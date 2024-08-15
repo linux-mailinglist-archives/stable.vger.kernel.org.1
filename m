@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-68537-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68776-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED87D9532D1
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:11:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A90179533E7
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:21:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95812281BD9
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:11:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DC1D81C252B6
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:21:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D9361A4F0F;
-	Thu, 15 Aug 2024 14:08:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9993F1EA80;
+	Thu, 15 Aug 2024 14:20:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uVCjtruw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xboStETu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BD0F1A00E7;
-	Thu, 15 Aug 2024 14:08:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58A0C1E526;
+	Thu, 15 Aug 2024 14:20:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730882; cv=none; b=iFD5k/0dBsA8V8usP4pSjcpcY1rG3fcKODdQv97ykuEoMSN1SSEhjBAu0vIJTugPHpNhs29exp3r37myAi0bcz5RzNGz1Cla0W394qMxTl0Y57Cs2o0UfLHhjugB4fVMmGpyKUH7I2Iza0J32eMFCeDwpfAeEY35FkBXdVIyM3Y=
+	t=1723731630; cv=none; b=RC5orXYLGvWn8F61o9BWYFkqHfuuS1BnDfqZMnYAvFYCPYIDW+pB/a6GtmLGgbBfYg0P/SvKOFyxLvogWYHwDHwBs4Fsr5PpbRNj2vlmT5lQO8ujagbq4ZbfoDJQ9HyoORNWytfrttANbZ40sDNKuldoOX3lVHgtTsdSygwf3g4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730882; c=relaxed/simple;
-	bh=Iu08SWYymgMYTqND5oqPXvmFx4lbLmrIu+0A4KVM0CI=;
+	s=arc-20240116; t=1723731630; c=relaxed/simple;
+	bh=rOZHd49LrMc5lo7TivRssdj4jH37jBje7uZdNrS/Hm4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BGePwpuV9Q8oBG0aV+AkncX8ggaUDvMhynHQFsg80652YSi5z2q46aDMS6qo0008ZV65/laUXkoa4CEaznOEJlkHGvVA7oUVNWF8M2XMQcNDZJSjJW3Byjz1+fTtY3Ublcg8OSUfBqAahDYMSyGvBH3dqjod5OdO9YGOoEzZXfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uVCjtruw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85100C32786;
-	Thu, 15 Aug 2024 14:08:01 +0000 (UTC)
+	 MIME-Version; b=uRKgj/urUj6TX2H1R5lM61DyCmalrlpMEg24k3a0MHy1/lxrBwuFp4c0CLo0oVfHP1SLCKS0NQUKn8AGis3LtjbXKpP05qgecqdY9oxA3hGMiJ1qR8DnBmdSZ7n4Q/J9Zokrvy3coktyzLwoqK3NHZH54C05ZhuS1h6HPekKIQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xboStETu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD3A2C32786;
+	Thu, 15 Aug 2024 14:20:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730881;
-	bh=Iu08SWYymgMYTqND5oqPXvmFx4lbLmrIu+0A4KVM0CI=;
+	s=korg; t=1723731630;
+	bh=rOZHd49LrMc5lo7TivRssdj4jH37jBje7uZdNrS/Hm4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uVCjtruwMz1jO2G7fiBKUH0d9/4USIkqbHwfisr9XA/fRhS72MemVdYC9OUVn3itZ
-	 Mzot2s6r4wpOnyDSVOfRscnjLktWHuMudoPj8zy8vP8FPbbggHa7qRJxq6DSjIWNRA
-	 XkoTx48W2HF4yxo1VoQhqA0jum4wn1QWNHQ/i/8g=
+	b=xboStETuAw7IcEYth34cejI0E9N4SX7JswEzb3LzXTnRxMXapjNft+yHfotGiwlvv
+	 0mca6ss5tVQjYFYWXi8MhCQNBiickE5+byAbya2JFGz8BOc8RhY49ZHtn36o8Xr+m3
+	 C/6IxVb9EaFMCTizs+LCMc/4gZmBl4esGFYGcH14=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.6 08/67] nfsd: stop setting ->pg_stats for unused stats
+	syzbot <syzkaller@googlegroups.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 189/259] net: linkwatch: use system_unbound_wq
 Date: Thu, 15 Aug 2024 15:25:22 +0200
-Message-ID: <20240815131838.642134029@linuxfoundation.org>
+Message-ID: <20240815131910.077438978@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131838.311442229@linuxfoundation.org>
-References: <20240815131838.311442229@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,91 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit a2214ed588fb3c5b9824a21cff870482510372bb ]
+[ Upstream commit 3e7917c0cdad835a5121520fc5686d954b7a61ab ]
 
-A lot of places are setting a blank svc_stats in ->pg_stats and never
-utilizing these stats.  Remove all of these extra structs as we're not
-reporting these stats anywhere.
+linkwatch_event() grabs possibly very contended RTNL mutex.
 
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+system_wq is not suitable for such work.
+
+Inspired by many noisy syzbot reports.
+
+3 locks held by kworker/0:7/5266:
+ #0: ffff888015480948 ((wq_completion)events){+.+.}-{0:0}, at: process_one_work kernel/workqueue.c:3206 [inline]
+ #0: ffff888015480948 ((wq_completion)events){+.+.}-{0:0}, at: process_scheduled_works+0x90a/0x1830 kernel/workqueue.c:3312
+ #1: ffffc90003f6fd00 ((linkwatch_work).work){+.+.}-{0:0}, at: process_one_work kernel/workqueue.c:3207 [inline]
+ , at: process_scheduled_works+0x945/0x1830 kernel/workqueue.c:3312
+ #2: ffffffff8fa6f208 (rtnl_mutex){+.+.}-{3:3}, at: linkwatch_event+0xe/0x60 net/core/link_watch.c:276
+
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20240805085821.1616528-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/lockd/svc.c    |    3 ---
- fs/nfs/callback.c |    3 ---
- fs/nfsd/nfssvc.c  |    5 -----
- 3 files changed, 11 deletions(-)
+ net/core/link_watch.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/lockd/svc.c
-+++ b/fs/lockd/svc.c
-@@ -712,8 +712,6 @@ static const struct svc_version *nlmsvc_
- #endif
- };
+diff --git a/net/core/link_watch.c b/net/core/link_watch.c
+index 35b0e39030daf..a70b2adc47a16 100644
+--- a/net/core/link_watch.c
++++ b/net/core/link_watch.c
+@@ -130,9 +130,9 @@ static void linkwatch_schedule_work(int urgent)
+ 	 * override the existing timer.
+ 	 */
+ 	if (test_bit(LW_URGENT, &linkwatch_flags))
+-		mod_delayed_work(system_wq, &linkwatch_work, 0);
++		mod_delayed_work(system_unbound_wq, &linkwatch_work, 0);
+ 	else
+-		schedule_delayed_work(&linkwatch_work, delay);
++		queue_delayed_work(system_unbound_wq, &linkwatch_work, delay);
+ }
  
--static struct svc_stat		nlmsvc_stats;
--
- #define NLM_NRVERS	ARRAY_SIZE(nlmsvc_version)
- static struct svc_program	nlmsvc_program = {
- 	.pg_prog		= NLM_PROGRAM,		/* program number */
-@@ -721,7 +719,6 @@ static struct svc_program	nlmsvc_program
- 	.pg_vers		= nlmsvc_version,	/* version table */
- 	.pg_name		= "lockd",		/* service name */
- 	.pg_class		= "nfsd",		/* share authentication with nfsd */
--	.pg_stats		= &nlmsvc_stats,	/* stats table */
- 	.pg_authenticate	= &lockd_authenticate,	/* export authentication */
- 	.pg_init_request	= svc_generic_init_request,
- 	.pg_rpcbind_set		= svc_generic_rpcbind_set,
---- a/fs/nfs/callback.c
-+++ b/fs/nfs/callback.c
-@@ -399,15 +399,12 @@ static const struct svc_version *nfs4_ca
- 	[4] = &nfs4_callback_version4,
- };
  
--static struct svc_stat nfs4_callback_stats;
--
- static struct svc_program nfs4_callback_program = {
- 	.pg_prog = NFS4_CALLBACK,			/* RPC service number */
- 	.pg_nvers = ARRAY_SIZE(nfs4_callback_version),	/* Number of entries */
- 	.pg_vers = nfs4_callback_version,		/* version table */
- 	.pg_name = "NFSv4 callback",			/* service name */
- 	.pg_class = "nfs",				/* authentication class */
--	.pg_stats = &nfs4_callback_stats,
- 	.pg_authenticate = nfs_callback_authenticate,
- 	.pg_init_request = svc_generic_init_request,
- 	.pg_rpcbind_set	= svc_generic_rpcbind_set,
---- a/fs/nfsd/nfssvc.c
-+++ b/fs/nfsd/nfssvc.c
-@@ -89,7 +89,6 @@ unsigned long	nfsd_drc_max_mem;
- unsigned long	nfsd_drc_mem_used;
- 
- #if defined(CONFIG_NFSD_V2_ACL) || defined(CONFIG_NFSD_V3_ACL)
--static struct svc_stat	nfsd_acl_svcstats;
- static const struct svc_version *nfsd_acl_version[] = {
- # if defined(CONFIG_NFSD_V2_ACL)
- 	[2] = &nfsd_acl_version2,
-@@ -108,15 +107,11 @@ static struct svc_program	nfsd_acl_progr
- 	.pg_vers		= nfsd_acl_version,
- 	.pg_name		= "nfsacl",
- 	.pg_class		= "nfsd",
--	.pg_stats		= &nfsd_acl_svcstats,
- 	.pg_authenticate	= &svc_set_client,
- 	.pg_init_request	= nfsd_acl_init_request,
- 	.pg_rpcbind_set		= nfsd_acl_rpcbind_set,
- };
- 
--static struct svc_stat	nfsd_acl_svcstats = {
--	.program	= &nfsd_acl_program,
--};
- #endif /* defined(CONFIG_NFSD_V2_ACL) || defined(CONFIG_NFSD_V3_ACL) */
- 
- static const struct svc_version *nfsd_version[] = {
+-- 
+2.43.0
+
 
 
 
