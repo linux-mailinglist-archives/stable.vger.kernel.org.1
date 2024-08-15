@@ -1,122 +1,85 @@
-Return-Path: <stable+bounces-69218-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69219-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48C13953699
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 17:05:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8C0195369D
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 17:05:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 75A7D1C24FA9
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:05:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC5201C24CC2
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:05:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 823B51AE05A;
-	Thu, 15 Aug 2024 15:04:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D78B1A706A;
+	Thu, 15 Aug 2024 15:05:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aPlX7Bi3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d2ZR4qR7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EF941A76B5;
-	Thu, 15 Aug 2024 15:04:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C11821A7068
+	for <stable@vger.kernel.org>; Thu, 15 Aug 2024 15:05:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723734270; cv=none; b=NptZhDKfTl7vr1q5PTfLlttiEKRCMAOF2E0gl/UhkpZ7t5yUacWYc1p622fk87wqhtunUdfSePWjwEAiCl8AWvj4RhvWSPh8HbrWm4XaLdJLMWnIrhNU2RrefQIlcHuX024f66h9xNH7ugDEHXMzpLD0kqtPPcX0K7ZCecdPopk=
+	t=1723734311; cv=none; b=E8vIK8Dd1VzKqWga4+TBg3+PEL8XPxvnz2eNfbNKpgBt67o+ntY3X36X/iElpToZyXrxkz9GMYyIzXNmHLnwsl2rykqUP0gAze5WM46e9P8DLeF3BynhDW53HLHdhzMmvC4auyZfRel75wq72O/PJwM3NbjHLT0veP8U1NWHB7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723734270; c=relaxed/simple;
-	bh=HltTTI+e8zHa/qW9JNcDQXbYgPTmLUWskd9ijkI8SrM=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=l1zXVo6k5gBpoXo6tfQspS2N2Ov56N6wnm3qskp7egTUsDKIngmUbU/Nso9RUancY/d4xzepScCtGX0mIhGfwShDEJuW5AS16gIJGXjKSFU0hBVebWoU9rxj3Y5TVkoKAEWSlRgeP3zhTH1ScEQ74JS2CYXT2ViiSxJXQ9gCQ3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aPlX7Bi3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3B8BC4AF0D;
-	Thu, 15 Aug 2024 15:04:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723734269;
-	bh=HltTTI+e8zHa/qW9JNcDQXbYgPTmLUWskd9ijkI8SrM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=aPlX7Bi3/wmYB8ikaem8Ft3bALXzCVClw2xagxo0if8pH5nDRJQhBImwzJC0P2qE/
-	 +8Cx21imJGYHMOdL4FlM+mYxIeUEoVjPrQ89Q2Iw/pbiPEqGCBAQiy8dzfPA6ZBfUU
-	 Pa6bMxJvM3DUNoGgcVmX8WNZiJRPM8IP6fMWYKKs/HgVvOAJNQ//ME4lcWVURZ3TqG
-	 Uqt0DghoDdAXaW4RN4AFDHMH0lc7PBm/rGzmkxmZCVGFwdZ4cguEd64O8j5pKo9+OI
-	 3xKOnHoC4WcU7y/apxbYTaLCFtFzNh8G07w8yrueXUmFcNNsdKkdvK4wi4x6pqSwuw
-	 hiTVukapcPpjg==
-Date: Thu, 15 Aug 2024 17:04:25 +0200
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Sean Young
- <sean@mess.org>, stable@vger.kernel.org, patches@lists.linux.dev, Zheng
- Yejian <zhengyejian1@huawei.com>, Sasha Levin <sashal@kernel.org>, Mauro
- Carvalho Chehab <mchehab@kernel.org>
-Subject: Re: [PATCH 5.15 085/484] media: dvb-usb: Fix unexpected infinite
- loop in dvb_usb_read_remote_control()
-Message-ID: <20240815170418.5dd187b1@foz.lan>
-In-Reply-To: <ad064a06-2037-4289-8087-d5a525872c26@xs4all.nl>
-References: <20240815131941.255804951@linuxfoundation.org>
-	<20240815131944.570292721@linuxfoundation.org>
-	<Zr4MX0elvdkuHZ8j@gofer.mess.org>
-	<2024081526-amusement-saddlebag-c622@gregkh>
-	<ad064a06-2037-4289-8087-d5a525872c26@xs4all.nl>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+	s=arc-20240116; t=1723734311; c=relaxed/simple;
+	bh=I0BfDFRxKEnLda2Pri6exgQF3tiMe84UkWe7MpusdxI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DLAgDnbEebFmcPnPQbFeo6SKwQ+k2vEGp6KzyPKuCklUUoBbNefJs6gHiaSErZDgclbMabMnLZzAM+xjk4WkqXi8a7hMsnuTkF0Pgjl9JOQOJHjp2nZ1EgDMHXskkIigMGKfIjh+qAaMKvPS3UqVDP7/hgGMLiewECSFXoYsdqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d2ZR4qR7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8E04C32786;
+	Thu, 15 Aug 2024 15:05:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1723734311;
+	bh=I0BfDFRxKEnLda2Pri6exgQF3tiMe84UkWe7MpusdxI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=d2ZR4qR7jB3Ez43f/u7NY9tJbpwED+WakZuPmF2odLwfPvhIbOV0iaYmNrKKd253v
+	 2zhom77LAFP9IG6mf/2fymwj4dH5YVN3b9nYRhXmMsR/SKb0vCJZ6DK4nx+0lQ4AXw
+	 y70Aqbfz/vwOyvC/kz196R6jmnFOSwNpHPRiWqkc=
+Date: Thu, 15 Aug 2024 17:05:08 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Mark Rutland <mark.rutland@arm.com>
+Cc: stable@vger.kernel.org, anshuman.khandual@arm.com,
+	bwicaksono@nvidia.com, catalin.marinas@arm.com, james.clark@arm.com,
+	james.morse@arm.com, will@kernel.org
+Subject: Re: [PATCH 6.6.y 13/13] arm64: errata: Expand speculative SSBS
+ workaround (again)
+Message-ID: <2024081501-dispute-underwear-a9ca@gregkh>
+References: <20240809095745.3476191-1-mark.rutland@arm.com>
+ <20240809095745.3476191-14-mark.rutland@arm.com>
+ <2024081211-props-gimmick-e3f5@gregkh>
+ <Zr4V_T8_ugiJmGJg@J2N7QTR9R3.cambridge.arm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Zr4V_T8_ugiJmGJg@J2N7QTR9R3.cambridge.arm.com>
 
-Em Thu, 15 Aug 2024 16:51:03 +0200
-Hans Verkuil <hverkuil-cisco@xs4all.nl> escreveu:
-
-> On 15/08/2024 16:20, Greg Kroah-Hartman wrote:
-> > On Thu, Aug 15, 2024 at 03:10:39PM +0100, Sean Young wrote:  
-> >> On Thu, Aug 15, 2024 at 03:19:03PM +0200, Greg Kroah-Hartman wrote:  
-> >>> 5.15-stable review patch.  If anyone has any objections, please let me know.
-> >>>
-> >>> ------------------
-> >>>
-> >>> From: Zheng Yejian <zhengyejian1@huawei.com>
-> >>>
-> >>> [ Upstream commit 2052138b7da52ad5ccaf74f736d00f39a1c9198c ]
-> >>>
-> >>> Infinite log printing occurs during fuzz test:
-> >>>
-> >>>   rc rc1: DViCO FusionHDTV DVB-T USB (LGZ201) as ...
-> >>>   ...
-> >>>   dvb-usb: schedule remote query interval to 100 msecs.
-> >>>   dvb-usb: DViCO FusionHDTV DVB-T USB (LGZ201) successfully initialized ...
-> >>>   dvb-usb: bulk message failed: -22 (1/0)
-> >>>   dvb-usb: bulk message failed: -22 (1/0)
-> >>>   dvb-usb: bulk message failed: -22 (1/0)
-> >>>   ...
-> >>>   dvb-usb: bulk message failed: -22 (1/0)
-> >>>
-> >>> Looking into the codes, there is a loop in dvb_usb_read_remote_control(),
-> >>> that is in rc_core_dvb_usb_remote_init() create a work that will call
-> >>> dvb_usb_read_remote_control(), and this work will reschedule itself at
-> >>> 'rc_interval' intervals to recursively call dvb_usb_read_remote_control(),
-> >>> see following code snippet:  
-> >>
-> >> This commit causes problems and has been reverted upstream.
-> >>
-> >> https://git.linuxtv.org/media_stage.git/commit/?h=fixes&id=0c84bde4f37ba27d50e4c70ecacd33fe4a57030d
-> >>
-> >> Please don't apply.  
+On Thu, Aug 15, 2024 at 03:51:41PM +0100, Mark Rutland wrote:
+> On Mon, Aug 12, 2024 at 05:03:45PM +0200, Greg KH wrote:
+> > On Fri, Aug 09, 2024 at 10:57:45AM +0100, Mark Rutland wrote:
+> > > [ Upstream commit b0672bbe133ebb6f7be21fce1d742d52f25bcdc7 ]
 > > 
-> > When will that land in Linus's tree?  Currently this commit is already
-> > in released 6.1, 6.6, and 6.10 kernels :(  
+> > Now I figured it out, this is the wrong git id, and is not in any tree
+> > anywhere.  It should be adeec61a4723fd3e39da68db4cc4d924e6d7f641.
+> > 
+> > I'll go hand-edit it now...
 > 
-> I asked Mauro to make a PR asap. Hopefully for the next rc.
+> Thanks, and sorry about that.
+> 
+> Looking in my local tree, the incorrect commit id is a copy of
+> adeec61a4723fd3e39da68db4cc4d924e6d7f641 where the earlier commits had
+> been updated with "[ Upstream commit XXX ]" wording. Evidently I grabbed
+> the commit ID from the wrong branch when I was folding that in.
+> 
+> I'll try to make sure that doesn't happen again. Is there any public
+> tooling for sanity-checking this?
 
-PR just sent:
-	https://lore.kernel.org/linux-media/20240815170235.0ab77b44@foz.lan/T/#u
-
-Regards,
-Mauro
-
-
-Thanks,
-Mauro
+Not that I know of :(
 
