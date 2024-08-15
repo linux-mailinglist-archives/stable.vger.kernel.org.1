@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-69121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68823-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49A3095358D
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:39:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79376953428
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:24:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F2B9A1F26BD6
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:39:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 22AD81F291DB
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:24:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E2A41A0710;
-	Thu, 15 Aug 2024 14:38:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1E7D1A08DD;
+	Thu, 15 Aug 2024 14:22:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uarbaSTp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="trT+cWx7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF0C21AC893;
-	Thu, 15 Aug 2024 14:38:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 808D91A0712;
+	Thu, 15 Aug 2024 14:22:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732737; cv=none; b=oouVhzP5DLc0SKb/saEjV8EQHFbgI2DQXZUBPYUQdhojLO1fu+GKVt624l7LITkj+FpCxz+zqPlJzGekAhSz3lzerk+OEu7DjWfEPBpk4zQnfvxWMKLNFDVAkwUIubofP2HXOWLB2LOniRiWNxl47J0oQ3nrWLpbRstcm4y+5fw=
+	t=1723731776; cv=none; b=DYkrwNom39lC60CZlQ6kV/JS8j7mkd+pDdtsjb248cvfEcxzbQlJA5bx2vOcuP4Wx34N3fMY9uEJ+IrBppDK5u/M9lKLBMuBjaxHX6aed5HsBXimG/xDd/iZqJGSJLBlxP7wS9N325vGDnsSr/lfqRYifxC6W1X8bNdmInV+xh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732737; c=relaxed/simple;
-	bh=DrIo/oSUV9g1c8D7MpOPL8zXuNIiSvlxQP1OGj/iTdw=;
+	s=arc-20240116; t=1723731776; c=relaxed/simple;
+	bh=yWacTcBgDeFodIvbBDbg+fWCTQMxGTRMXoukIsRrPpQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KdAhR5/xeHkgNzhCDCjcLKkCLm0CPhP3c881hcHylpvuytupPLYPrCjKx1DRlw+KwWs4/lzv2PNTfpnxa0AtjQHNZeWzyeVsrnufH/mZmVxV91Bv2QnOiwr8rPEyucVTrhxsLuhaU/G2+8EQs+1OLb7D2q44nD/NoR0Q2MReCBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uarbaSTp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD124C32786;
-	Thu, 15 Aug 2024 14:38:55 +0000 (UTC)
+	 MIME-Version; b=ettxX2sPx5SEWHAnAD2ahZwQUK/tLqdF5r5R8iOZUyVLIl66s+/hWVtDdfBX9pLYiEZOwVsjZauWRybg/4YBgbSHK60OXusCXB+Yjnfo05p91u4j1Ot74+ykYXYSSBxDbRhIjVI1G9oZ1U8m1flgBm9ygImllcuRMgU+gYYwik8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=trT+cWx7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92952C32786;
+	Thu, 15 Aug 2024 14:22:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732736;
-	bh=DrIo/oSUV9g1c8D7MpOPL8zXuNIiSvlxQP1OGj/iTdw=;
+	s=korg; t=1723731776;
+	bh=yWacTcBgDeFodIvbBDbg+fWCTQMxGTRMXoukIsRrPpQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uarbaSTpFQHIhr8Ib2mcL6Vck2NHB6suxiUInswBAdnE1jtENPBvhwRzhvoGdjl2Q
-	 uoBZf5Xqj795nazNpSA1Y5oLEd+ueneyHDqV0OsbC4t5O/yGXeftTBSSXWr9h4xgWq
-	 WJF/ftGZCgqnF38EZH3gpVYWkGvlJYdSi4PxLkN8=
+	b=trT+cWx7DtiVeug4A4W1dxTjVm2zczEf23kjW2hXgOIFTLoQdZXbQ3Z8kH4lJ3AFO
+	 DjDYFUVPd4suaYIVR8e41yQYcBpXTkO9ZTMv+CgzAt3135ECsxNFXRb6vyUxgHwBqq
+	 HlxS5iX742kDFkh8ORfAud8HNIGF8ZvqYWKtxzks=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Kemeng Shi <shikemeng@huaweicloud.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 270/352] wifi: nl80211: dont give key data to userspace
-Date: Thu, 15 Aug 2024 15:25:36 +0200
-Message-ID: <20240815131929.886108226@linuxfoundation.org>
+Subject: [PATCH 5.4 204/259] jbd2: avoid memleak in jbd2_journal_write_metadata_buffer
+Date: Thu, 15 Aug 2024 15:25:37 +0200
+Message-ID: <20240815131910.651046115@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +64,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Kemeng Shi <shikemeng@huaweicloud.com>
 
-[ Upstream commit a7e5793035792cc46a1a4b0a783655ffa897dfe9 ]
+[ Upstream commit cc102aa24638b90e04364d64e4f58a1fa91a1976 ]
 
-When a key is requested by userspace, there's really no need
-to include the key data, the sequence counter is really what
-userspace needs in this case. The fact that it's included is
-just a historic quirk.
+The new_bh is from alloc_buffer_head, we should call free_buffer_head to
+free it in error case.
 
-Remove the key data.
-
-Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20240627104411.b6a4f097e4ea.I7e6cc976cb9e8a80ef25a3351330f313373b4578@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
+Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20240514112438.1269037-2-shikemeng@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/nl80211.c | 10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
+ fs/jbd2/journal.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 846e40dc00bb6..f9ad7de710cb4 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -3968,10 +3968,7 @@ static void get_key_callback(void *c, struct key_params *params)
- 	struct nlattr *key;
- 	struct get_key_cookie *cookie = c;
- 
--	if ((params->key &&
--	     nla_put(cookie->msg, NL80211_ATTR_KEY_DATA,
--		     params->key_len, params->key)) ||
--	    (params->seq &&
-+	if ((params->seq &&
- 	     nla_put(cookie->msg, NL80211_ATTR_KEY_SEQ,
- 		     params->seq_len, params->seq)) ||
- 	    (params->cipher &&
-@@ -3983,10 +3980,7 @@ static void get_key_callback(void *c, struct key_params *params)
- 	if (!key)
- 		goto nla_put_failure;
- 
--	if ((params->key &&
--	     nla_put(cookie->msg, NL80211_KEY_DATA,
--		     params->key_len, params->key)) ||
--	    (params->seq &&
-+	if ((params->seq &&
- 	     nla_put(cookie->msg, NL80211_KEY_SEQ,
- 		     params->seq_len, params->seq)) ||
- 	    (params->cipher &&
+diff --git a/fs/jbd2/journal.c b/fs/jbd2/journal.c
+index 81bd7b29a10b6..cfa21c29f3123 100644
+--- a/fs/jbd2/journal.c
++++ b/fs/jbd2/journal.c
+@@ -408,6 +408,7 @@ int jbd2_journal_write_metadata_buffer(transaction_t *transaction,
+ 		tmp = jbd2_alloc(bh_in->b_size, GFP_NOFS);
+ 		if (!tmp) {
+ 			brelse(new_bh);
++			free_buffer_head(new_bh);
+ 			return -ENOMEM;
+ 		}
+ 		jbd_lock_bh_state(bh_in);
 -- 
 2.43.0
 
