@@ -1,255 +1,205 @@
-Return-Path: <stable+bounces-67952-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67990-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A36C4952FEE
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:37:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAC3595301E
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:39:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C764C1C24BDC
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:37:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 741371F2611B
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:39:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D1C929CE6;
-	Thu, 15 Aug 2024 13:37:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17F2519EED2;
+	Thu, 15 Aug 2024 13:39:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TVvhxGX2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RD1ZA3IO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37C041A4F3A;
-	Thu, 15 Aug 2024 13:37:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C424D19EECF;
+	Thu, 15 Aug 2024 13:39:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723729034; cv=none; b=p79ZZ9p472373ts14TdKCv+rOo9JI/eHI0XpSv/SXL4z0Kf5HgEtbC1phDgIhZGJSl1NRN8/3iuHaBc4XOQncZ88mG59x5JvwFlYLavmdSFKBert2TuRL6KqGZzDfUXI9T+GPj3dM/wu5ZSNoMi4uy3h2yAU5bAmgpc3RY527oo=
+	t=1723729153; cv=none; b=HRwFSGCQk02DnhZOhDhI7odVzrFQjL6+2vI5GrLDWnbhI4BphVWzbEevCMM1e6lJzLWkUE/LI7QWIGFhK6sro+A2Hv/AYKLNJC7mV5qlMXcGzSpfB6I9lMXo5FXZRXIepNd6tvEwN0k700mkkwYtFD4s0waMroONy7X96Cec3rI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723729034; c=relaxed/simple;
-	bh=fUgJGdKQUAnd4ia2Teq06B+i3AO85HYBTSmMbNSlZ1M=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PuKPIMdCm/W1m5xJOUiDTWYdr5s2oTawS08AqE4tNo/E+IIzPsGIXe/vUyAtpd9FazzegMMqaHjX3xKaavYzUnxk7ndVxZ9JLFB63itGR8m4OAhHzWXbLKhONJrTHiEhWSM9b+YmRVgm7FSOif51Y2lN3CNAr/aLI9hzt2Jk7p4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TVvhxGX2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76EA4C4AF10;
-	Thu, 15 Aug 2024 13:37:13 +0000 (UTC)
+	s=arc-20240116; t=1723729153; c=relaxed/simple;
+	bh=wfNjkiwjF3OQQaLpX0or6c2Q95TUZGbxbvgApXQCKn4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=swHAAVpJ+fek+9qF4hufrSQvXe1SpHHVfh6DUS2nuTHr15zIplKEMMQtAkCr/HfzafiaJTRIMR+XEfYJeOSBtjl3/i5giovrrjOZwbxQukrZ5wMhPZPm4mkJIE1bmg6CjSeKwgmeCkFZZEe8zpiLdLXlFfkA1bz3hyrkFOgQODo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RD1ZA3IO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D50C9C4AF0A;
+	Thu, 15 Aug 2024 13:39:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723729033;
-	bh=fUgJGdKQUAnd4ia2Teq06B+i3AO85HYBTSmMbNSlZ1M=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TVvhxGX2EIEynHrbDFj2UywEHlemWBtWn6e+Baows+ZT57tEnkKI9aIVJQZo6FMs9
-	 qqpI6moBACiINQl6TyTpgp1GGZHowZK4htrY8viMbPSBAPpT5a7FLgOcxst9uQTqS9
-	 H7xfoUc49MUXB7EPiCZloduF3HsxZ5HzOcKxwrQ4=
+	s=korg; t=1723729153;
+	bh=wfNjkiwjF3OQQaLpX0or6c2Q95TUZGbxbvgApXQCKn4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=RD1ZA3IODvwLqwVDN+JLa1dWLE1WA+A3i7sWEUi62zpwIhS23RgIw7DEf44lM3Ft+
+	 l4b+/2cn/ItD7TvTYDzndkJ9SrT45QAkfhT0GxzTumv+FsBYwOfibkpvSexup2jFOt
+	 vcvaQnP06Ynm5owTVJaOFHb4cN3ToFnQXmwRvVN0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org,
-	netfilter-devel@vger.kernel.org
+To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 4.19 190/196] netfilter: nf_tables: use timestamp to check for set element timeout
-Date: Thu, 15 Aug 2024 15:25:07 +0200
-Message-ID: <20240815131859.341364145@linuxfoundation.org>
+	linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@denx.de,
+	jonathanh@nvidia.com,
+	f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net,
+	rwarsow@gmx.de,
+	conor@kernel.org,
+	allen.lkml@gmail.com,
+	broonie@kernel.org
+Subject: [PATCH 6.10 00/22] 6.10.6-rc1 review
+Date: Thu, 15 Aug 2024 15:25:08 +0200
+Message-ID: <20240815131831.265729493@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
+X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.10.6-rc1.gz
+X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+X-KernelTest-Branch: linux-6.10.y
+X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
+X-KernelTest-Version: 6.10.6-rc1
+X-KernelTest-Deadline: 2024-08-17T13:18+00:00
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+This is the start of the stable review cycle for the 6.10.6 release.
+There are 22 patches in this series, all will be posted as a response
+to this one.  If anyone has any issues with these being applied, please
+let me know.
 
-------------------
+Responses should be made by Sat, 17 Aug 2024 13:18:17 +0000.
+Anything received after that time might be too late.
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+The whole patch series can be found in one patch at:
+	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.10.6-rc1.gz
+or in the git tree and branch at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.10.y
+and the diffstat can be found below.
 
-commit 7395dfacfff65e9938ac0889dafa1ab01e987d15 upstream
+thanks,
 
-Add a timestamp field at the beginning of the transaction, store it
-in the nftables per-netns area.
+greg k-h
 
-Update set backend .insert, .deactivate and sync gc path to use the
-timestamp, this avoids that an element expires while control plane
-transaction is still unfinished.
+-------------
+Pseudo-Shortlog of commits:
 
-.lookup and .update, which are used from packet path, still use the
-current time to check if the element has expired. And .get path and dump
-also since this runs lockless under rcu read size lock. Then, there is
-async gc which also needs to check the current time since it runs
-asynchronously from a workqueue.
+Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Linux 6.10.6-rc1
 
-[ NB: rbtree GC updates has been excluded because GC is asynchronous. ]
+Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+    drm/amdgpu/display: Fix null pointer dereference in dc_stream_program_cursor_position
 
-Fixes: c3e1b005ed1c ("netfilter: nf_tables: add set element timeout support")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- include/net/netfilter/nf_tables.h |   21 +++++++++++++++++++--
- net/netfilter/nf_tables_api.c     |    1 +
- net/netfilter/nft_set_hash.c      |    8 +++++++-
- net/netfilter/nft_set_rbtree.c    |    6 ++++--
- 4 files changed, 31 insertions(+), 5 deletions(-)
+Wayne Lin <Wayne.Lin@amd.com>
+    drm/amd/display: Solve mst monitors blank out problem after resume
 
---- a/include/net/netfilter/nf_tables.h
-+++ b/include/net/netfilter/nf_tables.h
-@@ -12,6 +12,7 @@
- #include <linux/rhashtable.h>
- #include <net/netfilter/nf_flow_table.h>
- #include <net/netlink.h>
-+#include <net/netns/generic.h>
- 
- #define NFT_JUMP_STACK_SIZE	16
- 
-@@ -636,10 +637,16 @@ static inline struct nft_expr *nft_set_e
- 	return nft_set_ext(ext, NFT_SET_EXT_EXPR);
- }
- 
--static inline bool nft_set_elem_expired(const struct nft_set_ext *ext)
-+static inline bool __nft_set_elem_expired(const struct nft_set_ext *ext,
-+					  u64 tstamp)
- {
- 	return nft_set_ext_exists(ext, NFT_SET_EXT_EXPIRATION) &&
--	       time_is_before_eq_jiffies64(*nft_set_ext_expiration(ext));
-+	       time_after_eq64(tstamp, *nft_set_ext_expiration(ext));
-+}
-+
-+static inline bool nft_set_elem_expired(const struct nft_set_ext *ext)
-+{
-+	return __nft_set_elem_expired(ext, get_jiffies_64());
- }
- 
- static inline struct nft_set_ext *nft_set_elem_ext(const struct nft_set *set,
-@@ -1423,11 +1430,21 @@ struct nftables_pernet {
- 	struct list_head	module_list;
- 	struct list_head	notify_list;
- 	struct mutex		commit_mutex;
-+	u64			tstamp;
- 	unsigned int		base_seq;
- 	u8			validate_state;
- 	unsigned int		gc_seq;
- };
- 
-+extern unsigned int nf_tables_net_id;
-+
-+static inline u64 nft_net_tstamp(const struct net *net)
-+{
-+	struct nftables_pernet *nft_net = net_generic(net, nf_tables_net_id);
-+
-+	return nft_net->tstamp;
-+}
-+
- int nf_msecs_to_jiffies64(const struct nlattr *nla, u64 *result);
- __be64 nf_jiffies64_to_msecs(u64 input);
- 
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -7365,6 +7365,7 @@ static bool nf_tables_valid_genid(struct
- 	bool genid_ok;
- 
- 	mutex_lock(&nft_net->commit_mutex);
-+	nft_net->tstamp = get_jiffies_64();
- 
- 	genid_ok = genid == 0 || nft_net->base_seq == genid;
- 	if (!genid_ok)
---- a/net/netfilter/nft_set_hash.c
-+++ b/net/netfilter/nft_set_hash.c
-@@ -41,6 +41,7 @@ struct nft_rhash_cmp_arg {
- 	const struct nft_set		*set;
- 	const u32			*key;
- 	u8				genmask;
-+	u64				tstamp;
- };
- 
- static inline u32 nft_rhash_key(const void *data, u32 len, u32 seed)
-@@ -67,7 +68,7 @@ static inline int nft_rhash_cmp(struct r
- 		return 1;
- 	if (nft_set_elem_is_dead(&he->ext))
- 		return 1;
--	if (nft_set_elem_expired(&he->ext))
-+	if (__nft_set_elem_expired(&he->ext, x->tstamp))
- 		return 1;
- 	if (!nft_set_elem_active(&he->ext, x->genmask))
- 		return 1;
-@@ -91,6 +92,7 @@ static bool nft_rhash_lookup(const struc
- 		.genmask = nft_genmask_cur(net),
- 		.set	 = set,
- 		.key	 = key,
-+		.tstamp  = get_jiffies_64(),
- 	};
- 
- 	he = rhashtable_lookup_fast(&priv->ht, &arg, nft_rhash_params);
-@@ -109,6 +111,7 @@ static void *nft_rhash_get(const struct
- 		.genmask = nft_genmask_cur(net),
- 		.set	 = set,
- 		.key	 = elem->key.val.data,
-+		.tstamp  = get_jiffies_64(),
- 	};
- 
- 	he = rhashtable_lookup_fast(&priv->ht, &arg, nft_rhash_params);
-@@ -132,6 +135,7 @@ static bool nft_rhash_update(struct nft_
- 		.genmask = NFT_GENMASK_ANY,
- 		.set	 = set,
- 		.key	 = key,
-+		.tstamp  = get_jiffies_64(),
- 	};
- 
- 	he = rhashtable_lookup_fast(&priv->ht, &arg, nft_rhash_params);
-@@ -175,6 +179,7 @@ static int nft_rhash_insert(const struct
- 		.genmask = nft_genmask_next(net),
- 		.set	 = set,
- 		.key	 = elem->key.val.data,
-+		.tstamp	 = nft_net_tstamp(net),
- 	};
- 	struct nft_rhash_elem *prev;
- 
-@@ -217,6 +222,7 @@ static void *nft_rhash_deactivate(const
- 		.genmask = nft_genmask_next(net),
- 		.set	 = set,
- 		.key	 = elem->key.val.data,
-+		.tstamp	 = nft_net_tstamp(net),
- 	};
- 
- 	rcu_read_lock();
---- a/net/netfilter/nft_set_rbtree.c
-+++ b/net/netfilter/nft_set_rbtree.c
-@@ -318,6 +318,7 @@ static int __nft_rbtree_insert(const str
- 	struct nft_rbtree *priv = nft_set_priv(set);
- 	u8 cur_genmask = nft_genmask_cur(net);
- 	u8 genmask = nft_genmask_next(net);
-+	u64 tstamp = nft_net_tstamp(net);
- 	int d, err;
- 
- 	/* Descend the tree to search for an existing element greater than the
-@@ -365,7 +366,7 @@ static int __nft_rbtree_insert(const str
- 		/* perform garbage collection to avoid bogus overlap reports
- 		 * but skip new elements in this transaction.
- 		 */
--		if (nft_set_elem_expired(&rbe->ext) &&
-+		if (__nft_set_elem_expired(&rbe->ext, tstamp) &&
- 		    nft_set_elem_active(&rbe->ext, cur_genmask)) {
- 			err = nft_rbtree_gc_elem(set, priv, rbe);
- 			if (err < 0)
-@@ -540,6 +541,7 @@ static void *nft_rbtree_deactivate(const
- 	const struct rb_node *parent = priv->root.rb_node;
- 	struct nft_rbtree_elem *rbe, *this = elem->priv;
- 	u8 genmask = nft_genmask_next(net);
-+	u64 tstamp = nft_net_tstamp(net);
- 	int d;
- 
- 	while (parent != NULL) {
-@@ -560,7 +562,7 @@ static void *nft_rbtree_deactivate(const
- 				   nft_rbtree_interval_end(this)) {
- 				parent = parent->rb_right;
- 				continue;
--			} else if (nft_set_elem_expired(&rbe->ext)) {
-+			} else if (__nft_set_elem_expired(&rbe->ext, tstamp)) {
- 				break;
- 			} else if (!nft_set_elem_active(&rbe->ext, genmask)) {
- 				parent = parent->rb_left;
+Kees Cook <kees@kernel.org>
+    binfmt_flat: Fix corruption when not offsetting data start
+
+Gergo Koteles <soyer@irl.hu>
+    platform/x86: ideapad-laptop: add a mutex to synchronize VPC commands
+
+Gergo Koteles <soyer@irl.hu>
+    platform/x86: ideapad-laptop: move ymc_trigger_ec from lenovo-ymc
+
+Gergo Koteles <soyer@irl.hu>
+    platform/x86: ideapad-laptop: introduce a generic notification chain
+
+Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+    platform/x86/amd/pmf: Fix to Update HPD Data When ALS is Disabled
+
+Takashi Iwai <tiwai@suse.de>
+    ALSA: usb: Fix UBSAN warning in parse_audio_unit()
+
+Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+    fs/ntfs3: Do copy_to_user out of run_lock
+
+Pei Li <peili.dev@gmail.com>
+    jfs: Fix shift-out-of-bounds in dbDiscardAG
+
+Edward Adam Davis <eadavis@qq.com>
+    jfs: fix null ptr deref in dtInsertEntry
+
+Willem de Bruijn <willemb@google.com>
+    fou: remove warn in gue_gro_receive on unsupported protocol
+
+Chao Yu <chao@kernel.org>
+    f2fs: fix to cover read extent cache access with lock
+
+Chao Yu <chao@kernel.org>
+    f2fs: fix to do sanity check on F2FS_INLINE_DATA flag in inode during GC
+
+yunshui <jiangyunshui@kylinos.cn>
+    bpf, net: Use DEV_STAT_INC()
+
+Simon Trimmer <simont@opensource.cirrus.com>
+    ASoC: cs35l56: Patch CS35L56_IRQ1_MASK_18 to the default value
+
+WangYuli <wangyuli@uniontech.com>
+    nvme/pci: Add APST quirk for Lenovo N60z laptop
+
+Huacai Chen <chenhuacai@kernel.org>
+    LoongArch: Define __ARCH_WANT_NEW_STAT in unistd.h
+
+Fangzhi Zuo <jerry.zuo@amd.com>
+    drm/amd/display: Prevent IPX From Link Detect and Set Mode
+
+Harry Wentland <harry.wentland@amd.com>
+    drm/amd/display: Separate setting and programming of cursor
+
+Wayne Lin <wayne.lin@amd.com>
+    drm/amd/display: Defer handling mst up request in resume
+
+Kees Cook <kees@kernel.org>
+    exec: Fix ToCToU between perm check and set-uid/gid usage
+
+
+-------------
+
+Diffstat:
+
+ Makefile                                           |   4 +-
+ arch/loongarch/include/uapi/asm/unistd.h           |   1 +
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c  |  14 +-
+ .../drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c    |   6 +-
+ drivers/gpu/drm/amd/display/dc/core/dc_stream.c    |  94 ++++++++-----
+ drivers/gpu/drm/amd/display/dc/dc_stream.h         |   8 ++
+ .../drm/amd/display/dc/hwss/dcn30/dcn30_hwseq.c    |   2 +-
+ drivers/nvme/host/pci.c                            |   7 +
+ drivers/platform/x86/Kconfig                       |   1 +
+ drivers/platform/x86/amd/pmf/spc.c                 |  32 ++---
+ drivers/platform/x86/ideapad-laptop.c              | 148 ++++++++++++++++++---
+ drivers/platform/x86/ideapad-laptop.h              |   9 ++
+ drivers/platform/x86/lenovo-ymc.c                  |  60 +--------
+ fs/binfmt_flat.c                                   |   4 +-
+ fs/exec.c                                          |   8 +-
+ fs/f2fs/extent_cache.c                             |  50 +++----
+ fs/f2fs/f2fs.h                                     |   2 +-
+ fs/f2fs/gc.c                                       |  10 ++
+ fs/f2fs/inode.c                                    |  10 +-
+ fs/jfs/jfs_dmap.c                                  |   2 +
+ fs/jfs/jfs_dtree.c                                 |   2 +
+ fs/ntfs3/frecord.c                                 |  75 ++++++++++-
+ net/core/filter.c                                  |   8 +-
+ net/ipv4/fou_core.c                                |   2 +-
+ sound/soc/codecs/cs35l56-shared.c                  |   1 +
+ sound/usb/mixer.c                                  |   7 +
+ 26 files changed, 388 insertions(+), 179 deletions(-)
 
 
 
