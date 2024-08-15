@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-68182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68223-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F308953101
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:49:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16AF9953132
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:51:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9FA3CB24423
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:49:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B340D1F2173B
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:51:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B2021494C5;
-	Thu, 15 Aug 2024 13:49:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0768C19AA53;
+	Thu, 15 Aug 2024 13:51:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z70/R6lU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uNcTie9Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC1B37DA9E;
-	Thu, 15 Aug 2024 13:49:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA5081494C5;
+	Thu, 15 Aug 2024 13:51:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723729752; cv=none; b=orhdfjUaVmT2VXqB0Fp7MLpmPjvHdBf6wbF7NCYqMBGZfEaRfyH0Sf2ZmggapwW8pajcmpyPRSTshBJq8l0ZkE10/zV4QdQdwNqghNYF2YvNlp381Sw5lOQEfebGbd0ocWu2DnC/iJXF8flI47U8jyI55jMpDEzDFq8tks/LwbU=
+	t=1723729884; cv=none; b=q9hqGhd4PJq8VooCca6xFDSwbDrPGHxuLEfdml782n8BzgkR9aEaX+9DIDsKVi1Hao8psFsfI6aTWanljeosGMyXYha1dodTe95l68tkltaeZNyLixsWsrxEl6WIdLqQdA/0arEn8zNMnJWGzMQvkqEdWXfcyr2hEPR0Qk/63DI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723729752; c=relaxed/simple;
-	bh=7pDCy+58oo3CS/Jbq5zqsf2f7wjINT9IHSLFkf9tJ08=;
+	s=arc-20240116; t=1723729884; c=relaxed/simple;
+	bh=5/Weo7+iQnsYhUvcvzeq2YNKnQtFyuaf7zVkcIRxuAc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VqjU1cACJDh9txI5/nd55HRnz7XJZ03fDhI0b+vp+IUm8wPJgQYutZ6YCOhd3JfkdSnQDiyahmAj8gEWju1UqoRQrW83M+vXyOE2WScAwg+2WSX/Yi62n2+Hy79AtYH8HKFWXwm7Al1fH5YX1p2HIJITmcPK9AzpB1kFzrMOWVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z70/R6lU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48740C32786;
-	Thu, 15 Aug 2024 13:49:12 +0000 (UTC)
+	 MIME-Version; b=pVZ70ezh3bl6tZpsxqbasr4+r6jZisnGF4TG9L2N9DjvgMsXu+xNl95g8JSlZLdSZ8+yRG4zIidcqEbKD/Tr2zvJcnCG6sHa+W50abESo5Wv2JmB7aSLsEEjV+dWOZjJRP8d+KXpSEe1uubQ0xdLl6huwqv1dPxjdZcjkOHCLa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uNcTie9Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21788C32786;
+	Thu, 15 Aug 2024 13:51:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723729752;
-	bh=7pDCy+58oo3CS/Jbq5zqsf2f7wjINT9IHSLFkf9tJ08=;
+	s=korg; t=1723729884;
+	bh=5/Weo7+iQnsYhUvcvzeq2YNKnQtFyuaf7zVkcIRxuAc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z70/R6lUy2NdTI72TO4iPm+Jxu2W7ao3oEYxJ8SxseAds6OyhOwAa7cFTPRwBserk
-	 Vk3rV4J9NapQkceNgNTXAvx1e+QmIkGO/ESn9dOUXUH/prY2F9VOxZxn8/zoQrI36C
-	 h4hFXXWlDx5CknsJQ4gFq8qM2ppFfniUDiIrPfsM=
+	b=uNcTie9QXTv0wTzKjK4nxOMA0aXtbsYho3b7UFPE//cIvaMLkdi3LHwJMO/9Il0J6
+	 WS3Hd6AkRQQ4TkeBRf0gOP42prLKTBpr0SkXOsmgp+ZdSVXb+UkN2JZnXAQ75UcTZo
+	 8Hoq5hhDan3wjMDtnNWVqdpuPL2x8XQa5/bYvWR0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	=?UTF-8?q?Micka=C3=ABl=20Sala=C3=BCn?= <mic@digikod.net>
-Subject: [PATCH 5.15 195/484] selftests/landlock: Add cred_transfer test
-Date: Thu, 15 Aug 2024 15:20:53 +0200
-Message-ID: <20240815131948.945925591@linuxfoundation.org>
+	Rafael Beims <rafael.beims@toradex.com>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Kalle Valo <kvalo@kernel.org>
+Subject: [PATCH 5.15 196/484] wifi: mwifiex: Fix interface type change
+Date: Thu, 15 Aug 2024 15:20:54 +0200
+Message-ID: <20240815131948.984578769@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
 References: <20240815131941.255804951@linuxfoundation.org>
@@ -59,132 +60,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mickaël Salaün <mic@digikod.net>
+From: Rafael Beims <rafael.beims@toradex.com>
 
-commit cc374782b6ca0fd634482391da977542443d3368 upstream.
+commit a17b9f590f6ec2b9f1b12b1db3bf1d181de6b272 upstream.
 
-Check that keyctl(KEYCTL_SESSION_TO_PARENT) preserves the parent's
-restrictions.
+When changing the interface type we also need to update the bss_num, the
+driver private data is searched based on a unique (bss_type, bss_num)
+tuple, therefore every time bss_type changes, bss_num must also change.
 
-Fixes: e1199815b47b ("selftests/landlock: Add user space tests")
-Co-developed-by: Jann Horn <jannh@google.com>
-Signed-off-by: Jann Horn <jannh@google.com>
-Link: https://lore.kernel.org/r/20240724.Ood5aige9she@digikod.net
-Signed-off-by: Mickaël Salaün <mic@digikod.net>
+This fixes for example an issue in which, after the mode changed, a
+wireless scan on the changed interface would not finish, leading to
+repeated -EBUSY messages to userspace when other scan requests were
+sent.
+
+Fixes: c606008b7062 ("mwifiex: Properly initialize private structure on interface type changes")
+Cc: stable@vger.kernel.org
+Signed-off-by: Rafael Beims <rafael.beims@toradex.com>
+Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://msgid.link/20240510110458.15475-1-francesco@dolcini.it
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/landlock/base_test.c |   74 +++++++++++++++++++++++++++
- tools/testing/selftests/landlock/config      |    5 +
- 2 files changed, 77 insertions(+), 2 deletions(-)
+ drivers/net/wireless/marvell/mwifiex/cfg80211.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/tools/testing/selftests/landlock/base_test.c
-+++ b/tools/testing/selftests/landlock/base_test.c
-@@ -9,6 +9,7 @@
- #define _GNU_SOURCE
- #include <errno.h>
- #include <fcntl.h>
-+#include <linux/keyctl.h>
- #include <linux/landlock.h>
- #include <string.h>
- #include <sys/prctl.h>
-@@ -356,4 +357,77 @@ TEST(ruleset_fd_transfer)
- 	ASSERT_EQ(EXIT_SUCCESS, WEXITSTATUS(status));
- }
+--- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
++++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+@@ -930,6 +930,8 @@ mwifiex_init_new_priv_params(struct mwif
+ 		return -EOPNOTSUPP;
+ 	}
  
-+TEST(cred_transfer)
-+{
-+	struct landlock_ruleset_attr ruleset_attr = {
-+		.handled_access_fs = LANDLOCK_ACCESS_FS_READ_DIR,
-+	};
-+	int ruleset_fd, dir_fd;
-+	pid_t child;
-+	int status;
++	priv->bss_num = mwifiex_get_unused_bss_num(adapter, priv->bss_type);
 +
-+	drop_caps(_metadata);
-+
-+	dir_fd = open("/", O_RDONLY | O_DIRECTORY | O_CLOEXEC);
-+	EXPECT_LE(0, dir_fd);
-+	EXPECT_EQ(0, close(dir_fd));
-+
-+	/* Denies opening directories. */
-+	ruleset_fd =
-+		landlock_create_ruleset(&ruleset_attr, sizeof(ruleset_attr), 0);
-+	ASSERT_LE(0, ruleset_fd);
-+	EXPECT_EQ(0, prctl(PR_SET_NO_NEW_PRIVS, 1, 0, 0, 0));
-+	ASSERT_EQ(0, landlock_restrict_self(ruleset_fd, 0));
-+	EXPECT_EQ(0, close(ruleset_fd));
-+
-+	/* Checks ruleset enforcement. */
-+	EXPECT_EQ(-1, open("/", O_RDONLY | O_DIRECTORY | O_CLOEXEC));
-+	EXPECT_EQ(EACCES, errno);
-+
-+	/* Needed for KEYCTL_SESSION_TO_PARENT permission checks */
-+	EXPECT_NE(-1, syscall(__NR_keyctl, KEYCTL_JOIN_SESSION_KEYRING, NULL, 0,
-+			      0, 0))
-+	{
-+		TH_LOG("Failed to join session keyring: %s", strerror(errno));
-+	}
-+
-+	child = fork();
-+	ASSERT_LE(0, child);
-+	if (child == 0) {
-+		/* Checks ruleset enforcement. */
-+		EXPECT_EQ(-1, open("/", O_RDONLY | O_DIRECTORY | O_CLOEXEC));
-+		EXPECT_EQ(EACCES, errno);
-+
-+		/*
-+		 * KEYCTL_SESSION_TO_PARENT is a no-op unless we have a
-+		 * different session keyring in the child, so make that happen.
-+		 */
-+		EXPECT_NE(-1, syscall(__NR_keyctl, KEYCTL_JOIN_SESSION_KEYRING,
-+				      NULL, 0, 0, 0));
-+
-+		/*
-+		 * KEYCTL_SESSION_TO_PARENT installs credentials on the parent
-+		 * that never go through the cred_prepare hook, this path uses
-+		 * cred_transfer instead.
-+		 */
-+		EXPECT_EQ(0, syscall(__NR_keyctl, KEYCTL_SESSION_TO_PARENT, 0,
-+				     0, 0, 0));
-+
-+		/* Re-checks ruleset enforcement. */
-+		EXPECT_EQ(-1, open("/", O_RDONLY | O_DIRECTORY | O_CLOEXEC));
-+		EXPECT_EQ(EACCES, errno);
-+
-+		_exit(_metadata->passed ? EXIT_SUCCESS : EXIT_FAILURE);
-+		return;
-+	}
-+
-+	EXPECT_EQ(child, waitpid(child, &status, 0));
-+	EXPECT_EQ(1, WIFEXITED(status));
-+	EXPECT_EQ(EXIT_SUCCESS, WEXITSTATUS(status));
-+
-+	/* Re-checks ruleset enforcement. */
-+	EXPECT_EQ(-1, open("/", O_RDONLY | O_DIRECTORY | O_CLOEXEC));
-+	EXPECT_EQ(EACCES, errno);
-+}
-+
- TEST_HARNESS_MAIN
---- a/tools/testing/selftests/landlock/config
-+++ b/tools/testing/selftests/landlock/config
-@@ -1,7 +1,8 @@
-+CONFIG_KEYS=y
- CONFIG_OVERLAY_FS=y
-+CONFIG_SECURITY=y
- CONFIG_SECURITY_LANDLOCK=y
- CONFIG_SECURITY_PATH=y
--CONFIG_SECURITY=y
- CONFIG_SHMEM=y
--CONFIG_TMPFS_XATTR=y
- CONFIG_TMPFS=y
-+CONFIG_TMPFS_XATTR=y
+ 	spin_lock_irqsave(&adapter->main_proc_lock, flags);
+ 	adapter->main_locked = false;
+ 	spin_unlock_irqrestore(&adapter->main_proc_lock, flags);
 
 
 
