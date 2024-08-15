@@ -1,129 +1,206 @@
-Return-Path: <stable+bounces-67737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67738-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6454E9528A7
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 06:48:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 689299528AA
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 06:50:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F92C28593D
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 04:48:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB1421F226C7
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 04:50:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B0FB3BBD8;
-	Thu, 15 Aug 2024 04:48:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7723B3FBB3;
+	Thu, 15 Aug 2024 04:50:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="Llh/s1xx"
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="PkC367M5"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailout2.samsung.com (mailout2.samsung.com [203.254.224.25])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDE9D38382
-	for <stable@vger.kernel.org>; Thu, 15 Aug 2024 04:48:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE75918D63B
+	for <stable@vger.kernel.org>; Thu, 15 Aug 2024 04:50:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723697301; cv=none; b=U3XZ+8icYla5bmSSL6i+CbpsueznQTmmoxSfJgAscdG0qy5pHmFH7LhzIJseLO/HmOTCAGxLOkVaUBtz2i9RvobLrxHTq6agTD9iEDzE0wr4M+Ij4TpGPbFYsYaH1YXZDk98KwzJVgbnBUTKooagwkPBpgdjNfFs6vEIORgdS2Q=
+	t=1723697450; cv=none; b=bCc5ta27tZ8OuHXcI7GhrBVirVpDYjksPM+8cDkcrb3LMPVY7o8BabP71e/qiyddkcRfOhIbudaYvnwUJtzDoPqZ0U3ofjO/HRxVom/dUFiWemOXT2VLNZ0+i7HrGNhBq2AEyriHBhbflaqavP87XD3TuqnLsyZxKf9jYTRv7cE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723697301; c=relaxed/simple;
-	bh=1H8OSJlJ5N02+gXkYla/orQDMo/rMWVcoHt8snd/BFU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XBbN5V10Goh5+nQ2xNNFll7IDDvC/JbHKj/Ofe9OWhdJO+Rrs96gJr9cimYWtgfRm4Z3qRpKPAbtcUNMP364vLZnlVp4PWb3j8IgmL/vMYEkuer0++P9yHi8740BXLFLvDtw4BDMo0P5DDsxsxGaSsoGs2F8p/VaIkIQY03cqy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=Llh/s1xx; arc=none smtp.client-ip=209.85.210.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-70d2b921cd1so452960b3a.1
-        for <stable@vger.kernel.org>; Wed, 14 Aug 2024 21:48:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1723697299; x=1724302099; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=/hmiS/G0zKAC5tA9OzOxytrtCGZMWxkCbcEk10y8Ir0=;
-        b=Llh/s1xxcFTDiSx+c+Y2xt/dW1sHZniqBxcFg7DkO9kc06Vc5NG7p/Yh0zFzbctfRL
-         Mrw/n4SoRlKArZmDhJw9q2N+6oxkR6k+UdxfsD76kNaBe5Bq/DTUJ2A+MRZlKKtoS5B/
-         lTQ2865e5zzXSJP/Oy2hvdK0Ha/Aw+QoSZmXM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723697299; x=1724302099;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/hmiS/G0zKAC5tA9OzOxytrtCGZMWxkCbcEk10y8Ir0=;
-        b=nwo4xK5wOixvf3bMKoQRoLX1CQ4AyeVp2mHUtSI41snUEQOWdg9aKKq03ciHIRmJaI
-         3ihwhX2LjirocPzpKii8s40ljJ5qo1OcMUzu16bbCFbBOuGj8MsOSleVM/QJ+S1uMvYG
-         E7TwYNqqWzJAv7sDXDIqE0rIz6M3I1M42HNN1Fq+oDkkYV/OucHz2vBiZ9kPhqY0zJfQ
-         F41wBfVnaH+pflOJGcfL2+gKlU7lyHwRExm2PlPm6XVhH+CkCCJgbbYoo4s5u7jvUrXc
-         KILRLcx/YT3zPiGoIoFChbBWlRGwSsBxznRC1lBa6hp/Jis9ur5HdHrgCwEp9xKhWFCB
-         RiXg==
-X-Forwarded-Encrypted: i=1; AJvYcCUixBd3whd3HqlwIQj4I3Rvock/4KcPhuza4PRaVD7eicCD2URIOrU1gzWbFV0iDHo/XyKsbd4dD4qK9aEYuQ43tLLFXbml
-X-Gm-Message-State: AOJu0YxAcUWwnFD/KzpyvPRo/yNDmI3ExdskgfvqNSh8KoGHYT3XpMtX
-	49mioEdVJCKDaiajoRq65WNCBpHdYGE+tie7LzrCX1XcIGDXMsgC2GiypNjM6w==
-X-Google-Smtp-Source: AGHT+IGx1lP4TlGrHuh23iB/99xzj8kXmWkUac5JJk27ttUx5Ghve1MQJhTg2y2w5CMBWQpQv4QJXQ==
-X-Received: by 2002:a05:6a00:198e:b0:70d:2892:402b with SMTP id d2e1a72fcca58-71267101635mr5313447b3a.7.1723697299019;
-        Wed, 14 Aug 2024 21:48:19 -0700 (PDT)
-Received: from google.com ([2401:fa00:1:10:745d:58f7:b3cd:901f])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7127ae6c0bdsm383551b3a.90.2024.08.14.21.48.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Aug 2024 21:48:18 -0700 (PDT)
-Date: Thu, 15 Aug 2024 12:48:15 +0800
-From: Chen-Yu Tsai <wenst@chromium.org>
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>,
-	linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 1/3] thermal: of: Fix OF node leak in
- thermal_of_trips_init() error path
-Message-ID: <20240815044815.GA255011@google.com>
-References: <20240814195823.437597-1-krzysztof.kozlowski@linaro.org>
+	s=arc-20240116; t=1723697450; c=relaxed/simple;
+	bh=+sbo/RaN01xb+bMoE+fI4jvDxe5KaagqqbODOZdWilU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
+	 Content-Type:References; b=toty4iD5O/OX6JREy/Q7UlpHQxeXgICRvgymwtv+GvPtCJBvzvhPz+tXSDUpZmELpliEpPEYTxBwhgI/fCYYMsKWzLFI6VPztzEpdI6Ya/GvoFXIftp1BpLmEu6oubhZ6tajhcav0Ok4Jp0OmxGzMp9BHUlgBG7sS9M/m+3qg6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=PkC367M5; arc=none smtp.client-ip=203.254.224.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+Received: from epcas5p3.samsung.com (unknown [182.195.41.41])
+	by mailout2.samsung.com (KnoxPortal) with ESMTP id 20240815045039epoutp0226ce2933d4ed8eee323e002488cca8ad~rzbBnIl6t0383903839epoutp02m
+	for <stable@vger.kernel.org>; Thu, 15 Aug 2024 04:50:39 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.samsung.com 20240815045039epoutp0226ce2933d4ed8eee323e002488cca8ad~rzbBnIl6t0383903839epoutp02m
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1723697439;
+	bh=B04Z+6zGuB0KBw3YdpPpJZCIUGk1QJZXr7rPMYtlGts=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=PkC367M5yxF1bfV82f5wMwp84QovXGDc7pUfBZ/jCYWt0r6kxT1WiTWYQGt9gKUTg
+	 fit/dJ4pvbOTDhz3FquNp+y4njBMrwuxZ8eRwfceQjdsTs7l20gpUSEAVx/alzLqsN
+	 xEpnMNqKjtGeJCdnMJHa5jK7Lfto/TY9oEzygbOk=
+Received: from epsnrtp3.localdomain (unknown [182.195.42.164]) by
+	epcas5p4.samsung.com (KnoxPortal) with ESMTP id
+	20240815045039epcas5p42e8d7cba4902eb634b902e53d99386ca~rzbBIS0Q03231432314epcas5p4i;
+	Thu, 15 Aug 2024 04:50:39 +0000 (GMT)
+Received: from epsmgec5p1new.samsung.com (unknown [182.195.38.177]) by
+	epsnrtp3.localdomain (Postfix) with ESMTP id 4Wkt3d595hz4x9Pt; Thu, 15 Aug
+	2024 04:50:37 +0000 (GMT)
+Received: from epcas5p2.samsung.com ( [182.195.41.40]) by
+	epsmgec5p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
+	62.A1.08855.D198DB66; Thu, 15 Aug 2024 13:50:37 +0900 (KST)
+Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
+	epcas5p4.samsung.com (KnoxPortal) with ESMTPA id
+	20240815044941epcas5p443263c18ecb61bbbc08871faf57eccbc~rzaLhtCUt2641926419epcas5p48;
+	Thu, 15 Aug 2024 04:49:41 +0000 (GMT)
+Received: from epsmgms1p2new.samsung.com (unknown [182.195.42.42]) by
+	epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
+	20240815044941epsmtrp14e0d289d9828a17e8412de60624ae374~rzaLhBnu32251522515epsmtrp1w;
+	Thu, 15 Aug 2024 04:49:41 +0000 (GMT)
+X-AuditID: b6c32a44-15fb870000002297-1b-66bd891d4f79
+Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
+	epsmgms1p2new.samsung.com (Symantec Messaging Gateway) with SMTP id
+	FA.D9.08456.5E88DB66; Thu, 15 Aug 2024 13:49:41 +0900 (KST)
+Received: from [107.122.5.126] (unknown [107.122.5.126]) by
+	epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20240815044939epsmtip1a78615c86bab7dd0a600378c8b7320a8~rzaJeP-Po0122001220epsmtip1u;
+	Thu, 15 Aug 2024 04:49:39 +0000 (GMT)
+Message-ID: <8526e46f-30f2-4f24-8874-624b66aa54b1@samsung.com>
+Date: Thu, 15 Aug 2024 10:19:38 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240814195823.437597-1-krzysztof.kozlowski@linaro.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] usb: dwc3: core: Prevent USB core invalid event
+ buffer address access
+To: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Cc: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"jh0801.jung@samsung.com" <jh0801.jung@samsung.com>, "dh10.jung@samsung.com"
+	<dh10.jung@samsung.com>, "naushad@samsung.com" <naushad@samsung.com>,
+	"akash.m5@samsung.com" <akash.m5@samsung.com>, "rc93.raju@samsung.com"
+	<rc93.raju@samsung.com>, "taehyun.cho@samsung.com"
+	<taehyun.cho@samsung.com>, "hongpooh.kim@samsung.com"
+	<hongpooh.kim@samsung.com>, "eomji.oh@samsung.com" <eomji.oh@samsung.com>,
+	"shijie.cai@samsung.com" <shijie.cai@samsung.com>, "stable@vger.kernel.org"
+	<stable@vger.kernel.org>
+Content-Language: en-US
+From: Selvarasu Ganesan <selvarasu.g@samsung.com>
+In-Reply-To: <20240815000352.squzue3q646bfmmx@synopsys.com>
+Content-Transfer-Encoding: 8bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrKJsWRmVeSWpSXmKPExsWy7bCmhq5s5940gx0n1CzeXF3FanFnwTQm
+	i1PLFzJZNC9ez2Yxac9WFou7D3+wWFzeNYfNYtGyVmaLT0f/s1qs6pwDFPu+k9liwcZHjBaT
+	DoparFpwgN2Bz2P/3DXsHn1bVjF6bNn/mdHj8ya5AJaobJuM1MSU1CKF1Lzk/JTMvHRbJe/g
+	eOd4UzMDQ11DSwtzJYW8xNxUWyUXnwBdt8wcoBuVFMoSc0qBQgGJxcVK+nY2RfmlJakKGfnF
+	JbZKqQUpOQUmBXrFibnFpXnpenmpJVaGBgZGpkCFCdkZL/etZSzokKho/FLewNgk3MXIySEh
+	YCKx8el/xi5GLg4hgd2MEpPvzGKGcD4xSnSt2g7lfGOU+PHoCnsXIwdYy82HURDxvYwSh5+/
+	YIdw3jJK/F24ixVkLq+AncTnhi9sIDaLgKrEnD/d7BBxQYmTM5+wgNiiAvIS92/NABsqLBAv
+	cbk9HCQsIqAjceDEeSYQm1lgL6tE/2dvCFtc4taT+Uwg5WwChhLPTtiAhDkFrCXOzNjFDlEi
+	L9G8dTbYzRICezgkljx6ywTxpovEmweP2CFsYYlXx7dA2VISL/vboOxqidV3PrJBNLcAPfbk
+	G1TCXuLx0UfMIIuZBTQl1u/ShwjLSkw9tQ7qTj6J3t9PoHbxSuyYB2OrSpxqvMwGYUtL3Fty
+	jRUShh4S+xa7T2BUnIUUKLOQfDkLyTuzEBYvYGRZxSiZWlCcm56abFpgmJdaDo/t5PzcTYzg
+	9KvlsoPxxvx/eocYmTgYDzFKcDArifAGmuxKE+JNSaysSi3Kjy8qzUktPsRoCoydicxSosn5
+	wAyQVxJvaGJpYGJmZmZiaWxmqCTO+7p1boqQQHpiSWp2ampBahFMHxMHp1QDE98XfZ71Zo5V
+	k2JCNmfs1dzb82vuxpscU2teMypeyJ55ed3UNG+2Ix+a6qqWO6ffEc6+u9uWcUf9koMimz02
+	XtLf+SnobPo7U4VdIosDX/lP6S5X9xDnm9V9sv6k/d2ZVnU8G9Y+a43nWuj8qTqU5Xfu+cc7
+	/J9PuptVMG3Z/qvWD5wn5rB7zt0Z9uiCzbMjUf5vrbTvCrDN5RVJr+R8+Tve8TKrMLPW1Ic7
+	X/IxreJpdCx6tvDK1rXWFosUnKddsv8hwhvLJLt3UdEU4Z/deTU++0rONCe/2Hw36om7/Nko
+	/WiWehN+4QLPHAPp6amzHHzXTs3ON5YQiOmeO1V5e3ptn/7vi2YX/vccS/0tp8RSnJFoqMVc
+	VJwIAIb0vipIBAAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprMIsWRmVeSWpSXmKPExsWy7bCSnO7Tjr1pBr/b9SzeXF3FanFnwTQm
+	i1PLFzJZNC9ez2Yxac9WFou7D3+wWFzeNYfNYtGyVmaLT0f/s1qs6pwDFPu+k9liwcZHjBaT
+	DoparFpwgN2Bz2P/3DXsHn1bVjF6bNn/mdHj8ya5AJYoLpuU1JzMstQifbsEroyX+9YyFnRI
+	VDR+KW9gbBLuYuTgkBAwkbj5MKqLkYtDSGA3o0RvZxN7FyMnUFxa4vWsLkYIW1hi5b/n7BBF
+	rxkltvzbCZbgFbCT+NzwhQ3EZhFQlZjzp5sdIi4ocXLmExYQW1RAXuL+rRlgcWGBeIk122aB
+	9YoI6EgcOHGeCWQos8BBVokLk34xQmzoYZZ4smkLK0gVs4C4xK0n85lATmUTMJR4dsIGJMwp
+	YC1xZsYudogSM4murRCXMgMta946m3kCo9AsJHfMQjJpFpKWWUhaFjCyrGKUTC0ozk3PLTYs
+	MMpLLdcrTswtLs1L10vOz93ECI43La0djHtWfdA7xMjEwXiIUYKDWUmEN9BkV5oQb0piZVVq
+	UX58UWlOavEhRmkOFiVx3m+ve1OEBNITS1KzU1MLUotgskwcnFINTE3zb7QbLinZrjnny8K9
+	TBczmCbLVM+x9Tv/umqBx3vJXbcvt3ccaA3ds0+b86/W7LavOdwTd//8dW/LxOVWu+/nft+r
+	y/38Q8Vd+b7aJ7/bVa1XTrVvSjr4qSvr6LLJd9KCC17YdSV+iHr+O3X72v3OM7I81XYGdDT1
+	bZ3rtKK67iPHusU33dyVJbSjteoildfv01yuwnP26c5p+es/b/Ko7pS3yrt2nSNLZ5P0/rpn
+	TgUn/M5MbN3XmyulFr5hi4vIlzMOies+vtJP/hIyW4FXJOW/YukGgfnzmbdpzYu/tJ25Quaj
+	9L+QGW4Bux4HPj4YHndz1eHECTxfeXic7sx/1iKu456yRMb8Y6tV/AklluKMREMt5qLiRACC
+	tM9sJgMAAA==
+X-CMS-MailID: 20240815044941epcas5p443263c18ecb61bbbc08871faf57eccbc
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-Sendblock-Type: REQ_APPROVE
+CMS-TYPE: 105P
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20240808120605epcas5p2c9164533413706da5f7fa2ed624318cd
+References: <CGME20240808120605epcas5p2c9164533413706da5f7fa2ed624318cd@epcas5p2.samsung.com>
+	<20240808120507.1464-1-selvarasu.g@samsung.com>
+	<20240809232804.or5kccyf7yebbqm6@synopsys.com>
+	<98e0cf35-f729-43e2-97f2-06120052a1cc@samsung.com>
+	<20240813231744.p4hd4kbhlotjzgmz@synopsys.com>
+	<45a638d0-57e0-405f-bbb0-8159d73cc8b6@samsung.com>
+	<20240815000352.squzue3q646bfmmx@synopsys.com>
 
-On Wed, Aug 14, 2024 at 09:58:21PM +0200, Krzysztof Kozlowski wrote:
-> Terminating for_each_child_of_node() loop requires dropping OF node
-> reference, so bailing out after thermal_of_populate_trip() error misses
-> this.  Solve the OF node reference leak with scoped
-> for_each_child_of_node_scoped().
-> 
-> Fixes: d0c75fa2c17f ("thermal/of: Initialize trip points separately")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
+On 8/15/2024 5:34 AM, Thinh Nguyen wrote:
+> On Wed, Aug 14, 2024, Selvarasu Ganesan wrote:
+>> On 8/14/2024 4:47 AM, Thinh Nguyen wrote:
+>>> On Sat, Aug 10, 2024, Selvarasu Ganesan wrote:
+>>>> On 8/10/2024 4:58 AM, Thinh Nguyen wrote:
+>>>>> On Thu, Aug 08, 2024, Selvarasu Ganesan wrote:
+>>>>>> This commit addresses an issue where the USB core could access an
+>>>>>> invalid event buffer address during runtime suspend, potentially causing
+>>>>>> SMMU faults and other memory issues. The problem arises from the
+>>>>>> following sequence.
+>>>>>>            1. In dwc3_gadget_suspend, there is a chance of a timeout when
+>>>>>>            moving the USB core to the halt state after clearing the
+>>>>>>            run/stop bit by software.
+>>>>>>            2. In dwc3_core_exit, the event buffer is cleared regardless of
+>>>>>>            the USB core's status, which may lead to an SMMU faults and
+>>>>> This is a workaround to your specific setup behavior. Please document in
+>>>>> the commit message which platforms are impacted.
+>>>> Please correct me if i am wrong. I dont think this workaround only
+>>>> applicable our specific setup. It could be a common issue across all
+>>>> other vendor platforms, and it's required to must check the controller
+>>>> status before clear the event buffers address.  What you think is it
+>>>> really required to mention the platform details in commit message?
+>>> How can it be a common issue, the suspend sequence hasn't completed in
+>>> the dwc3 driver but yet the buffer is no longer accessible? Also, as you
+>>> noted, we don't know the exact condition for the SMMU fault, and this
+>>> isn't reproducible all the time.
+>> Agree. Will update platform detail in next version.
+>>>>>>            other memory issues. if the USB core tries to access the event
+>>>>>>            buffer address.
+>>>>>>
+>>>>>> To prevent this issue, this commit ensures that the event buffer address
+>>>>>> is not cleared by software  when the USB core is active during runtime
+>>>>>> suspend by checking its status before clearing the buffer address.
+>>>>>>
+>>>>>> Cc: stable@vger.kernel.org
+>>>>> We can keep the stable tag, but there's no issue with the commit below.
+>>>> By mistaken I mentioned wrong commit ID. The correct commit id would be
+>>>> 660e9bde74d69 ("usb: dwc3: remove num_event_buffers").
+>>> The above commit isn't the issue either. If it is, then the problem
+>>> should still exist prior to that.
+>>
+>> This issue still persists in older kernels (6.1.X) as well. We believed
+>> that it could be a common issue due to the missing condition for
+>> checking the controller status in the mentioned commit above. We require
+>> this fix in all stable kernel for the Exynos platform. Is it fine to
+>> only mention the "Cc" tag in this case?
+> You can just Cc stable and indicate how far you want this to be
+> backported. Make sure to note that this change resolves a hardware
+> quirk.
+>
+> e.g.
+> Cc: stable <stable@kernel.org> # 6.1.x
 
-> ---
->  drivers/thermal/thermal_of.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/thermal/thermal_of.c b/drivers/thermal/thermal_of.c
-> index aa34b6e82e26..30f8d6e70484 100644
-> --- a/drivers/thermal/thermal_of.c
-> +++ b/drivers/thermal/thermal_of.c
-> @@ -125,7 +125,7 @@ static int thermal_of_populate_trip(struct device_node *np,
->  static struct thermal_trip *thermal_of_trips_init(struct device_node *np, int *ntrips)
->  {
->  	struct thermal_trip *tt;
-> -	struct device_node *trips, *trip;
-> +	struct device_node *trips;
->  	int ret, count;
->  
->  	trips = of_get_child_by_name(np, "trips");
-> @@ -150,7 +150,7 @@ static struct thermal_trip *thermal_of_trips_init(struct device_node *np, int *n
->  	*ntrips = count;
->  
->  	count = 0;
-> -	for_each_child_of_node(trips, trip) {
-> +	for_each_child_of_node_scoped(trips, trip) {
->  		ret = thermal_of_populate_trip(trip, &tt[count++]);
->  		if (ret)
->  			goto out_kfree;
-> -- 
-> 2.43.0
-> 
+Sure. Thanks for the confirmation.
+>
+> BR,
+> Thinh
 
