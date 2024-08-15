@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-68556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AEED9532E9
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:11:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EAA295329F
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:08:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C1441C2042D
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:11:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3EAD31C25770
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:08:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DC081AC450;
-	Thu, 15 Aug 2024 14:09:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 116121AC8AE;
+	Thu, 15 Aug 2024 14:05:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GgWQZsuZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iURgHP52"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A5231A01D4;
-	Thu, 15 Aug 2024 14:09:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C26601AD3E2;
+	Thu, 15 Aug 2024 14:05:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730944; cv=none; b=H/hAjn0L90/YCxwMlvvT1o7R/19/sMbfXL+VL1u0hz42mlHd8aV2P0WKE9pvl46DUshP6ZE6rp0FkETcMFzrkHjWsHN1hb3EC1Sq0y6QvwMTHXj5dNNHakf2fGuYpetoAwxh0dqw320SnXAf6PtIZmI2+SAIon+H92lc5XO2/CY=
+	t=1723730751; cv=none; b=YzWVmYbdldWjZ41C9q55imRXqYu1JKEut8srRon5EWS95d5oxBS4hD0LhHFzwaUOvD4F8RTPCYXAky+LaRdK0RefLRorp6sAwpdihV/xLOfvc30TA3fWcZ4ppxE0fK+IlWZSQjAAvuMVOezYqxbF+XT1a7FVgeqnA/OfzzLgBxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730944; c=relaxed/simple;
-	bh=QG1Tz1S5Lwe2alfITdxDGfA+HsyM0BG4M2V4aWAGbTE=;
+	s=arc-20240116; t=1723730751; c=relaxed/simple;
+	bh=YV8gII9gmbdFEZWAnPkBOtsqqilX0da6MHcoDP/2560=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UL9t6zh2mzOShgEg9WdAaDCHHC4sQZ0RBuJ45uiymU5SuCcL+BOEX7A+Zo32XSmsmMtEQ/RgEW+9YKCNlFrCrQ6ja8BBKHTLZM3ro1LBgva+KHiVGhtDI9jGe70VfiPA2Uy3i2EPmu9sle+tQCdBURMevNBBRghlbJ7BN5LRcBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GgWQZsuZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E4F7C32786;
-	Thu, 15 Aug 2024 14:09:03 +0000 (UTC)
+	 MIME-Version; b=RDsyg6WDGcPxmrqNSE9A8/WWyfbmrkA5atqmPUi7nJl1dZPuaAle34AHHU+hzoynpla9V7f2BYRDe/Z/DZ48+7zWP/fk+s93V5D0rfb6StEd2koiTb8g367QRRgf3qcEncgzucRBSmHQlSn9pDqKSgqBMMwzhfQZuki1DO4kIk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iURgHP52; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CFC0C32786;
+	Thu, 15 Aug 2024 14:05:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730943;
-	bh=QG1Tz1S5Lwe2alfITdxDGfA+HsyM0BG4M2V4aWAGbTE=;
+	s=korg; t=1723730751;
+	bh=YV8gII9gmbdFEZWAnPkBOtsqqilX0da6MHcoDP/2560=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GgWQZsuZwoX66btfH1L5mlyOP0nABK7xuIPqoYlCv4dCp7UXYp0KAWYEdlc1grMFG
-	 h4j2Ui4crgPqlaiDxRx01/yArEWUy6NlV66J3ZM9GuPUjeC9E17vMr+T4abTAiBf8d
-	 ovNI4Sqz/vmszuDM4UBgh1elJxkbWkQjtoGxG+Ag=
+	b=iURgHP52fERIe4DNwdo53B8/3WBbaqBFCjTVj6KKL6vT7CI4ZunnBguEsmcOiwewo
+	 rWwLS4BH8ahe8nFdXPVbDCQenkHHBnbcMUS302BaKhIqMX6ddl1NVS2+WJfWsNEVVk
+	 hiHXJ+3cwRWNZKUL2zogWLDdcrl+IXHzY0eFzMqk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+1fa663a2100308ab6eab@syzkaller.appspotmail.com,
-	Alexei Starovoitov <ast@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 41/67] bpf: Avoid kfree_rcu() under lock in bpf_lpm_trie.
+	Josef Bacik <josef@toxicpanda.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.1 21/38] sunrpc: remove ->pg_stats from svc_program
 Date: Thu, 15 Aug 2024 15:25:55 +0200
-Message-ID: <20240815131839.895503593@linuxfoundation.org>
+Message-ID: <20240815131833.767908746@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131838.311442229@linuxfoundation.org>
-References: <20240815131838.311442229@linuxfoundation.org>
+In-Reply-To: <20240815131832.944273699@linuxfoundation.org>
+References: <20240815131832.944273699@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,107 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexei Starovoitov <ast@kernel.org>
+From: Josef Bacik <josef@toxicpanda.com>
 
-[ Upstream commit 59f2f841179aa6a0899cb9cf53659149a35749b7 ]
+[ Upstream commit 3f6ef182f144dcc9a4d942f97b6a8ed969f13c95 ]
 
-syzbot reported the following lock sequence:
-cpu 2:
-  grabs timer_base lock
-    spins on bpf_lpm lock
+Now that this isn't used anywhere, remove it.
 
-cpu 1:
-  grab rcu krcp lock
-    spins on timer_base lock
-
-cpu 0:
-  grab bpf_lpm lock
-    spins on rcu krcp lock
-
-bpf_lpm lock can be the same.
-timer_base lock can also be the same due to timer migration.
-but rcu krcp lock is always per-cpu, so it cannot be the same lock.
-Hence it's a false positive.
-To avoid lockdep complaining move kfree_rcu() after spin_unlock.
-
-Reported-by: syzbot+1fa663a2100308ab6eab@syzkaller.appspotmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20240329171439.37813-1-alexei.starovoitov@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+[ cel: adjusted to apply to v6.1.y ]
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/bpf/lpm_trie.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ fs/nfsd/nfssvc.c           |    1 -
+ include/linux/sunrpc/svc.h |    1 -
+ 2 files changed, 2 deletions(-)
 
-diff --git a/kernel/bpf/lpm_trie.c b/kernel/bpf/lpm_trie.c
-index 050fe1ebf0f7d..d0febf07051ed 100644
---- a/kernel/bpf/lpm_trie.c
-+++ b/kernel/bpf/lpm_trie.c
-@@ -308,6 +308,7 @@ static long trie_update_elem(struct bpf_map *map,
- {
- 	struct lpm_trie *trie = container_of(map, struct lpm_trie, map);
- 	struct lpm_trie_node *node, *im_node = NULL, *new_node = NULL;
-+	struct lpm_trie_node *free_node = NULL;
- 	struct lpm_trie_node __rcu **slot;
- 	struct bpf_lpm_trie_key_u8 *key = _key;
- 	unsigned long irq_flags;
-@@ -382,7 +383,7 @@ static long trie_update_elem(struct bpf_map *map,
- 			trie->n_entries--;
- 
- 		rcu_assign_pointer(*slot, new_node);
--		kfree_rcu(node, rcu);
-+		free_node = node;
- 
- 		goto out;
- 	}
-@@ -429,6 +430,7 @@ static long trie_update_elem(struct bpf_map *map,
- 	}
- 
- 	spin_unlock_irqrestore(&trie->lock, irq_flags);
-+	kfree_rcu(free_node, rcu);
- 
- 	return ret;
- }
-@@ -437,6 +439,7 @@ static long trie_update_elem(struct bpf_map *map,
- static long trie_delete_elem(struct bpf_map *map, void *_key)
- {
- 	struct lpm_trie *trie = container_of(map, struct lpm_trie, map);
-+	struct lpm_trie_node *free_node = NULL, *free_parent = NULL;
- 	struct bpf_lpm_trie_key_u8 *key = _key;
- 	struct lpm_trie_node __rcu **trim, **trim2;
- 	struct lpm_trie_node *node, *parent;
-@@ -506,8 +509,8 @@ static long trie_delete_elem(struct bpf_map *map, void *_key)
- 		else
- 			rcu_assign_pointer(
- 				*trim2, rcu_access_pointer(parent->child[0]));
--		kfree_rcu(parent, rcu);
--		kfree_rcu(node, rcu);
-+		free_parent = parent;
-+		free_node = node;
- 		goto out;
- 	}
- 
-@@ -521,10 +524,12 @@ static long trie_delete_elem(struct bpf_map *map, void *_key)
- 		rcu_assign_pointer(*trim, rcu_access_pointer(node->child[1]));
- 	else
- 		RCU_INIT_POINTER(*trim, NULL);
--	kfree_rcu(node, rcu);
-+	free_node = node;
- 
- out:
- 	spin_unlock_irqrestore(&trie->lock, irq_flags);
-+	kfree_rcu(free_parent, rcu);
-+	kfree_rcu(free_node, rcu);
- 
- 	return ret;
- }
--- 
-2.43.0
-
+--- a/fs/nfsd/nfssvc.c
++++ b/fs/nfsd/nfssvc.c
+@@ -136,7 +136,6 @@ struct svc_program		nfsd_program = {
+ 	.pg_vers		= nfsd_version,		/* version table */
+ 	.pg_name		= "nfsd",		/* program name */
+ 	.pg_class		= "nfsd",		/* authentication class */
+-	.pg_stats		= &nfsd_svcstats,	/* version table */
+ 	.pg_authenticate	= &svc_set_client,	/* export authentication */
+ 	.pg_init_request	= nfsd_init_request,
+ 	.pg_rpcbind_set		= nfsd_rpcbind_set,
+--- a/include/linux/sunrpc/svc.h
++++ b/include/linux/sunrpc/svc.h
+@@ -422,7 +422,6 @@ struct svc_program {
+ 	const struct svc_version **pg_vers;	/* version array */
+ 	char *			pg_name;	/* service name */
+ 	char *			pg_class;	/* class name: services sharing authentication */
+-	struct svc_stat *	pg_stats;	/* rpc statistics */
+ 	int			(*pg_authenticate)(struct svc_rqst *);
+ 	__be32			(*pg_init_request)(struct svc_rqst *,
+ 						   const struct svc_program *,
 
 
 
