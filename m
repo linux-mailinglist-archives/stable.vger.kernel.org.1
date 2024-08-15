@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-68800-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69133-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D093953409
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:22:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51D82953599
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:39:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ADEC81C25F2C
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:22:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BF856B257C5
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:39:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C654319FA7E;
-	Thu, 15 Aug 2024 14:21:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21CA11993B9;
+	Thu, 15 Aug 2024 14:39:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DWeynWET"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aQ5CyFoy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 835E719DF85;
-	Thu, 15 Aug 2024 14:21:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4D7F1AC893;
+	Thu, 15 Aug 2024 14:39:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731706; cv=none; b=mBkCiVFSlIUhRrpbxlRd3OL0s0bumbcX93TGkSSBB0ieHL18953NTXZrGhD1iz/umcgak5w6o58XI1NLm4NCvOwU/ghDDthYf+A/p2IsJr6hjSf25AkjN7YK/2KcHcuFg18s4jsgQignVdq8hrj5Lj0lQgUAVNWt1Z06d7AgOFY=
+	t=1723732775; cv=none; b=nv/ISySdSjpYh5P3lRmwYSNdxQTBsLN6Ymdk9n6iiDSX7W5sMLYNMbF3v4Cb/FnoB2UAnPfdl/8VRVF8QYk/9azY/q5Qk2/2C0amIGdaJLAuMrx1RKwpGnMyH+6WlWToRfC/Mrzf5SV+XhayXc4KT2aSWjv6BQyUM7OF7c4Cpd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731706; c=relaxed/simple;
-	bh=jhl/cUnuW1vbKORgMGc3Ns2ogNuN0KZk0JQwCEHgrcU=;
+	s=arc-20240116; t=1723732775; c=relaxed/simple;
+	bh=QfWZlf6QQKs8S/5o2SdHb7VzmSz0A3z5pPHPN6tSyA0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gZGJ6MfKswWHZbOfvXh89YSEu3Eeo8ar/37fazm7vmTg4kW+9laQZWorB3NxyWF3OrtVnOXZpi02cDpwl61PCvvLhTBzfIveuKTARoNBAnftgccIjsyn1u5InyobSqkh51aRDY94x6nritNXK5Tnqw/YbhENpykxktbbP4mfaRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DWeynWET; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A5B2C32786;
-	Thu, 15 Aug 2024 14:21:45 +0000 (UTC)
+	 MIME-Version; b=dMwxNKMcpxYd/G/s0nBf5BIRhy1Enj1z2Ogv+xEwjUkEgtc3DayZz5HeVJC+scbf9k248flG6AHm2Ky7bqotGcdV2QgrUyNSU32h8m1x5jVsxgF5qzu2SqbtWSIfNWeFHwZ8RH98EIm5tDgsb5ktMzLMb6cvnKQXuZmH211DDa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aQ5CyFoy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58390C32786;
+	Thu, 15 Aug 2024 14:39:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731706;
-	bh=jhl/cUnuW1vbKORgMGc3Ns2ogNuN0KZk0JQwCEHgrcU=;
+	s=korg; t=1723732775;
+	bh=QfWZlf6QQKs8S/5o2SdHb7VzmSz0A3z5pPHPN6tSyA0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DWeynWETqSPicej4aDuAf76xhKK2ViwqD0oWYCWfYw5F7XOpEbbchl8UIljzxlmRD
-	 XtfVF9UhJ7V1dwNoM8h2S4vK4wDwpRZKsoaOuzbJUNmCr9WcOW410A0o5xE200+KJJ
-	 3osnI8pAQKwPXxkxiBQkcC8rLSk8gsYs5d5fENI0=
+	b=aQ5CyFoyts02Pw1zNY7AkHInV78YL20Q1OotID7n3QjkHyJa565XqsviTp9pcNdn6
+	 Y5AFk2WCtINfUKy8ShzLOoILqQLH1td4HclfwYHOlIQbiaSOC00DYiiSjqJ+Q5Y1Ak
+	 9WNXaiQY1/GWQVWBmdzscozts3CCCTLn5Nb7vKBA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
 	James Morse <james.morse@arm.com>,
-	Will Deacon <will@kernel.org>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
 	Catalin Marinas <catalin.marinas@arm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 213/259] arm64: cputype: Add Cortex-X3 definitions
-Date: Thu, 15 Aug 2024 15:25:46 +0200
-Message-ID: <20240815131910.998618098@linuxfoundation.org>
+Subject: [PATCH 5.10 281/352] arm64: cpufeature: Force HWCAP to be based on the sysreg visible to user-space
+Date: Thu, 15 Aug 2024 15:25:47 +0200
+Message-ID: <20240815131930.313083404@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +64,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: James Morse <james.morse@arm.com>
 
-[ Upstream commit be5a6f238700f38b534456608588723fba96c5ab ]
+[ Upstream commit 237405ebef580a7352a52129b2465c117145eafa ]
 
-Add cputype definitions for Cortex-X3. These will be used for errata
-detection in subsequent patches.
+arm64 advertises hardware features to user-space via HWCAPs, and by
+emulating access to the CPUs id registers. The cpufeature code has a
+sanitised system-wide view of an id register, and a sanitised user-space
+view of an id register, where some features use their 'safe' value
+instead of the hardware value.
 
-These values can be found in Table A-263 ("MIDR_EL1 bit descriptions")
-in issue 07 of the Cortex-X3 TRM, which can be found at:
+It is currently possible for a HWCAP to be advertised where the user-space
+view of the id register does not show the feature as supported.
+Erratum workaround need to remove both the HWCAP, and the feature from
+the user-space view of the id register. This involves duplicating the
+code, and spreading it over cpufeature.c and cpu_errata.c.
 
-  https://developer.arm.com/documentation/101593/0102/?lang=en
+Make the HWCAP code use the user-space view of id registers. This ensures
+the values never diverge, and allows erratum workaround to remove HWCAP
+by modifying the user-space view of the id register.
 
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: James Morse <james.morse@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Link: https://lore.kernel.org/r/20240603111812.1514101-2-mark.rutland@arm.com
+Signed-off-by: James Morse <james.morse@arm.com>
+Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Link: https://lore.kernel.org/r/20220909165938.3931307-2-james.morse@arm.com
 Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-[ Mark: trivial backport ]
+[ Mark: fixup lack of 'width' parameter ]
 Signed-off-by: Mark Rutland <mark.rutland@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/cputype.h | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/kernel/cpufeature.c | 36 +++++++++++++++++++++++++++-------
+ 1 file changed, 29 insertions(+), 7 deletions(-)
 
-diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
-index 0c3f9cc84491c..4b27bfc0d8569 100644
---- a/arch/arm64/include/asm/cputype.h
-+++ b/arch/arm64/include/asm/cputype.h
-@@ -80,6 +80,7 @@
- #define ARM_CPU_PART_CORTEX_X2		0xD48
- #define ARM_CPU_PART_NEOVERSE_N2	0xD49
- #define ARM_CPU_PART_CORTEX_A78C	0xD4B
-+#define ARM_CPU_PART_CORTEX_X3		0xD4E
- #define ARM_CPU_PART_NEOVERSE_V2	0xD4F
- #define ARM_CPU_PART_CORTEX_X4		0xD82
- #define ARM_CPU_PART_NEOVERSE_V3	0xD84
-@@ -124,6 +125,7 @@
- #define MIDR_CORTEX_X2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X2)
- #define MIDR_NEOVERSE_N2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_N2)
- #define MIDR_CORTEX_A78C	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A78C)
-+#define MIDR_CORTEX_X3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X3)
- #define MIDR_NEOVERSE_V2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V2)
- #define MIDR_CORTEX_X4 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X4)
- #define MIDR_NEOVERSE_V3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V3)
+diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
+index 1f0a2deafd643..11a42fcf94bfc 100644
+--- a/arch/arm64/kernel/cpufeature.c
++++ b/arch/arm64/kernel/cpufeature.c
+@@ -1196,17 +1196,39 @@ feature_matches(u64 reg, const struct arm64_cpu_capabilities *entry)
+ 	return val >= entry->min_field_value;
+ }
+ 
+-static bool
+-has_cpuid_feature(const struct arm64_cpu_capabilities *entry, int scope)
++static u64
++read_scoped_sysreg(const struct arm64_cpu_capabilities *entry, int scope)
+ {
+-	u64 val;
+-
+ 	WARN_ON(scope == SCOPE_LOCAL_CPU && preemptible());
+ 	if (scope == SCOPE_SYSTEM)
+-		val = read_sanitised_ftr_reg(entry->sys_reg);
++		return read_sanitised_ftr_reg(entry->sys_reg);
+ 	else
+-		val = __read_sysreg_by_encoding(entry->sys_reg);
++		return __read_sysreg_by_encoding(entry->sys_reg);
++}
++
++static bool
++has_user_cpuid_feature(const struct arm64_cpu_capabilities *entry, int scope)
++{
++	int mask;
++	struct arm64_ftr_reg *regp;
++	u64 val = read_scoped_sysreg(entry, scope);
++
++	regp = get_arm64_ftr_reg(entry->sys_reg);
++	if (!regp)
++		return false;
++
++	mask = cpuid_feature_extract_unsigned_field(regp->user_mask,
++						    entry->field_pos);
++	if (!mask)
++		return false;
++
++	return feature_matches(val, entry);
++}
+ 
++static bool
++has_cpuid_feature(const struct arm64_cpu_capabilities *entry, int scope)
++{
++	u64 val = read_scoped_sysreg(entry, scope);
+ 	return feature_matches(val, entry);
+ }
+ 
+@@ -2172,7 +2194,7 @@ static const struct arm64_cpu_capabilities arm64_features[] = {
+ };
+ 
+ #define HWCAP_CPUID_MATCH(reg, field, s, min_value)				\
+-		.matches = has_cpuid_feature,					\
++		.matches = has_user_cpuid_feature,				\
+ 		.sys_reg = reg,							\
+ 		.field_pos = field,						\
+ 		.sign = s,							\
 -- 
 2.43.0
 
