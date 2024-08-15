@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-68663-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68996-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A7FC953366
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:16:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCB359534F4
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:32:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 943761C2383D
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:16:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 691BD28569A
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:32:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22A9317C9B6;
-	Thu, 15 Aug 2024 14:14:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D393D1A01CB;
+	Thu, 15 Aug 2024 14:32:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hhdxwi2y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bq1EalpW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1C4D1AB50A;
-	Thu, 15 Aug 2024 14:14:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 883E11DFFB;
+	Thu, 15 Aug 2024 14:32:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731274; cv=none; b=C3Vvy9IAyIqgTDVTOaSV2fYfDj9Gt7xSuLT2f9JVWHo5e2c6lVdd35B/ZGcEftZ3lyD1M48CwWek6ldrV+LIqYTtjzGHFKk48nsXj4ZdHPo/Jjut51DiKLoU5zFy9TtYMWBpAKSoTZim/CbKC4WE9/zFiWCzJxAig+izNr4bR/A=
+	t=1723732329; cv=none; b=mbwDoWXAPnicBg+z8Nb1AYeX4cqGqhFKX73COlu0rdIBYqvu0q8W7No89X+RCTxdrZYhclUZwc1gsITP+t5XNt0N97HbIFg2U2lfpLYse3pYKLk86cB+G1ajrnghb2WcNBimfT98pNRDgOhU0an+1RPShDGhPDWv1QwbUcDlhaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731274; c=relaxed/simple;
-	bh=1Q8p1qYxWhh5l3zAcGN5fe3l0AN8rWv10QaT9TkS5V4=;
+	s=arc-20240116; t=1723732329; c=relaxed/simple;
+	bh=OV7zAWJ9Nkz3kZcZHsYbV+0w7TPdo/oqWme1Tw0reSg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t8l4BTAuWgfs0JzVSDEVRmfRMcceeVxdXeJaL0lD23wvzmy+fkkR6hu3F6PHgIvEDxt/gwq+WmcTzNlTYyfd/IPoutYzmJRi+GE4eAxlYpH60hbfDvcaj0jPd0QMMNxQqmRkIqONmIbY1CF0ef9vQpy2XNulTDnqQmKLKhoCQVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hhdxwi2y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A71AC32786;
-	Thu, 15 Aug 2024 14:14:33 +0000 (UTC)
+	 MIME-Version; b=h2ZvWnh6d1NkWNycZbVyJNN43h/9v96ktdUuapz6rTSanmSFcWKfnvhmEc0g0PtAfXYAwI8aRDlnPOxLFNfhVoSH0lRNrn0f/n4vMJ2dXIu6XpXUPsvxw8NhinpQ1OKabzHmYLU8fN1CNpZnSIsRDTsXKv2X9MKvL7YTWa9prs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bq1EalpW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB83AC32786;
+	Thu, 15 Aug 2024 14:32:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731274;
-	bh=1Q8p1qYxWhh5l3zAcGN5fe3l0AN8rWv10QaT9TkS5V4=;
+	s=korg; t=1723732329;
+	bh=OV7zAWJ9Nkz3kZcZHsYbV+0w7TPdo/oqWme1Tw0reSg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hhdxwi2ygjUAyA2NGB7vbsKnYESw0h3Un9CCi9ajyVhWZr/FxXuTDFs0UC2n2a2Ye
-	 rvt522PoC6/xzLY3Pr7XqPOqdRc/4M8W7UmjNEdoyF+j2FNjhapcCXOiSmcPgdFvcx
-	 sWXn/AIILofRXfuQW37LrJIEFRd9eNj96g4TIrwo=
+	b=Bq1EalpWW7L+DX1FR42EwptNINmVmMl2ps6iRHWFikjFlTxrGOwSerutxTnsIsjXC
+	 9cz5JYvfbxOFy+UraRFZI6cMkbxN6ACZ5cHlr+AzZ3tVxUypDc08/L4mCjXXFWQRsT
+	 wC7lByo0kO4SshB3JZFUS91blKQDo50I/AxcFQFc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nick Bowler <nbowler@draconx.ca>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 078/259] macintosh/therm_windtunnel: fix module unload.
+	syzbot+ae688d469e36fb5138d0@syzkaller.appspotmail.com,
+	stable@kernel.org,
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 5.10 145/352] ext4: make sure the first directory block is not a hole
 Date: Thu, 15 Aug 2024 15:23:31 +0200
-Message-ID: <20240815131905.815057571@linuxfoundation.org>
+Message-ID: <20240815131924.864396764@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +64,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nick Bowler <nbowler@draconx.ca>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit fd748e177194ebcbbaf98df75152a30e08230cc6 ]
+commit f9ca51596bbfd0f9c386dd1c613c394c78d9e5e6 upstream.
 
-The of_device_unregister call in therm_windtunnel's module_exit procedure
-does not fully reverse the effects of of_platform_device_create in the
-module_init prodedure.  Once you unload this module, it is impossible
-to load it ever again since only the first of_platform_device_create
-call on the fan node succeeds.
+The syzbot constructs a directory that has no dirblock but is non-inline,
+i.e. the first directory block is a hole. And no errors are reported when
+creating files in this directory in the following flow.
 
-This driver predates first git commit, and it turns out back then
-of_platform_device_create worked differently than it does today.
-So this is actually an old regression.
+    ext4_mknod
+     ...
+      ext4_add_entry
+        // Read block 0
+        ext4_read_dirblock(dir, block, DIRENT)
+          bh = ext4_bread(NULL, inode, block, 0)
+          if (!bh && (type == INDEX || type == DIRENT_HTREE))
+          // The first directory block is a hole
+          // But type == DIRENT, so no error is reported.
 
-The appropriate function to undo of_platform_device_create now appears
-to be of_platform_device_destroy, and switching to use this makes it
-possible to unload and load the module as expected.
+After that, we get a directory block without '.' and '..' but with a valid
+dentry. This may cause some code that relies on dot or dotdot (such as
+make_indexed_dir()) to crash.
 
-Signed-off-by: Nick Bowler <nbowler@draconx.ca>
-Fixes: c6e126de43e7 ("of: Keep track of populated platform devices")
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240711035428.16696-1-nbowler@draconx.ca
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Therefore when ext4_read_dirblock() finds that the first directory block
+is a hole report that the filesystem is corrupted and return an error to
+avoid loading corrupted data from disk causing something bad.
+
+Reported-by: syzbot+ae688d469e36fb5138d0@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=ae688d469e36fb5138d0
+Fixes: 4e19d6b65fb4 ("ext4: allow directory holes")
+Cc: stable@kernel.org
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20240702132349.2600605-3-libaokun@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/macintosh/therm_windtunnel.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ext4/namei.c |   17 ++++++-----------
+ 1 file changed, 6 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/macintosh/therm_windtunnel.c b/drivers/macintosh/therm_windtunnel.c
-index a0d87ed9da696..63e99762a1656 100644
---- a/drivers/macintosh/therm_windtunnel.c
-+++ b/drivers/macintosh/therm_windtunnel.c
-@@ -549,7 +549,7 @@ g4fan_exit( void )
- 	platform_driver_unregister( &therm_of_driver );
+--- a/fs/ext4/namei.c
++++ b/fs/ext4/namei.c
+@@ -145,10 +145,11 @@ static struct buffer_head *__ext4_read_d
  
- 	if( x.of_dev )
--		of_device_unregister( x.of_dev );
-+		of_platform_device_destroy(&x.of_dev->dev, NULL);
- }
+ 		return bh;
+ 	}
+-	if (!bh && (type == INDEX || type == DIRENT_HTREE)) {
++	/* The first directory block must not be a hole. */
++	if (!bh && (type == INDEX || type == DIRENT_HTREE || block == 0)) {
+ 		ext4_error_inode(inode, func, line, block,
+-				 "Directory hole found for htree %s block",
+-				 (type == INDEX) ? "index" : "leaf");
++				 "Directory hole found for htree %s block %u",
++				 (type == INDEX) ? "index" : "leaf", block);
+ 		return ERR_PTR(-EFSCORRUPTED);
+ 	}
+ 	if (!bh)
+@@ -2977,10 +2978,7 @@ bool ext4_empty_dir(struct inode *inode)
+ 		EXT4_ERROR_INODE(inode, "invalid size");
+ 		return false;
+ 	}
+-	/* The first directory block must not be a hole,
+-	 * so treat it as DIRENT_HTREE
+-	 */
+-	bh = ext4_read_dirblock(inode, 0, DIRENT_HTREE);
++	bh = ext4_read_dirblock(inode, 0, EITHER);
+ 	if (IS_ERR(bh))
+ 		return false;
  
- module_init(g4fan_init);
--- 
-2.43.0
-
+@@ -3611,10 +3609,7 @@ static struct buffer_head *ext4_get_firs
+ 		struct ext4_dir_entry_2 *de;
+ 		unsigned int offset;
+ 
+-		/* The first directory block must not be a hole, so
+-		 * treat it as DIRENT_HTREE
+-		 */
+-		bh = ext4_read_dirblock(inode, 0, DIRENT_HTREE);
++		bh = ext4_read_dirblock(inode, 0, EITHER);
+ 		if (IS_ERR(bh)) {
+ 			*retval = PTR_ERR(bh);
+ 			return NULL;
 
 
 
