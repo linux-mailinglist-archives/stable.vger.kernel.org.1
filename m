@@ -1,55 +1,62 @@
-Return-Path: <stable+bounces-69096-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68763-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63F8C953569
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:37:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60C929533D8
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:20:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 152C3281A4D
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:37:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F1F70B264DE
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:20:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70D171A00CF;
-	Thu, 15 Aug 2024 14:37:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5648F19F462;
+	Thu, 15 Aug 2024 14:19:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XN/SsWxN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DY11pM56"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EF041DFFB;
-	Thu, 15 Aug 2024 14:37:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1450B1EA80;
+	Thu, 15 Aug 2024 14:19:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732654; cv=none; b=igar4lxyFlxLaxpn5Tftael2U3wToQXQwO454SMH1GO7tshpywC4FqoZmkFDUTDf5Br65mDmduLpAnkxIS9DkxQRzYBh1qGnQTRR+ET6LXXkGt9/f0Um5MpQ2x954giSvBXLYiZ8a5fiPSEkapAU8R4mEK4zrmifkIjspXepxgw=
+	t=1723731588; cv=none; b=DQZq4pFmPkZWHCdNDJTCKYmL0tshfLTCESMhQ2Jp2O9gUMsDhy4jJx3SUwDoqqXaSC8nIF6sXfGVFRoNsM94DAV1trZ+WoMXafvRv/pxSvciH3kUfI+iZhzq17i6RB75m+zjMuDysoVGvUGc3S38q8eJ6GRg2n4iflmrnv+mb+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732654; c=relaxed/simple;
-	bh=46QaFxyT5daWqWfmRJ6EkbXHtl1u64zDewv5+7kxr2g=;
+	s=arc-20240116; t=1723731588; c=relaxed/simple;
+	bh=Mh2EHOszsZ/N5EQ7y1MVEH3OElDF+75XU58lpooqA6U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JzBgwo6AqRvV8tWez15EdgL7dl1b7WbX72ScRNdiKlSjz8i7hT60KIF8oH478zDYTRgmYjA66Wp2g+AkCZMsCGcmMq6C4AEp84yp88TDO1YQiAEm8xL4xndkHfT226aXVCmt6GWp9LgKENPGwEufOlNMGNxEiYKYSFL3+3nlqLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XN/SsWxN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7B91C32786;
-	Thu, 15 Aug 2024 14:37:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=StMno+dbG48MV04XiliTZwYfLwJZy1UHtGzwlSkqwzL4VCh+U3v+MKtcIV6awmCs9APBVyiEW8Fxr10nWtUnsAtmdI2TTy2OHwqq4TnP0VCUnZLHIca4UhbkmN4VMWEvuaB+IWzZ/zND1qpt+Uh9dZayETri2Gwfp2QWtg7sluE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DY11pM56; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E793C32786;
+	Thu, 15 Aug 2024 14:19:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732654;
-	bh=46QaFxyT5daWqWfmRJ6EkbXHtl1u64zDewv5+7kxr2g=;
+	s=korg; t=1723731588;
+	bh=Mh2EHOszsZ/N5EQ7y1MVEH3OElDF+75XU58lpooqA6U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XN/SsWxNQ/ZH9f8r8AKvKYpjjMbqg1UThGDbnvzosF2ibM7qunKGMTotSiWhqxybR
-	 KhhIvzHlhrfTxUa1XBYoDobWi2cGkyWW8ihva2L++tHQvdyHLkvnFYJk5e5N1edqDP
-	 aBl2j4Y9rKDhPjzPV8ozMKoKL+97azsUiENHJKKo=
+	b=DY11pM56uykBV4Oa0LEXHXYsFtQTpnwZsHiSrpqXNcizFTA62sHS4LSahIpRTxxvR
+	 331Gf9ZycTyA5m14VgFhfjMsVzZkLzx9AFK7HYJQjB4dU+Ky8K4TO2bN3H562kZmWs
+	 dEnOKX7uEnX+B8VKq78NfnS9o7xbrnT9CU3eR9i0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mavroudis Chatzilazaridis <mavchatz@protonmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.10 244/352] ALSA: hda/realtek: Add quirk for Acer Aspire E5-574G
+	Jen Linkova <furry@google.com>,
+	Lorenzo Colitti <lorenzo@google.com>,
+	Patrick Rohr <prohr@google.com>,
+	David Ahern <dsahern@kernel.org>,
+	=?UTF-8?q?YOSHIFUJI=20Hideaki=20/=20=E5=90=89=E8=97=A4=E8=8B=B1=E6=98=8E?= <yoshfuji@linux-ipv6.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Maciej=20=C5=BBenczykowski?= <maze@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 177/259] ipv6: fix ndisc_is_useropt() handling for PIO
 Date: Thu, 15 Aug 2024 15:25:10 +0200
-Message-ID: <20240815131928.869306615@linuxfoundation.org>
+Message-ID: <20240815131909.614873148@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,38 +66,97 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mavroudis Chatzilazaridis <mavchatz@protonmail.com>
+From: Maciej Żenczykowski <maze@google.com>
 
-commit 3c0b6f924e1259ade38587ea719b693f6f6f2f3e upstream.
+[ Upstream commit a46c68debf3be3a477a69ccbf0a1d050df841676 ]
 
-ALC255_FIXUP_ACER_LIMIT_INT_MIC_BOOST fixes combo jack detection and
-limits the internal microphone boost that causes clipping on this model.
+The current logic only works if the PIO is between two
+other ND user options.  This fixes it so that the PIO
+can also be either before or after other ND user options
+(for example the first or last option in the RA).
 
-Signed-off-by: Mavroudis Chatzilazaridis <mavchatz@protonmail.com>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20240728123601.144017-1-mavchatz@protonmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+side note: there's actually Android tests verifying
+a portion of the old broken behaviour, so:
+  https://android-review.googlesource.com/c/kernel/tests/+/3196704
+fixes those up.
+
+Cc: Jen Linkova <furry@google.com>
+Cc: Lorenzo Colitti <lorenzo@google.com>
+Cc: Patrick Rohr <prohr@google.com>
+Cc: David Ahern <dsahern@kernel.org>
+Cc: YOSHIFUJI Hideaki / 吉藤英明 <yoshfuji@linux-ipv6.org>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Maciej Żenczykowski <maze@google.com>
+Fixes: 048c796beb6e ("ipv6: adjust ndisc_is_useropt() to also return true for PIO")
+Link: https://patch.msgid.link/20240730001748.147636-1-maze@google.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/ipv6/ndisc.c | 34 ++++++++++++++++++----------------
+ 1 file changed, 18 insertions(+), 16 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -8893,6 +8893,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x1025, 0x079b, "Acer Aspire V5-573G", ALC282_FIXUP_ASPIRE_V5_PINS),
- 	SND_PCI_QUIRK(0x1025, 0x080d, "Acer Aspire V5-122P", ALC269_FIXUP_ASPIRE_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1025, 0x0840, "Acer Aspire E1", ALC269VB_FIXUP_ASPIRE_E1_COEF),
-+	SND_PCI_QUIRK(0x1025, 0x100c, "Acer Aspire E5-574G", ALC255_FIXUP_ACER_LIMIT_INT_MIC_BOOST),
- 	SND_PCI_QUIRK(0x1025, 0x101c, "Acer Veriton N2510G", ALC269_FIXUP_LIFEBOOK),
- 	SND_PCI_QUIRK(0x1025, 0x102b, "Acer Aspire C24-860", ALC286_FIXUP_ACER_AIO_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1025, 0x1065, "Acer Aspire C20-820", ALC269VC_FIXUP_ACER_HEADSET_MIC),
+diff --git a/net/ipv6/ndisc.c b/net/ipv6/ndisc.c
+index 74977ec77c576..64729e7e6a866 100644
+--- a/net/ipv6/ndisc.c
++++ b/net/ipv6/ndisc.c
+@@ -225,6 +225,7 @@ struct ndisc_options *ndisc_parse_options(const struct net_device *dev,
+ 		return NULL;
+ 	memset(ndopts, 0, sizeof(*ndopts));
+ 	while (opt_len) {
++		bool unknown = false;
+ 		int l;
+ 		if (opt_len < sizeof(struct nd_opt_hdr))
+ 			return NULL;
+@@ -260,22 +261,23 @@ struct ndisc_options *ndisc_parse_options(const struct net_device *dev,
+ 			break;
+ #endif
+ 		default:
+-			if (ndisc_is_useropt(dev, nd_opt)) {
+-				ndopts->nd_useropts_end = nd_opt;
+-				if (!ndopts->nd_useropts)
+-					ndopts->nd_useropts = nd_opt;
+-			} else {
+-				/*
+-				 * Unknown options must be silently ignored,
+-				 * to accommodate future extension to the
+-				 * protocol.
+-				 */
+-				ND_PRINTK(2, notice,
+-					  "%s: ignored unsupported option; type=%d, len=%d\n",
+-					  __func__,
+-					  nd_opt->nd_opt_type,
+-					  nd_opt->nd_opt_len);
+-			}
++			unknown = true;
++		}
++		if (ndisc_is_useropt(dev, nd_opt)) {
++			ndopts->nd_useropts_end = nd_opt;
++			if (!ndopts->nd_useropts)
++				ndopts->nd_useropts = nd_opt;
++		} else if (unknown) {
++			/*
++			 * Unknown options must be silently ignored,
++			 * to accommodate future extension to the
++			 * protocol.
++			 */
++			ND_PRINTK(2, notice,
++				  "%s: ignored unsupported option; type=%d, len=%d\n",
++				  __func__,
++				  nd_opt->nd_opt_type,
++				  nd_opt->nd_opt_len);
+ 		}
+ next_opt:
+ 		opt_len -= l;
+-- 
+2.43.0
+
 
 
 
