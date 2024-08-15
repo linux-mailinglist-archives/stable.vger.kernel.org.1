@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-68858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68860-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAC1895345A
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:26:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDB5995345C
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:26:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C06928A16A
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:26:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5C4D91F2903A
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:26:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C5451AC422;
-	Thu, 15 Aug 2024 14:24:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 689711AD405;
+	Thu, 15 Aug 2024 14:24:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pWRSLQT4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BFUTQSrK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC91A1A76A2;
-	Thu, 15 Aug 2024 14:24:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25FC11AC437;
+	Thu, 15 Aug 2024 14:24:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731888; cv=none; b=AUH7tRqFc/tdtHt6TXj9mPYa4sKY2dX5DB/XyLyGdycGZ0tLSaNME5cGGPsavl7z6payMp4kJxw9jGIprErEaUMCOer6zGxCVeuV+vIe5a3O8Q3ABTtWV/qByiAQmod+ucH7eGHVzvOlWH4NPQE4UUGUAUCFmyrvc4tnSrhH1Fk=
+	t=1723731894; cv=none; b=dyk8gFkVQ/VY/qna50ugRNKq6USRh651lP6FkmbuiLlhYYv24HcZ1vJKA2x+e2JIBZ7PtB0Ol4nA88GjUMx+hl3jfXzM96UWaZbfrK7OambuOGLGflvXdj4sclV4VD/UuGQPE8iGpLRgbl4JdJkRI2hvuGgYrY7nAoA9lRaupB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731888; c=relaxed/simple;
-	bh=7CvWOjYMg8Ktlr+4XaY6wofU4afalTdCwIspLH23ZLw=;
+	s=arc-20240116; t=1723731894; c=relaxed/simple;
+	bh=g27U/i5paDgAa6SzEeDTp5OrTG/Fc+h0K8jyclwn4p0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h65wfStaG130ctQ0PGICqne46pKA01UakhlNtJPy+unBFD7i5NbPxm54VA/r4iMmk5wcXUcZfHgUDxyfQPI8KkDfI98M8SjE0B1iVAqjCONq2eEplbbylttl93Y4C/Fqp1i7LFryjiJHADeNrAJvYPmvqhR+y/Pt0iNRu8OXmDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pWRSLQT4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DBD6C32786;
-	Thu, 15 Aug 2024 14:24:47 +0000 (UTC)
+	 MIME-Version; b=eZPL8WlLYkCgXVO6KRNZry05UIFVDWbO1r67GJHeY2YTYnm/iJHPyerRAux3hlqjVs1yBVFFt5OWDTh1u8z003lTX39ij9tFzUKx6bB+g/2OjTGwtdnac447HTC99OaoZagHuvp0Qnq8h3m/ra0e/FjWPGuk3+nHewW9Ykne3dY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BFUTQSrK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0950C32786;
+	Thu, 15 Aug 2024 14:24:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731887;
-	bh=7CvWOjYMg8Ktlr+4XaY6wofU4afalTdCwIspLH23ZLw=;
+	s=korg; t=1723731894;
+	bh=g27U/i5paDgAa6SzEeDTp5OrTG/Fc+h0K8jyclwn4p0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pWRSLQT4zH7ntYCsfUIMNYDv/NZb7m69f1HiJohhHGAZqxkMK6zIsesSWAg0LUEj9
-	 jbQ88QbLpESzGwjmZmbvtnpc153ANHZ8E1YW/qSeVKP77SvAuP+IxOtr2o+VZeD0f+
-	 5L0EJ9PTLyC/Hl6iF43U2PUgn+THDiuJs+SG1hrw=
+	b=BFUTQSrKbgIfHVgIQnvXDAWmn6qSHWTlVav6TVVO8MooJdL8SQ5py4OjtDaxkAsQi
+	 x4MHJL7Ik75qKrDwKoTpYRQVvABrAoN/4PFZWgAnazTc6SOqju+qbke0gGAdid/aVX
+	 SemfSRA8Pl+dJrCY+SwXduBYvIdyDcidTyDb84Qk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+	Arnd Bergmann <arnd@arndb.de>,
 	Tony Luck <tony.luck@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 001/352] EDAC/skx_common: Add new ADXL components for 2-level memory
-Date: Thu, 15 Aug 2024 15:21:07 +0200
-Message-ID: <20240815131919.257129276@linuxfoundation.org>
+Subject: [PATCH 5.10 002/352] EDAC, i10nm: make skx_common.o a separate module
+Date: Thu, 15 Aug 2024 15:21:08 +0200
+Message-ID: <20240815131919.295547575@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
 References: <20240815131919.196120297@linuxfoundation.org>
@@ -66,214 +66,188 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 2f4348e5a86198704368a699a7c4cdeb21d569f5 ]
+[ Upstream commit 123b158635505c89ed0d3ef45c5845ff9030a466 ]
 
-Some Intel servers may configure memory in 2 levels, using
-fast "near" memory (e.g. DDR) as a cache for larger, slower,
-"far" memory (e.g. 3D X-point).
+Commit 598afa050403 ("kbuild: warn objects shared among multiple modules")
+was added to track down cases where the same object is linked into
+multiple modules. This can cause serious problems if some modules are
+builtin while others are not.
 
-In these configurations the BIOS ADXL address translation for
-an address in a 2-level memory range will provide details of
-both the "near" and far components.
+That test triggers this warning:
 
-Current exported ADXL components are only for 1-level memory
-system or for 2nd level memory of 2-level memory system. So
-add new ADXL components for 1st level memory of 2-level memory
-system to fully support 2-level memory system and the detection
-of memory error source(1st level memory or 2nd level memory).
+scripts/Makefile.build:236: drivers/edac/Makefile: skx_common.o is added to multiple modules: i10nm_edac skx_edac
 
-Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+Make this a separate module instead.
+
+[Tony: Added more background details to commit message]
+
+Fixes: d4dc89d069aa ("EDAC, i10nm: Add a driver for Intel 10nm server processors")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Tony Luck <tony.luck@intel.com>
-Link: https://lore.kernel.org/r/20210611170123.1057025-2-tony.luck@intel.com
-Stable-dep-of: 123b15863550 ("EDAC, i10nm: make skx_common.o a separate module")
+Link: https://lore.kernel.org/all/20240529095132.1929397-1-arnd@kernel.org/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/edac/skx_common.c | 67 ++++++++++++++++++++++++++++++++-------
- drivers/edac/skx_common.h | 11 +++++++
- 2 files changed, 67 insertions(+), 11 deletions(-)
+ drivers/edac/Makefile     | 10 ++++++----
+ drivers/edac/skx_common.c | 21 +++++++++++++++++++--
+ drivers/edac/skx_common.h |  4 ++--
+ 3 files changed, 27 insertions(+), 8 deletions(-)
 
+diff --git a/drivers/edac/Makefile b/drivers/edac/Makefile
+index 3a849168780dd..eec69c885c1de 100644
+--- a/drivers/edac/Makefile
++++ b/drivers/edac/Makefile
+@@ -58,11 +58,13 @@ obj-$(CONFIG_EDAC_MPC85XX)		+= mpc85xx_edac_mod.o
+ layerscape_edac_mod-y			:= fsl_ddr_edac.o layerscape_edac.o
+ obj-$(CONFIG_EDAC_LAYERSCAPE)		+= layerscape_edac_mod.o
+ 
+-skx_edac-y				:= skx_common.o skx_base.o
+-obj-$(CONFIG_EDAC_SKX)			+= skx_edac.o
++skx_edac_common-y			:= skx_common.o
+ 
+-i10nm_edac-y				:= skx_common.o i10nm_base.o
+-obj-$(CONFIG_EDAC_I10NM)		+= i10nm_edac.o
++skx_edac-y				:= skx_base.o
++obj-$(CONFIG_EDAC_SKX)			+= skx_edac.o skx_edac_common.o
++
++i10nm_edac-y				:= i10nm_base.o
++obj-$(CONFIG_EDAC_I10NM)		+= i10nm_edac.o skx_edac_common.o
+ 
+ obj-$(CONFIG_EDAC_MV64X60)		+= mv64x60_edac.o
+ obj-$(CONFIG_EDAC_CELL)			+= cell_edac.o
 diff --git a/drivers/edac/skx_common.c b/drivers/edac/skx_common.c
-index 2b4ce8e5ac2fa..300bfd8383e17 100644
+index 300bfd8383e17..b585cbe3eff94 100644
 --- a/drivers/edac/skx_common.c
 +++ b/drivers/edac/skx_common.c
-@@ -23,10 +23,13 @@
- #include "skx_common.h"
- 
- static const char * const component_names[] = {
--	[INDEX_SOCKET]	= "ProcessorSocketId",
--	[INDEX_MEMCTRL]	= "MemoryControllerId",
--	[INDEX_CHANNEL]	= "ChannelId",
--	[INDEX_DIMM]	= "DimmSlotId",
-+	[INDEX_SOCKET]		= "ProcessorSocketId",
-+	[INDEX_MEMCTRL]		= "MemoryControllerId",
-+	[INDEX_CHANNEL]		= "ChannelId",
-+	[INDEX_DIMM]		= "DimmSlotId",
-+	[INDEX_NM_MEMCTRL]	= "NmMemoryControllerId",
-+	[INDEX_NM_CHANNEL]	= "NmChannelId",
-+	[INDEX_NM_DIMM]		= "NmDimmSlotId",
- };
- 
- static int component_indices[ARRAY_SIZE(component_names)];
-@@ -34,12 +37,14 @@ static int adxl_component_count;
- static const char * const *adxl_component_names;
- static u64 *adxl_values;
- static char *adxl_msg;
-+static unsigned long adxl_nm_bitmap;
- 
- static char skx_msg[MSG_SIZE];
- static skx_decode_f skx_decode;
- static skx_show_retry_log_f skx_show_retry_rd_err_log;
- static u64 skx_tolm, skx_tohm;
+@@ -46,7 +46,7 @@ static u64 skx_tolm, skx_tohm;
  static LIST_HEAD(dev_edac_list);
-+static bool skx_mem_cfg_2lm;
+ static bool skx_mem_cfg_2lm;
  
- int __init skx_adxl_get(void)
+-int __init skx_adxl_get(void)
++int skx_adxl_get(void)
  {
-@@ -56,14 +61,25 @@ int __init skx_adxl_get(void)
- 		for (j = 0; names[j]; j++) {
- 			if (!strcmp(component_names[i], names[j])) {
- 				component_indices[i] = j;
-+
-+				if (i >= INDEX_NM_FIRST)
-+					adxl_nm_bitmap |= 1 << i;
-+
- 				break;
- 			}
- 		}
+ 	const char * const *names;
+ 	int i, j;
+@@ -108,12 +108,14 @@ int __init skx_adxl_get(void)
  
--		if (!names[j])
-+		if (!names[j] && i < INDEX_NM_FIRST)
- 			goto err;
- 	}
+ 	return -ENODEV;
+ }
++EXPORT_SYMBOL_GPL(skx_adxl_get);
  
-+	if (skx_mem_cfg_2lm) {
-+		if (!adxl_nm_bitmap)
-+			skx_printk(KERN_NOTICE, "Not enough ADXL components for 2-level memory.\n");
-+		else
-+			edac_dbg(2, "adxl_nm_bitmap: 0x%lx\n", adxl_nm_bitmap);
-+	}
-+
- 	adxl_component_names = names;
- 	while (*names++)
- 		adxl_component_count++;
-@@ -99,7 +115,7 @@ void __exit skx_adxl_put(void)
+-void __exit skx_adxl_put(void)
++void skx_adxl_put(void)
+ {
+ 	kfree(adxl_values);
  	kfree(adxl_msg);
  }
++EXPORT_SYMBOL_GPL(skx_adxl_put);
  
--static bool skx_adxl_decode(struct decoded_addr *res)
-+static bool skx_adxl_decode(struct decoded_addr *res, bool error_in_1st_level_mem)
+ static bool skx_adxl_decode(struct decoded_addr *res, bool error_in_1st_level_mem)
  {
- 	struct skx_dev *d;
- 	int i, len = 0;
-@@ -116,11 +132,20 @@ static bool skx_adxl_decode(struct decoded_addr *res)
- 	}
- 
- 	res->socket  = (int)adxl_values[component_indices[INDEX_SOCKET]];
--	res->imc     = (int)adxl_values[component_indices[INDEX_MEMCTRL]];
--	res->channel = (int)adxl_values[component_indices[INDEX_CHANNEL]];
--	res->dimm    = (int)adxl_values[component_indices[INDEX_DIMM]];
-+	if (error_in_1st_level_mem) {
-+		res->imc     = (adxl_nm_bitmap & BIT_NM_MEMCTRL) ?
-+			       (int)adxl_values[component_indices[INDEX_NM_MEMCTRL]] : -1;
-+		res->channel = (adxl_nm_bitmap & BIT_NM_CHANNEL) ?
-+			       (int)adxl_values[component_indices[INDEX_NM_CHANNEL]] : -1;
-+		res->dimm    = (adxl_nm_bitmap & BIT_NM_DIMM) ?
-+			       (int)adxl_values[component_indices[INDEX_NM_DIMM]] : -1;
-+	} else {
-+		res->imc     = (int)adxl_values[component_indices[INDEX_MEMCTRL]];
-+		res->channel = (int)adxl_values[component_indices[INDEX_CHANNEL]];
-+		res->dimm    = (int)adxl_values[component_indices[INDEX_DIMM]];
-+	}
- 
--	if (res->imc > NUM_IMC - 1) {
-+	if (res->imc > NUM_IMC - 1 || res->imc < 0) {
- 		skx_printk(KERN_ERR, "Bad imc %d\n", res->imc);
- 		return false;
- 	}
-@@ -151,6 +176,11 @@ static bool skx_adxl_decode(struct decoded_addr *res)
- 	return true;
+@@ -180,12 +182,14 @@ void skx_set_mem_cfg(bool mem_cfg_2lm)
+ {
+ 	skx_mem_cfg_2lm = mem_cfg_2lm;
  }
++EXPORT_SYMBOL_GPL(skx_set_mem_cfg);
  
-+void skx_set_mem_cfg(bool mem_cfg_2lm)
-+{
-+	skx_mem_cfg_2lm = mem_cfg_2lm;
-+}
-+
  void skx_set_decode(skx_decode_f decode, skx_show_retry_log_f show_retry_log)
  {
  	skx_decode = decode;
-@@ -565,6 +595,21 @@ static void skx_mce_output_error(struct mem_ctl_info *mci,
- 			     optype, skx_msg);
+ 	skx_show_retry_rd_err_log = show_retry_log;
  }
++EXPORT_SYMBOL_GPL(skx_set_decode);
  
-+static bool skx_error_in_1st_level_mem(const struct mce *m)
-+{
-+	u32 errcode;
-+
-+	if (!skx_mem_cfg_2lm)
-+		return false;
-+
-+	errcode = GET_BITFIELD(m->status, 0, 15);
-+
-+	if ((errcode & 0xef80) != 0x280)
-+		return false;
-+
-+	return true;
-+}
-+
- int skx_mce_check_error(struct notifier_block *nb, unsigned long val,
- 			void *data)
+ int skx_get_src_id(struct skx_dev *d, int off, u8 *id)
  {
-@@ -584,7 +629,7 @@ int skx_mce_check_error(struct notifier_block *nb, unsigned long val,
- 	res.addr = mce->addr;
+@@ -199,6 +203,7 @@ int skx_get_src_id(struct skx_dev *d, int off, u8 *id)
+ 	*id = GET_BITFIELD(reg, 12, 14);
+ 	return 0;
+ }
++EXPORT_SYMBOL_GPL(skx_get_src_id);
  
- 	if (adxl_component_count) {
--		if (!skx_adxl_decode(&res))
-+		if (!skx_adxl_decode(&res, skx_error_in_1st_level_mem(mce)))
- 			return NOTIFY_DONE;
- 	} else if (!skx_decode || !skx_decode(&res)) {
- 		return NOTIFY_DONE;
+ int skx_get_node_id(struct skx_dev *d, u8 *id)
+ {
+@@ -212,6 +217,7 @@ int skx_get_node_id(struct skx_dev *d, u8 *id)
+ 	*id = GET_BITFIELD(reg, 0, 2);
+ 	return 0;
+ }
++EXPORT_SYMBOL_GPL(skx_get_node_id);
+ 
+ static int get_width(u32 mtr)
+ {
+@@ -277,6 +283,7 @@ int skx_get_all_bus_mappings(struct res_config *cfg, struct list_head **list)
+ 		*list = &dev_edac_list;
+ 	return ndev;
+ }
++EXPORT_SYMBOL_GPL(skx_get_all_bus_mappings);
+ 
+ int skx_get_hi_lo(unsigned int did, int off[], u64 *tolm, u64 *tohm)
+ {
+@@ -316,6 +323,7 @@ int skx_get_hi_lo(unsigned int did, int off[], u64 *tolm, u64 *tohm)
+ 	pci_dev_put(pdev);
+ 	return -ENODEV;
+ }
++EXPORT_SYMBOL_GPL(skx_get_hi_lo);
+ 
+ static int skx_get_dimm_attr(u32 reg, int lobit, int hibit, int add,
+ 			     int minval, int maxval, const char *name)
+@@ -369,6 +377,7 @@ int skx_get_dimm_info(u32 mtr, u32 mcmtr, u32 amap, struct dimm_info *dimm,
+ 
+ 	return 1;
+ }
++EXPORT_SYMBOL_GPL(skx_get_dimm_info);
+ 
+ int skx_get_nvdimm_info(struct dimm_info *dimm, struct skx_imc *imc,
+ 			int chan, int dimmno, const char *mod_str)
+@@ -417,6 +426,7 @@ int skx_get_nvdimm_info(struct dimm_info *dimm, struct skx_imc *imc,
+ 
+ 	return (size == 0 || size == ~0ull) ? 0 : 1;
+ }
++EXPORT_SYMBOL_GPL(skx_get_nvdimm_info);
+ 
+ int skx_register_mci(struct skx_imc *imc, struct pci_dev *pdev,
+ 		     const char *ctl_name, const char *mod_str,
+@@ -484,6 +494,7 @@ int skx_register_mci(struct skx_imc *imc, struct pci_dev *pdev,
+ 	imc->mci = NULL;
+ 	return rc;
+ }
++EXPORT_SYMBOL_GPL(skx_register_mci);
+ 
+ static void skx_unregister_mci(struct skx_imc *imc)
+ {
+@@ -663,6 +674,7 @@ int skx_mce_check_error(struct notifier_block *nb, unsigned long val,
+ 	mce->kflags |= MCE_HANDLED_EDAC;
+ 	return NOTIFY_DONE;
+ }
++EXPORT_SYMBOL_GPL(skx_mce_check_error);
+ 
+ void skx_remove(void)
+ {
+@@ -698,3 +710,8 @@ void skx_remove(void)
+ 		kfree(d);
+ 	}
+ }
++EXPORT_SYMBOL_GPL(skx_remove);
++
++MODULE_LICENSE("GPL v2");
++MODULE_AUTHOR("Tony Luck");
++MODULE_DESCRIPTION("MC Driver for Intel server processors");
 diff --git a/drivers/edac/skx_common.h b/drivers/edac/skx_common.h
-index 78f8c1de0b71c..9773bd8e05322 100644
+index 9773bd8e05322..b93c33ac8e607 100644
 --- a/drivers/edac/skx_common.h
 +++ b/drivers/edac/skx_common.h
-@@ -9,6 +9,8 @@
- #ifndef _SKX_COMM_EDAC_H
- #define _SKX_COMM_EDAC_H
+@@ -134,8 +134,8 @@ typedef int (*get_dimm_config_f)(struct mem_ctl_info *mci);
+ typedef bool (*skx_decode_f)(struct decoded_addr *res);
+ typedef void (*skx_show_retry_log_f)(struct decoded_addr *res, char *msg, int len);
  
-+#include <linux/bits.h>
-+
- #define MSG_SIZE		1024
- 
- /*
-@@ -90,9 +92,17 @@ enum {
- 	INDEX_MEMCTRL,
- 	INDEX_CHANNEL,
- 	INDEX_DIMM,
-+	INDEX_NM_FIRST,
-+	INDEX_NM_MEMCTRL = INDEX_NM_FIRST,
-+	INDEX_NM_CHANNEL,
-+	INDEX_NM_DIMM,
- 	INDEX_MAX
- };
- 
-+#define BIT_NM_MEMCTRL	BIT_ULL(INDEX_NM_MEMCTRL)
-+#define BIT_NM_CHANNEL	BIT_ULL(INDEX_NM_CHANNEL)
-+#define BIT_NM_DIMM	BIT_ULL(INDEX_NM_DIMM)
-+
- struct decoded_addr {
- 	struct skx_dev *dev;
- 	u64	addr;
-@@ -127,6 +137,7 @@ typedef void (*skx_show_retry_log_f)(struct decoded_addr *res, char *msg, int le
- int __init skx_adxl_get(void);
- void __exit skx_adxl_put(void);
+-int __init skx_adxl_get(void);
+-void __exit skx_adxl_put(void);
++int skx_adxl_get(void);
++void skx_adxl_put(void);
  void skx_set_decode(skx_decode_f decode, skx_show_retry_log_f show_retry_log);
-+void skx_set_mem_cfg(bool mem_cfg_2lm);
+ void skx_set_mem_cfg(bool mem_cfg_2lm);
  
- int skx_get_src_id(struct skx_dev *d, int off, u8 *id);
- int skx_get_node_id(struct skx_dev *d, u8 *id);
 -- 
 2.43.0
 
