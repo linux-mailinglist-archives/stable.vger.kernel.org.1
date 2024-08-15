@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-67812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68320-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59F08952F33
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:29:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 735149531A3
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:56:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D72B1C23EF6
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:29:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2850E1F21E42
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:56:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D908119DFAE;
-	Thu, 15 Aug 2024 13:29:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F6BB19DFA6;
+	Thu, 15 Aug 2024 13:56:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c+yeWvjx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1VIwcFCI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 968121DFFB;
-	Thu, 15 Aug 2024 13:29:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F3E71714A1;
+	Thu, 15 Aug 2024 13:56:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723728596; cv=none; b=rGj949ysEH8RrERwcW/cUQsVeQdQy7sBx7MKFyMf7Cdfl+c5Ns+hfSrg2y7q44gb4wkgnhk/I7HYcrg18NSSXGYZ2ojV5yphARKrhPFIqgxXUwEIjqzvIKUOok3bXvjaHSocSxTJlnpda6QOYzvHOEq6/M/B4wCUB+NNFtJdifI=
+	t=1723730197; cv=none; b=t1VzLjktZTAOmN2rt/QegIvVLm/22OdfGiJlvk4D2ZtqQ8QprRs44hggm7ebbGFICMoIbusq9yI9HEK8sFqyKAzaA6xhwGm8zq6zKnNdBL6R62zKdcRYADLsL2NmPHGuvwWxf34uewAi2tEDPxJYvCCMVpw1gVT4FyXyOTYeFJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723728596; c=relaxed/simple;
-	bh=sAd/ZQ/e0tVVut/UcZaCjynGySXfcFaa/L2Xf0mQ41k=;
+	s=arc-20240116; t=1723730197; c=relaxed/simple;
+	bh=ESQZ0of3ve/GHIneBhnc42dYbvB/1ky3VDyN4Cs09xs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FHDukyf0vdHzGe0cJP3ChFh1NKlOTce/L+B8XtgfgN/S3sHd8dgHQpsVmz5d+IH3yPmk2CfFdjbkZRdmLjaHpbSIvL3J29ovxtWukdGALMn3xwyd0oo1nWX0OZUbbbswY2jUaGIPLTxz5/lRjfWbw8jIHTvgX4WRhdA0YAYQGNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c+yeWvjx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C585C32786;
-	Thu, 15 Aug 2024 13:29:55 +0000 (UTC)
+	 MIME-Version; b=lBAKtCtgUcKjVpXePp0g256yNTpyJUjhzcFEQa13a0AlLVztX84IXDFDcLWW8H0K1wEGPpeHNTRoHyoiNkSt+FseH88befJgcTRLnSc3K5+B/x0S+eipnfrQumc0C4cp03Bs6h8d0WweWhmJ72jw8DS9j4cdYF3RppnBP3ZmHwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1VIwcFCI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC426C32786;
+	Thu, 15 Aug 2024 13:56:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723728596;
-	bh=sAd/ZQ/e0tVVut/UcZaCjynGySXfcFaa/L2Xf0mQ41k=;
+	s=korg; t=1723730197;
+	bh=ESQZ0of3ve/GHIneBhnc42dYbvB/1ky3VDyN4Cs09xs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c+yeWvjxvSTQROqtS5wUFwoBQ91VVtxYTIheLfBX+sht26562WPsogXg2Kff0bPG3
-	 OZ3Hiyha1j0RMDBSAuL73twVUcsG9ISVNY1qF3DZZWt3ea+BIp8eRtu4WNFMjSDD3W
-	 P033O360o0ORLOVNCIUWAbwj0rOEKJrBa6JqQQwY=
+	b=1VIwcFCIM8u+BRA0Bet0Q4cqUQOs2jtfj/qxwMgh5i6mScuekFZ34OrMUQCKRo7SA
+	 ZBLhCyLmFB0fZ6ayCBd8MJuBUsZboUyr2RW4DFrhZHOH/T2oHCePUqqvcjniC41A2Q
+	 aznKG7kZEawv53hueXRD8r11+Eon59MyE7gkLqQk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jon Derrick <jonathan.derrick@intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 042/196] PCI: Equalize hotplug memory and io for occupied and empty slots
+Subject: [PATCH 5.15 301/484] arm64: dts: qcom: msm8998: switch USB QMP PHY to new style of bindings
 Date: Thu, 15 Aug 2024 15:22:39 +0200
-Message-ID: <20240815131853.692787412@linuxfoundation.org>
+Message-ID: <20240815131953.033704581@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,124 +62,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jon Derrick <jonathan.derrick@intel.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit de3ffa301142bf8802a7b0de17f9985acde5c223 ]
+[ Upstream commit b7efebfeb2e8ad8187cdabba5f0212ba2e6c1069 ]
 
-Currently, a hotplug bridge will be given hpmemsize additional memory
-and hpiosize additional io if available, in order to satisfy any future
-hotplug allocation requirements.
+Change the USB QMP PHY to use newer style of QMP PHY bindings (single
+resource region, no per-PHY subnodes).
 
-These calculations don't consider the current memory/io size of the
-hotplug bridge/slot, so hotplug bridges/slots which have downstream
-devices will be allocated their current allocation in addition to the
-hpmemsize value.
-
-This makes for possibly undesirable results with a mix of unoccupied and
-occupied slots (ex, with hpmemsize=2M):
-
-  02:03.0 PCI bridge: <-- Occupied
-	  Memory behind bridge: d6200000-d64fffff [size=3M]
-  02:04.0 PCI bridge: <-- Unoccupied
-	  Memory behind bridge: d6500000-d66fffff [size=2M]
-
-This change considers the current allocation size when using the
-hpmemsize/hpiosize parameters to make the reservations predictable for
-the mix of unoccupied and occupied slots:
-
-  02:03.0 PCI bridge: <-- Occupied
-	  Memory behind bridge: d6200000-d63fffff [size=2M]
-  02:04.0 PCI bridge: <-- Unoccupied
-	  Memory behind bridge: d6400000-d65fffff [size=2M]
-
-Signed-off-by: Jon Derrick <jonathan.derrick@intel.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Stable-dep-of: 903534fa7d30 ("PCI: Fix resource double counting on remove & rescan")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20230824211952.1397699-11-dmitry.baryshkov@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Stable-dep-of: 0046325ae520 ("arm64: dts: qcom: msm8998: Disable SS instance in Parkmode for USB")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/setup-bus.c | 28 +++++++++++++++-------------
- 1 file changed, 15 insertions(+), 13 deletions(-)
+ arch/arm64/boot/dts/qcom/msm8998.dtsi | 35 +++++++++++----------------
+ 1 file changed, 14 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/pci/setup-bus.c b/drivers/pci/setup-bus.c
-index 87c8190de622f..7f58360b42b7e 100644
---- a/drivers/pci/setup-bus.c
-+++ b/drivers/pci/setup-bus.c
-@@ -774,6 +774,8 @@ static struct resource *find_free_bus_resource(struct pci_bus *bus,
- static resource_size_t calculate_iosize(resource_size_t size,
- 		resource_size_t min_size,
- 		resource_size_t size1,
-+		resource_size_t add_size,
-+		resource_size_t children_add_size,
- 		resource_size_t old_size,
- 		resource_size_t align)
- {
-@@ -786,15 +788,18 @@ static resource_size_t calculate_iosize(resource_size_t size,
- #if defined(CONFIG_ISA) || defined(CONFIG_EISA)
- 	size = (size & 0xff) + ((size & ~0xffUL) << 2);
- #endif
--	size = ALIGN(size + size1, align);
-+	size = size + size1;
- 	if (size < old_size)
- 		size = old_size;
-+
-+	size = ALIGN(max(size, add_size) + children_add_size, align);
- 	return size;
- }
+diff --git a/arch/arm64/boot/dts/qcom/msm8998.dtsi b/arch/arm64/boot/dts/qcom/msm8998.dtsi
+index f5772d6efaa8b..8037288359482 100644
+--- a/arch/arm64/boot/dts/qcom/msm8998.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8998.dtsi
+@@ -1982,7 +1982,7 @@ usb3_dwc3: dwc3@a800000 {
+ 				interrupts = <GIC_SPI 131 IRQ_TYPE_LEVEL_HIGH>;
+ 				snps,dis_u2_susphy_quirk;
+ 				snps,dis_enblslpm_quirk;
+-				phys = <&qusb2phy>, <&usb1_ssphy>;
++				phys = <&qusb2phy>, <&usb3phy>;
+ 				phy-names = "usb2-phy", "usb3-phy";
+ 				snps,has-lpm-erratum;
+ 				snps,hird-threshold = /bits/ 8 <0x10>;
+@@ -1991,33 +1991,26 @@ usb3_dwc3: dwc3@a800000 {
  
- static resource_size_t calculate_memsize(resource_size_t size,
- 		resource_size_t min_size,
--		resource_size_t size1,
-+		resource_size_t add_size,
-+		resource_size_t children_add_size,
- 		resource_size_t old_size,
- 		resource_size_t align)
- {
-@@ -804,7 +809,8 @@ static resource_size_t calculate_memsize(resource_size_t size,
- 		old_size = 0;
- 	if (size < old_size)
- 		size = old_size;
--	size = ALIGN(size + size1, align);
-+
-+	size = ALIGN(max(size, add_size) + children_add_size, align);
- 	return size;
- }
+ 		usb3phy: phy@c010000 {
+ 			compatible = "qcom,msm8998-qmp-usb3-phy";
+-			reg = <0x0c010000 0x18c>;
+-			status = "disabled";
+-			#address-cells = <1>;
+-			#size-cells = <1>;
+-			ranges;
++			reg = <0x0c010000 0x1000>;
  
-@@ -893,12 +899,10 @@ static void pbus_size_io(struct pci_bus *bus, resource_size_t min_size,
- 		}
- 	}
+ 			clocks = <&gcc GCC_USB3_PHY_AUX_CLK>,
++				 <&gcc GCC_USB3_CLKREF_CLK>,
+ 				 <&gcc GCC_USB_PHY_CFG_AHB2PHY_CLK>,
+-				 <&gcc GCC_USB3_CLKREF_CLK>;
+-			clock-names = "aux", "cfg_ahb", "ref";
++				 <&gcc GCC_USB3_PHY_PIPE_CLK>;
++			clock-names = "aux",
++				      "ref",
++				      "cfg_ahb",
++				      "pipe";
++			clock-output-names = "usb3_phy_pipe_clk_src";
++			#clock-cells = <0>;
++			#phy-cells = <0>;
  
--	size0 = calculate_iosize(size, min_size, size1,
-+	size0 = calculate_iosize(size, min_size, size1, 0, 0,
- 			resource_size(b_res), min_align);
--	if (children_add_size > add_size)
--		add_size = children_add_size;
--	size1 = (!realloc_head || (realloc_head && !add_size)) ? size0 :
--		calculate_iosize(size, min_size, add_size + size1,
-+	size1 = (!realloc_head || (realloc_head && !add_size && !children_add_size)) ? size0 :
-+		calculate_iosize(size, min_size, size1, add_size, children_add_size,
- 			resource_size(b_res), min_align);
- 	if (!size0 && !size1) {
- 		if (b_res->start || b_res->end)
-@@ -1042,12 +1046,10 @@ static int pbus_size_mem(struct pci_bus *bus, unsigned long mask,
+ 			resets = <&gcc GCC_USB3_PHY_BCR>,
+ 				 <&gcc GCC_USB3PHY_PHY_BCR>;
+-			reset-names = "phy", "common";
++			reset-names = "phy",
++				      "phy_phy";
  
- 	min_align = calculate_mem_align(aligns, max_order);
- 	min_align = max(min_align, window_alignment(bus, b_res->flags));
--	size0 = calculate_memsize(size, min_size, 0, resource_size(b_res), min_align);
-+	size0 = calculate_memsize(size, min_size, 0, 0, resource_size(b_res), min_align);
- 	add_align = max(min_align, add_align);
--	if (children_add_size > add_size)
--		add_size = children_add_size;
--	size1 = (!realloc_head || (realloc_head && !add_size)) ? size0 :
--		calculate_memsize(size, min_size, add_size,
-+	size1 = (!realloc_head || (realloc_head && !add_size && !children_add_size)) ? size0 :
-+		calculate_memsize(size, min_size, add_size, children_add_size,
- 				resource_size(b_res), add_align);
- 	if (!size0 && !size1) {
- 		if (b_res->start || b_res->end)
+-			usb1_ssphy: phy@c010200 {
+-				reg = <0xc010200 0x128>,
+-				      <0xc010400 0x200>,
+-				      <0xc010c00 0x20c>,
+-				      <0xc010600 0x128>,
+-				      <0xc010800 0x200>;
+-				#phy-cells = <0>;
+-				#clock-cells = <0>;
+-				clocks = <&gcc GCC_USB3_PHY_PIPE_CLK>;
+-				clock-names = "pipe0";
+-				clock-output-names = "usb3_phy_pipe_clk_src";
+-			};
++			status = "disabled";
+ 		};
+ 
+ 		qusb2phy: phy@c012000 {
 -- 
 2.43.0
 
