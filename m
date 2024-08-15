@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-69001-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68639-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41A0C9534F9
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:32:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BA5595334C
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:15:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E2B1828107C
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:32:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1ACF0B2848E
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:15:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92AE317C995;
-	Thu, 15 Aug 2024 14:32:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B692619FA99;
+	Thu, 15 Aug 2024 14:13:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gwO07DjB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dJZ0kSHz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F6E463D5;
-	Thu, 15 Aug 2024 14:32:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74E6E762D2;
+	Thu, 15 Aug 2024 14:13:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732346; cv=none; b=g1F1UqOmP6TM1WqlavhGU8E0xrcnW2FWbNmV7dy9jZ6x1jGKxnqdN7BVjHDCZeldBrVFGDR8dD4/OlpXCR9cEfrJSSN1fMaNTkNcKKHCJ7yvOdcJFAQMsdP8d3EtmE1wkbOHXBwwhydxW/kyJfyIewumc5XGp6eQFmQRLTveAqM=
+	t=1723731202; cv=none; b=uKMaUZacBJ92MrrlY+bXi7Q/xO4dF6pzd7/RoU8qmSPwu+URiGJdbSvNgvxujbdPxlpobfX7DqXzq5uTEFXoL3ZqQlDIclmSRFX05peY1U26C4etvmTk5qTQseGdeuRvg8gZam5ToQ8OlJQSGfMFXvdJ2dlllKKHFS3GYz2x6SQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732346; c=relaxed/simple;
-	bh=WR9MClY/hGyRgRVeacXAyx96sViRYNE6baxO7vN/CmQ=;
+	s=arc-20240116; t=1723731202; c=relaxed/simple;
+	bh=7dUvPe+tN6riJuw+Ar7vQpWvt9Fzdd6PJRsotdcqlZM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e1ds3UTAP1cXqxsOAhj9VXj6QqtPYJDl2kF7Ywk3GdV6OTWB+VQ7pVjredNJCWA2FV4+ccPWec6egswMaMd1Llzolkz1bFzzxf2gsxoD3oFmY/7QB12E6gk9osz0hwNPd+DYP2r8M63OPgrhGYWfBhrP9qJ9WL9YRVZUzr7CjOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gwO07DjB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9FB7C32786;
-	Thu, 15 Aug 2024 14:32:25 +0000 (UTC)
+	 MIME-Version; b=mLIaE8amhYKUqBcgTtb926m+iO0ElZ6i6ZvBeaQP12HBgNk+6AkLraIP7B/BHfECSwGZXKvjgHDuzxvv1eTdhRunpHwDfsP1YHanP6kPyJMFk/+sEhhF6tDzZwUfhMsXgvaznAs7MLuVMZQYmf/XHFlPGLRd+s6DqBL5jEpx2cg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dJZ0kSHz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8110BC32786;
+	Thu, 15 Aug 2024 14:13:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732346;
-	bh=WR9MClY/hGyRgRVeacXAyx96sViRYNE6baxO7vN/CmQ=;
+	s=korg; t=1723731202;
+	bh=7dUvPe+tN6riJuw+Ar7vQpWvt9Fzdd6PJRsotdcqlZM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gwO07DjBlXnkVAqG4KU/Tp3VJ2Ii+TRzaJFhLjrDjL0fVEpk5Fu8mFHF7wSydX63j
-	 dSIUr9XKryyEHxOTmhFPD6hjn1rI6URJK2WgrldydE95NI694X8eh6od1sq/gtiihg
-	 I1SRfXbhJJff6bIBCPwAz7brTI+U9vrTEHJsJ+Ag=
+	b=dJZ0kSHzh09h6FhuzgXo4c9bGm64Cpkxyw6Ro/3BaC4952ezJe9NnBYTqTPDOlWmh
+	 4klogsopYPMYDmjHrPsZXsu/5wu8tkbwnSeMOD9tVSmvsB/6g95T+sJ3LrQOKt3q5u
+	 YFzD4RbW/TaxR/U0/o0aMCWKi7ghTrqpy2OlJsIE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Hildenbrand <david@redhat.com>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Lance Yang <ioworker0@gmail.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Alexey Dobriyan <adobriyan@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 120/352] fs/proc/task_mmu: indicate PM_FILE for PMD-mapped file THP
-Date: Thu, 15 Aug 2024 15:23:06 +0200
-Message-ID: <20240815131923.890372142@linuxfoundation.org>
+Subject: [PATCH 5.4 054/259] media: uvcvideo: Allow entity-defined get_info and get_cur
+Date: Thu, 15 Aug 2024 15:23:07 +0200
+Message-ID: <20240815131904.896837568@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,67 +63,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Hildenbrand <david@redhat.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit 3f9f022e975d930709848a86a1c79775b0585202 ]
+[ Upstream commit 65900c581d014499f0f8ceabfc02c652e9a88771 ]
 
-Patch series "fs/proc: move page_mapcount() to fs/proc/internal.h".
+Allows controls to get their properties and current value
+from an entity-defined function instead of via a query to the USB
+device.
 
-With all other page_mapcount() users in the tree gone, move
-page_mapcount() to fs/proc/internal.h, rename it and extend the
-documentation to prevent future (ab)use.
-
-... of course, I find some issues while working on that code that I sort
-first ;)
-
-We'll now only end up calling page_mapcount() [now
-folio_precise_page_mapcount()] on pages mapped via present page table
-entries.  Except for /proc/kpagecount, that still does questionable
-things, but we'll leave that legacy interface as is for now.
-
-Did a quick sanity check.  Likely we would want some better selfestest for
-/proc/$/pagemap + smaps.  I'll see if I can find some time to write some
-more.
-
-This patch (of 6):
-
-Looks like we never taught pagemap_pmd_range() about the existence of
-PMD-mapped file THPs.  Seems to date back to the times when we first added
-support for non-anon THPs in the form of shmem THP.
-
-Link: https://lkml.kernel.org/r/20240607122357.115423-1-david@redhat.com
-Link: https://lkml.kernel.org/r/20240607122357.115423-2-david@redhat.com
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Fixes: 800d8c63b2e9 ("shmem: add huge pages support")
-Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Reviewed-by: Lance Yang <ioworker0@gmail.com>
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Alexey Dobriyan <adobriyan@gmail.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Stable-dep-of: 86419686e66d ("media: uvcvideo: Override default flags")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/proc/task_mmu.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/media/usb/uvc/uvc_ctrl.c | 22 ++++++++++++++++++----
+ drivers/media/usb/uvc/uvcvideo.h |  5 +++++
+ 2 files changed, 23 insertions(+), 4 deletions(-)
 
-diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-index 39b1038076c3e..97023c0dca60a 100644
---- a/fs/proc/task_mmu.c
-+++ b/fs/proc/task_mmu.c
-@@ -1468,6 +1468,8 @@ static int pagemap_pmd_range(pmd_t *pmdp, unsigned long addr, unsigned long end,
- 		}
- #endif
+diff --git a/drivers/media/usb/uvc/uvc_ctrl.c b/drivers/media/usb/uvc/uvc_ctrl.c
+index e0d894c61f4b7..13723fccb9000 100644
+--- a/drivers/media/usb/uvc/uvc_ctrl.c
++++ b/drivers/media/usb/uvc/uvc_ctrl.c
+@@ -1002,10 +1002,20 @@ static int __uvc_ctrl_get(struct uvc_video_chain *chain,
+ 		return -EACCES;
  
-+		if (page && !PageAnon(page))
-+			flags |= PM_FILE;
- 		if (page && !migration && page_mapcount(page) == 1)
- 			flags |= PM_MMAP_EXCLUSIVE;
+ 	if (!ctrl->loaded) {
+-		ret = uvc_query_ctrl(chain->dev, UVC_GET_CUR, ctrl->entity->id,
+-				chain->dev->intfnum, ctrl->info.selector,
++		if (ctrl->entity->get_cur) {
++			ret = ctrl->entity->get_cur(chain->dev,
++				ctrl->entity,
++				ctrl->info.selector,
+ 				uvc_ctrl_data(ctrl, UVC_CTRL_DATA_CURRENT),
+ 				ctrl->info.size);
++		} else {
++			ret = uvc_query_ctrl(chain->dev, UVC_GET_CUR,
++				ctrl->entity->id,
++				chain->dev->intfnum,
++				ctrl->info.selector,
++				uvc_ctrl_data(ctrl, UVC_CTRL_DATA_CURRENT),
++				ctrl->info.size);
++		}
+ 		if (ret < 0)
+ 			return ret;
  
+@@ -1718,8 +1728,12 @@ static int uvc_ctrl_get_flags(struct uvc_device *dev,
+ 	if (data == NULL)
+ 		return -ENOMEM;
+ 
+-	ret = uvc_query_ctrl(dev, UVC_GET_INFO, ctrl->entity->id, dev->intfnum,
+-			     info->selector, data, 1);
++	if (ctrl->entity->get_info)
++		ret = ctrl->entity->get_info(dev, ctrl->entity,
++					     ctrl->info.selector, data);
++	else
++		ret = uvc_query_ctrl(dev, UVC_GET_INFO, ctrl->entity->id,
++				     dev->intfnum, info->selector, data, 1);
+ 	if (!ret)
+ 		info->flags |= (data[0] & UVC_CONTROL_CAP_GET ?
+ 				UVC_CTRL_FLAG_GET_CUR : 0)
+diff --git a/drivers/media/usb/uvc/uvcvideo.h b/drivers/media/usb/uvc/uvcvideo.h
+index 9f5b9601eadcf..97817b350f988 100644
+--- a/drivers/media/usb/uvc/uvcvideo.h
++++ b/drivers/media/usb/uvc/uvcvideo.h
+@@ -350,6 +350,11 @@ struct uvc_entity {
+ 	u8 bNrInPins;
+ 	u8 *baSourceID;
+ 
++	int (*get_info)(struct uvc_device *dev, struct uvc_entity *entity,
++			u8 cs, u8 *caps);
++	int (*get_cur)(struct uvc_device *dev, struct uvc_entity *entity,
++		       u8 cs, void *data, u16 size);
++
+ 	unsigned int ncontrols;
+ 	struct uvc_control *controls;
+ };
 -- 
 2.43.0
 
