@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-69028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68696-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DAA095351B
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:34:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C95F5953389
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:17:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B1D32B283E8
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:33:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71F301F246FE
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:17:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B15519FA7A;
-	Thu, 15 Aug 2024 14:33:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B71D1A4F1C;
+	Thu, 15 Aug 2024 14:16:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vl4/g5Md"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RHJmvA7D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 387AF63D5;
-	Thu, 15 Aug 2024 14:33:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39F491A08DD;
+	Thu, 15 Aug 2024 14:16:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732435; cv=none; b=idzd+GwVrW0Z3wsEhjAjzKm0/wQ6lITsLAnZnadjqbBjDuC2WzSDErKhUSK744tbs9WCozVOVXPp+mEH3vL+J2BM3W2aHNVi17UTNLcbrWYhFtrJ5ul7AWk3YZoWELyHTue/O2u/c+SUkrB7O9UQNswCur41eWILJDbo/munkSI=
+	t=1723731379; cv=none; b=dbe991rADfT6BbwgZz9xluMQSyQ1ly6RHZ3cELepToKzp5dorOEwjCQNNRdO3QYJE68TCXgHyEwZE2OItQpwbhnhMtTrcBEgcr7wTIrkU0Vnyp7JJp7cEn9TqsoCQ02R0RvOVnnaKvskW1rWpZnZCoqFE0y5XJ8B/3FY6NrE3l4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732435; c=relaxed/simple;
-	bh=Mfh+UzMoeD08v3ehw3DuV1kdsbKriD+VtiAbcdTwczs=;
+	s=arc-20240116; t=1723731379; c=relaxed/simple;
+	bh=33b78M2euvg2BWsMDvIimuPd0ZSHF3oX+gRI/mhmEJA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tVjnkDS6u3vgcLqehVOz14LngHSygM2tyCWuDPfKMMkgRHSU82tlW2mdz9a2FshxN4lh+9z05Hg9qCVKCLl9cbSPHbXc4eXlXmv/1cdLrckHiqr/XKACyXcpkBMeckkcguSWNsTpeZCWHheJJWo12bvMXM2i54ciuWbJiYp911E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vl4/g5Md; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F0B8C32786;
-	Thu, 15 Aug 2024 14:33:54 +0000 (UTC)
+	 MIME-Version; b=pHWOLfwWQbVs8fQwXSZdu+qSbe1INT5MdyRfwck11D+FF7EEIQTmcJ6GGmecpSUAHx8IgQortQUHjh8er8bg7Y02JS9waRFxVdBos9mFuZYPgBOUbBmTqga85QLmdOXp35bP9MS9QSjmWvU2jlnU/0DmhoyyHKJnK8p55gj+mRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RHJmvA7D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2C6DC32786;
+	Thu, 15 Aug 2024 14:16:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732435;
-	bh=Mfh+UzMoeD08v3ehw3DuV1kdsbKriD+VtiAbcdTwczs=;
+	s=korg; t=1723731379;
+	bh=33b78M2euvg2BWsMDvIimuPd0ZSHF3oX+gRI/mhmEJA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vl4/g5Mdm/9pk7gZcbAwAJQqQBNosulJEbsHq8ARhoGVpUDxZbrYDwRcW2iZr9rf2
-	 /2C2d2vVHZOsG5zGhHtrKiNler+Vv2bE3YZFVHbEMzr1NDCBu/25mG7b7OUUrrKqYC
-	 3SUgwfOpo/uoMe2nBTZh8A/JPwYIHDP3b8Okt+bw=
+	b=RHJmvA7Dg1r8OijLUxOtgSX6jKKAhFk8e0OpTTW8dQ6A0j0YBNzm0cP2pKa4fYKw7
+	 k38gP5IpLjQIpOaaq+pq5zUwKhfwmmEYVrWaXn8vQ1uQ0SsBkvch9kRAqE/c30XZ3D
+	 ZS6RmdW4nMJ1mluwb8YnnGBsxnEaEHFvr1HmPE9w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilya Dryomov <idryomov@gmail.com>,
-	Dongsheng Yang <dongsheng.yang@easystack.cn>
-Subject: [PATCH 5.10 177/352] rbd: dont assume rbd_is_lock_owner() for exclusive mappings
-Date: Thu, 15 Aug 2024 15:24:03 +0200
-Message-ID: <20240815131926.119113485@linuxfoundation.org>
+	Bastien Curutchet <bastien.curutchet@bootlin.com>,
+	David Lechner <david@lechnology.com>,
+	Stephen Boyd <sboyd@kernel.org>
+Subject: [PATCH 5.4 111/259] clk: davinci: da8xx-cfgchip: Initialize clk_init_data before use
+Date: Thu, 15 Aug 2024 15:24:04 +0200
+Message-ID: <20240815131907.088615623@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Dryomov <idryomov@gmail.com>
+From: Bastien Curutchet <bastien.curutchet@bootlin.com>
 
-commit 3ceccb14f5576e02b81cc8b105ab81f224bd87f6 upstream.
+commit a83b22754e351f13fb46596c85f667dc33da71ec upstream.
 
-Expanding on the previous commit, assuming that rbd_is_lock_owner()
-always returns true (i.e. that we are either in RBD_LOCK_STATE_LOCKED
-or RBD_LOCK_STATE_QUIESCING) if the mapping is exclusive is wrong too.
-In case ceph_cls_set_cookie() fails, the lock would be temporarily
-released even if the mapping is exclusive, meaning that we can end up
-even in RBD_LOCK_STATE_UNLOCKED.
+The flag attribute of the struct clk_init_data isn't initialized before
+the devm_clk_hw_register() call. This can lead to unexpected behavior
+during registration.
 
-IOW, exclusive mappings are really "just" about disabling automatic
-lock transitions (as documented in the man page), not about grabbing
-the lock and holding on to it whatever it takes.
+Initialize the entire clk_init_data to zero at declaration.
 
 Cc: stable@vger.kernel.org
-Fixes: 637cd060537d ("rbd: new exclusive lock wait/wake code")
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Reviewed-by: Dongsheng Yang <dongsheng.yang@easystack.cn>
+Fixes: 58e1e2d2cd89 ("clk: davinci: cfgchip: Add TI DA8XX USB PHY clocks")
+Signed-off-by: Bastien Curutchet <bastien.curutchet@bootlin.com>
+Reviewed-by: David Lechner <david@lechnology.com>
+Link: https://lore.kernel.org/r/20240718115534.41513-1-bastien.curutchet@bootlin.com
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/rbd.c |    5 -----
- 1 file changed, 5 deletions(-)
+ drivers/clk/davinci/da8xx-cfgchip.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/block/rbd.c
-+++ b/drivers/block/rbd.c
-@@ -6660,11 +6660,6 @@ static int rbd_add_acquire_lock(struct r
- 	if (ret)
- 		return ret;
+--- a/drivers/clk/davinci/da8xx-cfgchip.c
++++ b/drivers/clk/davinci/da8xx-cfgchip.c
+@@ -505,7 +505,7 @@ da8xx_cfgchip_register_usb0_clk48(struct
+ 	const char * const parent_names[] = { "usb_refclkin", "pll0_auxclk" };
+ 	struct clk *fck_clk;
+ 	struct da8xx_usb0_clk48 *usb0;
+-	struct clk_init_data init;
++	struct clk_init_data init = {};
+ 	int ret;
  
--	/*
--	 * The lock may have been released by now, unless automatic lock
--	 * transitions are disabled.
--	 */
--	rbd_assert(!rbd_dev->opts->exclusive || rbd_is_lock_owner(rbd_dev));
- 	return 0;
- }
+ 	fck_clk = devm_clk_get(dev, "fck");
+@@ -579,7 +579,7 @@ da8xx_cfgchip_register_usb1_clk48(struct
+ {
+ 	const char * const parent_names[] = { "usb0_clk48", "usb_refclkin" };
+ 	struct da8xx_usb1_clk48 *usb1;
+-	struct clk_init_data init;
++	struct clk_init_data init = {};
+ 	int ret;
  
+ 	usb1 = devm_kzalloc(dev, sizeof(*usb1), GFP_KERNEL);
 
 
 
