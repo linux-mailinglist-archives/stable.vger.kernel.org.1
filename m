@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-67787-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68271-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CFFC952F1A
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:28:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5020C95316F
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:54:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA0901F261BC
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:28:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 83D3C1C21093
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:54:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63B4519EED7;
-	Thu, 15 Aug 2024 13:28:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4C0E19DF9C;
+	Thu, 15 Aug 2024 13:53:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yyoxR51K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QNgYKEbp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 214C11714D0;
-	Thu, 15 Aug 2024 13:28:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9220718D630;
+	Thu, 15 Aug 2024 13:53:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723728516; cv=none; b=gMqJuP1SeZoVthvDpPQLUbJzinV7ex96ylrCwYBN9gaXIN8KOIgephRPUwl5eobcAF/iCIsbnqXB6OAmdCYk13YqI/DcDHNLLrQVCXwKG+kNVXAdmVlXYLPpiIXA01UkB/wbebabvco+keAn9se2f8k35jwJ3cPXzIyRTnhXnnk=
+	t=1723730038; cv=none; b=o2hD7iboI2wA4vluGSzuPXmByhjB3bX23BRT2Mmc/QaNLKfN0w74fHyAzBQjC8T7HQd4VLgLnn9fdWaFSym1XI/p6fmPxq7wHktpIpLMgx8wW5sCkdLchx3RVGmP95K/t7kPFETJbwWczF1myg01QHBpfADsnx/ZmUnLE8rvKKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723728516; c=relaxed/simple;
-	bh=FgzHZxmTaj7+VsaMhxyNiMMLm3o+ZMUQcEVh908lCN0=;
+	s=arc-20240116; t=1723730038; c=relaxed/simple;
+	bh=8zzxwEk5Q88IpKQdClk/DhE32X+gCV4XPBHyytRBWzI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SlaLDOXdIUt30ncUpY4nPFbF4tBVCeyKMvZMiWz4e0AI8gN6X+7wtWXFFK/65kvDjunVYa2WAH0HpQ9TkxrEg3GZi8eYQOIKD/7kLfp2VDbLDxaOOFSG/MfeYHEszttJlOlMgL8zTW3vwUg8uWDzjG8U1oidsLkcJVuzl6pK4pk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yyoxR51K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99677C32786;
-	Thu, 15 Aug 2024 13:28:35 +0000 (UTC)
+	 MIME-Version; b=sYNZPCsb8jAZmt5fA+ymV5Hob+1ur9e6nnFXQYjJaMj9VKMHoyoyChfyetQLckV9B+wUU2r0fw7bCY0R6YWZvepebiHS/vNbHQzy5jTGYHW1Iemhl4JCAotV2TGFrwbeOYtXr5WIYoxo0CV9zNZVqx8En44L0lKE1kEPFIqyoKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QNgYKEbp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B41C3C32786;
+	Thu, 15 Aug 2024 13:53:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723728516;
-	bh=FgzHZxmTaj7+VsaMhxyNiMMLm3o+ZMUQcEVh908lCN0=;
+	s=korg; t=1723730038;
+	bh=8zzxwEk5Q88IpKQdClk/DhE32X+gCV4XPBHyytRBWzI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yyoxR51K5nagM/GzLejh0ESdH7SwcTHyd3PRvfpVN9xfsDzN5GQCSdwsMwBBiRXpJ
-	 xI+ZzI19rqF4Ow9dofoB98fIPy3tEO/pXEhBhx7k3PERILsIRYLmGRge0OLFB/IOox
-	 8YH6KeG1/x8IHWOXk/rOFQCvOENIpgPc2xTSobJM=
+	b=QNgYKEbpXabnaXF5XQb7jiQEeuxHn69QkgIHs7mQRQf0I9dWa+ZTgj7VKy5g5/s1Y
+	 wpAd14T/X9X0FQmAqKjwOzFtVurHOZ3L35EQjRvfSSIS5SwCRcTjRSaqcYsIeRSRxz
+	 AN8ZvDGl0WTp4i3WMN5Q+yU625za2vupvoZsewc4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ismael Luceno <iluceno@suse.de>,
-	Julian Anastasov <ja@ssi.bg>,
-	Simon Horman <horms@kernel.org>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 025/196] ipvs: Avoid unnecessary calls to skb_is_gso_sctp
+Subject: [PATCH 5.15 284/484] spi: spidev: Replace OF specific code by device property API
 Date: Thu, 15 Aug 2024 15:22:22 +0200
-Message-ID: <20240815131853.050478281@linuxfoundation.org>
+Message-ID: <20240815131952.377458267@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +62,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ismael Luceno <iluceno@suse.de>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 53796b03295cf7ab1fc8600016fa6dfbf4a494a0 ]
+[ Upstream commit 88a285192084edab6657e819f7f130f9cfcb0579 ]
 
-In the context of the SCTP SNAT/DNAT handler, these calls can only
-return true.
+Instead of calling the OF specific APIs, use device property ones.
 
-Fixes: e10d3ba4d434 ("ipvs: Fix checksumming on GSO of SCTP packets")
-Signed-off-by: Ismael Luceno <iluceno@suse.de>
-Acked-by: Julian Anastasov <ja@ssi.bg>
-Acked-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+It also prevents misusing PRP0001 in ACPI when trying to instantiate
+spidev directly. We only support special SPI test devices there.
+
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20220323140215.2568-4-andriy.shevchenko@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: fc28d1c1fe3b ("spi: spidev: add correct compatible for Rohm BH2228FV")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/ipvs/ip_vs_proto_sctp.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/spidev.c | 45 ++++++++++++++++++++++----------------------
+ 1 file changed, 22 insertions(+), 23 deletions(-)
 
-diff --git a/net/netfilter/ipvs/ip_vs_proto_sctp.c b/net/netfilter/ipvs/ip_vs_proto_sctp.c
-index 18e2e489d0e51..5005469c1732a 100644
---- a/net/netfilter/ipvs/ip_vs_proto_sctp.c
-+++ b/net/netfilter/ipvs/ip_vs_proto_sctp.c
-@@ -123,7 +123,7 @@ sctp_snat_handler(struct sk_buff *skb, struct ip_vs_protocol *pp,
- 	if (sctph->source != cp->vport || payload_csum ||
- 	    skb->ip_summed == CHECKSUM_PARTIAL) {
- 		sctph->source = cp->vport;
--		if (!skb_is_gso(skb) || !skb_is_gso_sctp(skb))
-+		if (!skb_is_gso(skb))
- 			sctp_nat_csum(skb, sctph, sctphoff);
- 	} else {
- 		skb->ip_summed = CHECKSUM_UNNECESSARY;
-@@ -172,7 +172,7 @@ sctp_dnat_handler(struct sk_buff *skb, struct ip_vs_protocol *pp,
- 	    (skb->ip_summed == CHECKSUM_PARTIAL &&
- 	     !(skb_dst(skb)->dev->features & NETIF_F_SCTP_CRC))) {
- 		sctph->dest = cp->dport;
--		if (!skb_is_gso(skb) || !skb_is_gso_sctp(skb))
-+		if (!skb_is_gso(skb))
- 			sctp_nat_csum(skb, sctph, sctphoff);
- 	} else if (skb->ip_summed != CHECKSUM_PARTIAL) {
- 		skb->ip_summed = CHECKSUM_UNNECESSARY;
+diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
+index 8c69ab348a7f7..4a19c2142e474 100644
+--- a/drivers/spi/spidev.c
++++ b/drivers/spi/spidev.c
+@@ -20,8 +20,6 @@
+ #include <linux/property.h>
+ #include <linux/slab.h>
+ #include <linux/compat.h>
+-#include <linux/of.h>
+-#include <linux/of_device.h>
+ 
+ #include <linux/spi/spi.h>
+ #include <linux/spi/spidev.h>
+@@ -696,20 +694,31 @@ static const struct spi_device_id spidev_spi_ids[] = {
+ };
+ MODULE_DEVICE_TABLE(spi, spidev_spi_ids);
+ 
+-#ifdef CONFIG_OF
++/*
++ * spidev should never be referenced in DT without a specific compatible string,
++ * it is a Linux implementation thing rather than a description of the hardware.
++ */
++static int spidev_of_check(struct device *dev)
++{
++	if (device_property_match_string(dev, "compatible", "spidev") < 0)
++		return 0;
++
++	dev_err(dev, "spidev listed directly in DT is not supported\n");
++	return -EINVAL;
++}
++
+ static const struct of_device_id spidev_dt_ids[] = {
+-	{ .compatible = "rohm,dh2228fv" },
+-	{ .compatible = "lineartechnology,ltc2488" },
+-	{ .compatible = "semtech,sx1301" },
+-	{ .compatible = "lwn,bk4" },
+-	{ .compatible = "dh,dhcom-board" },
+-	{ .compatible = "menlo,m53cpld" },
+-	{ .compatible = "cisco,spi-petra" },
+-	{ .compatible = "micron,spi-authenta" },
++	{ .compatible = "rohm,dh2228fv", .data = &spidev_of_check },
++	{ .compatible = "lineartechnology,ltc2488", .data = &spidev_of_check },
++	{ .compatible = "semtech,sx1301", .data = &spidev_of_check },
++	{ .compatible = "lwn,bk4", .data = &spidev_of_check },
++	{ .compatible = "dh,dhcom-board", .data = &spidev_of_check },
++	{ .compatible = "menlo,m53cpld", .data = &spidev_of_check },
++	{ .compatible = "cisco,spi-petra", .data = &spidev_of_check },
++	{ .compatible = "micron,spi-authenta", .data = &spidev_of_check },
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(of, spidev_dt_ids);
+-#endif
+ 
+ /* Dummy SPI devices not to be used in production systems */
+ static int spidev_acpi_check(struct device *dev)
+@@ -741,16 +750,6 @@ static int spidev_probe(struct spi_device *spi)
+ 	int			status;
+ 	unsigned long		minor;
+ 
+-	/*
+-	 * spidev should never be referenced in DT without a specific
+-	 * compatible string, it is a Linux implementation thing
+-	 * rather than a description of the hardware.
+-	 */
+-	if (spi->dev.of_node && of_device_is_compatible(spi->dev.of_node, "spidev")) {
+-		dev_err(&spi->dev, "spidev listed directly in DT is not supported\n");
+-		return -EINVAL;
+-	}
+-
+ 	match = device_get_match_data(&spi->dev);
+ 	if (match) {
+ 		status = match(&spi->dev);
+@@ -827,7 +826,7 @@ static int spidev_remove(struct spi_device *spi)
+ static struct spi_driver spidev_spi_driver = {
+ 	.driver = {
+ 		.name =		"spidev",
+-		.of_match_table = of_match_ptr(spidev_dt_ids),
++		.of_match_table = spidev_dt_ids,
+ 		.acpi_match_table = spidev_acpi_ids,
+ 	},
+ 	.probe =	spidev_probe,
 -- 
 2.43.0
 
