@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-68807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68493-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64B11953410
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:22:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E3F695329B
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:08:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E0961F285C4
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:22:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6F951B2107C
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:08:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D287F1AC896;
-	Thu, 15 Aug 2024 14:22:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C3D91A4F16;
+	Thu, 15 Aug 2024 14:05:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="la4gx9UW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oqkm92At"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9047C3214;
-	Thu, 15 Aug 2024 14:22:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE7621AC8BB;
+	Thu, 15 Aug 2024 14:05:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731728; cv=none; b=mk5V3ZWnJWbRIMANYGQ5ashLZI4qVw6cyVVf7CBvYB8j1Scv6pr7X1Ya1Drz7CZEIehpXC6wAgIE1EzXMfXTCRXnf/c+6/aTjhk+NQP5M5E6z+u4R1TunuCQiBIM9Ryx2CIpaGSEiYqLsgHpLEJKhzvBM712Fl2ZlGVDwNndMmA=
+	t=1723730741; cv=none; b=roELelMSF7Mv2JdMFxHNwy+8Yr6MIYVMwvaucD2I9v0u9fxh5R3KRDZs4FbpGVTxH4uAnUQzuxcwIJOhSPQn9lm6BEyVB+Jq+5B7s99mKLvbxXDHwWzT5bMJGkIBfOjhPKPgSCqh4W25eGZZ31Dm4o8PQZo9DoxyETKb9Oy4M70=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731728; c=relaxed/simple;
-	bh=L1tulkwlTAOq6U3Lwtcy8y9BhT8TndwIrJmBZ6Bs5rw=;
+	s=arc-20240116; t=1723730741; c=relaxed/simple;
+	bh=FsIK4VK9J4V58ZMyPO5iETevpDqr40NVbWkCRoss7/Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DmmLfuCf+erT5jYLEHL3XN+/GzswA5CmSECcqEmEcTbGkCGl22EWqAbpTMJAF5aumbpz8IXOEGom7YW1u3zVqHZ0WW5DvCPPHEOqWCtTYhvpNe4z0HrgE4resxb04OZoRPdiKmo/2ssq3iFK/fr2NOUDnOyWaoRnqPT106jREg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=la4gx9UW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1253AC32786;
-	Thu, 15 Aug 2024 14:22:07 +0000 (UTC)
+	 MIME-Version; b=EubiLgHL2ogoeX+h2lj3Ofiht//P7lps0hJorpl6fPWP8qUuNUueEmtJX4W0A933Z80dW8NSc4hH3LgBwWjSjwEKotJtjJ6WiAmT0It2QuZ+a8qVH1zchH4b5nXU0lLErE43VtE/Vnon7NaKoh7KbiqzI51Yg6c9Uk2Y6hkUFFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oqkm92At; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B0E2C32786;
+	Thu, 15 Aug 2024 14:05:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731728;
-	bh=L1tulkwlTAOq6U3Lwtcy8y9BhT8TndwIrJmBZ6Bs5rw=;
+	s=korg; t=1723730741;
+	bh=FsIK4VK9J4V58ZMyPO5iETevpDqr40NVbWkCRoss7/Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=la4gx9UWA8YlNTk9iaYnT2jKTvl17SLqncc4by9caaP6SMzPs8WuDk4a075ixK9L4
-	 XOoYAh8EMBh06etz5nbj+wROEm7b1y36HKZWA7bB0ahkOJbk9jtUGvUlEoGoZiYs1c
-	 QQuhMJ6QRyVE9neFVZx2WGEmR3kNK0Lzapf74p/Q=
+	b=oqkm92At6VKNcK24jHy2aH75g9wLlqYw703styS44TLAR5egfyFEHWdm/QOZGTqNh
+	 XJqrLih37ZVH3rJMnzBIlpoTyNqAqMB5o+/3DLxCfIHQIDGrWo4N205cUZy7QpfCKG
+	 956Ravx9+H0kXnlciWX2pJmFRGxGDgBChJ6gELhk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	James Morse <james.morse@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 219/259] arm64: cputype: Add Cortex-A725 definitions
+	Josef Bacik <josef@toxicpanda.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.1 18/38] sunrpc: dont change ->sv_stats if it doesnt exist
 Date: Thu, 15 Aug 2024 15:25:52 +0200
-Message-ID: <20240815131911.226062905@linuxfoundation.org>
+Message-ID: <20240815131833.652544899@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131832.944273699@linuxfoundation.org>
+References: <20240815131832.944273699@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,59 +62,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Josef Bacik <josef@toxicpanda.com>
 
-[ Upstream commit 9ef54a384526911095db465e77acc1cb5266b32c ]
+[ Upstream commit ab42f4d9a26f1723dcfd6c93fcf768032b2bb5e7 ]
 
-Add cputype definitions for Cortex-A725. These will be used for errata
-detection in subsequent patches.
+We check for the existence of ->sv_stats elsewhere except in the core
+processing code.  It appears that only nfsd actual exports these values
+anywhere, everybody else just has a write only copy of sv_stats in their
+svc_program.  Add a check for ->sv_stats before every adjustment to
+allow us to eliminate the stats struct from all the users who don't
+report the stats.
 
-These values can be found in the Cortex-A725 TRM:
-
-  https://developer.arm.com/documentation/107652/0001/
-
-... in table A-247 ("MIDR_EL1 bit descriptions").
-
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: James Morse <james.morse@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Link: https://lore.kernel.org/r/20240801101803.1982459-3-mark.rutland@arm.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-[ Mark: trivial backport ]
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+[ cel: adjusted to apply to v6.1.y ]
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/cputype.h | 2 ++
- 1 file changed, 2 insertions(+)
+ net/sunrpc/svc.c |   24 ++++++++++++++++--------
+ 1 file changed, 16 insertions(+), 8 deletions(-)
 
-diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
-index bb8efde2c8b10..18b5267ff48e1 100644
---- a/arch/arm64/include/asm/cputype.h
-+++ b/arch/arm64/include/asm/cputype.h
-@@ -87,6 +87,7 @@
- #define ARM_CPU_PART_CORTEX_X4		0xD82
- #define ARM_CPU_PART_NEOVERSE_V3	0xD84
- #define ARM_CPU_PART_CORTEX_X925	0xD85
-+#define ARM_CPU_PART_CORTEX_A725	0xD87
+--- a/net/sunrpc/svc.c
++++ b/net/sunrpc/svc.c
+@@ -1324,7 +1324,8 @@ svc_process_common(struct svc_rqst *rqst
+ 		goto err_bad_proc;
  
- #define APM_CPU_PART_POTENZA		0x000
+ 	/* Syntactic check complete */
+-	serv->sv_stats->rpccnt++;
++	if (serv->sv_stats)
++		serv->sv_stats->rpccnt++;
+ 	trace_svc_process(rqstp, progp->pg_name);
  
-@@ -135,6 +136,7 @@
- #define MIDR_CORTEX_X4 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X4)
- #define MIDR_NEOVERSE_V3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V3)
- #define MIDR_CORTEX_X925 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X925)
-+#define MIDR_CORTEX_A725 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A725)
- #define MIDR_THUNDERX	MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX)
- #define MIDR_THUNDERX_81XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_81XX)
- #define MIDR_THUNDERX_83XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_83XX)
--- 
-2.43.0
-
+ 	/* Build the reply header. */
+@@ -1377,7 +1378,8 @@ err_short_len:
+ 	goto close_xprt;
+ 
+ err_bad_rpc:
+-	serv->sv_stats->rpcbadfmt++;
++	if (serv->sv_stats)
++		serv->sv_stats->rpcbadfmt++;
+ 	svc_putnl(resv, 1);	/* REJECT */
+ 	svc_putnl(resv, 0);	/* RPC_MISMATCH */
+ 	svc_putnl(resv, 2);	/* Only RPCv2 supported */
+@@ -1387,7 +1389,8 @@ err_bad_rpc:
+ err_bad_auth:
+ 	dprintk("svc: authentication failed (%d)\n",
+ 		be32_to_cpu(rqstp->rq_auth_stat));
+-	serv->sv_stats->rpcbadauth++;
++	if (serv->sv_stats)
++		serv->sv_stats->rpcbadauth++;
+ 	/* Restore write pointer to location of accept status: */
+ 	xdr_ressize_check(rqstp, reply_statp);
+ 	svc_putnl(resv, 1);	/* REJECT */
+@@ -1397,7 +1400,8 @@ err_bad_auth:
+ 
+ err_bad_prog:
+ 	dprintk("svc: unknown program %d\n", prog);
+-	serv->sv_stats->rpcbadfmt++;
++	if (serv->sv_stats)
++		serv->sv_stats->rpcbadfmt++;
+ 	svc_putnl(resv, RPC_PROG_UNAVAIL);
+ 	goto sendit;
+ 
+@@ -1405,7 +1409,8 @@ err_bad_vers:
+ 	svc_printk(rqstp, "unknown version (%d for prog %d, %s)\n",
+ 		       rqstp->rq_vers, rqstp->rq_prog, progp->pg_name);
+ 
+-	serv->sv_stats->rpcbadfmt++;
++	if (serv->sv_stats)
++		serv->sv_stats->rpcbadfmt++;
+ 	svc_putnl(resv, RPC_PROG_MISMATCH);
+ 	svc_putnl(resv, process.mismatch.lovers);
+ 	svc_putnl(resv, process.mismatch.hivers);
+@@ -1414,7 +1419,8 @@ err_bad_vers:
+ err_bad_proc:
+ 	svc_printk(rqstp, "unknown procedure (%d)\n", rqstp->rq_proc);
+ 
+-	serv->sv_stats->rpcbadfmt++;
++	if (serv->sv_stats)
++		serv->sv_stats->rpcbadfmt++;
+ 	svc_putnl(resv, RPC_PROC_UNAVAIL);
+ 	goto sendit;
+ 
+@@ -1423,7 +1429,8 @@ err_garbage:
+ 
+ 	rpc_stat = rpc_garbage_args;
+ err_bad:
+-	serv->sv_stats->rpcbadfmt++;
++	if (serv->sv_stats)
++		serv->sv_stats->rpcbadfmt++;
+ 	svc_putnl(resv, ntohl(rpc_stat));
+ 	goto sendit;
+ }
+@@ -1469,7 +1476,8 @@ svc_process(struct svc_rqst *rqstp)
+ out_baddir:
+ 	svc_printk(rqstp, "bad direction 0x%08x, dropping request\n",
+ 		   be32_to_cpu(dir));
+-	rqstp->rq_server->sv_stats->rpcbadfmt++;
++	if (rqstp->rq_server->sv_stats)
++		rqstp->rq_server->sv_stats->rpcbadfmt++;
+ out_drop:
+ 	svc_drop(rqstp);
+ 	return 0;
 
 
 
