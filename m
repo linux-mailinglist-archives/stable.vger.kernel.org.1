@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-68798-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68544-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCF2E953407
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:22:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3ED339532D9
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:11:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17BDF1C25F6F
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:22:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E88281F21F54
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:11:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A34051A706B;
-	Thu, 15 Aug 2024 14:21:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE34B1AC422;
+	Thu, 15 Aug 2024 14:08:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zExYCz15"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fTpXqkq6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 606091E526;
-	Thu, 15 Aug 2024 14:21:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8372044376;
+	Thu, 15 Aug 2024 14:08:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731700; cv=none; b=TLoCSfm4bOFrUkKsM3IhXCUjcrS61QgHlTJDWlXPQOYzcdjukhYACMD+eiYKWiIRdWPimCf7FLeTurHMiJxUyJve9c9KxJOL8UTX31J5QPE8KBUW9HaQcCXiLXut7VJGZ1Ig6EMy5MJzKfTlGppqVsnxnWUgBUED4IK522cRV4s=
+	t=1723730904; cv=none; b=lYS0FOSmoSFU5V9VfUs7ZVG26evFyMn2vbMHn9JtQFs7Su6OKpBvYE6z0K4c/vIbsDdrHsTLQAdKuQiq7dpA/8r7zGZ/D4zmeFZnkOYRklcHBvpYg8tIf/Nx98T4D/d/s/wKYJj4GmGstTHM3IjUiLwiqBD5Rh1RdHtESzxVzaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731700; c=relaxed/simple;
-	bh=abHHqlPImUyBa/sE4apC55cfROM945CMOr3aRseuJnY=;
+	s=arc-20240116; t=1723730904; c=relaxed/simple;
+	bh=rnMn+4mMcjT0yZj04ErKyVzeWeyK1KXHzBbdAlLShKY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fvL0XMyMMi2ISoB3yZ2SKURHXoGb1zwftKtTRKxUrDVig2a5KVMg4ZyUg0U7++Tlgy4EF1KoJ+8gFw/E+07mMrwWgXRYAMO2chXlvxKpG9yY6SHFQejWmaptBrF5Of2QzGmVcnsX1nSgxL0MfGiJjnMoL9/xKj7XtJC/gfGuzqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zExYCz15; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8BEDC32786;
-	Thu, 15 Aug 2024 14:21:39 +0000 (UTC)
+	 MIME-Version; b=N/q8urh7qf8/Cm5SMU83JjXu/svAGHiVDkB+MS6uITrRHMJXJyJUQCxkmHyfERlEFBTZu7ccU0lPqQj6LrQrsCXDosgG85EpD4qxaVz39foUMkx1wq2muSDxRk8N7yXYGZ7gwlNPtN8PH+b3lYnpFQsVnGjSgd7QZ5e8kRfbIoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fTpXqkq6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 084D6C32786;
+	Thu, 15 Aug 2024 14:08:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731700;
-	bh=abHHqlPImUyBa/sE4apC55cfROM945CMOr3aRseuJnY=;
+	s=korg; t=1723730904;
+	bh=rnMn+4mMcjT0yZj04ErKyVzeWeyK1KXHzBbdAlLShKY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zExYCz15nRRhY5VXcd1RavuIwNbFI5499ajd1gDdjckgTX7jcpovOp9pEg9kv07lh
-	 /DMc/o2oFoYbTgwLVN5aK5MmnO33Hnr3mupv2uuaeAp7oOTtv8nN57zdkGu+1u0sqq
-	 DHl2jUm124SuS2BX8T7jSKRTNzHjzj2gR/MZYkIA=
+	b=fTpXqkq6W0xcjNFj79HxyjIeAWSjamRRqynDyXvhwHgpoF3vZACABfFPxnapa72CB
+	 ff1+8KAi1w8yhk4DNRiwERjusXC31llG2/k00KKW3/Etrng+04gK4TbAI42tFA1HyH
+	 DxI7rp1uTBk8114YNGLsgwPb8rSnQeunpRePURTw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	James Morse <james.morse@arm.com>,
-	Will Deacon <will@kernel.org>,
+	syzbot+32d3767580a1ea339a81@syzkaller.appspotmail.com,
+	Lizhi Xu <lizhi.xu@windriver.com>,
+	Phillip Lougher <phillip@squashfs.org.uk>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 211/259] arm64: cputype: Add Neoverse-V3 definitions
+Subject: [PATCH 6.6 30/67] squashfs: squashfs_read_data need to check if the length is 0
 Date: Thu, 15 Aug 2024 15:25:44 +0200
-Message-ID: <20240815131910.921566901@linuxfoundation.org>
+Message-ID: <20240815131839.483798465@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131838.311442229@linuxfoundation.org>
+References: <20240815131838.311442229@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,55 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Lizhi Xu <lizhi.xu@windriver.com>
 
-[ Upstream commit 0ce85db6c2141b7ffb95709d76fc55a27ff3cdc1 ]
+[ Upstream commit eb66b8abae98f869c224f7c852b685ae02144564 ]
 
-Add cputype definitions for Neoverse-V3. These will be used for errata
-detection in subsequent patches.
+When the length passed in is 0, the pagemap_scan_test_walk() caller should
+bail.  This error causes at least a WARN_ON().
 
-These values can be found in Table B-249 ("MIDR_EL1 bit descriptions")
-in issue 0001-04 of the Neoverse-V3 TRM, which can be found at:
-
-  https://developer.arm.com/documentation/107734/0001/?lang=en
-
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: James Morse <james.morse@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Link: https://lore.kernel.org/r/20240508081400.235362-4-mark.rutland@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
-[ Mark: trivial backport ]
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Link: https://lkml.kernel.org/r/20231116031352.40853-1-lizhi.xu@windriver.com
+Reported-by: syzbot+32d3767580a1ea339a81@syzkaller.appspotmail.com
+Closes: https://lkml.kernel.org/r/0000000000000526f2060a30a085@google.com
+Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
+Reviewed-by: Phillip Lougher <phillip@squashfs.org.uk>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/cputype.h | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/squashfs/block.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
-index 75deab44560d3..0c3f9cc84491c 100644
---- a/arch/arm64/include/asm/cputype.h
-+++ b/arch/arm64/include/asm/cputype.h
-@@ -82,6 +82,7 @@
- #define ARM_CPU_PART_CORTEX_A78C	0xD4B
- #define ARM_CPU_PART_NEOVERSE_V2	0xD4F
- #define ARM_CPU_PART_CORTEX_X4		0xD82
-+#define ARM_CPU_PART_NEOVERSE_V3	0xD84
- 
- #define APM_CPU_PART_POTENZA		0x000
- 
-@@ -125,6 +126,7 @@
- #define MIDR_CORTEX_A78C	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A78C)
- #define MIDR_NEOVERSE_V2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V2)
- #define MIDR_CORTEX_X4 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X4)
-+#define MIDR_NEOVERSE_V3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V3)
- #define MIDR_THUNDERX	MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX)
- #define MIDR_THUNDERX_81XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_81XX)
- #define MIDR_THUNDERX_83XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_83XX)
+diff --git a/fs/squashfs/block.c b/fs/squashfs/block.c
+index 581ce95193390..2dc730800f448 100644
+--- a/fs/squashfs/block.c
++++ b/fs/squashfs/block.c
+@@ -321,7 +321,7 @@ int squashfs_read_data(struct super_block *sb, u64 index, int length,
+ 		TRACE("Block @ 0x%llx, %scompressed size %d\n", index - 2,
+ 		      compressed ? "" : "un", length);
+ 	}
+-	if (length < 0 || length > output->length ||
++	if (length <= 0 || length > output->length ||
+ 			(index + length) > msblk->bytes_used) {
+ 		res = -EIO;
+ 		goto out;
 -- 
 2.43.0
 
