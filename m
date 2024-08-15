@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-67817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68300-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFF4B952F3D
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:30:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F343495318E
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:55:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A646D288CA1
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:30:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31EE21C22759
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:55:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B190A19DF9D;
-	Thu, 15 Aug 2024 13:30:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CAA119DF9C;
+	Thu, 15 Aug 2024 13:55:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YetB2iNK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GLu2Ym/O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F2247DA8A;
-	Thu, 15 Aug 2024 13:30:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 390911714A1;
+	Thu, 15 Aug 2024 13:55:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723728612; cv=none; b=tybHcCjEfs4tnBLAIsidiFXvdg1QsQNGY9fM/oSa0ARNUyReSGF5fIk7gQOdjwAGJqrMftn0jJAzFlMZPJEHqHg8JxL7AxWzyoAGbL6iALDMuVfMK0U3TFTf6YMtHd8PoD63HIQiQrTy+xiXh8kuo+IKJ4T2HHgljWJDqxSTQmo=
+	t=1723730133; cv=none; b=R/BC7QWXH5uwjeuH/8/qzmPuvXD/2XWZGUOePkHV7Xf+SHgQoiBImsfbOfccDVSD132RjxBHPOOxd6XwteFHyBB2ElIHqGtHYiwXXUr0O7YGs9ETyGYDqotU+9GM8noOHE1iT4jN0lggfM5e926KAHeEaerhctGXkv52L4xmqbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723728612; c=relaxed/simple;
-	bh=Q+J925H/VQRR7YDbQ92/j0BnPq+zREmWB/o+z+vZxlI=;
+	s=arc-20240116; t=1723730133; c=relaxed/simple;
+	bh=/Xaxb8MLZMu7TaB7gnp/oDkO/KRfLBJl94etI2CEFjY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jvf1oSuVNnY3MhzWTDwRbSpRyj5IaNDiCY+O/6EFVmslRce7Fdym+QJYq/g7RoqatiHRSMvQZHJcsVez41vweQU4xHGWFawI7zGFTIhA/5zCNRkea7ckoqCi+C5bkt86RcPgn8VqhOM+38Po+LfKqj4UVeEyGwwGbppOYwAuRPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YetB2iNK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE42FC32786;
-	Thu, 15 Aug 2024 13:30:11 +0000 (UTC)
+	 MIME-Version; b=rCbH0gsNblfxVTEPwq+fVte9aS4kAuaYcksqY4A2IF7AKBbnh7gVwAvzZMxuu1dqBYO98iHuJdhjqyW9cuIuzcucuCO7Y1RJRb2KRZyIorKlijTqgmB9JYazOLZbmW7swK1Lh6KJDgtMmA2+O5Om4HYdw4ibq6xMNX71XVfle80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GLu2Ym/O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2F2CC32786;
+	Thu, 15 Aug 2024 13:55:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723728612;
-	bh=Q+J925H/VQRR7YDbQ92/j0BnPq+zREmWB/o+z+vZxlI=;
+	s=korg; t=1723730133;
+	bh=/Xaxb8MLZMu7TaB7gnp/oDkO/KRfLBJl94etI2CEFjY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YetB2iNK0217zLcaY4De9ikmmz3d9QZXd256tNHZrFIEHDuqOTzoQ9Yaz2Ab1gbCO
-	 rkWD7dq/1GJ9CeG1OyfZA+aGkM1ndCOG4ir8MULQmyPuKYlsBZ+LRareZnVq3gMXvd
-	 q77XKaMW+x6gtr6LUnuDyfegck45q/4JlCW56jiA=
+	b=GLu2Ym/O88es8g1xM4MzSTZE+XEej2K9tadJRAydtfxklXN/9zWlejOp6skAspJUO
+	 8A031M8A+vmCZ0RzN/86Lu3HtvmUq5kKD37WwUGwVKttenp4UE2syFqj9bcgnQz6wk
+	 jQswj8EGbgk8kh3W2SP2Z5RYf9awQ19fEnXMGqls=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Yingliang <yangyingliang@huawei.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 055/196] pinctrl: core: fix possible memory leak when pinctrl_enable() fails
+Subject: [PATCH 5.15 314/484] leds: trigger: Store brightness set by led_trigger_event()
 Date: Thu, 15 Aug 2024 15:22:52 +0200
-Message-ID: <20240815131854.183911957@linuxfoundation.org>
+Message-ID: <20240815131953.532594428@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +63,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Yingliang <yangyingliang@huawei.com>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-[ Upstream commit ae1cf4759972c5fe665ee4c5e0c29de66fe3cf4a ]
+[ Upstream commit 822c91e72eac568ed8d83765634f00decb45666c ]
 
-In devm_pinctrl_register(), if pinctrl_enable() fails in pinctrl_register(),
-the "pctldev" has not been added to dev resources, so devm_pinctrl_dev_release()
-can not be called, it leads memory leak.
+If a simple trigger is assigned to a LED, then the LED may be off until
+the next led_trigger_event() call. This may be an issue for simple
+triggers with rare led_trigger_event() calls, e.g. power supply
+charging indicators (drivers/power/supply/power_supply_leds.c).
+Therefore persist the brightness value of the last led_trigger_event()
+call and use this value if the trigger is assigned to a LED.
+In addition add a getter for the trigger brightness value.
 
-Introduce pinctrl_uninit_controller(), call it in the error path to free memory.
-
-Fixes: 5038a66dad01 ("pinctrl: core: delete incorrect free in pinctrl_enable()")
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/20240606023704.3931561-2-yangyingliang@huawei.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Reviewed-by: Takashi Iwai <tiwai@suse.de>
+Link: https://lore.kernel.org/r/b1358b25-3f30-458d-8240-5705ae007a8a@gmail.com
+Signed-off-by: Lee Jones <lee@kernel.org>
+Stable-dep-of: ab477b766edd ("leds: triggers: Flush pending brightness before activating trigger")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/core.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/leds/led-triggers.c |  6 ++++--
+ include/linux/leds.h        | 15 +++++++++++++++
+ 2 files changed, 19 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pinctrl/core.c b/drivers/pinctrl/core.c
-index 97b1fa3a5e78d..8c52bfac1cc24 100644
---- a/drivers/pinctrl/core.c
-+++ b/drivers/pinctrl/core.c
-@@ -1992,6 +1992,14 @@ pinctrl_init_controller(struct pinctrl_desc *pctldesc, struct device *dev,
- 	return ERR_PTR(ret);
+diff --git a/drivers/leds/led-triggers.c b/drivers/leds/led-triggers.c
+index dddfc301d3414..cdb446cb84af2 100644
+--- a/drivers/leds/led-triggers.c
++++ b/drivers/leds/led-triggers.c
+@@ -193,11 +193,11 @@ int led_trigger_set(struct led_classdev *led_cdev, struct led_trigger *trig)
+ 		spin_unlock(&trig->leddev_list_lock);
+ 		led_cdev->trigger = trig;
+ 
++		ret = 0;
+ 		if (trig->activate)
+ 			ret = trig->activate(led_cdev);
+ 		else
+-			ret = 0;
+-
++			led_set_brightness(led_cdev, trig->brightness);
+ 		if (ret)
+ 			goto err_activate;
+ 
+@@ -372,6 +372,8 @@ void led_trigger_event(struct led_trigger *trig,
+ 	if (!trig)
+ 		return;
+ 
++	trig->brightness = brightness;
++
+ 	rcu_read_lock();
+ 	list_for_each_entry_rcu(led_cdev, &trig->led_cdevs, trig_list)
+ 		led_set_brightness(led_cdev, brightness);
+diff --git a/include/linux/leds.h b/include/linux/leds.h
+index 2bbff7519b731..79ab2dfd3c72f 100644
+--- a/include/linux/leds.h
++++ b/include/linux/leds.h
+@@ -356,6 +356,9 @@ struct led_trigger {
+ 	int		(*activate)(struct led_classdev *led_cdev);
+ 	void		(*deactivate)(struct led_classdev *led_cdev);
+ 
++	/* Brightness set by led_trigger_event */
++	enum led_brightness brightness;
++
+ 	/* LED-private triggers have this set */
+ 	struct led_hw_trigger_type *trigger_type;
+ 
+@@ -409,6 +412,12 @@ static inline void *led_get_trigger_data(struct led_classdev *led_cdev)
+ 	return led_cdev->trigger_data;
  }
  
-+static void pinctrl_uninit_controller(struct pinctrl_dev *pctldev, struct pinctrl_desc *pctldesc)
++static inline enum led_brightness
++led_trigger_get_brightness(const struct led_trigger *trigger)
 +{
-+	pinctrl_free_pindescs(pctldev, pctldesc->pins,
-+			      pctldesc->npins);
-+	mutex_destroy(&pctldev->mutex);
-+	kfree(pctldev);
++	return trigger ? trigger->brightness : LED_OFF;
 +}
 +
- static int pinctrl_claim_hogs(struct pinctrl_dev *pctldev)
- {
- 	pctldev->p = create_pinctrl(pctldev->dev, pctldev);
-@@ -2072,8 +2080,10 @@ struct pinctrl_dev *pinctrl_register(struct pinctrl_desc *pctldesc,
- 		return pctldev;
+ #define module_led_trigger(__led_trigger) \
+ 	module_driver(__led_trigger, led_trigger_register, \
+ 		      led_trigger_unregister)
+@@ -445,6 +454,12 @@ static inline void *led_get_trigger_data(struct led_classdev *led_cdev)
+ 	return NULL;
+ }
  
- 	error = pinctrl_enable(pctldev);
--	if (error)
-+	if (error) {
-+		pinctrl_uninit_controller(pctldev, pctldesc);
- 		return ERR_PTR(error);
-+	}
++static inline enum led_brightness
++led_trigger_get_brightness(const struct led_trigger *trigger)
++{
++	return LED_OFF;
++}
++
+ #endif /* CONFIG_LEDS_TRIGGERS */
  
- 	return pctldev;
- 
+ /* Trigger specific functions */
 -- 
 2.43.0
 
