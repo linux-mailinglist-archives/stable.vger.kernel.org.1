@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-68477-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68526-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8BE095327D
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:06:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 887D99532C8
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:10:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8DCD0286F98
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:06:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EC93FB26AA7
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:10:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C075E1B14F6;
-	Thu, 15 Aug 2024 14:04:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 012AA1A00F7;
+	Thu, 15 Aug 2024 14:07:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1y58xVnG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iXCHqkt7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D17B1A01C6;
-	Thu, 15 Aug 2024 14:04:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A993919F462;
+	Thu, 15 Aug 2024 14:07:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730693; cv=none; b=Gqegw3bc9bAWrN7O/Nw8A1oBAXPGptmE69BPHktxU3x5hyxNRbOREOJO996QCnsJZil6wCwcFLucEdD4918CIlmpubBfU/9b6XP0dirp68D+063gAfafrZWdI22CxovO240opUzch7DqekgQ5VxMXil8mSyuccv7tIQwQefitsg=
+	t=1723730847; cv=none; b=JGFRAAUsm7HBBp2hzhegzU4yyLv85NXsWejsSvb8JuIjit5MNd/RV/8PzgOfvU52krnCmbUJrQGAYDzPVWL0Oo02sEvWOELJshRl//UcNJZaIzz4xiEsP1QjJI+rzukJw94RJytIeMz40dmzAL3A/X3Iw5ZyAfKBzeek88gdp0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730693; c=relaxed/simple;
-	bh=mQlNjAP89H7QiKeAVN57UOGD+DGMOERv6op8tx9Hkw8=;
+	s=arc-20240116; t=1723730847; c=relaxed/simple;
+	bh=1FgAAeaIUS3/nAoOTwpudwmNvk8kx0/uaUhx3iC26Y4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QxpRJoNxhERmyvAAs16/mIHKEEtVCaZTbUgPIZoL/+/nLHQSP4Q4gNfrmnc6NoUO9NASTGY1iGS6dmdLAukZr/veCIz7TX6RTe1mR4dqfxMKiph646FaTQ/eBc1l3KcZIP0lZSa+9VtgOiOSUcf5C4pKoYpAZYFX6MZR+0BzKtg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1y58xVnG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3FFBC32786;
-	Thu, 15 Aug 2024 14:04:52 +0000 (UTC)
+	 MIME-Version; b=RfpxROk5AOWOmL41BYEAaugxcFi5va1GULk1YjmoUPETyQTEuEYfmBrMRRjOWhW1NQE439bEswg1YV+1nezbpbbEFwEB6FbS9TZXERvR62vYJIPQbW+CrRpL3xyhbFmWYu+Y87LklmP6I8a52tJ+6Ie6qEc6oHq80qHEewZUMtg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iXCHqkt7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E7D5C32786;
+	Thu, 15 Aug 2024 14:07:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730693;
-	bh=mQlNjAP89H7QiKeAVN57UOGD+DGMOERv6op8tx9Hkw8=;
+	s=korg; t=1723730847;
+	bh=1FgAAeaIUS3/nAoOTwpudwmNvk8kx0/uaUhx3iC26Y4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1y58xVnGXH0jZENCe6W8oEJj9UuIuDgHID9MKZh/PL2EG1qv7An1ocY807I89a9Kj
-	 cameXY3sRfFk632RYc3K94iPLWMCBqXjMW4ppYIu/GtuiEjZ4sRvoxFkKlMhfbMHLP
-	 aKJRmLxlQw2NukwmKV8pYtzA0RoM6TAbS7RXnftQ=
+	b=iXCHqkt7ROeNmk5KWIxQxnnH8anDQXKH87uRNKlJUqrWUfBhXvLWKWIpnA0brPGwN
+	 l1iNZWKy+vho1izE/JR07nldWvQ+Qg0fup7wS6gEXP3gx2IjCaIK38fnseku6Icc1O
+	 luxTRXwPEd4wT3/8nj6Ee50Upmu591QxCNa8Qm00=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org,
-	netfilter-devel@vger.kernel.org
+To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 5.15 468/484] netfilter: nf_tables: bail out if stateful expression provides no .clone
+	Josef Bacik <josef@toxicpanda.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.6 12/67] nfsd: rename NFSD_NET_* to NFSD_STATS_*
 Date: Thu, 15 Aug 2024 15:25:26 +0200
-Message-ID: <20240815131959.554712392@linuxfoundation.org>
+Message-ID: <20240815131838.797295238@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131838.311442229@linuxfoundation.org>
+References: <20240815131838.311442229@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Josef Bacik <josef@toxicpanda.com>
 
-commit 3c13725f43dcf43ad8a9bcd6a9f12add19a8f93e upstream.
+[ Upstream commit d98416cc2154053950610bb6880911e3dcbdf8c5 ]
 
-All existing NFT_EXPR_STATEFUL provide a .clone interface, remove
-fallback to copy content of stateful expression since this is never
-exercised and bail out if .clone interface is not defined.
+We're going to merge the stats all into per network namespace in
+subsequent patches, rename these nn counters to be consistent with the
+rest of the stats.
 
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c |   15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ fs/nfsd/netns.h    |    4 ++--
+ fs/nfsd/nfscache.c |    4 ++--
+ fs/nfsd/stats.h    |    6 +++---
+ 3 files changed, 7 insertions(+), 7 deletions(-)
 
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -3053,14 +3053,13 @@ int nft_expr_clone(struct nft_expr *dst,
+--- a/fs/nfsd/netns.h
++++ b/fs/nfsd/netns.h
+@@ -26,9 +26,9 @@ struct nfsd4_client_tracking_ops;
+ 
+ enum {
+ 	/* cache misses due only to checksum comparison failures */
+-	NFSD_NET_PAYLOAD_MISSES,
++	NFSD_STATS_PAYLOAD_MISSES,
+ 	/* amount of memory (in bytes) currently consumed by the DRC */
+-	NFSD_NET_DRC_MEM_USAGE,
++	NFSD_STATS_DRC_MEM_USAGE,
+ 	NFSD_NET_COUNTERS_NUM
+ };
+ 
+--- a/fs/nfsd/nfscache.c
++++ b/fs/nfsd/nfscache.c
+@@ -690,7 +690,7 @@ int nfsd_reply_cache_stats_show(struct s
+ 		   atomic_read(&nn->num_drc_entries));
+ 	seq_printf(m, "hash buckets:          %u\n", 1 << nn->maskbits);
+ 	seq_printf(m, "mem usage:             %lld\n",
+-		   percpu_counter_sum_positive(&nn->counter[NFSD_NET_DRC_MEM_USAGE]));
++		   percpu_counter_sum_positive(&nn->counter[NFSD_STATS_DRC_MEM_USAGE]));
+ 	seq_printf(m, "cache hits:            %lld\n",
+ 		   percpu_counter_sum_positive(&nfsdstats.counter[NFSD_STATS_RC_HITS]));
+ 	seq_printf(m, "cache misses:          %lld\n",
+@@ -698,7 +698,7 @@ int nfsd_reply_cache_stats_show(struct s
+ 	seq_printf(m, "not cached:            %lld\n",
+ 		   percpu_counter_sum_positive(&nfsdstats.counter[NFSD_STATS_RC_NOCACHE]));
+ 	seq_printf(m, "payload misses:        %lld\n",
+-		   percpu_counter_sum_positive(&nn->counter[NFSD_NET_PAYLOAD_MISSES]));
++		   percpu_counter_sum_positive(&nn->counter[NFSD_STATS_PAYLOAD_MISSES]));
+ 	seq_printf(m, "longest chain len:     %u\n", nn->longest_chain);
+ 	seq_printf(m, "cachesize at longest:  %u\n", nn->longest_chain_cachesize);
+ 	return 0;
+--- a/fs/nfsd/stats.h
++++ b/fs/nfsd/stats.h
+@@ -81,17 +81,17 @@ static inline void nfsd_stats_io_write_a
+ 
+ static inline void nfsd_stats_payload_misses_inc(struct nfsd_net *nn)
  {
- 	int err;
+-	percpu_counter_inc(&nn->counter[NFSD_NET_PAYLOAD_MISSES]);
++	percpu_counter_inc(&nn->counter[NFSD_STATS_PAYLOAD_MISSES]);
+ }
  
--	if (src->ops->clone) {
--		dst->ops = src->ops;
--		err = src->ops->clone(dst, src);
--		if (err < 0)
--			return err;
--	} else {
--		memcpy(dst, src, src->ops->size);
--	}
-+	if (WARN_ON_ONCE(!src->ops->clone))
-+		return -EINVAL;
-+
-+	dst->ops = src->ops;
-+	err = src->ops->clone(dst, src);
-+	if (err < 0)
-+		return err;
+ static inline void nfsd_stats_drc_mem_usage_add(struct nfsd_net *nn, s64 amount)
+ {
+-	percpu_counter_add(&nn->counter[NFSD_NET_DRC_MEM_USAGE], amount);
++	percpu_counter_add(&nn->counter[NFSD_STATS_DRC_MEM_USAGE], amount);
+ }
  
- 	__module_get(src->ops->type->owner);
+ static inline void nfsd_stats_drc_mem_usage_sub(struct nfsd_net *nn, s64 amount)
+ {
+-	percpu_counter_sub(&nn->counter[NFSD_NET_DRC_MEM_USAGE], amount);
++	percpu_counter_sub(&nn->counter[NFSD_STATS_DRC_MEM_USAGE], amount);
+ }
  
+ #ifdef CONFIG_NFSD_V4
 
 
 
