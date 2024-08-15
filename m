@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-68935-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68904-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D6BD9534AF
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:28:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D01E595348D
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:28:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5091F1C229AB
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:28:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 798561F292CE
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:28:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B7E418CBE1;
-	Thu, 15 Aug 2024 14:28:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 528671A7076;
+	Thu, 15 Aug 2024 14:27:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FVJlj8th"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jtX3JYkf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5907E7DA6C;
-	Thu, 15 Aug 2024 14:28:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E6291A705B;
+	Thu, 15 Aug 2024 14:27:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732137; cv=none; b=TC2XkORazrRuGPjUwaFOERgHIC4Yg52HWNEJWatUpqlxZkXFohzfFc0AtRfkgWTwY17I67Rpd90NOwvDhfCR+MV123DiFNM9VLxzIl07rxJBW/RJo3wf1qDkhA64UhZ5xX+twxuv7bDLygeV6m6Tk2bsJjah3f8lvwlsusPXLPk=
+	t=1723732035; cv=none; b=lJXotQxzRKO+5v5AjsaPgKyVNvZTQwR+U8K3NU8TdxCEOE6ZFdlpn29Mkxkb6Q4hBmRQy9dFoE2XRiwz5h8bs+wH5t1Qh/0EVUCV6sLog65ht4JXNg2Trqdoou/gjFJbu0VcdkMOnV7YCsBee62xbk16qfWoAJdHy3xA0q7seZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732137; c=relaxed/simple;
-	bh=61OaIru0US2jS67VE15cKMeiXqdjkyFhWQH7H6M5TuY=;
+	s=arc-20240116; t=1723732035; c=relaxed/simple;
+	bh=DQf0JD3MXXY4U5simKbGOzeXmwQdgAscKX/0+Imh20A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CnHhPnE5nsGWQMo8FRE0QDl9vRgMlJg82SYX7CzA8rjbJzA6sdMthOoZkM17y5jqjz5Yh6PuAttCvLtPBz7sNIYZFQlQ1Gh1apryx796Zokt09TNNW5OXiUbjAKe13UKqoPgvek+vUgmUBqWvQzShzpesBz0jsf3uaA6q9SsjuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FVJlj8th; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B970FC32786;
-	Thu, 15 Aug 2024 14:28:56 +0000 (UTC)
+	 MIME-Version; b=A0C2QdnoDjZsbucGvK1oB3M/u4ttE9BEiHlapPhXeUMK8ugHNgCOeVKTlDaOrj2hcALNXBerjiIBNvtDOR8jtFN0F3oZJQ7Z+RopqMAX+KfdydAf+BTacnsMX5ejNz1jOY50HCmEVh4Ki+Zz8zJYinKAZIwKOYpom1m2dulw22w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jtX3JYkf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A1FDC32786;
+	Thu, 15 Aug 2024 14:27:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732137;
-	bh=61OaIru0US2jS67VE15cKMeiXqdjkyFhWQH7H6M5TuY=;
+	s=korg; t=1723732034;
+	bh=DQf0JD3MXXY4U5simKbGOzeXmwQdgAscKX/0+Imh20A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FVJlj8thpiYCaPUn8DSEmqGboLr3QiA01VR3q7l47srXRDmHJFFL+Nvaq/FfAw8zS
-	 dzd/r7y7vfUE4ilWofYTrICQP4e0VhW6aKmk9XzG+sOToW6CvUKzzzUqYokeN40/H6
-	 yKOrUelxfcU3M6JngXPHk/K1E6181JxfJVVJJ/6o=
+	b=jtX3JYkfisvpRSAJ/Suvogd4aZb3hhyb/42wc89G+9/rm9Z4kEYHdi2E075QvEaX4
+	 AcpTvDMObUROvhnsb4YZruDVPLTxipD5ImGl3mMJPkdfB9eJdIyti7Uue7xIHgJYgK
+	 YDUarENOpBkFZlTVVb+oB24AYPq72JVBTHPFWGrg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Adrian Hunter <adrian.hunter@intel.com>,
 	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 054/352] perf: Fix perf_aux_size() for greater-than 32-bit size
-Date: Thu, 15 Aug 2024 15:22:00 +0200
-Message-ID: <20240815131921.327446276@linuxfoundation.org>
+Subject: [PATCH 5.10 055/352] perf: Prevent passing zero nr_pages to rb_alloc_aux()
+Date: Thu, 15 Aug 2024 15:22:01 +0200
+Message-ID: <20240815131921.365829505@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
 References: <20240815131919.196120297@linuxfoundation.org>
@@ -68,33 +68,47 @@ Content-Transfer-Encoding: 8bit
 
 From: Adrian Hunter <adrian.hunter@intel.com>
 
-[ Upstream commit 3df94a5b1078dfe2b0c03f027d018800faf44c82 ]
+[ Upstream commit dbc48c8f41c208082cfa95e973560134489e3309 ]
 
-perf_buffer->aux_nr_pages uses a 32-bit type, so a cast is needed to
-calculate a 64-bit size.
+nr_pages is unsigned long but gets passed to rb_alloc_aux() as an int,
+and is stored as an int.
+
+Only power-of-2 values are accepted, so if nr_pages is a 64_bit value, it
+will be passed to rb_alloc_aux() as zero.
+
+That is not ideal because:
+ 1. the value is incorrect
+ 2. rb_alloc_aux() is at risk of misbehaving, although it manages to
+ return -ENOMEM in that case, it is a result of passing zero to get_order()
+ even though the get_order() result is documented to be undefined in that
+ case.
+
+Fix by simply validating the maximum supported value in the first place.
+Use -ENOMEM error code for consistency with the current error code that
+is returned in that case.
 
 Fixes: 45bfb2e50471 ("perf: Add AUX area to ring buffer for raw data streams")
 Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20240624201101.60186-5-adrian.hunter@intel.com
+Link: https://lore.kernel.org/r/20240624201101.60186-6-adrian.hunter@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/internal.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/events/core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/kernel/events/internal.h b/kernel/events/internal.h
-index aa23ffdaf819f..8e63cc2bd4f7d 100644
---- a/kernel/events/internal.h
-+++ b/kernel/events/internal.h
-@@ -128,7 +128,7 @@ static inline unsigned long perf_data_size(struct perf_buffer *rb)
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 3a191bec69aca..b60325cc8604d 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -6239,6 +6239,8 @@ static int perf_mmap(struct file *file, struct vm_area_struct *vma)
+ 			return -EINVAL;
  
- static inline unsigned long perf_aux_size(struct perf_buffer *rb)
- {
--	return rb->aux_nr_pages << PAGE_SHIFT;
-+	return (unsigned long)rb->aux_nr_pages << PAGE_SHIFT;
- }
+ 		nr_pages = vma_size / PAGE_SIZE;
++		if (nr_pages > INT_MAX)
++			return -ENOMEM;
  
- #define __DEFINE_OUTPUT_COPY_BODY(advance_buf, memcpy_func, ...)	\
+ 		mutex_lock(&event->mmap_mutex);
+ 		ret = -EINVAL;
 -- 
 2.43.0
 
