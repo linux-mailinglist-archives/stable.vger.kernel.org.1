@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-68946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68646-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60D319534BA
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:29:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 586DB953353
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:16:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 108BD2881E5
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:29:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EFDA82824A2
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:16:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C53C18CBE1;
-	Thu, 15 Aug 2024 14:29:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F6261AED47;
+	Thu, 15 Aug 2024 14:13:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TcHE920D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XUVRBTcu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B6D963C;
-	Thu, 15 Aug 2024 14:29:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C197B1A256C;
+	Thu, 15 Aug 2024 14:13:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732172; cv=none; b=UU8r+6WEe/jLtmIfrDDfMIYdlYMpg71fGtHHxhUJU8qtVY4V2urltV0Sj3/c933OCDWuGTGgI2xjjl0vj7NAuIuwT5ZvmcirhOXDjX5DC/wlQAK9mPjyL1saqyKWdg6RHzONAQGAjfNtjKPF9/xcVoy2dxWk1zmzeYZV/3LS1I0=
+	t=1723731224; cv=none; b=Ihx5tpZ2KpLHlX4IgoyakPkitQ1KLkJiuYb5zefbPQwpeYSgaLl/n3inwqqblK73vkg210lmHxvAxefX+FyBvmkjZzqI3XfBjxtdjtFx/vj8cCVcpmS+wvQfJSXTfiPin0B0nuwXA4RlBTf3RbKsDMEoElE6cwcDhjB00rRJ/78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732172; c=relaxed/simple;
-	bh=du4+ICsE6/nUN1i+/z+RpTBDPMCd/l9lr41oEwxCWPE=;
+	s=arc-20240116; t=1723731224; c=relaxed/simple;
+	bh=Vm0eDcX8rAs9WtIE2xgUN3SJ/1iyqb7SrqtSnY5Cktg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jSoyGhmXxSTjrO4NohxuF5QU1BprhNWKPCwZpajLFmoVBL05m2qqHkqXiioVe65kwF9syhGwn8qIzLyuoqODLbz80bYKTb3AsOMgKJhrRpMxqMRwbW741+0Ornw/SznrK3Q1ff952e+qozxC5UEcLg9je5lI0c8jp6aiAFlVkQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TcHE920D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3668C32786;
-	Thu, 15 Aug 2024 14:29:31 +0000 (UTC)
+	 MIME-Version; b=RwZ0WL2tLoPvmfD6eub3ubkTaSuxjxD+w2qsDtXRTZ6xyVNb7CB1O8TdoEe/0/BEsHN8ejWK3IUDLkV68GI6PmnML6jPmf1GOh59u03rIcGrQMg7QFkl8YiwxGoStkLMn2C+HLDwah+Ha/VQX8WxVugW0pmeMHIkLymDdXCvFC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XUVRBTcu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA11EC32786;
+	Thu, 15 Aug 2024 14:13:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732172;
-	bh=du4+ICsE6/nUN1i+/z+RpTBDPMCd/l9lr41oEwxCWPE=;
+	s=korg; t=1723731224;
+	bh=Vm0eDcX8rAs9WtIE2xgUN3SJ/1iyqb7SrqtSnY5Cktg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TcHE920DSqUtFitb8ZXaLpE/qwa8gTd7arV+/rzRuu4rwDUankgocnLB7f0zRKnGJ
-	 CWs6DNqnoQeW8OuyQd5+Y8NX7gRJ2Kiqwo1xQ+G3W/peQ2osRdmvxAkTzO9Qx1mZ9y
-	 Fgc91TW0adcG36pDtee2EFFm+pW6ifdHyPewkCd8=
+	b=XUVRBTcul9hsa2uhA3i6XmHx+7YgmQ+iE8mJmIZMH1hMbQDIJ8eE2YORGuLcggQvX
+	 VUhy61SFG75TXy7CtzS2tW11J4voe5/RvWx0Y3/0HuAObDV47SrjqpTvIfPmPCkJQ4
+	 eViACVGv5vNbt63Lky8VrU3Y/1AQjvZ/53ryVekE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Clark <james.clark@arm.com>,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Stefan Raspl <raspl@linux.ibm.com>,
+	Guvenc Gulce <guvenc@linux.ibm.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 097/352] coresight: Fix ref leak when of_coresight_parse_endpoint() fails
+Subject: [PATCH 5.4 030/259] net/smc: Allow SMC-D 1MB DMB allocations
 Date: Thu, 15 Aug 2024 15:22:43 +0200
-Message-ID: <20240815131923.009045437@linuxfoundation.org>
+Message-ID: <20240815131903.961984390@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +63,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Clark <james.clark@arm.com>
+From: Stefan Raspl <raspl@linux.ibm.com>
 
-[ Upstream commit 7fcb9cb2fe47294e16067c3cfd25332c8662a115 ]
+[ Upstream commit 67161779a9ea926fccee8de047ae66cbd3482b91 ]
 
-of_graph_get_next_endpoint() releases the reference to the previous
-endpoint on each iteration, but when parsing fails the loop exits
-early meaning the last reference is never dropped.
+Commit a3fe3d01bd0d7 ("net/smc: introduce sg-logic for RMBs") introduced
+a restriction for RMB allocations as used by SMC-R. However, SMC-D does
+not use scatter-gather lists to back its DMBs, yet it was limited by
+this restriction, still.
+This patch exempts SMC, but limits allocations to the maximum RMB/DMB
+size respectively.
 
-Fix it by dropping the refcount in the exit condition.
-
-Fixes: d375b356e687 ("coresight: Fix support for sparsely populated ports")
-Signed-off-by: James Clark <james.clark@arm.com>
-Reported-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20240529133626.90080-1-james.clark@arm.com
+Signed-off-by: Stefan Raspl <raspl@linux.ibm.com>
+Signed-off-by: Guvenc Gulce <guvenc@linux.ibm.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 3ac14b9dfbd3 ("net/smc: set rmb's SG_MAX_SINGLE_ALLOC limitation only when CONFIG_ARCH_NO_SG_CHAIN is defined")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/coresight/coresight-platform.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/smc/smc_core.c | 31 ++++++++++++++++---------------
+ 1 file changed, 16 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/hwtracing/coresight/coresight-platform.c b/drivers/hwtracing/coresight/coresight-platform.c
-index c594f45319fc5..dfb8022c4da1a 100644
---- a/drivers/hwtracing/coresight/coresight-platform.c
-+++ b/drivers/hwtracing/coresight/coresight-platform.c
-@@ -323,8 +323,10 @@ static int of_get_coresight_platform_data(struct device *dev,
- 			continue;
+diff --git a/net/smc/smc_core.c b/net/smc/smc_core.c
+index 66cdfd5725acf..fb3543f7f278e 100644
+--- a/net/smc/smc_core.c
++++ b/net/smc/smc_core.c
+@@ -681,21 +681,30 @@ int smc_conn_create(struct smc_sock *smc, struct smc_init_info *ini)
+ 	return rc;
+ }
  
- 		ret = of_coresight_parse_endpoint(dev, ep, pdata);
--		if (ret)
-+		if (ret) {
-+			of_node_put(ep);
- 			return ret;
-+		}
- 	}
+-/* convert the RMB size into the compressed notation - minimum 16K.
++#define SMCD_DMBE_SIZES		6 /* 0 -> 16KB, 1 -> 32KB, .. 6 -> 1MB */
++#define SMCR_RMBE_SIZES		5 /* 0 -> 16KB, 1 -> 32KB, .. 5 -> 512KB */
++
++/* convert the RMB size into the compressed notation (minimum 16K, see
++ * SMCD/R_DMBE_SIZES.
+  * In contrast to plain ilog2, this rounds towards the next power of 2,
+  * so the socket application gets at least its desired sndbuf / rcvbuf size.
+  */
+-static u8 smc_compress_bufsize(int size)
++static u8 smc_compress_bufsize(int size, bool is_smcd, bool is_rmb)
+ {
++	const unsigned int max_scat = SG_MAX_SINGLE_ALLOC * PAGE_SIZE;
+ 	u8 compressed;
  
- 	return 0;
+ 	if (size <= SMC_BUF_MIN_SIZE)
+ 		return 0;
+ 
+-	size = (size - 1) >> 14;
+-	compressed = ilog2(size) + 1;
+-	if (compressed >= SMC_RMBE_SIZES)
+-		compressed = SMC_RMBE_SIZES - 1;
++	size = (size - 1) >> 14;  /* convert to 16K multiple */
++	compressed = min_t(u8, ilog2(size) + 1,
++			   is_smcd ? SMCD_DMBE_SIZES : SMCR_RMBE_SIZES);
++
++	if (!is_smcd && is_rmb)
++		/* RMBs are backed by & limited to max size of scatterlists */
++		compressed = min_t(u8, compressed, ilog2(max_scat >> 14));
++
+ 	return compressed;
+ }
+ 
+@@ -796,17 +805,12 @@ static struct smc_buf_desc *smcr_new_buf_create(struct smc_link_group *lgr,
+ 	return buf_desc;
+ }
+ 
+-#define SMCD_DMBE_SIZES		6 /* 0 -> 16KB, 1 -> 32KB, .. 6 -> 1MB */
+-
+ static struct smc_buf_desc *smcd_new_buf_create(struct smc_link_group *lgr,
+ 						bool is_dmb, int bufsize)
+ {
+ 	struct smc_buf_desc *buf_desc;
+ 	int rc;
+ 
+-	if (smc_compress_bufsize(bufsize) > SMCD_DMBE_SIZES)
+-		return ERR_PTR(-EAGAIN);
+-
+ 	/* try to alloc a new DMB */
+ 	buf_desc = kzalloc(sizeof(*buf_desc), GFP_KERNEL);
+ 	if (!buf_desc)
+@@ -850,9 +854,8 @@ static int __smc_buf_create(struct smc_sock *smc, bool is_smcd, bool is_rmb)
+ 		/* use socket send buffer size (w/o overhead) as start value */
+ 		sk_buf_size = smc->sk.sk_sndbuf / 2;
+ 
+-	for (bufsize_short = smc_compress_bufsize(sk_buf_size);
++	for (bufsize_short = smc_compress_bufsize(sk_buf_size, is_smcd, is_rmb);
+ 	     bufsize_short >= 0; bufsize_short--) {
+-
+ 		if (is_rmb) {
+ 			lock = &lgr->rmbs_lock;
+ 			buf_list = &lgr->rmbs[bufsize_short];
+@@ -861,8 +864,6 @@ static int __smc_buf_create(struct smc_sock *smc, bool is_smcd, bool is_rmb)
+ 			buf_list = &lgr->sndbufs[bufsize_short];
+ 		}
+ 		bufsize = smc_uncompress_bufsize(bufsize_short);
+-		if ((1 << get_order(bufsize)) > SG_MAX_SINGLE_ALLOC)
+-			continue;
+ 
+ 		/* check for reusable slot in the link group */
+ 		buf_desc = smc_buf_get_slot(bufsize_short, lock, buf_list);
 -- 
 2.43.0
 
