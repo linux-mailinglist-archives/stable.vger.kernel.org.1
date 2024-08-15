@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-68073-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68075-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53D94953080
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:43:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38A42953082
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:43:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D4BA92866A1
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:43:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C67D1C254A1
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:43:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 937791A01B9;
-	Thu, 15 Aug 2024 13:43:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C899D19EECD;
+	Thu, 15 Aug 2024 13:43:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VXgS0BFu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wU8Y6dvo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50DF318D630;
-	Thu, 15 Aug 2024 13:43:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 805C21714A8;
+	Thu, 15 Aug 2024 13:43:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723729412; cv=none; b=QG1LDN+/5xw2PjTE5TvIZdkCcmayIRd7dSBbHY6/t8bDXfoTVpLFGJlWsanflhF3SsXo7cGYko0iWga7Pi8EtPDVhcPQoJ16Q575vvqrL2XYTtk/BPN4ueSHDc4OcMbReb+RYHOFpvFRTwIlR+c72zdWuJjA6ZoE7h0eceBstVk=
+	t=1723729418; cv=none; b=MDNPLj+aIWVQgYzTUWQ+yWDj7a8TylqBm/rOgqxIPBWPZa4NVsDIn8rTiuw7SinFFGq1gtjHWwfGCr1MDJvNnBV2IsJ3IZ94SS8XEo2ojpxLzedZFJH6pz4MpaLvnqMX1zaEyfvgQEayvgiNMC8D5jcn4phtT6VOf80s6P36Fn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723729412; c=relaxed/simple;
-	bh=19e2Nx0lmxkcwl1SpbdTrZqs9RqC9OkykX22rh+XfBk=;
+	s=arc-20240116; t=1723729418; c=relaxed/simple;
+	bh=UfuZW983r0ncrJkLNHbSwGzKJbCTyQr6kmu/jp1XXqE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d6VfzDclnnliQDo1jFUUi03h8TOnU7wVpB4kylpYC/ageV58AYsgsVLy3rUVHcF1M0e7o4YOdOBDYuGkz4UaeiGq1nPvf/vMSlfBBrnA9pBUkQveWLQsi4vmY9hAufL3VPEb+RsxFfglYVj3hQiqYzW2Ald3dO7oBfS+am8bmKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VXgS0BFu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCA3AC4AF0F;
-	Thu, 15 Aug 2024 13:43:31 +0000 (UTC)
+	 MIME-Version; b=Bi25a6Loq/7SlUj1/RaGGuk5vqxm8nmxhy2TPoDnHca1cgb4aojMf9u1YuJYxkIgH2eHhlu7P9UrCiLHUpmkwDHlHLzjZ5uMZ3ylilxmF4p9Jc6BpBtGfiMiQTMWyFM3IekwIf4hmZeaFOCIGe+daV3qCZYfA4fqVywB+VbJ0bo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wU8Y6dvo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00F4DC32786;
+	Thu, 15 Aug 2024 13:43:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723729412;
-	bh=19e2Nx0lmxkcwl1SpbdTrZqs9RqC9OkykX22rh+XfBk=;
+	s=korg; t=1723729418;
+	bh=UfuZW983r0ncrJkLNHbSwGzKJbCTyQr6kmu/jp1XXqE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VXgS0BFu5HuOUwKGX+akCJxuhx7pwqE2rEbdKJ18XfmXWJ+jGCeo0xkhDmDGXmGAN
-	 M9TZTj8afkfO/SfB+NJWduLnfUMKskmuH7QZUlRsviOunWu/CJ9EYSZnF2I0j8BoVa
-	 KqkZ0bb2RAB0ioNUHwdPneb8PEErSq2pZ0u2KEp4=
+	b=wU8Y6dvoCi2gBktbwEb4rQqrncq6FMsKYwvlud3TcRjZjxNIkAbFebPPkIRKH7AcV
+	 y5L/JIB4zwX71K5PI14tn9uIyDw+lBH1HnN3FtAymoeBS6j27mThh26/djHfOgO9YQ
+	 25H08jhWh4xTdjb1Yfy4K76YtcUl3ezjo5EhQ2bY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Claudio Imbrenda <imbrenda@linux.ibm.com>,
 	Janosch Frank <frankja@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@de.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 089/484] KVM: s390: pv: properly handle page flags for protected guests
-Date: Thu, 15 Aug 2024 15:19:07 +0200
-Message-ID: <20240815131944.724687374@linuxfoundation.org>
+Subject: [PATCH 5.15 090/484] KVM: s390: pv: add export before import
+Date: Thu, 15 Aug 2024 15:19:08 +0200
+Message-ID: <20240815131944.763121222@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
 References: <20240815131941.255804951@linuxfoundation.org>
@@ -69,180 +68,77 @@ Content-Transfer-Encoding: 8bit
 
 From: Claudio Imbrenda <imbrenda@linux.ibm.com>
 
-[ Upstream commit 380d97bd02fca7b9b41aec2d1c767874d602bc78 ]
+[ Upstream commit 72b1daff2671cef2c8cccc6c4e52f8d5ce4ebe58 ]
 
-Introduce variants of the convert and destroy page functions that also
-clear the PG_arch_1 bit used to mark them as secure pages.
+Due to upcoming changes, it will be possible to temporarily have
+multiple protected VMs in the same address space, although only one
+will be actually active.
 
-The PG_arch_1 flag is always allowed to overindicate; using the new
-functions introduced here allows to reduce the extent of overindication
-and thus improve performance.
+In that scenario, it is necessary to perform an export of every page
+that is to be imported, since the hardware does not allow a page
+belonging to a protected guest to be imported into a different
+protected guest.
 
-These new functions can only be called on pages for which a reference
-is already being held.
+This also applies to pages that are shared, and thus accessible by the
+host.
 
 Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
 Reviewed-by: Janosch Frank <frankja@linux.ibm.com>
-Reviewed-by: Christian Borntraeger <borntraeger@de.ibm.com>
-Link: https://lore.kernel.org/r/20210920132502.36111-7-imbrenda@linux.ibm.com
-Signed-off-by: Christian Borntraeger <borntraeger@de.ibm.com>
+Link: https://lore.kernel.org/r/20220628135619.32410-7-imbrenda@linux.ibm.com
+Message-Id: <20220628135619.32410-7-imbrenda@linux.ibm.com>
+Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
 Stable-dep-of: 3f29f6537f54 ("s390/uv: Don't call folio_wait_writeback() without a folio reference")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/include/asm/pgtable.h |  9 ++++++---
- arch/s390/include/asm/uv.h      | 10 ++++++++--
- arch/s390/kernel/uv.c           | 34 ++++++++++++++++++++++++++++++++-
- arch/s390/mm/gmap.c             |  4 +++-
- 4 files changed, 50 insertions(+), 7 deletions(-)
+ arch/s390/kernel/uv.c | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
-diff --git a/arch/s390/include/asm/pgtable.h b/arch/s390/include/asm/pgtable.h
-index b61426c9ef178..e434169502456 100644
---- a/arch/s390/include/asm/pgtable.h
-+++ b/arch/s390/include/asm/pgtable.h
-@@ -1074,8 +1074,9 @@ static inline pte_t ptep_get_and_clear(struct mm_struct *mm,
- 	pte_t res;
- 
- 	res = ptep_xchg_lazy(mm, addr, ptep, __pte(_PAGE_INVALID));
-+	/* At this point the reference through the mapping is still present */
- 	if (mm_is_protected(mm) && pte_present(res))
--		uv_convert_from_secure(pte_val(res) & PAGE_MASK);
-+		uv_convert_owned_from_secure(pte_val(res) & PAGE_MASK);
- 	return res;
- }
- 
-@@ -1091,8 +1092,9 @@ static inline pte_t ptep_clear_flush(struct vm_area_struct *vma,
- 	pte_t res;
- 
- 	res = ptep_xchg_direct(vma->vm_mm, addr, ptep, __pte(_PAGE_INVALID));
-+	/* At this point the reference through the mapping is still present */
- 	if (mm_is_protected(vma->vm_mm) && pte_present(res))
--		uv_convert_from_secure(pte_val(res) & PAGE_MASK);
-+		uv_convert_owned_from_secure(pte_val(res) & PAGE_MASK);
- 	return res;
- }
- 
-@@ -1116,8 +1118,9 @@ static inline pte_t ptep_get_and_clear_full(struct mm_struct *mm,
- 	} else {
- 		res = ptep_xchg_lazy(mm, addr, ptep, __pte(_PAGE_INVALID));
- 	}
-+	/* At this point the reference through the mapping is still present */
- 	if (mm_is_protected(mm) && pte_present(res))
--		uv_convert_from_secure(pte_val(res) & PAGE_MASK);
-+		uv_convert_owned_from_secure(pte_val(res) & PAGE_MASK);
- 	return res;
- }
- 
-diff --git a/arch/s390/include/asm/uv.h b/arch/s390/include/asm/uv.h
-index fe92a4caf5ec8..bb94d2bec67bd 100644
---- a/arch/s390/include/asm/uv.h
-+++ b/arch/s390/include/asm/uv.h
-@@ -351,8 +351,9 @@ static inline int is_prot_virt_host(void)
- }
- 
- int gmap_make_secure(struct gmap *gmap, unsigned long gaddr, void *uvcb);
--int uv_destroy_page(unsigned long paddr);
-+int uv_destroy_owned_page(unsigned long paddr);
- int uv_convert_from_secure(unsigned long paddr);
-+int uv_convert_owned_from_secure(unsigned long paddr);
- int gmap_convert_to_secure(struct gmap *gmap, unsigned long gaddr);
- 
- void setup_uv(void);
-@@ -360,7 +361,7 @@ void setup_uv(void);
- #define is_prot_virt_host() 0
- static inline void setup_uv(void) {}
- 
--static inline int uv_destroy_page(unsigned long paddr)
-+static inline int uv_destroy_owned_page(unsigned long paddr)
- {
- 	return 0;
- }
-@@ -369,6 +370,11 @@ static inline int uv_convert_from_secure(unsigned long paddr)
- {
- 	return 0;
- }
-+
-+static inline int uv_convert_owned_from_secure(unsigned long paddr)
-+{
-+	return 0;
-+}
- #endif
- 
- #endif /* _ASM_S390_UV_H */
 diff --git a/arch/s390/kernel/uv.c b/arch/s390/kernel/uv.c
-index 09b80d371409b..8b0e62507d62e 100644
+index 8b0e62507d62e..56bb0a4829770 100644
 --- a/arch/s390/kernel/uv.c
 +++ b/arch/s390/kernel/uv.c
-@@ -100,7 +100,7 @@ static int uv_pin_shared(unsigned long paddr)
-  *
-  * @paddr: Absolute host address of page to be destroyed
-  */
--int uv_destroy_page(unsigned long paddr)
-+static int uv_destroy_page(unsigned long paddr)
- {
- 	struct uv_cb_cfs uvcb = {
- 		.header.cmd = UVC_CMD_DESTR_SEC_STOR,
-@@ -120,6 +120,22 @@ int uv_destroy_page(unsigned long paddr)
- 	return 0;
+@@ -234,6 +234,32 @@ static int make_secure_pte(pte_t *ptep, unsigned long addr,
+ 	return uvcb->rc == 0x10a ? -ENXIO : -EINVAL;
  }
  
-+/*
-+ * The caller must already hold a reference to the page
++/**
++ * should_export_before_import - Determine whether an export is needed
++ * before an import-like operation
++ * @uvcb: the Ultravisor control block of the UVC to be performed
++ * @mm: the mm of the process
++ *
++ * Returns whether an export is needed before every import-like operation.
++ * This is needed for shared pages, which don't trigger a secure storage
++ * exception when accessed from a different guest.
++ *
++ * Although considered as one, the Unpin Page UVC is not an actual import,
++ * so it is not affected.
++ *
++ * No export is needed also when there is only one protected VM, because the
++ * page cannot belong to the wrong VM in that case (there is no "other VM"
++ * it can belong to).
++ *
++ * Return: true if an export is needed before every import, otherwise false.
 + */
-+int uv_destroy_owned_page(unsigned long paddr)
++static bool should_export_before_import(struct uv_cb_header *uvcb, struct mm_struct *mm)
 +{
-+	struct page *page = phys_to_page(paddr);
-+	int rc;
-+
-+	get_page(page);
-+	rc = uv_destroy_page(paddr);
-+	if (!rc)
-+		clear_bit(PG_arch_1, &page->flags);
-+	put_page(page);
-+	return rc;
++	if (uvcb->cmd == UVC_CMD_UNPIN_PAGE_SHARED)
++		return false;
++	return atomic_read(&mm->context.protected_count) > 1;
 +}
 +
  /*
-  * Requests the Ultravisor to encrypt a guest page and make it
-  * accessible to the host for paging (export).
-@@ -139,6 +155,22 @@ int uv_convert_from_secure(unsigned long paddr)
- 	return 0;
- }
+  * Requests the Ultravisor to make a page accessible to a guest.
+  * If it's brought in the first time, it will be cleared. If
+@@ -277,6 +303,8 @@ int gmap_make_secure(struct gmap *gmap, unsigned long gaddr, void *uvcb)
  
-+/*
-+ * The caller must already hold a reference to the page
-+ */
-+int uv_convert_owned_from_secure(unsigned long paddr)
-+{
-+	struct page *page = phys_to_page(paddr);
-+	int rc;
-+
-+	get_page(page);
-+	rc = uv_convert_from_secure(paddr);
-+	if (!rc)
-+		clear_bit(PG_arch_1, &page->flags);
-+	put_page(page);
-+	return rc;
-+}
-+
- /*
-  * Calculate the expected ref_count for a page that would otherwise have no
-  * further pins. This was cribbed from similar functions in other places in
-diff --git a/arch/s390/mm/gmap.c b/arch/s390/mm/gmap.c
-index 32d9db5e6f53c..7a4320a9f6557 100644
---- a/arch/s390/mm/gmap.c
-+++ b/arch/s390/mm/gmap.c
-@@ -2698,8 +2698,10 @@ static int __s390_reset_acc(pte_t *ptep, unsigned long addr,
- {
- 	pte_t pte = READ_ONCE(*ptep);
- 
-+	/* There is a reference through the mapping */
- 	if (pte_present(pte))
--		WARN_ON_ONCE(uv_destroy_page(pte_val(pte) & PAGE_MASK));
-+		WARN_ON_ONCE(uv_destroy_owned_page(pte_val(pte) & PAGE_MASK));
-+
- 	return 0;
- }
- 
+ 	lock_page(page);
+ 	ptep = get_locked_pte(gmap->mm, uaddr, &ptelock);
++	if (should_export_before_import(uvcb, gmap->mm))
++		uv_convert_from_secure(page_to_phys(page));
+ 	rc = make_secure_pte(ptep, uaddr, page, uvcb);
+ 	pte_unmap_unlock(ptep, ptelock);
+ 	unlock_page(page);
 -- 
 2.43.0
 
