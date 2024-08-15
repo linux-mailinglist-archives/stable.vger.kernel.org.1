@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-68701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69050-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6C5895338F
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:17:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 977F3953532
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:35:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D18E2828FA
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:17:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D94B1F2A788
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:35:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 325201A76C1;
-	Thu, 15 Aug 2024 14:16:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA59917C995;
+	Thu, 15 Aug 2024 14:35:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LSf1NrZr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AkaUQWDB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4E021A76A4;
-	Thu, 15 Aug 2024 14:16:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98C4A63D5;
+	Thu, 15 Aug 2024 14:35:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731395; cv=none; b=MnjeTImd5NSPuAiOHWy/0CLLIxLpa9mhpilkr3/Qstcp/s3zriXlFpTJe26LeHnpoK2OTMJaKmyLka/hLYkCQUbZoqm2PtMzZrDHtvN5uJghIdVTG/LsuqUuCFiZFY5BHGW1Gh90ZwPzv84RRAuZw8rKmBSHiBTWieVE104KtTI=
+	t=1723732504; cv=none; b=hCOsGNtySstlqZ4ssGT66iEt/Bijwvop3tDI5CwtBWN4UTngG5oqAtjaaTPP4ua5osBcGcNOzbrL7uTN9zfBwbahU577WJE4W+eLRbz8YkU346tMYqNZa4sG5+ZBLLpNg7KDpiXQkuCRJ4D6IpWh75tiANwlMCi2ImStO/tWIls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731395; c=relaxed/simple;
-	bh=3b6GbRCGtzqm6kpBSUzEtlgY3QDM6atXfIqNYzcCdWo=;
+	s=arc-20240116; t=1723732504; c=relaxed/simple;
+	bh=3+zC3O6n0W/4lpDuu5GkcXTltwT4zkqX64187I3VOy8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=okhzvB8GbxsW7jlZ59BKJEeJAJC8zocQBNqlCL6+8WmpuEQ3JJWetD+1+pSI1SkrrSdRzO2miCudjOVkbM6Y3WpZorBaBFHVYKj84ryyBjnX+7/RjmT+gzp03PdSLNrJzRfz3VU8jhQNLeHCZqWORaJ+ipz0olHTAruMLbqim8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LSf1NrZr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 715A8C32786;
-	Thu, 15 Aug 2024 14:16:34 +0000 (UTC)
+	 MIME-Version; b=AUtm8DXlULamZlHko7JC0ESto1429FFtRVv18vZogzRbW0TxJGuxyiMKfLyZM0YFhv8j3TFBCc4hgNshjZ2xoVdO4hel0V+h+JV7uOqDVkcDE3WFo+2HHY0bumWjisJmsM2141hjrNdfSg/V24aWb33tepDtEScTn8T2b0ijdwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AkaUQWDB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3F12C32786;
+	Thu, 15 Aug 2024 14:35:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731394;
-	bh=3b6GbRCGtzqm6kpBSUzEtlgY3QDM6atXfIqNYzcCdWo=;
+	s=korg; t=1723732504;
+	bh=3+zC3O6n0W/4lpDuu5GkcXTltwT4zkqX64187I3VOy8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LSf1NrZryZTN2FaPHvx0kiWSgh4sdhnLknd3s6xmnZv5BUHj+0UVGII3sreNYCRJN
-	 eetlFXihXYhFPnh/e2WKxg+9twQzR/SPt3i7UaZf7zfZYjDT379hmmoEZwE2YryfGk
-	 GyLOWlm8GCtAbkjrn6TmyLcsaiQBwNQ+D7JbQ8u8=
+	b=AkaUQWDBJG8jYJ4qa0rzra4lAh2ZgbFa4R3OVbcoZ6j5OZ7K0x+h1FfCXnbxajWUw
+	 43Ts7VsvBho2p0G7Hzr72I4WQv799f4TDuTMfoLR5wGy1pOUzhiloRk8k9PJ/G1+ZT
+	 rXeeNGdjd2hjEP9YaENwPLJcejIyA7t6CfZEFnKM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joy Chakraborty <joychakr@google.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 5.4 115/259] rtc: cmos: Fix return value of nvmem callbacks
+	Ilya Dryomov <idryomov@gmail.com>,
+	Dongsheng Yang <dongsheng.yang@easystack.cn>
+Subject: [PATCH 5.10 182/352] rbd: dont assume RBD_LOCK_STATE_LOCKED for exclusive mappings
 Date: Thu, 15 Aug 2024 15:24:08 +0200
-Message-ID: <20240815131907.240626447@linuxfoundation.org>
+Message-ID: <20240815131926.312299375@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,82 +61,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joy Chakraborty <joychakr@google.com>
+From: Ilya Dryomov <idryomov@gmail.com>
 
-commit 1c184baccf0d5e2ef4cc1562261d0e48508a1c2b upstream.
+commit 2237ceb71f89837ac47c5dce2aaa2c2b3a337a3c upstream.
 
-Read/write callbacks registered with nvmem core expect 0 to be returned
-on success and a negative value to be returned on failure.
+Every time a watch is reestablished after getting lost, we need to
+update the cookie which involves quiescing exclusive lock.  For this,
+we transition from RBD_LOCK_STATE_LOCKED to RBD_LOCK_STATE_QUIESCING
+roughly for the duration of rbd_reacquire_lock() call.  If the mapping
+is exclusive and I/O happens to arrive in this time window, it's failed
+with EROFS (later translated to EIO) based on the wrong assumption in
+rbd_img_exclusive_lock() -- "lock got released?" check there stopped
+making sense with commit a2b1da09793d ("rbd: lock should be quiesced on
+reacquire").
 
-cmos_nvram_read()/cmos_nvram_write() currently return the number of
-bytes read or written, fix to return 0 on success and -EIO incase number
-of bytes requested was not read or written.
+To make it worse, any such I/O is added to the acquiring list before
+EROFS is returned and this sets up for violating rbd_lock_del_request()
+precondition that the request is either on the running list or not on
+any list at all -- see commit ded080c86b3f ("rbd: don't move requests
+to the running list on errors").  rbd_lock_del_request() ends up
+processing these requests as if they were on the running list which
+screws up quiescing_wait completion counter and ultimately leads to
 
-Fixes: 8b5b7958fd1c ("rtc: cmos: use generic nvmem")
+    rbd_assert(!completion_done(&rbd_dev->quiescing_wait));
+
+being triggered on the next watch error.
+
+Cc: stable@vger.kernel.org # 06ef84c4e9c4: rbd: rename RBD_LOCK_STATE_RELEASING and releasing_wait
 Cc: stable@vger.kernel.org
-Signed-off-by: Joy Chakraborty <joychakr@google.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/20240612083635.1253039-1-joychakr@google.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Fixes: 637cd060537d ("rbd: new exclusive lock wait/wake code")
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Reviewed-by: Dongsheng Yang <dongsheng.yang@easystack.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/rtc/rtc-cmos.c |   10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ drivers/block/rbd.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/drivers/rtc/rtc-cmos.c
-+++ b/drivers/rtc/rtc-cmos.c
-@@ -597,11 +597,10 @@ static int cmos_nvram_read(void *priv, u
- 			   size_t count)
- {
- 	unsigned char *buf = val;
--	int	retval;
+--- a/drivers/block/rbd.c
++++ b/drivers/block/rbd.c
+@@ -3522,6 +3522,7 @@ static void rbd_lock_del_request(struct
+ 	lockdep_assert_held(&rbd_dev->lock_rwsem);
+ 	spin_lock(&rbd_dev->lock_lists_lock);
+ 	if (!list_empty(&img_req->lock_item)) {
++		rbd_assert(!list_empty(&rbd_dev->running_list));
+ 		list_del_init(&img_req->lock_item);
+ 		need_wakeup = (rbd_dev->lock_state == RBD_LOCK_STATE_QUIESCING &&
+ 			       list_empty(&rbd_dev->running_list));
+@@ -3541,11 +3542,6 @@ static int rbd_img_exclusive_lock(struct
+ 	if (rbd_lock_add_request(img_req))
+ 		return 1;
  
- 	off += NVRAM_OFFSET;
- 	spin_lock_irq(&rtc_lock);
--	for (retval = 0; count; count--, off++, retval++) {
-+	for (; count; count--, off++) {
- 		if (off < 128)
- 			*buf++ = CMOS_READ(off);
- 		else if (can_bank2)
-@@ -611,7 +610,7 @@ static int cmos_nvram_read(void *priv, u
- 	}
- 	spin_unlock_irq(&rtc_lock);
+-	if (rbd_dev->opts->exclusive) {
+-		WARN_ON(1); /* lock got released? */
+-		return -EROFS;
+-	}
+-
+ 	/*
+ 	 * Note the use of mod_delayed_work() in rbd_acquire_lock()
+ 	 * and cancel_delayed_work() in wake_lock_waiters().
+@@ -4657,6 +4653,10 @@ static void rbd_reacquire_lock(struct rb
+ 			rbd_warn(rbd_dev, "failed to update lock cookie: %d",
+ 				 ret);
  
--	return retval;
-+	return count ? -EIO : 0;
- }
- 
- static int cmos_nvram_write(void *priv, unsigned int off, void *val,
-@@ -619,7 +618,6 @@ static int cmos_nvram_write(void *priv,
- {
- 	struct cmos_rtc	*cmos = priv;
- 	unsigned char	*buf = val;
--	int		retval;
- 
- 	/* NOTE:  on at least PCs and Ataris, the boot firmware uses a
- 	 * checksum on part of the NVRAM data.  That's currently ignored
-@@ -628,7 +626,7 @@ static int cmos_nvram_write(void *priv,
- 	 */
- 	off += NVRAM_OFFSET;
- 	spin_lock_irq(&rtc_lock);
--	for (retval = 0; count; count--, off++, retval++) {
-+	for (; count; count--, off++) {
- 		/* don't trash RTC registers */
- 		if (off == cmos->day_alrm
- 				|| off == cmos->mon_alrm
-@@ -643,7 +641,7 @@ static int cmos_nvram_write(void *priv,
- 	}
- 	spin_unlock_irq(&rtc_lock);
- 
--	return retval;
-+	return count ? -EIO : 0;
- }
- 
- /*----------------------------------------------------------------*/
++		if (rbd_dev->opts->exclusive)
++			rbd_warn(rbd_dev,
++			     "temporarily releasing lock on exclusive mapping");
++
+ 		/*
+ 		 * Lock cookie cannot be updated on older OSDs, so do
+ 		 * a manual release and queue an acquire.
 
 
 
