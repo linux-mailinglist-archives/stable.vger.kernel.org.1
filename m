@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-67844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68296-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E01AD952F5A
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:31:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 175EE95318A
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:55:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90BF7289351
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:31:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 719C9B2102A
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:55:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10AFF17C984;
-	Thu, 15 Aug 2024 13:31:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC73C18D64F;
+	Thu, 15 Aug 2024 13:55:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O3PPglzg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ak0kSz2D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C29477DA78;
-	Thu, 15 Aug 2024 13:31:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A99B1714A1;
+	Thu, 15 Aug 2024 13:55:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723728697; cv=none; b=NuLpfCBmMScIlJRE2g6/K+YTTmckSImXGYQmtQ1AenCXosEmiP0NIT+vJZOSN0cWqEGteZJzNwmgTFNtXU3xgH97v095ZlpJw1ykv8a8dHCXxBn18WBCR2Iylcv1axrQTsPutf7+cQIFKGV2TOJR+eK/ScXGvAVbG2SqFrxb8wE=
+	t=1723730120; cv=none; b=tE9PNeJ8SKwarDk5UXj7I/MsnrCONE4phinh3UOXrPHREPLZSaPrfdOiYw57X7gYaD53n8vqodTXtW6N2yM/VyGjTh5hHw1iNQDtESQeVidiG8NywV2UvuolCA9Kw/39W82Qhgmozu7WYQTDAmkYmkY/evfiKnYXynrMpnsIy/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723728697; c=relaxed/simple;
-	bh=JAFot6l1nqIgwYSNg6IPKgyLAfxS9tzvHhTwupeJJjk=;
+	s=arc-20240116; t=1723730120; c=relaxed/simple;
+	bh=lLy0Bib9FPuqkxV5aJBi/hEF0Xv7LJ4Ho2bga+rTfbo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KkXtK6OjHvkQfiOj7nMx3kE6wUlKVpcRKbVtFMb5IpW+68DIUzfc0aCFPcHetJOBi+jqW+WK/nF+4ZoPifJPXHvWQhzTdBOn4xQ+zwHtEBN0jX4/JUzAR3fNnGMQI+XlfCkFzreYECtK9gaUp2GsNpmhXieJ43KBTZkXctHe54w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O3PPglzg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F328BC32786;
-	Thu, 15 Aug 2024 13:31:36 +0000 (UTC)
+	 MIME-Version; b=aUcluRxkToJ+34IskQLrMcXjnVQ2C3FYLreJ7BtnRPyF0gU/cEH6da1o8vFoObYvT9wv9qrPUaqUXUHWRKSO6/euNkdbnHl/TEKsoqs7aI2BnBcz4dJI9h6gMsa3qg6UvparpTjEFReXGkQRDUaGdljf9FtFIjp9elicGKWwe6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ak0kSz2D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFA69C32786;
+	Thu, 15 Aug 2024 13:55:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723728697;
-	bh=JAFot6l1nqIgwYSNg6IPKgyLAfxS9tzvHhTwupeJJjk=;
+	s=korg; t=1723730120;
+	bh=lLy0Bib9FPuqkxV5aJBi/hEF0Xv7LJ4Ho2bga+rTfbo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O3PPglzg0QbE4y/deoG06rfvPowTkoE5jZ7N60tCtMF4kfcifaCTD0PD7EY2bd6LI
-	 C+Ys/M/y0RKJiqoIaCYY0z/Y8BpppZFq96gKBQ+N6gVm1eV0W+yWVtILl/OwwzMZ0Q
-	 kaJEZrXKlC+9c2xdmy72bCAtKUjf59pfdyEq/+Xo=
+	b=ak0kSz2DV+4XUz3M9gxU+HPz5RR5brej7PnX3gx3cn96zSOsZhS2j368psyvwAJbx
+	 45cyDKs3REAc8a1nN4x9+T2GMp4bnXuvXiW6gUj6NHs01q1WcDCorSqveajzYb0+zB
+	 DxR+H3r1jS8BK2hYq8d1PKoqsbjvGG19e9ipQUjg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Michael Tretter <m.tretter@pengutronix.de>,
+	Michal Simek <michal.simek@xilinx.com>,
+	Rajan Vaja <rajan.vaja@xilinx.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 050/196] powerpc/xmon: Fix disassembly CPU feature checks
-Date: Thu, 15 Aug 2024 15:22:47 +0200
-Message-ID: <20240815131853.996574020@linuxfoundation.org>
+Subject: [PATCH 5.15 310/484] soc: xilinx: move PM_INIT_FINALIZE to zynqmp_pm_domains driver
+Date: Thu, 15 Aug 2024 15:22:48 +0200
+Message-ID: <20240815131953.382597606@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,101 +63,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Michael Tretter <m.tretter@pengutronix.de>
 
-[ Upstream commit 14196e47c5ffe32af7ed5a51c9e421c5ea5bccce ]
+[ Upstream commit 7fd890b89dea55eb5866640eb8befad26d558161 ]
 
-In the xmon disassembly code there are several CPU feature checks to
-determine what dialects should be passed to the disassembler. The
-dialect controls which instructions the disassembler will recognise.
+PM_INIT_FINALIZE tells the PMU FW that Linux is able to handle the power
+management nodes that are provided by the PMU FW. Nodes that are not
+requested are shut down after this call.
 
-Unfortunately the checks are incorrect, because instead of passing a
-single CPU feature they are passing a mask of feature bits.
+Calling PM_INIT_FINALIZE from the zynqmp_power driver is wrong. The PM
+node request mechanism is implemented in the zynqmp_pm_domains driver,
+which must also call PM_INIT_FINALIZE.
 
-For example the code:
+Due to the behavior of the PMU FW, all devices must be powered up before
+PM_INIT_FINALIZE is called, because otherwise the devices might
+misbehave. Calling PM_INIT_FINALIZE from the sync_state device callback
+ensures that all users probed successfully before the PMU FW is allowed
+to power off unused domains.
 
-  if (cpu_has_feature(CPU_FTRS_POWER5))
-      dialect |= PPC_OPCODE_POWER5;
-
-Is trying to check if the system is running on a Power5 CPU. But
-CPU_FTRS_POWER5 is a mask of *all* the feature bits that are enabled on
-a Power5.
-
-In practice the test will always return true for any 64-bit CPU, because
-at least one bit in the mask will be present in the CPU_FTRS_ALWAYS
-mask.
-
-Similarly for all the other checks against CPU_FTRS_xx masks.
-
-Rather than trying to match the disassembly behaviour exactly to the
-current CPU, just differentiate between 32-bit and 64-bit, and Altivec,
-VSX and HTM.
-
-That will cause some instructions to be shown in disassembly even
-on a CPU that doesn't support them, but that's OK, objdump -d output
-has the same behaviour, and if anything it's less confusing than some
-instructions not being disassembled.
-
-Fixes: 897f112bb42e ("[POWERPC] Import updated version of ppc disassembly code for xmon")
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240509121248.270878-2-mpe@ellerman.id.au
+Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
+Acked-by: Michal Simek <michal.simek@xilinx.com>
+Acked-by: Rajan Vaja <rajan.vaja@xilinx.com>
+Link: https://lore.kernel.org/r/20210825150313.4033156-2-m.tretter@pengutronix.de
+Signed-off-by: Michal Simek <michal.simek@xilinx.com>
+Stable-dep-of: 9b003e14801c ("drivers: soc: xilinx: check return status of get_api_version()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/xmon/ppc-dis.c | 33 +++++++++++----------------------
- 1 file changed, 11 insertions(+), 22 deletions(-)
+ drivers/soc/xilinx/zynqmp_pm_domains.c | 16 ++++++++++++++++
+ drivers/soc/xilinx/zynqmp_power.c      |  1 -
+ 2 files changed, 16 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/xmon/ppc-dis.c b/arch/powerpc/xmon/ppc-dis.c
-index 27f1e64150360..8f84e6502776b 100644
---- a/arch/powerpc/xmon/ppc-dis.c
-+++ b/arch/powerpc/xmon/ppc-dis.c
-@@ -133,32 +133,21 @@ int print_insn_powerpc (unsigned long insn, unsigned long memaddr)
-   bool insn_is_short;
-   ppc_cpu_t dialect;
+diff --git a/drivers/soc/xilinx/zynqmp_pm_domains.c b/drivers/soc/xilinx/zynqmp_pm_domains.c
+index 226d343f0a6a5..81e8e10f10929 100644
+--- a/drivers/soc/xilinx/zynqmp_pm_domains.c
++++ b/drivers/soc/xilinx/zynqmp_pm_domains.c
+@@ -152,11 +152,17 @@ static int zynqmp_gpd_power_off(struct generic_pm_domain *domain)
+ static int zynqmp_gpd_attach_dev(struct generic_pm_domain *domain,
+ 				 struct device *dev)
+ {
++	struct device_link *link;
+ 	int ret;
+ 	struct zynqmp_pm_domain *pd;
  
--  dialect = PPC_OPCODE_PPC | PPC_OPCODE_COMMON
--            | PPC_OPCODE_64 | PPC_OPCODE_POWER4 | PPC_OPCODE_ALTIVEC;
-+  dialect = PPC_OPCODE_PPC | PPC_OPCODE_COMMON;
+ 	pd = container_of(domain, struct zynqmp_pm_domain, gpd);
  
--  if (cpu_has_feature(CPU_FTRS_POWER5))
--    dialect |= PPC_OPCODE_POWER5;
-+  if (IS_ENABLED(CONFIG_PPC64))
-+    dialect |= PPC_OPCODE_64 | PPC_OPCODE_POWER4 | PPC_OPCODE_CELL |
-+	PPC_OPCODE_POWER5 | PPC_OPCODE_POWER6 | PPC_OPCODE_POWER7 | PPC_OPCODE_POWER8 |
-+	PPC_OPCODE_POWER9;
++	link = device_link_add(dev, &domain->dev, DL_FLAG_SYNC_STATE_ONLY);
++	if (!link)
++		dev_dbg(&domain->dev, "failed to create device link for %s\n",
++			dev_name(dev));
++
+ 	/* If this is not the first device to attach there is nothing to do */
+ 	if (domain->device_count)
+ 		return 0;
+@@ -299,9 +305,19 @@ static int zynqmp_gpd_remove(struct platform_device *pdev)
+ 	return 0;
+ }
  
--  if (cpu_has_feature(CPU_FTRS_CELL))
--    dialect |= (PPC_OPCODE_CELL | PPC_OPCODE_ALTIVEC);
-+  if (cpu_has_feature(CPU_FTR_TM))
-+    dialect |= PPC_OPCODE_HTM;
++static void zynqmp_gpd_sync_state(struct device *dev)
++{
++	int ret;
++
++	ret = zynqmp_pm_init_finalize();
++	if (ret)
++		dev_warn(dev, "failed to release power management to firmware\n");
++}
++
+ static struct platform_driver zynqmp_power_domain_driver = {
+ 	.driver	= {
+ 		.name = "zynqmp_power_controller",
++		.sync_state = zynqmp_gpd_sync_state,
+ 	},
+ 	.probe = zynqmp_gpd_probe,
+ 	.remove = zynqmp_gpd_remove,
+diff --git a/drivers/soc/xilinx/zynqmp_power.c b/drivers/soc/xilinx/zynqmp_power.c
+index c556623dae024..f8c301984d4f9 100644
+--- a/drivers/soc/xilinx/zynqmp_power.c
++++ b/drivers/soc/xilinx/zynqmp_power.c
+@@ -178,7 +178,6 @@ static int zynqmp_pm_probe(struct platform_device *pdev)
+ 	u32 pm_api_version;
+ 	struct mbox_client *client;
  
--  if (cpu_has_feature(CPU_FTRS_POWER6))
--    dialect |= (PPC_OPCODE_POWER5 | PPC_OPCODE_POWER6 | PPC_OPCODE_ALTIVEC);
-+  if (cpu_has_feature(CPU_FTR_ALTIVEC))
-+    dialect |= PPC_OPCODE_ALTIVEC | PPC_OPCODE_ALTIVEC2;
+-	zynqmp_pm_init_finalize();
+ 	zynqmp_pm_get_api_version(&pm_api_version);
  
--  if (cpu_has_feature(CPU_FTRS_POWER7))
--    dialect |= (PPC_OPCODE_POWER5 | PPC_OPCODE_POWER6 | PPC_OPCODE_POWER7
--                | PPC_OPCODE_ALTIVEC | PPC_OPCODE_VSX);
--
--  if (cpu_has_feature(CPU_FTRS_POWER8))
--    dialect |= (PPC_OPCODE_POWER5 | PPC_OPCODE_POWER6 | PPC_OPCODE_POWER7
--		| PPC_OPCODE_POWER8 | PPC_OPCODE_HTM
--		| PPC_OPCODE_ALTIVEC | PPC_OPCODE_ALTIVEC2 | PPC_OPCODE_VSX);
--
--  if (cpu_has_feature(CPU_FTRS_POWER9))
--    dialect |= (PPC_OPCODE_POWER5 | PPC_OPCODE_POWER6 | PPC_OPCODE_POWER7
--		| PPC_OPCODE_POWER8 | PPC_OPCODE_POWER9 | PPC_OPCODE_HTM
--		| PPC_OPCODE_ALTIVEC | PPC_OPCODE_ALTIVEC2
--		| PPC_OPCODE_VSX | PPC_OPCODE_VSX3);
-+  if (cpu_has_feature(CPU_FTR_VSX))
-+    dialect |= PPC_OPCODE_VSX | PPC_OPCODE_VSX3;
- 
-   /* Get the major opcode of the insn.  */
-   opcode = NULL;
+ 	/* Check PM API version number */
 -- 
 2.43.0
 
