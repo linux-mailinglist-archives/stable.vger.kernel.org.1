@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-67800-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68325-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACF45952F27
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:29:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C4499531AB
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:57:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 529B5288892
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:29:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 008EE28B7B5
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:57:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF13519DF9E;
-	Thu, 15 Aug 2024 13:29:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1599319DF9C;
+	Thu, 15 Aug 2024 13:56:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OWk4zzK8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u3ffb4dK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B1D01DDF5;
-	Thu, 15 Aug 2024 13:29:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7F971714A1;
+	Thu, 15 Aug 2024 13:56:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723728557; cv=none; b=ntIBA9ndJfHSX+mGa6k484+mSzdGp2DBfMaNC60HN0rAd/m1rlTt0Osd8ZHl+rGBlNXS9bYe37Mc38quB7Ar300RVFwU/WYU3QTVFsgHPBdFT/m/HoSwxeQdcsr72UqQ7G1TbwlxDMhWKP8TBrE8A2/99kkY2Qiko5KCvKGPh7o=
+	t=1723730212; cv=none; b=Uw9w+ueJ4TDPYC8+XlrYbKI73zuia2qk7xcR745ay9FbjarOWrqdZbMAJ4t/7HZTM3BXH1paOfCbGkX5AqS00gDsidxyI1WzG7oAorXh115I6Jrs4iJnteWM1M2JFhmlHRkfhUVZm1HUg0jgc2EQKB3Qlfu8n3rw5ve+urEn7cA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723728557; c=relaxed/simple;
-	bh=46/6/4JuQR+RJtY76M9IfNf0SpDQWxWN1zrqZr2KUNo=;
+	s=arc-20240116; t=1723730212; c=relaxed/simple;
+	bh=kSKiaHWolATUZNo8+f9jDNg/XVipxZJ5MJbt6xWwXAk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VCoFwU6BGF5KoAZfjaWfhAEIKS+6oP3qs6JIPGdaTMaI6MuK6uPVrBiIja3wphl1puxFgf1vPU3wZKE2ug9ygEsfulzVNaV/tcDYlKIGOBCG08oN5ip6qeeTfaR4VWwXmbgDWmFYaul2z21HnEgvsy7S7xh1RGr/HfC5M+zuh+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OWk4zzK8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 193ADC4AF0C;
-	Thu, 15 Aug 2024 13:29:16 +0000 (UTC)
+	 MIME-Version; b=VVjZbe2osKYtlGD2xNDgQNOn3KuJ7u6MOTkZzG0cy//Z/o1FGfWYHhPN594SYEcsrdupn1RoeOgWFkVc+VPE1N3CGRIL2uZUvGLMJ/IbMayKGfqfb0bZy7iRvDd1s3rE+q8Z1x30lgCp0zii5KBw0p/HApV/JdLVTSl9c/dkfCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u3ffb4dK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 386ACC32786;
+	Thu, 15 Aug 2024 13:56:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723728557;
-	bh=46/6/4JuQR+RJtY76M9IfNf0SpDQWxWN1zrqZr2KUNo=;
+	s=korg; t=1723730212;
+	bh=kSKiaHWolATUZNo8+f9jDNg/XVipxZJ5MJbt6xWwXAk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OWk4zzK8oT4gvJzSAinf8qq/czlOZQyT3n8F+mZPlG8b44HWeplgE2agQ2jdVo2I0
-	 ByKnTAL4QOSlDB9+TNC29MWLK4v4GOkcwAjdAZAM1z4T0u8WkMO7Oi6D7aJUMZIfHI
-	 5czUY7TZZap8wHn8r3qRBpQX9ZYzb7NCTgAmyuC8=
+	b=u3ffb4dK5h8uNIDUHzYfDVYyYjBE/y81Pkbkqot7CYr/anuzKv5KILrYndE0Tr56h
+	 7u2SC/XlZYuTX/BGDHaGKDOYpvzn/OaPv52J98DD2ROQPcQjXi8YipJw9YIVEhGljT
+	 O4yJYM43QMqkLsRRV88U2nJ+IMNzYjkR84kU7zuM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Nitesh Shetty <nj.shetty@samsung.com>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 037/196] perf report: Fix condition in sort__sym_cmp()
+Subject: [PATCH 5.15 296/484] nvme-pci: add missing condition check for existence of mapped data
 Date: Thu, 15 Aug 2024 15:22:34 +0200
-Message-ID: <20240815131853.506137953@linuxfoundation.org>
+Message-ID: <20240815131952.838590101@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Leon Romanovsky <leonro@nvidia.com>
 
-[ Upstream commit cb39d05e67dc24985ff9f5150e71040fa4d60ab8 ]
+[ Upstream commit c31fad1470389666ac7169fe43aa65bf5b7e2cfd ]
 
-It's expected that both hist entries are in the same hists when
-comparing two.  But the current code in the function checks one without
-dso sort key and other with the key.  This would make the condition true
-in any case.
+nvme_map_data() is called when request has physical segments, hence
+the nvme_unmap_data() should have same condition to avoid dereference.
 
-I guess the intention of the original commit was to add '!' for the
-right side too.  But as it should be the same, let's just remove it.
-
-Fixes: 69849fc5d2119 ("perf hists: Move sort__has_dso into struct perf_hpp_list")
-Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Link: https://lore.kernel.org/r/20240621170528.608772-2-namhyung@kernel.org
+Fixes: 4aedb705437f ("nvme-pci: split metadata handling from nvme_map_data / nvme_unmap_data")
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Nitesh Shetty <nj.shetty@samsung.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/sort.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nvme/host/pci.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tools/perf/util/sort.c b/tools/perf/util/sort.c
-index 66e11e6bb7197..a9a10cba8957e 100644
---- a/tools/perf/util/sort.c
-+++ b/tools/perf/util/sort.c
-@@ -256,7 +256,7 @@ sort__sym_cmp(struct hist_entry *left, struct hist_entry *right)
- 	 * comparing symbol address alone is not enough since it's a
- 	 * relative address within a dso.
- 	 */
--	if (!hists__has(left->hists, dso) || hists__has(right->hists, dso)) {
-+	if (!hists__has(left->hists, dso)) {
- 		ret = sort__dso_cmp(left, right);
- 		if (ret != 0)
- 			return ret;
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index 01f16989d0d84..1df3e083f3c67 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -914,7 +914,8 @@ static blk_status_t nvme_prep_rq(struct nvme_dev *dev, struct request *req)
+ 	blk_mq_start_request(req);
+ 	return BLK_STS_OK;
+ out_unmap_data:
+-	nvme_unmap_data(dev, req);
++	if (blk_rq_nr_phys_segments(req))
++		nvme_unmap_data(dev, req);
+ out_free_cmd:
+ 	nvme_cleanup_cmd(req);
+ 	return ret;
 -- 
 2.43.0
 
