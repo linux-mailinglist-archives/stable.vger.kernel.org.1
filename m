@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-68642-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68972-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F33CC95334D
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:15:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5114F9534D5
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:30:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A7BD31F212B5
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:15:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EE8A51F2939E
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:30:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E76361A00F5;
-	Thu, 15 Aug 2024 14:13:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88FDF2772A;
+	Thu, 15 Aug 2024 14:30:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mZM74Bjm"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k/Y5//j9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ABAC19F470;
-	Thu, 15 Aug 2024 14:13:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45F6E63D5;
+	Thu, 15 Aug 2024 14:30:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731211; cv=none; b=XSd9/zztSK+pPlFgExheatCUB0nvRny/pWegCi2TyByRPysVR1SEiTln02OAXHFGdmjkwwqLoPpU7Jlp97gTRmzmCBt2OpF70QS6aanssbRCBC2D87dxovXZkei9zLcLC1cJVwidwrBx3coTLVb0eUUQWAE8LMaxVxA3f2ulBlc=
+	t=1723732255; cv=none; b=Kf1ay5cYSHEsQ6EG+NKToj4H0b+8RWw/+8j02CjaknynaB1CzYbVkJFTBgLq/9iYYHzeFuLSjJw7xCoE2dOovMgCIQUgbR8Zt1CgYBLvbOkjjKPAtUWOwMdc4I7Y/NilqzgnhIdJbyavTvAAPe7nJ+Ui7piUgwi4lyV8Dqmda54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731211; c=relaxed/simple;
-	bh=MdrU9OOf0TGZp1RNMMESTS+OxHt0EnkTLknJ7UACMGw=;
+	s=arc-20240116; t=1723732255; c=relaxed/simple;
+	bh=2IFtMuNV5RAAHviundxOn/iotZIHs1tTwoj1b6/PgBE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ShVQX2hR1mlHtI6JBoXPTnNyywvhSKYhEq74XW0H3JjcgbxrlfrZ/yspBexeR9T4CFgvEcQ8k2RywUqlKmbFbq+YAueRRkX9ggxQn1nhav7Qe4ayng5uhZRKQ11z9Pp0a952kLLLFeTyNk3cZy40FgHfGBB44XVGgyWmN83UuCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mZM74Bjm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C462C32786;
-	Thu, 15 Aug 2024 14:13:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=U/IM6yXaQdA46f9YHEpf4XDABDJCW/qGSdLZmDG9/m3J27dmg+xGtTwmk08dRC6UTS5ZOzi1pH6xk1+7b/jb+mKrOkk+Rs9IBfm25v9vRu9eV8M46wT3rco4oqxLer6e4Ex1JuGCOikzj5W7qSaRaB8UNqU/NMPKBWMyDtDFkjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k/Y5//j9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B50EEC32786;
+	Thu, 15 Aug 2024 14:30:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731211;
-	bh=MdrU9OOf0TGZp1RNMMESTS+OxHt0EnkTLknJ7UACMGw=;
+	s=korg; t=1723732255;
+	bh=2IFtMuNV5RAAHviundxOn/iotZIHs1tTwoj1b6/PgBE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mZM74BjmVM0w45wMuAs4y58POsKhUv9UGEHiTxwXYl4q094+5NR7P+AN5iP/etzFS
-	 luAmAytSCM2SHStr/Ldl5akoNz5IhujKcSEdeaVtiPJhZeOBNzYFLWI+JelGTXl6A4
-	 O2G7InGd6crbHATj80sp7ZEPDQCCbF6EYqShjS5w=
+	b=k/Y5//j9++J/cIpzS8fLXMbGgsTSy8AufYWlHKEL4KtvkjWIrMr6hFHM2n3uN1QYC
+	 EIPbw6+BKs1QU13vgPY2tq/6eN3asijbULVtKQMm6wc2sj0mfI4ulh3QAs09UIcDp/
+	 zOZnQ1z8rXVMnq1uZH5qcGmcrsh+sURahQ0aHX3M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	=?UTF-8?q?Cs=C3=B3k=C3=A1s@web.codeaurora.org,
+	=20Bence?= <csokas.bence@prolan.hu>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 056/259] media: renesas: vsp1: Fix _irqsave and _irq mix
+Subject: [PATCH 5.10 123/352] rtc: interface: Add RTC offset to alarm after fix-up
 Date: Thu, 15 Aug 2024 15:23:09 +0200
-Message-ID: <20240815131904.974582572@linuxfoundation.org>
+Message-ID: <20240815131924.006493385@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,121 +61,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+From: Csókás, Bence <csokas.bence@prolan.hu>
 
-[ Upstream commit 57edbbcf5258c378a9b9d0c80d33b03a010b22c8 ]
+[ Upstream commit 463927a8902a9f22c3633960119410f57d4c8920 ]
 
-The histogram support mixes _irqsave and _irq, causing the following
-smatch warning:
+`rtc_add_offset()` is called by `__rtc_read_time()`
+and `__rtc_read_alarm()` to add the RTC's offset to
+the raw read-outs from the device drivers. However,
+in the latter case, a fix-up algorithm is run if
+the RTC device does not report a full `struct rtc_time`
+alarm value. In that case, the offset was forgot to be
+added.
 
-     drivers/media/platform/renesas/vsp1/vsp1_histo.c:153 histo_stop_streaming()
-     warn: mixing irqsave and irq
+Fixes: fd6792bb022e ("rtc: fix alarm read and set offset")
 
-The histo_stop_streaming() calls spin_lock_irqsave() followed by
-wait_event_lock_irq(). The former hints that interrupts may be disabled
-by the caller, while the latter reenables interrupts unconditionally.
-This doesn't cause any real bug, as the function is always called with
-interrupts enabled, but the pattern is still incorrect.
-
-Fix the problem by using spin_lock_irq() instead of spin_lock_irqsave()
-in histo_stop_streaming(). While at it, switch to spin_lock_irq() and
-spin_lock() as appropriate elsewhere.
-
-Fixes: 99362e32332b ("[media] v4l: vsp1: Add histogram support")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/linux-renesas-soc/164d74ff-312c-468f-be64-afa7182cd2f4@moroto.mountain/
-Reviewed-by: Kieran Bingham <kieran.bingham+renesas@ideasonboard.com>
-Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
+Link: https://lore.kernel.org/r/20240619140451.2800578-1-csokas.bence@prolan.hu
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/vsp1/vsp1_histo.c | 20 ++++++++------------
- 1 file changed, 8 insertions(+), 12 deletions(-)
+ drivers/rtc/interface.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/media/platform/vsp1/vsp1_histo.c b/drivers/media/platform/vsp1/vsp1_histo.c
-index 30d751f2cccf1..83c50628926ba 100644
---- a/drivers/media/platform/vsp1/vsp1_histo.c
-+++ b/drivers/media/platform/vsp1/vsp1_histo.c
-@@ -36,9 +36,8 @@ struct vsp1_histogram_buffer *
- vsp1_histogram_buffer_get(struct vsp1_histogram *histo)
- {
- 	struct vsp1_histogram_buffer *buf = NULL;
--	unsigned long flags;
+diff --git a/drivers/rtc/interface.c b/drivers/rtc/interface.c
+index 146056858135e..154ea5ae2c0c3 100644
+--- a/drivers/rtc/interface.c
++++ b/drivers/rtc/interface.c
+@@ -274,10 +274,9 @@ int __rtc_read_alarm(struct rtc_device *rtc, struct rtc_wkalrm *alarm)
+ 			return err;
  
--	spin_lock_irqsave(&histo->irqlock, flags);
-+	spin_lock(&histo->irqlock);
+ 		/* full-function RTCs won't have such missing fields */
+-		if (rtc_valid_tm(&alarm->time) == 0) {
+-			rtc_add_offset(rtc, &alarm->time);
+-			return 0;
+-		}
++		err = rtc_valid_tm(&alarm->time);
++		if (!err)
++			goto done;
  
- 	if (list_empty(&histo->irqqueue))
- 		goto done;
-@@ -49,7 +48,7 @@ vsp1_histogram_buffer_get(struct vsp1_histogram *histo)
- 	histo->readout = true;
+ 		/* get the "after" timestamp, to detect wrapped fields */
+ 		err = rtc_read_time(rtc, &now);
+@@ -379,6 +378,8 @@ int __rtc_read_alarm(struct rtc_device *rtc, struct rtc_wkalrm *alarm)
+ 	if (err)
+ 		dev_warn(&rtc->dev, "invalid alarm value: %ptR\n",
+ 			 &alarm->time);
++	else
++		rtc_add_offset(rtc, &alarm->time);
  
- done:
--	spin_unlock_irqrestore(&histo->irqlock, flags);
-+	spin_unlock(&histo->irqlock);
- 	return buf;
+ 	return err;
  }
- 
-@@ -58,7 +57,6 @@ void vsp1_histogram_buffer_complete(struct vsp1_histogram *histo,
- 				    size_t size)
- {
- 	struct vsp1_pipeline *pipe = histo->entity.pipe;
--	unsigned long flags;
- 
- 	/*
- 	 * The pipeline pointer is guaranteed to be valid as this function is
-@@ -70,10 +68,10 @@ void vsp1_histogram_buffer_complete(struct vsp1_histogram *histo,
- 	vb2_set_plane_payload(&buf->buf.vb2_buf, 0, size);
- 	vb2_buffer_done(&buf->buf.vb2_buf, VB2_BUF_STATE_DONE);
- 
--	spin_lock_irqsave(&histo->irqlock, flags);
-+	spin_lock(&histo->irqlock);
- 	histo->readout = false;
- 	wake_up(&histo->wait_queue);
--	spin_unlock_irqrestore(&histo->irqlock, flags);
-+	spin_unlock(&histo->irqlock);
- }
- 
- /* -----------------------------------------------------------------------------
-@@ -124,11 +122,10 @@ static void histo_buffer_queue(struct vb2_buffer *vb)
- 	struct vb2_v4l2_buffer *vbuf = to_vb2_v4l2_buffer(vb);
- 	struct vsp1_histogram *histo = vb2_get_drv_priv(vb->vb2_queue);
- 	struct vsp1_histogram_buffer *buf = to_vsp1_histogram_buffer(vbuf);
--	unsigned long flags;
- 
--	spin_lock_irqsave(&histo->irqlock, flags);
-+	spin_lock_irq(&histo->irqlock);
- 	list_add_tail(&buf->queue, &histo->irqqueue);
--	spin_unlock_irqrestore(&histo->irqlock, flags);
-+	spin_unlock_irq(&histo->irqlock);
- }
- 
- static int histo_start_streaming(struct vb2_queue *vq, unsigned int count)
-@@ -140,9 +137,8 @@ static void histo_stop_streaming(struct vb2_queue *vq)
- {
- 	struct vsp1_histogram *histo = vb2_get_drv_priv(vq);
- 	struct vsp1_histogram_buffer *buffer;
--	unsigned long flags;
- 
--	spin_lock_irqsave(&histo->irqlock, flags);
-+	spin_lock_irq(&histo->irqlock);
- 
- 	/* Remove all buffers from the IRQ queue. */
- 	list_for_each_entry(buffer, &histo->irqqueue, queue)
-@@ -152,7 +148,7 @@ static void histo_stop_streaming(struct vb2_queue *vq)
- 	/* Wait for the buffer being read out (if any) to complete. */
- 	wait_event_lock_irq(histo->wait_queue, !histo->readout, histo->irqlock);
- 
--	spin_unlock_irqrestore(&histo->irqlock, flags);
-+	spin_unlock_irq(&histo->irqlock);
- }
- 
- static const struct vb2_ops histo_video_queue_qops = {
 -- 
 2.43.0
 
