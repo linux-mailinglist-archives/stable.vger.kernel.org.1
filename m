@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-69129-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68450-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A3CA953595
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:39:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D07595325A
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:05:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D8659282A71
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:39:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0876C1F21B64
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:05:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 713D31993B9;
-	Thu, 15 Aug 2024 14:39:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C2011ABEA7;
+	Thu, 15 Aug 2024 14:03:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OD5JboiD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VVoKu1UI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F6A31AC893;
-	Thu, 15 Aug 2024 14:39:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEB901ABEB6;
+	Thu, 15 Aug 2024 14:03:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732763; cv=none; b=r2KvSXg12cX8ZCZHQrzAH3+NCHBhadn97MFszbpxdtXDhvvOS2vCHXu4I4UlIkVKojnCBpuqxlCVz9tnkgtv38llpcd8FMJOSmsVKdgy2YKX41psvOtThS0+A76obzMIdu8/wbB5zaQjF4q7HFrlakyAIADB+YpQQRSibUV77mE=
+	t=1723730609; cv=none; b=R+PLc1cJHNuB+Mkv3ZSQXN4V9qbp3PVFdSL8CLhFwRh6IncMt9uvv0FNfXGgODQHujLoN5C05NpemqZWC1zDrRw9z/PtzqrmgeVdvXsDwMPWIDqj3Gugfq9MleriIaEg3uQhwSokAJW+HBY/+Snyd+wTZLI6FOKWthIauoDSTn4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732763; c=relaxed/simple;
-	bh=3r2e4UFhFtjdrUR3y7nBNCQR5mCZge7Hn/tKUV2P1sg=;
+	s=arc-20240116; t=1723730609; c=relaxed/simple;
+	bh=VfjlkwwWQFaxsbnb3F+gwgs7SrjRD3NURL0b0Y6cdrs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kKDQzzfZ9T5zxyw2/ojWydXra/wiUIvxin8o6sX1gGwMpeowXpnvBDi1b6iF5MXBsZGD0i/pqZNNxQZPDCu6nSHOXHM/Mqa+7G5GWYYLKzNsa1jX8gOwHw6D+8tfJfIqmWolbHtwGXJOHv7fRT96uOTeEA8X+h/9ohj97G4UnFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OD5JboiD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66EC1C4AF0D;
-	Thu, 15 Aug 2024 14:39:22 +0000 (UTC)
+	 MIME-Version; b=Yxx/Xaqs/aEkUy2PBl0G3WAw3heDPn1EPF46HgpMvsyVgcNjqzdQJHcojUgsVIfB1KZk1V9ZSXzuxrcDObXQolSS29cfESXOG7eDiRuBkg/yU0Pjj/6WbjJtkcuX3cO5Gbuej3AS16Rhel/7igqOAuuQ1r1F8PixdxQJdrtyaP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VVoKu1UI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E858C32786;
+	Thu, 15 Aug 2024 14:03:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732762;
-	bh=3r2e4UFhFtjdrUR3y7nBNCQR5mCZge7Hn/tKUV2P1sg=;
+	s=korg; t=1723730608;
+	bh=VfjlkwwWQFaxsbnb3F+gwgs7SrjRD3NURL0b0Y6cdrs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OD5JboiDSQo0mCIH9T1JCvVJvBNwJ19ZhBUVgcOJa++EF359hHPNnYPjc3iYgS5xZ
-	 EF+YFuA71fK9bvcNHEOqn2RfOTwkBw8GVY3dk2PMiAHwJ+MjU2rp/qDz03bErDPnx7
-	 CEZP8HBeMxUxgyuW5v6W/EtrxyeQ0DCasBfymS60=
+	b=VVoKu1UIk4dmBczg/5Oxllyok92Z9ZQygjSkMJXZuhLfJvZcHy4gNAFVWvQ0Oj2AS
+	 eWSmkrnNjXJ0PAuaosyHj0ZxcQ3aRPm1vKfBPqg9xJj782YHTWt1S5sdOPVbX+Ib36
+	 6dlbBvBL6mg2r2CLRUpkkNGC7NFGNIP+4LvJKqss=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 251/352] x86/mm: Fix pti_clone_pgtable() alignment assumption
-Date: Thu, 15 Aug 2024 15:25:17 +0200
-Message-ID: <20240815131929.140086739@linuxfoundation.org>
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 5.15 460/484] selftests: mptcp: join: check backup support in signal endp
+Date: Thu, 15 Aug 2024 15:25:18 +0200
+Message-ID: <20240815131959.240886891@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-[ Upstream commit 41e71dbb0e0a0fe214545fe64af031303a08524c ]
+commit f833470c27832136d4416d8fc55d658082af0989 upstream.
 
-Guenter reported dodgy crashes on an i386-nosmp build using GCC-11
-that had the form of endless traps until entry stack exhaust and then
-#DF from the stack guard.
+Before the previous commit, 'signal' endpoints with the 'backup' flag
+were ignored when sending the MP_JOIN.
 
-It turned out that pti_clone_pgtable() had alignment assumptions on
-the start address, notably it hard assumes start is PMD aligned. This
-is true on x86_64, but very much not true on i386.
+The MPTCP Join selftest has then been modified to validate this case:
+the "single address, backup" test, is now validating the MP_JOIN with a
+backup flag as it is what we expect it to do with such name. The
+previous version has been kept, but renamed to "single address, switch
+to backup" to avoid confusions.
 
-These assumptions can cause the end condition to malfunction, leading
-to a 'short' clone. Guess what happens when the user mapping has a
-short copy of the entry text?
+The "single address with port, backup" test is also now validating the
+MPJ with a backup flag, which makes more sense than checking the switch
+to backup with an MP_PRIO.
 
-Use the correct increment form for addr to avoid alignment
-assumptions.
+The "mpc backup both sides" test is now validating that the backup flag
+is also set in MP_JOIN from and to the addresses used in the initial
+subflow, using the special ID 0.
 
-Fixes: 16a3fe634f6a ("x86/mm/pti: Clone kernel-image on PTE level for 32 bit")
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-Suggested-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20240731163105.GG33588@noisy.programming.kicks-ass.net
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The 'Fixes' tag here below is the same as the one from the previous
+commit: this patch here is not fixing anything wrong in the selftests,
+but it validates the previous fix for an issue introduced by this commit
+ID.
+
+Fixes: 4596a2c1b7f5 ("mptcp: allow creating non-backup subflows")
+Cc: stable@vger.kernel.org
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[ Conflicts in mptcp_join.sh because 'run_tests' helper has been
+  modified in multiple commits that are not in this version, e.g. commit
+  e571fb09c893 ("selftests: mptcp: add speed env var") and commit
+  ae7bd9ccecc3 ("selftests: mptcp: join: option to execute specific
+  tests"). Adaptations have been made to use the old way, similar to
+  what is done around.
+  Also in this version, there is no "single address with port, backup"
+  subtest. Same for "mpc backup both sides". ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/mm/pti.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |   11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/mm/pti.c b/arch/x86/mm/pti.c
-index 1aab92930569a..59c13fdb8da0f 100644
---- a/arch/x86/mm/pti.c
-+++ b/arch/x86/mm/pti.c
-@@ -374,14 +374,14 @@ pti_clone_pgtable(unsigned long start, unsigned long end,
- 			 */
- 			*target_pmd = *pmd;
- 
--			addr += PMD_SIZE;
-+			addr = round_up(addr + 1, PMD_SIZE);
- 
- 		} else if (level == PTI_CLONE_PTE) {
- 
- 			/* Walk the page-table down to the pte level */
- 			pte = pte_offset_kernel(pmd, addr);
- 			if (pte_none(*pte)) {
--				addr += PAGE_SIZE;
-+				addr = round_up(addr + 1, PAGE_SIZE);
- 				continue;
- 			}
- 
-@@ -401,7 +401,7 @@ pti_clone_pgtable(unsigned long start, unsigned long end,
- 			/* Clone the PTE */
- 			*target_pte = *pte;
- 
--			addr += PAGE_SIZE;
-+			addr = round_up(addr + 1, PAGE_SIZE);
- 
- 		} else {
- 			BUG();
--- 
-2.43.0
-
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -1588,10 +1588,19 @@ backup_tests()
+ 	# single address, backup
+ 	reset
+ 	ip netns exec $ns1 ./pm_nl_ctl limits 0 1
++	ip netns exec $ns1 ./pm_nl_ctl add 10.0.2.1 flags signal,backup
++	ip netns exec $ns2 ./pm_nl_ctl limits 1 1
++	run_tests $ns1 $ns2 10.0.1.1 0 0 0 slow nobackup
++	chk_join_nr "single address, backup" 1 1 1
++	chk_add_nr 1 1
++	chk_prio_nr 1 0 0 1
++
++	reset
++	ip netns exec $ns1 ./pm_nl_ctl limits 0 1
+ 	ip netns exec $ns1 ./pm_nl_ctl add 10.0.2.1 flags signal
+ 	ip netns exec $ns2 ./pm_nl_ctl limits 1 1
+ 	run_tests $ns1 $ns2 10.0.1.1 0 0 0 slow backup
+-	chk_join_nr "single address, backup" 1 1 1
++	chk_join_nr "single address, switch to backup" 1 1 1
+ 	chk_add_nr 1 1
+ 	chk_prio_nr 1 0 0 0
+ }
 
 
 
