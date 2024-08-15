@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-68773-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68452-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B50E9533E4
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:20:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13D4195325B
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:05:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C36F91F2760D
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:20:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 877711F21C58
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:05:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AF1319DF85;
-	Thu, 15 Aug 2024 14:20:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D22D1A3BDC;
+	Thu, 15 Aug 2024 14:03:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a4QZO+i7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qL0JJQtD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9E4638DC8;
-	Thu, 15 Aug 2024 14:20:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B2311A3BB6;
+	Thu, 15 Aug 2024 14:03:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731620; cv=none; b=TSMmcriALVHSY8OPxkw6f84pxBd0itH9Fjedwl0rlvFh0bIN++Jjvq4sSm1C7i5rxPOBfDeSkHG7GgsB8qZKiMHa+tRyfQZb8L8TcKPXPL6wVE7Bfy9Mv8qkpjDl2ZFFzQopbHdRqkMz1k/y9wurg2Awvz+2hLKWgs2+RVxqRPE=
+	t=1723730612; cv=none; b=s31xUvGSWzlUnIwfgXWBtBt/OGJi+INQ1pPq6Cz50IMOLhjhY1sGXEBGuKXIMOnz+W6AsXalrx/CdndU3mzfXEO8ZJ+KaHK7kqoVeVLlepn/R3IhRG+W+/maborxYCNBSYlCUko/Y8pP+pL/DBIy1Xu2QZJY7lvIjYzI6m8S3MQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731620; c=relaxed/simple;
-	bh=sVj7XJXLjKlQ9Xw6KOwUaOeoFuV5Jufz/XYLplc+QzQ=;
+	s=arc-20240116; t=1723730612; c=relaxed/simple;
+	bh=M/2bMTSPRyQxSHu6BUigwSY3PtZbsF9HxwTVCUGdpcs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dCZYgwstusCCwbfiMHAYp0XgUtUoucFtMe9MJsHQtVTIKJCkDTEEajnTGlZ80kk09r2MLbXD4S5Z/5viEzXr945itlRObprDdRFLqY6DFTDB1Np2EnKpAfJfVaEAdsBa9r9CO9tAd27oB9pSDCtJFjwJiE9J0o5AM8hcUzG9AKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a4QZO+i7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3519C32786;
-	Thu, 15 Aug 2024 14:20:19 +0000 (UTC)
+	 MIME-Version; b=DtYj4DoNTl3S7RFUSszVMT5N56qBHCmdurRlTY3/+J2ldzefCHyummxgH6bAc2JnrcDCiBZsRZO0yXxWoVjRcb84UvBcwOIklEaFPGo1Ve3igcJAxWH6LfmsxayZeBlm9b67TDoiV+KF4vWu/U7tlPcITxDwCA/9pjeomar4+1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qL0JJQtD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE8CBC32786;
+	Thu, 15 Aug 2024 14:03:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731620;
-	bh=sVj7XJXLjKlQ9Xw6KOwUaOeoFuV5Jufz/XYLplc+QzQ=;
+	s=korg; t=1723730612;
+	bh=M/2bMTSPRyQxSHu6BUigwSY3PtZbsF9HxwTVCUGdpcs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a4QZO+i7nG2PWoAX82SkJrp7q1JAW7lhoHMLGA3QwuqFxsmW1BlHMNDjoC2D4or0u
-	 n3iuqlwB2Q0mT6qYT24guIqgcrHvhQnI3Yb1m+PGuG4g+Cey2ar2EIzvDLVoh431gX
-	 4B5Xo8trI3LL+cDmBdhdr4gmdn7N/hSKtuJQrnH8=
+	b=qL0JJQtDPQ83mGHGxqb/n4RGPbjvVKRghnGs6l0Big+6/izZtIJ7nOHTDI+deJgb4
+	 xNLkb4E+qQDFP9OFbfIQ0FSErfAo1lUmR5NLtY52hMcFOm8ZDibTY2L+ZwjEDwmZWZ
+	 BT6c8pF8c8PksVgJzxyAsmbqN+vYjg9HhP6nK2eA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xin Long <lucien.xin@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 186/259] sctp: move hlist_node and hashent out of sctp_ep_common
+	Hanna Czenczek <hreitz@redhat.com>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 5.15 461/484] btrfs: fix corruption after buffer fault in during direct IO append write
 Date: Thu, 15 Aug 2024 15:25:19 +0200
-Message-ID: <20240815131909.962243161@linuxfoundation.org>
+Message-ID: <20240815131959.282269547@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,217 +63,258 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xin Long <lucien.xin@gmail.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 3d3b2f57d4447e6e9f4096ad01d0e4129f7bc7e9 ]
+commit 939b656bc8ab203fdbde26ccac22bcb7f0985be5 upstream.
 
-Struct sctp_ep_common is included in both asoc and ep, but hlist_node
-and hashent are only needed by ep after asoc_hashtable was dropped by
-Commit b5eff7128366 ("sctp: drop the old assoc hashtable of sctp").
+During an append (O_APPEND write flag) direct IO write if the input buffer
+was not previously faulted in, we can corrupt the file in a way that the
+final size is unexpected and it includes an unexpected hole.
 
-So it is better to move hlist_node and hashent from sctp_ep_common to
-sctp_endpoint, and it saves some space for each asoc.
+The problem happens like this:
 
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 9ab0faa7f9ff ("sctp: Fix null-ptr-deref in reuseport_add_sock().")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+1) We have an empty file, with size 0, for example;
+
+2) We do an O_APPEND direct IO with a length of 4096 bytes and the input
+   buffer is not currently faulted in;
+
+3) We enter btrfs_direct_write(), lock the inode and call
+   generic_write_checks(), which calls generic_write_checks_count(), and
+   that function sets the iocb position to 0 with the following code:
+
+	if (iocb->ki_flags & IOCB_APPEND)
+		iocb->ki_pos = i_size_read(inode);
+
+4) We call btrfs_dio_write() and enter into iomap, which will end up
+   calling btrfs_dio_iomap_begin() and that calls
+   btrfs_get_blocks_direct_write(), where we update the i_size of the
+   inode to 4096 bytes;
+
+5) After btrfs_dio_iomap_begin() returns, iomap will attempt to access
+   the page of the write input buffer (at iomap_dio_bio_iter(), with a
+   call to bio_iov_iter_get_pages()) and fail with -EFAULT, which gets
+   returned to btrfs at btrfs_direct_write() via btrfs_dio_write();
+
+6) At btrfs_direct_write() we get the -EFAULT error, unlock the inode,
+   fault in the write buffer and then goto to the label 'relock';
+
+7) We lock again the inode, do all the necessary checks again and call
+   again generic_write_checks(), which calls generic_write_checks_count()
+   again, and there we set the iocb's position to 4K, which is the current
+   i_size of the inode, with the following code pointed above:
+
+        if (iocb->ki_flags & IOCB_APPEND)
+                iocb->ki_pos = i_size_read(inode);
+
+8) Then we go again to btrfs_dio_write() and enter iomap and the write
+   succeeds, but it wrote to the file range [4K, 8K), leaving a hole in
+   the [0, 4K) range and an i_size of 8K, which goes against the
+   expectations of having the data written to the range [0, 4K) and get an
+   i_size of 4K.
+
+Fix this by not unlocking the inode before faulting in the input buffer,
+in case we get -EFAULT or an incomplete write, and not jumping to the
+'relock' label after faulting in the buffer - instead jump to a location
+immediately before calling iomap, skipping all the write checks and
+relocking. This solves this problem and it's fine even in case the input
+buffer is memory mapped to the same file range, since only holding the
+range locked in the inode's io tree can cause a deadlock, it's safe to
+keep the inode lock (VFS lock), as was fixed and described in commit
+51bd9563b678 ("btrfs: fix deadlock due to page faults during direct IO
+reads and writes").
+
+A sample reproducer provided by a reporter is the following:
+
+   $ cat test.c
+   #ifndef _GNU_SOURCE
+   #define _GNU_SOURCE
+   #endif
+
+   #include <fcntl.h>
+   #include <stdio.h>
+   #include <sys/mman.h>
+   #include <sys/stat.h>
+   #include <unistd.h>
+
+   int main(int argc, char *argv[])
+   {
+       if (argc < 2) {
+           fprintf(stderr, "Usage: %s <test file>\n", argv[0]);
+           return 1;
+       }
+
+       int fd = open(argv[1], O_WRONLY | O_CREAT | O_TRUNC | O_DIRECT |
+                     O_APPEND, 0644);
+       if (fd < 0) {
+           perror("creating test file");
+           return 1;
+       }
+
+       char *buf = mmap(NULL, 4096, PROT_READ,
+                        MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+       ssize_t ret = write(fd, buf, 4096);
+       if (ret < 0) {
+           perror("pwritev2");
+           return 1;
+       }
+
+       struct stat stbuf;
+       ret = fstat(fd, &stbuf);
+       if (ret < 0) {
+           perror("stat");
+           return 1;
+       }
+
+       printf("size: %llu\n", (unsigned long long)stbuf.st_size);
+       return stbuf.st_size == 4096 ? 0 : 1;
+   }
+
+A test case for fstests will be sent soon.
+
+Reported-by: Hanna Czenczek <hreitz@redhat.com>
+Link: https://lore.kernel.org/linux-btrfs/0b841d46-12fe-4e64-9abb-871d8d0de271@redhat.com/
+Fixes: 8184620ae212 ("btrfs: fix lost file sync on direct IO write with nowait and dsync iocb")
+CC: stable@vger.kernel.org # 6.1+
+Tested-by: Hanna Czenczek <hreitz@redhat.com>
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/sctp/sctp.h    |  4 ++--
- include/net/sctp/structs.h |  8 ++++----
- net/sctp/input.c           | 27 ++++++++++-----------------
- net/sctp/proc.c            | 10 ++++------
- net/sctp/socket.c          |  6 +++---
- 5 files changed, 23 insertions(+), 32 deletions(-)
+ fs/btrfs/ctree.h |    1 +
+ fs/btrfs/file.c  |   55 ++++++++++++++++++++++++++++++++++++++++++-------------
+ 2 files changed, 43 insertions(+), 13 deletions(-)
 
-diff --git a/include/net/sctp/sctp.h b/include/net/sctp/sctp.h
-index 35c108a6b8720..aa29695f4bd79 100644
---- a/include/net/sctp/sctp.h
-+++ b/include/net/sctp/sctp.h
-@@ -506,8 +506,8 @@ static inline int sctp_ep_hashfn(struct net *net, __u16 lport)
- 	return (net_hash_mix(net) + lport) & (sctp_ep_hashsize - 1);
- }
+--- a/fs/btrfs/ctree.h
++++ b/fs/btrfs/ctree.h
+@@ -1383,6 +1383,7 @@ struct btrfs_drop_extents_args {
+ struct btrfs_file_private {
+ 	void *filldir_buf;
+ 	u64 last_index;
++	bool fsync_skip_inode_lock;
+ };
  
--#define sctp_for_each_hentry(epb, head) \
--	hlist_for_each_entry(epb, head, node)
-+#define sctp_for_each_hentry(ep, head) \
-+	hlist_for_each_entry(ep, head, node)
  
- /* Is a socket of this style? */
- #define sctp_style(sk, style) __sctp_style((sk), (SCTP_SOCKET_##style))
-diff --git a/include/net/sctp/structs.h b/include/net/sctp/structs.h
-index 48cbf3352042f..146d46a44b439 100644
---- a/include/net/sctp/structs.h
-+++ b/include/net/sctp/structs.h
-@@ -1224,10 +1224,6 @@ enum sctp_endpoint_type {
-  */
+--- a/fs/btrfs/file.c
++++ b/fs/btrfs/file.c
+@@ -1983,22 +1983,38 @@ relock:
+ 	 * So here we disable page faults in the iov_iter and then retry if we
+ 	 * got -EFAULT, faulting in the pages before the retry.
+ 	 */
++again:
+ 	from->nofault = true;
+ 	dio = __iomap_dio_rw(iocb, from, &btrfs_dio_iomap_ops, &btrfs_dio_ops,
+ 			     IOMAP_DIO_PARTIAL, written);
+ 	from->nofault = false;
  
- struct sctp_ep_common {
--	/* Fields to help us manage our entries in the hash tables. */
--	struct hlist_node node;
--	int hashent;
+-	/*
+-	 * iomap_dio_complete() will call btrfs_sync_file() if we have a dsync
+-	 * iocb, and that needs to lock the inode. So unlock it before calling
+-	 * iomap_dio_complete() to avoid a deadlock.
+-	 */
+-	btrfs_inode_unlock(inode, ilock_flags);
 -
- 	/* Runtime type information.  What kind of endpoint is this? */
- 	enum sctp_endpoint_type type;
- 
-@@ -1279,6 +1275,10 @@ struct sctp_endpoint {
- 	/* Common substructure for endpoint and association. */
- 	struct sctp_ep_common base;
- 
-+	/* Fields to help us manage our entries in the hash tables. */
-+	struct hlist_node node;
-+	int hashent;
+-	if (IS_ERR_OR_NULL(dio))
++	if (IS_ERR_OR_NULL(dio)) {
+ 		err = PTR_ERR_OR_ZERO(dio);
+-	else
++	} else {
++		struct btrfs_file_private stack_private = { 0 };
++		struct btrfs_file_private *private;
++		const bool have_private = (file->private_data != NULL);
 +
- 	/* Associations: A list of current associations and mappings
- 	 *	      to the data consumers for each association. This
- 	 *	      may be in the form of a hash table or other
-diff --git a/net/sctp/input.c b/net/sctp/input.c
-index c306cb25f5246..87a69335e5521 100644
---- a/net/sctp/input.c
-+++ b/net/sctp/input.c
-@@ -722,23 +722,21 @@ static int __sctp_hash_endpoint(struct sctp_endpoint *ep)
- 	struct sock *sk = ep->base.sk;
- 	struct net *net = sock_net(sk);
- 	struct sctp_hashbucket *head;
--	struct sctp_ep_common *epb;
++		if (!have_private)
++			file->private_data = &stack_private;
++
++		/*
++		 * If we have a synchoronous write, we must make sure the fsync
++		 * triggered by the iomap_dio_complete() call below doesn't
++		 * deadlock on the inode lock - we are already holding it and we
++		 * can't call it after unlocking because we may need to complete
++		 * partial writes due to the input buffer (or parts of it) not
++		 * being already faulted in.
++		 */
++		private = file->private_data;
++		private->fsync_skip_inode_lock = true;
+ 		err = iomap_dio_complete(dio);
++		private->fsync_skip_inode_lock = false;
++
++		if (!have_private)
++			file->private_data = NULL;
++	}
  
--	epb = &ep->base;
--	epb->hashent = sctp_ep_hashfn(net, epb->bind_addr.port);
--	head = &sctp_ep_hashtable[epb->hashent];
-+	ep->hashent = sctp_ep_hashfn(net, ep->base.bind_addr.port);
-+	head = &sctp_ep_hashtable[ep->hashent];
- 
- 	if (sk->sk_reuseport) {
- 		bool any = sctp_is_ep_boundall(sk);
--		struct sctp_ep_common *epb2;
-+		struct sctp_endpoint *ep2;
- 		struct list_head *list;
- 		int cnt = 0, err = 1;
- 
- 		list_for_each(list, &ep->base.bind_addr.address_list)
- 			cnt++;
- 
--		sctp_for_each_hentry(epb2, &head->chain) {
--			struct sock *sk2 = epb2->sk;
-+		sctp_for_each_hentry(ep2, &head->chain) {
-+			struct sock *sk2 = ep2->base.sk;
- 
- 			if (!net_eq(sock_net(sk2), net) || sk2 == sk ||
- 			    !uid_eq(sock_i_uid(sk2), sock_i_uid(sk)) ||
-@@ -765,7 +763,7 @@ static int __sctp_hash_endpoint(struct sctp_endpoint *ep)
- 	}
- 
- 	write_lock(&head->lock);
--	hlist_add_head(&epb->node, &head->chain);
-+	hlist_add_head(&ep->node, &head->chain);
- 	write_unlock(&head->lock);
- 	return 0;
- }
-@@ -787,19 +785,16 @@ static void __sctp_unhash_endpoint(struct sctp_endpoint *ep)
- {
- 	struct sock *sk = ep->base.sk;
- 	struct sctp_hashbucket *head;
--	struct sctp_ep_common *epb;
- 
--	epb = &ep->base;
-+	ep->hashent = sctp_ep_hashfn(sock_net(sk), ep->base.bind_addr.port);
- 
--	epb->hashent = sctp_ep_hashfn(sock_net(sk), epb->bind_addr.port);
--
--	head = &sctp_ep_hashtable[epb->hashent];
-+	head = &sctp_ep_hashtable[ep->hashent];
- 
- 	if (rcu_access_pointer(sk->sk_reuseport_cb))
- 		reuseport_detach_sock(sk);
- 
- 	write_lock(&head->lock);
--	hlist_del_init(&epb->node);
-+	hlist_del_init(&ep->node);
- 	write_unlock(&head->lock);
- }
- 
-@@ -832,7 +827,6 @@ static struct sctp_endpoint *__sctp_rcv_lookup_endpoint(
- 					const union sctp_addr *paddr)
- {
- 	struct sctp_hashbucket *head;
--	struct sctp_ep_common *epb;
- 	struct sctp_endpoint *ep;
- 	struct sock *sk;
- 	__be16 lport;
-@@ -842,8 +836,7 @@ static struct sctp_endpoint *__sctp_rcv_lookup_endpoint(
- 	hash = sctp_ep_hashfn(net, ntohs(lport));
- 	head = &sctp_ep_hashtable[hash];
- 	read_lock(&head->lock);
--	sctp_for_each_hentry(epb, &head->chain) {
--		ep = sctp_ep(epb);
-+	sctp_for_each_hentry(ep, &head->chain) {
- 		if (sctp_endpoint_is_match(ep, net, laddr))
- 			goto hit;
- 	}
-diff --git a/net/sctp/proc.c b/net/sctp/proc.c
-index 963b94517ec20..ec00ee75d59a6 100644
---- a/net/sctp/proc.c
-+++ b/net/sctp/proc.c
-@@ -161,7 +161,6 @@ static void *sctp_eps_seq_next(struct seq_file *seq, void *v, loff_t *pos)
- static int sctp_eps_seq_show(struct seq_file *seq, void *v)
- {
- 	struct sctp_hashbucket *head;
--	struct sctp_ep_common *epb;
- 	struct sctp_endpoint *ep;
- 	struct sock *sk;
- 	int    hash = *(loff_t *)v;
-@@ -171,18 +170,17 @@ static int sctp_eps_seq_show(struct seq_file *seq, void *v)
- 
- 	head = &sctp_ep_hashtable[hash];
- 	read_lock_bh(&head->lock);
--	sctp_for_each_hentry(epb, &head->chain) {
--		ep = sctp_ep(epb);
--		sk = epb->sk;
-+	sctp_for_each_hentry(ep, &head->chain) {
-+		sk = ep->base.sk;
- 		if (!net_eq(sock_net(sk), seq_file_net(seq)))
- 			continue;
- 		seq_printf(seq, "%8pK %8pK %-3d %-3d %-4d %-5d %5u %5lu ", ep, sk,
- 			   sctp_sk(sk)->type, sk->sk_state, hash,
--			   epb->bind_addr.port,
-+			   ep->base.bind_addr.port,
- 			   from_kuid_munged(seq_user_ns(seq), sock_i_uid(sk)),
- 			   sock_i_ino(sk));
- 
--		sctp_seq_dump_local_addrs(seq, epb);
-+		sctp_seq_dump_local_addrs(seq, &ep->base);
- 		seq_printf(seq, "\n");
- 	}
- 	read_unlock_bh(&head->lock);
-diff --git a/net/sctp/socket.c b/net/sctp/socket.c
-index c188a0acfa594..614130ff6ba06 100644
---- a/net/sctp/socket.c
-+++ b/net/sctp/socket.c
-@@ -5365,14 +5365,14 @@ int sctp_for_each_endpoint(int (*cb)(struct sctp_endpoint *, void *),
- 			   void *p) {
- 	int err = 0;
- 	int hash = 0;
--	struct sctp_ep_common *epb;
-+	struct sctp_endpoint *ep;
- 	struct sctp_hashbucket *head;
- 
- 	for (head = sctp_ep_hashtable; hash < sctp_ep_hashsize;
- 	     hash++, head++) {
- 		read_lock_bh(&head->lock);
--		sctp_for_each_hentry(epb, &head->chain) {
--			err = cb(sctp_ep(epb), p);
-+		sctp_for_each_hentry(ep, &head->chain) {
-+			err = cb(ep, p);
- 			if (err)
- 				break;
+ 	/* No increment (+=) because iomap returns a cumulative value. */
+ 	if (err > 0)
+@@ -2025,10 +2041,12 @@ relock:
+ 		} else {
+ 			fault_in_iov_iter_readable(from, left);
+ 			prev_left = left;
+-			goto relock;
++			goto again;
  		}
--- 
-2.43.0
-
+ 	}
+ 
++	btrfs_inode_unlock(inode, ilock_flags);
++
+ 	/* If 'err' is -ENOTBLK then it means we must fallback to buffered IO. */
+ 	if ((err < 0 && err != -ENOTBLK) || !iov_iter_count(from))
+ 		goto out;
+@@ -2177,6 +2195,7 @@ static inline bool skip_inode_logging(co
+  */
+ int btrfs_sync_file(struct file *file, loff_t start, loff_t end, int datasync)
+ {
++	struct btrfs_file_private *private = file->private_data;
+ 	struct dentry *dentry = file_dentry(file);
+ 	struct inode *inode = d_inode(dentry);
+ 	struct btrfs_fs_info *fs_info = btrfs_sb(inode->i_sb);
+@@ -2186,6 +2205,7 @@ int btrfs_sync_file(struct file *file, l
+ 	int ret = 0, err;
+ 	u64 len;
+ 	bool full_sync;
++	const bool skip_ilock = (private ? private->fsync_skip_inode_lock : false);
+ 
+ 	trace_btrfs_sync_file(file, datasync);
+ 
+@@ -2213,7 +2233,10 @@ int btrfs_sync_file(struct file *file, l
+ 	if (ret)
+ 		goto out;
+ 
+-	btrfs_inode_lock(inode, BTRFS_ILOCK_MMAP);
++	if (skip_ilock)
++		down_write(&BTRFS_I(inode)->i_mmap_lock);
++	else
++		btrfs_inode_lock(inode, BTRFS_ILOCK_MMAP);
+ 
+ 	atomic_inc(&root->log_batch);
+ 
+@@ -2245,7 +2268,10 @@ int btrfs_sync_file(struct file *file, l
+ 	 */
+ 	ret = start_ordered_ops(inode, start, end);
+ 	if (ret) {
+-		btrfs_inode_unlock(inode, BTRFS_ILOCK_MMAP);
++		if (skip_ilock)
++			up_write(&BTRFS_I(inode)->i_mmap_lock);
++		else
++			btrfs_inode_unlock(inode, BTRFS_ILOCK_MMAP);
+ 		goto out;
+ 	}
+ 
+@@ -2337,7 +2363,10 @@ int btrfs_sync_file(struct file *file, l
+ 	 * file again, but that will end up using the synchronization
+ 	 * inside btrfs_sync_log to keep things safe.
+ 	 */
+-	btrfs_inode_unlock(inode, BTRFS_ILOCK_MMAP);
++	if (skip_ilock)
++		up_write(&BTRFS_I(inode)->i_mmap_lock);
++	else
++		btrfs_inode_unlock(inode, BTRFS_ILOCK_MMAP);
+ 
+ 	if (ret == BTRFS_NO_LOG_SYNC) {
+ 		ret = btrfs_end_transaction(trans);
 
 
 
