@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-68530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68481-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3A279532CA
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:10:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E5A8953288
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:07:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A94E91F219CC
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:10:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 139BC280C95
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:07:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 916101A2C35;
-	Thu, 15 Aug 2024 14:07:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3DA71A00EC;
+	Thu, 15 Aug 2024 14:05:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bYWzNvwz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sawvZoGm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5003619F473;
-	Thu, 15 Aug 2024 14:07:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 911A01A00F5;
+	Thu, 15 Aug 2024 14:05:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730860; cv=none; b=e/CwhFCcwita+k3O3e+I/6ShclRTie5FeJkRMQRgrMBn1Q/lW503YVQ/Q7MzUlIMUOVi1TRn2+2HJdJSspGiBrNoE272WeZRbY85xRnl1SZlURws2Spe0uc/i7WH58k7v4VZFuA+7tG54Hw/nzvKKnJZ7JVPq7ilu6HLevCsirg=
+	t=1723730706; cv=none; b=WeuCWrmkrjFPqYyCJepk3XdvzxhKGtrHpWmZ2+tMSnKKfRYV0H4v42h6VUWyrNH74U2qaRLFRXzfP57n1JJw1FmS09YdDsMx8+iCjJ1Bkji+g0qeJkF4SiGcaC+S4vtCMcIbotuCkqcVx0Yw9EMIcKEmRNB/MBwNYB9yMzURFxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730860; c=relaxed/simple;
-	bh=QGQLrFZHg2afaNtFk0a8m8MF/2zMnPbWzUR3GIcOrQM=;
+	s=arc-20240116; t=1723730706; c=relaxed/simple;
+	bh=zxh6cJhs7xCBjgNYZo/02HETLXRP/BGMQ5q2Z6oXCBo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RcJaaP4dTbpMuvYsl3eacFtu96GmDWYugkUAfkITca7YgD2FXSRZrJCXoZPX1P2cVS9gjXZF7kQYZfCw+rgZog+sQae+aFeI8vysl7MRmuODluF9phE1Rfx+i9ZI8SwXfJRT0KoMJ7NX6I65jFLEINDP7ES9JsOCwsmM8hyfIlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bYWzNvwz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C31F0C4AF0C;
-	Thu, 15 Aug 2024 14:07:39 +0000 (UTC)
+	 MIME-Version; b=bQoxFJQTJX8SHMcEenKSsmUqgdSL/vOMjDeeDcV110hg3vd0m3Nr1/nPd0cRrBc9vyNDHMmeismg0YumtSLiSg9AO7uVekzzS2S12Ndf53SL3paWrbOCbSz+Yu22SPjsavnX4XJSzVfzpvsOtGoiOhgZZ9kPcRF/UBUSuFIrvFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sawvZoGm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 019E9C32786;
+	Thu, 15 Aug 2024 14:05:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730860;
-	bh=QGQLrFZHg2afaNtFk0a8m8MF/2zMnPbWzUR3GIcOrQM=;
+	s=korg; t=1723730706;
+	bh=zxh6cJhs7xCBjgNYZo/02HETLXRP/BGMQ5q2Z6oXCBo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bYWzNvwzgTJk3vzCobCZGO63N/bnhRzNrSKwonkmvcE4xjDlSEa2v7o4rGEiko5Bh
-	 n1mtWfly4ymRLlPZG24czkoIe9eyT/c69gCnz7lWtbAxZYDps5CKDRE9NpJo+9pgls
-	 8fXoCzO+u4zRf90jsa1zrg//wg0YIKNw2ty2qcm4=
+	b=sawvZoGmvqF/n2z0JZFU4q7Xw75zhaQUYyjYEN+N6Dx9a5Lv2YhB19qJpl1c7TfnW
+	 /bG/hBAbuiN4/mt52KA6dK1KsncB0WQGrYzw9YApiTtXsSunxpn4r4/+mg4XtY/AQm
+	 4bGEwKi1iJl7PtNvMM84RIHP0cQNNiZpfpqrr0nE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.6 16/67] nfsd: make svc_stat per-network namespace instead of global
+	Richard Zhu <hongxing.zhu@nxp.com>,
+	Jisheng Zhang <jszhang@kernel.org>,
+	Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+	Bjorn Helgaas <bhelgaas@google.com>
+Subject: [PATCH 5.15 472/484] PCI: dwc: Restore MSI Receiver mask during resume
 Date: Thu, 15 Aug 2024 15:25:30 +0200
-Message-ID: <20240815131838.957086898@linuxfoundation.org>
+Message-ID: <20240815131959.707523521@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131838.311442229@linuxfoundation.org>
-References: <20240815131838.311442229@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,116 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Jisheng Zhang <jszhang@kernel.org>
 
-[ Upstream commit 16fb9808ab2c99979f081987752abcbc5b092eac ]
+commit 815953dc2011ad7a34de355dfa703dcef1085219 upstream
 
-The final bit of stats that is global is the rpc svc_stat.  Move this
-into the nfsd_net struct and use that everywhere instead of the global
-struct.  Remove the unused global struct.
+If a host that uses the IP's integrated MSI Receiver lost power
+during suspend, we call dw_pcie_setup_rc() to reinit the RC. But
+dw_pcie_setup_rc() always sets pp->irq_mask[ctrl] to ~0, so the mask
+register is always set as 0xffffffff incorrectly, thus the MSI can't
+work after resume.
 
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fix this issue by moving pp->irq_mask[ctrl] initialization to
+dw_pcie_host_init() so we can correctly set the mask reg during both
+boot and resume.
+
+Tested-by: Richard Zhu <hongxing.zhu@nxp.com>
+Link: https://lore.kernel.org/r/20211226074019.2556-1-jszhang@kernel.org
+Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
+Signed-off-by: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/netns.h  |    4 ++++
- fs/nfsd/nfsctl.c |    2 ++
- fs/nfsd/nfssvc.c |    2 +-
- fs/nfsd/stats.c  |   10 ++++------
- fs/nfsd/stats.h  |    2 --
- 5 files changed, 11 insertions(+), 9 deletions(-)
+ drivers/pci/controller/dwc/pcie-designware-host.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/fs/nfsd/netns.h
-+++ b/fs/nfsd/netns.h
-@@ -14,6 +14,7 @@
- #include <linux/nfs4.h>
- #include <linux/percpu_counter.h>
- #include <linux/siphash.h>
-+#include <linux/sunrpc/stats.h>
- 
- /* Hash tables for nfs4_clientid state */
- #define CLIENT_HASH_BITS                 4
-@@ -184,6 +185,9 @@ struct nfsd_net {
- 	/* Per-netns stats counters */
- 	struct percpu_counter    counter[NFSD_STATS_COUNTERS_NUM];
- 
-+	/* sunrpc svc stats */
-+	struct svc_stat          nfsd_svcstats;
+--- a/drivers/pci/controller/dwc/pcie-designware-host.c
++++ b/drivers/pci/controller/dwc/pcie-designware-host.c
+@@ -352,6 +352,12 @@ int dw_pcie_host_init(struct pcie_port *
+ 			if (ret < 0)
+ 				return ret;
+ 		} else if (pp->has_msi_ctrl) {
++			u32 ctrl, num_ctrls;
 +
- 	/* longest hash chain seen */
- 	unsigned int             longest_chain;
- 
---- a/fs/nfsd/nfsctl.c
-+++ b/fs/nfsd/nfsctl.c
-@@ -1527,6 +1527,8 @@ static __net_init int nfsd_net_init(stru
- 	retval = nfsd_stat_counters_init(nn);
- 	if (retval)
- 		goto out_repcache_error;
-+	memset(&nn->nfsd_svcstats, 0, sizeof(nn->nfsd_svcstats));
-+	nn->nfsd_svcstats.program = &nfsd_program;
- 	nn->nfsd_versions = NULL;
- 	nn->nfsd4_minorversions = NULL;
- 	nfsd4_init_leases_net(nn);
---- a/fs/nfsd/nfssvc.c
-+++ b/fs/nfsd/nfssvc.c
-@@ -670,7 +670,7 @@ int nfsd_create_serv(struct net *net)
- 	if (nfsd_max_blksize == 0)
- 		nfsd_max_blksize = nfsd_get_default_max_blksize();
- 	nfsd_reset_versions(nn);
--	serv = svc_create_pooled(&nfsd_program, &nfsd_svcstats,
-+	serv = svc_create_pooled(&nfsd_program, &nn->nfsd_svcstats,
- 				 nfsd_max_blksize, nfsd);
- 	if (serv == NULL)
- 		return -ENOMEM;
---- a/fs/nfsd/stats.c
-+++ b/fs/nfsd/stats.c
-@@ -27,10 +27,6 @@
- 
- #include "nfsd.h"
- 
--struct svc_stat		nfsd_svcstats = {
--	.program	= &nfsd_program,
--};
--
- static int nfsd_show(struct seq_file *seq, void *v)
- {
- 	struct net *net = pde_data(file_inode(seq->file));
-@@ -56,7 +52,7 @@ static int nfsd_show(struct seq_file *se
- 	seq_puts(seq, "\nra 0 0 0 0 0 0 0 0 0 0 0 0\n");
- 
- 	/* show my rpc info */
--	svc_seq_show(seq, &nfsd_svcstats);
-+	svc_seq_show(seq, &nn->nfsd_svcstats);
- 
- #ifdef CONFIG_NFSD_V4
- 	/* Show count for individual nfsv4 operations */
-@@ -121,7 +117,9 @@ void nfsd_stat_counters_destroy(struct n
- 
- void nfsd_proc_stat_init(struct net *net)
- {
--	svc_proc_register(net, &nfsd_svcstats, &nfsd_proc_ops);
-+	struct nfsd_net *nn = net_generic(net, nfsd_net_id);
++			num_ctrls = pp->num_vectors / MAX_MSI_IRQS_PER_CTRL;
++			for (ctrl = 0; ctrl < num_ctrls; ctrl++)
++				pp->irq_mask[ctrl] = ~0;
 +
-+	svc_proc_register(net, &nn->nfsd_svcstats, &nfsd_proc_ops);
- }
+ 			if (!pp->msi_irq) {
+ 				pp->msi_irq = platform_get_irq_byname_optional(pdev, "msi");
+ 				if (pp->msi_irq < 0) {
+@@ -550,7 +556,6 @@ void dw_pcie_setup_rc(struct pcie_port *
  
- void nfsd_proc_stat_shutdown(struct net *net)
---- a/fs/nfsd/stats.h
-+++ b/fs/nfsd/stats.h
-@@ -10,8 +10,6 @@
- #include <uapi/linux/nfsd/stats.h>
- #include <linux/percpu_counter.h>
- 
--extern struct svc_stat		nfsd_svcstats;
--
- int nfsd_percpu_counters_init(struct percpu_counter *counters, int num);
- void nfsd_percpu_counters_reset(struct percpu_counter *counters, int num);
- void nfsd_percpu_counters_destroy(struct percpu_counter *counters, int num);
+ 		/* Initialize IRQ Status array */
+ 		for (ctrl = 0; ctrl < num_ctrls; ctrl++) {
+-			pp->irq_mask[ctrl] = ~0;
+ 			dw_pcie_writel_dbi(pci, PCIE_MSI_INTR0_MASK +
+ 					    (ctrl * MSI_REG_CTRL_BLOCK_SIZE),
+ 					    pp->irq_mask[ctrl]);
 
 
 
