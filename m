@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-67878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68330-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DD6D952F8A
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:34:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F38E39531B1
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:57:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 709201C2455E
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:34:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9CFED1F22203
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:57:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A5EF1714AE;
-	Thu, 15 Aug 2024 13:33:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7601719DF9C;
+	Thu, 15 Aug 2024 13:57:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pYarmvsH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2vp3EPbK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52B7C19E7FA;
-	Thu, 15 Aug 2024 13:33:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32A9E17C9A9;
+	Thu, 15 Aug 2024 13:57:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723728805; cv=none; b=eHeKYYAuveao8MIsFxGzV45qddDnVa+v7s/u5v2BVWFRPnSc0h/hggrjJ0Y4/Yvnu308EC3USXY8p+jdvKXITWq7gJWoiikTHesz3rj8+5iiLonybeQ1wi+lbCT40xqpZ6FIojQl0JDVPYen5HbwHtb0k4PkrxYXg++wiRvG+BE=
+	t=1723730225; cv=none; b=qN6Mtam3wJoQUfYZ26mrKjOx48vG7MZH3z+YaXpv/g0yz4qR1OgjLU4hPsVw3r51G3d0s9daXjHHI8X6P5n7hkZT8lG2/uEM6ps7y/6ECnwtWhc6qQmOWZBHLn/YkD0Pp0HtBSxodlPHZAnaOpWuZSLAyjQfsm4LZiRuwlq3138=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723728805; c=relaxed/simple;
-	bh=CMPSsIbh7fH7HXS4bvasSm9d2LN+XMhqgvtOBRiPP0Y=;
+	s=arc-20240116; t=1723730225; c=relaxed/simple;
+	bh=IvQ4+4PkgOnA/Hv1Il4MrJnBclbpOT4UcKi3PFrGO0o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bKwjq4Q3gE74T+a8ZvHMtmUOgB3wFzqWIgiD9VrvRiXpAZHmCkIrUAtdJdVSV/u1Bec8e6IU7bm2Zcb59Vw4lNMiAaXHRRNkqZg+U4qtZkV1p0HcSCuNEh3br4Td3O4rJRPmrVlAQyAAL1iC0iKjTEkHamtYtUU5Rg1dELbQS0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pYarmvsH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0612C32786;
-	Thu, 15 Aug 2024 13:33:24 +0000 (UTC)
+	 MIME-Version; b=Q1PyhE74X8ajY9IgA/TCYC/fZKrJRC5AJPXQOgCj/NrX6WrzwC34VZcC/lr4E54Zmdlk7rOi0qTx84+wR0+/2A3RNkjLXj1olt4+6RES92Msg2bx2EemKDtWhL8sjj5aRrQcjab0GS8M1LDRTmAVZJ7ZYpCzQQ/FgXyki8fgyz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2vp3EPbK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0801C4AF0C;
+	Thu, 15 Aug 2024 13:57:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723728805;
-	bh=CMPSsIbh7fH7HXS4bvasSm9d2LN+XMhqgvtOBRiPP0Y=;
+	s=korg; t=1723730225;
+	bh=IvQ4+4PkgOnA/Hv1Il4MrJnBclbpOT4UcKi3PFrGO0o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pYarmvsHK3LavPRPo9WNCAh5bN1tYXOEgdZPcdU6Hbi2inGIIXBt4pSvjLlJk974w
-	 zpVcOs1r1u9J4FzoH2soZcWhF7lTDwAInwIN2RlTvZUddTit9D0FtNqyIddYMEJzt8
-	 b5ZD2Aab/Hd41RTznzAXZapKG8czyA1LdVAjhL+s=
+	b=2vp3EPbKGZbJlLzRwLD4gtxIFpe8WJAGTqk1EnOG44Hhg5ghlgPpl1fSAfdDX0Ade
+	 9bvNWDob87wl36C34A3DqlutqLux4IX9vV8YomaJm78pa7/+XJiQvIbsirZZ0ifJpJ
+	 5ZtVsVLRMFq7Ja1+EONG8sKrHDorrJv7W9XThSJ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ross Lagerwall <ross.lagerwall@citrix.com>,
-	Alain Knaff <alain@knaff.lu>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 4.19 084/196] decompress_bunzip2: fix rare decompression failure
+	Tatsunosuke Tobita <tatsunosuke.tobita@wacom.com>,
+	Tatsunosuke Tobita <tatsunosuke.wacom@gmail.com>,
+	Ping Cheng <ping.cheng@wacom.com>,
+	Benjamin Tissoires <bentiss@kernel.org>,
+	stable@kernel.org
+Subject: [PATCH 5.15 343/484] HID: wacom: Modify pen IDs
 Date: Thu, 15 Aug 2024 15:23:21 +0200
-Message-ID: <20240815131855.295105292@linuxfoundation.org>
+Message-ID: <20240815131954.668864263@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ross Lagerwall <ross.lagerwall@citrix.com>
+From: Tatsunosuke Tobita <tatsunosuke.tobita@wacom.com>
 
-commit bf6acd5d16057d7accbbb1bf7dc6d8c56eeb4ecc upstream.
+commit f0d17d696dfce77c9abc830e4ac2d677890a2dad upstream.
 
-The decompression code parses a huffman tree and counts the number of
-symbols for a given bit length.  In rare cases, there may be >= 256
-symbols with a given bit length, causing the unsigned char to overflow.
-This causes a decompression failure later when the code tries and fails to
-find the bit length for a given symbol.
+The pen ID, 0x80842, was not the correct ID for wacom driver to
+treat. The ID was corrected to 0x8842.
+Also, 0x4200 was not the expected ID used on any Wacom device.
+Therefore, 0x4200 was removed.
 
-Since the maximum number of symbols is 258, use unsigned short instead.
-
-Link: https://lkml.kernel.org/r/20240717162016.1514077-1-ross.lagerwall@citrix.com
-Fixes: bc22c17e12c1 ("bzip2/lzma: library support for gzip, bzip2 and lzma decompression")
-Signed-off-by: Ross Lagerwall <ross.lagerwall@citrix.com>
-Cc: Alain Knaff <alain@knaff.lu>
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Tatsunosuke Tobita <tatsunosuke.tobita@wacom.com>
+Signed-off-by: Tatsunosuke Tobita <tatsunosuke.wacom@gmail.com>
+Fixes: bfdc750c4cb2 ("HID: wacom: add three styli to wacom_intuos_get_tool_type")
+Cc: stable@kernel.org #6.2
+Reviewed-by: Ping Cheng <ping.cheng@wacom.com>
+Link: https://patch.msgid.link/20240709055729.17158-1-tatsunosuke.wacom@gmail.com
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/decompress_bunzip2.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/hid/wacom_wac.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/lib/decompress_bunzip2.c
-+++ b/lib/decompress_bunzip2.c
-@@ -232,7 +232,8 @@ static int INIT get_next_block(struct bu
- 	   RUNB) */
- 	symCount = symTotal+2;
- 	for (j = 0; j < groupCount; j++) {
--		unsigned char length[MAX_SYMBOLS], temp[MAX_HUFCODE_BITS+1];
-+		unsigned char length[MAX_SYMBOLS];
-+		unsigned short temp[MAX_HUFCODE_BITS+1];
- 		int	minLen,	maxLen, pp;
- 		/* Read Huffman code lengths for each symbol.  They're
- 		   stored in a way similar to mtf; record a starting
+--- a/drivers/hid/wacom_wac.c
++++ b/drivers/hid/wacom_wac.c
+@@ -714,13 +714,12 @@ static int wacom_intuos_get_tool_type(in
+ 	case 0x8e2: /* IntuosHT2 pen */
+ 	case 0x022:
+ 	case 0x200: /* Pro Pen 3 */
+-	case 0x04200: /* Pro Pen 3 */
+ 	case 0x10842: /* MobileStudio Pro Pro Pen slim */
+ 	case 0x14802: /* Intuos4/5 13HD/24HD Classic Pen */
+ 	case 0x16802: /* Cintiq 13HD Pro Pen */
+ 	case 0x18802: /* DTH2242 Pen */
+ 	case 0x10802: /* Intuos4/5 13HD/24HD General Pen */
+-	case 0x80842: /* Intuos Pro and Cintiq Pro 3D Pen */
++	case 0x8842: /* Intuos Pro and Cintiq Pro 3D Pen */
+ 		tool_type = BTN_TOOL_PEN;
+ 		break;
+ 
 
 
 
