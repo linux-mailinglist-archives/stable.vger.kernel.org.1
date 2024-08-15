@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-68434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4421395324A
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:05:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 938E89533FA
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:21:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C2FE6B23DF4
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:04:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 450251F27F0E
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:21:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BB9B1A00DF;
-	Thu, 15 Aug 2024 14:02:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5A5519FA99;
+	Thu, 15 Aug 2024 14:21:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZgElZeHB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BiLbVwuD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29AEB44376;
-	Thu, 15 Aug 2024 14:02:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 943D11AC8BB;
+	Thu, 15 Aug 2024 14:21:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730556; cv=none; b=gq1CF5cZh/9qnFqWXcRD+JPB8ZJ/CDUvu649l9fL02nuFtpxReaFwnVn5lgfZjyTKVhFugFLwX1HW4iFOB/DeQTypOPM2xWnVUCL8DZW8tmerJqGWgrdiOjb6EQij/8LeKxlOfJG9qRt5qEzEcE/d2fcQbbh65spUDczQaJrlvk=
+	t=1723731675; cv=none; b=unRmr5nY+9wtGfdN1vv6GWnzjb+Xc60lPHrMKCyeQODjaeF6X1kMxStZbVFH9K8hGZ7z5Mmi3hdsf8imUT2GeKY3q5xaP7S2eU4ESBs7fjJF58jFhA5ay7Fe8Uo+aKpr/jDmtqTVSHvJDgPna0FxQ6QI0pb+g79OM83Pxz2gfBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730556; c=relaxed/simple;
-	bh=e421JMG2QkD386mC1/ilGUF34IyMEVQ4k/Zidb8B8ho=;
+	s=arc-20240116; t=1723731675; c=relaxed/simple;
+	bh=ybZAu8PIbEplAixliZVH9Oo88vB0p5hBXUOY/eVuq90=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZjbnUaO+mYnDf837akDX5Fv5BHKFY5BD2jAmytrmkQyh8/W8R/XiJ9kkUbIO56KOwyyNOHi2wo9laVtAKZobQEnGPixQX7W9TzLRH1uWuWW+lXtp5j12DaFZxMBwLJ5ZNpiWu6PVfvWI0VCoVptchEK+lRwwJnnEMb22HdzXEdw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZgElZeHB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E0B9C32786;
-	Thu, 15 Aug 2024 14:02:35 +0000 (UTC)
+	 MIME-Version; b=VxtPK8XdM/LmzYZPy0IkyhFCBrZAAT/JHgPXpILRgBNRpYQ/xolqxEi4qWQi56qZVQWEAauSi9GrhFp5BvGScXuOig6Eq/YS+s78YMAlqIPE3Hl7oRwCp0ZdOg3xY/rz/eKwMevknI5htCvAU7x4sgujltX4Qy3E7J6/LDnhp3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BiLbVwuD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0699FC32786;
+	Thu, 15 Aug 2024 14:21:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730556;
-	bh=e421JMG2QkD386mC1/ilGUF34IyMEVQ4k/Zidb8B8ho=;
+	s=korg; t=1723731675;
+	bh=ybZAu8PIbEplAixliZVH9Oo88vB0p5hBXUOY/eVuq90=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZgElZeHBe3s1lTYsol9SCGDLm0iVCHq43Yq47uhI9bPUXLeB6EOfdF4L2iQpha4B/
-	 nfSqf/YQDzT4NPCT6e0+8eRD6ygcwJyNbaCaEEK5fKXxuetIr+HEsNqP9iHfM7t5tx
-	 mgyxE25aRJNpcDRzdrYuqyXeQ9fC2hHh/EFdVqQc=
+	b=BiLbVwuD7iD2FAGwzdCZ2ecV34PK0aoZcGhCZ9EYhYt+7kR80M2+LJbEngJM2JtW8
+	 dYmJ6h4rEDpKzVv5pnEG9JjcA3Br413u5tpa8sM2zK96eIz5QZS/qbKB67ojljRh31
+	 VTYCe/RNRGTAzshits86YoDF6Kkz21sOgRAw2ZOk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andi Kleen <ak@linux.intel.com>,
-	Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 5.15 446/484] x86/mtrr: Check if fixed MTRRs exist before saving them
+	Dong Aisheng <aisheng.dong@nxp.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Bjorn Andersson <bjorn.andersson@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 171/259] remoteproc: imx_rproc: Fix ignoring mapping vdev regions
 Date: Thu, 15 Aug 2024 15:25:04 +0200
-Message-ID: <20240815131958.686299944@linuxfoundation.org>
+Message-ID: <20240815131909.382627321@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andi Kleen <ak@linux.intel.com>
+From: Dong Aisheng <aisheng.dong@nxp.com>
 
-commit 919f18f961c03d6694aa726c514184f2311a4614 upstream.
+[ Upstream commit afe670e23af91d8a74a8d7049f6e0984bbf6ea11 ]
 
-MTRRs have an obsolete fixed variant for fine grained caching control
-of the 640K-1MB region that uses separate MSRs. This fixed variant has
-a separate capability bit in the MTRR capability MSR.
+vdev regions are typically named vdev0buffer, vdev0ring0, vdev0ring1 and
+etc. Change to strncmp to cover them all.
 
-So far all x86 CPUs which support MTRR have this separate bit set, so it
-went unnoticed that mtrr_save_state() does not check the capability bit
-before accessing the fixed MTRR MSRs.
-
-Though on a CPU that does not support the fixed MTRR capability this
-results in a #GP.  The #GP itself is harmless because the RDMSR fault is
-handled gracefully, but results in a WARN_ON().
-
-Add the missing capability check to prevent this.
-
-Fixes: 2b1f6278d77c ("[PATCH] x86: Save the MTRRs of the BSP before booting an AP")
-Signed-off-by: Andi Kleen <ak@linux.intel.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20240808000244.946864-1-ak@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8f2d8961640f ("remoteproc: imx_rproc: ignore mapping vdev regions")
+Reviewed-and-tested-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Dong Aisheng <aisheng.dong@nxp.com>
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Cc: stable <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20210910090621.3073540-5-peng.fan@oss.nxp.com
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Signed-off-by: Bjorn Andersson <bjorn.andersson@linaro.org>
+Stable-dep-of: 2fa26ca8b786 ("remoteproc: imx_rproc: Skip over memory region when node value is NULL")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/mtrr/mtrr.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/remoteproc/imx_rproc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/x86/kernel/cpu/mtrr/mtrr.c
-+++ b/arch/x86/kernel/cpu/mtrr/mtrr.c
-@@ -816,7 +816,7 @@ void mtrr_save_state(void)
- {
- 	int first_cpu;
+diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
+index 05b724fdca591..0e6246678bc2b 100644
+--- a/drivers/remoteproc/imx_rproc.c
++++ b/drivers/remoteproc/imx_rproc.c
+@@ -286,8 +286,8 @@ static int imx_rproc_addr_init(struct imx_rproc *priv,
+ 		struct resource res;
  
--	if (!mtrr_enabled())
-+	if (!mtrr_enabled() || !mtrr_state.have_fixed)
- 		return;
- 
- 	first_cpu = cpumask_first(cpu_online_mask);
+ 		node = of_parse_phandle(np, "memory-region", a);
+-		/* Not map vdev region */
+-		if (!strcmp(node->name, "vdev"))
++		/* Not map vdevbuffer, vdevring region */
++		if (!strncmp(node->name, "vdev", strlen("vdev")))
+ 			continue;
+ 		err = of_address_to_resource(node, 0, &res);
+ 		if (err) {
+-- 
+2.43.0
+
 
 
 
