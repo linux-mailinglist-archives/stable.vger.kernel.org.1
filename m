@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-69165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68581-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AA739535CF
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:43:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E36795330A
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:13:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1B0B8B295BD
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:43:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 475471F211E2
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:13:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 553431A76A0;
-	Thu, 15 Aug 2024 14:41:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 927671A7067;
+	Thu, 15 Aug 2024 14:10:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cy3BdNh+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fhn67ybl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1294C1A76A2;
-	Thu, 15 Aug 2024 14:41:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F70419FA7E;
+	Thu, 15 Aug 2024 14:10:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732880; cv=none; b=TL7Olvhtd6ch/Ujp5tEE/a6ga04p0MvTLh7uIckkZlxcjuGnx87p/lYWyWEekxsAsZnZmUNySmwRruP65rG/1zHtbReFPuEX4ju0DczM7sCtO8FGVG0k262/pKybp529tjNZ0QNAkkYfjpAFZjSv/uJB49uUKM6YPibjJdYoYAU=
+	t=1723731020; cv=none; b=RZZDo9+p9EU1xqZve0w/ns7l/aD7977MEZSob6BPMvuA6Svzy8KJZKU4x94IcKWvJl9xGlG3oGW6TH/PrjtJ+n6jUYNZHu2AQ7ALpW7XmW4ZRSH40PgCQ3lDDJEp0YzxZoJYsBmUtBD2IIT8rrqk5qXkVIRGcjSmVJczMFNciYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732880; c=relaxed/simple;
-	bh=KoK2yzKQ3RGTVJkGqx0MZMmLc3LVqzzjZaEBLDJtfA0=;
+	s=arc-20240116; t=1723731020; c=relaxed/simple;
+	bh=ugS3K1+nnHkdh08wZUprrJqiLw3HyRIRjsHehbaUJXc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EjCLLWZRcJ/4TTHzpk6F23VTuAbmq8YUBJAFtHsNHj5M7q/I74SYt5U6CNfY7RJivbcivXfnsAEFgc3npLld81Z5d/3G7Yfvwe7nLEJGpiv5rgMQVOynxdsZmpPyAgMj+gZ2q7SedCSZXcZZBKRhjLs53/8m7BNxJaBdw2C45QI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cy3BdNh+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CE58C32786;
-	Thu, 15 Aug 2024 14:41:19 +0000 (UTC)
+	 MIME-Version; b=RWwxNjaeHgh8QZtfGjn1O1dqiFJx9DRQWrNyubx89f+Jyn0ntwUuUTnoINEdjnw1zjnd21A1Hldi0dKH+2rLUh88zsvBNlc5skcwpwCxj519iupRMoBh36khQHtw/HANlHzw4VjRsrqdK32Xl311cjs7qQNVDG3KJpDa3K30oRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fhn67ybl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C2CBC4AF0C;
+	Thu, 15 Aug 2024 14:10:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732879;
-	bh=KoK2yzKQ3RGTVJkGqx0MZMmLc3LVqzzjZaEBLDJtfA0=;
+	s=korg; t=1723731019;
+	bh=ugS3K1+nnHkdh08wZUprrJqiLw3HyRIRjsHehbaUJXc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cy3BdNh+ME+amlpoyNGWJiThYts5H2UbkgvAlaH2+KAXZigHZVCT0vHW0v81rCdde
-	 BmKm2Tw6a1qPORfFzGUXABz8UkT64jVe/M+48Cs/Lt3DUKa0keqd1me9QgvNiHKvyy
-	 Rtg4Zd5bndIQcc1/IzCBIF0DCB2KnkZ1gcJW4ECM=
+	b=Fhn67yblE7jUojzvtiosBcO6jyEmKdc2EeblfRQ98OuuGQXSp8UI0xqtCyLSz4jrh
+	 wKHcHGGQuuTbHG4BCw0e9tUijYOvXepm7NFSsnyMDVCaFUyPY12tZ4/vOmlMWHauz5
+	 FKb4c455GEfx7pw6CzbdAJxLHbX6VbOcS7mPmlN4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Stitt <justinstitt@google.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Miroslav Lichvar <mlichvar@redhat.com>
-Subject: [PATCH 5.10 313/352] ntp: Safeguard against time_constant overflow
-Date: Thu, 15 Aug 2024 15:26:19 +0200
-Message-ID: <20240815131931.556522955@linuxfoundation.org>
+	Raghavendra Rao Ananta <rananta@google.com>,
+	Shaoqin Huang <shahuang@redhat.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 6.6 66/67] KVM: arm64: Dont defer TLB invalidation when zapping table entries
+Date: Thu, 15 Aug 2024 15:26:20 +0200
+Message-ID: <20240815131840.831660720@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131838.311442229@linuxfoundation.org>
+References: <20240815131838.311442229@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +64,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Stitt <justinstitt@google.com>
+From: Will Deacon <will@kernel.org>
 
-commit 06c03c8edce333b9ad9c6b207d93d3a5ae7c10c0 upstream.
+commit f62d4c3eb687d87b616b4279acec7862553bda77 upstream.
 
-Using syzkaller with the recently reintroduced signed integer overflow
-sanitizer produces this UBSAN report:
+Commit 7657ea920c54 ("KVM: arm64: Use TLBI range-based instructions for
+unmap") introduced deferred TLB invalidation for the stage-2 page-table
+so that range-based invalidation can be used for the accumulated
+addresses. This works fine if the structure of the page-tables remains
+unchanged, but if entire tables are zapped and subsequently freed then
+we transiently leave the hardware page-table walker with a reference
+to freed memory thanks to the translation walk caches. For example,
+stage2_unmap_walker() will free page-table pages:
 
-UBSAN: signed-integer-overflow in ../kernel/time/ntp.c:738:18
-9223372036854775806 + 4 cannot be represented in type 'long'
-Call Trace:
- handle_overflow+0x171/0x1b0
- __do_adjtimex+0x1236/0x1440
- do_adjtimex+0x2be/0x740
+	if (childp)
+		mm_ops->put_page(childp);
 
-The user supplied time_constant value is incremented by four and then
-clamped to the operating range.
+and issue the TLB invalidation later in kvm_pgtable_stage2_unmap():
 
-Before commit eea83d896e31 ("ntp: NTP4 user space bits update") the user
-supplied value was sanity checked to be in the operating range. That change
-removed the sanity check and relied on clamping after incrementing which
-does not work correctly when the user supplied value is in the overflow
-zone of the '+ 4' operation.
+	if (stage2_unmap_defer_tlb_flush(pgt))
+		/* Perform the deferred TLB invalidations */
+		kvm_tlb_flush_vmid_range(pgt->mmu, addr, size);
 
-The operation requires CAP_SYS_TIME and the side effect of the overflow is
-NTP getting out of sync.
+For now, take the conservative approach and invalidate the TLB eagerly
+when we clear a table entry. Note, however, that the existing level
+hint passed to __kvm_tlb_flush_vmid_ipa() is incorrect and will be
+fixed in a subsequent patch.
 
-Similar to the fixups for time_maxerror and time_esterror, clamp the user
-space supplied value to the operating range.
-
-[ tglx: Switch to clamping ]
-
-Fixes: eea83d896e31 ("ntp: NTP4 user space bits update")
-Signed-off-by: Justin Stitt <justinstitt@google.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: Miroslav Lichvar <mlichvar@redhat.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20240517-b4-sio-ntp-c-v2-1-f3a80096f36f@google.com
-Closes: https://github.com/KSPP/linux/issues/352
+Cc: Raghavendra Rao Ananta <rananta@google.com>
+Cc: Shaoqin Huang <shahuang@redhat.com>
+Cc: Marc Zyngier <maz@kernel.org>
+Cc: Oliver Upton <oliver.upton@linux.dev>
+Reviewed-by: Shaoqin Huang <shahuang@redhat.com>
+Reviewed-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/r/20240327124853.11206-2-will@kernel.org
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+Cc: <stable@vger.kernel.org> # 6.6.y only
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/time/ntp.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ arch/arm64/kvm/hyp/pgtable.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/kernel/time/ntp.c
-+++ b/kernel/time/ntp.c
-@@ -685,11 +685,10 @@ static inline void process_adjtimex_mode
- 		time_esterror = clamp(txc->esterror, (long long)0, (long long)NTP_PHASE_LIMIT);
+--- a/arch/arm64/kvm/hyp/pgtable.c
++++ b/arch/arm64/kvm/hyp/pgtable.c
+@@ -861,9 +861,11 @@ static void stage2_unmap_put_pte(const s
+ 	if (kvm_pte_valid(ctx->old)) {
+ 		kvm_clear_pte(ctx->ptep);
  
- 	if (txc->modes & ADJ_TIMECONST) {
--		time_constant = txc->constant;
-+		time_constant = clamp(txc->constant, (long long)0, (long long)MAXTC);
- 		if (!(time_status & STA_NANO))
- 			time_constant += 4;
--		time_constant = min(time_constant, (long)MAXTC);
--		time_constant = max(time_constant, 0l);
-+		time_constant = clamp(time_constant, (long)0, (long)MAXTC);
+-		if (!stage2_unmap_defer_tlb_flush(pgt))
++		if (!stage2_unmap_defer_tlb_flush(pgt) ||
++		    kvm_pte_table(ctx->old, ctx->level)) {
+ 			kvm_call_hyp(__kvm_tlb_flush_vmid_ipa, mmu,
+ 					ctx->addr, ctx->level);
++		}
  	}
  
- 	if (txc->modes & ADJ_TAI &&
+ 	mm_ops->put_page(ctx->ptep);
 
 
 
