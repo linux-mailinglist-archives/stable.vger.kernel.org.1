@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-67804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68313-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3B1D952F2B
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:29:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A1C695319C
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:56:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6F704B260D2
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:29:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DF881C21679
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:56:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFB4619DF9E;
-	Thu, 15 Aug 2024 13:29:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1B1019DF9C;
+	Thu, 15 Aug 2024 13:56:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nDTZ+yGg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eYMI1p/k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D0FF1DDF5;
-	Thu, 15 Aug 2024 13:29:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B04891714A1;
+	Thu, 15 Aug 2024 13:56:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723728570; cv=none; b=kVcCzmEzhbAsGqkkaN12PQ7UevW4kOYbs18+zQCiqmy2tfEwXgdJ6tzx2cwIcpQ/4ufWUC6PBCp+MiXFtsr+PJapB3mCQcn880YFLz38P9Nzp7rqqb3RXqMsp6OlvI61AtAPX3CERin/rgn6dghD1Enj71WD8mJJI0NbYGOaSkI=
+	t=1723730174; cv=none; b=Izd70fheolhcUw6T5dvSkNx2JIWscXvvy1p+Ea90TRzsOghMhkwDz0XEbtPH1yTgv0QiQu3lRIkgLDZLYVKcrYY2p2HqNaXHI+tmexqM05daVFkVqehYDZB1wvnUdGpXoeIhI0jrj7FnOsBHTY489UyFu/ov1Koqa0zG0fGe3YA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723728570; c=relaxed/simple;
-	bh=R6q2mV44HDeLwUFgsSLweWfuVtA0119Tebh7ZlkWor8=;
+	s=arc-20240116; t=1723730174; c=relaxed/simple;
+	bh=IE3rDku9+OhPtQozphStHoWKtCX2pJ3C3SVxUW0iekU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qisKNqRHCXX7uRssUHzzYOj3zGepiQijS+SbmbJlkjdqm9hVY31TrGTGDlvB00O2typPJqXijlXvOO1mIbXbz8A38IxhMn4Kk/qIcWYDYf/46vZOnmGqUS/9DqQQFD370veHgamIJVNUE5AGWccmOcsaXYF+8cCCJ9Ac5lyGGf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nDTZ+yGg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF77DC32786;
-	Thu, 15 Aug 2024 13:29:29 +0000 (UTC)
+	 MIME-Version; b=I42n/WivRzCmmauFmaJ7vdjAw2Rgpcm1ivprghY3PWbK2Fp2DY/ZBcAyoAKeL+JCJQIsHCZ+3ia3IjFCNEv6Wvi9AzVqVd2qEq9r7junVPLnFFVv6AUbU3pNmDw6qYv7Dr46IjGWDz2ROKf+oyPmV/IqY+z/gNqp9itFSG9GmZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eYMI1p/k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23A4FC32786;
+	Thu, 15 Aug 2024 13:56:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723728570;
-	bh=R6q2mV44HDeLwUFgsSLweWfuVtA0119Tebh7ZlkWor8=;
+	s=korg; t=1723730174;
+	bh=IE3rDku9+OhPtQozphStHoWKtCX2pJ3C3SVxUW0iekU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nDTZ+yGgMprHG2ny2S9HH8AzQL4AQBf6ffiuwBiLZBUFVGMIhjBpC0riLiVwNsnss
-	 7ZOuwnvC8Rb2lgFKe+APM9qqDdj0EI2A2TvVNGsVEfqI1f9gP8BjXTI10O95ZPUCxo
-	 bkGzrAZ79BYlQGr6ltjuDAeOA6YqiAW36ZFoNDa0=
+	b=eYMI1p/kUEoRwvyf24iaVT+gmiw4QtuhFolnzLFruaNbM3hDs3KCl9uKxgjdy51nL
+	 jT03Gl1hsA03r3QupDJGmihM5RvlflRLW5NK7kZPHoOvJ5NbODsBaW5i8muZNcb/E3
+	 wjY3vm8Rf6plXlLLIeVS06y05Fc9xZHzSNL2xTXY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+9c1fe13fcb51574b249b@syzkaller.appspotmail.com,
-	Hugh Dickins <hughd@google.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
+	Shawn Guo <shawn.guo@linaro.org>,
+	Bjorn Andersson <bjorn.andersson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 040/196] ext4: avoid writing unitialized memory to disk in EA inodes
+Subject: [PATCH 5.15 299/484] arm64: dts: qcom: msm8996: Move #clock-cells to QMP PHY child node
 Date: Thu, 15 Aug 2024 15:22:37 +0200
-Message-ID: <20240815131853.619190700@linuxfoundation.org>
+Message-ID: <20240815131952.952238204@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +62,152 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Shawn Guo <shawn.guo@linaro.org>
 
-[ Upstream commit 65121eff3e4c8c90f8126debf3c369228691c591 ]
+[ Upstream commit 82d61e19fccbf2fe7c018765b3799791916e7f31 ]
 
-If the extended attribute size is not a multiple of block size, the last
-block in the EA inode will have uninitialized tail which will get
-written to disk. We will never expose the data to userspace but still
-this is not a good practice so just zero out the tail of the block as it
-isn't going to cause a noticeable performance overhead.
+'#clock-cells' is a required property of QMP PHY child node, not itself.
+Move it to fix the dtbs_check warnings.
 
-Fixes: e50e5129f384 ("ext4: xattr-in-inode support")
-Reported-by: syzbot+9c1fe13fcb51574b249b@syzkaller.appspotmail.com
-Reported-by: Hugh Dickins <hughd@google.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20240613150234.25176-1-jack@suse.cz
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+There are only '#clock-cells' removal from SM8350 QMP PHY nodes, because
+child nodes already have the property.
+
+Signed-off-by: Shawn Guo <shawn.guo@linaro.org>
+Signed-off-by: Bjorn Andersson <bjorn.andersson@linaro.org>
+Link: https://lore.kernel.org/r/20210929034253.24570-4-shawn.guo@linaro.org
+Stable-dep-of: 0046325ae520 ("arm64: dts: qcom: msm8998: Disable SS instance in Parkmode for USB")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/xattr.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/arm64/boot/dts/qcom/ipq8074.dtsi | 4 ++--
+ arch/arm64/boot/dts/qcom/msm8996.dtsi | 4 ++--
+ arch/arm64/boot/dts/qcom/msm8998.dtsi | 2 +-
+ arch/arm64/boot/dts/qcom/sm8350.dtsi  | 3 ---
+ 4 files changed, 5 insertions(+), 8 deletions(-)
 
-diff --git a/fs/ext4/xattr.c b/fs/ext4/xattr.c
-index dc42a8fba0d22..e9299f769dbfe 100644
---- a/fs/ext4/xattr.c
-+++ b/fs/ext4/xattr.c
-@@ -1420,6 +1420,12 @@ static int ext4_xattr_inode_write(handle_t *handle, struct inode *ea_inode,
- 			goto out;
+diff --git a/arch/arm64/boot/dts/qcom/ipq8074.dtsi b/arch/arm64/boot/dts/qcom/ipq8074.dtsi
+index 17eeff106bab7..0a4c5b847ddd5 100644
+--- a/arch/arm64/boot/dts/qcom/ipq8074.dtsi
++++ b/arch/arm64/boot/dts/qcom/ipq8074.dtsi
+@@ -91,7 +91,6 @@ soc: soc {
+ 		ssphy_1: phy@58000 {
+ 			compatible = "qcom,ipq8074-qmp-usb3-phy";
+ 			reg = <0x00058000 0x1c4>;
+-			#clock-cells = <1>;
+ 			#address-cells = <1>;
+ 			#size-cells = <1>;
+ 			ranges;
+@@ -112,6 +111,7 @@ usb1_ssphy: phy@58200 {
+ 				      <0x00058800 0x1f8>,     /* PCS  */
+ 				      <0x00058600 0x044>;     /* PCS misc*/
+ 				#phy-cells = <0>;
++				#clock-cells = <1>;
+ 				clocks = <&gcc GCC_USB1_PIPE_CLK>;
+ 				clock-names = "pipe0";
+ 				clock-output-names = "usb3phy_1_cc_pipe_clk";
+@@ -134,7 +134,6 @@ qusb_phy_1: phy@59000 {
+ 		ssphy_0: phy@78000 {
+ 			compatible = "qcom,ipq8074-qmp-usb3-phy";
+ 			reg = <0x00078000 0x1c4>;
+-			#clock-cells = <1>;
+ 			#address-cells = <1>;
+ 			#size-cells = <1>;
+ 			ranges;
+@@ -155,6 +154,7 @@ usb0_ssphy: phy@78200 {
+ 				      <0x00078800 0x1f8>,     /* PCS  */
+ 				      <0x00078600 0x044>;     /* PCS misc*/
+ 				#phy-cells = <0>;
++				#clock-cells = <1>;
+ 				clocks = <&gcc GCC_USB0_PIPE_CLK>;
+ 				clock-names = "pipe0";
+ 				clock-output-names = "usb3phy_0_cc_pipe_clk";
+diff --git a/arch/arm64/boot/dts/qcom/msm8996.dtsi b/arch/arm64/boot/dts/qcom/msm8996.dtsi
+index 210016ff50449..9b74cf57b6d1c 100644
+--- a/arch/arm64/boot/dts/qcom/msm8996.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8996.dtsi
+@@ -615,7 +615,6 @@ soc: soc {
+ 		pcie_phy: phy@34000 {
+ 			compatible = "qcom,msm8996-qmp-pcie-phy";
+ 			reg = <0x00034000 0x488>;
+-			#clock-cells = <1>;
+ 			#address-cells = <1>;
+ 			#size-cells = <1>;
+ 			ranges;
+@@ -637,6 +636,7 @@ pciephy_0: phy@35000 {
+ 				      <0x00035400 0x1dc>;
+ 				#phy-cells = <0>;
  
- 		memcpy(bh->b_data, buf, csize);
-+		/*
-+		 * Zero out block tail to avoid writing uninitialized memory
-+		 * to disk.
-+		 */
-+		if (csize < blocksize)
-+			memset(bh->b_data + csize, 0, blocksize - csize);
- 		set_buffer_uptodate(bh);
- 		ext4_handle_dirty_metadata(handle, ea_inode, bh);
++				#clock-cells = <1>;
+ 				clock-output-names = "pcie_0_pipe_clk_src";
+ 				clocks = <&gcc GCC_PCIE_0_PIPE_CLK>;
+ 				clock-names = "pipe0";
+@@ -2642,7 +2642,6 @@ usb3_dwc3: dwc3@6a00000 {
+ 		usb3phy: phy@7410000 {
+ 			compatible = "qcom,msm8996-qmp-usb3-phy";
+ 			reg = <0x07410000 0x1c4>;
+-			#clock-cells = <1>;
+ 			#address-cells = <1>;
+ 			#size-cells = <1>;
+ 			ranges;
+@@ -2663,6 +2662,7 @@ ssusb_phy_0: phy@7410200 {
+ 				      <0x07410600 0x1a8>;
+ 				#phy-cells = <0>;
  
++				#clock-cells = <1>;
+ 				clock-output-names = "usb3_phy_pipe_clk_src";
+ 				clocks = <&gcc GCC_USB3_PHY_PIPE_CLK>;
+ 				clock-names = "pipe0";
+diff --git a/arch/arm64/boot/dts/qcom/msm8998.dtsi b/arch/arm64/boot/dts/qcom/msm8998.dtsi
+index d636718adbde2..42329e78437e9 100644
+--- a/arch/arm64/boot/dts/qcom/msm8998.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8998.dtsi
+@@ -1993,7 +1993,6 @@ usb3phy: phy@c010000 {
+ 			compatible = "qcom,msm8998-qmp-usb3-phy";
+ 			reg = <0x0c010000 0x18c>;
+ 			status = "disabled";
+-			#clock-cells = <1>;
+ 			#address-cells = <1>;
+ 			#size-cells = <1>;
+ 			ranges;
+@@ -2014,6 +2013,7 @@ usb1_ssphy: phy@c010200 {
+ 				      <0xc010600 0x128>,
+ 				      <0xc010800 0x200>;
+ 				#phy-cells = <0>;
++				#clock-cells = <1>;
+ 				clocks = <&gcc GCC_USB3_PHY_PIPE_CLK>;
+ 				clock-names = "pipe0";
+ 				clock-output-names = "usb3_phy_pipe_clk_src";
+diff --git a/arch/arm64/boot/dts/qcom/sm8350.dtsi b/arch/arm64/boot/dts/qcom/sm8350.dtsi
+index b0ba63b5869d2..8506dc841c869 100644
+--- a/arch/arm64/boot/dts/qcom/sm8350.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8350.dtsi
+@@ -1119,7 +1119,6 @@ ufs_mem_phy: phy@1d87000 {
+ 			reg = <0 0x01d87000 0 0x1c4>;
+ 			#address-cells = <2>;
+ 			#size-cells = <2>;
+-			#clock-cells = <1>;
+ 			ranges;
+ 			clock-names = "ref",
+ 				      "ref_aux";
+@@ -1254,7 +1253,6 @@ usb_1_qmpphy: phy-wrapper@88e9000 {
+ 			      <0 0x088e8000 0 0x20>;
+ 			reg-names = "reg-base", "dp_com";
+ 			status = "disabled";
+-			#clock-cells = <1>;
+ 			#address-cells = <2>;
+ 			#size-cells = <2>;
+ 			ranges;
+@@ -1287,7 +1285,6 @@ usb_2_qmpphy: phy-wrapper@88eb000 {
+ 			compatible = "qcom,sm8350-qmp-usb3-uni-phy";
+ 			reg = <0 0x088eb000 0 0x200>;
+ 			status = "disabled";
+-			#clock-cells = <1>;
+ 			#address-cells = <2>;
+ 			#size-cells = <2>;
+ 			ranges;
 -- 
 2.43.0
 
