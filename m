@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-68435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69090-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF29C953248
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:04:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD39F953563
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:37:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C63E1C25A7C
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:04:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B7E11C214AA
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:37:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B569A1A00F5;
-	Thu, 15 Aug 2024 14:02:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAADB19FA9D;
+	Thu, 15 Aug 2024 14:37:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Orgl+V0v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GEnRxvKU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 735CD19F49A;
-	Thu, 15 Aug 2024 14:02:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86A131DFFB;
+	Thu, 15 Aug 2024 14:37:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730559; cv=none; b=XTqzzEwDMyVn3MuKOB6MmgP2VFFaqg58eUVgNi6JiLx0ysfDbjrSx6vRdmKG/WiecTi2eIaTyZ7gALXL+Ih5e1VeiZpMu4Jvxfrnesf9WcOQLEaNnLjqMD1CGL/NkqmC6KjwNRJGQFgTvJutEPGovoGGiWcGuoWLJpr2JyUu8tk=
+	t=1723732634; cv=none; b=AwAXXhc1+XWisbV6flFi17UkipBtwPPjlQQodxtHQil9aWLlElFb0evTZ+u4LcCEX3vh0IWZjy9NbWDRpiSOsqWt0Jn8AhJzPNWAZq/Jsjk8gWyl5zdE0NRqqDteFPNDEU1Hik7AWmTq9Q04jXshCx9RNrwrIfT0sKiMkhwe11c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730559; c=relaxed/simple;
-	bh=pawTW0lh6hKdD5Nmak14KccYbG4OzJDDFOhqHNnstNY=;
+	s=arc-20240116; t=1723732634; c=relaxed/simple;
+	bh=V5vVn+W0Va2APEE3Zj9ZSpHpRLQdV0L5tWf3FTWG+n4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mIc6W8ORwiUmvle7+R9Jiq5Cypl7ov/CxUxLQx8zv3tQofJeiY58pditYYmUWp8apwqw82ROGbohSgm2gOvreTFX8xkYxL1roiD2EG/17XuYx9zzN5TRxYbpfz7LoU7QNVEJO8HPJGaFY6vGkw7IK9P125RdpmZ353F9hgP2Fec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Orgl+V0v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D161AC32786;
-	Thu, 15 Aug 2024 14:02:38 +0000 (UTC)
+	 MIME-Version; b=EWBTY/XN3zmZIqeobLD2uFgTtDjt9YY2DdzeAyL7M0lZGIEyB+JEKdV82njAAsLau/y774FAq+bWuk+7l3tJizo+Tbm/gsfpCZ3j3OZ7OtCYRmdmlXiHqF8lIP12ZlAzwL/gcXBVFkk55pdYZCLsJ+2b/f/HCS95QZ6U5yswX4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GEnRxvKU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEADEC32786;
+	Thu, 15 Aug 2024 14:37:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730559;
-	bh=pawTW0lh6hKdD5Nmak14KccYbG4OzJDDFOhqHNnstNY=;
+	s=korg; t=1723732634;
+	bh=V5vVn+W0Va2APEE3Zj9ZSpHpRLQdV0L5tWf3FTWG+n4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Orgl+V0vKYHWM/SMNAFdnH+XXrQUkMgGiZsmZi8/UNqVV8/sjvB7M7S43QRvYuk8c
-	 pXA8OvIulcU1rUnBtq1as2rMwu1xYJuQ9xxTKeJKk+oVYTe97J6nI3S6W4xfEdot2y
-	 0R52FN3iIgZX3UjXlKv1I+Y4MyI8EEymQcMnRhms=
+	b=GEnRxvKUFGJLqHn4seTTHgH5pAoOJqr/aSbegY95yH9zdpNtuIO1QWTH1Zu2Cwpzl
+	 J4Z0sgxvNPXG76SgKv75WCu68tC9em2PAru3vIXXrauquDvVFyPMuE0AQTIDsuQey0
+	 LcdUecCdv5gwmm6gfKT4CZ5EZpXUG/pfX+LVoBo0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Yang Yingliang <yangyingliang@huawei.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>
-Subject: [PATCH 5.15 447/484] sched/smt: Introduce sched_smt_present_inc/dec() helper
+	Zhe Qiao <qiaozhe@iscas.ac.cn>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 239/352] riscv/mm: Add handling for VM_FAULT_SIGSEGV in mm_fault_error()
 Date: Thu, 15 Aug 2024 15:25:05 +0200
-Message-ID: <20240815131958.725647909@linuxfoundation.org>
+Message-ID: <20240815131928.674448483@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,82 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Yingliang <yangyingliang@huawei.com>
+From: Zhe Qiao <qiaozhe@iscas.ac.cn>
 
-commit 31b164e2e4af84d08d2498083676e7eeaa102493 upstream.
+[ Upstream commit 0c710050c47d45eb77b28c271cddefc5c785cb40 ]
 
-Introduce sched_smt_present_inc/dec() helper, so it can be called
-in normal or error path simply. No functional changed.
+Handle VM_FAULT_SIGSEGV in the page fault path so that we correctly
+kill the process and we don't BUG() the kernel.
 
-Cc: stable@kernel.org
-Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20240703031610.587047-2-yangyingliang@huaweicloud.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 07037db5d479 ("RISC-V: Paging and MMU")
+Signed-off-by: Zhe Qiao <qiaozhe@iscas.ac.cn>
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/20240731084547.85380-1-qiaozhe@iscas.ac.cn
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/core.c |   26 +++++++++++++++++++-------
- 1 file changed, 19 insertions(+), 7 deletions(-)
+ arch/riscv/mm/fault.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -9101,6 +9101,22 @@ static int cpuset_cpu_inactive(unsigned
- 	return 0;
+diff --git a/arch/riscv/mm/fault.c b/arch/riscv/mm/fault.c
+index 54b12943cc7b0..9bed320891974 100644
+--- a/arch/riscv/mm/fault.c
++++ b/arch/riscv/mm/fault.c
+@@ -39,26 +39,27 @@ static inline void no_context(struct pt_regs *regs, unsigned long addr)
+ 
+ static inline void mm_fault_error(struct pt_regs *regs, unsigned long addr, vm_fault_t fault)
+ {
++	if (!user_mode(regs)) {
++		no_context(regs, addr);
++		return;
++	}
++
+ 	if (fault & VM_FAULT_OOM) {
+ 		/*
+ 		 * We ran out of memory, call the OOM killer, and return the userspace
+ 		 * (which will retry the fault, or kill us if we got oom-killed).
+ 		 */
+-		if (!user_mode(regs)) {
+-			no_context(regs, addr);
+-			return;
+-		}
+ 		pagefault_out_of_memory();
+ 		return;
+ 	} else if (fault & VM_FAULT_SIGBUS) {
+ 		/* Kernel mode? Handle exceptions or die */
+-		if (!user_mode(regs)) {
+-			no_context(regs, addr);
+-			return;
+-		}
+ 		do_trap(regs, SIGBUS, BUS_ADRERR, addr);
+ 		return;
++	} else if (fault & VM_FAULT_SIGSEGV) {
++		do_trap(regs, SIGSEGV, SEGV_MAPERR, addr);
++		return;
+ 	}
++
+ 	BUG();
  }
  
-+static inline void sched_smt_present_inc(int cpu)
-+{
-+#ifdef CONFIG_SCHED_SMT
-+	if (cpumask_weight(cpu_smt_mask(cpu)) == 2)
-+		static_branch_inc_cpuslocked(&sched_smt_present);
-+#endif
-+}
-+
-+static inline void sched_smt_present_dec(int cpu)
-+{
-+#ifdef CONFIG_SCHED_SMT
-+	if (cpumask_weight(cpu_smt_mask(cpu)) == 2)
-+		static_branch_dec_cpuslocked(&sched_smt_present);
-+#endif
-+}
-+
- int sched_cpu_activate(unsigned int cpu)
- {
- 	struct rq *rq = cpu_rq(cpu);
-@@ -9112,13 +9128,10 @@ int sched_cpu_activate(unsigned int cpu)
- 	 */
- 	balance_push_set(cpu, false);
- 
--#ifdef CONFIG_SCHED_SMT
- 	/*
- 	 * When going up, increment the number of cores with SMT present.
- 	 */
--	if (cpumask_weight(cpu_smt_mask(cpu)) == 2)
--		static_branch_inc_cpuslocked(&sched_smt_present);
--#endif
-+	sched_smt_present_inc(cpu);
- 	set_cpu_active(cpu, true);
- 
- 	if (sched_smp_initialized) {
-@@ -9187,13 +9200,12 @@ int sched_cpu_deactivate(unsigned int cp
- 	}
- 	rq_unlock_irqrestore(rq, &rf);
- 
--#ifdef CONFIG_SCHED_SMT
- 	/*
- 	 * When going down, decrement the number of cores with SMT present.
- 	 */
--	if (cpumask_weight(cpu_smt_mask(cpu)) == 2)
--		static_branch_dec_cpuslocked(&sched_smt_present);
-+	sched_smt_present_dec(cpu);
- 
-+#ifdef CONFIG_SCHED_SMT
- 	sched_core_cpu_deactivate(cpu);
- #endif
- 
+-- 
+2.43.0
+
 
 
 
