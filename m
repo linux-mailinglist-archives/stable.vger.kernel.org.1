@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-68806-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68492-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2267495340F
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:22:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16B0395329A
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:08:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA9CF1F284DF
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:22:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4DF64B21270
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:07:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B0D717C987;
-	Thu, 15 Aug 2024 14:22:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2AE31ABEB4;
+	Thu, 15 Aug 2024 14:05:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JY1m+QUd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lARX/HLv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5889F1AC896;
-	Thu, 15 Aug 2024 14:22:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F9EA1AC8BB;
+	Thu, 15 Aug 2024 14:05:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731725; cv=none; b=B9NwFKrG528LJjWsSeMe52zR46zcUkkhqV/Ucr0ikX/Wdlx3u2jZNZtgruxVOzGQYXie0d+pcDjDXZFqfsz7lRSBKj8AB4rLy2mVDPR1a3wV3wRHky6DJl/YFgflZMqoO9yXpjm0dMbjFhjxfjxAHDRmjyLeY8/QP16qH+zbh60=
+	t=1723730738; cv=none; b=RarG9N4FNavf0EFSW0gXrRdEuN6UM2y/yvTkfWgHYiC392UjX0/9rz0lB4JwJPKVerX+5mTODO9JeRS9i5+pdAOpPuklURysW5kX5B6wd7EjGSDnaKHJHJGxs3hSSqF373WCGIUva9WW7EiuUJDxxdJH0I0wU8NpzfAHpG22L+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731725; c=relaxed/simple;
-	bh=VAAzlOIvituiLZs7CVg7vgma/SQFOe2NCwWP7wQe9Vo=;
+	s=arc-20240116; t=1723730738; c=relaxed/simple;
+	bh=p81gzyceZqV/E+MXsDoOX9TBAmbHlpw2daBtCfq43Jw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ccpCTvwxqLomQJXCcK9nB1LqQYJhIZ967iv6IPj6Fq0AdZPOIHCWjj5NacoaHGDK8kpnSbpXGUpEKe9EoyVFU6MhZx+Ec5hegPH87jDphV+dRy9MwZckcqBk4+x56Fnhc0yrG/ye+xhWZtY4Jy1vxz2nL77M12aBzeAq4GJbu9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JY1m+QUd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3690C32786;
-	Thu, 15 Aug 2024 14:22:04 +0000 (UTC)
+	 MIME-Version; b=rJAdhe+zqcnVsUs7RNpDWJaPP34D+tZJHQMTkqxTcmWM/sHqXutX9+9cDWQWwsBUyPB8FdHzsi6hxo9lQARJns7jfUX6pVI+aqvld3ZfSIFVbQcXKlCgr+v/bYOOfjylIkGb+GLTkZ/wU9J34cqS/Rw7IkqkDr5fVsNRrZfclF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lARX/HLv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E309C32786;
+	Thu, 15 Aug 2024 14:05:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731725;
-	bh=VAAzlOIvituiLZs7CVg7vgma/SQFOe2NCwWP7wQe9Vo=;
+	s=korg; t=1723730738;
+	bh=p81gzyceZqV/E+MXsDoOX9TBAmbHlpw2daBtCfq43Jw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JY1m+QUd4b1Mhd4py+YoYOnk1hfGkPur085Vu2eqVseXR4YKGhYLoYj2woC1YO5GW
-	 1j2TsWsq7g+yFs93Zh6MCQfqbPomWRJFZCHbOe50eYpX1sL11WUPUGGApdkJVnqZ02
-	 9leBKicgPSAlDsAWKIRFsL+/jYndqhjLlJ+2Kd9s=
+	b=lARX/HLvDXhOCV0qMsEaUX7JTsluZDlNLvmCfc2CsYX0hDPh7GF5j7RoTCnyxKJh3
+	 A7aeQIOlK5jBp53OXXa7fgNOUbeqUi8GfPF5s+cPBYbWS8hIF8I3ZORpBTdbnlqLoH
+	 MTlaHIFj97gm6S6b341NWJnF55CIkOBWqd09z460=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	James Morse <james.morse@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 218/259] arm64: cputype: Add Cortex-X1C definitions
+	kernel test robot <lkp@intel.com>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.1 17/38] NFSD: Fix frame size warning in svc_export_parse()
 Date: Thu, 15 Aug 2024 15:25:51 +0200
-Message-ID: <20240815131911.187722176@linuxfoundation.org>
+Message-ID: <20240815131833.614942006@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131832.944273699@linuxfoundation.org>
+References: <20240815131832.944273699@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,59 +63,169 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 58d245e03c324d083a0ec3b9ab8ebd46ec9848d7 ]
+[ Upstream commit 6939ace1f22681fface7841cdbf34d3204cc94b5 ]
 
-Add cputype definitions for Cortex-X1C. These will be used for errata
-detection in subsequent patches.
+fs/nfsd/export.c: In function 'svc_export_parse':
+fs/nfsd/export.c:737:1: warning: the frame size of 1040 bytes is larger than 1024 bytes [-Wframe-larger-than=]
+    737 | }
 
-These values can be found in the Cortex-X1C TRM:
+On my systems, svc_export_parse() has a stack frame of over 800
+bytes, not 1040, but nonetheless, it could do with some reduction.
 
-  https://developer.arm.com/documentation/101968/0002/
+When a struct svc_export is on the stack, it's a temporary structure
+used as an argument, and not visible as an actual exported FS. No
+need to reserve space for export_stats in such cases.
 
-... in section B2.107 ("MIDR_EL1, Main ID Register, EL1").
-
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: James Morse <james.morse@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Link: https://lore.kernel.org/r/20240801101803.1982459-2-mark.rutland@arm.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-[ Mark: trivial backport ]
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202310012359.YEw5IrK6-lkp@intel.com/
+Cc: Amir Goldstein <amir73il@gmail.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Stable-dep-of: 4b14885411f7 ("nfsd: make all of the nfsd stats per-network namespace")
+[ cel: adjusted to apply to v6.1.y ]
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/cputype.h | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/nfsd/export.c |   32 +++++++++++++++++++++++---------
+ fs/nfsd/export.h |    4 ++--
+ fs/nfsd/stats.h  |   12 ++++++------
+ 3 files changed, 31 insertions(+), 17 deletions(-)
 
-diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
-index 6322263063887..bb8efde2c8b10 100644
---- a/arch/arm64/include/asm/cputype.h
-+++ b/arch/arm64/include/asm/cputype.h
-@@ -80,6 +80,7 @@
- #define ARM_CPU_PART_CORTEX_X2		0xD48
- #define ARM_CPU_PART_NEOVERSE_N2	0xD49
- #define ARM_CPU_PART_CORTEX_A78C	0xD4B
-+#define ARM_CPU_PART_CORTEX_X1C		0xD4C
- #define ARM_CPU_PART_CORTEX_X3		0xD4E
- #define ARM_CPU_PART_NEOVERSE_V2	0xD4F
- #define ARM_CPU_PART_CORTEX_A720	0xD81
-@@ -127,6 +128,7 @@
- #define MIDR_CORTEX_X2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X2)
- #define MIDR_NEOVERSE_N2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_N2)
- #define MIDR_CORTEX_A78C	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A78C)
-+#define MIDR_CORTEX_X1C	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X1C)
- #define MIDR_CORTEX_X3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X3)
- #define MIDR_NEOVERSE_V2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V2)
- #define MIDR_CORTEX_A720 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A720)
--- 
-2.43.0
-
+--- a/fs/nfsd/export.c
++++ b/fs/nfsd/export.c
+@@ -339,12 +339,16 @@ static int export_stats_init(struct expo
+ 
+ static void export_stats_reset(struct export_stats *stats)
+ {
+-	nfsd_percpu_counters_reset(stats->counter, EXP_STATS_COUNTERS_NUM);
++	if (stats)
++		nfsd_percpu_counters_reset(stats->counter,
++					   EXP_STATS_COUNTERS_NUM);
+ }
+ 
+ static void export_stats_destroy(struct export_stats *stats)
+ {
+-	nfsd_percpu_counters_destroy(stats->counter, EXP_STATS_COUNTERS_NUM);
++	if (stats)
++		nfsd_percpu_counters_destroy(stats->counter,
++					     EXP_STATS_COUNTERS_NUM);
+ }
+ 
+ static void svc_export_put(struct kref *ref)
+@@ -353,7 +357,8 @@ static void svc_export_put(struct kref *
+ 	path_put(&exp->ex_path);
+ 	auth_domain_put(exp->ex_client);
+ 	nfsd4_fslocs_free(&exp->ex_fslocs);
+-	export_stats_destroy(&exp->ex_stats);
++	export_stats_destroy(exp->ex_stats);
++	kfree(exp->ex_stats);
+ 	kfree(exp->ex_uuid);
+ 	kfree_rcu(exp, ex_rcu);
+ }
+@@ -744,13 +749,15 @@ static int svc_export_show(struct seq_fi
+ 	seq_putc(m, '\t');
+ 	seq_escape(m, exp->ex_client->name, " \t\n\\");
+ 	if (export_stats) {
+-		seq_printf(m, "\t%lld\n", exp->ex_stats.start_time);
++		struct percpu_counter *counter = exp->ex_stats->counter;
++
++		seq_printf(m, "\t%lld\n", exp->ex_stats->start_time);
+ 		seq_printf(m, "\tfh_stale: %lld\n",
+-			   percpu_counter_sum_positive(&exp->ex_stats.counter[EXP_STATS_FH_STALE]));
++			   percpu_counter_sum_positive(&counter[EXP_STATS_FH_STALE]));
+ 		seq_printf(m, "\tio_read: %lld\n",
+-			   percpu_counter_sum_positive(&exp->ex_stats.counter[EXP_STATS_IO_READ]));
++			   percpu_counter_sum_positive(&counter[EXP_STATS_IO_READ]));
+ 		seq_printf(m, "\tio_write: %lld\n",
+-			   percpu_counter_sum_positive(&exp->ex_stats.counter[EXP_STATS_IO_WRITE]));
++			   percpu_counter_sum_positive(&counter[EXP_STATS_IO_WRITE]));
+ 		seq_putc(m, '\n');
+ 		return 0;
+ 	}
+@@ -796,7 +803,7 @@ static void svc_export_init(struct cache
+ 	new->ex_layout_types = 0;
+ 	new->ex_uuid = NULL;
+ 	new->cd = item->cd;
+-	export_stats_reset(&new->ex_stats);
++	export_stats_reset(new->ex_stats);
+ }
+ 
+ static void export_update(struct cache_head *cnew, struct cache_head *citem)
+@@ -832,7 +839,14 @@ static struct cache_head *svc_export_all
+ 	if (!i)
+ 		return NULL;
+ 
+-	if (export_stats_init(&i->ex_stats)) {
++	i->ex_stats = kmalloc(sizeof(*(i->ex_stats)), GFP_KERNEL);
++	if (!i->ex_stats) {
++		kfree(i);
++		return NULL;
++	}
++
++	if (export_stats_init(i->ex_stats)) {
++		kfree(i->ex_stats);
+ 		kfree(i);
+ 		return NULL;
+ 	}
+--- a/fs/nfsd/export.h
++++ b/fs/nfsd/export.h
+@@ -64,10 +64,10 @@ struct svc_export {
+ 	struct cache_head	h;
+ 	struct auth_domain *	ex_client;
+ 	int			ex_flags;
++	int			ex_fsid;
+ 	struct path		ex_path;
+ 	kuid_t			ex_anon_uid;
+ 	kgid_t			ex_anon_gid;
+-	int			ex_fsid;
+ 	unsigned char *		ex_uuid; /* 16 byte fsid */
+ 	struct nfsd4_fs_locations ex_fslocs;
+ 	uint32_t		ex_nflavors;
+@@ -76,7 +76,7 @@ struct svc_export {
+ 	struct nfsd4_deviceid_map *ex_devid_map;
+ 	struct cache_detail	*cd;
+ 	struct rcu_head		ex_rcu;
+-	struct export_stats	ex_stats;
++	struct export_stats	*ex_stats;
+ };
+ 
+ /* an "export key" (expkey) maps a filehandlefragement to an
+--- a/fs/nfsd/stats.h
++++ b/fs/nfsd/stats.h
+@@ -60,22 +60,22 @@ static inline void nfsd_stats_rc_nocache
+ static inline void nfsd_stats_fh_stale_inc(struct svc_export *exp)
+ {
+ 	percpu_counter_inc(&nfsdstats.counter[NFSD_STATS_FH_STALE]);
+-	if (exp)
+-		percpu_counter_inc(&exp->ex_stats.counter[EXP_STATS_FH_STALE]);
++	if (exp && exp->ex_stats)
++		percpu_counter_inc(&exp->ex_stats->counter[EXP_STATS_FH_STALE]);
+ }
+ 
+ static inline void nfsd_stats_io_read_add(struct svc_export *exp, s64 amount)
+ {
+ 	percpu_counter_add(&nfsdstats.counter[NFSD_STATS_IO_READ], amount);
+-	if (exp)
+-		percpu_counter_add(&exp->ex_stats.counter[EXP_STATS_IO_READ], amount);
++	if (exp && exp->ex_stats)
++		percpu_counter_add(&exp->ex_stats->counter[EXP_STATS_IO_READ], amount);
+ }
+ 
+ static inline void nfsd_stats_io_write_add(struct svc_export *exp, s64 amount)
+ {
+ 	percpu_counter_add(&nfsdstats.counter[NFSD_STATS_IO_WRITE], amount);
+-	if (exp)
+-		percpu_counter_add(&exp->ex_stats.counter[EXP_STATS_IO_WRITE], amount);
++	if (exp && exp->ex_stats)
++		percpu_counter_add(&exp->ex_stats->counter[EXP_STATS_IO_WRITE], amount);
+ }
+ 
+ static inline void nfsd_stats_payload_misses_inc(struct nfsd_net *nn)
 
 
 
