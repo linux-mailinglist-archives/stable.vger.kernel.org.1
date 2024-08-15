@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-67983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67957-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF726953014
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:39:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88ED3952FF5
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:38:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9EC41288406
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:39:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD9911C24BB5
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:38:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 936C919E7EF;
-	Thu, 15 Aug 2024 13:38:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4454F19FA90;
+	Thu, 15 Aug 2024 13:37:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g8wmrmpr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o8GKhIxZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50BD61AC8A2;
-	Thu, 15 Aug 2024 13:38:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F204319FA87;
+	Thu, 15 Aug 2024 13:37:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723729131; cv=none; b=q8cvSz7znyyPdUBL3T6ujWockN+gD0V9sYbQc0pswuMyuMC8H+nqMDSWm0tvqW+YLSEpshxoN5tSoL2ezA7QkpTuCCgIHi2zS8kYXr52mzjjc3y+IhYrueBPD2U4LvBUjUYYPWolpThMXg1ADPZfOgeJnGT8mV6Iqb6Zw74Ejvo=
+	t=1723729050; cv=none; b=Oj5ZFzAjXjrhnVkw1Ne8PLrMorw4qUjxZM0o5kGdJYQPVm1uLLCCA7A03rCdq5BJbJpzDZp578J8ngfjCwYC8dx1R5l8AW+mts0SdO9tpyRz5VMKaUECKz72QcLqmBj8nWkkhUSLLTZbV43pbYZ9eknfgqePHus+6Ue3SRs4rNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723729131; c=relaxed/simple;
-	bh=HOAny0Mr/rSB+NoxRYDUfeRcN7pXQ8mDTjekN4Kykm0=;
+	s=arc-20240116; t=1723729050; c=relaxed/simple;
+	bh=NCiuIS5BcSWqb5NTW6/rurBbOnvyHlig9UEB/ycKNto=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pB9pJjMcbEAiJQ6Th0+2/FCoNsX28F43VSZp0YvtIyNDJIKF95OJay3PbJoqohW6YBlkggqFqdSKSp09OCap+AIlEOTQlH3ydVts0tCP2FfrP212I3pmwtCL1HmDG1+i0J9eh8lhCHsclau6u7HENOy5JGVyyDZeAEJQS5CqWmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g8wmrmpr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8D34C32786;
-	Thu, 15 Aug 2024 13:38:50 +0000 (UTC)
+	 MIME-Version; b=Iuh7t342C9tEo6bCjefsbtt8mJ6ZcFvMu/cpWKGJeegjD0LIsQOm2p++uzsgBy1oqkRfo/jXqruMJgkDRk2ZMtLR/Dk4bRMMa3Qu5wNPXfLCBhFMUiAwVb456fMmbYirdqLy3mn3WsZia6QwIPfG9wh7CBIEIvuvrNv2kZmypXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o8GKhIxZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A2E7C32786;
+	Thu, 15 Aug 2024 13:37:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723729131;
-	bh=HOAny0Mr/rSB+NoxRYDUfeRcN7pXQ8mDTjekN4Kykm0=;
+	s=korg; t=1723729049;
+	bh=NCiuIS5BcSWqb5NTW6/rurBbOnvyHlig9UEB/ycKNto=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g8wmrmpr2KDC3PssMan2dCOPfEdQos/IJcafLsfw0U0DVGJn0HijU4M3UvTuUFA5R
-	 pCHq7a44qGELj2vUrhXd02E3q5qgvupVlYksFXHkJL5vFJhegy507pLtFIfPUu8GQc
-	 fwnU5KbHmDIsjqqUzJJ9heWL1k0E0JtpDH6EUONc=
+	b=o8GKhIxZaoUezP/uu0o6GXjsrigJsaU6S71hD6MPhUG6TbhElrHHc//oTjjaklJpc
+	 QKkwetWM5kjX2kHIH+kMovMlV2oS+m86BNxfnYFtWJlvTckz8n5yK+CCvwk2qGAdiZ
+	 QoqyFaW+KdTsZbpnyWyzWsD6TuCn4Mgwe/vA2tuQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Agustin Gutierrez <agustin.gutierrez@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Kevin Holm <kevin@holm.dev>
-Subject: [PATCH 6.10 03/22] drm/amd/display: Separate setting and programming of cursor
-Date: Thu, 15 Aug 2024 15:25:11 +0200
-Message-ID: <20240815131831.398609182@linuxfoundation.org>
+	Marco Vanotti <mvanotti@google.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Eric Biederman <ebiederm@xmission.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Kees Cook <kees@kernel.org>
+Subject: [PATCH 4.19 195/196] exec: Fix ToCToU between perm check and set-uid/gid usage
+Date: Thu, 15 Aug 2024 15:25:12 +0200
+Message-ID: <20240815131859.533233461@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131831.265729493@linuxfoundation.org>
-References: <20240815131831.265729493@linuxfoundation.org>
+In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
+References: <20240815131852.063866671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,235 +65,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harry Wentland <harry.wentland@amd.com>
+From: Kees Cook <kees@kernel.org>
 
-commit f63f86b5affcc2abd1162f11824b9386fc06ac94 upstream.
+commit f50733b45d865f91db90919f8311e2127ce5a0cb upstream.
 
-We're seeing issues when user-space tries to do an atomic update of
-the primary surface, as well as the cursor. These two updates are
-separate calls into DC and don't currently act as an atomic update.
-This might lead to cursor updates being locked out and cursors
-stuttering.
+When opening a file for exec via do_filp_open(), permission checking is
+done against the file's metadata at that moment, and on success, a file
+pointer is passed back. Much later in the execve() code path, the file
+metadata (specifically mode, uid, and gid) is used to determine if/how
+to set the uid and gid. However, those values may have changed since the
+permissions check, meaning the execution may gain unintended privileges.
 
-In order to solve this problem we want to separate the setting
-and programming of cursor attributes and position. That's what
-we're doing in this patch. The subsequent patch will then be
-able to use the cursor setters in independent cursor updates,
-as well as in atomic commits.
+For example, if a file could change permissions from executable and not
+set-id:
 
-Reviewed-by: Agustin Gutierrez <agustin.gutierrez@amd.com>
-Acked-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Harry Wentland <harry.wentland@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: Kevin Holm <kevin@holm.dev>
+---------x 1 root root 16048 Aug  7 13:16 target
+
+to set-id and non-executable:
+
+---S------ 1 root root 16048 Aug  7 13:16 target
+
+it is possible to gain root privileges when execution should have been
+disallowed.
+
+While this race condition is rare in real-world scenarios, it has been
+observed (and proven exploitable) when package managers are updating
+the setuid bits of installed programs. Such files start with being
+world-executable but then are adjusted to be group-exec with a set-uid
+bit. For example, "chmod o-x,u+s target" makes "target" executable only
+by uid "root" and gid "cdrom", while also becoming setuid-root:
+
+-rwxr-xr-x 1 root cdrom 16048 Aug  7 13:16 target
+
+becomes:
+
+-rwsr-xr-- 1 root cdrom 16048 Aug  7 13:16 target
+
+But racing the chmod means users without group "cdrom" membership can
+get the permission to execute "target" just before the chmod, and when
+the chmod finishes, the exec reaches brpm_fill_uid(), and performs the
+setuid to root, violating the expressed authorization of "only cdrom
+group members can setuid to root".
+
+Re-check that we still have execute permissions in case the metadata
+has changed. It would be better to keep a copy from the perm-check time,
+but until we can do that refactoring, the least-bad option is to do a
+full inode_permission() call (under inode lock). It is understood that
+this is safe against dead-locks, but hardly optimal.
+
+Reported-by: Marco Vanotti <mvanotti@google.com>
+Tested-by: Marco Vanotti <mvanotti@google.com>
+Suggested-by: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Cc: Eric Biederman <ebiederm@xmission.com>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>
+Cc: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Kees Cook <kees@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c       |    2 
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c |    6 -
- drivers/gpu/drm/amd/display/dc/core/dc_stream.c         |   89 ++++++++++------
- drivers/gpu/drm/amd/display/dc/dc_stream.h              |    8 +
- drivers/gpu/drm/amd/display/dc/hwss/dcn30/dcn30_hwseq.c |    2 
- 5 files changed, 73 insertions(+), 34 deletions(-)
+ fs/exec.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -8947,7 +8947,7 @@ static void amdgpu_dm_commit_streams(str
+--- a/fs/exec.c
++++ b/fs/exec.c
+@@ -1528,6 +1528,7 @@ static void bprm_fill_uid(struct linux_b
+ 	unsigned int mode;
+ 	kuid_t uid;
+ 	kgid_t gid;
++	int err;
  
- 			memset(&position, 0, sizeof(position));
- 			mutex_lock(&dm->dc_lock);
--			dc_stream_set_cursor_position(dm_old_crtc_state->stream, &position);
-+			dc_stream_program_cursor_position(dm_old_crtc_state->stream, &position);
- 			mutex_unlock(&dm->dc_lock);
- 		}
+ 	/*
+ 	 * Since this can be called multiple times (via prepare_binprm),
+@@ -1552,12 +1553,17 @@ static void bprm_fill_uid(struct linux_b
+ 	/* Be careful if suid/sgid is set */
+ 	inode_lock(inode);
  
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
-@@ -1254,7 +1254,7 @@ void amdgpu_dm_plane_handle_cursor_updat
- 		/* turn off cursor */
- 		if (crtc_state && crtc_state->stream) {
- 			mutex_lock(&adev->dm.dc_lock);
--			dc_stream_set_cursor_position(crtc_state->stream,
-+			dc_stream_program_cursor_position(crtc_state->stream,
- 						      &position);
- 			mutex_unlock(&adev->dm.dc_lock);
- 		}
-@@ -1284,11 +1284,11 @@ void amdgpu_dm_plane_handle_cursor_updat
+-	/* reload atomically mode/uid/gid now that lock held */
++	/* Atomically reload and check mode/uid/gid now that lock held. */
+ 	mode = inode->i_mode;
+ 	uid = inode->i_uid;
+ 	gid = inode->i_gid;
++	err = inode_permission(inode, MAY_EXEC);
+ 	inode_unlock(inode);
  
- 	if (crtc_state->stream) {
- 		mutex_lock(&adev->dm.dc_lock);
--		if (!dc_stream_set_cursor_attributes(crtc_state->stream,
-+		if (!dc_stream_program_cursor_attributes(crtc_state->stream,
- 							 &attributes))
- 			DRM_ERROR("DC failed to set cursor attributes\n");
- 
--		if (!dc_stream_set_cursor_position(crtc_state->stream,
-+		if (!dc_stream_program_cursor_position(crtc_state->stream,
- 						   &position))
- 			DRM_ERROR("DC failed to set cursor position\n");
- 		mutex_unlock(&adev->dm.dc_lock);
---- a/drivers/gpu/drm/amd/display/dc/core/dc_stream.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc_stream.c
-@@ -266,7 +266,6 @@ bool dc_stream_set_cursor_attributes(
- 	const struct dc_cursor_attributes *attributes)
- {
- 	struct dc  *dc;
--	bool reset_idle_optimizations = false;
- 
- 	if (NULL == stream) {
- 		dm_error("DC: dc_stream is NULL!\n");
-@@ -297,20 +296,36 @@ bool dc_stream_set_cursor_attributes(
- 
- 	stream->cursor_attributes = *attributes;
- 
--	dc_z10_restore(dc);
--	/* disable idle optimizations while updating cursor */
--	if (dc->idle_optimizations_allowed) {
--		dc_allow_idle_optimizations(dc, false);
--		reset_idle_optimizations = true;
--	}
-+	return true;
-+}
- 
--	program_cursor_attributes(dc, stream, attributes);
--
--	/* re-enable idle optimizations if necessary */
--	if (reset_idle_optimizations && !dc->debug.disable_dmub_reallow_idle)
--		dc_allow_idle_optimizations(dc, true);
-+bool dc_stream_program_cursor_attributes(
-+	struct dc_stream_state *stream,
-+	const struct dc_cursor_attributes *attributes)
-+{
-+	struct dc  *dc;
-+	bool reset_idle_optimizations = false;
- 
--	return true;
-+	dc = stream ? stream->ctx->dc : NULL;
++	/* Did the exec bit vanish out from under us? Give up. */
++	if (err)
++		return;
 +
-+	if (dc_stream_set_cursor_attributes(stream, attributes)) {
-+		dc_z10_restore(dc);
-+		/* disable idle optimizations while updating cursor */
-+		if (dc->idle_optimizations_allowed) {
-+			dc_allow_idle_optimizations(dc, false);
-+			reset_idle_optimizations = true;
-+		}
-+
-+		program_cursor_attributes(dc, stream, attributes);
-+
-+		/* re-enable idle optimizations if necessary */
-+		if (reset_idle_optimizations && !dc->debug.disable_dmub_reallow_idle)
-+			dc_allow_idle_optimizations(dc, true);
-+
-+		return true;
-+	}
-+
-+	return false;
- }
- 
- static void program_cursor_position(
-@@ -355,9 +370,6 @@ bool dc_stream_set_cursor_position(
- 	struct dc_stream_state *stream,
- 	const struct dc_cursor_position *position)
- {
--	struct dc *dc;
--	bool reset_idle_optimizations = false;
--
- 	if (NULL == stream) {
- 		dm_error("DC: dc_stream is NULL!\n");
- 		return false;
-@@ -368,24 +380,43 @@ bool dc_stream_set_cursor_position(
- 		return false;
- 	}
- 
-+	stream->cursor_position = *position;
-+
-+
-+	return true;
-+}
-+
-+bool dc_stream_program_cursor_position(
-+	struct dc_stream_state *stream,
-+	const struct dc_cursor_position *position)
-+{
-+	struct dc *dc;
-+	bool reset_idle_optimizations = false;
-+	const struct dc_cursor_position *old_position;
-+
-+	old_position = stream ? &stream->cursor_position : NULL;
- 	dc = stream->ctx->dc;
--	dc_z10_restore(dc);
- 
--	/* disable idle optimizations if enabling cursor */
--	if (dc->idle_optimizations_allowed && (!stream->cursor_position.enable || dc->debug.exit_idle_opt_for_cursor_updates)
--			&& position->enable) {
--		dc_allow_idle_optimizations(dc, false);
--		reset_idle_optimizations = true;
--	}
-+	if (dc_stream_set_cursor_position(stream, position)) {
-+		dc_z10_restore(dc);
- 
--	stream->cursor_position = *position;
-+		/* disable idle optimizations if enabling cursor */
-+		if (dc->idle_optimizations_allowed &&
-+		    (!old_position->enable || dc->debug.exit_idle_opt_for_cursor_updates) &&
-+		    position->enable) {
-+			dc_allow_idle_optimizations(dc, false);
-+			reset_idle_optimizations = true;
-+		}
- 
--	program_cursor_position(dc, stream, position);
--	/* re-enable idle optimizations if necessary */
--	if (reset_idle_optimizations && !dc->debug.disable_dmub_reallow_idle)
--		dc_allow_idle_optimizations(dc, true);
-+		program_cursor_position(dc, stream, position);
-+		/* re-enable idle optimizations if necessary */
-+		if (reset_idle_optimizations && !dc->debug.disable_dmub_reallow_idle)
-+			dc_allow_idle_optimizations(dc, true);
- 
--	return true;
-+		return true;
-+	}
-+
-+	return false;
- }
- 
- bool dc_stream_add_writeback(struct dc *dc,
---- a/drivers/gpu/drm/amd/display/dc/dc_stream.h
-+++ b/drivers/gpu/drm/amd/display/dc/dc_stream.h
-@@ -470,10 +470,18 @@ bool dc_stream_set_cursor_attributes(
- 	struct dc_stream_state *stream,
- 	const struct dc_cursor_attributes *attributes);
- 
-+bool dc_stream_program_cursor_attributes(
-+	struct dc_stream_state *stream,
-+	const struct dc_cursor_attributes *attributes);
-+
- bool dc_stream_set_cursor_position(
- 	struct dc_stream_state *stream,
- 	const struct dc_cursor_position *position);
- 
-+bool dc_stream_program_cursor_position(
-+	struct dc_stream_state *stream,
-+	const struct dc_cursor_position *position);
-+
- 
- bool dc_stream_adjust_vmin_vmax(struct dc *dc,
- 				struct dc_stream_state *stream,
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn30/dcn30_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn30/dcn30_hwseq.c
-@@ -1041,7 +1041,7 @@ bool dcn30_apply_idle_power_optimization
- 
- 					/* Use copied cursor, and it's okay to not switch back */
- 					cursor_attr.address.quad_part = cmd.mall.cursor_copy_dst.quad_part;
--					dc_stream_set_cursor_attributes(stream, &cursor_attr);
-+					dc_stream_program_cursor_attributes(stream, &cursor_attr);
- 				}
- 
- 				/* Enable MALL */
+ 	/* We ignore suid/sgid if there are no mappings for them in the ns */
+ 	if (!kuid_has_mapping(bprm->cred->user_ns, uid) ||
+ 		 !kgid_has_mapping(bprm->cred->user_ns, gid))
 
 
 
