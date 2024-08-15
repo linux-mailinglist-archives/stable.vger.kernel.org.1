@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-68271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67788-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5020C95316F
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:54:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32E68952F1B
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:28:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 83D3C1C21093
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:54:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0CA61F26212
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:28:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4C0E19DF9C;
-	Thu, 15 Aug 2024 13:53:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AACB81DFFB;
+	Thu, 15 Aug 2024 13:28:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QNgYKEbp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WRhy+l4B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9220718D630;
-	Thu, 15 Aug 2024 13:53:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6504B19DFA6;
+	Thu, 15 Aug 2024 13:28:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730038; cv=none; b=o2hD7iboI2wA4vluGSzuPXmByhjB3bX23BRT2Mmc/QaNLKfN0w74fHyAzBQjC8T7HQd4VLgLnn9fdWaFSym1XI/p6fmPxq7wHktpIpLMgx8wW5sCkdLchx3RVGmP95K/t7kPFETJbwWczF1myg01QHBpfADsnx/ZmUnLE8rvKKY=
+	t=1723728519; cv=none; b=g0mLEu84BgqKyT5sJ42ly8+EGcFUGBIwtiExAivkhSBHe3I9CT8b6tp+jeD8gZvT1IrtzoTgAADlxjdV2FP8i3yHgUrwzUP5PBFJwxdX+cogCYZlFx3qtMG0pz7MZgJCh6S9mXdMq7Umk/GLbDy1eBvZdM//M6X+JGSNR4zw1mM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730038; c=relaxed/simple;
-	bh=8zzxwEk5Q88IpKQdClk/DhE32X+gCV4XPBHyytRBWzI=;
+	s=arc-20240116; t=1723728519; c=relaxed/simple;
+	bh=s59+uAZWXV6ueUyW3Ngyd9LirQxdrF7rXZZpEMweW/0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sYNZPCsb8jAZmt5fA+ymV5Hob+1ur9e6nnFXQYjJaMj9VKMHoyoyChfyetQLckV9B+wUU2r0fw7bCY0R6YWZvepebiHS/vNbHQzy5jTGYHW1Iemhl4JCAotV2TGFrwbeOYtXr5WIYoxo0CV9zNZVqx8En44L0lKE1kEPFIqyoKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QNgYKEbp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B41C3C32786;
-	Thu, 15 Aug 2024 13:53:57 +0000 (UTC)
+	 MIME-Version; b=NCyqocaoqSiLasytAyYRDA0dRhu91VhWrIdhBNdu9qT6e9BvlrlTPy3kqy+4wI3FEN+5TNyPmlaaxEEb5JcDq5qslESJdcwooaCFDVadaAa/Ul909wCOBFarlhvGRYpHsRFk73c9V/H6Jn46AAeX3x946aIAgxNp523bAS0Sf7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WRhy+l4B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C73A3C32786;
+	Thu, 15 Aug 2024 13:28:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730038;
-	bh=8zzxwEk5Q88IpKQdClk/DhE32X+gCV4XPBHyytRBWzI=;
+	s=korg; t=1723728519;
+	bh=s59+uAZWXV6ueUyW3Ngyd9LirQxdrF7rXZZpEMweW/0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QNgYKEbpXabnaXF5XQb7jiQEeuxHn69QkgIHs7mQRQf0I9dWa+ZTgj7VKy5g5/s1Y
-	 wpAd14T/X9X0FQmAqKjwOzFtVurHOZ3L35EQjRvfSSIS5SwCRcTjRSaqcYsIeRSRxz
-	 AN8ZvDGl0WTp4i3WMN5Q+yU625za2vupvoZsewc4=
+	b=WRhy+l4BqwNDrnELFHvYehLRXdfNdfrOMPRNcIcdi023FvMz+NfmLUhhor+IF23mN
+	 HMgBHrHxB/RSKklxvH+H17/T2mQ7yE0o2SZsRJux3wnG9ZpU+lxS0b1dgGbe9HD4ju
+	 cJn8M6+OtLsINsdowfyjgb0wNYjBeSUYOE4XWRI0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 284/484] spi: spidev: Replace OF specific code by device property API
-Date: Thu, 15 Aug 2024 15:22:22 +0200
-Message-ID: <20240815131952.377458267@linuxfoundation.org>
+Subject: [PATCH 4.19 026/196] perf: Fix perf_aux_size() for greater-than 32-bit size
+Date: Thu, 15 Aug 2024 15:22:23 +0200
+Message-ID: <20240815131853.088411972@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
+References: <20240815131852.063866671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,109 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-[ Upstream commit 88a285192084edab6657e819f7f130f9cfcb0579 ]
+[ Upstream commit 3df94a5b1078dfe2b0c03f027d018800faf44c82 ]
 
-Instead of calling the OF specific APIs, use device property ones.
+perf_buffer->aux_nr_pages uses a 32-bit type, so a cast is needed to
+calculate a 64-bit size.
 
-It also prevents misusing PRP0001 in ACPI when trying to instantiate
-spidev directly. We only support special SPI test devices there.
-
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20220323140215.2568-4-andriy.shevchenko@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: fc28d1c1fe3b ("spi: spidev: add correct compatible for Rohm BH2228FV")
+Fixes: 45bfb2e50471 ("perf: Add AUX area to ring buffer for raw data streams")
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20240624201101.60186-5-adrian.hunter@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spidev.c | 45 ++++++++++++++++++++++----------------------
- 1 file changed, 22 insertions(+), 23 deletions(-)
+ kernel/events/internal.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
-index 8c69ab348a7f7..4a19c2142e474 100644
---- a/drivers/spi/spidev.c
-+++ b/drivers/spi/spidev.c
-@@ -20,8 +20,6 @@
- #include <linux/property.h>
- #include <linux/slab.h>
- #include <linux/compat.h>
--#include <linux/of.h>
--#include <linux/of_device.h>
+diff --git a/kernel/events/internal.h b/kernel/events/internal.h
+index 8fc0ddc38cb69..a99713a883e9d 100644
+--- a/kernel/events/internal.h
++++ b/kernel/events/internal.h
+@@ -121,7 +121,7 @@ static inline unsigned long perf_data_size(struct ring_buffer *rb)
  
- #include <linux/spi/spi.h>
- #include <linux/spi/spidev.h>
-@@ -696,20 +694,31 @@ static const struct spi_device_id spidev_spi_ids[] = {
- };
- MODULE_DEVICE_TABLE(spi, spidev_spi_ids);
+ static inline unsigned long perf_aux_size(struct ring_buffer *rb)
+ {
+-	return rb->aux_nr_pages << PAGE_SHIFT;
++	return (unsigned long)rb->aux_nr_pages << PAGE_SHIFT;
+ }
  
--#ifdef CONFIG_OF
-+/*
-+ * spidev should never be referenced in DT without a specific compatible string,
-+ * it is a Linux implementation thing rather than a description of the hardware.
-+ */
-+static int spidev_of_check(struct device *dev)
-+{
-+	if (device_property_match_string(dev, "compatible", "spidev") < 0)
-+		return 0;
-+
-+	dev_err(dev, "spidev listed directly in DT is not supported\n");
-+	return -EINVAL;
-+}
-+
- static const struct of_device_id spidev_dt_ids[] = {
--	{ .compatible = "rohm,dh2228fv" },
--	{ .compatible = "lineartechnology,ltc2488" },
--	{ .compatible = "semtech,sx1301" },
--	{ .compatible = "lwn,bk4" },
--	{ .compatible = "dh,dhcom-board" },
--	{ .compatible = "menlo,m53cpld" },
--	{ .compatible = "cisco,spi-petra" },
--	{ .compatible = "micron,spi-authenta" },
-+	{ .compatible = "rohm,dh2228fv", .data = &spidev_of_check },
-+	{ .compatible = "lineartechnology,ltc2488", .data = &spidev_of_check },
-+	{ .compatible = "semtech,sx1301", .data = &spidev_of_check },
-+	{ .compatible = "lwn,bk4", .data = &spidev_of_check },
-+	{ .compatible = "dh,dhcom-board", .data = &spidev_of_check },
-+	{ .compatible = "menlo,m53cpld", .data = &spidev_of_check },
-+	{ .compatible = "cisco,spi-petra", .data = &spidev_of_check },
-+	{ .compatible = "micron,spi-authenta", .data = &spidev_of_check },
- 	{},
- };
- MODULE_DEVICE_TABLE(of, spidev_dt_ids);
--#endif
- 
- /* Dummy SPI devices not to be used in production systems */
- static int spidev_acpi_check(struct device *dev)
-@@ -741,16 +750,6 @@ static int spidev_probe(struct spi_device *spi)
- 	int			status;
- 	unsigned long		minor;
- 
--	/*
--	 * spidev should never be referenced in DT without a specific
--	 * compatible string, it is a Linux implementation thing
--	 * rather than a description of the hardware.
--	 */
--	if (spi->dev.of_node && of_device_is_compatible(spi->dev.of_node, "spidev")) {
--		dev_err(&spi->dev, "spidev listed directly in DT is not supported\n");
--		return -EINVAL;
--	}
--
- 	match = device_get_match_data(&spi->dev);
- 	if (match) {
- 		status = match(&spi->dev);
-@@ -827,7 +826,7 @@ static int spidev_remove(struct spi_device *spi)
- static struct spi_driver spidev_spi_driver = {
- 	.driver = {
- 		.name =		"spidev",
--		.of_match_table = of_match_ptr(spidev_dt_ids),
-+		.of_match_table = spidev_dt_ids,
- 		.acpi_match_table = spidev_acpi_ids,
- 	},
- 	.probe =	spidev_probe,
+ #define __DEFINE_OUTPUT_COPY_BODY(advance_buf, memcpy_func, ...)	\
 -- 
 2.43.0
 
