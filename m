@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-68358-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67876-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 706759531D0
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:58:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF3B9952F8B
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:34:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3CEE1C2130A
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:58:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 143EDB23301
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:34:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E154219DFA6;
-	Thu, 15 Aug 2024 13:58:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CE4119EED4;
+	Thu, 15 Aug 2024 13:33:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i2vFwr/B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z0WH+Oye"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A06927DA7D;
-	Thu, 15 Aug 2024 13:58:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5FD819EECD;
+	Thu, 15 Aug 2024 13:33:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730316; cv=none; b=IAgLLp+8RalrIhauQEBDkbiirR8CnDk9Kvon3HuLs2aKGxIOZf+Txr0+5hQMA9mX1AFZH8neXn2zGraC6K3cL31PprSPbh8GDV6MY40cBujtHH6kOX48eM9QY/tt1pIzRLz7C3KytBLOnZWDwuO2wVc+HBI2vk5MzJ1WZJfRz88=
+	t=1723728799; cv=none; b=K6ncMTPij3cZ4Mqqr9S4tIsvvmpB0rf1i5o1QRpl4mKxvq/cyUzxWrrSpSgiShcIv5POpth9dZw80VmlFUos1zVc1qnBD8Ijg5LuvJM2rLCYfuV0u7gietEIbXgHNcXNU2CVeFpFbEBO+wI5xDdz5qLNhbpoCpzr+cE1+svvBiE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730316; c=relaxed/simple;
-	bh=HfiDz/K5yrqG358L+kFX0aWtOoMHEShBG0A09Dp4sis=;
+	s=arc-20240116; t=1723728799; c=relaxed/simple;
+	bh=GAb1zf4JoX8VtkKKTfkRG4Fk+9YVxDUmxq/+iQW1YJ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U9wJSSskVZM1Bc1mhMd65xudTP2Ny8SCXll1ZhZNrEm3EbojUjQBssPCzkWSgcc+P89XEcAIImGFnIzbxeP9HHxPR4GW3p+i0wV67eY/fC14Rkxv6KgoLrXZ279/5B6ENESWsgjjx3vbidL3UlVKCEYqKEA/iEIP7Jj4f3QctRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i2vFwr/B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28193C32786;
-	Thu, 15 Aug 2024 13:58:35 +0000 (UTC)
+	 MIME-Version; b=hTbqUHelBHZ/ci2LkN/ExG0cbkuNnOwXmybaJOxTYhHcCQ+lrpFl2U3qA6PjamXFHztbHpAE4XIeJHdfmUljZzGq8W/C0jw66iS7LVMofvuRiIZEZk7W2Mw575fde7LXMqgGMUDNdYpY+XlZATt7CqO5iJx/S1KcqKbBmqg/t1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z0WH+Oye; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B441FC32786;
+	Thu, 15 Aug 2024 13:33:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730316;
-	bh=HfiDz/K5yrqG358L+kFX0aWtOoMHEShBG0A09Dp4sis=;
+	s=korg; t=1723728799;
+	bh=GAb1zf4JoX8VtkKKTfkRG4Fk+9YVxDUmxq/+iQW1YJ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i2vFwr/Bj4f2VMP6B8KPOZXMAvQO+h38e0v1Y0+xJ5/JrggndiKd5Ry7q6z2/jdvl
-	 6KlFhy/vOHvpPc01g++Beq8Hf3ae7K/AMYFYgVXYBdKTExyUHkJA6jWry5/tifONkw
-	 hfANwUJIigBINcEbYRjCMg0uogLyLBw+ymJu10M4=
+	b=Z0WH+Oye4qFcX8PLDLzrHZlVJiLn9SLEvTgkO+a3l4znySwKrlOfxJJ680FDQ5ARF
+	 81XuBhAGEFzC0AaR3ffjE+VJqosGCTuuP1vShNBWOlGZfdFQfBcSX+tr9XNb4uYPay
+	 oFlrNTYM00g9Lv4ZRIgkrkz9hekgkkoNd8oZa2M8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhe Qiao <qiaozhe@iscas.ac.cn>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 340/484] riscv/mm: Add handling for VM_FAULT_SIGSEGV in mm_fault_error()
-Date: Thu, 15 Aug 2024 15:23:18 +0200
-Message-ID: <20240815131954.547642753@linuxfoundation.org>
+	Bastien Curutchet <bastien.curutchet@bootlin.com>,
+	David Lechner <david@lechnology.com>,
+	Stephen Boyd <sboyd@kernel.org>
+Subject: [PATCH 4.19 082/196] clk: davinci: da8xx-cfgchip: Initialize clk_init_data before use
+Date: Thu, 15 Aug 2024 15:23:19 +0200
+Message-ID: <20240815131855.217466637@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
+References: <20240815131852.063866671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhe Qiao <qiaozhe@iscas.ac.cn>
+From: Bastien Curutchet <bastien.curutchet@bootlin.com>
 
-[ Upstream commit 0c710050c47d45eb77b28c271cddefc5c785cb40 ]
+commit a83b22754e351f13fb46596c85f667dc33da71ec upstream.
 
-Handle VM_FAULT_SIGSEGV in the page fault path so that we correctly
-kill the process and we don't BUG() the kernel.
+The flag attribute of the struct clk_init_data isn't initialized before
+the devm_clk_hw_register() call. This can lead to unexpected behavior
+during registration.
 
-Fixes: 07037db5d479 ("RISC-V: Paging and MMU")
-Signed-off-by: Zhe Qiao <qiaozhe@iscas.ac.cn>
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Link: https://lore.kernel.org/r/20240731084547.85380-1-qiaozhe@iscas.ac.cn
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Initialize the entire clk_init_data to zero at declaration.
+
+Cc: stable@vger.kernel.org
+Fixes: 58e1e2d2cd89 ("clk: davinci: cfgchip: Add TI DA8XX USB PHY clocks")
+Signed-off-by: Bastien Curutchet <bastien.curutchet@bootlin.com>
+Reviewed-by: David Lechner <david@lechnology.com>
+Link: https://lore.kernel.org/r/20240718115534.41513-1-bastien.curutchet@bootlin.com
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/mm/fault.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ drivers/clk/davinci/da8xx-cfgchip.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/riscv/mm/fault.c b/arch/riscv/mm/fault.c
-index 884a3c76573cf..3fc62e05bac11 100644
---- a/arch/riscv/mm/fault.c
-+++ b/arch/riscv/mm/fault.c
-@@ -60,26 +60,27 @@ static inline void no_context(struct pt_regs *regs, unsigned long addr)
+--- a/drivers/clk/davinci/da8xx-cfgchip.c
++++ b/drivers/clk/davinci/da8xx-cfgchip.c
+@@ -507,7 +507,7 @@ da8xx_cfgchip_register_usb0_clk48(struct
+ 	const char * const parent_names[] = { "usb_refclkin", "pll0_auxclk" };
+ 	struct clk *fck_clk;
+ 	struct da8xx_usb0_clk48 *usb0;
+-	struct clk_init_data init;
++	struct clk_init_data init = {};
+ 	int ret;
  
- static inline void mm_fault_error(struct pt_regs *regs, unsigned long addr, vm_fault_t fault)
+ 	fck_clk = devm_clk_get(dev, "fck");
+@@ -581,7 +581,7 @@ da8xx_cfgchip_register_usb1_clk48(struct
  {
-+	if (!user_mode(regs)) {
-+		no_context(regs, addr);
-+		return;
-+	}
-+
- 	if (fault & VM_FAULT_OOM) {
- 		/*
- 		 * We ran out of memory, call the OOM killer, and return the userspace
- 		 * (which will retry the fault, or kill us if we got oom-killed).
- 		 */
--		if (!user_mode(regs)) {
--			no_context(regs, addr);
--			return;
--		}
- 		pagefault_out_of_memory();
- 		return;
- 	} else if (fault & VM_FAULT_SIGBUS) {
- 		/* Kernel mode? Handle exceptions or die */
--		if (!user_mode(regs)) {
--			no_context(regs, addr);
--			return;
--		}
- 		do_trap(regs, SIGBUS, BUS_ADRERR, addr);
- 		return;
-+	} else if (fault & VM_FAULT_SIGSEGV) {
-+		do_trap(regs, SIGSEGV, SEGV_MAPERR, addr);
-+		return;
- 	}
-+
- 	BUG();
- }
+ 	const char * const parent_names[] = { "usb0_clk48", "usb_refclkin" };
+ 	struct da8xx_usb1_clk48 *usb1;
+-	struct clk_init_data init;
++	struct clk_init_data init = {};
+ 	int ret;
  
--- 
-2.43.0
-
+ 	usb1 = devm_kzalloc(dev, sizeof(*usb1), GFP_KERNEL);
 
 
 
