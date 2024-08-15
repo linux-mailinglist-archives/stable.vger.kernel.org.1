@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-68167-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68178-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AC129530F2
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:48:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E639A9530FD
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:49:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 151D1B23292
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:48:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7F139B240B3
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:49:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81F5218D630;
-	Thu, 15 Aug 2024 13:48:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFD1017BEA5;
+	Thu, 15 Aug 2024 13:48:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HNYbcql0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WR3NDe6X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36A157DA9E;
-	Thu, 15 Aug 2024 13:48:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFD767DA9E;
+	Thu, 15 Aug 2024 13:48:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723729704; cv=none; b=mpWS+ie4a0eYEGKprHdf8TGPXqE8p7TUYxEGLQNc+a/gTs5SymvRMxKmgZg2XNjJT42z8i2zRoye4x8Zmvn6sSmghsuocdzxU/v1nmBZFeIfkQiUjKMLKTtQlUbAjpvZ1WlmBAIfJ7PXtU4LUwon/gefJNcL8KfI7XX+LPFDlJc=
+	t=1723729739; cv=none; b=WyrMmgXYoUvfrTxcorYBQcndaJqOlmNUw82QVOD7lw/nV/tzeJLRpAmFKIkaO9ymrm5l1ZfjwlwNau0AT2KoxR3Bty6Wsk5osTnwhNngMOOtlz5PzC7xX9E++rkvddUSHrH/ebYaf0rwZm9qJiHXpwiFysYme66r/++yz0ePcxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723729704; c=relaxed/simple;
-	bh=1Fs2GtjcFIag3Q5uyoH9rK/XmeJvXLGFmEVruoukwOw=;
+	s=arc-20240116; t=1723729739; c=relaxed/simple;
+	bh=v8vUQL4x2vi6IkQx0k3v9ZMNP7/879FzAdO+pVNhOiw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Xs/cIUZ4BOHN76ICHxr5SGxQpfHMQpLC0b9iGD/ycmBbJg4YM21vhhJv0vc9NUv24PDN107O6sIeQ9SiI56v2OPcvwQFHtxMKmATExNb8VVVgGkfM0F4zTpXyr6lX8farpuxaqCMOuKCEw6QuNMlN8r7yl9E1zq6kAMTDnAAXN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HNYbcql0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7226EC32786;
-	Thu, 15 Aug 2024 13:48:23 +0000 (UTC)
+	 MIME-Version; b=PTocNj60brl+UUEh9vKDeKRtWlifqpAUyD2PWC4KgQBPivuQ/XNuUKr8Od5O9Ozz7hLJkUXIY595IIe4LffnmNggFEB1G1GDR0oSj2cCpNHAbIJL9gd7+nAjZNXjgU6ykCH0Cnf3EuF5cZuJ84rNIAFYzwitoVx1l6BDHoLjGzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WR3NDe6X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2396FC32786;
+	Thu, 15 Aug 2024 13:48:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723729703;
-	bh=1Fs2GtjcFIag3Q5uyoH9rK/XmeJvXLGFmEVruoukwOw=;
+	s=korg; t=1723729739;
+	bh=v8vUQL4x2vi6IkQx0k3v9ZMNP7/879FzAdO+pVNhOiw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HNYbcql06s9njobAXh+QuvXOzEuXL7foBR1n9V7qYeaXDxj3kCAf2ihoVX1FybDez
-	 rGpz1QRRPRGKXTfabQVJmeBbZlB2uhDosq75NSbsY8DXIa6jMDTNlsPruIYgEalKmF
-	 qYJtbUKOZSr4EL4bWWk0qlFkJPfCB0QkCM4cQHIk=
+	b=WR3NDe6XEsBM+8posUsuZ7g17l8nR/fyrnt7KN9PuYISvZVbE94hR3wgxQNWQjY4V
+	 SnszyD8R54b4sQfDEVewC2tOnbtYGNMowHx2OjpDfKI4uRZEKiY9Kglcc/P3Va+I6z
+	 akMHE/qMIrrPOJn2D4Q0Hnp53ihigerZqIk/zqhI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Cs=C3=B3k=C3=A1s@web.codeaurora.org,
-	=20Bence?= <csokas.bence@prolan.hu>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 164/484] rtc: interface: Add RTC offset to alarm after fix-up
-Date: Thu, 15 Aug 2024 15:20:22 +0200
-Message-ID: <20240815131947.744520175@linuxfoundation.org>
+Subject: [PATCH 5.15 165/484] fs/ntfs3: Missed error return
+Date: Thu, 15 Aug 2024 15:20:23 +0200
+Message-ID: <20240815131947.784870595@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
 References: <20240815131941.255804951@linuxfoundation.org>
@@ -61,62 +59,36 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Csókás, Bence <csokas.bence@prolan.hu>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-[ Upstream commit 463927a8902a9f22c3633960119410f57d4c8920 ]
+[ Upstream commit 2cbbd96820255fff4f0ad1533197370c9ccc570b ]
 
-`rtc_add_offset()` is called by `__rtc_read_time()`
-and `__rtc_read_alarm()` to add the RTC's offset to
-the raw read-outs from the device drivers. However,
-in the latter case, a fix-up algorithm is run if
-the RTC device does not report a full `struct rtc_time`
-alarm value. In that case, the offset was forgot to be
-added.
-
-Fixes: fd6792bb022e ("rtc: fix alarm read and set offset")
-
-Signed-off-by: Csókás, Bence <csokas.bence@prolan.hu>
-Link: https://lore.kernel.org/r/20240619140451.2800578-1-csokas.bence@prolan.hu
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Fixes: 3f3b442b5ad2 ("fs/ntfs3: Add bitmap")
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/interface.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ fs/ntfs3/bitmap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/rtc/interface.c b/drivers/rtc/interface.c
-index f49ab45455d7c..29c12947e73fc 100644
---- a/drivers/rtc/interface.c
-+++ b/drivers/rtc/interface.c
-@@ -274,10 +274,9 @@ int __rtc_read_alarm(struct rtc_device *rtc, struct rtc_wkalrm *alarm)
- 			return err;
+diff --git a/fs/ntfs3/bitmap.c b/fs/ntfs3/bitmap.c
+index 21536b72aa5e5..95589a496f0ff 100644
+--- a/fs/ntfs3/bitmap.c
++++ b/fs/ntfs3/bitmap.c
+@@ -1363,7 +1363,7 @@ int wnd_extend(struct wnd_bitmap *wnd, size_t new_bits)
  
- 		/* full-function RTCs won't have such missing fields */
--		if (rtc_valid_tm(&alarm->time) == 0) {
--			rtc_add_offset(rtc, &alarm->time);
--			return 0;
--		}
-+		err = rtc_valid_tm(&alarm->time);
-+		if (!err)
-+			goto done;
+ 		err = ntfs_vbo_to_lbo(sbi, &wnd->run, vbo, &lbo, &bytes);
+ 		if (err)
+-			break;
++			return err;
  
- 		/* get the "after" timestamp, to detect wrapped fields */
- 		err = rtc_read_time(rtc, &now);
-@@ -379,6 +378,8 @@ int __rtc_read_alarm(struct rtc_device *rtc, struct rtc_wkalrm *alarm)
- 	if (err)
- 		dev_warn(&rtc->dev, "invalid alarm value: %ptR\n",
- 			 &alarm->time);
-+	else
-+		rtc_add_offset(rtc, &alarm->time);
- 
- 	return err;
- }
+ 		bh = ntfs_bread(sb, lbo >> sb->s_blocksize_bits);
+ 		if (!bh)
 -- 
 2.43.0
 
