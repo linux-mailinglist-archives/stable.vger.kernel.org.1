@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-68460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68742-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7112953265
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:05:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5275B9533BF
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:19:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5102A1F21E32
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:05:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC920287C10
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:19:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AA4E1AC425;
-	Thu, 15 Aug 2024 14:03:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF87E1AAE07;
+	Thu, 15 Aug 2024 14:18:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1+K7cQGg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QhDCb9wg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 173C01A3BB6;
-	Thu, 15 Aug 2024 14:03:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DB4A1A256C;
+	Thu, 15 Aug 2024 14:18:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730639; cv=none; b=H+wfBl/cMrrqWb+5xEO/QMOWURcnSq41jeo2n9IlxVV99jUBiaShFYJuNbh3SdGN24CLKCC1F//ghthdHSX39dJNMZRMz8qv/vtqys2UzlbtATpoLmKO9AwsiXvFe1VXvekSbyL++2KrVRohX4Yp9I2pdt2PcRwUXzraPqK3eVY=
+	t=1723731520; cv=none; b=WG3exCEQclvtx5fLH7KF2ByaxDmlPXU6WeWCqdZMh/AYNbufOECrtOrvpHaTQvhY0w9PdRjgc6oeL3XhRgjDd7BHBaxWtqPLk0PIrQvkFM8bgxXLYtip+3ddpvnsTO/CReYiJ0WbSn5wuuL9sFqbyAUMfeswwN+uoT0ZlWDqQZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730639; c=relaxed/simple;
-	bh=s4XNLMr/2Dkiv/6Fr3nxj2WU5jHOQ64jnmbSqNn+Jww=;
+	s=arc-20240116; t=1723731520; c=relaxed/simple;
+	bh=aCSDu4uXOe9uDdnPgr7aP5L9lMBGvRGVVyveu+WTijU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r/aOINFlTICLT1VnQZycCIctoL0cIcRQbIIsDmh7Gr1CVF5L9VfLaVJunoi7YOcZiI7tKiw6/U4cIggpxgUANOkJ530SSZQ3ddLZve5E+criqvUGrG77mr+TrbR0rVpPFrQLf9ONzyB7D5I9Py82hBY4pSDJRLLfoR2v6B1tK/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1+K7cQGg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D41AC32786;
-	Thu, 15 Aug 2024 14:03:57 +0000 (UTC)
+	 MIME-Version; b=jVLqL9m3PGIAxCBN6erZe8a9gg2vc0W8q8JlusSN7D0TZRnRDL91dtYOUJQWMZdPGKr/pQ8Gv0ZEgDfuc3xVBxMEurySwJpfDB7pKiMsjf686PY6Buy8fePTNdDK05Srif7pzCrkoRgV6xtvQH2GBSErnKmw2YVB9kHG/h9pkd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QhDCb9wg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 110D0C32786;
+	Thu, 15 Aug 2024 14:18:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730638;
-	bh=s4XNLMr/2Dkiv/6Fr3nxj2WU5jHOQ64jnmbSqNn+Jww=;
+	s=korg; t=1723731520;
+	bh=aCSDu4uXOe9uDdnPgr7aP5L9lMBGvRGVVyveu+WTijU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1+K7cQGguCQlxd3dSH1tA8U0MIIEZObHhUaO/KVQbSlZUy8JnHKW04rSexnkM+E9Z
-	 xMyqrbwVu+nTsbAP/LzS8vSbIIZjolT3cKJ0TUpHSC9XKHOb2av/pp7ZTCoYEKS4LJ
-	 ddVuuvxRcp6uf0zpJvfrYVRaycuAT04ES6h4UBvU=
+	b=QhDCb9wgOiJz4hlH8X7UX8SKb8B+d1qrfcuw4JGfyFTCxyOsRXaXNYY1nXdIwz8b0
+	 WBTgstSbmxaAMrJwXhWvxu31ic/8OhrzBM/fS/Z0mW/NF1RE4zikBCYqrDJ6SDQIsE
+	 Da59e5IblxSDMWIl0UHYdtH2SeLfug2sIhZQpuUw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
+	Gerd Bayer <gbayer@linux.ibm.com>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 430/484] torture: Enable clocksource watchdog with "tsc=watchdog"
+Subject: [PATCH 5.4 155/259] s390/pci: Refactor arch_setup_msi_irqs()
 Date: Thu, 15 Aug 2024 15:24:48 +0200
-Message-ID: <20240815131958.066259308@linuxfoundation.org>
+Message-ID: <20240815131908.772330569@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +63,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul E. McKenney <paulmck@kernel.org>
+From: Gerd Bayer <gbayer@linux.ibm.com>
 
-[ Upstream commit 877a0e83c57fa5e2a7fd628ec2e1733ed70c8792 ]
+[ Upstream commit 5fd11b96b43708f2f6e3964412c301c1bd20ec0f ]
 
-This commit tests the "tsc=watchdog" kernel boot parameter when running
-the clocksourcewd torture tests.
+Factor out adapter interrupt allocation from arch_setup_msi_irqs() in
+preparation for enabling registration of multiple MSIs. Code movement
+only, no change of functionality intended.
 
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-Stable-dep-of: f2655ac2c06a ("clocksource: Fix brown-bag boolean thinko in cs_watchdog_read()")
+Signed-off-by: Gerd Bayer <gbayer@linux.ibm.com>
+Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Stable-dep-of: ab42fcb511fd ("s390/pci: Allow allocation of more than 1 MSI interrupt")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/rcutorture/bin/torture.sh | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/s390/pci/pci_irq.c | 54 ++++++++++++++++++++++++-----------------
+ 1 file changed, 32 insertions(+), 22 deletions(-)
 
-diff --git a/tools/testing/selftests/rcutorture/bin/torture.sh b/tools/testing/selftests/rcutorture/bin/torture.sh
-index 66f0f724a1a6d..33ba08ea10a73 100755
---- a/tools/testing/selftests/rcutorture/bin/torture.sh
-+++ b/tools/testing/selftests/rcutorture/bin/torture.sh
-@@ -386,16 +386,16 @@ fi
+diff --git a/arch/s390/pci/pci_irq.c b/arch/s390/pci/pci_irq.c
+index 9ed76fa9391cb..b36f5ef34a6c1 100644
+--- a/arch/s390/pci/pci_irq.c
++++ b/arch/s390/pci/pci_irq.c
+@@ -232,33 +232,20 @@ static void zpci_floating_irq_handler(struct airq_struct *airq, bool floating)
+ 	}
+ }
  
- if test "$do_clocksourcewd" = "yes"
- then
--	torture_bootargs="rcupdate.rcu_cpu_stall_suppress_at_boot=1 torture.disable_onoff_at_boot rcupdate.rcu_task_stall_timeout=30000"
-+	torture_bootargs="rcupdate.rcu_cpu_stall_suppress_at_boot=1 torture.disable_onoff_at_boot rcupdate.rcu_task_stall_timeout=30000 tsc=watchdog"
- 	torture_set "clocksourcewd-1" tools/testing/selftests/rcutorture/bin/kvm.sh --allcpus --duration 45s --configs TREE03 --kconfig "CONFIG_TEST_CLOCKSOURCE_WATCHDOG=y" --trust-make
+-int arch_setup_msi_irqs(struct pci_dev *pdev, int nvec, int type)
++static int __alloc_airq(struct zpci_dev *zdev, int msi_vecs,
++			unsigned long *bit)
+ {
+-	struct zpci_dev *zdev = to_zpci(pdev);
+-	unsigned int hwirq, msi_vecs, cpu;
+-	unsigned long bit;
+-	struct msi_desc *msi;
+-	struct msi_msg msg;
+-	int cpu_addr;
+-	int rc, irq;
+-
+-	zdev->aisb = -1UL;
+-	zdev->msi_first_bit = -1U;
+-	if (type == PCI_CAP_ID_MSI && nvec > 1)
+-		return 1;
+-	msi_vecs = min_t(unsigned int, nvec, zdev->max_msi);
+-
+ 	if (irq_delivery == DIRECTED) {
+ 		/* Allocate cpu vector bits */
+-		bit = airq_iv_alloc(zpci_ibv[0], msi_vecs);
+-		if (bit == -1UL)
++		*bit = airq_iv_alloc(zpci_ibv[0], msi_vecs);
++		if (*bit == -1UL)
+ 			return -EIO;
+ 	} else {
+ 		/* Allocate adapter summary indicator bit */
+-		bit = airq_iv_alloc_bit(zpci_sbv);
+-		if (bit == -1UL)
++		*bit = airq_iv_alloc_bit(zpci_sbv);
++		if (*bit == -1UL)
+ 			return -EIO;
+-		zdev->aisb = bit;
++		zdev->aisb = *bit;
  
--	torture_bootargs="rcupdate.rcu_cpu_stall_suppress_at_boot=1 torture.disable_onoff_at_boot rcupdate.rcu_task_stall_timeout=30000 clocksource.max_cswd_read_retries=1"
-+	torture_bootargs="rcupdate.rcu_cpu_stall_suppress_at_boot=1 torture.disable_onoff_at_boot rcupdate.rcu_task_stall_timeout=30000 clocksource.max_cswd_read_retries=1 tsc=watchdog"
- 	torture_set "clocksourcewd-2" tools/testing/selftests/rcutorture/bin/kvm.sh --allcpus --duration 45s --configs TREE03 --kconfig "CONFIG_TEST_CLOCKSOURCE_WATCHDOG=y" --trust-make
+ 		/* Create adapter interrupt vector */
+ 		zdev->aibv = airq_iv_create(msi_vecs, AIRQ_IV_DATA | AIRQ_IV_BITLOCK);
+@@ -266,10 +253,33 @@ int arch_setup_msi_irqs(struct pci_dev *pdev, int nvec, int type)
+ 			return -ENOMEM;
  
- 	# In case our work is already done...
- 	if test "$do_rcutorture" != "yes"
- 	then
--		torture_bootargs="rcupdate.rcu_cpu_stall_suppress_at_boot=1 torture.disable_onoff_at_boot rcupdate.rcu_task_stall_timeout=30000"
-+		torture_bootargs="rcupdate.rcu_cpu_stall_suppress_at_boot=1 torture.disable_onoff_at_boot rcupdate.rcu_task_stall_timeout=30000 tsc=watchdog"
- 		torture_set "clocksourcewd-3" tools/testing/selftests/rcutorture/bin/kvm.sh --allcpus --duration 45s --configs TREE03 --trust-make
- 	fi
- fi
+ 		/* Wire up shortcut pointer */
+-		zpci_ibv[bit] = zdev->aibv;
++		zpci_ibv[*bit] = zdev->aibv;
+ 		/* Each function has its own interrupt vector */
+-		bit = 0;
++		*bit = 0;
+ 	}
++	return 0;
++}
++
++int arch_setup_msi_irqs(struct pci_dev *pdev, int nvec, int type)
++{
++	struct zpci_dev *zdev = to_zpci(pdev);
++	unsigned int hwirq, msi_vecs, cpu;
++	struct msi_desc *msi;
++	struct msi_msg msg;
++	unsigned long bit;
++	int cpu_addr;
++	int rc, irq;
++
++	zdev->aisb = -1UL;
++	zdev->msi_first_bit = -1U;
++
++	if (type == PCI_CAP_ID_MSI && nvec > 1)
++		return 1;
++	msi_vecs = min_t(unsigned int, nvec, zdev->max_msi);
++
++	rc = __alloc_airq(zdev, msi_vecs, &bit);
++	if (rc < 0)
++		return rc;
+ 
+ 	/* Request MSI interrupts */
+ 	hwirq = bit;
 -- 
 2.43.0
 
