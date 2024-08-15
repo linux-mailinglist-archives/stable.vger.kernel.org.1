@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-68386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67913-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 534399531EF
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:00:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9AB5952FBB
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:36:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0584828236C
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:00:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1997A1C224FB
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:36:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92C7D1A00FF;
-	Thu, 15 Aug 2024 14:00:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CCB91A4F1F;
+	Thu, 15 Aug 2024 13:35:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PcZKR6Xb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2hZCpRKR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DD701714DC;
-	Thu, 15 Aug 2024 14:00:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFE361A2C19;
+	Thu, 15 Aug 2024 13:35:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730404; cv=none; b=Q3agXB+SZapw6pOMjPfp4BZE/Vy+nhi5SOK1RpaVS+KKm4nB6LUzzFdHy5a8vtV8X9VoC2ATzSPktgTjEyE5mT0XCYe2vuOfewTbtrx+5/r4yJpSrHos2vBiVavusBCJf4zMFRYiV8orX52PKaFwwexRAW3OFA9VUY4bSKe8nHE=
+	t=1723728914; cv=none; b=u1K4OSazGGtarC+fmVhN+hYmgWM1wPODSsEhKAVLMAoVURwWCTtJ+61gUDmHgt6Dienl/Q24nR/gaiKkktsuEvisVraJBN8vZM45CUDgaEJ/nvBwt2chDJLaTPShsV+DMxjydll4e/gHGtOFtjpIQXvsLyIa4p2oisDdaQK+fkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730404; c=relaxed/simple;
-	bh=DesL9QNm+MiqAQ/9RpdMmwrJLM8eHoOzmT/QEueL8H0=;
+	s=arc-20240116; t=1723728914; c=relaxed/simple;
+	bh=oo0a5N2zyRRQPH5VqvJ56g7pc5S98cBLwADy5LoeubM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mqwn9LZyRvnYr9kpKWmy4Rf7bjao1+RQtG8nuVGtFj1Q4BP0cvXWQhbF94vA4Teb3hmEqrDpuXAvWCQFK0w0unm3rm3TtpegVZAriX8FYhGY3XNCgLlkZRW6NEZH3Gf2b/iyQhoaZyx+MOnfx+3TR5UMiSeTJW28dZaZSPYDp2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PcZKR6Xb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5359C32786;
-	Thu, 15 Aug 2024 14:00:03 +0000 (UTC)
+	 MIME-Version; b=JgNZ9Y9Jee/QbGGEwdmANMWZvc3YYLrkPieVQQio91HmeAchINeLGDkE5s+XN4dUTZY5PUcGDsvVFQcsBOmYu/okS5wKivslg10e/9cWHqT7okUYQyNKG5N6XexK9wzlMImbf+xYqYpohRHzaBbHtH5LQKCSTj8OtkUdwTNfed4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2hZCpRKR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22162C32786;
+	Thu, 15 Aug 2024 13:35:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730404;
-	bh=DesL9QNm+MiqAQ/9RpdMmwrJLM8eHoOzmT/QEueL8H0=;
+	s=korg; t=1723728913;
+	bh=oo0a5N2zyRRQPH5VqvJ56g7pc5S98cBLwADy5LoeubM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PcZKR6Xbp1JWjmBvzEeeKIVD7DWbmBshwopTfb4akFlBEDE9YCKSl5qCH60AQsBaK
-	 SoeLy8JkVSa4ys0mCDwQtE/BSJ35Km0325caItB69Iq0fwnLQS61uQZQ7r1PXZct96
-	 TKYE4I6y3omYQZm4BUgrcPJqv7ITBHXqanTc0iIU=
+	b=2hZCpRKRHiNQfodOSmJRnTBtMu9bqswJVzqgSdc4QCCcQao8o5T1gTjXvR6BQjn3N
+	 IxGncgvTwzkc4n/1yQSUonT5nPSlU4avQlW6riLv192AXRfTp4UwPdhtJMRXiGH5S1
+	 hZONB9k5OL3+Rr7qbXViCYMCDpLnv/C1wpr0yhVk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Nan <linan122@huawei.com>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Song Liu <song@kernel.org>,
+	"Gustavo A. R. Silva" <gustavo@embeddedor.com>,
+	Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 368/484] md: do not delete safemode_timer in mddev_suspend
+Subject: [PATCH 4.19 109/196] parport: parport_pc: Mark expected switch fall-through
 Date: Thu, 15 Aug 2024 15:23:46 +0200
-Message-ID: <20240815131955.650512837@linuxfoundation.org>
+Message-ID: <20240815131856.250975469@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
+References: <20240815131852.063866671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Nan <linan122@huawei.com>
+From: Gustavo A. R. Silva <gustavo@embeddedor.com>
 
-[ Upstream commit a8768a134518e406d41799a3594aeb74e0889cf7 ]
+[ Upstream commit aa1f0fa374ed23528b915a693a11b0f275a299c0 ]
 
-The deletion of safemode_timer in mddev_suspend() is redundant and
-potentially harmful now. If timer is about to be woken up but gets
-deleted, 'in_sync' will remain 0 until the next write, causing array
-to stay in the 'active' state instead of transitioning to 'clean'.
+In preparation to enabling -Wimplicit-fallthrough, mark switch cases
+where we are expecting to fall through.
 
-Commit 0d9f4f135eb6 ("MD: Add del_timer_sync to mddev_suspend (fix
-nasty panic))" introduced this deletion for dm, because if timer fired
-after dm is destroyed, the resource which the timer depends on might
-have been freed.
-
-However, commit 0dd84b319352 ("md: call __md_stop_writes in md_stop")
-added __md_stop_writes() to md_stop(), which is called before freeing
-resource. Timer is deleted in __md_stop_writes(), and the origin issue
-is resolved. Therefore, delete safemode_timer can be removed safely now.
-
-Signed-off-by: Li Nan <linan122@huawei.com>
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20240508092053.1447930-1-linan666@huaweicloud.com
+Addresses-Coverity-ID: 114730 ("Missing break in switch")
+Signed-off-by: Gustavo A. R. Silva <gustavo@embeddedor.com>
+Signed-off-by: Sudip Mukherjee <sudipm.mukherjee@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: ab11dac93d2d ("dev/parport: fix the array out-of-bounds risk")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/md.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/parport/parport_pc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/md/md.c b/drivers/md/md.c
-index 45ef1ddd2bd03..5b6c366587d54 100644
---- a/drivers/md/md.c
-+++ b/drivers/md/md.c
-@@ -509,7 +509,6 @@ void mddev_suspend(struct mddev *mddev)
- 	clear_bit_unlock(MD_ALLOW_SB_UPDATE, &mddev->flags);
- 	wait_event(mddev->sb_wait, !test_bit(MD_UPDATING_SB, &mddev->flags));
- 
--	del_timer_sync(&mddev->safemode_timer);
- 	/* restrict memory reclaim I/O during raid array is suspend */
- 	mddev->noio_flag = memalloc_noio_save();
- }
+diff --git a/drivers/parport/parport_pc.c b/drivers/parport/parport_pc.c
+index c34ad5dd62e3d..1f9908b1d9d6c 100644
+--- a/drivers/parport/parport_pc.c
++++ b/drivers/parport/parport_pc.c
+@@ -1667,7 +1667,7 @@ static int parport_ECP_supported(struct parport *pb)
+ 	default:
+ 		printk(KERN_WARNING "0x%lx: Unknown implementation ID\n",
+ 			pb->base);
+-		/* Assume 1 */
++		/* Fall through - Assume 1 */
+ 	case 1:
+ 		pword = 1;
+ 	}
 -- 
 2.43.0
 
