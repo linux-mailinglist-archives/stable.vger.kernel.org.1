@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-68469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68824-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1647953272
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:06:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C767953429
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:24:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B7811F21230
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:06:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2485428A14F
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:24:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 599DF1A7056;
-	Thu, 15 Aug 2024 14:04:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A96B1A2C04;
+	Thu, 15 Aug 2024 14:22:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mc369fgs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aFRjl2Te"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 182551AED25;
-	Thu, 15 Aug 2024 14:04:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23A5319F471;
+	Thu, 15 Aug 2024 14:22:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730668; cv=none; b=MEiE4KKfjUZ+Q/BR5l+tn3pK6KjZnJzkYXf545w6EO/waNUccqf56BDdlcGfqkLpCVyj2Nurz1oUBRtVBj8vfEmcO46g4d8BlVWHbmIWCkUb9EZw9d0UAWYepGF0sMjFcOjoJE4/hfoUBPb7NZCjc2NDka1DqVtD9zqhddOiUhg=
+	t=1723731779; cv=none; b=WWbRymVW2MuYrWDlOnrxZ/D5LSl4ifgCJyJaihjvoJJnKC80OED0Y5dgY0iOj1w6JOGsWBO6tu44qRutvRxtU5bWjDnwg4rCATotrUNf1J6mSED/s4tsUEmXOMQ1Jm7qLWs3xnVA8/mMP1aZoTJw5kR3vYYwYMX8BmXekMuBBRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730668; c=relaxed/simple;
-	bh=7R+K/wTD6GeFEEKC3Wvye7kS5fPluJegHfLVMG8dOSk=;
+	s=arc-20240116; t=1723731779; c=relaxed/simple;
+	bh=Mr307NEkujzIw0/2Y4KFGcGTUFP7zGmksRe6UURB+xM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qqT2PB5ZyvXrN7BmS3iW1JSJqUEs+X9NLARffIXyNeSYSxHJP0teyDyTsWtiDd7SMc/rfJXppTzkkDpjKUvqif8H2oSjwz4gUHSSfZWXfV1NvWYMCDLcvsxoSsq8JPLadcIy2F8S2ZgjtqMHn9B/PkpkWUscyk3lzgPxL9utKKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mc369fgs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 309CCC32786;
-	Thu, 15 Aug 2024 14:04:26 +0000 (UTC)
+	 MIME-Version; b=O6PZPXEsZHjKwHqpVX/IzrpY14ABAzEcPo8q4qvlCRNN0XuKH1cNTo1sNm5PFllw5vkhCZBQTyWi4qtylUw2HgY3CgKL2i2wen+JiZCZSq1Ub6SOLJCTiJbGPWvcqGU9t35V2FgVf0OsFrpcXEI7AaQGkuTd9DmS0Cmzn1/Y2v8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aFRjl2Te; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FACBC4AF0A;
+	Thu, 15 Aug 2024 14:22:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730667;
-	bh=7R+K/wTD6GeFEEKC3Wvye7kS5fPluJegHfLVMG8dOSk=;
+	s=korg; t=1723731779;
+	bh=Mr307NEkujzIw0/2Y4KFGcGTUFP7zGmksRe6UURB+xM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mc369fgsSx4s5dG4aLKSCCBqI717M8lc+Ziem9efbkJbBOr9Gqo6Z1rlYAc6m2Xa9
-	 KIKiFFlOjMdpYm/Y3f2mWEAHX7FBnljqm5Dx3xS/Lpe9PFt438yFAypdKumm9zT5t0
-	 TOP6EMERmcsPnol7ZqzWLg19QdAvSOSAvCVlFGdg=
+	b=aFRjl2Te0m0SMixDtW3ChDHv3YNVdVMMJCKBcHVEWKqLeHG3YrRaCZcKMUw/YWczy
+	 uNUKMOdc6IBfVib8bdLTpY1vZadCwc6RIX5TJ0uuIxWZ89vq0HfIlWTjUsugJ2RV52
+	 Q03M5LiT5dUmkiNmE+c0TGRacDNDDOygLg21Ly3w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	hmy <huanglin@uniontech.com>,
-	Wentao Guan <guanwentao@uniontech.com>,
-	WangYuli <wangyuli@uniontech.com>,
-	Keith Busch <kbusch@kernel.org>
-Subject: [PATCH 5.15 480/484] nvme/pci: Add APST quirk for Lenovo N60z laptop
+	Heiko Carstens <hca@linux.ibm.com>,
+	Peter Oberparleiter <oberpar@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 205/259] s390/sclp: Prevent release of buffer in I/O
 Date: Thu, 15 Aug 2024 15:25:38 +0200
-Message-ID: <20240815132000.026107661@linuxfoundation.org>
+Message-ID: <20240815131910.689207976@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: WangYuli <wangyuli@uniontech.com>
+From: Peter Oberparleiter <oberpar@linux.ibm.com>
 
-commit ab091ec536cb7b271983c0c063b17f62f3591583 upstream.
+[ Upstream commit bf365071ea92b9579d5a272679b74052a5643e35 ]
 
-There is a hardware power-saving problem with the Lenovo N60z
-board. When turn it on and leave it for 10 hours, there is a
-20% chance that a nvme disk will not wake up until reboot.
+When a task waiting for completion of a Store Data operation is
+interrupted, an attempt is made to halt this operation. If this attempt
+fails due to a hardware or firmware problem, there is a chance that the
+SCLP facility might store data into buffers referenced by the original
+operation at a later time.
 
-Link: https://lore.kernel.org/all/2B5581C46AC6E335+9c7a81f1-05fb-4fd0-9fbb-108757c21628@uniontech.com
-Signed-off-by: hmy <huanglin@uniontech.com>
-Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Handle this situation by not releasing the referenced data buffers if
+the halt attempt fails. For current use cases, this might result in a
+leak of few pages of memory in case of a rare hardware/firmware
+malfunction.
+
+Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/pci.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/s390/char/sclp_sd.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -2976,6 +2976,13 @@ static unsigned long check_vendor_combin
- 			return NVME_QUIRK_FORCE_NO_SIMPLE_SUSPEND;
+diff --git a/drivers/s390/char/sclp_sd.c b/drivers/s390/char/sclp_sd.c
+index 1e244f78f1929..64581433c3349 100644
+--- a/drivers/s390/char/sclp_sd.c
++++ b/drivers/s390/char/sclp_sd.c
+@@ -319,8 +319,14 @@ static int sclp_sd_store_data(struct sclp_sd_data *result, u8 di)
+ 			  &esize);
+ 	if (rc) {
+ 		/* Cancel running request if interrupted */
+-		if (rc == -ERESTARTSYS)
+-			sclp_sd_sync(page, SD_EQ_HALT, di, 0, 0, NULL, NULL);
++		if (rc == -ERESTARTSYS) {
++			if (sclp_sd_sync(page, SD_EQ_HALT, di, 0, 0, NULL, NULL)) {
++				pr_warn("Could not stop Store Data request - leaking at least %zu bytes\n",
++					(size_t)dsize * PAGE_SIZE);
++				data = NULL;
++				asce = 0;
++			}
++		}
+ 		vfree(data);
+ 		goto out;
  	}
- 
-+	/*
-+	 * NVMe SSD drops off the PCIe bus after system idle
-+	 * for 10 hours on a Lenovo N60z board.
-+	 */
-+	if (dmi_match(DMI_BOARD_NAME, "LXKT-ZXEG-N6"))
-+		return NVME_QUIRK_NO_APST;
-+
- 	return 0;
- }
- 
+-- 
+2.43.0
+
 
 
 
