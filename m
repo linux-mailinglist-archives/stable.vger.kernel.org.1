@@ -1,55 +1,62 @@
-Return-Path: <stable+bounces-68768-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68459-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 565879533DE
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:20:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7170D953264
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:05:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F15C1288D31
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:20:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 26DB71F21FA9
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:05:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A4F21A0733;
-	Thu, 15 Aug 2024 14:20:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B824E1AC422;
+	Thu, 15 Aug 2024 14:03:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bUheH34T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ne5qEFCZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EF8919DF85;
-	Thu, 15 Aug 2024 14:20:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 752E819DF5F;
+	Thu, 15 Aug 2024 14:03:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731604; cv=none; b=RfNVJzCL7uMgOfgmFcaG5mn4CBn9LOUHRo+T46ZvKyyPK7JILB65oy1HwXhIRDEuVqlTdxJkjS59iPGeQpwb/G2RRIFvU88rDkhCFQaHOu2Mh2rtptbKxyYwBibZ0IQLNlOj5LvOdQSbBBkidDL3v+JL5Uf9G1GLYPZIKd8ZyQY=
+	t=1723730635; cv=none; b=j3oqMh/p8mGPlxwnN8OVN3bf3WTiW3aub6rYhd4BOy4mX3toNncMMRA+0SPmYDn4Nty1IigeCtnzTo4crQJpVeu19oUY/Be+qyrBquy+2Z1pa/mexgzFl80CidQDhEFIqmT7+9qdEyasTuQLpC69OjtK5k4o67Md4HXxDPPcsDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731604; c=relaxed/simple;
-	bh=i93hdX1UYNLzPeSSJ6xbJ9K+Fb5E01erLsPwC/dEeRQ=;
+	s=arc-20240116; t=1723730635; c=relaxed/simple;
+	bh=KaOeRqYTxdVTLb3PhAP5c9vm2F4CxIkX/Sh5iMpQq6g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MQUpyowXnijzBRM5nlM8/gCujlXLGK/f7yh7yVLyd4apZZ6R3SMH1fprEBGJj8G/kOdqfCu49dWyTil/rxO8cwWeP98jnFrzt/eMvFLaiNvvJd/LM3CmAJpIizMTELnVMkVyJPoLFqpkRLoMAk6dITs+zCjN7M/0D2lfiXWyUv8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bUheH34T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B91CCC32786;
-	Thu, 15 Aug 2024 14:20:03 +0000 (UTC)
+	 MIME-Version; b=knNSZOMAKhjbULH9jzrMrNn+vT/dAibVAwVk8TsdOqH569+wHsTVvD4INiKW3b4VR+65GPiP3Bf8T2xInQq7S0DqbT6yGs49NvXax985p/vrVNcXS7Khuws5i+VFFj0APyYw3bphOLWaLTumjVtFlW1vtdK5fnOKZw1d0njEUSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ne5qEFCZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5C88C32786;
+	Thu, 15 Aug 2024 14:03:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731604;
-	bh=i93hdX1UYNLzPeSSJ6xbJ9K+Fb5E01erLsPwC/dEeRQ=;
+	s=korg; t=1723730635;
+	bh=KaOeRqYTxdVTLb3PhAP5c9vm2F4CxIkX/Sh5iMpQq6g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bUheH34TvxHRtLxzfyvfBslr9P40lCOSAQgfFb4rr/GMWzH3brmqYy/DlNa8G2Ivc
-	 Q09ovuiHwQN96oD0y7wnDujCNJLqKTmXDDONbuRMd4qQSoDRKanvyw6EVkKZelVZYb
-	 T/3mmpf91i4TjORynAjI27TW0sDvr4bBX6mYiahs=
+	b=Ne5qEFCZI16OSVaHoAfIVwHQv1v69vEReybj5VyzqR6wPHyPhDT5AqXKL/Y6Lbhf7
+	 fJNLie9jldN9N70Men1dxw/o8vnHqU+G/+rqurEWeBmLGLUAuqEFDnREmIsqjgYBdT
+	 marMT7A35kwMHb0BFS7DUS7KoGVFCwyE/inGmg8k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 164/259] driver core: Cast to (void *) with __force for __percpu pointer
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	syzbot+2388cdaeb6b10f0c13ac@syzkaller.appspotmail.com,
+	Marco Elver <elver@google.com>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Aleksandr Nogikh <nogikh@google.com>,
+	Alexander Potapenko <glider@google.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Marcello Sylvester Bauer <sylv@sylv.io>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 439/484] kcov: properly check for softirq context
 Date: Thu, 15 Aug 2024 15:24:57 +0200
-Message-ID: <20240815131909.117378583@linuxfoundation.org>
+Message-ID: <20240815131958.414267677@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +68,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Andrey Konovalov <andreyknvl@gmail.com>
 
-[ Upstream commit d7aa44f5a1f86cb40659eef06035d8d92604b9d5 ]
+commit 7d4df2dad312f270d62fecb0e5c8b086c6d7dcfc upstream.
 
-Sparse is not happy:
+When collecting coverage from softirqs, KCOV uses in_serving_softirq() to
+check whether the code is running in the softirq context.  Unfortunately,
+in_serving_softirq() is > 0 even when the code is running in the hardirq
+or NMI context for hardirqs and NMIs that happened during a softirq.
 
-  drivers/base/devres.c:1230:9: warning: cast removes address space '__percpu' of expression
+As a result, if a softirq handler contains a remote coverage collection
+section and a hardirq with another remote coverage collection section
+happens during handling the softirq, KCOV incorrectly detects a nested
+softirq coverate collection section and prints a WARNING, as reported by
+syzbot.
 
-Use __force attribute to make it happy.
+This issue was exposed by commit a7f3813e589f ("usb: gadget: dummy_hcd:
+Switch to hrtimer transfer scheduler"), which switched dummy_hcd to using
+hrtimer and made the timer's callback be executed in the hardirq context.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20210401171030.60527-1-andriy.shevchenko@linux.intel.com
+Change the related checks in KCOV to account for this behavior of
+in_serving_softirq() and make KCOV ignore remote coverage collection
+sections in the hardirq and NMI contexts.
+
+This prevents the WARNING printed by syzbot but does not fix the inability
+of KCOV to collect coverage from the __usb_hcd_giveback_urb when dummy_hcd
+is in use (caused by a7f3813e589f); a separate patch is required for that.
+
+Link: https://lkml.kernel.org/r/20240729022158.92059-1-andrey.konovalov@linux.dev
+Fixes: 5ff3b30ab57d ("kcov: collect coverage from interrupts")
+Signed-off-by: Andrey Konovalov <andreyknvl@gmail.com>
+Reported-by: syzbot+2388cdaeb6b10f0c13ac@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=2388cdaeb6b10f0c13ac
+Acked-by: Marco Elver <elver@google.com>
+Cc: Alan Stern <stern@rowland.harvard.edu>
+Cc: Aleksandr Nogikh <nogikh@google.com>
+Cc: Alexander Potapenko <glider@google.com>
+Cc: Dmitry Vyukov <dvyukov@google.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Marcello Sylvester Bauer <sylv@sylv.io>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: bd50a974097b ("devres: Fix memory leakage caused by driver API devm_free_percpu()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/devres.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/kcov.c |   15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/base/devres.c b/drivers/base/devres.c
-index 0bbb328bd17f8..e8ad6a41ad4ce 100644
---- a/drivers/base/devres.c
-+++ b/drivers/base/devres.c
-@@ -1112,6 +1112,6 @@ EXPORT_SYMBOL_GPL(__devm_alloc_percpu);
- void devm_free_percpu(struct device *dev, void __percpu *pdata)
- {
- 	WARN_ON(devres_destroy(dev, devm_percpu_release, devm_percpu_match,
--			       (void *)pdata));
-+			       (__force void *)pdata));
+--- a/kernel/kcov.c
++++ b/kernel/kcov.c
+@@ -151,6 +151,15 @@ static void kcov_remote_area_put(struct
+ 	list_add(&area->list, &kcov_remote_areas);
  }
- EXPORT_SYMBOL_GPL(devm_free_percpu);
--- 
-2.43.0
-
+ 
++/*
++ * Unlike in_serving_softirq(), this function returns false when called during
++ * a hardirq or an NMI that happened in the softirq context.
++ */
++static inline bool in_softirq_really(void)
++{
++	return in_serving_softirq() && !in_hardirq() && !in_nmi();
++}
++
+ static notrace bool check_kcov_mode(enum kcov_mode needed_mode, struct task_struct *t)
+ {
+ 	unsigned int mode;
+@@ -160,7 +169,7 @@ static notrace bool check_kcov_mode(enum
+ 	 * so we ignore code executed in interrupts, unless we are in a remote
+ 	 * coverage collection section in a softirq.
+ 	 */
+-	if (!in_task() && !(in_serving_softirq() && t->kcov_softirq))
++	if (!in_task() && !(in_softirq_really() && t->kcov_softirq))
+ 		return false;
+ 	mode = READ_ONCE(t->kcov_mode);
+ 	/*
+@@ -822,7 +831,7 @@ void kcov_remote_start(u64 handle)
+ 
+ 	if (WARN_ON(!kcov_check_handle(handle, true, true, true)))
+ 		return;
+-	if (!in_task() && !in_serving_softirq())
++	if (!in_task() && !in_softirq_really())
+ 		return;
+ 
+ 	local_irq_save(flags);
+@@ -963,7 +972,7 @@ void kcov_remote_stop(void)
+ 	int sequence;
+ 	unsigned long flags;
+ 
+-	if (!in_task() && !in_serving_softirq())
++	if (!in_task() && !in_softirq_really())
+ 		return;
+ 
+ 	local_irq_save(flags);
 
 
 
