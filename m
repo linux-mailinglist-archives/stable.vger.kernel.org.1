@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-69062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68729-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5910C953545
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:35:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88E5A9533B1
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:19:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0321E1F2A7EA
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:35:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3DC231F26742
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:19:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E70901A2C35;
-	Thu, 15 Aug 2024 14:35:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A31B31A76C9;
+	Thu, 15 Aug 2024 14:17:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vfFAKbpp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wfj01Mmn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E27F1A2564;
-	Thu, 15 Aug 2024 14:35:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 607781A76A0;
+	Thu, 15 Aug 2024 14:17:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732542; cv=none; b=sfp7UDPFPDH/SWeTnjEe6Qe4Ri+HXvZqNUzEQoenyedt9kKuFJMHItJ+n+cg/lhRfWGIHFrQKOTZYI7CfS62Ur+g3Gmkvz4+yrlI+V5aoxbwopve/53pWD9qymSwQIcksCgWtYYycMKaK6LDKG3czr1N+6rIEvHnumZBuMAmhl8=
+	t=1723731478; cv=none; b=TDiK6DBzd/5pY90LHD70DvUiBGE/RbVSyDYVRhvzJfaMSqNztUig0i1X2qBd2/gwUMjy2EbjkR7FQq84pQvxFpUcVHY1ZZ/54aMEOgq99uElH53wqwhAOz1DeTcesvTlQ0JCTe4qoIuIPlhUFU4w1VNwcghbUkfCR9wWq1LvbJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732542; c=relaxed/simple;
-	bh=GaM1tb27/KiwRK0V1hqZO6Pej3W0N4NrhDVwzaCLUl4=;
+	s=arc-20240116; t=1723731478; c=relaxed/simple;
+	bh=lCwNNj8d0xpr8a7UYEo9kjV8Eg1WuX0cxjiJsMDYn3M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bta1zEZ7DrGE/DRe710uLxfRvRSpfcKNpmFUaak0ahuM5eZZVImOzOdTtS3YGypffAk6G3knMHW/OSecUHxsSmxYFPjC16wpG4IFUpcsp4+krwBcMQ+vNT+TgJPxWEzHkBSNPUaXtWCPUS/DNkgnUzcxEDLTXmIr29vdSfqa+IU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vfFAKbpp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24CD9C4AF0D;
-	Thu, 15 Aug 2024 14:35:41 +0000 (UTC)
+	 MIME-Version; b=c9ipX0uP7sRvIdGmzkGiiLOG2E0NxZ8K4vNYdZ9KA3GMdHKFc/UaTPXdtRN3lg+4TFev72f+Vl7sMdlU7elP1HMbAkWHMdNK3zAsY26ncQ/Attx/YL9FAX220nZtVzSuT9SQ/kdWtOW70hr9cUy3/nCFlrBXh9y+aY6ftTX8fMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wfj01Mmn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D477BC32786;
+	Thu, 15 Aug 2024 14:17:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732542;
-	bh=GaM1tb27/KiwRK0V1hqZO6Pej3W0N4NrhDVwzaCLUl4=;
+	s=korg; t=1723731478;
+	bh=lCwNNj8d0xpr8a7UYEo9kjV8Eg1WuX0cxjiJsMDYn3M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vfFAKbppJlChVFMc1xKSPfQuj+sJ8qGOVjS8pDtlrEeQLdrSJBXm2Tp10811ARgDw
-	 Hua5eQt6TL8+npQdPkI87GBWf1FOSa+51FYo1viPukVVu/u14hRTiessT7EjdYD8Rh
-	 SKhAucf+QOG0FvgIScMjIpg3U+pEZMYWstJavNYQ=
+	b=Wfj01MmnglmRBIPAFT2KGEdLFQlwGZbWG3ov1ddTA4lkUWMy4vdnSbT8zl5pp1GrR
+	 He0xEooCiibw8OAO/MJXsstQbCPw0wVVrlNwNLW0Whf8qwrjlopGGmWYfaFy1JdSI/
+	 1DMj37TYKJju9q/3NmgEatCGMdmzULtB/M78o1b4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Shigeru Yoshida <syoshida@redhat.com>,
+	Tung Nguyen <tung.q.nguyen@endava.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 210/352] s390/pci: Rework MSI descriptor walk
+Subject: [PATCH 5.4 143/259] tipc: Return non-zero value from tipc_udp_addr2str() on error
 Date: Thu, 15 Aug 2024 15:24:36 +0200
-Message-ID: <20240815131927.403698704@linuxfoundation.org>
+Message-ID: <20240815131908.312525436@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Shigeru Yoshida <syoshida@redhat.com>
 
-[ Upstream commit 2ca5e908d0f4cde61d9d3595e8314adca5d914a1 ]
+[ Upstream commit fa96c6baef1b5385e2f0c0677b32b3839e716076 ]
 
-Replace the about to vanish iterators and make use of the filtering.
+tipc_udp_addr2str() should return non-zero value if the UDP media
+address is invalid. Otherwise, a buffer overflow access can occur in
+tipc_media_addr_printf(). Fix this by returning 1 on an invalid UDP
+media address.
 
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Acked-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Link: https://lore.kernel.org/r/20211206210748.305656158@linutronix.de
-Stable-dep-of: ab42fcb511fd ("s390/pci: Allow allocation of more than 1 MSI interrupt")
+Fixes: d0f91938bede ("tipc: add ip/udp media type")
+Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
+Reviewed-by: Tung Nguyen <tung.q.nguyen@endava.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/pci/pci_irq.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ net/tipc/udp_media.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/arch/s390/pci/pci_irq.c b/arch/s390/pci/pci_irq.c
-index 5036e00b7ec1b..9ed76fa9391cb 100644
---- a/arch/s390/pci/pci_irq.c
-+++ b/arch/s390/pci/pci_irq.c
-@@ -273,7 +273,7 @@ int arch_setup_msi_irqs(struct pci_dev *pdev, int nvec, int type)
+diff --git a/net/tipc/udp_media.c b/net/tipc/udp_media.c
+index 1fb0535e2eb47..4db2185a32aec 100644
+--- a/net/tipc/udp_media.c
++++ b/net/tipc/udp_media.c
+@@ -128,8 +128,11 @@ static int tipc_udp_addr2str(struct tipc_media_addr *a, char *buf, int size)
+ 		snprintf(buf, size, "%pI4:%u", &ua->ipv4, ntohs(ua->port));
+ 	else if (ntohs(ua->proto) == ETH_P_IPV6)
+ 		snprintf(buf, size, "%pI6:%u", &ua->ipv6, ntohs(ua->port));
+-	else
++	else {
+ 		pr_err("Invalid UDP media address\n");
++		return 1;
++	}
++
+ 	return 0;
+ }
  
- 	/* Request MSI interrupts */
- 	hwirq = bit;
--	for_each_pci_msi_entry(msi, pdev) {
-+	msi_for_each_desc(msi, &pdev->dev, MSI_DESC_NOTASSOCIATED) {
- 		rc = -EIO;
- 		if (hwirq - bit >= msi_vecs)
- 			break;
-@@ -338,9 +338,7 @@ void arch_teardown_msi_irqs(struct pci_dev *pdev)
- 		return;
- 
- 	/* Release MSI interrupts */
--	for_each_pci_msi_entry(msi, pdev) {
--		if (!msi->irq)
--			continue;
-+	msi_for_each_desc(msi, &pdev->dev, MSI_DESC_ASSOCIATED) {
- 		irq_set_msi_desc(msi->irq, NULL);
- 		irq_free_desc(msi->irq);
- 		msi->msg.address_lo = 0;
 -- 
 2.43.0
 
