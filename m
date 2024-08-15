@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-68658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68990-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32A54953360
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:16:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3A339534EE
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:32:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E0F0D28224C
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:16:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 99BFB1F29D6B
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:32:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B20051A76C0;
-	Thu, 15 Aug 2024 14:14:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96C5219FA9D;
+	Thu, 15 Aug 2024 14:31:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Et0/V37j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tUVcjTJQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 710151A76A0;
-	Thu, 15 Aug 2024 14:14:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 555F7210FB;
+	Thu, 15 Aug 2024 14:31:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731259; cv=none; b=Mw5otlYL647Lrq3Zbko48dLmLUngTRy73AH9srPSx/YtsocXOzX0Fyw0OoOfh0xGTTEZ4wBEpEVtJPIYCkTro0OilCHkfpdaBd7OiaZXemfMBwORo7FtIZCCCrF2/Ii+RUaKG3qMBM510gK6TM0arqPvbBMpTAvP0v5DQ9gJEpo=
+	t=1723732311; cv=none; b=APlrJxyTqP1P2+9aHPao1XL+yc55+rbWYmZWTGTpS4BI2oeG7iBOTl3TgV3gp6M6C0cQxVut3V7g3jHyFMzauG6XDVwIB4luIzJfQJ0ZlI1AJZkaKOZbEnhd9MzL22+pMqZYH8cp7VI5+HAO0yS2G6L31HHgQNtYC4haKpj2xkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731259; c=relaxed/simple;
-	bh=2vF46znScm20Aik/rXwSknkqLhOwi51nrQV85/7P430=;
+	s=arc-20240116; t=1723732311; c=relaxed/simple;
+	bh=E43/fLbzkgk1R6PKSBnI1nup9ifA/MhOsbQpzHKJj/s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sbcabUwoFAa+Idl/BGNrVGUl0C+cv7pYsKNPANN27DXBpIxrLui4+lh5HYbb1EpcaH9Pmf/UCW31oBLCKNC5CqHeECONrLR0DUZdBxUgD+bWm/h/vhBQTTPBGm/UsCGm5ktI1AWCdCI7QkRqwXreGpt0jFeYEmgJ0j4Xx3ecIBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Et0/V37j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BE62C4AF0C;
-	Thu, 15 Aug 2024 14:14:18 +0000 (UTC)
+	 MIME-Version; b=ul0rQKsQ8v6kreHD5f+tpoYH7nQJx6e9r/hQzFGxh0T6SvPY0uh5jISlExXYEJ8x3+EhrSzVp+HMo9F0cyFAj5mNP/B2N2hmOHqdqjVBWl7W3SFMSm/GnDDrQxdvD3S4RjAZtA0bSO7VRMs//N6C+tOQ1G2SyW8dqsuQqplBNb0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tUVcjTJQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5A93C32786;
+	Thu, 15 Aug 2024 14:31:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731259;
-	bh=2vF46znScm20Aik/rXwSknkqLhOwi51nrQV85/7P430=;
+	s=korg; t=1723732311;
+	bh=E43/fLbzkgk1R6PKSBnI1nup9ifA/MhOsbQpzHKJj/s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Et0/V37jOpoyuhxJA2QAyoRosooFS7ioAWJ1f4peGAEGAaP5Woteb+Z41dJfo0Xy0
-	 Bi18HbGb337wUu5j/NExkurxIe8hGnAp9JuFWVmx8JOTEkI+uvZVQstcZnFK0z1kkB
-	 A9ZoBSSnaPkgilCb1GjI5XD4/cYLu1aSFvwsTt4k=
+	b=tUVcjTJQm6LSSEFDnv38QEBabIAKKRqXKZI49n8qeSr5RemzeX+VRabUCHPdQTpAF
+	 E8/CuVWGtMmQXaPx3w5ysOIa+peF3+tIU2Sw0FPiUNk26ZEvrd1iXq6oz2CEutcdLA
+	 R76jPPmH7zkYoP7jJg+N6kMMMTzC2tIEpDgbmaCs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 073/259] mtd: make mtd_test.c a separate module
+	Frederic Weisbecker <frederic@kernel.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH 5.10 140/352] task_work: s/task_work_cancel()/task_work_cancel_func()/
 Date: Thu, 15 Aug 2024 15:23:26 +0200
-Message-ID: <20240815131905.622563238@linuxfoundation.org>
+Message-ID: <20240815131924.671692602@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,119 +61,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Frederic Weisbecker <frederic@kernel.org>
 
-[ Upstream commit a5cf054d325e6f362e82fe6d124a1871a4af8174 ]
+commit 68cbd415dd4b9c5b9df69f0f091879e56bf5907a upstream.
 
-This file gets linked into nine different modules, which causes a warning:
+A proper task_work_cancel() API that actually cancels a callback and not
+*any* callback pointing to a given function is going to be needed for
+perf events event freeing. Do the appropriate rename to prepare for
+that.
 
-scripts/Makefile.build:236: drivers/mtd/tests/Makefile: mtd_test.o is added to multiple modules: mtd_nandbiterrs mtd_oobtest mtd_pagetest mtd_readtest mtd_speedtest mtd_stresstest mtd_subpagetest mtd_torturetest
-
-Make it a separate module instead.
-
-Fixes: a995c792280d ("mtd: tests: rename sources in order to link a helper object")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20240529095049.1915393-1-arnd@kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240621091601.18227-2-frederic@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/tests/Makefile   | 34 +++++++++++++++++-----------------
- drivers/mtd/tests/mtd_test.c |  9 +++++++++
- 2 files changed, 26 insertions(+), 17 deletions(-)
+ include/linux/task_work.h |    2 +-
+ kernel/irq/manage.c       |    2 +-
+ kernel/task_work.c        |   10 +++++-----
+ security/keys/keyctl.c    |    2 +-
+ 4 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/mtd/tests/Makefile b/drivers/mtd/tests/Makefile
-index 5de0378f90dbd..7dae831ee8b6b 100644
---- a/drivers/mtd/tests/Makefile
-+++ b/drivers/mtd/tests/Makefile
-@@ -1,19 +1,19 @@
- # SPDX-License-Identifier: GPL-2.0
--obj-$(CONFIG_MTD_TESTS) += mtd_oobtest.o
--obj-$(CONFIG_MTD_TESTS) += mtd_pagetest.o
--obj-$(CONFIG_MTD_TESTS) += mtd_readtest.o
--obj-$(CONFIG_MTD_TESTS) += mtd_speedtest.o
--obj-$(CONFIG_MTD_TESTS) += mtd_stresstest.o
--obj-$(CONFIG_MTD_TESTS) += mtd_subpagetest.o
--obj-$(CONFIG_MTD_TESTS) += mtd_torturetest.o
--obj-$(CONFIG_MTD_TESTS) += mtd_nandecctest.o
--obj-$(CONFIG_MTD_TESTS) += mtd_nandbiterrs.o
-+obj-$(CONFIG_MTD_TESTS) += mtd_oobtest.o mtd_test.o
-+obj-$(CONFIG_MTD_TESTS) += mtd_pagetest.o mtd_test.o
-+obj-$(CONFIG_MTD_TESTS) += mtd_readtest.o mtd_test.o
-+obj-$(CONFIG_MTD_TESTS) += mtd_speedtest.o mtd_test.o
-+obj-$(CONFIG_MTD_TESTS) += mtd_stresstest.o mtd_test.o
-+obj-$(CONFIG_MTD_TESTS) += mtd_subpagetest.o mtd_test.o
-+obj-$(CONFIG_MTD_TESTS) += mtd_torturetest.o mtd_test.o
-+obj-$(CONFIG_MTD_TESTS) += mtd_nandecctest.o mtd_test.o
-+obj-$(CONFIG_MTD_TESTS) += mtd_nandbiterrs.o mtd_test.o
+--- a/include/linux/task_work.h
++++ b/include/linux/task_work.h
+@@ -24,7 +24,7 @@ int task_work_add(struct task_struct *ta
  
--mtd_oobtest-objs := oobtest.o mtd_test.o
--mtd_pagetest-objs := pagetest.o mtd_test.o
--mtd_readtest-objs := readtest.o mtd_test.o
--mtd_speedtest-objs := speedtest.o mtd_test.o
--mtd_stresstest-objs := stresstest.o mtd_test.o
--mtd_subpagetest-objs := subpagetest.o mtd_test.o
--mtd_torturetest-objs := torturetest.o mtd_test.o
--mtd_nandbiterrs-objs := nandbiterrs.o mtd_test.o
-+mtd_oobtest-objs := oobtest.o
-+mtd_pagetest-objs := pagetest.o
-+mtd_readtest-objs := readtest.o
-+mtd_speedtest-objs := speedtest.o
-+mtd_stresstest-objs := stresstest.o
-+mtd_subpagetest-objs := subpagetest.o
-+mtd_torturetest-objs := torturetest.o
-+mtd_nandbiterrs-objs := nandbiterrs.o
-diff --git a/drivers/mtd/tests/mtd_test.c b/drivers/mtd/tests/mtd_test.c
-index c84250beffdc9..f391e0300cdc9 100644
---- a/drivers/mtd/tests/mtd_test.c
-+++ b/drivers/mtd/tests/mtd_test.c
-@@ -25,6 +25,7 @@ int mtdtest_erase_eraseblock(struct mtd_info *mtd, unsigned int ebnum)
+ struct callback_head *task_work_cancel_match(struct task_struct *task,
+ 	bool (*match)(struct callback_head *, void *data), void *data);
+-struct callback_head *task_work_cancel(struct task_struct *, task_work_func_t);
++struct callback_head *task_work_cancel_func(struct task_struct *, task_work_func_t);
+ void task_work_run(void);
  
+ static inline void exit_task_work(struct task_struct *task)
+--- a/kernel/irq/manage.c
++++ b/kernel/irq/manage.c
+@@ -1230,7 +1230,7 @@ static int irq_thread(void *data)
+ 	 * synchronize_hardirq(). So neither IRQTF_RUNTHREAD nor the
+ 	 * oneshot mask bit can be set.
+ 	 */
+-	task_work_cancel(current, irq_thread_dtor);
++	task_work_cancel_func(current, irq_thread_dtor);
  	return 0;
  }
-+EXPORT_SYMBOL_GPL(mtdtest_erase_eraseblock);
  
- static int is_block_bad(struct mtd_info *mtd, unsigned int ebnum)
+--- a/kernel/task_work.c
++++ b/kernel/task_work.c
+@@ -101,9 +101,9 @@ static bool task_work_func_match(struct
+ }
+ 
+ /**
+- * task_work_cancel - cancel a pending work added by task_work_add()
+- * @task: the task which should execute the work
+- * @func: identifies the work to remove
++ * task_work_cancel_func - cancel a pending work matching a function added by task_work_add()
++ * @task: the task which should execute the func's work
++ * @func: identifies the func to match with a work to remove
+  *
+  * Find the last queued pending work with ->func == @func and remove
+  * it from queue.
+@@ -112,7 +112,7 @@ static bool task_work_func_match(struct
+  * The found work or NULL if not found.
+  */
+ struct callback_head *
+-task_work_cancel(struct task_struct *task, task_work_func_t func)
++task_work_cancel_func(struct task_struct *task, task_work_func_t func)
  {
-@@ -57,6 +58,7 @@ int mtdtest_scan_for_bad_eraseblocks(struct mtd_info *mtd, unsigned char *bbt,
- 
- 	return 0;
+ 	return task_work_cancel_match(task, task_work_func_match, func);
  }
-+EXPORT_SYMBOL_GPL(mtdtest_scan_for_bad_eraseblocks);
+@@ -149,7 +149,7 @@ void task_work_run(void)
+ 		if (!work)
+ 			break;
+ 		/*
+-		 * Synchronize with task_work_cancel(). It can not remove
++		 * Synchronize with task_work_cancel_match(). It can not remove
+ 		 * the first entry == work, cmpxchg(task_works) must fail.
+ 		 * But it can remove another entry from the ->next list.
+ 		 */
+--- a/security/keys/keyctl.c
++++ b/security/keys/keyctl.c
+@@ -1694,7 +1694,7 @@ long keyctl_session_to_parent(void)
+ 		goto unlock;
  
- int mtdtest_erase_good_eraseblocks(struct mtd_info *mtd, unsigned char *bbt,
- 				unsigned int eb, int ebcnt)
-@@ -75,6 +77,7 @@ int mtdtest_erase_good_eraseblocks(struct mtd_info *mtd, unsigned char *bbt,
+ 	/* cancel an already pending keyring replacement */
+-	oldwork = task_work_cancel(parent, key_change_session_keyring);
++	oldwork = task_work_cancel_func(parent, key_change_session_keyring);
  
- 	return 0;
- }
-+EXPORT_SYMBOL_GPL(mtdtest_erase_good_eraseblocks);
- 
- int mtdtest_read(struct mtd_info *mtd, loff_t addr, size_t size, void *buf)
- {
-@@ -92,6 +95,7 @@ int mtdtest_read(struct mtd_info *mtd, loff_t addr, size_t size, void *buf)
- 
- 	return err;
- }
-+EXPORT_SYMBOL_GPL(mtdtest_read);
- 
- int mtdtest_write(struct mtd_info *mtd, loff_t addr, size_t size,
- 		const void *buf)
-@@ -107,3 +111,8 @@ int mtdtest_write(struct mtd_info *mtd, loff_t addr, size_t size,
- 
- 	return err;
- }
-+EXPORT_SYMBOL_GPL(mtdtest_write);
-+
-+MODULE_LICENSE("GPL");
-+MODULE_DESCRIPTION("MTD function test helpers");
-+MODULE_AUTHOR("Akinobu Mita");
--- 
-2.43.0
-
+ 	/* the replacement session keyring is applied just prior to userspace
+ 	 * restarting */
 
 
 
