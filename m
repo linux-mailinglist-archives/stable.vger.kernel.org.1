@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-68120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68086-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 780AC9530BB
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:46:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81440953092
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:44:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 16CAF287459
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:46:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B4D311C2553A
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:44:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36EC819AA53;
-	Thu, 15 Aug 2024 13:45:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D9281A00E2;
+	Thu, 15 Aug 2024 13:44:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tqtDO9az"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZaeQreE0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6DDF7DA9E;
-	Thu, 15 Aug 2024 13:45:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF44D1A00D6;
+	Thu, 15 Aug 2024 13:44:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723729557; cv=none; b=M6v8NQ3Rt/PHsnRiGQAAhJV609z+zAqhBcqHI+kiH394iOYYamvrZhe8Bsb2qNqnTT/5dl2FksyXgOSYmpswAoEMLiZRFs+VM1H/g3+E4GTGq9u9H6jvZyjk3zL8NI3+eWHxrn7zTJx19jOAZxuZk7rvuBJ52MRcRvhWI1cCvOQ=
+	t=1723729454; cv=none; b=DuZrn9UhiiIrlGjwN/xAlgPSyR8smMlJ72UCrfMmZpCnFRvFSyfRmf2SIh3MRlSrcyE4I3yVqkVZT67VyLxRFuOeiep7g4mA31YMq8egHL/17cbGV9R9FK/9+zjdQn+XvuLXAf3i45RZxG8q/vo0qp7tgCfuMJ51+xi+d6VNNL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723729557; c=relaxed/simple;
-	bh=Zd3AwQfzP1Jn4wnwqTZOrnwlAlmiFsdHjXJt4JzhEpw=;
+	s=arc-20240116; t=1723729454; c=relaxed/simple;
+	bh=lH/KDhJuJ5dH3O1SZt2EqRUp0JvSIVw3iEyBneIWBxc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UhXwS65qCtElLnMLrPGadyFHALhpiMse0lTbTHUANT4PQMwu1bDG86bSn5MhTkSjsfh/47OoS7jf70B0KLR3Yf2hfTprShNBnuLZwnHVg08c9F74yffDozGY0h89R+7BqGAWeba4ILFFegqgNwxN0WXH9oG+wZG18avIfMfrIis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tqtDO9az; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C5E2C32786;
-	Thu, 15 Aug 2024 13:45:56 +0000 (UTC)
+	 MIME-Version; b=OXY3Lmx6bBZjex1rNGysjT0MVReyjvtOyJn7R/3yP8gBGQz3AbveL3tXYYmvwIq1tMZ1Fo2CPbkicZi3XLngNLclusEeelCJNP0nn4UbPpjopxyXpvjPhPN2A+xUaNowawpBSbHUsFkcj67ITHaTUgy0h2KRYVlTZH2ioCOjMdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZaeQreE0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 150ABC32786;
+	Thu, 15 Aug 2024 13:44:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723729556;
-	bh=Zd3AwQfzP1Jn4wnwqTZOrnwlAlmiFsdHjXJt4JzhEpw=;
+	s=korg; t=1723729453;
+	bh=lH/KDhJuJ5dH3O1SZt2EqRUp0JvSIVw3iEyBneIWBxc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tqtDO9azK8w6SUav3Mzr0sdSRQwf9lF+EDTiWmp5u8VlUrKYBtdCmWe5L701AMoGP
-	 m0oFQ3DuaowuM+iPxEi/Xy0l0062f1wMY6mm+iaSdX2jwI47hhnlr1ph/Wxt/BBzJ2
-	 qZLYUCaP11thJlejfx2NXpIv8ptmDQu0zY8ka0B0=
+	b=ZaeQreE0SBPrxBSVStbxbWFhdM2YWwM3VCvb3w30r47wtVgH4ySX6Dd1oTYnNGSta
+	 UVoPKsqqXAjRotMZY4sDx40tMqiwfI4+IMsyzdjr856NgzP552cwHg+95jxeMxk7zq
+	 FfS7/TgW6FPtYakkRgHpAIX7uG2M3u4ftPlwLtuY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	David Hildenbrand <david@redhat.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Aleksandr Burakov <a.burakov@rosalinux.ru>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 094/484] s390/uv: Dont call folio_wait_writeback() without a folio reference
-Date: Thu, 15 Aug 2024 15:19:12 +0200
-Message-ID: <20240815131944.922031925@linuxfoundation.org>
+Subject: [PATCH 5.15 095/484] saa7134: Unchecked i2c_transfer function result fixed
+Date: Thu, 15 Aug 2024 15:19:13 +0200
+Message-ID: <20240815131944.961726368@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
 References: <20240815131941.255804951@linuxfoundation.org>
@@ -68,51 +66,49 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: David Hildenbrand <david@redhat.com>
+From: Aleksandr Burakov <a.burakov@rosalinux.ru>
 
-[ Upstream commit 3f29f6537f54d74e64bac0a390fb2e26da25800d ]
+[ Upstream commit 9d8683b3fd93f0e378f24dc3d9604e5d7d3e0a17 ]
 
-folio_wait_writeback() requires that no spinlocks are held and that
-a folio reference is held, as documented. After we dropped the PTL, the
-folio could get freed concurrently. So grab a temporary reference.
+Return value of function 'i2c_transfer' is not checked that
+may cause undefined behaviour.
 
-Fixes: 214d9bbcd3a6 ("s390/mm: provide memory management functions for protected KVM guests")
-Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Link: https://lore.kernel.org/r/20240508182955.358628-2-david@redhat.com
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 2cf36ac44730 ("[PATCH] v4l: 656: added support for the following cards")
+Signed-off-by: Aleksandr Burakov <a.burakov@rosalinux.ru>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kernel/uv.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/media/pci/saa7134/saa7134-dvb.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/arch/s390/kernel/uv.c b/arch/s390/kernel/uv.c
-index b54376c658688..4ec467605d328 100644
---- a/arch/s390/kernel/uv.c
-+++ b/arch/s390/kernel/uv.c
-@@ -299,6 +299,13 @@ int gmap_make_secure(struct gmap *gmap, unsigned long gaddr, void *uvcb)
- 			rc = make_folio_secure(folio, uvcb);
- 			folio_unlock(folio);
- 		}
+diff --git a/drivers/media/pci/saa7134/saa7134-dvb.c b/drivers/media/pci/saa7134/saa7134-dvb.c
+index f359cd5c006a7..c786b83a69d2b 100644
+--- a/drivers/media/pci/saa7134/saa7134-dvb.c
++++ b/drivers/media/pci/saa7134/saa7134-dvb.c
+@@ -466,7 +466,9 @@ static int philips_europa_tuner_sleep(struct dvb_frontend *fe)
+ 	/* switch the board to analog mode */
+ 	if (fe->ops.i2c_gate_ctrl)
+ 		fe->ops.i2c_gate_ctrl(fe, 1);
+-	i2c_transfer(&dev->i2c_adap, &analog_msg, 1);
++	if (i2c_transfer(&dev->i2c_adap, &analog_msg, 1) != 1)
++		return -EIO;
 +
-+		/*
-+		 * Once we drop the PTL, the folio may get unmapped and
-+		 * freed immediately. We need a temporary reference.
-+		 */
-+		if (rc == -EAGAIN)
-+			folio_get(folio);
- 	}
- unlock:
- 	pte_unmap_unlock(ptep, ptelock);
-@@ -311,6 +318,7 @@ int gmap_make_secure(struct gmap *gmap, unsigned long gaddr, void *uvcb)
- 		 * completion, this is just a useless check, but it is safe.
- 		 */
- 		folio_wait_writeback(folio);
-+		folio_put(folio);
- 	} else if (rc == -EBUSY) {
- 		/*
- 		 * If we have tried a local drain and the folio refcount
+ 	return 0;
+ }
+ 
+@@ -1018,7 +1020,9 @@ static int md8800_set_voltage2(struct dvb_frontend *fe,
+ 	else
+ 		wbuf[1] = rbuf & 0xef;
+ 	msg[0].len = 2;
+-	i2c_transfer(&dev->i2c_adap, msg, 1);
++	if (i2c_transfer(&dev->i2c_adap, msg, 1) != 1)
++		return -EIO;
++
+ 	return 0;
+ }
+ 
 -- 
 2.43.0
 
