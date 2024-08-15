@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-67866-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68351-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3897E952F76
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:33:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 922C49531C9
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:58:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4C7F28383F
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:33:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0AF3A287386
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:58:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D583C19EECD;
-	Thu, 15 Aug 2024 13:32:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B2FE19EEB6;
+	Thu, 15 Aug 2024 13:58:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NEwCT06h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZtvFKVfF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 925F019EED0;
-	Thu, 15 Aug 2024 13:32:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A13217C9A9;
+	Thu, 15 Aug 2024 13:58:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723728768; cv=none; b=YlyJGqoeRTNHmowkbRK3AOJo5rHeO1TH2ryJwlFTKu9Xf+t6M2GY+foEDvnsqwvGQ/qarmdPNjdFNWEtpqtfIduRlONCUGbqUora26EW8wUzmvbuRqwDLGHfGaSxDTmdbq+hhGJCUjp+CVMLxiesNLodmNjYEM4/O/xzTSmJiHQ=
+	t=1723730294; cv=none; b=huGcSbcUw9/zqrtnfMvr3MuNgPhV9qJGIUOqyuWM9M9ARZuAsVhexA9zhm6zP7mZRWIcwojCYTAOcJazAmj7eDTob7y4VU8lsr2ASkbEwtWb+5I310hkOdLgJYJabdbsDnzrl1f2ApaX3Cq1xyUN3C2YIRC7F2WzNfZ3jmUn6gQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723728768; c=relaxed/simple;
-	bh=QhDdzTBZXkxsuRh5gHx0oj38R6GVA76EwrLyZOOmsl0=;
+	s=arc-20240116; t=1723730294; c=relaxed/simple;
+	bh=XUiYSOqt2WkAfRHpBWsN1rju+NbyN5r+sXNqW24NfCs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vbbxj4+gOaOmIsUqTdy9+aabOU9bJ0T8DMsjcEc3Y+1WA2+mS6bLkXNxUCGjM7rsAPtVy5/3w0UD3JZJ+/hadi9MRHdBYWG1wrYBVFJWLlAJDzNQaNS+E1dMq80mjd8V0dH6NcXWjPD0B5976tJQ2e26fVdNMqOo5fZFwxq3324=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NEwCT06h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CAF6C4AF0C;
-	Thu, 15 Aug 2024 13:32:47 +0000 (UTC)
+	 MIME-Version; b=uOqqzP56U0Nkkx5Di1azodmeqHMFA9bGqiFGAzDc/uVrUc9mvjRYluiU+U6+KNTKl3KzLt7lSkodzwtxseZaMIiv0xJVd1MqlrbQN8TChRUSVtpuQAisNKeIi/PTzBFL06a9JswEuyWUmrffNQI+raORDU9Xt6axskvX1M5tPzc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZtvFKVfF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C8A2C32786;
+	Thu, 15 Aug 2024 13:58:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723728768;
-	bh=QhDdzTBZXkxsuRh5gHx0oj38R6GVA76EwrLyZOOmsl0=;
+	s=korg; t=1723730294;
+	bh=XUiYSOqt2WkAfRHpBWsN1rju+NbyN5r+sXNqW24NfCs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NEwCT06h0JA6df77UZiT8TZ/swD1JegbvYvvUo+2W5qVoD0NdLKDdQIj4oqhYrMAP
-	 qRlhmWRanuuTcLz3K05+Y6T2tTMmMlsU3WjIdTGyp4KRBUacGUUfcF5r3jMG/O1Qc1
-	 xP90BtV8nMLAZkdrJRgeziJ773kPGLKG8gOWkW9Y=
+	b=ZtvFKVfFdfOTx1jy0xYucRDTrsJ6t4gINngDw9I0qZUzOpwBYhkWbquIsUUvzZU2y
+	 C3maBgj2BK6xoUck8HvoJme2cqXGqKtv0vVSxaP9jvbNyMT34E33+FgqH5PrOkzo/Y
+	 dRouLMP+GcxrdLu53qQqMtgIccg/9NsSrxXQ9vU0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiri Pirko <jiri@nvidia.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Jay Vosburgh <jv@jvosburgh.net>,
-	Paolo Abeni <pabeni@redhat.com>,
+	syzbot <syzkaller@googlegroups.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 103/196] net: bonding: correctly annotate RCU in bond_should_notify_peers()
+Subject: [PATCH 5.15 362/484] net: linkwatch: use system_unbound_wq
 Date: Thu, 15 Aug 2024 15:23:40 +0200
-Message-ID: <20240815131856.023845579@linuxfoundation.org>
+Message-ID: <20240815131955.414590939@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,55 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 3ba359c0cd6eb5ea772125a7aededb4a2d516684 ]
+[ Upstream commit 3e7917c0cdad835a5121520fc5686d954b7a61ab ]
 
-RCU use in bond_should_notify_peers() looks wrong, since it does
-rcu_dereference(), leaves the critical section, and uses the
-pointer after that.
+linkwatch_event() grabs possibly very contended RTNL mutex.
 
-Luckily, it's called either inside a nested RCU critical section
-or with the RTNL held.
+system_wq is not suitable for such work.
 
-Annotate it with rcu_dereference_rtnl() instead, and remove the
-inner RCU critical section.
+Inspired by many noisy syzbot reports.
 
-Fixes: 4cb4f97b7e36 ("bonding: rebuild the lock use for bond_mii_monitor()")
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Acked-by: Jay Vosburgh <jv@jvosburgh.net>
-Link: https://patch.msgid.link/20240719094119.35c62455087d.I68eb9c0f02545b364b79a59f2110f2cf5682a8e2@changeid
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+3 locks held by kworker/0:7/5266:
+ #0: ffff888015480948 ((wq_completion)events){+.+.}-{0:0}, at: process_one_work kernel/workqueue.c:3206 [inline]
+ #0: ffff888015480948 ((wq_completion)events){+.+.}-{0:0}, at: process_scheduled_works+0x90a/0x1830 kernel/workqueue.c:3312
+ #1: ffffc90003f6fd00 ((linkwatch_work).work){+.+.}-{0:0}, at: process_one_work kernel/workqueue.c:3207 [inline]
+ , at: process_scheduled_works+0x945/0x1830 kernel/workqueue.c:3312
+ #2: ffffffff8fa6f208 (rtnl_mutex){+.+.}-{3:3}, at: linkwatch_event+0xe/0x60 net/core/link_watch.c:276
+
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20240805085821.1616528-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bonding/bond_main.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ net/core/link_watch.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index 79b36f1c50aec..f0c0da85ba4fc 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -774,13 +774,10 @@ static struct slave *bond_find_best_slave(struct bonding *bond)
- 	return bestslave;
+diff --git a/net/core/link_watch.c b/net/core/link_watch.c
+index 9599afd0862da..010b39f4a189b 100644
+--- a/net/core/link_watch.c
++++ b/net/core/link_watch.c
+@@ -138,9 +138,9 @@ static void linkwatch_schedule_work(int urgent)
+ 	 * override the existing timer.
+ 	 */
+ 	if (test_bit(LW_URGENT, &linkwatch_flags))
+-		mod_delayed_work(system_wq, &linkwatch_work, 0);
++		mod_delayed_work(system_unbound_wq, &linkwatch_work, 0);
+ 	else
+-		schedule_delayed_work(&linkwatch_work, delay);
++		queue_delayed_work(system_unbound_wq, &linkwatch_work, delay);
  }
  
-+/* must be called in RCU critical section or with RTNL held */
- static bool bond_should_notify_peers(struct bonding *bond)
- {
--	struct slave *slave;
--
--	rcu_read_lock();
--	slave = rcu_dereference(bond->curr_active_slave);
--	rcu_read_unlock();
-+	struct slave *slave = rcu_dereference_rtnl(bond->curr_active_slave);
  
- 	if (!slave || !bond->send_peer_notif ||
- 	    !netif_carrier_ok(bond->dev) ||
 -- 
 2.43.0
 
