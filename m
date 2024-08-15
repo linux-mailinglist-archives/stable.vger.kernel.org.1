@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-68942-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68619-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF0A89534B6
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:29:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FD8E953335
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:14:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5BDC6283D5E
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:29:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0FBE5B27D41
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:14:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F318B18CBE1;
-	Thu, 15 Aug 2024 14:29:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCECF1AD40A;
+	Thu, 15 Aug 2024 14:12:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UarGCCAA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YauKikYt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2D5063C;
-	Thu, 15 Aug 2024 14:29:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A8631AD402;
+	Thu, 15 Aug 2024 14:12:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732159; cv=none; b=rtH0DHPXFUbTpGXPhlCRmW6xJN6VIkrqbibIM1HvcQ6tIH/MGNBbwQ5uTov2V75GMeN3rxKwnWlsu1i0bj4PuNcWjdYLMUfSYuonDhV6Pj+ZdMw78HBTG4MUGbVKgvBpaBZSFF/H9lc/vaOck/1VWXFOLdHFOp8UYjYmMyp8f2g=
+	t=1723731138; cv=none; b=DQR9YAocX16bDhbfGnoxNB6Ws8aZAOpUbbItlDgeCalixwMDySNIbwlmLOeUvzd10ILGvYq9gTaaXGekDLVIEstCJoBPmqDNakvD379N7Mu8nYss1nmh62aG9By1KdN/ZRN/Y8+/Na68cNYxSzK90ZE5kWYWd7MqqGcchJ1hGIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732159; c=relaxed/simple;
-	bh=CmeTcuvFjN10D+GSH+WRzKESai5db6Z+fjsiYHG1PHA=;
+	s=arc-20240116; t=1723731138; c=relaxed/simple;
+	bh=4K42+R24VngEO/HvYTVnNCzptKq2OcWrkRXBq2WCHEA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sn5fS61isO8dFlfxXrEVR5u+breRJAJt9sB2Q2VDvw3D3wm1tYvejnAoUYlJW49k+XKgJWkAH6N4FohKy1PWExwk5Vb9nweibMvVeCC5FEjJKnxXGeAVApldAEqXSg5fOStsO/aUekbqQRjRe5r9cI5dqKFufBVVP1zaPHuCo2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UarGCCAA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A755C32786;
-	Thu, 15 Aug 2024 14:29:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=px7p2VR2kNU4U7R4v4pV4GQcgAMjR3261tv2QkayBRnVwkeg9kdBtem/AgXHrzknPfqNbs6vKFYlu1Tk2IVrkWy4NR9ogBcLQJeTiL59VH5/Wgg8fdNJnsHXumkyThwV0aYenNpnI5hRiHPLRymq2AaladTmTfm6JjelwwlhBsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YauKikYt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0220CC32786;
+	Thu, 15 Aug 2024 14:12:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732159;
-	bh=CmeTcuvFjN10D+GSH+WRzKESai5db6Z+fjsiYHG1PHA=;
+	s=korg; t=1723731138;
+	bh=4K42+R24VngEO/HvYTVnNCzptKq2OcWrkRXBq2WCHEA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UarGCCAA67DfFB1P2EJTeqUeXAdcbHFRUwHyBqDy6v4+3HIuUr1c9bZYD6mRs3c8M
-	 cnGCnP3tz0VYqfaXlikP/xBuwl450IgCNKDzaJoaElxkg3/h1tWdY/nlcI1umVd7DA
-	 iBELyR2XuCIQh7AN2Z4pwKeTh4tImY6ggFsRiw/o=
+	b=YauKikYtNE+NHzTaDLHUEXnxrdX37jKKjT4u28SviKcrIi4DgvbBrQkUz3tQRofkU
+	 m/F0fIOw1oJzpu7S1kzGiWsqc1BCxE8q5ULNCoeTnjIjZmyQreKNyByPWrWeaXA/EE
+	 ZSeE0jTurva+sN1AhN+I/QcI+ty/005ItmI1Qiu0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+9c1fe13fcb51574b249b@syzkaller.appspotmail.com,
-	Hugh Dickins <hughd@google.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
+	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 093/352] ext4: avoid writing unitialized memory to disk in EA inodes
-Date: Thu, 15 Aug 2024 15:22:39 +0200
-Message-ID: <20240815131922.856626516@linuxfoundation.org>
+Subject: [PATCH 5.4 027/259] firmware: turris-mox-rwtm: Fix checking return value of wait_for_completion_timeout()
+Date: Thu, 15 Aug 2024 15:22:40 +0200
+Message-ID: <20240815131903.846610314@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +62,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Marek Behún <kabel@kernel.org>
 
-[ Upstream commit 65121eff3e4c8c90f8126debf3c369228691c591 ]
+[ Upstream commit 8467cfe821ac3526f7598682ad5f90689fa8cc49 ]
 
-If the extended attribute size is not a multiple of block size, the last
-block in the EA inode will have uninitialized tail which will get
-written to disk. We will never expose the data to userspace but still
-this is not a good practice so just zero out the tail of the block as it
-isn't going to cause a noticeable performance overhead.
+The wait_for_completion_timeout() function returns 0 if timed out, and a
+positive value if completed. Fix the usage of this function.
 
-Fixes: e50e5129f384 ("ext4: xattr-in-inode support")
-Reported-by: syzbot+9c1fe13fcb51574b249b@syzkaller.appspotmail.com
-Reported-by: Hugh Dickins <hughd@google.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20240613150234.25176-1-jack@suse.cz
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: 389711b37493 ("firmware: Add Turris Mox rWTM firmware driver")
+Fixes: 2eab59cf0d20 ("firmware: turris-mox-rwtm: fail probing when firmware does not support hwrng")
+Signed-off-by: Marek Behún <kabel@kernel.org>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/xattr.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/firmware/turris-mox-rwtm.c | 15 ++++++---------
+ 1 file changed, 6 insertions(+), 9 deletions(-)
 
-diff --git a/fs/ext4/xattr.c b/fs/ext4/xattr.c
-index 2dcb7d2bb85e8..b91a1d1099d59 100644
---- a/fs/ext4/xattr.c
-+++ b/fs/ext4/xattr.c
-@@ -1377,6 +1377,12 @@ static int ext4_xattr_inode_write(handle_t *handle, struct inode *ea_inode,
- 			goto out;
+diff --git a/drivers/firmware/turris-mox-rwtm.c b/drivers/firmware/turris-mox-rwtm.c
+index 0779513ac8d4f..852d911c78f6b 100644
+--- a/drivers/firmware/turris-mox-rwtm.c
++++ b/drivers/firmware/turris-mox-rwtm.c
+@@ -186,9 +186,8 @@ static int mox_get_board_info(struct mox_rwtm *rwtm)
+ 	if (ret < 0)
+ 		return ret;
  
- 		memcpy(bh->b_data, buf, csize);
-+		/*
-+		 * Zero out block tail to avoid writing uninitialized memory
-+		 * to disk.
-+		 */
-+		if (csize < blocksize)
-+			memset(bh->b_data + csize, 0, blocksize - csize);
- 		set_buffer_uptodate(bh);
- 		ext4_handle_dirty_metadata(handle, ea_inode, bh);
+-	ret = wait_for_completion_timeout(&rwtm->cmd_done, HZ / 2);
+-	if (ret < 0)
+-		return ret;
++	if (!wait_for_completion_timeout(&rwtm->cmd_done, HZ / 2))
++		return -ETIMEDOUT;
  
+ 	ret = mox_get_status(MBOX_CMD_BOARD_INFO, reply->retval);
+ 	if (ret == -ENODATA) {
+@@ -222,9 +221,8 @@ static int mox_get_board_info(struct mox_rwtm *rwtm)
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	ret = wait_for_completion_timeout(&rwtm->cmd_done, HZ / 2);
+-	if (ret < 0)
+-		return ret;
++	if (!wait_for_completion_timeout(&rwtm->cmd_done, HZ / 2))
++		return -ETIMEDOUT;
+ 
+ 	ret = mox_get_status(MBOX_CMD_ECDSA_PUB_KEY, reply->retval);
+ 	if (ret == -ENODATA) {
+@@ -261,9 +259,8 @@ static int check_get_random_support(struct mox_rwtm *rwtm)
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	ret = wait_for_completion_timeout(&rwtm->cmd_done, HZ / 2);
+-	if (ret < 0)
+-		return ret;
++	if (!wait_for_completion_timeout(&rwtm->cmd_done, HZ / 2))
++		return -ETIMEDOUT;
+ 
+ 	return mox_get_status(MBOX_CMD_GET_RANDOM, rwtm->reply.retval);
+ }
 -- 
 2.43.0
 
