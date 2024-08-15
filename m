@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-68340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C94C49531BC
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:57:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52384952F66
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:32:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 091611C231B0
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:57:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF7AE1F27342
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:32:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 693D219DF9C;
-	Thu, 15 Aug 2024 13:57:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3C8018D630;
+	Thu, 15 Aug 2024 13:32:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f5HgW0EX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mwHOKYsG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 285A01714A1;
-	Thu, 15 Aug 2024 13:57:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D36E1714D0;
+	Thu, 15 Aug 2024 13:32:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730257; cv=none; b=K3ObpnteAzM3D7/wiVPiqTTmPRfRT20W0gpQ58mFWBTlG5/QH1wgxQTE6adGwuevc0ODjmVnr3TpGM2PIARg832iIRa+D0cfewIJ7FO34ouT7xTWHuWsTWEm5xl6QbabLL2+3sEud4/neg7ZfItepgDGj7TxdZ3OMTXscLb1Sno=
+	t=1723728733; cv=none; b=MvUIpCD078ODg7q0EZDHUUeX3hfZvPwzA3DiC+pxPPzhXuW9fjbfDNDGHmHFf5ELZqZD8vGJiQLMkBw5g4f6UuJ4e5Vm8F0YuaLwmfWVfueM+ooOIs1wgwjTz9mwwnF7MUbi1yiSWgtdHpWvFlQ4omd8jPqgkEmbQVsiv4sWKdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730257; c=relaxed/simple;
-	bh=Mqo8BSnkJt/8lUuEF8qRNzCYweuMf5ubHCJGtICLLbI=;
+	s=arc-20240116; t=1723728733; c=relaxed/simple;
+	bh=7DirDnIUkox3H4q6lWHJmTfSuFjYH5+Lj5nQVnstqp8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QxO53M5Eoz0BbL/sny4n7ix31hyccDmfTeNo1a4BG0awtqR7xUxakpauEX7gk4uLIhaKwBf5nENt0FBYjxerQaYgzsLQoEUPpAMP22KIg34Y9QSY17vz5PQis5tvL56JOZU0l2ex6V022yvKXYnTmMK6XEp3GoIGwp+7x2qusw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f5HgW0EX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70C41C4AF0C;
-	Thu, 15 Aug 2024 13:57:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nlpRN6WSk+Zmwcld9jrp1aoluPEa9I46FkZEQgqtzJbODIksaEiCTYbB0qfuK2i3s1de4Rme5iZt/z31lR1qvTwNzyXgLaRO5cpuJrIr5MGvECy/rP6UMmVMotIU1aNQBqjcR5jy0t4BANxjEYYMUJb0DAE212UxfTrDtAtn7P0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mwHOKYsG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEE44C32786;
+	Thu, 15 Aug 2024 13:32:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730257;
-	bh=Mqo8BSnkJt/8lUuEF8qRNzCYweuMf5ubHCJGtICLLbI=;
+	s=korg; t=1723728733;
+	bh=7DirDnIUkox3H4q6lWHJmTfSuFjYH5+Lj5nQVnstqp8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f5HgW0EXVfq9+m/H3in4u2xkGdlqAnfA0w3ezrd1phAsZ4uRM6enQcca3Ac5Xleoy
-	 AJwZ1igIpk+dO/oJh627pcFlCXlLWFAgQsh/lqe2iqK6g7QM0dg72zo7rHvfYW5D46
-	 rhQDMjEjehxvX812Cs5Ms+Ks7kZYc+vHsz2IS2xs=
+	b=mwHOKYsGKOqNzDvshStGaFpAD/SQ79hd4lsJ7KJ6mU80hfAfYdIw9YAuUyMy3RZzk
+	 0y6WCCeaqk1y7JFsDcCPLiXPnU2xCQM6zem+SGocnGfpOPlD4VLDyqZLrH7NiuH18N
+	 BbQsa1/4Zzkp1/0PKrVQ55JWyKFeStXicEA87y58=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Subject: [PATCH 5.15 352/484] mptcp: fix duplicate data handling
+	Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH 4.19 093/196] selftests/sigaltstack: Fix ppc64 GCC build
 Date: Thu, 15 Aug 2024 15:23:30 +0200
-Message-ID: <20240815131955.023893960@linuxfoundation.org>
+Message-ID: <20240815131855.640439996@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
+References: <20240815131852.063866671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,69 +58,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-commit 68cc924729ffcfe90d0383177192030a9aeb2ee4 upstream.
+commit 17c743b9da9e0d073ff19fd5313f521744514939 upstream.
 
-When a subflow receives and discards duplicate data, the mptcp
-stack assumes that the consumed offset inside the current skb is
-zero.
+Building the sigaltstack test with GCC on 64-bit powerpc errors with:
 
-With multiple subflows receiving data simultaneously such assertion
-does not held true. As a result the subflow-level copied_seq will
-be incorrectly increased and later on the same subflow will observe
-a bad mapping, leading to subflow reset.
+  gcc -Wall     sas.c  -o /home/michael/linux/.build/kselftest/sigaltstack/sas
+  In file included from sas.c:23:
+  current_stack_pointer.h:22:2: error: #error "implement current_stack_pointer equivalent"
+     22 | #error "implement current_stack_pointer equivalent"
+        |  ^~~~~
+  sas.c: In function ‘my_usr1’:
+  sas.c:50:13: error: ‘sp’ undeclared (first use in this function); did you mean ‘p’?
+     50 |         if (sp < (unsigned long)sstack ||
+        |             ^~
 
-Address the issue taking into account the skb consumed offset in
-mptcp_subflow_discard_data().
+This happens because GCC doesn't define __ppc__ for 64-bit builds, only
+32-bit builds. Instead use __powerpc__ to detect powerpc builds, which
+is defined by clang and GCC for 64-bit and 32-bit builds.
 
-Fixes: 04e4cd4f7ca4 ("mptcp: cleanup mptcp_subflow_discard_data()")
-Cc: stable@vger.kernel.org
-Link: https://github.com/multipath-tcp/mptcp_net-next/issues/501
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 05107edc9101 ("selftests: sigaltstack: fix -Wuninitialized")
+Cc: stable@vger.kernel.org # v6.3+
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240520062647.688667-1-mpe@ellerman.id.au
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/subflow.c |   16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ tools/testing/selftests/sigaltstack/current_stack_pointer.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -1099,14 +1099,22 @@ static void mptcp_subflow_discard_data(s
- {
- 	struct mptcp_subflow_context *subflow = mptcp_subflow_ctx(ssk);
- 	bool fin = TCP_SKB_CB(skb)->tcp_flags & TCPHDR_FIN;
--	u32 incr;
-+	struct tcp_sock *tp = tcp_sk(ssk);
-+	u32 offset, incr, avail_len;
- 
--	incr = limit >= skb->len ? skb->len + fin : limit;
-+	offset = tp->copied_seq - TCP_SKB_CB(skb)->seq;
-+	if (WARN_ON_ONCE(offset > skb->len))
-+		goto out;
- 
--	pr_debug("discarding=%d len=%d seq=%d", incr, skb->len,
--		 subflow->map_subflow_seq);
-+	avail_len = skb->len - offset;
-+	incr = limit >= avail_len ? avail_len + fin : limit;
-+
-+	pr_debug("discarding=%d len=%d offset=%d seq=%d", incr, skb->len,
-+		 offset, subflow->map_subflow_seq);
- 	MPTCP_INC_STATS(sock_net(ssk), MPTCP_MIB_DUPDATA);
- 	tcp_sk(ssk)->copied_seq += incr;
-+
-+out:
- 	if (!before(tcp_sk(ssk)->copied_seq, TCP_SKB_CB(skb)->end_seq))
- 		sk_eat_skb(ssk, skb);
- 	if (mptcp_subflow_get_map_offset(subflow) >= subflow->map_data_len)
+--- a/tools/testing/selftests/sigaltstack/current_stack_pointer.h
++++ b/tools/testing/selftests/sigaltstack/current_stack_pointer.h
+@@ -8,7 +8,7 @@ register unsigned long sp asm("sp");
+ register unsigned long sp asm("esp");
+ #elif __loongarch64
+ register unsigned long sp asm("$sp");
+-#elif __ppc__
++#elif __powerpc__
+ register unsigned long sp asm("r1");
+ #elif __s390x__
+ register unsigned long sp asm("%15");
 
 
 
