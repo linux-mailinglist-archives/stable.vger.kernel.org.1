@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-68400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67915-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47B17953203
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:01:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BE6B952FBD
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:36:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A1726B21EB7
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:01:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F4DB1C22854
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:36:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C0F31A2C04;
-	Thu, 15 Aug 2024 14:00:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D53F19F470;
+	Thu, 15 Aug 2024 13:35:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QwcUe/CH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="plpUKj1s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEBF51A00DF;
-	Thu, 15 Aug 2024 14:00:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C053E198E78;
+	Thu, 15 Aug 2024 13:35:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730449; cv=none; b=DLinVY3Pm1XTC1tR0Ytyv3mQyrta4Hz/FSS7O629LSy4iwhFWHXA1fSTMGZ7Irn2+Ew/9YeFlDG2QQQyNMFCEpMEC+ovvMWes0HmdizVR9cCMKf4/GyAgPsuv2kPzWob3xw8WLsesz4dywab2Jn8QunSWzlnClXV8mdlyNc9RbA=
+	t=1723728919; cv=none; b=pv7FE2AU+dAWGYQ9XN3Z7l5Of/TZRNFwV/+EOz1BwPsiWfGAeJAoq3Yf3PHX8uG9i7YEdGUGw1LH/C4PhGA55BkdbN3S6MXpjIpwS+qdwRwtDqP3aUZlE7vW4Y9tKCAAeUFTFneVnNrcf9PSJZYIX6MULKsO/4Ph2rsAYVreZiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730449; c=relaxed/simple;
-	bh=Zm3GFrM/RFdF3gp5azbbS0wXHgW6vBTK61JIqAD1tpU=;
+	s=arc-20240116; t=1723728919; c=relaxed/simple;
+	bh=eP6ISUTX05zja1aX0+2/vYtCb/PaE3klIJ0gKaDIY6c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AOWKNx1kNFywR1DJVpLRgPGhw6U+dfcMmthxUtlg/JT80XBzdVuqoxQAbTtnNN6Q5YiZGH9MMyNLQG3q+3q+YLTW5+piRP1w7LkHeEM0mn55x7IEi83v0Vc7xDH4qrSrb3AdGmcHH3BFvZcm4UsKki/m/KiK2Zi4HawnJGizPHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QwcUe/CH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14D82C4AF0D;
-	Thu, 15 Aug 2024 14:00:48 +0000 (UTC)
+	 MIME-Version; b=uTVhlnzlZtIlvKAbAXSRUyveCNGIVoAHS72nuc6sDajYLzMSOilN0E4aldEilHO5VQf7ZvwpSvQtChDyH/lEn5s10YVuuQHjbmVCGeM1AwQHfo5AqSTh7acJQAgeLYyl7mLetzn8NEuZ0sMDyfaxO2zkmbEjIcXcsfH1utqBzDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=plpUKj1s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4554EC32786;
+	Thu, 15 Aug 2024 13:35:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730449;
-	bh=Zm3GFrM/RFdF3gp5azbbS0wXHgW6vBTK61JIqAD1tpU=;
+	s=korg; t=1723728919;
+	bh=eP6ISUTX05zja1aX0+2/vYtCb/PaE3klIJ0gKaDIY6c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QwcUe/CHKIznYU5sAM2CvCsN5U6fjVQ+G0i5qH7UAPOe1FSq19Dx7FFmgxTZO0Qt+
-	 SB4VznmHU19YiBJeidOrLOLi/zNgtdPhxcLBmlFnfFRL9Q9QfOk4FuAnvY+kIFvxyA
-	 1XJFM26xfu5N0Coz2QHXq28lMtOvdqDa4qEF8ebU=
+	b=plpUKj1smQjZqQfFwphkSaDf6sb3ysCGeMf81CA5kMykTHUVvGHFbXM3Vp1sSUOc3
+	 3M4/vcA+8Pd+LYVitXPaMYRsNPBbSQYtcc7vc4WyFOlLi9Z4AHQkFAzcTA/OvumL8t
+	 5InW5ZQKtqdlNYCJ5FL6znEy2XvXckUWZM94EmHk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	James Morse <james.morse@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 412/484] kprobes: Fix to check symbol prefixes correctly
+Subject: [PATCH 4.19 153/196] arm64: cputype: Add Cortex-X3 definitions
 Date: Thu, 15 Aug 2024 15:24:30 +0200
-Message-ID: <20240815131957.368656218@linuxfoundation.org>
+Message-ID: <20240815131857.928601113@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
+References: <20240815131852.063866671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Mark Rutland <mark.rutland@arm.com>
 
-[ Upstream commit 8c8acb8f26cbde665b233dd1b9bbcbb9b86822dc ]
+[ Upstream commit be5a6f238700f38b534456608588723fba96c5ab ]
 
-Since str_has_prefix() takes the prefix as the 2nd argument and the string
-as the first, is_cfi_preamble_symbol() always fails to check the prefix.
-Fix the function parameter order so that it correctly check the prefix.
+Add cputype definitions for Cortex-X3. These will be used for errata
+detection in subsequent patches.
 
-Link: https://lore.kernel.org/all/172260679559.362040.7360872132937227206.stgit@devnote2/
+These values can be found in Table A-263 ("MIDR_EL1 bit descriptions")
+in issue 07 of the Cortex-X3 TRM, which can be found at:
 
-Fixes: de02f2ac5d8c ("kprobes: Prohibit probing on CFI preamble symbol")
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+  https://developer.arm.com/documentation/101593/0102/?lang=en
+
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: James Morse <james.morse@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/r/20240603111812.1514101-2-mark.rutland@arm.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+[ Mark: trivial backport ]
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/kprobes.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/include/asm/cputype.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/kernel/kprobes.c b/kernel/kprobes.c
-index 258d425b2c4a5..0d463859ad329 100644
---- a/kernel/kprobes.c
-+++ b/kernel/kprobes.c
-@@ -1545,8 +1545,8 @@ static bool is_cfi_preamble_symbol(unsigned long addr)
- 	if (lookup_symbol_name(addr, symbuf))
- 		return false;
- 
--	return str_has_prefix("__cfi_", symbuf) ||
--		str_has_prefix("__pfx_", symbuf);
-+	return str_has_prefix(symbuf, "__cfi_") ||
-+		str_has_prefix(symbuf, "__pfx_");
- }
- 
- static int check_kprobe_address_safe(struct kprobe *p,
+diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
+index 9b44a59195889..a89d6baecbede 100644
+--- a/arch/arm64/include/asm/cputype.h
++++ b/arch/arm64/include/asm/cputype.h
+@@ -89,6 +89,7 @@
+ #define ARM_CPU_PART_CORTEX_X2		0xD48
+ #define ARM_CPU_PART_NEOVERSE_N2	0xD49
+ #define ARM_CPU_PART_CORTEX_A78C	0xD4B
++#define ARM_CPU_PART_CORTEX_X3		0xD4E
+ #define ARM_CPU_PART_NEOVERSE_V2	0xD4F
+ #define ARM_CPU_PART_CORTEX_X4		0xD82
+ #define ARM_CPU_PART_NEOVERSE_V3	0xD84
+@@ -128,6 +129,7 @@
+ #define MIDR_CORTEX_X2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X2)
+ #define MIDR_NEOVERSE_N2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_N2)
+ #define MIDR_CORTEX_A78C	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A78C)
++#define MIDR_CORTEX_X3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X3)
+ #define MIDR_NEOVERSE_V2 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V2)
+ #define MIDR_CORTEX_X4 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X4)
+ #define MIDR_NEOVERSE_V3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V3)
 -- 
 2.43.0
 
