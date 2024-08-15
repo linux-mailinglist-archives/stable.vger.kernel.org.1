@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-68115-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68116-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 741ED9530B8
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:46:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3BB29530B6
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:45:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C1E09B22FD0
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F3CC41C22E70
 	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:45:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F04319F482;
-	Thu, 15 Aug 2024 13:45:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B97518D64F;
+	Thu, 15 Aug 2024 13:45:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YLrKsYYL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MxFcPfz+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D047219DF9A;
-	Thu, 15 Aug 2024 13:45:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE18F19DF9A;
+	Thu, 15 Aug 2024 13:45:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723729544; cv=none; b=gZk+FAD+wnbjvZnEX1FNHnX9iToGTouyFiN9erR4eofmawxNqF8KSs+v/RjBnwj09HpJ4wjuujHpG+tHlQTc9eDlnozvrQCHTVshgFZDKSOFo+HFsQrkh1Q7E4uEECPIAaVzUUH6/70N6XfGUIjNm/U6BBsMldmAj3gDX/AKFHQ=
+	t=1723729548; cv=none; b=QqV0HqKONMOYxbJAbc5CGVCVJ/xt9TdG97DiZjMFCDqaDd/84VunhG+OrGFmPTfB9g5dRsMxhsFbbc4IlPtS1/X3NDympmj13YRslfofTIkMhniejjBt5unpIgL5vi4ohI/nLptJbKi/0htC/pQFslmvkvs4W/JPPzIp0/TG1Io=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723729544; c=relaxed/simple;
-	bh=YndF44SvFfpeCkXZjzk9JJxASV5OG9CGwBDNyMfycK4=;
+	s=arc-20240116; t=1723729548; c=relaxed/simple;
+	bh=nsGqwxP6ggTzw/EBJ6Ex6F9977DZkZz67Z08Tkajm8U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hY40qia+m/0+GL8tUb+gqJxua/4F7lRTxokfF88dT65/KEjTsKw8BJAKoi2XUXcUeaLw1HokXrdNsUGab9Ous4RyQNuZ81xFdL9PL+UV3ajDpFhiPh1pWlvE1lcWgH/eDN2fRlkflbQwiD5+WrAYI6i1l4woCA/DOAasyLJPNvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YLrKsYYL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53D03C32786;
-	Thu, 15 Aug 2024 13:45:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=N3FM/8gn92fG6hct+d8PZ7eWCwQTvc0zjgH+PWCbB6SnR34X9Zrk4HRa0pFvKqBhhNYkTcZmRO/psParYxnSfCVpEwmCHbiiTLXbQka4P0go6wFPwyhyUeVLXnuaGjtuH80mts+QuN+OeoP5XausdTzh2BiARNrc9O8RNeGtMOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MxFcPfz+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63BFEC32786;
+	Thu, 15 Aug 2024 13:45:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723729544;
-	bh=YndF44SvFfpeCkXZjzk9JJxASV5OG9CGwBDNyMfycK4=;
+	s=korg; t=1723729547;
+	bh=nsGqwxP6ggTzw/EBJ6Ex6F9977DZkZz67Z08Tkajm8U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YLrKsYYLFIxooFqQjwZWpmCLPDfdkar9/Qs1wZCImWQkko5spPrI1i+IkL8hIefMv
-	 euXbbmh+j51HP4fReXTgmap6KNYdgHp3QdlI0yLh2nsOt59MAgAbF1f/9Ljkz3SzM7
-	 N/Mp65podR3dAp4vTvCHjL0hmLb/h0+RaZaUe2Kc=
+	b=MxFcPfz+K80BrblfAT2O/Ayb1PIwS0l2OZ83KjArZW7Sap7VAMcT2PIhGREkXxE3x
+	 PSCtgrR8uYItep/F++ipTyFwI1vKv+yxWcPGHO3BlKrAKQEm1Ssdx3j/F6ClVL8UeR
+	 uFPct7qSJF9uJvhjl0WKQu8RSlXQ/YAt3PH9/Fe0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	CK Hu <ck.hu@mediatek.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Hsiao Chien Sung <shawn.sung@mediatek.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 100/484] drm/mediatek: Add DRM_MODE_ROTATE_0 to rotation property
-Date: Thu, 15 Aug 2024 15:19:18 +0200
-Message-ID: <20240815131945.154201780@linuxfoundation.org>
+Subject: [PATCH 5.15 101/484] leds: trigger: Unregister sysfs attributes before calling deactivate()
+Date: Thu, 15 Aug 2024 15:19:19 +0200
+Message-ID: <20240815131945.197970184@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
 References: <20240815131941.255804951@linuxfoundation.org>
@@ -62,99 +61,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hsiao Chien Sung <shawn.sung@mediatek.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 74608d8feefd1675388f23362aac8df4ac3af931 ]
+[ Upstream commit c0dc9adf9474ecb7106e60e5472577375aedaed3 ]
 
-Always add DRM_MODE_ROTATE_0 to rotation property to meet
-IGT's (Intel GPU Tools) requirement.
+Triggers which have trigger specific sysfs attributes typically store
+related data in trigger-data allocated by the activate() callback and
+freed by the deactivate() callback.
 
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Fixes: 119f5173628a ("drm/mediatek: Add DRM Driver for Mediatek SoC MT8173.")
-Signed-off-by: Hsiao Chien Sung <shawn.sung@mediatek.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20240620-igt-v3-8-a9d62d2e2c7e@mediatek.com/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Calling device_remove_groups() after calling deactivate() leaves a window
+where the sysfs attributes show/store functions could be called after
+deactivation and then operate on the just freed trigger-data.
+
+Move the device_remove_groups() call to before deactivate() to close
+this race window.
+
+This also makes the deactivation path properly do things in reverse order
+of the activation path which calls the activate() callback before calling
+device_add_groups().
+
+Fixes: a7e7a3156300 ("leds: triggers: add device attribute support")
+Cc: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Acked-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Link: https://lore.kernel.org/r/20240504162533.76780-1-hdegoede@redhat.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_disp_ovl.c     | 17 +++++------------
- drivers/gpu/drm/mediatek/mtk_drm_ddp_comp.h |  6 +++++-
- drivers/gpu/drm/mediatek/mtk_drm_plane.c    |  2 +-
- 3 files changed, 11 insertions(+), 14 deletions(-)
+ drivers/leds/led-triggers.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_disp_ovl.c b/drivers/gpu/drm/mediatek/mtk_disp_ovl.c
-index 411cf0f216611..c54d56fb7b4c5 100644
---- a/drivers/gpu/drm/mediatek/mtk_disp_ovl.c
-+++ b/drivers/gpu/drm/mediatek/mtk_disp_ovl.c
-@@ -204,27 +204,20 @@ int mtk_ovl_layer_check(struct device *dev, unsigned int idx,
- 			struct mtk_plane_state *mtk_state)
- {
- 	struct drm_plane_state *state = &mtk_state->base;
--	unsigned int rotation = 0;
- 
--	rotation = drm_rotation_simplify(state->rotation,
--					 DRM_MODE_ROTATE_0 |
--					 DRM_MODE_REFLECT_X |
--					 DRM_MODE_REFLECT_Y);
--	rotation &= ~DRM_MODE_ROTATE_0;
--
--	/* We can only do reflection, not rotation */
--	if ((rotation & DRM_MODE_ROTATE_MASK) != 0)
-+	/* check if any unsupported rotation is set */
-+	if (state->rotation & ~mtk_ovl_supported_rotations(dev))
- 		return -EINVAL;
- 
- 	/*
- 	 * TODO: Rotating/reflecting YUV buffers is not supported at this time.
- 	 *	 Only RGB[AX] variants are supported.
-+	 *	 Since DRM_MODE_ROTATE_0 means "no rotation", we should not
-+	 *	 reject layers with this property.
- 	 */
--	if (state->fb->format->is_yuv && rotation != 0)
-+	if (state->fb->format->is_yuv && (state->rotation & ~DRM_MODE_ROTATE_0))
- 		return -EINVAL;
- 
--	state->rotation = rotation;
--
- 	return 0;
- }
- 
-diff --git a/drivers/gpu/drm/mediatek/mtk_drm_ddp_comp.h b/drivers/gpu/drm/mediatek/mtk_drm_ddp_comp.h
-index 25cb50f2391fa..fa9616505ed6a 100644
---- a/drivers/gpu/drm/mediatek/mtk_drm_ddp_comp.h
-+++ b/drivers/gpu/drm/mediatek/mtk_drm_ddp_comp.h
-@@ -145,7 +145,11 @@ unsigned int mtk_ddp_comp_supported_rotations(struct mtk_ddp_comp *comp)
- 	if (comp->funcs && comp->funcs->supported_rotations)
- 		return comp->funcs->supported_rotations(comp->dev);
- 
--	return 0;
-+	/*
-+	 * In order to pass IGT tests, DRM_MODE_ROTATE_0 is required when
-+	 * rotation is not supported.
-+	 */
-+	return DRM_MODE_ROTATE_0;
- }
- 
- static inline unsigned int mtk_ddp_comp_layer_nr(struct mtk_ddp_comp *comp)
-diff --git a/drivers/gpu/drm/mediatek/mtk_drm_plane.c b/drivers/gpu/drm/mediatek/mtk_drm_plane.c
-index a9fa510d9a684..b0c3bc2cf2f0f 100644
---- a/drivers/gpu/drm/mediatek/mtk_drm_plane.c
-+++ b/drivers/gpu/drm/mediatek/mtk_drm_plane.c
-@@ -258,7 +258,7 @@ int mtk_plane_init(struct drm_device *dev, struct drm_plane *plane,
- 		return err;
- 	}
- 
--	if (supported_rotations & ~DRM_MODE_ROTATE_0) {
-+	if (supported_rotations) {
- 		err = drm_plane_create_rotation_property(plane,
- 							 DRM_MODE_ROTATE_0,
- 							 supported_rotations);
+diff --git a/drivers/leds/led-triggers.c b/drivers/leds/led-triggers.c
+index 4e7b78a84149b..cbe70f38cb572 100644
+--- a/drivers/leds/led-triggers.c
++++ b/drivers/leds/led-triggers.c
+@@ -177,9 +177,9 @@ int led_trigger_set(struct led_classdev *led_cdev, struct led_trigger *trig)
+ 			flags);
+ 		cancel_work_sync(&led_cdev->set_brightness_work);
+ 		led_stop_software_blink(led_cdev);
++		device_remove_groups(led_cdev->dev, led_cdev->trigger->groups);
+ 		if (led_cdev->trigger->deactivate)
+ 			led_cdev->trigger->deactivate(led_cdev);
+-		device_remove_groups(led_cdev->dev, led_cdev->trigger->groups);
+ 		led_cdev->trigger = NULL;
+ 		led_cdev->trigger_data = NULL;
+ 		led_cdev->activated = false;
 -- 
 2.43.0
 
