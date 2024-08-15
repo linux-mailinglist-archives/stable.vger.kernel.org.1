@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-68490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68804-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5FD4953296
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:07:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F6CD95340C
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:22:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FAEC1F22182
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:07:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE4622899D9
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:22:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE3041A2570;
-	Thu, 15 Aug 2024 14:05:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AEEB1AC8BB;
+	Thu, 15 Aug 2024 14:21:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hw1yLeIR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="12n5E63o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A95C1AC8BB;
-	Thu, 15 Aug 2024 14:05:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 392F91AC896;
+	Thu, 15 Aug 2024 14:21:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730732; cv=none; b=N5hehpMm1FA9pFkrQB5hVlXe+JaU3jirGCpx9WJ/TKxN3v1ecq/XbXnmHOgGB9FbQbe/p68EMbv8SytZOKnojZbDT3IfNpO40PMErEHaJHqNUrFIXZo+dDJaVIYLpI0yU03IJcilmQYrDSW3kCyV2mUysXqTYBswqQ7TqTXbJ/A=
+	t=1723731719; cv=none; b=j3KfLu6UyP+d7dOj0kL71EBztH+4J4sKcGzAE1JTAa6wciV6TlafRAaBtq7kT3YzAUxiWyz2uzwCLw3APtPKIiSDaZtrWt5lUQItGIe9Om/q3AvYxJ90B1CwnhgseF5UPphYKB/JcOq4Vh7WXgQ5TWHuyTQhucDNoyLXhf4+iwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730732; c=relaxed/simple;
-	bh=R8xzYibVXCpIglO8nRvfbQDfpIbMTFZ4AV9NSrFMwUQ=;
+	s=arc-20240116; t=1723731719; c=relaxed/simple;
+	bh=y9BSpmUKiIIjJptnHQRx7aTwyuR/L8/3xrwFqFnUNc0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A+X6d+Cojv3dCAX1gFZM9kIgLDvOLEA5U5e/OpnS6B0i2+3bq3OIcsYLv7n2m4Cf7WRAbAH5l/uBAAffcPaXTbAT1DYfjFXWJ2R+p3JF25QATeN6BgR4ANsRb/wcwqGz20YKFBmewboS2KQpmspzKAp9CkU/3IKEK9zpGcbn0dQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hw1yLeIR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0528C32786;
-	Thu, 15 Aug 2024 14:05:31 +0000 (UTC)
+	 MIME-Version; b=iEHTJJ/OmALGLM4bmlOPD92pjIbApo+f0YAUhIsCrJJqOdM0u8GVbPuhQV+TMGPDQJ+oqYc+jo9UrOyt9uv5zLOD4EuntSIADsjP5HF9EU7f3W1F3rRRzmQSttvIHjr2wodhJQPn5QoNJhLy48jIJ1B4Dt2i3lsws+MO78YBVvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=12n5E63o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA6B2C32786;
+	Thu, 15 Aug 2024 14:21:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730732;
-	bh=R8xzYibVXCpIglO8nRvfbQDfpIbMTFZ4AV9NSrFMwUQ=;
+	s=korg; t=1723731719;
+	bh=y9BSpmUKiIIjJptnHQRx7aTwyuR/L8/3xrwFqFnUNc0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hw1yLeIRDC0lgTUkETAcCHgO2BatPvgdNhQxFQsSO4TwJ6JltZ5AreJjq8oBQgo//
-	 V8RFactc4FmmcitPiMJ3AMFjrmcWTDBsKOSwGKQjjP2F7D+l89kduOj6lc1mPNBU/l
-	 ap8ilY9ytok5eHo+/8+We5MfzmINOGbDRtOQPztc=
+	b=12n5E63o4n+olY+ZE4Up5FlQXcd8PDB/SnWdvW4URyyXaq4pvTL9w8faytE+HH/M6
+	 4EjEm4ugBvJ74nJzaN94joOUvg8CTqd7QgbhS/WZeLcGkOQ1XSK/gzSfv0RjXDPTa4
+	 zUV3cyY94nwxmJEk3bGHGA0FlSYFhzhl8bD1KJ+s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.1 15/38] NFSD: Refactor the duplicate reply cache shrinker
+	Mark Rutland <mark.rutland@arm.com>,
+	James Morse <james.morse@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 216/259] arm64: errata: Unify speculative SSBS errata logic
 Date: Thu, 15 Aug 2024 15:25:49 +0200
-Message-ID: <20240815131833.538482037@linuxfoundation.org>
+Message-ID: <20240815131911.112483290@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131832.944273699@linuxfoundation.org>
-References: <20240815131832.944273699@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,136 +64,141 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Mark Rutland <mark.rutland@arm.com>
 
-[ Upstream commit c135e1269f34dfdea4bd94c11060c83a3c0b3c12 ]
+[ Upstream commit ec768766608092087dfb5c1fc45a16a6f524dee2 ]
 
-Avoid holding the bucket lock while freeing cache entries. This
-change also caps the number of entries that are freed when the
-shrinker calls to reduce the shrinker's impact on the cache's
-effectiveness.
+Cortex-X4 erratum 3194386 and Neoverse-V3 erratum 3312417 are identical,
+with duplicate Kconfig text and some unsightly ifdeffery. While we try
+to share code behind CONFIG_ARM64_WORKAROUND_SPECULATIVE_SSBS, having
+separate options results in a fair amount of boilerplate code, and this
+will only get worse as we expand the set of affected CPUs.
 
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-[ cel: adjusted to apply to v6.1.y -- this one might not be necessary ]
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To reduce this boilerplate, unify the two behind a common Kconfig
+option. This removes the duplicate text and Kconfig logic, and removes
+the need for the intermediate ARM64_WORKAROUND_SPECULATIVE_SSBS option.
+The set of affected CPUs is described as a list so that this can easily
+be extended.
+
+I've used ARM64_ERRATUM_3194386 (matching the Neoverse-V3 erratum ID) as
+the common option, matching the way we use ARM64_ERRATUM_1319367 to
+cover Cortex-A57 erratum 1319537 and Cortex-A72 erratum 1319367.
+
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: James Morse <james.morse@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/r/20240603111812.1514101-5-mark.rutland@arm.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+[ Mark: fix conflicts & renames, drop unneeded cpucaps.h ]
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfscache.c |   83 ++++++++++++++++++++++++-----------------------------
- 1 file changed, 39 insertions(+), 44 deletions(-)
+ Documentation/arm64/silicon-errata.rst |  2 +-
+ arch/arm64/Kconfig                     | 28 ++++----------------------
+ arch/arm64/kernel/cpu_errata.c         | 10 +++------
+ 3 files changed, 8 insertions(+), 32 deletions(-)
 
---- a/fs/nfsd/nfscache.c
-+++ b/fs/nfsd/nfscache.c
-@@ -310,67 +310,62 @@ nfsd_prune_bucket_locked(struct nfsd_net
- 	}
- }
+diff --git a/Documentation/arm64/silicon-errata.rst b/Documentation/arm64/silicon-errata.rst
+index 003424286dda4..b2db2492bd131 100644
+--- a/Documentation/arm64/silicon-errata.rst
++++ b/Documentation/arm64/silicon-errata.rst
+@@ -96,7 +96,7 @@ stable kernels.
+ +----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | Neoverse-N1     | #1542419        | ARM64_ERRATUM_1542419       |
+ +----------------+-----------------+-----------------+-----------------------------+
+-| ARM            | Neoverse-V3     | #3312417        | ARM64_ERRATUM_3312417       |
++| ARM            | Neoverse-V3     | #3312417        | ARM64_ERRATUM_3194386       |
+ +----------------+-----------------+-----------------+-----------------------------+
+ | ARM            | MMU-500         | #841119,826419  | N/A                         |
+ +----------------+-----------------+-----------------+-----------------------------+
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index 122f2b068e28d..1455a81ee8687 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -590,34 +590,14 @@ config ARM64_ERRATUM_1742098
  
--static long prune_bucket(struct nfsd_drc_bucket *b, struct nfsd_net *nn,
--			 unsigned int max)
-+/**
-+ * nfsd_reply_cache_count - count_objects method for the DRC shrinker
-+ * @shrink: our registered shrinker context
-+ * @sc: garbage collection parameters
-+ *
-+ * Returns the total number of entries in the duplicate reply cache. To
-+ * keep things simple and quick, this is not the number of expired entries
-+ * in the cache (ie, the number that would be removed by a call to
-+ * nfsd_reply_cache_scan).
-+ */
-+static unsigned long
-+nfsd_reply_cache_count(struct shrinker *shrink, struct shrink_control *sc)
- {
--	struct svc_cacherep *rp, *tmp;
--	long freed = 0;
-+	struct nfsd_net *nn = container_of(shrink,
-+				struct nfsd_net, nfsd_reply_cache_shrinker);
+ 	  If unsure, say Y.
  
--	list_for_each_entry_safe(rp, tmp, &b->lru_head, c_lru) {
--		/*
--		 * Don't free entries attached to calls that are still
--		 * in-progress, but do keep scanning the list.
--		 */
--		if (rp->c_state == RC_INPROG)
--			continue;
--		if (atomic_read(&nn->num_drc_entries) <= nn->max_drc_entries &&
--		    time_before(jiffies, rp->c_timestamp + RC_EXPIRE))
--			break;
--		nfsd_reply_cache_free_locked(b, rp, nn);
--		if (max && freed++ > max)
--			break;
--	}
--	return freed;
-+	return atomic_read(&nn->num_drc_entries);
- }
- 
--/*
-- * Walk the LRU list and prune off entries that are older than RC_EXPIRE.
-- * Also prune the oldest ones when the total exceeds the max number of entries.
-+/**
-+ * nfsd_reply_cache_scan - scan_objects method for the DRC shrinker
-+ * @shrink: our registered shrinker context
-+ * @sc: garbage collection parameters
-+ *
-+ * Free expired entries on each bucket's LRU list until we've released
-+ * nr_to_scan freed objects. Nothing will be released if the cache
-+ * has not exceeded it's max_drc_entries limit.
-+ *
-+ * Returns the number of entries released by this call.
-  */
--static long
--prune_cache_entries(struct nfsd_net *nn)
-+static unsigned long
-+nfsd_reply_cache_scan(struct shrinker *shrink, struct shrink_control *sc)
- {
-+	struct nfsd_net *nn = container_of(shrink,
-+				struct nfsd_net, nfsd_reply_cache_shrinker);
-+	unsigned long freed = 0;
-+	LIST_HEAD(dispose);
- 	unsigned int i;
--	long freed = 0;
- 
- 	for (i = 0; i < nn->drc_hashsize; i++) {
- 		struct nfsd_drc_bucket *b = &nn->drc_hashtbl[i];
- 
- 		if (list_empty(&b->lru_head))
- 			continue;
-+
- 		spin_lock(&b->cache_lock);
--		freed += prune_bucket(b, nn, 0);
-+		nfsd_prune_bucket_locked(nn, b, 0, &dispose);
- 		spin_unlock(&b->cache_lock);
--	}
--	return freed;
--}
+-config ARM64_WORKAROUND_SPECULATIVE_SSBS
+-	bool
 -
--static unsigned long
--nfsd_reply_cache_count(struct shrinker *shrink, struct shrink_control *sc)
--{
--	struct nfsd_net *nn = container_of(shrink,
--				struct nfsd_net, nfsd_reply_cache_shrinker);
- 
--	return atomic_read(&nn->num_drc_entries);
--}
+ config ARM64_ERRATUM_3194386
+-	bool "Cortex-X4: 3194386: workaround for MSR SSBS not self-synchronizing"
+-	select ARM64_WORKAROUND_SPECULATIVE_SSBS
++	bool "Cortex-X4/Neoverse-V3: workaround for MSR SSBS not self-synchronizing"
+ 	default y
+ 	help
+-	  This option adds the workaround for ARM Cortex-X4 erratum 3194386.
 -
--static unsigned long
--nfsd_reply_cache_scan(struct shrinker *shrink, struct shrink_control *sc)
--{
--	struct nfsd_net *nn = container_of(shrink,
--				struct nfsd_net, nfsd_reply_cache_shrinker);
-+		freed += nfsd_cacherep_dispose(&dispose);
-+		if (freed > sc->nr_to_scan)
-+			break;
-+	}
+-	  On affected cores "MSR SSBS, #0" instructions may not affect
+-	  subsequent speculative instructions, which may permit unexepected
+-	  speculative store bypassing.
+-
+-	  Work around this problem by placing a speculation barrier after
+-	  kernel changes to SSBS. The presence of the SSBS special-purpose
+-	  register is hidden from hwcaps and EL0 reads of ID_AA64PFR1_EL1, such
+-	  that userspace will use the PR_SPEC_STORE_BYPASS prctl to change
+-	  SSBS.
++	  This option adds the workaround for the following errata:
  
--	return prune_cache_entries(nn);
-+	trace_nfsd_drc_gc(nn, freed);
-+	return freed;
- }
+-	  If unsure, say Y.
+-
+-config ARM64_ERRATUM_3312417
+-	bool "Neoverse-V3: 3312417: workaround for MSR SSBS not self-synchronizing"
+-	select ARM64_WORKAROUND_SPECULATIVE_SSBS
+-	default y
+-	help
+-	  This option adds the workaround for ARM Neoverse-V3 erratum 3312417.
++	  * ARM Cortex-X4 erratum 3194386
++	  * ARM Neoverse-V3 erratum 3312417
  
- /**
+ 	  On affected cores "MSR SSBS, #0" instructions may not affect
+ 	  subsequent speculative instructions, which may permit unexepected
+diff --git a/arch/arm64/kernel/cpu_errata.c b/arch/arm64/kernel/cpu_errata.c
+index dd8be391e595d..5e77a7595059b 100644
+--- a/arch/arm64/kernel/cpu_errata.c
++++ b/arch/arm64/kernel/cpu_errata.c
+@@ -382,7 +382,7 @@ void arm64_set_ssbd_mitigation(bool state)
+ 		 * CPUs could mis-speculate branches and bypass a conditional
+ 		 * barrier.
+ 		 */
+-		if (IS_ENABLED(CONFIG_ARM64_WORKAROUND_SPECULATIVE_SSBS))
++		if (IS_ENABLED(CONFIG_ARM64_ERRATUM_3194386))
+ 			spec_bar();
+ 
+ 		return;
+@@ -841,14 +841,10 @@ static struct midr_range broken_aarch32_aes[] = {
+ };
+ #endif
+ 
+-#ifdef CONFIG_ARM64_WORKAROUND_SPECULATIVE_SSBS
+-static const struct midr_range erratum_spec_ssbs_list[] = {
+ #ifdef CONFIG_ARM64_ERRATUM_3194386
++static const struct midr_range erratum_spec_ssbs_list[] = {
+ 	MIDR_ALL_VERSIONS(MIDR_CORTEX_X4),
+-#endif
+-#ifdef CONFIG_ARM64_ERRATUM_3312417
+ 	MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V3),
+-#endif
+ 	{}
+ };
+ #endif
+@@ -1042,7 +1038,7 @@ const struct arm64_cpu_capabilities arm64_errata[] = {
+ 		.type = ARM64_CPUCAP_LOCAL_CPU_ERRATUM,
+ 	},
+ #endif
+-#ifdef CONFIG_ARM64_WORKAROUND_SPECULATIVE_SSBS
++#ifdef CONFIG_ARM64_ERRATUM_3194386
+ 	{
+ 		.desc = "ARM errata 3194386, 3312417",
+ 		.capability = ARM64_WORKAROUND_SPECULATIVE_SSBS,
+-- 
+2.43.0
+
 
 
 
