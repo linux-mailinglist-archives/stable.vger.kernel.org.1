@@ -1,123 +1,129 @@
-Return-Path: <stable+bounces-67736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67737-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 471B4952807
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 04:56:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6454E9528A7
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 06:48:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D077E1F21BCA
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 02:56:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F92C28593D
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 04:48:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 128401D545;
-	Thu, 15 Aug 2024 02:56:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B0FB3BBD8;
+	Thu, 15 Aug 2024 04:48:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="EhvLsG96"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="Llh/s1xx"
 X-Original-To: stable@vger.kernel.org
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7104B18C0C;
-	Thu, 15 Aug 2024 02:56:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDE9D38382
+	for <stable@vger.kernel.org>; Thu, 15 Aug 2024 04:48:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723690606; cv=none; b=M5CGA62P1aydZLZkwbJWNMWWmI082F7pfp4FvR6OZ4YLNR4/aQUFJAj8tctzts2Ag3p07panDRd6O4CxwyvyS2x2pCSNGVouXmSJiGPVSCmafjHNpo+4HtSe1p47AXKI0z2T9mKzxJOF056xX9ey/pSS9QHYai98I3iqNDZT9e0=
+	t=1723697301; cv=none; b=U3XZ+8icYla5bmSSL6i+CbpsueznQTmmoxSfJgAscdG0qy5pHmFH7LhzIJseLO/HmOTCAGxLOkVaUBtz2i9RvobLrxHTq6agTD9iEDzE0wr4M+Ij4TpGPbFYsYaH1YXZDk98KwzJVgbnBUTKooagwkPBpgdjNfFs6vEIORgdS2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723690606; c=relaxed/simple;
-	bh=qoaWrAb8kjBtgWeIJuuD1ayfZGcAGUFf/DgXrhGn7xI=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=plx1c73cjEehBZo5roFCgx4zwNzFUL6ggRHFJNXfYmbNBqBcTWNwk3Zu20GDdA2qfmbbTgKqc02Zi247/OiVxAU3UgEQrK46t9b53GQi+48lwE/8wndU5kw+r4vSYmp359rx3yn+M1YOz2pUWSbrRl3xIE2ac02DaFBxk8PJZDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=EhvLsG96; arc=none smtp.client-ip=210.61.82.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: fdb25da45ab111ef8b96093e013ec31c-20240815
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=IreNKXAd6Wij/T8hdkR8/W4pp0PDvrbdbTuyMa714HU=;
-	b=EhvLsG968NWKTBd2Vn1QWFfmTlDmR4DbviJhNXnuSEnEWBM5g3ZaKGRjmTIwBbk5eJGJQzJkLaA0PJFMhlE3Y3ToJotfW2mrqqyWUkFF9gHTrNkv5VlB9ndkQsHUrG/EHPpJe/VZPLtUSbfaGPq6WLk1vsnv/buqlG/+bbKXcEM=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.41,REQID:7ccb41eb-044a-499b-8505-d0852749139d,IP:0,U
-	RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:-5
-X-CID-META: VersionHash:6dc6a47,CLOUDID:b11c9cfe-77bb-433c-b174-ffb8012693b0,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-	RL:0,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,
-	SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR
-X-UUID: fdb25da45ab111ef8b96093e013ec31c-20240815
-Received: from mtkmbs14n1.mediatek.inc [(172.21.101.75)] by mailgw02.mediatek.com
-	(envelope-from <mingyen.hsieh@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 1470514797; Thu, 15 Aug 2024 10:56:38 +0800
-Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
- MTKMBS14N1.mediatek.inc (172.21.101.75) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Thu, 15 Aug 2024 10:56:35 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Thu, 15 Aug 2024 10:56:35 +0800
-From: Mingyen Hsieh <mingyen.hsieh@mediatek.com>
-To: <nbd@nbd.name>, <lorenzo@kernel.org>
-CC: <deren.wu@mediatek.com>, <Sean.Wang@mediatek.com>,
-	<Soul.Huang@mediatek.com>, <Leon.Yen@mediatek.com>,
-	<Eric-SY.Chang@mediatek.com>, <km.lin@mediatek.com>,
-	<robin.chiu@mediatek.com>, <ch.yeh@mediatek.com>, <posh.sun@mediatek.com>,
-	<Quan.Zhou@mediatek.com>, <Ryder.Lee@mediatek.com>,
-	<Shayne.Chen@mediatek.com>, <linux-wireless@vger.kernel.org>,
-	<linux-mediatek@lists.infradead.org>, Ming Yen Hsieh
-	<mingyen.hsieh@mediatek.com>, <stable@vger.kernel.org>
-Subject: [PATCH] wifi: mt76: mt7921: fix wrong UNII-4 freq range check for the channel usage
-Date: Thu, 15 Aug 2024 10:56:33 +0800
-Message-ID: <20240815025633.20974-1-mingyen.hsieh@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+	s=arc-20240116; t=1723697301; c=relaxed/simple;
+	bh=1H8OSJlJ5N02+gXkYla/orQDMo/rMWVcoHt8snd/BFU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XBbN5V10Goh5+nQ2xNNFll7IDDvC/JbHKj/Ofe9OWhdJO+Rrs96gJr9cimYWtgfRm4Z3qRpKPAbtcUNMP364vLZnlVp4PWb3j8IgmL/vMYEkuer0++P9yHi8740BXLFLvDtw4BDMo0P5DDsxsxGaSsoGs2F8p/VaIkIQY03cqy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=Llh/s1xx; arc=none smtp.client-ip=209.85.210.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-70d2b921cd1so452960b3a.1
+        for <stable@vger.kernel.org>; Wed, 14 Aug 2024 21:48:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1723697299; x=1724302099; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=/hmiS/G0zKAC5tA9OzOxytrtCGZMWxkCbcEk10y8Ir0=;
+        b=Llh/s1xxcFTDiSx+c+Y2xt/dW1sHZniqBxcFg7DkO9kc06Vc5NG7p/Yh0zFzbctfRL
+         Mrw/n4SoRlKArZmDhJw9q2N+6oxkR6k+UdxfsD76kNaBe5Bq/DTUJ2A+MRZlKKtoS5B/
+         lTQ2865e5zzXSJP/Oy2hvdK0Ha/Aw+QoSZmXM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723697299; x=1724302099;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/hmiS/G0zKAC5tA9OzOxytrtCGZMWxkCbcEk10y8Ir0=;
+        b=nwo4xK5wOixvf3bMKoQRoLX1CQ4AyeVp2mHUtSI41snUEQOWdg9aKKq03ciHIRmJaI
+         3ihwhX2LjirocPzpKii8s40ljJ5qo1OcMUzu16bbCFbBOuGj8MsOSleVM/QJ+S1uMvYG
+         E7TwYNqqWzJAv7sDXDIqE0rIz6M3I1M42HNN1Fq+oDkkYV/OucHz2vBiZ9kPhqY0zJfQ
+         F41wBfVnaH+pflOJGcfL2+gKlU7lyHwRExm2PlPm6XVhH+CkCCJgbbYoo4s5u7jvUrXc
+         KILRLcx/YT3zPiGoIoFChbBWlRGwSsBxznRC1lBa6hp/Jis9ur5HdHrgCwEp9xKhWFCB
+         RiXg==
+X-Forwarded-Encrypted: i=1; AJvYcCUixBd3whd3HqlwIQj4I3Rvock/4KcPhuza4PRaVD7eicCD2URIOrU1gzWbFV0iDHo/XyKsbd4dD4qK9aEYuQ43tLLFXbml
+X-Gm-Message-State: AOJu0YxAcUWwnFD/KzpyvPRo/yNDmI3ExdskgfvqNSh8KoGHYT3XpMtX
+	49mioEdVJCKDaiajoRq65WNCBpHdYGE+tie7LzrCX1XcIGDXMsgC2GiypNjM6w==
+X-Google-Smtp-Source: AGHT+IGx1lP4TlGrHuh23iB/99xzj8kXmWkUac5JJk27ttUx5Ghve1MQJhTg2y2w5CMBWQpQv4QJXQ==
+X-Received: by 2002:a05:6a00:198e:b0:70d:2892:402b with SMTP id d2e1a72fcca58-71267101635mr5313447b3a.7.1723697299019;
+        Wed, 14 Aug 2024 21:48:19 -0700 (PDT)
+Received: from google.com ([2401:fa00:1:10:745d:58f7:b3cd:901f])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7127ae6c0bdsm383551b3a.90.2024.08.14.21.48.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 Aug 2024 21:48:18 -0700 (PDT)
+Date: Thu, 15 Aug 2024 12:48:15 +0800
+From: Chen-Yu Tsai <wenst@chromium.org>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>,
+	linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 1/3] thermal: of: Fix OF node leak in
+ thermal_of_trips_init() error path
+Message-ID: <20240815044815.GA255011@google.com>
+References: <20240814195823.437597-1-krzysztof.kozlowski@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-Product-Ver: SMEX-14.0.0.3152-9.1.1006-23728.005
-X-TM-AS-Result: No-10-0.808800-8.000000
-X-TMASE-MatchedRID: PwZ81m9fkLYO9fZKTjt+z/havVZP5tTaKFFZAe4nyZ4Fi3R9x/2qQjEG
-	FjeZwyRU/Wti4Vzf8lvbCHv011Gy9U/CFiHta6tDngIgpj8eDcAZ1CdBJOsoY9mzcdRxL+xwKra
-	uXd3MZDX371moSn0VOAmbF1rkLU7qU7EZP1t1XBI2LIqpGKMvSJdTpzr1FBoedipJQCO3xTig3f
-	bPV9K2v+/Dm8xfT8B7S7S4JFB9LdNl6jZ5qkH35hdGg+ZY7eN6THB2Q+oKru8MTI34nyF36MJL1
-	aANdU8K+rL5VW+ofZc=
-X-TM-AS-User-Approved-Sender: No
-X-TM-AS-User-Blocked-Sender: No
-X-TMASE-Result: 10-0.808800-8.000000
-X-TMASE-Version: SMEX-14.0.0.3152-9.1.1006-23728.005
-X-TM-SNTS-SMTP:
-	7E10A3FC5E124F9FF0A490BB7CFDBDE5BE3AD67CB69DD3D00DA2ED5DBE0B567E2000:8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240814195823.437597-1-krzysztof.kozlowski@linaro.org>
 
-From: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+On Wed, Aug 14, 2024 at 09:58:21PM +0200, Krzysztof Kozlowski wrote:
+> Terminating for_each_child_of_node() loop requires dropping OF node
+> reference, so bailing out after thermal_of_populate_trip() error misses
+> this.  Solve the OF node reference leak with scoped
+> for_each_child_of_node_scoped().
+> 
+> Fixes: d0c75fa2c17f ("thermal/of: Initialize trip points separately")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-The check should start from 5845 to 5925, which includes
-channels 169, 173, and 177.
+Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
 
-Cc: stable@vger.kernel.org
-Fixes: 09382d8f8641 ("wifi: mt76: mt7921: update the channel usage when the regd domain changed")
-Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
----
- drivers/net/wireless/mediatek/mt76/mt7921/init.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/init.c b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-index ef0c721d26e3..57672c69150e 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/init.c
-@@ -83,7 +83,7 @@ mt7921_regd_channel_update(struct wiphy *wiphy, struct mt792x_dev *dev)
- 		}
- 
- 		/* UNII-4 */
--		if (IS_UNII_INVALID(0, 5850, 5925))
-+		if (IS_UNII_INVALID(0, 5845, 5925))
- 			ch->flags |= IEEE80211_CHAN_DISABLED;
- 	}
- 
--- 
-2.18.0
-
+> ---
+>  drivers/thermal/thermal_of.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/thermal/thermal_of.c b/drivers/thermal/thermal_of.c
+> index aa34b6e82e26..30f8d6e70484 100644
+> --- a/drivers/thermal/thermal_of.c
+> +++ b/drivers/thermal/thermal_of.c
+> @@ -125,7 +125,7 @@ static int thermal_of_populate_trip(struct device_node *np,
+>  static struct thermal_trip *thermal_of_trips_init(struct device_node *np, int *ntrips)
+>  {
+>  	struct thermal_trip *tt;
+> -	struct device_node *trips, *trip;
+> +	struct device_node *trips;
+>  	int ret, count;
+>  
+>  	trips = of_get_child_by_name(np, "trips");
+> @@ -150,7 +150,7 @@ static struct thermal_trip *thermal_of_trips_init(struct device_node *np, int *n
+>  	*ntrips = count;
+>  
+>  	count = 0;
+> -	for_each_child_of_node(trips, trip) {
+> +	for_each_child_of_node_scoped(trips, trip) {
+>  		ret = thermal_of_populate_trip(trip, &tt[count++]);
+>  		if (ret)
+>  			goto out_kfree;
+> -- 
+> 2.43.0
+> 
 
