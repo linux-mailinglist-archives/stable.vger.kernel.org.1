@@ -1,136 +1,100 @@
-Return-Path: <stable+bounces-67743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67744-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 453E7952971
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 08:41:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B788495297C
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 08:49:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B183287301
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 06:41:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 32880B23B4A
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 06:49:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21E2A179654;
-	Thu, 15 Aug 2024 06:40:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B09F17920E;
+	Thu, 15 Aug 2024 06:49:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="ClIPBtss"
 X-Original-To: stable@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from mout.web.de (mout.web.de [212.227.17.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8221C176FD2
-	for <stable@vger.kernel.org>; Thu, 15 Aug 2024 06:40:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D069178CCA;
+	Thu, 15 Aug 2024 06:48:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723704040; cv=none; b=pBCxJdSvSD+locKnRbWEkkjSX4eC2i952FStLdcvfdZPDuUgS5PGUSBVK1LRlf912rAKuivuAcNJrki9VMrMQoxQ0C9cDtPkFWtlSmWOQHzrk9fjpIkJgiaNp+CncDhoPNR+mslQC4bS90fuiY0dxTXN9qje4s+u37Xv5erlbS8=
+	t=1723704540; cv=none; b=G4DAcy5RKL5hsQgK9GwGwsAnaMxgDmThHMm8fDhg2CKcV0j/UBkvaAv4Q1puEYie4bdXjH4B2W7edssVGBzzlyVjE4ezlUUPBsUtY4ZWR9qjFgTWQSUZ/Xnw1eJjjdo+TFBsmaLESBMF5C4Bu9paMYVf0hdcyndxdzPTLtOJCmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723704040; c=relaxed/simple;
-	bh=Vy2YoRP3WMBL9Q0m0cvv2z3doL40ax72V/J2g22sdOI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=DEIj46r2oeR7LeIFVIWxi+VnrasJEtxQ3QdqTMsa7/Tl07NTnsQJQz7989RFmQpTVmqAiqaULzsSOJPJwR2OcXw0ylqCXk4D+6fT4Ja67rSw9Ethjusaew56tJA68QWZNsHFQoQUVMAmgBwZ7S55AOgNJROvENFzHPClyvNZv8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <m.grzeschik@pengutronix.de>)
-	id 1seU9u-0002L8-Ty; Thu, 15 Aug 2024 08:40:30 +0200
-Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <m.grzeschik@pengutronix.de>)
-	id 1seU9t-000XGZ-Oj; Thu, 15 Aug 2024 08:40:29 +0200
-Received: from localhost ([::1] helo=dude04.red.stw.pengutronix.de)
-	by dude04.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <m.grzeschik@pengutronix.de>)
-	id 1seU9t-002CsL-2H;
-	Thu, 15 Aug 2024 08:40:29 +0200
-From: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Date: Thu, 15 Aug 2024 08:40:29 +0200
-Subject: [PATCH v2] usb: dwc3: ep0: Don't reset resource alloc flag
- (including ep0)
+	s=arc-20240116; t=1723704540; c=relaxed/simple;
+	bh=mWOaouGtbDKsYQdGv0jggBmrDBnJHD8xQ8HL5gUYJ+E=;
+	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
+	 In-Reply-To:Content-Type; b=fWCBqZSOy/xNFnAyZwm4ADAsbrKcnOpYfI9xUSsw5SQ/7PvmansdmNDIsuQOf29Ikm4knjAB2ven7NlmgwnKjiW+fP3i/9i6TggHs6phVQLKFz3QwDjb4g/QjPfHqyAwPorfvfM0k6CqzpOngb/FNfdZriHtLc0WrudgsWwxSJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=ClIPBtss; arc=none smtp.client-ip=212.227.17.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1723704516; x=1724309316; i=markus.elfring@web.de;
+	bh=mWOaouGtbDKsYQdGv0jggBmrDBnJHD8xQ8HL5gUYJ+E=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
+	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
+	 cc:content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=ClIPBtsspNiU++Q2niceSwX2d/fXTyqz088aFWoL32eCb5KQ1phquRlFDxiySpwx
+	 01pCqbka/UPHlVwMZqjvX4OGoQbabSaSpYox5RfbbdiODT3oargUU0TE8q9ys1l6E
+	 fJz9DEyCY9Gby8oUtsvfIRe9clLafIXdi2YqGkPi/O1/YHEB+s2HdaKluUsw+49iV
+	 ZK+9SuFKlUSUHRh1HoWxus3ev3xUoEffBevfyqTbhWakv+pOdIQK7lPBvAMXpVRYh
+	 r2A5wkqjcDXHcp5F0jDzXV7tR5qXcIw8J10kk9WhdcwecOwwtoH2uleVjJXexZ83O
+	 35O1hTre0u4Z/oUpaA==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.21] ([94.31.87.95]) by smtp.web.de (mrweb106
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1N1d7i-1sBnIa0EVk-010QtW; Thu, 15
+ Aug 2024 08:48:36 +0200
+Message-ID: <7309e626-214e-4623-b3dc-2e4e2f68b1e4@web.de>
+Date: Thu, 15 Aug 2024 08:48:22 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240814-dwc3hwep0reset-v2-1-29e1d7d923ea@pengutronix.de>
-X-B4-Tracking: v=1; b=H4sIANyivWYC/3WOOw6DMBBEr4K2jiP/FEiq3COiwHjB2xi0JkCEu
- HsMXYqUbzRPMxskZMIEj2IDxpkSDTGDvhTQhib2KMhnBi21lZWywi+tCQuOkjHhJJz1plRVaez
- dQpZck1A4bmIbDu23fRRGxo7Wc/FVZw6UpoE/54FZHenfrVkJJWRVOun1rTNePkeM/XviIdJ69
- Qj1vu9fEiwMaNIAAAA=
-To: Thinh Nguyen <Thinh.Nguyen@synopsys.com>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org, Michael Grzeschik <m.grzeschik@pengutronix.de>
-X-Mailer: b4 0.12.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1784;
- i=m.grzeschik@pengutronix.de; h=from:subject:message-id;
- bh=Vy2YoRP3WMBL9Q0m0cvv2z3doL40ax72V/J2g22sdOI=;
- b=owEBbQKS/ZANAwAKAb9pWET5cfSrAcsmYgBmvaLd76WjuTzBse4a1zQhSPCx4BbCb63ZKWekQ
- 78y4MU4I5mJAjMEAAEKAB0WIQQV2+2Fpbqd6fvv0Gi/aVhE+XH0qwUCZr2i3QAKCRC/aVhE+XH0
- q/F6D/9egYIhDfTzbtMWhwhK6deKJS363ZTXV5Xq9R8Bt6wjqDfp8yz9StX0LewcdFcKBPbb/NC
- LiJPB1yWimhY8ENM+KLjb63lzgvkiYR0fLC2Ruzo9ZpCBSflWy4xAPLiPICVr3ghxaT7wxQs+Ha
- qGJnp1dsIbuhtATkniT6HtAtFHsNEu8jamCuHy8r9+94C1R1CUcOvf0RXbq/fftGJOZgaOLe3GE
- 8gFUo8PRG6gsArFmU0+lUyN+HHIpOKAsi1xl3bUyhwLGuwdonUrdpYFjCm0RVFEHMCAObC7GeCI
- 6WzLPiCNP1aUB0b99AxUC3tIb0/Pi7DEudPOYKw2iZwJoGuv0ZZjuiIKK2Wt01K3R2XaAQIWSIo
- Y0L3YpzJ7l4k0DaFNWKhPVeZHRrxkYmT88INiACI/ICsCAcD3SdbQLe3PuBGybpVaX/coEnrS7p
- xWWYQlLGZ7pt4gqKDT2QwwEKQzWaWb5UAkWRu8XOVsYvAQ1h3yeum5+zApVhHrnn1M3woRvoFDV
- q7RhUCfdU5ubUq6O3l8uioR5DsRKzboitMEDpQ3StXrNpB88cm7MqJvy3o0mnd4shM6duI3m/V8
- BSqlmXWLxEFQariB6S2CCuH5vuOmOSc0w31IAPvnV52h7wbOprmk1N+GnDLx9xTiwne+H2zRaCE
- 0992l7kkJRLM5ag==
-X-Developer-Key: i=m.grzeschik@pengutronix.de; a=openpgp;
- fpr=957BC452CE953D7EA60CF4FC0BE9E3157A1E2C64
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: m.grzeschik@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
+User-Agent: Mozilla Thunderbird
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+ linux-pm@vger.kernel.org, Daniel Lezcano <daniel.lezcano@linaro.org>,
+ Lukasz Luba <lukasz.luba@arm.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
+ Zhang Rui <rui.zhang@intel.com>
+Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+ Chen-Yu Tsai <wenst@chromium.org>
+References: <20240814195823.437597-1-krzysztof.kozlowski@linaro.org>
+Subject: Re: [PATCH 1/3] thermal: of: Fix OF node leak in
+ thermal_of_trips_init() error path
+Content-Language: en-GB
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <20240814195823.437597-1-krzysztof.kozlowski@linaro.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:Y4LYm9M+cHdWv5CBLcVL1JI9ZqLYGEXS2CCmJQ2UUH9/pEx+lQq
+ O9oHPY08kqK3EPyhG2ANIVolA7uef7tsdkuy5xJAlh5PCZQWXc0FNOzclM5P+ZukC756pWA
+ oir3rUEEOCGWjY2zgn16cGbZqnKtFEAxQ+WIbP0TYop7HHv5KLord+oyCY0nyFb/JxmiCDQ
+ XmaqzooGFU9lfFeQTN5dg==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:PSfSfel47F8=;eIbnGqTUMp7UrIuGfZxudeMcuMh
+ a3njT3AZh9X3QBiVD9w7HVUxjj74TPbOGztAzZmWpI6Fm5+tVOF/ZDyt02v6TyFg1/IVGyqgl
+ GCszqpERF4oVJtVAQpAnm6F3Oc0Wr9HaW5fiTNI2mIcnQCGq+R8xX4YO/vYhxxrjqGjYGxstk
+ 8ClUZsdtMsHPgEYk1FEMAyllp0iHWYXMj2x5NuQIynRR+06a9GZatltKHlEMONda56jgV9OtV
+ I9afxFSyOYFMCV1nwRu7UbqIrBiW7x419f6tYFt7arvrxKoTSnkxuxRnAIypTTCa9eqpRp+nc
+ KrwTmJvWCsTZzDBR/hGHVxL6XD6DbvpBAab1JeSu0TZuUi3a0Mkv3wHRLElrEBmY+SGKj01wm
+ g7WALNsapmHr/hV6wKvqeA9FouL85AyMrUKwYWc3NcGxPdlqRHbqjIpE7uLBuldyhEvva70Xs
+ 8sOYgtCoMF3+YApLZwubmvP1C1ZZ9O2vD7N07nQGjMjimP0zjFqICZw17ez4GY0eg9fk60vMh
+ ve8w9LfU6SzwI+zlsVdsyghqGYVD9wOUrXQbOGft7uB7y/Yj1yb79puTfO1ePaD4ycuYGnRJE
+ vG7DFy7KSHFRGDw3yqdwZmeHQBgWQ25881xs7byZLl9FNJt/+dTGJenZFB+JjQEDfA3RphHQK
+ ysVQ63FhJPkRqYuMOTBGJE+HDX2EPmKDZJwIyJbMBHbGrzE9rZrhS7GbyjWJRhDz+s7y3FxmZ
+ FOg+XVhkUKJncKkbW9fA6HK+3RyN2X2z3CHcejGfruIxENO9tZeO3zM9OJBJHPMVSTEzZu/AM
+ e0geVIMCew4XmIv2GElUTm6w==
 
-The DWC3_EP_RESOURCE_ALLOCATED flag ensures that the resource of an
-endpoint is only assigned once. Unless the endpoint is reset, don't
-clear this flag. Otherwise we may set endpoint resource again, which
-prevents the driver from initiate transfer after handling a STALL or
-endpoint halt to the control endpoint.
+> Terminating for_each_child_of_node() loop requires dropping OF node
+=E2=80=A6
 
-Commit f2e0eee47038 ("usb: dwc3: ep0: Don't reset resource alloc flag")
-was fixing the initial issue, but did this only for physical ep1. Since
-the function dwc3_ep0_stall_and_restart is resetting the flags for both
-physical endpoints, this also has to be done for ep0.
+Can a cover letter be helpful for such patch series?
 
-Cc: stable@vger.kernel.org
-Fixes: b311048c174d ("usb: dwc3: gadget: Rewrite endpoint allocation flow")
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
----
-v2: Added missing double quotes in the referenced patch name
-
-- Link to v1: https://lore.kernel.org/r/20240814-dwc3hwep0reset-v1-1-087b0d26f3d0@pengutronix.de
----
- drivers/usb/dwc3/ep0.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/usb/dwc3/ep0.c b/drivers/usb/dwc3/ep0.c
-index d96ffbe520397..c9533a99e47c8 100644
---- a/drivers/usb/dwc3/ep0.c
-+++ b/drivers/usb/dwc3/ep0.c
-@@ -232,7 +232,8 @@ void dwc3_ep0_stall_and_restart(struct dwc3 *dwc)
- 	/* stall is always issued on EP0 */
- 	dep = dwc->eps[0];
- 	__dwc3_gadget_ep_set_halt(dep, 1, false);
--	dep->flags = DWC3_EP_ENABLED;
-+	dep->flags &= DWC3_EP_RESOURCE_ALLOCATED;
-+	dep->flags |= DWC3_EP_ENABLED;
- 	dwc->delayed_status = false;
- 
- 	if (!list_empty(&dep->pending_list)) {
-
----
-base-commit: 38343be0bf9a7d7ef0d160da5f2db887a0e29b62
-change-id: 20240814-dwc3hwep0reset-b4d371873494
-
-Best regards,
--- 
-Michael Grzeschik <m.grzeschik@pengutronix.de>
-
+Regards,
+Markus
 
