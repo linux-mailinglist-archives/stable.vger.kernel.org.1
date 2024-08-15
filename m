@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-68085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68052-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8C6895308F
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:44:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE5C3953065
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:42:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9CBF21F245DB
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:44:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F1B351C21E9E
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:42:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBB5019F49A;
-	Thu, 15 Aug 2024 13:44:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D9BA19DF60;
+	Thu, 15 Aug 2024 13:42:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eMMYIP8E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a/KldgMb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8602A19EED0;
-	Thu, 15 Aug 2024 13:44:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C8351714A8;
+	Thu, 15 Aug 2024 13:42:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723729450; cv=none; b=pNMYao8+4+JJQOVo3UsjdGpAwNW0uqjG3fxtMYeAfyd6X5SbKYY2CMx6K5w3J+SdDjQcAl0mSttUoCyYLS6TS/MnVb8m15sEWx4BEO8Amm5qUdW/hyxAJRLCBdTLb3/iBF5yGqj/pjp9oha2YTXpPjzfUj+oRpf60NRlvJYwJxo=
+	t=1723729345; cv=none; b=Yyri+OG5VRKDwPzPC9F1bf8G7mWfQwZmc0Q6OAml9/zfGCo/KSqO267ZK+VIHWA1wy6GWIS7iealybd7l2OvO9pE8c4pKkxCdQ+jRRrpGI1VM8v+nBksI49lOeL6xA4vRD+zCiJgikcp2j+WoJA9YUqqCVqyeXLWGhp8Xei6RIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723729450; c=relaxed/simple;
-	bh=6atr6dNWt0jLluxGjMuV7KrvxKADM0YWkQXe64uNCh0=;
+	s=arc-20240116; t=1723729345; c=relaxed/simple;
+	bh=TDevdhlGkRXWcWRSfoNOxs7kYEoi4ExwiHrpNYygCew=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nTfBK2BcRFXaexn8aUIYfufhrHXLCeoN7u+klvOaYKxGXge7OI69elJ5KP/w9cw1xMjCoUMRtvQPYOXNmSLKblmKWO1UZZnWUG53bA0Qjvi9Gue5XcSBglt4fKezTzJ5M8EjSUb6eLgDyL3L94KSVZVUfpv3TVLFSOuuIv3upLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eMMYIP8E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0219EC32786;
-	Thu, 15 Aug 2024 13:44:09 +0000 (UTC)
+	 MIME-Version; b=fqc9McL5asf4IoIwVGAdD61Kq7l0Y2xx+LlmvHSY0C/SfV5PEJfpWBJJScIbpyGqP//zUJKX/IsKddM+SUfa+Vblwdv2dZBuBPk2l5TJrCIVhxzaIbELdRdts/vkSa8shyvTH7/lSg/XGJ/NMECFnBNHNpvN5M2rz0F79OMcMXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a/KldgMb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10A40C32786;
+	Thu, 15 Aug 2024 13:42:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723729450;
-	bh=6atr6dNWt0jLluxGjMuV7KrvxKADM0YWkQXe64uNCh0=;
+	s=korg; t=1723729345;
+	bh=TDevdhlGkRXWcWRSfoNOxs7kYEoi4ExwiHrpNYygCew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eMMYIP8ES0Ay7ydADq4uUTJ2XjW2mOiKuebbqdpSJo6UjpPAqoYQvv69/XAzyH9F4
-	 bC4AtzN3DYKgOSE36qurcbh+xCwl/m150YvIlHM7BFyIVnU88OheNgqdinjsYW1wIz
-	 uZog33u8/yC1ivPe2sD1kUOdc0N/N+SnHJBc8f1M=
+	b=a/KldgMbGZcEVZnF24RpMQbyxiDGrIaRefNYJ310mmT9KdLiTTsN6r6L74VgAa36p
+	 2QwnB7B9cMFTE+JXxFSOUvcksUBVpy/iyYmVpWK7/xDagFPgGrByNT4lYvT7lbnnHw
+	 UZhW4FesPU0WVPgIT3sZ+OR9rCMZK/CNqT4JBl/Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Baochen Qiang <quic_bqiang@quicinc.com>,
 	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 060/484] wifi: cfg80211: fix typo in cfg80211_calculate_bitrate_he()
-Date: Thu, 15 Aug 2024 15:18:38 +0200
-Message-ID: <20240815131943.602217026@linuxfoundation.org>
+Subject: [PATCH 5.15 061/484] wifi: cfg80211: handle 2x996 RU allocation in cfg80211_calculate_bitrate_he()
+Date: Thu, 15 Aug 2024 15:18:39 +0200
+Message-ID: <20240815131943.641684079@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
 References: <20240815131941.255804951@linuxfoundation.org>
@@ -68,41 +68,40 @@ Content-Transfer-Encoding: 8bit
 
 From: Baochen Qiang <quic_bqiang@quicinc.com>
 
-[ Upstream commit 9ee0d44f055276fe2802b2f65058e920853f4f99 ]
+[ Upstream commit bcbd771cd5d68c0c52567556097d75f9fc4e7cd6 ]
 
-rates_996 is mistakenly written as rates_969, fix it.
+Currently NL80211_RATE_INFO_HE_RU_ALLOC_2x996 is not handled in
+cfg80211_calculate_bitrate_he(), leading to below warning:
+
+kernel: invalid HE MCS: bw:6, ru:6
+kernel: WARNING: CPU: 0 PID: 2312 at net/wireless/util.c:1501 cfg80211_calculate_bitrate_he+0x22b/0x270 [cfg80211]
+
+Fix it by handling 2x996 RU allocation in the same way as 160 MHz bandwidth.
 
 Fixes: c4cbaf7973a7 ("cfg80211: Add support for HE")
 Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Link: https://msgid.link/20240606020653.33205-2-quic_bqiang@quicinc.com
+Link: https://msgid.link/20240606020653.33205-3-quic_bqiang@quicinc.com
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/util.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/wireless/util.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/net/wireless/util.c b/net/wireless/util.c
-index d40c2cf777dc0..a879d6b310a90 100644
+index a879d6b310a90..6ebc6567b2875 100644
 --- a/net/wireless/util.c
 +++ b/net/wireless/util.c
-@@ -1363,7 +1363,7 @@ static u32 cfg80211_calculate_bitrate_he(struct rate_info *rate)
- 		  5120, /*  0.833333... */
- 	};
- 	u32 rates_160M[3] = { 960777777, 907400000, 816666666 };
--	u32 rates_969[3] =  { 480388888, 453700000, 408333333 };
-+	u32 rates_996[3] =  { 480388888, 453700000, 408333333 };
- 	u32 rates_484[3] =  { 229411111, 216666666, 195000000 };
- 	u32 rates_242[3] =  { 114711111, 108333333,  97500000 };
- 	u32 rates_106[3] =  {  40000000,  37777777,  34000000 };
-@@ -1388,7 +1388,7 @@ static u32 cfg80211_calculate_bitrate_he(struct rate_info *rate)
+@@ -1383,7 +1383,9 @@ static u32 cfg80211_calculate_bitrate_he(struct rate_info *rate)
+ 	if (WARN_ON_ONCE(rate->nss < 1 || rate->nss > 8))
+ 		return 0;
+ 
+-	if (rate->bw == RATE_INFO_BW_160)
++	if (rate->bw == RATE_INFO_BW_160 ||
++	    (rate->bw == RATE_INFO_BW_HE_RU &&
++	     rate->he_ru_alloc == NL80211_RATE_INFO_HE_RU_ALLOC_2x996))
+ 		result = rates_160M[rate->he_gi];
  	else if (rate->bw == RATE_INFO_BW_80 ||
  		 (rate->bw == RATE_INFO_BW_HE_RU &&
- 		  rate->he_ru_alloc == NL80211_RATE_INFO_HE_RU_ALLOC_996))
--		result = rates_969[rate->he_gi];
-+		result = rates_996[rate->he_gi];
- 	else if (rate->bw == RATE_INFO_BW_40 ||
- 		 (rate->bw == RATE_INFO_BW_HE_RU &&
- 		  rate->he_ru_alloc == NL80211_RATE_INFO_HE_RU_ALLOC_484))
 -- 
 2.43.0
 
