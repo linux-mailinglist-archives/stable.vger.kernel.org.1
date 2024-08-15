@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-68809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69170-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 917AD953412
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:22:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBDB99535D1
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:43:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 353872878DC
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:22:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E9EA51C24326
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:43:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15EAC1A00F5;
-	Thu, 15 Aug 2024 14:22:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73A0A1A08C6;
+	Thu, 15 Aug 2024 14:41:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pTNrvH9X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jkwZor/X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C74853214;
-	Thu, 15 Aug 2024 14:22:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3089D63D5;
+	Thu, 15 Aug 2024 14:41:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731734; cv=none; b=W0YLeucnKsTboelWdUGJzRZ5pQGVZYb2usHyfw34k/9Oy0eCcj6xhqiptqgkb0YxhGDkKRAVDk11V2FXefLvK7c/9dj8ywivYi5Ptz1z198HPOusuuPEtT9YkXSCbCEkRQZ/Y4WAlSRC+9C1cigIER772eg9QBkg2h6tGrPL5BQ=
+	t=1723732896; cv=none; b=LyCLgEgaXVoPsiDGYmZcHpWDPUZJ8bn6skA8iNEbNt7KJjbJwx7Ww/ku7JIK21bIXYkYFsgDC2h8K0Z82j3qvRS7AQ5OO8jq1OAkY7T9AGc1KvafgJyHOHWDqg56EWLWPX7eUz+AxRRP2RLWI8jENYBThmrr8RrH1VtJ2cQoG+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731734; c=relaxed/simple;
-	bh=uTiU2GMgK7BItprZBZUQca7a7o1zlblwB0h2zNGyDgI=;
+	s=arc-20240116; t=1723732896; c=relaxed/simple;
+	bh=Tcfcwv3kS7nAA7VxdwEzxOi4Eje5w8fqrXqJDujILwo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a6TsE1JYAFbJK0Gbq6g0T13sA5m13+DjhrsQqsqe/1aElNbemKumF6ifjRUxwVIpSQXO0971T1aSCvYrPEYuQXF3HnoeYOam3a3AFyFuXspa9Q127/VVWs8BtVc94t1P5t6QS03ES9D/fM5C8FInaOI0hG51lRngYNE6VXvszRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pTNrvH9X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 452F3C32786;
-	Thu, 15 Aug 2024 14:22:14 +0000 (UTC)
+	 MIME-Version; b=qCeiFBGWLueVQzrTORRDYwf4+naCIle+yYhxda5oBOQy9yB4vCqlbeAwJG8BEWovW5eJrFu3hqCAKcr+bqw61TTaS9G5JlSZWKROF4CD5Zmgl5pt6qGZjPIvgGEIHnVnIAQsg0bl7Ha+/VlHkT6SvCFpA2Pp/ncrk7mILau7kCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jkwZor/X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52A73C32786;
+	Thu, 15 Aug 2024 14:41:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731734;
-	bh=uTiU2GMgK7BItprZBZUQca7a7o1zlblwB0h2zNGyDgI=;
+	s=korg; t=1723732895;
+	bh=Tcfcwv3kS7nAA7VxdwEzxOi4Eje5w8fqrXqJDujILwo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pTNrvH9XcubGvNwd7j23ZB2uDB5UF3+hiDKO5YOP6hxXGCEsNiGm0ua2biFEbDtRE
-	 vOBXV+Hu9bJzgWwyPWHON+oqLVo2FHkkDmFbPy8xJmCjBPB/yK62f/17Wc0mBv+Of0
-	 RaSsam9J0WKg/QRaT4NZsSb4ZsBQmGwfZwH4fR0Q=
+	b=jkwZor/X1Mh+Py/b19Tb3hlj3PMLrrXa2uTjR7Cu6Xn6lYZqpVe8Wc+n6sDvLmT4o
+	 TYq4dtz5SseE0D0gI7o3EDhZ0b9WNys3D2f0MpkJq+9N83KzLOFjmJWe6btySdTMxJ
+	 qbah/5Qxdqi4LBqFnK5KIir1Dh5zwzQWo8QIhB4o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Corey Minyard <cminyard@mvista.com>,
-	Jean Delvare <jdelvare@suse.de>,
-	Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-	Wolfram Sang <wsa@the-dreams.de>,
+	Mark Rutland <mark.rutland@arm.com>,
+	James Morse <james.morse@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 221/259] i2c: smbus: Dont filter out duplicate alerts
+Subject: [PATCH 5.10 288/352] arm64: cputype: Add Cortex-X925 definitions
 Date: Thu, 15 Aug 2024 15:25:54 +0200
-Message-ID: <20240815131911.306400187@linuxfoundation.org>
+Message-ID: <20240815131930.580714642@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,62 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Corey Minyard <cminyard@mvista.com>
+From: Mark Rutland <mark.rutland@arm.com>
 
-[ Upstream commit dca0dd28fa5e0a1ec41a623dbaf667601fc62331 ]
+[ Upstream commit fd2ff5f0b320f418288e7a1f919f648fbc8a0dfc ]
 
-Getting the same alert twice in a row is legal and normal,
-especially on a fast device (like running in qemu).  Kind of
-like interrupts.  So don't report duplicate alerts, and deliver
-them normally.
+Add cputype definitions for Cortex-X925. These will be used for errata
+detection in subsequent patches.
 
-[JD: Fixed subject]
+These values can be found in Table A-285 ("MIDR_EL1 bit descriptions")
+in issue 0001-05 of the Cortex-X925 TRM, which can be found at:
 
-Signed-off-by: Corey Minyard <cminyard@mvista.com>
-Signed-off-by: Jean Delvare <jdelvare@suse.de>
-Reviewed-by: Benjamin Tissoires <benjamin.tissoires@redhat.com>
-Signed-off-by: Wolfram Sang <wsa@the-dreams.de>
-Stable-dep-of: 37c526f00bc1 ("i2c: smbus: Improve handling of stuck alerts")
+  https://developer.arm.com/documentation/102807/0001/?lang=en
+
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
+Cc: James Morse <james.morse@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Link: https://lore.kernel.org/r/20240603111812.1514101-4-mark.rutland@arm.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+[ Mark: trivial backport ]
+Signed-off-by: Mark Rutland <mark.rutland@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/i2c-smbus.c | 7 -------
- 1 file changed, 7 deletions(-)
+ arch/arm64/include/asm/cputype.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/i2c/i2c-smbus.c b/drivers/i2c/i2c-smbus.c
-index 03096f47e6abb..7e2f5d0eacdb0 100644
---- a/drivers/i2c/i2c-smbus.c
-+++ b/drivers/i2c/i2c-smbus.c
-@@ -66,7 +66,6 @@ static irqreturn_t smbus_alert(int irq, void *d)
- {
- 	struct i2c_smbus_alert *alert = d;
- 	struct i2c_client *ara;
--	unsigned short prev_addr = 0;	/* Not a valid address */
+diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
+index 4f08438344e2a..35162c15ed6c6 100644
+--- a/arch/arm64/include/asm/cputype.h
++++ b/arch/arm64/include/asm/cputype.h
+@@ -89,6 +89,7 @@
+ #define ARM_CPU_PART_CORTEX_A720	0xD81
+ #define ARM_CPU_PART_CORTEX_X4		0xD82
+ #define ARM_CPU_PART_NEOVERSE_V3	0xD84
++#define ARM_CPU_PART_CORTEX_X925	0xD85
  
- 	ara = alert->ara;
+ #define APM_CPU_PART_POTENZA		0x000
  
-@@ -90,18 +89,12 @@ static irqreturn_t smbus_alert(int irq, void *d)
- 		data.addr = status >> 1;
- 		data.type = I2C_PROTOCOL_SMBUS_ALERT;
- 
--		if (data.addr == prev_addr) {
--			dev_warn(&ara->dev, "Duplicate SMBALERT# from dev "
--				"0x%02x, skipping\n", data.addr);
--			break;
--		}
- 		dev_dbg(&ara->dev, "SMBALERT# from dev 0x%02x, flag %d\n",
- 			data.addr, data.data);
- 
- 		/* Notify driver for the device which issued the alert */
- 		device_for_each_child(&ara->adapter->dev, &data,
- 				      smbus_do_alert);
--		prev_addr = data.addr;
- 	}
- 
- 	return IRQ_HANDLED;
+@@ -146,6 +147,7 @@
+ #define MIDR_CORTEX_A720 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A720)
+ #define MIDR_CORTEX_X4 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X4)
+ #define MIDR_NEOVERSE_V3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V3)
++#define MIDR_CORTEX_X925 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X925)
+ #define MIDR_THUNDERX	MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX)
+ #define MIDR_THUNDERX_81XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_81XX)
+ #define MIDR_THUNDERX_83XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_83XX)
 -- 
 2.43.0
 
