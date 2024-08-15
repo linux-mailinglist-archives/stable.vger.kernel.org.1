@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-69068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68705-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D92195354B
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:36:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A928F953392
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:18:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 37E7C1F285DC
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:36:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E4A01F244C1
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:18:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A06CA1A00CE;
-	Thu, 15 Aug 2024 14:36:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCBE11A3BB6;
+	Thu, 15 Aug 2024 14:16:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tN0QV2h0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iWwsDNSW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DC7C1DFFB;
-	Thu, 15 Aug 2024 14:36:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9949E19F49B;
+	Thu, 15 Aug 2024 14:16:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732561; cv=none; b=QZcqKlqWOeNQCByQcOpPi8qT3mmeAZp486Y4l+2Xu//xOd+044SX7ayjpcHLqvfTpvMmrI1igW/MLu9OZ2qcf8ZiQ54mjmFgO5L7QGb3T4u9kgqEhLv0seDDdoLkdllOXUjHEu/gD9BSCKCBFDyvvhNMyqtnd6xpAgpmRGvbdtI=
+	t=1723731407; cv=none; b=nLUpNs4l1KulMUQiZ+lgVWkPUVs3zVgowfgs7TQVcFU2P07C/J6tXa8dLVPkWVsuimYsJLirL1DsmURFGmxUr1/S/+oYGa9062d1DyFavskkNgKT1g+8FlWkfz/eW3M/ftx9kGs22TACcPDe3Bp3mFTTcY399PL2zk03ZbLz74U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732561; c=relaxed/simple;
-	bh=G/VehMVDKo3+r3JCitmYOqtBlhi1kPj6jTk61mE7SrY=;
+	s=arc-20240116; t=1723731407; c=relaxed/simple;
+	bh=2/7vEtSipHizz1Kdq7CFzwCHyr9Mv1o4rkHnR5SiN5E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ljDiJsdAOAAX9O0GT9P62xA32yYIBwI4scZ7WVcrVIvbmLv3WkavuVBc0moVtwscaSMIib3NQzfHfPP4wvF0izEFGCJxQcGCDqzoW8sqxVS2cZWd10+aQGrr/VHWcW7mGi1rUL0++ZX9xRiaO5HqAfFkTsaDyFLVy/rGg6Vkibo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tN0QV2h0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4A83C32786;
-	Thu, 15 Aug 2024 14:36:00 +0000 (UTC)
+	 MIME-Version; b=TM8nZRhwxVfmb9FASj1Ydit7ejGIQCGJQK9PtUO2g8WKP2YsOXsTTGqpXbQcVCa4ORVVBqHQ6P8WXia68bjbOaqPXvVw0nswtc/Btbg0cl4lkjf5Bd1nFtlusOctQ1yV11Ia5DTt/6mJyyp7rJSmgGzI0XbXxlp5AU/Iw2Ro77U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iWwsDNSW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07581C32786;
+	Thu, 15 Aug 2024 14:16:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732561;
-	bh=G/VehMVDKo3+r3JCitmYOqtBlhi1kPj6jTk61mE7SrY=;
+	s=korg; t=1723731407;
+	bh=2/7vEtSipHizz1Kdq7CFzwCHyr9Mv1o4rkHnR5SiN5E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tN0QV2h0vLX25z8V7/lo1609QHmfCnf59BcuraiGQS6+DXcn9tmK+Q2Svnu0mzDlY
-	 lP5qXS27zedMLYBso6IkbcqSM/+RI/0yPbYNzK/1U+s0dLSwJZOL9JyFnE3uFuMf1C
-	 bBfZ05Gd/J6nutr0bPtQyLWXmwAKggKecgTXIR1k=
+	b=iWwsDNSWCpkSNxdtzi3mj9iV8si3CTWbQ/FCD4BUufiF2XwiwulkfiL16d1ck5Ibm
+	 kq4ObcMkQTdXuEEiNRYZQm0lEZZjmglcUVGYpkKRMsvZ8hga5+TtPbED/Mlpx4u/+d
+	 XXeVy5LnXQXoRPPq++vMjWKTAR8kx/Y88BRpZQxY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Julian Orth <ju.orth@gmail.com>,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 5.10 186/352] io_uring/io-wq: limit retrying worker initialisation
+	Nilesh Javali <njavali@marvell.com>,
+	Himanshu Madhani <himanshu.madhani@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.4 119/259] scsi: qla2xxx: validate nvme_local_port correctly
 Date: Thu, 15 Aug 2024 15:24:12 +0200
-Message-ID: <20240815131926.467774043@linuxfoundation.org>
+Message-ID: <20240815131907.394321133@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,89 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Nilesh Javali <njavali@marvell.com>
 
-commit 0453aad676ff99787124b9b3af4a5f59fbe808e2 upstream.
+commit eb1d4ce2609584eeb7694866f34d4b213caa3af9 upstream.
 
-If io-wq worker creation fails, we retry it by queueing up a task_work.
-tasK_work is needed because it should be done from the user process
-context. The problem is that retries are not limited, and if queueing a
-task_work is the reason for the failure, we might get into an infinite
-loop.
+The driver load failed with error message,
 
-It doesn't seem to happen now but it would with the following patch
-executing task_work in the freezer's loop. For now, arbitrarily limit the
-number of attempts to create a worker.
+qla2xxx [0000:04:00.0]-ffff:0: register_localport failed: ret=ffffffef
+
+and with a kernel crash,
+
+	BUG: unable to handle kernel NULL pointer dereference at 0000000000000070
+	Workqueue: events_unbound qla_register_fcport_fn [qla2xxx]
+	RIP: 0010:nvme_fc_register_remoteport+0x16/0x430 [nvme_fc]
+	RSP: 0018:ffffaaa040eb3d98 EFLAGS: 00010282
+	RAX: 0000000000000000 RBX: ffff9dfb46b78c00 RCX: 0000000000000000
+	RDX: ffff9dfb46b78da8 RSI: ffffaaa040eb3e08 RDI: 0000000000000000
+	RBP: ffff9dfb612a0a58 R08: ffffffffaf1d6270 R09: 3a34303a30303030
+	R10: 34303a303030305b R11: 2078787832616c71 R12: ffff9dfb46b78dd4
+	R13: ffff9dfb46b78c24 R14: ffff9dfb41525300 R15: ffff9dfb46b78da8
+	FS:  0000000000000000(0000) GS:ffff9dfc67c00000(0000) knlGS:0000000000000000
+	CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+	CR2: 0000000000000070 CR3: 000000018da10004 CR4: 00000000000206f0
+	Call Trace:
+	qla_nvme_register_remote+0xeb/0x1f0 [qla2xxx]
+	? qla2x00_dfs_create_rport+0x231/0x270 [qla2xxx]
+	qla2x00_update_fcport+0x2a1/0x3c0 [qla2xxx]
+	qla_register_fcport_fn+0x54/0xc0 [qla2xxx]
+
+Exit the qla_nvme_register_remote() function when qla_nvme_register_hba()
+fails and correctly validate nvme_local_port.
 
 Cc: stable@vger.kernel.org
-Fixes: 3146cba99aa28 ("io-wq: make worker creation resilient against signals")
-Reported-by: Julian Orth <ju.orth@gmail.com>
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/8280436925db88448c7c85c6656edee1a43029ea.1720634146.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20240710171057.35066-3-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/io-wq.c |   10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/scsi/qla2xxx/qla_nvme.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/io_uring/io-wq.c
-+++ b/io_uring/io-wq.c
-@@ -19,6 +19,7 @@
- #include "io-wq.h"
+--- a/drivers/scsi/qla2xxx/qla_nvme.c
++++ b/drivers/scsi/qla2xxx/qla_nvme.c
+@@ -28,7 +28,10 @@ int qla_nvme_register_remote(struct scsi
+ 		return 0;
+ 	}
  
- #define WORKER_IDLE_TIMEOUT	(5 * HZ)
-+#define WORKER_INIT_LIMIT	3
+-	if (!vha->nvme_local_port && qla_nvme_register_hba(vha))
++	if (qla_nvme_register_hba(vha))
++		return 0;
++
++	if (!vha->nvme_local_port)
+ 		return 0;
  
- enum {
- 	IO_WORKER_F_UP		= 1,	/* up and active */
-@@ -54,6 +55,7 @@ struct io_worker {
- 	unsigned long create_state;
- 	struct callback_head create_work;
- 	int create_index;
-+	int init_retries;
- 
- 	union {
- 		struct rcu_head rcu;
-@@ -732,7 +734,7 @@ static bool io_wq_work_match_all(struct
- 	return true;
- }
- 
--static inline bool io_should_retry_thread(long err)
-+static inline bool io_should_retry_thread(struct io_worker *worker, long err)
- {
- 	/*
- 	 * Prevent perpetual task_work retry, if the task (or its group) is
-@@ -740,6 +742,8 @@ static inline bool io_should_retry_threa
- 	 */
- 	if (fatal_signal_pending(current))
- 		return false;
-+	if (worker->init_retries++ >= WORKER_INIT_LIMIT)
-+		return false;
- 
- 	switch (err) {
- 	case -EAGAIN:
-@@ -766,7 +770,7 @@ static void create_worker_cont(struct ca
- 		io_init_new_worker(wqe, worker, tsk);
- 		io_worker_release(worker);
- 		return;
--	} else if (!io_should_retry_thread(PTR_ERR(tsk))) {
-+	} else if (!io_should_retry_thread(worker, PTR_ERR(tsk))) {
- 		struct io_wqe_acct *acct = io_wqe_get_acct(worker);
- 
- 		atomic_dec(&acct->nr_running);
-@@ -831,7 +835,7 @@ fail:
- 	tsk = create_io_thread(io_wqe_worker, worker, wqe->node);
- 	if (!IS_ERR(tsk)) {
- 		io_init_new_worker(wqe, worker, tsk);
--	} else if (!io_should_retry_thread(PTR_ERR(tsk))) {
-+	} else if (!io_should_retry_thread(worker, PTR_ERR(tsk))) {
- 		kfree(worker);
- 		goto fail;
- 	} else {
+ 	if (!(fcport->nvme_prli_service_param &
 
 
 
