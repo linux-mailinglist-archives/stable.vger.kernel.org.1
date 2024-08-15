@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-68443-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69098-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39BF7953251
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:05:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F17F95356C
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:37:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E1884289489
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:05:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F1397B22905
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:37:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04C361A2C11;
-	Thu, 15 Aug 2024 14:03:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9861219FA7A;
+	Thu, 15 Aug 2024 14:37:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yp0Ohtlt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z/39LAKf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B51DA1AC8BB;
-	Thu, 15 Aug 2024 14:03:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 501A23214;
+	Thu, 15 Aug 2024 14:37:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730585; cv=none; b=Rrkc7hnqa446BLGZNV5xKoykjsjENRMC1eSxfye1L6xN51WuYgI0pBC4Tpa7SVbhzRlrdOx6ZF3USu2GUlNW/B8DHQisEs115gbkUtfTwXBaMtiYu9jxMLlGu6hwkzymBrwAiOjjSGp1ML2QVx4ZR3fOIoog297Iyr+SBkHpTFo=
+	t=1723732661; cv=none; b=Bkt/GtppAcJYxz+xY8sOLTIH1DwDn7B8Frk2+FxExj1r+Ye6JFPWqCnJEaoYmvSpF7JBsBBY4hiNXN18VLdsYP1WmX+EBkx2KOOA52vp4xalr0YP7r7CQlXSzADMsJfp7CTzYJDZEjl/L2hmb99Tl+8rY7ZPxweHXj22SRIQ3Eo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730585; c=relaxed/simple;
-	bh=3ZUk3hy4QT8CPyqu01KPYwY3hbLmtRRucdm1rF5fQOY=;
+	s=arc-20240116; t=1723732661; c=relaxed/simple;
+	bh=DAchrNRtEFCIinBwsLxj2ZeFcDTneXzf8r4YrLbTHGU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qlpUZQNsdeIYGeFqJeU4097/5u4DC3MXOdWnBjhfMor6sWJY//RUjVEhYMmz7OrRbon1Njv4eOPl5awy1RPut44TzDsoGa0xzZUEFKnrV73HyMjRTFRt3Zosf40Fw5YeTm91igTZUNLByXRYhAcRijTN4GPYnFCCVSWle3pd0co=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yp0Ohtlt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7BB0C32786;
-	Thu, 15 Aug 2024 14:03:04 +0000 (UTC)
+	 MIME-Version; b=Zyh18JITBNVK1wJvCRkvZQ+sjKEPCMLffIUQQ5h0H6rUNmTQ0/3BN8O4x4gDVM0qiNrt0zwQ/b67CwJr4EbmyYnp0CofyqbIQIWJcdk4d6orN/wP925Qb36OEb7gtm0pquIkLUJY6/R01QGY47As+l5fDT/CJ3xbN4ejobU+EZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z/39LAKf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B96DC32786;
+	Thu, 15 Aug 2024 14:37:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730585;
-	bh=3ZUk3hy4QT8CPyqu01KPYwY3hbLmtRRucdm1rF5fQOY=;
+	s=korg; t=1723732660;
+	bh=DAchrNRtEFCIinBwsLxj2ZeFcDTneXzf8r4YrLbTHGU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yp0Ohtltf5QXd+zsz4ZC4tJrRsqbFUyiq0vTh69KcfJZGmxtEKVYudJv8qvN8aNns
-	 Y3eXZGw+xgkJauH4KPU5vZbt+mkqENB/h/9JfILUxrFe9V0sXWmZf2Rp3TpTbaVkNd
-	 a9KR0E1uYpbtF8rDpkJxdrjM6TtJeiOMeVUk9mlo=
+	b=Z/39LAKfLawejuqOEpjzXTuByx+hXnwREF1zvHpPW5TBpvhELk0hKIPNpQUv6KxsS
+	 XaMokHRf58Uf75JNRlsaWzOp3l0ugHA/YZIkBB3bJ7U6U2DSIprt09MQcGzrXfHc7n
+	 uXP0i4UvkaY/9wDtmGZw8Y3YSSk1Z+/MTE6l5glE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 5.15 454/484] mptcp: mib: count MPJ with backup flag
+	Jakub Kicinski <kuba@kernel.org>,
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Wojciech Drewek <wojciech.drewek@intel.com>
+Subject: [PATCH 5.10 246/352] r8169: dont increment tx_dropped in case of NETDEV_TX_BUSY
 Date: Thu, 15 Aug 2024 15:25:12 +0200
-Message-ID: <20240815131959.001142031@linuxfoundation.org>
+Message-ID: <20240815131928.946884010@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-commit 4dde0d72ccec500c60c798e036b852e013d6e124 upstream.
+commit d516b187a9cc2e842030dd005be2735db3e8f395 upstream.
 
-Without such counters, it is difficult to easily debug issues with MPJ
-not having the backup flags on production servers.
+The skb isn't consumed in case of NETDEV_TX_BUSY, therefore don't
+increment the tx_dropped counter.
 
-This is not strictly a fix, but it eases to validate the following
-patches without requiring to take packet traces, to query ongoing
-connections with Netlink with admin permissions, or to guess by looking
-at the behaviour of the packet scheduler. Also, the modification is self
-contained, isolated, well controlled, and the increments are done just
-after others, there from the beginning. It looks then safe, and helpful
-to backport this.
-
-Fixes: 4596a2c1b7f5 ("mptcp: allow creating non-backup subflows")
+Fixes: 188f4af04618 ("r8169: use NETDEV_TX_{BUSY/OK}")
 Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[ Conflicts in subflow.c because the context has changed in
-  commit b3ea6b272d79 ("mptcp: consolidate initial ack seq generation")
-  which is not in this version. This commit is unrelated to this
-  modification. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Suggested-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
+Link: https://patch.msgid.link/bbba9c48-8bac-4932-9aa1-d2ed63bc9433@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/mib.c     |    2 ++
- net/mptcp/mib.h     |    2 ++
- net/mptcp/subflow.c |    6 ++++++
- 3 files changed, 10 insertions(+)
+ drivers/net/ethernet/realtek/r8169_main.c |    8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
---- a/net/mptcp/mib.c
-+++ b/net/mptcp/mib.c
-@@ -19,7 +19,9 @@ static const struct snmp_mib mptcp_snmp_
- 	SNMP_MIB_ITEM("MPTCPRetrans", MPTCP_MIB_RETRANSSEGS),
- 	SNMP_MIB_ITEM("MPJoinNoTokenFound", MPTCP_MIB_JOINNOTOKEN),
- 	SNMP_MIB_ITEM("MPJoinSynRx", MPTCP_MIB_JOINSYNRX),
-+	SNMP_MIB_ITEM("MPJoinSynBackupRx", MPTCP_MIB_JOINSYNBACKUPRX),
- 	SNMP_MIB_ITEM("MPJoinSynAckRx", MPTCP_MIB_JOINSYNACKRX),
-+	SNMP_MIB_ITEM("MPJoinSynAckBackupRx", MPTCP_MIB_JOINSYNACKBACKUPRX),
- 	SNMP_MIB_ITEM("MPJoinSynAckHMacFailure", MPTCP_MIB_JOINSYNACKMAC),
- 	SNMP_MIB_ITEM("MPJoinAckRx", MPTCP_MIB_JOINACKRX),
- 	SNMP_MIB_ITEM("MPJoinAckHMacFailure", MPTCP_MIB_JOINACKMAC),
---- a/net/mptcp/mib.h
-+++ b/net/mptcp/mib.h
-@@ -12,7 +12,9 @@ enum linux_mptcp_mib_field {
- 	MPTCP_MIB_RETRANSSEGS,		/* Segments retransmitted at the MPTCP-level */
- 	MPTCP_MIB_JOINNOTOKEN,		/* Received MP_JOIN but the token was not found */
- 	MPTCP_MIB_JOINSYNRX,		/* Received a SYN + MP_JOIN */
-+	MPTCP_MIB_JOINSYNBACKUPRX,	/* Received a SYN + MP_JOIN + backup flag */
- 	MPTCP_MIB_JOINSYNACKRX,		/* Received a SYN/ACK + MP_JOIN */
-+	MPTCP_MIB_JOINSYNACKBACKUPRX,	/* Received a SYN/ACK + MP_JOIN + backup flag */
- 	MPTCP_MIB_JOINSYNACKMAC,	/* HMAC was wrong on SYN/ACK + MP_JOIN */
- 	MPTCP_MIB_JOINACKRX,		/* Received an ACK + MP_JOIN */
- 	MPTCP_MIB_JOINACKMAC,		/* HMAC was wrong on ACK + MP_JOIN */
---- a/net/mptcp/subflow.c
-+++ b/net/mptcp/subflow.c
-@@ -163,6 +163,9 @@ static int subflow_check_req(struct requ
- 			return 0;
- 	} else if (opt_mp_join) {
- 		SUBFLOW_REQ_INC_STATS(req, MPTCP_MIB_JOINSYNRX);
-+
-+		if (mp_opt.backup)
-+			SUBFLOW_REQ_INC_STATS(req, MPTCP_MIB_JOINSYNBACKUPRX);
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -4288,7 +4288,8 @@ static netdev_tx_t rtl8169_start_xmit(st
+ 	if (unlikely(!rtl_tx_slots_avail(tp))) {
+ 		if (net_ratelimit())
+ 			netdev_err(dev, "BUG! Tx Ring full when queue awake!\n");
+-		goto err_stop_0;
++		netif_stop_queue(dev);
++		return NETDEV_TX_BUSY;
  	}
  
- 	if (opt_mp_capable && listener->request_mptcp) {
-@@ -462,6 +465,9 @@ static void subflow_finish_connect(struc
- 		subflow->mp_join = 1;
- 		MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_JOINSYNACKRX);
+ 	opts[1] = rtl8169_tx_vlan_tag(skb);
+@@ -4361,11 +4362,6 @@ err_dma_0:
+ 	dev_kfree_skb_any(skb);
+ 	dev->stats.tx_dropped++;
+ 	return NETDEV_TX_OK;
+-
+-err_stop_0:
+-	netif_stop_queue(dev);
+-	dev->stats.tx_dropped++;
+-	return NETDEV_TX_BUSY;
+ }
  
-+		if (subflow->backup)
-+			MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_JOINSYNACKBACKUPRX);
-+
- 		if (subflow_use_different_dport(mptcp_sk(parent), sk)) {
- 			pr_debug("synack inet_dport=%d %d",
- 				 ntohs(inet_sk(sk)->inet_dport),
+ static unsigned int rtl_last_frag_len(struct sk_buff *skb)
 
 
 
