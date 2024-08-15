@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-68311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67828-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEDEF95319A
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:56:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35E0F952F4A
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:30:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1DAF71C2246C
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:56:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DF2041F26CA1
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:30:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C08719E7F6;
-	Thu, 15 Aug 2024 13:56:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F19681714D0;
+	Thu, 15 Aug 2024 13:30:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vifaqXe9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hGIfSy+R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE06317C9A9;
-	Thu, 15 Aug 2024 13:56:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF5967DA78;
+	Thu, 15 Aug 2024 13:30:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730168; cv=none; b=YPnheZQSOPF1I1AWpROyMLjDM7ykcJmgoEwmiGtChwAzRpdBxvh8RSDsr3LcGlwN0TiV0cYcG3o/b+2p5ETLLns9CrIkF27ORsn1p3v1+LQ3C2wN7BuIyR/t0ZDM6p0FapFixVXhwe4/JM7/lYQ6XH91RB2jZFJtmhEjkF0yERI=
+	t=1723728646; cv=none; b=SpYqe3SnXEtroMxxhIorkv9GT9jXVyUPBjXRDvJrgyZfS0mYHpLLWZxN9SfgJmglXqYFTRWVViu9asmnj7wsJO+zN9d5H1au0pFLeD0hUDvbX+8AWyHJvJiHnHvZ6IFCYFV93TFCz+o0q2jvageolZbEwdrI1+B4O4BD71rg4BI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730168; c=relaxed/simple;
-	bh=T7g3qoKa5YR8ZBBBYG3JS87D/4B0oELWj2QQG+P6jts=;
+	s=arc-20240116; t=1723728646; c=relaxed/simple;
+	bh=pYEhA7FpRxuY+CFu4614OC5U6icrp0vYAzitdZkkJ5Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tY46O4lBfbgWttL/2LSe3Qf5HxHM+jW9au5xI8vfoSc+XyB32Oi9sGrj9tDRcZScPhY5AbiqiuqrekOsbwo75ZpqWr8TP1+e4Sv6g417Ji8LzgTn1UpFnYPd5kR1FVzyCLP4nA/Lkl2aBFPs3Yc9stX99Ab0m5AZdz7DJKGLt+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vifaqXe9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1311C32786;
-	Thu, 15 Aug 2024 13:56:07 +0000 (UTC)
+	 MIME-Version; b=qfD9RqG61JsMeiLHenZ7VRKsc5c8+ACkuvBRwVwT5xB/6XZ+2MFrC7Ze8rtK4lFJyG+3fGvYSV7v7GPoOuBzEB4wkLkMwFwy9FhPpRmibjHrPvOfHu3U8BYCmtMsTYwB4vwfUS3x6kMIP7hht+6wd0q5x6tq49b6IRIWIJlXICE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hGIfSy+R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3342DC32786;
+	Thu, 15 Aug 2024 13:30:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730168;
-	bh=T7g3qoKa5YR8ZBBBYG3JS87D/4B0oELWj2QQG+P6jts=;
+	s=korg; t=1723728646;
+	bh=pYEhA7FpRxuY+CFu4614OC5U6icrp0vYAzitdZkkJ5Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vifaqXe9r32ItxtMSE0/24pKZtUUUV0YfncKn+e54UEQcW1piH3reuUmljcRMxlFn
-	 5UIh4IWy7x1t1I03hJqU9E2Y5PReHtNsrzjo7yamYP8YDmzEOMFbpXVnROka1R4Pjt
-	 NnOAVs9DF2mMWkZT33IQxVnRTqyZCE5LXcXA0nzU=
+	b=hGIfSy+RsPQwEizV/5fQA9SX9XcYnZoW4wqK94NfREtDk6stMELX7fWQm3FGqfQrQ
+	 Ord1UvNiI7sRFj6D9TH43zzNMNeHBYenRkHIpg4jkpE9AWPIA1WXa4o+5ou222m+D1
+	 u0kX2177kgfinB6k7U0sQASgBc4DrosJhJvXY/R4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Binbin Zhou <zhoubinbin@loongson.cn>,
-	WANG Xuerui <git@xen0n.name>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 324/484] MIPS: Loongson64: DTS: Add RTC support to Loongson-2K1000
+	Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 4.19 065/196] ipv6: take care of scope when choosing the src addr
 Date: Thu, 15 Aug 2024 15:23:02 +0200
-Message-ID: <20240815131953.923986263@linuxfoundation.org>
+Message-ID: <20240815131854.560832630@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
+References: <20240815131852.063866671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Binbin Zhou <zhoubinbin@loongson.cn>
+From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
 
-[ Upstream commit e47084e116fccaa43644360d7c0b997979abce3e ]
+commit abb9a68d2c64dd9b128ae1f2e635e4d805e7ce64 upstream.
 
-The module is now supported, enable it.
+When the source address is selected, the scope must be checked. For
+example, if a loopback address is assigned to the vrf device, it must not
+be chosen for packets sent outside.
 
-Acked-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Signed-off-by: Binbin Zhou <zhoubinbin@loongson.cn>
-Signed-off-by: WANG Xuerui <git@xen0n.name>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Stable-dep-of: dbb69b9d6234 ("MIPS: dts: loongson: Fix liointc IRQ polarity")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CC: stable@vger.kernel.org
+Fixes: afbac6010aec ("net: ipv6: Address selection needs to consider L3 domains")
+Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20240710081521.3809742-4-nicolas.dichtel@6wind.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi | 7 +++++++
- 1 file changed, 7 insertions(+)
+ net/ipv6/addrconf.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi b/arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi
-index b44aedba350a6..03abda568aa60 100644
---- a/arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi
-+++ b/arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi
-@@ -84,6 +84,13 @@ liointc1: interrupt-controller@1fe11440 {
- 						<0x00000000>; /* int3 */
- 		};
+--- a/net/ipv6/addrconf.c
++++ b/net/ipv6/addrconf.c
+@@ -1768,7 +1768,8 @@ int ipv6_dev_get_saddr(struct net *net,
+ 							    master, &dst,
+ 							    scores, hiscore_idx);
  
-+		rtc0: rtc@1fe07800 {
-+			compatible = "loongson,ls2k1000-rtc";
-+			reg = <0 0x1fe07800 0 0x78>;
-+			interrupt-parent = <&liointc0>;
-+			interrupts = <60 IRQ_TYPE_LEVEL_LOW>;
-+		};
-+
- 		uart0: serial@1fe00000 {
- 			compatible = "ns16550a";
- 			reg = <0 0x1fe00000 0 0x8>;
--- 
-2.43.0
-
+-			if (scores[hiscore_idx].ifa)
++			if (scores[hiscore_idx].ifa &&
++			    scores[hiscore_idx].scopedist >= 0)
+ 				goto out;
+ 		}
+ 
 
 
 
