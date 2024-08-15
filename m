@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-68289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67807-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5478953182
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:55:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17282952F2E
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:29:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 89F531F2193E
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:55:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C0C71288A24
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:29:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9C4419AA53;
-	Thu, 15 Aug 2024 13:54:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FE5C19DF9E;
+	Thu, 15 Aug 2024 13:29:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D0uV5lAf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kZ4/WFPG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67A821714A1;
-	Thu, 15 Aug 2024 13:54:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BA8D1DDF5;
+	Thu, 15 Aug 2024 13:29:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730098; cv=none; b=UVDpzwvTWTSfFyBaJOn0f9NU+ffCS5UZLQ+BnMftHZOXj0Lh+paINIKfLfbFLuAgFx7kiRg93Ps8xtMh3BUOUdAa2ywcEWgKP1shEofYb1u8eApZpojWLToYCE97tOpdSz5Ay8WMz88HWhOx0TwqK29R5GDVpjGbWzd3B4kw1kE=
+	t=1723728580; cv=none; b=D7JT7LxJNcJihTePjbZ/PvB29ThLQPlQAjn+igSODBR9bBufS0N0L+YO8S8/Fwm09ei7sQNNKjzIOgKgvVpgfdITLHsXjN7SP6c48phvmj6M5HQLMS8bMq35vraB4UrXurt44V8ch6dJ1ar2VRYoMz5rs8a7UUiB7eNu9d4lXLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730098; c=relaxed/simple;
-	bh=Z1zHJnzleCfK0aHFkrF/IqOTtqvfv2oma25sK+UDGfA=;
+	s=arc-20240116; t=1723728580; c=relaxed/simple;
+	bh=HS87vX5TJZFVkSpv/BVnURKUmL/H08Wng+G1Y0avE1U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HBdTAtfTm7uaM5l7DL2xX4tT6CMInwHZt2w8wLOJE0tLq22HzcdHXmJpdyKwwVsQa8GZgbHTBvkoVhcX/UCIwSbsLXSKDAptvJUyfjzG6GzMlGu1uN1gyeL7+/12BXlO8y6jIB9nVPqj0/RJk8u0AlNxFALi8gUxpRkdqkE++Ys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D0uV5lAf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF593C4AF0A;
-	Thu, 15 Aug 2024 13:54:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LKoSbiqXvWeOerAjO1ZBNHALUf9l7DSfeUVghElstaNhHleUnf3w29TqEpFB2zTUEf6w5Zeaj8l0xQCCWUJueH0TAB91klu2k5Oi3w8q04zdQUp0CQRNojndFEPTeJkVihpmGWpZDjGULq0r2MAOWHjm+JJsbFbrcsxzwCyBCz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kZ4/WFPG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CCD0C32786;
+	Thu, 15 Aug 2024 13:29:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730098;
-	bh=Z1zHJnzleCfK0aHFkrF/IqOTtqvfv2oma25sK+UDGfA=;
+	s=korg; t=1723728580;
+	bh=HS87vX5TJZFVkSpv/BVnURKUmL/H08Wng+G1Y0avE1U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D0uV5lAfMMsuBRcOnR1cPwuGUV+7tZCTb/NBbs6955PkXLhPOBzJZd/ZLS1rApekf
-	 xBI9+JKwd1TZ98dH3tnnNi3H0LoJm3gb14sl90z3TKkjMnqf57jticKmbADFmBCds2
-	 L/8L/bWjwiX6F2kDOlDnnnwgJiVkBBKS0m2bRwr0=
+	b=kZ4/WFPGitwPynUFs7qwq23b35bQa1qJTRjfI/tVyo9QNJjBVQLHjFV01TXWsK25c
+	 +IiD/f7olwnBcITxbCIWnZ6ujvIBVXcDHWEvPJ4cJJR616Q1xlVKf3Q572b7PXztaU
+	 gz325Vz2z7CPbgbqO/f+uiJHkgigOP0l9o0S1Osk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefano Brivio <sbrivio@redhat.com>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	=?UTF-8?q?Nicolas=20Pomar=C3=A8de?= <npomarede@corp.free.fr>,
+	Christian Zietz <czietz@gmx.net>,
+	Eero Tamminen <oak@helsinkinet.fi>,
+	Michael Schmitz <schmitzmic@gmail.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 273/484] netfilter: nft_set_pipapo_avx2: disable softinterrupts
+Subject: [PATCH 4.19 014/196] m68k: atari: Fix TT bootup freeze / unexpected (SCU) interrupt messages
 Date: Thu, 15 Aug 2024 15:22:11 +0200
-Message-ID: <20240815131951.951074727@linuxfoundation.org>
+Message-ID: <20240815131852.620006446@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
+References: <20240815131852.063866671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,75 +63,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Eero Tamminen <oak@helsinkinet.fi>
 
-[ Upstream commit a16909ae9982e931841c456061cb57fbaec9c59e ]
+[ Upstream commit f70065a9fd988983b2c693631b801f25a615fc04 ]
 
-We need to disable softinterrupts, else we get following problem:
+Avoid freeze on Atari TT / MegaSTe boot with continuous messages of:
 
-1. pipapo_avx2 called from process context; fpu usable
-2. preempt_disable() called, pcpu scratchmap in use
-3. softirq handles rx or tx, we re-enter pipapo_avx2
-4. fpu busy, fallback to generic non-avx version
-5. fallback reuses scratch map and index, which are in use
-   by the preempted process
+	unexpected interrupt from 112
 
-Handle this same way as generic version by first disabling
-softinterrupts while the scratchmap is in use.
+Which was due to VBL interrupt being enabled in SCU sys mask, but there
+being no handler for that any more.
 
-Fixes: f0b3d338064e ("netfilter: nft_set_pipapo_avx2: Add irq_fpu_usable() check, fallback to non-AVX2 version")
-Cc: Stefano Brivio <sbrivio@redhat.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+(Bug and fix were first verified on real Atari TT HW by Christian,
+ this patch later on in Hatari emulator.)
+
+Fixes: 1fa0b29f3a43f9dd ("fbdev: Kill Atari vblank cursor blinking")
+Reported-by: Nicolas Pomarède <npomarede@corp.free.fr>
+Closes: https://listengine.tuxfamily.org/lists.tuxfamily.org/hatari-devel/2024/06/msg00016.html
+Closes: https://lore.kernel.org/all/9aa793d7-82ed-4fbd-bce5-60810d8a9119@helsinkinet.fi
+Tested-by: Christian Zietz <czietz@gmx.net>
+Signed-off-by: Eero Tamminen <oak@helsinkinet.fi>
+Reviewed-by: Michael Schmitz <schmitzmic@gmail.com>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: https://lore.kernel.org/20240624144901.5236-1-oak@helsinkinet.fi
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_set_pipapo_avx2.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ arch/m68k/atari/ataints.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/net/netfilter/nft_set_pipapo_avx2.c b/net/netfilter/nft_set_pipapo_avx2.c
-index 295406cf63672..dfae90cd34939 100644
---- a/net/netfilter/nft_set_pipapo_avx2.c
-+++ b/net/netfilter/nft_set_pipapo_avx2.c
-@@ -1141,8 +1141,14 @@ bool nft_pipapo_avx2_lookup(const struct net *net, const struct nft_set *set,
- 	bool map_index;
- 	int i, ret = 0;
+diff --git a/arch/m68k/atari/ataints.c b/arch/m68k/atari/ataints.c
+index 56f02ea2c248d..715d1e0d973e6 100644
+--- a/arch/m68k/atari/ataints.c
++++ b/arch/m68k/atari/ataints.c
+@@ -302,11 +302,7 @@ void __init atari_init_IRQ(void)
  
--	if (unlikely(!irq_fpu_usable()))
--		return nft_pipapo_lookup(net, set, key, ext);
-+	local_bh_disable();
-+
-+	if (unlikely(!irq_fpu_usable())) {
-+		bool fallback_res = nft_pipapo_lookup(net, set, key, ext);
-+
-+		local_bh_enable();
-+		return fallback_res;
-+	}
- 
- 	m = rcu_dereference(priv->match);
- 
-@@ -1157,6 +1163,7 @@ bool nft_pipapo_avx2_lookup(const struct net *net, const struct nft_set *set,
- 	scratch = *raw_cpu_ptr(m->scratch);
- 	if (unlikely(!scratch)) {
- 		kernel_fpu_end();
-+		local_bh_enable();
- 		return false;
- 	}
- 
-@@ -1237,6 +1244,7 @@ bool nft_pipapo_avx2_lookup(const struct net *net, const struct nft_set *set,
- 	if (i % 2)
- 		scratch->map_index = !map_index;
- 	kernel_fpu_end();
-+	local_bh_enable();
- 
- 	return ret >= 0;
- }
+ 	if (ATARIHW_PRESENT(SCU)) {
+ 		/* init the SCU if present */
+-		tt_scu.sys_mask = 0x10;		/* enable VBL (for the cursor) and
+-									 * disable HSYNC interrupts (who
+-									 * needs them?)  MFP and SCC are
+-									 * enabled in VME mask
+-									 */
++		tt_scu.sys_mask = 0x0;		/* disable all interrupts */
+ 		tt_scu.vme_mask = 0x60;		/* enable MFP and SCC ints */
+ 	} else {
+ 		/* If no SCU and no Hades, the HSYNC interrupt needs to be
 -- 
 2.43.0
 
