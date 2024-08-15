@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-69078-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68456-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21F46953555
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:36:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9ED7953260
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:05:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A0D84B214A7
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:36:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E97351C25F1F
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:05:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D4B217BEC0;
-	Thu, 15 Aug 2024 14:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A5401ABED4;
+	Thu, 15 Aug 2024 14:03:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YZJj3TbK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eW00TXF7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1CDA1DFFB;
-	Thu, 15 Aug 2024 14:36:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1629A19DFA4;
+	Thu, 15 Aug 2024 14:03:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732594; cv=none; b=RDFAkLcT/jFGmg3H4uW6QyuOVJeLkZc/zF3dnhlN4mf0pJTu3bVXXlmbU46CTVt3VTMdTGxOt3P4PV7iXl99toMuZ/3Z0mrn6Xkeb5wqzHKCWJRjV+OBcB+5OmNrMHAoKopNm1X7jmzgx/md2KdRL6DJDoxy7uRdGHJHHxO3UF0=
+	t=1723730626; cv=none; b=q/Az0wzl4qP599K8Qi6qzy2oLJiwCGY7ejkMhZgnLTIRvCL5RpjC4Ca2Ajyk6DetG8ymhJxeeTjaFSHPsvZ5+z/s8ZyK9wlWM9SwwACxNIWtFhtViMozdbFMur4v2H6Aruq4Vqn5IjEAfyOj5gIHAPaoF+UxUoTh2L3b7zUGt2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732594; c=relaxed/simple;
-	bh=H2oRZsdBywvFyAZFbcERchbZ12IJq1Srg89hgvHbFwQ=;
+	s=arc-20240116; t=1723730626; c=relaxed/simple;
+	bh=6gIVCketxtqy+biVW9e1fWVErrQ1JhF5O3gxeaccXgg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cST4oXnlmanQg2iKeWzmd7ZdyaAKqccJHe9OwAkjpiD+S8mYFcgmfiCuyIG3JMu8jhJ33JdvFFc9cpWe08g+3++tm7xsJaMJ5N2Gsqv+lOhxlhMn5OXBK0I/YnRfkfzZOSlzPYVEldTYrPikt968R7htyEe0y7dsJz6IkIH4XZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YZJj3TbK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46A68C32786;
-	Thu, 15 Aug 2024 14:36:34 +0000 (UTC)
+	 MIME-Version; b=p7QH3cZNquBWinCDakfuUlsnICYpeLlxSkspVZFPwtF9ARckCHsTfCi/OWH1FEqYtp0jPJLPOErF0JGf6D1w7+XyKWcwnrmc+RtDy3EGzdbssPUOgOD/2Zz0LyWw6Dw0cOYJA3nr1zjzmp6p715GOj3/3+WOKw8PQK3BhxUeWUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eW00TXF7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66466C32786;
+	Thu, 15 Aug 2024 14:03:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732594;
-	bh=H2oRZsdBywvFyAZFbcERchbZ12IJq1Srg89hgvHbFwQ=;
+	s=korg; t=1723730625;
+	bh=6gIVCketxtqy+biVW9e1fWVErrQ1JhF5O3gxeaccXgg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YZJj3TbK7NrVzyzCapBNzS4E4oDOioIF+WkQjOWAu0A8mFO+wk6NP5c18NqJIVPmT
-	 uj1B6SHvH6cvokPikDQYRDY18WoLcKfuJxDLGO+h1WxClZNKbhTS1MuYaGBggywi4+
-	 yX4tYzRoqRjjnCthSwKMhsNDZ9bfaYN/hqkWJFcs=
+	b=eW00TXF7pFGvLmKE4qX67U8hakpvzdsPRGAP8RpH6jUx8cNONW5mCtwQ32OSK2/Cy
+	 JckbzJqccJJdO+oyKRSj3rsCudnlX2TxdwOmtrFnh9YwQeLXOYpKM0tQUUl5mH5KGY
+	 CtqVdib8yn+H+BGsNuZ1oCkoMXfTJ73gDaIhSSyU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lucas Stach <l.stach@pengutronix.de>,
-	Marc Zyngier <maz@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 228/352] irqchip/imx-irqsteer: Add runtime PM support
+	Justin Stitt <justinstitt@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Miroslav Lichvar <mlichvar@redhat.com>
+Subject: [PATCH 5.15 436/484] ntp: Safeguard against time_constant overflow
 Date: Thu, 15 Aug 2024 15:24:54 +0200
-Message-ID: <20240815131928.243539632@linuxfoundation.org>
+Message-ID: <20240815131958.299011490@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,90 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lucas Stach <l.stach@pengutronix.de>
+From: Justin Stitt <justinstitt@google.com>
 
-[ Upstream commit 4730d2233311d86cad9dc510318d1b40e4b53cf2 ]
+commit 06c03c8edce333b9ad9c6b207d93d3a5ae7c10c0 upstream.
 
-There are now SoCs that integrate the irqsteer controller within
-a separate power domain. In order to allow this domain to be
-powered down when not needed, add runtime PM support to the driver.
+Using syzkaller with the recently reintroduced signed integer overflow
+sanitizer produces this UBSAN report:
 
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20220406163701.1277930-2-l.stach@pengutronix.de
-Stable-dep-of: 33b1c47d1fc0 ("irqchip/imx-irqsteer: Handle runtime power management correctly")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+UBSAN: signed-integer-overflow in ../kernel/time/ntp.c:738:18
+9223372036854775806 + 4 cannot be represented in type 'long'
+Call Trace:
+ handle_overflow+0x171/0x1b0
+ __do_adjtimex+0x1236/0x1440
+ do_adjtimex+0x2be/0x740
+
+The user supplied time_constant value is incremented by four and then
+clamped to the operating range.
+
+Before commit eea83d896e31 ("ntp: NTP4 user space bits update") the user
+supplied value was sanity checked to be in the operating range. That change
+removed the sanity check and relied on clamping after incrementing which
+does not work correctly when the user supplied value is in the overflow
+zone of the '+ 4' operation.
+
+The operation requires CAP_SYS_TIME and the side effect of the overflow is
+NTP getting out of sync.
+
+Similar to the fixups for time_maxerror and time_esterror, clamp the user
+space supplied value to the operating range.
+
+[ tglx: Switch to clamping ]
+
+Fixes: eea83d896e31 ("ntp: NTP4 user space bits update")
+Signed-off-by: Justin Stitt <justinstitt@google.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: Miroslav Lichvar <mlichvar@redhat.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20240517-b4-sio-ntp-c-v2-1-f3a80096f36f@google.com
+Closes: https://github.com/KSPP/linux/issues/352
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/irqchip/irq-imx-irqsteer.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ kernel/time/ntp.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/irqchip/irq-imx-irqsteer.c b/drivers/irqchip/irq-imx-irqsteer.c
-index c9998b46414cc..b1ecdb08c618c 100644
---- a/drivers/irqchip/irq-imx-irqsteer.c
-+++ b/drivers/irqchip/irq-imx-irqsteer.c
-@@ -12,6 +12,7 @@
- #include <linux/kernel.h>
- #include <linux/of_irq.h>
- #include <linux/of_platform.h>
-+#include <linux/pm_runtime.h>
- #include <linux/spinlock.h>
+--- a/kernel/time/ntp.c
++++ b/kernel/time/ntp.c
+@@ -733,11 +733,10 @@ static inline void process_adjtimex_mode
+ 		time_esterror = clamp(txc->esterror, 0, NTP_PHASE_LIMIT);
  
- #define CTRL_STRIDE_OFF(_t, _r)	(_t * 4 * _r)
-@@ -178,7 +179,7 @@ static int imx_irqsteer_probe(struct platform_device *pdev)
- 	data->irq_count = DIV_ROUND_UP(irqs_num, 64);
- 	data->reg_num = irqs_num / 32;
- 
--	if (IS_ENABLED(CONFIG_PM_SLEEP)) {
-+	if (IS_ENABLED(CONFIG_PM)) {
- 		data->saved_reg = devm_kzalloc(&pdev->dev,
- 					sizeof(u32) * data->reg_num,
- 					GFP_KERNEL);
-@@ -202,6 +203,7 @@ static int imx_irqsteer_probe(struct platform_device *pdev)
- 		ret = -ENOMEM;
- 		goto out;
+ 	if (txc->modes & ADJ_TIMECONST) {
+-		time_constant = txc->constant;
++		time_constant = clamp(txc->constant, 0, MAXTC);
+ 		if (!(time_status & STA_NANO))
+ 			time_constant += 4;
+-		time_constant = min(time_constant, (long)MAXTC);
+-		time_constant = max(time_constant, 0l);
++		time_constant = clamp(time_constant, 0, MAXTC);
  	}
-+	irq_domain_set_pm_device(data->domain, &pdev->dev);
  
- 	if (!data->irq_count || data->irq_count > CHAN_MAX_OUTPUT_INT) {
- 		ret = -EINVAL;
-@@ -222,6 +224,9 @@ static int imx_irqsteer_probe(struct platform_device *pdev)
- 
- 	platform_set_drvdata(pdev, data);
- 
-+	pm_runtime_set_active(&pdev->dev);
-+	pm_runtime_enable(&pdev->dev);
-+
- 	return 0;
- out:
- 	clk_disable_unprepare(data->ipg_clk);
-@@ -244,7 +249,7 @@ static int imx_irqsteer_remove(struct platform_device *pdev)
- 	return 0;
- }
- 
--#ifdef CONFIG_PM_SLEEP
-+#ifdef CONFIG_PM
- static void imx_irqsteer_save_regs(struct irqsteer_data *data)
- {
- 	int i;
-@@ -291,7 +296,10 @@ static int imx_irqsteer_resume(struct device *dev)
- #endif
- 
- static const struct dev_pm_ops imx_irqsteer_pm_ops = {
--	SET_NOIRQ_SYSTEM_SLEEP_PM_OPS(imx_irqsteer_suspend, imx_irqsteer_resume)
-+	SET_NOIRQ_SYSTEM_SLEEP_PM_OPS(pm_runtime_force_suspend,
-+				      pm_runtime_force_resume)
-+	SET_RUNTIME_PM_OPS(imx_irqsteer_suspend,
-+			   imx_irqsteer_resume, NULL)
- };
- 
- static const struct of_device_id imx_irqsteer_dt_ids[] = {
--- 
-2.43.0
-
+ 	if (txc->modes & ADJ_TAI &&
 
 
 
