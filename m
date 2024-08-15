@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-67798-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68283-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5234F952F25
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:29:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5996095317C
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:54:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F048B1F26232
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:29:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00C7A28B53F
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:54:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8346019DF9E;
-	Thu, 15 Aug 2024 13:29:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8981619DF9C;
+	Thu, 15 Aug 2024 13:54:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xo22mrmj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aB9rlKqk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F45A1DDF5;
-	Thu, 15 Aug 2024 13:29:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 463D01714A1;
+	Thu, 15 Aug 2024 13:54:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723728551; cv=none; b=g5QTzGoaZOffYxPXe6RnWBx9Xb9McxzeI6cnju6qpSuQ24j9MYyOiGvdNJg0YWUU9N7aqZecIIDoGL+LVAo56tYHoa9SPJz9QIYbmqEMwbu7F/uXmAcVIcOzWw9A76qGvW8G8E3KlJGQLUXrDZ/itLZiKSV+spOXk3+d12hGTko=
+	t=1723730078; cv=none; b=tWzBHujHGzk7gZyTodJiNECuaGde6UtdBvxYEZHqG0ibIECJBfergRGFKPDzQ8LcCXb+alUg38ci+n+L4cK4B6X5hUVW9x9gok5sIe1I+pweLZtvMzJl1NdzDAMlceunHORjnGc7jJRF84RGXenuAxz1X1AhhtRFhzY7vIpZ2jw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723728551; c=relaxed/simple;
-	bh=b5R042+uLZfeEhj1tuGCQ/sV5ApKDgv75n4JSjTdgKc=;
+	s=arc-20240116; t=1723730078; c=relaxed/simple;
+	bh=TgwfJey8obEZUaciqYmUir+J8g2Af0x4SRVvjNJ08Zk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZNelFTYSa+6lXrSk3CBI1TJZEnxrT7586sxi988omncUYz4DBIJNbN6/N7l65P9S4n3rTgVn4mIOnuu13Q2Rg7HumUINQJi8TvfwAKoHavxFItDkWDW0Ry9dXId1dM02yLKuCYb14IGW/wX3ehbn2TkEO/MVdySdneiZAEjLeZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xo22mrmj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA619C32786;
-	Thu, 15 Aug 2024 13:29:10 +0000 (UTC)
+	 MIME-Version; b=R6pSVfTakoMUdCM41k+h8x4xqdud84j+oZeUZ6ErQoOq9lhr7y2CaRMA+wQ+ZTrMRT3MH3yuIYjNBN7cPiqKwCHt5S77cZ83x3Ug2qky0cxfU9lOHsFnqMG5ttAOxov+xbaTgxAV7UpjPwEJdB2Ycf3wKQWDg/WR0/EgvNq0T9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aB9rlKqk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD22EC32786;
+	Thu, 15 Aug 2024 13:54:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723728551;
-	bh=b5R042+uLZfeEhj1tuGCQ/sV5ApKDgv75n4JSjTdgKc=;
+	s=korg; t=1723730078;
+	bh=TgwfJey8obEZUaciqYmUir+J8g2Af0x4SRVvjNJ08Zk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xo22mrmjLJ6qY06r9XjCJZScUaQDRwfK5XQ7cp1Tmke7Ce/wtq7qp0g0e/v47Kc6T
-	 pxkPwEYdoCdZF9L19AsjGIg60sGcNG9rym8defBood02nBlq4t6Hq1bDgi6qxUORN4
-	 mOCHT16GmamidAg75ovojP5PN4BKpwqkzgHA+6F0=
+	b=aB9rlKqkjRErCReo/b7EjHYA6DJhaIdHprYq50s9Sr793HX2hta13yR+VtjdWSbM/
+	 SSoGRtvqKW8xXLRAs1jB1vAlNV9TBgCpffNGXtzpvy6x6ar5Tw3S5rMpKPd/0IEPNM
+	 D61sMQHaL9o/1HqxAMNIgmAfYFPMkeJr9UYKNasw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	Jacopo Mondi <jacopo.mondi+renesas@ideasonboard.com>,
+	Hannes Reinecke <hare@suse.de>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 035/196] media: renesas: vsp1: Store RPF partition configuration per RPF instance
-Date: Thu, 15 Aug 2024 15:22:32 +0200
-Message-ID: <20240815131853.432080923@linuxfoundation.org>
+Subject: [PATCH 5.15 295/484] nvme: separate command prep and issue
+Date: Thu, 15 Aug 2024 15:22:33 +0200
+Message-ID: <20240815131952.801069318@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +63,129 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit a213bc09b1025c771ee722ee341af1d84375db8a ]
+[ Upstream commit 62451a2b2e7ea17c4a547ada6a5deebf8787a27a ]
 
-The vsp1_partition structure stores the RPF partition configuration in a
-single field for all RPF instances, while each RPF can have its own
-configuration. Fix it by storing the configuration separately for each
-RPF instance.
+Add a nvme_prep_rq() helper to setup a command, and nvme_queue_rq() is
+adapted to use this helper.
 
-Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Fixes: ab45e8585182 ("media: v4l: vsp1: Allow entities to participate in the partition algorithm")
-Reviewed-by: Jacopo Mondi <jacopo.mondi+renesas@ideasonboard.com>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Stable-dep-of: c31fad147038 ("nvme-pci: add missing condition check for existence of mapped data")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/vsp1/vsp1_pipe.h | 2 +-
- drivers/media/platform/vsp1/vsp1_rpf.c  | 8 +++++---
- 2 files changed, 6 insertions(+), 4 deletions(-)
+ drivers/nvme/host/pci.c | 63 +++++++++++++++++++++++------------------
+ 1 file changed, 36 insertions(+), 27 deletions(-)
 
-diff --git a/drivers/media/platform/vsp1/vsp1_pipe.h b/drivers/media/platform/vsp1/vsp1_pipe.h
-index ae646c9ef3373..15daf35bda216 100644
---- a/drivers/media/platform/vsp1/vsp1_pipe.h
-+++ b/drivers/media/platform/vsp1/vsp1_pipe.h
-@@ -73,7 +73,7 @@ struct vsp1_partition_window {
-  * @wpf: The WPF partition window configuration
-  */
- struct vsp1_partition {
--	struct vsp1_partition_window rpf;
-+	struct vsp1_partition_window rpf[VSP1_MAX_RPF];
- 	struct vsp1_partition_window uds_sink;
- 	struct vsp1_partition_window uds_source;
- 	struct vsp1_partition_window sru;
-diff --git a/drivers/media/platform/vsp1/vsp1_rpf.c b/drivers/media/platform/vsp1/vsp1_rpf.c
-index abaf4dde3802d..a61b86861c64d 100644
---- a/drivers/media/platform/vsp1/vsp1_rpf.c
-+++ b/drivers/media/platform/vsp1/vsp1_rpf.c
-@@ -270,8 +270,8 @@ static void rpf_configure_partition(struct vsp1_entity *entity,
- 	 * 'width' need to be adjusted.
- 	 */
- 	if (pipe->partitions > 1) {
--		crop.width = pipe->partition->rpf.width;
--		crop.left += pipe->partition->rpf.left;
-+		crop.width = pipe->partition->rpf[rpf->entity.index].width;
-+		crop.left += pipe->partition->rpf[rpf->entity.index].left;
- 	}
- 
- 	if (pipe->interlaced) {
-@@ -326,7 +326,9 @@ static void rpf_partition(struct vsp1_entity *entity,
- 			  unsigned int partition_idx,
- 			  struct vsp1_partition_window *window)
- {
--	partition->rpf = *window;
-+	struct vsp1_rwpf *rpf = to_rwpf(&entity->subdev);
-+
-+	partition->rpf[rpf->entity.index] = *window;
+diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+index 04e51134165dd..01f16989d0d84 100644
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -886,55 +886,32 @@ static blk_status_t nvme_map_metadata(struct nvme_dev *dev, struct request *req,
+ 	return BLK_STS_OK;
  }
  
- static const struct vsp1_entity_operations rpf_entity_ops = {
+-/*
+- * NOTE: ns is NULL when called on the admin queue.
+- */
+-static blk_status_t nvme_queue_rq(struct blk_mq_hw_ctx *hctx,
+-			 const struct blk_mq_queue_data *bd)
++static blk_status_t nvme_prep_rq(struct nvme_dev *dev, struct request *req)
+ {
+-	struct nvme_ns *ns = hctx->queue->queuedata;
+-	struct nvme_queue *nvmeq = hctx->driver_data;
+-	struct nvme_dev *dev = nvmeq->dev;
+-	struct request *req = bd->rq;
+ 	struct nvme_iod *iod = blk_mq_rq_to_pdu(req);
+-	struct nvme_command *cmnd = &iod->cmd;
+ 	blk_status_t ret;
+ 
+ 	iod->aborted = 0;
+ 	iod->npages = -1;
+ 	iod->nents = 0;
+ 
+-	/*
+-	 * We should not need to do this, but we're still using this to
+-	 * ensure we can drain requests on a dying queue.
+-	 */
+-	if (unlikely(!test_bit(NVMEQ_ENABLED, &nvmeq->flags)))
+-		return BLK_STS_IOERR;
+-
+-	if (!nvme_check_ready(&dev->ctrl, req, true))
+-		return nvme_fail_nonready_command(&dev->ctrl, req);
+-
+-	ret = nvme_setup_cmd(ns, req);
++	ret = nvme_setup_cmd(req->q->queuedata, req);
+ 	if (ret)
+ 		return ret;
+ 
+ 	if (blk_rq_nr_phys_segments(req)) {
+-		ret = nvme_map_data(dev, req, cmnd);
++		ret = nvme_map_data(dev, req, &iod->cmd);
+ 		if (ret)
+ 			goto out_free_cmd;
+ 	}
+ 
+ 	if (blk_integrity_rq(req)) {
+-		ret = nvme_map_metadata(dev, req, cmnd);
++		ret = nvme_map_metadata(dev, req, &iod->cmd);
+ 		if (ret)
+ 			goto out_unmap_data;
+ 	}
+ 
+ 	blk_mq_start_request(req);
+-	spin_lock(&nvmeq->sq_lock);
+-	nvme_sq_copy_cmd(nvmeq, &iod->cmd);
+-	nvme_write_sq_db(nvmeq, bd->last);
+-	spin_unlock(&nvmeq->sq_lock);
+ 	return BLK_STS_OK;
+ out_unmap_data:
+ 	nvme_unmap_data(dev, req);
+@@ -943,6 +920,38 @@ static blk_status_t nvme_queue_rq(struct blk_mq_hw_ctx *hctx,
+ 	return ret;
+ }
+ 
++/*
++ * NOTE: ns is NULL when called on the admin queue.
++ */
++static blk_status_t nvme_queue_rq(struct blk_mq_hw_ctx *hctx,
++			 const struct blk_mq_queue_data *bd)
++{
++	struct nvme_queue *nvmeq = hctx->driver_data;
++	struct nvme_dev *dev = nvmeq->dev;
++	struct request *req = bd->rq;
++	struct nvme_iod *iod = blk_mq_rq_to_pdu(req);
++	blk_status_t ret;
++
++	/*
++	 * We should not need to do this, but we're still using this to
++	 * ensure we can drain requests on a dying queue.
++	 */
++	if (unlikely(!test_bit(NVMEQ_ENABLED, &nvmeq->flags)))
++		return BLK_STS_IOERR;
++
++	if (unlikely(!nvme_check_ready(&dev->ctrl, req, true)))
++		return nvme_fail_nonready_command(&dev->ctrl, req);
++
++	ret = nvme_prep_rq(dev, req);
++	if (unlikely(ret))
++		return ret;
++	spin_lock(&nvmeq->sq_lock);
++	nvme_sq_copy_cmd(nvmeq, &iod->cmd);
++	nvme_write_sq_db(nvmeq, bd->last);
++	spin_unlock(&nvmeq->sq_lock);
++	return BLK_STS_OK;
++}
++
+ static void nvme_pci_complete_rq(struct request *req)
+ {
+ 	struct nvme_queue *nvmeq = req->mq_hctx->driver_data;
 -- 
 2.43.0
 
