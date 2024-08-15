@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-69130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68517-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D80F953596
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:39:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A62399532BC
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:10:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 516341F24471
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:39:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F45C1F21987
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:10:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAB1919FA9D;
-	Thu, 15 Aug 2024 14:39:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 905E51B012B;
+	Thu, 15 Aug 2024 14:06:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zfh7QRCe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RR9/e6Gp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 996341AC893;
-	Thu, 15 Aug 2024 14:39:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FEE418D64F;
+	Thu, 15 Aug 2024 14:06:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732766; cv=none; b=pq7rIsfPstDILCV9NZ2fDG5WnpCk0thNSydX9dz6CHD2LVdmn35xC2O5nd7LCm2Hqk1L21KBsA5QrB0NWzH1X8w9u0iUjt+NBZUYmk9YlVQks+qCQIb1oGXUyrSUrRGjVJeHaHyc6iHJkOEsux61w7A6Ez/LC3TJTLVhWnKESd0=
+	t=1723730819; cv=none; b=CWb7k1edtZBGh7Tu0FN9U1K4JkpYOcTy8XL0Ku7btUpWm22bOrtlDEM81G83Jbh4zfVTWrkuGa4BBV8V40xzmL1nPUuFwsNo8IfCigfMJAhS7RDoJHyMgV26OvjckscVkzThkKqdA30eZR6L87195SKZ22UkJAv1oJ5wrdwdLMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732766; c=relaxed/simple;
-	bh=oYJN5em6vu9jvfj85TIiOiAPN5AyXOPJUgM8m9wX9ro=;
+	s=arc-20240116; t=1723730819; c=relaxed/simple;
+	bh=HkxK0Nt/OnuMEnCaCql8lEskdlVtVYmi/emr/vbIrFQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RQKd73ieeQ11gQ8+fyYMtp2Mer4RoJE0Pk2YrvJQ78UkO8TD6/b24phs57Z+G/Tg6fGehw4rLsEfS2KzINb/PVKb7wRXLU/8XSrLkW6/3OLIO1fBqo3JXbEjvEkEr18whnDPeeVBMF3H2CVu0seSOeUy0z2UOwGPg4BWaW5HsXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zfh7QRCe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACBB4C32786;
-	Thu, 15 Aug 2024 14:39:25 +0000 (UTC)
+	 MIME-Version; b=AVrbWfJ8qDN3alA9Q83PV/9lyOM+Rrgqchdy7Ly/GTtIA54yLOOJjj1+6Y3/Tnyi7ajQSQDFeFUY0+MM4rHhYokdc+8SFuwjzyVHQxhre85za+YkmgphIR1WKvtPKTsEOWUD4z81ZnbkU6jPJnOcTVqS7JGsv0+tC3YNBJyDGNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RR9/e6Gp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD858C32786;
+	Thu, 15 Aug 2024 14:06:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732766;
-	bh=oYJN5em6vu9jvfj85TIiOiAPN5AyXOPJUgM8m9wX9ro=;
+	s=korg; t=1723730819;
+	bh=HkxK0Nt/OnuMEnCaCql8lEskdlVtVYmi/emr/vbIrFQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zfh7QRCeELyC11RZpdoFLuNYaz0/8M1s3ubOM2O59ppzd+2Km008FRwnps7je8BA3
-	 AZcNT4hhD2nB2HLqlmFZz8KQtPQtUCqfUbYjRDrVFao6Y2+0BcQQiHFfYZTTA56Gy+
-	 pXwnThp3sVzF5DYjyT/fsfKVyr4pPcj1mFenvQKo=
+	b=RR9/e6Gp8Y+roKL1ImYrfSJ1C/flgLo0MYz6IfwC5ZS6Jbr1IU2P8gYMx878DFCdI
+	 AyHalyNU+y1bGytjJ0cpk2SRdWKGMvJOY+A+DivyQLVWYM9RWYnG7zEYdElHNy5q2l
+	 Sw9cu/krYGGOXa9zgQZIt4XcolRY4ClIxyXALstE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Coddington <bcodding@redhat.com>,
+	Dai Ngo <dai.ngo@oracle.com>,
 	Jeff Layton <jlayton@kernel.org>,
-	Anna Schumaker <Anna.Schumaker@Netapp.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 278/352] SUNRPC: Fix a race to wake a sync task
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.1 10/38] nfsd: move reply cache initialization into nfsd startup
 Date: Thu, 15 Aug 2024 15:25:44 +0200
-Message-ID: <20240815131930.197385839@linuxfoundation.org>
+Message-ID: <20240815131833.348722861@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131832.944273699@linuxfoundation.org>
+References: <20240815131832.944273699@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +62,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Coddington <bcodding@redhat.com>
+From: Jeff Layton <jlayton@kernel.org>
 
-[ Upstream commit ed0172af5d6fc07d1b40ca82f5ca3979300369f7 ]
+[ Upstream commit f5f9d4a314da88c0a5faa6d168bf69081b7a25ae ]
 
-We've observed NFS clients with sync tasks sleeping in __rpc_execute
-waiting on RPC_TASK_QUEUED that have not responded to a wake-up from
-rpc_make_runnable().  I suspect this problem usually goes unnoticed,
-because on a busy client the task will eventually be re-awoken by another
-task completion or xprt event.  However, if the state manager is draining
-the slot table, a sync task missing a wake-up can result in a hung client.
+There's no need to start the reply cache before nfsd is up and running,
+and doing so means that we register a shrinker for every net namespace
+instead of just the ones where nfsd is running.
 
-We've been able to prove that the waker in rpc_make_runnable() successfully
-calls wake_up_bit() (ie- there's no race to tk_runstate), but the
-wake_up_bit() call fails to wake the waiter.  I suspect the waker is
-missing the load of the bit's wait_queue_head, so waitqueue_active() is
-false.  There are some very helpful comments about this problem above
-wake_up_bit(), prepare_to_wait(), and waitqueue_active().
+Move it to the per-net nfsd startup instead.
 
-Fix this by inserting smp_mb__after_atomic() before the wake_up_bit(),
-which pairs with prepare_to_wait() calling set_current_state().
-
-Signed-off-by: Benjamin Coddington <bcodding@redhat.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Dai Ngo <dai.ngo@oracle.com>
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Stable-dep-of: ed9ab7346e90 ("nfsd: move init of percpu reply_cache_stats counters back to nfsd_init_net")
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sunrpc/sched.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/nfsd/nfsctl.c |    8 --------
+ fs/nfsd/nfssvc.c |   10 +++++++++-
+ 2 files changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/net/sunrpc/sched.c b/net/sunrpc/sched.c
-index a4c9d410eb8d5..f4b1b7fee2c05 100644
---- a/net/sunrpc/sched.c
-+++ b/net/sunrpc/sched.c
-@@ -348,8 +348,10 @@ static void rpc_make_runnable(struct workqueue_struct *wq,
- 	if (RPC_IS_ASYNC(task)) {
- 		INIT_WORK(&task->u.tk_work, rpc_async_schedule);
- 		queue_work(wq, &task->u.tk_work);
--	} else
-+	} else {
-+		smp_mb__after_atomic();
- 		wake_up_bit(&task->tk_runstate, RPC_TASK_QUEUED);
-+	}
- }
+--- a/fs/nfsd/nfsctl.c
++++ b/fs/nfsd/nfsctl.c
+@@ -1453,16 +1453,11 @@ static __net_init int nfsd_init_net(stru
+ 	nn->nfsd_versions = NULL;
+ 	nn->nfsd4_minorversions = NULL;
+ 	nfsd4_init_leases_net(nn);
+-	retval = nfsd_reply_cache_init(nn);
+-	if (retval)
+-		goto out_cache_error;
+ 	get_random_bytes(&nn->siphash_key, sizeof(nn->siphash_key));
+ 	seqlock_init(&nn->writeverf_lock);
  
- /*
--- 
-2.43.0
-
+ 	return 0;
+ 
+-out_cache_error:
+-	nfsd_idmap_shutdown(net);
+ out_idmap_error:
+ 	nfsd_export_shutdown(net);
+ out_export_error:
+@@ -1471,9 +1466,6 @@ out_export_error:
+ 
+ static __net_exit void nfsd_exit_net(struct net *net)
+ {
+-	struct nfsd_net *nn = net_generic(net, nfsd_net_id);
+-
+-	nfsd_reply_cache_shutdown(nn);
+ 	nfsd_idmap_shutdown(net);
+ 	nfsd_export_shutdown(net);
+ 	nfsd_netns_free_versions(net_generic(net, nfsd_net_id));
+--- a/fs/nfsd/nfssvc.c
++++ b/fs/nfsd/nfssvc.c
+@@ -427,16 +427,23 @@ static int nfsd_startup_net(struct net *
+ 	ret = nfsd_file_cache_start_net(net);
+ 	if (ret)
+ 		goto out_lockd;
+-	ret = nfs4_state_start_net(net);
++
++	ret = nfsd_reply_cache_init(nn);
+ 	if (ret)
+ 		goto out_filecache;
+ 
++	ret = nfs4_state_start_net(net);
++	if (ret)
++		goto out_reply_cache;
++
+ #ifdef CONFIG_NFSD_V4_2_INTER_SSC
+ 	nfsd4_ssc_init_umount_work(nn);
+ #endif
+ 	nn->nfsd_net_up = true;
+ 	return 0;
+ 
++out_reply_cache:
++	nfsd_reply_cache_shutdown(nn);
+ out_filecache:
+ 	nfsd_file_cache_shutdown_net(net);
+ out_lockd:
+@@ -454,6 +461,7 @@ static void nfsd_shutdown_net(struct net
+ 	struct nfsd_net *nn = net_generic(net, nfsd_net_id);
+ 
+ 	nfs4_state_shutdown_net(net);
++	nfsd_reply_cache_shutdown(nn);
+ 	nfsd_file_cache_shutdown_net(net);
+ 	if (nn->lockd_up) {
+ 		lockd_down(net);
 
 
 
