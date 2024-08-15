@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-68518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 948249532BD
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:10:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06E6B9532DB
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:11:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D0C1288274
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:10:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3839E1C257CB
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:11:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D72F51B0127;
-	Thu, 15 Aug 2024 14:07:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD7431B14F8;
+	Thu, 15 Aug 2024 14:08:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S/uyoI6p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eO01xhMv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 969EC19F473;
-	Thu, 15 Aug 2024 14:07:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A42D1A7057;
+	Thu, 15 Aug 2024 14:08:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730822; cv=none; b=ZWnArhXxAygYNYIH8CR3XrJDfelr61HH2+CCRbMhkGBAH9Mg8MHypibFym+JxQJnk2xU7BefXZACwAZKVOMDng/JzCL9+m8LaffUBgBCFwgQvXjiOSmG+Vo30cD2ZiypmdLekyGV0EUbffKBEY/+IxDlWlhxrGAI8ALOw4nQlBs=
+	t=1723730907; cv=none; b=uqE3+37/rF3UnaYkBRbqW7uiGOtWxSIWUlqGYC6tD6KFTfqAywQEC5BJbZhZLxmCNJ9zzXf6qVMlU1XNdngefzrLUC0o72SWa0ScyumKh6xeSpIcPBCjV7m9eaoVDZZe/wR98nKblW18Mgda1wEDnV/wEcjXWhx6qNIvicqNlZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730822; c=relaxed/simple;
-	bh=62vi8p6xloFpiHgdUGzhPZ0DreMT8/GawRLqv1/1+So=;
+	s=arc-20240116; t=1723730907; c=relaxed/simple;
+	bh=S13t7G3xqQelV53Y5ONNp3x6tvNC6yK5WdLDNlUq1/M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B7rixgJhMUrVwv+5Ebc2Xx8U7EYSd8MzLSR/KzOqbRORqxOSR1LAJN4LgFNZdUps8NI5pBmqZR7sugcmyRNjrgMGmhLhTF8YtmGv5yzdgatp7NrW/BcQcXUzRYy0YeHd/OenrnZ5f54vBKo3iEY7u1C/ZkNQq/Lz0o/M2z7OwRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S/uyoI6p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03E73C32786;
-	Thu, 15 Aug 2024 14:07:01 +0000 (UTC)
+	 MIME-Version; b=N3coLidDV7bhf6kjswfEI5JZS5eMr0FxNyV4NJyt6ZVFYVpgzsJmTI/bLejQ5JAZMZRd7E/FYTVOJEc/CY5KB+vWTn6LEux/Oo21ygw6CYwt0WdB+jbjNybzk9Rq0tP40j7pGHEe5br9dmV6oisV1YRw3UWuLKuZ85KCKpy3MwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eO01xhMv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 204F5C32786;
+	Thu, 15 Aug 2024 14:08:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730822;
-	bh=62vi8p6xloFpiHgdUGzhPZ0DreMT8/GawRLqv1/1+So=;
+	s=korg; t=1723730907;
+	bh=S13t7G3xqQelV53Y5ONNp3x6tvNC6yK5WdLDNlUq1/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S/uyoI6pDT0ociPtghYdbrU5x7nhRV3RqCfkNbSYZ8Ja3sqhh5V6ScxqcaNaOEhh0
-	 QQJHj75qQ64BbMNzn2vNdWx6ELULZLTe7Lr6Nrq30E5orvyPdIKY97D8Nt+mXDvZ7D
-	 9TO2cAAweNWadhc3wqxMkrsDwtLGOsyZDHp0ErlE=
+	b=eO01xhMvhybM/Ts+Velku/Jju+tOIneWiUgdD/eDKeMTsYmjl3jUC5TjWssA60K1c
+	 A0+UKZ3FFzLrkL+Ok2IU6Elx4DhRyyDYuJ9RZAY/29MBNfyRbFqLFA53MBqnqugN+H
+	 NyUmG2wrsCvgLBkb8y0c6E4B0zOgo/5d5BPqgnhE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Eirik Fuller <efuller@redhat.com>
-Subject: [PATCH 6.1 11/38] nfsd: move init of percpu reply_cache_stats counters back to nfsd_init_net
+	Phillip Lougher <phillip@squashfs.org.uk>,
+	syzbot+604424eb051c2f696163@syzkaller.appspotmail.com,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 31/67] Squashfs: fix variable overflow triggered by sysbot
 Date: Thu, 15 Aug 2024 15:25:45 +0200
-Message-ID: <20240815131833.386760021@linuxfoundation.org>
+Message-ID: <20240815131839.521744936@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131832.944273699@linuxfoundation.org>
-References: <20240815131832.944273699@linuxfoundation.org>
+In-Reply-To: <20240815131838.311442229@linuxfoundation.org>
+References: <20240815131838.311442229@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,165 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Phillip Lougher <phillip@squashfs.org.uk>
 
-[ Upstream commit ed9ab7346e908496816cffdecd46932035f66e2e ]
+[ Upstream commit 12427de9439d68b8e96ba6f50b601ef15f437612 ]
 
-Commit f5f9d4a314da ("nfsd: move reply cache initialization into nfsd
-startup") moved the initialization of the reply cache into nfsd startup,
-but didn't account for the stats counters, which can be accessed before
-nfsd is ever started. The result can be a NULL pointer dereference when
-someone accesses /proc/fs/nfsd/reply_cache_stats while nfsd is still
-shut down.
+Sysbot reports a slab out of bounds write in squashfs_readahead().
 
-This is a regression and a user-triggerable oops in the right situation:
+This is ultimately caused by a file reporting an (infeasibly) large file
+size (1407374883553280 bytes) with the minimum block size of 4K.
 
-- non-x86_64 arch
-- /proc/fs/nfsd is mounted in the namespace
-- nfsd is not started in the namespace
-- unprivileged user calls "cat /proc/fs/nfsd/reply_cache_stats"
+This causes variable overflow.
 
-Although this is easy to trigger on some arches (like aarch64), on
-x86_64, calling this_cpu_ptr(NULL) evidently returns a pointer to the
-fixed_percpu_data. That struct looks just enough like a newly
-initialized percpu var to allow nfsd_reply_cache_stats_show to access
-it without Oopsing.
-
-Move the initialization of the per-net+per-cpu reply-cache counters
-back into nfsd_init_net, while leaving the rest of the reply cache
-allocations to be done at nfsd startup time.
-
-Kudos to Eirik who did most of the legwork to track this down.
-
-Cc: stable@vger.kernel.org # v6.3+
-Fixes: f5f9d4a314da ("nfsd: move reply cache initialization into nfsd startup")
-Reported-and-tested-by: Eirik Fuller <efuller@redhat.com>
-Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2215429
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Stable-dep-of: 4b14885411f7 ("nfsd: make all of the nfsd stats per-network namespace")
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lkml.kernel.org/r/20231113160901.6444-1-phillip@squashfs.org.uk
+Signed-off-by: Phillip Lougher <phillip@squashfs.org.uk>
+Reported-by: syzbot+604424eb051c2f696163@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/000000000000b1fda20609ede0d1@google.com/
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/cache.h    |    2 ++
- fs/nfsd/nfscache.c |   25 ++++++++++++++-----------
- fs/nfsd/nfsctl.c   |   10 +++++++++-
- 3 files changed, 25 insertions(+), 12 deletions(-)
+ fs/squashfs/file.c        | 3 ++-
+ fs/squashfs/file_direct.c | 6 +++---
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
---- a/fs/nfsd/cache.h
-+++ b/fs/nfsd/cache.h
-@@ -80,6 +80,8 @@ enum {
+diff --git a/fs/squashfs/file.c b/fs/squashfs/file.c
+index 8ba8c4c507707..e8df6430444b0 100644
+--- a/fs/squashfs/file.c
++++ b/fs/squashfs/file.c
+@@ -544,7 +544,8 @@ static void squashfs_readahead(struct readahead_control *ractl)
+ 	struct squashfs_page_actor *actor;
+ 	unsigned int nr_pages = 0;
+ 	struct page **pages;
+-	int i, file_end = i_size_read(inode) >> msblk->block_log;
++	int i;
++	loff_t file_end = i_size_read(inode) >> msblk->block_log;
+ 	unsigned int max_pages = 1UL << shift;
  
- int	nfsd_drc_slab_create(void);
- void	nfsd_drc_slab_free(void);
-+int	nfsd_net_reply_cache_init(struct nfsd_net *nn);
-+void	nfsd_net_reply_cache_destroy(struct nfsd_net *nn);
- int	nfsd_reply_cache_init(struct nfsd_net *);
- void	nfsd_reply_cache_shutdown(struct nfsd_net *);
- int	nfsd_cache_lookup(struct svc_rqst *rqstp, unsigned int start,
---- a/fs/nfsd/nfscache.c
-+++ b/fs/nfsd/nfscache.c
-@@ -148,12 +148,23 @@ void nfsd_drc_slab_free(void)
- 	kmem_cache_destroy(drc_slab);
- }
+ 	readahead_expand(ractl, start, (len | mask) + 1);
+diff --git a/fs/squashfs/file_direct.c b/fs/squashfs/file_direct.c
+index f1ccad519e28c..763a3f7a75f6d 100644
+--- a/fs/squashfs/file_direct.c
++++ b/fs/squashfs/file_direct.c
+@@ -26,10 +26,10 @@ int squashfs_readpage_block(struct page *target_page, u64 block, int bsize,
+ 	struct inode *inode = target_page->mapping->host;
+ 	struct squashfs_sb_info *msblk = inode->i_sb->s_fs_info;
  
--static int nfsd_reply_cache_stats_init(struct nfsd_net *nn)
-+/**
-+ * nfsd_net_reply_cache_init - per net namespace reply cache set-up
-+ * @nn: nfsd_net being initialized
-+ *
-+ * Returns zero on succes; otherwise a negative errno is returned.
-+ */
-+int nfsd_net_reply_cache_init(struct nfsd_net *nn)
- {
- 	return nfsd_percpu_counters_init(nn->counter, NFSD_NET_COUNTERS_NUM);
- }
- 
--static void nfsd_reply_cache_stats_destroy(struct nfsd_net *nn)
-+/**
-+ * nfsd_net_reply_cache_destroy - per net namespace reply cache tear-down
-+ * @nn: nfsd_net being freed
-+ *
-+ */
-+void nfsd_net_reply_cache_destroy(struct nfsd_net *nn)
- {
- 	nfsd_percpu_counters_destroy(nn->counter, NFSD_NET_COUNTERS_NUM);
- }
-@@ -169,17 +180,13 @@ int nfsd_reply_cache_init(struct nfsd_ne
- 	hashsize = nfsd_hashsize(nn->max_drc_entries);
- 	nn->maskbits = ilog2(hashsize);
- 
--	status = nfsd_reply_cache_stats_init(nn);
--	if (status)
--		goto out_nomem;
--
- 	nn->nfsd_reply_cache_shrinker.scan_objects = nfsd_reply_cache_scan;
- 	nn->nfsd_reply_cache_shrinker.count_objects = nfsd_reply_cache_count;
- 	nn->nfsd_reply_cache_shrinker.seeks = 1;
- 	status = register_shrinker(&nn->nfsd_reply_cache_shrinker,
- 				   "nfsd-reply:%s", nn->nfsd_name);
- 	if (status)
--		goto out_stats_destroy;
-+		return status;
- 
- 	nn->drc_hashtbl = kvzalloc(array_size(hashsize,
- 				sizeof(*nn->drc_hashtbl)), GFP_KERNEL);
-@@ -195,9 +202,6 @@ int nfsd_reply_cache_init(struct nfsd_ne
- 	return 0;
- out_shrinker:
- 	unregister_shrinker(&nn->nfsd_reply_cache_shrinker);
--out_stats_destroy:
--	nfsd_reply_cache_stats_destroy(nn);
--out_nomem:
- 	printk(KERN_ERR "nfsd: failed to allocate reply cache\n");
- 	return -ENOMEM;
- }
-@@ -217,7 +221,6 @@ void nfsd_reply_cache_shutdown(struct nf
- 									rp, nn);
- 		}
- 	}
--	nfsd_reply_cache_stats_destroy(nn);
- 
- 	kvfree(nn->drc_hashtbl);
- 	nn->drc_hashtbl = NULL;
---- a/fs/nfsd/nfsctl.c
-+++ b/fs/nfsd/nfsctl.c
-@@ -1450,6 +1450,9 @@ static __net_init int nfsd_init_net(stru
- 	retval = nfsd_idmap_init(net);
- 	if (retval)
- 		goto out_idmap_error;
-+	retval = nfsd_net_reply_cache_init(nn);
-+	if (retval)
-+		goto out_repcache_error;
- 	nn->nfsd_versions = NULL;
- 	nn->nfsd4_minorversions = NULL;
- 	nfsd4_init_leases_net(nn);
-@@ -1458,6 +1461,8 @@ static __net_init int nfsd_init_net(stru
- 
- 	return 0;
- 
-+out_repcache_error:
-+	nfsd_idmap_shutdown(net);
- out_idmap_error:
- 	nfsd_export_shutdown(net);
- out_export_error:
-@@ -1466,9 +1471,12 @@ out_export_error:
- 
- static __net_exit void nfsd_exit_net(struct net *net)
- {
-+	struct nfsd_net *nn = net_generic(net, nfsd_net_id);
-+
-+	nfsd_net_reply_cache_destroy(nn);
- 	nfsd_idmap_shutdown(net);
- 	nfsd_export_shutdown(net);
--	nfsd_netns_free_versions(net_generic(net, nfsd_net_id));
-+	nfsd_netns_free_versions(nn);
- }
- 
- static struct pernet_operations nfsd_net_ops = {
+-	int file_end = (i_size_read(inode) - 1) >> PAGE_SHIFT;
++	loff_t file_end = (i_size_read(inode) - 1) >> PAGE_SHIFT;
+ 	int mask = (1 << (msblk->block_log - PAGE_SHIFT)) - 1;
+-	int start_index = target_page->index & ~mask;
+-	int end_index = start_index | mask;
++	loff_t start_index = target_page->index & ~mask;
++	loff_t end_index = start_index | mask;
+ 	int i, n, pages, bytes, res = -ENOMEM;
+ 	struct page **page;
+ 	struct squashfs_page_actor *actor;
+-- 
+2.43.0
+
 
 
 
