@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-68630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68944-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED985953342
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:15:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8FF99534B8
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:29:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 97B191F20172
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:15:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9BAF62880EB
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:29:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF6A91B3F05;
-	Thu, 15 Aug 2024 14:12:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EB4117C9B6;
+	Thu, 15 Aug 2024 14:29:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g6v7Vuu1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VQAeYtFZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 793C41B32CD;
-	Thu, 15 Aug 2024 14:12:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CFA263C;
+	Thu, 15 Aug 2024 14:29:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731173; cv=none; b=FMsodcFqgsGbSVwMDSN66XEvpmqFODmpywZXtU9H6t+IkCJP72PQm1K4WqdjtxFAGPYBOTcCzmT4IWIv9q+knLFcZI5Vvg2UgxXqlqtbCRiCvIWU08u0Jx2XXUEkGyN6y5Df9nI8Pz5+n0xBF2JJC+67QW+ze28s8378h/m1ejw=
+	t=1723732166; cv=none; b=LJNjqywR4rmpUe3kpFbzoXaoqaCHaXgRZlXRnuPaC39GjhyMBeqNusgXATvrFihy8Nt7TMWTm7vDwUhgYWAqNcQZmaqbp0wycJKgajYXdpQ9FGn4zcQS2FIldIqt9gYTsscI/Ye9tEhSLOqt+3QUaKo+ceJIbjsg+B8MBzp6HLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731173; c=relaxed/simple;
-	bh=EGM5VYOwPMWl291bCBpPPDcDlfPi/s/i1ubBxqQfxzE=;
+	s=arc-20240116; t=1723732166; c=relaxed/simple;
+	bh=93qe8ECe+57yJOXKp4engFWzpk6JIbA1WB2Q0IL0Xmw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dXTyq0OxngyLSzV6vQwrqvb7jrRft0TnUmVPurFP9hunGAAMeeM3KS0jwQgOCMGizp2bAOfsv4SKKSyPFYSuyqnUxYuJUqheZ2s+fpeTZqm+iLaYIeObPKQy8YZ5RuRFY+uU8e3VmOVloP+GwKDtR2ra3nMeN+k6Ua4hKn45YDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g6v7Vuu1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A509FC4AF0C;
-	Thu, 15 Aug 2024 14:12:52 +0000 (UTC)
+	 MIME-Version; b=nh647s1XpiMFsBpYfxT5L53xS5fmeOHc8KRAvruvujkf8kM8VThhWBfzfuiB/Z5UP1tqvWEKghy//Pzn/iz8AFvTCJARJYjltp/qjsNEoi5HEJbBKt+lyCtsSW2j4pCcaGJMJnlvF8xn5MJfiGjkLoPYfZ91GaUb6rbhNZh+rIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VQAeYtFZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ED12C32786;
+	Thu, 15 Aug 2024 14:29:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731173;
-	bh=EGM5VYOwPMWl291bCBpPPDcDlfPi/s/i1ubBxqQfxzE=;
+	s=korg; t=1723732165;
+	bh=93qe8ECe+57yJOXKp4engFWzpk6JIbA1WB2Q0IL0Xmw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g6v7Vuu1rvkejgGT4WuMYq+9vp+Q3gKFJ1gQHS9Yd40SLJtX2X1ix4zMFAKPfO5Lw
-	 uyaZbqYZyfBAqSULYteLEGnTxfKySX6K/7bETw/GIX8lhWX0Ic8q6MNvUYoDDir1Sg
-	 uTe18Ht8BqjUQVSnkLU7tDwGpp5SIoqWQvVv9Kzk=
+	b=VQAeYtFZBpcIYWPuU7zBNt5whMBVdEOg9UIQu3eOSdYNMLA7FIi7UAsOHKwgDZz0/
+	 D1qrWwaqPICbaWdqJnR+zoAcurFPcAP/q86MrIhkx9ntNpwP9oV3TqzjnGRGlOUbZ7
+	 +OyGyKyTD/3bhuVBzkgGQ8JDFb7ioZpIckUQ4/sk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
-	Andy Shevchenko <andy@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
+	Benjamin Coddington <bcodding@redhat.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Anna Schumaker <Anna.Schumaker@Netapp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 028/259] firmware: turris-mox-rwtm: Initialize completion before mailbox
+Subject: [PATCH 5.10 095/352] SUNRPC: Fixup gss_status tracepoint error output
 Date: Thu, 15 Aug 2024 15:22:41 +0200
-Message-ID: <20240815131903.886227177@linuxfoundation.org>
+Message-ID: <20240815131922.932348999@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +61,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Behún <kabel@kernel.org>
+From: Benjamin Coddington <bcodding@redhat.com>
 
-[ Upstream commit 49e24c80d3c81c43e2a56101449e1eea32fcf292 ]
+[ Upstream commit b9fae9f06d84ffab0f3f9118f3a96bbcdc528bf6 ]
 
-Initialize the completion before the mailbox channel is requested.
+The GSS routine errors are values, not flags.
 
-Fixes: 389711b37493 ("firmware: Add Turris Mox rWTM firmware driver")
-Signed-off-by: Marek Behún <kabel@kernel.org>
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Fixes: 0c77668ddb4e ("SUNRPC: Introduce trace points in rpc_auth_gss.ko")
+Signed-off-by: Benjamin Coddington <bcodding@redhat.com>
+Reviewed-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/turris-mox-rwtm.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ include/trace/events/rpcgss.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/turris-mox-rwtm.c b/drivers/firmware/turris-mox-rwtm.c
-index 852d911c78f6b..212a463973737 100644
---- a/drivers/firmware/turris-mox-rwtm.c
-+++ b/drivers/firmware/turris-mox-rwtm.c
-@@ -337,6 +337,7 @@ static int turris_mox_rwtm_probe(struct platform_device *pdev)
- 	platform_set_drvdata(pdev, rwtm);
+diff --git a/include/trace/events/rpcgss.h b/include/trace/events/rpcgss.h
+index ffdbe6f85da8b..9c8cb69c79112 100644
+--- a/include/trace/events/rpcgss.h
++++ b/include/trace/events/rpcgss.h
+@@ -52,7 +52,7 @@ TRACE_DEFINE_ENUM(GSS_S_UNSEQ_TOKEN);
+ TRACE_DEFINE_ENUM(GSS_S_GAP_TOKEN);
  
- 	mutex_init(&rwtm->busy);
-+	init_completion(&rwtm->cmd_done);
- 
- 	rwtm->mbox_client.dev = dev;
- 	rwtm->mbox_client.rx_callback = mox_rwtm_rx_callback;
-@@ -350,8 +351,6 @@ static int turris_mox_rwtm_probe(struct platform_device *pdev)
- 		goto remove_files;
- 	}
- 
--	init_completion(&rwtm->cmd_done);
--
- 	ret = mox_get_board_info(rwtm);
- 	if (ret < 0)
- 		dev_warn(dev, "Cannot read board information: %i\n", ret);
+ #define show_gss_status(x)						\
+-	__print_flags(x, "|",						\
++	__print_symbolic(x, 						\
+ 		{ GSS_S_BAD_MECH, "GSS_S_BAD_MECH" },			\
+ 		{ GSS_S_BAD_NAME, "GSS_S_BAD_NAME" },			\
+ 		{ GSS_S_BAD_NAMETYPE, "GSS_S_BAD_NAMETYPE" },		\
 -- 
 2.43.0
 
