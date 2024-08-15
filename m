@@ -1,51 +1,53 @@
-Return-Path: <stable+bounces-69016-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69027-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4DDE95350A
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:33:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFBFE95351A
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:33:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5CE421F2A2A4
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:33:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 888AAB283BE
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:33:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D473C63D5;
-	Thu, 15 Aug 2024 14:33:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87E1A17BEC0;
+	Thu, 15 Aug 2024 14:33:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CL/v4ddD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iZxiK2w7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90FCB210FB;
-	Thu, 15 Aug 2024 14:33:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4548E63D5;
+	Thu, 15 Aug 2024 14:33:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732395; cv=none; b=rbQj0skUTt0DNWR2iZy51GxQvpvFpFtv6ao6VSKdAR7s03Frh96QcJArQlUFDA0ghhnYRB19035J1S2OYrXoRpW2Q5zXQwtc5Ub4b2nvcb3ZKrOj5FHATw5H6juxVuW+gFL+ImV4f7iUmIoLxqLblpZSza14QaKRLfb2KrsnGkY=
+	t=1723732432; cv=none; b=efzyTdQ8JwpIum0z8U49c8T8b4GBe77/37OYGOwVolqaMgdObgZG7Y8Vh88i/VRmOt7aCx8Y4t77Z2aC+muhGVq3XoQNAGUZPSm0TF2Rixv8dkmOlGn+7ew+memBPwwtahW+1qFzjUaGkXVXfPSKaQYPuAsGnQsjQ+ROOeiFxuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732395; c=relaxed/simple;
-	bh=FQoOMVlUAkGOOOS4mVGh89vjlu8SobWj8s4btPUIX34=;
+	s=arc-20240116; t=1723732432; c=relaxed/simple;
+	bh=cD2kUD8Vu2G6+aD5XQKGM/bLyQ7BxVGas8l2F1+G+5M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NAu8aeLDXKpryDo37PxSOU0Y05eT5iV0vBG+5KMmjXbAB++rDIok/UacajA29BQ80noa9ssZgyFWBN4E1fzTvgoEvLzEBxIyr4qAWBEzZ/HRsPDlGUTBkjc1TXOk5AQe+HcChWnqlCDgn58qEPOahT7KoDBt1XyoSkAzb/yalvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CL/v4ddD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B1CFC32786;
-	Thu, 15 Aug 2024 14:33:14 +0000 (UTC)
+	 MIME-Version; b=h8zVLl+uMsmEEyh29PPhq5xM1b7bLkPGSt3mDsd067FcvsVVrsvFxki6z/OZFBYIknyNNcgteWP7livyhjzMmpWPbPC/2sSxWckvgRT/kN+a5x3d7+JqVBSLFltHSW5E7OXwu2ss54YFgoXMXfXMnp5NIDerdWiZB8NNQADf6Bk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iZxiK2w7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55B5DC32786;
+	Thu, 15 Aug 2024 14:33:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732395;
-	bh=FQoOMVlUAkGOOOS4mVGh89vjlu8SobWj8s4btPUIX34=;
+	s=korg; t=1723732431;
+	bh=cD2kUD8Vu2G6+aD5XQKGM/bLyQ7BxVGas8l2F1+G+5M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CL/v4ddDTmW2aXJTk44fcw2l+hRD6rt5B653jjxgebq9lLlmQFhtXmF9ZacHLJ59U
-	 H1/orU62A+NN9XPHDMwnms+sDhwmzklcgcBMerza5WWhFcvTUbuHvHdCh8+sHfigRF
-	 b3E+GfaBUF1aPAPTpBrmpXQPNterRKfJmsqJZ3AM=
+	b=iZxiK2w73cP7Q7PYj3IvPPwhGadaAaYHcEz2V0FEyO9jfOJfezPLU2QvoJ4s2Wiiv
+	 8Dv0Ueop0B5TuabEytUFkDvZn7/Nq/N8RuQzGjDnABY2pu2MmmNj7Auo5qQI83He19
+	 XQpNsS0K+d4jB6cdKjIhzoMZWTf6WMXwi4m8zKuM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 5.10 149/352] KVM: VMX: Split out the non-virtualization part of vmx_interrupt_blocked()
-Date: Thu, 15 Aug 2024 15:23:35 +0200
-Message-ID: <20240815131925.024949998@linuxfoundation.org>
+	Alan Stern <stern@rowland.harvard.edu>,
+	Andrea Parri <parri.andrea@gmail.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>
+Subject: [PATCH 5.10 150/352] tools/memory-model: Fix bug in lock.cat
+Date: Thu, 15 Aug 2024 15:23:36 +0200
+Message-ID: <20240815131925.063236748@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
 References: <20240815131919.196120297@linuxfoundation.org>
@@ -64,61 +66,99 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-commit 322a569c4b4188a0da2812f9e952780ce09b74ba upstream.
+commit 4c830eef806679dc243e191f962c488dd9d00708 upstream.
 
-Move the non-VMX chunk of the "interrupt blocked" checks to a separate
-helper so that KVM can reuse the code to detect if interrupts are blocked
-for L2, e.g. to determine if a virtual interrupt _for L2_ is a valid wake
-event.  If L1 disables HLT-exiting for L2, nested APICv is enabled, and L2
-HLTs, then L2 virtual interrupts are valid wake events, but if and only if
-interrupts are unblocked for L2.
+Andrea reported that the following innocuous litmus test:
 
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240607172609.3205077-4-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+C T
+
+{}
+
+P0(spinlock_t *x)
+{
+	int r0;
+
+	spin_lock(x);
+	spin_unlock(x);
+	r0 = spin_is_locked(x);
+}
+
+gives rise to a nonsensical empty result with no executions:
+
+$ herd7 -conf linux-kernel.cfg T.litmus
+Test T Required
+States 0
+Ok
+Witnesses
+Positive: 0 Negative: 0
+Condition forall (true)
+Observation T Never 0 0
+Time T 0.00
+Hash=6fa204e139ddddf2cb6fa963bad117c0
+
+The problem is caused by a bug in the lock.cat part of the LKMM.  Its
+computation of the rf relation for RU (read-unlocked) events is
+faulty; it implicitly assumes that every RU event must read from
+either a UL (unlock) event in another thread or from the lock's
+initial state.  Neither is true in the litmus test above, so the
+computation yields no possible executions.
+
+The lock.cat code tries to make up for this deficiency by allowing RU
+events outside of critical sections to read from the last po-previous
+UL event.  But it does this incorrectly, trying to keep these rfi links
+separate from the rfe links that might also be needed, and passing only
+the latter to herd7's cross() macro.
+
+The problem is fixed by merging the two sets of possible rf links for
+RU events and using them all in the call to cross().
+
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Reported-by: Andrea Parri <parri.andrea@gmail.com>
+Closes: https://lore.kernel.org/linux-arch/ZlC0IkzpQdeGj+a3@andrea/
+Tested-by: Andrea Parri <parri.andrea@gmail.com>
+Acked-by: Andrea Parri <parri.andrea@gmail.com>
+Fixes: 15553dcbca06 ("tools/memory-model: Add model support for spin_is_locked()")
+CC: <stable@vger.kernel.org>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/vmx/vmx.c |   11 ++++++++---
- arch/x86/kvm/vmx/vmx.h |    1 +
- 2 files changed, 9 insertions(+), 3 deletions(-)
+ tools/memory-model/lock.cat |   20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -4738,14 +4738,19 @@ static int vmx_nmi_allowed(struct kvm_vc
- 	return !vmx_nmi_blocked(vcpu);
- }
+--- a/tools/memory-model/lock.cat
++++ b/tools/memory-model/lock.cat
+@@ -102,19 +102,19 @@ let rf-lf = rfe-lf | rfi-lf
+  * within one of the lock's critical sections returns False.
+  *)
  
-+bool __vmx_interrupt_blocked(struct kvm_vcpu *vcpu)
-+{
-+	return !(vmx_get_rflags(vcpu) & X86_EFLAGS_IF) ||
-+	       (vmcs_read32(GUEST_INTERRUPTIBILITY_INFO) &
-+		(GUEST_INTR_STATE_STI | GUEST_INTR_STATE_MOV_SS));
-+}
-+
- bool vmx_interrupt_blocked(struct kvm_vcpu *vcpu)
- {
- 	if (is_guest_mode(vcpu) && nested_exit_on_intr(vcpu))
- 		return false;
+-(* rfi for RU events: an RU may read from the last po-previous UL *)
+-let rfi-ru = ([UL] ; po-loc ; [RU]) \ ([UL] ; po-loc ; [LKW] ; po-loc)
+-
+-(* rfe for RU events: an RU may read from an external UL or the initial write *)
+-let all-possible-rfe-ru =
+-	let possible-rfe-ru r =
++(*
++ * rf for RU events: an RU may read from an external UL or the initial write,
++ * or from the last po-previous UL
++ *)
++let all-possible-rf-ru =
++	let possible-rf-ru r =
+ 		let pair-to-relation p = p ++ 0
+-		in map pair-to-relation (((UL | IW) * {r}) & loc & ext)
+-	in map possible-rfe-ru RU
++		in map pair-to-relation ((((UL | IW) * {r}) & loc & ext) |
++			(((UL * {r}) & po-loc) \ ([UL] ; po-loc ; [LKW] ; po-loc)))
++	in map possible-rf-ru RU
  
--	return !(vmx_get_rflags(vcpu) & X86_EFLAGS_IF) ||
--	       (vmcs_read32(GUEST_INTERRUPTIBILITY_INFO) &
--		(GUEST_INTR_STATE_STI | GUEST_INTR_STATE_MOV_SS));
-+	return __vmx_interrupt_blocked(vcpu);
- }
+ (* Generate all rf relations for RU events *)
+-with rfe-ru from cross(all-possible-rfe-ru)
+-let rf-ru = rfe-ru | rfi-ru
++with rf-ru from cross(all-possible-rf-ru)
  
- static int vmx_interrupt_allowed(struct kvm_vcpu *vcpu, bool for_injection)
---- a/arch/x86/kvm/vmx/vmx.h
-+++ b/arch/x86/kvm/vmx/vmx.h
-@@ -359,6 +359,7 @@ bool vmx_guest_inject_ac(struct kvm_vcpu
- void update_exception_bitmap(struct kvm_vcpu *vcpu);
- void vmx_update_msr_bitmap(struct kvm_vcpu *vcpu);
- bool vmx_nmi_blocked(struct kvm_vcpu *vcpu);
-+bool __vmx_interrupt_blocked(struct kvm_vcpu *vcpu);
- bool vmx_interrupt_blocked(struct kvm_vcpu *vcpu);
- bool vmx_get_nmi_mask(struct kvm_vcpu *vcpu);
- void vmx_set_nmi_mask(struct kvm_vcpu *vcpu, bool masked);
+ (* Final rf relation *)
+ let rf = rf | rf-lf | rf-ru
 
 
 
