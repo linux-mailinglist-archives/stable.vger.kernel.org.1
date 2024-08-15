@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-68816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68561-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95C8295341B
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:23:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78A279532F1
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:12:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4AC3B1F28C52
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:23:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 244442856E4
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:12:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0506819FA90;
-	Thu, 15 Aug 2024 14:22:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EC951B3F1B;
+	Thu, 15 Aug 2024 14:09:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t10yUc5A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QWXWjm0k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B57B629CE6;
-	Thu, 15 Aug 2024 14:22:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3894A1B3753;
+	Thu, 15 Aug 2024 14:09:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731753; cv=none; b=nWZwUrLGequKchMQBvk4b5Yde6A2iPDN780YQ7A8XNtJagNwNIv2sPeiJPze5YmkYg4iZx1hrCWgCetSus/MbBXTbQb2huLXyIBBY356Rht8AuaOtu48nEEwLUC05uvsOK5Ruv67YhbAUs3W9GG0S4f8oKovKa8aovNp471DJDI=
+	t=1723730959; cv=none; b=Bm9YNupxbxZHhAVlJXg/nAnkOY0gNsI829Syp07fZGYfwl5LFQOY9Hawe9cM/DFPLXsOAH1VacQDYBU+BjKNjyjHou/rZlbTquVDRJD0FZYY6mQT6T/OPXuxLnCv0uJ8LsliQiSQZOUM3oPqHMApQp0fR8cint2vN1UkVT9830Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731753; c=relaxed/simple;
-	bh=C+eu428rsEMNSXX2YlEu8DoJuHJsKPrQfRW4ZunyHzg=;
+	s=arc-20240116; t=1723730959; c=relaxed/simple;
+	bh=nh0BvCUVkXpkZzetoN6eb4roRoHkR+yc+6cukihhySs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MZOaLnggcyBkwF8GXJv9nNmuax61/zbraxBrqduP/4tBQt1deJjm2sR1iksA8o2D9W4xkkjae6UUyGP1JzXuBAhpAsuJ63cH+cCeBugOIB1H2/qdzSHJMl660G9H/AHr9Rcd/MMP/iMTnhEhJoNRLKD29CXf4Ia6vioGZNFipeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t10yUc5A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 351BEC32786;
-	Thu, 15 Aug 2024 14:22:33 +0000 (UTC)
+	 MIME-Version; b=E5VNsiv+PQdv/ZRNms3Bx0e50Ih1KkL0nOxt7IkZ//4m1DIPmb5AjoGjJ5HfcWWcEqVtCPpwJ/smT4cUYAGraYu8GXlGsewTBYqMSYAsnMc1Z1X+iNlkm5IZpHVSksdBYRGCQFZIjZFKehDLl5JNt5Ac7N4wAkIH+Kr4ogGFXfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QWXWjm0k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4489C4AF0A;
+	Thu, 15 Aug 2024 14:09:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731753;
-	bh=C+eu428rsEMNSXX2YlEu8DoJuHJsKPrQfRW4ZunyHzg=;
+	s=korg; t=1723730959;
+	bh=nh0BvCUVkXpkZzetoN6eb4roRoHkR+yc+6cukihhySs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t10yUc5AoQn7bKoi9WvA78nof3Wwy1CH/ZPmVi9fvrJfvNs+2ZyyP5qXY9Q2RHdHp
-	 KedsNXW65xh8XIAEe/5UAEvbQIFrLeb8EKTPUBsgtFTCYWc5IH5b5zkoZYOTyU7leo
-	 gfyPkbYIckKXJBAcczkOmEoDb8Q6l266Bnt5VifY=
+	b=QWXWjm0k/8keYIlluZOuQSQY+5bDtMqlyBrEqZpGl2xTTQFLJlCsJGfBpjgB4WHsW
+	 xyVsuYfEnlI8nXycYqgcDl8MhV6o2g6wyPR8qs6F8aTwNWscUL5zr/ODXh8cOQycMU
+	 Q3WEgqnEmGCQkj/vOBzeX2FJSmkXPBdflKKFiDj4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wahren <wahrenst@gmx.net>,
-	Mark Brown <broonie@kernel.org>,
+	syzbot <syzkaller@googlegroups.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 226/259] spi: spi-fsl-lpspi: Fix scldiv calculation
-Date: Thu, 15 Aug 2024 15:25:59 +0200
-Message-ID: <20240815131911.509082955@linuxfoundation.org>
+Subject: [PATCH 6.6 46/67] Bluetooth: RFCOMM: Fix not validating setsockopt user input
+Date: Thu, 15 Aug 2024 15:26:00 +0200
+Message-ID: <20240815131840.083071569@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131838.311442229@linuxfoundation.org>
+References: <20240815131838.311442229@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +63,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wahren <wahrenst@gmx.net>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 730bbfaf7d4890bd99e637db7767dc68cfeb24e7 ]
+[ Upstream commit a97de7bff13b1cc825c1b1344eaed8d6c2d3e695 ]
 
-The effective SPI clock frequency should never exceed speed_hz
-otherwise this might result in undefined behavior of the SPI device.
+syzbot reported rfcomm_sock_setsockopt_old() is copying data without
+checking user input length.
 
-Currently the scldiv calculation could violate this constraint.
-For the example parameters perclk_rate = 24 MHz and speed_hz = 7 MHz,
-the function fsl_lpspi_set_bitrate will determine perscale = 0 and
-scldiv = 1, which is a effective SPI clock of 8 MHz.
+BUG: KASAN: slab-out-of-bounds in copy_from_sockptr_offset
+include/linux/sockptr.h:49 [inline]
+BUG: KASAN: slab-out-of-bounds in copy_from_sockptr
+include/linux/sockptr.h:55 [inline]
+BUG: KASAN: slab-out-of-bounds in rfcomm_sock_setsockopt_old
+net/bluetooth/rfcomm/sock.c:632 [inline]
+BUG: KASAN: slab-out-of-bounds in rfcomm_sock_setsockopt+0x893/0xa70
+net/bluetooth/rfcomm/sock.c:673
+Read of size 4 at addr ffff8880209a8bc3 by task syz-executor632/5064
 
-So fix this by rounding up the quotient of perclk_rate and speed_hz.
-While this never change within the loop, we can pull this out.
-
-Fixes: 5314987de5e5 ("spi: imx: add lpspi bus driver")
-Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
-Link: https://patch.msgid.link/20240804113611.83613-1-wahrenst@gmx.net
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 9f2c8a03fbb3 ("Bluetooth: Replace RFCOMM link mode with security level")
+Fixes: bb23c0ab8246 ("Bluetooth: Add support for deferring RFCOMM connection setup")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-fsl-lpspi.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/bluetooth/rfcomm/sock.c | 14 +++++---------
+ 1 file changed, 5 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index 5351185fd9af7..2708bf15e1263 100644
---- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -317,7 +317,7 @@ static void fsl_lpspi_set_watermark(struct fsl_lpspi_data *fsl_lpspi)
- static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data *fsl_lpspi)
- {
- 	struct lpspi_config config = fsl_lpspi->config;
--	unsigned int perclk_rate, scldiv;
-+	unsigned int perclk_rate, scldiv, div;
- 	u8 prescale;
+diff --git a/net/bluetooth/rfcomm/sock.c b/net/bluetooth/rfcomm/sock.c
+index b54e8a530f55a..29aa07e9db9d7 100644
+--- a/net/bluetooth/rfcomm/sock.c
++++ b/net/bluetooth/rfcomm/sock.c
+@@ -629,7 +629,7 @@ static int rfcomm_sock_setsockopt_old(struct socket *sock, int optname,
  
- 	perclk_rate = clk_get_rate(fsl_lpspi->clk_per);
-@@ -328,8 +328,10 @@ static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data *fsl_lpspi)
- 		return -EINVAL;
- 	}
- 
-+	div = DIV_ROUND_UP(perclk_rate, config.speed_hz);
-+
- 	for (prescale = 0; prescale < 8; prescale++) {
--		scldiv = perclk_rate / config.speed_hz / (1 << prescale) - 2;
-+		scldiv = div / (1 << prescale) - 2;
- 		if (scldiv < 256) {
- 			fsl_lpspi->config.prescale = prescale;
+ 	switch (optname) {
+ 	case RFCOMM_LM:
+-		if (copy_from_sockptr(&opt, optval, sizeof(u32))) {
++		if (bt_copy_from_sockptr(&opt, sizeof(opt), optval, optlen)) {
+ 			err = -EFAULT;
  			break;
+ 		}
+@@ -664,7 +664,6 @@ static int rfcomm_sock_setsockopt(struct socket *sock, int level, int optname,
+ 	struct sock *sk = sock->sk;
+ 	struct bt_security sec;
+ 	int err = 0;
+-	size_t len;
+ 	u32 opt;
+ 
+ 	BT_DBG("sk %p", sk);
+@@ -686,11 +685,9 @@ static int rfcomm_sock_setsockopt(struct socket *sock, int level, int optname,
+ 
+ 		sec.level = BT_SECURITY_LOW;
+ 
+-		len = min_t(unsigned int, sizeof(sec), optlen);
+-		if (copy_from_sockptr(&sec, optval, len)) {
+-			err = -EFAULT;
++		err = bt_copy_from_sockptr(&sec, sizeof(sec), optval, optlen);
++		if (err)
+ 			break;
+-		}
+ 
+ 		if (sec.level > BT_SECURITY_HIGH) {
+ 			err = -EINVAL;
+@@ -706,10 +703,9 @@ static int rfcomm_sock_setsockopt(struct socket *sock, int level, int optname,
+ 			break;
+ 		}
+ 
+-		if (copy_from_sockptr(&opt, optval, sizeof(u32))) {
+-			err = -EFAULT;
++		err = bt_copy_from_sockptr(&opt, sizeof(opt), optval, optlen);
++		if (err)
+ 			break;
+-		}
+ 
+ 		if (opt)
+ 			set_bit(BT_SK_DEFER_SETUP, &bt_sk(sk)->flags);
 -- 
 2.43.0
 
