@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-69100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68738-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E20B395356E
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:37:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 163D69533BB
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:19:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4ADCAB22A58
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:37:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ADEED2876AA
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:19:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85B5C19FA7A;
-	Thu, 15 Aug 2024 14:37:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63F651AC8AE;
+	Thu, 15 Aug 2024 14:18:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h5k/HcKq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LT1h66ld"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 426F73214;
-	Thu, 15 Aug 2024 14:37:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 211FC1E526;
+	Thu, 15 Aug 2024 14:18:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732667; cv=none; b=PrLYPORwSnEHrTGnwqrL5TWak1uhypNf58PoylUKOuPZtmSpLdpLRUeYJpyPBZS2yANzcu0s77ai8Q1dsItt8qvccn95c+Z8uFq7xEz4wvAK5hwOL5ZBvc2mJD5n1vUM1CT4+trdrQ13dqbN45axZL+9Nmxm5h0lJOkYU/Z30kE=
+	t=1723731508; cv=none; b=rh/esRaVFBxPZ8RmmgaayFgK3lN81L0cve6Aecfr0L11VrpDm21DRta61CncPEadpDEIhkFeJzYsgekMdSNnUFXlFztym8WZS3oQn+/vMYeDQhMUhlUZzT8aaX6S6omGvDGphfU/dvHkbpVHIVxbNQ+NcQxFlZwmn3ETbn/dR1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732667; c=relaxed/simple;
-	bh=N4HgJq0sBNLZOnHnewma1SkZfYzk3tkisEePXjT6D2w=;
+	s=arc-20240116; t=1723731508; c=relaxed/simple;
+	bh=8U6BkqfiY8eG+oF2guFx7s4crljo2ycxR1MxwKmPeR4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YLl7gQU9NIgwMioTNByNNjVsLwCO+1c43FmQOD+QuAPAiFBee9qS9SpALCA1Og1lRxzgJPww9zsB8FuIwGqCJtePaKGgy7Cgf2/Uo9+6Bs2qJE9buLk7rVylatFkppEMU7v4DQvlh1pk3kgdueEgowD8An33etPmh1HsLVyr344=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h5k/HcKq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF165C32786;
-	Thu, 15 Aug 2024 14:37:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=k49jaOn/LoYde8PMgSg0FJt6xfAhCFY2KRZzH2NLYFpnXzjWHQP9laZioRtU2BTXWW6nmvpL6vJPXGfLET1wrgtc+n432TjNCJ1naX31KD2s1ggjuUF40QOtNUXLbwonzP84QelVVcXa1J8wAiyJLnbS+AlpYDcdqnvN8di1pHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LT1h66ld; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34A71C32786;
+	Thu, 15 Aug 2024 14:18:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732667;
-	bh=N4HgJq0sBNLZOnHnewma1SkZfYzk3tkisEePXjT6D2w=;
+	s=korg; t=1723731507;
+	bh=8U6BkqfiY8eG+oF2guFx7s4crljo2ycxR1MxwKmPeR4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h5k/HcKqSRI0zuX6Sb4TL+OtkyrISQh+pHkp5PGlhqNtw57c3Z6ynT9kSCnQxUIIQ
-	 56IM4gtXrkMoDbfLms4xGZ9kLvZeJgwUbPracPVIQZ1Ovx7cfpayX0TYJwrWq1Cg8G
-	 jBRuy9VKR3y3IfxR7o6a+XZwWTLGK+K8IMc/Qf7M=
+	b=LT1h66ldZHEY90ZPxQx2H0dFYqIDD4g4a8ujmwNlH8xmvsP8tOZSgGqBPGa8URaWX
+	 aI8AYbUSbGfjPa4VfB8WXsDrU60uhDDK0Tg3n0INlQl4y0c6mMmyUHD/igFCpUFTO7
+	 C86dLTmCVXXYSo2GEvu8f9PP7hKuCOGosyrEL/mU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Sandeen <sandeen@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Josef Bacik <josef@toxicpanda.com>,
+	kernel test robot <lkp@intel.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 218/352] fuse: verify {g,u}id mount options correctly
+Subject: [PATCH 5.4 151/259] ASoC: Intel: use soc_intel_is_byt_cr() only when IOSF_MBI is reachable
 Date: Thu, 15 Aug 2024 15:24:44 +0200
-Message-ID: <20240815131927.715606774@linuxfoundation.org>
+Message-ID: <20240815131908.618219865@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,90 +64,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Sandeen <sandeen@redhat.com>
+From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
 
-[ Upstream commit 525bd65aa759ec320af1dc06e114ed69733e9e23 ]
+[ Upstream commit 9931f7d5d251882a147cc5811060097df43e79f5 ]
 
-As was done in
-0200679fc795 ("tmpfs: verify {g,u}id mount options correctly")
-we need to validate that the requested uid and/or gid is representable in
-the filesystem's idmapping.
+the Intel kbuild bot reports a link failure when IOSF_MBI is built-in
+but the Merrifield driver is configured as a module. The
+soc-intel-quirks.h is included for Merrifield platforms, but IOSF_MBI
+is not selected for that platform.
 
-Cribbing from the above commit log,
+ld.lld: error: undefined symbol: iosf_mbi_read
+>>> referenced by atom.c
+>>>               sound/soc/sof/intel/atom.o:(atom_machine_select) in archive vmlinux.a
 
-The contract for {g,u}id mount options and {g,u}id values in general set
-from userspace has always been that they are translated according to the
-caller's idmapping. In so far, fuse has been doing the correct thing.
-But since fuse is mountable in unprivileged contexts it is also
-necessary to verify that the resulting {k,g}uid is representable in the
-namespace of the superblock.
+This patch forces the use of the fallback static inline when IOSF_MBI is not reachable.
 
-Fixes: c30da2e981a7 ("fuse: convert to use the new mount API")
-Cc: stable@vger.kernel.org # 5.4+
-Signed-off-by: Eric Sandeen <sandeen@redhat.com>
-Link: https://lore.kernel.org/r/8f07d45d-c806-484d-a2e3-7a2199df1cd2@redhat.com
-Reviewed-by: Christian Brauner <brauner@kernel.org>
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: 536cfd2f375d ("ASoC: Intel: use common helpers to detect CPUs")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202407160704.zpdhJ8da-lkp@intel.com/
+Suggested-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Link: https://patch.msgid.link/20240722083002.10800-1-pierre-louis.bossart@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fuse/inode.c | 24 ++++++++++++++++++++----
- 1 file changed, 20 insertions(+), 4 deletions(-)
+ sound/soc/intel/common/soc-intel-quirks.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/fuse/inode.c b/fs/fuse/inode.c
-index 5f9b2dc59135b..a5d1eb0bc5214 100644
---- a/fs/fuse/inode.c
-+++ b/fs/fuse/inode.c
-@@ -540,6 +540,8 @@ static int fuse_parse_param(struct fs_context *fsc, struct fs_parameter *param)
- 	struct fs_parse_result result;
- 	struct fuse_fs_context *ctx = fsc->fs_private;
- 	int opt;
-+	kuid_t kuid;
-+	kgid_t kgid;
+diff --git a/sound/soc/intel/common/soc-intel-quirks.h b/sound/soc/intel/common/soc-intel-quirks.h
+index a46be331c178e..a7960b41a6a34 100644
+--- a/sound/soc/intel/common/soc-intel-quirks.h
++++ b/sound/soc/intel/common/soc-intel-quirks.h
+@@ -11,7 +11,7 @@
  
- 	if (fsc->purpose == FS_CONTEXT_FOR_RECONFIGURE) {
- 		/*
-@@ -584,16 +586,30 @@ static int fuse_parse_param(struct fs_context *fsc, struct fs_parameter *param)
- 		break;
+ #include <linux/platform_data/x86/soc.h>
  
- 	case OPT_USER_ID:
--		ctx->user_id = make_kuid(fsc->user_ns, result.uint_32);
--		if (!uid_valid(ctx->user_id))
-+		kuid =  make_kuid(fsc->user_ns, result.uint_32);
-+		if (!uid_valid(kuid))
- 			return invalfc(fsc, "Invalid user_id");
-+		/*
-+		 * The requested uid must be representable in the
-+		 * filesystem's idmapping.
-+		 */
-+		if (!kuid_has_mapping(fsc->user_ns, kuid))
-+			return invalfc(fsc, "Invalid user_id");
-+		ctx->user_id = kuid;
- 		ctx->user_id_present = true;
- 		break;
+-#if IS_ENABLED(CONFIG_X86)
++#if IS_REACHABLE(CONFIG_IOSF_MBI)
  
- 	case OPT_GROUP_ID:
--		ctx->group_id = make_kgid(fsc->user_ns, result.uint_32);
--		if (!gid_valid(ctx->group_id))
-+		kgid = make_kgid(fsc->user_ns, result.uint_32);;
-+		if (!gid_valid(kgid))
-+			return invalfc(fsc, "Invalid group_id");
-+		/*
-+		 * The requested gid must be representable in the
-+		 * filesystem's idmapping.
-+		 */
-+		if (!kgid_has_mapping(fsc->user_ns, kgid))
- 			return invalfc(fsc, "Invalid group_id");
-+		ctx->group_id = kgid;
- 		ctx->group_id_present = true;
- 		break;
- 
+ #include <linux/dmi.h>
+ #include <asm/iosf_mbi.h>
 -- 
 2.43.0
 
