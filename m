@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-68051-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68017-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BC21953064
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:42:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA4E295303E
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:40:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0186F287976
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:42:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E6071F23E0E
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:40:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E10119E7EF;
-	Thu, 15 Aug 2024 13:42:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 667211714A8;
+	Thu, 15 Aug 2024 13:40:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vtRTDPJ0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QA5JOg+1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B26019DF60;
-	Thu, 15 Aug 2024 13:42:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2430019E7F5;
+	Thu, 15 Aug 2024 13:40:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723729341; cv=none; b=vF+VBaXQSp0fl8jnzcUGwn2dUZxp9KyL6tCgmAgqjJv8LnufnwQctfSiZDP4PzINhSI/HRfmw4U2TpIylzMc8pW6/wWIHIvBiJgv2/PYPfMAKOfZydln/9zHrM50mx+Uqv4zXCjwIJ1u8yMt4Jc9r0IF1Evr+u1JPWCaPWebfMw=
+	t=1723729238; cv=none; b=TBzOMQg1Pf2cq/p1TMZvezCtcSrhABxgpnRjTPKqqIUaedEJUCULRxKT6JmmRsre+XqZm+SFkBeo0HHAt0RJ5/eA6EZg9t3qVCpw4ZbNqDVfl8zCJrSXaDqBH3iypb35sgjR4x+PvR2XlIxRVZtodVApsjalzxuId8xhEc26Ihg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723729341; c=relaxed/simple;
-	bh=DxhauyGkUMZ1madFYIE80xTOtum16NBkAoHvtxEv/RM=;
+	s=arc-20240116; t=1723729238; c=relaxed/simple;
+	bh=gl4dd5G4mX5jISA0Wi5Snu+eNuD465piBCqpFqRxX8o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jGp82U3+QE+hwZfkVsQjqzmVfRonanRO2JVLyHPSnoZR81oxo4CU8sJM9QJkEMJ6gSwx+g42U+RrhcVNbB59Bp7DBsp7yHftrPsyWsaTNnaSe55Bbp3ALcxXsZAZdVqkjXHa14jy/YpUK0EFFtTbPUfdDZbefPJTR/FAlLtGFbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vtRTDPJ0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDC0AC32786;
-	Thu, 15 Aug 2024 13:42:20 +0000 (UTC)
+	 MIME-Version; b=aVLwvkTahIJfho72AVDAP3P4b1pboAmqVU7DOKx+2yFTa60an3imWSnKPVyrg0pjBViq0gi9a6iksoeoIlytNljegDGAbGWER9Ob6XcJzlFKzAHTBaE1PY0LazvKkUKUYt0jRVNoFih8L6OAGwbVCIK3eQ24KEZl0zcg210GoAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QA5JOg+1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CDC8C32786;
+	Thu, 15 Aug 2024 13:40:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723729341;
-	bh=DxhauyGkUMZ1madFYIE80xTOtum16NBkAoHvtxEv/RM=;
+	s=korg; t=1723729238;
+	bh=gl4dd5G4mX5jISA0Wi5Snu+eNuD465piBCqpFqRxX8o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vtRTDPJ0GwbX1b9T8eZGVZv+j6+VYLK6dMmwIAL2Ing38rNDjKoZSUyKJPgfe3fTZ
-	 XgbSUY7YPIHIqMDRBblm+8tnlv7qeZ8e2IF52Ux8+sagA5uyYX8cKgZCJIhezbNpMB
-	 vem6v2JBchGGwV4p9Ex5pFwHEJnOibyDEGgpM2j8=
+	b=QA5JOg+13HCE76d747GKFTxBpujvvHWgfL/AVHxBH2GAS3r6IhHqBEwQMHiTiPQJ6
+	 0QGI0Pl9iIgYEMEXHFK59GLZHJ9msR6zJ3gPckAPsXmXWVfCILtn3P93NQFC5NpLyw
+	 wvj2rD7SM6CvfHOjAcg6RMz6iybenZp3qylCL1O0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Marco Felsch <m.felsch@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 026/484] arm64: dts: rockchip: Increase VOP clk rate on RK3328
-Date: Thu, 15 Aug 2024 15:18:04 +0200
-Message-ID: <20240815131942.286274319@linuxfoundation.org>
+Subject: [PATCH 5.15 027/484] ARM: dts: imx6qdl-kontron-samx6i: move phy reset into phy-node
+Date: Thu, 15 Aug 2024 15:18:05 +0200
+Message-ID: <20240815131942.324726988@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
 References: <20240815131941.255804951@linuxfoundation.org>
@@ -66,40 +66,48 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jonas Karlman <jonas@kwiboo.se>
+From: Marco Felsch <m.felsch@pengutronix.de>
 
-[ Upstream commit 0f2ddb128fa20f8441d903285632f2c69e90fae1 ]
+[ Upstream commit 5694eed98cca5c164ebb5b831b65b4c9eee4b2d5 ]
 
-The VOP on RK3328 needs to run at a higher rate in order to produce a
-proper 3840x2160 signal.
+Add ethernet-phy node so we can drop the deprecated fec phy-reset-gpios
+property. The reset-assert-us value is taken from the existing logic
+since the fec driver will add an 1ms assert delay per default if
+phy-reset-gpios is used and phy-reset-duration is not specified.
 
-Change to use 300MHz for VIO clk and 400MHz for VOP clk, same rates used
-by vendor 4.4 kernel.
-
-Fixes: 52e02d377a72 ("arm64: dts: rockchip: add core dtsi file for RK3328 SoCs")
-Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
-Link: https://lore.kernel.org/r/20240615170417.3134517-2-jonas@kwiboo.se
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Stable-dep-of: edfea889a049 ("ARM: dts: imx6qdl-kontron-samx6i: fix PHY reset")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3328.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm/boot/dts/imx6qdl-kontron-samx6i.dtsi | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3328.dtsi b/arch/arm64/boot/dts/rockchip/rk3328.dtsi
-index 26f02cc70dc5d..21755dd5b4c45 100644
---- a/arch/arm64/boot/dts/rockchip/rk3328.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3328.dtsi
-@@ -807,8 +807,8 @@ cru: clock-controller@ff440000 {
- 			<0>, <24000000>,
- 			<24000000>, <24000000>,
- 			<15000000>, <15000000>,
--			<100000000>, <100000000>,
--			<100000000>, <100000000>,
-+			<300000000>, <100000000>,
-+			<400000000>, <100000000>,
- 			<50000000>, <100000000>,
- 			<100000000>, <100000000>,
- 			<50000000>, <50000000>,
+diff --git a/arch/arm/boot/dts/imx6qdl-kontron-samx6i.dtsi b/arch/arm/boot/dts/imx6qdl-kontron-samx6i.dtsi
+index 683f6e58ab230..85aeebc9485dd 100644
+--- a/arch/arm/boot/dts/imx6qdl-kontron-samx6i.dtsi
++++ b/arch/arm/boot/dts/imx6qdl-kontron-samx6i.dtsi
+@@ -260,7 +260,19 @@ &fec {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&pinctrl_enet>;
+ 	phy-mode = "rgmii";
+-	phy-reset-gpios = <&gpio1 25 GPIO_ACTIVE_LOW>;
++	phy-handle = <&ethphy>;
++
++	mdio {
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		ethphy: ethernet-phy@1 {
++			compatible = "ethernet-phy-ieee802.3-c22";
++			reg = <1>;
++			reset-gpios = <&gpio1 25 GPIO_ACTIVE_LOW>;
++			reset-assert-us = <1000>;
++		};
++	};
+ };
+ 
+ &hdmi {
 -- 
 2.43.0
 
