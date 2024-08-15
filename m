@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-69052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68753-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F98A953534
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:35:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E0319533CE
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:20:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 911B21C23B03
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:35:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0FBB2288365
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:20:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8459117C995;
-	Thu, 15 Aug 2024 14:35:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAB211A706F;
+	Thu, 15 Aug 2024 14:19:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MBRmqAPV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YPs5h7K8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 448DC63D5;
-	Thu, 15 Aug 2024 14:35:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 657F81A0712;
+	Thu, 15 Aug 2024 14:19:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732511; cv=none; b=Maxu/GC64C4qgCY5fSnnsNrx0LoCwqRphnVQeJT9/uGCzhIOzP2hyFF0djgVAdIG3iwIUwYdJQbXDiMaPzL6IUmQm05rK+UDyoADw4iGVILTrIYDiz2js6dNkcqsBFRKMfXpWfHwbQb/vcsSS7JLJ8dN0J3Np2rE0NebuJR0ZL0=
+	t=1723731556; cv=none; b=AZKrPIz947ZdE6DKgFpHTKgga6JfvF8WIqvMTXxKVuejMgaGz1CNwtG6Mr0wzI1NYwYYdTzCugwIVC97QsTUx1TjyB40T5C978VhBkxusqUwCzBG9rvnPVOik5TKAnHtD8oYygUj6vcaX9S2WpGztJi1XTXOCuWixaucdHwEz38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732511; c=relaxed/simple;
-	bh=efAejBIREQyy/P54z5EliFlt82pOs0fUeE3zLidgpT4=;
+	s=arc-20240116; t=1723731556; c=relaxed/simple;
+	bh=H0/UNrnqcNnUpAK69rMuqsTnh5+I7z9WlYRtRxluGFU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GZhcU20S/qtyfqj4cyyqEHrjN3VjlmFNmEpKFjvJu0wku9VrlRbjPAX1xfx/FXamVRMczxZmU3QJ6TtdFa8JfGjLyE4r81eh+T+esxbcW91zFBHQVoCERlPr1AMNGyRy4yhH9RNAGIkg+Ahwcv8KjNDC9SdzlfT9M7sQ+4TQp/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MBRmqAPV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B3DBC32786;
-	Thu, 15 Aug 2024 14:35:09 +0000 (UTC)
+	 MIME-Version; b=pmdTE6eBufBYtv/XmhBWrUmnHrzWpPi48q5O/n/CWZyzQ5BoJ32geFEcAJZZpni48WQwiIKr91b4ZuQU+ANNQUxvChtvW5PWBL6TiUsjoiNVAUbCegdT+HBhBsA01Q/5eb6G4Es4z5aLr3Lm/wggiXwlBIQl+dcGDBm+K+N0sOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YPs5h7K8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83F43C4AF0A;
+	Thu, 15 Aug 2024 14:19:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732511;
-	bh=efAejBIREQyy/P54z5EliFlt82pOs0fUeE3zLidgpT4=;
+	s=korg; t=1723731556;
+	bh=H0/UNrnqcNnUpAK69rMuqsTnh5+I7z9WlYRtRxluGFU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MBRmqAPVzfDLS71dWFxGHIE0r0n0Lnr3dypCTgofahaFtHoKI/YiHXxpboMT8ZOZq
-	 1/42JBNPUm0r51PZRh84Pv1St2lMoIzXMgjfs1ib7Gb+y65LaxWKs/27nTGTftIKWP
-	 UHnub0xAq2JuQAuwcjTn3OCu33pfqjnxRxBixa0E=
+	b=YPs5h7K8yZ550P6wlnu9nIlnUlsIo5aMUUmTg5kMFYww28vaKZ4FHREeh+YONIoQ4
+	 GSXHEf0jxw3yyd4mr/PFzgHPwVSHeMEOoZSFcSVut0OKuhm1aN7e1w/GXWFpRwS7c0
+	 +E3IxE4AKqpzLr/nwIb0JQC+i4ZGAFqVw8ATWa/o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Machata <petrm@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Douglas Anderson <dianders@chromium.org>,
+	Daniel Thompson <daniel.thompson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 201/352] net: nexthop: Initialize all fields in dumped nexthops
-Date: Thu, 15 Aug 2024 15:24:27 +0200
-Message-ID: <20240815131927.046232786@linuxfoundation.org>
+Subject: [PATCH 5.4 135/259] kdb: Use the passed prompt in kdb_position_cursor()
+Date: Thu, 15 Aug 2024 15:24:28 +0200
+Message-ID: <20240815131908.007079606@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Machata <petrm@nvidia.com>
+From: Douglas Anderson <dianders@chromium.org>
 
-[ Upstream commit 6d745cd0e9720282cd291d36b9db528aea18add2 ]
+[ Upstream commit e2e821095949cde46256034975a90f88626a2a73 ]
 
-struct nexthop_grp contains two reserved fields that are not initialized by
-nla_put_nh_group(), and carry garbage. This can be observed e.g. with
-strace (edited for clarity):
+The function kdb_position_cursor() takes in a "prompt" parameter but
+never uses it. This doesn't _really_ matter since all current callers
+of the function pass the same value and it's a global variable, but
+it's a bit ugly. Let's clean it up.
 
-    # ip nexthop add id 1 dev lo
-    # ip nexthop add id 101 group 1
-    # strace -e recvmsg ip nexthop get id 101
-    ...
-    recvmsg(... [{nla_len=12, nla_type=NHA_GROUP},
-                 [{id=1, weight=0, resvd1=0x69, resvd2=0x67}]] ...) = 52
+Found by code inspection. This patch is expected to functionally be a
+no-op.
 
-The fields are reserved and therefore not currently used. But as they are, they
-leak kernel memory, and the fact they are not just zero complicates repurposing
-of the fields for new ends. Initialize the full structure.
-
-Fixes: 430a049190de ("nexthop: Add support for nexthop groups")
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 09b35989421d ("kdb: Use format-strings rather than '\0' injection in kdb_read()")
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://lore.kernel.org/r/20240528071144.1.I0feb49839c6b6f4f2c4bf34764f5e95de3f55a66@changeid
+Signed-off-by: Daniel Thompson <daniel.thompson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/nexthop.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ kernel/debug/kdb/kdb_io.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv4/nexthop.c b/net/ipv4/nexthop.c
-index 7a0102a4b1de7..a508fd94b8be0 100644
---- a/net/ipv4/nexthop.c
-+++ b/net/ipv4/nexthop.c
-@@ -210,9 +210,10 @@ static int nla_put_nh_group(struct sk_buff *skb, struct nh_group *nhg)
- 
- 	p = nla_data(nla);
- 	for (i = 0; i < nhg->num_nh; ++i) {
--		p->id = nhg->nh_entries[i].nh->id;
--		p->weight = nhg->nh_entries[i].weight - 1;
--		p += 1;
-+		*p++ = (struct nexthop_grp) {
-+			.id = nhg->nh_entries[i].nh->id,
-+			.weight = nhg->nh_entries[i].weight - 1,
-+		};
- 	}
- 
- 	return 0;
+diff --git a/kernel/debug/kdb/kdb_io.c b/kernel/debug/kdb/kdb_io.c
+index 9ce4e52532b77..bfce77a0daac8 100644
+--- a/kernel/debug/kdb/kdb_io.c
++++ b/kernel/debug/kdb/kdb_io.c
+@@ -192,7 +192,7 @@ static int kdb_read_get_key(char *buffer, size_t bufsize)
+  */
+ static void kdb_position_cursor(char *prompt, char *buffer, char *cp)
+ {
+-	kdb_printf("\r%s", kdb_prompt_str);
++	kdb_printf("\r%s", prompt);
+ 	if (cp > buffer)
+ 		kdb_printf("%.*s", (int)(cp - buffer), buffer);
+ }
 -- 
 2.43.0
 
