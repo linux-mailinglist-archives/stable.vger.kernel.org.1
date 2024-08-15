@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-68961-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68627-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1539A9534C9
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:30:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1924A95333E
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:15:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A3596B26ECA
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:30:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE1AA2879CE
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:15:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C2E719DFA4;
-	Thu, 15 Aug 2024 14:30:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66D831B3748;
+	Thu, 15 Aug 2024 14:12:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HJlqt5fu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NPOt4iQj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEAEC63D5;
-	Thu, 15 Aug 2024 14:30:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24DDA1B32CD;
+	Thu, 15 Aug 2024 14:12:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732220; cv=none; b=bvfJQL3AQz1eXEdYPFvB/ijlSvQjlDUHtR3RMnekekkxuWmHwb6K7Xa8eCO2x3hYMCmApkpLNcAKlXiZCQGvqaDzrI0GlocwlBoO4+4XWa2tg0ja7ghtFTrFUt4rUV3N857ZFm0xyJTGzVQQHkszFRKciDT2+cIS1wd5kPfZCVc=
+	t=1723731164; cv=none; b=FkFLjLj2LKoi+9bQ9/AZqj2Wq9vfD0PkNzJuYS/km6tZznRvNtYiBdPHVMfCVZzB7G8XFdiqMBQBYPDHyQhSQ6TYynCHJroikXF97n9bSNE5SJk5DuD6X3vqo/ibzVNs98AsLyUIH3AHej/QQ4piSzTXjRQ774pFeoJUCZg2LUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732220; c=relaxed/simple;
-	bh=FvYnCRKsnDBWpalkKYYbowK04nIbSawCNgOfQToyVWg=;
+	s=arc-20240116; t=1723731164; c=relaxed/simple;
+	bh=BGrgjzYhIhZy1M9Zm8PF5CCYxdDb50dDKsoUYKtHOFA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DXOO2B1+yplba0IHfRomwcXYya9zwEYFCKa5eGDAome7xiu/zeyOMUIZFUMvM5bBfZghG0kXgq1KDyNFdM+ZbM7zLvIQLyjIbfjZjJw0JWzWOk08ch2rYlowj62ZdxlExps8RhBdkiBDVDbabvRqyXIPMX+oT87Z241ciOF8a2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HJlqt5fu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA1ABC32786;
-	Thu, 15 Aug 2024 14:30:19 +0000 (UTC)
+	 MIME-Version; b=G8Hv5B1rxCLyPI4IhCAS+G7MxGU/4W4JMI1Bg9dAyEM+PWdWAIcu1RfMHTdT9TeXi4u3zqY5aXn/YdqR7bq8RC78AjLRKpD75QNAG2gkRD7E/WgNXB1fYe9ODP6K/xa+x4yT13IDX47dMQLOWu/X07oowTozST4KtJTb4rTzUuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NPOt4iQj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 821B3C32786;
+	Thu, 15 Aug 2024 14:12:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732220;
-	bh=FvYnCRKsnDBWpalkKYYbowK04nIbSawCNgOfQToyVWg=;
+	s=korg; t=1723731164;
+	bh=BGrgjzYhIhZy1M9Zm8PF5CCYxdDb50dDKsoUYKtHOFA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HJlqt5fug9VJvi0zqA9F1iGtAkaTOFjR3YQ0ynl7TE3cwFpk4XIdtkDq3oJg1ZjhZ
-	 1tpUBVMMbDnb+HWOztac3bzNAW1XkYR3nz0P2ipevjpQctiuLdPSvQ7A6m1BbtIcXN
-	 z3uIbCk1w0ECRGIAxJhlzN3Pp8BXQfobz6fW8zFk=
+	b=NPOt4iQjf8egXq4Cojh9ObTi18QhM1x0UsSArus4X8yIwgK7/xJygbA+jJ6pRZwob
+	 0hwQ5djEBHR9QcZIL4N8YU/AnwbtMXE4j75Iqs3XGeUvXWgrr0+qoYB32DTDaWoGbP
+	 q5ZS4nb03YBNit7pDJFPQFOl8lDzqquNOOosO4Hg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jack Wang <jinpu.wang@ionos.com>,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 110/352] bnxt_re: Fix imm_data endianness
+Subject: [PATCH 5.4 043/259] perf: Prevent passing zero nr_pages to rb_alloc_aux()
 Date: Thu, 15 Aug 2024 15:22:56 +0200
-Message-ID: <20240815131923.507933505@linuxfoundation.org>
+Message-ID: <20240815131904.467445870@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,107 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jack Wang <jinpu.wang@ionos.com>
+From: Adrian Hunter <adrian.hunter@intel.com>
 
-[ Upstream commit 95b087f87b780daafad1dbb2c84e81b729d5d33f ]
+[ Upstream commit dbc48c8f41c208082cfa95e973560134489e3309 ]
 
-When map a device between servers with MLX and BCM RoCE nics, RTRS
-server complain about unknown imm type, and can't map the device,
+nr_pages is unsigned long but gets passed to rb_alloc_aux() as an int,
+and is stored as an int.
 
-After more debug, it seems bnxt_re wrongly handle the
-imm_data, this patch fixed the compat issue with MLX for us.
+Only power-of-2 values are accepted, so if nr_pages is a 64_bit value, it
+will be passed to rb_alloc_aux() as zero.
 
-In off list discussion, Selvin confirmed HW is working in little endian format
-and all data needs to be converted to LE while providing.
+That is not ideal because:
+ 1. the value is incorrect
+ 2. rb_alloc_aux() is at risk of misbehaving, although it manages to
+ return -ENOMEM in that case, it is a result of passing zero to get_order()
+ even though the get_order() result is documented to be undefined in that
+ case.
 
-This patch fix the endianness for imm_data
+Fix by simply validating the maximum supported value in the first place.
+Use -ENOMEM error code for consistency with the current error code that
+is returned in that case.
 
-Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
-Signed-off-by: Jack Wang <jinpu.wang@ionos.com>
-Link: https://lore.kernel.org/r/20240710122102.37569-1-jinpu.wang@ionos.com
-Acked-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: 45bfb2e50471 ("perf: Add AUX area to ring buffer for raw data streams")
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20240624201101.60186-6-adrian.hunter@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/ib_verbs.c | 8 ++++----
- drivers/infiniband/hw/bnxt_re/qplib_fp.h | 6 +++---
- 2 files changed, 7 insertions(+), 7 deletions(-)
+ kernel/events/core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.c b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-index a0d7777acb6d4..f16e0b2c7895e 100644
---- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-+++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-@@ -2357,7 +2357,7 @@ static int bnxt_re_build_send_wqe(struct bnxt_re_qp *qp,
- 		break;
- 	case IB_WR_SEND_WITH_IMM:
- 		wqe->type = BNXT_QPLIB_SWQE_TYPE_SEND_WITH_IMM;
--		wqe->send.imm_data = wr->ex.imm_data;
-+		wqe->send.imm_data = be32_to_cpu(wr->ex.imm_data);
- 		break;
- 	case IB_WR_SEND_WITH_INV:
- 		wqe->type = BNXT_QPLIB_SWQE_TYPE_SEND_WITH_INV;
-@@ -2387,7 +2387,7 @@ static int bnxt_re_build_rdma_wqe(const struct ib_send_wr *wr,
- 		break;
- 	case IB_WR_RDMA_WRITE_WITH_IMM:
- 		wqe->type = BNXT_QPLIB_SWQE_TYPE_RDMA_WRITE_WITH_IMM;
--		wqe->rdma.imm_data = wr->ex.imm_data;
-+		wqe->rdma.imm_data = be32_to_cpu(wr->ex.imm_data);
- 		break;
- 	case IB_WR_RDMA_READ:
- 		wqe->type = BNXT_QPLIB_SWQE_TYPE_RDMA_READ;
-@@ -3334,7 +3334,7 @@ static void bnxt_re_process_res_shadow_qp_wc(struct bnxt_re_qp *gsi_sqp,
- 	wc->byte_len = orig_cqe->length;
- 	wc->qp = &gsi_qp->ib_qp;
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 2347dda682abd..39cf0040e6dfb 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -5830,6 +5830,8 @@ static int perf_mmap(struct file *file, struct vm_area_struct *vma)
+ 			return -EINVAL;
  
--	wc->ex.imm_data = orig_cqe->immdata;
-+	wc->ex.imm_data = cpu_to_be32(le32_to_cpu(orig_cqe->immdata));
- 	wc->src_qp = orig_cqe->src_qp;
- 	memcpy(wc->smac, orig_cqe->smac, ETH_ALEN);
- 	if (bnxt_re_is_vlan_pkt(orig_cqe, &vlan_id, &sl)) {
-@@ -3474,7 +3474,7 @@ int bnxt_re_poll_cq(struct ib_cq *ib_cq, int num_entries, struct ib_wc *wc)
- 				continue;
- 			}
- 			wc->qp = &qp->ib_qp;
--			wc->ex.imm_data = cqe->immdata;
-+			wc->ex.imm_data = cpu_to_be32(le32_to_cpu(cqe->immdata));
- 			wc->src_qp = cqe->src_qp;
- 			memcpy(wc->smac, cqe->smac, ETH_ALEN);
- 			wc->port_num = 1;
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_fp.h b/drivers/infiniband/hw/bnxt_re/qplib_fp.h
-index 667f93d90045e..f112f013df7d9 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_fp.h
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_fp.h
-@@ -162,7 +162,7 @@ struct bnxt_qplib_swqe {
- 		/* Send, with imm, inval key */
- 		struct {
- 			union {
--				__be32	imm_data;
-+				u32	imm_data;
- 				u32	inv_key;
- 			};
- 			u32		q_key;
-@@ -180,7 +180,7 @@ struct bnxt_qplib_swqe {
- 		/* RDMA write, with imm, read */
- 		struct {
- 			union {
--				__be32	imm_data;
-+				u32	imm_data;
- 				u32	inv_key;
- 			};
- 			u64		remote_va;
-@@ -372,7 +372,7 @@ struct bnxt_qplib_cqe {
- 	u16				cfa_meta;
- 	u64				wr_id;
- 	union {
--		__be32			immdata;
-+		__le32			immdata;
- 		u32			invrkey;
- 	};
- 	u64				qp_handle;
+ 		nr_pages = vma_size / PAGE_SIZE;
++		if (nr_pages > INT_MAX)
++			return -ENOMEM;
+ 
+ 		mutex_lock(&event->mmap_mutex);
+ 		ret = -EINVAL;
 -- 
 2.43.0
 
