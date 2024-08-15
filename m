@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-68316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67832-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7850E9531A1
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:56:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72532952F4E
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:31:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 211711F2146E
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:56:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C6661F26CED
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:31:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0830E18D64F;
-	Thu, 15 Aug 2024 13:56:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5933A1714D0;
+	Thu, 15 Aug 2024 13:30:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zDPlg7uD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E55tafs7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9DF21714A1;
-	Thu, 15 Aug 2024 13:56:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 158907DA78;
+	Thu, 15 Aug 2024 13:30:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730184; cv=none; b=iq/yiStWlT+GwLLflQezGwsO8yYydzOL7oYsCWzcMTlyUR0pQKu5y1HgvZHcokApe0ukiKuEXiu9Ybk9SOH4nN4jn94aXID1AhaqQUBSz3IJ+X3NWYKUGpenVN3pLnoO3HMnJ2J99SQmQoWGKzuGeuNVucteQdqbhgRyaaXikOg=
+	t=1723728659; cv=none; b=tXg9hIbw8fzJEWZAHmqLMax+Lnw67Jp3nxXIwq1k4Rpf/a/SZUq7NDA0DvxVYyFgYUktMQbkiQ3l41zo27m2LE81I7xfdNvlGJdjmtW2GmvcnHtA1nnBMxEa1dLb5uPccxjRf7TVKmb5uuB4l48lnZBfszEbVtm9FHjAGdQ2Tk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730184; c=relaxed/simple;
-	bh=vVB4msi48NoPdZ06PGuMt4xfu0TjupwVz2EWwuQYWOc=;
+	s=arc-20240116; t=1723728659; c=relaxed/simple;
+	bh=GPPx87Hq6sRB3FhnWxiZIUdq2qEkmB4/42OrCox/v+w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MgNkKMMBFrBM356nMPm7IHYag5wK1BbwTNFVZRJJmyTR/1qZBJZ/yrAO0dTODiQaLBUoa3deeyEOITQjHwRiMpUhII2tJRKev6/5lZnvCnCenj3pgYFHnTYtmUWImwvaIZRYWzfNk54NO9nAvjvu3zn26z+gxObkVs4akECEOIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zDPlg7uD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D5E0C4AF0D;
-	Thu, 15 Aug 2024 13:56:23 +0000 (UTC)
+	 MIME-Version; b=m/7dVy3lrHNA/RIToY1GGa1HFXVBTvDxeM/dYS9ova4KX4HB17wJkDPFUD0jO/sZRY//n94Hb1r7WXc2djyzgmFzeFLugy9tLixLYCHljMqKiSS/7EjQ7PuCeK/VyuEpCgPiss3PnOLKWNXdVPbL7pTzdHGCS3zlPXFZD+wXQT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E55tafs7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86C84C32786;
+	Thu, 15 Aug 2024 13:30:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730184;
-	bh=vVB4msi48NoPdZ06PGuMt4xfu0TjupwVz2EWwuQYWOc=;
+	s=korg; t=1723728659;
+	bh=GPPx87Hq6sRB3FhnWxiZIUdq2qEkmB4/42OrCox/v+w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zDPlg7uDqhS5XoSyoQsLDjGgydBuseyUPOhO2FxF+bUT9odCM8YQx1DFV40zdcnhh
-	 OZd+Lr25Uuq/NMMKWCYAchGkBiEY5lRZ3xJT3pOpp8djyi6M0fQkHbhpuGhNjTsYtY
-	 Pta54k268EDC/ndJOBoeyThNhVOAluyTwL8sI+Q4=
+	b=E55tafs7sBBjc7w7sAgeoynroYKIFhvkgyQkFvEF1gOfF/BBj9pfILil0mCyrYL++
+	 Xh/TKV1lBY8FkZIJLLCeslg6Eb0M+G1tzI7Em/ghB1TfANwrjaNwzoajOFH3vqS1KT
+	 +RehdAcF/rFDVrjSMcx3n3HChQGtWCMzfwBGEx9k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ben Skeggs <bskeggs@nvidia.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 328/484] drm/nouveau: prime: fix refcount underflow
+	Ma Ke <make24@iscas.ac.cn>,
+	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
+Subject: [PATCH 4.19 069/196] drm/gma500: fix null pointer dereference in cdv_intel_lvds_get_modes
 Date: Thu, 15 Aug 2024 15:23:06 +0200
-Message-ID: <20240815131954.079815818@linuxfoundation.org>
+Message-ID: <20240815131854.716680776@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
+References: <20240815131852.063866671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +59,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Danilo Krummrich <dakr@kernel.org>
+From: Ma Ke <make24@iscas.ac.cn>
 
-[ Upstream commit a9bf3efc33f1fbf88787a277f7349459283c9b95 ]
+commit cb520c3f366c77e8d69e4e2e2781a8ce48d98e79 upstream.
 
-Calling nouveau_bo_ref() on a nouveau_bo without initializing it (and
-hence the backing ttm_bo) leads to a refcount underflow.
+In cdv_intel_lvds_get_modes(), the return value of drm_mode_duplicate()
+is assigned to mode, which will lead to a NULL pointer dereference on
+failure of drm_mode_duplicate(). Add a check to avoid npd.
 
-Instead of calling nouveau_bo_ref() in the unwind path of
-drm_gem_object_init(), clean things up manually.
-
-Fixes: ab9ccb96a6e6 ("drm/nouveau: use prime helpers")
-Reviewed-by: Ben Skeggs <bskeggs@nvidia.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240718165959.3983-2-dakr@kernel.org
-(cherry picked from commit 1b93f3e89d03cfc576636e195466a0d728ad8de5)
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 6a227d5fd6c4 ("gma500: Add support for Cedarview")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Signed-off-by: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240709113311.37168-1-make24@iscas.ac.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_prime.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/gma500/cdv_intel_lvds.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/nouveau/nouveau_prime.c b/drivers/gpu/drm/nouveau/nouveau_prime.c
-index 531615719f6da..89fcbfdb5f0af 100644
---- a/drivers/gpu/drm/nouveau/nouveau_prime.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_prime.c
-@@ -63,7 +63,8 @@ struct drm_gem_object *nouveau_gem_prime_import_sg_table(struct drm_device *dev,
- 	 * to the caller, instead of a normal nouveau_bo ttm reference. */
- 	ret = drm_gem_object_init(dev, &nvbo->bo.base, size);
- 	if (ret) {
--		nouveau_bo_ref(NULL, &nvbo);
-+		drm_gem_object_release(&nvbo->bo.base);
-+		kfree(nvbo);
- 		obj = ERR_PTR(-ENOMEM);
- 		goto unlock;
+--- a/drivers/gpu/drm/gma500/cdv_intel_lvds.c
++++ b/drivers/gpu/drm/gma500/cdv_intel_lvds.c
+@@ -404,6 +404,9 @@ static int cdv_intel_lvds_get_modes(stru
+ 	if (mode_dev->panel_fixed_mode != NULL) {
+ 		struct drm_display_mode *mode =
+ 		    drm_mode_duplicate(dev, mode_dev->panel_fixed_mode);
++		if (!mode)
++			return 0;
++
+ 		drm_mode_probed_add(connector, mode);
+ 		return 1;
  	}
--- 
-2.43.0
-
 
 
 
