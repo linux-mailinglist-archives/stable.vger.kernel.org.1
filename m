@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-69083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68430-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BBA895355B
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:36:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED225953246
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:04:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BFC2F1C24D1E
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:36:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3FED5B23D71
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:04:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B3921A00F8;
-	Thu, 15 Aug 2024 14:36:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C62319FA7E;
+	Thu, 15 Aug 2024 14:02:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hh1+eX3A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XespUck+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4893417BEC0;
-	Thu, 15 Aug 2024 14:36:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 396411B4C31;
+	Thu, 15 Aug 2024 14:02:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732611; cv=none; b=hrlWidfCKiGujDFNreY+VX37e4fDI4SAJtLdisLDua/iu1Gx3FUqVw3/73HeBWGdClQM/lD5IG/gJ2icrgP7rBJaXmUGIbqBTG2aX39R0HYF1LXNkyqGoqykAxtk3asEMe34+FHsyFflyWhtHatpjJKuGweqxNi728SDGADcxAg=
+	t=1723730543; cv=none; b=R5QEFytZwGzctVV3Ge/Nwl8rdVdkWN9FiUECr2T+pVe0HBZYvgmOm4VPPR8c1kJdZ2TzcMyL7cs15SYMiXgkS8tOqFdxZ3FhmP/f8mW5uzdahFUJ3gbTl1JdOn/4cddmQ8iitR8GaQWAkjpBA+eI7gn/6P7EJqVw1suRg2XcC+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732611; c=relaxed/simple;
-	bh=D4OK5lfSo+QMAaRd5VJDUl9KtM+GO9fwrgccBX6JV4o=;
+	s=arc-20240116; t=1723730543; c=relaxed/simple;
+	bh=8g7rTr4taSEugZP9giu426HbT5YqcR8ASFg/PWOkalM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=C+Sdm8ecCx6WI+2trtwz+rUS5KC5KsS3tp/X6aWLATxpwW1RU3kA65XQvlOrjeSovvXN0FgBtvclZ24bH+pzTKQxhvcc1xj9UgO42lHHKdl+/IR+7Z9Oy0T3ZetuL61EeTaGch8LhvHAnRnOoXaBP+B8q0HlGnEhAodMSepXxM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hh1+eX3A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B44C6C4AF0D;
-	Thu, 15 Aug 2024 14:36:50 +0000 (UTC)
+	 MIME-Version; b=ZOy3ox20a0GgN24wvBBLfWpS7chg0gI1kmUllClGnfWlK7DVhlRBXQns4AMTPSjrKbQID/PDai9QdtgZUNZZxEkvxP6Zk34vW7J/0hPwnAPYlEIhWs0M5omBcvSHIiqZetGQsO/5Nq5Jh0kl+OEHV491lKw38Us4vEhVCPopMEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XespUck+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B00ACC4AF0A;
+	Thu, 15 Aug 2024 14:02:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732611;
-	bh=D4OK5lfSo+QMAaRd5VJDUl9KtM+GO9fwrgccBX6JV4o=;
+	s=korg; t=1723730543;
+	bh=8g7rTr4taSEugZP9giu426HbT5YqcR8ASFg/PWOkalM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hh1+eX3AtBm/ALVIOvhgLyvbA4cbCEt4M+PdtrWQGHGD/Uccx4tZFrUXTGBzOgY2r
-	 ZsxPkuOFErH9qvyC3K029fVbE70MVkF5PdwX2S9dUtODg55Ydkd0njbflIbBGpgGP3
-	 KNETl2Spg4gcWyzQ/JeEwwmp5/sleU5sb/9oqjcU=
+	b=XespUck+rx3ACz35CPpdC6CpC3q85WbL7w1H+YuvEPJEGGmS7FZ81z9+g3r6S+qTg
+	 T49i7fYXuhv9/c3TJ0lbzjLoTmlp7jfg2ase5t5CCgPCMr5OD19BHc72OUUkIMi6Oz
+	 22O1fSgkLzj2tn39/wExDen4y6DsOmHfypcpkmkE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ben Skeggs <bskeggs@nvidia.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 233/352] drm/nouveau: prime: fix refcount underflow
-Date: Thu, 15 Aug 2024 15:24:59 +0200
-Message-ID: <20240815131928.442365707@linuxfoundation.org>
+	Hans de Goede <hdegoede@redhat.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>
+Subject: [PATCH 5.15 442/484] power: supply: axp288_charger: Fix constant_charge_voltage writes
+Date: Thu, 15 Aug 2024 15:25:00 +0200
+Message-ID: <20240815131958.532288470@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +59,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Danilo Krummrich <dakr@kernel.org>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit a9bf3efc33f1fbf88787a277f7349459283c9b95 ]
+commit b34ce4a59cfe9cd0d6f870e6408e8ec88a964585 upstream.
 
-Calling nouveau_bo_ref() on a nouveau_bo without initializing it (and
-hence the backing ttm_bo) leads to a refcount underflow.
+info->max_cv is in millivolts, divide the microvolt value being written
+to constant_charge_voltage by 1000 *before* clamping it to info->max_cv.
 
-Instead of calling nouveau_bo_ref() in the unwind path of
-drm_gem_object_init(), clean things up manually.
+Before this fix the code always tried to set constant_charge_voltage
+to max_cv / 1000 = 4 millivolt, which ends up in setting it to 4.1V
+which is the lowest supported value.
 
-Fixes: ab9ccb96a6e6 ("drm/nouveau: use prime helpers")
-Reviewed-by: Ben Skeggs <bskeggs@nvidia.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240718165959.3983-2-dakr@kernel.org
-(cherry picked from commit 1b93f3e89d03cfc576636e195466a0d728ad8de5)
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 843735b788a4 ("power: axp288_charger: axp288 charger driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20240717200333.56669-1-hdegoede@redhat.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_prime.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/power/supply/axp288_charger.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/nouveau/nouveau_prime.c b/drivers/gpu/drm/nouveau/nouveau_prime.c
-index f08bda533bd94..65874a48dc807 100644
---- a/drivers/gpu/drm/nouveau/nouveau_prime.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_prime.c
-@@ -81,7 +81,8 @@ struct drm_gem_object *nouveau_gem_prime_import_sg_table(struct drm_device *dev,
- 	 * to the caller, instead of a normal nouveau_bo ttm reference. */
- 	ret = drm_gem_object_init(dev, &nvbo->bo.base, size);
- 	if (ret) {
--		nouveau_bo_ref(NULL, &nvbo);
-+		drm_gem_object_release(&nvbo->bo.base);
-+		kfree(nvbo);
- 		obj = ERR_PTR(-ENOMEM);
- 		goto unlock;
- 	}
--- 
-2.43.0
-
+--- a/drivers/power/supply/axp288_charger.c
++++ b/drivers/power/supply/axp288_charger.c
+@@ -371,8 +371,8 @@ static int axp288_charger_usb_set_proper
+ 			dev_warn(&info->pdev->dev, "set charge current failed\n");
+ 		break;
+ 	case POWER_SUPPLY_PROP_CONSTANT_CHARGE_VOLTAGE:
+-		scaled_val = min(val->intval, info->max_cv);
+-		scaled_val = DIV_ROUND_CLOSEST(scaled_val, 1000);
++		scaled_val = DIV_ROUND_CLOSEST(val->intval, 1000);
++		scaled_val = min(scaled_val, info->max_cv);
+ 		ret = axp288_charger_set_cv(info, scaled_val);
+ 		if (ret < 0)
+ 			dev_warn(&info->pdev->dev, "set charge voltage failed\n");
 
 
 
