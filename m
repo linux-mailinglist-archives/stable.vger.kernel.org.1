@@ -1,157 +1,265 @@
-Return-Path: <stable+bounces-68562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68651-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C34A9532F2
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:12:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B1EB953359
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:16:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 109891F21A26
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:12:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E5BA5B28799
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:16:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27F261B3F2F;
-	Thu, 15 Aug 2024 14:09:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 861621A08DD;
+	Thu, 15 Aug 2024 14:14:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TPnBVXbs"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="o3SzHfne";
+	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="J3FbZ3OC"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAD3A1AD9E8;
-	Thu, 15 Aug 2024 14:09:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730960; cv=none; b=NxonH8KO8My749bPgq4v8Q3e+mw9im8r+Y7vwEGuBqz4nOYXvhhTNFdUR7/Uk7QqqudC2z1yUYekiHLMIWIaMQ6V45yvLOO9Aqq7Pl/k2klnJHxhTlAgIYw/+iEV/KwtQpBKtpirKokmB1InEBrwP7t5QjWwPOWgZQwARpnZY5E=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730960; c=relaxed/simple;
-	bh=R//JYXLLg67ii2SoH3h/7/uUd8NJdeUOHDDJ8l2oIIQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=lYzLeKSEzkPfbfnZRPyHbtq3P7j3uIN27KwOXxJQ3TSqBh8JQydhiN2nBnegrKbZuC0rAlc3WLtlp5Pd4ixrLYjHCuHJV12yyaYyZQGDrM5KrVCj3LyzOmL0l/KhKF95LnOV0zV9G9wKQnuSXQKlQyfaekDvkksowUjEiLSeJUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TPnBVXbs; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1723730959; x=1755266959;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=R//JYXLLg67ii2SoH3h/7/uUd8NJdeUOHDDJ8l2oIIQ=;
-  b=TPnBVXbsckgWdCaYQSkIpmIDzmwfojRO324vDND9nbGChn5jMIPEdnhu
-   aNLNCCEE+6f6J3NHIxvLQEEgX/Iey3x4/9x73X+aymRxgbxp1Z1S27b8Q
-   ojKxtcoxTMpSqbpcyiUqX+Oynz4NUCFfSL+cZlG3IZmL8d0kZOwzy1HaU
-   t2cYven2tWzt1mU2qXGZcPxR/W48qpE3HnP1XOvipSQBVDsYuUVBg1FiT
-   fIt8XrvO5LhYhADFkTK9VCxGNI72EMoIVRK/YeTClNlqt4gClmw0uihl+
-   Q4JzX7FhQ22PMqFOe0kS7TGksnKa+PI64PfZSXzI4IFIYCfdkvj6LDyXg
-   Q==;
-X-CSE-ConnectionGUID: f0YGwTZGTaumYBWEFahJkw==
-X-CSE-MsgGUID: KikZN7egRgath8IA6/9JQg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11165"; a="25852517"
-X-IronPort-AV: E=Sophos;i="6.10,149,1719903600"; 
-   d="scan'208";a="25852517"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Aug 2024 07:09:18 -0700
-X-CSE-ConnectionGUID: jvvbB3RiS3SDmRn0xnVgMw==
-X-CSE-MsgGUID: pGv6Tp4ISeOstApqUB+KbA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,149,1719903600"; 
-   d="scan'208";a="64022926"
-Received: from mattu-haswell.fi.intel.com ([10.237.72.199])
-  by fmviesa004.fm.intel.com with ESMTP; 15 Aug 2024 07:09:16 -0700
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
-To: <linux-usb@vger.kernel.org>,
-	<gregkh@linuxfoundation.org>
-Cc: Mathias Nyman <mathias.nyman@linux.intel.com>,
-	Karel Balej <balejk@matfyz.cz>,
-	stable@vger.kernel.org
-Subject: [PATCH 1/1] xhci: Fix Panther point NULL pointer deref at full-speed re-enumeration
-Date: Thu, 15 Aug 2024 17:11:17 +0300
-Message-Id: <20240815141117.2702314-2-mathias.nyman@linux.intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240815141117.2702314-1-mathias.nyman@linux.intel.com>
-References: <20240815141117.2702314-1-mathias.nyman@linux.intel.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FB451AC8BB
+	for <stable@vger.kernel.org>; Thu, 15 Aug 2024 14:13:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1723731240; cv=fail; b=rtPrCdMSN3PJ4gEULN+IhhKAGQAAke25zdeEvw5y1mF1fvGqtWUceaEiBTYJZ6sYi7yaAa1ErOyoulvlS0X8qtgWeN5AG3NyRrcAXerZbinky5/Uto6Z4I51hxMkn7xR4S8qwT6RYbFSwCgjBPO4Rx063/Nn9PvtmUHlVVgmi4Y=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1723731240; c=relaxed/simple;
+	bh=CXnn1klMN7sV4dt5Wod2AZIO41Q5wYQ11sWxFoRPpgI=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=jKnYEOENQM/jOHgoo4VwOe6DYq3kr464foVm0eLwsRww2pp/9KagzwHYH38IYQUD8ATdDUzknOfN0W17foVl/RILBPaA8XzAtbmdrSBHj9CIs9PmRva6E7tNDL4sB/T2N4NFilvvwkp7HvzwnqYPe4Pi1jG0eMeZJKOR49TcxP4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=o3SzHfne; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=J3FbZ3OC; arc=fail smtp.client-ip=205.220.165.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0246627.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47FCtVQO024993;
+	Thu, 15 Aug 2024 14:13:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
+	message-id:date:subject:to:cc:references:from:in-reply-to
+	:content-type:content-transfer-encoding:mime-version; s=
+	corp-2023-11-20; bh=evM8Wk/v0rFKE5BGuJ8SDEyf+RChZ3MixweVsLZfMEg=; b=
+	o3SzHfneOMusSUTvalsztwXoyKh8ll4jFjwBgXZkD6kYiac54CQVFhG4wRLlGzmw
+	FPMdYp7Ci2HeY7IMM1UzGmtlq/RNayhV9CUAnqAjypq9aC8N7sbLmWlxaM90VXuv
+	EDsPV28QuUWnkEruZFLAbNKH1wG8mKTBGuwBhzIpmBu5vXgIk6rd33+/fHiwcp+9
+	CzCv4Zbn93i5kjPCyIVGZFwUjvThihQxx6yKXYos61U4ttfBb8pRiKqNYMicwkdt
+	FXca8hF2zZmtw7Z3mCnkxfmjIV4liomGvpC1P0hXeP8H4/4/8YJpYBAfYNbyHS5F
+	lqdS6ctEEE7oaXT32Y+yyA==
+Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 40wxt12jfe-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 15 Aug 2024 14:13:51 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 47FCDa77003704;
+	Thu, 15 Aug 2024 14:13:49 GMT
+Received: from nam02-sn1-obe.outbound.protection.outlook.com (mail-sn1nam02lp2040.outbound.protection.outlook.com [104.47.57.40])
+	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 40wxnc5w1e-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 15 Aug 2024 14:13:49 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=pRCWcoIywgpuEuavpYd04NJgavtxfWFTuI0j8zm9ZK/X5Hp34/9jyDVMpcVw+WJo+3qwMlsNABMzrjBPy0rzgpep08/QimwDPmP2IIoMqNZsiQGURyzkmqpbP76rnKH44a1FKt/2N09SHZnGUvXxVEmbnToxk6Q42Fut155T43Fi3z/zb4lnUo7kNyEkaZR4ULbYIoC3JppXFmqoAl4ogtBi7qDc7UBZ8QZScn2Hx8FwQC195RAYgxzfI7968ArRLnTWShEdHZPAVIQONrD18anrBggBucYLvJu4NsMGiRvQ4BhC+Ac1k/BXMmAXMWc3hdth/nb3oBl+S3EpX2vzhA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=evM8Wk/v0rFKE5BGuJ8SDEyf+RChZ3MixweVsLZfMEg=;
+ b=XX1HUbMXslbdd8KmjPtrrJJ04zmrXZpeAvFjyKkBTyMatxEGKHVUjS+RbzzY3zCktZHAOdP7zwPXM7Haow2oebbyWuOX5HhJ7IpPVa72m9JKpXLkgGp82AsALnDVEmQCTICa9nTF1A5crgiZQm3yzXBC4Qz2WVo/O9rhQ5cENP+lI81t8Lh1vAs1EhHoMw0i36Dw0rrLJd6Udp/0u1SzMe68+lcgzasiYJnutg3Lg5FR8g9f+3xYVK+nphTwCumgK4fxuX7fVTGnjt/H9QSlD6eS8S2Y47lTlxGyaRs24s2EreuYoKf9LRepryGDnQV6uOXzAZSkKOhtk/ufSdDtmQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=evM8Wk/v0rFKE5BGuJ8SDEyf+RChZ3MixweVsLZfMEg=;
+ b=J3FbZ3OCrVZyFtXRSdPbY0GHrE0XyRph3rPrvxTiG6zz3Q5X2tlLjYpuPSFyHESoWcAeJPtgy9OXyepcWLNSqg+iIoUTaVD5LpTUmFpTyUIxMuQLZWZH8GG6itNOcfBRvtJubv4Ql/v01vIC2o1NzPRTdQXzEVpW2hiyA8vxTXU=
+Received: from MW5PR10MB5738.namprd10.prod.outlook.com (2603:10b6:303:19b::14)
+ by SJ2PR10MB7083.namprd10.prod.outlook.com (2603:10b6:a03:4c9::11) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7897.10; Thu, 15 Aug
+ 2024 14:13:46 +0000
+Received: from MW5PR10MB5738.namprd10.prod.outlook.com
+ ([fe80::187b:b241:398b:50eb]) by MW5PR10MB5738.namprd10.prod.outlook.com
+ ([fe80::187b:b241:398b:50eb%4]) with mapi id 15.20.7875.016; Thu, 15 Aug 2024
+ 14:13:45 +0000
+Message-ID: <36b8c214-3039-4fce-b27e-3558a78cfda2@oracle.com>
+Date: Thu, 15 Aug 2024 09:13:42 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.6 29/67] jfs: fix shift-out-of-bounds in dbJoin
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev,
+        syzbot+411debe54d318eaed386@syzkaller.appspotmail.com,
+        Manas Ghandat <ghandatmanas@gmail.com>,
+        Sasha Levin <sashal@kernel.org>
+References: <20240815131838.311442229@linuxfoundation.org>
+ <20240815131839.446390501@linuxfoundation.org>
+Content-Language: en-US
+From: Dave Kleikamp <dave.kleikamp@oracle.com>
+In-Reply-To: <20240815131839.446390501@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: CH2PR15CA0010.namprd15.prod.outlook.com
+ (2603:10b6:610:51::20) To MW5PR10MB5738.namprd10.prod.outlook.com
+ (2603:10b6:303:19b::14)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: MW5PR10MB5738:EE_|SJ2PR10MB7083:EE_
+X-MS-Office365-Filtering-Correlation-Id: ca9ae1d8-dcf3-4b91-af7b-08dcbd347965
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?NUVwKy9RZ3hpeHJ2K2FpNTBlZENhTTNnWG52NnNyMndkdHJFWFc4Nlc5R1Y0?=
+ =?utf-8?B?V2lqWGUwcjdKelZGRmpwbmNTU1cxMnpLcHdUeDhRRDRoZUFBcVAzUG1XMERl?=
+ =?utf-8?B?eFpXUmwrdFlnMVdzbjJnZkY0azlvZkpueUtmUW9ZMG9jUTlBd0NHdUEyQ3Nq?=
+ =?utf-8?B?K1hFOTZOS29TemFtWFJhaVZvTGM1T0lDc0xLMjN2SFB3bDRsZUpRR2pjdXU4?=
+ =?utf-8?B?QWlvR0NDSlphY3c0ZklIMGJSZGJaM0V0dWhEWTI5MkJuNTBndzEyTWZOVW8r?=
+ =?utf-8?B?KzN6dWEyTytMU25vOE8wU1I3S1RsbUF4QmRsVXRnWG5lMVZkQmlCLzlRdGJN?=
+ =?utf-8?B?SXlJT3F3QmJtOTM3OTRlV2RCeUZVeStwM2l2WEQ5SDNRTGxhS0h6bUtIZW5R?=
+ =?utf-8?B?TE0yeC8rZnNwWE00RVZXaW1LaDJvdDhZNXBzZi9Vd0syaGRpUzlkemN0aEFP?=
+ =?utf-8?B?ZE5tWGFCdG1MajFnbHdpUFVPV2NMUlluYXFPUUlldHZaRkJzNzZoM1B0bHB6?=
+ =?utf-8?B?U3NncmthYzZtM2cwaXF3U1lpT2MrWGZYVjQ0T2Z5OWMwL3B1R3ZuWktvSnd3?=
+ =?utf-8?B?T1p3S2NDRVVTby9uSjZiYlc1NGlEQVVXRU4xd1dGVHpneG5uS3NhNEtQRC9P?=
+ =?utf-8?B?V2YvT1NDOVVhNlpwU3gvMVIwbXZucXIwUEZ1NUtXUnc1NXcrNHVHUC9uMFRy?=
+ =?utf-8?B?RndnaGp6SXdrMXY5RTZnR1p1VjJoM1cxQUFMWTYzU3l6bUFKYVZlR2NDczB0?=
+ =?utf-8?B?ZDlJSGx3REk4cDVQcHJvbjdYdTlIZlp4L0hFSUJnblk1cm1jRk5teTl6VVRJ?=
+ =?utf-8?B?YURpMXVXNHF3RXJ0STIrb3RSTjlLOVRwTjFyaUR5UHBqT2xMeDRacDBVeEp1?=
+ =?utf-8?B?Q0JMdUtqTmtBNVZXcVBrVzRHbTh2a3lPMWYwY0hMaHMvYWlRRWNNTy9oZ1RV?=
+ =?utf-8?B?N3JDeldiN3dQb2pDc1RoSVVIc210WWJYTTVUdHRZTXBzQnk2UzI0Y1hENGxu?=
+ =?utf-8?B?L3ZWd1Fhejlqb3haL1NuTWRpM0VoUFpSWVFQTVpTdWRwQnFjNzZhY0FOdjY1?=
+ =?utf-8?B?V2kxVXo5YkVEcjRmMTdRSFB5UWJLc0RmM3ptNWZmZ3Z4SzhwK2kyTEt4eFRr?=
+ =?utf-8?B?VWI0VGVqSks4SHA2bHRSbEhKRHltRjZQMkplNlJuWHZFbUJZVGNyZG9reG50?=
+ =?utf-8?B?dTJQUjBjQUM5N3lZNmY0YTVWZ3ZoeEFxQ09ndUdaekMrWmtwL1gyTnhFTTMy?=
+ =?utf-8?B?TUgxck1SNGZwNHptYzEzNHhNRDZmRXhYR1R2V0VZYU1zci9GTzMrK2crdm44?=
+ =?utf-8?B?SFpBUzdMYm85amtIdzZhdnlxZTU5YTAyajFxN1NGV0duQkE3eW1ZMXZ1MWVW?=
+ =?utf-8?B?UWhGYWFralhpeXh6RGptWXNPNG9sUktvOUVDRGFObFRtMG1lMFFnZG0xcmZU?=
+ =?utf-8?B?RGdGZXBoQlhNYUhOSDA2Q2IvSkpFV1BTWmh1ZERHaTBlK1FQT3NHa1k0NjJI?=
+ =?utf-8?B?SXhhVFhTTjRhajgvQ1BnOHhlZm5xcFBPZWNvUjhaRGpvQXpQTXNIQ2dxNzQ5?=
+ =?utf-8?B?NTAvclpxeGQydFFtQzgwMStuN21MdzIwRGU0TGxhRTJPKzh1UmFlNWlkdTAx?=
+ =?utf-8?B?dWIyaVdkUGszeXpCRERTeEZxL2lCRjVMa3ZZRTR2aFJrcG9va01aYjN0dUxm?=
+ =?utf-8?B?RWpZb2FBTUpXd2UzS290Qm9vaW5JdGt6TzlhQWFvblN6QVUxeElCOUVzOW5S?=
+ =?utf-8?Q?QOi3+5WRZlPq37XEKc=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MW5PR10MB5738.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?bFlnYVRwV0JCVzZKZHRpanJZOHpYeGw4QjI0OWpSb1hJVDMyelNBdk5zTHpF?=
+ =?utf-8?B?eUQwOU9EMVVHaUpRYUJRZHlGNGh0aXRDRHM5c1pzb0VrcExKQnFxanRmUHVh?=
+ =?utf-8?B?U1JVcUtJSWg3Q2R6UjhzTFhKaEszYjEzbVk4TW5zVHNSN1hsUVlHeThsekM0?=
+ =?utf-8?B?d2ZPR0dpYjFnTXlNbVp4MWdSYXFWc2cvcWpOd28wc1hlNjM4aWc4dDZ6U2tN?=
+ =?utf-8?B?N2lhdnlyN2JmVlpYWnBsNjZ0RXpxcmYwRDBPTFEzdHVNMFh3SE1NUVVIRFI1?=
+ =?utf-8?B?U2Q1RFVodWpwUWVHajZmU1ltOGc1QS9hRmYyUUNaRFhIL0p6ZElzUkZGN3VQ?=
+ =?utf-8?B?bTBhUXU5YmpncWhkTFFWRFhwQXdleGY5T2x2bzJIeHpuSEtxWWE0d2lub2Rr?=
+ =?utf-8?B?UjdCb29jSlV4aERiS0NYUXhXVlRZa3NsajBsclFiRXRqNHhsZGFjN25SMUNE?=
+ =?utf-8?B?TnpZOG1iY3B3Wnh4Tmd3OGtmV3JlRFpQbG5RVS9waWtmZGlxZXFZMmJML3BV?=
+ =?utf-8?B?N2ZoUEplaSs2c3RpRG5MMUlwb0x4WTJpSm4yaTV2dGlldGtqcjZEWmVGN25r?=
+ =?utf-8?B?TUdvaTYrZDNQb1BROWxZaWhQMk1RbUZpdUV1OUFBc244UWQxUSswODBaTHRZ?=
+ =?utf-8?B?djN6MTJxUDlGWVBXZ2xiZmk2bXRsSnBtTkE0QThzRzVPQTNBTWMwaVFSdVJu?=
+ =?utf-8?B?dWMrMFd0TGdMMEd3dzlwcFF0UDNrMWE5S28vaURZK3pFdEEwQjVyTlhNKzNl?=
+ =?utf-8?B?d2hBZkZ2TWJXeGEzWERDRHhrQktHODF1VVpWQTMvS0NWdmxjQXZ6eTlMQlFX?=
+ =?utf-8?B?K1pNMFhIME5zLzBIeklOQmJOT1NKNkhkdmROSyt3Nk5wd283WldyR3pFOGIw?=
+ =?utf-8?B?NjFpZHdHaUFQZXFKSDM5YmNMZUJTYmpveWdGMlZoYVdiNGRrYkhUS3cyM3lk?=
+ =?utf-8?B?SWpKdnpTNVExc25XSSsrQzdXTUpqd1N3VHFLMmZjS0g3SkpzaUhUMitTbEx2?=
+ =?utf-8?B?VjBrK2VzaW15cDFrZGJndXhVTmdZYkZtODVGWXk1WE81WkdDL3g2TGlHcXcv?=
+ =?utf-8?B?R1haTFp4V211UERsMmpRTU5PaFRFMGRYSzgzbFVoNDFxWWwrYW9VQ003Wmdo?=
+ =?utf-8?B?T2NvQUk3WkJmdnZxY28zakZuaUU3aE5JZ0d6V0pYelJZd3BsQW93WGxGT2lw?=
+ =?utf-8?B?dVhpSngzTGdBL1lXVFhkdENTR3RMWHRIcXI4c3BVUzJvTkFMYzIzUXZBTzV6?=
+ =?utf-8?B?YWlzRk45VXRoQnBoSnhxMGdWQjljcERBR2hYZW9rUEE1NFk0ZFdLSm52TjRE?=
+ =?utf-8?B?bjF5Y05SUkdMSlByQlNIMDhPWFZDdnZRTW1rZDF5UDhVMUxsZ0ljSzRFclBv?=
+ =?utf-8?B?dEx5VmVvUzIxK1hnaHBrM0NSMHVGVUtmN1RsK1NhMlJUMFdKNjM5dnNPd2lQ?=
+ =?utf-8?B?NWREaHh5aWVPUXF6N0tPTVJseDdHdXM1NWREekZBSHVjd0FQd3pOOVZSeUFI?=
+ =?utf-8?B?UjlwZSt2UUs2WDRycHpXUFRCSWdVaXpQRG9lMFpOWmpVa2t4dmduOE1VWnZT?=
+ =?utf-8?B?UXlOcVNKTUltVXVxOTBLbW92a3JrWFdnZU1XTkNvSG1MUUM4TThUTXdaTXh5?=
+ =?utf-8?B?aXVKazF0bUZXRkl6aEV0cHQ3WmwxY2JuUjVSUTk1Nzd2L1pKNlB2U1A3clox?=
+ =?utf-8?B?UFhrZXNTQm1HRXVrUjQrMTNkb1Exb0Z1S1VURFM4b3NURzJvWnc4V2UwUjNR?=
+ =?utf-8?B?Qm43Nmw3WjE5cG4vUy9nZkNVWFNZNlZkUExuVzFlTUJ0T0F1SFN6dVZ2dHpS?=
+ =?utf-8?B?bTFwenZBZ1FPbFkzWWhYcWphZHRyVmY4TjV5U09mT2tQemtJUlBobkRqQzdN?=
+ =?utf-8?B?SmV0WDkyRW53VXRvKzl3QkNHTFE0K0tYZkFYZGtLZlJ6czA1V3NzeW56OHUv?=
+ =?utf-8?B?K0RuZUpLTWhQTWEwUjRMT2d4VUt2K01ydytrM1g1MEc1K1d3MHlMdWhpcEJz?=
+ =?utf-8?B?WFVxVTFnWUNMVFc3WFZmODF2VjI1SkpBbnZMS1YzSmRmanh2NjJxQVhjaCtY?=
+ =?utf-8?B?bTRrUG4zSnNMdFkrZTJWZlI2OVpmcWtCZHI0eGczZnZSQUJwakVKVU0rNFh5?=
+ =?utf-8?B?YTBrNXRhdEhVMkFZOVBtNXU3bE02QlR6U0tEcG9mVlVBNjl0NEtnTDh3YWN3?=
+ =?utf-8?B?ZHc9PQ==?=
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	vYcVVqNjRh6IFq5WcrOz9npmYob8ntaX+hkurugulpn3W7JWRtB+we49OFtBUxCFneXVz3kNDFac1w0TXUsv0Y2AJYV/z1XfB6zXz9Lm421GMhNotMUEXYobxtQz1KEYXzb2n3ErJIdVC46fOkrcaOXmDxulckqbDvzDg9eJqtMx381vX0yYtimQ9/7YNOu6xcbQmdFQgWeUFprTRjf2Fw1PnhmJXu3BFSeUFbC7oXF5XM731RyrAnV1QO7871MvYfMLJKQS3WaItU0g1pCftkiUUEthCE8PAialfK7ej7Q/NYfNeMtN9xQV2Go63JR5kgV2EgoJhjr21pPVRj96kvLVUTY8s0zR+Bv/jkMVKRmluXHa5ZXAyCZ5bSVGL8zRQJ8e2mkthg9AI1j5hY2DeGfxcHfdrUapnhgt4ajmPn7h7NSk4aDU+OF22oYCFH3ErSS2srifPiNkGjaPjvNwN/CTAy9YK9RH6lhuk9gg17k5Jfdee3mL9NEe62Tc0rJQpn2Kg8nt0wigt9d54qxSGUBM82k+IVgA1E2iTm3KVwRr6nMz0d4B8p4dwNpuirAblnbGw8U1hnlTEkzHab6a7WvwRr9kwNHS9dt7eOJuBrs=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ca9ae1d8-dcf3-4b91-af7b-08dcbd347965
+X-MS-Exchange-CrossTenant-AuthSource: MW5PR10MB5738.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Aug 2024 14:13:45.3808
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: oJbF+WFU1BbdMRR8CjVAUKqneZ0SEojYr8Y6lCscbPcNI7E4bKPBV8vHEk21vovj/ocK9caF77UQl/LX6CTcvu2+W5UAoRLoKjSlth9M0Ys=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR10MB7083
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-08-15_06,2024-08-15_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 mlxscore=0 adultscore=0
+ suspectscore=0 mlxlogscore=999 phishscore=0 spamscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2407110000
+ definitions=main-2408150102
+X-Proofpoint-GUID: sA8QXS_yKwiovx_IHdRmrJR5fOnLw-Mk
+X-Proofpoint-ORIG-GUID: sA8QXS_yKwiovx_IHdRmrJR5fOnLw-Mk
 
-re-enumerating full-speed devices after a failed address device command
-can trigger a NULL pointer dereference.
+On 8/15/24 8:25AM, Greg Kroah-Hartman wrote:
+> 6.6-stable review patch.  If anyone has any objections, please let me know.
 
-Full-speed devices may need to reconfigure the endpoint 0 Max Packet Size
-value during enumeration. Usb core calls usb_ep0_reinit() in this case,
-which ends up calling xhci_configure_endpoint().
+Please do not include this patch and its revert (62/67). This was not a 
+good fix.
 
-On Panther point xHC the xhci_configure_endpoint() function will
-additionally check and reserve bandwidth in software. Other hosts do
-this in hardware
+Thanks,
+Shaggy
 
-If xHC address device command fails then a new xhci_virt_device structure
-is allocated as part of re-enabling the slot, but the bandwidth table
-pointers are not set up properly here.
-This triggers the NULL pointer dereference the next time usb_ep0_reinit()
-is called and xhci_configure_endpoint() tries to check and reserve
-bandwidth
-
-[46710.713538] usb 3-1: new full-speed USB device number 5 using xhci_hcd
-[46710.713699] usb 3-1: Device not responding to setup address.
-[46710.917684] usb 3-1: Device not responding to setup address.
-[46711.125536] usb 3-1: device not accepting address 5, error -71
-[46711.125594] BUG: kernel NULL pointer dereference, address: 0000000000000008
-[46711.125600] #PF: supervisor read access in kernel mode
-[46711.125603] #PF: error_code(0x0000) - not-present page
-[46711.125606] PGD 0 P4D 0
-[46711.125610] Oops: Oops: 0000 [#1] PREEMPT SMP PTI
-[46711.125615] CPU: 1 PID: 25760 Comm: kworker/1:2 Not tainted 6.10.3_2 #1
-[46711.125620] Hardware name: Gigabyte Technology Co., Ltd.
-[46711.125623] Workqueue: usb_hub_wq hub_event [usbcore]
-[46711.125668] RIP: 0010:xhci_reserve_bandwidth (drivers/usb/host/xhci.c
-
-Fix this by making sure bandwidth table pointers are set up correctly
-after a failed address device command, and additionally by avoiding
-checking for bandwidth in cases like this where no actual endpoints are
-added or removed, i.e. only context for default control endpoint 0 is
-evaluated.
-
-Reported-by: Karel Balej <balejk@matfyz.cz>
-Closes: https://lore.kernel.org/linux-usb/D3CKQQAETH47.1MUO22RTCH2O3@matfyz.cz/
-Cc: stable@vger.kernel.org
-Fixes: 651aaf36a7d7 ("usb: xhci: Handle USB transaction error on address command")
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
----
- drivers/usb/host/xhci.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/usb/host/xhci.c b/drivers/usb/host/xhci.c
-index 0a8cf6c17f82..efdf4c228b8c 100644
---- a/drivers/usb/host/xhci.c
-+++ b/drivers/usb/host/xhci.c
-@@ -2837,7 +2837,7 @@ static int xhci_configure_endpoint(struct xhci_hcd *xhci,
- 				xhci->num_active_eps);
- 		return -ENOMEM;
- 	}
--	if ((xhci->quirks & XHCI_SW_BW_CHECKING) &&
-+	if ((xhci->quirks & XHCI_SW_BW_CHECKING) && !ctx_change &&
- 	    xhci_reserve_bandwidth(xhci, virt_dev, command->in_ctx)) {
- 		if ((xhci->quirks & XHCI_EP_LIMIT_QUIRK))
- 			xhci_free_host_resources(xhci, ctrl_ctx);
-@@ -4200,8 +4200,10 @@ static int xhci_setup_device(struct usb_hcd *hcd, struct usb_device *udev,
- 		mutex_unlock(&xhci->mutex);
- 		ret = xhci_disable_slot(xhci, udev->slot_id);
- 		xhci_free_virt_device(xhci, udev->slot_id);
--		if (!ret)
--			xhci_alloc_dev(hcd, udev);
-+		if (!ret) {
-+			if (xhci_alloc_dev(hcd, udev) == 1)
-+				xhci_setup_addressable_virt_dev(xhci, udev);
-+		}
- 		kfree(command->completion);
- 		kfree(command);
- 		return -EPROTO;
--- 
-2.25.1
-
+> 
+> ------------------
+> 
+> From: Manas Ghandat <ghandatmanas@gmail.com>
+> 
+> [ Upstream commit cca974daeb6c43ea971f8ceff5a7080d7d49ee30 ]
+> 
+> Currently while joining the leaf in a buddy system there is shift out
+> of bound error in calculation of BUDSIZE. Added the required check
+> to the BUDSIZE and fixed the documentation as well.
+> 
+> Reported-by: syzbot+411debe54d318eaed386@syzkaller.appspotmail.com
+> Closes: https://syzkaller.appspot.com/bug?extid=411debe54d318eaed386
+> Signed-off-by: Manas Ghandat <ghandatmanas@gmail.com>
+> Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>   fs/jfs/jfs_dmap.c | 8 +++++++-
+>   1 file changed, 7 insertions(+), 1 deletion(-)
+> 
+> diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
+> index cb3cda1390adb..8eec84c651bfb 100644
+> --- a/fs/jfs/jfs_dmap.c
+> +++ b/fs/jfs/jfs_dmap.c
+> @@ -2763,7 +2763,9 @@ static int dbBackSplit(dmtree_t *tp, int leafno, bool is_ctl)
+>    *	leafno	- the number of the leaf to be updated.
+>    *	newval	- the new value for the leaf.
+>    *
+> - * RETURN VALUES: none
+> + * RETURN VALUES:
+> + *  0		- success
+> + *	-EIO	- i/o error
+>    */
+>   static int dbJoin(dmtree_t *tp, int leafno, int newval, bool is_ctl)
+>   {
+> @@ -2790,6 +2792,10 @@ static int dbJoin(dmtree_t *tp, int leafno, int newval, bool is_ctl)
+>   		 * get the buddy size (number of words covered) of
+>   		 * the new value.
+>   		 */
+> +
+> +		if ((newval - tp->dmt_budmin) > BUDMIN)
+> +			return -EIO;
+> +
+>   		budsz = BUDSIZE(newval, tp->dmt_budmin);
+>   
+>   		/* try to join.
 
