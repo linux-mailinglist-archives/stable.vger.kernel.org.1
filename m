@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-69134-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D26C795359B
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:39:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CFB89532CE
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:11:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5DD9DB257C5
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:39:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 105361F21973
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:11:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF7AF19FA7A;
-	Thu, 15 Aug 2024 14:39:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A564B1AED5A;
+	Thu, 15 Aug 2024 14:07:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TJmmKFrL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xWCJZQTI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D5731AC893;
-	Thu, 15 Aug 2024 14:39:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63D1D44376;
+	Thu, 15 Aug 2024 14:07:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732779; cv=none; b=Bg/HB35jeoRCRk+ZBG/us77Cli2Vo+nFiDHH1ZMQo8Y5Ef2HZOw0a8NNvbJ6cBwVMW1Rs6OG8J5N3bpVkZWxkjaJscN+FDOMRZPagzFDwDr0n7m9wJYF8gmYqmQa63X9qvn0NTpNnVZf8jB928NDSN2emjgtS92DBLKa4TNn+yk=
+	t=1723730869; cv=none; b=JbFh4//mMgdL43y0J9WdPWCkF+w2nzBQVYk6mk4CQGPEnym2Hrpon34w5V9HzeFq1eRuu947lfDDfteGmTnuuFN2At7izG0PpYRdobujAoRTrQu7r44RaehIVOuQ+U0RCWLgu7WQoxqQnnESCtTMOoFT6Tgl2adMtNv42foGcgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732779; c=relaxed/simple;
-	bh=OqubQMwMyWFJUYiWSMe6NtjwHvi/oPUwA6gnypFFhJM=;
+	s=arc-20240116; t=1723730869; c=relaxed/simple;
+	bh=hy24SqDZCdLCO/zAAy181hD4hEXWOZFsEyfxft/udCE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nNohhnWQBvd7vXLbaLbnpw1aviZUum4zJVZqldosTfTWYE/Irhy0xFx4RxmieQSU++a7VcVVlvHCSlzDVjj/HTmB2DBb8mN0DI8xwqBq9Sfsv5R/5x445tgVkNYiV5YIIJ1PAYsek8hmWty4hM40rYzLS0mwO7k1gQfD5Mqo/uo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TJmmKFrL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95784C32786;
-	Thu, 15 Aug 2024 14:39:38 +0000 (UTC)
+	 MIME-Version; b=l4JXQ8MiQQaa1Z3fsHzl5T9X5GotP7o+hDVEZq3tPKwmTbh5bOQIEB+R9Kf1vIBHvYo+M7/yYTTBXkS58x7luyzRpbpF36cY6Xhyi47QfwRvumEmwWTtK0gVE6efjbIUTbN6awC6iwkhe92YT1iP3A2epb74DCuzyYimQtSDZ7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xWCJZQTI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D992BC32786;
+	Thu, 15 Aug 2024 14:07:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732779;
-	bh=OqubQMwMyWFJUYiWSMe6NtjwHvi/oPUwA6gnypFFhJM=;
+	s=korg; t=1723730869;
+	bh=hy24SqDZCdLCO/zAAy181hD4hEXWOZFsEyfxft/udCE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TJmmKFrLiSYPHBVEkSFYlahY6KRggH0vfZ61/8DMTawSNuAYpoer6F9nhxiw0BbpB
-	 or6cepiZh024Bp3Yu53kVbdemnL4CJNfSWZ0BefUaSN0CZmPucZ5nVTYGmeyXF8tPp
-	 pesktU/qqWKuf9YWbFbMsR6QJ2JVm3d9psRyWsKA=
+	b=xWCJZQTIqIA+sgaqlAl7jLWeH8zI5UbB1RfJyhoILBl2/WxkFRrSjqIlKb+V/0rtm
+	 8tHqSj5iInQ36bKU9LtULkzFh6TdKp+Pt1byQnqPwmwUBHBpEwGZzmEoBqvGGdB0Yw
+	 0CeUstkmvxvSj7NO2RimhTZ+3dTcdJ98h8kdPsoU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 252/352] x86/mm: Fix pti_clone_entry_text() for i386
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.6 04/67] LoongArch: Define __ARCH_WANT_NEW_STAT in unistd.h
 Date: Thu, 15 Aug 2024 15:25:18 +0200
-Message-ID: <20240815131929.179037145@linuxfoundation.org>
+Message-ID: <20240815131838.486320821@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131838.311442229@linuxfoundation.org>
+References: <20240815131838.311442229@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +60,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-[ Upstream commit 3db03fb4995ef85fc41e86262ead7b4852f4bcf0 ]
+commit 7697a0fe0154468f5df35c23ebd7aa48994c2cdc upstream.
 
-While x86_64 has PMD aligned text sections, i386 does not have this
-luxery. Notably ALIGN_ENTRY_TEXT_END is empty and _etext has PAGE
-alignment.
+Chromium sandbox apparently wants to deny statx [1] so it could properly
+inspect arguments after the sandboxed process later falls back to fstat.
+Because there's currently not a "fd-only" version of statx, so that the
+sandbox has no way to ensure the path argument is empty without being
+able to peek into the sandboxed process's memory. For architectures able
+to do newfstatat though, glibc falls back to newfstatat after getting
+-ENOSYS for statx, then the respective SIGSYS handler [2] takes care of
+inspecting the path argument, transforming allowed newfstatat's into
+fstat instead which is allowed and has the same type of return value.
 
-This means that text on i386 can be page granular at the tail end,
-which in turn means that the PTI text clones should consistently
-account for this.
+But, as LoongArch is the first architecture to not have fstat nor
+newfstatat, the LoongArch glibc does not attempt falling back at all
+when it gets -ENOSYS for statx -- and you see the problem there!
 
-Make pti_clone_entry_text() consistent with pti_clone_kernel_text().
+Actually, back when the LoongArch port was under review, people were
+aware of the same problem with sandboxing clone3 [3], so clone was
+eventually kept. Unfortunately it seemed at that time no one had noticed
+statx, so besides restoring fstat/newfstatat to LoongArch uapi (and
+postponing the problem further), it seems inevitable that we would need
+to tackle seccomp deep argument inspection.
 
-Fixes: 16a3fe634f6a ("x86/mm/pti: Clone kernel-image on PTE level for 32 bit")
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+However, this is obviously a decision that shouldn't be taken lightly,
+so we just restore fstat/newfstatat by defining __ARCH_WANT_NEW_STAT
+in unistd.h. This is the simplest solution for now, and so we hope the
+community will tackle the long-standing problem of seccomp deep argument
+inspection in the future [4][5].
+
+Also add "newstat" to syscall_abis_64 in Makefile.syscalls due to
+upstream asm-generic changes.
+
+More infomation please reading this thread [6].
+
+[1] https://chromium-review.googlesource.com/c/chromium/src/+/2823150
+[2] https://chromium.googlesource.com/chromium/src/sandbox/+/c085b51940bd/linux/seccomp-bpf-helpers/sigsys_handlers.cc#355
+[3] https://lore.kernel.org/linux-arch/20220511211231.GG7074@brightrain.aerifal.cx/
+[4] https://lwn.net/Articles/799557/
+[5] https://lpc.events/event/4/contributions/560/attachments/397/640/deep-arg-inspection.pdf
+[6] https://lore.kernel.org/loongarch/20240226-granit-seilschaft-eccc2433014d@brauner/T/#t
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/mm/pti.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/loongarch/include/uapi/asm/unistd.h |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/mm/pti.c b/arch/x86/mm/pti.c
-index 59c13fdb8da0f..50e31d14351bf 100644
---- a/arch/x86/mm/pti.c
-+++ b/arch/x86/mm/pti.c
-@@ -497,7 +497,7 @@ static void pti_clone_entry_text(void)
- {
- 	pti_clone_pgtable((unsigned long) __entry_text_start,
- 			  (unsigned long) __entry_text_end,
--			  PTI_CLONE_PMD);
-+			  PTI_LEVEL_KERNEL_IMAGE);
- }
+--- a/arch/loongarch/include/uapi/asm/unistd.h
++++ b/arch/loongarch/include/uapi/asm/unistd.h
+@@ -1,4 +1,5 @@
+ /* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
++#define __ARCH_WANT_NEW_STAT
+ #define __ARCH_WANT_SYS_CLONE
+ #define __ARCH_WANT_SYS_CLONE3
  
- /*
--- 
-2.43.0
-
 
 
 
