@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-68636-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69000-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F423A953348
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:15:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC69A9534F8
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:32:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F6A91F21EBE
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:15:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2BE331C23826
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:32:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF41B1B3740;
-	Thu, 15 Aug 2024 14:13:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CF6017BEC0;
+	Thu, 15 Aug 2024 14:32:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xQurYDgw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AlFt7UGz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 757401AC432;
-	Thu, 15 Aug 2024 14:13:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B950210FB;
+	Thu, 15 Aug 2024 14:32:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731192; cv=none; b=h7K6w78VNPFU8B1FgIOBwkkUhi/yFsHUpoJha9eBoOYT2y0cRAQUruAwOkjRViYmbQ+s9Ho3Vj3toZdCPbjjWu5XPyRT7E4aCJjY4X8NHVbCaM04xjkS58VAbRldqYpZSzPND8bNnyuENLsjRM7JbzYEQfktGEBcAyIbPrBSq6I=
+	t=1723732343; cv=none; b=MKGCq5OCdF0GGEEd8SilcFEQO6gI8CHgRAtXXGV8pODh3RaEk6gMbahJ7QQGiqGMbQOwv6ZmGjBrF9lUUyXKVKwr7QGzPWVLVjQ0Fe6Zq+IVegCiyUrojHpRqHnzgTyEjPyHvxBHn1EHVLMn5rhzngnUTqw8tM5mijQD/dXQM+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731192; c=relaxed/simple;
-	bh=fRcub9Kzz2qLRaJxO7KE0EBWd6+BDEPrMLo36K/8KoE=;
+	s=arc-20240116; t=1723732343; c=relaxed/simple;
+	bh=Tu9MRo3PHV3rwQwgDzfqbvIL3kFX31j/g25oEmuMa1A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lHRjjv764ZJ+PNUXrDf/NnG7LRZCTILyNl+2UUEyQWeBTKBn3jSKX9+Ph0nImpjWkKyIe6LLZfDcG9HFZbZsysXzq4F9APCIW34IlTBPESE+APY24sIvJBIFaZc2kaPWoQLM2rlY24hLUkbkBOsnxaycU+jMb3f/NeBXnVhKMI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xQurYDgw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1291C32786;
-	Thu, 15 Aug 2024 14:13:11 +0000 (UTC)
+	 MIME-Version; b=nktFga3lJK1rMl3TkXiDWOk9r9mwoGIv6DHXdtgn1Rgb0SawsSVAXKOZclO6xPiohIA13mTJ6OrWXvWgR55sgGsyzSMPt77vABBnMrh/dYogqTgTNOIf6GgN5dNshAySBfx3NQrbtBzYYs2J2IDjSPYZPPOLTtfQepoKAwHKsSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AlFt7UGz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 763DAC32786;
+	Thu, 15 Aug 2024 14:32:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731192;
-	bh=fRcub9Kzz2qLRaJxO7KE0EBWd6+BDEPrMLo36K/8KoE=;
+	s=korg; t=1723732342;
+	bh=Tu9MRo3PHV3rwQwgDzfqbvIL3kFX31j/g25oEmuMa1A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xQurYDgwG28ZFstGLV4Zz7QZaipQa5uuOuHzp09g4hKF8Ual3XIqWkkIW1PAqcPVN
-	 +gsquBCLzM1/VYI0alOU7zmFYE/9pYdpwDgCyQvN+FjOcILGIXZs8EqSg2KeTE5o+B
-	 Tj8Mducjva9o36mpnu3ddZyFURWRg4iWhfdaOBO8=
+	b=AlFt7UGzNeTmfqYtOk7W0LQvSFWVyte0yK0p6AWhu+F8W/nnPduPllaNCYRJijLmG
+	 m0fyXBrdBBqpgGU54DxuScfu3js3z799BQg1kKGdSYYfnOgecV6j1y3Fl0Ws/xQWvq
+	 HZ0vk4qs0VfqSsCqSSOjYo7yyoj0usdnUNKbPnxE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zheng Yejian <zhengyejian1@huawei.com>,
-	Sean Young <sean@mess.org>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Peng Fan <peng.fan@nxp.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 051/259] media: dvb-usb: Fix unexpected infinite loop in dvb_usb_read_remote_control()
-Date: Thu, 15 Aug 2024 15:23:04 +0200
-Message-ID: <20240815131904.776800293@linuxfoundation.org>
+Subject: [PATCH 5.10 119/352] pinctrl: freescale: mxs: Fix refcount of child
+Date: Thu, 15 Aug 2024 15:23:05 +0200
+Message-ID: <20240815131923.852409671@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,145 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Yejian <zhengyejian1@huawei.com>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit 2052138b7da52ad5ccaf74f736d00f39a1c9198c ]
+[ Upstream commit 7f500f2011c0bbb6e1cacab74b4c99222e60248e ]
 
-Infinite log printing occurs during fuzz test:
+of_get_next_child() will increase refcount of the returned node, need
+use of_node_put() on it when done.
 
-  rc rc1: DViCO FusionHDTV DVB-T USB (LGZ201) as ...
-  ...
-  dvb-usb: schedule remote query interval to 100 msecs.
-  dvb-usb: DViCO FusionHDTV DVB-T USB (LGZ201) successfully initialized ...
-  dvb-usb: bulk message failed: -22 (1/0)
-  dvb-usb: bulk message failed: -22 (1/0)
-  dvb-usb: bulk message failed: -22 (1/0)
-  ...
-  dvb-usb: bulk message failed: -22 (1/0)
+Per current implementation, 'child' will be override by
+for_each_child_of_node(np, child), so use of_get_child_count to avoid
+refcount leakage.
 
-Looking into the codes, there is a loop in dvb_usb_read_remote_control(),
-that is in rc_core_dvb_usb_remote_init() create a work that will call
-dvb_usb_read_remote_control(), and this work will reschedule itself at
-'rc_interval' intervals to recursively call dvb_usb_read_remote_control(),
-see following code snippet:
-
-  rc_core_dvb_usb_remote_init() {
-    ...
-    INIT_DELAYED_WORK(&d->rc_query_work, dvb_usb_read_remote_control);
-    schedule_delayed_work(&d->rc_query_work,
-                          msecs_to_jiffies(rc_interval));
-    ...
-  }
-
-  dvb_usb_read_remote_control() {
-    ...
-    err = d->props.rc.core.rc_query(d);
-    if (err)
-      err(...)  // Did not return even if query failed
-    schedule_delayed_work(&d->rc_query_work,
-                          msecs_to_jiffies(rc_interval));
-  }
-
-When the infinite log printing occurs, the query callback
-'d->props.rc.core.rc_query' is cxusb_rc_query(). And the log is due to
-the failure of finding a valid 'generic_bulk_ctrl_endpoint'
-in usb_bulk_msg(), see following code snippet:
-
-  cxusb_rc_query() {
-    cxusb_ctrl_msg() {
-      dvb_usb_generic_rw() {
-        ret = usb_bulk_msg(d->udev, usb_sndbulkpipe(d->udev,
-                           d->props.generic_bulk_ctrl_endpoint),...);
-        if (ret)
-          err("bulk message failed: %d (%d/%d)",ret,wlen,actlen);
-          ...
-      }
-  ...
-  }
-
-By analyzing the corresponding USB descriptor, it shows that the
-bNumEndpoints is 0 in its interface descriptor, but
-the 'generic_bulk_ctrl_endpoint' is 1, that means user don't configure
-a valid endpoint for 'generic_bulk_ctrl_endpoint', therefore this
-'invalid' USB device should be rejected before it calls into
-dvb_usb_read_remote_control().
-
-To fix it, we need to add endpoint check for 'generic_bulk_ctrl_endpoint'.
-And as Sean suggested, the same check and clear halts should be done for
-'generic_bulk_ctrl_endpoint_response'. So introduce
-dvb_usb_check_bulk_endpoint() to do it for both of them.
-
-Fixes: 4d43e13f723e ("V4L/DVB (4643): Multi-input patch for DVB-USB device")
-Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
-Signed-off-by: Sean Young <sean@mess.org>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: 17723111e64f ("pinctrl: add pinctrl-mxs support")
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Link: https://lore.kernel.org/20240504-pinctrl-cleanup-v2-18-26c5f2dc1181@nxp.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/dvb-usb/dvb-usb-init.c | 35 +++++++++++++++++++++---
- 1 file changed, 31 insertions(+), 4 deletions(-)
+ drivers/pinctrl/freescale/pinctrl-mxs.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/usb/dvb-usb/dvb-usb-init.c b/drivers/media/usb/dvb-usb/dvb-usb-init.c
-index cb5bf119df9f1..6c7a56b178e52 100644
---- a/drivers/media/usb/dvb-usb/dvb-usb-init.c
-+++ b/drivers/media/usb/dvb-usb/dvb-usb-init.c
-@@ -23,11 +23,40 @@ static int dvb_usb_force_pid_filter_usage;
- module_param_named(force_pid_filter_usage, dvb_usb_force_pid_filter_usage, int, 0444);
- MODULE_PARM_DESC(force_pid_filter_usage, "force all dvb-usb-devices to use a PID filter, if any (default: 0).");
+diff --git a/drivers/pinctrl/freescale/pinctrl-mxs.c b/drivers/pinctrl/freescale/pinctrl-mxs.c
+index 735cedd0958a2..5b0fcf15f2804 100644
+--- a/drivers/pinctrl/freescale/pinctrl-mxs.c
++++ b/drivers/pinctrl/freescale/pinctrl-mxs.c
+@@ -405,8 +405,8 @@ static int mxs_pinctrl_probe_dt(struct platform_device *pdev,
+ 	int ret;
+ 	u32 val;
  
-+static int dvb_usb_check_bulk_endpoint(struct dvb_usb_device *d, u8 endpoint)
-+{
-+	if (endpoint) {
-+		int ret;
-+
-+		ret = usb_pipe_type_check(d->udev, usb_sndbulkpipe(d->udev, endpoint));
-+		if (ret)
-+			return ret;
-+		ret = usb_pipe_type_check(d->udev, usb_rcvbulkpipe(d->udev, endpoint));
-+		if (ret)
-+			return ret;
-+	}
-+	return 0;
-+}
-+
-+static void dvb_usb_clear_halt(struct dvb_usb_device *d, u8 endpoint)
-+{
-+	if (endpoint) {
-+		usb_clear_halt(d->udev, usb_sndbulkpipe(d->udev, endpoint));
-+		usb_clear_halt(d->udev, usb_rcvbulkpipe(d->udev, endpoint));
-+	}
-+}
-+
- static int dvb_usb_adapter_init(struct dvb_usb_device *d, short *adapter_nrs)
- {
- 	struct dvb_usb_adapter *adap;
- 	int ret, n, o;
- 
-+	ret = dvb_usb_check_bulk_endpoint(d, d->props.generic_bulk_ctrl_endpoint);
-+	if (ret)
-+		return ret;
-+	ret = dvb_usb_check_bulk_endpoint(d, d->props.generic_bulk_ctrl_endpoint_response);
-+	if (ret)
-+		return ret;
- 	for (n = 0; n < d->props.num_adapters; n++) {
- 		adap = &d->adapter[n];
- 		adap->dev = d;
-@@ -103,10 +132,8 @@ static int dvb_usb_adapter_init(struct dvb_usb_device *d, short *adapter_nrs)
- 	 * when reloading the driver w/o replugging the device
- 	 * sometimes a timeout occurs, this helps
- 	 */
--	if (d->props.generic_bulk_ctrl_endpoint != 0) {
--		usb_clear_halt(d->udev, usb_sndbulkpipe(d->udev, d->props.generic_bulk_ctrl_endpoint));
--		usb_clear_halt(d->udev, usb_rcvbulkpipe(d->udev, d->props.generic_bulk_ctrl_endpoint));
--	}
-+	dvb_usb_clear_halt(d, d->props.generic_bulk_ctrl_endpoint);
-+	dvb_usb_clear_halt(d, d->props.generic_bulk_ctrl_endpoint_response);
- 
- 	return 0;
- 
+-	child = of_get_next_child(np, NULL);
+-	if (!child) {
++	val = of_get_child_count(np);
++	if (val == 0) {
+ 		dev_err(&pdev->dev, "no group is defined\n");
+ 		return -ENOENT;
+ 	}
 -- 
 2.43.0
 
