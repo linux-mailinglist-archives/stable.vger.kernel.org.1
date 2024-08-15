@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-68234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68236-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0B22953144
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:52:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7946A953145
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:52:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 967EE1F2129E
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:52:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 009B71F21907
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:52:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3301719F482;
-	Thu, 15 Aug 2024 13:52:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C233519FA90;
+	Thu, 15 Aug 2024 13:52:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ACbg+gSw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CSQVll5Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6AE91714A1;
-	Thu, 15 Aug 2024 13:51:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FFBF19FA7A;
+	Thu, 15 Aug 2024 13:52:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723729920; cv=none; b=Jr2earafgaKVGcB/Tzd/zTFoLRGCxwZff5Xp7U8mE+6z+UfbqiBqQbZry1qPQEger+U1UmbkdP2/iXGgGtmwtbeXTDg+0NSG+Rb7EcpAigbx6xfqCTzZlv2ThNmGMmvMOLFol8OTEmqdc0g0r9mfa3y5bIRAg7H7ihlc7sr4N/M=
+	t=1723729926; cv=none; b=V6ClwZwldFeou626NUxOg+trKzA95ui3CniKEo+hFKbCREJtc2YXLTHYYfuqflHZ0OczBDVBm7IO227IE3lO/HYHt/Jl2xzB9vn5ev5HKvAmKPuDOl1/mHCRjWEZka3zdTD+cD4FRCxDBkRaYOE/Qsf46s6IZOJ2IrLIjc3S12Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723729920; c=relaxed/simple;
-	bh=AlSi/MaBItUvEpvtObuVL6xoSlF5Vrs7s5orFYyMcc8=;
+	s=arc-20240116; t=1723729926; c=relaxed/simple;
+	bh=hjepkz6ID/wsKDtHDCBUF4XAhN/NCVTq+iNG4mpDHRQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kaGNau3P6M/plR0qnGB3RZQQmhZVEOQdiFX/9SArcU+CQ0Fxv6GUj9oPu+qxTBmfbbf4Jt4oIa15M6RITy/wMAgFTOzI6qpPxgwFPtFi0vwE72LzIfDXkONWrH+PyeNoyxK4E4+MTONOQiybYeIJHi6/VEFB8UyztXCbWfjdbwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ACbg+gSw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58152C4AF0A;
-	Thu, 15 Aug 2024 13:51:59 +0000 (UTC)
+	 MIME-Version; b=p9jt/WzJELbinKIOV8JYwbeoitfrhVtX5jHl3DsZMNdmQH0YVDGo/KhE8hMVktNDuwHE17eJDVOTrvdaVh5cC6sBM4Gn1DPX2SCQ+woPSqaFaBxkH3nt7J8Q8windyQ3sV9rgrXej/5Qwncb7wxF4yK+7xe8YZoUkGl8aP8CE1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CSQVll5Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A91F0C32786;
+	Thu, 15 Aug 2024 13:52:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723729919;
-	bh=AlSi/MaBItUvEpvtObuVL6xoSlF5Vrs7s5orFYyMcc8=;
+	s=korg; t=1723729926;
+	bh=hjepkz6ID/wsKDtHDCBUF4XAhN/NCVTq+iNG4mpDHRQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ACbg+gSwu4yYtmMeZdQyS9WaIVpQnAocbW3e0X9COAwG2L5hwQtvui853S0UQLaK5
-	 Eu2txhElttt8z/55bYi1hx0MdpJPpZLB7OOIu3AtmEPe9edifCwNP8NbamM7YJ1EFn
-	 CRMXUb30oIggUFSg1pe+xtpMO1M5/MNzD6xVRPL8=
+	b=CSQVll5YBAExNYNV0wM+DaKoDn67+pG0SrR9J/JVqPhOCSST8lguPGfd04czPPH7i
+	 vuD02TcFZeG4r1LpYBMuh937Km69/oKeAev1dHpWrIVJy3Z8D0st3PhseG+EDxPERQ
+	 j84Xrl2OMz14iijyZyu+0GLIbC6IQ+fVWXuRMsME=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Jiaxun Yang <jiaxun.yang@flygoat.com>,
 	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 5.15 249/484] MIPS: Loongson64: Remove memory node for builtin-dtb
-Date: Thu, 15 Aug 2024 15:21:47 +0200
-Message-ID: <20240815131951.016477722@linuxfoundation.org>
+Subject: [PATCH 5.15 250/484] MIPS: Loongson64: reset: Prioritise firmware service
+Date: Thu, 15 Aug 2024 15:21:48 +0200
+Message-ID: <20240815131951.056668773@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
 References: <20240815131941.255804951@linuxfoundation.org>
@@ -67,39 +67,101 @@ Content-Transfer-Encoding: 8bit
 
 From: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
-commit b81656c37acf1e682dde02f3e07987784b0f3634 upstream.
+commit 4e7ca0b57f3bc09ba3e4ab86bf6b7c35134bfd04 upstream.
 
-Builtin DTBS should never contain memory node as memory is
-going to be managed by LEFI interface.
+We should always use firmware's poweroff & reboot service
+if it's available as firmware may need to perform more task
+than platform's syscon etc.
 
-Remove memory node to prevent confliction.
+However _machine_restart & poweroff hooks are registered at
+low priority, which means platform reboot driver can override
+them.
 
-Fixes: b1a792601f26 ("MIPS: Loongson64: DeviceTree for Loongson-2K1000")
+Register firmware based reboot/poweroff implementation with
+register_sys_off_handler with appropriate priority so that
+they will be prioritised. Remove _machine_halt hook as it's
+deemed to be unnecessary.
+
 Cc: stable@vger.kernel.org
 Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
 Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi |    8 --------
- 1 file changed, 8 deletions(-)
+ arch/mips/loongson64/reset.c |   38 ++++++++++++++++----------------------
+ 1 file changed, 16 insertions(+), 22 deletions(-)
 
---- a/arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi
-+++ b/arch/mips/boot/dts/loongson/loongson64-2k1000.dtsi
-@@ -23,14 +23,6 @@
- 		};
- 	};
+--- a/arch/mips/loongson64/reset.c
++++ b/arch/mips/loongson64/reset.c
+@@ -11,6 +11,7 @@
+ #include <linux/init.h>
+ #include <linux/kexec.h>
+ #include <linux/pm.h>
++#include <linux/reboot.h>
+ #include <linux/slab.h>
  
--	memory@200000 {
--		compatible = "memory";
--		device_type = "memory";
--		reg = <0x00000000 0x00200000 0x00000000 0x0ee00000>, /* 238 MB at 2 MB */
--			<0x00000000 0x20000000 0x00000000 0x1f000000>, /* 496 MB at 512 MB */
--			<0x00000001 0x10000000 0x00000001 0xb0000000>; /* 6912 MB at 4352MB */
--	};
+ #include <asm/bootinfo.h>
+@@ -21,36 +22,21 @@
+ #include <loongson.h>
+ #include <boot_param.h>
+ 
+-static void loongson_restart(char *command)
++static int firmware_restart(struct sys_off_data *unusedd)
+ {
+ 
+ 	void (*fw_restart)(void) = (void *)loongson_sysconf.restart_addr;
+ 
+ 	fw_restart();
+-	while (1) {
+-		if (cpu_wait)
+-			cpu_wait();
+-	}
++	return NOTIFY_DONE;
+ }
+ 
+-static void loongson_poweroff(void)
++static int firmware_poweroff(struct sys_off_data *unused)
+ {
+ 	void (*fw_poweroff)(void) = (void *)loongson_sysconf.poweroff_addr;
+ 
+ 	fw_poweroff();
+-	while (1) {
+-		if (cpu_wait)
+-			cpu_wait();
+-	}
+-}
 -
- 	cpu_clk: cpu_clk {
- 		#clock-cells = <0>;
- 		compatible = "fixed-clock";
+-static void loongson_halt(void)
+-{
+-	pr_notice("\n\n** You can safely turn off the power now **\n\n");
+-	while (1) {
+-		if (cpu_wait)
+-			cpu_wait();
+-	}
++	return NOTIFY_DONE;
+ }
+ 
+ #ifdef CONFIG_KEXEC
+@@ -154,9 +140,17 @@ static void loongson_crash_shutdown(stru
+ 
+ static int __init mips_reboot_setup(void)
+ {
+-	_machine_restart = loongson_restart;
+-	_machine_halt = loongson_halt;
+-	pm_power_off = loongson_poweroff;
++	if (loongson_sysconf.restart_addr) {
++		register_sys_off_handler(SYS_OFF_MODE_RESTART,
++				 SYS_OFF_PRIO_FIRMWARE,
++				 firmware_restart, NULL);
++	}
++
++	if (loongson_sysconf.poweroff_addr) {
++		register_sys_off_handler(SYS_OFF_MODE_POWER_OFF,
++				 SYS_OFF_PRIO_FIRMWARE,
++				 firmware_poweroff, NULL);
++	}
+ 
+ #ifdef CONFIG_KEXEC
+ 	kexec_argv = kmalloc(KEXEC_ARGV_SIZE, GFP_KERNEL);
 
 
 
