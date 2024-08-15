@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-68299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-67816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4C8F95318D
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:55:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5732A952F3C
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:30:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 22E2E1C2202D
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:55:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0117C1F26717
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:30:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51E8D18D64F;
-	Thu, 15 Aug 2024 13:55:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22C7918D627;
+	Thu, 15 Aug 2024 13:30:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N+HwOHJK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hh6/y76G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 113481714A1;
-	Thu, 15 Aug 2024 13:55:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D598F7DA78;
+	Thu, 15 Aug 2024 13:30:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730130; cv=none; b=BW6gQmqfhz9d9zXzlZTMEwATkOC8CMH9sbQcsCK4EjxxD++5c8O4zIadeF2F1uckEnY3A/HyZ9+YIKyxtEy6xrhXkE4VOq3gjQDpbBeIZp6H/MtKOT9IqtDTGJUdg00CPvKRU22FL9hgMkaqv4LL/oy68bvWu6sb4bVm7pTxn+8=
+	t=1723728610; cv=none; b=DQi73eimPmPnq84Y3t6ahjdZYZ8ASgbEvf3EB4HmEiKuHhRjGoEJ3RRpBWWWTnn5pGY35HNQGkWc676wvsywd5Jz8YhVj95rvA0L3oSJEjbfvMA9THH8TYMYSYfwrlO08KxwV04qEU0m91aqZextMGzcGViBB+Y9qt1RLdBixKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730130; c=relaxed/simple;
-	bh=XaTPKSdlxnLUzi/0dMZIFxSC8luhyzcgMjv18M5Hyj0=;
+	s=arc-20240116; t=1723728610; c=relaxed/simple;
+	bh=xfqK6ctOyojTSXPZ8LCLPLIr/JzNhSFX5oEVtoOU87k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dJPthC9ZGd++jiigIlXUiz9jtXVVZQGr4eo9xUyAwLSCNg1OMomxvo+R8EJ+r2hxMU1iqGa5aTTwVrtFSnGCVzD6UtIcZlUNKfVTl76on70UCx72pCcwICv6kA+ZaTD6UYfHaN51M6TX+6qaAUwPnr6LBCAw7LDVAkVEhnfw0dg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N+HwOHJK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87530C32786;
-	Thu, 15 Aug 2024 13:55:29 +0000 (UTC)
+	 MIME-Version; b=nuns3h+BY+Ps7Fy1bzUWOGx9p5RewF1l+OTlepKXWZDb2kOCX66SzqU+Rbh/5SKTftnf3rmH5YctYS3Gt6cGSWopeg00cqhtm0RKEWdgkCeTsywC8wMFrEcpnF2vnjB2xsOg7ZhMppBvjkvVFrkcqnxkIoKogG2daFE2EqwAyKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hh6/y76G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02FDEC32786;
+	Thu, 15 Aug 2024 13:30:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730129;
-	bh=XaTPKSdlxnLUzi/0dMZIFxSC8luhyzcgMjv18M5Hyj0=;
+	s=korg; t=1723728609;
+	bh=xfqK6ctOyojTSXPZ8LCLPLIr/JzNhSFX5oEVtoOU87k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N+HwOHJKJyOC9g9NOFgcWQmqEG7qg5Qcq7jot5rlWJj08KN7TwvC8VXjh+Pgrg+7q
-	 COZBWp+34DnGSU/ssjohKZKn7N9ECeKyHs4soy07YYF6Ey4UmpWJNWXoXfSR10BpaW
-	 FFyjjFYvCJOXcEpKe6Kc+9x6gft72QvTqoqG0eIo=
+	b=hh6/y76GFa215g9IsBr4J6jWUqEDJWS589Brxw3wdnDNmsX9TKJ85X2iYQkrFgdWl
+	 Oxz3Xz4PO5Rsfiq2cFeAIvce4cRcjGqE0tMufQ/+Iwfb2FeXjdsZRxVrFzCJ1+aQPn
+	 ml3Onf7z7XSIqpJ1zV8BfKICc1rAI+izzfnsje5g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Lee Jones <lee@kernel.org>,
+	zdi-disclosures@trendmicro.com,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 313/484] leds: trigger: Remove unused function led_trigger_rename_static()
+Subject: [PATCH 4.19 054/196] netfilter: ctnetlink: use helper function to calculate expect ID
 Date: Thu, 15 Aug 2024 15:22:51 +0200
-Message-ID: <20240815131953.495400773@linuxfoundation.org>
+Message-ID: <20240815131854.146808322@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
-References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
+References: <20240815131852.063866671@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit c82a1662d4548c454de5343b88f69b9fc82266b3 ]
+[ Upstream commit 782161895eb4ac45cf7cfa8db375bd4766cb8299 ]
 
-This function was added with a8df7b1ab70b ("leds: add led_trigger_rename
-function") 11 yrs ago, but it has no users. So remove it.
+Delete expectation path is missing a call to the nf_expect_get_id()
+helper function to calculate the expectation ID, otherwise LSB of the
+expectation object address is leaked to userspace.
 
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Link: https://lore.kernel.org/r/d90f30be-f661-4db7-b0b5-d09d07a78a68@gmail.com
-Signed-off-by: Lee Jones <lee@kernel.org>
-Stable-dep-of: ab477b766edd ("leds: triggers: Flush pending brightness before activating trigger")
+Fixes: 3c79107631db ("netfilter: ctnetlink: don't use conntrack/expect object addresses as id")
+Reported-by: zdi-disclosures@trendmicro.com
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/led-triggers.c | 13 -------------
- include/linux/leds.h        | 17 -----------------
- 2 files changed, 30 deletions(-)
+ net/netfilter/nf_conntrack_netlink.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/leds/led-triggers.c b/drivers/leds/led-triggers.c
-index 024b73f84ce0c..dddfc301d3414 100644
---- a/drivers/leds/led-triggers.c
-+++ b/drivers/leds/led-triggers.c
-@@ -268,19 +268,6 @@ void led_trigger_set_default(struct led_classdev *led_cdev)
- }
- EXPORT_SYMBOL_GPL(led_trigger_set_default);
+diff --git a/net/netfilter/nf_conntrack_netlink.c b/net/netfilter/nf_conntrack_netlink.c
+index 83e8566ec3f05..bcb72ad2c1786 100644
+--- a/net/netfilter/nf_conntrack_netlink.c
++++ b/net/netfilter/nf_conntrack_netlink.c
+@@ -3106,7 +3106,8 @@ static int ctnetlink_del_expect(struct net *net, struct sock *ctnl,
  
--void led_trigger_rename_static(const char *name, struct led_trigger *trig)
--{
--	/* new name must be on a temporary string to prevent races */
--	BUG_ON(name == trig->name);
--
--	down_write(&triggers_list_lock);
--	/* this assumes that trig->name was originaly allocated to
--	 * non constant storage */
--	strcpy((char *)trig->name, name);
--	up_write(&triggers_list_lock);
--}
--EXPORT_SYMBOL_GPL(led_trigger_rename_static);
--
- /* LED Trigger Interface */
- 
- int led_trigger_register(struct led_trigger *trig)
-diff --git a/include/linux/leds.h b/include/linux/leds.h
-index ba4861ec73d30..2bbff7519b731 100644
---- a/include/linux/leds.h
-+++ b/include/linux/leds.h
-@@ -409,23 +409,6 @@ static inline void *led_get_trigger_data(struct led_classdev *led_cdev)
- 	return led_cdev->trigger_data;
- }
- 
--/**
-- * led_trigger_rename_static - rename a trigger
-- * @name: the new trigger name
-- * @trig: the LED trigger to rename
-- *
-- * Change a LED trigger name by copying the string passed in
-- * name into current trigger name, which MUST be large
-- * enough for the new string.
-- *
-- * Note that name must NOT point to the same string used
-- * during LED registration, as that could lead to races.
-- *
-- * This is meant to be used on triggers with statically
-- * allocated name.
-- */
--void led_trigger_rename_static(const char *name, struct led_trigger *trig);
--
- #define module_led_trigger(__led_trigger) \
- 	module_driver(__led_trigger, led_trigger_register, \
- 		      led_trigger_unregister)
+ 		if (cda[CTA_EXPECT_ID]) {
+ 			__be32 id = nla_get_be32(cda[CTA_EXPECT_ID]);
+-			if (ntohl(id) != (u32)(unsigned long)exp) {
++
++			if (id != nf_expect_get_id(exp)) {
+ 				nf_ct_expect_put(exp);
+ 				return -ENOENT;
+ 			}
 -- 
 2.43.0
 
