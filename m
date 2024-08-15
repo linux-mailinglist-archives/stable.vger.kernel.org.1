@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-68763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68441-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60C929533D8
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:20:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 72649953252
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:05:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F1F70B264DE
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:20:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F17F7B25307
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:05:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5648F19F462;
-	Thu, 15 Aug 2024 14:19:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EF7A1A7074;
+	Thu, 15 Aug 2024 14:02:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DY11pM56"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XTftuAfl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1450B1EA80;
-	Thu, 15 Aug 2024 14:19:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CD541A01B5;
+	Thu, 15 Aug 2024 14:02:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731588; cv=none; b=DQZq4pFmPkZWHCdNDJTCKYmL0tshfLTCESMhQ2Jp2O9gUMsDhy4jJx3SUwDoqqXaSC8nIF6sXfGVFRoNsM94DAV1trZ+WoMXafvRv/pxSvciH3kUfI+iZhzq17i6RB75m+zjMuDysoVGvUGc3S38q8eJ6GRg2n4iflmrnv+mb+s=
+	t=1723730579; cv=none; b=ha8OQ3ARngUKYtHpntBip585fIFL7IwH6VPSdQMo2x/T0kZKM6F1lBj6WbJSfaTVpORmNimVLKZMtGXkkxb5ihnbOUnjX87idFR5tBEOS84/2hjnN/yny/r/RuTxDnhIsKo/radtEOpemokV2M8IlIi+w6m5dtzoIkPjJQ3h1jc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731588; c=relaxed/simple;
-	bh=Mh2EHOszsZ/N5EQ7y1MVEH3OElDF+75XU58lpooqA6U=;
+	s=arc-20240116; t=1723730579; c=relaxed/simple;
+	bh=9MxRyBJHtS9XPl5RrvWyhKDzUU/IyAK91wdIybdWDdE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=StMno+dbG48MV04XiliTZwYfLwJZy1UHtGzwlSkqwzL4VCh+U3v+MKtcIV6awmCs9APBVyiEW8Fxr10nWtUnsAtmdI2TTy2OHwqq4TnP0VCUnZLHIca4UhbkmN4VMWEvuaB+IWzZ/zND1qpt+Uh9dZayETri2Gwfp2QWtg7sluE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DY11pM56; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E793C32786;
-	Thu, 15 Aug 2024 14:19:47 +0000 (UTC)
+	 MIME-Version; b=kUFUWtZ5AsdYFBFay+pBN/zAEI9QXEJzYtAMQJMvmdQ1YNN4eajZnA/SJ4RQ4SVVsYOu6PyHgc0tnk2+kw+3jGirjwWRSNQP+SNglwKwtX6cinBabQCRfSA+OksqBskn8c8hSpD8+wo9+DahAp7nkqcGFKI167hWR3S7I09vnhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XTftuAfl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B012EC32786;
+	Thu, 15 Aug 2024 14:02:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731588;
-	bh=Mh2EHOszsZ/N5EQ7y1MVEH3OElDF+75XU58lpooqA6U=;
+	s=korg; t=1723730579;
+	bh=9MxRyBJHtS9XPl5RrvWyhKDzUU/IyAK91wdIybdWDdE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DY11pM56uykBV4Oa0LEXHXYsFtQTpnwZsHiSrpqXNcizFTA62sHS4LSahIpRTxxvR
-	 331Gf9ZycTyA5m14VgFhfjMsVzZkLzx9AFK7HYJQjB4dU+Ky8K4TO2bN3H562kZmWs
-	 dEnOKX7uEnX+B8VKq78NfnS9o7xbrnT9CU3eR9i0=
+	b=XTftuAflSP7onjutwV+oB985P0sTiuYRJl3oQn+SrgSJSDH33bS2XsRzNFSpBF3K0
+	 A3Hi5R4xXpVgBu5LA3xL6xn99LOXzD+ZKAVR8PYRG+76OzaKy7Ml19lI6mGjSP2CIT
+	 jiIGuXbvaV8LvyfHUaEz6Fj50FJ8KfcAWU4jxK+E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jen Linkova <furry@google.com>,
-	Lorenzo Colitti <lorenzo@google.com>,
-	Patrick Rohr <prohr@google.com>,
-	David Ahern <dsahern@kernel.org>,
-	=?UTF-8?q?YOSHIFUJI=20Hideaki=20/=20=E5=90=89=E8=97=A4=E8=8B=B1=E6=98=8E?= <yoshfuji@linux-ipv6.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	=?UTF-8?q?Maciej=20=C5=BBenczykowski?= <maze@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 177/259] ipv6: fix ndisc_is_useropt() handling for PIO
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 5.15 452/484] mptcp: distinguish rcv vs sent backup flag in requests
 Date: Thu, 15 Aug 2024 15:25:10 +0200
-Message-ID: <20240815131909.614873148@linuxfoundation.org>
+Message-ID: <20240815131958.922738940@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,97 +60,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej Żenczykowski <maze@google.com>
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-[ Upstream commit a46c68debf3be3a477a69ccbf0a1d050df841676 ]
+commit efd340bf3d7779a3a8ec954d8ec0fb8a10f24982 upstream.
 
-The current logic only works if the PIO is between two
-other ND user options.  This fixes it so that the PIO
-can also be either before or after other ND user options
-(for example the first or last option in the RA).
+When sending an MP_JOIN + SYN + ACK, it is possible to mark the subflow
+as 'backup' by setting the flag with the same name. Before this patch,
+the backup was set if the other peer set it in its MP_JOIN + SYN
+request.
 
-side note: there's actually Android tests verifying
-a portion of the old broken behaviour, so:
-  https://android-review.googlesource.com/c/kernel/tests/+/3196704
-fixes those up.
+It is not correct: the backup flag should be set in the MPJ+SYN+ACK only
+if the host asks for it, and not mirroring what was done by the other
+peer. It is then required to have a dedicated bit for each direction,
+similar to what is done in the subflow context.
 
-Cc: Jen Linkova <furry@google.com>
-Cc: Lorenzo Colitti <lorenzo@google.com>
-Cc: Patrick Rohr <prohr@google.com>
-Cc: David Ahern <dsahern@kernel.org>
-Cc: YOSHIFUJI Hideaki / 吉藤英明 <yoshfuji@linux-ipv6.org>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Maciej Żenczykowski <maze@google.com>
-Fixes: 048c796beb6e ("ipv6: adjust ndisc_is_useropt() to also return true for PIO")
-Link: https://patch.msgid.link/20240730001748.147636-1-maze@google.com
+Fixes: f296234c98a8 ("mptcp: Add handling of incoming MP_JOIN requests")
+Cc: stable@vger.kernel.org
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[ Conflicts in subflow.c, because the context has changed in commit
+  4cf86ae84c71 ("mptcp: strict local address ID selection"), and in
+  commit 967d3c27127e ("mptcp: fix data races on remote_id"), which are
+  not in this version. These commits are unrelated to this
+  modification. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/ndisc.c | 34 ++++++++++++++++++----------------
- 1 file changed, 18 insertions(+), 16 deletions(-)
+ net/mptcp/options.c  |    2 +-
+ net/mptcp/protocol.h |    1 +
+ net/mptcp/subflow.c  |    1 +
+ 3 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv6/ndisc.c b/net/ipv6/ndisc.c
-index 74977ec77c576..64729e7e6a866 100644
---- a/net/ipv6/ndisc.c
-+++ b/net/ipv6/ndisc.c
-@@ -225,6 +225,7 @@ struct ndisc_options *ndisc_parse_options(const struct net_device *dev,
- 		return NULL;
- 	memset(ndopts, 0, sizeof(*ndopts));
- 	while (opt_len) {
-+		bool unknown = false;
- 		int l;
- 		if (opt_len < sizeof(struct nd_opt_hdr))
- 			return NULL;
-@@ -260,22 +261,23 @@ struct ndisc_options *ndisc_parse_options(const struct net_device *dev,
- 			break;
- #endif
- 		default:
--			if (ndisc_is_useropt(dev, nd_opt)) {
--				ndopts->nd_useropts_end = nd_opt;
--				if (!ndopts->nd_useropts)
--					ndopts->nd_useropts = nd_opt;
--			} else {
--				/*
--				 * Unknown options must be silently ignored,
--				 * to accommodate future extension to the
--				 * protocol.
--				 */
--				ND_PRINTK(2, notice,
--					  "%s: ignored unsupported option; type=%d, len=%d\n",
--					  __func__,
--					  nd_opt->nd_opt_type,
--					  nd_opt->nd_opt_len);
--			}
-+			unknown = true;
-+		}
-+		if (ndisc_is_useropt(dev, nd_opt)) {
-+			ndopts->nd_useropts_end = nd_opt;
-+			if (!ndopts->nd_useropts)
-+				ndopts->nd_useropts = nd_opt;
-+		} else if (unknown) {
-+			/*
-+			 * Unknown options must be silently ignored,
-+			 * to accommodate future extension to the
-+			 * protocol.
-+			 */
-+			ND_PRINTK(2, notice,
-+				  "%s: ignored unsupported option; type=%d, len=%d\n",
-+				  __func__,
-+				  nd_opt->nd_opt_type,
-+				  nd_opt->nd_opt_len);
- 		}
- next_opt:
- 		opt_len -= l;
--- 
-2.43.0
-
+--- a/net/mptcp/options.c
++++ b/net/mptcp/options.c
+@@ -877,7 +877,7 @@ bool mptcp_synack_options(const struct r
+ 		return true;
+ 	} else if (subflow_req->mp_join) {
+ 		opts->suboptions = OPTION_MPTCP_MPJ_SYNACK;
+-		opts->backup = subflow_req->backup;
++		opts->backup = subflow_req->request_bkup;
+ 		opts->join_id = subflow_req->local_id;
+ 		opts->thmac = subflow_req->thmac;
+ 		opts->nonce = subflow_req->local_nonce;
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -370,6 +370,7 @@ struct mptcp_subflow_request_sock {
+ 	u16	mp_capable : 1,
+ 		mp_join : 1,
+ 		backup : 1,
++		request_bkup : 1,
+ 		csum_reqd : 1,
+ 		allow_join_id0 : 1;
+ 	u8	local_id;
+--- a/net/mptcp/subflow.c
++++ b/net/mptcp/subflow.c
+@@ -1766,6 +1766,7 @@ static void subflow_ulp_clone(const stru
+ 		new_ctx->mp_join = 1;
+ 		new_ctx->fully_established = 1;
+ 		new_ctx->backup = subflow_req->backup;
++		new_ctx->request_bkup = subflow_req->request_bkup;
+ 		new_ctx->local_id = subflow_req->local_id;
+ 		new_ctx->remote_id = subflow_req->remote_id;
+ 		new_ctx->token = subflow_req->token;
 
 
 
