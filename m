@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-68814-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68559-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02C09953418
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:23:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10D6C9532EE
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:12:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8199DB27A19
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:23:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC9092838F7
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:12:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0CA81A4F1C;
-	Thu, 15 Aug 2024 14:22:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A6AA1AD9D9;
+	Thu, 15 Aug 2024 14:09:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kTSSF2tn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bRfnInnX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B10419DF92;
-	Thu, 15 Aug 2024 14:22:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38B7D1B32D9;
+	Thu, 15 Aug 2024 14:09:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731747; cv=none; b=Iiz8yrBAi5Z8AC00VjrTSv3kyGO4YEQXTbAOZs1/3knW1mG/PMXyIptejv9loC7Mfk7vc4ntOrXIQI7ZYwozqsZE9FQXJ0BEX7cFTKkRrMyYcdaDbWODBwlg6Cxu0twZFurSdMI+K0N2dGMNAjyxBlpgvs0dCjfnwsWmwzXSnew=
+	t=1723730953; cv=none; b=S5MhXzVVRxHIUPCvJU/q3LoEVw1qxdc6jf9Qp3LUJlfvTC2Pzn8Rt7EwXX6iy40LGeUtVjGv/IM33mjZquCmVZH/w0JLS0wTe+QD+KyTagLwHBcu5SOqSa0MkMDx9l4LTofvMozZKPOu/gaH8c32pZ7N445ioAPUDvTmbHQr+8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731747; c=relaxed/simple;
-	bh=3NLqioVRavUotdvV8xxvUxdNXfoHZeXXKyzQvGTzV90=;
+	s=arc-20240116; t=1723730953; c=relaxed/simple;
+	bh=leZhJWtvw4rBYeR3QFyIHWlo3i3+Q572wjH6U9D1KHk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NS/+vViLmn6vGtvBESA197Er2LR80ebEtFkeJyVVKMVH+YcuhHKubGa23yynJKlp4RnE6PRgNhoDDrbmDykoHeldgTWXT6FnZcB4cCsK/pXESp8O/P6G0QB51ecw6zCp0T9fHPYybQc+eK6cuDitldl+5axKKZJPkX6KW6hDy6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kTSSF2tn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE095C4AF0C;
-	Thu, 15 Aug 2024 14:22:26 +0000 (UTC)
+	 MIME-Version; b=cgJCDwQBMUzLi1GiAwaOmtH1SCBct5O84/yYtdO0gUQXb7amZCfuPvo+KEpVA6Qwftmumd3rLfQMhpgDZPV3PdfJHVPRHjLgHLzyvTtw6FZT/XIg6HqeRafAtOqVslEXTjnC+Q7SwJQ/b580/EazDO+Q0DhjcHvqifNfd6w98h4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bRfnInnX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA52EC32786;
+	Thu, 15 Aug 2024 14:09:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731747;
-	bh=3NLqioVRavUotdvV8xxvUxdNXfoHZeXXKyzQvGTzV90=;
+	s=korg; t=1723730953;
+	bh=leZhJWtvw4rBYeR3QFyIHWlo3i3+Q572wjH6U9D1KHk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kTSSF2tnFOeoXh1rErwjuUkfLLuzrhuvv52TGgaeQH+j91TLmqkNTAx35tTOpsU7V
-	 0lQc3QaeLpIF/MzQgR/jCY+8AwtJNnSAWKYXeFdt6rzaMWLZA0WJBNyAwI0nYl2qMl
-	 SK1a0js5VpGoZFVPsfhHJJ52XMxII4tmzD/oYLOY=
+	b=bRfnInnXOPkKoTwHzC4ciWsbbge5qNOpZkxKMYFn0eaOq+cZjvYGD2M5fMCzuCpUv
+	 XLgEaEdY0lDP1VY+qtycIkE8MgLhOB7+6etAty5l3VtZfiW4YVPww5UKCUy1UQrF9P
+	 YZn59maW6FoSSe3NrLn7bqwjCzoG2N3yNZ8s9JXQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksandr Suvorov <oleksandr.suvorov@toradex.com>,
-	Mark Brown <broonie@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 225/259] spi: fsl-lpspi: remove unneeded array
+Subject: [PATCH 6.6 44/67] net: add copy_safe_from_sockptr() helper
 Date: Thu, 15 Aug 2024 15:25:58 +0200
-Message-ID: <20240815131911.463275579@linuxfoundation.org>
+Message-ID: <20240815131840.008697510@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131838.311442229@linuxfoundation.org>
+References: <20240815131838.311442229@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksandr Suvorov <oleksandr.suvorov@toradex.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 2fa98705a9289c758b6154a22174aa8d4041a285 ]
+[ Upstream commit 6309863b31dd80317cd7d6824820b44e254e2a9c ]
 
-- replace the array with the shift operation
-- remove the extra comparing operation.
+copy_from_sockptr() helper is unsafe, unless callers
+did the prior check against user provided optlen.
 
-Signed-off-by: Oleksandr Suvorov <oleksandr.suvorov@toradex.com>
-Link: https://lore.kernel.org/r/20200220141143.3902922-2-oleksandr.suvorov@toradex.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 730bbfaf7d48 ("spi: spi-fsl-lpspi: Fix scldiv calculation")
+Too many callers get this wrong, lets add a helper to
+fix them and avoid future copy/paste bugs.
+
+Instead of :
+
+   if (optlen < sizeof(opt)) {
+       err = -EINVAL;
+       break;
+   }
+   if (copy_from_sockptr(&opt, optval, sizeof(opt)) {
+       err = -EFAULT;
+       break;
+   }
+
+Use :
+
+   err = copy_safe_from_sockptr(&opt, sizeof(opt),
+                                optval, optlen);
+   if (err)
+       break;
+
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/r/20240408082845.3957374-2-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 7a87441c9651 ("nfc: llcp: fix nfc_llcp_setsockopt() unsafe copies")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-fsl-lpspi.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ include/linux/sockptr.h | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index 58b2da91be1c0..5351185fd9af7 100644
---- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -86,8 +86,6 @@
- #define TCR_RXMSK	BIT(19)
- #define TCR_TXMSK	BIT(18)
+diff --git a/include/linux/sockptr.h b/include/linux/sockptr.h
+index bae5e2369b4f7..1c1a5d926b171 100644
+--- a/include/linux/sockptr.h
++++ b/include/linux/sockptr.h
+@@ -50,11 +50,36 @@ static inline int copy_from_sockptr_offset(void *dst, sockptr_t src,
+ 	return 0;
+ }
  
--static int clkdivs[] = {1, 2, 4, 8, 16, 32, 64, 128};
--
- struct lpspi_config {
- 	u8 bpw;
- 	u8 chip_select;
-@@ -331,15 +329,14 @@ static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data *fsl_lpspi)
- 	}
++/* Deprecated.
++ * This is unsafe, unless caller checked user provided optlen.
++ * Prefer copy_safe_from_sockptr() instead.
++ */
+ static inline int copy_from_sockptr(void *dst, sockptr_t src, size_t size)
+ {
+ 	return copy_from_sockptr_offset(dst, src, 0, size);
+ }
  
- 	for (prescale = 0; prescale < 8; prescale++) {
--		scldiv = perclk_rate /
--			 (clkdivs[prescale] * config.speed_hz) - 2;
-+		scldiv = perclk_rate / config.speed_hz / (1 << prescale) - 2;
- 		if (scldiv < 256) {
- 			fsl_lpspi->config.prescale = prescale;
- 			break;
- 		}
- 	}
- 
--	if (prescale == 8 && scldiv >= 256)
-+	if (scldiv >= 256)
- 		return -EINVAL;
- 
- 	writel(scldiv | (scldiv << 8) | ((scldiv >> 1) << 16),
++/**
++ * copy_safe_from_sockptr: copy a struct from sockptr
++ * @dst:   Destination address, in kernel space. This buffer must be @ksize
++ *         bytes long.
++ * @ksize: Size of @dst struct.
++ * @optval: Source address. (in user or kernel space)
++ * @optlen: Size of @optval data.
++ *
++ * Returns:
++ *  * -EINVAL: @optlen < @ksize
++ *  * -EFAULT: access to userspace failed.
++ *  * 0 : @ksize bytes were copied
++ */
++static inline int copy_safe_from_sockptr(void *dst, size_t ksize,
++					 sockptr_t optval, unsigned int optlen)
++{
++	if (optlen < ksize)
++		return -EINVAL;
++	return copy_from_sockptr(dst, optval, ksize);
++}
++
+ static inline int copy_to_sockptr_offset(sockptr_t dst, size_t offset,
+ 		const void *src, size_t size)
+ {
 -- 
 2.43.0
 
