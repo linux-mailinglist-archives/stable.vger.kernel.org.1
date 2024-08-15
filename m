@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-69124-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68488-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36E7D953590
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:39:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67F51953294
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:07:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D49181F26BD8
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:39:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1014B1F21FEE
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:07:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6C561684AC;
-	Thu, 15 Aug 2024 14:39:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4136C1B5818;
+	Thu, 15 Aug 2024 14:05:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L3+UN4FA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s28Qnf2/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A43F83214;
-	Thu, 15 Aug 2024 14:39:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0BFF1AB51B;
+	Thu, 15 Aug 2024 14:05:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732746; cv=none; b=Lk1o9o8mruffMQOl7gfqDO9Vjd/Ujm7RhAyDPldFtoWTnu/vcx/l1uN5BWbLDf+sTYVCRSifrB7bwxLfP0/BzSczYbrruc+na+Mpa3TZyFHraxiSCoXgYb4QwUhb/3WpgQ3ZpWDvqU2toaa21JKt+lZNkK+gvklzSED0i6WDm08=
+	t=1723730726; cv=none; b=VFK7Wq6ToMeh7t/pS05SOJdpqPeZoBBbjYzuSVQCzAexrUiZUpaAlk1GC2CYnQRE0Iv12qJZ23RDqT06BSDhFYvehojOho4s2DH2zi/bX4g8+lhRAcS/6n57rf8/GRJzYe2yXQPRbjeesTJ75EUuDEFECGRToPawZMT8POL04/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732746; c=relaxed/simple;
-	bh=WIoafgL4SwPUuZ2aaYQj04ARXJA84S1TX/6zd95Jb4U=;
+	s=arc-20240116; t=1723730726; c=relaxed/simple;
+	bh=bGzmPexXs+za00+EKWikSYOM/Cd6JvaWIp+/RmI8gcc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f1AsE6cB7GvTwnWuI/ia7hAlZJ++1se6uGJ8x9eKgWDRD/43xemEuDoLNvkNkP1r3YO2X00wLRokZzESkG2oWxtasNbIk9TEyRGerKKWJDEgCzJVZ02tyyFJW8Z0DV2X4TSB9NIgCuGoUTAFG/SrdyqcMy1rtv/TJRrTZhBsrDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L3+UN4FA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 177CDC32786;
-	Thu, 15 Aug 2024 14:39:05 +0000 (UTC)
+	 MIME-Version; b=IOIMTDTdyhIOL0EqrIyEtmfdJ5/j4EVMdpln17Z9l6Fg5dpG10dBecMsGRl8bBV8aoHFBZtg6cAaiaNii0He+au+ZYvUeOBtuw9Fs/LoG5wwD48ZdaJOUBbwh18cn9vYUWbHsxGeXDAqF9p3uTFowgYwfCl3LK+bkS1RNluRMLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s28Qnf2/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72410C4AF0C;
+	Thu, 15 Aug 2024 14:05:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732746;
-	bh=WIoafgL4SwPUuZ2aaYQj04ARXJA84S1TX/6zd95Jb4U=;
+	s=korg; t=1723730725;
+	bh=bGzmPexXs+za00+EKWikSYOM/Cd6JvaWIp+/RmI8gcc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L3+UN4FAntR2RMs7gTjszxFsLYpTImfNFNYrDPT0Ozg8wlB8/L3Er32mT8A07zmxm
-	 fLBeAJ8d3xrRHIpCGx5IHdfhSHD3UdRRSbQQQyv1vhLDcAOixfBaV4PiTdPwp013Ho
-	 goeiIwcKSuBKW+BzUSCmdv4NHSr/2NrDC/XR4kJs=
+	b=s28Qnf2/2j9fa8APriBCf6wPZ/LtBgomfQl3yW9kq0HhYoF407+fdeHfUgtp2KhAf
+	 7tkYgEqwVRofYrXg9TCpmJuzFgQVQu5hslGANWQJZcJmb7AOLKrqwfb9ZeOB8DL4JX
+	 88FZk9csjl0zUTjS6YXaYJYkgZveqJ4rFnpbS4RA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Wang <kevinyang.wang@amd.com>,
-	Ma Jun <Jun.Ma2@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 273/352] drm/amdgpu/pm: Fix the null pointer dereference in apply_state_adjust_rules
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 05/38] selftests: mptcp: join: test both signal & subflow
 Date: Thu, 15 Aug 2024 15:25:39 +0200
-Message-ID: <20240815131930.003421844@linuxfoundation.org>
+Message-ID: <20240815131833.163060005@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131832.944273699@linuxfoundation.org>
+References: <20240815131832.944273699@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,109 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Jun <Jun.Ma2@amd.com>
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-[ Upstream commit d19fb10085a49b77578314f69fff21562f7cd054 ]
+commit 4d2868b5d191c74262f7407972d68d1bf3245d6a upstream.
 
-Check the pointer value to fix potential null pointer
-dereference
+It should be quite uncommon to set both the subflow and the signal
+flags: the initiator of the connection is typically the one creating new
+subflows, not the other peer, then no need to announce additional local
+addresses, and use it to create subflows.
 
-Acked-by: Yang Wang<kevinyang.wang@amd.com>
-Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+But some people might be confused about the flags, and set both "just to
+be sure at least the right one is set". To verify the previous fix, and
+avoid future regressions, this specific case is now validated: the
+client announces a new address, and initiates a new subflow from the
+same address.
+
+While working on this, another bug has been noticed, where the client
+reset the new subflow because an ADD_ADDR echo got received as the 3rd
+ACK: this new test also explicitly checks that no RST have been sent by
+the client and server.
+
+The 'Fixes' tag here below is the same as the one from the previous
+commit: this patch here is not fixing anything wrong in the selftests,
+but it validates the previous fix for an issue introduced by this commit
+ID.
+
+Fixes: 86e39e04482b ("mptcp: keep track of local endpoint still available for each msk")
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20240731-upstream-net-20240731-mptcp-endp-subflow-signal-v1-7-c8a9b036493b@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ No conflicts, but not using 'chk_add_nr 1 1 0 invert': in this
+  version, 'chk_add_nr' cannot be used with 'invert': d73bb9d3957b
+  ("selftests: mptcp: join: ability to invert ADD_ADDR check") is not in
+  this version, and backporting it causes a lot of conflicts. That's
+  fine, checking that there is an additional subflow should be enough. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c    |  7 +++++--
- .../gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c    | 14 ++++++++------
- .../gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c  |  7 +++++--
- 3 files changed, 18 insertions(+), 10 deletions(-)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-index 7931528bc864b..5e72b7555edae 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu7_hwmgr.c
-@@ -2983,8 +2983,7 @@ static int smu7_apply_state_adjust_rules(struct pp_hwmgr *hwmgr,
- 			const struct pp_power_state *current_ps)
- {
- 	struct amdgpu_device *adev = hwmgr->adev;
--	struct smu7_power_state *smu7_ps =
--				cast_phw_smu7_power_state(&request_ps->hardware);
-+	struct smu7_power_state *smu7_ps;
- 	uint32_t sclk;
- 	uint32_t mclk;
- 	struct PP_Clocks minimum_clocks = {0};
-@@ -2998,6 +2997,10 @@ static int smu7_apply_state_adjust_rules(struct pp_hwmgr *hwmgr,
- 	int32_t count;
- 	int32_t stable_pstate_sclk = 0, stable_pstate_mclk = 0;
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -2090,6 +2090,20 @@ signal_address_tests()
+ 		chk_add_nr 1 1
+ 	fi
  
-+	smu7_ps = cast_phw_smu7_power_state(&request_ps->hardware);
-+	if (!smu7_ps)
-+		return -EINVAL;
++	# uncommon: subflow and signal flags on the same endpoint
++	# or because the user wrongly picked both, but still expects the client
++	# to create additional subflows
++	if reset "subflow and signal together"; then
++		pm_nl_set_limits $ns1 0 2
++		pm_nl_set_limits $ns2 0 2
++		pm_nl_add_endpoint $ns2 10.0.3.2 flags signal,subflow
++		run_tests $ns1 $ns2 10.0.1.1
++		chk_join_nr 1 1 1
++		chk_add_nr 0 0 0         # none initiated by ns1
++		chk_rst_nr 0 0 invert    # no RST sent by the client
++		chk_rst_nr 0 0           # no RST sent by the server
++	fi
 +
- 	data->battery_state = (PP_StateUILabel_Battery ==
- 			request_ps->classification.ui_label);
- 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c
-index 35ed47ebaf09d..35d0ff57a5960 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/smu8_hwmgr.c
-@@ -1051,16 +1051,18 @@ static int smu8_apply_state_adjust_rules(struct pp_hwmgr *hwmgr,
- 				struct pp_power_state  *prequest_ps,
- 			const struct pp_power_state *pcurrent_ps)
- {
--	struct smu8_power_state *smu8_ps =
--				cast_smu8_power_state(&prequest_ps->hardware);
--
--	const struct smu8_power_state *smu8_current_ps =
--				cast_const_smu8_power_state(&pcurrent_ps->hardware);
--
-+	struct smu8_power_state *smu8_ps;
-+	const struct smu8_power_state *smu8_current_ps;
- 	struct smu8_hwmgr *data = hwmgr->backend;
- 	struct PP_Clocks clocks = {0, 0, 0, 0};
- 	bool force_high;
- 
-+	smu8_ps = cast_smu8_power_state(&prequest_ps->hardware);
-+	smu8_current_ps = cast_const_smu8_power_state(&pcurrent_ps->hardware);
-+
-+	if (!smu8_ps || !smu8_current_ps)
-+		return -EINVAL;
-+
- 	smu8_ps->need_dfs_bypass = true;
- 
- 	data->battery_state = (PP_StateUILabel_Battery == prequest_ps->classification.ui_label);
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
-index 4dc27ec4d012d..10678b5199957 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
-@@ -3232,8 +3232,7 @@ static int vega10_apply_state_adjust_rules(struct pp_hwmgr *hwmgr,
- 			const struct pp_power_state *current_ps)
- {
- 	struct amdgpu_device *adev = hwmgr->adev;
--	struct vega10_power_state *vega10_ps =
--				cast_phw_vega10_power_state(&request_ps->hardware);
-+	struct vega10_power_state *vega10_ps;
- 	uint32_t sclk;
- 	uint32_t mclk;
- 	struct PP_Clocks minimum_clocks = {0};
-@@ -3251,6 +3250,10 @@ static int vega10_apply_state_adjust_rules(struct pp_hwmgr *hwmgr,
- 	uint32_t stable_pstate_sclk = 0, stable_pstate_mclk = 0;
- 	uint32_t latency;
- 
-+	vega10_ps = cast_phw_vega10_power_state(&request_ps->hardware);
-+	if (!vega10_ps)
-+		return -EINVAL;
-+
- 	data->battery_state = (PP_StateUILabel_Battery ==
- 			request_ps->classification.ui_label);
- 
--- 
-2.43.0
-
+ 	# accept and use add_addr with additional subflows
+ 	if reset "multiple subflows and signal"; then
+ 		pm_nl_set_limits $ns1 0 3
 
 
 
