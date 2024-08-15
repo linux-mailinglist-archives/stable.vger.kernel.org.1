@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-68947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68647-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31F599534BB
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:29:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77D52953354
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:16:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6545A1C231FD
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:29:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2990A284EAF
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:16:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6E3F17C9B6;
-	Thu, 15 Aug 2024 14:29:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 173871A2C35;
+	Thu, 15 Aug 2024 14:13:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wx2xEGkH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aq19ZvLQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85B7763C;
-	Thu, 15 Aug 2024 14:29:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C78521A00F8;
+	Thu, 15 Aug 2024 14:13:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732175; cv=none; b=STgjHn99DX+nqxPgx90WaNYIA1yptnpxNghII/z94IlJNi8Vw3iLP9MX12qszk/hziWYlT0Yqcn7OU2UmhvAvD6mgWASYBVOxuvUoBQookxk5ZiJFSqIRXJT5eQgzRAlLglAhgjLN29woMcwtvMHS9sAfo5ZSv5SdDdZejL4Y6I=
+	t=1723731227; cv=none; b=t/pH8XofA6F92djjNfSOHdBCifxZjVID3YN9uZuGZAQ+9hVZEqyfoslDEGPyXytZkAaYIx1OAX+GOGgfjGROgvTRagvagu1Rmy9fQu1gzi3/oIwljkBiTRprWFQS8Oo6wR7GGFc/GW9+sKVHoARHbwGo/Pz/WOL/imgWicxYeGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732175; c=relaxed/simple;
-	bh=Nwm6ogMst77Q7PqkVSUbVSjOPlvS4K4ZevJG5BE6ks0=;
+	s=arc-20240116; t=1723731227; c=relaxed/simple;
+	bh=uPOGKNXoWw+sUsJ7R4kRcRMvBuzarzJeQe2I7mJT4Vc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DnmT484Zy+jIBtgiowbtdNDEVhmCQizP4cKSCcjVX94xllm9HD0ZThAzXwom5FKK48zbX79B6bg0EHAyI+6AyF2/FE5gD9371mK1EYA6KVHz8AFanvStbS07QQgEzpNZfUJtasbYZjanvGTjrDPV/Ey7oa7nWWVuK3TmT7jh1Pk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wx2xEGkH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E92C3C32786;
-	Thu, 15 Aug 2024 14:29:34 +0000 (UTC)
+	 MIME-Version; b=ZmnguhcCC5uZ0MTbjqP1zOMCUSEAjQRDU2Irg6pb5xsCG0i6wZCMLqEUzD9GjRCuqSqZOSxGqBSBLFDWwm5xT6xuXZTRxNr/waFcMOtqNVwSVMRms0uLiQ5gvbAOT0WCBJc3ZwGowSpZWUvWWuqXNjeQV6eyYLod9E9ObrFXNSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aq19ZvLQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7C1CC32786;
+	Thu, 15 Aug 2024 14:13:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732175;
-	bh=Nwm6ogMst77Q7PqkVSUbVSjOPlvS4K4ZevJG5BE6ks0=;
+	s=korg; t=1723731227;
+	bh=uPOGKNXoWw+sUsJ7R4kRcRMvBuzarzJeQe2I7mJT4Vc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wx2xEGkHwtOKdxEsQuPUp0QcZkN5EEXU3a2EZq1N3FvELUwnOQ85In5348oulkyHF
-	 EebbFgg72MmfAc9j0nPQUEUYzxDHvldKcMYjktGWj+8XsGVGsXjjQDrUmXBnjpIK5M
-	 KKUoelY2G5eIeyFlo8XcdKzH0fxuzL6RgpPwxrvE=
+	b=aq19ZvLQzwiIP9DgOJPVDOpN1j5zEVtS+EoF8F7NG0PomzLBbODldrPuv2MSXwZk+
+	 JdqeQA39qxbig6YHH8iOMm5EIv8yuz06xhp0YWe6wtOsJ/73T8/sLoeRxILJZ4NZiu
+	 IU0kg1MwxWAF+sOKMzx7ods0hydpTMCO6Dir6FU0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrei Lalaev <andrei.lalaev@anton-paar.com>,
-	Marco Felsch <m.felsch@pengutronix.de>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Guangguan Wang <guangguan.wang@linux.alibaba.com>,
+	Wen Gu <guwen@linux.alibaba.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 098/352] Input: qt1050 - handle CHIP_ID reading error
+Subject: [PATCH 5.4 031/259] net/smc: set rmbs SG_MAX_SINGLE_ALLOC limitation only when CONFIG_ARCH_NO_SG_CHAIN is defined
 Date: Thu, 15 Aug 2024 15:22:44 +0200
-Message-ID: <20240815131923.047202967@linuxfoundation.org>
+Message-ID: <20240815131904.000278699@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrei Lalaev <andrei.lalaev@anton-paar.com>
+From: Guangguan Wang <guangguan.wang@linux.alibaba.com>
 
-[ Upstream commit 866a5c7e2781cf1b019072288f1f5c64186dcb63 ]
+[ Upstream commit 3ac14b9dfbd345e891d48d89f6c2fa519848f0f4 ]
 
-If the device is missing, we get the following error:
+SG_MAX_SINGLE_ALLOC is used to limit maximum number of entries that
+will be allocated in one piece of scatterlist. When the entries of
+scatterlist exceeds SG_MAX_SINGLE_ALLOC, sg chain will be used. From
+commit 7c703e54cc71 ("arch: switch the default on ARCH_HAS_SG_CHAIN"),
+we can know that the macro CONFIG_ARCH_NO_SG_CHAIN is used to identify
+whether sg chain is supported. So, SMC-R's rmb buffer should be limited
+by SG_MAX_SINGLE_ALLOC only when the macro CONFIG_ARCH_NO_SG_CHAIN is
+defined.
 
-  qt1050 3-0041: ID -1340767592 not supported
-
-Let's handle this situation and print more informative error
-when reading of CHIP_ID fails:
-
-  qt1050 3-0041: Failed to read chip ID: -6
-
-Fixes: cbebf5addec1 ("Input: qt1050 - add Microchip AT42QT1050 support")
-Signed-off-by: Andrei Lalaev <andrei.lalaev@anton-paar.com>
-Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
-Link: https://lore.kernel.org/r/20240617183018.916234-1-andrey.lalaev@gmail.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Fixes: a3fe3d01bd0d ("net/smc: introduce sg-logic for RMBs")
+Signed-off-by: Guangguan Wang <guangguan.wang@linux.alibaba.com>
+Co-developed-by: Wen Gu <guwen@linux.alibaba.com>
+Signed-off-by: Wen Gu <guwen@linux.alibaba.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/keyboard/qt1050.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ net/smc/smc_core.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/input/keyboard/qt1050.c b/drivers/input/keyboard/qt1050.c
-index 403060d05c3b3..7193a4198e214 100644
---- a/drivers/input/keyboard/qt1050.c
-+++ b/drivers/input/keyboard/qt1050.c
-@@ -226,7 +226,12 @@ static bool qt1050_identify(struct qt1050_priv *ts)
- 	int err;
+diff --git a/net/smc/smc_core.c b/net/smc/smc_core.c
+index fb3543f7f278e..0a1520c75b862 100644
+--- a/net/smc/smc_core.c
++++ b/net/smc/smc_core.c
+@@ -691,7 +691,6 @@ int smc_conn_create(struct smc_sock *smc, struct smc_init_info *ini)
+  */
+ static u8 smc_compress_bufsize(int size, bool is_smcd, bool is_rmb)
+ {
+-	const unsigned int max_scat = SG_MAX_SINGLE_ALLOC * PAGE_SIZE;
+ 	u8 compressed;
  
- 	/* Read Chip ID */
--	regmap_read(ts->regmap, QT1050_CHIP_ID, &val);
-+	err = regmap_read(ts->regmap, QT1050_CHIP_ID, &val);
-+	if (err) {
-+		dev_err(&ts->client->dev, "Failed to read chip ID: %d\n", err);
-+		return false;
-+	}
-+
- 	if (val != QT1050_CHIP_ID_VER) {
- 		dev_err(&ts->client->dev, "ID %d not supported\n", val);
- 		return false;
+ 	if (size <= SMC_BUF_MIN_SIZE)
+@@ -701,9 +700,11 @@ static u8 smc_compress_bufsize(int size, bool is_smcd, bool is_rmb)
+ 	compressed = min_t(u8, ilog2(size) + 1,
+ 			   is_smcd ? SMCD_DMBE_SIZES : SMCR_RMBE_SIZES);
+ 
++#ifdef CONFIG_ARCH_NO_SG_CHAIN
+ 	if (!is_smcd && is_rmb)
+ 		/* RMBs are backed by & limited to max size of scatterlists */
+-		compressed = min_t(u8, compressed, ilog2(max_scat >> 14));
++		compressed = min_t(u8, compressed, ilog2((SG_MAX_SINGLE_ALLOC * PAGE_SIZE) >> 14));
++#endif
+ 
+ 	return compressed;
+ }
 -- 
 2.43.0
 
