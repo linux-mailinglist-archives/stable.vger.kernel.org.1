@@ -1,57 +1,53 @@
-Return-Path: <stable+bounces-68008-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68051-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BAFF953031
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:40:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BC21953064
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:42:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B198A288B3D
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:40:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0186F287976
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:42:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F186719DF60;
-	Thu, 15 Aug 2024 13:40:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E10119E7EF;
+	Thu, 15 Aug 2024 13:42:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LstjNtYp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vtRTDPJ0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF26B1714A8;
-	Thu, 15 Aug 2024 13:40:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B26019DF60;
+	Thu, 15 Aug 2024 13:42:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723729209; cv=none; b=go/AhQqTCn4YRwUbbv0hVryyn0nWnkj8JciDT3sPXXTJbFq4KbAidQ11GAiP27HE3U63yGEV9ZzLhUJ/stB4vmei9OlW9ySXehyDoFlCr43Cwz3/ip8+E7N8JJ6zomF/z915zEWILkFgyQvvlz2d7BYrosG54ikocmU33tosjNk=
+	t=1723729341; cv=none; b=vF+VBaXQSp0fl8jnzcUGwn2dUZxp9KyL6tCgmAgqjJv8LnufnwQctfSiZDP4PzINhSI/HRfmw4U2TpIylzMc8pW6/wWIHIvBiJgv2/PYPfMAKOfZydln/9zHrM50mx+Uqv4zXCjwIJ1u8yMt4Jc9r0IF1Evr+u1JPWCaPWebfMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723729209; c=relaxed/simple;
-	bh=bXfav2P56VxPTGvtniJQPSA/Tq2lz49cHQI+d9bYhms=;
+	s=arc-20240116; t=1723729341; c=relaxed/simple;
+	bh=DxhauyGkUMZ1madFYIE80xTOtum16NBkAoHvtxEv/RM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GLE2VbMK3r6oHMmBrMisuiGkzLgPXMMfL3r34HzgiGTnrc5YLcyXLPEspWCkNdQRgLAI4ijr6YyKSxoX1wrv3aB9nv6qqt4HNum+JCrARE6dyNa3s0PteVqGp0jONYTuA7hcc7j4Bf3vsocZvmV4ksbxmY2qPQ0hL1K0eORF6RQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LstjNtYp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36338C32786;
-	Thu, 15 Aug 2024 13:40:09 +0000 (UTC)
+	 MIME-Version; b=jGp82U3+QE+hwZfkVsQjqzmVfRonanRO2JVLyHPSnoZR81oxo4CU8sJM9QJkEMJ6gSwx+g42U+RrhcVNbB59Bp7DBsp7yHftrPsyWsaTNnaSe55Bbp3ALcxXsZAZdVqkjXHa14jy/YpUK0EFFtTbPUfdDZbefPJTR/FAlLtGFbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vtRTDPJ0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDC0AC32786;
+	Thu, 15 Aug 2024 13:42:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723729209;
-	bh=bXfav2P56VxPTGvtniJQPSA/Tq2lz49cHQI+d9bYhms=;
+	s=korg; t=1723729341;
+	bh=DxhauyGkUMZ1madFYIE80xTOtum16NBkAoHvtxEv/RM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LstjNtYpkTIlsb/YRZukAqlsby51NHxn5yitLvS3QtShFGFxIxbqXtIAua4DLCL/N
-	 56uv9WB6JGzE0tN9d+0EoqOaSUM8wrVSznAIs785aTNR5/Itgo9GFaxpecVcf0c2Rg
-	 u9cd1yBBWHvGtJxMVlbkKUTFbw8TTBzEA41JhXGY=
+	b=vtRTDPJ0GwbX1b9T8eZGVZv+j6+VYLK6dMmwIAL2Ing38rNDjKoZSUyKJPgfe3fTZ
+	 XgbSUY7YPIHIqMDRBblm+8tnlv7qeZ8e2IF52Ux8+sagA5uyYX8cKgZCJIhezbNpMB
+	 vem6v2JBchGGwV4p9Ex5pFwHEJnOibyDEGgpM2j8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steev Klimaszewski <steev@kali.org>,
-	Alexey Minnekhanov <alexeymin@postmarketos.org>,
-	Chris Lew <quic_clew@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>
-Subject: [PATCH 5.15 025/484] soc: qcom: pdr: fix parsing of domains lists
-Date: Thu, 15 Aug 2024 15:18:03 +0200
-Message-ID: <20240815131942.247448153@linuxfoundation.org>
+	Jonas Karlman <jonas@kwiboo.se>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 026/484] arm64: dts: rockchip: Increase VOP clk rate on RK3328
+Date: Thu, 15 Aug 2024 15:18:04 +0200
+Message-ID: <20240815131942.286274319@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
 References: <20240815131941.255804951@linuxfoundation.org>
@@ -70,41 +66,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Jonas Karlman <jonas@kwiboo.se>
 
-[ Upstream commit 57f20d51f35780f240ecf39d81cda23612800a92 ]
+[ Upstream commit 0f2ddb128fa20f8441d903285632f2c69e90fae1 ]
 
-While parsing the domains list, start offsets from 0 rather than from
-domains_read. The domains_read is equal to the total count of the
-domains we have seen, while the domains list in the message starts from
-offset 0.
+The VOP on RK3328 needs to run at a higher rate in order to produce a
+proper 3840x2160 signal.
 
-Fixes: fbe639b44a82 ("soc: qcom: Introduce Protection Domain Restart helpers")
-Tested-by: Steev Klimaszewski <steev@kali.org>
-Tested-by: Alexey Minnekhanov <alexeymin@postmarketos.org>
-Reviewed-by: Chris Lew <quic_clew@quicinc.com>
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20240622-qcom-pd-mapper-v9-2-a84ee3591c8e@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Change to use 300MHz for VIO clk and 400MHz for VOP clk, same rates used
+by vendor 4.4 kernel.
+
+Fixes: 52e02d377a72 ("arm64: dts: rockchip: add core dtsi file for RK3328 SoCs")
+Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
+Link: https://lore.kernel.org/r/20240615170417.3134517-2-jonas@kwiboo.se
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/pdr_interface.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/rockchip/rk3328.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/soc/qcom/pdr_interface.c b/drivers/soc/qcom/pdr_interface.c
-index b308d942bbd6c..e20d97d7fb658 100644
---- a/drivers/soc/qcom/pdr_interface.c
-+++ b/drivers/soc/qcom/pdr_interface.c
-@@ -418,7 +418,7 @@ static int pdr_locate_service(struct pdr_handle *pdr, struct pdr_service *pds)
- 		if (ret < 0)
- 			goto out;
- 
--		for (i = domains_read; i < resp->domain_list_len; i++) {
-+		for (i = 0; i < resp->domain_list_len; i++) {
- 			entry = &resp->domain_list[i];
- 
- 			if (strnlen(entry->name, sizeof(entry->name)) == sizeof(entry->name))
+diff --git a/arch/arm64/boot/dts/rockchip/rk3328.dtsi b/arch/arm64/boot/dts/rockchip/rk3328.dtsi
+index 26f02cc70dc5d..21755dd5b4c45 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3328.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3328.dtsi
+@@ -807,8 +807,8 @@ cru: clock-controller@ff440000 {
+ 			<0>, <24000000>,
+ 			<24000000>, <24000000>,
+ 			<15000000>, <15000000>,
+-			<100000000>, <100000000>,
+-			<100000000>, <100000000>,
++			<300000000>, <100000000>,
++			<400000000>, <100000000>,
+ 			<50000000>, <100000000>,
+ 			<100000000>, <100000000>,
+ 			<50000000>, <50000000>,
 -- 
 2.43.0
 
