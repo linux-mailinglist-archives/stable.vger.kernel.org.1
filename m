@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-67794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68277-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43B41952F20
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:29:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CAA7953176
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:54:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BD158288787
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:29:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C5C361F2175D
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:54:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8367419DFAE;
-	Thu, 15 Aug 2024 13:28:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 592C419DF9C;
+	Thu, 15 Aug 2024 13:54:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cp9nKzqW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pawy8AXO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3897519DF9E;
-	Thu, 15 Aug 2024 13:28:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16F8118D630;
+	Thu, 15 Aug 2024 13:54:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723728538; cv=none; b=irT1dfrDfCGsWFNg3u++S0MfKPvzjRjFY8TW7p8gBbCc2vHLWJeLa5sgSjFj19HSm9u9Jnf5qdruWvnGdw7SIq2CtKxUh4vxM9BIrvfvdaOURx6+4+O8X0SXywkxSsw1WcsjtWyXnEzBhfzohyamwFlC728APuZWBf8XQQtvYms=
+	t=1723730058; cv=none; b=bDwMaNFgGDXFuk7/SI7EGU7xgfzkU4uYo16W7gmX0h/kgzHT8DOs8vr+XbStjUsZ1V9NJUkseLTLGtdJhWZglGk23UAWoWBmvj4oF8Xt76weHDPSYuQJ4MYbGVm0wpCXd7mDGqaeBn6FXNX9ekYwUEzF1EI1nOgqG8KRJMuUS6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723728538; c=relaxed/simple;
-	bh=BCSanpJWA/pCxi9PbabiM5F8LHY6EC9YeVvwqzTwijA=;
+	s=arc-20240116; t=1723730058; c=relaxed/simple;
+	bh=m1hcY5W15qAb0pSnBYPsAN+iRVyMgaXPW7pSBo8wv88=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hMeqOEf19tMD5Q3A8Ph/OnPVbHdPXf02RUKoYSd2L83YChFLtxjYtTq+sW7s/WWDbHVE8z2LHTbT2z8kiYBnYLGh2fA4KWD/Rd53U/OIo/iiL0Ahkd8TYVOOtvqu1pzL/eOznL+VLZDjXi90HezxeAaGOzf9zQD5KXgkHkgK2Ng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cp9nKzqW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8EE5C32786;
-	Thu, 15 Aug 2024 13:28:57 +0000 (UTC)
+	 MIME-Version; b=eIVo/7FFzHYqiMpcaujMRDGROi3dyVxk+TNfhJa56vDFhFdjoDEHTDFsDO4nOG861T2mPLTfjv+IGC1aC4UTrr7GzCTSdkLC37i2fZNwxOdgsEmhWqMKo+7deJuWz2oZBruYWWMLczEeAi1oM+VhrqXZ4ZxsGBa2ZSLFGQ2hYpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pawy8AXO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93491C32786;
+	Thu, 15 Aug 2024 13:54:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723728538;
-	bh=BCSanpJWA/pCxi9PbabiM5F8LHY6EC9YeVvwqzTwijA=;
+	s=korg; t=1723730058;
+	bh=m1hcY5W15qAb0pSnBYPsAN+iRVyMgaXPW7pSBo8wv88=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cp9nKzqWUv4s6VVK/Wo/t0FRJ2bfwdegdp6/fUBh947/RxZ39aYcEjyY0Inn94gEO
-	 6dYVpRczJJP7uwZyLkgHCHWCdj7WnYs2lpiNInhlvXwMlYDik48uHshm+Mkab8UpFD
-	 G1O613q8kQndR7ZeVXBYqGcUZXaJDratZRaoQFkk=
+	b=pawy8AXOCW4dnoHLqAVLGVOhj1pKDvOB9gR7V41e3i/BSTIueOohrNCJ+/a1QefAE
+	 NN+4BnxlDcZnPbYGiDRYX3ynlqUNubvFfo/bN5K2sXweM3RHVodlpHM/8Pgiemid47
+	 Ibf6TSs/YdIzwnHiTB+ZNpNPnIWC4QfIGpKsSnFE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Burakov <a.burakov@rosalinux.ru>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 031/196] saa7134: Unchecked i2c_transfer function result fixed
+Subject: [PATCH 5.15 290/484] s390/pci: Rework MSI descriptor walk
 Date: Thu, 15 Aug 2024 15:22:28 +0200
-Message-ID: <20240815131853.277056453@linuxfoundation.org>
+Message-ID: <20240815131952.608760476@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Burakov <a.burakov@rosalinux.ru>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit 9d8683b3fd93f0e378f24dc3d9604e5d7d3e0a17 ]
+[ Upstream commit 2ca5e908d0f4cde61d9d3595e8314adca5d914a1 ]
 
-Return value of function 'i2c_transfer' is not checked that
-may cause undefined behaviour.
+Replace the about to vanish iterators and make use of the filtering.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 2cf36ac44730 ("[PATCH] v4l: 656: added support for the following cards")
-Signed-off-by: Aleksandr Burakov <a.burakov@rosalinux.ru>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Acked-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Link: https://lore.kernel.org/r/20211206210748.305656158@linutronix.de
+Stable-dep-of: ab42fcb511fd ("s390/pci: Allow allocation of more than 1 MSI interrupt")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/pci/saa7134/saa7134-dvb.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ arch/s390/pci/pci_irq.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/media/pci/saa7134/saa7134-dvb.c b/drivers/media/pci/saa7134/saa7134-dvb.c
-index 3025d38ddb2b5..d710c00b4dc91 100644
---- a/drivers/media/pci/saa7134/saa7134-dvb.c
-+++ b/drivers/media/pci/saa7134/saa7134-dvb.c
-@@ -475,7 +475,9 @@ static int philips_europa_tuner_sleep(struct dvb_frontend *fe)
- 	/* switch the board to analog mode */
- 	if (fe->ops.i2c_gate_ctrl)
- 		fe->ops.i2c_gate_ctrl(fe, 1);
--	i2c_transfer(&dev->i2c_adap, &analog_msg, 1);
-+	if (i2c_transfer(&dev->i2c_adap, &analog_msg, 1) != 1)
-+		return -EIO;
-+
- 	return 0;
- }
+diff --git a/arch/s390/pci/pci_irq.c b/arch/s390/pci/pci_irq.c
+index 3823e159bf749..49e404c3e987a 100644
+--- a/arch/s390/pci/pci_irq.c
++++ b/arch/s390/pci/pci_irq.c
+@@ -303,7 +303,7 @@ int arch_setup_msi_irqs(struct pci_dev *pdev, int nvec, int type)
  
-@@ -1027,7 +1029,9 @@ static int md8800_set_voltage2(struct dvb_frontend *fe,
- 	else
- 		wbuf[1] = rbuf & 0xef;
- 	msg[0].len = 2;
--	i2c_transfer(&dev->i2c_adap, msg, 1);
-+	if (i2c_transfer(&dev->i2c_adap, msg, 1) != 1)
-+		return -EIO;
-+
- 	return 0;
- }
+ 	/* Request MSI interrupts */
+ 	hwirq = bit;
+-	for_each_pci_msi_entry(msi, pdev) {
++	msi_for_each_desc(msi, &pdev->dev, MSI_DESC_NOTASSOCIATED) {
+ 		rc = -EIO;
+ 		if (hwirq - bit >= msi_vecs)
+ 			break;
+@@ -362,9 +362,7 @@ void arch_teardown_msi_irqs(struct pci_dev *pdev)
+ 		return;
  
+ 	/* Release MSI interrupts */
+-	for_each_pci_msi_entry(msi, pdev) {
+-		if (!msi->irq)
+-			continue;
++	msi_for_each_desc(msi, &pdev->dev, MSI_DESC_ASSOCIATED) {
+ 		irq_set_msi_desc(msi->irq, NULL);
+ 		irq_free_desc(msi->irq);
+ 		msi->msg.address_lo = 0;
 -- 
 2.43.0
 
