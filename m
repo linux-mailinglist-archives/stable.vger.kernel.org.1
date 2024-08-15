@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-68973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68644-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C5DC9534D6
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:31:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37E7E953351
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:16:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 704FF1C23651
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:31:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D283A1F2145F
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:16:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF34217BEC0;
-	Thu, 15 Aug 2024 14:30:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC6D21A0710;
+	Thu, 15 Aug 2024 14:13:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sbQ9Rx7l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u1/K7aM9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D07963D5;
-	Thu, 15 Aug 2024 14:30:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A51419F462;
+	Thu, 15 Aug 2024 14:13:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732258; cv=none; b=hpXphTEAF1dHdCS6U9yG9JwIvf2e1UHhlWNeU7px2KY3xX31GtN4kaB+Inj1AhzlxkXENTVRiT8owKEZ644lxVRnxW/FgFoo2c+4WRxDL5CZO7TZzyxTq+3Kp80Hr9BAojnCcy2sQQCz4RJj/OkkvKIrCSE0VmtenZ2tFsWo58c=
+	t=1723731218; cv=none; b=fBbzDIq+bl8bhAv2CzNRCUALjw0+UZ/8Ig+uyWnKNBmIvsVDvtbgwO8JXcX0sQ+jSbGzwaTpk1NrWftlNQkRY13G3NrxHYchQCwCGqAmuE7m9myPAtkHo49nqats45TJRpXMbSYuQlC7GpXBAesptKChRiDVqYBQkHAywzuv6hU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732258; c=relaxed/simple;
-	bh=2bNieHbKqbvEPzPirvjopy/G8WKw6GauGGTx9P8pJD4=;
+	s=arc-20240116; t=1723731218; c=relaxed/simple;
+	bh=vc0MgZO1opdaT3XiPgA86lxi++nwfxj9PByFKK0DLUs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B4hAlt9Mymxmz78htQDD6mdWHoci25W1w0p6Tw5yoXh/gTAsea4kaUDb+iSD6rmwDXZx82BHIYV1DytmO8f1Ul106LR5V0pGyHP5LkzkawbBQ7YUr68HxQhi5YptUqPwo6kk/X86yYvpcmTS8Jl4dejTKmKlZk8xbMGFfsh+/ZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sbQ9Rx7l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7F4DC32786;
-	Thu, 15 Aug 2024 14:30:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HpCtcZnr0fnnK8c0VrLIrguw3FgzJ+xK5xVZMFTBy7fUifjHrPUbag7/XAmH4ccYCUjWdWSx9fpA86A3r19cUt7lopqm8rSES+enlYuW4D4Ntgdx8PyEdmgSsbucKs+cG7Ag6DuLwlLn+jFlfBFZ3I5kbMlNuY3CC8zQW38I2N0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u1/K7aM9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B0A0C32786;
+	Thu, 15 Aug 2024 14:13:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732258;
-	bh=2bNieHbKqbvEPzPirvjopy/G8WKw6GauGGTx9P8pJD4=;
+	s=korg; t=1723731217;
+	bh=vc0MgZO1opdaT3XiPgA86lxi++nwfxj9PByFKK0DLUs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sbQ9Rx7lFQ0B/Y/KBc6B32YMNLyRk7qF38poFiKU1OLkwpFBbBcgW3EOs4OMH9M3b
-	 VCNXMYRAV0EN7tzLQox10ODlbbhx/dgxFmh5Ovs5YBIgoE9GGScEw3misvdHxaFoQD
-	 m12N6PGkBD45zs9Ql7dTkZ037ORQ3pdS5mpmB4uM=
+	b=u1/K7aM9g5amNoWp7XI9RxtiepZxKPX6KvqH9nKn+KJbz0s98mYtMN7CweoQWilIJ
+	 oS9TW+Oo8rQj50G88vLFKW80eMjaMKlNtLJ5ekI8+oUL5mkRJo2RJBK1fTb9jl/0dk
+	 ZtPnVc80cwu3+xUa8M5jOvGwws4TG5BRq/qM+WRw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>
-Subject: [PATCH 5.10 124/352] dt-bindings: thermal: correct thermal zone node name limit
-Date: Thu, 15 Aug 2024 15:23:10 +0200
-Message-ID: <20240815131924.046286358@linuxfoundation.org>
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Lee Jones <lee@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 058/259] leds: trigger: Unregister sysfs attributes before calling deactivate()
+Date: Thu, 15 Aug 2024 15:23:11 +0200
+Message-ID: <20240815131905.051494910@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +61,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit 97e32381d0fc6c2602a767b0c46e15eb2b75971d upstream.
+[ Upstream commit c0dc9adf9474ecb7106e60e5472577375aedaed3 ]
 
-Linux kernel uses thermal zone node name during registering thermal
-zones and has a hard-coded limit of 20 characters, including terminating
-NUL byte.  The bindings expect node names to finish with '-thermal'
-which is eight bytes long, thus we have only 11 characters for the reset
-of the node name (thus 10 for the pattern after leading fixed character).
+Triggers which have trigger specific sysfs attributes typically store
+related data in trigger-data allocated by the activate() callback and
+freed by the deactivate() callback.
 
-Reported-by: Rob Herring <robh@kernel.org>
-Closes: https://lore.kernel.org/all/CAL_JsqKogbT_4DPd1n94xqeHaU_J8ve5K09WOyVsRX3jxxUW3w@mail.gmail.com/
-Fixes: 1202a442a31f ("dt-bindings: thermal: Add yaml bindings for thermal zones")
-Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20240702145248.47184-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Calling device_remove_groups() after calling deactivate() leaves a window
+where the sysfs attributes show/store functions could be called after
+deactivation and then operate on the just freed trigger-data.
+
+Move the device_remove_groups() call to before deactivate() to close
+this race window.
+
+This also makes the deactivation path properly do things in reverse order
+of the activation path which calls the activate() callback before calling
+device_add_groups().
+
+Fixes: a7e7a3156300 ("leds: triggers: add device attribute support")
+Cc: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Acked-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Link: https://lore.kernel.org/r/20240504162533.76780-1-hdegoede@redhat.com
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/thermal/thermal-zones.yaml | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/leds/led-triggers.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/thermal/thermal-zones.yaml b/Documentation/devicetree/bindings/thermal/thermal-zones.yaml
-index 68398e7e8655..606b80965a44 100644
---- a/Documentation/devicetree/bindings/thermal/thermal-zones.yaml
-+++ b/Documentation/devicetree/bindings/thermal/thermal-zones.yaml
-@@ -49,7 +49,10 @@ properties:
-       to take when the temperature crosses those thresholds.
- 
- patternProperties:
--  "^[a-zA-Z][a-zA-Z0-9\\-]{1,12}-thermal$":
-+  # Node name is limited in size due to Linux kernel requirements - 19
-+  # characters in total (see THERMAL_NAME_LENGTH, including terminating NUL
-+  # byte):
-+  "^[a-zA-Z][a-zA-Z0-9\\-]{1,10}-thermal$":
-     type: object
-     description:
-       Each thermal zone node contains information about how frequently it
+diff --git a/drivers/leds/led-triggers.c b/drivers/leds/led-triggers.c
+index 0d59763e40de1..3ec9629a1b002 100644
+--- a/drivers/leds/led-triggers.c
++++ b/drivers/leds/led-triggers.c
+@@ -121,9 +121,9 @@ int led_trigger_set(struct led_classdev *led_cdev, struct led_trigger *trig)
+ 			flags);
+ 		cancel_work_sync(&led_cdev->set_brightness_work);
+ 		led_stop_software_blink(led_cdev);
++		device_remove_groups(led_cdev->dev, led_cdev->trigger->groups);
+ 		if (led_cdev->trigger->deactivate)
+ 			led_cdev->trigger->deactivate(led_cdev);
+-		device_remove_groups(led_cdev->dev, led_cdev->trigger->groups);
+ 		led_cdev->trigger = NULL;
+ 		led_cdev->trigger_data = NULL;
+ 		led_cdev->activated = false;
 -- 
-2.45.2
+2.43.0
 
 
 
