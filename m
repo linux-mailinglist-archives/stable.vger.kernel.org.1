@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-68971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68633-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 296C59534D4
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:30:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1190D953345
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:15:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C146628908B
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:30:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 450701C23B63
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:15:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7009817C995;
-	Thu, 15 Aug 2024 14:30:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 822731B3F20;
+	Thu, 15 Aug 2024 14:13:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sd95+Ies"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="io/V5I4z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DB8663D5;
-	Thu, 15 Aug 2024 14:30:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4164D1AE845;
+	Thu, 15 Aug 2024 14:13:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732252; cv=none; b=PkQ5iTHIo1Q0dYmgrWzcc8yITs2iB8sMy0V3NQ2pD6hxp7vcqvOoWOE3hzHcRFYdLuqWVcwEoR3XaLRjjnRTF3p7pyk8bv8AltHTxoxT3yi/wpchWfvlutSzFlc0YiRdbgRIMKWNKqhLJqTLl8dSJkV8Prlvhkf3c3eAEqTztk0=
+	t=1723731183; cv=none; b=fSxZzgv/U5lmCAtyg7d006A7He7ivpdEYo2hWyDULUmFpthAt4CasiIl/IpoVcHgvhH1pND09/OsjNuRRgSlFD653UtKAMO3FM6DVuSLZ1iVrvwct+goIaJkWvMp2Q1z0O5F2Wh6E0VjtRaZjwoyrHGGn+UIn91mYbwSzv6YNc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732252; c=relaxed/simple;
-	bh=LLLUW34qoERu2LQEyUPHqgFJAClGOs30xRgcmTm49RE=;
+	s=arc-20240116; t=1723731183; c=relaxed/simple;
+	bh=YirkVDMeIGfEmdAb8EalmP5aJ83YnXOF0m8b2rVHBhc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V8RIa+dGMnWlx8NWVLKUNkAW+to5Ro6sQA+e3geLKltPEbz1oxiBh08a2i21Ck2Z/JE1sMCK4uC3GabLhIinQWGm1vgtGmSzkSZBQyDk1v7JDVow5dyPHhU+9oglq+Ucb9ottq99z2mhT3LMR4TN43U6U917dDZ65ypPPuaHkxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sd95+Ies; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABA6BC32786;
-	Thu, 15 Aug 2024 14:30:51 +0000 (UTC)
+	 MIME-Version; b=VA+c883gZqFXq5Puu5KuHspNTQZEbi8h6TPB1omVpDjgI98iB7Zf2JQAJc7NVyMaX1ZR2PIF4esp/jAXNM50bU/UauYk2hqsyXP0sL3h4kMykmLv6RHgCct/uG8SJjPiw5LavT6L07rRgqEtWBheWpthb9S6Mm5T8F9Wnp1URI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=io/V5I4z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5A82C32786;
+	Thu, 15 Aug 2024 14:13:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732252;
-	bh=LLLUW34qoERu2LQEyUPHqgFJAClGOs30xRgcmTm49RE=;
+	s=korg; t=1723731183;
+	bh=YirkVDMeIGfEmdAb8EalmP5aJ83YnXOF0m8b2rVHBhc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sd95+Ies62kbi5xbntRYbvzSacajLN5pQ9r/dKAWjHQwnMPf3d0dTMJmSD4ohSVRU
-	 y2DPoXx9Vbbp7PIH81bCggwgIaBvPrb5rwr8aEGT4Jf9kuhvXvJLaPkTuye9ArZG7V
-	 99qurCAccInJm1lz+ZwS5Xs0ngwV6NT4n1VU7AIg=
+	b=io/V5I4zeDG38i7u2sKq/zK4+GK5nVqltQQtcRawjyupk3vjOP8w1azT2tYOmHEHB
+	 q7iQc2O8x3D9WY2BXBEjwDqXAZLOc02uDzW2/aswxy9liGQdQowO8IQGawFlzgYnlm
+	 5zTMz8E5+AppP9fgpHH5V3L6f7EZts3+tXyluSkk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Yashin <dmt.yashin@gmail.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Alexey Kodanev <aleksei.kodanev@bell-sw.com>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 114/352] pinctrl: rockchip: update rk3308 iomux routes
-Date: Thu, 15 Aug 2024 15:23:00 +0200
-Message-ID: <20240815131923.661323111@linuxfoundation.org>
+Subject: [PATCH 5.4 048/259] bna: adjust name buf size of bna_tcb and bna_ccb structures
+Date: Thu, 15 Aug 2024 15:23:01 +0200
+Message-ID: <20240815131904.660026192@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +63,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Yashin <dmt.yashin@gmail.com>
+From: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
 
-[ Upstream commit a8f2548548584549ea29d43431781d67c4afa42b ]
+[ Upstream commit c9741a03dc8e491e57b95fba0058ab46b7e506da ]
 
-Some of the rk3308 iomux routes in rk3308_mux_route_data belong to
-the rk3308b SoC. Remove them and correct i2c3 routes.
+To have enough space to write all possible sprintf() args. Currently
+'name' size is 16, but the first '%s' specifier may already need at
+least 16 characters, since 'bnad->netdev->name' is used there.
 
-Fixes: 7825aeb7b208 ("pinctrl: rockchip: add rk3308 SoC support")
-Signed-off-by: Dmitry Yashin <dmt.yashin@gmail.com>
-Reviewed-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://lore.kernel.org/r/20240515121634.23945-2-dmt.yashin@gmail.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+For '%d' specifiers, assume that they require:
+ * 1 char for 'tx_id + tx_info->tcb[i]->id' sum, BNAD_MAX_TXQ_PER_TX is 8
+ * 2 chars for 'rx_id + rx_info->rx_ctrl[i].ccb->id', BNAD_MAX_RXP_PER_RX
+   is 16
+
+And replace sprintf with snprintf.
+
+Detected using the static analysis tool - Svace.
+
+Fixes: 8b230ed8ec96 ("bna: Brocade 10Gb Ethernet device driver")
+Signed-off-by: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/pinctrl-rockchip.c | 17 ++---------------
- 1 file changed, 2 insertions(+), 15 deletions(-)
+ drivers/net/ethernet/brocade/bna/bna_types.h |  2 +-
+ drivers/net/ethernet/brocade/bna/bnad.c      | 11 ++++++-----
+ 2 files changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/pinctrl/pinctrl-rockchip.c b/drivers/pinctrl/pinctrl-rockchip.c
-index 02b41f1bafe71..e0f22ce219ee8 100644
---- a/drivers/pinctrl/pinctrl-rockchip.c
-+++ b/drivers/pinctrl/pinctrl-rockchip.c
-@@ -720,9 +720,8 @@ static struct rockchip_mux_route_data rk3308_mux_route_data[] = {
- 	RK_MUXROUTE_SAME(0, RK_PC3, 1, 0x314, BIT(16 + 0) | BIT(0)), /* rtc_clk */
- 	RK_MUXROUTE_SAME(1, RK_PC6, 2, 0x314, BIT(16 + 2) | BIT(16 + 3)), /* uart2_rxm0 */
- 	RK_MUXROUTE_SAME(4, RK_PD2, 2, 0x314, BIT(16 + 2) | BIT(16 + 3) | BIT(2)), /* uart2_rxm1 */
--	RK_MUXROUTE_SAME(0, RK_PB7, 2, 0x608, BIT(16 + 8) | BIT(16 + 9)), /* i2c3_sdam0 */
--	RK_MUXROUTE_SAME(3, RK_PB4, 2, 0x608, BIT(16 + 8) | BIT(16 + 9) | BIT(8)), /* i2c3_sdam1 */
--	RK_MUXROUTE_SAME(2, RK_PA0, 3, 0x608, BIT(16 + 8) | BIT(16 + 9) | BIT(9)), /* i2c3_sdam2 */
-+	RK_MUXROUTE_SAME(0, RK_PB7, 2, 0x314, BIT(16 + 4)), /* i2c3_sdam0 */
-+	RK_MUXROUTE_SAME(3, RK_PB4, 2, 0x314, BIT(16 + 4) | BIT(4)), /* i2c3_sdam1 */
- 	RK_MUXROUTE_SAME(1, RK_PA3, 2, 0x308, BIT(16 + 3)), /* i2s-8ch-1-sclktxm0 */
- 	RK_MUXROUTE_SAME(1, RK_PA4, 2, 0x308, BIT(16 + 3)), /* i2s-8ch-1-sclkrxm0 */
- 	RK_MUXROUTE_SAME(1, RK_PB5, 2, 0x308, BIT(16 + 3) | BIT(3)), /* i2s-8ch-1-sclktxm1 */
-@@ -731,18 +730,6 @@ static struct rockchip_mux_route_data rk3308_mux_route_data[] = {
- 	RK_MUXROUTE_SAME(1, RK_PB6, 4, 0x308, BIT(16 + 12) | BIT(16 + 13) | BIT(12)), /* pdm-clkm1 */
- 	RK_MUXROUTE_SAME(2, RK_PA6, 2, 0x308, BIT(16 + 12) | BIT(16 + 13) | BIT(13)), /* pdm-clkm2 */
- 	RK_MUXROUTE_SAME(2, RK_PA4, 3, 0x600, BIT(16 + 2) | BIT(2)), /* pdm-clkm-m2 */
--	RK_MUXROUTE_SAME(3, RK_PB2, 3, 0x314, BIT(16 + 9)), /* spi1_miso */
--	RK_MUXROUTE_SAME(2, RK_PA4, 2, 0x314, BIT(16 + 9) | BIT(9)), /* spi1_miso_m1 */
--	RK_MUXROUTE_SAME(0, RK_PB3, 3, 0x314, BIT(16 + 10) | BIT(16 + 11)), /* owire_m0 */
--	RK_MUXROUTE_SAME(1, RK_PC6, 7, 0x314, BIT(16 + 10) | BIT(16 + 11) | BIT(10)), /* owire_m1 */
--	RK_MUXROUTE_SAME(2, RK_PA2, 5, 0x314, BIT(16 + 10) | BIT(16 + 11) | BIT(11)), /* owire_m2 */
--	RK_MUXROUTE_SAME(0, RK_PB3, 2, 0x314, BIT(16 + 12) | BIT(16 + 13)), /* can_rxd_m0 */
--	RK_MUXROUTE_SAME(1, RK_PC6, 5, 0x314, BIT(16 + 12) | BIT(16 + 13) | BIT(12)), /* can_rxd_m1 */
--	RK_MUXROUTE_SAME(2, RK_PA2, 4, 0x314, BIT(16 + 12) | BIT(16 + 13) | BIT(13)), /* can_rxd_m2 */
--	RK_MUXROUTE_SAME(1, RK_PC4, 3, 0x314, BIT(16 + 14)), /* mac_rxd0_m0 */
--	RK_MUXROUTE_SAME(4, RK_PA2, 2, 0x314, BIT(16 + 14) | BIT(14)), /* mac_rxd0_m1 */
--	RK_MUXROUTE_SAME(3, RK_PB4, 4, 0x314, BIT(16 + 15)), /* uart3_rx */
--	RK_MUXROUTE_SAME(0, RK_PC1, 3, 0x314, BIT(16 + 15) | BIT(15)), /* uart3_rx_m1 */
- };
+diff --git a/drivers/net/ethernet/brocade/bna/bna_types.h b/drivers/net/ethernet/brocade/bna/bna_types.h
+index 666b6922e24db..ebf54d74c2bbe 100644
+--- a/drivers/net/ethernet/brocade/bna/bna_types.h
++++ b/drivers/net/ethernet/brocade/bna/bna_types.h
+@@ -410,7 +410,7 @@ struct bna_ib {
+ /* Tx object */
  
- static struct rockchip_mux_route_data rk3328_mux_route_data[] = {
+ /* Tx datapath control structure */
+-#define BNA_Q_NAME_SIZE		16
++#define BNA_Q_NAME_SIZE		(IFNAMSIZ + 6)
+ struct bna_tcb {
+ 	/* Fast path */
+ 	void			**sw_qpt;
+diff --git a/drivers/net/ethernet/brocade/bna/bnad.c b/drivers/net/ethernet/brocade/bna/bnad.c
+index 94e87e7f277bb..838fa3a2700ab 100644
+--- a/drivers/net/ethernet/brocade/bna/bnad.c
++++ b/drivers/net/ethernet/brocade/bna/bnad.c
+@@ -1535,8 +1535,9 @@ bnad_tx_msix_register(struct bnad *bnad, struct bnad_tx_info *tx_info,
+ 
+ 	for (i = 0; i < num_txqs; i++) {
+ 		vector_num = tx_info->tcb[i]->intr_vector;
+-		sprintf(tx_info->tcb[i]->name, "%s TXQ %d", bnad->netdev->name,
+-				tx_id + tx_info->tcb[i]->id);
++		snprintf(tx_info->tcb[i]->name, BNA_Q_NAME_SIZE, "%s TXQ %d",
++			 bnad->netdev->name,
++			 tx_id + tx_info->tcb[i]->id);
+ 		err = request_irq(bnad->msix_table[vector_num].vector,
+ 				  (irq_handler_t)bnad_msix_tx, 0,
+ 				  tx_info->tcb[i]->name,
+@@ -1586,9 +1587,9 @@ bnad_rx_msix_register(struct bnad *bnad, struct bnad_rx_info *rx_info,
+ 
+ 	for (i = 0; i < num_rxps; i++) {
+ 		vector_num = rx_info->rx_ctrl[i].ccb->intr_vector;
+-		sprintf(rx_info->rx_ctrl[i].ccb->name, "%s CQ %d",
+-			bnad->netdev->name,
+-			rx_id + rx_info->rx_ctrl[i].ccb->id);
++		snprintf(rx_info->rx_ctrl[i].ccb->name, BNA_Q_NAME_SIZE,
++			 "%s CQ %d", bnad->netdev->name,
++			 rx_id + rx_info->rx_ctrl[i].ccb->id);
+ 		err = request_irq(bnad->msix_table[vector_num].vector,
+ 				  (irq_handler_t)bnad_msix_rx, 0,
+ 				  rx_info->rx_ctrl[i].ccb->name,
 -- 
 2.43.0
 
