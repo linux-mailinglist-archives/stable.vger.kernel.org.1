@@ -1,107 +1,78 @@
-Return-Path: <stable+bounces-69216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69217-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80F6B95363E
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:51:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D51C5953641
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:51:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 33D621F2252A
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:51:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9125C283734
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:51:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7E7D1A7068;
-	Thu, 15 Aug 2024 14:51:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6381419FA9D;
+	Thu, 15 Aug 2024 14:51:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD4511A7048;
-	Thu, 15 Aug 2024 14:51:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D1AB1AC8BE
+	for <stable@vger.kernel.org>; Thu, 15 Aug 2024 14:51:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723733466; cv=none; b=X9D2evDMatyPl6KITf7AOP91AwlkgISaaTaN5lXHGzqrd8Kf2yS3501ZYLzQtWdyCQlzRU2pwzkfD4lli+CJOQTNKpmwP195KaUcZmAGZoU86a4bZkXOdJCm1HZ5Jz0Qzp0z0DOB/G+AjkM/vhsFe4i/iZ4XlliWhmd2hm5aoCg=
+	t=1723733511; cv=none; b=bjjWewqZZcDs1S450Lt7GEhWFy7/0xo3G8rnfRiIp4jO0q/S2X6F6inZVojDHk+TlYhVMaVOGlG07Rw7DXWJwUAqCRxDoMvOFIEAMCaCYVdEZGJAqASHe43XnwIBY4+mz4ONU/r+vGB3iKDqYDra+uuJPoE75Yp7R0ZmADcSCKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723733466; c=relaxed/simple;
-	bh=BlPaZhldIsp7N0Q7B093mw+fvVgyB0UDrUMgpBv3CQw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TA0cy998/u8zP+4moh1+SxqKGddWf++HUugKXX70UpkkegroP0NFDJfglUdAVjkhC/kB5XxhiK0eFEyAVasc75nQOTR4mBz1+iGkambxNNewK/GyzRVsmG0vMBo9YuygEc25vntIYJ8PqSXlsiKBouZmEBOdfflg6emWl3Euk7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F25CFC4AF0D;
-	Thu, 15 Aug 2024 14:51:04 +0000 (UTC)
-Message-ID: <ad064a06-2037-4289-8087-d5a525872c26@xs4all.nl>
-Date: Thu, 15 Aug 2024 16:51:03 +0200
+	s=arc-20240116; t=1723733511; c=relaxed/simple;
+	bh=3l6nYyd0G0aXALkJWYBtwQtEmECnyeuj0UC/PPOxYIc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JPLryQcBs9ht2mp+GrIkP09ivGui6bJ4SLrphQzRTGXhf7El6cby3mDoilln8+BKQtYv28xiXrLjW6Sln54u+tBfNUbPPkvdbAnIgg4ABCTjhNCK3dSqkB/fOGptf9FH3YGVrPmbltaxOcd746h7zIl7hRAe94PLtSbnji0tSaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B20C314BF;
+	Thu, 15 Aug 2024 07:52:14 -0700 (PDT)
+Received: from J2N7QTR9R3.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4C38C3F58B;
+	Thu, 15 Aug 2024 07:51:47 -0700 (PDT)
+Date: Thu, 15 Aug 2024 15:51:41 +0100
+From: Mark Rutland <mark.rutland@arm.com>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, anshuman.khandual@arm.com,
+	bwicaksono@nvidia.com, catalin.marinas@arm.com, james.clark@arm.com,
+	james.morse@arm.com, will@kernel.org
+Subject: Re: [PATCH 6.6.y 13/13] arm64: errata: Expand speculative SSBS
+ workaround (again)
+Message-ID: <Zr4V_T8_ugiJmGJg@J2N7QTR9R3.cambridge.arm.com>
+References: <20240809095745.3476191-1-mark.rutland@arm.com>
+ <20240809095745.3476191-14-mark.rutland@arm.com>
+ <2024081211-props-gimmick-e3f5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.15 085/484] media: dvb-usb: Fix unexpected infinite loop
- in dvb_usb_read_remote_control()
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Sean Young <sean@mess.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
- Zheng Yejian <zhengyejian1@huawei.com>, Sasha Levin <sashal@kernel.org>,
- Mauro Carvalho Chehab <mchehab@kernel.org>
-References: <20240815131941.255804951@linuxfoundation.org>
- <20240815131944.570292721@linuxfoundation.org>
- <Zr4MX0elvdkuHZ8j@gofer.mess.org>
- <2024081526-amusement-saddlebag-c622@gregkh>
-Content-Language: en-US, nl
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-In-Reply-To: <2024081526-amusement-saddlebag-c622@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2024081211-props-gimmick-e3f5@gregkh>
 
-On 15/08/2024 16:20, Greg Kroah-Hartman wrote:
-> On Thu, Aug 15, 2024 at 03:10:39PM +0100, Sean Young wrote:
->> On Thu, Aug 15, 2024 at 03:19:03PM +0200, Greg Kroah-Hartman wrote:
->>> 5.15-stable review patch.  If anyone has any objections, please let me know.
->>>
->>> ------------------
->>>
->>> From: Zheng Yejian <zhengyejian1@huawei.com>
->>>
->>> [ Upstream commit 2052138b7da52ad5ccaf74f736d00f39a1c9198c ]
->>>
->>> Infinite log printing occurs during fuzz test:
->>>
->>>   rc rc1: DViCO FusionHDTV DVB-T USB (LGZ201) as ...
->>>   ...
->>>   dvb-usb: schedule remote query interval to 100 msecs.
->>>   dvb-usb: DViCO FusionHDTV DVB-T USB (LGZ201) successfully initialized ...
->>>   dvb-usb: bulk message failed: -22 (1/0)
->>>   dvb-usb: bulk message failed: -22 (1/0)
->>>   dvb-usb: bulk message failed: -22 (1/0)
->>>   ...
->>>   dvb-usb: bulk message failed: -22 (1/0)
->>>
->>> Looking into the codes, there is a loop in dvb_usb_read_remote_control(),
->>> that is in rc_core_dvb_usb_remote_init() create a work that will call
->>> dvb_usb_read_remote_control(), and this work will reschedule itself at
->>> 'rc_interval' intervals to recursively call dvb_usb_read_remote_control(),
->>> see following code snippet:
->>
->> This commit causes problems and has been reverted upstream.
->>
->> https://git.linuxtv.org/media_stage.git/commit/?h=fixes&id=0c84bde4f37ba27d50e4c70ecacd33fe4a57030d
->>
->> Please don't apply.
+On Mon, Aug 12, 2024 at 05:03:45PM +0200, Greg KH wrote:
+> On Fri, Aug 09, 2024 at 10:57:45AM +0100, Mark Rutland wrote:
+> > [ Upstream commit b0672bbe133ebb6f7be21fce1d742d52f25bcdc7 ]
 > 
-> When will that land in Linus's tree?  Currently this commit is already
-> in released 6.1, 6.6, and 6.10 kernels :(
-
-I asked Mauro to make a PR asap. Hopefully for the next rc.
-
-Regards,
-
-	Hans
-
+> Now I figured it out, this is the wrong git id, and is not in any tree
+> anywhere.  It should be adeec61a4723fd3e39da68db4cc4d924e6d7f641.
 > 
-> thanks,
-> 
-> greg k-h
+> I'll go hand-edit it now...
 
+Thanks, and sorry about that.
+
+Looking in my local tree, the incorrect commit id is a copy of
+adeec61a4723fd3e39da68db4cc4d924e6d7f641 where the earlier commits had
+been updated with "[ Upstream commit XXX ]" wording. Evidently I grabbed
+the commit ID from the wrong branch when I was folding that in.
+
+I'll try to make sure that doesn't happen again. Is there any public
+tooling for sanity-checking this?
+
+Mark.
 
