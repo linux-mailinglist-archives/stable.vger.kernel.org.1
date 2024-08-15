@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-69047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68734-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BF2F95352F
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:34:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5915E9533B8
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:19:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E6821C23B53
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:34:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CFA3EB26445
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:19:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6E5C19FA7A;
-	Thu, 15 Aug 2024 14:34:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BD5D1A7060;
+	Thu, 15 Aug 2024 14:18:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QTtcE55N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gj2nAnAh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65A931DFFB;
-	Thu, 15 Aug 2024 14:34:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A3FD38DC8;
+	Thu, 15 Aug 2024 14:18:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732494; cv=none; b=goaZVuy1N4jSsZjeUvFz88CUb9QwnxnuIAGPd+J8JN4/HlUsRer/e4BlzEsqGkRKDh+bRVchODH6CwZLmIuzFjK5AjIkUUHKzFuFVTmscFWIbJjgnGL6bUNw3P+KbdbETdtHmvsSnUhzyPBc9byOVJmE9tD51EakSbKczRZDfnU=
+	t=1723731495; cv=none; b=enf+cZCOH0lMiLVJV/L52/8W1rQW1GFzS+gXxDpsx++PBc3kuhvesBZK0b9P71GXDHk1QTXSJ7Y6hqXsGs/inR2fAJhXeQjNCblRYDOvyuMC7T6jws7hiC8gOUsgc0ff7xrzRtRUCiKt6WjgHZhliLiCBTA+t1HlFXW5ISMyJHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732494; c=relaxed/simple;
-	bh=SvFodh5QtVJNV4C8No1bXIiWbvlqVynv4Kiu1V7h92I=;
+	s=arc-20240116; t=1723731495; c=relaxed/simple;
+	bh=dtymwF4wuW9fU32w6F2wblrUILHSrRDWI8nzlxzbN0Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qrvd+bAtqRRJzmbLdMt03CGVl88DaID5xxV+uJfQFuWdTweRNkWVGzdq1OA089fQJ/zN5zhTGbDoc0iJWU/BJIDJqKNU9lsAFlyFHg1tm7WlNnprixYYtvxioLPwbf8K7YNZgjt0exp5Kfjc3o8VpafsV7gtOndm2XJi1EylxSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QTtcE55N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CACB7C32786;
-	Thu, 15 Aug 2024 14:34:53 +0000 (UTC)
+	 MIME-Version; b=ptqOaMG7vszgJyT6127t8VZHAdgUTTd7jVk6gpEuMnyG7Z8Vze+9H/pjQthCkQa1manOby9wiqIqiXCgzzNhS7oB3PH2QLTabvVEM66oS+54QrYWF0OvXTtTrlDNdSUcd1YAZRH50fWs/qjV1sFigDKBI3GMthkM4sT60iutr+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gj2nAnAh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB325C32786;
+	Thu, 15 Aug 2024 14:18:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732494;
-	bh=SvFodh5QtVJNV4C8No1bXIiWbvlqVynv4Kiu1V7h92I=;
+	s=korg; t=1723731495;
+	bh=dtymwF4wuW9fU32w6F2wblrUILHSrRDWI8nzlxzbN0Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QTtcE55Nc6T793IFl66CwW3dpuGbK1+YbVI3FiyAsT3FJ9lnCMUSKwTgB0+dwx30X
-	 5B9yKBXYh0ux9eRgj4ATJpb/NrdB9R73DeDiFuq7lAdyn3ec35GN85/ylJlVVWJZfO
-	 5dZNvLJVtyCtZ2rRaI+3hM/6HRfzS1VrS0MWkuqo=
+	b=Gj2nAnAhNdLE3dtmJAMAaUL6CKhcO7NRqU1GSH6tkoeoWA8UORnM/OC0mKHzyItvN
+	 9SojYRTflHAaY53PD9jfj9FoBYem26piPyENVki6pXq9DBY6IPfeyw4Up7ID4V/gVy
+	 TQmxE7loShgqoSu//hxUrQRIl8PD5TyZXuPlJldw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiri Pirko <jiri@nvidia.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Jay Vosburgh <jv@jvosburgh.net>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 197/352] net: bonding: correctly annotate RCU in bond_should_notify_peers()
+	Ilya Dryomov <idryomov@gmail.com>,
+	Dongsheng Yang <dongsheng.yang@easystack.cn>
+Subject: [PATCH 5.4 130/259] rbd: dont assume RBD_LOCK_STATE_LOCKED for exclusive mappings
 Date: Thu, 15 Aug 2024 15:24:23 +0200
-Message-ID: <20240815131926.893644815@linuxfoundation.org>
+Message-ID: <20240815131907.813614667@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,58 +61,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Ilya Dryomov <idryomov@gmail.com>
 
-[ Upstream commit 3ba359c0cd6eb5ea772125a7aededb4a2d516684 ]
+commit 2237ceb71f89837ac47c5dce2aaa2c2b3a337a3c upstream.
 
-RCU use in bond_should_notify_peers() looks wrong, since it does
-rcu_dereference(), leaves the critical section, and uses the
-pointer after that.
+Every time a watch is reestablished after getting lost, we need to
+update the cookie which involves quiescing exclusive lock.  For this,
+we transition from RBD_LOCK_STATE_LOCKED to RBD_LOCK_STATE_QUIESCING
+roughly for the duration of rbd_reacquire_lock() call.  If the mapping
+is exclusive and I/O happens to arrive in this time window, it's failed
+with EROFS (later translated to EIO) based on the wrong assumption in
+rbd_img_exclusive_lock() -- "lock got released?" check there stopped
+making sense with commit a2b1da09793d ("rbd: lock should be quiesced on
+reacquire").
 
-Luckily, it's called either inside a nested RCU critical section
-or with the RTNL held.
+To make it worse, any such I/O is added to the acquiring list before
+EROFS is returned and this sets up for violating rbd_lock_del_request()
+precondition that the request is either on the running list or not on
+any list at all -- see commit ded080c86b3f ("rbd: don't move requests
+to the running list on errors").  rbd_lock_del_request() ends up
+processing these requests as if they were on the running list which
+screws up quiescing_wait completion counter and ultimately leads to
 
-Annotate it with rcu_dereference_rtnl() instead, and remove the
-inner RCU critical section.
+    rbd_assert(!completion_done(&rbd_dev->quiescing_wait));
 
-Fixes: 4cb4f97b7e36 ("bonding: rebuild the lock use for bond_mii_monitor()")
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Acked-by: Jay Vosburgh <jv@jvosburgh.net>
-Link: https://patch.msgid.link/20240719094119.35c62455087d.I68eb9c0f02545b364b79a59f2110f2cf5682a8e2@changeid
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+being triggered on the next watch error.
+
+Cc: stable@vger.kernel.org # 06ef84c4e9c4: rbd: rename RBD_LOCK_STATE_RELEASING and releasing_wait
+Cc: stable@vger.kernel.org
+Fixes: 637cd060537d ("rbd: new exclusive lock wait/wake code")
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Reviewed-by: Dongsheng Yang <dongsheng.yang@easystack.cn>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/bonding/bond_main.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ drivers/block/rbd.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index 50fabba042488..c07b9bac1a6a0 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -1052,13 +1052,10 @@ static struct slave *bond_find_best_slave(struct bonding *bond)
- 	return bestslave;
- }
+--- a/drivers/block/rbd.c
++++ b/drivers/block/rbd.c
+@@ -3608,6 +3608,7 @@ static void rbd_lock_del_request(struct
+ 	lockdep_assert_held(&rbd_dev->lock_rwsem);
+ 	spin_lock(&rbd_dev->lock_lists_lock);
+ 	if (!list_empty(&img_req->lock_item)) {
++		rbd_assert(!list_empty(&rbd_dev->running_list));
+ 		list_del_init(&img_req->lock_item);
+ 		need_wakeup = (rbd_dev->lock_state == RBD_LOCK_STATE_QUIESCING &&
+ 			       list_empty(&rbd_dev->running_list));
+@@ -3627,11 +3628,6 @@ static int rbd_img_exclusive_lock(struct
+ 	if (rbd_lock_add_request(img_req))
+ 		return 1;
  
-+/* must be called in RCU critical section or with RTNL held */
- static bool bond_should_notify_peers(struct bonding *bond)
- {
--	struct slave *slave;
+-	if (rbd_dev->opts->exclusive) {
+-		WARN_ON(1); /* lock got released? */
+-		return -EROFS;
+-	}
 -
--	rcu_read_lock();
--	slave = rcu_dereference(bond->curr_active_slave);
--	rcu_read_unlock();
-+	struct slave *slave = rcu_dereference_rtnl(bond->curr_active_slave);
+ 	/*
+ 	 * Note the use of mod_delayed_work() in rbd_acquire_lock()
+ 	 * and cancel_delayed_work() in wake_lock_waiters().
+@@ -4701,6 +4697,10 @@ static void rbd_reacquire_lock(struct rb
+ 			rbd_warn(rbd_dev, "failed to update lock cookie: %d",
+ 				 ret);
  
- 	if (!slave || !bond->send_peer_notif ||
- 	    bond->send_peer_notif %
--- 
-2.43.0
-
++		if (rbd_dev->opts->exclusive)
++			rbd_warn(rbd_dev,
++			     "temporarily releasing lock on exclusive mapping");
++
+ 		/*
+ 		 * Lock cookie cannot be updated on older OSDs, so do
+ 		 * a manual release and queue an acquire.
 
 
 
