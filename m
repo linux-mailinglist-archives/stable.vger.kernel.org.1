@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-67785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68269-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF820952F17
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:28:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F674953170
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:54:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 68F2A1F26184
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:28:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D9D93B23DCC
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:54:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BA4219DF9E;
-	Thu, 15 Aug 2024 13:28:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E343119AA53;
+	Thu, 15 Aug 2024 13:53:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EbD15B3T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xe35RNFQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 064F71714D0;
-	Thu, 15 Aug 2024 13:28:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A046218D630;
+	Thu, 15 Aug 2024 13:53:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723728510; cv=none; b=mkmNT47iE/JV5nsK0UR719VmAFFY/0am+IYfHtImzbIfUXBlrPn1fiJl88SPIheS6PBevE1ZOgMFv0AHBREhsQiHBgvt2PXRs/PAaRgOMAamS0V68rVeedRsczJ8B6I5NINhXbG5/D2qpwxfRwbmXBv9IIqjhdGsBOxN6uP1oZE=
+	t=1723730031; cv=none; b=Xwb85GHP028NahzbNA35YPnI5LWmWiTM4x9sKdDBNMSyObbHMzzpTQtk1kWUGI/1UxkRe9qjhMGs7O4v9ETD3DYwwvGktc6e1TvjtJe9ABpDvNA/lD48EHUgODlMLLnaUMa/VHECmkBIVR2iKTAJpKL/2noVd9xHUfhqwCBr4cc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723728510; c=relaxed/simple;
-	bh=eobpG5nVYQrqDNC8FkoQHuIy+hnbptBKNQKutbw0EM8=;
+	s=arc-20240116; t=1723730031; c=relaxed/simple;
+	bh=8CbvWtYi7o24xC+kqvNy8uaL0YWTYbii7htjbJRwy08=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rHJerVlLXeNWn3Edfyt52+R7UOVRHKpLdqp71cOe0ekTxgYsJ0qsWw2iXABCmo+rYtBLuL9T0c+/DCaT2S0oYv0qOrh3wJp/5f9YbqFsX3aOMLixaE26Ued2Il1+VEsR9tXGopE+kq4FKKpOsvLULH+Uf636lPEM/Ry+tXXrOko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EbD15B3T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 387D4C32786;
-	Thu, 15 Aug 2024 13:28:29 +0000 (UTC)
+	 MIME-Version; b=Q+siwNgCd8Ak8MRBeSBtcBPLIXS/FqlITiJWo64x+9CJPOSSWq5hdKV3GAca5NTLhORI5qRLtE/q1+tVs1GQzPrm7g+9Qc5q8okz+tsH3NA0VVJxm9NB51adUlnlXbYovJD+sTz/a2xAcjz68nsCpmN55yrcxeQb43Ivq5h9rug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xe35RNFQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDAE4C32786;
+	Thu, 15 Aug 2024 13:53:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723728509;
-	bh=eobpG5nVYQrqDNC8FkoQHuIy+hnbptBKNQKutbw0EM8=;
+	s=korg; t=1723730031;
+	bh=8CbvWtYi7o24xC+kqvNy8uaL0YWTYbii7htjbJRwy08=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EbD15B3TWrqeqFIDgHJCI9Yr2YSj3w3SpF4lBTjcpPeQFV6WFfOCmgD1u9zPMpuog
-	 A0oMbes3fxVLBaTc9oR726MnQvgs3aWD4VyfQvIe21iBrP43QMB3y5cdt8ODZ2XKYd
-	 /SBFD3pIgSoj8Now9HS7Ql92svonPLeyQlDctcYs=
+	b=xe35RNFQE9gFdXMmzpKQOB8ozUUVVEH4izIx7+phpJg47PtPNQ3rHQa3rglruXxZz
+	 ExXNSkVa65sdz0K81D3Dpl2KA+FW0BcBXjBImb4lLK0Q3E14bizKt7yZaYnbHwFn/c
+	 yJioc6LGNIz4XFbAIjtgF/B/15M7lNi30yJqm7ak=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Cs=C3=B3k=C3=A1s=20Bence?= <csokas.bence@prolan.hu>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 023/196] net: fec: Refactor: #define magic constants
-Date: Thu, 15 Aug 2024 15:22:20 +0200
-Message-ID: <20240815131852.974038921@linuxfoundation.org>
+Subject: [PATCH 5.15 283/484] spi: spidev: Replace ACPI specific code by device_get_match_data()
+Date: Thu, 15 Aug 2024 15:22:21 +0200
+Message-ID: <20240815131952.339731275@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,151 +60,133 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Csókás Bence <csokas.bence@prolan.hu>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit ff049886671ccd4e624a30ec464cb20e4c39a313 ]
+[ Upstream commit 2a7f669dd8f6561d227e724ca2614c25732f4799 ]
 
-Add defines for bits of ECR, RCR control registers, TX watermark etc.
+Instead of calling the ACPI specific APIs, use device_get_match_data().
 
-Signed-off-by: Csókás Bence <csokas.bence@prolan.hu>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://lore.kernel.org/r/20240212153717.10023-1-csokas.bence@prolan.hu
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: c32fe1986f27 ("net: fec: Fix FEC_ECR_EN1588 being cleared on link-down")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20220323140215.2568-3-andriy.shevchenko@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: fc28d1c1fe3b ("spi: spidev: add correct compatible for Rohm BH2228FV")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/freescale/fec_main.c | 46 +++++++++++++++--------
- 1 file changed, 30 insertions(+), 16 deletions(-)
+ drivers/spi/spidev.c | 47 ++++++++++++++++++--------------------------
+ 1 file changed, 19 insertions(+), 28 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/fec_main.c b/drivers/net/ethernet/freescale/fec_main.c
-index 35593b41e6c12..32775326414b7 100644
---- a/drivers/net/ethernet/freescale/fec_main.c
-+++ b/drivers/net/ethernet/freescale/fec_main.c
-@@ -223,8 +223,8 @@ MODULE_PARM_DESC(macaddr, "FEC Ethernet MAC address");
- #define PKT_MINBUF_SIZE		64
+diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
+index 75eb1c95c4a04..8c69ab348a7f7 100644
+--- a/drivers/spi/spidev.c
++++ b/drivers/spi/spidev.c
+@@ -8,19 +8,20 @@
+  */
  
- /* FEC receive acceleration */
--#define FEC_RACC_IPDIS		(1 << 1)
--#define FEC_RACC_PRODIS		(1 << 2)
-+#define FEC_RACC_IPDIS		BIT(1)
-+#define FEC_RACC_PRODIS		BIT(2)
- #define FEC_RACC_SHIFT16	BIT(7)
- #define FEC_RACC_OPTIONS	(FEC_RACC_IPDIS | FEC_RACC_PRODIS)
+ #include <linux/init.h>
+-#include <linux/module.h>
+ #include <linux/ioctl.h>
+ #include <linux/fs.h>
+ #include <linux/device.h>
+ #include <linux/err.h>
+ #include <linux/list.h>
+ #include <linux/errno.h>
++#include <linux/mod_devicetable.h>
++#include <linux/module.h>
+ #include <linux/mutex.h>
++#include <linux/property.h>
+ #include <linux/slab.h>
+ #include <linux/compat.h>
+ #include <linux/of.h>
+ #include <linux/of_device.h>
+-#include <linux/acpi.h>
  
-@@ -253,8 +253,23 @@ MODULE_PARM_DESC(macaddr, "FEC Ethernet MAC address");
- #define FEC_MMFR_TA		(2 << 16)
- #define FEC_MMFR_DATA(v)	(v & 0xffff)
- /* FEC ECR bits definition */
--#define FEC_ECR_MAGICEN		(1 << 2)
--#define FEC_ECR_SLEEP		(1 << 3)
-+#define FEC_ECR_RESET           BIT(0)
-+#define FEC_ECR_ETHEREN         BIT(1)
-+#define FEC_ECR_MAGICEN         BIT(2)
-+#define FEC_ECR_SLEEP           BIT(3)
-+#define FEC_ECR_EN1588          BIT(4)
-+#define FEC_ECR_BYTESWP         BIT(8)
-+/* FEC RCR bits definition */
-+#define FEC_RCR_LOOP            BIT(0)
-+#define FEC_RCR_HALFDPX         BIT(1)
-+#define FEC_RCR_MII             BIT(2)
-+#define FEC_RCR_PROMISC         BIT(3)
-+#define FEC_RCR_BC_REJ          BIT(4)
-+#define FEC_RCR_FLOWCTL         BIT(5)
-+#define FEC_RCR_RMII            BIT(8)
-+#define FEC_RCR_10BASET         BIT(9)
-+/* TX WMARK bits */
-+#define FEC_TXWMRK_STRFWD       BIT(8)
+ #include <linux/spi/spi.h>
+ #include <linux/spi/spidev.h>
+@@ -710,10 +711,12 @@ static const struct of_device_id spidev_dt_ids[] = {
+ MODULE_DEVICE_TABLE(of, spidev_dt_ids);
+ #endif
  
- #define FEC_MII_TIMEOUT		30000 /* us */
- 
-@@ -950,7 +965,7 @@ fec_restart(struct net_device *ndev)
- 	u32 val;
- 	u32 temp_mac[2];
- 	u32 rcntl = OPT_FRAME_SIZE | 0x04;
--	u32 ecntl = 0x2; /* ETHEREN */
-+	u32 ecntl = FEC_ECR_ETHEREN;
- 
- 	/* Whack a reset.  We should wait for this.
- 	 * For i.MX6SX SOC, enet use AXI bus, we use disable MAC
-@@ -1026,18 +1041,18 @@ fec_restart(struct net_device *ndev)
- 		    fep->phy_interface == PHY_INTERFACE_MODE_RGMII_TXID)
- 			rcntl |= (1 << 6);
- 		else if (fep->phy_interface == PHY_INTERFACE_MODE_RMII)
--			rcntl |= (1 << 8);
-+			rcntl |= FEC_RCR_RMII;
- 		else
--			rcntl &= ~(1 << 8);
-+			rcntl &= ~FEC_RCR_RMII;
- 
- 		/* 1G, 100M or 10M */
- 		if (ndev->phydev) {
- 			if (ndev->phydev->speed == SPEED_1000)
- 				ecntl |= (1 << 5);
- 			else if (ndev->phydev->speed == SPEED_100)
--				rcntl &= ~(1 << 9);
-+				rcntl &= ~FEC_RCR_10BASET;
- 			else
--				rcntl |= (1 << 9);
-+				rcntl |= FEC_RCR_10BASET;
- 		}
- 	} else {
- #ifdef FEC_MIIGSK_ENR
-@@ -1096,13 +1111,13 @@ fec_restart(struct net_device *ndev)
- 
- 	if (fep->quirks & FEC_QUIRK_ENET_MAC) {
- 		/* enable ENET endian swap */
--		ecntl |= (1 << 8);
-+		ecntl |= FEC_ECR_BYTESWP;
- 		/* enable ENET store and forward mode */
--		writel(1 << 8, fep->hwp + FEC_X_WMRK);
-+		writel(FEC_TXWMRK_STRFWD, fep->hwp + FEC_X_WMRK);
- 	}
- 
- 	if (fep->bufdesc_ex)
--		ecntl |= (1 << 4);
-+		ecntl |= FEC_ECR_EN1588;
- 
- #ifndef CONFIG_M5272
- 	/* Enable the MIB statistic event counters */
-@@ -1149,7 +1164,7 @@ static void
- fec_stop(struct net_device *ndev)
- {
- 	struct fec_enet_private *fep = netdev_priv(ndev);
--	u32 rmii_mode = readl(fep->hwp + FEC_R_CNTRL) & (1 << 8);
-+	u32 rmii_mode = readl(fep->hwp + FEC_R_CNTRL) & FEC_RCR_RMII;
- 	u32 val;
- 
- 	/* We cannot expect a graceful transmit stop without link !!! */
-@@ -1168,7 +1183,7 @@ fec_stop(struct net_device *ndev)
- 		if (fep->quirks & FEC_QUIRK_HAS_AVB) {
- 			writel(0, fep->hwp + FEC_ECNTRL);
- 		} else {
--			writel(1, fep->hwp + FEC_ECNTRL);
-+			writel(FEC_ECR_RESET, fep->hwp + FEC_ECNTRL);
- 			udelay(10);
- 		}
- 		writel(FEC_DEFAULT_IMASK, fep->hwp + FEC_IMASK);
-@@ -1184,12 +1199,11 @@ fec_stop(struct net_device *ndev)
- 	/* We have to keep ENET enabled to have MII interrupt stay working */
- 	if (fep->quirks & FEC_QUIRK_ENET_MAC &&
- 		!(fep->wol_flag & FEC_WOL_FLAG_SLEEP_ON)) {
--		writel(2, fep->hwp + FEC_ECNTRL);
-+		writel(FEC_ECR_ETHEREN, fep->hwp + FEC_ECNTRL);
- 		writel(rmii_mode, fep->hwp + FEC_R_CNTRL);
- 	}
- }
- 
+-#ifdef CONFIG_ACPI
 -
- static void
- fec_timeout(struct net_device *ndev)
+ /* Dummy SPI devices not to be used in production systems */
+-#define SPIDEV_ACPI_DUMMY	1
++static int spidev_acpi_check(struct device *dev)
++{
++	dev_warn(dev, "do not use this driver in production systems!\n");
++	return 0;
++}
+ 
+ static const struct acpi_device_id spidev_acpi_ids[] = {
+ 	/*
+@@ -722,35 +725,18 @@ static const struct acpi_device_id spidev_acpi_ids[] = {
+ 	 * description of the connected peripheral and they should also use
+ 	 * a proper driver instead of poking directly to the SPI bus.
+ 	 */
+-	{ "SPT0001", SPIDEV_ACPI_DUMMY },
+-	{ "SPT0002", SPIDEV_ACPI_DUMMY },
+-	{ "SPT0003", SPIDEV_ACPI_DUMMY },
++	{ "SPT0001", (kernel_ulong_t)&spidev_acpi_check },
++	{ "SPT0002", (kernel_ulong_t)&spidev_acpi_check },
++	{ "SPT0003", (kernel_ulong_t)&spidev_acpi_check },
+ 	{},
+ };
+ MODULE_DEVICE_TABLE(acpi, spidev_acpi_ids);
+ 
+-static void spidev_probe_acpi(struct spi_device *spi)
+-{
+-	const struct acpi_device_id *id;
+-
+-	if (!has_acpi_companion(&spi->dev))
+-		return;
+-
+-	id = acpi_match_device(spidev_acpi_ids, &spi->dev);
+-	if (WARN_ON(!id))
+-		return;
+-
+-	if (id->driver_data == SPIDEV_ACPI_DUMMY)
+-		dev_warn(&spi->dev, "do not use this driver in production systems!\n");
+-}
+-#else
+-static inline void spidev_probe_acpi(struct spi_device *spi) {}
+-#endif
+-
+ /*-------------------------------------------------------------------------*/
+ 
+ static int spidev_probe(struct spi_device *spi)
  {
++	int (*match)(struct device *dev);
+ 	struct spidev_data	*spidev;
+ 	int			status;
+ 	unsigned long		minor;
+@@ -765,7 +751,12 @@ static int spidev_probe(struct spi_device *spi)
+ 		return -EINVAL;
+ 	}
+ 
+-	spidev_probe_acpi(spi);
++	match = device_get_match_data(&spi->dev);
++	if (match) {
++		status = match(&spi->dev);
++		if (status)
++			return status;
++	}
+ 
+ 	/* Allocate driver data */
+ 	spidev = kzalloc(sizeof(*spidev), GFP_KERNEL);
+@@ -837,7 +828,7 @@ static struct spi_driver spidev_spi_driver = {
+ 	.driver = {
+ 		.name =		"spidev",
+ 		.of_match_table = of_match_ptr(spidev_dt_ids),
+-		.acpi_match_table = ACPI_PTR(spidev_acpi_ids),
++		.acpi_match_table = spidev_acpi_ids,
+ 	},
+ 	.probe =	spidev_probe,
+ 	.remove =	spidev_remove,
 -- 
 2.43.0
 
