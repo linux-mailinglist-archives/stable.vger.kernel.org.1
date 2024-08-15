@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-68995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68662-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D4359534F3
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:32:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A14D8953365
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:16:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A12AD1C23B07
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:32:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 482641F2410A
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:16:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4C5B1A0712;
-	Thu, 15 Aug 2024 14:32:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B24501ABEA7;
+	Thu, 15 Aug 2024 14:14:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CIqjobI5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wiYgfovr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 896942772A;
-	Thu, 15 Aug 2024 14:32:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 715101AB53C;
+	Thu, 15 Aug 2024 14:14:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732326; cv=none; b=BlEeuoetKM2Y/+hE0eDvyHim/xTVjDyth/awYRWTsTVEUm8pxRAFpUwBLI4582unMPkYVIlpGHYmjOKyaomB7TaZuAbosKkn6tbMi8+gsiWfsANPoX7UbyqeNgfY8DsR9VuYGpvHItVSgFPo+gQEr9EbIXtBGIpZanHmE067v7I=
+	t=1723731271; cv=none; b=PCg9UTGKfSO0clPS6yoyfwxmxpR5O5btRdbjYSiFCrAICzUplrpUHy1cPJobpjDXEPo8B9aptliFiehfiEt7BxORlKVrjS59vELrUh/ufYr2XV9t2yyeyo7Wj/fmy0UhLb7AeY8T+tYjUHlY34WT2RUpYfdqyO7hK7b2AFnuW9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732326; c=relaxed/simple;
-	bh=VdTJJQf/eNac1uRvJhr6WYVGqgw39Bb5x20vlIp2ii8=;
+	s=arc-20240116; t=1723731271; c=relaxed/simple;
+	bh=t98H0i5rXlIR3ypm5Ns6s1Rcym0ohWSB68KRyi+DSjs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e9bLsqMAF2V5pqO6eQotxYFF3IDERcFxz6Y0HWLWCt7lbFOeAraquZkllm13xYXJNpqZAer94uty/Pqryani7rn3lC3bqmLiedt8u7NPltCPdAktmBgOq1gZv9ExeLuJ3YZ0YeCZN3AkkIdbUsIkiMGDCEOHna49ImilT6IeIGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CIqjobI5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC914C32786;
-	Thu, 15 Aug 2024 14:32:05 +0000 (UTC)
+	 MIME-Version; b=azsI7stqkTB5UaMnnqHQigzcdEko1t+EPHDSqBJE0e3XIT26yZbnmMg1oafKHWFr9/X0xcWq6ntc/nezXzUkNHh4aOxgp9BF3qhC/MCmfSa1mYns7d2L6co4Ftyfi9aH7jub9hSElXfNUb5OPVfmEw8hUKd3LjBXVI0NbPhWAy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wiYgfovr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECA4AC32786;
+	Thu, 15 Aug 2024 14:14:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732326;
-	bh=VdTJJQf/eNac1uRvJhr6WYVGqgw39Bb5x20vlIp2ii8=;
+	s=korg; t=1723731271;
+	bh=t98H0i5rXlIR3ypm5Ns6s1Rcym0ohWSB68KRyi+DSjs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CIqjobI5b/o9LJRPjyqnA4HjX7OrNcVyWnWc9u3lzrjE5PQ1gAz+XGITAL1g1v33w
-	 uBfy++eTnLuPRV6vvO9ResUtOoTWIpAgzucGRhBumaKghEZwV7/OU+/WCD9DNDU/uQ
-	 uRjBVVPxrm5lmADiHUKSfZiBC4jtFljU4q4nxmOg=
+	b=wiYgfovrqgR8zvZa6QNv7IaPxwQ3ObN9hGI0/RYxOgtO0yfLl6d/5wW/kmEJ1kmw2
+	 WVhD0T7GD5Umyc8/XUvOXU6tnEB23ojMxfsUc/R5peaokAKCyJaiSZdgtryQoehKcB
+	 cUkkPj0tYmcnkHP2/IG/VB6hLvSPUGGcANxANyWs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+ae688d469e36fb5138d0@syzkaller.appspotmail.com,
-	stable@kernel.org,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 5.10 144/352] ext4: check dot and dotdot of dx_root before making dir indexed
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 077/259] powerpc/xmon: Fix disassembly CPU feature checks
 Date: Thu, 15 Aug 2024 15:23:30 +0200
-Message-ID: <20240815131924.825564437@linuxfoundation.org>
+Message-ID: <20240815131905.777561248@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,156 +61,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-commit 50ea741def587a64e08879ce6c6a30131f7111e7 upstream.
+[ Upstream commit 14196e47c5ffe32af7ed5a51c9e421c5ea5bccce ]
 
-Syzbot reports a issue as follows:
-============================================
-BUG: unable to handle page fault for address: ffffed11022e24fe
-PGD 23ffee067 P4D 23ffee067 PUD 0
-Oops: Oops: 0000 [#1] PREEMPT SMP KASAN PTI
-CPU: 0 PID: 5079 Comm: syz-executor306 Not tainted 6.10.0-rc5-g55027e689933 #0
-Call Trace:
- <TASK>
- make_indexed_dir+0xdaf/0x13c0 fs/ext4/namei.c:2341
- ext4_add_entry+0x222a/0x25d0 fs/ext4/namei.c:2451
- ext4_rename fs/ext4/namei.c:3936 [inline]
- ext4_rename2+0x26e5/0x4370 fs/ext4/namei.c:4214
-[...]
-============================================
+In the xmon disassembly code there are several CPU feature checks to
+determine what dialects should be passed to the disassembler. The
+dialect controls which instructions the disassembler will recognise.
 
-The immediate cause of this problem is that there is only one valid dentry
-for the block to be split during do_split, so split==0 results in out of
-bounds accesses to the map triggering the issue.
+Unfortunately the checks are incorrect, because instead of passing a
+single CPU feature they are passing a mask of feature bits.
 
-    do_split
-      unsigned split
-      dx_make_map
-       count = 1
-      split = count/2 = 0;
-      continued = hash2 == map[split - 1].hash;
-       ---> map[4294967295]
+For example the code:
 
-The maximum length of a filename is 255 and the minimum block size is 1024,
-so it is always guaranteed that the number of entries is greater than or
-equal to 2 when do_split() is called.
+  if (cpu_has_feature(CPU_FTRS_POWER5))
+      dialect |= PPC_OPCODE_POWER5;
 
-But syzbot's crafted image has no dot and dotdot in dir, and the dentry
-distribution in dirblock is as follows:
+Is trying to check if the system is running on a Power5 CPU. But
+CPU_FTRS_POWER5 is a mask of *all* the feature bits that are enabled on
+a Power5.
 
-  bus     dentry1          hole           dentry2           free
-|xx--|xx-------------|...............|xx-------------|...............|
-0   12 (8+248)=256  268     256     524 (8+256)=264 788     236     1024
+In practice the test will always return true for any 64-bit CPU, because
+at least one bit in the mask will be present in the CPU_FTRS_ALWAYS
+mask.
 
-So when renaming dentry1 increases its name_len length by 1, neither hole
-nor free is sufficient to hold the new dentry, and make_indexed_dir() is
-called.
+Similarly for all the other checks against CPU_FTRS_xx masks.
 
-In make_indexed_dir() it is assumed that the first two entries of the
-dirblock must be dot and dotdot, so bus and dentry1 are left in dx_root
-because they are treated as dot and dotdot, and only dentry2 is moved
-to the new leaf block. That's why count is equal to 1.
+Rather than trying to match the disassembly behaviour exactly to the
+current CPU, just differentiate between 32-bit and 64-bit, and Altivec,
+VSX and HTM.
 
-Therefore add the ext4_check_dx_root() helper function to add more sanity
-checks to dot and dotdot before starting the conversion to avoid the above
-issue.
+That will cause some instructions to be shown in disassembly even
+on a CPU that doesn't support them, but that's OK, objdump -d output
+has the same behaviour, and if anything it's less confusing than some
+instructions not being disassembled.
 
-Reported-by: syzbot+ae688d469e36fb5138d0@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=ae688d469e36fb5138d0
-Fixes: ac27a0ec112a ("[PATCH] ext4: initial copy of files from ext3")
-Cc: stable@kernel.org
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20240702132349.2600605-2-libaokun@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 897f112bb42e ("[POWERPC] Import updated version of ppc disassembly code for xmon")
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240509121248.270878-2-mpe@ellerman.id.au
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/namei.c |   56 +++++++++++++++++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 51 insertions(+), 5 deletions(-)
+ arch/powerpc/xmon/ppc-dis.c | 33 +++++++++++----------------------
+ 1 file changed, 11 insertions(+), 22 deletions(-)
 
---- a/fs/ext4/namei.c
-+++ b/fs/ext4/namei.c
-@@ -2098,6 +2098,52 @@ static int add_dirent_to_buf(handle_t *h
- 	return err ? err : err2;
- }
+diff --git a/arch/powerpc/xmon/ppc-dis.c b/arch/powerpc/xmon/ppc-dis.c
+index 75fa98221d485..af105e1bc3fca 100644
+--- a/arch/powerpc/xmon/ppc-dis.c
++++ b/arch/powerpc/xmon/ppc-dis.c
+@@ -122,32 +122,21 @@ int print_insn_powerpc (unsigned long insn, unsigned long memaddr)
+   bool insn_is_short;
+   ppc_cpu_t dialect;
  
-+static bool ext4_check_dx_root(struct inode *dir, struct dx_root *root)
-+{
-+	struct fake_dirent *fde;
-+	const char *error_msg;
-+	unsigned int rlen;
-+	unsigned int blocksize = dir->i_sb->s_blocksize;
-+	char *blockend = (char *)root + dir->i_sb->s_blocksize;
-+
-+	fde = &root->dot;
-+	if (unlikely(fde->name_len != 1)) {
-+		error_msg = "invalid name_len for '.'";
-+		goto corrupted;
-+	}
-+	if (unlikely(strncmp(root->dot_name, ".", fde->name_len))) {
-+		error_msg = "invalid name for '.'";
-+		goto corrupted;
-+	}
-+	rlen = ext4_rec_len_from_disk(fde->rec_len, blocksize);
-+	if (unlikely((char *)fde + rlen >= blockend)) {
-+		error_msg = "invalid rec_len for '.'";
-+		goto corrupted;
-+	}
-+
-+	fde = &root->dotdot;
-+	if (unlikely(fde->name_len != 2)) {
-+		error_msg = "invalid name_len for '..'";
-+		goto corrupted;
-+	}
-+	if (unlikely(strncmp(root->dotdot_name, "..", fde->name_len))) {
-+		error_msg = "invalid name for '..'";
-+		goto corrupted;
-+	}
-+	rlen = ext4_rec_len_from_disk(fde->rec_len, blocksize);
-+	if (unlikely((char *)fde + rlen >= blockend)) {
-+		error_msg = "invalid rec_len for '..'";
-+		goto corrupted;
-+	}
-+
-+	return true;
-+
-+corrupted:
-+	EXT4_ERROR_INODE(dir, "Corrupt dir, %s, running e2fsck is recommended",
-+			 error_msg);
-+	return false;
-+}
-+
- /*
-  * This converts a one block unindexed directory to a 3 block indexed
-  * directory, and adds the dentry to the indexed directory.
-@@ -2131,17 +2177,17 @@ static int make_indexed_dir(handle_t *ha
- 		brelse(bh);
- 		return retval;
- 	}
-+
- 	root = (struct dx_root *) bh->b_data;
-+	if (!ext4_check_dx_root(dir, root)) {
-+		brelse(bh);
-+		return -EFSCORRUPTED;
-+	}
+-  dialect = PPC_OPCODE_PPC | PPC_OPCODE_COMMON
+-            | PPC_OPCODE_64 | PPC_OPCODE_POWER4 | PPC_OPCODE_ALTIVEC;
++  dialect = PPC_OPCODE_PPC | PPC_OPCODE_COMMON;
  
- 	/* The 0th block becomes the root, move the dirents out */
- 	fde = &root->dotdot;
- 	de = (struct ext4_dir_entry_2 *)((char *)fde +
- 		ext4_rec_len_from_disk(fde->rec_len, blocksize));
--	if ((char *) de >= (((char *) root) + blocksize)) {
--		EXT4_ERROR_INODE(dir, "invalid rec_len for '..'");
--		brelse(bh);
--		return -EFSCORRUPTED;
--	}
- 	len = ((char *) root) + (blocksize - csum_size) - (char *) de;
+-  if (cpu_has_feature(CPU_FTRS_POWER5))
+-    dialect |= PPC_OPCODE_POWER5;
++  if (IS_ENABLED(CONFIG_PPC64))
++    dialect |= PPC_OPCODE_64 | PPC_OPCODE_POWER4 | PPC_OPCODE_CELL |
++	PPC_OPCODE_POWER5 | PPC_OPCODE_POWER6 | PPC_OPCODE_POWER7 | PPC_OPCODE_POWER8 |
++	PPC_OPCODE_POWER9;
  
- 	/* Allocate new block for the 0th block's dirents */
+-  if (cpu_has_feature(CPU_FTRS_CELL))
+-    dialect |= (PPC_OPCODE_CELL | PPC_OPCODE_ALTIVEC);
++  if (cpu_has_feature(CPU_FTR_TM))
++    dialect |= PPC_OPCODE_HTM;
+ 
+-  if (cpu_has_feature(CPU_FTRS_POWER6))
+-    dialect |= (PPC_OPCODE_POWER5 | PPC_OPCODE_POWER6 | PPC_OPCODE_ALTIVEC);
++  if (cpu_has_feature(CPU_FTR_ALTIVEC))
++    dialect |= PPC_OPCODE_ALTIVEC | PPC_OPCODE_ALTIVEC2;
+ 
+-  if (cpu_has_feature(CPU_FTRS_POWER7))
+-    dialect |= (PPC_OPCODE_POWER5 | PPC_OPCODE_POWER6 | PPC_OPCODE_POWER7
+-                | PPC_OPCODE_ALTIVEC | PPC_OPCODE_VSX);
+-
+-  if (cpu_has_feature(CPU_FTRS_POWER8))
+-    dialect |= (PPC_OPCODE_POWER5 | PPC_OPCODE_POWER6 | PPC_OPCODE_POWER7
+-		| PPC_OPCODE_POWER8 | PPC_OPCODE_HTM
+-		| PPC_OPCODE_ALTIVEC | PPC_OPCODE_ALTIVEC2 | PPC_OPCODE_VSX);
+-
+-  if (cpu_has_feature(CPU_FTRS_POWER9))
+-    dialect |= (PPC_OPCODE_POWER5 | PPC_OPCODE_POWER6 | PPC_OPCODE_POWER7
+-		| PPC_OPCODE_POWER8 | PPC_OPCODE_POWER9 | PPC_OPCODE_HTM
+-		| PPC_OPCODE_ALTIVEC | PPC_OPCODE_ALTIVEC2
+-		| PPC_OPCODE_VSX | PPC_OPCODE_VSX3);
++  if (cpu_has_feature(CPU_FTR_VSX))
++    dialect |= PPC_OPCODE_VSX | PPC_OPCODE_VSX3;
+ 
+   /* Get the major opcode of the insn.  */
+   opcode = NULL;
+-- 
+2.43.0
+
 
 
 
