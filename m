@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-68615-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68924-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB2D3953330
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:14:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D73B9534A3
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:28:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0AB3D1C22285
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:14:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 58DDA1C20A97
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:28:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A83F1AC44F;
-	Thu, 15 Aug 2024 14:12:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB9B419DF85;
+	Thu, 15 Aug 2024 14:28:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b46ECzjp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PKROg/Gc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC7111AC8AE;
-	Thu, 15 Aug 2024 14:12:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A949D3214;
+	Thu, 15 Aug 2024 14:28:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731124; cv=none; b=V0fSjrngpixFXKGOUqu4SVFO2cgO9pN679WzdqwrkgkTBtKnP448eSYH0jtC4ymxaLJlxQdSyG8uLg8rO6WYsT50TEOMZuwc4+4QYA2Z2cESwLCREe3sutOSIGpQndRXm8ycfQ1zVqcfrvw7tVk48e6qQ58c64biNFSB2qExtgY=
+	t=1723732100; cv=none; b=MvUja/u17UixJwi3SFRei3ZXdusprlD9N5fQzbOUCqaZFTzh5ur4bL2t+AmjnmgkMDSwVkXUhDdySv5oOzw7fwmCKbUbFkVD5uKiMcvQG46o/NSQJEA72YGDRCTtkq3TX9ZfQ9dyEEl2lCy7PPEh1SsA6eXKQSCwZK1UNmLNY2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731124; c=relaxed/simple;
-	bh=r1iP8iP7zGTY+dcaC9/W/yUH4HlaBt3kCG66ur9OuiQ=;
+	s=arc-20240116; t=1723732100; c=relaxed/simple;
+	bh=ULw1uyoYgtkX9YTEQaIcgN04jNrD8/NCKe5jsWF20yo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nUzWzFQvM5S9FnlgK8FTZqw8F1Vg1HI3Itb4hevugN9wTvq5MmOJ9Mnq4h013IXLugTyazaWn3LDNd5sg2jxlKW15c+nI2QhOIMPKuc0rcIvr06va8cUsRtLUl17C73KcpJjvRE6TDGVUt97YdmQOeoGilewGa3Rhx6wKYWn4Mg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b46ECzjp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49B16C32786;
-	Thu, 15 Aug 2024 14:12:04 +0000 (UTC)
+	 MIME-Version; b=XvPpmYrU+svK1Ka99VHTF9l9GvNvDs/zdSt0utYVqAWUEEyUllpRd3gur+YbK7Y5DhT2mqivSgHvUaFgzknoJjFBrs03n8E9eps2Pnanwn/MzNrrEcDc/JX6/ZrJynaCsef9cZfYcdGkNfI1gWnpXyrSXSmE4k3B5wXs4wiGZYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PKROg/Gc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3D7FC32786;
+	Thu, 15 Aug 2024 14:28:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731124;
-	bh=r1iP8iP7zGTY+dcaC9/W/yUH4HlaBt3kCG66ur9OuiQ=;
+	s=korg; t=1723732100;
+	bh=ULw1uyoYgtkX9YTEQaIcgN04jNrD8/NCKe5jsWF20yo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b46ECzjp6I6YL53+DCLBAc8ZCYSdL02h3mPhwP0VKFgEyUZVC8rCXKRcoZasQ6Hxb
-	 UPeQWv6PIN/PBNnNSF802/RinMSFsCE/f8Uy+yuahorX/aG9/3X6LwXPeVE8Yd2l5M
-	 Ebpu7QcXbJIJqFdOMb1bo47XBI/CX/if0JkHhHbM=
+	b=PKROg/Gcl3yZh8+fJhBqtMkp7aC4vVbVJqDj7TI7lCEJ/9n3InEk8nAcx7PQ+UG6f
+	 BuhY0OroyJnkkhjVXaPTfMQ/aGCbL7480o0kikRQnrQGnaxLEzfDoeav+MDPEgpJQ4
+	 JBI58NCfAWndm7dEAm31fggxQLuZURuizT0H1XSs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 007/259] x86/of: Return consistent error type from x86_of_pci_irq_enable()
+Subject: [PATCH 5.10 074/352] s390/mm: Convert make_page_secure to use a folio
 Date: Thu, 15 Aug 2024 15:22:20 +0200
-Message-ID: <20240815131903.074272320@linuxfoundation.org>
+Message-ID: <20240815131922.102962152@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +61,97 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-[ Upstream commit ec0b4c4d45cf7cf9a6c9626a494a89cb1ae7c645 ]
+[ Upstream commit 259e660d91d0e7261ae0ee37bb37266d6006a546 ]
 
-x86_of_pci_irq_enable() returns PCIBIOS_* code received from
-pci_read_config_byte() directly and also -EINVAL which are not
-compatible error types. x86_of_pci_irq_enable() is used as
-(*pcibios_enable_irq) function which should not return PCIBIOS_* codes.
+These page APIs are deprecated, so convert the incoming page to a folio
+and use the folio APIs instead.  The ultravisor API cannot handle large
+folios, so return -EINVAL if one has slipped through.
 
-Convert the PCIBIOS_* return code from pci_read_config_byte() into
-normal errno using pcibios_err_to_errno().
-
-Fixes: 96e0a0797eba ("x86: dtb: Add support for PCI devices backed by dtb nodes")
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20240527125538.13620-1-ilpo.jarvinen@linux.intel.com
+Acked-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Link: https://lore.kernel.org/r/20240322161149.2327518-2-willy@infradead.org
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Stable-dep-of: 3f29f6537f54 ("s390/uv: Don't call folio_wait_writeback() without a folio reference")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/devicetree.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/s390/kernel/uv.c | 29 ++++++++++++++++-------------
+ 1 file changed, 16 insertions(+), 13 deletions(-)
 
-diff --git a/arch/x86/kernel/devicetree.c b/arch/x86/kernel/devicetree.c
-index 8d85e00bb40a5..04c5f25877998 100644
---- a/arch/x86/kernel/devicetree.c
-+++ b/arch/x86/kernel/devicetree.c
-@@ -91,7 +91,7 @@ static int x86_of_pci_irq_enable(struct pci_dev *dev)
+diff --git a/arch/s390/kernel/uv.c b/arch/s390/kernel/uv.c
+index 6abf73e832445..c99b7f9de1e1f 100644
+--- a/arch/s390/kernel/uv.c
++++ b/arch/s390/kernel/uv.c
+@@ -193,21 +193,21 @@ int uv_convert_owned_from_secure(unsigned long paddr)
+ }
  
- 	ret = pci_read_config_byte(dev, PCI_INTERRUPT_PIN, &pin);
- 	if (ret)
--		return ret;
-+		return pcibios_err_to_errno(ret);
- 	if (!pin)
- 		return 0;
+ /*
+- * Calculate the expected ref_count for a page that would otherwise have no
++ * Calculate the expected ref_count for a folio that would otherwise have no
+  * further pins. This was cribbed from similar functions in other places in
+  * the kernel, but with some slight modifications. We know that a secure
+- * page can not be a huge page for example.
++ * folio can not be a large folio, for example.
+  */
+-static int expected_page_refs(struct page *page)
++static int expected_folio_refs(struct folio *folio)
+ {
+ 	int res;
  
+-	res = page_mapcount(page);
+-	if (PageSwapCache(page)) {
++	res = folio_mapcount(folio);
++	if (folio_test_swapcache(folio)) {
+ 		res++;
+-	} else if (page_mapping(page)) {
++	} else if (folio_mapping(folio)) {
+ 		res++;
+-		if (page_has_private(page))
++		if (folio->private)
+ 			res++;
+ 	}
+ 	return res;
+@@ -215,14 +215,17 @@ static int expected_page_refs(struct page *page)
+ 
+ static int make_page_secure(struct page *page, struct uv_cb_header *uvcb)
+ {
++	struct folio *folio = page_folio(page);
+ 	int expected, cc = 0;
+ 
+-	if (PageWriteback(page))
++	if (folio_test_large(folio))
++		return -EINVAL;
++	if (folio_test_writeback(folio))
+ 		return -EAGAIN;
+-	expected = expected_page_refs(page);
+-	if (!page_ref_freeze(page, expected))
++	expected = expected_folio_refs(folio);
++	if (!folio_ref_freeze(folio, expected))
+ 		return -EBUSY;
+-	set_bit(PG_arch_1, &page->flags);
++	set_bit(PG_arch_1, &folio->flags);
+ 	/*
+ 	 * If the UVC does not succeed or fail immediately, we don't want to
+ 	 * loop for long, or we might get stall notifications.
+@@ -232,9 +235,9 @@ static int make_page_secure(struct page *page, struct uv_cb_header *uvcb)
+ 	 * -EAGAIN and we let the callers deal with it.
+ 	 */
+ 	cc = __uv_call(0, (u64)uvcb);
+-	page_ref_unfreeze(page, expected);
++	folio_ref_unfreeze(folio, expected);
+ 	/*
+-	 * Return -ENXIO if the page was not mapped, -EINVAL for other errors.
++	 * Return -ENXIO if the folio was not mapped, -EINVAL for other errors.
+ 	 * If busy or partially completed, return -EAGAIN.
+ 	 */
+ 	if (cc == UVC_CC_OK)
 -- 
 2.43.0
 
