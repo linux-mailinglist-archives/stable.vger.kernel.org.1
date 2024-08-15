@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-69170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68495-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBDB99535D1
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:43:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B438295329E
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:08:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E9EA51C24326
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:43:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E50101C231EA
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:08:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73A0A1A08C6;
-	Thu, 15 Aug 2024 14:41:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14A671B9B3C;
+	Thu, 15 Aug 2024 14:05:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jkwZor/X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fYLvsMgF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3089D63D5;
-	Thu, 15 Aug 2024 14:41:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6C581B5839;
+	Thu, 15 Aug 2024 14:05:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732896; cv=none; b=LyCLgEgaXVoPsiDGYmZcHpWDPUZJ8bn6skA8iNEbNt7KJjbJwx7Ww/ku7JIK21bIXYkYFsgDC2h8K0Z82j3qvRS7AQ5OO8jq1OAkY7T9AGc1KvafgJyHOHWDqg56EWLWPX7eUz+AxRRP2RLWI8jENYBThmrr8RrH1VtJ2cQoG+E=
+	t=1723730748; cv=none; b=EIJbqENE18ITUp1joKEQR4xvdl97ZIbJO8Ju3D64nIXLaahRYT6I3ZVmoMo+TeeM8oG/jF+mn8Qu33kkeF8iVCN+NOFcNMv69gRCoKK6a8hZXEPtcFWDSWo30BQ4O8QWwVey64NqgrfomJUXS780/JcZ+wqK7cTDR2uPqSZu5zg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732896; c=relaxed/simple;
-	bh=Tcfcwv3kS7nAA7VxdwEzxOi4Eje5w8fqrXqJDujILwo=;
+	s=arc-20240116; t=1723730748; c=relaxed/simple;
+	bh=KoaUP3U3f3EvvxryYsxW9xulEK5HnAYK9T4lkZnJQVk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qCeiFBGWLueVQzrTORRDYwf4+naCIle+yYhxda5oBOQy9yB4vCqlbeAwJG8BEWovW5eJrFu3hqCAKcr+bqw61TTaS9G5JlSZWKROF4CD5Zmgl5pt6qGZjPIvgGEIHnVnIAQsg0bl7Ha+/VlHkT6SvCFpA2Pp/ncrk7mILau7kCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jkwZor/X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52A73C32786;
-	Thu, 15 Aug 2024 14:41:35 +0000 (UTC)
+	 MIME-Version; b=WOr8jpku0Qa3yBCa84Q1KSxJ8rOF9+iwtJ7L+NQSELrv/sgk8CSLur2AWUY92b3dOwpfBci1DcCcr1rX3T75eb3W28L4WddS0wUHakEGDX7tbP0noGO6Gd45oZTW9XvJ+oban6lRpPaJeeLnjb4vswWyo7nu6SItesnhaI93y00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fYLvsMgF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 184CDC4AF0C;
+	Thu, 15 Aug 2024 14:05:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732895;
-	bh=Tcfcwv3kS7nAA7VxdwEzxOi4Eje5w8fqrXqJDujILwo=;
+	s=korg; t=1723730748;
+	bh=KoaUP3U3f3EvvxryYsxW9xulEK5HnAYK9T4lkZnJQVk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jkwZor/X1Mh+Py/b19Tb3hlj3PMLrrXa2uTjR7Cu6Xn6lYZqpVe8Wc+n6sDvLmT4o
-	 TYq4dtz5SseE0D0gI7o3EDhZ0b9WNys3D2f0MpkJq+9N83KzLOFjmJWe6btySdTMxJ
-	 qbah/5Qxdqi4LBqFnK5KIir1Dh5zwzQWo8QIhB4o=
+	b=fYLvsMgFpi7iu8Rt2DeXIccMyLrb8fhr3EnYYn8OtsLxmOQqovv6BWkIT68SHpEZ7
+	 Y4GLtLkxA8Dc0sHOWlRo+AYn13hTLsSU5PYBXsBQ51f57cmqefvUWPoqJ7wM00zFgs
+	 tD3QWK8kWnob7ljkdLKxaOnnEj4iY52+b3Z+XHUY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	James Morse <james.morse@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 288/352] arm64: cputype: Add Cortex-X925 definitions
+	Josef Bacik <josef@toxicpanda.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.1 20/38] sunrpc: pass in the sv_stats struct through svc_create_pooled
 Date: Thu, 15 Aug 2024 15:25:54 +0200
-Message-ID: <20240815131930.580714642@linuxfoundation.org>
+Message-ID: <20240815131833.729061269@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131832.944273699@linuxfoundation.org>
+References: <20240815131832.944273699@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +62,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Josef Bacik <josef@toxicpanda.com>
 
-[ Upstream commit fd2ff5f0b320f418288e7a1f919f648fbc8a0dfc ]
+[ Upstream commit f094323867668d50124886ad884b665de7319537 ]
 
-Add cputype definitions for Cortex-X925. These will be used for errata
-detection in subsequent patches.
+Since only one service actually reports the rpc stats there's not much
+of a reason to have a pointer to it in the svc_program struct.  Adjust
+the svc_create_pooled function to take the sv_stats as an argument and
+pass the struct through there as desired instead of getting it from the
+svc_program->pg_stats.
 
-These values can be found in Table A-285 ("MIDR_EL1 bit descriptions")
-in issue 0001-05 of the Cortex-X925 TRM, which can be found at:
-
-  https://developer.arm.com/documentation/102807/0001/?lang=en
-
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: James Morse <james.morse@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Link: https://lore.kernel.org/r/20240603111812.1514101-4-mark.rutland@arm.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-[ Mark: trivial backport ]
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+[ cel: adjusted to apply to v6.1.y ]
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/cputype.h | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/nfsd/nfssvc.c           |    3 ++-
+ include/linux/sunrpc/svc.h |    4 +++-
+ net/sunrpc/svc.c           |   12 +++++++-----
+ 3 files changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/arch/arm64/include/asm/cputype.h b/arch/arm64/include/asm/cputype.h
-index 4f08438344e2a..35162c15ed6c6 100644
---- a/arch/arm64/include/asm/cputype.h
-+++ b/arch/arm64/include/asm/cputype.h
-@@ -89,6 +89,7 @@
- #define ARM_CPU_PART_CORTEX_A720	0xD81
- #define ARM_CPU_PART_CORTEX_X4		0xD82
- #define ARM_CPU_PART_NEOVERSE_V3	0xD84
-+#define ARM_CPU_PART_CORTEX_X925	0xD85
+--- a/fs/nfsd/nfssvc.c
++++ b/fs/nfsd/nfssvc.c
+@@ -657,7 +657,8 @@ int nfsd_create_serv(struct net *net)
+ 	if (nfsd_max_blksize == 0)
+ 		nfsd_max_blksize = nfsd_get_default_max_blksize();
+ 	nfsd_reset_versions(nn);
+-	serv = svc_create_pooled(&nfsd_program, nfsd_max_blksize, nfsd);
++	serv = svc_create_pooled(&nfsd_program, &nfsd_svcstats,
++				 nfsd_max_blksize, nfsd);
+ 	if (serv == NULL)
+ 		return -ENOMEM;
  
- #define APM_CPU_PART_POTENZA		0x000
+--- a/include/linux/sunrpc/svc.h
++++ b/include/linux/sunrpc/svc.h
+@@ -493,7 +493,9 @@ void		   svc_rqst_replace_page(struct sv
+ 					 struct page *page);
+ void		   svc_rqst_free(struct svc_rqst *);
+ void		   svc_exit_thread(struct svc_rqst *);
+-struct svc_serv *  svc_create_pooled(struct svc_program *, unsigned int,
++struct svc_serv *  svc_create_pooled(struct svc_program *prog,
++				     struct svc_stat *stats,
++				     unsigned int bufsize,
+ 				     int (*threadfn)(void *data));
+ int		   svc_set_num_threads(struct svc_serv *, struct svc_pool *, int);
+ int		   svc_pool_stats_open(struct svc_serv *serv, struct file *file);
+--- a/net/sunrpc/svc.c
++++ b/net/sunrpc/svc.c
+@@ -453,8 +453,8 @@ __svc_init_bc(struct svc_serv *serv)
+  * Create an RPC service
+  */
+ static struct svc_serv *
+-__svc_create(struct svc_program *prog, unsigned int bufsize, int npools,
+-	     int (*threadfn)(void *data))
++__svc_create(struct svc_program *prog, struct svc_stat *stats,
++	     unsigned int bufsize, int npools, int (*threadfn)(void *data))
+ {
+ 	struct svc_serv	*serv;
+ 	unsigned int vers;
+@@ -466,7 +466,7 @@ __svc_create(struct svc_program *prog, u
+ 	serv->sv_name      = prog->pg_name;
+ 	serv->sv_program   = prog;
+ 	kref_init(&serv->sv_refcnt);
+-	serv->sv_stats     = prog->pg_stats;
++	serv->sv_stats     = stats;
+ 	if (bufsize > RPCSVC_MAXPAYLOAD)
+ 		bufsize = RPCSVC_MAXPAYLOAD;
+ 	serv->sv_max_payload = bufsize? bufsize : 4096;
+@@ -528,26 +528,28 @@ __svc_create(struct svc_program *prog, u
+ struct svc_serv *svc_create(struct svc_program *prog, unsigned int bufsize,
+ 			    int (*threadfn)(void *data))
+ {
+-	return __svc_create(prog, bufsize, 1, threadfn);
++	return __svc_create(prog, NULL, bufsize, 1, threadfn);
+ }
+ EXPORT_SYMBOL_GPL(svc_create);
  
-@@ -146,6 +147,7 @@
- #define MIDR_CORTEX_A720 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A720)
- #define MIDR_CORTEX_X4 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X4)
- #define MIDR_NEOVERSE_V3 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_NEOVERSE_V3)
-+#define MIDR_CORTEX_X925 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X925)
- #define MIDR_THUNDERX	MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX)
- #define MIDR_THUNDERX_81XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_81XX)
- #define MIDR_THUNDERX_83XX MIDR_CPU_MODEL(ARM_CPU_IMP_CAVIUM, CAVIUM_CPU_PART_THUNDERX_83XX)
--- 
-2.43.0
-
+ /**
+  * svc_create_pooled - Create an RPC service with pooled threads
+  * @prog: the RPC program the new service will handle
++ * @stats: the stats struct if desired
+  * @bufsize: maximum message size for @prog
+  * @threadfn: a function to service RPC requests for @prog
+  *
+  * Returns an instantiated struct svc_serv object or NULL.
+  */
+ struct svc_serv *svc_create_pooled(struct svc_program *prog,
++				   struct svc_stat *stats,
+ 				   unsigned int bufsize,
+ 				   int (*threadfn)(void *data))
+ {
+ 	struct svc_serv *serv;
+ 	unsigned int npools = svc_pool_map_get();
+ 
+-	serv = __svc_create(prog, bufsize, npools, threadfn);
++	serv = __svc_create(prog, stats, bufsize, npools, threadfn);
+ 	if (!serv)
+ 		goto out_err;
+ 	return serv;
 
 
 
