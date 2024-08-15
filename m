@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-68578-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69162-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB95A953307
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:13:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CB7B9535CA
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:42:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9FD5E1F242D0
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:13:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 702611C243A0
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:42:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07B351BB6BB;
-	Thu, 15 Aug 2024 14:10:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEE2F19D89D;
+	Thu, 15 Aug 2024 14:41:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QnMsgxaC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VxDkL/n0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B90371A7056;
-	Thu, 15 Aug 2024 14:10:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D76C1A706A;
+	Thu, 15 Aug 2024 14:41:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731010; cv=none; b=P9p1micishlfmgrEfKFD6MwxI9zlbbJY/QA+qffVbQtnH9LlaII+3gnYD7YYbmmjhdoAo3x37ZHyJOdDAqIyI5ezFtRBGF9NUODm5SuEB/+2DMV1s+viQlZKKP878OnkdrnQ6hakOqr+yc/aDQ1XN9vrLIXlEiPIB5jFSqc/uBQ=
+	t=1723732870; cv=none; b=OW4BVmaFV/5L55OzGoPiqMK/EloXHSRizL2skX3WK74hbkGg8ut6+6X2BPRNXygv9joFGZCEQp4vI+3vW6tas9lQpl9z65O5s884J5MT4VKeT1JnbgIjaj9AnEFZlGZRAPUWz5xtZguw9OCI3j/hZFYbo0dj86Kze2dF925DO9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731010; c=relaxed/simple;
-	bh=QGDEwYSXEJfdjZ5I8Mda29Agntp3MXRW0vsRHuFm4/g=;
+	s=arc-20240116; t=1723732870; c=relaxed/simple;
+	bh=VdJpEKEf+MPx635jvPSuApJTqEWMMWLmHsJX0qAZV6Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A/XdlrAX9z8UspS+VoEiAE8rg8RJ86MAGgEnqEkzHNnvQRDdUpgaBLEhoQ0pRxCbtLwq1vlfrWmCEXxe74EA/JaszKoG0RSgOe8XG/RvU+UIbir4NBca6D235dUMZ596AQqQZbp18iUiWkEYLIqnsPxXVZhCD25cR0buYlCFi4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QnMsgxaC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33356C32786;
-	Thu, 15 Aug 2024 14:10:10 +0000 (UTC)
+	 MIME-Version; b=L0LabgpGuRZV7xzznQWP9ZKzbKUAb/r1mNmW6oU4Tx9Tezlw3JyduCnwwuOZTXF4gZkISBLbotyPddzvmLMdAg+ROrl2xsSoq/Mk4xmi2X6LALb6aOdMTtDsfp4cPjkkTDjvZ/2v3u9jwhxV9Cgqakobz5NE3c4/at70djABlkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VxDkL/n0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E261C4AF0D;
+	Thu, 15 Aug 2024 14:41:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731010;
-	bh=QGDEwYSXEJfdjZ5I8Mda29Agntp3MXRW0vsRHuFm4/g=;
+	s=korg; t=1723732870;
+	bh=VdJpEKEf+MPx635jvPSuApJTqEWMMWLmHsJX0qAZV6Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QnMsgxaCNngnR2RyqwS3fncem9QFYUAMIyyzavNtLNZ0nmV/Sssz96bdFVhS1jJP6
-	 CxgkoQLEtvKQ5dvkZm9H2GoYurXl4sk2zPXCzu3gyd7gJ+a/CPHx3GWgqxFSMDmmHa
-	 81Tq/ODzdJl8Z+KIelW1Rtmp8BFk6Xl2/wq6uilY=
+	b=VxDkL/n0MipnXEARzEkXZi2VLf3AgJA8RpsHWazrjqy0nHvK/7HKYY+qVBHbBHmJp
+	 GQB1vzOLsgpLTFoOgKSHcKzVb3dOpxMFu0tU37I58pk44mwmEd21GkXB8gsZLnd8+x
+	 vVI1r1BQZMLZaeJAZvSfHP1mFdYX9K36nn4Orsnc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacopo Radice <jacopo.radice@outlook.com>,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.6 63/67] Revert "Input: bcm5974 - check endpoint type before starting traffic"
+	Justin Stitt <justinstitt@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Miroslav Lichvar <mlichvar@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 311/352] ntp: Clamp maxerror and esterror to operating range
 Date: Thu, 15 Aug 2024 15:26:17 +0200
-Message-ID: <20240815131840.718224334@linuxfoundation.org>
+Message-ID: <20240815131931.477905845@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131838.311442229@linuxfoundation.org>
-References: <20240815131838.311442229@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,100 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Justin Stitt <justinstitt@google.com>
 
-commit 7105e92c60c9cc4112c782d69c172e96b69a43dc upstream.
+[ Upstream commit 87d571d6fb77ec342a985afa8744bb9bb75b3622 ]
 
-This patch intended to fix an well-knonw issue in old drivers where the
-endpoint type is taken for granted, which is often triggered by fuzzers.
+Using syzkaller alongside the newly reintroduced signed integer overflow
+sanitizer spits out this report:
 
-That was the case for this driver [1], and although the fix seems to be
-correct, it uncovered another issue that leads to a regression [2], if
-the endpoints of the current interface are checked.
+UBSAN: signed-integer-overflow in ../kernel/time/ntp.c:461:16
+9223372036854775807 + 500 cannot be represented in type 'long'
+Call Trace:
+ handle_overflow+0x171/0x1b0
+ second_overflow+0x2d6/0x500
+ accumulate_nsecs_to_secs+0x60/0x160
+ timekeeping_advance+0x1fe/0x890
+ update_wall_time+0x10/0x30
 
-The driver makes use of endpoints that belong to a different interface
-rather than the one it binds (it binds to the third interface, but also
-accesses an endpoint from a different one). The driver should claim the
-interfaces it requires, but that is still not the case.
+time_maxerror is unconditionally incremented and the result is checked
+against NTP_PHASE_LIMIT, but the increment itself can overflow, resulting
+in wrap-around to negative space.
 
-Given that the regression is more severe than the issue found by
-syzkaller, the best approach is reverting the patch that causes the
-regression, and trying to fix the underlying problem before checking
-the endpoint types again.
+Before commit eea83d896e31 ("ntp: NTP4 user space bits update") the user
+supplied value was sanity checked to be in the operating range. That change
+removed the sanity check and relied on clamping in handle_overflow() which
+does not work correctly when the user supplied value is in the overflow
+zone of the '+ 500' operation.
 
-Note that reverting this patch will probably trigger the syzkaller bug
-at some point.
+The operation requires CAP_SYS_TIME and the side effect of the overflow is
+NTP getting out of sync.
 
-This reverts commit 2b9c3eb32a699acdd4784d6b93743271b4970899.
+Miroslav confirmed that the input value should be clamped to the operating
+range and the same applies to time_esterror. The latter is not used by the
+kernel, but the value still should be in the operating range as it was
+before the sanity check got removed.
 
-Link: https://syzkaller.appspot.com/bug?extid=348331f63b034f89b622 [1]
-Link: https://lore.kernel.org/linux-input/87sf161jjc.wl-tiwai@suse.de/ [2]
+Clamp them to the operating range.
 
-Fixes: 2b9c3eb32a69 ("Input: bcm5974 - check endpoint type before starting traffic")
-Reported-by: Jacopo Radice <jacopo.radice@outlook.com>
-Closes: https://bugzilla.suse.com/show_bug.cgi?id=1220030
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Link: https://lore.kernel.org/r/20240305-revert_bcm5974_ep_check-v3-1-527198cf6499@gmail.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+[ tglx: Changed it to clamping and included time_esterror ]
+
+Fixes: eea83d896e31 ("ntp: NTP4 user space bits update")
+Signed-off-by: Justin Stitt <justinstitt@google.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: Miroslav Lichvar <mlichvar@redhat.com>
+Link: https://lore.kernel.org/all/20240517-b4-sio-ntp-usec-v2-1-d539180f2b79@google.com
+Closes: https://github.com/KSPP/linux/issues/354
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+[ cast things to long long to fix compiler warnings - gregkh ]
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/mouse/bcm5974.c |   20 --------------------
- 1 file changed, 20 deletions(-)
+ kernel/time/ntp.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/input/mouse/bcm5974.c
-+++ b/drivers/input/mouse/bcm5974.c
-@@ -19,7 +19,6 @@
-  * Copyright (C) 2006	   Nicolas Boichat (nicolas@boichat.ch)
-  */
+--- a/kernel/time/ntp.c
++++ b/kernel/time/ntp.c
+@@ -679,10 +679,10 @@ static inline void process_adjtimex_mode
+ 	}
  
--#include "linux/usb.h"
- #include <linux/kernel.h>
- #include <linux/errno.h>
- #include <linux/slab.h>
-@@ -194,8 +193,6 @@ enum tp_type {
+ 	if (txc->modes & ADJ_MAXERROR)
+-		time_maxerror = txc->maxerror;
++		time_maxerror = clamp(txc->maxerror, (long long)0, (long long)NTP_PHASE_LIMIT);
  
- /* list of device capability bits */
- #define HAS_INTEGRATED_BUTTON	1
--/* maximum number of supported endpoints (currently trackpad and button) */
--#define MAX_ENDPOINTS	2
+ 	if (txc->modes & ADJ_ESTERROR)
+-		time_esterror = txc->esterror;
++		time_esterror = clamp(txc->esterror, (long long)0, (long long)NTP_PHASE_LIMIT);
  
- /* trackpad finger data block size */
- #define FSIZE_TYPE1		(14 * sizeof(__le16))
-@@ -894,18 +891,6 @@ static int bcm5974_resume(struct usb_int
- 	return error;
- }
- 
--static bool bcm5974_check_endpoints(struct usb_interface *iface,
--				    const struct bcm5974_config *cfg)
--{
--	u8 ep_addr[MAX_ENDPOINTS + 1] = {0};
--
--	ep_addr[0] = cfg->tp_ep;
--	if (cfg->tp_type == TYPE1)
--		ep_addr[1] = cfg->bt_ep;
--
--	return usb_check_int_endpoints(iface, ep_addr);
--}
--
- static int bcm5974_probe(struct usb_interface *iface,
- 			 const struct usb_device_id *id)
- {
-@@ -918,11 +903,6 @@ static int bcm5974_probe(struct usb_inte
- 	/* find the product index */
- 	cfg = bcm5974_get_config(udev);
- 
--	if (!bcm5974_check_endpoints(iface, cfg)) {
--		dev_err(&iface->dev, "Unexpected non-int endpoint\n");
--		return -ENODEV;
--	}
--
- 	/* allocate memory for our device state and initialize it */
- 	dev = kzalloc(sizeof(struct bcm5974), GFP_KERNEL);
- 	input_dev = input_allocate_device();
+ 	if (txc->modes & ADJ_TIMECONST) {
+ 		time_constant = txc->constant;
 
 
 
