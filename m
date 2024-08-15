@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-69081-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68768-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0CEC953557
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:36:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 565879533DE
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:20:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 68B592814FB
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:36:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F15C1288D31
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:20:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 178181A00CE;
-	Thu, 15 Aug 2024 14:36:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A4F21A0733;
+	Thu, 15 Aug 2024 14:20:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DEIJo4wX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bUheH34T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C86A53214;
-	Thu, 15 Aug 2024 14:36:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EF8919DF85;
+	Thu, 15 Aug 2024 14:20:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732604; cv=none; b=mjw8gr/mxQpMcQ4wJJ9k4pEUhh3uQ5w4VWKhPgm6DqMAvWTvWRJJlFSbzcDPE/iyXgzgTxJ2++tqbQtkx3Ym8VhhgdoX6EbYkUCqVE+CCVk6UNBJWr3dS7ti+/XWDALCu5zA4/xALVSie98oGmHd7IKH7N1NyHs8YHNCCzRM3vY=
+	t=1723731604; cv=none; b=RfNVJzCL7uMgOfgmFcaG5mn4CBn9LOUHRo+T46ZvKyyPK7JILB65oy1HwXhIRDEuVqlTdxJkjS59iPGeQpwb/G2RRIFvU88rDkhCFQaHOu2Mh2rtptbKxyYwBibZ0IQLNlOj5LvOdQSbBBkidDL3v+JL5Uf9G1GLYPZIKd8ZyQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732604; c=relaxed/simple;
-	bh=sRwReKQaqk5cQIfD+508qfJigfSJd/95tZrVBjBBdhA=;
+	s=arc-20240116; t=1723731604; c=relaxed/simple;
+	bh=i93hdX1UYNLzPeSSJ6xbJ9K+Fb5E01erLsPwC/dEeRQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=um0ueOE26lS88mKcB69beO/RhDZ/gZbbYHv6CxhRPK+lcBgESjG+JAj9rkxHO5f15cnRT/K8kd5CYmaaPsPXOpI13w6rLItiVZp9AadcCd8cS1kTam3NNTtGP2GG/vtf+i4WHmp3r+9RZiEoPUxBvU1nY6Ccdm6GT2vXOc9i20I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DEIJo4wX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3237CC32786;
-	Thu, 15 Aug 2024 14:36:44 +0000 (UTC)
+	 MIME-Version; b=MQUpyowXnijzBRM5nlM8/gCujlXLGK/f7yh7yVLyd4apZZ6R3SMH1fprEBGJj8G/kOdqfCu49dWyTil/rxO8cwWeP98jnFrzt/eMvFLaiNvvJd/LM3CmAJpIizMTELnVMkVyJPoLFqpkRLoMAk6dITs+zCjN7M/0D2lfiXWyUv8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bUheH34T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B91CCC32786;
+	Thu, 15 Aug 2024 14:20:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732604;
-	bh=sRwReKQaqk5cQIfD+508qfJigfSJd/95tZrVBjBBdhA=;
+	s=korg; t=1723731604;
+	bh=i93hdX1UYNLzPeSSJ6xbJ9K+Fb5E01erLsPwC/dEeRQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DEIJo4wXRo6nqhB3KqM71sZg014lGPZrXHkIAvKE2iCdll6v2vWf/OE5v/Au6Aq5m
-	 uDzcwFP4cQ11OsQzeJDnsmfO8bIOc6JK2+7o6pOnHJCz5/u0S9YqZNWeXIp4fSmuq6
-	 rBM9nBNWWJ/P5s/PjuEYEFZtMEPlDpixExN0DmXs=
+	b=bUheH34TvxHRtLxzfyvfBslr9P40lCOSAQgfFb4rr/GMWzH3brmqYy/DlNa8G2Ivc
+	 Q09ovuiHwQN96oD0y7wnDujCNJLqKTmXDDONbuRMd4qQSoDRKanvyw6EVkKZelVZYb
+	 T/3mmpf91i4TjORynAjI27TW0sDvr4bBX6mYiahs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dong Aisheng <aisheng.dong@nxp.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Bjorn Andersson <bjorn.andersson@linaro.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 231/352] remoteproc: imx_rproc: Fix ignoring mapping vdev regions
+Subject: [PATCH 5.4 164/259] driver core: Cast to (void *) with __force for __percpu pointer
 Date: Thu, 15 Aug 2024 15:24:57 +0200
-Message-ID: <20240815131928.360780550@linuxfoundation.org>
+Message-ID: <20240815131909.117378583@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dong Aisheng <aisheng.dong@nxp.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit afe670e23af91d8a74a8d7049f6e0984bbf6ea11 ]
+[ Upstream commit d7aa44f5a1f86cb40659eef06035d8d92604b9d5 ]
 
-vdev regions are typically named vdev0buffer, vdev0ring0, vdev0ring1 and
-etc. Change to strncmp to cover them all.
+Sparse is not happy:
 
-Fixes: 8f2d8961640f ("remoteproc: imx_rproc: ignore mapping vdev regions")
-Reviewed-and-tested-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Dong Aisheng <aisheng.dong@nxp.com>
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Cc: stable <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20210910090621.3073540-5-peng.fan@oss.nxp.com
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
-Signed-off-by: Bjorn Andersson <bjorn.andersson@linaro.org>
-Stable-dep-of: 2fa26ca8b786 ("remoteproc: imx_rproc: Skip over memory region when node value is NULL")
+  drivers/base/devres.c:1230:9: warning: cast removes address space '__percpu' of expression
+
+Use __force attribute to make it happy.
+
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20210401171030.60527-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: bd50a974097b ("devres: Fix memory leakage caused by driver API devm_free_percpu()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/imx_rproc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/base/devres.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
-index 6e233f6289200..517d1b5733288 100644
---- a/drivers/remoteproc/imx_rproc.c
-+++ b/drivers/remoteproc/imx_rproc.c
-@@ -287,8 +287,8 @@ static int imx_rproc_addr_init(struct imx_rproc *priv,
- 		struct resource res;
- 
- 		node = of_parse_phandle(np, "memory-region", a);
--		/* Not map vdev region */
--		if (!strcmp(node->name, "vdev"))
-+		/* Not map vdevbuffer, vdevring region */
-+		if (!strncmp(node->name, "vdev", strlen("vdev")))
- 			continue;
- 		err = of_address_to_resource(node, 0, &res);
- 		if (err) {
+diff --git a/drivers/base/devres.c b/drivers/base/devres.c
+index 0bbb328bd17f8..e8ad6a41ad4ce 100644
+--- a/drivers/base/devres.c
++++ b/drivers/base/devres.c
+@@ -1112,6 +1112,6 @@ EXPORT_SYMBOL_GPL(__devm_alloc_percpu);
+ void devm_free_percpu(struct device *dev, void __percpu *pdata)
+ {
+ 	WARN_ON(devres_destroy(dev, devm_percpu_release, devm_percpu_match,
+-			       (void *)pdata));
++			       (__force void *)pdata));
+ }
+ EXPORT_SYMBOL_GPL(devm_free_percpu);
 -- 
 2.43.0
 
