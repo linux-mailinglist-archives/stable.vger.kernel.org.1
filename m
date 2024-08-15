@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-67869-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68360-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8DC4952F81
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:34:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 173319531D2
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:58:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1794A1C246F3
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:34:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B443B287B15
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:58:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 516A719E7EF;
-	Thu, 15 Aug 2024 13:32:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5820C19F470;
+	Thu, 15 Aug 2024 13:58:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uOQ3Fphv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I7/runCN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FC021A7065;
-	Thu, 15 Aug 2024 13:32:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16BBB7DA7D;
+	Thu, 15 Aug 2024 13:58:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723728778; cv=none; b=nfVpWEpkDDdAgDMUClUBp9gGW81nJ72QSW5s0gj1K4rLhLISldQOKeI7Te+2UrGDPF3tjmhYVo5CCU0LcwZCe9pCyFqhw1d4pgpnffu/XDQUEEbFg33FnupCuwvVirVTiCJzq8dQP940u5au6BVH8NugccaHqnZmSDn67twGHu8=
+	t=1723730323; cv=none; b=aG/Xt6mzbZ7Bo4YE1ITI8VHXDiVnVtphELJy3Z2QpHvrN2oXjT/NoO5RoL+T5m8aVzQ3YQryj3wuWHacCsQ955/Wtjbls0LZlGiFyUSnxj/AjOTZXXRhIW9XD2gihbX06gCjkz4xp6aDAJhJB5IumckIo7rnig8cusma3n/EkmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723728778; c=relaxed/simple;
-	bh=baVIuH+eR6LS8WEEaQ2yxNMjOXgcRX4vowY5hEzPpww=;
+	s=arc-20240116; t=1723730323; c=relaxed/simple;
+	bh=B/MIgGO2Z5usU8dzEhgYMjAeTeQeEN9h8bGG0gAOGTk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Og25mp6NNQDYdluq+rqROvSySiQWex9osQPDQZtfW7xEl3ztZbWtDHoBlMaV+wbuGcHasdAkmYSNFMmv1COoizj7LXIjWQ//XpJIOM9sZCzn8AviJGG78sv36E0C0zVg75YZ0ImHfrM1BfwcMMpM0xXjmpLYBbVIPW+pPky6hDw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uOQ3Fphv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 236DEC32786;
-	Thu, 15 Aug 2024 13:32:56 +0000 (UTC)
+	 MIME-Version; b=B/OYqBSSVLzxYihK+djKYfdBZ2ltGiG1iwjZK2ZD1LGWEuLma8OMnIiKd2YVn3xmpxFtWOkPrWfu1ki3xS90K/H4CD6Bs5qNJLKCRhwXq5L5zdjXO91x+64Jrdt6RpDVGOIIFNjb6/1rggH3sXgGr21HArNJoBdkvFAxnYLhg44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I7/runCN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E386C32786;
+	Thu, 15 Aug 2024 13:58:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723728777;
-	bh=baVIuH+eR6LS8WEEaQ2yxNMjOXgcRX4vowY5hEzPpww=;
+	s=korg; t=1723730323;
+	bh=B/MIgGO2Z5usU8dzEhgYMjAeTeQeEN9h8bGG0gAOGTk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uOQ3Fphvd6+QkEN648BadSyftws6BWXCYyagNra9EStekbpR9AEYMEkxJfovCHMl3
-	 iSoULNSJZQxJmoCXDfR0vFuRdgScXIWdPoqk/P4T3QIglKXWT43XgzltO/tuo+Ub3C
-	 E0nQsnwgYX7MbELhotHy8MvIPJbsJYQwinUu1bSA=
+	b=I7/runCN9D6dJGqSJlaNfkExvG5HPpAmszLp+3lZPHQlWVf80xF0otxRfAZimVfGd
+	 jlhUoaxsC+oRWUNIBtczCUoPIiGqfEGJWv3Tm5v7hTaz2mK0OVY97a9JcXXxWf18fQ
+	 lYDudV+5TrVa90vs1SQj4RTHTGwhWf9aRSYMkWzs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Simon Horman <horms@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	syzbot+6acef9e0a4d1f46c83d4@syzkaller.appspotmail.com,
+	gnault@redhat.com,
+	cong.wang@bytedance.com,
+	James Chapman <jchapman@katalix.com>,
+	Tom Parkin <tparkin@katalix.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 105/196] mISDN: Fix a use after free in hfcmulti_tx()
-Date: Thu, 15 Aug 2024 15:23:42 +0200
-Message-ID: <20240815131856.099245264@linuxfoundation.org>
+Subject: [PATCH 5.15 365/484] l2tp: fix lockdep splat
+Date: Thu, 15 Aug 2024 15:23:43 +0200
+Message-ID: <20240815131955.532683632@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +67,218 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: James Chapman <jchapman@katalix.com>
 
-[ Upstream commit 61ab751451f5ebd0b98e02276a44e23a10110402 ]
+[ Upstream commit 86a41ea9fd79ddb6145cb8ebf5aeafceabca6f7d ]
 
-Don't dereference *sp after calling dev_kfree_skb(*sp).
+When l2tp tunnels use a socket provided by userspace, we can hit
+lockdep splats like the below when data is transmitted through another
+(unrelated) userspace socket which then gets routed over l2tp.
 
-Fixes: af69fb3a8ffa ("Add mISDN HFC multiport driver")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/8be65f5a-c2dd-4ba0-8a10-bfe5980b8cfb@stanley.mountain
+This issue was previously discussed here:
+https://lore.kernel.org/netdev/87sfialu2n.fsf@cloudflare.com/
+
+The solution is to have lockdep treat socket locks of l2tp tunnel
+sockets separately than those of standard INET sockets. To do so, use
+a different lockdep subclass where lock nesting is possible.
+
+  ============================================
+  WARNING: possible recursive locking detected
+  6.10.0+ #34 Not tainted
+  --------------------------------------------
+  iperf3/771 is trying to acquire lock:
+  ffff8881027601d8 (slock-AF_INET/1){+.-.}-{2:2}, at: l2tp_xmit_skb+0x243/0x9d0
+
+  but task is already holding lock:
+  ffff888102650d98 (slock-AF_INET/1){+.-.}-{2:2}, at: tcp_v4_rcv+0x1848/0x1e10
+
+  other info that might help us debug this:
+   Possible unsafe locking scenario:
+
+         CPU0
+         ----
+    lock(slock-AF_INET/1);
+    lock(slock-AF_INET/1);
+
+   *** DEADLOCK ***
+
+   May be due to missing lock nesting notation
+
+  10 locks held by iperf3/771:
+   #0: ffff888102650258 (sk_lock-AF_INET){+.+.}-{0:0}, at: tcp_sendmsg+0x1a/0x40
+   #1: ffffffff822ac220 (rcu_read_lock){....}-{1:2}, at: __ip_queue_xmit+0x4b/0xbc0
+   #2: ffffffff822ac220 (rcu_read_lock){....}-{1:2}, at: ip_finish_output2+0x17a/0x1130
+   #3: ffffffff822ac220 (rcu_read_lock){....}-{1:2}, at: process_backlog+0x28b/0x9f0
+   #4: ffffffff822ac220 (rcu_read_lock){....}-{1:2}, at: ip_local_deliver_finish+0xf9/0x260
+   #5: ffff888102650d98 (slock-AF_INET/1){+.-.}-{2:2}, at: tcp_v4_rcv+0x1848/0x1e10
+   #6: ffffffff822ac220 (rcu_read_lock){....}-{1:2}, at: __ip_queue_xmit+0x4b/0xbc0
+   #7: ffffffff822ac220 (rcu_read_lock){....}-{1:2}, at: ip_finish_output2+0x17a/0x1130
+   #8: ffffffff822ac1e0 (rcu_read_lock_bh){....}-{1:2}, at: __dev_queue_xmit+0xcc/0x1450
+   #9: ffff888101f33258 (dev->qdisc_tx_busylock ?: &qdisc_tx_busylock#2){+...}-{2:2}, at: __dev_queue_xmit+0x513/0x1450
+
+  stack backtrace:
+  CPU: 2 UID: 0 PID: 771 Comm: iperf3 Not tainted 6.10.0+ #34
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+  Call Trace:
+   <IRQ>
+   dump_stack_lvl+0x69/0xa0
+   dump_stack+0xc/0x20
+   __lock_acquire+0x135d/0x2600
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   lock_acquire+0xc4/0x2a0
+   ? l2tp_xmit_skb+0x243/0x9d0
+   ? __skb_checksum+0xa3/0x540
+   _raw_spin_lock_nested+0x35/0x50
+   ? l2tp_xmit_skb+0x243/0x9d0
+   l2tp_xmit_skb+0x243/0x9d0
+   l2tp_eth_dev_xmit+0x3c/0xc0
+   dev_hard_start_xmit+0x11e/0x420
+   sch_direct_xmit+0xc3/0x640
+   __dev_queue_xmit+0x61c/0x1450
+   ? ip_finish_output2+0xf4c/0x1130
+   ip_finish_output2+0x6b6/0x1130
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? __ip_finish_output+0x217/0x380
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   __ip_finish_output+0x217/0x380
+   ip_output+0x99/0x120
+   __ip_queue_xmit+0xae4/0xbc0
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? tcp_options_write.constprop.0+0xcb/0x3e0
+   ip_queue_xmit+0x34/0x40
+   __tcp_transmit_skb+0x1625/0x1890
+   __tcp_send_ack+0x1b8/0x340
+   tcp_send_ack+0x23/0x30
+   __tcp_ack_snd_check+0xa8/0x530
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   tcp_rcv_established+0x412/0xd70
+   tcp_v4_do_rcv+0x299/0x420
+   tcp_v4_rcv+0x1991/0x1e10
+   ip_protocol_deliver_rcu+0x50/0x220
+   ip_local_deliver_finish+0x158/0x260
+   ip_local_deliver+0xc8/0xe0
+   ip_rcv+0xe5/0x1d0
+   ? __pfx_ip_rcv+0x10/0x10
+   __netif_receive_skb_one_core+0xce/0xe0
+   ? process_backlog+0x28b/0x9f0
+   __netif_receive_skb+0x34/0xd0
+   ? process_backlog+0x28b/0x9f0
+   process_backlog+0x2cb/0x9f0
+   __napi_poll.constprop.0+0x61/0x280
+   net_rx_action+0x332/0x670
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? find_held_lock+0x2b/0x80
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   handle_softirqs+0xda/0x480
+   ? __dev_queue_xmit+0xa2c/0x1450
+   do_softirq+0xa1/0xd0
+   </IRQ>
+   <TASK>
+   __local_bh_enable_ip+0xc8/0xe0
+   ? __dev_queue_xmit+0xa2c/0x1450
+   __dev_queue_xmit+0xa48/0x1450
+   ? ip_finish_output2+0xf4c/0x1130
+   ip_finish_output2+0x6b6/0x1130
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? __ip_finish_output+0x217/0x380
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   __ip_finish_output+0x217/0x380
+   ip_output+0x99/0x120
+   __ip_queue_xmit+0xae4/0xbc0
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? tcp_options_write.constprop.0+0xcb/0x3e0
+   ip_queue_xmit+0x34/0x40
+   __tcp_transmit_skb+0x1625/0x1890
+   tcp_write_xmit+0x766/0x2fb0
+   ? __entry_text_end+0x102ba9/0x102bad
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   ? __might_fault+0x74/0xc0
+   ? srso_alias_return_thunk+0x5/0xfbef5
+   __tcp_push_pending_frames+0x56/0x190
+   tcp_push+0x117/0x310
+   tcp_sendmsg_locked+0x14c1/0x1740
+   tcp_sendmsg+0x28/0x40
+   inet_sendmsg+0x5d/0x90
+   sock_write_iter+0x242/0x2b0
+   vfs_write+0x68d/0x800
+   ? __pfx_sock_write_iter+0x10/0x10
+   ksys_write+0xc8/0xf0
+   __x64_sys_write+0x3d/0x50
+   x64_sys_call+0xfaf/0x1f50
+   do_syscall_64+0x6d/0x140
+   entry_SYSCALL_64_after_hwframe+0x76/0x7e
+  RIP: 0033:0x7f4d143af992
+  Code: c3 8b 07 85 c0 75 24 49 89 fb 48 89 f0 48 89 d7 48 89 ce 4c 89 c2 4d 89 ca 4c 8b 44 24 08 4c 8b 4c 24 10 4c 89 5c 24 08 0f 05 <c3> e9 01 cc ff ff 41 54 b8 02 00 00 0
+  RSP: 002b:00007ffd65032058 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
+  RAX: ffffffffffffffda RBX: 0000000000000001 RCX: 00007f4d143af992
+  RDX: 0000000000000025 RSI: 00007f4d143f3bcc RDI: 0000000000000005
+  RBP: 00007f4d143f2b28 R08: 0000000000000000 R09: 0000000000000000
+  R10: 0000000000000000 R11: 0000000000000246 R12: 00007f4d143f3bcc
+  R13: 0000000000000005 R14: 0000000000000000 R15: 00007ffd650323f0
+   </TASK>
+
+Fixes: 0b2c59720e65 ("l2tp: close all race conditions in l2tp_tunnel_register()")
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Reported-by: syzbot+6acef9e0a4d1f46c83d4@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=6acef9e0a4d1f46c83d4
+CC: gnault@redhat.com
+CC: cong.wang@bytedance.com
+Signed-off-by: James Chapman <jchapman@katalix.com>
+Signed-off-by: Tom Parkin <tparkin@katalix.com>
+Link: https://patch.msgid.link/20240806160626.1248317-1-jchapman@katalix.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/isdn/hardware/mISDN/hfcmulti.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ net/l2tp/l2tp_core.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/isdn/hardware/mISDN/hfcmulti.c b/drivers/isdn/hardware/mISDN/hfcmulti.c
-index 60b3a4aabe6b8..9010d5ca3cd53 100644
---- a/drivers/isdn/hardware/mISDN/hfcmulti.c
-+++ b/drivers/isdn/hardware/mISDN/hfcmulti.c
-@@ -1945,7 +1945,7 @@ hfcmulti_dtmf(struct hfc_multi *hc)
- static void
- hfcmulti_tx(struct hfc_multi *hc, int ch)
- {
--	int i, ii, temp, len = 0;
-+	int i, ii, temp, tmp_len, len = 0;
- 	int Zspace, z1, z2; /* must be int for calculation */
- 	int Fspace, f1, f2;
- 	u_char *d;
-@@ -2166,14 +2166,15 @@ hfcmulti_tx(struct hfc_multi *hc, int ch)
- 		HFC_wait_nodebug(hc);
- 	}
+diff --git a/net/l2tp/l2tp_core.c b/net/l2tp/l2tp_core.c
+index a2b13e213e06f..acd5b67858ddc 100644
+--- a/net/l2tp/l2tp_core.c
++++ b/net/l2tp/l2tp_core.c
+@@ -88,6 +88,11 @@
+ /* Default trace flags */
+ #define L2TP_DEFAULT_DEBUG_FLAGS	0
  
-+	tmp_len = (*sp)->len;
- 	dev_kfree_skb(*sp);
- 	/* check for next frame */
- 	if (bch && get_next_bframe(bch)) {
--		len = (*sp)->len;
-+		len = tmp_len;
- 		goto next_frame;
- 	}
- 	if (dch && get_next_dframe(dch)) {
--		len = (*sp)->len;
-+		len = tmp_len;
- 		goto next_frame;
- 	}
++#define L2TP_DEPTH_NESTING		2
++#if L2TP_DEPTH_NESTING == SINGLE_DEPTH_NESTING
++#error "L2TP requires its own lockdep subclass"
++#endif
++
+ /* Private data stored for received packets in the skb.
+  */
+ struct l2tp_skb_cb {
+@@ -1041,7 +1046,13 @@ static int l2tp_xmit_core(struct l2tp_session *session, struct sk_buff *skb, uns
+ 	IPCB(skb)->flags &= ~(IPSKB_XFRM_TUNNEL_SIZE | IPSKB_XFRM_TRANSFORMED | IPSKB_REROUTED);
+ 	nf_reset_ct(skb);
  
+-	bh_lock_sock_nested(sk);
++	/* L2TP uses its own lockdep subclass to avoid lockdep splats caused by
++	 * nested socket calls on the same lockdep socket class. This can
++	 * happen when data from a user socket is routed over l2tp, which uses
++	 * another userspace socket.
++	 */
++	spin_lock_nested(&sk->sk_lock.slock, L2TP_DEPTH_NESTING);
++
+ 	if (sock_owned_by_user(sk)) {
+ 		kfree_skb(skb);
+ 		ret = NET_XMIT_DROP;
+@@ -1093,7 +1104,7 @@ static int l2tp_xmit_core(struct l2tp_session *session, struct sk_buff *skb, uns
+ 	ret = l2tp_xmit_queue(tunnel, skb, &inet->cork.fl);
+ 
+ out_unlock:
+-	bh_unlock_sock(sk);
++	spin_unlock(&sk->sk_lock.slock);
+ 
+ 	return ret;
+ }
 -- 
 2.43.0
 
