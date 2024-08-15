@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-68538-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF8BB9532D3
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:11:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C74D953275
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:06:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F2E871C2549F
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:11:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EAB75285AFA
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:06:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 730731A3BD0;
-	Thu, 15 Aug 2024 14:08:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13EC81AED40;
+	Thu, 15 Aug 2024 14:04:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dZ2EMeLe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cda2o6cC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3034A19DFA4;
-	Thu, 15 Aug 2024 14:08:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C494E1A00CF;
+	Thu, 15 Aug 2024 14:04:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730885; cv=none; b=DPzokV08b4HwEujMds99GJ6vsld1cAqb1UkiiLyhfAbIMZjNmre7lLmxXS70KKmlFTK2vYqd22syxN8fe25IdV30Z3auutsRbkROvwoLWoD9JBM+dyu4hENF+i662vQ2w/GxO347R/VxlYNWERv+zAD/KWRDPn7wh6pCdSjLYDc=
+	t=1723730677; cv=none; b=sUurpIuCy8fl0pIPv1tD7Ko+OrbOQGeIT9d3mIj3GgCqrYnBRzNfc2zs7OJTWrznI+aZ+n3EVaOLZtfyLzZiBdoGwwj+gdRApO3j0ySbwZsr+OgSvb3yINGvtoR5V6a9FHxxAsM1Iscm+cvM+zXPdp+emXRgdJS5DCKz1NMg+RA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730885; c=relaxed/simple;
-	bh=LxAv+xha0AbJErlhmq5CKyWMRYpPY0L2cZfY6Wdt0Ow=;
+	s=arc-20240116; t=1723730677; c=relaxed/simple;
+	bh=jgTLgYSgSKxUsYpJYwEpkpnclye5UzwvtyeIyP0RG9g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JwdVLZXQspXddnsXHmSk45o84/2ygZSr1SEpfr/8hjnR0fkg0Ru5zNpH9q32+UeVphYn202/xXetZznkpqwA38xCev6X7nWyW/vdj2UonfRVnlZUsUjFRa7ZVG6YMnrJrZQUZlNOJkMI2iaUw1ulQd56StcNgmYNsuJQQenHPoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dZ2EMeLe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB0ADC4AF0D;
-	Thu, 15 Aug 2024 14:08:04 +0000 (UTC)
+	 MIME-Version; b=JaDAEf/UgerF+8zDTmNrXxOBaJZSfpviXZM1FovsP7FWvILKbzChvIbeU6VRfsabRFourhLigsGvelPtSb7w39ZmCl9ZmnI/0/ZOS4XlPOsOxBp52gbY/SErqiOYqAutDGUxgQHnTMJPoiFvHMS8QUV4C4XV4AbrA4kBvOtd304=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cda2o6cC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD7BFC32786;
+	Thu, 15 Aug 2024 14:04:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723730885;
-	bh=LxAv+xha0AbJErlhmq5CKyWMRYpPY0L2cZfY6Wdt0Ow=;
+	s=korg; t=1723730677;
+	bh=jgTLgYSgSKxUsYpJYwEpkpnclye5UzwvtyeIyP0RG9g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dZ2EMeLebI+lTOyijbVz3qRara83PKiO+5F6paNUVdRvS26XKIYIN1qE+XSskJYtg
-	 HBUXW9PH7FC+N4nERKNoEZ0PnEoTch8kwMiXqBAZf7b69i9E+J4UZJgmjXA0d5L29t
-	 d5MLXcGOeZ8IOSDvId01B4SoFzOYe9grWuwPOOqw=
+	b=cda2o6cCKlhNSeKgwUKSwWuZcvJ6Ow69P7+RY7wSCahL89u8Ce3a626ASlhylPSvr
+	 MLblK3uOfhayK9rMRkYTgW6WaqO0BdlxBJ+FJAYon0F+yK2sfY18WS/23QI04Y+6sb
+	 5dGL+EN/ehD8VmdsbxNg/EDwBFWeE/aK8lpZq7xw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.6 09/67] sunrpc: pass in the sv_stats struct through svc_create_pooled
+	valis <sec@valis.email>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	"David S. Miller" <davem@davemloft.net>,
+	Lee Jones <lee@kernel.org>,
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Subject: [PATCH 5.15 465/484] tls: fix race between tx work scheduling and socket close
 Date: Thu, 15 Aug 2024 15:25:23 +0200
-Message-ID: <20240815131838.681192325@linuxfoundation.org>
+Message-ID: <20240815131959.438868589@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131838.311442229@linuxfoundation.org>
-References: <20240815131838.311442229@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,109 +66,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit f094323867668d50124886ad884b665de7319537 ]
+commit e01e3934a1b2d122919f73bc6ddbe1cdafc4bbdb upstream.
 
-Since only one service actually reports the rpc stats there's not much
-of a reason to have a pointer to it in the svc_program struct.  Adjust
-the svc_create_pooled function to take the sv_stats as an argument and
-pass the struct through there as desired instead of getting it from the
-svc_program->pg_stats.
+Similarly to previous commit, the submitting thread (recvmsg/sendmsg)
+may exit as soon as the async crypto handler calls complete().
+Reorder scheduling the work before calling complete().
+This seems more logical in the first place, as it's
+the inverse order of what the submitting thread will do.
 
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-[ cel: adjusted to apply to v6.6.y ]
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Reported-by: valis <sec@valis.email>
+Fixes: a42055e8d2c3 ("net/tls: Add support for async encryption of records for performance")
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+[ Lee: Fixed merge-conflict in Stable branches linux-6.1.y and older ]
+Signed-off-by: Lee Jones <lee@kernel.org>
+[ Harshit: bp to 5.15.y, minor conflict resolutin due to missing commit:
+  8ae187386420 ("tls: Only use data field in crypto completion function")
+  in 5.15.y]
+Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfssvc.c           |    3 ++-
- include/linux/sunrpc/svc.h |    4 +++-
- net/sunrpc/svc.c           |   12 +++++++-----
- 3 files changed, 12 insertions(+), 7 deletions(-)
+ net/tls/tls_sw.c |   16 ++++++----------
+ 1 file changed, 6 insertions(+), 10 deletions(-)
 
---- a/fs/nfsd/nfssvc.c
-+++ b/fs/nfsd/nfssvc.c
-@@ -670,7 +670,8 @@ int nfsd_create_serv(struct net *net)
- 	if (nfsd_max_blksize == 0)
- 		nfsd_max_blksize = nfsd_get_default_max_blksize();
- 	nfsd_reset_versions(nn);
--	serv = svc_create_pooled(&nfsd_program, nfsd_max_blksize, nfsd);
-+	serv = svc_create_pooled(&nfsd_program, &nfsd_svcstats,
-+				 nfsd_max_blksize, nfsd);
- 	if (serv == NULL)
- 		return -ENOMEM;
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -468,7 +468,6 @@ static void tls_encrypt_done(struct cryp
+ 	struct scatterlist *sge;
+ 	struct sk_msg *msg_en;
+ 	struct tls_rec *rec;
+-	bool ready = false;
  
---- a/include/linux/sunrpc/svc.h
-+++ b/include/linux/sunrpc/svc.h
-@@ -408,7 +408,9 @@ bool		   svc_rqst_replace_page(struct sv
- void		   svc_rqst_release_pages(struct svc_rqst *rqstp);
- void		   svc_rqst_free(struct svc_rqst *);
- void		   svc_exit_thread(struct svc_rqst *);
--struct svc_serv *  svc_create_pooled(struct svc_program *, unsigned int,
-+struct svc_serv *  svc_create_pooled(struct svc_program *prog,
-+				     struct svc_stat *stats,
-+				     unsigned int bufsize,
- 				     int (*threadfn)(void *data));
- int		   svc_set_num_threads(struct svc_serv *, struct svc_pool *, int);
- int		   svc_pool_stats_open(struct svc_serv *serv, struct file *file);
---- a/net/sunrpc/svc.c
-+++ b/net/sunrpc/svc.c
-@@ -453,8 +453,8 @@ __svc_init_bc(struct svc_serv *serv)
-  * Create an RPC service
-  */
- static struct svc_serv *
--__svc_create(struct svc_program *prog, unsigned int bufsize, int npools,
--	     int (*threadfn)(void *data))
-+__svc_create(struct svc_program *prog, struct svc_stat *stats,
-+	     unsigned int bufsize, int npools, int (*threadfn)(void *data))
- {
- 	struct svc_serv	*serv;
- 	unsigned int vers;
-@@ -466,7 +466,7 @@ __svc_create(struct svc_program *prog, u
- 	serv->sv_name      = prog->pg_name;
- 	serv->sv_program   = prog;
- 	kref_init(&serv->sv_refcnt);
--	serv->sv_stats     = prog->pg_stats;
-+	serv->sv_stats     = stats;
- 	if (bufsize > RPCSVC_MAXPAYLOAD)
- 		bufsize = RPCSVC_MAXPAYLOAD;
- 	serv->sv_max_payload = bufsize? bufsize : 4096;
-@@ -532,26 +532,28 @@ __svc_create(struct svc_program *prog, u
- struct svc_serv *svc_create(struct svc_program *prog, unsigned int bufsize,
- 			    int (*threadfn)(void *data))
- {
--	return __svc_create(prog, bufsize, 1, threadfn);
-+	return __svc_create(prog, NULL, bufsize, 1, threadfn);
+ 	if (err == -EINPROGRESS) /* see the comment in tls_decrypt_done() */
+ 		return;
+@@ -502,19 +501,16 @@ static void tls_encrypt_done(struct cryp
+ 		/* If received record is at head of tx_list, schedule tx */
+ 		first_rec = list_first_entry(&ctx->tx_list,
+ 					     struct tls_rec, list);
+-		if (rec == first_rec)
+-			ready = true;
++		if (rec == first_rec) {
++			/* Schedule the transmission */
++			if (!test_and_set_bit(BIT_TX_SCHEDULED,
++					      &ctx->tx_bitmask))
++				schedule_delayed_work(&ctx->tx_work.work, 1);
++		}
+ 	}
+ 
+ 	if (atomic_dec_and_test(&ctx->encrypt_pending))
+ 		complete(&ctx->async_wait.completion);
+-
+-	if (!ready)
+-		return;
+-
+-	/* Schedule the transmission */
+-	if (!test_and_set_bit(BIT_TX_SCHEDULED, &ctx->tx_bitmask))
+-		schedule_delayed_work(&ctx->tx_work.work, 1);
  }
- EXPORT_SYMBOL_GPL(svc_create);
  
- /**
-  * svc_create_pooled - Create an RPC service with pooled threads
-  * @prog: the RPC program the new service will handle
-+ * @stats: the stats struct if desired
-  * @bufsize: maximum message size for @prog
-  * @threadfn: a function to service RPC requests for @prog
-  *
-  * Returns an instantiated struct svc_serv object or NULL.
-  */
- struct svc_serv *svc_create_pooled(struct svc_program *prog,
-+				   struct svc_stat *stats,
- 				   unsigned int bufsize,
- 				   int (*threadfn)(void *data))
- {
- 	struct svc_serv *serv;
- 	unsigned int npools = svc_pool_map_get();
- 
--	serv = __svc_create(prog, bufsize, npools, threadfn);
-+	serv = __svc_create(prog, stats, bufsize, npools, threadfn);
- 	if (!serv)
- 		goto out_err;
- 	return serv;
+ static int tls_encrypt_async_wait(struct tls_sw_context_tx *ctx)
 
 
 
