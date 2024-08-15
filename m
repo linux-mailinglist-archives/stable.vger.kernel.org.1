@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-69094-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69096-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1990E953567
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:37:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63F8C953569
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:37:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4CA201C23668
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:37:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 152C3281A4D
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:37:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB11017C995;
-	Thu, 15 Aug 2024 14:37:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70D171A00CF;
+	Thu, 15 Aug 2024 14:37:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dtTZM6R7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XN/SsWxN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 664CA3214;
-	Thu, 15 Aug 2024 14:37:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EF041DFFB;
+	Thu, 15 Aug 2024 14:37:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732647; cv=none; b=SxBf2dMAHOlS2x/VM9qSozivjUYiRZxi+dSi9rPD+yKAGBrxUpudkfy7E7KB0eURYIYN9VYXqqRMyCq+t0sBw4CrGzp1ZnP3igwxevK3p7WtlrchdFU7GmZG8MrIwnWVtoWgxnPrXeh7N4VqyWLLzDjsdBf1y75Ax9rIM7DM80w=
+	t=1723732654; cv=none; b=igar4lxyFlxLaxpn5Tftael2U3wToQXQwO454SMH1GO7tshpywC4FqoZmkFDUTDf5Br65mDmduLpAnkxIS9DkxQRzYBh1qGnQTRR+ET6LXXkGt9/f0Um5MpQ2x954giSvBXLYiZ8a5fiPSEkapAU8R4mEK4zrmifkIjspXepxgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732647; c=relaxed/simple;
-	bh=/Tht8j/kmUYXF0BLFuxrVlsXs9U2JjDDVOZL8sMKlDM=;
+	s=arc-20240116; t=1723732654; c=relaxed/simple;
+	bh=46QaFxyT5daWqWfmRJ6EkbXHtl1u64zDewv5+7kxr2g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ab8A6cLtVsMoi6/RxNn9lez1F6ShY+7RZDxfDEqCXFlOTNifjsina0pfns2Lm4zt8hLvm/04VleUcDilNhaeYvHPXrI5MU88NTrXNBoSeB/+mkCjS8EJ51UBE1989wk/Tws2vcvAp+QsAZYaYzmpfWL8t9Z9GpJBp//IigKzc4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dtTZM6R7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D15C8C32786;
-	Thu, 15 Aug 2024 14:37:26 +0000 (UTC)
+	 MIME-Version; b=JzBgwo6AqRvV8tWez15EdgL7dl1b7WbX72ScRNdiKlSjz8i7hT60KIF8oH478zDYTRgmYjA66Wp2g+AkCZMsCGcmMq6C4AEp84yp88TDO1YQiAEm8xL4xndkHfT226aXVCmt6GWp9LgKENPGwEufOlNMGNxEiYKYSFL3+3nlqLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XN/SsWxN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7B91C32786;
+	Thu, 15 Aug 2024 14:37:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732647;
-	bh=/Tht8j/kmUYXF0BLFuxrVlsXs9U2JjDDVOZL8sMKlDM=;
+	s=korg; t=1723732654;
+	bh=46QaFxyT5daWqWfmRJ6EkbXHtl1u64zDewv5+7kxr2g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dtTZM6R7iK2znXpBU7I14C8MOy+A96DNDR0OKcDEwTcrHOLKFVY52sYeqLAk7//SU
-	 qkHcHlwRRZXv67L/CVUOQZhk3d4kcP2rpJ7C+MbbEx2ZQ773FzlnJkkhmAqswHSo9S
-	 0LgowVDgI0fCUtV4AJRnMW/FFh0koGEWDT43scFg=
+	b=XN/SsWxNQ/ZH9f8r8AKvKYpjjMbqg1UThGDbnvzosF2ibM7qunKGMTotSiWhqxybR
+	 KhhIvzHlhrfTxUa1XBYoDobWi2cGkyWW8ihva2L++tHQvdyHLkvnFYJk5e5N1edqDP
+	 aBl2j4Y9rKDhPjzPV8ozMKoKL+97azsUiENHJKKo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sylvain BERTRAND <sylvain.bertrand@legeek.net>,
+	Mavroudis Chatzilazaridis <mavchatz@protonmail.com>,
 	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.10 243/352] ALSA: usb-audio: Correct surround channels in UAC1 channel map
-Date: Thu, 15 Aug 2024 15:25:09 +0200
-Message-ID: <20240815131928.830025230@linuxfoundation.org>
+Subject: [PATCH 5.10 244/352] ALSA: hda/realtek: Add quirk for Acer Aspire E5-574G
+Date: Thu, 15 Aug 2024 15:25:10 +0200
+Message-ID: <20240815131928.869306615@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
 References: <20240815131919.196120297@linuxfoundation.org>
@@ -65,42 +65,32 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Mavroudis Chatzilazaridis <mavchatz@protonmail.com>
 
-commit b7b7e1ab7619deb3b299b5e5c619c3e6f183a12d upstream.
+commit 3c0b6f924e1259ade38587ea719b693f6f6f2f3e upstream.
 
-USB-audio driver puts SNDRV_CHMAP_SL and _SR as left and right
-surround channels for UAC1 channel map, respectively.  But they should
-have been SNDRV_CHMAP_RL and _RR; the current value *_SL and _SR are
-rather "side" channels, not "surround".  I guess I took those
-mistakenly when I read the spec mentioning "surround left".
+ALC255_FIXUP_ACER_LIMIT_INT_MIC_BOOST fixes combo jack detection and
+limits the internal microphone boost that causes clipping on this model.
 
-This patch corrects those entries to be the right channels.
-
-Suggested-by: Sylvain BERTRAND <sylvain.bertrand@legeek.net>
-Closes: https://lore.kernel.orgZ/qIyJD8lhd8hFhlC@freedom
-Fixes: 04324ccc75f9 ("ALSA: usb-audio: add channel map support")
+Signed-off-by: Mavroudis Chatzilazaridis <mavchatz@protonmail.com>
 Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20240731142018.24750-1-tiwai@suse.de
+Link: https://patch.msgid.link/20240728123601.144017-1-mavchatz@protonmail.com
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/stream.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/sound/usb/stream.c
-+++ b/sound/usb/stream.c
-@@ -245,8 +245,8 @@ static struct snd_pcm_chmap_elem *conver
- 		SNDRV_CHMAP_FR,		/* right front */
- 		SNDRV_CHMAP_FC,		/* center front */
- 		SNDRV_CHMAP_LFE,	/* LFE */
--		SNDRV_CHMAP_SL,		/* left surround */
--		SNDRV_CHMAP_SR,		/* right surround */
-+		SNDRV_CHMAP_RL,		/* left surround */
-+		SNDRV_CHMAP_RR,		/* right surround */
- 		SNDRV_CHMAP_FLC,	/* left of center */
- 		SNDRV_CHMAP_FRC,	/* right of center */
- 		SNDRV_CHMAP_RC,		/* surround */
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -8893,6 +8893,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x1025, 0x079b, "Acer Aspire V5-573G", ALC282_FIXUP_ASPIRE_V5_PINS),
+ 	SND_PCI_QUIRK(0x1025, 0x080d, "Acer Aspire V5-122P", ALC269_FIXUP_ASPIRE_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1025, 0x0840, "Acer Aspire E1", ALC269VB_FIXUP_ASPIRE_E1_COEF),
++	SND_PCI_QUIRK(0x1025, 0x100c, "Acer Aspire E5-574G", ALC255_FIXUP_ACER_LIMIT_INT_MIC_BOOST),
+ 	SND_PCI_QUIRK(0x1025, 0x101c, "Acer Veriton N2510G", ALC269_FIXUP_LIFEBOOK),
+ 	SND_PCI_QUIRK(0x1025, 0x102b, "Acer Aspire C24-860", ALC286_FIXUP_ACER_AIO_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1025, 0x1065, "Acer Aspire C20-820", ALC269VC_FIXUP_ACER_HEADSET_MIC),
 
 
 
