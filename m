@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-67932-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68418-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 510E2952FCE
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:36:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83011953221
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:02:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06F401F21941
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:36:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 37CD81F21F8A
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:02:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85D2618D627;
-	Thu, 15 Aug 2024 13:36:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B1431A00CE;
+	Thu, 15 Aug 2024 14:01:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aasf5l2A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qP7ft859"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4569B1714AE;
-	Thu, 15 Aug 2024 13:36:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAE9D1AC8BB;
+	Thu, 15 Aug 2024 14:01:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723728971; cv=none; b=nVUNpnVJrJOSaYg3biZsYRx379+ZXymRVXP8sJhZB3IT21Nq+Uw7JDh5iP9/CmRojVJKBc4tQlW7iryhNUSAjoBrq/c1H+Aoi796qb9JBkiWcPAfrshEFEp8uekV4Y37kQdFmjl40IwAB1g7ew5bgpxaQh/0wMvE4hhZR5tgULo=
+	t=1723730506; cv=none; b=NlvJT5sPvpTXfgYIwVmqHYcSb+r1HnlknKft8Yokgg5QU6EGt9UyAMuOlHy3cC9uRY/Q7O08DzA/lQjq4mYJMkZGavJ61hdRyhKYODrCY0XDrJZa4PCn/7ouM5dHpSVLLjry9sy+ACI/v5kbrVDCaTMweoTrazVjgwy5ufqMP7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723728971; c=relaxed/simple;
-	bh=s0CMQjUiaJ+GfRkv2/1QIHH4SxmvwpSiz/bM9XqjxJA=;
+	s=arc-20240116; t=1723730506; c=relaxed/simple;
+	bh=U3A31N3zw1rwXplX3SaNgepd68aQFcdtcaonebNIYKA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZvPHPcU2liJFzdMVF1UH3DUNZLi51R+NHmwnSFcqCACmPMjPv0VA3CZ/k/jjFIfXm8byh39Ty+DM27vMS1dkgQ7QPp+rlfBPQPZgpTF0FfQVTol0Pyg4HFli0xdjo8N7ZltFOBrRvEB071dD3XYP10uVyCt5uSim8wEYhayS0Qw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aasf5l2A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3112C32786;
-	Thu, 15 Aug 2024 13:36:10 +0000 (UTC)
+	 MIME-Version; b=VYIg9EsCmBTdAfpXJgUu79Frx3Lmh4GTKCJHde2yGFnX6eKEaD2wo8tIPVpPgSHV+Q8ZShNa7oKHgzydHVhgKrEUBRm9PB0iHueZf4c03TnG9RzCP+kbioQBtGS+8xwojq4DDrOJapUs/dYjaEiWPtyzDhMW7bxqOsmXmZ0sz5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qP7ft859; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62580C4AF0A;
+	Thu, 15 Aug 2024 14:01:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723728971;
-	bh=s0CMQjUiaJ+GfRkv2/1QIHH4SxmvwpSiz/bM9XqjxJA=;
+	s=korg; t=1723730505;
+	bh=U3A31N3zw1rwXplX3SaNgepd68aQFcdtcaonebNIYKA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aasf5l2AKJDlMBKYrUs+so8ulsIMm1yXQPJPtDc2/NH8qcr14jir/RDV9rlwQy4Xk
-	 qjqSOskvrj+WrkqkE6jCNSdOzLMJEtosn64xPRmO5SN+4LFXqDhVom4zb3XVgKJTH7
-	 O0LiScUAIUM7f8hcWtzGeneE4dBVCwyLKpeKUkAo=
+	b=qP7ft859KzS5R0iiKLCIR3RTykrj306xdnp8uVG9kQj4MwSpWyhGX1JuMnn+rGKc0
+	 e6j6sQOyvvlI+0oo3RZN0wTfRrS1Ak0wYlEVY3vS6C3xlf/qTjdCYBBFzAZH8nAORz
+	 LtTIwI4lvxB0jf5Y/fMhYrHa3AwSo5ZMG+Kd4OiY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Clark Wang <xiaoning.wang@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
+	Justin Stitt <justinstitt@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Miroslav Lichvar <mlichvar@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 169/196] spi: lpspi: add the error info of transfer speed setting
+Subject: [PATCH 5.15 428/484] ntp: Clamp maxerror and esterror to operating range
 Date: Thu, 15 Aug 2024 15:24:46 +0200
-Message-ID: <20240815131858.537741172@linuxfoundation.org>
+Message-ID: <20240815131957.990157358@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Clark Wang <xiaoning.wang@nxp.com>
+From: Justin Stitt <justinstitt@google.com>
 
-[ Upstream commit 77736a98b859e2c64aebbd0f90b2ce4b17682396 ]
+[ Upstream commit 87d571d6fb77ec342a985afa8744bb9bb75b3622 ]
 
-Add a error info when set a speed which greater than half of per-clk of
-spi module.
+Using syzkaller alongside the newly reintroduced signed integer overflow
+sanitizer spits out this report:
 
-The minimum SCK period is 2 cycles(CCR[SCKDIV]). So the maximum transfer
-speed is half of spi per-clk.
+UBSAN: signed-integer-overflow in ../kernel/time/ntp.c:461:16
+9223372036854775807 + 500 cannot be represented in type 'long'
+Call Trace:
+ handle_overflow+0x171/0x1b0
+ second_overflow+0x2d6/0x500
+ accumulate_nsecs_to_secs+0x60/0x160
+ timekeeping_advance+0x1fe/0x890
+ update_wall_time+0x10/0x30
 
-Signed-off-by: Clark Wang <xiaoning.wang@nxp.com>
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 730bbfaf7d48 ("spi: spi-fsl-lpspi: Fix scldiv calculation")
+time_maxerror is unconditionally incremented and the result is checked
+against NTP_PHASE_LIMIT, but the increment itself can overflow, resulting
+in wrap-around to negative space.
+
+Before commit eea83d896e31 ("ntp: NTP4 user space bits update") the user
+supplied value was sanity checked to be in the operating range. That change
+removed the sanity check and relied on clamping in handle_overflow() which
+does not work correctly when the user supplied value is in the overflow
+zone of the '+ 500' operation.
+
+The operation requires CAP_SYS_TIME and the side effect of the overflow is
+NTP getting out of sync.
+
+Miroslav confirmed that the input value should be clamped to the operating
+range and the same applies to time_esterror. The latter is not used by the
+kernel, but the value still should be in the operating range as it was
+before the sanity check got removed.
+
+Clamp them to the operating range.
+
+[ tglx: Changed it to clamping and included time_esterror ]
+
+Fixes: eea83d896e31 ("ntp: NTP4 user space bits update")
+Signed-off-by: Justin Stitt <justinstitt@google.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: Miroslav Lichvar <mlichvar@redhat.com>
+Link: https://lore.kernel.org/all/20240517-b4-sio-ntp-usec-v2-1-d539180f2b79@google.com
+Closes: https://github.com/KSPP/linux/issues/354
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-fsl-lpspi.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ kernel/time/ntp.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index 5802f188051b8..8e1f6ee0a7993 100644
---- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -263,6 +263,13 @@ static int fsl_lpspi_set_bitrate(struct fsl_lpspi_data *fsl_lpspi)
- 	u8 prescale;
+diff --git a/kernel/time/ntp.c b/kernel/time/ntp.c
+index 406dccb79c2b6..502e1e5b7f7f6 100644
+--- a/kernel/time/ntp.c
++++ b/kernel/time/ntp.c
+@@ -727,10 +727,10 @@ static inline void process_adjtimex_modes(const struct __kernel_timex *txc,
+ 	}
  
- 	perclk_rate = clk_get_rate(fsl_lpspi->clk_per);
-+
-+	if (config.speed_hz > perclk_rate / 2) {
-+		dev_err(fsl_lpspi->dev,
-+		      "per-clk should be at least two times of transfer speed");
-+		return -EINVAL;
-+	}
-+
- 	for (prescale = 0; prescale < 8; prescale++) {
- 		scldiv = perclk_rate /
- 			 (clkdivs[prescale] * config.speed_hz) - 2;
-@@ -316,7 +323,7 @@ static int fsl_lpspi_config(struct fsl_lpspi_data *fsl_lpspi)
- 	return 0;
- }
+ 	if (txc->modes & ADJ_MAXERROR)
+-		time_maxerror = txc->maxerror;
++		time_maxerror = clamp(txc->maxerror, 0, NTP_PHASE_LIMIT);
  
--static void fsl_lpspi_setup_transfer(struct spi_device *spi,
-+static int fsl_lpspi_setup_transfer(struct spi_device *spi,
- 				     struct spi_transfer *t)
- {
- 	struct fsl_lpspi_data *fsl_lpspi =
-@@ -349,7 +356,7 @@ static void fsl_lpspi_setup_transfer(struct spi_device *spi,
- 	else
- 		fsl_lpspi->watermark = fsl_lpspi->txfifosize;
+ 	if (txc->modes & ADJ_ESTERROR)
+-		time_esterror = txc->esterror;
++		time_esterror = clamp(txc->esterror, 0, NTP_PHASE_LIMIT);
  
--	fsl_lpspi_config(fsl_lpspi);
-+	return fsl_lpspi_config(fsl_lpspi);
- }
- 
- static int fsl_lpspi_slave_abort(struct spi_controller *controller)
-@@ -428,7 +435,10 @@ static int fsl_lpspi_transfer_one_msg(struct spi_controller *controller,
- 	msg->actual_length = 0;
- 
- 	list_for_each_entry(xfer, &msg->transfers, transfer_list) {
--		fsl_lpspi_setup_transfer(spi, xfer);
-+		ret = fsl_lpspi_setup_transfer(spi, xfer);
-+		if (ret < 0)
-+			goto complete;
-+
- 		fsl_lpspi_set_cmd(fsl_lpspi, is_first_xfer);
- 
- 		is_first_xfer = false;
+ 	if (txc->modes & ADJ_TIMECONST) {
+ 		time_constant = txc->constant;
 -- 
 2.43.0
 
