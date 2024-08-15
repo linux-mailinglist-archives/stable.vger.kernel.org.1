@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-67789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68274-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C10B952F1C
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:28:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFCF1953173
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:54:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 11A1A1F2623D
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:28:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82B9D1F2175D
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:54:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E936E19F47A;
-	Thu, 15 Aug 2024 13:28:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0752E19DF58;
+	Thu, 15 Aug 2024 13:54:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ChTMS5qn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W5XE3tQR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A76BD19DFAE;
-	Thu, 15 Aug 2024 13:28:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9A7D1714A1;
+	Thu, 15 Aug 2024 13:54:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723728522; cv=none; b=QoW5QqVK1XJg/0Dq+8+IpFWXndWXnhmpkFWjt8Zw8GmsgZfxnPW8a7k5dzYrE5st3u6uwL7mzuzD6X4KhXAOdghrU/8ryfE4Goks4wKmQ1bDv0gOosPxu7WkWlxs8S9cvIA22tbuOhdAbhuo45LD7/y8s35Ht8Vb9c9274GDij4=
+	t=1723730047; cv=none; b=imuKy3qrua9y+O3kZf9SxH4c3v/gVZLF++DU2sF/FK8d3hPpdBzutME2etwH2nXP0ja+CZVRXsiy/Q3/5Pwy3l4ewbi3l2ZyWw6lyOwANIb0rOVPDWvtZ+wEJJPmuXo21QVi+lK0pMmoNK/HxrVNMu5xvSAHxIc4MbmnUn8HcGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723728522; c=relaxed/simple;
-	bh=jGRPQNGljoxX0whuqLZBlLrCFJhlsz6Ibkks3xDT6kE=;
+	s=arc-20240116; t=1723730047; c=relaxed/simple;
+	bh=0Qs8sbp/YW8fz7D4D+a2D4hAIEgXUMy3wkq87VW/cRg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aAmZea6nsuMFVglpTaS1+DiWpEXHZ0SOL0js8Mq4seykV4jeHrrjZbAK0rBcCAICfO9frzlTaies5BjlesfWfE83/C7w6VmV0cOHqJZLdry4PYIpMQprHiV8cFPKU+tOgHUfLekIox27SZpyeONv2Tp+CYgyESZnV+9TVr6pZC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ChTMS5qn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 188E9C32786;
-	Thu, 15 Aug 2024 13:28:41 +0000 (UTC)
+	 MIME-Version; b=Cr3MNBXQYU7/+WjAQw+VUS/3rJ8fALukdhis2Ju7DU8RtiIvUfCunqbny1liyNNcp53RndmByvFGlBxKQf2H3b1AxUvHPkRfXSpYr/r2n5T517o9l/9i3S0465WYO2sFmd8WFLSUuMSVxHAq2YPSGY+za/DQnAwCxHAQAUbk/nU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W5XE3tQR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25BEAC4AF0E;
+	Thu, 15 Aug 2024 13:54:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723728522;
-	bh=jGRPQNGljoxX0whuqLZBlLrCFJhlsz6Ibkks3xDT6kE=;
+	s=korg; t=1723730047;
+	bh=0Qs8sbp/YW8fz7D4D+a2D4hAIEgXUMy3wkq87VW/cRg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ChTMS5qnD3jUNXIP3Yd+0ADrD0febzgih9G/hAfkes4HOK/cy7FB8yUZ/ZaF7xKPb
-	 zB9vr1pXzlP0sp9urFpQb/hZYVkOuRL6yQA1xEehsMtLXIJnXVu4LRRGp0xLJfdzlE
-	 5Tpg4XtQCfy+/QklSBMk0XSTpLfmns/QTiyitUGE=
+	b=W5XE3tQRNwSnjeaAw5RnoNiSW/Ch+sJ9jmzokTGH0+DKLkWBodiK1VB3tLqDvuuOT
+	 sLb/MCdKLS9GtC1O+JgM5q6RXJjy3zKot4d8aone1YDguhhn+yGirmJl//QaLayd6a
+	 zEQFilcA4lqTMhEScCVb3VZ+aiWoHTvQTG4E6CdQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 027/196] perf: Prevent passing zero nr_pages to rb_alloc_aux()
-Date: Thu, 15 Aug 2024 15:22:24 +0200
-Message-ID: <20240815131853.125624946@linuxfoundation.org>
+Subject: [PATCH 5.15 287/484] spi: spidev: add correct compatible for Rohm BH2228FV
+Date: Thu, 15 Aug 2024 15:22:25 +0200
+Message-ID: <20240815131952.494912513@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adrian Hunter <adrian.hunter@intel.com>
+From: Conor Dooley <conor.dooley@microchip.com>
 
-[ Upstream commit dbc48c8f41c208082cfa95e973560134489e3309 ]
+[ Upstream commit fc28d1c1fe3b3e2fbc50834c8f73dda72f6af9fc ]
 
-nr_pages is unsigned long but gets passed to rb_alloc_aux() as an int,
-and is stored as an int.
+When Maxime originally added the BH2228FV to the spidev driver, he spelt
+it incorrectly - the d should have been a b. Add the correctly spelt
+compatible to the driver. Although the majority of users of this
+compatible are abusers, there is at least one board that validly uses
+the incorrect spelt compatible, so keep it in the driver to avoid
+breaking the few real users it has.
 
-Only power-of-2 values are accepted, so if nr_pages is a 64_bit value, it
-will be passed to rb_alloc_aux() as zero.
-
-That is not ideal because:
- 1. the value is incorrect
- 2. rb_alloc_aux() is at risk of misbehaving, although it manages to
- return -ENOMEM in that case, it is a result of passing zero to get_order()
- even though the get_order() result is documented to be undefined in that
- case.
-
-Fix by simply validating the maximum supported value in the first place.
-Use -ENOMEM error code for consistency with the current error code that
-is returned in that case.
-
-Fixes: 45bfb2e50471 ("perf: Add AUX area to ring buffer for raw data streams")
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20240624201101.60186-6-adrian.hunter@intel.com
+Fixes: 8fad805bdc52 ("spi: spidev: Add Rohm DH2228FV DAC compatible string")
+Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+Acked-by: Maxime Ripard <mripard@kernel.org>
+Link: https://patch.msgid.link/20240717-ventricle-strewn-a7678c509e85@spud
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/core.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/spi/spidev.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index c7651c30eaabf..4f1b0fc2e74d2 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -5730,6 +5730,8 @@ static int perf_mmap(struct file *file, struct vm_area_struct *vma)
- 			return -EINVAL;
- 
- 		nr_pages = vma_size / PAGE_SIZE;
-+		if (nr_pages > INT_MAX)
-+			return -ENOMEM;
- 
- 		mutex_lock(&event->mmap_mutex);
- 		ret = -EINVAL;
+diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
+index 14bebc079ddbd..99bdbc040d1ae 100644
+--- a/drivers/spi/spidev.c
++++ b/drivers/spi/spidev.c
+@@ -715,6 +715,7 @@ static const struct of_device_id spidev_dt_ids[] = {
+ 	{ .compatible = "lwn,bk4", .data = &spidev_of_check },
+ 	{ .compatible = "menlo,m53cpld", .data = &spidev_of_check },
+ 	{ .compatible = "micron,spi-authenta", .data = &spidev_of_check },
++	{ .compatible = "rohm,bh2228fv", .data = &spidev_of_check },
+ 	{ .compatible = "rohm,dh2228fv", .data = &spidev_of_check },
+ 	{ .compatible = "semtech,sx1301", .data = &spidev_of_check },
+ 	{ .compatible = "silabs,em3581", .data = &spidev_of_check },
 -- 
 2.43.0
 
