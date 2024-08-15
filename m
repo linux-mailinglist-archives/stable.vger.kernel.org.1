@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-67876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68328-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF3B9952F8B
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:34:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA0F19531AF
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:57:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 143EDB23301
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:34:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 24C9B28B766
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:57:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CE4119EED4;
-	Thu, 15 Aug 2024 13:33:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 246621A071A;
+	Thu, 15 Aug 2024 13:56:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z0WH+Oye"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XYbj9jkx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5FD819EECD;
-	Thu, 15 Aug 2024 13:33:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D40DE1A01D2;
+	Thu, 15 Aug 2024 13:56:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723728799; cv=none; b=K6ncMTPij3cZ4Mqqr9S4tIsvvmpB0rf1i5o1QRpl4mKxvq/cyUzxWrrSpSgiShcIv5POpth9dZw80VmlFUos1zVc1qnBD8Ijg5LuvJM2rLCYfuV0u7gietEIbXgHNcXNU2CVeFpFbEBO+wI5xDdz5qLNhbpoCpzr+cE1+svvBiE=
+	t=1723730218; cv=none; b=BEh/aB88/Eh3qFE+IkAeH2mx3El/CZ3DJL8OsrhZtzfbc/AXRCHmPzmfDhBMiOsDQwAlOvJuk6MeecP3aDpzdtavNV+jAhAWQuP7RblyM57gOt7iSspRpNQAbpKDPHzlsESt6rdp+6+6ydxUc4+3uQEsrbndUXYo1dQJiWwTnSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723728799; c=relaxed/simple;
-	bh=GAb1zf4JoX8VtkKKTfkRG4Fk+9YVxDUmxq/+iQW1YJ0=;
+	s=arc-20240116; t=1723730218; c=relaxed/simple;
+	bh=v2++EbYLAxZrEgombunXWG/Ea4r7g/m+WGiQ3Q/bbN0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hTbqUHelBHZ/ci2LkN/ExG0cbkuNnOwXmybaJOxTYhHcCQ+lrpFl2U3qA6PjamXFHztbHpAE4XIeJHdfmUljZzGq8W/C0jw66iS7LVMofvuRiIZEZk7W2Mw575fde7LXMqgGMUDNdYpY+XlZATt7CqO5iJx/S1KcqKbBmqg/t1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z0WH+Oye; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B441FC32786;
-	Thu, 15 Aug 2024 13:33:18 +0000 (UTC)
+	 MIME-Version; b=EaVGfZhNlgwaZXLmD46P7LGd05tbrgDH9igd92M+7Vr1kswdWy9MXxQ3++3KzwgCZFuvb5U8lvdy5+oM7A3puqYg3YosEr3HBQyse2Xi1U3lam4l5/NeEIG8gYZlQ135SbooaSc675lDXAETm1GaL2OkdQDkKO8pchgXocBVly0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XYbj9jkx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B745C4AF0F;
+	Thu, 15 Aug 2024 13:56:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723728799;
-	bh=GAb1zf4JoX8VtkKKTfkRG4Fk+9YVxDUmxq/+iQW1YJ0=;
+	s=korg; t=1723730218;
+	bh=v2++EbYLAxZrEgombunXWG/Ea4r7g/m+WGiQ3Q/bbN0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z0WH+Oye4qFcX8PLDLzrHZlVJiLn9SLEvTgkO+a3l4znySwKrlOfxJJ680FDQ5ARF
-	 81XuBhAGEFzC0AaR3ffjE+VJqosGCTuuP1vShNBWOlGZfdFQfBcSX+tr9XNb4uYPay
-	 oFlrNTYM00g9Lv4ZRIgkrkz9hekgkkoNd8oZa2M8=
+	b=XYbj9jkxdipOlw8mo8bS0mSpKoOZsFpifbTKrSGCfLjuap0T8AAzP+zLyKu9Nqkch
+	 jNh1gpvPMe8bI2SSkJuMMVco5Zsut4iF5QZu6KXlz7Z6tbO4VglX9X3cIpdqQluW3r
+	 3UzIqL3vCL9BrNc5VuBVuFNfQpOX/+Uf2Efd2SgY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bastien Curutchet <bastien.curutchet@bootlin.com>,
-	David Lechner <david@lechnology.com>,
-	Stephen Boyd <sboyd@kernel.org>
-Subject: [PATCH 4.19 082/196] clk: davinci: da8xx-cfgchip: Initialize clk_init_data before use
+	linux-hardening@vger.kernel.org,
+	Justin Stitt <justinstitt@google.com>,
+	Kees Cook <keescook@chromium.org>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 341/484] power: supply: bq24190_charger: replace deprecated strncpy with strscpy
 Date: Thu, 15 Aug 2024 15:23:19 +0200
-Message-ID: <20240815131855.217466637@linuxfoundation.org>
+Message-ID: <20240815131954.589989595@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +64,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bastien Curutchet <bastien.curutchet@bootlin.com>
+From: Justin Stitt <justinstitt@google.com>
 
-commit a83b22754e351f13fb46596c85f667dc33da71ec upstream.
+[ Upstream commit b0009b8bed98bd5d59449af48781703df261c247 ]
 
-The flag attribute of the struct clk_init_data isn't initialized before
-the devm_clk_hw_register() call. This can lead to unexpected behavior
-during registration.
+strncpy() is deprecated for use on NUL-terminated destination strings
+[1] and as such we should prefer more robust and less ambiguous string
+interfaces.
 
-Initialize the entire clk_init_data to zero at declaration.
+We expect bdi->model_name to be NUL-terminated based on its usage with
+sysfs_emit and format strings:
 
-Cc: stable@vger.kernel.org
-Fixes: 58e1e2d2cd89 ("clk: davinci: cfgchip: Add TI DA8XX USB PHY clocks")
-Signed-off-by: Bastien Curutchet <bastien.curutchet@bootlin.com>
-Reviewed-by: David Lechner <david@lechnology.com>
-Link: https://lore.kernel.org/r/20240718115534.41513-1-bastien.curutchet@bootlin.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+val->strval is assigned to bdi->model_name in
+bq24190_charger_get_property():
+1186 | val->strval = bdi->model_name;
+
+... then in power_supply_sysfs.c we use value.strval with a format string:
+311  | ret = sysfs_emit(buf, "%s\n", value.strval);
+
+we assigned value.strval via:
+285  | ret = power_supply_get_property(psy, psp, &value);
+... which invokes psy->desc->get_property():
+1210 | return psy->desc->get_property(psy, psp, val);
+
+with bq24190_charger_get_property():
+1320 | static const struct power_supply_desc bq24190_charger_desc = {
+...
+1325 | 	.get_property		= bq24190_charger_get_property,
+
+Moreover, no NUL-padding is required as bdi is zero-allocated in
+bq24190_charger.c:
+1798 | bdi = devm_kzalloc(dev, sizeof(*bdi), GFP_KERNEL);
+
+Considering the above, a suitable replacement is `strscpy` [2] due to
+the fact that it guarantees NUL-termination on the destination buffer
+without unnecessarily NUL-padding.
+
+Link: https://www.kernel.org/doc/html/latest/process/deprecated.html#strncpy-on-nul-terminated-strings [1]
+Link: https://manpages.debian.org/testing/linux-manual-4.8/strscpy.9.en.html [2]
+Link: https://github.com/KSPP/linux/issues/90
+Cc: linux-hardening@vger.kernel.org
+Signed-off-by: Justin Stitt <justinstitt@google.com>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Link: https://lore.kernel.org/r/20231020-strncpy-drivers-power-supply-bq24190_charger-c-v1-1-e896223cb795@google.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/davinci/da8xx-cfgchip.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/power/supply/bq24190_charger.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/clk/davinci/da8xx-cfgchip.c
-+++ b/drivers/clk/davinci/da8xx-cfgchip.c
-@@ -507,7 +507,7 @@ da8xx_cfgchip_register_usb0_clk48(struct
- 	const char * const parent_names[] = { "usb_refclkin", "pll0_auxclk" };
- 	struct clk *fck_clk;
- 	struct da8xx_usb0_clk48 *usb0;
--	struct clk_init_data init;
-+	struct clk_init_data init = {};
- 	int ret;
+diff --git a/drivers/power/supply/bq24190_charger.c b/drivers/power/supply/bq24190_charger.c
+index 90ac5e59a5d6f..8a4729ee1ab19 100644
+--- a/drivers/power/supply/bq24190_charger.c
++++ b/drivers/power/supply/bq24190_charger.c
+@@ -1727,7 +1727,7 @@ static int bq24190_probe(struct i2c_client *client,
  
- 	fck_clk = devm_clk_get(dev, "fck");
-@@ -581,7 +581,7 @@ da8xx_cfgchip_register_usb1_clk48(struct
- {
- 	const char * const parent_names[] = { "usb0_clk48", "usb_refclkin" };
- 	struct da8xx_usb1_clk48 *usb1;
--	struct clk_init_data init;
-+	struct clk_init_data init = {};
- 	int ret;
- 
- 	usb1 = devm_kzalloc(dev, sizeof(*usb1), GFP_KERNEL);
+ 	bdi->client = client;
+ 	bdi->dev = dev;
+-	strncpy(bdi->model_name, id->name, I2C_NAME_SIZE);
++	strscpy(bdi->model_name, id->name, sizeof(bdi->model_name));
+ 	mutex_init(&bdi->f_reg_lock);
+ 	bdi->f_reg = 0;
+ 	bdi->ss_reg = BQ24190_REG_SS_VBUS_STAT_MASK; /* impossible state */
+-- 
+2.43.0
+
 
 
 
