@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-67811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68281-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BF0B952F32
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:29:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 347A695317A
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:54:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D93B1C23EC1
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:29:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C429FB2445D
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:54:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8C4F19DFA4;
-	Thu, 15 Aug 2024 13:29:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B7A019AA53;
+	Thu, 15 Aug 2024 13:54:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s3N1Y5/t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0fqMpTqc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 871D51DDF5;
-	Thu, 15 Aug 2024 13:29:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC9471714A1;
+	Thu, 15 Aug 2024 13:54:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723728593; cv=none; b=iYOWgNhDlf8QxUGTD2IQo+YfPhCfY9RIbitmJUsNPu1UKqFDns78RLJ4Xv46GDunFW/4T7tcQaoYjkOntFmclYnszE1gwW+zzam7fgS/8nz5hq1qLXQoovi6lMhfGHouIJKAaE1Dnbz97lK77HDPgZdzSXvvQr6xH6JZ7o/+Evo=
+	t=1723730072; cv=none; b=hGTdK77yGJmlWKUflMiQnUf0ihkcFD2KbKvB33Ci6b+CWypEINQS5PWZ/uUYy1gYO0uRA93djOdN6A8qWMxhgOyB9aB3JeBag5N4Lw9CSbhYd1BjCylwCFOh87SxD2QUmj99KdLQSpbZRTSe5Ard6tEmCwq2KUy/0irl1TZsfyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723728593; c=relaxed/simple;
-	bh=te8P9VU8nAMiZ93UK1mzYYSBgZ0TXpxGJWpgMaiEYwA=;
+	s=arc-20240116; t=1723730072; c=relaxed/simple;
+	bh=/o1MFYyARfsr1bTELjdyECEo3xJ+W7D5+sB14SvkhvI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=L6xLheAgFWXZ8M9kzxNfmbpBBWfrECKD2wZRcFl/uO1E24RkU7SmiTGzAx1oH6XyAeG9hZY5ysK4IqTIPZv1gI35wD1M0yVIqBOhQ7G+eW3lbFHa4s06baSbElzlYI3TAGXmAnv6yNZgQboIzDPvEe5bR9xA0QnrZSusVaA1QnI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s3N1Y5/t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BADBC4AF0E;
-	Thu, 15 Aug 2024 13:29:52 +0000 (UTC)
+	 MIME-Version; b=tPn8TxVmJu9KTXzSAwU9GLBlkrzyK4QXdTOCkQJfyduUgTJzR8DEVIskGmLf87zY3W+S9npXbhRxSSziZcqPcJH403pFKTTqzJIzkh4HKSgiF2GC/Xef9VDFSN9Gk5YFKWTcvcrHtbMI5qxKgUXD1Ub+nj+BQbflMY7k5hAquWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0fqMpTqc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 500FAC32786;
+	Thu, 15 Aug 2024 13:54:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723728593;
-	bh=te8P9VU8nAMiZ93UK1mzYYSBgZ0TXpxGJWpgMaiEYwA=;
+	s=korg; t=1723730071;
+	bh=/o1MFYyARfsr1bTELjdyECEo3xJ+W7D5+sB14SvkhvI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s3N1Y5/tNWvB22dUJKkkeYcYjGvkrJdOIKq1vXEeUAQziL3i1FPiiyg/xwjFt6vAl
-	 SpckQxPlgnnlR2mOZNcIUFJyv4O1tFQ5g5VaBPtvdXwy5wHnBePbNgivgWHFHbDfEx
-	 50fPRgnwFNDvXzkJJiyUt7rbMaxqmuFyMS3Pb2nA=
+	b=0fqMpTqcTTP/8DRb6lf9W8mgltjSJRo4M1Za9OcK+t5HMa7HEDlrODSGKPgKbOU/i
+	 d5JAjgOrYXZyXgmL+i4Nw8DVUntTwN1b/X70AuysbimwGRPPIaycu0JSBROBh5L5+d
+	 85n/n1tpu6fbMslSmNUopAJ0s0YuNms+VWzdIii8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Stanislav Fomichev <sdf@fomichev.me>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 008/196] pwm: stm32: Always do lazy disabling
+Subject: [PATCH 5.15 267/484] libbpf: Fix no-args func prototype BTF dumping syntax
 Date: Thu, 15 Aug 2024 15:22:05 +0200
-Message-ID: <20240815131852.392340189@linuxfoundation.org>
+Message-ID: <20240815131951.714781670@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,58 +62,100 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+From: Andrii Nakryiko <andrii@kernel.org>
 
-[ Upstream commit 7346e7a058a2c9aa9ff1cc699c7bf18a402d9f84 ]
+[ Upstream commit 189f1a976e426011e6a5588f1d3ceedf71fe2965 ]
 
-When the state changes from enabled to disabled, polarity, duty_cycle
-and period are not configured in hardware and TIM_CCER_CCxE is just
-cleared. However if the state changes from one disabled state to
-another, all parameters are written to hardware because the early exit
-from stm32_pwm_apply() is only taken if the pwm is currently enabled.
+For all these years libbpf's BTF dumper has been emitting not strictly
+valid syntax for function prototypes that have no input arguments.
 
-This yields surprises like: Applying
+Instead of `int (*blah)()` we should emit `int (*blah)(void)`.
 
-	{ .period = 1, .duty_cycle = 0, .enabled = false }
+This is not normally a problem, but it manifests when we get kfuncs in
+vmlinux.h that have no input arguments. Due to compiler internal
+specifics, we get no BTF information for such kfuncs, if they are not
+declared with proper `(void)`.
 
-succeeds if the pwm is initially on, but fails if it's already off
-because 1 is a too small period.
+The fix is trivial. We also need to adjust a few ancient tests that
+happily assumed `()` is correct.
 
-Update the check for lazy disable to always exit early if the target
-state is disabled, no matter what is currently configured.
-
-Fixes: 7edf7369205b ("pwm: Add driver for STM32 plaftorm")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Link: https://lore.kernel.org/r/20240703110010.672654-2-u.kleine-koenig@baylibre.com
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+Fixes: 351131b51c7a ("libbpf: add btf_dump API for BTF-to-C conversion")
+Reported-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
+Link: https://lore.kernel.org/bpf/20240712224442.282823-1-andrii@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-stm32.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ tools/lib/bpf/btf_dump.c                                  | 8 +++++---
+ .../selftests/bpf/progs/btf_dump_test_case_multidim.c     | 4 ++--
+ .../selftests/bpf/progs/btf_dump_test_case_syntax.c       | 4 ++--
+ 3 files changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/pwm/pwm-stm32.c b/drivers/pwm/pwm-stm32.c
-index ee7197b8e4ef7..5325e804ca24f 100644
---- a/drivers/pwm/pwm-stm32.c
-+++ b/drivers/pwm/pwm-stm32.c
-@@ -451,8 +451,9 @@ static int stm32_pwm_apply(struct pwm_chip *chip, struct pwm_device *pwm,
+diff --git a/tools/lib/bpf/btf_dump.c b/tools/lib/bpf/btf_dump.c
+index b91dd7cd4ffb0..c2bf996fcba82 100644
+--- a/tools/lib/bpf/btf_dump.c
++++ b/tools/lib/bpf/btf_dump.c
+@@ -1458,10 +1458,12 @@ static void btf_dump_emit_type_chain(struct btf_dump *d,
+ 			 * Clang for BPF target generates func_proto with no
+ 			 * args as a func_proto with a single void arg (e.g.,
+ 			 * `int (*f)(void)` vs just `int (*f)()`). We are
+-			 * going to pretend there are no args for such case.
++			 * going to emit valid empty args (void) syntax for
++			 * such case. Similarly and conveniently, valid
++			 * no args case can be special-cased here as well.
+ 			 */
+-			if (vlen == 1 && p->type == 0) {
+-				btf_dump_printf(d, ")");
++			if (vlen == 0 || (vlen == 1 && p->type == 0)) {
++				btf_dump_printf(d, "void)");
+ 				return;
+ 			}
  
- 	enabled = pwm->state.enabled;
+diff --git a/tools/testing/selftests/bpf/progs/btf_dump_test_case_multidim.c b/tools/testing/selftests/bpf/progs/btf_dump_test_case_multidim.c
+index ba97165bdb282..a657651eba523 100644
+--- a/tools/testing/selftests/bpf/progs/btf_dump_test_case_multidim.c
++++ b/tools/testing/selftests/bpf/progs/btf_dump_test_case_multidim.c
+@@ -14,9 +14,9 @@ typedef int *ptr_arr_t[6];
  
--	if (enabled && !state->enabled) {
--		stm32_pwm_disable(priv, pwm->hwpwm);
-+	if (!state->enabled) {
-+		if (enabled)
-+			stm32_pwm_disable(priv, pwm->hwpwm);
- 		return 0;
- 	}
+ typedef int *ptr_multiarr_t[7][8][9][10];
  
+-typedef int * (*fn_ptr_arr_t[11])();
++typedef int * (*fn_ptr_arr_t[11])(void);
+ 
+-typedef int * (*fn_ptr_multiarr_t[12][13])();
++typedef int * (*fn_ptr_multiarr_t[12][13])(void);
+ 
+ struct root_struct {
+ 	arr_t _1;
+diff --git a/tools/testing/selftests/bpf/progs/btf_dump_test_case_syntax.c b/tools/testing/selftests/bpf/progs/btf_dump_test_case_syntax.c
+index 970598dda7322..7fda004c153a6 100644
+--- a/tools/testing/selftests/bpf/progs/btf_dump_test_case_syntax.c
++++ b/tools/testing/selftests/bpf/progs/btf_dump_test_case_syntax.c
+@@ -67,7 +67,7 @@ typedef void (*printf_fn_t)(const char *, ...);
+  *   `int -> char *` function and returns pointer to a char. Equivalent:
+  *   typedef char * (*fn_input_t)(int);
+  *   typedef char * (*fn_output_outer_t)(fn_input_t);
+- *   typedef const fn_output_outer_t (* fn_output_inner_t)();
++ *   typedef const fn_output_outer_t (* fn_output_inner_t)(void);
+  *   typedef const fn_output_inner_t fn_ptr_arr2_t[5];
+  */
+ /* ----- START-EXPECTED-OUTPUT ----- */
+@@ -94,7 +94,7 @@ typedef void (* (*signal_t)(int, void (*)(int)))(int);
+ 
+ typedef char * (*fn_ptr_arr1_t[10])(int **);
+ 
+-typedef char * (* (* const fn_ptr_arr2_t[5])())(char * (*)(int));
++typedef char * (* (* const fn_ptr_arr2_t[5])(void))(char * (*)(int));
+ 
+ struct struct_w_typedefs {
+ 	int_t a;
 -- 
 2.43.0
 
