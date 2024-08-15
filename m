@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-67868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68355-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A52FA952F80
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:33:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36F839531CD
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 15:58:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E7AE289D8C
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:33:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E0EFC1F22224
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 13:58:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B9601A76C1;
-	Thu, 15 Aug 2024 13:32:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3476E19E7F6;
+	Thu, 15 Aug 2024 13:58:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="arEDeeIo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PRbhmB/z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C60E41A76B7;
-	Thu, 15 Aug 2024 13:32:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E898B7DA7D;
+	Thu, 15 Aug 2024 13:58:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723728774; cv=none; b=tUhjBgNkEn7TXYylE3p/2f++DyAw/iLrYVxfbzg8GwQTSF3gAyLZRPAQal2MCTS0ltuPwJyQ8Sjh90qcS5M8atI1/fpd2Rl8CLKv/SNqOhUFA+FFgyh61qGILD5YS/rZBIUMtzDAZjBjR6W94+XcJp9ocufU100Ta/FhB9KVsL8=
+	t=1723730307; cv=none; b=Ws+O9N3FYcLfpTPnx3HzSxJyeeuD8koUMHbGJxC8jzPtc9v9J0S1r5LMYcM/wBsVNXjpsFATJk5I1DUIiqHtyk1IKUZkcBdB7JkwqNSKgQFDHebmNhw/8E33AsqrSeddLiAijWbDPRIWC98l3ASpbGVulyfo94pRrHJPtzSsG8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723728774; c=relaxed/simple;
-	bh=CTBsuA7LxTZt/eZfFw4Ukm5h8RCIpWpDHwkzyPj26iU=;
+	s=arc-20240116; t=1723730307; c=relaxed/simple;
+	bh=3/W/BjpvRl7QhTa97yIsH222KmlLYmon3CbP85VDdWE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=unugrDh8rKMC3aG3aePQyH+MCZW3Zp6pVHdSCpRFz4+KaGomWhiFTFEypYJcr7dCQGxk78AeJsVenD2f0g2zrgH0R8/ofrMQjOd62Zt1kUF6Ea5+LRsqervxpYzZRvxNFtF2FK9Osi+pv8YI/cufEvmrrnULIYjlz4rdXQW4O7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=arEDeeIo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26AB0C4AF0E;
-	Thu, 15 Aug 2024 13:32:53 +0000 (UTC)
+	 MIME-Version; b=IMVHX+xwmrZIjDiHvi+Oybp7ac18onRUb4ARlgd6RlJ06gY+tvoo2XwV+Y3H3lTRZt+RoZ0ymGoALnKwOZWlebbt5EKI72ogrGnHzbmp92WFHI2LTAMcTkKz6sAMuBS9P8KPiAn9Wth09jwzUiBiKCeV809iMMyRGF0aHtlfwXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PRbhmB/z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70FDCC32786;
+	Thu, 15 Aug 2024 13:58:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723728774;
-	bh=CTBsuA7LxTZt/eZfFw4Ukm5h8RCIpWpDHwkzyPj26iU=;
+	s=korg; t=1723730306;
+	bh=3/W/BjpvRl7QhTa97yIsH222KmlLYmon3CbP85VDdWE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=arEDeeIoDjBDDDCpBshJ4STvCSIOL3oPE7w+QLLm4iAbkyDzLV0EZylT4j0Wi7pxQ
-	 NsdSUjRnHNekq4Yzqi+laScPHrX3bj2gEUjeUBgqlPRfJg0BPm68nljPXlxz5386Xq
-	 tARGkIRhaTqmNg6zOxeQj4GCN1dbDdQbDKpa8Guo=
+	b=PRbhmB/zg5XjCRy1GuRY/s9fewvFCltNFaoKdOQopuDzKtqPV0rCmG70vrd4y+1Hu
+	 lwlpThVx8ED0qwg2lK5/+oNRGZkWeKPZAIrtZvGhXj0GnO4fEZLBxcmftEE32cEVQM
+	 pQJ0DVCtqb9p+wGovNv87iwtHxk/KzybFEdobA/g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Liu <wei.liu@kernel.org>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Michael Kelley <mhklinux@outlook.com>,
-	stable@kernel.org
-Subject: [PATCH 4.19 078/196] PCI: hv: Return zero, not garbage, when reading PCI_INTERRUPT_PIN
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 337/484] netfilter: iptables: Fix potential null-ptr-deref in ip6table_nat_table_init().
 Date: Thu, 15 Aug 2024 15:23:15 +0200
-Message-ID: <20240815131855.061263542@linuxfoundation.org>
+Message-ID: <20240815131954.430131747@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131852.063866671@linuxfoundation.org>
-References: <20240815131852.063866671@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+References: <20240815131941.255804951@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +61,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Liu <wei.liu@kernel.org>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-commit fea93a3e5d5e6a09eb153866d2ce60ea3287a70d upstream.
+[ Upstream commit c22921df777de5606f1047b1345b8d22ef1c0b34 ]
 
-The intent of the code snippet is to always return 0 for both
-PCI_INTERRUPT_LINE and PCI_INTERRUPT_PIN.
+ip6table_nat_table_init() accesses net->gen->ptr[ip6table_nat_net_ops.id],
+but the function is exposed to user space before the entry is allocated
+via register_pernet_subsys().
 
-The check misses PCI_INTERRUPT_PIN. This patch fixes that.
+Let's call register_pernet_subsys() before xt_register_template().
 
-This is discovered by this call in VFIO:
-
-    pci_read_config_byte(vdev->pdev, PCI_INTERRUPT_PIN, &pin);
-
-The old code does not set *val to 0 because it misses the check for
-PCI_INTERRUPT_PIN. Garbage is returned in that case.
-
-Fixes: 4daace0d8ce8 ("PCI: hv: Add paravirtual PCI front-end for Microsoft Hyper-V VMs")
-Link: https://lore.kernel.org/linux-pci/20240701202606.129606-1-wei.liu@kernel.org
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Reviewed-by: Michael Kelley <mhklinux@outlook.com>
-Cc: stable@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: fdacd57c79b7 ("netfilter: x_tables: never register tables by default")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/pci-hyperv.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/ipv6/netfilter/ip6table_nat.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
---- a/drivers/pci/controller/pci-hyperv.c
-+++ b/drivers/pci/controller/pci-hyperv.c
-@@ -650,8 +650,8 @@ static void _hv_pcifront_read_config(str
- 		   PCI_CAPABILITY_LIST) {
- 		/* ROM BARs are unimplemented */
- 		*val = 0;
--	} else if (where >= PCI_INTERRUPT_LINE && where + size <=
--		   PCI_INTERRUPT_PIN) {
-+	} else if ((where >= PCI_INTERRUPT_LINE && where + size <= PCI_INTERRUPT_PIN) ||
-+		   (where >= PCI_INTERRUPT_PIN && where + size <= PCI_MIN_GNT)) {
- 		/*
- 		 * Interrupt Line and Interrupt PIN are hard-wired to zero
- 		 * because this front-end only supports message-signaled
+diff --git a/net/ipv6/netfilter/ip6table_nat.c b/net/ipv6/netfilter/ip6table_nat.c
+index 921c1723a01e4..229a81cf1a729 100644
+--- a/net/ipv6/netfilter/ip6table_nat.c
++++ b/net/ipv6/netfilter/ip6table_nat.c
+@@ -154,23 +154,27 @@ static struct pernet_operations ip6table_nat_net_ops = {
+ 
+ static int __init ip6table_nat_init(void)
+ {
+-	int ret = xt_register_template(&nf_nat_ipv6_table,
+-				       ip6table_nat_table_init);
++	int ret;
+ 
++	/* net->gen->ptr[ip6table_nat_net_id] must be allocated
++	 * before calling ip6t_nat_register_lookups().
++	 */
++	ret = register_pernet_subsys(&ip6table_nat_net_ops);
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	ret = register_pernet_subsys(&ip6table_nat_net_ops);
++	ret = xt_register_template(&nf_nat_ipv6_table,
++				   ip6table_nat_table_init);
+ 	if (ret)
+-		xt_unregister_template(&nf_nat_ipv6_table);
++		unregister_pernet_subsys(&ip6table_nat_net_ops);
+ 
+ 	return ret;
+ }
+ 
+ static void __exit ip6table_nat_exit(void)
+ {
+-	unregister_pernet_subsys(&ip6table_nat_net_ops);
+ 	xt_unregister_template(&nf_nat_ipv6_table);
++	unregister_pernet_subsys(&ip6table_nat_net_ops);
+ }
+ 
+ module_init(ip6table_nat_init);
+-- 
+2.43.0
+
 
 
 
