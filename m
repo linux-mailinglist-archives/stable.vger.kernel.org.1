@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-69136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-68774-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC34795359C
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:39:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 896819533E6
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:21:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 69CBA281EBA
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:39:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0BCCBB26DB9
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:21:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE1FE2772A;
-	Thu, 15 Aug 2024 14:39:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4793E3214;
+	Thu, 15 Aug 2024 14:20:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SJcpLzxp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YRcnXwyV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CA581AC893;
-	Thu, 15 Aug 2024 14:39:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01868762D2;
+	Thu, 15 Aug 2024 14:20:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732785; cv=none; b=Pl22v+50gg3qlMd8zxXBTD15PxTX1eLnopBVtxkF7VhVzDuhLZFmE+0kwyOdF/D4CdT7m+6InX4wGDC5r4yqLJuI/Fy85+QXAOh/pJ96w8WxDxwsiN5UUu/Jm1ACuX934BIRqr5gqPPU54OUcai5RocE/kE3x0e6SA8105WqKHM=
+	t=1723731624; cv=none; b=DbK86vTN9+CnV+r/kH1jRW3rEvpoOaRwOc0mkYnYmtUXH3J3qKU1pgah9gnPeKOTW1IjP7+z9NwfZlJpHvuBCFjGbgNppDBsdDeHEaxKR0CZx3lxUNUfDwpcvR44DQ4tCVwK4X6t+AR7QDueygEkrLZYhr30c0epuS90KzhFon8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732785; c=relaxed/simple;
-	bh=EJ61rU1tdH35pHsMgX7FKk/L4Ecfys2yAw1KgPWBM0A=;
+	s=arc-20240116; t=1723731624; c=relaxed/simple;
+	bh=Z23L7DDR6ATkQvWsxkZo1XhvCg5jvH0Tllkc4yAOPDY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HLF98W3HEijKV2nY3SGxFaUvaODmG89bJidkPA8YTehnuxHfmGPKYnEVoDkm1R843F1hTaO8rPhdFGe1w+E3i1M3C39nnfCYUE2rHplAvaWvg2vf+JRoGvi/V04fH7QydZRnxMmSQgOn4nR0z52WMk57VgpMfOPvXdS8wt07TFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SJcpLzxp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20451C32786;
-	Thu, 15 Aug 2024 14:39:44 +0000 (UTC)
+	 MIME-Version; b=o2D2kMceQ98eblqMJCm4TbAmV9xER9Uu074an0JDxpgyJYf3u6vmvrvv/xJraHb8yBspojIxm605jmbuiRJ8IKapMWFo2tFyYBGDe2nCofDalaU+Fa5hPojDdyj+Irwi9W4DhvznW8w+upD8KWA83B3tVmytdjXC61wBAssUFNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YRcnXwyV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65F01C32786;
+	Thu, 15 Aug 2024 14:20:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723732785;
-	bh=EJ61rU1tdH35pHsMgX7FKk/L4Ecfys2yAw1KgPWBM0A=;
+	s=korg; t=1723731623;
+	bh=Z23L7DDR6ATkQvWsxkZo1XhvCg5jvH0Tllkc4yAOPDY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SJcpLzxpFuSgFoXwyRIyQEjmdIKL+rjFBpsCtkOO4DhkPwaayWdJ/iGwSyZPPAdPV
-	 9AtQjiSDqMmY4KF6nErB0GwoDAtHrowNtTO0xC6ic5WqSuRwwZ+L9808lJOkGrbiW3
-	 ZecNFaPziG+CC/nMzwdxC9SwQXYrQ9HPpEHnJj14=
+	b=YRcnXwyV6Y9I6zkcVvY/hdQa4kaUoG20K/L+e087np87W0QMh24TRxuqAv5b/2FOk
+	 zees70MMmc457wSDDXVwtPkhfQbjgzwZv1kcuZd7kY5j0n5Jm+ySXGofEt7uKKq+Dx
+	 Kq85WCGurIQ8ypxXMRWKWd205qKXzp29HX6LfELk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,12 +47,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Xin Long <lucien.xin@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 254/352] sctp: Fix null-ptr-deref in reuseport_add_sock().
+Subject: [PATCH 5.4 187/259] sctp: Fix null-ptr-deref in reuseport_add_sock().
 Date: Thu, 15 Aug 2024 15:25:20 +0200
-Message-ID: <20240815131929.255874463@linuxfoundation.org>
+Message-ID: <20240815131910.000672880@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
-References: <20240815131919.196120297@linuxfoundation.org>
+In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
+References: <20240815131902.779125794@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,7 +64,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -163,10 +163,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 11 insertions(+), 8 deletions(-)
 
 diff --git a/net/sctp/input.c b/net/sctp/input.c
-index 17df756418eae..8fe1a74f0618d 100644
+index 87a69335e5521..b1d3e342ac830 100644
 --- a/net/sctp/input.c
 +++ b/net/sctp/input.c
-@@ -723,15 +723,19 @@ static int __sctp_hash_endpoint(struct sctp_endpoint *ep)
+@@ -722,15 +722,19 @@ static int __sctp_hash_endpoint(struct sctp_endpoint *ep)
  	struct sock *sk = ep->base.sk;
  	struct net *net = sock_net(sk);
  	struct sctp_hashbucket *head;
@@ -187,7 +187,7 @@ index 17df756418eae..8fe1a74f0618d 100644
  
  		list_for_each(list, &ep->base.bind_addr.address_list)
  			cnt++;
-@@ -749,24 +753,24 @@ static int __sctp_hash_endpoint(struct sctp_endpoint *ep)
+@@ -748,24 +752,24 @@ static int __sctp_hash_endpoint(struct sctp_endpoint *ep)
  			if (!err) {
  				err = reuseport_add_sock(sk, sk2, any);
  				if (err)
@@ -217,7 +217,7 @@ index 17df756418eae..8fe1a74f0618d 100644
  }
  
  /* Add an endpoint to the hash. Local BH-safe. */
-@@ -791,10 +795,9 @@ static void __sctp_unhash_endpoint(struct sctp_endpoint *ep)
+@@ -790,10 +794,9 @@ static void __sctp_unhash_endpoint(struct sctp_endpoint *ep)
  
  	head = &sctp_ep_hashtable[ep->hashent];
  
