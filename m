@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-68695-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69028-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DF95953388
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:17:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DAA095351B
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 16:34:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 23F0928283D
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:17:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B1D32B283E8
+	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 14:33:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73E661A00F8;
-	Thu, 15 Aug 2024 14:16:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B15519FA7A;
+	Thu, 15 Aug 2024 14:33:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zzZHfxPI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vl4/g5Md"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30EE618D64F;
-	Thu, 15 Aug 2024 14:16:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 387AF63D5;
+	Thu, 15 Aug 2024 14:33:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731376; cv=none; b=Rjr2ebwmSR62x4BheAIFQoAWlPLSUDONvXL8RPZEnp6pfN4nnhalETGCL4kiS/RSF6y/iUrAqwYNcr9b+gi2O5YUlEmZZpe6OzYsSNKkrF3nUerArjSC+hn608NGKvvu0bj+jfa2UgK+rn90qMLnX7cgVJnU6oPnVXtGz2uLCjo=
+	t=1723732435; cv=none; b=idzd+GwVrW0Z3wsEhjAjzKm0/wQ6lITsLAnZnadjqbBjDuC2WzSDErKhUSK744tbs9WCozVOVXPp+mEH3vL+J2BM3W2aHNVi17UTNLcbrWYhFtrJ5ul7AWk3YZoWELyHTue/O2u/c+SUkrB7O9UQNswCur41eWILJDbo/munkSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731376; c=relaxed/simple;
-	bh=UZcyR9thul5rcQhs7ePrpUQchPOFBFHHFMYVodNNmrc=;
+	s=arc-20240116; t=1723732435; c=relaxed/simple;
+	bh=Mfh+UzMoeD08v3ehw3DuV1kdsbKriD+VtiAbcdTwczs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fFsEAU2tWTaIZGQEozhhH5oSrN6jDQGMLb7jqsFOTQt5Ckgk5QdvLhFTVITO0wN2RhAXKM24zEQpI29aHQdnPCiiWsQRY3YnssGjvLIGuGxcw8NcM9qTNLpUu8d75XgzGS0X+NbjrBZalim6N1EARvhe3UNBQZbJfoKUumlozag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zzZHfxPI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4353C4AF12;
-	Thu, 15 Aug 2024 14:16:15 +0000 (UTC)
+	 MIME-Version; b=tVjnkDS6u3vgcLqehVOz14LngHSygM2tyCWuDPfKMMkgRHSU82tlW2mdz9a2FshxN4lh+9z05Hg9qCVKCLl9cbSPHbXc4eXlXmv/1cdLrckHiqr/XKACyXcpkBMeckkcguSWNsTpeZCWHheJJWo12bvMXM2i54ciuWbJiYp911E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vl4/g5Md; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F0B8C32786;
+	Thu, 15 Aug 2024 14:33:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723731376;
-	bh=UZcyR9thul5rcQhs7ePrpUQchPOFBFHHFMYVodNNmrc=;
+	s=korg; t=1723732435;
+	bh=Mfh+UzMoeD08v3ehw3DuV1kdsbKriD+VtiAbcdTwczs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zzZHfxPI9/VGnxN9/n5tpMxIExmO066eMXoj8VwknI88fzQQoE5wCf3BTyEfEnlQO
-	 nFyTRqXOuT/kbT3hVB+RXDr2uUAZA50Otf1f/sQ9VsfU2ESbo/MbfQJ9wMNB19by7T
-	 ZKIwSO0Z531E75SuPokphD+F0L5GJxao9Af8Ca+c=
+	b=vl4/g5Mdm/9pk7gZcbAwAJQqQBNosulJEbsHq8ARhoGVpUDxZbrYDwRcW2iZr9rf2
+	 /2C2d2vVHZOsG5zGhHtrKiNler+Vv2bE3YZFVHbEMzr1NDCBu/25mG7b7OUUrrKqYC
+	 3SUgwfOpo/uoMe2nBTZh8A/JPwYIHDP3b8Okt+bw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+31e4659a3fe953aec2f4@syzkaller.appspotmail.com,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 5.4 110/259] f2fs: fix to dont dirty inode for readonly filesystem
+	Ilya Dryomov <idryomov@gmail.com>,
+	Dongsheng Yang <dongsheng.yang@easystack.cn>
+Subject: [PATCH 5.10 177/352] rbd: dont assume rbd_is_lock_owner() for exclusive mappings
 Date: Thu, 15 Aug 2024 15:24:03 +0200
-Message-ID: <20240815131907.050860530@linuxfoundation.org>
+Message-ID: <20240815131926.119113485@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240815131902.779125794@linuxfoundation.org>
-References: <20240815131902.779125794@linuxfoundation.org>
+In-Reply-To: <20240815131919.196120297@linuxfoundation.org>
+References: <20240815131919.196120297@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Ilya Dryomov <idryomov@gmail.com>
 
-commit 192b8fb8d1c8ca3c87366ebbef599fa80bb626b8 upstream.
+commit 3ceccb14f5576e02b81cc8b105ab81f224bd87f6 upstream.
 
-syzbot reports f2fs bug as below:
+Expanding on the previous commit, assuming that rbd_is_lock_owner()
+always returns true (i.e. that we are either in RBD_LOCK_STATE_LOCKED
+or RBD_LOCK_STATE_QUIESCING) if the mapping is exclusive is wrong too.
+In case ceph_cls_set_cookie() fails, the lock would be temporarily
+released even if the mapping is exclusive, meaning that we can end up
+even in RBD_LOCK_STATE_UNLOCKED.
 
-kernel BUG at fs/f2fs/inode.c:933!
-RIP: 0010:f2fs_evict_inode+0x1576/0x1590 fs/f2fs/inode.c:933
-Call Trace:
- evict+0x2a4/0x620 fs/inode.c:664
- dispose_list fs/inode.c:697 [inline]
- evict_inodes+0x5f8/0x690 fs/inode.c:747
- generic_shutdown_super+0x9d/0x2c0 fs/super.c:675
- kill_block_super+0x44/0x90 fs/super.c:1667
- kill_f2fs_super+0x303/0x3b0 fs/f2fs/super.c:4894
- deactivate_locked_super+0xc1/0x130 fs/super.c:484
- cleanup_mnt+0x426/0x4c0 fs/namespace.c:1256
- task_work_run+0x24a/0x300 kernel/task_work.c:180
- ptrace_notify+0x2cd/0x380 kernel/signal.c:2399
- ptrace_report_syscall include/linux/ptrace.h:411 [inline]
- ptrace_report_syscall_exit include/linux/ptrace.h:473 [inline]
- syscall_exit_work kernel/entry/common.c:251 [inline]
- syscall_exit_to_user_mode_prepare kernel/entry/common.c:278 [inline]
- __syscall_exit_to_user_mode_work kernel/entry/common.c:283 [inline]
- syscall_exit_to_user_mode+0x15c/0x280 kernel/entry/common.c:296
- do_syscall_64+0x50/0x110 arch/x86/entry/common.c:88
- entry_SYSCALL_64_after_hwframe+0x63/0x6b
-
-The root cause is:
-- do_sys_open
- - f2fs_lookup
-  - __f2fs_find_entry
-   - f2fs_i_depth_write
-    - f2fs_mark_inode_dirty_sync
-     - f2fs_dirty_inode
-      - set_inode_flag(inode, FI_DIRTY_INODE)
-
-- umount
- - kill_f2fs_super
-  - kill_block_super
-   - generic_shutdown_super
-    - sync_filesystem
-    : sb is readonly, skip sync_filesystem()
-    - evict_inodes
-     - iput
-      - f2fs_evict_inode
-       - f2fs_bug_on(sbi, is_inode_flag_set(inode, FI_DIRTY_INODE))
-       : trigger kernel panic
-
-When we try to repair i_current_depth in readonly filesystem, let's
-skip dirty inode to avoid panic in later f2fs_evict_inode().
+IOW, exclusive mappings are really "just" about disabling automatic
+lock transitions (as documented in the man page), not about grabbing
+the lock and holding on to it whatever it takes.
 
 Cc: stable@vger.kernel.org
-Reported-by: syzbot+31e4659a3fe953aec2f4@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-f2fs-devel/000000000000e890bc0609a55cff@google.com
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: 637cd060537d ("rbd: new exclusive lock wait/wake code")
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Reviewed-by: Dongsheng Yang <dongsheng.yang@easystack.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/inode.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/block/rbd.c |    5 -----
+ 1 file changed, 5 deletions(-)
 
---- a/fs/f2fs/inode.c
-+++ b/fs/f2fs/inode.c
-@@ -23,6 +23,9 @@ void f2fs_mark_inode_dirty_sync(struct i
- 	if (is_inode_flag_set(inode, FI_NEW_INODE))
- 		return;
+--- a/drivers/block/rbd.c
++++ b/drivers/block/rbd.c
+@@ -6660,11 +6660,6 @@ static int rbd_add_acquire_lock(struct r
+ 	if (ret)
+ 		return ret;
  
-+	if (f2fs_readonly(F2FS_I_SB(inode)->sb))
-+		return;
-+
- 	if (f2fs_inode_dirtied(inode, sync))
- 		return;
+-	/*
+-	 * The lock may have been released by now, unless automatic lock
+-	 * transitions are disabled.
+-	 */
+-	rbd_assert(!rbd_dev->opts->exclusive || rbd_is_lock_owner(rbd_dev));
+ 	return 0;
+ }
  
 
 
