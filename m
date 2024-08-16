@@ -1,164 +1,178 @@
-Return-Path: <stable+bounces-69269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21290953FFB
-	for <lists+stable@lfdr.de>; Fri, 16 Aug 2024 05:11:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E3FE9540B4
+	for <lists+stable@lfdr.de>; Fri, 16 Aug 2024 06:45:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2314D1C2220F
-	for <lists+stable@lfdr.de>; Fri, 16 Aug 2024 03:11:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 25938285E42
+	for <lists+stable@lfdr.de>; Fri, 16 Aug 2024 04:45:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD6E95F873;
-	Fri, 16 Aug 2024 03:10:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A70836F30D;
+	Fri, 16 Aug 2024 04:45:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="29V0ypQP"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="mb4CT3/C"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FE6E55898
-	for <stable@vger.kernel.org>; Fri, 16 Aug 2024 03:10:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 381B810E4;
+	Fri, 16 Aug 2024 04:45:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723777855; cv=none; b=tED/rRAiJaMOcIZQKeIS5FZ6Or3BkFHCXkS3F16EFv7/Jtx1+5uY1tfltZbNRaHb5dR1m0DKkLSGEvgszQ2CcuNy/t7KOSI9RhPUngYMRWcm4ml7C7U3MMzJhDwv98RdI5PPqIf6iItC9sARUdy9zCDOkQQ/YQvtkVR4BhO2Ces=
+	t=1723783528; cv=none; b=g8Vy3enir9nqORioqbjvVQwtIRCqAcIehg056MsyNMzyo78dNLXIuTEQERc+JOIqW4GVb0lHHR5q+MCoYtvpeGbRYaM26UgtQuOLNhbS4QIxOXA16KtfHqIa7gKCP2qSEe+q6ifrtjjhBYhyQBcT9/6rYjbxsGl83CZ3ui5kTTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723777855; c=relaxed/simple;
-	bh=pDkx8ngnUQRjIclWtfWHA39LO7XC/50Owe9Vmjxe8yY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QEXorpf29Wv/l5vz/cFwD3f5OrIEdbtL8hJegEv3kG8ejZYAF7jwnBXqMA5ljxVfYY3jf9ZYNha8Xtjc3qRlIDYnsyXAeYKiwcqpSJ3mWAizilinMEZDXemalACy0JUTueOdreHOXkrU8I6RjzBiJgdmjaXukl9vRTrmNlrVE2Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=29V0ypQP; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-1fd7509397bso58515ad.0
-        for <stable@vger.kernel.org>; Thu, 15 Aug 2024 20:10:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1723777853; x=1724382653; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TksdukPAgZv3CISxfFNPNoWEfe+SnBkoBwJZG9NR5no=;
-        b=29V0ypQPCK02vMOCwAzezmndAahVmclJuzQG1OmBOhVmjS8EBVVzfwYQf0RdHlgRvN
-         H8a/8ruoukofjP4KKcpEF3uAGOsOw9rBUGav8O20xX7/7aMr1AbB6jn1S+q208UMCcYk
-         27CCwjzweIKNvsyzX8KTgaIxH0f8uaCBtGZeAyeGESg+moO566xjbxaUkOXa7glYz7fE
-         sreGy/cUPP15OVdQ6yGvergZ4jZ/46cSwcP8+BdMH+kEty5smDS/2zHCUmq9IosTnS2c
-         vzVH0IpkZ2/JDfds8f6a8T559YPQ9VjXWHT6YqVf5wIL8NOrOWzo6SotO7Tpan9gKJos
-         Tlhw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723777853; x=1724382653;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=TksdukPAgZv3CISxfFNPNoWEfe+SnBkoBwJZG9NR5no=;
-        b=m4j8SQXDTo4SqqkvbKcZPCFeJLXfZcGahjjKNPCwbbAtQdWlpecDcR6gJcUooVXeAT
-         s9yYRi5Z0Vx3Zhn18n6c6mAUoVagULpS+03eIc29YcKhBCm0wQdfEjpFVd/JAo+4kopT
-         vBehJRC60hq45eLr2PQ/hpr9FiwMo7lJ9giS90OMkynFt9SE2kfYGE7JHXwFFYHpI1dN
-         8VWQf7Ziv6RILArg0z8JLNJLypIOcdknnK3qNNyx9TlDOGt3gc8j8CwHs4nn9JgueNnC
-         nqrSdYlQo6pU1jI/bk/Y22/FHK2OAA4wEoDafO5rdNqqF9wd9vj3K+R4imuH05Yj1Qe6
-         XSxQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUxwwpwJttbp0yQx6xSz77HhKnHzOp5LxVBhOvhrGEwtPuvf72snOUGcYoWu7AAZOESTdQIe0A=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxB4DRvMytpjoZUluEaRwQTKGesgeICNs7f0ZyqIU6pInM+6FeE
-	2IHdM3c5Apxm/mrZlaav48e3N+SX/HOmMjp0gosfMrM1I/u8OUoBtTt/iiAzsUzmYsE7Y7gkfst
-	HHwA4v9yq0NL3UuGvEITZrmBLjKqeEUCKPxln
-X-Google-Smtp-Source: AGHT+IGZLeBKv3CMMAwWol2fV8fxptjq88r8Yrtm01DrODCf8SauDZd7ISG+PN303isiBbUK4suCZa1K107RgC107lI=
-X-Received: by 2002:a17:902:e5d0:b0:1eb:3f4f:6f02 with SMTP id
- d9443c01a7336-2020600ae4dmr794735ad.12.1723777852732; Thu, 15 Aug 2024
- 20:10:52 -0700 (PDT)
+	s=arc-20240116; t=1723783528; c=relaxed/simple;
+	bh=tjEQXuIrF/JMlAdKx+RtTwQKX7g/szbKv2fX1bKd7r0=;
+	h=Date:To:From:Subject:Message-Id; b=IMrmuvCFPJRr/TVU/L19skJ5qDJQZUF9BJ8K+0komC/w8MAfifsB77L/aQK3NMQxtO5+vdMMMIdsTbSkajeGUwZ+8Qt5Rq46bZyiex9ETCBCMFQ4EosYvLK4Xs9w/Vb7oNa4WSl5+abEgY3A/mYiL9uJfDFxKLCb26PIw+RnBIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=mb4CT3/C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E56EC32782;
+	Fri, 16 Aug 2024 04:45:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1723783527;
+	bh=tjEQXuIrF/JMlAdKx+RtTwQKX7g/szbKv2fX1bKd7r0=;
+	h=Date:To:From:Subject:From;
+	b=mb4CT3/CcLGkXZQEJsIrFt5AOsnKiEHR+j4zlse//dopDt1zTuwfevqFOR31F/aHY
+	 wC9ayg9MMT8SfVsgkQvfYr5i6jhxBdo6j4fcRT5Rf59Ej71bYIY5/l2ggLkWQZICXc
+	 vDwA+s954hxO8xLlms9OG68WxBGYQ3w7vHmoCeHk=
+Date: Thu, 15 Aug 2024 21:45:26 -0700
+To: mm-commits@vger.kernel.org,vbabka@suse.cz,surenb@google.com,stable@vger.kernel.org,roman.gushchin@linux.dev,rientjes@google.com,penberg@kernel.org,kent.overstreet@linux.dev,kees@kernel.org,iamjoonsoo.kim@lge.com,cl@linux.com,42.hyeyoo@gmail.com,gehao@kylinos.cn,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-slub-add-check-for-s-flags-in-the-alloc_tagging_slab_free_hook.patch added to mm-hotfixes-unstable branch
+Message-Id: <20240816044527.8E56EC32782@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240815142212.3834625-1-matt@readmodwrite.com>
-In-Reply-To: <20240815142212.3834625-1-matt@readmodwrite.com>
-From: Ian Rogers <irogers@google.com>
-Date: Thu, 15 Aug 2024 20:10:40 -0700
-Message-ID: <CAP-5=fU4Lv76Yv5HdhPZz4woZuZ-WMemEC3vGpKJgKhwqrE_rg@mail.gmail.com>
-Subject: Re: [PATCH] perf hist: Update hist symbol when updating maps
-To: Matt Fleming <matt@readmodwrite.com>
-Cc: Arnaldo Carvalho de Melo <acme@redhat.com>, linux-kernel@vger.kernel.org, 
-	linux-perf-users@vger.kernel.org, kernel-team@cloudflare.com, 
-	Namhyung Kim <namhyung@kernel.org>, Yunzhao Li <yunzhao@cloudflare.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 15, 2024 at 7:22=E2=80=AFAM Matt Fleming <matt@readmodwrite.com=
-> wrote:
->
-> AddressSanitizer found a use-after-free bug in the symbol code which
-> manifested as perf top segfaulting.
->
->   =3D=3D1238389=3D=3DERROR: AddressSanitizer: heap-use-after-free on addr=
-ess 0x60b00c48844b at pc 0x5650d8035961 bp 0x7f751aaecc90 sp 0x7f751aaecc80
->   READ of size 1 at 0x60b00c48844b thread T193
->       #0 0x5650d8035960 in _sort__sym_cmp util/sort.c:310
->       #1 0x5650d8043744 in hist_entry__cmp util/hist.c:1286
->       #2 0x5650d8043951 in hists__findnew_entry util/hist.c:614
->       #3 0x5650d804568f in __hists__add_entry util/hist.c:754
->       #4 0x5650d8045bf9 in hists__add_entry util/hist.c:772
->       #5 0x5650d8045df1 in iter_add_single_normal_entry util/hist.c:997
->       #6 0x5650d8043326 in hist_entry_iter__add util/hist.c:1242
->       #7 0x5650d7ceeefe in perf_event__process_sample /home/matt/src/linu=
-x/tools/perf/builtin-top.c:845
->       #8 0x5650d7ceeefe in deliver_event /home/matt/src/linux/tools/perf/=
-builtin-top.c:1208
->       #9 0x5650d7fdb51b in do_flush util/ordered-events.c:245
->       #10 0x5650d7fdb51b in __ordered_events__flush util/ordered-events.c=
-:324
->       #11 0x5650d7ced743 in process_thread /home/matt/src/linux/tools/per=
-f/builtin-top.c:1120
->       #12 0x7f757ef1f133 in start_thread nptl/pthread_create.c:442
->       #13 0x7f757ef9f7db in clone3 ../sysdeps/unix/sysv/linux/x86_64/clon=
-e3.S:81
->
-> When updating hist maps it's also necessary to update the hist symbol
-> reference because the old one gets freed in map__put().
->
-> While this bug was probably introduced with 5c24b67aae72 ("perf tools:
-> Replace map->referenced & maps->removed_maps with map->refcnt"), the
-> symbol objects were leaked until c087e9480cf3 ("perf machine: Fix
-> refcount usage when processing PERF_RECORD_KSYMBOL") was merged so the
-> bug was masked.
->
-> Fixes: c087e9480cf3 ("perf machine: Fix refcount usage when processing PE=
-RF_RECORD_KSYMBOL")
-> Signed-off-by: Matt Fleming (Cloudflare) <matt@readmodwrite.com>
-> Reported-by: Yunzhao Li <yunzhao@cloudflare.com>
-> Cc: stable@vger.kernel.org # v5.13+
-> ---
->  tools/perf/util/hist.c | 5 +++++
->  1 file changed, 5 insertions(+)
->
-> diff --git a/tools/perf/util/hist.c b/tools/perf/util/hist.c
-> index 0f554febf9a1..0f9ce2ee2c31 100644
-> --- a/tools/perf/util/hist.c
-> +++ b/tools/perf/util/hist.c
-> @@ -639,6 +639,11 @@ static struct hist_entry *hists__findnew_entry(struc=
-t hists *hists,
->                          * the history counter to increment.
->                          */
->                         if (he->ms.map !=3D entry->ms.map) {
-> +                               if (he->ms.sym) {
-> +                                       u64 addr =3D he->ms.sym->start;
 
-nit: we normally put a newline between a variable and the first
-non-variable line of code.
+The patch titled
+     Subject: mm/slub: add check for s->flags in the alloc_tagging_slab_free_hook
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-slub-add-check-for-s-flags-in-the-alloc_tagging_slab_free_hook.patch
 
-Acked-by: Ian Rogers <irogers@google.com>
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-slub-add-check-for-s-flags-in-the-alloc_tagging_slab_free_hook.patch
 
-Thanks,
-Ian
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-> +                                       he->ms.sym =3D map__find_symbol(e=
-ntry->ms.map, addr);
-> +                               }
-> +
->                                 map__put(he->ms.map);
->                                 he->ms.map =3D map__get(entry->ms.map);
->                         }
-> --
-> 2.34.1
->
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Hao Ge <gehao@kylinos.cn>
+Subject: mm/slub: add check for s->flags in the alloc_tagging_slab_free_hook
+Date: Fri, 16 Aug 2024 09:33:36 +0800
+
+When enable CONFIG_MEMCG & CONFIG_KFENCE & CONFIG_KMEMLEAK, the following
+warning always occurs,This is because the following call stack occurred:
+mem_pool_alloc
+    kmem_cache_alloc_noprof
+        slab_alloc_node
+            kfence_alloc
+
+Once the kfence allocation is successful,slab->obj_exts will not be empty,
+because it has already been assigned a value in kfence_init_pool.
+
+Since in the prepare_slab_obj_exts_hook function,we perform a check for
+s->flags & (SLAB_NO_OBJ_EXT | SLAB_NOLEAKTRACE),the alloc_tag_add function
+will not be called as a result.Therefore,ref->ct remains NULL.
+
+However,when we call mem_pool_free,since obj_ext is not empty, it
+eventually leads to the alloc_tag_sub scenario being invoked.  This is
+where the warning occurs.
+
+So we should add corresponding checks in the alloc_tagging_slab_free_hook.
+For __GFP_NO_OBJ_EXT case,I didn't see the specific case where it's using
+kfence,so I won't add the corresponding check in
+alloc_tagging_slab_free_hook for now.
+
+[    3.734349] ------------[ cut here ]------------
+[    3.734807] alloc_tag was not set
+[    3.735129] WARNING: CPU: 4 PID: 40 at ./include/linux/alloc_tag.h:130 kmem_cache_free+0x444/0x574
+[    3.735866] Modules linked in: autofs4
+[    3.736211] CPU: 4 UID: 0 PID: 40 Comm: ksoftirqd/4 Tainted: G        W          6.11.0-rc3-dirty #1
+[    3.736969] Tainted: [W]=WARN
+[    3.737258] Hardware name: QEMU KVM Virtual Machine, BIOS unknown 2/2/2022
+[    3.737875] pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[    3.738501] pc : kmem_cache_free+0x444/0x574
+[    3.738951] lr : kmem_cache_free+0x444/0x574
+[    3.739361] sp : ffff80008357bb60
+[    3.739693] x29: ffff80008357bb70 x28: 0000000000000000 x27: 0000000000000000
+[    3.740338] x26: ffff80008207f000 x25: ffff000b2eb2fd60 x24: ffff0000c0005700
+[    3.740982] x23: ffff8000804229e4 x22: ffff800082080000 x21: ffff800081756000
+[    3.741630] x20: fffffd7ff8253360 x19: 00000000000000a8 x18: ffffffffffffffff
+[    3.742274] x17: ffff800ab327f000 x16: ffff800083398000 x15: ffff800081756df0
+[    3.742919] x14: 0000000000000000 x13: 205d344320202020 x12: 5b5d373038343337
+[    3.743560] x11: ffff80008357b650 x10: 000000000000005d x9 : 00000000ffffffd0
+[    3.744231] x8 : 7f7f7f7f7f7f7f7f x7 : ffff80008237bad0 x6 : c0000000ffff7fff
+[    3.744907] x5 : ffff80008237ba78 x4 : ffff8000820bbad0 x3 : 0000000000000001
+[    3.745580] x2 : 68d66547c09f7800 x1 : 68d66547c09f7800 x0 : 0000000000000000
+[    3.746255] Call trace:
+[    3.746530]  kmem_cache_free+0x444/0x574
+[    3.746931]  mem_pool_free+0x44/0xf4
+[    3.747306]  free_object_rcu+0xc8/0xdc
+[    3.747693]  rcu_do_batch+0x234/0x8a4
+[    3.748075]  rcu_core+0x230/0x3e4
+[    3.748424]  rcu_core_si+0x14/0x1c
+[    3.748780]  handle_softirqs+0x134/0x378
+[    3.749189]  run_ksoftirqd+0x70/0x9c
+[    3.749560]  smpboot_thread_fn+0x148/0x22c
+[    3.749978]  kthread+0x10c/0x118
+[    3.750323]  ret_from_fork+0x10/0x20
+[    3.750696] ---[ end trace 0000000000000000 ]---
+
+Link: https://lkml.kernel.org/r/20240816013336.17505-1-hao.ge@linux.dev
+Fixes: 4b8736964640 ("mm/slab: add allocation accounting into slab allocation and free paths")
+Signed-off-by: Hao Ge <gehao@kylinos.cn>
+Cc: Christoph Lameter <cl@linux.com>
+Cc: David Rientjes <rientjes@google.com>
+Cc: Hyeonggon Yoo <42.hyeyoo@gmail.com>
+Cc: Joonsoo Kim <iamjoonsoo.kim@lge.com>
+Cc: Kees Cook <kees@kernel.org>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: Pekka Enberg <penberg@kernel.org>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/slub.c |    4 ++++
+ 1 file changed, 4 insertions(+)
+
+--- a/mm/slub.c~mm-slub-add-check-for-s-flags-in-the-alloc_tagging_slab_free_hook
++++ a/mm/slub.c
+@@ -2116,6 +2116,10 @@ alloc_tagging_slab_free_hook(struct kmem
+ 	if (!mem_alloc_profiling_enabled())
+ 		return;
+ 
++	/* slab->obj_exts might not be NULL if it was created for MEMCG accounting. */
++	if (s->flags & (SLAB_NO_OBJ_EXT | SLAB_NOLEAKTRACE))
++		return;
++
+ 	obj_exts = slab_obj_exts(slab);
+ 	if (!obj_exts)
+ 		return;
+_
+
+Patches currently in -mm which might be from gehao@kylinos.cn are
+
+mm-slub-add-check-for-s-flags-in-the-alloc_tagging_slab_free_hook.patch
+mm-cma-change-the-addition-of-totalcma_pages-in-the-cma_init_reserved_mem.patch
+
 
