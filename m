@@ -1,176 +1,154 @@
-Return-Path: <stable+bounces-69265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69266-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABF19953EFE
-	for <lists+stable@lfdr.de>; Fri, 16 Aug 2024 03:40:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF897953F2D
+	for <lists+stable@lfdr.de>; Fri, 16 Aug 2024 03:57:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D19F41C22372
-	for <lists+stable@lfdr.de>; Fri, 16 Aug 2024 01:40:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 755091F24842
+	for <lists+stable@lfdr.de>; Fri, 16 Aug 2024 01:57:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F7E61EA91;
-	Fri, 16 Aug 2024 01:40:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEAA729CFE;
+	Fri, 16 Aug 2024 01:56:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VfK2bovy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JgacoNso"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1571729CF0;
-	Fri, 16 Aug 2024 01:40:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE7944AEE6
+	for <stable@vger.kernel.org>; Fri, 16 Aug 2024 01:56:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723772440; cv=none; b=iaszb6pNvNvIqJmWs3ZvYLF2iSSj+m7Y2sofbGHXlsEgrTawqODP5ZsIbCC1nl5eZgvfVtZMcBRrMnlnivdBakpNfrRN+HHWUdZkicZyIu1LQFXb84Zons6YvznugqIK3jv39PEyGNCMkBrJubKZAf8iy4U9u3xp7tBn4Tt/ZB8=
+	t=1723773416; cv=none; b=bG0EZEWaqxO2gOC9kJbTAzXQwIt1iE5dM+5wR1y2boDS2PlA5bmWDz7iAO0SvNQk6zWxKHIh/+V7MePXKVbeOnd4veGMnIaxoBFRl3YHufu8lOLkU4BD61LXd4B5i2P1vmtvMGNaECcY8Q9wTWIiSd1uTstxohiksqtxs1czgyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723772440; c=relaxed/simple;
-	bh=TxVgBYYWN/3kYg/XenduJ5cBNArWEosbc8sM/EqhRJc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=i3s2VFsbTzKm07f7zTBYd/xy8Ns5auV+0nWISQSczFWeePPCgRT91V3BWN8zF1/QE/bqOTwT0VFLQlHHb/ASlu5JtNhT/3OoHUiYmIgO2eJm1oAwnCj0UeXnmTKCgHxRWnJDL8lZi3m+6k8DncJo2wdO/EWDcQMKg5UudZS++O0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VfK2bovy; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1723772438; x=1755308438;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=TxVgBYYWN/3kYg/XenduJ5cBNArWEosbc8sM/EqhRJc=;
-  b=VfK2bovyIuxFifgrg0zmfIhg5w+KBZvm0NQPTiurfBF3pDfpVuvGx2xf
-   thizQhnmpJoSKJ6UwqD365G/WYQMvNYRC0iXuwrl1rv5mJ0FRq9K7XfUF
-   8X+qsvvg1WsY5uYKqFZiR8pQhIaYBXSsVyYjmG4NHYEsJ9kdmNL6rMnzS
-   fE1RDthfKtdHrAg8TDTJ3AbyugI/opQKUNzmU8xR0JAVMI931JRxSB2h1
-   UqF5qwN/0KXsy47tbCgVDinAL8UPm5sBFTnpSswrfogYSaycrpQLnNqgL
-   FsFyL4002h+rXSi09LmoOpVT9RVRK6GwhMUoU75h1MWoUuq5w3qqHqPGx
-   g==;
-X-CSE-ConnectionGUID: 8Hbfl3WMQkOxtqEDWx7RmQ==
-X-CSE-MsgGUID: oqsrwJXGTt+4GP7NMMglSw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11165"; a="32730631"
-X-IronPort-AV: E=Sophos;i="6.10,150,1719903600"; 
-   d="scan'208";a="32730631"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Aug 2024 18:40:38 -0700
-X-CSE-ConnectionGUID: sfn6/XgtQKCUHNIjJxz2xA==
-X-CSE-MsgGUID: MgntSaxjQ0+PbFVhh0EtkA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,150,1719903600"; 
-   d="scan'208";a="64472928"
-Received: from lkp-server01.sh.intel.com (HELO 9a732dc145d3) ([10.239.97.150])
-  by orviesa004.jf.intel.com with ESMTP; 15 Aug 2024 18:40:33 -0700
-Received: from kbuild by 9a732dc145d3 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1selx8-0005mw-2T;
-	Fri, 16 Aug 2024 01:40:30 +0000
-Date: Fri, 16 Aug 2024 09:39:48 +0800
-From: kernel test robot <lkp@intel.com>
-To: Ma Ke <make24@iscas.ac.cn>, kristo@kernel.org, bp@alien8.de,
-	tony.luck@intel.com, james.morse@arm.com, mchehab@kernel.org,
-	rric@kernel.org, akpm@linux-foundation.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	linux-edac@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Ma Ke <make24@iscas.ac.cn>, stable@vger.kernel.org
-Subject: Re: [PATCH v4 RESEND] EDAC/ti: Fix possible null pointer dereference
- in _emif_get_id()
-Message-ID: <202408160935.A6QFliqt-lkp@intel.com>
-References: <20240815014511.147065-1-make24@iscas.ac.cn>
+	s=arc-20240116; t=1723773416; c=relaxed/simple;
+	bh=xJDx/MLKp7yzOS0c4b90+3aVs9d+yiU+8kqmSzvYf5g=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=jBFNv2iD2pH7XOYd8H8bkjI1MIfGs5NQ+uq7//xjMe3ZR6KDIxBDq0MYtSP6CumQ/8nL6RlDDrllZkqoJiUzlfT6cjg6fZ/fgWvxFKkNc/ie7HiN1Wur1nCJyLa+pue5NoZ6MLUJ+N9xflRzkAWa/X98OngXQHRig83k1DLF30Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JgacoNso; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB25DC32786
+	for <stable@vger.kernel.org>; Fri, 16 Aug 2024 01:56:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1723773416;
+	bh=xJDx/MLKp7yzOS0c4b90+3aVs9d+yiU+8kqmSzvYf5g=;
+	h=From:To:Subject:Date:In-Reply-To:References:From;
+	b=JgacoNsodXim+eNuwnj9Kya54yLMGHq0ESIEtQ24lf/EbrNww2USP6vopDz6bOTOB
+	 6ufG8sJBnbDN2AJnzMO5FMZfr7CRfrSpN/GErptZbYMrLdc8f/q75vmLIeSm5xWSHP
+	 Ff4EIJKUXvMp/6Jjv0jCWt9A1pH0fu8hN0kNRjKWML44CjkaTK3Y5a5PsPQ6u9OcPV
+	 +yFxIK/8NLesZIG4lm2BHENrbVR7awhWuPo4Lk9I0nDtJzVeIPEbi5sl4aNOQDid8y
+	 CMpnM0W0gtKNanI+3kyEbrTl+4IHIR5qJWucKYMKQU0OIni7Obygyen9ciA+B1HjfS
+	 h4wlr/cWRAW9g==
+From: Damien Le Moal <dlemoal@kernel.org>
+To: stable@vger.kernel.org
+Subject: [PATCH 5.10.y] scsi: mpt3sas: Avoid IOMMU page faults on REPORT ZONES
+Date: Fri, 16 Aug 2024 10:56:54 +0900
+Message-ID: <20240816015654.448057-1-dlemoal@kernel.org>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <2024081112-idly-qualify-80f3@gregkh>
+References: <2024081112-idly-qualify-80f3@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240815014511.147065-1-make24@iscas.ac.cn>
+Content-Transfer-Encoding: 8bit
 
-Hi Ma,
+Commit 82dbb57ac8d06dfe8227ba9ab11a49de2b475ae5 upstream.
 
-kernel test robot noticed the following build warnings:
+Some firmware versions of the 9600 series SAS HBA byte-swap the REPORT
+ZONES command reply buffer from ATA-ZAC devices by directly accessing the
+buffer in the host memory. This does not respect the default command DMA
+direction and causes IOMMU page faults on architectures with an IOMMU
+enforcing write-only mappings for DMA_FROM_DEVICE DMA driection (e.g. AMD
+hosts).
 
-[auto build test WARNING on ras/edac-for-next]
-[also build test WARNING on linus/master v6.11-rc3 next-20240815]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+scsi 18:0:0:0: Direct-Access-ZBC ATA      WDC  WSH722020AL W870 PQ: 0 ANSI: 6
+scsi 18:0:0:0: SATA: handle(0x0027), sas_addr(0x300062b2083e7c40), phy(0), device_name(0x5000cca29dc35e11)
+scsi 18:0:0:0: enclosure logical id (0x300062b208097c40), slot(0)
+scsi 18:0:0:0: enclosure level(0x0000), connector name( C0.0)
+scsi 18:0:0:0: atapi(n), ncq(y), asyn_notify(n), smart(y), fua(y), sw_preserve(y)
+scsi 18:0:0:0: qdepth(32), tagged(1), scsi_level(7), cmd_que(1)
+sd 18:0:0:0: Attached scsi generic sg2 type 20
+sd 18:0:0:0: [sdc] Host-managed zoned block device
+mpt3sas 0000:41:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0021 address=0xfff9b200 flags=0x0050]
+mpt3sas 0000:41:00.0: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0021 address=0xfff9b300 flags=0x0050]
+mpt3sas_cm0: mpt3sas_ctl_pre_reset_handler: Releasing the trace buffer due to adapter reset.
+mpt3sas_cm0 fault info from func: mpt3sas_base_make_ioc_ready
+mpt3sas_cm0: fault_state(0x2666)!
+mpt3sas_cm0: sending diag reset !!
+mpt3sas_cm0: diag reset: SUCCESS
+sd 18:0:0:0: [sdc] REPORT ZONES start lba 0 failed
+sd 18:0:0:0: [sdc] REPORT ZONES: Result: hostbyte=DID_RESET driverbyte=DRIVER_OK
+sd 18:0:0:0: [sdc] 0 4096-byte logical blocks: (0 B/0 B)
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Ma-Ke/EDAC-ti-Fix-possible-null-pointer-dereference-in-_emif_get_id/20240815-094801
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/ras/ras.git edac-for-next
-patch link:    https://lore.kernel.org/r/20240815014511.147065-1-make24%40iscas.ac.cn
-patch subject: [PATCH v4 RESEND] EDAC/ti: Fix possible null pointer dereference in _emif_get_id()
-config: arm-randconfig-002-20240816 (https://download.01.org/0day-ci/archive/20240816/202408160935.A6QFliqt-lkp@intel.com/config)
-compiler: clang version 20.0.0git (https://github.com/llvm/llvm-project f86594788ce93b696675c94f54016d27a6c21d18)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240816/202408160935.A6QFliqt-lkp@intel.com/reproduce)
+Avoid such issue by always mapping the buffer of REPORT ZONES commands
+using DMA_BIDIRECTIONAL (read+write IOMMU mapping). This is done by
+introducing the helper function _base_scsi_dma_map() and using this helper
+in _base_build_sg_scmd() and _base_build_sg_scmd_ieee() instead of calling
+directly scsi_dma_map().
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202408160935.A6QFliqt-lkp@intel.com/
+Fixes: 471ef9d4e498 ("mpt3sas: Build MPI SGL LIST on GEN2 HBAs and IEEE SGL LIST on GEN3 HBAs")
+Cc: stable@vger.kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Link: https://lore.kernel.org/r/20240719073913.179559-3-dlemoal@kernel.org
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+(cherry picked from commit 82dbb57ac8d06dfe8227ba9ab11a49de2b475ae5)
+---
+ drivers/scsi/mpt3sas/mpt3sas_base.c | 20 ++++++++++++++++++--
+ 1 file changed, 18 insertions(+), 2 deletions(-)
 
-All warnings (new ones prefixed by >>):
-
-   In file included from drivers/edac/ti_edac.c:28:
-   In file included from drivers/edac/edac_module.h:15:
-   In file included from drivers/edac/edac_mc.h:30:
-   In file included from include/linux/pci.h:1646:
-   In file included from include/linux/dmapool.h:14:
-   In file included from include/linux/scatterlist.h:8:
-   In file included from include/linux/mm.h:2228:
-   include/linux/vmstat.h:514:36: warning: arithmetic between different enumeration types ('enum node_stat_item' and 'enum lru_list') [-Wenum-enum-conversion]
-     514 |         return node_stat_name(NR_LRU_BASE + lru) + 3; // skip "nr_"
-         |                               ~~~~~~~~~~~ ^ ~~~
->> drivers/edac/ti_edac.c:214:14: warning: result of comparison of constant 18446744073709551615 with expression of type 'u32' (aka 'unsigned int') is always false [-Wtautological-constant-out-of-range-compare]
-     214 |         if (my_addr == OF_BAD_ADDR)
-         |             ~~~~~~~ ^  ~~~~~~~~~~~
-   drivers/edac/ti_edac.c:226:12: warning: result of comparison of constant 18446744073709551615 with expression of type 'u32' (aka 'unsigned int') is always false [-Wtautological-constant-out-of-range-compare]
-     226 |                 if (addr == OF_BAD_ADDR)
-         |                     ~~~~ ^  ~~~~~~~~~~~
-   3 warnings generated.
-
-
-vim +214 drivers/edac/ti_edac.c
-
-   201	
-   202	static int _emif_get_id(struct device_node *node)
-   203	{
-   204		struct device_node *np;
-   205		const __be32 *addrp;
-   206		u32 addr, my_addr;
-   207		int my_id = 0;
-   208	
-   209		addrp = of_get_address(node, 0, NULL, NULL);
-   210		if (!addrp)
-   211			return -EINVAL;
-   212	
-   213		my_addr = (u32)of_translate_address(node, addrp);
- > 214		if (my_addr == OF_BAD_ADDR)
-   215			return -EINVAL;
-   216	
-   217		for_each_matching_node(np, ti_edac_of_match) {
-   218			if (np == node)
-   219				continue;
-   220	
-   221			addrp = of_get_address(np, 0, NULL, NULL);
-   222			if (!addrp)
-   223				return -EINVAL;
-   224	
-   225			addr = (u32)of_translate_address(np, addrp);
-   226			if (addr == OF_BAD_ADDR)
-   227				return -EINVAL;
-   228	
-   229			edac_printk(KERN_INFO, EDAC_MOD_NAME,
-   230				    "addr=%x, my_addr=%x\n",
-   231				    addr, my_addr);
-   232	
-   233			if (addr < my_addr)
-   234				my_id++;
-   235		}
-   236	
-   237		return my_id;
-   238	}
-   239	
-
+diff --git a/drivers/scsi/mpt3sas/mpt3sas_base.c b/drivers/scsi/mpt3sas/mpt3sas_base.c
+index 2803b475dae6..0886177d6530 100644
+--- a/drivers/scsi/mpt3sas/mpt3sas_base.c
++++ b/drivers/scsi/mpt3sas/mpt3sas_base.c
+@@ -2496,6 +2496,22 @@ _base_build_zero_len_sge_ieee(struct MPT3SAS_ADAPTER *ioc, void *paddr)
+ 	_base_add_sg_single_ieee(paddr, sgl_flags, 0, 0, -1);
+ }
+ 
++static inline int _base_scsi_dma_map(struct scsi_cmnd *cmd)
++{
++	/*
++	 * Some firmware versions byte-swap the REPORT ZONES command reply from
++	 * ATA-ZAC devices by directly accessing in the host buffer. This does
++	 * not respect the default command DMA direction and causes IOMMU page
++	 * faults on some architectures with an IOMMU enforcing write mappings
++	 * (e.g. AMD hosts). Avoid such issue by making the report zones buffer
++	 * mapping bi-directional.
++	 */
++	if (cmd->cmnd[0] == ZBC_IN && cmd->cmnd[1] == ZI_REPORT_ZONES)
++		cmd->sc_data_direction = DMA_BIDIRECTIONAL;
++
++	return scsi_dma_map(cmd);
++}
++
+ /**
+  * _base_build_sg_scmd - main sg creation routine
+  *		pcie_device is unused here!
+@@ -2542,7 +2558,7 @@ _base_build_sg_scmd(struct MPT3SAS_ADAPTER *ioc,
+ 	sgl_flags = sgl_flags << MPI2_SGE_FLAGS_SHIFT;
+ 
+ 	sg_scmd = scsi_sglist(scmd);
+-	sges_left = scsi_dma_map(scmd);
++	sges_left = _base_scsi_dma_map(scmd);
+ 	if (sges_left < 0) {
+ 		sdev_printk(KERN_ERR, scmd->device,
+ 		 "scsi_dma_map failed: request for %d bytes!\n",
+@@ -2690,7 +2706,7 @@ _base_build_sg_scmd_ieee(struct MPT3SAS_ADAPTER *ioc,
+ 	}
+ 
+ 	sg_scmd = scsi_sglist(scmd);
+-	sges_left = scsi_dma_map(scmd);
++	sges_left = _base_scsi_dma_map(scmd);
+ 	if (sges_left < 0) {
+ 		sdev_printk(KERN_ERR, scmd->device,
+ 			"scsi_dma_map failed: request for %d bytes!\n",
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.45.2
+
 
