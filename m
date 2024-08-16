@@ -1,126 +1,162 @@
-Return-Path: <stable+bounces-69263-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69264-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08FB0953DD0
-	for <lists+stable@lfdr.de>; Fri, 16 Aug 2024 01:04:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E78A953ECD
+	for <lists+stable@lfdr.de>; Fri, 16 Aug 2024 03:11:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1BBB1F26D46
-	for <lists+stable@lfdr.de>; Thu, 15 Aug 2024 23:04:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 47CAB1C214E8
+	for <lists+stable@lfdr.de>; Fri, 16 Aug 2024 01:11:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA6F21547C4;
-	Thu, 15 Aug 2024 23:04:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7FDF1A28D;
+	Fri, 16 Aug 2024 01:11:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="mrhlIJJJ"
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="mymc92bG";
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="mymc92bG"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D81E12B94;
-	Thu, 15 Aug 2024 23:04:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67EA5B647;
+	Fri, 16 Aug 2024 01:10:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723763050; cv=none; b=ko/0UtD7P0K6eIN5wdU/YWGbg3K1+UsPKFS6Ap0+druDRmu7Cvwxf1SpcEK373H5B6GvXz46/QKlbwNN96VHbkeXyyWitAlCMjm8pc/WOfEJgJ7e7LfR761s+2ZrPCNSnPxnvbwjm2mrT4GWc7mWsMrpSiFP5veD+14CIAoyBkI=
+	t=1723770663; cv=none; b=uaN14Kh/07EzTXkET5Tl+r/Ajs5WCKht2TZiio+kPKP7d9mP0YeCoK2qsNSye8tsxPvhHG5lQCmetWeG/bkcwBZgwZri59NVkMPZdeXEq4WBiQb0klsnoFgsPW51WjkynLEJApFcdbRmX7i1dBrHsQvS96d1KfW8ieWwLbNsoTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723763050; c=relaxed/simple;
-	bh=IEEC+jtffX5lcp1nrDsJrcpgvd25d72MFCtAJE047JM=;
-	h=Date:To:From:Subject:Message-Id; b=CKxL+CePSOWmtnXN32GOL7vinygmWZY1m0+WNFfEBYFOGUByJyWCZAxl0ClKwbBEPEkK0nR6RxDwjMgf90iH6wNVIPTKAvxaTn5JHIyuD+g27jMD3do+n7485/TjuDBOC93M3pJP3JJik5WmUMFIQgMFAIOrNYFVw6ZGowVvrUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=mrhlIJJJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FB69C32786;
-	Thu, 15 Aug 2024 23:04:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1723763050;
-	bh=IEEC+jtffX5lcp1nrDsJrcpgvd25d72MFCtAJE047JM=;
-	h=Date:To:From:Subject:From;
-	b=mrhlIJJJ90XRPcdDb2P5mX6YOp0iDTX8treDLHfu9KysdlNFx8BHY5tHnG5xB9wSH
-	 mlfmBGX34jBcHeIH+SXwmlxk9+WdUl00/b3mtupzMTJfQDAl13tNijN59onKw6/HNu
-	 UYdKZeM6Pkso2QW6vGK1hLCRa8DsQ7q/yo3yE2zE=
-Date: Thu, 15 Aug 2024 16:04:09 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,kees@kernel.org,erhard_f@mailbox.org,davidgow@google.com,ivan.orlov0322@gmail.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + kunit-overflow-fix-ub-in-overflow_allocation_test.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240815230410.2FB69C32786@smtp.kernel.org>
+	s=arc-20240116; t=1723770663; c=relaxed/simple;
+	bh=Wg98roUs9UnDkZvwfwUi/QM50bCz9k2dNbQZp4JxeGg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ubB4dWtVVl6AdU0/yCSZ1u8KuO+ZmaV+UrQ/ynCqTs1IFuNIALjra1fIFTKvAiJZQoHFdjBQpGVjlnqTpJ30WUfFcj4/xjEEDWk/fAp2piZp4MbhA4B0iPmfefcicovxRIiksDaOyFbeBAQuob3QnH2OwX6dQpLX/Hd0cohmtf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=mymc92bG; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=mymc92bG; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 96ABC2288B;
+	Fri, 16 Aug 2024 01:10:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1723770657; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=5izJoME/EgOGqrOxxJbNIFZPzL4ZTxq6Pfp9grC9ENs=;
+	b=mymc92bGEglNExdRewcYIqalOz7g4HU6w6wnnOnNoVLg/iLJjODpnq1VZu5tz22QpOmhXd
+	xQmezh+zbTvqdCcKmSr9TUBLY9spBxTfPBxSxtxsKzaaZBs63UVgl+3JcM66TATv2CVIlf
+	uXt6xd2KSBFmDjtH/ITDfde/X5tRSN8=
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1723770657; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=5izJoME/EgOGqrOxxJbNIFZPzL4ZTxq6Pfp9grC9ENs=;
+	b=mymc92bGEglNExdRewcYIqalOz7g4HU6w6wnnOnNoVLg/iLJjODpnq1VZu5tz22QpOmhXd
+	xQmezh+zbTvqdCcKmSr9TUBLY9spBxTfPBxSxtxsKzaaZBs63UVgl+3JcM66TATv2CVIlf
+	uXt6xd2KSBFmDjtH/ITDfde/X5tRSN8=
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 74E3E13983;
+	Fri, 16 Aug 2024 01:10:56 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id xLXcCyCnvmbXJwAAD6G6ig
+	(envelope-from <wqu@suse.com>); Fri, 16 Aug 2024 01:10:56 +0000
+From: Qu Wenruo <wqu@suse.com>
+To: linux-btrfs@vger.kernel.org
+Cc: stable@vger.kernel.org
+Subject: [PATCH] btrfs: only enable extent map shrinker for DEBUG builds
+Date: Fri, 16 Aug 2024 10:40:38 +0930
+Message-ID: <09ca70ddac244d13780bd82866b8b708088362fb.1723770634.git.wqu@suse.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Flag: NO
+X-Spam-Score: -2.80
+X-Spam-Level: 
+X-Spamd-Result: default: False [-2.80 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_MISSING_CHARSET(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	DKIM_SIGNED(0.00)[suse.com:s=susede1];
+	RCPT_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	ARC_NA(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	RCVD_TLS_ALL(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_DN_NONE(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,suse.com:mid]
 
+Although there are several patches improving the extent map shrinker,
+there are still reports of too frequent shrinker behavior, taking too
+much CPU for the kswapd process.
 
-The patch titled
-     Subject: kunit/overflow: fix UB in overflow_allocation_test
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     kunit-overflow-fix-ub-in-overflow_allocation_test.patch
+So let's only enable extent shrinker for now, until we got more
+comprehensive understanding and a better solution.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/kunit-overflow-fix-ub-in-overflow_allocation_test.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Ivan Orlov <ivan.orlov0322@gmail.com>
-Subject: kunit/overflow: fix UB in overflow_allocation_test
-Date: Thu, 15 Aug 2024 01:04:31 +0100
-
-The 'device_name' array doesn't exist out of the
-'overflow_allocation_test' function scope.  However, it is being used as a
-driver name when calling 'kunit_driver_create' from
-'kunit_device_register'.  It produces the kernel panic with KASAN enabled.
-
-Since this variable is used in one place only, remove it and pass the
-device name into kunit_device_register directly as an ascii string.
-
-Link: https://lkml.kernel.org/r/20240815000431.401869-1-ivan.orlov0322@gmail.com
-Fixes: ca90800a91ba ("test_overflow: Add memory allocation overflow tests")
-Signed-off-by: Ivan Orlov <ivan.orlov0322@gmail.com>
-Tested-by: Erhard Furtner <erhard_f@mailbox.org>
-Reviewed-by: David Gow <davidgow@google.com>
-Cc: Kees Cook <kees@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Link: https://lore.kernel.org/linux-btrfs/3df4acd616a07ef4d2dc6bad668701504b412ffc.camel@intelfx.name/
+Link: https://lore.kernel.org/linux-btrfs/c30fd6b3-ca7a-4759-8a53-d42878bf84f7@gmail.com/
+Fixes: 956a17d9d050 ("btrfs: add a shrinker for extent maps")
+CC: stable@vger.kernel.org # 6.10+
+Signed-off-by: Qu Wenruo <wqu@suse.com>
 ---
+I also checked how XFS (the only other fs implemented the
+free_cached_objects callback) implemented the callback.
 
- lib/overflow_kunit.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+They did two things:
 
---- a/lib/overflow_kunit.c~kunit-overflow-fix-ub-in-overflow_allocation_test
-+++ a/lib/overflow_kunit.c
-@@ -668,7 +668,6 @@ DEFINE_TEST_ALLOC(devm_kzalloc,  devm_kf
- 
- static void overflow_allocation_test(struct kunit *test)
- {
--	const char device_name[] = "overflow-test";
- 	struct device *dev;
- 	int count = 0;
- 
-@@ -678,7 +677,7 @@ static void overflow_allocation_test(str
- } while (0)
- 
- 	/* Create dummy device for devm_kmalloc()-family tests. */
--	dev = kunit_device_register(test, device_name);
-+	dev = kunit_device_register(test, "overflow-test");
- 	KUNIT_ASSERT_FALSE_MSG(test, IS_ERR(dev),
- 			       "Cannot register test device\n");
- 
-_
+- Make sure there is only one queued reclaim
+  Currently we only do the reclaim for kswapd, but for multi-node
+  systems, we can still have multiple kswapd processes.
 
-Patches currently in -mm which might be from ivan.orlov0322@gmail.com are
+  But I do not think that's the root cause.
 
-kunit-overflow-fix-ub-in-overflow_allocation_test.patch
+- With an extra delay of 60% of xfs_syncd_centiseccs
+  The default value for xfs_syncd_centiseccs is 3000 centiseconds (30s),
+  with a minimal 100 centiseconds (1s).
+  This results the reclaim work only to be executed at most every 18
+  seconds by default (or 0.6s for the minimal interval).
+
+  I believe this is the root cause, we have no extra delay and that
+  makes btrfs to shrink extent maps too frequently.
+---
+ fs/btrfs/super.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/fs/btrfs/super.c b/fs/btrfs/super.c
+index 11044e9e2cb1..98fa0f382480 100644
+--- a/fs/btrfs/super.c
++++ b/fs/btrfs/super.c
+@@ -2402,7 +2402,13 @@ static long btrfs_nr_cached_objects(struct super_block *sb, struct shrink_contro
+ 
+ 	trace_btrfs_extent_map_shrinker_count(fs_info, nr);
+ 
+-	return nr;
++	/*
++	 * Only report the real number for DEBUG builds, as there are reports of
++	 * serious performance degradation caused by too frequent shrinks.
++	 */
++	if (IS_ENABLED(CONFIG_BTRFS_DEBUG))
++		return nr;
++	return 0;
+ }
+ 
+ static long btrfs_free_cached_objects(struct super_block *sb, struct shrink_control *sc)
+-- 
+2.46.0
 
 
