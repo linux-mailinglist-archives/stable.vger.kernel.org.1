@@ -1,145 +1,135 @@
-Return-Path: <stable+bounces-69345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69346-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FB2295514A
-	for <lists+stable@lfdr.de>; Fri, 16 Aug 2024 21:18:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92A0D955176
+	for <lists+stable@lfdr.de>; Fri, 16 Aug 2024 21:28:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B65B8B214B7
-	for <lists+stable@lfdr.de>; Fri, 16 Aug 2024 19:18:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 14E69B239A7
+	for <lists+stable@lfdr.de>; Fri, 16 Aug 2024 19:28:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48AF21BE861;
-	Fri, 16 Aug 2024 19:18:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6FA41C4610;
+	Fri, 16 Aug 2024 19:28:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="INfiEl7L";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="hmgr6lxg";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="INfiEl7L";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="hmgr6lxg"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YOb03rvt"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1E046F30D;
-	Fri, 16 Aug 2024 19:18:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF4561C3F3E;
+	Fri, 16 Aug 2024 19:28:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723835911; cv=none; b=S8LqzT2RA3XO4SIT8vld51lXyRCzkEX5SyUqpTmQERTGSuC8aHPBMp1uLJJfXhwdTcrhVIpgDyQ9UApVZ3eQGcqr35iorAjNkybe8CqUtrbtol9FryzXaZXYY3uuxDSRbOfUq7ZkcWA+Sn2nqw2MNstpgmnlnZQDgdmsFTEeWTE=
+	t=1723836483; cv=none; b=DkghdvMQU4Ox/ZcRXi8+cNqsfnc4sie8ZlnGA4eRpdFrMxSGMl7QB9QfWx6tByf5FIaiBx5zvRVVdkjS60PrAgP9B1SMrsG6Jt3GVEveLagLA82BTKccoF3beBRqKys+V4g3WA6cef9DmsnjSBOodvTGA+hmYcHCzq3RyLo6CaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723835911; c=relaxed/simple;
-	bh=wRF91Xuac5qlFY6lEYkJrYyrF3JIQi24NGZajxH9k/c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HhTd/ZcjOrBJK2EWbDkCPo/PLzZQwc0CxxMMajsOnB8gMo/prE6ObR7wR9FOLs51uj3/+DuyQN8QjZyKjjK7BB+7BpQ/zN2Fzgffi62YN+wXpZpqF5CSlxElvLQA+HJKPTWXxIAUU2hJuESEqj8MZ+XuwNn50FxoR8XBh2Sk5tY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=INfiEl7L; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=hmgr6lxg; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=INfiEl7L; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=hmgr6lxg; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 94E13200F8;
-	Fri, 16 Aug 2024 19:18:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1723835906;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qRt9XlnmYrBnBCRNCGsrSo1pRzErx88p8BUGEGdG2mc=;
-	b=INfiEl7L/2s7UzmGv5FdD40Y4VIqvQUw2fq1lKPukeoNzXGFqEWdfNZzxjFd9E/JaYB7lT
-	1HpiNHo9mdXGKV5fSK8ZCZ2nmryHF6vWNw8GjURVRuA+arnXpwwI6IWL/iOtOMD/+Fcld1
-	WMGzThWSqX8EAYAivD48XNhHxW8DEeA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1723835906;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qRt9XlnmYrBnBCRNCGsrSo1pRzErx88p8BUGEGdG2mc=;
-	b=hmgr6lxgW7DE9po9ONoWWkcn1/wfn6ccYX+zg8/gOz9Wfq/cgWrxvyUxPCt7d6DV+KtCGe
-	/aZZ+1Glry7q+kDw==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1723835906;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qRt9XlnmYrBnBCRNCGsrSo1pRzErx88p8BUGEGdG2mc=;
-	b=INfiEl7L/2s7UzmGv5FdD40Y4VIqvQUw2fq1lKPukeoNzXGFqEWdfNZzxjFd9E/JaYB7lT
-	1HpiNHo9mdXGKV5fSK8ZCZ2nmryHF6vWNw8GjURVRuA+arnXpwwI6IWL/iOtOMD/+Fcld1
-	WMGzThWSqX8EAYAivD48XNhHxW8DEeA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1723835906;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qRt9XlnmYrBnBCRNCGsrSo1pRzErx88p8BUGEGdG2mc=;
-	b=hmgr6lxgW7DE9po9ONoWWkcn1/wfn6ccYX+zg8/gOz9Wfq/cgWrxvyUxPCt7d6DV+KtCGe
-	/aZZ+1Glry7q+kDw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 75A471379A;
-	Fri, 16 Aug 2024 19:18:26 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id yDgxHAKmv2Z/VgAAD6G6ig
-	(envelope-from <dsterba@suse.cz>); Fri, 16 Aug 2024 19:18:26 +0000
-Date: Fri, 16 Aug 2024 21:18:21 +0200
-From: David Sterba <dsterba@suse.cz>
-To: Qu Wenruo <wqu@suse.com>
-Cc: linux-btrfs@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] btrfs: only enable extent map shrinker for DEBUG builds
-Message-ID: <20240816191821.GI25962@twin.jikos.cz>
-Reply-To: dsterba@suse.cz
-References: <09ca70ddac244d13780bd82866b8b708088362fb.1723770634.git.wqu@suse.com>
+	s=arc-20240116; t=1723836483; c=relaxed/simple;
+	bh=CIw9DPk2JTHUJqxqpuLOS7kldbV+bgDrJlwd4gP3AOs=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Ft1idvIj8niLnq8f0zyr+eLeH8mlkm0dNA1vcntKwmaVChj588VB81rtPQoegacZwIyq1XyHtfoe2og41tIcAssUBUWPT/5QMF94c+5A7smMZxDbwDzV3KTZF/8edZ1Iyetnq7N9Nfx1iKb59t4ohJ2p+oeDvmjvkMDiiEPr0ww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YOb03rvt; arc=none smtp.client-ip=209.85.167.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-530d0882370so2409245e87.3;
+        Fri, 16 Aug 2024 12:28:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1723836480; x=1724441280; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=CE6XtGp7KoeNdDNBrlXqZpr1Iyoicx4DxbmZrRjkjss=;
+        b=YOb03rvt4TUwVdO2gTTsyj6rtiRfLQhiEh1EMlTS7akdB2t0q5xjmnVXQpHtX2HSZh
+         2jJ0gBlRgDZSsbTGjNuGizMmY/CLZhZzDJBJxy8UnXCm84mVE3mB0AT8ENaSM35sohZM
+         iz0NcfMvXfpBh0CNcC2yP/u/NHkjb9NaRg3hPioqkxK51moq6iO5JGS267MaqB9pvI75
+         8wHioyQc0Pd8w3CEA8cs0qfLv4i1wXwzSl1cmLyIOlWVh2ZxJjOxXWmYy/pkx7QpvDhY
+         x7uzV3VkdRgWYx4bVskHTzFh7ihQWgu1WhBVSSoBKKS9oxsym0uN404UCvgSAhsq7VMb
+         lECA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723836480; x=1724441280;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=CE6XtGp7KoeNdDNBrlXqZpr1Iyoicx4DxbmZrRjkjss=;
+        b=FVy7EfpV2Ag882ZaG+fI6k03mN+Z3lvBfRMcfzT7ZySuuDqzyZZZghBF9PZXqsdgtc
+         ycSBmWzwGZ+jAnu5FAY0KtVTZvA3ziF4DapwVxxQw92AEcmdGi4wQDvAzYNYfVpAy9WP
+         7Mhm+FZLiHxOJP02ZDZpIQLO84Gh/4NQTTrBPDDGvKu9Lr3BNB8EtON8MzK+bkROHP5o
+         ZuCYLBZZ6JWHWc096mkcTLvEkzdUSmPQmxBnCi8DbLDCqvjY5T39+KoRLh+KTWelnrL0
+         1HYQYueVBxsMnR/05zEs4rBL041NtasGiv2q1aJdjxD5N73+/SYVRmLVjwoGqsdCibvY
+         3l/w==
+X-Forwarded-Encrypted: i=1; AJvYcCWv4GDpJpphM9oTRsH7uHBrrKmgKg7hPGVip/D+BUbfnSeOJ1/9ddKzQy0h5dVuwpSBBa50zcIHh+ddRL/TF/HVidUWZmDWT+rDMjH9MjMVvAXOCYU/UhkUr5juJMKFq2R3+JMKGpLo
+X-Gm-Message-State: AOJu0Yz2XgNv7T4oqpCjxuHRZ4i+dC4whmOHNZ6dUqrAH995adZwfJdi
+	cNymNyVp6HXdH0rTBMoRTt/hCXltXs7ScUks4VHLzhGE+BMlz8Kn6Gfj5Q884BJLVQ==
+X-Google-Smtp-Source: AGHT+IEymvjbBVzQIV0kHSXsyBKvbYFRUuVdZNg1ZdOqlMhK2EiiNqpaLjZQcYNP5PbzUZWCqF1gqw==
+X-Received: by 2002:a05:6512:104a:b0:52e:7f09:aaae with SMTP id 2adb3069b0e04-5331c6b0286mr2768812e87.27.1723836479323;
+        Fri, 16 Aug 2024 12:27:59 -0700 (PDT)
+Received: from localhost.localdomain ([178.69.224.101])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5330d3afb15sm655960e87.21.2024.08.16.12.27.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 16 Aug 2024 12:27:59 -0700 (PDT)
+From: Artem Sadovnikov <ancowi69@gmail.com>
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Artem Sadovnikov <ancowi69@gmail.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	linux-ide@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org
+Subject: [PATCH v5 5.10/5.15] ata: libata-scsi: check cdb length for VARIABLE_LENGTH_CMD commands
+Date: Fri, 16 Aug 2024 22:27:52 +0300
+Message-Id: <20240816192752.9488-1-ancowi69@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <09ca70ddac244d13780bd82866b8b708088362fb.1723770634.git.wqu@suse.com>
-User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
-X-Spam-Level: 
-X-Spam-Flag: NO
-X-Spamd-Result: default: False [-8.00 / 50.00];
-	REPLY(-4.00)[];
-	BAYES_HAM(-3.00)[99.99%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	HAS_REPLYTO(0.30)[dsterba@suse.cz];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	RCPT_COUNT_THREE(0.00)[3];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	REPLYTO_ADDR_EQ_FROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email];
-	RCVD_COUNT_TWO(0.00)[2];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[]
-X-Spam-Score: -8.00
+Content-Transfer-Encoding: 8bit
 
-On Fri, Aug 16, 2024 at 10:40:38AM +0930, Qu Wenruo wrote:
-> Although there are several patches improving the extent map shrinker,
-> there are still reports of too frequent shrinker behavior, taking too
-> much CPU for the kswapd process.
-> 
-> So let's only enable extent shrinker for now, until we got more
-> comprehensive understanding and a better solution.
+No upstream commit exists for this commit.
 
-Thanks, that's probably better than to disable it completely. I'll
-forward to patch so we get it to sable next week.
+Fuzzing of 5.10 stable branch reports a slab-out-of-bounds error in
+ata_scsi_pass_thru.
 
-Reviewed-by: David Sterba <dsterba@suse.com>
+The error is fixed in 5.18 by commit ce70fd9a551a ("scsi: core: Remove the
+cmd field from struct scsi_request") upstream.
+Backporting this commit would require significant changes to the code so
+it is better to use a simple fix for that particular error.
+
+The problem is that the length of the received SCSI command is not
+validated if scsi_op == VARIABLE_LENGTH_CMD. It can lead to out-of-bounds
+reading if the user sends a request with SCSI command of length less than
+32.
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Acked-by: Damien Le Moal <dlemoal@kernel.org>
+Co-developed-by: Mikhail Ivanov <iwanov-23@bk.ru>
+Signed-off-by: Mikhail Ivanov <iwanov-23@bk.ru>
+Co-developed-by: Mikhail Ukhin <mish.uxin2012@yandex.ru>
+Signed-off-by: Mikhail Ukhin <mish.uxin2012@yandex.ru>
+Signed-off-by: Artem Sadovnikov <ancowi69@gmail.com>
+---
+Link: https://lore.kernel.org/lkml/20240711151546.341491-1-ancowi69@gmail.com/T/#u
+unfortunately, stable@vger.kernel.org wasn't initially mentioned.
+ drivers/ata/libata-scsi.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
+index 36f32fa052df..4397986db053 100644
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -3949,6 +3949,9 @@ static unsigned int ata_scsi_var_len_cdb_xlat(struct ata_queued_cmd *qc)
+ 	const u8 *cdb = scmd->cmnd;
+ 	const u16 sa = get_unaligned_be16(&cdb[8]);
+ 
++	if (scmd->cmd_len != 32)
++		return 1;
++
+ 	/*
+ 	 * if service action represents a ata pass-thru(32) command,
+ 	 * then pass it to ata_scsi_pass_thru handler.
+-- 
+2.34.1
+
 
