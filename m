@@ -1,131 +1,149 @@
-Return-Path: <stable+bounces-69314-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69315-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C3DA954684
-	for <lists+stable@lfdr.de>; Fri, 16 Aug 2024 12:09:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E07995468E
+	for <lists+stable@lfdr.de>; Fri, 16 Aug 2024 12:13:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D8171F2254C
-	for <lists+stable@lfdr.de>; Fri, 16 Aug 2024 10:09:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D05551F22CBC
+	for <lists+stable@lfdr.de>; Fri, 16 Aug 2024 10:13:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B3E1172760;
-	Fri, 16 Aug 2024 10:09:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82041170A2D;
+	Fri, 16 Aug 2024 10:13:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b="0rAapn9M"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h0FTh5Nl"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.75])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DB7A170A2D;
-	Fri, 16 Aug 2024 10:09:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.72.192.75
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9888881741;
+	Fri, 16 Aug 2024 10:13:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723802955; cv=none; b=iT1Za5CqycltO1kWvqym2vvZsrXBl2WG62YiCbJfW8afxCHNFu3Fb+Z5fKXo+MuLVRRWStiKRBEyNlWJMxfJZuDmNOAyDqFIdDeOQkiZztjeQ6K7XPaxm7lR0oBZ7sDHeKaHCM1FeX/fbHdOzEzSEN92HOk7zE+2K+9exR5fL70=
+	t=1723803209; cv=none; b=Q4vz5TJzRtPnEdWbWDOot160hMcKip6VoTbsViO33KgY63wm6QVSLLnoArfnWhkvYE3ebzBOToqaAg3WkI9eFybHxh1Z3Ky/LzcikVH2xLYSKraokpatM6Af/9SsUySX/d/abgA3ACY6nX7Kntfz14ZmgciS4HOc7CAYEzi5eXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723802955; c=relaxed/simple;
-	bh=XblC078xni1zsUW+8Or/GJX8jPozvOle7xqNGC4RZTA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HVX+Pk9NsJKySVrq5xuOy6qm00rIyM27W2J45+PWPjTerYfzYm4rzl7xTtixusxfFRxsdeat3akaMeX+Pob0YQ1fobZvLbIYZVeOFa1MNWA6ReaRZ+6t0Zoj76yD7A4Mqu36sunOChtqrad+bEDjcz72cLG+z+6kjPeUbNU/iKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu; spf=pass smtp.mailfrom=heusel.eu; dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b=0rAapn9M; arc=none smtp.client-ip=217.72.192.75
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=heusel.eu
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=heusel.eu;
-	s=s1-ionos; t=1723802902; x=1724407702; i=christian@heusel.eu;
-	bh=do2Bwj8g7fpyb7cE3waI5N/4aZzXIwqgM6OvvBVCdzU=;
-	h=X-UI-Sender-Class:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:In-Reply-To:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=0rAapn9M/HHnd+OSQOQMZzhUhuXl3L6gQrshVPb8Gq1jKgk+mze+yQE+Nw15OK/R
-	 w+XvPC/gFVUNaz9rQECbW9X/f0ndmmlz1Bx00ZQR85cd1/LiopZZQD0hxBwyYn6Q4
-	 l3wZKw1jmnMvj4uuZuEuhlzzC+EzH2zIi/JBp6iCRpT2joQFGB2G70tL0PVpF+qxI
-	 JNS3nhw+cIEX1r0FCgDC1CfEkA3LI5AtrcxltH3wtdKxe9+9sEqYbjmgLj6nekhZt
-	 iS7WLBtBJwMXxzFCpYO+5A5iLWxSuG9VbB2L9vWBGPxTrHhQFFECNVW4cmiVV/dG7
-	 oXGtnoTnTuCtynKS8A==
-X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
-Received: from localhost ([93.196.141.81]) by mrelayeu.kundenserver.de
- (mreue108 [212.227.15.183]) with ESMTPSA (Nemesis) id
- 1N49d1-1sEOmd2GmH-00scsn; Fri, 16 Aug 2024 12:08:22 +0200
-Date: Fri, 16 Aug 2024 12:08:18 +0200
-From: Christian Heusel <christian@heusel.eu>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, akpm@linux-foundation.org, 
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org, 
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com, 
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, 
-	allen.lkml@gmail.com, broonie@kernel.org
-Subject: Re: [PATCH 6.10 00/22] 6.10.6-rc1 review
-Message-ID: <6bd15eac-5ec9-42b6-8644-a716ffef67a1@heusel.eu>
-References: <20240815131831.265729493@linuxfoundation.org>
+	s=arc-20240116; t=1723803209; c=relaxed/simple;
+	bh=yMpT0AwU6aa6vozdU3i8e/x/S3yREPELsS/sP0YSs6A=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Es5WQu3mHTe07yWX2LSjCRySvukpJE8OUKrYW0y+7pWdQq06gTQlyAbKNSFClNn73pFGbs7UiMPvjLaIa/VCpFMrnc2qI7+TkYDnYEuFbmnLbD0whpmzK4+8MtoGB7YrrFt2G3tZIse+bzJ8vDe4ZtTNmDSw7aQSsqD0fXyldJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h0FTh5Nl; arc=none smtp.client-ip=209.85.208.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2f029e9c9cfso26994491fa.2;
+        Fri, 16 Aug 2024 03:13:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1723803206; x=1724408006; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=mX0QjytBccHj3E/U2+ZxJG6mQrfJ0MGA/Z6TLsinBxw=;
+        b=h0FTh5Nln8jHaqlDKE+J1ElAR+BYuuOPEP24jp034Fi8GVzBtwVdHWl2o2HCy0ocDV
+         n6deeSCTgyLT6s9Uz6bED34lOqMOMuXE2gUtJXHlhUUv7RpaE/ndyiHQmfL9moDLhR2P
+         yHalXfYogWcn6eu1eV4m+bkejvOOxseWzovlUtf3zHKKbsSVvcmKDm/0vsghJUd18h30
+         IIvIibQAnpmphxqygDlFMa27xjZ4I/Ha9UTZm8aPCnIx+s6OZySaw19JrhLNED5eOQ42
+         X5+rdlHvNyDwGkQOHf9B0g0umS2te61XyzErRXS+jhJu7MdVTf7p6Imi7R8nCAwUW2LA
+         /sHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723803206; x=1724408006;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mX0QjytBccHj3E/U2+ZxJG6mQrfJ0MGA/Z6TLsinBxw=;
+        b=u4kgDPTMos7sH0nGI2UqNd4zE6CWY9jXjS5gSdZOMNBSjWLM4Ax7h5Kv/3PoFgv/l5
+         ij5Xi03FaaHk2iPLPa2Dq5FNa91XnQ4TXT7y4Abaz8JTgFq8gDkRf5SPPS+VzQVWpE+v
+         IvLN2AoXEX8JSwbDTPgKZGhLF0I+cZUya0rAHRJ5C0Msg83kuSCgKWJ5njTxsO4XiaFV
+         vxZsSAm7X2w8kujz64nAyXHjx5Bj63bKXn3xnrg8jjIsv2v90TzVXkT6ztBZwp5ystM7
+         r0H21j7bsO0gHAtvX7586XYhuSCQxo62LGAnEh8rrTu4AY+zrfAHZo7j+UI9mk2++s6W
+         IMRA==
+X-Forwarded-Encrypted: i=1; AJvYcCVTlelru4/T2MIFbjqq6lyux1SviQprYDv2+D8Hs3IGdOSiFVCwvsg7gMe1Q9g83HAE+yAFVGGo0B05NWRsXKDiydfsg3zw2c8Qu55uu1To7pewnXb79SYw7ugjxc/1AN2WOFTo
+X-Gm-Message-State: AOJu0YzXjwElLVI6e0kvE+sA5y1ycX584PkliyLzl8nrPsnm8FxA6eFQ
+	rZD/a/W9D3KLEJOEEQkW6feuDG+RC+HBsZU4Hp/c8OKilTfpF6RN
+X-Google-Smtp-Source: AGHT+IHoN/OTahMDYZFxiU7ILKiovPlHB8SS+Ly2Ed8r65CGLkK2ARLHV4+PTXUycWoouYbLtPjl5w==
+X-Received: by 2002:a05:6512:10cd:b0:530:b871:eba9 with SMTP id 2adb3069b0e04-5331c691e9dmr2025403e87.1.1723803205198;
+        Fri, 16 Aug 2024 03:13:25 -0700 (PDT)
+Received: from pc636 (host-90-233-214-145.mobileonline.telia.com. [90.233.214.145])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5330d41df75sm501629e87.194.2024.08.16.03.13.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 16 Aug 2024 03:13:24 -0700 (PDT)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
+Date: Fri, 16 Aug 2024 12:13:21 +0200
+To: Hailong Liu <hailong.liu@oppo.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Uladzislau Rezki <urezki@gmail.com>, Michal Hocko <mhocko@suse.com>,
+	Barry Song <21cnbao@gmail.com>,
+	Christoph Hellwig <hch@infradead.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Tangquan Zheng <zhengtangquan@oppo.com>, stable@vger.kernel.org,
+	Baoquan He <bhe@redhat.com>, Matthew Wilcox <willy@infradead.org>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [RESEND PATCH v1] mm/vmalloc: fix page mapping if
+ vm_area_alloc_pages() with high order fallback to order 0
+Message-ID: <Zr8mQbc3ETdeOMIK@pc636>
+References: <20240808122019.3361-1-hailong.liu@oppo.com>
+ <CAGsJ_4z4+CCDoPR7+dPEhemBQN60Cj84rCeqRY7-xvWapY4LGg@mail.gmail.com>
+ <ZrXiUvj_ZPTc0yRk@tiehlicka>
+ <ZrXkVhEg1B0yF5_Q@pc636>
+ <20240815220709.47f66f200fd0a072777cc348@linux-foundation.org>
+ <20240816091232.fsliktqgza5o5x6t@oppo.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="akhn5qsxjckqmavt"
-Content-Disposition: inline
-In-Reply-To: <20240815131831.265729493@linuxfoundation.org>
-X-Provags-ID: V03:K1:9aabSk45RqJ+ZtzmTO3WSN0YZBmstwf7pqgDl01OY/mcI19xKAl
- ibHfNRGveAR7kNfHMi8R+04n/Jh0jSfZ1juH5Mo2gJX8dwESaG/OuVvWMmnDG5vaqClPGZr
- 9PLmCTBMx+9J1Aanv0hWf+V2Dzpdpe7ixRoDwapmOA2lHzH+jz58zGqMtRnp9jFr5KzToMC
- m2SxSyyqOi8c/ylX2qX4w==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:ffyTtNvRhe0=;t8hEJbfZanaSV4+rzi6cbpBajog
- PqVo7CKlw/uuXQiyBf6lzUn7CSoOtbYW6HWg4b7G9A1fCaU96J0SaN1QIImsJb2bmXqmUkrEU
- VO/AD/bpvQz1G5Oy1eLSevkpTKTE4T+Fx4uvwF2J1OrIXaaIajgWvAq1FZQ1zKiuCyQOlSYYI
- sYD+o+wKTjdL5nE/TE4hBRq2hL6wJuv4VXrIa8VjjxLdHyjC/IAtz5sGa7G1GD5WsXyoP9sAq
- IvvCNYb6JxdSAKoYBh12A90Eb2cZCxPJ6vafoubmf0KLj3NJW1A63dRvdKacdKCSGqt+IZvnw
- L75whREfXqb2OroNwLMm7jeSdoKHxnaIDr246/uqr1LjwPX/zKi5PqPQAGAbDlQ+y/Khglc1j
- WqMwd0Gf9feUGDcHq+ofEb4AIQSxVCnc+RkxPafxtA+bpNS9633h78Gf1kO7Ouq40SmOa3DLW
- ikNBdEugH4ZFx9zvz/O0ecpGpBuZTBkgd/j2WpgC7nscISZyhJyRBOFFf9ey1g/OS22QbEBx6
- iDaADE/ceXmgwI3xZjpjTjc5CTuyb7zfXU6ka/bcfbeQU5k3dQPOGo8cMaoBXjxaIsuFU2E9C
- BzJwazXPJZNJo6UR8Rkf48TneLyh6MqJgh7buDUwOOkQOMwxByJIK0Zf/auI/9qzvj+O7a1lP
- SsQjnU6wddRZoQU0GTqH1G+Hvxhe66yc1fU33eK0XKMde03hMac+Yd9Nj6+M5mY27tz1Nwa/G
- 1UFRMU3H0l6Vfw6TKzmzigp4Ri7b59PbQ==
-
-
---akhn5qsxjckqmavt
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20240816091232.fsliktqgza5o5x6t@oppo.com>
 
-On 24/08/15 03:25PM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.10.6 release.
-> There are 22 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->=20
-> Responses should be made by Sat, 17 Aug 2024 13:18:17 +0000.
-> Anything received after that time might be too late.
+On Fri, Aug 16, 2024 at 05:12:32PM +0800, Hailong Liu wrote:
+> On Thu, 15. Aug 22:07, Andrew Morton wrote:
+> > On Fri, 9 Aug 2024 11:41:42 +0200 Uladzislau Rezki <urezki@gmail.com> wrote:
+> >
+> > > > > Acked-by: Barry Song <baohua@kernel.org>
+> > > > >
+> > > > > because we already have a fallback here:
+> > > > >
+> > > > > void *__vmalloc_node_range_noprof :
+> > > > >
+> > > > > fail:
+> > > > >         if (shift > PAGE_SHIFT) {
+> > > > >                 shift = PAGE_SHIFT;
+> > > > >                 align = real_align;
+> > > > >                 size = real_size;
+> > > > >                 goto again;
+> > > > >         }
+> > > >
+> > > > This really deserves a comment because this is not really clear at all.
+> > > > The code is also fragile and it would benefit from some re-org.
+> > > >
+> > > > Thanks for the fix.
+> > > >
+> > > > Acked-by: Michal Hocko <mhocko@suse.com>
+> > > >
+> > > I agree. This is only clear for people who know the code. A "fallback"
+> > > to order-0 should be commented.
+> >
+> > It's been a week.  Could someone please propose a fixup patch to add
+> > this comment?
+> 
+> Hi Andrew:
+> 
+> Do you mean that I need to send a v2 patch with the the comments included?
+> 
+It is better to post v2.
 
-Tested-by: Christian Heusel <christian@heusel.eu>
+But before, could you please comment on:
 
-Tested on a ThinkPad E14 Gen 3 with a AMD Ryzen 5 5500U CPU
+in case of order-0, bulk path may easily fail and fallback to the single
+page allocator. If an request is marked as NO_FAIL, i am talking about
+order-0 request, your change breaks GFP_NOFAIL for !order.
 
---akhn5qsxjckqmavt
-Content-Type: application/pgp-signature; name="signature.asc"
+Am i missing something obvious?
 
------BEGIN PGP SIGNATURE-----
+Thanks!
 
-iQIzBAABCAAdFiEEb3ea3iR6a4oPcswTwEfU8yi1JYUFAma/JRIACgkQwEfU8yi1
-JYWTLA//d3OSFssO46jfyyh/6gniFNV3Z5Nq/lwnHxgStLiDVYCxlSohbz0I7rKK
-oI9XfwiKZ+PhUagudeyNgscQjygKt/Z1stodjRJNKEXIq+syQB23KqLifTLqRazN
-FdtBxq4ZfyFMAALv/dZuEKZF6BdX60er8sNHmZU6rIym+Ux9DxERKGoqVAGiUl4j
-YV0BXk7p1CaccVY3jD3WxTZ4loKpXLJmfPU2EEAr1pWlgjTwQPOljoYbX23w24Pi
-fbvgGukCzVn1/M9fBN3rXz9SH/eHVZLTP6qKFHpQKZ2izZ0Z4UHRnweRgUqrkHZm
-TKfmyHZMO1Xnu3OOo6q2wUT5p8RpCZe0GiQZVz7ZWgQs3YcVCYrnUKgq9Lb1WEm4
-kVL21hJOSiGFNSv7f70iqhvGTAnUfW5lGKyUVyNzKR4jZK62VJgi1bhFp62z4pfa
-5zgtYm7AMwxbKq1kLW3l/skWW0WDNIBrRMHT3smnZjRAvL2BHeCQGvCo+Lr05HUL
-C660BuqnDd/5nHxIkrDGcanKA09BIh4lA3sq7JEhpChmJYKMQncpgtPUOYOVzGUO
-WK82yVztX9FY73sgNI1tNOtrtnKikUP+zp2WcVel2tZuUuCkPnr7IFvSqYpDBnMO
-nkWyfIRgU7ja97OnWfH8WpBUs9xUUbroigOf5bJ0BjHp37kdW+c=
-=HNMX
------END PGP SIGNATURE-----
-
---akhn5qsxjckqmavt--
+--
+Uladzsislau Rezki
 
