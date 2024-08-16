@@ -1,91 +1,172 @@
-Return-Path: <stable+bounces-69301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69302-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA16E9544DA
-	for <lists+stable@lfdr.de>; Fri, 16 Aug 2024 10:52:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 86DB59544DF
+	for <lists+stable@lfdr.de>; Fri, 16 Aug 2024 10:52:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5FACD1F2415A
-	for <lists+stable@lfdr.de>; Fri, 16 Aug 2024 08:52:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 397DF1F23D65
+	for <lists+stable@lfdr.de>; Fri, 16 Aug 2024 08:52:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE07A13AD3F;
-	Fri, 16 Aug 2024 08:51:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83F6113C9A7;
+	Fri, 16 Aug 2024 08:52:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bqtr94Qe"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="xWCC/X2T"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B08784DE4;
-	Fri, 16 Aug 2024 08:51:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C2A413C667
+	for <stable@vger.kernel.org>; Fri, 16 Aug 2024 08:52:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723798319; cv=none; b=QUFlmv//+LTrYtDyxLAw+BrZfbTMhtYHoLWUiHSbfEY0+EtpMOxGjVglkTGULhd4unp3K4GD8J2sVHJ8tQTT3kxMHkValtHncpiJVWmr1zzGCdzey4A/cKzNJ+7EEyyUyZt8OKnWUxLjiXPVE2Y+7YP/yZV81GXNlojxb4lP7f8=
+	t=1723798371; cv=none; b=gCtCKtp+MmTeLUrJvzrp4PG04IllwSdeQZP4CqbFOIhOHZVg55R2Vwlk+pcgCy1qPVfgkVpKSxS/97o2yDKBmaFwvhv3Bb4gITLxLQcFb6u/70CBva7lWavXdQ2vAREM3AvI1AfKc7i5C06DCfO4BWk2b3S/7s9b9vJjNfH+eZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723798319; c=relaxed/simple;
-	bh=PVDikmWDCXphrDcGq7W4MtX6yVPaIhSv52o/pdJsHf8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XfVH0tLOpW5QnZl6axTj+O1lghR2t1H+mwHjJZNLx1RmweKoCc8VHtstE/uITgV2PtcrOSSjLJUAi52q6D3JEgj2hSxFlN7Igaf1LEwdW8x3JWEmZ8h0siuLnxy/uU7SrfJgkBa/Ludt1JAayME5DhaE/+/JLBSaARk++1A3tZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bqtr94Qe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E9B3C32782;
-	Fri, 16 Aug 2024 08:51:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723798319;
-	bh=PVDikmWDCXphrDcGq7W4MtX6yVPaIhSv52o/pdJsHf8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bqtr94QednM74yq0Ke4K0z8zNEUmViVCqELy9NA4PqaiU6PvrzxKRNzqhg2jaip9k
-	 qBHFYzbkua9H2T0oX/9cW8+CLdXRfcMPm+TuHflvK/JZOSjzBm+tWrObflHon7aJXu
-	 naSE55uVFzsIDdHVQ/Kybo/125DsK34isgUSm1tk=
-Date: Fri, 16 Aug 2024 10:51:56 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	allen.lkml@gmail.com, broonie@kernel.org
-Subject: Re: [PATCH 6.10 00/22] 6.10.6-rc1 review
-Message-ID: <2024081647-showgirl-squint-dd38@gregkh>
-References: <20240815131831.265729493@linuxfoundation.org>
- <d3a5a6b1-4c15-4d02-8c60-5a4d55f497b2@roeck-us.net>
+	s=arc-20240116; t=1723798371; c=relaxed/simple;
+	bh=b5VjYZomUq4QLo7azRFOK7rbYbpMDyOD2BeliqnLSEk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=IoaYVb16fmxvItY0KEhLMd3ByMKEq1jBYKdv+zCZA3xevk2tg6g1uxzd0cOPvjvwh9KfcZirBRjzWrZOUbYS+irIy9wckkQWnJJJiUnGs1DtWAYqVD9hwuA3RXGNUceygnklX1NdrgYdRmYoiozpKXfM/9UpMjGt1g6M8cKE838=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=xWCC/X2T; arc=none smtp.client-ip=209.85.208.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-5bd13ea7604so2225155a12.1
+        for <stable@vger.kernel.org>; Fri, 16 Aug 2024 01:52:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1723798368; x=1724403168; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=e65/T9qUroc+GcaiwE/lqgYH/wsQj1WvG1P77AhxpUg=;
+        b=xWCC/X2TpwmjIGipfFEpDxv5y1El9y+qODbwZVJ64dgOSQgeeS5Z7VvVZomsvtWBdU
+         T5YylnDciDMHHKv7GRxtmMll06j9S5I5JbTTuB0emU6XJiFuTJctr2fZ16L/iL+XIsqJ
+         +rp9oivjrOg8Zpk8U+W3Dol529jMZuIPiy2p3g8bMBz5l3iGA1mZGEYJ05REljLz+DpY
+         jMit/aBrJHbypMlyS1hu+mmX0tnGVH+NYYBSVhu/z5jczL095mVQ0t32HBeREzEFhGf4
+         q9BUeXFg4jjeV2itzdCjQ86kTc9FwYrTpntSovLSblwcaNl8F7KtT7VWqDFT04wGnErh
+         GT7A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723798368; x=1724403168;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=e65/T9qUroc+GcaiwE/lqgYH/wsQj1WvG1P77AhxpUg=;
+        b=O+UZWMHpmkpqrMXn0juUF6CQg1w1v9DUv5OMwFhdJAvjeJJTsXBfPsDYkLN06sx1Pn
+         93j9sRE4+CCS1WLL/RuU/LfZy0I4PRDJUqfdhVzrkNDXbNT8M4IAdScizTNpCVpG8wW/
+         Bf53mM3GrNRs6iLlWS/Tga+QDglCHLP/cs0k1yLmNjPIfzgMLB9pg40QqXmsVEl0gmLP
+         6nEUHs6ZJFOvox0PnREzlLcSvId1hop24bKhF8KxmTioyQNDDCOW/bdK1WtIf5faBunj
+         HrPVihe9SNv8/I2CJc7R/D0mrpfHxMkbpIcy8tNjHnxX4CcoHackkL/DtxTm0oB6HjAR
+         8uew==
+X-Gm-Message-State: AOJu0YyLxfs27bkQ6WqpQoTVmOBFlZ8h66gTkY9bNunTHA6TN3AAEIUZ
+	X5IyC9sBYOyW2OWIuSneMIcHXjPSXCgE78tsp4sNbv1i8x+cDkIovUpuWGmoSGHecAhml8rDymt
+	TMpxYKhH5kpXbctNAfCPn13xAHqyfmHLXUPfEKg==
+X-Google-Smtp-Source: AGHT+IEiGLOupo2idMEIYgeBEEhwpy74x2AZzsa9raRzuh+5+yX/DVQkWeGNuYisVyq0HUy+LQnKGZPFddeuMn+7bKg=
+X-Received: by 2002:a17:907:e25e:b0:a7a:a892:8e0b with SMTP id
+ a640c23a62f3a-a8392930f95mr145350566b.19.1723798367668; Fri, 16 Aug 2024
+ 01:52:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d3a5a6b1-4c15-4d02-8c60-5a4d55f497b2@roeck-us.net>
+References: <20240815131941.255804951@linuxfoundation.org>
+In-Reply-To: <20240815131941.255804951@linuxfoundation.org>
+From: Anders Roxell <anders.roxell@linaro.org>
+Date: Fri, 16 Aug 2024 10:52:35 +0200
+Message-ID: <CADYN=9LRUpKMbBebjkcy3qo3O_1UFevA=x90SGZQ7ja5FXHG3w@mail.gmail.com>
+Subject: Re: [PATCH 5.15 000/484] 5.15.165-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
+	broonie@kernel.org, Claudio Imbrenda <imbrenda@linux.ibm.com>, linux-s390@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, Aug 15, 2024 at 08:07:58AM -0700, Guenter Roeck wrote:
-> On 8/15/24 06:25, Greg Kroah-Hartman wrote:
-> > This is the start of the stable review cycle for the 6.10.6 release.
-> > There are 22 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
-> > 
-> > Responses should be made by Sat, 17 Aug 2024 13:18:17 +0000.
-> > Anything received after that time might be too late.
-> > 
-> 
-> arm:allmodconfig and various other allmodconfig builds:
-> 
-> drivers/gpu/drm/amd/amdgpu/../display/amdgpu_dm/amdgpu_dm_mst_types.c:1581:13: error: 'is_dsc_common_config_possible' defined but not used [-Werror=unused-function]
->  1581 | static bool is_dsc_common_config_possible(struct dc_stream_state *stream,
->       |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-> drivers/gpu/drm/amd/amdgpu/../display/amdgpu_dm/amdgpu_dm_mst_types.c:1569:21: error: 'kbps_from_pbn' defined but not used [-Werror=unused-function]
->  1569 | static unsigned int kbps_from_pbn(unsigned int pbn)
-> 
-> This was introduced in v6.10.5 and is seen with CONFIG_DRM_AMD_DC_FP=n
-> and CONFIG_DRM_AMD_DC=y. AFAICS that happens for images built with gcc
-> on architectures which don't have kernel FPU support.
+On Thu, 15 Aug 2024 at 15:40, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 5.15.165 release.
+> There are 484 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Sat, 17 Aug 2024 13:18:17 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.165-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-I'll push out a -rc2 that should fix this now, thanks.
+The following S390 build failed on stable-rc 5.15.y with gcc-12 and clang due
+to following warnings and errors [1].
 
-greg k-h
+s390:
+  build:
+    * gcc-8-defconfig-fe40093d
+    * gcc-12-defconfig
+    * clang-18-defconfig
+
+
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+Bisect point to 85cf9455e504 ("KVM: s390: pv: avoid stalls when making
+pages secure")
+as the problematic commit [ Upstream commit
+f0a1a0615a6ff6d38af2c65a522698fb4bb85df6 ].
+
+Build log:
+------
+arch/s390/kernel/uv.c: In function 'expected_folio_refs':
+arch/s390/kernel/uv.c:184:15: error: implicit declaration of function
+'folio_mapcount'; did you mean 'total_mapcount'?
+[-Werror=implicit-function-declaration]
+  184 |         res = folio_mapcount(folio);
+      |               ^~~~~~~~~~~~~~
+      |               total_mapcount
+arch/s390/kernel/uv.c:185:13: error: implicit declaration of function
+'folio_test_swapcache' [-Werror=implicit-function-declaration]
+  185 |         if (folio_test_swapcache(folio)) {
+      |             ^~~~~~~~~~~~~~~~~~~~
+arch/s390/kernel/uv.c:187:20: error: implicit declaration of function
+'folio_mapping'; did you mean 'no_idmapping'?
+[-Werror=implicit-function-declaration]
+  187 |         } else if (folio_mapping(folio)) {
+      |                    ^~~~~~~~~~~~~
+      |                    no_idmapping
+arch/s390/kernel/uv.c:189:26: error: invalid use of undefined type
+'struct folio'
+  189 |                 if (folio->private)
+      |                          ^~
+
+
+Build log link:
+-------
+ [1] https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.15.y/build/v5.15.164-485-g0a33b8afe07a/testrun/24869919/suite/build/test/gcc-12-defconfig/log
+
+metadata:
+--------
+* kernel: 5.15.165-rc1
+* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+* git commit: 0a33b8afe07a366222228559e4dd1de564dbdf13
+* git describe: v5.15.164-485-g0a33b8afe07a
+* Test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.15.y/build/v5.15.164-485-g0a33b8afe07a
+* arch: s390
+* toolchain: gcc-12 and clang-18
+* config: https://storage.tuxsuite.com/public/linaro/lkft/builds/2khLvf8Vv5pS66ldvXrSWZd6CHa/config
+* download_url:
+https://storage.tuxsuite.com/public/linaro/lkft/builds/2khLvf8Vv5pS66ldvXrSWZd6CHa/
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
