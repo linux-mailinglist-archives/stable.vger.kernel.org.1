@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-69266-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69267-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF897953F2D
-	for <lists+stable@lfdr.de>; Fri, 16 Aug 2024 03:57:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02E15953F3B
+	for <lists+stable@lfdr.de>; Fri, 16 Aug 2024 04:04:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 755091F24842
-	for <lists+stable@lfdr.de>; Fri, 16 Aug 2024 01:57:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABA041F22128
+	for <lists+stable@lfdr.de>; Fri, 16 Aug 2024 02:04:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEAA729CFE;
-	Fri, 16 Aug 2024 01:56:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AF4121373;
+	Fri, 16 Aug 2024 02:04:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JgacoNso"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DSCZgxMn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE7944AEE6
-	for <stable@vger.kernel.org>; Fri, 16 Aug 2024 01:56:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFB371A288
+	for <stable@vger.kernel.org>; Fri, 16 Aug 2024 02:04:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723773416; cv=none; b=bG0EZEWaqxO2gOC9kJbTAzXQwIt1iE5dM+5wR1y2boDS2PlA5bmWDz7iAO0SvNQk6zWxKHIh/+V7MePXKVbeOnd4veGMnIaxoBFRl3YHufu8lOLkU4BD61LXd4B5i2P1vmtvMGNaECcY8Q9wTWIiSd1uTstxohiksqtxs1czgyo=
+	t=1723773883; cv=none; b=EeZzGH/ozLAZunDhrNgp3sWk2ywdJGUDMasXpv87poXInLqKZEN0l9SZXps8HcTjxnPwMlPEI7EpA30JgZsYTqQGT9Lk04W1petCzWFHQiXUBlzxj6of5uFokSNDcL30eJIO+kEzum+9XVGSyVqjJVdVw4jdqwjXSrbi/Ka8psU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723773416; c=relaxed/simple;
-	bh=xJDx/MLKp7yzOS0c4b90+3aVs9d+yiU+8kqmSzvYf5g=;
+	s=arc-20240116; t=1723773883; c=relaxed/simple;
+	bh=x38DMPVFJyonCSvP7YPXoMwUHhJdanh+awsWfNTzdu0=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jBFNv2iD2pH7XOYd8H8bkjI1MIfGs5NQ+uq7//xjMe3ZR6KDIxBDq0MYtSP6CumQ/8nL6RlDDrllZkqoJiUzlfT6cjg6fZ/fgWvxFKkNc/ie7HiN1Wur1nCJyLa+pue5NoZ6MLUJ+N9xflRzkAWa/X98OngXQHRig83k1DLF30Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JgacoNso; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB25DC32786
-	for <stable@vger.kernel.org>; Fri, 16 Aug 2024 01:56:55 +0000 (UTC)
+	 MIME-Version; b=gqpIojJdK7vRXVMwb86xgQ+iixOmcfuCPHsLZGZHjLOupkhRx8/E62z77MVCibsrzgBkddLMi/GzxbAbTZeAdyxQ/++kGcred7GPURx4Qb2X0ZrzwBkHtgZ8lLUONciKRX52Eim76/XotJfuOwrFRZCIyCmhsvKhPnmbQFC2tkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DSCZgxMn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B509C32786
+	for <stable@vger.kernel.org>; Fri, 16 Aug 2024 02:04:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723773416;
-	bh=xJDx/MLKp7yzOS0c4b90+3aVs9d+yiU+8kqmSzvYf5g=;
+	s=k20201202; t=1723773882;
+	bh=x38DMPVFJyonCSvP7YPXoMwUHhJdanh+awsWfNTzdu0=;
 	h=From:To:Subject:Date:In-Reply-To:References:From;
-	b=JgacoNsodXim+eNuwnj9Kya54yLMGHq0ESIEtQ24lf/EbrNww2USP6vopDz6bOTOB
-	 6ufG8sJBnbDN2AJnzMO5FMZfr7CRfrSpN/GErptZbYMrLdc8f/q75vmLIeSm5xWSHP
-	 Ff4EIJKUXvMp/6Jjv0jCWt9A1pH0fu8hN0kNRjKWML44CjkaTK3Y5a5PsPQ6u9OcPV
-	 +yFxIK/8NLesZIG4lm2BHENrbVR7awhWuPo4Lk9I0nDtJzVeIPEbi5sl4aNOQDid8y
-	 CMpnM0W0gtKNanI+3kyEbrTl+4IHIR5qJWucKYMKQU0OIni7Obygyen9ciA+B1HjfS
-	 h4wlr/cWRAW9g==
+	b=DSCZgxMniF9GEgb+Pme6tmkOK71VArSguPQXbDE7Fgvk7XCX7r8XTwRiIxUNLiyiL
+	 epUOVQv2HaBjZRx9jlR3NJKjmP1V+eVItjz4DNId0FN46OtNHhOnNThZbtN1HfWSBA
+	 Dfmmhevxzx2Dhq3kkt6TmB/zbqWCAeyB3cmF97KdRl18cM/dJkWpNlQ8mGcwiOrdW3
+	 xxrderaROixc7k3uEgRtwKPmCdX4Mybu33XktTihniUqOKdXc6xioRy0NNMBRVjoHA
+	 2c47pfG31QWm10D6U72zlHn5LqxGweByCALk1Ko3PDXP8/2dwcylE83igd1oFHU1Xd
+	 NIHQOBuMrer/g==
 From: Damien Le Moal <dlemoal@kernel.org>
 To: stable@vger.kernel.org
-Subject: [PATCH 5.10.y] scsi: mpt3sas: Avoid IOMMU page faults on REPORT ZONES
-Date: Fri, 16 Aug 2024 10:56:54 +0900
-Message-ID: <20240816015654.448057-1-dlemoal@kernel.org>
+Subject: [PATCH 5.4.y] scsi: mpt3sas: Avoid IOMMU page faults on REPORT ZONES
+Date: Fri, 16 Aug 2024 11:04:40 +0900
+Message-ID: <20240816020440.669525-1-dlemoal@kernel.org>
 X-Mailer: git-send-email 2.45.2
-In-Reply-To: <2024081112-idly-qualify-80f3@gregkh>
-References: <2024081112-idly-qualify-80f3@gregkh>
+In-Reply-To: <2024081113-creamed-unleaded-c696@gregkh>
+References: <2024081113-creamed-unleaded-c696@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -104,10 +104,10 @@ Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
  1 file changed, 18 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/scsi/mpt3sas/mpt3sas_base.c b/drivers/scsi/mpt3sas/mpt3sas_base.c
-index 2803b475dae6..0886177d6530 100644
+index 35c97bc660bd..9df835907279 100644
 --- a/drivers/scsi/mpt3sas/mpt3sas_base.c
 +++ b/drivers/scsi/mpt3sas/mpt3sas_base.c
-@@ -2496,6 +2496,22 @@ _base_build_zero_len_sge_ieee(struct MPT3SAS_ADAPTER *ioc, void *paddr)
+@@ -2375,6 +2375,22 @@ _base_build_zero_len_sge_ieee(struct MPT3SAS_ADAPTER *ioc, void *paddr)
  	_base_add_sg_single_ieee(paddr, sgl_flags, 0, 0, -1);
  }
  
@@ -130,7 +130,7 @@ index 2803b475dae6..0886177d6530 100644
  /**
   * _base_build_sg_scmd - main sg creation routine
   *		pcie_device is unused here!
-@@ -2542,7 +2558,7 @@ _base_build_sg_scmd(struct MPT3SAS_ADAPTER *ioc,
+@@ -2421,7 +2437,7 @@ _base_build_sg_scmd(struct MPT3SAS_ADAPTER *ioc,
  	sgl_flags = sgl_flags << MPI2_SGE_FLAGS_SHIFT;
  
  	sg_scmd = scsi_sglist(scmd);
@@ -139,7 +139,7 @@ index 2803b475dae6..0886177d6530 100644
  	if (sges_left < 0) {
  		sdev_printk(KERN_ERR, scmd->device,
  		 "scsi_dma_map failed: request for %d bytes!\n",
-@@ -2690,7 +2706,7 @@ _base_build_sg_scmd_ieee(struct MPT3SAS_ADAPTER *ioc,
+@@ -2569,7 +2585,7 @@ _base_build_sg_scmd_ieee(struct MPT3SAS_ADAPTER *ioc,
  	}
  
  	sg_scmd = scsi_sglist(scmd);
