@@ -1,82 +1,78 @@
-Return-Path: <stable+bounces-69336-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69337-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7329C954E92
-	for <lists+stable@lfdr.de>; Fri, 16 Aug 2024 18:15:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 264C4954EE9
+	for <lists+stable@lfdr.de>; Fri, 16 Aug 2024 18:33:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A68C01C217FA
-	for <lists+stable@lfdr.de>; Fri, 16 Aug 2024 16:15:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B0231C246B5
+	for <lists+stable@lfdr.de>; Fri, 16 Aug 2024 16:33:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D2701BF30D;
-	Fri, 16 Aug 2024 16:15:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCCD277119;
+	Fri, 16 Aug 2024 16:33:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MwXY80nN"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PjRM6Soc"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FE9B1BF310
-	for <stable@vger.kernel.org>; Fri, 16 Aug 2024 16:15:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 492C11BCA0B
+	for <stable@vger.kernel.org>; Fri, 16 Aug 2024 16:33:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723824923; cv=none; b=N8HgI4MAa4haV2ex07mtKyx/CyAa5cJpXaVzbkgVrXoFt5oKtrM6QicuAWkuZPlLzZkscEwetJ14+dsZQNE8fkL3jbVGjr+WahOcKAsKrLhBAjTPFcG1lef4fvyjKDLaOxhYc7zonraSwrGNfRLLMxl/9P3p1MRszwy7rx3t4sI=
+	t=1723825990; cv=none; b=F+Qe6gIi9mOvRCMZaWJ8FfsyYjP/3x55VKGcVzVw+irRP6NgW+rQOudqDPcPhGkg/Ye6nm+TDRnva5Pnepx+9/7DrgC7VFC5ltccugM6urHEEfvR2qZ6Xy+GjyDSeEtMpLNCGW9qZmnc1+9VfpZzm7yQIevankjCLPDU55ah+O8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723824923; c=relaxed/simple;
-	bh=REb0zsBjwB1tdfHOzYnUeubdhTBPYbvNx3oC8RorGcA=;
+	s=arc-20240116; t=1723825990; c=relaxed/simple;
+	bh=a+GazqQj0H0hND+mdHAKbt7nto5jHAAJxyknn+frBv0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qfbN3c+oKHQaoik62f4EI1RsoAvC2nYrDoS3lWJVA990vX7CoPVyMltYnHMkNwDNWydck5iEP1CHa814J/zdIg2HFgJ+V+JVjUvZz9PF5VLE6YkNLQDR/rptwEUbH+9FZkB4A8OrFKggLa99vlpSAyR8ZNvYZNgsv6FAbSNj8eA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MwXY80nN; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1723824920;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=atbfBzbpVJrrinLTFjpDdZ++CnkCWoD354k0n5MAo1Q=;
-	b=MwXY80nNajHe3ZlkajTS4WfoURPJdnSwykfpZwk2PyMDuR0HUqcQDUHkJ93BGJLHB8g3N8
-	tvsWxITywWkCALHsmATCX+ifO3uOJ6sx2buZb6fDwG1js3wMgN7YnQgDYXg9bIH4BGp3ay
-	bfQkTKwRT9m02DHTo8H78lCoNL+aRtI=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-623-eH51UxaOOpaSwzACwZCeXA-1; Fri,
- 16 Aug 2024 12:15:15 -0400
-X-MC-Unique: eH51UxaOOpaSwzACwZCeXA-1
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id CD0DA1954227;
-	Fri, 16 Aug 2024 16:15:12 +0000 (UTC)
-Received: from localhost (unknown [10.72.112.51])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 205053001FE5;
-	Fri, 16 Aug 2024 16:15:10 +0000 (UTC)
-Date: Sat, 17 Aug 2024 00:15:05 +0800
-From: Baoquan He <bhe@redhat.com>
-To: Uladzislau Rezki <urezki@gmail.com>
-Cc: Hailong Liu <hailong.liu@oppo.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Michal Hocko <mhocko@suse.com>, Barry Song <21cnbao@gmail.com>,
-	Christoph Hellwig <hch@infradead.org>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Tangquan Zheng <zhengtangquan@oppo.com>, stable@vger.kernel.org,
-	Matthew Wilcox <willy@infradead.org>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RESEND PATCH v1] mm/vmalloc: fix page mapping if
- vm_area_alloc_pages() with high order fallback to order 0
-Message-ID: <Zr97CW+Y4FiviI35@MiWiFi-R3L-srv>
-References: <20240808122019.3361-1-hailong.liu@oppo.com>
- <CAGsJ_4z4+CCDoPR7+dPEhemBQN60Cj84rCeqRY7-xvWapY4LGg@mail.gmail.com>
- <ZrXiUvj_ZPTc0yRk@tiehlicka>
- <ZrXkVhEg1B0yF5_Q@pc636>
- <20240815220709.47f66f200fd0a072777cc348@linux-foundation.org>
- <20240816091232.fsliktqgza5o5x6t@oppo.com>
- <Zr8mQbc3ETdeOMIK@pc636>
- <Zr96JyrzXuQXT2BG@MiWiFi-R3L-srv>
+	 Content-Type:Content-Disposition:In-Reply-To; b=MtbJj7wVGYBEL01VXm6OxUZugWC08lsWm7ZMuEjcOt1WoMoVqMNDP399xpvNXSRx6DK7vFjsW38F+1RfbTXSNCnYFCkLWjFqV2qn7yISeCjjmiC9AO7B2eETRnQNItMRxnAffRDklsLIOObybFkfSR/imI+7ArSN9r+N4rL04BY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PjRM6Soc; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1723825988; x=1755361988;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=a+GazqQj0H0hND+mdHAKbt7nto5jHAAJxyknn+frBv0=;
+  b=PjRM6SocwSDleO8LZUCB3UzPZ0EaC8C8InOT6CYLBAuc13HQ5g9M/kZ2
+   i0zTlcFutewkPJH4tkOLFmMPhutbNZUPlAvXSZun0cpnucdE7aR9qqp1C
+   lFqJaynNz1MbhOwqzdx6nyKQoao4c7z2WwKLU+ezLdaDPmBqHURKLh5ZK
+   AQKlcvZSRO592VxTtFBbTZJvHpxIZYcvMrxyTP6c7ESdyU0PymbopP9EK
+   IgIh4kWbt/KyE37C+kzFvrV++63qccJhk2TzgQdCMNacRbSmX92hiS5tg
+   Npmg2oCFq+E+XmZp8Ry5nNNUcH8LJ3vjgBjLC75U8oPd9t4zJhJ21SOUP
+   g==;
+X-CSE-ConnectionGUID: xDFwV+0JR1WqoFG8n7fs9g==
+X-CSE-MsgGUID: /glhazXETtqEW43qay/Ftw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11166"; a="39582287"
+X-IronPort-AV: E=Sophos;i="6.10,152,1719903600"; 
+   d="scan'208";a="39582287"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Aug 2024 09:33:07 -0700
+X-CSE-ConnectionGUID: Qn9qCAtGSS6R5q93QrfwOw==
+X-CSE-MsgGUID: htCLX/cfSZeb4sx/845cDg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,152,1719903600"; 
+   d="scan'208";a="60001770"
+Received: from lkp-server01.sh.intel.com (HELO 9a732dc145d3) ([10.239.97.150])
+  by orviesa006.jf.intel.com with ESMTP; 16 Aug 2024 09:33:05 -0700
+Received: from kbuild by 9a732dc145d3 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1sezss-0006e6-0Q;
+	Fri, 16 Aug 2024 16:33:02 +0000
+Date: Sat, 17 Aug 2024 00:32:18 +0800
+From: kernel test robot <lkp@intel.com>
+To: Zack Rusin <zack.rusin@broadcom.com>, dri-devel@lists.freedesktop.org
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
+	ian.forbes@broadcom.com, martin.krastev@broadcom.com,
+	maaz.mombasawala@broadcom.com, Zack Rusin <zack.rusin@broadcom.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v3 2/2] drm/vmwgfx: Fix prime with external buffers
+Message-ID: <202408170033.rkCwgtSp-lkp@intel.com>
+References: <20240815153404.630214-2-zack.rusin@broadcom.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -85,59 +81,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Zr96JyrzXuQXT2BG@MiWiFi-R3L-srv>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+In-Reply-To: <20240815153404.630214-2-zack.rusin@broadcom.com>
 
-On 08/17/24 at 12:11am, Baoquan He wrote:
-> On 08/16/24 at 12:13pm, Uladzislau Rezki wrote:
-> > On Fri, Aug 16, 2024 at 05:12:32PM +0800, Hailong Liu wrote:
-> > > On Thu, 15. Aug 22:07, Andrew Morton wrote:
-> > > > On Fri, 9 Aug 2024 11:41:42 +0200 Uladzislau Rezki <urezki@gmail.com> wrote:
-> > > >
-> > > > > > > Acked-by: Barry Song <baohua@kernel.org>
-> > > > > > >
-> > > > > > > because we already have a fallback here:
-> > > > > > >
-> > > > > > > void *__vmalloc_node_range_noprof :
-> > > > > > >
-> > > > > > > fail:
-> > > > > > >         if (shift > PAGE_SHIFT) {
-> > > > > > >                 shift = PAGE_SHIFT;
-> > > > > > >                 align = real_align;
-> > > > > > >                 size = real_size;
-> > > > > > >                 goto again;
-> > > > > > >         }
-> > > > > >
-> > > > > > This really deserves a comment because this is not really clear at all.
-> > > > > > The code is also fragile and it would benefit from some re-org.
-> > > > > >
-> > > > > > Thanks for the fix.
-> > > > > >
-> > > > > > Acked-by: Michal Hocko <mhocko@suse.com>
-> > > > > >
-> > > > > I agree. This is only clear for people who know the code. A "fallback"
-> > > > > to order-0 should be commented.
-> > > >
-> > > > It's been a week.  Could someone please propose a fixup patch to add
-> > > > this comment?
-> > > 
-> > > Hi Andrew:
-> > > 
-> > > Do you mean that I need to send a v2 patch with the the comments included?
-> > > 
-> > It is better to post v2.
-> > 
-> > But before, could you please comment on:
-> > 
-> > in case of order-0, bulk path may easily fail and fallback to the single
-> > page allocator. If an request is marked as NO_FAIL, i am talking about
-> > order-0 request, your change breaks GFP_NOFAIL for !order.
-> 
-> In case order-0, bulk_gfp masks off __GFP_NOFAIL, but alloc_gfp doesn't.
-> So alloc_gfp has __GFP_NOFAIL in fallback, it won't be failed by
-> alloc_pages().
+Hi Zack,
 
-Please ignore this, I didn't update my local mail box, didn't see
-Hailong's reply.
+kernel test robot noticed the following build errors:
 
+[auto build test ERROR on drm/drm-next]
+[also build test ERROR on drm-intel/for-linux-next-fixes drm-misc/drm-misc-next drm-tip/drm-tip linus/master v6.11-rc3 next-20240816]
+[cannot apply to drm-exynos/exynos-drm-next drm-intel/for-linux-next]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Zack-Rusin/drm-vmwgfx-Fix-prime-with-external-buffers/20240815-234842
+base:   git://anongit.freedesktop.org/drm/drm drm-next
+patch link:    https://lore.kernel.org/r/20240815153404.630214-2-zack.rusin%40broadcom.com
+patch subject: [PATCH v3 2/2] drm/vmwgfx: Fix prime with external buffers
+config: i386-randconfig-013-20240816 (https://download.01.org/0day-ci/archive/20240817/202408170033.rkCwgtSp-lkp@intel.com/config)
+compiler: clang version 18.1.5 (https://github.com/llvm/llvm-project 617a15a9eac96088ae5e9134248d8236e34b91b1)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240817/202408170033.rkCwgtSp-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202408170033.rkCwgtSp-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+>> drivers/gpu/drm/vmwgfx/vmwgfx_blit.c:503:18: error: call to undeclared function 'floor'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+     503 |         diff->rect.y1 = floor(dst_offset / dst_stride);
+         |                         ^
+   1 error generated.
+
+
+vim +/floor +503 drivers/gpu/drm/vmwgfx/vmwgfx_blit.c
+
+   455	
+   456	static int vmw_external_bo_copy(struct vmw_bo *dst, u32 dst_offset,
+   457					u32 dst_stride, struct vmw_bo *src,
+   458					u32 src_offset, u32 src_stride,
+   459					u32 width_in_bytes, u32 height,
+   460					struct vmw_diff_cpy *diff)
+   461	{
+   462		struct vmw_private *vmw =
+   463			container_of(dst->tbo.bdev, struct vmw_private, bdev);
+   464		size_t dst_size = dst->tbo.resource->size;
+   465		size_t src_size = src->tbo.resource->size;
+   466		struct iosys_map dst_map = {0};
+   467		struct iosys_map src_map = {0};
+   468		int ret, i;
+   469		u8 *vsrc;
+   470		u8 *vdst;
+   471	
+   472		vsrc = map_external(src, &src_map);
+   473		if (!vsrc) {
+   474			drm_dbg_driver(&vmw->drm, "Wasn't able to map src\n");
+   475			ret = -ENOMEM;
+   476			goto out;
+   477		}
+   478	
+   479		vdst = map_external(dst, &dst_map);
+   480		if (!vdst) {
+   481			drm_dbg_driver(&vmw->drm, "Wasn't able to map dst\n");
+   482			ret = -ENOMEM;
+   483			goto out;
+   484		}
+   485	
+   486		vsrc += src_offset;
+   487		vdst += dst_offset;
+   488		if (src_stride == dst_stride) {
+   489			dst_size -= dst_offset;
+   490			src_size -= src_offset;
+   491			memcpy(vdst, vsrc,
+   492			       min(dst_stride * height, min(dst_size, src_size)));
+   493		} else {
+   494			WARN_ON(dst_stride < width_in_bytes);
+   495			for (i = 0; i < height; ++i) {
+   496				memcpy(vdst, vsrc, width_in_bytes);
+   497				vsrc += src_stride;
+   498				vdst += dst_stride;
+   499			}
+   500		}
+   501	
+   502		diff->rect.x1 = (dst_offset % dst_stride) / diff->cpp;
+ > 503		diff->rect.y1 = floor(dst_offset / dst_stride);
+   504		diff->rect.x2 = diff->rect.x1 + width_in_bytes / diff->cpp;
+   505		diff->rect.y2 = diff->rect.y1 + height;
+   506	
+   507		ret = 0;
+   508	out:
+   509		unmap_external(src, &src_map);
+   510		unmap_external(dst, &dst_map);
+   511	
+   512		return ret;
+   513	}
+   514	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
