@@ -1,80 +1,98 @@
-Return-Path: <stable+bounces-69330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69331-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55D29954BE6
-	for <lists+stable@lfdr.de>; Fri, 16 Aug 2024 16:08:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FC30954C2C
+	for <lists+stable@lfdr.de>; Fri, 16 Aug 2024 16:18:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D4B83B23E35
-	for <lists+stable@lfdr.de>; Fri, 16 Aug 2024 14:08:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8FDFEB2433A
+	for <lists+stable@lfdr.de>; Fri, 16 Aug 2024 14:18:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82BF61C0DFE;
-	Fri, 16 Aug 2024 14:06:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBEF81BDA8C;
+	Fri, 16 Aug 2024 14:17:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=mareichelt.com header.i=@mareichelt.com header.b="D9A3GZwF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FPHvbC34"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.antaris-organics.com (mail.antaris-organics.com [91.227.220.155])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFB001BD4E4;
-	Fri, 16 Aug 2024 14:06:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.227.220.155
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 756CA1BC09E;
+	Fri, 16 Aug 2024 14:17:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723817179; cv=none; b=FG0vLTO07X3tuzJVxhiUh9ttsl7D+GEuEl+c/pxQUhLc9OTHxeg/j5bAnqRd+lx+xrzWRnPc5/q5VU/LwD9D1mB4uNcViMibVivVD0XJRWMi7acB5NvZAsRdjBKJuQzvSk8WwxULMXJM/VkpOTqX3rKHIJJLZnauOmROnjIwL20=
+	t=1723817851; cv=none; b=hYZTqrUU4VCBrem3P22fn4x524klFBWdQ2L+moRwxBsb42YksxSxHdKvMT21GlOWnfBsk9pNPjsaedBE3HH6Sdrp5UBcPN6rhzMJsyMGdW+Hpl/RFQ6O1+NsuJ0HsAGu2QpCFtDUSX5Rp9xr6NIxySey9iAu4T2bM3twrUoW/bQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723817179; c=relaxed/simple;
-	bh=QpO6GTw0iGnN6j2K6ioOCnIcoC3VCwqWs2F5D78yvmc=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uUVWNNrf7RI2gzvNUPhZvcsMEXFcY7XnAQE3x9TWmIqL6D5ObD8zClVXrn/ptBbs0khbx8U1sv426bfZotqPWodxV3OihXKT8qcQD72euyHefKUNzUvE3LKMo9sAdZ+zeL7pjqI22Yk8mwx8UlNd67mOW42FDMmNBdddfaK7F6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mareichelt.com; spf=pass smtp.mailfrom=mareichelt.com; dkim=pass (2048-bit key) header.d=mareichelt.com header.i=@mareichelt.com header.b=D9A3GZwF; arc=none smtp.client-ip=91.227.220.155
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mareichelt.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mareichelt.com
-Date: Fri, 16 Aug 2024 16:06:14 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mareichelt.com;
-	s=202107; t=1723817176;
-	bh=QpO6GTw0iGnN6j2K6ioOCnIcoC3VCwqWs2F5D78yvmc=;
-	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:In-Reply-To:Cc:Cc:content-type:content-type:date:date:
-	 From:from:in-reply-to:in-reply-to:message-id:mime-version:
-	 references:reply-to:Sender:Subject:Subject:To:To;
-	b=D9A3GZwFnZUwWAiynkc1yCp5qTzLzN8D8MDMbKc+0zWC/EZZ215jgdYeLMxTQin1b
-	 iChYIWMYJc3RTTZ2623+t3z2kNFHbHJHyuKDTHtYRXlT/E3b473lgdicsi9aDrlFZE
-	 bSIdNX0CPdAJ8PZ5OGxpLgWOqKGLp6lf1fgax3D50gelyewL3v4BUEa7B4z+ssvtW8
-	 0W9AQamj5pcmsDNMXehpZrfFs45S27KFgyJ6MOuyFwkXinWF5UZ9GP0gS5MuvCJeuk
-	 4RFdbOxDRf26HA+GHpB0+NG5/DSWdWGp7DA4k28kkR8BqX9j8v8yqo88oXcwsXlksC
-	 8m9Ye7qUcmgxw==
-From: Markus Reichelt <lkt+2023@mareichelt.com>
-To: stable@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 6.10 00/25] 6.10.6-rc2 review
-Message-ID: <20240816140614.GC5407@pc21.mareichelt.com>
-Mail-Followup-To: stable@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20240816085226.888902473@linuxfoundation.org>
+	s=arc-20240116; t=1723817851; c=relaxed/simple;
+	bh=l6a/3nMx63a4IQhEgNbIhpMr2Y6lm5De2psJ4sPW/4A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CRhr7zd99wcJVqFb1k+4KhiFKo3IaDMxFAAjFQ0VQ1CFXddgzg6VCdw8iUXwfuacSZzDN4FP3mARLNDyksInQU9MSb+XygxVbr8mUrtHHDg36RNOBKrO7FkwQqHYNv88iy6wRIUNTAJ+BfqK7aWSIprkPZMoG/wulpkXU8VV/kE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FPHvbC34; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 619AFC4AF09;
+	Fri, 16 Aug 2024 14:17:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1723817850;
+	bh=l6a/3nMx63a4IQhEgNbIhpMr2Y6lm5De2psJ4sPW/4A=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=FPHvbC34jT/QOe09ZXaM7l3RcxL5uqab1A4XS3sDOEo9CQFxnv58r3YZXUi0C3ZY0
+	 38gA0WDDRb3suruepKMc2dqkTbSfAwbpvjZY5QxUeS/Sq3DeHGznko+F6Mitdd2M1k
+	 Av67kKIMPjbw5+Vw98c2K0VOfyBgbhjf2rm6um7kLOH65IYRmdAm2KS+6Ac3N5qnZR
+	 Vhsde/OcQvvOWQJTTjCPuOZ4JlA3qJUnzeQbmZwSsOx782nKrZ0OSNx7pcO7O8vcZ/
+	 SiyS8nTFB9ZtoPhuEK02hQw39eez28iXiswCCSDzvkQiG+6WTOBdbPQzUzJvWiXRg9
+	 cyuN0kB/gsggQ==
+Date: Fri, 16 Aug 2024 15:17:24 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com
+Subject: Re: [PATCH 5.15 000/483] 5.15.165-rc2 review
+Message-ID: <d48bb7d2-8f56-4f62-914d-f7710ba2e850@sirena.org.uk>
+References: <20240816101524.478149768@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="hd/2dn2JQk3oIhq6"
+Content-Disposition: inline
+In-Reply-To: <20240816101524.478149768@linuxfoundation.org>
+X-Cookie: A Smith & Wesson beats four aces.
+
+
+--hd/2dn2JQk3oIhq6
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240816085226.888902473@linuxfoundation.org>
 
-* Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
-
-> This is the start of the stable review cycle for the 6.10.6 release.
-> There are 25 patches in this series, all will be posted as a response
+On Fri, Aug 16, 2024 at 12:22:17PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.15.165 release.
+> There are 483 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
-> 
-> Responses should be made by Sun, 18 Aug 2024 08:52:13 +0000.
-> Anything received after that time might be too late.
 
-Hi Greg
+Tested-by: Mark Brown <broonie@kernel.org>
 
-6.10.6-rc2 compiles, boots and runs here on x86_64
-(AMD Ryzen 5 PRO 4650G, Slackware64-15.0)
+--hd/2dn2JQk3oIhq6
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Tested-by: Markus Reichelt <lkt+2023@mareichelt.com>
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAma/X3MACgkQJNaLcl1U
+h9B6lQf/d0kRdY33zvTAQvkht5afwyuoCaQB5tJIsmSYuSGtJ6dLeDcHT7BEF2o/
+afxgCkCdqnk6LN5hh40IMYzvy3tU9UvXikFPCo3nkvuan+fJM76ao8V7yTn9nAnl
+Mv0BWLrfZbeXu6ESve2aa/aFQfl09INX7jtLQxnfmlAtStADMUzrHOgZSPO5QlhP
+VB5xgdrUUA3OT/+8KDTwczW+34L6weAk0k+LvUGvNUvyUL59KxynQY7kHhwd1CJj
+JWMeGmmTq3hsNGCuNho9MNjJEw/P+j/AhDQouHK2VUrNyEAH5Ts1wBhASyClZaI4
+yrSBjetVlEVhoTzXxcxtnN+LkSfdnw==
+=Ofoe
+-----END PGP SIGNATURE-----
+
+--hd/2dn2JQk3oIhq6--
 
