@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-69312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69313-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EAB695463D
-	for <lists+stable@lfdr.de>; Fri, 16 Aug 2024 11:52:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8002A954646
+	for <lists+stable@lfdr.de>; Fri, 16 Aug 2024 11:55:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C5D211F21B78
-	for <lists+stable@lfdr.de>; Fri, 16 Aug 2024 09:52:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5AF05B21403
+	for <lists+stable@lfdr.de>; Fri, 16 Aug 2024 09:55:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 324BA15B13A;
-	Fri, 16 Aug 2024 09:52:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38D6D16F0E1;
+	Fri, 16 Aug 2024 09:55:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fPaundfR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BrDamOPj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D23271304AB;
-	Fri, 16 Aug 2024 09:52:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D790115B13A;
+	Fri, 16 Aug 2024 09:55:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723801939; cv=none; b=pMofvIkCYGTr2Qh13Ixp1tuSn/LeGFuBJmUveCKl7UP01fIKOEfk6DO8yvr1AQd6agUMv7PfE8I+QZ9olhXes/NtMdBSMxPNYBgcWRAQyWDjrDa9x2kfBu2vFdu/VTvFaKSKVp1FuwiGEhbAHyGI5RHQTeWQLH9/dH0LyLv1UXg=
+	t=1723802136; cv=none; b=O7WU0LgM6ey0J47l2mKPy55kvzh58TZU6Dhok265HHx4vmHn+Il0NoKv+G+31n2c7A53OvRL3NoNVwYy0VHi833bzHixLLe7GJOgQW+7zIkNMUGhM/KaviB4rwWB8l9m3OAZMxA9iOh9zOh+AacbCJjNhAWgSgu3r1wFt2RnbSs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723801939; c=relaxed/simple;
-	bh=0abDR47X1F5bNCDpDVpI73U3sF42dfY1UVk0OkpRzPw=;
+	s=arc-20240116; t=1723802136; c=relaxed/simple;
+	bh=cYKyIvE4QasD4N3hkDbl8Ujh2Cxx5hf/u+JrYlT6G2w=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MfDgJH58AHB+P6SywI5idoPmWgL+1+djmkstvYGgsmqdL3XhIf/I6oglI63A7HOgfQMM6ZdiVVheWHb/XVOA+mDkmiDoKgRChgK4T6Bb5EwfMsw3JZXqOrMGULwn6lrEWszq8ZyEHvCT3Y9tPQpM1pwSLuTQxM+/++J+2KHb+Xw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fPaundfR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8E2FC32782;
-	Fri, 16 Aug 2024 09:52:17 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=eVdJ+wiPO3XOe4C3gX/IoUAE+M73R3GPBGw+8AO2o8WgQvS01DJMLcMqDLY7UzD1NyHnUaOJxSe05HFYMTdHezBFnl3Xb8HRV2C3Uuu/AFcOeC1RElJ7iRfhKGWxxYZIoPewPiNtdfOxBrYEuP4In1HzhEvvtyk5bknK4Ceo79s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BrDamOPj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2364EC32782;
+	Fri, 16 Aug 2024 09:55:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723801938;
-	bh=0abDR47X1F5bNCDpDVpI73U3sF42dfY1UVk0OkpRzPw=;
+	s=korg; t=1723802135;
+	bh=cYKyIvE4QasD4N3hkDbl8Ujh2Cxx5hf/u+JrYlT6G2w=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fPaundfR/qdz87rS9TIhOwfUCKNS2Z4g61uIBI+m2I7E/OiplXQSJSzLlvJ/0BE1O
-	 GZ/tDcL5XiQqouD9u6BCTxB52ZRMLSJEEHTnSvC8hisaG33DrNk5+MKVGkRMTBxyRD
-	 PDjZ65kvvjAPp4tzk7QJpMHSxTY+cTUi2+9iJm1c=
-Date: Fri, 16 Aug 2024 11:52:15 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Anders Roxell <anders.roxell@linaro.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	linux-s390@vger.kernel.org
-Subject: Re: [PATCH 5.4 000/259] 5.4.282-rc1 review
-Message-ID: <2024081602-absence-preheated-eb57@gregkh>
-References: <20240815131902.779125794@linuxfoundation.org>
- <CADYN=9+zo=R7jFdHGps0YedBqGzhjm7xeOZLsaR_E7-b0Y_CMQ@mail.gmail.com>
+	b=BrDamOPj5WURob1BiB0HCQ4cdrBbMtba0SROiNf7mT4tJku795mblGbVDhTLhdrtQ
+	 pFYPEVPAF8tw3ZCoXQLpbcL8EpDMM2C0Fzkj2jnwPCU2e8I6G3RIoyHg10rzFiodwX
+	 8bnTzny4F+7jYr7m1YE50tbXyyx800AkJstpR88w=
+Date: Fri, 16 Aug 2024 11:55:32 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Selvarasu Ganesan <selvarasu.g@samsung.com>
+Cc: Thinh.Nguyen@synopsys.com, linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org, jh0801.jung@samsung.com,
+	dh10.jung@samsung.com, naushad@samsung.com, akash.m5@samsung.com,
+	rc93.raju@samsung.com, taehyun.cho@samsung.com,
+	hongpooh.kim@samsung.com, eomji.oh@samsung.com,
+	shijie.cai@samsung.com, stable@vger.kernel.org
+Subject: Re: [PATCH v3] usb: dwc3: core: Prevent USB core invalid event
+ buffer address access
+Message-ID: <2024081618-singing-marlin-2b05@gregkh>
+References: <CGME20240815064918epcas5p1248e4f9084d33fdb11a25fa34e66cdbe@epcas5p1.samsung.com>
+ <20240815064836.1491-1-selvarasu.g@samsung.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,73 +60,31 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CADYN=9+zo=R7jFdHGps0YedBqGzhjm7xeOZLsaR_E7-b0Y_CMQ@mail.gmail.com>
+In-Reply-To: <20240815064836.1491-1-selvarasu.g@samsung.com>
 
-On Fri, Aug 16, 2024 at 11:01:53AM +0200, Anders Roxell wrote:
-> On Thu, 15 Aug 2024 at 16:12, Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
-> >
-> > This is the start of the stable review cycle for the 5.4.282 release.
-> > There are 259 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
-> >
-> > Responses should be made by Sat, 17 Aug 2024 13:18:17 +0000.
-> > Anything received after that time might be too late.
-> >
-> > The whole patch series can be found in one patch at:
-> >         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.282-rc1.gz
-> > or in the git tree and branch at:
-> >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.4.y
-> > and the diffstat can be found below.
-> >
-> > thanks,
-> >
-> > greg k-h
+On Thu, Aug 15, 2024 at 12:18:31PM +0530, Selvarasu Ganesan wrote:
+> This commit addresses an issue where the USB core could access an
+> invalid event buffer address during runtime suspend, potentially causing
+> SMMU faults and other memory issues in Exynos platforms. The problem
+> arises from the following sequence.
+>         1. In dwc3_gadget_suspend, there is a chance of a timeout when
+>         moving the USB core to the halt state after clearing the
+>         run/stop bit by software.
+>         2. In dwc3_core_exit, the event buffer is cleared regardless of
+>         the USB core's status, which may lead to an SMMU faults and
+>         other memory issues. if the USB core tries to access the event
+>         buffer address.
 > 
-> The following S390 build failed on stable-rc 5.4.y with gcc-12 due
-> to following warnings and errors [1].
+> To prevent this hardware quirk on Exynos platforms, this commit ensures
+> that the event buffer address is not cleared by software  when the USB
+> core is active during runtime suspend by checking its status before
+> clearing the buffer address.
 > 
-> s390:
->   build:
->     * gcc-8-defconfig-fe40093d
->     * gcc-12-defconfig
-> 
-> Bisect point to deb23146ba03 ("s390/pci: fix CPU address in MSI for
-> directed IRQ")
-> as the problematic commit [ Upstream commit
-> a2bd4097b3ec242f4de4924db463a9c94530e03a ].
-> 
-> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-> 
-> Build log:
-> ------
-> /builds/linux/arch/s390/pci/pci_irq.c: In function 'zpci_set_irq_affinity':
-> /builds/linux/arch/s390/pci/pci_irq.c:106:17: error: implicit
-> declaration of function 'smp_cpu_get_cpu_address'; did you mean
-> 'device_get_mac_address'? [-Werror=implicit-function-declaration]
->   int cpu_addr = smp_cpu_get_cpu_address(cpumask_first(dest));
->                  ^~~~~~~~~~~~~~~~~~~~~~~
->                  device_get_mac_address
-> /builds/linux/arch/s390/pci/pci_irq.c: In function 'arch_setup_msi_irqs':
-> /builds/linux/arch/s390/pci/pci_irq.c:298:2: error: implicit
-> declaration of function 'msi_for_each_desc'; did you mean
-> 'bus_for_each_dev'? [-Werror=implicit-function-declaration]
->   msi_for_each_desc(msi, &pdev->dev, MSI_DESC_NOTASSOCIATED) {
->   ^~~~~~~~~~~~~~~~~
->   bus_for_each_dev
-> /builds/linux/arch/s390/pci/pci_irq.c:298:37: error:
-> 'MSI_DESC_NOTASSOCIATED' undeclared (first use in this function)
->   msi_for_each_desc(msi, &pdev->dev, MSI_DESC_NOTASSOCIATED) {
->                                      ^~~~~~~~~~~~~~~~~~~~~~
-> /builds/linux/arch/s390/pci/pci_irq.c:298:37: note: each undeclared
-> identifier is reported only once for each function it appears in
-> /builds/linux/arch/s390/pci/pci_irq.c:298:60: error: expected ';'
-> before '{' token
->   msi_for_each_desc(msi, &pdev->dev, MSI_DESC_NOTASSOCIATED) {
->                                                             ^~
+> Cc: stable@vger.kernel.org # v6.1+
 
-Thanks, will go drop the offending commits and push out a -rc2
+Any hint as to what commit id this fixes?
+
+thanks,
 
 greg k-h
 
