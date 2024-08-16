@@ -1,71 +1,98 @@
-Return-Path: <stable+bounces-69328-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69327-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD93A954AE3
-	for <lists+stable@lfdr.de>; Fri, 16 Aug 2024 15:21:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 429BC954AD9
+	for <lists+stable@lfdr.de>; Fri, 16 Aug 2024 15:16:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99718284470
-	for <lists+stable@lfdr.de>; Fri, 16 Aug 2024 13:21:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B2080B212E4
+	for <lists+stable@lfdr.de>; Fri, 16 Aug 2024 13:16:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ADDC1B32BF;
-	Fri, 16 Aug 2024 13:21:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D5061B0122;
+	Fri, 16 Aug 2024 13:16:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=hotelshavens.com header.i=admin@hotelshavens.com header.b="nFlAyZfU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SP8gz2n0"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.hotelshavens.com (mail.hotelshavens.com [217.156.64.234])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D6AE1B0122
-	for <stable@vger.kernel.org>; Fri, 16 Aug 2024 13:20:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.156.64.234
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E719E1E495;
+	Fri, 16 Aug 2024 13:16:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723814460; cv=none; b=DVkuLUTRbGwErWyVqzhUv9elUSLjDtof2Ey0nVqrUnL5Uota96KuYXqTumUWX1NwYsBHM8XaN24kHy65LvE3z0K63R+uo1unFNbDBj6vVPQY5No+iPC8S5X0W+4A/AExwAmqZeR85fOo5E/h4StyhJcD5SfqgPacubOOTNb1AVc=
+	t=1723814204; cv=none; b=orEyXoScnT9A06w095H6LBHulLsHs+EW4+x5Wo7oZzkExgS4esQBRoVBLfNkCbFy5MNQBS9Z0dNV3qJKnA3OIsOTKUWFG7NsH/WWRIk1u5aVSCT6HdraMOJRFPY+q+4ljgDhNUkPJSlAIh3O6MmiOAnrpNY8htgXk3PiVabqeqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723814460; c=relaxed/simple;
-	bh=LeauVVj/ho8MTPNMawrJjqTY1r/703ALfp3CIgRyk7w=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=XUaunOQ6GKuaMBrae7KSgz1NRJOl4eTLE+5XTtUzaTFPR13+Vdk+12Oh4gK0+r/q3eeWa9qzEbAkv+7WpRcFAh4JNUX9Gn3oQd6utq2eJT0gCHBV0wX398ZSewOgzVJeWzfSZ11DYqj+3/REzNvyuTJE+6W5drSsgNL1Zg6Etis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotelshavens.com; spf=pass smtp.mailfrom=hotelshavens.com; dkim=pass (4096-bit key) header.d=hotelshavens.com header.i=admin@hotelshavens.com header.b=nFlAyZfU; arc=none smtp.client-ip=217.156.64.234
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=hotelshavens.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hotelshavens.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; s=dkim; d=hotelshavens.com;
- h=Reply-To:From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:
- Content-Transfer-Encoding; i=admin@hotelshavens.com;
- bh=LeauVVj/ho8MTPNMawrJjqTY1r/703ALfp3CIgRyk7w=;
- b=nFlAyZfUqeGzlj0KZi9zotknYIT7Pau2Pu56dJ1R6f3sG2R8YqnznmTt0xkF6LdgbjoKdqykBq7R
-   gKCMv/Y2+gWxOv1A8oSpjoS8+3JtBml4F/BwH5sXHxZKeJkjVgS8vRGKIe4iWHm6f694rUCxYgTt
-   Zi+/8QU4SH6GeGfPzVgBqX44oAOBLl+/gqVMvEPSI6BNdSmSArF2ipClQC82PVkIAG1BmZIqsTp4
-   mlDXjZZiTH1nwufD7IiGuZTjPHJ/iX2k8vmTGz98MBLIz/A+JPicRnyMAQrv801ec55GSyPkKJhw
-   qYj1fI8NgDE2DXQXbiUMlas5pc4CUPAx+k/v1Jtr4+Uu7OIyhJGby/WAaRBngdfAm3vw4UQxXdSy
-   Nx7HePkO5f/YR45NDHbercJff1BN8+UnAMKiT762DbI2KCAprwZT7a12RPvQenSSD+18vRPiQf5O
-   gUYpJ5L8pscJfNtjTvzQNorj0A03Ybj1v8+r10Xhf7t3pfLvDZuq2/DKoP3GdncokSVNNXA/rVT8
-   oaclB88GhSwk/CVB/DUuQZ3TzRAjK9rjd7pLemho4HylhvBOOEJQ074iA7F0JzNmydWMOpWA/6oM
-   1hSlRW+mtiQFLOaogRRYH0bAf4b1vN36lCTEbMhRG0JaZMMbzB/4vgjvMHlWsQgqeTLYuLxNJng=
-Reply-To: boris@undpkh.com
-From: Boris Soroka <admin@hotelshavens.com>
-To: stable@vger.kernel.org
-Subject: HI DEAR !
-Date: 16 Aug 2024 15:14:23 +0200
-Message-ID: <20240816134828.C40C0057EB67B0B4@hotelshavens.com>
+	s=arc-20240116; t=1723814204; c=relaxed/simple;
+	bh=oMRP9g9WrHtUyx2kHPQ5xZCk6nck2HERE5nYlQTHlRI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=E9XBGNJk899jYJsErAcnDXTtV7ubW3a0zY8+ivjzaxBdvsiWS5FqpbKP/C4ZIiTUWQii/Op70zgTp9U03MaX4lQKiSGBuksMthYRI/IwkLZFmRuA0xEuqbc8JQ52gjj6oGCPYEm7RYh1us0gGV81I/LB+BXXHGOVZy7aw4fTbYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SP8gz2n0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6230C32782;
+	Fri, 16 Aug 2024 13:16:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1723814203;
+	bh=oMRP9g9WrHtUyx2kHPQ5xZCk6nck2HERE5nYlQTHlRI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=SP8gz2n0mqEpzEBzA2L1XQOpj569rNX6n8SKH9K3f9Vyc1aqzp5JJbUhvheNS8xsS
+	 bv9rJl/1DIdAh1wnuMKool0gaPpij35HNQ16uEBIPqm1mOEyoIP2/qoKXD6czKAT19
+	 0f3l4iv7U6+RYcxdNkdw+jv6c29Xtu8QpUsUWbU6QT82Os50UD2/W3ev1/3Psyd9ky
+	 /ac+6yAYVlI5qH17OQQ2zweEpw23Yaoc+XwApkr464XRF+V6fUEIenma490Wk/oZJm
+	 BjFsdzdHgNQcwa+ws1MBmhM5hObXX5gNW7Md+a1WEoB1q1Qdpw1l1iIkRPa5uVW3NJ
+	 8jLlkEZQcQKqw==
+Date: Fri, 16 Aug 2024 14:16:37 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com
+Subject: Re: [PATCH 6.10 00/25] 6.10.6-rc2 review
+Message-ID: <b8e4af66-d952-477d-8227-d1eb9527b701@sirena.org.uk>
+References: <20240816085226.888902473@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
-	charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="uWMQWVIot4EaUV8o"
+Content-Disposition: inline
+In-Reply-To: <20240816085226.888902473@linuxfoundation.org>
+X-Cookie: A Smith & Wesson beats four aces.
 
-Greetings,
 
-Did you receive my last email message I sent to this Email=20
-address: ( stable@vger.kernel.org ) concerning relocating my=20
-investment to your country due to the on going war in my country=20
-Russia.
+--uWMQWVIot4EaUV8o
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Best Regards,
-Mr.Boris Soroka.
+On Fri, Aug 16, 2024 at 11:42:18AM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.10.6 release.
+> There are 25 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+
+Tested-by: Mark Brown <broonie@kernel.org>
+
+--uWMQWVIot4EaUV8o
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAma/UTQACgkQJNaLcl1U
+h9DeXQf6AijF4ILS/JM+FwC1iuB6FCt4GgSXV3UaBG05ojS/lnbkHTenWCajZRoq
+hQd/tQpL1/Dq4LfKIAPIKn5NG7cHP9qlvpeAxbokOi4th3PMY+CSv6l4EJQPnTJ1
+D79xR9xeakVUSnoqoyKL/ulx8Qk9Vmz1hmiRG2z40kpxI5R3/kWozfczy0F9OrCl
+p3ncHPdABed/1T+t2c2NMDOUYObalHC93tZ/yTuMJ/XNnhPsCZJP/tnO/Wb6CgJA
+udXD9s/0yVKsKp534f2pzRGvPqLBw+8k+WEPbpf5IfOUQPt3kT6g3ERApqdry5if
+UDmjJJSg89oasCF92nWywGCxcPqaVQ==
+=1kkm
+-----END PGP SIGNATURE-----
+
+--uWMQWVIot4EaUV8o--
 
