@@ -1,184 +1,115 @@
-Return-Path: <stable+bounces-69337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69338-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 264C4954EE9
-	for <lists+stable@lfdr.de>; Fri, 16 Aug 2024 18:33:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00619954EF6
+	for <lists+stable@lfdr.de>; Fri, 16 Aug 2024 18:36:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B0231C246B5
-	for <lists+stable@lfdr.de>; Fri, 16 Aug 2024 16:33:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F3791C21C3B
+	for <lists+stable@lfdr.de>; Fri, 16 Aug 2024 16:36:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCCD277119;
-	Fri, 16 Aug 2024 16:33:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 323001BCA1C;
+	Fri, 16 Aug 2024 16:36:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="PjRM6Soc"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TPIAcTeI"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 492C11BCA0B
-	for <stable@vger.kernel.org>; Fri, 16 Aug 2024 16:33:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 487C16F2F0;
+	Fri, 16 Aug 2024 16:36:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723825990; cv=none; b=F+Qe6gIi9mOvRCMZaWJ8FfsyYjP/3x55VKGcVzVw+irRP6NgW+rQOudqDPcPhGkg/Ye6nm+TDRnva5Pnepx+9/7DrgC7VFC5ltccugM6urHEEfvR2qZ6Xy+GjyDSeEtMpLNCGW9qZmnc1+9VfpZzm7yQIevankjCLPDU55ah+O8=
+	t=1723826197; cv=none; b=kxkKXjPXnrBv5Ad8RwbxzZ9MU3rVFkYzsPnOXDid3ndtzwnG+vqUUUtQvZs7SJLY+nFsfU+8zmwrMnksLVoxPp0UgSo+Zx2T8z/wJmgrarr6XkqCoUf9wKK+LxsYd0CDdHZm//ddGJS/cGT7hISy/xmkTjF7nO7E4+njogq6eXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723825990; c=relaxed/simple;
-	bh=a+GazqQj0H0hND+mdHAKbt7nto5jHAAJxyknn+frBv0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MtbJj7wVGYBEL01VXm6OxUZugWC08lsWm7ZMuEjcOt1WoMoVqMNDP399xpvNXSRx6DK7vFjsW38F+1RfbTXSNCnYFCkLWjFqV2qn7yISeCjjmiC9AO7B2eETRnQNItMRxnAffRDklsLIOObybFkfSR/imI+7ArSN9r+N4rL04BY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=PjRM6Soc; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1723826197; c=relaxed/simple;
+	bh=jpTpSSV9F/SL9g+TdUoyDgRSkH9SqJBsGcdxZf9uEPo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XuiV/2o6yrVRHPk+6zUqSx6pMKI83TyEZgzZAWdgpLw2qLDSS1cXSy5nKsZYFzsJST0xBlSj7pgQc7rWvcPWFICg+LsbLIEco2cu6jXXnBscTefJ7QrVzoLoW6P9W5/jPHsK3QwQCsorjwKyzY4s2/YjE4jv9B38kwpQfHaS7+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TPIAcTeI; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1723825988; x=1755361988;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=a+GazqQj0H0hND+mdHAKbt7nto5jHAAJxyknn+frBv0=;
-  b=PjRM6SocwSDleO8LZUCB3UzPZ0EaC8C8InOT6CYLBAuc13HQ5g9M/kZ2
-   i0zTlcFutewkPJH4tkOLFmMPhutbNZUPlAvXSZun0cpnucdE7aR9qqp1C
-   lFqJaynNz1MbhOwqzdx6nyKQoao4c7z2WwKLU+ezLdaDPmBqHURKLh5ZK
-   AQKlcvZSRO592VxTtFBbTZJvHpxIZYcvMrxyTP6c7ESdyU0PymbopP9EK
-   IgIh4kWbt/KyE37C+kzFvrV++63qccJhk2TzgQdCMNacRbSmX92hiS5tg
-   Npmg2oCFq+E+XmZp8Ry5nNNUcH8LJ3vjgBjLC75U8oPd9t4zJhJ21SOUP
-   g==;
-X-CSE-ConnectionGUID: xDFwV+0JR1WqoFG8n7fs9g==
-X-CSE-MsgGUID: /glhazXETtqEW43qay/Ftw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11166"; a="39582287"
+  t=1723826196; x=1755362196;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=jpTpSSV9F/SL9g+TdUoyDgRSkH9SqJBsGcdxZf9uEPo=;
+  b=TPIAcTeII0mqNRIrI6CwSQXXJN5rhZS2U18BGTi7UVISy+qr3x2TJA/C
+   3tah+jyPFPTMk6sWs9JzQNXP77ZHGs7MfMwTvhiyPzZwGfKN0OMa6iSwM
+   zCJoFS1uOJ9FrQ9D03XLiItMF7QRU4ySmqkcDoP4Z/uv+5XbRo3kMyoSw
+   dZ4TX/pQN5gX7s0YUpDznZnshmlDuKE8rdJQtwSTcYkPwalhN4IHqaNSv
+   c7Bb2IJPOSLUtbi9cAkLiwT82iLtb7Rimy0CLlHK35ydxZkw6kb5H7dyj
+   D5KdIz38WadqYJ2ceqolUTvKvJ8dMJHQudehz85pQBAWCjclwoqK62rfG
+   A==;
+X-CSE-ConnectionGUID: Qx8OEcuZQgyJPPWNDLfSFQ==
+X-CSE-MsgGUID: 9V4h0vp9T+6fS5H1HQp3Zg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11166"; a="22098401"
 X-IronPort-AV: E=Sophos;i="6.10,152,1719903600"; 
-   d="scan'208";a="39582287"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Aug 2024 09:33:07 -0700
-X-CSE-ConnectionGUID: Qn9qCAtGSS6R5q93QrfwOw==
-X-CSE-MsgGUID: htCLX/cfSZeb4sx/845cDg==
+   d="scan'208";a="22098401"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Aug 2024 09:36:36 -0700
+X-CSE-ConnectionGUID: VbCL0jPUTbqoab3uowuPBA==
+X-CSE-MsgGUID: V4RmGtPxTtWGGtamHKi9XA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.10,152,1719903600"; 
-   d="scan'208";a="60001770"
-Received: from lkp-server01.sh.intel.com (HELO 9a732dc145d3) ([10.239.97.150])
-  by orviesa006.jf.intel.com with ESMTP; 16 Aug 2024 09:33:05 -0700
-Received: from kbuild by 9a732dc145d3 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sezss-0006e6-0Q;
-	Fri, 16 Aug 2024 16:33:02 +0000
-Date: Sat, 17 Aug 2024 00:32:18 +0800
-From: kernel test robot <lkp@intel.com>
-To: Zack Rusin <zack.rusin@broadcom.com>, dri-devel@lists.freedesktop.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	ian.forbes@broadcom.com, martin.krastev@broadcom.com,
-	maaz.mombasawala@broadcom.com, Zack Rusin <zack.rusin@broadcom.com>,
+   d="scan'208";a="97229364"
+Received: from spandruv-desk.jf.intel.com ([10.54.75.19])
+  by orviesa001.jf.intel.com with ESMTP; 16 Aug 2024 09:36:34 -0700
+From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+To: hdegoede@redhat.com,
+	ilpo.jarvinen@linux.intel.com
+Cc: platform-driver-x86@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] drm/vmwgfx: Fix prime with external buffers
-Message-ID: <202408170033.rkCwgtSp-lkp@intel.com>
-References: <20240815153404.630214-2-zack.rusin@broadcom.com>
+Subject: [PATCH] platform/x86: ISST: Fix return value on last invalid resource
+Date: Fri, 16 Aug 2024 09:36:26 -0700
+Message-ID: <20240816163626.415762-1-srinivas.pandruvada@linux.intel.com>
+X-Mailer: git-send-email 2.45.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240815153404.630214-2-zack.rusin@broadcom.com>
+Content-Transfer-Encoding: 8bit
 
-Hi Zack,
+When only the last resource is invalid, tpmi_sst_dev_add() is returing
+error even if there are other valid resources before. This function
+should return error when there are no valid resources.
 
-kernel test robot noticed the following build errors:
+Here tpmi_sst_dev_add() is returning "ret" variable. But this "ret"
+variable contains the failure status of last call to sst_main(), which
+failed for the invalid resource. But there may be other valid resources
+before the last entry.
 
-[auto build test ERROR on drm/drm-next]
-[also build test ERROR on drm-intel/for-linux-next-fixes drm-misc/drm-misc-next drm-tip/drm-tip linus/master v6.11-rc3 next-20240816]
-[cannot apply to drm-exynos/exynos-drm-next drm-intel/for-linux-next]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+To address this, do not update "ret" variable for sst_main() return
+status.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Zack-Rusin/drm-vmwgfx-Fix-prime-with-external-buffers/20240815-234842
-base:   git://anongit.freedesktop.org/drm/drm drm-next
-patch link:    https://lore.kernel.org/r/20240815153404.630214-2-zack.rusin%40broadcom.com
-patch subject: [PATCH v3 2/2] drm/vmwgfx: Fix prime with external buffers
-config: i386-randconfig-013-20240816 (https://download.01.org/0day-ci/archive/20240817/202408170033.rkCwgtSp-lkp@intel.com/config)
-compiler: clang version 18.1.5 (https://github.com/llvm/llvm-project 617a15a9eac96088ae5e9134248d8236e34b91b1)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240817/202408170033.rkCwgtSp-lkp@intel.com/reproduce)
+Fixes: 9d1d36268f3d ("platform/x86: ISST: Support partitioned systems")
+Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Cc: <stable@vger.kernel.org> # 6.10+
+---
+ drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202408170033.rkCwgtSp-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
->> drivers/gpu/drm/vmwgfx/vmwgfx_blit.c:503:18: error: call to undeclared function 'floor'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-     503 |         diff->rect.y1 = floor(dst_offset / dst_stride);
-         |                         ^
-   1 error generated.
-
-
-vim +/floor +503 drivers/gpu/drm/vmwgfx/vmwgfx_blit.c
-
-   455	
-   456	static int vmw_external_bo_copy(struct vmw_bo *dst, u32 dst_offset,
-   457					u32 dst_stride, struct vmw_bo *src,
-   458					u32 src_offset, u32 src_stride,
-   459					u32 width_in_bytes, u32 height,
-   460					struct vmw_diff_cpy *diff)
-   461	{
-   462		struct vmw_private *vmw =
-   463			container_of(dst->tbo.bdev, struct vmw_private, bdev);
-   464		size_t dst_size = dst->tbo.resource->size;
-   465		size_t src_size = src->tbo.resource->size;
-   466		struct iosys_map dst_map = {0};
-   467		struct iosys_map src_map = {0};
-   468		int ret, i;
-   469		u8 *vsrc;
-   470		u8 *vdst;
-   471	
-   472		vsrc = map_external(src, &src_map);
-   473		if (!vsrc) {
-   474			drm_dbg_driver(&vmw->drm, "Wasn't able to map src\n");
-   475			ret = -ENOMEM;
-   476			goto out;
-   477		}
-   478	
-   479		vdst = map_external(dst, &dst_map);
-   480		if (!vdst) {
-   481			drm_dbg_driver(&vmw->drm, "Wasn't able to map dst\n");
-   482			ret = -ENOMEM;
-   483			goto out;
-   484		}
-   485	
-   486		vsrc += src_offset;
-   487		vdst += dst_offset;
-   488		if (src_stride == dst_stride) {
-   489			dst_size -= dst_offset;
-   490			src_size -= src_offset;
-   491			memcpy(vdst, vsrc,
-   492			       min(dst_stride * height, min(dst_size, src_size)));
-   493		} else {
-   494			WARN_ON(dst_stride < width_in_bytes);
-   495			for (i = 0; i < height; ++i) {
-   496				memcpy(vdst, vsrc, width_in_bytes);
-   497				vsrc += src_stride;
-   498				vdst += dst_stride;
-   499			}
-   500		}
-   501	
-   502		diff->rect.x1 = (dst_offset % dst_stride) / diff->cpp;
- > 503		diff->rect.y1 = floor(dst_offset / dst_stride);
-   504		diff->rect.x2 = diff->rect.x1 + width_in_bytes / diff->cpp;
-   505		diff->rect.y2 = diff->rect.y1 + height;
-   506	
-   507		ret = 0;
-   508	out:
-   509		unmap_external(src, &src_map);
-   510		unmap_external(dst, &dst_map);
-   511	
-   512		return ret;
-   513	}
-   514	
-
+diff --git a/drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c b/drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c
+index 7fa360073f6e..404582307109 100644
+--- a/drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c
++++ b/drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c
+@@ -1549,8 +1549,7 @@ int tpmi_sst_dev_add(struct auxiliary_device *auxdev)
+ 			goto unlock_free;
+ 		}
+ 
+-		ret = sst_main(auxdev, &pd_info[i]);
+-		if (ret) {
++		if (sst_main(auxdev, &pd_info[i])) {
+ 			/*
+ 			 * This entry is not valid, hardware can partially
+ 			 * populate dies. In this case MMIO will have 0xFFs.
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.45.0
+
 
