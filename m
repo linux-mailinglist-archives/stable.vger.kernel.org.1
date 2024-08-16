@@ -1,178 +1,101 @@
-Return-Path: <stable+bounces-69270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69273-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E3FE9540B4
-	for <lists+stable@lfdr.de>; Fri, 16 Aug 2024 06:45:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C7F49540E1
+	for <lists+stable@lfdr.de>; Fri, 16 Aug 2024 07:09:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 25938285E42
-	for <lists+stable@lfdr.de>; Fri, 16 Aug 2024 04:45:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 61C951C214D5
+	for <lists+stable@lfdr.de>; Fri, 16 Aug 2024 05:09:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A70836F30D;
-	Fri, 16 Aug 2024 04:45:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="mb4CT3/C"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE08978286;
+	Fri, 16 Aug 2024 05:09:42 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 381B810E4;
-	Fri, 16 Aug 2024 04:45:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B608D7711B
+	for <stable@vger.kernel.org>; Fri, 16 Aug 2024 05:09:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.255
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723783528; cv=none; b=g8Vy3enir9nqORioqbjvVQwtIRCqAcIehg056MsyNMzyo78dNLXIuTEQERc+JOIqW4GVb0lHHR5q+MCoYtvpeGbRYaM26UgtQuOLNhbS4QIxOXA16KtfHqIa7gKCP2qSEe+q6ifrtjjhBYhyQBcT9/6rYjbxsGl83CZ3ui5kTTM=
+	t=1723784982; cv=none; b=AhWalf39a4zOjsJgb4dMvZDulrWS9VpBa/lQOrs69tY7hIXC26kW42UIiCHpfs+Osl8G03TK5CUZrMTB5ItNVNCw6JlBgiJi704b5RyyTsPWXs1gf6yQuBqNMDwcKztXrA1EfaEW5kw9ePKrnF3Kb3yokjVzg3BmdHO2htBFmDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723783528; c=relaxed/simple;
-	bh=tjEQXuIrF/JMlAdKx+RtTwQKX7g/szbKv2fX1bKd7r0=;
-	h=Date:To:From:Subject:Message-Id; b=IMrmuvCFPJRr/TVU/L19skJ5qDJQZUF9BJ8K+0komC/w8MAfifsB77L/aQK3NMQxtO5+vdMMMIdsTbSkajeGUwZ+8Qt5Rq46bZyiex9ETCBCMFQ4EosYvLK4Xs9w/Vb7oNa4WSl5+abEgY3A/mYiL9uJfDFxKLCb26PIw+RnBIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=mb4CT3/C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E56EC32782;
-	Fri, 16 Aug 2024 04:45:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1723783527;
-	bh=tjEQXuIrF/JMlAdKx+RtTwQKX7g/szbKv2fX1bKd7r0=;
-	h=Date:To:From:Subject:From;
-	b=mb4CT3/CcLGkXZQEJsIrFt5AOsnKiEHR+j4zlse//dopDt1zTuwfevqFOR31F/aHY
-	 wC9ayg9MMT8SfVsgkQvfYr5i6jhxBdo6j4fcRT5Rf59Ej71bYIY5/l2ggLkWQZICXc
-	 vDwA+s954hxO8xLlms9OG68WxBGYQ3w7vHmoCeHk=
-Date: Thu, 15 Aug 2024 21:45:26 -0700
-To: mm-commits@vger.kernel.org,vbabka@suse.cz,surenb@google.com,stable@vger.kernel.org,roman.gushchin@linux.dev,rientjes@google.com,penberg@kernel.org,kent.overstreet@linux.dev,kees@kernel.org,iamjoonsoo.kim@lge.com,cl@linux.com,42.hyeyoo@gmail.com,gehao@kylinos.cn,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-slub-add-check-for-s-flags-in-the-alloc_tagging_slab_free_hook.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240816044527.8E56EC32782@smtp.kernel.org>
+	s=arc-20240116; t=1723784982; c=relaxed/simple;
+	bh=Idh4UqXWQWouM4c3RH2lHW/NZoWDwH10zoG53MFK8NE=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=VPSKGL0hiurCPUiuLNRe3+fV0rQqul+nERLt5SMKIVdB/RPcZIr4P30l+fnZ/ki5wk64e1LYXPHbS6xrvqLBYJfAel3hzruMlNR9O9sEob8mh4xUq92wkLVcjgkdLYnWpXwqMpA9fJnYJXPA+E6fi9ApA29yK8IS2iSAbOx2PbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.255
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.194])
+	by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4WlVQR659Sz1T7SD;
+	Fri, 16 Aug 2024 13:09:03 +0800 (CST)
+Received: from dggpemf500017.china.huawei.com (unknown [7.185.36.126])
+	by mail.maildlp.com (Postfix) with ESMTPS id E79F81401E9;
+	Fri, 16 Aug 2024 13:09:35 +0800 (CST)
+Received: from localhost.localdomain (10.175.104.67) by
+ dggpemf500017.china.huawei.com (7.185.36.126) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Fri, 16 Aug 2024 13:09:35 +0800
+From: Long Li <leo.lilong@huawei.com>
+To: <stable@vger.kernel.org>
+CC: <gregkh@linuxfoundation.org>, <jannh@google.com>, <leo.lilong@huawei.com>,
+	<yangerkun@huawei.com>
+Subject: [PATCH 4.19] filelock: Correct the filelock owner in fcntl_setlk/fcntl_setlk64
+Date: Fri, 16 Aug 2024 13:05:16 +0800
+Message-ID: <20240816050516.2120947-1-leo.lilong@huawei.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ dggpemf500017.china.huawei.com (7.185.36.126)
 
+The locks_remove_posix() function in fcntl_setlk/fcntl_setlk64 is designed
+to reliably remove locks when an fcntl/close race is detected. However, it
+was passing in the wrong filelock owner, it looks like a mistake and
+resulting in a failure to remove locks. More critically, if the lock
+removal fails, it could lead to a uaf issue while traversing the locks.
 
-The patch titled
-     Subject: mm/slub: add check for s->flags in the alloc_tagging_slab_free_hook
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-slub-add-check-for-s-flags-in-the-alloc_tagging_slab_free_hook.patch
+This problem occurs only in the 4.19 stable version.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-slub-add-check-for-s-flags-in-the-alloc_tagging_slab_free_hook.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Hao Ge <gehao@kylinos.cn>
-Subject: mm/slub: add check for s->flags in the alloc_tagging_slab_free_hook
-Date: Fri, 16 Aug 2024 09:33:36 +0800
-
-When enable CONFIG_MEMCG & CONFIG_KFENCE & CONFIG_KMEMLEAK, the following
-warning always occurs,This is because the following call stack occurred:
-mem_pool_alloc
-    kmem_cache_alloc_noprof
-        slab_alloc_node
-            kfence_alloc
-
-Once the kfence allocation is successful,slab->obj_exts will not be empty,
-because it has already been assigned a value in kfence_init_pool.
-
-Since in the prepare_slab_obj_exts_hook function,we perform a check for
-s->flags & (SLAB_NO_OBJ_EXT | SLAB_NOLEAKTRACE),the alloc_tag_add function
-will not be called as a result.Therefore,ref->ct remains NULL.
-
-However,when we call mem_pool_free,since obj_ext is not empty, it
-eventually leads to the alloc_tag_sub scenario being invoked.  This is
-where the warning occurs.
-
-So we should add corresponding checks in the alloc_tagging_slab_free_hook.
-For __GFP_NO_OBJ_EXT case,I didn't see the specific case where it's using
-kfence,so I won't add the corresponding check in
-alloc_tagging_slab_free_hook for now.
-
-[    3.734349] ------------[ cut here ]------------
-[    3.734807] alloc_tag was not set
-[    3.735129] WARNING: CPU: 4 PID: 40 at ./include/linux/alloc_tag.h:130 kmem_cache_free+0x444/0x574
-[    3.735866] Modules linked in: autofs4
-[    3.736211] CPU: 4 UID: 0 PID: 40 Comm: ksoftirqd/4 Tainted: G        W          6.11.0-rc3-dirty #1
-[    3.736969] Tainted: [W]=WARN
-[    3.737258] Hardware name: QEMU KVM Virtual Machine, BIOS unknown 2/2/2022
-[    3.737875] pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[    3.738501] pc : kmem_cache_free+0x444/0x574
-[    3.738951] lr : kmem_cache_free+0x444/0x574
-[    3.739361] sp : ffff80008357bb60
-[    3.739693] x29: ffff80008357bb70 x28: 0000000000000000 x27: 0000000000000000
-[    3.740338] x26: ffff80008207f000 x25: ffff000b2eb2fd60 x24: ffff0000c0005700
-[    3.740982] x23: ffff8000804229e4 x22: ffff800082080000 x21: ffff800081756000
-[    3.741630] x20: fffffd7ff8253360 x19: 00000000000000a8 x18: ffffffffffffffff
-[    3.742274] x17: ffff800ab327f000 x16: ffff800083398000 x15: ffff800081756df0
-[    3.742919] x14: 0000000000000000 x13: 205d344320202020 x12: 5b5d373038343337
-[    3.743560] x11: ffff80008357b650 x10: 000000000000005d x9 : 00000000ffffffd0
-[    3.744231] x8 : 7f7f7f7f7f7f7f7f x7 : ffff80008237bad0 x6 : c0000000ffff7fff
-[    3.744907] x5 : ffff80008237ba78 x4 : ffff8000820bbad0 x3 : 0000000000000001
-[    3.745580] x2 : 68d66547c09f7800 x1 : 68d66547c09f7800 x0 : 0000000000000000
-[    3.746255] Call trace:
-[    3.746530]  kmem_cache_free+0x444/0x574
-[    3.746931]  mem_pool_free+0x44/0xf4
-[    3.747306]  free_object_rcu+0xc8/0xdc
-[    3.747693]  rcu_do_batch+0x234/0x8a4
-[    3.748075]  rcu_core+0x230/0x3e4
-[    3.748424]  rcu_core_si+0x14/0x1c
-[    3.748780]  handle_softirqs+0x134/0x378
-[    3.749189]  run_ksoftirqd+0x70/0x9c
-[    3.749560]  smpboot_thread_fn+0x148/0x22c
-[    3.749978]  kthread+0x10c/0x118
-[    3.750323]  ret_from_fork+0x10/0x20
-[    3.750696] ---[ end trace 0000000000000000 ]---
-
-Link: https://lkml.kernel.org/r/20240816013336.17505-1-hao.ge@linux.dev
-Fixes: 4b8736964640 ("mm/slab: add allocation accounting into slab allocation and free paths")
-Signed-off-by: Hao Ge <gehao@kylinos.cn>
-Cc: Christoph Lameter <cl@linux.com>
-Cc: David Rientjes <rientjes@google.com>
-Cc: Hyeonggon Yoo <42.hyeyoo@gmail.com>
-Cc: Joonsoo Kim <iamjoonsoo.kim@lge.com>
-Cc: Kees Cook <kees@kernel.org>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Pekka Enberg <penberg@kernel.org>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: a561145f3ae9 ("filelock: Fix fcntl/close race recovery compat path")
+Fixes: d30ff3304083 ("filelock: Remove locks reliably when fcntl/close race is detected")
+Cc: stable@vger.kernel.org
+Signed-off-by: Long Li <leo.lilong@huawei.com>
 ---
+ fs/locks.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
- mm/slub.c |    4 ++++
- 1 file changed, 4 insertions(+)
-
---- a/mm/slub.c~mm-slub-add-check-for-s-flags-in-the-alloc_tagging_slab_free_hook
-+++ a/mm/slub.c
-@@ -2116,6 +2116,10 @@ alloc_tagging_slab_free_hook(struct kmem
- 	if (!mem_alloc_profiling_enabled())
- 		return;
- 
-+	/* slab->obj_exts might not be NULL if it was created for MEMCG accounting. */
-+	if (s->flags & (SLAB_NO_OBJ_EXT | SLAB_NOLEAKTRACE))
-+		return;
-+
- 	obj_exts = slab_obj_exts(slab);
- 	if (!obj_exts)
- 		return;
-_
-
-Patches currently in -mm which might be from gehao@kylinos.cn are
-
-mm-slub-add-check-for-s-flags-in-the-alloc_tagging_slab_free_hook.patch
-mm-cma-change-the-addition-of-totalcma_pages-in-the-cma_init_reserved_mem.patch
+diff --git a/fs/locks.c b/fs/locks.c
+index 234ebfa8c070..b1201b01867a 100644
+--- a/fs/locks.c
++++ b/fs/locks.c
+@@ -2313,7 +2313,7 @@ int fcntl_setlk(unsigned int fd, struct file *filp, unsigned int cmd,
+ 		f = fcheck(fd);
+ 		spin_unlock(&current->files->file_lock);
+ 		if (f != filp) {
+-			locks_remove_posix(filp, &current->files);
++			locks_remove_posix(filp, current->files);
+ 			error = -EBADF;
+ 		}
+ 	}
+@@ -2443,7 +2443,7 @@ int fcntl_setlk64(unsigned int fd, struct file *filp, unsigned int cmd,
+ 		f = fcheck(fd);
+ 		spin_unlock(&current->files->file_lock);
+ 		if (f != filp) {
+-			locks_remove_posix(filp, &current->files);
++			locks_remove_posix(filp, current->files);
+ 			error = -EBADF;
+ 		}
+ 	}
+-- 
+2.39.2
 
 
