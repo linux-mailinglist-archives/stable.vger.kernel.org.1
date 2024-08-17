@@ -1,194 +1,218 @@
-Return-Path: <stable+bounces-69387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69388-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9348D95582D
-	for <lists+stable@lfdr.de>; Sat, 17 Aug 2024 15:49:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90EE0955831
+	for <lists+stable@lfdr.de>; Sat, 17 Aug 2024 15:52:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20987282C1B
-	for <lists+stable@lfdr.de>; Sat, 17 Aug 2024 13:49:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E3F31F21AAB
+	for <lists+stable@lfdr.de>; Sat, 17 Aug 2024 13:52:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5550214E2CC;
-	Sat, 17 Aug 2024 13:49:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7046D14EC4E;
+	Sat, 17 Aug 2024 13:52:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="nUOdgm0k"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V676TsH3"
 X-Original-To: stable@vger.kernel.org
-Received: from mailout1.samsung.com (mailout1.samsung.com [203.254.224.24])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 911091EEE6
-	for <stable@vger.kernel.org>; Sat, 17 Aug 2024 13:49:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.24
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7886FF507;
+	Sat, 17 Aug 2024 13:52:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723902569; cv=none; b=oGINsonVYdBYtVCh/S90jZQcl3mpNchzTupuF3agDzoq0WXG67aH2Y6WwQVQssNAzo/C7KsE+az1Xp2sMcxqaRBu7ISmIGYhn2WYuuf/VvVd9g3LJ8shqHNqXEB9RxnxzYzZpfMnJLjz77cYKLnEQ2w3NguloE03JWYNlkSvpUw=
+	t=1723902748; cv=none; b=g+UXTmiP+GRT7kKZV5znit+EJnVIkb741hUeqF91rwiqo5rGY8Yw+Ie0o3t6mDgoJpsq5cArKU9MeKTngOaymK6OEgFxzOul/lXHPqX0FFuh8MLOWOPILrImaFgUuo+D5NdLygI7JcchAz7YGyMTVtYGBpURbUVDry1gAuHbzOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723902569; c=relaxed/simple;
-	bh=Z37x7P3OUwQ57VOk02zwVc2udz2b1U+xIPjklLd4zCo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
-	 Content-Type:References; b=rbu5xFKdmAp7O9/Am0fOqaBs8gIUnfxfEFi8wfHQP02zkrUh+lTsTJCO3BnCr/HWkVp109T3Xkx75YLDi0/RseDZZlcZ9SFwDCoYYKTxESjF0WOhuaRTGzXh1xF1GS8S2o0BfVeuc3yUmhYQiBqMit0Q503vxNXCEtI52xFryEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=nUOdgm0k; arc=none smtp.client-ip=203.254.224.24
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
-Received: from epcas5p2.samsung.com (unknown [182.195.41.40])
-	by mailout1.samsung.com (KnoxPortal) with ESMTP id 20240817134919epoutp013084369c4a4fb405b3de2e29d29e9879~siD56jGm41155311553epoutp01Q
-	for <stable@vger.kernel.org>; Sat, 17 Aug 2024 13:49:19 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com 20240817134919epoutp013084369c4a4fb405b3de2e29d29e9879~siD56jGm41155311553epoutp01Q
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1723902559;
-	bh=6OdAAhY1jmDD/qNc8iBhpCFMfmOZJ5vdix/d/18DDPQ=;
-	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
-	b=nUOdgm0ktl34B2s0pKxb3UkUK88B4KLP1hctKHgmNtvkc/V1CHVUJakkdkU+oiNwW
-	 ZhzWrCxOideaD9sI+xT3pO3FN91BhRWUqOLihsW1gznNBKxUxUlg/6/P5DkvFvc0gu
-	 vluUXMvs1QpeIqkl0iFqCCuaXWz/Bs8Ucx5UHySg=
-Received: from epsnrtp1.localdomain (unknown [182.195.42.162]) by
-	epcas5p4.samsung.com (KnoxPortal) with ESMTP id
-	20240817134918epcas5p4b81041e43428e2ab9c9ce40d2c919282~siD5lhkIw0893208932epcas5p4H;
-	Sat, 17 Aug 2024 13:49:18 +0000 (GMT)
-Received: from epsmges5p2new.samsung.com (unknown [182.195.38.179]) by
-	epsnrtp1.localdomain (Postfix) with ESMTP id 4WmKwF2pmjz4x9Pp; Sat, 17 Aug
-	2024 13:49:17 +0000 (GMT)
-Received: from epcas5p1.samsung.com ( [182.195.41.39]) by
-	epsmges5p2new.samsung.com (Symantec Messaging Gateway) with SMTP id
-	87.D4.09743.D5AA0C66; Sat, 17 Aug 2024 22:49:17 +0900 (KST)
-Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
-	epcas5p3.samsung.com (KnoxPortal) with ESMTPA id
-	20240817134356epcas5p311b04d9ba86b537c871a55ae7f2e4261~sh-NkFcK82016620166epcas5p3p;
-	Sat, 17 Aug 2024 13:43:56 +0000 (GMT)
-Received: from epsmgmc1p1new.samsung.com (unknown [182.195.42.40]) by
-	epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
-	20240817134356epsmtrp2ad3aba442d71ae211fca8898de870bbd~sh-NjSmU20363203632epsmtrp2C;
-	Sat, 17 Aug 2024 13:43:56 +0000 (GMT)
-X-AuditID: b6c32a4a-14fff7000000260f-b2-66c0aa5d535c
-Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
-	epsmgmc1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
-	56.6A.07567.C19A0C66; Sat, 17 Aug 2024 22:43:56 +0900 (KST)
-Received: from [107.122.5.126] (unknown [107.122.5.126]) by
-	epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20240817134354epsmtip130a4c32a2f80ebb9ac325ba1b7b421d5~sh-LnkTaY0574705747epsmtip1P;
-	Sat, 17 Aug 2024 13:43:54 +0000 (GMT)
-Message-ID: <c477fdb2-a92a-4551-b6c8-38ada06914c6@samsung.com>
-Date: Sat, 17 Aug 2024 19:13:53 +0530
+	s=arc-20240116; t=1723902748; c=relaxed/simple;
+	bh=10ShYPpgkaroFS2ksMKDMWdNDO8MC7xsOob74hArJYY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dCN4i33IF6wfKm5hob6TsCrJ8Q7uV2Jlvblwe5m5WyLRq76uG30Qv8qh+Wl0EFNwCGli0IxApIBbt2J8Bw1lCE9VTdqqkLdqQjyOV3RJcf9RKpvHWKCpd7VP6lBaN+yPUm2Jo8zacLsesaYa8vBsJi9gWrK3vIFhXCQgTQkWwSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V676TsH3; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-429d2d7be1eso14826895e9.1;
+        Sat, 17 Aug 2024 06:52:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1723902745; x=1724507545; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HhF0RYx6ynDaRd0C4Ob0aLdco1kIfELnk5gy0xZdEL8=;
+        b=V676TsH339LmUaBzvUIwJkj4JKT99d/+zeBszATxihX46mM0P6Qzj0EixqUIwwS8aX
+         z+OblT8QUChUirVpE/vKmrOJPxZlVHDsnWZj7ibOtdoL26rR1FXN8tnRsjIqZuvIsuIj
+         pg69SPCCWjD/vW6UrI1fLltC7CKXXeKFdniiKQFJC6nMGzEwxVLd7IRplui+5CtUbcMi
+         cfHR3CY0QV1eCtpy1FuDGkOUfL3ndvADMrFZDyZtfblHUuZvLOyl4nqcUNuCRZgD7uqm
+         qwb4+NgUuQZf14weFQG0T9hHiYfQiMQ/nWYUKB3Q+ilIeg6fep7LxwKfbPodEsi+n5yY
+         Uutg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723902745; x=1724507545;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=HhF0RYx6ynDaRd0C4Ob0aLdco1kIfELnk5gy0xZdEL8=;
+        b=eyzrNFeUKmdDVLjl8genJKaSriVzUm/Xy/48jPRzdkSEw2TUeOAW5yyxu3Kwn9wHBU
+         PoN/cBZfYFkceMURM8Ips84xve6UR4ewXSelxIw7Vn2ROYiFYQowXNaPaHbyi+RF7Mga
+         UcKerMVgGnPxRDJ2b0s+QOXMxlLM0C12Us7nE0MZmgnbTjkn3Tfo5wOJUW2tADE4a9yr
+         zEojMiFZiPz4OB42FWL1U83oKkURMmDwNAa8lQQHVeJS2rMPIEWb3mypZMLJdIxBalw1
+         /y9/Jy57K5hbOeMnyXyk7beSiTvZf/dUMiloP8vwUFOU6k+y3w0mGedSnp2PJYhWP2Yy
+         a27w==
+X-Forwarded-Encrypted: i=1; AJvYcCVNE3XFwi2aWJjg0LY0zB8qDZ0c3KVOpFC4GWGvmyn9MLKZKMZrYM4aV47dgVVnanU6pjhhpAGriAqeHEWCrpqC56WsZAGM4pUbKuAQPTpqWYgLGEMZNFlUSbDnadAhgSnkXIA06eDZrVsspRXGzNUc/gg4mFlis9x/gdaZFdek4gNZ
+X-Gm-Message-State: AOJu0YySD+nrkCJ5xTmqmmep2P9M0y2R6h5c4p5REEoE6isLlJRzRt8v
+	n9xcjsRYd2sc6sNWpCItegTGJ/f8mKtgBfb7jVJAvoRoyXy3/ZA9c602zpYnakopYuzAUAnDrnj
+	dee4GWJCxjszb5z0+1AO3TPwnldg=
+X-Google-Smtp-Source: AGHT+IG2Dte1tcw6sJPWDiyzzIAPURygmYu25hnF/KjN1rpvyHQwHIMX/6EjVWe/64zBi5ru4A7hDqqvSh0hlds/kyM=
+X-Received: by 2002:a05:600c:1808:b0:424:71f7:77f2 with SMTP id
+ 5b1f17b1804b1-429e6f61d47mr59981775e9.16.1723902744330; Sat, 17 Aug 2024
+ 06:52:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] usb: dwc3: core: Prevent USB core invalid event
- buffer address access
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Thinh.Nguyen@synopsys.com, linux-usb@vger.kernel.org,
-	linux-kernel@vger.kernel.org, jh0801.jung@samsung.com,
-	dh10.jung@samsung.com, naushad@samsung.com, akash.m5@samsung.com,
-	rc93.raju@samsung.com, taehyun.cho@samsung.com, hongpooh.kim@samsung.com,
-	eomji.oh@samsung.com, shijie.cai@samsung.com, stable@vger.kernel.org
-Content-Language: en-US
-From: Selvarasu Ganesan <selvarasu.g@samsung.com>
-In-Reply-To: <2024081700-skittle-lethargy-9567@gregkh>
-Content-Transfer-Encoding: 7bit
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrBJsWRmVeSWpSXmKPExsWy7bCmum7sqgNpBs0LhS3eXF3FanFnwTQm
-	i1PLFzJZNC9ez2Yxac9WFou7D3+wWFzeNYfNYtGyVmaLT0f/s1qs6pwDFPu+k9liwcZHjBaT
-	DoparFpwgN2Bz2P/3DXsHn1bVjF6bNn/mdHj8ya5AJaobJuM1MSU1CKF1Lzk/JTMvHRbJe/g
-	eOd4UzMDQ11DSwtzJYW8xNxUWyUXnwBdt8wcoBuVFMoSc0qBQgGJxcVK+nY2RfmlJakKGfnF
-	JbZKqQUpOQUmBXrFibnFpXnpenmpJVaGBgZGpkCFCdkZa3fZF2wSrHi49DBTA+Nm3i5GTg4J
-	AROJpsUT2LsYuTiEBHYzSpxe8BTK+cQoMen+YSYI5xujxLoFN9hhWqYu384GkdjLKNF+ajUL
-	hPOWUWLu3BusIFW8AnYSf/dOZu5i5OBgEVCVONuRDBEWlDg58wkLiC0qIC9x/9YMsKHCAvES
-	R24vBWsVEdCQeHn0FthMZoGTTBJXly5jAkkwC4hL3HoynwlkJpuAocSzEzYgYU4BM4mptxcx
-	QpTIS2x/O4cZpFdCYA+HxL4TDUwQV7tIdLbfYoawhSVeHd8C9Y2UxOd3e9kg7GqJ1Xc+skE0
-	tzBKHH7yDarIXuLx0UdgzzALaEqs36UPEZaVmHpqHdRtfBK9v59A7eKV2DEPxlaVONV4GWq+
-	tMS9JddYIWwPickvtjBPYFSchRQus5C8OQvJP7MQNi9gZFnFKJlaUJybnlpsWmCUl1oOj/Dk
-	/NxNjOAkrOW1g/Hhgw96hxiZOBgPMUpwMCuJ8D79sjdNiDclsbIqtSg/vqg0J7X4EKMpMH4m
-	MkuJJucD80BeSbyhiaWBiZmZmYmlsZmhkjjv69a5KUIC6YklqdmpqQWpRTB9TBycUg1M3tZX
-	C5Zemrb6QcRaK/f4pXlhFp1L1aQEvRVtTirdWe776MtvJaGO3Y1vxee4Pu2ws5217NCzN3tD
-	kgI9Z895Em0rU6O5XnRiRGLbp6s/JNK1uJ2v3RXeu3n58vU218QCRLeGlbPOy3z3NH0x84Jj
-	9Zqv9abKVzBZ9lovmLenpF1E4tHGOrWFZ0qWf5nEbuL+NeZYe8D7iGjefV2vNae7nBKYt9j0
-	1Uaj+70LRT9PUJVNrGKqnLtvTXMz17Iij63fH6aEmSudeL2gXPXnXN6S1hvdQXveXF0i+2iN
-	sOHmPsXlRkb3TyraCR3NvCDz5oqAY7fUfua+6a2RbCcqk+M0rk9bz6Vy8enOez+LV3x1U2Ip
-	zkg01GIuKk4EAGET9E9LBAAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprEIsWRmVeSWpSXmKPExsWy7bCSnK7MygNpBt83aFq8ubqK1eLOgmlM
-	FqeWL2SyaF68ns1i0p6tLBZ3H/5gsbi8aw6bxaJlrcwWn47+Z7VY1TkHKPZ9J7PFgo2PGC0m
-	HRS1WLXgALsDn8f+uWvYPfq2rGL02LL/M6PH501yASxRXDYpqTmZZalF+nYJXBlrd9kXbBKs
-	eLj0MFMD42beLkZODgkBE4mpy7ezgdhCArsZJeZMroWIS0u8ntXFCGELS6z895y9i5ELqOY1
-	o8SBYyfYQRK8AnYSf/dOZu5i5OBgEVCVONuRDBEWlDg58wkLiC0qIC9x/9YMsHJhgXiJ5sn7
-	mUBsEQENiZdHb7GAzGQWOMkkse9KHzPEgllMEtcnzGMFqWIWEJe49WQ+E8gCNgFDiWcnbEDC
-	nAJmElNvL2KEKDGT6NraBWXLS2x/O4d5AqPQLCR3zEIyaRaSlllIWhYwsqxilEwtKM5Nz002
-	LDDMSy3XK07MLS7NS9dLzs/dxAiONi2NHYz35v/TO8TIxMF4iFGCg1lJhPfpl71pQrwpiZVV
-	qUX58UWlOanFhxilOViUxHkNZ8xOERJITyxJzU5NLUgtgskycXBKNTDJCB9K+Bt87vlJZu3D
-	0+cq/bTf+YPLasLvU584IvKnL9+69VWw7E/n2/w+5iw1uj8qqrfHf0n/Fid9Ye++GVdklhx1
-	ODi3bTnXCvEHU5kOOShaSVZEXVr8JGe/dl7VTecahd7grzEbY2xNw+Jrt3PkKT4z1Nn0aFth
-	gbqHeOe6aZGMZ0T3lbnon3bmbHRjkvm+7CvD5cPnbBhm79v10MPvilTd8ZPGLEq2C977lTgm
-	yu+Mqrp34OGhzWtTZgf8msNwZteO72t8xF6L7RZqv2kdtStOSoCXU3JKXK1G7cIzyoveva+I
-	qfl+fvlcdtZdEhufsk06f0vGkvfaCg0u2+YPF89b2v+U5Hp6PlRzQn+PEktxRqKhFnNRcSIA
-	OkdZfCUDAAA=
-X-CMS-MailID: 20240817134356epcas5p311b04d9ba86b537c871a55ae7f2e4261
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-Sendblock-Type: REQ_APPROVE
-CMS-TYPE: 105P
-DLP-Filter: Pass
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20240815064918epcas5p1248e4f9084d33fdb11a25fa34e66cdbe
-References: <CGME20240815064918epcas5p1248e4f9084d33fdb11a25fa34e66cdbe@epcas5p1.samsung.com>
-	<20240815064836.1491-1-selvarasu.g@samsung.com>
-	<2024081618-singing-marlin-2b05@gregkh>
-	<4f286780-89a2-496d-9007-d35559f26a21@samsung.com>
-	<2024081700-skittle-lethargy-9567@gregkh>
+References: <20240725132056.9151-1-max.oss.09@gmail.com> <D3I3BTOHN2RW.2DUYSKP3JRT5Z@fairphone.com>
+In-Reply-To: <D3I3BTOHN2RW.2DUYSKP3JRT5Z@fairphone.com>
+From: Max Krummenacher <max.oss.09@gmail.com>
+Date: Sat, 17 Aug 2024 15:52:13 +0200
+Message-ID: <CAEHkU3V9L4NKUkwr8Gyo2ZWEVJsjYTqPRduYrHoHyVtdEfFEVQ@mail.gmail.com>
+Subject: Re: [PATCH] tty: vt: conmakehash: cope with abs_srctree no longer in env
+To: Luca Weiss <luca.weiss@fairphone.com>
+Cc: Max Krummenacher <max.krummenacher@toradex.com>, stable@vger.kernel.org, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby <jirislaby@kernel.org>, 
+	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@pengutronix.de>, 
+	linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+Hi Luca
 
-On 8/17/2024 10:47 AM, Greg KH wrote:
-> On Fri, Aug 16, 2024 at 09:13:09PM +0530, Selvarasu Ganesan wrote:
->> On 8/16/2024 3:25 PM, Greg KH wrote:
->>> On Thu, Aug 15, 2024 at 12:18:31PM +0530, Selvarasu Ganesan wrote:
->>>> This commit addresses an issue where the USB core could access an
->>>> invalid event buffer address during runtime suspend, potentially causing
->>>> SMMU faults and other memory issues in Exynos platforms. The problem
->>>> arises from the following sequence.
->>>>           1. In dwc3_gadget_suspend, there is a chance of a timeout when
->>>>           moving the USB core to the halt state after clearing the
->>>>           run/stop bit by software.
->>>>           2. In dwc3_core_exit, the event buffer is cleared regardless of
->>>>           the USB core's status, which may lead to an SMMU faults and
->>>>           other memory issues. if the USB core tries to access the event
->>>>           buffer address.
->>>>
->>>> To prevent this hardware quirk on Exynos platforms, this commit ensures
->>>> that the event buffer address is not cleared by software  when the USB
->>>> core is active during runtime suspend by checking its status before
->>>> clearing the buffer address.
->>>>
->>>> Cc: stable@vger.kernel.org # v6.1+
->>> Any hint as to what commit id this fixes?
->>>
->>> thanks,
->>>
->>> greg k-h
->>
->> Hi Greg,
->>
->> This issue is not related to any particular commit. The given fix is
->> address a hardware quirk on the Exynos platform. And we require it to be
->> backported on stable kernel 6.1 and above all stable kernel.
-> If it's a hardware quirk issue, why are you restricting it to a specific
-> kernel release and not a specific kernel commit?  Why not 5.15?  5.4?
-
-Hi Greg,
-
-I mentioned a specific kernel because our platform is set to be tested 
-and functioning with kernels 6.1 and above, and the issue was reported 
-with these kernel versions. However, we would be fine if all stable 
-kernels, such as 5.4 and 5.15, were backported. In this case, if you 
-need a new patch version to update the Cc tag for all stable kernels, 
-please suggest the Cc tag to avoid confusion in next version.
-
-Thanks,
-Selva
+On Sat, Aug 17, 2024 at 11:48=E2=80=AFAM Luca Weiss <luca.weiss@fairphone.c=
+om> wrote:
 >
-> thanks,
+> On Thu Jul 25, 2024 at 3:20 PM CEST, max.oss.09 wrote:
+> > From: Max Krummenacher <max.krummenacher@toradex.com>
+> >
+> > conmakehash uses getenv("abs_srctree") from the environment to strip
+> > the absolute path from the generated sources.
+> > However since commit e2bad142bb3d ("kbuild: unexport abs_srctree and
+> > abs_objtree") this environment variable no longer gets set.
+> > Instead use basename() to indicate the used file in a comment of the
+> > generated source file.
+> >
+> > Fixes: 3bd85c6c97b2 ("tty: vt: conmakehash: Don't mention the full path=
+ of the input in output")
+> > Signed-off-by: Max Krummenacher <max.krummenacher@toradex.com>
+> >
+> > ---
+> >
+> >  drivers/tty/vt/conmakehash.c | 20 +++++++-------------
+> >  1 file changed, 7 insertions(+), 13 deletions(-)
+> >
+> > diff --git a/drivers/tty/vt/conmakehash.c b/drivers/tty/vt/conmakehash.=
+c
+> > index dc2177fec715..82d9db68b2ce 100644
+> > --- a/drivers/tty/vt/conmakehash.c
+> > +++ b/drivers/tty/vt/conmakehash.c
+> > @@ -11,6 +11,8 @@
+> >   * Copyright (C) 1995-1997 H. Peter Anvin
+> >   */
+> >
+> > +#include <libgen.h>
+> > +#include <linux/limits.h>
 >
-> greg k-h
+> Hi Max,
 >
+> Not sure this is the best place to ask but this <linux/limits.h> include
+> appears to rely on this file already being installed in /usr/include and
+> is not taken from the Linux source tree that's being built.
+>
+> This mostly manifests in building Linux kernel e.g. in Alpine Linux
+> package build if 'linux-headers' package is not being explicitly
+> installed, failing with
+>
+>   drivers/tty/vt/conmakehash.c:15:10: fatal error: linux/limits.h: No suc=
+h file or directory
+>      15 | #include <linux/limits.h>
+>         |          ^~~~~~~~~~~~~~~~
+>   compilation terminated.
+>
+> Apparently this is (understandably) also a problem when building on
+> macOS:
+> https://lore.kernel.org/all/20240807-macos-build-support-v1-11-4cd1ded856=
+94@samsung.com/
+>
+> I did try that linked patch a bit ago, but unfortunately didn't fix it
+> for the Alpine Linux build environment.
+
+This is a bug I introduced.
+
+Masahiro Yamada already fixed it with [1].
+
+Sorry about that.
+
+Regards
+Max
+
+[1] https://lore.kernel.org/all/20240809160853.1269466-1-masahiroy@kernel.o=
+rg/
+
+>
+> Any ideas?
+>
+> Regards
+> Luca
+>
+>
+> >  #include <stdio.h>
+> >  #include <stdlib.h>
+> >  #include <sysexits.h>
+> > @@ -76,8 +78,8 @@ static void addpair(int fp, int un)
+> >  int main(int argc, char *argv[])
+> >  {
+> >    FILE *ctbl;
+> > -  const char *tblname, *rel_tblname;
+> > -  const char *abs_srctree;
+> > +  const char *tblname;
+> > +  char base_tblname[PATH_MAX];
+> >    char buffer[65536];
+> >    int fontlen;
+> >    int i, nuni, nent;
+> > @@ -102,16 +104,6 @@ int main(int argc, char *argv[])
+> >       }
+> >      }
+> >
+> > -  abs_srctree =3D getenv("abs_srctree");
+> > -  if (abs_srctree && !strncmp(abs_srctree, tblname, strlen(abs_srctree=
+)))
+> > -    {
+> > -      rel_tblname =3D tblname + strlen(abs_srctree);
+> > -      while (*rel_tblname =3D=3D '/')
+> > -     ++rel_tblname;
+> > -    }
+> > -  else
+> > -    rel_tblname =3D tblname;
+> > -
+> >    /* For now we assume the default font is always 256 characters. */
+> >    fontlen =3D 256;
+> >
+> > @@ -253,6 +245,8 @@ int main(int argc, char *argv[])
+> >    for ( i =3D 0 ; i < fontlen ; i++ )
+> >      nuni +=3D unicount[i];
+> >
+> > +  strncpy(base_tblname, tblname, PATH_MAX);
+> > +  base_tblname[PATH_MAX - 1] =3D 0;
+> >    printf("\
+> >  /*\n\
+> >   * Do not edit this file; it was automatically generated by\n\
+> > @@ -264,7 +258,7 @@ int main(int argc, char *argv[])
+> >  #include <linux/types.h>\n\
+> >  \n\
+> >  u8 dfont_unicount[%d] =3D \n\
+> > -{\n\t", rel_tblname, fontlen);
+> > +{\n\t", basename(base_tblname), fontlen);
+> >
+> >    for ( i =3D 0 ; i < fontlen ; i++ )
+> >      {
 >
 
