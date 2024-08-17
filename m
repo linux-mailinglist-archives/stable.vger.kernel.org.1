@@ -1,127 +1,194 @@
-Return-Path: <stable+bounces-69386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69387-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC486955781
-	for <lists+stable@lfdr.de>; Sat, 17 Aug 2024 13:41:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9348D95582D
+	for <lists+stable@lfdr.de>; Sat, 17 Aug 2024 15:49:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7AE40B21156
-	for <lists+stable@lfdr.de>; Sat, 17 Aug 2024 11:41:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20987282C1B
+	for <lists+stable@lfdr.de>; Sat, 17 Aug 2024 13:49:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5203149E1A;
-	Sat, 17 Aug 2024 11:41:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5550214E2CC;
+	Sat, 17 Aug 2024 13:49:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="VjG5ENY6"
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="nUOdgm0k"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailout1.samsung.com (mailout1.samsung.com [203.254.224.24])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05112256E;
-	Sat, 17 Aug 2024 11:41:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 911091EEE6
+	for <stable@vger.kernel.org>; Sat, 17 Aug 2024 13:49:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.24
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723894864; cv=none; b=RkEWevgVh4Q9O4QaJViHb+FnZXbSRc6BLNjiV1WV157ijVi1EiZWBnX4iK7yGxclCtfotOMa9vF050xXXSPsrY+e/ZJpi62vA3JegEKDzoq20HWxDvtk/5LmTnFciQm+Egj+zUJWF8jleKo7jxE3f+x99csR9D2YFYgYM7EYgBA=
+	t=1723902569; cv=none; b=oGINsonVYdBYtVCh/S90jZQcl3mpNchzTupuF3agDzoq0WXG67aH2Y6WwQVQssNAzo/C7KsE+az1Xp2sMcxqaRBu7ISmIGYhn2WYuuf/VvVd9g3LJ8shqHNqXEB9RxnxzYzZpfMnJLjz77cYKLnEQ2w3NguloE03JWYNlkSvpUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723894864; c=relaxed/simple;
-	bh=pHb1cd/bM5HAeb2aNJlmyYZrkZZKm2iDpqq5ciaa690=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GCGpbBJ9JzWCR6TwOQ5epwcg/r3G/wXq73CDRg4cYwQevBnrRRiXZgLvvQVX4DD2sZyu+ijMl8EVcfze5GJacqlay7V8OuMNpECDCJ819cMQNeCtc18ZYB5UkGrGSfRnGkSTrL0e59f5ZtUqDz4iWfUlTwjSPlW+OgAVRtvgqgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=VjG5ENY6; arc=none smtp.client-ip=209.85.167.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-530e062217eso3682346e87.1;
-        Sat, 17 Aug 2024 04:41:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1723894861; x=1724499661; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=vRpUQui6KEL9xqbOs0Ea/v4MaqiDAscFoJmUDj6bZgo=;
-        b=VjG5ENY6zeMmHwYARA8cB50dZ7mfDKkqTdbIZ/Vb8FNvCF7MS1GfhsTv7bt1cqBf/s
-         ipDKghtF2DgAqe1cEsDMIwGcr20rZrMGtM8F9BZM6dPV5UJsv9QKDVXQb5/UxVKrmvaW
-         8w+PQBOOp3ftnCuWuUzqjAyxwnjGKSSi4TPgHpuQoSJm+Fd+hrjlQ/mVnECh1Fi+QFhb
-         lOdJ5SaMd+Qt7so2BUXdyKEUHuy67EEVrJBGIlDiTaVH7OK5n6MXenG1/Bzv6DJRkd7p
-         2qe91DqqyiqRiADezp0wglAjHOZjlr/0VB85kfpb8tWcVzPrOGKlnli+VYaii17EG1mz
-         MYSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723894861; x=1724499661;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vRpUQui6KEL9xqbOs0Ea/v4MaqiDAscFoJmUDj6bZgo=;
-        b=TOZOtKrOrEcvdpTsVLKkKEcFHyRGtM8oJJ24Hdai/eKIwCsWlVuIA0Yz2/ZB0wgLFe
-         pvQ+HK7vVSryS7726q0a2ubXddqpJg4v8MN1Z33XBHFu1PAkUzQO3gGL8gkurc5Cu//Y
-         60j+aC7BOLmPgJreKJ5ExNEx4bnxx7DP+7Y5URo2vRj6QdtfRZCOGmh06ek/MJPcBuWQ
-         sKP1ZreRd2zvKhqzLZ0uxzKFPP6vPH6tV4S1uujQ6hsklA707pl1NWbQS1xMtIp/iEaA
-         pT1oHKvyG0O+0+PVqECNMsX0eRSy8GjKHrKxzqCv1k/9g023mPy7Oraw9xn8PTQua+MA
-         xNvQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVcdjB+bNr2Ea4LXZl4YaTEZPNvGdlKrCno4wOBiZ59qkEN7GMh7boOZ3N7v7ciC0FDF2QaLiJwow20/Z1zwNVO3jGFUFu0OiUeXUJd8PN8h01l38gAfYLBDW31V0iRXDCx+IYb
-X-Gm-Message-State: AOJu0YxWNLnO3fXUlCDQ2nriz5Dirbxeo91S0vd0YFhdnU2xXmNIxnlL
-	3mpv4gQ771kw/LT4/DEhykk0S4mscSwWjxMf04g1MzRK5+C+Yaw=
-X-Google-Smtp-Source: AGHT+IFRrGmUNhCYwUr6r0aNdaQyrpw2Zl2kgseXIhOIL4K1vn+dS++NFAIzpV6T7Gr+tD4HzXyacw==
-X-Received: by 2002:a05:6512:1081:b0:52e:73a2:4415 with SMTP id 2adb3069b0e04-5331c6dc95emr3852777e87.46.1723894860555;
-        Sat, 17 Aug 2024 04:41:00 -0700 (PDT)
-Received: from [192.168.1.3] (p5b05713d.dip0.t-ipconnect.de. [91.5.113.61])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5331c98c77esm622664e87.250.2024.08.17.04.40.58
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 17 Aug 2024 04:40:59 -0700 (PDT)
-Message-ID: <886e729c-d3fd-432f-8fce-6f6926b1fdbc@googlemail.com>
-Date: Sat, 17 Aug 2024 13:40:57 +0200
+	s=arc-20240116; t=1723902569; c=relaxed/simple;
+	bh=Z37x7P3OUwQ57VOk02zwVc2udz2b1U+xIPjklLd4zCo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:From:In-Reply-To:
+	 Content-Type:References; b=rbu5xFKdmAp7O9/Am0fOqaBs8gIUnfxfEFi8wfHQP02zkrUh+lTsTJCO3BnCr/HWkVp109T3Xkx75YLDi0/RseDZZlcZ9SFwDCoYYKTxESjF0WOhuaRTGzXh1xF1GS8S2o0BfVeuc3yUmhYQiBqMit0Q503vxNXCEtI52xFryEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=nUOdgm0k; arc=none smtp.client-ip=203.254.224.24
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+Received: from epcas5p2.samsung.com (unknown [182.195.41.40])
+	by mailout1.samsung.com (KnoxPortal) with ESMTP id 20240817134919epoutp013084369c4a4fb405b3de2e29d29e9879~siD56jGm41155311553epoutp01Q
+	for <stable@vger.kernel.org>; Sat, 17 Aug 2024 13:49:19 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com 20240817134919epoutp013084369c4a4fb405b3de2e29d29e9879~siD56jGm41155311553epoutp01Q
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1723902559;
+	bh=6OdAAhY1jmDD/qNc8iBhpCFMfmOZJ5vdix/d/18DDPQ=;
+	h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+	b=nUOdgm0ktl34B2s0pKxb3UkUK88B4KLP1hctKHgmNtvkc/V1CHVUJakkdkU+oiNwW
+	 ZhzWrCxOideaD9sI+xT3pO3FN91BhRWUqOLihsW1gznNBKxUxUlg/6/P5DkvFvc0gu
+	 vluUXMvs1QpeIqkl0iFqCCuaXWz/Bs8Ucx5UHySg=
+Received: from epsnrtp1.localdomain (unknown [182.195.42.162]) by
+	epcas5p4.samsung.com (KnoxPortal) with ESMTP id
+	20240817134918epcas5p4b81041e43428e2ab9c9ce40d2c919282~siD5lhkIw0893208932epcas5p4H;
+	Sat, 17 Aug 2024 13:49:18 +0000 (GMT)
+Received: from epsmges5p2new.samsung.com (unknown [182.195.38.179]) by
+	epsnrtp1.localdomain (Postfix) with ESMTP id 4WmKwF2pmjz4x9Pp; Sat, 17 Aug
+	2024 13:49:17 +0000 (GMT)
+Received: from epcas5p1.samsung.com ( [182.195.41.39]) by
+	epsmges5p2new.samsung.com (Symantec Messaging Gateway) with SMTP id
+	87.D4.09743.D5AA0C66; Sat, 17 Aug 2024 22:49:17 +0900 (KST)
+Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
+	epcas5p3.samsung.com (KnoxPortal) with ESMTPA id
+	20240817134356epcas5p311b04d9ba86b537c871a55ae7f2e4261~sh-NkFcK82016620166epcas5p3p;
+	Sat, 17 Aug 2024 13:43:56 +0000 (GMT)
+Received: from epsmgmc1p1new.samsung.com (unknown [182.195.42.40]) by
+	epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
+	20240817134356epsmtrp2ad3aba442d71ae211fca8898de870bbd~sh-NjSmU20363203632epsmtrp2C;
+	Sat, 17 Aug 2024 13:43:56 +0000 (GMT)
+X-AuditID: b6c32a4a-14fff7000000260f-b2-66c0aa5d535c
+Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
+	epsmgmc1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
+	56.6A.07567.C19A0C66; Sat, 17 Aug 2024 22:43:56 +0900 (KST)
+Received: from [107.122.5.126] (unknown [107.122.5.126]) by
+	epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
+	20240817134354epsmtip130a4c32a2f80ebb9ac325ba1b7b421d5~sh-LnkTaY0574705747epsmtip1P;
+	Sat, 17 Aug 2024 13:43:54 +0000 (GMT)
+Message-ID: <c477fdb2-a92a-4551-b6c8-38ada06914c6@samsung.com>
+Date: Sat, 17 Aug 2024 19:13:53 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 6.10 00/25] 6.10.6-rc2 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-References: <20240816085226.888902473@linuxfoundation.org>
-Content-Language: de-DE
-From: Peter Schneider <pschneider1968@googlemail.com>
-In-Reply-To: <20240816085226.888902473@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] usb: dwc3: core: Prevent USB core invalid event
+ buffer address access
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Thinh.Nguyen@synopsys.com, linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org, jh0801.jung@samsung.com,
+	dh10.jung@samsung.com, naushad@samsung.com, akash.m5@samsung.com,
+	rc93.raju@samsung.com, taehyun.cho@samsung.com, hongpooh.kim@samsung.com,
+	eomji.oh@samsung.com, shijie.cai@samsung.com, stable@vger.kernel.org
+Content-Language: en-US
+From: Selvarasu Ganesan <selvarasu.g@samsung.com>
+In-Reply-To: <2024081700-skittle-lethargy-9567@gregkh>
+Content-Transfer-Encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrBJsWRmVeSWpSXmKPExsWy7bCmum7sqgNpBs0LhS3eXF3FanFnwTQm
+	i1PLFzJZNC9ez2Yxac9WFou7D3+wWFzeNYfNYtGyVmaLT0f/s1qs6pwDFPu+k9liwcZHjBaT
+	DoparFpwgN2Bz2P/3DXsHn1bVjF6bNn/mdHj8ya5AJaobJuM1MSU1CKF1Lzk/JTMvHRbJe/g
+	eOd4UzMDQ11DSwtzJYW8xNxUWyUXnwBdt8wcoBuVFMoSc0qBQgGJxcVK+nY2RfmlJakKGfnF
+	JbZKqQUpOQUmBXrFibnFpXnpenmpJVaGBgZGpkCFCdkZa3fZF2wSrHi49DBTA+Nm3i5GTg4J
+	AROJpsUT2LsYuTiEBHYzSpxe8BTK+cQoMen+YSYI5xujxLoFN9hhWqYu384GkdjLKNF+ajUL
+	hPOWUWLu3BusIFW8AnYSf/dOZu5i5OBgEVCVONuRDBEWlDg58wkLiC0qIC9x/9YMsKHCAvES
+	R24vBWsVEdCQeHn0FthMZoGTTBJXly5jAkkwC4hL3HoynwlkJpuAocSzEzYgYU4BM4mptxcx
+	QpTIS2x/O4cZpFdCYA+HxL4TDUwQV7tIdLbfYoawhSVeHd8C9Y2UxOd3e9kg7GqJ1Xc+skE0
+	tzBKHH7yDarIXuLx0UdgzzALaEqs36UPEZaVmHpqHdRtfBK9v59A7eKV2DEPxlaVONV4GWq+
+	tMS9JddYIWwPickvtjBPYFSchRQus5C8OQvJP7MQNi9gZFnFKJlaUJybnlpsWmCUl1oOj/Dk
+	/NxNjOAkrOW1g/Hhgw96hxiZOBgPMUpwMCuJ8D79sjdNiDclsbIqtSg/vqg0J7X4EKMpMH4m
+	MkuJJucD80BeSbyhiaWBiZmZmYmlsZmhkjjv69a5KUIC6YklqdmpqQWpRTB9TBycUg1M3tZX
+	C5Zemrb6QcRaK/f4pXlhFp1L1aQEvRVtTirdWe776MtvJaGO3Y1vxee4Pu2ws5217NCzN3tD
+	kgI9Z895Em0rU6O5XnRiRGLbp6s/JNK1uJ2v3RXeu3n58vU218QCRLeGlbPOy3z3NH0x84Jj
+	9Zqv9abKVzBZ9lovmLenpF1E4tHGOrWFZ0qWf5nEbuL+NeZYe8D7iGjefV2vNae7nBKYt9j0
+	1Uaj+70LRT9PUJVNrGKqnLtvTXMz17Iij63fH6aEmSudeL2gXPXnXN6S1hvdQXveXF0i+2iN
+	sOHmPsXlRkb3TyraCR3NvCDz5oqAY7fUfua+6a2RbCcqk+M0rk9bz6Vy8enOez+LV3x1U2Ip
+	zkg01GIuKk4EAGET9E9LBAAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprEIsWRmVeSWpSXmKPExsWy7bCSnK7MygNpBt83aFq8ubqK1eLOgmlM
+	FqeWL2SyaF68ns1i0p6tLBZ3H/5gsbi8aw6bxaJlrcwWn47+Z7VY1TkHKPZ9J7PFgo2PGC0m
+	HRS1WLXgALsDn8f+uWvYPfq2rGL02LL/M6PH501yASxRXDYpqTmZZalF+nYJXBlrd9kXbBKs
+	eLj0MFMD42beLkZODgkBE4mpy7ezgdhCArsZJeZMroWIS0u8ntXFCGELS6z895y9i5ELqOY1
+	o8SBYyfYQRK8AnYSf/dOZu5i5OBgEVCVONuRDBEWlDg58wkLiC0qIC9x/9YMsHJhgXiJ5sn7
+	mUBsEQENiZdHb7GAzGQWOMkkse9KHzPEgllMEtcnzGMFqWIWEJe49WQ+E8gCNgFDiWcnbEDC
+	nAJmElNvL2KEKDGT6NraBWXLS2x/O4d5AqPQLCR3zEIyaRaSlllIWhYwsqxilEwtKM5Nz002
+	LDDMSy3XK07MLS7NS9dLzs/dxAiONi2NHYz35v/TO8TIxMF4iFGCg1lJhPfpl71pQrwpiZVV
+	qUX58UWlOanFhxilOViUxHkNZ8xOERJITyxJzU5NLUgtgskycXBKNTDJCB9K+Bt87vlJZu3D
+	0+cq/bTf+YPLasLvU584IvKnL9+69VWw7E/n2/w+5iw1uj8qqrfHf0n/Fid9Ye++GVdklhx1
+	ODi3bTnXCvEHU5kOOShaSVZEXVr8JGe/dl7VTecahd7grzEbY2xNw+Jrt3PkKT4z1Nn0aFth
+	gbqHeOe6aZGMZ0T3lbnon3bmbHRjkvm+7CvD5cPnbBhm79v10MPvilTd8ZPGLEq2C977lTgm
+	yu+Mqrp34OGhzWtTZgf8msNwZteO72t8xF6L7RZqv2kdtStOSoCXU3JKXK1G7cIzyoveva+I
+	qfl+fvlcdtZdEhufsk06f0vGkvfaCg0u2+YPF89b2v+U5Hp6PlRzQn+PEktxRqKhFnNRcSIA
+	OkdZfCUDAAA=
+X-CMS-MailID: 20240817134356epcas5p311b04d9ba86b537c871a55ae7f2e4261
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-Sendblock-Type: REQ_APPROVE
+CMS-TYPE: 105P
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20240815064918epcas5p1248e4f9084d33fdb11a25fa34e66cdbe
+References: <CGME20240815064918epcas5p1248e4f9084d33fdb11a25fa34e66cdbe@epcas5p1.samsung.com>
+	<20240815064836.1491-1-selvarasu.g@samsung.com>
+	<2024081618-singing-marlin-2b05@gregkh>
+	<4f286780-89a2-496d-9007-d35559f26a21@samsung.com>
+	<2024081700-skittle-lethargy-9567@gregkh>
 
-Am 16.08.2024 um 11:42 schrieb Greg Kroah-Hartman:
-> This is the start of the stable review cycle for the 6.10.6 release.
-> There are 25 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
 
-Now I'm a little bit confused. I saw you announced a new 6.10.6 RC and I wanted to 
-(re-)test it. Your subject says -rc2, but when I git fetch from the kernel.org 
-linux-stable-rc git repo (which I always do) what I get is -rc3 from today, however I have 
-not (yet) seen a mail from you announcing -rc3. Forgot to send that one out? Anyway, -rc3 
-is what I tested, and as I already reported for -rc1, it is fine on my machine, too.
+On 8/17/2024 10:47 AM, Greg KH wrote:
+> On Fri, Aug 16, 2024 at 09:13:09PM +0530, Selvarasu Ganesan wrote:
+>> On 8/16/2024 3:25 PM, Greg KH wrote:
+>>> On Thu, Aug 15, 2024 at 12:18:31PM +0530, Selvarasu Ganesan wrote:
+>>>> This commit addresses an issue where the USB core could access an
+>>>> invalid event buffer address during runtime suspend, potentially causing
+>>>> SMMU faults and other memory issues in Exynos platforms. The problem
+>>>> arises from the following sequence.
+>>>>           1. In dwc3_gadget_suspend, there is a chance of a timeout when
+>>>>           moving the USB core to the halt state after clearing the
+>>>>           run/stop bit by software.
+>>>>           2. In dwc3_core_exit, the event buffer is cleared regardless of
+>>>>           the USB core's status, which may lead to an SMMU faults and
+>>>>           other memory issues. if the USB core tries to access the event
+>>>>           buffer address.
+>>>>
+>>>> To prevent this hardware quirk on Exynos platforms, this commit ensures
+>>>> that the event buffer address is not cleared by software  when the USB
+>>>> core is active during runtime suspend by checking its status before
+>>>> clearing the buffer address.
+>>>>
+>>>> Cc: stable@vger.kernel.org # v6.1+
+>>> Any hint as to what commit id this fixes?
+>>>
+>>> thanks,
+>>>
+>>> greg k-h
+>>
+>> Hi Greg,
+>>
+>> This issue is not related to any particular commit. The given fix is
+>> address a hardware quirk on the Exynos platform. And we require it to be
+>> backported on stable kernel 6.1 and above all stable kernel.
+> If it's a hardware quirk issue, why are you restricting it to a specific
+> kernel release and not a specific kernel commit?  Why not 5.15?  5.4?
 
-I tested with running 4 QEMU/KVM virtual machines for an hour, and did not find any 
-problems, so:
+Hi Greg,
 
+I mentioned a specific kernel because our platform is set to be tested 
+and functioning with kernels 6.1 and above, and the issue was reported 
+with these kernel versions. However, we would be fine if all stable 
+kernels, such as 5.4 and 5.15, were backported. In this case, if you 
+need a new patch version to update the Cc tag for all stable kernels, 
+please suggest the Cc tag to avoid confusion in next version.
 
-Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg 
-oddities or regressions found.
-
-Tested-by: Peter Schneider <pschneider1968@googlemail.com>
-
-Beste Grüße,
-Peter Schneider
-
--- 
-Climb the mountain not to plant your flag, but to embrace the challenge,
-enjoy the air and behold the view. Climb it so you can see the world,
-not so the world can see you.                    -- David McCullough Jr.
-
-OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
-Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
+Thanks,
+Selva
+>
+> thanks,
+>
+> greg k-h
+>
+>
 
