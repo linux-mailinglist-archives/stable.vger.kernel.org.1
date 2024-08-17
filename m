@@ -1,135 +1,115 @@
-Return-Path: <stable+bounces-69371-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69372-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2B5395549F
-	for <lists+stable@lfdr.de>; Sat, 17 Aug 2024 03:35:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2C859554AD
+	for <lists+stable@lfdr.de>; Sat, 17 Aug 2024 03:50:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB12E1C21172
-	for <lists+stable@lfdr.de>; Sat, 17 Aug 2024 01:35:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 76F001F21D94
+	for <lists+stable@lfdr.de>; Sat, 17 Aug 2024 01:50:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91E21440C;
-	Sat, 17 Aug 2024 01:35:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="N1r9KGPA"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE5154C96;
+	Sat, 17 Aug 2024 01:50:26 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 427E31C27;
-	Sat, 17 Aug 2024 01:35:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB8CE7464;
+	Sat, 17 Aug 2024 01:50:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723858535; cv=none; b=kEHTcO+X/m2wJEBY1wr7g/tCvhLFOht+9JDnwWEiB7Vm503IRVdGIf7yjCG5hC6R9i0KT+9oHiWEx2hbjD+bOFR2V3s48n9G3ONHfDIf+yQu7Ap0W23H7ScYI44mb3zaHiKuhFfmRi/3jS1mQAXmqRjxMX694yvJCGasw+/fWVs=
+	t=1723859426; cv=none; b=izOJJqfZWI9wGeRgPNmQre+98+V/7+3s0E/SMg4l+NqqSXu6TMA8J3iiccQA8cn9bGU2ben53ztCep8094YnNF6xs2AjsbvbuWmVSuXSS3affEEw4hbXmIzZ3xr8Hu66hgCMDPR7MhCrfkTxUQV/oXQAaVApL/Vp7e4ZGy94iHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723858535; c=relaxed/simple;
-	bh=4LSvQeTR2aPKJk90n9OzYCXKOmQ2gOVbk/P5PhH72LI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hOzRFaRnFHahxjE6FKybyCPbrj94B9bmCUbxp2jQxtj9qWvwLhUGdM3Tn39wYlENmqVfBkxik5ZppXNkhdLAWMBrmw84ityqk05NOdj3lrRFmscns5wBMew9IIb6tf9YDNJ5cc3eaJNIDJREoVa64a+e4hZyW6WFDSZLLE8LpqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=N1r9KGPA; arc=none smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246631.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47H10uBw030485;
-	Sat, 17 Aug 2024 01:35:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
-	from:to:cc:subject:date:message-id:in-reply-to:references
-	:mime-version:content-type:content-transfer-encoding; s=
-	corp-2023-11-20; bh=RcyIY7dAOLNFoaYnKiwoiE+YLhUZthVQp6jgi3UF3IA=; b=
-	N1r9KGPAJL1gy7HT8at+jH4QlAe+Wt0KTYfiwbHyyxUOY92Z5L2LZp9tiIypruYx
-	hYmQKepXLP4xHtzZB4VwRLKW68K3XHcwxVmfVbHCAxrAQ75t1MlSDW2ysq3EZAF5
-	a/oGPCQ+tMjCZb6cWTZwp1JvviwCvKvPiGNi0AQJJeXT+LHNh6RPeTJwKvMvJtv/
-	VM2c+jse6Z2CKitl6CTp2b6f0mohuOSMpsc7z4UmW4UBfods7QmkZsdfKO6kLiIZ
-	xJ9V0lrxxMoHfXhBuWs9xCYqzRk3OA9YE62UnG/tgldJbiVqXPnt0oyWNQLtzMpI
-	0gFW/4n1I5eUgpDnqhLqag==
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 40wy035xym-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 17 Aug 2024 01:35:26 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 47H1XPFw022209;
-	Sat, 17 Aug 2024 01:35:26 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 412ja580ht-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 17 Aug 2024 01:35:26 +0000
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 47H1ZP9P025756;
-	Sat, 17 Aug 2024 01:35:25 GMT
-Received: from ca-mkp2.ca.oracle.com.com (mpeterse-ol9.allregionaliads.osdevelopmeniad.oraclevcn.com [100.100.251.135])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 412ja580h7-1;
-	Sat, 17 Aug 2024 01:35:25 +0000
-From: "Martin K. Petersen" <martin.petersen@oracle.com>
-To: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Finn Thain <fthain@linux-m68k.org>
-Cc: "Martin K . Petersen" <martin.petersen@oracle.com>,
-        Hannes Reinecke <hare@suse.com>, linux-kernel@vger.kernel.org,
-        linux-scsi@vger.kernel.org, Ondrej Zary <linux@zary.sk>,
-        Michael Schmitz <schmitzmic@gmail.com>, stable@vger.kernel.org,
-        Stan Johnson <userm57@yahoo.com>
-Subject: Re: [PATCH 00/11] NCR5380: Bug fixes and other improvements
-Date: Fri, 16 Aug 2024 21:34:48 -0400
-Message-ID: <172385819634.3430749.6349002426440536098.b4-ty@oracle.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <cover.1723001788.git.fthain@linux-m68k.org>
-References: <cover.1723001788.git.fthain@linux-m68k.org>
+	s=arc-20240116; t=1723859426; c=relaxed/simple;
+	bh=4RLfXEz98KK3x0nXEGtYwk91Bn1R7H16pzJ8e42DkfY=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=SvfjJT2rep2mrSHLLaibLKp9X+oQlt0NL/3BaJOLe+D3cT4b7n+M8v+oE7+sHTu8I32353Ut/boEv7VvSJlEIu7aIoLLk6kOPUPiikqkgofec51/iDloZ3tUwZfD2n0sh2wDaY4SV+g6poOAuNUPGqNqNJMJECXWFyE+fuS1gb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.194])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4Wm1x354SdzpSwX;
+	Sat, 17 Aug 2024 09:48:55 +0800 (CST)
+Received: from dggpemf100013.china.huawei.com (unknown [7.185.36.179])
+	by mail.maildlp.com (Postfix) with ESMTPS id 739351401F2;
+	Sat, 17 Aug 2024 09:50:20 +0800 (CST)
+Received: from localhost.huawei.com (10.50.165.33) by
+ dggpemf100013.china.huawei.com (7.185.36.179) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Sat, 17 Aug 2024 09:50:20 +0800
+From: Yihang Li <liyihang9@huawei.com>
+To: <James.Bottomley@HansenPartnership.com>, <martin.petersen@oracle.com>
+CC: <linux-scsi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<bvanassche@acm.org>, <liyihang9@huawei.com>, <linuxarm@huawei.com>,
+	<prime.zeng@huawei.com>, <stable@vger.kernel.org>
+Subject: [PATCH v4] scsi: sd: retry command SYNC CACHE if format in progress
+Date: Sat, 17 Aug 2024 09:50:19 +0800
+Message-ID: <20240817015019.3467765-1-liyihang9@huawei.com>
+X-Mailer: git-send-email 2.33.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-08-16_18,2024-08-16_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxlogscore=742
- adultscore=0 bulkscore=0 phishscore=0 suspectscore=0 malwarescore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2407110000 definitions=main-2408170009
-X-Proofpoint-GUID: 89JdnTe8Igx9IOBdwmUY7bkeQBvCvo6J
-X-Proofpoint-ORIG-GUID: 89JdnTe8Igx9IOBdwmUY7bkeQBvCvo6J
+Content-Type: text/plain
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ dggpemf100013.china.huawei.com (7.185.36.179)
 
-On Wed, 07 Aug 2024 13:36:28 +1000, Finn Thain wrote:
+If formatting a suspended disk (such as formatting with different DIF
+type), the disk will be resuming first, and then the format command will
+submit to the disk through SG_IO ioctl.
 
-> This series begins with some work on the mac_scsi driver to improve
-> compatibility with SCSI2SD v5 devices. Better error handling is needed
-> there because the PDMA hardware does not tolerate the write latency spikes
-> which SD cards can produce.
-> 
-> A bug is fixed in the 5380 core driver so that scatter/gather can be
-> enabled in mac_scsi.
-> 
-> [...]
+When the disk is processing the format command, the system does not submit
+other commands to the disk. Therefore, the system attempts to suspend the
+disk again and sends the SYNC CACHE command. However, the SYNC CACHE
+command will fail because the disk is in the formatting process, which
+will cause the runtime_status of the disk to error and it is difficult
+for user to recover it. Error info like:
 
-Applied to 6.12/scsi-queue, thanks!
+[  669.925325] sd 6:0:6:0: [sdg] Synchronizing SCSI cache
+[  670.202371] sd 6:0:6:0: [sdg] Synchronize Cache(10) failed: Result: hostbyte=0x00 driverbyte=DRIVER_OK
+[  670.216300] sd 6:0:6:0: [sdg] Sense Key : 0x2 [current]
+[  670.221860] sd 6:0:6:0: [sdg] ASC=0x4 ASCQ=0x4
 
-[01/11] scsi: mac_scsi: Revise printk(KERN_DEBUG ...) messages
-        https://git.kernel.org/mkp/scsi/c/5ec4f820cb97
-[02/11] scsi: mac_scsi: Refactor polling loop
-        https://git.kernel.org/mkp/scsi/c/5545c3165cbc
-[03/11] scsi: mac_scsi: Disallow bus errors during PDMA send
-        https://git.kernel.org/mkp/scsi/c/5551bc30e4a6
-[04/11] scsi: NCR5380: Check for phase match during PDMA fixup
-        https://git.kernel.org/mkp/scsi/c/5768718da941
-[05/11] scsi: mac_scsi: Enable scatter/gather by default
-        https://git.kernel.org/mkp/scsi/c/2ac6d29716cd
-[06/11] scsi: NCR5380: Initialize buffer for MSG IN and STATUS transfers
-        https://git.kernel.org/mkp/scsi/c/1c71065df2df
-[07/11] scsi: NCR5380: Handle BSY signal loss during information transfer phases
-        https://git.kernel.org/mkp/scsi/c/086c4802cf99
-[08/11] scsi: NCR5380: Drop redundant member from struct NCR5380_cmd
-        https://git.kernel.org/mkp/scsi/c/476f8c82e218
-[09/11] scsi: NCR5380: Remove redundant result calculation from NCR5380_transfer_pio()
-        https://git.kernel.org/mkp/scsi/c/8663cadefd15
-[10/11] scsi: NCR5380: Remove obsolete comment
-        https://git.kernel.org/mkp/scsi/c/c331df3d4a8d
-[11/11] scsi: NCR5380: Clean up indentation
-        https://git.kernel.org/mkp/scsi/c/a8ebca904f8e
+To solve the issue, retry the command until format command is finished.
 
+Cc: stable@vger.kernel.org
+Signed-off-by: Yihang Li <liyihang9@huawei.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+---
+Changes since v3:
+- Add Cc tag for kernel stable.
+
+Changes since v2:
+- Add Reviewed-by for Bart.
+
+Changes since v1:
+- Updated and added error information to the patch description.
+
+---
+ drivers/scsi/sd.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/drivers/scsi/sd.c b/drivers/scsi/sd.c
+index adeaa8ab9951..5cd88a8eea73 100644
+--- a/drivers/scsi/sd.c
++++ b/drivers/scsi/sd.c
+@@ -1823,6 +1823,11 @@ static int sd_sync_cache(struct scsi_disk *sdkp)
+ 			    (sshdr.asc == 0x74 && sshdr.ascq == 0x71))	/* drive is password locked */
+ 				/* this is no error here */
+ 				return 0;
++
++			/* retry if format in progress */
++			if (sshdr.asc == 0x4 && sshdr.ascq == 0x4)
++				return -EBUSY;
++
+ 			/*
+ 			 * This drive doesn't support sync and there's not much
+ 			 * we can do because this is called during shutdown
 -- 
-Martin K. Petersen	Oracle Linux Engineering
+2.33.0
+
 
