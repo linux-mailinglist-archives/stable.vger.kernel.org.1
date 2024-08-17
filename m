@@ -1,203 +1,127 @@
-Return-Path: <stable+bounces-69385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69386-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A46DD9556E3
-	for <lists+stable@lfdr.de>; Sat, 17 Aug 2024 11:48:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC486955781
+	for <lists+stable@lfdr.de>; Sat, 17 Aug 2024 13:41:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 22BF21F22268
-	for <lists+stable@lfdr.de>; Sat, 17 Aug 2024 09:48:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7AE40B21156
+	for <lists+stable@lfdr.de>; Sat, 17 Aug 2024 11:41:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA35D1474A4;
-	Sat, 17 Aug 2024 09:48:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5203149E1A;
+	Sat, 17 Aug 2024 11:41:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="nu/O0F34"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="VjG5ENY6"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 988416FD3
-	for <stable@vger.kernel.org>; Sat, 17 Aug 2024 09:48:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05112256E;
+	Sat, 17 Aug 2024 11:41:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723888105; cv=none; b=iisHWlWC4Z5QvQqgtb1i0RFYGzh9X9VqT62U7D6UzOzHEACNUHMqOADRUk3HXebdtT/3535WV/eCZt+GWAmrPEpJs9+nmtZrURDLzAOGAYhRxwBpt1shfDiycXrH9lSSAgfZei4aim62X9j2mqzQgyTP37IlTcXH7MMtFdyI2TU=
+	t=1723894864; cv=none; b=RkEWevgVh4Q9O4QaJViHb+FnZXbSRc6BLNjiV1WV157ijVi1EiZWBnX4iK7yGxclCtfotOMa9vF050xXXSPsrY+e/ZJpi62vA3JegEKDzoq20HWxDvtk/5LmTnFciQm+Egj+zUJWF8jleKo7jxE3f+x99csR9D2YFYgYM7EYgBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723888105; c=relaxed/simple;
-	bh=AZx2BJBXH8oQq7xdyF9rrqUH+UIpxBGVygKCLrGYUlM=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
-	 References:In-Reply-To; b=EaZQsglOlKGfUt5tk0a2t/DlLVJ7HkGJjIyBXRjgP29zmqtBVWUFfy0PP1bdRtNdeNKASUoe3J4ceWKiTN4FDwQEaeBUIr4LIkGgiWOIEQUy8ui6Vi1aBo2R6HO1AJcVH0hHctcSdAfZf2vPUyKEdh2i6e3mKmxdDsFofE+DdKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=nu/O0F34; arc=none smtp.client-ip=209.85.208.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-2ef2fccca2cso31380601fa.1
-        for <stable@vger.kernel.org>; Sat, 17 Aug 2024 02:48:23 -0700 (PDT)
+	s=arc-20240116; t=1723894864; c=relaxed/simple;
+	bh=pHb1cd/bM5HAeb2aNJlmyYZrkZZKm2iDpqq5ciaa690=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GCGpbBJ9JzWCR6TwOQ5epwcg/r3G/wXq73CDRg4cYwQevBnrRRiXZgLvvQVX4DD2sZyu+ijMl8EVcfze5GJacqlay7V8OuMNpECDCJ819cMQNeCtc18ZYB5UkGrGSfRnGkSTrL0e59f5ZtUqDz4iWfUlTwjSPlW+OgAVRtvgqgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=VjG5ENY6; arc=none smtp.client-ip=209.85.167.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-530e062217eso3682346e87.1;
+        Sat, 17 Aug 2024 04:41:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1723888102; x=1724492902; darn=vger.kernel.org;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=350RyIMKXGOQLd/8HTZr3pRXPYZz9XbRH5Vw+7o+H40=;
-        b=nu/O0F34jB1ZW2kCAdf23PO7x4QFVu9KeHT0q5bfOC1hEkMcu6Gd8bU53YdBcjtarG
-         tqaEYWucfci+eSkxiXvtQs14MTiB8zQMfWi9L7zL4cM4EJFGbWUdbwAHTe2BRbDMERxI
-         BSr3o365xwZFvjO/UEAEci4eQJxr+bIhtVQl4iutRMxQfuw2u3PxDsJnH/M/SUKFQHKG
-         cAqaEk5QP2GKtKp8qbKiTeZaArSvU5ArA3rBWj3k3AUzpowGTJ8viJ+GOHpz9X/pcQeA
-         Xcz08Wcl3+nTMJB6JhziQNf5+gHfh1Kwips7pugKog2E9cgBuyZ7gq0LYaCpBqLRW07O
-         Cdrg==
+        d=googlemail.com; s=20230601; t=1723894861; x=1724499661; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=vRpUQui6KEL9xqbOs0Ea/v4MaqiDAscFoJmUDj6bZgo=;
+        b=VjG5ENY6zeMmHwYARA8cB50dZ7mfDKkqTdbIZ/Vb8FNvCF7MS1GfhsTv7bt1cqBf/s
+         ipDKghtF2DgAqe1cEsDMIwGcr20rZrMGtM8F9BZM6dPV5UJsv9QKDVXQb5/UxVKrmvaW
+         8w+PQBOOp3ftnCuWuUzqjAyxwnjGKSSi4TPgHpuQoSJm+Fd+hrjlQ/mVnECh1Fi+QFhb
+         lOdJ5SaMd+Qt7so2BUXdyKEUHuy67EEVrJBGIlDiTaVH7OK5n6MXenG1/Bzv6DJRkd7p
+         2qe91DqqyiqRiADezp0wglAjHOZjlr/0VB85kfpb8tWcVzPrOGKlnli+VYaii17EG1mz
+         MYSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723888102; x=1724492902;
-        h=in-reply-to:references:from:subject:cc:to:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=350RyIMKXGOQLd/8HTZr3pRXPYZz9XbRH5Vw+7o+H40=;
-        b=n7dlUElk79Eowc4CzzxFRGqV5hWB64mpCX/dF2dbDnneuut519BvR8Suh5XzUFdVr2
-         xyEZlJh2O4AXPgcDsjbJYDgCNkGUiyjYbxuWyTkw2FGHPaTPYGBjmHQJ1uk1gL7eCg75
-         1WmX0SOHbAXRRS82ylTeCrtam8I1JtvHi+K5M7b0eCuxTzpB8N8upFEvVOl7AO7AtnLk
-         CyqNXe50gnWhGpSmecABHnffMwAg/V5gI3NV5CyxC/bC2bqTDbm52IUlGeJX8vjuHqdo
-         pp+MaQhXAR6jAu9WdwfCRRZCqa9NTcgoz/2q8B84aU33k8SAIo9O/+8P80QuyUOL+xWr
-         kEAw==
-X-Gm-Message-State: AOJu0YzVQZgTWaBkXJoe1WTXhiK+xHKpc2A+AhjFpuzSAmh3NT8xaf1r
-	jBn8JRQ5LOUz+eu7AWVm/CByQpZxwtSLGFAkrhsO8dzOEo7+MHE8BY4YazJiO0k=
-X-Google-Smtp-Source: AGHT+IHqnXF5BOfwuJW2UnmBiqatHyT9kJAyaAOLERxfSFlVm4kaSkuz6kKxlR9v7OJqRmYcz5htpg==
-X-Received: by 2002:a2e:a490:0:b0:2f2:b2f7:c8a3 with SMTP id 38308e7fff4ca-2f3c91334ffmr10398731fa.44.1723888101375;
-        Sat, 17 Aug 2024 02:48:21 -0700 (PDT)
-Received: from localhost ([194.95.66.31])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4ccd6e96d61sm1829227173.67.2024.08.17.02.48.19
+        d=1e100.net; s=20230601; t=1723894861; x=1724499661;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=vRpUQui6KEL9xqbOs0Ea/v4MaqiDAscFoJmUDj6bZgo=;
+        b=TOZOtKrOrEcvdpTsVLKkKEcFHyRGtM8oJJ24Hdai/eKIwCsWlVuIA0Yz2/ZB0wgLFe
+         pvQ+HK7vVSryS7726q0a2ubXddqpJg4v8MN1Z33XBHFu1PAkUzQO3gGL8gkurc5Cu//Y
+         60j+aC7BOLmPgJreKJ5ExNEx4bnxx7DP+7Y5URo2vRj6QdtfRZCOGmh06ek/MJPcBuWQ
+         sKP1ZreRd2zvKhqzLZ0uxzKFPP6vPH6tV4S1uujQ6hsklA707pl1NWbQS1xMtIp/iEaA
+         pT1oHKvyG0O+0+PVqECNMsX0eRSy8GjKHrKxzqCv1k/9g023mPy7Oraw9xn8PTQua+MA
+         xNvQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVcdjB+bNr2Ea4LXZl4YaTEZPNvGdlKrCno4wOBiZ59qkEN7GMh7boOZ3N7v7ciC0FDF2QaLiJwow20/Z1zwNVO3jGFUFu0OiUeXUJd8PN8h01l38gAfYLBDW31V0iRXDCx+IYb
+X-Gm-Message-State: AOJu0YxWNLnO3fXUlCDQ2nriz5Dirbxeo91S0vd0YFhdnU2xXmNIxnlL
+	3mpv4gQ771kw/LT4/DEhykk0S4mscSwWjxMf04g1MzRK5+C+Yaw=
+X-Google-Smtp-Source: AGHT+IFRrGmUNhCYwUr6r0aNdaQyrpw2Zl2kgseXIhOIL4K1vn+dS++NFAIzpV6T7Gr+tD4HzXyacw==
+X-Received: by 2002:a05:6512:1081:b0:52e:73a2:4415 with SMTP id 2adb3069b0e04-5331c6dc95emr3852777e87.46.1723894860555;
+        Sat, 17 Aug 2024 04:41:00 -0700 (PDT)
+Received: from [192.168.1.3] (p5b05713d.dip0.t-ipconnect.de. [91.5.113.61])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5331c98c77esm622664e87.250.2024.08.17.04.40.58
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 17 Aug 2024 02:48:20 -0700 (PDT)
+        Sat, 17 Aug 2024 04:40:59 -0700 (PDT)
+Message-ID: <886e729c-d3fd-432f-8fce-6f6926b1fdbc@googlemail.com>
+Date: Sat, 17 Aug 2024 13:40:57 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Sat, 17 Aug 2024 11:48:14 +0200
-Message-Id: <D3I3BTOHN2RW.2DUYSKP3JRT5Z@fairphone.com>
-To: <max.oss.09@gmail.com>, "Max Krummenacher"
- <max.krummenacher@toradex.com>
-Cc: <stable@vger.kernel.org>, "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>, "Jiri Slaby" <jirislaby@kernel.org>,
- =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
- <linux-kernel@vger.kernel.org>, <linux-serial@vger.kernel.org>
-Subject: Re: [PATCH] tty: vt: conmakehash: cope with abs_srctree no longer
- in env
-From: "Luca Weiss" <luca.weiss@fairphone.com>
-X-Mailer: aerc 0.18.2-0-ge037c095a049
-References: <20240725132056.9151-1-max.oss.09@gmail.com>
-In-Reply-To: <20240725132056.9151-1-max.oss.09@gmail.com>
+MIME-Version: 1.0
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.10 00/25] 6.10.6-rc2 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+References: <20240816085226.888902473@linuxfoundation.org>
+Content-Language: de-DE
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20240816085226.888902473@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Thu Jul 25, 2024 at 3:20 PM CEST, max.oss.09 wrote:
-> From: Max Krummenacher <max.krummenacher@toradex.com>
->
-> conmakehash uses getenv("abs_srctree") from the environment to strip
-> the absolute path from the generated sources.
-> However since commit e2bad142bb3d ("kbuild: unexport abs_srctree and
-> abs_objtree") this environment variable no longer gets set.
-> Instead use basename() to indicate the used file in a comment of the
-> generated source file.
->
-> Fixes: 3bd85c6c97b2 ("tty: vt: conmakehash: Don't mention the full path o=
-f the input in output")
-> Signed-off-by: Max Krummenacher <max.krummenacher@toradex.com>
->
-> ---
->
->  drivers/tty/vt/conmakehash.c | 20 +++++++-------------
->  1 file changed, 7 insertions(+), 13 deletions(-)
->
-> diff --git a/drivers/tty/vt/conmakehash.c b/drivers/tty/vt/conmakehash.c
-> index dc2177fec715..82d9db68b2ce 100644
-> --- a/drivers/tty/vt/conmakehash.c
-> +++ b/drivers/tty/vt/conmakehash.c
-> @@ -11,6 +11,8 @@
->   * Copyright (C) 1995-1997 H. Peter Anvin
->   */
-> =20
-> +#include <libgen.h>
-> +#include <linux/limits.h>
+Am 16.08.2024 um 11:42 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.10.6 release.
+> There are 25 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Hi Max,
+Now I'm a little bit confused. I saw you announced a new 6.10.6 RC and I wanted to 
+(re-)test it. Your subject says -rc2, but when I git fetch from the kernel.org 
+linux-stable-rc git repo (which I always do) what I get is -rc3 from today, however I have 
+not (yet) seen a mail from you announcing -rc3. Forgot to send that one out? Anyway, -rc3 
+is what I tested, and as I already reported for -rc1, it is fine on my machine, too.
 
-Not sure this is the best place to ask but this <linux/limits.h> include
-appears to rely on this file already being installed in /usr/include and
-is not taken from the Linux source tree that's being built.
-
-This mostly manifests in building Linux kernel e.g. in Alpine Linux
-package build if 'linux-headers' package is not being explicitly
-installed, failing with=20
-
-  drivers/tty/vt/conmakehash.c:15:10: fatal error: linux/limits.h: No such =
-file or directory
-     15 | #include <linux/limits.h>
-        |          ^~~~~~~~~~~~~~~~
-  compilation terminated.
-
-Apparently this is (understandably) also a problem when building on
-macOS:
-https://lore.kernel.org/all/20240807-macos-build-support-v1-11-4cd1ded85694=
-@samsung.com/
-
-I did try that linked patch a bit ago, but unfortunately didn't fix it
-for the Alpine Linux build environment.
-
-Any ideas?
-
-Regards
-Luca
+I tested with running 4 QEMU/KVM virtual machines for an hour, and did not find any 
+problems, so:
 
 
->  #include <stdio.h>
->  #include <stdlib.h>
->  #include <sysexits.h>
-> @@ -76,8 +78,8 @@ static void addpair(int fp, int un)
->  int main(int argc, char *argv[])
->  {
->    FILE *ctbl;
-> -  const char *tblname, *rel_tblname;
-> -  const char *abs_srctree;
-> +  const char *tblname;
-> +  char base_tblname[PATH_MAX];
->    char buffer[65536];
->    int fontlen;
->    int i, nuni, nent;
-> @@ -102,16 +104,6 @@ int main(int argc, char *argv[])
->  	}
->      }
-> =20
-> -  abs_srctree =3D getenv("abs_srctree");
-> -  if (abs_srctree && !strncmp(abs_srctree, tblname, strlen(abs_srctree))=
-)
-> -    {
-> -      rel_tblname =3D tblname + strlen(abs_srctree);
-> -      while (*rel_tblname =3D=3D '/')
-> -	++rel_tblname;
-> -    }
-> -  else
-> -    rel_tblname =3D tblname;
-> -
->    /* For now we assume the default font is always 256 characters. */
->    fontlen =3D 256;
-> =20
-> @@ -253,6 +245,8 @@ int main(int argc, char *argv[])
->    for ( i =3D 0 ; i < fontlen ; i++ )
->      nuni +=3D unicount[i];
-> =20
-> +  strncpy(base_tblname, tblname, PATH_MAX);
-> +  base_tblname[PATH_MAX - 1] =3D 0;
->    printf("\
->  /*\n\
->   * Do not edit this file; it was automatically generated by\n\
-> @@ -264,7 +258,7 @@ int main(int argc, char *argv[])
->  #include <linux/types.h>\n\
->  \n\
->  u8 dfont_unicount[%d] =3D \n\
-> -{\n\t", rel_tblname, fontlen);
-> +{\n\t", basename(base_tblname), fontlen);
-> =20
->    for ( i =3D 0 ; i < fontlen ; i++ )
->      {
+Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg 
+oddities or regressions found.
 
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+
+Beste Grüße,
+Peter Schneider
+
+-- 
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
+
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
