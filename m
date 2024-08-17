@@ -1,198 +1,197 @@
-Return-Path: <stable+bounces-69396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69397-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B52C955974
-	for <lists+stable@lfdr.de>; Sat, 17 Aug 2024 21:48:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6DDC955987
+	for <lists+stable@lfdr.de>; Sat, 17 Aug 2024 22:30:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 69BE51C20B4E
-	for <lists+stable@lfdr.de>; Sat, 17 Aug 2024 19:48:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2CCBE1F218DA
+	for <lists+stable@lfdr.de>; Sat, 17 Aug 2024 20:30:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA04515535A;
-	Sat, 17 Aug 2024 19:48:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72D5914EC55;
+	Sat, 17 Aug 2024 20:30:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Y3MJHhGQ"
+	dkim=pass (2048-bit key) header.d=holm.dev header.i=@holm.dev header.b="xAEGVIcP"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM04-BN8-obe.outbound.protection.outlook.com (mail-bn8nam04on2068.outbound.protection.outlook.com [40.107.100.68])
+Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2252646;
-	Sat, 17 Aug 2024 19:48:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.100.68
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723924131; cv=fail; b=MYU+rooXBVEUqiqclctzwg+Y/hobv/uGg0o7OUj4ijttlwJ01EcWiXdkKNanxuEOJM8fIFbul23wEScw7Tjc/XwOAAvVvnk58NUvwKRQbFtYoXpj6HaOZ2tEZgQJhajcaZ0bVCizxk6P2d1wBq1aOd5oY6fwaKFUnmfki65fUro=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723924131; c=relaxed/simple;
-	bh=xhz3O+ipunDV3PBf/LlWbPfn2dKaodveTwVgbnJ69tA=;
-	h=From:To:CC:Subject:In-Reply-To:References:Content-Type:
-	 MIME-Version:Message-ID:Date; b=oCLIez9h2mLVZYycTCT+myfoygp1jLZfhULoBjEoIVWmDvEwGXmhRnoAk+MINOn4i5cvIQJa0VfCAde0wcY87m4dqWKfR6wijIh/X/PkaVPzQvowxoX/yHSdO92N3aO8l3t9+sn3WBJtSr2ISMjYjDx9IDLMfz6tw5f2vyGCjPk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Y3MJHhGQ; arc=fail smtp.client-ip=40.107.100.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=EKxdUfWcZbKydg8BGZPIEOJsQMU7wQkiDJYlI34FXF7fmI2yzppTPIE914madWRMrgx45vVA55OuY0rfZwT8DZUqj9420B5I88l+/Yj+KMnGDmDl0TQacoUnQHDi5LShtnfPbVMruBeVwI0bST3H5HmAPjGIPHyq3GyRYUwl/AAO8R1NMm1uRAz3iX4KBODE85wXR6qZTLMJ4tkvl0vfMUZIqk10eo0iBYCG6F9GQelxqtb+FHmZ6r/2Pns1LwkPIsOLV+5a/gQpFIhbXs1UijJmkjeQ6/oHyrBnx5QbEP4Y+VFksl0PnnkEdbmBpi6+6RonLr/v7aWOb7nb0xhj2g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=RQaRb2SIjhLzM5q7a9LZNUGcAL32NRDNE5g+7Ejdt7E=;
- b=p94adZTyGyqFPMyLf73E4y2FGR/spmLguPxNIUx+EUfJ0UXkuzHHuWCUxv6pkfyOzJYOyumvqxjURMruvLsAYhNzRmSVm3cFhQTrg+MiR0iM5zXWIGSfk/p3W0NlPhkQG1dzzAsCX+RcKle03B9yFppOHF2yuXflakgcnDAyi+JPZWCPXyTgHHrqO1jDg4NPqqBg9lpR8405HLj5OGe6KAOR40yKE7yr6Uz4VaIJKXZjOBi4MzLakKqQLMXWpFOgN/Nk3z6JFO55pKZCJmBBSwODQ8T9sCJWqzuO4MYt9MHDrpjheJQMb0qNR6/cEcdKkSG7GgQdH7a0gLE1Xved/g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.161) smtp.rcpttodomain=linuxfoundation.org
- smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
- header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=RQaRb2SIjhLzM5q7a9LZNUGcAL32NRDNE5g+7Ejdt7E=;
- b=Y3MJHhGQ1PxxN9TBs/ORqMimdhwaWVKYQxYGpBk1GedW119i8eKXJlHLiv1xULHvCKrLyCKqB75k8DgILbZ3EVK23t48DzR8/mYBb2wuTp7fOnQvWzgG0Pd6Z+/tlOCZa0n85iKzflH6+tl1o4UAGCOm27QJEMB7Mu9FxEeSPbFB6H3YBhbpUkl5ncV63ES9PABvhSQKYQmEt3QSNnJNVfQQt7zAWqwCSX8PWzzaIiPF3p68rxGKSj0AznoDK2QPp6h5XvsBZCG27eT1cy1YKSYq5wkccNQUwNd1dJ8mgAlOWUfHL/akIQwN06kp4pPabCU/VDvQD30nV14acbiUqA==
-Received: from BN0PR04CA0172.namprd04.prod.outlook.com (2603:10b6:408:eb::27)
- by CH3PR12MB9100.namprd12.prod.outlook.com (2603:10b6:610:1a8::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7875.21; Sat, 17 Aug
- 2024 19:48:43 +0000
-Received: from MN1PEPF0000F0DE.namprd04.prod.outlook.com
- (2603:10b6:408:eb:cafe::f2) by BN0PR04CA0172.outlook.office365.com
- (2603:10b6:408:eb::27) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7875.21 via Frontend
- Transport; Sat, 17 Aug 2024 19:48:43 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.161) by
- MN1PEPF0000F0DE.mail.protection.outlook.com (10.167.242.36) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7897.11 via Frontend Transport; Sat, 17 Aug 2024 19:48:42 +0000
-Received: from rnnvmail202.nvidia.com (10.129.68.7) by mail.nvidia.com
- (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Sat, 17 Aug
- 2024 12:48:36 -0700
-Received: from rnnvmail203.nvidia.com (10.129.68.9) by rnnvmail202.nvidia.com
- (10.129.68.7) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Sat, 17 Aug
- 2024 12:48:36 -0700
-Received: from jonathanh-vm-01.nvidia.com (10.127.8.9) by mail.nvidia.com
- (10.129.68.9) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4 via Frontend
- Transport; Sat, 17 Aug 2024 12:48:35 -0700
-From: Jon Hunter <jonathanh@nvidia.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	<patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
-	<torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
-	<linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
-	<lkft-triage@lists.linaro.org>, <pavel@denx.de>, <jonathanh@nvidia.com>,
-	<f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
-	<rwarsow@gmx.de>, <conor@kernel.org>, <allen.lkml@gmail.com>,
-	<broonie@kernel.org>, <linux-tegra@vger.kernel.org>, <stable@vger.kernel.org>
-Subject: Re: [PATCH 5.15 000/479] 5.15.165-rc3 review
-In-Reply-To: <20240817075228.220424500@linuxfoundation.org>
-References: <20240817075228.220424500@linuxfoundation.org>
-X-NVConfidentiality: public
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 682CF824AF
+	for <stable@vger.kernel.org>; Sat, 17 Aug 2024 20:30:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.187
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1723926651; cv=none; b=nH6X8SfpzUY5FpykaBXqHx4PbWXFv0OvSToss7HuC7McJylUckIT0cmsAYFo3tQGLxuWBtfuQ7EGx3RTTc0NEinKYzdEhNQXjs3Wfv39sbts9Wo/kwl0KqmKudp+zlI3saCU0EXadslxu+MdfAK4JMCabfN1y7mHWCoM/L6g6oM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1723926651; c=relaxed/simple;
+	bh=9pVBnF/IoqoTA9giQFUXONfm/EXkOUlqKduLvu0uTR4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=O/uTZgxGWFgLzvxLp12LM0BJCLCwSg1zcSUoc+CFdvKwFGxcAktDLwNUEWgYVIUz+2S1Mpy8xMWXi4Aj0H5H7xGFFt3TUWRuwW/da7UEqEj+bq6009F9yE3dTzimurKtrFx7nuq3GqkEpkqYAQ4Nu0oaBg5fspipGfJ42M2UJP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=holm.dev; spf=pass smtp.mailfrom=holm.dev; dkim=pass (2048-bit key) header.d=holm.dev header.i=@holm.dev header.b=xAEGVIcP; arc=none smtp.client-ip=95.215.58.187
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=holm.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=holm.dev
+Message-ID: <e518ef00-4c7a-4719-bc58-90d782e34b30@holm.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=holm.dev; s=key1;
+	t=1723926645;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RiMzr2mOghlf7iiDaqEMg26CjM/eQ8wr+mNOVNBO9T4=;
+	b=xAEGVIcPQJt5llu96Y8JewrBti+W3MjnLAKMZadCVm5MruQjiBAKEN2skzp8aTFjwPjX8u
+	8HPDBLLrEA7tyzsraZrdiWCfBGKVC7AlK0OQ+zpB7UqoMsN/VLkXb1YhdBlvHye/+vxKXk
+	qGi2JTZ1s+lprhbPrkppOY+2AiBxGNaZfQRb94U7Hx918DkNMuh2mNLCiup2x1CpAcw6NY
+	d+fQ1eL2yJKm/IKfaSHooV3SMJHHhxjYwNi9vBM6ZOW+hAWpN9EZRyESmoUtK9wg22Iqr5
+	KPYzKv4eHL5r82wuOVG6+EE74AHBgs0U9ZLWL+DaR6WwAdMtti910CvHdnSdxA==
+Date: Sat, 17 Aug 2024 22:30:41 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <91c7ae73-72fe-407a-9d51-a37141e7b681@rnnvmail203.nvidia.com>
-Date: Sat, 17 Aug 2024 12:48:35 -0700
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN1PEPF0000F0DE:EE_|CH3PR12MB9100:EE_
-X-MS-Office365-Filtering-Correlation-Id: 54531590-35b8-4407-7ba4-08dcbef5995e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|82310400026|1800799024|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?enBFMUhDb3Ayb3QrNnZldk5YRUlBWUVqV3dwTEs0T2l4b2hOZW1HNTYxOVdv?=
- =?utf-8?B?bGxaUWxUc29QaVpndkdsczNpelI0dXBjZ1F2MFhXeElXMjdiWjlDM3VCRDY3?=
- =?utf-8?B?cEtYRldKTGdVaFAzS2wvSVdLM2dQNTZ4UHl1K1hDTlY3T2F4OHZqZElWaEZu?=
- =?utf-8?B?WDVrSGxwdU5oN3NFT25tOUltQThYQzhiNkZKdGZhb1FtMGRvMUxHSVNiZTF3?=
- =?utf-8?B?cTJzaTNLdmJtdVVXNjY3N2lpcVdBYTNsYjc0bkxaeDlnTFJ0OWNuS3hucGdD?=
- =?utf-8?B?NXBUajFQL0x6YUxab2RxSDZIbjVtMDNVbWdZYmFtR2NtWEc5TEFCNlMrOUE3?=
- =?utf-8?B?dEFFTmJqNnAvcjVQOUx0K0krOUdNYzFsS2E5cDZGbVhSQ3YxR2tEMm9ERW95?=
- =?utf-8?B?MHRrY2FiVEp2SUpxam9ldmg4R1ZJZnVpcGZvTWMrOU44NVdsMHNrYS9JQ2ov?=
- =?utf-8?B?bFViYnlES2phTy9uRTQ0WTU0TDNyZkduSWV6a2dIekl2M3NLaEg5SzVaNXdU?=
- =?utf-8?B?MHpDRC9CRjFjTnM5K1FSY2FuYXFYM3YwQjRNbXhUeDY3QmtBV3FxbXVsN0hM?=
- =?utf-8?B?aUJFblJiUmNZc09RWVNvM1F3eUVjdDlRYVFzVU5lOWVjZDJXaFlaVm1VM1Jn?=
- =?utf-8?B?VVpBNnBnWGNwS1FRc0pKRENBdllCR1ZkbmdWTEhOOVZWVkpEZHhub0Z0MUhu?=
- =?utf-8?B?OTJnR2Z3RWZ0UXNWOENNV3dtMk41RlZrTkovZjBnaXlCYmxkQXkrMzc0MXdu?=
- =?utf-8?B?SVlKaWRqV1RyYWlXVlE0a0FuWVFLV0hmL25PVDBPOFVqU1JPSUx1a2tneUxY?=
- =?utf-8?B?MG1iRUlQS0pCVG12TDZ0eHJXS1J1eUROZXl4OHhlVWJFNHFXbHhBbWxOVmlN?=
- =?utf-8?B?bG9DdXRCOE8xRkxOd2VlQTBVbjhxaTlRbndpejBYdldVK25lZmNwRmw0UFNE?=
- =?utf-8?B?c014NmJsM0FTQjl4UW9ZblFZdjk3dUdreU1OTFU0dnpPSUtEK3NtQ0pUQitX?=
- =?utf-8?B?M0Z2QVc1djB4WjYwYzhiQ0FRcFNKRnh4TkMwTUNNZTNKUDEyYlJ0NnNPc2sy?=
- =?utf-8?B?cXVRZFNYK1paaHQvcXNLck01ck40QlBBaDBQbEJxZE1IZ2tpemo2MVI1Z2RN?=
- =?utf-8?B?M245OUJ3WStGdFIrWHFVTHN1d0t4YS9zbGU2TUhoVFh3MVNJTElad1M1enFX?=
- =?utf-8?B?ZkthVVpFU2V3UjlyL1BIV1cwN1hFc2F1SlhqelRmMkJ5R0crQjgzUi9yVitn?=
- =?utf-8?B?RGsyNU0zNHFUSEtlREtUT1Zwa0kzUzhWajhaVTZpYnkrZm9MenFKcEFKV0c4?=
- =?utf-8?B?dnBORUJsbTRpTkt3eGFBK0htUHFDREN5SVZPNlh4UVZmcG1GR1o1TUlqeGx3?=
- =?utf-8?B?UDJLZkFQaDdxMFJoZzA3NTFwcEZqc3JoU2l1WmRxbDJwWHdlN1VUbnl3ZTF2?=
- =?utf-8?B?KzZYT0tzZzdKRGlxZVEzT3IrN3dNcVoxSm1EVmxiek53VE85eTJYS3RwWDFq?=
- =?utf-8?B?b2FVMVRqRFBjQm5UQmNBY1A0czBNOW5YUndkMHJEdUVpb2l2QXF4SldoVjRO?=
- =?utf-8?B?VmpjTEhkSk9DZjNtcnRCOUQ3UEQrM2w2U2MvUmZBTHg1SW1VSStHZEZSS01m?=
- =?utf-8?B?YTNlZERSVDZOd3Y3eVJqYTVZVHZ5dERFZVpGS0pHM2FMZkVNalRqZUFjK2do?=
- =?utf-8?B?QXk4aVArSWVtNkZVREZQUkRhcDZ0OWdHTjFWaHdkNWpUR3BPaHErOStxdjFo?=
- =?utf-8?B?TitPaDkvbGYrWWZBZmEzb2NGL01LT2o4Q3JkOFY5ZlEvKzd2WDFZc01PUHVv?=
- =?utf-8?B?YnFzNEZDSHY3TUpNUHZYenR1NGZoVmF6REdNTGhGekd6OGxmTUJ5MHV6b2lI?=
- =?utf-8?B?NFhZbm13T3VFZjYvRTFoRlhHSXdydXlaVHB0cGhacEFaTk1uMS91cTZCYUx5?=
- =?utf-8?Q?qDG69zzM5ZSfj1RPADy0bvv1vVG9Lamu?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(36860700013)(82310400026)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Aug 2024 19:48:42.7263
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 54531590-35b8-4407-7ba4-08dcbef5995e
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	MN1PEPF0000F0DE.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB9100
+Subject: Re: [PATCH 6.10] drm/amd/display: Refactor function
+ dm_dp_mst_is_port_support_mode()
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, regressions@lists.linux.dev,
+ amd-gfx@lists.freedesktop.org, ML dri-devel
+ <dri-devel@lists.freedesktop.org>, LKML <linux-kernel@vger.kernel.org>,
+ Wayne Lin <wayne.lin@amd.com>, Jerry Zuo <jerry.zuo@amd.com>,
+ Zaeem Mohamed <zaeem.mohamed@amd.com>,
+ Daniel Wheeler <daniel.wheeler@amd.com>,
+ Alex Deucher <alexander.deucher@amd.com>
+References: <20240730185339.543359-1-kevin@holm.dev>
+ <2024081739-suburb-manor-e6c3@gregkh>
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Kevin Holm <kevin@holm.dev>
+Content-Language: en-US
+In-Reply-To: <2024081739-suburb-manor-e6c3@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
-On Sat, 17 Aug 2024 10:00:38 +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.165 release.
-> There are 479 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+
+
+On 17.08.24 10:42, Greg KH wrote:
+> On Tue, Jul 30, 2024 at 08:53:39PM +0200, Kevin Holm wrote:
+>> From: Wayne Lin <wayne.lin@amd.com>
+>>
+>> [ Upstream commit fa57924c76d995e87ca3533ec60d1d5e55769a27 ]
+>>
+>> [Why]
+>> dm_dp_mst_is_port_support_mode() is a bit not following the original design rule and cause
+>> light up issue with multiple 4k monitors after mst dsc hub.
+>>
+>> [How]
+>> Refactor function dm_dp_mst_is_port_support_mode() a bit to solve the light up issue.
+>>
+>> Reviewed-by: Jerry Zuo <jerry.zuo@amd.com>
+>> Acked-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
+>> Signed-off-by: Wayne Lin <wayne.lin@amd.com>
+>> Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+>> Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+>> [kevin@holm.dev: Resolved merge conflict in .../amdgpu_dm_mst_types.c]
+>> Fixes: 4df96ba6676034 ("drm/amd/display: Add timing pixel encoding for mst mode validation")
+>> Link: https://lore.kernel.org/stable/d74a7768e957e6ce88c27a5bece0c64dff132e24@holm.dev/T/#u
+>> Signed-off-by: Kevin Holm <kevin@holm.dev>
+>> ---
+>> I resolved the merge conflict so that, after this patch is applied to the
+>> linux-6.10.y branch of the stable git repository, the resulting function
+>> dm_dp_mst_is_port_support_mode (and also the new function
+>> dp_get_link_current_set_bw) is identical to the original commit.
+>>
+>> I've confirmed that it fixes the regression I reported for my use case.
 > 
-> Responses should be made by Mon, 19 Aug 2024 07:51:05 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.165-rc3.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> and the diffstat can be found below.
-> 
-> thanks,
+> And it turns out this change breaks the arm and arm64 builds.  I tried
+> to fix it up by applying the fixup afterward for this file, but it's
+> just too much of a mess to unwind this, so I'm going to have to revert
+> this now, sorry.
+That sucks, sorry for the problems my patch caused. :(
+
+> See:
+> 	https://lore.kernel.org/r/b27c5434-f1b1-4697-985b-91bb3e9a22df@roeck-us.net
+> for details.
+I unfortunately don't know the amdgpu driver and kernel code in general enough to help fix
+that. The back-ported patch I send was my first patch to the kernel.
+
+In the email thread where I reported the problem I send a patch that reverts
+4df96ba6676034 ("drm/amd/display: Add timing pixel encoding for mst mode validation") to
+fix the problem that way [1]. I've included a copy of that below.
+I've tested that it still applies to 6.10.6-rc3 without conflicts and compiles for me. I
+could not test if the 6.10.6-rc3 with the revert applied fixes the problem as I'm
+traveling and don't have access to my normal setup. I can only say that reverting it on
+v6.10.2 fixed the problem for me.
+
+I don't know how to compile for other architectures so I did not test that.
+
+Not sure what would be best, reverting the problem commit so the regression is fixed in
+the 6.10 stable kernel (and maybe breaking something else?) or waiting for someone at AMD
+with better knowledge of the amdgpu driver to back-port the fixing commit in a non-broken
+way.
+
+~kevin
+
+[1] https://lore.kernel.org/regressions/7bf26283474fbb6ea915f93f4db0bc614a627617@holm.dev/
 > 
 > greg k-h
+---
+  .../display/amdgpu_dm/amdgpu_dm_mst_types.c   | 33 +++----------------
+  1 file changed, 5 insertions(+), 28 deletions(-)
 
-All tests passing for Tegra ...
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c 
+b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
+index a5e1a93ddaea..5c555a37e367 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
+@@ -1599,7 +1599,7 @@ enum dc_status dm_dp_mst_is_port_support_mode(
+         struct amdgpu_dm_connector *aconnector,
+         struct dc_stream_state *stream)
+  {
+-       int pbn, branch_max_throughput_mps = 0;
++       int bpp, pbn, branch_max_throughput_mps = 0;
+         struct dc_link_settings cur_link_settings;
+         unsigned int end_to_end_bw_in_kbps = 0;
+         unsigned int upper_link_bw_in_kbps = 0, down_link_bw_in_kbps = 0;
+@@ -1649,34 +1649,11 @@ enum dc_status dm_dp_mst_is_port_support_mode(
+                         }
+                 }
+         } else {
+-               /* Check if mode could be supported within max slot
+-                * number of current mst link and full_pbn of mst links.
+-                */
+-               int pbn_div, slot_num, max_slot_num;
+-               enum dc_link_encoding_format link_encoding;
+-               uint32_t stream_kbps =
+-                       dc_bandwidth_in_kbps_from_timing(&stream->timing,
+-                               dc_link_get_highest_encoding_format(stream->link));
+-
+-               pbn = kbps_to_peak_pbn(stream_kbps);
+-               pbn_div = dm_mst_get_pbn_divider(stream->link);
+-               slot_num = DIV_ROUND_UP(pbn, pbn_div);
+-
+-               link_encoding = dc_link_get_highest_encoding_format(stream->link);
+-               if (link_encoding == DC_LINK_ENCODING_DP_8b_10b)
+-                       max_slot_num = 63;
+-               else if (link_encoding == DC_LINK_ENCODING_DP_128b_132b)
+-                       max_slot_num = 64;
+-               else {
+-                       DRM_DEBUG_DRIVER("Invalid link encoding format\n");
++               /* check if mode could be supported within full_pbn */
++               bpp = convert_dc_color_depth_into_bpc(stream->timing.display_color_depth) * 3;
++               pbn = drm_dp_calc_pbn_mode(stream->timing.pix_clk_100hz / 10, bpp << 4);
++               if (pbn > aconnector->mst_output_port->full_pbn)
+                         return DC_FAIL_BANDWIDTH_VALIDATE;
+-               }
+-
+-               if (slot_num > max_slot_num ||
+-                       pbn > aconnector->mst_output_port->full_pbn) {
+-                       DRM_DEBUG_DRIVER("Mode can not be supported within mst links!");
+-                       return DC_FAIL_BANDWIDTH_VALIDATE;
+-               }
+         }
 
-Test results for stable-v5.15:
-    10 builds:	10 pass, 0 fail
-    26 boots:	26 pass, 0 fail
-    102 tests:	102 pass, 0 fail
-
-Linux version:	5.15.165-rc3-g2a66d0cb3772
-Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
-                tegra194-p2972-0000, tegra194-p3509-0000+p3668-0000,
-                tegra20-ventana, tegra210-p2371-2180,
-                tegra210-p3450-0000, tegra30-cardhu-a04
-
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-
-Jon
+         /* check is mst dsc output bandwidth branch_overall_throughput_0_mps */
+-- 
+2.45.2
 
