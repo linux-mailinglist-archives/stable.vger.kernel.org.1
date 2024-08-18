@@ -1,100 +1,105 @@
-Return-Path: <stable+bounces-69399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69400-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8063E9559AD
-	for <lists+stable@lfdr.de>; Sat, 17 Aug 2024 22:48:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16BF1955AB3
+	for <lists+stable@lfdr.de>; Sun, 18 Aug 2024 05:58:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DE76281387
-	for <lists+stable@lfdr.de>; Sat, 17 Aug 2024 20:48:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CAE9B2820B2
+	for <lists+stable@lfdr.de>; Sun, 18 Aug 2024 03:58:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1F79155393;
-	Sat, 17 Aug 2024 20:47:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C6B48F49;
+	Sun, 18 Aug 2024 03:58:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pFOwn/7c"
 X-Original-To: stable@vger.kernel.org
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7E751553BC;
-	Sat, 17 Aug 2024 20:47:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA7AC748D;
+	Sun, 18 Aug 2024 03:58:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723927674; cv=none; b=bJR0rRChkdCVGMgfeeooMlKxateOzLscJ7utLXA0UXtMp3GspEhnios5+TmKQ0i04cG/eXxfukcyYJuDvw6RG1+GCjqMbXLffQyE3NZ7YIT0vRupGp+7pB8O3ddxwyL1ckTusHocPI2Cro9PpabLGGRAfYtRLvTnBtyvSYSqozc=
+	t=1723953501; cv=none; b=s74+3dm0308wQHhaBRL92O/QxBFEBcMPzIELEmM063QBaES+TdGzZoOEi+Ei7tcfn46VGTqeP5qQTLc7Jvyte5gXJCYGbC/sDwhtbHXVhHf17J97fOT2HElA/NWicdGebcRWffcEZGa5EQMxu3nWdnTpPp8qN3dQn2nvNXwC+Dg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723927674; c=relaxed/simple;
-	bh=8xU3yuwdgNGZT8AeiDfAnKCwyGL2vZAMkGqY8jLtla0=;
+	s=arc-20240116; t=1723953501; c=relaxed/simple;
+	bh=L9oJBUC516q+ejSs4MQDSm90WpWXosKx1wQ5yOBnEq8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=e2pZ6fp+LXcgwK/jyrR1yfGjgEmmHBdAsPeVmzoV7XTQHmvtOSTV4fMnbcWhg0H1PEHse/v4/q9oa6VODAXT8MQrAmLjWsm5rlag1xWvSQX1Cm76ODDkFQ7BnHzRj+Ka/cqFhEgo+ma4LubAmhvOMsGnC/aXL8MX0ThrTZnvrxQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id 435721C00A4; Sat, 17 Aug 2024 22:47:51 +0200 (CEST)
-Date: Sat, 17 Aug 2024 22:47:50 +0200
-From: Pavel Machek <pavel@denx.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-Subject: Re: [PATCH 5.10 000/345] 5.10.224-rc3 review
-Message-ID: <ZsEMdlHU6SYvz8wl@duo.ucw.cz>
-References: <20240817074737.217182940@linuxfoundation.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Fj/TTaK6olpE0p9RY3SpvVVu5eqe6j0BozpnQv4YQRVn6hVBfLxBHtif9xo9YQyivec3UEB03PMBXgioE2w7RmoHQOcIh6HFp5WAaugUXEXdyTJWDgLRvke2Neie2zu/5r0BiBOSGM2LZTV8nOihkG34OVQ3O0UkuesI7t0of8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pFOwn/7c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 356DBC32786;
+	Sun, 18 Aug 2024 03:58:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1723953500;
+	bh=L9oJBUC516q+ejSs4MQDSm90WpWXosKx1wQ5yOBnEq8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=pFOwn/7c2x2YWhkYlDvtta1Rcl8axckpl3SGPQQ9X4KZzjL5hdaEr3T2j7OJP1Rc7
+	 Ubcq8Vz/6dXUGmeHw8e6DDcU1S+XXVdpV4+TF8xEnhxBSX+kWobJs71VwYG7z3kNwc
+	 egQaStHzciEZY+g0Rv03F8HHpLOy1VRJ3bYi1HBCphKNaiRKwHlNxu4ADg6yP01wWh
+	 qbqfTu3p/YDqzmD0IrkDfjm/3fwGzOikPY/djYZbN8wINfE4SZA80sq9dek92sbtcY
+	 fzRnaNuSVpoc3eixOVSWJc9IM+E2ts8thyKDNs8JEBzeCKwq+2+eh1VgF6K3V+aV6s
+	 ZbKFm7jXUfzVQ==
+Date: Sat, 17 Aug 2024 20:58:18 -0700
+From: Eric Biggers <ebiggers@kernel.org>
+To: Christian Brauner <brauner@kernel.org>
+Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Oleg Nesterov <oleg@redhat.com>, Aleksa Sarai <cyphar@cyphar.com>,
+	Tycho Andersen <tandersen@netflix.com>,
+	Daan De Meyer <daan.j.demeyer@gmail.com>, Tejun Heo <tj@kernel.org>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] pidfd: prevent creation of pidfds for kthreads
+Message-ID: <20240818035818.GA1929@sol.localdomain>
+References: <20240731-gleis-mehreinnahmen-6bbadd128383@brauner>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="E2NJT776ii5jaby9"
-Content-Disposition: inline
-In-Reply-To: <20240817074737.217182940@linuxfoundation.org>
-
-
---E2NJT776ii5jaby9
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20240731-gleis-mehreinnahmen-6bbadd128383@brauner>
 
-Hi!
+Hi Christian,
 
-> This is the start of the stable review cycle for the 5.10.224 release.
-> There are 345 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Wed, Jul 31, 2024 at 12:01:12PM +0200, Christian Brauner wrote:
+> It's currently possible to create pidfds for kthreads but it is unclear
+> what that is supposed to mean. Until we have use-cases for it and we
+> figured out what behavior we want block the creation of pidfds for
+> kthreads.
+> 
+> Fixes: 32fcb426ec00 ("pid: add pidfd_open()")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Christian Brauner <brauner@kernel.org>
+> ---
+>  kernel/fork.c | 25 ++++++++++++++++++++++---
+>  1 file changed, 22 insertions(+), 3 deletions(-)
 
-CIP testing did not find any problems here:
+Unfortunately this commit broke systemd-shutdown's ability to kill processes,
+which makes some filesystems no longer get unmounted at shutdown.
 
-https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
-5.10.y
+It looks like systemd-shutdown relies on being able to create a pidfd for any
+process listed in /proc (even a kthread), and if it gets EINVAL it treats it a
+fatal error and stops looking for more processes...
 
-No problems detected in Linux 5.15.165-rc3 (2a66d0cb3772), either.
+This is what shows up in the system log:
 
-Tested-by: Pavel Machek (CIP) <pavel@denx.de>
+    systemd[1]: Shutting down.
+    systemd-shutdown[1]: Syncing filesystems and block devices.
+    systemd-shutdown[1]: Sending SIGTERM to remaining processes...
+    systemd-shutdown[1]: Failed to enumerate /proc/: Invalid argument
+    systemd-shutdown[1]: Sending SIGKILL to remaining processes...
+    systemd-shutdown[1]: Failed to enumerate /proc/: Invalid argument
+    systemd-shutdown[1]: Unmounting file systems.
+    (sd-umount)[17359]: Unmounting '/run/credentials/systemd-vconsole-setup.service'.
+    (sd-umount)[17360]: Unmounting '/run/credentials/systemd-journald.service'.
+    (sd-remount)[17361]: Remounting '/' read-only with options ''.
+    (sd-remount)[17361]: Failed to remount '/' read-only: Device or resource busy
+    (sd-remount)[17362]: Remounting '/' read-only with options ''.
+    (sd-remount)[17362]: Failed to remount '/' read-only: Device or resource busy
+    systemd-shutdown[1]: Not all file systems unmounted, 1 left.
 
-Best regards,
-                                                                Pavel
-
-
-
---=20
-DENX Software Engineering GmbH,        Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-
---E2NJT776ii5jaby9
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZsEMdgAKCRAw5/Bqldv6
-8rCBAJ9gfuyaJB086EBZ+ACKMFqyYu1XVgCfWic3FKxN1CHSyCwguFSYoe2F1+s=
-=W5YA
------END PGP SIGNATURE-----
-
---E2NJT776ii5jaby9--
+- Eric
 
