@@ -1,139 +1,92 @@
-Return-Path: <stable+bounces-69410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69411-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D103955C68
-	for <lists+stable@lfdr.de>; Sun, 18 Aug 2024 14:28:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22088955C6A
+	for <lists+stable@lfdr.de>; Sun, 18 Aug 2024 14:32:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B17B281C14
-	for <lists+stable@lfdr.de>; Sun, 18 Aug 2024 12:28:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C5421C208F2
+	for <lists+stable@lfdr.de>; Sun, 18 Aug 2024 12:32:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 657061C6A5;
-	Sun, 18 Aug 2024 12:28:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 297851946B;
+	Sun, 18 Aug 2024 12:32:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="l5Pdqc4d";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="FeMQmBP4"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="Nn7uGKnk"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh1-smtp.messagingengine.com (fhigh1-smtp.messagingengine.com [103.168.172.152])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C96A8F66;
-	Sun, 18 Aug 2024 12:28:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55E881B978;
+	Sun, 18 Aug 2024 12:32:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723984101; cv=none; b=rgFmeQTIL5bw04I16hO432/2oDK4BYfurxmy6GIuXUP7r3hbkjgoO2C930XLU+Up+iYE+F5XDW+xliF9SaFAioPFhbBGuDSrBGKGLumHuP6iYGqh6mgKzhSMhgZ4ZiTzqqaH3HuvXlXPfCtekJXW0zk+MBMVPBsn6m92JdlNJF4=
+	t=1723984330; cv=none; b=i5bFKcdkAI+VTb1j9Yj0WIjwTxmS4LFfvcN9bwJbgiuXaa+W6hWtV2mcCr6jFBrQZzdqHOMtLt/aJdUtaqop7BweNx958mtteftTaE64Pf1qh8j/VXn39nWg//hm+G6L2w1CseoGkCEwXHBVeEYw5Yn7IGSWUoxtgbsnup6naOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723984101; c=relaxed/simple;
-	bh=QGZSgaDwjkzBfnoDRA6+KuuqDqZikjRQ6sBf6Ujr0d4=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=gc6Ass31ZVps2gfQv44orj/QPwb6uWEBYwBWItykDYpQW0i4RgYyV9zO+d9JFen2P32zuhwsFmJIaIs9EHWHDXzigQoj/XJy/fDsyR/6npMEedOaY5PUPHuoFBJeHaym8YsxBHPldHrZlZ/CtoDDKkBjncOvSOseIWlzeVmpZHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=l5Pdqc4d; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=FeMQmBP4; arc=none smtp.client-ip=103.168.172.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
-Received: from phl-compute-04.internal (phl-compute-04.nyi.internal [10.202.2.44])
-	by mailfhigh.nyi.internal (Postfix) with ESMTP id 9059A1151B61;
-	Sun, 18 Aug 2024 08:28:17 -0400 (EDT)
-Received: from phl-imap-11 ([10.202.2.101])
-  by phl-compute-04.internal (MEProxy); Sun, 18 Aug 2024 08:28:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm3; t=1723984097;
-	 x=1724070497; bh=DRpDj2if4gk6AAWUrO6EDxIFDLegIjhrreMFy1AqthQ=; b=
-	l5Pdqc4dnK65nM1uaF6yLTV2hFu+IyDTanJMSqyq3aXX4Qv/CDdovxO2hJ6Xnuet
-	fdwJyzl7z7VGXIcc7Cc/yhATrB4OBaLTF16FBlLd+iBg/aGEdlCZdQBCXCK2o4/O
-	O7GbY9TkA1wiaT/+gwTusn3A+KaaLZ9rmq2wCeUHFcUuCZb28OaSJAncrpzyB80d
-	BRYStQRBzvVmWz67yQBGFV1X12yuqv0rwpyQKZGbwE4cw46lKNT4WJCIstvqkSxj
-	HITkd+xg33dnnbRa1tBmK6ovhrLFQI4N5xivXm63f00edQU5SBJu1PlII4W2xaGg
-	Gry9vt1cx6FqQLAdfW+zEQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1723984097; x=
-	1724070497; bh=DRpDj2if4gk6AAWUrO6EDxIFDLegIjhrreMFy1AqthQ=; b=F
-	eMQmBP4rC8xHAiJGQZh9F40ZSgYgtwP+C1zdx2Jrz18tJ0nV+0JKeZeyc0iKe1Lx
-	ixfIQoJupI31wBMV5RqMdSDmwcJamFvlvGRt+Hpofm/Ft8WuvEuU0LTtZY4IZzTE
-	PKXGq01szZVR3I5WTXtTwFOntHyY3NCWxJfwq9CsM+/NGxFk6nLKb8Dz9z+F1GKO
-	V+vw0+Q3fyycTqqUbZV48aoey5qAmh1BU8132NuulOcwB8NOeLmw+vwdT1VxyEpu
-	WprbwTnMzz6AKYvLHnRTc+6nC8a/faqo9eo876ugbNpljhR2bgy1uBVvK44JWR/z
-	itPDAbqUbCuSmpo/oJvBw==
-X-ME-Sender: <xms:4OjBZsOU3EN2qawhBpwSUIaTMFtdmE78ULT6N9fXI-3NgSOex4kugA>
-    <xme:4OjBZi-lTJj4wMlCqlXASbTZcAe_0HlX6aZ9UJbnV1Tc7eA5Vb38K6DAdEJFeeLgn
-    1EfsK3jLs10APN-S20>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrudduvddgheefucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddt
-    necuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrd
-    guvgeqnecuggftrfgrthhtvghrnhephfdthfdvtdefhedukeetgefggffhjeeggeetfefg
-    gfevudegudevledvkefhvdeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
-    hmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohepiedp
-    mhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepmhgrkhgvvdegsehishgtrghsrdgrtg
-    drtghnpdhrtghpthhtohepvhhkohhulheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohep
-    rghkphhmsehlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopegumh
-    grvghnghhinhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhu
-    gidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhtrg
-    gslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:4OjBZjTnvrU0NCwBe3Y88TYgtWycaQvN7eRtu9wX1lApoAHFquOG9A>
-    <xmx:4OjBZkuV1GYcWyJwTsr5YVjuJj8r2SKR_1lSM6bRwrFfAyeUnKfMhw>
-    <xmx:4OjBZke3DK4PelYEF4eVQBcvXzT5gz09Mn51Qkpb_dV6hSZJjw2Zuw>
-    <xmx:4OjBZo1vbpD8PDdXimKFpqaNs8dxD43UXTJijjJVzHfG-wiwXXdrDQ>
-    <xmx:4ejBZpH0_HFlfQm6b9HG-iOGxzoq-wc6hUyTKbKZyB3nup0caigtxdIg>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id C9BAB16005E; Sun, 18 Aug 2024 08:28:16 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	s=arc-20240116; t=1723984330; c=relaxed/simple;
+	bh=HtuFhXI63urBA3dRKYyXQ6GHreCYVeNttV6YM+zDLlM=;
+	h=Message-ID:Date:MIME-Version:From:To:Cc:Subject:Content-Type; b=ap3mW8M/57zlCoduSJhg2ovsTtnW7FCqoJRlCPFYI7mqgiQxxWTsE0f17Dx6Iw83SN3ZGC8rR8Y+pMO/e0t3wro/O5UbY5N0lX9LUgQP87oXBuMfgPpenEjaJPGatq7GDoCe0JtFSyUVGGwnUAf/KxBeE+1qdEUbGAYJCreaYPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=Nn7uGKnk; arc=none smtp.client-ip=212.227.17.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1723984325; x=1724589125; i=rwarsow@gmx.de;
+	bh=HtuFhXI63urBA3dRKYyXQ6GHreCYVeNttV6YM+zDLlM=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:From:To:Cc:
+	 Subject:Content-Type:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=Nn7uGKnk/Ul1FkW2zYU8Yk+PYbb/EZGOrekQ3okxOfz5SFtz3fNqVP45Tq1Wjo26
+	 axF9y01LH0h06PjxaGxuu7y9qSHDwrscD20Kjkg2Yv19k6NzyOpHP0D2h2NN5Z2Hm
+	 q8IG/DKu+J4rm8Z8382Kapb/uLhe2n/gcqPuWfLvMzljm34e8Se/fzjQ3ILOpriZ1
+	 1lbw1lxeqXWaBz0ojfJr+lxmbWn7HgRdkQOSNr+NqqJclFheaqxzvd7ITpF84ach+
+	 D4erJSynfCNtMhrcaOesrmd6AGQk5Jacfq8fIvOFUKTlQmfZIikw/XPDSNbtl2Xij
+	 pnrGzlqNgWTJHmHc4A==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.100.20] ([46.142.35.208]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MPGVx-1sVQj22TfB-00LN4M; Sun, 18
+ Aug 2024 14:32:05 +0200
+Message-ID: <2962a37a-0dac-41db-9b97-1f2d58af3bff@gmx.de>
+Date: Sun, 18 Aug 2024 14:32:05 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Sun, 18 Aug 2024 14:27:56 +0200
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Ma Ke" <make24@iscas.ac.cn>, "Vinod Koul" <vkoul@kernel.org>,
- "Andrew Morton" <akpm@linux-foundation.org>
-Cc: dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-Message-Id: <68f613a0-64c8-4c3c-915c-ce6e76eee317@app.fastmail.com>
-In-Reply-To: <20240818071757.798601-1-make24@iscas.ac.cn>
-References: <20240818071757.798601-1-make24@iscas.ac.cn>
-Subject: Re: [PATCH v3] dmaengine: moxart: handle irq_of_parse_and_map() errors
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+From: Ronald Warsow <rwarsow@gmx.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Content-Language: de-DE, en-US
+Subject: Re: [PATCH 6.10 00/25] 6.10.6-rc3 review
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:xJjvTaBnBICHK12ZTw034O3uOj7jFVCYkg9Tcxnhthng60rzUyR
+ uvp34tgFoc1pY0rJfwMpC9j3+UrqWga3uiPjNfTF3PVdhVYXnv5gpo+ZCHloudLGydZFvzz
+ M5favxzOn6QLk4k7EAshY8RopCyC98XNpbGsmb6lwKfYBBNXdvqVSWBxW6xQhFowKiBPukv
+ e9k+XfJTdhyyXdv6GE4fQ==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:dlTeiFxsmvA=;VxFCkSpiBSlBfo7ZQZ6hswT/Nyw
+ tV8lUcPePAfmrtBP8puCmpz4IZaELlUDQeSTEQpYJQjy4mHeO7c2edtW1VPwxr8DJWqbRE3YV
+ t7oBhxmNLILzKPdocK+jlIOd9z5YVFho/1P61fmY2b9dMOqO0a4VitLpRGUXzY0vVs+4oKJIA
+ kH/mZE0hNxRRv6YBpsSZfIJmP6x5fMTAG+r7I3jk1bFgTDjoGy/2/qfRA9T9fwCYvKa9t3yZ4
+ zYIG2Px39Ck6PIzjYUOQ1kpInnno6dKsHLy4Yr1C/gSsZPYyCYg8WHHx+/fWt3iCXj93FaEy/
+ 7DI/ojvLNm2MZwCHVMj1HmIXQMLxBLTnYEi4Fs//yXs4P5zyNazpjPK9tMi7YRudsDpHcdmxw
+ qRcZZa4KtH9iVxMkaVPrgxAJafyJ33zpD1WauvgWkZpI4/bo3Dqgdic6CnvTugIO4MmcUwOKP
+ JTToO6/myL+qV01HPhvxRvagBVc4LERkmRiLT5+BjPjDLCRVa1CkIyZnmxNJdyy2VpWCK44MR
+ PhcLJApiYferJus2n1nohmfgjXPbTPuPI4+XrSdfRIJ8QGo9SfI3sqWAHG3YUOCC5byaRZy/L
+ g275vJRvBs2QvBZwghidi6iE2NxEy44AJxrkzhAeb8Cpc9tBqYoZlinWSdAQ2107XxM5wonNH
+ RT5G2UZCLpZxi5B7/8ukQIwZp8o6BEQCDMRETy4J9XpGPmeNKYroU2GT203iN+dBcDm8Z6mBl
+ 0teOt3yK5+bi3RS3brzgX0J87j0sUycEIF8IuwtCMlHmOPXXexEhcODnCuAWtYhQhiXyvj6lw
+ JwnC+idv9GzQnnt2NUDYrmwA==
 
-On Sun, Aug 18, 2024, at 09:17, Ma Ke wrote:
-> Zero and negative number is not a valid IRQ for in-kernel code and the
-> irq_of_parse_and_map() function returns zero on error.  So this check for
-> valid IRQs should only accept values > 0.
->
-> Cc: stable@vger.kernel.org
-> Fixes: 2d9e31b9412c ("dmaengine: moxart: remove NO_IRQ")
-> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-> ---
+Hi Greg
 
-This makes no sense to me, you explain why the current code is
-correct and then change it to something wrong?
+no regressions here on x86_64 (RKL, Intel 11th Gen. CPU)
 
-> diff --git a/drivers/dma/moxart-dma.c b/drivers/dma/moxart-dma.c
-> index 66dc6d31b603..16dd3c5aba4d 100644
-> --- a/drivers/dma/moxart-dma.c
-> +++ b/drivers/dma/moxart-dma.c
-> @@ -568,7 +568,7 @@ static int moxart_probe(struct platform_device *pdev)
->  		return -ENOMEM;
-> 
->  	irq = irq_of_parse_and_map(node, 0);
-> -	if (!irq) {
-> +	if (irq <= 0) {
->  		dev_err(dev, "no IRQ resource\n");
->  		return -EINVAL;
+Thanks
 
-The "if (!irq)" is clearly the intended check, as you explain
-irq_of_parse_and_map() returns 0 on error.
-
-      Arnd
+Tested-by: Ronald Warsow <rwarsow@gmx.de>
 
