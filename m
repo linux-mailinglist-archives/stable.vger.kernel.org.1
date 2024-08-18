@@ -1,147 +1,129 @@
-Return-Path: <stable+bounces-69425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69426-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFA3D95601E
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 01:18:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18409956036
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 01:56:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8AD0C1F22036
-	for <lists+stable@lfdr.de>; Sun, 18 Aug 2024 23:18:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 397111C20EF4
+	for <lists+stable@lfdr.de>; Sun, 18 Aug 2024 23:56:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5B44158A31;
-	Sun, 18 Aug 2024 23:18:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C051155A3C;
+	Sun, 18 Aug 2024 23:55:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="ZkY98LCO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RMIW7gbr"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFFBE154454;
-	Sun, 18 Aug 2024 23:17:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B2541A291;
+	Sun, 18 Aug 2024 23:55:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724023080; cv=none; b=sHUXP+Ay1tPVygAt5N7pvRNDwiC2Adt0oo7xvqyd5XPL89QZ3t3Gg1JEd/6fR7/2kaTUog2Y3hJsaoIyz1NEEk45Beg/mB0jC3/ex0Ja9bZics8oLyCeJ2OOiBD/z+bvKlc3ZG49KgfguxZtajiFyr1a9TTJ4c7+HgIVOyTcVoY=
+	t=1724025354; cv=none; b=jNiKTrMqYXbqs07RFppbhAf1LtQ+mXPxgBRrAqmjXclS09wwUSIQliIwKa27f1faN1cey5SNg9pmZaJg+Boz4SPPQKDYSQGS3HNUcejBPn2mStsvEWqFSDSkDsCoH087zCLnezXz53j2BWL+xIzttmQfZnR9mrCqDEWdz6mfJiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724023080; c=relaxed/simple;
-	bh=A/HYDsrJuXFW0qGUWD2KE96ILaBtDbLU+NxkkFF5u+I=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-ID:References:
-	 In-Reply-To:To:CC; b=nF+SYsVj5ZCO9zz9n3RfundL/EMCX+BFH/5MBgZ3vqzPC5Y/sOUQE0pDEhD/BpaReos8WrYhHdabqdjIYSOHsNUvL1BRlrvvZKLTXtbFkdsVzknph3RuIN2auXNEKxHbmR9CMlw34krRjvcyl5oJu0ErhS1SyE9ZOooIl0u6938=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=ZkY98LCO; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47IL3Ikb030735;
-	Sun, 18 Aug 2024 23:17:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	WJASdRSwBE2XVvB6rmnNHIQXn5hm5EE5wC8ypIKFpuo=; b=ZkY98LCOenmw2q4/
-	usrwk/AriItEPK9js3tQSVajxbnpS3CWKOjUw5yMeB57CutSW5k+AsflslYgg/g8
-	8I6vz964F3HotQ6QrZ2Pf1qsyLwQSOEDtZ6icVUSbKUs2lDcSxuBSY/K77iFjzp5
-	QZXO1CzNI1Ad51UN+VlsNKmnwUPIBVePL8Gv3t1+2Ft3vkVWrKKA7wd3g95C00gc
-	b2Y041+DKtwUiticFhfFTNtC3NOz6mPBzT7/PacL5eqZmfgyH2rl7yex4+/kAzak
-	t9DW/8c0KlmBHtSKB/XqNB/il/pP9iVFmuGH8ottBkEbPwyyxmXiX9XEo9Ql4s/h
-	LRUn0w==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 412m872ftf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 18 Aug 2024 23:17:40 +0000 (GMT)
-Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
-	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 47INHcWG029847
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 18 Aug 2024 23:17:38 GMT
-Received: from hu-bjorande-lv.qualcomm.com (10.49.16.6) by
- nalasex01c.na.qualcomm.com (10.47.97.35) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Sun, 18 Aug 2024 16:17:38 -0700
-From: Bjorn Andersson <quic_bjorande@quicinc.com>
-Date: Sun, 18 Aug 2024 16:17:39 -0700
-Subject: [PATCH 3/3] soc: qcom: pmic_glink: Actually communicate with
- remote goes down
+	s=arc-20240116; t=1724025354; c=relaxed/simple;
+	bh=XBPgRajQMF3kBFF2qXNj8VIXdwJb8ZAa2UAOgGyhnlQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EU903+mCb2tZCkzDA7GDbWdBR4Kj5+JVNRokR77mhtUh/XwbG7dnbppCXiI66Ic6vbBOsl5mquktsCywvRtN1OZPobIn1uxsKoqGECSeSldERCkmoVJAwr5YE21nNPTSAPGlsoSkRhnK8HZFTLLcPyzIQ5FoMj4gKGNkxCTd+pY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RMIW7gbr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66C2CC4AF0E;
+	Sun, 18 Aug 2024 23:55:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724025353;
+	bh=XBPgRajQMF3kBFF2qXNj8VIXdwJb8ZAa2UAOgGyhnlQ=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=RMIW7gbrHXOXxlWvy2z71DdGHQqWFV++aLjZnN0rA4Nu5ainHsPu70FobMhcYQegb
+	 zxV9BCzm1Tuj/hb5wDHJu9mraFrcXlm8CXhyi+dxODxyFKRAtO57jAU+TfqJ1qgrZz
+	 mNSJSq82IaRqlN+lj2H1sr1M+mEV4VvYp9Y3XfaXtYDF6anoy4/0ZbTGSvL2RnXsCy
+	 26gTjrw3zyAnBl1WYlObfLeGOHAtah2gyPbV//+HgOhdRa+0tixoGRUrmNrmkMzZfW
+	 x7B2xRqUPCOTK4b5dUnXRjf8zP/w5QF6EA9Jr5AYx8ZnMk0U/oXrIT65SMFJ1Q8s6l
+	 sY0E8RCWVgykA==
+Message-ID: <10c56cbc-a367-44c3-8b14-b846a3c4e4a0@kernel.org>
+Date: Mon, 19 Aug 2024 08:55:51 +0900
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4] scsi: sd: retry command SYNC CACHE if format in
+ progress
+To: Yihang Li <liyihang9@huawei.com>, James.Bottomley@HansenPartnership.com,
+ martin.petersen@oracle.com
+Cc: linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ bvanassche@acm.org, linuxarm@huawei.com, prime.zeng@huawei.com,
+ stable@vger.kernel.org
+References: <20240817015019.3467765-1-liyihang9@huawei.com>
+From: Damien Le Moal <dlemoal@kernel.org>
+Content-Language: en-US
+Organization: Western Digital Research
+In-Reply-To: <20240817015019.3467765-1-liyihang9@huawei.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-ID: <20240818-pmic-glink-v6-11-races-v1-3-f87c577e0bc9@quicinc.com>
-References: <20240818-pmic-glink-v6-11-races-v1-0-f87c577e0bc9@quicinc.com>
-In-Reply-To: <20240818-pmic-glink-v6-11-races-v1-0-f87c577e0bc9@quicinc.com>
-To: Sebastian Reichel <sre@kernel.org>,
-        Bjorn Andersson
-	<andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        "Heikki
- Krogerus" <heikki.krogerus@linux.intel.com>,
-        Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>,
-        Neil Armstrong <neil.armstrong@linaro.org>
-CC: Johan Hovold <johan+linaro@kernel.org>, Chris Lew <quic_clew@quicinc.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Stephen Boyd
-	<swboyd@chromium.org>,
-        Amit Pundir <amit.pundir@linaro.org>, <linux-arm-msm@vger.kernel.org>,
-        <linux-pm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-usb@vger.kernel.org>,
-        Bjorn Andersson
-	<quic_bjorande@quicinc.com>, <stable@vger.kernel.org>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1724023057; l=1283;
- i=quic_bjorande@quicinc.com; s=20230915; h=from:subject:message-id;
- bh=A/HYDsrJuXFW0qGUWD2KE96ILaBtDbLU+NxkkFF5u+I=;
- b=N4uM4ZyFXEnLrngR9QzkC2v7udqPNoUqxiXM2V1jmLj+w7Ex2LraJQzLX9o6j/82ZvR4rIgXv
- n8LBCLwl8BOBOGmRJB77EHJkGNMkW1iJdJnPh9Psa9COmedQbk5WWFQ
-X-Developer-Key: i=quic_bjorande@quicinc.com; a=ed25519;
- pk=VkhObtljigy9k0ZUIE1Mvr0Y+E1dgBEH9WoLQnUtbIM=
-X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
- nalasex01c.na.qualcomm.com (10.47.97.35)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: SZWl1v5oJrFfAjhOrZKPnL3eUeoZFCEN
-X-Proofpoint-ORIG-GUID: SZWl1v5oJrFfAjhOrZKPnL3eUeoZFCEN
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-08-18_22,2024-08-16_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 malwarescore=0
- mlxlogscore=999 priorityscore=1501 adultscore=0 lowpriorityscore=0
- clxscore=1015 bulkscore=0 suspectscore=0 spamscore=0 impostorscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2407110000 definitions=main-2408180174
 
-When the pmic_glink state is UP and we either receive a protection-
-domain (PD) notifcation indicating that the PD is going down, or that
-the whole remoteproc is going down, it's expected that the pmic_glink
-client instances are notified that their function has gone DOWN.
+On 8/17/24 10:50, Yihang Li wrote:
+> If formatting a suspended disk (such as formatting with different DIF
+> type), the disk will be resuming first, and then the format command will
+> submit to the disk through SG_IO ioctl.
+> 
+> When the disk is processing the format command, the system does not submit
+> other commands to the disk. Therefore, the system attempts to suspend the
+> disk again and sends the SYNC CACHE command. However, the SYNC CACHE
 
-This is not what the code does, which results in the client state either
-not updating, or being wrong in many cases. So let's fix the conditions.
+Why would the system try to suspend the disk with a request in flight ? Sounds
+like there is a bug with PM reference counting, no ?
 
-Fixes: 58ef4ece1e41 ("soc: qcom: pmic_glink: Introduce base PMIC GLINK driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Bjorn Andersson <quic_bjorande@quicinc.com>
----
- drivers/soc/qcom/pmic_glink.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/soc/qcom/pmic_glink.c b/drivers/soc/qcom/pmic_glink.c
-index e4747f1d3da5..cb202a37e8ab 100644
---- a/drivers/soc/qcom/pmic_glink.c
-+++ b/drivers/soc/qcom/pmic_glink.c
-@@ -191,7 +191,7 @@ static void pmic_glink_state_notify_clients(struct pmic_glink *pg)
- 		if (pg->pdr_state == SERVREG_SERVICE_STATE_UP && pg->ept)
- 			new_state = SERVREG_SERVICE_STATE_UP;
- 	} else {
--		if (pg->pdr_state == SERVREG_SERVICE_STATE_UP && pg->ept)
-+		if (pg->pdr_state == SERVREG_SERVICE_STATE_DOWN || !pg->ept)
- 			new_state = SERVREG_SERVICE_STATE_DOWN;
- 	}
- 
+> command will fail because the disk is in the formatting process, which
+> will cause the runtime_status of the disk to error and it is difficult
+> for user to recover it. Error info like:
+> 
+> [  669.925325] sd 6:0:6:0: [sdg] Synchronizing SCSI cache
+> [  670.202371] sd 6:0:6:0: [sdg] Synchronize Cache(10) failed: Result: hostbyte=0x00 driverbyte=DRIVER_OK
+> [  670.216300] sd 6:0:6:0: [sdg] Sense Key : 0x2 [current]
+> [  670.221860] sd 6:0:6:0: [sdg] ASC=0x4 ASCQ=0x4
+> 
+> To solve the issue, retry the command until format command is finished.
+> 
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Yihang Li <liyihang9@huawei.com>
+> Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+> ---
+> Changes since v3:
+> - Add Cc tag for kernel stable.
+> 
+> Changes since v2:
+> - Add Reviewed-by for Bart.
+> 
+> Changes since v1:
+> - Updated and added error information to the patch description.
+> 
+> ---
+>  drivers/scsi/sd.c | 5 +++++
+>  1 file changed, 5 insertions(+)
+> 
+> diff --git a/drivers/scsi/sd.c b/drivers/scsi/sd.c
+> index adeaa8ab9951..5cd88a8eea73 100644
+> --- a/drivers/scsi/sd.c
+> +++ b/drivers/scsi/sd.c
+> @@ -1823,6 +1823,11 @@ static int sd_sync_cache(struct scsi_disk *sdkp)
+>  			    (sshdr.asc == 0x74 && sshdr.ascq == 0x71))	/* drive is password locked */
+>  				/* this is no error here */
+>  				return 0;
+> +
+> +			/* retry if format in progress */
+> +			if (sshdr.asc == 0x4 && sshdr.ascq == 0x4)
+> +				return -EBUSY;
+> +
+>  			/*
+>  			 * This drive doesn't support sync and there's not much
+>  			 * we can do because this is called during shutdown
 
 -- 
-2.34.1
+Damien Le Moal
+Western Digital Research
 
 
