@@ -1,116 +1,139 @@
-Return-Path: <stable+bounces-69408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69410-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B7DA955C06
-	for <lists+stable@lfdr.de>; Sun, 18 Aug 2024 10:55:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D103955C68
+	for <lists+stable@lfdr.de>; Sun, 18 Aug 2024 14:28:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 067992822E8
-	for <lists+stable@lfdr.de>; Sun, 18 Aug 2024 08:55:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B17B281C14
+	for <lists+stable@lfdr.de>; Sun, 18 Aug 2024 12:28:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E81921773A;
-	Sun, 18 Aug 2024 08:55:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 657061C6A5;
+	Sun, 18 Aug 2024 12:28:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jKaivLmh"
+	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="l5Pdqc4d";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="FeMQmBP4"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fhigh1-smtp.messagingengine.com (fhigh1-smtp.messagingengine.com [103.168.172.152])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97653101E6;
-	Sun, 18 Aug 2024 08:55:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C96A8F66;
+	Sun, 18 Aug 2024 12:28:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723971322; cv=none; b=djEvE2LAmNVOU6P8w69U1xCM+74X0/y7L8BZoq3OiQeOy5Ggr3S2Ds2q0r2v71DNYS5NGteKvviNTByRlhUNkOOoDqTao54b0uHCI/1tKWp5zvgc+QBCX70IZHPMtqoODDLFBYigSvaUzhegBg2ivy4hCdYDy7eLkxaQ60fSfPY=
+	t=1723984101; cv=none; b=rgFmeQTIL5bw04I16hO432/2oDK4BYfurxmy6GIuXUP7r3hbkjgoO2C930XLU+Up+iYE+F5XDW+xliF9SaFAioPFhbBGuDSrBGKGLumHuP6iYGqh6mgKzhSMhgZ4ZiTzqqaH3HuvXlXPfCtekJXW0zk+MBMVPBsn6m92JdlNJF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723971322; c=relaxed/simple;
-	bh=pPv6ETlZaKlCB45ZA2czhva+WhqswiAldgD9gR2ihEU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UjVdae44Sl8BQa6+QhZRCMxuNJRxFmaFmV66HnTqayJH6ip9PmWp6t/Em4MAVtFZaf67l/Xf5NhZzuBRgm+rbCYYLnTSCXYWw7JBy0sn0zke7SeOx7xFLdcsG6BdJOzzwvAQ/2xXp6dfmKVjK/e9EqU54yILIVJsFXBsf1rSyco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jKaivLmh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E4BBC32786;
-	Sun, 18 Aug 2024 08:55:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723971322;
-	bh=pPv6ETlZaKlCB45ZA2czhva+WhqswiAldgD9gR2ihEU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jKaivLmhtt7olUKvu0DXw2JdZX2uEtAnj1anJV63lYbu8mdtqtirCu0wljsf8hNtl
-	 IZtHc5HgGK7yJF7kw6Z6arpPY63oM42xljpWk710CO61/tV6QN/C50JQA8mni4b3Cc
-	 RwkBZ/9UCsjZpkrkfG6FEOtnsF9bkw0w5swnJ2JU=
-Date: Sun, 18 Aug 2024 10:55:19 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Anders Roxell <anders.roxell@linaro.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-Subject: Re: [PATCH 5.10 000/345] 5.10.224-rc3 review
-Message-ID: <2024081846-sequester-pull-4183@gregkh>
-References: <20240817074737.217182940@linuxfoundation.org>
- <CADYN=9++QDcougZ_xJOLf8otPOrrFcwaJe_gL7ZYmmw6gDXWmg@mail.gmail.com>
+	s=arc-20240116; t=1723984101; c=relaxed/simple;
+	bh=QGZSgaDwjkzBfnoDRA6+KuuqDqZikjRQ6sBf6Ujr0d4=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=gc6Ass31ZVps2gfQv44orj/QPwb6uWEBYwBWItykDYpQW0i4RgYyV9zO+d9JFen2P32zuhwsFmJIaIs9EHWHDXzigQoj/XJy/fDsyR/6npMEedOaY5PUPHuoFBJeHaym8YsxBHPldHrZlZ/CtoDDKkBjncOvSOseIWlzeVmpZHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=l5Pdqc4d; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=FeMQmBP4; arc=none smtp.client-ip=103.168.172.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+Received: from phl-compute-04.internal (phl-compute-04.nyi.internal [10.202.2.44])
+	by mailfhigh.nyi.internal (Postfix) with ESMTP id 9059A1151B61;
+	Sun, 18 Aug 2024 08:28:17 -0400 (EDT)
+Received: from phl-imap-11 ([10.202.2.101])
+  by phl-compute-04.internal (MEProxy); Sun, 18 Aug 2024 08:28:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm3; t=1723984097;
+	 x=1724070497; bh=DRpDj2if4gk6AAWUrO6EDxIFDLegIjhrreMFy1AqthQ=; b=
+	l5Pdqc4dnK65nM1uaF6yLTV2hFu+IyDTanJMSqyq3aXX4Qv/CDdovxO2hJ6Xnuet
+	fdwJyzl7z7VGXIcc7Cc/yhATrB4OBaLTF16FBlLd+iBg/aGEdlCZdQBCXCK2o4/O
+	O7GbY9TkA1wiaT/+gwTusn3A+KaaLZ9rmq2wCeUHFcUuCZb28OaSJAncrpzyB80d
+	BRYStQRBzvVmWz67yQBGFV1X12yuqv0rwpyQKZGbwE4cw46lKNT4WJCIstvqkSxj
+	HITkd+xg33dnnbRa1tBmK6ovhrLFQI4N5xivXm63f00edQU5SBJu1PlII4W2xaGg
+	Gry9vt1cx6FqQLAdfW+zEQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1723984097; x=
+	1724070497; bh=DRpDj2if4gk6AAWUrO6EDxIFDLegIjhrreMFy1AqthQ=; b=F
+	eMQmBP4rC8xHAiJGQZh9F40ZSgYgtwP+C1zdx2Jrz18tJ0nV+0JKeZeyc0iKe1Lx
+	ixfIQoJupI31wBMV5RqMdSDmwcJamFvlvGRt+Hpofm/Ft8WuvEuU0LTtZY4IZzTE
+	PKXGq01szZVR3I5WTXtTwFOntHyY3NCWxJfwq9CsM+/NGxFk6nLKb8Dz9z+F1GKO
+	V+vw0+Q3fyycTqqUbZV48aoey5qAmh1BU8132NuulOcwB8NOeLmw+vwdT1VxyEpu
+	WprbwTnMzz6AKYvLHnRTc+6nC8a/faqo9eo876ugbNpljhR2bgy1uBVvK44JWR/z
+	itPDAbqUbCuSmpo/oJvBw==
+X-ME-Sender: <xms:4OjBZsOU3EN2qawhBpwSUIaTMFtdmE78ULT6N9fXI-3NgSOex4kugA>
+    <xme:4OjBZi-lTJj4wMlCqlXASbTZcAe_0HlX6aZ9UJbnV1Tc7eA5Vb38K6DAdEJFeeLgn
+    1EfsK3jLs10APN-S20>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrudduvddgheefucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertdertddt
+    necuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrd
+    guvgeqnecuggftrfgrthhtvghrnhephfdthfdvtdefhedukeetgefggffhjeeggeetfefg
+    gfevudegudevledvkefhvdeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
+    hmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohepiedp
+    mhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepmhgrkhgvvdegsehishgtrghsrdgrtg
+    drtghnpdhrtghpthhtohepvhhkohhulheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohep
+    rghkphhmsehlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopegumh
+    grvghnghhinhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhu
+    gidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhtrg
+    gslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:4OjBZjTnvrU0NCwBe3Y88TYgtWycaQvN7eRtu9wX1lApoAHFquOG9A>
+    <xmx:4OjBZkuV1GYcWyJwTsr5YVjuJj8r2SKR_1lSM6bRwrFfAyeUnKfMhw>
+    <xmx:4OjBZke3DK4PelYEF4eVQBcvXzT5gz09Mn51Qkpb_dV6hSZJjw2Zuw>
+    <xmx:4OjBZo1vbpD8PDdXimKFpqaNs8dxD43UXTJijjJVzHfG-wiwXXdrDQ>
+    <xmx:4ejBZpH0_HFlfQm6b9HG-iOGxzoq-wc6hUyTKbKZyB3nup0caigtxdIg>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+	id C9BAB16005E; Sun, 18 Aug 2024 08:28:16 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CADYN=9++QDcougZ_xJOLf8otPOrrFcwaJe_gL7ZYmmw6gDXWmg@mail.gmail.com>
+Date: Sun, 18 Aug 2024 14:27:56 +0200
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Ma Ke" <make24@iscas.ac.cn>, "Vinod Koul" <vkoul@kernel.org>,
+ "Andrew Morton" <akpm@linux-foundation.org>
+Cc: dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Message-Id: <68f613a0-64c8-4c3c-915c-ce6e76eee317@app.fastmail.com>
+In-Reply-To: <20240818071757.798601-1-make24@iscas.ac.cn>
+References: <20240818071757.798601-1-make24@iscas.ac.cn>
+Subject: Re: [PATCH v3] dmaengine: moxart: handle irq_of_parse_and_map() errors
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-On Sat, Aug 17, 2024 at 05:39:48PM +0200, Anders Roxell wrote:
-> On Sat, 17 Aug 2024 at 09:51, Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
-> >
-> > This is the start of the stable review cycle for the 5.10.224 release.
-> > There are 345 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
-> >
-> > Responses should be made by Mon, 19 Aug 2024 07:46:32 +0000.
-> > Anything received after that time might be too late.
-> >
-> > The whole patch series can be found in one patch at:
-> >         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.224-rc3.gz
-> > or in the git tree and branch at:
-> >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
-> > and the diffstat can be found below.
-> >
-> > thanks,
-> >
-> > greg k-h
-> 
-> The following S390 build failed on stable-rc 5.10.y with gcc-12 and clang due
-> to following warnings and errors [1].
-> 
-> s390:
->   build:
->     * gcc-8-defconfig-fe40093d
->     * gcc-12-defconfig
->     * clang-18-defconfig
-> 
-> 
-> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-> 
-> The bisect points to 34a325f5a22f ("s390/pci: Do not mask MSI[-X]
-> entries on teardown")
-> as the problematic commit [ Upstream commit
-> 2ca5e908d0f4cde61d9d3595e8314adca5d914a1 ].
-> 
-> Build log:
-> --------
-> /builds/linux/arch/s390/pci/pci_irq.c: In function 'arch_setup_msi_irqs':
-> /builds/linux/arch/s390/pci/pci_irq.c:298:9: error: implicit
+On Sun, Aug 18, 2024, at 09:17, Ma Ke wrote:
+> Zero and negative number is not a valid IRQ for in-kernel code and the
+> irq_of_parse_and_map() function returns zero on error.  So this check for
+> valid IRQs should only accept values > 0.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: 2d9e31b9412c ("dmaengine: moxart: remove NO_IRQ")
+> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+> ---
 
-Wow, s390 builds just don't work at all.  I'm going to go drop all s390
-changes from 5.10 and 5.15 now, I doubt anyone for those arches is
-really using those older kernels these days anyway.
+This makes no sense to me, you explain why the current code is
+correct and then change it to something wrong?
 
-thanks,
+> diff --git a/drivers/dma/moxart-dma.c b/drivers/dma/moxart-dma.c
+> index 66dc6d31b603..16dd3c5aba4d 100644
+> --- a/drivers/dma/moxart-dma.c
+> +++ b/drivers/dma/moxart-dma.c
+> @@ -568,7 +568,7 @@ static int moxart_probe(struct platform_device *pdev)
+>  		return -ENOMEM;
+> 
+>  	irq = irq_of_parse_and_map(node, 0);
+> -	if (!irq) {
+> +	if (irq <= 0) {
+>  		dev_err(dev, "no IRQ resource\n");
+>  		return -EINVAL;
 
-greg k-h
+The "if (!irq)" is clearly the intended check, as you explain
+irq_of_parse_and_map() returns 0 on error.
+
+      Arnd
 
