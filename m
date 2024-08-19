@@ -1,76 +1,77 @@
-Return-Path: <stable+bounces-69471-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFAA995666F
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 11:11:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B7CF956679
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 11:12:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 76B7E1F22647
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 09:11:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BB6781F22BA3
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 09:12:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EEDC15D5CA;
-	Mon, 19 Aug 2024 09:10:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64FF315C132;
+	Mon, 19 Aug 2024 09:12:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wPb82XeP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LeARzJJz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F2A215B99D
-	for <stable@vger.kernel.org>; Mon, 19 Aug 2024 09:10:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 245D115E5BD
+	for <stable@vger.kernel.org>; Mon, 19 Aug 2024 09:12:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724058647; cv=none; b=EgBgAFVCUnvLle6Lh6eNtjYDQOPN/p8yFZ+HZg0NaoRt/f94H4Tl8P5O3VPBrLyDtQAQlhT6gb3h0OPQp9CfyZbhmoiszGIFXXMRv6o7dvzgGtBQApJWAcbocph/yFvi0w2okwC6yP+Medw3hLdfvAi/AFiwlcl5r0V6n0Q6fgo=
+	t=1724058728; cv=none; b=DxoQ2lgONyyfiKCOb+dTWu2v/AwCXOYLlUCXqCvOOKJuI9AHa3q7DDyerGSLomIup8yaKofo1T9qxVbk7L+Fuco4Zgjb2jnpmEKgUijTrRV66x/TKFUKzBZb/bO9lFgGQ6TlcLIBF5aMz8H0AkT/G2jXQZMxnSDBvYxI22w9GXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724058647; c=relaxed/simple;
-	bh=IdGImv2Ex6RJCuDCLJoCeQUFyByrbF3TVf7KmiiS4qg=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=lowDeFfZlCPOO08hdx6psvehKogho9gGx5ru8QeK+5D/NZG/Gzq5RGfZfDNtlAxHtow14PX0wbe9+v7IU4OUZu3FEBX7oKIIkgniTBvfLajIh5SkvkoxPXCl555o1yDQlcX7S3OVlg0EvcvcaX0rBYQqr5IX9Q7pqVnFOV6Tlgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wPb82XeP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A6FEC4AF0C;
-	Mon, 19 Aug 2024 09:10:46 +0000 (UTC)
+	s=arc-20240116; t=1724058728; c=relaxed/simple;
+	bh=RdEYg1ShGktrfdB/XXs+DdVZneqV2fsO8lcmbtRxZik=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=LT/CpVIHK+/ULFepLHpKKgUUJllkzkSa0YcrO+QmORA+mgbxnt4vIiecObDRdddN55soL8gePoEuRA940d2X+equFmXJAmpxtYpKISHUEGDIezXN3c2gZ0npruXrwFaZRj2Rk6doUtjo/M2cyLRj0yjYA7Gq3zuYXV2oeCAAxyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LeARzJJz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B6BFC4AF0C;
+	Mon, 19 Aug 2024 09:12:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724058647;
-	bh=IdGImv2Ex6RJCuDCLJoCeQUFyByrbF3TVf7KmiiS4qg=;
+	s=korg; t=1724058727;
+	bh=RdEYg1ShGktrfdB/XXs+DdVZneqV2fsO8lcmbtRxZik=;
 	h=Subject:To:Cc:From:Date:From;
-	b=wPb82XePVI/vP9vhxPiPIjBZkqkuGN6Va+L55AMLQbVmx4gn+m2H5lnbFZfBYOohS
-	 v2EscJeHsUCZLY0bJRM3sZpFJSxCRg+rFse6k20xbczRKsOEmGXulGa9cKSQhoOSQE
-	 5ygKFY/j5iOIrJxhvTzCtWe2l8XdGoLbhrD9KzTA=
-Subject: FAILED: patch "[PATCH] ALSA: timer: Relax start tick time check for slave timer" failed to apply to 5.4-stable tree
-To: tiwai@suse.de,stable@vger.kernel.org
+	b=LeARzJJzYjntPlHGZvIKa315oOvntO/A1mQfAL/oDXvO4vT4x8iNh4CB+D4iF9i6q
+	 jRWkX7StGENc6q0cgoH7PyDJvrI4GxubLHEyURC+RgpqfSrdPpv/5JwYb8r9I4XOaF
+	 M1CkYDxuXh46m7/A8QljhHqHwGf0GElVwaDbo3k0=
+Subject: FAILED: patch "[PATCH] thermal: gov_bang_bang: Split bang_bang_control()" failed to apply to 6.10-stable tree
+To: rafael.j.wysocki@intel.com,peter@piie.net,rui.zhang@intel.com,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 Aug 2024 11:10:31 +0200
-Message-ID: <2024081930-untoasted-corporal-214e@gregkh>
+Date: Mon, 19 Aug 2024 11:12:04 +0200
+Message-ID: <2024081904-sprite-urologist-d8e9@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x ccbfcac05866ebe6eb3bc6d07b51d4ed4fcde436
+git cherry-pick -x 84248e35d9b60e03df7276627e4e91fbaf80f73d
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081930-untoasted-corporal-214e@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081904-sprite-urologist-d8e9@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
 
 Possible dependencies:
 
-ccbfcac05866 ("ALSA: timer: Relax start tick time check for slave timer elements")
-4a63bd179fa8 ("ALSA: timer: Set lower bound of start tick time")
+84248e35d9b6 ("thermal: gov_bang_bang: Split bang_bang_control()")
+b9b6ee6fe258 ("thermal: gov_bang_bang: Call __thermal_cdev_update() directly")
+2c637af8a74d ("thermal: gov_bang_bang: Drop unnecessary cooling device target state checks")
 
 thanks,
 
@@ -78,38 +79,85 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From ccbfcac05866ebe6eb3bc6d07b51d4ed4fcde436 Mon Sep 17 00:00:00 2001
-From: Takashi Iwai <tiwai@suse.de>
-Date: Sat, 10 Aug 2024 10:48:32 +0200
-Subject: [PATCH] ALSA: timer: Relax start tick time check for slave timer
- elements
+From 84248e35d9b60e03df7276627e4e91fbaf80f73d Mon Sep 17 00:00:00 2001
+From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Date: Tue, 13 Aug 2024 16:26:42 +0200
+Subject: [PATCH] thermal: gov_bang_bang: Split bang_bang_control()
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-The recent addition of a sanity check for a too low start tick time
-seems breaking some applications that uses aloop with a certain slave
-timer setup.  They may have the initial resolution 0, hence it's
-treated as if it were a too low value.
+Move the setting of the thermal instance target state from
+bang_bang_control() into a separate function that will be also called
+in a different place going forward.
 
-Relax and skip the check for the slave timer instance for addressing
-the regression.
+No intentional functional impact.
 
-Fixes: 4a63bd179fa8 ("ALSA: timer: Set lower bound of start tick time")
-Cc: <stable@vger.kernel.org>
-Link: https://github.com/raspberrypi/linux/issues/6294
-Link: https://patch.msgid.link/20240810084833.10939-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Acked-by: Peter Kästle <peter@piie.net>
+Reviewed-by: Zhang Rui <rui.zhang@intel.com>
+Cc: 6.10+ <stable@vger.kernel.org> # 6.10+
+Link: https://patch.msgid.link/3313587.aeNJFYEL58@rjwysocki.net
 
-diff --git a/sound/core/timer.c b/sound/core/timer.c
-index d104adc75a8b..71a07c1662f5 100644
---- a/sound/core/timer.c
-+++ b/sound/core/timer.c
-@@ -547,7 +547,7 @@ static int snd_timer_start1(struct snd_timer_instance *timeri,
- 	/* check the actual time for the start tick;
- 	 * bail out as error if it's way too low (< 100us)
- 	 */
--	if (start) {
-+	if (start && !(timer->hw.flags & SNDRV_TIMER_HW_SLAVE)) {
- 		if ((u64)snd_timer_hw_resolution(timer) * ticks < 100000)
- 			return -EINVAL;
+diff --git a/drivers/thermal/gov_bang_bang.c b/drivers/thermal/gov_bang_bang.c
+index b9474c6af72b..87cff3ea77a9 100644
+--- a/drivers/thermal/gov_bang_bang.c
++++ b/drivers/thermal/gov_bang_bang.c
+@@ -13,6 +13,27 @@
+ 
+ #include "thermal_core.h"
+ 
++static void bang_bang_set_instance_target(struct thermal_instance *instance,
++					  unsigned int target)
++{
++	if (instance->target != 0 && instance->target != 1 &&
++	    instance->target != THERMAL_NO_TARGET)
++		pr_debug("Unexpected state %ld of thermal instance %s in bang-bang\n",
++			 instance->target, instance->name);
++
++	/*
++	 * Enable the fan when the trip is crossed on the way up and disable it
++	 * when the trip is crossed on the way down.
++	 */
++	instance->target = target;
++
++	dev_dbg(&instance->cdev->device, "target=%ld\n", instance->target);
++
++	mutex_lock(&instance->cdev->lock);
++	__thermal_cdev_update(instance->cdev);
++	mutex_unlock(&instance->cdev->lock);
++}
++
+ /**
+  * bang_bang_control - controls devices associated with the given zone
+  * @tz: thermal_zone_device
+@@ -54,25 +75,8 @@ static void bang_bang_control(struct thermal_zone_device *tz,
+ 		tz->temperature, trip->hysteresis);
+ 
+ 	list_for_each_entry(instance, &tz->thermal_instances, tz_node) {
+-		if (instance->trip != trip)
+-			continue;
+-
+-		if (instance->target != 0 && instance->target != 1 &&
+-		    instance->target != THERMAL_NO_TARGET)
+-			pr_debug("Unexpected state %ld of thermal instance %s in bang-bang\n",
+-				 instance->target, instance->name);
+-
+-		/*
+-		 * Enable the fan when the trip is crossed on the way up and
+-		 * disable it when the trip is crossed on the way down.
+-		 */
+-		instance->target = crossed_up;
+-
+-		dev_dbg(&instance->cdev->device, "target=%ld\n", instance->target);
+-
+-		mutex_lock(&instance->cdev->lock);
+-		__thermal_cdev_update(instance->cdev);
+-		mutex_unlock(&instance->cdev->lock);
++		if (instance->trip == trip)
++			bang_bang_set_instance_target(instance, crossed_up);
  	}
+ }
+ 
 
 
