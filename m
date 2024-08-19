@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-69510-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69511-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 473DF95677E
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 11:50:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EAA2956782
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 11:51:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A6121C2180C
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 09:50:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E62AD1F22893
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 09:51:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 751F8145324;
-	Mon, 19 Aug 2024 09:50:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 869AF15696E;
+	Mon, 19 Aug 2024 09:51:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mu+ErShF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZCuwptfu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36CB213B592
-	for <stable@vger.kernel.org>; Mon, 19 Aug 2024 09:50:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 475CD13B592
+	for <stable@vger.kernel.org>; Mon, 19 Aug 2024 09:51:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724061052; cv=none; b=NyBwEv/8zKnqF1Iy4Sp0CqHVjyjgtkSVA2CX5Hbw2Qrt3ODUv5jj1W6uGARx/4K30BikywCuugblKkMJ1ZvZX6gVVGXCYYJvHt6U7aj1zxxwwcggYDSqMX+mz7Hjm5BMUFQbRinkWeJQ12uK0ogHoZoJBiK1+1HaoS2AbH3AGyI=
+	t=1724061061; cv=none; b=Fu/GZr/5xKhWDPjZwQlpioNhEzePK+6yQF72NpSCLbk+lErON9elA61jx/kqRBuMhAfn0v/JuBYazJoASpG7tXHqCgv76t3AL/sc9826gLmvlbpIpTQEm/CxGZ7JtM6Rrd0ErEtJ7GHOnNeeSazIOqhInXvvn8oLLK3vRf0g6IM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724061052; c=relaxed/simple;
-	bh=NfL2aJ01cVJcZ/Owo4JyVzPG4t4ni6i5+IqunoJAWA4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=fe+nak/CnNlxlibPadHiDpcEsWxjnVUxYQcjRhJMA6z1DYX8JHpgTlzUO2Aw3yGAzGMcecMvra8sUM7AwJ/K2UDnKpcQCYDAiVW6VzlJGNMMVZ0p5fc113qT3Pcpl+wz1QXP8wJiLtPpZRes8+Yejo8gAlpXvfINknaCqiOKy3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mu+ErShF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FF1FC4AF0C;
-	Mon, 19 Aug 2024 09:50:51 +0000 (UTC)
+	s=arc-20240116; t=1724061061; c=relaxed/simple;
+	bh=2OxxHF7C2mVHLWZ+Tqglxn5dlCVgTISbn/o7uwVuo7c=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ozqLxIgpNIfEwB7rhxxxaaV74i+OOk4LmGFjztURiM54pjE4hhPvcgA2k/ag4Z6ABxkiVMDhsTw/7vsqjdSlXi+ILHIXgOxvXvWbPXlaBTlgeKFqTU5rxLWrbXUbIpkA3CePCmZv+jWTY/pcXYKjkpl79MfTwX8kdPr5v6jmKa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZCuwptfu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ED39C32782;
+	Mon, 19 Aug 2024 09:51:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724061052;
-	bh=NfL2aJ01cVJcZ/Owo4JyVzPG4t4ni6i5+IqunoJAWA4=;
+	s=korg; t=1724061060;
+	bh=2OxxHF7C2mVHLWZ+Tqglxn5dlCVgTISbn/o7uwVuo7c=;
 	h=Subject:To:Cc:From:Date:From;
-	b=mu+ErShF/Jp2AcxFDiRupRTm1Fd84Ohik69nbMMumbgBBq50T7WkXZ/i+8qWaA3JP
-	 slR2IyYELMwfd6UpLf3wqhc8tKfYe7qcYOiN1/zwpzkm6yziDYszEJD+4y3+qYMR8f
-	 kHQKO9nrfmC4XsmuG4GjWH22+MHz2WqVCkwWAB9U=
-Subject: FAILED: patch "[PATCH] net: mana: Fix doorbell out of order violation and avoid" failed to apply to 6.1-stable tree
+	b=ZCuwptfuuEFPK5dKKWCdhOwXFe03bFWsyxfA7qb7mCVf/UcyrqbsulhnWQujmQpWy
+	 c8m0RdS4dWz56fwXO+Qh4DrrDcd9qpc0XY6wYdkyBNw8DpONXuUusZvSKizinNLFuu
+	 DGEwWajMUKTheZaaMuBu3cdcpBWSiT+3eXeqcK/w=
+Subject: FAILED: patch "[PATCH] net: mana: Fix doorbell out of order violation and avoid" failed to apply to 5.15-stable tree
 To: longli@microsoft.com,haiyangz@microsoft.com,pabeni@redhat.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 Aug 2024 11:50:49 +0200
-Message-ID: <2024081949-strategy-gatherer-758e@gregkh>
+Date: Mon, 19 Aug 2024 11:50:50 +0200
+Message-ID: <2024081950-tweed-tattle-7f2c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,23 +53,24 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 58a63729c957621f1990c3494c702711188ca347
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081949-strategy-gatherer-758e@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081950-tweed-tattle-7f2c@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
 58a63729c957 ("net: mana: Fix doorbell out of order violation and avoid unnecessary doorbell rings")
+18010ff776fa ("net: mana: Fix race on per-CQ variable napi work_done")
 
 thanks,
 
