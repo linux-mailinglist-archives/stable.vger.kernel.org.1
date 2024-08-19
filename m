@@ -1,239 +1,133 @@
-Return-Path: <stable+bounces-69433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69434-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A017D956156
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 05:06:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E704F956254
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 06:07:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 95DE31C214C0
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 03:06:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2DEEC1C213C0
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 04:07:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6529C13D2AF;
-	Mon, 19 Aug 2024 03:06:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="J1Kr5lt4"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CCEA383B1;
+	Mon, 19 Aug 2024 04:07:20 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5761E13B79F;
-	Mon, 19 Aug 2024 03:05:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A6228801;
+	Mon, 19 Aug 2024 04:07:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.187
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724036761; cv=none; b=KSFO/pZc1TCr0h7kdYHKF57FczKu+sabZO0Koai/F8wHCtFhxXEhrnsFlnLS7+VaQCxmZOozNpHhnSmlhs0KPIE6TlY3sR97ji3bcHkPd+4iRX5X/3Rj/Na3c63txjhtCNjH7f8BUacSbR4LbbEGrJwxPwz/B3NoyooebibvaLQ=
+	t=1724040439; cv=none; b=LfYnC4COGlWtxnBEldQHWrfk5aMH6i+2j5Hhm9tLJTvGVgUGYved7Xj/ZNOo3e8bJ0p4U71N/NHEJmCjoMvAg70RHiaciGicYW7Umyga5FRg7/BvTb35z6T8Wkf612BxRYJTR12GHxQJiD9tmk4oAsJtL9QZJptL1HTtGbhr+4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724036761; c=relaxed/simple;
-	bh=qvxTRMwIAztD0QmYd7Rog3CTgLZUh2raZlkxc8+ozd8=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S4+bKxKwNtAVt6x/VW6RdlxTg69oELY/NuDaCCKK3MJqHSkhe6O5moUZExj70ZHNE0z4W/W2vUoQ4HM4vUxgnRsgUtErwdyuAa5F/4wAV/lU0DtPmEGzgYne9+gPsWJ15B/A5vCRa7AwdOq/8+29fVbMlS1xVPQ+PojvA0yDeQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=J1Kr5lt4; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47INOqKn032383;
-	Mon, 19 Aug 2024 03:05:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=xrIy6iY7ahIFNbwZ2iD2K8RQ
-	YdSUK6c4i2+BLomgv9U=; b=J1Kr5lt4sY8Oc7yGyPERiCoiLWUx3dOgdbZBm2kD
-	UZgZaY9gmiqmPS7AUcRlZr90w+zhhO8QpAUBVyo5OBLeAw2xqJIBPo3SmsH3zuF0
-	6gX9UN8mi6YDAIcWWt/nALdminw5lXYaZyUXtbTUKOhD14TpZHlzi9WGZvCXV3MR
-	CA7jult+CNiabEJFp2/uqYsOUElM5Ag7gPcErvmCNzK3H3FkAG9UoWXuLxGL+kW6
-	jCbfo1X443P0qx9g6DXYHQJDmXzPMRBzbhWNDVKdU+8p78IqmQCVj2vrF8POMju1
-	eLnY2puluo58QOG+yTz+9/0T5aBa9MPzY4XLVx4tMVb8CA==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 412m872sf9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 19 Aug 2024 03:05:52 +0000 (GMT)
-Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
-	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 47J35prp006070
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 19 Aug 2024 03:05:51 GMT
-Received: from hu-bjorande-lv.qualcomm.com (10.49.16.6) by
- nalasex01c.na.qualcomm.com (10.47.97.35) with Microsoft SMTP Server
+	s=arc-20240116; t=1724040439; c=relaxed/simple;
+	bh=YC4pg6rIZ6V7oITQ3r15iFjLXh/SwMR391VwGJ8UtSc=;
+	h=Subject:To:References:CC:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=mstztF0A1T5lLvbqijk2GxfSLShvjgd+dkka0LjzFuLCoI4s9xIsCLxhmV69ragsPr0iZ4kJeUaB1dBk1990C7QhoCDbG7eK8CHD33Lz6bIgJ0SnmItsN/G9igwNI3UzPBIZXm7RUbm5LzYrmKJuqcqHmP7qqcgQWo/c+Zs+XnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.187
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.162.254])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4WnJvL639szyR0y;
+	Mon, 19 Aug 2024 12:06:54 +0800 (CST)
+Received: from dggpemf100013.china.huawei.com (unknown [7.185.36.179])
+	by mail.maildlp.com (Postfix) with ESMTPS id 00D231800F2;
+	Mon, 19 Aug 2024 12:07:15 +0800 (CST)
+Received: from [10.67.120.126] (10.67.120.126) by
+ dggpemf100013.china.huawei.com (7.185.36.179) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Sun, 18 Aug 2024 20:05:50 -0700
-Date: Sun, 18 Aug 2024 20:05:49 -0700
-From: Bjorn Andersson <quic_bjorande@quicinc.com>
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-CC: Sebastian Reichel <sre@kernel.org>,
-        Bjorn Andersson
-	<andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        "Heikki
- Krogerus" <heikki.krogerus@linux.intel.com>,
-        Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
-        Johan Hovold <johan+linaro@kernel.org>,
-        Chris Lew <quic_clew@quicinc.com>, Stephen Boyd <swboyd@chromium.org>,
-        Amit Pundir <amit.pundir@linaro.org>, <linux-arm-msm@vger.kernel.org>,
-        <linux-pm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-usb@vger.kernel.org>, <stable@vger.kernel.org>
-Subject: Re: [PATCH 2/3] usb: typec: ucsi: Move unregister out of atomic
- section
-Message-ID: <ZsK2jSheqBlCW7OC@hu-bjorande-lv.qualcomm.com>
-References: <20240818-pmic-glink-v6-11-races-v1-0-f87c577e0bc9@quicinc.com>
- <20240818-pmic-glink-v6-11-races-v1-2-f87c577e0bc9@quicinc.com>
- <4F313FA4-C2C7-4BD8-8E42-64F98EACCBA2@linaro.org>
+ 15.2.1544.11; Mon, 19 Aug 2024 12:07:14 +0800
+Subject: Re: [PATCH v4] scsi: sd: retry command SYNC CACHE if format in
+ progress
+To: Damien Le Moal <dlemoal@kernel.org>,
+	<James.Bottomley@HansenPartnership.com>, <martin.petersen@oracle.com>
+References: <20240817015019.3467765-1-liyihang9@huawei.com>
+ <10c56cbc-a367-44c3-8b14-b846a3c4e4a0@kernel.org>
+CC: <linux-scsi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<bvanassche@acm.org>, <linuxarm@huawei.com>, <prime.zeng@huawei.com>,
+	<stable@vger.kernel.org>, <liyihang9@huawei.com>
+From: Yihang Li <liyihang9@huawei.com>
+Message-ID: <4618fc13-4499-53f1-efea-0487f436b353@huawei.com>
+Date: Mon, 19 Aug 2024 12:07:14 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.7.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <4F313FA4-C2C7-4BD8-8E42-64F98EACCBA2@linaro.org>
-X-ClientProxiedBy: nalasex01a.na.qualcomm.com (10.47.209.196) To
- nalasex01c.na.qualcomm.com (10.47.97.35)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: InxtmKFNEQoZIL585ippG8ULABY3O7g-
-X-Proofpoint-ORIG-GUID: InxtmKFNEQoZIL585ippG8ULABY3O7g-
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-08-18_24,2024-08-16_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 malwarescore=0
- mlxlogscore=999 priorityscore=1501 adultscore=0 lowpriorityscore=0
- clxscore=1015 bulkscore=0 suspectscore=0 spamscore=0 impostorscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2407110000 definitions=main-2408190022
+In-Reply-To: <10c56cbc-a367-44c3-8b14-b846a3c4e4a0@kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ dggpemf100013.china.huawei.com (7.185.36.179)
 
-On Mon, Aug 19, 2024 at 08:16:25AM +0700, Dmitry Baryshkov wrote:
-> On 19 August 2024 06:17:38 GMT+07:00, Bjorn Andersson <quic_bjorande@quicinc.com> wrote:
-> >Commit 'caa855189104 ("soc: qcom: pmic_glink: Fix race during
-> >initialization")' moved the pmic_glink client list under a spinlock, as
-> >it is accessed by the rpmsg/glink callback, which in turn is invoked
-> >from IRQ context.
-> >
-> >This means that ucsi_unregister() is now called from IRQ context, which
-> >isn't feasible as it's expecting a sleepable context. An effort is under
-> >way to get GLINK to invoke its callbacks in a sleepable context, but
-> >until then lets schedule the unregistration.
-> >
-> >A side effect of this is that ucsi_unregister() can now happen
-> >after the remote processor, and thereby the communication link with it, is
-> >gone. pmic_glink_send() is amended with a check to avoid the resulting
-> >NULL pointer dereference, but it becomes expecting to see a failing send
-> >upon shutting down the remote processor (e.g. during a restart following
-> >a firmware crash):
-> >
-> >  ucsi_glink.pmic_glink_ucsi pmic_glink.ucsi.0: failed to send UCSI write request: -5
-> >
-> >Fixes: caa855189104 ("soc: qcom: pmic_glink: Fix race during initialization")
-> >Cc: stable@vger.kernel.org
-> >Signed-off-by: Bjorn Andersson <quic_bjorande@quicinc.com>
-> >---
-> > drivers/soc/qcom/pmic_glink.c       | 10 +++++++++-
-> > drivers/usb/typec/ucsi/ucsi_glink.c | 28 +++++++++++++++++++++++-----
-> > 2 files changed, 32 insertions(+), 6 deletions(-)
-> >
-> >diff --git a/drivers/soc/qcom/pmic_glink.c b/drivers/soc/qcom/pmic_glink.c
-> >index 58ec91767d79..e4747f1d3da5 100644
-> >--- a/drivers/soc/qcom/pmic_glink.c
-> >+++ b/drivers/soc/qcom/pmic_glink.c
-> >@@ -112,8 +112,16 @@ EXPORT_SYMBOL_GPL(pmic_glink_register_client);
-> > int pmic_glink_send(struct pmic_glink_client *client, void *data, size_t len)
-> > {
-> > 	struct pmic_glink *pg = client->pg;
-> >+	int ret;
-> > 
-> >-	return rpmsg_send(pg->ept, data, len);
-> >+	mutex_lock(&pg->state_lock);
-> >+	if (!pg->ept)
-> >+		ret = -ECONNRESET;
-> >+	else
-> >+		ret = rpmsg_send(pg->ept, data, len);
-> >+	mutex_unlock(&pg->state_lock);
-> >+
-> >+	return ret;
-> > }
-> > EXPORT_SYMBOL_GPL(pmic_glink_send);
-> > 
-> >diff --git a/drivers/usb/typec/ucsi/ucsi_glink.c b/drivers/usb/typec/ucsi/ucsi_glink.c
-> >index ac53a81c2a81..a33056eec83d 100644
-> >--- a/drivers/usb/typec/ucsi/ucsi_glink.c
-> >+++ b/drivers/usb/typec/ucsi/ucsi_glink.c
-> >@@ -68,6 +68,9 @@ struct pmic_glink_ucsi {
-> > 
-> > 	struct work_struct notify_work;
-> > 	struct work_struct register_work;
-> >+	spinlock_t state_lock;
-> >+	unsigned int pdr_state;
-> >+	unsigned int new_pdr_state;
-> > 
-> > 	u8 read_buf[UCSI_BUF_SIZE];
-> > };
-> >@@ -244,8 +247,22 @@ static void pmic_glink_ucsi_notify(struct work_struct *work)
-> > static void pmic_glink_ucsi_register(struct work_struct *work)
-> > {
-> > 	struct pmic_glink_ucsi *ucsi = container_of(work, struct pmic_glink_ucsi, register_work);
-> >+	unsigned long flags;
-> >+	unsigned int new_state;
-> >+
-> >+	spin_lock_irqsave(&ucsi->state_lock, flags);
-> >+	new_state = ucsi->new_pdr_state;
-> >+	spin_unlock_irqrestore(&ucsi->state_lock, flags);
-> >+
-> >+	if (ucsi->pdr_state != SERVREG_SERVICE_STATE_UP) {
-> >+		if (new_state == SERVREG_SERVICE_STATE_UP)
-> >+			ucsi_register(ucsi->ucsi);
-> >+	} else {
-> >+		if (new_state == SERVREG_SERVICE_STATE_DOWN)
-> >+			ucsi_unregister(ucsi->ucsi);
-> >+	}
-> > 
-> >-	ucsi_register(ucsi->ucsi);
-> >+	ucsi->pdr_state = new_state;
-> > }
+
+
+On 2024/8/19 7:55, Damien Le Moal wrote:
+> On 8/17/24 10:50, Yihang Li wrote:
+>> If formatting a suspended disk (such as formatting with different DIF
+>> type), the disk will be resuming first, and then the format command will
+>> submit to the disk through SG_IO ioctl.
+>>
+>> When the disk is processing the format command, the system does not submit
+>> other commands to the disk. Therefore, the system attempts to suspend the
+>> disk again and sends the SYNC CACHE command. However, the SYNC CACHE
 > 
-> Is there a chance if a race condition if the firmware is restarted quickly, but the system is under heavy mist: 
-> - the driver gets DOWN event, updates the state and schedules the work,
-> - the work starts to execute, reads the state,
-> - the driver gets UP event, updates the state, but the work is not rescheduled as it is still executing 
-> - the worker finishes unregistering the UCSI.
-> 
+> Why would the system try to suspend the disk with a request in flight ? Sounds
+> like there is a bug with PM reference counting, no ?
 
-I was under the impression that if we reach the point where we start
-executing the worker, then a second schedule_work() would cause the
-worker to run again. But I might be mistaken here.
-
-What I do expect though is that if we for some reason don't start
-executing the work before the state becomes UP again, the UCSI core
-wouldn't know that the firmware has been reset.
-
-
-My proposal is to accept this risk for v6.11 (and get the benefit of
-things actually working) and then take a new swing at getting rid of all
-these workers for v6.12/13. Does that sound reasonable?
-
-Regards,
-Bjorn
+According to my understand and test, the format command request is finished,
+so it is not in flight for the kernel. And the command need a few time to processing
+in the disk while no other commands are being sent.
 
 > 
-> 
-> > 
-> > static void pmic_glink_ucsi_callback(const void *data, size_t len, void *priv)
-> >@@ -269,11 +286,12 @@ static void pmic_glink_ucsi_callback(const void *data, size_t len, void *priv)
-> > static void pmic_glink_ucsi_pdr_notify(void *priv, int state)
-> > {
-> > 	struct pmic_glink_ucsi *ucsi = priv;
-> >+	unsigned long flags;
-> > 
-> >-	if (state == SERVREG_SERVICE_STATE_UP)
-> >-		schedule_work(&ucsi->register_work);
-> >-	else if (state == SERVREG_SERVICE_STATE_DOWN)
-> >-		ucsi_unregister(ucsi->ucsi);
-> >+	spin_lock_irqsave(&ucsi->state_lock, flags);
-> >+	ucsi->new_pdr_state = state;
-> >+	spin_unlock_irqrestore(&ucsi->state_lock, flags);
-> >+	schedule_work(&ucsi->register_work);
-> > }
-> > 
-> > static void pmic_glink_ucsi_destroy(void *data)
-> >
+>> command will fail because the disk is in the formatting process, which
+>> will cause the runtime_status of the disk to error and it is difficult
+>> for user to recover it. Error info like:
+>>
+>> [  669.925325] sd 6:0:6:0: [sdg] Synchronizing SCSI cache
+>> [  670.202371] sd 6:0:6:0: [sdg] Synchronize Cache(10) failed: Result: hostbyte=0x00 driverbyte=DRIVER_OK
+>> [  670.216300] sd 6:0:6:0: [sdg] Sense Key : 0x2 [current]
+>> [  670.221860] sd 6:0:6:0: [sdg] ASC=0x4 ASCQ=0x4
+>>
+>> To solve the issue, retry the command until format command is finished.
+>>
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Yihang Li <liyihang9@huawei.com>
+>> Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+>> ---
+>> Changes since v3:
+>> - Add Cc tag for kernel stable.
+>>
+>> Changes since v2:
+>> - Add Reviewed-by for Bart.
+>>
+>> Changes since v1:
+>> - Updated and added error information to the patch description.
+>>
+>> ---
+>>  drivers/scsi/sd.c | 5 +++++
+>>  1 file changed, 5 insertions(+)
+>>
+>> diff --git a/drivers/scsi/sd.c b/drivers/scsi/sd.c
+>> index adeaa8ab9951..5cd88a8eea73 100644
+>> --- a/drivers/scsi/sd.c
+>> +++ b/drivers/scsi/sd.c
+>> @@ -1823,6 +1823,11 @@ static int sd_sync_cache(struct scsi_disk *sdkp)
+>>  			    (sshdr.asc == 0x74 && sshdr.ascq == 0x71))	/* drive is password locked */
+>>  				/* this is no error here */
+>>  				return 0;
+>> +
+>> +			/* retry if format in progress */
+>> +			if (sshdr.asc == 0x4 && sshdr.ascq == 0x4)
+>> +				return -EBUSY;
+>> +
+>>  			/*
+>>  			 * This drive doesn't support sync and there's not much
+>>  			 * we can do because this is called during shutdown
 > 
 
