@@ -1,79 +1,79 @@
-Return-Path: <stable+bounces-69581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69582-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B46A956A86
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 14:10:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24547956A9A
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 14:14:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 415BF1C237DC
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 12:10:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4969C1C21D12
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 12:14:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BD4A168486;
-	Mon, 19 Aug 2024 12:10:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D52816938C;
+	Mon, 19 Aug 2024 12:14:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="RKx0k5TZ"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="FRUog0Nw"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
+Received: from mail-yb1-f171.google.com (mail-yb1-f171.google.com [209.85.219.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D8C913DBA0
-	for <stable@vger.kernel.org>; Mon, 19 Aug 2024 12:10:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36423166F36
+	for <stable@vger.kernel.org>; Mon, 19 Aug 2024 12:13:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724069434; cv=none; b=r/xEYiJSUo5+Q/MotVzAuu8V8Afhx6BZ7Wuzso04kgUM8whalIu9q0AHs9SBXsKBLlD2K+z5uvx5tDNNraigBOs+/EKER4x4vHKi2F2BcpASQ4q2iMH9368RI2pSXZMcBZTObuWxgwrbaA5wVG6oxPbVk+oUM3UVFUwA7XwgCPk=
+	t=1724069640; cv=none; b=n9y1Z8Scm1sDmqdMKAZnBl1/OCXuhAX9oqm8DvbbmVYK5Kc+HP2WH/ADvtIq4csevssSfYvucBqQYK5sh107L8haslDL7yRxb5wEsQaEv6e3uLaH+7UUA5Q0zlHFKHnB+sQAZwShAgmRklGkCBpfLHb0kTKBo+8N3if3YGKhPXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724069434; c=relaxed/simple;
-	bh=IaK9RlV7QXerXLcnrRZk0SnIcw7IFKx06nrVbcSlUSo=;
+	s=arc-20240116; t=1724069640; c=relaxed/simple;
+	bh=6S5YFUgjO5JN00vxBShjx/4xkBM4CKTkN6F7+rR4jP0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YLGvLWJUIJKs2DWJORP/pSS+xte6sXagY79DlCtDgA85p1O5XgVbBuFWU6NVlUAw+QSUiq1UbXEMftG3yYjfB+T/XU2xpsvuqwO1SnejaVBY8TQPgSGpXMu0a0eUib8dyxXgZEe4Qk9/rBtjODGXlASsnu93N56+gDkzFTuWVZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=RKx0k5TZ; arc=none smtp.client-ip=209.85.222.181
+	 MIME-Version; b=a8L9PcQOn61DXFGo0e+M5T/hRvD6DAuf6fgMHd/fHHXIVIKp3ZCBUYwqGLKtk/nZiUp0V1P50Q3h+oUVrS3uWwFWSSUzrZvulXDBo/EfVuPedP4wArh66t3x03qYojCNTe+i+EEDMlRyPk3O1+3WfhGNK0XyM94tmoXTdFJ/NmA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=FRUog0Nw; arc=none smtp.client-ip=209.85.219.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-7a1d7bc07b7so292985485a.0
-        for <stable@vger.kernel.org>; Mon, 19 Aug 2024 05:10:32 -0700 (PDT)
+Received: by mail-yb1-f171.google.com with SMTP id 3f1490d57ef6-e02b79c6f21so4457113276.2
+        for <stable@vger.kernel.org>; Mon, 19 Aug 2024 05:13:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1724069431; x=1724674231; darn=vger.kernel.org;
+        d=chromium.org; s=google; t=1724069638; x=1724674438; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=CajuTsdCi2RSIdgmS0S2t7VToev9SgQSYdEMxQ8U1ko=;
-        b=RKx0k5TZTFuwjmZlDKoy2Tmc5k5yV3mW41Ytyq5dn+NPIVgsSN5QsqkK2LgTvB+6Z5
-         PhcZdQxKsnYisgzff++6ceWGeRYefYn8F1Tbq45blFIe1ygklFm0tbCW7WJH9zWDeQy6
-         f9uQ8+A56ybCK6LfhI9LGns87CI0UUr64SHW4=
+        bh=11bdx4W4XHO8H67veWe/5gwYa9xTmESCCU4+6AkIwGw=;
+        b=FRUog0NwaEIY+JZGV9hf5ITFYDcxfFaeCO87AQTjGqc02ifvSIkYdPr0gIGDZH3jkN
+         5cq+N2Sm3GUKIHRozxdmcbsdjdDXndeH7wxU84a0V6erEVssbCSeYUyXImXEV0Y+hNcX
+         G+JcYplitPzaaITKUZ+nQuRjiYnW89BRfmJng=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724069431; x=1724674231;
+        d=1e100.net; s=20230601; t=1724069638; x=1724674438;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=CajuTsdCi2RSIdgmS0S2t7VToev9SgQSYdEMxQ8U1ko=;
-        b=BEOQfr8MqYVX1kpInG1C/nQh5YNWMYWhcRJlMIOmrymw0+p2runIz68fJWiJyxWYjy
-         PyfbCPS8ZwxiA/UkqRX3g5tSM0jMHI94yj23f90c9X86x+neRufensfcQxiqtVerFLMQ
-         52bVOIELiVZfe0qJ5iUsrjjE8BPMPKo5Gau0opD3JgaYzAJ2k9eSQiqX9kZhpKyb/UkA
-         bR9mJ5YyACH76129dlygF7XpJvsI855xxraN8aCaM/cddVQlUgmxSft1AcH2pRopCydm
-         umpPvU7CnuGwW7O5s2XsrhWBMTTVngVxBeZhaRlk8gGgEHSFYTvHC96Yt/VFb95Bl20Q
-         LCrw==
-X-Gm-Message-State: AOJu0YwLZboxBubX2UMQ2SaOJVjMbIEkrLq/2WTYQhR5+VlXmSyiD3mO
-	imw3Umga9/Gh6Jt5moNga2bSY8YKFxeM9ybhFoqeZX6u5jOuPXtGDPSJTxOQAvfKDrowU1CernM
+        bh=11bdx4W4XHO8H67veWe/5gwYa9xTmESCCU4+6AkIwGw=;
+        b=QvG8gwb6ZHoCSmkSd6oB5JH/J2uYpjRuoLgHcrLW0QZPHpa1MxQ5m5/PTOhyQbiFAK
+         l642/aRuSihxoWqnR9QGuBxzPWVMz+PKtTt7EuDcXJ/h7aSIwyzcvPIAbiXebV4i1oL0
+         CuHtDAq3mIj4uIy7p08xHO26FtAZQBVOgg9qdNYYjE98jsggWz9yyKSGPWMXE2mvAq+E
+         KDxbL/zU8eTaIOI1AetodlIqRSvE2VtLb6tk3MRWzxqpaYNwdtYENXH+ecA+OCsk/87s
+         Z9fp+/Bk16/pCfAe6pbhUjm8QL/rSNtDYmBPlyfUCIac6nBNiK1bbwhKVRxizDn0T/Ae
+         BJAA==
+X-Gm-Message-State: AOJu0Yyl5qXS4PaR1UTnNt+Z65Z2enUHpxiP/U7MQoYqR57VHULkr8jg
+	sTZLE/RWQ6Yfy2TUBPmgp1WRMN6n4baQTdhXUcXLn49/AnheLDqXlDKOurJoNbZTsckkA53cwO0
 	=
-X-Google-Smtp-Source: AGHT+IFbB5eLtuDYhWf/uWLmgFWnr9O6Vqyq4JE2byFBVsXJOe/0VjQTFJ2YymfeaFRUjsitJ0cXKA==
-X-Received: by 2002:a05:620a:284a:b0:7a4:dfd6:5fb8 with SMTP id af79cd13be357-7a506937f19mr1074130085a.23.1724069431143;
-        Mon, 19 Aug 2024 05:10:31 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGsIiRMKOMw3tgnDfZWtcz/WAiR8nCFkU8u4LyxvDW3E4gYZbqxJOQ4Y+26epkAtMbQ8i+z0w==
+X-Received: by 2002:a05:6902:158b:b0:e0d:d525:86b8 with SMTP id 3f1490d57ef6-e1180f8409amr10786451276.36.1724069637853;
+        Mon, 19 Aug 2024 05:13:57 -0700 (PDT)
 Received: from denia.c.googlers.com.com (123.178.145.34.bc.googleusercontent.com. [34.145.178.123])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7a4ff02e5cdsm427296985a.4.2024.08.19.05.10.30
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6bf6fe115absm41946826d6.38.2024.08.19.05.13.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Aug 2024 05:10:30 -0700 (PDT)
+        Mon, 19 Aug 2024 05:13:57 -0700 (PDT)
 From: Ricardo Ribalda <ribalda@chromium.org>
 To: stable@vger.kernel.org
 Cc: Ricardo Ribalda <ribalda@chromium.org>,
 	Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Subject: [PATCH 5.4.y] media: uvcvideo: Fix integer overflow calculating timestamp
-Date: Mon, 19 Aug 2024 12:10:26 +0000
-Message-ID: <20240819121026.35515-1-ribalda@chromium.org>
+Subject: [PATCH 4.19.y] media: uvcvideo: Fix integer overflow calculating timestamp
+Date: Mon, 19 Aug 2024 12:13:52 +0000
+Message-ID: <20240819121352.41749-1-ribalda@chromium.org>
 X-Mailer: git-send-email 2.46.0.184.g6999bdac58-goog
-In-Reply-To: <2024072901-duct-manager-b71e@gregkh>
-References: <2024072901-duct-manager-b71e@gregkh>
+In-Reply-To: <2024072903-hamster-magical-c334@gregkh>
+References: <2024072903-hamster-magical-c334@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -168,10 +168,10 @@ Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
  1 file changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/drivers/media/usb/uvc/uvc_video.c b/drivers/media/usb/uvc/uvc_video.c
-index 8a8271e23c63..e62afdee20db 100644
+index 3f0796141545..ac47d05fb8f5 100644
 --- a/drivers/media/usb/uvc/uvc_video.c
 +++ b/drivers/media/usb/uvc/uvc_video.c
-@@ -723,11 +723,11 @@ void uvc_video_clock_update(struct uvc_streaming *stream,
+@@ -728,11 +728,11 @@ void uvc_video_clock_update(struct uvc_streaming *stream,
  	unsigned long flags;
  	u64 timestamp;
  	u32 delta_stc;
@@ -185,7 +185,7 @@ index 8a8271e23c63..e62afdee20db 100644
  
  	if (!uvc_hw_timestamps_param)
  		return;
-@@ -767,7 +767,7 @@ void uvc_video_clock_update(struct uvc_streaming *stream,
+@@ -772,7 +772,7 @@ void uvc_video_clock_update(struct uvc_streaming *stream,
  	sof = y;
  
  	uvc_trace(UVC_TRACE_CLOCK, "%s: PTS %u y %llu.%06llu SOF %u.%06llu "
@@ -194,7 +194,7 @@ index 8a8271e23c63..e62afdee20db 100644
  		  stream->dev->name, buf->pts,
  		  y >> 16, div_u64((y & 0xffff) * 1000000, 65536),
  		  sof >> 16, div_u64(((u64)sof & 0xffff) * 1000000LLU, 65536),
-@@ -782,7 +782,7 @@ void uvc_video_clock_update(struct uvc_streaming *stream,
+@@ -787,7 +787,7 @@ void uvc_video_clock_update(struct uvc_streaming *stream,
  		goto done;
  
  	y1 = NSEC_PER_SEC;
@@ -203,7 +203,7 @@ index 8a8271e23c63..e62afdee20db 100644
  
  	/* Interpolated and host SOF timestamps can wrap around at slightly
  	 * different times. Handle this by adding or removing 2048 to or from
-@@ -802,7 +802,7 @@ void uvc_video_clock_update(struct uvc_streaming *stream,
+@@ -807,7 +807,7 @@ void uvc_video_clock_update(struct uvc_streaming *stream,
  	timestamp = ktime_to_ns(first->host_time) + y - y1;
  
  	uvc_trace(UVC_TRACE_CLOCK, "%s: SOF %u.%06llu y %llu ts %llu "
