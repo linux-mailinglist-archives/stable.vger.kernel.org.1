@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-69512-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69513-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13B59956787
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 11:52:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8C4995678A
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 11:52:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 383BC1C2184B
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 09:52:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4172280E09
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 09:52:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 771EE15C14A;
-	Mon, 19 Aug 2024 09:52:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF64715C14A;
+	Mon, 19 Aug 2024 09:52:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OjO42p98"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r9Xhaqtn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37F6415696E
-	for <stable@vger.kernel.org>; Mon, 19 Aug 2024 09:52:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 709A113C81B
+	for <stable@vger.kernel.org>; Mon, 19 Aug 2024 09:52:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724061149; cv=none; b=WFzdScNnruJ9ksMu4NiStpKy0PftgbnYVFyu37gY+Znl+7N5yATVyHIoGpZ7yZGLZmjOHNZcRyUhcc3Bp6mGpnZPZBK9sKEOnPSSd1JtVoqlM7Mv0F8bbPNvTHCAT6mWNvCwm6FykM9bJnuhHKw3PjqbGEjnYo6XHqRxgj/Ok60=
+	t=1724061163; cv=none; b=Db/YeGQCPVq7apxY+3Id6yt7kg2ucmZiPGf4LasouJncfLCQEacrVCy8zFAZYE0BEPbBF8PFxAdvS/kD5RpOREhpZUlWxCBwVrZoi9htSv56SOzxoAHRwHeLnHX7qrGGGExHzJ0TWQXaQB0BAQBRaoCfkfIrsSa2ugqFFVMCNZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724061149; c=relaxed/simple;
-	bh=cxHwvMPQEVdCngC2pvbmGkuGLE84AQcZkR1luhxPIUE=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=b3oW+rtE6gE1sVIh3OLnyHzCAg36y5BIU3YIkKhVJOeGZ/BD5G8YKqfjjiNxbWKtQciY1hlz/cHDfkK3WwTNIcRgy44kv7+xyD+P70/f8eMWiYL2lpVXGeoeZ8IOdYZEa14Tw5fvLCBP/FZQRAwO3RKP2zoeTemz0BYGBmVGDqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OjO42p98; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F447C32782;
-	Mon, 19 Aug 2024 09:52:28 +0000 (UTC)
+	s=arc-20240116; t=1724061163; c=relaxed/simple;
+	bh=IgxMd36jw5cTYi5HGdnbgf81KVFaPP5Npr7ASHdAxGk=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Y6uFtXBSB9kEX56/vv8KabS7jKKY8oOfsjJtliHTHBoHNNXtnvBJANpJUYRWFT5IPqF16DsWduqT+e6JPu+5MBHOLBaam8/noT3/5sQzHuWtZSv6a5dtmBs7KBnF14qGuX5jCjCDF74YwNnFdcdgf5T02nGgUl96hJSLy94ZPW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r9Xhaqtn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0FCBC32782;
+	Mon, 19 Aug 2024 09:52:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724061148;
-	bh=cxHwvMPQEVdCngC2pvbmGkuGLE84AQcZkR1luhxPIUE=;
+	s=korg; t=1724061163;
+	bh=IgxMd36jw5cTYi5HGdnbgf81KVFaPP5Npr7ASHdAxGk=;
 	h=Subject:To:Cc:From:Date:From;
-	b=OjO42p98M71Gys70TqpXi4XezzSu0tKW3pYJJOy3WpTUIjnkmQf1gMnNHF3+8ov5m
-	 RSbtsnUfH3y8NdL8Yrk4B65c6QGbClwBWgt3xDnXUhV6O0Mct0bdYJsptBzGtg3anb
-	 e3A2pSICF7aaKyPQ57aEapzZy1p2HUC8aV+uYLrw=
-Subject: FAILED: patch "[PATCH] mm/memory-failure: use raw_spinlock_t in struct" failed to apply to 5.15-stable tree
-To: longman@redhat.com,akpm@linux-foundation.org,juri.lelli@redhat.com,len.brown@intel.com,linmiaohe@huawei.com,nao.horiguchi@gmail.com,stable@vger.kernel.org,ying.huang@intel.com
+	b=r9Xhaqtnj9+khN7GpD25u5N9Bi6ke9667Da9h2dquDVjZ+vb3vAh59Ba/RZ/M0qpc
+	 trAuacZUJQEvnjEzOWXjBPU/XdC7MaiLzRsVVI0hEVX/RpiGwXQixf5aE6beJYC7BA
+	 ZxoK7SMu6t3yVAU/gQLcrYwdWVkLjW4BZ5OXnMro=
+Subject: FAILED: patch "[PATCH] selftests: memfd_secret: don't build memfd_secret test on" failed to apply to 6.6-stable tree
+To: usama.anjum@collabora.com,James.Bottomley@HansenPartnership.com,akpm@linux-foundation.org,aou@eecs.berkeley.edu,palmer@dabbelt.com,paul.walmsley@sifive.com,rppt@kernel.org,skhan@linuxfoundation.org,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 Aug 2024 11:52:25 +0200
-Message-ID: <2024081925-stardust-create-e577@gregkh>
+Date: Mon, 19 Aug 2024 11:52:40 +0200
+Message-ID: <2024081940-stopped-knickers-3a22@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,25 +53,25 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x d75abd0d0bc29e6ebfebbf76d11b4067b35844af
+git cherry-pick -x 7c5e8d212d7d81991a580e7de3904ea213d9a852
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081925-stardust-create-e577@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081940-stopped-knickers-3a22@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
-d75abd0d0bc2 ("mm/memory-failure: use raw_spinlock_t in struct memory_failure_cpu")
-96f96763de26 ("mm: memory-failure: convert to pr_fmt()")
-98931dd95fd4 ("Merge tag 'mm-stable-2022-05-25' of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm")
+7c5e8d212d7d ("selftests: memfd_secret: don't build memfd_secret test on unsupported arches")
+a3c5cc5129ef ("selftests/mm: log run_vmtests.sh results in TAP format")
+2ffc27b15b11 ("tools/testing/selftests/mm/run_vmtests.sh: lower the ptrace permissions")
 
 thanks,
 
@@ -79,129 +79,74 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From d75abd0d0bc29e6ebfebbf76d11b4067b35844af Mon Sep 17 00:00:00 2001
-From: Waiman Long <longman@redhat.com>
-Date: Tue, 6 Aug 2024 12:41:07 -0400
-Subject: [PATCH] mm/memory-failure: use raw_spinlock_t in struct
- memory_failure_cpu
+From 7c5e8d212d7d81991a580e7de3904ea213d9a852 Mon Sep 17 00:00:00 2001
+From: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Date: Fri, 9 Aug 2024 12:56:42 +0500
+Subject: [PATCH] selftests: memfd_secret: don't build memfd_secret test on
+ unsupported arches
 
-The memory_failure_cpu structure is a per-cpu structure.  Access to its
-content requires the use of get_cpu_var() to lock in the current CPU and
-disable preemption.  The use of a regular spinlock_t for locking purpose
-is fine for a non-RT kernel.
+[1] mentions that memfd_secret is only supported on arm64, riscv, x86 and
+x86_64 for now.  It doesn't support other architectures.  I found the
+build error on arm and decided to send the fix as it was creating noise on
+KernelCI:
 
-Since the integration of RT spinlock support into the v5.15 kernel, a
-spinlock_t in a RT kernel becomes a sleeping lock and taking a sleeping
-lock in a preemption disabled context is illegal resulting in the
-following kind of warning.
+memfd_secret.c: In function 'memfd_secret':
+memfd_secret.c:42:24: error: '__NR_memfd_secret' undeclared (first use in this function);
+did you mean 'memfd_secret'?
+   42 |         return syscall(__NR_memfd_secret, flags);
+      |                        ^~~~~~~~~~~~~~~~~
+      |                        memfd_secret
 
-  [12135.732244] BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
-  [12135.732248] in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 270076, name: kworker/0:0
-  [12135.732252] preempt_count: 1, expected: 0
-  [12135.732255] RCU nest depth: 2, expected: 2
-    :
-  [12135.732420] Hardware name: Dell Inc. PowerEdge R640/0HG0J8, BIOS 2.10.2 02/24/2021
-  [12135.732423] Workqueue: kacpi_notify acpi_os_execute_deferred
-  [12135.732433] Call Trace:
-  [12135.732436]  <TASK>
-  [12135.732450]  dump_stack_lvl+0x57/0x81
-  [12135.732461]  __might_resched.cold+0xf4/0x12f
-  [12135.732479]  rt_spin_lock+0x4c/0x100
-  [12135.732491]  memory_failure_queue+0x40/0xe0
-  [12135.732503]  ghes_do_memory_failure+0x53/0x390
-  [12135.732516]  ghes_do_proc.constprop.0+0x229/0x3e0
-  [12135.732575]  ghes_proc+0xf9/0x1a0
-  [12135.732591]  ghes_notify_hed+0x6a/0x150
-  [12135.732602]  notifier_call_chain+0x43/0xb0
-  [12135.732626]  blocking_notifier_call_chain+0x43/0x60
-  [12135.732637]  acpi_ev_notify_dispatch+0x47/0x70
-  [12135.732648]  acpi_os_execute_deferred+0x13/0x20
-  [12135.732654]  process_one_work+0x41f/0x500
-  [12135.732695]  worker_thread+0x192/0x360
-  [12135.732715]  kthread+0x111/0x140
-  [12135.732733]  ret_from_fork+0x29/0x50
-  [12135.732779]  </TASK>
+Hence I'm adding condition that memfd_secret should only be compiled on
+supported architectures.
 
-Fix it by using a raw_spinlock_t for locking instead.
+Also check in run_vmtests script if memfd_secret binary is present before
+executing it.
 
-Also move the pr_err() out of the lock critical section and after
-put_cpu_ptr() to avoid indeterminate latency and the possibility of sleep
-with this call.
-
-[longman@redhat.com: don't hold percpu ref across pr_err(), per Miaohe]
-  Link: https://lkml.kernel.org/r/20240807181130.1122660-1-longman@redhat.com
-Link: https://lkml.kernel.org/r/20240806164107.1044956-1-longman@redhat.com
-Fixes: 0f383b6dc96e ("locking/spinlock: Provide RT variant")
-Signed-off-by: Waiman Long <longman@redhat.com>
-Acked-by: Miaohe Lin <linmiaohe@huawei.com>
-Cc: "Huang, Ying" <ying.huang@intel.com>
-Cc: Juri Lelli <juri.lelli@redhat.com>
-Cc: Len Brown <len.brown@intel.com>
-Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
+Link: https://lkml.kernel.org/r/20240812061522.1933054-1-usama.anjum@collabora.com
+Link: https://lore.kernel.org/all/20210518072034.31572-7-rppt@kernel.org/ [1]
+Link: https://lkml.kernel.org/r/20240809075642.403247-1-usama.anjum@collabora.com
+Fixes: 76fe17ef588a ("secretmem: test: add basic selftest for memfd_secret(2)")
+Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Cc: Albert Ou <aou@eecs.berkeley.edu>
+Cc: James Bottomley <James.Bottomley@HansenPartnership.com>
+Cc: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Paul Walmsley <paul.walmsley@sifive.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
-diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-index 581d3e5c9117..7066fc84f351 100644
---- a/mm/memory-failure.c
-+++ b/mm/memory-failure.c
-@@ -2417,7 +2417,7 @@ struct memory_failure_entry {
- struct memory_failure_cpu {
- 	DECLARE_KFIFO(fifo, struct memory_failure_entry,
- 		      MEMORY_FAILURE_FIFO_SIZE);
--	spinlock_t lock;
-+	raw_spinlock_t lock;
- 	struct work_struct work;
- };
+diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
+index 7b8a5def54a1..cfad627e8d94 100644
+--- a/tools/testing/selftests/mm/Makefile
++++ b/tools/testing/selftests/mm/Makefile
+@@ -53,7 +53,9 @@ TEST_GEN_FILES += madv_populate
+ TEST_GEN_FILES += map_fixed_noreplace
+ TEST_GEN_FILES += map_hugetlb
+ TEST_GEN_FILES += map_populate
++ifneq (,$(filter $(ARCH),arm64 riscv riscv64 x86 x86_64))
+ TEST_GEN_FILES += memfd_secret
++endif
+ TEST_GEN_FILES += migration
+ TEST_GEN_FILES += mkdirty
+ TEST_GEN_FILES += mlock-random-test
+diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
+index 03ac4f2e1cce..36045edb10de 100755
+--- a/tools/testing/selftests/mm/run_vmtests.sh
++++ b/tools/testing/selftests/mm/run_vmtests.sh
+@@ -374,8 +374,11 @@ CATEGORY="hmm" run_test bash ./test_hmm.sh smoke
+ # MADV_POPULATE_READ and MADV_POPULATE_WRITE tests
+ CATEGORY="madv_populate" run_test ./madv_populate
  
-@@ -2443,20 +2443,22 @@ void memory_failure_queue(unsigned long pfn, int flags)
- {
- 	struct memory_failure_cpu *mf_cpu;
- 	unsigned long proc_flags;
-+	bool buffer_overflow;
- 	struct memory_failure_entry entry = {
- 		.pfn =		pfn,
- 		.flags =	flags,
- 	};
++if [ -x ./memfd_secret ]
++then
+ (echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope 2>&1) | tap_prefix
+ CATEGORY="memfd_secret" run_test ./memfd_secret
++fi
  
- 	mf_cpu = &get_cpu_var(memory_failure_cpu);
--	spin_lock_irqsave(&mf_cpu->lock, proc_flags);
--	if (kfifo_put(&mf_cpu->fifo, entry))
-+	raw_spin_lock_irqsave(&mf_cpu->lock, proc_flags);
-+	buffer_overflow = !kfifo_put(&mf_cpu->fifo, entry);
-+	if (!buffer_overflow)
- 		schedule_work_on(smp_processor_id(), &mf_cpu->work);
--	else
-+	raw_spin_unlock_irqrestore(&mf_cpu->lock, proc_flags);
-+	put_cpu_var(memory_failure_cpu);
-+	if (buffer_overflow)
- 		pr_err("buffer overflow when queuing memory failure at %#lx\n",
- 		       pfn);
--	spin_unlock_irqrestore(&mf_cpu->lock, proc_flags);
--	put_cpu_var(memory_failure_cpu);
- }
- EXPORT_SYMBOL_GPL(memory_failure_queue);
- 
-@@ -2469,9 +2471,9 @@ static void memory_failure_work_func(struct work_struct *work)
- 
- 	mf_cpu = container_of(work, struct memory_failure_cpu, work);
- 	for (;;) {
--		spin_lock_irqsave(&mf_cpu->lock, proc_flags);
-+		raw_spin_lock_irqsave(&mf_cpu->lock, proc_flags);
- 		gotten = kfifo_get(&mf_cpu->fifo, &entry);
--		spin_unlock_irqrestore(&mf_cpu->lock, proc_flags);
-+		raw_spin_unlock_irqrestore(&mf_cpu->lock, proc_flags);
- 		if (!gotten)
- 			break;
- 		if (entry.flags & MF_SOFT_OFFLINE)
-@@ -2501,7 +2503,7 @@ static int __init memory_failure_init(void)
- 
- 	for_each_possible_cpu(cpu) {
- 		mf_cpu = &per_cpu(memory_failure_cpu, cpu);
--		spin_lock_init(&mf_cpu->lock);
-+		raw_spin_lock_init(&mf_cpu->lock);
- 		INIT_KFIFO(mf_cpu->fifo);
- 		INIT_WORK(&mf_cpu->work, memory_failure_work_func);
- 	}
+ # KSM KSM_MERGE_TIME_HUGE_PAGES test with size of 100
+ CATEGORY="ksm" run_test ./ksm_tests -H -s 100
 
 
