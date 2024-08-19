@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-69530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69531-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 801969567A0
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 11:55:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AF449567A1
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 11:55:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F29DC1F22646
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 09:55:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD108B22653
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 09:55:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B49815B55D;
-	Mon, 19 Aug 2024 09:55:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E0BB157E93;
+	Mon, 19 Aug 2024 09:55:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l9YMg379"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rc2KWnKJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D06421581EE
-	for <stable@vger.kernel.org>; Mon, 19 Aug 2024 09:55:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F315313B592
+	for <stable@vger.kernel.org>; Mon, 19 Aug 2024 09:55:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724061316; cv=none; b=NQy1cSgFKBdnDx5Tf6VMF0/4aUo2OWMNBwBD481u5m5MScmI3cb0rghxzjvsXHlm1R9LkLy3dw+MYZUcg2W4g6g9ngiX9uzQ+fj8f9VD2zjGTCy6Yg+Z0rE80xDmtRiOFqpwH8NXVQmtnpq5XrX+KrNQlcDV85eC8a3lUcBZtjY=
+	t=1724061320; cv=none; b=FIVnbLMPWA4/hbCg+ZOYVOcTVsaO7BQoi9cohaRd2cptkecZUSa9SHmODHuQbvILKET2tZq7LeP7LRac+HSXeaUez5u0AOjEOrgggcnPf/0Lgj+ZzFuMa1EA2lxJQfWPgwCTXTkaBQ/xq9iUwJzLoMDGCFgs8Eb+2L3vud0oebY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724061316; c=relaxed/simple;
-	bh=7AkHRW3uU8eJAE55WWJYk5D4tXt6wKZtafXmF5U5Kxs=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Jw9qpv5OXQcvSzqQNqPox6RHlUUvN9kNlD2b7b2WYqGN5kzGS67ALUHWIP/N06cufOurBYNX/pvw9OlJxxHgtVvLRIqFgxooAeVL5pvAPscFhAfKJMaDJ8SF44Ffswlxq2ziZcpBv3g9QkbYmd1eTTUGVss+8svQZx8ym+bdDsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l9YMg379; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E279C32782;
-	Mon, 19 Aug 2024 09:55:16 +0000 (UTC)
+	s=arc-20240116; t=1724061320; c=relaxed/simple;
+	bh=QjdDW2f6cEp5pV768y3/cBLV5pCcXtOhHF+2aXHo+jg=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=AdLqJiWiCVtLRyTEU9syaayV5aRYL6bYroiz/j7FI07cDFXOE2ePEoyrQ41kXHF+g5ab17ZGsa2h40074Vvkg06lI9w0puub+bVGXYoIjThedzuFKJAoNQE/YU54mKPPBTdKY65N9kXMIwfLPkdecY8Wk9NanO8j+x8Do+hh0EE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rc2KWnKJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37FBAC32782;
+	Mon, 19 Aug 2024 09:55:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724061316;
-	bh=7AkHRW3uU8eJAE55WWJYk5D4tXt6wKZtafXmF5U5Kxs=;
+	s=korg; t=1724061319;
+	bh=QjdDW2f6cEp5pV768y3/cBLV5pCcXtOhHF+2aXHo+jg=;
 	h=Subject:To:Cc:From:Date:From;
-	b=l9YMg379ngrY58RB0uQhvnXrDyxg8Tx8RuDACyFnAVTl5H+We1ykSO3lRLoSBcs+b
-	 9dXEKPCyktd/6L5kdry0IlqZEQkGWd4Hx7zosmGLOrv79WVXxZo/hmF1Pc/d3pWSRB
-	 kFk+pzIjryzMMf3v9Zrj62fPPFb2O2IkcA2MZMQ4=
-Subject: FAILED: patch "[PATCH] btrfs: send: allow cloning non-aligned extent if it ends at" failed to apply to 6.1-stable tree
+	b=Rc2KWnKJS8bv0BcAeKvTnBEe5GJKqFPchI3MRChm9nacjK0Tx5UC1hlb0UkeQj1Ux
+	 aKkgmE7OHypgkCTBoQ+h4IcEGaE7KiJxPySIwhrD/7+SJKJlE2zkrmZPxaNKXUNwCN
+	 /0uL58T+wUlvgz+5Zqy3RJmEwHifzh/HvLxv1G3g=
+Subject: FAILED: patch "[PATCH] btrfs: send: allow cloning non-aligned extent if it ends at" failed to apply to 5.15-stable tree
 To: fdmanana@suse.com,dsterba@suse.com,wqu@suse.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 Aug 2024 11:55:11 +0200
-Message-ID: <2024081911-shrivel-overstay-1394@gregkh>
+Date: Mon, 19 Aug 2024 11:55:13 +0200
+Message-ID: <2024081913-cupped-curing-f315@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,30 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 46a6e10a1ab16cc71d4a3cab73e79aabadd6b8ea
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081911-shrivel-overstay-1394@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081913-cupped-curing-f315@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
 46a6e10a1ab1 ("btrfs: send: allow cloning non-aligned extent if it ends at i_size")
 4e00422ee626 ("btrfs: replace sb::s_blocksize by fs_info::sectorsize")
+3ea4dc5bf00c ("btrfs: send: send compressed extents with encoded writes")
+6fe81a3a3ac8 ("btrfs: balance btree dirty pages and delayed items after clone and dedupe")
+152555b39ceb ("btrfs: send: avoid trashing the page cache")
+521b6803f22e ("btrfs: send: keep the current inode open while processing it")
+1c6cbbbeeeca ("btrfs: remove inode_dio_wait() calls when starting reflink operations")
+6b1f86f8e9c7 ("Merge tag 'folio-5.18b' of git://git.infradead.org/users/willy/pagecache")
 
 thanks,
 
