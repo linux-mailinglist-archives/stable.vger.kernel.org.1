@@ -1,150 +1,173 @@
-Return-Path: <stable+bounces-69624-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69625-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88DD99573DC
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 20:46:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F319895742B
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 21:09:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 099EC1F24240
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 18:46:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7F202855FC
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 19:09:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79D39181B9A;
-	Mon, 19 Aug 2024 18:46:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 524E31D54E7;
+	Mon, 19 Aug 2024 19:09:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gam7KhGo"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K23Tcdhw"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67C4026AD3;
-	Mon, 19 Aug 2024 18:46:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E372F26AD3;
+	Mon, 19 Aug 2024 19:09:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724093163; cv=none; b=gkrdc27kMokjiPSPGsUJ62d5Wu+Z4hv584aUonfBAA7/GBGwsum6iQeIFci5Bf/7hE2cW1IsCY05tOpHp0wGbv8AksCMtqW2Vvqk2OqTfTewAZOj9gOc5pf5vTQxCwX1LJ+UI51g2zyRn/suxMzNVzVXCyz3M5iIfr6kI0/gpHs=
+	t=1724094572; cv=none; b=EjVJs8S6g3rnAkS9OmGqEpo9G4UgwjVhipqPP0thyHyOnv+PNYmEfFIZDq5TLuopCBgGP/BdpTml5Sh+qa5AS1A5a+5VXo4mLOUm8mVkGVLr5EAIMirRfgFPLqoGX2/rEZY9U5aAQKOnfZOf4Z/Td/eFsIfvFGQrpY/CmWua8ec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724093163; c=relaxed/simple;
-	bh=HdIJY01lHoLxaZGedoCASwrrmQVvme3IbQCYk3XtDxs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uPy/naceQg+wB3AoE5j276zAEz22HRZgMiXZ70bsyigeEQswLmxRGO8Hb9IqroF82a97u1Ied1db6Fvnx9AeFLcPHsU8Ej+zB9LBNMJLB02wSUeUgUTmaMaY3gBpYHSTx+zvcvLTOW+tR1v7SwQpftB6xuuG7BLwxsB/m38N//I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gam7KhGo; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4280b3a7efaso36697855e9.0;
-        Mon, 19 Aug 2024 11:46:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724093160; x=1724697960; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=83RS5Bq76bBQeFMijiRLgaOeMKTh/8Mb3G8iVoR5aBw=;
-        b=gam7KhGofNpYIjdvZsILa8FkqXRX9YwEHV+ltLdr7DGsFzmM/ELFyxA7T4v1GVBOC2
-         tiIWrV5275yfwe6RWTWia/9nHeBPGqjNo4wn3Utgx5ZoOh1yjELrq+mHczOGNVDRjvTS
-         gzULpOp2X82wQE6DpZKM1gPk9mu90m83/ZSo0zNAdnh+eDrsvbsp+bE/SltUO7K56dtw
-         sja+W5hbj/L3VKwHOwnIEXZCbaXvGL9P73w7TcHINVwtOFj8iw9DwUOIyO3ONlZ05WHH
-         aiN69aCuwS+XRP1gUv8GrIFmWPnmqCH2/2i8YvlxmVol7wwmgXmbUFJdvU14tLhI1cS1
-         7mTA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724093160; x=1724697960;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=83RS5Bq76bBQeFMijiRLgaOeMKTh/8Mb3G8iVoR5aBw=;
-        b=PRndKsuF58qFN48U7ZcwsT8qLYwDzNWPMXsS/Pi7RhqFxyxvy6KKjPb/EQEQ4562W0
-         dd02oMb+MGTsEXrGbsE+wl+QSgT1iZZUM5+REgQvTOCuQAQ/HK5mUjZRGF7V1BwE54c7
-         61fQECReCGJjyp+bK/IAYwKewsACyQxPK9xIHeGjEGXpLtGPDP7VKWfW4LgvxdQ5/nLp
-         L+9UnmTMBEGfPOpmgM3qwMnph/UMxXdGoqTEd2oJSg6CspQdzV9MolmXlbTZJw+OZcqj
-         D2zVw5+s7LPbNcA5HDTCECrTaej0ajh1UmcsQS7xIlSRTZvfSZqUyyDbcv5E5lLnzeB8
-         BpYA==
-X-Forwarded-Encrypted: i=1; AJvYcCUs/Xn4lDCP8Hiax3kreL1K1qFOQPqE8s3FZJw/s2NzP7IbpBVwnyygskF52BZ32CHEO3IXYTZiuTOraHEq@vger.kernel.org, AJvYcCViwoxg+fLtAFTQrhxka4qCRWmPJpOrJiPGX7HAIPJs4RF2XHE8E0x/JUDa7tjzRilPGiO5nR0i@vger.kernel.org, AJvYcCVwMvt8nGRdQJzC4nhMvGI4Tm2q30ymZdr/pLwsWhQbRjdqoTP86JKNxVP0eOqAMvDdxvJjjtSf0hs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxHqnYtqVrnWqV4qzsTcaXaul2ToIQorX8R0gj9Nqcz+q2tqEwW
-	UIraZs5IWJn/hNvcXm0BcgF51bjQXNWwmVEJpIXAG6ZIx3jn9fbHzmLD7nB/
-X-Google-Smtp-Source: AGHT+IHgkMerOvxIAQnbhWE5dSxXyVexmF7ZW1KYRom0PSEE9yi2Aci3kgKxAUs6+3AAUS3kSUNC/g==
-X-Received: by 2002:a05:600c:a45:b0:426:627e:37af with SMTP id 5b1f17b1804b1-429ed77d75amr72399195e9.3.1724093159268;
-        Mon, 19 Aug 2024 11:45:59 -0700 (PDT)
-Received: from eldamar.lan (c-82-192-242-114.customer.ggaweb.ch. [82.192.242.114])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-429eea70115sm113922805e9.36.2024.08.19.11.45.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Aug 2024 11:45:57 -0700 (PDT)
-Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
-Received: by eldamar.lan (Postfix, from userid 1000)
-	id 61A00BE2EE7; Mon, 19 Aug 2024 20:45:56 +0200 (CEST)
-Date: Mon, 19 Aug 2024 20:45:56 +0200
-From: Salvatore Bonaccorso <carnil@debian.org>
-To: Linux regressions mailing list <regressions@lists.linux.dev>
-Cc: Christian Heusel <christian@heusel.eu>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Igor Pylypiv <ipylypiv@google.com>, linux-ide@vger.kernel.org,
-	Hannes Reinecke <hare@suse.de>, stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [REGRESSION][BISECTED][STABLE] hdparm errors since 28ab9769117c
-Message-ID: <ZsOS5DmRnS3ab_9W@eldamar.lan>
-References: <0bf3f2f0-0fc6-4ba5-a420-c0874ef82d64@heusel.eu>
- <45cdf1c2-9056-4ac2-8e4d-4f07996a9267@kernel.org>
- <ZrPw5m9LwMH5NQYy@x1-carbon.lan>
- <1376f541-bc8a-4162-a814-a9146ebaf4eb@kernel.org>
- <df43ed14-9762-4193-990a-daec1a320288@heusel.eu>
- <e206181e-d9d7-421b-af14-2a70a7f83006@heusel.eu>
- <d224b165-14dd-4131-b923-1ef5bdf3fb7f@leemhuis.info>
+	s=arc-20240116; t=1724094572; c=relaxed/simple;
+	bh=l1fQ+yTpICnSE9dSKG3BDMX4w4n0NCxmJvBhJmEGqB4=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=YfmKR2vLYolwXbpssIP3hMZZMPEeluOd9BbKrl035u+OkzhFo6MH/X9ts4aXofWzqL9FYe06vrDqP87jrvFJ02sZUP1N656SOlDGnAFyhUv2e2zlTQEDqpURSLsgwrvK5LJ+w/2iG2EYcn2Dd1yrP6pXLnN9TaIl2E01l/ZRQlM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K23Tcdhw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA725C32782;
+	Mon, 19 Aug 2024 19:09:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724094570;
+	bh=l1fQ+yTpICnSE9dSKG3BDMX4w4n0NCxmJvBhJmEGqB4=;
+	h=From:Date:Subject:To:Cc:From;
+	b=K23Tcdhww1EkxB49+rm3W650EQEZDN1DZ4pOCr70a90bg1W+mWxNTIBGEWrzOsxdQ
+	 /EMvooiFf+IIqBl8ZSoQCK8gk7stYV/9fyjK02RANiVANd/6bgf7+Q5IrHJjrna605
+	 3sfHSfexgVMRk/2N4SkoZbxhj8+tC6DqFIWHxeBXqQycXeOOgo/FgAXugNSB5QqnQd
+	 BGm7TQf7Psk8yCRfi2AJ47B1ggcOG9vOBhF0CqU7QPKErO3V2LFOMe5HDklGyEDSNZ
+	 eDL8qvPfw/Z5Alg22hFsgjYJiusCxk9w5Ue/Q5gJ7AZag2sYHD3Sl9TdjiH5tIFs9a
+	 1v5qjV10mlL+A==
+From: Nathan Chancellor <nathan@kernel.org>
+Date: Mon, 19 Aug 2024 12:09:22 -0700
+Subject: [PATCH] ACPI: platform-profile: Fix CFI violation when accessing
+ sysfs files
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d224b165-14dd-4131-b923-1ef5bdf3fb7f@leemhuis.info>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240819-acpi-platform_profile-fix-cfi-violation-v1-1-479365d848f6@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAGGYw2YC/x2N0QqDMAxFf0XyvIB2E52/Msbo2sQF1JZ0iCD+u
+ 8HHw7mcu0MhFSowVDsorVIkLQbNrYLw88tIKNEYXO0edd880YcsmCf/56TzJ2timQhZNgwsuEo
+ yZQ2M5Lq+a+/f2DJYLSvZ6Hp6vY/jBPDv3sd5AAAA
+To: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>
+Cc: Hans de Goede <hdegoede@redhat.com>, 
+ Mark Pearson <markpearson@lenovo.com>, Kees Cook <kees@kernel.org>, 
+ Sami Tolvanen <samitolvanen@google.com>, linux-acpi@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, llvm@lists.linux.dev, patches@lists.linux.dev, 
+ stable@vger.kernel.org, John Rowley <lkml@johnrowley.me>, 
+ Nathan Chancellor <nathan@kernel.org>
+X-Mailer: b4 0.15-dev
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3849; i=nathan@kernel.org;
+ h=from:subject:message-id; bh=l1fQ+yTpICnSE9dSKG3BDMX4w4n0NCxmJvBhJmEGqB4=;
+ b=owGbwMvMwCUmm602sfCA1DTG02pJDGmHZ2T2TtC8LPzCnU3tVVZbYM1K5QeVO3XXH7z8tl5qm
+ ZXRmVnrO0pZGMS4GGTFFFmqH6seNzScc5bxxqlJMHNYmUCGMHBxCsBEToQzMlzhUrrvE5x5tJHp
+ V6pu56JiJXVdg/zMql8a0md81XYt+M/IsLj3AuOdt5MmRYmFBQg+OKRncsTvgeXsCesluSUjrvv
+ P4AQA
+X-Developer-Key: i=nathan@kernel.org; a=openpgp;
+ fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
 
-Hi,
+When an attribute group is created with sysfs_create_group(), the
+->sysfs_ops() callback is set to kobj_sysfs_ops, which sets the ->show()
+and ->store() callbacks to kobj_attr_show() and kobj_attr_store()
+respectively. These functions use container_of() to get the respective
+callback from the passed attribute, meaning that these callbacks need to
+be the same type as the callbacks in 'struct kobj_attribute'.
 
-On Mon, Aug 12, 2024 at 11:26:53AM +0200, Linux regression tracking (Thorsten Leemhuis) wrote:
-> On 09.08.24 22:13, Christian Heusel wrote:
-> > On 24/08/09 08:42PM, Christian Heusel wrote:
-> >> On 24/08/09 08:34AM, Damien Le Moal wrote:
-> >>> On 2024/08/07 15:10, Niklas Cassel wrote:
-> >>>> On Wed, Aug 07, 2024 at 11:26:46AM -0700, Damien Le Moal wrote:
-> >>>>> On 2024/08/07 10:23, Christian Heusel wrote:
-> >>>>>>
-> >>>>>> on my NAS I am encountering the following issue since v6.6.44 (LTS),
-> >>>>>> when executing the hdparm command for my WD-WCC7K4NLX884 drives to get
-> >>>>>> the active or standby state:
-> >>> [...]
-> >>> Yes, indeed. I do not want to revert any of these recent patches, because as you
-> >>> rightly summarize here, these fix something that has been broken for a long
-> >>> time. We were just lucky that we did not see more application failures until
-> >>> now, or rather unlucky that we did not as that would have revealed these
-> >>> problems earlier.
-> >>
-> >> It seems like this does not only break hdparm but also hddtemp, which
-> >> does not use hdparm as dep as far as I can tell:
-> > 
-> > As someone on the same thread has pointed out, this also seems to affect
-> > udiskd:
-> > 
-> > https://github.com/storaged-project/udisks/issues/732
-> 
-> For the record, three more people reported similar symptoms in the past
-> few days:
-> 
-> https://lore.kernel.org/all/e620f887-a674-f007-c17b-dc16f9a0a588@web.de/
-> https://bugzilla.kernel.org/show_bug.cgi?id=219144
-> 
-> Ciao, Thorsten
-> 
-> P.S.: I for the tracking for now assume those are indeed the same problem:
-> 
-> #regzbot dup:
-> https://lore.kernel.org/all/e620f887-a674-f007-c17b-dc16f9a0a588@web.de/
-> #regzbot dup: https://bugzilla.kernel.org/show_bug.cgi?id=219144
+However, the platform_profile sysfs functions have the type of the
+->show() and ->store() callbacks in 'struct device_attribute', which
+results a CFI violation when accessing platform_profile or
+platform_profile_choices under /sys/firmware/acpi because the types do
+not match:
 
-AFAICS, this has now been reverted upstream with fa0db8e56878 ("Revert
-"ata: libata-scsi: Honor the D_SENSE bit for CK_COND=1 and no error"")
-in 6.11-rc4 and the revert was as well backported to stable releases
-(5.15.165, 6.1.106, 6.6.47 and 6.10.6)
+  CFI failure at kobj_attr_show+0x19/0x30 (target: platform_profile_choices_show+0x0/0x140; expected type: 0x7a69590c)
 
-Regards,
-Salvatore
+This happens to work because the layout of 'struct kobj_attribute' and
+'struct device_attribute' are the same, so the container_of() cast
+happens to allow the callbacks to still work.
+
+Change the type of platform_profile_choices_show() and
+platform_profile_{show,store}() to match the callbacks in
+'struct kobj_attribute' and update the attribute variables to match,
+which resolves the CFI violation.
+
+Cc: stable@vger.kernel.org
+Fixes: a2ff95e018f1 ("ACPI: platform: Add platform profile support")
+Reported-by: John Rowley <lkml@johnrowley.me>
+Closes: https://github.com/ClangBuiltLinux/linux/issues/2047
+Tested-by: John Rowley <lkml@johnrowley.me>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+---
+ drivers/acpi/platform_profile.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_profile.c
+index d2f7fd7743a1..11278f785526 100644
+--- a/drivers/acpi/platform_profile.c
++++ b/drivers/acpi/platform_profile.c
+@@ -22,8 +22,8 @@ static const char * const profile_names[] = {
+ };
+ static_assert(ARRAY_SIZE(profile_names) == PLATFORM_PROFILE_LAST);
+ 
+-static ssize_t platform_profile_choices_show(struct device *dev,
+-					struct device_attribute *attr,
++static ssize_t platform_profile_choices_show(struct kobject *kobj,
++					struct kobj_attribute *attr,
+ 					char *buf)
+ {
+ 	int len = 0;
+@@ -49,8 +49,8 @@ static ssize_t platform_profile_choices_show(struct device *dev,
+ 	return len;
+ }
+ 
+-static ssize_t platform_profile_show(struct device *dev,
+-					struct device_attribute *attr,
++static ssize_t platform_profile_show(struct kobject *kobj,
++					struct kobj_attribute *attr,
+ 					char *buf)
+ {
+ 	enum platform_profile_option profile = PLATFORM_PROFILE_BALANCED;
+@@ -77,8 +77,8 @@ static ssize_t platform_profile_show(struct device *dev,
+ 	return sysfs_emit(buf, "%s\n", profile_names[profile]);
+ }
+ 
+-static ssize_t platform_profile_store(struct device *dev,
+-			    struct device_attribute *attr,
++static ssize_t platform_profile_store(struct kobject *kobj,
++			    struct kobj_attribute *attr,
+ 			    const char *buf, size_t count)
+ {
+ 	int err, i;
+@@ -115,12 +115,12 @@ static ssize_t platform_profile_store(struct device *dev,
+ 	return count;
+ }
+ 
+-static DEVICE_ATTR_RO(platform_profile_choices);
+-static DEVICE_ATTR_RW(platform_profile);
++static struct kobj_attribute attr_platform_profile_choices = __ATTR_RO(platform_profile_choices);
++static struct kobj_attribute attr_platform_profile = __ATTR_RW(platform_profile);
+ 
+ static struct attribute *platform_profile_attrs[] = {
+-	&dev_attr_platform_profile_choices.attr,
+-	&dev_attr_platform_profile.attr,
++	&attr_platform_profile_choices.attr,
++	&attr_platform_profile.attr,
+ 	NULL
+ };
+ 
+
+---
+base-commit: 47ac09b91befbb6a235ab620c32af719f8208399
+change-id: 20240819-acpi-platform_profile-fix-cfi-violation-de278753bd5f
+
+Best regards,
+-- 
+Nathan Chancellor <nathan@kernel.org>
+
 
