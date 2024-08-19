@@ -1,98 +1,115 @@
-Return-Path: <stable+bounces-69466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11973956664
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 11:10:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81227956666
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 11:11:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B00181F225B4
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 09:10:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B48671C216DB
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 09:11:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2E8F15C15B;
-	Mon, 19 Aug 2024 09:10:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9314815D5B3;
+	Mon, 19 Aug 2024 09:10:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JMCx6/AS"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECD0115B11D;
-	Mon, 19 Aug 2024 09:10:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FBEA15D5A6
+	for <stable@vger.kernel.org>; Mon, 19 Aug 2024 09:10:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724058633; cv=none; b=qqiEQtQfwBkyVqbDW5SCrJg8Eo0/cl/ywHQrWzbXjDpfaY+CgU0BdmEOMNljqqiRYQJ+1HWtPJhnGPe3nOFDCgeTSezQaY+xPYxeuiykRhj6RlmnEwt6BkZiOELVa2UxZtmHefSXm+47im1B4b0NjNOQfwUIDmmPchiO0HPs9qY=
+	t=1724058635; cv=none; b=DMcXXwhOH/rg3sQUTxkVft0Gi5Sxvmc8SK4jBbwcgD5oNRFO7S3cLcuM3PFgUWx6HNiTOK3efsSr/Ek1Z4HxFcPLJt60wFZEYrB/1UXpyb88aAsUUNpCju4ffnLv1xHzhM+XuVP9G5nZStoQZvDdB6XzlXzOFLEim2Ml5puZxPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724058633; c=relaxed/simple;
-	bh=nj6Sc1Tch/1JsyhOQg7Dy6FGbxjRBPS0rhbyf4DsayM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=AWfGdMijYXGoO6MrBJw8LPOu+Pq4mi0JmryYYCP/NR3eH+644ZfoeQd7zgOcCBmi0E9sA0G60rG7B2fyeE8Gh+1GWjTHr1U6pPJ344oi0VqUSnx0sP1ANw0a92Kok7GHLqMOrGUwMAzEyk1CAdiWCP164l952sKbwdM5W7KEap0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
-	by APP-03 (Coremail) with SMTP id rQCowAA3Pfn5C8Nmc5QTCA--.22630S2;
-	Mon, 19 Aug 2024 17:10:19 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: maz@kernel.org,
-	tglx@linutronix.de,
-	Suravee.Suthikulpanit@amd.com,
-	akpm@linux-foundation.org
-Cc: linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Ma Ke <make24@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] irqchip/gic-v2m: Fix refcount leak in gicv2m_of_init
-Date: Mon, 19 Aug 2024 17:10:11 +0800
-Message-Id: <20240819091011.1015745-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1724058635; c=relaxed/simple;
+	bh=EQ+shrUqwcjk26Kf56CCVhTGX/u6BtyEDKJWYUL1SlA=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=LKsdNJeelBLG3qmwcD/5NueG3z++9NR5MfztlFyuMjaPvb4mOF7vi7hb7E8UUm+LesUBXcviVwhH57vrjXnSnQkUEQjx39RWGZu1qxDgaXDUsA/XHapWr246G1kaYmIz9eyIG2MD5LLkSTubz1uuw7KDHShaGyT2YetcHcgmuU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JMCx6/AS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8756C32782;
+	Mon, 19 Aug 2024 09:10:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1724058635;
+	bh=EQ+shrUqwcjk26Kf56CCVhTGX/u6BtyEDKJWYUL1SlA=;
+	h=Subject:To:Cc:From:Date:From;
+	b=JMCx6/AS/vCXM3iMUUX8BWnCqWwXN7ChF1tgiz6xM6Xf8Hrb0g9zf/E5N+shjlumH
+	 Q5nWiuJoTMps6yrWNAg2MXzCBd+yIMSrJsg9mgDx1mHOYUCcXdZT+PB/YOWAA3I09f
+	 jz0WYZBw/V0v/s4TDuTSN2hpVD89hLhP5dFaPg4k=
+Subject: FAILED: patch "[PATCH] ALSA: timer: Relax start tick time check for slave timer" failed to apply to 6.1-stable tree
+To: tiwai@suse.de,stable@vger.kernel.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 19 Aug 2024 11:10:28 +0200
+Message-ID: <2024081928-deduct-humongous-41ae@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowAA3Pfn5C8Nmc5QTCA--.22630S2
-X-Coremail-Antispam: 1UD129KBjvdXoW7XrWUWF18tF4UWF43uF4kJFb_yoW3CFX_Wr
-	yUWF97JFW0kr4kGw1Iqr43ur9Fy34kW3WvgF40qF95X3y8Z34xCr129F95JryDCFsaqr97
-	CFs8Zr1Iyr17ZjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbVAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Cr0_
-	Gr1UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
-	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr
-	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IE
-	rcIFxwCY1x0262kKe7AKxVWUAVWUtwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbV
-	WUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF
-	67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42
-	IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF
-	0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxh
-	VjvjDU0xZFpf9x0JUp7KsUUUUU=
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-Add the missing of_node_put() to release the refcount incremented
-by of_find_matching_node().
 
-Cc: stable@vger.kernel.org
-Fixes: 4266ab1a8ff5 ("irqchip/gic-v2m: Refactor to prepare for ACPI support")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
----
- drivers/irqchip/irq-gic-v2m.c | 1 +
- 1 file changed, 1 insertion(+)
+The patch below does not apply to the 6.1-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-diff --git a/drivers/irqchip/irq-gic-v2m.c b/drivers/irqchip/irq-gic-v2m.c
-index 51af63c046ed..65a55ee7bb30 100644
---- a/drivers/irqchip/irq-gic-v2m.c
-+++ b/drivers/irqchip/irq-gic-v2m.c
-@@ -396,6 +396,7 @@ static int __init gicv2m_of_init(struct fwnode_handle *parent_handle,
- 		ret = of_address_to_resource(child, 0, &res);
- 		if (ret) {
- 			pr_err("Failed to allocate v2m resource.\n");
-+			of_node_put(child);
- 			break;
- 		}
- 
--- 
-2.25.1
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git checkout FETCH_HEAD
+git cherry-pick -x ccbfcac05866ebe6eb3bc6d07b51d4ed4fcde436
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081928-deduct-humongous-41ae@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+
+Possible dependencies:
+
+ccbfcac05866 ("ALSA: timer: Relax start tick time check for slave timer elements")
+4a63bd179fa8 ("ALSA: timer: Set lower bound of start tick time")
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From ccbfcac05866ebe6eb3bc6d07b51d4ed4fcde436 Mon Sep 17 00:00:00 2001
+From: Takashi Iwai <tiwai@suse.de>
+Date: Sat, 10 Aug 2024 10:48:32 +0200
+Subject: [PATCH] ALSA: timer: Relax start tick time check for slave timer
+ elements
+
+The recent addition of a sanity check for a too low start tick time
+seems breaking some applications that uses aloop with a certain slave
+timer setup.  They may have the initial resolution 0, hence it's
+treated as if it were a too low value.
+
+Relax and skip the check for the slave timer instance for addressing
+the regression.
+
+Fixes: 4a63bd179fa8 ("ALSA: timer: Set lower bound of start tick time")
+Cc: <stable@vger.kernel.org>
+Link: https://github.com/raspberrypi/linux/issues/6294
+Link: https://patch.msgid.link/20240810084833.10939-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+
+diff --git a/sound/core/timer.c b/sound/core/timer.c
+index d104adc75a8b..71a07c1662f5 100644
+--- a/sound/core/timer.c
++++ b/sound/core/timer.c
+@@ -547,7 +547,7 @@ static int snd_timer_start1(struct snd_timer_instance *timeri,
+ 	/* check the actual time for the start tick;
+ 	 * bail out as error if it's way too low (< 100us)
+ 	 */
+-	if (start) {
++	if (start && !(timer->hw.flags & SNDRV_TIMER_HW_SLAVE)) {
+ 		if ((u64)snd_timer_hw_resolution(timer) * ticks < 100000)
+ 			return -EINVAL;
+ 	}
 
 
