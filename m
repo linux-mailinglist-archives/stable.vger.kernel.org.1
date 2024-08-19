@@ -1,305 +1,460 @@
-Return-Path: <stable+bounces-69458-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69459-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DEF3956529
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 10:04:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A159395657E
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 10:24:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C91301F2349A
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 08:04:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 589792830FA
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 08:24:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 330791552FA;
-	Mon, 19 Aug 2024 08:04:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E70AC15B0F8;
+	Mon, 19 Aug 2024 08:24:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="ll7Qb2Ui";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="9udWDGz9";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="EdzuyuQW";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="3dT3ANge"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="Xl9Xvzc5"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam04on2080.outbound.protection.outlook.com [40.107.102.80])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00B2614D29A
-	for <stable@vger.kernel.org>; Mon, 19 Aug 2024 08:04:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724054668; cv=none; b=H005a7pgreTZDK9R0K53YT/x4rtEgcJjLEL/saJB7yXnpcl+mM/VtF7Fe92cvWd9CFztXJejJxhzXckuVNdBomRTg4C5NbeM/CvVjw/c3SWjWIWeLkvDJejSlsv9vCgJzNz6ANZsz0MYBcXY7JpSdl9/L+JaDMpAZfuxNdNaDJM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724054668; c=relaxed/simple;
-	bh=Hv3vonilsrI12tvOAkcRY0T7GXHW7lHFrE1IPjQvxA8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FnTakWtgSJ7WFDPDl7SUnQoCAeTdPzcR/btuGb5gCAy9x4HgPFUDVzXRdZxOyEtM4HTBgrSoObgqc5JmAozfIkOle+Gr1hxe77C8myn4taighhZ+mVDxZFAvIdaGePqPV/pgxLBMwcx+z3B2nMVaboerqxg2sLFL66Eb57csJxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=ll7Qb2Ui; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=9udWDGz9; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=EdzuyuQW; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=3dT3ANge; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id ED23922990;
-	Mon, 19 Aug 2024 08:04:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1724054664; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ILJjJMgN/vVG1KF3mgEFsWgeLKvgG5ha1rlaYTvfjfY=;
-	b=ll7Qb2UikIV3JfslfL43CffJuCg5S8azRQkFt7+pKJSc1bnqbLHnYn8H74TEHcmwTzA2P6
-	mSNfghfY4+vzXBZd2B0FS49xSRcmg5AcJiG9eSHyfn5hYWW7ycCYK4GN9+rJfb+M2dvnRe
-	sEtmas8hbfZGzJBSqi9+GYkcVgnufZE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1724054664;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ILJjJMgN/vVG1KF3mgEFsWgeLKvgG5ha1rlaYTvfjfY=;
-	b=9udWDGz9JNWIHTPO1GWCDyL0L+B6f96+v/MqJfYJ9GPlheGCvSh97kBv1BuQkGiQZ/j4Ui
-	YnRLH9Z84kaziHAA==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=EdzuyuQW;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=3dT3ANge
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1724054662; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ILJjJMgN/vVG1KF3mgEFsWgeLKvgG5ha1rlaYTvfjfY=;
-	b=EdzuyuQWN6253r2KEmvZH0p+TmfaRrPZjTQJ4FCrz3e1qndYwyXCkv0m8/REkOuuHHHKve
-	/lKAxsVWidXFls5aaaTbKdKmOgsVL2rF2Aq/d0JNcAHVFnVb8mMPdaCc/SE7RBuwfh2Y0h
-	b5ekwPZJigTVYnPQbQIjieQS5PkeODk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1724054662;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ILJjJMgN/vVG1KF3mgEFsWgeLKvgG5ha1rlaYTvfjfY=;
-	b=3dT3ANgebDVQeZe7yn3zs7di46UaOK5tmoY2v1v8YFw8gteun8uoCSPdPMblB+L1mW7fDr
-	ak1m1bPC1xSuqvCA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 967B1137C3;
-	Mon, 19 Aug 2024 08:04:22 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id oulsI4b8wmZLDQAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Mon, 19 Aug 2024 08:04:22 +0000
-Message-ID: <8bbf3f92-3719-4ff4-9587-e076635758d1@suse.de>
-Date: Mon, 19 Aug 2024 10:04:22 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98519158538;
+	Mon, 19 Aug 2024 08:24:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.102.80
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1724055846; cv=fail; b=mGMED4Y6n5yStqfiYMNL1DI3XmUMzB49GlvWpyunQjSrP1EMSpxtjfUwF4jU6eDqFp+RPCMkPSRS2JTqnx12GEwURia2fJzVD3QaI0bfJUTVlXmVjcXyLbR5lqaqCAAyRTL9OQXpCcrcok2+ITeiFIU0v/I1kVbjyQM147+uxiA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1724055846; c=relaxed/simple;
+	bh=IREmgtroFoUHFDWVDY0ZXpj8TFRaae3nphsEgdx+ZBg=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=fcyyEtEPLvq80GUngX8jN5xFMsd686mMBeBsZRPgyt8eC+PxoJa29NmhcYkm2aEiE9MIxoTV9H4h4vU0/vEOxLraoRBpIDscAQqeLu6UcgCsjeODg/m8VUnx/JOC9NazN1E3CeoxWktzQ9yltQsos4HtIMFk/bMaR4WJ0v+1jRk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=Xl9Xvzc5; arc=fail smtp.client-ip=40.107.102.80
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=NjQ8j1JQFvSyqfFZ9lDcSEe+xc9cWRTTWxi7CHDJT6CGBK0Yb5fcdClPJN4xoZaeK7lDyQ1YWyCRVjfb73hE/qZX2vFz+VV99vBHVQwwu8s7MMtloczcIizE9WWZIL0yTipMaFhRQPccd0MuhRlFNtY2XvUwHwn3Or3WiYz+DbAhb4DYtaJh1uJQr1oy8PZuI3qTteWtL4sBFdIaGlQuOfpDG1dyWJmWeuVLXwZpgNrMKitEoe46kT6ARp6GWbjB72rEQBEO01BFrLJ4SXGxq+DWfrcTFyUUkFFHHWHyPzx2NJCevt7O8IDB3x0WR+B08Hm2y84zHEpyf+iuVx9CGw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/ELVC0rh6nVNheMrn4kmhIIe7EmmoyZygm/0xHM3e18=;
+ b=wW11H4n/jyVvUvvwtImga4f9X65cZV5eA9qCoi4lJ+h68Z476RUaXeq08vOKCLQmNhea0/9zG6eO8CLz5Y5+Fb6wF63yj1u0qP/UkNNuKVkbZPaUHYBapPabtzEO/bvP0EzIlNZIwVM7HK+cCAj+LaJIpatdFmyEjaawTDK5btfIW6b91L/JIKNyF4lpNWjqOmqAB7tHlw2LNqIbD9Ww75Ju4eQvRF//Kj6eWoOu+RCz7CtGashdBhXCzrF3txuk/MD7b0PZ/A0DX3SaXbwOoqgOu9UEGdUbP4D/vMopD04DCMWPamHIvWaj8PRFrFmAXIoQBTuaRX4BI2WafEatjA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/ELVC0rh6nVNheMrn4kmhIIe7EmmoyZygm/0xHM3e18=;
+ b=Xl9Xvzc50B+4y7MJ/qxrnzXSjgoD4xliFdGp3c9EAVn+mzIKD6qyxqJuzv8FgR7UYuj8ERRWZxcKAyXgKtCm/Xxi9/TexbiOXSP0mFiNCn0TojO9Qa1fGpBs5oj3NPuZe9ge3xEAE/LDj3sf7rCN8oKagsaVfhjZY67jBCTSpoY=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
+ by DM4PR12MB6349.namprd12.prod.outlook.com (2603:10b6:8:a4::8) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7875.21; Mon, 19 Aug 2024 08:24:02 +0000
+Received: from PH7PR12MB5685.namprd12.prod.outlook.com
+ ([fe80::46fb:96f2:7667:7ca5]) by PH7PR12MB5685.namprd12.prod.outlook.com
+ ([fe80::46fb:96f2:7667:7ca5%4]) with mapi id 15.20.7875.019; Mon, 19 Aug 2024
+ 08:24:02 +0000
+Message-ID: <aec97449-b33f-4be7-bcd1-ef1cc8e47e75@amd.com>
+Date: Mon, 19 Aug 2024 10:23:55 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] drm/radeon/evergreen_cs: fix int overflow errors in cs
+ track offsets
+To: Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+ Alex Deucher <alexdeucher@gmail.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>, Xinhui Pan
+ <Xinhui.Pan@amd.com>, David Airlie <airlied@gmail.com>,
+ Daniel Vetter <daniel@ffwll.ch>, Jerome Glisse <jglisse@redhat.com>,
+ Dave Airlie <airlied@redhat.com>, amd-gfx@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ lvc-project@linuxtesting.org, stable@vger.kernel.org
+References: <20240725180950.15820-1-n.zhandarovich@fintech.ru>
+ <e5199bf0-0861-4b79-8f32-d14a784b116f@amd.com>
+ <CADnq5_PuzU12x=M09HaGkG7Yqg8Lk1M1nWDAut7iP09TT33D6g@mail.gmail.com>
+ <fb530f45-df88-402a-9dc0-99298b88754c@amd.com>
+ <e497f5cb-a3cb-477b-8947-f96276e401b7@fintech.ru>
+ <1914cfcb-9700-4274-8120-9746e241cb54@amd.com>
+ <cb85a5c1-526b-4024-8e8f-23c2fe0d8381@amd.com>
+ <158d9e56-d8af-4d0f-980c-4355639f6ff8@fintech.ru>
+ <a80ec052-72a3-4630-8381-bc24ad3a6ab6@amd.com>
+ <66f8503f-4c36-4ac7-b66c-f9526409a0eb@fintech.ru>
+Content-Language: en-US
+From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
+In-Reply-To: <66f8503f-4c36-4ac7-b66c-f9526409a0eb@fintech.ru>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: FR0P281CA0109.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:a8::9) To PH7PR12MB5685.namprd12.prod.outlook.com
+ (2603:10b6:510:13c::22)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] video/aperture: match the pci device when calling
- sysfb_disable()
-To: Alex Deucher <alexdeucher@gmail.com>
-Cc: kernel test robot <lkp@intel.com>,
- Alex Deucher <alexander.deucher@amd.com>, amd-gfx@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, oe-kbuild-all@lists.linux.dev,
- intel-gfx@lists.freedesktop.org,
- Javier Martinez Canillas <javierm@redhat.com>, Helge Deller <deller@gmx.de>,
- Sam Ravnborg <sam@ravnborg.org>, Daniel Vetter <daniel.vetter@ffwll.ch>,
- stable@vger.kernel.org
-References: <20240809150327.2485848-1-alexander.deucher@amd.com>
- <202408101951.tXyqYOzv-lkp@intel.com>
- <1c77f913-4707-4300-b84a-36fcf99942f4@suse.de>
- <CADnq5_NjCFyy+bQY+uyijcZwvwXYkvVLLUQdtzN_ODvHAj193Q@mail.gmail.com>
-Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <CADnq5_NjCFyy+bQY+uyijcZwvwXYkvVLLUQdtzN_ODvHAj193Q@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: ED23922990
-X-Spam-Score: -4.51
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-4.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	URIBL_BLOCKED(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,intel.com:email,suse.de:dkim,suse.de:mid,suse.de:email,01.org:url];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	FREEMAIL_TO(0.00)[gmail.com];
-	ARC_NA(0.00)[];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	MIME_TRACE(0.00)[0:+];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com,gmx.de];
-	FREEMAIL_CC(0.00)[intel.com,amd.com,lists.freedesktop.org,lists.linux.dev,redhat.com,gmx.de,ravnborg.org,ffwll.ch,vger.kernel.org];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,suse.de:dkim,suse.de:mid,suse.de:email]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spam-Flag: NO
-X-Spam-Level: 
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|DM4PR12MB6349:EE_
+X-MS-Office365-Filtering-Correlation-Id: ac9ef8c6-d654-411e-74e6-08dcc02847ec
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?Tm16M1FzVUozRm9VTXk2U1VITFk0czZTbEFsODUwa2RxNi8xTVZKQXNucHYv?=
+ =?utf-8?B?em56TGU4RkJjbFNESWUrTDBGWWR1czZnYUhNRzZIeWtiUG5ndmZPcFBBL1Ur?=
+ =?utf-8?B?c29pYmt6N0sra3VmTG82QWVKWDA5YW94ZDVmYUVBY0NSdU9RMytHYzdWa0k5?=
+ =?utf-8?B?NXFZamNGUyswdUVEbXpqVkFVZUZBUG9ScVVQN0VTSHNZYktpYm9pQ0hZUEF5?=
+ =?utf-8?B?ZHpwL25xcUVBMFlDMXhSQjV3cG9VMVJ6Qk9xU0tCSVFqT2lJTDJNdkRiV2Zo?=
+ =?utf-8?B?U3l3SzE0eXFUR2xmTmpFanpUS2tQbFZGMGJ6b1BIN3ZFWmNvVTM2anNRSzUv?=
+ =?utf-8?B?aFBCVkFnSjhJZzRWeXNibUFsSTRlbEtEM2pxYWIzekY3V04vd29HY3Mza1hB?=
+ =?utf-8?B?cWIvRkw5d1hEaE1OZElJRmtZR2JCRGwwcGdHTEtqdVlwVk9IR2V3bjZCc3pR?=
+ =?utf-8?B?eWxnamJueTJMeDl1cHdjckd0TGplNmsvQmRXRm9tUVc3YTJvdnNXZ0ozMXd3?=
+ =?utf-8?B?K2pJeWg2ZVorY0IxclJodDQ4S3ViWjFSSUIyS0plLytlWDVmMElKUCtoYUNp?=
+ =?utf-8?B?T0dmWGEwbU5EY2FTNkFScS8zbElsOFhPNEo3b1BGRGlQRXR4NjRyWEZpQWto?=
+ =?utf-8?B?b0ZLVEJmNEY3WHFhbWNFUDh4YUFsdHVXOXNkcklMY3ZyUFIwNksvb1FpK3Fn?=
+ =?utf-8?B?amFQY2JHUktRSVR6a1dSdjZRc3k5ZCt1T0QrT2F5bHN3VEU5WVliek9pRm1y?=
+ =?utf-8?B?SHJxSEpXNkhwR3RibXdKUGJPZEJHdVBGbU5LRytpdVhEU3pNTjcyOGFOR2du?=
+ =?utf-8?B?UGpNQ1pDSFN1QlhDSlU4MU1jMjlQWWlmMXBwTVh4VCt0U0RKZlJnMlVPV2gv?=
+ =?utf-8?B?Q2FqbEJub3R3UEdCWDFCREdENUZmQndOZ1czZkZKVFZJOWdXSUxobStLVC9X?=
+ =?utf-8?B?L0htZk9wMXhzdStmNkJLMDZSWTl6Z2hzLzllQkFYeUFQWnFjbFdMQzFUb3ZY?=
+ =?utf-8?B?RCtkdDAwS3lvdmxGcFN5QlBucjQvZlZJaUQxVm5ncUNrVk5uTC9vanR6NytH?=
+ =?utf-8?B?VWFLOXpyQlVqYzdaK01hVng5R21JSnRUZGZ5cmRVcjh3NzcwWVUzbCt4bURu?=
+ =?utf-8?B?cXpmNW0ySUJ1ei9JcmwveDlMK2hoUVJDaWJlODZDRk0xRFc3aDNTcWl6RXBl?=
+ =?utf-8?B?UjI5SjBQWWNNOGFUSHpna2dCYnNpakN5UkJ2UngvTGFoeXNaR0RYR1JqcDFZ?=
+ =?utf-8?B?YXFqdTZXZVBZRjJCYmZkc2ZKd2M1QzVpS1RNOWdwRlVHZGdmYmZ6QkVmRzBp?=
+ =?utf-8?B?UU41UzhuNS9hMm44NEFMWjFpRVlmK2ZZTCtEcCsyRjFmR3oweHhQbWdvYTRn?=
+ =?utf-8?B?eGpxQnVudERSWXhYdWlqQzZrbThwMmhUNHp4YTRGSW9pYnNzMGtNUXY0Vllz?=
+ =?utf-8?B?R1RNakdDTlByTDhyaDdNWUo0VTR0WXltdTRJTzA5b2ZIR2NVOEpWVWpYVzFB?=
+ =?utf-8?B?eVEwRkNNdm9IdXEwU3E3ck9jWjZlaVd6RG1neGNSK0lDVkNmRHRaNVNvTjZ3?=
+ =?utf-8?B?WGVJd0s1QlNTc1hiR0lUb0NYY2Fpc2gvZGdPZnlONTFKK21zQVhNZG5sUTRP?=
+ =?utf-8?B?OTE4eC9nUzlxVDRVcW1NQVVJYldvcUpjVFR4VjNSWC9ObERKMVk0UnRmTzdI?=
+ =?utf-8?B?aFFua2lRbnJicmZRWUYvVm1wOGdiUFZzZjRVMXlMa2d1SkpWcDUyQnA2dFVB?=
+ =?utf-8?B?b01ySGRMQ1FOSVJHZWpQb25TSXpuRjYwS1l5RjJZWkRsZjY0MW1TTjh3M2hy?=
+ =?utf-8?B?ZVhwZjdFTUxSZUdlSmI1dz09?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?akFaQ1hEUHVHM3Fnbjh6dUxLWkZBUHZrNUpRdVozdzM2WWtMalN0TWI0RFhk?=
+ =?utf-8?B?UnRCTG5mMVN6T3ZDV2xRWjR2dFZ5WTgzbWdtV0dZd0tUQnNWYU14VmNnTjlD?=
+ =?utf-8?B?STdFMlF6bnYwY3A3MWh1dUZqQzQ0STJxV0ZDSCtkT0RMa0hGUnFCdWM0VXpB?=
+ =?utf-8?B?ZUZ6U3BaQUZyUFlZRm9ycDZESzdNZnZVTnB2NjY1WnZNWEwzc3B5SXN6c0hk?=
+ =?utf-8?B?MjhkUEFCQXpQUFZJT0p6N1BKWE1WM0FpMSs4cjlXbi9BZHV4U1pnYjg3RkF0?=
+ =?utf-8?B?Q3YzZDVNSzhwUDNUalR6VTBDMzlHK2dYWFNOQ29lOUZpdXV2a2xTenNWcGxn?=
+ =?utf-8?B?bkowMnA4amtsVXJmVC91d0toTW5uSjJ5RUFjRUV4QTYwMHI0em5oVHVzNmVU?=
+ =?utf-8?B?TEZQZjNBRjlTUjhDK3pERFpZM3JRSEZmUzIyczNoS3Q0K1Y4UkpmYzBKcWpm?=
+ =?utf-8?B?aEVWaGRlZDZMNmFScUpmclZoM1pkRDBnWE9KdFAvYkRHZldxSWk1eFFLeEk5?=
+ =?utf-8?B?dGtBYlhWU1FuT3p1bG8wUnZPVlhBVk1ubFpFTnhvNG9oa1dsNGVXc2VCRjBh?=
+ =?utf-8?B?aVJjM3A2WlpTd0RQOW10Y2h5YWtPeTFUbUl2K21TSVBDbk9KS0RvSVA5M2dw?=
+ =?utf-8?B?cGlkRERWaGtsTDhUOXlSMzhyMm85S2FUL3BSM1JKcEhyVHJpMjRlQXd6Z1F4?=
+ =?utf-8?B?NzFzdTN4Nk1tNUxCVmNFcU5KVWRFSlFGYUR6Y0JlaFBUT210WG1ENUdzNmtD?=
+ =?utf-8?B?eVphZTRTZ2s1U2FBUFhId0xoTENwRTZETkNseENiRitZWDM3MHA5YTlyQmlT?=
+ =?utf-8?B?Zk4vQ2Vva0t6cnltaGdTcDNsV29qWXVjbWVoL3Ywb1dnTlhJMStBcjhuOENn?=
+ =?utf-8?B?eWZpOWdjbnNuK2twbHc0SWNFV3BrRkR2Z295Zy93UHR4SktIbHFEOTc3eEpS?=
+ =?utf-8?B?aWlIeEU4UklmU1NDQlZocUVDbXZLczYvRHFFTkNCQUhVSmVKTWNnekZzb2Js?=
+ =?utf-8?B?WkIxOS9PZzF4VkF4QWEwVWgvT0tFbE1OZ0Q4OVZrWDFjcEx1dnBqWDhDZ1dF?=
+ =?utf-8?B?RWpnK05XMUp4NU1aNHUzK1JQQklKZHE0andzZmdpSEp3OXBGcWxPeEFiNFp6?=
+ =?utf-8?B?SnlwTnF2dkR2TFJMQ2pjQkMyMlJ5UTJwblVDdG1SOFdCaUZwYkJITmtnbnUr?=
+ =?utf-8?B?MXZYSEkxM3BFYW5Bd204OWtGeUo0RndkdUNXVlFJK0FWZkl4WWF1bFVBOXIx?=
+ =?utf-8?B?Ylcra0hDS3puKzNpNVdIRFpXd2ZYRmtxNmlzNVUvOUJPZkl6TTZIb1Y1dnpn?=
+ =?utf-8?B?TVpVU1l4ZFVsOHdkemlkMHlCT3RsS21ENCtnRXVTRmwwbDU1UWxxajU0N0RU?=
+ =?utf-8?B?T3cwekFNT2JYR2VBSUR6eUdMU1I5Q1VWVERVazNHdGdkM0RYUk5pYmhFY0ly?=
+ =?utf-8?B?OGFiVHhtR2MvdllDV002RWNoWStjdzBQeUo5UGIwWkxLbG43Z2E2bE9zR1Va?=
+ =?utf-8?B?eXpxUFR0MFlYTzkzMnRHK0JwT3JZZmgvRG1JNjNnMnB0b0cyaVZPN3lielpk?=
+ =?utf-8?B?ai9tUHd0U0FMeC9PU2dyTXkrbk9FcmZxYUFIdDZDSEhTQ0Y1WjNUNE54SnZy?=
+ =?utf-8?B?VElvbG4vZUpZSnpLTStQa0FYMit3b28wZXloa0F3bUVWWnlWb05Qby8xcFhM?=
+ =?utf-8?B?eHlTUGx2YlZaUTZoaTl0VDgvS1lvbVJ1ZDBYTkVIMjhpeFR6TmxhQUQrS1h5?=
+ =?utf-8?B?QkxUeDlJRS9qc3FYYjFqeWRadHh1Q1ZtQnFCeTBlUmZvSkVvV09JZDNqVndp?=
+ =?utf-8?B?T3cxTk9lamUveFZ6bitFamdacU9sM3UvMlFBanFrNjhQdUtDSU9Ic2ZEY3gr?=
+ =?utf-8?B?QWs5ekYwcjJ6Vk1uOHNJbU5GYjVzYXhHMjJvc04rWDdWaktZR0pkMGdPd2Nm?=
+ =?utf-8?B?ckI5RjZDemU4LzQrMGdNaVZlMHJramdXN1E2eENiQm14aGdxLzRrRXZjVElm?=
+ =?utf-8?B?UDk5YTV3ZG5pTlJjOStBeHpXYitTZjVKTnhlVDFHVEo4Z3VJT3VtQURQMUZM?=
+ =?utf-8?B?eXRKZER4NEhpaG9rMFF4emNmZEhqV2tqV0ViVWdSUVM2dlZZbGpKVXJyaXYw?=
+ =?utf-8?Q?Q138=3D?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ac9ef8c6-d654-411e-74e6-08dcc02847ec
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Aug 2024 08:24:01.9096
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ZX2jobFuSkxfIsiwmf5WvPGgAd22DW5rq65kDCeLWiWBtXxpdjtxRu0IYpZH01Cw
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6349
 
-Hi
-
-Am 16.08.24 um 22:57 schrieb Alex Deucher:
-> On Mon, Aug 12, 2024 at 8:10 AM Thomas Zimmermann <tzimmermann@suse.de> wrote:
->> Hi
+Am 05.08.24 um 09:34 schrieb Nikita Zhandarovich:
+>
+> On 7/30/24 23:56, Christian König wrote:
+>> Am 30.07.24 um 19:36 schrieb Nikita Zhandarovich:
+>>> On 7/29/24 11:12, Christian König wrote:
+>>>> Am 29.07.24 um 20:04 schrieb Christian König:
+>>>>> Am 29.07.24 um 19:26 schrieb Nikita Zhandarovich:
+>>>>>> Hi,
+>>>>>>
+>>>>>> On 7/29/24 02:23, Christian König wrote:
+>>>>>>> Am 26.07.24 um 14:52 schrieb Alex Deucher:
+>>>>>>>> On Fri, Jul 26, 2024 at 3:05 AM Christian König
+>>>>>>>> <christian.koenig@amd.com> wrote:
+>>>>>>>>> Am 25.07.24 um 20:09 schrieb Nikita Zhandarovich:
+>>>>>>>>>> Several cs track offsets (such as 'track->db_s_read_offset')
+>>>>>>>>>> either are initialized with or plainly take big enough values
+>>>>>>>>>> that,
+>>>>>>>>>> once shifted 8 bits left, may be hit with integer overflow if the
+>>>>>>>>>> resulting values end up going over u32 limit.
+>>>>>>>>>>
+>>>>>>>>>> Some debug prints take this into account (see according
+>>>>>>>>>> dev_warn() in
+>>>>>>>>>> evergreen_cs_track_validate_stencil()), even if the actual
+>>>>>>>>>> calculated value assigned to local 'offset' variable is missing
+>>>>>>>>>> similar proper expansion.
+>>>>>>>>>>
+>>>>>>>>>> Mitigate the problem by casting the type of right operands to the
+>>>>>>>>>> wider type of corresponding left ones in all such cases.
+>>>>>>>>>>
+>>>>>>>>>> Found by Linux Verification Center (linuxtesting.org) with static
+>>>>>>>>>> analysis tool SVACE.
+>>>>>>>>>>
+>>>>>>>>>> Fixes: 285484e2d55e ("drm/radeon: add support for evergreen/ni
+>>>>>>>>>> tiling informations v11")
+>>>>>>>>>> Cc: stable@vger.kernel.org
+>>>>>>>>> Well first of all the long cast doesn't makes the value 64bit, it
+>>>>>>>>> depends on the architecture.
+>>>>>>>>>
+>>>>>>>>> Then IIRC the underlying hw can only handle a 32bit address
+>>>>>>>>> space so
+>>>>>>>>> having the offset as long is incorrect to begin with.
+>>>>>>>> Evergreen chips support a 36 bit internal address space and NI and
+>>>>>>>> newer support a 40 bit one, so this is applicable.
+>>>>>>> In that case I strongly suggest that we replace the unsigned long
+>>>>>>> with
+>>>>>>> u64 or otherwise we get different behavior on 32 and 64bit machines.
+>>>>>>>
+>>>>>>> Regards,
+>>>>>>> Christian.
+>>>>>>>
+>>>>>> To be clear, I'll prepare v2 patch that changes 'offset' to u64 as
+>>>>>> well
+>>>>>> as the cast of 'track->db_z_read_offset' (and the likes) to u64 too.
+>>>>>>
+>>>>>> On the other note, should I also include casting to wider type of the
+>>>>>> expression surf.layer_size * mslice (example down below) in
+>>>>>> evergreen_cs_track_validate_cb() and other similar functions? I can't
+>>>>>> properly gauge if the result will definitively fit into u32, maybe it
+>>>>>> makes sense to expand it as well?
+>>>>> The integer overflows caused by shifts are irrelevant and doesn't need
+>>>>> any fixing in the first place.
+>>>> Wait a second.
+>>>>
+>>>> Thinking more about it the integer overflows are actually necessary
+>>>> because that is exactly what happens in the hardware as well.
+>>>>
+>>>> If you don't overflow those shifts you actually create a security
+>>>> problem because the HW the might access at a different offset then you
+>>>> calculated here.
+>>>>
+>>>> We need to use something like a mask or use lower_32_bits() here.
+>>> Christian,
+>>>
+>>> My apologies, I may be getting a bit confused here.
+>>>
+>>> If integer overflows caused by shifts are predictable and constitute
+>>> normal behavior in this case, and there is no need to "fix" them, does
+>>> it still make sense to use any mitigations at all, i.e. masks or macros?
+>> Well you stumbled over that somehow, so some automated checker things
+>> that this is a bad idea.
 >>
->> Am 10.08.24 um 13:44 schrieb kernel test robot:
->>> Hi Alex,
+>>> Leaving these shifts to u32 variables as they are now will achieve the
+>>> same result as, for example, doing something along the lines of:
 >>>
->>> kernel test robot noticed the following build errors:
+>>> offset = lower_32_bits((u64)track->cb_color_bo_offset[id] << 8);
 >>>
->>> [auto build test ERROR on drm-misc/drm-misc-next]
->>> [also build test ERROR on linus/master v6.11-rc2 next-20240809]
->>> [If your patch is applied to the wrong git tree, kindly drop us a note.
->>> And when submitting patch, we suggest to use '--base' as documented in
->>> https://git-scm.com/docs/git-format-patch#_base_tree_information]
->>>
->>> url:    https://github.com/intel-lab-lkp/linux/commits/Alex-Deucher/video-aperture-match-the-pci-device-when-calling-sysfb_disable/20240810-021357
->>> base:   git://anongit.freedesktop.org/drm/drm-misc drm-misc-next
->>> patch link:    https://lore.kernel.org/r/20240809150327.2485848-1-alexander.deucher%40amd.com
->>> patch subject: [PATCH] video/aperture: match the pci device when calling sysfb_disable()
->>> config: csky-randconfig-001-20240810 (https://download.01.org/0day-ci/archive/20240810/202408101951.tXyqYOzv-lkp@intel.com/config)
->>> compiler: csky-linux-gcc (GCC) 14.1.0
->>> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240810/202408101951.tXyqYOzv-lkp@intel.com/reproduce)
->>>
->>> If you fix the issue in a separate patch/commit (i.e. not just a new version of
->>> the same patch/commit), kindly add following tags
->>> | Reported-by: kernel test robot <lkp@intel.com>
->>> | Closes: https://lore.kernel.org/oe-kbuild-all/202408101951.tXyqYOzv-lkp@intel.com/
->>>
->>> All errors (new ones prefixed by >>):
->>>
->>>      csky-linux-ld: drivers/video/aperture.o: in function `aperture_remove_conflicting_pci_devices':
->>>>> aperture.c:(.text+0x222): undefined reference to `screen_info_pci_dev'
->> Strange. There's a already placeholder [1] for architectures without
->> PCI. Otherwise the source file is listed at [2].
-> So I dug into this, and the problem seems to be that
-> CONFIG_SCREEN_INFO is not defined in that config.  I can't figure out
-> how this should work in that case or why this is not a problem in
-> drivers/firmware/sysfb.c.
->
-> Something like this works:
-> diff --git a/drivers/video/aperture.c b/drivers/video/aperture.c
-> index 56a5a0bc2b1af..50e98210c9fe5 100644
-> --- a/drivers/video/aperture.c
-> +++ b/drivers/video/aperture.c
-> @@ -347,7 +347,9 @@ EXPORT_SYMBOL(__aperture_remove_legacy_vga_devices);
->    */
->   int aperture_remove_conflicting_pci_devices(struct pci_dev *pdev,
-> const char *name)
->   {
-> +#if defined(CONFIG_SCREEN_INFO)
->          struct screen_info *si = &screen_info;
-> +#endif
->          bool primary = false;
->          resource_size_t base, size;
->          int bar, ret = 0;
-> @@ -355,8 +357,10 @@ int
-> aperture_remove_conflicting_pci_devices(struct pci_dev *pdev, const
-> char *na
->          if (pdev == vga_default_device())
->                  primary = true;
->
-> +#if defined(CONFIG_SCREEN_INFO)
->          if (pdev == screen_info_pci_dev(si))
->                  sysfb_disable();
-> +#endif
->
->          for (bar = 0; bar < PCI_STD_NUM_BARS; ++bar) {
->                  if (!(pci_resource_flags(pdev, bar) & IORESOURCE_MEM))
->
-> But that can't be the right fix...  Any ideas?
-
-Thanks for investigating. I'd say we should pass the device (pdev->dev) 
-to sysfb_disable() and  do the test there. In sysfb.c, next to 
-sysfb_disable(), you'll find sysfb_parent_dev(), which gives the Linux 
-device of the screen_info.
-
-The code then looks something like this:
-
-sysfb_disable(struct device *dev)
-{
-     if (dev && dev == sysfb_parent_dev(screen_info))
-       return
-
-   /* else do the current code */
-}
-
-there's an invocation of sysfb_disable() in drivers/of/platform.c where 
-you can pass NULL.
-
-Best regards
-Thomas
-
->
-> Alex
->
->> [1]
->> https://elixir.bootlin.com/linux/v6.10/source/include/linux/screen_info.h#L127
->> [2] https://elixir.bootlin.com/linux/v6.10/source/drivers/video/Makefile#L11
+>>> which seems clunky and unnecessary, even if it suppresses some static
+>>> analyzer triggers (and that seems overboard).
+>>> Or am I missing something obvious here?
+>> No, it's just about suppressing the static checker warnings.
 >>
->> Best regards
->> Thomas
+>> I'm also not 100% sure how that old hw works. Alex mentioned that it is
+>> using 36bits internally.
 >>
->>>      csky-linux-ld: drivers/video/aperture.o: in function `devm_aperture_acquire_release':
->>>>> aperture.c:(.text+0x2c0): undefined reference to `screen_info'
->>>>> csky-linux-ld: aperture.c:(.text+0x2c4): undefined reference to `screen_info_pci_dev'
->> --
->> --
->> Thomas Zimmermann
->> Graphics Driver Developer
->> SUSE Software Solutions Germany GmbH
->> Frankenstrasse 146, 90461 Nuernberg, Germany
->> GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
->> HRB 36809 (AG Nuernberg)
+>> So it could be that we need to switch to using u64 here. I need to
+>> double check that with Alex.
 >>
+>> But using unsigned long is certainly incorrect cause we then get
+>> different behavior based on the CPU architecture.
+>>
+>> Thanks for pointing this out,
+>> Christian.
+>>
+> Hi,
+>
+> Christian, did you get a chance to go over hw specifics with Alex?
 
--- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstrasse 146, 90461 Nuernberg, Germany
-GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
-HRB 36809 (AG Nuernberg)
+Sorry I'm just back from vacation. Give me a week to dig through my 
+mails and talk with Alex.
+
+Thanks,
+Christian.
+
+> I'd really like to get on with v2 patch but I can't really start
+> properly if I don't know what (and how) exactly to fix.
+>
+> I am also hesitant to split the fix into parts and I'd rather do the
+> whole int overflow mitigation in one set.
+>
+> Thanks,
+> Nikita
+>
+>>>> Regards,
+>>>> Christian.
+>>>>
+>>>>> The point is rather that we need to avoid multiplication overflows and
+>>>>> the security problems which come with those.
+>>>>>
+>>>>>> 441         }
+>>>>>> 442
+>>>>>> 443         offset += surf.layer_size * mslice;
+>>>>> In other words that here needs to be validated correctly.
+>>>>>
+>>> Agreed, I think either casting right operand to u64 (once 'offset' is
+>>> also changed from unsigned long to u64) or using mul_u32_u32() here and
+>>> in other places should suffice.
+>>>
+>>>>> Regards,
+>>>>> Christian.
+>>>>>
+>>>>>> 444         if (offset > radeon_bo_size(track->cb_color_bo[id])) {
+>>>>>> 445                 /* old ddx are broken they allocate bo with
+>>>>>> w*h*bpp
+>>>>>>
+>>>>>> Regards,
+>>>>>> Nikita
+>>>>>>>> Alex
+>>>>>>>>
+>>>>>>>>> And finally that is absolutely not material for stable.
+>>>>>>>>>
+>>>>>>>>> Regards,
+>>>>>>>>> Christian.
+>>>>>>>>>
+>>>>>>>>>> Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+>>>>>>>>>> ---
+>>>>>>>>>> P.S. While I am not certain that track->cb_color_bo_offset[id]
+>>>>>>>>>> actually ends up taking values high enough to cause an overflow,
+>>>>>>>>>> nonetheless I thought it prudent to cast it to ulong as well.
+>>>>>>>>>>
+>>>>>>>>>>       drivers/gpu/drm/radeon/evergreen_cs.c | 18 +++++++++---------
+>>>>>>>>>>       1 file changed, 9 insertions(+), 9 deletions(-)
+>>>>>>>>>>
+>>>>>>>>>> diff --git a/drivers/gpu/drm/radeon/evergreen_cs.c
+>>>>>>>>>> b/drivers/gpu/drm/radeon/evergreen_cs.c
+>>>>>>>>>> index 1fe6e0d883c7..d734d221e2da 100644
+>>>>>>>>>> --- a/drivers/gpu/drm/radeon/evergreen_cs.c
+>>>>>>>>>> +++ b/drivers/gpu/drm/radeon/evergreen_cs.c
+>>>>>>>>>> @@ -433,7 +433,7 @@ static int
+>>>>>>>>>> evergreen_cs_track_validate_cb(struct
+>>>>>>>>>> radeon_cs_parser *p, unsigned i
+>>>>>>>>>>                   return r;
+>>>>>>>>>>           }
+>>>>>>>>>>
+>>>>>>>>>> -     offset = track->cb_color_bo_offset[id] << 8;
+>>>>>>>>>> +     offset = (unsigned long)track->cb_color_bo_offset[id] << 8;
+>>>>>>>>>>           if (offset & (surf.base_align - 1)) {
+>>>>>>>>>>                   dev_warn(p->dev, "%s:%d cb[%d] bo base %ld not
+>>>>>>>>>> aligned with %ld\n",
+>>>>>>>>>>                            __func__, __LINE__, id, offset,
+>>>>>>>>>> surf.base_align);
+>>>>>>>>>> @@ -455,7 +455,7 @@ static int
+>>>>>>>>>> evergreen_cs_track_validate_cb(struct
+>>>>>>>>>> radeon_cs_parser *p, unsigned i
+>>>>>>>>>>                                   min = surf.nby - 8;
+>>>>>>>>>>                           }
+>>>>>>>>>>                           bsize =
+>>>>>>>>>> radeon_bo_size(track->cb_color_bo[id]);
+>>>>>>>>>> -                     tmp = track->cb_color_bo_offset[id] << 8;
+>>>>>>>>>> +                     tmp = (unsigned
+>>>>>>>>>> long)track->cb_color_bo_offset[id] << 8;
+>>>>>>>>>>                           for (nby = surf.nby; nby > min; nby--) {
+>>>>>>>>>>                                   size = nby * surf.nbx *
+>>>>>>>>>> surf.bpe *
+>>>>>>>>>> surf.nsamples;
+>>>>>>>>>>                                   if ((tmp + size * mslice) <=
+>>>>>>>>>> bsize) {
+>>>>>>>>>> @@ -476,10 +476,10 @@ static int
+>>>>>>>>>> evergreen_cs_track_validate_cb(struct radeon_cs_parser *p,
+>>>>>>>>>> unsigned i
+>>>>>>>>>>                           }
+>>>>>>>>>>                   }
+>>>>>>>>>>                   dev_warn(p->dev, "%s:%d cb[%d] bo too small
+>>>>>>>>>> (layer
+>>>>>>>>>> size %d, "
+>>>>>>>>>> -                      "offset %d, max layer %d, bo size %ld,
+>>>>>>>>>> slice
+>>>>>>>>>> %d)\n",
+>>>>>>>>>> +                      "offset %ld, max layer %d, bo size %ld,
+>>>>>>>>>> slice
+>>>>>>>>>> %d)\n",
+>>>>>>>>>>                            __func__, __LINE__, id, surf.layer_size,
+>>>>>>>>>> -                     track->cb_color_bo_offset[id] << 8, mslice,
+>>>>>>>>>> - radeon_bo_size(track->cb_color_bo[id]), slice);
+>>>>>>>>>> +                     (unsigned long)track->cb_color_bo_offset[id]
+>>>>>>>>>> << 8,
+>>>>>>>>>> +                     mslice,
+>>>>>>>>>> radeon_bo_size(track->cb_color_bo[id]), slice);
+>>>>>>>>>>                   dev_warn(p->dev, "%s:%d problematic surf: (%d %d)
+>>>>>>>>>> (%d
+>>>>>>>>>> %d %d %d %d %d %d)\n",
+>>>>>>>>>>                            __func__, __LINE__, surf.nbx, surf.nby,
+>>>>>>>>>>                           surf.mode, surf.bpe, surf.nsamples,
+>>>>>>>>>> @@ -608,7 +608,7 @@ static int
+>>>>>>>>>> evergreen_cs_track_validate_stencil(struct radeon_cs_parser *p)
+>>>>>>>>>>                   return r;
+>>>>>>>>>>           }
+>>>>>>>>>>
+>>>>>>>>>> -     offset = track->db_s_read_offset << 8;
+>>>>>>>>>> +     offset = (unsigned long)track->db_s_read_offset << 8;
+>>>>>>>>>>           if (offset & (surf.base_align - 1)) {
+>>>>>>>>>>                   dev_warn(p->dev, "%s:%d stencil read bo base
+>>>>>>>>>> %ld not
+>>>>>>>>>> aligned with %ld\n",
+>>>>>>>>>>                            __func__, __LINE__, offset,
+>>>>>>>>>> surf.base_align);
+>>>>>>>>>> @@ -627,7 +627,7 @@ static int
+>>>>>>>>>> evergreen_cs_track_validate_stencil(struct radeon_cs_parser *p)
+>>>>>>>>>>                   return -EINVAL;
+>>>>>>>>>>           }
+>>>>>>>>>>
+>>>>>>>>>> -     offset = track->db_s_write_offset << 8;
+>>>>>>>>>> +     offset = (unsigned long)track->db_s_write_offset << 8;
+>>>>>>>>>>           if (offset & (surf.base_align - 1)) {
+>>>>>>>>>>                   dev_warn(p->dev, "%s:%d stencil write bo base %ld
+>>>>>>>>>> not
+>>>>>>>>>> aligned with %ld\n",
+>>>>>>>>>>                            __func__, __LINE__, offset,
+>>>>>>>>>> surf.base_align);
+>>>>>>>>>> @@ -706,7 +706,7 @@ static int
+>>>>>>>>>> evergreen_cs_track_validate_depth(struct radeon_cs_parser *p)
+>>>>>>>>>>                   return r;
+>>>>>>>>>>           }
+>>>>>>>>>>
+>>>>>>>>>> -     offset = track->db_z_read_offset << 8;
+>>>>>>>>>> +     offset = (unsigned long)track->db_z_read_offset << 8;
+>>>>>>>>>>           if (offset & (surf.base_align - 1)) {
+>>>>>>>>>>                   dev_warn(p->dev, "%s:%d stencil read bo base
+>>>>>>>>>> %ld not
+>>>>>>>>>> aligned with %ld\n",
+>>>>>>>>>>                            __func__, __LINE__, offset,
+>>>>>>>>>> surf.base_align);
+>>>>>>>>>> @@ -722,7 +722,7 @@ static int
+>>>>>>>>>> evergreen_cs_track_validate_depth(struct radeon_cs_parser *p)
+>>>>>>>>>>                   return -EINVAL;
+>>>>>>>>>>           }
+>>>>>>>>>>
+>>>>>>>>>> -     offset = track->db_z_write_offset << 8;
+>>>>>>>>>> +     offset = (unsigned long)track->db_z_write_offset << 8;
+>>>>>>>>>>           if (offset & (surf.base_align - 1)) {
+>>>>>>>>>>                   dev_warn(p->dev, "%s:%d stencil write bo base %ld
+>>>>>>>>>> not
+>>>>>>>>>> aligned with %ld\n",
+>>>>>>>>>>                            __func__, __LINE__, offset,
+>>>>>>>>>> surf.base_align);
 
 
