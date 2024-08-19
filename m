@@ -1,170 +1,383 @@
-Return-Path: <stable+bounces-69594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69595-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB680956C65
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 15:45:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AEEA956CAD
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 16:07:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A5EE1C21608
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 13:45:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B21A2B216CA
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 14:07:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 553601DFEF;
-	Mon, 19 Aug 2024 13:45:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06E8016C85F;
+	Mon, 19 Aug 2024 14:07:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PkAbKZpF"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="GN+OeDGV"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
+Received: from mail-il1-f176.google.com (mail-il1-f176.google.com [209.85.166.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6102D15B107;
-	Mon, 19 Aug 2024 13:45:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD36816C69C
+	for <stable@vger.kernel.org>; Mon, 19 Aug 2024 14:07:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724075147; cv=none; b=sdhiEOAB8sKqRU6sOE0Qy+3QrGRAgj51xBV3hFXnxCYzeQ/XYbpurFv1ViD0ui2tfhl6/njCYRfXBPKK66EvbzSfdD245hM3R5qlOslonvogA2chJbj5rrlPEe/IRtEpjtpRybk2Tg/vG4DIoynBuxggMNOkM+rETk+ShmgpAV8=
+	t=1724076440; cv=none; b=cyMrkmHmLOUmIg0in4ohqN8WbsqS7rq0j+7vyNL7PQxJpI4a3iMeRes8qJWqVsIVVqlIT5nCOrMnVQTFIWGom23eq0bKt8e8OHQivmmgiJ2jP63OsfHBco5Sdq2bZsElSd1ZiSob5U9cPwYeu3SKZjZphSCMTfgIUAfjcHV35Rc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724075147; c=relaxed/simple;
-	bh=uJ+Y4bPxiu9WC0najMuSt0PqbZ8eZRT9HQqLxeIV8QI=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ct/KWE1v21CO8ss/toUwUzBQIUI+9TRAGWZ/DD5h/+TOx+L750Ox2nrOmfOyQSSDCF7+s66EbtbsuNGv6/fpxOSydBC0ygccqi3hmO1Q7DTaBJnvEfAcQ33duxddTjv8/w7XWwcer0XHdtQHcWjdsbRqSLxzKMp5k+Iim/x2OP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PkAbKZpF; arc=none smtp.client-ip=209.85.208.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-2f183f4fa63so813001fa.1;
-        Mon, 19 Aug 2024 06:45:45 -0700 (PDT)
+	s=arc-20240116; t=1724076440; c=relaxed/simple;
+	bh=ECDzg8MfGLxqE4u9uMOW5kOOxdYfJtaJWC/MQQ4H77o=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=U6eupXwuG12wLVB+nAHiIlrExiv7WPeTm2W2GLv7inDA43MFiUvedfsIryBD1kUpX2djBqsS3EhY8yBJ/KTJR+M6HgLQ0Jxvq7irUgkTqhgGQJCEHP/USguGd2c/q6o1/kNK7XlgB+I7s02lgzeuL+YQ6KF6VNImPwJLSu6y5yk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=GN+OeDGV; arc=none smtp.client-ip=209.85.166.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-il1-f176.google.com with SMTP id e9e14a558f8ab-39d2044b522so13467285ab.0
+        for <stable@vger.kernel.org>; Mon, 19 Aug 2024 07:07:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724075143; x=1724679943; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=fD4i0svjCsU8SycKPnQ9n+u2qUcon0ngRKpMteb06XI=;
-        b=PkAbKZpFwnoAxLUuVh0axPbNsA1MibGg1PJbilMjRP9spmOyCz+uGzIpg7f3HybeLc
-         FuLKClkRgbh63d+7VZdYQVxpym/x+4LL1I+iIjDZsu64FgU7PZeM+LrX/Fl6K/Z8gWKO
-         qX31ZSX5qlmghPxUDP5a3j4EM0IhHWBi0Uj8ClK8jMP0YnPAYGgkSIZ0tvwSioP+hrvg
-         2Ux5BFjqfnBqCMvLsH12bk5uTotBDWECtnZMt5ZLuDB99hG6MUnekvtZqywsaNnFRvNq
-         UDZ0jUtycPGNa1+KZOvRp1TD3L8E7dGf4N5tHYipHUJLil471+d+Zp4bIM1phobEkvDg
-         n8Bg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724075143; x=1724679943;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+        d=broadcom.com; s=google; t=1724076438; x=1724681238; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=fD4i0svjCsU8SycKPnQ9n+u2qUcon0ngRKpMteb06XI=;
-        b=G5ukDkKcODQs8M/x4ODGiWpEcB+voMrOlkpiHrPZyvw/G4jygoSvcYpl/jauOgcua7
-         qw8bwjHiKlzKDGYOd/UyDoDQkoe2IdVryVYnnQTcLb7gfrGviS3mSkCf5/1/CLm8hVcj
-         hsHMAgowr6k+Il8Bw125nzz5LwrCq25R79IVJJxKUPqewxj01bopDoyUZSA4Xs/HitXT
-         jirEfwEOcAq2p/1v9h9HQ/6x8P65HaKu18A+Gdgt0EYKozUBNjM+v+EPbHztN0ae4XoQ
-         mpcs3ZOFUvnL6QW5pfP11LrhENJNLjFS90/cn9iXR73fj+O32/JLMH5CWCrdTqZ6AdYm
-         H/bw==
-X-Forwarded-Encrypted: i=1; AJvYcCVoDP0UH4wn2mt+ipbkVjCGz+/eklUwKcmIqiBKfRW743lFETokRSXOvWF8rLE1lq1PdsQyUJhcjQ4nc3wDPxJ2sOMtqwyV7JQ12E5OP+xcTxNz5OCwjcfF8Hn4XR19vr0nTMvv
-X-Gm-Message-State: AOJu0Yy+03ubxEfjecMvhSsRf/d80izYbbXNHKRLM9tJ+wYV91ENiBoR
-	XMIwB/sJLSqRie4acFdQF/d9w9Rb15G0t8PzdNzARkeHmLIQ8qWH
-X-Google-Smtp-Source: AGHT+IENoxLryRMzpvEoN1Ur7jC9BkqOLVNKCh71aitZqunk84KecPpDS7BAcGGII/Ti03XDZc0ahQ==
-X-Received: by 2002:a05:651c:210f:b0:2ef:1c05:6907 with SMTP id 38308e7fff4ca-2f3bf05a5camr36452501fa.5.1724075142825;
-        Mon, 19 Aug 2024 06:45:42 -0700 (PDT)
-Received: from pc636 (host-90-233-222-199.mobileonline.telia.com. [90.233.222.199])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2f3b748db9fsm15475711fa.40.2024.08.19.06.45.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Aug 2024 06:45:42 -0700 (PDT)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
-Date: Mon, 19 Aug 2024 15:45:39 +0200
-To: Hailong Liu <hailong.liu@oppo.com>
-Cc: Hailong Liu <hailong.liu@oppo.com>, Michal Hocko <mhocko@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Barry Song <21cnbao@gmail.com>,
-	Christoph Hellwig <hch@infradead.org>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Tangquan Zheng <zhengtangquan@oppo.com>, stable@vger.kernel.org,
-	Baoquan He <bhe@redhat.com>, Matthew Wilcox <willy@infradead.org>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [RESEND PATCH v1] mm/vmalloc: fix page mapping if
- vm_area_alloc_pages() with high order fallback to order 0
-Message-ID: <ZsNMg9iTRWRL2GfV@pc636>
-References: <CAGsJ_4z4+CCDoPR7+dPEhemBQN60Cj84rCeqRY7-xvWapY4LGg@mail.gmail.com>
- <ZrXiUvj_ZPTc0yRk@tiehlicka>
- <ZrXkVhEg1B0yF5_Q@pc636>
- <20240815220709.47f66f200fd0a072777cc348@linux-foundation.org>
- <20240816091232.fsliktqgza5o5x6t@oppo.com>
- <Zr8mQbc3ETdeOMIK@pc636>
- <20240816114626.jmhqh5ducbk7qeur@oppo.com>
- <ZsMzq4bAIUCTJspN@pc636>
- <20240819125738.vbjlw3qbv2v2rj57@oppo.com>
- <ZsNK61ilMr9wMzJl@pc636>
+        bh=zInusf384MoOXg5RDBYhVVIadQ13Cf9VYTTCR/vH0vg=;
+        b=GN+OeDGVLvJDKQnGB9fQ3nb3pj5zKnGgg6cll5xjSwhLq6l5ZUpM4nbRebebBlkWVD
+         ZAX5GyNcwfaD7fy23ifUZ0vvCWmqB2FPwbEKELuoHEESyGBbfLc4uwrzcw6eXVepkVI5
+         kxUwAzlvnc7qpUGvLBY39WqHwLn/CA4/ctwGU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724076438; x=1724681238;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zInusf384MoOXg5RDBYhVVIadQ13Cf9VYTTCR/vH0vg=;
+        b=nEIze23Y7/+ZvHzIKKifC34E8lvxx17AHxFDET0MohlmV8mtdTDQ6fh2aYao0AT/yy
+         NPOVB0mNPRkkhBVYW0KPdPhiv8uOEdGZdVg7zoi92I2wkxvy1IiRU4oev898ttfdrMcT
+         Zi6NUKViny60zyaRRbj6Sewq3AXp6bC7NgCepcmZJQxdkr2XyzMErYXOQp4nRSJ06gnE
+         eff4Kmg+wZzM7OYpnk6HL52ws9nSagIXS0KD7sXw72fbxkiIJzEgO4apMEt9oK6q+yJw
+         UUgU1vRmko62e3G68n6UdZpaLTboeE59PMd5G4/jau/Mwk68Oqwe0VGWwK+oybNL9WX4
+         wxWQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWi1dcxaYJ84NxTH/sUaFQ30eY1JlnXvN2ByR/y90KZZnLAUemkKX7xJOCReB27f5XJULKVJLUiP7v/K9/nBOZM8s8H8AA1
+X-Gm-Message-State: AOJu0YwO4mZ80Wv5hX9sgKB+fqArnt4NykwJOBSVFYVmLscWY6zbhRGU
+	oOkKBe2lLpyyePtQ8HC1HB4GeW1x87GHa6xgeppI+RuVEr6W/P88jFUij96C6hRkbHfy0KOCTah
+	7qL49fLpf+sohlh6yRytFuOLywVwfFGwDpOKm
+X-Google-Smtp-Source: AGHT+IFBRJ9RIrMZmaC++KoG2j75Y8cMmwi42TLdr/jx9pxnZ9uKFRa79LOMOp31rN8oPKXyhjA+PEWkMyP0b9TrG0Y=
+X-Received: by 2002:a05:6e02:160a:b0:39a:12d7:2841 with SMTP id
+ e9e14a558f8ab-39d26d060d6mr129247625ab.15.1724076437684; Mon, 19 Aug 2024
+ 07:07:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZsNK61ilMr9wMzJl@pc636>
+References: <20240815153404.630214-1-zack.rusin@broadcom.com> <20240815153404.630214-2-zack.rusin@broadcom.com>
+In-Reply-To: <20240815153404.630214-2-zack.rusin@broadcom.com>
+From: Martin Krastev <martin.krastev@broadcom.com>
+Date: Mon, 19 Aug 2024 17:07:06 +0300
+Message-ID: <CAKLwHdU7aNX5wV91ki11WKMzPOMWtj4kxwgc_23SQOQE1x4M-Q@mail.gmail.com>
+Subject: Re: [PATCH v3 2/2] drm/vmwgfx: Fix prime with external buffers
+To: Zack Rusin <zack.rusin@broadcom.com>
+Cc: dri-devel@lists.freedesktop.org, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, ian.forbes@broadcom.com, 
+	maaz.mombasawala@broadcom.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Aug 19, 2024 at 03:38:51PM +0200, Uladzislau Rezki wrote:
-> On Mon, Aug 19, 2024 at 08:57:38PM +0800, Hailong Liu wrote:
-> > On Mon, 19. Aug 13:59, Uladzislau Rezki wrote:
-> > > On Fri, Aug 16, 2024 at 07:46:26PM +0800, Hailong Liu wrote:
-> > > > On Fri, 16. Aug 12:13, Uladzislau Rezki wrote:
-> > > > > On Fri, Aug 16, 2024 at 05:12:32PM +0800, Hailong Liu wrote:
-> > > > > > On Thu, 15. Aug 22:07, Andrew Morton wrote:
-> > > > > > > On Fri, 9 Aug 2024 11:41:42 +0200 Uladzislau Rezki <urezki@gmail.com> wrote:
-> > > > > > >
-> > > > > > > > > > Acked-by: Barry Song <baohua@kernel.org>
-> > > > > > > > > >
-> > > > > > > > > > because we already have a fallback here:
-> > > > > > > > > >
-> > > > > > > > > > void *__vmalloc_node_range_noprof :
-> > > > > > > > > >
-> > > > > > > > > > fail:
-> > > > > > > > > >         if (shift > PAGE_SHIFT) {
-> > > > > > > > > >                 shift = PAGE_SHIFT;
-> > > > > > > > > >                 align = real_align;
-> > > > > > > > > >                 size = real_size;
-> > > > > > > > > >                 goto again;
-> > > > > > > > > >         }
-> > > > > > > > >
-> > > > > > > > > This really deserves a comment because this is not really clear at all.
-> > > > > > > > > The code is also fragile and it would benefit from some re-org.
-> > > > > > > > >
-> > > > > > > > > Thanks for the fix.
-> > > > > > > > >
-> > > > > > > > > Acked-by: Michal Hocko <mhocko@suse.com>
-> > > > > > > > >
-> > > > > > > > I agree. This is only clear for people who know the code. A "fallback"
-> > > > > > > > to order-0 should be commented.
-> > > > > > >
-> > > > > > > It's been a week.  Could someone please propose a fixup patch to add
-> > > > > > > this comment?
-> > > > > >
-> > > > > > Hi Andrew:
-> > > > > >
-> > > > > > Do you mean that I need to send a v2 patch with the the comments included?
-> > > > > >
-> > > > > It is better to post v2.
-> > > > Got it.
-> > > >
-> > > > >
-> > > > > But before, could you please comment on:
-> > > > >
-> > > > > in case of order-0, bulk path may easily fail and fallback to the single
-> > > > > page allocator. If an request is marked as NO_FAIL, i am talking about
-> > > > > order-0 request, your change breaks GFP_NOFAIL for !order.
-> > > > >
-> > > > > Am i missing something obvious?
-> > > > For order-0, alloc_pages(GFP_X | __GFP_NOFAIL, 0), buddy allocator will handle
-> > > > the flag correctly. IMO we don't need to handle the flag here.
-> > > >
-> > > Agree. As for comment, i meant to comment the below fallback:
-> > Michal send a craft that make nofail logic more clearer and I check the branch
-> > found Andrew already merged in -stable branch. So we can include these with a
-> > new patch.
-> >
-> Just to confirm. Will you send an extra patch with the comment?
-> 
-Also, an idea to handle NOFAIL outside of vm_area_alloc_pages() looks
-sounds good to me.
+On Thu, Aug 15, 2024 at 6:34=E2=80=AFPM Zack Rusin <zack.rusin@broadcom.com=
+> wrote:
+>
+> Make sure that for external buffers mapping goes through the dma_buf
+> interface instead of trying to access pages directly.
+>
+> External buffers might not provide direct access to readable/writable
+> pages so to make sure the bo's created from external dma_bufs can be
+> read dma_buf interface has to be used.
+>
+> Fixes crashes in IGT's kms_prime with vgem. Regular desktop usage won't
+> trigger this due to the fact that virtual machines will not have
+> multiple GPUs but it enables better test coverage in IGT.
+>
+> v2: Fix the diff rectangle computation
+>
+> Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+> Fixes: b32233acceff ("drm/vmwgfx: Fix prime import/export")
+> Cc: <stable@vger.kernel.org> # v6.6+
+> Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadc=
+om.com>
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: <stable@vger.kernel.org> # v6.9+
+> ---
+>  drivers/gpu/drm/vmwgfx/vmwgfx_blit.c | 112 ++++++++++++++++++++++++++-
+>  drivers/gpu/drm/vmwgfx/vmwgfx_drv.h  |   4 +-
+>  drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c |  12 +--
+>  3 files changed, 116 insertions(+), 12 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_blit.c b/drivers/gpu/drm/vmwgf=
+x/vmwgfx_blit.c
+> index 717d624e9a05..4049447d211c 100644
+> --- a/drivers/gpu/drm/vmwgfx/vmwgfx_blit.c
+> +++ b/drivers/gpu/drm/vmwgfx/vmwgfx_blit.c
+> @@ -27,6 +27,8 @@
+>   ***********************************************************************=
+***/
+>
+>  #include "vmwgfx_drv.h"
+> +
+> +#include "vmwgfx_bo.h"
+>  #include <linux/highmem.h>
+>
+>  /*
+> @@ -420,13 +422,103 @@ static int vmw_bo_cpu_blit_line(struct vmw_bo_blit=
+_line_data *d,
+>         return 0;
+>  }
+>
+> +static void *map_external(struct vmw_bo *bo, struct iosys_map *map)
+> +{
+> +       struct vmw_private *vmw =3D
+> +               container_of(bo->tbo.bdev, struct vmw_private, bdev);
+> +       void *ptr =3D NULL;
+> +       int ret;
+> +
+> +       if (bo->tbo.base.import_attach) {
+> +               ret =3D dma_buf_vmap(bo->tbo.base.dma_buf, map);
+> +               if (ret) {
+> +                       drm_dbg_driver(&vmw->drm,
+> +                                      "Wasn't able to map external bo!\n=
+");
+> +                       goto out;
+> +               }
+> +               ptr =3D map->vaddr;
+> +       } else {
+> +               ptr =3D vmw_bo_map_and_cache(bo);
+> +       }
+> +
+> +out:
+> +       return ptr;
+> +}
+> +
+> +static void unmap_external(struct vmw_bo *bo, struct iosys_map *map)
+> +{
+> +       if (bo->tbo.base.import_attach)
+> +               dma_buf_vunmap(bo->tbo.base.dma_buf, map);
+> +       else
+> +               vmw_bo_unmap(bo);
+> +}
+> +
+> +static int vmw_external_bo_copy(struct vmw_bo *dst, u32 dst_offset,
+> +                               u32 dst_stride, struct vmw_bo *src,
+> +                               u32 src_offset, u32 src_stride,
+> +                               u32 width_in_bytes, u32 height,
+> +                               struct vmw_diff_cpy *diff)
+> +{
+> +       struct vmw_private *vmw =3D
+> +               container_of(dst->tbo.bdev, struct vmw_private, bdev);
+> +       size_t dst_size =3D dst->tbo.resource->size;
+> +       size_t src_size =3D src->tbo.resource->size;
+> +       struct iosys_map dst_map =3D {0};
+> +       struct iosys_map src_map =3D {0};
+> +       int ret, i;
+> +       u8 *vsrc;
+> +       u8 *vdst;
+> +
+> +       vsrc =3D map_external(src, &src_map);
+> +       if (!vsrc) {
+> +               drm_dbg_driver(&vmw->drm, "Wasn't able to map src\n");
+> +               ret =3D -ENOMEM;
+> +               goto out;
+> +       }
+> +
+> +       vdst =3D map_external(dst, &dst_map);
+> +       if (!vdst) {
+> +               drm_dbg_driver(&vmw->drm, "Wasn't able to map dst\n");
+> +               ret =3D -ENOMEM;
+> +               goto out;
+> +       }
+> +
+> +       vsrc +=3D src_offset;
+> +       vdst +=3D dst_offset;
+> +       if (src_stride =3D=3D dst_stride) {
+> +               dst_size -=3D dst_offset;
+> +               src_size -=3D src_offset;
+> +               memcpy(vdst, vsrc,
+> +                      min(dst_stride * height, min(dst_size, src_size)))=
+;
+> +       } else {
+> +               WARN_ON(dst_stride < width_in_bytes);
 
---
-Uladzislau Rezki
+Wouldn't that be a hard BUG_ON / error condition? I mean, there'd
+likely be a buffer overrun ensuing.
+
+> +               for (i =3D 0; i < height; ++i) {
+> +                       memcpy(vdst, vsrc, width_in_bytes);
+> +                       vsrc +=3D src_stride;
+> +                       vdst +=3D dst_stride;
+> +               }
+> +       }
+> +
+> +       diff->rect.x1 =3D (dst_offset % dst_stride) / diff->cpp;
+> +       diff->rect.y1 =3D floor(dst_offset / dst_stride);
+
+That floor looks like a leftover from an earlier (signed integer) version?
+
+> +       diff->rect.x2 =3D diff->rect.x1 + width_in_bytes / diff->cpp;
+> +       diff->rect.y2 =3D diff->rect.y1 + height;
+> +
+> +       ret =3D 0;
+> +out:
+> +       unmap_external(src, &src_map);
+> +       unmap_external(dst, &dst_map);
+> +
+> +       return ret;
+> +}
+> +
+>  /**
+>   * vmw_bo_cpu_blit - in-kernel cpu blit.
+>   *
+> - * @dst: Destination buffer object.
+> + * @vmw_dst: Destination buffer object.
+>   * @dst_offset: Destination offset of blit start in bytes.
+>   * @dst_stride: Destination stride in bytes.
+> - * @src: Source buffer object.
+> + * @vmw_src: Source buffer object.
+>   * @src_offset: Source offset of blit start in bytes.
+>   * @src_stride: Source stride in bytes.
+>   * @w: Width of blit.
+> @@ -444,13 +536,15 @@ static int vmw_bo_cpu_blit_line(struct vmw_bo_blit_=
+line_data *d,
+>   * Neither of the buffer objects may be placed in PCI memory
+>   * (Fixed memory in TTM terminology) when using this function.
+>   */
+> -int vmw_bo_cpu_blit(struct ttm_buffer_object *dst,
+> +int vmw_bo_cpu_blit(struct vmw_bo *vmw_dst,
+>                     u32 dst_offset, u32 dst_stride,
+> -                   struct ttm_buffer_object *src,
+> +                   struct vmw_bo *vmw_src,
+>                     u32 src_offset, u32 src_stride,
+>                     u32 w, u32 h,
+>                     struct vmw_diff_cpy *diff)
+>  {
+> +       struct ttm_buffer_object *src =3D &vmw_src->tbo;
+> +       struct ttm_buffer_object *dst =3D &vmw_dst->tbo;
+>         struct ttm_operation_ctx ctx =3D {
+>                 .interruptible =3D false,
+>                 .no_wait_gpu =3D false
+> @@ -460,6 +554,11 @@ int vmw_bo_cpu_blit(struct ttm_buffer_object *dst,
+>         int ret =3D 0;
+>         struct page **dst_pages =3D NULL;
+>         struct page **src_pages =3D NULL;
+> +       bool src_external =3D (src->ttm->page_flags & TTM_TT_FLAG_EXTERNA=
+L) !=3D 0;
+> +       bool dst_external =3D (dst->ttm->page_flags & TTM_TT_FLAG_EXTERNA=
+L) !=3D 0;
+> +
+> +       if (WARN_ON(dst =3D=3D src))
+> +               return -EINVAL;
+>
+>         /* Buffer objects need to be either pinned or reserved: */
+>         if (!(dst->pin_count))
+> @@ -479,6 +578,11 @@ int vmw_bo_cpu_blit(struct ttm_buffer_object *dst,
+>                         return ret;
+>         }
+>
+> +       if (src_external || dst_external)
+> +               return vmw_external_bo_copy(vmw_dst, dst_offset, dst_stri=
+de,
+> +                                           vmw_src, src_offset, src_stri=
+de,
+> +                                           w, h, diff);
+> +
+>         if (!src->ttm->pages && src->ttm->sg) {
+>                 src_pages =3D kvmalloc_array(src->ttm->num_pages,
+>                                            sizeof(struct page *), GFP_KER=
+NEL);
+> diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h b/drivers/gpu/drm/vmwgfx=
+/vmwgfx_drv.h
+> index 32f50e595809..3f4719b3c268 100644
+> --- a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h
+> +++ b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h
+> @@ -1353,9 +1353,9 @@ void vmw_diff_memcpy(struct vmw_diff_cpy *diff, u8 =
+*dest, const u8 *src,
+>
+>  void vmw_memcpy(struct vmw_diff_cpy *diff, u8 *dest, const u8 *src, size=
+_t n);
+>
+> -int vmw_bo_cpu_blit(struct ttm_buffer_object *dst,
+> +int vmw_bo_cpu_blit(struct vmw_bo *dst,
+>                     u32 dst_offset, u32 dst_stride,
+> -                   struct ttm_buffer_object *src,
+> +                   struct vmw_bo *src,
+>                     u32 src_offset, u32 src_stride,
+>                     u32 w, u32 h,
+>                     struct vmw_diff_cpy *diff);
+> diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c b/drivers/gpu/drm/vmwgf=
+x/vmwgfx_stdu.c
+> index 5106413c14b7..3cc664384b66 100644
+> --- a/drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c
+> +++ b/drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c
+> @@ -502,7 +502,7 @@ static void vmw_stdu_bo_cpu_commit(struct vmw_kms_dir=
+ty *dirty)
+>                 container_of(dirty->unit, typeof(*stdu), base);
+>         s32 width, height;
+>         s32 src_pitch, dst_pitch;
+> -       struct ttm_buffer_object *src_bo, *dst_bo;
+> +       struct vmw_bo *src_bo, *dst_bo;
+>         u32 src_offset, dst_offset;
+>         struct vmw_diff_cpy diff =3D VMW_CPU_BLIT_DIFF_INITIALIZER(stdu->=
+cpp);
+>
+> @@ -517,11 +517,11 @@ static void vmw_stdu_bo_cpu_commit(struct vmw_kms_d=
+irty *dirty)
+>
+>         /* Assume we are blitting from Guest (bo) to Host (display_srf) *=
+/
+>         src_pitch =3D stdu->display_srf->metadata.base_size.width * stdu-=
+>cpp;
+> -       src_bo =3D &stdu->display_srf->res.guest_memory_bo->tbo;
+> +       src_bo =3D stdu->display_srf->res.guest_memory_bo;
+>         src_offset =3D ddirty->top * src_pitch + ddirty->left * stdu->cpp=
+;
+>
+>         dst_pitch =3D ddirty->pitch;
+> -       dst_bo =3D &ddirty->buf->tbo;
+> +       dst_bo =3D ddirty->buf;
+>         dst_offset =3D ddirty->fb_top * dst_pitch + ddirty->fb_left * std=
+u->cpp;
+>
+>         (void) vmw_bo_cpu_blit(dst_bo, dst_offset, dst_pitch,
+> @@ -1143,7 +1143,7 @@ vmw_stdu_bo_populate_update_cpu(struct vmw_du_updat=
+e_plane  *update, void *cmd,
+>         struct vmw_diff_cpy diff =3D VMW_CPU_BLIT_DIFF_INITIALIZER(0);
+>         struct vmw_stdu_update_gb_image *cmd_img =3D cmd;
+>         struct vmw_stdu_update *cmd_update;
+> -       struct ttm_buffer_object *src_bo, *dst_bo;
+> +       struct vmw_bo *src_bo, *dst_bo;
+>         u32 src_offset, dst_offset;
+>         s32 src_pitch, dst_pitch;
+>         s32 width, height;
+> @@ -1157,11 +1157,11 @@ vmw_stdu_bo_populate_update_cpu(struct vmw_du_upd=
+ate_plane  *update, void *cmd,
+>
+>         diff.cpp =3D stdu->cpp;
+>
+> -       dst_bo =3D &stdu->display_srf->res.guest_memory_bo->tbo;
+> +       dst_bo =3D stdu->display_srf->res.guest_memory_bo;
+>         dst_pitch =3D stdu->display_srf->metadata.base_size.width * stdu-=
+>cpp;
+>         dst_offset =3D bb->y1 * dst_pitch + bb->x1 * stdu->cpp;
+>
+> -       src_bo =3D &vfbbo->buffer->tbo;
+> +       src_bo =3D vfbbo->buffer;
+>         src_pitch =3D update->vfb->base.pitches[0];
+>         src_offset =3D bo_update->fb_top * src_pitch + bo_update->fb_left=
+ *
+>                 stdu->cpp;
+> --
+> 2.43.0
+>
+
+LGTM, just with those two remarks.
+
+Reviewed-by: Martin Krastev <martin.krastev@broadcom.com>
+
+Regards,
+Martin
 
