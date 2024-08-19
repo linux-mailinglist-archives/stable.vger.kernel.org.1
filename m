@@ -1,104 +1,305 @@
-Return-Path: <stable+bounces-69457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69458-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 710F595650F
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 09:54:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DEF3956529
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 10:04:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F3C2AB22930
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 07:54:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C91301F2349A
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 08:04:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24A4F15AD83;
-	Mon, 19 Aug 2024 07:54:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 330791552FA;
+	Mon, 19 Aug 2024 08:04:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b="Qe0QhUeE"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="ll7Qb2Ui";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="9udWDGz9";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="EdzuyuQW";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="3dT3ANge"
 X-Original-To: stable@vger.kernel.org
-Received: from forwardcorp1a.mail.yandex.net (forwardcorp1a.mail.yandex.net [178.154.239.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17B8115AAB1;
-	Mon, 19 Aug 2024 07:54:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.154.239.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00B2614D29A
+	for <stable@vger.kernel.org>; Mon, 19 Aug 2024 08:04:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724054083; cv=none; b=JctXAqzmO3Vd9Gd0+dhQXiG/OpM3gOkTpzyZpncr9/zfDhQ5pIIgC0CEts9HYQ11Qq/0Rc1BrqOhOE/f49BvQHFgIpnXWasCM65XmIpG3gsD298z9z13xusbSmkUH0M4q4Ws57h1CwN1+6spuqhD5mfKTWNEPHeDv/wsP01691w=
+	t=1724054668; cv=none; b=H005a7pgreTZDK9R0K53YT/x4rtEgcJjLEL/saJB7yXnpcl+mM/VtF7Fe92cvWd9CFztXJejJxhzXckuVNdBomRTg4C5NbeM/CvVjw/c3SWjWIWeLkvDJejSlsv9vCgJzNz6ANZsz0MYBcXY7JpSdl9/L+JaDMpAZfuxNdNaDJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724054083; c=relaxed/simple;
-	bh=Tz6zhJqrkiXmYBOuhOMdTTUN30OczbcwT5/Bmwip71E=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Lk8VA2nBTYfwCeeYzsJP+o91OVgeKmGP+K1mRyaY6344rAuLNH8cXTkN/CqvSSwqgeh1MiK2J6OuCb3UZEpQ9BKIOPlz95c6kh8spEDcvFckcN7YsPFIWyvTcbcxPSgmtzcen+0hR4+aQHorelZh5Un6iYmnyQdFbwNekXQSBYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru; spf=pass smtp.mailfrom=yandex-team.ru; dkim=pass (1024-bit key) header.d=yandex-team.ru header.i=@yandex-team.ru header.b=Qe0QhUeE; arc=none smtp.client-ip=178.154.239.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yandex-team.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yandex-team.ru
-Received: from mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net (mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net [IPv6:2a02:6b8:c1f:6401:0:640:7e6f:0])
-	by forwardcorp1a.mail.yandex.net (Yandex) with ESMTPS id 7C40860CF5;
-	Mon, 19 Aug 2024 10:54:28 +0300 (MSK)
-Received: from kniv-nix.yandex-team.ru (unknown [2a02:6b8:b081:a411::1:16])
-	by mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net (smtpcorp/Yandex) with ESMTPSA id MsG0Nr3IWmI0-UvhOWPYn;
-	Mon, 19 Aug 2024 10:54:27 +0300
-X-Yandex-Fwd: 1
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yandex-team.ru;
-	s=default; t=1724054067;
-	bh=mR59kDa39T2CrMpsJrUAK8Rv/tzywGTEs2gymkli9HE=;
-	h=Message-Id:Date:Cc:Subject:To:From;
-	b=Qe0QhUeEmAXV1rsP6rqopCg9RzadWDbatIgr3EwK+oBcDoxBOue+VOxK/OIlVLy7h
-	 Qky6L07Tnusm8kpVkPTgBki6HIrdmvb4wc3K2iBMgZv3yfCYRSRJrUJy+9/VU9Sjpb
-	 eNSAOmELqQjo+5hyhCTCm/nd/sRemvXXGTlgnc3c=
-Authentication-Results: mail-nwsmtp-smtp-corp-main-69.vla.yp-c.yandex.net; dkim=pass header.i=@yandex-team.ru
-From: Nikolay Kuratov <kniv@yandex-team.ru>
-To: linux-kernel@vger.kernel.org
-Cc: netdev@vger.kernel.org,
-	stable@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	Kumar Sanghvi <kumaras@chelsio.com>,
-	Potnuri Bharat Teja <bharat@chelsio.com>,
-	Rahul Lakkireddy <rahul.lakkireddy@chelsio.com>,
-	Ganesh Goudar <ganeshgr@chelsio.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Simon Horman <horms@kernel.org>,
-	Nikolay Kuratov <kniv@yandex-team.ru>
-Subject: [PATCH v2] cxgb4: add forgotten u64 ivlan cast before shift
-Date: Mon, 19 Aug 2024 10:54:08 +0300
-Message-Id: <20240819075408.92378-1-kniv@yandex-team.ru>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1724054668; c=relaxed/simple;
+	bh=Hv3vonilsrI12tvOAkcRY0T7GXHW7lHFrE1IPjQvxA8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FnTakWtgSJ7WFDPDl7SUnQoCAeTdPzcR/btuGb5gCAy9x4HgPFUDVzXRdZxOyEtM4HTBgrSoObgqc5JmAozfIkOle+Gr1hxe77C8myn4taighhZ+mVDxZFAvIdaGePqPV/pgxLBMwcx+z3B2nMVaboerqxg2sLFL66Eb57csJxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=ll7Qb2Ui; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=9udWDGz9; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=EdzuyuQW; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=3dT3ANge; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id ED23922990;
+	Mon, 19 Aug 2024 08:04:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1724054664; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=ILJjJMgN/vVG1KF3mgEFsWgeLKvgG5ha1rlaYTvfjfY=;
+	b=ll7Qb2UikIV3JfslfL43CffJuCg5S8azRQkFt7+pKJSc1bnqbLHnYn8H74TEHcmwTzA2P6
+	mSNfghfY4+vzXBZd2B0FS49xSRcmg5AcJiG9eSHyfn5hYWW7ycCYK4GN9+rJfb+M2dvnRe
+	sEtmas8hbfZGzJBSqi9+GYkcVgnufZE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1724054664;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=ILJjJMgN/vVG1KF3mgEFsWgeLKvgG5ha1rlaYTvfjfY=;
+	b=9udWDGz9JNWIHTPO1GWCDyL0L+B6f96+v/MqJfYJ9GPlheGCvSh97kBv1BuQkGiQZ/j4Ui
+	YnRLH9Z84kaziHAA==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=EdzuyuQW;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=3dT3ANge
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1724054662; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=ILJjJMgN/vVG1KF3mgEFsWgeLKvgG5ha1rlaYTvfjfY=;
+	b=EdzuyuQWN6253r2KEmvZH0p+TmfaRrPZjTQJ4FCrz3e1qndYwyXCkv0m8/REkOuuHHHKve
+	/lKAxsVWidXFls5aaaTbKdKmOgsVL2rF2Aq/d0JNcAHVFnVb8mMPdaCc/SE7RBuwfh2Y0h
+	b5ekwPZJigTVYnPQbQIjieQS5PkeODk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1724054662;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=ILJjJMgN/vVG1KF3mgEFsWgeLKvgG5ha1rlaYTvfjfY=;
+	b=3dT3ANgebDVQeZe7yn3zs7di46UaOK5tmoY2v1v8YFw8gteun8uoCSPdPMblB+L1mW7fDr
+	ak1m1bPC1xSuqvCA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 967B1137C3;
+	Mon, 19 Aug 2024 08:04:22 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id oulsI4b8wmZLDQAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Mon, 19 Aug 2024 08:04:22 +0000
+Message-ID: <8bbf3f92-3719-4ff4-9587-e076635758d1@suse.de>
+Date: Mon, 19 Aug 2024 10:04:22 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] video/aperture: match the pci device when calling
+ sysfb_disable()
+To: Alex Deucher <alexdeucher@gmail.com>
+Cc: kernel test robot <lkp@intel.com>,
+ Alex Deucher <alexander.deucher@amd.com>, amd-gfx@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, oe-kbuild-all@lists.linux.dev,
+ intel-gfx@lists.freedesktop.org,
+ Javier Martinez Canillas <javierm@redhat.com>, Helge Deller <deller@gmx.de>,
+ Sam Ravnborg <sam@ravnborg.org>, Daniel Vetter <daniel.vetter@ffwll.ch>,
+ stable@vger.kernel.org
+References: <20240809150327.2485848-1-alexander.deucher@amd.com>
+ <202408101951.tXyqYOzv-lkp@intel.com>
+ <1c77f913-4707-4300-b84a-36fcf99942f4@suse.de>
+ <CADnq5_NjCFyy+bQY+uyijcZwvwXYkvVLLUQdtzN_ODvHAj193Q@mail.gmail.com>
+Content-Language: en-US
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <CADnq5_NjCFyy+bQY+uyijcZwvwXYkvVLLUQdtzN_ODvHAj193Q@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: ED23922990
+X-Spam-Score: -4.51
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-4.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	URIBL_BLOCKED(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,intel.com:email,suse.de:dkim,suse.de:mid,suse.de:email,01.org:url];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	FREEMAIL_TO(0.00)[gmail.com];
+	ARC_NA(0.00)[];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com,gmx.de];
+	FREEMAIL_CC(0.00)[intel.com,amd.com,lists.freedesktop.org,lists.linux.dev,redhat.com,gmx.de,ravnborg.org,ffwll.ch,vger.kernel.org];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,suse.de:dkim,suse.de:mid,suse.de:email]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Flag: NO
+X-Spam-Level: 
 
-It is done everywhere in cxgb4 code, e.g. in is_filter_exact_match()
-There is no reason it should not be done here
+Hi
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE
+Am 16.08.24 um 22:57 schrieb Alex Deucher:
+> On Mon, Aug 12, 2024 at 8:10 AM Thomas Zimmermann <tzimmermann@suse.de> wrote:
+>> Hi
+>>
+>> Am 10.08.24 um 13:44 schrieb kernel test robot:
+>>> Hi Alex,
+>>>
+>>> kernel test robot noticed the following build errors:
+>>>
+>>> [auto build test ERROR on drm-misc/drm-misc-next]
+>>> [also build test ERROR on linus/master v6.11-rc2 next-20240809]
+>>> [If your patch is applied to the wrong git tree, kindly drop us a note.
+>>> And when submitting patch, we suggest to use '--base' as documented in
+>>> https://git-scm.com/docs/git-format-patch#_base_tree_information]
+>>>
+>>> url:    https://github.com/intel-lab-lkp/linux/commits/Alex-Deucher/video-aperture-match-the-pci-device-when-calling-sysfb_disable/20240810-021357
+>>> base:   git://anongit.freedesktop.org/drm/drm-misc drm-misc-next
+>>> patch link:    https://lore.kernel.org/r/20240809150327.2485848-1-alexander.deucher%40amd.com
+>>> patch subject: [PATCH] video/aperture: match the pci device when calling sysfb_disable()
+>>> config: csky-randconfig-001-20240810 (https://download.01.org/0day-ci/archive/20240810/202408101951.tXyqYOzv-lkp@intel.com/config)
+>>> compiler: csky-linux-gcc (GCC) 14.1.0
+>>> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240810/202408101951.tXyqYOzv-lkp@intel.com/reproduce)
+>>>
+>>> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+>>> the same patch/commit), kindly add following tags
+>>> | Reported-by: kernel test robot <lkp@intel.com>
+>>> | Closes: https://lore.kernel.org/oe-kbuild-all/202408101951.tXyqYOzv-lkp@intel.com/
+>>>
+>>> All errors (new ones prefixed by >>):
+>>>
+>>>      csky-linux-ld: drivers/video/aperture.o: in function `aperture_remove_conflicting_pci_devices':
+>>>>> aperture.c:(.text+0x222): undefined reference to `screen_info_pci_dev'
+>> Strange. There's a already placeholder [1] for architectures without
+>> PCI. Otherwise the source file is listed at [2].
+> So I dug into this, and the problem seems to be that
+> CONFIG_SCREEN_INFO is not defined in that config.  I can't figure out
+> how this should work in that case or why this is not a problem in
+> drivers/firmware/sysfb.c.
+>
+> Something like this works:
+> diff --git a/drivers/video/aperture.c b/drivers/video/aperture.c
+> index 56a5a0bc2b1af..50e98210c9fe5 100644
+> --- a/drivers/video/aperture.c
+> +++ b/drivers/video/aperture.c
+> @@ -347,7 +347,9 @@ EXPORT_SYMBOL(__aperture_remove_legacy_vga_devices);
+>    */
+>   int aperture_remove_conflicting_pci_devices(struct pci_dev *pdev,
+> const char *name)
+>   {
+> +#if defined(CONFIG_SCREEN_INFO)
+>          struct screen_info *si = &screen_info;
+> +#endif
+>          bool primary = false;
+>          resource_size_t base, size;
+>          int bar, ret = 0;
+> @@ -355,8 +357,10 @@ int
+> aperture_remove_conflicting_pci_devices(struct pci_dev *pdev, const
+> char *na
+>          if (pdev == vga_default_device())
+>                  primary = true;
+>
+> +#if defined(CONFIG_SCREEN_INFO)
+>          if (pdev == screen_info_pci_dev(si))
+>                  sysfb_disable();
+> +#endif
+>
+>          for (bar = 0; bar < PCI_STD_NUM_BARS; ++bar) {
+>                  if (!(pci_resource_flags(pdev, bar) & IORESOURCE_MEM))
+>
+> But that can't be the right fix...  Any ideas?
 
-Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
-Cc: stable@vger.kernel.org
-Fixes: 12b276fbf6e0 ("cxgb4: add support to create hash filters")
-Reviewed-by: Simon Horman <horms@kernel.org>
----
-v2: Wrap line to 80 characters
+Thanks for investigating. I'd say we should pass the device (pdev->dev) 
+to sysfb_disable() and  do the test there. In sysfb.c, next to 
+sysfb_disable(), you'll find sysfb_parent_dev(), which gives the Linux 
+device of the screen_info.
 
- drivers/net/ethernet/chelsio/cxgb4/cxgb4_filter.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+The code then looks something like this:
 
-diff --git a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_filter.c b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_filter.c
-index 786ceae34488..dd9e68465e69 100644
---- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_filter.c
-+++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_filter.c
-@@ -1244,7 +1244,8 @@ static u64 hash_filter_ntuple(struct ch_filter_specification *fs,
- 	 * in the Compressed Filter Tuple.
- 	 */
- 	if (tp->vlan_shift >= 0 && fs->mask.ivlan)
--		ntuple |= (FT_VLAN_VLD_F | fs->val.ivlan) << tp->vlan_shift;
-+		ntuple |= (u64)(FT_VLAN_VLD_F |
-+				fs->val.ivlan) << tp->vlan_shift;
- 
- 	if (tp->port_shift >= 0 && fs->mask.iport)
- 		ntuple |= (u64)fs->val.iport << tp->port_shift;
+sysfb_disable(struct device *dev)
+{
+     if (dev && dev == sysfb_parent_dev(screen_info))
+       return
+
+   /* else do the current code */
+}
+
+there's an invocation of sysfb_disable() in drivers/of/platform.c where 
+you can pass NULL.
+
+Best regards
+Thomas
+
+>
+> Alex
+>
+>> [1]
+>> https://elixir.bootlin.com/linux/v6.10/source/include/linux/screen_info.h#L127
+>> [2] https://elixir.bootlin.com/linux/v6.10/source/drivers/video/Makefile#L11
+>>
+>> Best regards
+>> Thomas
+>>
+>>>      csky-linux-ld: drivers/video/aperture.o: in function `devm_aperture_acquire_release':
+>>>>> aperture.c:(.text+0x2c0): undefined reference to `screen_info'
+>>>>> csky-linux-ld: aperture.c:(.text+0x2c4): undefined reference to `screen_info_pci_dev'
+>> --
+>> --
+>> Thomas Zimmermann
+>> Graphics Driver Developer
+>> SUSE Software Solutions Germany GmbH
+>> Frankenstrasse 146, 90461 Nuernberg, Germany
+>> GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
+>> HRB 36809 (AG Nuernberg)
+>>
+
 -- 
-2.34.1
+--
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Frankenstrasse 146, 90461 Nuernberg, Germany
+GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
+HRB 36809 (AG Nuernberg)
 
 
