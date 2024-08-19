@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-69520-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69521-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BC8E956794
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 11:54:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0A7F956795
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 11:54:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 81F46B2226F
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 09:54:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E80B28238B
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 09:54:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4791815B986;
-	Mon, 19 Aug 2024 09:54:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AAA815C14A;
+	Mon, 19 Aug 2024 09:54:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HC8AlvG5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vuxrg5WI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 076A013B592
-	for <stable@vger.kernel.org>; Mon, 19 Aug 2024 09:54:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF29D13B592
+	for <stable@vger.kernel.org>; Mon, 19 Aug 2024 09:54:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724061261; cv=none; b=fbJrxfjNb/MeU8cJVuBxkBpHf6ahwV6182B0pEbOi2042cekXCbKfRfwcOOt5pVBqXRPknJ900jr3a4BzLsHVPR8fjWL/EtKIoNpOqklw9tUI2oH16OfrqoqhS5ege/pF3vEDtHpLTIRUYDtHjxAK5nhVKkml5UgblzttsyOQbE=
+	t=1724061268; cv=none; b=eBq3NBZm7uaNgmt8ydf8HrPikSJyyYLiqXa/D1EATcsEOKrDnwQUQaRjsP9tpyMv2ovek269okhIjYvnKciFNMjaVXi1J/Xq1YcsOI1Q5UxMTmRDod+1D2s25LHe2X2ez/YnWbNe/sO+ZkK0Uzky4Y7KrlHZHGs5il1qb4E0pOE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724061261; c=relaxed/simple;
-	bh=zh460gA+57UevNhf7MVrdfYoflryl297D42fvOyV9u4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Wd8zNV4+pLtfWUl1LRFxMmGkhnhuzsnV0lYLEpLFued5iD2HGlkPmCNnbTAFM7ADy3tfaGzgzaZoxPnzqHLL9QVk+HVAw/Tk94SmXe9tllgLiDMGQzVa5HG5DH4b7Mvai7JGC6e/hV2IZl1fabBmdOtC4HZi6sP3veiX0GQBVUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HC8AlvG5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 326B9C32782;
-	Mon, 19 Aug 2024 09:54:20 +0000 (UTC)
+	s=arc-20240116; t=1724061268; c=relaxed/simple;
+	bh=OrZNBCmAGRAZ/b22gFwaBAp47weQVLYXYMA9mWT98gw=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=t9BlUi0/t62BnRQIZzZHfewGYaZAg2iTnoI9fmjCTSeARESqdcZHJ6+OpfK8qhZuYtOLz7cPxZTys5zF2O+AxuKpITzIVAA+DlRE9QqlmUE2/akskRVS6IT83quqyUca9lulorIuAsNkE7gvW8toDCc1sQ4CaQbPsS1KRefrZHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vuxrg5WI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FC47C32782;
+	Mon, 19 Aug 2024 09:54:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724061260;
-	bh=zh460gA+57UevNhf7MVrdfYoflryl297D42fvOyV9u4=;
+	s=korg; t=1724061268;
+	bh=OrZNBCmAGRAZ/b22gFwaBAp47weQVLYXYMA9mWT98gw=;
 	h=Subject:To:Cc:From:Date:From;
-	b=HC8AlvG5y8uCG+sbUPB3Kzhhd3mnmzdZJ+I7xQqJFj5hYuiwcaUKPcwJGCEMGaUBN
-	 RuK3ef0XNeLYlpwEmRV5QBwKgJh9n/hLf0bg3sLRa7u3RIWesrysTiFAPgxpuVcQw+
-	 hcvJovH46+A996AgGQfHJO0vCUsLNDj+A11aOFOA=
-Subject: FAILED: patch "[PATCH] mm/vmalloc: fix page mapping if vm_area_alloc_pages() with" failed to apply to 6.6-stable tree
+	b=Vuxrg5WILP/FXFAkLPcBUzgmGv8tj2CnNmv+ZQrUl/MtpV8elbFOQTbhXOzZnovtc
+	 Dznfqbf38io1gBzi8tMgDaKIc2t05MI/GAaxHxvUaRAjye9WlewUnicsi+kAW0efse
+	 94yhg+fjEHIMXdZXgQWOCrnFqa+dryaX0M5c5IUg=
+Subject: FAILED: patch "[PATCH] mm/vmalloc: fix page mapping if vm_area_alloc_pages() with" failed to apply to 6.1-stable tree
 To: hailong.liu@oppo.com,akpm@linux-foundation.org,baohua@kernel.org,bhe@redhat.com,mhocko@suse.com,stable@vger.kernel.org,urezki@gmail.com,willy@infradead.org,zhengtangquan@oppo.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 Aug 2024 11:54:17 +0200
-Message-ID: <2024081917-rubber-cable-a9ab@gregkh>
+Date: Mon, 19 Aug 2024 11:54:18 +0200
+Message-ID: <2024081918-payday-symphonic-ac65@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,26 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 61ebe5a747da649057c37be1c37eb934b4af79ca
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081917-rubber-cable-a9ab@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081918-payday-symphonic-ac65@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
 61ebe5a747da ("mm/vmalloc: fix page mapping if vm_area_alloc_pages() with high order fallback to order 0")
 88ae5fb755b0 ("mm: vmalloc: enable memory allocation profiling")
+e9c3cda4d86e ("mm, vmalloc: fix high order __GFP_NOFAIL allocations")
+3ba2c3ff98ea ("Merge tag 'modules-6.2-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/mcgrof/linux")
 
 thanks,
 
