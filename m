@@ -1,49 +1,65 @@
-Return-Path: <stable+bounces-69461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69462-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F55C9565FB
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 10:49:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C319E95661A
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 10:55:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BCFDF1F25989
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 08:49:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 430371C21BC6
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 08:55:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 514C415B968;
-	Mon, 19 Aug 2024 08:49:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D22C15B555;
+	Mon, 19 Aug 2024 08:55:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC33815B140;
-	Mon, 19 Aug 2024 08:49:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F119947A;
+	Mon, 19 Aug 2024 08:55:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724057348; cv=none; b=dVcq5D0atkw8YcLdt7n6WHzqJJFKIGAPODQV82dTiT2ovrmA7uWl6LTXduC7tYZAPoy4fVtUGY5kAK7/9FbgzTnXxjIp2ZLOMW2D1OnkeUV8r2S4aGngKpT+SXuTBFDqfJNRvwU5Ryx4f/KGB20hxXFpy0LUCpgd5ZO9TbLiS94=
+	t=1724057719; cv=none; b=Ts/1ECPXWv/GVVE6InC2zlArQVfxPetv/6o7zmRtXnFqaDa2ijo3IItTdsxK9pceD7jk0zQCMLKe0GH6FkLSpxEry/LhTtzaMPJ1tTXlQrpfgpqLdHfM66xYjUcnv2KeUuMALIeI4rLyfdpDYTb2hNw/9XobM6+l1s2NPF5fV5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724057348; c=relaxed/simple;
-	bh=3YlNtsaDCcsAcHaVTN0CfYd2K6RSzN6+m+xD9anLX84=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=iPdLJ3tZNB39xsrMexvSUXqbZ406g9WCrJ+vCjEQh91aATw2t7Wl8lpAQC4FQP8EgYwUv81Q/D9RkJSScUzIkqpqupylMtxqsZFN5fRS3f0fGuK690Gh9jWfnl0+ux/Q6W2GOZ3FcbD4xcmT819PVDrxJj4Xi8Q0/kD7pCs4HCw=
+	s=arc-20240116; t=1724057719; c=relaxed/simple;
+	bh=BZ+tG3sPqkdp1r8WVl3AmA1qeUmicg7w7NSIoJ6H0IM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=gR/Xe4Y8JnmfYbisuGQkVu8GQpwI3V534I0JtVsAHeW/k3rIEDVNzv8Zp9mVqStVSuEmG+0Mug+Fiq+hdrG6hsHzjQ69pwkq56st0vMzJj3TijqoS7saRFAZltFFg9TQcUoEFR0eZ+QDAca0nrpERI3ay4Bz8pz+oDKlkkYYKw4=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
 Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
-	by APP-03 (Coremail) with SMTP id rQCowACnhRjsBsNmhUISCA--.42807S2;
-	Mon, 19 Aug 2024 16:48:51 +0800 (CST)
+	by APP-03 (Coremail) with SMTP id rQCowAA3XQBaCMNmOqISCA--.43879S2;
+	Mon, 19 Aug 2024 16:55:00 +0800 (CST)
 From: Ma Ke <make24@iscas.ac.cn>
-To: herbert@gondor.apana.org.au,
-	davem@davemloft.net,
-	j-keerthy@ti.com,
-	t-kristo@ti.com,
+To: nbd@nbd.name,
+	lorenzo@kernel.org,
+	ryder.lee@mediatek.com,
+	shayne.chen@mediatek.com,
+	sean.wang@mediatek.com,
+	kvalo@kernel.org,
+	matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com,
+	chui-hao.chiu@mediatek.com,
+	howard-yh.hsu@mediatek.com,
+	StanleyYP.Wang@mediatek.com,
+	benjamin-jw.lin@mediatek.com,
+	allen.ye@mediatek.com,
+	chank.chen@mediatek.com,
+	meichia.chiu@mediatek.com,
+	Bo.Jiao@mediatek.com,
+	evelyn.tsai@mediatek.com,
+	Money.Wang@mediatek.com,
 	akpm@linux-foundation.org
-Cc: linux-crypto@vger.kernel.org,
+Cc: linux-wireless@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
 	Ma Ke <make24@iscas.ac.cn>,
 	stable@vger.kernel.org
-Subject: [PATCH RESEND] crypto: sa2ul - fix memory leak in sa_cra_init_aead()
-Date: Mon, 19 Aug 2024 16:48:43 +0800
-Message-Id: <20240819084843.1012289-1-make24@iscas.ac.cn>
+Subject: [PATCH RESEND] wifi: mt76: mt7996: fix NULL pointer dereference in mt7996_mcu_sta_bfer_he
+Date: Mon, 19 Aug 2024 16:54:49 +0800
+Message-Id: <20240819085449.1013279-1-make24@iscas.ac.cn>
 X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -52,92 +68,51 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowACnhRjsBsNmhUISCA--.42807S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7tw18KFykGF1xtF45Jw43Jrb_yoW8uw4fpF
-	s5uFWjyry5JFn3GFWftws5Gr15X3yS93yagayxGwn3ZrnF9r1v9FW7CFy0vF17GF1kGr17
-	XFZrJr45Zr1UG3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvK14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
-	6r4UJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
-	CE3s1lnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xv
-	F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r
-	4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I
-	648v4I1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7
-	v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF
-	1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIx
-	AIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI
-	42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxh
-	VjvjDU0xZFpf9x0JUQvtAUUUUU=
+X-CM-TRANSID:rQCowAA3XQBaCMNmOqISCA--.43879S2
+X-Coremail-Antispam: 1UD129KBjvdXoWruw4DZw1UtrWxKF1xJr13Jwb_yoWDXrXE9r
+	n29FnIqw48Kw48Kr429wnxuryay3ykZF97Gay5tayfta97J3yUZF1IvFn3Ar13uFn7ZF1U
+	J3ZrJFy0y395WjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbS8FF20E14v26ryj6rWUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Cr0_
+	Gr1UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+	Cq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
+	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr
+	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IE
+	rcIFxwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVW8ZVWrXwCF04k20xvY0x
+	0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E
+	7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIxAIcV
+	C0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF
+	04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7
+	CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0pRNAwsUUUUU=
 X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-Currently the resource allocated by crypto_alloc_shash() is not freed in
-case crypto_alloc_aead() fails, resulting in memory leak.
-
-Add crypto_free_shash() to fix it.
+Fix the NULL pointer dereference in mt7996_mcu_sta_bfer_he
+routine adding an sta interface to the mt7996 driver.
 
 Found by code review.
 
 Cc: stable@vger.kernel.org
-Fixes: d2c8ac187fc9 ("crypto: sa2ul - Add AEAD algorithm support")
+Fixes: 98686cd21624 ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
 Signed-off-by: Ma Ke <make24@iscas.ac.cn>
 ---
- drivers/crypto/sa2ul.c | 20 +++++++++++++-------
- 1 file changed, 13 insertions(+), 7 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/crypto/sa2ul.c b/drivers/crypto/sa2ul.c
-index 461eca40e878..b5af621f7f17 100644
---- a/drivers/crypto/sa2ul.c
-+++ b/drivers/crypto/sa2ul.c
-@@ -1740,7 +1740,8 @@ static int sa_cra_init_aead(struct crypto_aead *tfm, const char *hash,
- 	ctx->shash = crypto_alloc_shash(hash, 0, CRYPTO_ALG_NEED_FALLBACK);
- 	if (IS_ERR(ctx->shash)) {
- 		dev_err(sa_k3_dev, "base driver %s couldn't be loaded\n", hash);
--		return PTR_ERR(ctx->shash);
-+		ret = PTR_ERR(ctx->shash);
-+		goto err_free_shash;
- 	}
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+index 2e4fa9f48dfb..cba28d8d5562 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+@@ -1544,6 +1544,9 @@ mt7996_mcu_sta_bfer_he(struct ieee80211_sta *sta, struct ieee80211_vif *vif,
+ 	u8 nss_mcs = mt7996_mcu_get_sta_nss(mcs_map);
+ 	u8 snd_dim, sts;
  
- 	ctx->fallback.aead = crypto_alloc_aead(fallback, 0,
-@@ -1749,7 +1750,8 @@ static int sa_cra_init_aead(struct crypto_aead *tfm, const char *hash,
- 	if (IS_ERR(ctx->fallback.aead)) {
- 		dev_err(sa_k3_dev, "fallback driver %s couldn't be loaded\n",
- 			fallback);
--		return PTR_ERR(ctx->fallback.aead);
-+		ret = PTR_ERR(ctx->fallback.aead);
-+		goto err_free_shash;
- 	}
- 
- 	crypto_aead_set_reqsize(tfm, sizeof(struct aead_request) +
-@@ -1757,19 +1759,23 @@ static int sa_cra_init_aead(struct crypto_aead *tfm, const char *hash,
- 
- 	ret = sa_init_ctx_info(&ctx->enc, data);
- 	if (ret)
--		return ret;
-+		goto err_free_shash;
- 
- 	ret = sa_init_ctx_info(&ctx->dec, data);
--	if (ret) {
--		sa_free_ctx_info(&ctx->enc, data);
--		return ret;
--	}
-+	if (ret)
-+		goto err_free_ctx_info;
- 
- 	dev_dbg(sa_k3_dev, "%s(0x%p) sc-ids(0x%x(0x%pad), 0x%x(0x%pad))\n",
- 		__func__, tfm, ctx->enc.sc_id, &ctx->enc.sc_phys,
- 		ctx->dec.sc_id, &ctx->dec.sc_phys);
- 
- 	return ret;
++	if (!vc)
++		return;
 +
-+err_free_ctx_info:
-+	sa_free_ctx_info(&ctx->enc, data);
-+err_free_shash:
-+	crypto_free_shash(ctx->shash);
-+	return ret;
- }
+ 	bf->tx_mode = MT_PHY_TYPE_HE_SU;
  
- static int sa_cra_init_aead_sha1(struct crypto_aead *tfm)
+ 	mt7996_mcu_sta_sounding_rate(bf);
 -- 
 2.25.1
 
