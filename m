@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-69625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69626-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F319895742B
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 21:09:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED5279574B0
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 21:45:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7F202855FC
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 19:09:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 81F21B21CAF
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 19:45:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 524E31D54E7;
-	Mon, 19 Aug 2024 19:09:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19DC61DC48A;
+	Mon, 19 Aug 2024 19:45:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K23Tcdhw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q8imgfX4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E372F26AD3;
-	Mon, 19 Aug 2024 19:09:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B30B928F3;
+	Mon, 19 Aug 2024 19:45:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724094572; cv=none; b=EjVJs8S6g3rnAkS9OmGqEpo9G4UgwjVhipqPP0thyHyOnv+PNYmEfFIZDq5TLuopCBgGP/BdpTml5Sh+qa5AS1A5a+5VXo4mLOUm8mVkGVLr5EAIMirRfgFPLqoGX2/rEZY9U5aAQKOnfZOf4Z/Td/eFsIfvFGQrpY/CmWua8ec=
+	t=1724096726; cv=none; b=UXa0qDV34Ira0XX2gfsups8h62m2Nc82yZbaQ+9WmmZ/DGX5lJ9GjrEfCkEWyITrEmZC1wGEe0zhLgiwPQEUlQPYbrpz9e63z3SwdXp99J74jrnDD6hLvbfivXA2wiMqHk0I7dWPZk0ectNo2EKxoaTLb6nQcdFSxX8op/y7OIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724094572; c=relaxed/simple;
-	bh=l1fQ+yTpICnSE9dSKG3BDMX4w4n0NCxmJvBhJmEGqB4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=YfmKR2vLYolwXbpssIP3hMZZMPEeluOd9BbKrl035u+OkzhFo6MH/X9ts4aXofWzqL9FYe06vrDqP87jrvFJ02sZUP1N656SOlDGnAFyhUv2e2zlTQEDqpURSLsgwrvK5LJ+w/2iG2EYcn2Dd1yrP6pXLnN9TaIl2E01l/ZRQlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K23Tcdhw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA725C32782;
-	Mon, 19 Aug 2024 19:09:29 +0000 (UTC)
+	s=arc-20240116; t=1724096726; c=relaxed/simple;
+	bh=rxZqESM+eUB7EBEwECl45DgTGVkm6axYqGu1hueOi3k=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ULp3/ETAFOnieizY51HkybI05+cHaIH9Cku8wdTExy/SeR/is6bxoSe5Wvu7e+sxeH4G8EfDO0FyTzvFtOTu+qkqS/oZK2ZE7EkuUDekN0a6MIP6XGXVQ4/NWg0YFWitOjQ955M3kueYnBOgFtUFmZHVKZYybGfybUfqNo/sCLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q8imgfX4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2248C32782;
+	Mon, 19 Aug 2024 19:45:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724094570;
-	bh=l1fQ+yTpICnSE9dSKG3BDMX4w4n0NCxmJvBhJmEGqB4=;
-	h=From:Date:Subject:To:Cc:From;
-	b=K23Tcdhww1EkxB49+rm3W650EQEZDN1DZ4pOCr70a90bg1W+mWxNTIBGEWrzOsxdQ
-	 /EMvooiFf+IIqBl8ZSoQCK8gk7stYV/9fyjK02RANiVANd/6bgf7+Q5IrHJjrna605
-	 3sfHSfexgVMRk/2N4SkoZbxhj8+tC6DqFIWHxeBXqQycXeOOgo/FgAXugNSB5QqnQd
-	 BGm7TQf7Psk8yCRfi2AJ47B1ggcOG9vOBhF0CqU7QPKErO3V2LFOMe5HDklGyEDSNZ
-	 eDL8qvPfw/Z5Alg22hFsgjYJiusCxk9w5Ue/Q5gJ7AZag2sYHD3Sl9TdjiH5tIFs9a
-	 1v5qjV10mlL+A==
-From: Nathan Chancellor <nathan@kernel.org>
-Date: Mon, 19 Aug 2024 12:09:22 -0700
-Subject: [PATCH] ACPI: platform-profile: Fix CFI violation when accessing
- sysfs files
+	s=k20201202; t=1724096726;
+	bh=rxZqESM+eUB7EBEwECl45DgTGVkm6axYqGu1hueOi3k=;
+	h=From:Subject:Date:To:Cc:From;
+	b=Q8imgfX4tWt0Am2fcYPQDZQDcXPfAqjIMEMTeP3vEMSe+I48OZQ+0636BAbr1rpoR
+	 OrPhUmAAJBXJIjnaTJW6fr9cTOIHE3puqIhjflPX0n2URSKycxUPlrV02KzO3WzqDv
+	 ZQFGXw3AfZ11AoKrJIjYhadbthcMneP/XH9QZUCTMIEK1HeJTqVH6GujeI3ENApz96
+	 MaFoBlQgV5xdL+BFAsSkeO4s762CYXAHwS4q92DYZh3OEk4ETH22xaNzrbkCYYmSKZ
+	 o1tK9wsVMaq/rATiyQZxI+CYM90jsEPn5h/fLLSMOAii0xmcmNrgBFiLFsQxLcozxE
+	 Lzdmf/lcqOv7Q==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH net 00/14] mptcp: pm: fix IDs not being reusable
+Date: Mon, 19 Aug 2024 21:45:18 +0200
+Message-Id: <20240819-net-mptcp-pm-reusing-id-v1-0-38035d40de5b@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -52,122 +52,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240819-acpi-platform_profile-fix-cfi-violation-v1-1-479365d848f6@kernel.org>
-X-B4-Tracking: v=1; b=H4sIAGGYw2YC/x2N0QqDMAxFf0XyvIB2E52/Msbo2sQF1JZ0iCD+u
- 8HHw7mcu0MhFSowVDsorVIkLQbNrYLw88tIKNEYXO0edd880YcsmCf/56TzJ2timQhZNgwsuEo
- yZQ2M5Lq+a+/f2DJYLSvZ6Hp6vY/jBPDv3sd5AAAA
-To: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>
-Cc: Hans de Goede <hdegoede@redhat.com>, 
- Mark Pearson <markpearson@lenovo.com>, Kees Cook <kees@kernel.org>, 
- Sami Tolvanen <samitolvanen@google.com>, linux-acpi@vger.kernel.org, 
- linux-kernel@vger.kernel.org, llvm@lists.linux.dev, patches@lists.linux.dev, 
- stable@vger.kernel.org, John Rowley <lkml@johnrowley.me>, 
- Nathan Chancellor <nathan@kernel.org>
-X-Mailer: b4 0.15-dev
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3849; i=nathan@kernel.org;
- h=from:subject:message-id; bh=l1fQ+yTpICnSE9dSKG3BDMX4w4n0NCxmJvBhJmEGqB4=;
- b=owGbwMvMwCUmm602sfCA1DTG02pJDGmHZ2T2TtC8LPzCnU3tVVZbYM1K5QeVO3XXH7z8tl5qm
- ZXRmVnrO0pZGMS4GGTFFFmqH6seNzScc5bxxqlJMHNYmUCGMHBxCsBEToQzMlzhUrrvE5x5tJHp
- V6pu56JiJXVdg/zMql8a0md81XYt+M/IsLj3AuOdt5MmRYmFBQg+OKRncsTvgeXsCesluSUjrvv
- P4AQA
-X-Developer-Key: i=nathan@kernel.org; a=openpgp;
- fpr=2437CB76E544CB6AB3D9DFD399739260CB6CB716
+X-B4-Tracking: v=1; b=H4sIAM6gw2YC/x2MwQqDMBAFf0X23IUYion9ldKD0dd0D8aQqBTEf
+ 3fxODAzB1UUQaVXc1DBLlWWpNA+Ghp/Q4pgmZTJGvs0vu05YeU5r2PmPHPBViVFdRjBeG9dcAE
+ daZ0LvvK/z2/SiD7neQHMpnhxbgAAAA==
+To: mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>, 
+ Geliang Tang <geliang@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Shuah Khan <shuah@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, 
+ "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, stable@vger.kernel.org
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2921; i=matttbe@kernel.org;
+ h=from:subject:message-id; bh=rxZqESM+eUB7EBEwECl45DgTGVkm6axYqGu1hueOi3k=;
+ b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBmw6DShCkwBCwPsrJVDaJvEoQKj7WScMrjECzPx
+ fIdApAUFeiJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZsOg0gAKCRD2t4JPQmmg
+ c3bvEADbcGE+bC1WIf8Jqlxgk1takIjIZGTB3mULFhv9P0Mr0uK3FclMmHKiui4wFIZBNHjxzWz
+ y/to1EHPzGK2eFe43EaleSE/OEjsHMfxXrD9TcDQBQ+SFI5xNgIT9Q0S5gu3OcaipqRji2Z1S6H
+ 1DsSYbtV6/1TgQTyK6MlWLsmjSsGTKhhgEdInvOenGu6z+ALsYKoAHqeDIMA1OExxaYDZi4p632
+ xR6DInNq9BmIowXTxaZLZjPJMTT8f0f6SybBUx6HcCttW9cr60Rfeolv1wnwpZIiuOVeHbvzZ8i
+ Bqtck2b8ViW9dgMDJbF8TL+ChrvnO1oGbMeT8c1c0y7a7HQZ8n3Q8dCcmcSRqZaMmSmQqJgBbci
+ LeqO1wMg1e1XmxjcBDL0IA4l0oEDnhhnrywQTDsiNwmmSW/ws77AuNYJN815oHz2U0wu6cOXIcc
+ 4s/avXQcmwDGZLDzqjoV2clt3edhoPVqjegjFahfn4Ua6Yy3nJXpXhanX2hY8yFGbHz/DdaqN6O
+ g+6URHda6DoJ71oyeqTde7O7Az4BjANkB9M8IOSlnojxcQdndB6wMFzhUuUdMS2riBxfWM9d5mh
+ loWdoTR1bDIwmUqNkrn7lJ6pnxPJyuV2hs1edGIgHl2ekNOIDf6VjovOlK+MrLbbv1H9s0IQMJ/
+ avD/dqhgMWeDisg==
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
+ fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 
-When an attribute group is created with sysfs_create_group(), the
-->sysfs_ops() callback is set to kobj_sysfs_ops, which sets the ->show()
-and ->store() callbacks to kobj_attr_show() and kobj_attr_store()
-respectively. These functions use container_of() to get the respective
-callback from the passed attribute, meaning that these callbacks need to
-be the same type as the callbacks in 'struct kobj_attribute'.
+Here are more fixes for the MPTCP in-kernel path-manager. In this
+series, the fixes are around the endpoint IDs not being reusable for
+on-going connections when re-creating endpoints with previously used IDs.
 
-However, the platform_profile sysfs functions have the type of the
-->show() and ->store() callbacks in 'struct device_attribute', which
-results a CFI violation when accessing platform_profile or
-platform_profile_choices under /sys/firmware/acpi because the types do
-not match:
+- Patch 1 fixes this case for endpoints being used to send ADD_ADDR.
+  Patch 2 validates this fix. The issue is present since v5.10.
 
-  CFI failure at kobj_attr_show+0x19/0x30 (target: platform_profile_choices_show+0x0/0x140; expected type: 0x7a69590c)
+- Patch 3 fixes this case for endpoints being used to establish new
+  subflows. Patch 4 validates this fix. The issue is present since v5.10.
 
-This happens to work because the layout of 'struct kobj_attribute' and
-'struct device_attribute' are the same, so the container_of() cast
-happens to allow the callbacks to still work.
+- Patch 5 fixes this case when all endpoints are flushed. Patch 6
+  validates this fix. The issue is present since v5.13.
 
-Change the type of platform_profile_choices_show() and
-platform_profile_{show,store}() to match the callbacks in
-'struct kobj_attribute' and update the attribute variables to match,
-which resolves the CFI violation.
+- Patch 7 removes a helper that is confusing, and introduced in v5.10.
+  It helps simplifying the next patches.
 
-Cc: stable@vger.kernel.org
-Fixes: a2ff95e018f1 ("ACPI: platform: Add platform profile support")
-Reported-by: John Rowley <lkml@johnrowley.me>
-Closes: https://github.com/ClangBuiltLinux/linux/issues/2047
-Tested-by: John Rowley <lkml@johnrowley.me>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+- Patch 8 makes sure a 'subflow' counter is only decremented when
+  removing a 'subflow' endpoint. Can be backported up to v5.13.
+
+- Patch 9 is similar, but for a 'signal' counter. Can be backported up
+  to v5.10.
+
+- Patch 10 checks the last max accepted ADD_ADDR limit before accepting
+  new ADD_ADDR. For v5.10 as well.
+
+- Patch 11 removes a wrong restriction for the userspace PM, added
+  during a refactoring in v6.5.
+
+- Patch 12 makes sure the fullmesh mode sets the ID 0 when a new subflow
+  using the source address of the initial subflow is created. Patch 13
+  covers this case. This issue is present since v5.15.
+
+- Patch 14 avoid possible UaF when selecting an address from the
+  endpoints list.
+
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 ---
- drivers/acpi/platform_profile.c | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+Matthieu Baerts (NGI0) (14):
+      mptcp: pm: re-using ID of unused removed ADD_ADDR
+      selftests: mptcp: join: check re-using ID of unused ADD_ADDR
+      mptcp: pm: re-using ID of unused removed subflows
+      selftests: mptcp: join: check re-using ID of closed subflow
+      mptcp: pm: re-using ID of unused flushed subflows
+      selftests: mptcp: join: test for flush/re-add endpoints
+      mptcp: pm: remove mptcp_pm_remove_subflow()
+      mptcp: pm: only mark 'subflow' endp as available
+      mptcp: pm: only decrement add_addr_accepted for MPJ req
+      mptcp: pm: check add_addr_accept_max before accepting new ADD_ADDR
+      mptcp: pm: only in-kernel cannot have entries with ID 0
+      mptcp: pm: fullmesh: select the right ID later
+      selftests: mptcp: join: validate fullmesh endp on 1st sf
+      mptcp: pm: avoid possible UaF when selecting endp
 
-diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_profile.c
-index d2f7fd7743a1..11278f785526 100644
---- a/drivers/acpi/platform_profile.c
-+++ b/drivers/acpi/platform_profile.c
-@@ -22,8 +22,8 @@ static const char * const profile_names[] = {
- };
- static_assert(ARRAY_SIZE(profile_names) == PLATFORM_PROFILE_LAST);
- 
--static ssize_t platform_profile_choices_show(struct device *dev,
--					struct device_attribute *attr,
-+static ssize_t platform_profile_choices_show(struct kobject *kobj,
-+					struct kobj_attribute *attr,
- 					char *buf)
- {
- 	int len = 0;
-@@ -49,8 +49,8 @@ static ssize_t platform_profile_choices_show(struct device *dev,
- 	return len;
- }
- 
--static ssize_t platform_profile_show(struct device *dev,
--					struct device_attribute *attr,
-+static ssize_t platform_profile_show(struct kobject *kobj,
-+					struct kobj_attribute *attr,
- 					char *buf)
- {
- 	enum platform_profile_option profile = PLATFORM_PROFILE_BALANCED;
-@@ -77,8 +77,8 @@ static ssize_t platform_profile_show(struct device *dev,
- 	return sysfs_emit(buf, "%s\n", profile_names[profile]);
- }
- 
--static ssize_t platform_profile_store(struct device *dev,
--			    struct device_attribute *attr,
-+static ssize_t platform_profile_store(struct kobject *kobj,
-+			    struct kobj_attribute *attr,
- 			    const char *buf, size_t count)
- {
- 	int err, i;
-@@ -115,12 +115,12 @@ static ssize_t platform_profile_store(struct device *dev,
- 	return count;
- }
- 
--static DEVICE_ATTR_RO(platform_profile_choices);
--static DEVICE_ATTR_RW(platform_profile);
-+static struct kobj_attribute attr_platform_profile_choices = __ATTR_RO(platform_profile_choices);
-+static struct kobj_attribute attr_platform_profile = __ATTR_RW(platform_profile);
- 
- static struct attribute *platform_profile_attrs[] = {
--	&dev_attr_platform_profile_choices.attr,
--	&dev_attr_platform_profile.attr,
-+	&attr_platform_profile_choices.attr,
-+	&attr_platform_profile.attr,
- 	NULL
- };
- 
-
+ net/mptcp/pm.c                                  |  13 ---
+ net/mptcp/pm_netlink.c                          | 142 ++++++++++++++++--------
+ net/mptcp/protocol.h                            |   3 -
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |  76 +++++++++++--
+ 4 files changed, 160 insertions(+), 74 deletions(-)
 ---
-base-commit: 47ac09b91befbb6a235ab620c32af719f8208399
-change-id: 20240819-acpi-platform_profile-fix-cfi-violation-de278753bd5f
+base-commit: 565d121b69980637f040eb4d84289869cdaabedf
+change-id: 20240819-net-mptcp-pm-reusing-id-eb08827b7be6
 
 Best regards,
 -- 
-Nathan Chancellor <nathan@kernel.org>
+Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
 
