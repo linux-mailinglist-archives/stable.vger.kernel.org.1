@@ -1,171 +1,144 @@
-Return-Path: <stable+bounces-69460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69461-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A3649565CA
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 10:42:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F55C9565FB
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 10:49:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A78F81F23D87
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 08:42:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BCFDF1F25989
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 08:49:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87B5215B972;
-	Mon, 19 Aug 2024 08:41:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ow8gNcp6"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 514C415B968;
+	Mon, 19 Aug 2024 08:49:08 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B747C125;
-	Mon, 19 Aug 2024 08:41:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC33815B140;
+	Mon, 19 Aug 2024 08:49:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724056881; cv=none; b=cayC6RjMX0UFIajyMQ8pok/eFmjUFtPfBqiDJ7bOPXFxtT19JokiX3DCgdak3GRfefsfJ2Z1Qnm0JvD+0srdY0P3aYcEqjDqKOxNDpzR37QZH/vmbZkU2ik+r0WExLddDcBjW3MpBW1ErRHt8/txt0kwFdm3DB4hCC6Lw+BKegU=
+	t=1724057348; cv=none; b=dVcq5D0atkw8YcLdt7n6WHzqJJFKIGAPODQV82dTiT2ovrmA7uWl6LTXduC7tYZAPoy4fVtUGY5kAK7/9FbgzTnXxjIp2ZLOMW2D1OnkeUV8r2S4aGngKpT+SXuTBFDqfJNRvwU5Ryx4f/KGB20hxXFpy0LUCpgd5ZO9TbLiS94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724056881; c=relaxed/simple;
-	bh=QmA14CcItYXW//LCVYvE0WOp2qeBSdVeMt7bClS3avg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ThtP2/0T6+ds1cO218wSULJo7PlGHq4T3lbSVpCQ5aPTdxDTmnhPbPAeB//fEshlyNFmIk4C4z149mAoE7keYHdWfcKK0Cr4EeVhzv8HqsTCdNo17u4PGyU6D5U0JBiTIqcFUsUSNsIv6vN6yyMW+Cqy3cGyrw3MHGCuvJQVxKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ow8gNcp6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62BCAC4AF0C;
-	Mon, 19 Aug 2024 08:41:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724056880;
-	bh=QmA14CcItYXW//LCVYvE0WOp2qeBSdVeMt7bClS3avg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Ow8gNcp66/tcw5rt2sDiBXQaOIUeb2iAknf+tT6+FOH9ZH4uy0gam/xQX2HNZHLkK
-	 zVJd6EhupJJ2Lp1HLrzGLAxiryIIFrtdfQhVOWswT+GkqywG13vO4+PYIoEKE0M/QA
-	 Q4Ra4apzS619NYrlOH/kkeCuUck5AU/rKf205E5QBX7Jb23x0dN5ik0jSja23190lF
-	 7tBkrV/SBae+XHGJ40TJVXtpbfubY0bMoqCAyxYYlRQccbODpJdfLnJ5kjbFx8i/Y5
-	 VeEPTEoaAK2g/USs7uw2xAQhCRoUO4gbBVHPA0rD5pqMn+uAC7g1zCM0nhN3k4Suxp
-	 gJ79o6ONM6ZRg==
-Date: Mon, 19 Aug 2024 10:41:15 +0200
-From: Christian Brauner <brauner@kernel.org>
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Oleg Nesterov <oleg@redhat.com>, Aleksa Sarai <cyphar@cyphar.com>, 
-	Tycho Andersen <tandersen@netflix.com>, Daan De Meyer <daan.j.demeyer@gmail.com>, 
-	Tejun Heo <tj@kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH] pidfd: prevent creation of pidfds for kthreads
-Message-ID: <20240819-staudamm-rederei-cb7092f54e76@brauner>
-References: <20240731-gleis-mehreinnahmen-6bbadd128383@brauner>
- <20240818035818.GA1929@sol.localdomain>
+	s=arc-20240116; t=1724057348; c=relaxed/simple;
+	bh=3YlNtsaDCcsAcHaVTN0CfYd2K6RSzN6+m+xD9anLX84=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=iPdLJ3tZNB39xsrMexvSUXqbZ406g9WCrJ+vCjEQh91aATw2t7Wl8lpAQC4FQP8EgYwUv81Q/D9RkJSScUzIkqpqupylMtxqsZFN5fRS3f0fGuK690Gh9jWfnl0+ux/Q6W2GOZ3FcbD4xcmT819PVDrxJj4Xi8Q0/kD7pCs4HCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
+	by APP-03 (Coremail) with SMTP id rQCowACnhRjsBsNmhUISCA--.42807S2;
+	Mon, 19 Aug 2024 16:48:51 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: herbert@gondor.apana.org.au,
+	davem@davemloft.net,
+	j-keerthy@ti.com,
+	t-kristo@ti.com,
+	akpm@linux-foundation.org
+Cc: linux-crypto@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Ma Ke <make24@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH RESEND] crypto: sa2ul - fix memory leak in sa_cra_init_aead()
+Date: Mon, 19 Aug 2024 16:48:43 +0800
+Message-Id: <20240819084843.1012289-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="iq3ob3y54mfyyhoy"
-Content-Disposition: inline
-In-Reply-To: <20240818035818.GA1929@sol.localdomain>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:rQCowACnhRjsBsNmhUISCA--.42807S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7tw18KFykGF1xtF45Jw43Jrb_yoW8uw4fpF
+	s5uFWjyry5JFn3GFWftws5Gr15X3yS93yagayxGwn3ZrnF9r1v9FW7CFy0vF17GF1kGr17
+	XFZrJr45Zr1UG3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvK14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
+	6r4UJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
+	CE3s1lnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xv
+	F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r
+	4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I
+	648v4I1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7
+	v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF
+	1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIx
+	AIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI
+	42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxh
+	VjvjDU0xZFpf9x0JUQvtAUUUUU=
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
+Currently the resource allocated by crypto_alloc_shash() is not freed in
+case crypto_alloc_aead() fails, resulting in memory leak.
 
---iq3ob3y54mfyyhoy
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Add crypto_free_shash() to fix it.
 
-On Sat, Aug 17, 2024 at 08:58:18PM GMT, Eric Biggers wrote:
-> Hi Christian,
-> 
-> On Wed, Jul 31, 2024 at 12:01:12PM +0200, Christian Brauner wrote:
-> > It's currently possible to create pidfds for kthreads but it is unclear
-> > what that is supposed to mean. Until we have use-cases for it and we
-> > figured out what behavior we want block the creation of pidfds for
-> > kthreads.
-> > 
-> > Fixes: 32fcb426ec00 ("pid: add pidfd_open()")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Christian Brauner <brauner@kernel.org>
-> > ---
-> >  kernel/fork.c | 25 ++++++++++++++++++++++---
-> >  1 file changed, 22 insertions(+), 3 deletions(-)
-> 
-> Unfortunately this commit broke systemd-shutdown's ability to kill processes,
-> which makes some filesystems no longer get unmounted at shutdown.
-> 
-> It looks like systemd-shutdown relies on being able to create a pidfd for any
-> process listed in /proc (even a kthread), and if it gets EINVAL it treats it a
-> fatal error and stops looking for more processes...
+Found by code review.
 
-Thanks for the report!
-I talked to Daan De Meyer who made that change and he said that this
-must a systemd version that hasn't gotten his fixes yet. In any case, if
-this causes regression then I'll revert it right now. See the appended
-revert.
-
---iq3ob3y54mfyyhoy
-Content-Type: text/x-diff; charset=utf-8
-Content-Disposition: attachment;
-	filename="0001-Revert-pidfd-prevent-creation-of-pidfds-for-kthreads.patch"
-
-From 780d60bac21ebee5c2465d21fe51b67bb9b054db Mon Sep 17 00:00:00 2001
-From: Christian Brauner <brauner@kernel.org>
-Date: Mon, 19 Aug 2024 10:38:23 +0200
-Subject: [PATCH] Revert "pidfd: prevent creation of pidfds for kthreads"
-
-This reverts commit 3b5bbe798b2451820e74243b738268f51901e7d0.
-
-Eric reported that systemd-shutdown gets broken by blocking the creating
-of pidfds for kthreads as older versions seems to rely on being able to
-create a pidfd for any process in /proc.
-
-Reported-by: Eric Biggers <ebiggers@kernel.org>
-Link: https://lore.kernel.org/r/20240818035818.GA1929@sol.localdomain
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: d2c8ac187fc9 ("crypto: sa2ul - Add AEAD algorithm support")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
 ---
- kernel/fork.c | 25 +++----------------------
- 1 file changed, 3 insertions(+), 22 deletions(-)
+ drivers/crypto/sa2ul.c | 20 +++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
-diff --git a/kernel/fork.c b/kernel/fork.c
-index 18bdc87209d0..cc760491f201 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -2053,23 +2053,10 @@ static int __pidfd_prepare(struct pid *pid, unsigned int flags, struct file **re
-  */
- int pidfd_prepare(struct pid *pid, unsigned int flags, struct file **ret)
- {
--	if (!pid)
--		return -EINVAL;
--
--	scoped_guard(rcu) {
--		struct task_struct *tsk;
--
--		if (flags & PIDFD_THREAD)
--			tsk = pid_task(pid, PIDTYPE_PID);
--		else
--			tsk = pid_task(pid, PIDTYPE_TGID);
--		if (!tsk)
--			return -EINVAL;
-+	bool thread = flags & PIDFD_THREAD;
+diff --git a/drivers/crypto/sa2ul.c b/drivers/crypto/sa2ul.c
+index 461eca40e878..b5af621f7f17 100644
+--- a/drivers/crypto/sa2ul.c
++++ b/drivers/crypto/sa2ul.c
+@@ -1740,7 +1740,8 @@ static int sa_cra_init_aead(struct crypto_aead *tfm, const char *hash,
+ 	ctx->shash = crypto_alloc_shash(hash, 0, CRYPTO_ALG_NEED_FALLBACK);
+ 	if (IS_ERR(ctx->shash)) {
+ 		dev_err(sa_k3_dev, "base driver %s couldn't be loaded\n", hash);
+-		return PTR_ERR(ctx->shash);
++		ret = PTR_ERR(ctx->shash);
++		goto err_free_shash;
+ 	}
  
--		/* Don't create pidfds for kernel threads for now. */
--		if (tsk->flags & PF_KTHREAD)
--			return -EINVAL;
+ 	ctx->fallback.aead = crypto_alloc_aead(fallback, 0,
+@@ -1749,7 +1750,8 @@ static int sa_cra_init_aead(struct crypto_aead *tfm, const char *hash,
+ 	if (IS_ERR(ctx->fallback.aead)) {
+ 		dev_err(sa_k3_dev, "fallback driver %s couldn't be loaded\n",
+ 			fallback);
+-		return PTR_ERR(ctx->fallback.aead);
++		ret = PTR_ERR(ctx->fallback.aead);
++		goto err_free_shash;
+ 	}
+ 
+ 	crypto_aead_set_reqsize(tfm, sizeof(struct aead_request) +
+@@ -1757,19 +1759,23 @@ static int sa_cra_init_aead(struct crypto_aead *tfm, const char *hash,
+ 
+ 	ret = sa_init_ctx_info(&ctx->enc, data);
+ 	if (ret)
+-		return ret;
++		goto err_free_shash;
+ 
+ 	ret = sa_init_ctx_info(&ctx->dec, data);
+-	if (ret) {
+-		sa_free_ctx_info(&ctx->enc, data);
+-		return ret;
 -	}
-+	if (!pid || !pid_has_task(pid, thread ? PIDTYPE_PID : PIDTYPE_TGID))
-+		return -EINVAL;
++	if (ret)
++		goto err_free_ctx_info;
  
- 	return __pidfd_prepare(pid, flags, ret);
+ 	dev_dbg(sa_k3_dev, "%s(0x%p) sc-ids(0x%x(0x%pad), 0x%x(0x%pad))\n",
+ 		__func__, tfm, ctx->enc.sc_id, &ctx->enc.sc_phys,
+ 		ctx->dec.sc_id, &ctx->dec.sc_phys);
+ 
+ 	return ret;
++
++err_free_ctx_info:
++	sa_free_ctx_info(&ctx->enc, data);
++err_free_shash:
++	crypto_free_shash(ctx->shash);
++	return ret;
  }
-@@ -2416,12 +2403,6 @@ __latent_entropy struct task_struct *copy_process(
- 	if (clone_flags & CLONE_PIDFD) {
- 		int flags = (clone_flags & CLONE_THREAD) ? PIDFD_THREAD : 0;
  
--		/* Don't create pidfds for kernel threads for now. */
--		if (args->kthread) {
--			retval = -EINVAL;
--			goto bad_fork_free_pid;
--		}
--
- 		/* Note that no task has been attached to @pid yet. */
- 		retval = __pidfd_prepare(pid, flags, &pidfile);
- 		if (retval < 0)
+ static int sa_cra_init_aead_sha1(struct crypto_aead *tfm)
 -- 
-2.43.0
+2.25.1
 
-
---iq3ob3y54mfyyhoy--
 
