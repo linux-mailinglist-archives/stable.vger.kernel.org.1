@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-69516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69517-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F7B395678F
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 11:53:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8836956791
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 11:54:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2610E1F225A8
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 09:53:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F8421F22488
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 09:54:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DB4C15B14E;
-	Mon, 19 Aug 2024 09:53:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09A3715B14E;
+	Mon, 19 Aug 2024 09:54:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FvkdzrWn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K2yXRvvK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E60E13B592
-	for <stable@vger.kernel.org>; Mon, 19 Aug 2024 09:53:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD14215696E
+	for <stable@vger.kernel.org>; Mon, 19 Aug 2024 09:54:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724061234; cv=none; b=A93agcGCGGIsY5FA83bEU13apxwu3RLzcKpgWVOV1AV5Gz1kicuyPUjkt478MMYs4Xvp96i62oE43spXoqy5IFI4JF2RTdYzaqYgKhjIbk2u7E/34Kypa88w2VyGKcWmTDWNZj692vN0hYUq+O7CfT79i7LNBImuZPWPW4Hrqkk=
+	t=1724061243; cv=none; b=ih9be2WyGvopMdTWSrrV6nIFCOleyr1QR2memeVp/S+e++EeZ6jfmHsFudTKjXsYmn1bfTBzOMPsBzvFVBJLkpERVOLGqrIT0z66ux2wL89U6ImeiomRLy3yv549KYta02RJKdQ6LITU5DHywBOY93mE9YPb7cZBBv2DDQyj0tE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724061234; c=relaxed/simple;
-	bh=VxeWDKUBU6ZY/9FawdU6Y0kk3FtCfommiLcfoN5bM2o=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=CbN2MfM60D0TjLBpiZ55A8rAXZ6CX3i8UmlnnanIYmHhGd4BhWWBzhMx89pKb//g05gxGhO/S9aZsrhMqaQ32ACRGwJi41zUsiqprmZkin530w9rG0KTUO0MzhEZM0yGoR66xTjmBJUe8F2ufYA1yRBVDsHNQDRJ4IYIh2iTKGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FvkdzrWn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4497CC32782;
-	Mon, 19 Aug 2024 09:53:53 +0000 (UTC)
+	s=arc-20240116; t=1724061243; c=relaxed/simple;
+	bh=+0hn6fLfpIoJCHtaHKhsvIo6IzF8Fdh438mexgHBF/M=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=RD2jU98QGKmMENWFV2SPJfklsxo9afRI1vsoBSiwm8lGaWJfYScKsnIZGzFym8XtLIWjspwPisTpSSmy4/JU134bJdvuABqUk6qPlnT3ULTI+PURRBW3/3OWmC+df4XCC+lUjQ2PjB1mcEywLS8NMYiWdq8gQ7oK+PTs+OlYOlw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K2yXRvvK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41255C4AF0C;
+	Mon, 19 Aug 2024 09:54:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724061233;
-	bh=VxeWDKUBU6ZY/9FawdU6Y0kk3FtCfommiLcfoN5bM2o=;
+	s=korg; t=1724061243;
+	bh=+0hn6fLfpIoJCHtaHKhsvIo6IzF8Fdh438mexgHBF/M=;
 	h=Subject:To:Cc:From:Date:From;
-	b=FvkdzrWn7TNg3+JKzUbSMvMFyGG9Srh0KZJhhCYowDn7x8Ve0T/e8SuyHUToB4Jku
-	 Z6WESbIq9XY3ADptTsF3W9I2FMi30cPhwcEurkBHgb/PIQzgGv1vY33KoUpdZDK+KU
-	 wLDamcAtvsc+eEpfT4mIiahspsrAu+ApHVkNXP1k=
-Subject: FAILED: patch "[PATCH] mm/numa: no task_numa_fault() call if PMD is changed" failed to apply to 6.10-stable tree
+	b=K2yXRvvKNOnc9gpURS3w6v2bb3vcqgjWRbIFX+HeXGtsp8nyxr/Z1jcLFeDw42qpg
+	 hLKSpo8iIoklEUqaMUPelRwCYuJpccr5RkJoCdG2YG4TgZvaAxPP5qQ3EzO96l7L3U
+	 pneiWXge+uU575tG14syYsVM5aFFFdyDFqk+/Lrg=
+Subject: FAILED: patch "[PATCH] mm/numa: no task_numa_fault() call if PMD is changed" failed to apply to 6.6-stable tree
 To: ziy@nvidia.com,akpm@linux-foundation.org,baolin.wang@linux.alibaba.com,david@redhat.com,mgorman@suse.de,shy828301@gmail.com,stable@vger.kernel.org,wangkefeng.wang@huawei.com,ying.huang@intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 Aug 2024 11:53:50 +0200
-Message-ID: <2024081950-jolliness-crux-7fe1@gregkh>
+Date: Mon, 19 Aug 2024 11:53:51 +0200
+Message-ID: <2024081951-fable-brewery-9048@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,23 +53,26 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.10-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x fd8c35a92910f4829b7c99841f39b1b952c259d5
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081950-jolliness-crux-7fe1@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081951-fable-brewery-9048@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
 fd8c35a92910 ("mm/numa: no task_numa_fault() call if PMD is changed")
+667ffc31aa95 ("mm: huge_memory: use a folio in do_huge_pmd_numa_page()")
+73eab3ca481e ("mm: migrate: convert migrate_misplaced_page() to migrate_misplaced_folio()")
+2ac9e99f3b21 ("mm: migrate: convert numamigrate_isolate_page() to numamigrate_isolate_folio()")
 
 thanks,
 
