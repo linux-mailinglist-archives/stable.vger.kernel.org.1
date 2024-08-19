@@ -1,235 +1,267 @@
-Return-Path: <stable+bounces-69453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1694C9563D9
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 08:47:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29E099564B9
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 09:33:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6F9BBB2100F
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 06:47:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C9DB1C208B2
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 07:33:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2B6A155741;
-	Mon, 19 Aug 2024 06:47:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0AC5157490;
+	Mon, 19 Aug 2024 07:33:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="PAXfImeh"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="RY5C4ZbR"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAFEA14AD0E
-	for <stable@vger.kernel.org>; Mon, 19 Aug 2024 06:47:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1075C13C8E8
+	for <stable@vger.kernel.org>; Mon, 19 Aug 2024 07:32:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724050054; cv=none; b=gU5lj6vPjPsq+2MaqOlRzMIb0ko1eNwhy/c08d6lt1t2jrsYDSYUUzl5KwpDwMPqZKeS/QAgcABv487zet0umE39w8soLZkiMRIs6RPdumgPNWyjoLT2MfPF95np2kqI1xlN35PghrpkuhJtoWR9zePS762INkQnLoVKsRCSYbg=
+	t=1724052781; cv=none; b=B7UvJCbp9yDx+YP8aAgPs7fP9Bta+4lVW2LU0XFiiHr4Kahu0HhqkvqYrPLFXv0wLm/9OJCU6BkdPtAbqZBRbUUc0tH9mmLtEVshkz3tvzvobUeubwUKDi39iPLrbtjlMQpoDA0JJgPUdmP7Aa1NmhT8HjVvf624bg+zMp2eUB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724050054; c=relaxed/simple;
-	bh=7wP86Da9Obl8V+FdIpHpFY6+BBI77NaHDM8n8YRt94Y=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=mvhlvEW+V3nK4mGJjMq5c3P/IpIY4OBWAFBmT5sMPBGnD6d99zmnKPpa2cphb99E8xEx90MU5NAswIXZx+ymvzvMoYGH/eRbA7OlM1rsEiabo2Rr4X5iqVMFUu37FOYi8cPCt6QQRDtNBzqvYvVuBQbEHvBFLrFUl0Ml0PkFPB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=PAXfImeh; arc=none smtp.client-ip=209.85.218.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-a7aa086b077so395582366b.0
-        for <stable@vger.kernel.org>; Sun, 18 Aug 2024 23:47:31 -0700 (PDT)
+	s=arc-20240116; t=1724052781; c=relaxed/simple;
+	bh=lqG59gpccqoJniQbhLyFTrxHLnQRRH2XLMNU6pCm0bc=;
+	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
+	 MIME-Version:Content-Type; b=Ia/nw+05LQbQSrpOp0VDNDdf/LkmuohhOaXawV2mOxZcy3lYaC9o0pkHgJYCu0/i0/VWStASEDBHQJNQnu/GiQ1fDLlbaUZjA6eF49P5DNdrbiuNEKBkvYSXthA7t5ffbb8zx/+R+CVcoCLDz3Zw6hToAAum+Q0GYaE4ESQ9khM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=RY5C4ZbR; arc=none smtp.client-ip=209.85.210.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-710ffaf921fso2552459b3a.1
+        for <stable@vger.kernel.org>; Mon, 19 Aug 2024 00:32:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1724050050; x=1724654850; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=LND9mIrFerHkVrQTnyq4VdOw05+VpKfEai3OB71/UB8=;
-        b=PAXfImeh0XS+Fe2V0wvArF6PSsoSezl6pGuNIpp27vNIxQHpsThriQ2FJ0RIRYxZDo
-         zFJEQFy9nZVqaBEoUHV6h+gQ3jHXIDZa9iPeAhY/NyEmqKj1YBeq2rGD1DB9bfjXV6Ie
-         9Tppb3Kf3LAZqoZHKfxw0Ll7Qpsig77vFtMUFqjAFx1PVhcYIlpmD+EfNiVM1DGNFrqo
-         sJPJu7USRuEEA1lMcUzkgMq2d1GU+8CQtnNRTU8XQzWMVTNm9IPgJknSmhteOpaIzCrq
-         i2rJXDi1v1xoiId3yOk0zBmULOEtWjtX85IT463OlE0PlhN2yPSler1+7uBywTuIHAvz
-         Kv0g==
+        d=linaro.org; s=google; t=1724052779; x=1724657579; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:references
+         :in-reply-to:user-agent:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=bVF+vaplgIfDeqn8Jo/FGo4c3zDJgnAYKY22inJTgUE=;
+        b=RY5C4ZbRSr/qdLgu8HKFVmN4ewPDru+AGNit5VwvKAv2yzJ5q/1Cn2JD4O0PoDzNrg
+         n4Y17grSMdalKiNcQRoGY1BotaeUwRikPBKihx1dg8/kOI8cFFQ7cOINwIcQcwPz6OUe
+         JNHcgWqnG+vI0WGZTfC1te5jTgr/+qvUVyEATPyvbOQGd2Y8MIy076rdQCJELXEDZaEl
+         AhvDkVIut86r7ZILIBCWT9YqXW6hPQkuDOqNNRV8BCl6ppyolhV+DCukv+7kG1dJzlx1
+         ClnUL3F4dioS4qYew83d7I4Hns6b9mVujnudIg2oIyPPq0kpxc2NDFIapVoLxFCmEsRb
+         E10g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724050050; x=1724654850;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=LND9mIrFerHkVrQTnyq4VdOw05+VpKfEai3OB71/UB8=;
-        b=nUOzcqJPZLS9HbhqTkxFJHQ4VX26o+9AokZUnqTLDxoM47n/OVLzmuVq/lrn0IBpgj
-         4AW8x3FcPwFH8p96C8/PyeIf1IPOMvwzroowiWYtIZSw/1sNJr3JlBABdavToJILcMs8
-         tLl46pQy9AK5bj1hSyY4ScJSEkQtD7NBQSUMaxq0wom308ui4atK8SIqjCLr+pNHvmvn
-         cdayBbgbYR6pzHegpEUgEILwepHTBMU87TzLdAPLM3mk+mKx8EoKJxxuvmnzjJ3BgUuu
-         3FAbt+ENTIzJxRVLSndQ5hcnoOv5y3tNAaT4ZgvON2IDMnnF7NyadOllkGW4ScxE/v12
-         rjAw==
-X-Forwarded-Encrypted: i=1; AJvYcCVPGciN8qQHepCgiOD70B7tN0dKtA0E/IkLCLx/Zigy757FWfZnYqyYwyVBwuhxumkcwRKoIgQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwACoYCWqQzgIBO4GsY/Rly1eYC/kRmEsvqlOEziTyzN3ikLAcf
-	iIXcE/9ZBgSEwFrpQa6GHOaWhwIrFbKdO3m7WLqDq0NBy4R/QrDfR8xPHG9UsPg=
-X-Google-Smtp-Source: AGHT+IG/LOAv6VXcb2ahcaNnLPc8Zo+lzLm+8FzIpuANSmibKvOSrYbcPxeSEN4xbkWJ163zpJ8cMQ==
-X-Received: by 2002:a17:906:f5a2:b0:a72:8d40:52b8 with SMTP id a640c23a62f3a-a83a9fb9491mr456337366b.3.1724050049983;
-        Sun, 18 Aug 2024 23:47:29 -0700 (PDT)
-Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a83839344fdsm595276766b.100.2024.08.18.23.47.29
+        d=1e100.net; s=20230601; t=1724052779; x=1724657579;
+        h=content-transfer-encoding:mime-version:message-id:references
+         :in-reply-to:user-agent:subject:cc:to:from:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=bVF+vaplgIfDeqn8Jo/FGo4c3zDJgnAYKY22inJTgUE=;
+        b=U3JS/4eV0Cki06GfO69yAeRxa5BgCY0552kwXscFieZLA3VLX+eKTd1ZlxeFftJuBx
+         VBydFXXhfGz4h3/e0BRYUkbSWHJ+xJ2XtN2oSuxnMOksLPX9JGshGDUGzgDU1B7tKdTr
+         Z14sRav3yjprtr2s/16umTN3V8yrK0nvtmJexQ9JsTnY6zSpOfrxEqLkJHm4SDIL/N92
+         KSWIXpcemDyODxG0Kvm0sQKZrpiW4boJVBJaLc4KtfndAufVMMtbfl7DSDFuWPe53T9V
+         JpimbfMGOApBaLBqMqsxznGNnDdYi6TOzc+pzncD7yO/whpzZ4MMy63vfatftp9mdEcy
+         QL3g==
+X-Forwarded-Encrypted: i=1; AJvYcCXlxD0LSfQDLc5thcLePL9vJdY3kHZ7MNjQVfizpxMVvC48AQkWaT9ekyIql8vW8P+zktdKXlLPdZdthgN7YAMRZq9z9lFj
+X-Gm-Message-State: AOJu0YwhzeRxzj8DcUEQlI8zziTRHdEMP21U33nViNVQBqqAQYu/i3uW
+	h4tzTwlnAY4z1InSZr+LyhZpu+x7fvLhA5Ov2l6tVGYgf/D3HHWAuLttzGncSwE=
+X-Google-Smtp-Source: AGHT+IFfm2w3BSOecH3ZgllW9SAhYMQsRd/FMRvM7RHDXRP2ro3rXfQFvLQQyRy2k8EZr/AD4ObC6g==
+X-Received: by 2002:a05:6a00:17a7:b0:70e:98e2:c76e with SMTP id d2e1a72fcca58-713c66515f1mr15127310b3a.6.1724052779034;
+        Mon, 19 Aug 2024 00:32:59 -0700 (PDT)
+Received: from ?IPv6:::1? ([2405:9800:b900:a564:77f2:b46a:c9f8:ca95])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7127aef5787sm6111501b3a.120.2024.08.19.00.32.57
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 18 Aug 2024 23:47:29 -0700 (PDT)
+        Mon, 19 Aug 2024 00:32:58 -0700 (PDT)
+Date: Mon, 19 Aug 2024 14:32:53 +0700
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+To: Bjorn Andersson <quic_bjorande@quicinc.com>
+CC: Sebastian Reichel <sre@kernel.org>, Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konrad.dybcio@linaro.org>,
+ Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Neil Armstrong <neil.armstrong@linaro.org>,
+ Johan Hovold <johan+linaro@kernel.org>, Chris Lew <quic_clew@quicinc.com>,
+ Stephen Boyd <swboyd@chromium.org>, Amit Pundir <amit.pundir@linaro.org>,
+ linux-arm-msm@vger.kernel.org, linux-pm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_2/3=5D_usb=3A_typec=3A_ucsi=3A_M?=
+ =?US-ASCII?Q?ove_unregister_out_of_atomic_section?=
+User-Agent: K-9 Mail for Android
+In-Reply-To: <ZsK2jSheqBlCW7OC@hu-bjorande-lv.qualcomm.com>
+References: <20240818-pmic-glink-v6-11-races-v1-0-f87c577e0bc9@quicinc.com> <20240818-pmic-glink-v6-11-races-v1-2-f87c577e0bc9@quicinc.com> <4F313FA4-C2C7-4BD8-8E42-64F98EACCBA2@linaro.org> <ZsK2jSheqBlCW7OC@hu-bjorande-lv.qualcomm.com>
+Message-ID: <A366AFBC-1775-421A-BEAC-274741DF3192@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Mon, 19 Aug 2024 08:47:29 +0200
-Message-Id: <D3JOQILHYKG7.1RRC5IF2RZJ4V@fairphone.com>
-Cc: "Max Krummenacher" <max.krummenacher@toradex.com>,
- <stable@vger.kernel.org>, "Greg Kroah-Hartman"
- <gregkh@linuxfoundation.org>, "Jiri Slaby" <jirislaby@kernel.org>,
- =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
- <linux-kernel@vger.kernel.org>, <linux-serial@vger.kernel.org>
-Subject: Re: [PATCH] tty: vt: conmakehash: cope with abs_srctree no longer
- in env
-From: "Luca Weiss" <luca.weiss@fairphone.com>
-To: "Max Krummenacher" <max.oss.09@gmail.com>
-X-Mailer: aerc 0.18.2-0-ge037c095a049
-References: <20240725132056.9151-1-max.oss.09@gmail.com>
- <D3I3BTOHN2RW.2DUYSKP3JRT5Z@fairphone.com>
- <CAEHkU3V9L4NKUkwr8Gyo2ZWEVJsjYTqPRduYrHoHyVtdEfFEVQ@mail.gmail.com>
-In-Reply-To: <CAEHkU3V9L4NKUkwr8Gyo2ZWEVJsjYTqPRduYrHoHyVtdEfFEVQ@mail.gmail.com>
 
-On Sat Aug 17, 2024 at 3:52 PM CEST, Max Krummenacher wrote:
-> Hi Luca
+On 19 August 2024 10:05:49 GMT+07:00, Bjorn Andersson <quic_bjorande@quicin=
+c=2Ecom> wrote:
+>On Mon, Aug 19, 2024 at 08:16:25AM +0700, Dmitry Baryshkov wrote:
+>> On 19 August 2024 06:17:38 GMT+07:00, Bjorn Andersson <quic_bjorande@qu=
+icinc=2Ecom> wrote:
+>> >Commit 'caa855189104 ("soc: qcom: pmic_glink: Fix race during
+>> >initialization")' moved the pmic_glink client list under a spinlock, a=
+s
+>> >it is accessed by the rpmsg/glink callback, which in turn is invoked
+>> >from IRQ context=2E
+>> >
+>> >This means that ucsi_unregister() is now called from IRQ context, whic=
+h
+>> >isn't feasible as it's expecting a sleepable context=2E An effort is u=
+nder
+>> >way to get GLINK to invoke its callbacks in a sleepable context, but
+>> >until then lets schedule the unregistration=2E
+>> >
+>> >A side effect of this is that ucsi_unregister() can now happen
+>> >after the remote processor, and thereby the communication link with it=
+, is
+>> >gone=2E pmic_glink_send() is amended with a check to avoid the resulti=
+ng
+>> >NULL pointer dereference, but it becomes expecting to see a failing se=
+nd
+>> >upon shutting down the remote processor (e=2Eg=2E during a restart fol=
+lowing
+>> >a firmware crash):
+>> >
+>> >  ucsi_glink=2Epmic_glink_ucsi pmic_glink=2Eucsi=2E0: failed to send U=
+CSI write request: -5
+>> >
+>> >Fixes: caa855189104 ("soc: qcom: pmic_glink: Fix race during initializ=
+ation")
+>> >Cc: stable@vger=2Ekernel=2Eorg
+>> >Signed-off-by: Bjorn Andersson <quic_bjorande@quicinc=2Ecom>
+>> >---
+>> > drivers/soc/qcom/pmic_glink=2Ec       | 10 +++++++++-
+>> > drivers/usb/typec/ucsi/ucsi_glink=2Ec | 28 +++++++++++++++++++++++---=
+--
+>> > 2 files changed, 32 insertions(+), 6 deletions(-)
+>> >
+>> >diff --git a/drivers/soc/qcom/pmic_glink=2Ec b/drivers/soc/qcom/pmic_g=
+link=2Ec
+>> >index 58ec91767d79=2E=2Ee4747f1d3da5 100644
+>> >--- a/drivers/soc/qcom/pmic_glink=2Ec
+>> >+++ b/drivers/soc/qcom/pmic_glink=2Ec
+>> >@@ -112,8 +112,16 @@ EXPORT_SYMBOL_GPL(pmic_glink_register_client);
+>> > int pmic_glink_send(struct pmic_glink_client *client, void *data, siz=
+e_t len)
+>> > {
+>> > 	struct pmic_glink *pg =3D client->pg;
+>> >+	int ret;
+>> >=20
+>> >-	return rpmsg_send(pg->ept, data, len);
+>> >+	mutex_lock(&pg->state_lock);
+>> >+	if (!pg->ept)
+>> >+		ret =3D -ECONNRESET;
+>> >+	else
+>> >+		ret =3D rpmsg_send(pg->ept, data, len);
+>> >+	mutex_unlock(&pg->state_lock);
+>> >+
+>> >+	return ret;
+>> > }
+>> > EXPORT_SYMBOL_GPL(pmic_glink_send);
+>> >=20
+>> >diff --git a/drivers/usb/typec/ucsi/ucsi_glink=2Ec b/drivers/usb/typec=
+/ucsi/ucsi_glink=2Ec
+>> >index ac53a81c2a81=2E=2Ea33056eec83d 100644
+>> >--- a/drivers/usb/typec/ucsi/ucsi_glink=2Ec
+>> >+++ b/drivers/usb/typec/ucsi/ucsi_glink=2Ec
+>> >@@ -68,6 +68,9 @@ struct pmic_glink_ucsi {
+>> >=20
+>> > 	struct work_struct notify_work;
+>> > 	struct work_struct register_work;
+>> >+	spinlock_t state_lock;
+>> >+	unsigned int pdr_state;
+>> >+	unsigned int new_pdr_state;
+>> >=20
+>> > 	u8 read_buf[UCSI_BUF_SIZE];
+>> > };
+>> >@@ -244,8 +247,22 @@ static void pmic_glink_ucsi_notify(struct work_st=
+ruct *work)
+>> > static void pmic_glink_ucsi_register(struct work_struct *work)
+>> > {
+>> > 	struct pmic_glink_ucsi *ucsi =3D container_of(work, struct pmic_glin=
+k_ucsi, register_work);
+>> >+	unsigned long flags;
+>> >+	unsigned int new_state;
+>> >+
+>> >+	spin_lock_irqsave(&ucsi->state_lock, flags);
+>> >+	new_state =3D ucsi->new_pdr_state;
+>> >+	spin_unlock_irqrestore(&ucsi->state_lock, flags);
+>> >+
+>> >+	if (ucsi->pdr_state !=3D SERVREG_SERVICE_STATE_UP) {
+>> >+		if (new_state =3D=3D SERVREG_SERVICE_STATE_UP)
+>> >+			ucsi_register(ucsi->ucsi);
+>> >+	} else {
+>> >+		if (new_state =3D=3D SERVREG_SERVICE_STATE_DOWN)
+>> >+			ucsi_unregister(ucsi->ucsi);
+>> >+	}
+>> >=20
+>> >-	ucsi_register(ucsi->ucsi);
+>> >+	ucsi->pdr_state =3D new_state;
+>> > }
+>>=20
+>> Is there a chance if a race condition if the firmware is restarted quic=
+kly, but the system is under heavy mist:=20
+>> - the driver gets DOWN event, updates the state and schedules the work,
+>> - the work starts to execute, reads the state,
+>> - the driver gets UP event, updates the state, but the work is not resc=
+heduled as it is still executing=20
+>> - the worker finishes unregistering the UCSI=2E
+>>=20
 >
-> On Sat, Aug 17, 2024 at 11:48=E2=80=AFAM Luca Weiss <luca.weiss@fairphone=
-.com> wrote:
-> >
-> > On Thu Jul 25, 2024 at 3:20 PM CEST, max.oss.09 wrote:
-> > > From: Max Krummenacher <max.krummenacher@toradex.com>
-> > >
-> > > conmakehash uses getenv("abs_srctree") from the environment to strip
-> > > the absolute path from the generated sources.
-> > > However since commit e2bad142bb3d ("kbuild: unexport abs_srctree and
-> > > abs_objtree") this environment variable no longer gets set.
-> > > Instead use basename() to indicate the used file in a comment of the
-> > > generated source file.
-> > >
-> > > Fixes: 3bd85c6c97b2 ("tty: vt: conmakehash: Don't mention the full pa=
-th of the input in output")
-> > > Signed-off-by: Max Krummenacher <max.krummenacher@toradex.com>
-> > >
-> > > ---
-> > >
-> > >  drivers/tty/vt/conmakehash.c | 20 +++++++-------------
-> > >  1 file changed, 7 insertions(+), 13 deletions(-)
-> > >
-> > > diff --git a/drivers/tty/vt/conmakehash.c b/drivers/tty/vt/conmakehas=
-h.c
-> > > index dc2177fec715..82d9db68b2ce 100644
-> > > --- a/drivers/tty/vt/conmakehash.c
-> > > +++ b/drivers/tty/vt/conmakehash.c
-> > > @@ -11,6 +11,8 @@
-> > >   * Copyright (C) 1995-1997 H. Peter Anvin
-> > >   */
-> > >
-> > > +#include <libgen.h>
-> > > +#include <linux/limits.h>
-> >
-> > Hi Max,
-> >
-> > Not sure this is the best place to ask but this <linux/limits.h> includ=
-e
-> > appears to rely on this file already being installed in /usr/include an=
-d
-> > is not taken from the Linux source tree that's being built.
-> >
-> > This mostly manifests in building Linux kernel e.g. in Alpine Linux
-> > package build if 'linux-headers' package is not being explicitly
-> > installed, failing with
-> >
-> >   drivers/tty/vt/conmakehash.c:15:10: fatal error: linux/limits.h: No s=
-uch file or directory
-> >      15 | #include <linux/limits.h>
-> >         |          ^~~~~~~~~~~~~~~~
-> >   compilation terminated.
-> >
-> > Apparently this is (understandably) also a problem when building on
-> > macOS:
-> > https://lore.kernel.org/all/20240807-macos-build-support-v1-11-4cd1ded8=
-5694@samsung.com/
-> >
-> > I did try that linked patch a bit ago, but unfortunately didn't fix it
-> > for the Alpine Linux build environment.
->
-> This is a bug I introduced.
->
-> Masahiro Yamada already fixed it with [1].
+>I was under the impression that if we reach the point where we start
+>executing the worker, then a second schedule_work() would cause the
+>worker to run again=2E But I might be mistaken here=2E
 
-Great, I see it's also in torvalds' tree already, so I assume it'll hit
-stable soon as well.
-
-Thanks!
+I don't have full source code at hand and the docs only speak about being =
+queued, so it is perfectly possible that I am mistaken here=2E
 
 >
-> Sorry about that.
+>What I do expect though is that if we for some reason don't start
+>executing the work before the state becomes UP again, the UCSI core
+>wouldn't know that the firmware has been reset=2E
 >
-> Regards
-> Max
 >
-> [1] https://lore.kernel.org/all/20240809160853.1269466-1-masahiroy@kernel=
-.org/
+>My proposal is to accept this risk for v6=2E11 (and get the benefit of
+>things actually working) and then take a new swing at getting rid of all
+>these workers for v6=2E12/13=2E Does that sound reasonable?
+
+
+Yes, makes sense to me=2E=20
+
+Reviewed-by: Dmitry Baryshkov <dmitry=2Ebaryshkov@linaro=2Eorg>
+
+
 >
-> >
-> > Any ideas?
-> >
-> > Regards
-> > Luca
-> >
-> >
-> > >  #include <stdio.h>
-> > >  #include <stdlib.h>
-> > >  #include <sysexits.h>
-> > > @@ -76,8 +78,8 @@ static void addpair(int fp, int un)
-> > >  int main(int argc, char *argv[])
-> > >  {
-> > >    FILE *ctbl;
-> > > -  const char *tblname, *rel_tblname;
-> > > -  const char *abs_srctree;
-> > > +  const char *tblname;
-> > > +  char base_tblname[PATH_MAX];
-> > >    char buffer[65536];
-> > >    int fontlen;
-> > >    int i, nuni, nent;
-> > > @@ -102,16 +104,6 @@ int main(int argc, char *argv[])
-> > >       }
-> > >      }
-> > >
-> > > -  abs_srctree =3D getenv("abs_srctree");
-> > > -  if (abs_srctree && !strncmp(abs_srctree, tblname, strlen(abs_srctr=
-ee)))
-> > > -    {
-> > > -      rel_tblname =3D tblname + strlen(abs_srctree);
-> > > -      while (*rel_tblname =3D=3D '/')
-> > > -     ++rel_tblname;
-> > > -    }
-> > > -  else
-> > > -    rel_tblname =3D tblname;
-> > > -
-> > >    /* For now we assume the default font is always 256 characters. */
-> > >    fontlen =3D 256;
-> > >
-> > > @@ -253,6 +245,8 @@ int main(int argc, char *argv[])
-> > >    for ( i =3D 0 ; i < fontlen ; i++ )
-> > >      nuni +=3D unicount[i];
-> > >
-> > > +  strncpy(base_tblname, tblname, PATH_MAX);
-> > > +  base_tblname[PATH_MAX - 1] =3D 0;
-> > >    printf("\
-> > >  /*\n\
-> > >   * Do not edit this file; it was automatically generated by\n\
-> > > @@ -264,7 +258,7 @@ int main(int argc, char *argv[])
-> > >  #include <linux/types.h>\n\
-> > >  \n\
-> > >  u8 dfont_unicount[%d] =3D \n\
-> > > -{\n\t", rel_tblname, fontlen);
-> > > +{\n\t", basename(base_tblname), fontlen);
-> > >
-> > >    for ( i =3D 0 ; i < fontlen ; i++ )
-> > >      {
-> >
+>Regards,
+>Bjorn
+>
+>>=20
+>>=20
+>> >=20
+>> > static void pmic_glink_ucsi_callback(const void *data, size_t len, vo=
+id *priv)
+>> >@@ -269,11 +286,12 @@ static void pmic_glink_ucsi_callback(const void =
+*data, size_t len, void *priv)
+>> > static void pmic_glink_ucsi_pdr_notify(void *priv, int state)
+>> > {
+>> > 	struct pmic_glink_ucsi *ucsi =3D priv;
+>> >+	unsigned long flags;
+>> >=20
+>> >-	if (state =3D=3D SERVREG_SERVICE_STATE_UP)
+>> >-		schedule_work(&ucsi->register_work);
+>> >-	else if (state =3D=3D SERVREG_SERVICE_STATE_DOWN)
+>> >-		ucsi_unregister(ucsi->ucsi);
+>> >+	spin_lock_irqsave(&ucsi->state_lock, flags);
+>> >+	ucsi->new_pdr_state =3D state;
+>> >+	spin_unlock_irqrestore(&ucsi->state_lock, flags);
+>> >+	schedule_work(&ucsi->register_work);
+>> > }
+>> >=20
+>> > static void pmic_glink_ucsi_destroy(void *data)
+>> >
+>>=20
 
 
