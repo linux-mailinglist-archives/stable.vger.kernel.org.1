@@ -1,246 +1,143 @@
-Return-Path: <stable+bounces-69616-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69617-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 842C4957183
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 19:07:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 629C0957210
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 19:23:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A85611C22ACF
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 17:07:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 14C79B2B0CD
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 17:07:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE9FA17C204;
-	Mon, 19 Aug 2024 17:03:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3DB618B46D;
+	Mon, 19 Aug 2024 17:04:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cAjVczeH"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UtUSTUeg"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F229918A932
-	for <stable@vger.kernel.org>; Mon, 19 Aug 2024 17:03:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC023187FFE;
+	Mon, 19 Aug 2024 17:03:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724087034; cv=none; b=LqxXIk6HdAlR+s8Or3sECQkF28iUZdb7tQ3NmF7XAjuVCPJXU4dfJCvYeTkowaTXHdaXxogHFAoA7kODi4QbDJqlD0Eq7TV3ZSyc5BZFGnHj/Z4hYzrjk81eT9/Zxbn1Z38saLjnTV91C9Ny9SsQx9/ph8dYicaKolucKG227lw=
+	t=1724087041; cv=none; b=Q1i16Uwjio8s85rv6SzJwV/8J3hjeF1VxJaMupo12LHAW0kQb+tIYerNiAiacQkhDKUf43X9AI+M0WeM5Z0/+XZcg9iuu9EtYDwxlRDCVc68fEQyoPkW34zFOb3g1T/8MbJwSPk/NSVXDDRjBGR6SLu/ySndu7vDYd0Lr+xfHP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724087034; c=relaxed/simple;
-	bh=cd9uMXXjwIg3LipodXGtIPYrqQicCXUGwYBCYfrGU5U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hHJ3hzfyjBHjiREatvtVOW7IMxa7Yhakl48Hq9P0xBq7fdFGWPs4BQB4bLBJob5eZ0tGwg+DX01cE5QtcftEAfwkSeN1ag9eRPzKeHf+/3csYHDKlxJmgSuK6fGrgbB4EjpeF+N1eegjlg8r0yboxX/K4pfIdT9TJ4C+jYmLIsI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cAjVczeH; arc=none smtp.client-ip=209.85.214.180
+	s=arc-20240116; t=1724087041; c=relaxed/simple;
+	bh=JgmieXg4Iblau/5Q/kxt2DnEgSgVYdSGYAbJ5VjaqKY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=IjlqhnyeFPTYY5T+16Y1VMZdflu2EH+pRJZOjrORU3BOs6/B4/THIYgJ90zhFdSzcW2ynGlF4Aqj52duPFEIDx1cuyL2jtTx2U55YVbB/65oW+T5d3u6UVrdj7xZ23zwIWzv4GwLF/Nxnfqk4yPMKu21aUzDoh4OlyvcfL3JWXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UtUSTUeg; arc=none smtp.client-ip=209.85.222.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-202376301e6so8902915ad.0
-        for <stable@vger.kernel.org>; Mon, 19 Aug 2024 10:03:52 -0700 (PDT)
+Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-7a1dcba8142so424116285a.0;
+        Mon, 19 Aug 2024 10:03:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724087032; x=1724691832; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BmNdRfQwBhxaT1HwilI10sPKkC7lH+s3BpK82jwzrS8=;
-        b=cAjVczeHJexmwro/mKW1gQN/ovy0VKxUJMum1O4hVpLlnYgZHVV1mikwfIptR3tKks
-         8TmEI//oQAXPo3+2HE2DMgZIxV8UIMpOtPHZlXe/1cWhWMSNEoP2U91M8owMyeSoaIRG
-         szQvJ5bspGyF6PzZxAQan1wXOphpEOgnK/R0z5oOLNGvkoTl6gMO6EpkebN801kEalGP
-         7iwV5QcZxBj34CsMpGHDctjd9WmR7SAfKujw0QTz8VBZglLpch3VQyP30FdT1e8bNJcV
-         YoNfvLjRbDD5X8sWV193tjJDPsAUVyKIi2I/Omzjxlf0kBAF6irxR1AMGTnENg5gKqZ6
-         P09w==
+        d=gmail.com; s=20230601; t=1724087039; x=1724691839; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=a3BIaVWnwxuWR27UJ/fveub/Cw3H6dA+grq2xxd+b3c=;
+        b=UtUSTUegylrYusi8Cu42qtjkDnrplW/ihsdKyTaqHXWSTMniXBlvoTaib/pHKQlBdr
+         AGgwYvRSuzCundNNpFtxiQPp2heEcWRBtuEwlT/373De5101ri9s5FrSgjsEY8kwi79V
+         yVyGvc8r/IBKP+EIHLIgQ05GyXop0gqCq9RNmvzJD+M1zufGVq9hEa0tmyhNOOBF+22c
+         32+2PYGnMBqJyfxTlIOulIb6mxLwSsne9JwSzyMAHXvHX/LfzdPEbXsEFmyzcmdenDTa
+         b/YZMfaJLs5xjNTZ+JgdSl59kTVOfxMUFoD7fQbzSdskBoSl1JZbVSSWC1AbVY/bBFXT
+         9czA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724087032; x=1724691832;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=BmNdRfQwBhxaT1HwilI10sPKkC7lH+s3BpK82jwzrS8=;
-        b=XIXnBOA4vUcII/XzjZqjLvQSM88M0T0kQokF+svaXOotsdtbO3c1iILBVErtF6MCpS
-         0gBQSaw7k8P6T4mBsLBa49wu+Xi4qOoXfsASCgtuGJWlFQyNkcz4DyTjJeV/tk1Gi1e4
-         MIK0wQxuUEPSrZOb6ImGfGc8eBc8P7W2Khf2wzdy+HkTVBXjLzpXTEhbYiw7F8Cbvnsd
-         GII3aDAeE207DLcNyDhN2GbpWh87MzffzK2KuBDfAZX79kX/kKG7PJscF3AH6wQMQ+eT
-         mJJBLQAuVg3tT3szbb9SMVE/ZRoDRxkMZfFMkgk96V5TM4xKnQVVtGPvtoFm9kwxwH1t
-         3blg==
-X-Forwarded-Encrypted: i=1; AJvYcCV/sDLN3YsPWIWwNaqeLR+SIzAGaXxP51efmKnG/c+5yXChpE9Xeiqo0j7HvWTkPGQmkkZXUWE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwqpknmOxm1GFPTMOOhgtQkW8gOCkLB4jO+x4Q4mgi5lsKbajBO
-	i1kpVq8ShpdKQjK5+O/AO+Uij30th9KKrTFgWL+QLASAZvtxwORE1BCYtj0acArpS6abCLZd8Qn
-	GgWah/YAtrPziIDlCm+vcs9BuOojPnVHw
-X-Google-Smtp-Source: AGHT+IFrRCmM5UI/i4vWXN89LDnPdv0s59wDFaKy0zznINVO0gSqZ6AVSs5aHioOicfupSSEZfWlnPph7E8/q+jTABQ=
-X-Received: by 2002:a17:903:10c:b0:202:2f0:3bb2 with SMTP id
- d9443c01a7336-20204067d8fmr93491475ad.60.1724087032002; Mon, 19 Aug 2024
- 10:03:52 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1724087039; x=1724691839;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=a3BIaVWnwxuWR27UJ/fveub/Cw3H6dA+grq2xxd+b3c=;
+        b=njuK3sRARmiJCO4H8fCPdtrtO1t6YHVsidXkJ+w3x6EVjXWw9wZtzTlS3EuaIg1Ten
+         Gzfxk9hSCFE6zIMxeTe7llTAn6vhMUxnYKmS1guHr9U98/fzjvIdW+XXcZ94Q+NLbI3J
+         aem7QljxDEi93lxR0Y/X0TZnJMTlxqU+J35KDL/Al4dUPH4pPvLB0JEafIl8GFm2YyW7
+         r4u3u4xNtrb3mPyo8dKVWsliBK1L6XlcjNra7vaj5zmYHlsTe+qcueqzFsk8sD+ekcmi
+         kCwYObvJvIQpFKxzGuetDiz+/i+dMbPVqq+OYMkWRpvbmQiPpqcHvbOZOOKyS9aEOlDM
+         2YxQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV49t7QtE+/dWghiM7txIqKj1kGVOC1FOa+90vV+Vxd1F6rGCXtKj1g5fd0/K2DRTxz62brqYLX9WpTmXlTN+uZuA9rs96E8WTVqszTppBlbWNEjQWHm5+rYMp0C/hm3gL4Yywm
+X-Gm-Message-State: AOJu0Yxb9Z6hj5S+shjIntq8cIc9uKU7E4EZZpKssqi3Zic7/wsTkooR
+	7blayJKbHq6POKiuAJ1cgTzG9vk5IdnFjj6nuVutulBxSd4Z0EwW
+X-Google-Smtp-Source: AGHT+IFbUhEcPgxK/XfmNoG6Hn+cKrtm8a4uxXkzp4ZBuOe/ugGXCGOPKI+bgtCqYGHfkyGl+yVDfQ==
+X-Received: by 2002:a05:620a:24cb:b0:7a2:1bc:be05 with SMTP id af79cd13be357-7a667c53723mr46511485a.31.1724087038449;
+        Mon, 19 Aug 2024 10:03:58 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id af79cd13be357-7a4ff0faec2sm444637185a.105.2024.08.19.10.03.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 19 Aug 2024 10:03:55 -0700 (PDT)
+Message-ID: <96ad9bc6-1cac-4ebf-8385-661c0d4f1b99@gmail.com>
+Date: Mon, 19 Aug 2024 10:03:51 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240819165341.799848-1-alexander.deucher@amd.com>
-In-Reply-To: <20240819165341.799848-1-alexander.deucher@amd.com>
-From: Alex Deucher <alexdeucher@gmail.com>
-Date: Mon, 19 Aug 2024 13:03:37 -0400
-Message-ID: <CADnq5_M5GnsS5dcfrQU7c-B7j3yp=Gq70eZ4XB5Ri1b4M4yO-w@mail.gmail.com>
-Subject: Re: [PATCH V2] video/aperture: match the pci device when calling sysfb_disable()
-To: Alex Deucher <alexander.deucher@amd.com>
-Cc: amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
-	intel-gfx@lists.freedesktop.org, 
-	Javier Martinez Canillas <javierm@redhat.com>, Thomas Zimmermann <tzimmermann@suse.de>, Helge Deller <deller@gmx.de>, 
-	Sam Ravnborg <sam@ravnborg.org>, Daniel Vetter <daniel.vetter@ffwll.ch>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: 5.10.225-rc1 [Was: Re: [PATCH 5.10 000/345] 5.10.224-rc3 review]
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+References: <20240817074737.217182940@linuxfoundation.org>
+Content-Language: en-US
+From: Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20240817074737.217182940@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-I forgot to update the patch title but it should probably be something like=
-:
+On 8/17/24 00:51, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.10.224 release.
+> There are 345 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Mon, 19 Aug 2024 07:46:32 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.224-rc3.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-video/aperture: optionally match the device in sysfb_disable()
+perf fails to build on ARM/ARM64/MIPS with:
 
-Alex
+/local/stbopt_p/toolchains_303/stbgcc-12.3-1.0/bin/../lib/gcc/arm-unknown-linux-gnueabihf/12.3.0/../../../../arm-unknown-linux-gnueabihf/bin/ld: 
+/local/users/fainelli/buildroot/output/arm/build/linux-custom/tools/perf/perf-in.o: 
+in function `bitmap_zero':
+/local/users/fainelli/buildroot/output/arm/build/linux-custom/tools/perf/../include/linux/bitmap.h:40: 
+undefined reference to `ALIGN'
+/local/stbopt_p/toolchains_303/stbgcc-12.3-1.0/bin/../lib/gcc/arm-unknown-linux-gnueabihf/12.3.0/../../../../arm-unknown-linux-gnueabihf/bin/ld: 
+/local/users/fainelli/buildroot/output/arm/build/linux-custom/tools/perf/perf-in.o: 
+in function `bitmap_alloc':
+/local/users/fainelli/buildroot/output/arm/build/linux-custom/tools/perf/../include/linux/bitmap.h:126: 
+undefined reference to `ALIGN'
+/local/stbopt_p/toolchains_303/stbgcc-12.3-1.0/bin/../lib/gcc/arm-unknown-linux-gnueabihf/12.3.0/../../../../arm-unknown-linux-gnueabihf/bin/ld: 
+/local/users/fainelli/buildroot/output/arm/build/linux-custom/tools/perf/../include/linux/bitmap.h:126: 
+undefined reference to `ALIGN'
+/local/stbopt_p/toolchains_303/stbgcc-12.3-1.0/bin/../lib/gcc/arm-unknown-linux-gnueabihf/12.3.0/../../../../arm-unknown-linux-gnueabihf/bin/ld: 
+/local/users/fainelli/buildroot/output/arm/build/linux-custom/tools/perf/../include/linux/bitmap.h:126: 
+undefined reference to `ALIGN'
+/local/stbopt_p/toolchains_303/stbgcc-12.3-1.0/bin/../lib/gcc/arm-unknown-linux-gnueabihf/12.3.0/../../../../arm-unknown-linux-gnueabihf/bin/ld: 
+/local/users/fainelli/buildroot/output/arm/build/linux-custom/tools/perf/../include/linux/bitmap.h:126: 
+undefined reference to `ALIGN'
+/local/stbopt_p/toolchains_303/stbgcc-12.3-1.0/bin/../lib/gcc/arm-unknown-linux-gnueabihf/12.3.0/../../../../arm-unknown-linux-gnueabihf/bin/ld: 
+/local/users/fainelli/buildroot/output/arm/build/linux-custom/tools/perf/perf-in.o:/local/users/fainelli/buildroot/output/arm/build/linux-custom/tools/perf/../include/linux/bitmap.h:40: 
+more undefined references to `ALIGN' follow
+collect2: error: ld returned 1 exit status
 
-On Mon, Aug 19, 2024 at 1:00=E2=80=AFPM Alex Deucher <alexander.deucher@amd=
-.com> wrote:
->
-> In aperture_remove_conflicting_pci_devices(), we currently only
-> call sysfb_disable() on vga class devices.  This leads to the
-> following problem when the pimary device is not VGA compatible:
->
-> 1. A PCI device with a non-VGA class is the boot display
-> 2. That device is probed first and it is not a VGA device so
->    sysfb_disable() is not called, but the device resources
->    are freed by aperture_detach_platform_device()
-> 3. Non-primary GPU has a VGA class and it ends up calling sysfb_disable()
-> 4. NULL pointer dereference via sysfb_disable() since the resources
->    have already been freed by aperture_detach_platform_device() when
->    it was called by the other device.
->
-> Fix this by passing a device pointer to sysfb_disable() and checking
-> the device to determine if we should execute it or not.
->
-> v2: Fix build when CONFIG_SCREEN_INFO is not set
->
-> Fixes: 5ae3716cfdcd ("video/aperture: Only remove sysfb on the default vg=
-a pci device")
-> Cc: Javier Martinez Canillas <javierm@redhat.com>
-> Cc: Thomas Zimmermann <tzimmermann@suse.de>
-> Cc: Helge Deller <deller@gmx.de>
-> Cc: Sam Ravnborg <sam@ravnborg.org>
-> Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
-> Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-> Cc: stable@vger.kernel.org
-> ---
->  drivers/firmware/sysfb.c | 11 +++++++++--
->  drivers/of/platform.c    |  2 +-
->  drivers/video/aperture.c |  5 ++---
->  include/linux/sysfb.h    |  4 ++--
->  4 files changed, 14 insertions(+), 8 deletions(-)
->
-> diff --git a/drivers/firmware/sysfb.c b/drivers/firmware/sysfb.c
-> index 880ffcb500887..033a044af2646 100644
-> --- a/drivers/firmware/sysfb.c
-> +++ b/drivers/firmware/sysfb.c
-> @@ -39,6 +39,8 @@ static struct platform_device *pd;
->  static DEFINE_MUTEX(disable_lock);
->  static bool disabled;
->
-> +static struct device *sysfb_parent_dev(const struct screen_info *si);
-> +
->  static bool sysfb_unregister(void)
->  {
->         if (IS_ERR_OR_NULL(pd))
-> @@ -52,6 +54,7 @@ static bool sysfb_unregister(void)
->
->  /**
->   * sysfb_disable() - disable the Generic System Framebuffers support
-> + * @dev:       the device to check if non-NULL
->   *
->   * This disables the registration of system framebuffer devices that mat=
-ch the
->   * generic drivers that make use of the system framebuffer set up by fir=
-mware.
-> @@ -61,8 +64,12 @@ static bool sysfb_unregister(void)
->   * Context: The function can sleep. A @disable_lock mutex is acquired to=
- serialize
->   *          against sysfb_init(), that registers a system framebuffer de=
-vice.
->   */
-> -void sysfb_disable(void)
-> +void sysfb_disable(struct device *dev)
->  {
-> +       struct screen_info *si =3D &screen_info;
-> +
-> +       if (dev && dev !=3D sysfb_parent_dev(si))
-> +               return;
->         mutex_lock(&disable_lock);
->         sysfb_unregister();
->         disabled =3D true;
-> @@ -93,7 +100,7 @@ static __init bool sysfb_pci_dev_is_enabled(struct pci=
-_dev *pdev)
->  }
->  #endif
->
-> -static __init struct device *sysfb_parent_dev(const struct screen_info *=
-si)
-> +static struct device *sysfb_parent_dev(const struct screen_info *si)
->  {
->         struct pci_dev *pdev;
->
-> diff --git a/drivers/of/platform.c b/drivers/of/platform.c
-> index 389d4ea6bfc15..ef622d41eb5b2 100644
-> --- a/drivers/of/platform.c
-> +++ b/drivers/of/platform.c
-> @@ -592,7 +592,7 @@ static int __init of_platform_default_populate_init(v=
-oid)
->                          * This can happen for example on DT systems that=
- do EFI
->                          * booting and may provide a GOP handle to the EF=
-I stub.
->                          */
-> -                       sysfb_disable();
-> +                       sysfb_disable(NULL);
->                         of_platform_device_create(node, NULL, NULL);
->                         of_node_put(node);
->                 }
-> diff --git a/drivers/video/aperture.c b/drivers/video/aperture.c
-> index 561be8feca96c..b23d85ceea104 100644
-> --- a/drivers/video/aperture.c
-> +++ b/drivers/video/aperture.c
-> @@ -293,7 +293,7 @@ int aperture_remove_conflicting_devices(resource_size=
-_t base, resource_size_t si
->          * ask for this, so let's assume that a real driver for the displ=
-ay
->          * was already probed and prevent sysfb to register devices later=
-.
->          */
-> -       sysfb_disable();
-> +       sysfb_disable(NULL);
->
->         aperture_detach_devices(base, size);
->
-> @@ -353,8 +353,7 @@ int aperture_remove_conflicting_pci_devices(struct pc=
-i_dev *pdev, const char *na
->         if (pdev =3D=3D vga_default_device())
->                 primary =3D true;
->
-> -       if (primary)
-> -               sysfb_disable();
-> +       sysfb_disable(&pdev->dev);
->
->         for (bar =3D 0; bar < PCI_STD_NUM_BARS; ++bar) {
->                 if (!(pci_resource_flags(pdev, bar) & IORESOURCE_MEM))
-> diff --git a/include/linux/sysfb.h b/include/linux/sysfb.h
-> index c9cb657dad08a..bef5f06a91de6 100644
-> --- a/include/linux/sysfb.h
-> +++ b/include/linux/sysfb.h
-> @@ -58,11 +58,11 @@ struct efifb_dmi_info {
->
->  #ifdef CONFIG_SYSFB
->
-> -void sysfb_disable(void);
-> +void sysfb_disable(struct device *dev);
->
->  #else /* CONFIG_SYSFB */
->
-> -static inline void sysfb_disable(void)
-> +static inline void sysfb_disable(struct device *dev)
->  {
->  }
->
-> --
-> 2.46.0
->
+this is coming from "bitmap: introduce generic optimized bitmap_size()".
+-- 
+Florian
+
 
