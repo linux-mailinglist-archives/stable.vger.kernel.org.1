@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-69524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69525-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0127295679A
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 11:54:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF8E095679B
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 11:54:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FA4B1F22618
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 09:54:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 76C2E1F22599
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 09:54:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADBC115D5DE;
-	Mon, 19 Aug 2024 09:54:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19CAD15B55D;
+	Mon, 19 Aug 2024 09:54:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l9pddfCQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MzAwX0XQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E2AE1581EE
-	for <stable@vger.kernel.org>; Mon, 19 Aug 2024 09:54:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF55713B592
+	for <stable@vger.kernel.org>; Mon, 19 Aug 2024 09:54:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724061287; cv=none; b=bwgfrka926S8zDvlFVkcDkPu6ui7lDVoWNNan/pO76FdqvANBBV0VuJpo9PNsrDPGStSkbG76UImJK++rftmNgELcEUfmiXRWI7WnT+V6483ZPRKFrFjRtnpmylg3dsUzwTUvHfU2usAcyTe+fNseepT9pEQt1IiEJXE7uAFkoQ=
+	t=1724061294; cv=none; b=c4mUXrUd4k0ht4YcuEfyod3dYsjWbCTLyJQrs8x6tJOWYEHMxgzgp8qsxBKRh4NGaIMwqKGwG55Weq4mFFXJnvbXnZQfv+7hsLhtEr2EGJFKo0JlBAepqvlnQl6qXLKSFmGPy+ac+4wa77X92q9GykpTG+lrU70sT1HNvkGMHJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724061287; c=relaxed/simple;
-	bh=ZZlzwsGG3soPWlXY6ju31WJixexCjDpQXwf9B4BPb9g=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=gYZgUSVesk7W8QGRFNvTvDY28XF9SH7BBfG19gOJtzrLLB4jEh0vlxA5HPrZkVFbWEI0uVzGgU3Bv1BZEKB/KJV1Y8tNhEHOcGO35SGvjsEV0AW6Y+pMdQpEvihRtMo+RdxEZpvkvHQAvDWOlzq7UVV6BrBqP2VadYApYIAh830=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l9pddfCQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAA73C32782;
-	Mon, 19 Aug 2024 09:54:46 +0000 (UTC)
+	s=arc-20240116; t=1724061294; c=relaxed/simple;
+	bh=5QasZ33U/nwVYVEb00RbCAbRlJjBm3LhSmVmBdIPBzM=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=fz/hNtN6LG+TUEatAHNVm7LiAID0t7NdCodJZelO0PoECpnl9/PVIPm6IGHEjyTvSEZFMqE3U6yAfTjCTJp0b2VQ58uo/oJi7w6M/E/vpAGKvnWd6lbwtBRVsjju5bAxX3jUMTUBdQ3SGU76iDHLLUrhkb++S8XCjqR7OBnFzuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MzAwX0XQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03966C4AF09;
+	Mon, 19 Aug 2024 09:54:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724061287;
-	bh=ZZlzwsGG3soPWlXY6ju31WJixexCjDpQXwf9B4BPb9g=;
+	s=korg; t=1724061294;
+	bh=5QasZ33U/nwVYVEb00RbCAbRlJjBm3LhSmVmBdIPBzM=;
 	h=Subject:To:Cc:From:Date:From;
-	b=l9pddfCQdIdNxcSSC+AgA3jCWOGZNtAncHnLVtppcYi0gUULu0LGF9U5gfZw9gjqn
-	 Z59MgLTzF2wWLQtqLYnsS+wDiXBHlttUuVzETYrisIBfU2CZ54AlfvLuwicmDZysrV
-	 FbMl9Ia8tn+7qOvK3Nl0kw0eFgVG5reYyLzXkecY=
-Subject: FAILED: patch "[PATCH] mm/numa: no task_numa_fault() call if PTE is changed" failed to apply to 5.15-stable tree
-To: ziy@nvidia.com,akpm@linux-foundation.org,baolin.wang@linux.alibaba.com,david@redhat.com,mgorman@suse.de,shy828301@gmail.com,stable@vger.kernel.org,wangkefeng.wang@huawei.com,ying.huang@intel.com
+	b=MzAwX0XQ97wnmfHmk32cuULviThI6aQ2VliviTD91NsK53FxB4dSi6XhUoA0jh6ug
+	 +JpWBzXD2DxPSDv9O8V8UFk9dgWSWyFamWKRz5Lb8HZMRmGrKeBOIxCJFfkO4kQcAS
+	 WiU0rnOAIyIaXSC204JRmg2x5ohpfQ005E5cBR7Y=
+Subject: FAILED: patch "[PATCH] btrfs: tree-checker: reject BTRFS_FT_UNKNOWN dir type" failed to apply to 6.1-stable tree
+To: wqu@suse.com,dsterba@suse.com,nospam@kota.moe
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 Aug 2024 11:54:34 +0200
-Message-ID: <2024081934-embargo-primer-a23e@gregkh>
+Date: Mon, 19 Aug 2024 11:54:51 +0200
+Message-ID: <2024081951-anyhow-fool-5756@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,30 +53,42 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 40b760cfd44566bca791c80e0720d70d75382b84
+git cherry-pick -x 31723c9542dba1681cc3720571fdf12ffe0eddd9
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081934-embargo-primer-a23e@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081951-anyhow-fool-5756@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-40b760cfd445 ("mm/numa: no task_numa_fault() call if PTE is changed")
-d2136d749d76 ("mm: support multi-size THP numa balancing")
-6b0ed7b3c775 ("mm: factor out the numa mapping rebuilding into a new helper")
-ec1778807a80 ("mm: mprotect: use a folio in change_pte_range()")
-6695cf68b15c ("mm: memory: use a folio in do_numa_page()")
-73eab3ca481e ("mm: migrate: convert migrate_misplaced_page() to migrate_misplaced_folio()")
-2ac9e99f3b21 ("mm: migrate: convert numamigrate_isolate_page() to numamigrate_isolate_folio()")
-df57721f9a63 ("Merge tag 'x86_shstk_for_6.6-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip")
+31723c9542db ("btrfs: tree-checker: reject BTRFS_FT_UNKNOWN dir type")
+94a48aef49f2 ("btrfs: extend btrfs_dir_item type to store encryption status")
+e43eec81c516 ("btrfs: use struct qstr instead of name and namelen pairs")
+07e81dc94474 ("btrfs: move accessor helpers into accessors.h")
+ad1ac5012c2b ("btrfs: move btrfs_map_token to accessors")
+55e5cfd36da5 ("btrfs: remove fs_info::pending_changes and related code")
+7966a6b5959b ("btrfs: move fs_info::flags enum to fs.h")
+fc97a410bd78 ("btrfs: move mount option definitions to fs.h")
+0d3a9cf8c306 ("btrfs: convert incompat and compat flag test helpers to macros")
+ec8eb376e271 ("btrfs: move BTRFS_FS_STATE* definitions and helpers to fs.h")
+9b569ea0be6f ("btrfs: move the printk helpers out of ctree.h")
+e118578a8df7 ("btrfs: move assert helpers out of ctree.h")
+c7f13d428ea1 ("btrfs: move fs wide helpers out of ctree.h")
+63a7cb130718 ("btrfs: auto enable discard=async when possible")
+7a66eda351ba ("btrfs: move the btrfs_verity_descriptor_item defs up in ctree.h")
+956504a331a6 ("btrfs: move trans_handle_cachep out of ctree.h")
+f1e5c6185ca1 ("btrfs: move flush related definitions to space-info.h")
+ed4c491a3db2 ("btrfs: move BTRFS_MAX_MIRRORS into scrub.c")
+4300c58f8090 ("btrfs: move btrfs on-disk definitions out of ctree.h")
+d60d956eb41f ("btrfs: remove unused set/clear_pending_info helpers")
 
 thanks,
 
@@ -84,96 +96,57 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 40b760cfd44566bca791c80e0720d70d75382b84 Mon Sep 17 00:00:00 2001
-From: Zi Yan <ziy@nvidia.com>
-Date: Fri, 9 Aug 2024 10:59:04 -0400
-Subject: [PATCH] mm/numa: no task_numa_fault() call if PTE is changed
+From 31723c9542dba1681cc3720571fdf12ffe0eddd9 Mon Sep 17 00:00:00 2001
+From: Qu Wenruo <wqu@suse.com>
+Date: Mon, 12 Aug 2024 08:52:44 +0930
+Subject: [PATCH] btrfs: tree-checker: reject BTRFS_FT_UNKNOWN dir type
 
-When handling a numa page fault, task_numa_fault() should be called by a
-process that restores the page table of the faulted folio to avoid
-duplicated stats counting.  Commit b99a342d4f11 ("NUMA balancing: reduce
-TLB flush via delaying mapping on hint page fault") restructured
-do_numa_page() and did not avoid task_numa_fault() call in the second page
-table check after a numa migration failure.  Fix it by making all
-!pte_same() return immediately.
+[REPORT]
+There is a bug report that kernel is rejecting a mismatching inode mode
+and its dir item:
 
-This issue can cause task_numa_fault() being called more than necessary
-and lead to unexpected numa balancing results (It is hard to tell whether
-the issue will cause positive or negative performance impact due to
-duplicated numa fault counting).
+  [ 1881.553937] BTRFS critical (device dm-0): inode mode mismatch with
+  dir: inode mode=040700 btrfs type=2 dir type=0
 
-Link: https://lkml.kernel.org/r/20240809145906.1513458-2-ziy@nvidia.com
-Fixes: b99a342d4f11 ("NUMA balancing: reduce TLB flush via delaying mapping on hint page fault")
-Signed-off-by: Zi Yan <ziy@nvidia.com>
-Reported-by: "Huang, Ying" <ying.huang@intel.com>
-Closes: https://lore.kernel.org/linux-mm/87zfqfw0yw.fsf@yhuang6-desk2.ccr.corp.intel.com/
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Mel Gorman <mgorman@suse.de>
-Cc: Yang Shi <shy828301@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[CAUSE]
+It looks like the inode mode is correct, while the dir item type
+0 is BTRFS_FT_UNKNOWN, which should not be generated by btrfs at all.
 
-diff --git a/mm/memory.c b/mm/memory.c
-index 34f8402d2046..3c01d68065be 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -5295,7 +5295,7 @@ static vm_fault_t do_numa_page(struct vm_fault *vmf)
+This may be caused by a memory bit flip.
+
+[ENHANCEMENT]
+Although tree-checker is not able to do any cross-leaf verification, for
+this particular case we can at least reject any dir type with
+BTRFS_FT_UNKNOWN.
+
+So here we enhance the dir type check from [0, BTRFS_FT_MAX), to
+(0, BTRFS_FT_MAX).
+Although the existing corruption can not be fixed just by such enhanced
+checking, it should prevent the same 0x2->0x0 bitflip for dir type to
+reach disk in the future.
+
+Reported-by: Kota <nospam@kota.moe>
+Link: https://lore.kernel.org/linux-btrfs/CACsxjPYnQF9ZF-0OhH16dAx50=BXXOcP74MxBc3BG+xae4vTTw@mail.gmail.com/
+CC: stable@vger.kernel.org # 5.4+
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+
+diff --git a/fs/btrfs/tree-checker.c b/fs/btrfs/tree-checker.c
+index a825fa598e3c..6f1e2f2215d9 100644
+--- a/fs/btrfs/tree-checker.c
++++ b/fs/btrfs/tree-checker.c
+@@ -569,9 +569,10 @@ static int check_dir_item(struct extent_buffer *leaf,
  
- 	if (unlikely(!pte_same(old_pte, vmf->orig_pte))) {
- 		pte_unmap_unlock(vmf->pte, vmf->ptl);
--		goto out;
-+		return 0;
- 	}
- 
- 	pte = pte_modify(old_pte, vma->vm_page_prot);
-@@ -5358,23 +5358,19 @@ static vm_fault_t do_numa_page(struct vm_fault *vmf)
- 	if (!migrate_misplaced_folio(folio, vma, target_nid)) {
- 		nid = target_nid;
- 		flags |= TNF_MIGRATED;
--	} else {
--		flags |= TNF_MIGRATE_FAIL;
--		vmf->pte = pte_offset_map_lock(vma->vm_mm, vmf->pmd,
--					       vmf->address, &vmf->ptl);
--		if (unlikely(!vmf->pte))
--			goto out;
--		if (unlikely(!pte_same(ptep_get(vmf->pte), vmf->orig_pte))) {
--			pte_unmap_unlock(vmf->pte, vmf->ptl);
--			goto out;
--		}
--		goto out_map;
-+		task_numa_fault(last_cpupid, nid, nr_pages, flags);
-+		return 0;
- 	}
- 
--out:
--	if (nid != NUMA_NO_NODE)
--		task_numa_fault(last_cpupid, nid, nr_pages, flags);
--	return 0;
-+	flags |= TNF_MIGRATE_FAIL;
-+	vmf->pte = pte_offset_map_lock(vma->vm_mm, vmf->pmd,
-+				       vmf->address, &vmf->ptl);
-+	if (unlikely(!vmf->pte))
-+		return 0;
-+	if (unlikely(!pte_same(ptep_get(vmf->pte), vmf->orig_pte))) {
-+		pte_unmap_unlock(vmf->pte, vmf->ptl);
-+		return 0;
-+	}
- out_map:
- 	/*
- 	 * Make it present again, depending on how arch implements
-@@ -5387,7 +5383,10 @@ static vm_fault_t do_numa_page(struct vm_fault *vmf)
- 		numa_rebuild_single_mapping(vmf, vma, vmf->address, vmf->pte,
- 					    writable);
- 	pte_unmap_unlock(vmf->pte, vmf->ptl);
--	goto out;
-+
-+	if (nid != NUMA_NO_NODE)
-+		task_numa_fault(last_cpupid, nid, nr_pages, flags);
-+	return 0;
- }
- 
- static inline vm_fault_t create_huge_pmd(struct vm_fault *vmf)
+ 		/* dir type check */
+ 		dir_type = btrfs_dir_ftype(leaf, di);
+-		if (unlikely(dir_type >= BTRFS_FT_MAX)) {
++		if (unlikely(dir_type <= BTRFS_FT_UNKNOWN ||
++			     dir_type >= BTRFS_FT_MAX)) {
+ 			dir_item_err(leaf, slot,
+-			"invalid dir item type, have %u expect [0, %u)",
++			"invalid dir item type, have %u expect (0, %u)",
+ 				dir_type, BTRFS_FT_MAX);
+ 			return -EUCLEAN;
+ 		}
 
 
