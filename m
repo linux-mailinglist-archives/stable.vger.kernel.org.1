@@ -1,161 +1,153 @@
-Return-Path: <stable+bounces-69483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69484-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D4409566E6
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 11:29:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07DB495670A
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 11:32:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4984A2816AF
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 09:29:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B1341C20FFD
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 09:32:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25BD715ECD1;
-	Mon, 19 Aug 2024 09:29:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB1CF15C14F;
+	Mon, 19 Aug 2024 09:31:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="bdyDEa3r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dBvQT9p9"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E09BA15ECC2;
-	Mon, 19 Aug 2024 09:29:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A9E214AD3F
+	for <stable@vger.kernel.org>; Mon, 19 Aug 2024 09:31:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724059744; cv=none; b=Y5iE9EB6uvly7NuCbOcu9XpgYIHlJx+gLvz+gPFJaDydSS+Scre0ei3VG/kgJVLz6jcIiCgj62nGWCG0ZVeOBVq2U2AKluiZjBC8Kg2fvN2nkzROk4sYQIYZPKBhH0is0PhnV/U5mjuvajZ9pDImRr226gtARhqr5jwuO615kPw=
+	t=1724059874; cv=none; b=SxXuutoTVpH5t/mXAHv+MnAL4fhZC2n1lV5fbPgPGCP4O3vp/lxWbMkACyLIegMzRA1t2yOhKtazNlNpyiVDHiDNgsWkeZLNdmvpaSK4H6HE+SxYAY9vWCRct7qjbztJjHMw2XVGA4oOIYvamL33EzOh+oBbqobsMC8E8VOQ61U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724059744; c=relaxed/simple;
-	bh=O3anHyxZGKI47++zGmsoUsfSAf8M8dwURXdMCZnQxTc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=SHTQjtSI8yCunoGQ585vvodVhHoQCEptUeP1zdMeV/wvAT9XdA9pTGgz1FJUF9zHQh6QFwesOQvOUuZA0jZyE73XhXNsHTOgARKwg2Yy9pnCyeurN5+v0VPeJC3KwuzGj4n6sJyREq0H+BrPzyZcTLH2mbaV7I1EVIVGG0UpaiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=bdyDEa3r; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47INk1Za002536;
-	Mon, 19 Aug 2024 09:28:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	5oqXScjibZQjsUj+JfXXMkmZzpjNKCj5FEqv1WndicE=; b=bdyDEa3rWCYoBwEl
-	kdtWwVQpvFKkm4rNx+SF8eSnUw5ft/DEhg/Pqz1f9SRXIa3JuBJ1KLT40WJ2vKDq
-	HlJoIuDzFrLLSEaLv4t2ERoI9Bys3+Jau1l7bOiAL3IRwDlefgt5VC7340XU9PbB
-	+CvjJiJp+YCCc8RJa/KYkkYZv8azZZCjtttW8QRE4GB7wkeBP5eVxZtd7JbH/XOP
-	vCZF+Ay399uwx6beyVFgsvQBtnefzQTcFY16fkCuuaOFcs5BMSJqFn2KiAP8go6X
-	9Fz77EZzDxy5sCgHbUlmnFga11TPbpeHSVVappFMTmJYEcDyR2C2BGlJyVfKt7Cr
-	gUMcGQ==
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 412key3pdu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 19 Aug 2024 09:28:55 +0000 (GMT)
-Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
-	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 47J9Ssmb013173
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 19 Aug 2024 09:28:54 GMT
-Received: from [10.216.31.248] (10.80.80.8) by nalasex01a.na.qualcomm.com
- (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 19 Aug
- 2024 02:28:49 -0700
-Message-ID: <9de9be29-2f75-41a1-931b-f8cf0a9904ac@quicinc.com>
-Date: Mon, 19 Aug 2024 14:58:46 +0530
+	s=arc-20240116; t=1724059874; c=relaxed/simple;
+	bh=UzwJfYh/3K1mEbYFiVZBLIN2SKdVkNKSyanrTaaSUDE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=g/6Sbry6UqdUDqOJTjfpLPUAVVq2ZUYReV3COWupM6fTKj8hu8spBOprgpbvBxWWSEZvbNb4BSVqACTAW0ydM9RI+MhDTIA41QCnoF66Hg7+tMDanMDfGCOcmnKEH5u/yc/0M/Zl2Gzy3Trr9qzBlGjnkrJaCFw9tyWOK9vJYZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dBvQT9p9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B01AAC4AF09;
+	Mon, 19 Aug 2024 09:31:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1724059874;
+	bh=UzwJfYh/3K1mEbYFiVZBLIN2SKdVkNKSyanrTaaSUDE=;
+	h=Subject:To:Cc:From:Date:From;
+	b=dBvQT9p9Q5txZ+gXggyWNKCtbxDjm3N4uqXTmlnS2aih2NLkPYziPvUXalJ6kdrcj
+	 3WbwqQHTRDPNhiU3GyiJQevi24zOJVYOZhuIba0J9KeW/s33YvcxBSFMtGYDdBU/qn
+	 YWEMIjVO0RCABCetJWFmMhcctKmPCSRGU/Zb/f9c=
+Subject: FAILED: patch "[PATCH] smb3: fix lock breakage for cached writes" failed to apply to 6.6-stable tree
+To: stfrench@microsoft.com,dhowells@redhat.com,kevin.ottens@enioka.com,piastryyy@gmail.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 19 Aug 2024 11:31:11 +0200
+Message-ID: <2024081910-dawn-handoff-e37b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] usb: dwc3: core: Prevent USB core invalid event buffer
- address access
-To: Selvarasu Ganesan <selvarasu.g@samsung.com>, <Thinh.Nguyen@synopsys.com>,
-        <gregkh@linuxfoundation.org>
-CC: <jh0801.jung@samsung.com>, <dh10.jung@samsung.com>, <naushad@samsung.com>,
-        <akash.m5@samsung.com>, <rc93.raju@samsung.com>,
-        <linux-kernel@vger.kernel.org>, <linux-usb@vger.kernel.org>,
-        <taehyun.cho@samsung.com>, <hongpooh.kim@samsung.com>,
-        <eomji.oh@samsung.com>, <shijie.cai@samsung.com>,
-        <stable@vger.kernel.org>
-References: <CGME20240808120605epcas5p2c9164533413706da5f7fa2ed624318cd@epcas5p2.samsung.com>
- <20240808120507.1464-1-selvarasu.g@samsung.com>
-Content-Language: en-US
-From: Krishna Kurapati <quic_kriskura@quicinc.com>
-In-Reply-To: <20240808120507.1464-1-selvarasu.g@samsung.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01a.na.qualcomm.com (10.47.209.196)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: xDRjhdP30BnRxcaFntPhAlO8_h_fcSGR
-X-Proofpoint-GUID: xDRjhdP30BnRxcaFntPhAlO8_h_fcSGR
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-08-19_08,2024-08-19_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0
- lowpriorityscore=0 mlxscore=0 adultscore=0 clxscore=1011 impostorscore=0
- suspectscore=0 malwarescore=0 priorityscore=1501 spamscore=0
- mlxlogscore=999 bulkscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2407110000 definitions=main-2408190065
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
 
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-On 8/8/2024 5:35 PM, Selvarasu Ganesan wrote:
-> This commit addresses an issue where the USB core could access an
-> invalid event buffer address during runtime suspend, potentially causing
-> SMMU faults and other memory issues. The problem arises from the
-> following sequence.
->          1. In dwc3_gadget_suspend, there is a chance of a timeout when
->          moving the USB core to the halt state after clearing the
->          run/stop bit by software.
->          2. In dwc3_core_exit, the event buffer is cleared regardless of
->          the USB core's status, which may lead to an SMMU faults and
->          other memory issues. if the USB core tries to access the event
->          buffer address.
-> 
-> To prevent this issue, this commit ensures that the event buffer address
-> is not cleared by software  when the USB core is active during runtime
-> suspend by checking its status before clearing the buffer address.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 89d7f9629946 ("usb: dwc3: core: Skip setting event buffers for host only controllers")
+To reproduce the conflict and resubmit, you may use the following commands:
 
-I don't think the fixes tag is right.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x 836bb3268db405cf9021496ac4dbc26d3e4758fe
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081910-dawn-handoff-e37b@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
-This fix is independent of whether controller is host only capable or 
-not. This is fixing the original commit that introduced the cleanup call.
+Possible dependencies:
 
-Regards,
-Krishna,
+836bb3268db4 ("smb3: fix lock breakage for cached writes")
+3ee1a1fc3981 ("cifs: Cut over to using netfslib")
+69c3c023af25 ("cifs: Implement netfslib hooks")
+edea94a69730 ("cifs: Add mempools for cifs_io_request and cifs_io_subrequest structs")
+1a5b4edd97ce ("cifs: Move cifs_loose_read_iter() and cifs_file_write_iter() to file.c")
+ab58fbdeebc7 ("cifs: Use more fields from netfs_io_subrequest")
+a975a2f22cdc ("cifs: Replace cifs_writedata with a wrapper around netfs_io_subrequest")
+753b67eb630d ("cifs: Replace cifs_readdata with a wrapper around netfs_io_subrequest")
+0f7c0f3f5150 ("cifs: Use alternative invalidation to using launder_folio")
+2e9d7e4b984a ("mm: Remove the PG_fscache alias for PG_private_2")
+2ff1e97587f4 ("netfs: Replace PG_fscache by setting folio->private and marking dirty")
+f3dc1bdb6b0b ("cifs: Fix writeback data corruption")
+d1bba17e20d5 ("Merge tag '6.8-rc1-smb3-client-fixes' of git://git.samba.org/sfrench/cifs-2.6")
 
-> Signed-off-by: Selvarasu Ganesan <selvarasu.g@samsung.com>
-> ---
-> 
-> Changes in v2:
-> - Added separate check for USB controller status before cleaning the
->    event buffer.
-> - Link to v1: https://lore.kernel.org/lkml/20240722145617.537-1-selvarasu.g@samsung.com/
-> ---
->   drivers/usb/dwc3/core.c | 5 +++++
->   1 file changed, 5 insertions(+)
-> 
-> diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
-> index 734de2a8bd21..5b67d9bca71b 100644
-> --- a/drivers/usb/dwc3/core.c
-> +++ b/drivers/usb/dwc3/core.c
-> @@ -564,10 +564,15 @@ int dwc3_event_buffers_setup(struct dwc3 *dwc)
->   void dwc3_event_buffers_cleanup(struct dwc3 *dwc)
->   {
->   	struct dwc3_event_buffer	*evt;
-> +	u32				reg;
->   
->   	if (!dwc->ev_buf)
->   		return;
->   
-> +	reg = dwc3_readl(dwc->regs, DWC3_DSTS);
-> +	if (!(reg & DWC3_DSTS_DEVCTRLHLT))
-> +		return;
-> +
->   	evt = dwc->ev_buf;
->   
->   	evt->lpos = 0;
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 836bb3268db405cf9021496ac4dbc26d3e4758fe Mon Sep 17 00:00:00 2001
+From: Steve French <stfrench@microsoft.com>
+Date: Thu, 15 Aug 2024 14:03:43 -0500
+Subject: [PATCH] smb3: fix lock breakage for cached writes
+
+Mandatory locking is enforced for cached writes, which violates
+default posix semantics, and also it is enforced inconsistently.
+This apparently breaks recent versions of libreoffice, but can
+also be demonstrated by opening a file twice from the same
+client, locking it from handle one and writing to it from
+handle two (which fails, returning EACCES).
+
+Since there was already a mount option "forcemandatorylock"
+(which defaults to off), with this change only when the user
+intentionally specifies "forcemandatorylock" on mount will we
+break posix semantics on write to a locked range (ie we will
+only fail the write in this case, if the user mounts with
+"forcemandatorylock").
+
+Fixes: 85160e03a79e ("CIFS: Implement caching mechanism for mandatory brlocks")
+Cc: stable@vger.kernel.org
+Cc: Pavel Shilovsky <piastryyy@gmail.com>
+Reported-by: abartlet@samba.org
+Reported-by: Kevin Ottens <kevin.ottens@enioka.com>
+Reviewed-by: David Howells <dhowells@redhat.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+
+diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
+index 45459af5044d..06a0667f8ff2 100644
+--- a/fs/smb/client/file.c
++++ b/fs/smb/client/file.c
+@@ -2753,6 +2753,7 @@ cifs_writev(struct kiocb *iocb, struct iov_iter *from)
+ 	struct inode *inode = file->f_mapping->host;
+ 	struct cifsInodeInfo *cinode = CIFS_I(inode);
+ 	struct TCP_Server_Info *server = tlink_tcon(cfile->tlink)->ses->server;
++	struct cifs_sb_info *cifs_sb = CIFS_SB(inode->i_sb);
+ 	ssize_t rc;
+ 
+ 	rc = netfs_start_io_write(inode);
+@@ -2769,12 +2770,16 @@ cifs_writev(struct kiocb *iocb, struct iov_iter *from)
+ 	if (rc <= 0)
+ 		goto out;
+ 
+-	if (!cifs_find_lock_conflict(cfile, iocb->ki_pos, iov_iter_count(from),
++	if ((cifs_sb->mnt_cifs_flags & CIFS_MOUNT_NOPOSIXBRL) &&
++	    (cifs_find_lock_conflict(cfile, iocb->ki_pos, iov_iter_count(from),
+ 				     server->vals->exclusive_lock_type, 0,
+-				     NULL, CIFS_WRITE_OP))
+-		rc = netfs_buffered_write_iter_locked(iocb, from, NULL);
+-	else
++				     NULL, CIFS_WRITE_OP))) {
+ 		rc = -EACCES;
++		goto out;
++	}
++
++	rc = netfs_buffered_write_iter_locked(iocb, from, NULL);
++
+ out:
+ 	up_read(&cinode->lock_sem);
+ 	netfs_end_io_write(inode);
+
 
