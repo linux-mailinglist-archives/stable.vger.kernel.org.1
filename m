@@ -1,203 +1,147 @@
-Return-Path: <stable+bounces-69574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69575-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FC09956880
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 12:29:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87A889568CD
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 12:57:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 64AE31C21DE1
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 10:29:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 434CC28342C
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 10:57:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECA67160865;
-	Mon, 19 Aug 2024 10:29:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B511B165EF6;
+	Mon, 19 Aug 2024 10:57:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="eBlD/uXf"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LqrHPf/w"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F19AB1607B4
-	for <stable@vger.kernel.org>; Mon, 19 Aug 2024 10:28:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6838F142900;
+	Mon, 19 Aug 2024 10:57:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724063340; cv=none; b=sVXPCeU2F0LJlm+Eo3zPIVOGuGXMVzIin3LggqU8qYKcP5z7P6BkMDMSp2TX12oCpFXOpeLZDdxiD5qwf2tyu+KvhFv0rnNUTzC+dApVeLB2VIUkAXymaStAGAImPVCb9+JfhBALwH9Yf5sUFlu1YHFCjl42lFZWMum51MUadx8=
+	t=1724065053; cv=none; b=rXNVX1dEjgrb+Z21zHufs8RWMSp1M8jrkKEaL5kO8Bpmgiqsu34tUY7SQothXYUKjf7nhPIKZdWCWAyDbT2Sfs1e2jAXAsOlumMbpTPKBj6fwWjeNP6bd8mMpGMI0g7DmyKFouU726diSZofOUsf7E0tMA1F5XtS/mIrpLsjsHQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724063340; c=relaxed/simple;
-	bh=l8ZbmO6Lv+Wg7bzzIAkFARQu8z8b43FyamU0Djc64CM=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=YV/u6mfCg9iQyJxUF/ZIc9n5PGTPQCoZ/buMGfjEA9kV9QTSpz3gyX/otv2SiTNMj4C6yba/siLQk3wfx/Y0C4fi6+0JkN/98N+EFrf1OC2mfFiM9NJCJPOGzUEkmayUWEz6UbkOkEIMTG5ur40L1EjOmaQiWaEJJuKWqOt18SE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=eBlD/uXf; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1724063337;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pItcLM8wa8tu17zUOu3tXm7ZXWAByQE/2p3M5RP3lC8=;
-	b=eBlD/uXftkBcPAWhzPjojqAAcZFVZCubnSrY6mVene+dExhpZwtxcV6Nc3LUVawhFZfOtE
-	NHYgQW3jWd6NuRdsuPeXb6zHeM8NTdd19Tegq9rlA8b2pd6u5n5a3WgD6c5Bl0ce3Cv12K
-	w3sJtWMF0BQRZNwOELaT3j7WljMVSvI=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-136--QoEfT0QOQKEEBfe9lUFPA-1; Mon,
- 19 Aug 2024 06:28:54 -0400
-X-MC-Unique: -QoEfT0QOQKEEBfe9lUFPA-1
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6D2971955D4B;
-	Mon, 19 Aug 2024 10:28:53 +0000 (UTC)
-Received: from file1-rdu.file-001.prod.rdu2.dc.redhat.com (unknown [10.11.5.21])
-	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 27C1F1956054;
-	Mon, 19 Aug 2024 10:28:53 +0000 (UTC)
-Received: by file1-rdu.file-001.prod.rdu2.dc.redhat.com (Postfix, from userid 12668)
-	id 0C43130C051C; Mon, 19 Aug 2024 10:28:52 +0000 (UTC)
-Received: from localhost (localhost [127.0.0.1])
-	by file1-rdu.file-001.prod.rdu2.dc.redhat.com (Postfix) with ESMTP id 09BB93FB48;
-	Mon, 19 Aug 2024 12:28:52 +0200 (CEST)
-Date: Mon, 19 Aug 2024 12:28:52 +0200 (CEST)
-From: Mikulas Patocka <mpatocka@redhat.com>
-To: gregkh@linuxfoundation.org
-cc: stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] dm suspend: return -ERESTARTSYS instead
- of -EINTR" failed to apply to 4.19-stable tree
-In-Reply-To: <2024081927-smoky-refrain-8af1@gregkh>
-Message-ID: <e7ae27a1-14c7-baf7-d44b-7f73b6eb571f@redhat.com>
-References: <2024081927-smoky-refrain-8af1@gregkh>
+	s=arc-20240116; t=1724065053; c=relaxed/simple;
+	bh=EXnBZhRBDTjgOZaGOlzmFEXScQis9I93u6zh7wJFIcU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cugWtVm50CfItDcvcNk2oDSHVMePTCnBzG3so3Zr5E8DUV+pPuykGKrYhhLuCkqzpYj40y+Sgtm4OVFo43Yn5rH7rxLfiVNdNyH+hVWS0/SdYgIWeUYMXVy2cbYbsAB7oQzspzNZTSESllHUrwlfibuw4zwRlgAi+m/uTXw3HUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LqrHPf/w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFF41C32782;
+	Mon, 19 Aug 2024 10:57:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724065053;
+	bh=EXnBZhRBDTjgOZaGOlzmFEXScQis9I93u6zh7wJFIcU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=LqrHPf/wpTiFcS2kjZKdhodpWiHaPfsJ/ydvHxw8Bv1HfrGc/xFm5KGba/GZuLoK0
+	 zuaEVkZ3ldcEIU91+kW7VDRZ7XGG0SWPmLffoqiURzZfRF1/+Obe450QWKwHrcZxJy
+	 ohPXCr7im5Nl/2IwFTeZDERyXikloS40IGW/wwvCgHPkrToLcYA9Z5VVWndIzRyift
+	 kXpHfgwXuakO374q+lfzRqKi++Fn/TjaS58dzATpJ1EUZwaJ/8aAweZNVuXJ9BGjWw
+	 0vUmCWbc6c6q2CjBKgcnoIvFac+w/mG41TQ+ceQJKg5AnNjzyIrjzURXyAhfXnB0zE
+	 3NXjkEjA+QDcQ==
+Message-ID: <c1552d1f-e147-44d9-8cc6-5ab2110b4703@kernel.org>
+Date: Mon, 19 Aug 2024 19:57:30 +0900
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5] scsi: sd: Ignore command SYNC CACHE error if format in
+ progress
+To: Yihang Li <liyihang9@huawei.com>, James.Bottomley@HansenPartnership.com,
+ martin.petersen@oracle.com
+Cc: linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ bvanassche@acm.org, linuxarm@huawei.com, prime.zeng@huawei.com,
+ stable@vger.kernel.org
+References: <20240819090934.2130592-1-liyihang9@huawei.com>
+From: Damien Le Moal <dlemoal@kernel.org>
+Content-Language: en-US
+Organization: Western Digital Research
+In-Reply-To: <20240819090934.2130592-1-liyihang9@huawei.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-
-
-On Mon, 19 Aug 2024, gregkh@linuxfoundation.org wrote:
-
+On 8/19/24 18:09, Yihang Li wrote:
+> If formatting a suspended disk (such as formatting with different DIF
+> type), the disk will be resuming first, and then the format command will
+> submit to the disk through SG_IO ioctl.
 > 
-> The patch below does not apply to the 4.19-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git commit
-> id to <stable@vger.kernel.org>.
+> When the disk is processing the format command, the system does not submit
+> other commands to the disk. Therefore, the system attempts to suspend the
+> disk again and sends the SYNC CACHE command. However, the SYNC CACHE
+> command will fail because the disk is in the formatting process, which
+> will cause the runtime_status of the disk to error and it is difficult
+> for user to recover it. Error info like:
 > 
-> To reproduce the conflict and resubmit, you may use the following commands:
+> [  669.925325] sd 6:0:6:0: [sdg] Synchronizing SCSI cache
+> [  670.202371] sd 6:0:6:0: [sdg] Synchronize Cache(10) failed: Result: hostbyte=0x00 driverbyte=DRIVER_OK
+> [  670.216300] sd 6:0:6:0: [sdg] Sense Key : 0x2 [current]
+> [  670.221860] sd 6:0:6:0: [sdg] ASC=0x4 ASCQ=0x4
 > 
-> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
-> git checkout FETCH_HEAD
-> git cherry-pick -x 1e1fd567d32fcf7544c6e09e0e5bc6c650da6e23
-> # <resolve conflicts, build, test, etc.>
-> git commit -s
-> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081927-smoky-refrain-8af1@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+> To solve the issue, ignore the error and return success/0 when formatting
+> in progress.
 > 
-> Possible dependencies:
-> 
-> 1e1fd567d32f ("dm suspend: return -ERESTARTSYS instead of -EINTR")
-> 85067747cf98 ("dm: do not use waitqueue for request-based DM")
-> 087615bf3acd ("dm mpath: pass IO start time to path selector")
-> 5de719e3d01b ("dm mpath: fix missing call of path selector type->end_io")
-> 645efa84f6c7 ("dm: add memory barrier before waitqueue_active")
-> 3c94d83cb352 ("blk-mq: change blk_mq_queue_busy() to blk_mq_queue_inflight()")
-> c4576aed8d85 ("dm: fix request-based dm's use of dm_wait_for_completion")
-> b7934ba4147a ("dm: fix inflight IO check")
-> 6f75723190d8 ("dm: remove the pending IO accounting")
-> dbd3bbd291a0 ("dm rq: leverage blk_mq_queue_busy() to check for outstanding IO")
-> 80a787ba3809 ("dm: dont rewrite dm_disk(md)->part0.in_flight")
-> ae8799125d56 ("blk-mq: provide a helper to check if a queue is busy")
-> 6a23e05c2fe3 ("dm: remove legacy request-based IO path")
-> 
-> thanks,
-> 
-> greg k-h
-> 
-> ------------------ original commit in Linus's tree ------------------
-> 
-> >From 1e1fd567d32fcf7544c6e09e0e5bc6c650da6e23 Mon Sep 17 00:00:00 2001
-> From: Mikulas Patocka <mpatocka@redhat.com>
-> Date: Tue, 13 Aug 2024 12:38:51 +0200
-> Subject: [PATCH] dm suspend: return -ERESTARTSYS instead of -EINTR
-> 
-> This commit changes device mapper, so that it returns -ERESTARTSYS
-> instead of -EINTR when it is interrupted by a signal (so that the ioctl
-> can be restarted).
-> 
-> The manpage signal(7) says that the ioctl function should be restarted if
-> the signal was handled with SA_RESTART.
-> 
-> Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 > Cc: stable@vger.kernel.org
+> Signed-off-by: Yihang Li <liyihang9@huawei.com>
+> Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+
+The patch changed significantly, so I do not think you can retain Bart's review
+tag...
+
+In any case, this looks OK to me, so:
+
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+
+> ---
+> Changes since v4:
+> - Rename the commit title.
+> - Ignore the SYNC command error during formatting as suggested by Damien.
 > 
-> diff --git a/drivers/md/dm.c b/drivers/md/dm.c
-> index 97fab2087df8..87bb90303435 100644
-> --- a/drivers/md/dm.c
-> +++ b/drivers/md/dm.c
-> @@ -2737,7 +2737,7 @@ static int dm_wait_for_bios_completion(struct mapped_device *md, unsigned int ta
->  			break;
->  
->  		if (signal_pending_state(task_state, current)) {
-> -			r = -EINTR;
-> +			r = -ERESTARTSYS;
->  			break;
+> Changes since v3:
+> - Add Cc tag for kernel stable.
+> 
+> Changes since v2:
+> - Add Reviewed-by for Bart.
+> 
+> Changes since v1:
+> - Updated and added error information to the patch description.
+> 
+> ---
+>  drivers/scsi/sd.c | 12 +++++++-----
+>  1 file changed, 7 insertions(+), 5 deletions(-)
+> 
+> diff --git a/drivers/scsi/sd.c b/drivers/scsi/sd.c
+> index adeaa8ab9951..2d7240a24b52 100644
+> --- a/drivers/scsi/sd.c
+> +++ b/drivers/scsi/sd.c
+> @@ -1823,13 +1823,15 @@ static int sd_sync_cache(struct scsi_disk *sdkp)
+>  			    (sshdr.asc == 0x74 && sshdr.ascq == 0x71))	/* drive is password locked */
+>  				/* this is no error here */
+>  				return 0;
+> +
+>  			/*
+> -			 * This drive doesn't support sync and there's not much
+> -			 * we can do because this is called during shutdown
+> -			 * or suspend so just return success so those operations
+> -			 * can proceed.
+> +			 * If a format is in progress or if the drive does not
+> +			 * support sync, there is not much we can do because
+> +			 * this is called during shutdown or suspend so just
+> +			 * return success so those operations can proceed.
+>  			 */
+> -			if (sshdr.sense_key == ILLEGAL_REQUEST)
+> +			if ((sshdr.asc == 0x04 && sshdr.ascq == 0x04) ||
+> +			    sshdr.sense_key == ILLEGAL_REQUEST)
+>  				return 0;
 >  		}
 >  
-> @@ -2762,7 +2762,7 @@ static int dm_wait_for_completion(struct mapped_device *md, unsigned int task_st
->  			break;
->  
->  		if (signal_pending_state(task_state, current)) {
-> -			r = -EINTR;
-> +			r = -ERESTARTSYS;
->  			break;
->  		}
->  
-> 
 
-Hi
-
-Here I'm sending the updated patch for 4.19 and 5.4.
-
-Mikulas
-
-
-
-commit 1e1fd567d32fcf7544c6e09e0e5bc6c650da6e23
-Author: Mikulas Patocka <mpatocka@redhat.com>
-Date:   Tue Aug 13 12:38:51 2024 +0200
-
-    dm suspend: return -ERESTARTSYS instead of -EINTR
-    
-    This commit changes device mapper, so that it returns -ERESTARTSYS
-    instead of -EINTR when it is interrupted by a signal (so that the ioctl
-    can be restarted).
-    
-    The manpage signal(7) says that the ioctl function should be restarted if
-    the signal was handled with SA_RESTART.
-    
-    Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-    Cc: stable@vger.kernel.org
-
----
- drivers/md/dm.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-Index: linux-stable/drivers/md/dm.c
-===================================================================
---- linux-stable.orig/drivers/md/dm.c
-+++ linux-stable/drivers/md/dm.c
-@@ -2468,7 +2468,7 @@ static int dm_wait_for_completion(struct
- 			break;
- 
- 		if (signal_pending_state(task_state, current)) {
--			r = -EINTR;
-+			r = -ERESTARTSYS;
- 			break;
- 		}
- 
+-- 
+Damien Le Moal
+Western Digital Research
 
 
