@@ -1,383 +1,102 @@
-Return-Path: <stable+bounces-69595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69596-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AEEA956CAD
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 16:07:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86488956CB5
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 16:08:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B21A2B216CA
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 14:07:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43F08284C0A
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 14:08:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06E8016C85F;
-	Mon, 19 Aug 2024 14:07:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7103116D32C;
+	Mon, 19 Aug 2024 14:07:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="GN+OeDGV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eGaLxQRU"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-il1-f176.google.com (mail-il1-f176.google.com [209.85.166.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD36816C69C
-	for <stable@vger.kernel.org>; Mon, 19 Aug 2024 14:07:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAF7E16CD02;
+	Mon, 19 Aug 2024 14:07:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724076440; cv=none; b=cyMrkmHmLOUmIg0in4ohqN8WbsqS7rq0j+7vyNL7PQxJpI4a3iMeRes8qJWqVsIVVqlIT5nCOrMnVQTFIWGom23eq0bKt8e8OHQivmmgiJ2jP63OsfHBco5Sdq2bZsElSd1ZiSob5U9cPwYeu3SKZjZphSCMTfgIUAfjcHV35Rc=
+	t=1724076466; cv=none; b=NiG16Pp60Ab7ginboEco4p5DT+hfvk9WjqBTkLrgIJvFk/JNmuNXgL90SRE3ZTrRNNTGTcW7bQQTnkFphICR7GZxaTUkH3FZDlp/YpRDqP+7v68bhbx4Jos6QKKnoVeyhT5nhpQa+ZzSN/HqVrWnP8eVZ9uNVpvqTCoP3TUdT1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724076440; c=relaxed/simple;
-	bh=ECDzg8MfGLxqE4u9uMOW5kOOxdYfJtaJWC/MQQ4H77o=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=U6eupXwuG12wLVB+nAHiIlrExiv7WPeTm2W2GLv7inDA43MFiUvedfsIryBD1kUpX2djBqsS3EhY8yBJ/KTJR+M6HgLQ0Jxvq7irUgkTqhgGQJCEHP/USguGd2c/q6o1/kNK7XlgB+I7s02lgzeuL+YQ6KF6VNImPwJLSu6y5yk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=GN+OeDGV; arc=none smtp.client-ip=209.85.166.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-il1-f176.google.com with SMTP id e9e14a558f8ab-39d2044b522so13467285ab.0
-        for <stable@vger.kernel.org>; Mon, 19 Aug 2024 07:07:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1724076438; x=1724681238; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zInusf384MoOXg5RDBYhVVIadQ13Cf9VYTTCR/vH0vg=;
-        b=GN+OeDGVLvJDKQnGB9fQ3nb3pj5zKnGgg6cll5xjSwhLq6l5ZUpM4nbRebebBlkWVD
-         ZAX5GyNcwfaD7fy23ifUZ0vvCWmqB2FPwbEKELuoHEESyGBbfLc4uwrzcw6eXVepkVI5
-         kxUwAzlvnc7qpUGvLBY39WqHwLn/CA4/ctwGU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724076438; x=1724681238;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zInusf384MoOXg5RDBYhVVIadQ13Cf9VYTTCR/vH0vg=;
-        b=nEIze23Y7/+ZvHzIKKifC34E8lvxx17AHxFDET0MohlmV8mtdTDQ6fh2aYao0AT/yy
-         NPOVB0mNPRkkhBVYW0KPdPhiv8uOEdGZdVg7zoi92I2wkxvy1IiRU4oev898ttfdrMcT
-         Zi6NUKViny60zyaRRbj6Sewq3AXp6bC7NgCepcmZJQxdkr2XyzMErYXOQp4nRSJ06gnE
-         eff4Kmg+wZzM7OYpnk6HL52ws9nSagIXS0KD7sXw72fbxkiIJzEgO4apMEt9oK6q+yJw
-         UUgU1vRmko62e3G68n6UdZpaLTboeE59PMd5G4/jau/Mwk68Oqwe0VGWwK+oybNL9WX4
-         wxWQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWi1dcxaYJ84NxTH/sUaFQ30eY1JlnXvN2ByR/y90KZZnLAUemkKX7xJOCReB27f5XJULKVJLUiP7v/K9/nBOZM8s8H8AA1
-X-Gm-Message-State: AOJu0YwO4mZ80Wv5hX9sgKB+fqArnt4NykwJOBSVFYVmLscWY6zbhRGU
-	oOkKBe2lLpyyePtQ8HC1HB4GeW1x87GHa6xgeppI+RuVEr6W/P88jFUij96C6hRkbHfy0KOCTah
-	7qL49fLpf+sohlh6yRytFuOLywVwfFGwDpOKm
-X-Google-Smtp-Source: AGHT+IFBRJ9RIrMZmaC++KoG2j75Y8cMmwi42TLdr/jx9pxnZ9uKFRa79LOMOp31rN8oPKXyhjA+PEWkMyP0b9TrG0Y=
-X-Received: by 2002:a05:6e02:160a:b0:39a:12d7:2841 with SMTP id
- e9e14a558f8ab-39d26d060d6mr129247625ab.15.1724076437684; Mon, 19 Aug 2024
- 07:07:17 -0700 (PDT)
+	s=arc-20240116; t=1724076466; c=relaxed/simple;
+	bh=ISi78XNIMPVWDNGliDOOqlz+F6un0Fa04UJbTOxjiEg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CvhhMO7J34F0/O4WSSEo9yWKsiODzkV8NhdZK5p26eF6qK44ILbqDQVAup/GCW947dUNDvKKlzIAz81CzraDJMQ8ZrLBC7cMIoBafH8q4/JOl3eLUflkaxR6YqMIr6Kn6kXKBLNS2papyopx2jhcf6E9s4fi+9zj/QqrC16Qqno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eGaLxQRU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7021EC32782;
+	Mon, 19 Aug 2024 14:07:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1724076465;
+	bh=ISi78XNIMPVWDNGliDOOqlz+F6un0Fa04UJbTOxjiEg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=eGaLxQRU7fzLOB5R0JryMchI8iXukUXTmUpiDd7PtmJlycUdPNFWtFHaTWy6JnjcQ
+	 QHcl0X5oQG9wgkFONU/ubTN5FZp2kZaE9p6eeP6l1y5a62vsW5Y4CFAKqDM85IQ2rb
+	 rJSujDq1nH2b/5BI+wmkTjWGcQQ6e1YIGbvWsXfg=
+Date: Mon, 19 Aug 2024 16:07:41 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Bjorn Andersson <quic_bjorande@quicinc.com>
+Cc: Sebastian Reichel <sre@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Chris Lew <quic_clew@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Stephen Boyd <swboyd@chromium.org>,
+	Amit Pundir <amit.pundir@linaro.org>, linux-arm-msm@vger.kernel.org,
+	linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-usb@vger.kernel.org, Johan Hovold <johan@kernel.org>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 0/3] soc: qcom: pmic_glink: v6.11-rc bug fixes
+Message-ID: <2024081914-exploit-yonder-4d51@gregkh>
+References: <20240818-pmic-glink-v6-11-races-v1-0-f87c577e0bc9@quicinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240815153404.630214-1-zack.rusin@broadcom.com> <20240815153404.630214-2-zack.rusin@broadcom.com>
-In-Reply-To: <20240815153404.630214-2-zack.rusin@broadcom.com>
-From: Martin Krastev <martin.krastev@broadcom.com>
-Date: Mon, 19 Aug 2024 17:07:06 +0300
-Message-ID: <CAKLwHdU7aNX5wV91ki11WKMzPOMWtj4kxwgc_23SQOQE1x4M-Q@mail.gmail.com>
-Subject: Re: [PATCH v3 2/2] drm/vmwgfx: Fix prime with external buffers
-To: Zack Rusin <zack.rusin@broadcom.com>
-Cc: dri-devel@lists.freedesktop.org, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, ian.forbes@broadcom.com, 
-	maaz.mombasawala@broadcom.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240818-pmic-glink-v6-11-races-v1-0-f87c577e0bc9@quicinc.com>
 
-On Thu, Aug 15, 2024 at 6:34=E2=80=AFPM Zack Rusin <zack.rusin@broadcom.com=
-> wrote:
->
-> Make sure that for external buffers mapping goes through the dma_buf
-> interface instead of trying to access pages directly.
->
-> External buffers might not provide direct access to readable/writable
-> pages so to make sure the bo's created from external dma_bufs can be
-> read dma_buf interface has to be used.
->
-> Fixes crashes in IGT's kms_prime with vgem. Regular desktop usage won't
-> trigger this due to the fact that virtual machines will not have
-> multiple GPUs but it enables better test coverage in IGT.
->
-> v2: Fix the diff rectangle computation
->
-> Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-> Fixes: b32233acceff ("drm/vmwgfx: Fix prime import/export")
-> Cc: <stable@vger.kernel.org> # v6.6+
-> Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadc=
-om.com>
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: <stable@vger.kernel.org> # v6.9+
-> ---
->  drivers/gpu/drm/vmwgfx/vmwgfx_blit.c | 112 ++++++++++++++++++++++++++-
->  drivers/gpu/drm/vmwgfx/vmwgfx_drv.h  |   4 +-
->  drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c |  12 +--
->  3 files changed, 116 insertions(+), 12 deletions(-)
->
-> diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_blit.c b/drivers/gpu/drm/vmwgf=
-x/vmwgfx_blit.c
-> index 717d624e9a05..4049447d211c 100644
-> --- a/drivers/gpu/drm/vmwgfx/vmwgfx_blit.c
-> +++ b/drivers/gpu/drm/vmwgfx/vmwgfx_blit.c
-> @@ -27,6 +27,8 @@
->   ***********************************************************************=
-***/
->
->  #include "vmwgfx_drv.h"
-> +
-> +#include "vmwgfx_bo.h"
->  #include <linux/highmem.h>
->
->  /*
-> @@ -420,13 +422,103 @@ static int vmw_bo_cpu_blit_line(struct vmw_bo_blit=
-_line_data *d,
->         return 0;
->  }
->
-> +static void *map_external(struct vmw_bo *bo, struct iosys_map *map)
-> +{
-> +       struct vmw_private *vmw =3D
-> +               container_of(bo->tbo.bdev, struct vmw_private, bdev);
-> +       void *ptr =3D NULL;
-> +       int ret;
-> +
-> +       if (bo->tbo.base.import_attach) {
-> +               ret =3D dma_buf_vmap(bo->tbo.base.dma_buf, map);
-> +               if (ret) {
-> +                       drm_dbg_driver(&vmw->drm,
-> +                                      "Wasn't able to map external bo!\n=
-");
-> +                       goto out;
-> +               }
-> +               ptr =3D map->vaddr;
-> +       } else {
-> +               ptr =3D vmw_bo_map_and_cache(bo);
-> +       }
-> +
-> +out:
-> +       return ptr;
-> +}
-> +
-> +static void unmap_external(struct vmw_bo *bo, struct iosys_map *map)
-> +{
-> +       if (bo->tbo.base.import_attach)
-> +               dma_buf_vunmap(bo->tbo.base.dma_buf, map);
-> +       else
-> +               vmw_bo_unmap(bo);
-> +}
-> +
-> +static int vmw_external_bo_copy(struct vmw_bo *dst, u32 dst_offset,
-> +                               u32 dst_stride, struct vmw_bo *src,
-> +                               u32 src_offset, u32 src_stride,
-> +                               u32 width_in_bytes, u32 height,
-> +                               struct vmw_diff_cpy *diff)
-> +{
-> +       struct vmw_private *vmw =3D
-> +               container_of(dst->tbo.bdev, struct vmw_private, bdev);
-> +       size_t dst_size =3D dst->tbo.resource->size;
-> +       size_t src_size =3D src->tbo.resource->size;
-> +       struct iosys_map dst_map =3D {0};
-> +       struct iosys_map src_map =3D {0};
-> +       int ret, i;
-> +       u8 *vsrc;
-> +       u8 *vdst;
-> +
-> +       vsrc =3D map_external(src, &src_map);
-> +       if (!vsrc) {
-> +               drm_dbg_driver(&vmw->drm, "Wasn't able to map src\n");
-> +               ret =3D -ENOMEM;
-> +               goto out;
-> +       }
-> +
-> +       vdst =3D map_external(dst, &dst_map);
-> +       if (!vdst) {
-> +               drm_dbg_driver(&vmw->drm, "Wasn't able to map dst\n");
-> +               ret =3D -ENOMEM;
-> +               goto out;
-> +       }
-> +
-> +       vsrc +=3D src_offset;
-> +       vdst +=3D dst_offset;
-> +       if (src_stride =3D=3D dst_stride) {
-> +               dst_size -=3D dst_offset;
-> +               src_size -=3D src_offset;
-> +               memcpy(vdst, vsrc,
-> +                      min(dst_stride * height, min(dst_size, src_size)))=
-;
-> +       } else {
-> +               WARN_ON(dst_stride < width_in_bytes);
+On Sun, Aug 18, 2024 at 04:17:36PM -0700, Bjorn Andersson wrote:
+> Amit and Johan both reported a NULL pointer dereference in the
+> pmic_glink client code during initialization, and Stephen Boyd pointed
+> out the problem (race condition).
+> 
+> While investigating, and writing the fix, I noticed that
+> ucsi_unregister() is called in atomic context but tries to sleep, and I
+> also noticed that the condition for when to inform the pmic_glink client
+> drivers when the remote has gone down is just wrong.
+> 
+> So, let's fix all three.
+> 
+> As mentioned in the commit message for the UCSI fix, I have a series in
+> the works that makes the GLINK callback happen in a sleepable context,
+> which would remove the need for the clients list to be protected by a
+> spinlock, and removing the work scheduling. This is however not -rc
+> material...
+> 
+> In addition to the NULL pointer dereference, there is the -ECANCELED
+> issue reported here:
+> https://lore.kernel.org/all/Zqet8iInnDhnxkT9@hovoldconsulting.com/
+> I have not yet been able to either reproduce this or convince myself
+> that this is the same issue.
+> 
+> Signed-off-by: Bjorn Andersson <quic_bjorande@quicinc.com>
 
-Wouldn't that be a hard BUG_ON / error condition? I mean, there'd
-likely be a buffer overrun ensuing.
+What tree are these to go through?  I can take them through mine, but if
+someone else wants to, feel free to route them some other way.
 
-> +               for (i =3D 0; i < height; ++i) {
-> +                       memcpy(vdst, vsrc, width_in_bytes);
-> +                       vsrc +=3D src_stride;
-> +                       vdst +=3D dst_stride;
-> +               }
-> +       }
-> +
-> +       diff->rect.x1 =3D (dst_offset % dst_stride) / diff->cpp;
-> +       diff->rect.y1 =3D floor(dst_offset / dst_stride);
+thanks,
 
-That floor looks like a leftover from an earlier (signed integer) version?
-
-> +       diff->rect.x2 =3D diff->rect.x1 + width_in_bytes / diff->cpp;
-> +       diff->rect.y2 =3D diff->rect.y1 + height;
-> +
-> +       ret =3D 0;
-> +out:
-> +       unmap_external(src, &src_map);
-> +       unmap_external(dst, &dst_map);
-> +
-> +       return ret;
-> +}
-> +
->  /**
->   * vmw_bo_cpu_blit - in-kernel cpu blit.
->   *
-> - * @dst: Destination buffer object.
-> + * @vmw_dst: Destination buffer object.
->   * @dst_offset: Destination offset of blit start in bytes.
->   * @dst_stride: Destination stride in bytes.
-> - * @src: Source buffer object.
-> + * @vmw_src: Source buffer object.
->   * @src_offset: Source offset of blit start in bytes.
->   * @src_stride: Source stride in bytes.
->   * @w: Width of blit.
-> @@ -444,13 +536,15 @@ static int vmw_bo_cpu_blit_line(struct vmw_bo_blit_=
-line_data *d,
->   * Neither of the buffer objects may be placed in PCI memory
->   * (Fixed memory in TTM terminology) when using this function.
->   */
-> -int vmw_bo_cpu_blit(struct ttm_buffer_object *dst,
-> +int vmw_bo_cpu_blit(struct vmw_bo *vmw_dst,
->                     u32 dst_offset, u32 dst_stride,
-> -                   struct ttm_buffer_object *src,
-> +                   struct vmw_bo *vmw_src,
->                     u32 src_offset, u32 src_stride,
->                     u32 w, u32 h,
->                     struct vmw_diff_cpy *diff)
->  {
-> +       struct ttm_buffer_object *src =3D &vmw_src->tbo;
-> +       struct ttm_buffer_object *dst =3D &vmw_dst->tbo;
->         struct ttm_operation_ctx ctx =3D {
->                 .interruptible =3D false,
->                 .no_wait_gpu =3D false
-> @@ -460,6 +554,11 @@ int vmw_bo_cpu_blit(struct ttm_buffer_object *dst,
->         int ret =3D 0;
->         struct page **dst_pages =3D NULL;
->         struct page **src_pages =3D NULL;
-> +       bool src_external =3D (src->ttm->page_flags & TTM_TT_FLAG_EXTERNA=
-L) !=3D 0;
-> +       bool dst_external =3D (dst->ttm->page_flags & TTM_TT_FLAG_EXTERNA=
-L) !=3D 0;
-> +
-> +       if (WARN_ON(dst =3D=3D src))
-> +               return -EINVAL;
->
->         /* Buffer objects need to be either pinned or reserved: */
->         if (!(dst->pin_count))
-> @@ -479,6 +578,11 @@ int vmw_bo_cpu_blit(struct ttm_buffer_object *dst,
->                         return ret;
->         }
->
-> +       if (src_external || dst_external)
-> +               return vmw_external_bo_copy(vmw_dst, dst_offset, dst_stri=
-de,
-> +                                           vmw_src, src_offset, src_stri=
-de,
-> +                                           w, h, diff);
-> +
->         if (!src->ttm->pages && src->ttm->sg) {
->                 src_pages =3D kvmalloc_array(src->ttm->num_pages,
->                                            sizeof(struct page *), GFP_KER=
-NEL);
-> diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h b/drivers/gpu/drm/vmwgfx=
-/vmwgfx_drv.h
-> index 32f50e595809..3f4719b3c268 100644
-> --- a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h
-> +++ b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h
-> @@ -1353,9 +1353,9 @@ void vmw_diff_memcpy(struct vmw_diff_cpy *diff, u8 =
-*dest, const u8 *src,
->
->  void vmw_memcpy(struct vmw_diff_cpy *diff, u8 *dest, const u8 *src, size=
-_t n);
->
-> -int vmw_bo_cpu_blit(struct ttm_buffer_object *dst,
-> +int vmw_bo_cpu_blit(struct vmw_bo *dst,
->                     u32 dst_offset, u32 dst_stride,
-> -                   struct ttm_buffer_object *src,
-> +                   struct vmw_bo *src,
->                     u32 src_offset, u32 src_stride,
->                     u32 w, u32 h,
->                     struct vmw_diff_cpy *diff);
-> diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c b/drivers/gpu/drm/vmwgf=
-x/vmwgfx_stdu.c
-> index 5106413c14b7..3cc664384b66 100644
-> --- a/drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c
-> +++ b/drivers/gpu/drm/vmwgfx/vmwgfx_stdu.c
-> @@ -502,7 +502,7 @@ static void vmw_stdu_bo_cpu_commit(struct vmw_kms_dir=
-ty *dirty)
->                 container_of(dirty->unit, typeof(*stdu), base);
->         s32 width, height;
->         s32 src_pitch, dst_pitch;
-> -       struct ttm_buffer_object *src_bo, *dst_bo;
-> +       struct vmw_bo *src_bo, *dst_bo;
->         u32 src_offset, dst_offset;
->         struct vmw_diff_cpy diff =3D VMW_CPU_BLIT_DIFF_INITIALIZER(stdu->=
-cpp);
->
-> @@ -517,11 +517,11 @@ static void vmw_stdu_bo_cpu_commit(struct vmw_kms_d=
-irty *dirty)
->
->         /* Assume we are blitting from Guest (bo) to Host (display_srf) *=
-/
->         src_pitch =3D stdu->display_srf->metadata.base_size.width * stdu-=
->cpp;
-> -       src_bo =3D &stdu->display_srf->res.guest_memory_bo->tbo;
-> +       src_bo =3D stdu->display_srf->res.guest_memory_bo;
->         src_offset =3D ddirty->top * src_pitch + ddirty->left * stdu->cpp=
-;
->
->         dst_pitch =3D ddirty->pitch;
-> -       dst_bo =3D &ddirty->buf->tbo;
-> +       dst_bo =3D ddirty->buf;
->         dst_offset =3D ddirty->fb_top * dst_pitch + ddirty->fb_left * std=
-u->cpp;
->
->         (void) vmw_bo_cpu_blit(dst_bo, dst_offset, dst_pitch,
-> @@ -1143,7 +1143,7 @@ vmw_stdu_bo_populate_update_cpu(struct vmw_du_updat=
-e_plane  *update, void *cmd,
->         struct vmw_diff_cpy diff =3D VMW_CPU_BLIT_DIFF_INITIALIZER(0);
->         struct vmw_stdu_update_gb_image *cmd_img =3D cmd;
->         struct vmw_stdu_update *cmd_update;
-> -       struct ttm_buffer_object *src_bo, *dst_bo;
-> +       struct vmw_bo *src_bo, *dst_bo;
->         u32 src_offset, dst_offset;
->         s32 src_pitch, dst_pitch;
->         s32 width, height;
-> @@ -1157,11 +1157,11 @@ vmw_stdu_bo_populate_update_cpu(struct vmw_du_upd=
-ate_plane  *update, void *cmd,
->
->         diff.cpp =3D stdu->cpp;
->
-> -       dst_bo =3D &stdu->display_srf->res.guest_memory_bo->tbo;
-> +       dst_bo =3D stdu->display_srf->res.guest_memory_bo;
->         dst_pitch =3D stdu->display_srf->metadata.base_size.width * stdu-=
->cpp;
->         dst_offset =3D bb->y1 * dst_pitch + bb->x1 * stdu->cpp;
->
-> -       src_bo =3D &vfbbo->buffer->tbo;
-> +       src_bo =3D vfbbo->buffer;
->         src_pitch =3D update->vfb->base.pitches[0];
->         src_offset =3D bo_update->fb_top * src_pitch + bo_update->fb_left=
- *
->                 stdu->cpp;
-> --
-> 2.43.0
->
-
-LGTM, just with those two remarks.
-
-Reviewed-by: Martin Krastev <martin.krastev@broadcom.com>
-
-Regards,
-Martin
+greg k-h
 
