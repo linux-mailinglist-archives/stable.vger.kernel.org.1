@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-69561-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69562-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E0E6956839
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4E1D95683A
 	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 12:22:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F15D1F22DBD
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F3ADE1C21559
 	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 10:22:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A67A1158DBF;
-	Mon, 19 Aug 2024 10:21:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BADB15F3E7;
+	Mon, 19 Aug 2024 10:21:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0r6GG8jq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Pk9mBgF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67A732900
-	for <stable@vger.kernel.org>; Mon, 19 Aug 2024 10:21:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D22B2900
+	for <stable@vger.kernel.org>; Mon, 19 Aug 2024 10:21:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724062915; cv=none; b=VHtnl7Gq2Q34lA4NFUzDYid4vg29dGT1bZwWVgLxZr0mIGUKL/7rWnfI0b4o13VUCnnGeu1n5dw1M32EoZVcB/PfNTzY2fnXYyGLohfOCkqOOtjGA7b1dOuVwJZjfEoXaNlZbKh0cs9a1i7mDUPQ/QnkNbVWaEKXXN2/pkEQcLc=
+	t=1724062918; cv=none; b=i1H0+GkeRf79NZXnSpAxUHT+YsROmoPITAStycFkTinmiP91we5Mpvz+QqpOh/1i2NhTNt/ogcZuabDC+V2WpY+XtdSz1/mUtna436ZlB+0rX+be1fxXsDIIHhibzgz4k/ZEqUeA0t204hE4bCZ1kao0DKgG9E0a8vPJvLREcSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724062915; c=relaxed/simple;
-	bh=n0luJpKnxMehTSWqmEGZfkFdyvMX2auC98a7mAhpVL8=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Hv3VqtG8EQWURZ3x82B3KNSIv7PUnRt3i6lAgJwqVfi4gMlADV8eH/VwcNJDa72rvWavRBnAXfFEuCOgU4aMVsn3En1Dc5QJjfLS6sF0lJdO8BwXPcuWZbYQh3hIsuhfgLzEAjWRB1MVKkiAxrrD/wSujbBUyUs5a6PQuKs+ikw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0r6GG8jq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1DD2C32782;
-	Mon, 19 Aug 2024 10:21:54 +0000 (UTC)
+	s=arc-20240116; t=1724062918; c=relaxed/simple;
+	bh=cPfGaPnaWChRLAdB01SnnAH4psFGwpm1od0KWNZ7YJc=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=QaGJolP3gkgQuGP+G8SOsmU2Rkjo8Ee+gmfuuOInFN2jqJ0+K3s0YK+FwcshPjqBh3ts+ROS+vm1K7zkBKAibRfsMlWnvUgnqYI11KDpi/5rRr4ReqBpOfdR7/shHVc0lLVRVoW98XPBWwtBpvY8m+dw6lceFPnqwbvU9xtH9qw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Pk9mBgF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6D3BC4AF09;
+	Mon, 19 Aug 2024 10:21:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724062915;
-	bh=n0luJpKnxMehTSWqmEGZfkFdyvMX2auC98a7mAhpVL8=;
+	s=korg; t=1724062918;
+	bh=cPfGaPnaWChRLAdB01SnnAH4psFGwpm1od0KWNZ7YJc=;
 	h=Subject:To:Cc:From:Date:From;
-	b=0r6GG8jqT5zdcJl1/WhkILPUOZUxKfhcnobn+EJgerKoCg6yaeddHjA1uoxtJT2GN
-	 9RYYKTReZGwmBz2ar7sigg+JQVTzTI+nl1Dn+fRhJOKJhuBCPecyAQJAsmN1MedpHC
-	 K0Z/ecr2Ne/k7AECMamY0Vrwmhtogkh3eWgsad6w=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Fix MST BW calculation Regression" failed to apply to 6.10-stable tree
+	b=1Pk9mBgFytxEx9JK12SpN5jpspL7PnA6J7q0z5eqxamIXYpq85eUsi0vYjI94YXJA
+	 BAeE09aBT66p3TX+/suLGZgt7oxSVnLQfXNK4GEYiVrN1+XujS41HoFsugK7s6Urru
+	 ayy3Fp0aAhII7ewfuFsoPGsGw5toXHOobe4+h4RE=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Fix MST BW calculation Regression" failed to apply to 6.6-stable tree
 To: Jerry.Zuo@amd.com,alexander.deucher@amd.com,chiahsuan.chung@amd.com,daniel.wheeler@amd.com,wayne.lin@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 Aug 2024 12:21:52 +0200
-Message-ID: <2024081952-knapsack-enjoyment-313c@gregkh>
+Date: Mon, 19 Aug 2024 12:21:53 +0200
+Message-ID: <2024081953-gravel-flame-4e6b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,25 +53,42 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.10-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x 338567d17627064dba63cf063459605e782f71d2
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081952-knapsack-enjoyment-313c@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081953-gravel-flame-4e6b@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
 338567d17627 ("drm/amd/display: Fix MST BW calculation Regression")
 00c391102abc ("drm/amd/display: Add misc DC changes for DCN401")
 da87132f641e ("drm/amd/display: Add some DCN401 reg name to macro definitions")
+ef319dff5475 ("drm/amd/display: add support for chroma offset")
+a41aa6a7d0a6 ("drm/amd/display: Add comments to improve the code readability")
+5324e2b205a2 ("drm/amd/display: Add driver support for future FAMS versions")
+f3736c0d979a ("drm/amd/display: Add code comments clock and encode code")
+8b2cb32cf0c6 ("drm/amd/display: FEC overhead should be checked once for mst slot nums")
+4df96ba66760 ("drm/amd/display: Add timing pixel encoding for mst mode validation")
+2dbe9c2b2685 ("drm/amd/display: add DCN 351 version for microcode load")
+1c5c36530a57 ("drm/amd/display: Set DCN351 BB and IP the same as DCN35")
+5034b935f62a ("drm/amd/display: Modify DHCUB waterwark structures and functions")
+9d43241953f7 ("drm/amd/display: Refactor DML2 interfaces")
+8cffa89bd5e2 ("drm/amd/display: Expand DML2 callbacks")
+2d5bb791e24f ("drm/amd/display: Implement update_planes_and_stream_v3 sequence")
+88867807564e ("drm/amd/display: Refactor DPP into a component directory")
+eed4edda910f ("drm/amd/display: Support long vblank feature")
+caef6c453cf2 ("drm/amd/display: Add DML2 folder to include path")
+2d7f3d1a5866 ("drm/amd/display: Implement wait_for_odm_update_pending_complete")
+4f5b8d78ca43 ("drm/amd/display: Init DPPCLK from SMU on dcn32")
 
 thanks,
 
