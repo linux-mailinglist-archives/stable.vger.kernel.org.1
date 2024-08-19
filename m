@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-69522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69523-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4A81956799
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 11:54:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F91B956798
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 11:54:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E225AB22533
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 09:54:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4CC551C20D1F
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 09:54:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16BFA15B986;
-	Mon, 19 Aug 2024 09:54:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCE7515B14E;
+	Mon, 19 Aug 2024 09:54:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sUBIEWVT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="adQrWjsh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC6DE13B592
-	for <stable@vger.kernel.org>; Mon, 19 Aug 2024 09:54:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E07213B592
+	for <stable@vger.kernel.org>; Mon, 19 Aug 2024 09:54:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724061275; cv=none; b=GDcjZw7ymWxZyKR44LXYeK3boUmGlL1mNEHdGKP8/ICIxYNVwAOMZZtu+x2o2pDKLymcib5xgxOqsxGfwmg8PWb+FSxuiIS8CxJfI74olQBZ3VgZyYxTE0XOaateRtIvS+i9PeVUVtEYRFHF+HkJN27ZCqGfq0sVrNipcCd4u/I=
+	t=1724061284; cv=none; b=HTHhsP0VFzqRLjFVwlcFqm6PCvy+Y3ia4CQctRnArJAZLBLRJvKc2BHcAX6VnccHwdTdHxc/HJqCYLnYhOke7uOgNdSptpNglf8Oq2PSLH1Z+HppLU1F3pquilr0c1pFp8zFh9WC3MSBGFr2F0QOW9o0NN61xg+CLDE9QKcqrCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724061275; c=relaxed/simple;
-	bh=iCvgRIlG/k15uXe8Xtt2nY2W4+pWwCV6NDo0RZLLE24=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=jHaNfSzHLZpGBclzZDdtsB8unXmqQmY2iwRS3SZuSYOmPxoZE1Rs1TqbE+P1jcw4HO/8DhYoqJGNjGzcknxqOWh22eIwBUuxrk+FrIoHVblLzsRb/xWI6Vjhn50Q1n8oQRdU5rIfDoOLPzdeSBq40Wt/PH8TYPlguk4R7+KY+rM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sUBIEWVT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13959C32782;
-	Mon, 19 Aug 2024 09:54:34 +0000 (UTC)
+	s=arc-20240116; t=1724061284; c=relaxed/simple;
+	bh=XChQEm+PfiULxXvH2nvs5t445P2XtHfh22D5abSvbdI=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=t/cyX7PE/Q+ZquDcCKC/Q17/YBglRmqm2XxXL3os3hQVRX4Cxk7pVW+L+aUw0aeNi3DdFmIG0MZ5uQ8He7o9XfyShcGmNT1JKIZ4TxIfgupFZs0aK3eH8i6kRLmx0K36kHIkafN58x9mFz2RdoPflMKaGR35ap3tnTCXuUhjI2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=adQrWjsh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E834C32782;
+	Mon, 19 Aug 2024 09:54:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724061275;
-	bh=iCvgRIlG/k15uXe8Xtt2nY2W4+pWwCV6NDo0RZLLE24=;
+	s=korg; t=1724061284;
+	bh=XChQEm+PfiULxXvH2nvs5t445P2XtHfh22D5abSvbdI=;
 	h=Subject:To:Cc:From:Date:From;
-	b=sUBIEWVTSngPLQexre0FZHGCH8MbSkFDDA5oDV6k0B05zHZcc2nya1Ms11rwH1dKP
-	 iyAT5n2xAFonTiOoDpqwT41Gqd/GaDJSQEbvYS/ptcubEAIeDa7Irn2wYPunZKAUSE
-	 UhQObXuVcxFV872GsQvb21Ce1MqCWvuJQ+8jx4Gk=
-Subject: FAILED: patch "[PATCH] mm/numa: no task_numa_fault() call if PTE is changed" failed to apply to 6.6-stable tree
+	b=adQrWjsh9opVEixxBOvf3d/dWL8yxQE9qPCnoPZWPAQZ32HwLDbEa3cncJo0dPhlg
+	 0Nme0gYNYbMf2UEez9CypqosmBFAisz2ho4UoBkLTxnyQgAQyLlCbiln5zKGmkaZ+z
+	 K/nk8jl3v7OMnpt2NvUdRJ1efXFVNzMelXCTyIqc=
+Subject: FAILED: patch "[PATCH] mm/numa: no task_numa_fault() call if PTE is changed" failed to apply to 6.1-stable tree
 To: ziy@nvidia.com,akpm@linux-foundation.org,baolin.wang@linux.alibaba.com,david@redhat.com,mgorman@suse.de,shy828301@gmail.com,stable@vger.kernel.org,wangkefeng.wang@huawei.com,ying.huang@intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 Aug 2024 11:54:32 +0200
-Message-ID: <2024081932-vastly-ice-7932@gregkh>
+Date: Mon, 19 Aug 2024 11:54:33 +0200
+Message-ID: <2024081933-cheddar-oak-0777@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 40b760cfd44566bca791c80e0720d70d75382b84
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081932-vastly-ice-7932@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081933-cheddar-oak-0777@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -76,6 +76,7 @@ ec1778807a80 ("mm: mprotect: use a folio in change_pte_range()")
 6695cf68b15c ("mm: memory: use a folio in do_numa_page()")
 73eab3ca481e ("mm: migrate: convert migrate_misplaced_page() to migrate_misplaced_folio()")
 2ac9e99f3b21 ("mm: migrate: convert numamigrate_isolate_page() to numamigrate_isolate_folio()")
+df57721f9a63 ("Merge tag 'x86_shstk_for_6.6-rc1' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip")
 
 thanks,
 
