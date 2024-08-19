@@ -1,49 +1,52 @@
-Return-Path: <stable+bounces-69463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69464-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B062A956640
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 11:04:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2659995665F
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 11:09:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 57E281F22EEF
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 09:04:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CD7231F227CD
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 09:09:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75BE515B966;
-	Mon, 19 Aug 2024 09:04:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9405015B992;
+	Mon, 19 Aug 2024 09:09:43 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D46B4C8F;
-	Mon, 19 Aug 2024 09:04:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4605E148FE0;
+	Mon, 19 Aug 2024 09:09:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724058265; cv=none; b=WIyPtlefK44fdw2TyA+zIIPo2Lgw39/wpiWor4i/2aGoDFNUg1OF0780UMDK6ih16HuFOPpB9tYMiCu12xTWh7XyDDqxIiuz8e/bflMj4OCB9fgW44Odd781ghhrGLSJg6b8dKVOcR7rYibKHIqgJLFTjI9P48Bsdq9yWeiEekY=
+	t=1724058583; cv=none; b=h8HAMLSfTt+2vkBIL8o13Yn4az4ANYzbskd1vQ3W+heO77GmhSlQftqgYVQN/avhX5Ly6RxVfSscBqmZx7ecmRMIV8oxnwDQr+FXsNztC2u+zuxiNqRdpY3yMyD5JJ1oMF5GHnbFqNLlmHWCOPI45y3YZhgvGQhOybUwAisxCaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724058265; c=relaxed/simple;
-	bh=xTVcQrxxfosSm/0YHPLcGuf5tQDE5+4P8KTE8UqLPoI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=oP1pNA81GWMDWmbSVwcuB8FAsTLInkymABjq1duUCfq4CplwxN7yp3cZuvfRLiOvylNK4Vq9ylcRob8Hx3H/7MtJH+9wbD3iUDh15KUypLQJ/6KsDSmyE1jQUPhX99BGmRyfy3ejxD3Bnto/0+4Z+e99hXqHhQ5dSB7xq63U3H0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
-	by APP-03 (Coremail) with SMTP id rQCowAA3XQCGCsNmoSsTCA--.43971S2;
-	Mon, 19 Aug 2024 17:04:13 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: make24@iscas.ac.cn,
-	nico@fluxnic.net,
-	will@kernel.org,
-	suzuki.poulose@arm.com,
-	punitagrawal@gmail.com,
-	akpm@linux-foundation.org
-Cc: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] arm-cci: Fix refcount leak in cci_probe
-Date: Mon, 19 Aug 2024 17:04:05 +0800
-Message-Id: <20240819090405.1014759-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1724058583; c=relaxed/simple;
+	bh=LtEilVAKm3QCrkGSgVEhT2aH+SwOWcf5TsJ6Mx1E2Ak=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=KibKGR/oKeiHfk0TLsNz/LkC1x7L0Let137NLCkCpYptFaNdPEBdvGG8smCAnLyKcn8XF1mQDRUGvzpWVgxS5tHYwT2rhujPC+mOFQJaAoXumzqqkCn56uCQ5fkN0X1rmLtEAU2j7L+3UsVZcm4Mtkvuva0nZQGjrqkyh8lNUfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.214])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4WnRVt0FH4z1j6ff;
+	Mon, 19 Aug 2024 17:04:38 +0800 (CST)
+Received: from dggpemf100013.china.huawei.com (unknown [7.185.36.179])
+	by mail.maildlp.com (Postfix) with ESMTPS id 3458B1A016C;
+	Mon, 19 Aug 2024 17:09:36 +0800 (CST)
+Received: from localhost.huawei.com (10.50.165.33) by
+ dggpemf100013.china.huawei.com (7.185.36.179) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 19 Aug 2024 17:09:35 +0800
+From: Yihang Li <liyihang9@huawei.com>
+To: <James.Bottomley@HansenPartnership.com>, <martin.petersen@oracle.com>
+CC: <linux-scsi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<bvanassche@acm.org>, <dlemoal@kernel.org>, <liyihang9@huawei.com>,
+	<linuxarm@huawei.com>, <prime.zeng@huawei.com>, <stable@vger.kernel.org>
+Subject: [PATCH v5] scsi: sd: Ignore command SYNC CACHE error if format in progress
+Date: Mon, 19 Aug 2024 17:09:34 +0800
+Message-ID: <20240819090934.2130592-1-liyihang9@huawei.com>
+X-Mailer: git-send-email 2.33.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -51,48 +54,76 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowAA3XQCGCsNmoSsTCA--.43971S2
-X-Coremail-Antispam: 1UD129KBjvdXoW7XrWUWrWDGr4rZFWUuFWruFg_yoWxCrg_Cr
-	4fXryfJryDuF1DWw1avwnxur9Yv395WF1kXF47ta4fK347Ar1rJr18urZ3WF1xZr47tryD
-	C3yDJryIkr4UGjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbVAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Cr0_
-	Gr1UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
-	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUGVWUXwAv7VC2z280aVAFwI0_Jr0_Gr
-	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IE
-	rcIFxwCY1x0262kKe7AKxVWUAVWUtwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbV
-	WUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF
-	67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42
-	IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF
-	0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxh
-	VjvjDU0xZFpf9x0JUp7KsUUUUU=
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
+Content-Type: text/plain
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ dggpemf100013.china.huawei.com (7.185.36.179)
 
-Add the missing of_node_put() to release the refcount incremented
-by of_find_matching_node().
+If formatting a suspended disk (such as formatting with different DIF
+type), the disk will be resuming first, and then the format command will
+submit to the disk through SG_IO ioctl.
+
+When the disk is processing the format command, the system does not submit
+other commands to the disk. Therefore, the system attempts to suspend the
+disk again and sends the SYNC CACHE command. However, the SYNC CACHE
+command will fail because the disk is in the formatting process, which
+will cause the runtime_status of the disk to error and it is difficult
+for user to recover it. Error info like:
+
+[  669.925325] sd 6:0:6:0: [sdg] Synchronizing SCSI cache
+[  670.202371] sd 6:0:6:0: [sdg] Synchronize Cache(10) failed: Result: hostbyte=0x00 driverbyte=DRIVER_OK
+[  670.216300] sd 6:0:6:0: [sdg] Sense Key : 0x2 [current]
+[  670.221860] sd 6:0:6:0: [sdg] ASC=0x4 ASCQ=0x4
+
+To solve the issue, ignore the error and return success/0 when formatting
+in progress.
 
 Cc: stable@vger.kernel.org
-Fixes: f6b9e83ce05e ("arm-cci: Rearrange code for splitting PMU vs driver code")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Signed-off-by: Yihang Li <liyihang9@huawei.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
 ---
- drivers/bus/arm-cci.c | 1 +
- 1 file changed, 1 insertion(+)
+Changes since v4:
+- Rename the commit title.
+- Ignore the SYNC command error during formatting as suggested by Damien.
 
-diff --git a/drivers/bus/arm-cci.c b/drivers/bus/arm-cci.c
-index b8184a903583..6be7b05b5ff1 100644
---- a/drivers/bus/arm-cci.c
-+++ b/drivers/bus/arm-cci.c
-@@ -548,6 +548,7 @@ static int cci_probe(void)
- 	}
- 	if (ret || !cci_ctrl_base) {
- 		WARN(1, "unable to ioremap CCI ctrl\n");
-+		of_node_put(np);
- 		return -ENXIO;
- 	}
+Changes since v3:
+- Add Cc tag for kernel stable.
+
+Changes since v2:
+- Add Reviewed-by for Bart.
+
+Changes since v1:
+- Updated and added error information to the patch description.
+
+---
+ drivers/scsi/sd.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/scsi/sd.c b/drivers/scsi/sd.c
+index adeaa8ab9951..2d7240a24b52 100644
+--- a/drivers/scsi/sd.c
++++ b/drivers/scsi/sd.c
+@@ -1823,13 +1823,15 @@ static int sd_sync_cache(struct scsi_disk *sdkp)
+ 			    (sshdr.asc == 0x74 && sshdr.ascq == 0x71))	/* drive is password locked */
+ 				/* this is no error here */
+ 				return 0;
++
+ 			/*
+-			 * This drive doesn't support sync and there's not much
+-			 * we can do because this is called during shutdown
+-			 * or suspend so just return success so those operations
+-			 * can proceed.
++			 * If a format is in progress or if the drive does not
++			 * support sync, there is not much we can do because
++			 * this is called during shutdown or suspend so just
++			 * return success so those operations can proceed.
+ 			 */
+-			if (sshdr.sense_key == ILLEGAL_REQUEST)
++			if ((sshdr.asc == 0x04 && sshdr.ascq == 0x04) ||
++			    sshdr.sense_key == ILLEGAL_REQUEST)
+ 				return 0;
+ 		}
  
 -- 
-2.25.1
+2.33.0
 
 
