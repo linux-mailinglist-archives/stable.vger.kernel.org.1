@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-69567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FD6995683F
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 12:22:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9877D956840
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 12:22:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A57241F22F2B
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 10:22:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4E40B1F22F20
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 10:22:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7E891607A3;
-	Mon, 19 Aug 2024 10:22:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5FFF158DBF;
+	Mon, 19 Aug 2024 10:22:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X4jU0hJ+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fk/2TBGU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A610115FD04
-	for <stable@vger.kernel.org>; Mon, 19 Aug 2024 10:22:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 881BB2900
+	for <stable@vger.kernel.org>; Mon, 19 Aug 2024 10:22:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724062934; cv=none; b=nW138ZI7EsrqZhfFmRcVwWwI67DOPZtksnZ86HM0iUsXPta+kJdugpqAMLWEo14s9By5H0OVq3TAH/OjanqLgarg44qN9onzBU6EwvY1+obR2JNmsG83SUETW33Rvx/yWw3gA/2XXosmmQPEcMcChAHsTsvjKDow5DBQv8xl2fE=
+	t=1724062937; cv=none; b=csV91oo/SAPPRa825/oH7MuswE1RIjqo90q1e+D7bHNyOaRrIAywCC0/jbVnCjw2W/fsjONvv2gPvufiOwXSQJDRxOJMsACO2Hgey5L4jhXh3CDxaT0ymEXSpNuEJbowdBI5kQVut27+xBabcBqhg6J0nfi1uF6dvX/G6pgOUWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724062934; c=relaxed/simple;
-	bh=72PYQ6tRIJEsFtp7UPLigco49sicp4DIPc70yeehPOs=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=NdWboQtISJ2hp6IJvYYj9lnbBd/SnijecJ+OM121CGDMw1aSsCZFFCgna6XaXkEavElagc8qMECQCQei0n01VIV36/dI2SNB2cOgYc44gCeFhQr062jg5PwwtunMKSQc18Wmyw5mKLlx/Asdynq0ss239G2U6/bvn5LKMr7m+IE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X4jU0hJ+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DEAAC4AF0C;
-	Mon, 19 Aug 2024 10:22:14 +0000 (UTC)
+	s=arc-20240116; t=1724062937; c=relaxed/simple;
+	bh=PQ8RDrId7Yn59tI0VKB+se6UGj6r+cEWPhJUbbDN2qE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ZuZMAVCunrKwAnXRNnfIb1/sTpVGzUm9U2CjAn7rSDaP9yXJzNKbVFXMBAcka4KsoD7GqhBsob8D12SnTYLuUpX7gVBOt/lZKhO4rzqNIIKTMhcyH8pBHOGoa14Puvv0yFl59ZdkLRYrMPLxpT9SKzDfenajyAa1Ngjb+PWsQzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fk/2TBGU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F10EC32782;
+	Mon, 19 Aug 2024 10:22:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724062934;
-	bh=72PYQ6tRIJEsFtp7UPLigco49sicp4DIPc70yeehPOs=;
+	s=korg; t=1724062937;
+	bh=PQ8RDrId7Yn59tI0VKB+se6UGj6r+cEWPhJUbbDN2qE=;
 	h=Subject:To:Cc:From:Date:From;
-	b=X4jU0hJ+JcSEBOdJwrvU3TWoNMKGyIpJ/2FGfaTfWgaWF4q2YvSpzEjMH4xC015Zn
-	 9h7uOsmorOk9cJTaihPxX8jvKAyNPN8F7N7xI129/aDFsNE28ak+yKVcM3Vs1TqqpF
-	 RE3GuAkt4+HhdqObTPiw7ROi/jlkhpgjbIBOM/QY=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Fix MST BW calculation Regression" failed to apply to 4.19-stable tree
-To: Jerry.Zuo@amd.com,alexander.deucher@amd.com,chiahsuan.chung@amd.com,daniel.wheeler@amd.com,wayne.lin@amd.com
+	b=Fk/2TBGUvLAVoS0GEbsouWazzEWri6AViX98ZGnES3OWpaU9bJ2LUEmQFb/hC+9QF
+	 Roi4FT4bmBjJLZqwiFySutTlqYk3wPajogwwl+NRmqp+N9mH4YU2woNfpcWIiwGTKW
+	 sveeMFv91OZAOV/f4Q8JNfYt95FHwylQPa+mW8ig=
+Subject: FAILED: patch "[PATCH] pidfd: prevent creation of pidfds for kthreads" failed to apply to 6.6-stable tree
+To: brauner@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 Aug 2024 12:21:57 +0200
-Message-ID: <2024081956-vice-dribble-c1ce@gregkh>
+Date: Mon, 19 Aug 2024 12:22:08 +0200
+Message-ID: <2024081908-dork-steadfast-6a68@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,42 +53,32 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 338567d17627064dba63cf063459605e782f71d2
+git cherry-pick -x 3b5bbe798b2451820e74243b738268f51901e7d0
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081956-vice-dribble-c1ce@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081908-dork-steadfast-6a68@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
-338567d17627 ("drm/amd/display: Fix MST BW calculation Regression")
-00c391102abc ("drm/amd/display: Add misc DC changes for DCN401")
-da87132f641e ("drm/amd/display: Add some DCN401 reg name to macro definitions")
-ef319dff5475 ("drm/amd/display: add support for chroma offset")
-a41aa6a7d0a6 ("drm/amd/display: Add comments to improve the code readability")
-5324e2b205a2 ("drm/amd/display: Add driver support for future FAMS versions")
-f3736c0d979a ("drm/amd/display: Add code comments clock and encode code")
-8b2cb32cf0c6 ("drm/amd/display: FEC overhead should be checked once for mst slot nums")
-4df96ba66760 ("drm/amd/display: Add timing pixel encoding for mst mode validation")
-2dbe9c2b2685 ("drm/amd/display: add DCN 351 version for microcode load")
-1c5c36530a57 ("drm/amd/display: Set DCN351 BB and IP the same as DCN35")
-5034b935f62a ("drm/amd/display: Modify DHCUB waterwark structures and functions")
-9d43241953f7 ("drm/amd/display: Refactor DML2 interfaces")
-8cffa89bd5e2 ("drm/amd/display: Expand DML2 callbacks")
-2d5bb791e24f ("drm/amd/display: Implement update_planes_and_stream_v3 sequence")
-88867807564e ("drm/amd/display: Refactor DPP into a component directory")
-eed4edda910f ("drm/amd/display: Support long vblank feature")
-caef6c453cf2 ("drm/amd/display: Add DML2 folder to include path")
-2d7f3d1a5866 ("drm/amd/display: Implement wait_for_odm_update_pending_complete")
-4f5b8d78ca43 ("drm/amd/display: Init DPPCLK from SMU on dcn32")
+3b5bbe798b24 ("pidfd: prevent creation of pidfds for kthreads")
+83b290c9e3b5 ("pidfd: clone: allow CLONE_THREAD | CLONE_PIDFD together")
+64bef697d33b ("pidfd: implement PIDFD_THREAD flag for pidfd_open()")
+21e25205d7f9 ("pidfd: don't do_notify_pidfd() if !thread_group_empty()")
+cdefbf2324ce ("pidfd: cleanup the usage of __pidfd_prepare's flags")
+932562a6045e ("rseq: Split out rseq.h from sched.h")
+cba6167f0adb ("restart_block: Trim includes")
+f038cc1379c0 ("locking/seqlock: Split out seqlock_types.h")
+53d31ba842d9 ("posix-cpu-timers: Split out posix-timers_types.h")
+f995443f01b4 ("locking/seqlock: Simplify SEQCOUNT_LOCKNAME()")
 
 thanks,
 
@@ -96,150 +86,65 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 338567d17627064dba63cf063459605e782f71d2 Mon Sep 17 00:00:00 2001
-From: Fangzhi Zuo <Jerry.Zuo@amd.com>
-Date: Mon, 29 Jul 2024 10:23:03 -0400
-Subject: [PATCH] drm/amd/display: Fix MST BW calculation Regression
+From 3b5bbe798b2451820e74243b738268f51901e7d0 Mon Sep 17 00:00:00 2001
+From: Christian Brauner <brauner@kernel.org>
+Date: Wed, 31 Jul 2024 12:01:12 +0200
+Subject: [PATCH] pidfd: prevent creation of pidfds for kthreads
 
-[Why & How]
-Revert commit 8b2cb32cf0c6
-("drm/amd/display: FEC overhead should be checked once for mst slot nums")
-Because causes bw calculation regression
+It's currently possible to create pidfds for kthreads but it is unclear
+what that is supposed to mean. Until we have use-cases for it and we
+figured out what behavior we want block the creation of pidfds for
+kthreads.
 
-Cc: mario.limonciello@amd.com
-Cc: alexander.deucher@amd.com
-Reported-by: jirislaby@kernel.org
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3495
-Closes: https://bugzilla.suse.com/show_bug.cgi?id=1228093
-Reviewed-by: Wayne Lin <wayne.lin@amd.com>
-Signed-off-by: Fangzhi Zuo <Jerry.Zuo@amd.com>
-Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 12dbb3ed212fc7655fce421542a5add637f8af7a)
+Link: https://lore.kernel.org/r/20240731-gleis-mehreinnahmen-6bbadd128383@brauner
+Fixes: 32fcb426ec00 ("pid: add pidfd_open()")
 Cc: stable@vger.kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-index 915eb2c08ece..2e9f6da1acdc 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-@@ -804,12 +804,25 @@ struct dsc_mst_fairness_params {
- };
- 
- #if defined(CONFIG_DRM_AMD_DC_FP)
--static int kbps_to_peak_pbn(int kbps)
-+static uint16_t get_fec_overhead_multiplier(struct dc_link *dc_link)
-+{
-+	u8 link_coding_cap;
-+	uint16_t fec_overhead_multiplier_x1000 = PBN_FEC_OVERHEAD_MULTIPLIER_8B_10B;
-+
-+	link_coding_cap = dc_link_dp_mst_decide_link_encoding_format(dc_link);
-+	if (link_coding_cap == DP_128b_132b_ENCODING)
-+		fec_overhead_multiplier_x1000 = PBN_FEC_OVERHEAD_MULTIPLIER_128B_132B;
-+
-+	return fec_overhead_multiplier_x1000;
-+}
-+
-+static int kbps_to_peak_pbn(int kbps, uint16_t fec_overhead_multiplier_x1000)
+diff --git a/kernel/fork.c b/kernel/fork.c
+index cc760491f201..18bdc87209d0 100644
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -2053,11 +2053,24 @@ static int __pidfd_prepare(struct pid *pid, unsigned int flags, struct file **re
+  */
+ int pidfd_prepare(struct pid *pid, unsigned int flags, struct file **ret)
  {
- 	u64 peak_kbps = kbps;
+-	bool thread = flags & PIDFD_THREAD;
+-
+-	if (!pid || !pid_has_task(pid, thread ? PIDTYPE_PID : PIDTYPE_TGID))
++	if (!pid)
+ 		return -EINVAL;
  
- 	peak_kbps *= 1006;
--	peak_kbps = div_u64(peak_kbps, 1000);
-+	peak_kbps *= fec_overhead_multiplier_x1000;
-+	peak_kbps = div_u64(peak_kbps, 1000 * 1000);
- 	return (int) DIV64_U64_ROUND_UP(peak_kbps * 64, (54 * 8 * 1000));
++	scoped_guard(rcu) {
++		struct task_struct *tsk;
++
++		if (flags & PIDFD_THREAD)
++			tsk = pid_task(pid, PIDTYPE_PID);
++		else
++			tsk = pid_task(pid, PIDTYPE_TGID);
++		if (!tsk)
++			return -EINVAL;
++
++		/* Don't create pidfds for kernel threads for now. */
++		if (tsk->flags & PF_KTHREAD)
++			return -EINVAL;
++	}
++
+ 	return __pidfd_prepare(pid, flags, ret);
  }
  
-@@ -910,11 +923,12 @@ static int increase_dsc_bpp(struct drm_atomic_state *state,
- 	int link_timeslots_used;
- 	int fair_pbn_alloc;
- 	int ret = 0;
-+	uint16_t fec_overhead_multiplier_x1000 = get_fec_overhead_multiplier(dc_link);
+@@ -2403,6 +2416,12 @@ __latent_entropy struct task_struct *copy_process(
+ 	if (clone_flags & CLONE_PIDFD) {
+ 		int flags = (clone_flags & CLONE_THREAD) ? PIDFD_THREAD : 0;
  
- 	for (i = 0; i < count; i++) {
- 		if (vars[i + k].dsc_enabled) {
- 			initial_slack[i] =
--			kbps_to_peak_pbn(params[i].bw_range.max_kbps) - vars[i + k].pbn;
-+			kbps_to_peak_pbn(params[i].bw_range.max_kbps, fec_overhead_multiplier_x1000) - vars[i + k].pbn;
- 			bpp_increased[i] = false;
- 			remaining_to_increase += 1;
- 		} else {
-@@ -1010,6 +1024,7 @@ static int try_disable_dsc(struct drm_atomic_state *state,
- 	int next_index;
- 	int remaining_to_try = 0;
- 	int ret;
-+	uint16_t fec_overhead_multiplier_x1000 = get_fec_overhead_multiplier(dc_link);
- 
- 	for (i = 0; i < count; i++) {
- 		if (vars[i + k].dsc_enabled
-@@ -1039,7 +1054,7 @@ static int try_disable_dsc(struct drm_atomic_state *state,
- 		if (next_index == -1)
- 			break;
- 
--		vars[next_index].pbn = kbps_to_peak_pbn(params[next_index].bw_range.stream_kbps);
-+		vars[next_index].pbn = kbps_to_peak_pbn(params[next_index].bw_range.stream_kbps, fec_overhead_multiplier_x1000);
- 		ret = drm_dp_atomic_find_time_slots(state,
- 						    params[next_index].port->mgr,
- 						    params[next_index].port,
-@@ -1052,8 +1067,7 @@ static int try_disable_dsc(struct drm_atomic_state *state,
- 			vars[next_index].dsc_enabled = false;
- 			vars[next_index].bpp_x16 = 0;
- 		} else {
--			vars[next_index].pbn = kbps_to_peak_pbn(
--				params[next_index].bw_range.max_kbps);
-+			vars[next_index].pbn = kbps_to_peak_pbn(params[next_index].bw_range.stream_kbps, fec_overhead_multiplier_x1000);
- 			ret = drm_dp_atomic_find_time_slots(state,
- 							    params[next_index].port->mgr,
- 							    params[next_index].port,
-@@ -1082,6 +1096,7 @@ static int compute_mst_dsc_configs_for_link(struct drm_atomic_state *state,
- 	int count = 0;
- 	int i, k, ret;
- 	bool debugfs_overwrite = false;
-+	uint16_t fec_overhead_multiplier_x1000 = get_fec_overhead_multiplier(dc_link);
- 
- 	memset(params, 0, sizeof(params));
- 
-@@ -1146,7 +1161,7 @@ static int compute_mst_dsc_configs_for_link(struct drm_atomic_state *state,
- 	/* Try no compression */
- 	for (i = 0; i < count; i++) {
- 		vars[i + k].aconnector = params[i].aconnector;
--		vars[i + k].pbn = kbps_to_peak_pbn(params[i].bw_range.stream_kbps);
-+		vars[i + k].pbn = kbps_to_peak_pbn(params[i].bw_range.stream_kbps, fec_overhead_multiplier_x1000);
- 		vars[i + k].dsc_enabled = false;
- 		vars[i + k].bpp_x16 = 0;
- 		ret = drm_dp_atomic_find_time_slots(state, params[i].port->mgr, params[i].port,
-@@ -1165,7 +1180,7 @@ static int compute_mst_dsc_configs_for_link(struct drm_atomic_state *state,
- 	/* Try max compression */
- 	for (i = 0; i < count; i++) {
- 		if (params[i].compression_possible && params[i].clock_force_enable != DSC_CLK_FORCE_DISABLE) {
--			vars[i + k].pbn = kbps_to_peak_pbn(params[i].bw_range.min_kbps);
-+			vars[i + k].pbn = kbps_to_peak_pbn(params[i].bw_range.min_kbps, fec_overhead_multiplier_x1000);
- 			vars[i + k].dsc_enabled = true;
- 			vars[i + k].bpp_x16 = params[i].bw_range.min_target_bpp_x16;
- 			ret = drm_dp_atomic_find_time_slots(state, params[i].port->mgr,
-@@ -1173,7 +1188,7 @@ static int compute_mst_dsc_configs_for_link(struct drm_atomic_state *state,
- 			if (ret < 0)
- 				return ret;
- 		} else {
--			vars[i + k].pbn = kbps_to_peak_pbn(params[i].bw_range.stream_kbps);
-+			vars[i + k].pbn = kbps_to_peak_pbn(params[i].bw_range.stream_kbps, fec_overhead_multiplier_x1000);
- 			vars[i + k].dsc_enabled = false;
- 			vars[i + k].bpp_x16 = 0;
- 			ret = drm_dp_atomic_find_time_slots(state, params[i].port->mgr,
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.h b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.h
-index fa84d34b7373..600d6e221011 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.h
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.h
-@@ -46,6 +46,9 @@
- #define SYNAPTICS_CASCADED_HUB_ID  0x5A
- #define IS_SYNAPTICS_CASCADED_PANAMERA(devName, data) ((IS_SYNAPTICS_PANAMERA(devName) && ((int)data[2] == SYNAPTICS_CASCADED_HUB_ID)) ? 1 : 0)
- 
-+#define PBN_FEC_OVERHEAD_MULTIPLIER_8B_10B     1031
-+#define PBN_FEC_OVERHEAD_MULTIPLIER_128B_132B  1000
++		/* Don't create pidfds for kernel threads for now. */
++		if (args->kthread) {
++			retval = -EINVAL;
++			goto bad_fork_free_pid;
++		}
 +
- enum mst_msg_ready_type {
- 	NONE_MSG_RDY_EVENT = 0,
- 	DOWN_REP_MSG_RDY_EVENT = 1,
+ 		/* Note that no task has been attached to @pid yet. */
+ 		retval = __pidfd_prepare(pid, flags, &pidfile);
+ 		if (retval < 0)
 
 
