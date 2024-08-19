@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-69489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69490-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9754B956716
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 11:33:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0708C956717
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 11:33:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 224BBB22699
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 09:32:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8EBC9B2267A
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 09:33:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CDEE15EFAF;
-	Mon, 19 Aug 2024 09:31:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B02A615FA67;
+	Mon, 19 Aug 2024 09:31:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ZwutRr8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l2pxeSa+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29DEB15ECFD
-	for <stable@vger.kernel.org>; Mon, 19 Aug 2024 09:31:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C2D415F406
+	for <stable@vger.kernel.org>; Mon, 19 Aug 2024 09:31:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724059891; cv=none; b=FZOTAnpuxkqf6BnTu4RySUhVCj+ks1Fg75nDyCMW+APM++iv4H6UEFsACKmTsRO23VV9r8cPmi9OgcCjBV9BSpCWAlI0OMtrAl2EaUAi+qGdykMbK+BHmyAbvmsO3KYRTY1+Fdh3ic96HQfJ5gvH04Svnp8OW/dJl7tYTCJxjDE=
+	t=1724059894; cv=none; b=ibEkP7Uin/tNyo07xB8H90cp9OLM2dwAf5UEbi4yFvyCFYdvU+19zqTy0tdhCtPjBJcLR/VWoq59KLQSPUTwyd8wIKmv/aY3U96NZqYj/KjTyUZrEXjW/2T6rxAjRIn7bXDUhAauc2Y3QA2hi7jYcRfYIA2aEXI3nWEmtCCymE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724059891; c=relaxed/simple;
-	bh=YpaWZbi0RLxAdwWZlJ4U/ylT/TM8xlqkb65KMqbdE1I=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Mj+rhQZI8n3Q+xLsMeCHKl+64ZuPA7sV/zoTm5y0gIipwxBGzY4hc3cOJjD7R81gV/JrsWw+Jjjt6AhmNhmTjtPYAbjICfvF6BnxH5E8uQtFmlKEhTf/W/Y2IWkXRSeP4A27uxY4gWGGf8Wn2Mj63fFc9tC9Tp2+2w9hCsLvbtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ZwutRr8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4C7CC4AF0C;
-	Mon, 19 Aug 2024 09:31:30 +0000 (UTC)
+	s=arc-20240116; t=1724059894; c=relaxed/simple;
+	bh=0fEJKSmKl16D9fOIFQt5SqhJvh+pjn7U7BoczK/fW2A=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Y25lJOT1vBAKd4Mj/iXyWo+1im/Q7bQvv0tGNUw+FljEu+HKT7MKceMgZadIiRE0X7wCAH5Nz2lZAWB0ahlNyzhyhDk4l4AENpDaSHcz8URPq92mtzw8/WYWMNoeu//CPAtz1wnR5r5NmG5F5xUu+C4M+Kp/WOMZLznbsvhCvb4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l2pxeSa+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EE47C32782;
+	Mon, 19 Aug 2024 09:31:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724059891;
-	bh=YpaWZbi0RLxAdwWZlJ4U/ylT/TM8xlqkb65KMqbdE1I=;
+	s=korg; t=1724059894;
+	bh=0fEJKSmKl16D9fOIFQt5SqhJvh+pjn7U7BoczK/fW2A=;
 	h=Subject:To:Cc:From:Date:From;
-	b=0ZwutRr80NxkchoAgHefD1Qv2n76D03IVIKoC9/5jQZvPaIf8jyL6bF+mK1PLW2yE
-	 NEjK36pd5I3KziC8snrkbpWYbw7x4FXTEvtL9scxaZtBQFmypWQH5ds8jJewVRkKO1
-	 KnTOJD75ZUB9VXlaZ+26NO8RZPIp6FqwvJFsam+g=
-Subject: FAILED: patch "[PATCH] smb3: fix lock breakage for cached writes" failed to apply to 4.19-stable tree
-To: stfrench@microsoft.com,dhowells@redhat.com,kevin.ottens@enioka.com,piastryyy@gmail.com
+	b=l2pxeSa+nfSZ5y7p6L5WsQNPcZSLvPIuYouj7ho2KTGzyGuuHhpdu5HvrEpJEgjp7
+	 jD7joWRhafqllcvF7CT/ODfn9wopo6WTwjTuPutacK7HCApmJvCkkh2wO4i2TAPJKa
+	 hRkawrbvJhQfs4I4kxWAEqPDfEbEwtL5T8ng+bxc=
+Subject: FAILED: patch "[PATCH] smb/client: avoid possible NULL dereference in" failed to apply to 6.10-stable tree
+To: suhui@nfschina.com,dhowells@redhat.com,stfrench@microsoft.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 Aug 2024 11:31:15 +0200
-Message-ID: <2024081915-antitoxic-kennel-6f2e@gregkh>
+Date: Mon, 19 Aug 2024 11:31:28 +0200
+Message-ID: <2024081927-sustained-humbly-8aaf@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,35 +53,24 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 6.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x 836bb3268db405cf9021496ac4dbc26d3e4758fe
+git cherry-pick -x 74c2ab6d653b4c2354df65a7f7f2df1925a40a51
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081915-antitoxic-kennel-6f2e@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081927-sustained-humbly-8aaf@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
 
 Possible dependencies:
 
-836bb3268db4 ("smb3: fix lock breakage for cached writes")
-3ee1a1fc3981 ("cifs: Cut over to using netfslib")
-69c3c023af25 ("cifs: Implement netfslib hooks")
-edea94a69730 ("cifs: Add mempools for cifs_io_request and cifs_io_subrequest structs")
-1a5b4edd97ce ("cifs: Move cifs_loose_read_iter() and cifs_file_write_iter() to file.c")
-ab58fbdeebc7 ("cifs: Use more fields from netfs_io_subrequest")
-a975a2f22cdc ("cifs: Replace cifs_writedata with a wrapper around netfs_io_subrequest")
-753b67eb630d ("cifs: Replace cifs_readdata with a wrapper around netfs_io_subrequest")
-0f7c0f3f5150 ("cifs: Use alternative invalidation to using launder_folio")
-2e9d7e4b984a ("mm: Remove the PG_fscache alias for PG_private_2")
-2ff1e97587f4 ("netfs: Replace PG_fscache by setting folio->private and marking dirty")
-f3dc1bdb6b0b ("cifs: Fix writeback data corruption")
-d1bba17e20d5 ("Merge tag '6.8-rc1-smb3-client-fixes' of git://git.samba.org/sfrench/cifs-2.6")
+74c2ab6d653b ("smb/client: avoid possible NULL dereference in cifs_free_subrequest()")
+519be989717c ("cifs: Add a tracepoint to track credits involved in R/W requests")
 
 thanks,
 
@@ -89,65 +78,57 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 836bb3268db405cf9021496ac4dbc26d3e4758fe Mon Sep 17 00:00:00 2001
-From: Steve French <stfrench@microsoft.com>
-Date: Thu, 15 Aug 2024 14:03:43 -0500
-Subject: [PATCH] smb3: fix lock breakage for cached writes
+From 74c2ab6d653b4c2354df65a7f7f2df1925a40a51 Mon Sep 17 00:00:00 2001
+From: Su Hui <suhui@nfschina.com>
+Date: Thu, 8 Aug 2024 20:23:32 +0800
+Subject: [PATCH] smb/client: avoid possible NULL dereference in
+ cifs_free_subrequest()
 
-Mandatory locking is enforced for cached writes, which violates
-default posix semantics, and also it is enforced inconsistently.
-This apparently breaks recent versions of libreoffice, but can
-also be demonstrated by opening a file twice from the same
-client, locking it from handle one and writing to it from
-handle two (which fails, returning EACCES).
+Clang static checker (scan-build) warning:
+	cifsglob.h:line 890, column 3
+	Access to field 'ops' results in a dereference of a null pointer.
 
-Since there was already a mount option "forcemandatorylock"
-(which defaults to off), with this change only when the user
-intentionally specifies "forcemandatorylock" on mount will we
-break posix semantics on write to a locked range (ie we will
-only fail the write in this case, if the user mounts with
-"forcemandatorylock").
+Commit 519be989717c ("cifs: Add a tracepoint to track credits involved in
+R/W requests") adds a check for 'rdata->server', and let clang throw this
+warning about NULL dereference.
 
-Fixes: 85160e03a79e ("CIFS: Implement caching mechanism for mandatory brlocks")
+When 'rdata->credits.value != 0 && rdata->server == NULL' happens,
+add_credits_and_wake_if() will call rdata->server->ops->add_credits().
+This will cause NULL dereference problem. Add a check for 'rdata->server'
+to avoid NULL dereference.
+
 Cc: stable@vger.kernel.org
-Cc: Pavel Shilovsky <piastryyy@gmail.com>
-Reported-by: abartlet@samba.org
-Reported-by: Kevin Ottens <kevin.ottens@enioka.com>
+Fixes: 69c3c023af25 ("cifs: Implement netfslib hooks")
 Reviewed-by: David Howells <dhowells@redhat.com>
+Signed-off-by: Su Hui <suhui@nfschina.com>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 
 diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
-index 45459af5044d..06a0667f8ff2 100644
+index b2405dd4d4d4..45459af5044d 100644
 --- a/fs/smb/client/file.c
 +++ b/fs/smb/client/file.c
-@@ -2753,6 +2753,7 @@ cifs_writev(struct kiocb *iocb, struct iov_iter *from)
- 	struct inode *inode = file->f_mapping->host;
- 	struct cifsInodeInfo *cinode = CIFS_I(inode);
- 	struct TCP_Server_Info *server = tlink_tcon(cfile->tlink)->ses->server;
-+	struct cifs_sb_info *cifs_sb = CIFS_SB(inode->i_sb);
- 	ssize_t rc;
+@@ -315,7 +315,7 @@ static void cifs_free_subrequest(struct netfs_io_subrequest *subreq)
+ #endif
+ 	}
  
- 	rc = netfs_start_io_write(inode);
-@@ -2769,12 +2770,16 @@ cifs_writev(struct kiocb *iocb, struct iov_iter *from)
- 	if (rc <= 0)
- 		goto out;
- 
--	if (!cifs_find_lock_conflict(cfile, iocb->ki_pos, iov_iter_count(from),
-+	if ((cifs_sb->mnt_cifs_flags & CIFS_MOUNT_NOPOSIXBRL) &&
-+	    (cifs_find_lock_conflict(cfile, iocb->ki_pos, iov_iter_count(from),
- 				     server->vals->exclusive_lock_type, 0,
--				     NULL, CIFS_WRITE_OP))
--		rc = netfs_buffered_write_iter_locked(iocb, from, NULL);
--	else
-+				     NULL, CIFS_WRITE_OP))) {
- 		rc = -EACCES;
-+		goto out;
+-	if (rdata->credits.value != 0)
++	if (rdata->credits.value != 0) {
+ 		trace_smb3_rw_credits(rdata->rreq->debug_id,
+ 				      rdata->subreq.debug_index,
+ 				      rdata->credits.value,
+@@ -323,8 +323,12 @@ static void cifs_free_subrequest(struct netfs_io_subrequest *subreq)
+ 				      rdata->server ? rdata->server->in_flight : 0,
+ 				      -rdata->credits.value,
+ 				      cifs_trace_rw_credits_free_subreq);
++		if (rdata->server)
++			add_credits_and_wake_if(rdata->server, &rdata->credits, 0);
++		else
++			rdata->credits.value = 0;
 +	}
-+
-+	rc = netfs_buffered_write_iter_locked(iocb, from, NULL);
-+
- out:
- 	up_read(&cinode->lock_sem);
- 	netfs_end_io_write(inode);
+ 
+-	add_credits_and_wake_if(rdata->server, &rdata->credits, 0);
+ 	if (rdata->have_xid)
+ 		free_xid(rdata->xid);
+ }
 
 
