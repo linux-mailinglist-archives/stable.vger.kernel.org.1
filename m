@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-69503-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69504-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0431956774
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 11:50:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B94BE956776
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 11:50:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95DF6282053
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 09:50:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3907D1F22897
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 09:50:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6202B15B14D;
-	Mon, 19 Aug 2024 09:50:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8686C15696E;
+	Mon, 19 Aug 2024 09:50:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ItZK4ZMU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jlO21Hl0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22D5413C81B
-	for <stable@vger.kernel.org>; Mon, 19 Aug 2024 09:50:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4787F13B592
+	for <stable@vger.kernel.org>; Mon, 19 Aug 2024 09:50:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724061024; cv=none; b=lVgy+b34npEc032dsWw3sRQeLnbu3QdwJ3KosZ4bkWSwamLRffC1lH5aPogl1qizQBePNfl9HXXPCgtIBiaceSCzpH/841Z70+PGUw1DWeYs24rs5sASSVq19D5LUfTzJTdCD4SfsLQAXvZnL6ob+EAeJnUJfcyW/pcZfLpWxvQ=
+	t=1724061027; cv=none; b=P4gax1nFtODq5mIApXGlHHspnb06qM2HDeTBJ3KzsE4r7TvlKtRpKWd/3V+HoVQBKzk1bYZHQCKcTAd3pQ2W8OAD6KbZVZvlvylb3+ZPG3+THp7V8lO2iYW57lKMLWH+27hXKHiJp3xg8omyMp0wUDp/VCP6nWV7R5GkNJ+2psk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724061024; c=relaxed/simple;
-	bh=nk7Rk5Cc+3yFckFD09/GGhwxxexkhGUToZ5RNtF8REY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=mV+3HrYh5s84Rc4pR0kZW+SYhfY5pvDk3TlFQ2tD0rGAk246yno1bVXc24ayYRs/XmJ/DIDIG3MB5HN92XJST68IeNFf0aUZMXtLpKNEuBvdie5gezTP7OjdKQWMaYDSVbD6uORs929kYxWJFLGVjICRgQWjx+uXqv06owq0cV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ItZK4ZMU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C928C4AF0C;
-	Mon, 19 Aug 2024 09:50:23 +0000 (UTC)
+	s=arc-20240116; t=1724061027; c=relaxed/simple;
+	bh=tjFPhV4wrmk+JlRakrB4P7+uYdSdp6nc/hcDBc0fGjs=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=VjyOzDE2W4Nk4bBsPOg0oOgoJ4k28idH5zg5z1y+t7pWlgRtMHLPKKp7f1iG0XE30+0M0nkRJ89gFwlEEboETYRcDjE6ezwd/VWRDm64QtDgeTWrMs1+DvRQJ1W9u1nu9eVS1tX7yPwfG3sr2QaE4UnRgQJMpw855MKx1DS6wKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jlO21Hl0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF3DDC4AF0C;
+	Mon, 19 Aug 2024 09:50:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724061023;
-	bh=nk7Rk5Cc+3yFckFD09/GGhwxxexkhGUToZ5RNtF8REY=;
+	s=korg; t=1724061027;
+	bh=tjFPhV4wrmk+JlRakrB4P7+uYdSdp6nc/hcDBc0fGjs=;
 	h=Subject:To:Cc:From:Date:From;
-	b=ItZK4ZMUiQ4bv2NEQefclTskYtsajBQjJBCzEtIkfIQ2VODX1FDlj9zMC2q1+j7Ez
-	 62m7+nugPaBXtMSvVjqow0POhOT/vMNb0f3rIF0RsGcusy+GOl2VNzQjBgzEkNhsNB
-	 LN3DoIiKW33ohBDcDGjPgNxTrzy0NDpwpuwuAjZY=
-Subject: FAILED: patch "[PATCH] wifi: ath12k: use 128 bytes aligned iova in transmit path for" failed to apply to 6.10-stable tree
+	b=jlO21Hl0LBD+8XRoVdrSyd52ZZho/pNnueQ/MF4XwdFK0s03sf+rUJ/12nLHoBSkW
+	 rggt+qDJy3kv+GeDnEAcmFaFULSmEJKP939jR6ApAzAHpsoQL50ISnAZdOm55NyzXl
+	 zCfSlXLVIUKiB11JbdcQs7lj2fetqRwuWRrGSz7I=
+Subject: FAILED: patch "[PATCH] wifi: ath12k: use 128 bytes aligned iova in transmit path for" failed to apply to 6.6-stable tree
 To: quic_bqiang@quicinc.com,mpearson-lenovo@squebb.ca,quic_kvalo@quicinc.com,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 Aug 2024 11:50:21 +0200
-Message-ID: <2024081920-gating-yummy-71e0@gregkh>
+Date: Mon, 19 Aug 2024 11:50:22 +0200
+Message-ID: <2024081921-graded-starlet-91b8@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.10-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x 38055789d15155109b41602ad719d770af507030
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081920-gating-yummy-71e0@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081921-graded-starlet-91b8@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -74,6 +74,21 @@ Possible dependencies:
 97b7cbb7a3cb ("wifi: ath12k: support SMPS configuration for 6 GHz")
 f0e61dc7ecf9 ("wifi: ath12k: refactor SMPS configuration")
 112dbc6af807 ("wifi: ath12k: add 6 GHz params in peer assoc command")
+576771c9fa21 ("wifi: ath12k: ACPI TAS support")
+8d5f4da8d70b ("wifi: ath12k: support suspend/resume")
+2652f6b472ff ("wifi: ath12k: avoid stopping mac80211 queues in ath12k_core_restart()")
+c7b2da3c0a57 ("wifi: ath12k: rearrange IRQ enable/disable in reset path")
+303c017821d8 ("wifi: ath12k: fix kernel crash during resume")
+f8bde02a26b9 ("wifi: ath12k: initial debugfs support")
+54ca3308a23c ("wifi: ath12k: enable 802.11 power save mode in station mode")
+2d3a7384b9c8 ("wifi: ath12k: disable QMI PHY capability learn in split-phy QCN9274")
+af9bc78d14fb ("wifi: ath12k: Read board id to support split-PHY QCN9274")
+f7019c2fcdf6 ("wifi: ath12k: split hal_ops to support RX TLVs word mask compaction")
+12f491cd6d81 ("wifi: ath12k: add firmware-2.bin support")
+53a65445c144 ("wifi: ath12k: add QMI PHY capability learn support")
+76fece36f17a ("wifi: ath12k: refactor QMI MLO host capability helper function")
+ce20a10fdff4 ("wifi: ath12k: refactor ath12k_bss_assoc()")
+e7ab40b73309 ("wifi: ath12k: Make QMI message rules const")
 
 thanks,
 
