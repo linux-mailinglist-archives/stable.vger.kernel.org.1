@@ -1,327 +1,234 @@
-Return-Path: <stable+bounces-69603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69604-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29B99956E5C
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 17:14:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D04B8956E91
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 17:18:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C7162825D1
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 15:14:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 225D1B26702
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 15:18:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 782AB1741D9;
-	Mon, 19 Aug 2024 15:14:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B71626AD3;
+	Mon, 19 Aug 2024 15:18:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="ByLZoEiy";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="hAWdifuD";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="ByLZoEiy";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="hAWdifuD"
+	dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b="jrPy881n"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from OS0P286CU011.outbound.protection.outlook.com (mail-japanwestazon11010053.outbound.protection.outlook.com [52.101.228.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19D1C2AD2C
-	for <stable@vger.kernel.org>; Mon, 19 Aug 2024 15:14:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724080476; cv=none; b=KRzGPnydsLN1oGHFL1iLNl2jLcmzdTkb/iYSR9FzZEXCRf5jQ3Qmsk+s5EUOmdKi/PXDHpa3naTmstsktjNL7Cov50OzNMknF2cEPhRpoGkL0ECgAlcGNMq+K/auiLOySuHCVD4vtZQcuyWBdL3/0vCRowyCp3l7+siy18zdU1E=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724080476; c=relaxed/simple;
-	bh=CIqsPtKbNf4eppWH1btipwfOsCfYOdRPXQr2wCzSFZo=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=mYsUR4NA4qBZAxJ/mIWUy2go4e4uceW3IgqmQrNU4Tn0GpPJ/zcQ/ayIuOYcZ83tKInKgLOxbNnX5tXV9pV4V/c616hq/8GxGVs7SdLDxZ+0KXAP9Nt1WpW7qPIMRguZronBRTgHBAXXnAr5MDYTvWJbeS71ji41dhCtMp/yCYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=ByLZoEiy; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=hAWdifuD; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=ByLZoEiy; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=hAWdifuD; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 1A35421ED1;
-	Mon, 19 Aug 2024 15:14:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1724080472; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=51YdApFs8jsVtd2RKoqunhnxphP9DtzQ+7ug6Ap7uko=;
-	b=ByLZoEiy9Zqj+jusKjzCUjM7CcDAKJBRZu2gS4Q+90/sKidXcuCiDGJ9wAHdEeNTvV++jh
-	B6/edI/CckS/W//pt9jb59hKsw2gpT00IzktxRdRK+2QXD17EONvkKvVpGm+/AOiE9Yecm
-	YJVNAw47PArUw+MPOc8seAVeij+858c=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1724080472;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=51YdApFs8jsVtd2RKoqunhnxphP9DtzQ+7ug6Ap7uko=;
-	b=hAWdifuDBGPUaH3YtbZGWx9R4dOwNQKB/UfM2bmwmF2uPZmQlY6SBeNuAV2XxiQLlGKsGv
-	WQoG4adn61E4ywCQ==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ByLZoEiy;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=hAWdifuD
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1724080472; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=51YdApFs8jsVtd2RKoqunhnxphP9DtzQ+7ug6Ap7uko=;
-	b=ByLZoEiy9Zqj+jusKjzCUjM7CcDAKJBRZu2gS4Q+90/sKidXcuCiDGJ9wAHdEeNTvV++jh
-	B6/edI/CckS/W//pt9jb59hKsw2gpT00IzktxRdRK+2QXD17EONvkKvVpGm+/AOiE9Yecm
-	YJVNAw47PArUw+MPOc8seAVeij+858c=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1724080472;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=51YdApFs8jsVtd2RKoqunhnxphP9DtzQ+7ug6Ap7uko=;
-	b=hAWdifuDBGPUaH3YtbZGWx9R4dOwNQKB/UfM2bmwmF2uPZmQlY6SBeNuAV2XxiQLlGKsGv
-	WQoG4adn61E4ywCQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BDDAF137C3;
-	Mon, 19 Aug 2024 15:14:31 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 3ZwZLVdhw2Z3GQAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Mon, 19 Aug 2024 15:14:31 +0000
-Message-ID: <3fdacb13-6b91-4266-9fa5-8a14f46527b5@suse.de>
-Date: Mon, 19 Aug 2024 17:14:31 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 675AD3C6BA;
+	Mon, 19 Aug 2024 15:18:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.228.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1724080693; cv=fail; b=DGcNihQSsCvalGHuyfO9DUYny3Z9C+VFNKao03sxDKIeDgApXra7NqE0pv3pnhHkaSuXT5YJkhtB4LLF12d8ZvO5DnPsi7nq8+K+NIUCjAlL3F0XArudNiWKeQqXAWNW2vNjR91+T7VBXe9L3kDqouAT34atwUE6AvQkfNWhKbw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1724080693; c=relaxed/simple;
+	bh=2Oy7USXRjt1gFKM96NnTUKNVOwXUwKxW8H4o5zunLIk=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=AaqeS8h+KPP/222xBW0JNAC9tFLTwiOja1unhVKY2s5PgbbGD0w6AqdW0lLPwUWgwouBcw6wTma0U/E6KlGQieV4lKjmgzlPM9yW1EZNF0KAkAEWut9KMZQKuol9COD/s6lavmUdwG2wK/msGdsXWf27blvjuK52mtixQnoQ0Gs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com; spf=pass smtp.mailfrom=renesas.com; dkim=pass (1024-bit key) header.d=renesas.com header.i=@renesas.com header.b=jrPy881n; arc=fail smtp.client-ip=52.101.228.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=renesas.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=renesas.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=yOVDDjZkfQT9qF6zQ2U2vJUq8kI5XCwv/8sY2rm53SNweoUGl99QboNaLQeHEdYZoTOsiN0YD5MZ5Pvfmpx2l5eHLHfTZi3zf4r6/r8zvXvaAoMT1mmZdkf9agOTPuKA8oIFDuKIm5oFs8N6L66cSAXiQ4oyyDn/gKuK3qi2HQJVrVExoeoQdcxYGgSmuy2NMsejB9ppZVbVuHp+EDYgYDBO+sYU3YS+90ynkvbYAzFJCzfLgLwP4L9SKlMx+T0V2boWoS5OVfnHWJ7j/eL2lWMM/YzG0zWyTZ915v5pwo7LAtBX4DnmrGoqh24ZUyhslZHnmIlFMIFPNBCc4XVRRw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=KOUb/QyY3QKBs5tKBYkNLKBhctDLVDeGoGO5sxiNm1E=;
+ b=I/3p20tiP6wsnECk74RHofMkef0tVrW5qV1X1685hld9UMGA6Oy6V2dFZWrLbzj9myz9p9vrkerC7M54mE6+7iHrEWedddQBDKbhjYqe8ZsBq2H2ETgd3h3VHe94ATGIfwJiK3PkXfbsxBAsF2ldEm9ydsarzqgAAY7TKhh2aszFJ8r2VsLQkfiRFsJyhTp/IsNmhjk3Ku5eL8GziwQk4U9jhKulNYKNeGN3AHSeEyF0QA9548L+y0aF1ZB5XzadJtJTYvn/xb1VK07RN6WaHT9KyiZo2SGYOjCsx79+nKcH5BJO8ZeI1mpL70Sn/dlxXCYuoQw361e3Vg8zbrItog==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=renesas.com; dmarc=pass action=none header.from=renesas.com;
+ dkim=pass header.d=renesas.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=renesas.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=KOUb/QyY3QKBs5tKBYkNLKBhctDLVDeGoGO5sxiNm1E=;
+ b=jrPy881nIixufMbQOWkCZzipO6wfNdfH8PV8YH6iyDVJB5GUiyogJJ8R4CeRFs1LRhExxGdLKvSyUp9OIoHGK1Vsm3vMEaPTTNVWiQZgsqtBwXL00rbUKAPp/kRrhmGmRelycwaotB6fW5JNl9U4zDQkkm0weQ6ibBY+aFtMyzc=
+Received: from TYYPR01MB12402.jpnprd01.prod.outlook.com (2603:1096:405:f7::12)
+ by TYWPR01MB10631.jpnprd01.prod.outlook.com (2603:1096:400:2a3::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7875.20; Mon, 19 Aug
+ 2024 15:18:06 +0000
+Received: from TYYPR01MB12402.jpnprd01.prod.outlook.com
+ ([fe80::64e8:dbea:c288:5e87]) by TYYPR01MB12402.jpnprd01.prod.outlook.com
+ ([fe80::64e8:dbea:c288:5e87%3]) with mapi id 15.20.7875.019; Mon, 19 Aug 2024
+ 15:18:05 +0000
+From: Chris Paterson <Chris.Paterson2@renesas.com>
+To: Pavel Machek <pavel@denx.de>, Greg Kroah-Hartman
+	<gregkh@linuxfoundation.org>
+CC: "stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"patches@lists.linux.dev" <patches@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"torvalds@linux-foundation.org" <torvalds@linux-foundation.org>,
+	"akpm@linux-foundation.org" <akpm@linux-foundation.org>, "linux@roeck-us.net"
+	<linux@roeck-us.net>, "shuah@kernel.org" <shuah@kernel.org>,
+	"patches@kernelci.org" <patches@kernelci.org>, "lkft-triage@lists.linaro.org"
+	<lkft-triage@lists.linaro.org>, "jonathanh@nvidia.com"
+	<jonathanh@nvidia.com>, "f.fainelli@gmail.com" <f.fainelli@gmail.com>,
+	"sudipm.mukherjee@gmail.com" <sudipm.mukherjee@gmail.com>,
+	"srw@sladewatkins.net" <srw@sladewatkins.net>, "rwarsow@gmx.de"
+	<rwarsow@gmx.de>, "conor@kernel.org" <conor@kernel.org>,
+	"allen.lkml@gmail.com" <allen.lkml@gmail.com>, "broonie@kernel.org"
+	<broonie@kernel.org>
+Subject: RE: [PATCH 6.10 00/25] 6.10.6-rc3 review
+Thread-Topic: [PATCH 6.10 00/25] 6.10.6-rc3 review
+Thread-Index: AQHa8Uwq4UX2gcIIcE6Fe8Gz65f67bIuTk0AgABbtxA=
+Date: Mon, 19 Aug 2024 15:18:05 +0000
+Message-ID:
+ <TYYPR01MB12402A34A443D1F3A6556D902B78C2@TYYPR01MB12402.jpnprd01.prod.outlook.com>
+References: <20240817085406.129098889@linuxfoundation.org>
+ <ZsMNYtjBBUE5Ehqy@duo.ucw.cz>
+In-Reply-To: <ZsMNYtjBBUE5Ehqy@duo.ucw.cz>
+Accept-Language: en-US, en-GB
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=renesas.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: TYYPR01MB12402:EE_|TYWPR01MB10631:EE_
+x-ms-office365-filtering-correlation-id: 4de40c7d-8f64-4c1a-ad5f-08dcc0621fac
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|376014|7416014|1800799024|366016|38070700018;
+x-microsoft-antispam-message-info:
+ =?Windows-1252?Q?eGZ7Q3eJQllY7Ota7aKTDF06pdR1vXljLWn8FRt9UvjjpOzdBUh608lk?=
+ =?Windows-1252?Q?76/VvQKxNiZrsNwhixYVlHou4bsidhv9xL5GKpgAEohRTO2mAHC+RLj4?=
+ =?Windows-1252?Q?blsULvokJzMdkCBixwiarNXZ9ME0h0LJOl3S3vIZbSex2g7EHYsCLNGf?=
+ =?Windows-1252?Q?fXyeJe5ZiPTx0TeGx+/jXGFuGckTdCYGhX8DxY9J/K4EbxuOoQHvILrg?=
+ =?Windows-1252?Q?w9VQMb/q3KPv9GZc8Bum7yNqN39fasfPQCEZ2acHwNHuWVGFVZwLryJK?=
+ =?Windows-1252?Q?rKKEksesi/AegyhNflJFoKgwl5wtkWUSV+dEJozECplk1UBxx02gRn8l?=
+ =?Windows-1252?Q?pmu5GpJlTgy0HCV0wL7qN2aFuqA1BhsB7R4r0NcuYQPtHad277zWWrYn?=
+ =?Windows-1252?Q?8Oe8gKNV956+4aESTaomce7jbrmGg6wfeAgKp6WExWXipB5McU+0QBpc?=
+ =?Windows-1252?Q?voqq+xmClCNCmva3uVtKRey4UZ4wM3rDp7bXKXnFkq4zJ4l7TlRSvwPk?=
+ =?Windows-1252?Q?1hGIfLGtNlWPDb6cfTFnoRK5zAtbXcNeydcVCqano1620Qxkvim83ZiT?=
+ =?Windows-1252?Q?s0TSSrgUONBMmNnyoZFldUFM/QlsIMpVGe+KTXbYDhg0xeuDYkFGmqD0?=
+ =?Windows-1252?Q?Jh20FEn5zytNbLakDfDmIYxYv2JAFQCrlUa+0XWObnmG1IX84kLIyKRh?=
+ =?Windows-1252?Q?jbWbVETASWFyxPyX00kkHsaK4A+0Yrb06AaM/7Ua5DEKoUH7QtkkgUHq?=
+ =?Windows-1252?Q?rI0aimjo1XWHBqZIKNJSuU7SSA4NIWBsFIF0QXzs4ERxRmXK/p6wHohL?=
+ =?Windows-1252?Q?0QSMT3Op5M1kNeLN41Kct3qCheKfeAPxMqwGienIOIe9ATZ95xiqNuqo?=
+ =?Windows-1252?Q?1TaIh7C0e4JYeP5/STOsQbIQ/dHLtpAOa+t3Cxx3eis68+JRSOP5TzMi?=
+ =?Windows-1252?Q?RxIhAtFmcKTjO2eToR0c1R7ncMYD8VYfbAMHWEYKgKs4dYtCBnIgD7/7?=
+ =?Windows-1252?Q?gHNhjcan1iJMqy0dv9gGr7lkEddRqS0ZyT6wnXcukIhguOAnwgtRJpQN?=
+ =?Windows-1252?Q?DyROwkS0kedAdQPLqkHVl2iXzjsJ4JGKAUX0NTeP3vOLKk3KO/m2qAVR?=
+ =?Windows-1252?Q?g96YLSRe6aVqk3dqZqGt6xiMWDjc0TIoj1eWfEsy21+Xa80gt176uuB0?=
+ =?Windows-1252?Q?JAi7Z7NebTjKumlEAaRAjobXt1McmlkqujmR6+Ta9H5K+RDyMbfQY34d?=
+ =?Windows-1252?Q?yai0CCtPXYjiwvBhQkzPiu8C+5p+jtayquCtWDAXMa9whxQ6AMd3vBZx?=
+ =?Windows-1252?Q?CRI0VUJ9AHhZlsQkEMiXjKTtI9JSuR+L0Y9v6fX+02bS631n2dKxswcI?=
+ =?Windows-1252?Q?67F4YsTaWneXeub/b8g8KCyd0bY6dxlpMuHBEMQxy/u9N314jIn5LENm?=
+ =?Windows-1252?Q?4JQoNnxaiZKAJPHRJ4wrGgyUcHe2mJrwvJ8UE1B5xvY=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:TYYPR01MB12402.jpnprd01.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?Windows-1252?Q?CQw9ZviUCyl1NMZeFpQfufB2Aj5RLtnpV8YjUEkyrO7/82OoeImIa7s0?=
+ =?Windows-1252?Q?7k4J3ytbDQjqQJGVQIy2Y4B98vkTCu4Rn3pd55k20npX05BJTZlOZYuz?=
+ =?Windows-1252?Q?nHuDhwBwj9jid0DIlQM/vHSRkBtGSwOheNEzCl/IElPF77QR/EbJtQGP?=
+ =?Windows-1252?Q?a9OdXH43Z0l0BmKtPQ/TYXVU4wEQJpZjRkLc+sYw/flp+4EMi32JHKI+?=
+ =?Windows-1252?Q?W5LfSC3d6j177OKWzSDPIvicHYNKS74qA73np9eLKTv8roV+C8b6VEbD?=
+ =?Windows-1252?Q?nuoCfObQCo/tE8lgJOr7dopCRLe9d4WWJaNym5nGa6jrvv1suOjOsq6n?=
+ =?Windows-1252?Q?A1bf+XUIlKDLj4rxNPu4gGm7CjO8sUee6COxv2E4H7de1b8svq5DUlzQ?=
+ =?Windows-1252?Q?Srs71LbJuHQvRsBVRO8c06ODD4HTO1qZbMVHJN1n6N2TGqA7jlYK6N+M?=
+ =?Windows-1252?Q?6qhWADBlvfzKUB/Oek8DwTJSl41Nksiqycv4sqXVyjAAQX/G+FXdyq1q?=
+ =?Windows-1252?Q?rfFATjx3Zl/nPoT9UUo4+G5CeXq8vGWC3n6QQW/kYJteyO/jGcaz1uhx?=
+ =?Windows-1252?Q?MYW+AW6w/FelnvLzhdvgas3oX5LtcQ+LDeRtoGYGpVdEU15mxgpwOvdn?=
+ =?Windows-1252?Q?f73n+/wrg82sVloNYsFDh9SJI7wD9Rss6d2JNzdUslQo3J2dHxnZR+Jf?=
+ =?Windows-1252?Q?I2NqZcFn/Ve6ad7ChG79Yi2uF0UnE25KG3Xbqk2FP6Wxl3c5mLlp8vZy?=
+ =?Windows-1252?Q?1TYPNxRS3kyElfdOPo5Qtaqa6xmqtdPdONubSwiGN0Y2UXWFlRrXfaa0?=
+ =?Windows-1252?Q?67rS+DsievKB92C0JoRkYSld+xPKAZuxWlaxxAj8deKBses8jjN/gljS?=
+ =?Windows-1252?Q?kuZU0bWd8Itioi6jvh7eSGUo9KX6Glp15PwAqr1QP7Qud6Z7QY2sszVU?=
+ =?Windows-1252?Q?RqN3ZEpQEE1RwJcvTl/zZsSKuN43M2QNGa0qhur9OKTNQyccQoIYjyNU?=
+ =?Windows-1252?Q?epOyas2AVH5zoOo9aUiNXe6EOIR9oPb29Pq25D50jOF75lHQQgROWXWe?=
+ =?Windows-1252?Q?LXPYibCTTZEioejyowrv6IZE/8YtlbDSmAsBWltxqOb2AUiTX1UQ8ANd?=
+ =?Windows-1252?Q?x1p17NkxzaEUChzvMAc7OlIV4k7koEpD/qODafPTRbejbmf6uE7QtpiV?=
+ =?Windows-1252?Q?fZ10IngwxSgAD8eba0bAEyDMH0cVK/+GFXLj94rBsbY3+JQk1pLc5m+6?=
+ =?Windows-1252?Q?qewT91H2nkiJ3GU89Yc41uTJZtOBfbrta/AX7cznSqZ02NKsCSs/Eb2K?=
+ =?Windows-1252?Q?EW8HcMKsZN5VLt5kZH28zR6AnGtObRl2G+iMxCw0PfB7+ONo2GF+KKcB?=
+ =?Windows-1252?Q?CoR3f/svRo2n8AUL4yQqsTk5RXwzo9K0Ff9ZT8ZDusy+5v9T88WRHyi9?=
+ =?Windows-1252?Q?CaJ4MceLBnIoYQsDhefG5DjF7m+CiMoCTpvUyGCrr9u37DSfUvjP5d6i?=
+ =?Windows-1252?Q?L9yEDUDUYqTpbJjjKCYx0lM0kacl6lRx5sKOo660R3WybXa7MjlOf9o7?=
+ =?Windows-1252?Q?p4m395Z3oKPwqo2Zd/SczK1h2wQgw5KXP8mKbExeqZ6WN1EEtmgNwXRY?=
+ =?Windows-1252?Q?EwBubmZ1mP6Lj8QGwtSrg79GSBRYXJhuPr9oIh2CS5aiY+ri6+DBvqle?=
+ =?Windows-1252?Q?JtBtTxHvogMo9xP9NomZNcfp7oAhJjPKE2d/9AeRPtGjUmxt6SxxNw?=
+ =?Windows-1252?Q?=3D=3D?=
+Content-Type: text/plain; charset="Windows-1252"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] video/aperture: match the pci device when calling
- sysfb_disable()
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: Alex Deucher <alexdeucher@gmail.com>
-Cc: kernel test robot <lkp@intel.com>,
- Alex Deucher <alexander.deucher@amd.com>, amd-gfx@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, oe-kbuild-all@lists.linux.dev,
- intel-gfx@lists.freedesktop.org,
- Javier Martinez Canillas <javierm@redhat.com>, Helge Deller <deller@gmx.de>,
- Sam Ravnborg <sam@ravnborg.org>, Daniel Vetter <daniel.vetter@ffwll.ch>,
- stable@vger.kernel.org
-References: <20240809150327.2485848-1-alexander.deucher@amd.com>
- <202408101951.tXyqYOzv-lkp@intel.com>
- <1c77f913-4707-4300-b84a-36fcf99942f4@suse.de>
- <CADnq5_NjCFyy+bQY+uyijcZwvwXYkvVLLUQdtzN_ODvHAj193Q@mail.gmail.com>
- <8bbf3f92-3719-4ff4-9587-e076635758d1@suse.de>
-Content-Language: en-US
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <8bbf3f92-3719-4ff4-9587-e076635758d1@suse.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 1A35421ED1
-X-Spam-Score: -6.51
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-6.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	DWL_DNSWL_MED(-2.00)[suse.de:dkim];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	RCVD_TLS_ALL(0.00)[];
-	ARC_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FREEMAIL_TO(0.00)[gmail.com];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com,gmx.de];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[intel.com,amd.com,lists.freedesktop.org,lists.linux.dev,redhat.com,gmx.de,ravnborg.org,ffwll.ch,vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,git-scm.com:url,01.org:url];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	DKIM_TRACE(0.00)[suse.de:+]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spam-Flag: NO
-X-Spam-Level: 
+X-OriginatorOrg: renesas.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: TYYPR01MB12402.jpnprd01.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4de40c7d-8f64-4c1a-ad5f-08dcc0621fac
+X-MS-Exchange-CrossTenant-originalarrivaltime: 19 Aug 2024 15:18:05.0158
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 53d82571-da19-47e4-9cb4-625a166a4a2a
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: DYerDboVfSxIlGt+UG3jsJWwt77+j2sPJLarVbG+xFleh7x3cBC5CAKkfbNK5PqklcoLJJU11FHc/78Z+cj2U3TbYRWpmfXsfKoUP+knYXE=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: TYWPR01MB10631
+
+Hello Pavel,
+
+> From: Pavel Machek <pavel@denx.de>
+> Sent: Monday, August 19, 2024 10:16 AM
+>=20
+> Hi!
+>=20
+> > This is the start of the stable review cycle for the 6.10.6 release.
+> > There are 25 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+>=20
+> This one fails our testing.
+>=20
+> https://lava.ciplatform.org/scheduler/job/1181715
+>=20
+> [    0.493440] ThumbEE CPU extension supported.
+> [    0.493646] Registering SWP/SWPB emulation handler
+> [    0.515073] clk: Disabling unused clocks
+> login-action timed out after 119 seconds
+> end: 2.2.1 login-action (duration 00:01:59) [common]
+>=20
+> https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-
+> /jobs/7610484202
+>=20
+> Failure does not go away with retries.
+>=20
+> Now... I believe I seen similar failures before, but those did go away
+> with retries. I guess I'll need help of our Q/A team here.
+
+All the failed retired jobs from this pipeline ran on the same qemu LAVA ma=
+chine.
+I've rerun the same test jobs on different qemu machines and they have boot=
+ed okay, e.g.
+https://lava.ciplatform.org/scheduler/device_type/qemu?dt_dt_dt_search=3D&d=
+t_dt_dt_length=3D100&dt_dt_length=3D100&dt_dt_search=3D6.10&dt_length=3D100=
+&dt_search=3D6.10.6#dt_
+
+So we could blame it on the qemu-cip-siemens-muc machine, however, it was q=
+uite happily booting 6.10.6-rc1 a few days ago:
+https://lava.ciplatform.org/scheduler/job/1180857
+6.10.6-rc2 was also okay:
+https://lava.ciplatform.org/scheduler/job/1181017
 
 
+So it's an intermittent issue, however I can't say it's with the kernel or =
+the qemu machine, maybe not so helpful, sorry.
 
-Am 19.08.24 um 10:04 schrieb Thomas Zimmermann:
-> Hi
->
-> Am 16.08.24 um 22:57 schrieb Alex Deucher:
->> On Mon, Aug 12, 2024 at 8:10 AM Thomas Zimmermann 
->> <tzimmermann@suse.de> wrote:
->>> Hi
->>>
->>> Am 10.08.24 um 13:44 schrieb kernel test robot:
->>>> Hi Alex,
->>>>
->>>> kernel test robot noticed the following build errors:
->>>>
->>>> [auto build test ERROR on drm-misc/drm-misc-next]
->>>> [also build test ERROR on linus/master v6.11-rc2 next-20240809]
->>>> [If your patch is applied to the wrong git tree, kindly drop us a 
->>>> note.
->>>> And when submitting patch, we suggest to use '--base' as documented in
->>>> https://git-scm.com/docs/git-format-patch#_base_tree_information]
->>>>
->>>> url: 
->>>> https://github.com/intel-lab-lkp/linux/commits/Alex-Deucher/video-aperture-match-the-pci-device-when-calling-sysfb_disable/20240810-021357
->>>> base:   git://anongit.freedesktop.org/drm/drm-misc drm-misc-next
->>>> patch link: 
->>>> https://lore.kernel.org/r/20240809150327.2485848-1-alexander.deucher%40amd.com
->>>> patch subject: [PATCH] video/aperture: match the pci device when 
->>>> calling sysfb_disable()
->>>> config: csky-randconfig-001-20240810 
->>>> (https://download.01.org/0day-ci/archive/20240810/202408101951.tXyqYOzv-lkp@intel.com/config)
->>>> compiler: csky-linux-gcc (GCC) 14.1.0
->>>> reproduce (this is a W=1 build): 
->>>> (https://download.01.org/0day-ci/archive/20240810/202408101951.tXyqYOzv-lkp@intel.com/reproduce)
->>>>
->>>> If you fix the issue in a separate patch/commit (i.e. not just a 
->>>> new version of
->>>> the same patch/commit), kindly add following tags
->>>> | Reported-by: kernel test robot <lkp@intel.com>
->>>> | Closes: 
->>>> https://lore.kernel.org/oe-kbuild-all/202408101951.tXyqYOzv-lkp@intel.com/
->>>>
->>>> All errors (new ones prefixed by >>):
->>>>
->>>>      csky-linux-ld: drivers/video/aperture.o: in function 
->>>> `aperture_remove_conflicting_pci_devices':
->>>>>> aperture.c:(.text+0x222): undefined reference to 
->>>>>> `screen_info_pci_dev'
->>> Strange. There's a already placeholder [1] for architectures without
->>> PCI. Otherwise the source file is listed at [2].
->> So I dug into this, and the problem seems to be that
->> CONFIG_SCREEN_INFO is not defined in that config.  I can't figure out
->> how this should work in that case or why this is not a problem in
->> drivers/firmware/sysfb.c.
->>
->> Something like this works:
->> diff --git a/drivers/video/aperture.c b/drivers/video/aperture.c
->> index 56a5a0bc2b1af..50e98210c9fe5 100644
->> --- a/drivers/video/aperture.c
->> +++ b/drivers/video/aperture.c
->> @@ -347,7 +347,9 @@ EXPORT_SYMBOL(__aperture_remove_legacy_vga_devices);
->>    */
->>   int aperture_remove_conflicting_pci_devices(struct pci_dev *pdev,
->> const char *name)
->>   {
->> +#if defined(CONFIG_SCREEN_INFO)
->>          struct screen_info *si = &screen_info;
->> +#endif
->>          bool primary = false;
->>          resource_size_t base, size;
->>          int bar, ret = 0;
->> @@ -355,8 +357,10 @@ int
->> aperture_remove_conflicting_pci_devices(struct pci_dev *pdev, const
->> char *na
->>          if (pdev == vga_default_device())
->>                  primary = true;
->>
->> +#if defined(CONFIG_SCREEN_INFO)
->>          if (pdev == screen_info_pci_dev(si))
->>                  sysfb_disable();
->> +#endif
->>
->>          for (bar = 0; bar < PCI_STD_NUM_BARS; ++bar) {
->>                  if (!(pci_resource_flags(pdev, bar) & IORESOURCE_MEM))
->>
->> But that can't be the right fix...  Any ideas?
->
-> Thanks for investigating. I'd say we should pass the device 
-> (pdev->dev) to sysfb_disable() and  do the test there. In sysfb.c, 
-> next to sysfb_disable(), you'll find sysfb_parent_dev(), which gives 
-> the Linux device of the screen_info.
->
-> The code then looks something like this:
->
-> sysfb_disable(struct device *dev)
-> {
->     if (dev && dev == sysfb_parent_dev(screen_info))
+Kind regards, Chris
 
-s/==/!=
 
-> return
->
->   /* else do the current code */
-> }
->
-> there's an invocation of sysfb_disable() in drivers/of/platform.c 
-> where you can pass NULL.
->
-> Best regards
-> Thomas
->
->>
->> Alex
->>
->>> [1]
->>> https://elixir.bootlin.com/linux/v6.10/source/include/linux/screen_info.h#L127 
->>>
->>> [2] 
->>> https://elixir.bootlin.com/linux/v6.10/source/drivers/video/Makefile#L11 
->>>
->>>
->>> Best regards
->>> Thomas
->>>
->>>>      csky-linux-ld: drivers/video/aperture.o: in function 
->>>> `devm_aperture_acquire_release':
->>>>>> aperture.c:(.text+0x2c0): undefined reference to `screen_info'
->>>>>> csky-linux-ld: aperture.c:(.text+0x2c4): undefined reference to 
->>>>>> `screen_info_pci_dev'
->>> -- 
->>> -- 
->>> Thomas Zimmermann
->>> Graphics Driver Developer
->>> SUSE Software Solutions Germany GmbH
->>> Frankenstrasse 146, 90461 Nuernberg, Germany
->>> GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
->>> HRB 36809 (AG Nuernberg)
->>>
->
-
--- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstrasse 146, 90461 Nuernberg, Germany
-GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
-HRB 36809 (AG Nuernberg)
-
+>=20
+> Best regards,
+> 								Pavel
+> --
+> DENX Software Engineering GmbH,        Managing Director: Erika Unter
+> HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 
