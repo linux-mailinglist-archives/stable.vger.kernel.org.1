@@ -1,218 +1,128 @@
-Return-Path: <stable+bounces-69582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69583-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24547956A9A
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 14:14:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A22A956B06
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 14:39:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4969C1C21D12
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 12:14:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 26FE22812FC
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 12:39:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D52816938C;
-	Mon, 19 Aug 2024 12:14:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4896316B748;
+	Mon, 19 Aug 2024 12:39:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="FRUog0Nw"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Tf5vBtaV"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yb1-f171.google.com (mail-yb1-f171.google.com [209.85.219.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36423166F36
-	for <stable@vger.kernel.org>; Mon, 19 Aug 2024 12:13:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01C7C16B397;
+	Mon, 19 Aug 2024 12:39:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724069640; cv=none; b=n9y1Z8Scm1sDmqdMKAZnBl1/OCXuhAX9oqm8DvbbmVYK5Kc+HP2WH/ADvtIq4csevssSfYvucBqQYK5sh107L8haslDL7yRxb5wEsQaEv6e3uLaH+7UUA5Q0zlHFKHnB+sQAZwShAgmRklGkCBpfLHb0kTKBo+8N3if3YGKhPXQ=
+	t=1724071181; cv=none; b=TvY4wJ14FzO+VA2GVLQH/KKDy6plqeW9U2KRSAsqVNSRYtqJurVoDvrMVUAdKZDGxOzh8UsUY88K3a8e/s/X1xOKIlu4aOTUec7kJOWlIOdOMqRzqkeMP0m6EA96qZYpq55oncGdhLd2W4QcdDBf+LgCRMdpkx5LJeBD+5nDlmY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724069640; c=relaxed/simple;
-	bh=6S5YFUgjO5JN00vxBShjx/4xkBM4CKTkN6F7+rR4jP0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a8L9PcQOn61DXFGo0e+M5T/hRvD6DAuf6fgMHd/fHHXIVIKp3ZCBUYwqGLKtk/nZiUp0V1P50Q3h+oUVrS3uWwFWSSUzrZvulXDBo/EfVuPedP4wArh66t3x03qYojCNTe+i+EEDMlRyPk3O1+3WfhGNK0XyM94tmoXTdFJ/NmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=FRUog0Nw; arc=none smtp.client-ip=209.85.219.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-yb1-f171.google.com with SMTP id 3f1490d57ef6-e02b79c6f21so4457113276.2
-        for <stable@vger.kernel.org>; Mon, 19 Aug 2024 05:13:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1724069638; x=1724674438; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=11bdx4W4XHO8H67veWe/5gwYa9xTmESCCU4+6AkIwGw=;
-        b=FRUog0NwaEIY+JZGV9hf5ITFYDcxfFaeCO87AQTjGqc02ifvSIkYdPr0gIGDZH3jkN
-         5cq+N2Sm3GUKIHRozxdmcbsdjdDXndeH7wxU84a0V6erEVssbCSeYUyXImXEV0Y+hNcX
-         G+JcYplitPzaaITKUZ+nQuRjiYnW89BRfmJng=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724069638; x=1724674438;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=11bdx4W4XHO8H67veWe/5gwYa9xTmESCCU4+6AkIwGw=;
-        b=QvG8gwb6ZHoCSmkSd6oB5JH/J2uYpjRuoLgHcrLW0QZPHpa1MxQ5m5/PTOhyQbiFAK
-         l642/aRuSihxoWqnR9QGuBxzPWVMz+PKtTt7EuDcXJ/h7aSIwyzcvPIAbiXebV4i1oL0
-         CuHtDAq3mIj4uIy7p08xHO26FtAZQBVOgg9qdNYYjE98jsggWz9yyKSGPWMXE2mvAq+E
-         KDxbL/zU8eTaIOI1AetodlIqRSvE2VtLb6tk3MRWzxqpaYNwdtYENXH+ecA+OCsk/87s
-         Z9fp+/Bk16/pCfAe6pbhUjm8QL/rSNtDYmBPlyfUCIac6nBNiK1bbwhKVRxizDn0T/Ae
-         BJAA==
-X-Gm-Message-State: AOJu0Yyl5qXS4PaR1UTnNt+Z65Z2enUHpxiP/U7MQoYqR57VHULkr8jg
-	sTZLE/RWQ6Yfy2TUBPmgp1WRMN6n4baQTdhXUcXLn49/AnheLDqXlDKOurJoNbZTsckkA53cwO0
-	=
-X-Google-Smtp-Source: AGHT+IGsIiRMKOMw3tgnDfZWtcz/WAiR8nCFkU8u4LyxvDW3E4gYZbqxJOQ4Y+26epkAtMbQ8i+z0w==
-X-Received: by 2002:a05:6902:158b:b0:e0d:d525:86b8 with SMTP id 3f1490d57ef6-e1180f8409amr10786451276.36.1724069637853;
-        Mon, 19 Aug 2024 05:13:57 -0700 (PDT)
-Received: from denia.c.googlers.com.com (123.178.145.34.bc.googleusercontent.com. [34.145.178.123])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6bf6fe115absm41946826d6.38.2024.08.19.05.13.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Aug 2024 05:13:57 -0700 (PDT)
-From: Ricardo Ribalda <ribalda@chromium.org>
-To: stable@vger.kernel.org
-Cc: Ricardo Ribalda <ribalda@chromium.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Subject: [PATCH 4.19.y] media: uvcvideo: Fix integer overflow calculating timestamp
-Date: Mon, 19 Aug 2024 12:13:52 +0000
-Message-ID: <20240819121352.41749-1-ribalda@chromium.org>
-X-Mailer: git-send-email 2.46.0.184.g6999bdac58-goog
-In-Reply-To: <2024072903-hamster-magical-c334@gregkh>
-References: <2024072903-hamster-magical-c334@gregkh>
+	s=arc-20240116; t=1724071181; c=relaxed/simple;
+	bh=HrTwzLj7XSeTw8tryKWAcTYmPm+9tklQ6X4mSbHuZms=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TWK9zUTwb5iw8qjZ5fOWMSqRO0dDgZ+3UxVlL2ZWJd99za+Lqot68ykZlGoeyv6/twLvaymPqFF0vN3xEQa9pLqevPYFz8A7xevFd45PFdhHhHMAAAj4FYZhZmXEL5H52p+pUWsPy7fhagyjs10MECDmJE4LoKNRkdcH3G+9ZeU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Tf5vBtaV; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1724071179; x=1755607179;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=HrTwzLj7XSeTw8tryKWAcTYmPm+9tklQ6X4mSbHuZms=;
+  b=Tf5vBtaV1ZZgixYqHt7pp3U5F8hN+jWO9p4zrsGpA31jT84848/jPbOB
+   qbB91Un2Tw33edFfBIsEuVN2wc6RA0mnNBDeDJOVE6DnAnNOKsBQ7zRVQ
+   A60Z0a0xBUuV0I+4TN5+ixDsEfnBoz9tmokwJJXMFSR7ASVtIzljJi3lt
+   ETkyh4TvRqWPm6SsgE1cC+F0qyoN/3vC20VGuumgMWkAWpppV/6OaGm0d
+   m0/QZE9YS2/O4jEtd8h01Q82jAHfIgS0NQYFoYLKN4RIzpvBL3zoe6N8E
+   YgQoLg0WQSsgBKEr2MV+qrOm3ONzU4RzI3/q8KRK3bYgRrs2Kjw0DpOQl
+   w==;
+X-CSE-ConnectionGUID: XMNdGA50RUqP5mpP6tCpxQ==
+X-CSE-MsgGUID: fSYg2WLkQVG5iSC40gvYPg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11169"; a="22473825"
+X-IronPort-AV: E=Sophos;i="6.10,159,1719903600"; 
+   d="scan'208";a="22473825"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Aug 2024 05:39:38 -0700
+X-CSE-ConnectionGUID: HEKcbfg2SjuEnCUqRPyVFw==
+X-CSE-MsgGUID: gbH/QOgkRCevGz8xw6aE/w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,159,1719903600"; 
+   d="scan'208";a="60340619"
+Received: from kuha.fi.intel.com ([10.237.72.185])
+  by fmviesa008.fm.intel.com with SMTP; 19 Aug 2024 05:39:35 -0700
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Mon, 19 Aug 2024 15:39:34 +0300
+Date: Mon, 19 Aug 2024 15:39:34 +0300
+From: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To: Luca Weiss <luca.weiss@fairphone.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Caleb Connolly <caleb.connolly@linaro.org>,
+	~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] usb: typec: fsa4480: Relax CHIP_ID check
+Message-ID: <ZsM9BkcaxV3qdWNs@kuha.fi.intel.com>
+References: <20240818-fsa4480-chipid-fix-v1-1-17c239435cf7@fairphone.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240818-fsa4480-chipid-fix-v1-1-17c239435cf7@fairphone.com>
 
-The function uvc_video_clock_update() supports a single SOF overflow. Or
-in other words, the maximum difference between the first ant the last
-timestamp can be 4096 ticks or 4.096 seconds.
+On Sun, Aug 18, 2024 at 10:21:01PM +0200, Luca Weiss wrote:
+> Some FSA4480-compatible chips like the OCP96011 used on Fairphone 5
+> return 0x00 from the CHIP_ID register. Handle that gracefully and only
+> fail probe when the I2C read has failed.
+> 
+> With this the dev_dbg will print 0 but otherwise continue working.
+> 
+>   [    0.251581] fsa4480 1-0042: Found FSA4480 v0.0 (Vendor ID = 0)
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: e885f5f1f2b4 ("usb: typec: fsa4480: Check if the chip is really there")
+> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
 
-This results in a maximum value for y2 of: 0x12FBECA00, that overflows
-32bits.
-y2 = (u32)ktime_to_ns(ktime_sub(last->host_time, first->host_time)) + y1;
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
 
-Extend the size of y2 to u64 to support all its values.
+> ---
+>  drivers/usb/typec/mux/fsa4480.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/usb/typec/mux/fsa4480.c b/drivers/usb/typec/mux/fsa4480.c
+> index cd235339834b..f71dba8bf07c 100644
+> --- a/drivers/usb/typec/mux/fsa4480.c
+> +++ b/drivers/usb/typec/mux/fsa4480.c
+> @@ -274,7 +274,7 @@ static int fsa4480_probe(struct i2c_client *client)
+>  		return dev_err_probe(dev, PTR_ERR(fsa->regmap), "failed to initialize regmap\n");
+>  
+>  	ret = regmap_read(fsa->regmap, FSA4480_DEVICE_ID, &val);
+> -	if (ret || !val)
+> +	if (ret)
+>  		return dev_err_probe(dev, -ENODEV, "FSA4480 not found\n");
+>  
+>  	dev_dbg(dev, "Found FSA4480 v%lu.%lu (Vendor ID = %lu)\n",
+> 
+> ---
+> base-commit: ccdbf91fdf5a71881ef32b41797382c4edd6f670
+> change-id: 20240818-fsa4480-chipid-fix-2c7cf5810135
+> 
+> Best regards,
+> -- 
+> Luca Weiss <luca.weiss@fairphone.com>
 
-Without this patch:
- # yavta -s 1920x1080 -f YUYV -t 1/5 -c /dev/video0
-Device /dev/v4l/by-id/usb-Shine-Optics_Integrated_Camera_0001-video-index0 opened.
-Device `Integrated Camera: Integrated C' on `usb-0000:00:14.0-6' (driver 'uvcvideo') supports video, capture, without mplanes.
-Video format set: YUYV (56595559) 1920x1080 (stride 3840) field none buffer size 4147200
-Video format: YUYV (56595559) 1920x1080 (stride 3840) field none buffer size 4147200
-Current frame rate: 1/5
-Setting frame rate to: 1/5
-Frame rate set: 1/5
-8 buffers requested.
-length: 4147200 offset: 0 timestamp type/source: mono/SoE
-Buffer 0/0 mapped at address 0x7947ea94c000.
-length: 4147200 offset: 4149248 timestamp type/source: mono/SoE
-Buffer 1/0 mapped at address 0x7947ea557000.
-length: 4147200 offset: 8298496 timestamp type/source: mono/SoE
-Buffer 2/0 mapped at address 0x7947ea162000.
-length: 4147200 offset: 12447744 timestamp type/source: mono/SoE
-Buffer 3/0 mapped at address 0x7947e9d6d000.
-length: 4147200 offset: 16596992 timestamp type/source: mono/SoE
-Buffer 4/0 mapped at address 0x7947e9978000.
-length: 4147200 offset: 20746240 timestamp type/source: mono/SoE
-Buffer 5/0 mapped at address 0x7947e9583000.
-length: 4147200 offset: 24895488 timestamp type/source: mono/SoE
-Buffer 6/0 mapped at address 0x7947e918e000.
-length: 4147200 offset: 29044736 timestamp type/source: mono/SoE
-Buffer 7/0 mapped at address 0x7947e8d99000.
-0 (0) [-] none 0 4147200 B 507.554210 508.874282 242.836 fps ts mono/SoE
-1 (1) [-] none 2 4147200 B 508.886298 509.074289 0.751 fps ts mono/SoE
-2 (2) [-] none 3 4147200 B 509.076362 509.274307 5.261 fps ts mono/SoE
-3 (3) [-] none 4 4147200 B 509.276371 509.474336 5.000 fps ts mono/SoE
-4 (4) [-] none 5 4147200 B 509.476394 509.674394 4.999 fps ts mono/SoE
-5 (5) [-] none 6 4147200 B 509.676506 509.874345 4.997 fps ts mono/SoE
-6 (6) [-] none 7 4147200 B 509.876430 510.074370 5.002 fps ts mono/SoE
-7 (7) [-] none 8 4147200 B 510.076434 510.274365 5.000 fps ts mono/SoE
-8 (0) [-] none 9 4147200 B 510.276421 510.474333 5.000 fps ts mono/SoE
-9 (1) [-] none 10 4147200 B 510.476391 510.674429 5.001 fps ts mono/SoE
-10 (2) [-] none 11 4147200 B 510.676434 510.874283 4.999 fps ts mono/SoE
-11 (3) [-] none 12 4147200 B 510.886264 511.074349 4.766 fps ts mono/SoE
-12 (4) [-] none 13 4147200 B 511.070577 511.274304 5.426 fps ts mono/SoE
-13 (5) [-] none 14 4147200 B 511.286249 511.474301 4.637 fps ts mono/SoE
-14 (6) [-] none 15 4147200 B 511.470542 511.674251 5.426 fps ts mono/SoE
-15 (7) [-] none 16 4147200 B 511.672651 511.874337 4.948 fps ts mono/SoE
-16 (0) [-] none 17 4147200 B 511.873988 512.074462 4.967 fps ts mono/SoE
-17 (1) [-] none 18 4147200 B 512.075982 512.278296 4.951 fps ts mono/SoE
-18 (2) [-] none 19 4147200 B 512.282631 512.482423 4.839 fps ts mono/SoE
-19 (3) [-] none 20 4147200 B 518.986637 512.686333 0.149 fps ts mono/SoE
-20 (4) [-] none 21 4147200 B 518.342709 512.886386 -1.553 fps ts mono/SoE
-21 (5) [-] none 22 4147200 B 517.909812 513.090360 -2.310 fps ts mono/SoE
-22 (6) [-] none 23 4147200 B 517.590775 513.294454 -3.134 fps ts mono/SoE
-23 (7) [-] none 24 4147200 B 513.298465 513.494335 -0.233 fps ts mono/SoE
-24 (0) [-] none 25 4147200 B 513.510273 513.698375 4.721 fps ts mono/SoE
-25 (1) [-] none 26 4147200 B 513.698904 513.902327 5.301 fps ts mono/SoE
-26 (2) [-] none 27 4147200 B 513.895971 514.102348 5.074 fps ts mono/SoE
-27 (3) [-] none 28 4147200 B 514.099091 514.306337 4.923 fps ts mono/SoE
-28 (4) [-] none 29 4147200 B 514.310348 514.510567 4.734 fps ts mono/SoE
-29 (5) [-] none 30 4147200 B 514.509295 514.710367 5.026 fps ts mono/SoE
-30 (6) [-] none 31 4147200 B 521.532513 514.914398 0.142 fps ts mono/SoE
-31 (7) [-] none 32 4147200 B 520.885277 515.118385 -1.545 fps ts mono/SoE
-32 (0) [-] none 33 4147200 B 520.411140 515.318336 -2.109 fps ts mono/SoE
-33 (1) [-] none 34 4147200 B 515.325425 515.522278 -0.197 fps ts mono/SoE
-34 (2) [-] none 35 4147200 B 515.538276 515.726423 4.698 fps ts mono/SoE
-35 (3) [-] none 36 4147200 B 515.720767 515.930373 5.480 fps ts mono/SoE
-
-Cc: stable@vger.kernel.org
-Fixes: 66847ef013cc ("[media] uvcvideo: Add UVC timestamps support")
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Link: https://lore.kernel.org/r/20240610-hwtimestamp-followup-v1-2-f9eaed7be7f0@chromium.org
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-(cherry picked from commit 8676a5e796fa18f55897ca36a94b2adf7f73ebd1)
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
----
- drivers/media/usb/uvc/uvc_video.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/media/usb/uvc/uvc_video.c b/drivers/media/usb/uvc/uvc_video.c
-index 3f0796141545..ac47d05fb8f5 100644
---- a/drivers/media/usb/uvc/uvc_video.c
-+++ b/drivers/media/usb/uvc/uvc_video.c
-@@ -728,11 +728,11 @@ void uvc_video_clock_update(struct uvc_streaming *stream,
- 	unsigned long flags;
- 	u64 timestamp;
- 	u32 delta_stc;
--	u32 y1, y2;
-+	u32 y1;
- 	u32 x1, x2;
- 	u32 mean;
- 	u32 sof;
--	u64 y;
-+	u64 y, y2;
- 
- 	if (!uvc_hw_timestamps_param)
- 		return;
-@@ -772,7 +772,7 @@ void uvc_video_clock_update(struct uvc_streaming *stream,
- 	sof = y;
- 
- 	uvc_trace(UVC_TRACE_CLOCK, "%s: PTS %u y %llu.%06llu SOF %u.%06llu "
--		  "(x1 %u x2 %u y1 %u y2 %u SOF offset %u)\n",
-+		  "(x1 %u x2 %u y1 %u y2 %llu SOF offset %u)\n",
- 		  stream->dev->name, buf->pts,
- 		  y >> 16, div_u64((y & 0xffff) * 1000000, 65536),
- 		  sof >> 16, div_u64(((u64)sof & 0xffff) * 1000000LLU, 65536),
-@@ -787,7 +787,7 @@ void uvc_video_clock_update(struct uvc_streaming *stream,
- 		goto done;
- 
- 	y1 = NSEC_PER_SEC;
--	y2 = (u32)ktime_to_ns(ktime_sub(last->host_time, first->host_time)) + y1;
-+	y2 = ktime_to_ns(ktime_sub(last->host_time, first->host_time)) + y1;
- 
- 	/* Interpolated and host SOF timestamps can wrap around at slightly
- 	 * different times. Handle this by adding or removing 2048 to or from
-@@ -807,7 +807,7 @@ void uvc_video_clock_update(struct uvc_streaming *stream,
- 	timestamp = ktime_to_ns(first->host_time) + y - y1;
- 
- 	uvc_trace(UVC_TRACE_CLOCK, "%s: SOF %u.%06llu y %llu ts %llu "
--		  "buf ts %llu (x1 %u/%u/%u x2 %u/%u/%u y1 %u y2 %u)\n",
-+		  "buf ts %llu (x1 %u/%u/%u x2 %u/%u/%u y1 %u y2 %llu)\n",
- 		  stream->dev->name,
- 		  sof >> 16, div_u64(((u64)sof & 0xffff) * 1000000LLU, 65536),
- 		  y, timestamp, vbuf->vb2_buf.timestamp,
 -- 
-2.46.0.184.g6999bdac58-goog
-
+heikki
 
