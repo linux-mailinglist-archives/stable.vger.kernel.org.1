@@ -1,135 +1,117 @@
-Return-Path: <stable+bounces-69499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69500-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAFBF956762
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 11:45:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C696195676F
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 11:47:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C6EE1C21A96
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 09:45:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 046D91C21A1F
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 09:47:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E80871494D8;
-	Mon, 19 Aug 2024 09:45:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 099A815696E;
+	Mon, 19 Aug 2024 09:47:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s5x+a2zC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FscYBI/q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3D7FBE65;
-	Mon, 19 Aug 2024 09:45:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEB8515B14E
+	for <stable@vger.kernel.org>; Mon, 19 Aug 2024 09:47:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724060741; cv=none; b=rtAW/QtOzbIsKuwQp6HM6Ida54pczP+uNQS9cXUmpTKpQsGyzuIEs0ZYZQaKSSR3ZehFUGlju+u5+dPVRUR4eM7+v29dWnPbBY+JL267dlFSB1g65IETKtS6JWXuWs1uOlP+1rdA1ZjOKNL+rgq6xaqdm7HmrUC5CsQXvbMKTT4=
+	t=1724060848; cv=none; b=BqggTv/LvkXY6FFvS2ReBIgFxFPVDcu7pyZIuUjZm89F33qSSCarCFyFY/3nCV3VJZc28AMCJccB5LGm8CxuJBIRBBxADLVq3XRNa9ipJxg5IzJTu/B4hx08mo4P9L3vIm5Itli0xHNarHgG8WNUUL34+3dtt7YwKlTVB0xLXNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724060741; c=relaxed/simple;
-	bh=YS/8TiJFBdjMRL1xjOBFUMV2FIcDFujd6QrtyTla/zQ=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=C6JF/6JXauruR+3z6bW/PW8G2UC8jqhmdGmjLGamup/5DObivN03sDX9cfOTk1P9CXoP4IbGKbTmQZZKibpPMxvqosjfkJSjZj3yreHfyp/HNpdmViFUjEpsKo8tItxW72k47PMvMHmwMtUpc8C/ywuoP3zq1Pf3FVXuVaSgU+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s5x+a2zC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 445D0C32782;
-	Mon, 19 Aug 2024 09:45:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724060741;
-	bh=YS/8TiJFBdjMRL1xjOBFUMV2FIcDFujd6QrtyTla/zQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=s5x+a2zC5SDQWxuHaXQyn3FmtHEXKyHUYwPe3V4QjSWF8l+tCL4hbewNwaxazMKEJ
-	 ZtZBxQYM9FlP6Ln+WDnauOfQtCxko4aq5JxuszY67j7Dd24pMGv7vr9PSfIbCYea9N
-	 7qFO/mAmMkSZ8WMl3xG3HCUDQ9OY+MxAdNYsyhxWkpGVe+YNdJidIp+YGFs7SensMl
-	 XokHXzvBjtuWtjLS8tiheK8nUePhzKMnaRgaELN7iq/+eecKSPULIh0c9K7UzgPLY+
-	 byeGC5TxAGUGjxwJcLCK5GzGsnPfvatepq2I0mK2mFORqivYgWXPUbrautnz6+z6ws
-	 G6L3wE/ACvszA==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1sfyxG-004rgz-R8;
-	Mon, 19 Aug 2024 10:45:39 +0100
-Date: Mon, 19 Aug 2024 10:45:38 +0100
-Message-ID: <864j7gzvzx.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Ma Ke <make24@iscas.ac.cn>
-Cc: tglx@linutronix.de,
-	Suravee.Suthikulpanit@amd.com,
-	akpm@linux-foundation.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] irqchip/gic-v2m: Fix refcount leak in gicv2m_of_init
-In-Reply-To: <20240819091011.1015745-1-make24@iscas.ac.cn>
-References: <20240819091011.1015745-1-make24@iscas.ac.cn>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=arc-20240116; t=1724060848; c=relaxed/simple;
+	bh=GMDgUVJ76a3I7aHjIq70ZgtMh3dPhIR6ovrMvNQPGyo=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=gnQircVGVOE6gKoOD32JCnBBTQJSyitAwySbKnG9ZR4KOfPs5x6iRsPartHDt/Z63ddf786nHtm+RsESzJ4YNdaQq2LBTjATbuNdP5jF8k+6Ga8pcIDUHJKuc8DPzthVDxJAhEkKss4MsoCpphj7hICc0ZNoD+/CBSOlPD0CMog=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FscYBI/q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09C55C32782;
+	Mon, 19 Aug 2024 09:47:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1724060848;
+	bh=GMDgUVJ76a3I7aHjIq70ZgtMh3dPhIR6ovrMvNQPGyo=;
+	h=Subject:To:Cc:From:Date:From;
+	b=FscYBI/qA9ZFfheo/TCI7be6ctR0GYKvv/8+7g4UZrG+SJgTdEsLbCpfCNXCyVQDu
+	 P2fq0VZ7fCTOEgr/+tFStXuZ89XYCrydGo7xBnD/GIOWIisL/yZTPJfH7Mkl7eZoqP
+	 5vQCH9yYtfrMS4LIZERX0b/cTTQ2hZZpNRKM6B/w=
+Subject: FAILED: patch "[PATCH] i2c: qcom-geni: Add missing geni_icc_disable in" failed to apply to 5.15-stable tree
+To: andi.shyti@kernel.org,cuigaosheng1@huawei.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 19 Aug 2024 11:47:25 +0200
+Message-ID: <2024081925-editor-flinch-ca97@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: make24@iscas.ac.cn, tglx@linutronix.de, Suravee.Suthikulpanit@amd.com, akpm@linux-foundation.org, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-On Mon, 19 Aug 2024 10:10:11 +0100,
-Ma Ke <make24@iscas.ac.cn> wrote:
-> 
-> Add the missing of_node_put() to release the refcount incremented
-> by of_find_matching_node().
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 4266ab1a8ff5 ("irqchip/gic-v2m: Refactor to prepare for ACPI support")
-> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-> ---
->  drivers/irqchip/irq-gic-v2m.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/drivers/irqchip/irq-gic-v2m.c b/drivers/irqchip/irq-gic-v2m.c
-> index 51af63c046ed..65a55ee7bb30 100644
-> --- a/drivers/irqchip/irq-gic-v2m.c
-> +++ b/drivers/irqchip/irq-gic-v2m.c
-> @@ -396,6 +396,7 @@ static int __init gicv2m_of_init(struct fwnode_handle *parent_handle,
->  		ret = of_address_to_resource(child, 0, &res);
->  		if (ret) {
->  			pr_err("Failed to allocate v2m resource.\n");
-> +			of_node_put(child);
->  			break;
->  		}
->  
 
-Although this indeed fixes a minor issue, it is probably better to
-unify all the failure conditions. Something like this (untested):
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-diff --git a/drivers/irqchip/irq-gic-v2m.c b/drivers/irqchip/irq-gic-v2m.c
-index 51af63c046ed..d5988012eb40 100644
---- a/drivers/irqchip/irq-gic-v2m.c
-+++ b/drivers/irqchip/irq-gic-v2m.c
-@@ -407,12 +407,12 @@ static int __init gicv2m_of_init(struct fwnode_handle *parent_handle,
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x 4e91fa1ef3ce6290b4c598e54b5eb6cf134fbec8
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081925-editor-flinch-ca97@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+
+Possible dependencies:
+
+4e91fa1ef3ce ("i2c: qcom-geni: Add missing geni_icc_disable in geni_i2c_runtime_resume")
+14d02fbadb5d ("i2c: qcom-geni: add desc struct to prepare support for I2C Master Hub variant")
+d8703554f4de ("i2c: qcom-geni: Add support for GPI DMA")
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 4e91fa1ef3ce6290b4c598e54b5eb6cf134fbec8 Mon Sep 17 00:00:00 2001
+From: Andi Shyti <andi.shyti@kernel.org>
+Date: Mon, 12 Aug 2024 21:40:28 +0200
+Subject: [PATCH] i2c: qcom-geni: Add missing geni_icc_disable in
+ geni_i2c_runtime_resume
+
+Add the missing geni_icc_disable() call before returning in the
+geni_i2c_runtime_resume() function.
+
+Commit 9ba48db9f77c ("i2c: qcom-geni: Add missing
+geni_icc_disable in geni_i2c_runtime_resume") by Gaosheng missed
+disabling the interconnect in one case.
+
+Fixes: bf225ed357c6 ("i2c: i2c-qcom-geni: Add interconnect support")
+Cc: Gaosheng Cui <cuigaosheng1@huawei.com>
+Cc: stable@vger.kernel.org # v5.9+
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+
+diff --git a/drivers/i2c/busses/i2c-qcom-geni.c b/drivers/i2c/busses/i2c-qcom-geni.c
+index 365e37bba0f3..06e836e3e877 100644
+--- a/drivers/i2c/busses/i2c-qcom-geni.c
++++ b/drivers/i2c/busses/i2c-qcom-geni.c
+@@ -986,8 +986,10 @@ static int __maybe_unused geni_i2c_runtime_resume(struct device *dev)
+ 		return ret;
  
- 		ret = gicv2m_init_one(&child->fwnode, spi_start, nr_spis,
- 				      &res, 0);
--		if (ret) {
--			of_node_put(child);
-+		if (ret)
- 			break;
--		}
- 	}
+ 	ret = clk_prepare_enable(gi2c->core_clk);
+-	if (ret)
++	if (ret) {
++		geni_icc_disable(&gi2c->se);
+ 		return ret;
++	}
  
-+	if (ret && child)
-+		of_put_node(child);
- 	if (!ret)
- 		ret = gicv2m_allocate_domains(parent);
- 	if (ret)
+ 	ret = geni_se_resources_on(&gi2c->se);
+ 	if (ret) {
 
-
-Thanks,
-
-	M.
-
--- 
-Without deviation from the norm, progress is not possible.
 
