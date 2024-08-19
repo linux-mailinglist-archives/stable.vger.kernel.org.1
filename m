@@ -1,161 +1,102 @@
-Return-Path: <stable+bounces-69480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69482-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 869B69566AD
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 11:18:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 340E49566D2
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 11:24:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E4492821FB
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 09:18:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 66A461C20B42
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 09:24:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CB7A15ECE3;
-	Mon, 19 Aug 2024 09:17:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="NtWpKnkS"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24C2315C14F;
+	Mon, 19 Aug 2024 09:24:28 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C43B15CD7C
-	for <stable@vger.kernel.org>; Mon, 19 Aug 2024 09:17:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AF1428373;
+	Mon, 19 Aug 2024 09:24:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724059067; cv=none; b=MW7Jwe/SRYiOruX6N2vcittPfV/gD7skMwjhv6YYEM1vi0nwCuBgfpzVFYH9gUQYP8JGnXdXOS/w6TYkhSxRcbTGAT6NlMtjt46T49GgGEqZpAeOdECkyryqvqiV3vIHYe7CqAoWpimjNTF44sxk77nQvgfyeWqd3ejBN3uIvmA=
+	t=1724059468; cv=none; b=mngg0y1khIFDG4WlOOPtKNqvQIJtg15qUU1ETgN/AW78PJshNP8L9bmLPBfFvU8XQ8zXNdlDV7ArsKGm0kkY2dDGHQUfqhMIpwU/8VMxHNe3XDOCeYi9lqqoL1SkdSkgK3RUE+fbWpT28NTQX43HQhMUMxBMLjxdjnzHnkSf0Go=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724059067; c=relaxed/simple;
-	bh=DeAh7OCINJlaVMH/2MJ/n7OJVs6+3KRocWQLIJZn7NY=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=mTdWjpjkxm/Kd8ryuuZHBdvCn9hw15Ez5yUtrzpiotB9p+Lzwpk/6DJOSoqg8gnW3DsY+vq54q8jnZPS1rAAREU430Nc7UMKYPD3lkRro0nSu2/cgUek22e9KGnMR44fTa+I3Q+5hYl+GsGdx3iSd2u8x7sV/KOAvKZ8Jo5wm9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=NtWpKnkS; arc=none smtp.client-ip=209.85.221.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-3718cd91185so2072355f8f.2
-        for <stable@vger.kernel.org>; Mon, 19 Aug 2024 02:17:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1724059063; x=1724663863; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:references:cc:to:subject:reply-to:from:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=jW5htLOExcm7TmNKkHH5JrpafKHBGU3xH9gtLbh6Kuc=;
-        b=NtWpKnkSACj4C18GLXAsrPSNTFKq0ZLWlRj/TZQNNIu9h4OQwtPPDaQ4rtQXJPnL4y
-         k379MViAidVQFcaKFjVpMrBtKBa5FZ+dpIyXsAjHdF9/k1WC9BBvInuw0Qjuw7po/Kzf
-         WwwOpSJ/EyXnF6bk+REO3mZ3IAu715v9xP7MyylQuPU7hWDs8iK4Qw3UqZvAffx6g+WT
-         kfXxNKjyS/Fz/gm6l5i+faVJOAiyDXTuzjmo+0Zfid9rhm0P0I36MasPXVe25/pKQMWP
-         NulDSI9XC6/tuDU5YAVcLSaZH9f2lVsazH7WM52G0IHAoE1V3YhW5i+VkjQSqRJRI7J4
-         xBRw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724059063; x=1724663863;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:references:cc:to:subject:reply-to:from:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=jW5htLOExcm7TmNKkHH5JrpafKHBGU3xH9gtLbh6Kuc=;
-        b=rb++aLD9cESJWfvjOW3W+v1KkvQ+jWtKnvEBVdbY60MACVOHGLxzZWeC5z4EcI1xPN
-         OoxpQZS6CPr8W4ED+kt5wB4UgZYbUb/DOy5CMFqI1E0rrEKNWqSW2WTgFeKFPKA0xDe3
-         yODf3y5vwtITWgA4Ho/s6UJnZPxymCpYwe7/35qXV8sAeh23urGvsKCx0TFfSfHskkT9
-         KNx+Al1+5PhpK458Mdrk5daRl+ajw/vqw94EqlwqsbAp3W8IQkyECfoe3JaS2C7aJ7b6
-         rrD4aaLj0esvnmG5Mbc8zctpWC+k69HzXIpegyireiM1Oab8uMBvCgtf0AsHaB5jPoV/
-         BGxA==
-X-Forwarded-Encrypted: i=1; AJvYcCU+AqyhMLlR0amZGyWfo+QYHSQXAuA+hJEA4WlpDNkQvbZmhcRQiaT5a6s+89+KUuy3wEfHHVHUL5NuM7cehMAeG75UDVrk
-X-Gm-Message-State: AOJu0Yx6uM8S/KyqURhVpJbrMlXrymoJHxgt8O/v5Y+FkyXylg+BgFRu
-	W3xJBA34Mg849TkIe7KWoeRwvLcmptQ/uxB/kH8h2ikwf1ZX5OK/FNaT7uCDmXo=
-X-Google-Smtp-Source: AGHT+IEAH3Kw9cWP0lRWspZIIbJnS+xNyPa9dFVtb1/yX70W1/SVJnGw2FZ8bD+/7UjVDQogk1CDVw==
-X-Received: by 2002:adf:ee8f:0:b0:371:869e:d24e with SMTP id ffacd0b85a97d-37194688e87mr7226712f8f.49.1724059062973;
-        Mon, 19 Aug 2024 02:17:42 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:982:cbb0:f54e:4b0a:5175:5727? ([2a01:e0a:982:cbb0:f54e:4b0a:5175:5727])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37189849a05sm9935848f8f.26.2024.08.19.02.17.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 19 Aug 2024 02:17:42 -0700 (PDT)
-Message-ID: <c6494803-fff7-4348-b797-8bde5ed57fcd@linaro.org>
-Date: Mon, 19 Aug 2024 11:17:41 +0200
+	s=arc-20240116; t=1724059468; c=relaxed/simple;
+	bh=vIACFU5pV7FY3YiEM/69pven583eTZCyLjaDVNt5Vk4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=YgxYO1bYJ/69nrjQ7vr5QQDZdfCW0UL04ujUysGVQTtqIN6jAzlgTGkzVKncAHBHqmlMkJCvV3vcEfGbid2DRGYyKQXovLPtSXGe32XI+qnObDNEXE22dMwfP7rklM+8fMy31XcUkBv9IXAeIpvJJ0evH6C5s9MJdXD79CAj6eE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
+	by APP-03 (Coremail) with SMTP id rQCowACHrwI2D8NmtVkUCA--.44254S2;
+	Mon, 19 Aug 2024 17:24:14 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: James.Bottomley@HansenPartnership.com,
+	martin.petersen@oracle.com,
+	m.muzzammilashraf@gmail.com,
+	make24@iscas.ac.cn,
+	James.Bottomley@suse.de,
+	kxie@chelsio.com,
+	michaelc@cs.wisc.edu,
+	akpm@linux-foundation.org
+Cc: linux-scsi@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH] scsi: iscsi: fix reference count leak in cxgbi_check_route()
+Date: Mon, 19 Aug 2024 17:24:05 +0800
+Message-Id: <20240819092405.1017971-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: neil.armstrong@linaro.org
-Reply-To: neil.armstrong@linaro.org
-Subject: Re: [PATCH] usb: typec: fsa4480: Relax CHIP_ID check
-To: Luca Weiss <luca.weiss@fairphone.com>,
- Heikki Krogerus <heikki.krogerus@linux.intel.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Konrad Dybcio <konrad.dybcio@linaro.org>,
- Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
- Caleb Connolly <caleb.connolly@linaro.org>
-Cc: ~postmarketos/upstreaming@lists.sr.ht, phone-devel@vger.kernel.org,
- linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-msm@vger.kernel.org, stable@vger.kernel.org
-References: <20240818-fsa4480-chipid-fix-v1-1-17c239435cf7@fairphone.com>
-Content-Language: en-US, fr
-Autocrypt: addr=neil.armstrong@linaro.org; keydata=
- xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
- GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
- BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
- qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
- 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
- AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
- OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
- Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
- YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
- GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
- UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
- GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
- yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
- QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
- SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
- 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
- Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
- oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
- M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
- 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
- KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
- 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
- QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
-Organization: Linaro
-In-Reply-To: <20240818-fsa4480-chipid-fix-v1-1-17c239435cf7@fairphone.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:rQCowACHrwI2D8NmtVkUCA--.44254S2
+X-Coremail-Antispam: 1UD129KBjvdXoWrur47tw48tFy7uFWDCw1xZrb_yoWfurg_Gw
+	48ZFW7Ar4qgrsrKw4I93Z3ZF9xZF9rZFy8uF4xtr9akw45Xr97Kr18AF1rJ345Xw4qgr15
+	Aw17Wr13CFnFgjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbS8FF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Cr0_
+	Gr1UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+	Cq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
+	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUXVWUAwAv7VC2z280aVAFwI0_Jr0_Gr
+	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IE
+	rcIFxwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x
+	0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E
+	7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcV
+	C0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF
+	04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7
+	CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUl-eOUUUUU=
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-On 18/08/2024 22:21, Luca Weiss wrote:
-> Some FSA4480-compatible chips like the OCP96011 used on Fairphone 5
-> return 0x00 from the CHIP_ID register. Handle that gracefully and only
-> fail probe when the I2C read has failed.
-> 
-> With this the dev_dbg will print 0 but otherwise continue working.
-> 
->    [    0.251581] fsa4480 1-0042: Found FSA4480 v0.0 (Vendor ID = 0)
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: e885f5f1f2b4 ("usb: typec: fsa4480: Check if the chip is really there")
-> Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-> ---
->   drivers/usb/typec/mux/fsa4480.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/usb/typec/mux/fsa4480.c b/drivers/usb/typec/mux/fsa4480.c
-> index cd235339834b..f71dba8bf07c 100644
-> --- a/drivers/usb/typec/mux/fsa4480.c
-> +++ b/drivers/usb/typec/mux/fsa4480.c
-> @@ -274,7 +274,7 @@ static int fsa4480_probe(struct i2c_client *client)
->   		return dev_err_probe(dev, PTR_ERR(fsa->regmap), "failed to initialize regmap\n");
->   
->   	ret = regmap_read(fsa->regmap, FSA4480_DEVICE_ID, &val);
-> -	if (ret || !val)
-> +	if (ret)
->   		return dev_err_probe(dev, -ENODEV, "FSA4480 not found\n");
->   
->   	dev_dbg(dev, "Found FSA4480 v%lu.%lu (Vendor ID = %lu)\n",
-> 
-> ---
-> base-commit: ccdbf91fdf5a71881ef32b41797382c4edd6f670
-> change-id: 20240818-fsa4480-chipid-fix-2c7cf5810135
-> 
-> Best regards,
+cxgbi_check_route() dont release the reference acquired by ip_dev_find()
+which introducing a reference count leak. We could remedy this by
+insuring the reference is released.ip_dev_find().
 
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Cc: stable@vger.kernel.org
+Fixes: 9ba682f01e2f ("[SCSI] libcxgbi: common library for cxgb3i and cxgb4i")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+---
+ drivers/scsi/cxgbi/libcxgbi.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/scsi/cxgbi/libcxgbi.c b/drivers/scsi/cxgbi/libcxgbi.c
+index bf75940f2be1..6b0f1e8dac40 100644
+--- a/drivers/scsi/cxgbi/libcxgbi.c
++++ b/drivers/scsi/cxgbi/libcxgbi.c
+@@ -670,6 +670,7 @@ cxgbi_check_route(struct sockaddr *dst_addr, int ifindex)
+ 		"route to %pI4 :%u, ndev p#%d,%s, cdev 0x%p.\n",
+ 		&daddr->sin_addr.s_addr, ntohs(daddr->sin_port),
+ 			   port, ndev->name, cdev);
++	dev_put(ndev);
+ 
+ 	csk = cxgbi_sock_create(cdev);
+ 	if (!csk) {
+-- 
+2.25.1
+
 
