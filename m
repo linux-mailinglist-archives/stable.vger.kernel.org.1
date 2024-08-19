@@ -1,177 +1,140 @@
-Return-Path: <stable+bounces-69538-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69540-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62BE29567AB
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 11:55:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB9409567CA
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 12:05:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8829A1C21969
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 09:55:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 678561F229F2
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 10:05:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDFEB13B592;
-	Mon, 19 Aug 2024 09:55:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 940DD15DBD8;
+	Mon, 19 Aug 2024 10:05:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nkK9USq0"
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=Usama.Anjum@collabora.com header.b="QFQNtX6z"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0226157E93
-	for <stable@vger.kernel.org>; Mon, 19 Aug 2024 09:55:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724061354; cv=none; b=IhMBfU2AM2JKdKXBzaNndJmw6oUoqZQBDb2Vz+rUW9FTPsbhNZ+b3aKreeNmRIfdbWJiXQd9Bq4ibPqzyxb9rvGdZyhIKWS+vt3CBCHHskxRQDGO8bY2TEOZcd89tnLdD1eriu6gJ9toZGdnAtAi+QvAp05l01JeJ4qBLNtb9Bs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724061354; c=relaxed/simple;
-	bh=k5M4C2met7hGOvyxiuPz6INhkUDLQ5pnEPreB6RKPdI=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=C7RXh5y/vlFxOeS68qGM0igQg9w1YeaM8o1fFcz/RR7/83gU7Lm6r1aDn1BWvNui55zUnLnOspuHL7W/v0x5QDrYNqIHk934MaD66pv6s3/yG1bPd8MRmkNkfttUbaqwv4dvIdrLUOn8X2ichOJl7LIyX0kj3Quets1UGO2JYnI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nkK9USq0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3250AC4AF0E;
-	Mon, 19 Aug 2024 09:55:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724061354;
-	bh=k5M4C2met7hGOvyxiuPz6INhkUDLQ5pnEPreB6RKPdI=;
-	h=Subject:To:Cc:From:Date:From;
-	b=nkK9USq0iBAltJyQWAZFVzLHitfk+V8Bs8dIhpdwYRrQzv/3HUSL1/UgENJj7GRm9
-	 ybcLyiXgnlOOGHH3i9nh3j9DGfwYuOOIwaRGmRoAMjdJ2KP4lHnmbLRmYuLaAJqaJj
-	 LWotuCY73oKPxfDQi7H9JMxZWiGXzSFmTRAoHE7I=
-Subject: FAILED: patch "[PATCH] btrfs: zoned: properly take lock to read/update block group's" failed to apply to 5.15-stable tree
-To: naohiro.aota@wdc.com,dsterba@suse.com,johannes.thumshirn@wdc.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 Aug 2024 11:55:51 +0200
-Message-ID: <2024081951-enrich-hesitate-0db0@gregkh>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFCC7148FE0;
+	Mon, 19 Aug 2024 10:05:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1724061937; cv=pass; b=sORd3vXR1cAmt4S7MiowD6cIKtOSAE7NzrXwyX334WTgNcZvkpMQwopSwnVasyX5zCDTjNbJWl56rxmvG6JHHRoKampnACY6U/z2AV9kK0MJsyUVvW5WanV+TDHUVbQOkasCx7+2KWhC6F8HsJL01ykb8bAsPVOLXupBikbLbkc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1724061937; c=relaxed/simple;
+	bh=Hh8QfZgSepyCVNdlw8p6+aGPEFGsy6XYRFHLeqgAijE=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=JEVE1Qh32Jt6bvOLcRYE2wd9h7sM/k8EU+iWwLyn+QIoP5yhmrjSymRJ95cgm2SkUJXjXv07SFGVYMcxBMM8Imxe84fZBq12o9pi70x/X2Fn2fp8kdVWGnt+hQHCu6z/JTz0M/U+Z1RGx/7nuSaBjkLhUk4dh97k6T9HBVBj38Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=Usama.Anjum@collabora.com header.b=QFQNtX6z; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+Delivered-To: Usama.Anjum@collabora.com
+ARC-Seal: i=1; a=rsa-sha256; t=1724061921; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=MXOhc7NLEDPDr/iPpz6LDk+OKmaWGNi608mPfY3+G8aMooSY4q1YtJlBkTErvALqkiJB36Evfe3+xm5KMlBjUUTuMEaHw+dfpepIghc9za9DvnI0Bz/4DR0dTATzX5UTsxCgz2VFiQLOJnehAK/RryheLGuF5psEDjud0LbaY3Y=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1724061921; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=clWg1cFDvmBXHk5ECX33rfzkJ2REgKM2jV0tZFYmIeQ=; 
+	b=PUlR2JI/qzO2k81FjM2m5k5QxwrKZ9omUh/3J+0lC+Mwx+1OiPktwnoi1g3JtYdyFWX9oOnQD8nsBzUJAbXP1ISIWPuDsikRTqIadvYWwWh6t5DXjEmxY7eZsymgSCKZh3NSJWTK5fBD3zLLV0hqpKLAguhZThbpmBtLJjRu0Dk=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=Usama.Anjum@collabora.com;
+	dmarc=pass header.from=<Usama.Anjum@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1724061921;
+	s=zohomail; d=collabora.com; i=Usama.Anjum@collabora.com;
+	h=Message-ID:Date:Date:MIME-Version:Cc:Cc:Subject:Subject:To:To:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=clWg1cFDvmBXHk5ECX33rfzkJ2REgKM2jV0tZFYmIeQ=;
+	b=QFQNtX6zd8MeGg+ZTXgH2wzzY9xNeJKd5YubWcapTV7m5lk9rX13WKKixaCfjLPY
+	xVrvQjc0GOdi0gTl0msRIJwR5ePxQKYjV/6x1rlG+eya7C4oUl3s2ItFgMYLiZXHrkI
+	eLBRGE4NmrGShGj6+dhZv88676r6cOD0rW38Oasw=
+Received: by mx.zohomail.com with SMTPS id 1724061920204590.2573152825611;
+	Mon, 19 Aug 2024 03:05:20 -0700 (PDT)
+Message-ID: <1b36ba43-60a4-441c-981f-9b62f366aa95@collabora.com>
+Date: Mon, 19 Aug 2024 15:05:07 +0500
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+User-Agent: Mozilla Thunderbird
+Cc: Usama.Anjum@collabora.com, Andrew Morton <akpm@linux-foundation.org>,
+ Shuah Khan <shuah@kernel.org>, Kees Cook <kees@kernel.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, kernel@collabora.com,
+ stable@vger.kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] selftests: mm: Fix build errors on armhf
+To: Jeff Xu <jeffxu@chromium.org>
+References: <20240809082511.497266-1-usama.anjum@collabora.com>
+ <CABi2SkWgPoWJY_CMxDru7FPjtQBgv61PA2VoCumd3T8Xq3fjbg@mail.gmail.com>
+Content-Language: en-US
+From: Muhammad Usama Anjum <Usama.Anjum@collabora.com>
+In-Reply-To: <CABi2SkWgPoWJY_CMxDru7FPjtQBgv61PA2VoCumd3T8Xq3fjbg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
 
+On 8/14/24 3:29 AM, Jeff Xu wrote:
+> Hi Muhammad
+> 
+> On Fri, Aug 9, 2024 at 1:25 AM Muhammad Usama Anjum
+> <usama.anjum@collabora.com> wrote:
+>>
+>> The __NR_mmap isn't found on armhf. The mmap() is commonly available
+>> system call and its wrapper is presnet on all architectures. So it
+>> should be used directly. It solves problem for armhf and doesn't create
+>> problem for architectures as well. Remove sys_mmap() functions as they
+>> aren't doing anything else other than calling mmap(). There is no need
+>> to set errno = 0 manually as glibc always resets it.
+>>
+> The mseal_test should't have dependency on libc, and mmap() is
+> implemented by glibc, right ?
+> 
+> I just fixed a bug to switch mremap() to sys_mremap to address an
+> issue that different glibc version's behavior is slightly different
+> for mremap().
+> 
+> What is the reason that __NR_mmap not available in armhf ? (maybe it
+> is another name ?)  there must be a way to call syscall directly on
+> armhf, can we use that instead ?
 
-The patch below does not apply to the 5.15-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+It seems __NR_mmap syscall is deprecated for arm. Found this comment in
+arch/arm/include/asm/unistd.h:
+/*
+ * The following syscalls are obsolete and no longer available for EABI:
+ *  __NR_time
+ *  __NR_umount
+ *  __NR_stime
+ *  __NR_alarm
+ *  __NR_utime
+ *  __NR_getrlimit
+ *  __NR_select
+ *  __NR_readdir
+ *  __NR_mmap
+ *  __NR_socketcall
+ *  __NR_syscall
+ *  __NR_ipc
+ */
 
-To reproduce the conflict and resubmit, you may use the following commands:
+The glibc mmap() calls mmap2() these days by adjusting the parameters
+internally. From man mmap:
+C library/kernel differences:
+This  page  describes the interface provided by the glibc mmap() wrapper
+function.  Originally, this function invoked a system call of the same
+name.  Since Linux 2.4, that system call has been superseded  by
+mmap2(2), and nowadays the glibc mmap() wrapper function invokes
+mmap2(2) with a suitably adjusted value for offset.
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
-git checkout FETCH_HEAD
-git cherry-pick -x e30729d4bd4001881be4d1ad4332a5d4985398f8
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081951-enrich-hesitate-0db0@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+I'm not sure if behaviour of glibc mmap() and syscall mmap2() would be
+same, but we should use glibc at most places which accounts for
+different architectures correctly. Maybe the differences were only
+present in case of mremap().
 
-Possible dependencies:
-
-e30729d4bd40 ("btrfs: zoned: properly take lock to read/update block group's zoned variables")
-8cd44dd1d17a ("btrfs: zoned: fix zone_unusable accounting on making block group read-write again")
-b9fd2affe4aa ("btrfs: zoned: fix initial free space detection")
-6a8ebc773ef6 ("btrfs: zoned: no longer count fresh BG region as zone unusable")
-fa2068d7e922 ("btrfs: zoned: count fresh BG region as zone unusable")
-3349b57fd47b ("btrfs: convert block group bit field to use bit helpers")
-9d4b0a129a0d ("btrfs: simplify arguments of btrfs_update_space_info and rename")
-6ca64ac27631 ("btrfs: zoned: fix mounting with conventional zones")
-ced8ecf026fd ("btrfs: fix space cache corruption and potential double allocations")
-b09315139136 ("btrfs: zoned: activate metadata block group on flush_space")
-6a921de58992 ("btrfs: zoned: introduce space_info->active_total_bytes")
-393f646e34c1 ("btrfs: zoned: finish least available block group on data bg allocation")
-bb9950d3df71 ("btrfs: let can_allocate_chunk return error")
-f6fca3917b4d ("btrfs: store chunk size in space-info struct")
-b8bea09a456f ("btrfs: add trace event for submitted RAID56 bio")
-c67c68eb57f1 ("btrfs: use integrated bitmaps for btrfs_raid_bio::dbitmap and finish_pbitmap")
-143823cf4d5a ("btrfs: fix typos in comments")
-b3a3b0255797 ("btrfs: zoned: drop optimization of zone finish")
-343d8a30851c ("btrfs: zoned: prevent allocation from previous data relocation BG")
-d70cbdda75da ("btrfs: zoned: consolidate zone finish functions")
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From e30729d4bd4001881be4d1ad4332a5d4985398f8 Mon Sep 17 00:00:00 2001
-From: Naohiro Aota <naohiro.aota@wdc.com>
-Date: Thu, 1 Aug 2024 16:47:52 +0900
-Subject: [PATCH] btrfs: zoned: properly take lock to read/update block group's
- zoned variables
-
-__btrfs_add_free_space_zoned() references and modifies bg's alloc_offset,
-ro, and zone_unusable, but without taking the lock. It is mostly safe
-because they monotonically increase (at least for now) and this function is
-mostly called by a transaction commit, which is serialized by itself.
-
-Still, taking the lock is a safer and correct option and I'm going to add a
-change to reset zone_unusable while a block group is still alive. So, add
-locking around the operations.
-
-Fixes: 169e0da91a21 ("btrfs: zoned: track unusable bytes for zones")
-CC: stable@vger.kernel.org # 5.15+
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-
-diff --git a/fs/btrfs/free-space-cache.c b/fs/btrfs/free-space-cache.c
-index f5996a43db24..eaa1dbd31352 100644
---- a/fs/btrfs/free-space-cache.c
-+++ b/fs/btrfs/free-space-cache.c
-@@ -2697,15 +2697,16 @@ static int __btrfs_add_free_space_zoned(struct btrfs_block_group *block_group,
- 	u64 offset = bytenr - block_group->start;
- 	u64 to_free, to_unusable;
- 	int bg_reclaim_threshold = 0;
--	bool initial = ((size == block_group->length) && (block_group->alloc_offset == 0));
-+	bool initial;
- 	u64 reclaimable_unusable;
- 
--	WARN_ON(!initial && offset + size > block_group->zone_capacity);
-+	spin_lock(&block_group->lock);
- 
-+	initial = ((size == block_group->length) && (block_group->alloc_offset == 0));
-+	WARN_ON(!initial && offset + size > block_group->zone_capacity);
- 	if (!initial)
- 		bg_reclaim_threshold = READ_ONCE(sinfo->bg_reclaim_threshold);
- 
--	spin_lock(&ctl->tree_lock);
- 	if (!used)
- 		to_free = size;
- 	else if (initial)
-@@ -2718,7 +2719,9 @@ static int __btrfs_add_free_space_zoned(struct btrfs_block_group *block_group,
- 		to_free = offset + size - block_group->alloc_offset;
- 	to_unusable = size - to_free;
- 
-+	spin_lock(&ctl->tree_lock);
- 	ctl->free_space += to_free;
-+	spin_unlock(&ctl->tree_lock);
- 	/*
- 	 * If the block group is read-only, we should account freed space into
- 	 * bytes_readonly.
-@@ -2727,11 +2730,8 @@ static int __btrfs_add_free_space_zoned(struct btrfs_block_group *block_group,
- 		block_group->zone_unusable += to_unusable;
- 		WARN_ON(block_group->zone_unusable > block_group->length);
- 	}
--	spin_unlock(&ctl->tree_lock);
- 	if (!used) {
--		spin_lock(&block_group->lock);
- 		block_group->alloc_offset -= size;
--		spin_unlock(&block_group->lock);
- 	}
- 
- 	reclaimable_unusable = block_group->zone_unusable -
-@@ -2745,6 +2745,8 @@ static int __btrfs_add_free_space_zoned(struct btrfs_block_group *block_group,
- 		btrfs_mark_bg_to_reclaim(block_group);
- 	}
- 
-+	spin_unlock(&block_group->lock);
-+
- 	return 0;
- }
- 
+-- 
+BR,
+Muhammad Usama Anjum
 
 
