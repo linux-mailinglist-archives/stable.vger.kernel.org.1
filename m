@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-69496-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69497-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CDF4956727
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 11:34:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5917F956728
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 11:34:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B0F491C21A70
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 09:34:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 706681C217D8
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 09:34:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5A7C15D5CF;
-	Mon, 19 Aug 2024 09:33:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51C2F15E5D0;
+	Mon, 19 Aug 2024 09:33:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wJUTa/0a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ct/Frev3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76D3D15C134
-	for <stable@vger.kernel.org>; Mon, 19 Aug 2024 09:33:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11CCF15D5C8
+	for <stable@vger.kernel.org>; Mon, 19 Aug 2024 09:33:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724060019; cv=none; b=KIdOjJ7JoTBP0jjb8S/rT8TWqLzQFvEvZcJepLwBG3Adq/J28m4e26Iw668hJ6JoL633pyaz3EvvvKaCpIuDzMYJLRzhtjN/FSlZpO6WmWHVVOZMCyuDpUc9P0bFtN/5BaLx2vf+CUaKH5vipF8y6W7etSvY2CmsYanO3+yLXcg=
+	t=1724060022; cv=none; b=ouzobV8y7FH8xaAKvd8anVmBdQVa0eCLSkST3G1FUr2w6MMXtHeGEnN/It2S+DL5VKVynhC8J7lMQ1QYRYKumLQ2uzb8IOK3yg59cQ44W6Z6HxXMAASVB5B4ZGpKqK4PwriPyVJWzCzXIcI0lXqb6Z5aTL/bzaBHqJ4QCl6aLSw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724060019; c=relaxed/simple;
-	bh=xwqSJ/gqo7EFlpGxb9awZ2mQRXKmJhY3micSmg6NU2M=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Ym1vd5upkrt3EfAJpypwawrDAL0izNbIv3BcznfZEd+HmddI8dhDUJM8CUOa1qtiw7Iv0SgPCBZ1pkceYq1BJ/1Z4ron8iC0Xme4ovPpNFCOhO4yWni+wCL0MEzAMbwLNC/XoQcmwNr/EbhQYh9lZsuNDLJXe9lzvS/6nRDYZ00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wJUTa/0a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82C43C4AF09;
-	Mon, 19 Aug 2024 09:33:38 +0000 (UTC)
+	s=arc-20240116; t=1724060022; c=relaxed/simple;
+	bh=popoXJabUv7Q3hQ+Hhk7Hv68rNXQm5Qat0qW7P5+wXU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=IOhOAszt8qJIC73+CAECWEcZz0F12v2AO9nw1YTaF6OqXPqGEIV4jjzK+dntWHcIuR8j36oFWRZhCENyOM0Ons+rj9CfMvductF1ua68XYZx9OKdeOMYbm9CsVDQ06Zoe1qOAh71LQCh7VYy0h7MoKGYMXEnsTPSp9swkXO3oLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ct/Frev3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CD76C32782;
+	Mon, 19 Aug 2024 09:33:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724060018;
-	bh=xwqSJ/gqo7EFlpGxb9awZ2mQRXKmJhY3micSmg6NU2M=;
+	s=korg; t=1724060021;
+	bh=popoXJabUv7Q3hQ+Hhk7Hv68rNXQm5Qat0qW7P5+wXU=;
 	h=Subject:To:Cc:From:Date:From;
-	b=wJUTa/0a0L4IGTdmWT/c9gIfEiyHGrUHAkFIvlXN1YNPqLlHhZoDllrKepSbMkDwk
-	 +4t7v0rqNbAe5BcPNPTFLPKFeYC02HVp5g+4SQCPDY39LCnQ3RyLvVsRe/Xf722JQd
-	 4f+9bV0fKFFWfLzRtN0LS4dSq9Xc18czwJ9NGtdM=
-Subject: FAILED: patch "[PATCH] dm suspend: return -ERESTARTSYS instead of -EINTR" failed to apply to 5.15-stable tree
+	b=ct/Frev3fJih8ffbBJqeFAEM6/1ndA/UKmqKqUSfjWMTuHsd3Sg+gIqgJthHaTz31
+	 aplxQlp/stDdg5wtwdhg0n7+R8Bm5qDr5H6ysmzkarYSvkkb3EcAXP4HQSZbF2dlv7
+	 NoU5vmNPZ0d6MhK4EZe66PlCohkuTX2MK5c1sQro=
+Subject: FAILED: patch "[PATCH] dm suspend: return -ERESTARTSYS instead of -EINTR" failed to apply to 5.4-stable tree
 To: mpatocka@redhat.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 Aug 2024 11:33:26 +0200
-Message-ID: <2024081925-voting-handwrite-258d@gregkh>
+Date: Mon, 19 Aug 2024 11:33:27 +0200
+Message-ID: <2024081927-lapping-sedation-f06f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,23 +53,25 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 1e1fd567d32fcf7544c6e09e0e5bc6c650da6e23
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081925-voting-handwrite-258d@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081927-lapping-sedation-f06f@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
 1e1fd567d32f ("dm suspend: return -ERESTARTSYS instead of -EINTR")
+85067747cf98 ("dm: do not use waitqueue for request-based DM")
+087615bf3acd ("dm mpath: pass IO start time to path selector")
 
 thanks,
 
