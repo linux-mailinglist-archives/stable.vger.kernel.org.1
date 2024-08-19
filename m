@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-69515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69516-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FE4E95678C
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 11:52:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F7B395678F
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 11:53:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF9F12822DC
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 09:52:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2610E1F225A8
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 09:53:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8773015B986;
-	Mon, 19 Aug 2024 09:52:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DB4C15B14E;
+	Mon, 19 Aug 2024 09:53:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F1ZZmrWM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FvkdzrWn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47B3113B592
-	for <stable@vger.kernel.org>; Mon, 19 Aug 2024 09:52:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E60E13B592
+	for <stable@vger.kernel.org>; Mon, 19 Aug 2024 09:53:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724061175; cv=none; b=STK3Q68+OXzzP1cj02x7adFvf4FhmxWVOm8uo+iiV0B6o1gNq1lU7agLLi3y3FdRsVEeXlp0EN//qPjNSp43VUxsdP2Ki5m176GDozxHuVMLS0fPpPmp83xkCoXOZLbb8fftob9+9HEl+RUlCZQ+x28G8sr8poQVk3KcikWuWqE=
+	t=1724061234; cv=none; b=A93agcGCGGIsY5FA83bEU13apxwu3RLzcKpgWVOV1AV5Gz1kicuyPUjkt478MMYs4Xvp96i62oE43spXoqy5IFI4JF2RTdYzaqYgKhjIbk2u7E/34Kypa88w2VyGKcWmTDWNZj692vN0hYUq+O7CfT79i7LNBImuZPWPW4Hrqkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724061175; c=relaxed/simple;
-	bh=qGylRa7hRVVPry+G3vEuxMRPIhjvgeWWYCrAeGr2DBI=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=mM9g8So61hp0dS5hgA+WpjNUHNhdU8TZsCcD68c+JSxrAjxOQ+2+OTHnAE6ihEEG6zNgkuqnR8T3nDN9JWC3XxsU2ydgHEUvwFPok50Jj7S9/pU69NzqAs0OB18PDL6rQlu7MXTqS9xKel6mUAmOqYe2Jv7N42phnX0W7QUkUA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F1ZZmrWM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E3D6C4AF0C;
-	Mon, 19 Aug 2024 09:52:54 +0000 (UTC)
+	s=arc-20240116; t=1724061234; c=relaxed/simple;
+	bh=VxeWDKUBU6ZY/9FawdU6Y0kk3FtCfommiLcfoN5bM2o=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=CbN2MfM60D0TjLBpiZ55A8rAXZ6CX3i8UmlnnanIYmHhGd4BhWWBzhMx89pKb//g05gxGhO/S9aZsrhMqaQ32ACRGwJi41zUsiqprmZkin530w9rG0KTUO0MzhEZM0yGoR66xTjmBJUe8F2ufYA1yRBVDsHNQDRJ4IYIh2iTKGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FvkdzrWn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4497CC32782;
+	Mon, 19 Aug 2024 09:53:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724061174;
-	bh=qGylRa7hRVVPry+G3vEuxMRPIhjvgeWWYCrAeGr2DBI=;
+	s=korg; t=1724061233;
+	bh=VxeWDKUBU6ZY/9FawdU6Y0kk3FtCfommiLcfoN5bM2o=;
 	h=Subject:To:Cc:From:Date:From;
-	b=F1ZZmrWMU+onDcgjt3l0Z4313k7bVen+iJ0n+9rTvicFBCANXu1NHOZCNSvASMkKC
-	 2btjAdj8vkkfEZe3qS797O6YqX0V1fMfoRZBysW7eDDY3GuLIj4muH+dnJinEgQMzU
-	 rexOH+0pWTZZZXduHGFyodZ09aRn8mSztAicz26Y=
-Subject: FAILED: patch "[PATCH] selftests: memfd_secret: don't build memfd_secret test on" failed to apply to 5.15-stable tree
-To: usama.anjum@collabora.com,James.Bottomley@HansenPartnership.com,akpm@linux-foundation.org,aou@eecs.berkeley.edu,palmer@dabbelt.com,paul.walmsley@sifive.com,rppt@kernel.org,skhan@linuxfoundation.org,stable@vger.kernel.org
+	b=FvkdzrWn7TNg3+JKzUbSMvMFyGG9Srh0KZJhhCYowDn7x8Ve0T/e8SuyHUToB4Jku
+	 Z6WESbIq9XY3ADptTsF3W9I2FMi30cPhwcEurkBHgb/PIQzgGv1vY33KoUpdZDK+KU
+	 wLDamcAtvsc+eEpfT4mIiahspsrAu+ApHVkNXP1k=
+Subject: FAILED: patch "[PATCH] mm/numa: no task_numa_fault() call if PMD is changed" failed to apply to 6.10-stable tree
+To: ziy@nvidia.com,akpm@linux-foundation.org,baolin.wang@linux.alibaba.com,david@redhat.com,mgorman@suse.de,shy828301@gmail.com,stable@vger.kernel.org,wangkefeng.wang@huawei.com,ying.huang@intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 Aug 2024 11:52:42 +0200
-Message-ID: <2024081942-rippling-relieving-c8d1@gregkh>
+Date: Mon, 19 Aug 2024 11:53:50 +0200
+Message-ID: <2024081950-jolliness-crux-7fe1@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,31 +53,23 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x 7c5e8d212d7d81991a580e7de3904ea213d9a852
+git cherry-pick -x fd8c35a92910f4829b7c99841f39b1b952c259d5
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081942-rippling-relieving-c8d1@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081950-jolliness-crux-7fe1@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
 
 Possible dependencies:
 
-7c5e8d212d7d ("selftests: memfd_secret: don't build memfd_secret test on unsupported arches")
-a3c5cc5129ef ("selftests/mm: log run_vmtests.sh results in TAP format")
-2ffc27b15b11 ("tools/testing/selftests/mm/run_vmtests.sh: lower the ptrace permissions")
-05f1edac8009 ("selftests/mm: run all tests from run_vmtests.sh")
-000303329752 ("selftests/mm: make migration test robust to failure")
-f6dd4e223d87 ("selftests/mm: skip soft-dirty tests on arm64")
-ba91e7e5d15a ("selftests/mm: add tests for HWPOISON hugetlbfs read")
-2bc481362245 ("selftests/mm: add -a to run_vmtests.sh")
-63773d2b593d ("Merge mm-hotfixes-stable into mm-stable to pick up depended-upon changes.")
+fd8c35a92910 ("mm/numa: no task_numa_fault() call if PMD is changed")
 
 thanks,
 
@@ -85,74 +77,92 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 7c5e8d212d7d81991a580e7de3904ea213d9a852 Mon Sep 17 00:00:00 2001
-From: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Date: Fri, 9 Aug 2024 12:56:42 +0500
-Subject: [PATCH] selftests: memfd_secret: don't build memfd_secret test on
- unsupported arches
+From fd8c35a92910f4829b7c99841f39b1b952c259d5 Mon Sep 17 00:00:00 2001
+From: Zi Yan <ziy@nvidia.com>
+Date: Fri, 9 Aug 2024 10:59:05 -0400
+Subject: [PATCH] mm/numa: no task_numa_fault() call if PMD is changed
 
-[1] mentions that memfd_secret is only supported on arm64, riscv, x86 and
-x86_64 for now.  It doesn't support other architectures.  I found the
-build error on arm and decided to send the fix as it was creating noise on
-KernelCI:
+When handling a numa page fault, task_numa_fault() should be called by a
+process that restores the page table of the faulted folio to avoid
+duplicated stats counting.  Commit c5b5a3dd2c1f ("mm: thp: refactor NUMA
+fault handling") restructured do_huge_pmd_numa_page() and did not avoid
+task_numa_fault() call in the second page table check after a numa
+migration failure.  Fix it by making all !pmd_same() return immediately.
 
-memfd_secret.c: In function 'memfd_secret':
-memfd_secret.c:42:24: error: '__NR_memfd_secret' undeclared (first use in this function);
-did you mean 'memfd_secret'?
-   42 |         return syscall(__NR_memfd_secret, flags);
-      |                        ^~~~~~~~~~~~~~~~~
-      |                        memfd_secret
+This issue can cause task_numa_fault() being called more than necessary
+and lead to unexpected numa balancing results (It is hard to tell whether
+the issue will cause positive or negative performance impact due to
+duplicated numa fault counting).
 
-Hence I'm adding condition that memfd_secret should only be compiled on
-supported architectures.
-
-Also check in run_vmtests script if memfd_secret binary is present before
-executing it.
-
-Link: https://lkml.kernel.org/r/20240812061522.1933054-1-usama.anjum@collabora.com
-Link: https://lore.kernel.org/all/20210518072034.31572-7-rppt@kernel.org/ [1]
-Link: https://lkml.kernel.org/r/20240809075642.403247-1-usama.anjum@collabora.com
-Fixes: 76fe17ef588a ("secretmem: test: add basic selftest for memfd_secret(2)")
-Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Cc: Albert Ou <aou@eecs.berkeley.edu>
-Cc: James Bottomley <James.Bottomley@HansenPartnership.com>
-Cc: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>
+Link: https://lkml.kernel.org/r/20240809145906.1513458-3-ziy@nvidia.com
+Fixes: c5b5a3dd2c1f ("mm: thp: refactor NUMA fault handling")
+Reported-by: "Huang, Ying" <ying.huang@intel.com>
+Closes: https://lore.kernel.org/linux-mm/87zfqfw0yw.fsf@yhuang6-desk2.ccr.corp.intel.com/
+Signed-off-by: Zi Yan <ziy@nvidia.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: "Huang, Ying" <ying.huang@intel.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Mel Gorman <mgorman@suse.de>
+Cc: Yang Shi <shy828301@gmail.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 
-diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
-index 7b8a5def54a1..cfad627e8d94 100644
---- a/tools/testing/selftests/mm/Makefile
-+++ b/tools/testing/selftests/mm/Makefile
-@@ -53,7 +53,9 @@ TEST_GEN_FILES += madv_populate
- TEST_GEN_FILES += map_fixed_noreplace
- TEST_GEN_FILES += map_hugetlb
- TEST_GEN_FILES += map_populate
-+ifneq (,$(filter $(ARCH),arm64 riscv riscv64 x86 x86_64))
- TEST_GEN_FILES += memfd_secret
-+endif
- TEST_GEN_FILES += migration
- TEST_GEN_FILES += mkdirty
- TEST_GEN_FILES += mlock-random-test
-diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
-index 03ac4f2e1cce..36045edb10de 100755
---- a/tools/testing/selftests/mm/run_vmtests.sh
-+++ b/tools/testing/selftests/mm/run_vmtests.sh
-@@ -374,8 +374,11 @@ CATEGORY="hmm" run_test bash ./test_hmm.sh smoke
- # MADV_POPULATE_READ and MADV_POPULATE_WRITE tests
- CATEGORY="madv_populate" run_test ./madv_populate
+diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+index f4be468e06a4..67c86a5d64a6 100644
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -1685,7 +1685,7 @@ vm_fault_t do_huge_pmd_numa_page(struct vm_fault *vmf)
+ 	vmf->ptl = pmd_lock(vma->vm_mm, vmf->pmd);
+ 	if (unlikely(!pmd_same(oldpmd, *vmf->pmd))) {
+ 		spin_unlock(vmf->ptl);
+-		goto out;
++		return 0;
+ 	}
  
-+if [ -x ./memfd_secret ]
-+then
- (echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope 2>&1) | tap_prefix
- CATEGORY="memfd_secret" run_test ./memfd_secret
-+fi
+ 	pmd = pmd_modify(oldpmd, vma->vm_page_prot);
+@@ -1728,22 +1728,16 @@ vm_fault_t do_huge_pmd_numa_page(struct vm_fault *vmf)
+ 	if (!migrate_misplaced_folio(folio, vma, target_nid)) {
+ 		flags |= TNF_MIGRATED;
+ 		nid = target_nid;
+-	} else {
+-		flags |= TNF_MIGRATE_FAIL;
+-		vmf->ptl = pmd_lock(vma->vm_mm, vmf->pmd);
+-		if (unlikely(!pmd_same(oldpmd, *vmf->pmd))) {
+-			spin_unlock(vmf->ptl);
+-			goto out;
+-		}
+-		goto out_map;
++		task_numa_fault(last_cpupid, nid, HPAGE_PMD_NR, flags);
++		return 0;
+ 	}
  
- # KSM KSM_MERGE_TIME_HUGE_PAGES test with size of 100
- CATEGORY="ksm" run_test ./ksm_tests -H -s 100
+-out:
+-	if (nid != NUMA_NO_NODE)
+-		task_numa_fault(last_cpupid, nid, HPAGE_PMD_NR, flags);
+-
+-	return 0;
+-
++	flags |= TNF_MIGRATE_FAIL;
++	vmf->ptl = pmd_lock(vma->vm_mm, vmf->pmd);
++	if (unlikely(!pmd_same(oldpmd, *vmf->pmd))) {
++		spin_unlock(vmf->ptl);
++		return 0;
++	}
+ out_map:
+ 	/* Restore the PMD */
+ 	pmd = pmd_modify(oldpmd, vma->vm_page_prot);
+@@ -1753,7 +1747,10 @@ vm_fault_t do_huge_pmd_numa_page(struct vm_fault *vmf)
+ 	set_pmd_at(vma->vm_mm, haddr, vmf->pmd, pmd);
+ 	update_mmu_cache_pmd(vma, vmf->address, vmf->pmd);
+ 	spin_unlock(vmf->ptl);
+-	goto out;
++
++	if (nid != NUMA_NO_NODE)
++		task_numa_fault(last_cpupid, nid, HPAGE_PMD_NR, flags);
++	return 0;
+ }
+ 
+ /*
 
 
