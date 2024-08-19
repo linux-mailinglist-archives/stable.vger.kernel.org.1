@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-69501-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69502-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27100956770
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 11:47:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CB33956772
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 11:49:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D77B22832E7
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 09:47:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B53C1C2158D
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 09:49:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E176415D5B8;
-	Mon, 19 Aug 2024 09:47:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F3BC15696E;
+	Mon, 19 Aug 2024 09:49:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y6G8J7Nq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z3UPq4wS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FFB615B14D
-	for <stable@vger.kernel.org>; Mon, 19 Aug 2024 09:47:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C265013B592
+	for <stable@vger.kernel.org>; Mon, 19 Aug 2024 09:49:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724060857; cv=none; b=j0ml5hMbp9C2C/5cczS2+N+hvLhITH3+bpLNGI2DOHapSHCKsPRbQZu4TZyoAhyLESihQ1u+QPfMvbfL4lsppiEtMiTr5Xqckeffd7Yt1sYFORARHWgGxYfbOgg6qpC6uz3xfeNAIf+rc5NlNeqvBVlVziGQ1hLDllXa5xRBusk=
+	t=1724060956; cv=none; b=ONsGseqmlcmzBWD39qd3wFmhJyt2IJ7d0wxae2/hUDNEsbVCAAa8qD+KOpWUzNIF1/OxClzaxeWcGu8hcpvBieHt8IGsNpuhfbeZlDkzhDHo9evINvo9yAYP781V6vWyqelsEIvMpT3Gd5Sg8pfa/WC31XiF0CaSJ3qpXnx9CQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724060857; c=relaxed/simple;
-	bh=h31ecI91nVfliFk0/vaevO6nliImoBPXP1o5/EZb5Ps=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=PmTfsX9Vp9s/+4sVt3hxHk5HPoRRZl26g3tLVtaQNH/Wwz1OF0IBWTObo/nHg6kY1Vm4N9FsRp1QtxfYj0Qoo4yfr55cTyR0MNZRjo6AaHXuw+aqru0nq0vglv7E6C1SO4mVpTcUr43ODE8g2wszTONi6r3jKWy6Zsv37/680Sg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y6G8J7Nq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C51ABC32782;
-	Mon, 19 Aug 2024 09:47:36 +0000 (UTC)
+	s=arc-20240116; t=1724060956; c=relaxed/simple;
+	bh=438/xGI7Xb9HUPqGOqZdWbrJinAn1kkfPMjgPliCgko=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=aHULSmfGF8RPn9Vy2prxPMZeqkKkwf87GW/mQThBpPc1Rplt3wkKVR55+/k3oNYB0KzEgrq3PW7x2PHhpcfmqc5DrVRVPrQCHXhs03mUlF4WGFPCEOKFqrr5edxHRAsC39O+ajvXgPvGQF1xPJbGqM99xJE7hynybCOgBxsmzW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z3UPq4wS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC6D0C4AF09;
+	Mon, 19 Aug 2024 09:49:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724060857;
-	bh=h31ecI91nVfliFk0/vaevO6nliImoBPXP1o5/EZb5Ps=;
+	s=korg; t=1724060956;
+	bh=438/xGI7Xb9HUPqGOqZdWbrJinAn1kkfPMjgPliCgko=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Y6G8J7Nq3sKNi/7/SGH6WVXSAzuNJKp4444fPUgKZbknXwYq0rYyl0ezmV4kbsLYH
-	 ywgwrwMLqxImAofUptQVjfkthAUmxpepDk9iBtPL5hI+PuQjUP8LO1uBZ3JhNK/mLA
-	 kPr///gy9t7I+Gg1GcFRT/4cv+pRMgyEdJUTnsJE=
-Subject: FAILED: patch "[PATCH] i2c: qcom-geni: Add missing geni_icc_disable in" failed to apply to 5.10-stable tree
-To: andi.shyti@kernel.org,cuigaosheng1@huawei.com
+	b=z3UPq4wSQtN2h4YDHN6973J5Xq4OqDmd/KrIViUphP89spyAdo6ELB01D3mz9iDx/
+	 RF5bx6ru5l0M+ejyapUkbuzjbj1RH9fLCEn7TMyt1P4BEbXa9co71tnHOv4WEN+5BZ
+	 ZTHQKGKahz4F/pARAVkOntSD4syJtTMoYMniPukI=
+Subject: FAILED: patch "[PATCH] mm: fix endless reclaim on machines with unaccepted memory" failed to apply to 6.6-stable tree
+To: kirill.shutemov@linux.intel.com,akpm@linux-foundation.org,bp@alien8.de,david@redhat.com,hannes@cmpxchg.org,jxgao@google.com,mgorman@suse.de,rppt@kernel.org,stable@vger.kernel.org,thomas.lendacky@amd.com,vbabka@suse.cz,willy@infradead.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 Aug 2024 11:47:26 +0200
-Message-ID: <2024081926-thrower-salaried-4605@gregkh>
+Date: Mon, 19 Aug 2024 11:49:13 +0200
+Message-ID: <2024081913-outbid-skincare-1e41@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,27 +53,31 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 4e91fa1ef3ce6290b4c598e54b5eb6cf134fbec8
+git cherry-pick -x 807174a93d24c456503692dc3f5af322ee0b640a
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081926-thrower-salaried-4605@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081913-outbid-skincare-1e41@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
-4e91fa1ef3ce ("i2c: qcom-geni: Add missing geni_icc_disable in geni_i2c_runtime_resume")
-14d02fbadb5d ("i2c: qcom-geni: add desc struct to prepare support for I2C Master Hub variant")
-d8703554f4de ("i2c: qcom-geni: Add support for GPI DMA")
-357ee8841d0b ("i2c: qcom-geni: Store DMA mapping data in geni_i2c_dev struct")
-9cb4c67d7717 ("Revert "i2c: i2c-qcom-geni: Fix DMA transfer race"")
+807174a93d24 ("mm: fix endless reclaim on machines with unaccepted memory")
+57c0419c5f0e ("mm, pcp: decrease PCP high if free pages < high watermark")
+51a755c56dc0 ("mm: tune PCP high automatically")
+90b41691b988 ("mm: add framework for PCP high auto-tuning")
+c0a242394cb9 ("mm, page_alloc: scale the number of pages that are batch allocated")
+52166607ecc9 ("mm: restrict the pcp batch scale factor to avoid too long latency")
+362d37a106dd ("mm, pcp: reduce lock contention for draining high-order pages")
+94a3bfe4073c ("cacheinfo: calculate size of per-CPU data cache slice")
+ca71fe1ad922 ("mm, pcp: avoid to drain PCP when process exit")
 
 thanks,
 
@@ -81,39 +85,156 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 4e91fa1ef3ce6290b4c598e54b5eb6cf134fbec8 Mon Sep 17 00:00:00 2001
-From: Andi Shyti <andi.shyti@kernel.org>
-Date: Mon, 12 Aug 2024 21:40:28 +0200
-Subject: [PATCH] i2c: qcom-geni: Add missing geni_icc_disable in
- geni_i2c_runtime_resume
+From 807174a93d24c456503692dc3f5af322ee0b640a Mon Sep 17 00:00:00 2001
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Date: Fri, 9 Aug 2024 14:48:47 +0300
+Subject: [PATCH] mm: fix endless reclaim on machines with unaccepted memory
 
-Add the missing geni_icc_disable() call before returning in the
-geni_i2c_runtime_resume() function.
+Unaccepted memory is considered unusable free memory, which is not counted
+as free on the zone watermark check.  This causes get_page_from_freelist()
+to accept more memory to hit the high watermark, but it creates problems
+in the reclaim path.
 
-Commit 9ba48db9f77c ("i2c: qcom-geni: Add missing
-geni_icc_disable in geni_i2c_runtime_resume") by Gaosheng missed
-disabling the interconnect in one case.
+The reclaim path encounters a failed zone watermark check and attempts to
+reclaim memory.  This is usually successful, but if there is little or no
+reclaimable memory, it can result in endless reclaim with little to no
+progress.  This can occur early in the boot process, just after start of
+the init process when the only reclaimable memory is the page cache of the
+init executable and its libraries.
 
-Fixes: bf225ed357c6 ("i2c: i2c-qcom-geni: Add interconnect support")
-Cc: Gaosheng Cui <cuigaosheng1@huawei.com>
-Cc: stable@vger.kernel.org # v5.9+
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Make unaccepted memory free from watermark check point of view.  This way
+unaccepted memory will never be the trigger of memory reclaim.  Accept
+more memory in the get_page_from_freelist() if needed.
 
-diff --git a/drivers/i2c/busses/i2c-qcom-geni.c b/drivers/i2c/busses/i2c-qcom-geni.c
-index 365e37bba0f3..06e836e3e877 100644
---- a/drivers/i2c/busses/i2c-qcom-geni.c
-+++ b/drivers/i2c/busses/i2c-qcom-geni.c
-@@ -986,8 +986,10 @@ static int __maybe_unused geni_i2c_runtime_resume(struct device *dev)
- 		return ret;
+Link: https://lkml.kernel.org/r/20240809114854.3745464-2-kirill.shutemov@linux.intel.com
+Fixes: dcdfdd40fa82 ("mm: Add support for unaccepted memory")
+Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Reported-by: Jianxiong Gao <jxgao@google.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Tested-by: Jianxiong Gao <jxgao@google.com>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Mel Gorman <mgorman@suse.de>
+Cc: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Cc: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: <stable@vger.kernel.org>	[6.5+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+
+diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+index 875d76e8684a..8747087acee3 100644
+--- a/mm/page_alloc.c
++++ b/mm/page_alloc.c
+@@ -287,7 +287,7 @@ EXPORT_SYMBOL(nr_online_nodes);
  
- 	ret = clk_prepare_enable(gi2c->core_clk);
--	if (ret)
-+	if (ret) {
-+		geni_icc_disable(&gi2c->se);
- 		return ret;
+ static bool page_contains_unaccepted(struct page *page, unsigned int order);
+ static void accept_page(struct page *page, unsigned int order);
+-static bool try_to_accept_memory(struct zone *zone, unsigned int order);
++static bool cond_accept_memory(struct zone *zone, unsigned int order);
+ static inline bool has_unaccepted_memory(void);
+ static bool __free_unaccepted(struct page *page);
+ 
+@@ -3072,9 +3072,6 @@ static inline long __zone_watermark_unusable_free(struct zone *z,
+ 	if (!(alloc_flags & ALLOC_CMA))
+ 		unusable_free += zone_page_state(z, NR_FREE_CMA_PAGES);
+ #endif
+-#ifdef CONFIG_UNACCEPTED_MEMORY
+-	unusable_free += zone_page_state(z, NR_UNACCEPTED);
+-#endif
+ 
+ 	return unusable_free;
+ }
+@@ -3368,6 +3365,8 @@ get_page_from_freelist(gfp_t gfp_mask, unsigned int order, int alloc_flags,
+ 			}
+ 		}
+ 
++		cond_accept_memory(zone, order);
++
+ 		/*
+ 		 * Detect whether the number of free pages is below high
+ 		 * watermark.  If so, we will decrease pcp->high and free
+@@ -3393,10 +3392,8 @@ get_page_from_freelist(gfp_t gfp_mask, unsigned int order, int alloc_flags,
+ 				       gfp_mask)) {
+ 			int ret;
+ 
+-			if (has_unaccepted_memory()) {
+-				if (try_to_accept_memory(zone, order))
+-					goto try_this_zone;
+-			}
++			if (cond_accept_memory(zone, order))
++				goto try_this_zone;
+ 
+ #ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT
+ 			/*
+@@ -3450,10 +3447,8 @@ get_page_from_freelist(gfp_t gfp_mask, unsigned int order, int alloc_flags,
+ 
+ 			return page;
+ 		} else {
+-			if (has_unaccepted_memory()) {
+-				if (try_to_accept_memory(zone, order))
+-					goto try_this_zone;
+-			}
++			if (cond_accept_memory(zone, order))
++				goto try_this_zone;
+ 
+ #ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT
+ 			/* Try again if zone has deferred pages */
+@@ -6950,9 +6945,6 @@ static bool try_to_accept_memory_one(struct zone *zone)
+ 	struct page *page;
+ 	bool last;
+ 
+-	if (list_empty(&zone->unaccepted_pages))
+-		return false;
+-
+ 	spin_lock_irqsave(&zone->lock, flags);
+ 	page = list_first_entry_or_null(&zone->unaccepted_pages,
+ 					struct page, lru);
+@@ -6978,23 +6970,29 @@ static bool try_to_accept_memory_one(struct zone *zone)
+ 	return true;
+ }
+ 
+-static bool try_to_accept_memory(struct zone *zone, unsigned int order)
++static bool cond_accept_memory(struct zone *zone, unsigned int order)
+ {
+ 	long to_accept;
+-	int ret = false;
++	bool ret = false;
++
++	if (!has_unaccepted_memory())
++		return false;
++
++	if (list_empty(&zone->unaccepted_pages))
++		return false;
+ 
+ 	/* How much to accept to get to high watermark? */
+ 	to_accept = high_wmark_pages(zone) -
+ 		    (zone_page_state(zone, NR_FREE_PAGES) -
+-		    __zone_watermark_unusable_free(zone, order, 0));
++		    __zone_watermark_unusable_free(zone, order, 0) -
++		    zone_page_state(zone, NR_UNACCEPTED));
+ 
+-	/* Accept at least one page */
+-	do {
++	while (to_accept > 0) {
+ 		if (!try_to_accept_memory_one(zone))
+ 			break;
+ 		ret = true;
+ 		to_accept -= MAX_ORDER_NR_PAGES;
+-	} while (to_accept > 0);
 +	}
  
- 	ret = geni_se_resources_on(&gi2c->se);
- 	if (ret) {
+ 	return ret;
+ }
+@@ -7037,7 +7035,7 @@ static void accept_page(struct page *page, unsigned int order)
+ {
+ }
+ 
+-static bool try_to_accept_memory(struct zone *zone, unsigned int order)
++static bool cond_accept_memory(struct zone *zone, unsigned int order)
+ {
+ 	return false;
+ }
 
 
