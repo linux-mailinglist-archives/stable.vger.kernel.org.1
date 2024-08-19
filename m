@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-69502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69503-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CB33956772
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 11:49:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0431956774
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 11:50:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B53C1C2158D
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 09:49:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95DF6282053
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 09:50:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F3BC15696E;
-	Mon, 19 Aug 2024 09:49:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6202B15B14D;
+	Mon, 19 Aug 2024 09:50:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z3UPq4wS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ItZK4ZMU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C265013B592
-	for <stable@vger.kernel.org>; Mon, 19 Aug 2024 09:49:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22D5413C81B
+	for <stable@vger.kernel.org>; Mon, 19 Aug 2024 09:50:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724060956; cv=none; b=ONsGseqmlcmzBWD39qd3wFmhJyt2IJ7d0wxae2/hUDNEsbVCAAa8qD+KOpWUzNIF1/OxClzaxeWcGu8hcpvBieHt8IGsNpuhfbeZlDkzhDHo9evINvo9yAYP781V6vWyqelsEIvMpT3Gd5Sg8pfa/WC31XiF0CaSJ3qpXnx9CQU=
+	t=1724061024; cv=none; b=lVgy+b34npEc032dsWw3sRQeLnbu3QdwJ3KosZ4bkWSwamLRffC1lH5aPogl1qizQBePNfl9HXXPCgtIBiaceSCzpH/841Z70+PGUw1DWeYs24rs5sASSVq19D5LUfTzJTdCD4SfsLQAXvZnL6ob+EAeJnUJfcyW/pcZfLpWxvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724060956; c=relaxed/simple;
-	bh=438/xGI7Xb9HUPqGOqZdWbrJinAn1kkfPMjgPliCgko=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=aHULSmfGF8RPn9Vy2prxPMZeqkKkwf87GW/mQThBpPc1Rplt3wkKVR55+/k3oNYB0KzEgrq3PW7x2PHhpcfmqc5DrVRVPrQCHXhs03mUlF4WGFPCEOKFqrr5edxHRAsC39O+ajvXgPvGQF1xPJbGqM99xJE7hynybCOgBxsmzW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z3UPq4wS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC6D0C4AF09;
-	Mon, 19 Aug 2024 09:49:15 +0000 (UTC)
+	s=arc-20240116; t=1724061024; c=relaxed/simple;
+	bh=nk7Rk5Cc+3yFckFD09/GGhwxxexkhGUToZ5RNtF8REY=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=mV+3HrYh5s84Rc4pR0kZW+SYhfY5pvDk3TlFQ2tD0rGAk246yno1bVXc24ayYRs/XmJ/DIDIG3MB5HN92XJST68IeNFf0aUZMXtLpKNEuBvdie5gezTP7OjdKQWMaYDSVbD6uORs929kYxWJFLGVjICRgQWjx+uXqv06owq0cV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ItZK4ZMU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C928C4AF0C;
+	Mon, 19 Aug 2024 09:50:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724060956;
-	bh=438/xGI7Xb9HUPqGOqZdWbrJinAn1kkfPMjgPliCgko=;
+	s=korg; t=1724061023;
+	bh=nk7Rk5Cc+3yFckFD09/GGhwxxexkhGUToZ5RNtF8REY=;
 	h=Subject:To:Cc:From:Date:From;
-	b=z3UPq4wSQtN2h4YDHN6973J5Xq4OqDmd/KrIViUphP89spyAdo6ELB01D3mz9iDx/
-	 RF5bx6ru5l0M+ejyapUkbuzjbj1RH9fLCEn7TMyt1P4BEbXa9co71tnHOv4WEN+5BZ
-	 ZTHQKGKahz4F/pARAVkOntSD4syJtTMoYMniPukI=
-Subject: FAILED: patch "[PATCH] mm: fix endless reclaim on machines with unaccepted memory" failed to apply to 6.6-stable tree
-To: kirill.shutemov@linux.intel.com,akpm@linux-foundation.org,bp@alien8.de,david@redhat.com,hannes@cmpxchg.org,jxgao@google.com,mgorman@suse.de,rppt@kernel.org,stable@vger.kernel.org,thomas.lendacky@amd.com,vbabka@suse.cz,willy@infradead.org
+	b=ItZK4ZMUiQ4bv2NEQefclTskYtsajBQjJBCzEtIkfIQ2VODX1FDlj9zMC2q1+j7Ez
+	 62m7+nugPaBXtMSvVjqow0POhOT/vMNb0f3rIF0RsGcusy+GOl2VNzQjBgzEkNhsNB
+	 LN3DoIiKW33ohBDcDGjPgNxTrzy0NDpwpuwuAjZY=
+Subject: FAILED: patch "[PATCH] wifi: ath12k: use 128 bytes aligned iova in transmit path for" failed to apply to 6.10-stable tree
+To: quic_bqiang@quicinc.com,mpearson-lenovo@squebb.ca,quic_kvalo@quicinc.com,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 Aug 2024 11:49:13 +0200
-Message-ID: <2024081913-outbid-skincare-1e41@gregkh>
+Date: Mon, 19 Aug 2024 11:50:21 +0200
+Message-ID: <2024081920-gating-yummy-71e0@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,31 +53,27 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x 807174a93d24c456503692dc3f5af322ee0b640a
+git cherry-pick -x 38055789d15155109b41602ad719d770af507030
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081913-outbid-skincare-1e41@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081920-gating-yummy-71e0@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
 
 Possible dependencies:
 
-807174a93d24 ("mm: fix endless reclaim on machines with unaccepted memory")
-57c0419c5f0e ("mm, pcp: decrease PCP high if free pages < high watermark")
-51a755c56dc0 ("mm: tune PCP high automatically")
-90b41691b988 ("mm: add framework for PCP high auto-tuning")
-c0a242394cb9 ("mm, page_alloc: scale the number of pages that are batch allocated")
-52166607ecc9 ("mm: restrict the pcp batch scale factor to avoid too long latency")
-362d37a106dd ("mm, pcp: reduce lock contention for draining high-order pages")
-94a3bfe4073c ("cacheinfo: calculate size of per-CPU data cache slice")
-ca71fe1ad922 ("mm, pcp: avoid to drain PCP when process exit")
+38055789d151 ("wifi: ath12k: use 128 bytes aligned iova in transmit path for WCN7850")
+26dd8ccdba4d ("wifi: ath12k: dynamic VLAN support")
+97b7cbb7a3cb ("wifi: ath12k: support SMPS configuration for 6 GHz")
+f0e61dc7ecf9 ("wifi: ath12k: refactor SMPS configuration")
+112dbc6af807 ("wifi: ath12k: add 6 GHz params in peer assoc command")
 
 thanks,
 
@@ -85,156 +81,210 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 807174a93d24c456503692dc3f5af322ee0b640a Mon Sep 17 00:00:00 2001
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Date: Fri, 9 Aug 2024 14:48:47 +0300
-Subject: [PATCH] mm: fix endless reclaim on machines with unaccepted memory
+From 38055789d15155109b41602ad719d770af507030 Mon Sep 17 00:00:00 2001
+From: Baochen Qiang <quic_bqiang@quicinc.com>
+Date: Thu, 1 Aug 2024 18:04:07 +0300
+Subject: [PATCH] wifi: ath12k: use 128 bytes aligned iova in transmit path for
+ WCN7850
 
-Unaccepted memory is considered unusable free memory, which is not counted
-as free on the zone watermark check.  This causes get_page_from_freelist()
-to accept more memory to hit the high watermark, but it creates problems
-in the reclaim path.
+In transmit path, it is likely that the iova is not aligned to PCIe TLP
+max payload size, which is 128 for WCN7850. Normally in such cases hardware
+is expected to split the packet into several parts in a manner such that
+they, other than the first one, have aligned iova. However due to hardware
+limitations, WCN7850 does not behave like that properly with some specific
+unaligned iova in transmit path. This easily results in target hang in a
+KPI transmit test: packet send/receive failure, WMI command send timeout
+etc. Also fatal error seen in PCIe level:
 
-The reclaim path encounters a failed zone watermark check and attempts to
-reclaim memory.  This is usually successful, but if there is little or no
-reclaimable memory, it can result in endless reclaim with little to no
-progress.  This can occur early in the boot process, just after start of
-the init process when the only reclaimable memory is the page cache of the
-init executable and its libraries.
+	...
+	Capabilities: ...
+		...
+		DevSta: ... FatalErr+ ...
+		...
+	...
 
-Make unaccepted memory free from watermark check point of view.  This way
-unaccepted memory will never be the trigger of memory reclaim.  Accept
-more memory in the get_page_from_freelist() if needed.
+Work around this by manually moving/reallocating payload buffer such that
+we can map it to a 128 bytes aligned iova. The moving requires sufficient
+head room or tail room in skb: for the former we can do ourselves a favor
+by asking some extra bytes when registering with mac80211, while for the
+latter we can do nothing.
 
-Link: https://lkml.kernel.org/r/20240809114854.3745464-2-kirill.shutemov@linux.intel.com
-Fixes: dcdfdd40fa82 ("mm: Add support for unaccepted memory")
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Reported-by: Jianxiong Gao <jxgao@google.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Tested-by: Jianxiong Gao <jxgao@google.com>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Mel Gorman <mgorman@suse.de>
-Cc: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Cc: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: <stable@vger.kernel.org>	[6.5+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Moving/reallocating buffer consumes additional CPU cycles, but the good news
+is that an aligned iova increases PCIe efficiency. In my tests on some X86
+platforms the KPI results are almost consistent.
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 875d76e8684a..8747087acee3 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -287,7 +287,7 @@ EXPORT_SYMBOL(nr_online_nodes);
- 
- static bool page_contains_unaccepted(struct page *page, unsigned int order);
- static void accept_page(struct page *page, unsigned int order);
--static bool try_to_accept_memory(struct zone *zone, unsigned int order);
-+static bool cond_accept_memory(struct zone *zone, unsigned int order);
- static inline bool has_unaccepted_memory(void);
- static bool __free_unaccepted(struct page *page);
- 
-@@ -3072,9 +3072,6 @@ static inline long __zone_watermark_unusable_free(struct zone *z,
- 	if (!(alloc_flags & ALLOC_CMA))
- 		unusable_free += zone_page_state(z, NR_FREE_CMA_PAGES);
- #endif
--#ifdef CONFIG_UNACCEPTED_MEMORY
--	unusable_free += zone_page_state(z, NR_UNACCEPTED);
--#endif
- 
- 	return unusable_free;
- }
-@@ -3368,6 +3365,8 @@ get_page_from_freelist(gfp_t gfp_mask, unsigned int order, int alloc_flags,
- 			}
- 		}
- 
-+		cond_accept_memory(zone, order);
-+
- 		/*
- 		 * Detect whether the number of free pages is below high
- 		 * watermark.  If so, we will decrease pcp->high and free
-@@ -3393,10 +3392,8 @@ get_page_from_freelist(gfp_t gfp_mask, unsigned int order, int alloc_flags,
- 				       gfp_mask)) {
- 			int ret;
- 
--			if (has_unaccepted_memory()) {
--				if (try_to_accept_memory(zone, order))
--					goto try_this_zone;
--			}
-+			if (cond_accept_memory(zone, order))
-+				goto try_this_zone;
- 
- #ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT
- 			/*
-@@ -3450,10 +3447,8 @@ get_page_from_freelist(gfp_t gfp_mask, unsigned int order, int alloc_flags,
- 
- 			return page;
- 		} else {
--			if (has_unaccepted_memory()) {
--				if (try_to_accept_memory(zone, order))
--					goto try_this_zone;
--			}
-+			if (cond_accept_memory(zone, order))
-+				goto try_this_zone;
- 
- #ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT
- 			/* Try again if zone has deferred pages */
-@@ -6950,9 +6945,6 @@ static bool try_to_accept_memory_one(struct zone *zone)
- 	struct page *page;
- 	bool last;
- 
--	if (list_empty(&zone->unaccepted_pages))
--		return false;
--
- 	spin_lock_irqsave(&zone->lock, flags);
- 	page = list_first_entry_or_null(&zone->unaccepted_pages,
- 					struct page, lru);
-@@ -6978,23 +6970,29 @@ static bool try_to_accept_memory_one(struct zone *zone)
- 	return true;
+Since this is seen only with WCN7850, add a new hardware parameter to
+differentiate from others.
+
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+
+Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Cc: <stable@vger.kernel.org>
+Tested-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://patch.msgid.link/20240715023814.20242-1-quic_bqiang@quicinc.com
+
+diff --git a/drivers/net/wireless/ath/ath12k/dp_tx.c b/drivers/net/wireless/ath/ath12k/dp_tx.c
+index d08c04343e90..44406e0b4a34 100644
+--- a/drivers/net/wireless/ath/ath12k/dp_tx.c
++++ b/drivers/net/wireless/ath/ath12k/dp_tx.c
+@@ -162,6 +162,60 @@ static int ath12k_dp_prepare_htt_metadata(struct sk_buff *skb)
+ 	return 0;
  }
  
--static bool try_to_accept_memory(struct zone *zone, unsigned int order)
-+static bool cond_accept_memory(struct zone *zone, unsigned int order)
- {
- 	long to_accept;
--	int ret = false;
-+	bool ret = false;
++static void ath12k_dp_tx_move_payload(struct sk_buff *skb,
++				      unsigned long delta,
++				      bool head)
++{
++	unsigned long len = skb->len;
 +
-+	if (!has_unaccepted_memory())
-+		return false;
-+
-+	if (list_empty(&zone->unaccepted_pages))
-+		return false;
- 
- 	/* How much to accept to get to high watermark? */
- 	to_accept = high_wmark_pages(zone) -
- 		    (zone_page_state(zone, NR_FREE_PAGES) -
--		    __zone_watermark_unusable_free(zone, order, 0));
-+		    __zone_watermark_unusable_free(zone, order, 0) -
-+		    zone_page_state(zone, NR_UNACCEPTED));
- 
--	/* Accept at least one page */
--	do {
-+	while (to_accept > 0) {
- 		if (!try_to_accept_memory_one(zone))
- 			break;
- 		ret = true;
- 		to_accept -= MAX_ORDER_NR_PAGES;
--	} while (to_accept > 0);
++	if (head) {
++		skb_push(skb, delta);
++		memmove(skb->data, skb->data + delta, len);
++		skb_trim(skb, len);
++	} else {
++		skb_put(skb, delta);
++		memmove(skb->data + delta, skb->data, len);
++		skb_pull(skb, delta);
 +	}
- 
- 	return ret;
- }
-@@ -7037,7 +7035,7 @@ static void accept_page(struct page *page, unsigned int order)
++}
++
++static int ath12k_dp_tx_align_payload(struct ath12k_base *ab,
++				      struct sk_buff **pskb)
++{
++	u32 iova_mask = ab->hw_params->iova_mask;
++	unsigned long offset, delta1, delta2;
++	struct sk_buff *skb2, *skb = *pskb;
++	unsigned int headroom = skb_headroom(skb);
++	int tailroom = skb_tailroom(skb);
++	int ret = 0;
++
++	offset = (unsigned long)skb->data & iova_mask;
++	delta1 = offset;
++	delta2 = iova_mask - offset + 1;
++
++	if (headroom >= delta1) {
++		ath12k_dp_tx_move_payload(skb, delta1, true);
++	} else if (tailroom >= delta2) {
++		ath12k_dp_tx_move_payload(skb, delta2, false);
++	} else {
++		skb2 = skb_realloc_headroom(skb, iova_mask);
++		if (!skb2) {
++			ret = -ENOMEM;
++			goto out;
++		}
++
++		dev_kfree_skb_any(skb);
++
++		offset = (unsigned long)skb2->data & iova_mask;
++		if (offset)
++			ath12k_dp_tx_move_payload(skb2, offset, true);
++		*pskb = skb2;
++	}
++
++out:
++	return ret;
++}
++
+ int ath12k_dp_tx(struct ath12k *ar, struct ath12k_vif *arvif,
+ 		 struct sk_buff *skb)
  {
- }
+@@ -184,6 +238,7 @@ int ath12k_dp_tx(struct ath12k *ar, struct ath12k_vif *arvif,
+ 	bool tcl_ring_retry;
+ 	bool msdu_ext_desc = false;
+ 	bool add_htt_metadata = false;
++	u32 iova_mask = ab->hw_params->iova_mask;
  
--static bool try_to_accept_memory(struct zone *zone, unsigned int order)
-+static bool cond_accept_memory(struct zone *zone, unsigned int order)
- {
- 	return false;
- }
+ 	if (test_bit(ATH12K_FLAG_CRASH_FLUSH, &ar->ab->dev_flags))
+ 		return -ESHUTDOWN;
+@@ -279,6 +334,23 @@ int ath12k_dp_tx(struct ath12k *ar, struct ath12k_vif *arvif,
+ 		goto fail_remove_tx_buf;
+ 	}
+ 
++	if (iova_mask &&
++	    (unsigned long)skb->data & iova_mask) {
++		ret = ath12k_dp_tx_align_payload(ab, &skb);
++		if (ret) {
++			ath12k_warn(ab, "failed to align TX buffer %d\n", ret);
++			/* don't bail out, give original buffer
++			 * a chance even unaligned.
++			 */
++			goto map;
++		}
++
++		/* hdr is pointing to a wrong place after alignment,
++		 * so refresh it for later use.
++		 */
++		hdr = (void *)skb->data;
++	}
++map:
+ 	ti.paddr = dma_map_single(ab->dev, skb->data, skb->len, DMA_TO_DEVICE);
+ 	if (dma_mapping_error(ab->dev, ti.paddr)) {
+ 		atomic_inc(&ab->soc_stats.tx_err.misc_fail);
+diff --git a/drivers/net/wireless/ath/ath12k/hw.c b/drivers/net/wireless/ath/ath12k/hw.c
+index 2e11ea763574..7b0b6a7f4701 100644
+--- a/drivers/net/wireless/ath/ath12k/hw.c
++++ b/drivers/net/wireless/ath/ath12k/hw.c
+@@ -924,6 +924,8 @@ static const struct ath12k_hw_params ath12k_hw_params[] = {
+ 
+ 		.acpi_guid = NULL,
+ 		.supports_dynamic_smps_6ghz = true,
++
++		.iova_mask = 0,
+ 	},
+ 	{
+ 		.name = "wcn7850 hw2.0",
+@@ -1000,6 +1002,8 @@ static const struct ath12k_hw_params ath12k_hw_params[] = {
+ 
+ 		.acpi_guid = &wcn7850_uuid,
+ 		.supports_dynamic_smps_6ghz = false,
++
++		.iova_mask = ATH12K_PCIE_MAX_PAYLOAD_SIZE - 1,
+ 	},
+ 	{
+ 		.name = "qcn9274 hw2.0",
+@@ -1072,6 +1076,8 @@ static const struct ath12k_hw_params ath12k_hw_params[] = {
+ 
+ 		.acpi_guid = NULL,
+ 		.supports_dynamic_smps_6ghz = true,
++
++		.iova_mask = 0,
+ 	},
+ };
+ 
+diff --git a/drivers/net/wireless/ath/ath12k/hw.h b/drivers/net/wireless/ath/ath12k/hw.h
+index e792eb6b249b..b1d302c48326 100644
+--- a/drivers/net/wireless/ath/ath12k/hw.h
++++ b/drivers/net/wireless/ath/ath12k/hw.h
+@@ -96,6 +96,8 @@
+ #define ATH12K_M3_FILE			"m3.bin"
+ #define ATH12K_REGDB_FILE_NAME		"regdb.bin"
+ 
++#define ATH12K_PCIE_MAX_PAYLOAD_SIZE	128
++
+ enum ath12k_hw_rate_cck {
+ 	ATH12K_HW_RATE_CCK_LP_11M = 0,
+ 	ATH12K_HW_RATE_CCK_LP_5_5M,
+@@ -215,6 +217,8 @@ struct ath12k_hw_params {
+ 
+ 	const guid_t *acpi_guid;
+ 	bool supports_dynamic_smps_6ghz;
++
++	u32 iova_mask;
+ };
+ 
+ struct ath12k_hw_ops {
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index 8106297f0bc1..ce41c8153080 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -9193,6 +9193,7 @@ static int ath12k_mac_hw_register(struct ath12k_hw *ah)
+ 
+ 	hw->vif_data_size = sizeof(struct ath12k_vif);
+ 	hw->sta_data_size = sizeof(struct ath12k_sta);
++	hw->extra_tx_headroom = ab->hw_params->iova_mask;
+ 
+ 	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_CQM_RSSI_LIST);
+ 	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_STA_TX_PWR);
 
 
