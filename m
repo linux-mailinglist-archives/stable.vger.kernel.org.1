@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-69553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69554-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A219595682C
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 12:20:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A7FA956831
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 12:21:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D57A31C2193C
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 10:20:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0088F280DEE
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 10:21:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED8CE1607B5;
-	Mon, 19 Aug 2024 10:20:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9F8C15FD04;
+	Mon, 19 Aug 2024 10:21:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I+6RsTYe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CpKTZk0K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE96515F316
-	for <stable@vger.kernel.org>; Mon, 19 Aug 2024 10:20:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A1142208E
+	for <stable@vger.kernel.org>; Mon, 19 Aug 2024 10:21:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724062840; cv=none; b=YXuZbdF86FV6oIwWsHefUuBWuXjP7QGLSuT2TsqhVCcMxsWma2sMUEqK8BgqPyldKuysjtRMfzeHlcR9H2icwxDHwE0jkcqPBvpxh4bygrVstxc9BUWHICqk1jr0p214KPIEzv87s0JY5of+zFfeqr/lY7usGiYW/cTunkR+6Do=
+	t=1724062884; cv=none; b=OamMRGDrjZhCG7CCt2b2hzGG6PCIHnQYY9LxJzYK2KPO4GEIpEVv7kds3tQCzvPV20xrt2g6WTdhFBasecYMMOZ0Q0QMVjPsjCb85QrckoePsldDEqyTRhkp7VXOWpdn04kHALQYt6YoCKzM4qjL+fuOeQKMIsZTkUo9VwtxBbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724062840; c=relaxed/simple;
-	bh=xpOgg0Te8wZHK3F+fozg6JOU8Fj48viEn/4M30pFiQ8=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=RfIhv3tyuqZFA7oUt5cP2VFz8L8rqan/b1u/KOXeah/raLtszg53eIELt+VTSPBygdy2v4P4Vl+cItXD/bbRkYHP0QfQGHfbg8kmPuz1w0jKCAvk1d1o+APXQkWUb+o909xyLZs7IUX62IPwguDB8FoLIk6H5kFgi3s27O2s6aw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I+6RsTYe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 336C8C32782;
-	Mon, 19 Aug 2024 10:20:40 +0000 (UTC)
+	s=arc-20240116; t=1724062884; c=relaxed/simple;
+	bh=7cUS8d9nLR7S/y3/BEgEntv/fDlZR0VuLwmx8x3mLrQ=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Fxp9dNsE7vqrAp1N2XSlLFwedQ+UTIZ7PYts7MkSLmg+BV3y/MsUJL+qpplTJ5ZWncjM6QTiCwy7zxGmyVeZCN5VEKMNwZcWCzgh5M1iKLqvQ8PAqAf7HPaEm07/OUKXiKXyArMUoUGpIGxILCx2QvRxyEIj/u+HRN4sG1hFym4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CpKTZk0K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A208C32782;
+	Mon, 19 Aug 2024 10:21:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724062840;
-	bh=xpOgg0Te8wZHK3F+fozg6JOU8Fj48viEn/4M30pFiQ8=;
+	s=korg; t=1724062883;
+	bh=7cUS8d9nLR7S/y3/BEgEntv/fDlZR0VuLwmx8x3mLrQ=;
 	h=Subject:To:Cc:From:Date:From;
-	b=I+6RsTYe6dvFl90xsIgzuko9IElTvA6+NHOTx/UOkRbEloX5mxuIsspMQ9EN+dVQk
-	 kk6SD7BTQXVrOGVx7jUkxtZ9kGNQym9dUiamsLxTpER9TBlbBta4IdPc4/FfgQz3zX
-	 /oLGgQD4xRkuOHpZ1h3UT0eirFV/ywGStcnkO+ac=
-Subject: FAILED: patch "[PATCH] drm/amd/display: fix cursor offset on rotation 180" failed to apply to 6.1-stable tree
-To: mwen@igalia.com,alexander.deucher@amd.com,chiahsuan.chung@amd.com,daniel.wheeler@amd.com,hamza.mahfooz@amd.com,harry.wentland@amd.com,xaver.hugl@gmail.com
+	b=CpKTZk0K2V2MGGwTZYQwPNBi4eF8Q7aBMdEHDcWhUjlYvtSQGlmpmjYuBPUjUVqmV
+	 cgkol/n6qYrNoGp9IbWZJGnk6P6OSRxghic5E/vXb9q/kb/0X9D0ne4gVShya2qhl0
+	 Op37gCGHg21UcminUXkaCPTbsmIUbmcEL35VFZA8=
+Subject: FAILED: patch "[PATCH] drm/amd/amdgpu: command submission parser for JPEG" failed to apply to 6.6-stable tree
+To: David.Wu3@amd.com,alexander.deucher@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 Aug 2024 12:20:37 +0200
-Message-ID: <2024081937-granular-passably-9226@gregkh>
+Date: Mon, 19 Aug 2024 12:21:21 +0200
+Message-ID: <2024081921-overvalue-angles-9d06@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,23 +53,26 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 737222cebecbdbcdde2b69475c52bcb9ecfeb830
+git cherry-pick -x 470516c2925493594a690bc4d05b1f4471d9f996
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081937-granular-passably-9226@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081921-overvalue-angles-9d06@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
-737222cebecb ("drm/amd/display: fix cursor offset on rotation 180")
+470516c29254 ("drm/amd/amdgpu: command submission parser for JPEG")
+e6c6bd6253e7 ("drm/amdgpu/jpeg4: properly set atomics vmid field")
+dfad65c65728 ("drm/amdgpu: Add JPEG5 support")
+8f98a715da8e ("drm/amdgpu/jpeg: add jpeg support for VCN4_0_5")
 
 thanks,
 
@@ -77,49 +80,175 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 737222cebecbdbcdde2b69475c52bcb9ecfeb830 Mon Sep 17 00:00:00 2001
-From: Melissa Wen <mwen@igalia.com>
-Date: Tue, 31 Jan 2023 15:05:46 -0100
-Subject: [PATCH] drm/amd/display: fix cursor offset on rotation 180
+From 470516c2925493594a690bc4d05b1f4471d9f996 Mon Sep 17 00:00:00 2001
+From: "David (Ming Qiang) Wu" <David.Wu3@amd.com>
+Date: Thu, 8 Aug 2024 12:19:50 -0400
+Subject: [PATCH] drm/amd/amdgpu: command submission parser for JPEG
 
-[why & how]
-Cursor gets clipped off in the middle of the screen with hw
-rotation 180. Fix a miscalculation of cursor offset when it's
-placed near the edges in the pipe split case.
+Add JPEG IB command parser to ensure registers
+in the command are within the JPEG IP block.
 
-Cursor bugs with hw rotation were reported on AMD issue
-tracker:
-https://gitlab.freedesktop.org/drm/amd/-/issues/2247
-
-The issues on rotation 270 was fixed by:
-https://lore.kernel.org/amd-gfx/20221118125935.4013669-22-Brian.Chang@amd.com/
-that partially addressed the rotation 180 too. So, this patch is the
-final bits for rotation 180.
-
-Reported-by: Xaver Hugl <xaver.hugl@gmail.com>
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/2247
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Fixes: 9d84c7ef8a87 ("drm/amd/display: Correct cursor position on horizontal mirror")
-Signed-off-by: Melissa Wen <mwen@igalia.com>
-Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: David (Ming Qiang) Wu <David.Wu3@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 1fd2cf090096af8a25bf85564341cfc21cec659d)
+(cherry picked from commit a7f670d5d8e77b092404ca8a35bb0f8f89ed3117)
 Cc: stable@vger.kernel.org
 
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn10/dcn10_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn10/dcn10_hwseq.c
-index ff03b1d98aa7..1b9ac8812f5b 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn10/dcn10_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn10/dcn10_hwseq.c
-@@ -3589,7 +3589,7 @@ void dcn10_set_cursor_position(struct pipe_ctx *pipe_ctx)
- 						(int)hubp->curs_attr.width || pos_cpy.x
- 						<= (int)hubp->curs_attr.width +
- 						pipe_ctx->plane_state->src_rect.x) {
--						pos_cpy.x = temp_x + viewport_width;
-+						pos_cpy.x = 2 * viewport_width - temp_x;
- 					}
- 				}
- 			} else {
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
+index 9aa952f258cf..6dfdff58bffd 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
+@@ -1057,6 +1057,9 @@ static int amdgpu_cs_patch_ibs(struct amdgpu_cs_parser *p,
+ 			r = amdgpu_ring_parse_cs(ring, p, job, ib);
+ 			if (r)
+ 				return r;
++
++			if (ib->sa_bo)
++				ib->gpu_addr =  amdgpu_sa_bo_gpu_addr(ib->sa_bo);
+ 		} else {
+ 			ib->ptr = (uint32_t *)kptr;
+ 			r = amdgpu_ring_patch_cs_in_place(ring, p, job, ib);
+diff --git a/drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_3.c b/drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_3.c
+index f4662920c653..6ae5a784e187 100644
+--- a/drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_3.c
++++ b/drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_3.c
+@@ -23,6 +23,7 @@
+ 
+ #include "amdgpu.h"
+ #include "amdgpu_jpeg.h"
++#include "amdgpu_cs.h"
+ #include "soc15.h"
+ #include "soc15d.h"
+ #include "jpeg_v4_0_3.h"
+@@ -782,7 +783,11 @@ void jpeg_v4_0_3_dec_ring_emit_ib(struct amdgpu_ring *ring,
+ 
+ 	amdgpu_ring_write(ring, PACKETJ(regUVD_LMI_JRBC_IB_VMID_INTERNAL_OFFSET,
+ 		0, 0, PACKETJ_TYPE0));
+-	amdgpu_ring_write(ring, (vmid | (vmid << 4) | (vmid << 8)));
++
++	if (ring->funcs->parse_cs)
++		amdgpu_ring_write(ring, 0);
++	else
++		amdgpu_ring_write(ring, (vmid | (vmid << 4) | (vmid << 8)));
+ 
+ 	amdgpu_ring_write(ring, PACKETJ(regUVD_LMI_JPEG_VMID_INTERNAL_OFFSET,
+ 		0, 0, PACKETJ_TYPE0));
+@@ -1084,6 +1089,7 @@ static const struct amdgpu_ring_funcs jpeg_v4_0_3_dec_ring_vm_funcs = {
+ 	.get_rptr = jpeg_v4_0_3_dec_ring_get_rptr,
+ 	.get_wptr = jpeg_v4_0_3_dec_ring_get_wptr,
+ 	.set_wptr = jpeg_v4_0_3_dec_ring_set_wptr,
++	.parse_cs = jpeg_v4_0_3_dec_ring_parse_cs,
+ 	.emit_frame_size =
+ 		SOC15_FLUSH_GPU_TLB_NUM_WREG * 6 +
+ 		SOC15_FLUSH_GPU_TLB_NUM_REG_WAIT * 8 +
+@@ -1248,3 +1254,56 @@ static void jpeg_v4_0_3_set_ras_funcs(struct amdgpu_device *adev)
+ {
+ 	adev->jpeg.ras = &jpeg_v4_0_3_ras;
+ }
++
++/**
++ * jpeg_v4_0_3_dec_ring_parse_cs - command submission parser
++ *
++ * @parser: Command submission parser context
++ * @job: the job to parse
++ * @ib: the IB to parse
++ *
++ * Parse the command stream, return -EINVAL for invalid packet,
++ * 0 otherwise
++ */
++int jpeg_v4_0_3_dec_ring_parse_cs(struct amdgpu_cs_parser *parser,
++			     struct amdgpu_job *job,
++			     struct amdgpu_ib *ib)
++{
++	uint32_t i, reg, res, cond, type;
++	struct amdgpu_device *adev = parser->adev;
++
++	for (i = 0; i < ib->length_dw ; i += 2) {
++		reg  = CP_PACKETJ_GET_REG(ib->ptr[i]);
++		res  = CP_PACKETJ_GET_RES(ib->ptr[i]);
++		cond = CP_PACKETJ_GET_COND(ib->ptr[i]);
++		type = CP_PACKETJ_GET_TYPE(ib->ptr[i]);
++
++		if (res) /* only support 0 at the moment */
++			return -EINVAL;
++
++		switch (type) {
++		case PACKETJ_TYPE0:
++			if (cond != PACKETJ_CONDITION_CHECK0 || reg < JPEG_REG_RANGE_START || reg > JPEG_REG_RANGE_END) {
++				dev_err(adev->dev, "Invalid packet [0x%08x]!\n", ib->ptr[i]);
++				return -EINVAL;
++			}
++			break;
++		case PACKETJ_TYPE3:
++			if (cond != PACKETJ_CONDITION_CHECK3 || reg < JPEG_REG_RANGE_START || reg > JPEG_REG_RANGE_END) {
++				dev_err(adev->dev, "Invalid packet [0x%08x]!\n", ib->ptr[i]);
++				return -EINVAL;
++			}
++			break;
++		case PACKETJ_TYPE6:
++			if (ib->ptr[i] == CP_PACKETJ_NOP)
++				continue;
++			dev_err(adev->dev, "Invalid packet [0x%08x]!\n", ib->ptr[i]);
++			return -EINVAL;
++		default:
++			dev_err(adev->dev, "Unknown packet type %d !\n", type);
++			return -EINVAL;
++		}
++	}
++
++	return 0;
++}
+diff --git a/drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_3.h b/drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_3.h
+index 747a3e5f6856..71c54b294e15 100644
+--- a/drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_3.h
++++ b/drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_3.h
+@@ -46,6 +46,9 @@
+ 
+ #define JRBC_DEC_EXTERNAL_REG_WRITE_ADDR				0x18000
+ 
++#define JPEG_REG_RANGE_START						0x4000
++#define JPEG_REG_RANGE_END						0x41c2
++
+ extern const struct amdgpu_ip_block_version jpeg_v4_0_3_ip_block;
+ 
+ void jpeg_v4_0_3_dec_ring_emit_ib(struct amdgpu_ring *ring,
+@@ -62,5 +65,7 @@ void jpeg_v4_0_3_dec_ring_insert_end(struct amdgpu_ring *ring);
+ void jpeg_v4_0_3_dec_ring_emit_wreg(struct amdgpu_ring *ring, uint32_t reg, uint32_t val);
+ void jpeg_v4_0_3_dec_ring_emit_reg_wait(struct amdgpu_ring *ring, uint32_t reg,
+ 					uint32_t val, uint32_t mask);
+-
++int jpeg_v4_0_3_dec_ring_parse_cs(struct amdgpu_cs_parser *parser,
++				  struct amdgpu_job *job,
++				  struct amdgpu_ib *ib);
+ #endif /* __JPEG_V4_0_3_H__ */
+diff --git a/drivers/gpu/drm/amd/amdgpu/jpeg_v5_0_0.c b/drivers/gpu/drm/amd/amdgpu/jpeg_v5_0_0.c
+index d694a276498a..f4daff90c770 100644
+--- a/drivers/gpu/drm/amd/amdgpu/jpeg_v5_0_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/jpeg_v5_0_0.c
+@@ -646,6 +646,7 @@ static const struct amdgpu_ring_funcs jpeg_v5_0_0_dec_ring_vm_funcs = {
+ 	.get_rptr = jpeg_v5_0_0_dec_ring_get_rptr,
+ 	.get_wptr = jpeg_v5_0_0_dec_ring_get_wptr,
+ 	.set_wptr = jpeg_v5_0_0_dec_ring_set_wptr,
++	.parse_cs = jpeg_v4_0_3_dec_ring_parse_cs,
+ 	.emit_frame_size =
+ 		SOC15_FLUSH_GPU_TLB_NUM_WREG * 6 +
+ 		SOC15_FLUSH_GPU_TLB_NUM_REG_WAIT * 8 +
+diff --git a/drivers/gpu/drm/amd/amdgpu/soc15d.h b/drivers/gpu/drm/amd/amdgpu/soc15d.h
+index 2357ff39323f..e74e1983da53 100644
+--- a/drivers/gpu/drm/amd/amdgpu/soc15d.h
++++ b/drivers/gpu/drm/amd/amdgpu/soc15d.h
+@@ -76,6 +76,12 @@
+ 			 ((cond & 0xF) << 24) |				\
+ 			 ((type & 0xF) << 28))
+ 
++#define CP_PACKETJ_NOP		0x60000000
++#define CP_PACKETJ_GET_REG(x)  ((x) & 0x3FFFF)
++#define CP_PACKETJ_GET_RES(x)  (((x) >> 18) & 0x3F)
++#define CP_PACKETJ_GET_COND(x) (((x) >> 24) & 0xF)
++#define CP_PACKETJ_GET_TYPE(x) (((x) >> 28) & 0xF)
++
+ /* Packet 3 types */
+ #define	PACKET3_NOP					0x10
+ #define	PACKET3_SET_BASE				0x11
 
 
