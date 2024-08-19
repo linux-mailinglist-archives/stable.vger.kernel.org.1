@@ -1,102 +1,161 @@
-Return-Path: <stable+bounces-69482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69483-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 340E49566D2
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 11:24:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D4409566E6
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 11:29:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 66A461C20B42
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 09:24:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4984A2816AF
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 09:29:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24C2315C14F;
-	Mon, 19 Aug 2024 09:24:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25BD715ECD1;
+	Mon, 19 Aug 2024 09:29:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="bdyDEa3r"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AF1428373;
-	Mon, 19 Aug 2024 09:24:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E09BA15ECC2;
+	Mon, 19 Aug 2024 09:29:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724059468; cv=none; b=mngg0y1khIFDG4WlOOPtKNqvQIJtg15qUU1ETgN/AW78PJshNP8L9bmLPBfFvU8XQ8zXNdlDV7ArsKGm0kkY2dDGHQUfqhMIpwU/8VMxHNe3XDOCeYi9lqqoL1SkdSkgK3RUE+fbWpT28NTQX43HQhMUMxBMLjxdjnzHnkSf0Go=
+	t=1724059744; cv=none; b=Y5iE9EB6uvly7NuCbOcu9XpgYIHlJx+gLvz+gPFJaDydSS+Scre0ei3VG/kgJVLz6jcIiCgj62nGWCG0ZVeOBVq2U2AKluiZjBC8Kg2fvN2nkzROk4sYQIYZPKBhH0is0PhnV/U5mjuvajZ9pDImRr226gtARhqr5jwuO615kPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724059468; c=relaxed/simple;
-	bh=vIACFU5pV7FY3YiEM/69pven583eTZCyLjaDVNt5Vk4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=YgxYO1bYJ/69nrjQ7vr5QQDZdfCW0UL04ujUysGVQTtqIN6jAzlgTGkzVKncAHBHqmlMkJCvV3vcEfGbid2DRGYyKQXovLPtSXGe32XI+qnObDNEXE22dMwfP7rklM+8fMy31XcUkBv9IXAeIpvJJ0evH6C5s9MJdXD79CAj6eE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
-	by APP-03 (Coremail) with SMTP id rQCowACHrwI2D8NmtVkUCA--.44254S2;
-	Mon, 19 Aug 2024 17:24:14 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: James.Bottomley@HansenPartnership.com,
-	martin.petersen@oracle.com,
-	m.muzzammilashraf@gmail.com,
-	make24@iscas.ac.cn,
-	James.Bottomley@suse.de,
-	kxie@chelsio.com,
-	michaelc@cs.wisc.edu,
-	akpm@linux-foundation.org
-Cc: linux-scsi@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH] scsi: iscsi: fix reference count leak in cxgbi_check_route()
-Date: Mon, 19 Aug 2024 17:24:05 +0800
-Message-Id: <20240819092405.1017971-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1724059744; c=relaxed/simple;
+	bh=O3anHyxZGKI47++zGmsoUsfSAf8M8dwURXdMCZnQxTc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=SHTQjtSI8yCunoGQ585vvodVhHoQCEptUeP1zdMeV/wvAT9XdA9pTGgz1FJUF9zHQh6QFwesOQvOUuZA0jZyE73XhXNsHTOgARKwg2Yy9pnCyeurN5+v0VPeJC3KwuzGj4n6sJyREq0H+BrPzyZcTLH2mbaV7I1EVIVGG0UpaiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=bdyDEa3r; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279871.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47INk1Za002536;
+	Mon, 19 Aug 2024 09:28:56 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	5oqXScjibZQjsUj+JfXXMkmZzpjNKCj5FEqv1WndicE=; b=bdyDEa3rWCYoBwEl
+	kdtWwVQpvFKkm4rNx+SF8eSnUw5ft/DEhg/Pqz1f9SRXIa3JuBJ1KLT40WJ2vKDq
+	HlJoIuDzFrLLSEaLv4t2ERoI9Bys3+Jau1l7bOiAL3IRwDlefgt5VC7340XU9PbB
+	+CvjJiJp+YCCc8RJa/KYkkYZv8azZZCjtttW8QRE4GB7wkeBP5eVxZtd7JbH/XOP
+	vCZF+Ay399uwx6beyVFgsvQBtnefzQTcFY16fkCuuaOFcs5BMSJqFn2KiAP8go6X
+	9Fz77EZzDxy5sCgHbUlmnFga11TPbpeHSVVappFMTmJYEcDyR2C2BGlJyVfKt7Cr
+	gUMcGQ==
+Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 412key3pdu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 19 Aug 2024 09:28:55 +0000 (GMT)
+Received: from nalasex01a.na.qualcomm.com (nalasex01a.na.qualcomm.com [10.47.209.196])
+	by NALASPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 47J9Ssmb013173
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 19 Aug 2024 09:28:54 GMT
+Received: from [10.216.31.248] (10.80.80.8) by nalasex01a.na.qualcomm.com
+ (10.47.209.196) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.9; Mon, 19 Aug
+ 2024 02:28:49 -0700
+Message-ID: <9de9be29-2f75-41a1-931b-f8cf0a9904ac@quicinc.com>
+Date: Mon, 19 Aug 2024 14:58:46 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowACHrwI2D8NmtVkUCA--.44254S2
-X-Coremail-Antispam: 1UD129KBjvdXoWrur47tw48tFy7uFWDCw1xZrb_yoWfurg_Gw
-	48ZFW7Ar4qgrsrKw4I93Z3ZF9xZF9rZFy8uF4xtr9akw45Xr97Kr18AF1rJ345Xw4qgr15
-	Aw17Wr13CFnFgjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbS8FF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Cr0_
-	Gr1UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
-	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUXVWUAwAv7VC2z280aVAFwI0_Jr0_Gr
-	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IE
-	rcIFxwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x
-	0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E
-	7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcV
-	C0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF
-	04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7
-	CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUl-eOUUUUU=
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] usb: dwc3: core: Prevent USB core invalid event buffer
+ address access
+To: Selvarasu Ganesan <selvarasu.g@samsung.com>, <Thinh.Nguyen@synopsys.com>,
+        <gregkh@linuxfoundation.org>
+CC: <jh0801.jung@samsung.com>, <dh10.jung@samsung.com>, <naushad@samsung.com>,
+        <akash.m5@samsung.com>, <rc93.raju@samsung.com>,
+        <linux-kernel@vger.kernel.org>, <linux-usb@vger.kernel.org>,
+        <taehyun.cho@samsung.com>, <hongpooh.kim@samsung.com>,
+        <eomji.oh@samsung.com>, <shijie.cai@samsung.com>,
+        <stable@vger.kernel.org>
+References: <CGME20240808120605epcas5p2c9164533413706da5f7fa2ed624318cd@epcas5p2.samsung.com>
+ <20240808120507.1464-1-selvarasu.g@samsung.com>
+Content-Language: en-US
+From: Krishna Kurapati <quic_kriskura@quicinc.com>
+In-Reply-To: <20240808120507.1464-1-selvarasu.g@samsung.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nalasex01a.na.qualcomm.com (10.47.209.196)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: xDRjhdP30BnRxcaFntPhAlO8_h_fcSGR
+X-Proofpoint-GUID: xDRjhdP30BnRxcaFntPhAlO8_h_fcSGR
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-08-19_08,2024-08-19_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0
+ lowpriorityscore=0 mlxscore=0 adultscore=0 clxscore=1011 impostorscore=0
+ suspectscore=0 malwarescore=0 priorityscore=1501 spamscore=0
+ mlxlogscore=999 bulkscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2407110000 definitions=main-2408190065
 
-cxgbi_check_route() dont release the reference acquired by ip_dev_find()
-which introducing a reference count leak. We could remedy this by
-insuring the reference is released.ip_dev_find().
 
-Cc: stable@vger.kernel.org
-Fixes: 9ba682f01e2f ("[SCSI] libcxgbi: common library for cxgb3i and cxgb4i")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
----
- drivers/scsi/cxgbi/libcxgbi.c | 1 +
- 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/scsi/cxgbi/libcxgbi.c b/drivers/scsi/cxgbi/libcxgbi.c
-index bf75940f2be1..6b0f1e8dac40 100644
---- a/drivers/scsi/cxgbi/libcxgbi.c
-+++ b/drivers/scsi/cxgbi/libcxgbi.c
-@@ -670,6 +670,7 @@ cxgbi_check_route(struct sockaddr *dst_addr, int ifindex)
- 		"route to %pI4 :%u, ndev p#%d,%s, cdev 0x%p.\n",
- 		&daddr->sin_addr.s_addr, ntohs(daddr->sin_port),
- 			   port, ndev->name, cdev);
-+	dev_put(ndev);
- 
- 	csk = cxgbi_sock_create(cdev);
- 	if (!csk) {
--- 
-2.25.1
+On 8/8/2024 5:35 PM, Selvarasu Ganesan wrote:
+> This commit addresses an issue where the USB core could access an
+> invalid event buffer address during runtime suspend, potentially causing
+> SMMU faults and other memory issues. The problem arises from the
+> following sequence.
+>          1. In dwc3_gadget_suspend, there is a chance of a timeout when
+>          moving the USB core to the halt state after clearing the
+>          run/stop bit by software.
+>          2. In dwc3_core_exit, the event buffer is cleared regardless of
+>          the USB core's status, which may lead to an SMMU faults and
+>          other memory issues. if the USB core tries to access the event
+>          buffer address.
+> 
+> To prevent this issue, this commit ensures that the event buffer address
+> is not cleared by software  when the USB core is active during runtime
+> suspend by checking its status before clearing the buffer address.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 89d7f9629946 ("usb: dwc3: core: Skip setting event buffers for host only controllers")
 
+I don't think the fixes tag is right.
+
+This fix is independent of whether controller is host only capable or 
+not. This is fixing the original commit that introduced the cleanup call.
+
+Regards,
+Krishna,
+
+> Signed-off-by: Selvarasu Ganesan <selvarasu.g@samsung.com>
+> ---
+> 
+> Changes in v2:
+> - Added separate check for USB controller status before cleaning the
+>    event buffer.
+> - Link to v1: https://lore.kernel.org/lkml/20240722145617.537-1-selvarasu.g@samsung.com/
+> ---
+>   drivers/usb/dwc3/core.c | 5 +++++
+>   1 file changed, 5 insertions(+)
+> 
+> diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
+> index 734de2a8bd21..5b67d9bca71b 100644
+> --- a/drivers/usb/dwc3/core.c
+> +++ b/drivers/usb/dwc3/core.c
+> @@ -564,10 +564,15 @@ int dwc3_event_buffers_setup(struct dwc3 *dwc)
+>   void dwc3_event_buffers_cleanup(struct dwc3 *dwc)
+>   {
+>   	struct dwc3_event_buffer	*evt;
+> +	u32				reg;
+>   
+>   	if (!dwc->ev_buf)
+>   		return;
+>   
+> +	reg = dwc3_readl(dwc->regs, DWC3_DSTS);
+> +	if (!(reg & DWC3_DSTS_DEVCTRLHLT))
+> +		return;
+> +
+>   	evt = dwc->ev_buf;
+>   
+>   	evt->lpos = 0;
 
