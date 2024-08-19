@@ -1,178 +1,327 @@
-Return-Path: <stable+bounces-69602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69603-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F374A956E35
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 17:07:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29B99956E5C
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 17:14:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A624B1F228AF
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 15:07:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C7162825D1
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 15:14:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F08F176AB9;
-	Mon, 19 Aug 2024 15:07:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 782AB1741D9;
+	Mon, 19 Aug 2024 15:14:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A+NvMM/j"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="ByLZoEiy";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="hAWdifuD";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="ByLZoEiy";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="hAWdifuD"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2AA617622F;
-	Mon, 19 Aug 2024 15:07:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19D1C2AD2C
+	for <stable@vger.kernel.org>; Mon, 19 Aug 2024 15:14:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724080022; cv=none; b=nalaRMSVDuxynqTawCojSJWQa+Wt9aSoZm/2Z0qC5GIFADQLmR4bCvgDXnm75XXcE4BEWnI/FW9g6ffnEVmR737lYOokip9tDNWG16MMMf0/xp5+6hvlfOTvHUn91hQm28u1fIr9D4EXeRlED+U27ga1ygbCSmZ1vsK+ib1P+Ro=
+	t=1724080476; cv=none; b=KRzGPnydsLN1oGHFL1iLNl2jLcmzdTkb/iYSR9FzZEXCRf5jQ3Qmsk+s5EUOmdKi/PXDHpa3naTmstsktjNL7Cov50OzNMknF2cEPhRpoGkL0ECgAlcGNMq+K/auiLOySuHCVD4vtZQcuyWBdL3/0vCRowyCp3l7+siy18zdU1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724080022; c=relaxed/simple;
-	bh=GYtDHER4l36QRbGSz9n1fTQl4KIxcIyyj6NCZNhyrxg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pxOKAUnO0eAE4rWtlvlqNY3U1q+wvmBqTmPr7S++gKZcrT+71+6ZKKohHkyHL4hdzp0QkOilriI6e1PE/2QGDGzU+NrsRP0rkpoOuGNS88z7B/d0yYLd20GVahqS9pNj/3nEvxknco8TO//ba4RNMXKFfJPMczgzLtuzmCII+Gs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A+NvMM/j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41078C32782;
-	Mon, 19 Aug 2024 15:07:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724080021;
-	bh=GYtDHER4l36QRbGSz9n1fTQl4KIxcIyyj6NCZNhyrxg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=A+NvMM/j9AVWIdfl4DKGnMElXWkpNPiFw43YwYnU0q3FYA70zKlbSe23ahceuKf2z
-	 Y6DzmQMxoUsh9ICWPAl0oHAbrOwicDumKDX1O/9h95qs5aWycObt57qRrpDUWz9zG8
-	 /vR6JDNIcCECfynJNfD0++4FF1FJ079FQX9UWD36qzhDnwI+VSZSUVwksxdfSUGrtG
-	 Ot6jgqF/6cDf5LvCigzB71UokFA9lPsWSpqIrxHdobmWU5h6ZnsVD4JB8gsqoFUlYQ
-	 wHn6uueqdNrKPA7Mnl338xLhDmmkWnUdirpuUnCeqQ4O8M6ZVutRAAXzl1vIIbP63k
-	 6I8VRQDxUx9QQ==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1sg3yE-000000007do-14Mo;
-	Mon, 19 Aug 2024 17:06:58 +0200
-Date: Mon, 19 Aug 2024 17:06:58 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Bjorn Andersson <quic_bjorande@quicinc.com>
-Cc: Sebastian Reichel <sre@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Chris Lew <quic_clew@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Stephen Boyd <swboyd@chromium.org>,
-	Amit Pundir <amit.pundir@linaro.org>, linux-arm-msm@vger.kernel.org,
-	linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-usb@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 2/3] usb: typec: ucsi: Move unregister out of atomic
- section
-Message-ID: <ZsNfkuiRK9VqBSLT@hovoldconsulting.com>
-References: <20240818-pmic-glink-v6-11-races-v1-0-f87c577e0bc9@quicinc.com>
- <20240818-pmic-glink-v6-11-races-v1-2-f87c577e0bc9@quicinc.com>
+	s=arc-20240116; t=1724080476; c=relaxed/simple;
+	bh=CIqsPtKbNf4eppWH1btipwfOsCfYOdRPXQr2wCzSFZo=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=mYsUR4NA4qBZAxJ/mIWUy2go4e4uceW3IgqmQrNU4Tn0GpPJ/zcQ/ayIuOYcZ83tKInKgLOxbNnX5tXV9pV4V/c616hq/8GxGVs7SdLDxZ+0KXAP9Nt1WpW7qPIMRguZronBRTgHBAXXnAr5MDYTvWJbeS71ji41dhCtMp/yCYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=ByLZoEiy; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=hAWdifuD; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=ByLZoEiy; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=hAWdifuD; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 1A35421ED1;
+	Mon, 19 Aug 2024 15:14:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1724080472; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=51YdApFs8jsVtd2RKoqunhnxphP9DtzQ+7ug6Ap7uko=;
+	b=ByLZoEiy9Zqj+jusKjzCUjM7CcDAKJBRZu2gS4Q+90/sKidXcuCiDGJ9wAHdEeNTvV++jh
+	B6/edI/CckS/W//pt9jb59hKsw2gpT00IzktxRdRK+2QXD17EONvkKvVpGm+/AOiE9Yecm
+	YJVNAw47PArUw+MPOc8seAVeij+858c=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1724080472;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=51YdApFs8jsVtd2RKoqunhnxphP9DtzQ+7ug6Ap7uko=;
+	b=hAWdifuDBGPUaH3YtbZGWx9R4dOwNQKB/UfM2bmwmF2uPZmQlY6SBeNuAV2XxiQLlGKsGv
+	WQoG4adn61E4ywCQ==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=ByLZoEiy;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=hAWdifuD
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1724080472; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=51YdApFs8jsVtd2RKoqunhnxphP9DtzQ+7ug6Ap7uko=;
+	b=ByLZoEiy9Zqj+jusKjzCUjM7CcDAKJBRZu2gS4Q+90/sKidXcuCiDGJ9wAHdEeNTvV++jh
+	B6/edI/CckS/W//pt9jb59hKsw2gpT00IzktxRdRK+2QXD17EONvkKvVpGm+/AOiE9Yecm
+	YJVNAw47PArUw+MPOc8seAVeij+858c=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1724080472;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=51YdApFs8jsVtd2RKoqunhnxphP9DtzQ+7ug6Ap7uko=;
+	b=hAWdifuDBGPUaH3YtbZGWx9R4dOwNQKB/UfM2bmwmF2uPZmQlY6SBeNuAV2XxiQLlGKsGv
+	WQoG4adn61E4ywCQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id BDDAF137C3;
+	Mon, 19 Aug 2024 15:14:31 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 3ZwZLVdhw2Z3GQAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Mon, 19 Aug 2024 15:14:31 +0000
+Message-ID: <3fdacb13-6b91-4266-9fa5-8a14f46527b5@suse.de>
+Date: Mon, 19 Aug 2024 17:14:31 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240818-pmic-glink-v6-11-races-v1-2-f87c577e0bc9@quicinc.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] video/aperture: match the pci device when calling
+ sysfb_disable()
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: Alex Deucher <alexdeucher@gmail.com>
+Cc: kernel test robot <lkp@intel.com>,
+ Alex Deucher <alexander.deucher@amd.com>, amd-gfx@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, oe-kbuild-all@lists.linux.dev,
+ intel-gfx@lists.freedesktop.org,
+ Javier Martinez Canillas <javierm@redhat.com>, Helge Deller <deller@gmx.de>,
+ Sam Ravnborg <sam@ravnborg.org>, Daniel Vetter <daniel.vetter@ffwll.ch>,
+ stable@vger.kernel.org
+References: <20240809150327.2485848-1-alexander.deucher@amd.com>
+ <202408101951.tXyqYOzv-lkp@intel.com>
+ <1c77f913-4707-4300-b84a-36fcf99942f4@suse.de>
+ <CADnq5_NjCFyy+bQY+uyijcZwvwXYkvVLLUQdtzN_ODvHAj193Q@mail.gmail.com>
+ <8bbf3f92-3719-4ff4-9587-e076635758d1@suse.de>
+Content-Language: en-US
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <8bbf3f92-3719-4ff4-9587-e076635758d1@suse.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 1A35421ED1
+X-Spam-Score: -6.51
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-6.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	DWL_DNSWL_MED(-2.00)[suse.de:dkim];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	RCVD_TLS_ALL(0.00)[];
+	ARC_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_TO(0.00)[gmail.com];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com,gmx.de];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[intel.com,amd.com,lists.freedesktop.org,lists.linux.dev,redhat.com,gmx.de,ravnborg.org,ffwll.ch,vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,git-scm.com:url,01.org:url];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	DKIM_TRACE(0.00)[suse.de:+]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Flag: NO
+X-Spam-Level: 
 
-On Sun, Aug 18, 2024 at 04:17:38PM -0700, Bjorn Andersson wrote:
-> Commit 'caa855189104 ("soc: qcom: pmic_glink: Fix race during
-> initialization")' 
 
-This commit does not exist, but I think you really meant to refer to
 
-	9329933699b3 ("soc: qcom: pmic_glink: Make client-lock non-sleeping")
+Am 19.08.24 um 10:04 schrieb Thomas Zimmermann:
+> Hi
+>
+> Am 16.08.24 um 22:57 schrieb Alex Deucher:
+>> On Mon, Aug 12, 2024 at 8:10 AM Thomas Zimmermann 
+>> <tzimmermann@suse.de> wrote:
+>>> Hi
+>>>
+>>> Am 10.08.24 um 13:44 schrieb kernel test robot:
+>>>> Hi Alex,
+>>>>
+>>>> kernel test robot noticed the following build errors:
+>>>>
+>>>> [auto build test ERROR on drm-misc/drm-misc-next]
+>>>> [also build test ERROR on linus/master v6.11-rc2 next-20240809]
+>>>> [If your patch is applied to the wrong git tree, kindly drop us a 
+>>>> note.
+>>>> And when submitting patch, we suggest to use '--base' as documented in
+>>>> https://git-scm.com/docs/git-format-patch#_base_tree_information]
+>>>>
+>>>> url: 
+>>>> https://github.com/intel-lab-lkp/linux/commits/Alex-Deucher/video-aperture-match-the-pci-device-when-calling-sysfb_disable/20240810-021357
+>>>> base:   git://anongit.freedesktop.org/drm/drm-misc drm-misc-next
+>>>> patch link: 
+>>>> https://lore.kernel.org/r/20240809150327.2485848-1-alexander.deucher%40amd.com
+>>>> patch subject: [PATCH] video/aperture: match the pci device when 
+>>>> calling sysfb_disable()
+>>>> config: csky-randconfig-001-20240810 
+>>>> (https://download.01.org/0day-ci/archive/20240810/202408101951.tXyqYOzv-lkp@intel.com/config)
+>>>> compiler: csky-linux-gcc (GCC) 14.1.0
+>>>> reproduce (this is a W=1 build): 
+>>>> (https://download.01.org/0day-ci/archive/20240810/202408101951.tXyqYOzv-lkp@intel.com/reproduce)
+>>>>
+>>>> If you fix the issue in a separate patch/commit (i.e. not just a 
+>>>> new version of
+>>>> the same patch/commit), kindly add following tags
+>>>> | Reported-by: kernel test robot <lkp@intel.com>
+>>>> | Closes: 
+>>>> https://lore.kernel.org/oe-kbuild-all/202408101951.tXyqYOzv-lkp@intel.com/
+>>>>
+>>>> All errors (new ones prefixed by >>):
+>>>>
+>>>>      csky-linux-ld: drivers/video/aperture.o: in function 
+>>>> `aperture_remove_conflicting_pci_devices':
+>>>>>> aperture.c:(.text+0x222): undefined reference to 
+>>>>>> `screen_info_pci_dev'
+>>> Strange. There's a already placeholder [1] for architectures without
+>>> PCI. Otherwise the source file is listed at [2].
+>> So I dug into this, and the problem seems to be that
+>> CONFIG_SCREEN_INFO is not defined in that config.  I can't figure out
+>> how this should work in that case or why this is not a problem in
+>> drivers/firmware/sysfb.c.
+>>
+>> Something like this works:
+>> diff --git a/drivers/video/aperture.c b/drivers/video/aperture.c
+>> index 56a5a0bc2b1af..50e98210c9fe5 100644
+>> --- a/drivers/video/aperture.c
+>> +++ b/drivers/video/aperture.c
+>> @@ -347,7 +347,9 @@ EXPORT_SYMBOL(__aperture_remove_legacy_vga_devices);
+>>    */
+>>   int aperture_remove_conflicting_pci_devices(struct pci_dev *pdev,
+>> const char *name)
+>>   {
+>> +#if defined(CONFIG_SCREEN_INFO)
+>>          struct screen_info *si = &screen_info;
+>> +#endif
+>>          bool primary = false;
+>>          resource_size_t base, size;
+>>          int bar, ret = 0;
+>> @@ -355,8 +357,10 @@ int
+>> aperture_remove_conflicting_pci_devices(struct pci_dev *pdev, const
+>> char *na
+>>          if (pdev == vga_default_device())
+>>                  primary = true;
+>>
+>> +#if defined(CONFIG_SCREEN_INFO)
+>>          if (pdev == screen_info_pci_dev(si))
+>>                  sysfb_disable();
+>> +#endif
+>>
+>>          for (bar = 0; bar < PCI_STD_NUM_BARS; ++bar) {
+>>                  if (!(pci_resource_flags(pdev, bar) & IORESOURCE_MEM))
+>>
+>> But that can't be the right fix...  Any ideas?
+>
+> Thanks for investigating. I'd say we should pass the device 
+> (pdev->dev) to sysfb_disable() and  do the test there. In sysfb.c, 
+> next to sysfb_disable(), you'll find sysfb_parent_dev(), which gives 
+> the Linux device of the screen_info.
+>
+> The code then looks something like this:
+>
+> sysfb_disable(struct device *dev)
+> {
+>     if (dev && dev == sysfb_parent_dev(screen_info))
 
-and possibly also
+s/==/!=
 
-	635ce0db8956 ("soc: qcom: pmic_glink: don't traverse clients list without a lock")
+> return
+>
+>   /* else do the current code */
+> }
+>
+> there's an invocation of sysfb_disable() in drivers/of/platform.c 
+> where you can pass NULL.
+>
+> Best regards
+> Thomas
+>
+>>
+>> Alex
+>>
+>>> [1]
+>>> https://elixir.bootlin.com/linux/v6.10/source/include/linux/screen_info.h#L127 
+>>>
+>>> [2] 
+>>> https://elixir.bootlin.com/linux/v6.10/source/drivers/video/Makefile#L11 
+>>>
+>>>
+>>> Best regards
+>>> Thomas
+>>>
+>>>>      csky-linux-ld: drivers/video/aperture.o: in function 
+>>>> `devm_aperture_acquire_release':
+>>>>>> aperture.c:(.text+0x2c0): undefined reference to `screen_info'
+>>>>>> csky-linux-ld: aperture.c:(.text+0x2c4): undefined reference to 
+>>>>>> `screen_info_pci_dev'
+>>> -- 
+>>> -- 
+>>> Thomas Zimmermann
+>>> Graphics Driver Developer
+>>> SUSE Software Solutions Germany GmbH
+>>> Frankenstrasse 146, 90461 Nuernberg, Germany
+>>> GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
+>>> HRB 36809 (AG Nuernberg)
+>>>
+>
 
-here.
+-- 
+--
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Frankenstrasse 146, 90461 Nuernberg, Germany
+GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
+HRB 36809 (AG Nuernberg)
 
-> moved the pmic_glink client list under a spinlock, as
-> it is accessed by the rpmsg/glink callback, which in turn is invoked
-> from IRQ context.
-> 
-> This means that ucsi_unregister() is now called from IRQ context, which
-> isn't feasible as it's expecting a sleepable context.
-
-But this is not correct as you say above that the callback has always
-been made in IRQ context. Then this bug has been there since the
-introduction of the UCSI driver by commit
-
-	62b5412b1f4a ("usb: typec: ucsi: add PMIC Glink UCSI driver")
-
-> An effort is under
-> way to get GLINK to invoke its callbacks in a sleepable context, but
-> until then lets schedule the unregistration.
-> 
-> A side effect of this is that ucsi_unregister() can now happen
-> after the remote processor, and thereby the communication link with it, is
-> gone. pmic_glink_send() is amended with a check to avoid the resulting
-> NULL pointer dereference, but it becomes expecting to see a failing send
-
-Perhaps you can rephrase this bit ("becomes expecting to see").
-
-> upon shutting down the remote processor (e.g. during a restart following
-> a firmware crash):
-> 
->   ucsi_glink.pmic_glink_ucsi pmic_glink.ucsi.0: failed to send UCSI write request: -5
-> 
-> Fixes: caa855189104 ("soc: qcom: pmic_glink: Fix race during initialization")
-
-So this should be
-
-Fixes: 62b5412b1f4a ("usb: typec: ucsi: add PMIC Glink UCSI driver")
-
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Bjorn Andersson <quic_bjorande@quicinc.com>
- 
-> diff --git a/drivers/usb/typec/ucsi/ucsi_glink.c b/drivers/usb/typec/ucsi/ucsi_glink.c
-> index ac53a81c2a81..a33056eec83d 100644
-> --- a/drivers/usb/typec/ucsi/ucsi_glink.c
-> +++ b/drivers/usb/typec/ucsi/ucsi_glink.c
-> @@ -68,6 +68,9 @@ struct pmic_glink_ucsi {
->  
->  	struct work_struct notify_work;
->  	struct work_struct register_work;
-> +	spinlock_t state_lock;
-> +	unsigned int pdr_state;
-> +	unsigned int new_pdr_state;
-
-Should these be int to match the notify callback (and enum
-servreg_service_state)?
-
->  	u8 read_buf[UCSI_BUF_SIZE];
->  };
-> @@ -244,8 +247,22 @@ static void pmic_glink_ucsi_notify(struct work_struct *work)
->  static void pmic_glink_ucsi_register(struct work_struct *work)
->  {
->  	struct pmic_glink_ucsi *ucsi = container_of(work, struct pmic_glink_ucsi, register_work);
-> +	unsigned long flags;
-> +	unsigned int new_state;
-
-Then int here too.
-
-> +
-> +	spin_lock_irqsave(&ucsi->state_lock, flags);
-> +	new_state = ucsi->new_pdr_state;
-> +	spin_unlock_irqrestore(&ucsi->state_lock, flags);
-> +
-> +	if (ucsi->pdr_state != SERVREG_SERVICE_STATE_UP) {
-> +		if (new_state == SERVREG_SERVICE_STATE_UP)
-> +			ucsi_register(ucsi->ucsi);
-> +	} else {
-> +		if (new_state == SERVREG_SERVICE_STATE_DOWN)
-> +			ucsi_unregister(ucsi->ucsi);
-
-Do you risk a double deregistration (and UAF/double free) here?
-
-> +	}
->  
-> -	ucsi_register(ucsi->ucsi);
-> +	ucsi->pdr_state = new_state;
->  }
-
-Johan
 
