@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-69537-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69538-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 944D19567AA
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 11:55:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62BE29567AB
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 11:55:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DB419B2287C
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 09:55:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8829A1C21969
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 09:55:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAE9215B97A;
-	Mon, 19 Aug 2024 09:55:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDFEB13B592;
+	Mon, 19 Aug 2024 09:55:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MOuqEzdI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nkK9USq0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D12613B592
-	for <stable@vger.kernel.org>; Mon, 19 Aug 2024 09:55:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0226157E93
+	for <stable@vger.kernel.org>; Mon, 19 Aug 2024 09:55:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724061346; cv=none; b=fspftnO3mdU/Dhbh6kaOZwP0PFXMssqsX/hIquNhOViwU5rmEdYKrf7vPXLtNo1bgjPyG/UGw6RGYkuB6hR35dJdSeiADekMCPMGPCXhMu4ZINRftauY2zysuAXZ0cHwMh/81ciJUgRqLp+QHkB+gFlEy6uHj06LK7KlS9gAf9s=
+	t=1724061354; cv=none; b=IhMBfU2AM2JKdKXBzaNndJmw6oUoqZQBDb2Vz+rUW9FTPsbhNZ+b3aKreeNmRIfdbWJiXQd9Bq4ibPqzyxb9rvGdZyhIKWS+vt3CBCHHskxRQDGO8bY2TEOZcd89tnLdD1eriu6gJ9toZGdnAtAi+QvAp05l01JeJ4qBLNtb9Bs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724061346; c=relaxed/simple;
-	bh=sRDCqefi2JKEzy3geYHpSXPEqaAvG4xFYJrcEi0tz6M=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=i55P1cqEFUgHa9zHEvvgLq8+QLXu5Bfj5ighBN3fM5f3EdTKTP+r7hLVcE0fDHdDGs4SrEGZ9EgKFOW55EFw8a4ZfYcoUtEP2bXVAMeO0MN8tUARZekrenwcfKwinB6qdbWW6xe9plFuF0dv7faC/+GU0pL5h2gm3b/M+qjrc3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MOuqEzdI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD215C32782;
-	Mon, 19 Aug 2024 09:55:45 +0000 (UTC)
+	s=arc-20240116; t=1724061354; c=relaxed/simple;
+	bh=k5M4C2met7hGOvyxiuPz6INhkUDLQ5pnEPreB6RKPdI=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=C7RXh5y/vlFxOeS68qGM0igQg9w1YeaM8o1fFcz/RR7/83gU7Lm6r1aDn1BWvNui55zUnLnOspuHL7W/v0x5QDrYNqIHk934MaD66pv6s3/yG1bPd8MRmkNkfttUbaqwv4dvIdrLUOn8X2ichOJl7LIyX0kj3Quets1UGO2JYnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nkK9USq0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3250AC4AF0E;
+	Mon, 19 Aug 2024 09:55:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724061346;
-	bh=sRDCqefi2JKEzy3geYHpSXPEqaAvG4xFYJrcEi0tz6M=;
+	s=korg; t=1724061354;
+	bh=k5M4C2met7hGOvyxiuPz6INhkUDLQ5pnEPreB6RKPdI=;
 	h=Subject:To:Cc:From:Date:From;
-	b=MOuqEzdIlsX6lcqgXhfKCqW/3Vvhb/eec8ed5Fyri9BUV28jvM3L3kYQy/J2n8jyX
-	 MnhqKiTmQciPYElwyNIs+Q3+iY/EukIclkfEy4tVB0LlNxTMxAIaTp8RLd91Nu3+ke
-	 HiQk04C7RGC1AXatNdrg3v51g8XRevxfdtKnU9qU=
-Subject: FAILED: patch "[PATCH] btrfs: check delayed refs when we're checking if a ref exists" failed to apply to 5.4-stable tree
-To: josef@toxicpanda.com,dsterba@suse.com,fdmanana@suse.com
+	b=nkK9USq0iBAltJyQWAZFVzLHitfk+V8Bs8dIhpdwYRrQzv/3HUSL1/UgENJj7GRm9
+	 ybcLyiXgnlOOGHH3i9nh3j9DGfwYuOOIwaRGmRoAMjdJ2KP4lHnmbLRmYuLaAJqaJj
+	 LWotuCY73oKPxfDQi7H9JMxZWiGXzSFmTRAoHE7I=
+Subject: FAILED: patch "[PATCH] btrfs: zoned: properly take lock to read/update block group's" failed to apply to 5.15-stable tree
+To: naohiro.aota@wdc.com,dsterba@suse.com,johannes.thumshirn@wdc.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 Aug 2024 11:55:33 +0200
-Message-ID: <2024081933-lyricism-manly-3272@gregkh>
+Date: Mon, 19 Aug 2024 11:55:51 +0200
+Message-ID: <2024081951-enrich-hesitate-0db0@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,42 +53,42 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 42fac187b5c746227c92d024f1caf33bc1d337e4
+git cherry-pick -x e30729d4bd4001881be4d1ad4332a5d4985398f8
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081933-lyricism-manly-3272@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081951-enrich-hesitate-0db0@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
-42fac187b5c7 ("btrfs: check delayed refs when we're checking if a ref exists")
-e094f48040cd ("btrfs: change root->root_key.objectid to btrfs_root_id()")
-44cc2e38e67b ("btrfs: stop referencing btrfs_delayed_data_ref directly")
-cf4f04325b2b ("btrfs: move ->parent and ->ref_root into btrfs_delayed_ref_node")
-12390e42b69d ("btrfs: rename ->len to ->num_bytes in btrfs_ref")
-1bff6d4f8737 ("btrfs: simplify delayed ref tracepoints")
-0ea4703cc27e ("btrfs: move ref specific initialization into init_delayed_ref_common")
-0509cc56619d ("btrfs: initialize btrfs_delayed_ref_head with btrfs_ref")
-da3c54854197 ("btrfs: pass btrfs_ref to init_delayed_ref_common")
-f2e69a77aa51 ("btrfs: move ref_root into btrfs_ref")
-4d09b4e942bc ("btrfs: do not use a function to initialize btrfs_ref")
-d3fbb00f5e21 ("btrfs: embed data_ref and tree_ref in btrfs_delayed_ref_node")
-0eea355fc0f4 ("btrfs: add a helper to get the delayed ref node from the data/tree ref")
-6de3595473b0 ("btrfs: compression: add error handling for missed page cache")
-01b69bf9906b ("btrfs: convert put_file_data() to folios")
-073bda7a5417 ("btrfs: zoned: add ASSERT and WARN for EXTENT_BUFFER_ZONED_ZEROOUT handling")
-141fb8cd206a ("btrfs: qgroup: correctly model root qgroup rsv in convert")
-ef5a05c55704 ("btrfs: remove SLAB_MEM_SPREAD flag use")
-06c9564980f1 ("btrfs: use KMEM_CACHE() to create btrfs_free_space cache")
-b2c7d55e4c4c ("btrfs: use KMEM_CACHE() to create delayed ref caches")
+e30729d4bd40 ("btrfs: zoned: properly take lock to read/update block group's zoned variables")
+8cd44dd1d17a ("btrfs: zoned: fix zone_unusable accounting on making block group read-write again")
+b9fd2affe4aa ("btrfs: zoned: fix initial free space detection")
+6a8ebc773ef6 ("btrfs: zoned: no longer count fresh BG region as zone unusable")
+fa2068d7e922 ("btrfs: zoned: count fresh BG region as zone unusable")
+3349b57fd47b ("btrfs: convert block group bit field to use bit helpers")
+9d4b0a129a0d ("btrfs: simplify arguments of btrfs_update_space_info and rename")
+6ca64ac27631 ("btrfs: zoned: fix mounting with conventional zones")
+ced8ecf026fd ("btrfs: fix space cache corruption and potential double allocations")
+b09315139136 ("btrfs: zoned: activate metadata block group on flush_space")
+6a921de58992 ("btrfs: zoned: introduce space_info->active_total_bytes")
+393f646e34c1 ("btrfs: zoned: finish least available block group on data bg allocation")
+bb9950d3df71 ("btrfs: let can_allocate_chunk return error")
+f6fca3917b4d ("btrfs: store chunk size in space-info struct")
+b8bea09a456f ("btrfs: add trace event for submitted RAID56 bio")
+c67c68eb57f1 ("btrfs: use integrated bitmaps for btrfs_raid_bio::dbitmap and finish_pbitmap")
+143823cf4d5a ("btrfs: fix typos in comments")
+b3a3b0255797 ("btrfs: zoned: drop optimization of zone finish")
+343d8a30851c ("btrfs: zoned: prevent allocation from previous data relocation BG")
+d70cbdda75da ("btrfs: zoned: consolidate zone finish functions")
 
 thanks,
 
@@ -96,254 +96,82 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 42fac187b5c746227c92d024f1caf33bc1d337e4 Mon Sep 17 00:00:00 2001
-From: Josef Bacik <josef@toxicpanda.com>
-Date: Thu, 11 Apr 2024 16:41:20 -0400
-Subject: [PATCH] btrfs: check delayed refs when we're checking if a ref exists
+From e30729d4bd4001881be4d1ad4332a5d4985398f8 Mon Sep 17 00:00:00 2001
+From: Naohiro Aota <naohiro.aota@wdc.com>
+Date: Thu, 1 Aug 2024 16:47:52 +0900
+Subject: [PATCH] btrfs: zoned: properly take lock to read/update block group's
+ zoned variables
 
-In the patch 78c52d9eb6b7 ("btrfs: check for refs on snapshot delete
-resume") I added some code to handle file systems that had been
-corrupted by a bug that incorrectly skipped updating the drop progress
-key while dropping a snapshot.  This code would check to see if we had
-already deleted our reference for a child block, and skip the deletion
-if we had already.
+__btrfs_add_free_space_zoned() references and modifies bg's alloc_offset,
+ro, and zone_unusable, but without taking the lock. It is mostly safe
+because they monotonically increase (at least for now) and this function is
+mostly called by a transaction commit, which is serialized by itself.
 
-Unfortunately there is a bug, as the check would only check the on-disk
-references.  I made an incorrect assumption that blocks in an already
-deleted snapshot that was having the deletion resume on mount wouldn't
-be modified.
+Still, taking the lock is a safer and correct option and I'm going to add a
+change to reset zone_unusable while a block group is still alive. So, add
+locking around the operations.
 
-If we have 2 pending deleted snapshots that share blocks, we can easily
-modify the rules for a block.  Take the following example
-
-subvolume a exists, and subvolume b is a snapshot of subvolume a.  They
-share references to block 1.  Block 1 will have 2 full references, one
-for subvolume a and one for subvolume b, and it belongs to subvolume a
-(btrfs_header_owner(block 1) == subvolume a).
-
-When deleting subvolume a, we will drop our full reference for block 1,
-and because we are the owner we will drop our full reference for all of
-block 1's children, convert block 1 to FULL BACKREF, and add a shared
-reference to all of block 1's children.
-
-Then we will start the snapshot deletion of subvolume b.  We look up the
-extent info for block 1, which checks delayed refs and tells us that
-FULL BACKREF is set, so sets parent to the bytenr of block 1.  However
-because this is a resumed snapshot deletion, we call into
-check_ref_exists().  Because check_ref_exists() only looks at the disk,
-it doesn't find the shared backref for the child of block 1, and thus
-returns 0 and we skip deleting the reference for the child of block 1
-and continue.  This orphans the child of block 1.
-
-The fix is to lookup the delayed refs, similar to what we do in
-btrfs_lookup_extent_info().  However we only care about whether the
-reference exists or not.  If we fail to find our reference on disk, go
-look up the bytenr in the delayed refs, and if it exists look for an
-existing ref in the delayed ref head.  If that exists then we know we
-can delete the reference safely and carry on.  If it doesn't exist we
-know we have to skip over this block.
-
-This bug has existed since I introduced this fix, however requires
-having multiple deleted snapshots pending when we unmount.  We noticed
-this in production because our shutdown path stops the container on the
-system, which deletes a bunch of subvolumes, and then reboots the box.
-This gives us plenty of opportunities to hit this issue.  Looking at the
-history we've seen this occasionally in production, but we had a big
-spike recently thanks to faster machines getting jobs with multiple
-subvolumes in the job.
-
-Chris Mason wrote a reproducer which does the following
-
-mount /dev/nvme4n1 /btrfs
-btrfs subvol create /btrfs/s1
-simoop -E -f 4k -n 200000 -z /btrfs/s1
-while(true) ; do
-	btrfs subvol snap /btrfs/s1 /btrfs/s2
-	simoop -f 4k -n 200000 -r 10 -z /btrfs/s2
-	btrfs subvol snap /btrfs/s2 /btrfs/s3
-	btrfs balance start -dusage=80 /btrfs
-	btrfs subvol del /btrfs/s2 /btrfs/s3
-	umount /btrfs
-	btrfsck /dev/nvme4n1 || exit 1
-	mount /dev/nvme4n1 /btrfs
-done
-
-On the second loop this would fail consistently, with my patch it has
-been running for hours and hasn't failed.
-
-I also used dm-log-writes to capture the state of the failure so I could
-debug the problem.  Using the existing failure case to test my patch
-validated that it fixes the problem.
-
-Fixes: 78c52d9eb6b7 ("btrfs: check for refs on snapshot delete resume")
-CC: stable@vger.kernel.org # 5.4+
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Fixes: 169e0da91a21 ("btrfs: zoned: track unusable bytes for zones")
+CC: stable@vger.kernel.org # 5.15+
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
 Signed-off-by: David Sterba <dsterba@suse.com>
 
-diff --git a/fs/btrfs/delayed-ref.c b/fs/btrfs/delayed-ref.c
-index 2ac9296edccb..06a9e0542d70 100644
---- a/fs/btrfs/delayed-ref.c
-+++ b/fs/btrfs/delayed-ref.c
-@@ -1134,6 +1134,73 @@ btrfs_find_delayed_ref_head(struct btrfs_delayed_ref_root *delayed_refs, u64 byt
- 	return find_ref_head(delayed_refs, bytenr, false);
+diff --git a/fs/btrfs/free-space-cache.c b/fs/btrfs/free-space-cache.c
+index f5996a43db24..eaa1dbd31352 100644
+--- a/fs/btrfs/free-space-cache.c
++++ b/fs/btrfs/free-space-cache.c
+@@ -2697,15 +2697,16 @@ static int __btrfs_add_free_space_zoned(struct btrfs_block_group *block_group,
+ 	u64 offset = bytenr - block_group->start;
+ 	u64 to_free, to_unusable;
+ 	int bg_reclaim_threshold = 0;
+-	bool initial = ((size == block_group->length) && (block_group->alloc_offset == 0));
++	bool initial;
+ 	u64 reclaimable_unusable;
+ 
+-	WARN_ON(!initial && offset + size > block_group->zone_capacity);
++	spin_lock(&block_group->lock);
+ 
++	initial = ((size == block_group->length) && (block_group->alloc_offset == 0));
++	WARN_ON(!initial && offset + size > block_group->zone_capacity);
+ 	if (!initial)
+ 		bg_reclaim_threshold = READ_ONCE(sinfo->bg_reclaim_threshold);
+ 
+-	spin_lock(&ctl->tree_lock);
+ 	if (!used)
+ 		to_free = size;
+ 	else if (initial)
+@@ -2718,7 +2719,9 @@ static int __btrfs_add_free_space_zoned(struct btrfs_block_group *block_group,
+ 		to_free = offset + size - block_group->alloc_offset;
+ 	to_unusable = size - to_free;
+ 
++	spin_lock(&ctl->tree_lock);
+ 	ctl->free_space += to_free;
++	spin_unlock(&ctl->tree_lock);
+ 	/*
+ 	 * If the block group is read-only, we should account freed space into
+ 	 * bytes_readonly.
+@@ -2727,11 +2730,8 @@ static int __btrfs_add_free_space_zoned(struct btrfs_block_group *block_group,
+ 		block_group->zone_unusable += to_unusable;
+ 		WARN_ON(block_group->zone_unusable > block_group->length);
+ 	}
+-	spin_unlock(&ctl->tree_lock);
+ 	if (!used) {
+-		spin_lock(&block_group->lock);
+ 		block_group->alloc_offset -= size;
+-		spin_unlock(&block_group->lock);
+ 	}
+ 
+ 	reclaimable_unusable = block_group->zone_unusable -
+@@ -2745,6 +2745,8 @@ static int __btrfs_add_free_space_zoned(struct btrfs_block_group *block_group,
+ 		btrfs_mark_bg_to_reclaim(block_group);
+ 	}
+ 
++	spin_unlock(&block_group->lock);
++
+ 	return 0;
  }
  
-+static int find_comp(struct btrfs_delayed_ref_node *entry, u64 root, u64 parent)
-+{
-+	int type = parent ? BTRFS_SHARED_BLOCK_REF_KEY : BTRFS_TREE_BLOCK_REF_KEY;
-+
-+	if (type < entry->type)
-+		return -1;
-+	if (type > entry->type)
-+		return 1;
-+
-+	if (type == BTRFS_TREE_BLOCK_REF_KEY) {
-+		if (root < entry->ref_root)
-+			return -1;
-+		if (root > entry->ref_root)
-+			return 1;
-+	} else {
-+		if (parent < entry->parent)
-+			return -1;
-+		if (parent > entry->parent)
-+			return 1;
-+	}
-+	return 0;
-+}
-+
-+/*
-+ * Check to see if a given root/parent reference is attached to the head.  This
-+ * only checks for BTRFS_ADD_DELAYED_REF references that match, as that
-+ * indicates the reference exists for the given root or parent.  This is for
-+ * tree blocks only.
-+ *
-+ * @head: the head of the bytenr we're searching.
-+ * @root: the root objectid of the reference if it is a normal reference.
-+ * @parent: the parent if this is a shared backref.
-+ */
-+bool btrfs_find_delayed_tree_ref(struct btrfs_delayed_ref_head *head,
-+				 u64 root, u64 parent)
-+{
-+	struct rb_node *node;
-+	bool found = false;
-+
-+	lockdep_assert_held(&head->mutex);
-+
-+	spin_lock(&head->lock);
-+	node = head->ref_tree.rb_root.rb_node;
-+	while (node) {
-+		struct btrfs_delayed_ref_node *entry;
-+		int ret;
-+
-+		entry = rb_entry(node, struct btrfs_delayed_ref_node, ref_node);
-+		ret = find_comp(entry, root, parent);
-+		if (ret < 0) {
-+			node = node->rb_left;
-+		} else if (ret > 0) {
-+			node = node->rb_right;
-+		} else {
-+			/*
-+			 * We only want to count ADD actions, as drops mean the
-+			 * ref doesn't exist.
-+			 */
-+			if (entry->action == BTRFS_ADD_DELAYED_REF)
-+				found = true;
-+			break;
-+		}
-+	}
-+	spin_unlock(&head->lock);
-+	return found;
-+}
-+
- void __cold btrfs_delayed_ref_exit(void)
- {
- 	kmem_cache_destroy(btrfs_delayed_ref_head_cachep);
-diff --git a/fs/btrfs/delayed-ref.h b/fs/btrfs/delayed-ref.h
-index ef15e998be03..05f634eb472d 100644
---- a/fs/btrfs/delayed-ref.h
-+++ b/fs/btrfs/delayed-ref.h
-@@ -389,6 +389,8 @@ void btrfs_dec_delayed_refs_rsv_bg_updates(struct btrfs_fs_info *fs_info);
- int btrfs_delayed_refs_rsv_refill(struct btrfs_fs_info *fs_info,
- 				  enum btrfs_reserve_flush_enum flush);
- bool btrfs_check_space_for_delayed_refs(struct btrfs_fs_info *fs_info);
-+bool btrfs_find_delayed_tree_ref(struct btrfs_delayed_ref_head *head,
-+				 u64 root, u64 parent);
- 
- static inline u64 btrfs_delayed_ref_owner(struct btrfs_delayed_ref_node *node)
- {
-diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
-index ff9f0d41987e..feec49e6f9c8 100644
---- a/fs/btrfs/extent-tree.c
-+++ b/fs/btrfs/extent-tree.c
-@@ -5472,23 +5472,62 @@ static int check_ref_exists(struct btrfs_trans_handle *trans,
- 			    struct btrfs_root *root, u64 bytenr, u64 parent,
- 			    int level)
- {
-+	struct btrfs_delayed_ref_root *delayed_refs;
-+	struct btrfs_delayed_ref_head *head;
- 	struct btrfs_path *path;
- 	struct btrfs_extent_inline_ref *iref;
- 	int ret;
-+	bool exists = false;
- 
- 	path = btrfs_alloc_path();
- 	if (!path)
- 		return -ENOMEM;
--
-+again:
- 	ret = lookup_extent_backref(trans, path, &iref, bytenr,
- 				    root->fs_info->nodesize, parent,
- 				    btrfs_root_id(root), level, 0);
-+	if (ret != -ENOENT) {
-+		/*
-+		 * If we get 0 then we found our reference, return 1, else
-+		 * return the error if it's not -ENOENT;
-+		 */
-+		btrfs_free_path(path);
-+		return (ret < 0 ) ? ret : 1;
-+	}
-+
-+	/*
-+	 * We could have a delayed ref with this reference, so look it up while
-+	 * we're holding the path open to make sure we don't race with the
-+	 * delayed ref running.
-+	 */
-+	delayed_refs = &trans->transaction->delayed_refs;
-+	spin_lock(&delayed_refs->lock);
-+	head = btrfs_find_delayed_ref_head(delayed_refs, bytenr);
-+	if (!head)
-+		goto out;
-+	if (!mutex_trylock(&head->mutex)) {
-+		/*
-+		 * We're contended, means that the delayed ref is running, get a
-+		 * reference and wait for the ref head to be complete and then
-+		 * try again.
-+		 */
-+		refcount_inc(&head->refs);
-+		spin_unlock(&delayed_refs->lock);
-+
-+		btrfs_release_path(path);
-+
-+		mutex_lock(&head->mutex);
-+		mutex_unlock(&head->mutex);
-+		btrfs_put_delayed_ref_head(head);
-+		goto again;
-+	}
-+
-+	exists = btrfs_find_delayed_tree_ref(head, root->root_key.objectid, parent);
-+	mutex_unlock(&head->mutex);
-+out:
-+	spin_unlock(&delayed_refs->lock);
- 	btrfs_free_path(path);
--	if (ret == -ENOENT)
--		return 0;
--	if (ret < 0)
--		return ret;
--	return 1;
-+	return exists ? 1 : 0;
- }
- 
- /*
 
 
