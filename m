@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-69555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31E4B956832
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 12:21:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E55AB956833
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 12:21:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 56C0E1C21169
-	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 10:21:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3D8FAB21967
+	for <lists+stable@lfdr.de>; Mon, 19 Aug 2024 10:21:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8CC215E5CC;
-	Mon, 19 Aug 2024 10:21:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8899B1607AD;
+	Mon, 19 Aug 2024 10:21:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NH5zUaJC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZxREmrUj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 785C92208E
-	for <stable@vger.kernel.org>; Mon, 19 Aug 2024 10:21:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48C4715FD04
+	for <stable@vger.kernel.org>; Mon, 19 Aug 2024 10:21:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724062887; cv=none; b=eHGflEN+Oz1lrfVfpvp5y1Iy/VXdhf276YI4tUEXsK3geTcpHjZq27T+LyzezRTKTc+ciQc0DIYCQKwWKfY5/xg5o9Kj5Z56YarLdNu1zyRK1vDO4yRvn0HAbqH0oV3THIh2kg0lrcxI0w5CmTzRvXNo7eoHCT8YpQRZbkeWYYg=
+	t=1724062890; cv=none; b=B4wcqdSAQNUdtHopuAsmL8aUvqDe+j+oDvyAFQxi7rjbsMOaqMANd88BBk9QFj1/GIuz/v51s6t+SBDmc1rYXtR5CW7FDS/xDciA5B76rbpZMS//JtSBdRDJD8NdZQ6+tzi4qtcBAPFWVrqMFEXtCCuw+tSX33MXDoenF+Uf7j8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724062887; c=relaxed/simple;
-	bh=7UYtyS1lcfTibFQWu9IRicVTMqGAYOUtHY/DtYMMq1k=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=pCngAYImT18Xv0MNbmEeKyNcvvo+3jKFbAExks5UHwNZZ3J0VaoAxTUUi/Q3zItz4okVgAvdttRRUsCK212czgGNbysGYrgIQu5gNlljLnXflY9rvCGbTIaHAuOLALb/PRRej1nmu/d/6ik9CTrFsTIKJTrI5IAbxJnKM1EYIkc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NH5zUaJC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E033CC32782;
-	Mon, 19 Aug 2024 10:21:26 +0000 (UTC)
+	s=arc-20240116; t=1724062890; c=relaxed/simple;
+	bh=lkXE37Jpd+veefGrJDgOVP8dHTGQ9lGFy8CUsCpI730=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Sc6jSPuBSvnl5JiDdf9aUe/TE+wWCptpkTEZfuoNxnQgtqymAohNZrY64f2nIEQDXNe4+eiH+ymy3c3uTsVtjgdhx04fJtgZlWRieDU8JIrhfx51xe33S0pZgpOu0e22pxosgTVEFuj+8O/FXyRnI0v848pXXSUrlbxxGEGHkyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZxREmrUj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C131BC32782;
+	Mon, 19 Aug 2024 10:21:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724062887;
-	bh=7UYtyS1lcfTibFQWu9IRicVTMqGAYOUtHY/DtYMMq1k=;
+	s=korg; t=1724062890;
+	bh=lkXE37Jpd+veefGrJDgOVP8dHTGQ9lGFy8CUsCpI730=;
 	h=Subject:To:Cc:From:Date:From;
-	b=NH5zUaJCE1daTd2QDU6gKCiVgGyFDOjIFX1Hq/9uOC8DtCvWVR89aJFmHDJZwQrQK
-	 PEgzskrqXfrWN6gdfzOrl8eCPF/ZAUZJ6k5npu4ezvP9a8oBi3fd0ykDBSh4SYhWax
-	 OAYGe605Ac0SLFr5UDTeiK3ZpLT35IWWNTa4CQhk=
-Subject: FAILED: patch "[PATCH] drm/amd/amdgpu: command submission parser for JPEG" failed to apply to 6.1-stable tree
+	b=ZxREmrUjMhK6dcjSNdaJqIRjhb+e1KKBrSG86Iy7ckvw/h8vkKlevgLCoS+P5OBJ5
+	 vwCJDL0GhLTPUnCdcPl2GlYEPFX3J0MYV5Xek95G/8Vj95tsdcEfXWLiopC9dgW1sw
+	 nCP+ujVPLnduLcn3sCUL7S06JRAH0yXZ++/gpL4g=
+Subject: FAILED: patch "[PATCH] drm/amd/amdgpu: command submission parser for JPEG" failed to apply to 5.15-stable tree
 To: David.Wu3@amd.com,alexander.deucher@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 19 Aug 2024 12:21:21 +0200
-Message-ID: <2024081921-corroding-scrabble-432d@gregkh>
+Date: Mon, 19 Aug 2024 12:21:22 +0200
+Message-ID: <2024081922-hammock-cloning-41b2@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 470516c2925493594a690bc4d05b1f4471d9f996
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081921-corroding-scrabble-432d@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024081922-hammock-cloning-41b2@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -80,6 +80,15 @@ e684e654eba9 ("drm/amdgpu/jpeg: add jpeg support for VCN4_0_3")
 bf35dbc13585 ("drm/amdgpu/jpeg: enable jpeg v4_0 for sriov")
 86e8255f941e ("drm/amdgpu: add JPEG 4.0 RAS poison consumption handling")
 533174580133 ("drm/amdgpu: add RAS error query for JPEG 4.0")
+f4b92fcd740d ("drm/amdgpu: cleanup CS pass2 v6")
+d4e8ad908b20 ("drm/amdgpu: reorder CS code")
+88c98d54b220 ("drm/amdgpu: cleanup CS init/fini and pass1")
+dd80d9c8eeca ("drm/amdgpu: revert "partial revert "remove ctx->lock" v2"")
+9b94c609cc17 ("drm/amdgpu: remove SRIOV and MCBP dependencies from the CS")
+63127922e155 ("drm/amdgpu/vcn: Add MMSCH v4_0 support for sriov")
+aa44beb5f015 ("drm/amdgpu/vcn: Add sriov VCN v4_0 unified queue support")
+dc5f3829a752 ("drm/amdgpu: sriov remove vcn_4_0 and jpeg_4_0")
+5df79aeb6e08 ("drm/amdgpu: Protect the amdgpu_bo_list list with a mutex v2")
 
 thanks,
 
