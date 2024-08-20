@@ -1,172 +1,124 @@
-Return-Path: <stable+bounces-69702-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69703-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43B0D9582FE
-	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 11:43:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1BF4958302
+	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 11:43:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A7D41C231BB
-	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 09:43:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6EEC8285BE2
+	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 09:43:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E56EF18D637;
-	Tue, 20 Aug 2024 09:40:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2858718C027;
+	Tue, 20 Aug 2024 09:41:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="hS8TOmDU"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="DL58zEpi"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02B7818CC1D
-	for <stable@vger.kernel.org>; Tue, 20 Aug 2024 09:40:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1EB518C004
+	for <stable@vger.kernel.org>; Tue, 20 Aug 2024 09:41:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724146830; cv=none; b=Aux1psTEJcprSvX6MbhrW8+jOgPjg+JkfXQsbhIqfw61sALs1Zk/EVp4nmGllRHe3Zrtj1v1y9PlYi/vA12pMNTRSap/4uVDvNsEBkESEuYpy5PnNWlphiw6e+iYT6fYqK2a7SB8XgztBRyvtvX+tqrbm686m9NMl7mSn9RznF4=
+	t=1724146889; cv=none; b=RzDy28Il9De68/XdAJDSi9bJNoYtLTMgwf5GAsrCHYwxUoHGEozb6NyX03MLBkeiWaU3y5ruQ9xJees8VRexDnUTh2p3oqf9D99y/yRJa+nuM5Pw0S/GjRmU3swo2Mf9tqObF+akgx0GaS5mAa1Ep6u5NYEYxi6pQSEF0yPb/io=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724146830; c=relaxed/simple;
-	bh=EoJtIsmmU9SrguY88s76AA2qh+Iy9f5umyZmJzjJwKE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FBYRgYqSG0lte7aoadA/1n7Pw+2ROkeZZn3KFJhC1hXt2YvqeQELUvqwUhX3jLrlZ0i8pQPpmFnonkAWlxo3CCbwuCIfDskQ9GxkOUVud3VkqZ+xyzRDWofP+oDW83VIk9xOiYp0pj7otQ6hQTy9D9FhCaozWCS7VSXAhHBwMRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=hS8TOmDU; arc=none smtp.client-ip=209.85.218.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-a8374e6a6fbso647706166b.3
-        for <stable@vger.kernel.org>; Tue, 20 Aug 2024 02:40:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1724146827; x=1724751627; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ml5kmP2AZ4rRTo1ml+BArOzT8EmV3i5O4Bq4nH6wu1k=;
-        b=hS8TOmDU8+WcrlVNcsMtWg4G0Q3xKdeNqb8Oki82bIESDLoknHE94gRzJj3HybvF7a
-         97aewSFE0PWzUboXdSjkjETAClQR5am4dO3RYBPr4Ilyiz84Ia+RtZsKL8L7cD8PVs4I
-         wSeX4vkweWNgK1ayA6T+icQY08lDhyyyk/ts/qsm6PWHx4DSCB/LMsEWlZQiUuqC0uYN
-         OTjmNj0/yyyUToEM94qPWpsbyDN4ldwFFJodumftLeFAND32sSsdhagV5IoEshgpj9HP
-         qpJ7VGM3DgrqOnePdvbgMO4HC81yIZTneN4vBysftc1ffLpimvXpC0eLINQ6McpLQMMI
-         bwtA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724146827; x=1724751627;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ml5kmP2AZ4rRTo1ml+BArOzT8EmV3i5O4Bq4nH6wu1k=;
-        b=GhLdvzlJErTT2gVGTy5LK5UPCNb/2kEqrvIgv0jr6Vpg5naUrhTH4G6lmGsuWf/vRy
-         xnKd7H0HX8FbSBOXMSZWKuoW603QY1xS2o/cBRIXwknupBiJnIqdMwriu9rx7T3ltr5X
-         bDyQPVynm9bytYBIs6lyrKMmXOSm5Bv2JRTtd/f89NPX2TLFcuMGe97TatXexAs/2MpS
-         tPg1zm4vkJbF8bZ6RfFVAbbeg+/pLmLfnOeI0YDllVUl0WuagpC8OsNd6hswoK07MoeU
-         wG+HYvl6oXa8rSlSG1IN2lGOkIuaDgexymS8o8kl6vb22JbnBo6TGSWRCSqtkzSboV2X
-         KjmA==
-X-Forwarded-Encrypted: i=1; AJvYcCWM+cNdDjp6B9g2tNK/4elRLCdRQ1OFzSx16g7wKcKJ+rfiBuZcZp7ZxUbMZO0D0/KKUVLkpG4cCdOP4k6QBdqlQ+h/LBJm
-X-Gm-Message-State: AOJu0Yy9IzvC9vlH0BWP6zKvP963h6x5OWPSvOO8z5zd6X+g0HF6oFm4
-	X4E9U8cMJaK8SiaEgBJp2VLA7l4NcoYyxxlxguWJoa0q6Xu0SY0tG7Jest6A9DI=
-X-Google-Smtp-Source: AGHT+IFWIcPWJD7AezJob3CaaT6BEKEOeCZ2xK2iLUqEJ3Fjit54kT8/4nWS9N5eeGL5wXOTPMbcfw==
-X-Received: by 2002:a17:907:e207:b0:a7a:bad3:e5b9 with SMTP id a640c23a62f3a-a83928a9ea4mr984286166b.11.1724146827093;
-        Tue, 20 Aug 2024 02:40:27 -0700 (PDT)
-Received: from krzk-bin.. ([178.197.215.209])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a83838d023dsm733613366b.64.2024.08.20.02.40.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Aug 2024 02:40:26 -0700 (PDT)
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To: Anup Patel <anup@brainfault.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Atish Patra <atishp@rivosinc.com>,
-	linux-pm@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	stable@vger.kernel.org
-Subject: [PATCH v2 1/2] cpuidle: riscv-sbi: Use scoped device node handling to fix missing of_node_put
-Date: Tue, 20 Aug 2024 11:40:22 +0200
-Message-ID: <20240820094023.61155-1-krzysztof.kozlowski@linaro.org>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1724146889; c=relaxed/simple;
+	bh=9g/KHnHJF7yG5Q8k/14N+81RO1cILvgvpPHqDnQN9zc=;
+	h=Message-ID:Date:MIME-Version:To:From:Cc:Subject:Content-Type; b=G39+ViRQpCs55AiFxHsPz/vlBjrJxBRx+uvha+ZZxe1ViSCan9RUs1HeD14Iz7pWEkm1HWQBk+lJooor16Uir/ScoRrC9BzHT1UXxBb7T8p4RHiPi3nHBAu4iYHLXKhHiavIBH0LzpQgnebNnxAx8s9rAq6ncPeGZhF8xB2AZVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=DL58zEpi; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47JN9BFR018330
+	for <stable@vger.kernel.org>; Tue, 20 Aug 2024 09:41:26 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+	message-id:date:mime-version:to:from:cc:subject:content-type
+	:content-transfer-encoding; s=pp1; bh=9g/KHnHJF7yG5Q8k/14N+81RO1
+	cILvgvpPHqDnQN9zc=; b=DL58zEpijTUxf2qIKkxujBayWmriOE7j8a9OtTjbH5
+	JuxgDrMAMEZxEkX0AYeIbgA4ybLth3S1wg6Tz7NQKeqww3gFwO2MtUB38Jo2kzzk
+	cak4uGgn5MNr/9TBkvWJy+34eM0DJ7hRWn92emXCkAtSyfaSDe2+kOXqCHZ7eftw
+	0V8PRPuBbMQNdGskRWzLWnmrBXD4WqCsFD4IwzHk8Hpe8/aQvQNo1uH+luLIuqB9
+	F2uwCSMbUNzAJyCY2cIkv3p1eQI/LuJ4QRsrxtnA8oimEdQtgnU5EbZ6q4Z9up8M
+	nKnZfpf4Sl6owq2FGHjNs8D9/mnG6K49l2LecYeYW2ag==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 412mb5n0d9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <stable@vger.kernel.org>; Tue, 20 Aug 2024 09:41:25 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 47K5UIZt013098
+	for <stable@vger.kernel.org>; Tue, 20 Aug 2024 09:41:25 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 41366u2fhe-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <stable@vger.kernel.org>; Tue, 20 Aug 2024 09:41:24 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 47K9fJKT56164834
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 20 Aug 2024 09:41:21 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 77F3920040;
+	Tue, 20 Aug 2024 09:41:19 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F2A2220043;
+	Tue, 20 Aug 2024 09:41:18 +0000 (GMT)
+Received: from [9.171.72.146] (unknown [9.171.72.146])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 20 Aug 2024 09:41:18 +0000 (GMT)
+Message-ID: <dd70606a-8121-4631-a799-86400e9a3c8f@linux.ibm.com>
+Date: Tue, 20 Aug 2024 11:41:18 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US, de-DE
+To: stable@vger.kernel.org
+From: =?UTF-8?Q?Jan_H=C3=B6ppner?= <hoeppner@linux.ibm.com>
+Cc: Stefan Haberland <sth@linux.ibm.com>
+Subject: "s390/dasd: Remove DMA alignment" for stable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: EKZ3f1a34CunPNoQ_Y_h6l-F_UBYbaic
+X-Proofpoint-GUID: EKZ3f1a34CunPNoQ_Y_h6l-F_UBYbaic
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-08-20_09,2024-08-19_03,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 spamscore=0
+ priorityscore=1501 adultscore=0 bulkscore=0 impostorscore=0 malwarescore=0
+ mlxlogscore=657 phishscore=0 mlxscore=0 lowpriorityscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2407110000
+ definitions=main-2408200070
 
-Two return statements in sbi_cpuidle_dt_init_states() did not drop the
-OF node reference count.  Solve the issue and simplify entire error
-handling with scoped/cleanup.h.
+Hi,
 
-Fixes: 6abf32f1d9c5 ("cpuidle: Add RISC-V SBI CPU idle driver")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+the stable tag was missing for the following commit:
+commit 2a07bb64d801 ("s390/dasd: Remove DMA alignment")
 
----
+The change needs to be applied for kernel 6.0+ essentially reverting
+bc792884b76f ("s390/dasd: Establish DMA alignment").
 
-Changes in v2:
-1. Re-write commit msg, because this is actually a fix.
----
- drivers/cpuidle/cpuidle-riscv-sbi.c | 21 +++++++--------------
- 1 file changed, 7 insertions(+), 14 deletions(-)
+The patch fixes filesystem errors especially for XFS when DASD devices are formatted
+with a blocksize smaller than 4096 bytes.
 
-diff --git a/drivers/cpuidle/cpuidle-riscv-sbi.c b/drivers/cpuidle/cpuidle-riscv-sbi.c
-index a6e123dfe394..5bb3401220d2 100644
---- a/drivers/cpuidle/cpuidle-riscv-sbi.c
-+++ b/drivers/cpuidle/cpuidle-riscv-sbi.c
-@@ -8,6 +8,7 @@
- 
- #define pr_fmt(fmt) "cpuidle-riscv-sbi: " fmt
- 
-+#include <linux/cleanup.h>
- #include <linux/cpuhotplug.h>
- #include <linux/cpuidle.h>
- #include <linux/cpumask.h>
-@@ -236,19 +237,16 @@ static int sbi_cpuidle_dt_init_states(struct device *dev,
- {
- 	struct sbi_cpuidle_data *data = per_cpu_ptr(&sbi_cpuidle_data, cpu);
- 	struct device_node *state_node;
--	struct device_node *cpu_node;
- 	u32 *states;
- 	int i, ret;
- 
--	cpu_node = of_cpu_device_node_get(cpu);
-+	struct device_node *cpu_node __free(device_node) = of_cpu_device_node_get(cpu);
- 	if (!cpu_node)
- 		return -ENODEV;
- 
- 	states = devm_kcalloc(dev, state_count, sizeof(*states), GFP_KERNEL);
--	if (!states) {
--		ret = -ENOMEM;
--		goto fail;
--	}
-+	if (!states)
-+		return -ENOMEM;
- 
- 	/* Parse SBI specific details from state DT nodes */
- 	for (i = 1; i < state_count; i++) {
-@@ -264,10 +262,8 @@ static int sbi_cpuidle_dt_init_states(struct device *dev,
- 
- 		pr_debug("sbi-state %#x index %d\n", states[i], i);
- 	}
--	if (i != state_count) {
--		ret = -ENODEV;
--		goto fail;
--	}
-+	if (i != state_count)
-+		return -ENODEV;
- 
- 	/* Initialize optional data, used for the hierarchical topology. */
- 	ret = sbi_dt_cpu_init_topology(drv, data, state_count, cpu);
-@@ -277,10 +273,7 @@ static int sbi_cpuidle_dt_init_states(struct device *dev,
- 	/* Store states in the per-cpu struct. */
- 	data->states = states;
- 
--fail:
--	of_node_put(cpu_node);
--
--	return ret;
-+	return 0;
- }
- 
- static void sbi_cpuidle_deinit_cpu(int cpu)
--- 
-2.43.0
+The commit 2a07bb64d801 ("s390/dasd: Remove DMA alignment") should apply cleanly for
+kernel 6.9+. There was a refactoring happening at the time with the following two commits
+(just for context, not required as prereqs!):
+commit 0127a47f58c6 ("dasd: move queue setup to common code")
+commit fde07a4d74e3 ("dasd: use the atomic queue limits API")
 
+For everything before 6.9 a simple git revert for commit bc792884b76f
+("s390/dasd: Establish DMA alignment") should work just fine.
+
+If you run into any conflicts, need separate patches, or have any questions,
+please let me know.
+
+Thanks a lot and apologies for the inconvenience!
+
+regards,
+Jan
 
