@@ -1,158 +1,187 @@
-Return-Path: <stable+bounces-69736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69737-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3A00958B1A
-	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 17:25:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D21A2958B93
+	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 17:46:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 224CF1C21E40
-	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 15:25:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F166B1C211FC
+	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 15:46:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DB0E1946B9;
-	Tue, 20 Aug 2024 15:24:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 885BA1BB6B8;
+	Tue, 20 Aug 2024 15:45:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="lRXLgSCF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SBZ7kqss"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85A6319412D
-	for <stable@vger.kernel.org>; Tue, 20 Aug 2024 15:24:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42FFC18FDA9;
+	Tue, 20 Aug 2024 15:45:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724167481; cv=none; b=tioV2mZxdAyGoiMF3kY1JevMOthBh9/NJUReHit72dpeM5ZTeK/g/3FGauuUI3syD9gk54k3urEZuwsxa2Rj8YCao9mquL3Pm0vBiVrfk8J1UUWgXK2WWTPH2XngH17vjp4PYXqKEMtWnEaO/A4hHkpbbwLtJURLxotes4Jkq/o=
+	t=1724168720; cv=none; b=fB6lGPVMICRpdqrtn412cCOJNgpQwc219VVjmb3xW2CODeIifZGIxifiRn9r20hybhUwHbvZ0T2mNLfX3Gm7703K6B1up7yqxAd0dZ4NQxUFrWhKpxegU2QUJ7YM4Jfk9gEvUgbhTdIAkOVU6TSpY3fytU0KiiY3RsXwsWMZ4Bo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724167481; c=relaxed/simple;
-	bh=2rc8FU9M+fSW+QkKpagTjuE9uoduYcxat2+eo3FYBq8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fImxHklPR6oKIkTcCvHYjw98vits3lgLVhz7ZR3uYaEDvhPA4QthMmez4vANCSYWok/tNZ7u2ir+GPEXPwQIe4yPKzTED9MEexEvNjp7PESI3nvIjb+7IJ8h9IIQOfpgB77hfQA3HtCzf1MZxdwHYuGjasvCeEj5H9sZl058KXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b=lRXLgSCF; arc=none smtp.client-ip=209.85.215.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
-Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-6bce380eb96so3313733a12.0
-        for <stable@vger.kernel.org>; Tue, 20 Aug 2024 08:24:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1724167479; x=1724772279; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pcWMRJ0Y65fLMG5U9Pko1FotKijofEtRgUtr9N2ekns=;
-        b=lRXLgSCFkVpYU5kVoYMWnzwyodepKebc5VKCtoyHZnaxDhkVBOjQp9TiDFr3gcNo1X
-         Lbnvvv3Pw5lG//OG4+70k++UQis0Y7nrJoOj44i+CCOC7aBv0A8EXgMQzWKW44sD5NS1
-         VSTRQN4/RMQeLrXb+fpxmEvzUCqtYgzb7dWT2WIC22o+F7kkH1fFovXJ/obrtkj+fGkn
-         Azv/AB17QAs6WRgpTKRzFUW+/zMqj1jdP+xMkwMsJ67z6mF/oriQybqxal9PXyS+6qbt
-         icAo6uSt4Eq74vmSsw/zW0G+CcbqigK+Rxja3+wWKWkbZxpGsiDy4NnISvjfMPxSyGv6
-         3tmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724167479; x=1724772279;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pcWMRJ0Y65fLMG5U9Pko1FotKijofEtRgUtr9N2ekns=;
-        b=rQ26XCdE0MQYFmeB4u2eZOjm38RLOnfxiMxxKcSoIvi16WkrQOjZuxS0Xf/bms0APV
-         iuMTcde1h0zR2KPsSxQeiPJ2uNNnpiexHRMmvn7TWMzts/ixbG5c4znbeo0AjSMreTii
-         ZoNan+Mj+Jq3gCqAEZ9vnPNE0PXlWKoNvbO3saOUzmIEp4oOtVXGl4bOsTklx8VWcFHn
-         2IYNvyHKRRG/ZFB8wDfS6dixby4h9nymf1oBGSefijwRCpbd1zMc4Ew6UdbYAaEQUZS+
-         JR0V/YMeOnUHmCCAEEYmPl3/jSf3q21EpxyiKnaS+3iIZKxQmsXuxtRIOFsJBicBeWX/
-         HF7g==
-X-Forwarded-Encrypted: i=1; AJvYcCWYtRPStB144udGN5EF/DRd2PRzBpw9NbAFVYvgmDeY2TQzwymYbVDrBAvHJS930rFIkHR0lywwpxun/N+ftkNAaGv46Ukm
-X-Gm-Message-State: AOJu0Yw25CQLSrqwtepPqLjTF4gSbnxDwTOi0KrQeY2wGrYZj8EFxM78
-	cF0/OaQ7Gmo92pIsw2plxSQcwfUpseSPiZppT2SAet4QBUaOvg7o0N3VgJsbhBY=
-X-Google-Smtp-Source: AGHT+IE+Km4Z4Uzp0Ic/89irlMkCcLxwcNYIyvvdXIzqeBq5tarmpBAMzPn+ZBc205ATxzcUSAGINA==
-X-Received: by 2002:a17:90b:1086:b0:2cd:4100:ef17 with SMTP id 98e67ed59e1d1-2d3dfff6674mr13170727a91.31.1724167478774;
-        Tue, 20 Aug 2024 08:24:38 -0700 (PDT)
-Received: from jesse-desktop.ba.rivosinc.com (pool-108-26-179-17.bstnma.fios.verizon.net. [108.26.179.17])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2d40bea7cb3sm7258157a91.25.2024.08.20.08.24.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Aug 2024 08:24:38 -0700 (PDT)
-From: Jesse Taube <jesse@rivosinc.com>
-To: linux-riscv@lists.infradead.org
-Cc: Jonathan Corbet <corbet@lwn.net>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Conor Dooley <conor@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	=?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
-	Evan Green <evan@rivosinc.com>,
-	Andrew Jones <ajones@ventanamicro.com>,
-	Jesse Taube <jesse@rivosinc.com>,
-	Charlie Jenkins <charlie@rivosinc.com>,
-	Xiao Wang <xiao.w.wang@intel.com>,
-	Andy Chiu <andy.chiu@sifive.com>,
-	Eric Biggers <ebiggers@google.com>,
-	Greentime Hu <greentime.hu@sifive.com>,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Costa Shulyupin <costa.shul@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Baoquan He <bhe@redhat.com>,
-	Anup Patel <apatel@ventanamicro.com>,
-	Zong Li <zong.li@sifive.com>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Ben Dooks <ben.dooks@codethink.co.uk>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Erick Archer <erick.archer@gmx.com>,
-	Joel Granados <j.granados@samsung.com>,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH v9 2/6] RISC-V: Scalar unaligned access emulated on hotplug CPUs
-Date: Tue, 20 Aug 2024 11:24:20 -0400
-Message-ID: <20240820152424.1973078-3-jesse@rivosinc.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240820152424.1973078-1-jesse@rivosinc.com>
-References: <20240820152424.1973078-1-jesse@rivosinc.com>
+	s=arc-20240116; t=1724168720; c=relaxed/simple;
+	bh=tjGK/8CsG4HQ9VR+w+On+tb2wpJykbsP0xTV1WhgcUA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ptqz/usjjWfygGZaLx13goRwaeOSmWlvV14bfR6i/DjaX84q6V4kXYBAhif91GB8ZflzIPMsFlt6/a+pAsXr4EGq6ppkXLK3VWft4DyalHK3ijY/OJdgwGbXSt6WroHAFqwinUF6elMEZcxjg87ez6xcPxwipj+GfK/aebuzNRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SBZ7kqss; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 734B6C4AF0B;
+	Tue, 20 Aug 2024 15:45:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724168720;
+	bh=tjGK/8CsG4HQ9VR+w+On+tb2wpJykbsP0xTV1WhgcUA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=SBZ7kqssxYgMnkzqdhE1823JbYYXmlhrCyn1UGHBztaAHx9AhCIVVhipMuTSlgSnE
+	 oGlwbHrza/C8zk1L6erWpBrDJe4jxTbRFx0+T+kX8c5mJYiKer0ZnDhQtmjuGu1mbX
+	 XNgCdYW8DAt7os+eQ+v6ujKiUxf9IsJcvbOJ0zjudMdPGQ7oBT7Sg3jXO+P2EjlWgb
+	 H7pLXVCURgDlwIPlLtdwhx1r0YApXHyWW7R4o5PEwk+E+sH5jcew/CpYrRPalx4XBP
+	 vx9dO9sVd8zZP3law8I8j63sFiNvXYk+9FdVfzpSEzr7QmYlBGTGd2ZgMvOCv4UFAr
+	 1snrZFWeBs6Gg==
+Date: Tue, 20 Aug 2024 17:45:15 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Jann Horn <jannh@google.com>
+Cc: Luis Chamberlain <mcgrof@kernel.org>,
+	Russ Weight <russ.weight@linux.dev>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] firmware_loader: Block path traversal
+Message-ID: <ZsS6CwZgEKfkxpfk@pollux>
+References: <20240820-firmware-traversal-v1-1-8699ffaa9276@google.com>
+ <ZsPf02GrdMiyZP8a@pollux>
+ <CAG48ez3AEU+LD-i7Qwo3kreJ0zGQEZOnthFX++QTUOMxe3e40Q@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAG48ez3AEU+LD-i7Qwo3kreJ0zGQEZOnthFX++QTUOMxe3e40Q@mail.gmail.com>
 
-The check_unaligned_access_emulated() function should have been called
-during CPU hotplug to ensure that if all CPUs had emulated unaligned
-accesses, the new CPU also does.
+On Tue, Aug 20, 2024 at 02:23:05AM +0200, Jann Horn wrote:
+> On Tue, Aug 20, 2024 at 2:14 AM Danilo Krummrich <dakr@kernel.org> wrote:
+> > On Tue, Aug 20, 2024 at 01:18:54AM +0200, Jann Horn wrote:
+> > > Most firmware names are hardcoded strings, or are constructed from fairly
+> > > constrained format strings where the dynamic parts are just some hex
+> > > numbers or such.
+> > >
+> > > However, there are a couple codepaths in the kernel where firmware file
+> > > names contain string components that are passed through from a device or
+> > > semi-privileged userspace; the ones I could find (not counting interfaces
+> > > that require root privileges) are:
+> > >
+> > >  - lpfc_sli4_request_firmware_update() seems to construct the firmware
+> > >    filename from "ModelName", a string that was previously parsed out of
+> > >    some descriptor ("Vital Product Data") in lpfc_fill_vpd()
+> > >  - nfp_net_fw_find() seems to construct a firmware filename from a model
+> > >    name coming from nfp_hwinfo_lookup(pf->hwinfo, "nffw.partno"), which I
+> > >    think parses some descriptor that was read from the device.
+> > >    (But this case likely isn't exploitable because the format string looks
+> > >    like "netronome/nic_%s", and there shouldn't be any *folders* starting
+> > >    with "netronome/nic_". The previous case was different because there,
+> > >    the "%s" is *at the start* of the format string.)
+> > >  - module_flash_fw_schedule() is reachable from the
+> > >    ETHTOOL_MSG_MODULE_FW_FLASH_ACT netlink command, which is marked as
+> > >    GENL_UNS_ADMIN_PERM (meaning CAP_NET_ADMIN inside a user namespace is
+> > >    enough to pass the privilege check), and takes a userspace-provided
+> > >    firmware name.
+> > >    (But I think to reach this case, you need to have CAP_NET_ADMIN over a
+> > >    network namespace that a special kind of ethernet device is mapped into,
+> > >    so I think this is not a viable attack path in practice.)
+> > >
+> > > For what it's worth, I went looking and haven't found any USB device
+> > > drivers that use the firmware loader dangerously.
+> >
+> > Your commit message very well describes the status quo, but only implies the
+> > problem, and skips how you intend to solve it.
+> >
+> > >
+> > > Cc: stable@vger.kernel.org
+> > > Fixes: abb139e75c2c ("firmware: teach the kernel to load firmware files directly from the filesystem")
+> > > Signed-off-by: Jann Horn <jannh@google.com>
+> > > ---
+> > > I wasn't sure whether to mark this one for stable or not - but I think
+> > > since there seems to be at least one PCI device model which could
+> > > trigger firmware loading with directory traversal, we should probably
+> > > backport the fix?
+> > > ---
+> > >  drivers/base/firmware_loader/main.c | 10 +++++++++-
+> > >  1 file changed, 9 insertions(+), 1 deletion(-)
+> > >
+> > > diff --git a/drivers/base/firmware_loader/main.c b/drivers/base/firmware_loader/main.c
+> > > index a03ee4b11134..a32be64f3bf5 100644
+> > > --- a/drivers/base/firmware_loader/main.c
+> > > +++ b/drivers/base/firmware_loader/main.c
+> > > @@ -864,7 +864,15 @@ _request_firmware(const struct firmware **firmware_p, const char *name,
+> > >       if (!firmware_p)
+> > >               return -EINVAL;
+> > >
+> > > -     if (!name || name[0] == '\0') {
+> > > +     /*
+> > > +      * Reject firmware file names with "/../" sequences in them.
+> > > +      * There are drivers that construct firmware file names from
+> > > +      * device-supplied strings, and we don't want some device to be able
+> > > +      * to tell us "I would like to be sent my firmware from
+> > > +      * ../../../etc/shadow, please".
+> > > +      */
+> > > +     if (!name || name[0] == '\0' ||
+> > > +         strstr(name, "/../") != NULL || strncmp(name, "../", 3) == 0) {
+> >
+> > Seems reasonable, but are there any API users that rely on that?
+> 
+> I tried grepping for in-kernel users and didn't find any, though I
+> guess I could have missed something.
 
-This patch adds the call to check_unaligned_access_emulated() in
-the hotplug path.
+It's a bit hard to grep for, but I gave it a quick shot too and I can't find any
+results for "../" in combination with "fw", "path", "bin", etc. either.
 
-Fixes: 55e0bf49a0d0 ("RISC-V: Probe misaligned access speed in parallel")
-Signed-off-by: Jesse Taube <jesse@rivosinc.com>
-Reviewed-by: Evan Green <evan@rivosinc.com>
-Cc: stable@vger.kernel.org
----
-V5 -> V6:
- - New patch
-V6 -> V7:
- - No changes
-V7 -> V8:
- - Rebase onto fixes
-V8 -> V9:
- - No changes
----
- arch/riscv/kernel/unaligned_access_speed.c | 1 +
- 1 file changed, 1 insertion(+)
+> I suppose slightly more likely than in-kernel users, there could be
+> userspace code out there that intentionally uses netlink or sysfs
+> interfaces to tell the kernel to load from firmware paths outside the
+> firmware directory, though that would be kinda weird?
 
-diff --git a/arch/riscv/kernel/unaligned_access_speed.c b/arch/riscv/kernel/unaligned_access_speed.c
-index 160628a2116d..f3508cc54f91 100644
---- a/arch/riscv/kernel/unaligned_access_speed.c
-+++ b/arch/riscv/kernel/unaligned_access_speed.c
-@@ -191,6 +191,7 @@ static int riscv_online_cpu(unsigned int cpu)
- 	if (per_cpu(misaligned_access_speed, cpu) != RISCV_HWPROBE_MISALIGNED_SCALAR_UNKNOWN)
- 		goto exit;
- 
-+	check_unaligned_access_emulated(NULL);
- 	buf = alloc_pages(GFP_KERNEL, MISALIGNED_BUFFER_ORDER);
- 	if (!buf) {
- 		pr_warn("Allocation failure, not measuring misaligned performance\n");
--- 
-2.45.2
+I agree it would be weird. Especially, since there is "firmware_class.path"
+available to avoid such hacks.
 
+> 
+> > I guess we can't just check for strstr(name, "../"), because "foo.." is a valid
+> > file name?
+> 
+> Yeah, that's the intent.
+> 
+> > Maybe it would be worth adding a comment and / or a small
+> > helper function for that.
+> 
+> Yeah, I guess that might make it clearer.
+> 
+> > I also suggest to update the documentation of the firmware loader API to let
+> > people know that going back the path isn't tolerated by this API.
+> 
+> In Documentation/driver-api/firmware/request_firmware.rst, correct?
+
+I think that's reasonable, though it would also be nice to have it in the
+documentation of the corresponding functions that take the argument.
+
+Since all the request_firmware() derivates refer to request_firmware(), it's
+probably enough to add it there.
+
+> 
+> > >               ret = -EINVAL;
+> > >               goto out;
+> > >       }
+> > >
+> > > ---
+> > > base-commit: b0da640826ba3b6506b4996a6b23a429235e6923
+> > > change-id: 20240820-firmware-traversal-6df8501b0fe4
+> > > --
+> > > Jann Horn <jannh@google.com>
+> > >
+> 
 
