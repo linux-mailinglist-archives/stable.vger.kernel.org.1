@@ -1,90 +1,151 @@
-Return-Path: <stable+bounces-69715-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69716-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9DFD9587CE
-	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 15:24:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02BC29587F8
+	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 15:30:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F6F1283531
-	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 13:24:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B48FB284688
+	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 13:30:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61C6918C91C;
-	Tue, 20 Aug 2024 13:24:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C8B019005A;
+	Tue, 20 Aug 2024 13:30:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XMj+YQII"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="XhZdDDkg";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="2vseWtqL";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="bv00aLWF";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="v6DSm80L"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 119EB18E35F
-	for <stable@vger.kernel.org>; Tue, 20 Aug 2024 13:24:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B4C918DF91;
+	Tue, 20 Aug 2024 13:30:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724160252; cv=none; b=Pvp+hv7sIhS9U8hCLYfleas9Dv1Q0Q/WgY4CeG/ljxGdR7H4pkdZudTfFKMEP//iQ/S545VcrKnXjkVwzDr/TPF4sbzrymID1Hnhzu07m62Eeq1gbVQ29nexBLbYfqAs7Q+F5R8V5pZVfV0XNnFKYgHbxLftf/TnsyPPChkIPIQ=
+	t=1724160613; cv=none; b=VyZDnyBQbxH/KmCFMAmbjxYtIImha2vs1FYt5XAZD/aQOUBF72Cinm0N+oxWGkcwpz2pkW2rdH52NB6sXC5/LpAhdFAip4EyStlCJcHO0CnFlL1Fzw/Z0UKj0MrzfWzelaKgWYaz1RvdEWq1+AG0cRKGoxlAcECLrs/cQwQjfeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724160252; c=relaxed/simple;
-	bh=K9O9m+y8EKlXF/k1wFDFoEeI2ygkh5hOkILdMDP4Mrs=;
+	s=arc-20240116; t=1724160613; c=relaxed/simple;
+	bh=jKlTj9khK0QRm6xc/vP87GKsjKtAJFQUzPY47Zw+Aqs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JO4HfiaWgdJqVtSS1q8e9eMccw/vg0SWQpPMM68Qum/GIYWvDnwvWGywISI5AzRncu4dtfbgR5ZkDJBIPLkHJiYNv7qnfGtXuV63i6hQKJUmqImq+D2OeVGWdgWdXpBBKrizMb2OmMp9ekZ6r6Qo4ctg1VL8/vj9EWmvi0pLBtA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XMj+YQII; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FF31C4AF0F;
-	Tue, 20 Aug 2024 13:24:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724160251;
-	bh=K9O9m+y8EKlXF/k1wFDFoEeI2ygkh5hOkILdMDP4Mrs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XMj+YQII7PR64gH9FSaBpj0SKZGiHlHW882feHeROQCSU8XrrOBHxuyR3xEgLd0xw
-	 R+9B83TDcizBglSkp8N6PA3sXuKeL8GAcjnFZWnRlUvB06jjDobdu61lYA2Sg1+2RF
-	 rbT9oiWiazSllYrTcNNgQKSH9rpJ9bTZdLAXVTBU=
-Date: Tue, 20 Aug 2024 21:24:08 +0800
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Jan =?iso-8859-1?Q?H=F6ppner?= <hoeppner@linux.ibm.com>
-Cc: stable@vger.kernel.org, Stefan Haberland <sth@linux.ibm.com>
-Subject: Re: "s390/dasd: Remove DMA alignment" for stable
-Message-ID: <2024082014-riverbed-glutton-ae33@gregkh>
-References: <dd70606a-8121-4631-a799-86400e9a3c8f@linux.ibm.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=FermRzaHI5CKZ6kTpCuoqywbAEM7KtWvtr7MJKH6MiKACf6QXANf2KveFC/Kjmi7oo4Zo+UGQsjq33ocQo2WvHuvHI3uidj/cVYIWwRz/rtB+zvYPh/Z91Sj23f9uNHgrFtZtFtOqOD6n3FgJ+H6a5UxGdCEZg5hK3DpJU1ft80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=XhZdDDkg; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=2vseWtqL; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=bv00aLWF; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=v6DSm80L; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 9022F1F83C;
+	Tue, 20 Aug 2024 13:30:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1724160609; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1tQIiT7gji9T0zJTAHP9wX9wn4Kb3HkhsfTfVvEFTwA=;
+	b=XhZdDDkgYtVFCUrJk87/e7jyQQp7eLxRvyxI9QVIlMt/kp/ecAGw7lNO8EGRJrJ4TJQw67
+	fnyz5j67bgLShJQde1udf5iLU2BRa8PFG2oQfGkWQT2RFHlUH2VyT6PRXFS/9+1Hrj5xMl
+	zbwI5d4UuwsBrhgaW3mdUCmltdpFB40=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1724160609;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1tQIiT7gji9T0zJTAHP9wX9wn4Kb3HkhsfTfVvEFTwA=;
+	b=2vseWtqLm95ipXf74dNgahGePKOAK6wRnRP6CdwoCNMKv1CNLWt0ipKc3xVbZLQe5SsO4k
+	ebSLjstcRSG94LCw==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1724160608; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1tQIiT7gji9T0zJTAHP9wX9wn4Kb3HkhsfTfVvEFTwA=;
+	b=bv00aLWFoKpU5UrtaZylkZ9epuRSUWDP3Fqq40bvnxhs9bJWqW5ayva7YGFMX8NxQGKdCw
+	QiswcSWsRm8RuLwqJF1LyQBxzkp27kq3jTgqGOSxUXBoZl6fzBY0vIqKnAFTYexLjdrqf4
+	pUlgBnuo2Dwr3X0vu9kJvVucj6KtjDE=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1724160608;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1tQIiT7gji9T0zJTAHP9wX9wn4Kb3HkhsfTfVvEFTwA=;
+	b=v6DSm80Lz8UhsXCN06dLZv49PNktl8nBVUC/G+CPA+mkTwkx9Mi2gr5ilZUAoSdRzrQTFR
+	ip29Gbey290HfkDA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 7E33413770;
+	Tue, 20 Aug 2024 13:30:08 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id DG5eHWCaxGbpDwAAD6G6ig
+	(envelope-from <chrubis@suse.cz>); Tue, 20 Aug 2024 13:30:08 +0000
+Date: Tue, 20 Aug 2024 15:29:08 +0200
+From: Cyril Hrubis <chrubis@suse.cz>
+To: Miao Wang <shankerwangmiao@gmail.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Xi Ruoyao <xry111@xry111.site>, Huacai Chen <chenhuacai@kernel.org>,
+	loongarch@lists.linux.dev, Sasha Levin <sashal@kernel.org>,
+	stable@vger.kernel.org, WANG Xuerui <kernel@xen0n.name>,
+	linux-api@vger.kernel.org
+Subject: Re: It is correct to introduce new sys calls to stable versions?
+Message-ID: <ZsSaJKKyLuH_vZ1C@yuki.lan>
+References: <DF762B6F-360A-4C0C-8C85-55686417209B@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <dd70606a-8121-4631-a799-86400e9a3c8f@linux.ibm.com>
+In-Reply-To: <DF762B6F-360A-4C0C-8C85-55686417209B@gmail.com>
+X-Spam-Level: 
+X-Spamd-Result: default: False [-3.27 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	SUBJECT_ENDS_QUESTION(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-0.998];
+	NEURAL_HAM_SHORT(-0.18)[-0.880];
+	MIME_GOOD(-0.10)[text/plain];
+	FREEMAIL_TO(0.00)[gmail.com];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,yuki.lan:mid,imap1.dmz-prg2.suse.org:helo]
+X-Spam-Score: -3.27
+X-Spam-Flag: NO
 
-On Tue, Aug 20, 2024 at 11:41:18AM +0200, Jan Höppner wrote:
-> Hi,
-> 
-> the stable tag was missing for the following commit:
-> commit 2a07bb64d801 ("s390/dasd: Remove DMA alignment")
-> 
-> The change needs to be applied for kernel 6.0+ essentially reverting
-> bc792884b76f ("s390/dasd: Establish DMA alignment").
-> 
-> The patch fixes filesystem errors especially for XFS when DASD devices are formatted
-> with a blocksize smaller than 4096 bytes.
-> 
-> The commit 2a07bb64d801 ("s390/dasd: Remove DMA alignment") should apply cleanly for
-> kernel 6.9+. There was a refactoring happening at the time with the following two commits
-> (just for context, not required as prereqs!):
-> commit 0127a47f58c6 ("dasd: move queue setup to common code")
-> commit fde07a4d74e3 ("dasd: use the atomic queue limits API")
-> 
-> For everything before 6.9 a simple git revert for commit bc792884b76f
-> ("s390/dasd: Establish DMA alignment") should work just fine.
-> 
-> If you run into any conflicts, need separate patches, or have any questions,
-> please let me know.
+Hi!
+> I wonder if it is correct to add new syscalls, which actually changes
+> the kernel features, in stable releases, as it might confuse downstream
+> developers because they may assume the existence of a certain feature
+> after a certain version.
 
-Can you please send the revert commit?  That makes it much simpler for
-us to apply instead of relying on us to take the time doing it (hint, I
-don't have time this week as I'm at a conference...)
+Just a side note, one thing I've learned by maintaining the Linux Test
+Project is that the kernel version is a lie. You should not use the
+kernel version for anything, never. All distributions rutinely backport
+various new functionalities to older kernels and only reliable way how
+to make sure something is implemented is to call the syscall and check
+the return value.
 
-thanks,
+That being said I have no idea what rules apply to stable trees.
 
-greg k-h
+-- 
+Cyril Hrubis
+chrubis@suse.cz
 
