@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-69679-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69680-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA6F9957FA7
-	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 09:31:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BC9E957FE9
+	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 09:36:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 295E71C210D6
-	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 07:31:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3460B1C244C7
+	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 07:36:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E11E14C5B0;
-	Tue, 20 Aug 2024 07:31:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71992189B9E;
+	Tue, 20 Aug 2024 07:35:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YIKbNpsK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NLG8ZfDT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 225CF3FB9F;
-	Tue, 20 Aug 2024 07:31:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 225381667ED;
+	Tue, 20 Aug 2024 07:35:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724139097; cv=none; b=CAs7ooFbnKRZB9mcZH+0KszSbmUAmwoF7HudJ9MP8yF5FlGgkCR3qPfNvNZZJUyAvkGSmZnl82wSgY2AqxkCcizfQG9GgUVoUTMYKaxgYtcT0yxKIzUCoent9abBOXDzg11kCofEGbioF4+C7jqTdqTQof6pu4p8MeFtY95YCD8=
+	t=1724139318; cv=none; b=nc+4wyUzSsWJygVwJis4XPpNBemqnaZOXyk9K70TlLS8VKfYDs01E2S2OhZryPGn739Bi2yderjQW8AMuG/y17J7IH+tRTuoPJVK5xRh2s/COgNcgMjiEPlq8XwgKS7altt2dM4T9bmzleg45UCNrb4NKu/rMQD0ghsv5J/+CS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724139097; c=relaxed/simple;
-	bh=lnVex45HkIbSrdva5jTznQrLVTO/IJ9b3LjfB4dv2tY=;
+	s=arc-20240116; t=1724139318; c=relaxed/simple;
+	bh=VlFp3AV+5ntIAXoC1p5XsTcSavlW4JGSdKmcfmgxiA4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FjjPj+qtGpe7maIw+AKIpGASQ/dkPNWwhEEnxAa3tri2a/K8g4UII0mSrofdl1ux640DTvXSoh3I1mFcyEOjr+0zCT3sQizUwAZ0AgPK9RVs0//XzVFsxNxJiOO5Fm5NexDCRJRek9VRR1qDwm818SYetixWDPE8D00FqxfqYRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YIKbNpsK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9F39C4AF09;
-	Tue, 20 Aug 2024 07:31:36 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=I9jagB0+xeQvqzb1gaLpofObqSMjYRtDd/g4e9LDI4tqp7wCoHL/HjJtRHY9m+75VdCGc0DXhhyoBRMWKwfxwafGd+pDX/7bu65e4N1mEI98mSk7wqwwN3yVBW++A8I4DppCfalXPqHTcIAAF9Tc8R8/WmhMi6Y+xPgnkgDi3B8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NLG8ZfDT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E21F6C4AF09;
+	Tue, 20 Aug 2024 07:35:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724139096;
-	bh=lnVex45HkIbSrdva5jTznQrLVTO/IJ9b3LjfB4dv2tY=;
+	s=k20201202; t=1724139317;
+	bh=VlFp3AV+5ntIAXoC1p5XsTcSavlW4JGSdKmcfmgxiA4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YIKbNpsKqef0mmWZHrPR6/ZB8Lp0kbqpqBvjxDYuT8iReRhu1cXIUT53QPKlzUqqJ
-	 mU6l+Y8lgvXwWgkeeVbiaLY4mdn6StAqucalxjVgu5janM8gCmcAl1mBoVpMrucU45
-	 DvyHIcPJfzsV9NpaGlOh+fCYWQHrSDLTNEgjG3/0yoPi+2uAOCFPJughZ0VfbdYRaT
-	 lvJT5BteKypflqJWrDO4eM7bsKUcn0zJ0CNVb7QY43kfb0iCbOBTmn9ViL6W6hmbbW
-	 pqFmxGq4pfdA28JBFoY3vigUjsqxf/1YuyzblUNjtJC2I/ye+66n8+FEsC0rLwjc5j
-	 0XibAonJ3IJsQ==
+	b=NLG8ZfDTt9MYyQTQ3bqC7GyppuVm23T4iHs6c/gwcMpKcxOdemVUGu26+W6mDF2bu
+	 E3siv6F9F1jTR7H9av0b7G5EfNueVKZWMuaCcz6FCAHjw3FqsfXGgO7DWu5jhfq+u3
+	 QIg4uoHC+L2wt4Pn7hPMg2qNw1vlE/qoeQk6oB6+M2RVEi2+EcO6OmMu33EcJXzUP1
+	 w4MuSHe84DnLpkoj2GMck3hWYZ7SQ2DGnSN8XG+iNfhHHylRfiKHBY+C2E8su092iT
+	 Cl70P842YearIv8oL1wKXb9zIOLSyY5/uraFBRFaZSz4A9Lm9FwrkC/rrwvzNfkstT
+	 w46TW2PzUzDxg==
 Received: from johan by xi.lan with local (Exim 4.97.1)
 	(envelope-from <johan@kernel.org>)
-	id 1sgJL5-000000005jS-0IhH;
-	Tue, 20 Aug 2024 09:31:35 +0200
-Date: Tue, 20 Aug 2024 09:31:35 +0200
+	id 1sgJOe-000000005rZ-1Thw;
+	Tue, 20 Aug 2024 09:35:16 +0200
+Date: Tue, 20 Aug 2024 09:35:16 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Bjorn Andersson <quic_bjorande@quicinc.com>
 Cc: Sebastian Reichel <sre@kernel.org>,
@@ -61,11 +61,12 @@ Cc: Sebastian Reichel <sre@kernel.org>,
 	Amit Pundir <amit.pundir@linaro.org>, linux-arm-msm@vger.kernel.org,
 	linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	linux-usb@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 0/3] soc: qcom: pmic_glink: v6.11-rc bug fixes
-Message-ID: <ZsRGV4hplvidpYji@hovoldconsulting.com>
-References: <20240818-pmic-glink-v6-11-races-v1-0-f87c577e0bc9@quicinc.com>
- <ZsNpSt3BtdFIT6ml@hovoldconsulting.com>
- <ZsN4dcErSt3nioWn@hu-bjorande-lv.qualcomm.com>
+Subject: Re: [PATCH v2 3/3] soc: qcom: pmic_glink: Actually communicate with
+ remote goes down
+Message-ID: <ZsRHNIMy7KbCaE7x@hovoldconsulting.com>
+References: <20240819-pmic-glink-v6-11-races-v2-0-88fe3ab1f0e2@quicinc.com>
+ <20240819-pmic-glink-v6-11-races-v2-3-88fe3ab1f0e2@quicinc.com>
+ <ZsRAnWgsoSHmrFE5@hovoldconsulting.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -74,35 +75,23 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZsN4dcErSt3nioWn@hu-bjorande-lv.qualcomm.com>
+In-Reply-To: <ZsRAnWgsoSHmrFE5@hovoldconsulting.com>
 
-On Mon, Aug 19, 2024 at 09:53:09AM -0700, Bjorn Andersson wrote:
-> On Mon, Aug 19, 2024 at 05:48:26PM +0200, Johan Hovold wrote:
-
-> > I can confirm that I still see the -ECANCELED issue with this series
-> > applied:
+On Tue, Aug 20, 2024 at 09:07:10AM +0200, Johan Hovold wrote:
+> On Mon, Aug 19, 2024 at 01:07:47PM -0700, Bjorn Andersson wrote:
+> > When the pmic_glink state is UP and we either receive a protection-
+> > domain (PD) notification indicating that the PD is going down, or that
+> > the whole remoteproc is going down, it's expected that the pmic_glink
+> > client instances are notified that their function has gone DOWN.
 > > 
-> > [    8.979329] pmic_glink_altmode.pmic_glink_altmode pmic_glink.altmode.0: failed to send altmode request: 0x10 (-125)
-> > [    9.004735] pmic_glink_altmode.pmic_glink_altmode pmic_glink.altmode.0: failed to request altmode notifications: -125
-> 
-> Could you confirm that you're seeing a call to
-> qcom_glink_handle_intent_req_ack() with granted == 0, leading to the
-> transfer failing.
+> > This is not what the code does, which results in the client state either
+> > not updating, or being wrong in many cases. So let's fix the conditions.
 
-It appears so:
+And I believe you meant
 
-[    9.539415]  30000000.remoteproc:glink-edge: qcom_glink_handle_intent_req_ack - cid = 9, granted = 0
-[    9.561750] qcom_battmgr.pmic_glink_power_supply pmic_glink.power-supply.0: failed to request power notifications
+	s/with/when/
 
-[    9.448945]  30000000.remoteproc:glink-edge: qcom_glink_handle_intent_req_ack - cid = 9, granted = 0
-[    9.461267] pmic_glink_altmode.pmic_glink_altmode pmic_glink.altmode.0: failed to send altmode request: 0x10 (-125)
-[    9.469241] qcom,apr 30000000.remoteproc:glink-edge.adsp_apps.-1.-1: Adding APR/GPR dev: gprsvc:service:2:1
-[    9.478968] pmic_glink_altmode.pmic_glink_altmode pmic_glink.altmode.0: failed to request altmode notifications: -125
-
-> It would also be nice, just for completeness sake to rule out that you
-> do not get a call to qcom_glink_intent_req_abort() here.
-
-And I'm not seeing this function being called.
+in the patch Subject.
 
 Johan
 
