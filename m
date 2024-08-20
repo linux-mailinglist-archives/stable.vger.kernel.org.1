@@ -1,136 +1,158 @@
-Return-Path: <stable+bounces-69664-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69665-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28E63957BEE
-	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 05:32:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7955957C51
+	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 06:16:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6651828499E
-	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 03:32:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2CAAC1C239EE
+	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 04:16:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48BE5481CE;
-	Tue, 20 Aug 2024 03:31:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B59F49622;
+	Tue, 20 Aug 2024 04:16:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PaWFJbzJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ib9BUAFd"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B91472E3FE
-	for <stable@vger.kernel.org>; Tue, 20 Aug 2024 03:31:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 101DD2F5E;
+	Tue, 20 Aug 2024 04:16:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724124719; cv=none; b=etdtKv4D17jgcuD4bQeH3tTzEls8rmG7jvGm9YOlyCXpv+ZAhnxCsYimVG7AbCsm5/hIyKPGwbI5wl1Ze9TcA6j6c7e7GQomsTrlt7gDxkB3iZVF9+nxHsdg72mhCEAoW27gAu+nHSC4LR0htbM0rCS0xazd2pV4WjrAVuK7OHE=
+	t=1724127365; cv=none; b=TVAl4QcWwRvVA7QpJ76jUUXN2kIR3lK2+sx18gRnE2IjgRPSsffdWuO7GVDy7zE7wJnVK4ht4LVPORBf7trlLgGFD5vUCmQbpHcuqLXjWzjG1VQvtdDN11byiB33+0euYbgrZaYLni113MrI2JPh5/ORF0cnNFcczuAdMhwvHlQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724124719; c=relaxed/simple;
-	bh=Lsks9gT6Mzx0h2HgXjICoo9sTX9N2S+fZp6knFYb9CU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=NJu74hMYwv0Uj+2Lt86DlGxX1tEW3qVLZBYAzZUkKD+9p7ZF+GBLSJzO64tT7t1u3SJqRvgCr1K8L1rBWAZUR8iQpUq/qkj9HmNNJpcatLGKH9ZmfWZiSBSLkNAl4J040RkC1oi5hhSwB9RUAFRAJfsazbdMDHtox+TKAdMlRuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PaWFJbzJ; arc=none smtp.client-ip=209.85.214.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-201e64607a5so35324325ad.2
-        for <stable@vger.kernel.org>; Mon, 19 Aug 2024 20:31:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724124717; x=1724729517; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=nBpomUDHMNH7osuoqx8GMBZw65c4SL4hGXGtEruA0HY=;
-        b=PaWFJbzJYV5oYdwbqpVZIOkBfMNuTnuA1+scvrFdUkWdm8ynzLj4A8fAWS1Y31nnIL
-         ZwIT/qVMm8vVZeHyVIFWQLG/F/aAHBO788ALnl1YcNeUVhyXw6EVC0JI3hnu+R99lHzX
-         4k2T5rH0xHvqznvFR36VPhnGxUaMiMvsBY24Hm1GnT0it4Lv5IfQ8Nj0bolqAU3HuQum
-         PwRKh6Kg2I3zDpHKg0dDxtA/ilM46mK3t1Ekr925NE50vEfcnZPi22VrsaF/3qvgWjJe
-         0Ijpoiupxa9nbzXY+1usxBqpH99zbHU5gcM4d1K3vRbT9VTVUazoFXs4rvuMZlRjOiDD
-         LHBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724124717; x=1724729517;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=nBpomUDHMNH7osuoqx8GMBZw65c4SL4hGXGtEruA0HY=;
-        b=ZcCc1e4dWCU1Ys7s2dLhFey/iOYXNhN2WRqOL+ppxIdnMnEQccHD11AHvGDR3gSfuG
-         U5mU5+Wu6xMBZOegmOzOH511ysvg+SIIackwnfWNrtvtlMZBTkZZqkhZCXvVQ39EHzzm
-         p3O7rQCC1o86rKHm4plLYKoExGgXN5tP6ZTLNvGjBzmlomTAFl+z7jq6ApChhMV5KwSH
-         CYz3gLdqrMvpNqj6b4SvYNFwjsTSpNMUugN9IWYKsJq3Zo2F7aHswta/BdbmxxWY5Xcn
-         q28tWeZxW3s8hr82L9BZAsgxZ+YnTJkt2D6eQuvbM8P2NjBWMLjlPZ0z8S03ZK7h05pC
-         8tYg==
-X-Forwarded-Encrypted: i=1; AJvYcCVG/AZ/pByR5qjnuwXKyPjyQ2REDtHJoM1tWDNla28P32zpn46zhkcXPy3Rz9UbRRB3rOtFovQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxkiaY+20y1ngM7jj4cQakM+ur2nVA0rfn8FjDo0lYsvxnGDSkq
-	K51hWyApQtW9SYqKHzv6/uARjg2bticEAKSnN+qB7ch2O/q1YDLC
-X-Google-Smtp-Source: AGHT+IEffL7jXIh+0ls5CoWvCOqF31cquBrZihGEprotxLlNle5BEtjn//syfW/d1AuHY06fynYBNQ==
-X-Received: by 2002:a17:903:41cf:b0:1fb:973f:866 with SMTP id d9443c01a7336-20203f47a9emr140920385ad.52.1724124716575;
-        Mon, 19 Aug 2024 20:31:56 -0700 (PDT)
-Received: from localhost ([123.113.109.19])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-201f0302d28sm69242465ad.31.2024.08.19.20.31.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Aug 2024 20:31:56 -0700 (PDT)
-From: Julian Sun <sunjunchao2870@gmail.com>
-To: gfs2@lists.linux.dev,
-	syzbot+d34c2a269ed512c531b0@syzkaller.appspotmail.com
-Cc: agruenba@redhat.com,
-	Julian Sun <sunjunchao2870@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] gfs2: fix double destroy_workqueue error
-Date: Tue, 20 Aug 2024 11:31:48 +0800
-Message-Id: <20240820033148.29662-1-sunjunchao2870@gmail.com>
-X-Mailer: git-send-email 2.39.2
+	s=arc-20240116; t=1724127365; c=relaxed/simple;
+	bh=AGa3YhfBqQHIC8r3pvSt8hZ1jUBw1AJBBqGQCs2wo98=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QsY8IDDm05Ru/HObBEad6Phnhon6PpgniNf9/BOHa98YQiabKluZi4dNQeoIVmgrzxhnyINM+iGRPpGf+IelplcBuPw2jdkLUZC34FLrT4qYjgg0Ujz12bZK9SIVfkiGi8Mklz8Noa+qQJ+qi6S9UiyNgNDPRh5TpX/QA22wL1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ib9BUAFd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91C98C4AF09;
+	Tue, 20 Aug 2024 04:16:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1724127364;
+	bh=AGa3YhfBqQHIC8r3pvSt8hZ1jUBw1AJBBqGQCs2wo98=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ib9BUAFdVkVdBgf92ngVXaz9/zKAZE+WtXLpxOj5r/PuW0XRmqPX8rTqYGWkv0MC7
+	 sgk8KQo/vj6VGCdUkMkZfY3D7OVXThlaPhtqY4AM3Vv+hY4Cn15RpD6mhz8shSGIDb
+	 gi/nHa3aFCQwyI2yentY9SjEj4nIuSkYpkrfX/OQ=
+Date: Tue, 20 Aug 2024 06:15:52 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Len Brown <lenb@kernel.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Mark Pearson <markpearson@lenovo.com>, Kees Cook <kees@kernel.org>,
+	Sami Tolvanen <samitolvanen@google.com>, linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org, llvm@lists.linux.dev,
+	patches@lists.linux.dev, stable@vger.kernel.org,
+	John Rowley <lkml@johnrowley.me>
+Subject: Re: [PATCH] ACPI: platform-profile: Fix CFI violation when accessing
+ sysfs files
+Message-ID: <2024082034-bullfight-pureness-3ada@gregkh>
+References: <20240819-acpi-platform_profile-fix-cfi-violation-v1-1-479365d848f6@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240819-acpi-platform_profile-fix-cfi-violation-v1-1-479365d848f6@kernel.org>
 
-When gfs2_fill_super() fails, destroy_workqueue()
-is called within gfs2_gl_hash_clear(), and the
-subsequent code path calls destroy_workqueue()
-on the same work queue again.
+On Mon, Aug 19, 2024 at 12:09:22PM -0700, Nathan Chancellor wrote:
+> When an attribute group is created with sysfs_create_group(), the
+> ->sysfs_ops() callback is set to kobj_sysfs_ops, which sets the ->show()
+> and ->store() callbacks to kobj_attr_show() and kobj_attr_store()
+> respectively. These functions use container_of() to get the respective
+> callback from the passed attribute, meaning that these callbacks need to
+> be the same type as the callbacks in 'struct kobj_attribute'.
+> 
+> However, the platform_profile sysfs functions have the type of the
+> ->show() and ->store() callbacks in 'struct device_attribute', which
+> results a CFI violation when accessing platform_profile or
+> platform_profile_choices under /sys/firmware/acpi because the types do
+> not match:
+> 
+>   CFI failure at kobj_attr_show+0x19/0x30 (target: platform_profile_choices_show+0x0/0x140; expected type: 0x7a69590c)
+> 
+> This happens to work because the layout of 'struct kobj_attribute' and
+> 'struct device_attribute' are the same, so the container_of() cast
+> happens to allow the callbacks to still work.
 
-This issue can be fixed by setting the work
-queue pointer to NULL after the first
-destroy_workqueue() call and checking for
-a NULL pointer before attempting to destroy
-the work queue again.
+Please note that this was an explicit design decision all those years
+ago, it's not just "happening" to work by some accident.  It was just
+done way before anyone thought of CFI-like things.
 
-Reported-by: syzbot+d34c2a269ed512c531b0@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=d34c2a269ed512c531b0
-Fixes: 30e388d57367 ("gfs2: Switch to a per-filesystem glock workqueue")
-Cc: stable@vger.kernel.org
-Signed-off-by: Julian Sun <sunjunchao2870@gmail.com>
----
- fs/gfs2/glock.c      | 1 +
- fs/gfs2/ops_fstype.c | 3 ++-
- 2 files changed, 3 insertions(+), 1 deletion(-)
+> 
+> Change the type of platform_profile_choices_show() and
+> platform_profile_{show,store}() to match the callbacks in
+> 'struct kobj_attribute' and update the attribute variables to match,
+> which resolves the CFI violation.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: a2ff95e018f1 ("ACPI: platform: Add platform profile support")
+> Reported-by: John Rowley <lkml@johnrowley.me>
+> Closes: https://github.com/ClangBuiltLinux/linux/issues/2047
+> Tested-by: John Rowley <lkml@johnrowley.me>
+> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+> ---
+>  drivers/acpi/platform_profile.c | 20 ++++++++++----------
+>  1 file changed, 10 insertions(+), 10 deletions(-)
+> 
+> diff --git a/drivers/acpi/platform_profile.c b/drivers/acpi/platform_profile.c
+> index d2f7fd7743a1..11278f785526 100644
+> --- a/drivers/acpi/platform_profile.c
+> +++ b/drivers/acpi/platform_profile.c
+> @@ -22,8 +22,8 @@ static const char * const profile_names[] = {
+>  };
+>  static_assert(ARRAY_SIZE(profile_names) == PLATFORM_PROFILE_LAST);
+>  
+> -static ssize_t platform_profile_choices_show(struct device *dev,
+> -					struct device_attribute *attr,
+> +static ssize_t platform_profile_choices_show(struct kobject *kobj,
+> +					struct kobj_attribute *attr,
+>  					char *buf)
+>  {
+>  	int len = 0;
+> @@ -49,8 +49,8 @@ static ssize_t platform_profile_choices_show(struct device *dev,
+>  	return len;
+>  }
+>  
+> -static ssize_t platform_profile_show(struct device *dev,
+> -					struct device_attribute *attr,
+> +static ssize_t platform_profile_show(struct kobject *kobj,
+> +					struct kobj_attribute *attr,
+>  					char *buf)
+>  {
+>  	enum platform_profile_option profile = PLATFORM_PROFILE_BALANCED;
+> @@ -77,8 +77,8 @@ static ssize_t platform_profile_show(struct device *dev,
+>  	return sysfs_emit(buf, "%s\n", profile_names[profile]);
+>  }
+>  
+> -static ssize_t platform_profile_store(struct device *dev,
+> -			    struct device_attribute *attr,
+> +static ssize_t platform_profile_store(struct kobject *kobj,
+> +			    struct kobj_attribute *attr,
+>  			    const char *buf, size_t count)
+>  {
+>  	int err, i;
+> @@ -115,12 +115,12 @@ static ssize_t platform_profile_store(struct device *dev,
+>  	return count;
+>  }
+>  
+> -static DEVICE_ATTR_RO(platform_profile_choices);
+> -static DEVICE_ATTR_RW(platform_profile);
+> +static struct kobj_attribute attr_platform_profile_choices = __ATTR_RO(platform_profile_choices);
+> +static struct kobj_attribute attr_platform_profile = __ATTR_RW(platform_profile);
 
-diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
-index 12a769077ea0..4775c2cb8ae1 100644
---- a/fs/gfs2/glock.c
-+++ b/fs/gfs2/glock.c
-@@ -2249,6 +2249,7 @@ void gfs2_gl_hash_clear(struct gfs2_sbd *sdp)
- 	gfs2_free_dead_glocks(sdp);
- 	glock_hash_walk(dump_glock_func, sdp);
- 	destroy_workqueue(sdp->sd_glock_wq);
-+	sdp->sd_glock_wq = NULL;
- }
- 
- static const char *state2str(unsigned state)
-diff --git a/fs/gfs2/ops_fstype.c b/fs/gfs2/ops_fstype.c
-index ff1f3e3dc65c..c1a7ff713c84 100644
---- a/fs/gfs2/ops_fstype.c
-+++ b/fs/gfs2/ops_fstype.c
-@@ -1305,7 +1305,8 @@ static int gfs2_fill_super(struct super_block *sb, struct fs_context *fc)
- 	gfs2_delete_debugfs_file(sdp);
- 	gfs2_sys_fs_del(sdp);
- fail_delete_wq:
--	destroy_workqueue(sdp->sd_delete_wq);
-+	if (sdp->sd_delete_wq)
-+		destroy_workqueue(sdp->sd_delete_wq);
- fail_glock_wq:
- 	destroy_workqueue(sdp->sd_glock_wq);
- fail_free:
--- 
-2.39.2
+I understand your need/want for this, but ick, is there any way to get
+back to using 'struct device' and not "raw" kobjects here?  That's what
+the code should be using really.
 
+thanks,
+
+greg k-h
 
