@@ -1,210 +1,110 @@
-Return-Path: <stable+bounces-69655-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69656-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16C8A957A68
-	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 02:23:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 733D2957A80
+	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 02:32:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8DE951F2369F
-	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 00:23:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A7AF1B20A62
+	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 00:32:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 866B15258;
-	Tue, 20 Aug 2024 00:23:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C26E35258;
+	Tue, 20 Aug 2024 00:32:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="W0rPNKTm"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="I4hrVPpw"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA8F233C9
-	for <stable@vger.kernel.org>; Tue, 20 Aug 2024 00:23:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6060C2F52;
+	Tue, 20 Aug 2024 00:32:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724113428; cv=none; b=uZcSnLSMbEtytR5t432fluaJSoZbhZh1tGNEmHPv6bKG1CXQAe3bFosu6fJLZEM6g7z6nOk1vizTjwv3Y6tLWp7guBww6h8pXEDaav0Zg8Ycnwn7Twoel+WjBNhnrEd7GzulClncQkSJzF9LfMsBncXvfgpApaEfT0/yP7FnBwI=
+	t=1724113927; cv=none; b=neYljUoI9i5vcAgjnlbMIu6jCQavx1qc1OM2ACuz7/PIEd4fNua0hOGOkJGma860EoHDY08fqmyY+6itZxBv2oyRuG4jDMSGiqrirPxnmnwFU/vrDx+U3Tuo005VqVm9s8YKezBXYxmwgZkYP1cott+vKWyEDnXZiZWAS2bc5+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724113428; c=relaxed/simple;
-	bh=l/MMPHrQQ3Q6NlKHsota4XpyjjpXMK+GqtUMgg5OfTA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eOse4PUp07Lu5z57eJPWuslBPVk1cYjvGHsvrbHie50qUcl2VPyRnT03NRkeRwyOe1oIPguFKb/Bd9+Ff2xNahENUNOeCw46uAXK5XKHtSqUN10fkk33peVxapShzOwBh10ZhPpZrOiPvW+l9PX7ISU4W9aHl6KN/M0KFSFgCvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=W0rPNKTm; arc=none smtp.client-ip=209.85.208.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-5bec7c5af2aso1851a12.1
-        for <stable@vger.kernel.org>; Mon, 19 Aug 2024 17:23:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1724113424; x=1724718224; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oDpJg/25PU9Gi8OKDEDgpYXo+X7+J2DDq41pw8QS5Ps=;
-        b=W0rPNKTms9qx5IWdF6JbXDAH3UiIdkSp94O7YphHOCJaKwgh6ASRYiC79B32BqC+Nb
-         G2ZEc2JepSsH8IVnEQ9LHKL1vAwLwBLAro+ITEJGrYRkysry0al1sKi25239oRQPo7jv
-         500NKvJQd0tSgb/cZ3wlNyByEKKqDSM+6nG8xkTrIZj8dyQLajIDL+tLHwbt17TIb+ho
-         KfYYghW4hI/OElDPGilMw1qDS7nB91KCQxHyWFFUgIGjLMMaSZ++CJKmfeb3WEG4e3M2
-         qvY3YAxhmN2pEH7cIqoUNKSX7Rs2hJ7ei50mjNANIaM0iTBIs6RFTvRm0eXi+255YzmC
-         G73w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724113424; x=1724718224;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=oDpJg/25PU9Gi8OKDEDgpYXo+X7+J2DDq41pw8QS5Ps=;
-        b=kI4vAn1sa2yGZFIrWX82zaq6kZjLly24mvxQoRUy4QXtZNIh9C8FFkGmIPkG5jr6gc
-         39rTprsu8600964L6fzMoxfhpOs8LUe31O9GMrtoEkD2Yirhl8/l3plLRpxCDPb2xkVE
-         n7Jj2XoqaTH8RV6Rvg023oaq7409ncakd3SnDS3xfwHBzNat5jp9rN0GrI6jbl7zroL4
-         JJqZo4Q8qxeo40XucfJnOwYe0XrpIgvH+NlorZlhHVb33YjjT/d4vkEKg9hx7yn+29M9
-         SOMxoThzlzoZxPriAbdt9JEkkY/VJGZZaltbemQxnLnPJ5XTWxQmoW1+Tcy3VV2HMi64
-         9Zng==
-X-Forwarded-Encrypted: i=1; AJvYcCWnasTUgiGheFCrCAJ3eXZ6sP9wE6/t8hoL13dKf2cHuPqHk+Q8wWvf2oUVgRj+YXT7z5YQH9dg+2Q2dnHnDhlcTsXCMhCV
-X-Gm-Message-State: AOJu0YyqnmqUcYHV1ff6S0UPglOz8U7u/67up9+dUI2gwL/6Hlewgomf
-	5z4u/MZTlq1nEfJXWsvXLXrgroFxkxWs+NNcD4OMJPoZuxG1pRD0beEPotvwGgbDGgNLBwm4l2F
-	HfhKWAmDrKpwjz8Kl0mTWVpY5qFqrh6SQpRMH
-X-Google-Smtp-Source: AGHT+IHtMUKxykGn/Yy7N6Kopmep5meMYD/5IrEs30rRItXIZZBc0NIGiKHY276e9D7ICho6QZpomOdP3KOlavCDVJQ=
-X-Received: by 2002:a05:6402:27cd:b0:5b4:df4a:48bb with SMTP id
- 4fb4d7f45d1cf-5bf0b77e3bemr54036a12.0.1724113423400; Mon, 19 Aug 2024
- 17:23:43 -0700 (PDT)
+	s=arc-20240116; t=1724113927; c=relaxed/simple;
+	bh=P87OLKr407u0qrHQWhxQpfh60h0AgrZzDDHtTTEYnAo=;
+	h=Date:To:From:Subject:Message-Id; b=BAdBtXzfzLHV20sZ6eSykZOC7HP09Yc3pTK6+KrSChSneZy7+lLxvFRCsWv50fwW486wiMgA084lgq1/E7k86QAhv+t9WQN9r8RHs3w37ZWNMUFx0Ktd+kwAztQHeX3/bUd1ntm53licHzDn2k5Th4ZWmxqCIwNEf3c9OTrc39k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=I4hrVPpw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C26CCC32782;
+	Tue, 20 Aug 2024 00:32:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1724113926;
+	bh=P87OLKr407u0qrHQWhxQpfh60h0AgrZzDDHtTTEYnAo=;
+	h=Date:To:From:Subject:From;
+	b=I4hrVPpwproGO/rlu4UWIYigLvfMZhCw6fCt2kHUgoqjw/TgmgVqetnGkcmw8HUCI
+	 OQD0tKo2KvYbf1mus3286reQIYv0QM9qpKz53LH30QyV2yYW2Oy7guoCEqYjOzRq7P
+	 tTDvnFFiaoBMTyW+Ik5y2fM71cOZMjs59nWfQgcc=
+Date: Mon, 19 Aug 2024 17:32:06 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,kees@kernel.org,erhard_f@mailbox.org,davidgow@google.com,ivan.orlov0322@gmail.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [merged] kunit-overflow-fix-ub-in-overflow_allocation_test.patch removed from -mm tree
+Message-Id: <20240820003206.C26CCC32782@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240820-firmware-traversal-v1-1-8699ffaa9276@google.com> <ZsPf02GrdMiyZP8a@pollux>
-In-Reply-To: <ZsPf02GrdMiyZP8a@pollux>
-From: Jann Horn <jannh@google.com>
-Date: Tue, 20 Aug 2024 02:23:05 +0200
-Message-ID: <CAG48ez3AEU+LD-i7Qwo3kreJ0zGQEZOnthFX++QTUOMxe3e40Q@mail.gmail.com>
-Subject: Re: [PATCH] firmware_loader: Block path traversal
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Aug 20, 2024 at 2:14=E2=80=AFAM Danilo Krummrich <dakr@kernel.org> =
-wrote:
-> On Tue, Aug 20, 2024 at 01:18:54AM +0200, Jann Horn wrote:
-> > Most firmware names are hardcoded strings, or are constructed from fair=
-ly
-> > constrained format strings where the dynamic parts are just some hex
-> > numbers or such.
-> >
-> > However, there are a couple codepaths in the kernel where firmware file
-> > names contain string components that are passed through from a device o=
-r
-> > semi-privileged userspace; the ones I could find (not counting interfac=
-es
-> > that require root privileges) are:
-> >
-> >  - lpfc_sli4_request_firmware_update() seems to construct the firmware
-> >    filename from "ModelName", a string that was previously parsed out o=
-f
-> >    some descriptor ("Vital Product Data") in lpfc_fill_vpd()
-> >  - nfp_net_fw_find() seems to construct a firmware filename from a mode=
-l
-> >    name coming from nfp_hwinfo_lookup(pf->hwinfo, "nffw.partno"), which=
- I
-> >    think parses some descriptor that was read from the device.
-> >    (But this case likely isn't exploitable because the format string lo=
-oks
-> >    like "netronome/nic_%s", and there shouldn't be any *folders* starti=
-ng
-> >    with "netronome/nic_". The previous case was different because there=
-,
-> >    the "%s" is *at the start* of the format string.)
-> >  - module_flash_fw_schedule() is reachable from the
-> >    ETHTOOL_MSG_MODULE_FW_FLASH_ACT netlink command, which is marked as
-> >    GENL_UNS_ADMIN_PERM (meaning CAP_NET_ADMIN inside a user namespace i=
-s
-> >    enough to pass the privilege check), and takes a userspace-provided
-> >    firmware name.
-> >    (But I think to reach this case, you need to have CAP_NET_ADMIN over=
- a
-> >    network namespace that a special kind of ethernet device is mapped i=
-nto,
-> >    so I think this is not a viable attack path in practice.)
-> >
-> > For what it's worth, I went looking and haven't found any USB device
-> > drivers that use the firmware loader dangerously.
->
-> Your commit message very well describes the status quo, but only implies =
-the
-> problem, and skips how you intend to solve it.
->
-> >
-> > Cc: stable@vger.kernel.org
-> > Fixes: abb139e75c2c ("firmware: teach the kernel to load firmware files=
- directly from the filesystem")
-> > Signed-off-by: Jann Horn <jannh@google.com>
-> > ---
-> > I wasn't sure whether to mark this one for stable or not - but I think
-> > since there seems to be at least one PCI device model which could
-> > trigger firmware loading with directory traversal, we should probably
-> > backport the fix?
-> > ---
-> >  drivers/base/firmware_loader/main.c | 10 +++++++++-
-> >  1 file changed, 9 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/drivers/base/firmware_loader/main.c b/drivers/base/firmwar=
-e_loader/main.c
-> > index a03ee4b11134..a32be64f3bf5 100644
-> > --- a/drivers/base/firmware_loader/main.c
-> > +++ b/drivers/base/firmware_loader/main.c
-> > @@ -864,7 +864,15 @@ _request_firmware(const struct firmware **firmware=
-_p, const char *name,
-> >       if (!firmware_p)
-> >               return -EINVAL;
-> >
-> > -     if (!name || name[0] =3D=3D '\0') {
-> > +     /*
-> > +      * Reject firmware file names with "/../" sequences in them.
-> > +      * There are drivers that construct firmware file names from
-> > +      * device-supplied strings, and we don't want some device to be a=
-ble
-> > +      * to tell us "I would like to be sent my firmware from
-> > +      * ../../../etc/shadow, please".
-> > +      */
-> > +     if (!name || name[0] =3D=3D '\0' ||
-> > +         strstr(name, "/../") !=3D NULL || strncmp(name, "../", 3) =3D=
-=3D 0) {
->
-> Seems reasonable, but are there any API users that rely on that?
 
-I tried grepping for in-kernel users and didn't find any, though I
-guess I could have missed something.
-I suppose slightly more likely than in-kernel users, there could be
-userspace code out there that intentionally uses netlink or sysfs
-interfaces to tell the kernel to load from firmware paths outside the
-firmware directory, though that would be kinda weird?
+The quilt patch titled
+     Subject: kunit/overflow: fix UB in overflow_allocation_test
+has been removed from the -mm tree.  Its filename was
+     kunit-overflow-fix-ub-in-overflow_allocation_test.patch
 
-> I guess we can't just check for strstr(name, "../"), because "foo.." is a=
- valid
-> file name?
+This patch was dropped because it was merged into mainline or a subsystem tree
 
-Yeah, that's the intent.
+------------------------------------------------------
+From: Ivan Orlov <ivan.orlov0322@gmail.com>
+Subject: kunit/overflow: fix UB in overflow_allocation_test
+Date: Thu, 15 Aug 2024 01:04:31 +0100
 
-> Maybe it would be worth adding a comment and / or a small
-> helper function for that.
+The 'device_name' array doesn't exist out of the
+'overflow_allocation_test' function scope.  However, it is being used
+as a driver name when calling 'kunit_driver_create' from
+'kunit_device_register'.  It produces the kernel panic with KASAN
+enabled due to undefined behaviour.
 
-Yeah, I guess that might make it clearer.
+Since this variable is used in one place only, remove it and pass the
+device name into kunit_device_register directly as an ascii string.
 
-> I also suggest to update the documentation of the firmware loader API to =
-let
-> people know that going back the path isn't tolerated by this API.
+Link: https://lkml.kernel.org/r/20240815000431.401869-1-ivan.orlov0322@gmail.com
+Fixes: ca90800a91ba ("test_overflow: Add memory allocation overflow tests")
+Signed-off-by: Ivan Orlov <ivan.orlov0322@gmail.com>
+Tested-by: Erhard Furtner <erhard_f@mailbox.org>
+Reviewed-by: David Gow <davidgow@google.com>
+Cc: Kees Cook <kees@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
 
-In Documentation/driver-api/firmware/request_firmware.rst, correct?
+ lib/overflow_kunit.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-> >               ret =3D -EINVAL;
-> >               goto out;
-> >       }
-> >
-> > ---
-> > base-commit: b0da640826ba3b6506b4996a6b23a429235e6923
-> > change-id: 20240820-firmware-traversal-6df8501b0fe4
-> > --
-> > Jann Horn <jannh@google.com>
-> >
+--- a/lib/overflow_kunit.c~kunit-overflow-fix-ub-in-overflow_allocation_test
++++ a/lib/overflow_kunit.c
+@@ -668,7 +668,6 @@ DEFINE_TEST_ALLOC(devm_kzalloc,  devm_kf
+ 
+ static void overflow_allocation_test(struct kunit *test)
+ {
+-	const char device_name[] = "overflow-test";
+ 	struct device *dev;
+ 	int count = 0;
+ 
+@@ -678,7 +677,7 @@ static void overflow_allocation_test(str
+ } while (0)
+ 
+ 	/* Create dummy device for devm_kmalloc()-family tests. */
+-	dev = kunit_device_register(test, device_name);
++	dev = kunit_device_register(test, "overflow-test");
+ 	KUNIT_ASSERT_FALSE_MSG(test, IS_ERR(dev),
+ 			       "Cannot register test device\n");
+ 
+_
+
+Patches currently in -mm which might be from ivan.orlov0322@gmail.com are
+
+
 
