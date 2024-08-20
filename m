@@ -1,150 +1,125 @@
-Return-Path: <stable+bounces-69672-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69671-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 996E3957E65
-	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 08:40:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2379E957E5F
+	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 08:39:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 27D871F23988
-	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 06:40:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 563741C23C2B
+	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 06:39:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11D331EB498;
-	Tue, 20 Aug 2024 06:34:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A34B51E7A44;
+	Tue, 20 Aug 2024 06:34:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V86hWq6S"
 X-Original-To: stable@vger.kernel.org
-Received: from baidu.com (mx24.baidu.com [111.206.215.185])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAAB81EB48F;
-	Tue, 20 Aug 2024 06:34:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=111.206.215.185
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C69B1E7A2F;
+	Tue, 20 Aug 2024 06:34:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724135698; cv=none; b=Rsi3o2LtR+U+uYgkVIoSp9euENJcdw7nrSmp+ZurE9OjmoMdRY8VMQQ0G7SuLvC7d5orSrP0XEhbtiAA1CY3zupyiM2PgpZvp70NVTai2DthG5MtU+AnKqzikCg9DtsVXjjYfnrh+UgGGGF6XwQ+T9ueGxwSuRAtGsMFU2uSajE=
+	t=1724135681; cv=none; b=o3+pFwjLu0XWJPRgceENIEYNBLrBOoKAQsIRN9a2N1Fx4C5aqlSh7M2mWHSG2Fvr2x/nGnXtIqbP2rqB9GfUQdLA8EsTvb+gEJ6o5XDNwYxPEof0xJQBIrfCVFFV41Xs7sHlRz1BUblb2SICm3Snqp33YppI+KEi7EDMq3rmJnk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724135698; c=relaxed/simple;
-	bh=eEissjANIlAjE6Dg4Lc8cpl/0QBn146mQDgtCJtqqCM=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=NisY1U8SpsyAT9s8uw8YrDZ/3ToDa6sDnM2c41cqyKwpDC43gWT6ReXu53t9b6RXeu2EjNj/HgNBsee+LMDkS8Cc16cEhSUMZjQQ8KzFMnHPIF4qI402npirArfPePBm0WAB59/Rbvw8HdnYL9/QK5rkAj4jgLNbPyFckdo3J9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=baidu.com; spf=pass smtp.mailfrom=baidu.com; arc=none smtp.client-ip=111.206.215.185
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=baidu.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baidu.com
-From: "Li,Rongqing" <lirongqing@baidu.com>
-To: David Hunter <david.hunter.linux@gmail.com>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>
-CC: "seanjc@google.com" <seanjc@google.com>, "pbonzini@redhat.com"
-	<pbonzini@redhat.com>, "dave.hansen@linux.intel.com"
-	<dave.hansen@linux.intel.com>, "x86@kernel.org" <x86@kernel.org>,
-	"hpa@zytor.com" <hpa@zytor.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"javier.carrasco.cruz@gmail.com" <javier.carrasco.cruz@gmail.com>,
-	"shuah@kernel.org" <shuah@kernel.org>, Peter Shier <pshier@google.com>, "Jim
- Mattson" <jmattson@google.com>, Wanpeng Li <wanpengli@tencent.com>
-Subject: =?gb2312?B?tPC4tDogW83isr/Tyrz+XSBbUEFUQ0ggNi4xLnldIEtWTTogeDg2OiBmaXJl?=
- =?gb2312?B?IHRpbWVyIHdoZW4gaXQgaXMgbWlncmF0ZWQgYW5kIGV4cGlyZWQsIGFuZCBp?=
- =?gb2312?Q?n_oneshot_mode?=
-Thread-Topic: =?gb2312?B?W83isr/Tyrz+XSBbUEFUQ0ggNi4xLnldIEtWTTogeDg2OiBmaXJlIHRpbWVy?=
- =?gb2312?B?IHdoZW4gaXQgaXMgbWlncmF0ZWQgYW5kIGV4cGlyZWQsIGFuZCBpbiBvbmVz?=
- =?gb2312?Q?hot_mode?=
-Thread-Index: AQHa8sJeC0W224tlhE2Nz9bQU8HZe7IvqO8Q
-Date: Tue, 20 Aug 2024 06:18:41 +0000
-Message-ID: <57141688d6c94c789aa416906cacf08f@baidu.com>
-References: <20240820053229.2858-1-david.hunter.linux@gmail.com>
-In-Reply-To: <20240820053229.2858-1-david.hunter.linux@gmail.com>
-Accept-Language: zh-CN, en-US
-Content-Language: zh-CN
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-baidu-bdmsfe-datecheck: 1_BJHW-Mail-Ex14_2024-08-20 14:18:41:876
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1724135681; c=relaxed/simple;
+	bh=VYm9fAL+Q+/V8SYgqp/PLQTB8NVxzo9tKEdJNZio6Sw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OMtoo31i8SKt6fw77bwqarrfaLXBTLBRMmCQ+PcjpkFg0YNez+IC+enh8oEMW+8XHWyqvAphB2OEe9ct7M1ndtVH5AfHKoD8xTO3d4cMPJ0Hg35FXmUhI0p165l1QOKO3ClTh1KRqfeCx7MHM89//WC79TFYPboKxXPS6pnPui0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V86hWq6S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5D66C4AF09;
+	Tue, 20 Aug 2024 06:34:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724135680;
+	bh=VYm9fAL+Q+/V8SYgqp/PLQTB8NVxzo9tKEdJNZio6Sw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=V86hWq6SYbgFePOxGJc1NOOq+AOy+A7HPeQRr2JIaHo817TJAFqli3mIFEAFeGnLb
+	 KvNe2iOK6gZGR6td9Rzrkj9fSVlUAp7QdNT7CvMTRgmVXnBl2EtUCRAu6aF4TTKT6G
+	 6/rkLuxhdaI5oEoShiY3XBHkOHbdUy+JYAlTyvf8DuTAic79TvP7hR1agTfmf4KQAq
+	 Ij8FJnm/OqIeAgzyfBwgFhRTXF56ChXd/8xAAaxH5ELvGVEzSdph64gnXu8YPHDzom
+	 p9sGmyqvaOynyPDTqpM4DxUZhlCOH2fWy+21abTy+NH/BFHI7Cc2bl8i+mrCyPJdb/
+	 FKPwfvFc+7t5g==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1sgIRy-000000002Fl-19mi;
+	Tue, 20 Aug 2024 08:34:38 +0200
+Date: Tue, 20 Aug 2024 08:34:38 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Bjorn Andersson <quic_bjorande@quicinc.com>
+Cc: Sebastian Reichel <sre@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Chris Lew <quic_clew@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Stephen Boyd <swboyd@chromium.org>,
+	Amit Pundir <amit.pundir@linaro.org>, linux-arm-msm@vger.kernel.org,
+	linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-usb@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH 2/3] usb: typec: ucsi: Move unregister out of atomic
+ section
+Message-ID: <ZsQ4_viDxMVu3Mho@hovoldconsulting.com>
+References: <20240818-pmic-glink-v6-11-races-v1-0-f87c577e0bc9@quicinc.com>
+ <20240818-pmic-glink-v6-11-races-v1-2-f87c577e0bc9@quicinc.com>
+ <ZsNfkuiRK9VqBSLT@hovoldconsulting.com>
+ <ZsN2qR3tuXylb2qK@hu-bjorande-lv.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-FEAS-Client-IP: 10.127.64.37
-X-FE-Last-Public-Client-IP: 100.100.100.38
-X-FE-Policy-ID: 52:10:53:SYSTEM
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZsN2qR3tuXylb2qK@hu-bjorande-lv.qualcomm.com>
 
-PiANCj4gRnJvbTogTGkgUm9uZ1FpbmcgPGxpcm9uZ3FpbmdAYmFpZHUuY29tPg0KPiANCj4gWyBV
-cHN0cmVhbSBDb21taXQgOGU2ZWQ5NmNkZDUwMDFjNTVmY2NjODBhMTdmNjUxNzQxYzFjYTdkMl0N
-Cj4gDQo+IHdoZW4gdGhlIHZDUFUgd2FzIG1pZ3JhdGVkLCBpZiBpdHMgdGltZXIgaXMgZXhwaXJl
-ZCwgS1ZNIF9zaG91bGRfIGZpcmUgdGhlDQo+IHRpbWVyIEFTQVAsIHplcm9pbmcgdGhlIGRlYWRs
-aW5lIGhlcmUgd2lsbCBjYXVzZSB0aGUgdGltZXIgdG8gaW1tZWRpYXRlbHkgZmlyZQ0KPiBvbiB0
-aGUgZGVzdGluYXRpb24NCj4gDQoNClRoaXMgcGF0Y2ggaW5jcmVhc2VkIHRoZSByZXByb2R1Y2Ug
-cmF0aW8gb2YgbGFwaWMgdGltZXIgaW50ZXJydXB0IGxvc2luZywgd2hpY2ggaGFzIGJlZW4gZml4
-ZWQgYnkgdGhlIGZvbGxvd2luZyBwYXRjaDsNCnNvIEkgdGhpbmsgcGF0Y2ggc2hvdWxkIG5vdCBt
-ZXJnZSBpdCBpbnRvIDYuMQ0KDQoNCmNvbW1pdCA5Y2ZlYzZkMDk3YzYwN2UzNjE5OWNmMGNmYmI4
-Y2Y1YWNiZDhlOWIyDQpBdXRob3I6IEhhaXRhbyBTaGFuIDxoc2hhbkBnb29nbGUuY29tPg0KRGF0
-ZTogICBUdWUgU2VwIDEyIDE2OjU1OjQ1IDIwMjMgLTA3MDANCg0KICAgIEtWTTogeDg2OiBGaXgg
-bGFwaWMgdGltZXIgaW50ZXJydXB0IGxvc3QgYWZ0ZXIgbG9hZGluZyBhIHNuYXBzaG90Lg0KDQog
-ICAgV2hlbiBydW5uaW5nIGFuZHJvaWQgZW11bGF0b3IgKHdoaWNoIGlzIGJhc2VkIG9uIFFFTVUg
-Mi4xMikgb24NCiAgICBjZXJ0YWluIEludGVsIGhvc3RzIHdpdGgga2VybmVsIHZlcnNpb24gNi4z
-LXJjMSBvciBhYm92ZSwgZ3Vlc3QNCiAgICB3aWxsIGZyZWV6ZSBhZnRlciBsb2FkaW5nIGEgc25h
-cHNob3QuIFRoaXMgaXMgYWxtb3N0IDEwMCUNCiAgICByZXByb2R1Y2libGUuIEJ5IGRlZmF1bHQs
-IHRoZSBhbmRyb2lkIGVtdWxhdG9yIHdpbGwgdXNlIHNuYXBzaG90DQogICAgdG8gc3BlZWQgdXAg
-dGhlIG5leHQgbGF1bmNoaW5nIG9mIHRoZSBzYW1lIGFuZHJvaWQgZ3Vlc3QuIFNvDQogICAgdGhp
-cyBicmVha3MgdGhlIGFuZHJvaWQgZW11bGF0b3IgYmFkbHkuDQoNCiAgICBJIHRlc3RlZCBRRU1V
-IDguMC40IGZyb20gRGViaWFuIDEyIHdpdGggYW4gVWJ1bnR1IDIyLjA0IGd1ZXN0IGJ5DQogICAg
-cnVubmluZyBjb21tYW5kICJsb2Fkdm0iIGFmdGVyICJzYXZldm0iLiBUaGUgc2FtZSBpc3N1ZSBp
-cw0KICAgIG9ic2VydmVkLiBBdCB0aGUgc2FtZSB0aW1lLCBub25lIG9mIG91ciBBTUQgcGxhdGZv
-cm1zIGlzIGltcGFjdGVkLg0KICAgIE1vcmUgZXhwZXJpbWVudHMgc2hvdyB0aGF0IGxvYWRpbmcg
-dGhlIEtWTSBtb2R1bGUgd2l0aA0KICAgICJlbmFibGVfYXBpY3Y9ZmFsc2UiIGNhbiB3b3JrYXJv
-dW5kIGl0Lg0KDQogICAgVGhlIGlzc3VlIHN0YXJ0ZWQgdG8gc2hvdyB1cCBhZnRlciBjb21taXQg
-OGU2ZWQ5NmNkZDUwICgiS1ZNOiB4ODY6DQogICAgZmlyZSB0aW1lciB3aGVuIGl0IGlzIG1pZ3Jh
-dGVkIGFuZCBleHBpcmVkLCBhbmQgaW4gb25lc2hvdCBtb2RlIikuDQogICAgSG93ZXZlciwgYXMg
-aXMgcG9pbnRlZCBvdXQgYnkgU2VhbiBDaHJpc3RvcGhlcnNvbiwgaXQgaXMgaW50cm9kdWNlZA0K
-ICAgIGJ5IGNvbW1pdCA5NjcyMzVkMzIwMzIgKCJLVk06IHZteDogY2xlYXIgcGVuZGluZyBpbnRl
-cnJ1cHRzIG9uDQogICAgS1ZNX1NFVF9MQVBJQyIpLiBjb21taXQgOGU2ZWQ5NmNkZDUwICgiS1ZN
-OiB4ODY6IGZpcmUgdGltZXIgd2hlbg0KICAgIGl0IGlzIG1pZ3JhdGVkIGFuZCBleHBpcmVkLCBh
-bmQgaW4gb25lc2hvdCBtb2RlIikganVzdCBtYWtlcyBpdA0KICAgIGVhc2llciB0byBoaXQgdGhl
-IGlzc3VlLg0KDQogICAgSGF2aW5nIGJvdGggY29tbWl0cywgdGhlIG9uZXNob3QgbGFwaWMgdGlt
-ZXIgZ2V0cyBmaXJlZCBpbW1lZGlhdGVseQ0KICAgIGluc2lkZSB0aGUgS1ZNX1NFVF9MQVBJQyBj
-YWxsIHdoZW4gbG9hZGluZyB0aGUgc25hcHNob3QuIE9uIEludGVsDQogICAgcGxhdGZvcm1zIHdp
-dGggQVBJQyB2aXJ0dWFsaXphdGlvbiBhbmQgcG9zdGVkIGludGVycnVwdCBwcm9jZXNzaW5nLA0K
-ICAgIHRoaXMgZXZlbnR1YWxseSBsZWFkcyB0byBzZXR0aW5nIHRoZSBjb3JyZXNwb25kaW5nIFBJ
-UiBiaXQuIEhvd2V2ZXIsDQogICAgdGhlIHdob2xlIFBJUiBiaXRzIGdldCBjbGVhcmVkIGxhdGVy
-IGluIHRoZSBzYW1lIEtWTV9TRVRfTEFQSUMgY2FsbA0KICAgIGJ5IGFwaWN2X3Bvc3Rfc3RhdGVf
-cmVzdG9yZS4gVGhpcyBsZWFkcyB0byB0aW1lciBpbnRlcnJ1cHQgbG9zdC4NCg0KICAgIFRoZSBm
-aXggaXMgdG8gbW92ZSB2bXhfYXBpY3ZfcG9zdF9zdGF0ZV9yZXN0b3JlIHRvIHRoZSBiZWdpbm5p
-bmcgb2YNCiAgICB0aGUgS1ZNX1NFVF9MQVBJQyBjYWxsIGFuZCByZW5hbWUgdG8gdm14X2FwaWN2
-X3ByZV9zdGF0ZV9yZXN0b3JlLg0KICAgIFdoYXQgdm14X2FwaWN2X3Bvc3Rfc3RhdGVfcmVzdG9y
-ZSBkb2VzIGlzIGFjdHVhbGx5IGNsZWFyaW5nIGFueQ0KICAgIGZvcm1lciBhcGljdiBzdGF0ZSBh
-bmQgdGhpcyBiZWhhdmlvciBpcyBtb3JlIHN1aXRhYmxlIHRvIGNhcnJ5IG91dA0KICAgIGluIHRo
-ZSBiZWdpbm5pbmcuDQoNCiAgICBGaXhlczogOTY3MjM1ZDMyMDMyICgiS1ZNOiB2bXg6IGNsZWFy
-IHBlbmRpbmcgaW50ZXJydXB0cyBvbiBLVk1fU0VUX0xBUElDIikNCiAgICBDYzogc3RhYmxlQHZn
-ZXIua2VybmVsLm9yZw0KICAgIFN1Z2dlc3RlZC1ieTogU2VhbiBDaHJpc3RvcGhlcnNvbiA8c2Vh
-bmpjQGdvb2dsZS5jb20+DQogICAgU2lnbmVkLW9mZi1ieTogSGFpdGFvIFNoYW4gPGhzaGFuQGdv
-b2dsZS5jb20+DQogICAgTGluazogaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvci8yMDIzMDkxMzAw
-MDIxNS40NzgzODctMS1oc2hhbkBnb29nbGUuY29tDQogICAgU2lnbmVkLW9mZi1ieTogU2VhbiBD
-aHJpc3RvcGhlcnNvbiA8c2VhbmpjQGdvb2dsZS5jb20+DQoNCg0KDQo+IENjOiBTZWFuIENocmlz
-dG9waGVyc29uIDxzZWFuamNAZ29vZ2xlLmNvbT4NCj4gQ2M6IFBldGVyIFNoaWVyIDxwc2hpZXJA
-Z29vZ2xlLmNvbT4NCj4gQ2M6IEppbSBNYXR0c29uIDxqbWF0dHNvbkBnb29nbGUuY29tPg0KPiBD
-YzogV2FucGVuZyBMaSA8d2FucGVuZ2xpQHRlbmNlbnQuY29tPg0KPiBDYzogUGFvbG8gQm9uemlu
-aSA8cGJvbnppbmlAcmVkaGF0LmNvbT4NCj4gU2lnbmVkLW9mZi1ieTogTGkgUm9uZ1FpbmcgPGxp
-cm9uZ3FpbmdAYmFpZHUuY29tPg0KPiBMaW5rOg0KPiBodHRwczovL2xvcmUua2VybmVsLm9yZy9y
-LzIwMjMwMTA2MDQwNjI1Ljg0MDQtMS1saXJvbmdxaW5nQGJhaWR1LmNvbQ0KPiBTaWduZWQtb2Zm
-LWJ5OiBTZWFuIENocmlzdG9waGVyc29uIDxzZWFuamNAZ29vZ2xlLmNvbT4NCj4gDQo+IChjaGVy
-cnkgcGlja2VkIGZyb20gY29tbWl0IDhlNmVkOTZjZGQ1MDAxYzU1ZmNjYzgwYTE3ZjY1MTc0MWMx
-Y2E3ZDIpDQo+IFRoZSBjb2RlIHdhcyBhYmxlIHRvIGNvbXBpbGUgd2l0aG91dCBlcnJvcnMgb3Ig
-d2FybmluZ3MuDQo+IFNpZ25lZC1vZmYtYnk6IERhdmlkIEh1bnRlciA8ZGF2aWQuaHVudGVyLmxp
-bnV4QGdtYWlsLmNvbT4NCj4gLS0tDQo+ICBhcmNoL3g4Ni9rdm0vbGFwaWMuYyB8IDggKysrKysr
-LS0NCj4gIDEgZmlsZSBjaGFuZ2VkLCA2IGluc2VydGlvbnMoKyksIDIgZGVsZXRpb25zKC0pDQo+
-IA0KPiBkaWZmIC0tZ2l0IGEvYXJjaC94ODYva3ZtL2xhcGljLmMgYi9hcmNoL3g4Ni9rdm0vbGFw
-aWMuYyBpbmRleA0KPiBjOTBmZWYwMjU4YzUuLjNjZDU5MGFjZTk1YSAxMDA2NDQNCj4gLS0tIGEv
-YXJjaC94ODYva3ZtL2xhcGljLmMNCj4gKysrIGIvYXJjaC94ODYva3ZtL2xhcGljLmMNCj4gQEAg
-LTE4NDMsOCArMTg0MywxMiBAQCBzdGF0aWMgYm9vbCBzZXRfdGFyZ2V0X2V4cGlyYXRpb24oc3Ry
-dWN0IGt2bV9sYXBpYw0KPiAqYXBpYywgdTMyIGNvdW50X3JlZykNCj4gIAkJaWYgKHVubGlrZWx5
-KGNvdW50X3JlZyAhPSBBUElDX1RNSUNUKSkgew0KPiAgCQkJZGVhZGxpbmUgPSB0bWljdF90b19u
-cyhhcGljLA0KPiAgCQkJCSAgICAga3ZtX2xhcGljX2dldF9yZWcoYXBpYywgY291bnRfcmVnKSk7
-DQo+IC0JCQlpZiAodW5saWtlbHkoZGVhZGxpbmUgPD0gMCkpDQo+IC0JCQkJZGVhZGxpbmUgPSBh
-cGljLT5sYXBpY190aW1lci5wZXJpb2Q7DQo+ICsJCQlpZiAodW5saWtlbHkoZGVhZGxpbmUgPD0g
-MCkpIHsNCj4gKwkJCQlpZiAoYXBpY19sdnR0X3BlcmlvZChhcGljKSkNCj4gKwkJCQkJZGVhZGxp
-bmUgPSBhcGljLT5sYXBpY190aW1lci5wZXJpb2Q7DQo+ICsJCQkJZWxzZQ0KPiArCQkJCQlkZWFk
-bGluZSA9IDA7DQo+ICsJCQl9DQo+ICAJCQllbHNlIGlmICh1bmxpa2VseShkZWFkbGluZSA+IGFw
-aWMtPmxhcGljX3RpbWVyLnBlcmlvZCkpIHsNCj4gIAkJCQlwcl9pbmZvX3JhdGVsaW1pdGVkKA0K
-PiAgCQkJCSAgICAia3ZtOiB2Y3B1ICVpOiByZXF1ZXN0ZWQgbGFwaWMgdGltZXIgcmVzdG9yZSB3
-aXRoICINCj4gLS0NCj4gMi40My4wDQoNCg==
+On Mon, Aug 19, 2024 at 09:45:29AM -0700, Bjorn Andersson wrote:
+> On Mon, Aug 19, 2024 at 05:06:58PM +0200, Johan Hovold wrote:
+> > On Sun, Aug 18, 2024 at 04:17:38PM -0700, Bjorn Andersson wrote:
+> > > Commit 'caa855189104 ("soc: qcom: pmic_glink: Fix race during
+> > > initialization")' 
+> > 
+> > This commit does not exist, but I think you really meant to refer to
+> > 
+> > 	9329933699b3 ("soc: qcom: pmic_glink: Make client-lock non-sleeping")
+> > 
+> > and possibly also
+> > 
+> > 	635ce0db8956 ("soc: qcom: pmic_glink: don't traverse clients list without a lock")
+> > 
+> > here.
+> > 
+> 
+> Yeah, I copy-pasted the wrong SHA1. Prior to commit 9329933699b3 ("soc:
+> qcom: pmic_glink: Make client-lock non-sleeping") the PDR notification
+> happened from a worker with only mutexes held.
+> 
+> > > moved the pmic_glink client list under a spinlock, as
+> > > it is accessed by the rpmsg/glink callback, which in turn is invoked
+> > > from IRQ context.
+> > > 
+> > > This means that ucsi_unregister() is now called from IRQ context, which
+                                                           ^^^^^^^^^^^
+
+> > > isn't feasible as it's expecting a sleepable context.
+> > 
+> > But this is not correct as you say above that the callback has always
+> > been made in IRQ context. Then this bug has been there since the
+> > introduction of the UCSI driver by commit
+> > 
+> 
+> No, I'm stating that commit 9329933699b3 ("soc: qcom: pmic_glink: Make
+> client-lock non-sleeping") was needed because the client list is
+> traversed under the separate glink callback, which has always been made
+> in IRQ context.
+
+Ok, got it. But then you meant "atomic context", not "IRQ context", in
+the paragraph above.
+
+Johan
 
