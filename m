@@ -1,133 +1,88 @@
-Return-Path: <stable+bounces-69684-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69685-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A9B7958075
-	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 10:05:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 159C89580A7
+	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 10:14:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3AE51F22035
-	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 08:05:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA2B61F21D24
+	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 08:14:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FC8B18E345;
-	Tue, 20 Aug 2024 08:04:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O31bAxDS"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FE32189B99;
+	Tue, 20 Aug 2024 08:14:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFCE11C6A1;
-	Tue, 20 Aug 2024 08:04:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 725DD18E345
+	for <stable@vger.kernel.org>; Tue, 20 Aug 2024 08:14:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724141097; cv=none; b=AfZTjlfuDn716BDEZjNGtcM6RkTPcOPwc3qvKqWXjqpL+nvUAWsbv4Capm5bOr1asmeeSZOOC4PO5PSvH8aReKiJwBPeGoigebITkkNwO4oFumRRGzd9lhOwnX4Ic52aCY+IqllE/w6Hap9PId3bCwQa8qQ6JGkgfyUlZry1594=
+	t=1724141676; cv=none; b=X+j6z7eSRT7gqGc6yL4GUEWM70n34NQRP8bpEt7oOw6gUQqk3mXvFJXDxdX9g3NPbO6XR8EKCUpqoWg8l7YN9/l/K+CFYZOg303zEIReGhDHLjjliNsqhhoGjxy0Lid/yjR4QJA+tLm3pKrpsGUork3DjcQVwSvRG4OnjGSzrXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724141097; c=relaxed/simple;
-	bh=nLDE8aqv7ibiDI+AnLjAU/rDCYSS1DmP41EiC6RFcmc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AhvgR1RuDMTM9jDm/xKyXuXL+oCTRgqVbXfHAex+n29xEmRsYafXV+EuPWQPVGUDNYnQezMLKQTAwoJJ9C3OKLma6XN/jxXDhJYHhRajLl0y3KTynCWBLeWmR39WArT1GKOEk79zGabPdcm19DpjGM/cpfnU9x4cXDN/g7vI0Cg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O31bAxDS; arc=none smtp.client-ip=209.85.218.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	s=arc-20240116; t=1724141676; c=relaxed/simple;
+	bh=TYmY1Xnnh0qRU1sPt7WOjOr24QrgTjNS/vGg75mC5dk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sBhOQ8qnzUJnr6+M+Fp4tezwVcQk1H9bYDCN7e6lXZUC3mFur2SJ8j32AaETsXuTlA2clPg63+kdC150DTkQzq7y3bom5ZmhO76c8Hu2ZTPqkuo+azYNEDd8XzwE1pM6aYIgKilt04+YuLIclvniB04dlD4Q6tfrdIbLquFhQIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-a80eab3945eso524042866b.1;
-        Tue, 20 Aug 2024 01:04:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724141094; x=1724745894; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=bWFgus7bmtmFt8A1IpRat5xjHQCJCzf5TqRiBZFH+5c=;
-        b=O31bAxDSg2V3F+VjVa6T98/wsGh4t66rmr4J6wgco8e/PfwMlJnvbDmPExfqhcuPhc
-         SvKQ4h7WDrEICNVCb0FD4cG3lQhAoPSJ3Gjtr+DUtz69Zp7vu4uixG6+zXMaxKFxJIfc
-         mWObX4jdlTDGJpPtBXl6bpT5WkRoOQZbLX9Um34rKQMNmRrP2HhWju5bA1cJua3KUhDV
-         xKdGz/IopTKXbxWZstUWbYhHO+QirgdnRfITqBqofuMFIy9xVjH+agKzRz2L3u/1VJoP
-         Az0IL1cbLbA3HFX3NMr/MxU4mpubfVR478I/MGU4cB0R7ja+/f0Z2GRHTZJp0DKyjnvN
-         HY7A==
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-5bed83489c3so3749810a12.3
+        for <stable@vger.kernel.org>; Tue, 20 Aug 2024 01:14:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724141094; x=1724745894;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=bWFgus7bmtmFt8A1IpRat5xjHQCJCzf5TqRiBZFH+5c=;
-        b=STA0jPsMFB52Ey7g30xiZVigbwGG/QtcjSVB303+Rp98UPIal5QIUVC2oYxZsA8kfi
-         uziWzN26cuVZ9efr1pXUvS7lRvwIOD4EpZf21CUvTMgQhGBNMb5Taqas4ejRzE+nlUFH
-         0UnMQSIWSg5vSx7HZMW51YFBlRKSgQcoTojlImrm4wzAGUdDbYF1fh4dUR5TVEkjLzJR
-         txwcAoLbcYbyGDN2uskyh9Hu/FLjAPxIHu6IgePUKPgbTBQ7iCvlJjhwe6g3SpXQYYAA
-         L2skGCZcFzQ2VOda4sDQb6IYCvTACqGndL/gNSNzXTGWpYzlITH0vSqnr4BhD7N3rP0y
-         qlIQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUJIxuR3ZbD2J0r/gJJIZ1bKYbA3krCYKioxheSBDgWLRhvDvBkarwc1k6eOx2gNybkeuNQ4y8p@vger.kernel.org, AJvYcCVmeScLfa6JCInfa64J07OebxGy+6pcJQjaC6LpCeJNSeRjRZaK1PzpmU+6vj9gZiTFHMfwnjqluazS8VOM@vger.kernel.org, AJvYcCWKdWmSFYOn7sBFJ9ujC89hEzuq5Ir35RqYmytQVbzxRVJCl6v2JXas8ziCoDeQhwADYjT3KQ63SbAQ0Mn6@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx9ITD4bu0D54GmXS0dilZVsppRogDza15B8e1W+Ep0sWBU7o69
-	SzoADZ8ohaoa6CMdlDZX9eIkzRQSdjMrbJ4Q8ITOuEfikl8eMaTqqXl63g==
-X-Google-Smtp-Source: AGHT+IEylAwKGfhOSRiPpbSpW/mefft1BLen+BVub0FwVY6eJPQ1OxSK1kbb37LXb0EZJFVLDfx10Q==
-X-Received: by 2002:a17:907:d581:b0:a7a:8cb9:7490 with SMTP id a640c23a62f3a-a8392a15b30mr943309266b.47.1724141093178;
-        Tue, 20 Aug 2024 01:04:53 -0700 (PDT)
-Received: from labdl-itc-sw06.tmt.telital.com (host-217-57-98-66.business.telecomitalia.it. [217.57.98.66])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a8383948d19sm728431066b.186.2024.08.20.01.04.52
+        d=1e100.net; s=20230601; t=1724141673; x=1724746473;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SLrcrYijvHYdmm6lZD+iH93v7IqstLwP2Xt/dCZ6NjA=;
+        b=jWCOJ19XsN4XFP71A53LsKBvApzDULE41HJOyP07Lt246z/9W81hDMXsYgm0yAIbhM
+         8f+I397NC6sfDngOQQwywLWK0EEzveewIMSQmEOYkPFr6cQMkjk6WPgdLVqTfkorP1q7
+         uLjP9Ixcd0e++lgzSZWBgSMOYB5+zqWDD1+XHozlTnAnNo+1g+bJLNV2bwiwuZuFtsnF
+         I9qe5zqed1mRhvrGA+PFxLGMKCuXP0sH5E/eTpH32BCUbJ+/oEtc+fWaLTrqb6ZmFIiC
+         fQMWiOmLHD2w1sOEMomdlEqfyt/K6w2UFXSC77BM6o2b8qzBZ1l64SnfbQMM/bM004F/
+         5Ilg==
+X-Forwarded-Encrypted: i=1; AJvYcCWRIbhN1bqyZMglr7vVJ0Tv4m8NYqKLcddBHFQOA4LBm7vY82oOW5PzQD0ot1WGQO1uC6O0/cXjK32A2p85lB5l6Xi8O1Nt
+X-Gm-Message-State: AOJu0YwBLtoKtiE0kn0kCmlf2+r2u/r3ewRpX8rotgjlfaiVT0yK6bY3
+	D7XB7O7f5lyGtuKCBrdRXcXlkB/U8TQ35cvCgVQPXFXhushhPKny
+X-Google-Smtp-Source: AGHT+IF1NhV/4IC+EXoqixYOas23Kznp/ufBZVLc/iSHzaBInTrFEm+PoaDz/YEB7qz+DdBFbj+Ovw==
+X-Received: by 2002:a05:6402:2745:b0:5be:d2be:50b1 with SMTP id 4fb4d7f45d1cf-5bed2be550cmr8660497a12.11.1724141672062;
+        Tue, 20 Aug 2024 01:14:32 -0700 (PDT)
+Received: from gmail.com (fwdproxy-lla-012.fbsv.net. [2a03:2880:30ff:c::face:b00c])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5bebc081afbsm6398544a12.94.2024.08.20.01.14.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Aug 2024 01:04:52 -0700 (PDT)
-From: Fabio Porcedda <fabio.porcedda@gmail.com>
-To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Daniele Palmas <dnlplm@gmail.com>
-Cc: mhi@lists.linux.dev,
-	linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Fabio Porcedda <fabio.porcedda@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] bus: mhi: host: pci_generic: Fix the name for the Telit FE990A
-Date: Tue, 20 Aug 2024 10:04:39 +0200
-Message-ID: <20240820080439.837666-1-fabio.porcedda@gmail.com>
-X-Mailer: git-send-email 2.46.0
+        Tue, 20 Aug 2024 01:14:31 -0700 (PDT)
+Date: Tue, 20 Aug 2024 01:14:29 -0700
+From: Breno Leitao <leitao@debian.org>
+To: gregkh@linuxfoundation.org
+Cc: andi.shyti@kernel.org, andy@kernel.org, digetx@gmail.com,
+	rmikey@meta.com, stable@vger.kernel.org
+Subject: Re: FAILED: patch "[PATCH] i2c: tegra: Do not mark ACPI devices as
+ irq safe" failed to apply to 6.1-stable tree
+Message-ID: <ZsRQZZiSo2sj5EaI@gmail.com>
+References: <2024081950-amaze-wriggle-3057@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2024081950-amaze-wriggle-3057@gregkh>
 
-Add a mhi_pci_dev_info struct specific for the Telit FE990A modem in
-order to use the correct product name.
+Hello Greg,
 
-Cc: stable@vger.kernel.org # 6.1+
-Fixes: 0724869ede9c ("bus: mhi: host: pci_generic: add support for Telit FE990 modem")
-Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
----
- drivers/bus/mhi/host/pci_generic.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+On Mon, Aug 19, 2024 at 11:31:50AM +0200, gregkh@linuxfoundation.org wrote:
+> 
+> The patch below does not apply to the 6.1-stable tree.
+> If someone wants it applied there, or to any other stable or longterm
+> tree, then please email the backport, including the original git commit
+> id to <stable@vger.kernel.org>.
 
-diff --git a/drivers/bus/mhi/host/pci_generic.c b/drivers/bus/mhi/host/pci_generic.c
-index 14a11880bcea..fb701c67f763 100644
---- a/drivers/bus/mhi/host/pci_generic.c
-+++ b/drivers/bus/mhi/host/pci_generic.c
-@@ -680,6 +680,15 @@ static const struct mhi_pci_dev_info mhi_telit_fn990_info = {
- 	.mru_default = 32768,
- };
- 
-+static const struct mhi_pci_dev_info mhi_telit_fe990a_info = {
-+	.name = "telit-fe990a",
-+	.config = &modem_telit_fn990_config,
-+	.bar_num = MHI_PCI_DEFAULT_BAR_NUM,
-+	.dma_data_width = 32,
-+	.sideband_wake = false,
-+	.mru_default = 32768,
-+};
-+
- /* Keep the list sorted based on the PID. New VID should be added as the last entry */
- static const struct pci_device_id mhi_pci_id_table[] = {
- 	{ PCI_DEVICE(PCI_VENDOR_ID_QCOM, 0x0304),
-@@ -697,9 +706,9 @@ static const struct pci_device_id mhi_pci_id_table[] = {
- 	/* Telit FN990 */
- 	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_QCOM, 0x0308, 0x1c5d, 0x2010),
- 		.driver_data = (kernel_ulong_t) &mhi_telit_fn990_info },
--	/* Telit FE990 */
-+	/* Telit FE990A */
- 	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_QCOM, 0x0308, 0x1c5d, 0x2015),
--		.driver_data = (kernel_ulong_t) &mhi_telit_fn990_info },
-+		.driver_data = (kernel_ulong_t) &mhi_telit_fe990a_info },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_QCOM, 0x0308),
- 		.driver_data = (kernel_ulong_t) &mhi_qcom_sdx65_info },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_QCOM, 0x0309),
--- 
-2.46.0
+I am working to backport this fix to 6.1 and I should have a patch ready
+soon.
 
+Thanks
 
