@@ -1,88 +1,102 @@
-Return-Path: <stable+bounces-69759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69760-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6A08958FE8
-	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 23:46:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A420959000
+	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 23:53:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D3811F23380
-	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 21:46:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B67D8B22908
+	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 21:53:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D10881C7B6E;
-	Tue, 20 Aug 2024 21:46:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 154D91C6892;
+	Tue, 20 Aug 2024 21:53:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="bVLhXX6A"
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="Qe+tl4Vj"
 X-Original-To: stable@vger.kernel.org
-Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
+Received: from 008.lax.mailroute.net (008.lax.mailroute.net [199.89.1.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A79618B467
-	for <stable@vger.kernel.org>; Tue, 20 Aug 2024 21:46:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 623D3154C10;
+	Tue, 20 Aug 2024 21:53:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724190401; cv=none; b=qdvWWwUJVKvL3ti9TKAD2SmmQ4/Zt0BEdvk6mjaRkJMsUYSYCHbOuNDEgAGObt8jSTB2Latbf4uNb3C9RRjtw/2QZ6WLCqvlsm7DkzGZjjlBQWWiWnEB/+EBV++8Naa3hCBgCn+h/MvwwsKY1XlAnMFG8BS9VgCNy9Z+AEUYv/M=
+	t=1724190795; cv=none; b=D9WPVgFDwKSG5QDfQZ11nuCLOpKe8h+/Ok8CHsSvFfB8yAMp3HWFANgi5uwlQZ0nmRADxLrBSZEt1PQM29voGfnSM6M2uwOH+YqEm0DmxuM6rzskICVJZ1Mxfbjdk9mUFBcZv9fItsKoMf3y+ckJKJRoWEoGDHyPSMTB8ngXA9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724190401; c=relaxed/simple;
-	bh=qLb0yN4NqnbyBII1d2B+3lYvrB94iEo9uUhFRuL55zI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DmgOCJT+OImuykLJw1stMPFCJ/W3hww3IuV3Kl/8yEY1+Lfe7q7kk1moqCYbItxKfbMu2c1g4Mkskbo+e9wocvTtPlTrs0z9AbCej8BziNVCwMf7TVALxfupbkZ6TZ+xTge1AhaqtgbwXh/plJ8Smi1SRvODlebDzNmnmWTlgsI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=bVLhXX6A; arc=none smtp.client-ip=95.215.58.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Date: Tue, 20 Aug 2024 14:46:30 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1724190396;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=H5Wfc7SpUB43gQpOzvYVCumAuS/D3QJGlE7NYs8JIZw=;
-	b=bVLhXX6ACG+AY083jKB2/YB67GL6xAZr+SctARVwqeTMLpzBMAOsbVM3WfbSqm6zh4r76g
-	mUOj8v69L8QwaHRe/MwKm2OIxiAjn57MgwvJeITtSabcZPct2IubEQED4HP0TiUhukeenb
-	+Ke9R7UHP+O8lmiVp5iK3gTnBhrf2nk=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Oliver Upton <oliver.upton@linux.dev>
-To: Marc Zyngier <maz@kernel.org>
-Cc: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	kvm@vger.kernel.org, James Morse <james.morse@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Alexander Potapenko <glider@google.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 01/12] KVM: arm64: Make ICC_*SGI*_EL1 undef in the
- absence of a vGICv3
-Message-ID: <ZsUOtp9kfpqm1enx@linux.dev>
-References: <20240820100349.3544850-1-maz@kernel.org>
- <20240820100349.3544850-2-maz@kernel.org>
+	s=arc-20240116; t=1724190795; c=relaxed/simple;
+	bh=zFFbXPWHS8E2Ezu8Rn5t+ePYv0aowCIytFxqaVt6GpU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=n4QqSrbxMXappP0wZmaDOTtT6wEvAl8K/NCXDsvSmBgbjJJYyRvVJ3uPB/eVcQ+fp6NQXvQ05qK6de5xmoVcIs+0TXnksV1XH58bnA0F8wE7NQ8Mgtd4pjAZv/x7QIcfVrDsrerSmW7qpwyCiLyIWGudMNHp7Xl0+XfRe4O7tak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=Qe+tl4Vj; arc=none smtp.client-ip=199.89.1.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+Received: from localhost (localhost [127.0.0.1])
+	by 008.lax.mailroute.net (Postfix) with ESMTP id 4WpNWF617Dz6ClY99;
+	Tue, 20 Aug 2024 21:53:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1724190790; x=1726782791; bh=S1ZtWpcyOYQRmSU7/wyc6UD+
+	b4EXl2U3vRPTY7cs4RI=; b=Qe+tl4VjT/LwLu76sGZBUTL58Xcit1Z+CScXSs8Q
+	K4ZvQcdPQvAgGpwr46gWnFjFrMGRHe1CUBiXbWHhthRdZl/7APWfK0eXqN0Ri6Xr
+	EaTCjbRaCkdBPlBBJQQ0FdTLFcUsJM0wtYQQlotMhyVjvCEaZsTvAz37FCOZmcRl
+	k+gRu28oMVAR4sdWKHvXtqatiQTeem/Uf872GZrh4EZbxCo6FdIBimIh8cW3hqec
+	R7aHrYjQP2/cFPnqnj5K5pz14bBlIjNcw/DTzxMatUdrYBsjrTOaPiLFxFfMLXiN
+	eRcSB+d8awoBzD1TGf/lYbi1ehgTFuEkJRa/uOd4p6Tdqw==
+X-Virus-Scanned: by MailRoute
+Received: from 008.lax.mailroute.net ([127.0.0.1])
+ by localhost (008.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id 91RVa769WTKk; Tue, 20 Aug 2024 21:53:10 +0000 (UTC)
+Received: from [192.168.51.14] (c-73-231-117-72.hsd1.ca.comcast.net [73.231.117.72])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 008.lax.mailroute.net (Postfix) with ESMTPSA id 4WpNW72YJ0z6ClY98;
+	Tue, 20 Aug 2024 21:53:07 +0000 (UTC)
+Message-ID: <ef580b2b-af06-4b5c-a0e2-09d6374434fb@acm.org>
+Date: Tue, 20 Aug 2024 14:53:05 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240820100349.3544850-2-maz@kernel.org>
-X-Migadu-Flow: FLOW_OUT
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5] scsi: sd: Ignore command SYNC CACHE error if format in
+ progress
+To: Damien Le Moal <dlemoal@kernel.org>, Yihang Li <liyihang9@huawei.com>,
+ James.Bottomley@HansenPartnership.com, martin.petersen@oracle.com
+Cc: linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linuxarm@huawei.com, prime.zeng@huawei.com, stable@vger.kernel.org
+References: <20240819090934.2130592-1-liyihang9@huawei.com>
+ <bfce098e-a070-40b1-95fc-951e2b3c1c22@acm.org>
+ <c8a990c3-4b47-4e22-a378-8714c697748a@kernel.org>
+Content-Language: en-US
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <c8a990c3-4b47-4e22-a378-8714c697748a@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Aug 20, 2024 at 11:03:38AM +0100, Marc Zyngier wrote:
-> On a system with a GICv3, if a guest hasn't been configured with
-> GICv3 and that the host is not capable of GICv2 emulation,
-> a write to any of the ICC_*SGI*_EL1 registers is trapped to EL2.
+On 8/19/24 4:19 PM, Damien Le Moal wrote:
+> On 8/20/24 01:59, Bart Van Assche wrote:
+>> On 8/19/24 2:09 AM, Yihang Li wrote:
+>>> +			if ((sshdr.asc == 0x04 && sshdr.ascq == 0x04) ||
+>>
+>> Shouldn't symbolic names be introduced for these numeric constants?
+>> Although there is more code in the SCSI core that compares ASC / ASCQ
+>> values with numeric constants, I think we need symbolic names for these
+>> constants to make code like the above easier to read. There is already
+>> a header file for definitions that come directly from the SCSI standard
+>> and that is used by both SCSI initiator and SCSI target code:
+>> <scsi/scsi_proto.h>.
 > 
-> We therefore try to emulate the SGI access, only to hit a NULL
-> pointer as no private interrupt is allocated (no GIC, remember?).
-> 
-> The obvious fix is to give the guest what it deserves, in the
-> shape of a UNDEF exception.
-> 
-> Reported-by: Alexander Potapenko <glider@google.com>
-> Signed-off-by: Marc Zyngier <maz@kernel.org>
-> Cc: stable@vger.kernel.org
+> That would be *a lot* to define...
 
-LGTM, and just as an FYI I do plan on grabbing this for 6.11
+I meant introducing symbolic names only for the numerical constants that
+occur in this patch. Anyway, I'm fine with a descriptive comment too.
 
--- 
-Thanks,
-Oliver
+Bart.
 
