@@ -1,115 +1,133 @@
-Return-Path: <stable+bounces-69697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3155958233
-	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 11:29:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64A2E958242
+	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 11:31:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 69DD21F242AF
-	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 09:29:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E2C3DB21E94
+	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 09:31:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49C7618B493;
-	Tue, 20 Aug 2024 09:29:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88C87158A18;
+	Tue, 20 Aug 2024 09:30:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="jqmqqkYo"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D44618A6C6;
-	Tue, 20 Aug 2024 09:29:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D05818E372;
+	Tue, 20 Aug 2024 09:30:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724146146; cv=none; b=GoK8UQ6x0KttSq9QpDI61MLGlWIWg8Fab0ckG+SYWQVN4SxQc3RYQG6YZv3B+kJayjM/MCv8SNMPLPYnSxql2QXqi4umBeh77MOZ7t82uQh3QBLD8y4/ivQuDYXLgOFNqN3t2S1JA2XheDnEM2C4HEFInu1qBAS64biSTkdvinM=
+	t=1724146256; cv=none; b=UyqweZOAF6gBDzgaok0WFncOw6TdqZ2+dTv2JxwuAO3915zvSIiP4YDBIclZYiL4EePjPixIIv81FGieJqkqtnwz5aJGX5g7tu75WRNch3Z8dQKMid1SbgJlz1uNYm6zC4vOZ0Vlh5sWtWglZZjkdGpAVA4tHeXBSOs5SpCs0es=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724146146; c=relaxed/simple;
-	bh=Sm2hRR9HMFXqVYEg4JRCFJU4UAJ1+UJlQmv8NYxuyW8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=UDoj0DZw0D03LonAqIeLhMa9hklQxsYtp7oiVqP4t5rX+quG3ez7wNqFxVjgPFASe1eswZ4oR6kwG3lHU52b9Xcg4h6I2WJ3cVBsZVgM0PGdrclq/cf0uazhe9zVt0YFDRqMtpKPrONgZZziGshF/QUEWY0RQS/J6VX2YG3tZao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
-	by APP-01 (Coremail) with SMTP id qwCowADX3EjMYcRmmU6NCA--.37003S2;
-	Tue, 20 Aug 2024 17:28:51 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: maz@kernel.org,
-	tglx@linutronix.de,
-	Suravee.Suthikulpanit@amd.com,
-	akpm@linux-foundation.org
-Cc: linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Ma Ke <make24@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH v3] irqchip/gic-v2m: Fix refcount leak in gicv2m_of_init
-Date: Tue, 20 Aug 2024 17:28:43 +0800
-Message-Id: <20240820092843.1219933-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1724146256; c=relaxed/simple;
+	bh=6bp+iYpueMBdF700L9bS/lx+HmmUlKjsruFR4f+BAKU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=tUG0H8bl9GreQcipwK1fpceptw+PKNrN21FxS9WjZog6k5BckAYxoI7nyoZL352CaKhaijbWPftcyYZLQFq+x7JM7HcM8h5+0EKuCphsSq9qebYWV/bSbSL5oZm4nLQz2qPu7zv7hPAAnh++vXY/bncQJtoJjzoWZZmFsYK67Vk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=jqmqqkYo; arc=none smtp.client-ip=198.47.19.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+	by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 47K9UZQg042341;
+	Tue, 20 Aug 2024 04:30:35 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1724146235;
+	bh=8++oE0bsX868XtOLPImyjy0fi1D7M2jqIM4z6bE1vA8=;
+	h=Date:Subject:To:CC:References:From:In-Reply-To;
+	b=jqmqqkYok6ZHjwnNTUEMGlSdstJppKgcFeIgsNLJoCmeeqqMzSLpddG9fiewrlHQ6
+	 dLhO+I4czV0biKDGJAjb974QxUFxpQ5DG1ILiBAAmHvVuUD4+6/vxdMV4uqQ1Elxdq
+	 FhO4r55/jgm9HkPTBuvRcwzo3ZCKVweiJ27n0JQg=
+Received: from DFLE106.ent.ti.com (dfle106.ent.ti.com [10.64.6.27])
+	by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 47K9UZZJ035373
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Tue, 20 Aug 2024 04:30:35 -0500
+Received: from DFLE103.ent.ti.com (10.64.6.24) by DFLE106.ent.ti.com
+ (10.64.6.27) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Tue, 20
+ Aug 2024 04:30:35 -0500
+Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DFLE103.ent.ti.com
+ (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Tue, 20 Aug 2024 04:30:35 -0500
+Received: from [172.24.218.186] (ltpw0bk3z4.dhcp.ti.com [172.24.218.186])
+	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 47K9UWXg040112;
+	Tue, 20 Aug 2024 04:30:33 -0500
+Message-ID: <3e6075a6-20a9-42ee-8f10-377ba9b0291b@ti.com>
+Date: Tue, 20 Aug 2024 15:00:31 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowADX3EjMYcRmmU6NCA--.37003S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7Xw4DJry3JFykGFWfKrWUXFb_yoW8JF18p3
-	y5C3sIvr43Ga1UGF1vka18ZFWrAFy5KrW7CayxG3Wavrn8GF909F42yasxWr1UJF4Iqa4U
-	CF4IvF17WF1UAaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9j14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r1I6r4UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Cr
-	1j6rxdM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVAC
-	Y4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJV
-	W8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI2
-	0VAGYxC7MxkF7I0En4kS14v26r126r1DMxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4
-	AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE
-	17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMI
-	IF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4l
-	IxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvf
-	C2KfnxnUUI43ZEXa7VUbsYFJUUUUU==
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] remoteproc: k3-r5: Fix driver shutdown
+To: Jan Kiszka <jan.kiszka@siemens.com>,
+        Bjorn Andersson
+	<andersson@kernel.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        <linux-remoteproc@vger.kernel.org>
+CC: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Apurva Nandan
+	<a-nandan@ti.com>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        Nishanth Menon <nm@ti.com>
+References: <bf2bd3df-902f-4cef-91fc-2e6438539a01@siemens.com>
+Content-Language: en-US
+From: Beleswar Prasad Padhi <b-padhi@ti.com>
+In-Reply-To: <bf2bd3df-902f-4cef-91fc-2e6438539a01@siemens.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 
-We fail to perform an of_node_put() when of_address_to_resource()
-fails, leading to a refcount leak.
+Hi Jan,
 
-Address this by moving the error handling path outside of the loop and
-making it common to all failure modes.
+On 19-08-2024 22:17, Jan Kiszka wrote:
+> From: Jan Kiszka <jan.kiszka@siemens.com>
+>
+> When k3_r5_cluster_rproc_exit is run, core 1 is shutdown and removed
+> first. When core 0 should then be stopped before its removal, it will
+> find core1->rproc as NULL already and crashes. Happens on rmmod e.g.
 
-Cc: stable@vger.kernel.org
-Fixes: 4266ab1a8ff5 ("irqchip/gic-v2m: Refactor to prepare for ACPI support")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
----
-Changes in v3:
-- modified the description information. Changed the added 'put' function 
-to 'of_node_put' (the previous incorrect function was 'of_put_node').
-Changes in v2:
-- modified the patch according to suggestions.
----
- drivers/irqchip/irq-gic-v2m.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/irqchip/irq-gic-v2m.c b/drivers/irqchip/irq-gic-v2m.c
-index 51af63c046ed..be35c5349986 100644
---- a/drivers/irqchip/irq-gic-v2m.c
-+++ b/drivers/irqchip/irq-gic-v2m.c
-@@ -407,12 +407,12 @@ static int __init gicv2m_of_init(struct fwnode_handle *parent_handle,
- 
- 		ret = gicv2m_init_one(&child->fwnode, spi_start, nr_spis,
- 				      &res, 0);
--		if (ret) {
--			of_node_put(child);
-+		if (ret)
- 			break;
--		}
- 	}
- 
-+	if (ret && child)
-+		of_node_put(child);
- 	if (!ret)
- 		ret = gicv2m_allocate_domains(parent);
- 	if (ret)
--- 
-2.25.1
+Did you check this on top of -next-20240820 tag? There was a series[0] 
+which was merged recently which fixed this condition. I don't see this 
+issue when trying on top of -next-20240820 tag.
+[0]: https://lore.kernel.org/all/20240808074127.2688131-1-b-padhi@ti.com/
 
+>
+> Fixes: 3c8a9066d584 ("remoteproc: k3-r5: Do not allow core1 to power up before core0 via sysfs")
+> CC: stable@vger.kernel.org
+> Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+> ---
+>
+> There might be one more because I can still make this driver crash
+> after an operator error. Were error scenarios tested at all?
+
+
+Can you point out what is this issue more specifically, and I can take 
+this up then.
+
+>
+>   drivers/remoteproc/ti_k3_r5_remoteproc.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/remoteproc/ti_k3_r5_remoteproc.c b/drivers/remoteproc/ti_k3_r5_remoteproc.c
+> index eb09d2e9b32a..9ebd7a34e638 100644
+> --- a/drivers/remoteproc/ti_k3_r5_remoteproc.c
+> +++ b/drivers/remoteproc/ti_k3_r5_remoteproc.c
+> @@ -646,7 +646,8 @@ static int k3_r5_rproc_stop(struct rproc *rproc)
+>   		/* do not allow core 0 to stop before core 1 */
+>   		core1 = list_last_entry(&cluster->cores, struct k3_r5_core,
+>   					elem);
+> -		if (core != core1 && core1->rproc->state != RPROC_OFFLINE) {
+> +		if (core != core1 && core1->rproc &&
+> +		    core1->rproc->state != RPROC_OFFLINE) {
+>   			dev_err(dev, "%s: can not stop core 0 before core 1\n",
+>   				__func__);
+>   			ret = -EPERM;
 
