@@ -1,97 +1,168 @@
-Return-Path: <stable+bounces-69751-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69752-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 690D3958ECF
-	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 21:50:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D77A958ED8
+	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 21:53:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B9A5EB2258D
-	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 19:50:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 513771C21245
+	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 19:53:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0526F1917E3;
-	Tue, 20 Aug 2024 19:49:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 794CA15B57B;
+	Tue, 20 Aug 2024 19:53:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gbVVZmTG"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b="pYSmpacu"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFA8C15FA93;
-	Tue, 20 Aug 2024 19:49:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFE1B1547D1;
+	Tue, 20 Aug 2024 19:53:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724183374; cv=none; b=N4J9uwNIDIJQhuqKJbG/+4t7xB/GRqTF2ZMXdAgygMaQevDP0dcKwHdvKoYyNpq+0TJGZqW+L09Aca0l/V76ZJdEjZIaGZ9xyOF7IqmBINcHxhrMoRt/tWXwMTiIjJdIXnwh8RcLw4OvjguGhbw2erH9jtq1pWQHUrxjs/GYS3o=
+	t=1724183630; cv=none; b=CI5IDId+t2uPQGROv13zozOY4npYij9MxRAHLHsFiclSCplpV0ZV4jKvOd1WFz7r4AXUgTVNSyPgLK2r7i1BjexTjJrSbqhH8x+MCsMKkGuSiMOcPVSI1UVH7N1DAR+iYHFQMUqczkluHQel1je+QGUZ5Tywnrv7kr50/0b46mI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724183374; c=relaxed/simple;
-	bh=wkf9gsj1XSad7V3Dq8I4UyQtzWEYMfLIFCxAydmaCzw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=H3HPZHagXn4E7Uf5GFqt1iPlNoK4iumusCV4R8iqKOqxPrmRkk6/o3MYeW+fxl37m/7YM8YF3PnRqbIDRiiQ+3Hr8Xv3t+JjeBa6ifL4g2Gyektbu2/elAPlUyZBY0eu5oF1gAFhQ8AC+/N33rHMk38RuosRzc/dMIAGWUjE4f8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gbVVZmTG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 446B3C4AF09;
-	Tue, 20 Aug 2024 19:49:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724183374;
-	bh=wkf9gsj1XSad7V3Dq8I4UyQtzWEYMfLIFCxAydmaCzw=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=gbVVZmTG/SRnVY6iMRmOJQvuRI/8KIUJ9pBlKlB4oJy9xuRxyKvxK9KDnwJrJuqS4
-	 nHj4l6KqMEwTOgrXd6qbK9glhJnqEYvVTHkujvxDfuESIkstmV8DUxx1Xt8giD9WVy
-	 x03oWr11ujcEfjwoU8BlG4+aYQlbrCOlvISgEGe4t5bTlZ9AlJiILtIpca8J+B8ZOv
-	 1V2tnVWcF/XWAGxIirrrWFVkcCeXvvZIiWasaYMG+uPxq3VqUEsnwAw+QmLUqxrO4s
-	 0pQRSkmPdoV7BYunY5ewYZnjKKSCROZ3DERwwDXCgJV5PKXaAQkbY++BWHdSOxFs3M
-	 Ewi76G9OuiKTw==
-Received: by mail-oa1-f53.google.com with SMTP id 586e51a60fabf-270420e231aso2049316fac.2;
-        Tue, 20 Aug 2024 12:49:33 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCULeQCeYIgKQx8GdbvFSgywG3gCt156yibpWy09KcCXL9pcqnFDlGSSyid8UoUKQ+vFFdzNrkiejh8VrIA=@vger.kernel.org, AJvYcCUjW3FA80bA0ySYpRI07phruKS0ehqOtFsB+esAtzMSS84PYcaXk7Vp2OIliPLwmpZhwJ7fHWuk@vger.kernel.org, AJvYcCWo/KXj7iL72AD9dRzxy5s7Jo0jC4AgnsQ1uTw/wEWSK3IyVkUtCeUryFV5DqMc2IQO5/wGMs76yCo=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw4p1XAdfVy958I1n+n5rKjxw811PBYUv9EtDqK6H6/XZ4agdLn
-	kRMFlz+1TR3/4Ld7tW5HNox3Dqitjw5GOJ+wOHxNS29ebRE7qYUvmff6JRbKr/alaeXIMPvc5Y4
-	V1FydHBw9c4XUTk8BTnCKb83+cw4=
-X-Google-Smtp-Source: AGHT+IEROyYPyyUToSOegMz5cgcnQfC+ZGutYEi8+81lPeRqkPLiLkJ6XqDwy11TysehDcz1PmHz7jBrDEzmfk2nO1I=
-X-Received: by 2002:a05:6870:96ab:b0:270:4a9:c369 with SMTP id
- 586e51a60fabf-2701c349c01mr18298140fac.7.1724183372607; Tue, 20 Aug 2024
- 12:49:32 -0700 (PDT)
+	s=arc-20240116; t=1724183630; c=relaxed/simple;
+	bh=DR2GJN7s3OoXebWgjtePJ6xiOH9yRIZ/F7+6AiRug2w=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=QKlIaYhFyg2dPnbHYmt55ddsyPKILF5eYkTe59Is4MJqFMI6cig5Syh2c8J8TaHk7TKxpqZBUvcraB9v5NwLNvT8wg5EBSw5wBlV6sq6ExyNAg/uVedyZf9a5FLh4e+Owl37VEz5xoJCfqyhbtYazoTQxycyAjXy14GTjvnGrIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b=pYSmpacu; arc=none smtp.client-ip=185.11.138.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
+	s=gloria202408; h=Content-Type:Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=BVZoZvXjYkyYcVetsS+NsA6dchCrMli+gEckw36uz5k=; b=pYSmpacuNcBLDgxvE9kbjJw6H9
+	Hmn/kWIdsbrtWZRMyyM1EaKN+ITOzjK6AzYD96mTuohFp1pDdoxeSYAWezaDn9aiXjAJezehsVXWe
+	Drr99YgqxHRhe2WyWUGlH4LNoiWJlm07xXeP2xfEczb3u2mUsCoK8559IZkHRe0R6EulOT0RgWleA
+	loPsRGG59j/JcHbHus8QNA+AHrnjDpkhyhdYVCZoLxzabWwYmA9YPcjh005YG0ry6+bJoBfvvqkKA
+	imHBdkhLsh/+5tVfFBGHIW7Um5y6bxcLuIUO5SkIkDMU6hoVv4aMLBTcM2eQMVsMYo1gaLpNodGXi
+	jaPu8FHg==;
+Received: from i53875aca.versanet.de ([83.135.90.202] helo=diego.localnet)
+	by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <heiko@sntech.de>)
+	id 1sgUvD-0001So-3G; Tue, 20 Aug 2024 21:53:39 +0200
+From: Heiko =?ISO-8859-1?Q?St=FCbner?= <heiko@sntech.de>
+To: Linus Walleij <linus.walleij@linaro.org>, Huang-Huang Bao <i@eh5.me>
+Cc: Richard Kojedzinszky <richard@kojedz.in>, linux-gpio@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Huang-Huang Bao <i@eh5.me>,
+ stable@vger.kernel.org
+Subject:
+ Re: [PATCH] pinctrl: rockchip: correct RK3328 iomux width flag for GPIO2-B
+ pins
+Date: Tue, 20 Aug 2024 21:54:05 +0200
+Message-ID: <2241778.ZfL8zNpBrT@diego>
+In-Reply-To: <20240709105428.1176375-1-i@eh5.me>
+References: <20240709105428.1176375-1-i@eh5.me>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240820094023.61155-1-krzysztof.kozlowski@linaro.org> <CAAhSdy3S_QTBzCNtj8kKDpzxtoeyKWvGLtjgSTViieWimpP-JA@mail.gmail.com>
-In-Reply-To: <CAAhSdy3S_QTBzCNtj8kKDpzxtoeyKWvGLtjgSTViieWimpP-JA@mail.gmail.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 20 Aug 2024 21:49:21 +0200
-X-Gmail-Original-Message-ID: <CAJZ5v0i7kweDVUGw103kq7kPOoh+9vJMU_8xugHA_hqqkRdaNg@mail.gmail.com>
-Message-ID: <CAJZ5v0i7kweDVUGw103kq7kPOoh+9vJMU_8xugHA_hqqkRdaNg@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] cpuidle: riscv-sbi: Use scoped device node
- handling to fix missing of_node_put
-To: Anup Patel <anup@brainfault.org>, 
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: Daniel Lezcano <daniel.lezcano@linaro.org>, Paul Walmsley <paul.walmsley@sifive.com>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Atish Patra <atishp@rivosinc.com>, linux-pm@vger.kernel.org, 
-	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 
-On Tue, Aug 20, 2024 at 12:57=E2=80=AFPM Anup Patel <anup@brainfault.org> w=
-rote:
->
-> On Tue, Aug 20, 2024 at 3:10=E2=80=AFPM Krzysztof Kozlowski
-> <krzysztof.kozlowski@linaro.org> wrote:
-> >
-> > Two return statements in sbi_cpuidle_dt_init_states() did not drop the
-> > OF node reference count.  Solve the issue and simplify entire error
-> > handling with scoped/cleanup.h.
-> >
-> > Fixes: 6abf32f1d9c5 ("cpuidle: Add RISC-V SBI CPU idle driver")
-> > Cc: <stable@vger.kernel.org>
-> > Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
->
-> LGTM.
->
-> Reviewed-by: Anup Patel <anup@brainfault.org>
+Hi Linus,
 
-Applied along with the [2/2] as 6.12 material, thanks!
+Am Dienstag, 9. Juli 2024, 12:54:28 CEST schrieb Huang-Huang Bao:
+> The base iomux offsets for each GPIO pin line are accumulatively
+> calculated based off iomux width flag in rockchip_pinctrl_get_soc_data.
+> If the iomux width flag is one of IOMUX_WIDTH_4BIT, IOMUX_WIDTH_3BIT or
+> IOMUX_WIDTH_2BIT, the base offset for next pin line would increase by 8
+> bytes, otherwise it would increase by 4 bytes.
+
+could you pick this patch that fixes a pinctrl problem on rk3328?
+
+The change is good and I added my reviewed-by on july 29th.
+
+
+Thanks a lot
+Heiko
+
+
+> Despite most of GPIO2-B iomux have 2-bit data width, which can be fit
+> into 4 bytes space with write mask, it actually take 8 bytes width for
+> whole GPIO2-B line.
+> 
+> Commit e8448a6c817c ("pinctrl: rockchip: fix pinmux bits for RK3328
+> GPIO2-B pins") wrongly set iomux width flag to 0, causing all base
+> iomux offset for line after GPIO2-B to be calculated wrong. Fix the
+> iomux width flag to IOMUX_WIDTH_2BIT so the offset after GPIO2-B is
+> correctly increased by 8, matching the actual width of GPIO2-B iomux.
+> 
+> Fixes: e8448a6c817c ("pinctrl: rockchip: fix pinmux bits for RK3328 GPIO2-B pins")
+> Cc: stable@vger.kernel.org
+> Reported-by: Richard Kojedzinszky <richard@kojedz.in>
+> Closes: https://lore.kernel.org/linux-rockchip/4f29b743202397d60edfb3c725537415@kojedz.in/
+> Tested-by: Richard Kojedzinszky <richard@kojedz.in>
+> Signed-off-by: Huang-Huang Bao <i@eh5.me>
+> ---
+> 
+> I have double checked the iomux offsets in debug message match iomux
+> register definitions in "GRF Register Description" section in RK3328
+> TRM[1].
+> 
+> [1]: https://opensource.rock-chips.com/images/9/97/Rockchip_RK3328TRM_V1.1-Part1-20170321.pdf
+> 
+> Kernel pinctrl debug message with dyndbg="file pinctrl-rockchip.c +p":
+>   rockchip-pinctrl pinctrl: bank 0, iomux 0 has iom_offset 0x0 drv_offset 0x0
+>   rockchip-pinctrl pinctrl: bank 0, iomux 1 has iom_offset 0x4 drv_offset 0x0
+>   rockchip-pinctrl pinctrl: bank 0, iomux 2 has iom_offset 0x8 drv_offset 0x0
+>   rockchip-pinctrl pinctrl: bank 0, iomux 3 has iom_offset 0xc drv_offset 0x0
+>   rockchip-pinctrl pinctrl: bank 1, iomux 0 has iom_offset 0x10 drv_offset 0x0
+>   rockchip-pinctrl pinctrl: bank 1, iomux 1 has iom_offset 0x14 drv_offset 0x0
+>   rockchip-pinctrl pinctrl: bank 1, iomux 2 has iom_offset 0x18 drv_offset 0x0
+>   rockchip-pinctrl pinctrl: bank 1, iomux 3 has iom_offset 0x1c drv_offset 0x0
+>   rockchip-pinctrl pinctrl: bank 2, iomux 0 has iom_offset 0x20 drv_offset 0x0
+>   rockchip-pinctrl pinctrl: bank 2, iomux 1 has iom_offset 0x24 drv_offset 0x0
+>   rockchip-pinctrl pinctrl: bank 2, iomux 2 has iom_offset 0x2c drv_offset 0x0
+>   rockchip-pinctrl pinctrl: bank 2, iomux 3 has iom_offset 0x34 drv_offset 0x0
+>   rockchip-pinctrl pinctrl: bank 3, iomux 0 has iom_offset 0x38 drv_offset 0x0
+>   rockchip-pinctrl pinctrl: bank 3, iomux 1 has iom_offset 0x40 drv_offset 0x0
+>   rockchip-pinctrl pinctrl: bank 3, iomux 2 has iom_offset 0x48 drv_offset 0x0
+>   rockchip-pinctrl pinctrl: bank 3, iomux 3 has iom_offset 0x4c drv_offset 0x0
+> 
+> The "Closes" links to test report from original reporter with original
+> issue contained, which was not delivered to any mailing list thus not
+> available on the web.
+> 
+> Added CC stable as the problematic e8448a6c817c fixed by this patch was
+> recently merged to stable kernels.
+> 
+> Sorry for the inconvenience caused,
+> Huang-Huang
+> 
+>  drivers/pinctrl/pinctrl-rockchip.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/pinctrl/pinctrl-rockchip.c b/drivers/pinctrl/pinctrl-rockchip.c
+> index 3f56991f5b89..f6da91941fbd 100644
+> --- a/drivers/pinctrl/pinctrl-rockchip.c
+> +++ b/drivers/pinctrl/pinctrl-rockchip.c
+> @@ -3813,7 +3813,7 @@ static struct rockchip_pin_bank rk3328_pin_banks[] = {
+>  	PIN_BANK_IOMUX_FLAGS(0, 32, "gpio0", 0, 0, 0, 0),
+>  	PIN_BANK_IOMUX_FLAGS(1, 32, "gpio1", 0, 0, 0, 0),
+>  	PIN_BANK_IOMUX_FLAGS(2, 32, "gpio2", 0,
+> -			     0,
+> +			     IOMUX_WIDTH_2BIT,
+>  			     IOMUX_WIDTH_3BIT,
+>  			     0),
+>  	PIN_BANK_IOMUX_FLAGS(3, 32, "gpio3",
+> 
+> base-commit: 4376e966ecb78c520b0faf239d118ecfab42a119
+> --
+> 2.45.2
+> 
+
+
+
+
 
