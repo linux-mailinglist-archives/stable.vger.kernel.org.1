@@ -1,136 +1,101 @@
-Return-Path: <stable+bounces-69726-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69727-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE3CD958A07
-	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 16:48:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63D3C958A0B
+	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 16:48:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D8DB284747
-	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 14:48:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 03B23B21D07
+	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 14:48:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3692A1A01D2;
-	Tue, 20 Aug 2024 14:43:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23958192B88;
+	Tue, 20 Aug 2024 14:45:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d3JD8ob4"
+	dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b="IlZbiYki"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4A3C192B83;
-	Tue, 20 Aug 2024 14:43:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72DF23A1B5
+	for <stable@vger.kernel.org>; Tue, 20 Aug 2024 14:45:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.9.28.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724165035; cv=none; b=rnH/ioEp6gptKjnXBYyQpEwCLvailIplXZfCi4kFaudcVAXXSRGLAfCxV/vzxpcnrrRoyPk+oN7XvecJjxXhNxvf/qprwy6YZn35u13+AoW2uaP6JLa12AKOQKUnDkytAm19AfXCqT53+NpuVHIUe6SSqV7Er0I+sMg0PXLFuZE=
+	t=1724165107; cv=none; b=rthV8dGsj6ltk+0yefJOkfu6fhcEKN77WMF+fqnvzstpegMmQSgyxkzRzt2J9qga0xYu8tzG8JpyeYvPczPxJEWVFANVwkIsbGdZ6ibfJnmDSEdELyZe/HGrHgbkGfAyg5BcUAbPze+lFagdEVWYwJjq1hNYrdpc6sKEVnKP7zk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724165035; c=relaxed/simple;
-	bh=W7ZCCtqep2N7YC84maFuRBR9W86xcb4AH8v0dpyHReY=;
+	s=arc-20240116; t=1724165107; c=relaxed/simple;
+	bh=VxMwLwnUAs3AECMBojlW02DRtgKsc7Q3XRI79OMkMsM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=H42yMD3B1e1ZT8IWW9Qm6XlxeXO+3IDv6hAGeflWhZjh0dhmo93AflxXuvhdPtEtJepa4Tsu50MKUicRT/+Z1EKfWrJbgvzciKmVBA4eONui+9x7kszf2FFFgAl8F0+OXvIfvfj+A7cNbnwiiEAPWEN0BnJA0Bqa1od2tz4D4m8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d3JD8ob4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83AE0C4AF0B;
-	Tue, 20 Aug 2024 14:43:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724165034;
-	bh=W7ZCCtqep2N7YC84maFuRBR9W86xcb4AH8v0dpyHReY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=d3JD8ob4MFmPvROFWu7vomdTt+bpkgPEBjVHYFCugq+o29YVB5yuKcb7kVUXO/sFU
-	 WPbweC5GTT0Vo/r3ac/F3TiRl79x+U7fn8nGMW+jRb9uItHUq79ox1zMuCws7IcfVK
-	 Y1KuN1eQGEY8Qky4IdSiivliWdiJ17tiHpFetmqB+V9rnpQg598RQOuQE7YG2GLSK3
-	 wVxqhtaCD9CluazTHG1KD3hiDHGYaG7kXSYDEjPlD60Pk0XiS3lzMH+fsdB0tfRXsa
-	 BZIaDl8xsn0UwxMNM+b4EHe8lh1zVXDtTlbUwj/7hvi9EF2cqwWi5RVtgwib0kf1l8
-	 lmBmUQZBW1uUg==
-Date: Tue, 20 Aug 2024 15:43:44 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, allen.lkml@gmail.com
-Subject: Re: [PATCH 5.15 000/479] 5.15.165-rc3 review
-Message-ID: <1c83d94d-1b56-4bd9-8a96-c5062c238c06@sirena.org.uk>
-References: <20240817075228.220424500@linuxfoundation.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=sW+MIN0E3iIpLRpmL+l8Stl5sH4KYKx1PxF9WwsFgPG3epPHmu3w8D0rh4+zcd3Y7e0Xx0hTOtNdz1zyIiiZz25Pyt942zf1JJ1TynldV6q/ekbUl/qd5Buj1gk2Qj38efqArfFc2/duwsmkC2Ufv0pelHgcJN1+VcXH/p2GgNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu; spf=pass smtp.mailfrom=mit.edu; dkim=pass (2048-bit key) header.d=mit.edu header.i=@mit.edu header.b=IlZbiYki; arc=none smtp.client-ip=18.9.28.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mit.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mit.edu
+Received: from cwcc.thunk.org (pool-173-48-112-67.bstnma.fios.verizon.net [173.48.112.67])
+	(authenticated bits=0)
+        (User authenticated as tytso@ATHENA.MIT.EDU)
+	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 47KEiYx0007623
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 20 Aug 2024 10:44:35 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mit.edu; s=outgoing;
+	t=1724165078; bh=PlANzkRxs6a6M2Z1PfSxu5aEfwB8iKyP3ycQHsRcY1o=;
+	h=Date:From:Subject:Message-ID:MIME-Version:Content-Type;
+	b=IlZbiYkiA2DDIKR2KdXWGwmcEia/7De9SkwGLeR/OZT0w70JGgngljGanNWrTQDuC
+	 6rBfZ5HVD/p61g5dhJNeAhh21YZXsrBwx51rx4JW4r5S/qtkAl6PHvU9gnsWnDqC2L
+	 jZt8dJ35TPlrfYmroMFoytLZ4nIvDFBC8P5j+lwjfQUVkolUldHXrQnBgit41HagEk
+	 35iWQ+O/N7XyLH2Aq9hzVENes3lGI4E3BMvZADWZPymqA1eVNC3FlQZa7AF8h5mJJS
+	 WtwAL8UKzbQmdqH1Bqqy14incd91ee3YrrmxlTc4lSRkMQE/H4MRqFolFPE2mSujA9
+	 /+IRihppkxRBw==
+Received: by cwcc.thunk.org (Postfix, from userid 15806)
+	id 90AE115C6438; Tue, 20 Aug 2024 10:44:34 -0400 (EDT)
+Date: Tue, 20 Aug 2024 10:44:34 -0400
+From: "Theodore Ts'o" <tytso@mit.edu>
+To: Miao Wang <shankerwangmiao@gmail.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Xi Ruoyao <xry111@xry111.site>, Huacai Chen <chenhuacai@kernel.org>,
+        loongarch@lists.linux.dev, Sasha Levin <sashal@kernel.org>,
+        stable@vger.kernel.org, WANG Xuerui <kernel@xen0n.name>,
+        linux-api@vger.kernel.org
+Subject: Re: It is correct to introduce new sys calls to stable versions?
+Message-ID: <20240820144434.GA184464@mit.edu>
+References: <DF762B6F-360A-4C0C-8C85-55686417209B@gmail.com>
+ <2024082057-coherence-lethargy-3513@gregkh>
+ <D19DB99F-B5D9-49A6-BCF8-A5980A9BC1A0@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="PfIcW7SysGFheIkL"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240817075228.220424500@linuxfoundation.org>
-X-Cookie: You are false data.
+In-Reply-To: <D19DB99F-B5D9-49A6-BCF8-A5980A9BC1A0@gmail.com>
 
+On Tue, Aug 20, 2024 at 09:49:59PM +0800, Miao Wang wrote:
+> 
+> I agree with you and Cyril on the version numbers, recalling that kernels
+> on RHEL numbered on 3.10 contains various new features.
 
---PfIcW7SysGFheIkL
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Some enterprise kernel versions have also been known to completely
+take code whole from some subsystem (like, for example, a file system
+like ext4 or xfs) from much newer upstream kernel version and backport
+it into a very old "enterprise" kernel, with massive work to deal with
+the dependencies that might be needed by the newer code, and
+additional massive work so that structures and function signatures
+stay the same so that binary out-of-tree kernel modules can continue
+to load on that "stable" enterprise kernel.
 
-On Sat, Aug 17, 2024 at 10:00:38AM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.165 release.
-> There are 479 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+That might take huge amounts of effort from a quality assurance
+perspective, but that's might some enterprise customers are willing to
+pay $$$$ for that frankenkernel and support for that frankenkernel....
 
-This breaks the build of at least the KVM selftests on arm64 for me:
+This is also why when I get a bug report relating a distro kernel, I
+tell bug reporters to go back to the distro for support.  Basically,
+you can't really take anything for granted when you're dealing with a
+non-upstream kernel, and that includes the version number.
+Personally, I think this is a really bad idea, but distros and their
+customers have the freedom to do what they want.  And this is why
+those customers pay the distro the big bucks.  :-)
 
-In file included from dirty_log_test.c:15:
-=2E./../../../tools/include/linux/bitmap.h: In function =E2=80=98bitmap_zer=
-o=E2=80=99:
-=2E./../../../tools/include/linux/bitmap.h:33:34: warning: implicit declara=
-tion of
- function =E2=80=98ALIGN=E2=80=99 [-Wimplicit-function-declaration]
-   33 | #define bitmap_size(nbits)      (ALIGN(nbits, BITS_PER_LONG) / BITS=
-_PER_
-BYTE)
-      |                                  ^~~~~
-=2E./../../../tools/include/linux/bitmap.h:40:32: note: in expansion of mac=
-ro =E2=80=98bit
-map_size=E2=80=99
-   40 |                 memset(dst, 0, bitmap_size(nbits));
-      |                                ^~~~~~~~~~~
-/usr/bin/ld: /tmp/cc4JPVlx.o: in function `bitmap_alloc':
-/build/stage/linux/tools/testing/selftests/kvm/../../../../tools/include/li=
-nux/b
-itmap.h:126: undefined reference to `ALIGN'
-/usr/bin/ld: /build/stage/linux/tools/testing/selftests/kvm/../../../../too=
-ls/in
-clude/linux/bitmap.h:126: undefined reference to `ALIGN'
-collect2: error: ld returned 1 exit status
-
-This bisects down to:
-
-9853a5bed65d507048dbe772bb84e6f905b772a3 is the first bad commit
-commit 9853a5bed65d507048dbe772bb84e6f905b772a3
-Author: Alexander Lobakin <aleksander.lobakin@intel.com>
-Date:   Wed Mar 27 16:23:49 2024 +0100
-
-    bitmap: introduce generic optimized bitmap_size()
-   =20
-    commit a37fbe666c016fd89e4460d0ebfcea05baba46dc upstream.
-
-A similar issue appears to affect at least the 5.10 -rc.
-
---PfIcW7SysGFheIkL
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmbEq6AACgkQJNaLcl1U
-h9BewQf/UoUrlE9AVYbakAIiMPXctHgee/yuja880P8DisjuiAd0s5VWr3sLfQc/
-QYm7Y/xQwso2hl1e8+8MvTUL0/EPVwSRYGTvhHvPFP/qIN/mUe/ED8Kyzh7xNay+
-PfOqs/PyPzIoLGmkzAHfhB4nl3LrBqkl4cRqrJlXA3K4mY72esYHgU9Vpmc4k5I0
-lAKCW2eSNaGeqCrOC0oq3PTQjj2rsdHmie4CCe7tH+UT2+5LLXHPMjlFuXtrvK3I
-twUZG0hD9Ylnl8TI87QtO6A7JnyMiVrvfdEpGthlLiAmhCH4fGUhK++XzZ20HQMR
-iFykVdY8WTr7bv2pfQC5cLAmzEJ2hA==
-=9GlQ
------END PGP SIGNATURE-----
-
---PfIcW7SysGFheIkL--
+    	      	    	    	- Ted
 
