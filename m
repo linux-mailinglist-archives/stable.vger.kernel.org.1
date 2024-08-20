@@ -1,97 +1,139 @@
-Return-Path: <stable+bounces-69706-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69707-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D80D895834A
-	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 11:55:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C531295838F
+	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 12:06:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 841D11F253F6
-	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 09:55:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 061A6288803
+	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 10:06:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9568F18C32F;
-	Tue, 20 Aug 2024 09:55:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC57B18C93B;
+	Tue, 20 Aug 2024 10:06:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ARVc1Xeg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WjkfdWsw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5072318C027;
-	Tue, 20 Aug 2024 09:54:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8443318E355;
+	Tue, 20 Aug 2024 10:06:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724147700; cv=none; b=eQ3I5XgK76JWL1alwD1ZFqzSldCZcPCj8on6KgrnYWKlk3cGSKJIZGTouJ1kxSiz8o0gbmaO3BYATF2X6PiwV+/3n8kvy/oqssnnBFz28077kgx5d4YLUO3ao3eqWAxlwv2nSGSxeSg0WpMLCko/0KjWmb2DpEo91IXzD2qu5WU=
+	t=1724148371; cv=none; b=ctyobD1F0+tt+P8lfVVOHvgqqHZ1+bc0+KjKEl1H7XFXBoH1ILtBptaEBxT+GUhaNKojC/jpMtslr58Kp3YbNleH0sexMyKb3bZDOF20oJ4ZqBXxWVmwSZ+B8ZT2skMnSvO4bTwc9JfISrciwpey6vjp+CppuDzorgmN24W4Oo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724147700; c=relaxed/simple;
-	bh=Skj0x3MfuIw+zzNHiN5rJLqdPBEqOODIJoUTO80lc48=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IzZOmbl1qKbkmOeqlOmLkG6LrxSm8hwhOYPnHj9/kMrXnVFdMMBsaHefY14I4DTRZ/1XXewTpA3QYu/8rNpuPrtQpL2VHOyGRTMeYXCKNZ+FbUVyJcKlBpuEzH/+AIOG58tGphJLoPvK2tGeOIAWvs6R6i0YxEulo60CanrrfiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ARVc1Xeg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB4ADC4AF09;
-	Tue, 20 Aug 2024 09:54:59 +0000 (UTC)
+	s=arc-20240116; t=1724148371; c=relaxed/simple;
+	bh=LOn8tbYqpTMo41juZ2qkyQCqnzv3ZHAiBo/Bqa9Q1yk=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=f/IT9BSCnrYtORoXyOf/U7LF6eTGlLnDUAg9w8LTRXCMnaCu0eVTNd4r68a6GbbyuItBAWwZq2lJRgu+KEgKuKr9JI8HlquJ50wAMvcMk5Jo/2vstUR+hwt2IiGqpaag1RCX5bUI1pEY1da7pJ2iSzJlPzRBZ99vlcfI9OW8wO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WjkfdWsw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24AD4C4AF09;
+	Tue, 20 Aug 2024 10:06:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724147699;
-	bh=Skj0x3MfuIw+zzNHiN5rJLqdPBEqOODIJoUTO80lc48=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=ARVc1Xeg15K+Agq6v9d38vDMQ7O8JbcVXDS2KQ0dQ6D9NJAPcR7oAt/g4cO8ic7cj
-	 5NIT4Z5uRtmJlCal0u8FcRQoJcEkO0QcGlc/Q6s8NaVVZfrr54ZC98FO48s6Xeh75i
-	 +KVIl98GRb2hukyulOnqPBEwvL1c0SQMvJS0Y9W6K9dOFCrGDnqMWCX2QdLR7Uj+jb
-	 yGnjRKX1RBaT2Cj8XAV81713X81zSiSSShL1p3PKu7+SLZwW9fw2Q3tBEF8r2Ep1ah
-	 aSqsLKFB7Vzvf0yAvBjIQ3k0w/kM975YleP/yJP5fYxcFjRA4FgLnuhXmOeZVxcnvT
-	 Lv2X9tjyaqkgw==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	s=k20201202; t=1724148371;
+	bh=LOn8tbYqpTMo41juZ2qkyQCqnzv3ZHAiBo/Bqa9Q1yk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=WjkfdWswvzeL9O4dMnfDrLLWRNbHRxqWc3pVtdW8xZ9mDPZ8YxJHdWJYPzcpPnkp7
+	 mfKjcWALdwbOX4APYMwOhXOkAKtTVqslLaNrvJ1EIwso0HCXAj9V7bZN9jACGqrhNG
+	 gE9fJgTGI7z8kraDBU66wpdP/03HWnVuxGoGqrELumL7gGfCJG7aV7+SounlcxVApI
+	 jFquupe6gaK1ACOY6anTUP6sz6j1JPDVHkmaMZGiX2KVPGCC6PT3aM7U56v5ToxjOa
+	 E9SExhCfezuvkRV1ilqqwC3ZohlJPcBViYR0U02JrpfVXKYrl0SSCi7FfTsrZ/PTsx
+	 1hne43Wn2FgvQ==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
 	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.95)
 	(envelope-from <maz@kernel.org>)
-	id 1sgLZp-005DZl-13;
-	Tue, 20 Aug 2024 10:54:57 +0100
-Date: Tue, 20 Aug 2024 10:54:56 +0100
-Message-ID: <86ttffy0wf.wl-maz@kernel.org>
+	id 1sgLkf-005Dk2-12;
+	Tue, 20 Aug 2024 11:06:09 +0100
 From: Marc Zyngier <maz@kernel.org>
-To: Ma Ke <make24@iscas.ac.cn>
-Cc: tglx@linutronix.de,
-	Suravee.Suthikulpanit@amd.com,
-	akpm@linux-foundation.org,
+To: kvmarm@lists.linux.dev,
 	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org
+Cc: James Morse <james.morse@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Alexander Potapenko <glider@google.com>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH v3] irqchip/gic-v2m: Fix refcount leak in gicv2m_of_init
-In-Reply-To: <20240820092843.1219933-1-make24@iscas.ac.cn>
-References: <20240820092843.1219933-1-make24@iscas.ac.cn>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+Subject: [PATCH 01/12] KVM: arm64: Make ICC_*SGI*_EL1 undef in the absence of a vGICv3
+Date: Tue, 20 Aug 2024 11:03:38 +0100
+Message-Id: <20240820100349.3544850-2-maz@kernel.org>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240820100349.3544850-1-maz@kernel.org>
+References: <20240820100349.3544850-1-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: make24@iscas.ac.cn, tglx@linutronix.de, Suravee.Suthikulpanit@amd.com, akpm@linux-foundation.org, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+X-SA-Exim-Rcpt-To: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org, james.morse@arm.com, suzuki.poulose@arm.com, oliver.upton@linux.dev, yuzenghui@huawei.com, glider@google.com, stable@vger.kernel.org
 X-SA-Exim-Mail-From: maz@kernel.org
 X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Tue, 20 Aug 2024 10:28:43 +0100,
-Ma Ke <make24@iscas.ac.cn> wrote:
-> 
-> We fail to perform an of_node_put() when of_address_to_resource()
-> fails, leading to a refcount leak.
-> 
-> Address this by moving the error handling path outside of the loop and
-> making it common to all failure modes.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 4266ab1a8ff5 ("irqchip/gic-v2m: Refactor to prepare for ACPI support")
-> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+On a system with a GICv3, if a guest hasn't been configured with
+GICv3 and that the host is not capable of GICv2 emulation,
+a write to any of the ICC_*SGI*_EL1 registers is trapped to EL2.
 
-Reviewed-by: Marc Zyngier <maz@kernel.org>
+We therefore try to emulate the SGI access, only to hit a NULL
+pointer as no private interrupt is allocated (no GIC, remember?).
 
-	M.
+The obvious fix is to give the guest what it deserves, in the
+shape of a UNDEF exception.
 
+Reported-by: Alexander Potapenko <glider@google.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Cc: stable@vger.kernel.org
+---
+ arch/arm64/kvm/sys_regs.c  | 6 ++++++
+ arch/arm64/kvm/vgic/vgic.h | 7 +++++++
+ 2 files changed, 13 insertions(+)
+
+diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
+index c90324060436..31e49da867ff 100644
+--- a/arch/arm64/kvm/sys_regs.c
++++ b/arch/arm64/kvm/sys_regs.c
+@@ -33,6 +33,7 @@
+ #include <trace/events/kvm.h>
+ 
+ #include "sys_regs.h"
++#include "vgic/vgic.h"
+ 
+ #include "trace.h"
+ 
+@@ -435,6 +436,11 @@ static bool access_gic_sgi(struct kvm_vcpu *vcpu,
+ {
+ 	bool g1;
+ 
++	if (!kvm_has_gicv3(vcpu->kvm)) {
++		kvm_inject_undefined(vcpu);
++		return false;
++	}
++
+ 	if (!p->is_write)
+ 		return read_from_write_only(vcpu, p, r);
+ 
+diff --git a/arch/arm64/kvm/vgic/vgic.h b/arch/arm64/kvm/vgic/vgic.h
+index ba8f790431bd..8532bfe3fed4 100644
+--- a/arch/arm64/kvm/vgic/vgic.h
++++ b/arch/arm64/kvm/vgic/vgic.h
+@@ -346,4 +346,11 @@ void vgic_v4_configure_vsgis(struct kvm *kvm);
+ void vgic_v4_get_vlpi_state(struct vgic_irq *irq, bool *val);
+ int vgic_v4_request_vpe_irq(struct kvm_vcpu *vcpu, int irq);
+ 
++static inline bool kvm_has_gicv3(struct kvm *kvm)
++{
++	return (static_branch_unlikely(&kvm_vgic_global_state.gicv3_cpuif) &&
++		irqchip_in_kernel(kvm) &&
++		kvm->arch.vgic.vgic_model == KVM_DEV_TYPE_ARM_VGIC_V3);
++}
++
+ #endif
 -- 
-Without deviation from the norm, progress is not possible.
+2.39.2
+
 
