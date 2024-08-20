@@ -1,188 +1,117 @@
-Return-Path: <stable+bounces-69709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69710-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7813958547
-	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 12:57:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 482D7958552
+	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 13:01:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 30DFD1F284EE
-	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 10:57:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E0201C243DD
+	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 11:01:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A4C118DF7C;
-	Tue, 20 Aug 2024 10:57:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 201F118DF9A;
+	Tue, 20 Aug 2024 11:01:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=brainfault-org.20230601.gappssmtp.com header.i=@brainfault-org.20230601.gappssmtp.com header.b="0dvXp3s6"
+	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="QLOODk1E"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-f54.google.com (mail-io1-f54.google.com [209.85.166.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pv50p00im-zteg10011401.me.com (pv50p00im-zteg10011401.me.com [17.58.6.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B63A18C004
-	for <stable@vger.kernel.org>; Tue, 20 Aug 2024 10:57:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDBFA18E353
+	for <stable@vger.kernel.org>; Tue, 20 Aug 2024 11:01:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.6.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724151424; cv=none; b=fkUvmR4/USVCk+yc4gkRhfQLUMtUKJ7dSsk4LCWsRixULYueA8xhgmUA2qv16SXrDvOqRsLJPrrXokdrPsAraZanEBfF3/HccG+91+HZpgtvCtbsmkT8URsB/FLZwRD6Dzqw59hmwUMxSL2dMIcOA2UR2ujmwCEQb+CY4f8DgNI=
+	t=1724151707; cv=none; b=iXExhPvofCpawJmjdUKy465KHIwK5gPgs2QQBE+GJhNwpqkhzqRdbOx4U+reoQkNWAxd1jbgZlbRD0R0njqejChIpmlidnN+lRorVLrwdpiu3P7HMsGzRMkm8sP/LyM79d9ipW4Fp2tqvHb4u+2bIjuVxzTAd3XNrkTLKTgVul4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724151424; c=relaxed/simple;
-	bh=wJ/EB1HWMzhF4m0C7qiWLBhs6DSBzQo5Xmg8Fm+BOng=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WEkm6GgEbw7/CN5wLuGRaYm3/wgIf4W5fyR89zAFU33CpyjGQFaNpWTxeELN+Etsrkt81CBfGaQbPt8SDe2lVzK71JjzahabB+q8qL9/vaZhBobHzzCerXO3GZQo8v2mECjJ+jApcrKPEM0FeLJ51En2W+rQZ8DrWlX9UvxvgUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault-org.20230601.gappssmtp.com header.i=@brainfault-org.20230601.gappssmtp.com header.b=0dvXp3s6; arc=none smtp.client-ip=209.85.166.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
-Received: by mail-io1-f54.google.com with SMTP id ca18e2360f4ac-81f96ea9ff7so272907539f.3
-        for <stable@vger.kernel.org>; Tue, 20 Aug 2024 03:57:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brainfault-org.20230601.gappssmtp.com; s=20230601; t=1724151421; x=1724756221; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Q9KVEQdhyyAo4Un7hmmWmcdbUoZrm1lWEAKevA08iqI=;
-        b=0dvXp3s6oXijujqOcHnrNGxDOsx8amo8H9HPaqcVCa7AcMPqLcMSyNkg4Mw2F+i7h2
-         BMOI1oiivYvbzqsfCrDhM5udaW5iB8JLY5E/mApkJx0FnuJYQhGnyARkbfS6YReDbDk+
-         /x4RptYPriJmYKj3XMgNYxineYvyi4oc6QoISxw04oP9wrCSN3DpR6AYXJev+bc/0JZR
-         LhrUxXQnV2kHunPU8UYsdTgYH9BhXV7R5ng8hLURZ/ITWa23qHgEaJH2Bc19I2fG84Hm
-         0PUZbIQ2wgLPuC+N7Jyskpp6A42Jgb8O85kiU2kOyRZ6r+L7KQK/e9K4nhKwah3Dz53I
-         DQdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724151421; x=1724756221;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Q9KVEQdhyyAo4Un7hmmWmcdbUoZrm1lWEAKevA08iqI=;
-        b=bMpc32hvQ9ZMTRHzFWYG+mwGl55eDKyH5WisgFyVHWF5lsUEV9h7d5emCWQVGlBx7c
-         GIWcVCCzu+iwrxUvr//AQI3ZA9OHOflGJjI6utmw+h+k4Bwv505JdxlmDyl/fTjGFa/W
-         mhoS78qTwLq/OQBPkeBH30zxQFnK13vFDgBlYaI22SHe4GlqHy10zLNto1k/lHNHRl9x
-         r/TMn20OcDzDThNEeq2P4E1g3IdEkgN4tsGOi9jzMzKy5LO5/cg7tQT2+LViUveHspk3
-         ygk66bKycS+Lx2fyWQ+58dnMUB8bYpH113BOltV5GOxxOSQ3MfywWhqT8oW1JIor5DHr
-         yrSA==
-X-Forwarded-Encrypted: i=1; AJvYcCXQ2TwryINfB5Ieob+4ZNaUOrkvt34A76LZeHK65inZgN3ud1aVkmvbmxrin7U7m52gecpiyBkwDSMCpE0WfDqcDe1FpHdT
-X-Gm-Message-State: AOJu0YzOu8bkmrC9/6zJFKNvsO6fha+AbWzXLLIRv3IW8g7FixVo0G/G
-	LHiNeXWwSgaPDSjo3vOTzj5tEsjD3UshM4LVabhGdiwusBsw8YjuddoENSqQ7YsxTXoJVVA/n2f
-	XwNu39cQo2hd4yrhzD6PmSw4AvBdEQV9AwmGz1Q==
-X-Google-Smtp-Source: AGHT+IF2qDXSD4GVokjV6QN9az33dHDjsKXPFgDYvoXoazydu4xSf7m7DCbKo2VqzmL8osOIuRjyhQlDzHCItoRiOOw=
-X-Received: by 2002:a05:6e02:1986:b0:39d:637f:97cd with SMTP id
- e9e14a558f8ab-39d637f9a2cmr5860365ab.0.1724151421518; Tue, 20 Aug 2024
- 03:57:01 -0700 (PDT)
+	s=arc-20240116; t=1724151707; c=relaxed/simple;
+	bh=3BOMc/I6AUvlSUOZTCgwNCSKreLKSM1oEQRQEXAPTDM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=XZtXMGtZvQKDQv58VWRa0cVdFM49+aqXUpSdK8K0ZvO1/Gv64ylBg56HnQOZlErAI26ZlUD4shhtHKCoPTiMzvCF5jiCQKnGAko+GaoC0Wcp5Kos8FPoHrhsDw5hS8RQQP/cpgdjvbpxFTmbaQp76lxw6cmi18lV1deINJEBbvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=QLOODk1E; arc=none smtp.client-ip=17.58.6.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
+	s=1a1hai; t=1724151705;
+	bh=UqkixdU7N5QLZDvZfiyEeqXZZrKl/m9LryM3N8LoHa0=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To;
+	b=QLOODk1EGMIkHi/M4LxeZ8kNvPDI0FMVgmQBOib1tx6zGiWVA8CdIwdwkYaKBY1bo
+	 TY/7uSLEqHR4MbJMo04wvCuDDCUsFYWgPLHgn6e3aYxDWQf8hN/d7BUKBP3ssj11kx
+	 E5NZkc75sIA1HU65k3464Qq1gK/GzuLQoVELCcEnRTeYi0jBfar0P1wwUlNUntxjjg
+	 m20FpS1ATKpF7+lgzx7FA8H6k6SumZN0wNUh3oy+3RgenHbNVlU4lcK22B2rTZZlQ9
+	 iFHOMEaLfUW0qIFMm642bzY0YIwzjo+5HT75ZiNlh1PtdaRip7fONwkrT+8Sd1DPI7
+	 sUYYzWdg1yY2Q==
+Received: from [192.168.1.26] (pv50p00im-dlb-asmtp-mailmevip.me.com [17.56.9.10])
+	by pv50p00im-zteg10011401.me.com (Postfix) with ESMTPSA id 7E5E3DC02FD;
+	Tue, 20 Aug 2024 11:01:41 +0000 (UTC)
+From: Zijun Hu <zijun_hu@icloud.com>
+Date: Tue, 20 Aug 2024 19:01:27 +0800
+Subject: [PATCH v2] usb: core: sysfs: Unmerge @usb3_hardware_lpm_attr_group
+ in remove_power_attributes()
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240820094023.61155-1-krzysztof.kozlowski@linaro.org>
-In-Reply-To: <20240820094023.61155-1-krzysztof.kozlowski@linaro.org>
-From: Anup Patel <anup@brainfault.org>
-Date: Tue, 20 Aug 2024 16:26:49 +0530
-Message-ID: <CAAhSdy3S_QTBzCNtj8kKDpzxtoeyKWvGLtjgSTViieWimpP-JA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] cpuidle: riscv-sbi: Use scoped device node
- handling to fix missing of_node_put
-To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Daniel Lezcano <daniel.lezcano@linaro.org>, 
-	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Atish Patra <atishp@rivosinc.com>, linux-pm@vger.kernel.org, 
-	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240820-sysfs_fix-v2-1-a9441487077e@quicinc.com>
+X-B4-Tracking: v=1; b=H4sIAIZ3xGYC/23Myw7CIBCF4VdpZi0GJnjBle9hGkMptbOQKqPEp
+ uHdHbt2+Z+cfAtwzBQZTs0CORZimpIEbhoIo0+3qKiXBtRo9dFYxTMPfB3ooxD1vo+u0+bgQP6
+ PHGVerUsrPRK/pjyvdDG/9Z9SjDJCofXoPO5cd36+KVAK2zDdoa21fgFpzvKNpAAAAA==
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Kevin Strasser <kevin.strasser@linux.intel.com>
+Cc: Zijun Hu <zijun_hu@icloud.com>, linux-usb@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Zijun Hu <quic_zijuhu@quicinc.com>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.14.1
+X-Proofpoint-ORIG-GUID: 6ZI_q_dh1mFYLwigoPRy9l_i9NesIjNz
+X-Proofpoint-GUID: 6ZI_q_dh1mFYLwigoPRy9l_i9NesIjNz
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-08-20_09,2024-08-19_03,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 bulkscore=0 spamscore=0
+ clxscore=1011 mlxlogscore=991 phishscore=0 suspectscore=0 malwarescore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2308100000 definitions=main-2408200082
+X-Apple-Remote-Links: v=1;h=KCk=;charset=UTF-8
 
-On Tue, Aug 20, 2024 at 3:10=E2=80=AFPM Krzysztof Kozlowski
-<krzysztof.kozlowski@linaro.org> wrote:
->
-> Two return statements in sbi_cpuidle_dt_init_states() did not drop the
-> OF node reference count.  Solve the issue and simplify entire error
-> handling with scoped/cleanup.h.
->
-> Fixes: 6abf32f1d9c5 ("cpuidle: Add RISC-V SBI CPU idle driver")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-LGTM.
+Device attribute group @usb3_hardware_lpm_attr_group is merged by
+add_power_attributes(), but it is not unmerged explicitly, fixed by
+unmerging it in remove_power_attributes().
 
-Reviewed-by: Anup Patel <anup@brainfault.org>
+Fixes: 655fe4effe0f ("usbcore: add sysfs support to xHCI usb3 hardware LPM")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+---
+Changes in v2:
+- Add stable tag
+- Link to v1: https://lore.kernel.org/r/20240814-sysfs_fix-v1-1-2224a29a259b@quicinc.com
+---
+ drivers/usb/core/sysfs.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Regards,
-Anup
+diff --git a/drivers/usb/core/sysfs.c b/drivers/usb/core/sysfs.c
+index d83231d6736a..61b6d978892c 100644
+--- a/drivers/usb/core/sysfs.c
++++ b/drivers/usb/core/sysfs.c
+@@ -670,6 +670,7 @@ static int add_power_attributes(struct device *dev)
+ 
+ static void remove_power_attributes(struct device *dev)
+ {
++	sysfs_unmerge_group(&dev->kobj, &usb3_hardware_lpm_attr_group);
+ 	sysfs_unmerge_group(&dev->kobj, &usb2_hardware_lpm_attr_group);
+ 	sysfs_unmerge_group(&dev->kobj, &power_attr_group);
+ }
 
->
-> ---
->
-> Changes in v2:
-> 1. Re-write commit msg, because this is actually a fix.
-> ---
->  drivers/cpuidle/cpuidle-riscv-sbi.c | 21 +++++++--------------
->  1 file changed, 7 insertions(+), 14 deletions(-)
->
-> diff --git a/drivers/cpuidle/cpuidle-riscv-sbi.c b/drivers/cpuidle/cpuidl=
-e-riscv-sbi.c
-> index a6e123dfe394..5bb3401220d2 100644
-> --- a/drivers/cpuidle/cpuidle-riscv-sbi.c
-> +++ b/drivers/cpuidle/cpuidle-riscv-sbi.c
-> @@ -8,6 +8,7 @@
->
->  #define pr_fmt(fmt) "cpuidle-riscv-sbi: " fmt
->
-> +#include <linux/cleanup.h>
->  #include <linux/cpuhotplug.h>
->  #include <linux/cpuidle.h>
->  #include <linux/cpumask.h>
-> @@ -236,19 +237,16 @@ static int sbi_cpuidle_dt_init_states(struct device=
- *dev,
->  {
->         struct sbi_cpuidle_data *data =3D per_cpu_ptr(&sbi_cpuidle_data, =
-cpu);
->         struct device_node *state_node;
-> -       struct device_node *cpu_node;
->         u32 *states;
->         int i, ret;
->
-> -       cpu_node =3D of_cpu_device_node_get(cpu);
-> +       struct device_node *cpu_node __free(device_node) =3D of_cpu_devic=
-e_node_get(cpu);
->         if (!cpu_node)
->                 return -ENODEV;
->
->         states =3D devm_kcalloc(dev, state_count, sizeof(*states), GFP_KE=
-RNEL);
-> -       if (!states) {
-> -               ret =3D -ENOMEM;
-> -               goto fail;
-> -       }
-> +       if (!states)
-> +               return -ENOMEM;
->
->         /* Parse SBI specific details from state DT nodes */
->         for (i =3D 1; i < state_count; i++) {
-> @@ -264,10 +262,8 @@ static int sbi_cpuidle_dt_init_states(struct device =
-*dev,
->
->                 pr_debug("sbi-state %#x index %d\n", states[i], i);
->         }
-> -       if (i !=3D state_count) {
-> -               ret =3D -ENODEV;
-> -               goto fail;
-> -       }
-> +       if (i !=3D state_count)
-> +               return -ENODEV;
->
->         /* Initialize optional data, used for the hierarchical topology. =
-*/
->         ret =3D sbi_dt_cpu_init_topology(drv, data, state_count, cpu);
-> @@ -277,10 +273,7 @@ static int sbi_cpuidle_dt_init_states(struct device =
-*dev,
->         /* Store states in the per-cpu struct. */
->         data->states =3D states;
->
-> -fail:
-> -       of_node_put(cpu_node);
-> -
-> -       return ret;
-> +       return 0;
->  }
->
->  static void sbi_cpuidle_deinit_cpu(int cpu)
-> --
-> 2.43.0
->
+---
+base-commit: ca7df2c7bb5f83fe46aa9ce998b7352c6b28f3a1
+change-id: 20240814-sysfs_fix-2206de9b0179
+
+Best regards,
+-- 
+Zijun Hu <quic_zijuhu@quicinc.com>
+
 
