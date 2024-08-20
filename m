@@ -1,115 +1,192 @@
-Return-Path: <stable+bounces-69720-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69721-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E0AE958891
-	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 16:08:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DEA99588BD
+	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 16:13:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0AE0C284E72
-	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 14:08:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9E7D282B89
+	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 14:13:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EF46191F68;
-	Tue, 20 Aug 2024 14:07:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D507191476;
+	Tue, 20 Aug 2024 14:13:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xWK5O1Zm"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="TqLTaJZ8"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 895FE1917EF
-	for <stable@vger.kernel.org>; Tue, 20 Aug 2024 14:07:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56EE91917D4
+	for <stable@vger.kernel.org>; Tue, 20 Aug 2024 14:13:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724162873; cv=none; b=i/AkzYOQtgiGrkLF3HgvjMxlN3EFMLbULpm+zu2BEsTfSMgKGPCxwA7nvzmqmFwMyTxqBkk5NC5tfqYdNt3Opu9Xx4WQiumY4UzGg9jnMN15s7IMaFOyPsUl1MX5qHI4b15dbPli9WmIMoVcpw8qLOmUv3vDwCDwdvmd/A+FfYg=
+	t=1724163199; cv=none; b=Q87R2z37cT2Crejd/BwF7MQadxC2GVXS2gKXQLfQMhp0tv881OZbEEMUi+2xUwQxx5dHD0h9NaEHsyzFIdcfBYzy0jC5mmjqAqkIr+iNwIfvSFXCCmi3XMqlmUjeuTs8rzgK/XlJxfFckXVNH05EzsmHW8uUjuPMq85TS69tFLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724162873; c=relaxed/simple;
-	bh=Gg37DeNsbWmBYNiiahr2QIXw7FkL3ip8vd7XDsHTSUY=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=gfCwn1SL3VL4v7VNnQCkdVYwCKlPxx8ocPWfks9SS6HgLJnNYNX5ZsorxGagV30BIT6Vtzwq1yuuxS9S4Bg7z1nM4S3M9LVbYCgh1XhBoIC1wJT1C0Pc3qZzLki+aNkZjgDh+32EuJDce+tFZbtke+1klOgqDNe8jFcTkX0njkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=xWK5O1Zm; arc=none smtp.client-ip=209.85.215.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-7c6b4dcb60aso1498978a12.0
-        for <stable@vger.kernel.org>; Tue, 20 Aug 2024 07:07:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1724162872; x=1724767672; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=1e6Yzii8DI/S05aUpd3Gkg6xtb8TfqZ0lxoJdgbmpvA=;
-        b=xWK5O1ZmzI9BiruHGjdJ0B5ai/Nl4l/vPJo8+wes4p/pyAtyUSuR0P2Xl6cjvP89va
-         kfw7H47SzuqTIw/e7QeQr4uOvIxHQe5AHMt1rPjhAcX/6NvYs+o7TUMVvb+Ia5vRaJti
-         2bvl+gBs+GrdkNbMEdBiZ27ac6KNjzk6mwv2D3/NlBTsbX22evFleACnz6wFcsEDmlDA
-         kj2mmTfu7Jykzgm+YsWG88KcEDHd7U/HFGOahe7XFFMlJSn0Tm5FNjyp5NldCeywAAtm
-         zI7FmW2Mkbj7+kyAAG+U8BScYzCMPJxpiTdcfi5F6mK4vymaBvWpyGOnUIPG1msZ6J17
-         cNQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724162872; x=1724767672;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=1e6Yzii8DI/S05aUpd3Gkg6xtb8TfqZ0lxoJdgbmpvA=;
-        b=tmiHaB8QtMN08jzrPzoYAkmHrPyfzy4+9MOapMlMQD91wXW+ik+AfCr7+RWX4Gw+qQ
-         tFcZZXYbJXH9jG2OgFqSk9W0SArTVtaprROBoW/H928Wvrp4OafbhqCag3Kn4jm/SRjq
-         sBiXdbNsrg2o5tuOTsvq/yPPiIiM75Prgu7EX7sAeefrIw6BrTHGf78xtqrvqUQgNLPH
-         5/s6ilALI8eXiSEvmcYyNTlBbuGcDNSp22OEUw/ZSKgw+3HPaM57PhQdMidP2YqOJVlF
-         t0lQlqh7HcIRzyjeQF6eco8aZBln1SgI5I85TcPf0ptrh4bd2Cc3uyuJ6ngVGYlH1OPv
-         AwGQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXO56sOgGkgesT431bs61bOyPz4UVW4vXfGbnCiyRrFszUn8Y9Ba2gBoSQe192hbASD4H0DhfU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzm58UzRQIWnoiFlIDDEnIxl2w5BVD1O7JEsk4VbJkMOFn4K9OF
-	x/UkVWuKPqv5IfrWkYdF9hK4BKfWNjwHqcC5smQ6nlgHchxItjX04o9m9rJVP/IAgcuDE20z1qI
-	xjw==
-X-Google-Smtp-Source: AGHT+IFZYU+p7sT1518DxW95Pk6T7GD0f+E1CQ6EuDjbtBvJQFg0ZldT+rHEBuxB5igFhmr2Lae8Rlpxq1Q=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a63:e844:0:b0:6f0:2ccc:812d with SMTP id
- 41be03b00d2f7-7c97b33291dmr27349a12.9.1724162871512; Tue, 20 Aug 2024
- 07:07:51 -0700 (PDT)
-Date: Tue, 20 Aug 2024 07:07:49 -0700
-In-Reply-To: <57141688d6c94c789aa416906cacf08f@baidu.com>
+	s=arc-20240116; t=1724163199; c=relaxed/simple;
+	bh=l1SNEmn/nTSHdNrXcVTCmbfZmUkPyAUsYs1jYlboEls=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=pgy+rymRAtBjwu8+Dg21fV6uZNjaYHeWxVHpuut5hD2C57XLbkf2SUuMtTPA92u1AflGfryFKBWxxGgEtkJ2xaM9Z85Ur+DdNvaDCqHvwKXnvpIkV/MD1NTwriqVzVJnGvCPR7dUeNDR3116IbCB/NSsissHoJEBI5h0xjXSCFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=TqLTaJZ8; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47KDnPsG001333;
+	Tue, 20 Aug 2024 14:13:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
+	:to:cc:subject:date:message-id:in-reply-to:references
+	:mime-version:content-type:content-transfer-encoding; s=pp1; bh=
+	3oPjmZVcenR2XB/cC9N8suB8tCMa0R1BW80JLe9umtM=; b=TqLTaJZ8LrMM3frO
+	tqqr+nQAW+UchGJW8FpCZR3DrdPXKsBoq/Px23vDlsuAlS+wxTMbjndiJ1pnCLEo
+	kHEOEULQW7Go1/s4TxHPZbcfkHrthTOd+ZdgkrGtoh3thAcZjqdCS6Mub6DDKBRj
+	zPvwPl/dWxnaVx7LYc4TLpw3P0thWksPpHX8TiSLWZsnHy/tolpXKtKgi4RmsF/D
+	4KXNzKRIL/acgX816B1A9zFBLpBWPhqAhBhd3zpa44M0w+4Os2+avDzRNBVV2NKC
+	iit7zbRCdvPzpq6KTCHUgySd9m6Wy5nOzfC0aljAIrtXyzwTWnz+5ks3wzM+gHHS
+	cXXh4Q==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 412mbfwgtj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 20 Aug 2024 14:13:14 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 47KD1Ovf030060;
+	Tue, 20 Aug 2024 14:13:13 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4138dmay53-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 20 Aug 2024 14:13:13 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 47KED8Ps18481418
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 20 Aug 2024 14:13:10 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3C7C920043;
+	Tue, 20 Aug 2024 14:13:08 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1F00520040;
+	Tue, 20 Aug 2024 14:13:08 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.152.85.9])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 20 Aug 2024 14:13:08 +0000 (GMT)
+From: =?UTF-8?q?Jan=20H=C3=B6ppner?= <hoeppner@linux.ibm.com>
+To: gregkh@linuxfoundation.org
+Cc: stable@vger.kernel.org, sth@linux.ibm.com
+Subject: [PATCH] Revert "s390/dasd: Establish DMA alignment"
+Date: Tue, 20 Aug 2024 16:13:07 +0200
+Message-ID: <20240820141307.2869182-1-hoeppner@linux.ibm.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <2024082014-riverbed-glutton-ae33@gregkh>
+References: <2024082014-riverbed-glutton-ae33@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20240820053229.2858-1-david.hunter.linux@gmail.com> <57141688d6c94c789aa416906cacf08f@baidu.com>
-Message-ID: <ZsSiQkQVSz0DarYC@google.com>
-Subject: Re: =?utf-8?B?562U5aSNOiBb5aSW6YOo6YKu5Lu2?= =?utf-8?B?XSBbUEFUQ0ggNi4xLnldIEtWTTogeDg2OiBmaXI=?=
- =?utf-8?Q?e?= timer when it is migrated and expired, and in oneshot mode
-From: Sean Christopherson <seanjc@google.com>
-To: Li Rongqing <lirongqing@baidu.com>
-Cc: David Hunter <david.hunter.linux@gmail.com>, 
-	"stable@vger.kernel.org" <stable@vger.kernel.org>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "x86@kernel.org" <x86@kernel.org>, 
-	"hpa@zytor.com" <hpa@zytor.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
-	"javier.carrasco.cruz@gmail.com" <javier.carrasco.cruz@gmail.com>, "shuah@kernel.org" <shuah@kernel.org>, 
-	Peter Shier <pshier@google.com>, Jim Mattson <jmattson@google.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: I6MfK8-0LQKJXBq7zwhilw0tb7epm81q
+X-Proofpoint-ORIG-GUID: I6MfK8-0LQKJXBq7zwhilw0tb7epm81q
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-08-20_09,2024-08-19_03,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011
+ priorityscore=1501 bulkscore=0 mlxlogscore=999 adultscore=0 malwarescore=0
+ phishscore=0 mlxscore=0 lowpriorityscore=0 suspectscore=0 impostorscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2407110000 definitions=main-2408200104
 
-On Tue, Aug 20, 2024, Li,Rongqing wrote:
-> > 
-> > From: Li RongQing <lirongqing@baidu.com>
-> > 
-> > [ Upstream Commit 8e6ed96cdd5001c55fccc80a17f651741c1ca7d2]
-> > 
-> > when the vCPU was migrated, if its timer is expired, KVM _should_ fire the
-> > timer ASAP, zeroing the deadline here will cause the timer to immediately fire
-> > on the destination
-> > 
-> 
-> This patch increased the reproduce ratio of lapic timer interrupt losing,
+This reverts commit bc792884b76f ("s390/dasd: Establish DMA alignment").
 
-Yep, this caused a painful amount of fallout in our environment.
+Quoting the original commit:
+    linux-next commit bf8d08532bc1 ("iomap: add support for dma aligned
+    direct-io") changes the alignment requirement to come from the block
+    device rather than the block size, and the default alignment
+    requirement is 512-byte boundaries. Since DASD I/O has page
+    alignments for IDAW/TIDAW requests, let's override this value to
+    restore the expected behavior.
 
-> which has been fixed by the following patch; so I think patch should not
-> merge it into 6.1
+I mentioned TIDAW, but that was wrong. TIDAWs have no distinct alignment
+requirement (per p. 15-70 of POPS SA22-7832-13):
 
-David, can you prep a small series with both this patch and the fix below?
+   Unless otherwise specified, TIDAWs may designate
+   a block of main storage on any boundary and length
+   up to 4K bytes, provided the specified block does not
+   cross a 4 K-byte boundary.
 
-Thanks!
+IDAWs do, but the original commit neglected that while ECKD DASD are
+typically formatted in 4096-byte blocks, they don't HAVE to be. Formatting
+an ECKD volume with smaller blocks is permitted (dasdfmt -b xxx), and the
+problematic commit enforces alignment properties to such a device that
+will result in errors, such as:
 
-> commit 9cfec6d097c607e36199cf0cfbb8cf5acbd8e9b2
-> Author: Haitao Shan <hshan@google.com>
-> Date:   Tue Sep 12 16:55:45 2023 -0700
+   [test@host ~]# lsdasd -l a367 | grep blksz
+     blksz:				512
+   [test@host ~]# mkfs.xfs -f /dev/disk/by-path/ccw-0.0.a367-part1
+   meta-data=/dev/dasdc1            isize=512    agcount=4, agsize=230075 blks
+            =                       sectsz=512   attr=2, projid32bit=1
+            =                       crc=1        finobt=1, sparse=1, rmapbt=1
+            =                       reflink=1    bigtime=1 inobtcount=1 nrext64=1
+   data     =                       bsize=4096   blocks=920299, imaxpct=25
+            =                       sunit=0      swidth=0 blks
+   naming   =version 2              bsize=4096   ascii-ci=0, ftype=1
+   log      =internal log           bsize=4096   blocks=16384, version=2
+            =                       sectsz=512   sunit=0 blks, lazy-count=1
+   realtime =none                   extsz=4096   blocks=0, rtextents=0
+   error reading existing superblock: Invalid argument
+   mkfs.xfs: pwrite failed: Invalid argument
+   libxfs_bwrite: write failed on (unknown) bno 0x70565c/0x100, err=22
+   mkfs.xfs: Releasing dirty buffer to free list!
+   found dirty buffer (bulk) on free list!
+   mkfs.xfs: pwrite failed: Invalid argument
+   ...snipped...
+
+The original commit omitted the FBA discipline for just this reason,
+but the formatted block size of the other disciplines was overlooked.
+The solution to all of this is to revert to the original behavior,
+such that the block size can be respected.
+
+But what of the original problem? That was manifested with a direct-io
+QEMU guest, where QEMU itself was changed a month or two later with
+commit 25474d90aa ("block: use the request length for iov alignment")
+such that the blamed kernel commit is unnecessary.
+
+Note: This is an adapted version of the original upstream commit
+2a07bb64d801 ("s390/dasd: Remove DMA alignment").
+
+Cc: stable@vger.kernel.org # 6.0+
+Signed-off-by: Jan Höppner <hoeppner@linux.ibm.com>
+---
+ drivers/s390/block/dasd_diag.c | 1 -
+ drivers/s390/block/dasd_eckd.c | 1 -
+ 2 files changed, 2 deletions(-)
+
+diff --git a/drivers/s390/block/dasd_diag.c b/drivers/s390/block/dasd_diag.c
+index 2e4e555b37c3..12db1046aad0 100644
+--- a/drivers/s390/block/dasd_diag.c
++++ b/drivers/s390/block/dasd_diag.c
+@@ -639,7 +639,6 @@ static void dasd_diag_setup_blk_queue(struct dasd_block *block)
+ 	/* With page sized segments each segment can be translated into one idaw/tidaw */
+ 	blk_queue_max_segment_size(q, PAGE_SIZE);
+ 	blk_queue_segment_boundary(q, PAGE_SIZE - 1);
+-	blk_queue_dma_alignment(q, PAGE_SIZE - 1);
+ }
+ 
+ static int dasd_diag_pe_handler(struct dasd_device *device,
+diff --git a/drivers/s390/block/dasd_eckd.c b/drivers/s390/block/dasd_eckd.c
+index bd89b032968a..18b63210ac5d 100644
+--- a/drivers/s390/block/dasd_eckd.c
++++ b/drivers/s390/block/dasd_eckd.c
+@@ -6895,7 +6895,6 @@ static void dasd_eckd_setup_blk_queue(struct dasd_block *block)
+ 	/* With page sized segments each segment can be translated into one idaw/tidaw */
+ 	blk_queue_max_segment_size(q, PAGE_SIZE);
+ 	blk_queue_segment_boundary(q, PAGE_SIZE - 1);
+-	blk_queue_dma_alignment(q, PAGE_SIZE - 1);
+ }
+ 
+ static struct ccw_driver dasd_eckd_driver = {
+-- 
+2.43.0
+
 
