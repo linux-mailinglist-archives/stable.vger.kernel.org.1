@@ -1,163 +1,136 @@
-Return-Path: <stable+bounces-69725-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69726-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B5859589FD
-	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 16:47:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE3CD958A07
+	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 16:48:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5119E1F23A72
-	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 14:47:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D8DB284747
+	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 14:48:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE66119885D;
-	Tue, 20 Aug 2024 14:41:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3692A1A01D2;
+	Tue, 20 Aug 2024 14:43:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fIsh6rMp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d3JD8ob4"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF441198A0F
-	for <stable@vger.kernel.org>; Tue, 20 Aug 2024 14:41:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4A3C192B83;
+	Tue, 20 Aug 2024 14:43:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724164899; cv=none; b=eqHBQmG+1R8xnYfeIfcwx+xKgKVoGrlSEJy8rBsx/M1lCyBD7dg48HFsQM6W5G9fmTGSLoarEU7u0PshccLCdM9EK+emTnAu87qEW0M8okrCt5sAQhI6eCGtsVo+lxSC71Whpn2FFK7nTj21oTy523I9zP7FDdbaHtRTWIizo4Q=
+	t=1724165035; cv=none; b=rnH/ioEp6gptKjnXBYyQpEwCLvailIplXZfCi4kFaudcVAXXSRGLAfCxV/vzxpcnrrRoyPk+oN7XvecJjxXhNxvf/qprwy6YZn35u13+AoW2uaP6JLa12AKOQKUnDkytAm19AfXCqT53+NpuVHIUe6SSqV7Er0I+sMg0PXLFuZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724164899; c=relaxed/simple;
-	bh=ol+KLWbA2n+RZgCVOjQA6F0ZFiUQopgZSe8GIuN2fzA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kqo8p1iGT28EdnEBQQwDbfjYAmS1ufEu2533/vKkZWi6z6vHfgAEZeOIA+PGAXV6giFyM2N5zsgsUozvV/0df0LuH3aNL9Ww5T7PTyPwLtT4J4A9fddlyBy+ckNFXIcjdOzRSQLX+XBK6kDjd1it0roFgOkewUEd+WuIjGiuI4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fIsh6rMp; arc=none smtp.client-ip=209.85.208.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-2f3ce5bc7d2so34883591fa.0
-        for <stable@vger.kernel.org>; Tue, 20 Aug 2024 07:41:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724164896; x=1724769696; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=COJqsdsUimC40QurmxvQ2PDteURpDZpJHvtTTyWWXds=;
-        b=fIsh6rMpcKG8QLx0M9lT8zGCZtWMMiLMW89TCVyd29DlkrUF56g/hH4RlNLPzUvgcz
-         A4oqskR7d6V/pvczqz/xE3lI/9xVLFO1oC2nKD62EtdEmG4w+tF7FHlevydGONnCWA14
-         hks1onKVSJXHLFgrpO8ofjV36Vw9M5WHjVkvo1UREzmcdh5NhLP5l+3eV5/+YE8mv7vu
-         mknbx0LNDwyHrNPSWO/1VhrZlljUF+gDayA1Q82zTfXKzdngN3a8pvuBL6E5OaHj8b5E
-         y7nD2dNpYXYfH4fGlJ37bCUPYjfvsk+oSh5sPNIUXWsB9gllsCT1U1ShjlNJlMBfBaOn
-         xZZQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724164896; x=1724769696;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=COJqsdsUimC40QurmxvQ2PDteURpDZpJHvtTTyWWXds=;
-        b=watjVJ1gTlraemlsQsKpFo/vLkdydv02DLci6azr12txkO+Ka9hJT6mv6BkvtTBykU
-         PgEVvgh8EvewKB2VPQGjt/ZlPvOcBCP82oZsMmysoHt5j1C/Oc5CBEZSoiyvBqZrB/zm
-         /tH0rNEicyI+HgFcCyf1gsuhfm2QA6L2irPYG4s2p8P5hwgaJ2KWKAyLQcN8oCM86aml
-         MrQZwb0FRm/nz4e0PqiwXKRhPtsie5B5aOMN2RIR5XoBeSxgtG6jaChUvZKVOayP04+m
-         ZvHXH+OkxTlby7hjdC2MeELcSthyuxfJCOcof13Sx594W+LCEweNXU+QkiY9GxfCnl+M
-         Azow==
-X-Forwarded-Encrypted: i=1; AJvYcCURqDEUXNeQtFXCLZGnrp0m9uNpMPNQ0r3Rcft3M3iuY+uZsCe5AD0CwZJz6yWAhEmjOvpIUFEt3ET53F5xQCvVgqEiUwxh
-X-Gm-Message-State: AOJu0YwqTz/ImWr8NFyOcgOSLfraFgX4I5bOxOkCJ68z5kNLzZzdGIi5
-	spl603yAfUpSVbWVJAzjhadnqkqu6ttuBJDSCLnZemXd8lmVh1WM9rcALhXDLon8uzN8rZimUJO
-	LBatSc/cbiWEsbT0DlSIb7H4SefI=
-X-Google-Smtp-Source: AGHT+IFs3rvyeXkj2tvWqusUlk0Gnjrjtiy6bfyOtPXdZdDMGbtqrAaEhUtsoSoT/xZRdVNT440vMqkHDu8HrJmMptM=
-X-Received: by 2002:a2e:bc09:0:b0:2ef:23ec:9356 with SMTP id
- 38308e7fff4ca-2f3be574b0amr101743041fa.8.1724164894866; Tue, 20 Aug 2024
- 07:41:34 -0700 (PDT)
+	s=arc-20240116; t=1724165035; c=relaxed/simple;
+	bh=W7ZCCtqep2N7YC84maFuRBR9W86xcb4AH8v0dpyHReY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=H42yMD3B1e1ZT8IWW9Qm6XlxeXO+3IDv6hAGeflWhZjh0dhmo93AflxXuvhdPtEtJepa4Tsu50MKUicRT/+Z1EKfWrJbgvzciKmVBA4eONui+9x7kszf2FFFgAl8F0+OXvIfvfj+A7cNbnwiiEAPWEN0BnJA0Bqa1od2tz4D4m8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d3JD8ob4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83AE0C4AF0B;
+	Tue, 20 Aug 2024 14:43:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724165034;
+	bh=W7ZCCtqep2N7YC84maFuRBR9W86xcb4AH8v0dpyHReY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=d3JD8ob4MFmPvROFWu7vomdTt+bpkgPEBjVHYFCugq+o29YVB5yuKcb7kVUXO/sFU
+	 WPbweC5GTT0Vo/r3ac/F3TiRl79x+U7fn8nGMW+jRb9uItHUq79ox1zMuCws7IcfVK
+	 Y1KuN1eQGEY8Qky4IdSiivliWdiJ17tiHpFetmqB+V9rnpQg598RQOuQE7YG2GLSK3
+	 wVxqhtaCD9CluazTHG1KD3hiDHGYaG7kXSYDEjPlD60Pk0XiS3lzMH+fsdB0tfRXsa
+	 BZIaDl8xsn0UwxMNM+b4EHe8lh1zVXDtTlbUwj/7hvi9EF2cqwWi5RVtgwib0kf1l8
+	 lmBmUQZBW1uUg==
+Date: Tue, 20 Aug 2024 15:43:44 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com
+Subject: Re: [PATCH 5.15 000/479] 5.15.165-rc3 review
+Message-ID: <1c83d94d-1b56-4bd9-8a96-c5062c238c06@sirena.org.uk>
+References: <20240817075228.220424500@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240820033148.29662-1-sunjunchao2870@gmail.com> <CAHc6FU69hYhBS2rRyXUGAJSHpzNY+kNN9tZBcfWQbL_u5N-MvA@mail.gmail.com>
-In-Reply-To: <CAHc6FU69hYhBS2rRyXUGAJSHpzNY+kNN9tZBcfWQbL_u5N-MvA@mail.gmail.com>
-From: Julian Sun <sunjunchao2870@gmail.com>
-Date: Tue, 20 Aug 2024 22:41:22 +0800
-Message-ID: <CAHB1NagXgRMj-Rhb=86L8kaXEe8H24=Of6nrUmhMVR2fxTqYkA@mail.gmail.com>
-Subject: Re: [PATCH] gfs2: fix double destroy_workqueue error
-To: Andreas Gruenbacher <agruenba@redhat.com>
-Cc: gfs2@lists.linux.dev, 
-	syzbot+d34c2a269ed512c531b0@syzkaller.appspotmail.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="PfIcW7SysGFheIkL"
+Content-Disposition: inline
+In-Reply-To: <20240817075228.220424500@linuxfoundation.org>
+X-Cookie: You are false data.
+
+
+--PfIcW7SysGFheIkL
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Andreas Gruenbacher <agruenba@redhat.com> =E4=BA=8E2024=E5=B9=B48=E6=9C=882=
-0=E6=97=A5=E5=91=A8=E4=BA=8C 22:22=E5=86=99=E9=81=93=EF=BC=9A
->
-> Hi,
->
-> On Tue, Aug 20, 2024 at 5:32=E2=80=AFAM Julian Sun <sunjunchao2870@gmail.=
-com> wrote:
-> > When gfs2_fill_super() fails, destroy_workqueue()
-> > is called within gfs2_gl_hash_clear(), and the
-> > subsequent code path calls destroy_workqueue()
-> > on the same work queue again.
-> >
-> > This issue can be fixed by setting the work
-> > queue pointer to NULL after the first
-> > destroy_workqueue() call and checking for
-> > a NULL pointer before attempting to destroy
-> > the work queue again.
-> >
-> > Reported-by: syzbot+d34c2a269ed512c531b0@syzkaller.appspotmail.com
-> > Closes: https://syzkaller.appspot.com/bug?extid=3Dd34c2a269ed512c531b0
-> > Fixes: 30e388d57367 ("gfs2: Switch to a per-filesystem glock workqueue"=
-)
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Julian Sun <sunjunchao2870@gmail.com>
-> > ---
-> >  fs/gfs2/glock.c      | 1 +
-> >  fs/gfs2/ops_fstype.c | 3 ++-
-> >  2 files changed, 3 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
-> > index 12a769077ea0..4775c2cb8ae1 100644
-> > --- a/fs/gfs2/glock.c
-> > +++ b/fs/gfs2/glock.c
-> > @@ -2249,6 +2249,7 @@ void gfs2_gl_hash_clear(struct gfs2_sbd *sdp)
-> >         gfs2_free_dead_glocks(sdp);
-> >         glock_hash_walk(dump_glock_func, sdp);
-> >         destroy_workqueue(sdp->sd_glock_wq);
-> > +       sdp->sd_glock_wq =3D NULL;
->
-> Here, sdp->sd_glock_wq is set to NULL,
->
-> >  }
-> >
-> >  static const char *state2str(unsigned state)
-> > diff --git a/fs/gfs2/ops_fstype.c b/fs/gfs2/ops_fstype.c
-> > index ff1f3e3dc65c..c1a7ff713c84 100644
-> > --- a/fs/gfs2/ops_fstype.c
-> > +++ b/fs/gfs2/ops_fstype.c
-> > @@ -1305,7 +1305,8 @@ static int gfs2_fill_super(struct super_block *sb=
-, struct fs_context *fc)
-> >         gfs2_delete_debugfs_file(sdp);
-> >         gfs2_sys_fs_del(sdp);
-> >  fail_delete_wq:
-> > -       destroy_workqueue(sdp->sd_delete_wq);
-> > +       if (sdp->sd_delete_wq)
-> > +               destroy_workqueue(sdp->sd_delete_wq);
->
->
-> > but here, we check if sdp->sd_delete_wq is NULL? That doesn't make sens=
-e.
-Oh... I see. Sorry for this stupid mistake. I will correct it and send
-a patch v2.
->
-> >  fail_glock_wq:
-> >         destroy_workqueue(sdp->sd_glock_wq);
-> >  fail_free:
-> > --
-> > 2.39.2
-> >
->
-> Thanks,
-> Andreas
->
+On Sat, Aug 17, 2024 at 10:00:38AM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.15.165 release.
+> There are 479 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Thanks,
---=20
-Julian Sun <sunjunchao2870@gmail.com>
+This breaks the build of at least the KVM selftests on arm64 for me:
+
+In file included from dirty_log_test.c:15:
+=2E./../../../tools/include/linux/bitmap.h: In function =E2=80=98bitmap_zer=
+o=E2=80=99:
+=2E./../../../tools/include/linux/bitmap.h:33:34: warning: implicit declara=
+tion of
+ function =E2=80=98ALIGN=E2=80=99 [-Wimplicit-function-declaration]
+   33 | #define bitmap_size(nbits)      (ALIGN(nbits, BITS_PER_LONG) / BITS=
+_PER_
+BYTE)
+      |                                  ^~~~~
+=2E./../../../tools/include/linux/bitmap.h:40:32: note: in expansion of mac=
+ro =E2=80=98bit
+map_size=E2=80=99
+   40 |                 memset(dst, 0, bitmap_size(nbits));
+      |                                ^~~~~~~~~~~
+/usr/bin/ld: /tmp/cc4JPVlx.o: in function `bitmap_alloc':
+/build/stage/linux/tools/testing/selftests/kvm/../../../../tools/include/li=
+nux/b
+itmap.h:126: undefined reference to `ALIGN'
+/usr/bin/ld: /build/stage/linux/tools/testing/selftests/kvm/../../../../too=
+ls/in
+clude/linux/bitmap.h:126: undefined reference to `ALIGN'
+collect2: error: ld returned 1 exit status
+
+This bisects down to:
+
+9853a5bed65d507048dbe772bb84e6f905b772a3 is the first bad commit
+commit 9853a5bed65d507048dbe772bb84e6f905b772a3
+Author: Alexander Lobakin <aleksander.lobakin@intel.com>
+Date:   Wed Mar 27 16:23:49 2024 +0100
+
+    bitmap: introduce generic optimized bitmap_size()
+   =20
+    commit a37fbe666c016fd89e4460d0ebfcea05baba46dc upstream.
+
+A similar issue appears to affect at least the 5.10 -rc.
+
+--PfIcW7SysGFheIkL
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmbEq6AACgkQJNaLcl1U
+h9BewQf/UoUrlE9AVYbakAIiMPXctHgee/yuja880P8DisjuiAd0s5VWr3sLfQc/
+QYm7Y/xQwso2hl1e8+8MvTUL0/EPVwSRYGTvhHvPFP/qIN/mUe/ED8Kyzh7xNay+
+PfOqs/PyPzIoLGmkzAHfhB4nl3LrBqkl4cRqrJlXA3K4mY72esYHgU9Vpmc4k5I0
+lAKCW2eSNaGeqCrOC0oq3PTQjj2rsdHmie4CCe7tH+UT2+5LLXHPMjlFuXtrvK3I
+twUZG0hD9Ylnl8TI87QtO6A7JnyMiVrvfdEpGthlLiAmhCH4fGUhK++XzZ20HQMR
+iFykVdY8WTr7bv2pfQC5cLAmzEJ2hA==
+=9GlQ
+-----END PGP SIGNATURE-----
+
+--PfIcW7SysGFheIkL--
 
