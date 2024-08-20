@@ -1,328 +1,218 @@
-Return-Path: <stable+bounces-69753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69754-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EFC4958F3B
-	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 22:38:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18B57958F6B
+	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 23:07:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABAE71F227AB
-	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 20:38:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8EE821F2336A
+	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 21:07:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D5951B86F8;
-	Tue, 20 Aug 2024 20:38:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CA681C4602;
+	Tue, 20 Aug 2024 21:07:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="oJJ5lRvk";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="KgYHndSo"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CLES6PMI"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f169.google.com (mail-qk1-f169.google.com [209.85.222.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1589918E37E;
-	Tue, 20 Aug 2024 20:38:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F8B049626;
+	Tue, 20 Aug 2024 21:07:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724186302; cv=none; b=LJVe5khyV+OWcC5t1JFEU/rqAzLcyNXdOQ8P2ZAsvTmy6Be9ltI1TNsbXZglFIIeAnUhkEEVg8+X/ssg2gNpekxK/10xCdaENOgctolq91CIwPfq4HfieI062H87pQyCiPPt1WswcCOExNkC/MtrOLeCR8d8zaw0o3JHmBx89CM=
+	t=1724188034; cv=none; b=CUSy/5cbmGYjpz2AMTiseORQBYnYDxiIXJQ+npD4HBnz/AbSW2SppNTAx2jS5d/kjvm05imVrx14P+AZXrQqungbebQW9O/lmWaPBYM7PCHK1rrki5Wx7c75Esvd3Kdwas0/Th51LC2CNVBi92P+7r2j/X5sPgd7im9uG/CHeCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724186302; c=relaxed/simple;
-	bh=z2NSTYohbl5yMpwnUSZ3/eUP+tZqxVOABVswy0Qs5Pc=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=c8owYLq56az0nQ471vOQwZ8kw9Cp9aWZl+p+IU2K5rfQYq6NPK3xw2H4viDBJVrf/g+/8RILxtIrQn/HgjJIdtoLAcSIL06mQm2l1a/c+zHhQezs4GL/h+ygXNaZlcKATXa1Bllp28oxIDShXSkd1jqvjQuvOlMLW3vyOdrP8So=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=oJJ5lRvk; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=KgYHndSo; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 20 Aug 2024 20:38:17 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1724186298;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=b5zNsM/2vqDYVr/xID+pmMS7r6uLjO/FlSyL3abxmYA=;
-	b=oJJ5lRvkPLgeS2bgSKXPCpMXxPzjGgHdMeXeg7jEmUXwpMsiGSdQXbKJwaxXaCh7Wum+on
-	4xh91Ole5s28HY7JxO2JjWqx+LiGWzV6xNjqnzhUCCSTPurATHXrrsbTPVb+FL0ui1zMyE
-	gGkhyUkhtnkZItwtGJ0ujBzi25YXgHMwj2B0Kb3KYRp0MWsvgmLSifs1ted8ZytUnAgw6K
-	ayPIFtCgmraPspNHnPQcyS0OIT4u15gIwfMaW8Oq1LSfzKpjCVuBpFh+yAWvOxVsbaP94t
-	BLK+rVuJcz9dQM63b+3a44Efi0zfxrGF6jQOEPA3uNk+904vWCYuueUgf0pwsg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1724186298;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=b5zNsM/2vqDYVr/xID+pmMS7r6uLjO/FlSyL3abxmYA=;
-	b=KgYHndSoCrZPbChTuvniloiXFB4I51sP9MZojQINlaJ7ZTXzmCcedSRMNEs7cHaQbXCcN7
-	jzHNAoJuqOYdkoCA==
-From: "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/kaslr: Expose and use the end of the physical
- memory address space
-Cc: Max Ramanouski <max8rr8@gmail.com>, Alistair Popple <apopple@nvidia.com>,
- Thomas Gleixner <tglx@linutronix.de>, Dan Williams <dan.j.williams@intel.com>,
- Kees Cook <kees@kernel.org>, stable@vger.kernel.org, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <87ed6soy3z.ffs@tglx>
-References: <87ed6soy3z.ffs@tglx>
+	s=arc-20240116; t=1724188034; c=relaxed/simple;
+	bh=fQhZtC5XTX1rDuiFtWrrHer8RBBsdR4bJOjfqxeR3Fk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lB/dF/fuQz2XaquCMhxsy46Orw/dicl1vrM41Gv8EMqaUfSEEqDazgJN95EX2PnjKUxF0jpYEhzk1PqVNC5cR36j+yzcxPbbiUES8r9rXF+tgIqeWNCsb7+385vPhxJoClOLDSYevDoDm/jPpaWnjh9t4Rc98DKIQZRVbpBsUs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CLES6PMI; arc=none smtp.client-ip=209.85.222.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qk1-f169.google.com with SMTP id af79cd13be357-7a501dd544eso363506085a.2;
+        Tue, 20 Aug 2024 14:07:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1724188031; x=1724792831; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AeUcR+7x0h8eh8YMQcLoUHiSpTodLwBICD59aETT1fA=;
+        b=CLES6PMIDzqnC2H1E8gWaqFjQXBXTZSLKcBM2FQ35D+mVNzfY5YXIfT/4acgE31G8W
+         raUn6N9OgOEFIsi+lkPa/rLlwR1iLCn7TBimnnVnZmsmCS+MITqcWPKv2doibEHDiS4m
+         /fOI/USpz/HnFmRDZyeXal9oeV0rA1++DUGpPqZGSe7BVYnQE7bYZXf6yOBS41Irtc/V
+         rQ4SlOQgLsw1rDfo2EETc8DOXLMl4oAGWHngop30ZeoBz5Kf6G8niwVo8VDikCAN7xhU
+         vfvKqi0V2ofZtXAJKyOu2VPc2ZzN60Et3DGncFOOIk+k1hYb+RTIDaGvA2GUMJeEbnZU
+         s/+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724188031; x=1724792831;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=AeUcR+7x0h8eh8YMQcLoUHiSpTodLwBICD59aETT1fA=;
+        b=RlWUWnWbwBjLMm/roDof9X7M0Edm78Zj/i6tTcNHKNAPsDrH9X++tZ+1nrJSbo9s2x
+         y1Lky8y2efjjNmzkmwBfhCP0MMWkRI+wH1mVxldp/h/6BKS7vD/1sXVcZpgzEcy11CVg
+         auwkQRbMpw/i/K65IlCcT8LQa3SbBwi+0VEjHD4xlAFr16Eg3hHlEZp6V86jsF+qWPHz
+         f777jKfTvWwSoi8H/nQV+6gVru7qhU9MbWUhXmBLNN0tHX0FOUWRjEHkBTG+aZpGA+RF
+         tZSv3rAq6/rmisihl4W2rLwbAuv/WsOxWRTDoJmve5s77dNIKiU2bzjVVCZkMZnGF3f9
+         UDmg==
+X-Forwarded-Encrypted: i=1; AJvYcCWN2kjVBN1Q91Mlaqm/6hN5Nw/SOy6mNAfQboUU/Jm4686lfHUdkz3OswnrC7WwqO9j1F9WhMJh@vger.kernel.org, AJvYcCXg4UpXrPWo+xjAPP/Gzg3cWJLRy0ffGg0FTijNt71z0cl21pNTGQA5SZKkg0OQoJfTq24Or8G3Yxul@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw7mQ9dFWeB89qx2vSnYizZwTuk31xXDivMo3f1HykcrnTfHLBX
+	4x94pHllTRQ6XEHvH07OecZpgv+75IoWmwRI8m9l090O1Nr7Irpj
+X-Google-Smtp-Source: AGHT+IFMKiBnMdA+T1HdrdVOPmK1vpftzXKrzhjlvBxRZ+6XVahDDgfE1v3Blmc+f8mYOWFCAXZSnA==
+X-Received: by 2002:a05:620a:2a01:b0:7a1:dfe4:5708 with SMTP id af79cd13be357-7a674027b83mr63061885a.16.1724188031098;
+        Tue, 20 Aug 2024 14:07:11 -0700 (PDT)
+Received: from fauth1-smtp.messagingengine.com (fauth1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7a4ff0e3592sm562387385a.92.2024.08.20.14.07.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Aug 2024 14:07:10 -0700 (PDT)
+Received: from phl-compute-05.internal (phl-compute-05.nyi.internal [10.202.2.45])
+	by mailfauth.nyi.internal (Postfix) with ESMTP id 36B6C1200043;
+	Tue, 20 Aug 2024 17:07:10 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Tue, 20 Aug 2024 17:07:10 -0400
+X-ME-Sender: <xms:fQXFZieSUsaLtAoRB2fya-NsnJqPFxbmYs943G6PP37g9ppTsww1gA>
+    <xme:fQXFZsNgYXZ5X-VhxwLgKnWFxMXSRDbiTcgJFl10oJzwOm1jFtIjRI0ZwaIxZhvXk
+    NPl6McsJC1ZCLJkWQ>
+X-ME-Received: <xmr:fQXFZji9iSnA3D7f7HLrcMgVo86g6V6C205pvAgC78gNjxJFXJ2uAEmTPks>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrudduiedgudehhecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
+    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddv
+    necuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilh
+    drtghomheqnecuggftrfgrthhtvghrnhephedugfduffffteeutddvheeuveelvdfhleel
+    ieevtdeguefhgeeuveeiudffiedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
+    hmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghl
+    ihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepgh
+    hmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopeduuddpmhho
+    uggvpehsmhhtphhouhhtpdhrtghpthhtohepsghothhtrggrfigvshhomhgvieeffeesgh
+    hmrghilhdrtghomhdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhk
+    vghrnhgvlhdrohhrghdprhgtphhtthhopehpvghtvghriiesihhnfhhrrgguvggrugdroh
+    hrghdprhgtphhtthhopehmihhnghhosehrvgguhhgrthdrtghomhdprhgtphhtthhopeif
+    ihhllheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhonhhgmhgrnhesrhgvughhrg
+    htrdgtohhmpdhrtghpthhtoheplhhinhhugidqvgigthegsehvghgvrhdrkhgvrhhnvghl
+    rdhorhhgpdhrtghpthhtohepshihiihkrghllhgvrhesghhoohhglhgvghhrohhuphhsrd
+    gtohhmpdhrtghpthhtohepshihiigsohhtodejfhegrgeifhejfhejtdehudegjeegvgeg
+    tdgrugesshihiihkrghllhgvrhdrrghpphhsphhothhmrghilhdrtghomh
+X-ME-Proxy: <xmx:fQXFZv9MKbTRWwleM5a6NeyeVRWqYJGUNMne20VmIlWK1NbKYHjppw>
+    <xmx:fQXFZuumGiquPq7Wn-iYu9M1_ytiiUdhMiEAr8AuaBoE_ylXKUPciw>
+    <xmx:fQXFZmHQ2goz8bwzt1e-FbQSXwwjZ8H4BFw51QPviOC27AyFz6m6ig>
+    <xmx:fQXFZtNwa-CkXxrfv0t9yHksIRdZ1pU6TQMlasbXe7YdkD2qOeZNcQ>
+    <xmx:fgXFZrNoURonOLD0kdF_EVw_f-fMqha6ap6YucbPhCOzujDpDgGAEfra>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 20 Aug 2024 17:07:08 -0400 (EDT)
+Date: Tue, 20 Aug 2024 14:07:05 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: botta633 <bottaawesome633@gmail.com>
+Cc: linux-kernel@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+	Waiman Long <longman@redhat.com>, linux-ext4@vger.kernel.org,
+	syzkaller@googlegroups.com,
+	syzbot+7f4a6f7f7051474e40ad@syzkaller.appspotmail.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v4 1/2] locking/lockdep: Forcing subclasses to have same
+ name pointer as their parent class
+Message-ID: <ZsUFeQP3tz8TXxrU@boqun-archlinux>
+References: <20240715132638.3141-1-bottaawesome633@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <172418629773.2215.4158024254077335422.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240715132638.3141-1-bottaawesome633@gmail.com>
 
-The following commit has been merged into the x86/urgent branch of tip:
+Hi Ahmed,
 
-Commit-ID:     ea72ce5da22806d5713f3ffb39a6d5ae73841f93
-Gitweb:        https://git.kernel.org/tip/ea72ce5da22806d5713f3ffb39a6d5ae73841f93
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Wed, 14 Aug 2024 00:29:36 +02:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 20 Aug 2024 13:44:57 +02:00
+Sorry I was missing some points on title and changelog, please see below
+and refer to Documentation/process/maintainer-tip.rst:
 
-x86/kaslr: Expose and use the end of the physical memory address space
+The title needs to be something like:
 
-iounmap() on x86 occasionally fails to unmap because the provided valid
-ioremap address is not below high_memory. It turned out that this
-happens due to KASLR.
+	locking/lockdep: Avoid creating new name string literals in lockdep_set_subclass()
 
-KASLR uses the full address space between PAGE_OFFSET and vaddr_end to
-randomize the starting points of the direct map, vmalloc and vmemmap
-regions.  It thereby limits the size of the direct map by using the
-installed memory size plus an extra configurable margin for hot-plug
-memory.  This limitation is done to gain more randomization space
-because otherwise only the holes between the direct map, vmalloc,
-vmemmap and vaddr_end would be usable for randomizing.
+the title and the changlog needs to be in imperative mode.
 
-The limited direct map size is not exposed to the rest of the kernel, so
-the memory hot-plug and resource management related code paths still
-operate under the assumption that the available address space can be
-determined with MAX_PHYSMEM_BITS.
+On Mon, Jul 15, 2024 at 04:26:37PM +0300, botta633 wrote:
+> From: Ahmed Ehab <bottaawesome633@gmail.com>
+> 
+> Preventing lockdep_set_subclass from creating a new instance of the
 
-request_free_mem_region() allocates from (1 << MAX_PHYSMEM_BITS) - 1
-downwards.  That means the first allocation happens past the end of the
-direct map and if unlucky this address is in the vmalloc space, which
-causes high_memory to become greater than VMALLOC_START and consequently
-causes iounmap() to fail for valid ioremap addresses.
 
-MAX_PHYSMEM_BITS cannot be changed for that because the randomization
-does not align with address bit boundaries and there are other places
-which actually require to know the maximum number of address bits.  All
-remaining usage sites of MAX_PHYSMEM_BITS have been analyzed and found
-to be correct.
+Same here, s/Preventing/Prevent, and when you reference a function, you
+want to do "lockdep_set_subclass()" instead of "lockdep_set_subclass".
 
-Cure this by exposing the end of the direct map via PHYSMEM_END and use
-that for the memory hot-plug and resource management related places
-instead of relying on MAX_PHYSMEM_BITS. In the KASLR case PHYSMEM_END
-maps to a variable which is initialized by the KASLR initialization and
-otherwise it is based on MAX_PHYSMEM_BITS as before.
 
-To prevent future hickups add a check into add_pages() to catch callers
-trying to add memory above PHYSMEM_END.
+Besides, overall, you want to structure your changelog as follow:
 
-Fixes: 0483e1fa6e09 ("x86/mm: Implement ASLR for kernel memory regions")
-Reported-by: Max Ramanouski <max8rr8@gmail.com>
-Reported-by: Alistair Popple <apopple@nvidia.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-By: Max Ramanouski <max8rr8@gmail.com>
-Tested-by: Alistair Popple <apopple@nvidia.com>
-Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-Reviewed-by: Alistair Popple <apopple@nvidia.com>
-Reviewed-by: Kees Cook <kees@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/87ed6soy3z.ffs@tglx
----
- arch/x86/include/asm/page_64.h          |  1 +-
- arch/x86/include/asm/pgtable_64_types.h |  4 +++-
- arch/x86/mm/init_64.c                   |  4 +++-
- arch/x86/mm/kaslr.c                     | 32 +++++++++++++++++++-----
- include/linux/mm.h                      |  4 +++-
- kernel/resource.c                       |  6 +----
- mm/memory_hotplug.c                     |  2 +-
- mm/sparse.c                             |  2 +-
- 8 files changed, 43 insertions(+), 12 deletions(-)
+Syzbot reports a problem that a warning will be triggered while
+searching a lock class in look_up_lock_class().
 
-diff --git a/arch/x86/include/asm/page_64.h b/arch/x86/include/asm/page_64.h
-index af4302d..f3d257c 100644
---- a/arch/x86/include/asm/page_64.h
-+++ b/arch/x86/include/asm/page_64.h
-@@ -17,6 +17,7 @@ extern unsigned long phys_base;
- extern unsigned long page_offset_base;
- extern unsigned long vmalloc_base;
- extern unsigned long vmemmap_base;
-+extern unsigned long physmem_end;
- 
- static __always_inline unsigned long __phys_addr_nodebug(unsigned long x)
- {
-diff --git a/arch/x86/include/asm/pgtable_64_types.h b/arch/x86/include/asm/pgtable_64_types.h
-index 9053dfe..a98e534 100644
---- a/arch/x86/include/asm/pgtable_64_types.h
-+++ b/arch/x86/include/asm/pgtable_64_types.h
-@@ -140,6 +140,10 @@ extern unsigned int ptrs_per_p4d;
- # define VMEMMAP_START		__VMEMMAP_BASE_L4
- #endif /* CONFIG_DYNAMIC_MEMORY_LAYOUT */
- 
-+#ifdef CONFIG_RANDOMIZE_MEMORY
-+# define PHYSMEM_END		physmem_end
-+#endif
-+
- /*
-  * End of the region for which vmalloc page tables are pre-allocated.
-  * For non-KMSAN builds, this is the same as VMALLOC_END.
-diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
-index d8dbeac..ff25364 100644
---- a/arch/x86/mm/init_64.c
-+++ b/arch/x86/mm/init_64.c
-@@ -958,8 +958,12 @@ static void update_end_of_memory_vars(u64 start, u64 size)
- int add_pages(int nid, unsigned long start_pfn, unsigned long nr_pages,
- 	      struct mhp_params *params)
- {
-+	unsigned long end = ((start_pfn + nr_pages) << PAGE_SHIFT) - 1;
- 	int ret;
- 
-+	if (WARN_ON_ONCE(end > PHYSMEM_END))
-+		return -ERANGE;
-+
- 	ret = __add_pages(nid, start_pfn, nr_pages, params);
- 	WARN_ON_ONCE(ret);
- 
-diff --git a/arch/x86/mm/kaslr.c b/arch/x86/mm/kaslr.c
-index 37db264..230f1de 100644
---- a/arch/x86/mm/kaslr.c
-+++ b/arch/x86/mm/kaslr.c
-@@ -47,13 +47,24 @@ static const unsigned long vaddr_end = CPU_ENTRY_AREA_BASE;
-  */
- static __initdata struct kaslr_memory_region {
- 	unsigned long *base;
-+	unsigned long *end;
- 	unsigned long size_tb;
- } kaslr_regions[] = {
--	{ &page_offset_base, 0 },
--	{ &vmalloc_base, 0 },
--	{ &vmemmap_base, 0 },
-+	{
-+		.base	= &page_offset_base,
-+		.end	= &physmem_end,
-+	},
-+	{
-+		.base	= &vmalloc_base,
-+	},
-+	{
-+		.base	= &vmemmap_base,
-+	},
- };
- 
-+/* The end of the possible address space for physical memory */
-+unsigned long physmem_end __ro_after_init;
-+
- /* Get size in bytes used by the memory region */
- static inline unsigned long get_padding(struct kaslr_memory_region *region)
- {
-@@ -82,6 +93,8 @@ void __init kernel_randomize_memory(void)
- 	BUILD_BUG_ON(vaddr_end != CPU_ENTRY_AREA_BASE);
- 	BUILD_BUG_ON(vaddr_end > __START_KERNEL_map);
- 
-+	/* Preset the end of the possible address space for physical memory */
-+	physmem_end = ((1ULL << MAX_PHYSMEM_BITS) - 1);
- 	if (!kaslr_memory_enabled())
- 		return;
- 
-@@ -128,11 +141,18 @@ void __init kernel_randomize_memory(void)
- 		vaddr += entropy;
- 		*kaslr_regions[i].base = vaddr;
- 
-+		/* Calculate the end of the region */
-+		vaddr += get_padding(&kaslr_regions[i]);
- 		/*
--		 * Jump the region and add a minimum padding based on
--		 * randomization alignment.
-+		 * KASLR trims the maximum possible size of the
-+		 * direct-map. Update the physmem_end boundary.
-+		 * No rounding required as the region starts
-+		 * PUD aligned and size is in units of TB.
- 		 */
--		vaddr += get_padding(&kaslr_regions[i]);
-+		if (kaslr_regions[i].end)
-+			*kaslr_regions[i].end = __pa_nodebug(vaddr - 1);
-+
-+		/* Add a minimum padding based on randomization alignment. */
- 		vaddr = round_up(vaddr + 1, PUD_SIZE);
- 		remain_entropy -= entropy;
- 	}
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index c4b238a..b386415 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -97,6 +97,10 @@ extern const int mmap_rnd_compat_bits_max;
- extern int mmap_rnd_compat_bits __read_mostly;
- #endif
- 
-+#ifndef PHYSMEM_END
-+# define PHYSMEM_END	((1ULL << MAX_PHYSMEM_BITS) - 1)
-+#endif
-+
- #include <asm/page.h>
- #include <asm/processor.h>
- 
-diff --git a/kernel/resource.c b/kernel/resource.c
-index 14777af..a83040f 100644
---- a/kernel/resource.c
-+++ b/kernel/resource.c
-@@ -1826,8 +1826,7 @@ static resource_size_t gfr_start(struct resource *base, resource_size_t size,
- 	if (flags & GFR_DESCENDING) {
- 		resource_size_t end;
- 
--		end = min_t(resource_size_t, base->end,
--			    (1ULL << MAX_PHYSMEM_BITS) - 1);
-+		end = min_t(resource_size_t, base->end, PHYSMEM_END);
- 		return end - size + 1;
- 	}
- 
-@@ -1844,8 +1843,7 @@ static bool gfr_continue(struct resource *base, resource_size_t addr,
- 	 * @size did not wrap 0.
- 	 */
- 	return addr > addr - size &&
--	       addr <= min_t(resource_size_t, base->end,
--			     (1ULL << MAX_PHYSMEM_BITS) - 1);
-+	       addr <= min_t(resource_size_t, base->end, PHYSMEM_END);
- }
- 
- static resource_size_t gfr_next(resource_size_t addr, resource_size_t size,
-diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-index 66267c2..951878a 100644
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -1681,7 +1681,7 @@ struct range __weak arch_get_mappable_range(void)
- 
- struct range mhp_get_pluggable_range(bool need_mapping)
- {
--	const u64 max_phys = (1ULL << MAX_PHYSMEM_BITS) - 1;
-+	const u64 max_phys = PHYSMEM_END;
- 	struct range mhp_range;
- 
- 	if (need_mapping) {
-diff --git a/mm/sparse.c b/mm/sparse.c
-index e4b8300..0c3bff8 100644
---- a/mm/sparse.c
-+++ b/mm/sparse.c
-@@ -129,7 +129,7 @@ static inline int sparse_early_nid(struct mem_section *section)
- static void __meminit mminit_validate_memmodel_limits(unsigned long *start_pfn,
- 						unsigned long *end_pfn)
- {
--	unsigned long max_sparsemem_pfn = 1UL << (MAX_PHYSMEM_BITS-PAGE_SHIFT);
-+	unsigned long max_sparsemem_pfn = (PHYSMEM_END + 1) >> PAGE_SHIFT;
- 
- 	/*
- 	 * Sanity checks - do not allow an architecture to pass
+// ^ the problem statement
+
+The cause of the issue is that instead of the existing name of a
+lock class, a new name (a string literal) is created and used by
+lockdep_set_subclass(), and this results in two lock classes with the
+same key but different address of the names, and a WARN_ONCE() is
+triggered because of that in look_up_lock_class().
+
+// ^ the analysis of the problem, you can merge the above two into one
+// paragraph if that works for you.
+
+To fix this, change lockdep_set_subclass() to use the existing name
+instead of a new one. As a result no new name will be created by
+lockdep_set_subclass(), hence the warning is avoided.
+
+// ^ the fix.
+
+
+Please send a new version if these make sense to you. The patch #2 also
+needs some changes in the title and changelog, but since that's adding
+a new test instead of fixing an issue, you could just write something
+like:
+
+Add a test case to ensure that no new name string literal will be
+created in lockdep_set_subclass(), otherwise a warning will be triggered
+in look_up_lock_class(). Add this to catch the problem in the future.
+
+
+Thanks!
+
+Regards,
+Boqun
+
+> string literal. Hence, we will always have the same class->name among
+> parent and subclasses. This prevents kernel panics when looking up a
+> lock class while comparing class locks and class names.
+> 
+> Reported-by: <syzbot+7f4a6f7f7051474e40ad@syzkaller.appspotmail.com>
+> Fixes: de8f5e4f2dc1f ("lockdep: Introduce wait-type checks")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Ahmed Ehab <bottaawesome633@gmail.com>
+> ---
+> v3->v4:
+>     - Fixed subject line truncation.
+> 
+>  include/linux/lockdep.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/include/linux/lockdep.h b/include/linux/lockdep.h
+> index 08b0d1d9d78b..df8fa5929de7 100644
+> --- a/include/linux/lockdep.h
+> +++ b/include/linux/lockdep.h
+> @@ -173,7 +173,7 @@ static inline void lockdep_init_map(struct lockdep_map *lock, const char *name,
+>  			      (lock)->dep_map.lock_type)
+>  
+>  #define lockdep_set_subclass(lock, sub)					\
+> -	lockdep_init_map_type(&(lock)->dep_map, #lock, (lock)->dep_map.key, sub,\
+> +	lockdep_init_map_type(&(lock)->dep_map, (lock)->dep_map.name, (lock)->dep_map.key, sub,\
+>  			      (lock)->dep_map.wait_type_inner,		\
+>  			      (lock)->dep_map.wait_type_outer,		\
+>  			      (lock)->dep_map.lock_type)
+> -- 
+> 2.45.2
 
