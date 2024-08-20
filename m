@@ -1,80 +1,95 @@
-Return-Path: <stable+bounces-69660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69661-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EDF1957AE7
-	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 03:26:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9384B957B37
+	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 03:54:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2BD3BB21E64
-	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 01:25:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4ED71285CF8
+	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 01:54:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4BA3F9EC;
-	Tue, 20 Aug 2024 01:25:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7303E1BC58;
+	Tue, 20 Aug 2024 01:54:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QkkBLGdW"
 X-Original-To: stable@vger.kernel.org
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f174.google.com (mail-vk1-f174.google.com [209.85.221.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C33B1BC58;
-	Tue, 20 Aug 2024 01:25:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9CA417BD5;
+	Tue, 20 Aug 2024 01:54:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724117152; cv=none; b=OtUg94z/+ewxPJ9zW3ZKipcP4pd+pI6lMRfsOfAAczghUWh9BHgyTwtNXTHUVgckSu8VfDTZMGTvEn9ux4ttgf6wIjRyyykvZxKFrx/mLmpUPhbvlX8A1N5OzXppeBK+Q+DOgzKEg1iT/imE8tQEnvhaliGFqOS2uWeunC4moMo=
+	t=1724118888; cv=none; b=PH7jf0SVUbIHgi8u+gmNODcS5twIJCDnjohdCoGmEnbh4V+ziT4HfYD+6ItdhLKSussXttWXrunr/MheRnTo3QNAEcJe50y4Ky/Y6yxNv09hw4RIIe5X6Hb/yAwcWCNDqjIADABjBuy74vAJPlV1Kb554FcLzutlCUrSzvlv/rc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724117152; c=relaxed/simple;
-	bh=ltGNretTtu1vKis5Qr5JrJc1GRGPHP9zlVyAbsNYovg=;
-	h=Subject:To:References:CC:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=LKxI2+7WJRYs/4/ITOWF1T/1T0arezYoQcSVce7zqzf5Z1M5vLOxKzd7Ydt9h367iBtR2Kb0XTIZqIVC4kS6MLj/1p8Y8E9obxovb+E7UYhMo1i6RMnGbwwawmJALImJ3qICxVPvnaYt8wx7WHqoMocQUOvV+/6JGs7t7+vleYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.105])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4WnsDj2TPgzfbdL;
-	Tue, 20 Aug 2024 09:23:49 +0800 (CST)
-Received: from dggpemf100013.china.huawei.com (unknown [7.185.36.179])
-	by mail.maildlp.com (Postfix) with ESMTPS id 4160A1402E0;
-	Tue, 20 Aug 2024 09:25:49 +0800 (CST)
-Received: from [10.67.120.126] (10.67.120.126) by
- dggpemf100013.china.huawei.com (7.185.36.179) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 20 Aug 2024 09:25:48 +0800
-Subject: Re: [PATCH v5] scsi: sd: Ignore command SYNC CACHE error if format in
- progress
-To: Bart Van Assche <bvanassche@acm.org>, Damien Le Moal <dlemoal@kernel.org>,
-	<James.Bottomley@HansenPartnership.com>, <martin.petersen@oracle.com>
-References: <20240819090934.2130592-1-liyihang9@huawei.com>
- <c1552d1f-e147-44d9-8cc6-5ab2110b4703@kernel.org>
- <099752c2-9cc2-43ef-8b97-56d26c148c88@acm.org>
-CC: <linux-scsi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linuxarm@huawei.com>, <prime.zeng@huawei.com>, <stable@vger.kernel.org>,
-	<liyihang9@huawei.com>
-From: Yihang Li <liyihang9@huawei.com>
-Message-ID: <e11b6850-e793-7f73-25e5-c474ef758211@huawei.com>
-Date: Tue, 20 Aug 2024 09:25:48 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101
- Thunderbird/45.7.1
+	s=arc-20240116; t=1724118888; c=relaxed/simple;
+	bh=0TyCg/t44e3EhQkh0UUL8UrEW29eMrzhWvtmVLAfqWs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=njqdocxIJqnGsj4oAVfzxzNGejxPkWhAaQXm9OIbSWPsZtLB01TkpWzTC/q/nPZOIW6jx9fW1ALGQqiYZfELsZATzcTEZ7plqofPzAHo9dsoKnb3sBUpnq3i3mUWKDCGg7W1axHf0tCs9T0ZqY82FcFTfZQQaONVbPvCcDHCL/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QkkBLGdW; arc=none smtp.client-ip=209.85.221.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-vk1-f174.google.com with SMTP id 71dfb90a1353d-4f6abcf0567so1661122e0c.0;
+        Mon, 19 Aug 2024 18:54:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1724118886; x=1724723686; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0myAGpOy9NnSjCr/mp35bKy5ul/TrTFINCm6hk6W9rg=;
+        b=QkkBLGdWg6+pzN7xRvL/V557eXNbVrwCrhuyfDD9JtEqsW/MRfdxPHUfKDJuTh1MsK
+         Ko6snH3b/YqdsBCwknUkpGw/Fql0MzKLl3mbhksCcJWWxCfWEkaPFRHuDqRbxYm5Fg+N
+         kqPMzp1B855UrIkIF7SjPuifQrZ+BteWK2sbfnHg+biURCLJ54nKv+GHDm3pJy3kZZLv
+         Jd+UygUYgpnUUghax9Cel9EoLsqdbiEisyZnFIgMbRCfjyyqA5SMIi617Z0X774jesKY
+         I1zlXXwmBXNrWmQ5nMAW79jLmWqyzIex7TgoC0RDuAF1/RsNAXef2k6wLiYxA9iwWaVD
+         V5Tg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724118886; x=1724723686;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=0myAGpOy9NnSjCr/mp35bKy5ul/TrTFINCm6hk6W9rg=;
+        b=EurXRQLvd3wjl1lleqVOLKUL9f/EPjTiilnY8qOc/NpU7kIbj1XX8zAT4UTitv73zg
+         buxTPXpbmY1VgVYskDWHhwvj9HnS0ODmS6ylAUeRKJ61pKnEkOxHlTDEX1NsdJgaUvuk
+         p77HfwwxSRt0DpRxD3ZyopoNKZ4PkdLnjZt5wzAZSYnmTzi45EQMZymJQLcX8pW52bsh
+         1RihN9C0MRDDIypw7LOFefsrmj9cPTH6JoqZVKvi5ANklDJ3nP49AgVlf8lb8ff4r8ZU
+         tdvdrPrhBgMCfFeE052L0H/sfGUFyGLisFWWQtXWz2TEQcj2GUOl7i5Cou1WWkZ72MWm
+         BSGA==
+X-Forwarded-Encrypted: i=1; AJvYcCUhSQlBG6URTqSYBuyJteIPmzebO1R9haU2HLIyUZLFPkAfJIVyiGmGkFn5/FxqRsk7QBOKCm9P@vger.kernel.org, AJvYcCWiFk0q1pbhdOxcCzGTkxS3CpH1s63+I7BujEnAebfDExmT/kodYu/Wuk1M63xfwf3DrnnOFqH8fCeZmg==@vger.kernel.org, AJvYcCXoG0zRRFOCGd+ALiyS4cIoQgWuEcOtkxXHeDAqLY4vxGRqeJohsAT4x/f2yrtAoTG801wBBp9/psSZW67D@vger.kernel.org
+X-Gm-Message-State: AOJu0YzSwa6XEowfcvb/1nd+q1B0P6VujrlklWpso36werqZoMLs4xrS
+	hCKgVrLhxGd3aSbrc/G6kkBHZuhAyqd3Drutibks87A0PVn6mRruBFd98vgb
+X-Google-Smtp-Source: AGHT+IGFgkBu6kEON1wC1ByIqvKHIoytVz007ZQm4rCHJNl4N276x+5zql/wox4vaL2AROSFkidYIw==
+X-Received: by 2002:a05:6122:2515:b0:4f6:b240:4af8 with SMTP id 71dfb90a1353d-4fc6cc1746dmr15350930e0c.11.1724118885707;
+        Mon, 19 Aug 2024 18:54:45 -0700 (PDT)
+Received: from localhost (57-135-107-183.static4.bluestreamfiber.net. [57.135.107.183])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-4fce3c238desm5179e0c.45.2024.08.19.18.54.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Aug 2024 18:54:45 -0700 (PDT)
+From: David Hunter <david.hunter.linux@gmail.com>
+To: david.hunter.linux@gmail.com
+Cc: axboe@kernel.dk,
+	hch@lst.de,
+	linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	penguin-kernel@I-love.SAKURA.ne.jp,
+	stable@vger.kernel.org
+Subject: [PATCH 5.15.y] block: use "unsigned long" for blk_validate_block_size().
+Date: Mon, 19 Aug 2024 21:54:43 -0400
+Message-ID: <20240820015443.5992-1-david.hunter.linux@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240819000502.2275929-1-david.hunter.linux@gmail.com>
+References: <20240819000502.2275929-1-david.hunter.linux@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <099752c2-9cc2-43ef-8b97-56d26c148c88@acm.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- dggpemf100013.china.huawei.com (7.185.36.179)
+Content-Transfer-Encoding: 8bit
 
+Link to version 2: 
 
-
-On 2024/8/20 0:54, Bart Van Assche wrote:
-> On 8/19/24 3:57 AM, Damien Le Moal wrote:
->> The patch changed significantly, so I do not think you can retain Bart's review
->> tag...
-> 
-> Agreed, my Reviewed-by definitely should have been removed.
-> 
-
-Sorry about that forgot remove your Reviewed-by tag.
+https://lore.kernel.org/all/20240819002324.2284362-1-david.hunter.linux@gmail.com/
 
