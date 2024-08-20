@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-69667-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69668-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 807A3957C84
-	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 06:40:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9339A957C8B
+	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 06:49:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 152CFB23561
-	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 04:40:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E57B4B22D74
+	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 04:49:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02C8012FB34;
-	Tue, 20 Aug 2024 04:39:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17F643FE4A;
+	Tue, 20 Aug 2024 04:49:08 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C90E6A039
-	for <stable@vger.kernel.org>; Tue, 20 Aug 2024 04:39:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B624E541
+	for <stable@vger.kernel.org>; Tue, 20 Aug 2024 04:49:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724128766; cv=none; b=D9/uL/QZA2wJHK5mLyXQ/x5TndDkUxfDxIEQ1vxXk/+YjHIJyMzO4acT0erKWFLg6sLRiiw7nDmqG9Ay3j04M8GMPXq2jhD0AmPM9Y/2dEY4zfZKXN4MPGkbwVfRLvc5z0NjagChF3batg0/5oodAWNqVFwYuutWMFERCeY//B0=
+	t=1724129347; cv=none; b=HzFkd113HV3uEmabxusFIBwdCwMdhOC0/vSNm1uK/1LH4ffLK7Zdg37Lsz54jK6MJKsy6omMTdUVVMc54LVwlVZc/s0hfOVQ9/E86TYfbv+fxJZFe/BVAT2VK9liTM8laBcu+Gtu94yzKgSX8qH7Je+sZ4e0KdtgSZagPhRB9r4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724128766; c=relaxed/simple;
-	bh=IiaU2ap4jvRF5tNog+qpXZHeYOvi+FmUsFM6A/WqXK4=;
+	s=arc-20240116; t=1724129347; c=relaxed/simple;
+	bh=vNz6hEzuYijA1TgDkkezCXD7HGknoTYO2HHAZPWUUOc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FNr7JQOa0B1TsMfrJRV42FqVCs7CyPGvMcUSGI7yV6WIkiI91d+7HiqnM5SZmicWFJvSvEGV+cFEOK1U1PaSBOyjboTrQ8FAQDfNU7Z3JhBxXIP95/m2Bmc50ENAsQMH0nuiHFVVL5U4JqgUYxS4jhVKAXUKT4G9DDlbHX4D0vA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.128.49
+	 In-Reply-To:Content-Type; b=YXiKYWQZWp/hwvNbi70VtB3wCaAX+WvJysbW2LQHJGMumlrmaYscDcI2cRVvPsz135nRaa89ZlhTjyjCSD1pLvdwxsT7JdCcaijx3uVgYzldCskBpI+wUi/cFTz9Ph4d8nYcKI7eRUMkoW+ZAGJRd7PWbOAuGFVI+kThyl1LOEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.128.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-428141be2ddso39026085e9.2
-        for <stable@vger.kernel.org>; Mon, 19 Aug 2024 21:39:25 -0700 (PDT)
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-428119da952so40528655e9.0
+        for <stable@vger.kernel.org>; Mon, 19 Aug 2024 21:49:05 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724128763; x=1724733563;
+        d=1e100.net; s=20230601; t=1724129344; x=1724734144;
         h=content-transfer-encoding:in-reply-to:autocrypt:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=rTjGr6TMsCDdXxH/Js7p8tKp5f3+qu+HUSXH6ORnMIA=;
-        b=WMdZ6PCfhDaeRIwms98SLJkYO0He2lHAuSlH+eh29xtfNJbIeHDfqygDOnbmQDEkBW
-         ZEjuxOVoe1zKGbD5RR0+LTIBirDQs+SrJ1b5DFjlNljGrpBSW7/ckKSdFjPHsVTphQPp
-         JLxBMbpQT/vfqYFwD8t24+rJA27m02zbLgyGinaHoX/tcZTT4eF8YOUxLMrcdfDN+Eeq
-         Us/Tm0roxkqRmt3aSWxQbbVeqwndVlX0trnicuEIPSi5dcGleQ/mgvsens0RmIwxut68
-         TrsoSQ55ngyh1n5j3zkP73R8w9bFRM2UJy1j/hDicYtSaROaUfeFHHDxa3XvTjiPt7dL
-         dG9g==
-X-Forwarded-Encrypted: i=1; AJvYcCWEnbvcz5N7c5DhUqNZjMChDPgRhfZjBDu9UmDuNnq54T42gDCUBXH/0DTBRbOE6vwiTJyVMpI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwO8297+jW3xcm3aLKqkLZF574i4WS+GOswABt8bNP4vUvtgm9q
-	35yE1U4pAuBre8oJDB4/vm82Zhb+aIaJ5kuaoA9AvBxqSNfxoRAG
-X-Google-Smtp-Source: AGHT+IGw6e4J6VHUZdN+QnOwgMoLjCSSaFpBuKEyOnqRqfJO5YF6oXAjuzrWKpNMhSiH6I4QPTl/Kw==
-X-Received: by 2002:adf:a45a:0:b0:371:879f:5cc0 with SMTP id ffacd0b85a97d-371946a4289mr7691706f8f.42.1724128763125;
-        Mon, 19 Aug 2024 21:39:23 -0700 (PDT)
+        bh=ALr5L9SS4h75GJ0msFfevTh0cqjXGdoJZIpXt9kUwpw=;
+        b=LsGOurmo4joEoZewyfhOmiKAxfzx91CyQTd1c1TKoQfqBLB04ZxPzEZhUe+Jocbog+
+         CdupD9T9DPbjer/xjZzVxzG0TtKHHp12R6tGvq9Or1X/ChQKkvwd/bv8breH2b7eFbs4
+         x6Vk0YVroSZ0BnutIeukcbtaCd2fnImdSHHNdhEVC9IdAIiLGQ3W79WppH5m45pYno+T
+         +oogxAR7b1M4VVEZxyXb8M9I9KZ0VRaujn/V3OUx2BOaJe2iTHfX5TNYLd0xYv7QH2jV
+         3Czj60GFfgfkP76Mn5sq0vJTKwTwQCk1ezi24HEYoqSr1KHftUeITEhsEfVoXW8Bm7JE
+         IwzA==
+X-Forwarded-Encrypted: i=1; AJvYcCXZSMkZeTfk9cRCfvehuKluvjRHNIujeceRBcMS9Fu+lWv0IYMInaOlNvnWpLkzTBBY5tHH6Ao=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyU1E/AdmJDa4UltS/Fbf0Gmi14W5AZoebnw7yc8mcgh8Lal319
+	hgRf4YNeZ39tcQSE2XaRo6iPtvvssd4o0BTYf04juQFSdEudaQFf
+X-Google-Smtp-Source: AGHT+IEKbRyAyK3bufxtdUOt8Pjb9fSK7pH1I9438DShOc4aPGzCWfxo0hO/U8P4l/ZhaJGsr7aYkw==
+X-Received: by 2002:a05:600c:35cd:b0:428:16a0:1c3d with SMTP id 5b1f17b1804b1-429ed7ae16cmr87308265e9.19.1724129344284;
+        Mon, 19 Aug 2024 21:49:04 -0700 (PDT)
 Received: from ?IPV6:2a0b:e7c0:0:107::aaaa:69? ([2a0b:e7c0:0:107::aaaa:69])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-429ed648f4asm129292505e9.5.2024.08.19.21.39.21
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-429ded7bb5fsm186680115e9.40.2024.08.19.21.49.03
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 19 Aug 2024 21:39:21 -0700 (PDT)
-Message-ID: <bf1a557a-efd5-4b83-9291-fd7e45795f40@kernel.org>
-Date: Tue, 20 Aug 2024 06:39:20 +0200
+        Mon, 19 Aug 2024 21:49:03 -0700 (PDT)
+Message-ID: <0d12eb50-c51b-496e-a931-9ce8fb6a1455@kernel.org>
+Date: Tue, 20 Aug 2024 06:49:02 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,20 +63,25 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.10 090/263] drm/amdgpu/pm: Fix the param type of
- set_power_profile_mode
-To: "Deucher, Alexander" <Alexander.Deucher@amd.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>
-Cc: "patches@lists.linux.dev" <patches@lists.linux.dev>,
- Sasha Levin <sashal@kernel.org>, "Koenig, Christian"
- <Christian.Koenig@amd.com>, "Pan, Xinhui" <Xinhui.Pan@amd.com>,
+Subject: Re: [PATCH 12/13] drm/amd/display: Fix a typo in revert commit
+To: "Li, Roman" <Roman.Li@amd.com>,
  "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>
-References: <20240812160146.517184156@linuxfoundation.org>
- <20240812160149.990704280@linuxfoundation.org>
- <ecca67e7-4c71-4b51-a271-5066cb77a601@kernel.org>
- <0155b806-628b-4db7-ac87-7ba21013aefd@kernel.org>
- <BL1PR12MB514424F261930331FF6E58DBF78C2@BL1PR12MB5144.namprd12.prod.outlook.com>
+Cc: "Wentland, Harry" <Harry.Wentland@amd.com>,
+ "Li, Sun peng (Leo)" <Sunpeng.Li@amd.com>,
+ "Siqueira, Rodrigo" <Rodrigo.Siqueira@amd.com>,
+ "Pillai, Aurabindo" <Aurabindo.Pillai@amd.com>,
+ "Lin, Wayne" <Wayne.Lin@amd.com>,
+ "Gutierrez, Agustin" <Agustin.Gutierrez@amd.com>,
+ "Chung, ChiaHsuan (Tom)" <ChiaHsuan.Chung@amd.com>,
+ "Zuo, Jerry" <Jerry.Zuo@amd.com>, "Mohamed, Zaeem" <Zaeem.Mohamed@amd.com>,
+ "Limonciello, Mario" <Mario.Limonciello@amd.com>,
+ "Deucher, Alexander" <Alexander.Deucher@amd.com>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+References: <20240815224525.3077505-1-Roman.Li@amd.com>
+ <20240815224525.3077505-13-Roman.Li@amd.com>
+ <CY8PR12MB81935FA7A89D077A2D0DADB489812@CY8PR12MB8193.namprd12.prod.outlook.com>
+ <360cabdc-3ba7-47a0-8e4f-f0ed8cea54bc@kernel.org>
+ <CY8PR12MB819387431D6D6E754929ECB9898C2@CY8PR12MB8193.namprd12.prod.outlook.com>
 Content-Language: en-US
 From: Jiri Slaby <jirislaby@kernel.org>
 Autocrypt: addr=jirislaby@kernel.org; keydata=
@@ -121,41 +126,42 @@ Autocrypt: addr=jirislaby@kernel.org; keydata=
  f/bIWIr0cqQmqQ33FgRhrG1+Xml6UXyJ2jExmlO8JljuOGeXYh6ZkIEyzqzffzBLXZCujlYQ
  DFXpyMNVJ2ZwPmX2mWEoYuaBU0JN7wM+/zWgOf2zRwhEuD3A2cO2PxoiIfyUEfB9SSmffaK/
  S4xXoB6wvGENZ85Hg37C7WDNdaAt6Xh2uQIly5grkgvWppkNy4ZHxE+jeNsU7tg=
-In-Reply-To: <BL1PR12MB514424F261930331FF6E58DBF78C2@BL1PR12MB5144.namprd12.prod.outlook.com>
+In-Reply-To: <CY8PR12MB819387431D6D6E754929ECB9898C2@CY8PR12MB8193.namprd12.prod.outlook.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 19. 08. 24, 22:12, Deucher, Alexander wrote:
-> [Public]
-> 
->> -----Original Message-----
->> From: Jiri Slaby <jirislaby@kernel.org>
->> Sent: Monday, August 19, 2024 3:54 AM
->> To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>;
->> stable@vger.kernel.org
->> Cc: patches@lists.linux.dev; Deucher, Alexander
->> <Alexander.Deucher@amd.com>; Sasha Levin <sashal@kernel.org>; Koenig,
->> Christian <Christian.Koenig@amd.com>; Pan, Xinhui <Xinhui.Pan@amd.com>;
->> amd-gfx@lists.freedesktop.org
->> Subject: Re: [PATCH 6.10 090/263] drm/amdgpu/pm: Fix the param type of
->> set_power_profile_mode
->>
->> FTR:
->> Delivery has failed to these recipients or groups:
->> Ma Jun (Jun.Ma2@amd.com)
->> The email address you entered couldn't be found
->>
->> So the author of the patch CANNOT respond. Anyone else?
-> 
-> This was a Coverity fix.  As to why it was pulled into stable, I think Sasha's scripts picked it up.
+On 19. 08. 24, 16:29, Li, Roman wrote:
+> Thank you, Jiri, for your feedback.
+> I've dropped this patch from DC v.3.2.297.
+> We will  follow-up on this separately and merge it after you do confirm the issue you reported is fixed.
 
-Sorry, but again, why do we change the kernel to _silence_ Coverity? We 
-do not do this even for compilers.
+The patch is all fine and very welcome to be upstream as soon as 
+possible. With this patch, it works as expected.
 
-I am asking, why do you call this a fix at all? What does it fixes?
+But the process is broken. Your and Fangzhi Zuo's send-email setup to 
+the least.
 
-And finally, Coverity has a "False positive" selection box to dismiss a 
-warning for good. One needs not changing the code.
+
+BTW you write in the commit log:
+Fixes: 4b6564cb120c ("drm/amd/display: Fix MST BW calculation
+Regression")
+
+But:
+$ git show 4b6564cb120c
+fatal: ambiguous argument '4b6564cb120c': unknown revision or path not 
+in the working tree.
+
+
+Instead, it is:
+commit 338567d17627064dba63cf063459605e782f71d2
+Author: Fangzhi Zuo <Jerry.Zuo@amd.com>
+Date:   Mon Jul 29 10:23:03 2024 -0400
+
+     drm/amd/display: Fix MST BW calculation Regression
+
+
+So apparently, someone in the process rebases the tree or something. 
+Which is another breakage (non-reliable SHAs).
 
 thanks,
 -- 
