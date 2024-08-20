@@ -1,187 +1,97 @@
-Return-Path: <stable+bounces-69705-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69706-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02DE395832A
-	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 11:49:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D80D895834A
+	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 11:55:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2DDD71C220C0
-	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 09:49:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 841D11F253F6
+	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 09:55:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C14F14A0A8;
-	Tue, 20 Aug 2024 09:49:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9568F18C32F;
+	Tue, 20 Aug 2024 09:55:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ARVc1Xeg"
 X-Original-To: stable@vger.kernel.org
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C33693E47B;
-	Tue, 20 Aug 2024 09:49:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5072318C027;
+	Tue, 20 Aug 2024 09:54:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724147364; cv=none; b=MViDlr7jBihr9a2WdDfPTo17D2emiu0fSnxTMiOKPHJqwGiTtdGV4+mmUBijC0ZT9OvtHYe7h0lNyQiwrskjtbiQAjJgm45xACzPLuSJhu/4yGZpQ3SdUHZFV5a4z6eKSMcEaEKKHkT2zQ25VzLtVS63FjPxnLpGZ2F5qLR2+vk=
+	t=1724147700; cv=none; b=eQ3I5XgK76JWL1alwD1ZFqzSldCZcPCj8on6KgrnYWKlk3cGSKJIZGTouJ1kxSiz8o0gbmaO3BYATF2X6PiwV+/3n8kvy/oqssnnBFz28077kgx5d4YLUO3ao3eqWAxlwv2nSGSxeSg0WpMLCko/0KjWmb2DpEo91IXzD2qu5WU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724147364; c=relaxed/simple;
-	bh=3JqT0Gg2JeFp/g987sd4pECRj7D9ynfXjo/MZ7zyE80=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=svu1NhHAAnGNGngx9Ll4gaRzOR9n0QLsmXjLx3KAuMSsZXyI7DyDP1SAcK/BmQ1tlpCSQHhfHBHyMXMBhR+P7vx+3ulDlF0gHhloR9S9O4RELuQUf2SVLh8K/dwj+g7MOjutx44yPJkmtK5rBHmlGjjiRA8nIwsPUuMnY2Gcynw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id 01B221C0082; Tue, 20 Aug 2024 11:49:14 +0200 (CEST)
-Date: Tue, 20 Aug 2024 11:49:13 +0200
-From: Pavel Machek <pavel@denx.de>
-To: Florian Bezdeka <florian.bezdeka@siemens.com>
-Cc: Chris Paterson <Chris.Paterson2@renesas.com>,
-	Pavel Machek <pavel@denx.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	"patches@lists.linux.dev" <patches@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"torvalds@linux-foundation.org" <torvalds@linux-foundation.org>,
-	"akpm@linux-foundation.org" <akpm@linux-foundation.org>,
-	"linux@roeck-us.net" <linux@roeck-us.net>,
-	"shuah@kernel.org" <shuah@kernel.org>,
-	"patches@kernelci.org" <patches@kernelci.org>,
-	"lkft-triage@lists.linaro.org" <lkft-triage@lists.linaro.org>,
-	"jonathanh@nvidia.com" <jonathanh@nvidia.com>,
-	"f.fainelli@gmail.com" <f.fainelli@gmail.com>,
-	"sudipm.mukherjee@gmail.com" <sudipm.mukherjee@gmail.com>,
-	"srw@sladewatkins.net" <srw@sladewatkins.net>,
-	"rwarsow@gmx.de" <rwarsow@gmx.de>,
-	"conor@kernel.org" <conor@kernel.org>,
-	"allen.lkml@gmail.com" <allen.lkml@gmail.com>,
-	"broonie@kernel.org" <broonie@kernel.org>,
-	Quirin Gylstorff <quirin.gylstorff@siemens.com>
-Subject: Re: [PATCH 6.10 00/25] 6.10.6-rc3 review
-Message-ID: <ZsRmmQOLiZ1KtQ1T@duo.ucw.cz>
-References: <20240817085406.129098889@linuxfoundation.org>
- <ZsMNYtjBBUE5Ehqy@duo.ucw.cz>
- <TYYPR01MB12402A34A443D1F3A6556D902B78C2@TYYPR01MB12402.jpnprd01.prod.outlook.com>
- <0e62552b7b9c1cd1eca6aa1af64006c53230c4f0.camel@siemens.com>
+	s=arc-20240116; t=1724147700; c=relaxed/simple;
+	bh=Skj0x3MfuIw+zzNHiN5rJLqdPBEqOODIJoUTO80lc48=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=IzZOmbl1qKbkmOeqlOmLkG6LrxSm8hwhOYPnHj9/kMrXnVFdMMBsaHefY14I4DTRZ/1XXewTpA3QYu/8rNpuPrtQpL2VHOyGRTMeYXCKNZ+FbUVyJcKlBpuEzH/+AIOG58tGphJLoPvK2tGeOIAWvs6R6i0YxEulo60CanrrfiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ARVc1Xeg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB4ADC4AF09;
+	Tue, 20 Aug 2024 09:54:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724147699;
+	bh=Skj0x3MfuIw+zzNHiN5rJLqdPBEqOODIJoUTO80lc48=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=ARVc1Xeg15K+Agq6v9d38vDMQ7O8JbcVXDS2KQ0dQ6D9NJAPcR7oAt/g4cO8ic7cj
+	 5NIT4Z5uRtmJlCal0u8FcRQoJcEkO0QcGlc/Q6s8NaVVZfrr54ZC98FO48s6Xeh75i
+	 +KVIl98GRb2hukyulOnqPBEwvL1c0SQMvJS0Y9W6K9dOFCrGDnqMWCX2QdLR7Uj+jb
+	 yGnjRKX1RBaT2Cj8XAV81713X81zSiSSShL1p3PKu7+SLZwW9fw2Q3tBEF8r2Ep1ah
+	 aSqsLKFB7Vzvf0yAvBjIQ3k0w/kM975YleP/yJP5fYxcFjRA4FgLnuhXmOeZVxcnvT
+	 Lv2X9tjyaqkgw==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <maz@kernel.org>)
+	id 1sgLZp-005DZl-13;
+	Tue, 20 Aug 2024 10:54:57 +0100
+Date: Tue, 20 Aug 2024 10:54:56 +0100
+Message-ID: <86ttffy0wf.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Ma Ke <make24@iscas.ac.cn>
+Cc: tglx@linutronix.de,
+	Suravee.Suthikulpanit@amd.com,
+	akpm@linux-foundation.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v3] irqchip/gic-v2m: Fix refcount leak in gicv2m_of_init
+In-Reply-To: <20240820092843.1219933-1-make24@iscas.ac.cn>
+References: <20240820092843.1219933-1-make24@iscas.ac.cn>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="0fLL3hkzIqPUgSKV"
-Content-Disposition: inline
-In-Reply-To: <0e62552b7b9c1cd1eca6aa1af64006c53230c4f0.camel@siemens.com>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: make24@iscas.ac.cn, tglx@linutronix.de, Suravee.Suthikulpanit@amd.com, akpm@linux-foundation.org, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
+On Tue, 20 Aug 2024 10:28:43 +0100,
+Ma Ke <make24@iscas.ac.cn> wrote:
+> 
+> We fail to perform an of_node_put() when of_address_to_resource()
+> fails, leading to a refcount leak.
+> 
+> Address this by moving the error handling path outside of the loop and
+> making it common to all failure modes.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 4266ab1a8ff5 ("irqchip/gic-v2m: Refactor to prepare for ACPI support")
+> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
 
---0fLL3hkzIqPUgSKV
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Reviewed-by: Marc Zyngier <maz@kernel.org>
 
-Hi!
+	M.
 
-> > So we could blame it on the qemu-cip-siemens-muc machine, however, it w=
-as quite happily booting 6.10.6-rc1 a few days ago:
-> > https://lava.ciplatform.org/scheduler/job/1180857
-> > 6.10.6-rc2 was also okay:
-> > https://lava.ciplatform.org/scheduler/job/1181017
->=20
-> As Chris pointed out that this might be related to our qemu instance in
-> the CIP lab. We had a look and found the attached kernel splat. This
-> seems not a guest but a host problem (which is Debian/6.1 based and not
-> 6.10).
-
-Aha, thanks a lot, things make sense now.
-
-> I think you can continue, ignore the test result for this 6.10 release
-> for now.=20
->=20
-> We will investigate further. Let's see.
->=20
-> For completeness the kernel log of the host is attached. LAVA runs into
-> a timeout and marks the job as failed.
-
-Thanks for the log. It seems something is seriously wrong with the
-machine, likely deadlock in ext4 or storage subsystems. If there are
-any suspect messages before this one, they may be useful.
-
-Best regards,
-								Pavel
-
-> [1639290.742208] INFO: task lava-run [job: :70173 blocked for more than 1=
-20 seconds.
-> [1639290.742223]       Not tainted 6.1.0-22-amd64 #1 Debian 6.1.94-1
-> [1639290.742231] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disab=
-les this message.
-> [1639290.742241] task:lava-run [job:  state:D stack:0     pid:70173 ppid:=
-2131   flags:0x00000002
-> [1639290.742244] Call Trace:
-> [1639290.742245]  <TASK>
-> [1639290.742247]  __schedule+0x34d/0x9e0
-> [1639290.742253]  schedule+0x5a/0xd0
-> [1639290.742255]  wb_wait_for_completion+0x82/0xb0
-> [1639290.742258]  ? cpuusage_read+0x10/0x10
-> [1639290.742261]  __writeback_inodes_sb_nr+0xa0/0xd0
-> [1639290.742263]  try_to_writeback_inodes_sb+0x55/0x70
-> [1639290.742266]  ext4_nonda_switch+0x80/0x90 [ext4]
-> [1639290.742289]  ext4_da_write_begin+0x61/0x2c0 [ext4]
-> [1639290.742306]  ? __file_remove_privs+0xbb/0x150
-> [1639290.742309]  generic_perform_write+0xcd/0x210
-> [1639290.742313]  ext4_buffered_write_iter+0x84/0x140 [ext4]
-> [1639290.742328]  vfs_write+0x232/0x3e0
-> [1639290.742332]  ksys_write+0x6b/0xf0
-> [1639290.742334]  do_syscall_64+0x55/0xb0
-> [1639290.742337]  ? ksys_read+0x6b/0xf0
-> [1639290.742339]  ? exit_to_user_mode_prepare+0x44/0x1f0
-> [1639290.742342]  ? syscall_exit_to_user_mode+0x1e/0x40
-> [1639290.742344]  ? do_syscall_64+0x61/0xb0
-> [1639290.742345]  ? syscall_exit_to_user_mode+0x1e/0x40
-> [1639290.742347]  ? do_syscall_64+0x61/0xb0
-> [1639290.742349]  ? do_syscall_64+0x61/0xb0
-> [1639290.742350]  ? __do_sys_newfstatat+0x4e/0x80
-> [1639290.742353]  ? exit_to_user_mode_prepare+0x44/0x1f0
-> [1639290.742355]  ? syscall_exit_to_user_mode+0x1e/0x40
-> [1639290.742357]  ? do_syscall_64+0x61/0xb0
-> [1639290.742358]  ? syscall_exit_to_user_mode+0x1e/0x40
-> [1639290.742360]  ? do_syscall_64+0x61/0xb0
-> [1639290.742362]  ? syscall_exit_to_user_mode+0x1e/0x40
-> [1639290.742363]  ? do_syscall_64+0x61/0xb0
-> [1639290.742365]  ? do_syscall_64+0x61/0xb0
-> [1639290.742366]  ? do_syscall_64+0x61/0xb0
-> [1639290.742367]  ? do_syscall_64+0x61/0xb0
-> [1639290.742369]  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-> [1639290.742371] RIP: 0033:0x7fc69729e240
-> [1639290.742373] RSP: 002b:00007ffcfc6840e8 EFLAGS: 00000202 ORIG_RAX: 00=
-00000000000001
-> [1639290.742375] RAX: ffffffffffffffda RBX: 0000000000a860f8 RCX: 00007fc=
-69729e240
-> [1639290.742376] RDX: 0000000000004000 RSI: 00000000019198d0 RDI: 0000000=
-00000000d
-> [1639290.742378] RBP: 0000000000004000 R08: 0000000000000000 R09: 0000000=
-000000000
-> [1639290.742378] R10: 0000000000000003 R11: 0000000000000202 R12: 00007fc=
-6971a4fc0
-> [1639290.742380] R13: 000000000000000d R14: 0000000000a440e0 R15: 0000000=
-000000000
-> [1639290.742382]  </TASK>
-> [1639411.519101] INFO: task lava-run [job: :70173 blocked for more than 2=
-41 seconds.
-> [1639411.519115]       Not tainted 6.1.0-22-amd64 #1 Debian 6.1.94-1
-
-
---=20
-DENX Software Engineering GmbH,        Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-
---0fLL3hkzIqPUgSKV
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZsRmmQAKCRAw5/Bqldv6
-8pGKAJ9RHSELhrd+5IPl20N6+p5iKhqNDACfaupYKHpsBvI2lsUI1fMmzE1anAw=
-=LDAA
------END PGP SIGNATURE-----
-
---0fLL3hkzIqPUgSKV--
+-- 
+Without deviation from the norm, progress is not possible.
 
