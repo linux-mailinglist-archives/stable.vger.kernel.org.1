@@ -1,150 +1,92 @@
-Return-Path: <stable+bounces-69658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69659-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FB24957AA0
-	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 02:58:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 149BB957AE1
+	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 03:24:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 218CEB225C5
-	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 00:58:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B49D51F23535
+	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 01:24:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28FBAC8E9;
-	Tue, 20 Aug 2024 00:58:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="K3J900PT"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5907617547;
+	Tue, 20 Aug 2024 01:24:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFF047483;
-	Tue, 20 Aug 2024 00:57:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6BE917C67;
+	Tue, 20 Aug 2024 01:24:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724115480; cv=none; b=VVSnrVSDHzoijkQ752hpweWaQrfShbT9EujgNEtvohXVmV34nZY+5sfkF+93ve7/hyMX4jVP5kbAkK4Mo8A/gQ1liEHpMkp1XSrIlPhLT1XMCgmHf/NtzJOGM1DA1KQ50GK3HtbPyGZgx6Pz4tCJzv8kxiX8bPXuCf4WOxdvRIk=
+	t=1724117067; cv=none; b=nvyNKT4e8T60Ik2AjYZEb68ySjDfO5xHofYv80die9RUM1+Ju2SViK20Hp3UuiznPtPzEiBBcT6B7NeV5vj7z2f/RbJuc8xu5pMXDNnIqDte/QgRdsm71juARQXitb8fXDQ51eAU+wt8mDnvRWojmDChcMwotC6p9TzoZhPDk2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724115480; c=relaxed/simple;
-	bh=6+SCZX/yFu50CRKwNxt0PxQOMt+yD4Pzzw4jd2yVToo=;
-	h=Date:To:From:Subject:Message-Id; b=nZlWGjePyAN7Y/+OqVt/1DUR9ziLo1HgcUrNbS+xLIJLXx8P5nhhJKCMiuSGu7ju30qBH6FU8WgQTT7NuxYb/2sL0Q86q9brcfxCOnNvaErQuOV6Fg4Ynv1gEPAsqGOszvS+FOdHstqgza3VYYIG4ta23zjNXlDJzkgI2PlDlec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=K3J900PT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35CAFC32782;
-	Tue, 20 Aug 2024 00:57:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1724115479;
-	bh=6+SCZX/yFu50CRKwNxt0PxQOMt+yD4Pzzw4jd2yVToo=;
-	h=Date:To:From:Subject:From;
-	b=K3J900PTfPVqYcsd2O52EbC7TGGAJ7rbQHdWp7RpCLPY0PCoOOelqWBnu68BJxun8
-	 izY9t0L87rKYM51NBEb1xw1EmHhpyblrQD4b7pN5w5OlZah9tkWk2juETfXF++T21H
-	 2bOehfydyZNE4kN7Orf5WuxmtUqiJJ6Kn5xAGZAQ=
-Date: Mon, 19 Aug 2024 17:57:58 -0700
-To: mm-commits@vger.kernel.org,vbabka@suse.cz,stable@vger.kernel.org,roman.gushchin@linux.dev,rientjes@google.com,penberg@kernel.org,iamjoonsoo.kim@lge.com,cl@linux.com,42.hyeyoo@gmail.com,dakr@kernel.org,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-krealloc-consider-spare-memory-for-__gfp_zero.patch added to mm-unstable branch
-Message-Id: <20240820005759.35CAFC32782@smtp.kernel.org>
+	s=arc-20240116; t=1724117067; c=relaxed/simple;
+	bh=PFhpBbGcqoFv9Ee+zZUeXGlY7AZl2F9JOryxrAQ354Q=;
+	h=Subject:To:References:CC:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=s97bg0apVqDRcxYwGh9Yj2QY20/Y+TFHXl08i6vYULwAZY8cUssVtI+XtcWZg0r5kf7gBbegcAe0bMjfEi8NC8/eVQmiay7l5AmJQ1LruAwtVCFvVaNAw1tbtDBTYKX0hBystqP4zp7u+zK5xfnOT0jjt8ZM8eIpT0RlAo7hEJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.174])
+	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4WnsC22hyvzfbd9;
+	Tue, 20 Aug 2024 09:22:22 +0800 (CST)
+Received: from dggpemf100013.china.huawei.com (unknown [7.185.36.179])
+	by mail.maildlp.com (Postfix) with ESMTPS id 48822140135;
+	Tue, 20 Aug 2024 09:24:22 +0800 (CST)
+Received: from [10.67.120.126] (10.67.120.126) by
+ dggpemf100013.china.huawei.com (7.185.36.179) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 20 Aug 2024 09:24:21 +0800
+Subject: Re: [PATCH v5] scsi: sd: Ignore command SYNC CACHE error if format in
+ progress
+To: Bart Van Assche <bvanassche@acm.org>,
+	<James.Bottomley@HansenPartnership.com>, <martin.petersen@oracle.com>
+References: <20240819090934.2130592-1-liyihang9@huawei.com>
+ <bfce098e-a070-40b1-95fc-951e2b3c1c22@acm.org>
+CC: <linux-scsi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<dlemoal@kernel.org>, <linuxarm@huawei.com>, <prime.zeng@huawei.com>,
+	<stable@vger.kernel.org>, <liyihang9@huawei.com>
+From: Yihang Li <liyihang9@huawei.com>
+Message-ID: <fd8c091f-a777-6641-835e-397fa8b5de94@huawei.com>
+Date: Tue, 20 Aug 2024 09:24:21 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101
+ Thunderbird/45.7.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+In-Reply-To: <bfce098e-a070-40b1-95fc-951e2b3c1c22@acm.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ dggpemf100013.china.huawei.com (7.185.36.179)
 
 
-The patch titled
-     Subject: mm: krealloc: consider spare memory for __GFP_ZERO
-has been added to the -mm mm-unstable branch.  Its filename is
-     mm-krealloc-consider-spare-memory-for-__gfp_zero.patch
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-krealloc-consider-spare-memory-for-__gfp_zero.patch
+On 2024/8/20 0:59, Bart Van Assche wrote:
+> On 8/19/24 2:09 AM, Yihang Li wrote:
+>> +            if ((sshdr.asc == 0x04 && sshdr.ascq == 0x04) ||
+> 
+> Shouldn't symbolic names be introduced for these numeric constants?
+> Although there is more code in the SCSI core that compares ASC / ASCQ
+> values with numeric constants, I think we need symbolic names for these
+> constants to make code like the above easier to read. There is already
+> a header file for definitions that come directly from the SCSI standard
+> and that is used by both SCSI initiator and SCSI target code:
+> <scsi/scsi_proto.h>.
+> 
 
-This patch will later appear in the mm-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+My idea is to be consistent with the style of the code context.
+That's why I use numerical values.
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+If we want to use symbolic names to replace all numeric constants,
+I think that would be another series of patches, and the changes would be more.
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+Thanks,
 
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Danilo Krummrich <dakr@kernel.org>
-Subject: mm: krealloc: consider spare memory for __GFP_ZERO
-Date: Tue, 13 Aug 2024 00:34:34 +0200
-
-As long as krealloc() is called with __GFP_ZERO consistently, starting
-with the initial memory allocation, __GFP_ZERO should be fully honored.
-
-However, if for an existing allocation krealloc() is called with a
-decreased size, it is not ensured that the spare portion the allocation is
-zeroed.  Thus, if krealloc() is subsequently called with a larger size
-again, __GFP_ZERO can't be fully honored, since we don't know the previous
-size, but only the bucket size.
-
-Example:
-
-	buf = kzalloc(64, GFP_KERNEL);
-	memset(buf, 0xff, 64);
-
-	buf = krealloc(buf, 48, GFP_KERNEL | __GFP_ZERO);
-
-	/* After this call the last 16 bytes are still 0xff. */
-	buf = krealloc(buf, 64, GFP_KERNEL | __GFP_ZERO);
-
-Fix this, by explicitly setting spare memory to zero, when shrinking an
-allocation with __GFP_ZERO flag set or init_on_alloc enabled.
-
-Link: https://lkml.kernel.org/r/20240812223707.32049-1-dakr@kernel.org
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
-Acked-by: David Rientjes <rientjes@google.com>
-Cc: Christoph Lameter <cl@linux.com>
-Cc: Hyeonggon Yoo <42.hyeyoo@gmail.com>
-Cc: Joonsoo Kim <iamjoonsoo.kim@lge.com>
-Cc: Pekka Enberg <penberg@kernel.org>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/slab_common.c |    7 +++++++
- 1 file changed, 7 insertions(+)
-
---- a/mm/slab_common.c~mm-krealloc-consider-spare-memory-for-__gfp_zero
-+++ a/mm/slab_common.c
-@@ -1273,6 +1273,13 @@ __do_krealloc(const void *p, size_t new_
- 
- 	/* If the object still fits, repoison it precisely. */
- 	if (ks >= new_size) {
-+		/* Zero out spare memory. */
-+		if (want_init_on_alloc(flags)) {
-+			kasan_disable_current();
-+			memset((void *)p + new_size, 0, ks - new_size);
-+			kasan_enable_current();
-+		}
-+
- 		p = kasan_krealloc((void *)p, new_size, flags);
- 		return (void *)p;
- 	}
-_
-
-Patches currently in -mm which might be from dakr@kernel.org are
-
-mm-vmalloc-implement-vrealloc.patch
-mm-vmalloc-implement-vrealloc-fix.patch
-mm-vmalloc-implement-vrealloc-fix-2.patch
-mm-vmalloc-implement-vrealloc-fix-3.patch
-mm-vmalloc-implement-vrealloc-fix-4.patch
-mm-kvmalloc-align-kvrealloc-with-krealloc.patch
-mm-kvmalloc-align-kvrealloc-with-krealloc-fix.patch
-mm-kvmalloc-align-kvrealloc-with-krealloc-fix-2.patch
-mm-kvmalloc-align-kvrealloc-with-krealloc-fix-3.patch
-mm-krealloc-consider-spare-memory-for-__gfp_zero.patch
-mm-krealloc-clarify-valid-usage-of-__gfp_zero.patch
-
+Yihang.
 
