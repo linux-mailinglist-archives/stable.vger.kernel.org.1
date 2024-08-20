@@ -1,131 +1,179 @@
-Return-Path: <stable+bounces-69732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69734-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4B39958AC6
-	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 17:12:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C45F2958AE7
+	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 17:16:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 21C14B214D4
-	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 15:12:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D3B0282CBC
+	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 15:16:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 831D7190052;
-	Tue, 20 Aug 2024 15:12:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E80231922E0;
+	Tue, 20 Aug 2024 15:16:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="f4BOzB7m";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="febEKZ63"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="y0gU7KF0"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 590D618E37F;
-	Tue, 20 Aug 2024 15:12:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10482190473;
+	Tue, 20 Aug 2024 15:16:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724166738; cv=none; b=GxHIcN68IbllYYzAzfkmDzOOcH80XFgSZzjsOunvyx4o1r1H4WDSCm/5SlqNwwFmUAzfviCmB+ej4JFmQgklu/W6NiZ3GesAceT06BQjKU4bxzDim1yxm+ywfLdPHKxTCprYZw+cr86pttFY38tC0dHynF86n06WxTuq2Rabg0c=
+	t=1724166970; cv=none; b=S5Qy5M6P+FTjDrDaTl01Cb09UAIN7LKGtLCUFHhKGt6LFqqV1NGQN2N4Qh7VXOUFYE/rFAhS7yevJsMjln0QE/ko9uQ12A7B11+wTAJBOJWu7fyI6dk3L9TfAHdYfl1kgcK2Aj/cdOJPE5aRAMIF14PAY8pnSO7ZUdZ9odFvdrQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724166738; c=relaxed/simple;
-	bh=WU4sn7n5evf6t5QHCKTquiAEUr02737lN7Up1e6S6hQ=;
-	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
-	 Message-ID:Content-Type; b=LEv8M/6RfiDXoDdhc69rp6jMbd5hYSSCdsKV5RLQFFTxshkswppbWpxeWvFEzvCeJRJBfKwhzAxgL4uTlz2kLQQVrKb/fMl8FNcnDbxgfCCpQDeLLl1ukMHaKDLw/2vknE4QLuegN3yww3zEapfCDJzR9+S7l9x2HGUo7vJu60c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=f4BOzB7m; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=febEKZ63; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Tue, 20 Aug 2024 15:12:14 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1724166734;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=iednjl+XWJ1tntTvPRGJxB0VlyMF9f1Yc+xpGnZrYDc=;
-	b=f4BOzB7mO+bAgliIDkWJ8rMhChUUnvFBP4aRsGcJ9x1uCk1Po0eaBohuYfKzIqERnK5mX2
-	zgrgBOgkgZiOdIfve7oVf/+wUG3rWemz/5UrJFlQGGhmKGfF3bpeVkjOYGa7tadzirG8X2
-	7rqHqpqAMpB0VA743wBLMR3F3nGCw66RbI81h5+zTB+DUhoy8k+NbupeoTGfXEfBx8RFc5
-	mKnVvqNoz0ucBO+J9DA0aARtdcpAvSqfDAqia64mBb8UH1eXhqGxGjCJUGzb5uvGDArF0k
-	9demyCQK8nyqgC0AVtoR7skzeF09bBEruemVvY4zRTSHATab1kT0eUe1rF4s8w==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1724166734;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=iednjl+XWJ1tntTvPRGJxB0VlyMF9f1Yc+xpGnZrYDc=;
-	b=febEKZ63lcrvUtDxdQyldUV92Qx7uxiKL4Q0qjjCFLyZmuhNIqV84AEH0RF/jjNnTyNRbf
-	TCYnZASTUlU+9TDw==
-From: "tip-bot2 for Ma Ke" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject:
- [tip: irq/urgent] irqchip/gic-v2m: Fix refcount leak in gicv2m_of_init()
-Cc: Ma Ke <make24@iscas.ac.cn>, Thomas Gleixner <tglx@linutronix.de>,
- Marc Zyngier <maz@kernel.org>, stable@vger.kernel.org, x86@kernel.org,
- linux-kernel@vger.kernel.org
-In-Reply-To: <20240820092843.1219933-1-make24@iscas.ac.cn>
-References: <20240820092843.1219933-1-make24@iscas.ac.cn>
+	s=arc-20240116; t=1724166970; c=relaxed/simple;
+	bh=2htDYgQvswGaU/wI5VetYbAFBjE4OAfABWe3crGFcQk=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:CC:References:
+	 In-Reply-To:Content-Type; b=bzfKgD876yklxMn3eUk7dyB/v7eeZRO9T7UkHQkoe84dS3r5WwgtR9cHxxhmi4qrg8AtSQaZQUQwjvvChsO/VtaVRG30SW4JXBSYDf9OfyhaLKeCtdz7f7OWe12fBnRbKSoi2zR9gwCagsiKI0JERChq4ZnixFpOPKjjAziP7mw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=y0gU7KF0; arc=none smtp.client-ip=198.47.19.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+	by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 47KFG2Bv012791;
+	Tue, 20 Aug 2024 10:16:02 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1724166962;
+	bh=o0ex5f/T4fe5xibAfgsBjL2cdHLLg0oekkZAeaRrtYw=;
+	h=Date:Subject:From:To:CC:References:In-Reply-To;
+	b=y0gU7KF0O8ubQ8gGeAOeqEbUEMr6J17SCWOSuBXoKbeVV462pZ0yW+mI7szU2fLO3
+	 AX4eQe9yTxJyyad5qiUQ8txtk8XXIjGv1GcNQy4cxrWX9XDPEPS+Ax8NusJh0mLjBA
+	 vw4bQpqISIYjv683zgM4xJX2Kgnyd9qehm1nntBI=
+Received: from DFLE103.ent.ti.com (dfle103.ent.ti.com [10.64.6.24])
+	by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 47KFG2NR047072
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Tue, 20 Aug 2024 10:16:02 -0500
+Received: from DFLE103.ent.ti.com (10.64.6.24) by DFLE103.ent.ti.com
+ (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Tue, 20
+ Aug 2024 10:16:02 -0500
+Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DFLE103.ent.ti.com
+ (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Tue, 20 Aug 2024 10:16:02 -0500
+Received: from [10.249.130.61] ([10.249.130.61])
+	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 47KFFwnx027038;
+	Tue, 20 Aug 2024 10:15:59 -0500
+Message-ID: <3274bdec-e9a3-4c2d-ba8e-58caa033d451@ti.com>
+Date: Tue, 20 Aug 2024 20:45:57 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <172416673413.2215.9983587782024044954.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] remoteproc: k3-r5: Fix driver shutdown
+From: Beleswar Prasad Padhi <b-padhi@ti.com>
+To: Jan Kiszka <jan.kiszka@siemens.com>,
+        Bjorn Andersson
+	<andersson@kernel.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        <linux-remoteproc@vger.kernel.org>
+CC: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Apurva Nandan
+	<a-nandan@ti.com>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        Nishanth Menon <nm@ti.com>
+References: <bf2bd3df-902f-4cef-91fc-2e6438539a01@siemens.com>
+ <3e6075a6-20a9-42ee-8f10-377ba9b0291b@ti.com>
+ <9ce9044c-085f-4eff-b142-ab36d39d90b4@siemens.com>
+ <2bdd6000-82b4-4f57-a950-e9378c321154@ti.com>
+ <7ffe0f80-d4a2-4d6f-8c45-5a407ac2e584@siemens.com>
+ <be50e40e-ece6-4784-83f3-031a750d5e79@ti.com>
+Content-Language: en-US
+In-Reply-To: <be50e40e-ece6-4784-83f3-031a750d5e79@ti.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 
-The following commit has been merged into the irq/urgent branch of tip:
 
-Commit-ID:     c5af2c90ba5629f0424a8d315f75fb8d91713c3c
-Gitweb:        https://git.kernel.org/tip/c5af2c90ba5629f0424a8d315f75fb8d91713c3c
-Author:        Ma Ke <make24@iscas.ac.cn>
-AuthorDate:    Tue, 20 Aug 2024 17:28:43 +08:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Tue, 20 Aug 2024 17:05:32 +02:00
+On 20-08-2024 20:29, Beleswar Prasad Padhi wrote:
+>
+> On 20-08-2024 19:50, Jan Kiszka wrote:
+>> On 20.08.24 11:48, Beleswar Prasad Padhi wrote:
+>>> On 20-08-2024 15:09, Jan Kiszka wrote:
+>>>> On 20.08.24 11:30, Beleswar Prasad Padhi wrote:
+>>>>> Hi Jan,
+>>>>>
+>>>>> On 19-08-2024 22:17, Jan Kiszka wrote:
+>>>>>> From: Jan Kiszka <jan.kiszka@siemens.com>
+>>>>>>
+>>>>>> When k3_r5_cluster_rproc_exit is run, core 1 is shutdown and removed
+>>>>>> first. When core 0 should then be stopped before its removal, it 
+>>>>>> will
+>>>>>> find core1->rproc as NULL already and crashes. Happens on rmmod e.g.
+>>>>> Did you check this on top of -next-20240820 tag? There was a 
+>>>>> series[0]
+>>>>> which was merged recently which fixed this condition. I don't see 
+>>>>> this
+>>>>> issue when trying on top of -next-20240820 tag.
+>>>>> [0]:
+>>>>> https://lore.kernel.org/all/20240808074127.2688131-1-b-padhi@ti.com/
+>>>>>
+>>>> I didn't try those yet, I was on 6.11-rcX. But from reading them
+>>>> quickly, I'm not seeing the two issues I found directly addressed 
+>>>> there.
+>>> Check the comment by Andrew Davis[0], that addresses the above issue.
+>>>
+>>> [0]:
+>>> https://lore.kernel.org/all/0bba5293-a55d-4f13-887c-272a54d6e1ca@ti.com/ 
+>>>
+>>>
+>> OK, then someone still needs to update his patch accordingly.
+> That comment was addressed in the v4 series revision[1] and was merged 
+> to linux-next, available with tag -next-20240820. Request you to 
+> please check if the issue persists with -next-20240820 tag. I checked 
+> myself, and was not able to reproduce.
+> [1]: https://lore.kernel.org/all/Zr9nbWnADDB+ZOlg@p14s/
+>>
+>>>>>> Fixes: 3c8a9066d584 ("remoteproc: k3-r5: Do not allow core1 to power
+>>>>>> up before core0 via sysfs")
+>>>>>> CC: stable@vger.kernel.org
+>>>>>> Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+>>>>>> ---
+>>>>>>
+>>>>>> There might be one more because I can still make this driver crash
+>>>>>> after an operator error. Were error scenarios tested at all?
+>>>>> Can you point out what is this issue more specifically, and I can 
+>>>>> take
+>>>>> this up then.
+>>>> Try starting core1 before core0, and then again - system will hang or
+>>> If you are trying to stop and then start the cores from sysfs, that is
+>>> not yet supported. The hang is thus expected.
+>> What? Then the driver is broken, even more. Why wasn't it fully 
+>> implemented?
 
-irqchip/gic-v2m: Fix refcount leak in gicv2m_of_init()
 
-gicv2m_of_init() fails to perform an of_node_put() when
-of_address_to_resource() fails, leading to a refcount leak.
+Just wanted to point out that this "graceful shutdown" feature is 
+majorly dependent on the Device Manager Firmware(point 3) and minimal 
+changes to the remoteproc driver (point 2 and 4). Thus, as soon as 
+Firmware is capable, we will send out the patches for this feature.
 
-Address this by moving the error handling path outside of the loop and
-making it common to all failure modes.
-
-Fixes: 4266ab1a8ff5 ("irqchip/gic-v2m: Refactor to prepare for ACPI support")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Marc Zyngier <maz@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20240820092843.1219933-1-make24@iscas.ac.cn
----
- drivers/irqchip/irq-gic-v2m.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/irqchip/irq-gic-v2m.c b/drivers/irqchip/irq-gic-v2m.c
-index 51af63c..be35c53 100644
---- a/drivers/irqchip/irq-gic-v2m.c
-+++ b/drivers/irqchip/irq-gic-v2m.c
-@@ -407,12 +407,12 @@ static int __init gicv2m_of_init(struct fwnode_handle *parent_handle,
- 
- 		ret = gicv2m_init_one(&child->fwnode, spi_start, nr_spis,
- 				      &res, 0);
--		if (ret) {
--			of_node_put(child);
-+		if (ret)
- 			break;
--		}
- 	}
- 
-+	if (ret && child)
-+		of_node_put(child);
- 	if (!ret)
- 		ret = gicv2m_allocate_domains(parent);
- 	if (ret)
+> The driver is capable of starting a core and stopping it all well. The 
+> problem is, when we stop a core from sysfs (without resetting the SoC 
+> itself), the remotecore is powered off, but its resources are not 
+> relinquished. So when we start it back, there could be some memory 
+> corruptions. This feature of "graceful shutdown" of remotecores is 
+> almost implemented and will be posted to this driver soon. Request you 
+> to try out after that.
+>
+> With graceful shutdown feature, this will be the flow:
+> 1. We issue a core stop operation from sysfs.
+> 2. The remoteproc driver sends a special "SHUTDOWN" mailbox message to 
+> the remotecore.
+> 3. The remotecore relinquishes all of its acquired resources through 
+> Device Manager Firmware and sends an ACK back.
+> 4. The remotecore enters WFI state and then is resetted through Host 
+> core.
+> 5. Then, if we try to do the core start operation from sysfs, core 
+> should be up as expected.
+>
+> Thanks,
+> Beleswar
+>>
+>> Jan
+>>
 
