@@ -1,70 +1,70 @@
-Return-Path: <stable+bounces-69724-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69725-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8049D9589EB
-	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 16:45:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B5859589FD
+	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 16:47:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 356B21F23B91
-	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 14:45:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5119E1F23A72
+	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 14:47:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82656193090;
-	Tue, 20 Aug 2024 14:38:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE66119885D;
+	Tue, 20 Aug 2024 14:41:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jDPFOc9A"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fIsh6rMp"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E8A719308E
-	for <stable@vger.kernel.org>; Tue, 20 Aug 2024 14:38:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF441198A0F
+	for <stable@vger.kernel.org>; Tue, 20 Aug 2024 14:41:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724164711; cv=none; b=jVDoKh73QlC9R+rSNzpqyLDRxUYxz39cyGgnd+thGfk0fzxl23k+vMNKHxeT94hAt8/QdvmSAi45dUZNTtbQlEprRGKMAsJOYFxvAGxdSiWxte91YsA9KWSKXxJdLi9jMz8lo5473c5kW+w/t791bYkwUQ4w1FaciwyVPxIUDSM=
+	t=1724164899; cv=none; b=eqHBQmG+1R8xnYfeIfcwx+xKgKVoGrlSEJy8rBsx/M1lCyBD7dg48HFsQM6W5G9fmTGSLoarEU7u0PshccLCdM9EK+emTnAu87qEW0M8okrCt5sAQhI6eCGtsVo+lxSC71Whpn2FFK7nTj21oTy523I9zP7FDdbaHtRTWIizo4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724164711; c=relaxed/simple;
-	bh=ih/n8CrewKI6D1+9ualLUR3DuDWkOzuYv5KaIh7VetU=;
+	s=arc-20240116; t=1724164899; c=relaxed/simple;
+	bh=ol+KLWbA2n+RZgCVOjQA6F0ZFiUQopgZSe8GIuN2fzA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Vjrf4A3GQdsPU92c5mv6X75+4q/wekGNlF6zE9KB39cLdAEpfJRoyUYIorWN/SFSwclpbgCCE05lL9iA3r7YybkX2bGgdiLs7ZxcaWbB45Wc4D+GmrtWbyhwfrbUq7sd/5w/Vhe6ddkrVSeYYKx+r7/VrSh++Nk4tG/BoB7BD7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jDPFOc9A; arc=none smtp.client-ip=209.85.208.50
+	 To:Cc:Content-Type; b=kqo8p1iGT28EdnEBQQwDbfjYAmS1ufEu2533/vKkZWi6z6vHfgAEZeOIA+PGAXV6giFyM2N5zsgsUozvV/0df0LuH3aNL9Ww5T7PTyPwLtT4J4A9fddlyBy+ckNFXIcjdOzRSQLX+XBK6kDjd1it0roFgOkewUEd+WuIjGiuI4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fIsh6rMp; arc=none smtp.client-ip=209.85.208.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-5bec4e00978so4781804a12.0
-        for <stable@vger.kernel.org>; Tue, 20 Aug 2024 07:38:29 -0700 (PDT)
+Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-2f3ce5bc7d2so34883591fa.0
+        for <stable@vger.kernel.org>; Tue, 20 Aug 2024 07:41:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724164708; x=1724769508; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1724164896; x=1724769696; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=PlKyZcerJI/b+5rW9w5YGY77JDxGB+71LgW6P71rn+M=;
-        b=jDPFOc9AyV9aOcfQbmqMPm4RKqAceEbMJjzSrxtzmOCYI9S/a1yB1Z/c0MGVLIYuAr
-         ADIC2C1SMVwletu1vlUYsp3elRRev+rsROfJQRTyQiHF2caDOjQ6eThXdq3LEYDqUwy1
-         mo0vlfpG6UtH0SvSFksyGq9dhI+eMwqA2rQOmtUxbkmKG0QjkAi53YBDoKV9Ul72FiPt
-         PE/zrwE62CJ0C7jI0JgBEGRN4254S2+Bd3zsbO/fynoiGH4x4/yDAwAkID9BVtVRNM/N
-         jJ2YATUg0Tfyyb2/s2RqtCPAjPlXh1FNrOX3ZLP43u7veYcO1rI7NImt8DuLYdio/pNg
-         iQHw==
+        bh=COJqsdsUimC40QurmxvQ2PDteURpDZpJHvtTTyWWXds=;
+        b=fIsh6rMpcKG8QLx0M9lT8zGCZtWMMiLMW89TCVyd29DlkrUF56g/hH4RlNLPzUvgcz
+         A4oqskR7d6V/pvczqz/xE3lI/9xVLFO1oC2nKD62EtdEmG4w+tF7FHlevydGONnCWA14
+         hks1onKVSJXHLFgrpO8ofjV36Vw9M5WHjVkvo1UREzmcdh5NhLP5l+3eV5/+YE8mv7vu
+         mknbx0LNDwyHrNPSWO/1VhrZlljUF+gDayA1Q82zTfXKzdngN3a8pvuBL6E5OaHj8b5E
+         y7nD2dNpYXYfH4fGlJ37bCUPYjfvsk+oSh5sPNIUXWsB9gllsCT1U1ShjlNJlMBfBaOn
+         xZZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724164708; x=1724769508;
+        d=1e100.net; s=20230601; t=1724164896; x=1724769696;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=PlKyZcerJI/b+5rW9w5YGY77JDxGB+71LgW6P71rn+M=;
-        b=MO97mOdy0VnwP92mFnsHs5ST4v0qxjTqhxs/dyjaiW/QiG/1B9HwAmALr7V1qGl5Ua
-         anlOFRW6EXV5i1C+26aIAygTONb4AbIcwX2pWOt8FC/B6NjLx0C0TIi4TndbCrNx2VPL
-         yV8rfl6aJ7xnmKAJ6zz2JIZF56kU4ldKUjPQ+sUF8+Ec3NAVaPT5cNfo4qivfYoS+K+o
-         8N1utJ1bTDQdIpqoY5CHAzrP2Fp9/s7eM4aKwz+tk8zYqSOxL0yoFlbbgERgcaXoGYeM
-         /+4UWBNIQQYawGkkmrunQ2CRQp11zAax1vlDRaBqb2whL6bv4xAidHPGAppJLNhdU0tE
-         ypyg==
-X-Forwarded-Encrypted: i=1; AJvYcCWpR83bKsfPflwuFGbsd21/x3uxBsT3bihWICsLsLp2QLkCOT+Oiz4iF+yHZzsAeLFRUn17ycs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzB1As+In+TS7dtDrKyKkxaWtK0AzYEC4+1trfGevS5PmhPXU7q
-	9EZs6sdauljnyL9CyQ4xgFtsPRCU6MoF90+jxLJa9noBTJBmtUddaalAo215ZLUvVeP3ujxyOKl
-	6bN4bqTYlS5OXMy9xnbGnyUWjlzw=
-X-Google-Smtp-Source: AGHT+IE/Q/pID2ImU9RPleC5mWD1P480kdwVLhC0s8JHB9DkygTJCsuzHRZVusRgrZlKdW5KHj8OvpykW/N/5BC9NSk=
-X-Received: by 2002:a05:6402:27cd:b0:5be:d5a8:e0e with SMTP id
- 4fb4d7f45d1cf-5bf0d2d2ab5mr1738851a12.37.1724164707363; Tue, 20 Aug 2024
- 07:38:27 -0700 (PDT)
+        bh=COJqsdsUimC40QurmxvQ2PDteURpDZpJHvtTTyWWXds=;
+        b=watjVJ1gTlraemlsQsKpFo/vLkdydv02DLci6azr12txkO+Ka9hJT6mv6BkvtTBykU
+         PgEVvgh8EvewKB2VPQGjt/ZlPvOcBCP82oZsMmysoHt5j1C/Oc5CBEZSoiyvBqZrB/zm
+         /tH0rNEicyI+HgFcCyf1gsuhfm2QA6L2irPYG4s2p8P5hwgaJ2KWKAyLQcN8oCM86aml
+         MrQZwb0FRm/nz4e0PqiwXKRhPtsie5B5aOMN2RIR5XoBeSxgtG6jaChUvZKVOayP04+m
+         ZvHXH+OkxTlby7hjdC2MeELcSthyuxfJCOcof13Sx594W+LCEweNXU+QkiY9GxfCnl+M
+         Azow==
+X-Forwarded-Encrypted: i=1; AJvYcCURqDEUXNeQtFXCLZGnrp0m9uNpMPNQ0r3Rcft3M3iuY+uZsCe5AD0CwZJz6yWAhEmjOvpIUFEt3ET53F5xQCvVgqEiUwxh
+X-Gm-Message-State: AOJu0YwqTz/ImWr8NFyOcgOSLfraFgX4I5bOxOkCJ68z5kNLzZzdGIi5
+	spl603yAfUpSVbWVJAzjhadnqkqu6ttuBJDSCLnZemXd8lmVh1WM9rcALhXDLon8uzN8rZimUJO
+	LBatSc/cbiWEsbT0DlSIb7H4SefI=
+X-Google-Smtp-Source: AGHT+IFs3rvyeXkj2tvWqusUlk0Gnjrjtiy6bfyOtPXdZdDMGbtqrAaEhUtsoSoT/xZRdVNT440vMqkHDu8HrJmMptM=
+X-Received: by 2002:a2e:bc09:0:b0:2ef:23ec:9356 with SMTP id
+ 38308e7fff4ca-2f3be574b0amr101743041fa.8.1724164894866; Tue, 20 Aug 2024
+ 07:41:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -74,8 +74,8 @@ MIME-Version: 1.0
 References: <20240820033148.29662-1-sunjunchao2870@gmail.com> <CAHc6FU69hYhBS2rRyXUGAJSHpzNY+kNN9tZBcfWQbL_u5N-MvA@mail.gmail.com>
 In-Reply-To: <CAHc6FU69hYhBS2rRyXUGAJSHpzNY+kNN9tZBcfWQbL_u5N-MvA@mail.gmail.com>
 From: Julian Sun <sunjunchao2870@gmail.com>
-Date: Tue, 20 Aug 2024 22:38:15 +0800
-Message-ID: <CAHB1Nagi560YvT_9LKevFGh-yvDxDTtTd04eskQ74OgcOamAeA@mail.gmail.com>
+Date: Tue, 20 Aug 2024 22:41:22 +0800
+Message-ID: <CAHB1NagXgRMj-Rhb=86L8kaXEe8H24=Of6nrUmhMVR2fxTqYkA@mail.gmail.com>
 Subject: Re: [PATCH] gfs2: fix double destroy_workqueue error
 To: Andreas Gruenbacher <agruenba@redhat.com>
 Cc: gfs2@lists.linux.dev, 
@@ -143,15 +143,8 @@ com> wrote:
 >
 > > but here, we check if sdp->sd_delete_wq is NULL? That doesn't make sens=
 e.
-
-I'm not sure if I have missed anything important. My understanding is
-that in gfs2_fill_super(), if execution jumps to the fail_lm label,
-gfs2_gl_hash_clear() is called first, which internally calls
-destroy_workqueue(sdp->sd_glock_wq). Subsequently, the code reaches
-the fail_delete_wq label, where destroy_workqueue(sdp->sd_glock_wq) is
-called again, leading to a bug.
-If there is anything important I'm missing, please let me know.
-
+Oh... I see. Sorry for this stupid mistake. I will correct it and send
+a patch v2.
 >
 > >  fail_glock_wq:
 > >         destroy_workqueue(sdp->sd_glock_wq);
