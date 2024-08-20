@@ -1,117 +1,126 @@
-Return-Path: <stable+bounces-69710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69711-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 482D7958552
-	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 13:01:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EB249585B8
+	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 13:24:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E0201C243DD
-	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 11:01:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4FA081C24344
+	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 11:24:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 201F118DF9A;
-	Tue, 20 Aug 2024 11:01:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E14D518E04E;
+	Tue, 20 Aug 2024 11:23:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="QLOODk1E"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MfVB2p1f"
 X-Original-To: stable@vger.kernel.org
-Received: from pv50p00im-zteg10011401.me.com (pv50p00im-zteg10011401.me.com [17.58.6.41])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDBFA18E353
-	for <stable@vger.kernel.org>; Tue, 20 Aug 2024 11:01:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.6.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29B7D18E351;
+	Tue, 20 Aug 2024 11:23:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724151707; cv=none; b=iXExhPvofCpawJmjdUKy465KHIwK5gPgs2QQBE+GJhNwpqkhzqRdbOx4U+reoQkNWAxd1jbgZlbRD0R0njqejChIpmlidnN+lRorVLrwdpiu3P7HMsGzRMkm8sP/LyM79d9ipW4Fp2tqvHb4u+2bIjuVxzTAd3XNrkTLKTgVul4=
+	t=1724153006; cv=none; b=ohdS6wsZf+P//HJJFxNnOZ5TkILRB36HgZImtaLRNatNOJEaNztVJDfat5udOSEgYe2cIsE9tBjSM4nufv8hqrqZizCxdloPtq9+umUtTOXv6ATGibrcrDNcySd3zhOEAuW7n568sKsp7L6SPl0/lQdEUi1zk9khbpchkQa8iqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724151707; c=relaxed/simple;
-	bh=3BOMc/I6AUvlSUOZTCgwNCSKreLKSM1oEQRQEXAPTDM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=XZtXMGtZvQKDQv58VWRa0cVdFM49+aqXUpSdK8K0ZvO1/Gv64ylBg56HnQOZlErAI26ZlUD4shhtHKCoPTiMzvCF5jiCQKnGAko+GaoC0Wcp5Kos8FPoHrhsDw5hS8RQQP/cpgdjvbpxFTmbaQp76lxw6cmi18lV1deINJEBbvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=QLOODk1E; arc=none smtp.client-ip=17.58.6.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
-	s=1a1hai; t=1724151705;
-	bh=UqkixdU7N5QLZDvZfiyEeqXZZrKl/m9LryM3N8LoHa0=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To;
-	b=QLOODk1EGMIkHi/M4LxeZ8kNvPDI0FMVgmQBOib1tx6zGiWVA8CdIwdwkYaKBY1bo
-	 TY/7uSLEqHR4MbJMo04wvCuDDCUsFYWgPLHgn6e3aYxDWQf8hN/d7BUKBP3ssj11kx
-	 E5NZkc75sIA1HU65k3464Qq1gK/GzuLQoVELCcEnRTeYi0jBfar0P1wwUlNUntxjjg
-	 m20FpS1ATKpF7+lgzx7FA8H6k6SumZN0wNUh3oy+3RgenHbNVlU4lcK22B2rTZZlQ9
-	 iFHOMEaLfUW0qIFMm642bzY0YIwzjo+5HT75ZiNlh1PtdaRip7fONwkrT+8Sd1DPI7
-	 sUYYzWdg1yY2Q==
-Received: from [192.168.1.26] (pv50p00im-dlb-asmtp-mailmevip.me.com [17.56.9.10])
-	by pv50p00im-zteg10011401.me.com (Postfix) with ESMTPSA id 7E5E3DC02FD;
-	Tue, 20 Aug 2024 11:01:41 +0000 (UTC)
-From: Zijun Hu <zijun_hu@icloud.com>
-Date: Tue, 20 Aug 2024 19:01:27 +0800
-Subject: [PATCH v2] usb: core: sysfs: Unmerge @usb3_hardware_lpm_attr_group
- in remove_power_attributes()
+	s=arc-20240116; t=1724153006; c=relaxed/simple;
+	bh=vs4Ivr8mcleS9d+BMDNEetc09LxW39Zhw3a6BqOGr54=;
+	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=o/vwPYGQu4p7jCkusK/XHkSr1XVyk9HRQoSFoP+OdjxkRVZBrU3ciw38Aoxt9mBAyUGGgLvRJoJbEN+yshSwqWbdfxgIieIZYVhE/IGH0VETwkrLZ3UxfGod3SRVh5FxqwiL1yAfF+npUFKvzEhOJjgVgZBj19Sgx7k9A0tRXAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MfVB2p1f; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1724153005; x=1755689005;
+  h=from:date:to:cc:subject:in-reply-to:message-id:
+   references:mime-version;
+  bh=vs4Ivr8mcleS9d+BMDNEetc09LxW39Zhw3a6BqOGr54=;
+  b=MfVB2p1f1TV1upLd3BcBFhWSMDmZdieXWeOuv6JEBHxlt7qKjDIK2LbW
+   NC/hWwXOGF0K3c/Zz7b14d/XNcvbHjUAPo9RVGMaq1VV3ipMzL+VQcDka
+   P1Hyw3uz8h4KkQ/cf/d6ROwz07+XWhfKPLsBKrrIvTYrQ2Ee8BHprsY2p
+   jNdOSOjjX7jflZWx0SZjzreS2xCRIit9iqZzEbzPT6EDHrqx6g1DB1coO
+   wkNluQ+ukoy+hNwLD8rEvr1LO6joFlqzRuWcLVjyExDFfcWuat8QShCGN
+   nXNcIc7KLbbwpT7PhEKUyfxu5k7hIjzaIZWi2EF5zChMY78l+x0qEnAe0
+   g==;
+X-CSE-ConnectionGUID: 42WmbfCVR6azzFLyFMk0Zw==
+X-CSE-MsgGUID: cHtoriJEQIC0OH+ccLXp8w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11170"; a="22610067"
+X-IronPort-AV: E=Sophos;i="6.10,161,1719903600"; 
+   d="scan'208";a="22610067"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Aug 2024 04:23:24 -0700
+X-CSE-ConnectionGUID: 4IPbaCR1Sv2errOjvCyngw==
+X-CSE-MsgGUID: hKXnm7PmQoKN/hhm/ZsjQw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,161,1719903600"; 
+   d="scan'208";a="65059127"
+Received: from ijarvine-desk1.ger.corp.intel.com (HELO localhost) ([10.245.245.102])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Aug 2024 04:23:22 -0700
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Date: Tue, 20 Aug 2024 14:23:18 +0300 (EEST)
+To: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+cc: Hans de Goede <hdegoede@redhat.com>, platform-driver-x86@vger.kernel.org, 
+    LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH] platform/x86: ISST: Fix return value on last invalid
+ resource
+In-Reply-To: <20240816163626.415762-1-srinivas.pandruvada@linux.intel.com>
+Message-ID: <e525b1ee-da15-a265-4e12-33c68e01b78f@linux.intel.com>
+References: <20240816163626.415762-1-srinivas.pandruvada@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240820-sysfs_fix-v2-1-a9441487077e@quicinc.com>
-X-B4-Tracking: v=1; b=H4sIAIZ3xGYC/23Myw7CIBCF4VdpZi0GJnjBle9hGkMptbOQKqPEp
- uHdHbt2+Z+cfAtwzBQZTs0CORZimpIEbhoIo0+3qKiXBtRo9dFYxTMPfB3ooxD1vo+u0+bgQP6
- PHGVerUsrPRK/pjyvdDG/9Z9SjDJCofXoPO5cd36+KVAK2zDdoa21fgFpzvKNpAAAAA==
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Kevin Strasser <kevin.strasser@linux.intel.com>
-Cc: Zijun Hu <zijun_hu@icloud.com>, linux-usb@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Zijun Hu <quic_zijuhu@quicinc.com>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.14.1
-X-Proofpoint-ORIG-GUID: 6ZI_q_dh1mFYLwigoPRy9l_i9NesIjNz
-X-Proofpoint-GUID: 6ZI_q_dh1mFYLwigoPRy9l_i9NesIjNz
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-08-20_09,2024-08-19_03,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 bulkscore=0 spamscore=0
- clxscore=1011 mlxlogscore=991 phishscore=0 suspectscore=0 malwarescore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2308100000 definitions=main-2408200082
-X-Apple-Remote-Links: v=1;h=KCk=;charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+On Fri, 16 Aug 2024, Srinivas Pandruvada wrote:
 
-Device attribute group @usb3_hardware_lpm_attr_group is merged by
-add_power_attributes(), but it is not unmerged explicitly, fixed by
-unmerging it in remove_power_attributes().
+> When only the last resource is invalid, tpmi_sst_dev_add() is returing
+> error even if there are other valid resources before. This function
+> should return error when there are no valid resources.
+> 
+> Here tpmi_sst_dev_add() is returning "ret" variable. But this "ret"
+> variable contains the failure status of last call to sst_main(), which
+> failed for the invalid resource. But there may be other valid resources
+> before the last entry.
+> 
+> To address this, do not update "ret" variable for sst_main() return
+> status.
+>
+> Fixes: 9d1d36268f3d ("platform/x86: ISST: Support partitioned systems")
+> Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+> Cc: <stable@vger.kernel.org> # 6.10+
 
-Fixes: 655fe4effe0f ("usbcore: add sysfs support to xHCI usb3 hardware LPM")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
----
-Changes in v2:
-- Add stable tag
-- Link to v1: https://lore.kernel.org/r/20240814-sysfs_fix-v1-1-2224a29a259b@quicinc.com
----
- drivers/usb/core/sysfs.c | 1 +
- 1 file changed, 1 insertion(+)
+Thanks for the patch. Applied to review-ilpo.
 
-diff --git a/drivers/usb/core/sysfs.c b/drivers/usb/core/sysfs.c
-index d83231d6736a..61b6d978892c 100644
---- a/drivers/usb/core/sysfs.c
-+++ b/drivers/usb/core/sysfs.c
-@@ -670,6 +670,7 @@ static int add_power_attributes(struct device *dev)
- 
- static void remove_power_attributes(struct device *dev)
- {
-+	sysfs_unmerge_group(&dev->kobj, &usb3_hardware_lpm_attr_group);
- 	sysfs_unmerge_group(&dev->kobj, &usb2_hardware_lpm_attr_group);
- 	sysfs_unmerge_group(&dev->kobj, &power_attr_group);
- }
+While applying, I added the answer to the obvious question: why no new 
+checks are needed for the no valid resources case (essentially, noting the 
+existing !inst check).
 
----
-base-commit: ca7df2c7bb5f83fe46aa9ce998b7352c6b28f3a1
-change-id: 20240814-sysfs_fix-2206de9b0179
-
-Best regards,
 -- 
-Zijun Hu <quic_zijuhu@quicinc.com>
+ i.
+
+> ---
+>  drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c b/drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c
+> index 7fa360073f6e..404582307109 100644
+> --- a/drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c
+> +++ b/drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c
+> @@ -1549,8 +1549,7 @@ int tpmi_sst_dev_add(struct auxiliary_device *auxdev)
+>  			goto unlock_free;
+>  		}
+>  
+> -		ret = sst_main(auxdev, &pd_info[i]);
+> -		if (ret) {
+> +		if (sst_main(auxdev, &pd_info[i])) {
+>  			/*
+>  			 * This entry is not valid, hardware can partially
+>  			 * populate dies. In this case MMIO will have 0xFFs.
+> 
 
 
