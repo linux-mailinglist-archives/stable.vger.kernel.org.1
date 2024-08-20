@@ -1,109 +1,97 @@
-Return-Path: <stable+bounces-69750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69751-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 443F2958EA2
-	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 21:34:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 690D3958ECF
+	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 21:50:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AAE1FB2238E
-	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 19:34:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B9A5EB2258D
+	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 19:50:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A67914B94B;
-	Tue, 20 Aug 2024 19:34:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0526F1917E3;
+	Tue, 20 Aug 2024 19:49:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ufF3CqrK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gbVVZmTG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D55428E8;
-	Tue, 20 Aug 2024 19:34:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFA8C15FA93;
+	Tue, 20 Aug 2024 19:49:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724182457; cv=none; b=aOsi7zlmlLVds2a9mNZwePRKKEExNH9+ww53HgX8lFoRev2r/MrIIhX/sAuxwbYHhY0xa2bpHgMqJO3kLVTqeHfnBbzHotmPWhrFuHMAt3oRFwXbCoCsg9mYpbhex+kMajv/W1urrTeN85akZyiyY8Gk/u1xmQ+x5DCnRDyS8hU=
+	t=1724183374; cv=none; b=N4J9uwNIDIJQhuqKJbG/+4t7xB/GRqTF2ZMXdAgygMaQevDP0dcKwHdvKoYyNpq+0TJGZqW+L09Aca0l/V76ZJdEjZIaGZ9xyOF7IqmBINcHxhrMoRt/tWXwMTiIjJdIXnwh8RcLw4OvjguGhbw2erH9jtq1pWQHUrxjs/GYS3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724182457; c=relaxed/simple;
-	bh=ztkY1HcRzYZPhdNOGcVyvUZWwCzGOeoC3a5BlTiOty8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HmJx1TVYiR6aOG9vI+VhuNpdM14NgMY76zK50OQzmZF7ncIkNVwcR/QLbEuiH3w06BqXaLkdrBxawHGn1/c13ekhDM54WtNEkO2l8GtH7pse9W77Y9ni7HrIztlAVxlIDc963sP7u128F+orDZ+NYLDROaxsNafBSS5tc25iGlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ufF3CqrK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E045C4AF15;
-	Tue, 20 Aug 2024 19:34:16 +0000 (UTC)
+	s=arc-20240116; t=1724183374; c=relaxed/simple;
+	bh=wkf9gsj1XSad7V3Dq8I4UyQtzWEYMfLIFCxAydmaCzw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=H3HPZHagXn4E7Uf5GFqt1iPlNoK4iumusCV4R8iqKOqxPrmRkk6/o3MYeW+fxl37m/7YM8YF3PnRqbIDRiiQ+3Hr8Xv3t+JjeBa6ifL4g2Gyektbu2/elAPlUyZBY0eu5oF1gAFhQ8AC+/N33rHMk38RuosRzc/dMIAGWUjE4f8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gbVVZmTG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 446B3C4AF09;
+	Tue, 20 Aug 2024 19:49:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724182456;
-	bh=ztkY1HcRzYZPhdNOGcVyvUZWwCzGOeoC3a5BlTiOty8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ufF3CqrKmgREyHzpn6s40n4gwbUKiBn3qYB54yCPjq5LYv4aLjVMy1ChiZalXul//
-	 jv1ahPCJhMGX6eEsoKZHeIGw27bmCwNDvJB1muHRgl0C3BDWaEYfp0UFmdfT8GgrcT
-	 GF8NBVLrnkXe60xwRXdae6uljlJd2lLFqG7LJYVphrzXxhyswKygIHWVaywdiBq4Df
-	 w3B7Hgn/DYMhTwhsgyUmA47XYlJhGhTSUqTjAmJCxgOqFMa3S8mI5zKIKfzLrnwbi5
-	 xCPAOofu9jst2h2B/nZ2jgeM6KSSkX73aNChZHh8Ly2k/F6s7jR7zQ95NMfwdRRK6E
-	 ldb9rbpIIyf6Q==
-Date: Tue, 20 Aug 2024 12:34:14 -0700
-From: Eric Biggers <ebiggers@kernel.org>
-To: Christian Brauner <brauner@kernel.org>
-Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Oleg Nesterov <oleg@redhat.com>, Aleksa Sarai <cyphar@cyphar.com>,
-	Tycho Andersen <tandersen@netflix.com>,
-	Daan De Meyer <daan.j.demeyer@gmail.com>, Tejun Heo <tj@kernel.org>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] pidfd: prevent creation of pidfds for kthreads
-Message-ID: <20240820193414.GA1178@sol.localdomain>
-References: <20240731-gleis-mehreinnahmen-6bbadd128383@brauner>
- <20240818035818.GA1929@sol.localdomain>
- <20240819-staudamm-rederei-cb7092f54e76@brauner>
+	s=k20201202; t=1724183374;
+	bh=wkf9gsj1XSad7V3Dq8I4UyQtzWEYMfLIFCxAydmaCzw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=gbVVZmTG/SRnVY6iMRmOJQvuRI/8KIUJ9pBlKlB4oJy9xuRxyKvxK9KDnwJrJuqS4
+	 nHj4l6KqMEwTOgrXd6qbK9glhJnqEYvVTHkujvxDfuESIkstmV8DUxx1Xt8giD9WVy
+	 x03oWr11ujcEfjwoU8BlG4+aYQlbrCOlvISgEGe4t5bTlZ9AlJiILtIpca8J+B8ZOv
+	 1V2tnVWcF/XWAGxIirrrWFVkcCeXvvZIiWasaYMG+uPxq3VqUEsnwAw+QmLUqxrO4s
+	 0pQRSkmPdoV7BYunY5ewYZnjKKSCROZ3DERwwDXCgJV5PKXaAQkbY++BWHdSOxFs3M
+	 Ewi76G9OuiKTw==
+Received: by mail-oa1-f53.google.com with SMTP id 586e51a60fabf-270420e231aso2049316fac.2;
+        Tue, 20 Aug 2024 12:49:33 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCULeQCeYIgKQx8GdbvFSgywG3gCt156yibpWy09KcCXL9pcqnFDlGSSyid8UoUKQ+vFFdzNrkiejh8VrIA=@vger.kernel.org, AJvYcCUjW3FA80bA0ySYpRI07phruKS0ehqOtFsB+esAtzMSS84PYcaXk7Vp2OIliPLwmpZhwJ7fHWuk@vger.kernel.org, AJvYcCWo/KXj7iL72AD9dRzxy5s7Jo0jC4AgnsQ1uTw/wEWSK3IyVkUtCeUryFV5DqMc2IQO5/wGMs76yCo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw4p1XAdfVy958I1n+n5rKjxw811PBYUv9EtDqK6H6/XZ4agdLn
+	kRMFlz+1TR3/4Ld7tW5HNox3Dqitjw5GOJ+wOHxNS29ebRE7qYUvmff6JRbKr/alaeXIMPvc5Y4
+	V1FydHBw9c4XUTk8BTnCKb83+cw4=
+X-Google-Smtp-Source: AGHT+IEROyYPyyUToSOegMz5cgcnQfC+ZGutYEi8+81lPeRqkPLiLkJ6XqDwy11TysehDcz1PmHz7jBrDEzmfk2nO1I=
+X-Received: by 2002:a05:6870:96ab:b0:270:4a9:c369 with SMTP id
+ 586e51a60fabf-2701c349c01mr18298140fac.7.1724183372607; Tue, 20 Aug 2024
+ 12:49:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240819-staudamm-rederei-cb7092f54e76@brauner>
+References: <20240820094023.61155-1-krzysztof.kozlowski@linaro.org> <CAAhSdy3S_QTBzCNtj8kKDpzxtoeyKWvGLtjgSTViieWimpP-JA@mail.gmail.com>
+In-Reply-To: <CAAhSdy3S_QTBzCNtj8kKDpzxtoeyKWvGLtjgSTViieWimpP-JA@mail.gmail.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Tue, 20 Aug 2024 21:49:21 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0i7kweDVUGw103kq7kPOoh+9vJMU_8xugHA_hqqkRdaNg@mail.gmail.com>
+Message-ID: <CAJZ5v0i7kweDVUGw103kq7kPOoh+9vJMU_8xugHA_hqqkRdaNg@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] cpuidle: riscv-sbi: Use scoped device node
+ handling to fix missing of_node_put
+To: Anup Patel <anup@brainfault.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Daniel Lezcano <daniel.lezcano@linaro.org>, Paul Walmsley <paul.walmsley@sifive.com>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Atish Patra <atishp@rivosinc.com>, linux-pm@vger.kernel.org, 
+	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Aug 19, 2024 at 10:41:15AM +0200, Christian Brauner wrote:
-> On Sat, Aug 17, 2024 at 08:58:18PM GMT, Eric Biggers wrote:
-> > Hi Christian,
-> > 
-> > On Wed, Jul 31, 2024 at 12:01:12PM +0200, Christian Brauner wrote:
-> > > It's currently possible to create pidfds for kthreads but it is unclear
-> > > what that is supposed to mean. Until we have use-cases for it and we
-> > > figured out what behavior we want block the creation of pidfds for
-> > > kthreads.
-> > > 
-> > > Fixes: 32fcb426ec00 ("pid: add pidfd_open()")
-> > > Cc: stable@vger.kernel.org
-> > > Signed-off-by: Christian Brauner <brauner@kernel.org>
-> > > ---
-> > >  kernel/fork.c | 25 ++++++++++++++++++++++---
-> > >  1 file changed, 22 insertions(+), 3 deletions(-)
-> > 
-> > Unfortunately this commit broke systemd-shutdown's ability to kill processes,
-> > which makes some filesystems no longer get unmounted at shutdown.
-> > 
-> > It looks like systemd-shutdown relies on being able to create a pidfd for any
-> > process listed in /proc (even a kthread), and if it gets EINVAL it treats it a
-> > fatal error and stops looking for more processes...
-> 
-> Thanks for the report!
-> I talked to Daan De Meyer who made that change and he said that this
-> must a systemd version that hasn't gotten his fixes yet. In any case, if
-> this causes regression then I'll revert it right now. See the appended
-> revert.
+On Tue, Aug 20, 2024 at 12:57=E2=80=AFPM Anup Patel <anup@brainfault.org> w=
+rote:
+>
+> On Tue, Aug 20, 2024 at 3:10=E2=80=AFPM Krzysztof Kozlowski
+> <krzysztof.kozlowski@linaro.org> wrote:
+> >
+> > Two return statements in sbi_cpuidle_dt_init_states() did not drop the
+> > OF node reference count.  Solve the issue and simplify entire error
+> > handling with scoped/cleanup.h.
+> >
+> > Fixes: 6abf32f1d9c5 ("cpuidle: Add RISC-V SBI CPU idle driver")
+> > Cc: <stable@vger.kernel.org>
+> > Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+>
+> LGTM.
+>
+> Reviewed-by: Anup Patel <anup@brainfault.org>
 
-Thanks for queueing up a revert.
-
-This was on systemd 256.4 which was released less than a month ago.
-
-I'm not sure what systemd fix you are talking about.  Looking at killall() in
-src/shared/killall.c on the latest "main" branch of systemd, it calls
-proc_dir_read_pidref() => pidref_set_pid() => pidfd_open(), and EINVAL gets
-passed back up to killall() and treated as a fatal error.  ignore_proc() skips
-kernel threads but is executed too late.  I didn't test it, so I could be wrong,
-but based on the code it does not appear to be fixed.
-
-- Erici
+Applied along with the [2/2] as 6.12 material, thanks!
 
