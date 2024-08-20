@@ -1,49 +1,82 @@
-Return-Path: <stable+bounces-69683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69684-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C49A1958061
-	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 09:54:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A9B7958075
+	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 10:05:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B8361F2204B
-	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 07:54:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3AE51F22035
+	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 08:05:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29A29189F5C;
-	Tue, 20 Aug 2024 07:54:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FC8B18E345;
+	Tue, 20 Aug 2024 08:04:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O31bAxDS"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B842189BAF;
-	Tue, 20 Aug 2024 07:54:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFCE11C6A1;
+	Tue, 20 Aug 2024 08:04:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724140476; cv=none; b=ApuPa/O2Y1zM7D9YkQ8WN+icwpke2xEADuP2GVGWOrxjHCOY6AYSkiu+vvPDYWOOM9PIl1WfBuQlGDSSLq2fcExuDYEMbqKV56NNlFDwPx+X9KBIkAQAtwrOpCsjbbisejrA+58q7ymjggGmlqbYoGHPVMwUpBYkxq41nu6F+xM=
+	t=1724141097; cv=none; b=AfZTjlfuDn716BDEZjNGtcM6RkTPcOPwc3qvKqWXjqpL+nvUAWsbv4Capm5bOr1asmeeSZOOC4PO5PSvH8aReKiJwBPeGoigebITkkNwO4oFumRRGzd9lhOwnX4Ic52aCY+IqllE/w6Hap9PId3bCwQa8qQ6JGkgfyUlZry1594=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724140476; c=relaxed/simple;
-	bh=+KpdcvUTND5J5Va9g0E1ckgOjItSX9mNrRy01W0IVqk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=pNAjOYUi2dLZK2KFnnf8FwZbkZx6ngNt2/211rg113sFzUNXoR6yhPPusk+OFn4ZV9ZlCxmQ6dJV8AXOWfYnmB5gKyVMFzhv7Y+bNfS3B01r/9GUFs0Rjz9V0aUMmHb2FX3QB6yZGP846vE50I4pl1ao8pQ6Bhds6BELrPomTm0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
-	by APP-01 (Coremail) with SMTP id qwCowABXXByaS8RmkLiHCA--.57264S2;
-	Tue, 20 Aug 2024 15:54:10 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: maz@kernel.org,
-	tglx@linutronix.de,
-	Suravee.Suthikulpanit@amd.com,
-	akpm@linux-foundation.org
-Cc: linux-arm-kernel@lists.infradead.org,
+	s=arc-20240116; t=1724141097; c=relaxed/simple;
+	bh=nLDE8aqv7ibiDI+AnLjAU/rDCYSS1DmP41EiC6RFcmc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AhvgR1RuDMTM9jDm/xKyXuXL+oCTRgqVbXfHAex+n29xEmRsYafXV+EuPWQPVGUDNYnQezMLKQTAwoJJ9C3OKLma6XN/jxXDhJYHhRajLl0y3KTynCWBLeWmR39WArT1GKOEk79zGabPdcm19DpjGM/cpfnU9x4cXDN/g7vI0Cg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O31bAxDS; arc=none smtp.client-ip=209.85.218.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-a80eab3945eso524042866b.1;
+        Tue, 20 Aug 2024 01:04:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1724141094; x=1724745894; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=bWFgus7bmtmFt8A1IpRat5xjHQCJCzf5TqRiBZFH+5c=;
+        b=O31bAxDSg2V3F+VjVa6T98/wsGh4t66rmr4J6wgco8e/PfwMlJnvbDmPExfqhcuPhc
+         SvKQ4h7WDrEICNVCb0FD4cG3lQhAoPSJ3Gjtr+DUtz69Zp7vu4uixG6+zXMaxKFxJIfc
+         mWObX4jdlTDGJpPtBXl6bpT5WkRoOQZbLX9Um34rKQMNmRrP2HhWju5bA1cJua3KUhDV
+         xKdGz/IopTKXbxWZstUWbYhHO+QirgdnRfITqBqofuMFIy9xVjH+agKzRz2L3u/1VJoP
+         Az0IL1cbLbA3HFX3NMr/MxU4mpubfVR478I/MGU4cB0R7ja+/f0Z2GRHTZJp0DKyjnvN
+         HY7A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724141094; x=1724745894;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=bWFgus7bmtmFt8A1IpRat5xjHQCJCzf5TqRiBZFH+5c=;
+        b=STA0jPsMFB52Ey7g30xiZVigbwGG/QtcjSVB303+Rp98UPIal5QIUVC2oYxZsA8kfi
+         uziWzN26cuVZ9efr1pXUvS7lRvwIOD4EpZf21CUvTMgQhGBNMb5Taqas4ejRzE+nlUFH
+         0UnMQSIWSg5vSx7HZMW51YFBlRKSgQcoTojlImrm4wzAGUdDbYF1fh4dUR5TVEkjLzJR
+         txwcAoLbcYbyGDN2uskyh9Hu/FLjAPxIHu6IgePUKPgbTBQ7iCvlJjhwe6g3SpXQYYAA
+         L2skGCZcFzQ2VOda4sDQb6IYCvTACqGndL/gNSNzXTGWpYzlITH0vSqnr4BhD7N3rP0y
+         qlIQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUJIxuR3ZbD2J0r/gJJIZ1bKYbA3krCYKioxheSBDgWLRhvDvBkarwc1k6eOx2gNybkeuNQ4y8p@vger.kernel.org, AJvYcCVmeScLfa6JCInfa64J07OebxGy+6pcJQjaC6LpCeJNSeRjRZaK1PzpmU+6vj9gZiTFHMfwnjqluazS8VOM@vger.kernel.org, AJvYcCWKdWmSFYOn7sBFJ9ujC89hEzuq5Ir35RqYmytQVbzxRVJCl6v2JXas8ziCoDeQhwADYjT3KQ63SbAQ0Mn6@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx9ITD4bu0D54GmXS0dilZVsppRogDza15B8e1W+Ep0sWBU7o69
+	SzoADZ8ohaoa6CMdlDZX9eIkzRQSdjMrbJ4Q8ITOuEfikl8eMaTqqXl63g==
+X-Google-Smtp-Source: AGHT+IEylAwKGfhOSRiPpbSpW/mefft1BLen+BVub0FwVY6eJPQ1OxSK1kbb37LXb0EZJFVLDfx10Q==
+X-Received: by 2002:a17:907:d581:b0:a7a:8cb9:7490 with SMTP id a640c23a62f3a-a8392a15b30mr943309266b.47.1724141093178;
+        Tue, 20 Aug 2024 01:04:53 -0700 (PDT)
+Received: from labdl-itc-sw06.tmt.telital.com (host-217-57-98-66.business.telecomitalia.it. [217.57.98.66])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a8383948d19sm728431066b.186.2024.08.20.01.04.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Aug 2024 01:04:52 -0700 (PDT)
+From: Fabio Porcedda <fabio.porcedda@gmail.com>
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Daniele Palmas <dnlplm@gmail.com>
+Cc: mhi@lists.linux.dev,
+	linux-arm-msm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Ma Ke <make24@iscas.ac.cn>,
+	Fabio Porcedda <fabio.porcedda@gmail.com>,
 	stable@vger.kernel.org
-Subject: [PATCH v2] irqchip/gic-v2m: Fix refcount leak in gicv2m_of_init
-Date: Tue, 20 Aug 2024 15:54:01 +0800
-Message-Id: <20240820075401.1206522-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+Subject: [PATCH] bus: mhi: host: pci_generic: Fix the name for the Telit FE990A
+Date: Tue, 20 Aug 2024 10:04:39 +0200
+Message-ID: <20240820080439.837666-1-fabio.porcedda@gmail.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -51,59 +84,50 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowABXXByaS8RmkLiHCA--.57264S2
-X-Coremail-Antispam: 1UD129KBjvdXoW7XrWUWF18tF4UWF43uF4kJFb_yoWDGrb_Gr
-	y8XF9xGFy0kr48Aws7Cw13uryUZr4kWF1I9r40yF93A348Z34xArnrZa4rJ34UuFs0vr1x
-	CFs0yr1Skr129jkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbVAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
-	Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AKxVWxJr
-	0_GcWlnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xv
-	F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r
-	4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I
-	648v4I1lc7CjxVAaw2AFwI0_JF0_Jw1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7
-	v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF
-	1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIx
-	AIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI
-	42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxh
-	VjvjDU0xZFpf9x0JUvg4fUUUUU=
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-Add the missing of_node_put() to release the refcount incremented
-by of_find_matching_node().
+Add a mhi_pci_dev_info struct specific for the Telit FE990A modem in
+order to use the correct product name.
 
-Cc: stable@vger.kernel.org
-Fixes: 4266ab1a8ff5 ("irqchip/gic-v2m: Refactor to prepare for ACPI support")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Cc: stable@vger.kernel.org # 6.1+
+Fixes: 0724869ede9c ("bus: mhi: host: pci_generic: add support for Telit FE990 modem")
+Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
 ---
-Changes in v2:
-- modified the patch according to suggestions.
----
- drivers/irqchip/irq-gic-v2m.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/bus/mhi/host/pci_generic.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/irqchip/irq-gic-v2m.c b/drivers/irqchip/irq-gic-v2m.c
-index 51af63c046ed..d5988012eb40 100644
---- a/drivers/irqchip/irq-gic-v2m.c
-+++ b/drivers/irqchip/irq-gic-v2m.c
-@@ -407,12 +407,12 @@ static int __init gicv2m_of_init(struct fwnode_handle *parent_handle,
+diff --git a/drivers/bus/mhi/host/pci_generic.c b/drivers/bus/mhi/host/pci_generic.c
+index 14a11880bcea..fb701c67f763 100644
+--- a/drivers/bus/mhi/host/pci_generic.c
++++ b/drivers/bus/mhi/host/pci_generic.c
+@@ -680,6 +680,15 @@ static const struct mhi_pci_dev_info mhi_telit_fn990_info = {
+ 	.mru_default = 32768,
+ };
  
- 		ret = gicv2m_init_one(&child->fwnode, spi_start, nr_spis,
- 				      &res, 0);
--		if (ret) {
--			of_node_put(child);
-+		if (ret)
- 			break;
--		}
- 	}
- 
-+	if (ret && child)
-+		of_put_node(child);
- 	if (!ret)
- 		ret = gicv2m_allocate_domains(parent);
- 	if (ret)
++static const struct mhi_pci_dev_info mhi_telit_fe990a_info = {
++	.name = "telit-fe990a",
++	.config = &modem_telit_fn990_config,
++	.bar_num = MHI_PCI_DEFAULT_BAR_NUM,
++	.dma_data_width = 32,
++	.sideband_wake = false,
++	.mru_default = 32768,
++};
++
+ /* Keep the list sorted based on the PID. New VID should be added as the last entry */
+ static const struct pci_device_id mhi_pci_id_table[] = {
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_QCOM, 0x0304),
+@@ -697,9 +706,9 @@ static const struct pci_device_id mhi_pci_id_table[] = {
+ 	/* Telit FN990 */
+ 	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_QCOM, 0x0308, 0x1c5d, 0x2010),
+ 		.driver_data = (kernel_ulong_t) &mhi_telit_fn990_info },
+-	/* Telit FE990 */
++	/* Telit FE990A */
+ 	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_QCOM, 0x0308, 0x1c5d, 0x2015),
+-		.driver_data = (kernel_ulong_t) &mhi_telit_fn990_info },
++		.driver_data = (kernel_ulong_t) &mhi_telit_fe990a_info },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_QCOM, 0x0308),
+ 		.driver_data = (kernel_ulong_t) &mhi_qcom_sdx65_info },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_QCOM, 0x0309),
 -- 
-2.25.1
+2.46.0
 
 
