@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-69677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69678-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BD51957F04
-	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 09:07:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BF58957F27
+	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 09:13:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E2621C21408
-	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 07:07:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F2A81C23A50
+	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 07:12:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8D451714CA;
-	Tue, 20 Aug 2024 07:07:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D06DE16D328;
+	Tue, 20 Aug 2024 07:12:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qYMm+1BR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Omx72tnu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F9FE4084E;
-	Tue, 20 Aug 2024 07:07:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78A88152165;
+	Tue, 20 Aug 2024 07:12:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724137632; cv=none; b=OxIj1oSCgejvw6TDQZnritcNyez8xaJvYzPujCdKqmwEL7tlcwzv6jGuxyatCelQEXfGaqqqJa4NjUL5J+ZoxkeG/bs1tlkBLupJo5j/sIJMpP5jOc6iGdpWq162g6nWJqcC7EsoSUkTt82JcEsRz0ya8KZr+yLX+eWh3pmAo4U=
+	t=1724137971; cv=none; b=GkUtsPDvF2tyTd/+uZO/wAHjorB+PUszO0H70hMlDbUCFYBmoyDinQml2Nbb9KqQ5pi11yFlxLV8Am+wiaaKM10Exlnci6JGJgF9btmLunp66AAduGuJTwkfxtzS74ht2MbSO586yqztNlEvqIOc9TQxsg4GhxoH/J3kGf1lyZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724137632; c=relaxed/simple;
-	bh=Vh6MSMRStnW33q5+dD+Us/r1QXXTp4gSRyZS7k149cY=;
+	s=arc-20240116; t=1724137971; c=relaxed/simple;
+	bh=05juWIN/pOOlKh+0AWNVcA4j6ejO1nrcxfu3RKQyvM0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Pem/ESC78y4YXh0OVByHp8GCSXI8iG5Do/7+dZwnMKI3y3zAgyRx1+gqiJccCHC40c4blcrOUNdvD0Uqk5/ID+x8BRsswtlnHNS0a1vJ1vsqEgTorUYJGCuZeBDH+UdVTWSklZL3IytBNRq7LhjqoDTgkxNU4ZBJSmlkKEdBhZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qYMm+1BR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7C13C4AF10;
-	Tue, 20 Aug 2024 07:07:11 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=J6UUuGbYQc8YgvnP9Av65X+IGcE0usod0Kfz1nB1+5Pqw4hDet8FizCUR2tgydDmAIpeyorYet0qv2RPhMv/cP7mXqAueM76wA33qTor4HCdgIk/A1ZR6ZzPFPSFLFjvHwHJcqlx5TwXR0YNyGkL5VAlXWaPDxTIVTc/3vVDS7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Omx72tnu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03398C4AF0B;
+	Tue, 20 Aug 2024 07:12:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724137632;
-	bh=Vh6MSMRStnW33q5+dD+Us/r1QXXTp4gSRyZS7k149cY=;
+	s=k20201202; t=1724137971;
+	bh=05juWIN/pOOlKh+0AWNVcA4j6ejO1nrcxfu3RKQyvM0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qYMm+1BREzRTVXtFN3XKXPxAN7VMeYrYc5xpmGBl8X2sK0zrMmER8Pq60YpDRzfGr
-	 Isk7MujL2y125VuDHL+yuJ00ztDg+Ry/zGf+F5U49lMH5zRgATfD1WEfydJATk+K7b
-	 tm4Kd+bHtAtV2RpU0TEo4xhMo4kvLBTSTMKC3sC62zQIBmPZpisewfZ+NLYWyL0Gpi
-	 GUSbcvoz1x1t+spqKidtx0+cNkRFXnlCc5l2tLAklbmAAiAbEwHGgk1N4CH3/Jujs8
-	 SwYgVyuK5SrIeGYG7G6SIAbSm9BroZ9WbzrLO1rWVMwKVhPXjxxKIOtjLbtm9ve2XV
-	 vcu0rVjQfGCTA==
+	b=Omx72tnu8bxN1JJKJ5zMkVpZLpyJrh/QDA+GUAMptshVynAl51/WGblFvcJC6IIUM
+	 vYa2RbvPHtthhJ78bTlcLNDlHg/rnNxL0orDQiPXyB7kqzGWsmNXQq3tc/5rVUXADp
+	 rOVEC+bBabF0VgivLprOVVPcPmDAsuecFZ/anURv4TLmKDioVPnkJIsXW/2Y9m3l7q
+	 GicxakTZod9ArkV13vuxFf+jYFSzLFH1zN1btw3KcXX9AEtgQ5iLD1qBrHQ4joTi36
+	 7OWebZCB2rMNNRDJQjoqNbB8S4R6h/FvOaoT5W/teIZxsD7S61Vjy9ksoWge4HzhqN
+	 DoPIEPZZvSJgQ==
 Received: from johan by xi.lan with local (Exim 4.97.1)
 	(envelope-from <johan@kernel.org>)
-	id 1sgIxR-000000002iP-2RXK;
-	Tue, 20 Aug 2024 09:07:10 +0200
-Date: Tue, 20 Aug 2024 09:07:09 +0200
+	id 1sgJ2v-000000003f5-1Mye;
+	Tue, 20 Aug 2024 09:12:49 +0200
+Date: Tue, 20 Aug 2024 09:12:49 +0200
 From: Johan Hovold <johan@kernel.org>
 To: Bjorn Andersson <quic_bjorande@quicinc.com>
 Cc: Sebastian Reichel <sre@kernel.org>,
@@ -61,11 +61,9 @@ Cc: Sebastian Reichel <sre@kernel.org>,
 	Amit Pundir <amit.pundir@linaro.org>, linux-arm-msm@vger.kernel.org,
 	linux-pm@vger.kernel.org, linux-kernel@vger.kernel.org,
 	linux-usb@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2 3/3] soc: qcom: pmic_glink: Actually communicate with
- remote goes down
-Message-ID: <ZsRAnWgsoSHmrFE5@hovoldconsulting.com>
+Subject: Re: [PATCH v2 0/3] soc: qcom: pmic_glink: v6.11-rc bug fixes
+Message-ID: <ZsRB8fk1_P7XPtQS@hovoldconsulting.com>
 References: <20240819-pmic-glink-v6-11-races-v2-0-88fe3ab1f0e2@quicinc.com>
- <20240819-pmic-glink-v6-11-races-v2-3-88fe3ab1f0e2@quicinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -74,37 +72,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240819-pmic-glink-v6-11-races-v2-3-88fe3ab1f0e2@quicinc.com>
+In-Reply-To: <20240819-pmic-glink-v6-11-races-v2-0-88fe3ab1f0e2@quicinc.com>
 
-On Mon, Aug 19, 2024 at 01:07:47PM -0700, Bjorn Andersson wrote:
-> When the pmic_glink state is UP and we either receive a protection-
-> domain (PD) notification indicating that the PD is going down, or that
-> the whole remoteproc is going down, it's expected that the pmic_glink
-> client instances are notified that their function has gone DOWN.
+On Mon, Aug 19, 2024 at 01:07:44PM -0700, Bjorn Andersson wrote:
+> Amit and Johan both reported a NULL pointer dereference in the
+> pmic_glink client code during initialization, and Stephen Boyd pointed
+> out the problem (race condition).
 > 
-> This is not what the code does, which results in the client state either
-> not updating, or being wrong in many cases. So let's fix the conditions.
+> While investigating, and writing the fix, I noticed that
+> ucsi_unregister() is called in atomic context but tries to sleep, and I
+> also noticed that the condition for when to inform the pmic_glink client
+> drivers when the remote has gone down is just wrong.
+> 
+> So, let's fix all three.
 
-> @@ -191,7 +191,7 @@ static void pmic_glink_state_notify_clients(struct pmic_glink *pg)
->  		if (pg->pdr_state == SERVREG_SERVICE_STATE_UP && pg->ept)
->  			new_state = SERVREG_SERVICE_STATE_UP;
->  	} else {
-> -		if (pg->pdr_state == SERVREG_SERVICE_STATE_UP && pg->ept)
-> +		if (pg->pdr_state == SERVREG_SERVICE_STATE_DOWN || !pg->ept)
->  			new_state = SERVREG_SERVICE_STATE_DOWN;
->  	}
+> Changes in v2:
+> - Refer to the correct commit in the ucsi_unregister() patch.
+> - Updated wording in the same commit message about the new error message
+>   in the log.
+> - Changed the data type of the introduced state variables, opted to go
+>   for a bool as we only represent two states (and I would like to
+>   further clean this up going forward)
+> - Initialized the spinlock
+> - Link to v1: https://lore.kernel.org/r/20240818-pmic-glink-v6-11-races-v1-0-f87c577e0bc9@quicinc.com
+> 
+> ---
+> Bjorn Andersson (3):
+>       soc: qcom: pmic_glink: Fix race during initialization
+>       usb: typec: ucsi: Move unregister out of atomic section
+>       soc: qcom: pmic_glink: Actually communicate with remote goes down
 
-I guess you could drop the outer conditional
-
-	if (pg->client_state != SERVREG_SERVICE_STATE_UP) {
-
-	} else {
-
-	}
-
-here to make this a bit more readable, but that's for a separate patch.
-
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-
-Johan
+Tested-by: Johan Hovold <johan+linaro@kernel.org>
 
