@@ -1,146 +1,109 @@
-Return-Path: <stable+bounces-69749-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69750-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F37B958E98
-	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 21:24:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 443F2958EA2
+	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 21:34:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D24BB1C21FF5
-	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 19:24:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AAE1FB2238E
+	for <lists+stable@lfdr.de>; Tue, 20 Aug 2024 19:34:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EF8815B57B;
-	Tue, 20 Aug 2024 19:24:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A67914B94B;
+	Tue, 20 Aug 2024 19:34:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WPwP4lr0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ufF3CqrK"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A46861586D0;
-	Tue, 20 Aug 2024 19:24:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D55428E8;
+	Tue, 20 Aug 2024 19:34:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724181879; cv=none; b=UAX251At3Emuler2C112rp02FjgPG+9LYRmgiE0+CgTi90he3wa719L/BvMMeg2sCXdi1Zm+8K/DC5+s5EwVbnD4d0WLWefhiOIV0mcC1qHiVlCXljOo+6K8Yi3sUkLXFrvQ6EE2m9NZfOq0nFR/P7hnKx9w7KI3S5k14bfItNY=
+	t=1724182457; cv=none; b=aOsi7zlmlLVds2a9mNZwePRKKEExNH9+ww53HgX8lFoRev2r/MrIIhX/sAuxwbYHhY0xa2bpHgMqJO3kLVTqeHfnBbzHotmPWhrFuHMAt3oRFwXbCoCsg9mYpbhex+kMajv/W1urrTeN85akZyiyY8Gk/u1xmQ+x5DCnRDyS8hU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724181879; c=relaxed/simple;
-	bh=4bfIMgpJwUN9el8i9XHzhs2svCvajb2m8PRxmIeFH8o=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=VkYg7M7krqpwySC5D4vLAV9dWv+BNLOQH3QdUpeuOJxMiOXyh1/fTT8l0iIWthmP0tbGhEHkOQTsP1eiJny0x+BIEFQMqkjIAm2+QR/HiRjVGFvv1D/vQIGKlolMYLE+Q4covnjCUTHoxlhvtoZK0m+xQI7CPAlC+fF2DX6UpLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WPwP4lr0; arc=none smtp.client-ip=209.85.216.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-2d3bc9405c2so744894a91.2;
-        Tue, 20 Aug 2024 12:24:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724181877; x=1724786677; darn=vger.kernel.org;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4bfIMgpJwUN9el8i9XHzhs2svCvajb2m8PRxmIeFH8o=;
-        b=WPwP4lr0D7WnTBH8SLAo8tTt+Tqg19FoA9NLBAwGYiI5mYWmKAjOJGyqyMZL3q81m6
-         0mtQGdehGdbpelMOewObXbmBiXDUk9Z8ff9MXrYPI+yIRRpz7z05sBQmmnK8rb2kPPpm
-         gSKisrmQHRE0oLSWconuoT72wkn6dzBEtKHAhcB2fL/0bIJGUmdy8wVF1ca01djGzvL/
-         rsOH1Z78Q9NXNLNxQ4qUDNWuUiUUFRUT9/7PfclcLXXFMnl8RWoKHgHAa3dQy6Ih0kis
-         2EX8+IR9aQmwKDBJbKcJBGPJV4uXqtUpiBEWZ9Cw0Rf8emXJwhs8DaoM9aWS8PJuqsV6
-         0T+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724181877; x=1724786677;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4bfIMgpJwUN9el8i9XHzhs2svCvajb2m8PRxmIeFH8o=;
-        b=cXlnrOCFzKDPNfUb2BHWmlkueHX0oLNAUuQYFrvUuzFu1ru3nf7ii9wcxiaA1AANoS
-         aAZq1um4OudvFM32NfoZ8rwFn4/e7AKK4jC5rsKWHn1vO/WPx2RPrL9k7z4gZeTE7tSV
-         JDb5lt4oVbcPDxxoD+7xErQFbkvJisBF6+AyshWnYbR4FbjhOPPiLLr9WO22buMFWf+h
-         +YFGzRlJp1KGo+1G1sKdURMWu9PmNFvOUMVMcm+mZMlFv3QkfzSqiEIWCt2Y+5ews72+
-         c9Fac/Bl7vKra0VWmGmGaiqmwdE5XFrFk65GFFGIXVrWA6B28kJMl5GZsS2BQVMxcHzd
-         6AUg==
-X-Forwarded-Encrypted: i=1; AJvYcCVVY6+bIOB5j0x+WCXizPvRtPkrdJ/kodRrAmvMHRlyFrWZaUcoC2jHK3f7KdfkKQyHKvvUQ+jQ@vger.kernel.org, AJvYcCXPNHr0emkvaaZyUayWdOQFv96cYWuOlnGZTy8EH2+tuzFAW/w39Mr8fPG9krarSIrH8v7EhRGzTnk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxeORdutyei25ENyJLgmU0yNXACDMkJKySxQ1GUO3U/AS/+4/VD
-	X4gVsY+SA04LpnkKR2E0ED4ji7jsAxudaMInJxBgJusLuqgaTAHn
-X-Google-Smtp-Source: AGHT+IEoRfGjjZJh3l/s5wOxl5IFeYiNBBI63m5S1vxD5J/TuosUjuf//avNRbiV5EqQVZwPCxchZQ==
-X-Received: by 2002:a17:90a:bc8a:b0:2c8:e8ed:8a33 with SMTP id 98e67ed59e1d1-2d3e1121bbdmr10169636a91.4.1724181876716;
-        Tue, 20 Aug 2024 12:24:36 -0700 (PDT)
-Received: from smtpclient.apple (v133-130-115-230.a046.g.tyo1.static.cnode.io. [133.130.115.230])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2d3e2330f26sm9853110a91.0.2024.08.20.12.24.32
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 20 Aug 2024 12:24:35 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	s=arc-20240116; t=1724182457; c=relaxed/simple;
+	bh=ztkY1HcRzYZPhdNOGcVyvUZWwCzGOeoC3a5BlTiOty8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HmJx1TVYiR6aOG9vI+VhuNpdM14NgMY76zK50OQzmZF7ncIkNVwcR/QLbEuiH3w06BqXaLkdrBxawHGn1/c13ekhDM54WtNEkO2l8GtH7pse9W77Y9ni7HrIztlAVxlIDc963sP7u128F+orDZ+NYLDROaxsNafBSS5tc25iGlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ufF3CqrK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E045C4AF15;
+	Tue, 20 Aug 2024 19:34:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724182456;
+	bh=ztkY1HcRzYZPhdNOGcVyvUZWwCzGOeoC3a5BlTiOty8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ufF3CqrKmgREyHzpn6s40n4gwbUKiBn3qYB54yCPjq5LYv4aLjVMy1ChiZalXul//
+	 jv1ahPCJhMGX6eEsoKZHeIGw27bmCwNDvJB1muHRgl0C3BDWaEYfp0UFmdfT8GgrcT
+	 GF8NBVLrnkXe60xwRXdae6uljlJd2lLFqG7LJYVphrzXxhyswKygIHWVaywdiBq4Df
+	 w3B7Hgn/DYMhTwhsgyUmA47XYlJhGhTSUqTjAmJCxgOqFMa3S8mI5zKIKfzLrnwbi5
+	 xCPAOofu9jst2h2B/nZ2jgeM6KSSkX73aNChZHh8Ly2k/F6s7jR7zQ95NMfwdRRK6E
+	 ldb9rbpIIyf6Q==
+Date: Tue, 20 Aug 2024 12:34:14 -0700
+From: Eric Biggers <ebiggers@kernel.org>
+To: Christian Brauner <brauner@kernel.org>
+Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Oleg Nesterov <oleg@redhat.com>, Aleksa Sarai <cyphar@cyphar.com>,
+	Tycho Andersen <tandersen@netflix.com>,
+	Daan De Meyer <daan.j.demeyer@gmail.com>, Tejun Heo <tj@kernel.org>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] pidfd: prevent creation of pidfds for kthreads
+Message-ID: <20240820193414.GA1178@sol.localdomain>
+References: <20240731-gleis-mehreinnahmen-6bbadd128383@brauner>
+ <20240818035818.GA1929@sol.localdomain>
+ <20240819-staudamm-rederei-cb7092f54e76@brauner>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3776.700.51\))
-Subject: Re: It is correct to introduce new sys calls to stable versions?
-From: Miao Wang <shankerwangmiao@gmail.com>
-In-Reply-To: <ZsTgxUndhb04snd6@1wt.eu>
-Date: Wed, 21 Aug 2024 03:24:19 +0800
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Xi Ruoyao <xry111@xry111.site>,
- Huacai Chen <chenhuacai@kernel.org>,
- loongarch@lists.linux.dev,
- Sasha Levin <sashal@kernel.org>,
- stable@vger.kernel.org,
- WANG Xuerui <kernel@xen0n.name>,
- linux-api@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <17D9A385-5149-4BED-94B8-82E43309484D@gmail.com>
-References: <DF762B6F-360A-4C0C-8C85-55686417209B@gmail.com>
- <2024082057-coherence-lethargy-3513@gregkh>
- <D19DB99F-B5D9-49A6-BCF8-A5980A9BC1A0@gmail.com>
- <2024082027-deskbound-rumbling-b96f@gregkh> <ZsSwnPfyOvdSBMOC@1wt.eu>
- <46C6EB05-1AA2-42BF-82BF-3B99CCA57439@gmail.com> <ZsTgxUndhb04snd6@1wt.eu>
-To: Willy Tarreau <w@1wt.eu>
-X-Mailer: Apple Mail (2.3776.700.51)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240819-staudamm-rederei-cb7092f54e76@brauner>
 
+On Mon, Aug 19, 2024 at 10:41:15AM +0200, Christian Brauner wrote:
+> On Sat, Aug 17, 2024 at 08:58:18PM GMT, Eric Biggers wrote:
+> > Hi Christian,
+> > 
+> > On Wed, Jul 31, 2024 at 12:01:12PM +0200, Christian Brauner wrote:
+> > > It's currently possible to create pidfds for kthreads but it is unclear
+> > > what that is supposed to mean. Until we have use-cases for it and we
+> > > figured out what behavior we want block the creation of pidfds for
+> > > kthreads.
+> > > 
+> > > Fixes: 32fcb426ec00 ("pid: add pidfd_open()")
+> > > Cc: stable@vger.kernel.org
+> > > Signed-off-by: Christian Brauner <brauner@kernel.org>
+> > > ---
+> > >  kernel/fork.c | 25 ++++++++++++++++++++++---
+> > >  1 file changed, 22 insertions(+), 3 deletions(-)
+> > 
+> > Unfortunately this commit broke systemd-shutdown's ability to kill processes,
+> > which makes some filesystems no longer get unmounted at shutdown.
+> > 
+> > It looks like systemd-shutdown relies on being able to create a pidfd for any
+> > process listed in /proc (even a kthread), and if it gets EINVAL it treats it a
+> > fatal error and stops looking for more processes...
+> 
+> Thanks for the report!
+> I talked to Daan De Meyer who made that change and he said that this
+> must a systemd version that hasn't gotten his fixes yet. In any case, if
+> this causes regression then I'll revert it right now. See the appended
+> revert.
 
+Thanks for queueing up a revert.
 
-> 2024=E5=B9=B48=E6=9C=8821=E6=97=A5 02:30=EF=BC=8CWilly Tarreau =
-<w@1wt.eu> =E5=86=99=E9=81=93=EF=BC=9A
->=20
-> On Wed, Aug 21, 2024 at 12:09:41AM +0800, Miao Wang wrote:
->> However, my original question is whether it is expected to include =
-new
->> syscalls in kernel stable tree. According to the document =
-"stable-kernel-
->> rules", if I'm interpreting it correctly, I expect only bug fixes and =
-small
->> driver enhancements from stable releases. I understand the patch in =
-question
->> is actually introducing new syscalls, which is beyond my expectation. =
-So I
->> wonder the consideration of including this patch in stable releases.
->=20
-> When you maintain stable software you quickly realize that everything
-> is not just pure white or black but a shade of gray and that if it can
-> be considered as a bug to miss a syscall in certain environments for
-> example, then it can become a valid fix to add it. I don't have any
-> opinion on this particular one, but since your question is broader I'm
-> trying to explain.
->=20
-> Different people have different expectations about what needs to be
-> fixed, that's even why some people will choose a distro over another
-> one (prefer to fix only critical bugs over fixing all bugs for =
-example),
-> but there's no point restarting a philosophical on this topic which =
-has
-> already been rehashed too many times in the past.
->=20
-> As a rule of thumb, just keep in mind that anything that needs to get
-> fix will eventually be fixed.
+This was on systemd 256.4 which was released less than a month ago.
 
-Many thanks for your explanation!
+I'm not sure what systemd fix you are talking about.  Looking at killall() in
+src/shared/killall.c on the latest "main" branch of systemd, it calls
+proc_dir_read_pidref() => pidref_set_pid() => pidfd_open(), and EINVAL gets
+passed back up to killall() and treated as a fatal error.  ignore_proc() skips
+kernel threads but is executed too late.  I didn't test it, so I could be wrong,
+but based on the code it does not appear to be fixed.
 
-Cheers,
-
-Miao Wang
-
->=20
-> Thanks,
-> Willy
-
+- Erici
 
