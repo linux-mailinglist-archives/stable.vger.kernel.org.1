@@ -1,116 +1,115 @@
-Return-Path: <stable+bounces-69842-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69843-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C27A095A43B
-	for <lists+stable@lfdr.de>; Wed, 21 Aug 2024 19:58:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A80F195A462
+	for <lists+stable@lfdr.de>; Wed, 21 Aug 2024 20:08:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF54F1C22631
-	for <lists+stable@lfdr.de>; Wed, 21 Aug 2024 17:58:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 645D52824A6
+	for <lists+stable@lfdr.de>; Wed, 21 Aug 2024 18:08:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 037AB1B3B0F;
-	Wed, 21 Aug 2024 17:57:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E44171B2EF5;
+	Wed, 21 Aug 2024 18:08:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="kUUIh8sV"
+	dkim=pass (2048-bit key) header.d=toxicpanda-com.20230601.gappssmtp.com header.i=@toxicpanda-com.20230601.gappssmtp.com header.b="ZbqPWpPF"
 X-Original-To: stable@vger.kernel.org
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f178.google.com (mail-yb1-f178.google.com [209.85.219.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD74C1B2EF7
-	for <stable@vger.kernel.org>; Wed, 21 Aug 2024 17:57:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 386431494D1
+	for <stable@vger.kernel.org>; Wed, 21 Aug 2024 18:08:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724263072; cv=none; b=qx1OszZ6mTYXiXdTsOBejmj1pjOxiVGpx8+/LDCT0iAtZj2BYaIvqVtbx0W677LEjdX03FEtNTTVrx+PyVSSw6KEsr+GxFZD+dAMMQXaYGl2bd3P41WAzvBjXFBmvc4rXPik6tdXQsFxg99w1skmvn1d9lbZSY/J++tVRCIZO8E=
+	t=1724263687; cv=none; b=V+wbZ3XmA4D3kS5RSic3A0z0z8uacw6VOOCjz0chAgAcRXO6upvgt1AvFBFt2/a3AnQReTBNoovx7ryB7TxqyxKWpO63TfMD56IurE//mIacxU2reeeQLPq+jknZgqTnH9D5LX53EMX9vcRo044hvjayxgHtlrOMsz5mzZbiQQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724263072; c=relaxed/simple;
-	bh=NvR7oT3zr3C4ZD5rcoKziVSJ6A0Ygns8X6MvpZlOnng=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZFh7hwmM1u2zCaoe7/ZItOC454fb50U5XInKluTZuYd8Lha50cIzauOM3aVendSK1Oe6y8uxGo1WEVShhA6UJnKw3vhMXszQeu81dBSEc8BxyzZxQGQGuUc/MP9VdBz3rCHXAOLTD1ZuOfR6xpgHcFDVPVH5Z6tfqnqIQneLb10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=kUUIh8sV; arc=none smtp.client-ip=95.215.58.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Message-ID: <dab1feb1-446d-46c7-a8b1-f0483cc149ea@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1724263067;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=exaGamvClAfEMBZ3mXvHDSEbyNjLuT+5dVdNlgYhTAo=;
-	b=kUUIh8sVO8fJk7PSghH29hp29QO/StTElaQhOn42ScWPsBHSt5QmWAwfcj1dmfRpxagPb6
-	oTjy23t8RZhJNczETlYEAb5c/rqChrJocP+Ym7RjKMd7vJLEGWmBeAp/bQy+idd1v3QVoA
-	wtRvIQMu3UF+xJZV1Gv9JR5xqqigWjI=
-Date: Wed, 21 Aug 2024 10:57:39 -0700
+	s=arc-20240116; t=1724263687; c=relaxed/simple;
+	bh=0lVqIJGc2EApbGk353iTzWJaICl9QseyhZch818YFDo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NMVnpojN2UMOOh5StOwRHe61oEKrTJrVTRMzv0zkd3KC0wZaYdgBxfTqTTUGOJFAOnihqNgWMw6tX2O6bq/RPYBRTQgrQSX1QJ88c248vYIEFTX++ljCe6HOO7W7vIxL7C1jKuP2cxc53NOMu51nsyMzzD4L+4T3ADDfeGltLUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com; spf=none smtp.mailfrom=toxicpanda.com; dkim=pass (2048-bit key) header.d=toxicpanda-com.20230601.gappssmtp.com header.i=@toxicpanda-com.20230601.gappssmtp.com header.b=ZbqPWpPF; arc=none smtp.client-ip=209.85.219.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=toxicpanda.com
+Received: by mail-yb1-f178.google.com with SMTP id 3f1490d57ef6-e02b79c6f21so8313276.2
+        for <stable@vger.kernel.org>; Wed, 21 Aug 2024 11:08:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=toxicpanda-com.20230601.gappssmtp.com; s=20230601; t=1724263685; x=1724868485; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=g2dWuKHtJVS6aU/UltCyUUTv5aoTU265tGKaSxNwpdg=;
+        b=ZbqPWpPFKP4dDIi9l343J99R9GzBkAFGtkyLN/NINrnaUfrocUnyG4xqj8LMLU185R
+         IjzZjsbh0JSb6u81j8MYBgExi0oOFyUlXDWvDf0VyW7CNMBjqc/z8D9eM/2hMcY2K+M+
+         udE+wUTDwTH2KEv3d62ivFWaV95zVqyLow/yOuqXY4RN1chz2fsbx/ns5MmUuWkkTIMi
+         DfRqfbdnI2k3ePy09LiF4YnZ07ehESpLoVaZA+RPDVgUz2C6PD7JfoVIjr3/O1aClQhb
+         35ADv7dW/CTQF7GDKOE4hOE+m0d8B7mEapa9ckplW2MVfujVPzbrxvDg72VFawz+9JKd
+         qQ9Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724263685; x=1724868485;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=g2dWuKHtJVS6aU/UltCyUUTv5aoTU265tGKaSxNwpdg=;
+        b=CBzVTiRv5DX7TzOYyPwwiMYnY2+t5V9ArKVttJW+KmELUS/jWOS/P8MumQfWSbL/ot
+         P721Pi7Iymh/PAKhZZ69PohP1v1DwUT8kqOyvkd2jKYkmqG57ulcsKlINWFa+/TSzVVu
+         c36qAfGku+GapY8Lep2meh3D8GDAD1EXpR2Fi16w+2mZb3m/pzNxvv29fWPZ0AJuAyu4
+         e+tRb7ZbB0WEviTMB+0Aw8sQgRN43OTNSvvzibVN8/TlZ45n3FmtmQ9EXi1oOMIF5nDy
+         dnqVI4VyfvZzR+PU0lRsSo6/s4TidQiu3AJfqC5IJzpf4MvWBzd7sHc4/MDNadtZa/h5
+         gi9g==
+X-Forwarded-Encrypted: i=1; AJvYcCWJ2051BAG1jVJ0xzjC5qt+hZ5un0LTpZ/paer6vusKVzAVnAqhB3hGjctSF+i9Gm1r28y0hkE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzMW4FtJU3TTxQPHY65/rVIHb/ML2LT7JnGIUbtXhkKrWwLng45
+	fwrmGwTuWXJTNivVYz8JHReYjDLoEUscOXUE3/E/t2PCfu8uum5qI/kZUFG/hKE=
+X-Google-Smtp-Source: AGHT+IGnmZPgepuL3HGkgA7tjMbmplROCP26e6nLpdI6NT2SWykOfXGaiQxacnbMvy6ZRM2xdJfSRA==
+X-Received: by 2002:a05:6902:220e:b0:e14:db6f:d94b with SMTP id 3f1490d57ef6-e166553a542mr3575809276.44.1724263685226;
+        Wed, 21 Aug 2024 11:08:05 -0700 (PDT)
+Received: from localhost (syn-076-182-020-124.res.spectrum.com. [76.182.20.124])
+        by smtp.gmail.com with ESMTPSA id 3f1490d57ef6-e1171e709e1sm3098525276.34.2024.08.21.11.08.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 Aug 2024 11:08:04 -0700 (PDT)
+Date: Wed, 21 Aug 2024 14:08:04 -0400
+From: Josef Bacik <josef@toxicpanda.com>
+To: Julian Sun <sunjunchao2870@gmail.com>
+Cc: linux-btrfs@vger.kernel.org, clm@fb.com, dsterba@suse.com,
+	syzbot+67ba3c42bcbb4665d3ad@syzkaller.appspotmail.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] btrfs: fix the race between umount and btrfs-cleaner
+Message-ID: <20240821180804.GF1998418@perftesting>
+References: <20240821114628.645455-1-sunjunchao2870@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH] bpftool: check for NULL ptr of btf in
- codegen_subskel_datasecs
-Content-Language: en-GB
-To: Ma Ke <make24@iscas.ac.cn>, qmo@kernel.org, ast@kernel.org,
- daniel@iogearbox.net, andrii@kernel.org, martin.lau@linux.dev,
- eddyz87@gmail.com, song@kernel.org, john.fastabend@gmail.com,
- kpsingh@kernel.org, sdf@fomichev.me, haoluo@google.com, jolsa@kernel.org,
- delyank@fb.com
-Cc: bpf@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20240821133112.1467721-1-make24@iscas.ac.cn>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Yonghong Song <yonghong.song@linux.dev>
-In-Reply-To: <20240821133112.1467721-1-make24@iscas.ac.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240821114628.645455-1-sunjunchao2870@gmail.com>
 
+On Wed, Aug 21, 2024 at 07:46:28PM +0800, Julian Sun wrote:
+> There is a race condition generic_shutdown_super() and
+> __btrfs_run_defrag_inode().
+> Consider the following scenario:
+> 
+> umount thread:             btrfs-cleaner thread:
+> 			     btrfs_run_delayed_iputs()
+> 			       ->run_delayed_iput_locked()
+> 				->iput(inode)
+> 				  // Here the inode (ie ino 261) will be cleared and freed
+> btrfs_kill_super()
+>   ->generic_shutdown_super()
+>     			     btrfs_run_defrag_inodes()
+> 			       ->__btrfs_run_defrag_inode()
+> 				->btrfs_iget(ino)
+> 				// The inode 261 was recreated with i_count=1
+> 				// and added to the sb list
+>     ->evict_inodes(sb)          // After some work
+>     // inode 261 was added      ->iput(inode)
+>     // to the dispose list        ->iput_funal()
+>       ->evict(inode)                ->evict(inode)
 
-On 8/21/24 6:31 AM, Ma Ke wrote:
-> bpf_object__btf() can return NULL value.  If bpf_object__btf returns null,
-> do not progress through codegen_subskel_datasecs(). This avoids a null ptr
-> dereference.
->
-> Found by code review, complie tested only.
+This is wrong though, evict_inodes() isn't supposed to isolate if i_count == 1,
+and iput_final sets I_FREEING, so we won't get the evict() from evict_inodes.
+Something else is happening here.  Thanks,
 
-Do you have a real case to show null ptr reference here?
-Code review and compile test are not enough. You should have
-a real reproducible case before you send the patch.
-
-For this particular case, we have check
-
-         btf = bpf_object__btf(obj);
-         if (!btf) {
-                 err = -1;
-                 p_err("need btf type information for %s", obj_name);
-                 goto out;
-         }
-
-which ensures that btf is available before codegen for subskeleton,
-so what you described won't happen in practice.
-  
-
->
-> Cc: stable@vger.kernel.org
-> Fixes: 00389c58ffe9 ("bpftool: Add support for subskeletons")
-> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-> ---
->   tools/bpf/bpftool/gen.c | 3 +++
->   1 file changed, 3 insertions(+)
->
-> diff --git a/tools/bpf/bpftool/gen.c b/tools/bpf/bpftool/gen.c
-> index 5a4d3240689e..7ce62f280310 100644
-> --- a/tools/bpf/bpftool/gen.c
-> +++ b/tools/bpf/bpftool/gen.c
-> @@ -334,6 +334,9 @@ static int codegen_subskel_datasecs(struct bpf_object *obj, const char *obj_name
->   	const char *sec_name, *var_name;
->   	__u32 var_type_id;
->   
-> +	if (!btf)
-> +		return -EINVAL;
-> +
->   	d = btf_dump__new(btf, codegen_btf_dump_printf, NULL, NULL);
->   	if (!d)
->   		return -errno;
+Josef
 
