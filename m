@@ -1,183 +1,143 @@
-Return-Path: <stable+bounces-69848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69849-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C254595A5A6
-	for <lists+stable@lfdr.de>; Wed, 21 Aug 2024 22:08:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B29A395A5C5
+	for <lists+stable@lfdr.de>; Wed, 21 Aug 2024 22:22:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2E858B21C23
-	for <lists+stable@lfdr.de>; Wed, 21 Aug 2024 20:08:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6778228467B
+	for <lists+stable@lfdr.de>; Wed, 21 Aug 2024 20:22:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7D93170A15;
-	Wed, 21 Aug 2024 20:07:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E64E816F830;
+	Wed, 21 Aug 2024 20:22:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="aok85hY9"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fxaejHwS"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7368E170854;
-	Wed, 21 Aug 2024 20:07:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50BEA16F27F;
+	Wed, 21 Aug 2024 20:22:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724270873; cv=none; b=qa07Exop2F0behE978VWIy2uBJTgshrHSb2jHWuw/J/DrsPQpdw1Hfdnu7mUvL/+M9L0lshN/9DzEozZMb5SgFteNUMc+o5BIjK3fPwfrY/jQYe/+U+ZmbgNnQapG8t9RpNbpqAZLvABhLPvm8KoZqlpon7NJ1TeuB5IrBQcZK8=
+	t=1724271744; cv=none; b=MlOQsEAKvVj5SAeIQ1u1sV3DAg/WG1pd+T0N74TEz5xsPdUvDw0Ni9o/rzZnf6uX5B5ekcTrCEQ3CaULWm9h9m7UpPPAxSwMEwIwI5MIDSlbKVdXx9vYth/9CsBjddQ1LjTMn8evkKZdf/P8Q4/5Q8lZDxbpG/nVHf/E5yhljmc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724270873; c=relaxed/simple;
-	bh=GNVLiZ5ygNrXffL6ds9GHFULUnbe5MiagZ6/faSJb90=;
-	h=Date:To:From:Subject:Message-Id; b=WDrhQ1VpV6TDOQsMDELrPbVvxxXSleBphTHjrl9ajsH/bnS11om/J+ebJzw4ckYZrKHU3N8onCS52RXVBW8SV6LSQCBw/kBUCLPJtmk7cN0iKv3IhtgYoxANxf+T6/CYzfi9xC+M/fAqhlbtHL4zc4qwcpRJcdlmK/jtyuN4WsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=aok85hY9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC7CEC32781;
-	Wed, 21 Aug 2024 20:07:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1724270873;
-	bh=GNVLiZ5ygNrXffL6ds9GHFULUnbe5MiagZ6/faSJb90=;
-	h=Date:To:From:Subject:From;
-	b=aok85hY9t6f8jVCWoUUFEakGQTMdfQStPxa2Bc86ZPev9TuXOtojndFyJUf1uYRZI
-	 LhXix4Go9WiELUMNeGC+Jv1jyowZB4RAfIITv0mE27gPgIs5OT+W+MGGHEHk6qgUu3
-	 YQy9d8+wLLDpQHkAY15po3mR3Tmzf1XkC0IwvqgQ=
-Date: Wed, 21 Aug 2024 13:07:55 -0700
-To: mm-commits@vger.kernel.org,zhaoyang.huang@unisoc.com,yuzhao@google.com,willy@infradead.org,vbabka@suse.cz,stable@vger.kernel.org,riel@surriel.com,leitao@debian.org,huangzhaoyang@gmail.com,hannes@cmpxchg.org,david@redhat.com,bharata@amd.com,usamaarif642@gmail.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + revert-mm-skip-cma-pages-when-they-are-not-available.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240821200752.DC7CEC32781@smtp.kernel.org>
+	s=arc-20240116; t=1724271744; c=relaxed/simple;
+	bh=TmkMF4BIKw0FSxRDCBPfYAw4QZSrEQuOOk+4ETbiN2Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ftwFcL6Kvso5NsYLR7ZVV8Kq1DRjDgGkK5ilS9w7xrErnvvw+kQapImCyuhlvueqGohlRFx2HGRoMATnMyUU3Ui0uS+57HGOYUWgjDM2mB/SO+pa7h9idT6Qh+BcUSTrz1DyyWsJceXnvaMEitgHCjpynBikp12PGRpxGgVDl/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fxaejHwS; arc=none smtp.client-ip=209.85.216.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-2d3d4862712so4577a91.2;
+        Wed, 21 Aug 2024 13:22:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1724271742; x=1724876542; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=v4N/0smalG5TPn1izfalz/IyqY1wsey3JgqZf+z0B8E=;
+        b=fxaejHwSO4D+TCHlheiCdpswEqY0EnERV0Gyib8K7uWG/0mojNXlT1BukVk0U/CAWG
+         LRPkd1lS7SQKiH5n0qvBVVTLbtHVLALLuoUTclHA8rsDIVQ4TYLFDOZd+i7oMTYEeVB7
+         7ize9uVsyL702SYa3YYM7sjpnZWts8JkLEHEM7k/keLQB9MrVwVZjUPo2wemhCcLhzRx
+         izMjerTgIIFmLaAx0Qq9Us+8EaBRQLB6XO8lVSs/dl6ukcaZiNlR2Kcs8ZZ6UiRPyMP4
+         234aMxH6yCrXusEg60iMarMREwL5rm18L5GWLh+SUeRC4Jq3mi67sQ/L3CrIvnHUMU8M
+         jmSw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724271742; x=1724876542;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=v4N/0smalG5TPn1izfalz/IyqY1wsey3JgqZf+z0B8E=;
+        b=RxcRw3n5vp3lZfQj2QFJB9oY9poGFaH9BM3scZtxjVGr1yY3bpw0RQlX/C88x+YjWx
+         HLUnBVUT4LGiyqL7Q121BuwSUoBUU/A2u9hgdPtMXq4/BHGmqSrcWyPI5cdbe6l6KV7y
+         OJkWkCKxMmFJjjDpwsev7OasH9gOnMv1GdZXX5PWn641/PBru1hfjbyDql8H9pFklVE8
+         GmGNH/Lto0kTfy/cMqgfx+BWvzEuBzPf9fUrSGSOp+zNYD9jcelgGBunJbICwTD3nM95
+         NSQpWmgXNtIiuvFSeUhe5+BeiUsEU2WShldxkV6TCSsSq55IUBNG5gXf8+5u3QU1xAKH
+         dGvg==
+X-Forwarded-Encrypted: i=1; AJvYcCU4pUPsAvgyQQNRzuvKkDUQ9kWuDv2InhNbRYqSttGcsQsc0FVvPjQMoj1FT9Uq9qU/6WyJ6HhN@vger.kernel.org, AJvYcCUMFPxM0MMXCCN21MVPQ5UpG/bJgB5N4rRRoDXPn9OwZ5vHnJJ+TTNPK5JziZCwyeOHvqs0nS37bCsynEo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy6m8uNaJhwx4MuRXu3mi+hKhGI/agqL4XrEKVOUJsnzDheTrGn
+	mzXr2x3QY9JL1ncJIC7SyyJAlQWVe9dgt98Ndx6v5CwlBckhZ4JVyHlW0eNvHjCI1xzJj5/j5Wu
+	0pSJyfUzTbvlLuFiE1j8MKfaiVM8=
+X-Google-Smtp-Source: AGHT+IGp6zlTSzpJYGatswz8fjy7/F9DjWBDw37uYGLUIWLeRFH6TaaSw5b4r+XPPtBbtx14A9e4Nji6NABBydevvmo=
+X-Received: by 2002:a17:90b:50c8:b0:2c9:863c:604 with SMTP id
+ 98e67ed59e1d1-2d5e9ece4admr2241412a91.3.1724271742315; Wed, 21 Aug 2024
+ 13:22:22 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20240821042724.1391169-1-make24@iscas.ac.cn>
+In-Reply-To: <20240821042724.1391169-1-make24@iscas.ac.cn>
+From: Alex Deucher <alexdeucher@gmail.com>
+Date: Wed, 21 Aug 2024 16:22:10 -0400
+Message-ID: <CADnq5_OzY97etD0LW5Tw-xCnnTYonGkvxA875xdAfMgxAtu_DQ@mail.gmail.com>
+Subject: Re: [PATCH RESEND] drm/amd/display: avoid using null object of framebuffer
+To: Ma Ke <make24@iscas.ac.cn>
+Cc: alexander.deucher@amd.com, christian.koenig@amd.com, Xinhui.Pan@amd.com, 
+	airlied@gmail.com, daniel@ffwll.ch, mwen@igalia.com, aurabindo.pillai@amd.com, 
+	joshua@froggi.es, hamza.mahfooz@amd.com, marek.olsak@amd.com, 
+	HaoPing.Liu@amd.com, akpm@linux-foundation.org, amd-gfx@lists.freedesktop.org, 
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Wed, Aug 21, 2024 at 3:45=E2=80=AFAM Ma Ke <make24@iscas.ac.cn> wrote:
+>
+> Instead of using state->fb->obj[0] directly, get object from framebuffer
+> by calling drm_gem_fb_get_obj() and return error code when object is
+> null to avoid using null object of framebuffer.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: 5d945cbcd4b1 ("drm/amd/display: Create a file dedicated to planes"=
+)
+> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+> ---
+>  drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c | 9 +++++++--
+>  1 file changed, 7 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c b/dr=
+ivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
+> index a83bd0331c3b..5cb11cc2d063 100644
+> --- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
+> +++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
+> @@ -28,6 +28,7 @@
+>  #include <drm/drm_blend.h>
+>  #include <drm/drm_gem_atomic_helper.h>
+>  #include <drm/drm_plane_helper.h>
+> +#include <drm/drm_gem_framebuffer_helper.h>
+>  #include <drm/drm_fourcc.h>
+>
+>  #include "amdgpu.h"
+> @@ -935,10 +936,14 @@ static int amdgpu_dm_plane_helper_prepare_fb(struct=
+ drm_plane *plane,
+>         }
+>
+>         afb =3D to_amdgpu_framebuffer(new_state->fb);
+> -       obj =3D new_state->fb->obj[0];
+> +       obj =3D drm_gem_fb_get_obj(new_state->fb, 0);
 
-The patch titled
-     Subject: Revert "mm: skip CMA pages when they are not available"
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     revert-mm-skip-cma-pages-when-they-are-not-available.patch
+Is it possible for obj to be NULL here?
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/revert-mm-skip-cma-pages-when-they-are-not-available.patch
+Alex
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Usama Arif <usamaarif642@gmail.com>
-Subject: Revert "mm: skip CMA pages when they are not available"
-Date: Wed, 21 Aug 2024 20:26:07 +0100
-
-This reverts commit 5da226dbfce3a2f44978c2c7cf88166e69a6788b.
-
-lruvec->lru_lock is highly contended and is held when calling
-isolate_lru_folios.  If the lru has a large number of CMA folios
-consecutively, while the allocation type requested is not MIGRATE_MOVABLE,
-isolate_lru_folios can hold the lock for a very long time while it skips
-those.  For FIO workload, ~150million order=0 folios were skipped to
-isolate a few ZONE_DMA folios [1].  This can cause lockups [1] and high
-memory pressure for extended periods of time [2].
-
-[1] https://lore.kernel.org/all/CAOUHufbkhMZYz20aM_3rHZ3OcK4m2puji2FGpUpn_-DevGk3Kg@mail.gmail.com/
-[2] https://lore.kernel.org/all/ZrssOrcJIDy8hacI@gmail.com/
-
-Link: https://lkml.kernel.org/r/9060a32d-b2d7-48c0-8626-1db535653c54@gmail.com
-Fixes: 5da226dbfce3 ("mm: skip CMA pages when they are not available")
-Signed-off-by: Usama Arif <usamaarif642@gmail.com>
-Cc: Bharata B Rao <bharata@amd.com>
-Cc: Breno Leitao <leitao@debian.org>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Yu Zhao <yuzhao@google.com>
-Cc: Zhaoyang Huang <huangzhaoyang@gmail.com>
-Cc: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/vmscan.c |   41 ++++++++++++++++++++---------------------
- 1 file changed, 20 insertions(+), 21 deletions(-)
-
---- a/mm/vmscan.c~revert-mm-skip-cma-pages-when-they-are-not-available
-+++ a/mm/vmscan.c
-@@ -1604,25 +1604,6 @@ static __always_inline void update_lru_s
- 
- }
- 
--#ifdef CONFIG_CMA
--/*
-- * It is waste of effort to scan and reclaim CMA pages if it is not available
-- * for current allocation context. Kswapd can not be enrolled as it can not
-- * distinguish this scenario by using sc->gfp_mask = GFP_KERNEL
-- */
--static bool skip_cma(struct folio *folio, struct scan_control *sc)
--{
--	return !current_is_kswapd() &&
--			gfp_migratetype(sc->gfp_mask) != MIGRATE_MOVABLE &&
--			folio_migratetype(folio) == MIGRATE_CMA;
--}
--#else
--static bool skip_cma(struct folio *folio, struct scan_control *sc)
--{
--	return false;
--}
--#endif
--
- /*
-  * Isolating page from the lruvec to fill in @dst list by nr_to_scan times.
-  *
-@@ -1669,8 +1650,7 @@ static unsigned long isolate_lru_folios(
- 		nr_pages = folio_nr_pages(folio);
- 		total_scan += nr_pages;
- 
--		if (folio_zonenum(folio) > sc->reclaim_idx ||
--				skip_cma(folio, sc)) {
-+		if (folio_zonenum(folio) > sc->reclaim_idx) {
- 			nr_skipped[folio_zonenum(folio)] += nr_pages;
- 			move_to = &folios_skipped;
- 			goto move;
-@@ -4273,6 +4253,25 @@ void lru_gen_soft_reclaim(struct mem_cgr
- 
- #endif /* CONFIG_MEMCG */
- 
-+#ifdef CONFIG_CMA
-+/*
-+ * It is waste of effort to scan and reclaim CMA pages if it is not available
-+ * for current allocation context. Kswapd can not be enrolled as it can not
-+ * distinguish this scenario by using sc->gfp_mask = GFP_KERNEL
-+ */
-+static bool skip_cma(struct folio *folio, struct scan_control *sc)
-+{
-+	return !current_is_kswapd() &&
-+			gfp_migratetype(sc->gfp_mask) != MIGRATE_MOVABLE &&
-+			folio_migratetype(folio) == MIGRATE_CMA;
-+}
-+#else
-+static bool skip_cma(struct folio *folio, struct scan_control *sc)
-+{
-+	return false;
-+}
-+#endif
-+
- /******************************************************************************
-  *                          the eviction
-  ******************************************************************************/
-_
-
-Patches currently in -mm which might be from usamaarif642@gmail.com are
-
-revert-mm-skip-cma-pages-when-they-are-not-available.patch
-
+> +       if (!obj) {
+> +               DRM_ERROR("Failed to get obj from framebuffer\n");
+> +               return -EINVAL;
+> +       }
+> +
+>         rbo =3D gem_to_amdgpu_bo(obj);
+>         adev =3D amdgpu_ttm_adev(rbo->tbo.bdev);
+> -
+>         r =3D amdgpu_bo_reserve(rbo, true);
+>         if (r) {
+>                 dev_err(adev->dev, "fail to reserve bo (%d)\n", r);
+> --
+> 2.25.1
+>
 
