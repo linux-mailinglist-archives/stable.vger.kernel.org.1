@@ -1,139 +1,208 @@
-Return-Path: <stable+bounces-69786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69787-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76771959981
-	for <lists+stable@lfdr.de>; Wed, 21 Aug 2024 13:20:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F2A095999E
+	for <lists+stable@lfdr.de>; Wed, 21 Aug 2024 13:24:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A90051C21FA1
-	for <lists+stable@lfdr.de>; Wed, 21 Aug 2024 11:20:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D22BA284C77
+	for <lists+stable@lfdr.de>; Wed, 21 Aug 2024 11:24:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 088322049F1;
-	Wed, 21 Aug 2024 10:00:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A39920E8BD;
+	Wed, 21 Aug 2024 10:10:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="QxT2yLCS"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="C3Pc/LMO"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.smtpout.orange.fr (smtp-26.smtpout.orange.fr [80.12.242.26])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC8EF20ABE8;
-	Wed, 21 Aug 2024 10:00:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.26
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9375E20E8A8;
+	Wed, 21 Aug 2024 10:10:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724234445; cv=none; b=YFt/3rzVUbaNSK8CMsbKfuPHLzl9jlVA4IHgcn/d5jF9E3GAXgYVkVko7TH2TIj3HvSI3TCIvUJaxw0kPnuPnr/N4r2khvcgR7SKPP/7mUT/md013qljIoAZYXkdVblch21ao0B+fVTUrHgSTctIF3uOsb8tImpFa8H5dyWReiM=
+	t=1724235036; cv=none; b=lro/GGg3OjTZf4tRcKVvApVyRgoEfR53620x6o1omTd1pF1fSpputIo43ryAZxfUXb4XbYpExzVlXmcycZmmSndjAJzfUypgf05VT1GJ+JsW6/K968/1RY0KNA9JzIv7YIQsCuvmnNQe2TKMcpJgMkNeFW1qs0Uwql1ZoIqVnxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724234445; c=relaxed/simple;
-	bh=xNUZvZ/XGFquQ7bcR8kjzWBjJpgTgvtWAUsduWt4sgQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QQA9wCScfYLOzSa/CG+l1UPWMWKn+ebNR9/yC4cR/iQSkfV2VYqSGjCM7y4XHnQXhlE7pZ3jGqx+5SGCSy+22XLxQWwj9QWLJwnbgOIIJ4UibqU3JXf3v8M5J5WWNHvga5mDoV2AHRTAohAULoX12lhdIaII/tMauafuO9Im760=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=QxT2yLCS; arc=none smtp.client-ip=80.12.242.26
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
-Received: from [192.168.1.37] ([90.11.132.44])
-	by smtp.orange.fr with ESMTPA
-	id gi8bsVe5vQYYugi8bs0j4Z; Wed, 21 Aug 2024 12:00:35 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1724234435;
-	bh=w6AIYrBySrGuhkddExNCWqzXmH7gBMeTgtXfKwkDmGI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From;
-	b=QxT2yLCSf3emNohfH/QMtChqPSQqqWCz+jg4/sJ1vsmTOCfCHpgaAvyqx/WbsPUgZ
-	 j0w3Ifi/pO/A9j3NexJSl4xUQGdgAwPSojkhWMogfJYjmNkm75D5FBLvWvzBfsoLnx
-	 RtgE/n5BJ2UFiEIPD8sFOVl2YVWvD1WoFHghd/fnChM3vrdlWGJ60YZx+cSO1POKe/
-	 UrZjsxDAjN7K04ZUGLvQezWqRv7RkY5CN3xSXxVmxM1ACtkvF+GMWCeH8yp3vLp82I
-	 DfoFXgyExAGvtjtoSmSR/NevfVwszwgh3H/mUaKphifhnf+W+FZJJpCz9TpFGY61l8
-	 ZEZ3P0e9kIg0Q==
-X-ME-Helo: [192.168.1.37]
-X-ME-Auth: bWFyaW9uLmphaWxsZXRAd2FuYWRvby5mcg==
-X-ME-Date: Wed, 21 Aug 2024 12:00:35 +0200
-X-ME-IP: 90.11.132.44
-Message-ID: <40db668d-8e8b-4782-8a0b-4a0e9965f086@wanadoo.fr>
-Date: Wed, 21 Aug 2024 12:00:20 +0200
+	s=arc-20240116; t=1724235036; c=relaxed/simple;
+	bh=kyokGypDjrDP9K3J1zH5qIpt14HFTO+O6/+NQMbf4vY=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=TYPx+gq1yjizYglMlbu00ff9ruqDuQB/v22xAgj4xlAntqAiCMHd9peWsd6t0yN748Iayp+Ei2WkLe94PJjMQ5r5AJ/YPbk0iTeNQ/9max8G4FMhnDeklaSrfBj5E1G9gYCEuVRg1zISmfXFh2damvDztd6Q5O/4oRPB4p3sddk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=C3Pc/LMO; arc=none smtp.client-ip=192.198.163.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1724235034; x=1755771034;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=kyokGypDjrDP9K3J1zH5qIpt14HFTO+O6/+NQMbf4vY=;
+  b=C3Pc/LMOFcHROtGAN9pG2iBJHHLMPbwa1OAo3E9tgcn/ivE1Ab2JM+s3
+   afq5RIO2j6LLr+qNcDT0jUK2wYDJWVTPJlpBEhhQbIzVZtO+88+qdkMMb
+   tXA0uHCEtGcRnb9yVuH8UAICL1tkvRQDl6dGFshfy0Ji3rQuRdhgKy2Vj
+   bbPD0ySU28Xtw7UbSmIXKQ1q+rOLHIC9+ygh+9UUxoupHLRhVoow11hOg
+   5qjh7jb4FbhqbLUoWuYyrmlID79cJpxX/0PQo9aZBuSA3MnW0LufuKbYJ
+   64mbdWK9q6LC0xh2/4pg8r/IByRwO+QdADpKgRujRp/kOK08FGpc4M3WC
+   Q==;
+X-CSE-ConnectionGUID: 2tP/end1Rg+14PDDUsmSmw==
+X-CSE-MsgGUID: LW13SqzrRMqHxTVkymrnpw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11170"; a="33203653"
+X-IronPort-AV: E=Sophos;i="6.10,164,1719903600"; 
+   d="scan'208";a="33203653"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2024 03:10:31 -0700
+X-CSE-ConnectionGUID: Czvy+4IgQ0SWXgMnaZ2E1A==
+X-CSE-MsgGUID: EnARDpcTQZO9YoiaB0FtRQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,164,1719903600"; 
+   d="scan'208";a="61353152"
+Received: from mehlow-prequal01.jf.intel.com ([10.54.102.156])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Aug 2024 03:10:31 -0700
+From: Dmitrii Kuvaiskii <dmitrii.kuvaiskii@intel.com>
+To: dave.hansen@linux.intel.com,
+	jarkko@kernel.org,
+	kai.huang@intel.com,
+	haitao.huang@linux.intel.com,
+	reinette.chatre@intel.com,
+	linux-sgx@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: mona.vij@intel.com,
+	kailun.qin@intel.com,
+	stable@vger.kernel.org
+Subject: [PATCH v5 1/3] x86/sgx: Split SGX_ENCL_PAGE_BEING_RECLAIMED into two flags
+Date: Wed, 21 Aug 2024 03:02:13 -0700
+Message-Id: <20240821100215.4119457-2-dmitrii.kuvaiskii@intel.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20240821100215.4119457-1-dmitrii.kuvaiskii@intel.com>
+References: <20240821100215.4119457-1-dmitrii.kuvaiskii@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 7/9] vdpa: solidrun: Fix potential UB bug with devres
-To: Philipp Stanner <pstanner@redhat.com>
-Cc: alexandre.torgue@foss.st.com, alvaro.karsz@solid-run.com,
- andy@kernel.org, axboe@kernel.dk, bhelgaas@google.com, brgl@bgdev.pl,
- broonie@kernel.org, christophe.jaillet@wanadoo.fr, corbet@lwn.net,
- davem@davemloft.net, dlechner@baylibre.com, dlemoal@kernel.org,
- edumazet@google.com, eperezma@redhat.com, hao.wu@intel.com, hare@suse.de,
- jasowang@redhat.com, joabreu@synopsys.com, kbusch@kernel.org,
- kuba@kernel.org, linus.walleij@linaro.org,
- linux-arm-kernel@lists.infradead.org, linux-block@vger.kernel.org,
- linux-doc@vger.kernel.org, linux-fpga@vger.kernel.org,
- linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-pci@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
- mcoquelin.stm32@gmail.com, mdf@kernel.org, mst@redhat.com,
- netdev@vger.kernel.org, pabeni@redhat.com, richardcochran@gmail.com,
- stable@vger.kernel.org, trix@redhat.com, u.kleine-koenig@pengutronix.de,
- virtualization@lists.linux.dev, xuanzhuo@linux.alibaba.com,
- yilun.xu@intel.com
-References: <20240821071842.8591-2-pstanner@redhat.com>
- <20240821071842.8591-9-pstanner@redhat.com>
-Content-Language: en-US, fr-FR
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-In-Reply-To: <20240821071842.8591-9-pstanner@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
+Organization: Intel Deutschland GmbH - Registered Address: Am Campeon 10, 85579 Neubiberg, Germany
 Content-Transfer-Encoding: 8bit
 
-Le 21/08/2024 à 09:18, Philipp Stanner a écrit :
-> In psnet_open_pf_bar() a string later passed to pcim_iomap_regions() is
-> placed on the stack. Neither pcim_iomap_regions() nor the functions it
-> calls copy that string.
-> 
-> Should the string later ever be used, this, consequently, causes
-> undefined behavior since the stack frame will by then have disappeared.
-> 
-> Fix the bug by allocating the string on the heap through
-> devm_kasprintf().
-> 
-> Cc: stable@vger.kernel.org	# v6.3
-> Fixes: 51a8f9d7f587 ("virtio: vdpa: new SolidNET DPU driver.")
-> Reported-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> Closes: https://lore.kernel.org/all/74e9109a-ac59-49e2-9b1d-d825c9c9f891@wanadoo.fr/
-> Suggested-by: Andy Shevchenko <andy@kernel.org>
-> Signed-off-by: Philipp Stanner <pstanner@redhat.com>
-> ---
->   drivers/vdpa/solidrun/snet_main.c | 7 +++++--
->   1 file changed, 5 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/vdpa/solidrun/snet_main.c b/drivers/vdpa/solidrun/snet_main.c
-> index 99428a04068d..4d42a05d70fc 100644
-> --- a/drivers/vdpa/solidrun/snet_main.c
-> +++ b/drivers/vdpa/solidrun/snet_main.c
-> @@ -555,7 +555,7 @@ static const struct vdpa_config_ops snet_config_ops = {
->   
->   static int psnet_open_pf_bar(struct pci_dev *pdev, struct psnet *psnet)
+The page reclaimer thread sets SGX_ENC_PAGE_BEING_RECLAIMED flag when
+the enclave page is being reclaimed (moved to the backing store). This
+flag however has two logical meanings:
 
-snet_open_vf_bar() also needs the same modification (see Andy's comment 
-on patch 8/9)
+1. Don't attempt to load the enclave page (the page is busy), see
+   __sgx_encl_load_page().
+2. Don't attempt to remove the PCMD page corresponding to this enclave
+   page (the PCMD page is busy), see reclaimer_writing_to_pcmd().
 
-CJ
+To reflect these two meanings, split SGX_ENCL_PAGE_BEING_RECLAIMED into
+two flags: SGX_ENCL_PAGE_BUSY and SGX_ENCL_PAGE_PCMD_BUSY. Currently,
+both flags are set only when the enclave page is being reclaimed (by the
+page reclaimer thread). A future commit will introduce new cases when
+the enclave page is being operated on; these new cases will set only the
+SGX_ENCL_PAGE_BUSY flag.
 
->   {
-> -	char name[50];
-> +	char *name;
->   	int ret, i, mask = 0;
->   	/* We don't know which BAR will be used to communicate..
->   	 * We will map every bar with len > 0.
-> @@ -573,7 +573,10 @@ static int psnet_open_pf_bar(struct pci_dev *pdev, struct psnet *psnet)
->   		return -ENODEV;
->   	}
->   
-> -	snprintf(name, sizeof(name), "psnet[%s]-bars", pci_name(pdev));
-> +	name = devm_kasprintf(&pdev->dev, GFP_KERNEL, "psnet[%s]-bars", pci_name(pdev));
-> +	if (!name)
-> +		return -ENOMEM;
-> +
->   	ret = pcim_iomap_regions(pdev, mask, name);
->   	if (ret) {
->   		SNET_ERR(pdev, "Failed to request and map PCI BARs\n");
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitrii Kuvaiskii <dmitrii.kuvaiskii@intel.com>
+Reviewed-by: Haitao Huang <haitao.huang@linux.intel.com>
+Acked-by: Kai Huang <kai.huang@intel.com>
+---
+ arch/x86/kernel/cpu/sgx/encl.c | 16 +++++++---------
+ arch/x86/kernel/cpu/sgx/encl.h | 10 ++++++++--
+ arch/x86/kernel/cpu/sgx/main.c |  4 ++--
+ 3 files changed, 17 insertions(+), 13 deletions(-)
+
+diff --git a/arch/x86/kernel/cpu/sgx/encl.c b/arch/x86/kernel/cpu/sgx/encl.c
+index 279148e72459..c0a3c00284c8 100644
+--- a/arch/x86/kernel/cpu/sgx/encl.c
++++ b/arch/x86/kernel/cpu/sgx/encl.c
+@@ -46,10 +46,10 @@ static int sgx_encl_lookup_backing(struct sgx_encl *encl, unsigned long page_ind
+  * a check if an enclave page sharing the PCMD page is in the process of being
+  * reclaimed.
+  *
+- * The reclaimer sets the SGX_ENCL_PAGE_BEING_RECLAIMED flag when it
+- * intends to reclaim that enclave page - it means that the PCMD page
+- * associated with that enclave page is about to get some data and thus
+- * even if the PCMD page is empty, it should not be truncated.
++ * The reclaimer sets the SGX_ENCL_PAGE_PCMD_BUSY flag when it intends to
++ * reclaim that enclave page - it means that the PCMD page associated with that
++ * enclave page is about to get some data and thus even if the PCMD page is
++ * empty, it should not be truncated.
+  *
+  * Context: Enclave mutex (&sgx_encl->lock) must be held.
+  * Return: 1 if the reclaimer is about to write to the PCMD page
+@@ -77,8 +77,7 @@ static int reclaimer_writing_to_pcmd(struct sgx_encl *encl,
+ 		 * Stop when reaching the SECS page - it does not
+ 		 * have a page_array entry and its reclaim is
+ 		 * started and completed with enclave mutex held so
+-		 * it does not use the SGX_ENCL_PAGE_BEING_RECLAIMED
+-		 * flag.
++		 * it does not use the SGX_ENCL_PAGE_PCMD_BUSY flag.
+ 		 */
+ 		if (addr == encl->base + encl->size)
+ 			break;
+@@ -91,8 +90,7 @@ static int reclaimer_writing_to_pcmd(struct sgx_encl *encl,
+ 		 * VA page slot ID uses same bit as the flag so it is important
+ 		 * to ensure that the page is not already in backing store.
+ 		 */
+-		if (entry->epc_page &&
+-		    (entry->desc & SGX_ENCL_PAGE_BEING_RECLAIMED)) {
++		if (entry->epc_page && (entry->desc & SGX_ENCL_PAGE_PCMD_BUSY)) {
+ 			reclaimed = 1;
+ 			break;
+ 		}
+@@ -257,7 +255,7 @@ static struct sgx_encl_page *__sgx_encl_load_page(struct sgx_encl *encl,
+ 
+ 	/* Entry successfully located. */
+ 	if (entry->epc_page) {
+-		if (entry->desc & SGX_ENCL_PAGE_BEING_RECLAIMED)
++		if (entry->desc & SGX_ENCL_PAGE_BUSY)
+ 			return ERR_PTR(-EBUSY);
+ 
+ 		return entry;
+diff --git a/arch/x86/kernel/cpu/sgx/encl.h b/arch/x86/kernel/cpu/sgx/encl.h
+index f94ff14c9486..b566b8ad5f33 100644
+--- a/arch/x86/kernel/cpu/sgx/encl.h
++++ b/arch/x86/kernel/cpu/sgx/encl.h
+@@ -22,8 +22,14 @@
+ /* 'desc' bits holding the offset in the VA (version array) page. */
+ #define SGX_ENCL_PAGE_VA_OFFSET_MASK	GENMASK_ULL(11, 3)
+ 
+-/* 'desc' bit marking that the page is being reclaimed. */
+-#define SGX_ENCL_PAGE_BEING_RECLAIMED	BIT(3)
++/* 'desc' bit indicating that the page is busy (being reclaimed). */
++#define SGX_ENCL_PAGE_BUSY	BIT(2)
++
++/*
++ * 'desc' bit indicating that PCMD page associated with the enclave page is
++ * busy (because the enclave page is being reclaimed).
++ */
++#define SGX_ENCL_PAGE_PCMD_BUSY	BIT(3)
+ 
+ struct sgx_encl_page {
+ 	unsigned long desc;
+diff --git a/arch/x86/kernel/cpu/sgx/main.c b/arch/x86/kernel/cpu/sgx/main.c
+index 166692f2d501..e94b09c43673 100644
+--- a/arch/x86/kernel/cpu/sgx/main.c
++++ b/arch/x86/kernel/cpu/sgx/main.c
+@@ -204,7 +204,7 @@ static void sgx_encl_ewb(struct sgx_epc_page *epc_page,
+ 	void *va_slot;
+ 	int ret;
+ 
+-	encl_page->desc &= ~SGX_ENCL_PAGE_BEING_RECLAIMED;
++	encl_page->desc &= ~(SGX_ENCL_PAGE_BUSY | SGX_ENCL_PAGE_PCMD_BUSY);
+ 
+ 	va_page = list_first_entry(&encl->va_pages, struct sgx_va_page,
+ 				   list);
+@@ -340,7 +340,7 @@ static void sgx_reclaim_pages(void)
+ 			goto skip;
+ 		}
+ 
+-		encl_page->desc |= SGX_ENCL_PAGE_BEING_RECLAIMED;
++		encl_page->desc |= SGX_ENCL_PAGE_BUSY | SGX_ENCL_PAGE_PCMD_BUSY;
+ 		mutex_unlock(&encl_page->encl->lock);
+ 		continue;
+ 
+-- 
+2.43.0
 
 
