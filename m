@@ -1,116 +1,100 @@
-Return-Path: <stable+bounces-69837-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69838-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 247AA95A311
-	for <lists+stable@lfdr.de>; Wed, 21 Aug 2024 18:42:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F85795A337
+	for <lists+stable@lfdr.de>; Wed, 21 Aug 2024 18:54:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 562081C213F6
-	for <lists+stable@lfdr.de>; Wed, 21 Aug 2024 16:42:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF25228136C
+	for <lists+stable@lfdr.de>; Wed, 21 Aug 2024 16:54:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC19F16190B;
-	Wed, 21 Aug 2024 16:42:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBB311AF4DF;
+	Wed, 21 Aug 2024 16:54:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="njAmwaqq"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="DtfrdYkV"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D3D713BAFA;
-	Wed, 21 Aug 2024 16:42:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5449C14E2EF
+	for <stable@vger.kernel.org>; Wed, 21 Aug 2024 16:53:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724258572; cv=none; b=Tmirfg6mLcyYycyieVohrzyKvDKKEfOu+6hH5XlDXLBgpCzCyZq/Y/YZYTUMH+rlWVwoHqU3PNn0hmKTnThNO0ocqyQXmCABJMXwTqafsrAxEa1sDleZpknzFRejmIEAT6tb/H7qQvsmtjTBbES1S7jNrI93ccWGu2O6c2m9ZeA=
+	t=1724259240; cv=none; b=g6lkOmTggk46H3tO4ZZWFM0yEgABxlLbqwIKj08mPgaEn7/SXVGPczKNeUFqcZzbkpR214BYiagcGSoEoqe2R+BC6fkCNnnF8vv5V6WLdEKkoMLushST1i7i7VQLpF+qk0mlyYTaI/bLyMoG98YBq8EUbK6DJi0vPRTzbEILNZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724258572; c=relaxed/simple;
-	bh=RUg69PvC4VJT/QoaTo+jte2EflazXzB30/Q7VGN+J98=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=bLsgzZ182s5hyVHnVYwFoiVSmeSkmZuMlS+gQ2NRlwMMGruY4ZWUKXuiuu8Bn0s3njBEmJ6nW+aYb40dliHidpzvt4BuWVr6GQ8ozz6VzXHsKHwWwX/m6d/z3j1Xg9zx5wyG1sySZ7rlDo3uFijAqX5LHJ/Q33hJRkuDapGoHAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=njAmwaqq; arc=none smtp.client-ip=209.85.210.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-714184b23d1so1467137b3a.0;
-        Wed, 21 Aug 2024 09:42:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724258570; x=1724863370; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=RUg69PvC4VJT/QoaTo+jte2EflazXzB30/Q7VGN+J98=;
-        b=njAmwaqqffU0ldErG5B9HMAOoGdxrmzdHk+4EI8HfFT5DDXI9XFpTCFuYl2pZ/o5vn
-         RmPY5NXAOhot0+lxjOVO7am4dE1YDWY1h+YMqiPAM7Xsgdy0izvxOBtcuilNao2+tkFK
-         XPiRayCs8tdvbQkB9I9ARWwyegZpyChl517QoWBWwgfLaNvg/i9tS4ZWSHy3WjzBpvCU
-         /9q7uAku4NkitdQESWROZ7d3ec68n/aCVUt7bFNqY/Vl4Li1lnTA9xVbyQltP0lAj7Td
-         bIIQ2yKzKDUmTGDFm3UQ0c9Z7LTNmrM5jSuSItjTE+An1qX8tVGWOJY4FPGpN1Wf6xJP
-         QjAw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724258570; x=1724863370;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=RUg69PvC4VJT/QoaTo+jte2EflazXzB30/Q7VGN+J98=;
-        b=aeujX9C8RlVhoJ0nuz+t/JPKWept6t5U4i4zrbdA41SQu2heYNH231PZrdjtWeeq28
-         8nYAOECddD4q3y1cbsxA2gXdX+NUMZZkgCw0hUozphDhhI+tA1DJpU7UFUfqCXPIzupS
-         sB3L7w9OxZVU6O8IImC3cw2DX/oEJzqb0gPLqEwid1JK4UflV2zTw2dznGEWPnKECZ1n
-         xiKsSKEVhkGAaxsvDiw2iPb7zYf7QTxrBXSh8V1SV1Xxx7z2fkUFSQCkLYzJDh9Nd1QT
-         ljQNjzqNItgZtEBeLDRRn0qkabueseGdudD6axwjjH2UNnvdx0/yDFG59hwE/Kvw1vgr
-         5Ivw==
-X-Forwarded-Encrypted: i=1; AJvYcCU3ZlijA8keoUsVArfcX4BO9aZBGrObCwRX4J0Bg+0BqBbWG1yT9FfAIvKFRaz8F5XVB/he2bRh@vger.kernel.org, AJvYcCU7xv0qZEYHumx3l6OsAO+5VT3c2pv4TBrB973IfIYssy4/Gqn4gwHyUgTGTNf3uuBhfms=@vger.kernel.org, AJvYcCUuZtVcC88q7vfvlhpKr6MFNzhVNwuWg46X9GcBMh2zwgDXxF42dQGWUOMUlMDAd+HjOyqlMNbGQIL2RJjK@vger.kernel.org
-X-Gm-Message-State: AOJu0YxapGs6et2pwjJ1xb2URieNi0Oa6pj06Pv0iopQQ13o+2xKdc4b
-	ScJ+iscCVQr4rJpgxZCEweYSvVzUlzR/CBIUgYW5npNXrNvkvpfl
-X-Google-Smtp-Source: AGHT+IEFVDB9uKDdQcuZxWC0w8ez4eUeUcKT+aIyDYXI087So4zKKfgjfNM3pvw0j9i4MVpT8NRq3Q==
-X-Received: by 2002:a05:6a21:9185:b0:1c6:a777:4cf6 with SMTP id adf61e73a8af0-1cad7fac22amr4118905637.10.1724258570261;
-        Wed, 21 Aug 2024 09:42:50 -0700 (PDT)
-Received: from [192.168.0.235] ([38.34.87.7])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-714131601d1sm2876034b3a.19.2024.08.21.09.42.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 21 Aug 2024 09:42:49 -0700 (PDT)
-Message-ID: <2bc94ca9dc634785c3f464576fac7450ffe8e686.camel@gmail.com>
-Subject: Re: KASAN: null-ptr-deref in bpf_core_calc_relo_insn
-From: Eduard Zingerman <eddyz87@gmail.com>
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Cc: Liu RuiTong <cnitlrt@gmail.com>, stable <stable@vger.kernel.org>, Linux
- Regressions <regressions@lists.linux.dev>, bpf <bpf@vger.kernel.org>, LKML
- <linux-kernel@vger.kernel.org>
-Date: Wed, 21 Aug 2024 09:42:44 -0700
-In-Reply-To: <CAADnVQ+9oy6L+oYWJsvy_yMri8vDL9jBQRhZ8nf0SEMm+mT4DA@mail.gmail.com>
-References: 
-	<CAK55_s6do7C+DVwbwY_7nKfUz0YLDoiA1v6X3Y9+p0sWzipFSA@mail.gmail.com>
-	 <badd583d09868ffdd48a97c727680ca6f5699727.camel@gmail.com>
-	 <188a0d1310609fddc29524a64fa3c470fc7c4c94.camel@gmail.com>
-	 <2449825072217d392b5b631e8fd394e91b22a256.camel@gmail.com>
-	 <CAADnVQ+9oy6L+oYWJsvy_yMri8vDL9jBQRhZ8nf0SEMm+mT4DA@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.3 (3.52.3-1.fc40) 
+	s=arc-20240116; t=1724259240; c=relaxed/simple;
+	bh=KRqYf0D7qKIvZDRldP2GF+vIYtADtDZc+uaNUudfuhA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=W5mgicshLoLVRFDhEIMjhrAkNT04lwJUYzqAYw8uOLUbtCGmdHPbYnw/As+H6+XekY9wadzd87VwykhVrGRMCWcSgKfxeqlP0NGN9frWd0PWWIMHjgKDIUIJ+5fI8DZ5pNA+QbpDTYNzKKJ3DkbdouXQglhvNe5YdVlssFwg9d4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=DtfrdYkV; arc=none smtp.client-ip=95.215.58.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Date: Wed, 21 Aug 2024 09:53:47 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1724259236;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vlQGzGWk8tm0muGf8AU98KPFAWS2rZ3ejTpHnzVFAeM=;
+	b=DtfrdYkV68G2vLS7xazpLrwqXKOB8+hUKiu+fgS9cXylowM4cw6AsBFHKCeKSSbmzxZFTk
+	eLeti0zxH3xtakjmF9lVvK29Ebh/Wfse6rz7P47ZItEpRwXu/cE4RCSjCeq2jdVFNVfpWn
+	gUZw1wFLoOLWmOXVa1H2J3aETUp18cE=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Oliver Upton <oliver.upton@linux.dev>
+To: Marc Zyngier <maz@kernel.org>
+Cc: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	kvm@vger.kernel.org, James Morse <james.morse@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Alexander Potapenko <glider@google.com>, stable@vger.kernel.org
+Subject: Re: [PATCH 01/12] KVM: arm64: Make ICC_*SGI*_EL1 undef in the
+ absence of a vGICv3
+Message-ID: <ZsYbm1PSqQMGmNyt@linux.dev>
+References: <20240820100349.3544850-1-maz@kernel.org>
+ <20240820100349.3544850-2-maz@kernel.org>
+ <ZsUOtp9kfpqm1enx@linux.dev>
+ <86le0qxhsn.wl-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <86le0qxhsn.wl-maz@kernel.org>
+X-Migadu-Flow: FLOW_OUT
 
-On Wed, 2024-08-21 at 09:40 -0700, Alexei Starovoitov wrote:
-> On Wed, Aug 21, 2024 at 9:34=E2=80=AFAM Eduard Zingerman <eddyz87@gmail.c=
-om> wrote:
-> >=20
-> > On Wed, 2024-08-21 at 04:46 -0700, Eduard Zingerman wrote:
-> >=20
-> > [...]
-> >=20
-> > > will post a fix to bpf mailing list shortly.
-> >=20
-> > Status update:
-> > apologies for the delay, the fix is trivial but I have some problems
-> > with test case not printing expected log on BPF CI, need some time to d=
-ebug.
-> >=20
-> > Link to wip patch:
-> > https://github.com/eddyz87/bpf/tree/relo-core-bad-local-id
->=20
-> I would ship the fix (since it's trivial) and sort out selftest later.
+On Wed, Aug 21, 2024 at 11:59:52AM +0100, Marc Zyngier wrote:
+> On Tue, 20 Aug 2024 22:46:30 +0100,
+> Oliver Upton <oliver.upton@linux.dev> wrote:
+> > 
+> > On Tue, Aug 20, 2024 at 11:03:38AM +0100, Marc Zyngier wrote:
+> > > On a system with a GICv3, if a guest hasn't been configured with
+> > > GICv3 and that the host is not capable of GICv2 emulation,
+> > > a write to any of the ICC_*SGI*_EL1 registers is trapped to EL2.
+> > > 
+> > > We therefore try to emulate the SGI access, only to hit a NULL
+> > > pointer as no private interrupt is allocated (no GIC, remember?).
+> > > 
+> > > The obvious fix is to give the guest what it deserves, in the
+> > > shape of a UNDEF exception.
+> > > 
+> > > Reported-by: Alexander Potapenko <glider@google.com>
+> > > Signed-off-by: Marc Zyngier <maz@kernel.org>
+> > > Cc: stable@vger.kernel.org
+> > 
+> > LGTM, and just as an FYI I do plan on grabbing this for 6.11
+> 
+> Great, thanks. Are you planning to route this via arm64, given that
+> Paolo is away for a bit?
 
-Makes sense, will submit the fix.
+Yup, exactly that. I'll send the PR in the next day or two when I have
+some time to kick the tires on everything.
+
+-- 
+Thanks,
+Oliver
 
