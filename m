@@ -1,291 +1,313 @@
-Return-Path: <stable+bounces-69844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69845-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89DC195A478
-	for <lists+stable@lfdr.de>; Wed, 21 Aug 2024 20:11:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F91295A522
+	for <lists+stable@lfdr.de>; Wed, 21 Aug 2024 21:12:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD7AF1C22A4D
-	for <lists+stable@lfdr.de>; Wed, 21 Aug 2024 18:10:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA04C1C2108B
+	for <lists+stable@lfdr.de>; Wed, 21 Aug 2024 19:11:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD68D1B3B27;
-	Wed, 21 Aug 2024 18:10:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4947116DEC7;
+	Wed, 21 Aug 2024 19:11:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=siemens.com header.i=@siemens.com header.b="NMufYbyg"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="hyeVxLuO"
 X-Original-To: stable@vger.kernel.org
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2040.outbound.protection.outlook.com [40.107.20.40])
+Received: from outbound.mail.protection.outlook.com (mail-dm6nam11on2045.outbound.protection.outlook.com [40.107.223.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1859D1B3B15;
-	Wed, 21 Aug 2024 18:10:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.40
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10D3016DEC3
+	for <stable@vger.kernel.org>; Wed, 21 Aug 2024 19:11:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.45
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724263844; cv=fail; b=aeBJ/wKcRonl7CJxnLubz87q6UIs3u8l7EmytT3VQqR6NEYv/kewySCQcuMT6sihuxt+A9DYVmyE+1p7/sT/JX610ZOJU97PgjyQWjckLhrkzo1tf4b+4aUPtjN80ojOnRsWx8PBCL9OqQy/NqfTuJRHANeSXGP7K3ASUKy6fU0=
+	t=1724267519; cv=fail; b=BD4jLWdc76L14vGTQkgi1wG8N4Ev5CnocyECzq//lfg2TZrQKvPrM1CZmfaHf92q8dDeE6iPPvfQkun/KWOdQTdqFr5gqnCoJiqFGK4stlvXWidoC+2Lrts0kfOzBbbLAj0G6RYeEq5t6zOZuIZnd2TgTf1lqBi154A+KeL8HgE=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724263844; c=relaxed/simple;
-	bh=mQWgCDicwfO3Szk3W0oBFrVbaP8TZWSpdlAmedoP9Wg=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=UpvKGLAn77uSzMUAvSek2qTPI4v0P4pIoniRZazexjgWidsHkiKA6oV85/vtXRvJd29DkAhew0VDDdqgrMWhlwFs7wFmk3BQcpyCFbqlz8B+qrgvXP0gGtK9XB7x3642Vc0RzQSTLFAIqNxR3I6DmRfp2tCdyJyDvSfsMLtaZts=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=@siemens.com header.b=NMufYbyg; arc=fail smtp.client-ip=40.107.20.40
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=siemens.com
+	s=arc-20240116; t=1724267519; c=relaxed/simple;
+	bh=ymlQde7oL6d1AC2eMfzSkl/ZO7jkDmR6tri+/dEuOKg=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=oXPaGBRW01hnT+ZZT7AmO55l1PiflN75gLPnhHfSgqohy1j/wFmb/g2XE8HDHXZGga9BgFYzXi6SN3pxpzVZKo3YraL0QPjyjjlAgCOIFvTUtzgi49U8fyKpbr98WDVXGVFp34G8pNLeF841SIEIbmrpnLcbAGCq6zw+wbc9T50=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=hyeVxLuO; arc=fail smtp.client-ip=40.107.223.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=lqZIbf3b3Qb36geOfJ/BfKdSotuK4VBu6iknWDPOxJEhAu9sFvA09ozHHAsUA6XWc/ycGG5zfrTxX2XAT812qj08xumeefWKDoCyBUpZsKqppmV45Tyax5ppHa2BTNam5xaADG+3hmeVjJLI2EAJN+VwpB2K274BTC6pk8NI36rpgdbPY75JKLWvFBjvaUOEwi/yvMSVRGJ4taRSt29vITCLdrLTHFimcKAQI4YG6IValeN858qGZ+YtTWLgy9Mcg2tTqv2qYaMUk158my+KIEcVJVwP1U+2P2DXLE1uXmF1MX+oIdSXFt7nfHWNVB//cyrxLIOd7wRhFftooBroPw==
+ b=i9PKMy89YXJ/Lr3ja/I3+IfE+lnVsi9kOZmcpS2/UuKz2lLlMBSF4S0DbtRavehPgrP355ipSE8lncZIDeHLgtqVKz+iDiNHE16SWh+4rE6eEgrOA0mEYFrjsq3ZnOWF1X7Do1OY/ZA3jvZU01V9w+wDkZKN/u82SUuI+SEucQalUWHvpjj3i38renRckKZSSHzMiCHqlUawrXBVnrTcfqLxLDKo/MzzqI8T2UTY3v1fO7P7JHQown7Eu8Ty/+LHTygoVTCKyKeLMguDTTP2PBZauEqoK/Jlwlbts/1navdJRMLKQapvSJpRKsLHJdlpB+DmxKWclCwG/02kZ+jlDA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MUl2FSia/hYbYTKZ1qKw8paU9nW2Dz6/9d4kbIcA1H0=;
- b=kHp/Ei4VLktLCKz5tf5iRIf/3qih48iYlS23wLfT7YYKt+FaeHfZm2i9ZVpyp581FBGCm/9KhMvXye8IVrkA9YR99AxILfOwb1EeVTt3ACQ9gp8lZFOau+cb+dkawKEaj2MkpmrhG1RrQ3u+1sYZahfcj/ikdq6Bmuy2hioPbPmK2ov/r+sfv/R23fEb2KDFc8eYky1fjIhv4kF9m0tN2jBJ4sBS1GJTW0VrzBpLRryqUnqDtivE6JBkSTxye9d+ACTjolfiPQL9/h7V2hxhmCgCcYdzz8RF/c1VYFo7lV7/Ohl4ALt622u3zAhSXg/3smAOe1MWkw89xFqpr4TijQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=siemens.com; dmarc=pass action=none header.from=siemens.com;
- dkim=pass header.d=siemens.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=siemens.com;
- s=selector2;
+ bh=tXZbR5hVCoVRZAkviYGDA0Ei+Af7qU0uM0ZIVZmenwQ=;
+ b=Hp7ikBSnSGoIKw4U+uQsMjy4RgUEoTHq+UJ9ZXAUnyI71ZycY6h8b2qLwT5kdIL1rN7DyWMKryqZuXPZa5fQkr//Shu2D+rhEdkanPocOco97npbzmJWcfIH56wDf/Zs0zFv0pUYiFMLASzBYmtZc1B3zSBL4SY2qiIhzef/MVyq9CUK9IY4K9OGUDmMGnvMtRl6DtiEDYuczTIrc+uzHfqW+DSLmROUAK5BYyGobMhlhSJlmxCo0AD8DbJfWmVKgfmCuqp+t7ZTpZzVAmzQPoBw4UItTkiQoVEC7k4OdZUGCg3qnrP8WpYHdsjMgitTxE59MxggElb9UxEImbvy4A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MUl2FSia/hYbYTKZ1qKw8paU9nW2Dz6/9d4kbIcA1H0=;
- b=NMufYbygPUPS2cRI4MmKOlfS8nYks5ebaQrLqF72yFYhom2q349E7ZPvqhqA3XIq3UNwZ5W5jiT9XjaBU0jffE2ZmZ09Urr4wW6y073Ux7P2XfPmSu+HlPESgMuF/99E4/KyO1GerQsnKbtyXWAn10Tv3x7Mo340I79YRrnOx2DecIkDQSd7w8iNrIT5nUUXYhQJFT2ivazuM66AT26x5vzf2Yw7DqgzhP7doGc9EiJ8P/YbB7Y90b16Vghnk5z4gFFgXOxgy9PMs8OOjnP3opy0UxG/geMku3BDb8SdPm8SuL7H3R1HO5vTR5C2FXl4vvsgwzknbW56U8TIl1KgYg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=siemens.com;
-Received: from AS4PR10MB6181.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:588::19)
- by DU2PR10MB7815.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:10:49f::22) with
+ bh=tXZbR5hVCoVRZAkviYGDA0Ei+Af7qU0uM0ZIVZmenwQ=;
+ b=hyeVxLuOtZU1NWdltxFzUMv8EBige2nu0/8Fgo5OF6Er40/Ypl5Y1OZ1M8NoZNDDTqzMYwhwsT3GlCcwpPdWGNTaG+fcU7ekU0b82VPHWyNUtbvHhNDdOwcEaLeyBJqbUWaUOqGsxN9AJvetlewfIzxtKzjH4reSY9aimqfE//0=
+Received: from CH0PR03CA0348.namprd03.prod.outlook.com (2603:10b6:610:11a::23)
+ by CY5PR12MB6201.namprd12.prod.outlook.com (2603:10b6:930:26::16) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7897.18; Wed, 21 Aug
- 2024 18:10:39 +0000
-Received: from AS4PR10MB6181.EURPRD10.PROD.OUTLOOK.COM
- ([fe80::8fe1:7e71:cf4a:7408]) by AS4PR10MB6181.EURPRD10.PROD.OUTLOOK.COM
- ([fe80::8fe1:7e71:cf4a:7408%4]) with mapi id 15.20.7875.023; Wed, 21 Aug 2024
- 18:10:38 +0000
-Message-ID: <3c8844db-0712-4727-a54c-0a156b3f9e9c@siemens.com>
-Date: Wed, 21 Aug 2024 20:10:35 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] remoteproc: k3-r5: Fix error handling when power-up
- failed
-To: Beleswar Prasad Padhi <b-padhi@ti.com>,
- Bjorn Andersson <andersson@kernel.org>,
- Mathieu Poirier <mathieu.poirier@linaro.org>,
- linux-remoteproc@vger.kernel.org
-Cc: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
- Apurva Nandan <a-nandan@ti.com>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>, Nishanth Menon <nm@ti.com>
-References: <9f481156-f220-4adf-b3d9-670871351e26@siemens.com>
- <cf1783e3-e378-482d-8cc2-e03dedca1271@ti.com>
-From: Jan Kiszka <jan.kiszka@siemens.com>
-Content-Language: en-US
-Autocrypt: addr=jan.kiszka@siemens.com; keydata=
- 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
-In-Reply-To: <cf1783e3-e378-482d-8cc2-e03dedca1271@ti.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: FR2P281CA0140.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:9e::8) To AS4PR10MB6181.EURPRD10.PROD.OUTLOOK.COM
- (2603:10a6:20b:588::19)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7875.29; Wed, 21 Aug
+ 2024 19:11:52 +0000
+Received: from DS3PEPF0000C380.namprd04.prod.outlook.com
+ (2603:10b6:610:11a:cafe::2f) by CH0PR03CA0348.outlook.office365.com
+ (2603:10b6:610:11a::23) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7897.19 via Frontend
+ Transport; Wed, 21 Aug 2024 19:11:52 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ DS3PEPF0000C380.mail.protection.outlook.com (10.167.23.10) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.7897.11 via Frontend Transport; Wed, 21 Aug 2024 19:11:51 +0000
+Received: from tr4.amd.com (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 21 Aug
+ 2024 14:11:50 -0500
+From: Alex Deucher <alexander.deucher@amd.com>
+To: <amd-gfx@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>
+CC: <intel-gfx@lists.freedesktop.org>, Alex Deucher
+	<alexander.deucher@amd.com>, Javier Martinez Canillas <javierm@redhat.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>, Helge Deller <deller@gmx.de>, "Sam
+ Ravnborg" <sam@ravnborg.org>, Daniel Vetter <daniel.vetter@ffwll.ch>,
+	<stable@vger.kernel.org>
+Subject: [PATCH V3] video/aperture: optionally match the device in sysfb_disable()
+Date: Wed, 21 Aug 2024 15:11:35 -0400
+Message-ID: <20240821191135.829765-1-alexander.deucher@amd.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS4PR10MB6181:EE_|DU2PR10MB7815:EE_
-X-MS-Office365-Filtering-Correlation-Id: f9258338-8123-4f3a-93fc-08dcc20c8f8e
-X-MS-Exchange-AtpMessageProperties: SA
+X-MS-TrafficTypeDiagnostic: DS3PEPF0000C380:EE_|CY5PR12MB6201:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8c374806-667d-4ffb-4aad-08dcc2151d3e
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|82310400026|376014|36860700013;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?blZrOHJpMnFWY1JjZTg4N2FhVDB4eTk1MXdYNFNueTNyb2NFUDRSRWI5OEIv?=
- =?utf-8?B?a1ZRV3ppTEtGNjIzOVNhbnEzUXAveWxLNm9OcHEraFJGOWZ3WVhWQlpVVlh2?=
- =?utf-8?B?M0Jwd09hU21rbnNFVjBhSnR1aUNtaDI2Y0pDaVMrY1E3TVdxVVU2NDhWUEMx?=
- =?utf-8?B?RlNHeU5GWUJxRmhWaXV3ZDZ3Tk9oczZXbzhWUkFBU1pEOHE4VkZwN3dVT2lz?=
- =?utf-8?B?VklobTJteW1wcmhuYkJ5WDRJRWdhMU9sYkJhbmhkSHRBb0R5aW1aM2dxd2NC?=
- =?utf-8?B?RXd1Rlk0VDRITFM0UFVxc1JOOGtEZ0JRYlgrb2lvbjhRTENuaVQzckpYWXds?=
- =?utf-8?B?KzBwbFd1anVZblVmc1NhZlVvcTlXKzVuSDhhV2hac2VXTkl0WlNsckF3cmVD?=
- =?utf-8?B?TXBBenlncHFva2JSREMrdlZNUzNZazJNUkZJb3dZL1ZCV2x6VWFPSDFoMDQx?=
- =?utf-8?B?TXYvSFd2bVZSMDY1cTg4cXlUZjBpcFNHdDJpU0dFTTgrRkdhbDhQRmhXcVMv?=
- =?utf-8?B?bWRscUFyQldRdkp5MFJqNlB4b2NvQys2THlnK2Z4RzM1bDlZU0ZCUncyRU9j?=
- =?utf-8?B?QmhOcVNwRkdvU3kwRWxlSnd4MGxLM29Vbm0wQTdrcGF0U2tPYVhUWGp3Z2hU?=
- =?utf-8?B?SWNsSkl1d3MwcWZVajhvb2c4YXNQbSt3TVFOdkg0UDBrUEpzWWZMSWJxbzV3?=
- =?utf-8?B?K1F0MGhzTVE5MVJQTUg0d2pXZ3BYR3JuZ2VmcjlyOUE3VWQxZ1R1VkF2Yytk?=
- =?utf-8?B?bk05dE1KWTlvQyt5b1MzREUyc096OGpLMkc3aDRXSGJXczNibGpjWUNoMnpN?=
- =?utf-8?B?OTI3c29ZM2NSSFdST09DWkxIS2ZTYTVrTWhlVmgvWitXUDlXNGxhbnMwNkxm?=
- =?utf-8?B?dUFWd0RUemtqaTRBbFhpS0UwZXg1TG9DejFaelZXSDZLeHFFZ0ZKK2V0YUhF?=
- =?utf-8?B?THVyOVRTVXlqdFlQaU54MzVKOStnUm5nZE81U0VJcXlqZk44N3dHWW9Yd1FH?=
- =?utf-8?B?bkEybXdvbzg0ZHRGeUV3WW91SWh2WUs0ZGYrOEpQeXpxZ1VNc1kxOGs0Q0Zs?=
- =?utf-8?B?b3FPNUJBbjlETEdCL3YzU3dkL3NaUnFGNmtYVU9YSElmbm90YmRseVc0c2F5?=
- =?utf-8?B?L1JMeHdoMHRoM0s1VXY4ZnF5SS8xRjBRRzBGVk02YXVmU2QyYVJtanIyWHVx?=
- =?utf-8?B?aU9UcFVmQW41SnR2OElNZHp2YWU4R00wTlE5TGpiVEo0WlVXUmIybFBqZlgw?=
- =?utf-8?B?OFB0cVAzbWFqY0ZlbE5nWjdvN3FkOGZGVVRldzYzNGJ3TWoyR2ZtRk5QSmov?=
- =?utf-8?B?YlRWc01GYVdrSXFBZXd4R3RWUGhlRXlFTy9sYnRzRCtpTFdsRDE4Z2I0VGdN?=
- =?utf-8?B?SlNsa3dQZTQ1TjE3TkZGb0FJT2hvYml6L3hYakk4SVhkNjQrdUlmU21zY3lI?=
- =?utf-8?B?SGsydVpEQi9KYzgxWEZTWGFxSGsvSmV6TEVMZ1Uzd2MydnJXdjIyU1VlQldQ?=
- =?utf-8?B?NUZGVGw0TWorbC9pSWNkRGJDdW82akpqbWRGb2F1aFltNTY0ZGFySXR5Uk4v?=
- =?utf-8?B?UUtHYUJoOHBuZDlSeXNESjFwejZzN1lDWENFWXkzSGpzOFZjSnlYTElBZWh4?=
- =?utf-8?B?V1lsaStkYkU3YUw5NjRWRHRqS0lra3ZVVTJxWjFPOTUvYlhwbWdTcG5BTi90?=
- =?utf-8?B?UlZlTnlrVlBYOHNJR283RnAvTXhKa0EyZjM4clc2TTJFaEx2dUZhTDNwc0hw?=
- =?utf-8?B?V1ZSMVFvd2QwL1R1S0JTa1kvSG8yUjhSTWRhTTdlaG1KTmFmSlZVV3NSbTRL?=
- =?utf-8?B?d08rNzdsNmd6QTJvTDFhUT09?=
+	=?us-ascii?Q?tmGzgOE2aFUjO7RmO9Hx2itIRoNZan0c9NtAhhhwQuEMPivPTCfRy3LAMnnL?=
+ =?us-ascii?Q?lgpH/JwA7oSdlTK7e75IrM1grvguTKe2D/OUtN+Zq0LSY9acKF6S/EcH3ny0?=
+ =?us-ascii?Q?SlFL+9zZ5Wf0HSw37oCbFajFVag2w6KjMMLBWnaGXK9m7c2Jv7thsjawixUs?=
+ =?us-ascii?Q?0hYeVzi0qHvxFa4/a8ioFY+tfHDHgKlLqR9br3yqUB02sR7s/AeP3EOhYWSF?=
+ =?us-ascii?Q?J9svlUlMdtx/H9gSmBoIFXFaZqYwrZaPP2Gh77KKGuLZViSQSRNnz627Kud6?=
+ =?us-ascii?Q?VgJn3IKW9iBxS//eRqMUtOB0IfVPSQfJqxQzegpoxWPaae6Lbb+AwFeTOsXQ?=
+ =?us-ascii?Q?ju9zWRWEMLLkO6fz4IRn7JPcXhOTbp8ELcnMmdM1qsYzOK9V+KPdYwpH9hOk?=
+ =?us-ascii?Q?vIEpb/DGQs2kzTUi0jG5hveNOby66bHa1SVwu+re+CpzTNCQFIFThNYfTo3d?=
+ =?us-ascii?Q?Lk65j5eHvHdPPbozHbt5PpZ5hAShmbYuq/pZwQQ70+dHhQD6nGgHHIQQG0yP?=
+ =?us-ascii?Q?qmHhsyRGyzfR3rROBJx/J91RwdifmxTgAdJm+m5b04LnTDioX6nDrKduZCJ1?=
+ =?us-ascii?Q?AIl5gTEcdzSPXefbIKTzLbdOzrnOaJUCLvkYvjQt6ZJg4fn8mxUGY1GEBoM+?=
+ =?us-ascii?Q?C08pL8DcsYyGjv6+qPXKrT7KmnuvXYwxN5rb/WuVU7YjU+4GrQ2+UTcI2I0I?=
+ =?us-ascii?Q?KnQZq18LJuuhMsJZ28iUU2llJltYHxTV5gEvV+sUcCh2NrRyJxsrkP+VUEwH?=
+ =?us-ascii?Q?tgLF0JL9ZzQB5vwvCWH/3B2/Gssz5R2/0EENdoBKhqYoUeGoHoMpVe+nUV05?=
+ =?us-ascii?Q?52rYi3PlpbJYjkEHvQrWqzeTPo65lA3G512ObNuipqjQG2iQkwzFjyLILJOK?=
+ =?us-ascii?Q?JrS24X2ZYq06BBsO7OfB6ZEOC9f6b4PArdV31FPvDfiijxMnz2NTVObhg2Q7?=
+ =?us-ascii?Q?WyNXcEtYgnAMLglBCsEUgy8OGdLeLYBBOwQNqcWqix7yt/v/C/ekdmIr7qjY?=
+ =?us-ascii?Q?HjkyCa1hcLkWfaopsCVnYQZ+VlQaw+PBRaoIFa8/4RRl4b0WrIq80wFhmXrn?=
+ =?us-ascii?Q?DYrSHlpoA0ir8kdpc5BGl/dS+tP+ZoxcoXe5Brza0AoP0fMYCd1CmX+g97mF?=
+ =?us-ascii?Q?nf0VSXpbCJeGO5X8LEKcu0Z0HSxd2t2nr5D4cMCOAOMasVwXuR1n3pifnscu?=
+ =?us-ascii?Q?MggD/5O/jgmJTa0yGJmaZC8N34HVcGmmuhk/K0dyHQJ/PXCdJUPdZeWIQcco?=
+ =?us-ascii?Q?vD7lE48ynALmpPgVWCNIWCJLGZuPyrejXoKs3JDJPLzZyXi93pIXrOnCuS9a?=
+ =?us-ascii?Q?MT/tW9U/24+xSyrDzAVBYIFv5145meLG8UQazTe0FZ1RVfGiKSFjMVBI3q5x?=
+ =?us-ascii?Q?mF7KVoAWyNyLm4c8ShobewTqmCSrnUc5pCP9JUJH+9GULH2AX1yaFAsAwdm9?=
+ =?us-ascii?Q?NDpqAucJHLX5JiY1zWVOI57EiJ06sRaR?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS4PR10MB6181.EURPRD10.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?aHBWeEVDS256VWExTCt6QnZaS0FJejFsS29GUEtqRHV0UTdXbk1SMWl6Ujl4?=
- =?utf-8?B?VjNxeGRDdVNscUhPbGxGejNQbHU1bmpBdWc4MzNXTHdzRW14MkVZMXdCOE5H?=
- =?utf-8?B?RURMdWtURUJYd083d2poTXNYZDh1RDFrR3QySnB4dDZNUEVoNGRaanRrTEdS?=
- =?utf-8?B?ZjRLZEZVbzlZa00vQTFTYXg2aHE5Ui9BaFdjSm4zOTlMczZtbnhleE5TTGtO?=
- =?utf-8?B?Q1BlM0VBRTJ4QVFWUFdlUDdSbGRUNjg5eEZYQW8yd1RaS05mbXJ1clh4NmUz?=
- =?utf-8?B?bDQrUi83T1ZML3RwMm5qSXhVcDdwTUlvUkI3bERxT1p1UDFYOXBJWEE0S2JP?=
- =?utf-8?B?c09FV2lZUldVSHpKeVRiRVlDNkZPMU96bVJzRHltUnJMQnZHNVo0OWFuQ2JS?=
- =?utf-8?B?VWxiRXJyUlAzazlwYWl0Y01mbVRBZ3Z6dUZjMXJ1V3p1N1R5WnhneXlxejVz?=
- =?utf-8?B?cGhRUUtwdndvV3c1SXM1cmtaZXIrT29YOHZBV3JqVWVZMjRIb0lsVVVHdWRP?=
- =?utf-8?B?aXd4K3BjNWNsM084bE5mQ2hTcFpJTTFMQ3JnWUk1UG5EWk44U25QZy9TdjVX?=
- =?utf-8?B?ZHNPcWJLWThjYjBmRFh2enBsQ0xBUExOTFJUa1dIc0hSUEY3R0M5Tm1jOU1V?=
- =?utf-8?B?S3AvUlZjQ1kybFFVT2twNHBvMzRvYVc4QUFXRmoxNWdPYlFyak81eVR0dUVw?=
- =?utf-8?B?TlAvODFsaVpBVjFkcWlhbVhrd0tBR2tSWWsyTWdIOWNWYmpweEZJNlBjMGlT?=
- =?utf-8?B?dFU3enViS3J2eW82Ly9LakRVYlNVMXRPaWdXMWczMENNeVgwV0Q0dHVzZTBS?=
- =?utf-8?B?TDk3b1QwSWtmMFFmRTdvRlJabjFGZHozajNaUDFqVUNjR0ZFNitNN25ZM2Mx?=
- =?utf-8?B?aWtCOU9odjZsK0JGZVZWcm43L3F3TUV4dE0xcDd5Z05vbTVzU3A2bDRVSFZw?=
- =?utf-8?B?S2RQcDNMb29TQmlpWHpkUnlXNGRCYTRWUDIyU2M3Vm5MVE5QSTFpZ3lDSGFr?=
- =?utf-8?B?cTJ4T2RHamZzSzhIWTdYcWw5bEFnNWZrTEIyUmFlTHpUVXNQWlhleC8yNUZm?=
- =?utf-8?B?bHJIZDBzVTQxaEFqSVlKZ1VPN21OT3VRL2ZVNEl3UlhFZW00U1FmNzE5czZ2?=
- =?utf-8?B?UjVVNW9pU0lLODRkK1I3NllEVC9nazhMVVRjN0tmRUpRUkZ5UFdMWGVGbFla?=
- =?utf-8?B?b0tMaGdTRnZSeitxdVo2ZE9aZ09KZCs4NVdJUksxMEdVQklyUVFrL2xVQms4?=
- =?utf-8?B?UWNDZ2s5aCtsSDNJaDlvbmwzcnJGeWVlTVRrell5cVp4QnY4SUtGaWpsNktj?=
- =?utf-8?B?RXlSbDBLN1NvbjhjbzhrRmpFNmhMNFFHZWlCSHpGN3UramVIc3NNeFFZU2lj?=
- =?utf-8?B?VWJjNnR0NTVnWFN5cThVejUvT2hlckNCVDhmNmZXOWo4Z1M4WTlmY0pPaWNC?=
- =?utf-8?B?UytQRDRuNU40Z0J2U2tEWWVTdVlISTdURkpEc0RQWUp3akxYR2F3Q3BMcEIy?=
- =?utf-8?B?QmVTQ0hmQ01PTzhKa0MwMU1MbkRwQVZxVzhKZjJ3dkR4dWJ5dEtXZ3k3L09m?=
- =?utf-8?B?ZDhhL3J0WlV3QktQTWlpbExiNFNSM2x5TFNyT1Q2UUp0WTFsQnlnMVRDeUxC?=
- =?utf-8?B?S2xoMWZ6Ujc5RlRWV3RGVGdIMVJ3dDFhVllyOVd6dWpaNFljZm9Qc3UzMGVa?=
- =?utf-8?B?N24yQXlvb1hPc0hnZDI5N2swNWdjV3BNZWIwL1cvMHYvZXp4M2ZZVzJ3R3ht?=
- =?utf-8?B?TWdZM2llbjRiUmZsMGtXSytMOCtKNS82UHhMNXltM1hxN0dCMnBBZy80RDN6?=
- =?utf-8?B?YlFBU1Z6bTJMODQ4bkg0SERQcWMyK0VJVkY3OHZiNXN0bys5bnU3b05Od044?=
- =?utf-8?B?VytqQzIwdFprajdQYkNIKzFQM25Cdm51elZXVVc3MUEzSXJPT25JTUZXTEZW?=
- =?utf-8?B?Y2ZrbXJLTVl1MUtVZWNsMk5OZUVZL1BnUGVneG9NMUdUZzdkdWlOQUdlaFdG?=
- =?utf-8?B?MjlXdEppbGVwemN4MzY2QkFCN2NaYllISDRmNEdhTlp1MXl3UVNQZGpMYXVI?=
- =?utf-8?B?aVRvR1Z0ZTNqQkR1YW9HckI5UUtyUSs2Y24xNTFCb2xPdmxmZnlydGNQbllD?=
- =?utf-8?Q?YsfDwyNX99O75hu5g0zMLkfz3?=
-X-OriginatorOrg: siemens.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f9258338-8123-4f3a-93fc-08dcc20c8f8e
-X-MS-Exchange-CrossTenant-AuthSource: AS4PR10MB6181.EURPRD10.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2024 18:10:38.4977
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(376014)(36860700013);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2024 19:11:51.9395
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 38ae3bcd-9579-4fd4-adda-b42e1495d55a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: qPXDDWhOlZb4T9jWKB7TLbCSwkb6rdmc8mY8Pl5fI8npaQ9G4t2kH7lkFXyq19kmJL7SxOZrT+G223L2L4o4bw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR10MB7815
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8c374806-667d-4ffb-4aad-08dcc2151d3e
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DS3PEPF0000C380.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6201
 
-On 21.08.24 07:30, Beleswar Prasad Padhi wrote:
-> 
-> On 19-08-2024 20:54, Jan Kiszka wrote:
->> From: Jan Kiszka <jan.kiszka@siemens.com>
->>
->> By simply bailing out, the driver was violating its rule and internal
-> 
-> 
-> Using device lifecycle managed functions to register the rproc
-> (devm_rproc_add()), bailing out with an error code will work.
-> 
->> assumptions that either both or no rproc should be initialized. E.g.,
->> this could cause the first core to be available but not the second one,
->> leading to crashes on its shutdown later on while trying to dereference
->> that second instance.
->>
->> Fixes: 61f6f68447ab ("remoteproc: k3-r5: Wait for core0 power-up
->> before powering up core1")
->> Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
->> ---
->>   drivers/remoteproc/ti_k3_r5_remoteproc.c | 3 ++-
->>   1 file changed, 2 insertions(+), 1 deletion(-)
->>
->> diff --git a/drivers/remoteproc/ti_k3_r5_remoteproc.c
->> b/drivers/remoteproc/ti_k3_r5_remoteproc.c
->> index 39a47540c590..eb09d2e9b32a 100644
->> --- a/drivers/remoteproc/ti_k3_r5_remoteproc.c
->> +++ b/drivers/remoteproc/ti_k3_r5_remoteproc.c
->> @@ -1332,7 +1332,7 @@ static int k3_r5_cluster_rproc_init(struct
->> platform_device *pdev)
->>               dev_err(dev,
->>                   "Timed out waiting for %s core to power up!\n",
->>                   rproc->name);
->> -            return ret;
->> +            goto err_powerup;
->>           }
->>       }
->>   @@ -1348,6 +1348,7 @@ static int k3_r5_cluster_rproc_init(struct
->> platform_device *pdev)
->>           }
->>       }
->>   +err_powerup:
->>       rproc_del(rproc);
-> 
-> 
-> Please use devm_rproc_add() to avoid having to do rproc_del() manually
-> here.
+In aperture_remove_conflicting_pci_devices(), we currently only
+call sysfb_disable() on vga class devices.  This leads to the
+following problem when the pimary device is not VGA compatible:
 
-This is just be the tip of the iceberg. The whole code needs to be
-reworked accordingly so that we can drop these goto, not just this one.
-Just look at k3_r5_reserved_mem_init. Your change in [1] was also too
-early in this regard, breaking current error handling additionally.
+1. A PCI device with a non-VGA class is the boot display
+2. That device is probed first and it is not a VGA device so
+   sysfb_disable() is not called, but the device resources
+   are freed by aperture_detach_platform_device()
+3. Non-primary GPU has a VGA class and it ends up calling sysfb_disable()
+4. NULL pointer dereference via sysfb_disable() since the resources
+   have already been freed by aperture_detach_platform_device() when
+   it was called by the other device.
 
-I'll stop my whac-a-mole. Someone needs to sit down and do that for the
-complete code consistently. And test the error cases.
+Fix this by passing a device pointer to sysfb_disable() and checking
+the device to determine if we should execute it or not.
 
-Jan
+v2: Fix build when CONFIG_SCREEN_INFO is not set
+v3: Move device check into the mutex
+    Drop primary variable in aperture_remove_conflicting_pci_devices()
+    Drop __init on pci sysfb_pci_dev_is_enabled()
 
-[1]
-https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/commit/?id=f3f11cfe890733373ddbb1ce8991ccd4ee5e79e1
+Fixes: 5ae3716cfdcd ("video/aperture: Only remove sysfb on the default vga pci device")
+Cc: Javier Martinez Canillas <javierm@redhat.com>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Helge Deller <deller@gmx.de>
+Cc: Sam Ravnborg <sam@ravnborg.org>
+Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
+---
+ drivers/firmware/sysfb.c | 19 +++++++++++++------
+ drivers/of/platform.c    |  2 +-
+ drivers/video/aperture.c | 11 +++--------
+ include/linux/sysfb.h    |  4 ++--
+ 4 files changed, 19 insertions(+), 17 deletions(-)
 
-> 
->>   err_add:
->>       k3_r5_reserved_mem_exit(kproc);
-
+diff --git a/drivers/firmware/sysfb.c b/drivers/firmware/sysfb.c
+index 880ffcb50088..ac4680dc463f 100644
+--- a/drivers/firmware/sysfb.c
++++ b/drivers/firmware/sysfb.c
+@@ -39,6 +39,8 @@ static struct platform_device *pd;
+ static DEFINE_MUTEX(disable_lock);
+ static bool disabled;
+ 
++static struct device *sysfb_parent_dev(const struct screen_info *si);
++
+ static bool sysfb_unregister(void)
+ {
+ 	if (IS_ERR_OR_NULL(pd))
+@@ -52,6 +54,7 @@ static bool sysfb_unregister(void)
+ 
+ /**
+  * sysfb_disable() - disable the Generic System Framebuffers support
++ * @dev:	the device to check if non-NULL
+  *
+  * This disables the registration of system framebuffer devices that match the
+  * generic drivers that make use of the system framebuffer set up by firmware.
+@@ -61,17 +64,21 @@ static bool sysfb_unregister(void)
+  * Context: The function can sleep. A @disable_lock mutex is acquired to serialize
+  *          against sysfb_init(), that registers a system framebuffer device.
+  */
+-void sysfb_disable(void)
++void sysfb_disable(struct device *dev)
+ {
++	struct screen_info *si = &screen_info;
++
+ 	mutex_lock(&disable_lock);
+-	sysfb_unregister();
+-	disabled = true;
++	if (!dev || dev == sysfb_parent_dev(si)) {
++		sysfb_unregister();
++		disabled = true;
++	}
+ 	mutex_unlock(&disable_lock);
+ }
+ EXPORT_SYMBOL_GPL(sysfb_disable);
+ 
+ #if defined(CONFIG_PCI)
+-static __init bool sysfb_pci_dev_is_enabled(struct pci_dev *pdev)
++static bool sysfb_pci_dev_is_enabled(struct pci_dev *pdev)
+ {
+ 	/*
+ 	 * TODO: Try to integrate this code into the PCI subsystem
+@@ -87,13 +94,13 @@ static __init bool sysfb_pci_dev_is_enabled(struct pci_dev *pdev)
+ 	return true;
+ }
+ #else
+-static __init bool sysfb_pci_dev_is_enabled(struct pci_dev *pdev)
++static bool sysfb_pci_dev_is_enabled(struct pci_dev *pdev)
+ {
+ 	return false;
+ }
+ #endif
+ 
+-static __init struct device *sysfb_parent_dev(const struct screen_info *si)
++static struct device *sysfb_parent_dev(const struct screen_info *si)
+ {
+ 	struct pci_dev *pdev;
+ 
+diff --git a/drivers/of/platform.c b/drivers/of/platform.c
+index 389d4ea6bfc1..ef622d41eb5b 100644
+--- a/drivers/of/platform.c
++++ b/drivers/of/platform.c
+@@ -592,7 +592,7 @@ static int __init of_platform_default_populate_init(void)
+ 			 * This can happen for example on DT systems that do EFI
+ 			 * booting and may provide a GOP handle to the EFI stub.
+ 			 */
+-			sysfb_disable();
++			sysfb_disable(NULL);
+ 			of_platform_device_create(node, NULL, NULL);
+ 			of_node_put(node);
+ 		}
+diff --git a/drivers/video/aperture.c b/drivers/video/aperture.c
+index 561be8feca96..2b5a1e666e9b 100644
+--- a/drivers/video/aperture.c
++++ b/drivers/video/aperture.c
+@@ -293,7 +293,7 @@ int aperture_remove_conflicting_devices(resource_size_t base, resource_size_t si
+ 	 * ask for this, so let's assume that a real driver for the display
+ 	 * was already probed and prevent sysfb to register devices later.
+ 	 */
+-	sysfb_disable();
++	sysfb_disable(NULL);
+ 
+ 	aperture_detach_devices(base, size);
+ 
+@@ -346,15 +346,10 @@ EXPORT_SYMBOL(__aperture_remove_legacy_vga_devices);
+  */
+ int aperture_remove_conflicting_pci_devices(struct pci_dev *pdev, const char *name)
+ {
+-	bool primary = false;
+ 	resource_size_t base, size;
+ 	int bar, ret = 0;
+ 
+-	if (pdev == vga_default_device())
+-		primary = true;
+-
+-	if (primary)
+-		sysfb_disable();
++	sysfb_disable(&pdev->dev);
+ 
+ 	for (bar = 0; bar < PCI_STD_NUM_BARS; ++bar) {
+ 		if (!(pci_resource_flags(pdev, bar) & IORESOURCE_MEM))
+@@ -370,7 +365,7 @@ int aperture_remove_conflicting_pci_devices(struct pci_dev *pdev, const char *na
+ 	 * that consumes the VGA framebuffer I/O range. Remove this
+ 	 * device as well.
+ 	 */
+-	if (primary)
++	if (pdev == vga_default_device())
+ 		ret = __aperture_remove_legacy_vga_devices(pdev);
+ 
+ 	return ret;
+diff --git a/include/linux/sysfb.h b/include/linux/sysfb.h
+index c9cb657dad08..bef5f06a91de 100644
+--- a/include/linux/sysfb.h
++++ b/include/linux/sysfb.h
+@@ -58,11 +58,11 @@ struct efifb_dmi_info {
+ 
+ #ifdef CONFIG_SYSFB
+ 
+-void sysfb_disable(void);
++void sysfb_disable(struct device *dev);
+ 
+ #else /* CONFIG_SYSFB */
+ 
+-static inline void sysfb_disable(void)
++static inline void sysfb_disable(struct device *dev)
+ {
+ }
+ 
 -- 
-Siemens AG, Technology
-Linux Expert Center
+2.46.0
 
 
