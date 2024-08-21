@@ -1,99 +1,123 @@
-Return-Path: <stable+bounces-69808-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69809-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9739095A05B
-	for <lists+stable@lfdr.de>; Wed, 21 Aug 2024 16:50:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7B2C95A07C
+	for <lists+stable@lfdr.de>; Wed, 21 Aug 2024 16:56:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54611284DC9
-	for <lists+stable@lfdr.de>; Wed, 21 Aug 2024 14:50:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 82627285CD7
+	for <lists+stable@lfdr.de>; Wed, 21 Aug 2024 14:55:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16839199FC9;
-	Wed, 21 Aug 2024 14:50:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FD941B1D73;
+	Wed, 21 Aug 2024 14:55:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PHtZXUF6"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lMUjjSpC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE6B2364D6;
-	Wed, 21 Aug 2024 14:50:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AF151B1D4E;
+	Wed, 21 Aug 2024 14:55:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724251831; cv=none; b=JI3IPuKlmD11V2z7e2AIRrruWqXTM/5FPB8au7HVqaTFcr2cHwAfWgWmkqcBCvqoabZJGj18AcvssyG2m48mIkcO8+AZ8y6Xo+kcjutkYJjW7uf638dSMllWhoD6o42BnNjpwFkowTVvqIlCTai58Acv27relK5G+KLvLUidVfA=
+	t=1724252155; cv=none; b=IzmYXIByDpNsO61GiFjaDfvqwFwk5Ptb1SNBwHBdxQ8X40hgkim7ReSnOxJlLjt0iimL8xFfZfMQIwwXeePpyZN9Fbg6eBS6WZU96MJovSzef7TWrKTmn03c6b5vB0D9XC1nDoIg5vzQk5zIIFsocg/F/K5aPXihAabqs0/IIiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724251831; c=relaxed/simple;
-	bh=DOn+l7VijRoQ0qf3XpvX93tTLR74QrEEGQ4BtmKSlDc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=q1z82iuNKO+nBNlulZaB0NbbTsfNZW3gr9NZsDdxntAxdSrhH7XvPE0O4Lrcd1tPrZCQz/0DwyMegbXQ/kML7PgTcdNaHWBfJodH2H0fFGcLVpyk5/UC+TIEMophTMLdg8Q2jab6hGpKIJomW0Jp8AKkqOsGRFEXr9uXFP/XxnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PHtZXUF6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86E6DC4AF09;
-	Wed, 21 Aug 2024 14:50:29 +0000 (UTC)
+	s=arc-20240116; t=1724252155; c=relaxed/simple;
+	bh=Z27Jo76f3T2sy25byCwkgjJLEz5yoPzSv/niImKLgrQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=MfL0qE4HUJBEXGo6tb9LDxLEIxXxmbMQj38uJfeU7o9Le4SZsuzGvJC631/wc/kbMqNg/fmNnvO5oe3M6kJD5ncfmPV2Y3AGndm5isKr62ytqHUqySc1jq7V7smEj4+d8VCzAchU6n8Lgp3pNLqXHB9thuoWFyK9QXEcRE+6Uwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lMUjjSpC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C7BDC4AF0E;
+	Wed, 21 Aug 2024 14:55:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724251830;
-	bh=DOn+l7VijRoQ0qf3XpvX93tTLR74QrEEGQ4BtmKSlDc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=PHtZXUF6aY8uuzdzlC/nehYxpXwf1+Vri257L2u9J+46BBETHc/1LSOI5bf3lVyxE
-	 HuapqepRW9B9qTaRxeFOUGDKvDs6BSIn28vsBfIMo5/9i+QtHK5Px+8Y2cGXq7Tkx7
-	 QSmwKv8zmOxX7+eKw+x0GqHl2PRILupM1FUPlAbfAO6Vb8jEXknKJOXRUVzhd2wfjl
-	 /ibkexLAF22k5FZnhdCuYFtVcdaEMQ7uMxRavmxqJ3SX4cD96/OfWOg9CrhwzIMzd6
-	 7WWVfuvfOnDi/rWGxbaTeezQ3DxSielSIJi8G2nM9VazcpqUtK6+rDLfvqGhMpCfua
-	 mb9zzlJ8IxKbg==
-Date: Wed, 21 Aug 2024 09:50:27 -0500
-From: Bjorn Andersson <andersson@kernel.org>
-To: Ma Ke <make24@iscas.ac.cn>
-Cc: vkoul@kernel.org, kishon@kernel.org, agross@codeaurora.org, 
-	ansuelsmth@gmail.com, linux-arm-msm@vger.kernel.org, linux-phy@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] phy: qualcomm: Check NULL ptr on lvts_data in
- qcom_ipq806x_usb_phy_probe()
-Message-ID: <4kpmkjp6pp6r34v7se24rscnk2t7g2pjcrqm6l7nt7h3lgsu3v@rauqrchifqjj>
-References: <20240821131042.1464529-1-make24@iscas.ac.cn>
+	s=k20201202; t=1724252154;
+	bh=Z27Jo76f3T2sy25byCwkgjJLEz5yoPzSv/niImKLgrQ=;
+	h=From:To:Cc:Subject:Date:From;
+	b=lMUjjSpChUxEvkyuGpvoqf3djfKUlQ2t5Kdei6Esarmhll1a+FCOgarFT/xOLOOKe
+	 X1JWpXo0mvNCy3hFiaxaEVpXEm93BpvIgBpbHg9DDaWv5lSL9C9msHrfMxvwzki25N
+	 fsG3XU5/pWfmw1Sp5Rg/uvgvbj+rlKYW98E95DlkBBMnqLZUGQhzVwBPvX4LdF1OL9
+	 iavzQ1a9oLxcJ0Nkr09LMS0NhGYmVn+JH1xNXcSvvpwk3IcvYIyhkNBXGJOwTe6d94
+	 krqR8pNzBFHPM5yyXjhnmQLGbOg/asagIzrwTpKuD6w0SVX9+sb/ebZtoSUs8ZWNJJ
+	 dN7QU22lZ4B9Q==
+From: cel@kernel.org
+To: <stable@vger.kernel.org>
+Cc: <linux-nfs@vger.kernel.org>,
+	pvorel@suse.cz,
+	sherry.yang@oracle.com,
+	calum.mackay@oracle.com,
+	kernel-team@fb.com,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15.y 00/18] Backport "make svc_stat per-net instead of global"
+Date: Wed, 21 Aug 2024 10:55:30 -0400
+Message-ID: <20240821145548.25700-1-cel@kernel.org>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240821131042.1464529-1-make24@iscas.ac.cn>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Wed, Aug 21, 2024 at 09:10:42PM GMT, Ma Ke wrote:
-> of_device_get_match_data() can return NULL if of_match_device failed, and
-> the pointer 'data' was dereferenced without checking against NULL. Add
-> checking of pointer 'data' in qcom_ipq806x_usb_phy_probe().
+From: Chuck Lever <chuck.lever@oracle.com>
 
-How do you create the platform_device such that this happens?
+Following up on
 
-Regards,
-Bjorn
+https://lore.kernel.org/linux-nfs/d4b235df-4ee5-4824-9d48-e3b3c1f1f4d1@oracle.com/
 
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: ef19b117b834 ("phy: qualcomm: add qcom ipq806x dwc usb phy driver")
-> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-> ---
->  drivers/phy/qualcomm/phy-qcom-ipq806x-usb.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/phy/qualcomm/phy-qcom-ipq806x-usb.c b/drivers/phy/qualcomm/phy-qcom-ipq806x-usb.c
-> index 06392ed7c91b..9b9fd9c1b1f7 100644
-> --- a/drivers/phy/qualcomm/phy-qcom-ipq806x-usb.c
-> +++ b/drivers/phy/qualcomm/phy-qcom-ipq806x-usb.c
-> @@ -492,6 +492,8 @@ static int qcom_ipq806x_usb_phy_probe(struct platform_device *pdev)
->  		return -ENOMEM;
->  
->  	data = of_device_get_match_data(&pdev->dev);
-> +	if (!data)
-> +		return -ENODEV;
->  
->  	phy_dwc3->dev = &pdev->dev;
->  
-> -- 
-> 2.25.1
-> 
-> 
+Here is a backport series targeting origin/linux-5.15.y that closes
+the information leak described in the above thread.
+
+Review comments welcome.
+
+Chuck Lever (6):
+  NFSD: Refactor nfsd_reply_cache_free_locked()
+  NFSD: Rename nfsd_reply_cache_alloc()
+  NFSD: Replace nfsd_prune_bucket()
+  NFSD: Refactor the duplicate reply cache shrinker
+  NFSD: Rewrite synopsis of nfsd_percpu_counters_init()
+  NFSD: Fix frame size warning in svc_export_parse()
+
+Jeff Layton (2):
+  nfsd: move reply cache initialization into nfsd startup
+  nfsd: move init of percpu reply_cache_stats counters back to
+    nfsd_init_net
+
+Josef Bacik (10):
+  sunrpc: don't change ->sv_stats if it doesn't exist
+  nfsd: stop setting ->pg_stats for unused stats
+  sunrpc: pass in the sv_stats struct through svc_create_pooled
+  sunrpc: remove ->pg_stats from svc_program
+  sunrpc: use the struct net as the svc proc private
+  nfsd: rename NFSD_NET_* to NFSD_STATS_*
+  nfsd: expose /proc/net/sunrpc/nfsd in net namespaces
+  nfsd: make all of the nfsd stats per-network namespace
+  nfsd: remove nfsd_stats, make th_cnt a global counter
+  nfsd: make svc_stat per-network namespace instead of global
+
+ fs/lockd/svc.c             |   3 -
+ fs/nfs/callback.c          |   3 -
+ fs/nfsd/export.c           |  32 ++++--
+ fs/nfsd/export.h           |   4 +-
+ fs/nfsd/netns.h            |  25 ++++-
+ fs/nfsd/nfs4proc.c         |   6 +-
+ fs/nfsd/nfscache.c         | 202 ++++++++++++++++++++++---------------
+ fs/nfsd/nfsctl.c           |  24 ++---
+ fs/nfsd/nfsd.h             |   1 +
+ fs/nfsd/nfsfh.c            |   3 +-
+ fs/nfsd/nfssvc.c           |  24 +++--
+ fs/nfsd/stats.c            |  52 ++++------
+ fs/nfsd/stats.h            |  83 ++++++---------
+ fs/nfsd/trace.h            |  22 ++++
+ fs/nfsd/vfs.c              |   6 +-
+ include/linux/sunrpc/svc.h |   5 +-
+ net/sunrpc/stats.c         |   2 +-
+ net/sunrpc/svc.c           |  36 ++++---
+ 18 files changed, 302 insertions(+), 231 deletions(-)
+
+-- 
+2.45.2
+
 
