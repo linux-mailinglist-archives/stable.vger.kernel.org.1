@@ -1,51 +1,127 @@
-Return-Path: <stable+bounces-69782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69783-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CE3595947A
-	for <lists+stable@lfdr.de>; Wed, 21 Aug 2024 08:21:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 586579595DB
+	for <lists+stable@lfdr.de>; Wed, 21 Aug 2024 09:22:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 078452830BA
-	for <lists+stable@lfdr.de>; Wed, 21 Aug 2024 06:21:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7816B1C224D7
+	for <lists+stable@lfdr.de>; Wed, 21 Aug 2024 07:22:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A2C316D9B4;
-	Wed, 21 Aug 2024 06:21:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD24C19ABB0;
+	Wed, 21 Aug 2024 07:19:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dOX/GWOL"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B781A1C6B5;
-	Wed, 21 Aug 2024 06:21:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1165D192D8C
+	for <stable@vger.kernel.org>; Wed, 21 Aug 2024 07:19:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724221311; cv=none; b=iKWCJbMitBiyjnTSlRzrvcBweSkeLZPU5oku1PbUduYhseZx5inla6QOKZMiW/7R7hvQjPHn3so1yHj++BxrnrTPJXRKTMkvMoVOiBK3AlAKBCLOeEBxaz+atTAKmx57cETBFu1MiLXFQLGYsQqkVOldRB2gda16idXQNXTb1cs=
+	t=1724224782; cv=none; b=t/At6blI9Layd/H0OF6iHB0d+SywH+vImfXXhmrh5qKHs6Ub4laUq2KdW94ag8TvfcRBnua1hUy1UJesMxmuUrWR/cxsM8NbfRSA0fQt7tjPY7N9QuPoPFlsExwxOL5yZiAzuY6hfCRw0fFToWxF3Ab9v3wf92n4buFWF7mkx0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724221311; c=relaxed/simple;
-	bh=glhbN7dVT4zQpN3na6hmnR2DxrICAvbg2AdlboJlrmM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=n21qeUXYPVa4LnCb6xpbrcXctsXN97v1MV61JGXFhQFN4nrISdesALP4V8DPzaC66jz6jmHZGoSF3JNmNhsdAvJjx2AyictOFloMW9w1xIEuNaZohjQ6ka+5HiDhOgamPU8gY8O9ETrzx27+BvCUdRr4R8gMjEDTNvB30u8Sabo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
-	by APP-05 (Coremail) with SMTP id zQCowAB3XThth8VmV6WgCA--.27029S2;
-	Wed, 21 Aug 2024 14:21:41 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: tony@atomide.com,
-	haojian.zhuang@linaro.org,
-	linus.walleij@linaro.org,
-	akpm@linux-foundation.org
-Cc: linux-arm-kernel@lists.infradead.org,
-	linux-omap@vger.kernel.org,
-	linux-gpio@vger.kernel.org,
+	s=arc-20240116; t=1724224782; c=relaxed/simple;
+	bh=Z/uFtZxMenV3NzQdDiVoUzUWJpKJL91lmHSWEqlwU88=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=fewjPlANvYGEKgZ+XnKE6aFwDwE6diMXg/B7f/yFK4i75CLJvF7wZRgZGyZ37CRetAblAZRS7qJns/OReJ/ApmYhMWggX6GwcqBKe7rB8DDlLPfArgku+TO+fpBdhnhsPK8V6MVOtpmztAEWIxCx1907Ybft3uIUSPtEl7c42yA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dOX/GWOL; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1724224780;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kqXkRiyUxqSbliwQmHVEASu4D/RYGtBd8mGoyCxVF1o=;
+	b=dOX/GWOLOMKpUTwLweBt7mlevj7EY1Z3vnSFS7jo0iKI1xua283E0yUFv5gBIS5BSYZxvI
+	FWceMEXLqnBs18qPwiLXGC1rq09He03WzeNJRdoaxy54HEYXktLK66mED4YxrTSeTlD6S6
+	xEZ1jYjeRMUFXFuscJ6b7k/zKwhh970=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-158-ZBQ_tRUIPKSMRf0zKv0PGg-1; Wed, 21 Aug 2024 03:19:37 -0400
+X-MC-Unique: ZBQ_tRUIPKSMRf0zKv0PGg-1
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-7a1dab8a2eeso775446185a.1
+        for <stable@vger.kernel.org>; Wed, 21 Aug 2024 00:19:37 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724224777; x=1724829577;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=kqXkRiyUxqSbliwQmHVEASu4D/RYGtBd8mGoyCxVF1o=;
+        b=bAVf9og17By/uz0sldDYT1PTVva7FrDoIB7sTxaDvsCSbpIjVJwj5zV9e35w3RVoub
+         MVtCUz4DohXcW18NiOAmuHV9UGpwOB3usu5P9sGM/sAojggBqTAyMlZO10U/b5AKQM17
+         +04hAVree743zQ3JBWo0UYzZI5rAzWVRLKpZzvQ9KrVt4PTe8+TA/KKpZvRtsxT4gjTA
+         IRWZ2wf629xCLOi2HhuKU6Y+1eATsPzxHn+IPQM4oVlBSOfi35t37wZc4D4vYk3V/qU+
+         gStUXVhGyKsKBIN2TVtWITSotCJ3GmGsaUVALEjdUlGC0SXRlAZ+NnwqZEdlvCxotdw2
+         X5Iw==
+X-Forwarded-Encrypted: i=1; AJvYcCUJER5md7iVBYsG1wVkhUXmg2sd8XUo41Xedi85nbV8oOZ+/O8ZHzC1sWXgcVjS48OLQXwNmwI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzNkYXEwcgHGGD8TNp1n5v8Yj5uFdLuqOSWFVpAXIVJ+dSCJtyn
+	jbHqgqo0p/M8vFpJxWr+MiCu04w2nYTIFwd5dOX2sOfydcQ2VaEErb1fi1sRVsqhWOipst63oqZ
+	NykNMs0c1VEJgFqoqCSK1dlERBurHzPsni3wTCW/i2ZSPHZmojikhYA==
+X-Received: by 2002:a05:620a:4723:b0:795:5672:9298 with SMTP id af79cd13be357-7a674057cddmr157583585a.41.1724224776883;
+        Wed, 21 Aug 2024 00:19:36 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHzvsJUVRLWmc58Q7QaiuvVDQhxagsdXHOmahNlcC4bwy6acZdi9NrIfC29BkE+CkLUyoCrrg==
+X-Received: by 2002:a05:620a:4723:b0:795:5672:9298 with SMTP id af79cd13be357-7a674057cddmr157580485a.41.1724224776363;
+        Wed, 21 Aug 2024 00:19:36 -0700 (PDT)
+Received: from eisenberg.redhat.com (nat-pool-muc-t.redhat.com. [149.14.88.26])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7a4ff013ef2sm596207885a.11.2024.08.21.00.19.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 Aug 2024 00:19:36 -0700 (PDT)
+From: Philipp Stanner <pstanner@redhat.com>
+To: Jonathan Corbet <corbet@lwn.net>,
+	Jens Axboe <axboe@kernel.dk>,
+	Wu Hao <hao.wu@intel.com>,
+	Tom Rix <trix@redhat.com>,
+	Moritz Fischer <mdf@kernel.org>,
+	Xu Yilun <yilun.xu@intel.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Jose Abreu <joabreu@synopsys.com>,
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Alvaro Karsz <alvaro.karsz@solid-run.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	Richard Cochran <richardcochran@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Philipp Stanner <pstanner@redhat.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Hannes Reinecke <hare@suse.de>,
+	Keith Busch <kbusch@kernel.org>
+Cc: linux-doc@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Ma Ke <make24@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH RESEND] pinctrl: single: fix potential NULL dereference in pcs_get_function()
-Date: Wed, 21 Aug 2024 14:21:32 +0800
-Message-Id: <20240821062132.1407444-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+	linux-block@vger.kernel.org,
+	linux-fpga@vger.kernel.org,
+	linux-gpio@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org,
+	linux-pci@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	stable@vger.kernel.org,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH v2 7/9] vdpa: solidrun: Fix potential UB bug with devres
+Date: Wed, 21 Aug 2024 09:18:40 +0200
+Message-ID: <20240821071842.8591-9-pstanner@redhat.com>
+X-Mailer: git-send-email 2.46.0
+In-Reply-To: <20240821071842.8591-2-pstanner@redhat.com>
+References: <20240821071842.8591-2-pstanner@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,52 +129,53 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowAB3XThth8VmV6WgCA--.27029S2
-X-Coremail-Antispam: 1UD129KBjvdXoWrury8WFW5Xr4DZF4fCFW8tFb_yoWDZFg_CF
-	WxXryxJryUGF4DXw17K3yrZFy0ka1UZFW0vr4vg34akryUAw4q93ykG390kwn7Gr4fGrZa
-	yFy5Zr93J347AjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbSxFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
-	Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AKxVWxJr
-	0_GcWlnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xv
-	F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jrv_JF1lYx0Ex4A2jsIE14v26r1j6r
-	4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I
-	648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2
-	Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s02
-	6x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0x
-	vE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE
-	42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6x
-	kF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUosqXDUUUU
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-pinmux_generic_get_function() can return NULL and the pointer 'function'
-was dereferenced without checking against NULL. Add checking of pointer
-'function' in pcs_get_function().
+In psnet_open_pf_bar() a string later passed to pcim_iomap_regions() is
+placed on the stack. Neither pcim_iomap_regions() nor the functions it
+calls copy that string.
 
-Found by code review.
+Should the string later ever be used, this, consequently, causes
+undefined behavior since the stack frame will by then have disappeared.
 
-Cc: stable@vger.kernel.org
-Fixes: 571aec4df5b7 ("pinctrl: single: Use generic pinmux helpers for managing functions")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Fix the bug by allocating the string on the heap through
+devm_kasprintf().
+
+Cc: stable@vger.kernel.org	# v6.3
+Fixes: 51a8f9d7f587 ("virtio: vdpa: new SolidNET DPU driver.")
+Reported-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Closes: https://lore.kernel.org/all/74e9109a-ac59-49e2-9b1d-d825c9c9f891@wanadoo.fr/
+Suggested-by: Andy Shevchenko <andy@kernel.org>
+Signed-off-by: Philipp Stanner <pstanner@redhat.com>
 ---
- drivers/pinctrl/pinctrl-single.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/vdpa/solidrun/snet_main.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pinctrl/pinctrl-single.c b/drivers/pinctrl/pinctrl-single.c
-index 4c6bfabb6bd7..4da3c3f422b6 100644
---- a/drivers/pinctrl/pinctrl-single.c
-+++ b/drivers/pinctrl/pinctrl-single.c
-@@ -345,6 +345,8 @@ static int pcs_get_function(struct pinctrl_dev *pctldev, unsigned pin,
- 		return -ENOTSUPP;
- 	fselector = setting->func;
- 	function = pinmux_generic_get_function(pctldev, fselector);
-+	if (!function)
-+		return -EINVAL;
- 	*func = function->data;
- 	if (!(*func)) {
- 		dev_err(pcs->dev, "%s could not find function%i\n",
+diff --git a/drivers/vdpa/solidrun/snet_main.c b/drivers/vdpa/solidrun/snet_main.c
+index 99428a04068d..4d42a05d70fc 100644
+--- a/drivers/vdpa/solidrun/snet_main.c
++++ b/drivers/vdpa/solidrun/snet_main.c
+@@ -555,7 +555,7 @@ static const struct vdpa_config_ops snet_config_ops = {
+ 
+ static int psnet_open_pf_bar(struct pci_dev *pdev, struct psnet *psnet)
+ {
+-	char name[50];
++	char *name;
+ 	int ret, i, mask = 0;
+ 	/* We don't know which BAR will be used to communicate..
+ 	 * We will map every bar with len > 0.
+@@ -573,7 +573,10 @@ static int psnet_open_pf_bar(struct pci_dev *pdev, struct psnet *psnet)
+ 		return -ENODEV;
+ 	}
+ 
+-	snprintf(name, sizeof(name), "psnet[%s]-bars", pci_name(pdev));
++	name = devm_kasprintf(&pdev->dev, GFP_KERNEL, "psnet[%s]-bars", pci_name(pdev));
++	if (!name)
++		return -ENOMEM;
++
+ 	ret = pcim_iomap_regions(pdev, mask, name);
+ 	if (ret) {
+ 		SNET_ERR(pdev, "Failed to request and map PCI BARs\n");
 -- 
-2.25.1
+2.46.0
 
 
