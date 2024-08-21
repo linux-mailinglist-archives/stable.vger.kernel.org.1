@@ -1,151 +1,125 @@
-Return-Path: <stable+bounces-69771-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69772-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEE7C9593A1
-	for <lists+stable@lfdr.de>; Wed, 21 Aug 2024 06:24:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D87E9593A5
+	for <lists+stable@lfdr.de>; Wed, 21 Aug 2024 06:28:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8699F284577
-	for <lists+stable@lfdr.de>; Wed, 21 Aug 2024 04:24:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E82F284F67
+	for <lists+stable@lfdr.de>; Wed, 21 Aug 2024 04:28:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 012E77602D;
-	Wed, 21 Aug 2024 04:24:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A8AB155332;
+	Wed, 21 Aug 2024 04:28:00 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32CE715C139
-	for <stable@vger.kernel.org>; Wed, 21 Aug 2024 04:24:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F317E4206B;
+	Wed, 21 Aug 2024 04:27:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724214256; cv=none; b=rDnRXgdHA5QlzV12l7Z265QrmDHPLHm+8oHGwX05eZpcjJY84k61tLPYrHQExGLPM+RU4uwPjgZMFDfKEQxGAk9SiCynhjYIhZCe60pGSe0enz3v8N5QpYLDVMJDbXphpwcA40tv5JCite/YjLyWfrvSle4Ww2NJ/FFeZ8azqEc=
+	t=1724214479; cv=none; b=LO0mKoGwLuYuuLK2/0d7Wm1gHFhdnp6M1CuyPYxWBZ7zT0uZi1r4zn/cNZYsUOnkg5jppEYrxSc0Gb0mwr0+tAoFpocS9DQUksMnXB7Fsrqyh1PDRskbu9PJx9smaoH+N7XiS2akt67qPpJ9aXlZ7pK4CEZig5J35momdvBCM18=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724214256; c=relaxed/simple;
-	bh=/pr3s3RdAs0hPYMn3hOCA2l5+jovt2rZKQxOHBHFnus=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Dh1kIjyfvx9Lhx6j83X5EZfJV442Nv09KdvcrmLLlO0bO91QNVcSk1I5w7QsxWCe5wtgrVcTXc7ehooJU2CsjOIyKisMeV3kHk8m1Hdv9k8S02CwQQ/t3BwI1sGfIh8rv3abtJtOL1cSDOhGVTcx0l+80/rCBLzUR+yV4rPFr80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-428101fa30aso50253875e9.3
-        for <stable@vger.kernel.org>; Tue, 20 Aug 2024 21:24:14 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724214253; x=1724819053;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KYK0IAITUp8WsqX/ffNf+bAopyUMqgIs4u3+pK1SGYU=;
-        b=cJZBA0xiahfCqVa0uwkECO+GqqUAYCnYEDtegWX3DRko9AmEcCLDOVU+Wbn6XjP7s7
-         9O/ez5ffX5+FsaMtJSYjILd00jut1DG7OPCURhnmpFoH/5LRsusOdiG6wdhC0XCR64GX
-         dlvsROpDMUeewMhucLpBPQytnTkMoeemZ84ZzdIbq7C4AHUbTuwIqLXMoGjD/2jS2GkX
-         YZSewdcQCUMD8QjGMWc3H5HS7t/pJpe2pQ8/w19/bvya9rPIJNN/u9TOIWqoz8t+Fghj
-         ENmSTFHlqh1juBLI3iHT1DJWTtIxuvCVrOS3akqfhx+3We+h5Z4cu44iQAdJ8OBpOIYG
-         0iXw==
-X-Forwarded-Encrypted: i=1; AJvYcCULfGJQz8Njh+5eOenKfbgB1Bhtjr1l9gfpq14pmYzuRSwHPt9pyYQi99WPst+WYg/9heU26OE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyyZeFk53WyIDgptB7h6avfmgwX+U7SRRuqMZctA6WY5uRpN3+C
-	yakwgpn/Ts3ZYtxVgb/oOjcqLWh64gs6jxYHISJiVmYNmrnP0fia
-X-Google-Smtp-Source: AGHT+IGHeSHVfzIXTgULN/DUbxTBiC6WvS1wgjXJh0nSFZxu6WLwKF0uyrkaQ1A9ewLZFvJLonNi9A==
-X-Received: by 2002:a05:600c:4504:b0:425:7c5f:1bac with SMTP id 5b1f17b1804b1-42abd21f620mr8700285e9.21.1724214253143;
-        Tue, 20 Aug 2024 21:24:13 -0700 (PDT)
-Received: from ?IPV6:2a0b:e7c0:0:107::aaaa:69? ([2a0b:e7c0:0:107::aaaa:69])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42abef9bd78sm10206945e9.28.2024.08.20.21.24.12
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 20 Aug 2024 21:24:12 -0700 (PDT)
-Message-ID: <a3473c2d-8ffc-434c-8536-933eaf1f508e@kernel.org>
-Date: Wed, 21 Aug 2024 06:24:11 +0200
+	s=arc-20240116; t=1724214479; c=relaxed/simple;
+	bh=6AS+qYUwNebFbttHVuG2nph/lVb1HMXJzLaPkWSC0uQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=bKCEwLMlbyZh8LQKfI44fOgudomwUxPCuAyKve4AufNrnuqwTRBW/pxc75WiDAhWuD8Q9bjBPmuM4fgSD45RDwJQbL5IjYe3pAitpwPYJ85gd6B9ZV1f/o9/axo6QDroyTuFcGk4ka0fq7sruAyCHwXvgjbf/2JXmKniZ47fu70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
+	by APP-03 (Coremail) with SMTP id rQCowABHTPivbMVmUjqrCA--.1206S2;
+	Wed, 21 Aug 2024 12:27:36 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: alexander.deucher@amd.com,
+	christian.koenig@amd.com,
+	Xinhui.Pan@amd.com,
+	airlied@gmail.com,
+	daniel@ffwll.ch,
+	mwen@igalia.com,
+	aurabindo.pillai@amd.com,
+	joshua@froggi.es,
+	hamza.mahfooz@amd.com,
+	marek.olsak@amd.com,
+	HaoPing.Liu@amd.com,
+	akpm@linux-foundation.org
+Cc: amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	Ma Ke <make24@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH RESEND] drm/amd/display: avoid using null object of framebuffer
+Date: Wed, 21 Aug 2024 12:27:24 +0800
+Message-Id: <20240821042724.1391169-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 12/13] drm/amd/display: Fix a typo in revert commit
-To: "Zuo, Jerry" <Jerry.Zuo@amd.com>, "Li, Roman" <Roman.Li@amd.com>,
- "amd-gfx@lists.freedesktop.org" <amd-gfx@lists.freedesktop.org>
-Cc: "Wentland, Harry" <Harry.Wentland@amd.com>,
- "Li, Sun peng (Leo)" <Sunpeng.Li@amd.com>,
- "Siqueira, Rodrigo" <Rodrigo.Siqueira@amd.com>,
- "Pillai, Aurabindo" <Aurabindo.Pillai@amd.com>,
- "Lin, Wayne" <Wayne.Lin@amd.com>,
- "Gutierrez, Agustin" <Agustin.Gutierrez@amd.com>,
- "Chung, ChiaHsuan (Tom)" <ChiaHsuan.Chung@amd.com>,
- "Mohamed, Zaeem" <Zaeem.Mohamed@amd.com>,
- "Limonciello, Mario" <Mario.Limonciello@amd.com>,
- "Deucher, Alexander" <Alexander.Deucher@amd.com>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>
-References: <20240815224525.3077505-1-Roman.Li@amd.com>
- <20240815224525.3077505-13-Roman.Li@amd.com>
- <CY8PR12MB81935FA7A89D077A2D0DADB489812@CY8PR12MB8193.namprd12.prod.outlook.com>
- <360cabdc-3ba7-47a0-8e4f-f0ed8cea54bc@kernel.org>
- <CY8PR12MB819387431D6D6E754929ECB9898C2@CY8PR12MB8193.namprd12.prod.outlook.com>
- <0d12eb50-c51b-496e-a931-9ce8fb6a1455@kernel.org>
- <IA1PR12MB906330068545FC761DB98FCCE58D2@IA1PR12MB9063.namprd12.prod.outlook.com>
-Content-Language: en-US
-From: Jiri Slaby <jirislaby@kernel.org>
-Autocrypt: addr=jirislaby@kernel.org; keydata=
- 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
-In-Reply-To: <IA1PR12MB906330068545FC761DB98FCCE58D2@IA1PR12MB9063.namprd12.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:rQCowABHTPivbMVmUjqrCA--.1206S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7CF4xWF4xKw18Ar48KFWUCFg_yoW8Xw43pF
+	sxAFy5Xr1UZF47t347CF1I9FZ0ka93XF1xKrWUuw1Svw15trn8Zws8Grs2gF4xXFWjkw4S
+	qFy7ArW2yF1qvw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUBa14x267AKxVW5JVWrJwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr
+	1j6F4UJwAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40E
+	FcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr
+	0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8v
+	x2IErcIFxwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVW8ZVWrXwCF04k20x
+	vY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I
+	3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkGc2Ij64vIr41lIx
+	AIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAI
+	cVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2js
+	IEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0pRBVb9UUUUU=
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-On 20. 08. 24, 20:28, Zuo, Jerry wrote:
-> [AMD Official Use Only - AMD Internal Distribution Only]
-> 
-> Hi Jiri:
-> 
->       Please kindly let me know the kernel branch you are using to validate the fix. I'll provide with two additional patches on top of ("drm/amd/display: Fix MST BW calculation Regression")
+Instead of using state->fb->obj[0] directly, get object from framebuffer
+by calling drm_gem_fb_get_obj() and return error code when object is
+null to avoid using null object of framebuffer.
 
-Hi,
+Cc: stable@vger.kernel.org
+Fixes: 5d945cbcd4b1 ("drm/amd/display: Create a file dedicated to planes")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+---
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-whatever you prefer. E.g. even drm-next is fine here. Currently I run 
-6.10-stable plus the patch.
-
-thanks,
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
+index a83bd0331c3b..5cb11cc2d063 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
+@@ -28,6 +28,7 @@
+ #include <drm/drm_blend.h>
+ #include <drm/drm_gem_atomic_helper.h>
+ #include <drm/drm_plane_helper.h>
++#include <drm/drm_gem_framebuffer_helper.h>
+ #include <drm/drm_fourcc.h>
+ 
+ #include "amdgpu.h"
+@@ -935,10 +936,14 @@ static int amdgpu_dm_plane_helper_prepare_fb(struct drm_plane *plane,
+ 	}
+ 
+ 	afb = to_amdgpu_framebuffer(new_state->fb);
+-	obj = new_state->fb->obj[0];
++	obj = drm_gem_fb_get_obj(new_state->fb, 0);
++	if (!obj) {
++		DRM_ERROR("Failed to get obj from framebuffer\n");
++		return -EINVAL;
++	}
++
+ 	rbo = gem_to_amdgpu_bo(obj);
+ 	adev = amdgpu_ttm_adev(rbo->tbo.bdev);
+-
+ 	r = amdgpu_bo_reserve(rbo, true);
+ 	if (r) {
+ 		dev_err(adev->dev, "fail to reserve bo (%d)\n", r);
 -- 
-js
+2.25.1
 
 
