@@ -1,96 +1,107 @@
-Return-Path: <stable+bounces-69835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69836-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E0F895A2DF
-	for <lists+stable@lfdr.de>; Wed, 21 Aug 2024 18:34:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5629E95A302
+	for <lists+stable@lfdr.de>; Wed, 21 Aug 2024 18:40:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0AFB8281F34
-	for <lists+stable@lfdr.de>; Wed, 21 Aug 2024 16:34:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 08FD11F22D10
+	for <lists+stable@lfdr.de>; Wed, 21 Aug 2024 16:40:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3761A1531DE;
-	Wed, 21 Aug 2024 16:34:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FFB6158A23;
+	Wed, 21 Aug 2024 16:40:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=szeredi.hu header.i=@szeredi.hu header.b="Q+aKMcOj"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RFZ4UtG3"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57634152199
-	for <stable@vger.kernel.org>; Wed, 21 Aug 2024 16:33:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 965D7152199;
+	Wed, 21 Aug 2024 16:40:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724258041; cv=none; b=TxU4PQhzf/gaSqbgb9swgNyyVp20o7oqTp82ZB0nB+Qpx8CbC+oqljZcDap18oUOqxwv8T+ezI5r6xIKDxP18j0CUacDSG4MttC9wALe23DLqU3n9mubRfXfyR7i3VEKC/7JgaVNc3We5bf47tVwbvrJWUnF73c6ouSaEB9P75Q=
+	t=1724258452; cv=none; b=KaSUbpetUTj0fI8XjkvFO5i87nkS3OuQvxiO6Ku0ua09v4zL+dSSFfi2XJm2pAM5neXlTOkNFhaKCEMpNXt5E4Y4pSh7SrvjPVCEQSj6gOKj8f/5ZKMAdIo/BwszPx5AwG9QrwNOtCSl1znGrMV37E93WA31LYQ6OvYFCy7KGGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724258041; c=relaxed/simple;
-	bh=sVgg3XEZ8t6920CMtY3WUo0BXNqLQRfIMdIh/d8tUDE=;
+	s=arc-20240116; t=1724258452; c=relaxed/simple;
+	bh=sJf6jiQ13TDCgcjgRib4X5ouGA1y4YARS+xp4O8b7Kg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gSru+0uY1fZeBdX5ezwr5uvs0ShmjTuqrwTItdk5J6Aj0E/6legEDmzuWO/GJYZtu7/LMQeaAc/c/6XaHVh9pWUeFPE+5q5VC2oWgEfAzLcsTWIDxjLO9fw4FnEYZoEqZAX649CYC9d9Y3IjfaBatBOximpOeYdY77X0CLBmDRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szeredi.hu; spf=pass smtp.mailfrom=szeredi.hu; dkim=pass (1024-bit key) header.d=szeredi.hu header.i=@szeredi.hu header.b=Q+aKMcOj; arc=none smtp.client-ip=209.85.208.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=szeredi.hu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=szeredi.hu
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-5befd2f35bfso4095376a12.2
-        for <stable@vger.kernel.org>; Wed, 21 Aug 2024 09:33:59 -0700 (PDT)
+	 To:Cc:Content-Type; b=F0RmBG2r6YuWMwUVRODlS5ZyhSyRJNkGsMrgHm3ium12KPk/nQ1Vne7L4Qstr5g1rNaoEXElwPPUPwHb9RkqUZC5Klc51boc4wI35Lw17zamU5k+0oyposeT1Js/d12DdAZeO9/tNOkyPgjr8UQcRXFBoPpAEGAM9TBv2Hp9iN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RFZ4UtG3; arc=none smtp.client-ip=209.85.218.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-a7aada2358fso163405166b.0;
+        Wed, 21 Aug 2024 09:40:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=szeredi.hu; s=google; t=1724258038; x=1724862838; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=sVgg3XEZ8t6920CMtY3WUo0BXNqLQRfIMdIh/d8tUDE=;
-        b=Q+aKMcOj7olrk26tcg3l21UCz3percFAwRNW7qT+jaVcugvqCaDHsM/+SQDpE0Aw18
-         O6a/mP2n6/YxwQtUx9mUa5K1uuJQ6RCVD2A+8IC5/ydxqLj/TqXVlSEVVxgDysaVu2YN
-         iLVmiY5whRLIQX9nvi/+YMNy/wcxcsh4uuplw=
+        d=gmail.com; s=20230601; t=1724258449; x=1724863249; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sJf6jiQ13TDCgcjgRib4X5ouGA1y4YARS+xp4O8b7Kg=;
+        b=RFZ4UtG3DGrj5h2+BTyzhgKWT+T1mmkLC3cdtIA9bZ2kLoviQ3Xb4I6SsWy3rSWvpt
+         0lIvSN9XSVdDGfPcKog4XMk6zdroMHuRdI31vVj2hTQjzP/CekRe4lWpzhJe7vcVxMb8
+         ws+jTRRsV8t3uXadWCflozhtyQFjglH/yjfeYXIQVeuyJG4cH7IKMK60Yl27vrvhXwmc
+         /8nYrcFF9ZMOZj4sDHSAmVB5x0XNQA0WTCC1JvVFGvkgzneXBKVJKBRJm3xVxEvJcyRh
+         QT/VwgicyB9v6szx6zQn9bwLeKg+lW1ON9LUh3lLNx+PL/t4vWne9WHhJxgZBZ6VzWhk
+         mUzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724258038; x=1724862838;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=sVgg3XEZ8t6920CMtY3WUo0BXNqLQRfIMdIh/d8tUDE=;
-        b=q+Vf+rmM2LhlfaeWOSODBURbpoyHMYnpNvnilFBMhe8kCneCSkStjDg1RaH+P0gout
-         +11iPUnzffIokmyBA0qaL3/wpGHiI8iQhJdBRNmPNWhTASrSZpqPtDjFC2YBNLf1sje2
-         Bb0jgI5uH659pi+PaK53DXMZtQgLEOYb5RYi9o6ikBKsyXkcShi2tI6F645qTGvsZCCI
-         aGmKhQmqWEJpxRVq2UzSCtU4R0bbiQyslQK1cxLV+2dg1lKAVMz7t6rrcxuUgXRI1NtN
-         +OjFNEeBd3EKLFqdlVYP4Nvc7weMnbf9pM+3ljEUNJpxJK+0+YAtQjHK93YYCgAxMo7n
-         ciVg==
-X-Forwarded-Encrypted: i=1; AJvYcCXQnAhIxKxzhq1o2k7qW/tYQr1QNr4eFNrxkbdEFCqJ39PkI+taZGMx8kyDZgvJOLHQbzba3dQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxm4b/XDne2JkUF9AkP/eqJ5bPl57rs5bwYMyZMLsPP8Q9+v51w
-	ut0pCx3fmGaKwW20VXU/AcIpGq/jSMiIKcZJ7mzsEYz3RTOWMrBedMJLH0VazGefdXi7MKbKDyB
-	uPyXBygr+BhAFO9R4og6KlzM4qfxXQWSUp0iU+zz1qqgTlAji
-X-Google-Smtp-Source: AGHT+IGDayd7xuAjuOBPzNSKAAgetzBjuj+Vul4/WCcTjqLvTO4EBhzQwJUfxXdLsV7UiBI1uJ93BDSvM19wz5RFwBY=
-X-Received: by 2002:a17:907:96a3:b0:a86:78ef:d4ad with SMTP id
- a640c23a62f3a-a8678efd649mr202521966b.20.1724258037501; Wed, 21 Aug 2024
- 09:33:57 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1724258449; x=1724863249;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=sJf6jiQ13TDCgcjgRib4X5ouGA1y4YARS+xp4O8b7Kg=;
+        b=O547TdjLJe8ytHzca3GIYaYap+iEfAG4ioh740bs36P0TPZs2ESCeOoMScKQNRF20r
+         cThPgsaGYPP/1pyFdVDSMrCUHZLeUAkCpN1LMnfY1QwZYAql6N6v6CmszQX2ndwmiiYf
+         eRXbe7cxEiKajJTLrWEVk67KVlN+9xW+s82FLit/y85oGiQZ3IAENzQGUsEPsEWXqM5X
+         sQwjN9pf1cMfHK8Ql2HYjTNA03+AoyCVjCxG9AeY+IBaD38JoBuqhDASMOnNwjn7ZSDH
+         3j2ZREcAaqTzR19a7lHKUA384ziPV+gL/o2dIWTpmq+bNk700BmCUUlAuchPUk5zdvc6
+         bR2g==
+X-Forwarded-Encrypted: i=1; AJvYcCVA6PeIrjR0cUyLhusjnCBhNSN2J6rT1zjWPGTp9XAVxuXxUY2Xjof6zB5ZjR0wSohVCQ+36xtiaqnXoBO8@vger.kernel.org, AJvYcCVMbqJmIKySLAoHC2DlZgB3u2lLn+NDv41HT/9RuvJXKIpelMSr2k8VGMINBKeOnWkhEl5RH1Fp@vger.kernel.org, AJvYcCWKjcUsEdL4+8v+ZvJhE+1ZGvGMKi1cboylQvhvd4KSZsQX5N7iHCEqeD63Lp9idfZTnsI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwXglQHTgBXcmGrnmZLLSRXZHwIoFO4z7m0qWGRNmrgieJewXuB
+	FX3hLc6MUAYUrhWdJOBycnia6ui9kiILt3cgyjbVhzzTIj2xDRGZejq3wdt/edCUEPLye773Llg
+	3RRAi9DZmfs0RobwOQ6+Uod0QV3eJ9g==
+X-Google-Smtp-Source: AGHT+IHBzbuPaj1YZCt0hCbiC2P/pXGyXmrjLnBwGTyy/blqFT/D977io1I/VfCIZ8TRKK3R9hsKGb8cHgs2p8zmrMs=
+X-Received: by 2002:a17:907:868c:b0:a7d:ab62:c317 with SMTP id
+ a640c23a62f3a-a868a908c50mr16241266b.30.1724258448536; Wed, 21 Aug 2024
+ 09:40:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240819-fuse-oob-error-fix-v1-1-9af04eeb4833@google.com>
-In-Reply-To: <20240819-fuse-oob-error-fix-v1-1-9af04eeb4833@google.com>
-From: Miklos Szeredi <miklos@szeredi.hu>
-Date: Wed, 21 Aug 2024 18:33:46 +0200
-Message-ID: <CAJfpegtOnAfAzz9-OcnXqMvwDeAO5a_j356Zi9eoRH_viMOj4w@mail.gmail.com>
-Subject: Re: [PATCH] fuse: use unsigned type for getxattr/listxattr size truncation
-To: Jann Horn <jannh@google.com>
-Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
+References: <CAK55_s6do7C+DVwbwY_7nKfUz0YLDoiA1v6X3Y9+p0sWzipFSA@mail.gmail.com>
+ <badd583d09868ffdd48a97c727680ca6f5699727.camel@gmail.com>
+ <188a0d1310609fddc29524a64fa3c470fc7c4c94.camel@gmail.com> <2449825072217d392b5b631e8fd394e91b22a256.camel@gmail.com>
+In-Reply-To: <2449825072217d392b5b631e8fd394e91b22a256.camel@gmail.com>
+From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date: Wed, 21 Aug 2024 09:40:36 -0700
+Message-ID: <CAADnVQ+9oy6L+oYWJsvy_yMri8vDL9jBQRhZ8nf0SEMm+mT4DA@mail.gmail.com>
+Subject: Re: KASAN: null-ptr-deref in bpf_core_calc_relo_insn
+To: Eduard Zingerman <eddyz87@gmail.com>
+Cc: Liu RuiTong <cnitlrt@gmail.com>, stable <stable@vger.kernel.org>, 
+	Linux Regressions <regressions@lists.linux.dev>, bpf <bpf@vger.kernel.org>, 
+	LKML <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 19 Aug 2024 at 19:52, Jann Horn <jannh@google.com> wrote:
+On Wed, Aug 21, 2024 at 9:34=E2=80=AFAM Eduard Zingerman <eddyz87@gmail.com=
+> wrote:
 >
-> The existing code uses min_t(ssize_t, outarg.size, XATTR_LIST_MAX) when
-> parsing the FUSE daemon's response to a zero-length getxattr/listxattr
-> request.
-> On 32-bit kernels, where ssize_t and outarg.size are the same size, this is
-> wrong: The min_t() will pass through any size values that are negative when
-> interpreted as signed.
-> fuse_listxattr() will then return this userspace-supplied negative value,
-> which callers will treat as an error value.
+> On Wed, 2024-08-21 at 04:46 -0700, Eduard Zingerman wrote:
 >
+> [...]
+>
+> > will post a fix to bpf mailing list shortly.
+>
+> Status update:
+> apologies for the delay, the fix is trivial but I have some problems
+> with test case not printing expected log on BPF CI, need some time to deb=
+ug.
+>
+> Link to wip patch:
+> https://github.com/eddyz87/bpf/tree/relo-core-bad-local-id
 
-Applied, thanks.
-
-Miklos
+I would ship the fix (since it's trivial) and sort out selftest later.
 
