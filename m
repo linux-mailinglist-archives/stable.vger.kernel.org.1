@@ -1,133 +1,101 @@
-Return-Path: <stable+bounces-69800-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69801-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA26D959CC1
-	for <lists+stable@lfdr.de>; Wed, 21 Aug 2024 15:04:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FC39959E34
+	for <lists+stable@lfdr.de>; Wed, 21 Aug 2024 15:11:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67DBA286C90
-	for <lists+stable@lfdr.de>; Wed, 21 Aug 2024 13:04:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3316282620
+	for <lists+stable@lfdr.de>; Wed, 21 Aug 2024 13:11:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83D26196D9E;
-	Wed, 21 Aug 2024 13:03:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF4FD19992D;
+	Wed, 21 Aug 2024 13:11:05 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from vmicros1.altlinux.org (vmicros1.altlinux.org [194.107.17.57])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ED1B18B49E;
-	Wed, 21 Aug 2024 13:03:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.107.17.57
+Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B6C1192D9C;
+	Wed, 21 Aug 2024 13:11:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724245437; cv=none; b=bXXe9yt6yAFxD9W6xOj646rbPahzWbtbJ0TGww1anGSzm9qhx1ar+CQLhl7bzQXbekpjxz7jxlXHummDD+tBD3MbPYKhE3TLboN4epUVl9BH0qSXHdh8df5Qe/LV9q08yKsPHlgBZ1VQO8ZMzSNhjFYyofn34nMhE/uK533tI/8=
+	t=1724245865; cv=none; b=OUFukn8dfYLPvHZaaBlu2YO4DWElTrzvcwC/QYvzAQTztUz0arL24S2X4mlOE1Rj3mn8XaBn7Jz0dkPoFrYaS7wA3hosi/es7t1ANYWGn0rSa2wmlKT2TK5GL85dlsI9UKN2lM9K6Ipt9QvMUXlxGqiNfG39VqC6w+aZieNsXv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724245437; c=relaxed/simple;
-	bh=EsZd7zphgRfp+Pj+5bpQt0D8iW92EupN1ZQaK+j/SKA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BxTzBB4ih7Zq2vbQs9qg7O6XdDaYJFagwGJccbiK5cTU580Vh9Yzl6c79apRHcCYzdUaP23udEwr6KO7yiPrYXuLaUJhz9qg1r0OdVpghTFHrukwfOAXzjdOT5/m4Nisu1wKVaIt4kcs2+pdjidzsaRr8iEE+1VaqyzmP0p8RW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=194.107.17.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
-Received: from imap.altlinux.org (imap.altlinux.org [194.107.17.38])
-	by vmicros1.altlinux.org (Postfix) with ESMTP id BF7B572C8CC;
-	Wed, 21 Aug 2024 15:57:58 +0300 (MSK)
-Received: from pony.office.basealt.ru (unknown [193.43.10.9])
-	by imap.altlinux.org (Postfix) with ESMTPSA id B626636D0178;
-	Wed, 21 Aug 2024 15:57:58 +0300 (MSK)
-Received: by pony.office.basealt.ru (Postfix, from userid 500)
-	id 95406360C1DE; Wed, 21 Aug 2024 15:57:58 +0300 (MSK)
-Date: Wed, 21 Aug 2024 15:57:58 +0300
-From: Vitaly Chikunov <vt@altlinux.org>
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: Christian Heusel <christian@heusel.eu>, 
-	Adrian Vladu <avladu@cloudbasesolutions.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
-	Greg KH <gregkh@linuxfoundation.org>, "alexander.duyck@gmail.com" <alexander.duyck@gmail.com>, 
-	"arefev@swemel.ru" <arefev@swemel.ru>, "davem@davemloft.net" <davem@davemloft.net>, 
-	"edumazet@google.com" <edumazet@google.com>, "jasowang@redhat.com" <jasowang@redhat.com>, 
-	"kuba@kernel.org" <kuba@kernel.org>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>, 
-	"pabeni@redhat.com" <pabeni@redhat.com>, "stable@vger.kernel.org" <stable@vger.kernel.org>, 
-	"willemb@google.com" <willemb@google.com>, "regressions@lists.linux.dev" <regressions@lists.linux.dev>
-Subject: Re: [PATCH net] net: drop bad gso csum_start and offset in
- virtio_net_hdr
-Message-ID: <zkpazbrdirbgp6xgrd54urzjv2b5o3gjfubj6hi673uf35aep3@hrqxcdd7vj5c>
-References: <2024080703-unafraid-chastise-acf0@gregkh>
- <146d2c9f-f2c3-4891-ac48-a3e50c863530@heusel.eu>
- <2024080857-contusion-womb-aae1@gregkh>
- <60bc20c5-7512-44f7-88cb-abc540437ae1@heusel.eu>
- <0d897b58-f4b8-4814-b3f9-5dce0540c81d@heusel.eu>
- <20240814055408-mutt-send-email-mst@kernel.org>
- <c746a1d2-ba0d-40fe-8983-0bf1f7ce64a7@heusel.eu>
- <PR3PR09MB5411FC965DBCCC26AF850EA5B0872@PR3PR09MB5411.eurprd09.prod.outlook.com>
- <ad4d96b7-d033-4292-86df-91b8d7b427c4@heusel.eu>
- <66bcb6f68172f_adbf529471@willemb.c.googlers.com.notmuch>
+	s=arc-20240116; t=1724245865; c=relaxed/simple;
+	bh=IXNh5XLies2Zu+d70075n+GhEUYfdwWx9D38TKDaRHo=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=FWSxxW3jjgHpiyWGXB4R+gNF8sDFaTko4DU/HXXR9GU3uM0572KhXVNCu/Pwh3oRVElefcEUYbCOthSDQtHPvJKGU2n9OmuxnRpPaEMYKRBLafJxhvvNLnbEwpTUME55G9atvhrsMS9F1D9tTdQsy+pjgAQgbIIuNu0Oa37NuzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
+	by APP-05 (Coremail) with SMTP id zQCowAC3vzNT58VmLeC2CA--.16735S2;
+	Wed, 21 Aug 2024 21:10:50 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: vkoul@kernel.org,
+	kishon@kernel.org,
+	make24@iscas.ac.cn,
+	agross@codeaurora.org,
+	ansuelsmth@gmail.com
+Cc: linux-arm-msm@vger.kernel.org,
+	linux-phy@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH] phy: qualcomm: Check NULL ptr on lvts_data in qcom_ipq806x_usb_phy_probe()
+Date: Wed, 21 Aug 2024 21:10:42 +0800
+Message-Id: <20240821131042.1464529-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <66bcb6f68172f_adbf529471@willemb.c.googlers.com.notmuch>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQCowAC3vzNT58VmLeC2CA--.16735S2
+X-Coremail-Antispam: 1UD129KBjvdXoWrZr13try3AFW8tr17CrW3Wrg_yoWDGrbEga
+	4UZr47urn7JF1rKr1UtrnIvryvka4qqrW8Xa1IgFyfCrWrAF1aqFyDJrs8ZrZxu3WIvr1D
+	J34YvFZ5Zr1jqjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbVkFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Jr0_
+	Gr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
+	0DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
+	64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8Jw
+	Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAG
+	YxC7MxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r
+	1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CE
+	b7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0x
+	vE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAI
+	cVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2Kf
+	nxnUUI43ZEXa7VUbQVy7UUUUU==
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-Willem,
+of_device_get_match_data() can return NULL if of_match_device failed, and
+the pointer 'data' was dereferenced without checking against NULL. Add
+checking of pointer 'data' in qcom_ipq806x_usb_phy_probe().
 
-On Wed, Aug 14, 2024 at 09:53:58AM GMT, Willem de Bruijn wrote:
-> Christian Heusel wrote:
-> > On 24/08/14 10:10AM, Adrian Vladu wrote:
-> > > Hello,
-> > > 
-> > > The 6.6.y branch has the patch already in the stable queue -> https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/commit/?id=3e713b73c01fac163a5c8cb0953d1e300407a773, and it should be available in the 6.6.46 upcoming minor.
-> > > 
-> > > Thanks, Adrian.
-> > 
-> > Yeah it's also queued up for 6.10, which I both missed (sorry for that!).
-> > If I'm able to properly backport the patch for 6.1 I'll send that one,
-> > but my hopes are not too high that this will work ..
-> 
-> There are two conflicts.
-> 
-> The one in include/linux/virtio_net.h is resolved by first backporting
-> commit fc8b2a6194693 ("net: more strict VIRTIO_NET_HDR_GSO_UDP_L4
-> validation")
-> 
-> We did not backport that to stable because there was some slight risk
-> that applications might be affected. This has not surfaced.
-> 
-> The conflict in net/ipv4/udp_offload.c is not so easy to address.
-> There were lots of patches between v6.1 and linus/master, with far
-> fewer of these betwee v6.1 and linux-stable/linux-6.1.y.
+Cc: stable@vger.kernel.org
+Fixes: ef19b117b834 ("phy: qualcomm: add qcom ipq806x dwc usb phy driver")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+---
+ drivers/phy/qualcomm/phy-qcom-ipq806x-usb.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-BTW, we successfully cherry-picked 3 suggested[1] commits over v6.1.105 in
-ALT, and there is no reported problems as of yet.
+diff --git a/drivers/phy/qualcomm/phy-qcom-ipq806x-usb.c b/drivers/phy/qualcomm/phy-qcom-ipq806x-usb.c
+index 06392ed7c91b..9b9fd9c1b1f7 100644
+--- a/drivers/phy/qualcomm/phy-qcom-ipq806x-usb.c
++++ b/drivers/phy/qualcomm/phy-qcom-ipq806x-usb.c
+@@ -492,6 +492,8 @@ static int qcom_ipq806x_usb_phy_probe(struct platform_device *pdev)
+ 		return -ENOMEM;
+ 
+ 	data = of_device_get_match_data(&pdev->dev);
++	if (!data)
++		return -ENODEV;
+ 
+ 	phy_dwc3->dev = &pdev->dev;
+ 
+-- 
+2.25.1
 
-  89add40066f9 ("net: drop bad gso csum_start and offset in virtio_net_hdr")
-  fc8b2a619469 ("net: more strict VIRTIO_NET_HDR_GSO_UDP_L4 validation")
-  9840036786d9 ("gso: fix dodgy bit handling for GSO_UDP_L4")
-
-[1] https://lore.kernel.org/all/2024081147-altitude-luminous-19d1@gregkh/
-
-Thanks,
-
-> 
-> We can also avoid the backport of fc8b2a6194693 and construct a custom
-> version for this older kernel. All this is needed in virtio_net.h is
-> 
-> +               case SKB_GSO_UDP_L4:
-> +               case SKB_GSO_TCPV4:
-> +               case SKB_GSO_TCPV6:
-> +                       if (skb->csum_offset != offsetof(struct tcphdr, check))
-> 
-> and in __udp_gso_segment
-> 
-> +       if (unlikely(skb_checksum_start(gso_skb) !=
-> +                    skb_transport_header(gso_skb)))
-> +               return ERR_PTR(-EINVAL);
-> +
-> 
-> The Fixes tag points to a commit introduced in 6.1. 6.6 is queued up,
-> so this is the only release for which we have to create a custom
-> patch, right?
-> 
-> Let me know if you will send this, or I should?
-> 
 
