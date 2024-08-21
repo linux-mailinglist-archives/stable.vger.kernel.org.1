@@ -1,253 +1,301 @@
-Return-Path: <stable+bounces-69830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69831-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46C4D95A1D4
-	for <lists+stable@lfdr.de>; Wed, 21 Aug 2024 17:49:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B81D95A230
+	for <lists+stable@lfdr.de>; Wed, 21 Aug 2024 18:00:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE4A31F24A5D
-	for <lists+stable@lfdr.de>; Wed, 21 Aug 2024 15:49:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 422F4289C5C
+	for <lists+stable@lfdr.de>; Wed, 21 Aug 2024 16:00:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B8F61C86FE;
-	Wed, 21 Aug 2024 15:41:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 085711B2EC6;
+	Wed, 21 Aug 2024 15:57:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="i4I8kKg2"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="5o0XcsqF"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2077.outbound.protection.outlook.com [40.107.220.77])
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2072.outbound.protection.outlook.com [40.107.93.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 041F81C7B71
-	for <stable@vger.kernel.org>; Wed, 21 Aug 2024 15:41:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.77
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA28214E2D7;
+	Wed, 21 Aug 2024 15:56:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.93.72
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724254867; cv=fail; b=CftLor0qlJQQ2GrWww09uQc96fx7aHe5TvbQZG7HToc2G6ZRuOgn3xfSud9J/Pq+TqZSO0WU9oiV9E2I6u35vS4eCv/f5S+R/3qRq4LkpNvmFMmmBnSiNTskei3iuJQihMZMGEmYhBsgVBWlbWgeDPsNuFWK/Uu1+70Rm0PLG18=
+	t=1724255821; cv=fail; b=QTBinLSLrBF0jmDNKa9nVqCiW4qpLmk9QBkJsJto/GcApHf/JBk4vGosDbGfJKHh2hXmW2sKmv8TV+Rzn1UlqasT6f2d36dA01IWWHQ2tQ5iD1fiVb5qo6mh3dbT8NR401rRnuVYQepZH02aRFJwcFSWzFv5GzIPRYFdrSO1HDA=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724254867; c=relaxed/simple;
-	bh=D2y8cc4rdzcXf7ICjSi387UXc0sSWkrZ7vVakLqEjgo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=FfC0aL/vrwRrRfKDqPHxWHw8tVZb0jEhFLj2X8CjtMciAHH4B6hw2Qv2YoeyUdIw2IxOoRW1WEt5H95Y/DE6WTbmbgIxlymb3JkiblkrJx4LhVutFD7Qaik3XlrVEdGVtXMbutWpf1rwP0sR/RnuyPfewdAkqh/XtMaoBcC5dv4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=i4I8kKg2; arc=fail smtp.client-ip=40.107.220.77
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1724255821; c=relaxed/simple;
+	bh=czAI0o8k97kTofZwY3roV51yAAradOoi6J6O4H+c3c0=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=gdjdcamI021u9Ny6NspmJmw1Z1cnkZUBtPf1Cg+fkj5NjEFQvhl5df3tAheHkGBC5EUe3ez2PFhiu+TNGJM7yzsm/zrZsfEXIjpLxXocLpIWZxH0Q2G/RvdaBaUeggXG2uWtG6n6Ba6oZDV27bKxc7S9obbk5T/n4dj+NnYYyIA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=5o0XcsqF; arc=fail smtp.client-ip=40.107.93.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Z31CW8TofauGai2KCA5IFHpNWrE0NniQutfqKrzmF6V0wfXUL3QQHOcp0EOEOmnDNdWBrvQ8ZP1Stxl3yCIkblSb/2L3tPOE70MdiS1dABfC+VqR9W0/0Eull7hGToMcxRR2R5AJHqs7WN845kv3B7wv/BqyxGq0EvN0gQP2VIH1YVunrt8ChqQE09V/qm+t78OMPOz5jYd/RlBPsJTf3n8FZ7ECYb/NMhJW1cP5AgEVrUbeKbtVpZuQKFEjhb6I0O/kX2v9bdAy75YvtkHO+xo6g80yTJ7wfVTqFNvqctOiuEhZM7fYdgAyHyBZ++BGcGDaDH23KKl5Cguq2e7pEQ==
+ b=H4smo4O0d8KxNLOch9qzpljFUd7ik1QV2IA/tzGTJJRSedIOJ+SV7NRkyGbmwY4Bsq9jmjzGmcJlFVxRvV+JiwahxYopg7fetQQ1FIDB4vRq/XlQrGPq1OJKx+2Nz9W49jufkOgTe14qGXXh3519THDzqHJ31ZWM0wrsy7taNqz1R9jxdpyIB2056RsK5MQjUIsIhTs8h9c4H8ae5xuVGgwEaBxOfIYTAhIGMQuJXmAhdOyAHbvIdj8NWazxmuComl0l5LSJGJPvKkZjnyXBhaxlkfZQaX3iXb1Ja7q48+ccWu+UE5J1JXjAs0vd/4J5OS3cAoJ2OjN44orAHOdTYQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JLI8ePIBAxdGwg/39CSJbF1b+RSKuU1xBx/74B8gYd4=;
- b=iPtcL0GF/nINfEYx9DqFYJXw/iaapK1PX3LctGq2M26juomh4+VQ6xHxbF8HL2e0y2K89IZlD2P3ARXokuMMK1nDtJyhVurfI+bmTIF4QVtEpK7XyA1jHKJz1FTqPkVz9cXlDIQlyjNOtkYbz2ctsySSc2y+6l+xb9aIounrhADlK5jhoPOD0z3AgXmc/kbxQzH8fmeMfrGvibNL8CwBPfTzHvn57byeI0iVj9FN4EgWH06staLidjjOig83j5g560usQuNDCJ8L++YzqbzedmE+hwIDeLY3ofgkVGj1rQqJBVYtHnOF0dm1JSJyqdto60fiLAQAvGUJ2esv0eL9RQ==
+ bh=y7QMfkQ9f+1W0/huDK/y1DV0uPjwb5ycEEOxlGP+pos=;
+ b=V9dzurpbhzruzvCdBK3S8VLmknCmleDA9I+sgbo5PtDNfT0TMG3trNQ/3Zo94o1bK56WszsoSTmxXZOJrZ+1L66RydoQiWMVaqf5unAhWoNS6/Ol8lsndpZvsX7sQWhTGXBbbSJokYCALnlLDahgH2kBLwx2eOKAhkglpqvibGMWOtAgmPY3cpCx71ljXF6g58qjha6zun1PD3zzC2y5pNqrw4tQdjX0zNYI57Zu1Wp3k0dY7BzI4kUfZfTIppQRIh7Z5K0eSlyka5Xfc5D/6pTC1YTFQZXfBWnVoygoTkncwFCpYG+4sYXkOci8554JPgFt9LC2LnWegtKpSBHsOA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JLI8ePIBAxdGwg/39CSJbF1b+RSKuU1xBx/74B8gYd4=;
- b=i4I8kKg27MWCCzh3cYgXazxxmURwvbcy4DC3GTlWV9bMBBGLcPRZq5guhYDaEXTQaZgmu89CvRmwxkpsGfHNOlgJfj8zpeS7AKAVlEo782Xbs5GDV7zK+6vE8cQroEzYlKJxfXUtPE87WbxXxumo7L6CCyX0EdK+v+dsyotrtmzVom0hfeRVVGRZpVubIyey4E+37uETGYXw8W3dVZsts7He2vHawP6ANP3gNIyOByXEYLY3ByG6P8NAsecE5S5/8IV3N8v6Wh6aaQZoqyUmSRIBIhKqYHYUL7hqsVuOV6h5ZjyskKpOK3pkH5Onbc1M4XqyfJZu/Ex+UnX2BuKRhw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CYXPR12MB9320.namprd12.prod.outlook.com (2603:10b6:930:e6::9)
- by PH7PR12MB6881.namprd12.prod.outlook.com (2603:10b6:510:1b7::10) with
+ bh=y7QMfkQ9f+1W0/huDK/y1DV0uPjwb5ycEEOxlGP+pos=;
+ b=5o0XcsqF2FPl0YJN3KsX39YHI8MDKAecsORY6uw1INMzOIRXcpjVCDuK5vrZ0/Ds46INvU+Fe+mtg44LtYwA863MXOegOQc4H0otvF+wpfbxXZW+OGO7qXV3YU5aDXLjSBEQE10FP2qRJ3LpNneHs2S8adDxdbWhM9Zu8ybAz5A=
+Received: from BL1PR12MB5144.namprd12.prod.outlook.com (2603:10b6:208:316::6)
+ by BY5PR12MB4306.namprd12.prod.outlook.com (2603:10b6:a03:206::17) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7897.18; Wed, 21 Aug
- 2024 15:41:00 +0000
-Received: from CYXPR12MB9320.namprd12.prod.outlook.com
- ([fe80::9347:9720:e1df:bb5f]) by CYXPR12MB9320.namprd12.prod.outlook.com
- ([fe80::9347:9720:e1df:bb5f%5]) with mapi id 15.20.7897.014; Wed, 21 Aug 2024
- 15:41:00 +0000
-From: Zi Yan <ziy@nvidia.com>
-To: stable@vger.kernel.org
-Cc: Zi Yan <ziy@nvidia.com>,
-	"Huang, Ying" <ying.huang@intel.com>,
-	David Hildenbrand <david@redhat.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Mel Gorman <mgorman@suse.de>,
-	Yang Shi <shy828301@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6.y] mm/numa: no task_numa_fault() call if PTE is changed
-Date: Wed, 21 Aug 2024 11:40:56 -0400
-Message-ID: <20240821154056.2244959-1-ziy@nvidia.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <2024081932-vastly-ice-7932@gregkh>
-References: <2024081932-vastly-ice-7932@gregkh>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: MN2PR16CA0054.namprd16.prod.outlook.com
- (2603:10b6:208:234::23) To CYXPR12MB9320.namprd12.prod.outlook.com
- (2603:10b6:930:e6::9)
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7875.25; Wed, 21 Aug
+ 2024 15:56:53 +0000
+Received: from BL1PR12MB5144.namprd12.prod.outlook.com
+ ([fe80::491a:cce3:e531:3c42]) by BL1PR12MB5144.namprd12.prod.outlook.com
+ ([fe80::491a:cce3:e531:3c42%3]) with mapi id 15.20.7897.014; Wed, 21 Aug 2024
+ 15:56:53 +0000
+From: "Deucher, Alexander" <Alexander.Deucher@amd.com>
+To: "stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"stable-commits@vger.kernel.org" <stable-commits@vger.kernel.org>, "Xiao,
+ Jack" <Jack.Xiao@amd.com>
+CC: "Koenig, Christian" <Christian.Koenig@amd.com>, "Pan, Xinhui"
+	<Xinhui.Pan@amd.com>, David Airlie <airlied@gmail.com>, Daniel Vetter
+	<daniel@ffwll.ch>
+Subject: RE: Patch "drm/amdgpu/gfx11: need acquire mutex before access
+ CP_VMID_RESET v2" has been added to the 6.6-stable tree
+Thread-Topic: Patch "drm/amdgpu/gfx11: need acquire mutex before access
+ CP_VMID_RESET v2" has been added to the 6.6-stable tree
+Thread-Index: AQHa886w/6UqDwuXpUiLF0oq8CwP6bIx3YkA
+Date: Wed, 21 Aug 2024 15:56:53 +0000
+Message-ID:
+ <BL1PR12MB51448BBFAAEAF8FE20E33B61F78E2@BL1PR12MB5144.namprd12.prod.outlook.com>
+References: <20240821133314.1666552-1-sashal@kernel.org>
+In-Reply-To: <20240821133314.1666552-1-sashal@kernel.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+ MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_ActionId=d028e477-dbb4-46f8-979b-cb1e9c460759;MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_ContentBits=0;MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_Enabled=true;MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_Method=Privileged;MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_Name=Open
+ Source;MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_SetDate=2024-08-21T15:55:52Z;MSIP_Label_f265efc6-e181-49d6-80f4-fae95cf838a0_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BL1PR12MB5144:EE_|BY5PR12MB4306:EE_
+x-ms-office365-filtering-correlation-id: a994a3e6-ada4-4eb5-fbb6-08dcc1f9e06c
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|366016|1800799024|376014|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?44H33iTXqM3S87HWKeQqf5zINGhPeQliRmwBNNaAqZh+tZfY+9jO1s1GxQsl?=
+ =?us-ascii?Q?TyvN8RbNAFVZ4f12GjKNqhFVNsDKSkIgROmotlZD/zXSo8C1QxV4k/dWzm0g?=
+ =?us-ascii?Q?alNgjvonvGCfaXGj4+rWAVmLqGKCYXdVutH8g6rIlWCgQNDI9s/aDoZ1k8SK?=
+ =?us-ascii?Q?76NCM5zhYPnSfKIEC+0k0oo3Vb86F/n3Uf33WrqHwTfKC1ay+oFI8p+bnh7j?=
+ =?us-ascii?Q?ja3JG6Lq6+JH+urMGoN/UkwdK+4pIqNmu+Wugz7rPI/ehxBBWVmNk8ChecJK?=
+ =?us-ascii?Q?w+2MIeXimTXKBXoFL+kYQkGNtuOhs9qyOsTLRJEiQ42o6xFyRjVmlRWWob7K?=
+ =?us-ascii?Q?yd1nfWi4EzOG8hSn3Z5Ts8ygyfi/ECS+rewZ44mYssl/mgQzomePjQbNWDUz?=
+ =?us-ascii?Q?qo+Tempy+cS1M0Ir6IZjQAc2OqObpj5IvZTrQiisZJbS44An9AVmdg3iOlW4?=
+ =?us-ascii?Q?zAQF1L/XR1Vo1e60lh3IZAfGP0TyoHxx+Jts/E2ubzV6xQ1NQ2tFfJX7NSRr?=
+ =?us-ascii?Q?1mu3YB9+XR2ZdsJIMzr9QXB03D1fuEE81cXrsBTGT250XMqQnz8oTv/gT+fv?=
+ =?us-ascii?Q?+I74k6J1tv+SSk0bfpw6EK5S9xJYtcu9ZYw32esDS2wWSufTCHVJjKzpmZUm?=
+ =?us-ascii?Q?zvgLnVIEWCVVpjLIHDTqpwhGaewnX5kVxfesd0sq6C6WmRCnDaCtgPMGZ6lQ?=
+ =?us-ascii?Q?LxY/WxCtyTuTci9+NS2Gt9nm8ivxMaXQdnVl0R1/era0KK/Uv5X+qASnb2eR?=
+ =?us-ascii?Q?JnVVd+DsLvY+wbpYwmKWF7/DqUA17jX8im80nXd5oM4FdxQ3e/HJ6K7212FO?=
+ =?us-ascii?Q?2J5fCh5A1c+EAMMKwlxXXLngFBACOhwRChVoBl+Bb+PFsGk/a2IuQOPYZBLH?=
+ =?us-ascii?Q?dtqBGMKVwtGyZ2VLrWuPZctmj8BNIHUWSe4f4TIH1Pu/piCgVI5Xpp7/a4Cl?=
+ =?us-ascii?Q?jB4rui0h4GroDtYnakrX6RTE0rZhms0LFZEKJ2ZgCV9MDe3JT/AFK5A0NKY8?=
+ =?us-ascii?Q?t5tSZEZCWAFWdAsj+TA8ah6zf8ST+cNlpYxT6QXbzZjY3IfXD1yNQhkuopgq?=
+ =?us-ascii?Q?ZjbssoktkfN3yL1CbUhf+eUEm88NkFcKUl7il3KfsV/kq6UmyprwbgUyBeN8?=
+ =?us-ascii?Q?h1io/0JBL2mDPX1HVXcrOyyrASFXBHJudzH8009eImGhaWTo3UE+na1CgZru?=
+ =?us-ascii?Q?xEMMAG0NKWC/B44xDsCR8trfcyT4qZFk1h0yZAQbmWQf1AOeT0WBN07QX0sA?=
+ =?us-ascii?Q?9irmXGOILhytjbbquUsR2iTig5u/7TrbHpjCtz+FcIyTPdaCLRWqhOwMKamy?=
+ =?us-ascii?Q?fIo67yWAC7Z71bpD0BkrCmmc7KiSg+5cqerlndJB49NYVLEGantSJcLdvk3t?=
+ =?us-ascii?Q?IpUCceY=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5144.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?mvBcrtul3uKKeM/fosQoPbGLAC8ixbEONeE2gzfz5s61KGaeVfqaIsCdMygj?=
+ =?us-ascii?Q?f1W93S9hhiGcBmwxWapH6gOp127rZRHyR6sNAWmqZWSADcXn9VayXLddjC7N?=
+ =?us-ascii?Q?Al+ukRzN+o7+EF/rp9qaBPgWda8P05JPeMdxyKpKr9jVzRRCqKT0++5HKwHa?=
+ =?us-ascii?Q?I63hQeDo0XQ37CAlgwG6MGa+P5qqo+YOvKAFBGMRleqnoJm56lV1I6KQv8n5?=
+ =?us-ascii?Q?JcrAghcUGtuaSPf4GkOu94LTRTEOvxED2lt6s2fmhbUjkHX2Sx7HarzkfHGY?=
+ =?us-ascii?Q?0TWxcK8GaUpOmo12cQxIUkPx2WqpyA/wymYJh0oWrO3alQVWpx20TX7sLLMG?=
+ =?us-ascii?Q?FRiVB0tjBERYj6zjXM/XTJRaszuFFrTtz5ujUKlivB46kAU8Hk7ony8ZMLVH?=
+ =?us-ascii?Q?/ajG0so5qYqSr20p5j3eq7Szm/33cFBehxgr7E6vMyawrt0itG7pZtEGzGcz?=
+ =?us-ascii?Q?axhxlpIRtCFIWilJz3y0hNJicKjF8T0oaMxjZcIq69R19ldNdH4Eks+rgg8Q?=
+ =?us-ascii?Q?3t90vYq8BCkPc1oMrahkK0anqVM/yQDfHYIY98pzqGTy9/3l85L08oKyHw0o?=
+ =?us-ascii?Q?8gbgUO7NPbi5SH2+gPON61ALgHgiUV2Jb46n/9cUdN2LCUV0tTFRyUSFXwbT?=
+ =?us-ascii?Q?S86JnrBf7lyf8bqG7n0NoL+M6xPAcUUihi8FXyTe7WAqdM3LCG7UFguY9ppB?=
+ =?us-ascii?Q?9zb+vPJ0cGKPryGbP3xw7ZMHeLfSh41ZgTxDWayRDz2pTaJNrcR7gZmiRdmw?=
+ =?us-ascii?Q?omLtRSnAg/zwCbuSfcrieEWbvxg2/639OgtPqK/jhk9xD5jrcvL8dMgv3PMC?=
+ =?us-ascii?Q?n8fvRwNxdb5tdxSxohXk06kApI2olsRGmyfzbkMM7H8L09yxJSocun3tSgKR?=
+ =?us-ascii?Q?2Yfzx4JtgRSUYV52KRVgNWxX/o2Cg05GBoSX4/WpF/00dAgyE4eBnuYOy/YQ?=
+ =?us-ascii?Q?doW8WQ+7BEXqtPp1ve85RR4cCnIDQeKAFIyNBfDAbsoAbeE7Lh2Jg7FOFzEP?=
+ =?us-ascii?Q?4z62Hs2HlFdRRd9EVAQgOpSC7cOrCoorhF3vCgTc8HRAhzdq4knvjb9mDXo1?=
+ =?us-ascii?Q?FjHw0itJzPW4EdfKKUFoZU1qeLEpPPdSBBIMnMbbDJsXsQk4zpGtmKIOM+KQ?=
+ =?us-ascii?Q?bs7PAHF0NyJkbvGwRXr7RyjEVkjidbFHzzSHT6u/7d/rqXgflHCpnhbk0ZdG?=
+ =?us-ascii?Q?NF+EwEdiXLc1teWVwM5kD85pefP+r2krf8B+Wg5oGxmc+BJOzVoyURUoHW86?=
+ =?us-ascii?Q?zfqMcafeFbK1KqTG6w3F3ZUJEW+wzLQOtW2lkTmn2czmDJz+VPX9CGHOpTOu?=
+ =?us-ascii?Q?rrjvCB5PUAxVWHt2ttmiWU0ZVyib1502ppmgE5tNRAMx0jdDDX2mBdtRyfam?=
+ =?us-ascii?Q?vZpLGj48e9TTbQ05y0iLc5T01qBoOT0P3xwKQ+fok7rlEUFOIg8i7DCAL6UM?=
+ =?us-ascii?Q?3iewDg5ZeZqZm9iuwZlFqMtSpgjBwg5zLOsg2dS6WU4cZR9SZ55HRhQ/OtJz?=
+ =?us-ascii?Q?st/VgayiOjEWrxrSTmY3ykaNNn1u1vowN5wKoVC+F8kylZdvzgjlC7QLximU?=
+ =?us-ascii?Q?6BxpwAuKwpwcZI2r3Yc=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CYXPR12MB9320:EE_|PH7PR12MB6881:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4d69296b-84b0-478a-2572-08dcc1f7a826
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?ErFdkVLAZr1AKUbJu/ntooLEYlZGJrI6mJrUZsTGWQ1Ead8xghO0VmH6Mc+A?=
- =?us-ascii?Q?RC+8xcS9uJ+s8gMxljmaU4ofYdabYOjW/MCOrzWHoe2SphIXt+Z5gZi+K4R6?=
- =?us-ascii?Q?0XbSu9RjI16i0C6Zfahp47UGYP+HHMOP4yCMChEtU5/mvH4FABQ7Nzdw2OSv?=
- =?us-ascii?Q?y3GZ5SHSuIgKhPyHKDZvlse9LZjPlG2ghbP3nx6rr/AHuyWIjZR0rSSse7j+?=
- =?us-ascii?Q?cSMVKN+7eaC7pV+KZG8Uya6rfrwUFdMyNp07IIWjk7AwRYlnkpGVAht5DSwF?=
- =?us-ascii?Q?2LTBc69WkuDO8lOO5JHII7x1LV8Y8vVlR3X4DvvmV9aOnKYszSWrqYuOe3g3?=
- =?us-ascii?Q?uWpVgqljIyYY4vNy2/pVIuX1lnxKFFj3K/r2KFUTnPVfp4kpQR354kS0V2FC?=
- =?us-ascii?Q?MihYAOh326gtRemrouVVLBh/g0oaS4g39r4eMXrcTt3vYLZt3YaKZWLI0Y/r?=
- =?us-ascii?Q?4UrHmxx41JN9S6NzeZ+fzWD3pa5Vc/GVvlHdaZ+gvq6nnOfAM+7YTidHgjkZ?=
- =?us-ascii?Q?JB/uKuZ6oYeKLXqDMNb2/USv7FhEA9SSjoZ1+Z4lNehl0jhszIKT8/wJH0fg?=
- =?us-ascii?Q?tyJUIW+fcvnHwljFzXGoEvP66CGMqynZrF7JYnEPO6GaPru+akDzW2dXT/Ft?=
- =?us-ascii?Q?mUsHOCv9b2+kSq/p+whi8fbMGz5lWzeW39+4oDvGT2Zm6Hhxx28jcX57O5P6?=
- =?us-ascii?Q?YtQJylHGWFuA8ZyW2dDRVetv9AZlfA96JRom3Xk4131YyBd2tGllvhatz7z7?=
- =?us-ascii?Q?HNzH/X1K7VmWCRL7BJAXkgkenLGD5X6DhCbpmbZ40xaGoo2L4H4F2uosg1qq?=
- =?us-ascii?Q?e+Cc2VACSZwJrGCMCi0qP6cYkNjGhBNL4Gu2V3ijapTDL3TMfBMpEGJLLwU9?=
- =?us-ascii?Q?lYza8tvugoibiVwxxVxBZc0IgDKa6Af44z6/+v4hvjHHNbvDOlmTUzfqNZtz?=
- =?us-ascii?Q?anPUobHIRXIP4zVaLshGhFE5iv/wMF0WUTjz2AJcHwbstB6WBVAhgc6CuMzJ?=
- =?us-ascii?Q?u+y0L06C8X9YI2yTWdgcsNsYd2VN7spx3ps054R60dtCbobbxj5nhiCo+//p?=
- =?us-ascii?Q?FK95hRQk7luMLqpEU2Ts2xhKkbs14pW4FDq95GyOfUMJ3r+Bs+VAedKtUvNK?=
- =?us-ascii?Q?6n6wDpubUIp6J3BHSp+TXobGVXRtI75/XDUB3IR559uZWlAvC0gWe50CZQdD?=
- =?us-ascii?Q?zbTZjr25B2y3fUopyuMKvdx6YmDN8krK+KzZuhTaTbgUyR/E3d+8zAT+k1BV?=
- =?us-ascii?Q?0Ct+5xRtaxRI4Kg+G46uRTNt8pkjiNLXyL2WFNIL30FHkKhx4hhSFMxaETvV?=
- =?us-ascii?Q?lRK34+p72mB7gFT895GZRL/nqn/SNfJddVsxJxUl7v4tlQ=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CYXPR12MB9320.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?fTmxk643w8yuJdCHSNCT4LHrexVaJnXFEEzdG/ykqpksA7+kciOIBWfB4rKw?=
- =?us-ascii?Q?B46P0jVtFglyVigoQJnLmoNipwGHsPUpdiLUYXyUi2++wZIAcWrI3BFZuKha?=
- =?us-ascii?Q?ws9WmB2vGHZEPT0rU7Nu98ZA8LXqoQB60fq1Igq//zf+h4HK/n3m0N8bShLb?=
- =?us-ascii?Q?GVBOPr33iD+YpOMuwknEpNo6ushwMsd7pKtqYg6XrZ97SYupI5LHBpKu8OhT?=
- =?us-ascii?Q?nTCYcKqsaX/izD0UUc0ZK/kHoYeXr5k9btGs2IMGkgLNpkPDMQmuZmZApl0y?=
- =?us-ascii?Q?Qp3uNr72l6xbK//sUqAan4lvf16CVEDQBbT4zrvd2w55AXyFfMgPhcOZVjCU?=
- =?us-ascii?Q?5/S7hA9DdxhdoRLd0VrGQelTDkNUs+m6uCUzghDYqDrsijqmr2SE5zT0nMOV?=
- =?us-ascii?Q?O9thdKvWdAyDv7a6kGICxBIGv8+4SzqM8r0ln593VkX3L4v3x4/e1VanVTif?=
- =?us-ascii?Q?Ij8+4iod6mR5MsDnkm2qN35adq3w28LIfqS6CXhN1H8M07c9LmKPEdO2b7vO?=
- =?us-ascii?Q?yDoJ39PvnYaSniKTLYPmymhbnLzjgUSL9kFJnmw0L14ma18Z+XQmgMSK2NUL?=
- =?us-ascii?Q?O8wBUZdAYlE+xyHGXN8bxl7KVy0LWt3uMnuFjY/RBHdhZQvl3F9MLNb/wQ2D?=
- =?us-ascii?Q?TXUN1a0k2lwg/O/jsWDP/fLcLAEYpZ2/UVtHw8r07jNSLyLQ25+jmrC5uFan?=
- =?us-ascii?Q?c0sDo8mpuOmswFUH6HEVFUPjMNdKVMCaC03d3ofOnkQD3yHGQNGNQPYMpDBF?=
- =?us-ascii?Q?bAHmpECKBgqLtY54d7LtfqeWirhYpYjBVKxG5Shq51CykxaZBE8RXF5BbD2A?=
- =?us-ascii?Q?tAHhKe1nOEf/xcLhWZnJWQYIQvJRY0NS4kw/e935Rqt4Ly5nqPjKeXLkNpVw?=
- =?us-ascii?Q?0S4qKPVCLxCVtqfqmCnUp6tVyzHRvq8L5/5DE9EVv5fk1KeyWxI/jZ0IXZL0?=
- =?us-ascii?Q?dYRTsmtMUrgvN4m31kuX8HFMrHD0eRux7Snojz4sndauVLizOTlROsM0h652?=
- =?us-ascii?Q?hlr+JCeKUuCs5Ct5fF5Hx+WS3tC2NLELlwoDkyEEqYFJ7q2Uqg3pTDKcf87l?=
- =?us-ascii?Q?j7JOLJv33tFYinPi0+gjmBk8qCZUQBt7JPP0vlx32PWL0+E13ByRXO/Du0tg?=
- =?us-ascii?Q?x24RFa9oxiA/Tm0mgTHSeAgvRCZi6k6AKXjuBRayMFNIfpR+K+9os8nQJhGJ?=
- =?us-ascii?Q?G6XGtsRQFkyU9G0saKLHb1SpXo+AAGkzKE6YCWrlprkjP9BCVbvMIVYuOib6?=
- =?us-ascii?Q?ztLCmS+j5eF6+QP/XbEchhxuMSFj3m/77DRHuCWrPHv5R9k6gKrxUtZzWpi2?=
- =?us-ascii?Q?jVkH+ny/p3mdsikI9Ppge3Ucw4gWb1p0Z64Mhp3UvHFX41GmHN+EGadEpOOQ?=
- =?us-ascii?Q?faFxKf/B1zz+EBrTyF5uU9q+ndj8PUhGyTfLqQGsCZ0qPdIlj1687qFSKORk?=
- =?us-ascii?Q?gZHU76Vt03wzRqb/vjUtcW7+t+EystiyfyELbcG6kLNxQXhsbVzqAycm3lmh?=
- =?us-ascii?Q?i0IzqtvBH5umQ2O8VG5rIlboS3j7rkssMWxUWlYO31tDs4XE9DXbpbfLULUb?=
- =?us-ascii?Q?37laiwAJE4oFHJhlsMZ3qKd+2svSIjWItkCG0Zl2?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4d69296b-84b0-478a-2572-08dcc1f7a826
-X-MS-Exchange-CrossTenant-AuthSource: CYXPR12MB9320.namprd12.prod.outlook.com
+X-OriginatorOrg: amd.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2024 15:41:00.3256
+X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5144.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a994a3e6-ada4-4eb5-fbb6-08dcc1f9e06c
+X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Aug 2024 15:56:53.5630
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: O+/GLfx/R3xTbesf5/oKjuAx6LGv0mjGzvhRvrgdroetcUjjxrrVstm6mxJNu3Qe
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6881
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: c7LcSNKXHwcd8E884I8nCudwMtu48BbQmb7dDQmCEkKvzqOzjC8VW7y41SpbLODcP3F9ldeZRA3Sw9LRuGkiqg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4306
 
-When handling a numa page fault, task_numa_fault() should be called by a
-process that restores the page table of the faulted folio to avoid
-duplicated stats counting.  Commit b99a342d4f11 ("NUMA balancing: reduce
-TLB flush via delaying mapping on hint page fault") restructured
-do_numa_page() and did not avoid task_numa_fault() call in the second page
-table check after a numa migration failure.  Fix it by making all
-!pte_same() return immediately.
+[Public]
 
-This issue can cause task_numa_fault() being called more than necessary
-and lead to unexpected numa balancing results (It is hard to tell whether
-the issue will cause positive or negative performance impact due to
-duplicated numa fault counting).
+> -----Original Message-----
+> From: Sasha Levin <sashal@kernel.org>
+> Sent: Wednesday, August 21, 2024 9:33 AM
+> To: stable-commits@vger.kernel.org; Xiao, Jack <Jack.Xiao@amd.com>
+> Cc: Deucher, Alexander <Alexander.Deucher@amd.com>; Koenig, Christian
+> <Christian.Koenig@amd.com>; Pan, Xinhui <Xinhui.Pan@amd.com>; David
+> Airlie <airlied@gmail.com>; Daniel Vetter <daniel@ffwll.ch>
+> Subject: Patch "drm/amdgpu/gfx11: need acquire mutex before access
+> CP_VMID_RESET v2" has been added to the 6.6-stable tree
+>
+> This is a note to let you know that I've just added the patch titled
+>
+>     drm/amdgpu/gfx11: need acquire mutex before access CP_VMID_RESET v2
+>
+> to the 6.6-stable tree which can be found at:
+>     http://www.kernel.org/git/?p=3Dlinux/kernel/git/stable/stable-
+> queue.git;a=3Dsummary
+>
+> The filename of the patch is:
+>      drm-amdgpu-gfx11-need-acquire-mutex-before-access-cp.patch
+> and it can be found in the queue-6.6 subdirectory.
+>
+> If you, or anyone else, feels it should not be added to the stable tree, =
+please let
+> <stable@vger.kernel.org> know about it.
+>
 
-Link: https://lkml.kernel.org/r/20240809145906.1513458-2-ziy@nvidia.com
-Fixes: b99a342d4f11 ("NUMA balancing: reduce TLB flush via delaying mapping on hint page fault")
-Signed-off-by: Zi Yan <ziy@nvidia.com>
-Reported-by: "Huang, Ying" <ying.huang@intel.com>
-Closes: https://lore.kernel.org/linux-mm/87zfqfw0yw.fsf@yhuang6-desk2.ccr.corp.intel.com/
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Mel Gorman <mgorman@suse.de>
-Cc: Yang Shi <shy828301@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-(cherry picked from commit 40b760cfd44566bca791c80e0720d70d75382b84)
----
- mm/memory.c | 33 ++++++++++++++++-----------------
- 1 file changed, 16 insertions(+), 17 deletions(-)
+This patch is not stable material.  Please drop for stable.
 
-diff --git a/mm/memory.c b/mm/memory.c
-index 58408bf96e0e..bfd2273cb4b4 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -4775,7 +4775,7 @@ static vm_fault_t do_numa_page(struct vm_fault *vmf)
- 	spin_lock(vmf->ptl);
- 	if (unlikely(!pte_same(ptep_get(vmf->pte), vmf->orig_pte))) {
- 		pte_unmap_unlock(vmf->pte, vmf->ptl);
--		goto out;
-+		return 0;
- 	}
- 
- 	/* Get the normal PTE  */
-@@ -4840,23 +4840,19 @@ static vm_fault_t do_numa_page(struct vm_fault *vmf)
- 	if (migrate_misplaced_page(page, vma, target_nid)) {
- 		page_nid = target_nid;
- 		flags |= TNF_MIGRATED;
--	} else {
--		flags |= TNF_MIGRATE_FAIL;
--		vmf->pte = pte_offset_map_lock(vma->vm_mm, vmf->pmd,
--					       vmf->address, &vmf->ptl);
--		if (unlikely(!vmf->pte))
--			goto out;
--		if (unlikely(!pte_same(ptep_get(vmf->pte), vmf->orig_pte))) {
--			pte_unmap_unlock(vmf->pte, vmf->ptl);
--			goto out;
--		}
--		goto out_map;
-+		task_numa_fault(last_cpupid, page_nid, 1, flags);
-+		return 0;
- 	}
- 
--out:
--	if (page_nid != NUMA_NO_NODE)
--		task_numa_fault(last_cpupid, page_nid, 1, flags);
--	return 0;
-+	flags |= TNF_MIGRATE_FAIL;
-+	vmf->pte = pte_offset_map_lock(vma->vm_mm, vmf->pmd,
-+				       vmf->address, &vmf->ptl);
-+	if (unlikely(!vmf->pte))
-+		return 0;
-+	if (unlikely(!pte_same(ptep_get(vmf->pte), vmf->orig_pte))) {
-+		pte_unmap_unlock(vmf->pte, vmf->ptl);
-+		return 0;
-+	}
- out_map:
- 	/*
- 	 * Make it present again, depending on how arch implements
-@@ -4870,7 +4866,10 @@ static vm_fault_t do_numa_page(struct vm_fault *vmf)
- 	ptep_modify_prot_commit(vma, vmf->address, vmf->pte, old_pte, pte);
- 	update_mmu_cache_range(vmf, vma, vmf->address, vmf->pte, 1);
- 	pte_unmap_unlock(vmf->pte, vmf->ptl);
--	goto out;
-+
-+	if (page_nid != NUMA_NO_NODE)
-+		task_numa_fault(last_cpupid, page_nid, 1, flags);
-+	return 0;
- }
- 
- static inline vm_fault_t create_huge_pmd(struct vm_fault *vmf)
--- 
-2.43.0
+Thanks,
 
+Alex
+
+>
+>
+> commit 72516630230bee2668c491fdafcac27c565a5ad5
+> Author: Jack Xiao <Jack.Xiao@amd.com>
+> Date:   Tue Dec 19 17:10:34 2023 +0800
+>
+>     drm/amdgpu/gfx11: need acquire mutex before access CP_VMID_RESET v2
+>
+>     [ Upstream commit 4b5c5f5ad38b9435518730cc7f8f1e8de9c5cb2f ]
+>
+>     It's required to take the gfx mutex before access to CP_VMID_RESET,
+>     for there is a race condition with CP firmware to write the register.
+>
+>     v2: add extra code to ensure the mutex releasing is successful.
+>
+>     Signed-off-by: Jack Xiao <Jack.Xiao@amd.com>
+>     Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
+>     Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+>     Signed-off-by: Sasha Levin <sashal@kernel.org>
+>
+> diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
+> b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
+> index c81e98f0d17ff..17a09e96b30fc 100644
+> --- a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
+> +++ b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
+> @@ -4430,11 +4430,43 @@ static int gfx_v11_0_wait_for_idle(void *handle)
+>       return -ETIMEDOUT;
+>  }
+>
+> +static int gfx_v11_0_request_gfx_index_mutex(struct amdgpu_device *adev,
+> +                                          int req)
+> +{
+> +     u32 i, tmp, val;
+> +
+> +     for (i =3D 0; i < adev->usec_timeout; i++) {
+> +             /* Request with MeId=3D2, PipeId=3D0 */
+> +             tmp =3D REG_SET_FIELD(0, CP_GFX_INDEX_MUTEX, REQUEST,
+> req);
+> +             tmp =3D REG_SET_FIELD(tmp, CP_GFX_INDEX_MUTEX,
+> CLIENTID, 4);
+> +             WREG32_SOC15(GC, 0, regCP_GFX_INDEX_MUTEX, tmp);
+> +
+> +             val =3D RREG32_SOC15(GC, 0, regCP_GFX_INDEX_MUTEX);
+> +             if (req) {
+> +                     if (val =3D=3D tmp)
+> +                             break;
+> +             } else {
+> +                     tmp =3D REG_SET_FIELD(tmp, CP_GFX_INDEX_MUTEX,
+> +                                         REQUEST, 1);
+> +
+> +                     /* unlocked or locked by firmware */
+> +                     if (val !=3D tmp)
+> +                             break;
+> +             }
+> +             udelay(1);
+> +     }
+> +
+> +     if (i >=3D adev->usec_timeout)
+> +             return -EINVAL;
+> +
+> +     return 0;
+> +}
+> +
+>  static int gfx_v11_0_soft_reset(void *handle)  {
+>       u32 grbm_soft_reset =3D 0;
+>       u32 tmp;
+> -     int i, j, k;
+> +     int r, i, j, k;
+>       struct amdgpu_device *adev =3D (struct amdgpu_device *)handle;
+>
+>       tmp =3D RREG32_SOC15(GC, 0, regCP_INT_CNTL); @@ -4474,6
+> +4506,13 @@ static int gfx_v11_0_soft_reset(void *handle)
+>               }
+>       }
+>
+> +     /* Try to acquire the gfx mutex before access to CP_VMID_RESET */
+> +     r =3D gfx_v11_0_request_gfx_index_mutex(adev, 1);
+> +     if (r) {
+> +             DRM_ERROR("Failed to acquire the gfx mutex during soft
+> reset\n");
+> +             return r;
+> +     }
+> +
+>       WREG32_SOC15(GC, 0, regCP_VMID_RESET, 0xfffffffe);
+>
+>       // Read CP_VMID_RESET register three times.
+> @@ -4482,6 +4521,13 @@ static int gfx_v11_0_soft_reset(void *handle)
+>       RREG32_SOC15(GC, 0, regCP_VMID_RESET);
+>       RREG32_SOC15(GC, 0, regCP_VMID_RESET);
+>
+> +     /* release the gfx mutex */
+> +     r =3D gfx_v11_0_request_gfx_index_mutex(adev, 0);
+> +     if (r) {
+> +             DRM_ERROR("Failed to release the gfx mutex during soft
+> reset\n");
+> +             return r;
+> +     }
+> +
+>       for (i =3D 0; i < adev->usec_timeout; i++) {
+>               if (!RREG32_SOC15(GC, 0, regCP_HQD_ACTIVE) &&
+>                   !RREG32_SOC15(GC, 0, regCP_GFX_HQD_ACTIVE))
 
