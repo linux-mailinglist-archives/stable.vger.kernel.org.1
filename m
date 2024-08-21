@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-69838-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69839-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F85795A337
-	for <lists+stable@lfdr.de>; Wed, 21 Aug 2024 18:54:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5ECCF95A400
+	for <lists+stable@lfdr.de>; Wed, 21 Aug 2024 19:37:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF25228136C
-	for <lists+stable@lfdr.de>; Wed, 21 Aug 2024 16:54:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 199E7282806
+	for <lists+stable@lfdr.de>; Wed, 21 Aug 2024 17:37:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBB311AF4DF;
-	Wed, 21 Aug 2024 16:54:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DDA91B2EF3;
+	Wed, 21 Aug 2024 17:37:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="DtfrdYkV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gZenRI8m"
 X-Original-To: stable@vger.kernel.org
-Received: from out-178.mta1.migadu.com (out-178.mta1.migadu.com [95.215.58.178])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5449C14E2EF
-	for <stable@vger.kernel.org>; Wed, 21 Aug 2024 16:53:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F17EB1B2EC1;
+	Wed, 21 Aug 2024 17:37:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724259240; cv=none; b=g6lkOmTggk46H3tO4ZZWFM0yEgABxlLbqwIKj08mPgaEn7/SXVGPczKNeUFqcZzbkpR214BYiagcGSoEoqe2R+BC6fkCNnnF8vv5V6WLdEKkoMLushST1i7i7VQLpF+qk0mlyYTaI/bLyMoG98YBq8EUbK6DJi0vPRTzbEILNZM=
+	t=1724261856; cv=none; b=gwzjacILDnSF2DY+60i7A9ao2quzT2Cdx0a2SHwpu8KYSHCWG8COBbdTjEdURwA9WlSs2iwooZ6BGfHHhOr2BJ48oGKS6A3rWtLsAcJk+C9227qTlidAZJGL2Sh+lVMQMUTsDRi7GQRjA86g0sAWdHwi0XZFqEBes7X6PuUBKKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724259240; c=relaxed/simple;
-	bh=KRqYf0D7qKIvZDRldP2GF+vIYtADtDZc+uaNUudfuhA=;
+	s=arc-20240116; t=1724261856; c=relaxed/simple;
+	bh=yzoAlBa7Gq7XplWHcp/NwfAfAm8mhCyPIfBsErv0xas=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=W5mgicshLoLVRFDhEIMjhrAkNT04lwJUYzqAYw8uOLUbtCGmdHPbYnw/As+H6+XekY9wadzd87VwykhVrGRMCWcSgKfxeqlP0NGN9frWd0PWWIMHjgKDIUIJ+5fI8DZ5pNA+QbpDTYNzKKJ3DkbdouXQglhvNe5YdVlssFwg9d4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=DtfrdYkV; arc=none smtp.client-ip=95.215.58.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Date: Wed, 21 Aug 2024 09:53:47 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1724259236;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vlQGzGWk8tm0muGf8AU98KPFAWS2rZ3ejTpHnzVFAeM=;
-	b=DtfrdYkV68G2vLS7xazpLrwqXKOB8+hUKiu+fgS9cXylowM4cw6AsBFHKCeKSSbmzxZFTk
-	eLeti0zxH3xtakjmF9lVvK29Ebh/Wfse6rz7P47ZItEpRwXu/cE4RCSjCeq2jdVFNVfpWn
-	gUZw1wFLoOLWmOXVa1H2J3aETUp18cE=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Oliver Upton <oliver.upton@linux.dev>
-To: Marc Zyngier <maz@kernel.org>
-Cc: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	kvm@vger.kernel.org, James Morse <james.morse@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Alexander Potapenko <glider@google.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 01/12] KVM: arm64: Make ICC_*SGI*_EL1 undef in the
- absence of a vGICv3
-Message-ID: <ZsYbm1PSqQMGmNyt@linux.dev>
-References: <20240820100349.3544850-1-maz@kernel.org>
- <20240820100349.3544850-2-maz@kernel.org>
- <ZsUOtp9kfpqm1enx@linux.dev>
- <86le0qxhsn.wl-maz@kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=nn0ZRkTOgy2jssR4n2CXDpq2gsevgv0WtFgfbFkzbhvx2eO0Fv2Ye6AaARkep8u1vj3wxX6T+Q9f6GXQiud7P25H3zxQeAlZeB2yUao7K7BLJI1Ajy+obQmy90cQD0E1rkJhqFvqXYJnehu+N9vCht+E7N/FURHsQ5kP6YI0oKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gZenRI8m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89E72C4AF11;
+	Wed, 21 Aug 2024 17:37:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724261855;
+	bh=yzoAlBa7Gq7XplWHcp/NwfAfAm8mhCyPIfBsErv0xas=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=gZenRI8mrXmGOdE9wLzBrPC+GIuS/3NZMFBvcmYPDFXxRoeT0TMhEltitILBTWbF8
+	 gHAy4bAW6cCCFArl1qPgYVxLpwlWnE3zvUh9Gn7dWfwXja1Tzz4u+fgMmkuSRV13zO
+	 1sCnbUXxnr6sSH5tuulEutbHp61rWkLkqEyRz0W65MCIHkDdsjLuSLlWpU0UApnnmB
+	 GCZYmuMu1/CKMNeAd437EZ0a6ltMJlVn9TE5qzAJMJ0Z6RuBZoTvTfyzmapUrtiH4h
+	 n6e8ym0Zr45wayTUMeVfcb26aqaeNqHCZuh0NV//nuFXVCdJ7ov3AJafbi/raXkKYi
+	 avf0T5uLR8sRQ==
+Date: Wed, 21 Aug 2024 18:37:30 +0100
+From: Simon Horman <horms@kernel.org>
+To: Ma Ke <make24@iscas.ac.cn>
+Cc: vkoul@kernel.org, alexandre.torgue@foss.st.com, joabreu@synopsys.com,
+	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, mcoquelin.stm32@gmail.com,
+	niklas.cassel@linaro.org, netdev@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] net: stmmac: Check NULL ptr on lvts_data in
+ qcom_ethqos_probe()
+Message-ID: <20240821173730.GD2164@kernel.org>
+References: <20240821131949.1465949-1-make24@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,37 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <86le0qxhsn.wl-maz@kernel.org>
-X-Migadu-Flow: FLOW_OUT
+In-Reply-To: <20240821131949.1465949-1-make24@iscas.ac.cn>
 
-On Wed, Aug 21, 2024 at 11:59:52AM +0100, Marc Zyngier wrote:
-> On Tue, 20 Aug 2024 22:46:30 +0100,
-> Oliver Upton <oliver.upton@linux.dev> wrote:
-> > 
-> > On Tue, Aug 20, 2024 at 11:03:38AM +0100, Marc Zyngier wrote:
-> > > On a system with a GICv3, if a guest hasn't been configured with
-> > > GICv3 and that the host is not capable of GICv2 emulation,
-> > > a write to any of the ICC_*SGI*_EL1 registers is trapped to EL2.
-> > > 
-> > > We therefore try to emulate the SGI access, only to hit a NULL
-> > > pointer as no private interrupt is allocated (no GIC, remember?).
-> > > 
-> > > The obvious fix is to give the guest what it deserves, in the
-> > > shape of a UNDEF exception.
-> > > 
-> > > Reported-by: Alexander Potapenko <glider@google.com>
-> > > Signed-off-by: Marc Zyngier <maz@kernel.org>
-> > > Cc: stable@vger.kernel.org
-> > 
-> > LGTM, and just as an FYI I do plan on grabbing this for 6.11
+On Wed, Aug 21, 2024 at 09:19:49PM +0800, Ma Ke wrote:
+> of_device_get_match_data() can return NULL if of_match_device failed, and
+> the pointer 'data' was dereferenced without checking against NULL. Add
+> checking of pointer 'data' in qcom_ethqos_probe().
 > 
-> Great, thanks. Are you planning to route this via arm64, given that
-> Paolo is away for a bit?
+> Cc: stable@vger.kernel.org
+> Fixes: a7c30e62d4b8 ("net: stmmac: Add driver for Qualcomm ethqos")
+> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
 
-Yup, exactly that. I'll send the PR in the next day or two when I have
-some time to kick the tires on everything.
+Hi Ma Ke,
 
--- 
-Thanks,
-Oliver
+There is probably no need to repost just because of this.
+But as a fix for Networking code it should be targeted at the net tree.
+
+	Subject: [PATCH net] ...
+
+> ---
+>  drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
+> index 901a3c1959fa..f18393fe58a4 100644
+> --- a/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
+> +++ b/drivers/net/ethernet/stmicro/stmmac/dwmac-qcom-ethqos.c
+> @@ -838,6 +838,9 @@ static int qcom_ethqos_probe(struct platform_device *pdev)
+>  	ethqos->mac_base = stmmac_res.addr;
+>  
+>  	data = of_device_get_match_data(dev);
+> +	if (!data)
+> +		return -ENODEV;
+> +
+
+In this function dev_err_probe() is used, I assume in cases
+where a function that returns an error does not emit any logs.
+
+For consistency, perhaps that is appropriate here too?
+
+>  	ethqos->por = data->por;
+>  	ethqos->num_por = data->num_por;
+>  	ethqos->rgmii_config_loopback_en = data->rgmii_config_loopback_en;
+> -- 
+> 2.25.1
 
