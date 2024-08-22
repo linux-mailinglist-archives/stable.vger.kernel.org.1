@@ -1,53 +1,94 @@
-Return-Path: <stable+bounces-69856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69857-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 345E995A89B
-	for <lists+stable@lfdr.de>; Thu, 22 Aug 2024 02:13:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B99BC95A89C
+	for <lists+stable@lfdr.de>; Thu, 22 Aug 2024 02:13:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B0CA4281CA0
-	for <lists+stable@lfdr.de>; Thu, 22 Aug 2024 00:13:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A39F5281D7B
+	for <lists+stable@lfdr.de>; Thu, 22 Aug 2024 00:13:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12BE429A5;
-	Thu, 22 Aug 2024 00:13:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 114E423CB;
+	Thu, 22 Aug 2024 00:13:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TG6SlU4w"
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="1AHcfJ+T";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="s6WJlEQ6"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fout2-smtp.messagingengine.com (fout2-smtp.messagingengine.com [103.168.172.145])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB17123CB;
-	Thu, 22 Aug 2024 00:13:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 548E7EC5
+	for <stable@vger.kernel.org>; Thu, 22 Aug 2024 00:13:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.145
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724285607; cv=none; b=lPnxMG6bf9UmRL3+vtybRb8gWvtCtN8/MJZMvdOathBRSbEnpImCPqgz9d0d0rhu9y0AD5l5emavlp6MwHUwjV4KzFW6UW4pmarxZmXG0K0TXujcTU+4ly+WW6LmbV1I+ZmBN55+4fpvZSUaah2CJ9wmYFhNXVkOCf1aau76cZM=
+	t=1724285614; cv=none; b=iVZfaItVvFmxL0FWCcFbMczVzWdjrOr+8k9C9fFFzm+DUUBcmaASMvwRruxdzF2/74bz7bdLk0DKEhnVETStjvtQNmiaUNoOOUbL/R2crFDah3SCxbt1qtuvbdu2i17tUsvRRDKtWANA83h6VJhQur12lhKf9XAh72G8HbjH1WQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724285607; c=relaxed/simple;
-	bh=s2mwO1OdtOj7IDXje9pSoeacZVHMD+zAoMZEH7vy/sw=;
+	s=arc-20240116; t=1724285614; c=relaxed/simple;
+	bh=XZBMRBMeMjRqe36jkCtz4dOa7SkGSph/sB7Jq/AIoZ0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RMSJtHINyDPubOJIYWQ53xRE8YLeFWN8+CR+H2c3HDQJ+0wwmEidRya5ml7cCgNqJK6HIFF//pWYKdhMHlbu7UB7Qa5PUDuHNJoTbAr8zwVkhPpzqVnqiLNrQl1yHf97ZbeG7V+rUb7p/Yporcn8qCD1WwgSuDiqabDo+5pjK6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TG6SlU4w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4305AC32781;
-	Thu, 22 Aug 2024 00:13:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724285607;
-	bh=s2mwO1OdtOj7IDXje9pSoeacZVHMD+zAoMZEH7vy/sw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TG6SlU4wrjB36Z5IoVn4tvk87MuttHjHhLaSEVUpj6HT9GZpWQsFpN+w6wNrhmD+X
-	 giHlieSWflnkJsJEBx3qmGhd7nr7TeihrVNKfqwq19+BRdNuYWcgF86xMMrqejW188
-	 Svqaio4/M/bI9lyJUofS/DHXKAYGpBcJ5G0cl5jo=
-Date: Thu, 22 Aug 2024 08:11:16 +0800
-From: Greg KH <gregkh@linuxfoundation.org>
-To: cel@kernel.org
-Cc: stable@vger.kernel.org, linux-nfs@vger.kernel.org, pvorel@suse.cz,
-	sherry.yang@oracle.com, calum.mackay@oracle.com, kernel-team@fb.com,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: Re: [PATCH 5.15.y 00/18] Backport "make svc_stat per-net instead of
- global"
-Message-ID: <2024082208-precinct-dander-ea81@gregkh>
-References: <20240821145548.25700-1-cel@kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=JDo/+3AAvkOE++tacUcoDw35JYSLqEYouPnhwx8BtiJtZwrd/xqt3nIobadYkGQyBhWi/HJ3YProSj829YMxFuLuS0+4oU8dFeWO++S1VDk1oqgFb4QgGkycT4f1bCvE7xlXujrtU4P9PtrVAKj5nF2Un95zHzpQFN45Og0eMG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=1AHcfJ+T; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=s6WJlEQ6; arc=none smtp.client-ip=103.168.172.145
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+Received: from phl-compute-06.internal (phl-compute-06.nyi.internal [10.202.2.46])
+	by mailfout.nyi.internal (Postfix) with ESMTP id 68D731390030;
+	Wed, 21 Aug 2024 20:13:31 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Wed, 21 Aug 2024 20:13:31 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm1; t=1724285611; x=1724372011; bh=DUFBUzLdap
+	IYCy6WK9qUHnyfBxRst/2LYDAotoRcdPc=; b=1AHcfJ+TBNDi5iBJAaGyoytywY
+	paOEKh3a7VgMpfM+jrnIQ0Wa3XODtjiwRi0LLt1/sy3LJt3NZfhblCPykpk4jT0T
+	FOs9F4EI7BEE62baz6HYG/ZFosmOcBNdtDrepoGLKsYu2chsXmHvsb9f6ghc4B9K
+	V/QzWUkmDygMxJCZOiZOqz072Pis5lNC5wCpMMSw8D/zqMyr9X7GK+xwY56yfw3g
+	6f6ealOIop/GrPAabTcSLq29cQ7iimhdBMy5l4k6AoLBgkOkLH+j0eYD2KniCssU
+	bvyh0jRgLqJeYEaG6U1RSMnfuuUjirtRsY+oHe0d7V/vVzRghtqoUbq/afQA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm1; t=1724285611; x=1724372011; bh=DUFBUzLdapIYCy6WK9qUHnyfBxRs
+	t/2LYDAotoRcdPc=; b=s6WJlEQ6FfA0enDcmfpm371GocVpkOv1svYXCTtvqFeG
+	IfT47vbByl55iamdaSKLIsYqKmepgUx8x3hmGrk9LVIA7uFPNJnmkh3in7I7rGh6
+	RrNlTWkhdjpYyGtGXke5ZIKq08XqlTRnlZFQIoQtJSkSADF/7PvUXkI+YSPn5KlC
+	1aBWf1RjXmJDfrOscflq5ok/QEdlbbI2pI2hYyx1v2Gh9mQ8314/cKvAbJIe53On
+	YHrnJlCVpb/gfr7LecgqwqmIijJOAA2YaooJEgX6KB9vUO24x6j8mb1HEbzxbwH1
+	8ZmERUU2DTjawF6Hg5VmLSk3s+mjHykeLylvx/w6og==
+X-ME-Sender: <xms:q4LGZoy6Be9i9Gx0aHxQjyz8DKMxp8xEKBdokdmL25rbeEwu8FSdWA>
+    <xme:q4LGZsRREJT7H74dIv54V2aY_oxLfmQfGJKFakrlALrmgJJ_rhGtt6SERBonbkM4y
+    -9WTyy3DzXR0Q>
+X-ME-Received: <xmr:q4LGZqVAeQSRiuV3AqVM_s3BjC927dUhv-8eVVkGEyGvohV3bLUtLmM5rSNT>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrudduledgfeefucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucenucfjughrpeffhffvve
+    fukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgvghcumffjuceoghhrvghg
+    sehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeehgedvvedvleejuefgtdduud
+    fhkeeltdeihfevjeekjeeuhfdtueefhffgheekteenucevlhhushhtvghrufhiiigvpedt
+    necurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhhdrtghomhdpnhgspg
+    hrtghpthhtohepgedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepshhohigvrhes
+    ihhrlhdrhhhupdhrtghpthhtohepshhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorh
+    hg
+X-ME-Proxy: <xmx:q4LGZmgwtMrpcjzl4n-IIuTFJ_F4tYABUEFswRDGOfadFFceLLABsQ>
+    <xmx:q4LGZqDQWT5gVBB1EVcWhNm8ml2csH8efYvK9I1-EyTRgKB2eoO6cw>
+    <xmx:q4LGZnIwFNITpg1kPSIytZp3RW2RUv60JrAwoQWK7qLHaLXXaTiFrw>
+    <xmx:q4LGZhCe1I2WPSlFXbJwytEUbW_sPr-jTErido0PNMyMNPLaDzPGcw>
+    <xmx:q4LGZt_e1XNPSQoldY95nclUYXlEbIrUSUimAfAJWGi_xO2FOhxvPkzR>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 21 Aug 2024 20:13:30 -0400 (EDT)
+Date: Thu, 22 Aug 2024 08:12:14 +0800
+From: Greg KH <greg@kroah.com>
+To: Gergo Koteles <soyer@irl.hu>
+Cc: stable@vger.kernel.org
+Subject: Re: Patch "drm/amd/display: Don't register panel_power_savings on
+ OLED panels"
+Message-ID: <2024082207-enquirer-subtract-ab3c@gregkh>
+References: <c8c0cae77c2f9c0a4c103b30dcda34e5ac10f820.camel@irl.hu>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,19 +97,16 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240821145548.25700-1-cel@kernel.org>
+In-Reply-To: <c8c0cae77c2f9c0a4c103b30dcda34e5ac10f820.camel@irl.hu>
 
-On Wed, Aug 21, 2024 at 10:55:30AM -0400, cel@kernel.org wrote:
-> From: Chuck Lever <chuck.lever@oracle.com>
+On Wed, Aug 21, 2024 at 07:01:54AM +0200, Gergo Koteles wrote:
+> Hi Greg,
 > 
-> Following up on
-> 
-> https://lore.kernel.org/linux-nfs/d4b235df-4ee5-4824-9d48-e3b3c1f1f4d1@oracle.com/
-> 
-> Here is a backport series targeting origin/linux-5.15.y that closes
-> the information leak described in the above thread.
+> I think commit 76cb763e6ea62e838ccc8f7a1ea4246d690fccc9 should be
+> applied to 6.10 kernel to disable Adaptive Backlight Management for
+> OLED displays.
 
-All now queued up, thanks!
+Now queued up, thanks.
 
 greg k-h
 
