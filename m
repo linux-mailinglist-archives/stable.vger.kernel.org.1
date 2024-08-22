@@ -1,151 +1,110 @@
-Return-Path: <stable+bounces-69890-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69891-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC2B795B9FC
-	for <lists+stable@lfdr.de>; Thu, 22 Aug 2024 17:22:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4970A95BA06
+	for <lists+stable@lfdr.de>; Thu, 22 Aug 2024 17:26:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AA4C2B22A10
-	for <lists+stable@lfdr.de>; Thu, 22 Aug 2024 15:22:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F25E01F23341
+	for <lists+stable@lfdr.de>; Thu, 22 Aug 2024 15:26:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58DB93CF63;
-	Thu, 22 Aug 2024 15:22:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63A7E1CB301;
+	Thu, 22 Aug 2024 15:25:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kFwD3Dc4"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=collabora.com header.i=nfraprado@collabora.com header.b="g51d7RqD"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oo1-f51.google.com (mail-oo1-f51.google.com [209.85.161.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1867182DF
-	for <stable@vger.kernel.org>; Thu, 22 Aug 2024 15:22:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.51
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724340128; cv=none; b=aZ82kRmrDSPNqvdF/7RrEQQWzps9MV/e7v9LjSsPJqcLq/LEh3+licxZgTg78J1BtvGAnbhZFRDU83dVCnD3CGqAVaCxZFUonwprZHeMq0yT2XtJuyh5pvvsStGfixQSplquP3cUh0p4kxENBigc9DthXc9+lsN66+zOFSP12JQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724340128; c=relaxed/simple;
-	bh=8u69ufbrCHfQW2AosSzdS2m/deE0V7QxgZFVylnBlK4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=isXkCRb+aw3Moaa5WvhYPxVrLSK4QrPddD2I8KbbTG4T16V+Ib6E9m+SGHx5qvU1WR/Ib2KACRDwIu8MLUIjUnnZTxxLbfpTgnwRvibPrIHyDDb+FjoBoTavpOpUbBYcPxKMhccGAZkn8TzrAXbdL1hUaSO/BsTq4t0nFZdOfEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kFwD3Dc4; arc=none smtp.client-ip=209.85.161.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-5d5de0e47b9so590217eaf.0
-        for <stable@vger.kernel.org>; Thu, 22 Aug 2024 08:22:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724340126; x=1724944926; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ftW5t8yNZCeZRBSWg58nVC1WR5Rd5XQN5IE7VyRL2DI=;
-        b=kFwD3Dc4tFF4Yg/Niqxl6w36RjmpjM4em2lYlRuh4/kPwsMOv9kpQJZtVx6sMJaIBv
-         2FOmIVHQGz+dA4wBf1WGhu9tFxqdH3Ld3w1zJ5ZnyKy4m00tLWCCunf55ZxiFGhjDABp
-         Rosi0rMesaGkpeJOziJ8Kq858VXs+xfD2VL+d5UZ1Jz3Sr/k9namffOJEJT0BNUIZOTm
-         aWmLsXo6vImmCi2lHOc5uaTd2Wjq6+ks5N/46z23HVzNfaAKZbP9/Wdl9CBKHiJIe3P+
-         waT93dWaHSGkjeRN5Vy1xkTt5OR1DctnQGp5BPN7BBScT9X5ofWPBZpdMwAL1qqgVq11
-         6Iaw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724340126; x=1724944926;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ftW5t8yNZCeZRBSWg58nVC1WR5Rd5XQN5IE7VyRL2DI=;
-        b=Ry8QjiGpk6RUjgCcy4U+2+NWta2Bo2J/1Kky+CiR1Mne0vWmxJQXcJEXmrbE+UnuQk
-         3BZWKOgHaySha6ErztsaxfL4JC9dromBrGv/agnJeEMQ6hUhP7fufDCdXVMcFjTlVXqV
-         /870/IhY1bTrhev+0eRO0YeEBTT0pgFqB8CIgTZkPQkpiT3tMBQbGPFCt95d2/CqrWdL
-         T7R4ZvWH8Z6+svgI25bjfm8mk+dzoygHnWS0kT5w9ZVq2eCPjIumm9P+zywr5PpNRYYl
-         gNVtJI3yX/EqZpWFH4qVxxuQClwpmvICfhbLqTCprZK46rgT8DsDjyPwgmaKW+iW5z/Q
-         aH0Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWKqr6oK4h/yIPgI7JZ/9PgUKj0f7c16Jgl/9Yub3IBiyThPeJY1bxBpQD7aFyWuYjosQJe6t4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy6QPvKtJ9Yq1M+55+LzKjaILbzcjzv/YLA4iZv7QzWRJy7Zg8+
-	2D8J1kXHDmpq13ZoU2qX+SULSDfoNftPCCvhiwQecJZcVaJZrLtS
-X-Google-Smtp-Source: AGHT+IETQhZpasbAQT1A59XgCwpfu+/BYlphPzA4I1mrOOmIcot1KHDgSkggj7OkhnIhpezJP90GwQ==
-X-Received: by 2002:a05:6358:7186:b0:1b5:968f:dbd with SMTP id e5c5f4694b2df-1b59f9b9f3dmr760977155d.15.1724340125747;
-        Thu, 22 Aug 2024 08:22:05 -0700 (PDT)
-Received: from localhost (57-135-107-183.static4.bluestreamfiber.net. [57.135.107.183])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-844ce515674sm224164241.23.2024.08.22.08.22.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Aug 2024 08:22:05 -0700 (PDT)
-From: David Hunter <david.hunter.linux@gmail.com>
-To: david.hunter.linux@gmail.com
-Cc: Haitao Shan <hshan@google.com>,
-	stable@vger.kernel.org,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.1.y 2/2 V2] KVM: x86: Fix lapic timer interrupt lost after loading a snapshot.
-Date: Thu, 22 Aug 2024 11:21:46 -0400
-Message-ID: <20240822152146.88654-3-david.hunter.linux@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240822152146.88654-1-david.hunter.linux@gmail.com>
-References: <20240822152146.88654-1-david.hunter.linux@gmail.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B6D22C87C;
+	Thu, 22 Aug 2024 15:25:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1724340356; cv=fail; b=eoRrhxed09lmh3Xha0HExHYxlk+0+DBOr61oWaGc1j3wYkt007KtPL8pjkc5TcZhhXEw68ZzCovPJTFANEb7/i+G6oNSlZ9s6XzMQN1ZYnt2tHshmPYl+2QX7PPT2UF4T2AvUiIC/+2ZDQAoMG+N96Wqyz+E1cWahtzByrtIGD0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1724340356; c=relaxed/simple;
+	bh=GQX/ybtanwy/zCKjsP6vimBs4eLzBliTPuRthVsxJ4w=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=poVzxyEe2LTsyECkwnZ69/JLDT+yG5eLRU5yfXqbbxXvx4KW49wxkGznQQhS2Kuw2AWtgVpcqQjk7lIMd7tTM0HQFipwpu1dPH/C/BM2GoNqbmtTgBzDPUCpu/ufhig6jLXtVbsQW1tiLOcqD/SKj93EypHN9oE+ohpNXA7hiho=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=fail (1024-bit key) header.d=collabora.com header.i=nfraprado@collabora.com header.b=g51d7RqD reason="signature verification failed"; arc=fail smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+Delivered-To: angelogioacchino.delregno@collabora.com
+ARC-Seal: i=1; a=rsa-sha256; t=1724340346; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=ZVIKW3D0jI3pXHiDjuzF/3Qsfrel7O10ClTVWiviaT+b5ntpoipxlCU5mPIuGoEVV3miX18qoHEtmCm2rdUtvHQ3c9NdgrmqpRJ0CyAl+6HAUxdv1e1dkPiC7p4SRgyo6Ab5qP0IcDv6isu4bqiuczNdr+mKk988amSpZo0UFY4=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1724340346; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=tblG4DXojNvd/Q9ZZ/KwVJ2+BRO+sDaWRSrrd7xNqI8=; 
+	b=XUF4RV9FP4IRDS5Z+tmMg0rjTbsXiXjcr+bIuvJDGKzZl1bLNUUGGffCB5EBA3V6960sP0WDQInxdud4ag87ryD845+s/WjJLoaHwvL3Xha2qZv10ISdI8AIxylalSZZTLCWs7CZN7K7R836P+LkN7mmhR8iI2lAiciL9wp1diY=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=nfraprado@collabora.com;
+	dmarc=pass header.from=<nfraprado@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1724340346;
+	s=zohomail; d=collabora.com; i=nfraprado@collabora.com;
+	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:References:MIME-Version:Content-Type:Content-Transfer-Encoding:In-Reply-To:Message-Id:Reply-To;
+	bh=tblG4DXojNvd/Q9ZZ/KwVJ2+BRO+sDaWRSrrd7xNqI8=;
+	b=g51d7RqD0veQjp5+KVKELwE+jm750mEPW6lk9pQPkDI/tNQWRXDwApIv3YMtlNT0
+	atmq+fEVY6o9uDAjHtvmS9QpmHBG/utJlrJJbdz7kYqeoEI1u4tjR53AoAqYTRC9Lyn
+	EGaKf/GVoT3MvcRwnNCAsWvZLPMUesJ2w/BHPU8Q=
+Received: by mx.zohomail.com with SMTPS id 1724340344652491.77049766479;
+	Thu, 22 Aug 2024 08:25:44 -0700 (PDT)
+Date: Thu, 22 Aug 2024 11:25:42 -0400
+From: =?utf-8?B?TsOtY29sYXMgRi4gUi4gQS4=?= Prado <nfraprado@collabora.com>
+To: Chen-Yu Tsai <wenst@chromium.org>
+Cc: Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	Stephen Boyd <swboyd@chromium.org>,
+	Pin-yen Lin <treapking@chromium.org>,
+	Alper Nebi Yasak <alpernebiyasak@gmail.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] arm64: dts: mediatek: mt8186-corsola: Disable DPI
+ display interface
+Message-ID: <00aaa8ff-1344-48dd-b0cb-5e8f4518ff6b@notapiano>
+References: <20240821042836.2631815-1-wenst@chromium.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240821042836.2631815-1-wenst@chromium.org>
+X-ZohoMailClient: External
 
-From: Haitao Shan <hshan@google.com>
+On Wed, Aug 21, 2024 at 12:28:34PM +0800, Chen-Yu Tsai wrote:
+> The DPI display interface feeds the external display pipeline. However
+> the pipeline representation is currently incomplete. Efforts are still
+> under way to come up with a way to represent the "creative" repurposing
+> of the DP bridge chip's internal output mux, which is meant to support
+> USB type-C orientation changes, to output to one of two type-C ports.
+> 
+> Until that is finalized, the external display can't be fully described,
+> and thus won't work. Even worse, the half complete graph potentially
+> confuses the OS, breaking the internal display as well.
+> 
+> Disable the external display interface across the whole Corsola family
+> until the DP / USB Type-C muxing graph binding is ready.
+> 
+> Reported-by: Alper Nebi Yasak <alpernebiyasak@gmail.com>
+> Closes: https://lore.kernel.org/linux-mediatek/38a703a9-6efb-456a-a248-1dd3687e526d@gmail.com/
+> Fixes: 8855d01fb81f ("arm64: dts: mediatek: Add MT8186 Krabby platform based Tentacruel / Tentacool")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
 
-When running android emulator (which is based on QEMU 2.12) on
-certain Intel hosts with kernel version 6.3-rc1 or above, guest
-will freeze after loading a snapshot. This is almost 100%
-reproducible. By default, the android emulator will use snapshot
-to speed up the next launching of the same android guest. So
-this breaks the android emulator badly.
+Reviewed-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
 
-I tested QEMU 8.0.4 from Debian 12 with an Ubuntu 22.04 guest by
-running command "loadvm" after "savevm". The same issue is
-observed. At the same time, none of our AMD platforms is impacted.
-More experiments show that loading the KVM module with
-"enable_apicv=false" can workaround it.
+Would be good to have Alper verify that with this change the internal display
+works again in their specific setup, although this change seems reasonable to me
+either way.
 
-The issue started to show up after commit 8e6ed96cdd50 ("KVM: x86:
-fire timer when it is migrated and expired, and in oneshot mode").
-However, as is pointed out by Sean Christopherson, it is introduced
-by commit 967235d32032 ("KVM: vmx: clear pending interrupts on
-KVM_SET_LAPIC"). commit 8e6ed96cdd50 ("KVM: x86: fire timer when
-it is migrated and expired, and in oneshot mode") just makes it
-easier to hit the issue.
-
-Having both commits, the oneshot lapic timer gets fired immediately
-inside the KVM_SET_LAPIC call when loading the snapshot. On Intel
-platforms with APIC virtualization and posted interrupt processing,
-this eventually leads to setting the corresponding PIR bit. However,
-the whole PIR bits get cleared later in the same KVM_SET_LAPIC call
-by apicv_post_state_restore. This leads to timer interrupt lost.
-
-The fix is to move vmx_apicv_post_state_restore to the beginning of
-the KVM_SET_LAPIC call and rename to vmx_apicv_pre_state_restore.
-What vmx_apicv_post_state_restore does is actually clearing any
-former apicv state and this behavior is more suitable to carry out
-in the beginning.
-
-Fixes: 967235d32032 ("KVM: vmx: clear pending interrupts on KVM_SET_LAPIC")
-Cc: stable@vger.kernel.org
-Suggested-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Haitao Shan <hshan@google.com>
-Link: https://lore.kernel.org/r/20230913000215.478387-1-hshan@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: David Hunter <david.hunter.linux@gmail.com>
----
- arch/x86/kvm/vmx/vmx.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 87abf4eebf8a..4040075bbd5a 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -8203,6 +8203,7 @@ static struct kvm_x86_ops vmx_x86_ops __initdata = {
- 	.load_eoi_exitmap = vmx_load_eoi_exitmap,
- 	.apicv_pre_state_restore = vmx_apicv_pre_state_restore,
- 	.check_apicv_inhibit_reasons = vmx_check_apicv_inhibit_reasons,
-+	.required_apicv_inhibits = VMX_REQUIRED_APICV_INHIBITS,
- 	.hwapic_irr_update = vmx_hwapic_irr_update,
- 	.hwapic_isr_update = vmx_hwapic_isr_update,
- 	.guest_apic_has_interrupt = vmx_guest_apic_has_interrupt,
--- 
-2.43.0
-
+Thanks,
+Nícolas
 
