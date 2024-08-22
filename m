@@ -1,55 +1,63 @@
-Return-Path: <stable+bounces-69863-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69864-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BF8495ACEA
-	for <lists+stable@lfdr.de>; Thu, 22 Aug 2024 07:36:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8754D95ACFD
+	for <lists+stable@lfdr.de>; Thu, 22 Aug 2024 07:42:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 06126B21597
-	for <lists+stable@lfdr.de>; Thu, 22 Aug 2024 05:35:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DAA9281CE4
+	for <lists+stable@lfdr.de>; Thu, 22 Aug 2024 05:42:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE4C356B7C;
-	Thu, 22 Aug 2024 05:35:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E394655E48;
+	Thu, 22 Aug 2024 05:42:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="XVS3x+Gq"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="Xg2F1uxQ"
 X-Original-To: stable@vger.kernel.org
-Received: from msa.smtpout.orange.fr (smtp-65.smtpout.orange.fr [80.12.242.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from lelv0143.ext.ti.com (lelv0143.ext.ti.com [198.47.23.248])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA14A2E3EE;
-	Thu, 22 Aug 2024 05:35:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F2FA770E2;
+	Thu, 22 Aug 2024 05:42:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.23.248
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724304948; cv=none; b=d+dKlwkYOutUSsd7HucrZuxxL5uh1wxUZxyOHjkJD1QJi6GyV0nlrQdhuuAajU3lm1RE/a2uYO3IrFShdNbCY0p+NANb7/4BuTzkGuRvJpe1XqqfWuhdDTdueM3RCk+44bq1bmCAf95u2URWrsB8xY4TPcU8jqHRGftkBbLWRlw=
+	t=1724305370; cv=none; b=qwuZA8rjDQkfO7Jkh1IkUzilfCcfL00sPV3+5Z6IZPrx9NIGjhOHd7YzDaHF8y9uNcivIdGepNJTxtcR+vI0ppAYIfZcOzHIH2gPZ7tx3ap2ktmTc3Kd/92lnAh2GtF7rHpqfaFYeKc6vGvxeePucdqv8TP/l3uycTdkRMoa5/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724304948; c=relaxed/simple;
-	bh=XdvD1KyMTUI1+9GAfEn02LHXODNszkiZ2XbS5NvGUqw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=C/3fNyxYUXdgNEGvcoeYzZRKnLNDWtrQvunDOTqaHSSZ6QX0qZkc2Zbb2duHZy6VcL3QBP3CR73BWVD3SzPWa+FL50kx5tU18MYP8DLEefjQUnN6ndgaEkSsEx2ajbQ0XF/EuzCStq26RImnWsc3pV8bqgqB3ezkAIK/vBCUBoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=XVS3x+Gq; arc=none smtp.client-ip=80.12.242.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
-Received: from [192.168.1.37] ([90.11.132.44])
-	by smtp.orange.fr with ESMTPA
-	id h0Sesc5R58iG0h0Sfsuo75; Thu, 22 Aug 2024 07:34:34 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1724304874;
-	bh=BmQSPiNuluw12WlvUYDCD0UY6O2GPBeyKleY3PHQSBA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From;
-	b=XVS3x+Gqr0Umk1fLe69p3azBWSp7OIVtY5YHyJNxNu1dJSO61RJp8dcKsElv+GbYF
-	 TwBhBsmCh8HeTNa34OXkw3rtMtAKRPVvJaeMdI7yanvsk/0480JZvCLdv5xUtB+W1K
-	 VIAZOa2lX+eHsKnoZV2nVK3PriXSOSuLRPofDa8THYd3fq6oYkJj79UXGD8ibFfORJ
-	 Bm70SDhwdP6Wv/lAvy1C5sQW2x+qP6IVUO/1QIHsVSzi4cQbsBGx9gwdH8/yIPHMUm
-	 YkEZf5jix0ElLNeYUXTD7T3bgekagtN1gaKbeO2l4ahUvOyoRw0bMKPaBtrh2VmUNr
-	 MOdFJBuAcJkjA==
-X-ME-Helo: [192.168.1.37]
-X-ME-Auth: bWFyaW9uLmphaWxsZXRAd2FuYWRvby5mcg==
-X-ME-Date: Thu, 22 Aug 2024 07:34:34 +0200
-X-ME-IP: 90.11.132.44
-Message-ID: <1fe20e5e-1c90-4029-9d40-625ec3bb3248@wanadoo.fr>
-Date: Thu, 22 Aug 2024 07:34:16 +0200
+	s=arc-20240116; t=1724305370; c=relaxed/simple;
+	bh=4ny/AX7pmP8OylgEVpTCTj8KvgTX+1PJ3JWGr2PMteY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=AKehwLAfd9vs+FZ2ITYZoChDIAyMIcwKC+3K9lg/j1WCmxPXM15eawymVMiETf1O1PAMilurxYscq3yTESoajs7fKYqMUALp5dkxCsQ17k9TuKJrbIqO6cg1yNAzOjJcmMtTj6YGM7hrHQ+3rp1+Q4bGHlu/KMZGKgiV8BRH6Lc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=Xg2F1uxQ; arc=none smtp.client-ip=198.47.23.248
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+	by lelv0143.ext.ti.com (8.15.2/8.15.2) with ESMTP id 47M5geCs121532;
+	Thu, 22 Aug 2024 00:42:40 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1724305360;
+	bh=R3mFWZN4/uiZw/T38Ef+OCPWTrZeTTqTXEWeaYsyccI=;
+	h=Date:Subject:To:CC:References:From:In-Reply-To;
+	b=Xg2F1uxQE6hhlxkAP4Dptvk8iSZBmnqzaCUYyr6crHClx7EUv7f6oTB9X9lY8hyrJ
+	 ob41Lmei0gW+ftWAscnH9iIHDcEEUi7xz/ii/Ke+2GvLjMamgm9nnATXLf0B8Jpy+h
+	 j/VrNFREGhOfucloYvPkT82qhPyLR6iDkRf0vQDQ=
+Received: from DFLE103.ent.ti.com (dfle103.ent.ti.com [10.64.6.24])
+	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 47M5geUg022713
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Thu, 22 Aug 2024 00:42:40 -0500
+Received: from DFLE111.ent.ti.com (10.64.6.32) by DFLE103.ent.ti.com
+ (10.64.6.24) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Thu, 22
+ Aug 2024 00:42:40 -0500
+Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DFLE111.ent.ti.com
+ (10.64.6.32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Thu, 22 Aug 2024 00:42:40 -0500
+Received: from [172.24.156.139] (ltpw0bk3z4.dhcp.ti.com [172.24.156.139])
+	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 47M5ga5m068395;
+	Thu, 22 Aug 2024 00:42:37 -0500
+Message-ID: <94faa49d-3acc-45c5-aa17-817e3fb31b5b@ti.com>
+Date: Thu, 22 Aug 2024 11:12:36 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,92 +65,109 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] net: mana: Fix race of mana_hwc_post_rx_wqe and new
- hwc response
-To: Haiyang Zhang <haiyangz@microsoft.com>
-Cc: ast@kernel.org, bpf@vger.kernel.org, daniel@iogearbox.net,
- davem@davemloft.net, decui@microsoft.com, edumazet@google.com,
- hawk@kernel.org, jesse.brandeburg@intel.com, john.fastabend@gmail.com,
- kuba@kernel.org, kys@microsoft.com, leon@kernel.org,
- linux-hyperv@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-rdma@vger.kernel.org, longli@microsoft.com, netdev@vger.kernel.org,
- olaf@aepfle.de, pabeni@redhat.com, paulros@microsoft.com,
- shradhagupta@linux.microsoft.com, ssengar@linux.microsoft.com,
- stable@vger.kernel.org, stephen@networkplumber.org, tglx@linutronix.de,
- vkuznets@redhat.com, wei.liu@kernel.org
-References: <1724272949-2044-1-git-send-email-haiyangz@microsoft.com>
-Content-Language: en-US, fr-FR
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-In-Reply-To: <1724272949-2044-1-git-send-email-haiyangz@microsoft.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH] remoteproc: k3-r5: Fix error handling when power-up
+ failed
+To: Jan Kiszka <jan.kiszka@siemens.com>,
+        Bjorn Andersson
+	<andersson@kernel.org>,
+        Mathieu Poirier <mathieu.poirier@linaro.org>,
+        <linux-remoteproc@vger.kernel.org>
+CC: Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Apurva Nandan
+	<a-nandan@ti.com>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        Nishanth Menon <nm@ti.com>
+References: <9f481156-f220-4adf-b3d9-670871351e26@siemens.com>
+ <cf1783e3-e378-482d-8cc2-e03dedca1271@ti.com>
+ <3c8844db-0712-4727-a54c-0a156b3f9e9c@siemens.com>
+ <716d189d-1f62-4fc0-9bb5-6c78967c5cba@ti.com>
+ <eaa07d0d-e2fc-49f2-8ee6-c18b5d7b3b5f@siemens.com>
+Content-Language: en-US
+From: Beleswar Prasad Padhi <b-padhi@ti.com>
+In-Reply-To: <eaa07d0d-e2fc-49f2-8ee6-c18b5d7b3b5f@siemens.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-
-Le 21/08/2024 à 22:42, Haiyang Zhang a écrit :
-> The mana_hwc_rx_event_handler() / mana_hwc_handle_resp() calls
-> complete(&ctx->comp_event) before posting the wqe back. It's
-> possible that other callers, like mana_create_txq(), start the
-> next round of mana_hwc_send_request() before the posting of wqe.
-> And if the HW is fast enough to respond, it can hit no_wqe error
-> on the HW channel, then the response message is lost. The mana
-> driver may fail to create queues and open, because of waiting for
-> the HW response and timed out.
-> Sample dmesg:
-> [  528.610840] mana 39d4:00:02.0: HWC: Request timed out!
-> [  528.614452] mana 39d4:00:02.0: Failed to send mana message: -110, 0x0
-> [  528.618326] mana 39d4:00:02.0 enP14804s2: Failed to create WQ object: -110
-> 
-> To fix it, move posting of rx wqe before complete(&ctx->comp_event).
-> 
-> Cc: stable-u79uwXL29TY76Z2rM5mHXA@public.gmane.org
-> Fixes: ca9c54d2d6a5 ("net: mana: Add a driver for Microsoft Azure Network Adapter (MANA)")
-> Signed-off-by: Haiyang Zhang <haiyangz-0li6OtcxBFHby3iVrkZq2A@public.gmane.org>
-> ---
->   .../net/ethernet/microsoft/mana/hw_channel.c  | 62 ++++++++++---------
->   1 file changed, 34 insertions(+), 28 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/microsoft/mana/hw_channel.c b/drivers/net/ethernet/microsoft/mana/hw_channel.c
-> index cafded2f9382..a00f915c5188 100644
-> --- a/drivers/net/ethernet/microsoft/mana/hw_channel.c
-> +++ b/drivers/net/ethernet/microsoft/mana/hw_channel.c
-> @@ -52,9 +52,33 @@ static int mana_hwc_verify_resp_msg(const struct hwc_caller_ctx *caller_ctx,
->   	return 0;
->   }
->   
-> +static int mana_hwc_post_rx_wqe(const struct hwc_wq *hwc_rxq,
-> +				struct hwc_work_request *req)
-> +{
-> +	struct device *dev = hwc_rxq->hwc->dev;
-> +	struct gdma_sge *sge;
-> +	int err;
-> +
-> +	sge = &req->sge;
-> +	sge->address = (u64)req->buf_sge_addr;
-> +	sge->mem_key = hwc_rxq->msg_buf->gpa_mkey;
-> +	sge->size = req->buf_len;
-> +
-> +	memset(&req->wqe_req, 0, sizeof(struct gdma_wqe_request));
-> +	req->wqe_req.sgl = sge;
-> +	req->wqe_req.num_sge = 1;
-> +	req->wqe_req.client_data_unit = 0;
-
-Hi,
-
-unrelated to your patch, but this initialization is useless, it is 
-already memset(0)'ed a few lines above.
-So why client_data_unit and not some other fields?
-
-> +
-> +	err = mana_gd_post_and_ring(hwc_rxq->gdma_wq, &req->wqe_req, NULL);
-> +	if (err)
-> +		dev_err(dev, "Failed to post WQE on HWC RQ: %d\n", err);
-> +	return err;
-> +}
-
-...
-
-Just my 2c.
-
-CJ
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 
 
+On 22-08-2024 10:57, Jan Kiszka wrote:
+> On 22.08.24 07:22, Beleswar Prasad Padhi wrote:
+>> On 21-08-2024 23:40, Jan Kiszka wrote:
+>>> On 21.08.24 07:30, Beleswar Prasad Padhi wrote:
+>>>> On 19-08-2024 20:54, Jan Kiszka wrote:
+>>>>> From: Jan Kiszka <jan.kiszka@siemens.com>
+>>>>>
+>>>>> By simply bailing out, the driver was violating its rule and internal
+>>>> Using device lifecycle managed functions to register the rproc
+>>>> (devm_rproc_add()), bailing out with an error code will work.
+>>>>
+>>>>> assumptions that either both or no rproc should be initialized. E.g.,
+>>>>> this could cause the first core to be available but not the second one,
+>>>>> leading to crashes on its shutdown later on while trying to dereference
+>>>>> that second instance.
+>>>>>
+>>>>> Fixes: 61f6f68447ab ("remoteproc: k3-r5: Wait for core0 power-up
+>>>>> before powering up core1")
+>>>>> Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
+>>>>> ---
+>>>>>     drivers/remoteproc/ti_k3_r5_remoteproc.c | 3 ++-
+>>>>>     1 file changed, 2 insertions(+), 1 deletion(-)
+>>>>>
+>>>>> diff --git a/drivers/remoteproc/ti_k3_r5_remoteproc.c
+>>>>> b/drivers/remoteproc/ti_k3_r5_remoteproc.c
+>>>>> index 39a47540c590..eb09d2e9b32a 100644
+>>>>> --- a/drivers/remoteproc/ti_k3_r5_remoteproc.c
+>>>>> +++ b/drivers/remoteproc/ti_k3_r5_remoteproc.c
+>>>>> @@ -1332,7 +1332,7 @@ static int k3_r5_cluster_rproc_init(struct
+>>>>> platform_device *pdev)
+>>>>>                 dev_err(dev,
+>>>>>                     "Timed out waiting for %s core to power up!\n",
+>>>>>                     rproc->name);
+>>>>> -            return ret;
+>>>>> +            goto err_powerup;
+>>>>>             }
+>>>>>         }
+>>>>>     @@ -1348,6 +1348,7 @@ static int k3_r5_cluster_rproc_init(struct
+>>>>> platform_device *pdev)
+>>>>>             }
+>>>>>         }
+>>>>>     +err_powerup:
+>>>>>         rproc_del(rproc);
+>>>> Please use devm_rproc_add() to avoid having to do rproc_del() manually
+>>>> here.
+>>> This is just be the tip of the iceberg. The whole code needs to be
+>>> reworked accordingly so that we can drop these goto, not just this one.
+>>
+>> You are correct. Unfortunately, the organic growth of this driver has
+>> resulted in a need to refactor. I plan on doing this and post the
+>> refactoring soon. This should be part of the overall refactoring as
+>> suggested by Mathieu[2]. But for the immediate problem, your fix does
+>> patch things up.. hence:
+>>
+>> Acked-by: Beleswar Padhi <b-padhi@ti.com>
+>>
+>> [2]: https://lore.kernel.org/all/Zr4w8Vj0mVo5sBsJ@p14s/
+>>
+>>> Just look at k3_r5_reserved_mem_init. Your change in [1] was also too
+>>> early in this regard, breaking current error handling additionally.
+>>
+>>
+>> Curious, Could you point out how does the change in [1] breaks current
+>> error handling?
+>>
+> Same story: You leave the inner loop of k3_r5_cluster_rproc_init() via
+> return without that loop having been converted to support this.
+
+
+The rproc has been allocated via devm_rproc_alloc[3] before the 
+return[4] at k3_r5_cluster_rproc_init. Thus, it is capable of freeing 
+the rproc just based on error codes. It was tested.
+[3]: 
+https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/tree/drivers/remoteproc/ti_k3_r5_remoteproc.c#n1238
+[4]: 
+https://git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/tree/drivers/remoteproc/ti_k3_r5_remoteproc.c#n1259
+
+>
+> Jan
+>
 
