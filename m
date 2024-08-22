@@ -1,117 +1,140 @@
-Return-Path: <stable+bounces-69907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69908-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC4E095BCF5
-	for <lists+stable@lfdr.de>; Thu, 22 Aug 2024 19:19:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 747F495BDCE
+	for <lists+stable@lfdr.de>; Thu, 22 Aug 2024 19:56:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C57B281692
-	for <lists+stable@lfdr.de>; Thu, 22 Aug 2024 17:19:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C873285A5D
+	for <lists+stable@lfdr.de>; Thu, 22 Aug 2024 17:56:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AAB61CE6F9;
-	Thu, 22 Aug 2024 17:19:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1EC01CF2B4;
+	Thu, 22 Aug 2024 17:56:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EaLlGuGr"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HYHjqw8z"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5EEA1CE701
-	for <stable@vger.kernel.org>; Thu, 22 Aug 2024 17:19:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C73911CF2A9;
+	Thu, 22 Aug 2024 17:55:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724347173; cv=none; b=jcnSbkT+eRoP2bIW/Go214gj2l6M7iUw6cF7at369rBIaXdp3kl2u1wwYap0OSxhXPCmmAl6ifdSTUQHDq1woIKlb+yJllK7piezemnyfaztImXmIU0HwtNiIY2bQcMw9vNoOpWkP05Oldi6BBfUZMCuJP0yP0vwZidcrbJS0dY=
+	t=1724349361; cv=none; b=Z2azlNki9Cgy924G4AtuKaFH/fStbaQwk/wej160Fl02Gq1Dza6jCTeB8sbNjpwJoILlOvmDsrVPf7BM/hGz/l1ffFfOgW29n3ks7xDK1fZsBUCYrENnbkrVbLalhAruRQfY5e9ZKSDejLWEh29eW3HLBDCP4NfLK0zoRBqwAOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724347173; c=relaxed/simple;
-	bh=BJjA9XBN7mCewDtkLp05+KNsAqPpHEmp1hrP0BUQajs=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=mjN79HqlEmEzcdWTPxv538QG0466gMkmG2oeWzYjRQEZLFQAofadR/dp+n9QDgqg4ju+NMi2TM/QO6iFBjt+0N4OkImFU7S6pX8hf31NEJoOa7eP0HLJrlHHgdZb4g7Ip/g0tWSMu0cQDSzwhTbjJlzq5hBmkx2i5u3dwwCqURU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EaLlGuGr; arc=none smtp.client-ip=209.85.218.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+	s=arc-20240116; t=1724349361; c=relaxed/simple;
+	bh=smVYnWuAmitIbB8+8SNe7l+nZkHzp1QzNF7x5k33bTc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=oG9eUUkyD0gMMn4oANVtyVzM3xW1gQGatSvS3O8vVt0arEr5Nut/4BHbxhQwI+PzkibyD6JdGHgzGYFu6SYGzpto2R0vCV2EkAlk48uxTfliemkNElNah/a3bJXAWM/gTccZ1PDXUOBHz0YEXSwAvvOQq9nBSdE3iFY1qQpHemw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HYHjqw8z; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-a8696e9bd24so81897166b.0
-        for <stable@vger.kernel.org>; Thu, 22 Aug 2024 10:19:30 -0700 (PDT)
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-201e2ebed48so727125ad.0;
+        Thu, 22 Aug 2024 10:55:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724347169; x=1724951969; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=34rVfFYOv2y3LSezYrphM0pmOukjA26qKhZaXpuAkwQ=;
-        b=EaLlGuGrqyUeLfpnvqD+E7sMcrTCpIEUFuUAtnN1GmoCU0jDXtXusYtT10DSYqmipi
-         qXW1GCWB5aPd30LGJLXKk6J7cal7g95BQw949B83UntfCwLZC6u3UdfdT1d7NDcM1Izy
-         G895bv0aFvK5dB4Kcmbkep4c/38fH/qD7dGh9KKvmwlvvYb7UTWVEbyIzns3tgcCK0Sh
-         yIyCrHpnFAOr3aNe6bkFh7Hil47CT9KTwbCU50G/P22L5XBpfsP8OocoVcmG+/+I9bud
-         BpatMLFqbIlkUau9TSZ1Sx95iFVsyNbX1fjn0fg+TFPzXT1agZ6MrCmjbY7I+TAUUq9J
-         pEjA==
+        d=gmail.com; s=20230601; t=1724349358; x=1724954158; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qhXu1/y7UKtVxtPjaKnW4gHUfJYvKyvM1SAHsg1HIWY=;
+        b=HYHjqw8zDU5Hijh/rtpWIt366YUxIGkm/p+HTtEMQPIJQk96WYsrAAqvqyvEf0VcI2
+         w9TS9gnoVyy42W1EZc4gxqJkGH7AOIldRdz4wmxDoWpyJuMGZdzW9UaOQ732NUY2bocC
+         oFzHE68MvBPkGrlEa3aRaFRdifPg706w2Kes70o3Yz2LrRHq3ikEMMFrptmETZjupdbH
+         MvWg0b21RaPJY5+GsXe7UFopgLwEXMpPjVfInihSCpAQZ1oDT+5Lwton396BhkzZ6LCP
+         wrTx6aI2yXI5I7HebiRDc7oNjAwKSRn2DiQSj+ywrBy1sNBBQyshirHmF4dT9MIPshyM
+         oV4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724347169; x=1724951969;
-        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=34rVfFYOv2y3LSezYrphM0pmOukjA26qKhZaXpuAkwQ=;
-        b=LaSglzHvf5Ngievmfr5wZFmsI1bEgIsLZMxa6ZcfIqhRDiakOpvffZb5h0SdrHxhb6
-         jF/igRWomkeTY3ZaX0CoBwMkFT+NzQoejorpx5rRxHGwx9otdFN20PtXRISuU7T8wKNY
-         9cJwHmaC6KHeygWSSoG5XsmJ8c4ssCpbML+09nRFIsTVNCXrozG3rfbbkz7LU7mTXtJp
-         DFuDW3XmfSkGPYRZQ3xmbKisPHZTL4FalYDbwdDl1HjL745rKmASqRrxhjPbjJqcjdgS
-         SCm9wHjFUt8Yhp6CvC7wZ6HRgpCtH07JNz+p3KADBnRtQZiEyRb6kxLf5Ueb8H2isUpZ
-         zyXQ==
-X-Gm-Message-State: AOJu0YxgWpTKf6CThE00PFijF8emex7Ee1ty7+pSH8+G6pr+FBGVSiS1
-	PbU2iOmzxxjnmSy1osMCk6jpFUuQsK0Gz19Aru/p1vgHVeMMrAA+VlFZZr/9
-X-Google-Smtp-Source: AGHT+IHvRBRImVm60bFEBhl+XrxfrmB8txGIBc6s5TwhAyt4LW6liHayhVsMPQ/bOSqpanzuQscIIg==
-X-Received: by 2002:a17:907:9406:b0:a7d:9f92:9107 with SMTP id a640c23a62f3a-a866f893f3bmr496606266b.58.1724347168681;
-        Thu, 22 Aug 2024 10:19:28 -0700 (PDT)
-Received: from eldamar.lan (c-82-192-242-114.customer.ggaweb.ch. [82.192.242.114])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a868f2a5771sm144194366b.76.2024.08.22.10.19.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Aug 2024 10:19:28 -0700 (PDT)
-Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
-Received: by eldamar.lan (Postfix, from userid 1000)
-	id 61316BE2EE7; Thu, 22 Aug 2024 19:19:27 +0200 (CEST)
-Date: Thu, 22 Aug 2024 19:19:27 +0200
-From: Salvatore Bonaccorso <carnil@debian.org>
-To: stable <stable@vger.kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Aurelien Jarno <aurelien@aurel32.net>,
-	David Laight <David.Laight@aculab.com>,
-	Jiri Slaby <jirislaby@gmail.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Please apply commit 31e97d7c9ae3 ("media: solo6x10: replace max(a,
- min(b, c)) by clamp(b, a, c)") to 6.1.y
-Message-ID: <ZsdzH-n9-9K8XYSx@eldamar.lan>
+        d=1e100.net; s=20230601; t=1724349358; x=1724954158;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qhXu1/y7UKtVxtPjaKnW4gHUfJYvKyvM1SAHsg1HIWY=;
+        b=d2PtxzyPEEkbukUvYklvh6PjiULQPAKvlAwjkW1gj1ufuj6W2tGAPUOQJzNJ56BZEk
+         CMoexdy17OjMurrwSmd5wOZ0VrnHdenBE+ibtMQiAl+Naf+EzaBH85BqbquH324/1/Wg
+         D11jj4rAjLWdYiHBJQdXEVn4iiwdeORBPQDVwNWjmMDviazqlmUXbQRUsaZCNoq3qRd2
+         MmComP16aXKN3S29lvQS4fKgk7PPc3+D4BclRe0uMQWojLCnHxYeprtnTzEvvfAiKEsV
+         THBcSI9QmKzB1b8EGWQpazsxGDre8weW2vOyBKYKKLt9/HzHWUFsvWdwjbh5nKZHwySy
+         otog==
+X-Forwarded-Encrypted: i=1; AJvYcCW/LDFct6cziZixym3Hcur+lKhTckUIlcEFz7d4Jm3y251nunf7B+2YYoHdxquvvf4An6DAC2LI@vger.kernel.org, AJvYcCX9WqpIaHCDGgRrXtGqZ/HQPm39RTpRu95PuDgyeLDAQVQ5Wh7wPzG/53v1OBHDBUagKtn+ShiYIoKEdfk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwSBK4U03CqO1jL+tuEzvGF0Tl5ucxxu/CU88uaiF3Sx1o1XoTW
+	JpGEIDW0s/3LlDADfkBWTcy5kIAJDDUPDZKAgDtleb6TH9xbLwTQkAFTQkYkwP7jJF2v9vktVUz
+	ZlqS9yMZhO5v7mL4Vt4kmkhEzyZHk7w==
+X-Google-Smtp-Source: AGHT+IETlDVRl8j8jbZqDqUvSIioAvhet305MNQITQRtCniCu61LWrGuZC6R67R9iHP+nA+QKCEStVE/J8zJyaAFQls=
+X-Received: by 2002:a17:902:c406:b0:1fa:a9f5:64b1 with SMTP id
+ d9443c01a7336-20367d0d354mr44078375ad.3.1724349357971; Thu, 22 Aug 2024
+ 10:55:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <20240821042724.1391169-1-make24@iscas.ac.cn>
+In-Reply-To: <20240821042724.1391169-1-make24@iscas.ac.cn>
+From: Alex Deucher <alexdeucher@gmail.com>
+Date: Thu, 22 Aug 2024 13:55:46 -0400
+Message-ID: <CADnq5_Orq-RkKxOeG9UMnnJGodsB-9Tek0_NyYNP3EGaiEXpGQ@mail.gmail.com>
+Subject: Re: [PATCH RESEND] drm/amd/display: avoid using null object of framebuffer
+To: Ma Ke <make24@iscas.ac.cn>
+Cc: alexander.deucher@amd.com, christian.koenig@amd.com, Xinhui.Pan@amd.com, 
+	airlied@gmail.com, daniel@ffwll.ch, mwen@igalia.com, aurabindo.pillai@amd.com, 
+	joshua@froggi.es, hamza.mahfooz@amd.com, marek.olsak@amd.com, 
+	HaoPing.Liu@amd.com, akpm@linux-foundation.org, amd-gfx@lists.freedesktop.org, 
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi
+Applied.  Thanks!
 
-While building 6.1.106 based verson for Debian I noticed that all
-32bit architectures did fail to build:
-
-https://buildd.debian.org/status/fetch.php?pkg=linux&arch=i386&ver=6.1.106-1&stamp=1724307428&raw=0
-
-The problem is known as
-
-https://lore.kernel.org/lkml/18c6df0d-45ed-450c-9eda-95160a2bbb8e@gmail.com/
-
-This now affects as well 6.1.y as the commits 867046cc7027 ("minmax:
-relax check to allow comparison between unsigned arguments and signed
-constants") and 4ead534fba42 ("minmax: allow comparisons of 'int'
-against 'unsigned char/short'") were backported to 6.1.106.
-
-Thus, can you please pick as well 31e97d7c9ae3 ("media: solo6x10:
-replace max(a, min(b, c)) by clamp(b, a, c)") for 6.1.y? 
-
-Note I suspect it is required as well for 5.15.164 (as the commits
-were backported there as well and 31e97d7c9ae3 now missing there).
-
-Regards,
-Salvatore
+On Wed, Aug 21, 2024 at 3:45=E2=80=AFAM Ma Ke <make24@iscas.ac.cn> wrote:
+>
+> Instead of using state->fb->obj[0] directly, get object from framebuffer
+> by calling drm_gem_fb_get_obj() and return error code when object is
+> null to avoid using null object of framebuffer.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: 5d945cbcd4b1 ("drm/amd/display: Create a file dedicated to planes"=
+)
+> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+> ---
+>  drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c | 9 +++++++--
+>  1 file changed, 7 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c b/dr=
+ivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
+> index a83bd0331c3b..5cb11cc2d063 100644
+> --- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
+> +++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
+> @@ -28,6 +28,7 @@
+>  #include <drm/drm_blend.h>
+>  #include <drm/drm_gem_atomic_helper.h>
+>  #include <drm/drm_plane_helper.h>
+> +#include <drm/drm_gem_framebuffer_helper.h>
+>  #include <drm/drm_fourcc.h>
+>
+>  #include "amdgpu.h"
+> @@ -935,10 +936,14 @@ static int amdgpu_dm_plane_helper_prepare_fb(struct=
+ drm_plane *plane,
+>         }
+>
+>         afb =3D to_amdgpu_framebuffer(new_state->fb);
+> -       obj =3D new_state->fb->obj[0];
+> +       obj =3D drm_gem_fb_get_obj(new_state->fb, 0);
+> +       if (!obj) {
+> +               DRM_ERROR("Failed to get obj from framebuffer\n");
+> +               return -EINVAL;
+> +       }
+> +
+>         rbo =3D gem_to_amdgpu_bo(obj);
+>         adev =3D amdgpu_ttm_adev(rbo->tbo.bdev);
+> -
+>         r =3D amdgpu_bo_reserve(rbo, true);
+>         if (r) {
+>                 dev_err(adev->dev, "fail to reserve bo (%d)\n", r);
+> --
+> 2.25.1
+>
 
