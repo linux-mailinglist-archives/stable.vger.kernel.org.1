@@ -1,122 +1,137 @@
-Return-Path: <stable+bounces-69901-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69902-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C563395BC02
-	for <lists+stable@lfdr.de>; Thu, 22 Aug 2024 18:33:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BE3095BC09
+	for <lists+stable@lfdr.de>; Thu, 22 Aug 2024 18:35:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 796C21F217E2
-	for <lists+stable@lfdr.de>; Thu, 22 Aug 2024 16:33:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D5F41C22C06
+	for <lists+stable@lfdr.de>; Thu, 22 Aug 2024 16:35:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B6951CDA23;
-	Thu, 22 Aug 2024 16:33:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADFA51CCEFF;
+	Thu, 22 Aug 2024 16:34:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Y+n4D59I"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YSSLeKp1"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+Received: from mail-pl1-f196.google.com (mail-pl1-f196.google.com [209.85.214.196])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39A291CDA0F
-	for <stable@vger.kernel.org>; Thu, 22 Aug 2024 16:33:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A43A1CDA0F
+	for <stable@vger.kernel.org>; Thu, 22 Aug 2024 16:34:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724344431; cv=none; b=YIYuxLuav0QEJYYeL/gaFfCTFeY3GSsyKSUbLgVd3UWdJu3ne9/YCINWljO/WKUG0PrJEpZlRElkSlHEO/sYW4ABJ9Kq20X8WlK1BaktQCHYrL72wVsB7aqf9p18E2qD9zPHUpztCwTT5XbNBNTopR27qEefct4TMold9gma4OE=
+	t=1724344498; cv=none; b=DHNLdOoIUvsgYiRZ65DBCtXiSeqq1XZZo0SRqmgUBuIwZTWcofG9eAutyiObBwD8OlWPGZTYzuyQKnMt4yFx1S8qFqghlRDLqhYyifRRdplRMHsY1LGqXoUXHMT+TShJbvDXUvcKlUJNKZVqg5wOBpRZbc+TLyCIUEmGTRdvMB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724344431; c=relaxed/simple;
-	bh=naDm1RtTiN2zXIk2LJ0zsnhLTTN50E2lGQMRxqbBYAQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YlAxcY64DbWFMEuZ4Tq1lOTMaFk4Oe9rEp94SJwbzHxxSRCsHbI0sCGmES3fR+98Js0v0pnEDEc965bGZvsa+JTYHEmdHOKfEBo27QbtExAr7+lAUmtTnXFW2F3bkgkJ6JXIlN2fX75kY+HwmsZ/3547gPgFAAwszRhDbeALKYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Y+n4D59I; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-428098e2b3bso982145e9.3
-        for <stable@vger.kernel.org>; Thu, 22 Aug 2024 09:33:49 -0700 (PDT)
+	s=arc-20240116; t=1724344498; c=relaxed/simple;
+	bh=xzPorhtiqWe/45TTNSOdT6KdUj9DKOIFxe2UI3vriGo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=hirEFtrgPVjFBhY6RP2tQ54wBlbYI325Krv/Hjk9qcuQ8fb8499mS2Cmh1oB0vl/gfRXHs2QmIzBRo8hsmGcFKsEmXydCTM/1JI8IVNMggYBDN3No4Fd0o/yV+rSeUZb5tasxEVa3SrfgBMBEK4cf33jQYleXpdup7uhQ3sTPsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YSSLeKp1; arc=none smtp.client-ip=209.85.214.196
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f196.google.com with SMTP id d9443c01a7336-202146e93f6so10280885ad.3
+        for <stable@vger.kernel.org>; Thu, 22 Aug 2024 09:34:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1724344428; x=1724949228; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=YTFuV6stQx7CKFbcUpz4unCbxA3iNnf+lqvoGhhxAkM=;
-        b=Y+n4D59I2HB+AV7hE/UHEWDaBT9lqkund6rGWosa3Bp2hO46mHtyUhBK/n8qahj/jJ
-         m886iUhAS4IYH7b0CnEO/w9Yb8nVXHsId0c00Ipm9jb+Sp5IXcY/4prFWz46q4SC53Hi
-         U49xaRGMARU27zQU4iqixAEyhrreAPP7v1jHA96tUzHDpLbBhRhEO4iaVF3Cav2ywI77
-         85msSGArG0De5nBbixJP4v1ToKgcQOLzz1dprlCu9e2lnRHGdv6UXqSe6lyhJaPMeF9g
-         1RdelEwOnx3uO0MG7IkwSHd0ISb8ppnekjBrVNw6ku1TIdSHFhDpXlcnEBcYj+muPgWe
-         q/4A==
+        d=gmail.com; s=20230601; t=1724344496; x=1724949296; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0982JcjmJPiEefz1duiu8NPYbp/vk0YS61cHSWHx6+E=;
+        b=YSSLeKp1sLt5d9KXnucmFiN6lA3/L7tiTr0klzxVgX8N4cxhqXWG+Ba9QNAUIgN6Jj
+         sPs1h+musda06oJ9YqRo1+fcalqlYM6GOjQBVl7eaV3tmG3OLnXJ3OKeQ3HSQHl0xrDp
+         xE6agEI/AGWTb/qcXk8/mLP2lFYb30CcozsYWhmrZi9pW7U6dn9bTF2Uxs9wALImOT15
+         CE7NM0FaOSmGKK9BDHo41D2T59l53SWCkN+HNv1UXz/VkycG8d3F2HSoyb2eUQCJQikY
+         y7xmTHyy7V/eLvYyjpQIOEVmolu02GkcwgQNlAQW1qZZ2UXyINBMyCfoRQ15SHmYcI6D
+         BDUA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724344428; x=1724949228;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=YTFuV6stQx7CKFbcUpz4unCbxA3iNnf+lqvoGhhxAkM=;
-        b=c0udsOvqHWF/Zm73pQ6q2w1qPwN1EEbLOfocgfeq/Z7tOJHvU97AHS3UwuSvkEFs7C
-         Bs9gJHhUUvYuy5FnVCgQc6QYMumbRSuJ5K6vzSVsC3fY4Rc7G/DZRt2v9ja3KV/iFrqe
-         xgW3V0GGonUk8mgAVrPPFrkpC/qjALCDQ8wnTAK2ISKsJj3u2svcE4hPSGGmHKr2i0uG
-         QI65briwHxlBt3Gy2qQCPfG2km5oN8/9BS4oWpTXG8clXOhSQ5ZPc0M8YyK5rNJO8+ET
-         30yj5/J/bnfgTW2TSTJpa2jv3U/jNz/ZUUtF8E67hEVoOaU4jRjmZXzPolYO3DeXQwOh
-         3uSw==
-X-Forwarded-Encrypted: i=1; AJvYcCXAx5fH6uus3QXqnPpgpF9Bjfx1ZY534KMaspvCChrobQSywaWFXPA4BAlorbEnyRGT9S7NM0k=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw3u8OfRc+RaTdUp+UleoheO5bkqb5aPwkOQ9N8/2Ajzue/nC8j
-	pJmV+2eN1Kmz2rLlSQj6/hT4Ik9jngNtemZCESIA4uCYnrYTJmhjOXuF/yYsCsU=
-X-Google-Smtp-Source: AGHT+IGvJ/iD05Q3C/AsOQTJKor76DdYYeZaTHMvrsybklOWmJKd355kURal8Tjnr9MKo4Z1wI636Q==
-X-Received: by 2002:a05:600c:3c85:b0:426:5dd5:f245 with SMTP id 5b1f17b1804b1-42abd231427mr29419205e9.2.1724344428442;
-        Thu, 22 Aug 2024 09:33:48 -0700 (PDT)
-Received: from krzk-bin.. ([178.197.222.82])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3730813cdcfsm2069377f8f.29.2024.08.22.09.33.47
+        d=1e100.net; s=20230601; t=1724344496; x=1724949296;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=0982JcjmJPiEefz1duiu8NPYbp/vk0YS61cHSWHx6+E=;
+        b=U7llDhFGTwUhOviRIaNS9pN/EQ5WicUtLOVKTW703vEevMTqHDu2m3H4n2rOWCM02p
+         cAIcGZwibXm76YAO97tIgtxJj/UuIN63spjIHuImor6XFMmB9QFWMgZw2ZrMnkyeX5Ju
+         wJq00dp8KhngMR4vC9A/wioms9rxhU3oOJ3wxq3fF+w+g4NJy8231miBFHgqk4at2l2T
+         EUyRHQGR8mZCCy1yEqZIYSkPL9hj5OOaVRqXjwrxXqH5j4ra11z6ViVSCLmIkjSbWdwd
+         jWnW9fSsz0NWXn0mQjY29qU9y3fyOXdcXQSzN2aEe/atEIgelD3EllGYM+0NjF10qz4L
+         4Kkw==
+X-Gm-Message-State: AOJu0YwqACPXRLoUYGWgs3voR14qWvJqYqSivsWIyOMQfWKSOHLgktFF
+	dbGRtWHSndBnT2J1Yp0i46VNnumwwrbV7nsJ1FQT3mL4shqWGzamxfC1pO2+0DU=
+X-Google-Smtp-Source: AGHT+IEM/f7cTXjwRmt5Lg/EDdNEehxWNAPAifJGjTxU2rdrFtMVYmngoz3fWF4r3x6yQhomdjptQA==
+X-Received: by 2002:a17:902:e846:b0:1fb:415d:81ab with SMTP id d9443c01a7336-20367e64085mr67124325ad.20.1724344495705;
+        Thu, 22 Aug 2024 09:34:55 -0700 (PDT)
+Received: from localhost ([103.156.242.194])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2038557e4f9sm14611115ad.65.2024.08.22.09.34.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Aug 2024 09:33:47 -0700 (PDT)
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To: Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	stable@vger.kernel.org
-Subject: [PATCH 1/2] soc: qcom: pmic_glink: fix scope of __pmic_glink_lock in pmic_glink_rpmsg_probe()
-Date: Thu, 22 Aug 2024 18:33:44 +0200
-Message-ID: <20240822163345.223787-1-krzysztof.kozlowski@linaro.org>
-X-Mailer: git-send-email 2.43.0
+        Thu, 22 Aug 2024 09:34:55 -0700 (PDT)
+From: Celeste Liu <coelacanthushex@gmail.com>
+X-Google-Original-From: Celeste Liu <CoelacanthusHex@gmail.com>
+To: stable@vger.kernel.org
+Cc: Celeste Liu <coelacanthushex@gmail.com>,
+	"Dmitry V. Levin" <ldv@strace.io>,
+	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
+	Celeste Liu <CoelacanthusHex@gmail.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>
+Subject: [PATCH 6.6.y] riscv: entry: always initialize regs->a0 to -ENOSYS
+Date: Fri, 23 Aug 2024 00:34:02 +0800
+Message-ID: <20240822163401.38104-2-CoelacanthusHex@gmail.com>
+X-Mailer: git-send-email 2.46.0
+In-Reply-To: <2024081917-flanked-clear-e564@gregkh>
+References: <2024081917-flanked-clear-e564@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1500; i=CoelacanthusHex@gmail.com; h=from:subject; bh=g6MM5CHnaDgLwgFDg8hcNtYK8x5sThfoP5dpD1Autmc=; b=owJ4nJvAy8zAJfY4pvNJRPo6U8bTakkMacczKrmPdj67568+KeUgj8z+dY2rbBMm7y3j1GS2n MrXn87hH9RRysIgxsUgK6bIIrbz6etlpY8+LOM1mQEzh5UJZAgDF6cATGSyKiPDvRbe6kSPO8zG n/fYW0ffuBivLscS/kV6p8q5/uNMy0t+MDLs37Yx8W7yQkd+x7z3E/ZVzJ+xRP7jy3de1q+OPfn g/0yBBQC8OUrW
+X-Developer-Key: i=CoelacanthusHex@gmail.com; a=openpgp; fpr=892EBC7DC392DFF9C9C03F1D15F4180E73787863
 Content-Transfer-Encoding: 8bit
 
-File-scope "__pmic_glink_lock" mutex protects the filke-scope
-"__pmic_glink", thus reference to it should be obtained under the lock,
-just like pmic_glink_rpmsg_remove() is doing.  Otherwise we have a race
-during if PMIC GLINK device removal: the pmic_glink_rpmsg_probe()
-function could store local reference before mutex in driver removal is
-acquired.
+From: Celeste Liu <coelacanthushex@gmail.com>
 
-Fixes: 58ef4ece1e41 ("soc: qcom: pmic_glink: Introduce base PMIC GLINK driver")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Otherwise when the tracer changes syscall number to -1, the kernel fails
+to initialize a0 with -ENOSYS and subsequently fails to return the error
+code of the failed syscall to userspace. For example, it will break
+strace syscall tampering.
+
+Fixes: 52449c17bdd1 ("riscv: entry: set a0 = -ENOSYS only when syscall != -1")
+Reported-by: "Dmitry V. Levin" <ldv@strace.io>
+Reviewed-by: Björn Töpel <bjorn@rivosinc.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Celeste Liu <CoelacanthusHex@gmail.com>
+Link: https://lore.kernel.org/r/20240627142338.5114-2-CoelacanthusHex@gmail.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+(cherry picked from commit 61119394631f219e23ce98bcc3eb993a64a8ea64)
 ---
- drivers/soc/qcom/pmic_glink.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/riscv/kernel/traps.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/soc/qcom/pmic_glink.c b/drivers/soc/qcom/pmic_glink.c
-index 9606222993fd..452f30a9354d 100644
---- a/drivers/soc/qcom/pmic_glink.c
-+++ b/drivers/soc/qcom/pmic_glink.c
-@@ -217,10 +217,11 @@ static void pmic_glink_pdr_callback(int state, char *svc_path, void *priv)
+diff --git a/arch/riscv/kernel/traps.c b/arch/riscv/kernel/traps.c
+index 67d0073fb624..2158b7a65d74 100644
+--- a/arch/riscv/kernel/traps.c
++++ b/arch/riscv/kernel/traps.c
+@@ -311,6 +311,7 @@ asmlinkage __visible __trap_section void do_trap_ecall_u(struct pt_regs *regs)
  
- static int pmic_glink_rpmsg_probe(struct rpmsg_device *rpdev)
- {
--	struct pmic_glink *pg = __pmic_glink;
-+	struct pmic_glink *pg;
- 	int ret = 0;
+ 		regs->epc += 4;
+ 		regs->orig_a0 = regs->a0;
++		regs->a0 = -ENOSYS;
  
- 	mutex_lock(&__pmic_glink_lock);
-+	pg = __pmic_glink;
- 	if (!pg) {
- 		ret = dev_err_probe(&rpdev->dev, -ENODEV, "no pmic_glink device to attach to\n");
- 		goto out_unlock;
+ 		riscv_v_vstate_discard(regs);
+ 
+@@ -318,8 +319,6 @@ asmlinkage __visible __trap_section void do_trap_ecall_u(struct pt_regs *regs)
+ 
+ 		if (syscall >= 0 && syscall < NR_syscalls)
+ 			syscall_handler(regs, syscall);
+-		else if (syscall != -1)
+-			regs->a0 = -ENOSYS;
+ 
+ 		syscall_exit_to_user_mode(regs);
+ 	} else {
 -- 
-2.43.0
+2.46.0
 
 
