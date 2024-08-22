@@ -1,152 +1,95 @@
-Return-Path: <stable+bounces-69910-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69911-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A81195BE30
-	for <lists+stable@lfdr.de>; Thu, 22 Aug 2024 20:24:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 294D495BEA6
+	for <lists+stable@lfdr.de>; Thu, 22 Aug 2024 21:05:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E0578B25227
-	for <lists+stable@lfdr.de>; Thu, 22 Aug 2024 18:24:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C8C771F23E67
+	for <lists+stable@lfdr.de>; Thu, 22 Aug 2024 19:05:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ED9814E2F0;
-	Thu, 22 Aug 2024 18:24:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1F371CFEA7;
+	Thu, 22 Aug 2024 19:05:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DQAbb8vj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qUwwgfam"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 689BE2AE77
-	for <stable@vger.kernel.org>; Thu, 22 Aug 2024 18:23:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78D4C13D8B2;
+	Thu, 22 Aug 2024 19:05:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724351039; cv=none; b=oBQmYRkfCCRU/uasEz1P9G2P9pH1/uk5eddbvj4+paWFtXNdhoh4HUoGD1UdN+jR4oV6+gecn/KE4Ry4Z+eirCwhYqCC9eyK770ctWqFvqPKNknwHTb9uS8xCJJCiJC5mXbkETHhLt3tL74gFcj/1hAt90CHj6Zc34ljzvSerUU=
+	t=1724353550; cv=none; b=YJpvrPmj7u+P7vEz/xmET+Q/Uu+dcx82rcCDPzmepaZxNlSOz+OTiuiQh3lj8E4Na/TC80JD7Iic0kGRD7f0s2IEuDzj8XjuWtUR1G4TdR/OKZppQo6PrSYVqcUGkuk9mPmebXGZ7zWTV6trxCtttm50qUDokEQALdRlwjnHqM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724351039; c=relaxed/simple;
-	bh=6oJWkRUERFpB3blIaG9wUxYb6rEF/EMjl0nYm0PPiQo=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=DUYzk45Wp8TmG+teTIJtdGozXvb6b0pqqfJeQ/xWfZp4vccTtwlG/1a5h9CTRzzIc8J1eNVaDmA4IpnSGSWwQ1AnMWGpT1D1wjWo+d//vc8SxHgswt2WXYEca96KNQW65Q1uMHKn1zbV/rLqEMB6+pkq2bWGiSoNCyeMy1KyoZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--cmllamas.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DQAbb8vj; arc=none smtp.client-ip=209.85.128.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--cmllamas.bounces.google.com
-Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-6b46a237b48so22565657b3.1
-        for <stable@vger.kernel.org>; Thu, 22 Aug 2024 11:23:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1724351037; x=1724955837; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=U+hG+801nTFiswIqakBQXEm/IokDZ+OxzOt1ioPF7rw=;
-        b=DQAbb8vjuklhZKWnRN8YbX9GwD3cpEHVJ/WHCplTep5m3cOOKqaLR7MRtuDgRslis+
-         rl6P3r3PfnLypmAel90ucym3tLX43BDVXEks9YEobymw8vRZgNoEz/B8LmiGCoKhGzOO
-         P0YBfpOozkrZAhYWyQ9kVb9S4oydWVE9ugr7dE0yrIQS1TTbYtAbrSiRLarpNUUqaF/P
-         yvIRSTxpSaREX8Un5D24SaYkrsnEMvQv3gkXKydcVYIvcf6tnyCD7vnn0cRLFO59uO0q
-         jhSrb95LGn73h/bG2ejVXITQ2RTuHa0N1ZdVj3MlHQdJmK9xcOwfpla8YcjXaQ22KyMs
-         LbLA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724351037; x=1724955837;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=U+hG+801nTFiswIqakBQXEm/IokDZ+OxzOt1ioPF7rw=;
-        b=eamWaDQT3aO1cTYB7tKdGmtzGAYqqb2GwBrOrAM9AY2fJ+2LpxKzwdYZoLhVIm4Zfi
-         9iEOUTOgNsOYwRigFuNpG5b6JFUXvXgrbmMdWRGXcmRTlMrt6WPd9D/4vaeSWUT1jVGV
-         QJgIsvcA6pnZG/EE9w+gDJ49SASrR8ULyh5HzQbP0Zu71FypgNXi5CIZzqUVrJhJudvo
-         Y2EMiLVk2L6bzkQCxS8GoWur9ItsQr126s4AzOTagejuAHhK36QEduD4c29IbG2Fv0Ey
-         xq84K03KhxWH6Hf5JbBeT5Wg0HFt5itP3JF+dViBcajKnZ3bXSGZZqYsKFMwbyRHl8h/
-         8GLw==
-X-Forwarded-Encrypted: i=1; AJvYcCUN5yWy/5JOpD7FFRVfGfJcL0hcxnSg7nzLXdljr8UsJT5ZO0dUxV0+mYP4WODKw6dkatP1FUw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzNvqTeA+X3j8WoShmyW5EGKwUQyg7LXrBsl4iuvvR5TOT1CVOX
-	3WCDkmnUhDfZYx3knWLvMdv0NaOApkKPI4dhqu0P69/BfucNjcfK+ifSKDMJd4HeDhYjrtlwQJP
-	P28VSfUG9pg==
-X-Google-Smtp-Source: AGHT+IGL3M8E0FGhFOjRuhFKH/kFSpPF3ugmAHbWuJ2qVdPZ+0SaWvWhHdLf4oiHO4rCpWSjXyBMkwnrPwO5tw==
-X-Received: from xllamas.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5070])
- (user=cmllamas job=sendgmr) by 2002:a05:690c:62c8:b0:69b:2f8e:4d1a with SMTP
- id 00721157ae682-6c0a08fcac2mr4589687b3.9.1724351037439; Thu, 22 Aug 2024
- 11:23:57 -0700 (PDT)
-Date: Thu, 22 Aug 2024 18:23:52 +0000
+	s=arc-20240116; t=1724353550; c=relaxed/simple;
+	bh=8kmKkdKB+bP/XDJ3bbKnBGeMf6mSdYD+LNXsB5C09D8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Ymoo2KNNvu2vHR2y1GIs85yF4PmulAxBYgUUmWSIwopHNeUGY3lq0/knrP02hB4/jN4ic5eoZgGRWYyKF2Lua2XPXxss6ThZRmVwOd8aTN3r79U+pCC6qgMFGfsAbKEtgjn46EX1Faux0hZtaGFDVqt0svA2IeHrWkifQ+vJKPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qUwwgfam; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13059C4AF0F;
+	Thu, 22 Aug 2024 19:05:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724353550;
+	bh=8kmKkdKB+bP/XDJ3bbKnBGeMf6mSdYD+LNXsB5C09D8=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=qUwwgfamPVYfMtqESx6bSCybae1p5QmsQGWag8+PozaZIcwOywAiByfblKAXno8nC
+	 IRd+HPOsNQjnkHiHyY6BrUqwibP0RMKw3EpVAjrUS2Xnm1GJGJLW0Bq7gaCI2GkPuF
+	 JIcfyiDZtBkVbGH8q1StiL3Vxlp35VtBkGRRCwjSsCpb1ybposUxNfm8wkX601/hZw
+	 pPJTz5Hs1jf2H/58PLzuASTAcpWj1+NIHmZZNqM9SoUoeZRikMG9Msq8aZOhSQCnaT
+	 O4UpagMJxZZzpfijE/Z4t21dmCdHhsRr4JejyrNBLNwuN0OwjJGNAcettjuhT3+sUL
+	 R3ZM7qDTJZtvg==
+Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-270263932d5so831683fac.2;
+        Thu, 22 Aug 2024 12:05:50 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUPoRSMfxVJqWLJ2pyxlgvkuhwt4iLH7w4AbiL1hTDL+byiChaXmbAUCWQl0PNu1f1FZg7TWku6@vger.kernel.org, AJvYcCUQiZ+1XvjItpB/ln3WfiQF52HGsAKCnpXmmfdArv1tPk0mbg2hur4QyLuAryK2TN8IqZVZ1BTNiMwOCv8=@vger.kernel.org, AJvYcCVAebGK46my0QF9TAf/K7iwiy0EN0GIYRGTTXmXlWrJjIhKR0ltswBl0TylXVAGjS1mNWUEZbJ8amE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz/LquK70AO8oP0yPTOX7cCnih/jxBMLPjKLfI2Sdmqf/FsHi39
+	ozdrP0FbHbohLrzy+lPqfVZIHtETYHkUEv8ORP2wEFrzqiWLk0Tq1XbzHXEsc2t7aLmZ0f1Y8ys
+	dOvCcmaiqM4QC7MCnXYQS9TQiEug=
+X-Google-Smtp-Source: AGHT+IGsx9MlDIqyZirN99gmnxGl5XE4O19AIzi2CakpohYGGZpr+FqqWk/yIZ1gsBeMm0skdNnTRtffCrhYTx9fNIk=
+X-Received: by 2002:a05:6870:d10d:b0:260:fdd5:4147 with SMTP id
+ 586e51a60fabf-273cfc55bdemr3593483fac.15.1724353549379; Thu, 22 Aug 2024
+ 12:05:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.46.0.295.g3b9ea8a38a-goog
-Message-ID: <20240822182353.2129600-1-cmllamas@google.com>
-Subject: [PATCH] binder: fix UAF caused by offsets overwrite
-From: Carlos Llamas <cmllamas@google.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
-	Joel Fernandes <joel@joelfernandes.org>, Christian Brauner <brauner@kernel.org>, 
-	Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>
-Cc: linux-kernel@vger.kernel.org, kernel-team@android.com, 
-	Todd Kjos <tkjos@google.com>, stable@vger.kernel.org
+MIME-Version: 1.0
+References: <20240814195823.437597-1-krzysztof.kozlowski@linaro.org>
+ <20240814195823.437597-3-krzysztof.kozlowski@linaro.org> <fcee1000-9f8d-40c6-8974-06e3c1722645@linaro.org>
+In-Reply-To: <fcee1000-9f8d-40c6-8974-06e3c1722645@linaro.org>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Thu, 22 Aug 2024 21:05:38 +0200
+X-Gmail-Original-Message-ID: <CAJZ5v0hMLVGpw+Mrso=6kpL+wMn=6UCrCykGk7nG55uidfkrAw@mail.gmail.com>
+Message-ID: <CAJZ5v0hMLVGpw+Mrso=6kpL+wMn=6UCrCykGk7nG55uidfkrAw@mail.gmail.com>
+Subject: Re: [PATCH 3/3] thermal: of: Fix OF node leak in of_thermal_zone_find()
+ error paths
+To: Daniel Lezcano <daniel.lezcano@linaro.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Zhang Rui <rui.zhang@intel.com>, 
+	Lukasz Luba <lukasz.luba@arm.com>, linux-pm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Binder objects are processed and copied individually into the target
-buffer during transactions. Any raw data in-between these objects is
-copied as well. However, this raw data copy lacks an out-of-bounds
-check. If the raw data exceeds the data section size then the copy
-overwrites the offsets section. This eventually triggers an error that
-attempts to unwind the processed objects. However, at this point the
-offsets used to index these objects are now corrupted.
+On Thu, Aug 22, 2024 at 6:12=E2=80=AFPM Daniel Lezcano
+<daniel.lezcano@linaro.org> wrote:
+>
+> On 14/08/2024 21:58, Krzysztof Kozlowski wrote:
+> > Terminating for_each_available_child_of_node() loop requires dropping O=
+F
+> > node reference, so bailing out on errors misses this.  Solve the OF nod=
+e
+> > reference leak with scoped for_each_available_child_of_node_scoped().
+> >
+> > Fixes: 3fd6d6e2b4e8 ("thermal/of: Rework the thermal device tree initia=
+lization")
+> > Cc: <stable@vger.kernel.org>
+> > Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+>
+> Reviewed-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 
-Unwinding with corrupted offsets can result in decrements of arbitrary
-nodes and lead to their premature release. Other users of such nodes are
-left with a dangling pointer triggering a use-after-free. This issue is
-made evident by the following KASAN report (trimmed):
-
-  ==================================================================
-  BUG: KASAN: slab-use-after-free in _raw_spin_lock+0xe4/0x19c
-  Write of size 4 at addr ffff47fc91598f04 by task binder-util/743
-
-  CPU: 9 UID: 0 PID: 743 Comm: binder-util Not tainted 6.11.0-rc4 #1
-  Hardware name: linux,dummy-virt (DT)
-  Call trace:
-   _raw_spin_lock+0xe4/0x19c
-   binder_free_buf+0x128/0x434
-   binder_thread_write+0x8a4/0x3260
-   binder_ioctl+0x18f0/0x258c
-  [...]
-
-  Allocated by task 743:
-   __kmalloc_cache_noprof+0x110/0x270
-   binder_new_node+0x50/0x700
-   binder_transaction+0x413c/0x6da8
-   binder_thread_write+0x978/0x3260
-   binder_ioctl+0x18f0/0x258c
-  [...]
-
-  Freed by task 745:
-   kfree+0xbc/0x208
-   binder_thread_read+0x1c5c/0x37d4
-   binder_ioctl+0x16d8/0x258c
-  [...]
-  ==================================================================
-
-To avoid this issue, let's check that the raw data copy is within the
-boundaries of the data section.
-
-Fixes: 6d98eb95b450 ("binder: avoid potential data leakage when copying txn")
-Cc: Todd Kjos <tkjos@google.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
----
- drivers/android/binder.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/android/binder.c b/drivers/android/binder.c
-index 905290c98c3c..e8643c69d426 100644
---- a/drivers/android/binder.c
-+++ b/drivers/android/binder.c
-@@ -3422,6 +3422,7 @@ static void binder_transaction(struct binder_proc *proc,
- 		 */
- 		copy_size = object_offset - user_offset;
- 		if (copy_size && (user_offset > object_offset ||
-+				object_offset > tr->data_size ||
- 				binder_alloc_copy_user_to_buffer(
- 					&target_proc->alloc,
- 					t->buffer, user_offset,
--- 
-2.46.0.295.g3b9ea8a38a-goog
-
+Applied along with the rest of the series as fixes for 6.11-rc, thanks!
 
