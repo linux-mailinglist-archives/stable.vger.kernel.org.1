@@ -1,83 +1,65 @@
-Return-Path: <stable+bounces-69892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69894-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74A2895BA8F
-	for <lists+stable@lfdr.de>; Thu, 22 Aug 2024 17:35:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C380D95BAD8
+	for <lists+stable@lfdr.de>; Thu, 22 Aug 2024 17:45:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE13D289698
-	for <lists+stable@lfdr.de>; Thu, 22 Aug 2024 15:35:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 795DA1F24292
+	for <lists+stable@lfdr.de>; Thu, 22 Aug 2024 15:45:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F0E91C9EA9;
-	Thu, 22 Aug 2024 15:35:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A17DA1CCB4B;
+	Thu, 22 Aug 2024 15:45:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="h2FBwq1R"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="j29S5XzV"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ua1-f52.google.com (mail-ua1-f52.google.com [209.85.222.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A24C12C1B4
-	for <stable@vger.kernel.org>; Thu, 22 Aug 2024 15:35:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 059671CCB2B;
+	Thu, 22 Aug 2024 15:45:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724340929; cv=none; b=U6XZpNe/LIb2lD7M7OnTCf17mBOtHqfEouqQur8vQGC1ranvU7HiKrMpoLmP2qCvsSc8YZRKB/5d4eZ/sgixy4AhwfVb69MGR+IVSqNKfMZYaBvxog1kp1e84rvV6eqzttXNjPPR6KziwozOPVrkMmg3dwloZPnq0OaSRb8pTRM=
+	t=1724341539; cv=none; b=QUi2XjZdrvTDTxw6tzoRALILwSr8QUgjPQKPClzSTlwLyuKYyGliwvIGmXXysJE6gyoHub68T83UGgpdQIkPw9IXphA01f5lkIg8WnDctA7aIkVjmFBGCirRqnZ0bH72MJxa/6rMbz7C9Odp+WOzrF16YWoP12viblC+l9/XtA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724340929; c=relaxed/simple;
-	bh=Z8pmjH/Bk0P7Rxvcgi25lJF1QvAO5q1Gji9c4k0ExXc=;
+	s=arc-20240116; t=1724341539; c=relaxed/simple;
+	bh=g4UzTpjAkmH1/8Mi3biEb/L7TovlNwHywY7DzG7f2wA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ac0+lxwV8exMGExMloWwGu7/9XWRAq+rbVIh/sN4xqoaG6Ygq/6/qC0l8cFt/SdH0o6H/mv9a2qEfkfP8zBk7801gGoxGQSiGzCaU7gN6yvv1q3biyZYKytndb1NvVcuQv4gFrOBbiv8lH/N9STydF088CnDKHEJ5+YsUhhGxPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=h2FBwq1R; arc=none smtp.client-ip=209.85.222.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ua1-f52.google.com with SMTP id a1e0cc1a2514c-842f91f2545so276747241.3
-        for <stable@vger.kernel.org>; Thu, 22 Aug 2024 08:35:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724340926; x=1724945726; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Z8pmjH/Bk0P7Rxvcgi25lJF1QvAO5q1Gji9c4k0ExXc=;
-        b=h2FBwq1RrBKLMbP++bmKnZc1y10Ys2ga2VYw0DewISPaJQft6o5pUmLWijNoozsdgR
-         Bu3aqVKl5lkpOKyc8lqbVLy+Hk0/GrvA72ckyeBzXt3lhKlbs5oAIBJ7xWD5jAnw/Z5T
-         SGm5YRN6ff3WKfxbOnJ3xis+vALJXnlFQ3QNKbt7Yrw7Ly8SmqjtiDZsUf/zy8dWb1bb
-         X6CNPAUE5bhczWWmMcVSnWK/hZvML8h7CVLQ08UTrQqHI7DDdrKQVi7vesL43xf8/Yfv
-         3EhcGOM6uiWgOBzi2xXmsbfOF+QjMt7m7A2nlHk1ZrCxK+lWZbB9yTzmfVs0DYqev4mx
-         RIug==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724340926; x=1724945726;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Z8pmjH/Bk0P7Rxvcgi25lJF1QvAO5q1Gji9c4k0ExXc=;
-        b=IsV1EVe4yLUXCKWrQ1I14x4wNjXUQdEIAJQPkcZlDZXlHpaJsxHZRxgxjxmHZVzrH2
-         wsLmfKaYDWQcNIzpskIa0spTqBtg+9QMHSrr5m8xWd4vilXFy58AROVgUUKut31rzV3P
-         7HzaJi1WXwaHMmtQ7TnvHAvGM87gjRxaYQlLnJ70yH0SXpcSBw1HzHiITtIIdEbg92yd
-         QrNGNdm0EASDNlDXdjYbyO53blamML3/gw9t/iqiVv2D/bPVsfoArozTVe+fh1CHAnpa
-         8ZVUenZBpkrCFuEUtuV4eFB9VxjwYGkRnSQIMU+bg6D8OrB5yvFUtptqr04gRE5XmhHk
-         1MXQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUnc7AMVuM5ouAdvkwUlDB9nY3u3TvoR+5JmLzvJbJUxjVYc6SdyMf8baBlV+b4xu15/r1htLw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy+dvMSDkwVQbgQgwuBQ3t5di0Z1IcVoa6sTqxV6AN5eZ6rfBcN
-	01koHsay8Q5VunqjekZMgN5EWpVGj36mBRFAg959JIbyOcdKb07H
-X-Google-Smtp-Source: AGHT+IFW5OIbceMv/4NATC9ZnOK3Z3UW3MDB5dplIb/hraWmXNZF734SrnUK+Qm7cCubG6VJSdA00Q==
-X-Received: by 2002:a05:6122:3281:b0:4ef:5744:46a with SMTP id 71dfb90a1353d-4fcf1aed083mr7650277e0c.1.1724340926371;
-        Thu, 22 Aug 2024 08:35:26 -0700 (PDT)
-Received: from localhost (57-135-107-183.static4.bluestreamfiber.net. [57.135.107.183])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-4fd0834176csm182289e0c.43.2024.08.22.08.35.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Aug 2024 08:35:25 -0700 (PDT)
-From: David Hunter <david.hunter.linux@gmail.com>
-To: david.hunter.linux@gmail.com
-Cc: hshan@google.com,
-	seanjc@google.com,
+	 MIME-Version; b=VL60jFTBS9Vh9F6RGzNaVDlL89hLreBLMI7KEFse61cMJqjMbDX2JdmNnlFkIeNfiVfXFvRRGbZYwT+wpPEUHWUIJ1oOtmqdpe92m9IvZuht7FQl1frWBTxjIzEl3vqi91iyYvcv3DOl6r/5KIN4+vZ8UIjU8VCVy6lVh1IaEV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=j29S5XzV; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 31D388A9;
+	Thu, 22 Aug 2024 17:44:33 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1724341473;
+	bh=g4UzTpjAkmH1/8Mi3biEb/L7TovlNwHywY7DzG7f2wA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=j29S5XzVK/J/DD64nbA79mgBNYDpOFugrBoQi9FE56kMepausoYrCKc1/FqdMm5rb
+	 1qUpEQh+6/A67zTDfC5AnlWzMD7nRE8Iw+xWmY18Tch4vbHKlBj9NFdNoxLQOjmQ1l
+	 8vvNtc8SqiY4yF5gaZkYVBql+e9FZyCfcvRmPgmU=
+From: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+To: linux-media@vger.kernel.org
+Cc: Chen-Yu Tsai <wens@csie.org>,
+	Eugen Hristev <eugen.hristev@collabora.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+	Kieran Bingham <kieran.bingham@ideasonboard.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Sakari Ailus <sakari.ailus@iki.fi>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	linux-renesas-soc@vger.kernel.org,
+	linux-sunxi@lists.linux.dev,
 	stable@vger.kernel.org
-Subject: Re: [PATCH 6.1.y 2/2 V2] KVM: x86: Fix lapic timer interrupt lost after loading a snapshot.
-Date: Thu, 22 Aug 2024 11:35:23 -0400
-Message-ID: <20240822153523.89387-1-david.hunter.linux@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240822152146.88654-3-david.hunter.linux@gmail.com>
-References: <20240822152146.88654-3-david.hunter.linux@gmail.com>
+Subject: [PATCH v2 2/7] media: sun4i_csi: Implement link validate for sun4i_csi subdev
+Date: Thu, 22 Aug 2024 18:45:26 +0300
+Message-ID: <20240822154531.25912-3-laurent.pinchart+renesas@ideasonboard.com>
+X-Mailer: git-send-email 2.44.2
+In-Reply-To: <20240822154531.25912-1-laurent.pinchart+renesas@ideasonboard.com>
+References: <20240822154531.25912-1-laurent.pinchart+renesas@ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -86,5 +68,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Please disregard. I am preparing a series patch and didn't realize that the emails at the bottom would be sent
+The sun4i_csi driver doesn't implement link validation for the subdev it
+registers, leaving the link between the subdev and its source
+unvalidated. Fix it, using the v4l2_subdev_link_validate() helper.
+
+Fixes: 577bbf23b758 ("media: sunxi: Add A10 CSI driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Acked-by: Chen-Yu Tsai <wens@csie.org>
+---
+ drivers/media/platform/sunxi/sun4i-csi/sun4i_csi.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/drivers/media/platform/sunxi/sun4i-csi/sun4i_csi.c b/drivers/media/platform/sunxi/sun4i-csi/sun4i_csi.c
+index 097a3a08ef7d..dbb26c7b2f8d 100644
+--- a/drivers/media/platform/sunxi/sun4i-csi/sun4i_csi.c
++++ b/drivers/media/platform/sunxi/sun4i-csi/sun4i_csi.c
+@@ -39,6 +39,10 @@ static const struct media_entity_operations sun4i_csi_video_entity_ops = {
+ 	.link_validate = v4l2_subdev_link_validate,
+ };
+ 
++static const struct media_entity_operations sun4i_csi_subdev_entity_ops = {
++	.link_validate = v4l2_subdev_link_validate,
++};
++
+ static int sun4i_csi_notify_bound(struct v4l2_async_notifier *notifier,
+ 				  struct v4l2_subdev *subdev,
+ 				  struct v4l2_async_connection *asd)
+@@ -214,6 +218,7 @@ static int sun4i_csi_probe(struct platform_device *pdev)
+ 	subdev->internal_ops = &sun4i_csi_subdev_internal_ops;
+ 	subdev->flags = V4L2_SUBDEV_FL_HAS_DEVNODE | V4L2_SUBDEV_FL_HAS_EVENTS;
+ 	subdev->entity.function = MEDIA_ENT_F_VID_IF_BRIDGE;
++	subdev->entity.ops = &sun4i_csi_subdev_entity_ops;
+ 	subdev->owner = THIS_MODULE;
+ 	snprintf(subdev->name, sizeof(subdev->name), "sun4i-csi-0");
+ 	v4l2_set_subdevdata(subdev, csi);
+-- 
+Regards,
+
+Laurent Pinchart
+
 
