@@ -1,119 +1,152 @@
-Return-Path: <stable+bounces-69905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69906-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5FD095BC67
-	for <lists+stable@lfdr.de>; Thu, 22 Aug 2024 18:49:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF95E95BC7F
+	for <lists+stable@lfdr.de>; Thu, 22 Aug 2024 18:52:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F6BB1C21067
-	for <lists+stable@lfdr.de>; Thu, 22 Aug 2024 16:49:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A2606B25CCE
+	for <lists+stable@lfdr.de>; Thu, 22 Aug 2024 16:52:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AB3E1CDA3E;
-	Thu, 22 Aug 2024 16:49:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 858481CDFBF;
+	Thu, 22 Aug 2024 16:52:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="lSSlvxd9"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="eUGT99XO"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B94671CDA1B
-	for <stable@vger.kernel.org>; Thu, 22 Aug 2024 16:48:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2577B1CDFAF
+	for <stable@vger.kernel.org>; Thu, 22 Aug 2024 16:52:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724345341; cv=none; b=Vmw59U1f74AmZkyxLbpT1J8FAi/l6LMNy5lotvSzr56TBuARxmmn4Ed4IZpNHXCLtF8IBxJfhF33ALkY9+XyrIN1BbJbmKz/kVJwQnbZBAIE1WbYS4eh3TVPaLeYiBLhQ10zJmPsRhOxIzSY+/B3gOEBYm7ZZYnqvP5rbYZcp0k=
+	t=1724345526; cv=none; b=f5NulyqpuSbWel46MsGXgfSstlc/LLGOMkDAR6TGs4kIGdtUNzKI3cJwq/QO/YOIYcxgX8CmGklpDI952lXVpOCg+AR/Ld5DBsPpz5txQUnBeGF9OGLOm0Z/Kuz42dBl80MPrscyfRmJ31cNGKfQg4mnLihMQKXk6drM7YNSS5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724345341; c=relaxed/simple;
-	bh=WORizGtRIG3wQEd5cKsiYTz4nE4FIsBA2fCtRinTt8o=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E+eIcCGPRuc3HkA1z9XGqCuwckhCZDeGP2kRNi073WgpZiiZfFShNHyHODLC0BbmYmdQ/QOS07Ivu+30g6RFqDliC94n6Iw2MIO3KZQvZFmiCsxHG+zOZqc2MPUp68pZUTqzgyOh6kvzIWbCsSazEn7UJl0rSvtuuezE0XIVps8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=lSSlvxd9; arc=none smtp.client-ip=209.85.221.51
+	s=arc-20240116; t=1724345526; c=relaxed/simple;
+	bh=PYun9E4NdnlNTayM1uIxJGk9dxfQdSd5lwmXFLu+Bxg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kS82/yK4a5cnOmirNKz5mPUZTq/lkK9g6yTzm+0nRZSQxr6y6AcOVudL5/gbD01lXRbKpxcscrB8qGLxNzbaFIsp2zi2q82sqwAPBrI7mpoIogieP91aRk+5gNYhN9Lr0RXmYsrXb8IQKvy75r0MaH/Kh33kGIGFu52vyNphBZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=eUGT99XO; arc=none smtp.client-ip=209.85.128.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-368633ca4ffso174805f8f.0
-        for <stable@vger.kernel.org>; Thu, 22 Aug 2024 09:48:59 -0700 (PDT)
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4280ef642fbso1422265e9.1
+        for <stable@vger.kernel.org>; Thu, 22 Aug 2024 09:52:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1724345338; x=1724950138; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2Jn92E/Ky5nVM/5+Oud+V0WsM8/cEIOvqMjdYQHvInY=;
-        b=lSSlvxd9gvCBQ9o5jxKp1+6YE5EnVRa/7fSO5DyDbPwlqMNbAB/4vA5i5juy1Je/0/
-         LqPwKr/YMVijDsgt4f+9GmdpW8x6LbNEerAD9/sJ5b4yJ7YwomYkxm1HhdyDxkpQnoIr
-         WwD4iIZ42jASxk6nGDIEyomf7gFWH9T7jGLmLwdczmQV0B+M4MZUQ4QhxzwF+QLHc6/w
-         ApVcEGB8C7hhg1kl4u4PQpbQWHyCGZEvUXaRPwKLpbMrCii1q0yuRlGfydmaSMXzHD9X
-         N0r1RGaH2AYIAg74qDIKJ606R/nB9j0JfrBsxvuo0IAD99IALoIthRwehLAv5Blf5wbZ
-         DqsA==
+        d=linaro.org; s=google; t=1724345522; x=1724950322; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=/QUDsxMTjf2w+QDhT+U7tmzKnt6f0H6iAuBZFC82qFA=;
+        b=eUGT99XOLxwA3pNF6SYaEAcc62PWT2GJGHXxdF9hm51YEUVT6Qx+HLy2pHPymJfMvS
+         QI1iy+azoXDzTGRg2EzvCNwolJLlAI2so8ZvEpW4BwWfHXzCflratOKeVP3fWaiR/Que
+         b/1DsyjrjBC8l+PO9X5y9Tbp35iQ0nra6FbG582ZcQTpz+EGear4spoPlANEsnHidC5S
+         V4H8IXagYuQIDlGzZpZAwH8GFBE6BM54unpPrPKoeF2RsEnVZQQljNV5oT0xU+AxdZ20
+         Vsc7MCga7T/fxwVB4yhzo8X8dHF23BFiWHOpRGuozBnLT/XlTdxb1sUl61u2hDvUKQnK
+         owQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724345338; x=1724950138;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2Jn92E/Ky5nVM/5+Oud+V0WsM8/cEIOvqMjdYQHvInY=;
-        b=pCx9A5lnqJyessmJJeJIX/ePTgYe0H7QgGeN9l4BHxZxAzSLmmTQIZA1LsyE1610da
-         juY1/hfWehxeXBnhcL0gEtivtWCLLi4PovfY5+CYZxXEVv+SgQQyWOsUMBOHRw/Vjn3n
-         MAASQNa0293KQJ0OYevwGIPTflKTzKdun3bdPhegE+Acp1dLSQ9LQEncoehrYiR88CJr
-         qDjefyK4Vfvz6t1Rgp0rlLjJeW9QbmIGS0LILQ5jDjjX39+aO65mqUVGrIZXyUH8YrIe
-         Rhnjopr6X2A1Yy0AVbsK0YgUP6VYLgHqeuO8sfyixmoreKAlIMRk9Z4MxhB0T/klj/6c
-         uZFQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXsoCHj5M8nrQXBCq1gNbkoNjTtg6FamWyA/nRrWS+/i1pei0nVx2qOxwkYsJCO93DOk922H2Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzFGfki650EyenOxBdt/cBkdCGniuNEfngVIT5eyAE3KUU67vuO
-	zFWi8Vk+YJtZGo2jlFp5IUCZnArr2Pxg06oz18MtjgP2fg0FTsbheSWNQy+075Y=
-X-Google-Smtp-Source: AGHT+IE13RldnzB73YXRgRbQeFB3CKCAvtoKwuPbT689RQiJ/f5BtqH6l2grgU6Nryf3J7W5S5rBmA==
-X-Received: by 2002:a05:600c:1ca0:b0:427:f1a9:cb06 with SMTP id 5b1f17b1804b1-42abef82886mr30936915e9.0.1724345338115;
-        Thu, 22 Aug 2024 09:48:58 -0700 (PDT)
-Received: from krzk-bin.. ([178.197.222.82])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42abefc627asm68062765e9.34.2024.08.22.09.48.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Aug 2024 09:48:57 -0700 (PDT)
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To: Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Andy Gross <agross@codeaurora.org>,
-	linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	stable@vger.kernel.org
-Subject: [PATCH] soc: qcom: smem_state: fix missing of_node_put in error path
-Date: Thu, 22 Aug 2024 18:48:51 +0200
-Message-ID: <20240822164853.231087-2-krzysztof.kozlowski@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240822164853.231087-1-krzysztof.kozlowski@linaro.org>
-References: <20240822164853.231087-1-krzysztof.kozlowski@linaro.org>
+        d=1e100.net; s=20230601; t=1724345522; x=1724950322;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:cc:to:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=/QUDsxMTjf2w+QDhT+U7tmzKnt6f0H6iAuBZFC82qFA=;
+        b=mpNKkgJGLTLw/MGaovlYUTxlLl4VPUZksIYv8eaFmr+VZlvINHZ3kPlBkQsyp84rdh
+         adJFVdjX8d7Ais2vjRNXXmX0UPgOBLTo3/21xh7wfJiCC7r9jz5Fz3+MkVI44eonbdCE
+         OF7bz+0omyjtJP50OMFMcLDrQ1Qh7MXRbLJkrW0WFBNg2Dw2DufNOVayWGqoE/4Tesz7
+         +CJAndRqDS3NBq1iylEPQaL/jP94n81fia2Qq3ok+qRbTxW0iibl+yuyRdiRVQgsMseI
+         gOkbrfOzScWRsHtBQNYyP9B1FyCG8e2cXdy0PqwuiiIF93w45DC/f5nAvbdIj3FluJwy
+         1k4w==
+X-Gm-Message-State: AOJu0Yyhx5s2loEYJTn93eWpEzs5tdIjgZtp8x1zl1h1hj9KTPgnN9XD
+	G8hhjQc4rblBLQRvXMK7xhZkv+ynHyXBibhg6WQN380p8MxCFZ2bZROmPXbvJy0=
+X-Google-Smtp-Source: AGHT+IEmRXduMOrtFKh/hFBgUXKJK9/J/CuRfA2q/OHoR+nQkaNMhkQzQGKUk+hf3U7+h5e56zPw1g==
+X-Received: by 2002:a5d:6d01:0:b0:367:90a8:4d3b with SMTP id ffacd0b85a97d-372fd585cefmr2573813f8f.3.1724345522334;
+        Thu, 22 Aug 2024 09:52:02 -0700 (PDT)
+Received: from [192.168.1.20] ([178.197.222.82])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3730826b10bsm2072959f8f.114.2024.08.22.09.52.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 22 Aug 2024 09:52:01 -0700 (PDT)
+Message-ID: <3813d9d1-5481-47d6-ada3-977439ee9b6a@linaro.org>
+Date: Thu, 22 Aug 2024 18:52:00 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] soc: qcom: smem_state: fix missing of_node_put in error
+ path
+To: Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>, Andy Gross <agross@codeaurora.org>,
+ linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: stable@vger.kernel.org
+References: <20240822164853.231087-1-krzysztof.kozlowski@linaro.org>
+ <20240822164853.231087-2-krzysztof.kozlowski@linaro.org>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Content-Language: en-US
+Autocrypt: addr=krzysztof.kozlowski@linaro.org; keydata=
+ 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
+ D2GYIS41Kv4Isx2dEFh+/Q==
+In-Reply-To: <20240822164853.231087-2-krzysztof.kozlowski@linaro.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-If of_parse_phandle_with_args() succeeds, the OF node reference should
-be dropped, regardless of number of phandle arguments.
+On 22/08/2024 18:48, Krzysztof Kozlowski wrote:
+> If of_parse_phandle_with_args() succeeds, the OF node reference should
+> be dropped, regardless of number of phandle arguments.
+> 
+> Cc: <stable@vger.kernel.org>
+> Fixes: 9460ae2ff308 ("soc: qcom: Introduce common SMEM state machine code")
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> ---
 
-Cc: <stable@vger.kernel.org>
-Fixes: 9460ae2ff308 ("soc: qcom: Introduce common SMEM state machine code")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
----
- drivers/soc/qcom/smem_state.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+And this one patch is a duplicate of what I sent separately. Can be
+ignored. Sorry for the mess, time to finish work for today. :(
 
-diff --git a/drivers/soc/qcom/smem_state.c b/drivers/soc/qcom/smem_state.c
-index d9bfac6c54fb..cc5be8019b6a 100644
---- a/drivers/soc/qcom/smem_state.c
-+++ b/drivers/soc/qcom/smem_state.c
-@@ -112,7 +112,8 @@ struct qcom_smem_state *qcom_smem_state_get(struct device *dev,
- 
- 	if (args.args_count != 1) {
- 		dev_err(dev, "invalid #qcom,smem-state-cells\n");
--		return ERR_PTR(-EINVAL);
-+		state = ERR_PTR(-EINVAL);
-+		goto put;
- 	}
- 
- 	state = of_node_to_state(args.np);
--- 
-2.43.0
+Best regards,
+Krzysztof
 
 
