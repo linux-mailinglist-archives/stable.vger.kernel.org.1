@@ -1,134 +1,142 @@
-Return-Path: <stable+bounces-69885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69886-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A35EF95B8F6
-	for <lists+stable@lfdr.de>; Thu, 22 Aug 2024 16:49:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2683B95B910
+	for <lists+stable@lfdr.de>; Thu, 22 Aug 2024 16:51:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 57D1C1F264DA
-	for <lists+stable@lfdr.de>; Thu, 22 Aug 2024 14:49:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D4E66286413
+	for <lists+stable@lfdr.de>; Thu, 22 Aug 2024 14:51:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6F1E1CC17A;
-	Thu, 22 Aug 2024 14:49:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AE4C1CB329;
+	Thu, 22 Aug 2024 14:51:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="a+p/G2ju"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DAB71CB329;
-	Thu, 22 Aug 2024 14:49:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44CB11CB31B
+	for <stable@vger.kernel.org>; Thu, 22 Aug 2024 14:51:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724338157; cv=none; b=FLTvfjunWzeuKw+2Q/aFXCDMxcK3BgRRMq6gD7wewKSBN/x3jKZG5t76TqcaTDCZpayAr6KP4dkSxHP6Gd551LilJ4VSqlUZ56wI9wmSw1/q2KoxaSU3LCJKILlqm8qFy6rtYxN7yLkVLmoqkmkJ58aRHZ6AAH8XvYHxVmehgto=
+	t=1724338274; cv=none; b=kFh0mNMH1OAeIK9C6gKUtJDe+NuAfSASTAkOJLISJSguswNPTSmSxqOgOcHUaFjkaQxJxSaaA314I1kCfig8ye+pThjHqs0ltrPCssG8aAeJVDQpUNhHeSIwVQVgG6GTrQDp0o+WniY3ZhEGV91Cgg5+awv9WZrq9hO7u8XUmQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724338157; c=relaxed/simple;
-	bh=nVK+LNj/wLjL3hrAoZDtwBy0ZOqxtsuaS1tXN9NmzRI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lYLuQk/2Vc6pKB1QoIQIp9DPbSrLv+euZ3PQFfIOKmjPRM7uJSz14nhCipeq19SPJ7xPg5tNDDqkap05qdDRE/6Z10Fol0CP3n+9ggSUpYn30F2/2OmbrwVL/6E0xx3ZMwyukG3x2b1AJahmJ3t52MWFQ5WgUYdjRxQFrIyeghU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=fail smtp.mailfrom=kernel.org; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=kernel.org
-X-CSE-ConnectionGUID: pzV1vKq4Qr6rtl1LW4fXSg==
-X-CSE-MsgGUID: aKPHNV+BRgeiJY8t1f0JqQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11172"; a="40221801"
-X-IronPort-AV: E=Sophos;i="6.10,167,1719903600"; 
-   d="scan'208";a="40221801"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Aug 2024 07:48:23 -0700
-X-CSE-ConnectionGUID: UdIrjZhCSFGc6ouMiWWcLQ==
-X-CSE-MsgGUID: FsVdg77kTMeRpXd6tbM6Zw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,167,1719903600"; 
-   d="scan'208";a="61793671"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Aug 2024 07:48:14 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98)
-	(envelope-from <andy@kernel.org>)
-	id 1sh96C-00000000U7b-2aUU;
-	Thu, 22 Aug 2024 17:47:40 +0300
-Date: Thu, 22 Aug 2024 17:47:40 +0300
-From: Andy Shevchenko <andy@kernel.org>
-To: Philipp Stanner <pstanner@redhat.com>
-Cc: Jonathan Corbet <corbet@lwn.net>, Jens Axboe <axboe@kernel.dk>,
-	Wu Hao <hao.wu@intel.com>, Tom Rix <trix@redhat.com>,
-	Moritz Fischer <mdf@kernel.org>, Xu Yilun <yilun.xu@intel.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Alexandre Torgue <alexandre.torgue@foss.st.com>,
-	Jose Abreu <joabreu@synopsys.com>,
-	Maxime Coquelin <mcoquelin.stm32@gmail.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Alvaro Karsz <alvaro.karsz@solid-run.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Richard Cochran <richardcochran@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	David Lechner <dlechner@baylibre.com>,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>,
-	Damien Le Moal <dlemoal@kernel.org>, Hannes Reinecke <hare@suse.de>,
-	Chaitanya Kulkarni <kch@nvidia.com>, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org,
-	linux-fpga@vger.kernel.org, linux-gpio@vger.kernel.org,
-	netdev@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org, linux-pci@vger.kernel.org,
-	virtualization@lists.linux.dev, stable@vger.kernel.org,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: Re: [PATCH v3 7/9] vdpa: solidrun: Fix UB bug with devres
-Message-ID: <ZsdPjHAkF4i_DN3V@smile.fi.intel.com>
-References: <20240822134744.44919-1-pstanner@redhat.com>
- <20240822134744.44919-8-pstanner@redhat.com>
+	s=arc-20240116; t=1724338274; c=relaxed/simple;
+	bh=g2ybLVxWhNcivH6KCN0x+1YGYAq6hE2vkRiIpjQyKSw=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=QB3a0IWolCSUxmz5QNTtvxODh7ta2CqFTT9ew+hUhXT0Of4g4j3V9Oqxc4zQx2HxSObUAsXkp/LyVhHAK4PY9aqPr0u4w8Q0rNAnDDafnVFP2GW2NmwHcNQq1odJyJcp8+KzBMzkkqiLQ4OiONHCuTB9FMTevExSvNp7VWBi6GQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=a+p/G2ju; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1724338271;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=qI7sIttUlfd6rK+jxE04yL0R9ETbDTbrKGTUq6cowac=;
+	b=a+p/G2juhp6vp1dG8azJGkG0UFwLpzeAAKf0CNaSiUp+qE9O+L59gL5OzC6OBWrxThtPSv
+	tgdSYgFCMgyf834RnYsFDg8jstrWLdbxJdhAuNmJftPhWC9Lh45WNNCUoxftbFStwAIEZK
+	DqX5lV1ynq9sD6n8826q/Ib3YYko1sw=
+Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
+ [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-672-4LG_O8wlPEu1_GPVctUTXQ-1; Thu, 22 Aug 2024 10:51:09 -0400
+X-MC-Unique: 4LG_O8wlPEu1_GPVctUTXQ-1
+Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-2d3f948347eso1835379a91.1
+        for <stable@vger.kernel.org>; Thu, 22 Aug 2024 07:51:09 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724338268; x=1724943068;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=qI7sIttUlfd6rK+jxE04yL0R9ETbDTbrKGTUq6cowac=;
+        b=vZ2jpd9jlEFV3/rmnTX7Cw6uTRaCxu0G6iojRH595g5600MiD9mpyLyDHsd9bSnZOc
+         OgOc0JsYxhxpQKu4KvAd1sIj/tIDXbCuAVGXK7N56CBFBMPhzYfoEZBMdFOcKOIUeRww
+         AwdKYcqoV/UY/DdbtIMjFQnFG90UtUgfWt+uQwulVcPa6pDbSjX4QO9C3qRV1Spfr+Ln
+         D5w9SSrqOuCtl1kj1UYr8BuRvdTnAlANabIsGrU8cFvY98ABzEeEMBbpHWxAHMljXBQV
+         oJE4DqF0BgaJeONTLz711IKgouYkgA1a0s+Xr5+rPn0kw2TyS95gTyNRdDl1qIE4pwuS
+         XOIA==
+X-Forwarded-Encrypted: i=1; AJvYcCU48r17eujSVOdxID6W4ev+Ln0p49rv+nyW8inurVNUFM8esBUqkoKmTIrzdiH/Mxm+0xEyTvY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YztgM+/GLTTm16Sn2Hw+DLGFKELQZg9xPYxqxj0d3rhQhTLHWTX
+	QjrPqsPuNvgtQ7HQ7WV1ihPEY3RUtUYNTQbCYZgp9NRwvJm56uj/aouS0ViNge7SfHJlWD3yb1O
+	fsGvIFAX2GHu4cG2m0GbYIOZCP+vYYR2SxsSO20oRmmfCyUshj2P14we6966mSGH1
+X-Received: by 2002:a17:90a:fe01:b0:2c9:63d3:1f20 with SMTP id 98e67ed59e1d1-2d60aa21cdbmr5119811a91.18.1724338267816;
+        Thu, 22 Aug 2024 07:51:07 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEkSqoPaYwU/pzTrCfkc680+HlIjlYxmDe4h014NbVi6qWLqici8+WArvm4OgjHVpg5BubFyQ==
+X-Received: by 2002:a17:90a:fe01:b0:2c9:63d3:1f20 with SMTP id 98e67ed59e1d1-2d60aa21cdbmr5119777a91.18.1724338267398;
+        Thu, 22 Aug 2024 07:51:07 -0700 (PDT)
+Received: from localhost ([181.120.144.238])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2d613af1496sm1921071a91.40.2024.08.22.07.51.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 Aug 2024 07:51:07 -0700 (PDT)
+From: Javier Martinez Canillas <javierm@redhat.com>
+To: Alex Deucher <alexander.deucher@amd.com>, amd-gfx@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org
+Cc: intel-gfx@lists.freedesktop.org, Alex Deucher
+ <alexander.deucher@amd.com>, Thomas Zimmermann <tzimmermann@suse.de>,
+ Helge Deller <deller@gmx.de>, Sam
+ Ravnborg <sam@ravnborg.org>, Daniel Vetter <daniel.vetter@ffwll.ch>,
+ stable@vger.kernel.org
+Subject: Re: [PATCH V3] video/aperture: optionally match the device in
+ sysfb_disable()
+In-Reply-To: <20240821191135.829765-1-alexander.deucher@amd.com>
+References: <20240821191135.829765-1-alexander.deucher@amd.com>
+Date: Thu, 22 Aug 2024 16:51:04 +0200
+Message-ID: <874j7ca9wn.fsf@minerva.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240822134744.44919-8-pstanner@redhat.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain
 
-On Thu, Aug 22, 2024 at 03:47:39PM +0200, Philipp Stanner wrote:
-> In psnet_open_pf_bar() and snet_open_vf_bar() a string later passed to
-> pcim_iomap_regions() is placed on the stack. Neither
-> pcim_iomap_regions() nor the functions it calls copy that string.
-> 
-> Should the string later ever be used, this, consequently, causes
-> undefined behavior since the stack frame will by then have disappeared.
-> 
-> Fix the bug by allocating the strings on the heap through
-> devm_kasprintf().
+Alex Deucher <alexander.deucher@amd.com> writes:
 
-...
+Hello Alex,
 
-> -	snprintf(name, sizeof(name), "psnet[%s]-bars", pci_name(pdev));
-> +	name = devm_kasprintf(&pdev->dev, GFP_KERNEL, "psnet[%s]-bars", pci_name(pdev));
-> +	if (!name)
-> +		return -ENOMEM;
-> +
->  	ret = pcim_iomap_regions(pdev, mask, name);
+> In aperture_remove_conflicting_pci_devices(), we currently only
+> call sysfb_disable() on vga class devices.  This leads to the
+> following problem when the pimary device is not VGA compatible:
+>
+> 1. A PCI device with a non-VGA class is the boot display
+> 2. That device is probed first and it is not a VGA device so
+>    sysfb_disable() is not called, but the device resources
+>    are freed by aperture_detach_platform_device()
+> 3. Non-primary GPU has a VGA class and it ends up calling sysfb_disable()
+> 4. NULL pointer dereference via sysfb_disable() since the resources
+>    have already been freed by aperture_detach_platform_device() when
+>    it was called by the other device.
+>
+> Fix this by passing a device pointer to sysfb_disable() and checking
+> the device to determine if we should execute it or not.
+>
+> v2: Fix build when CONFIG_SCREEN_INFO is not set
+> v3: Move device check into the mutex
+>     Drop primary variable in aperture_remove_conflicting_pci_devices()
+>     Drop __init on pci sysfb_pci_dev_is_enabled()
+>
+> Fixes: 5ae3716cfdcd ("video/aperture: Only remove sysfb on the default vga pci device")
+> Cc: Javier Martinez Canillas <javierm@redhat.com>
+> Cc: Thomas Zimmermann <tzimmermann@suse.de>
+> Cc: Helge Deller <deller@gmx.de>
+> Cc: Sam Ravnborg <sam@ravnborg.org>
+> Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
+> Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+> Cc: stable@vger.kernel.org
+> ---
 
-...
+This version looks good to me. Thanks!
 
-> -	snprintf(name, sizeof(name), "snet[%s]-bar", pci_name(pdev));
-> +	name = devm_kasprintf(&pdev->dev, GFP_KERNEL, "psnet[%s]-bars", pci_name(pdev));
-> +	if (!name)
-> +		return -ENOMEM;
-
-+ Blank line as in the above snippet?
-
->  	/* Request and map BAR */
->  	ret = pcim_iomap_regions(pdev, BIT(snet->psnet->cfg.vf_bar), name);
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
 
 -- 
-With Best Regards,
-Andy Shevchenko
+Best regards,
 
+Javier Martinez Canillas
+Core Platforms
+Red Hat
 
 
