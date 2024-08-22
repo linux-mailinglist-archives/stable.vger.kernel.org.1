@@ -1,195 +1,229 @@
-Return-Path: <stable+bounces-69912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69913-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02DF895BED0
-	for <lists+stable@lfdr.de>; Thu, 22 Aug 2024 21:26:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B5DB95C106
+	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 00:46:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9590285B20
-	for <lists+stable@lfdr.de>; Thu, 22 Aug 2024 19:26:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B32E51C21DB9
+	for <lists+stable@lfdr.de>; Thu, 22 Aug 2024 22:46:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13C9C1D0499;
-	Thu, 22 Aug 2024 19:26:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D65A1D1F6F;
+	Thu, 22 Aug 2024 22:46:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="3I09rXY/"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Z3k6r+dH"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2054.outbound.protection.outlook.com [40.107.236.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E6F31CE6E0;
-	Thu, 22 Aug 2024 19:26:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724354777; cv=fail; b=Ug0hnT0CS25h12iHFlssgCDIdQ40f8mczYnOyk0NulwfklEb+C2mKReKQy5hmBoVZmSNGYYdqnlWA0El6tyXPr/1wLvGbSAQ0PIUmUyCcCh28oTeNYHG2GwvozChMx0vberhhOGk/OXCPtWey35THC0jaNDcqu4h28VnfgmDY78=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724354777; c=relaxed/simple;
-	bh=C/SHcVmEuYGNN44wUVl5kM41QfjrR8VfsbQt4Caas7A=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=JhCYBBGP3obQzMMBkZN6GDIq+wckpEz966mdcSsvfppAf55JiZbnwfcWDFTCSAu2941GTIf1joGgWDG/TVny1MsgADPafpjOsoGDzz4jlByOdW5ugDN+Hkg2Mcq6Jt1ZvqizwLu8ezDukPHgi6Zc5oYrVi5MJxah4QrI4lFjqd0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=3I09rXY/; arc=fail smtp.client-ip=40.107.236.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Qds66RAGGT/eu9fGL3DyVjt2xR8QnuIdXX2K+8x+2Px1shBu5vJb6mN+ghj4iL87YoeGl5ghxIofx99Zx4bxQmbLALVFrYWCW/m9ZefwTzLln7hrEq6+UdDADD5AfgJ2nHb61b6jI8R/Oz4d1fbga18VQXg972vpixmLx5ItyMCgsI2787gncloZVGOuUCspPBuaOZYK39cqLf9QuX7E0rEBUNHx1I66qLLhQRRKXxHUSfjR4P3udxMeC9H3y8QTvfPTPbPjynkZLmhJNsg1ysNO9mdVMNz5LhHQFbuelZfQINXrHjaClJtJ6e99hkKnY/13yu9Xwu4xFyneoeQlbw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QB4q6vU448nn3qz8OtphuTEsKPHDfJtk59Q2Bw94288=;
- b=Z5kQshjkTDVhWaG5vnWWkURgI0bDRQUMjhevNHdUVEsSP+z3Ues3YkNu4f/aZ3H4DSyU8gE/t5KXMLi9n8FGkuKa4QNed2K7vUYjAXD+Xq+6UNaJluXMsl79HGfaFsqiWsIdldgiwY/OD45TaKqr5PUdIriswuFhs6h+8/RzdycBbMvSr6aSYOJsb7iLW3duBE+kxOIJt6KTrl4URTPbn+lhhcXQBLYUJBIQtAVU8RyOaUcddOemI4CEDM70NESRk7iuq9UNPACYhHYsw9sKYgoDWlp0KArKBT8IUy8jHW0inU3lTOqiFLrra1KgrevZjhhZTiKCaiVmVd+ViYbyrQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=QB4q6vU448nn3qz8OtphuTEsKPHDfJtk59Q2Bw94288=;
- b=3I09rXY/LDQz++/IkPMJrm+OuA/xaAABoX6gacY8aOb/YiWZx0x/KNyE9orM/44rEq5parEu5S1QcrNsebJ8BEl2WdD/QUeHmzKzWGdQXxXe86AUckJYkHatL+vD67G854iO0M6p+0WrNQwNQ8YRbq7qBh4SYbGMUYALEeRsaJg=
-Received: from BN0PR04CA0052.namprd04.prod.outlook.com (2603:10b6:408:e8::27)
- by CY5PR12MB6132.namprd12.prod.outlook.com (2603:10b6:930:24::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7849.22; Thu, 22 Aug
- 2024 19:26:10 +0000
-Received: from BL02EPF0001A101.namprd05.prod.outlook.com
- (2603:10b6:408:e8:cafe::a7) by BN0PR04CA0052.outlook.office365.com
- (2603:10b6:408:e8::27) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7897.16 via Frontend
- Transport; Thu, 22 Aug 2024 19:26:09 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BL02EPF0001A101.mail.protection.outlook.com (10.167.241.132) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7897.11 via Frontend Transport; Thu, 22 Aug 2024 19:26:09 +0000
-Received: from driver-dev1.pensando.io (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 22 Aug
- 2024 14:26:08 -0500
-From: Brett Creeley <brett.creeley@amd.com>
-To: <netdev@vger.kernel.org>, <davem@davemloft.net>, <kuba@kernel.org>,
-	<edumazet@google.com>, <pabeni@redhat.com>
-CC: <shannon.nelson@amd.com>, <brett.creeley@amd.com>,
-	<stable@vger.kernel.org>
-Subject: [PATCH net v2] ionic: Prevent tx_timeout due to frequent doorbell ringing
-Date: Thu, 22 Aug 2024 12:25:57 -0700
-Message-ID: <20240822192557.9089-1-brett.creeley@amd.com>
-X-Mailer: git-send-email 2.17.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC44C46556
+	for <stable@vger.kernel.org>; Thu, 22 Aug 2024 22:46:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1724366769; cv=none; b=W5d+21CEpOGA4lYIzB19fdUbl3LYDUgVWmw6JoPTxjHzgfyLsWxRKu5CwLTHMYEk/3lZO5jKBvZS80KlPA3sGwtqgsTCFFhKpSgdvkrAwoTHE8JHfqsJ6lkEG/yRNx24ePGf6vtS0GCrwGHtVw7jEcsxdSHhuCxf4ZTv6LcSGL4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1724366769; c=relaxed/simple;
+	bh=6EO0O4o9JKGH4hQejEuuwX4Rpu4yTFw6q9CWeFJnSgs=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=gOtsipGGTGolwZEbJZtCBssFyMDf0VDB05Kf4eKQStnlX7f7TSuMA0kwYozmpTe+0cGDAs8gg9/D4JLyN0P5bUV2zmADymeeXZ6zWMmVWXXKfB6NzSR//liYNkE3NPMHnHUcodLX40gHdFsLz8wnEExU1sCfw+EXkwXP8sfzy3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Z3k6r+dH; arc=none smtp.client-ip=209.85.167.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5334b0e1a8eso1693572e87.0
+        for <stable@vger.kernel.org>; Thu, 22 Aug 2024 15:46:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1724366766; x=1724971566; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rd4L2pq+cNv6ptoDFsJhK7t/4J9oetWQgiC2gczlRyk=;
+        b=Z3k6r+dHHxeQydjJA3fj0+rgwM2Vypu9l6UL/k4maW5PVfy+R81guPoRV4cJXwCE6w
+         hKufeaHLsHXAkMSPTudDcbN/BLDBGAsnwPtT+exL8QUWOqBmb6WqU7wfaupaz0tJ7FjP
+         omyvnx4QOQtNe3pZtGyvLvO8zTuIX22vnJK3YSDJmc0G36cWnMmJ2WsLEiBSljuBluCb
+         I3kR/RDXRaGtK1qjyn8UxeEgstLIfGLIFkSF+4qnO9YOC7suWLh2Jn/VaZ6DIetLF9Zc
+         ZaBmx0LoTW350RYfh2ONT7nOJ1n/zfptILzKJrzL2HZsFzuK5MdsFOG5VsaxhG8n0wa7
+         8DTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724366766; x=1724971566;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=rd4L2pq+cNv6ptoDFsJhK7t/4J9oetWQgiC2gczlRyk=;
+        b=m6fNeH2fm8ox5R7Jx64rbs362axwBECW9o78KisBtOIm20fVAi7zzSX1OQctk5W2i6
+         1CvzbL/UVu3e2tvHg2IEk3w1K7x4Ka+NJl4mOUMEDuxYskB2d4TlAqA9Xj3ffOODLCKE
+         opPdAlWqfepgdNmff1kud7TtM9Uk/5n5A9LDjJx3yPheRsdOc8qIwBvqEg0qGijey8Ek
+         +bN5LhDz/KSXHq0yxm5c60VB0+AjyM6ErLxnwltRPKuSQIaXIJeeMO0CLM+Cqoj1AsyI
+         x2hA36UShpat1zK7JzgJLH0vFoX7ylLOxLydfvvL4VD3GQ6nOgYNiL8Rm86KxcoWoaDY
+         d1Gg==
+X-Forwarded-Encrypted: i=1; AJvYcCW6k59bBxOWR/zXzEjoiZYSKtMeEI0BAB2UIxRJuAi54i/uD0vi4+4DbROYo2sJmSdUIEUUfzw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzB1MoOIICGFI/rle9viv8bkZrmSyit5C9vNtBbMiIdHgPe+Pw6
+	892J4njdsBJ4g2gTbGK/19Q2q6kU25dsvSnn9jHIUgyKfJX5lAsyeymDMYactW0=
+X-Google-Smtp-Source: AGHT+IElCYJAQaHkgKGtxiZoFimfR6Ft/lHijVpFpocO2DjQz0yBFh0jjHM8cqfvGlobtCvc9hXNsw==
+X-Received: by 2002:a05:6512:33c8:b0:533:4638:d490 with SMTP id 2adb3069b0e04-534387bbf16mr242936e87.38.1724366765813;
+        Thu, 22 Aug 2024 15:46:05 -0700 (PDT)
+Received: from uffe-tuxpro14.. (h-178-174-189-39.A498.priv.bahnhof.se. [178.174.189.39])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5334ea362a4sm379443e87.66.2024.08.22.15.46.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 Aug 2024 15:46:05 -0700 (PDT)
+From: Ulf Hansson <ulf.hansson@linaro.org>
+To: Viresh Kumar <vireshk@kernel.org>,
+	Nishanth Menon <nm@ti.com>,
+	Stephen Boyd <sboyd@kernel.org>
+Cc: Bjorn Andersson <andersson@kernel.org>,
+	Konrad Dybcio <quic_kdybcio@quicinc.com>,
+	Nikunj Kela <nkela@quicinc.com>,
+	Bryan O'Donoghue <bryan.odonoghue@linaro.org>,
+	Thierry Reding <thierry.reding@gmail.com>,
+	Mikko Perttunen <mperttunen@nvidia.com>,
+	Jonathan Hunter <jonathanh@nvidia.com>,
+	Stephan Gerhold <stephan@gerhold.net>,
+	Ilia Lin <ilia.lin@kernel.org>,
+	Stanimir Varbanov <stanimir.k.varbanov@gmail.com>,
+	Vikash Garodia <quic_vgarodia@quicinc.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	linux-pm@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v3 01/10] OPP: Fix support for required OPPs for multiple PM domains
+Date: Fri, 23 Aug 2024 00:45:38 +0200
+Message-Id: <20240822224547.385095-2-ulf.hansson@linaro.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240822224547.385095-1-ulf.hansson@linaro.org>
+References: <20240822224547.385095-1-ulf.hansson@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL02EPF0001A101:EE_|CY5PR12MB6132:EE_
-X-MS-Office365-Filtering-Correlation-Id: da1ffd37-83b6-4842-7300-08dcc2e046c2
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|36860700013|82310400026|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?fmICwprCzK6SJZDDZRqk/sw975AKFcXJC1KLm/Xs/j1xsYqdlNS/FnyU8vAH?=
- =?us-ascii?Q?NbX9a8qAnexDzm9sK9J5Un0ftkdfaHaEEp/eh/nC1CGnD5+b/RD8HfHG7g04?=
- =?us-ascii?Q?5WlRcSXyWjWWdzz5gKwUvsdINGmm00VAerDMLdghWtMfCEfUrDRJcpp9uESf?=
- =?us-ascii?Q?UORAuOqJ2N4+QM3PdFC8Tee/opOCGlmFZjXYid2BBIRgP8e/VCaaSdk82QyO?=
- =?us-ascii?Q?SKyfaUncdXammhtGyNHOBzrdkuZMRaC3p/M7IjF1ZN12WG1a7q8XLLUetrIm?=
- =?us-ascii?Q?kJocnT116ni/PdzEIpftaPUjHqRLjeUxNXuKmlg5046FHXTyND2TQoZAyTXq?=
- =?us-ascii?Q?Vg8jgn+VVDoTzS9sT7E82zzxlFK1aC3nOiGWx97j6B6iY+SC4T97WDWmcV1x?=
- =?us-ascii?Q?p856KAhUCoL2sGKUfQS82GVpBiVcChjynS2KJyWBJB0iB6Njj8n8+ZahZrNG?=
- =?us-ascii?Q?HukOe+0BMWAc2UI+0zYmkTt2Bse+g1dSMhQLaBvAy3d27mNY7UceNcugOWOl?=
- =?us-ascii?Q?4UJ1/KVc3puKHbT+LvBVUVacMOG60cf22g16k8jkdXRpE+9Ix6gd4iNUDV2D?=
- =?us-ascii?Q?Es4wMo65RXojv2fMLPowQDDd49WUriUnl4ceMGZLjbn7IOOf54LVyydzFLMN?=
- =?us-ascii?Q?AMPeh3VY19XKKNTVGdIJSaE2DN1/P2h+I661kXoPzmrY2PZ1EfY6SNoaxJ3n?=
- =?us-ascii?Q?psaXkpM5WK8EFlGXtxrNBMjRkw+5KRcn+9a2CMpIJDkMoOx/w+HzsN15/t+6?=
- =?us-ascii?Q?6fdV8xrrCdCYkJkyimOfXd3mioLNHCH8lapT7lb1fN4rgvAdm0TM8f9AdXjn?=
- =?us-ascii?Q?R+RDFEN3pGdaSsHBpDX96tUheTLvKrM1+JjiLXRBZImfMkUmXYme6cIzW4g4?=
- =?us-ascii?Q?yWORBI9cp2jqvuXGBR08EN4BPEP+mRp5QyuwVnBc9qHjE/wYtMqeoOnqOkUz?=
- =?us-ascii?Q?HpJORlM53RNUWSwRQKYV+uto3YRPuwJ4G9Xp5IZvPsRImxt1Y12QqbRuZWcF?=
- =?us-ascii?Q?hyarjYdyyCLDDVi63obysdEzfV6YvSJAmCLcGv1rEK/MjR4eteoQk+qsx1sW?=
- =?us-ascii?Q?ng8U6+evZJNUjUuBZdhGxVudM68dOOC1n7jt93bx0uSVnIK9ngDE1HUBJxhJ?=
- =?us-ascii?Q?FaFGGf1jiDAXNRN/Rqtqa5lb+Ey1DSJpqzqyLbti+NqqnasyqKqKXNHADxAx?=
- =?us-ascii?Q?GQX0GlvE41T1l3qyEN3JO47W4MKux/2u9n2aLtkmp5hT2FSZOOH78NSnAwQ7?=
- =?us-ascii?Q?1yvLtMRtZiha3uGZ6fbKVvRqk0wq9XHTODrs1yNNkwstFZaLMzeex5D+55LA?=
- =?us-ascii?Q?d8CLwVGlvecFEZd/JlR/che9YG25CYf51iPkDj3s819OApOYdBUbQhUSHwva?=
- =?us-ascii?Q?XmBXctqj02+WprvtUGL266FlRhjalBsJS2XJwXGsGc+84he/X3QFggOheNH2?=
- =?us-ascii?Q?hAgD83yMXNwpqT7Ye+LM9cRwLD5Yp09a?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700013)(82310400026)(376014);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Aug 2024 19:26:09.4598
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: da1ffd37-83b6-4842-7300-08dcc2e046c2
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BL02EPF0001A101.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6132
+Content-Transfer-Encoding: 8bit
 
-With recent work to the doorbell workaround code a small hole was
-introduced that could cause a tx_timeout. This happens if the rx
-dbell_deadline goes beyond the netdev watchdog timeout set by the driver
-(i.e. 2 seconds). Fix this by changing the netdev watchdog timeout to 5
-seconds and reduce the max rx dbell_deadline to 4 seconds.
+It has turned out that having _set_required_opps() to recursively call
+dev_pm_opp_set_opp() to set the required OPPs, doesn't really work as well
+as we expected.
 
-The test that can reproduce the issue being fixed is a multi-queue send
-test via pktgen with the "burst" setting to 1. This causes the queue's
-doorbell to be rung on every packet sent to the driver, which may result
-in the device missing doorbells due to the high doorbell rate.
+More precisely, at each recursive call to dev_pm_opp_set_opp() we are
+changing an OPP for a required_dev that belongs to a required-OPP table.
+The problem with this, is that we may have several devices sharing the same
+required-OPP table, which leads to an incorrect behaviour in regards to
+aggregating the per device votes.
 
+To fix the problem for a required-OPP table belonging to a PM domain, which
+is the only existing usecase for now, let's simply replace the call to
+dev_pm_opp_set_opp() in _set_required_opps() by a call to _set_opp_level().
+
+Moving forward we may potentially need to add support for other types of
+required-OPP tables. In this case, the aggregation needs to be thought of.
+
+Fixes: e37440e7e2c2 ("OPP: Call dev_pm_opp_set_opp() for required OPPs")
 Cc: stable@vger.kernel.org
-Fixes: 4ded136c78f8 ("ionic: add work item for missed-doorbell check")
-Signed-off-by: Brett Creeley <brett.creeley@amd.com>
-Reviewed-by: Shannon Nelson <shannon.nelson@amd.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 ---
-v2:
- - Drop budget == 0 patch to expedite getting this patch merged due to
-   the budget == 0 patch being more complicated than we originally
-   thought.
 
-v1:
- - https://lore.kernel.org/netdev/20240813234122.53083-1-brett.creeley@amd.com/
+Changes in v3:
+	- Clarified the commitmsg.
 
- drivers/net/ethernet/pensando/ionic/ionic_dev.h | 2 +-
- drivers/net/ethernet/pensando/ionic/ionic_lif.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+Changes in v2:
+	- Clarified the commitmsg.
+	- Addressed some comments from Viresh.
+	- Drop calls to _add_opp_dev() for required_devs.
 
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_dev.h b/drivers/net/ethernet/pensando/ionic/ionic_dev.h
-index c647033f3ad2..f2f07bf88545 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_dev.h
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_dev.h
-@@ -32,7 +32,7 @@
- #define IONIC_ADMIN_DOORBELL_DEADLINE	(HZ / 2)	/* 500ms */
- #define IONIC_TX_DOORBELL_DEADLINE	(HZ / 100)	/* 10ms */
- #define IONIC_RX_MIN_DOORBELL_DEADLINE	(HZ / 100)	/* 10ms */
--#define IONIC_RX_MAX_DOORBELL_DEADLINE	(HZ * 5)	/* 5s */
-+#define IONIC_RX_MAX_DOORBELL_DEADLINE	(HZ * 4)	/* 4s */
+---
+ drivers/opp/core.c | 56 ++++++++++++++++++----------------------------
+ 1 file changed, 22 insertions(+), 34 deletions(-)
+
+diff --git a/drivers/opp/core.c b/drivers/opp/core.c
+index 5f4598246a87..494f8860220d 100644
+--- a/drivers/opp/core.c
++++ b/drivers/opp/core.c
+@@ -1061,6 +1061,27 @@ static int _set_opp_bw(const struct opp_table *opp_table,
+ 	return 0;
+ }
  
- struct ionic_dev_bar {
- 	void __iomem *vaddr;
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_lif.c b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-index aa0cc31dfe6e..86774d9922d8 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-@@ -3220,7 +3220,7 @@ int ionic_lif_alloc(struct ionic *ionic)
- 	netdev->netdev_ops = &ionic_netdev_ops;
- 	ionic_ethtool_set_ops(netdev);
++static int _set_opp_level(struct device *dev, struct dev_pm_opp *opp)
++{
++	unsigned int level = 0;
++	int ret = 0;
++
++	if (opp) {
++		if (opp->level == OPP_LEVEL_UNSET)
++			return 0;
++
++		level = opp->level;
++	}
++
++	/* Request a new performance state through the device's PM domain. */
++	ret = dev_pm_domain_set_performance_state(dev, level);
++	if (ret)
++		dev_err(dev, "Failed to set performance state %u (%d)\n", level,
++			ret);
++
++	return ret;
++}
++
+ /* This is only called for PM domain for now */
+ static int _set_required_opps(struct device *dev, struct opp_table *opp_table,
+ 			      struct dev_pm_opp *opp, bool up)
+@@ -1091,7 +1112,7 @@ static int _set_required_opps(struct device *dev, struct opp_table *opp_table,
+ 		if (devs[index]) {
+ 			required_opp = opp ? opp->required_opps[index] : NULL;
  
--	netdev->watchdog_timeo = 2 * HZ;
-+	netdev->watchdog_timeo = 5 * HZ;
- 	netif_carrier_off(netdev);
+-			ret = dev_pm_opp_set_opp(devs[index], required_opp);
++			ret = _set_opp_level(devs[index], required_opp);
+ 			if (ret)
+ 				return ret;
+ 		}
+@@ -1102,27 +1123,6 @@ static int _set_required_opps(struct device *dev, struct opp_table *opp_table,
+ 	return 0;
+ }
  
- 	lif->identity = lid;
+-static int _set_opp_level(struct device *dev, struct dev_pm_opp *opp)
+-{
+-	unsigned int level = 0;
+-	int ret = 0;
+-
+-	if (opp) {
+-		if (opp->level == OPP_LEVEL_UNSET)
+-			return 0;
+-
+-		level = opp->level;
+-	}
+-
+-	/* Request a new performance state through the device's PM domain. */
+-	ret = dev_pm_domain_set_performance_state(dev, level);
+-	if (ret)
+-		dev_err(dev, "Failed to set performance state %u (%d)\n", level,
+-			ret);
+-
+-	return ret;
+-}
+-
+ static void _find_current_opp(struct device *dev, struct opp_table *opp_table)
+ {
+ 	struct dev_pm_opp *opp = ERR_PTR(-ENODEV);
+@@ -2457,18 +2457,6 @@ static int _opp_attach_genpd(struct opp_table *opp_table, struct device *dev,
+ 			}
+ 		}
+ 
+-		/*
+-		 * Add the virtual genpd device as a user of the OPP table, so
+-		 * we can call dev_pm_opp_set_opp() on it directly.
+-		 *
+-		 * This will be automatically removed when the OPP table is
+-		 * removed, don't need to handle that here.
+-		 */
+-		if (!_add_opp_dev(virt_dev, opp_table->required_opp_tables[index])) {
+-			ret = -ENOMEM;
+-			goto err;
+-		}
+-
+ 		opp_table->required_devs[index] = virt_dev;
+ 		index++;
+ 		name++;
 -- 
-2.17.1
+2.34.1
 
 
