@@ -1,140 +1,149 @@
-Return-Path: <stable+bounces-69908-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69909-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 747F495BDCE
-	for <lists+stable@lfdr.de>; Thu, 22 Aug 2024 19:56:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 772CA95BDE1
+	for <lists+stable@lfdr.de>; Thu, 22 Aug 2024 20:03:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C873285A5D
-	for <lists+stable@lfdr.de>; Thu, 22 Aug 2024 17:56:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 97B351C22516
+	for <lists+stable@lfdr.de>; Thu, 22 Aug 2024 18:03:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1EC01CF2B4;
-	Thu, 22 Aug 2024 17:56:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD3C51CF29F;
+	Thu, 22 Aug 2024 18:03:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HYHjqw8z"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="quHScmSi"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C73911CF2A9;
-	Thu, 22 Aug 2024 17:55:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62E9917C220;
+	Thu, 22 Aug 2024 18:03:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724349361; cv=none; b=Z2azlNki9Cgy924G4AtuKaFH/fStbaQwk/wej160Fl02Gq1Dza6jCTeB8sbNjpwJoILlOvmDsrVPf7BM/hGz/l1ffFfOgW29n3ks7xDK1fZsBUCYrENnbkrVbLalhAruRQfY5e9ZKSDejLWEh29eW3HLBDCP4NfLK0zoRBqwAOY=
+	t=1724349816; cv=none; b=oqCBAVTyN3AAtcRqQiFXrD6SVIY7OtgLC/xDFo37H8EkIf+QxtD3Ijj2pb6j4HdyQJPgGnArXNbEwy2Qf896+Mc0xJiOnFiyyQuoqcUKpW/3q0dtq0ntV7h2ETqJ4AlfLLzzn4aRVwLNt+kXneEbXWLJy1OKvGBKjeWK0ftsl+g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724349361; c=relaxed/simple;
-	bh=smVYnWuAmitIbB8+8SNe7l+nZkHzp1QzNF7x5k33bTc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oG9eUUkyD0gMMn4oANVtyVzM3xW1gQGatSvS3O8vVt0arEr5Nut/4BHbxhQwI+PzkibyD6JdGHgzGYFu6SYGzpto2R0vCV2EkAlk48uxTfliemkNElNah/a3bJXAWM/gTccZ1PDXUOBHz0YEXSwAvvOQq9nBSdE3iFY1qQpHemw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HYHjqw8z; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-201e2ebed48so727125ad.0;
-        Thu, 22 Aug 2024 10:55:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724349358; x=1724954158; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qhXu1/y7UKtVxtPjaKnW4gHUfJYvKyvM1SAHsg1HIWY=;
-        b=HYHjqw8zDU5Hijh/rtpWIt366YUxIGkm/p+HTtEMQPIJQk96WYsrAAqvqyvEf0VcI2
-         w9TS9gnoVyy42W1EZc4gxqJkGH7AOIldRdz4wmxDoWpyJuMGZdzW9UaOQ732NUY2bocC
-         oFzHE68MvBPkGrlEa3aRaFRdifPg706w2Kes70o3Yz2LrRHq3ikEMMFrptmETZjupdbH
-         MvWg0b21RaPJY5+GsXe7UFopgLwEXMpPjVfInihSCpAQZ1oDT+5Lwton396BhkzZ6LCP
-         wrTx6aI2yXI5I7HebiRDc7oNjAwKSRn2DiQSj+ywrBy1sNBBQyshirHmF4dT9MIPshyM
-         oV4A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724349358; x=1724954158;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qhXu1/y7UKtVxtPjaKnW4gHUfJYvKyvM1SAHsg1HIWY=;
-        b=d2PtxzyPEEkbukUvYklvh6PjiULQPAKvlAwjkW1gj1ufuj6W2tGAPUOQJzNJ56BZEk
-         CMoexdy17OjMurrwSmd5wOZ0VrnHdenBE+ibtMQiAl+Naf+EzaBH85BqbquH324/1/Wg
-         D11jj4rAjLWdYiHBJQdXEVn4iiwdeORBPQDVwNWjmMDviazqlmUXbQRUsaZCNoq3qRd2
-         MmComP16aXKN3S29lvQS4fKgk7PPc3+D4BclRe0uMQWojLCnHxYeprtnTzEvvfAiKEsV
-         THBcSI9QmKzB1b8EGWQpazsxGDre8weW2vOyBKYKKLt9/HzHWUFsvWdwjbh5nKZHwySy
-         otog==
-X-Forwarded-Encrypted: i=1; AJvYcCW/LDFct6cziZixym3Hcur+lKhTckUIlcEFz7d4Jm3y251nunf7B+2YYoHdxquvvf4An6DAC2LI@vger.kernel.org, AJvYcCX9WqpIaHCDGgRrXtGqZ/HQPm39RTpRu95PuDgyeLDAQVQ5Wh7wPzG/53v1OBHDBUagKtn+ShiYIoKEdfk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwSBK4U03CqO1jL+tuEzvGF0Tl5ucxxu/CU88uaiF3Sx1o1XoTW
-	JpGEIDW0s/3LlDADfkBWTcy5kIAJDDUPDZKAgDtleb6TH9xbLwTQkAFTQkYkwP7jJF2v9vktVUz
-	ZlqS9yMZhO5v7mL4Vt4kmkhEzyZHk7w==
-X-Google-Smtp-Source: AGHT+IETlDVRl8j8jbZqDqUvSIioAvhet305MNQITQRtCniCu61LWrGuZC6R67R9iHP+nA+QKCEStVE/J8zJyaAFQls=
-X-Received: by 2002:a17:902:c406:b0:1fa:a9f5:64b1 with SMTP id
- d9443c01a7336-20367d0d354mr44078375ad.3.1724349357971; Thu, 22 Aug 2024
- 10:55:57 -0700 (PDT)
+	s=arc-20240116; t=1724349816; c=relaxed/simple;
+	bh=gr3S8ktoJyMn1jKPhSjw3jsHWwnV8gxwwtqDDDkTOok=;
+	h=Date:To:From:Subject:Message-Id; b=ZI5RlVssotSp2rGslOhvRYLNbA/DORWahwxbgDc0dLFm9769NcTi1Ynq9uFeG4q/SHsQIK6y/90TlHjGtuKwKsukmi3RyOfGaZ9SRm/kMfxv189rmWXQt164tkGXi/eGSzHL4p9t8RwOCJ2LNVfJJE1PIuQhDFmNwXxDls7OSWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=quHScmSi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12784C32782;
+	Thu, 22 Aug 2024 18:03:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1724349815;
+	bh=gr3S8ktoJyMn1jKPhSjw3jsHWwnV8gxwwtqDDDkTOok=;
+	h=Date:To:From:Subject:From;
+	b=quHScmSidZl9ca7nGACl+UzgC5EVFxZ3gDDIgM+gERzCDuGDntAcwptbbKa0X4xaA
+	 Rg7Y6i82hr0HXnTorPKvJg3Rw6gJN4SNAVrs3USWrzY35Cd2UhOIMOvfPuyQ74equt
+	 HKuDCKqHfptP2sweqmALPn6vsWmep1jXKv+/KRtw=
+Date: Thu, 22 Aug 2024 11:03:33 -0700
+To: mm-commits@vger.kernel.org,zhaoyang.huang@unisoc.com,yuzhao@google.com,willy@infradead.org,vbabka@suse.cz,stable@vger.kernel.org,riel@surriel.com,leitao@debian.org,huangzhaoyang@gmail.com,hannes@cmpxchg.org,david@redhat.com,bharata@amd.com,usamaarif642@gmail.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + revert-mm-skip-cma-pages-when-they-are-not-available-update.patch added to mm-hotfixes-unstable branch
+Message-Id: <20240822180335.12784C32782@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240821042724.1391169-1-make24@iscas.ac.cn>
-In-Reply-To: <20240821042724.1391169-1-make24@iscas.ac.cn>
-From: Alex Deucher <alexdeucher@gmail.com>
-Date: Thu, 22 Aug 2024 13:55:46 -0400
-Message-ID: <CADnq5_Orq-RkKxOeG9UMnnJGodsB-9Tek0_NyYNP3EGaiEXpGQ@mail.gmail.com>
-Subject: Re: [PATCH RESEND] drm/amd/display: avoid using null object of framebuffer
-To: Ma Ke <make24@iscas.ac.cn>
-Cc: alexander.deucher@amd.com, christian.koenig@amd.com, Xinhui.Pan@amd.com, 
-	airlied@gmail.com, daniel@ffwll.ch, mwen@igalia.com, aurabindo.pillai@amd.com, 
-	joshua@froggi.es, hamza.mahfooz@amd.com, marek.olsak@amd.com, 
-	HaoPing.Liu@amd.com, akpm@linux-foundation.org, amd-gfx@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Applied.  Thanks!
 
-On Wed, Aug 21, 2024 at 3:45=E2=80=AFAM Ma Ke <make24@iscas.ac.cn> wrote:
->
-> Instead of using state->fb->obj[0] directly, get object from framebuffer
-> by calling drm_gem_fb_get_obj() and return error code when object is
-> null to avoid using null object of framebuffer.
->
-> Cc: stable@vger.kernel.org
-> Fixes: 5d945cbcd4b1 ("drm/amd/display: Create a file dedicated to planes"=
-)
-> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-> ---
->  drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c | 9 +++++++--
->  1 file changed, 7 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c b/dr=
-ivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
-> index a83bd0331c3b..5cb11cc2d063 100644
-> --- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
-> +++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
-> @@ -28,6 +28,7 @@
->  #include <drm/drm_blend.h>
->  #include <drm/drm_gem_atomic_helper.h>
->  #include <drm/drm_plane_helper.h>
-> +#include <drm/drm_gem_framebuffer_helper.h>
->  #include <drm/drm_fourcc.h>
->
->  #include "amdgpu.h"
-> @@ -935,10 +936,14 @@ static int amdgpu_dm_plane_helper_prepare_fb(struct=
- drm_plane *plane,
->         }
->
->         afb =3D to_amdgpu_framebuffer(new_state->fb);
-> -       obj =3D new_state->fb->obj[0];
-> +       obj =3D drm_gem_fb_get_obj(new_state->fb, 0);
-> +       if (!obj) {
-> +               DRM_ERROR("Failed to get obj from framebuffer\n");
-> +               return -EINVAL;
-> +       }
-> +
->         rbo =3D gem_to_amdgpu_bo(obj);
->         adev =3D amdgpu_ttm_adev(rbo->tbo.bdev);
-> -
->         r =3D amdgpu_bo_reserve(rbo, true);
->         if (r) {
->                 dev_err(adev->dev, "fail to reserve bo (%d)\n", r);
-> --
-> 2.25.1
->
+The patch titled
+     Subject: revert-mm-skip-cma-pages-when-they-are-not-available-update
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     revert-mm-skip-cma-pages-when-they-are-not-available-update.patch
+
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/revert-mm-skip-cma-pages-when-they-are-not-available-update.patch
+
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Usama Arif <usamaarif642@gmail.com>
+Subject: revert-mm-skip-cma-pages-when-they-are-not-available-update
+Date: Wed, 21 Aug 2024 20:26:07 +0100
+
+also revert b7108d66318a ("Multi-gen LRU: skip CMA pages when they are not
+eligible"), per Johannes
+
+Link: https://lkml.kernel.org/r/9060a32d-b2d7-48c0-8626-1db535653c54@gmail.com
+Link: https://lkml.kernel.org/r/357ac325-4c61-497a-92a3-bdbd230d5ec9@gmail.com
+Fixes: 5da226dbfce3 ("mm: skip CMA pages when they are not available")
+Signed-off-by: Usama Arif <usamaarif642@gmail.com>
+Acked-by: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Bharata B Rao <bharata@amd.com>
+Cc: Breno Leitao <leitao@debian.org>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Rik van Riel <riel@surriel.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Yu Zhao <yuzhao@google.com>
+Cc: Zhaoyang Huang <huangzhaoyang@gmail.com>
+Cc: Zhaoyang Huang <zhaoyang.huang@unisoc.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/vmscan.c |   21 +--------------------
+ 1 file changed, 1 insertion(+), 20 deletions(-)
+
+--- a/mm/vmscan.c~revert-mm-skip-cma-pages-when-they-are-not-available-update
++++ a/mm/vmscan.c
+@@ -4253,25 +4253,6 @@ void lru_gen_soft_reclaim(struct mem_cgr
+ 
+ #endif /* CONFIG_MEMCG */
+ 
+-#ifdef CONFIG_CMA
+-/*
+- * It is waste of effort to scan and reclaim CMA pages if it is not available
+- * for current allocation context. Kswapd can not be enrolled as it can not
+- * distinguish this scenario by using sc->gfp_mask = GFP_KERNEL
+- */
+-static bool skip_cma(struct folio *folio, struct scan_control *sc)
+-{
+-	return !current_is_kswapd() &&
+-			gfp_migratetype(sc->gfp_mask) != MIGRATE_MOVABLE &&
+-			folio_migratetype(folio) == MIGRATE_CMA;
+-}
+-#else
+-static bool skip_cma(struct folio *folio, struct scan_control *sc)
+-{
+-	return false;
+-}
+-#endif
+-
+ /******************************************************************************
+  *                          the eviction
+  ******************************************************************************/
+@@ -4319,7 +4300,7 @@ static bool sort_folio(struct lruvec *lr
+ 	}
+ 
+ 	/* ineligible */
+-	if (zone > sc->reclaim_idx || skip_cma(folio, sc)) {
++	if (zone > sc->reclaim_idx) {
+ 		gen = folio_inc_gen(lruvec, folio, false);
+ 		list_move_tail(&folio->lru, &lrugen->folios[gen][type][zone]);
+ 		return true;
+_
+
+Patches currently in -mm which might be from usamaarif642@gmail.com are
+
+revert-mm-skip-cma-pages-when-they-are-not-available.patch
+revert-mm-skip-cma-pages-when-they-are-not-available-update.patch
+
 
