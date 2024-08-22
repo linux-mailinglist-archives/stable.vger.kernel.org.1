@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-69877-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69878-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FE3195B3A6
-	for <lists+stable@lfdr.de>; Thu, 22 Aug 2024 13:20:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA3C595B3B4
+	for <lists+stable@lfdr.de>; Thu, 22 Aug 2024 13:25:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A8A91C22D37
-	for <lists+stable@lfdr.de>; Thu, 22 Aug 2024 11:20:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B7741F22EA2
+	for <lists+stable@lfdr.de>; Thu, 22 Aug 2024 11:25:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 117C11C93AC;
-	Thu, 22 Aug 2024 11:20:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8E1A1C93B7;
+	Thu, 22 Aug 2024 11:25:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aw6uEk4u"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gmNssrdI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD3411779BB;
-	Thu, 22 Aug 2024 11:20:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 967AC16EB54;
+	Thu, 22 Aug 2024 11:25:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724325605; cv=none; b=MZJxt4QSnsIl3WDVeU53dVZWTZK7vBFhBKUvEtx5hmFAZm2e+I4fMWJRdez8+5HCNIWydzg3t+Aoxb6cGdV/GcLF40wOh5Ez6vmq57Rw7bC0bJTJFdMg8obL96u7xUs2Y785GRZMdqNv6mkYXnemLkmvar/RvKYbzplw5EVXWvU=
+	t=1724325928; cv=none; b=FPu2P1Z0uncmAfTUXjYPEdU6NlT8v9budYLQXsOtciI+py95NGqfFTW5i4/QnQ3OlNkBKjS/OHTIge3ttlKhHcPwPynlYfOpZYRfI1ECpPHMG7K/eNiNtlltc+K1KwdmI9Aop2SlwiOtyZaAemB3qS+QBdLHjcrxFT47Sxv2yh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724325605; c=relaxed/simple;
-	bh=hwSpFaqpeuGl3qZPQ50oAYaSciVFPkcvEDwgd+BtA7U=;
+	s=arc-20240116; t=1724325928; c=relaxed/simple;
+	bh=0wm2QDWmoy3DcgYoZOxR4m3/bMn4YIfdxBe8Ay0Wn9E=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fS1Zx807EmYS01C7SarzFppdvcoXK2C4oPrzqxq68D4uwX9WtPEflps2YnBWjVjenWsxNpejbjDno1eLD7nDQEi4xLwcs/q0CQFRYvlFLwVCm8D1G/QIp77clokHYe/0C3lereIgaQpbb5VO+SbwM8w3gArXePF4Q5oEpEKY30Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aw6uEk4u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43DC5C32782;
-	Thu, 22 Aug 2024 11:20:04 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=PxaZFktbb7bWwR5BhlB/xzPD+zROTTKNq8BHtNjdtq1tF4ytaW+2c4Z3Pi+K6CsF6lIxhO3l//d53ks4+qi33vC3WG+bnRbU8E4fGF/2de9+5e1LuyrHpQGxy1eTRF3eFsHtTtF05z3GpgIkhNc7dCw1f77HUQPatp28FCEt5rU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gmNssrdI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28F28C32782;
+	Thu, 22 Aug 2024 11:25:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724325605;
-	bh=hwSpFaqpeuGl3qZPQ50oAYaSciVFPkcvEDwgd+BtA7U=;
+	s=k20201202; t=1724325928;
+	bh=0wm2QDWmoy3DcgYoZOxR4m3/bMn4YIfdxBe8Ay0Wn9E=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=aw6uEk4uYQvyuKFKiZ59WtsnZUlq7WwoSVqk499WafQ06X6DkE+pEKVdUoBbjlZwE
-	 IZG9aA8/G2hn1J7yJTZNmL+z9g9GO2BDClZtdWZMx/i36doVWKWc5JQ9xOJUCsydci
-	 suHgZtWMqeJ89PPKDVXRg2RuEI3RYe61vM2E52TBc9CgpwLjQ8NKy5ACRqIuEeQD2b
-	 o9jY1k9lB8jqeGZYzQm7G7+cFeIwWAOA4+L3k2wfu6Tg5O9lL+WGMW18qzKb/prnKb
-	 TW9iQWKltknpczArJMj7p99B8JpYf/gNcVK+iVlA8DjZvIUtm7DLIEZ8J65X/NnrHm
-	 ZjW1K968pAe2g==
-Date: Thu, 22 Aug 2024 19:19:56 +0800
-From: Peter Chen <peter.chen@kernel.org>
-To: Pawel Laszczak <pawell@cadence.com>
-Cc: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH] usb: cdnsp: fix for Link TRB with TC
-Message-ID: <20240822111956.GA783015@nchen-desktop>
-References: <20240821060426.84380-1-pawell@cadence.com>
- <PH7PR07MB953878279F375CCCE6C6F40FDD8E2@PH7PR07MB9538.namprd07.prod.outlook.com>
+	b=gmNssrdIoA7QqnvUX8wDzc0wlu56DCiIj/IpdYq5EjtIZr2CpXMWBHEYGqtdNiATe
+	 imBWPOyzQiWKjdZ+4L0O9Vgu920Wv4AdnFSeFlLpipcTwEwsB9f1+Lg90CCVgdALIH
+	 fiwWShqOf4J2QZlcfieLeGmYTKjzzvKffUGzYAKpp3YnoZdLez791ACWo4rlXuapBD
+	 U+sHbemXbWAElMwN36PvEQFtSJ2zyX3FwliANBPWSuh1N6mNulhtBpn9ugWLQX7EWn
+	 5+/gmqTEUz1pC9Zba4kv6t9Ar/MuhoSuxhyPMWhm0YjmUKygP0pCba4eF7tHK0m5ez
+	 O5ebkcMkczQtw==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan@kernel.org>)
+	id 1sh5wZ-000000005PY-2Jhk;
+	Thu, 22 Aug 2024 13:25:32 +0200
+Date: Thu, 22 Aug 2024 13:25:31 +0200
+From: Johan Hovold <johan@kernel.org>
+To: Faisal Hassan <quic_faisalh@quicinc.com>
+Cc: Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-arm-msm@vger.kernel.org, linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] usb: dwc3: qcom: fix NULL pointer dereference on
+ dwc3_qcom_read_usb2_speed
+Message-ID: <ZscgKygXTFON3lKk@hovoldconsulting.com>
+References: <20240813111847.31062-1-quic_faisalh@quicinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,97 +64,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <PH7PR07MB953878279F375CCCE6C6F40FDD8E2@PH7PR07MB9538.namprd07.prod.outlook.com>
+In-Reply-To: <20240813111847.31062-1-quic_faisalh@quicinc.com>
 
-On 24-08-21 06:07:42, Pawel Laszczak wrote:
-> Stop Endpoint command on LINK TRB with TC bit set to 1 causes that
-> internal cycle bit can have incorrect state after command complete.
-> In consequence empty transfer ring can be incorrectly detected
-> when EP is resumed.
-> NOP TRB before LINK TRB avoid such scenario. Stop Endpoint command
-> is then on NOP TRB and internal cycle bit is not changed and have
-> correct value.
+On Tue, Aug 13, 2024 at 04:48:47PM +0530, Faisal Hassan wrote:
+> Null pointer dereference occurs when accessing 'hcd' to detect speed
+> from dwc3_qcom_suspend after the xhci-hcd is unbound.
+
+Why are you unbinding the xhci driver?
+
+> To avoid this issue, ensure to check for NULL in dwc3_qcom_read_usb2_speed.
 > 
-> Fixes: 3d82904559f4 ("usb: cdnsp: cdns3 Add main part of Cadence USBSSP DRD Driver")
-> cc: <stable@vger.kernel.org>
-> Signed-off-by: Pawel Laszczak <pawell@cadence.com>
+> echo xhci-hcd.0.auto > /sys/bus/platform/drivers/xhci-hcd/unbind
+>   xhci_plat_remove() -> usb_put_hcd() -> hcd_release() -> kfree(hcd)
+> 
+>   Unable to handle kernel NULL pointer dereference at virtual address
+>   0000000000000060
+>   Call trace:
+>    dwc3_qcom_suspend.part.0+0x17c/0x2d0 [dwc3_qcom]
+>    dwc3_qcom_runtime_suspend+0x2c/0x40 [dwc3_qcom]
+>    pm_generic_runtime_suspend+0x30/0x44
+>    __rpm_callback+0x4c/0x190
+>    rpm_callback+0x6c/0x80
+>    rpm_suspend+0x10c/0x620
+>    pm_runtime_work+0xc8/0xe0
+>    process_one_work+0x1e4/0x4f4
+>    worker_thread+0x64/0x43c
+>    kthread+0xec/0x100
+>    ret_from_fork+0x10/0x20
+> 
+> Fixes: c5f14abeb52b ("usb: dwc3: qcom: fix peripheral and OTG suspend")
 
-Reviewed-by: Peter Chen <peter.chen@kernel.org>
+This is clearly not the commit that introduced this issue, please be
+more careful.
 
-Peter
+Also make sure to CC the author of any patch introducing a bug so that
+they may help with review.
+
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Faisal Hassan <quic_faisalh@quicinc.com>
 > ---
->  drivers/usb/cdns3/cdnsp-gadget.h |  3 +++
->  drivers/usb/cdns3/cdnsp-ring.c   | 28 ++++++++++++++++++++++++++++
->  2 files changed, 31 insertions(+)
+>  drivers/usb/dwc3/dwc3-qcom.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
 > 
-> diff --git a/drivers/usb/cdns3/cdnsp-gadget.h b/drivers/usb/cdns3/cdnsp-gadget.h
-> index e1b5801fdddf..9a5577a772af 100644
-> --- a/drivers/usb/cdns3/cdnsp-gadget.h
-> +++ b/drivers/usb/cdns3/cdnsp-gadget.h
-> @@ -811,6 +811,7 @@ struct cdnsp_stream_info {
->   *        generate Missed Service Error Event.
->   *        Set skip flag when receive a Missed Service Error Event and
->   *        process the missed tds on the endpoint ring.
-> + * @wa1_nop_trb: hold pointer to NOP trb.
->   */
->  struct cdnsp_ep {
->  	struct usb_ep endpoint;
-> @@ -838,6 +839,8 @@ struct cdnsp_ep {
->  #define EP_UNCONFIGURED		BIT(7)
+> diff --git a/drivers/usb/dwc3/dwc3-qcom.c b/drivers/usb/dwc3/dwc3-qcom.c
+> index 88fb6706a18d..0c7846478655 100644
+> --- a/drivers/usb/dwc3/dwc3-qcom.c
+> +++ b/drivers/usb/dwc3/dwc3-qcom.c
+> @@ -319,13 +319,15 @@ static bool dwc3_qcom_is_host(struct dwc3_qcom *qcom)
+>  static enum usb_device_speed dwc3_qcom_read_usb2_speed(struct dwc3_qcom *qcom, int port_index)
+>  {
+>  	struct dwc3 *dwc = platform_get_drvdata(qcom->dwc3);
+> -	struct usb_device *udev;
+> +	struct usb_device __maybe_unused *udev;
+>  	struct usb_hcd __maybe_unused *hcd;
 >  
->  	bool skip;
-> +	union cdnsp_trb	 *wa1_nop_trb;
-> +
->  };
->  
->  /**
-> diff --git a/drivers/usb/cdns3/cdnsp-ring.c b/drivers/usb/cdns3/cdnsp-ring.c
-> index 275a6a2fa671..75724e60653c 100644
-> --- a/drivers/usb/cdns3/cdnsp-ring.c
-> +++ b/drivers/usb/cdns3/cdnsp-ring.c
-> @@ -1904,6 +1904,23 @@ int cdnsp_queue_bulk_tx(struct cdnsp_device *pdev, struct cdnsp_request *preq)
->  	if (ret)
->  		return ret;
->  
-> +	/*
-> +	 * workaround 1: STOP EP command on LINK TRB with TC bit set to 1
-> +	 * causes that internal cycle bit can have incorrect state after
-> +	 * command complete. In consequence empty transfer ring can be
-> +	 * incorrectly detected when EP is resumed.
-> +	 * NOP TRB before LINK TRB avoid such scenario. STOP EP command is
-> +	 * then on NOP TRB and internal cycle bit is not changed and have
-> +	 * correct value.
-> +	 */
-> +	if (pep->wa1_nop_trb) {
-> +		field = le32_to_cpu(pep->wa1_nop_trb->trans_event.flags);
-> +		field ^= TRB_CYCLE;
-> +
-> +		pep->wa1_nop_trb->trans_event.flags = cpu_to_le32(field);
-> +		pep->wa1_nop_trb = NULL;
-> +	}
-> +
 >  	/*
->  	 * Don't give the first TRB to the hardware (by toggling the cycle bit)
->  	 * until we've finished creating all the other TRBs. The ring's cycle
-> @@ -1999,6 +2016,17 @@ int cdnsp_queue_bulk_tx(struct cdnsp_device *pdev, struct cdnsp_request *preq)
->  		send_addr = addr;
->  	}
+>  	 * FIXME: Fix this layering violation.
+>  	 */
+>  	hcd = platform_get_drvdata(dwc->xhci);
+> +	if (!hcd)
+> +		return USB_SPEED_UNKNOWN;
+
+This is just papering over the real issue here which is the layering
+violation of having drivers accessing driver data of their children. 
+
+Nothing is preventing the driver data from being deallocated after you
+check for NULL here.
+
+I suggest leaving this as is until Bjorn's patches that should address
+this properly lands.
+
 >  
-> +	if (cdnsp_trb_is_link(ring->enqueue + 1)) {
-> +		field = TRB_TYPE(TRB_TR_NOOP) | TRB_IOC;
-> +		if (!ring->cycle_state)
-> +			field |= TRB_CYCLE;
-> +
-> +		pep->wa1_nop_trb = ring->enqueue;
-> +
-> +		cdnsp_queue_trb(pdev, ring, 0, 0x0, 0x0,
-> +				TRB_INTR_TARGET(0), field);
-> +	}
-> +
->  	cdnsp_check_trb_math(preq, enqd_len);
->  	ret = cdnsp_giveback_first_trb(pdev, pep, preq->request.stream_id,
->  				       start_cycle, start_trb);
-> -- 
-> 2.43.0
-> 
+>  #ifdef CONFIG_USB
+>  	udev = usb_hub_find_child(hcd->self.root_hub, port_index + 1);
+
+Johan
 
