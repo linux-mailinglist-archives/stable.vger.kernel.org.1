@@ -1,110 +1,111 @@
-Return-Path: <stable+bounces-69891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69893-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4970A95BA06
-	for <lists+stable@lfdr.de>; Thu, 22 Aug 2024 17:26:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 487D595BA92
+	for <lists+stable@lfdr.de>; Thu, 22 Aug 2024 17:35:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F25E01F23341
-	for <lists+stable@lfdr.de>; Thu, 22 Aug 2024 15:26:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 781A21C23D05
+	for <lists+stable@lfdr.de>; Thu, 22 Aug 2024 15:35:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63A7E1CB301;
-	Thu, 22 Aug 2024 15:25:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 340201CB30A;
+	Thu, 22 Aug 2024 15:35:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=collabora.com header.i=nfraprado@collabora.com header.b="g51d7RqD"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="CMu3/vJC"
 X-Original-To: stable@vger.kernel.org
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B6D22C87C;
-	Thu, 22 Aug 2024 15:25:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724340356; cv=fail; b=eoRrhxed09lmh3Xha0HExHYxlk+0+DBOr61oWaGc1j3wYkt007KtPL8pjkc5TcZhhXEw68ZzCovPJTFANEb7/i+G6oNSlZ9s6XzMQN1ZYnt2tHshmPYl+2QX7PPT2UF4T2AvUiIC/+2ZDQAoMG+N96Wqyz+E1cWahtzByrtIGD0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724340356; c=relaxed/simple;
-	bh=GQX/ybtanwy/zCKjsP6vimBs4eLzBliTPuRthVsxJ4w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=poVzxyEe2LTsyECkwnZ69/JLDT+yG5eLRU5yfXqbbxXvx4KW49wxkGznQQhS2Kuw2AWtgVpcqQjk7lIMd7tTM0HQFipwpu1dPH/C/BM2GoNqbmtTgBzDPUCpu/ufhig6jLXtVbsQW1tiLOcqD/SKj93EypHN9oE+ohpNXA7hiho=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=fail (1024-bit key) header.d=collabora.com header.i=nfraprado@collabora.com header.b=g51d7RqD reason="signature verification failed"; arc=fail smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-Delivered-To: angelogioacchino.delregno@collabora.com
-ARC-Seal: i=1; a=rsa-sha256; t=1724340346; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=ZVIKW3D0jI3pXHiDjuzF/3Qsfrel7O10ClTVWiviaT+b5ntpoipxlCU5mPIuGoEVV3miX18qoHEtmCm2rdUtvHQ3c9NdgrmqpRJ0CyAl+6HAUxdv1e1dkPiC7p4SRgyo6Ab5qP0IcDv6isu4bqiuczNdr+mKk988amSpZo0UFY4=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1724340346; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=tblG4DXojNvd/Q9ZZ/KwVJ2+BRO+sDaWRSrrd7xNqI8=; 
-	b=XUF4RV9FP4IRDS5Z+tmMg0rjTbsXiXjcr+bIuvJDGKzZl1bLNUUGGffCB5EBA3V6960sP0WDQInxdud4ag87ryD845+s/WjJLoaHwvL3Xha2qZv10ISdI8AIxylalSZZTLCWs7CZN7K7R836P+LkN7mmhR8iI2lAiciL9wp1diY=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=nfraprado@collabora.com;
-	dmarc=pass header.from=<nfraprado@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1724340346;
-	s=zohomail; d=collabora.com; i=nfraprado@collabora.com;
-	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:References:MIME-Version:Content-Type:Content-Transfer-Encoding:In-Reply-To:Message-Id:Reply-To;
-	bh=tblG4DXojNvd/Q9ZZ/KwVJ2+BRO+sDaWRSrrd7xNqI8=;
-	b=g51d7RqD0veQjp5+KVKELwE+jm750mEPW6lk9pQPkDI/tNQWRXDwApIv3YMtlNT0
-	atmq+fEVY6o9uDAjHtvmS9QpmHBG/utJlrJJbdz7kYqeoEI1u4tjR53AoAqYTRC9Lyn
-	EGaKf/GVoT3MvcRwnNCAsWvZLPMUesJ2w/BHPU8Q=
-Received: by mx.zohomail.com with SMTPS id 1724340344652491.77049766479;
-	Thu, 22 Aug 2024 08:25:44 -0700 (PDT)
-Date: Thu, 22 Aug 2024 11:25:42 -0400
-From: =?utf-8?B?TsOtY29sYXMgRi4gUi4gQS4=?= Prado <nfraprado@collabora.com>
-To: Chen-Yu Tsai <wenst@chromium.org>
-Cc: Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	Stephen Boyd <swboyd@chromium.org>,
-	Pin-yen Lin <treapking@chromium.org>,
-	Alper Nebi Yasak <alpernebiyasak@gmail.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] arm64: dts: mediatek: mt8186-corsola: Disable DPI
- display interface
-Message-ID: <00aaa8ff-1344-48dd-b0cb-5e8f4518ff6b@notapiano>
-References: <20240821042836.2631815-1-wenst@chromium.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F9BF1CC88A;
+	Thu, 22 Aug 2024 15:35:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1724340938; cv=none; b=hukNRBr9cFNvgICTmK8i3ZyARFK3WoRhElxobcn++zhyyhn6MNXEbtDeejkm41g00Sj+XVOlkJwGV5JRFTTMhGHgV4VjcdZLac2Zxh7plCSF52h+xOF8zv7zqWw91BsiPa1pKIZwy5krUD945X4D4GYbsuKM4fGDocQwnEjfXDo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1724340938; c=relaxed/simple;
+	bh=g4UzTpjAkmH1/8Mi3biEb/L7TovlNwHywY7DzG7f2wA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=tm3oUBA/kQItiCUwIfhgbSnVhY/LN04b6bxSL9XTkDxZMYX1HvMdvWuGUZ+hKHEqJpCOdabZq+c63Q6nZG+hM7gSZEuRqDwaO1+5brYQgUs0eG+AgBiKOhJ4/jcleD+Z7GsPardGZKMGImq7LEnFesB+7M9BL2Ci+0W6i4WzQRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=CMu3/vJC; arc=none smtp.client-ip=213.167.242.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id E79FBB2A;
+	Thu, 22 Aug 2024 17:34:29 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1724340870;
+	bh=g4UzTpjAkmH1/8Mi3biEb/L7TovlNwHywY7DzG7f2wA=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=CMu3/vJCap9NxISUHX76T7sb86mhw9cppcfHGK4Kfq3oCcT0Fs5ZKqxmg+xNrlYNp
+	 7h3kpp95yRA6UbDdsKkLakgRMU+jp7xtXuHZ787PFTq3nACMjIznAWabsQRJxwYntl
+	 5WrufxQtDSIySkDEmv1+0/1x6XCbe3fA938Z75N4=
+From: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+To: libcamera-devel@lists.libcamera.org
+Cc: Chen-Yu Tsai <wens@csie.org>,
+	Eugen Hristev <eugen.hristev@collabora.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+	Kieran Bingham <kieran.bingham@ideasonboard.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Sakari Ailus <sakari.ailus@iki.fi>,
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	linux-renesas-soc@vger.kernel.org,
+	linux-sunxi@lists.linux.dev,
+	stable@vger.kernel.org
+Subject: [PATCH v2 2/7] media: sun4i_csi: Implement link validate for sun4i_csi subdev
+Date: Thu, 22 Aug 2024 18:35:22 +0300
+Message-ID: <20240822153527.25320-3-laurent.pinchart+renesas@ideasonboard.com>
+X-Mailer: git-send-email 2.44.2
+In-Reply-To: <20240822153527.25320-1-laurent.pinchart+renesas@ideasonboard.com>
+References: <20240822153527.25320-1-laurent.pinchart+renesas@ideasonboard.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240821042836.2631815-1-wenst@chromium.org>
-X-ZohoMailClient: External
 
-On Wed, Aug 21, 2024 at 12:28:34PM +0800, Chen-Yu Tsai wrote:
-> The DPI display interface feeds the external display pipeline. However
-> the pipeline representation is currently incomplete. Efforts are still
-> under way to come up with a way to represent the "creative" repurposing
-> of the DP bridge chip's internal output mux, which is meant to support
-> USB type-C orientation changes, to output to one of two type-C ports.
-> 
-> Until that is finalized, the external display can't be fully described,
-> and thus won't work. Even worse, the half complete graph potentially
-> confuses the OS, breaking the internal display as well.
-> 
-> Disable the external display interface across the whole Corsola family
-> until the DP / USB Type-C muxing graph binding is ready.
-> 
-> Reported-by: Alper Nebi Yasak <alpernebiyasak@gmail.com>
-> Closes: https://lore.kernel.org/linux-mediatek/38a703a9-6efb-456a-a248-1dd3687e526d@gmail.com/
-> Fixes: 8855d01fb81f ("arm64: dts: mediatek: Add MT8186 Krabby platform based Tentacruel / Tentacool")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+The sun4i_csi driver doesn't implement link validation for the subdev it
+registers, leaving the link between the subdev and its source
+unvalidated. Fix it, using the v4l2_subdev_link_validate() helper.
 
-Reviewed-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Fixes: 577bbf23b758 ("media: sunxi: Add A10 CSI driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Acked-by: Chen-Yu Tsai <wens@csie.org>
+---
+ drivers/media/platform/sunxi/sun4i-csi/sun4i_csi.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-Would be good to have Alper verify that with this change the internal display
-works again in their specific setup, although this change seems reasonable to me
-either way.
+diff --git a/drivers/media/platform/sunxi/sun4i-csi/sun4i_csi.c b/drivers/media/platform/sunxi/sun4i-csi/sun4i_csi.c
+index 097a3a08ef7d..dbb26c7b2f8d 100644
+--- a/drivers/media/platform/sunxi/sun4i-csi/sun4i_csi.c
++++ b/drivers/media/platform/sunxi/sun4i-csi/sun4i_csi.c
+@@ -39,6 +39,10 @@ static const struct media_entity_operations sun4i_csi_video_entity_ops = {
+ 	.link_validate = v4l2_subdev_link_validate,
+ };
+ 
++static const struct media_entity_operations sun4i_csi_subdev_entity_ops = {
++	.link_validate = v4l2_subdev_link_validate,
++};
++
+ static int sun4i_csi_notify_bound(struct v4l2_async_notifier *notifier,
+ 				  struct v4l2_subdev *subdev,
+ 				  struct v4l2_async_connection *asd)
+@@ -214,6 +218,7 @@ static int sun4i_csi_probe(struct platform_device *pdev)
+ 	subdev->internal_ops = &sun4i_csi_subdev_internal_ops;
+ 	subdev->flags = V4L2_SUBDEV_FL_HAS_DEVNODE | V4L2_SUBDEV_FL_HAS_EVENTS;
+ 	subdev->entity.function = MEDIA_ENT_F_VID_IF_BRIDGE;
++	subdev->entity.ops = &sun4i_csi_subdev_entity_ops;
+ 	subdev->owner = THIS_MODULE;
+ 	snprintf(subdev->name, sizeof(subdev->name), "sun4i-csi-0");
+ 	v4l2_set_subdevdata(subdev, csi);
+-- 
+Regards,
 
-Thanks,
-Nícolas
+Laurent Pinchart
+
 
