@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-69940-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69941-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A7E795C533
-	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 08:13:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEADF95C53E
+	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 08:14:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8CA4F1C2116A
-	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 06:13:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9AAFE28245D
+	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 06:14:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C6626F307;
-	Fri, 23 Aug 2024 06:12:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14F6D74424;
+	Fri, 23 Aug 2024 06:14:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2cg4pVeJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lfHDNevy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E31A555C3E;
-	Fri, 23 Aug 2024 06:12:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCA647345B;
+	Fri, 23 Aug 2024 06:14:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724393575; cv=none; b=SVHekzoHjXOseAEkFBovaqeCc9GsyEnZ7aDYZ+sCFTr9hvE8oUSyf+X/aCRZEAwzz7AXooJysy6FLQ/Y8O9zSIK819CsN/7lnMJDgP/YJdh2y46IPKAfkBWzOAd2uHWbqqJ3+aSXUASOAPjgjF/OSoN0gDJHk5CHIoGZ701AG0A=
+	t=1724393678; cv=none; b=KgO0OSi7rQ1CXb7p1DYS3pQ2sKlliG+g3lMqQXZQhE5ym4yyvfecugrI6jV+CVcnD+aUa+o1WG26UT2wgF3zqZyhCVGxCTFAgJdUXcAOBu8+4++wPzvTfuodneI7zO5u5/T+S2srAPhUqpek2pmZT4JzwxYancUymHV4dwRXBYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724393575; c=relaxed/simple;
-	bh=VuaMXq/ic8X2m9kV83mf6YFYaszIuxekeGJm8Pfrrqw=;
+	s=arc-20240116; t=1724393678; c=relaxed/simple;
+	bh=7+O/QT9OMuw+bvc3dHqfZlrxUk8r/29ACuYuoGeKbW8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=R8wYm/TplyQcHaOZ/hFC5CeC8gB18imQ0wv59Juxykcjjufj01tqZ1vbLpRDBO4hGPPCjIuxcEz0b125va5sEaQEBns8+M/4u+tsK/+DG5msPWCo0qWqIOhOaXq9PdR2uW3JPcr9odojUPomL4FXk2PfaImz+XDRqCswnCD2rNA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2cg4pVeJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED127C32786;
-	Fri, 23 Aug 2024 06:12:53 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=fUt5HRT8ThLH5w0CYF1j5XVSC3mdfkF7s4WP2vE/JJHT+LQij8oGbYC1BvIUCo9zgPQNzepdREejQzhib5QBxlIvQ5kJfQN7RZ598dK9ag+yxMxV32NwgUGurCbkA7X1rWDIeaE7HthO3NOrnnfmpafgDh/Q+pcWTuxRuIbcucc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lfHDNevy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B496AC32786;
+	Fri, 23 Aug 2024 06:14:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724393574;
-	bh=VuaMXq/ic8X2m9kV83mf6YFYaszIuxekeGJm8Pfrrqw=;
+	s=korg; t=1724393678;
+	bh=7+O/QT9OMuw+bvc3dHqfZlrxUk8r/29ACuYuoGeKbW8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=2cg4pVeJFoWhnJgcePmo6lZ4QBf+Lldz1O2gqcR/cj3fMPRDY1/5S+lSIdzQoJtx3
-	 liKnuqDEGtLZZVcWJrNXb4M6jpnSXRiNfXo2zpbMigL6yzFNkrUPrSmEbyKRfzi/op
-	 kuCgxH38zblAdnNsML67kVhuBCYId0ei/JDy9xO8=
-Date: Fri, 23 Aug 2024 14:12:51 +0800
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Linux regressions mailing list <regressions@lists.linux.dev>
-Cc: stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Oleg Nesterov <oleg@redhat.com>, Aleksa Sarai <cyphar@cyphar.com>,
-	Tycho Andersen <tandersen@netflix.com>,
-	Daan De Meyer <daan.j.demeyer@gmail.com>, Tejun Heo <tj@kernel.org>,
-	Eric Biggers <ebiggers@kernel.org>,
-	Christian Brauner <brauner@kernel.org>
-Subject: Re: [PATCH] pidfd: prevent creation of pidfds for kthreads
-Message-ID: <2024082313-throttle-snuggle-6238@gregkh>
-References: <20240731-gleis-mehreinnahmen-6bbadd128383@brauner>
- <20240818035818.GA1929@sol.localdomain>
- <20240819-staudamm-rederei-cb7092f54e76@brauner>
- <93296f30-1a3c-44b6-91d1-61408e1d9270@leemhuis.info>
+	b=lfHDNevyPmsrYzPialk455WsSVsEVhY2O1Exk8rW1to8EAoe1jJXdemwSKNDbe6QA
+	 TRsUqy5bHORrghkKqpcJeb2SpN+ZiI74jmFR0uhmnDLgxK6Qzt0SftHHogta64il9X
+	 L0RbuFLT21ISiKIOJcG4UMdDJ3zcJMLhqrpL6XKs=
+Date: Fri, 23 Aug 2024 14:14:35 +0800
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Faisal Hassan <quic_faisalh@quicinc.com>
+Cc: Johan Hovold <johan@kernel.org>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	linux-arm-msm@vger.kernel.org, linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] usb: dwc3: qcom: fix NULL pointer dereference on
+ dwc3_qcom_read_usb2_speed
+Message-ID: <2024082315-astride-footrest-ab04@gregkh>
+References: <20240813111847.31062-1-quic_faisalh@quicinc.com>
+ <ZscgKygXTFON3lKk@hovoldconsulting.com>
+ <a3facdb7-e38e-4ef0-aff6-3e6aff0f9d88@quicinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,45 +59,29 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <93296f30-1a3c-44b6-91d1-61408e1d9270@leemhuis.info>
+In-Reply-To: <a3facdb7-e38e-4ef0-aff6-3e6aff0f9d88@quicinc.com>
 
-On Fri, Aug 23, 2024 at 07:23:12AM +0200, Linux regression tracking (Thorsten Leemhuis) wrote:
-> On 19.08.24 10:41, Christian Brauner wrote:
-> > On Sat, Aug 17, 2024 at 08:58:18PM GMT, Eric Biggers wrote:
-> >> On Wed, Jul 31, 2024 at 12:01:12PM +0200, Christian Brauner wrote:
-> >>> It's currently possible to create pidfds for kthreads but it is unclear
-> >>> what that is supposed to mean. Until we have use-cases for it and we
-> >>> figured out what behavior we want block the creation of pidfds for
-> >>> kthreads.
-> >>>
-> >>> Fixes: 32fcb426ec00 ("pid: add pidfd_open()")
-> >>> Cc: stable@vger.kernel.org
-> >>> Signed-off-by: Christian Brauner <brauner@kernel.org>
-> >>> ---
-> >>>  kernel/fork.c | 25 ++++++++++++++++++++++---
-> >>>  1 file changed, 22 insertions(+), 3 deletions(-)
-> >>
-> >> Unfortunately this commit broke systemd-shutdown's ability to kill processes,
-> >> which makes some filesystems no longer get unmounted at shutdown.
-> >>
-> >> It looks like systemd-shutdown relies on being able to create a pidfd for any
-> >> process listed in /proc (even a kthread), and if it gets EINVAL it treats it a
-> >> fatal error and stops looking for more processes...
-> > 
-> > Thanks for the report!
-> > I talked to Daan De Meyer who made that change and he said that this
-> > must a systemd version that hasn't gotten his fixes yet. In any case, if
-> > this causes regression then I'll revert it right now. See the appended
-> > revert.
+On Fri, Aug 23, 2024 at 09:26:18AM +0530, Faisal Hassan wrote:
 > 
-> Greg, Sasha, JFYI in case you are not already aware of it: I by
-> chance[1] noticed that the patch Christian plans to revert is still in
-> the 6.10-queue. You might want to drop it (or apply the revert as well,
-> which is in -next, but not yet in mainline afaics).
+> 
+> On 8/22/2024 4:55 PM, Johan Hovold wrote:
+> > On Tue, Aug 13, 2024 at 04:48:47PM +0530, Faisal Hassan wrote:
+> >> Null pointer dereference occurs when accessing 'hcd' to detect speed
+> >> from dwc3_qcom_suspend after the xhci-hcd is unbound.
+> > 
+> > Why are you unbinding the xhci driver?
+> > 
+> 
+> On our automotive platforms, when preparing for suspend, a script
+> unbinds the xhci driver to remove all devices, ensuring the platform
+> reaches the lowest power state.
 
-I was hoping it would get into Linus's tree "soon" so I could take the
-revert too.  As it's in -next, I'll grab it from there when I get a
-chance.
+That used to be the case a decade or so ago, but shouldn't be needed
+anymore if your hardware is "sane" and can properly go to sleep.  Why
+not just fix the driver to correctly sleep instead of unloading
+everything?  This would require you to go through the whole
+initialization sequence again when waking up and that can be a long time
+overall, right?
 
 thanks,
 
