@@ -1,108 +1,110 @@
-Return-Path: <stable+bounces-70058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70059-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C189095CFD7
-	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 16:31:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2667F95D114
+	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 17:12:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E94161C2142F
-	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 14:31:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D9B1E1F22063
+	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 15:12:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F4E318BBA9;
-	Fri, 23 Aug 2024 14:14:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7BD1188A10;
+	Fri, 23 Aug 2024 15:07:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mfI0ilj5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W0brHzPs"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4F08185945;
-	Fri, 23 Aug 2024 14:14:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95050188A04;
+	Fri, 23 Aug 2024 15:07:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724422453; cv=none; b=irfY679Pd33Bwe8uKtj2QmcpWMDZQewRCExqwW83CbcCoUedhonWh9k7HQIPEN4rEA4W/wFKyNvG4JBWYNI76Q3j1djJLXgj7KsjpU7UsTSCI3Dp9fpkXvSbwlxLWp6F6kMFrR/vgVYESY3YUu4APzG3AqZGTNnD37SaSAZi5/o=
+	t=1724425652; cv=none; b=urAlv18T4BgAubhwHbmUVawkHS9+2Wo91Ng15clcqRwlVEO4hc8k7/Wa7NhZQdgUpQlJq4eVk0Ne4hvwlafTgdNS5bwBKx4jGlVEyhgpXwJUOODaqmJN9KKufk7GTRgdVzdeACrUiZH9cZRHMft5I7Da6HOROTWLqOJRe10IcuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724422453; c=relaxed/simple;
-	bh=HE989/n9y2OsE2fm8mYlQJ34Hr3xyGpPU/aMiImPfuk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kd+VZ9IyOxuTtIbJaOSEuUYQe9wCo8JSUhav+m8SrprANAj09v2Lt7Es97pYw/4FIpFOCnntE6C2xkAkQz0l5oaqzcCzctWEIR3Wi6I6GNZ9ZVApvIw5Z01DwqNRsyvp1WAWBufofV5+nyT7nDL1O82JNPYxNxRB0WErY6jY6Cg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mfI0ilj5; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1724422452; x=1755958452;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=HE989/n9y2OsE2fm8mYlQJ34Hr3xyGpPU/aMiImPfuk=;
-  b=mfI0ilj53xuEChyjMxQ2vUytkCHAUIh+hjr8fclOnYxNjJ+dzVttVnzg
-   JmxddOlMlcqSc9wR11QjdQ24hINUmB45JuzWPZYWoY0uUM+s5faD4lJvv
-   jpFjoOj3hbWX8lBR/P5a2ZR4ZU1eA9ouNXOGBmyTJoYEb+1j+a+q4nA3t
-   JZMumvdOhTlY5Iw2DcY4t6pd5JR7qYLPdEqBYWvrpdfdMV6dF0Wkhxp31
-   FXfjq/8wRPC5xf1W3yU8PK6b4bivM0K5PKDarRlpH/moU4rgRDhKCE4+f
-   hOnTmkP5+V7EXbJoBjWQoS+yi6aaFz9DSuWpyGv5iBK2emAATQLcNi1PC
-   w==;
-X-CSE-ConnectionGUID: sq/1vpNFTd6q5Y3QLoR95Q==
-X-CSE-MsgGUID: s3SfFZc3QFqfs7P7Mxi3Zw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11172"; a="40407650"
-X-IronPort-AV: E=Sophos;i="6.10,170,1719903600"; 
-   d="scan'208";a="40407650"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Aug 2024 07:14:11 -0700
-X-CSE-ConnectionGUID: +1bb5Lu0StCSI5ypw4aPdQ==
-X-CSE-MsgGUID: XHW89+I0SkuGXTYiUMqnmg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,170,1719903600"; 
-   d="scan'208";a="84983772"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Aug 2024 07:14:08 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1shV3E-00000000ogh-0nIV;
-	Fri, 23 Aug 2024 17:14:04 +0300
-Date: Fri, 23 Aug 2024 17:14:03 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Jiawen Wu <jiawenwu@trustnetic.com>
-Cc: andi.shyti@kernel.org, jarkko.nikula@linux.intel.com,
-	mika.westerberg@linux.intel.com, jsd@semihalf.com,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, rmk+kernel@armlinux.org.uk,
-	piotr.raczynski@intel.com, andrew@lunn.ch,
-	linux-i2c@vger.kernel.org, netdev@vger.kernel.org,
-	mengyuanlou@net-swift.com, duanqiangwen@net-swift.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net 1/3] net: txgbe: add IO address in I2C platform
- device data
-Message-ID: <ZsiZK5x77MRAyJdK@smile.fi.intel.com>
-References: <20240823030242.3083528-1-jiawenwu@trustnetic.com>
- <20240823030242.3083528-2-jiawenwu@trustnetic.com>
+	s=arc-20240116; t=1724425652; c=relaxed/simple;
+	bh=+aYPioaCTKJ31j15avs8Y4IbRInMqsYWr5TM+2fj4W4=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=r+GYsHXP6wPkWXE4ONJ7Mr8HJHJOTihnEEpeWn6NrlDnNUuZh5t/MyaUOE91d9llgBi0ZDUAXu5DJIhKHn/ZAJ6XR+fZU0KgERpX+Dw+LFoG94mN9ip3RJVSZ0Lix+tlW+kGpNWVTcYD825EeJMGtlkQDz0E1vyjTFbhzTyOKxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W0brHzPs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4B5FC32786;
+	Fri, 23 Aug 2024 15:07:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724425652;
+	bh=+aYPioaCTKJ31j15avs8Y4IbRInMqsYWr5TM+2fj4W4=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=W0brHzPswrdmOoOH0RQKJIk82725+K4MLChFvlDaJ03VOds33SAmKrBmFAOY43eHy
+	 YcsFo3FeyRxNmO+7Cm8zQR4IU7xp2kac4FttHFXe1DhnWEpP7cx5oDictFX0dsyco3
+	 jJQsAJZU7EuswbMGE0ilQT1UqWOK2o00CAaHE2dXEyvnSoQpXDEwv0Fj3OS+H7RYXb
+	 t1Q639lr2nqd0/DrdKrVn8apDJxSna9ZDGorngTeHpeIY/jIOPNQXQEpt9jXG6IyWJ
+	 yEkaTz7fvJj8djw0OTMHPlVDtXKJyaygSXE9SESrS5n7NbB5EaM5Wb6saogRdeB0NG
+	 ler/huYQHdMYg==
+From: Kalle Valo <kvalo@kernel.org>
+To: "A. Sverdlin" <alexander.sverdlin@siemens.com>
+Cc: linux-wireless@vger.kernel.org,  =?utf-8?B?SsOpcsO0bWU=?= Pouiller
+ <jerome.pouiller@silabs.com>,  Dmitry Antipov <dmantipov@yandex.ru>,
+  stable@vger.kernel.org
+Subject: Re: [PATCH] wifi: wfx: repair open network AP mode
+References: <20240823131521.3309073-1-alexander.sverdlin@siemens.com>
+Date: Fri, 23 Aug 2024 18:07:29 +0300
+In-Reply-To: <20240823131521.3309073-1-alexander.sverdlin@siemens.com> (A.
+	Sverdlin's message of "Fri, 23 Aug 2024 15:15:20 +0200")
+Message-ID: <87o75juvke.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240823030242.3083528-2-jiawenwu@trustnetic.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain
 
-On Fri, Aug 23, 2024 at 11:02:40AM +0800, Jiawen Wu wrote:
-> Consider the necessity of reading/writing the IO address to acquire and
-> release the lock between software and firmware, add the IO address as
-> the platform data to register I2C platform device.
+"A. Sverdlin" <alexander.sverdlin@siemens.com> writes:
 
-...
+> From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+>
+> RSN IE missing in beacon is normal in open networks.
+> Avoid returning -ENODEV in this case.
+>
+> Steps to reproduce:
+>
+> $ cat /etc/wpa_supplicant.conf
+> network={
+> 	ssid="testNet"
+> 	mode=2
+> 	key_mgmt=NONE
+> }
+>
+> $ wpa_supplicant -iwlan0 -c /etc/wpa_supplicant.conf
+> nl80211: Beacon set failed: -22 (Invalid argument)
+> Failed to set beacon parameters
+> Interface initialization failed
+> wlan0: interface state UNINITIALIZED->DISABLED
+> wlan0: AP-DISABLED
+> wlan0: Unable to setup interface.
+> Failed to initialize AP interface
+>
+> After the change:
+>
+> $ wpa_supplicant -iwlan0 -c /etc/wpa_supplicant.conf
+> Successfully initialized wpa_supplicant
+> wlan0: interface state UNINITIALIZED->ENABLED
+> wlan0: AP-ENABLED
 
-> +#include <linux/platform_data/i2c-wx.h>
+BTW excellent commit message, immediately obvious what was the problem
+and how it was tested. I wish everyone would do the same.
 
-I don't like this. Can you provide a property for that or so?
+> Cc: stable@vger.kernel.org
+> Fixes: fe0a7776d4d1 ("wifi: wfx: fix possible NULL pointer dereference in wfx_set_mfp_ap()")
+> Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+
+I think this should go to wireless tree for v6.11, right?
 
 -- 
-With Best Regards,
-Andy Shevchenko
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
+https://docs.kernel.org/process/submitting-patches.html
 
