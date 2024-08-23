@@ -1,70 +1,83 @@
-Return-Path: <stable+bounces-69924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69925-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5B0295C2F1
-	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 03:45:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB0FF95C2F3
+	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 03:46:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B5541F2280D
-	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 01:45:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE36E1C223DE
+	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 01:46:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1006217721;
-	Fri, 23 Aug 2024 01:45:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF3631BDD0;
+	Fri, 23 Aug 2024 01:46:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="dvg7xdAK"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="Mvqd39yN"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C71AA934
-	for <stable@vger.kernel.org>; Fri, 23 Aug 2024 01:45:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41B0B171C2
+	for <stable@vger.kernel.org>; Fri, 23 Aug 2024 01:46:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724377536; cv=none; b=Hp9UuIVBw0U93zi8OT/xc9QJYsfk5XxKSyivEYCyBXWc1TkVuPdDnhP1R34l1M9mc7kRVGdxmzg84jZcggEt3ByR9UeHElS0kJw4BzIZ99bpMbXlP8OvD2hTXydd61rG91VEKHyIWDhwDv6VaWJaIrI8L8dygm1E5Ti3xViWgmw=
+	t=1724377607; cv=none; b=iyNpCn1fgeU8Mwj0Z2VfLVEqJWK0Rd55ifNGs9G8mw+x69qydL/PXxfYhuRfmvS6n8fiXVNdpz/Apm64ogwYso0Bdcwl6nYdq0UaWXhVQsjjKLaGEdriX+lmwce/wLnQmITRL0piLPBn6kOmorNzrVL/mO1t01Ut14hC7q0v7uo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724377536; c=relaxed/simple;
-	bh=JMJWIvFK0mgjv4lzisDegaI3W7yRwGISwX6U342F4nI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R7HppSUUd0TEfr+oRiZr+YlEQmJk1jyjvw5D4FglFCbaovEBlUnmJ+vXLykgd+4gv4pN+clkp7xkOcmOYGUgsLeSds2qrNQPLTlv4+0GwxQ62X6XxE3CAmFOrqYYsnwdha44Ua1Seln/g0jQf92T2V+UPOuv9wHJnEkCiVSCr1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=dvg7xdAK; arc=none smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47N0BYso014713;
-	Fri, 23 Aug 2024 01:45:16 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
-	from:to:cc:subject:date:message-id:in-reply-to:references
-	:mime-version:content-transfer-encoding; s=corp-2023-11-20; bh=L
-	iRfE3WAGjHKeRQWZi/3e1NjtY3U5hZ85YkA7X240wE=; b=dvg7xdAKmFo7JrC/m
-	Lq48PH++rZiNfciAWwoHYU2tw+7kUH/7pW8B1WHuG2KJpA1Jsm3hKT21a6ZUiBlY
-	y8BwS98juoTqcTCEcAysj0+WmvlZfmk5J5a+70Sik9H+5JP6T5ATB7ad7sC1ekCF
-	opSMAf37Iw/V+YwCSHMaLggjWlYlIdIdBoN6Wh56DWEru0CE7TetkUA/g+pt9YP+
-	DoF8faNLdcpT+HWlvlFx3uY7QY7/fVc9ZgZBHiujX6B5X60TITPASewmHcN50Qcp
-	a2TvHqa63x2vT4pGizE7MPMlGCXtIxaWTwDA6Mz7mYhJ2oI8KZqJ3r/8771SFqfz
-	LWNhQ==
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 412m6gkcrd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 23 Aug 2024 01:45:16 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 47N0YEcX012191;
-	Fri, 23 Aug 2024 01:45:15 GMT
-Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 416g0e9gb3-1;
-	Fri, 23 Aug 2024 01:45:15 +0000
-From: Sherry Yang <sherry.yang@oracle.com>
-To: maxtram95@gmail.com
-Cc: andrii@kernel.org, ast@kernel.org, daniel@iogearbox.net, eddyz87@gmail.com,
-        gregkh@linuxfoundation.org, john.fastabend@gmail.com,
-        maxim@isovalent.com, sashal@kernel.org, stable@vger.kernel.org
-Subject: BPF selftest failed to build
-Date: Thu, 22 Aug 2024 18:45:14 -0700
-Message-ID: <20240823014514.3622865-1-sherry.yang@oracle.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240711184323.2355017-2-maxtram95@gmail.com>
-References: <20240711184323.2355017-2-maxtram95@gmail.com>
+	s=arc-20240116; t=1724377607; c=relaxed/simple;
+	bh=sGl2nL6mq3MynEP9qoi7xkphD3I99W2n1NgVTRy6SXI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Dzu9k2WAyGLLyDYvHLvCnuYeN5Y6TGZKDDOLVOzRPhy5ieNmqvjMZajnnP7s3cHQWyf7Hg7PMR4JfYnUwgSBNvgW5mUSttxpAh5YAiLQytSTldwqYCGcWPuX1tmuhA/aIh3orNdk3oIDZRTLiUPBm4NmC1YD2psN1r4w+dFl6hM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=Mvqd39yN; arc=none smtp.client-ip=209.85.221.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-3718706cf8aso677387f8f.3
+        for <stable@vger.kernel.org>; Thu, 22 Aug 2024 18:46:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1724377602; x=1724982402; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=sh2/784i7y6ih3W1qXtxCpk2D8g/ZXKSQt7qq695bYg=;
+        b=Mvqd39yNxVMa9etvhhkC1cUvWjE3u2ap9noWLuuF7vp1W9bCdftDZuIeGC4GNrMXzY
+         fi2ZCzBTJME8KXAoOrUydWGrr+EHhMvuE5EHn6pRO4Be9YjvX1I8aQnjdnDIhvkoNwbP
+         FVnCLQ1010J1COXWeYwzQ4hD016TeXgCWvvv++NGLDkSImSRzEkkMI3bTfIs6oEhr+SS
+         DiXRE3taAi1VhbRUbt12LXDxkZnkp9Rneb045XV2veroa6MO1fYZnStyMvZ1rhnD6BsZ
+         86hQEj8lQYv83mdT82QnzInSsXilZ+205js9t/uhXVp0Z73ruLbfeYrKQOQQ93cA1Yot
+         V2AQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724377602; x=1724982402;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=sh2/784i7y6ih3W1qXtxCpk2D8g/ZXKSQt7qq695bYg=;
+        b=werCnM/7BsAxIxmdF0JL1R3wIngZLLz0FMy8GL11+VNVY9SIbtgu/s12Ek7VZa0N9k
+         Ff+VsPLICNz88xR4lHAHmWuB+r+gy4UgZDpb9YnhnKU6kULMOvv7U1BD+AhVjYteAved
+         gvwoYbZLU0xI020vYkmO3G/Q1618+aUe/XndaPhxmRGmdTokivU8wo7gja+Naa+Vn7jc
+         phoSh83Eh4D6oVpIfg763jFmiMuyjy+VoI8Q26v/rIDBAjJmyD57yOnhu94DCv7ODAdY
+         AGbMmK61mBvpYddF2eu1FmoLxojvTNLT5Z+uXwHMDmvSzxi35JwEP66pdYUJU2z4B3gR
+         Fukg==
+X-Gm-Message-State: AOJu0YwSSqMoD6aiVNyyLkgnnuZ6ZFhwkIhw8nvkiPFkJbumIYRQj8Gy
+	NgsQNeR3/5CsXEnJXiS4dZbwqD2u0urzC+d0Tmv0BICSCYrf03Qo2qtBcVEdBSL+BF3DyIJ5sxz
+	ErDQ=
+X-Google-Smtp-Source: AGHT+IF7CyDabRkMdoNMuAnD2PW4KlZA09KkyuQsdjJy5JrfXQJbkF1i2OMKkT5iHdDF8mZqXFiDdg==
+X-Received: by 2002:adf:e3c1:0:b0:368:669c:3bd3 with SMTP id ffacd0b85a97d-373118c84fbmr317594f8f.48.1724377602318;
+        Thu, 22 Aug 2024 18:46:42 -0700 (PDT)
+Received: from localhost (27-51-129-77.adsl.fetnet.net. [27.51.129.77])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7144401ac8fsm378324b3a.19.2024.08.22.18.46.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 Aug 2024 18:46:41 -0700 (PDT)
+From: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+To: stable@vger.kernel.org,
+	Sasha Levin <sashal@kernel.org>
+Cc: bpf@vger.kernel.org,
+	Shung-Hsi Yu <shung-hsi.yu@suse.com>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Daniel Hodges <hodgesd@meta.com>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>
+Subject: [PATCH stable 6.10 1/2] bpf: Fix a kernel verifier crash in stacksafe()
+Date: Fri, 23 Aug 2024 09:46:30 +0800
+Message-ID: <20240823014631.114866-1-shung-hsi.yu@suse.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -72,42 +85,64 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-08-23_01,2024-08-22_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 bulkscore=0 adultscore=0
- malwarescore=0 suspectscore=0 mlxscore=0 mlxlogscore=999 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2407110000
- definitions=main-2408230009
-X-Proofpoint-ORIG-GUID: 84vaS5JaquI_V4VUzaydlv9c0HukKbGa
-X-Proofpoint-GUID: 84vaS5JaquI_V4VUzaydlv9c0HukKbGa
 
-Hi All,
+From: Yonghong Song <yonghong.song@linux.dev>
 
-We found BPF sefltest fail to build with following error:
+[ Upstream commit bed2eb964c70b780fb55925892a74f26cb590b25 ]
 
-08-09 20:39:59 DBG: |output|: progs/test_global_func10.c:24:1: error: unknown type name '__failure'
-08-09 20:39:59 DBG: |output|: __failure __msg("invalid indirect access to stack")
-08-09 20:39:59 DBG: |output|: ^
-08-09 20:39:59 DBG: |output|: progs/test_global_func10.c:24:17: error: expected parameter declarator
-08-09 20:39:59 DBG: |output|: __failure __msg("invalid indirect access to stack")
-08-09 20:39:59 DBG: |output|:                 ^
-08-09 20:39:59 DBG: |output|: progs/test_global_func10.c:24:17: error: expected ')'
-08-09 20:39:59 DBG: |output|: progs/test_global_func10.c:24:16: note: to match this '('
-08-09 20:39:59 DBG: |output|: __failure __msg("invalid indirect access to stack")
-08-09 20:39:59 DBG: |output|:                ^
-08-09 20:39:59 DBG: |output|: progs/test_global_func10.c:24:52: error: expected ';' after top level declarator
-08-09 20:39:59 DBG: |output|: __failure __msg("invalid indirect access to stack")
-08-09 20:39:59 DBG: |output|:                                                    ^
-08-09 20:39:59 DBG: |output|:                                                    ;
-08-09 20:39:59 DBG: |output|: 4 errors generated.
-08-09 20:39:59 DBG: |output|: make: *** [Makefile:470: /root/oltf/work/linux-bpf-qa/tools/testing/selftests/bpf/test_global_func10.o] Error 1
-08-09 20:39:59 DBG: |output|: make: *** Waiting for unfinished jobs....
+Daniel Hodges reported a kernel verifier crash when playing with sched-ext.
+Further investigation shows that the crash is due to invalid memory access
+in stacksafe(). More specifically, it is the following code:
 
-It happens from the commit e30bc19a9ee8("bpf: Allow reads from uninit stack"). We did a further look, '__failure' is defined in tools/testing/selftests/bpf/progs/bpf_misc.h, and was 1st introduced in commit 537c3f66eac1("selftests/bpf: add generic BPF program tester-loader") which is not backported to linux-5.15.y.
+    if (exact != NOT_EXACT &&
+        old->stack[spi].slot_type[i % BPF_REG_SIZE] !=
+        cur->stack[spi].slot_type[i % BPF_REG_SIZE])
+            return false;
 
-So we may need to revert the patch, or fix it.
+The 'i' iterates old->allocated_stack.
+If cur->allocated_stack < old->allocated_stack the out-of-bound
+access will happen.
 
-Kind regards,
-Sherry 
+To fix the issue add 'i >= cur->allocated_stack' check such that if
+the condition is true, stacksafe() should fail. Otherwise,
+cur->stack[spi].slot_type[i % BPF_REG_SIZE] memory access is legal.
+
+Fixes: 2793a8b015f7 ("bpf: exact states comparison for iterator convergence checks")
+Cc: Eduard Zingerman <eddyz87@gmail.com>
+Reported-by: Daniel Hodges <hodgesd@meta.com>
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+Signed-off-by: Yonghong Song <yonghong.song@linux.dev>
+Link: https://lore.kernel.org/r/20240812214847.213612-1-yonghong.song@linux.dev
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+---
+I see this patch itself was already picked up[1] by Sasha. This thread
+additional includes the associated selftest that was sent in the same
+series (not entirely sure if backporting selftest goes against the
+stable backporting rule though).
+
+1: https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/commit/queue-6.10/bpf-fix-a-kernel-verifier-crash-in-stacksafe.patch?id=e1b8b4a2ab5985f048c5e4ba7575deaa7bb65df7
+---
+ kernel/bpf/verifier.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index a8845cc299fe..521bd7efae03 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -16881,8 +16881,9 @@ static bool stacksafe(struct bpf_verifier_env *env, struct bpf_func_state *old,
+ 		spi = i / BPF_REG_SIZE;
+ 
+ 		if (exact != NOT_EXACT &&
+-		    old->stack[spi].slot_type[i % BPF_REG_SIZE] !=
+-		    cur->stack[spi].slot_type[i % BPF_REG_SIZE])
++		    (i >= cur->allocated_stack ||
++		     old->stack[spi].slot_type[i % BPF_REG_SIZE] !=
++		     cur->stack[spi].slot_type[i % BPF_REG_SIZE]))
+ 			return false;
+ 
+ 		if (!(old->stack[spi].spilled_ptr.live & REG_LIVE_READ)
+-- 
+2.46.0
+
 
