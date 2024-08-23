@@ -1,57 +1,50 @@
-Return-Path: <stable+bounces-69965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69966-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A36695CD8A
-	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 15:15:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 783CE95CDE0
+	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 15:30:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9C089B249C7
-	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 13:15:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DE9F1F249A7
+	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 13:30:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DD741E4B2;
-	Fri, 23 Aug 2024 13:15:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98A19188587;
+	Fri, 23 Aug 2024 13:30:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b="FEelb19e"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="poN9uNTi"
 X-Original-To: stable@vger.kernel.org
-Received: from mta-65-227.siemens.flowmailer.net (mta-65-227.siemens.flowmailer.net [185.136.65.227])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F441185931
-	for <stable@vger.kernel.org>; Fri, 23 Aug 2024 13:15:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.65.227
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EEEB18661A;
+	Fri, 23 Aug 2024 13:30:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724418939; cv=none; b=t4P17F8LwcMFM19cCL0jx8MrXzc1gb0CpPKiw9dgOz9ObbEm0ygrvv2LNkrZh54tHSwX48Q/bugYkH4s2GzSBd2uBq+T0tK82aTPBLC6wXswFbvTB0iKbvULu2PGWPCOM0gzb2wAWaB3PS5wx8m6KDfusFSd6vTMHpsaMiQO9e4=
+	t=1724419828; cv=none; b=SvT25IbzqBYDRJxSu+03hmIpb7Y0wi6l5KhWqpo06lKI6/aXi+4XVeLWxWjkn9/YwnVXKvquhkZQQI+/sCNEAy/h0CZ0bNamiXT/AZG6o7HMaQzYERz/hdXHbTgs97fuwEfBCPAS0SR4frDsESfzq8bxX5VMao41kybx654MqPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724418939; c=relaxed/simple;
-	bh=Ms/AMgVS4CDgtoEwImzVWejNY/HDWjKW4hxSXd7TToY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dcP5Dt8oWXN29QVvQhdqFMl9hepN1mxlVf7hccLpVAloxopjEAxJGmeyb+zBcKCllRPMzisu1n3XkC9w8Uv0heSppl+jJbwvjKAGdA8Z/ApA2TTYDl+WY8GLipV3TlNVveJZlHqH0xBeZF0HtTi1TdB08uC/VjQ5GFOjO/cX9Vo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b=FEelb19e; arc=none smtp.client-ip=185.136.65.227
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
-Received: by mta-65-227.siemens.flowmailer.net with ESMTPSA id 20240823131523ff4deafa8515a9dfd1
-        for <stable@vger.kernel.org>;
-        Fri, 23 Aug 2024 15:15:23 +0200
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm1;
- d=siemens.com; i=alexander.sverdlin@siemens.com;
- h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc;
- bh=Y89vCzptwdnKNk2K+D/h3ihBLRWAp2Sx0m64kgur5ac=;
- b=FEelb19ekzvjDFavKw8HJ9pZpgkVffPYiXt0XF7GHC2zYjbEvbJew6OgMW/Km2V79nq5Ch
- 9a0bGbklp9Jya4trAs8NLPzBPDyS6jRfcQwf+JT2GbUjtgIU6ugK8fe7KqcnOgFcdoCMhK+Y
- BmdQKmAmjDTRDJHc00+mYgThHooOAuoWN5c8okjrZR2JQdeh4qHGQlBMi0ExGSRCGi3+0ZVT
- WZnZVkLqjdCnTvHtCZj9NhJb01YrrLUTe+3mkf8nGm8jzAWTc1bpqNpP6LdFRCa8dkjBlp0n
- LGbSqsbbETWt+lsYwXEgsG//uwjQ5Axr3u12cFUoasDnaLjWDB/Z/Jfg==;
-From: "A. Sverdlin" <alexander.sverdlin@siemens.com>
-To: linux-wireless@vger.kernel.org
-Cc: Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	=?UTF-8?q?J=C3=A9r=C3=B4me=20Pouiller?= <jerome.pouiller@silabs.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	stable@vger.kernel.org
-Subject: [PATCH] wifi: wfx: repair open network AP mode
-Date: Fri, 23 Aug 2024 15:15:20 +0200
-Message-ID: <20240823131521.3309073-1-alexander.sverdlin@siemens.com>
+	s=arc-20240116; t=1724419828; c=relaxed/simple;
+	bh=bkdymBfFZ9rhDAJVOm/k+8cplSbx+iwX219268UINok=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=res1Tj1+Kx5JM22UJ5zGU5N+Q0BK6UwVARPyfcFrqjPi4HNyeit5pR11ZiwiDdtBj2fcUeOdy9rih21Ea2Z4UKe5uClL5u4O08Hf0znd+yNvNfWvvxQE/nantJrrDIrRPjuW29OU8L5MZt56ZNZmn2cv3i0FhmDqG2JQMtkmOjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=poN9uNTi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06948C32786;
+	Fri, 23 Aug 2024 13:30:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724419828;
+	bh=bkdymBfFZ9rhDAJVOm/k+8cplSbx+iwX219268UINok=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=poN9uNTiF3mTKwIyilRVUOgWSdN9z/xCHEQBkBVHQ2L1LhCHHY9qZ7YwsO177MXVj
+	 A710ywkQA4JjxbCgTAkJ/QSQ5Gsvcc7hYM/mqKPhqAp/a/aWB7XcvrpSL0pz5VZDwe
+	 IDsROTq6aoyAfm/RlSg3UtwklxthSBMLfNY9TR7i6IsTnLa1jZglIbAeNm6H/MyLBA
+	 DXzToauyonVu8C/aE9E35AVPyexsNj3nj6k51N41Hz20o2CMFp1x1uZZZD3kVOjwRr
+	 C0i+1uxi65y3xK0DQBtX79u8l4sLjLOCgze/tq6LqldfXFWyMGuZALgeGJS3R6fdSR
+	 6Bso7zXzqUs+g==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EAFAE3804CB0;
+	Fri, 23 Aug 2024 13:30:28 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,64 +52,54 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Flowmailer-Platform: Siemens
-Feedback-ID: 519:519-456497:519-21489:flowmailer
+Subject: Re: [PATCH net] net: mana: Fix race of mana_hwc_post_rx_wqe and new hwc
+ response
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <172441982778.2965533.12833287131080058770.git-patchwork-notify@kernel.org>
+Date: Fri, 23 Aug 2024 13:30:27 +0000
+References: <1724272949-2044-1-git-send-email-haiyangz@microsoft.com>
+In-Reply-To: <1724272949-2044-1-git-send-email-haiyangz@microsoft.com>
+To: Haiyang Zhang <haiyangz@microsoft.com>
+Cc: linux-hyperv@vger.kernel.org, netdev@vger.kernel.org, decui@microsoft.com,
+ stephen@networkplumber.org, kys@microsoft.com, paulros@microsoft.com,
+ olaf@aepfle.de, vkuznets@redhat.com, davem@davemloft.net, wei.liu@kernel.org,
+ edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, leon@kernel.org,
+ longli@microsoft.com, ssengar@linux.microsoft.com,
+ linux-rdma@vger.kernel.org, daniel@iogearbox.net, john.fastabend@gmail.com,
+ bpf@vger.kernel.org, ast@kernel.org, hawk@kernel.org, tglx@linutronix.de,
+ shradhagupta@linux.microsoft.com, jesse.brandeburg@intel.com,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
 
-From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Hello:
 
-RSN IE missing in beacon is normal in open networks.
-Avoid returning -ENODEV in this case.
+This patch was applied to netdev/net.git (main)
+by David S. Miller <davem@davemloft.net>:
 
-Steps to reproduce:
+On Wed, 21 Aug 2024 13:42:29 -0700 you wrote:
+> The mana_hwc_rx_event_handler() / mana_hwc_handle_resp() calls
+> complete(&ctx->comp_event) before posting the wqe back. It's
+> possible that other callers, like mana_create_txq(), start the
+> next round of mana_hwc_send_request() before the posting of wqe.
+> And if the HW is fast enough to respond, it can hit no_wqe error
+> on the HW channel, then the response message is lost. The mana
+> driver may fail to create queues and open, because of waiting for
+> the HW response and timed out.
+> Sample dmesg:
+> [  528.610840] mana 39d4:00:02.0: HWC: Request timed out!
+> [  528.614452] mana 39d4:00:02.0: Failed to send mana message: -110, 0x0
+> [  528.618326] mana 39d4:00:02.0 enP14804s2: Failed to create WQ object: -110
+> 
+> [...]
 
-$ cat /etc/wpa_supplicant.conf
-network={
-	ssid="testNet"
-	mode=2
-	key_mgmt=NONE
-}
+Here is the summary with links:
+  - [net] net: mana: Fix race of mana_hwc_post_rx_wqe and new hwc response
+    https://git.kernel.org/netdev/net/c/8af174ea863c
 
-$ wpa_supplicant -iwlan0 -c /etc/wpa_supplicant.conf
-nl80211: Beacon set failed: -22 (Invalid argument)
-Failed to set beacon parameters
-Interface initialization failed
-wlan0: interface state UNINITIALIZED->DISABLED
-wlan0: AP-DISABLED
-wlan0: Unable to setup interface.
-Failed to initialize AP interface
-
-After the change:
-
-$ wpa_supplicant -iwlan0 -c /etc/wpa_supplicant.conf
-Successfully initialized wpa_supplicant
-wlan0: interface state UNINITIALIZED->ENABLED
-wlan0: AP-ENABLED
-
-Cc: stable@vger.kernel.org
-Fixes: fe0a7776d4d1 ("wifi: wfx: fix possible NULL pointer dereference in wfx_set_mfp_ap()")
-Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
----
- drivers/net/wireless/silabs/wfx/sta.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/net/wireless/silabs/wfx/sta.c b/drivers/net/wireless/silabs/wfx/sta.c
-index 216d43c8bd6e..7c04810dbf3d 100644
---- a/drivers/net/wireless/silabs/wfx/sta.c
-+++ b/drivers/net/wireless/silabs/wfx/sta.c
-@@ -352,8 +352,11 @@ static int wfx_set_mfp_ap(struct wfx_vif *wvif)
- 
- 	ptr = (u16 *)cfg80211_find_ie(WLAN_EID_RSN, skb->data + ieoffset,
- 				      skb->len - ieoffset);
--	if (unlikely(!ptr))
-+	if (!ptr) {
-+		/* No RSN IE is fine in open networks */
-+		ret = 0;
- 		goto free_skb;
-+	}
- 
- 	ptr += pairwise_cipher_suite_count_offset;
- 	if (WARN_ON(ptr > (u16 *)skb_tail_pointer(skb)))
+You are awesome, thank you!
 -- 
-2.46.0
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
 
