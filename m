@@ -1,65 +1,70 @@
-Return-Path: <stable+bounces-70005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70006-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6833A95CF17
-	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 16:12:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 281D295CF1E
+	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 16:12:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 257E4281D9D
-	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 14:12:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B5FC1C237B7
+	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 14:12:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 851711991CA;
-	Fri, 23 Aug 2024 14:03:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A5FF188915;
+	Fri, 23 Aug 2024 14:03:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VCdMj/+d"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TYWnl5Yw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4337D188906;
-	Fri, 23 Aug 2024 14:03:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0142218BB90;
+	Fri, 23 Aug 2024 14:03:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724421828; cv=none; b=mXuVKq3hzzOJDbtj0EsuKHYsFLDpTwet+gjxxgUTsjUlGQe7HcFRuGv414ACkH1eOZQmuS6HSmdsq7OLbeETQjU3QqKP20iGIfrXN1X55603KSnYtS9UvbeoqJCBXVge670B+bAG0phnYVgYw7GSPdq19+rqEGSQ5GVMfXetpQM=
+	t=1724421833; cv=none; b=PRq+2KShwFGmYrb+7qNmlXqXxBC89LFI8HfqpvLSDZ1EF7iKiaMpiEPJjYB/EavZu1eRa2qNgbJBG3ZQYSFASq+sPim4vZkxvEUy++emcC9aA4NZ4WgpyWHTf8JxW66+yNVz8O95NCRwN6ixV67Ts2k+r2oNyegCggRbRXfh48M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724421828; c=relaxed/simple;
-	bh=Pf5doyZj52sYU4ZkPBSvPV+8vO0qg1sLFS+ArTntM9U=;
+	s=arc-20240116; t=1724421833; c=relaxed/simple;
+	bh=Lw3xV5CQbRpHj7Suwhvn/ROZHULgNHJAEmyajtD6PGE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qa5EmKNTZTKOE9O37OBlIpoB/RlNhXuDrD/XtMkST2rV9qbdR2FGRiKPeyWe4ffEoWzqeLRbqIpAVPS5XwCKaaS0cVc4RrmVBZDqQUaMLYv4gbY4jqgK2FG/VuB5yLNtPGWmEScMK6VkF9AW6Gj23YrRzGyloOyYZpckxkC47ds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VCdMj/+d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90CB2C4AF09;
-	Fri, 23 Aug 2024 14:03:46 +0000 (UTC)
+	 MIME-Version; b=nVIYWiJm1B57fr1NB1waiPrpZlXELzQZSAWhevO2OE/OgAigIzNI1mrJ+8+Nf9bs5nJz+Xtplvr4gNLBAeKfAMjg1Viw7utU3h9VUcID+IvEfP/CB2Z4LGeWtEjpzVyt/ik+7U9tD+4ly98b202yWwM2I8XycIjW+8wbSmnRuPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TYWnl5Yw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74F65C32786;
+	Fri, 23 Aug 2024 14:03:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724421828;
-	bh=Pf5doyZj52sYU4ZkPBSvPV+8vO0qg1sLFS+ArTntM9U=;
+	s=k20201202; t=1724421832;
+	bh=Lw3xV5CQbRpHj7Suwhvn/ROZHULgNHJAEmyajtD6PGE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VCdMj/+dpinNjVQRIjaF8ETG5e28uQsJj1yLZQbZC10aXoBNzKa7Tmji4ayvbiEZn
-	 JFwig4yCBefVY4aIhfEgtkTjVxGt0pg3L/kp/RBIWLIbDS8tzhfh0NoqyUuR/ncHbm
-	 kge0U6Gd5nsEiGEmjm9ZBWlTzgdEmiyJ55abf14hNCFJR8GS9qdC3c9zP51tkicNKz
-	 gAJ4kxpdhJwjpAqQZBqsNcjx/0yCA7M4NXdwtBogudeAxhUUxa8j4yf0II9AlsKb1a
-	 TYvnhDO8D3d9CCE86CVU6cPZe1GXxLwgWBID129bFv8rEVz88H//7XBfx15q47L9eb
-	 o4zDg4t0+hFGg==
+	b=TYWnl5YwwCBIArKeuw5YgI16un7qi9Ghfxz+P1bUe5Bfop9Jl5R9xnMAqGKFmf/Ys
+	 f0FKm9hYcRE/b0nveJtd+S6FtYaqmo6KOUI5QGNratyPuyau4vmAMPlSCe8UMu4oOf
+	 nOkCq48j5ebGp74SasoUiAVU3MQq7dVbbKH6lCB25wJUNeKXLZfwr6w992vSh4kwZ6
+	 UbBc1cffpBCKW/Z6GOhd/CPykQkx9i+1Ho7P1IGF4EXVU2ZjVsms6qV8Sl4KeuQ2Zm
+	 0QZB52ajVHpSuA8todpWFr5vHiz/quvFj9VDXWAUPK/hCHCTn2AgqwOfOerYw8Ol6u
+	 bJHUu77c56izw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+Cc: Bert Karwatzki <spasswolf@web.de>,
+	Felix Fietkau <nbd@nbd.name>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	hbathini@linux.ibm.com,
-	thorsten.blum@toblux.com,
-	rostedt@goodmis.org,
-	bhe@redhat.com,
-	arnd@arndb.de,
-	philmd@linaro.org,
-	rppt@kernel.org,
-	kent.overstreet@linux.dev,
-	tzimmermann@suse.de,
-	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH AUTOSEL 6.6 14/20] powerpc/mm: Fix boot warning with hugepages and CONFIG_DEBUG_VIRTUAL
-Date: Fri, 23 Aug 2024 10:02:28 -0400
-Message-ID: <20240823140309.1974696-14-sashal@kernel.org>
+	lorenzo@kernel.org,
+	ryder.lee@mediatek.com,
+	matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com,
+	sean.wang@mediatek.com,
+	deren.wu@mediatek.com,
+	mingyen.hsieh@mediatek.com,
+	johannes.berg@intel.com,
+	emmanuel.grumbach@intel.com,
+	hao.zhang@mediatek.com,
+	leon.yen@mediatek.com,
+	linux-wireless@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.6 15/20] wifi: mt76: mt7921: fix NULL pointer access in mt7921_ipv6_addr_change
+Date: Fri, 23 Aug 2024 10:02:29 -0400
+Message-ID: <20240823140309.1974696-15-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240823140309.1974696-1-sashal@kernel.org>
 References: <20240823140309.1974696-1-sashal@kernel.org>
@@ -74,83 +79,35 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.47
 Content-Transfer-Encoding: 8bit
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Bert Karwatzki <spasswolf@web.de>
 
-[ Upstream commit e7e846dc6c73fbc94ae8b4ec20d05627646416f2 ]
+[ Upstream commit 479ffee68d59c599f8aed8fa2dcc8e13e7bd13c3 ]
 
-Booting with CONFIG_DEBUG_VIRTUAL leads to following warning when
-passing hugepage reservation on command line:
+When disabling wifi mt7921_ipv6_addr_change() is called as a notifier.
+At this point mvif->phy is already NULL so we cannot use it here.
 
-  Kernel command line: hugepagesz=1g hugepages=1 hugepagesz=64m hugepages=1 hugepagesz=256m hugepages=1 noreboot
-  HugeTLB: allocating 1 of page size 1.00 GiB failed.  Only allocated 0 hugepages.
-  ------------[ cut here ]------------
-  WARNING: CPU: 0 PID: 0 at arch/powerpc/include/asm/io.h:948 __alloc_bootmem_huge_page+0xd4/0x284
-  Modules linked in:
-  CPU: 0 PID: 0 Comm: swapper Not tainted 6.10.0-rc6-00396-g6b0e82791bd0-dirty #936
-  Hardware name: MPC8544DS e500v2 0x80210030 MPC8544 DS
-  NIP:  c1020240 LR: c10201d0 CTR: 00000000
-  REGS: c13fdd30 TRAP: 0700   Not tainted  (6.10.0-rc6-00396-g6b0e82791bd0-dirty)
-  MSR:  00021000 <CE,ME>  CR: 44084288  XER: 20000000
-
-  GPR00: c10201d0 c13fde20 c130b560 e8000000 e8001000 00000000 00000000 c1420000
-  GPR08: 00000000 00028001 00000000 00000004 44084282 01066ac0 c0eb7c9c efffe149
-  GPR16: c0fc4228 0000005f ffffffff c0eb7d0c c0eb7cc0 c0eb7ce0 ffffffff 00000000
-  GPR24: c1441cec efffe153 e8001000 c14240c0 00000000 c1441d64 00000000 e8000000
-  NIP [c1020240] __alloc_bootmem_huge_page+0xd4/0x284
-  LR [c10201d0] __alloc_bootmem_huge_page+0x64/0x284
-  Call Trace:
-  [c13fde20] [c10201d0] __alloc_bootmem_huge_page+0x64/0x284 (unreliable)
-  [c13fde50] [c10207b8] hugetlb_hstate_alloc_pages+0x8c/0x3e8
-  [c13fdeb0] [c1021384] hugepages_setup+0x240/0x2cc
-  [c13fdef0] [c1000574] unknown_bootoption+0xfc/0x280
-  [c13fdf30] [c0078904] parse_args+0x200/0x4c4
-  [c13fdfa0] [c1000d9c] start_kernel+0x238/0x7d0
-  [c13fdff0] [c0000434] set_ivor+0x12c/0x168
-  Code: 554aa33e 7c042840 3ce0c142 80a7427c 5109a016 50caa016 7c9a2378 7fdcf378 4180000c 7c052040 41810160 7c095040 <0fe00000> 38c00000 40800108 3c60c0eb
-  ---[ end trace 0000000000000000 ]---
-
-This is due to virt_addr_valid() using high_memory before it is set.
-
-high_memory is set in mem_init() using max_low_pfn, but max_low_pfn
-is available long before, it is set in mem_topology_setup(). So just
-like commit daa9ada2093e ("powerpc/mm: Fix boot crash with FLATMEM")
-moved the setting of max_mapnr immediately after the call to
-mem_topology_setup(), the same can be done for high_memory.
-
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/62b69c4baad067093f39e7e60df0fe27a86b8d2a.1723100702.git.christophe.leroy@csgroup.eu
+Signed-off-by: Bert Karwatzki <spasswolf@web.de>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://patch.msgid.link/20240812104542.80760-1-spasswolf@web.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/setup-common.c | 1 +
- arch/powerpc/mm/mem.c              | 2 --
- 2 files changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7921/main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kernel/setup-common.c b/arch/powerpc/kernel/setup-common.c
-index 20f72cd1d8138..03eaad5949f14 100644
---- a/arch/powerpc/kernel/setup-common.c
-+++ b/arch/powerpc/kernel/setup-common.c
-@@ -950,6 +950,7 @@ void __init setup_arch(char **cmdline_p)
- 	mem_topology_setup();
- 	/* Set max_mapnr before paging_init() */
- 	set_max_mapnr(max_pfn);
-+	high_memory = (void *)__va(max_low_pfn * PAGE_SIZE);
- 
- 	/*
- 	 * Release secondary cpus out of their spinloops at 0x60 now that
-diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
-index 07e8f4f1e07f8..9dbef559af4cb 100644
---- a/arch/powerpc/mm/mem.c
-+++ b/arch/powerpc/mm/mem.c
-@@ -287,8 +287,6 @@ void __init mem_init(void)
- 	swiotlb_init(ppc_swiotlb_enable, ppc_swiotlb_flags);
- #endif
- 
--	high_memory = (void *) __va(max_low_pfn * PAGE_SIZE);
--
- 	kasan_late_init();
- 
- 	memblock_free_all();
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+index d8851cb5f400b..da17a29a4ce57 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+@@ -1095,7 +1095,7 @@ static void mt7921_ipv6_addr_change(struct ieee80211_hw *hw,
+ 				    struct inet6_dev *idev)
+ {
+ 	struct mt792x_vif *mvif = (struct mt792x_vif *)vif->drv_priv;
+-	struct mt792x_dev *dev = mvif->phy->dev;
++	struct mt792x_dev *dev = mt792x_hw_dev(hw);
+ 	struct inet6_ifaddr *ifa;
+ 	struct in6_addr ns_addrs[IEEE80211_BSS_ARP_ADDR_LIST_LEN];
+ 	struct sk_buff *skb;
 -- 
 2.43.0
 
