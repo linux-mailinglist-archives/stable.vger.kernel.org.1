@@ -1,57 +1,68 @@
-Return-Path: <stable+bounces-69984-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69985-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CA5A95CED1
-	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 16:06:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 084EE95CED3
+	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 16:06:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3F38B1C2407A
-	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 14:06:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AFAC41F27461
+	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 14:06:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BE9F1922E0;
-	Fri, 23 Aug 2024 14:02:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3211B191F64;
+	Fri, 23 Aug 2024 14:02:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QJrTNm8X"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dlYCZhCR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1743A1922D5;
-	Fri, 23 Aug 2024 14:02:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3CE1188A11;
+	Fri, 23 Aug 2024 14:02:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724421736; cv=none; b=f9xz9wt2Ctay3qjcDch+4SrjAR35I2WPko1eGzRnC7HfZc2YpcRzqAWXtq8AOugwFmdJOQpCqUtvJu9+haYvDw6hyemcR9ztG2LaZfXWAAcdzNRRzLcs0g8RjBU60Wb78vPE2UmaoHkqyj/gFaP+YBT6/IDAZyyIqxp4xB+p+Lk=
+	t=1724421740; cv=none; b=ttRC7cOW8hSD9hN+1bb6+hytLGLYrh1GFPBJxSWnTtrbCHpQ20RBBNzhH6gMpabcGiBD2TAetnpYHW7XKsWyo2INCaBNr6Z2xQevM1sUYqve4QhtSu2iAUvt6dHGyZBjqKwFgyubsd33cKKQXDj+NT+sVPEN7e3F6n3ycV4omYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724421736; c=relaxed/simple;
-	bh=hmI+p+zix87iEg319YNt7pc0rEvuw4ysuuicqIM28uw=;
+	s=arc-20240116; t=1724421740; c=relaxed/simple;
+	bh=dgiQ3/mt/vSgmJTLRuwP+QlvvZhMW/aC7s6AlBg/FVc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NFxwHydRxLJuFCD9OsYYa/Hp9QgMqRDlBcovdtxlbJQZ5wICrjcqSuD/M4z2sZQvNGdTBViJJU4I62s9anQwGlwnLbBntYPZ/aCsbJdlLxJUarqb455fXPHpqR797DmHkOvQoOo8WlUsl3bQdIa1lGVvloFXxOlMMufgQopY6RU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QJrTNm8X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8B65C4AF0B;
-	Fri, 23 Aug 2024 14:02:14 +0000 (UTC)
+	 MIME-Version; b=e9Ubh7nmgo2VEsCIAfKhGotKc/vaARfTU0hxZSgYCre7hg1sTSGrJ+9ta8bLRbmi6F/BSMRGbTzPx1qMBGuTrDM7hnfBYJC1sFwIifK4PTjiby9fT9tPjTlAj2rmR506TeW+OCXPbQ7qZdj9gRwwwR2Pbv/SQspjhg4Zj5OUptE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dlYCZhCR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBD72C4AF09;
+	Fri, 23 Aug 2024 14:02:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724421735;
-	bh=hmI+p+zix87iEg319YNt7pc0rEvuw4ysuuicqIM28uw=;
+	s=k20201202; t=1724421739;
+	bh=dgiQ3/mt/vSgmJTLRuwP+QlvvZhMW/aC7s6AlBg/FVc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QJrTNm8XjefKU+BLcYalxGRsDZ6fuOjn1h8+90hF5xNB0yLDEvaW3x8XJKnOd6Ip9
-	 647UrBDO/OJtqeJnmGRcUajyBw8VD3j1cY5B1qlqkeZrugQ6JhZ+QEphweL3ZTV8Jt
-	 P0D4jCXurY8o53xZrIiYK2nXAVDKWKq0UrqJ2QHzao5H+1fo5qRMO84KCgFhOrWVec
-	 XH5uk+UjS9FFaN/a5mQiXhy86xHGo0FWOgmVvTB4cOzWeOeft6NW84rfzhhJFXSsOU
-	 X9tAbJYTB/5waFNZx21q+gpPvwNArh2SQEliAMTwkA8488i6v0le+LQDXEuTBA3iQz
-	 f6l6FrhdisZjQ==
+	b=dlYCZhCRU7nnq27Ho0uf0X+Ef2SfRvgleHTR3u1xKT4dEw3OOYAijqId7ghUQkIJZ
+	 it1nCR0iv/8Oeuj0b4vdCsr7P8BfeMll1Yr1AxECRimn7dzLFzT2PN44IuWq7NURU3
+	 QIzdpfuh4O+Ws/MQClW8BJ25tVv7Cbn87muSYFyNQUgOW9nKhXs6p9e6p2K5F6uUKm
+	 BY4wE7S5/SV7rZQDr74/+lX1PZYJFKhuShDNzxnERzhQKg+O3UbQDtUjd3Wmt7qNwV
+	 NwmsCAf5jLiMv/hHsxDNwsjz2r78CNYOhn2v7J6+0GYD6mWKXHKMH3aNTuj7Lvkkzt
+	 RkRPwcshrj9QA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Phillip Lougher <phillip@squashfs.org.uk>,
-	Lizhi Xu <lizhi.xu@windriver.com>,
-	syzbot+24ac24ff58dc5b0d26b9@syzkaller.appspotmail.com,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 6.10 17/24] Squashfs: sanity check symbolic link size
-Date: Fri, 23 Aug 2024 10:00:39 -0400
-Message-ID: <20240823140121.1974012-17-sashal@kernel.org>
+Cc: Yinjie Yao <yinjie.yao@amd.com>,
+	Ruijing Dong <ruijing.dong@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>,
+	christian.koenig@amd.com,
+	Xinhui.Pan@amd.com,
+	airlied@gmail.com,
+	daniel@ffwll.ch,
+	leo.liu@amd.com,
+	sonny.jiang@amd.com,
+	boyuan.zhang@amd.com,
+	srinivasan.shanmugam@amd.com,
+	bokun.zhang@amd.com,
+	saleemkhan.jamadar@amd.com,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.10 18/24] drm/amdgpu: Update kmd_fw_shared for VCN5
+Date: Fri, 23 Aug 2024 10:00:40 -0400
+Message-ID: <20240823140121.1974012-18-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240823140121.1974012-1-sashal@kernel.org>
 References: <20240823140121.1974012-1-sashal@kernel.org>
@@ -66,66 +77,39 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.6
 Content-Transfer-Encoding: 8bit
 
-From: Phillip Lougher <phillip@squashfs.org.uk>
+From: Yinjie Yao <yinjie.yao@amd.com>
 
-[ Upstream commit 810ee43d9cd245d138a2733d87a24858a23f577d ]
+[ Upstream commit 507a2286c052919fe416b3daa0f0061d0fc702b9 ]
 
-Syzkiller reports a "KMSAN: uninit-value in pick_link" bug.
+kmd_fw_shared changed in VCN5
 
-This is caused by an uninitialised page, which is ultimately caused
-by a corrupted symbolic link size read from disk.
-
-The reason why the corrupted symlink size causes an uninitialised
-page is due to the following sequence of events:
-
-1. squashfs_read_inode() is called to read the symbolic
-   link from disk.  This assigns the corrupted value
-   3875536935 to inode->i_size.
-
-2. Later squashfs_symlink_read_folio() is called, which assigns
-   this corrupted value to the length variable, which being a
-   signed int, overflows producing a negative number.
-
-3. The following loop that fills in the page contents checks that
-   the copied bytes is less than length, which being negative means
-   the loop is skipped, producing an uninitialised page.
-
-This patch adds a sanity check which checks that the symbolic
-link size is not larger than expected.
-
---
-
-Signed-off-by: Phillip Lougher <phillip@squashfs.org.uk>
-Link: https://lore.kernel.org/r/20240811232821.13903-1-phillip@squashfs.org.uk
-Reported-by: Lizhi Xu <lizhi.xu@windriver.com>
-Reported-by: syzbot+24ac24ff58dc5b0d26b9@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/000000000000a90e8c061e86a76b@google.com/
-V2: fix spelling mistake.
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Yinjie Yao <yinjie.yao@amd.com>
+Reviewed-by: Ruijing Dong <ruijing.dong@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit aa02486fb18cecbaca0c4fd393d1a03f1d4c3f9a)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/squashfs/inode.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.h | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/fs/squashfs/inode.c b/fs/squashfs/inode.c
-index 16bd693d0b3aa..d5918eba27e37 100644
---- a/fs/squashfs/inode.c
-+++ b/fs/squashfs/inode.c
-@@ -279,8 +279,13 @@ int squashfs_read_inode(struct inode *inode, long long ino)
- 		if (err < 0)
- 			goto failed_read;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.h
+index 9f06def236fdc..49cf0c73b2364 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.h
+@@ -460,8 +460,11 @@ struct amdgpu_vcn5_fw_shared {
+ 	struct amdgpu_fw_shared_unified_queue_struct sq;
+ 	uint8_t pad1[8];
+ 	struct amdgpu_fw_shared_fw_logging fw_log;
++	uint8_t pad2[20];
+ 	struct amdgpu_fw_shared_rb_setup rb_setup;
+-	uint8_t pad2[4];
++	struct amdgpu_fw_shared_smu_interface_info smu_dpm_interface;
++	struct amdgpu_fw_shared_drm_key_wa drm_key_wa;
++	uint8_t pad3[9];
+ };
  
--		set_nlink(inode, le32_to_cpu(sqsh_ino->nlink));
- 		inode->i_size = le32_to_cpu(sqsh_ino->symlink_size);
-+		if (inode->i_size > PAGE_SIZE) {
-+			ERROR("Corrupted symlink\n");
-+			return -EINVAL;
-+		}
-+
-+		set_nlink(inode, le32_to_cpu(sqsh_ino->nlink));
- 		inode->i_op = &squashfs_symlink_inode_ops;
- 		inode_nohighmem(inode);
- 		inode->i_data.a_ops = &squashfs_symlink_aops;
+ #define VCN_BLOCK_ENCODE_DISABLE_MASK 0x80
 -- 
 2.43.0
 
