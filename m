@@ -1,85 +1,57 @@
-Return-Path: <stable+bounces-69964-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BEE195CD2A
-	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 15:07:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A36695CD8A
+	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 15:15:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BEEB8280D31
-	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 13:07:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9C089B249C7
+	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 13:15:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED18C1865E3;
-	Fri, 23 Aug 2024 13:07:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DD741E4B2;
+	Fri, 23 Aug 2024 13:15:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UOzNLhaP"
+	dkim=pass (2048-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b="FEelb19e"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mta-65-227.siemens.flowmailer.net (mta-65-227.siemens.flowmailer.net [185.136.65.227])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D17D185934;
-	Fri, 23 Aug 2024 13:07:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F441185931
+	for <stable@vger.kernel.org>; Fri, 23 Aug 2024 13:15:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.65.227
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724418458; cv=none; b=JrC3V5LfCJWdLMa3DZCndt4jVWYxFFMZC8TxpChD5qIlOX4QPfzCV53x+l5+8JgtRnaN52nSYqkKp4K3sBl7FN8MoTrfa6GB0gCjALeD/7EE88fgbZ453CalpVTZ6CbR4qzOMiNrkNyYg36JpwYtTBPf7opifUqKPbx6/wtCdLE=
+	t=1724418939; cv=none; b=t4P17F8LwcMFM19cCL0jx8MrXzc1gb0CpPKiw9dgOz9ObbEm0ygrvv2LNkrZh54tHSwX48Q/bugYkH4s2GzSBd2uBq+T0tK82aTPBLC6wXswFbvTB0iKbvULu2PGWPCOM0gzb2wAWaB3PS5wx8m6KDfusFSd6vTMHpsaMiQO9e4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724418458; c=relaxed/simple;
-	bh=md6wvIYInqDvwCnlq2oN/hcs0ZrJ5aQ4hMYF/cjf1nw=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=rpC8IgX511x/cS5OCdJE5FgHGJ6HHf9QWYfVcGgw5Xqx5D9IcwmDkszl+pviGCN/iW5FGnGa/8aMyFxAoeO2tH9f9BuLDheiomvCYgILqkhDWbXIBrxxfMU1ZU1pLU9ph3qnlGBNvXx4I6ySEG0SoTWHGnAIVqgb7552ho8z0k0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UOzNLhaP; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-202376301e6so15608265ad.0;
-        Fri, 23 Aug 2024 06:07:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724418456; x=1725023256; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=rlYuM/xStZRZGHv2D7dEfaRA47te2oJ7fzvapL8KZI4=;
-        b=UOzNLhaP95kOZk3gOBmn66KZo1Wqr5NvrAj2vyYGCVjhXkXeS4i5egejOZeD/2CYNk
-         /d5TJN5fKIXC0zSDHgHgO41TwTK+L8KoeN0bsOIyTj0DRw35dxqZLmQeHcBeKzMrLAuJ
-         jwk2e40uEj07yvqQww0Sf1yHmhN4DxJ2Dj0NCoUbS+rbLV9vNutc+f2vV6nO6kL0KlpL
-         Nkn6jWHX2+9gFwj0yTYwSdLCFuCPuxgnK/Hg3pn3/E8Hru5ojBzNhKw4aXiUSqmoNZM5
-         XuCBZH22wupu7xB1XnFOjq09uYGcdWsPwxIpkkHuP1kmhHwyje+7G+Ccsk1PYc6igpMg
-         nCSQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724418456; x=1725023256;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=rlYuM/xStZRZGHv2D7dEfaRA47te2oJ7fzvapL8KZI4=;
-        b=iJSAjlllzDeW/cXLLx1Sn1SEFQqkKBKLUCAVCAXvQdEyarRyjldJuDFUujAjFvFuAS
-         5u82E0DDBBl22spoQhey41reY9O/eRShQ3VH9A3S3fqEHevxpEJZdRFetoxoevS2JT2G
-         2I8dPa1lxbC505rPeVG39yn/XRosHZz005J71BcwRVYrv6RViUaGRDnnm1znJNCEVhOX
-         FGshGYEsFQGK96xngFAx75vAQBwPWi9OTsXdDJ+ZLJXwp3FampI9li7yfyIfTa4qx3TU
-         TSriELg+/bJXFLalVhMvWfCllhiaCknZpu9GjGk5jTVF7NKy9N2DuUdforgF8s+jfvDw
-         hD8A==
-X-Forwarded-Encrypted: i=1; AJvYcCUnXWtZDh9OrRL0db6k5nMY8CPJ0xoYShehQtZ0UMflH64UvSXv6J+QRjkPghQGvPo1vIOwejzb@vger.kernel.org, AJvYcCWMEuqfU4AT3Vf9jmjOlVo5A2f3XkPeUzd4vNcDMa2OobU5n6hwp1L8wDyBQNjr27+tnWShKKCSjLMxyQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwpGx/ID7NP9/4sq1RqdJbvmEqz5IZkoCupkXjVdZmad5XneF/G
-	1NJgS06razleSCPWkpmukw8DSPJE5wZ5PybUJ7UXJx/OK8vMmLWa19f9SKQJXmg=
-X-Google-Smtp-Source: AGHT+IG+z90BpU4n3/D5JvXJxPKNimH1Y2FygEdZ5a8zEddj3cN280eNkrOJRuCTc//DWkYOie1WEg==
-X-Received: by 2002:a17:902:c94f:b0:203:a12e:f8ca with SMTP id d9443c01a7336-203a12efa78mr19458605ad.20.1724418455563;
-        Fri, 23 Aug 2024 06:07:35 -0700 (PDT)
-Received: from localhost ([123.113.110.156])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20385580986sm27958085ad.79.2024.08.23.06.07.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Aug 2024 06:07:35 -0700 (PDT)
-From: Julian Sun <sunjunchao2870@gmail.com>
-To: linux-fsdevel@vger.kernel.org,
-	linux-btrfs@vger.kernel.org
-Cc: viro@zeniv.linux.org.uk,
-	brauner@kernel.org,
-	jack@suse.cz,
-	david@fromorbit.com,
-	zhuyifei1999@gmail.com,
-	Julian Sun <sunjunchao2870@gmail.com>,
-	syzbot+67ba3c42bcbb4665d3ad@syzkaller.appspotmail.com,
+	s=arc-20240116; t=1724418939; c=relaxed/simple;
+	bh=Ms/AMgVS4CDgtoEwImzVWejNY/HDWjKW4hxSXd7TToY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dcP5Dt8oWXN29QVvQhdqFMl9hepN1mxlVf7hccLpVAloxopjEAxJGmeyb+zBcKCllRPMzisu1n3XkC9w8Uv0heSppl+jJbwvjKAGdA8Z/ApA2TTYDl+WY8GLipV3TlNVveJZlHqH0xBeZF0HtTi1TdB08uC/VjQ5GFOjO/cX9Vo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b=FEelb19e; arc=none smtp.client-ip=185.136.65.227
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
+Received: by mta-65-227.siemens.flowmailer.net with ESMTPSA id 20240823131523ff4deafa8515a9dfd1
+        for <stable@vger.kernel.org>;
+        Fri, 23 Aug 2024 15:15:23 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm1;
+ d=siemens.com; i=alexander.sverdlin@siemens.com;
+ h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc;
+ bh=Y89vCzptwdnKNk2K+D/h3ihBLRWAp2Sx0m64kgur5ac=;
+ b=FEelb19ekzvjDFavKw8HJ9pZpgkVffPYiXt0XF7GHC2zYjbEvbJew6OgMW/Km2V79nq5Ch
+ 9a0bGbklp9Jya4trAs8NLPzBPDyS6jRfcQwf+JT2GbUjtgIU6ugK8fe7KqcnOgFcdoCMhK+Y
+ BmdQKmAmjDTRDJHc00+mYgThHooOAuoWN5c8okjrZR2JQdeh4qHGQlBMi0ExGSRCGi3+0ZVT
+ WZnZVkLqjdCnTvHtCZj9NhJb01YrrLUTe+3mkf8nGm8jzAWTc1bpqNpP6LdFRCa8dkjBlp0n
+ LGbSqsbbETWt+lsYwXEgsG//uwjQ5Axr3u12cFUoasDnaLjWDB/Z/Jfg==;
+From: "A. Sverdlin" <alexander.sverdlin@siemens.com>
+To: linux-wireless@vger.kernel.org
+Cc: Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	=?UTF-8?q?J=C3=A9r=C3=B4me=20Pouiller?= <jerome.pouiller@silabs.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Dmitry Antipov <dmantipov@yandex.ru>,
 	stable@vger.kernel.org
-Subject: [PATCH] vfs: fix race between evice_inodes() and find_inode()&iput()
-Date: Fri, 23 Aug 2024 21:07:30 +0800
-Message-Id: <20240823130730.658881-1-sunjunchao2870@gmail.com>
-X-Mailer: git-send-email 2.39.2
+Subject: [PATCH] wifi: wfx: repair open network AP mode
+Date: Fri, 23 Aug 2024 15:15:20 +0200
+Message-ID: <20240823131521.3309073-1-alexander.sverdlin@siemens.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -87,88 +59,64 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Flowmailer-Platform: Siemens
+Feedback-ID: 519:519-456497:519-21489:flowmailer
 
-Hi, all
+From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 
-Recently I noticed a bug[1] in btrfs, after digged it into
-and I believe it'a race in vfs.
+RSN IE missing in beacon is normal in open networks.
+Avoid returning -ENODEV in this case.
 
-Let's assume there's a inode (ie ino 261) with i_count 1 is
-called by iput(), and there's a concurrent thread calling
-generic_shutdown_super().
+Steps to reproduce:
 
-cpu0:                              cpu1:
-iput() // i_count is 1
-  ->spin_lock(inode)
-  ->dec i_count to 0
-  ->iput_final()                    generic_shutdown_super()
-    ->__inode_add_lru()               ->evict_inodes()
-      // cause some reason[2]           ->if (atomic_read(inode->i_count)) continue;
-      // return before                  // inode 261 passed the above check
-      // list_lru_add_obj()             // and then schedule out
-   ->spin_unlock()
-// note here: the inode 261
-// was still at sb list and hash list,
-// and I_FREEING|I_WILL_FREE was not been set
+$ cat /etc/wpa_supplicant.conf
+network={
+	ssid="testNet"
+	mode=2
+	key_mgmt=NONE
+}
 
-btrfs_iget()
-  // after some function calls
-  ->find_inode()
-    // found the above inode 261
-    ->spin_lock(inode)
-   // check I_FREEING|I_WILL_FREE
-   // and passed
-      ->__iget()
-    ->spin_unlock(inode)                // schedule back
-                                        ->spin_lock(inode)
-                                        // check (I_NEW|I_FREEING|I_WILL_FREE) flags,
-                                        // passed and set I_FREEING
-iput()                                  ->spin_unlock(inode)
-  ->spin_lock(inode)			  ->evict()
-  // dec i_count to 0
-  ->iput_final()
-    ->spin_unlock()
-    ->evict()
+$ wpa_supplicant -iwlan0 -c /etc/wpa_supplicant.conf
+nl80211: Beacon set failed: -22 (Invalid argument)
+Failed to set beacon parameters
+Interface initialization failed
+wlan0: interface state UNINITIALIZED->DISABLED
+wlan0: AP-DISABLED
+wlan0: Unable to setup interface.
+Failed to initialize AP interface
 
-Now, we have two threads simultaneously evicting
-the same inode, which may trigger the BUG(inode->i_state & I_CLEAR)
-statement both within clear_inode() and iput().
+After the change:
 
-To fix the bug, recheck the inode->i_count after holding i_lock.
-Because in the most scenarios, the first check is valid, and
-the overhead of spin_lock() can be reduced.
+$ wpa_supplicant -iwlan0 -c /etc/wpa_supplicant.conf
+Successfully initialized wpa_supplicant
+wlan0: interface state UNINITIALIZED->ENABLED
+wlan0: AP-ENABLED
 
-If there is any misunderstanding, please let me know, thanks.
-
-[1]: https://lore.kernel.org/linux-btrfs/000000000000eabe1d0619c48986@google.com/
-[2]: The reason might be 1. SB_ACTIVE was removed or 2. mapping_shrinkable()
-return false when I reproduced the bug.
-
-Reported-by: syzbot+67ba3c42bcbb4665d3ad@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=67ba3c42bcbb4665d3ad
-CC: stable@vger.kernel.org
-Fixes: 63997e98a3be ("split invalidate_inodes()")
-Signed-off-by: Julian Sun <sunjunchao2870@gmail.com>
+Cc: stable@vger.kernel.org
+Fixes: fe0a7776d4d1 ("wifi: wfx: fix possible NULL pointer dereference in wfx_set_mfp_ap()")
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 ---
- fs/inode.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/wireless/silabs/wfx/sta.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/fs/inode.c b/fs/inode.c
-index 3a41f83a4ba5..011f630777d0 100644
---- a/fs/inode.c
-+++ b/fs/inode.c
-@@ -723,6 +723,10 @@ void evict_inodes(struct super_block *sb)
- 			continue;
+diff --git a/drivers/net/wireless/silabs/wfx/sta.c b/drivers/net/wireless/silabs/wfx/sta.c
+index 216d43c8bd6e..7c04810dbf3d 100644
+--- a/drivers/net/wireless/silabs/wfx/sta.c
++++ b/drivers/net/wireless/silabs/wfx/sta.c
+@@ -352,8 +352,11 @@ static int wfx_set_mfp_ap(struct wfx_vif *wvif)
  
- 		spin_lock(&inode->i_lock);
-+		if (atomic_read(&inode->i_count)) {
-+			spin_unlock(&inode->i_lock);
-+			continue;
-+		}
- 		if (inode->i_state & (I_NEW | I_FREEING | I_WILL_FREE)) {
- 			spin_unlock(&inode->i_lock);
- 			continue;
+ 	ptr = (u16 *)cfg80211_find_ie(WLAN_EID_RSN, skb->data + ieoffset,
+ 				      skb->len - ieoffset);
+-	if (unlikely(!ptr))
++	if (!ptr) {
++		/* No RSN IE is fine in open networks */
++		ret = 0;
+ 		goto free_skb;
++	}
+ 
+ 	ptr += pairwise_cipher_suite_count_offset;
+ 	if (WARN_ON(ptr > (u16 *)skb_tail_pointer(skb)))
 -- 
-2.39.2
+2.46.0
 
 
