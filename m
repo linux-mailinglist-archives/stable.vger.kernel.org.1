@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-70033-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70034-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0624995CF73
-	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 16:21:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C0B995CF77
+	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 16:22:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A3A061F216F1
-	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 14:21:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 29E631C21126
+	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 14:22:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 968151A4F26;
-	Fri, 23 Aug 2024 14:05:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B332190045;
+	Fri, 23 Aug 2024 14:05:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dGfNNfXw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L22WcKiu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52B0E18F2FB;
-	Fri, 23 Aug 2024 14:05:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 027DE18892C;
+	Fri, 23 Aug 2024 14:05:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724421929; cv=none; b=YOBSRjAu9qqfrKkty4jmpH7s/+wze5x4y28oW1R7/6wzHpFU4yBCT8wk7qdAAgPmw9Ux+F9vKXcoZtG2EFtdT8VjP0kaMJVV9tlYI4WwwseUw+yZpiOL4Qbxr5BtUK57zF4cSQUXDItC236NLivmi4nj2i6d1UT8z86pU8DaIMA=
+	t=1724421944; cv=none; b=it03pT1gEnxjh2vQ0BoG/WCEWDXutxMDKtO+DqsHohqz2EuXwnyG432Mg2NrM4Unaj5uEOpGSl7EyP5YR9eodBkCJThyIcRyhx21Ri8F3Hb6Sjn5lNTVhkQN230zDObhqG89DcXaLXNKb3zmbKPBAVBPSXhNzgrxGPgPftDL99E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724421929; c=relaxed/simple;
-	bh=U8FFllOx3wObE1ADbHZAv4NbTzismmwQxdpoYaVOVyw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S1sfPJJfFYOYmDvenTDWc1fN+6+KDSKlX2JPR0P5LYCgD2TiqVYc7c07jkw8Vv/dNUekrRwH0p8P5ziMJcMFli5imArRtnhViw8LInQjnJuWouy4N5jgMZKgCLDu5dFnDtpG5SIbwWL1AmdS9sk174HJiFft0+ZBAiASfmUvIHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dGfNNfXw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5C1AC4AF09;
-	Fri, 23 Aug 2024 14:05:27 +0000 (UTC)
+	s=arc-20240116; t=1724421944; c=relaxed/simple;
+	bh=LZ6MiG4YRlQZkMjpzaXtBjLp8oaosKcR3U5nFR+187w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=d0VQ96kMeTLDzEol9FNCP7pxCFu+/L/gfpNycchKtQiRuISencH6wXzktE+8GYGcaDytWsexz85TOEzM+EsiqRaXCyKACY+qO20N9IAxfDArWP/RAk91KwEmt1flrTsdfrj9YDmuYFkwZklSJLEW42i9Crymu41l3xNasc0SYMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L22WcKiu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C121C32786;
+	Fri, 23 Aug 2024 14:05:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724421928;
-	bh=U8FFllOx3wObE1ADbHZAv4NbTzismmwQxdpoYaVOVyw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dGfNNfXwgDHRgRuGdoydmYMYHzFRNqDAzBZl/0jCtqgu5OEXEr4Xqdd3BCqz4FBM7
-	 1xNFUkT4E8W4QtDkjzyE3pm6oK/7FEavfHKEBsxv6ZfPdm45nMhcJFOh1K+XH7LxUr
-	 RRqVW7elsWnl0RmTgZlh/yAvtVQ7lQcH4qs2lC/1+n5bMD7NA9lGp98DbV6t22m83w
-	 7KLqvxbPbZZXMlj6QfQ8/xexcG7LfUSwRgp7HOeCFOGCaDzMv2h9y0oH0a9psku8ql
-	 A42TXOBgPzqIq+vF4JygTmz6zuppm4Q1o+4nmtmMlTwyY3+li/HKU9Bq6XiULiiqH7
-	 GgXvA+lmcmUow==
+	s=k20201202; t=1724421943;
+	bh=LZ6MiG4YRlQZkMjpzaXtBjLp8oaosKcR3U5nFR+187w=;
+	h=From:To:Cc:Subject:Date:From;
+	b=L22WcKiu10qAndF7o3dFaaVrkLBj4KLMk8gCR91d2rhUR5R1MxdSQFvT6ueZKIiIA
+	 mMGDlGSNu52I1HuSMAr9ixpGvlLdYlzH+3KRHJdTQMN8pmxyQCWO8StDSeZvxMDord
+	 Za4EPei89Ian4nZb1qGAKulNnYUeeyTffz9nKfkfiIBrC60v4rhoMwbKvDSJEI/+UM
+	 6cv5FIPVmY+tZedG3qGg+2inowjxSYFc1Y3t/Oxup8ZDkGzWxrPACCqQb9YfyGoHsO
+	 +BIhFIkpDggdF6XiicTV4UEs5FnqtiGRzDHudHFxhYD6sL5TFiJmgNbZQVZzQg3DFR
+	 /IqNbvDV6a+8Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jeff Layton <jlayton@kernel.org>,
-	David Sterba <dsterba@suse.com>,
+Cc: Oliver Neukum <oneukum@suse.com>,
+	Foster Snowhill <forst@pen.gy>,
+	Georgi Valkov <gvalkov@gmail.com>,
+	"David S . Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>,
-	clm@fb.com,
-	josef@toxicpanda.com,
-	linux-btrfs@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 9/9] btrfs: update target inode's ctime on unlink
-Date: Fri, 23 Aug 2024 10:04:56 -0400
-Message-ID: <20240823140507.1975524-9-sashal@kernel.org>
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-usb@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.10 1/9] usbnet: ipheth: race between ipheth_close and error handling
+Date: Fri, 23 Aug 2024 10:05:21 -0400
+Message-ID: <20240823140541.1975737-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240823140507.1975524-1-sashal@kernel.org>
-References: <20240823140507.1975524-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,44 +65,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 5.15.165
+X-stable-base: Linux 5.10.224
 Content-Transfer-Encoding: 8bit
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Oliver Neukum <oneukum@suse.com>
 
-[ Upstream commit 3bc2ac2f8f0b78a13140fc72022771efe0c9b778 ]
+[ Upstream commit e5876b088ba03a62124266fa20d00e65533c7269 ]
 
-Unlink changes the link count on the target inode. POSIX mandates that
-the ctime must also change when this occurs.
+ipheth_sndbulk_callback() can submit carrier_work
+as a part of its error handling. That means that
+the driver must make sure that the work is cancelled
+after it has made sure that no more URB can terminate
+with an error condition.
 
-According to https://pubs.opengroup.org/onlinepubs/9699919799/functions/unlink.html:
+Hence the order of actions in ipheth_close() needs
+to be inverted.
 
-"Upon successful completion, unlink() shall mark for update the last data
- modification and last file status change timestamps of the parent
- directory. Also, if the file's link count is not 0, the last file status
- change timestamp of the file shall be marked for update."
-
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Reviewed-by: David Sterba <dsterba@suse.com>
-[ add link to the opengroup docs ]
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Signed-off-by: Foster Snowhill <forst@pen.gy>
+Tested-by: Georgi Valkov <gvalkov@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/inode.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/usb/ipheth.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-index 07c6ab4ba0d43..ac68be3290ddd 100644
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -4199,6 +4199,7 @@ static int __btrfs_unlink_inode(struct btrfs_trans_handle *trans,
+diff --git a/drivers/net/usb/ipheth.c b/drivers/net/usb/ipheth.c
+index 06d9f19ca142a..0774d753dd316 100644
+--- a/drivers/net/usb/ipheth.c
++++ b/drivers/net/usb/ipheth.c
+@@ -353,8 +353,8 @@ static int ipheth_close(struct net_device *net)
+ {
+ 	struct ipheth_device *dev = netdev_priv(net);
  
- 	btrfs_i_size_write(dir, dir->vfs_inode.i_size - name_len * 2);
- 	inode_inc_iversion(&inode->vfs_inode);
-+	inode_set_ctime_current(&inode->vfs_inode);
- 	inode_inc_iversion(&dir->vfs_inode);
- 	inode->vfs_inode.i_ctime = dir->vfs_inode.i_mtime =
- 		dir->vfs_inode.i_ctime = current_time(&inode->vfs_inode);
+-	cancel_delayed_work_sync(&dev->carrier_work);
+ 	netif_stop_queue(net);
++	cancel_delayed_work_sync(&dev->carrier_work);
+ 	return 0;
+ }
+ 
 -- 
 2.43.0
 
