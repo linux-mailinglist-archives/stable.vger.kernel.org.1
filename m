@@ -1,136 +1,138 @@
-Return-Path: <stable+bounces-69931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69934-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A780C95C369
-	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 04:50:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BA1A95C396
+	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 05:05:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C3DE41C224FC
-	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 02:50:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D5D6EB246A1
+	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 03:05:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D62DB20B33;
-	Fri, 23 Aug 2024 02:50:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="H/Wvx61h"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A66037171;
+	Fri, 23 Aug 2024 03:05:03 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpbgbr1.qq.com (smtpbgbr1.qq.com [54.207.19.206])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 805F61AACC
-	for <stable@vger.kernel.org>; Fri, 23 Aug 2024 02:50:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD4F820B33;
+	Fri, 23 Aug 2024 03:04:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.19.206
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724381443; cv=none; b=LTTx/AcRzJHj1njH4/UbMHHG+O80hiW717DYz6DherqKvPGjZEYBFPNzxAMWNBZaYFaK9GXfQaylgXfp25tKSZ49MMwxKALB9fiKDJihuPcY9A+MBK+85XvoAwUMjU89vNvnlAwPqsGmLA2Ltmr1FG89MqlxmoWGBLdvf1pA/sQ=
+	t=1724382303; cv=none; b=hAeShtHmIBAvhp1zSl3H4EuAjB58qmaV0chbS2lyn1Y+faxh/jKr3AgUkhCwZTeIF7PSiN/EifWoh95zCLDCHWwyyphKTu2bHQGy+Depwdq7EySwFquoxa2JYxjJfAkf6JaHd8J8AN6JV49lLZS+UZxZUbbAMyq7697KKOT98as=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724381443; c=relaxed/simple;
-	bh=3UBGY3O0k69ZxSvyb+UsZpYE+MrQv/ZxxdMByKdn/wo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dqU1wpFXvxCzVqaXm35zFo7AMwR68RAKmvd80o3VCz7CweZc4PjYcUV88ogCvfwItvnjmAZtAZDDdMqCLDRR7uYFpJHlxqLwvNPkgmJN+WAT31FZ6zve48Bz7XVywM3RnAS3VfHbUUb+jttAUV+BMtcweeBhaImhz99OPZuu0Y8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=H/Wvx61h; arc=none smtp.client-ip=209.85.221.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-3719896b7c8so671873f8f.3
-        for <stable@vger.kernel.org>; Thu, 22 Aug 2024 19:50:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1724381440; x=1724986240; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=53XrlSuAuXREy7P2IzzeTvOSusKWy1K+VpUQ4Y6Gnto=;
-        b=H/Wvx61h3oXnRAn3BHZSbeYlJdOeHtuBwq0nG7Jh4r7a/sqdI//uVs/iG3IUAMG+0r
-         UIgz+3/NJNpICnyqTQlIl7ApIWKjbiSVe92+eHjZ6BmfwV9QCbn5vMiJ3fFJOE+H6Moz
-         zccG+yIU0QRtRuZs2dBNptaqn6faRsx9FLR5+LnJ3Q25oaCx6x91egyocmMfbvoImBgB
-         INuJEnvf9SstV1L69Qm+SYZ02C7IytLqUVdOrlZuxv8AUT3AQ06ozS7gIUDkFVZ31aYI
-         Et8psPZzIMsYGsIEAmNXtiH+86a/vnIID9jfEJ35zTRAE+3G+rIVneJJouIUqQXYLli3
-         6mpA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724381440; x=1724986240;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=53XrlSuAuXREy7P2IzzeTvOSusKWy1K+VpUQ4Y6Gnto=;
-        b=V1Fe/qXmAUETJqg4KP7pq7HYdDeWPR56PAOYWejoKrKdIcOP7gJ++cdIe1vWHVjiGP
-         ARPFfnajOP0Vn9pgPDqHcjATfh0ATmKjYI0qNyN9ZN43UVeidXY/ZXZONRW0i00wZ908
-         cbZZvWbBxYrZ2sSmSKm+0Dmt19ZQJHDy7MM6LCy1XM8vi62tip+9Hl45rm78HriiCFuC
-         kYArCvQsgNRyMC9s3vb9vvPB2S9ve9aTgcktTVD70TQInk+3LeDLv8XAn3Q7M09HkQAZ
-         93LxB1hOuxnJPGAjnpFGVQrXVWclLVIK+sgKmFhXG4bITajjTNvS5tocT2MIm8Dbg+91
-         W+FA==
-X-Forwarded-Encrypted: i=1; AJvYcCVKAmyCErBCZarWaEdugrTbs/prXSTSrSGYk5rbozUKVBHMLXcg4d3mrXpcvFDZWoa+pxq3YD0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy4CcwZ4itLVcVy37unqHsaA/138mztbJISg+pfOzE/61dyTf86
-	43NEbkgAqcK/blL0HsaQbVMUo3zQBpPNDi2h3JSVA08PJW88jBXS6uBkTr6vDRI=
-X-Google-Smtp-Source: AGHT+IFMv0oKgB/ZacGfwkwqtINuUiN/SmrUy8TwR3JUnk6zrgUA6sIRQ0CqiuppG/42O/rlId4hWA==
-X-Received: by 2002:adf:ffd2:0:b0:371:88a6:80d8 with SMTP id ffacd0b85a97d-37311863af5mr417426f8f.28.1724381439593;
-        Thu, 22 Aug 2024 19:50:39 -0700 (PDT)
-Received: from u94a (27-51-129-77.adsl.fetnet.net. [27.51.129.77])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7cda0ada9adsm1342591a12.26.2024.08.22.19.50.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Aug 2024 19:50:39 -0700 (PDT)
-Date: Fri, 23 Aug 2024 10:50:29 +0800
-From: Shung-Hsi Yu <shung-hsi.yu@suse.com>
-To: maxtram95@gmail.com, maxim@isovalent.com
-Cc: Sherry Yang <sherry.yang@oracle.com>, andrii@kernel.org, 
-	ast@kernel.org, daniel@iogearbox.net, eddyz87@gmail.com, 
-	gregkh@linuxfoundation.org, john.fastabend@gmail.com, sashal@kernel.org, 
+	s=arc-20240116; t=1724382303; c=relaxed/simple;
+	bh=wYA32n8apsDrrCroaz23XiRgtIN6FLOe59UHYpX+gP8=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=KDQyYWwntxaaeKtdq8wCCQY+/A3TnvYb+cGYV8OIsydfZf1JWlF2C68RYFe87DNcpyiY9Xlz/wCYl2Z0e8BQ8ajS3V/h0EoyIvS5H3eEgbKp4zkPneiyxyB9KqTkqgL/53QaCbjyHZXI867lBt2aH1whDmZRQGZMzD20oGoyQXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com; spf=pass smtp.mailfrom=trustnetic.com; arc=none smtp.client-ip=54.207.19.206
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=trustnetic.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=trustnetic.com
+X-QQ-mid: bizesmtpsz10t1724382253t0w8cy
+X-QQ-Originating-IP: DLfjgWbWDrqS3+pDl8ep5c3vVgAjqF/4QIofPLFmZfU=
+Received: from wxdbg.localdomain.com ( [125.118.254.234])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Fri, 23 Aug 2024 11:04:11 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 5009362697263220875
+From: Jiawen Wu <jiawenwu@trustnetic.com>
+To: andi.shyti@kernel.org,
+	jarkko.nikula@linux.intel.com,
+	andriy.shevchenko@linux.intel.com,
+	mika.westerberg@linux.intel.com,
+	jsd@semihalf.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	rmk+kernel@armlinux.org.uk,
+	piotr.raczynski@intel.com,
+	andrew@lunn.ch,
+	linux-i2c@vger.kernel.org,
+	netdev@vger.kernel.org
+Cc: mengyuanlou@net-swift.com,
+	duanqiangwen@net-swift.com,
+	Jiawen Wu <jiawenwu@trustnetic.com>,
 	stable@vger.kernel.org
-Subject: Re: BPF selftest failed to build
-Message-ID: <xycnahurpkbaym42w7lm3asy3uzqxowvxkckvbbpoqphxo2dad@c7z4ztfe4w6r>
-References: <20240711184323.2355017-2-maxtram95@gmail.com>
- <20240823014514.3622865-1-sherry.yang@oracle.com>
+Subject: [PATCH net 1/3] net: txgbe: add IO address in I2C platform device data
+Date: Fri, 23 Aug 2024 11:02:40 +0800
+Message-Id: <20240823030242.3083528-2-jiawenwu@trustnetic.com>
+X-Mailer: git-send-email 2.27.0
+In-Reply-To: <20240823030242.3083528-1-jiawenwu@trustnetic.com>
+References: <20240823030242.3083528-1-jiawenwu@trustnetic.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240823014514.3622865-1-sherry.yang@oracle.com>
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtpsz:trustnetic.com:qybglogicsvrgz:qybglogicsvrgz8a-1
 
-On Thu, Aug 22, 2024 at 06:45:14PM GMT, Sherry Yang wrote:
-> Hi All,
-> 
-> We found BPF sefltest fail to build with following error:
-> 
-> 08-09 20:39:59 DBG: |output|: progs/test_global_func10.c:24:1: error: unknown type name '__failure'
-> 08-09 20:39:59 DBG: |output|: __failure __msg("invalid indirect access to stack")
-> 08-09 20:39:59 DBG: |output|: ^
-> 08-09 20:39:59 DBG: |output|: progs/test_global_func10.c:24:17: error: expected parameter declarator
-> 08-09 20:39:59 DBG: |output|: __failure __msg("invalid indirect access to stack")
-> 08-09 20:39:59 DBG: |output|:                 ^
-> 08-09 20:39:59 DBG: |output|: progs/test_global_func10.c:24:17: error: expected ')'
-> 08-09 20:39:59 DBG: |output|: progs/test_global_func10.c:24:16: note: to match this '('
-> 08-09 20:39:59 DBG: |output|: __failure __msg("invalid indirect access to stack")
-> 08-09 20:39:59 DBG: |output|:                ^
-> 08-09 20:39:59 DBG: |output|: progs/test_global_func10.c:24:52: error: expected ';' after top level declarator
-> 08-09 20:39:59 DBG: |output|: __failure __msg("invalid indirect access to stack")
-> 08-09 20:39:59 DBG: |output|:                                                    ^
-> 08-09 20:39:59 DBG: |output|:                                                    ;
-> 08-09 20:39:59 DBG: |output|: 4 errors generated.
-> 08-09 20:39:59 DBG: |output|: make: *** [Makefile:470: /root/oltf/work/linux-bpf-qa/tools/testing/selftests/bpf/test_global_func10.o] Error 1
-> 08-09 20:39:59 DBG: |output|: make: *** Waiting for unfinished jobs....
-> 
-> It happens from the commit e30bc19a9ee8("bpf: Allow reads from uninit
-> stack"). We did a further look, '__failure' is defined in
-> tools/testing/selftests/bpf/progs/bpf_misc.h, and was 1st introduced
-> in commit 537c3f66eac1("selftests/bpf: add generic BPF program
-> tester-loader") which is not backported to linux-5.15.y.
-> 
-> So we may need to revert the patch, or fix it.
+Consider the necessity of reading/writing the IO address to acquire and
+release the lock between software and firmware, add the IO address as
+the platform data to register I2C platform device.
 
-To fix it I think we just need to drop the use of __failure and __msg in
-progs/test_global_func10.c, and update the "struct test_def tests[]"
-table in prog_tests/test_global_funcs.c with the new verifier rejection
-message.
+Cc: stable@vger.kernel.org
+Fixes: c625e72561f6 ("net: txgbe: Register I2C platform device")
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+---
+ drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c |  5 +++++
+ include/linux/platform_data/i2c-wx.h           | 11 +++++++++++
+ 2 files changed, 16 insertions(+)
+ create mode 100644 include/linux/platform_data/i2c-wx.h
 
-On the other hand I believe commit 537c3f66eac1("selftests/bpf: add
-generic BPF program tester-loader") should be relatively easy to
-backport, just picking that commit up and resolving simple conflict in
-Makefile should be enough. It will also save a lot of future headaches
-like this one.
+diff --git a/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c b/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
+index 5f502265f0a6..781a3a34aa4c 100644
+--- a/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
++++ b/drivers/net/ethernet/wangxun/txgbe/txgbe_phy.c
+@@ -9,6 +9,7 @@
+ #include <linux/i2c.h>
+ #include <linux/pci.h>
+ #include <linux/platform_device.h>
++#include <linux/platform_data/i2c-wx.h>
+ #include <linux/regmap.h>
+ #include <linux/pcs/pcs-xpcs.h>
+ #include <linux/phylink.h>
+@@ -618,6 +619,7 @@ static const struct regmap_config i2c_regmap_config = {
+ 
+ static int txgbe_i2c_register(struct txgbe *txgbe)
+ {
++	struct txgbe_i2c_platform_data pdata = {};
+ 	struct platform_device_info info = {};
+ 	struct platform_device *i2c_dev;
+ 	struct regmap *i2c_regmap;
+@@ -636,6 +638,9 @@ static int txgbe_i2c_register(struct txgbe *txgbe)
+ 	info.fwnode = software_node_fwnode(txgbe->nodes.group[SWNODE_I2C]);
+ 	info.name = "i2c_designware";
+ 	info.id = pci_dev_id(pdev);
++	pdata.hw_addr = wx->hw_addr;
++	info.data = &pdata;
++	info.size_data = sizeof(pdata);
+ 
+ 	info.res = &DEFINE_RES_IRQ(pdev->irq);
+ 	info.num_res = 1;
+diff --git a/include/linux/platform_data/i2c-wx.h b/include/linux/platform_data/i2c-wx.h
+new file mode 100644
+index 000000000000..b46777fa1d85
+--- /dev/null
++++ b/include/linux/platform_data/i2c-wx.h
+@@ -0,0 +1,11 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/* Copyright (c) 2015 - 2024 Beijing WangXun Technology Co., Ltd. */
++
++#ifndef _I2C_WX_H_
++#define _I2C_WX_H_
++
++struct txgbe_i2c_platform_data {
++	void __iomem *hw_addr;
++};
++
++#endif /* _I2C_WX_H_ */
+-- 
+2.27.0
 
-(Note: the generic test-loader patch will need to backport it to stable
-6.1 first before it an be backported to 5.15, as per the stable rule[1])
-
-1: https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#procedure-for-submitting-patches-to-the-stable-tree
 
