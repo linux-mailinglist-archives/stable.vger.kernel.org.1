@@ -1,54 +1,68 @@
-Return-Path: <stable+bounces-70009-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70010-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30A6595CF25
-	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 16:13:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CB7795CF28
+	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 16:13:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D8635281183
-	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 14:13:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4EEEA1C20B75
+	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 14:13:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8C11199FB9;
-	Fri, 23 Aug 2024 14:03:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0358519AD5C;
+	Fri, 23 Aug 2024 14:04:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UxvNGgho"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JRAPjnsr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C8F1199EAF;
-	Fri, 23 Aug 2024 14:03:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B568A18BBA1;
+	Fri, 23 Aug 2024 14:04:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724421836; cv=none; b=nzxaMl135wz1hAStL45NGPlwkVPF4o6GVbu1kuDiFus/lPxWV2pYnC/KYCgTWkRTVjD1dOyhUfB4I/H78khcJ25PNS05i/2EJNuYp3DkNnRE/D0qB1PF1UuEpdeMJMMFchb4eiX0YsCMBicy5Kznuy6SCkxLoaHwHKdxFRUhABA=
+	t=1724421840; cv=none; b=ED/wb1WEluSTZ2FyxTb2WFMGDxy157qk/nmomsW0g57IWVMrHFXhQSBEoPZ0XysTp3jJxX4xvhJe4O1aFgJYcU0l6hruR+wlMaSTm6yf2hi1z/a6F9lURJX0QEK5bMjMvT7PWrKcUbmTk3U9yEB8FyfWFw2lkz6a6QCFlNUDUeE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724421836; c=relaxed/simple;
-	bh=UiqWGB4fidTn7hEicA8WF8H3Yu5kNYzn7AfdgvBKixA=;
+	s=arc-20240116; t=1724421840; c=relaxed/simple;
+	bh=puTmv4xsqmpJFI+PMGcQwnS9bPy4XtIzMU074nWDteA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gtt4MyGAqjWRQ9ARnS19QULFdzUdenj/mfrW7X6UmQuAgxKstmk+VYFiHgiQnzHYanNL85IATQtF/wWlOYJow6+z2R0OMSXfpvG1LZMwzPMj2bVb1FNTyygfqgIgWVrC/BKLZ4s/m+Jq96JjK68vAEghzaBB9921hqAMX1N3ri0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UxvNGgho; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91D56C4AF0B;
-	Fri, 23 Aug 2024 14:03:55 +0000 (UTC)
+	 MIME-Version; b=JXVf/BbxVAUaegKZERAdf56bKVQcwSVOARlztCwcdTQdJKulihGxv2DWQPagrMeYHiHDY+gZpv9pc2cPNtoQ/F6gjCTYnOsmEUDE/D46DL0F/H9J27u0fhtHwn8ENpCVXqsqHLmRtOjlF22dlCi+7dSjgSBP1nMlEoO9s9KgtFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JRAPjnsr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C54BC32786;
+	Fri, 23 Aug 2024 14:03:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724421836;
-	bh=UiqWGB4fidTn7hEicA8WF8H3Yu5kNYzn7AfdgvBKixA=;
+	s=k20201202; t=1724421840;
+	bh=puTmv4xsqmpJFI+PMGcQwnS9bPy4XtIzMU074nWDteA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UxvNGghobk6RaFiXFE6qolrrWdwqbe93uHpwQiQtxkRZGNCPmyaz+NIKFLxU/d6lo
-	 23HGBCfqKi7n9TVQiA5F5JEgidR+caHLNJmtSfR7EkxgPUO71Vo9rbBVsuOv/3xnD0
-	 gqhJkyRVOY85afT0eqeV5AFTx2Pf3qdxfXRdYyxW6R6ppmWSbfq7Rh/w02hppZ2oNb
-	 AXjug2UqncbtoMhTxiZkTtV/IrgxWoJc3/ij8O+WOmWNFXsZfessZj4bktUBR7/N2W
-	 +d7E767hTiUCFp7DodsWC4TP3nNqtBHX4Byi7ONHz+LSE4uAlxb48Me9JLfOGwkxdB
-	 VgpU/oX6rFmKg==
+	b=JRAPjnsrSTFvecKaV3ofBEL46BU65EFtD+eV+ApK2alL14gJrGuxTVKMNScZeIbA0
+	 gI7L+l2VGEivDkT5sOb0l6FXcy451Iou/EdGDMMSBizEFvTgROxFgPF10f73/u7KS9
+	 JfI1f+u13taoUC3OyznlycRYg4XMuYZiMstkXsj6SBrZYBn9l/pXmQBExrJ11VkYmZ
+	 9VrgDaMYYQzYi4Pd1aIZaVVDcuCXGBKy2Vc6vexVN+yi0JBNIhNtaRvqlcY/S278SV
+	 F0r4d8BfVHVgqRvIM08kxtR44rjOWbTGBRuK36IpZYU1S0Gj1Msyjpx20fs/Ea2LCJ
+	 7Wp49G7yC7+TA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Kent Overstreet <kent.overstreet@linux.dev>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 6.6 18/20] lib/generic-radix-tree.c: Fix rare race in __genradix_ptr_alloc()
-Date: Fri, 23 Aug 2024 10:02:32 -0400
-Message-ID: <20240823140309.1974696-18-sashal@kernel.org>
+Cc: Peiyang Wang <wangpeiyang1@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>,
+	yisen.zhuang@huawei.com,
+	salil.mehta@huawei.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	horms@kernel.org,
+	wangjie125@huawei.com,
+	liuyonglong@huawei.com,
+	lanhao@huawei.com,
+	chenhao418@huawei.com,
+	shenjian15@huawei.com,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 19/20] net: hns3: use correct release function during uninitialization
+Date: Fri, 23 Aug 2024 10:02:33 -0400
+Message-ID: <20240823140309.1974696-19-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240823140309.1974696-1-sashal@kernel.org>
 References: <20240823140309.1974696-1-sashal@kernel.org>
@@ -63,36 +77,36 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.47
 Content-Transfer-Encoding: 8bit
 
-From: Kent Overstreet <kent.overstreet@linux.dev>
+From: Peiyang Wang <wangpeiyang1@huawei.com>
 
-[ Upstream commit b2f11c6f3e1fc60742673b8675c95b78447f3dae ]
+[ Upstream commit 7660833d217528c8f2385528951ab820a031e4e3 ]
 
-If we need to increase the tree depth, allocate a new node, and then
-race with another thread that increased the tree depth before us, we'll
-still have a preallocated node that might be used later.
+pci_request_regions is called to apply for PCI I/O and memory resources
+when the driver is initialized, Therefore, when the driver is uninstalled,
+pci_release_regions should be used to release PCI I/O and memory resources
+instead of pci_release_mem_regions is used to release memory reasouces
+only.
 
-If we then use that node for a new non-root node, it'll still have a
-pointer to the old root instead of being zeroed - fix this by zeroing it
-in the cmpxchg failure path.
-
-Signed-off-by: Kent Overstreet <kent.overstreet@linux.dev>
+Signed-off-by: Peiyang Wang <wangpeiyang1@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/generic-radix-tree.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/lib/generic-radix-tree.c b/lib/generic-radix-tree.c
-index 7dfa88282b006..78f081d695d0b 100644
---- a/lib/generic-radix-tree.c
-+++ b/lib/generic-radix-tree.c
-@@ -131,6 +131,8 @@ void *__genradix_ptr_alloc(struct __genradix *radix, size_t offset,
- 		if ((v = cmpxchg_release(&radix->root, r, new_root)) == r) {
- 			v = new_root;
- 			new_node = NULL;
-+		} else {
-+			new_node->children[0] = NULL;
- 		}
- 	}
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+index c8059d96f64be..3b01447478159 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+@@ -11358,7 +11358,7 @@ static void hclge_pci_uninit(struct hclge_dev *hdev)
+ 
+ 	pcim_iounmap(pdev, hdev->hw.hw.io_base);
+ 	pci_free_irq_vectors(pdev);
+-	pci_release_mem_regions(pdev);
++	pci_release_regions(pdev);
+ 	pci_disable_device(pdev);
+ }
  
 -- 
 2.43.0
