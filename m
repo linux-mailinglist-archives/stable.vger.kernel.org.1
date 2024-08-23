@@ -1,136 +1,136 @@
-Return-Path: <stable+bounces-69930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69931-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9FD695C353
-	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 04:37:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A780C95C369
+	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 04:50:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15F0F284CBA
-	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 02:37:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C3DE41C224FC
+	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 02:50:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1F6424B4A;
-	Fri, 23 Aug 2024 02:37:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D62DB20B33;
+	Fri, 23 Aug 2024 02:50:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="H/Wvx61h"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6691D364AB;
-	Fri, 23 Aug 2024 02:37:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 805F61AACC
+	for <stable@vger.kernel.org>; Fri, 23 Aug 2024 02:50:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724380627; cv=none; b=hH3IkQWM8d+eIwjpT0mACXwZK8MtaXdSs878+1Z5OebMgOCbksoXQB8OJXLColQd0vH6VP+jNjNqWyqtrzfdXif6fbpOH1iyctmqyYAzCTNkdVxm+xYdQozrl+cvaYM/ShCBfdYFhvkNfG5nCfhPO6eu7j6faw8TypLWx5EUq2Y=
+	t=1724381443; cv=none; b=LTTx/AcRzJHj1njH4/UbMHHG+O80hiW717DYz6DherqKvPGjZEYBFPNzxAMWNBZaYFaK9GXfQaylgXfp25tKSZ49MMwxKALB9fiKDJihuPcY9A+MBK+85XvoAwUMjU89vNvnlAwPqsGmLA2Ltmr1FG89MqlxmoWGBLdvf1pA/sQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724380627; c=relaxed/simple;
-	bh=9KBRN+uaalolKKdODoaz7qP+X19sfZ0ncDoTDYrTJ5w=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=JWXJu4CtGhU5j1Q9FWMiu9/kIo0gQe9xlE0nNcF3Lw7kEPFGddII6tJqHwiE7/TnCP+GgQw9dICF4HI6dH+70ooG4FNoNhym/5ouHcC0hiRWDBBAQbM2sgh2xkUpRHKI0gL6ICpYM9qkFAoM1ghZ0KZDx76z7x2ZW79LkLyJ5pU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
-	by APP-01 (Coremail) with SMTP id qwCowAC3vUm89cdmPBV6CQ--.44906S2;
-	Fri, 23 Aug 2024 10:36:55 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: akpm@linux-foundation.org
-Cc: haojian.zhuang@linaro.org,
-	linus.walleij@linaro.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-omap@vger.kernel.org,
-	make24@iscas.ac.cn,
-	stable@vger.kernel.org,
-	tony@atomide.com
-Subject: Re: [PATCH RESEND] pinctrl: single: fix potential NULL dereference in pcs_get_function()
-Date: Fri, 23 Aug 2024 10:36:44 +0800
-Message-Id: <20240823023644.1778013-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240821151604.7fbb834fa1503d11b373212b@linux-foundation.org>
-References: <20240821151604.7fbb834fa1503d11b373212b@linux-foundation.org>
+	s=arc-20240116; t=1724381443; c=relaxed/simple;
+	bh=3UBGY3O0k69ZxSvyb+UsZpYE+MrQv/ZxxdMByKdn/wo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=dqU1wpFXvxCzVqaXm35zFo7AMwR68RAKmvd80o3VCz7CweZc4PjYcUV88ogCvfwItvnjmAZtAZDDdMqCLDRR7uYFpJHlxqLwvNPkgmJN+WAT31FZ6zve48Bz7XVywM3RnAS3VfHbUUb+jttAUV+BMtcweeBhaImhz99OPZuu0Y8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=H/Wvx61h; arc=none smtp.client-ip=209.85.221.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-3719896b7c8so671873f8f.3
+        for <stable@vger.kernel.org>; Thu, 22 Aug 2024 19:50:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1724381440; x=1724986240; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=53XrlSuAuXREy7P2IzzeTvOSusKWy1K+VpUQ4Y6Gnto=;
+        b=H/Wvx61h3oXnRAn3BHZSbeYlJdOeHtuBwq0nG7Jh4r7a/sqdI//uVs/iG3IUAMG+0r
+         UIgz+3/NJNpICnyqTQlIl7ApIWKjbiSVe92+eHjZ6BmfwV9QCbn5vMiJ3fFJOE+H6Moz
+         zccG+yIU0QRtRuZs2dBNptaqn6faRsx9FLR5+LnJ3Q25oaCx6x91egyocmMfbvoImBgB
+         INuJEnvf9SstV1L69Qm+SYZ02C7IytLqUVdOrlZuxv8AUT3AQ06ozS7gIUDkFVZ31aYI
+         Et8psPZzIMsYGsIEAmNXtiH+86a/vnIID9jfEJ35zTRAE+3G+rIVneJJouIUqQXYLli3
+         6mpA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724381440; x=1724986240;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=53XrlSuAuXREy7P2IzzeTvOSusKWy1K+VpUQ4Y6Gnto=;
+        b=V1Fe/qXmAUETJqg4KP7pq7HYdDeWPR56PAOYWejoKrKdIcOP7gJ++cdIe1vWHVjiGP
+         ARPFfnajOP0Vn9pgPDqHcjATfh0ATmKjYI0qNyN9ZN43UVeidXY/ZXZONRW0i00wZ908
+         cbZZvWbBxYrZ2sSmSKm+0Dmt19ZQJHDy7MM6LCy1XM8vi62tip+9Hl45rm78HriiCFuC
+         kYArCvQsgNRyMC9s3vb9vvPB2S9ve9aTgcktTVD70TQInk+3LeDLv8XAn3Q7M09HkQAZ
+         93LxB1hOuxnJPGAjnpFGVQrXVWclLVIK+sgKmFhXG4bITajjTNvS5tocT2MIm8Dbg+91
+         W+FA==
+X-Forwarded-Encrypted: i=1; AJvYcCVKAmyCErBCZarWaEdugrTbs/prXSTSrSGYk5rbozUKVBHMLXcg4d3mrXpcvFDZWoa+pxq3YD0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy4CcwZ4itLVcVy37unqHsaA/138mztbJISg+pfOzE/61dyTf86
+	43NEbkgAqcK/blL0HsaQbVMUo3zQBpPNDi2h3JSVA08PJW88jBXS6uBkTr6vDRI=
+X-Google-Smtp-Source: AGHT+IFMv0oKgB/ZacGfwkwqtINuUiN/SmrUy8TwR3JUnk6zrgUA6sIRQ0CqiuppG/42O/rlId4hWA==
+X-Received: by 2002:adf:ffd2:0:b0:371:88a6:80d8 with SMTP id ffacd0b85a97d-37311863af5mr417426f8f.28.1724381439593;
+        Thu, 22 Aug 2024 19:50:39 -0700 (PDT)
+Received: from u94a (27-51-129-77.adsl.fetnet.net. [27.51.129.77])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7cda0ada9adsm1342591a12.26.2024.08.22.19.50.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 Aug 2024 19:50:39 -0700 (PDT)
+Date: Fri, 23 Aug 2024 10:50:29 +0800
+From: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+To: maxtram95@gmail.com, maxim@isovalent.com
+Cc: Sherry Yang <sherry.yang@oracle.com>, andrii@kernel.org, 
+	ast@kernel.org, daniel@iogearbox.net, eddyz87@gmail.com, 
+	gregkh@linuxfoundation.org, john.fastabend@gmail.com, sashal@kernel.org, 
+	stable@vger.kernel.org
+Subject: Re: BPF selftest failed to build
+Message-ID: <xycnahurpkbaym42w7lm3asy3uzqxowvxkckvbbpoqphxo2dad@c7z4ztfe4w6r>
+References: <20240711184323.2355017-2-maxtram95@gmail.com>
+ <20240823014514.3622865-1-sherry.yang@oracle.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-CM-TRANSID:qwCowAC3vUm89cdmPBV6CQ--.44906S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7uw1xWr47Zry3KF4fuw4rXwb_yoW8AF1fpa
-	yfAry5CrW5tF48JryUJw4rCFy7Ww4xJFyfGa4kKryqva15WF1DtFWDKr1q9a1vkrW8CrW0
-	v3W3XF909ryDAa7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUBI14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r1I6r4UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr
-	1j6F4UJwAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40E
-	FcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr
-	0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8v
-	x2IErcIFxwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCF04k20x
-	vY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I
-	3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIx
-	AIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAI
-	cVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2js
-	IEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7VUbQVy7UUUUU==
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240823014514.3622865-1-sherry.yang@oracle.com>
 
-Andrew Morton<akpm@linux-foundation.org> wrote:=0D
-> On Wed, 21 Aug 2024 14:21:32 +0800 Ma Ke <make24@iscas.ac.cn> wrote:=0D
-> =0D
-> > pinmux_generic_get_function() can return NULL and the pointer 'function=
-'=0D
-> > was dereferenced without checking against NULL. Add checking of pointer=
-=0D
-> > 'function' in pcs_get_function().=0D
-> > =0D
-> > Found by code review.=0D
-> > =0D
-> > ...=0D
-> >=0D
-> > --- a/drivers/pinctrl/pinctrl-single.c=0D
-> > +++ b/drivers/pinctrl/pinctrl-single.c=0D
-> > @@ -345,6 +345,8 @@ static int pcs_get_function(struct pinctrl_dev *pct=
-ldev, unsigned pin,=0D
-> >  		return -ENOTSUPP;=0D
-> >  	fselector =3D setting->func;=0D
-> >  	function =3D pinmux_generic_get_function(pctldev, fselector);=0D
-> > +	if (!function)=0D
-> > +		return -EINVAL;=0D
-> >  	*func =3D function->data;=0D
-> >  	if (!(*func)) {=0D
-> >  		dev_err(pcs->dev, "%s could not find function%i\n",=0D
-> =0D
-> Maybe.  Or maybe pinmux_generic_get_function() must always return a=0D
-> valid pointer, in which case=0D
-> =0D
-> 	BUG_ON(!function);=0D
-> =0D
-> is an appropriate thing.  But a null-pointer deref gives us the same=0D
-> info, so no change is needed.=0D
-> =0D
-> btw, pinmux_generic_get_function() is funny:=0D
-> =0D
-> 	if (!function)=0D
-> 		return NULL;=0D
-> =0D
-> 	return function;=0D
-Thank you for your response to the vulnerability I submitted. Yes, we =0D
-believe there is a similar issue. As described in [1], =0D
-pinmux_generic_get_function() could return as NULL and lead to a d=0D
-ereferencing problem, and a similar issue exists in this code. It is better=
-=0D
-to add checking of pointer 'function' in pcs_get_function(). The discovery =
-=0D
-of this problem was confirmed through manual review of the code and =0D
-compilation testing.=0D
-=0D
-[1] https://lore.kernel.org/linux-arm-kernel/CACRpkdYwBNjGzODYqvz+oScsO3u=
-=3DR0dXMkP4UfqmosDugPFWRA@mail.gmail.com/T/=0D
-=0D
---=0D
-Regards,=0D
-=0D
-Ma Ke=
+On Thu, Aug 22, 2024 at 06:45:14PM GMT, Sherry Yang wrote:
+> Hi All,
+> 
+> We found BPF sefltest fail to build with following error:
+> 
+> 08-09 20:39:59 DBG: |output|: progs/test_global_func10.c:24:1: error: unknown type name '__failure'
+> 08-09 20:39:59 DBG: |output|: __failure __msg("invalid indirect access to stack")
+> 08-09 20:39:59 DBG: |output|: ^
+> 08-09 20:39:59 DBG: |output|: progs/test_global_func10.c:24:17: error: expected parameter declarator
+> 08-09 20:39:59 DBG: |output|: __failure __msg("invalid indirect access to stack")
+> 08-09 20:39:59 DBG: |output|:                 ^
+> 08-09 20:39:59 DBG: |output|: progs/test_global_func10.c:24:17: error: expected ')'
+> 08-09 20:39:59 DBG: |output|: progs/test_global_func10.c:24:16: note: to match this '('
+> 08-09 20:39:59 DBG: |output|: __failure __msg("invalid indirect access to stack")
+> 08-09 20:39:59 DBG: |output|:                ^
+> 08-09 20:39:59 DBG: |output|: progs/test_global_func10.c:24:52: error: expected ';' after top level declarator
+> 08-09 20:39:59 DBG: |output|: __failure __msg("invalid indirect access to stack")
+> 08-09 20:39:59 DBG: |output|:                                                    ^
+> 08-09 20:39:59 DBG: |output|:                                                    ;
+> 08-09 20:39:59 DBG: |output|: 4 errors generated.
+> 08-09 20:39:59 DBG: |output|: make: *** [Makefile:470: /root/oltf/work/linux-bpf-qa/tools/testing/selftests/bpf/test_global_func10.o] Error 1
+> 08-09 20:39:59 DBG: |output|: make: *** Waiting for unfinished jobs....
+> 
+> It happens from the commit e30bc19a9ee8("bpf: Allow reads from uninit
+> stack"). We did a further look, '__failure' is defined in
+> tools/testing/selftests/bpf/progs/bpf_misc.h, and was 1st introduced
+> in commit 537c3f66eac1("selftests/bpf: add generic BPF program
+> tester-loader") which is not backported to linux-5.15.y.
+> 
+> So we may need to revert the patch, or fix it.
 
+To fix it I think we just need to drop the use of __failure and __msg in
+progs/test_global_func10.c, and update the "struct test_def tests[]"
+table in prog_tests/test_global_funcs.c with the new verifier rejection
+message.
+
+On the other hand I believe commit 537c3f66eac1("selftests/bpf: add
+generic BPF program tester-loader") should be relatively easy to
+backport, just picking that commit up and resolving simple conflict in
+Makefile should be enough. It will also save a lot of future headaches
+like this one.
+
+(Note: the generic test-loader patch will need to backport it to stable
+6.1 first before it an be backported to 5.15, as per the stable rule[1])
+
+1: https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#procedure-for-submitting-patches-to-the-stable-tree
 
