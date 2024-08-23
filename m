@@ -1,231 +1,268 @@
-Return-Path: <stable+bounces-70066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70067-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E636D95D3A7
-	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 18:39:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B226595D3B1
+	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 18:43:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5385AB22BB5
-	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 16:39:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C6881F22E0D
+	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 16:43:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30D8018BC02;
-	Fri, 23 Aug 2024 16:39:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6BE318BB8E;
+	Fri, 23 Aug 2024 16:42:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="u79x3eCk"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WoyRXL9Q"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B2B718A6C7
-	for <stable@vger.kernel.org>; Fri, 23 Aug 2024 16:39:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3BD0187855;
+	Fri, 23 Aug 2024 16:42:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724431185; cv=none; b=eLD3YN9pOpMPDGYvtUqKd9BiStpTCmufseI5JpwfO9Xs3Js9PNvJVg5XdmFZW18EQyz6Ln9BV93q7VDXjKKsdvndOSh6qNptabcKCo0VPdb9yByy9H9wBfJ17thnzmKbA6MYUbV0pIymI6fF8hlHoWs2VLblGbzEkbOhyYI7Ei0=
+	t=1724431376; cv=none; b=UydlLFaM5bHIUViT8GZmOcpXfSJ4mDNjdBjxO8OllupG5Qo74c3DcZJdKvkTFWYPbiaGRHQzX/XuAft/f0BF8fg8c3fAn6padt7CmohFAKSJOgGWVNDd8mjh8WlChb0r/a4SD1GaM7cRU3Iyt3KgxnN+wF0s/nw4DrvaoQJ2Ivw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724431185; c=relaxed/simple;
-	bh=KaCmjrABe49GNzvbAm6OT6hfcDxVLHDDU0KNQEzpicA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Myn4FmtMFbg4VNsrwSClaOX3GgtO+KNY8peD/0UqlocVN6oA4FwHl7X3C886vXnVjh0CWZUVzsZARqIZvcx2JwIUY1qB4/FVPNo00giy94y6ru6T1n9A2AEjhuie9kQiA2EhqHBiYEmyj1WI/l6XSbBBofM2Fo89qVzki3LUGM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=u79x3eCk; arc=none smtp.client-ip=209.85.160.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-44fee2bfd28so61cf.1
-        for <stable@vger.kernel.org>; Fri, 23 Aug 2024 09:39:43 -0700 (PDT)
+	s=arc-20240116; t=1724431376; c=relaxed/simple;
+	bh=Fmg79+pJqZ+Uvq9jbhFMYqgVb7MuD37XaqN3PuP27tY=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=njK6Mzhgk71feQDJWa/YCYtOjRb5KmZ+TRomcdvdsFBy4AiPrn3Srw8NWmq3zygsi4/EAfmfC2JYPUnN05KeLsIggd6wbfPGj3IXXqmnJwZN6qrZAWzsoejB4nF5fSRc6yCfrU2Uj6Pd0jFD2rLihXPBfRWdMwLkkAYVkd0onNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WoyRXL9Q; arc=none smtp.client-ip=209.85.167.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-52f01b8738dso1735702e87.1;
+        Fri, 23 Aug 2024 09:42:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1724431182; x=1725035982; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OWCZVGAlZgiRQ76TnTfciwWkaeUiO7Q9jJrOr7a++YM=;
-        b=u79x3eCkyXKVdsaq0hmfcH0OSrNOOoZTgqkgJvsIDp8ph/gw7eALwHaGrpBNKBAh4/
-         WKoVEZ7wuWt9L5yyms44SVPrK96/fxCYlw2qBQ3OKNKHUhOzjEL6+tLTYN9XK+u0NwuI
-         i4wu5XMVc5c+Dmp6KEhMrSDGx8hZz8ag11JiEYC7+ZczNPOpCa7QFVvTtTCpGkeA34DE
-         88kB60+2qHHH/qaMOLmO+ZrjQkgsWlmxHJzU0zCJusLI+b58eSzHDjFG8+z7qjefVs+n
-         uNrMNNb19Tmg9RifouIzylqHgKkW6xDWZFJmqaa4/zMqZ6/cu68Cqe45TvHPW6G4a2vp
-         eMkA==
+        d=gmail.com; s=20230601; t=1724431373; x=1725036173; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=cK52LZ2pqFwye/usYRJoo3LbuS95xxU06k6WwSINR4E=;
+        b=WoyRXL9QoTZisXjRcuzFlkTDBTOgxiTIKs7F5pFLszxyTaQa97PRLTGfi3zOGtnTT9
+         ebPPqu3hfOIwreYFi7jjfH/i0W/YH5MqPnCakuU1D3H5IWAfBzkE088EVFjrXl0I2D5t
+         Wi+r3Wsu/VGhKr7co4k2KH+ikUUuejxC6zE4z6a/9SRhndEOYZpHxBpO8E5KJqYMEASW
+         5Rl+D88gY2dJietP+vJtO9DSUJDShpCHsghbgw2WfvplvmLdBIDulLQu3OsxY1pkoQwc
+         nMwWtteP2cJFriOS3sHUhn+Kjju79alunjDeI34EZ6p0szzRJVgga31fQqW6zYeqkiVL
+         FyRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724431182; x=1725035982;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=OWCZVGAlZgiRQ76TnTfciwWkaeUiO7Q9jJrOr7a++YM=;
-        b=p71KuhbDNicQigXM7TunROZ2FViH9B753bW1e4l4IR8kYJnq6t7xVIVOjwV+3d6i/k
-         UK/S+Gmh97E2I676eC5pcC0HizPwS/1REv5uLGLcnfS7lRVfZ/+48Nto3M5OZxydPAA/
-         7KXM7Gb2leHaelQtgcSsQpn+P2jPjXa6wyEglKLkWEqqo2W7JTMoHMYuT4exaicg+QKV
-         Cch1nAsc4cZ5UuyS6GXpumkhxp04g803xAlCv0WO+XjhiBHtZFuB2cc7tUq6zoifWAGu
-         X7sbzU6BInOjXjW0hh9ZlK9VqIKNqDld/NBKcdjp5HcFyDy8cT6RC8+ABwZMPxB0Ovo1
-         JbIA==
-X-Forwarded-Encrypted: i=1; AJvYcCX8ghynMX/dvt3O9kpb1TckfnS+6zMMGnlx388ioWpEvqbwl6lkqa/bACbfiFPn99aVQMpt2ko=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyAju45RfTLPj2D+pNe3UxhJ+ZFEGFXcFtf/nQpn0jue7Z64cjA
-	QeBFR+OYCu0KSbxp4QfFbJ82+T9PYxerN1zuyrefx7kwE7Arbzhjc7h7vwLJPfOiDJmkukz8s+N
-	A0HNBJGyEPhdMTX459I7m1TJlcoQDOp8B+UMz
-X-Google-Smtp-Source: AGHT+IFoUZAQeCvqN+NjxXRErz71IIQZhTN00AkX1g1s0tHX14bey0qIKs+NzKWVaf59WcugpqvHyCzlUGndZY5N0uE=
-X-Received: by 2002:ac8:5a8a:0:b0:44f:e12e:3015 with SMTP id
- d75a77b69052e-45509ebc0demr3093081cf.25.1724431181755; Fri, 23 Aug 2024
- 09:39:41 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1724431373; x=1725036173;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cK52LZ2pqFwye/usYRJoo3LbuS95xxU06k6WwSINR4E=;
+        b=A4fmQXlAgBC7Xz5TMnxqW2US6JGV4H/lAHAhR6RvL1sx5kE2pj7Db5BL+OjUznoXJ2
+         8uA3sriLiz9gHZiBsDLd70OLhuO89CynVeaBNKXbI6Ff/I73Ex7lShdD46Xei0R/KsuB
+         IDBq7hY9H5nRtVuimkyFTUcSFIelIgzBt6q6emailMbII3pNQlRT/yCv8DzdMcB+9shW
+         8qOKEdmX46/bGR5Lc3eio2PsRGAKM/seJDjmIX+ncMyyPPGVse+OK2SWKwdaghx9vxDA
+         fAvLMJC/PSjDGZzNHRXuLL1QOgNila953xa5EDPV6XgMMRV+nUTSqWaScdOglMtiPZUS
+         yrlQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUPUWHCENqFInKJjyjmF101SFASZLMAXcCpad6cOv5yY1NIWQb5Ixdhh1n8mMcHTUvoCd9FLcKo@vger.kernel.org, AJvYcCXEMRC7OkYThGecWc6tYcbl7wjr7PmHGAGSaJsXBUCMyuaK2pnqW7SnwektsQ1Vgjy1gkN0dbQ4dvrwLZo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzaq2lnhHM9A4uSZZfo2H0G5live17roXgmkOLLtXlb3tjMp75z
+	GjJdhlrCHp3si6LxIWtYvYPejvCjaOfk4KwUg08wJZMz57uPOozN
+X-Google-Smtp-Source: AGHT+IGr8qEq/yllkgFywwhHWY1jskPoCv5mtjeA3Qu0q5m5j5/g/7q1bo6S2bl5O71wtvcRv3WwKw==
+X-Received: by 2002:a05:6512:3986:b0:530:e1f6:6eca with SMTP id 2adb3069b0e04-534387bb5c6mr1935292e87.37.1724431372039;
+        Fri, 23 Aug 2024 09:42:52 -0700 (PDT)
+Received: from pc638.lan ([84.217.131.213])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5334ea5d6e4sm590346e87.225.2024.08.23.09.42.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 23 Aug 2024 09:42:51 -0700 (PDT)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@pc638.lan>
+Date: Fri, 23 Aug 2024 18:42:47 +0200
+To: Michal Hocko <mhocko@suse.com>
+Cc: Hailong Liu <hailong.liu@oppo.com>, Uladzislau Rezki <urezki@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Barry Song <21cnbao@gmail.com>,
+	Christoph Hellwig <hch@infradead.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Tangquan Zheng <zhengtangquan@oppo.com>, stable@vger.kernel.org,
+	Baoquan He <bhe@redhat.com>, Matthew Wilcox <willy@infradead.org>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [RESEND PATCH v1] mm/vmalloc: fix page mapping if
+ vm_area_alloc_pages() with high order fallback to order 0
+Message-ID: <Zsi8Byjo4ayJORgS@pc638.lan>
+References: <20240808122019.3361-1-hailong.liu@oppo.com>
+ <CAGsJ_4z4+CCDoPR7+dPEhemBQN60Cj84rCeqRY7-xvWapY4LGg@mail.gmail.com>
+ <ZrXiUvj_ZPTc0yRk@tiehlicka>
+ <ZrXkVhEg1B0yF5_Q@pc636>
+ <20240815220709.47f66f200fd0a072777cc348@linux-foundation.org>
+ <20240816091232.fsliktqgza5o5x6t@oppo.com>
+ <Zr8mQbc3ETdeOMIK@pc636>
+ <20240816114626.jmhqh5ducbk7qeur@oppo.com>
+ <Zr9G-d6bMU4_QodJ@tiehlicka>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <d6f46ea8-0f09-4942-6818-a58005c8a0c1@linux.dev> <20240823062002.21165-1-hao.ge@linux.dev>
-In-Reply-To: <20240823062002.21165-1-hao.ge@linux.dev>
-From: Suren Baghdasaryan <surenb@google.com>
-Date: Fri, 23 Aug 2024 09:39:30 -0700
-Message-ID: <CAJuCfpH9BB0axRGphPWUdhamyhnhiK8MOQYLa55W7RmnBPASjA@mail.gmail.com>
-Subject: Re: [PATCH] codetag: debug: mark codetags for poisoned page as empty
-To: Hao Ge <hao.ge@linux.dev>
-Cc: akpm@linux-foundation.org, david@redhat.com, kent.overstreet@linux.dev, 
-	linmiaohe@huawei.com, nao.horiguchi@gmail.com, pasha.tatashin@soleen.com, 
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org, Hao Ge <gehao@kylinos.cn>, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Zr9G-d6bMU4_QodJ@tiehlicka>
 
-On Thu, Aug 22, 2024 at 11:21=E2=80=AFPM Hao Ge <hao.ge@linux.dev> wrote:
+Hello, Michal.
+
+> 
+> Let me clarify what I would like to have clarified:
+> 
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index 6b783baf12a1..fea90a39f5c5 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -3510,13 +3510,13 @@ void *vmap_pfn(unsigned long *pfns, unsigned int count, pgprot_t prot)
+>  EXPORT_SYMBOL_GPL(vmap_pfn);
+>  #endif /* CONFIG_VMAP_PFN */
+>  
+> +/* GFP_NOFAIL semantic is implemented by __vmalloc_node_range_noprof */
+>  static inline unsigned int
+>  vm_area_alloc_pages(gfp_t gfp, int nid,
+>  		unsigned int order, unsigned int nr_pages, struct page **pages)
+>  {
+>  	unsigned int nr_allocated = 0;
+> -	gfp_t alloc_gfp = gfp;
+> -	bool nofail = gfp & __GFP_NOFAIL;
+> +	gfp_t alloc_gfp = gfp & ~ __GFP_NOFAIL;
+>  	struct page *page;
+>  	int i;
+>  
+> @@ -3527,9 +3527,6 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
+>  	 * more permissive.
+>  	 */
+>  	if (!order) {
+> -		/* bulk allocator doesn't support nofail req. officially */
+> -		gfp_t bulk_gfp = gfp & ~__GFP_NOFAIL;
+> -
+>  		while (nr_allocated < nr_pages) {
+>  			unsigned int nr, nr_pages_request;
+>  
+> @@ -3547,12 +3544,12 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
+>  			 * but mempolicy wants to alloc memory by interleaving.
+>  			 */
+>  			if (IS_ENABLED(CONFIG_NUMA) && nid == NUMA_NO_NODE)
+> -				nr = alloc_pages_bulk_array_mempolicy_noprof(bulk_gfp,
+> +				nr = alloc_pages_bulk_array_mempolicy_noprof(alloc_gfp,
+>  							nr_pages_request,
+>  							pages + nr_allocated);
+>  
+>  			else
+> -				nr = alloc_pages_bulk_array_node_noprof(bulk_gfp, nid,
+> +				nr = alloc_pages_bulk_array_node_noprof(alloc_gfp, nid,
+>  							nr_pages_request,
+>  							pages + nr_allocated);
+>  
+> @@ -3566,13 +3563,6 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
+>  			if (nr != nr_pages_request)
+>  				break;
+>  		}
+> -	} else if (gfp & __GFP_NOFAIL) {
+> -		/*
+> -		 * Higher order nofail allocations are really expensive and
+> -		 * potentially dangerous (pre-mature OOM, disruptive reclaim
+> -		 * and compaction etc.
+> -		 */
+> -		alloc_gfp &= ~__GFP_NOFAIL;
+>  	}
+>  
+>  	/* High-order pages or fallback path if "bulk" fails. */
+> -- 
 >
-> From: Hao Ge <gehao@kylinos.cn>
->
-> The PG_hwpoison page will be caught and isolated on the entrance to
-> the free buddy page pool.
->
-> But for poisoned pages which software injected errors,
-> we can reclaim it through unpoison_memory.
->
-> So mark codetags for it as empty,just like when a page
-> is first added to the buddy system.
->
-> It was detected by [1] and the following WARN occurred:
+See below the change. It does not do any functional change and it is rather
+a small refactoring, which includes the comment i wanted to add and what you
+wanted to be clarified(if i got you correctly):
 
-Hi Hao,
-Thanks for fixing this. I find this description a bit unclear. How
-about something like this:
+<snip>
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index 3f9b6bd707d2..24fad2e48799 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -3531,8 +3531,6 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
+ 		unsigned int order, unsigned int nr_pages, struct page **pages)
+ {
+ 	unsigned int nr_allocated = 0;
+-	gfp_t alloc_gfp = gfp;
+-	bool nofail = gfp & __GFP_NOFAIL;
+ 	struct page *page;
+ 	int i;
+ 
+@@ -3543,9 +3541,6 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
+ 	 * more permissive.
+ 	 */
+ 	if (!order) {
+-		/* bulk allocator doesn't support nofail req. officially */
+-		gfp_t bulk_gfp = gfp & ~__GFP_NOFAIL;
+-
+ 		while (nr_allocated < nr_pages) {
+ 			unsigned int nr, nr_pages_request;
+ 
+@@ -3563,12 +3558,12 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
+ 			 * but mempolicy wants to alloc memory by interleaving.
+ 			 */
+ 			if (IS_ENABLED(CONFIG_NUMA) && nid == NUMA_NO_NODE)
+-				nr = alloc_pages_bulk_array_mempolicy_noprof(bulk_gfp,
++				nr = alloc_pages_bulk_array_mempolicy_noprof(gfp & ~__GFP_NOFAIL,
+ 							nr_pages_request,
+ 							pages + nr_allocated);
+-
+ 			else
+-				nr = alloc_pages_bulk_array_node_noprof(bulk_gfp, nid,
++				/* bulk allocator doesn't support nofail req. officially */
++				nr = alloc_pages_bulk_array_node_noprof(gfp & ~__GFP_NOFAIL, nid,
+ 							nr_pages_request,
+ 							pages + nr_allocated);
+ 
+@@ -3582,24 +3577,18 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
+ 			if (nr != nr_pages_request)
+ 				break;
+ 		}
+-	} else if (gfp & __GFP_NOFAIL) {
+-		/*
+-		 * Higher order nofail allocations are really expensive and
+-		 * potentially dangerous (pre-mature OOM, disruptive reclaim
+-		 * and compaction etc.
+-		 */
+-		alloc_gfp &= ~__GFP_NOFAIL;
+ 	}
+ 
+ 	/* High-order pages or fallback path if "bulk" fails. */
+ 	while (nr_allocated < nr_pages) {
+-		if (!nofail && fatal_signal_pending(current))
++		if (!(gfp & __GFP_NOFAIL) && fatal_signal_pending(current))
+ 			break;
+ 
+ 		if (nid == NUMA_NO_NODE)
+-			page = alloc_pages_noprof(alloc_gfp, order);
++			page = alloc_pages_noprof(gfp, order);
+ 		else
+-			page = alloc_pages_node_noprof(nid, alloc_gfp, order);
++			page = alloc_pages_node_noprof(nid, gfp, order);
++
+ 		if (unlikely(!page))
+ 			break;
+ 
+@@ -3666,7 +3655,16 @@ static void *__vmalloc_area_node(struct vm_struct *area, gfp_t gfp_mask,
+ 	set_vm_area_page_order(area, page_shift - PAGE_SHIFT);
+ 	page_order = vm_area_page_order(area);
+ 
+-	area->nr_pages = vm_area_alloc_pages(gfp_mask | __GFP_NOWARN,
++	/*
++	 * Higher order nofail allocations are really expensive and
++	 * potentially dangerous (pre-mature OOM, disruptive reclaim
++	 * and compaction etc.
++	 *
++	 * Please note, the __vmalloc_node_range_noprof() falls-back
++	 * to order-0 pages if high-order attempt has been unsuccessful.
++	 */
++	area->nr_pages = vm_area_alloc_pages(page_order ?
++		gfp_mask &= ~__GFP_NOFAIL : gfp_mask | __GFP_NOWARN,
+ 		node, page_order, nr_small_pages, area->pages);
+ 
+ 	atomic_long_add(area->nr_pages, &nr_vmalloc_pages);
+<snip>
 
-When PG_hwpoison pages are freed, they are treated differently in
-free_pages_prepare() and instead of being released they are isolated.
-Page allocation tag counters are decremented at this point since the
-page is considered not in use. Later on when such pages are released
-by unpoison_memory(), the allocation tag counters will be decremented
-again and the following warning gets reported:
+Is that aligned with your wish?
 
->
-> [  113.930443][ T3282] ------------[ cut here ]------------
-> [  113.931105][ T3282] alloc_tag was not set
-> [  113.931576][ T3282] WARNING: CPU: 2 PID: 3282 at ./include/linux/alloc=
-_tag.h:130 pgalloc_tag_sub.part.66+0x154/0x164
-> [  113.932866][ T3282] Modules linked in: hwpoison_inject fuse ip6t_rpfil=
-ter ip6t_REJECT nf_reject_ipv6 ipt_REJECT nf_reject_ipv4 xt_conntrack ebtab=
-le_nat ebtable_broute ip6table_nat ip6table_man4
-> [  113.941638][ T3282] CPU: 2 UID: 0 PID: 3282 Comm: madvise11 Kdump: loa=
-ded Tainted: G        W          6.11.0-rc4-dirty #18
-> [  113.943003][ T3282] Tainted: [W]=3DWARN
-> [  113.943453][ T3282] Hardware name: QEMU KVM Virtual Machine, BIOS unkn=
-own 2/2/2022
-> [  113.944378][ T3282] pstate: 40400005 (nZcv daif +PAN -UAO -TCO -DIT -S=
-SBS BTYPE=3D--)
-> [  113.945319][ T3282] pc : pgalloc_tag_sub.part.66+0x154/0x164
-> [  113.946016][ T3282] lr : pgalloc_tag_sub.part.66+0x154/0x164
-> [  113.946706][ T3282] sp : ffff800087093a10
-> [  113.947197][ T3282] x29: ffff800087093a10 x28: ffff0000d7a9d400 x27: f=
-fff80008249f0a0
-> [  113.948165][ T3282] x26: 0000000000000000 x25: ffff80008249f2b0 x24: 0=
-000000000000000
-> [  113.949134][ T3282] x23: 0000000000000001 x22: 0000000000000001 x21: 0=
-000000000000000
-> [  113.950597][ T3282] x20: ffff0000c08fcad8 x19: ffff80008251e000 x18: f=
-fffffffffffffff
-> [  113.952207][ T3282] x17: 0000000000000000 x16: 0000000000000000 x15: f=
-fff800081746210
-> [  113.953161][ T3282] x14: 0000000000000000 x13: 205d323832335420 x12: 5=
-b5d353031313339
-> [  113.954120][ T3282] x11: ffff800087093500 x10: 000000000000005d x9 : 0=
-0000000ffffffd0
-> [  113.955078][ T3282] x8 : 7f7f7f7f7f7f7f7f x7 : ffff80008236ba90 x6 : c=
-0000000ffff7fff
-> [  113.956036][ T3282] x5 : ffff000b34bf4dc8 x4 : ffff8000820aba90 x3 : 0=
-000000000000001
-> [  113.956994][ T3282] x2 : ffff800ab320f000 x1 : 841d1e35ac932e00 x0 : 0=
-000000000000000
-> [  113.957962][ T3282] Call trace:
-> [  113.958350][ T3282]  pgalloc_tag_sub.part.66+0x154/0x164
-> [  113.959000][ T3282]  pgalloc_tag_sub+0x14/0x1c
-> [  113.959539][ T3282]  free_unref_page+0xf4/0x4b8
-> [  113.960096][ T3282]  __folio_put+0xd4/0x120
-> [  113.960614][ T3282]  folio_put+0x24/0x50
-> [  113.961103][ T3282]  unpoison_memory+0x4f0/0x5b0
-> [  113.961678][ T3282]  hwpoison_unpoison+0x30/0x48 [hwpoison_inject]
-> [  113.962436][ T3282]  simple_attr_write_xsigned.isra.34+0xec/0x1cc
-> [  113.963183][ T3282]  simple_attr_write+0x38/0x48
-> [  113.963750][ T3282]  debugfs_attr_write+0x54/0x80
-> [  113.964330][ T3282]  full_proxy_write+0x68/0x98
-> [  113.964880][ T3282]  vfs_write+0xdc/0x4d0
-> [  113.965372][ T3282]  ksys_write+0x78/0x100
-> [  113.965875][ T3282]  __arm64_sys_write+0x24/0x30
-> [  113.966440][ T3282]  invoke_syscall+0x7c/0x104
-> [  113.966984][ T3282]  el0_svc_common.constprop.1+0x88/0x104
-> [  113.967652][ T3282]  do_el0_svc+0x2c/0x38
-> [  113.968893][ T3282]  el0_svc+0x3c/0x1b8
-> [  113.969379][ T3282]  el0t_64_sync_handler+0x98/0xbc
-> [  113.969980][ T3282]  el0t_64_sync+0x19c/0x1a0
-> [  113.970511][ T3282] ---[ end trace 0000000000000000 ]---
->
-> Link [1]: https://github.com/linux-test-project/ltp/blob/master/testcases=
-/kernel/syscalls/madvise/madvise11.c
+Thanks!
 
-To fix this, clear the page tag reference after the page got isolated
-and accounted for.
-
->
-> Fixes: a8fc28dad6d5 ("alloc_tag: introduce clear_page_tag_ref() helper fu=
-nction")
-
-This would be more appropriate:
-Fixes: d224eb0287fb ("codetag: debug: mark codetags for reserved pages
-as empty")
-
-> Cc: stable@vger.kernel.org # v6.10
-> Signed-off-by: Hao Ge <gehao@kylinos.cn>
-> ---
->  mm/page_alloc.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
->
-> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> index c565de8f48e9..7ccd2157d092 100644
-> --- a/mm/page_alloc.c
-> +++ b/mm/page_alloc.c
-> @@ -1054,6 +1054,14 @@ __always_inline bool free_pages_prepare(struct pag=
-e *page,
->                 reset_page_owner(page, order);
->                 page_table_check_free(page, order);
->                 pgalloc_tag_sub(page, 1 << order);
-> +
-> +               /*
-> +                * For poisoned pages which software injected errors,
-
-Not sure what you mean by "which software injected errors". Maybe it's
-a typo and should be "with software injected errors"?
-
-> +                * we can reclaim it through unpoison_memory.
-> +                * so mark codetags for it as empty,
-> +                * just like when a page is first added to the buddy syst=
-em.
-> +                */
-
-I think you can simply say here that:
-/*
- * The page is isolated and accounted for. Mark the codetag as empty to avo=
-id
- * accounting error when the page is freed by unpoison_memory().
- */
-
-> +               clear_page_tag_ref(page);
->                 return false;
->         }
->
-> --
-> 2.25.1
->
+--
+Uladzislau Rezki
 
