@@ -1,118 +1,127 @@
-Return-Path: <stable+bounces-69938-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69939-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 326E895C4D6
-	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 07:23:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB75395C531
+	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 08:11:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E189A28626E
-	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 05:23:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 810001F2262C
+	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 06:11:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3408B54720;
-	Fri, 23 Aug 2024 05:23:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FC0D5FBBA;
+	Fri, 23 Aug 2024 06:11:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="JGJmwxWw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yyF0oWmb"
 X-Original-To: stable@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1BA255E53;
-	Fri, 23 Aug 2024 05:23:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB06F8493;
+	Fri, 23 Aug 2024 06:11:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724390605; cv=none; b=Wgi3iGyM7lOTBaDd9KxpuPiYI6mh+L3i3QPTnsvYMS2nEb/E2tAOCSWYrqhq1dC4IuA1laedK3rlJDUjFIC0Ly8skXh14yzxxRCckPUaVTuBRw+R3m1y6dEXXQhM6QuhmGCsVIu98UaXaYd2TpQ+4e2tWi2dBMzSwkg6VLy3vEw=
+	t=1724393509; cv=none; b=D4Tj/WiVFGp3U8Ve/0aHPtieHAblXLdnA8TEBkoJd5LGIQxF9yP1rjfeDHJ9nUzzbtlb+h3QMjZKFu/FgvI3fPsvQwLh3V2Jknx9hchYRHYj9gCupKc11ujRg9j2046muNfN5RkzOrtLvHRasFHQBV529onZrvEqGzADd0QD35c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724390605; c=relaxed/simple;
-	bh=ptkDJuB4wN9LbPHBE9yxjtR4r1HRV4cAD6INkJxUbkw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ciiTRgqIG9ycncMU1IMSEBR6tvxAMuXKvH9rK8yhSQhqYGcbIMojFGKSmuLuoB7ZblLEUv67CKRNmeyvcALnynbtb949b1LexUgfZtcWW3FawrUX000T04O3d1w99Pn7Ig5o/dZ42NGaKcECVtK/pHAJYjW3ds+6z2parKZMJxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=JGJmwxWw; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:Reply-To:MIME-Version:Date:
-	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
-	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
-	In-Reply-To:References; bh=wSIT3l0Rz2s5QcxaavD9w3qriHdaS0mTvhZFg3F9mOY=;
-	t=1724390603; x=1724822603; b=JGJmwxWwPODZCpkWM4XOl/ZxNH9wtN+TdaL5JGD0zrTOWaN
-	9AttkRu+vvPIyZ/9jHgC5Kwc1N6RVuVW151tjVP7uBi3hnItjCdBSzaf3hbuV8Bxi9TnWAba63af3
-	NWtP0UxJua/Wx+QOERrHFK+2RwPu9m8tBOzKovqpTlse/zpZP5h4LTrjZx9fcUTIyQvSK5xBOZLhH
-	iDue+wI+jZT2dydMSyaAuqMm8SLR+sg+HlYQgWsu6kdegurOdoEafudojEwdLNAtLu7xDognPOOey
-	WoQ06XdJ9l13MQzQ8pmV4f5SX3yfh0Je9mmBHygyQfh39SPYEvtQD2tWMZbklA3Q==;
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1shMlX-0005Py-LR; Fri, 23 Aug 2024 07:23:15 +0200
-Message-ID: <93296f30-1a3c-44b6-91d1-61408e1d9270@leemhuis.info>
-Date: Fri, 23 Aug 2024 07:23:12 +0200
+	s=arc-20240116; t=1724393509; c=relaxed/simple;
+	bh=rZRxZusxBHotNQZhqeg8CxgvISn6IPndzeerII7HRnY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Zcn9CDrRq8O0Uup1HbiIIqdVbplPEwLRAuTehxxdVQRWDgx+fAs41VNQLuY4465X3e70vsJ6RiqJqyU+AAwpc/J9gBgzx7nfWWOF+nCc1+o8hx29F+HgMHjwrGbHffeyKUWgor8z3+vPlVpNqqSF7M5GgpDPm7Rm8riItNJ4H94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yyF0oWmb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17CCAC32786;
+	Fri, 23 Aug 2024 06:11:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1724393508;
+	bh=rZRxZusxBHotNQZhqeg8CxgvISn6IPndzeerII7HRnY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=yyF0oWmbAfs0WsC0hJUQEocgguWd1sQWMv5hKpZ5WGqUE2kR9E+hnvMopNfC7UgEt
+	 OqO6XD+MMLlKABq9qKRPWk1sjrE57i3unYEwxy3L/BBPmQdXH+NeDSrNMg+Ti/6uq4
+	 JFkuH8afvVYD8KMm2CseQiriM6w+vjLul30ST7pQ=
+Date: Fri, 23 Aug 2024 14:11:45 +0800
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: Zijun Hu <zijun_hu@icloud.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
+	linux-kernel@vger.kernel.org, Zijun Hu <quic_zijuhu@quicinc.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] driver core: Fix an uninitialized variable is used by
+ __device_attach()
+Message-ID: <2024082349-democrat-cough-bf77@gregkh>
+References: <20240823-fix_have_async-v1-1-43a354b6614b@quicinc.com>
+ <ZsfRqT9d6Qp_Pva5@google.com>
+ <04c58410-13c8-4e50-a009-5715af0cded3@icloud.com>
+ <2024082318-labored-blunderer-a897@gregkh>
+ <Zsfk-9lf1sRMgBqE@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-Subject: Re: [PATCH] pidfd: prevent creation of pidfds for kthreads
-To: stable@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>,
- Sasha Levin <sashal@kernel.org>
-Cc: linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
- Oleg Nesterov <oleg@redhat.com>, Aleksa Sarai <cyphar@cyphar.com>,
- Tycho Andersen <tandersen@netflix.com>,
- Daan De Meyer <daan.j.demeyer@gmail.com>, Tejun Heo <tj@kernel.org>,
- Eric Biggers <ebiggers@kernel.org>, Christian Brauner <brauner@kernel.org>,
- Linux kernel regressions list <regressions@lists.linux.dev>
-References: <20240731-gleis-mehreinnahmen-6bbadd128383@brauner>
- <20240818035818.GA1929@sol.localdomain>
- <20240819-staudamm-rederei-cb7092f54e76@brauner>
-From: "Linux regression tracking (Thorsten Leemhuis)"
- <regressions@leemhuis.info>
-Content-Language: en-US, de-DE
-In-Reply-To: <20240819-staudamm-rederei-cb7092f54e76@brauner>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1724390603;21903e02;
-X-HE-SMSGID: 1shMlX-0005Py-LR
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Zsfk-9lf1sRMgBqE@google.com>
 
-On 19.08.24 10:41, Christian Brauner wrote:
-> On Sat, Aug 17, 2024 at 08:58:18PM GMT, Eric Biggers wrote:
->> On Wed, Jul 31, 2024 at 12:01:12PM +0200, Christian Brauner wrote:
->>> It's currently possible to create pidfds for kthreads but it is unclear
->>> what that is supposed to mean. Until we have use-cases for it and we
->>> figured out what behavior we want block the creation of pidfds for
->>> kthreads.
->>>
->>> Fixes: 32fcb426ec00 ("pid: add pidfd_open()")
->>> Cc: stable@vger.kernel.org
->>> Signed-off-by: Christian Brauner <brauner@kernel.org>
->>> ---
->>>  kernel/fork.c | 25 ++++++++++++++++++++++---
->>>  1 file changed, 22 insertions(+), 3 deletions(-)
->>
->> Unfortunately this commit broke systemd-shutdown's ability to kill processes,
->> which makes some filesystems no longer get unmounted at shutdown.
->>
->> It looks like systemd-shutdown relies on being able to create a pidfd for any
->> process listed in /proc (even a kthread), and if it gets EINVAL it treats it a
->> fatal error and stops looking for more processes...
+On Thu, Aug 22, 2024 at 06:25:15PM -0700, Dmitry Torokhov wrote:
+> On Fri, Aug 23, 2024 at 09:14:12AM +0800, Greg Kroah-Hartman wrote:
+> > On Fri, Aug 23, 2024 at 08:46:12AM +0800, Zijun Hu wrote:
+> > > On 2024/8/23 08:02, Dmitry Torokhov wrote:
+> > > > Hi,
+> > > > 
+> > > > On Fri, Aug 23, 2024 at 07:46:09AM +0800, Zijun Hu wrote:
+> > > >> From: Zijun Hu <quic_zijuhu@quicinc.com>
+> > > >>
+> > > >> An uninitialized variable @data.have_async may be used as analyzed
+> > > >> by the following inline comments:
+> > > >>
+> > > >> static int __device_attach(struct device *dev, bool allow_async)
+> > > >> {
+> > > >> 	// if @allow_async is true.
+> > > >>
+> > > >> 	...
+> > > >> 	struct device_attach_data data = {
+> > > >> 		.dev = dev,
+> > > >> 		.check_async = allow_async,
+> > > >> 		.want_async = false,
+> > > >> 	};
+> > > >> 	// @data.have_async is not initialized.
+> > > > 
+> > > > No, in the presence of a structure initializer fields not explicitly
+> > > > initialized will be set to 0 by the compiler.
+> > > > 
+> > > really?
+> > > do all C compilers have such behavior ?
+> > 
+> > Oh wait, if this were static, then yes, it would all be set to 0, sorry,
+> > I misread this.
+> > 
+> > This is on the stack so it needs to be zeroed out explicitly.  We should
+> > set the whole thing to 0 and then set only the fields we want to
+> > override to ensure it's all correct.
 > 
-> Thanks for the report!
-> I talked to Daan De Meyer who made that change and he said that this
-> must a systemd version that hasn't gotten his fixes yet. In any case, if
-> this causes regression then I'll revert it right now. See the appended
-> revert.
+> No we do not. ISO/IEC 9899:201x 6.7.9 Initialization:
+> 
+> "21 If there are fewer initializers in a brace-enclosed list than there
+> are elements or members of an aggregate, or fewer characters in a string
+> literal used to initialize an array of known size than there are
+> elements in the array, the remainder of the aggregate shall be
+> initialized implicitly the same as objects that have static storage
+> duration."
+> 
+> That is why you can 0-initialize a structure by doing:
+> 
+> 	struct s s1 = { 0 };
+> 
+> or even
+> 
+> 	struct s s1 = { };
 
-Greg, Sasha, JFYI in case you are not already aware of it: I by
-chance[1] noticed that the patch Christian plans to revert is still in
-the 6.10-queue. You might want to drop it (or apply the revert as well,
-which is in -next, but not yet in mainline afaics).
+{sigh}  I always get this wrong, also there's the question "are holes
+in the structure also set to 0" which as you can see from the above
+spec, should also be true.  But numerous places in the kernel explicitly
+use memset() to "make sure" of that.
 
-Ciao, Thorsten
+thanks,
 
-[1] after I noticed this thread a third time, this time via some SELinux
-problems it caused in Fedora land:
-https://bugzilla.redhat.com/show_bug.cgi?id=2306818
-https://bugzilla.redhat.com/show_bug.cgi?id=2305270
+greg k-h
 
