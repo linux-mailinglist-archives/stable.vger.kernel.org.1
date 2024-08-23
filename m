@@ -1,296 +1,143 @@
-Return-Path: <stable+bounces-69927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69928-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B75095C2F9
-	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 03:48:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 891EE95C2FC
+	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 03:49:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 997A21F2173A
-	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 01:48:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1932DB222F9
+	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 01:49:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A16426AF6;
-	Fri, 23 Aug 2024 01:48:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63D031C694;
+	Fri, 23 Aug 2024 01:48:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="BrKD1gz4"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="DPAaQN3k"
 X-Original-To: stable@vger.kernel.org
-Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [95.215.58.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E7FD111A1
-	for <stable@vger.kernel.org>; Fri, 23 Aug 2024 01:48:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 531FC1B80F
+	for <stable@vger.kernel.org>; Fri, 23 Aug 2024 01:48:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724377708; cv=none; b=GNWVM0742Izd11w7cP38CU59lY+AHSUOKudsGPu+89WPNX20s9DY9lU3Ocf1nb3QIcD5Ceikb2c0KtyVcaSX+ivyx1zb6d82xkzT8gfd3uEAMLJIO02SoW23dLpL9bcxfvDuHl8V0B+5gAouJIhPWYbkjz1gbbe652vK6h42fHE=
+	t=1724377719; cv=none; b=Y5UXYIrrPNZjDv8Cs5bOgEaxIs6eahWtS3U2IQEP3ET9RAc9su/+GPOieC1bf4y7ycOXCPb014bImgqlZfrm3FTH2imJvqVAuhR4S2/2Qbqy6duKS3rH8s7fpE7rWnefoSmAyzsR0/LPYTIolVijVaM9Sm0rF5+ALPgSx0BCDEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724377708; c=relaxed/simple;
-	bh=ulJS3WCxd0O+3BESe7sSlzB3OfiVnjDv+NjQB84lSFE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=vGGk0RPlsJjpUul+laWZU2JJkjeZ7q7uk+RsnEYKC46y99dePAm5Wx98c/bFFkFUZxj3aw8WKiuA6uSwU9Fs6aAW53nYoh+RMBypaGY5X4dbaRo/2G4RGZIH448V+n/2M0C0uuT/wbPdgT6RinvYfEFCNWK18Cw8QyzEs8dQ9qA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=BrKD1gz4; arc=none smtp.client-ip=95.215.58.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Message-ID: <eb021308-76f4-216f-77e2-1de8ab72b083@linux.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1724377703;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PPHOSUo6pnc3jr4Qd3Swu3bDszK2Mgq0Ytsd6c+xHpQ=;
-	b=BrKD1gz42LUEASz7L+8rKbtq+XlDFRkk4D1TCgjNBVRPOazJXuHlF7T4pllpd3mout0hoK
-	Xl27UDDvh1dDNkVj6QuzRA+jYafp7d2GpVlgAmkHlTE6yJTHU9xlg9DWWmwelQB0h1+asQ
-	wlTZMZVcxZemHQ89wMSUftvGufZe1NI=
-Date: Fri, 23 Aug 2024 09:47:52 +0800
+	s=arc-20240116; t=1724377719; c=relaxed/simple;
+	bh=4hKbplegsIw81cNQ5WnyXPLM8uqwna6/0A25fiGrYYE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=P2GUVoKmqK3IneoO3NWg/Cp17HOGOpE6xZIjJM2rqQIJtzl5sGOmqXwtbpj+Z2/4Ay2lWHKq6Au1B1OZJCKv0Ho4g9RcP5CPSLyKEFPSRGiJIlPJzmCg2T7I3OI5S+w6fRzJyTnfu6sPnN5ImlD7nr8HgruiVO2o6q820PD/Uu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=DPAaQN3k; arc=none smtp.client-ip=209.85.221.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-3719f0758c6so745735f8f.1
+        for <stable@vger.kernel.org>; Thu, 22 Aug 2024 18:48:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1724377715; x=1724982515; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=FMhmmCDtW4ujiSa3oMXcmqVGqRJv4lFRXkcZHpGm9i4=;
+        b=DPAaQN3kyP+HUA+69tvNNMY5wOCcR+ndGsqTs2/VWOq++8ku9s0nVEaNOE1Rg7juDS
+         8JCeGt+fwv5Axai2v7MM4pQcBHWEQnY0UzcJc0yGva5z3MmD+SOS9kIlDiXVxGR5fpeh
+         KljCUI44huX5bFInSm8Jc54Eipr/bwnHqqHr3SI/e8YuS2QBz+SzIB2zQAetF+oB+4oH
+         MBByucwImSgJDG7qT6g+MFU2Q1SwJLUup2vycqmXsqlFUrk7bHlqIwvpSZ/3GBwfgXBs
+         DEa76WKhexOmVASFMFEd2HhiD8sfpyJXTZFyy6Q9hAn96pVINECwVunr7GRBxWdpvKAK
+         ptGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724377715; x=1724982515;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=FMhmmCDtW4ujiSa3oMXcmqVGqRJv4lFRXkcZHpGm9i4=;
+        b=Q92j1Pc03r5sxVdS0uIJtI/tpPpiwOjDefdoGexp2EM/ZtdUPDw0r68YIL9ofdVRjR
+         qDTJAcfMFy3tDhviEPswPUEWWFAeGZP6BhMjiIFdDhniQ/uHfG8DRnxdPtRbeLD5KDgn
+         W2qQPX4ZS6+ToSngQqsDAji2F+q8hY8IusultdEPl3G05eoEkw5Yt1NAmSama5Q8vBpm
+         z+T6IjhOqq/1D4SvqwJybpIsrmKDktevs/WZvOtpK3w6UnVvLSEvaSSMtGv0c/E2B6YG
+         kRVsjOZoUg24pFfMHLKogdUHHGyqud8bZT5zN9x0mO2iOvfhyGSIbNQgenJr/tqhKuKV
+         qasw==
+X-Gm-Message-State: AOJu0Yxf7hGJ345SPynOnxy5zjx2HAsUKWM06FJD9DJcd4gDoC86InWd
+	+Aqv2jBNkJFF+uHlFlEsroePSdf5adjFmwVQPFPhKaVQc1vhtSBjvpJuVwCyOrPFuOkx+5r2Ogq
+	zhug=
+X-Google-Smtp-Source: AGHT+IHk01EO7ycizahG1PJ7kp0j+rAUMJ0RqMuMbKWO67qXCheWVipXYM16MUpGo+l/0O4m55S89g==
+X-Received: by 2002:adf:fe4e:0:b0:36b:b297:1419 with SMTP id ffacd0b85a97d-37311855d3amr280118f8f.20.1724377715448;
+        Thu, 22 Aug 2024 18:48:35 -0700 (PDT)
+Received: from localhost (27-51-129-77.adsl.fetnet.net. [27.51.129.77])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2d5eba23d78sm4939192a91.29.2024.08.22.18.48.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 Aug 2024 18:48:35 -0700 (PDT)
+From: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+To: stable@vger.kernel.org
+Cc: bpf@vger.kernel.org,
+	Shung-Hsi Yu <shung-hsi.yu@suse.com>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Daniel Hodges <hodgesd@meta.com>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>
+Subject: [PATCH stable 6.6 1/2] bpf: Fix a kernel verifier crash in stacksafe()
+Date: Fri, 23 Aug 2024 09:48:28 +0800
+Message-ID: <20240823014829.115038-1-shung-hsi.yu@suse.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH] codetag: debug: mark codetags for pages which
- transitioned from being poison to unpoison as empty
-To: Suren Baghdasaryan <surenb@google.com>, Miaohe Lin <linmiaohe@huawei.com>
-Cc: kent.overstreet@linux.dev, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, Hao Ge <gehao@kylinos.cn>,
- stable@vger.kernel.org, nao.horiguchi@gmail.com, akpm@linux-foundation.org,
- pasha.tatashin@soleen.com, david@redhat.com
-References: <20240822025800.13380-1-hao.ge@linux.dev>
- <e360598c-cb58-cf9d-9247-430b8df9b3b7@huawei.com>
- <b2f51535-ca38-ac67-03b4-1aa45b2a7429@linux.dev>
- <CAJuCfpHUZBkGtu8CL=5cxNMtJa4iNyJ8gBVu2Ho_WOXCRzzfTA@mail.gmail.com>
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Hao Ge <hao.ge@linux.dev>
-In-Reply-To: <CAJuCfpHUZBkGtu8CL=5cxNMtJa4iNyJ8gBVu2Ho_WOXCRzzfTA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 
-Hi Suren and Miaohe
+From: Yonghong Song <yonghong.song@linux.dev>
 
+[ Upstream commit bed2eb964c70b780fb55925892a74f26cb590b25 ]
 
-Thank you all for taking the time to discuss this issue.
+Daniel Hodges reported a kernel verifier crash when playing with sched-ext.
+Further investigation shows that the crash is due to invalid memory access
+in stacksafe(). More specifically, it is the following code:
 
+    if (exact != NOT_EXACT &&
+        old->stack[spi].slot_type[i % BPF_REG_SIZE] !=
+        cur->stack[spi].slot_type[i % BPF_REG_SIZE])
+            return false;
 
-On 8/23/24 06:50, Suren Baghdasaryan wrote:
-> On Thu, Aug 22, 2024 at 2:46 AM Hao Ge <hao.ge@linux.dev> wrote:
->> Hi Miaohe
->>
->>
->> Thank you for taking the time to review this patch.
->>
->>
->> On 8/22/24 16:04, Miaohe Lin wrote:
->>> On 2024/8/22 10:58, Hao Ge wrote:
->>>> From: Hao Ge <gehao@kylinos.cn>
->>>>
->>> Thanks for your patch.
->>>
->>>> The PG_hwpoison page will be caught and isolated on the entrance to
->>>> the free buddy page pool. so,when we clear this flag and return it
->>>> to the buddy system,mark codetags for pages as empty.
->>>>
->>> Is below scene cause the problem?
->>>
->>> 1. Pages are allocated. pgalloc_tag_add() will be called when prep_new_page().
->>>
->>> 2. Pages are hwpoisoned. memory_failure() will set PG_hwpoison flag and pgalloc_tag_sub()
->>> will be called when pages are caught and isolated on the entrance to buddy.
-> Hi Folks,
-> Thanks for reporting this! Could you please describe in more details
-> how memory_failure() ends up calling pgalloc_tag_sub()? It's not
-> obvious to me which path leads to pgalloc_tag_sub(), so I must be
-> missing something.
+The 'i' iterates old->allocated_stack.
+If cur->allocated_stack < old->allocated_stack the out-of-bound
+access will happen.
 
+To fix the issue add 'i >= cur->allocated_stack' check such that if
+the condition is true, stacksafe() should fail. Otherwise,
+cur->stack[spi].slot_type[i % BPF_REG_SIZE] memory access is legal.
 
-OK,Let me describe the scenario I encountered.
+Fixes: 2793a8b015f7 ("bpf: exact states comparison for iterator convergence checks")
+Cc: Eduard Zingerman <eddyz87@gmail.com>
+Reported-by: Daniel Hodges <hodgesd@meta.com>
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+Signed-off-by: Yonghong Song <yonghong.song@linux.dev>
+Link: https://lore.kernel.org/r/20240812214847.213612-1-yonghong.song@linux.dev
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+shung-hsi.yu: "exact" variable is bool instead enum because commit 4f81c16f50ba
+("bpf: Recognize that two registers are safe when their ranges match") is not
+present.
+Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+---
+ kernel/bpf/verifier.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-In the Link [1] I mentioned,here is the logic behind it:
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 171045b6956d..3f1a9cd7fc9e 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -16124,8 +16124,9 @@ static bool stacksafe(struct bpf_verifier_env *env, struct bpf_func_state *old,
+ 		spi = i / BPF_REG_SIZE;
+ 
+ 		if (exact &&
+-		    old->stack[spi].slot_type[i % BPF_REG_SIZE] !=
+-		    cur->stack[spi].slot_type[i % BPF_REG_SIZE])
++		    (i >= cur->allocated_stack ||
++		     old->stack[spi].slot_type[i % BPF_REG_SIZE] !=
++		     cur->stack[spi].slot_type[i % BPF_REG_SIZE]))
+ 			return false;
+ 
+ 		if (!(old->stack[spi].spilled_ptr.live & REG_LIVE_READ) && !exact) {
+-- 
+2.46.0
 
-It performed the following operations:
-
-madvise(ptrs[num_alloc], pagesize, MADV_SOFT_OFFLINE)
-
-and then the kernel's call stack looks like this:
-
-do_madvise
-
-soft_offline_page
-
-page_handle_poison
-
-__folio_put
-
-free_unref_page
-
-It will set a flag within the following function and then release the page.
-
-https://elixir.bootlin.com/linux/v6.11-rc4/source/mm/memory-failure.c#L206
-
-and and then,because you set the PG_hwpoison flag, so the page will be 
-caught and isolated on the
-
-entrance to the free buddy page pool. look here:
-
-https://elixir.bootlin.com/linux/v6.11-rc4/source/mm/page_alloc.c#L1052
-
-At this very moment, we call pgalloc_tag_sub.
-
-So,when we callunpoison_memoryclear this flag and return the page to the 
-buddy system, the problem arises.
-
-
-> On a conceptual level I want to understand if the page isolated in
-> this manner should be considered freed or not. If it shouldn't be
-> considered free then I think the right fix would be to avoid
-> pgalloc_tag_sub() when this isolation happens.
-> Thanks,
-> Suren.
-
-In my understanding, the purpose of unpoison_memory is to reclaim 
-poisoned pages.
-
-I dug up the patch that introduced this function back then
-
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/mm/memory-failure.c?id=847ce401df392b0704369fd3f75df614ac1414b4
-
-Therefore, this is reasonable.
-
-Thanks
-
-Best regards
-
-Hao
-
->
->>> 3. unpoison_memory cleared flags and sent the pages to buddy. pgalloc_tag_sub() will be
->>> called again in free_pages_prepare().
->>>
->>> So there is a imbalance that pgalloc_tag_add() is called once and pgalloc_tag_sub() is called twice?
->> As you said, that's exactly the case.
->>> If so, let's think about more complicated scene:
->>>
->>> 1. Same as above.
->>>
->>> 2. Pages are hwpoisoned. But memory_failure() fails to handle it. So PG_hwpoison flag is set
->>> but pgalloc_tag_sub() is not called (pages are not sent to buddy).
->>>
->>> 3. unpoison_memory cleared flags and calls clear_page_tag_ref() without calling pgalloc_tag_sub()
->>> first. Will this cause problem?
->>>
->>> Though this should be really rare...
->>>
->>> Thanks.
->>> .
->> Great, I didn't anticipate this scenario.
->>
->> When we call clear_page_tag_ref() without calling pgalloc_tag_sub(),
->>
->> It will cause exceptions in|tag->counters->bytes|and|tag->counters->calls|.
->>
->> We can add a layer of protection to handle it
->>
->> The pseudocode is as follows:
->>
->> if (mem_alloc_profiling_enabled()) {
->>           union codetag_ref *ref = get_page_tag_ref(page);
->>
->>           if (ref) {
->>               if( ref->ct != NULL && !is_codetag_empty(ref))
->>               {
->>                   tag = ct_to_alloc_tag(ref->ct);
->>                   this_cpu_sub(tag->counters->bytes, bytes);
->>                   this_cpu_dec(tag->counters->calls);
->>               }
->>               set_codetag_empty(ref);
->>               put_page_tag_ref(ref);
->>           }
->> }
->>
->> Hi Suren and Kent
->>
->> Do you have any suggestions for this? If it's okay, I'll add comments
->> and include this pseudocode in|clear_page_tag_ref|.
->>
->>>> It was detected by [1] and the following WARN occurred:
->>>>
->>>> [  113.930443][ T3282] ------------[ cut here ]------------
->>>> [  113.931105][ T3282] alloc_tag was not set
->>>> [  113.931576][ T3282] WARNING: CPU: 2 PID: 3282 at ./include/linux/alloc_tag.h:130 pgalloc_tag_sub.part.66+0x154/0x164
->>>> [  113.932866][ T3282] Modules linked in: hwpoison_inject fuse ip6t_rpfilter ip6t_REJECT nf_reject_ipv6 ipt_REJECT nf_reject_ipv4 xt_conntrack ebtable_nat ebtable_broute ip6table_nat ip6table_man4
->>>> [  113.941638][ T3282] CPU: 2 UID: 0 PID: 3282 Comm: madvise11 Kdump: loaded Tainted: G        W          6.11.0-rc4-dirty #18
->>>> [  113.943003][ T3282] Tainted: [W]=WARN
->>>> [  113.943453][ T3282] Hardware name: QEMU KVM Virtual Machine, BIOS unknown 2/2/2022
->>>> [  113.944378][ T3282] pstate: 40400005 (nZcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
->>>> [  113.945319][ T3282] pc : pgalloc_tag_sub.part.66+0x154/0x164
->>>> [  113.946016][ T3282] lr : pgalloc_tag_sub.part.66+0x154/0x164
->>>> [  113.946706][ T3282] sp : ffff800087093a10
->>>> [  113.947197][ T3282] x29: ffff800087093a10 x28: ffff0000d7a9d400 x27: ffff80008249f0a0
->>>> [  113.948165][ T3282] x26: 0000000000000000 x25: ffff80008249f2b0 x24: 0000000000000000
->>>> [  113.949134][ T3282] x23: 0000000000000001 x22: 0000000000000001 x21: 0000000000000000
->>>> [  113.950597][ T3282] x20: ffff0000c08fcad8 x19: ffff80008251e000 x18: ffffffffffffffff
->>>> [  113.952207][ T3282] x17: 0000000000000000 x16: 0000000000000000 x15: ffff800081746210
->>>> [  113.953161][ T3282] x14: 0000000000000000 x13: 205d323832335420 x12: 5b5d353031313339
->>>> [  113.954120][ T3282] x11: ffff800087093500 x10: 000000000000005d x9 : 00000000ffffffd0
->>>> [  113.955078][ T3282] x8 : 7f7f7f7f7f7f7f7f x7 : ffff80008236ba90 x6 : c0000000ffff7fff
->>>> [  113.956036][ T3282] x5 : ffff000b34bf4dc8 x4 : ffff8000820aba90 x3 : 0000000000000001
->>>> [  113.956994][ T3282] x2 : ffff800ab320f000 x1 : 841d1e35ac932e00 x0 : 0000000000000000
->>>> [  113.957962][ T3282] Call trace:
->>>> [  113.958350][ T3282]  pgalloc_tag_sub.part.66+0x154/0x164
->>>> [  113.959000][ T3282]  pgalloc_tag_sub+0x14/0x1c
->>>> [  113.959539][ T3282]  free_unref_page+0xf4/0x4b8
->>>> [  113.960096][ T3282]  __folio_put+0xd4/0x120
->>>> [  113.960614][ T3282]  folio_put+0x24/0x50
->>>> [  113.961103][ T3282]  unpoison_memory+0x4f0/0x5b0
->>>> [  113.961678][ T3282]  hwpoison_unpoison+0x30/0x48 [hwpoison_inject]
->>>> [  113.962436][ T3282]  simple_attr_write_xsigned.isra.34+0xec/0x1cc
->>>> [  113.963183][ T3282]  simple_attr_write+0x38/0x48
->>>> [  113.963750][ T3282]  debugfs_attr_write+0x54/0x80
->>>> [  113.964330][ T3282]  full_proxy_write+0x68/0x98
->>>> [  113.964880][ T3282]  vfs_write+0xdc/0x4d0
->>>> [  113.965372][ T3282]  ksys_write+0x78/0x100
->>>> [  113.965875][ T3282]  __arm64_sys_write+0x24/0x30
->>>> [  113.966440][ T3282]  invoke_syscall+0x7c/0x104
->>>> [  113.966984][ T3282]  el0_svc_common.constprop.1+0x88/0x104
->>>> [  113.967652][ T3282]  do_el0_svc+0x2c/0x38
->>>> [  113.968893][ T3282]  el0_svc+0x3c/0x1b8
->>>> [  113.969379][ T3282]  el0t_64_sync_handler+0x98/0xbc
->>>> [  113.969980][ T3282]  el0t_64_sync+0x19c/0x1a0
->>>> [  113.970511][ T3282] ---[ end trace 0000000000000000 ]---
->>>>
->>>> Link [1]: https://github.com/linux-test-project/ltp/blob/master/testcases/kernel/syscalls/madvise/madvise11.c
->>>>
->>>> Fixes: a8fc28dad6d5 ("alloc_tag: introduce clear_page_tag_ref() helper function")
->>>> Cc: stable@vger.kernel.org # v6.10
->>>> Signed-off-by: Hao Ge <gehao@kylinos.cn>
->>>> ---
->>>>    mm/memory-failure.c | 6 ++++++
->>>>    1 file changed, 6 insertions(+)
->>>>
->>>> diff --git a/mm/memory-failure.c b/mm/memory-failure.c
->>>> index 7066fc84f351..570388c41532 100644
->>>> --- a/mm/memory-failure.c
->>>> +++ b/mm/memory-failure.c
->>>> @@ -2623,6 +2623,12 @@ int unpoison_memory(unsigned long pfn)
->>>>
->>>>               folio_put(folio);
->>>>               if (TestClearPageHWPoison(p)) {
->>>> +                    /* the PG_hwpoison page will be caught and isolated
->>>> +                     * on the entrance to the free buddy page pool.
->>>> +                     * so,when we clear this flag and return it to the buddy system,
->>>> +                     * clear it's codetag
->>>> +                     */
->>>> +                    clear_page_tag_ref(p);
->>>>                       folio_put(folio);
->>>>                       ret = 0;
->>>>               }
->>>>
->>>>
->> Thanks
->>
->> BR
->>
->> Hao
->>
 
