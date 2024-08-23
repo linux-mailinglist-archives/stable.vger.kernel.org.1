@@ -1,126 +1,113 @@
-Return-Path: <stable+bounces-69923-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69924-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B628295C2CE
-	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 03:30:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5B0295C2F1
+	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 03:45:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E78931C2214B
-	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 01:30:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B5541F2280D
+	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 01:45:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E94E171A7;
-	Fri, 23 Aug 2024 01:30:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1006217721;
+	Fri, 23 Aug 2024 01:45:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fKwML1ib"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="dvg7xdAK"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D1B411717;
-	Fri, 23 Aug 2024 01:30:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C71AA934
+	for <stable@vger.kernel.org>; Fri, 23 Aug 2024 01:45:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724376653; cv=none; b=I0lO96kIgC3grff7D5DgGpJTS2i+In/bw0LCaLHPhs2X6ST9fw6SLq1RoBcUW62RMGSxr6c7Zc1YnkyZ4Fzpgrh7fYkSxpXNh6PY7oB2y55+VGKaxR4wamjATaguHGyYAKk2vHWo6xH8qiTJexyabKu2bACtQSxa4oMMyP4Y3Tw=
+	t=1724377536; cv=none; b=Hp9UuIVBw0U93zi8OT/xc9QJYsfk5XxKSyivEYCyBXWc1TkVuPdDnhP1R34l1M9mc7kRVGdxmzg84jZcggEt3ByR9UeHElS0kJw4BzIZ99bpMbXlP8OvD2hTXydd61rG91VEKHyIWDhwDv6VaWJaIrI8L8dygm1E5Ti3xViWgmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724376653; c=relaxed/simple;
-	bh=HofqKVSX8hweqL6tlQcJRK+U2s4peJlN5tm1BKQFY+4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MlO/veaxgiCap/AsfOEzadUOyhbWk25xj997N2BgEb7sF71U4V3yvvrNgOQ0pYSexttoDep1Q5/rdiD/sHeMsIMjhvfK8gEh34Z9q2jJnkCH9aXEHXyoKIP1XayRhIZv5wTrFfYmD5mpkr9/zeLi2zfe3FfxYV6EgRxKk4RtR4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fKwML1ib; arc=none smtp.client-ip=209.85.215.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-7c691c8f8dcso1030888a12.1;
-        Thu, 22 Aug 2024 18:30:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724376651; x=1724981451; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ihi7wzSMhY5GnCD6Z9YDyGcT9vUYowgSoRe9ny56RKs=;
-        b=fKwML1ibAozG5fqvYfRvfb5HYsf30tv2YXqbODaNom4oFq3eQFluTIwwIoUKkJ8fJ3
-         9XExf5NgTb0mH9j/wn42YrTpxbhhlW2XUFVhdeEtCXij43OrYkcdRMliHYyOjwZRlkHk
-         vc/FE/DN9hiZIN4WMDOOznc6Q/WqdLifonrEG26EIascOr6q0X9UlRrVsyNOwfzhfRti
-         ozvx+0U1RNoyWCkd8dftVdQd/OfVndeUO28LMnneAKtEsb1Hzwawwug2AZ/KNopdgg50
-         30IiIlTvwUtMzjXIIFDlcVaKwTKmIKQhP0UKA9svOLvQht5tV/u2F27K6l/BkzC/ulN0
-         CNCQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724376651; x=1724981451;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Ihi7wzSMhY5GnCD6Z9YDyGcT9vUYowgSoRe9ny56RKs=;
-        b=BbATG4u7CzbdVuQPtL2q6AB5iOzz919sQ+FJjrAqqdGjw6SwvyMyYj0pwkn2nYmlmY
-         iFzT6m3sp3IQbGbQrpSes3BvLcQWh3BMsWS4ieeMhfftrF+dRHLNjb/YmGNaAcJqJKv1
-         aCexcMLBrCwxRMcVeL717jnZ1nyNu2zp3trx4qOSKvA1cvxN9XWucJ+HZ49F2/HB+TLd
-         /6Aw/TmZm2h3jqPlBs+zMa2bIAs4ZJw6oS8yo+INoKRQA0wE+tmd61myeBsemGWvKTbT
-         gg2IIfk1VV5qiSu1a8x0ZmIDdbSFPMqezgMgrxrWgiertMWdtHVNy8EqtpYycp5dl4If
-         rcfA==
-X-Forwarded-Encrypted: i=1; AJvYcCX44B1R8UF5PufbLZzZb547poyfg4A1656KqZWzz0J7893BqEoMwNY63pb72rbwMVhj4mtlRMqt9+sD4cA=@vger.kernel.org, AJvYcCXRn55rWCvRXuUNnvvqJuS0S6ZnNZnWYkK2cWG6nbk8gM53aqaZhIdOqF8IiiHrqPIzJGUPDyI+@vger.kernel.org
-X-Gm-Message-State: AOJu0YyDElydkVHjDlnOHYh3KgILKM80vlk5SZ6j9mYsejnlaZSPuleX
-	XyH4b8ChWp7iqPfnbHpHJj+6oXLkS643QF4pUhB0v06uOG/EBe8s
-X-Google-Smtp-Source: AGHT+IEUjYPI40y3iHamCoD/f4OnT066ID5vY9jdGC3TDvPbeMcs+wyBdQkE5gL/FDck0Afo4eiFJQ==
-X-Received: by 2002:a05:6a20:2d27:b0:1c6:a83c:d5db with SMTP id adf61e73a8af0-1cc89dd1450mr1019077637.31.1724376650893;
-        Thu, 22 Aug 2024 18:30:50 -0700 (PDT)
-Received: from google.com ([2620:15c:9d:2:ccdb:6951:7a5:be1b])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7143430f6e7sm1979338b3a.160.2024.08.22.18.30.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 22 Aug 2024 18:30:50 -0700 (PDT)
-Date: Thu, 22 Aug 2024 18:30:47 -0700
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To: Zijun Hu <zijun_hu@icloud.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	linux-kernel@vger.kernel.org, Zijun Hu <quic_zijuhu@quicinc.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] driver core: Fix an uninitialized variable is used by
- __device_attach()
-Message-ID: <ZsfmR69nVPZj_8oE@google.com>
-References: <20240823-fix_have_async-v1-1-43a354b6614b@quicinc.com>
- <ZsfRqT9d6Qp_Pva5@google.com>
- <04c58410-13c8-4e50-a009-5715af0cded3@icloud.com>
+	s=arc-20240116; t=1724377536; c=relaxed/simple;
+	bh=JMJWIvFK0mgjv4lzisDegaI3W7yRwGISwX6U342F4nI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=R7HppSUUd0TEfr+oRiZr+YlEQmJk1jyjvw5D4FglFCbaovEBlUnmJ+vXLykgd+4gv4pN+clkp7xkOcmOYGUgsLeSds2qrNQPLTlv4+0GwxQ62X6XxE3CAmFOrqYYsnwdha44Ua1Seln/g0jQf92T2V+UPOuv9wHJnEkCiVSCr1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=dvg7xdAK; arc=none smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47N0BYso014713;
+	Fri, 23 Aug 2024 01:45:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
+	from:to:cc:subject:date:message-id:in-reply-to:references
+	:mime-version:content-transfer-encoding; s=corp-2023-11-20; bh=L
+	iRfE3WAGjHKeRQWZi/3e1NjtY3U5hZ85YkA7X240wE=; b=dvg7xdAKmFo7JrC/m
+	Lq48PH++rZiNfciAWwoHYU2tw+7kUH/7pW8B1WHuG2KJpA1Jsm3hKT21a6ZUiBlY
+	y8BwS98juoTqcTCEcAysj0+WmvlZfmk5J5a+70Sik9H+5JP6T5ATB7ad7sC1ekCF
+	opSMAf37Iw/V+YwCSHMaLggjWlYlIdIdBoN6Wh56DWEru0CE7TetkUA/g+pt9YP+
+	DoF8faNLdcpT+HWlvlFx3uY7QY7/fVc9ZgZBHiujX6B5X60TITPASewmHcN50Qcp
+	a2TvHqa63x2vT4pGizE7MPMlGCXtIxaWTwDA6Mz7mYhJ2oI8KZqJ3r/8771SFqfz
+	LWNhQ==
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 412m6gkcrd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 23 Aug 2024 01:45:16 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 47N0YEcX012191;
+	Fri, 23 Aug 2024 01:45:15 GMT
+Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 416g0e9gb3-1;
+	Fri, 23 Aug 2024 01:45:15 +0000
+From: Sherry Yang <sherry.yang@oracle.com>
+To: maxtram95@gmail.com
+Cc: andrii@kernel.org, ast@kernel.org, daniel@iogearbox.net, eddyz87@gmail.com,
+        gregkh@linuxfoundation.org, john.fastabend@gmail.com,
+        maxim@isovalent.com, sashal@kernel.org, stable@vger.kernel.org
+Subject: BPF selftest failed to build
+Date: Thu, 22 Aug 2024 18:45:14 -0700
+Message-ID: <20240823014514.3622865-1-sherry.yang@oracle.com>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240711184323.2355017-2-maxtram95@gmail.com>
+References: <20240711184323.2355017-2-maxtram95@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <04c58410-13c8-4e50-a009-5715af0cded3@icloud.com>
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-08-23_01,2024-08-22_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 bulkscore=0 adultscore=0
+ malwarescore=0 suspectscore=0 mlxscore=0 mlxlogscore=999 phishscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2407110000
+ definitions=main-2408230009
+X-Proofpoint-ORIG-GUID: 84vaS5JaquI_V4VUzaydlv9c0HukKbGa
+X-Proofpoint-GUID: 84vaS5JaquI_V4VUzaydlv9c0HukKbGa
 
-On Fri, Aug 23, 2024 at 08:46:12AM +0800, Zijun Hu wrote:
-> On 2024/8/23 08:02, Dmitry Torokhov wrote:
-> > Hi,
-> > 
-> > On Fri, Aug 23, 2024 at 07:46:09AM +0800, Zijun Hu wrote:
-> >> From: Zijun Hu <quic_zijuhu@quicinc.com>
-> >>
-> >> An uninitialized variable @data.have_async may be used as analyzed
-> >> by the following inline comments:
-> >>
-> >> static int __device_attach(struct device *dev, bool allow_async)
-> >> {
-> >> 	// if @allow_async is true.
-> >>
-> >> 	...
-> >> 	struct device_attach_data data = {
-> >> 		.dev = dev,
-> >> 		.check_async = allow_async,
-> >> 		.want_async = false,
-> >> 	};
-> >> 	// @data.have_async is not initialized.
-> > 
-> > No, in the presence of a structure initializer fields not explicitly
-> > initialized will be set to 0 by the compiler.
-> > 
-> really?
-> do all C compilers have such behavior ?
+Hi All,
 
-Yes, all conforming to the C standard.
+We found BPF sefltest fail to build with following error:
 
-Thanks.
+08-09 20:39:59 DBG: |output|: progs/test_global_func10.c:24:1: error: unknown type name '__failure'
+08-09 20:39:59 DBG: |output|: __failure __msg("invalid indirect access to stack")
+08-09 20:39:59 DBG: |output|: ^
+08-09 20:39:59 DBG: |output|: progs/test_global_func10.c:24:17: error: expected parameter declarator
+08-09 20:39:59 DBG: |output|: __failure __msg("invalid indirect access to stack")
+08-09 20:39:59 DBG: |output|:                 ^
+08-09 20:39:59 DBG: |output|: progs/test_global_func10.c:24:17: error: expected ')'
+08-09 20:39:59 DBG: |output|: progs/test_global_func10.c:24:16: note: to match this '('
+08-09 20:39:59 DBG: |output|: __failure __msg("invalid indirect access to stack")
+08-09 20:39:59 DBG: |output|:                ^
+08-09 20:39:59 DBG: |output|: progs/test_global_func10.c:24:52: error: expected ';' after top level declarator
+08-09 20:39:59 DBG: |output|: __failure __msg("invalid indirect access to stack")
+08-09 20:39:59 DBG: |output|:                                                    ^
+08-09 20:39:59 DBG: |output|:                                                    ;
+08-09 20:39:59 DBG: |output|: 4 errors generated.
+08-09 20:39:59 DBG: |output|: make: *** [Makefile:470: /root/oltf/work/linux-bpf-qa/tools/testing/selftests/bpf/test_global_func10.o] Error 1
+08-09 20:39:59 DBG: |output|: make: *** Waiting for unfinished jobs....
 
--- 
-Dmitry
+It happens from the commit e30bc19a9ee8("bpf: Allow reads from uninit stack"). We did a further look, '__failure' is defined in tools/testing/selftests/bpf/progs/bpf_misc.h, and was 1st introduced in commit 537c3f66eac1("selftests/bpf: add generic BPF program tester-loader") which is not backported to linux-5.15.y.
+
+So we may need to revert the patch, or fix it.
+
+Kind regards,
+Sherry 
 
