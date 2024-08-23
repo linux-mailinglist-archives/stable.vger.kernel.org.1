@@ -1,65 +1,63 @@
-Return-Path: <stable+bounces-69968-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69969-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20A0895CE91
-	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 16:01:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B191B95CE95
+	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 16:01:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4846F1C2116A
-	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 14:01:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E560BB2633D
+	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 14:01:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F36D186E24;
-	Fri, 23 Aug 2024 14:01:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CDB4186E3B;
+	Fri, 23 Aug 2024 14:01:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sEY6Lmg2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KNkk4y0o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F03E91DA5E;
-	Fri, 23 Aug 2024 14:01:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0313C17E01F;
+	Fri, 23 Aug 2024 14:01:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724421685; cv=none; b=m7Li9HKxFT/T/sMw1T6DvnoVW9uuTP4m4xWbK/QpcKogYo0r2BfLx6cnO8OKxF5i36vZs6mtG2w3l4IvGZ2irdSMHW/WcZx9bTEBxL+m0Tv0wA0nvZgQiWozbXEq/8TOJeFOMyBy6xaqvDqf2mqZRnzzc9fBcoW2tsbIc1xgO1A=
+	t=1724421693; cv=none; b=jW2piY51qWNb2HUVDeRA3i6RqLaL0bclfV2FDWYTBeQDPSnpggsc0AcWwlQn8DQeOkvWFzi9ilE2c1VvqNYAYONWJemfLFY5xFmlh3/urMAZxz8t+M7cP5n53PjXGCGgWwcjGLu2jLJPeaMx9A60JO8dObAlPofbXutd/i1/uKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724421685; c=relaxed/simple;
-	bh=v2GAa73zU3iAPH4GtRJqLTx0Fal/h2Cne66iizWEres=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WrvreYD9FlEunmw1oIFzsD8w1K+mEURD63IIG/OnBQ8Ai5M+TSBswregdQrQE5h8ZKvlTnxXZ5EMCg9ns6hOYZ10z3dNP/oM34BC3S+gkA3PLtVrIPrumiybb4hzKtze4FXXRH+e66DGG5KAZsdBxdWI0F6kL+NQjClXCw/99c4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sEY6Lmg2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF39BC32786;
-	Fri, 23 Aug 2024 14:01:22 +0000 (UTC)
+	s=arc-20240116; t=1724421693; c=relaxed/simple;
+	bh=gW4sTdPf9EoKXEvA8Fl0YXEdAgrvilJkqo4YI6b6xV8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=RKrar/tXnXnYHL3sVV2FA0zAxMV0IZlDTWmll/wQmMbZ66XncwXdnY/Xq5RvM4ssiuBvFPpiTl4KpH3OsN0YDcruEKq1X+ay6z/ZAx7Oe+JSD3IpyU4+Ky9iopRmLR3bK833Evl6e6fsSXZUkj7MRsNsu+Uk7QgChWo9dRQds50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KNkk4y0o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 631B9C32786;
+	Fri, 23 Aug 2024 14:01:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724421684;
-	bh=v2GAa73zU3iAPH4GtRJqLTx0Fal/h2Cne66iizWEres=;
-	h=From:To:Cc:Subject:Date:From;
-	b=sEY6Lmg2697Gb5W7EOVk2j2o0tsWUniwfwvn//pp5zFQeEYbEcC3E+sp1V33Vedrk
-	 tSnjRASP4DASHj0tacdzJUu5Iq4hDy1HXgRPddNnPQshtAGNabDL5W3iHBzSUnZal5
-	 BlgyPyEpifi9FwXgV0IOgT2wZYyTwmHYuYbjxpW4S+TA6ERV7w1aoPOwAnjfyXth+C
-	 8NsRgzAm9ojH0SY0Hc8zOiImIoXq1oPSHgaFzBTv9NAjPWdQmYr07dDCaZk7FTSUzw
-	 qS6atd4+QPVYn54+hacIaCKOr14P1xkFtXCuk0ewdu+l9rzuQfMKTTbPLncdMLaHRP
-	 EIu20ucH+Hm6Q==
+	s=k20201202; t=1724421692;
+	bh=gW4sTdPf9EoKXEvA8Fl0YXEdAgrvilJkqo4YI6b6xV8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=KNkk4y0oUnyqYYdse1YGQWf+UyrWBeYqUsCfjCy8NVIJG6oCPbFylqnCsSPiCH5Oo
+	 AabGDG5r5DMRCg2nsKrT5MQXtBKfbD+hU7DAHCGRbL8HBBDGEYFUveDLPWCZvRzlNs
+	 3mAH57LOfJz359A7GgdGe5LD1Z1efCk+BgJBSBU0YVUlVIAydiKfOWsJ7LSwXooYvN
+	 EPui0sWs+NqMT3M/ylPIFlW6xZrW8SgPwGgayrqZNnEvVTPjCXqcRDfr8APG8yd/9J
+	 dOSh2xEBRRdnCuqvZLknQVRc6fd32bG/4GrsmHs5chLnlgFMc1Qhchdo6sFwm9iMOl
+	 W8uFa4YRKYZwg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Fei Shao <fshao@chromium.org>,
-	Daniel Stone <daniels@collabora.com>,
-	CK Hu <ck.hu@mediatek.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+Cc: Namjae Jeon <linkinjeon@kernel.org>,
+	Sangsoo Lee <constant.lee@samsung.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>,
-	p.zabel@pengutronix.de,
-	airlied@gmail.com,
-	daniel@ffwll.ch,
-	matthias.bgg@gmail.com,
-	dri-devel@lists.freedesktop.org,
-	linux-mediatek@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.10 01/24] drm/mediatek: Set sensible cursor width/height values to fix crash
-Date: Fri, 23 Aug 2024 10:00:23 -0400
-Message-ID: <20240823140121.1974012-1-sashal@kernel.org>
+	sfrench@samba.org,
+	bonifaido@gmail.com,
+	atteh.mailbox@gmail.com,
+	linux-cifs@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.10 02/24] ksmbd: override fsids for share path check
+Date: Fri, 23 Aug 2024 10:00:24 -0400
+Message-ID: <20240823140121.1974012-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240823140121.1974012-1-sashal@kernel.org>
+References: <20240823140121.1974012-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -71,50 +69,222 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.6
 Content-Transfer-Encoding: 8bit
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit 042b8711a0beafb2c3b888bebe3c300ab4c817fa ]
+[ Upstream commit a018c1b636e79b60149b41151ded7c2606d8606e ]
 
-Hardware-speaking, there is no feature-reduced cursor specific
-plane, so this driver reserves the last all Overlay plane as a
-Cursor plane, but sets the maximum cursor width/height to the
-maximum value that the full overlay plane can use.
+Sangsoo reported that a DAC denial error occurred when accessing
+files through the ksmbd thread. This patch override fsids for share
+path check.
 
-While this could be ok, it raises issues with common userspace
-using libdrm (especially Mutter, but other compositors too) which
-will crash upon performing allocations and/or using said cursor
-plane.
-
-Reduce the maximum width/height for the cursor to 512x512 pixels,
-value taken from IGT's maximum cursor size test, which succeeds.
-
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Fei Shao <fshao@chromium.org>
-Tested-by: Fei Shao <fshao@chromium.org>
-Reviewed-by: Daniel Stone <daniels@collabora.com>
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20240718082410.204459-1-angelogioacchino.delregno@collabora.com/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Reported-by: Sangsoo Lee <constant.lee@samsung.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_drm_drv.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/smb/server/mgmt/share_config.c | 15 ++++++++++++---
+ fs/smb/server/mgmt/share_config.h |  4 +++-
+ fs/smb/server/mgmt/tree_connect.c |  9 +++++----
+ fs/smb/server/mgmt/tree_connect.h |  4 ++--
+ fs/smb/server/smb2pdu.c           |  2 +-
+ fs/smb/server/smb_common.c        |  9 +++++++--
+ fs/smb/server/smb_common.h        |  2 ++
+ 7 files changed, 32 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_drm_drv.c b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
-index 56f409ad7f390..ab2bace792e46 100644
---- a/drivers/gpu/drm/mediatek/mtk_drm_drv.c
-+++ b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
-@@ -539,8 +539,8 @@ static int mtk_drm_kms_init(struct drm_device *drm)
- 	}
+diff --git a/fs/smb/server/mgmt/share_config.c b/fs/smb/server/mgmt/share_config.c
+index e0a6b758094fc..d8d03070ae44b 100644
+--- a/fs/smb/server/mgmt/share_config.c
++++ b/fs/smb/server/mgmt/share_config.c
+@@ -15,6 +15,7 @@
+ #include "share_config.h"
+ #include "user_config.h"
+ #include "user_session.h"
++#include "../connection.h"
+ #include "../transport_ipc.h"
+ #include "../misc.h"
  
- 	/* IGT will check if the cursor size is configured */
--	drm->mode_config.cursor_width = drm->mode_config.max_width;
--	drm->mode_config.cursor_height = drm->mode_config.max_height;
-+	drm->mode_config.cursor_width = 512;
-+	drm->mode_config.cursor_height = 512;
+@@ -120,12 +121,13 @@ static int parse_veto_list(struct ksmbd_share_config *share,
+ 	return 0;
+ }
  
- 	/* Use OVL device for all DMA memory allocations */
- 	crtc = drm_crtc_from_index(drm, 0);
+-static struct ksmbd_share_config *share_config_request(struct unicode_map *um,
++static struct ksmbd_share_config *share_config_request(struct ksmbd_work *work,
+ 						       const char *name)
+ {
+ 	struct ksmbd_share_config_response *resp;
+ 	struct ksmbd_share_config *share = NULL;
+ 	struct ksmbd_share_config *lookup;
++	struct unicode_map *um = work->conn->um;
+ 	int ret;
+ 
+ 	resp = ksmbd_ipc_share_config_request(name);
+@@ -181,7 +183,14 @@ static struct ksmbd_share_config *share_config_request(struct unicode_map *um,
+ 				      KSMBD_SHARE_CONFIG_VETO_LIST(resp),
+ 				      resp->veto_list_sz);
+ 		if (!ret && share->path) {
++			if (__ksmbd_override_fsids(work, share)) {
++				kill_share(share);
++				share = NULL;
++				goto out;
++			}
++
+ 			ret = kern_path(share->path, 0, &share->vfs_path);
++			ksmbd_revert_fsids(work);
+ 			if (ret) {
+ 				ksmbd_debug(SMB, "failed to access '%s'\n",
+ 					    share->path);
+@@ -214,7 +223,7 @@ static struct ksmbd_share_config *share_config_request(struct unicode_map *um,
+ 	return share;
+ }
+ 
+-struct ksmbd_share_config *ksmbd_share_config_get(struct unicode_map *um,
++struct ksmbd_share_config *ksmbd_share_config_get(struct ksmbd_work *work,
+ 						  const char *name)
+ {
+ 	struct ksmbd_share_config *share;
+@@ -227,7 +236,7 @@ struct ksmbd_share_config *ksmbd_share_config_get(struct unicode_map *um,
+ 
+ 	if (share)
+ 		return share;
+-	return share_config_request(um, name);
++	return share_config_request(work, name);
+ }
+ 
+ bool ksmbd_share_veto_filename(struct ksmbd_share_config *share,
+diff --git a/fs/smb/server/mgmt/share_config.h b/fs/smb/server/mgmt/share_config.h
+index 5f591751b9236..d4ac2dd4de204 100644
+--- a/fs/smb/server/mgmt/share_config.h
++++ b/fs/smb/server/mgmt/share_config.h
+@@ -11,6 +11,8 @@
+ #include <linux/path.h>
+ #include <linux/unicode.h>
+ 
++struct ksmbd_work;
++
+ struct ksmbd_share_config {
+ 	char			*name;
+ 	char			*path;
+@@ -68,7 +70,7 @@ static inline void ksmbd_share_config_put(struct ksmbd_share_config *share)
+ 	__ksmbd_share_config_put(share);
+ }
+ 
+-struct ksmbd_share_config *ksmbd_share_config_get(struct unicode_map *um,
++struct ksmbd_share_config *ksmbd_share_config_get(struct ksmbd_work *work,
+ 						  const char *name);
+ bool ksmbd_share_veto_filename(struct ksmbd_share_config *share,
+ 			       const char *filename);
+diff --git a/fs/smb/server/mgmt/tree_connect.c b/fs/smb/server/mgmt/tree_connect.c
+index d2c81a8a11dda..94a52a75014a4 100644
+--- a/fs/smb/server/mgmt/tree_connect.c
++++ b/fs/smb/server/mgmt/tree_connect.c
+@@ -16,17 +16,18 @@
+ #include "user_session.h"
+ 
+ struct ksmbd_tree_conn_status
+-ksmbd_tree_conn_connect(struct ksmbd_conn *conn, struct ksmbd_session *sess,
+-			const char *share_name)
++ksmbd_tree_conn_connect(struct ksmbd_work *work, const char *share_name)
+ {
+ 	struct ksmbd_tree_conn_status status = {-ENOENT, NULL};
+ 	struct ksmbd_tree_connect_response *resp = NULL;
+ 	struct ksmbd_share_config *sc;
+ 	struct ksmbd_tree_connect *tree_conn = NULL;
+ 	struct sockaddr *peer_addr;
++	struct ksmbd_conn *conn = work->conn;
++	struct ksmbd_session *sess = work->sess;
+ 	int ret;
+ 
+-	sc = ksmbd_share_config_get(conn->um, share_name);
++	sc = ksmbd_share_config_get(work, share_name);
+ 	if (!sc)
+ 		return status;
+ 
+@@ -61,7 +62,7 @@ ksmbd_tree_conn_connect(struct ksmbd_conn *conn, struct ksmbd_session *sess,
+ 		struct ksmbd_share_config *new_sc;
+ 
+ 		ksmbd_share_config_del(sc);
+-		new_sc = ksmbd_share_config_get(conn->um, share_name);
++		new_sc = ksmbd_share_config_get(work, share_name);
+ 		if (!new_sc) {
+ 			pr_err("Failed to update stale share config\n");
+ 			status.ret = -ESTALE;
+diff --git a/fs/smb/server/mgmt/tree_connect.h b/fs/smb/server/mgmt/tree_connect.h
+index 6377a70b811c8..a42cdd0510411 100644
+--- a/fs/smb/server/mgmt/tree_connect.h
++++ b/fs/smb/server/mgmt/tree_connect.h
+@@ -13,6 +13,7 @@
+ struct ksmbd_share_config;
+ struct ksmbd_user;
+ struct ksmbd_conn;
++struct ksmbd_work;
+ 
+ enum {
+ 	TREE_NEW = 0,
+@@ -50,8 +51,7 @@ static inline int test_tree_conn_flag(struct ksmbd_tree_connect *tree_conn,
+ struct ksmbd_session;
+ 
+ struct ksmbd_tree_conn_status
+-ksmbd_tree_conn_connect(struct ksmbd_conn *conn, struct ksmbd_session *sess,
+-			const char *share_name);
++ksmbd_tree_conn_connect(struct ksmbd_work *work, const char *share_name);
+ void ksmbd_tree_connect_put(struct ksmbd_tree_connect *tcon);
+ 
+ int ksmbd_tree_conn_disconnect(struct ksmbd_session *sess,
+diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
+index 840c71c66b30b..373c7ecbf8033 100644
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -1955,7 +1955,7 @@ int smb2_tree_connect(struct ksmbd_work *work)
+ 	ksmbd_debug(SMB, "tree connect request for tree %s treename %s\n",
+ 		    name, treename);
+ 
+-	status = ksmbd_tree_conn_connect(conn, sess, name);
++	status = ksmbd_tree_conn_connect(work, name);
+ 	if (status.ret == KSMBD_TREE_CONN_STATUS_OK)
+ 		rsp->hdr.Id.SyncId.TreeId = cpu_to_le32(status.tree_conn->id);
+ 	else
+diff --git a/fs/smb/server/smb_common.c b/fs/smb/server/smb_common.c
+index 474dadf6b7b8b..13818ecb6e1b2 100644
+--- a/fs/smb/server/smb_common.c
++++ b/fs/smb/server/smb_common.c
+@@ -732,10 +732,10 @@ bool is_asterisk(char *p)
+ 	return p && p[0] == '*';
+ }
+ 
+-int ksmbd_override_fsids(struct ksmbd_work *work)
++int __ksmbd_override_fsids(struct ksmbd_work *work,
++		struct ksmbd_share_config *share)
+ {
+ 	struct ksmbd_session *sess = work->sess;
+-	struct ksmbd_share_config *share = work->tcon->share_conf;
+ 	struct cred *cred;
+ 	struct group_info *gi;
+ 	unsigned int uid;
+@@ -775,6 +775,11 @@ int ksmbd_override_fsids(struct ksmbd_work *work)
+ 	return 0;
+ }
+ 
++int ksmbd_override_fsids(struct ksmbd_work *work)
++{
++	return __ksmbd_override_fsids(work, work->tcon->share_conf);
++}
++
+ void ksmbd_revert_fsids(struct ksmbd_work *work)
+ {
+ 	const struct cred *cred;
+diff --git a/fs/smb/server/smb_common.h b/fs/smb/server/smb_common.h
+index f1092519c0c28..4a3148b0167f5 100644
+--- a/fs/smb/server/smb_common.h
++++ b/fs/smb/server/smb_common.h
+@@ -447,6 +447,8 @@ int ksmbd_extract_shortname(struct ksmbd_conn *conn,
+ int ksmbd_smb_negotiate_common(struct ksmbd_work *work, unsigned int command);
+ 
+ int ksmbd_smb_check_shared_mode(struct file *filp, struct ksmbd_file *curr_fp);
++int __ksmbd_override_fsids(struct ksmbd_work *work,
++			   struct ksmbd_share_config *share);
+ int ksmbd_override_fsids(struct ksmbd_work *work);
+ void ksmbd_revert_fsids(struct ksmbd_work *work);
+ 
 -- 
 2.43.0
 
