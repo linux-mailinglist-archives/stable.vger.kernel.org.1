@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-69939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-69940-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB75395C531
-	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 08:11:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A7E795C533
+	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 08:13:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 810001F2262C
-	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 06:11:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8CA4F1C2116A
+	for <lists+stable@lfdr.de>; Fri, 23 Aug 2024 06:13:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FC0D5FBBA;
-	Fri, 23 Aug 2024 06:11:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C6626F307;
+	Fri, 23 Aug 2024 06:12:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yyF0oWmb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2cg4pVeJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB06F8493;
-	Fri, 23 Aug 2024 06:11:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E31A555C3E;
+	Fri, 23 Aug 2024 06:12:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724393509; cv=none; b=D4Tj/WiVFGp3U8Ve/0aHPtieHAblXLdnA8TEBkoJd5LGIQxF9yP1rjfeDHJ9nUzzbtlb+h3QMjZKFu/FgvI3fPsvQwLh3V2Jknx9hchYRHYj9gCupKc11ujRg9j2046muNfN5RkzOrtLvHRasFHQBV529onZrvEqGzADd0QD35c=
+	t=1724393575; cv=none; b=SVHekzoHjXOseAEkFBovaqeCc9GsyEnZ7aDYZ+sCFTr9hvE8oUSyf+X/aCRZEAwzz7AXooJysy6FLQ/Y8O9zSIK819CsN/7lnMJDgP/YJdh2y46IPKAfkBWzOAd2uHWbqqJ3+aSXUASOAPjgjF/OSoN0gDJHk5CHIoGZ701AG0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724393509; c=relaxed/simple;
-	bh=rZRxZusxBHotNQZhqeg8CxgvISn6IPndzeerII7HRnY=;
+	s=arc-20240116; t=1724393575; c=relaxed/simple;
+	bh=VuaMXq/ic8X2m9kV83mf6YFYaszIuxekeGJm8Pfrrqw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Zcn9CDrRq8O0Uup1HbiIIqdVbplPEwLRAuTehxxdVQRWDgx+fAs41VNQLuY4465X3e70vsJ6RiqJqyU+AAwpc/J9gBgzx7nfWWOF+nCc1+o8hx29F+HgMHjwrGbHffeyKUWgor8z3+vPlVpNqqSF7M5GgpDPm7Rm8riItNJ4H94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yyF0oWmb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17CCAC32786;
-	Fri, 23 Aug 2024 06:11:47 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=R8wYm/TplyQcHaOZ/hFC5CeC8gB18imQ0wv59Juxykcjjufj01tqZ1vbLpRDBO4hGPPCjIuxcEz0b125va5sEaQEBns8+M/4u+tsK/+DG5msPWCo0qWqIOhOaXq9PdR2uW3JPcr9odojUPomL4FXk2PfaImz+XDRqCswnCD2rNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2cg4pVeJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED127C32786;
+	Fri, 23 Aug 2024 06:12:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724393508;
-	bh=rZRxZusxBHotNQZhqeg8CxgvISn6IPndzeerII7HRnY=;
+	s=korg; t=1724393574;
+	bh=VuaMXq/ic8X2m9kV83mf6YFYaszIuxekeGJm8Pfrrqw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=yyF0oWmbAfs0WsC0hJUQEocgguWd1sQWMv5hKpZ5WGqUE2kR9E+hnvMopNfC7UgEt
-	 OqO6XD+MMLlKABq9qKRPWk1sjrE57i3unYEwxy3L/BBPmQdXH+NeDSrNMg+Ti/6uq4
-	 JFkuH8afvVYD8KMm2CseQiriM6w+vjLul30ST7pQ=
-Date: Fri, 23 Aug 2024 14:11:45 +0800
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc: Zijun Hu <zijun_hu@icloud.com>, "Rafael J. Wysocki" <rafael@kernel.org>,
-	linux-kernel@vger.kernel.org, Zijun Hu <quic_zijuhu@quicinc.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] driver core: Fix an uninitialized variable is used by
- __device_attach()
-Message-ID: <2024082349-democrat-cough-bf77@gregkh>
-References: <20240823-fix_have_async-v1-1-43a354b6614b@quicinc.com>
- <ZsfRqT9d6Qp_Pva5@google.com>
- <04c58410-13c8-4e50-a009-5715af0cded3@icloud.com>
- <2024082318-labored-blunderer-a897@gregkh>
- <Zsfk-9lf1sRMgBqE@google.com>
+	b=2cg4pVeJFoWhnJgcePmo6lZ4QBf+Lldz1O2gqcR/cj3fMPRDY1/5S+lSIdzQoJtx3
+	 liKnuqDEGtLZZVcWJrNXb4M6jpnSXRiNfXo2zpbMigL6yzFNkrUPrSmEbyKRfzi/op
+	 kuCgxH38zblAdnNsML67kVhuBCYId0ei/JDy9xO8=
+Date: Fri, 23 Aug 2024 14:12:51 +0800
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Linux regressions mailing list <regressions@lists.linux.dev>
+Cc: stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>,
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Oleg Nesterov <oleg@redhat.com>, Aleksa Sarai <cyphar@cyphar.com>,
+	Tycho Andersen <tandersen@netflix.com>,
+	Daan De Meyer <daan.j.demeyer@gmail.com>, Tejun Heo <tj@kernel.org>,
+	Eric Biggers <ebiggers@kernel.org>,
+	Christian Brauner <brauner@kernel.org>
+Subject: Re: [PATCH] pidfd: prevent creation of pidfds for kthreads
+Message-ID: <2024082313-throttle-snuggle-6238@gregkh>
+References: <20240731-gleis-mehreinnahmen-6bbadd128383@brauner>
+ <20240818035818.GA1929@sol.localdomain>
+ <20240819-staudamm-rederei-cb7092f54e76@brauner>
+ <93296f30-1a3c-44b6-91d1-61408e1d9270@leemhuis.info>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,66 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Zsfk-9lf1sRMgBqE@google.com>
+In-Reply-To: <93296f30-1a3c-44b6-91d1-61408e1d9270@leemhuis.info>
 
-On Thu, Aug 22, 2024 at 06:25:15PM -0700, Dmitry Torokhov wrote:
-> On Fri, Aug 23, 2024 at 09:14:12AM +0800, Greg Kroah-Hartman wrote:
-> > On Fri, Aug 23, 2024 at 08:46:12AM +0800, Zijun Hu wrote:
-> > > On 2024/8/23 08:02, Dmitry Torokhov wrote:
-> > > > Hi,
-> > > > 
-> > > > On Fri, Aug 23, 2024 at 07:46:09AM +0800, Zijun Hu wrote:
-> > > >> From: Zijun Hu <quic_zijuhu@quicinc.com>
-> > > >>
-> > > >> An uninitialized variable @data.have_async may be used as analyzed
-> > > >> by the following inline comments:
-> > > >>
-> > > >> static int __device_attach(struct device *dev, bool allow_async)
-> > > >> {
-> > > >> 	// if @allow_async is true.
-> > > >>
-> > > >> 	...
-> > > >> 	struct device_attach_data data = {
-> > > >> 		.dev = dev,
-> > > >> 		.check_async = allow_async,
-> > > >> 		.want_async = false,
-> > > >> 	};
-> > > >> 	// @data.have_async is not initialized.
-> > > > 
-> > > > No, in the presence of a structure initializer fields not explicitly
-> > > > initialized will be set to 0 by the compiler.
-> > > > 
-> > > really?
-> > > do all C compilers have such behavior ?
+On Fri, Aug 23, 2024 at 07:23:12AM +0200, Linux regression tracking (Thorsten Leemhuis) wrote:
+> On 19.08.24 10:41, Christian Brauner wrote:
+> > On Sat, Aug 17, 2024 at 08:58:18PM GMT, Eric Biggers wrote:
+> >> On Wed, Jul 31, 2024 at 12:01:12PM +0200, Christian Brauner wrote:
+> >>> It's currently possible to create pidfds for kthreads but it is unclear
+> >>> what that is supposed to mean. Until we have use-cases for it and we
+> >>> figured out what behavior we want block the creation of pidfds for
+> >>> kthreads.
+> >>>
+> >>> Fixes: 32fcb426ec00 ("pid: add pidfd_open()")
+> >>> Cc: stable@vger.kernel.org
+> >>> Signed-off-by: Christian Brauner <brauner@kernel.org>
+> >>> ---
+> >>>  kernel/fork.c | 25 ++++++++++++++++++++++---
+> >>>  1 file changed, 22 insertions(+), 3 deletions(-)
+> >>
+> >> Unfortunately this commit broke systemd-shutdown's ability to kill processes,
+> >> which makes some filesystems no longer get unmounted at shutdown.
+> >>
+> >> It looks like systemd-shutdown relies on being able to create a pidfd for any
+> >> process listed in /proc (even a kthread), and if it gets EINVAL it treats it a
+> >> fatal error and stops looking for more processes...
 > > 
-> > Oh wait, if this were static, then yes, it would all be set to 0, sorry,
-> > I misread this.
-> > 
-> > This is on the stack so it needs to be zeroed out explicitly.  We should
-> > set the whole thing to 0 and then set only the fields we want to
-> > override to ensure it's all correct.
+> > Thanks for the report!
+> > I talked to Daan De Meyer who made that change and he said that this
+> > must a systemd version that hasn't gotten his fixes yet. In any case, if
+> > this causes regression then I'll revert it right now. See the appended
+> > revert.
 > 
-> No we do not. ISO/IEC 9899:201x 6.7.9 Initialization:
-> 
-> "21 If there are fewer initializers in a brace-enclosed list than there
-> are elements or members of an aggregate, or fewer characters in a string
-> literal used to initialize an array of known size than there are
-> elements in the array, the remainder of the aggregate shall be
-> initialized implicitly the same as objects that have static storage
-> duration."
-> 
-> That is why you can 0-initialize a structure by doing:
-> 
-> 	struct s s1 = { 0 };
-> 
-> or even
-> 
-> 	struct s s1 = { };
+> Greg, Sasha, JFYI in case you are not already aware of it: I by
+> chance[1] noticed that the patch Christian plans to revert is still in
+> the 6.10-queue. You might want to drop it (or apply the revert as well,
+> which is in -next, but not yet in mainline afaics).
 
-{sigh}  I always get this wrong, also there's the question "are holes
-in the structure also set to 0" which as you can see from the above
-spec, should also be true.  But numerous places in the kernel explicitly
-use memset() to "make sure" of that.
+I was hoping it would get into Linus's tree "soon" so I could take the
+revert too.  As it's in -next, I'll grab it from there when I get a
+chance.
 
 thanks,
 
