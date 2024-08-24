@@ -1,198 +1,130 @@
-Return-Path: <stable+bounces-70100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70101-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36CB595DF96
-	for <lists+stable@lfdr.de>; Sat, 24 Aug 2024 20:31:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE0B395DFC1
+	for <lists+stable@lfdr.de>; Sat, 24 Aug 2024 21:12:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 896F61F21AE7
-	for <lists+stable@lfdr.de>; Sat, 24 Aug 2024 18:31:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6715B1F228CF
+	for <lists+stable@lfdr.de>; Sat, 24 Aug 2024 19:12:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57AF357CBA;
-	Sat, 24 Aug 2024 18:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88A6F770F3;
+	Sat, 24 Aug 2024 19:12:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="b2AQkCoN"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G6TbKhWp"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2076.outbound.protection.outlook.com [40.107.244.76])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F30E3CF5E;
-	Sat, 24 Aug 2024 18:31:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.244.76
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724524304; cv=fail; b=If943tRwK9ZZIP1+4NE3uQ5h0hZUnFjmbExxbCWmm70x2Ee11JlbaMfHT6kFHJF96z6L6rftmY8o5Gmve0Mz60/TfenzxCzAVIGEERxz8IeUKk4+i6JuHccSb11QBzUpU+9EToUIDe8Ng4SNkZu9CYS40mc5C10VvvkNuB3PWx4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724524304; c=relaxed/simple;
-	bh=LgPSBgpmCVnY7Pf/p1cWOYbuQur3r7X03Iubq1zHw94=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=BjqPJYmMlKMJX+utlRZo9ZvAo6CwVDVxI3FaQRU6q7qlBsojq85q9jB96gfHNMFZlJr/I4riHgIkc6DQfq/Fb3UnJ8GLF0Ra1w+r4QKHcLmZALSbKFNBH0u2CbwehOUYBDQP+m8QIFeOfK/dB7kBlfFXRhwj59wgwzQYmgluSGA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=b2AQkCoN; arc=fail smtp.client-ip=40.107.244.76
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=yKsxyhqrPHFUKLLdJcS6ED3S3Dsg4qFRWXtqsK2Wdd5qNWbWNAJ1xdbg1B8VO0qfq59HkEvuNLFlbJ+qVHk3FqLi/f8Utuj902fi04Ui1sdF0YbSeQxhBrKhww7p9QMBfj+slNiPM/3PBWOl8lgz3eJamIGlQvyAnVu3+V2YxnGgyEEHLloR7pNW4ysFODQXIElxrRDs7diXJkV8ELQQ6P0Wc69/T9CXUqbrJuiPNNPeaxfzpT1pOscoAtfpoBHK69j6nwRU/dRI8DYY4g61lwLpDY5/Hj6zd9mIStp/YzBeG7/m3dRetyHrQG+oOHhN1LVEnn2rcU7xTode2nOnjA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WkPqv+EFZ+8hZNCiDjOWFQuWOGfanQNAkyzT9anFZNU=;
- b=aGekSihWCHFcZNnb2vu1sRaWgKdiZ71pL63Oomvp1HQyX3UeKYzib1H4qDOt+9j9RDbe8oe4IQ6ewwGTu7/JJ6axVT8OlQZHyV5tnNz9zc/IYsvPzuflz/pxDRngit+tDVbmRlqyBpClavD1NDndXfWAAUtVKLs1nSKZNhTX41nS8Nd9J56ruuzEcc6DtEPML4AksCAQoi20ZTpETSm6RBDwwUY3imtFoB0/rYroTufCp4xJ9ZwB0D3SgIDG6B4MbR63Vu7VFmPuAp7+9gfXPwPixlCi6KC4XLIIhSt12uvaUc//760SWeiGykHPF5dfXhICnj5Y3dcV/J+1h2GRxg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WkPqv+EFZ+8hZNCiDjOWFQuWOGfanQNAkyzT9anFZNU=;
- b=b2AQkCoNgUq6YqDDaYRf+/LXTRA4JItj0WJWelkhOquRT0h3EYUr5Tvo4y/2LIQGvFHWB72cAYYOROApwhNOUYcxGo/3vJlZsYYGIRJ42C7h+iZ/NpCyvKY0kkcJzYtg6/gpPb6RZKH3cAQKf4j5sXrkJfQhZxDZIkX+g6lGPG4=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DM4PR12MB5070.namprd12.prod.outlook.com (2603:10b6:5:389::22)
- by DM4PR12MB7719.namprd12.prod.outlook.com (2603:10b6:8:101::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7897.23; Sat, 24 Aug
- 2024 18:31:40 +0000
-Received: from DM4PR12MB5070.namprd12.prod.outlook.com
- ([fe80::20a9:919e:fd6b:5a6e]) by DM4PR12MB5070.namprd12.prod.outlook.com
- ([fe80::20a9:919e:fd6b:5a6e%5]) with mapi id 15.20.7897.021; Sat, 24 Aug 2024
- 18:31:40 +0000
-Message-ID: <9c545db3-1581-18f0-3543-eb666e1a8eb6@amd.com>
-Date: Sat, 24 Aug 2024 13:31:42 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH] crypto: ccp: Properly unregister /dev/sev on sev
- PLATFORM_STATUS failure
-Content-Language: en-US
-To: Pavan Kumar Paluri <papaluri@amd.com>, linux-crypto@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org, Ashish Kalra <ashish.kalra@amd.com>,
- John Allen <john.allen@amd.com>, Herbert Xu <herbert@gondor.apana.org.au>,
- "David S . Miller" <davem@davemloft.net>, stable@vger.kernel.org
-References: <20240815122500.71946-1-papaluri@amd.com>
-From: Tom Lendacky <thomas.lendacky@amd.com>
-In-Reply-To: <20240815122500.71946-1-papaluri@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: SN4PR0501CA0050.namprd05.prod.outlook.com
- (2603:10b6:803:41::27) To DM4PR12MB5070.namprd12.prod.outlook.com
- (2603:10b6:5:389::22)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B681B7DA61;
+	Sat, 24 Aug 2024 19:12:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1724526773; cv=none; b=kWRWrFwalN0kwEYLhrV3e3dQXw7dWK5+Hy52X/CfvhKeprWO89Uv0tsFi0sB8qbJGdxacJPiafgxBDnfszZbA9kLEPMhDOd33zgDFxeXYSCxeryoa3lUY9j66sKP+hKdrJIHkyRCCE12Hvbnebpa+Dst0HV2PBq8bJz9luYCiMM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1724526773; c=relaxed/simple;
+	bh=pnaGJYOZGck1ER1jWc1dvxcWSL8te3arYl6CgL95lrI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cGny5MHEbCbkurFsk7D5lb5pgz7rxGsrgCeN6RCGSrs5lb/qoeo/Ccos1hsb4e5Nx/hmkasOEgGHEmqyZqhrFG43WbeMjdumcYhjSJLsg429Abv86f2k+O2XU4ZBjGDdrmh7DT1NdMN0KeKsNKlAxkuBFbHIB4pMMuBbD/DfbEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G6TbKhWp; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-427fc97a88cso25202855e9.0;
+        Sat, 24 Aug 2024 12:12:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1724526770; x=1725131570; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=uRqSVSBy7WVzrRyXzMTngEmfTDtpwenXKbG7hH0Uup8=;
+        b=G6TbKhWp5tfCeafR9InzSm0Cr+GmDlCfnSK2T6XmYkqzYNTFLWhgwV5dVQOz5Db9sW
+         bhQve4v8XDVTr+pyV4qEgDhu31S/LXl9EXGI3vNkdANtFHRKy7s9CNHyHFmJn1nBy048
+         GR8xfzrNnzsdtOGtSXmtpk4HNqH9X8B9FW4iJgrrcIJhrHAZ8ODGhQ6H17cOQpDCwxvj
+         YTBaByxEFjKsbqhbquTxbJcPsx5+LGQmWeFL8KkyhQEszlU0wWDICnZHdUpl5817/Znc
+         3Pi4oAqY1lxtg7C6F60sWAvMp7AkAmWTtnMt+GIXIcdgIkODdD0hjOKJFEu+X7ig98st
+         z40g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724526770; x=1725131570;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=uRqSVSBy7WVzrRyXzMTngEmfTDtpwenXKbG7hH0Uup8=;
+        b=GH0xpDC64I46aDoLwo4PSpVpY40PZEfTvXBQAuO9heVjjfZFm7UtNIJywSJLTPWo6j
+         KeB2QsqDNBF+42r86ODo/kht+7qBNmyWI9YBfufF3sW7ft/8JV/qzbtv2Ut+QJCGJgCU
+         5CMHeKpP4vsyeZzyOT2kgcVddKfOvmO/vTUfkPe36TPpxNMdtnxg6nmXuYvc876Px/4S
+         /10+foX4AoF28ojAf9a//gHPMsO2FK5jiZMlHOmDukRatU4vVjbFcnk3hETuWYepznwm
+         JkkJbvM30tw7hbtinWFb3FZJuQksQnGdYb0oia4XA1cHY/MbogU3cEjWHbwr6us9GPYf
+         u/rQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVV/9fY0O1GiAiFKyKwsOZhr68HtkGajm3QOj19l3cPZwMDDuNIB3VizJ5bF2bgXHpgck9Km3c/d3mn@vger.kernel.org, AJvYcCVxnTBZu7tellYMtvR3SBgUBF2ZVVoW13/1Vh5oLUnheCqEGPpW3IY8Z5Oz8nTnX+l64gUqemKY@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzs0PRUDYgnmu1SXHviOFqB5h1paO/yk+vcjHzBGNyKaLYB1kn+
+	kmJr2oJEkdagC6YIc9fi+8shSfwN7FIzHQ6rVMtosSwzwrOwu/YB09VGjeUI/i4=
+X-Google-Smtp-Source: AGHT+IEOcWJXK+IUeq9aebQdW8nPQy00HtJM4j9sdFCYGF6fyDggXTCyaAy5A/yB1LwAbqhRDy0WVw==
+X-Received: by 2002:adf:f5c3:0:b0:371:8c1f:6692 with SMTP id ffacd0b85a97d-373118e979amr3784385f8f.52.1724526769323;
+        Sat, 24 Aug 2024 12:12:49 -0700 (PDT)
+Received: from localhost.localdomain ([156.197.22.60])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3730813c520sm7109793f8f.39.2024.08.24.12.12.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 24 Aug 2024 12:12:48 -0700 (PDT)
+From: Ahmed Ehab <bottaawesome633@gmail.com>
+To: linux-kernel@vger.kernel.org
+Cc: Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Will Deacon <will@kernel.org>,
+	Waiman Long <longman@redhat.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	linux-ext4@vger.kernel.org,
+	syzkaller@googlegroups.com,
+	syzbot+7f4a6f7f7051474e40ad@syzkaller.appspotmail.com,
+	stable@vger.kernel.org
+Subject: [PATCH v5 1/2] locking/lockdep: Avoid creating new name string literals in lockdep_set_subclass()
+Date: Sun, 25 Aug 2024 01:10:30 +0300
+Message-ID: <20240824221031.7751-1-bottaawesome633@gmail.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR12MB5070:EE_|DM4PR12MB7719:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3a679693-cbce-49c4-f0f3-08dcc46afe9f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?KzlicSs0RHdFMHlBRFZ5QjZWVTFEMW53K3Qxcm9CeGRnWlExT043ZEFPbmtq?=
- =?utf-8?B?THFVSnVVVGxkL1FzR2ZvbzB1bXhkK0tYcllkVEduMS9WeGFjSTk0eGhJYko3?=
- =?utf-8?B?N0FDL21teUUwRUtjYll2T1JObGs5M00yalNTSjhqcVVHSm5DbVdzby9KSWd6?=
- =?utf-8?B?Nm5RR3huZHh6b0YwN3p1YnI3djJTZzNsZlZIdXd4YUhsUFg5cTBxQUFYR3BS?=
- =?utf-8?B?OXNXYWdpVTRza2N5R21ZWGFzVE1CcDBiYTdSL0VZVGl2b04wRys3bVJ5Zm1Q?=
- =?utf-8?B?Zk9leXdzcUR0bElzMENJT2VZTzZjZkFtV0tBWHdNVnFqVWtnWjZPTzlKVXJU?=
- =?utf-8?B?WC9NbnBJQzdVWDI5VEx6aVlXQlRCUmJwRjFRSENzWFNub3pheklOd2ZDZ0RM?=
- =?utf-8?B?NEllMWZRNlZiQUs4Q0t5bldzT3d4dG0vWnpGaTJJVTRWL3dqbkVSRDk4dGs1?=
- =?utf-8?B?bXp2MzdPcDZNVHZhZFpMREk4UUxCd2Y4L05uTTd2MjBPM3czc05pSnlQYnhJ?=
- =?utf-8?B?MzFBZk9FTjFlYUNVOG0zZ0s5KzU4OTRSL1JIU2ZPN1MzQlR0SC85aHY2Mk8z?=
- =?utf-8?B?bHR4Q1pCSERGUWVveFZLZG9hUWptamE0SzBpc1FDVzI5RUZqbnV3Zm1JTmh1?=
- =?utf-8?B?bld0SHFib3hydDVMbGd2Tzdla2VNd3NKQ2JXRnU4Y2N3NFJoZnUrZW85eTly?=
- =?utf-8?B?V3hmemJyQTZsQ2RUUG5yazRsd24rVmZBdkhtZXlBQVFHaXJJSnVjQlNHV2Ir?=
- =?utf-8?B?VGhEQllKMjVObGJCRG04Z2J2U1hNR1k5Z1BzSE5kRG8zMmpoUy85ekpWLzU2?=
- =?utf-8?B?cWliamgweEM5ek1MNXovcWlSYnFuZnhjaWUrSFMzQVNuRVVYUDUzZWlmV3JP?=
- =?utf-8?B?RENZUWs0UU50MisyalFPNS9yU1QwYVNkUmRyZ1ZNa1ZSNGlyc21tWWR5ZkJi?=
- =?utf-8?B?YVdsMkFNOGdFbEEvWUZUOG9vemdCWlE5ejI5VHlYN053V2lIWmpQN0lKN2Ix?=
- =?utf-8?B?djlpRDZjem00ZURWbXNFSlZuRG9wN1VuQjZzc0pRWTk1TkU0SDBVSXA1Q2Ji?=
- =?utf-8?B?TCt1cDZuRmQrSUFyMkdMN04wZXRxM2pRaVpjWTNnZ3drT3g5U0JZTmNFaWl1?=
- =?utf-8?B?dWpnQjBFaTc0M1R6N3RGL2dHaVozK0Ewd3hNLzh6dVdBYXBFUWlMU2FaOWkx?=
- =?utf-8?B?cnlYd3FPMlhSd2pKUWRwbUZaQ1o5VjZHTUU5djg0aWpnS1l1WjQ1aXVveWRq?=
- =?utf-8?B?eXgxazBCUVgwZEgrZ2ZoQjVrVmRzemNtRHRmN2tIMjRWZDdzajJhWmZWQ0VU?=
- =?utf-8?B?TFAxOUpJYUZVdVZ0d3hnWHBqNVdWS0xBcmNTK0FiNVRQalFXMTNZeUFsN1l2?=
- =?utf-8?B?amYxSkpJK0dJRTF0MGRZOGY3cTZWRDVwRU9nZ0ZjTGtuSnlhQXFQeXkyVmZu?=
- =?utf-8?B?SVUzdzltTkROMlR4MjV4STdHZjN6N2tsRjhCYmJvSjBqOWd2VzRFYjdFSS9Q?=
- =?utf-8?B?S2liUnkxVWtLeCtLTDFZUnN4MWxiN0k5QWtJbCtMZE9NOGVqem1nWE9Kemdz?=
- =?utf-8?B?S3hScjhZSDBGK21zNmNsMFZlRnc2S1RteGJ2ell4RFpRckhLYXpsR3l5RVVj?=
- =?utf-8?B?WmVMSVZGOUJ0andWclBEbERSb3F6YTVtRSs4ZmZNNDUrZ0ZDdGovc283MUZN?=
- =?utf-8?B?ME9kd1pReUhTMnJpUndGcHNnRml6N2RjN0hjQWFIN0hTZVNCamlGalllQ2JX?=
- =?utf-8?B?R1RBd05paTVzT0FlNWFkNVZsSXpHZjJXcmVJanlkSlN0bVdyaVJ4TkR1b2Nr?=
- =?utf-8?B?SWp5YTRXa1RjZkVObGlDZz09?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB5070.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?V3g1a0VvWlB2QTFaZkovMVE1OG03cnErNWtTZk1GdnRQbzJjTzF2SEJvb2Za?=
- =?utf-8?B?KzltcHBQQWJpRjVlT0V6YWRMOGFkVk5HTTRPdS9XT2QwVU9KZFMzbjRrdDJ1?=
- =?utf-8?B?OXVRQ0FEOWFSWjJiUjRzaCtiSHp6ekJNS1BlRGxxOXZ3NGovaTNzTTRGQm15?=
- =?utf-8?B?TTN6Si9iOWZiWGFJSGNOV2VuOUNHRHY1Wkc4dmNjVlRUU2Znb2RRL003RjZ2?=
- =?utf-8?B?MjRhcURuNDdCVmY4cTY5bXFMa1orZkZ2L1JhMUxVdjJXb09RWUpoVG1rOFhm?=
- =?utf-8?B?dkZqeEdMZCs2VnNObFhSaFhxT3FUbGZmeXRjcDhsMTdXblBZMVZ3bFVIR0ZY?=
- =?utf-8?B?VXhGS2pLc3lwcXBuSTZEZHhZWnQwSDkwdmZoWC9aRnQzaXdML0hlT1RscElt?=
- =?utf-8?B?ejRveW5TdzlER3RGamlieW1EZXhoQkxrck15TXNWWmVMZ2xSektWemk1alk4?=
- =?utf-8?B?U1FxZ1RaRUhHcVpTdG1LdVUyTXJGSkNCNHdVdWFOcHVVUEw1a2hGRnRkRFB6?=
- =?utf-8?B?Skc4dEpZL1BsVHViSGtYS2NQL0txT3BzYXF1S2hibEthU2UwcDQzVjUzYnhR?=
- =?utf-8?B?NmtNaG1MWTUvOVE2ek5OSlRTVDI5RmNmYWFmcW9EYnI5K1g1TmhxdG9JUnM0?=
- =?utf-8?B?dk9XbS9YcDFYSmNDTXQzQm9aT3FxNWhnOXljUHlxTy9QSHkrck83NVZhYTBU?=
- =?utf-8?B?cXhnbUdnOSsraDQ3Z1hSS3UybEIzcTcwQXJoTm9oWFRTK3pncmlEOFNiQ0Fx?=
- =?utf-8?B?Z0ZxNlFCb0Jvd05nRUZlTzNlZVBzZ24yaUpBNGdWUnQyT3NSUDcwQmxRdnZL?=
- =?utf-8?B?WWVMUkx2MWdTcWJ0aTUrMnZTbUgrN1pMU2NYZC9jVXB1NFl0NG0yQy8wZzdl?=
- =?utf-8?B?ZGMrTFJtQnora052bDVObDI1WTRUc3h6eUZZQzJQYTB3QTd4ZXNqZnF4eXhX?=
- =?utf-8?B?L2FVS2dEdlRVcUtKNUVxUmdrMzltQzVOa3VHaXNIYitUQTBBWjBVUjdvUytj?=
- =?utf-8?B?NDduZXg3Z3dqdkE0VDlNTmY3TWZ1L2lrbHo3K0tVL29qUEJnT0FESTdFVXVL?=
- =?utf-8?B?YXdIb05JZWYxRGhwTUVIQjJLSEhhSDdDUURpRUdBTWdrc2Z2VEwreG5iSXB6?=
- =?utf-8?B?UCtJeTd4dm9DbVptcE1EMjBrcUhXVXJQaGhtVEdZcXlud3Y3T3JkYnFxcnQx?=
- =?utf-8?B?T2RWMFVnNm05a1E4MS9nYWc4RTZNZEJHWlQxZmpZQnM3OEc1ZEV4TkRRbzU5?=
- =?utf-8?B?VVhEQU1ERXNwNEJRb2xSSlV4aFkxclNRZU1CVTQ0dGc5eXpibEJxd1JPd0lB?=
- =?utf-8?B?Z04zdVlYK3JQSjF2U2lhUFNXTENuQXBwTDl4OU9FUjNvZCt6RlE4TVZwaytJ?=
- =?utf-8?B?WmpscjY4Z3k5MkRNYk0vZk1wVWxuQUVCV3RTN01Uek05QzVqakJiYVkyM3c2?=
- =?utf-8?B?T3JYMWJQNlZCL29meTFyQm9ZUU9mU0VabTRINTBFN3RiRlZCTE4xM3NoMmJ0?=
- =?utf-8?B?OW5rRG9hcGlkY0pLV2lvUnFkZUsvdHplM2VJdXBySWVGUG5COHYzUm1MeUZ3?=
- =?utf-8?B?cXQ1R2N0RE0wZCtOb01uaVVsVUxHTXk0MThIZUNnWTg3QUhaMTJyVDNycTUv?=
- =?utf-8?B?cUJFM3FJZ2hxbFBuWUpiRXlSQkJ1aXdKQ3ZRdC9Ba0FuSXlTbVBOelZpdkdB?=
- =?utf-8?B?VXJheE1kczJZOWNqaTJZRVkycm9mQ3lrTGMrY1A1MkZQdFZaYzQ4cElZSHgy?=
- =?utf-8?B?VFkyc2lSSC83V3pGQ0Vsc3RxZzZRWEIwYnpFMFd6QkxqaGYxZXUxTXFyVTdG?=
- =?utf-8?B?ckd3RlE4MDFRVEV3bm1qWGMxR3NYTWZndlg0NEpKam45cUxhc3E1TG5nYUhE?=
- =?utf-8?B?bnVaZk4yK1UySi81emFaOGhZRmdRQ05sbHdxT0FydjJrN0xaWTRGRnlVa1A4?=
- =?utf-8?B?RjdNbE41Mk50TFBIeEFScFVPWW4xbnlremVpV3BIQktERmdIazY3ZFErRVk3?=
- =?utf-8?B?K0FXb0d5OUFmb1NXK3RPTm1wM0lWWEhqZUF1N1BablRHRlhYOTVtZWFseThx?=
- =?utf-8?B?YzhRMzV2cmxKL3preVZEZUdETDNUMlEwQkNGMGlIUm9uSkQ4cXZpUDNTWVdC?=
- =?utf-8?Q?CeyDmJKFEmYAyKXh1W0cJSQCk?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3a679693-cbce-49c4-f0f3-08dcc46afe9f
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB5070.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Aug 2024 18:31:39.8759
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: KePxZeL1L2L0GloXjHu/glpwuNj9gY148lSBlq83oN5aRTu4i/sLqc7YczmgPxra1REPJT9zH7gV3yFC4GnZOw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB7719
+Content-Transfer-Encoding: 8bit
 
-On 8/15/24 07:25, Pavan Kumar Paluri wrote:
-> In case of sev PLATFORM_STATUS failure, sev_get_api_version() fails
-> resulting in sev_data field of psp_master nulled out. This later becomes
-> a problem when unloading the ccp module because the device has not been
-> unregistered (via misc_deregister()) before clearing the sev_data field
-> of psp_master. As a result, on reloading the ccp module, a duplicate
-> device issue is encountered as can be seen from the dmesg log below.
-> 
-> on reloading ccp module via modprobe ccp
-> 
+Syzbot reports a problem that a warning will be triggered while
+searching a lock class in look_up_lock_class().
 
-...
+The cause of the issue is that a new name is created and used by
+lockdep_set_subclass() instead of using the existing one. This results
+in two lock classes with the same key but different name pointers and a
+WARN_ONCE() is triggered because of that in look_up_lock_class().
 
-> 
-> Address this issue by unregistering the /dev/sev before clearing out
-> sev_data in case of PLATFORM_STATUS failure.
-> 
-> Fixes: 200664d5237f ("crypto: ccp: Add Secure Encrypted Virtualization (SEV) command support")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Pavan Kumar Paluri <papaluri@amd.com>
+To fix this, change lockdep_set_subclass() to use the existing name
+instead of a new one. Hence, no new name will be created by
+lockdep_set_subclass(). Hence, the warning is avoided.
 
-Acked-by: Tom Lendacky <thomas.lendacky@amd.com>
+Reported-by: <syzbot+7f4a6f7f7051474e40ad@syzkaller.appspotmail.com>
+Fixes: de8f5e4f2dc1f ("lockdep: Introduce wait-type checks")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Ahmed Ehab <bottaawesome633@gmail.com>
+---
+v4->v5:
+    - Changed the subject
+    - Changed the changelog to be more detailed
 
-> ---
+ include/linux/lockdep.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/linux/lockdep.h b/include/linux/lockdep.h
+index 08b0d1d9d78b..df8fa5929de7 100644
+--- a/include/linux/lockdep.h
++++ b/include/linux/lockdep.h
+@@ -173,7 +173,7 @@ static inline void lockdep_init_map(struct lockdep_map *lock, const char *name,
+ 			      (lock)->dep_map.lock_type)
+ 
+ #define lockdep_set_subclass(lock, sub)					\
+-	lockdep_init_map_type(&(lock)->dep_map, #lock, (lock)->dep_map.key, sub,\
++	lockdep_init_map_type(&(lock)->dep_map, (lock)->dep_map.name, (lock)->dep_map.key, sub,\
+ 			      (lock)->dep_map.wait_type_inner,		\
+ 			      (lock)->dep_map.wait_type_outer,		\
+ 			      (lock)->dep_map.lock_type)
+-- 
+2.45.2
 
