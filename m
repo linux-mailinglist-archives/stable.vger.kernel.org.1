@@ -1,181 +1,170 @@
-Return-Path: <stable+bounces-70081-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70083-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DC2E95DB8A
-	for <lists+stable@lfdr.de>; Sat, 24 Aug 2024 06:54:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F55595DBEC
+	for <lists+stable@lfdr.de>; Sat, 24 Aug 2024 07:21:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 48FDB1C20F07
-	for <lists+stable@lfdr.de>; Sat, 24 Aug 2024 04:54:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 454271C20A26
+	for <lists+stable@lfdr.de>; Sat, 24 Aug 2024 05:21:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68CCF69959;
-	Sat, 24 Aug 2024 04:54:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D18AA14A60E;
+	Sat, 24 Aug 2024 05:21:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="l4kAOOgT"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="uATMonK6"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7735535894;
-	Sat, 24 Aug 2024 04:54:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 838A339FE5;
+	Sat, 24 Aug 2024 05:21:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724475268; cv=none; b=e4ZzsPhLLHm25N3+5YDwdTMghm6w56scWGbzLROZEwk4awET50/wHf41bsGu0YZOmpWRn/bUL2Hzvg8HoqE4haZgmvx4AoerjS3Ri+NiwmRh7S9eJhtUvNw76MRKzGNUnLFX0J4g5Ecs6YoKmyNNM4umB4ko6bXwKkgcIs9Ifs4=
+	t=1724476912; cv=none; b=p+EVEUJQMIfqPn+zIb+Sk1VJDmTNsLUuGTbNPy0JwvxzXwsLxYevC3+PdAZmq7MXIrWFTBTLh1bjWJ6+YCGv0Z+pXCkQ8IhDn/gZ8rFGBRA8PWVZzACu5kLWCmpLHpsezXBYsdhhQjzl2gAU+4ysciGoWP8mtYAwClM983ru/Ug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724475268; c=relaxed/simple;
-	bh=wXpKTZUdoyvJvNJnOIQkfolt/f0qWFXnVsW6rLNH3Xw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Rsh4DE6PDgrGA9Z/owDqb9ICM8IAuw2np1vxwJrxSSMN14ZocSThTIxqgXQaohFXlM7x02vr8O17z8Z9Dxee5BmA3jQfCtgAeM4/6/+AJ1iZL9inHFlyhmBKxEgCrEUW22LoB3Yn+v5nP/zBdSAmFMcTLLikJ3LrptPbQKK5K5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l4kAOOgT; arc=none smtp.client-ip=209.85.218.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-a7d26c2297eso326798966b.2;
-        Fri, 23 Aug 2024 21:54:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724475265; x=1725080065; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=0agvCFPVlt6qRkbLAkGcHDtqfGgeeJqNkqtO9Zw9IuE=;
-        b=l4kAOOgTg7VvaDTZZ8F90zBJS1a3gsgUMpPMDipJ2/TYRYQib80C4EwjeDFpTe2MRD
-         AT9fNN2Nx0hBQqN4PBjYWJD8iSsycYhaj5+LzTdhrhxbbMWcn59Rv/Qmf3PTmUtuEW1E
-         EuzSe3YYuXnKMKkMzgZ5k91nnM/xNPtJ0xsTTcZh02NxaD6YiSGR1RaInFuBGmZzEXCT
-         hs3YmLjN5fbAKZS0Rw/H6Bd1HUU9+sm+9KlWOVgtZ5JaDoeybvxADiinlYy36rQba32z
-         A00Cq8ZZmTNtCiP8yQYnk0bipFnmVJ5/JcwsvHbVGcjONJ7fUzeL/lmRmzYPUWT9jET7
-         duSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724475265; x=1725080065;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0agvCFPVlt6qRkbLAkGcHDtqfGgeeJqNkqtO9Zw9IuE=;
-        b=qVdpiVyJeeuEsil/ZyKVD9oVLowILq3QOcILj0nASMPM7wrC7cqnPocQpQ6PuYYFL2
-         THIgEYnPScG/QhFacHvYbTdDqjPAo8LsvxCl06Sq6logYd9kYsQdjmd5peNSUL2rUp/a
-         g0PBq8vydB4E0hTz2FaNIsCBeVUsEZntEbxinb3Xs0eo+kgeMBFqoOeGdkvFxM4GIhYZ
-         pT8PTRvbqlmrbd/zBvrL8rKhdBo3hH3MiwVa/Jaj3W1aVlChu1AYcczmdL+K8MHrMnKs
-         0RVgYa9CMD5yp5mg6i2VEpvxvWzHCArsqPdPUxRjLxdxGkx3IEs+hMvGwexpHBgRL9Oi
-         Xcng==
-X-Forwarded-Encrypted: i=1; AJvYcCWn7X4r0EQXn4nyydBUNH2eAopu2QfCMybCJiKn4bTn+89+ks76Tq/ii8PX4Kv7IFzdTxwL2qPR@vger.kernel.org, AJvYcCWyVs3CMR8nnIeD9G1dzH7yVprn2bbAi/6TYWS0lVQaMm0tSn4UUvVa5hrkx2tCpzmndV30jr5DSCyb/Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxGOw3RwZ/y89MjOw1HUC5zW87WdQC7cOmsgCQozMvP5Qrsojwz
-	LMBx3r1KYUtdCkmm1nQ7KaL8sJpVfwXDbHAIzWZJFrXlTxEMNR0RZ37qr3VX
-X-Google-Smtp-Source: AGHT+IEMcnudO1npIFPBPydVgGxHsU4qAj/nzx8TFAksV2cts2W7KPO++590xK54FO+Us3Kq8nB8Eg==
-X-Received: by 2002:a17:907:7d89:b0:a83:94bd:d913 with SMTP id a640c23a62f3a-a86a516542emr313380266b.10.1724475264194;
-        Fri, 23 Aug 2024 21:54:24 -0700 (PDT)
-Received: from f (cst-prg-86-203.cust.vodafone.cz. [46.135.86.203])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a868f29a568sm349807166b.53.2024.08.23.21.54.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 23 Aug 2024 21:54:23 -0700 (PDT)
-Date: Sat, 24 Aug 2024 06:54:13 +0200
-From: Mateusz Guzik <mjguzik@gmail.com>
-To: Julian Sun <sunjunchao2870@gmail.com>
-Cc: linux-fsdevel@vger.kernel.org, linux-btrfs@vger.kernel.org, 
-	viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz, david@fromorbit.com, 
-	zhuyifei1999@gmail.com, syzbot+67ba3c42bcbb4665d3ad@syzkaller.appspotmail.com, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH] vfs: fix race between evice_inodes() and
- find_inode()&iput()
-Message-ID: <rvorqwxqlpray26yi3epqpxjiijr77nvle3ts5glvwitebrl6e@vcvqfk2bf6sj>
-References: <20240823130730.658881-1-sunjunchao2870@gmail.com>
+	s=arc-20240116; t=1724476912; c=relaxed/simple;
+	bh=dKevw9Im7V/XWOVfxvrk8/Ou2IDfcHqlFUOO2BXrfV4=;
+	h=Date:To:From:Subject:Message-Id; b=Gi7zQ1diRxkVr4hKmW0Ght+sDY2I8xApfHL3ZN636kkE+sGN5H3I68DnF/7OFOq4UCOsrcjbIP/wRl5hjWPiYrbNEf31nkYpiVB+kHHmFi6Cy/7xkia3P4QIecuQUw0k/9ZowniiIu9/vbmMEb1wSype2JoC1btD4bBBLRiWemk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=uATMonK6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4C44C32781;
+	Sat, 24 Aug 2024 05:21:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1724476912;
+	bh=dKevw9Im7V/XWOVfxvrk8/Ou2IDfcHqlFUOO2BXrfV4=;
+	h=Date:To:From:Subject:From;
+	b=uATMonK6Wrysjm4k5ZpZtqLtzIuDYvDpAFqsNFwTcB9gvMaml4q+NYEPTzzkklv7D
+	 4hKjsnwFS4fUcj6KRglEnNvNKxgkGIX5W2ONQ9T+j+H8bkgv0FEE0j67t1+ZdMgjlO
+	 G3qOZ6H5d0O/eJ43K30cR8fOA8KK3NSb9NDbm/V8=
+Date: Fri, 23 Aug 2024 22:21:51 -0700
+To: mm-commits@vger.kernel.org,yosryahmed@google.com,stable@vger.kernel.org,shakeel.butt@linux.dev,roman.gushchin@linux.dev,nphamcs@gmail.com,muchun.song@linux.dev,mkoutny@suse.com,mhocko@kernel.org,hannes@cmpxchg.org,me@yhndnzj.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-memcontrol-respect-zswapwriteback-setting-from-parent-cg-too.patch added to mm-hotfixes-unstable branch
+Message-Id: <20240824052151.E4C44C32781@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240823130730.658881-1-sunjunchao2870@gmail.com>
 
-On Fri, Aug 23, 2024 at 09:07:30PM +0800, Julian Sun wrote:
-> Hi, all
-> 
-> Recently I noticed a bug[1] in btrfs, after digged it into
-> and I believe it'a race in vfs.
-> 
-> Let's assume there's a inode (ie ino 261) with i_count 1 is
-> called by iput(), and there's a concurrent thread calling
-> generic_shutdown_super().
-> 
-> cpu0:                              cpu1:
-> iput() // i_count is 1
->   ->spin_lock(inode)
->   ->dec i_count to 0
->   ->iput_final()                    generic_shutdown_super()
->     ->__inode_add_lru()               ->evict_inodes()
->       // cause some reason[2]           ->if (atomic_read(inode->i_count)) continue;
->       // return before                  // inode 261 passed the above check
->       // list_lru_add_obj()             // and then schedule out
->    ->spin_unlock()
-> // note here: the inode 261
-> // was still at sb list and hash list,
-> // and I_FREEING|I_WILL_FREE was not been set
-> 
-> btrfs_iget()
->   // after some function calls
->   ->find_inode()
->     // found the above inode 261
->     ->spin_lock(inode)
->    // check I_FREEING|I_WILL_FREE
->    // and passed
->       ->__iget()
->     ->spin_unlock(inode)                // schedule back
->                                         ->spin_lock(inode)
->                                         // check (I_NEW|I_FREEING|I_WILL_FREE) flags,
->                                         // passed and set I_FREEING
-> iput()                                  ->spin_unlock(inode)
->   ->spin_lock(inode)			  ->evict()
->   // dec i_count to 0
->   ->iput_final()
->     ->spin_unlock()
->     ->evict()
-> 
-> Now, we have two threads simultaneously evicting
-> the same inode, which may trigger the BUG(inode->i_state & I_CLEAR)
-> statement both within clear_inode() and iput().
-> 
-> To fix the bug, recheck the inode->i_count after holding i_lock.
-> Because in the most scenarios, the first check is valid, and
-> the overhead of spin_lock() can be reduced.
-> 
-> If there is any misunderstanding, please let me know, thanks.
-> 
-> [1]: https://lore.kernel.org/linux-btrfs/000000000000eabe1d0619c48986@google.com/
-> [2]: The reason might be 1. SB_ACTIVE was removed or 2. mapping_shrinkable()
-> return false when I reproduced the bug.
-> 
-> Reported-by: syzbot+67ba3c42bcbb4665d3ad@syzkaller.appspotmail.com
-> Closes: https://syzkaller.appspot.com/bug?extid=67ba3c42bcbb4665d3ad
-> CC: stable@vger.kernel.org
-> Fixes: 63997e98a3be ("split invalidate_inodes()")
-> Signed-off-by: Julian Sun <sunjunchao2870@gmail.com>
-> ---
->  fs/inode.c | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/fs/inode.c b/fs/inode.c
-> index 3a41f83a4ba5..011f630777d0 100644
-> --- a/fs/inode.c
-> +++ b/fs/inode.c
-> @@ -723,6 +723,10 @@ void evict_inodes(struct super_block *sb)
->  			continue;
->  
->  		spin_lock(&inode->i_lock);
-> +		if (atomic_read(&inode->i_count)) {
-> +			spin_unlock(&inode->i_lock);
-> +			continue;
-> +		}
->  		if (inode->i_state & (I_NEW | I_FREEING | I_WILL_FREE)) {
->  			spin_unlock(&inode->i_lock);
->  			continue;
 
-This looks correct to me, albeit I would argue the commit message is
-overly verbose making it harder to understand the gist of the problem:
-evict_inodes() fails to re-check i_count after acquiring the spin lock,
-while the flags blocking 0->1 i_count transisions are not set yet,
-making it possible to race against such transition.
+The patch titled
+     Subject: mm/memcontrol: respect zswap.writeback setting from parent cg too
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-memcontrol-respect-zswapwriteback-setting-from-parent-cg-too.patch
 
-The real remark I have here is that evict_inodes(), modulo the bug, is
-identical to invalidate_inodes(). Perhaps a separate patch (*not* for
-stable) to whack it would be prudent?
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-memcontrol-respect-zswapwriteback-setting-from-parent-cg-too.patch
+
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Mike Yuan <me@yhndnzj.com>
+Subject: mm/memcontrol: respect zswap.writeback setting from parent cg too
+Date: Fri, 23 Aug 2024 16:27:06 +0000
+
+Currently, the behavior of zswap.writeback wrt.  the cgroup hierarchy
+seems a bit odd.  Unlike zswap.max, it doesn't honor the value from parent
+cgroups.  This surfaced when people tried to globally disable zswap
+writeback, i.e.  reserve physical swap space only for hibernation [1] -
+disabling zswap.writeback only for the root cgroup results in subcgroups
+with zswap.writeback=3D1 still performing writeback.
+
+The inconsistency became more noticeable after I introduced the
+MemoryZSwapWriteback=3D systemd unit setting [2] for controlling the knob.
+The patch assumed that the kernel would enforce the value of parent
+cgroups.  It could probably be workarounded from systemd's side, by going
+up the slice unit tree and inheriting the value.  Yet I think it's more
+sensible to make it behave consistently with zswap.max and friends.
+
+[1] https://wiki.archlinux.org/title/Power_management/Suspend_and_hibernate=
+#Disable_zswap_writeback_to_use_the_swap_space_only_for_hibernation
+[2] https://github.com/systemd/systemd/pull/31734
+
+Link: https://lkml.kernel.org/r/20240823162506.12117-1-me@yhndnzj.com
+Fixes: 501a06fe8e4c ("zswap: memcontrol: implement zswap writeback disablin=
+g")
+Signed-off-by: Mike Yuan <me@yhndnzj.com>
+Reviewed-by: Nhat Pham <nphamcs@gmail.com>
+Acked-by: Yosry Ahmed <yosryahmed@google.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Michal Hocko <mhocko@kernel.org>
+Cc: Michal Koutný <mkoutny@suse.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ Documentation/admin-guide/cgroup-v2.rst |    7 ++++---
+ mm/memcontrol.c                         |   12 +++++++++---
+ 2 files changed, 13 insertions(+), 6 deletions(-)
+
+--- a/Documentation/admin-guide/cgroup-v2.rst~mm-memcontrol-respect-zswapwriteback-setting-from-parent-cg-too
++++ a/Documentation/admin-guide/cgroup-v2.rst
+@@ -1717,9 +1717,10 @@ The following nested keys are defined.
+ 	entries fault back in or are written out to disk.
+ 
+   memory.zswap.writeback
+-	A read-write single value file. The default value is "1". The
+-	initial value of the root cgroup is 1, and when a new cgroup is
+-	created, it inherits the current value of its parent.
++	A read-write single value file. The default value is "1".
++	Note that this setting is hierarchical, i.e. the writeback would be
++	implicitly disabled for child cgroups if the upper hierarchy
++	does so.
+ 
+ 	When this is set to 0, all swapping attempts to swapping devices
+ 	are disabled. This included both zswap writebacks, and swapping due
+--- a/mm/memcontrol.c~mm-memcontrol-respect-zswapwriteback-setting-from-parent-cg-too
++++ a/mm/memcontrol.c
+@@ -3613,8 +3613,7 @@ mem_cgroup_css_alloc(struct cgroup_subsy
+ 	memcg1_soft_limit_reset(memcg);
+ #ifdef CONFIG_ZSWAP
+ 	memcg->zswap_max = PAGE_COUNTER_MAX;
+-	WRITE_ONCE(memcg->zswap_writeback,
+-		!parent || READ_ONCE(parent->zswap_writeback));
++	WRITE_ONCE(memcg->zswap_writeback, true);
+ #endif
+ 	page_counter_set_high(&memcg->swap, PAGE_COUNTER_MAX);
+ 	if (parent) {
+@@ -5320,7 +5319,14 @@ void obj_cgroup_uncharge_zswap(struct ob
+ bool mem_cgroup_zswap_writeback_enabled(struct mem_cgroup *memcg)
+ {
+ 	/* if zswap is disabled, do not block pages going to the swapping device */
+-	return !zswap_is_enabled() || !memcg || READ_ONCE(memcg->zswap_writeback);
++	if (!zswap_is_enabled())
++		return true;
++
++	for (; memcg; memcg = parent_mem_cgroup(memcg))
++		if (!READ_ONCE(memcg->zswap_writeback))
++			return false;
++
++	return true;
+ }
+ 
+ static u64 zswap_current_read(struct cgroup_subsys_state *css,
+_
+
+Patches currently in -mm which might be from me@yhndnzj.com are
+
+mm-memcontrol-respect-zswapwriteback-setting-from-parent-cg-too.patch
+documentation-cgroup-v2-clarify-that-zswapwriteback-is-ignored-if-zswap-is-disabled.patch
+selftests-test_zswap-add-test-for-hierarchical-zswapwriteback.patch
+
 
