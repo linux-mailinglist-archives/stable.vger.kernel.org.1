@@ -1,119 +1,117 @@
-Return-Path: <stable+bounces-70091-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70097-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 179A695DE7C
-	for <lists+stable@lfdr.de>; Sat, 24 Aug 2024 16:40:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A39CB95DEA1
+	for <lists+stable@lfdr.de>; Sat, 24 Aug 2024 16:56:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B47551F22E2C
-	for <lists+stable@lfdr.de>; Sat, 24 Aug 2024 14:40:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 89FB21C20EBD
+	for <lists+stable@lfdr.de>; Sat, 24 Aug 2024 14:56:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE50217A5BC;
-	Sat, 24 Aug 2024 14:40:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A41617A93C;
+	Sat, 24 Aug 2024 14:56:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="QDMTk9dN"
+	dkim=pass (1024-bit key) header.d=mork.no header.i=@mork.no header.b="by51OAYF"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from dilbert.mork.no (dilbert.mork.no [65.108.154.246])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6297176AAB
-	for <stable@vger.kernel.org>; Sat, 24 Aug 2024 14:40:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5257B1714DA;
+	Sat, 24 Aug 2024 14:56:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.108.154.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724510434; cv=none; b=kZgX6EFPwY92e3v4b00LxhdtVm/38m5TCxPAqGwxs9Hwg2ItlImrOyab+mtVS96tNDy8BlQxxTZO7gIYO1sU26j/dBrc6LFS6zU3ipfqnj8CcWSv6g7LThn3kEr+LCoXVpwf3SgL+PwLf01MQrLPItjBD9lwFgtKcfkhy69DuYI=
+	t=1724511400; cv=none; b=ps/GJ277IAONRCMfHGQRaUh1+L+NqkXFXIjohtIKUKo682rdQOYW3HMtt7D0knEwg15l374C5E8MkIWdlWkRwQjNf15XTQKdukslrCRgkQ4c4o31+Uf1XtKjWr7hyfJwdCCNnFgK7nX2o3xzGPbbBVjK62/4GJ3uBZjyIUg2DpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724510434; c=relaxed/simple;
-	bh=M+00aPqAIJfQiLjQyOBdsrvt8KcSjON06jxPta54+9s=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MAM8iXsvzhkEyhFnavtKDAD0J6yaSewOKjNj6d940EA5MFKU4gE2PEC0rj1to/zeug07NG34FMM8dRGJMwfe8SP4PS767R9uxinaRVs4XcBOuSCuZJhGRv/HdrVXlo0jHiJA7DAqh0yR+OGX7apN7yQ4lk99UHqA9YPZ3pqHY8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=QDMTk9dN; arc=none smtp.client-ip=209.85.167.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-53345dcd377so3763751e87.2
-        for <stable@vger.kernel.org>; Sat, 24 Aug 2024 07:40:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1724510430; x=1725115230; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=M+00aPqAIJfQiLjQyOBdsrvt8KcSjON06jxPta54+9s=;
-        b=QDMTk9dNOUy0+i8YYeYxAOhm2q3fWfLYizvZUngq8S02sjpKAIumowxwQQ725rgXzL
-         VRb515NEiF/W67k/y8/jF4UHYo4+e22XcW9bUwRIRsXexC+06QXfL7w/DOw8daCXPfS2
-         sE0YNMZFJzRP9+52+adbO3cQTkab4SxLymLA/cVd6ThiswP2Fm4suqtEze4CUFchFXFg
-         3+g2yu41sTN18vx08KOh9gDv6VXJaLsDT9hurr0jURKFsnwz9b9cv+3fgrXH7ZGLyU2j
-         0u0oRnvnXZ77IP1ajyZHhNZqYlHePvG8+9nyH7FKDUKjnK8LPH8Lo+xPpvWF93t7qQBc
-         qCcg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724510430; x=1725115230;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=M+00aPqAIJfQiLjQyOBdsrvt8KcSjON06jxPta54+9s=;
-        b=NNwGzbb+7eXWT54JVd5M+/25R1vwiibWmuSFkl8qd4WklXw0EbcJzSgW8CMBMKIaWZ
-         Wlh2rmb6lCbU44WdLCYzjUNTO6n6aOw2K7jClJwEdOSILZLpkGRDvLVAJWRBlkNLyIdu
-         rTQQ6XmhmUVVKvx/KmcNN7qCvjWgr+IzamJ2LC5fjcducTyOu6P5fDR3BCvRqGOqjdFE
-         IuTMc6mE4WT8FjjLLfyUWmY2f6fu5AvO6Qjj8D6l+oeXKFkCmAZkyfiC6whYgEQNseBa
-         gioDLxhIvKtm9upWbyDNIZX7YakHdtOUxdgaO/pDxboGAeFH615rNFRWKInB+ya2FabB
-         Qwqg==
-X-Forwarded-Encrypted: i=1; AJvYcCW/Ci8n/qwxWJzOHxuBplwd3HWaXe6ngXOQtI9WhMI5KGzjMacIP0n1Y7/VkwasgSD0NeBs0as=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyOhiVo8+XJ9RCIGHvTGA+nmN35uDibKoUpwDr+WTcEnEkalef6
-	pDM+K/PlX4gj/QhJ3fGyX+vHoFNi/pyoh7NC48AF2AuNPqG0xTw4+lg+AcVp67MMugCKhCZ/Stq
-	EpQ0xolqlpsXY2HMj4sNGAGhC3Usf9h398M7Ct1jgtH4HAPvM
-X-Google-Smtp-Source: AGHT+IFUWwNU4JjKJfUkk5+b7VaNM9tcGLgDxOphG4oT66UVqnMDc84a+SVvS7/Tom2C/L+hvh4W6uCE9zsb/aWB89Q=
-X-Received: by 2002:a05:6512:230a:b0:533:4560:48b7 with SMTP id
- 2adb3069b0e04-53438783ff4mr3214329e87.30.1724510429403; Sat, 24 Aug 2024
- 07:40:29 -0700 (PDT)
+	s=arc-20240116; t=1724511400; c=relaxed/simple;
+	bh=KnjeP6vwYigDLYTJd5twaAha0YX82Wvm0lMe7Iqakjk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=sdwFcvPF+DXg2/gzc1AOGkax7DhtpTcLW9U0kQn7ElmEgdMIcM/IAKsGvCpTCxHxCils8MBbv5VSUT+bfSxy4ZhUIRhug3jgFvo5kYjnS8b8Bh5CdjTnhOkZqeSRrTCTkqPsFUFRmyBoL63lE6nc147Jihl+rHCj/FsxJT0Gt40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mork.no; spf=pass smtp.mailfrom=miraculix.mork.no; dkim=pass (1024-bit key) header.d=mork.no header.i=@mork.no header.b=by51OAYF; arc=none smtp.client-ip=65.108.154.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mork.no
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=miraculix.mork.no
+Received: from canardo.dyn.mork.no ([IPv6:2a01:799:10da:6900:0:0:0:1])
+	(authenticated bits=0)
+	by dilbert.mork.no (8.17.1.9/8.17.1.9) with ESMTPSA id 47OEfaq23717667
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
+	Sat, 24 Aug 2024 15:41:37 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mork.no; s=b;
+	t=1724510496; bh=n3Pt+wchlafO18tsiqz0oH+0puGudvk0SfFT3Jbisac=;
+	h=From:To:Cc:Subject:Date:Message-Id:From;
+	b=by51OAYFUGm8fVCo6TwX9TpeJMOORdHyk41/w6kysPhbr42P5pEOf3i14DPhcwiCd
+	 TBlNVI1fKYo5OMdOzhTBuFjyLybm9KfOQ4lQKS+mBEWBImgWL3eOzQYQOq/5F32uKI
+	 TuYwQUF9Uker7Pf98Av09orr/AwA1691Q5Ymw8dU=
+Received: from miraculix.mork.no ([IPv6:2a01:799:10da:690a:d43d:737:5289:b66f])
+	(authenticated bits=0)
+	by canardo.dyn.mork.no (8.17.1.9/8.17.1.9) with ESMTPSA id 47OEfZNw1964325
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
+	Sat, 24 Aug 2024 16:41:35 +0200
+Received: (nullmailer pid 1464847 invoked by uid 1000);
+	Sat, 24 Aug 2024 14:41:34 -0000
+From: =?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>
+To: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc: "Steven J . Hill" <Steven.Hill@imgtec.com>, linux-mips@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        =?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>, stable@vger.kernel.org
+Subject: [PATCH] MIPS: fw: Gracefully handle unknown firmware protocols
+Date: Sat, 24 Aug 2024 16:41:33 +0200
+Message-Id: <20240824144133.1464835-1-bjorn@mork.no>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240709105428.1176375-1-i@eh5.me>
-In-Reply-To: <20240709105428.1176375-1-i@eh5.me>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Sat, 24 Aug 2024 16:40:18 +0200
-Message-ID: <CACRpkdaekcM-rGNzczQFFwDcte8cR2D=j6LB9h5W1XRbBtBhJg@mail.gmail.com>
-Subject: Re: [PATCH] pinctrl: rockchip: correct RK3328 iomux width flag for
- GPIO2-B pins
-To: Huang-Huang Bao <i@eh5.me>
-Cc: Heiko Stuebner <heiko@sntech.de>, Richard Kojedzinszky <richard@kojedz.in>, linux-gpio@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Virus-Scanned: clamav-milter 1.0.5 at canardo
+X-Virus-Status: Clean
 
-On Tue, Jul 9, 2024 at 12:55=E2=80=AFPM Huang-Huang Bao <i@eh5.me> wrote:
+Boards based on the same SoC family can use different boot loaders.
+These may pass numeric arguments which we erroneously interpret as
+command line or environment pointers. Such errors will cause boot
+to halt at an early stage since commit 056a68cea01e ("mips: allow
+firmware to pass RNG seed to kernel").
 
-> The base iomux offsets for each GPIO pin line are accumulatively
-> calculated based off iomux width flag in rockchip_pinctrl_get_soc_data.
-> If the iomux width flag is one of IOMUX_WIDTH_4BIT, IOMUX_WIDTH_3BIT or
-> IOMUX_WIDTH_2BIT, the base offset for next pin line would increase by 8
-> bytes, otherwise it would increase by 4 bytes.
->
-> Despite most of GPIO2-B iomux have 2-bit data width, which can be fit
-> into 4 bytes space with write mask, it actually take 8 bytes width for
-> whole GPIO2-B line.
->
-> Commit e8448a6c817c ("pinctrl: rockchip: fix pinmux bits for RK3328
-> GPIO2-B pins") wrongly set iomux width flag to 0, causing all base
-> iomux offset for line after GPIO2-B to be calculated wrong. Fix the
-> iomux width flag to IOMUX_WIDTH_2BIT so the offset after GPIO2-B is
-> correctly increased by 8, matching the actual width of GPIO2-B iomux.
->
-> Fixes: e8448a6c817c ("pinctrl: rockchip: fix pinmux bits for RK3328 GPIO2=
--B pins")
-> Cc: stable@vger.kernel.org
-> Reported-by: Richard Kojedzinszky <richard@kojedz.in>
-> Closes: https://lore.kernel.org/linux-rockchip/4f29b743202397d60edfb3c725=
-537415@kojedz.in/
-> Tested-by: Richard Kojedzinszky <richard@kojedz.in>
-> Signed-off-by: Huang-Huang Bao <i@eh5.me>
+One known example of this issue is a HPE switch using a BootWare
+boot loader.  It was found to pass these arguments to the kernel:
 
-Patch applied for fixes!
+  0x00020000 0x00060000 0xfffdffff 0x0000416c
 
-Yours,
-Linus Walleij
+We can avoid hanging by validating that both passed pointers are in
+KSEG1 as expected.
+
+Cc: stable@vger.kernel.org
+Fixes: 14aecdd41921 ("MIPS: FW: Add environment variable processing.")
+Signed-off-by: Bjørn Mork <bjorn@mork.no>
+---
+ arch/mips/fw/lib/cmdline.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/mips/fw/lib/cmdline.c b/arch/mips/fw/lib/cmdline.c
+index 892765b742bb..51238c4f9455 100644
+--- a/arch/mips/fw/lib/cmdline.c
++++ b/arch/mips/fw/lib/cmdline.c
+@@ -22,7 +22,7 @@ void __init fw_init_cmdline(void)
+ 	int i;
+ 
+ 	/* Validate command line parameters. */
+-	if ((fw_arg0 >= CKSEG0) || (fw_arg1 < CKSEG0)) {
++	if (fw_arg0 >= CKSEG0 || fw_arg1 < CKSEG0 || fw_arg1 >= CKSEG2) {
+ 		fw_argc = 0;
+ 		_fw_argv = NULL;
+ 	} else {
+@@ -31,7 +31,7 @@ void __init fw_init_cmdline(void)
+ 	}
+ 
+ 	/* Validate environment pointer. */
+-	if (fw_arg2 < CKSEG0)
++	if (fw_arg2 < CKSEG0 || fw_arg2 >= CKSEG2)
+ 		_fw_envp = NULL;
+ 	else
+ 		_fw_envp = (int *)fw_arg2;
+-- 
+2.39.2
+
 
