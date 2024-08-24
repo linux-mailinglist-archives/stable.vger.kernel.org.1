@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-70075-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70076-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F81995DA2F
-	for <lists+stable@lfdr.de>; Sat, 24 Aug 2024 02:14:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6843B95DA3C
+	for <lists+stable@lfdr.de>; Sat, 24 Aug 2024 02:31:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35FF328209B
-	for <lists+stable@lfdr.de>; Sat, 24 Aug 2024 00:14:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BBB39B22D26
+	for <lists+stable@lfdr.de>; Sat, 24 Aug 2024 00:31:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3037C625;
-	Sat, 24 Aug 2024 00:14:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 974A5A5F;
+	Sat, 24 Aug 2024 00:31:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SulSZrph"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UuZlOqm+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2317161;
-	Sat, 24 Aug 2024 00:14:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51995161;
+	Sat, 24 Aug 2024 00:31:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724458493; cv=none; b=uuTMEvIrwRJxxxLV2Ae1NMc0+dsdA5FIwpuuEVzSMjwWuYGAKs69SiSXiEyGn7Po7FvCzwVhIU9kTKPTRNpJC7I1GNMurtsKVDlEXJGKPRALVpjVEVg2VaZwCBPTSihGb86M5Yip7XDzE6jTO9xbHbviUxtww/wOrxd0W1Mm3L4=
+	t=1724459493; cv=none; b=b5v43yKI1PikKmis3T2LlBWvvX38GcsUfB6DX6fDD6Ak4W0YxX3sUfveA8vh9ixarsGQM3LVYxpoMjaNHDaVE/LuL/zlXzTIiF1NLcYM/3XMkGb0MfNR1ZKjWoBpDFEMhEuU4VursEtcBwODCdEqb7Ps4n7nEUrQH/QctevN+jw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724458493; c=relaxed/simple;
-	bh=xOPjGge/Ya7kLxZ4Tct5scvKiHZs0n9DIsbK5p39oqI=;
+	s=arc-20240116; t=1724459493; c=relaxed/simple;
+	bh=M8M6JKbFYQJixFrU+1nEsjWDvBaW6/wRHoFZF2YoaRU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=atr2thr+UxJixqaACsgbLQbMYsFj98P3sKd3GpCAncl6IftHYGjuD1xZ9rcm4Ggffxbj16LvDuvo5Im+WKwgMY0plSJTozsV03B/MyNvGcpfO2c8iJLAZh3M5zmhzZIEmp/IxfwjVuS4+BWJNjFVPSFdV4ER9BqBGLDQfhj+C0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SulSZrph; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AFE9C32786;
-	Sat, 24 Aug 2024 00:14:50 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=qeI1aFAyfaWoj+Oxh3DLvjLl5tvlATJi3r1TOK3bSehLVQ9cO/zlDXOW2PlijsLbe+zdlY8erDiiv5cgQkSogGFAibZKv67q1ZgKIgNhr/oX8a/kWImNGfYDqjCiMAdZHDuB3VP+gBcgCujqwdf/rDpLRrZ+CKS8qOAJV0S3Axw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UuZlOqm+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A2DAC32786;
+	Sat, 24 Aug 2024 00:31:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724458492;
-	bh=xOPjGge/Ya7kLxZ4Tct5scvKiHZs0n9DIsbK5p39oqI=;
+	s=k20201202; t=1724459492;
+	bh=M8M6JKbFYQJixFrU+1nEsjWDvBaW6/wRHoFZF2YoaRU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SulSZrphM7hp/usEKgKXExL/nn3uf3Yb6EpIKshkS358NK95Rb4l2Dx8oD/11uhmx
-	 4BxKwC2MygDwDvJhj2rL9rqNnwAnV7AN1iJSaNd0rCIDKVN1VTnpXVJobL+CEE/yGi
-	 lQDpyrNZQuhRVS2nDle6laZaoPq+yK6Nk9pZzoZOG/YrazdVMgGqRdyg07Uk48TPQ8
-	 Ekj9sSwZl45dvd4+v274vYp0qOagAPRXJRGb2469Yzl/b/yU+helktfmkc4wnBhrSb
-	 u3vmgQatM0Skr2MfN0eqIqTV6TttiRje5NZYS2dgYoRLKPIgfGkY3FrWj7pmexisjx
-	 ZYksrdHZPfGHg==
-Date: Sat, 24 Aug 2024 02:14:47 +0200
+	b=UuZlOqm+mfxnvFYsN1XZ//LN5lrwmKDSZ3hCjedw6CSZndSspdMpdzZmwYrMBBcfP
+	 G6uKMh6tQs7VAMbeGW2lpEUcFiIdz0rAVepCdAilTQ7sjW/YgPHHj4tq6y5+dpFnQT
+	 9BkqMgEV1PJSmlCRRXwzXyTAMqZFaRIxMMUs+I0LHQIsD6WG72Mw0ITMyXYUkuMJ3n
+	 UaCT/tDsDUns+mwS13nR2kSlebNqT6SVCtuQzZ4czZ7fbLPmdhH8xYcqDXZ6GdaL4c
+	 Y6k5MtKyyxq34pqYaYm8B+aUC5a24MRODlWobw+EF+IsJaAFZoVKVnvJjhWknQSOkq
+	 ge2FzKD3zfTcQ==
+Date: Sat, 24 Aug 2024 02:31:27 +0200
 From: Danilo Krummrich <dakr@kernel.org>
-To: Luis Chamberlain <mcgrof@kernel.org>
-Cc: Jann Horn <jannh@google.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+To: Jann Horn <jannh@google.com>
+Cc: Luis Chamberlain <mcgrof@kernel.org>,
 	Russ Weight <russ.weight@linux.dev>,
 	Danilo Krummrich <dakr@redhat.com>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"Rafael J. Wysocki" <rafael@kernel.org>,
 	linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Subject: Re: [PATCH v2] firmware_loader: Block path traversal
-Message-ID: <Zskl9-0VKnixHA9X@pollux>
+Message-ID: <Zskp364_oYM4T8BQ@pollux>
 References: <20240823-firmware-traversal-v2-1-880082882709@google.com>
- <Zsj7afivXqOL1FXG@bombadil.infradead.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,69 +61,131 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Zsj7afivXqOL1FXG@bombadil.infradead.org>
+In-Reply-To: <20240823-firmware-traversal-v2-1-880082882709@google.com>
 
-On Fri, Aug 23, 2024 at 02:13:13PM -0700, Luis Chamberlain wrote:
-> On Fri, Aug 23, 2024 at 08:38:55PM +0200, Jann Horn wrote:
-> > Most firmware names are hardcoded strings, or are constructed from fairly
-> > constrained format strings where the dynamic parts are just some hex
-> > numbers or such.
-> > 
-> > However, there are a couple codepaths in the kernel where firmware file
-> > names contain string components that are passed through from a device or
-> > semi-privileged userspace; the ones I could find (not counting interfaces
-> > that require root privileges) are:
-> > 
-> >  - lpfc_sli4_request_firmware_update() seems to construct the firmware
-> >    filename from "ModelName", a string that was previously parsed out of
-> >    some descriptor ("Vital Product Data") in lpfc_fill_vpd()
-> >  - nfp_net_fw_find() seems to construct a firmware filename from a model
-> >    name coming from nfp_hwinfo_lookup(pf->hwinfo, "nffw.partno"), which I
-> >    think parses some descriptor that was read from the device.
-> >    (But this case likely isn't exploitable because the format string looks
-> >    like "netronome/nic_%s", and there shouldn't be any *folders* starting
-> >    with "netronome/nic_". The previous case was different because there,
-> >    the "%s" is *at the start* of the format string.)
-> >  - module_flash_fw_schedule() is reachable from the
-> >    ETHTOOL_MSG_MODULE_FW_FLASH_ACT netlink command, which is marked as
-> >    GENL_UNS_ADMIN_PERM (meaning CAP_NET_ADMIN inside a user namespace is
-> >    enough to pass the privilege check), and takes a userspace-provided
-> >    firmware name.
-> >    (But I think to reach this case, you need to have CAP_NET_ADMIN over a
-> >    network namespace that a special kind of ethernet device is mapped into,
-> >    so I think this is not a viable attack path in practice.)
-> > 
-> > Fix it by rejecting any firmware names containing ".." path components.
-> > 
-> > For what it's worth, I went looking and haven't found any USB device
-> > drivers that use the firmware loader dangerously.
-> > 
-> > Cc: stable@vger.kernel.org
-> > Fixes: abb139e75c2c ("firmware: teach the kernel to load firmware files directly from the filesystem")
-> > Signed-off-by: Jann Horn <jannh@google.com>
+On Fri, Aug 23, 2024 at 08:38:55PM +0200, Jann Horn wrote:
+> Most firmware names are hardcoded strings, or are constructed from fairly
+> constrained format strings where the dynamic parts are just some hex
+> numbers or such.
 > 
-> I'm all for this, however a strong rejection outright for the first
-> kernel release is bound to end up with some angry user with some oddball
-> driver that had this for whatever stupid reason. Without a semantic
-> patch assessment to do this (I think its possible with coccinelle) I'd
-
-I don't think we can fully validate it, there are lots of cases, where path
-names are passed through large call stacks, concatenated with other strings,
-selected from arrays, etc.
-
-So, if we want to be extra careful, we should indeed just warn for now.
-
-> suggest for now we leave the warning in place for one kernel release,
-> and for the one after we enforce this.
-
-I'd expect it to take a bit longer until someone recognizes when drivers for
-embedded stuff hit this, but that's probably fine, hopefully some vendor
-discovers it before it goes to end users. :)
-
+> However, there are a couple codepaths in the kernel where firmware file
+> names contain string components that are passed through from a device or
+> semi-privileged userspace; the ones I could find (not counting interfaces
+> that require root privileges) are:
 > 
-> Linus might feel differently over it, and may want it right away. I'll
-> let him chime in.
+>  - lpfc_sli4_request_firmware_update() seems to construct the firmware
+>    filename from "ModelName", a string that was previously parsed out of
+>    some descriptor ("Vital Product Data") in lpfc_fill_vpd()
+>  - nfp_net_fw_find() seems to construct a firmware filename from a model
+>    name coming from nfp_hwinfo_lookup(pf->hwinfo, "nffw.partno"), which I
+>    think parses some descriptor that was read from the device.
+>    (But this case likely isn't exploitable because the format string looks
+>    like "netronome/nic_%s", and there shouldn't be any *folders* starting
+>    with "netronome/nic_". The previous case was different because there,
+>    the "%s" is *at the start* of the format string.)
+>  - module_flash_fw_schedule() is reachable from the
+>    ETHTOOL_MSG_MODULE_FW_FLASH_ACT netlink command, which is marked as
+>    GENL_UNS_ADMIN_PERM (meaning CAP_NET_ADMIN inside a user namespace is
+>    enough to pass the privilege check), and takes a userspace-provided
+>    firmware name.
+>    (But I think to reach this case, you need to have CAP_NET_ADMIN over a
+>    network namespace that a special kind of ethernet device is mapped into,
+>    so I think this is not a viable attack path in practice.)
 > 
->   Luis
+> Fix it by rejecting any firmware names containing ".." path components.
+> 
+> For what it's worth, I went looking and haven't found any USB device
+> drivers that use the firmware loader dangerously.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: abb139e75c2c ("firmware: teach the kernel to load firmware files directly from the filesystem")
+> Signed-off-by: Jann Horn <jannh@google.com>
+> ---
+> Changes in v2:
+> - describe fix in commit message (dakr)
+> - write check more clearly and with comment in separate helper (dakr)
+> - document new restriction in comment above request_firmware() (dakr)
+> - warn when new restriction is triggered
+> - Link to v1: https://lore.kernel.org/r/20240820-firmware-traversal-v1-1-8699ffaa9276@google.com
+> ---
+>  drivers/base/firmware_loader/main.c | 41 +++++++++++++++++++++++++++++++++++++
+>  1 file changed, 41 insertions(+)
+> 
+> diff --git a/drivers/base/firmware_loader/main.c b/drivers/base/firmware_loader/main.c
+> index a03ee4b11134..dd47ce9a761f 100644
+> --- a/drivers/base/firmware_loader/main.c
+> +++ b/drivers/base/firmware_loader/main.c
+> @@ -849,6 +849,37 @@ static void fw_log_firmware_info(const struct firmware *fw, const char *name,
+>  {}
+>  #endif
+>  
+> +/*
+> + * Reject firmware file names with ".." path components.
+> + * There are drivers that construct firmware file names from device-supplied
+> + * strings, and we don't want some device to be able to tell us "I would like to
+> + * be sent my firmware from ../../../etc/shadow, please".
+> + *
+> + * Search for ".." surrounded by either '/' or start/end of string.
+> + *
+> + * This intentionally only looks at the firmware name, not at the firmware base
+> + * directory or at symlink contents.
+> + */
+> +static bool name_contains_dotdot(const char *name)
+> +{
+> +	size_t name_len = strlen(name);
+> +	size_t i;
+> +
+> +	if (name_len < 2)
+> +		return false;
+> +	for (i = 0; i < name_len - 1; i++) {
+> +		/* do we see a ".." sequence? */
+> +		if (name[i] != '.' || name[i+1] != '.')
+> +			continue;
+> +
+> +		/* is it a path component? */
+> +		if ((i == 0 || name[i-1] == '/') &&
+> +		    (i == name_len - 2 || name[i+2] == '/'))
+> +			return true;
+> +	}
+> +	return false;
+> +}
+
+Why do you open code it, instead of using strstr() and strncmp() like you did
+in v1? I think your approach from v1 read way better.
+
+> +
+>  /* called from request_firmware() and request_firmware_work_func() */
+>  static int
+>  _request_firmware(const struct firmware **firmware_p, const char *name,
+> @@ -869,6 +900,14 @@ _request_firmware(const struct firmware **firmware_p, const char *name,
+>  		goto out;
+>  	}
+>  
+> +	if (name_contains_dotdot(name)) {
+> +		dev_warn(device,
+> +			 "Firmware load for '%s' refused, path contains '..' component",
+> +			 name);
+> +		ret = -EINVAL;
+> +		goto out;
+> +	}
+> +
+>  	ret = _request_firmware_prepare(&fw, name, device, buf, size,
+>  					offset, opt_flags);
+>  	if (ret <= 0) /* error or already assigned */
+> @@ -946,6 +985,8 @@ _request_firmware(const struct firmware **firmware_p, const char *name,
+>   *      @name will be used as $FIRMWARE in the uevent environment and
+>   *      should be distinctive enough not to be confused with any other
+>   *      firmware image for this or any other device.
+> + *	It must not contain any ".." path components - "foo/bar..bin" is
+> + *	allowed, but "foo/../bar.bin" is not.
+>   *
+>   *	Caller must hold the reference count of @device.
+>   *
+> 
+> ---
+> base-commit: b0da640826ba3b6506b4996a6b23a429235e6923
+> change-id: 20240820-firmware-traversal-6df8501b0fe4
+> -- 
+> Jann Horn <jannh@google.com>
 > 
 
