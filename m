@@ -1,117 +1,102 @@
-Return-Path: <stable+bounces-70097-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70092-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A39CB95DEA1
-	for <lists+stable@lfdr.de>; Sat, 24 Aug 2024 16:56:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FC6C95DE85
+	for <lists+stable@lfdr.de>; Sat, 24 Aug 2024 16:45:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 89FB21C20EBD
-	for <lists+stable@lfdr.de>; Sat, 24 Aug 2024 14:56:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A5952830FE
+	for <lists+stable@lfdr.de>; Sat, 24 Aug 2024 14:45:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A41617A93C;
-	Sat, 24 Aug 2024 14:56:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A1261684A5;
+	Sat, 24 Aug 2024 14:45:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mork.no header.i=@mork.no header.b="by51OAYF"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fZ/gvwLA"
 X-Original-To: stable@vger.kernel.org
-Received: from dilbert.mork.no (dilbert.mork.no [65.108.154.246])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5257B1714DA;
-	Sat, 24 Aug 2024 14:56:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.108.154.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C364A94D;
+	Sat, 24 Aug 2024 14:45:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724511400; cv=none; b=ps/GJ277IAONRCMfHGQRaUh1+L+NqkXFXIjohtIKUKo682rdQOYW3HMtt7D0knEwg15l374C5E8MkIWdlWkRwQjNf15XTQKdukslrCRgkQ4c4o31+Uf1XtKjWr7hyfJwdCCNnFgK7nX2o3xzGPbbBVjK62/4GJ3uBZjyIUg2DpI=
+	t=1724510737; cv=none; b=lwJyfUKTYmTB2JEmOGd80IocDJ1XzLdcEtluFOKZ2Q5oHp5vW5Z0dEfMqG0tccGzhedOx81cTHLs2skk/shIpRvt24LrVX63kFO2w0czHw3Rf12kCzeqZj21IcInGEAPSeboYoyQRH/XROatWzP2ayySsYx2EaLxfSmt2jaNXUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724511400; c=relaxed/simple;
-	bh=KnjeP6vwYigDLYTJd5twaAha0YX82Wvm0lMe7Iqakjk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=sdwFcvPF+DXg2/gzc1AOGkax7DhtpTcLW9U0kQn7ElmEgdMIcM/IAKsGvCpTCxHxCils8MBbv5VSUT+bfSxy4ZhUIRhug3jgFvo5kYjnS8b8Bh5CdjTnhOkZqeSRrTCTkqPsFUFRmyBoL63lE6nc147Jihl+rHCj/FsxJT0Gt40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mork.no; spf=pass smtp.mailfrom=miraculix.mork.no; dkim=pass (1024-bit key) header.d=mork.no header.i=@mork.no header.b=by51OAYF; arc=none smtp.client-ip=65.108.154.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mork.no
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=miraculix.mork.no
-Received: from canardo.dyn.mork.no ([IPv6:2a01:799:10da:6900:0:0:0:1])
-	(authenticated bits=0)
-	by dilbert.mork.no (8.17.1.9/8.17.1.9) with ESMTPSA id 47OEfaq23717667
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
-	Sat, 24 Aug 2024 15:41:37 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mork.no; s=b;
-	t=1724510496; bh=n3Pt+wchlafO18tsiqz0oH+0puGudvk0SfFT3Jbisac=;
-	h=From:To:Cc:Subject:Date:Message-Id:From;
-	b=by51OAYFUGm8fVCo6TwX9TpeJMOORdHyk41/w6kysPhbr42P5pEOf3i14DPhcwiCd
-	 TBlNVI1fKYo5OMdOzhTBuFjyLybm9KfOQ4lQKS+mBEWBImgWL3eOzQYQOq/5F32uKI
-	 TuYwQUF9Uker7Pf98Av09orr/AwA1691Q5Ymw8dU=
-Received: from miraculix.mork.no ([IPv6:2a01:799:10da:690a:d43d:737:5289:b66f])
-	(authenticated bits=0)
-	by canardo.dyn.mork.no (8.17.1.9/8.17.1.9) with ESMTPSA id 47OEfZNw1964325
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
-	Sat, 24 Aug 2024 16:41:35 +0200
-Received: (nullmailer pid 1464847 invoked by uid 1000);
-	Sat, 24 Aug 2024 14:41:34 -0000
-From: =?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>
-To: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc: "Steven J . Hill" <Steven.Hill@imgtec.com>, linux-mips@vger.kernel.org,
-        linux-kernel@vger.kernel.org,
-        =?UTF-8?q?Bj=C3=B8rn=20Mork?= <bjorn@mork.no>, stable@vger.kernel.org
-Subject: [PATCH] MIPS: fw: Gracefully handle unknown firmware protocols
-Date: Sat, 24 Aug 2024 16:41:33 +0200
-Message-Id: <20240824144133.1464835-1-bjorn@mork.no>
-X-Mailer: git-send-email 2.39.2
+	s=arc-20240116; t=1724510737; c=relaxed/simple;
+	bh=hcZfQXCPMfbtBofazNo1S7/ZYeLZhUtzfyiS8oPPyz0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=nKktHgKiDibWFZGLgU9C/RE4NZ6MJbvWn86moGU1UEEl1fSvLkJDrD3XxjeXXBmthr2Aihxl5ux2XLZwwgVIWVyjT9opGmHRKJwO850o+ZctMqxyWpPhdSh1xbZTo+lsGABWca+oRheWY29UKbeEYmxhWyrbqM9xi7HoJXSmT/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fZ/gvwLA; arc=none smtp.client-ip=209.85.216.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-2d3bc9405c2so346377a91.2;
+        Sat, 24 Aug 2024 07:45:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1724510736; x=1725115536; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hcZfQXCPMfbtBofazNo1S7/ZYeLZhUtzfyiS8oPPyz0=;
+        b=fZ/gvwLAEwlaEBk/oQ+/v6ovYVUTlrPiijoZE3gjQw8fLVKmzwMqpzgngvxWKZsKtj
+         Z8XGVx1BnrP90uNSgMOxjwHsWYrHWmVK/N1RSLeVZMrMlucyUoc6avx4FICGPVUioMGI
+         IOuc3hk8yXoXmIDEH5cQEvEgM1OE5H66JKCKZ6C57Ufhk3FNBQQmH4nqCoILWN09jwiR
+         rSnSOtDyyE2KSeyPgt7j0bb0OPEfl1r0jaKr9VSNoXloKUHGhJ1sSFBly7abdkBj2dCS
+         23g3rYFnbydt5gctMLQ7Hwhu5FOSXvI6PP/so1kSulWlGr4FtsFbkRLEICIZgoX43Zlj
+         UKkA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724510736; x=1725115536;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=hcZfQXCPMfbtBofazNo1S7/ZYeLZhUtzfyiS8oPPyz0=;
+        b=r21PfQFQxik3/QDhNkA2sY0ZciPmaxO/mNqMe5m5dCB6goImNze96PQxzFWJPlbE1R
+         Hy+7TLxhDqG5WBsr6xJ22NS7if8koJZhSIKjAEy8BzlRW4+aiU/L8MWaCedbKf5Jjtw7
+         9Jeg/0WXOEOEW5iYaXkrHlCy88K6m2pGrzonM4XqqBlYzo69VlKtb0Q4ertYPluwNCIy
+         4ICQXnlp5YX08O9RbDXmuGKFM44Doq9SFONhf04mOmpSIDhjZwEv3NuH4bdyA2rORnoZ
+         o9OLIrvso5M2PqFgkbCxsH87M2wY8Fpu6sc3eMLcJM0gAJjJqkVnzWfiXvxokpSv7ymH
+         PBnw==
+X-Forwarded-Encrypted: i=1; AJvYcCVFO/FGqiZRS7ES/C9CAMoP/pa1WYHMZmzeFp/53SkjvKzeF8gx5O1ls7hwSvOcWlUSpX18EAh9UYh7qks1cw==@vger.kernel.org, AJvYcCVWWnt43dCWIYDg4o3K2l9y9GAbR3yiSnsLnxhUzBI1E7xZpM6dHENM96h1Qz1aS3LxRl3ueobr@vger.kernel.org
+X-Gm-Message-State: AOJu0YzpOdmwz/4IXk8tAlLY+Cig6yoouqSQL7TBqq5E+P8+Nhvm6ghk
+	JLcXurCJyoVnxgK5kZ94P6jSM5PSdBboDb+sfrTvwoKlCYj68RSSx+Wz5++P5HZMRbHu6CZ38Y3
+	ETBUqzkat2uW+fYC8VjzJfPY1vdg=
+X-Google-Smtp-Source: AGHT+IE+OBhuNFTc2DhxpTSuK3T4/iWGGKYoPxf5Nnc7rEcJ9gV3xAdvO1Lvms8P0I60wdRp+Ei95r14uPTkAGKZUPA=
+X-Received: by 2002:a17:90a:1f07:b0:2c9:6920:d2b2 with SMTP id
+ 98e67ed59e1d1-2d646b9d9bfmr3741225a91.1.1724510735795; Sat, 24 Aug 2024
+ 07:45:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: clamav-milter 1.0.5 at canardo
-X-Virus-Status: Clean
+References: <20240823140121.1974012-1-sashal@kernel.org> <20240823140121.1974012-9-sashal@kernel.org>
+In-Reply-To: <20240823140121.1974012-9-sashal@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sat, 24 Aug 2024 16:45:21 +0200
+Message-ID: <CANiq72=WHzjck6fU4b-Tjv0iJPCT7EeGdgKbyQ62JwcgzfW+wA@mail.gmail.com>
+Subject: Re: [PATCH AUTOSEL 6.10 09/24] kbuild: rust: skip -fmin-function-alignment
+ in bindgen flags
+To: Sasha Levin <sashal@kernel.org>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Zehui Xu <zehuixu@whu.edu.cn>, Alice Ryhl <aliceryhl@google.com>, Neal Gompa <neal@gompa.dev>, 
+	Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>, alex.gaynor@gmail.com, 
+	wedsonaf@gmail.com, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Boards based on the same SoC family can use different boot loaders.
-These may pass numeric arguments which we erroneously interpret as
-command line or environment pointers. Such errors will cause boot
-to halt at an early stage since commit 056a68cea01e ("mips: allow
-firmware to pass RNG seed to kernel").
+On Fri, Aug 23, 2024 at 4:01=E2=80=AFPM Sasha Levin <sashal@kernel.org> wro=
+te:
+>
+> From: Zehui Xu <zehuixu@whu.edu.cn>
+>
+> [ Upstream commit 869b5016e94eced02f2cf99bf53c69b49adcee32 ]
 
-One known example of this issue is a HPE switch using a BootWare
-boot loader.  It was found to pass these arguments to the kernel:
+Sounds good.
 
-  0x00020000 0x00060000 0xfffdffff 0x0000416c
+Thanks!
 
-We can avoid hanging by validating that both passed pointers are in
-KSEG1 as expected.
-
-Cc: stable@vger.kernel.org
-Fixes: 14aecdd41921 ("MIPS: FW: Add environment variable processing.")
-Signed-off-by: Bjørn Mork <bjorn@mork.no>
----
- arch/mips/fw/lib/cmdline.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/arch/mips/fw/lib/cmdline.c b/arch/mips/fw/lib/cmdline.c
-index 892765b742bb..51238c4f9455 100644
---- a/arch/mips/fw/lib/cmdline.c
-+++ b/arch/mips/fw/lib/cmdline.c
-@@ -22,7 +22,7 @@ void __init fw_init_cmdline(void)
- 	int i;
- 
- 	/* Validate command line parameters. */
--	if ((fw_arg0 >= CKSEG0) || (fw_arg1 < CKSEG0)) {
-+	if (fw_arg0 >= CKSEG0 || fw_arg1 < CKSEG0 || fw_arg1 >= CKSEG2) {
- 		fw_argc = 0;
- 		_fw_argv = NULL;
- 	} else {
-@@ -31,7 +31,7 @@ void __init fw_init_cmdline(void)
- 	}
- 
- 	/* Validate environment pointer. */
--	if (fw_arg2 < CKSEG0)
-+	if (fw_arg2 < CKSEG0 || fw_arg2 >= CKSEG2)
- 		_fw_envp = NULL;
- 	else
- 		_fw_envp = (int *)fw_arg2;
--- 
-2.39.2
-
+Cheers,
+Miguel
 
