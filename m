@@ -1,126 +1,167 @@
-Return-Path: <stable+bounces-70080-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70082-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F12395DA74
-	for <lists+stable@lfdr.de>; Sat, 24 Aug 2024 04:02:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F259595DBD1
+	for <lists+stable@lfdr.de>; Sat, 24 Aug 2024 07:18:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 847861C217F6
-	for <lists+stable@lfdr.de>; Sat, 24 Aug 2024 02:02:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A016C1F232D5
+	for <lists+stable@lfdr.de>; Sat, 24 Aug 2024 05:18:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48F1BEEC8;
-	Sat, 24 Aug 2024 02:02:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BDCD14AD20;
+	Sat, 24 Aug 2024 05:18:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="OAIFGqyf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wo0yCwjO"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f47.google.com (mail-lf1-f47.google.com [209.85.167.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F4AF8494
-	for <stable@vger.kernel.org>; Sat, 24 Aug 2024 02:02:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FF9514A611
+	for <stable@vger.kernel.org>; Sat, 24 Aug 2024 05:18:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724464964; cv=none; b=DV3etOzwL2IPdIqqPzVHaWl79dicNUMs31CgfenzHrq+wszCkI/zfEuvfozlO9O3w3SD613EsgH530WxfragaRcgfWg6TIslfmxvImhZjyI3jYl6M31EYP81FkkBpQ6+vhpkO+oH0U3RyCMXXz85jqxhNRGHgINcL2rH9w0JRV4=
+	t=1724476681; cv=none; b=J6WZ4dPr9ItE2tZhZFCra/28xSWx7mX06XPWsljf3PGLKp2an/p8cHU9Vb/Wgpw8CWoXK3XYvzcN7TjnfxBJ1ewMxrYsBwx+6oWtWQrC+Maq6bq515PTBv6UlydFTW4VEMzG+LvPICBoomSSysT26GdOKUqLqA8D4LupcMLfmeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724464964; c=relaxed/simple;
-	bh=PvxEnZaFii/sPRVmM5l16yEI1y18EcLbXmugTXFTBi4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=opKyQe6Xw6ngFbApZNYfXIXF33Z/wqnfZiLgbbqdh2XjH+XdbEz1B8CF7+W2YnaNkR+C01fFm2o1ze/UyvqteKevwZqLUidfljKUcQIIIpwUJTSYYD9JVVP97zfxqicbzq7wzz43n5NAxmLNeoTU3E47drEvOS5n/A+PximXM/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=OAIFGqyf; arc=none smtp.client-ip=209.85.167.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-533488ffaebso2863432e87.0
-        for <stable@vger.kernel.org>; Fri, 23 Aug 2024 19:02:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1724464960; x=1725069760; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=5ym980CqYxCsLXdz14ErVB+ivOLKtukT0tUKXVKCXag=;
-        b=OAIFGqyfxnVCFKl+BQXAJlIpyu3PF5R3RB4gsf2TRCpuq6xO/KAg4//rQ3VCLx3Ij0
-         mZfYPIvdd/0+yjCsvNEiiwVuZynA+U4F31H4m8RIoYAlTpgVuCmXtwHj4B7UTNfG0a3C
-         b2FSY9PEgPXwyns/95IezhwmMzrIq7qSX9eTk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724464960; x=1725069760;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=5ym980CqYxCsLXdz14ErVB+ivOLKtukT0tUKXVKCXag=;
-        b=M99DkJ2WOY2vtoDMEJhlmh300MNvCfKPiA6P8A2aZf0QfFSVVAVZvCfAV/0ldM6QV3
-         5vn/WBzCMrSVllJ08qvH93LfoBpOuJ8R5skedJ8yfjARwdko1YdTiSz//4JCfoXfyQP2
-         eGd/55kuUEL48LE6B2DRh2jhk3OkKIW8woowtgAdYkA/2WWwl8w8gKR1bRIU0pN+6JXK
-         IRHjnYH7Lc3mBcNg7YufoQJ31eiF9/I95Za0/FqTMovAaMgTTVm8+Yzr4nbWOnqNVc0G
-         uFQi0pB29lb5uNSYBVMFoZrza7iaGFFuRxGNbA1F5+netgPF5i+gm62dGbLJYs5doX/6
-         1Wxg==
-X-Forwarded-Encrypted: i=1; AJvYcCWTrQF0kwlYhpraWb4UCR7ybEMAms5nVygb1hn8M36Jxs4ruzjyxTwShcq+yj9P19a3rwWFiq4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy9GMWw8G0j6zvx2fVDr/LfvgP7z0GbrKHwA2lcCMVEfNbjRTwm
-	cp1XTeZdk/Fc3+4W1tQld923bE8S9p3adt0dow9PFWFj1vhFi+IL882qHXcte1++2MS4KLTWe30
-	0DkhIBA==
-X-Google-Smtp-Source: AGHT+IF81nVREP5u1Z/XjVAlE6nqwvU65Wi/BbKiXSZ6gJaAA5Jj4NFrLbFRWO/STOVI8SWoGQEarQ==
-X-Received: by 2002:a05:6512:6cf:b0:52c:cd4f:b95b with SMTP id 2adb3069b0e04-53438773dc4mr2721330e87.22.1724464959819;
-        Fri, 23 Aug 2024 19:02:39 -0700 (PDT)
-Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com. [209.85.208.170])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5334ea297casm698501e87.39.2024.08.23.19.02.38
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 23 Aug 2024 19:02:39 -0700 (PDT)
-Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-2f43de7ad5eso27018641fa.1
-        for <stable@vger.kernel.org>; Fri, 23 Aug 2024 19:02:38 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUtsJSlxIU0vhKNvCiCoCxWqh43Zwc+z1VV6HSFcK8Bf9h8yXuUKpceD+EAnYZNy1tMz7A5Xfg=@vger.kernel.org
-X-Received: by 2002:a05:651c:32c:b0:2ec:500c:b2e0 with SMTP id
- 38308e7fff4ca-2f4f4901deamr21932221fa.22.1724464958055; Fri, 23 Aug 2024
- 19:02:38 -0700 (PDT)
+	s=arc-20240116; t=1724476681; c=relaxed/simple;
+	bh=XGa3pEzrbeAQxMX0O98B1xcADQ8TahnnoP36TzKFTUA=;
+	h=Subject:To:From:Date:Message-ID:MIME-Version:Content-Type; b=AdEZARRJnzNFhEz+kYKToEt93QCIRWkln5p51FAJTjQsqm6FE8fO+GCQ4qlawDFGWo9ByXtjffBxgFFmiVo8una08C4rQJSiNgLTkkTErKKOY5BrU4Kuqz/FQ0QHZ4EACJT9g62I14sFFUaQm5o9ZlPfwoT8MMcKliuPyuc/wWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wo0yCwjO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75DF3C32781;
+	Sat, 24 Aug 2024 05:18:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1724476680;
+	bh=XGa3pEzrbeAQxMX0O98B1xcADQ8TahnnoP36TzKFTUA=;
+	h=Subject:To:From:Date:From;
+	b=wo0yCwjOHJW97xTorIwls0pmu5dslxsRXbsJ5JWuxJBPll59zEeqJ3A5ZveHbtPJ8
+	 Ii/5KjosQHuW1Zh3NujQt3i00ycJvpXLaXzAkU/adadLlv2iOre0kkHdpj/vlBgSNN
+	 HRdto0OZTM5OSwSCqJeHv+aWuudxJgIaRcA1SzJY=
+Subject: patch "usb: cdnsp: fix for Link TRB with TC" added to usb-linus
+To: pawell@cadence.com,gregkh@linuxfoundation.org,peter.chen@kernel.org,stable@vger.kernel.org
+From: <gregkh@linuxfoundation.org>
+Date: Sat, 24 Aug 2024 10:08:56 +0800
+Message-ID: <2024082456-jockstrap-dipped-26ac@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240823-firmware-traversal-v2-1-880082882709@google.com>
- <Zsj7afivXqOL1FXG@bombadil.infradead.org> <CAADWXX_zpqzYdCpmQGF3JgsN4+wk3AsuQLCKREkDC1ScxSfDjQ@mail.gmail.com>
- <CAG48ez2_Gs=fuG5vwML-gCzvZcVDJJy=Tr8p+ANxW4h2dKBAjQ@mail.gmail.com>
-In-Reply-To: <CAG48ez2_Gs=fuG5vwML-gCzvZcVDJJy=Tr8p+ANxW4h2dKBAjQ@mail.gmail.com>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Sat, 24 Aug 2024 10:02:21 +0800
-X-Gmail-Original-Message-ID: <CAHk-=wh2rRLv5hu4BaJ_8JGRrX+UiOA6x4mPtUHp12oNhnWJWA@mail.gmail.com>
-Message-ID: <CAHk-=wh2rRLv5hu4BaJ_8JGRrX+UiOA6x4mPtUHp12oNhnWJWA@mail.gmail.com>
-Subject: Re: [PATCH v2] firmware_loader: Block path traversal
-To: Jann Horn <jannh@google.com>
-Cc: Luis Chamberlain <mcgrof@kernel.org>, Christian Brauner <brauner@kernel.org>, 
-	Russ Weight <russ.weight@linux.dev>, Danilo Krummrich <dakr@redhat.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-On Sat, 24 Aug 2024 at 09:49, Jann Horn <jannh@google.com> wrote:
->
-> One other difference between the semantics we need here and
-> LOOKUP_BENEATH is that we need to allow *symlinks* that contain ".."
-> components or absolute paths; just the original path string must not
-> contain them.
 
-Yup, fair enough - a LOOKUP_NO_DOTDOT (or LOOKUP_NORMALIZED) flag
-would only affect the top-most nameidata level. Which makes it
-different from some of the other nameidata flags.
+This is a note to let you know that I've just added the patch titled
 
-Not really fundamentally harder, but different - it would involve
-having to also check nd->depth during the walk.
+    usb: cdnsp: fix for Link TRB with TC
 
-> (For what it's worth, I think I have seen many copies of this kind of
-> string-based checking for ".." components in various pieces of
-> userspace code. I don't think I've seen many places in the kernel that
-> would benefit from that.)
+to my usb git tree which can be found at
+    git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git
+in the usb-linus branch.
 
-Yeah, the kernel usually has trusted sources for the (relatively few)
-pathnames it follows. The firmware case is probably fairly unusual,
-with other sources of kernel path walking tend to be paths that have
-been set by the administrator (eg the "fw_path" part that is set by a
-module parameter).
+The patch will show up in the next release of the linux-next tree
+(usually sometime within the next 24 hours during the week.)
 
-I was indeed thinking of user level possibly finding this useful,
-having seen a lot of "clean up pathname" code myself (git being one
-example).
+The patch will hopefully also be merged in Linus's tree for the
+next -rc kernel release.
 
-                 Linus
+If you have any questions about this process, please let me know.
+
+
+From 740f2e2791b98e47288b3814c83a3f566518fed2 Mon Sep 17 00:00:00 2001
+From: Pawel Laszczak <pawell@cadence.com>
+Date: Wed, 21 Aug 2024 06:07:42 +0000
+Subject: usb: cdnsp: fix for Link TRB with TC
+
+Stop Endpoint command on LINK TRB with TC bit set to 1 causes that
+internal cycle bit can have incorrect state after command complete.
+In consequence empty transfer ring can be incorrectly detected
+when EP is resumed.
+NOP TRB before LINK TRB avoid such scenario. Stop Endpoint command
+is then on NOP TRB and internal cycle bit is not changed and have
+correct value.
+
+Fixes: 3d82904559f4 ("usb: cdnsp: cdns3 Add main part of Cadence USBSSP DRD Driver")
+cc: <stable@vger.kernel.org>
+Signed-off-by: Pawel Laszczak <pawell@cadence.com>
+Reviewed-by: Peter Chen <peter.chen@kernel.org>
+Link: https://lore.kernel.org/r/PH7PR07MB953878279F375CCCE6C6F40FDD8E2@PH7PR07MB9538.namprd07.prod.outlook.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ drivers/usb/cdns3/cdnsp-gadget.h |  3 +++
+ drivers/usb/cdns3/cdnsp-ring.c   | 28 ++++++++++++++++++++++++++++
+ 2 files changed, 31 insertions(+)
+
+diff --git a/drivers/usb/cdns3/cdnsp-gadget.h b/drivers/usb/cdns3/cdnsp-gadget.h
+index dbee6f085277..84887dfea763 100644
+--- a/drivers/usb/cdns3/cdnsp-gadget.h
++++ b/drivers/usb/cdns3/cdnsp-gadget.h
+@@ -811,6 +811,7 @@ struct cdnsp_stream_info {
+  *        generate Missed Service Error Event.
+  *        Set skip flag when receive a Missed Service Error Event and
+  *        process the missed tds on the endpoint ring.
++ * @wa1_nop_trb: hold pointer to NOP trb.
+  */
+ struct cdnsp_ep {
+ 	struct usb_ep endpoint;
+@@ -838,6 +839,8 @@ struct cdnsp_ep {
+ #define EP_UNCONFIGURED		BIT(7)
+ 
+ 	bool skip;
++	union cdnsp_trb	 *wa1_nop_trb;
++
+ };
+ 
+ /**
+diff --git a/drivers/usb/cdns3/cdnsp-ring.c b/drivers/usb/cdns3/cdnsp-ring.c
+index a60c0cb991cd..dbd83d321bca 100644
+--- a/drivers/usb/cdns3/cdnsp-ring.c
++++ b/drivers/usb/cdns3/cdnsp-ring.c
+@@ -1904,6 +1904,23 @@ int cdnsp_queue_bulk_tx(struct cdnsp_device *pdev, struct cdnsp_request *preq)
+ 	if (ret)
+ 		return ret;
+ 
++	/*
++	 * workaround 1: STOP EP command on LINK TRB with TC bit set to 1
++	 * causes that internal cycle bit can have incorrect state after
++	 * command complete. In consequence empty transfer ring can be
++	 * incorrectly detected when EP is resumed.
++	 * NOP TRB before LINK TRB avoid such scenario. STOP EP command is
++	 * then on NOP TRB and internal cycle bit is not changed and have
++	 * correct value.
++	 */
++	if (pep->wa1_nop_trb) {
++		field = le32_to_cpu(pep->wa1_nop_trb->trans_event.flags);
++		field ^= TRB_CYCLE;
++
++		pep->wa1_nop_trb->trans_event.flags = cpu_to_le32(field);
++		pep->wa1_nop_trb = NULL;
++	}
++
+ 	/*
+ 	 * Don't give the first TRB to the hardware (by toggling the cycle bit)
+ 	 * until we've finished creating all the other TRBs. The ring's cycle
+@@ -1999,6 +2016,17 @@ int cdnsp_queue_bulk_tx(struct cdnsp_device *pdev, struct cdnsp_request *preq)
+ 		send_addr = addr;
+ 	}
+ 
++	if (cdnsp_trb_is_link(ring->enqueue + 1)) {
++		field = TRB_TYPE(TRB_TR_NOOP) | TRB_IOC;
++		if (!ring->cycle_state)
++			field |= TRB_CYCLE;
++
++		pep->wa1_nop_trb = ring->enqueue;
++
++		cdnsp_queue_trb(pdev, ring, 0, 0x0, 0x0,
++				TRB_INTR_TARGET(0), field);
++	}
++
+ 	cdnsp_check_trb_math(preq, enqd_len);
+ 	ret = cdnsp_giveback_first_trb(pdev, pep, preq->request.stream_id,
+ 				       start_cycle, start_trb);
+-- 
+2.46.0
+
+
 
