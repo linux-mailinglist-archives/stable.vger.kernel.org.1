@@ -1,111 +1,157 @@
-Return-Path: <stable+bounces-70077-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70078-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B40F95DA52
-	for <lists+stable@lfdr.de>; Sat, 24 Aug 2024 03:14:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAD6195DA68
+	for <lists+stable@lfdr.de>; Sat, 24 Aug 2024 03:35:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CC108B22619
-	for <lists+stable@lfdr.de>; Sat, 24 Aug 2024 01:14:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 196941C215EE
+	for <lists+stable@lfdr.de>; Sat, 24 Aug 2024 01:35:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B52294A29;
-	Sat, 24 Aug 2024 01:14:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1983663D5;
+	Sat, 24 Aug 2024 01:35:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="B4jcbAUV"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="O1EpOyes"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
+Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0707215C3
-	for <stable@vger.kernel.org>; Sat, 24 Aug 2024 01:14:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C1993D7A
+	for <stable@vger.kernel.org>; Sat, 24 Aug 2024 01:34:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724462084; cv=none; b=qgGdezKK20GprOPYkzIQf0BzmxA17H9JDhDGZyTYOrHrWREMQXIukwUc2bKOKO6pF8XZMmwgALXKhQUpHqJ2WogY3F2Jxr814TYeSkYqFGxQLI8rcEiKaW7o/e61dEExU7ZUMjkIK3JRtCLMEydTAYFhK5eQ6yt5Mf3nJ9DBko4=
+	t=1724463300; cv=none; b=WXuv8i0HPD4axh4Ye7qFf4Yvpp8vYRydn+6cKn1x7+TfCnbatJoIbxBbv0kWs8biUCFlMfVAivgO0cV0/ToEbp0uQ5nV58+JidDAmw8CTZ7GR03KlHa4BgvIf/pZuEbhJPvrqGZgjqBrgYhNPHudcpAfWXUISrtlSa07ZET69Bo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724462084; c=relaxed/simple;
-	bh=3ltXvU/EqVjBNZCATDE9AKbK4I9cB4dTLRGwGvtGknE=;
+	s=arc-20240116; t=1724463300; c=relaxed/simple;
+	bh=Hw7jnvfa3Q1O1QIXd8Gkh/Elt396GJ7HVFb4Dj8GDzU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ucGxzncva24spR7Zdcz5DVusOZf2op6CvQGdbx9iCd0Rr1MIIsol0nOp3+ulLfB3B1Wi6o6My/GBin4ZpjSt2nqWMSyiJ6yd0XFU3EhvaLXcMQT2Uu1yAY240NlE+lpMX7RfuAfsc7w+Hb66pZNaiQsoTsoxw2yiosVfPbt2KQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=B4jcbAUV; arc=none smtp.client-ip=209.85.128.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-6b99988b6ceso27541347b3.0
-        for <stable@vger.kernel.org>; Fri, 23 Aug 2024 18:14:42 -0700 (PDT)
+	 To:Cc:Content-Type; b=BYrSKzS/Qv1XiwLGXMI+/JKZiqjtKRMn+Vn+Oh5Nj/zwmjTXNrNqIku1b5cuPbbizHICX4sQYgV7oP4Q6f/V9F+xKAYpsMhLslttszWao1Do9UCIrZjKYrsmGEgrZS4zSCwEz4AL20Gv51y9HVqOmEWM7VFfKRIgWYcF8UO+tZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=O1EpOyes; arc=none smtp.client-ip=209.85.167.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5334b61b6c2so1095e87.1
+        for <stable@vger.kernel.org>; Fri, 23 Aug 2024 18:34:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1724462082; x=1725066882; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1724463297; x=1725068097; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=z4D2X7/K+4SYrs0mfjAke0PQKQjsGDVZHDjzzxg00m4=;
-        b=B4jcbAUVWFfZHxTHIUUHMAxvEaDDPPOgExqNi5B698v+ryd5iKCKd0c3bXQvWJ4z9s
-         ZvCXPRt8QWuaJ6WFii4mejJ8VduNq/Xg24IQJCDOJGVmVTxDcOef9aAsycmM3dmwtQ7v
-         w4qNgi8pTGD4n7JtzEKriAJbC4r0L4KRZEijA=
+        bh=JcP2XHdhpQoR+8wXNb3t5tqZe5jimGDfuP+Dc4X+WBM=;
+        b=O1EpOyesM03o9AE9QAeBU7QwQc4h97F/sic2vVxy1RPd60NLdcbPWA0EPs5fy+S7Vl
+         9bqgk7EbKZhZrDQM2lrdtuoaGzWSWDwjx4oUlVAOKxE2vHGaSo8hq6n4ULlAGj7oJtw0
+         c/7H76IzXIZaPa7faAPINQAEJY4VgGvnytOnITOTGMhlySSfJSyhyHvsoyxzCHw8Wix5
+         X5M0tOrin2QE3L19ORPpwghV+47boKrTF/cPAziN6YkmA0KiiL7oCvRtsAgoL4yEfncB
+         /Xb7dQbxFjBOaR/XnoS9L6eiJP27qvy+EuUEzE1Wl+SX+6M+VS/ds66y/3DsPGec47mA
+         ufxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724462082; x=1725066882;
+        d=1e100.net; s=20230601; t=1724463297; x=1725068097;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=z4D2X7/K+4SYrs0mfjAke0PQKQjsGDVZHDjzzxg00m4=;
-        b=RyqxCce5GC0T+5YIFme7KY/vwMEzHG3aYjDZFJ8S6zDdN7CaTTh4DF5/+ysudC5yUX
-         Oy6MlplrUhWXt3hRE2KAvhbooAYr2DdqHmwqsB+x5mTEQ/D4Rtv5wFAv41yhzJPT9ES5
-         N6eP159f4VWUU+kDOlNabT8oGcWmL7jUSuflIO4A5ojE/AW2To9pI1rAcnmG/WcigC7+
-         32rQNTNRxhL7lI+qd08Z1W/6NDFdPjvzL+IxBd3GM95nVbXelehvjC8RgSKmloiowJhr
-         RmkGg8VxO8JjaVVRM/oQNlj7Xk3+jIj83Mb2mENtiY9dCpxsKDDoXfTPbbXITneHpyJH
-         8hYA==
-X-Forwarded-Encrypted: i=1; AJvYcCVK8rNJ06gGGYPZgnIrdFzSSLpTRR7QYVRH/Z8rbQ+Kh924On9FZDbCrI0Dk/HdKSvbg23lNfw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyJCqY8DhPTfp5fK7O6eoJMOBB7/49NISouQvAOazTezui3d3ko
-	zvQoJkggQzjSvA9BdzMqQr1HjTOJyqXJJN4BPR7GZ7Gv/FovX7x2Lm2zj3RagkJJ3j2tetRw/6S
-	Mm9phnUnUhL5CCN5LL3VzfOdfkjTatK+Vpt3k4w==
-X-Google-Smtp-Source: AGHT+IE6ZW88HoHP1Dw+5Mhydbv6PiMgNhRVRsbt3kx9tUZB91yn8vzE8b+B7f4QD6IHh4f2iU6uScsmlcLPUekzXvY=
-X-Received: by 2002:a05:690c:6609:b0:6b3:8248:34c with SMTP id
- 00721157ae682-6c6249dd2femr48331147b3.4.1724462081895; Fri, 23 Aug 2024
- 18:14:41 -0700 (PDT)
+        bh=JcP2XHdhpQoR+8wXNb3t5tqZe5jimGDfuP+Dc4X+WBM=;
+        b=BHGccfz3/HQPL3e1rRwkE2uN0MGy7Hdk8N0Ut8L4oLQ/diGU7X5nu/Cgn1ObuwuG7S
+         T/cop/lFCBCe0dTVQSXgvAm0ui0bCnXLSo9dGCvuqtiqN3sbftidQDhdAuvfFFE7dqBr
+         nhmUkqeY4Lt2/kxzeYgq9zWOj+ZHL+Mu6lQ0Lk0LStfRRtJlfmOJuId9ObVGmizSIeEZ
+         YZXtq4B8Xk6m2oTdUwdlqDL0jOW8vBwosSwNU+4NZajDYhDgToggNBhqDEK4JCvUIa8D
+         YuCZQg9qh1LHJdTFj0JSAhleLvc4eSHppvejBS9N0trJgMlSlWJtPG9BRgjBsUV2Th06
+         iNAQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW11VmbKavUpTrk7C7XQTMSDHNVewfnuDx6JYREeU8pVWSBq1OWvgkwwJsS/zawpH1y9uMTkWE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YymWfPeOKXhgHK1GN+/2sXRkqdhRp51/D/gMwk86GEi1gLjgvms
+	0pQua6J9QoZwJolr2QCPMYyZT0cdESm/gFe6gq/kEvWS+nctJO8uArLmfJgwxtTgPWKrtudlc9y
+	P2+xqpDCMUY1Zw/NEA8hmLqx51g9wMN7/0+Fw
+X-Google-Smtp-Source: AGHT+IHURFxnbYbSnrLHwqXFAW8a7r4AgAH2k8U6BVLvMWbntozxXieb/Lp3SJFLl8PP7sKnwg98qPonU/lz/wgjMlI=
+X-Received: by 2002:a05:6512:238a:b0:530:baaa:ee10 with SMTP id
+ 2adb3069b0e04-53440bcd289mr34644e87.3.1724463296675; Fri, 23 Aug 2024
+ 18:34:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240823-firmware-traversal-v2-1-880082882709@google.com> <Zsj7afivXqOL1FXG@bombadil.infradead.org>
-In-Reply-To: <Zsj7afivXqOL1FXG@bombadil.infradead.org>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Sat, 24 Aug 2024 09:14:30 +0800
-Message-ID: <CAADWXX_zpqzYdCpmQGF3JgsN4+wk3AsuQLCKREkDC1ScxSfDjQ@mail.gmail.com>
+References: <20240823-firmware-traversal-v2-1-880082882709@google.com> <Zskp364_oYM4T8BQ@pollux>
+In-Reply-To: <Zskp364_oYM4T8BQ@pollux>
+From: Jann Horn <jannh@google.com>
+Date: Sat, 24 Aug 2024 03:34:20 +0200
+Message-ID: <CAG48ez3A=NZ9GqkQv9U6871ciNc+Yy=AvPfm3UgeXfMyh=0+oQ@mail.gmail.com>
 Subject: Re: [PATCH v2] firmware_loader: Block path traversal
-To: Luis Chamberlain <mcgrof@kernel.org>, Christian Brauner <brauner@kernel.org>
-Cc: Jann Horn <jannh@google.com>, Russ Weight <russ.weight@linux.dev>, 
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Luis Chamberlain <mcgrof@kernel.org>, Russ Weight <russ.weight@linux.dev>, 
 	Danilo Krummrich <dakr@redhat.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
 	"Rafael J. Wysocki" <rafael@kernel.org>, linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Aug 24, 2024 at 5:13=E2=80=AFAM Luis Chamberlain <mcgrof@kernel.org=
-> wrote:
+On Sat, Aug 24, 2024 at 2:31=E2=80=AFAM Danilo Krummrich <dakr@kernel.org> =
+wrote:
+> On Fri, Aug 23, 2024 at 08:38:55PM +0200, Jann Horn wrote:
+> > Fix it by rejecting any firmware names containing ".." path components.
+[...]
+> > +/*
+> > + * Reject firmware file names with ".." path components.
+> > + * There are drivers that construct firmware file names from device-su=
+pplied
+> > + * strings, and we don't want some device to be able to tell us "I wou=
+ld like to
+> > + * be sent my firmware from ../../../etc/shadow, please".
+> > + *
+> > + * Search for ".." surrounded by either '/' or start/end of string.
+> > + *
+> > + * This intentionally only looks at the firmware name, not at the firm=
+ware base
+> > + * directory or at symlink contents.
+> > + */
+> > +static bool name_contains_dotdot(const char *name)
+> > +{
+> > +     size_t name_len =3D strlen(name);
+> > +     size_t i;
+> > +
+> > +     if (name_len < 2)
+> > +             return false;
+> > +     for (i =3D 0; i < name_len - 1; i++) {
+> > +             /* do we see a ".." sequence? */
+> > +             if (name[i] !=3D '.' || name[i+1] !=3D '.')
+> > +                     continue;
+> > +
+> > +             /* is it a path component? */
+> > +             if ((i =3D=3D 0 || name[i-1] =3D=3D '/') &&
+> > +                 (i =3D=3D name_len - 2 || name[i+2] =3D=3D '/'))
+> > +                     return true;
+> > +     }
+> > +     return false;
+> > +}
 >
-> I'm all for this, however a strong rejection outright for the first
-> kernel release is bound to end up with some angry user with some oddball
-> driver that had this for whatever stupid reason.
+> Why do you open code it, instead of using strstr() and strncmp() like you=
+ did
+> in v1? I think your approach from v1 read way better.
 
-I can't actually see a reason why a firmware file would have a ".."
-component in it, so I think the immediate rejection is fine -
-particularly since it has a warning printout, so you see what happened
-and why.
+The code in v1 was kinda sloppy - it was probably good enough for this
+check, but not good enough to put in a function called
+name_contains_dotdot() that is documented to exactly search for any
+".." components.
 
-I do wonder if we should just have a LOOKUP_NO_DOTDOT flag, and just use th=
-at.
+Basically, the precise regex we have to search for is something like
+/(^|/)\.\.($|/)/
 
-[ Christian - the issue is the firmware loading path not wanting to
-have ".." in the pathname so that you can't load outside the normal
-firmware tree. We could also use LOOKUP_BENEATH, except
-kernel_read_file_from_path_initns() just takes one long path rather
-than "here's the base, and here's the path". ]
+To implement that by searching for substrings like in v1, we'd have to
+search for each possible combination of the capture groups in the
+regex, which gives the following four (pow(2,2)) patterns:
 
-There might be other people who want LOOKUP_NO_DOTDOT for similar
-reasons. In fact, some people might want an even stronger "normalized
-path" validation, where empty components or just "." is invalid, just
-because that makes pathnames ambiguous.
+<start>..<end>
+<start>../
+/..<end>
+/../
 
-              Linus
+So written like in v1, that'd look something like:
+
+if (strcmp(name, "..") =3D=3D 0 || strncmp(name, "../", 3) =3D=3D 0 ||
+strstr(name, "/../") !=3D NULL || (name_len >=3D 3 &&
+strcmp(name+name_len-3, "/..") =3D=3D 0)))
+  return true;
+
+Compared to that, I prefer the code I wrote in v2, since it is less
+repetitive. But if you want, I can change it to the expression I wrote
+just now.
 
