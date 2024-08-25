@@ -1,130 +1,143 @@
-Return-Path: <stable+bounces-70101-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70102-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE0B395DFC1
-	for <lists+stable@lfdr.de>; Sat, 24 Aug 2024 21:12:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B63FE95E0B2
+	for <lists+stable@lfdr.de>; Sun, 25 Aug 2024 04:01:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6715B1F228CF
-	for <lists+stable@lfdr.de>; Sat, 24 Aug 2024 19:12:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 166C31F219F4
+	for <lists+stable@lfdr.de>; Sun, 25 Aug 2024 02:01:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88A6F770F3;
-	Sat, 24 Aug 2024 19:12:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="G6TbKhWp"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F10032F46;
+	Sun, 25 Aug 2024 02:01:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from d.mail.sonic.net (d.mail.sonic.net [64.142.111.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B681B7DA61;
-	Sat, 24 Aug 2024 19:12:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07F50370
+	for <stable@vger.kernel.org>; Sun, 25 Aug 2024 02:01:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.142.111.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724526773; cv=none; b=kWRWrFwalN0kwEYLhrV3e3dQXw7dWK5+Hy52X/CfvhKeprWO89Uv0tsFi0sB8qbJGdxacJPiafgxBDnfszZbA9kLEPMhDOd33zgDFxeXYSCxeryoa3lUY9j66sKP+hKdrJIHkyRCCE12Hvbnebpa+Dst0HV2PBq8bJz9luYCiMM=
+	t=1724551301; cv=none; b=Dbnsgnl4P2rAL7VCT/EIybgYGUzJN4c80aOZl7tep2qnvNp5LvMknLgdEky68ia32j0O+ZFiVYIdEFQb6LQdPsQOcW5upQLZGvuKsjbxrqSb470zSaeYaJH4QGbwPUYs3YfnzXeazI4Rz8YhLmslULPDdsfQCvOoPgCZ4MC3v30=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724526773; c=relaxed/simple;
-	bh=pnaGJYOZGck1ER1jWc1dvxcWSL8te3arYl6CgL95lrI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cGny5MHEbCbkurFsk7D5lb5pgz7rxGsrgCeN6RCGSrs5lb/qoeo/Ccos1hsb4e5Nx/hmkasOEgGHEmqyZqhrFG43WbeMjdumcYhjSJLsg429Abv86f2k+O2XU4ZBjGDdrmh7DT1NdMN0KeKsNKlAxkuBFbHIB4pMMuBbD/DfbEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=G6TbKhWp; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-427fc97a88cso25202855e9.0;
-        Sat, 24 Aug 2024 12:12:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724526770; x=1725131570; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=uRqSVSBy7WVzrRyXzMTngEmfTDtpwenXKbG7hH0Uup8=;
-        b=G6TbKhWp5tfCeafR9InzSm0Cr+GmDlCfnSK2T6XmYkqzYNTFLWhgwV5dVQOz5Db9sW
-         bhQve4v8XDVTr+pyV4qEgDhu31S/LXl9EXGI3vNkdANtFHRKy7s9CNHyHFmJn1nBy048
-         GR8xfzrNnzsdtOGtSXmtpk4HNqH9X8B9FW4iJgrrcIJhrHAZ8ODGhQ6H17cOQpDCwxvj
-         YTBaByxEFjKsbqhbquTxbJcPsx5+LGQmWeFL8KkyhQEszlU0wWDICnZHdUpl5817/Znc
-         3Pi4oAqY1lxtg7C6F60sWAvMp7AkAmWTtnMt+GIXIcdgIkODdD0hjOKJFEu+X7ig98st
-         z40g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724526770; x=1725131570;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=uRqSVSBy7WVzrRyXzMTngEmfTDtpwenXKbG7hH0Uup8=;
-        b=GH0xpDC64I46aDoLwo4PSpVpY40PZEfTvXBQAuO9heVjjfZFm7UtNIJywSJLTPWo6j
-         KeB2QsqDNBF+42r86ODo/kht+7qBNmyWI9YBfufF3sW7ft/8JV/qzbtv2Ut+QJCGJgCU
-         5CMHeKpP4vsyeZzyOT2kgcVddKfOvmO/vTUfkPe36TPpxNMdtnxg6nmXuYvc876Px/4S
-         /10+foX4AoF28ojAf9a//gHPMsO2FK5jiZMlHOmDukRatU4vVjbFcnk3hETuWYepznwm
-         JkkJbvM30tw7hbtinWFb3FZJuQksQnGdYb0oia4XA1cHY/MbogU3cEjWHbwr6us9GPYf
-         u/rQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVV/9fY0O1GiAiFKyKwsOZhr68HtkGajm3QOj19l3cPZwMDDuNIB3VizJ5bF2bgXHpgck9Km3c/d3mn@vger.kernel.org, AJvYcCVxnTBZu7tellYMtvR3SBgUBF2ZVVoW13/1Vh5oLUnheCqEGPpW3IY8Z5Oz8nTnX+l64gUqemKY@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzs0PRUDYgnmu1SXHviOFqB5h1paO/yk+vcjHzBGNyKaLYB1kn+
-	kmJr2oJEkdagC6YIc9fi+8shSfwN7FIzHQ6rVMtosSwzwrOwu/YB09VGjeUI/i4=
-X-Google-Smtp-Source: AGHT+IEOcWJXK+IUeq9aebQdW8nPQy00HtJM4j9sdFCYGF6fyDggXTCyaAy5A/yB1LwAbqhRDy0WVw==
-X-Received: by 2002:adf:f5c3:0:b0:371:8c1f:6692 with SMTP id ffacd0b85a97d-373118e979amr3784385f8f.52.1724526769323;
-        Sat, 24 Aug 2024 12:12:49 -0700 (PDT)
-Received: from localhost.localdomain ([156.197.22.60])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3730813c520sm7109793f8f.39.2024.08.24.12.12.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 24 Aug 2024 12:12:48 -0700 (PDT)
-From: Ahmed Ehab <bottaawesome633@gmail.com>
-To: linux-kernel@vger.kernel.org
-Cc: Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Will Deacon <will@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	linux-ext4@vger.kernel.org,
-	syzkaller@googlegroups.com,
-	syzbot+7f4a6f7f7051474e40ad@syzkaller.appspotmail.com,
-	stable@vger.kernel.org
-Subject: [PATCH v5 1/2] locking/lockdep: Avoid creating new name string literals in lockdep_set_subclass()
-Date: Sun, 25 Aug 2024 01:10:30 +0300
-Message-ID: <20240824221031.7751-1-bottaawesome633@gmail.com>
-X-Mailer: git-send-email 2.46.0
+	s=arc-20240116; t=1724551301; c=relaxed/simple;
+	bh=4xAUDQ5Xa1nBWD0nbczHkPr0m3ym6tcLEMSWnybSeoM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=UxrUP4SLc5TP2KTfniyjE/6+9T0Ep/U0EJgfJTe9tI+DaNniitQ9NyqBYf2I7P+NJmN2Sy6CBUXZzi7YFHDe0fdnU1FXpc0Aw9nzBbvchLX5VzSbz2+c9jVlxZvg7EHIB8r9oPG87/lZ28gSq7QE7wdDDbbU5UsX4RRW+zlmXTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nom.one; spf=pass smtp.mailfrom=nom.one; arc=none smtp.client-ip=64.142.111.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=nom.one
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nom.one
+Received: from 192-184-190-65.static.sonic.net (192-184-190-65.static.sonic.net [192.184.190.65])
+	(authenticated bits=0)
+	by d.mail.sonic.net (8.16.1/8.16.1) with ESMTPA id 47P1oeJg025924;
+	Sat, 24 Aug 2024 18:50:41 -0700
+From: Forest <forestix@nom.one>
+To: David Howells <dhowells@redhat.com>, Steve French <sfrench@samba.org>,
+        Shyam Prasad N <nspmangalore@gmail.com>,
+        Rohith Surabattula <rohiths.msft@gmail.com>,
+        Jeff Layton <jlayton@kernel.org>
+Cc: linux-cifs@vger.kernel.org, netfs@lists.linux.dev,
+        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+        stable@vger.kernel.org, regressions@lists.linux.dev
+Subject: [REGRESSION] cifs: triggers bad flatpak & ostree signatures, corrupts ffmpeg & mkvmerge outputs
+Date: Sat, 24 Aug 2024 18:50:40 -0700
+Message-ID: <pv2lcjhveti4sfua95o0u6r4i73r39srra@sonic.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+X-Sonic-CAuth: UmFuZG9tSVbLHoUERX1vtYlwpdseB4XYWtL2dShvfjUov/JNCh945aBnRL4VeQXkDwI4V2nIoHpMTu1rLsWf2EGRvohwCNK8
+X-Sonic-ID: C;pEX8boRi7xGqg65Sr7edkQ== M;NEsRb4Ri7xGqg65Sr7edkQ==
+X-Spam-Flag: No
+X-Sonic-Spam-Details: -0.0/5.0 by cerberusd
 
-Syzbot reports a problem that a warning will be triggered while
-searching a lock class in look_up_lock_class().
+#regzbot introduced: 3ee1a1fc3981
 
-The cause of the issue is that a new name is created and used by
-lockdep_set_subclass() instead of using the existing one. This results
-in two lock classes with the same key but different name pointers and a
-WARN_ONCE() is triggered because of that in look_up_lock_class().
+Dear maintainers,
 
-To fix this, change lockdep_set_subclass() to use the existing name
-instead of a new one. Hence, no new name will be created by
-lockdep_set_subclass(). Hence, the warning is avoided.
+I think I have found a cifs regression in the 6.10 kernel series, which leads
+certain programs to write corrupt data.
 
-Reported-by: <syzbot+7f4a6f7f7051474e40ad@syzkaller.appspotmail.com>
-Fixes: de8f5e4f2dc1f ("lockdep: Introduce wait-type checks")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Ahmed Ehab <bottaawesome633@gmail.com>
----
-v4->v5:
-    - Changed the subject
-    - Changed the changelog to be more detailed
+After upgrading from kernel 6.9.12 to 6.10.6, flatpak and ostree are now
+writing bad gpg signatures when exporting signed packages or signing their
+repository metadata/summary files, whenever the repository is on a cifs mount.
+Instead of writing the signature data, null bytes are written in its place.
 
- include/linux/lockdep.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Furthermore, ffmpeg and mkvmerge are now intermittently writing corrupt files
+to cifs mounts.
 
-diff --git a/include/linux/lockdep.h b/include/linux/lockdep.h
-index 08b0d1d9d78b..df8fa5929de7 100644
---- a/include/linux/lockdep.h
-+++ b/include/linux/lockdep.h
-@@ -173,7 +173,7 @@ static inline void lockdep_init_map(struct lockdep_map *lock, const char *name,
- 			      (lock)->dep_map.lock_type)
- 
- #define lockdep_set_subclass(lock, sub)					\
--	lockdep_init_map_type(&(lock)->dep_map, #lock, (lock)->dep_map.key, sub,\
-+	lockdep_init_map_type(&(lock)->dep_map, (lock)->dep_map.name, (lock)->dep_map.key, sub,\
- 			      (lock)->dep_map.wait_type_inner,		\
- 			      (lock)->dep_map.wait_type_outer,		\
- 			      (lock)->dep_map.lock_type)
--- 
-2.45.2
+No error is reported by the applications or the kernel when it happens.
+In the case of flatpak, the problem isn't revealed until something tries to use
+the repository and finds signatures full of null bytes. (Of course, this means
+the affected repositories have been rendered useless.) In the case of ffmpeg
+and mkvmerge, the problem isn't revealed until someone plays the video file and
+reaches a corrupt section.
+
+
+A kernel bisect reveals this:
+
+3ee1a1fc39819906f04d6c62c180e760cd3a689d is the first bad commit
+commit 3ee1a1fc39819906f04d6c62c180e760cd3a689d
+Author: David Howells <dhowells@redhat.com>
+Date:   Fri Oct 6 18:29:59 2023 +0100
+    cifs: Cut over to using netfslib
+
+I was unable to determine whether 6.11.0-rc4 fixes it, due to another cifs bug
+in that version (which I hope to report soon).
+
+
+An strace of flatpak (which uses libostree) shows it generating correct
+signatures internally, but behaving differently on cifs vs. ext4 when working
+with memory-mapped temp files, in which the signatures are stored before being
+written to their final outputs. Here's where I reported my initial findings to
+those projects:
+https://github.com/flatpak/flatpak/issues/5911
+https://github.com/ostreedev/ostree/issues/3288
+
+Debian Testing and Unstable kernels (6.10.4-1 and 6.10.6-1) are affected:
+https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1079394
+
+
+The following reproducer script consistently triggers the problem for me. Run
+it with two arguments: a path on a cifs mount where an ostree repo should be
+created, and a GPG key ID with which to sign a commit.
+
+
+#!/bin/sh
+set -e
+
+if [ "$#" -lt 2 ] || [ "$1" = "-h" ] ; then
+    echo "usage: $(basename "$0") <repo-dir> <gpg-key-id>"
+    exit 2
+fi
+
+repo=$1
+keyid=$2
+src="./foo"
+
+echo "creating ostree repo at $repo"
+ostree init --repo="$repo"
+
+echo "creating source file tree at $src"
+mkdir -p "$src"
+echo hi > "$src"/hello
+
+ostree commit --repo="$repo" --branch=foo --gpg-sign="$keyid" "$src"
+
+if ostree show --repo="$repo" foo; then
+    echo ---
+    echo success!
+else
+    echo ---
+    ostree show --repo="$repo" --print-detached-metadata-key=ostree.gpgsigs foo
+    echo failure!
+    echo look for null bytes in the above commit signature
+fi
+
+
 
