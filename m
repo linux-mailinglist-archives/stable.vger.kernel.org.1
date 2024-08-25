@@ -1,174 +1,198 @@
-Return-Path: <stable+bounces-70108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70109-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D35E995E3FB
-	for <lists+stable@lfdr.de>; Sun, 25 Aug 2024 16:45:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 062DB95E407
+	for <lists+stable@lfdr.de>; Sun, 25 Aug 2024 16:54:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E94321C20ABC
-	for <lists+stable@lfdr.de>; Sun, 25 Aug 2024 14:45:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 83AD11F21626
+	for <lists+stable@lfdr.de>; Sun, 25 Aug 2024 14:54:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02BC2155399;
-	Sun, 25 Aug 2024 14:44:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C568613F43A;
+	Sun, 25 Aug 2024 14:54:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mork.no header.i=@mork.no header.b="aD5NiiJB"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="keLeolZT";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="kS0d1+S1"
 X-Original-To: stable@vger.kernel.org
-Received: from dilbert.mork.no (dilbert.mork.no [65.108.154.246])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50CE213D28F;
-	Sun, 25 Aug 2024 14:44:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.108.154.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B35451DFCB;
+	Sun, 25 Aug 2024 14:54:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724597095; cv=none; b=mKPfP9ny2hAiBydt2TW63oZN5SZwuyCat3kfNkyIczaVqemuc0sHrdXfm0r3zGWb12hHpKxLNiP+IczwcKWfaibWbtgd9mn+cU4FzQs3mvZOsSE5g91jct8wkg2DQlnMZx5L/TCz+M5t5RWY1DZEf1aeA4Et7+mGqM1ncT1anFU=
+	t=1724597692; cv=none; b=ULm+brVplpXrqPKFtCmoUZ0xv/rUz/uDBsD/ZD9sgdFsMxS4MuegDaoVbm91FY5MMFhRCBkg5rEBIaH4tMx7aykZLYY2XT3Ei5SNqolbRU360N6qEIJIcz6ocM+WPvYidZsq3u/Fmg/cCfiNJTBiKcXi3WPQraTZhbKjyqAG15A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724597095; c=relaxed/simple;
-	bh=dxJjCllAKMbLX97rrVTFtjqjDQtIb2Bp+dprTVEPz1Q=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=ip1piez2cnVjzCrQc5kouBsI9deB5NP2fC5nDAw/gsCQ7weyoShF1yt/ELlWYua0nKH2EvKtZKz1D2ezKqDNAE9eX/471dMvzT51qlyLKdwT9Pax4jMj1yBOn8v5uBrUTMJZZmHUi0v4XQzj2lxJTPSrvwXsxr60JGACRcVVr1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mork.no; spf=pass smtp.mailfrom=miraculix.mork.no; dkim=pass (1024-bit key) header.d=mork.no header.i=@mork.no header.b=aD5NiiJB; arc=none smtp.client-ip=65.108.154.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mork.no
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=miraculix.mork.no
-Received: from canardo.dyn.mork.no ([IPv6:2a01:799:10da:6900:0:0:0:1])
-	(authenticated bits=0)
-	by dilbert.mork.no (8.17.1.9/8.17.1.9) with ESMTPSA id 47PEiG0M3818917
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
-	Sun, 25 Aug 2024 15:44:18 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mork.no; s=b;
-	t=1724597056; bh=YtuIvtJIjBFlQjJ+WcctjdKT+azF5P1AlLc5p6ajNKg=;
-	h=From:To:Cc:Subject:References:Date:Message-ID:From;
-	b=aD5NiiJBDo+YKfyOl4dRWReGNeHxcxe4bb7wF3RNE9ZtHBELLig9BaKW9bWmodbG7
-	 r/egmZpYDzoN6TXW3rJDZ5jF1BUmXkk3eg4B7Szt+IDewafpb/jmjxQ+bOqB1VSSDq
-	 xIHLEyWHnzBrGW+EGBl0Rx5nmA8CFUqsLxztiXrI=
-Received: from miraculix.mork.no ([IPv6:2a01:799:10da:690a:d43d:737:5289:b66f])
-	(authenticated bits=0)
-	by canardo.dyn.mork.no (8.17.1.9/8.17.1.9) with ESMTPSA id 47PEiGem2224004
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
-	Sun, 25 Aug 2024 16:44:16 +0200
-Received: (nullmailer pid 1536577 invoked by uid 1000);
-	Sun, 25 Aug 2024 14:44:16 -0000
-From: =?utf-8?Q?Bj=C3=B8rn_Mork?= <bjorn@mork.no>
-To: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        "Steven J . Hill" <Steven.Hill@imgtec.com>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        linux-kernel@vger.kernel.org,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH] MIPS: fw: Gracefully handle unknown firmware protocols
-Organization: m
-References: <20240824144133.1464835-1-bjorn@mork.no>
-	<7f0602dc-8a47-46cb-a12f-09afc082b48f@app.fastmail.com>
-Date: Sun, 25 Aug 2024 16:44:16 +0200
-In-Reply-To: <7f0602dc-8a47-46cb-a12f-09afc082b48f@app.fastmail.com> (Jiaxun
-	Yang's message of "Sun, 25 Aug 2024 13:50:20 +0100")
-Message-ID: <87o75gy85b.fsf@miraculix.mork.no>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1724597692; c=relaxed/simple;
+	bh=++LVRg4bp9nIRqe6eDRq9iQzNxspOTnDagj6ICY9YX8=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=ZJXVj6Qjq/50tZoiadno03fLRiciLkyuesj30I42NkaJEoYxKqk0zaWM87jLZi4PTWDrVQ+tFDDZXdNkaHRjvS/v/KxPxM/PD8yQhBQ19fkh+TWPmwCgXdXA59L5jwE/8UU13pl5ZGabEAgbJyPzCRNKHfBwUnfp1bdZP8ilFvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=keLeolZT; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=kS0d1+S1; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Sun, 25 Aug 2024 14:54:48 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1724597689;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fWiOdt2XHcMTbBWWzZSL9waZ0W5oriL5BqzCMWpA2TA=;
+	b=keLeolZTMXnpEoSsneuLbuurVzANWsOVVK7KwK+7wc6NPF6936PLMVIsRkbktiRyGSh3Um
+	SL2pzfXeu8Au8dMeb0Uw/NF0iBmT04Wgsg7ywQpyavgFgjUHl47F97f0SITMefhFBrTvVK
+	Q9L6gLzfy3U8Yyaj1mi65HhvG6eryIK7QlA8Y0AAEwFGZlKNhQl65JdASnxlk3KDXRQMIF
+	2CMg4r//xcxBL0uUuklvLsXLKsRnpZXos/5WZ7Xz8Ey4f3gMFe6sY6+4bYwVwVCLTVrA/p
+	PBchmVo4tduvIQClmCETcutlGsg0RkkcoG8ltQ215AoHdq+vnDIS25h7oxJqFA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1724597689;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fWiOdt2XHcMTbBWWzZSL9waZ0W5oriL5BqzCMWpA2TA=;
+	b=kS0d1+S110RmlDx5UtariB24GNBJffsRt19lSD88REKRY216UxigmQAQLmZcJr1tId0rkc
+	zuJAk1VH3MbhYVCg==
+From: "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: perf/urgent] perf/x86/intel: Limit the period on Haswell
+Cc: Li Huafei <lihuafei1@huawei.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Kan Liang <kan.liang@linux.intel.com>, stable@vger.kernel.org, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20240819183004.3132920-1-kan.liang@linux.intel.com>
+References: <20240819183004.3132920-1-kan.liang@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Virus-Scanned: clamav-milter 1.0.5 at canardo
-X-Virus-Status: Clean
+Message-ID: <172459768833.2215.4831564360570699596.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-"Jiaxun Yang" <jiaxun.yang@flygoat.com> writes:
-> =E5=9C=A82024=E5=B9=B48=E6=9C=8824=E6=97=A5=E5=85=AB=E6=9C=88 =E4=B8=8B=
-=E5=8D=883:41=EF=BC=8CBj=C3=B8rn Mork=E5=86=99=E9=81=93=EF=BC=9A
->> Boards based on the same SoC family can use different boot loaders.
->> These may pass numeric arguments which we erroneously interpret as
->> command line or environment pointers. Such errors will cause boot
->> to halt at an early stage since commit 056a68cea01e ("mips: allow
->> firmware to pass RNG seed to kernel").
->>
->> One known example of this issue is a HPE switch using a BootWare
->> boot loader.  It was found to pass these arguments to the kernel:
->>
->>   0x00020000 0x00060000 0xfffdffff 0x0000416c
->>
->> We can avoid hanging by validating that both passed pointers are in
->> KSEG1 as expected.
->
-> Hi Bjorn,
->
-> This is actually breaking 64 bit systems passing fw_args in XKPHYS or KSE=
-G0.
+The following commit has been merged into the perf/urgent branch of tip:
 
-Ouch.  Thanks for the feedback.
+Commit-ID:     25dfc9e357af8aed1ca79b318a73f2c59c1f0b2b
+Gitweb:        https://git.kernel.org/tip/25dfc9e357af8aed1ca79b318a73f2c59c1f0b2b
+Author:        Kan Liang <kan.liang@linux.intel.com>
+AuthorDate:    Mon, 19 Aug 2024 11:30:04 -07:00
+Committer:     Thomas Gleixner <tglx@linutronix.de>
+CommitterDate: Sun, 25 Aug 2024 16:49:05 +02:00
 
-But if so, then aren't those already broken with the current test
-against CKSEG0?  I didn't add that.
+perf/x86/intel: Limit the period on Haswell
 
-IIUC, CKSEGx is the sign extendend version of KSEGx on 64BIT:
+Running the ltp test cve-2015-3290 concurrently reports the following
+warnings.
 
-#ifdef CONFIG_64BIT
+perfevents: irq loop stuck!
+  WARNING: CPU: 31 PID: 32438 at arch/x86/events/intel/core.c:3174
+  intel_pmu_handle_irq+0x285/0x370
+  Call Trace:
+   <NMI>
+   ? __warn+0xa4/0x220
+   ? intel_pmu_handle_irq+0x285/0x370
+   ? __report_bug+0x123/0x130
+   ? intel_pmu_handle_irq+0x285/0x370
+   ? __report_bug+0x123/0x130
+   ? intel_pmu_handle_irq+0x285/0x370
+   ? report_bug+0x3e/0xa0
+   ? handle_bug+0x3c/0x70
+   ? exc_invalid_op+0x18/0x50
+   ? asm_exc_invalid_op+0x1a/0x20
+   ? irq_work_claim+0x1e/0x40
+   ? intel_pmu_handle_irq+0x285/0x370
+   perf_event_nmi_handler+0x3d/0x60
+   nmi_handle+0x104/0x330
 
-/*
- * Memory segments (64bit kernel mode addresses)
- * The compatibility segments use the full 64-bit sign extended value.  Note
- * the R8000 doesn't have them so don't reference these in generic MIPS cod=
-e.
- */
-#define XKUSEG                  _CONST64_(0x0000000000000000)
-#define XKSSEG                  _CONST64_(0x4000000000000000)
-#define XKPHYS                  _CONST64_(0x8000000000000000)
-#define XKSEG                   _CONST64_(0xc000000000000000)
-#define CKSEG0                  _CONST64_(0xffffffff80000000)
-#define CKSEG1                  _CONST64_(0xffffffffa0000000)
-#define CKSSEG                  _CONST64_(0xffffffffc0000000)
-#define CKSEG3                  _CONST64_(0xffffffffe0000000)
+Thanks to Thomas Gleixner's analysis, the issue is caused by the low
+initial period (1) of the frequency estimation algorithm, which triggers
+the defects of the HW, specifically erratum HSW11 and HSW143. (For the
+details, please refer https://lore.kernel.org/lkml/87plq9l5d2.ffs@tglx/)
 
-#define CKSEG0ADDR(a)           (CPHYSADDR(a) | CKSEG0)
-#define CKSEG1ADDR(a)           (CPHYSADDR(a) | CKSEG1)
-#define CKSEG2ADDR(a)           (CPHYSADDR(a) | CKSEG2)
-#define CKSEG3ADDR(a)           (CPHYSADDR(a) | CKSEG3)
+The HSW11 requires a period larger than 100 for the INST_RETIRED.ALL
+event, but the initial period in the freq mode is 1. The erratum is the
+same as the BDM11, which has been supported in the kernel. A minimum
+period of 128 is enforced as well on HSW.
 
+HSW143 is regarding that the fixed counter 1 may overcount 32 with the
+Hyper-Threading is enabled. However, based on the test, the hardware
+has more issues than it tells. Besides the fixed counter 1, the message
+'interrupt took too long' can be observed on any counter which was armed
+with a period < 32 and two events expired in the same NMI. A minimum
+period of 32 is enforced for the rest of the events.
+The recommended workaround code of the HSW143 is not implemented.
+Because it only addresses the issue for the fixed counter. It brings
+extra overhead through extra MSR writing. No related overcounting issue
+has been reported so far.
 
-> Maybe something like:
->
-> static inline bool valid_fw_arg(unsigned long arg)
-> {
-> #ifdef CONFIG_64BIT
-> 	if (arg >=3D XKPHYS && arg < XKSEG)
-> 		return TRUE;
-> #endif
-> 	return arg >=3D CKSEG0 && arg < CKSSEG;
-> }
->
-> Will be more robust.
+Fixes: 3a632cb229bf ("perf/x86/intel: Add simple Haswell PMU support")
+Reported-by: Li Huafei <lihuafei1@huawei.com>
+Suggested-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20240819183004.3132920-1-kan.liang@linux.intel.com
+Closes: https://lore.kernel.org/lkml/20240729223328.327835-1-lihuafei1@huawei.com/
+---
+ arch/x86/events/intel/core.c | 23 +++++++++++++++++++++--
+ 1 file changed, 21 insertions(+), 2 deletions(-)
 
-Maybe?
-
-But I can't make that match what U-Boot does.  AFAICS,
-u-boot/arch/mips/lib/bootm.c doesn't care about 32 or 64 bit, and simply
-does:
-
-static void linux_cmdline_init(void)
-{
-        linux_argc =3D 1;
-        linux_argv =3D (char **)CKSEG1ADDR(gd->bd->bi_boot_params);
-        linux_argv[0] =3D 0;
-        linux_argp =3D (char *)(linux_argv + LINUX_MAX_ARGS);
-}
-
-
-Then it derives the argument and environment pointers from linux_argv.
-Which means that all these pointers end up somewhere between CKSEG1 and
-CKSEG2 on both 32 and 64 bit. Or am I missing something?
-
-Tried looking for other MIPS code in U-Boot handling this for 64 bit,
-but all I found was arch/mips/mach-octeon/bootoctlinux.c which uses a
-completely different protocol.
-
-Sorry if I am asking stupid questions here.  Trying a rather steep
-learning curve. Maybe too steep :-)
-
-
-
-
-Bj=C3=B8rn
+diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
+index 0c9c270..9e519d8 100644
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -4589,6 +4589,25 @@ static enum hybrid_cpu_type adl_get_hybrid_cpu_type(void)
+ 	return HYBRID_INTEL_CORE;
+ }
+ 
++static inline bool erratum_hsw11(struct perf_event *event)
++{
++	return (event->hw.config & INTEL_ARCH_EVENT_MASK) ==
++		X86_CONFIG(.event=0xc0, .umask=0x01);
++}
++
++/*
++ * The HSW11 requires a period larger than 100 which is the same as the BDM11.
++ * A minimum period of 128 is enforced as well for the INST_RETIRED.ALL.
++ *
++ * The message 'interrupt took too long' can be observed on any counter which
++ * was armed with a period < 32 and two events expired in the same NMI.
++ * A minimum period of 32 is enforced for the rest of the events.
++ */
++static void hsw_limit_period(struct perf_event *event, s64 *left)
++{
++	*left = max(*left, erratum_hsw11(event) ? 128 : 32);
++}
++
+ /*
+  * Broadwell:
+  *
+@@ -4606,8 +4625,7 @@ static enum hybrid_cpu_type adl_get_hybrid_cpu_type(void)
+  */
+ static void bdw_limit_period(struct perf_event *event, s64 *left)
+ {
+-	if ((event->hw.config & INTEL_ARCH_EVENT_MASK) ==
+-			X86_CONFIG(.event=0xc0, .umask=0x01)) {
++	if (erratum_hsw11(event)) {
+ 		if (*left < 128)
+ 			*left = 128;
+ 		*left &= ~0x3fULL;
+@@ -6766,6 +6784,7 @@ __init int intel_pmu_init(void)
+ 
+ 		x86_pmu.hw_config = hsw_hw_config;
+ 		x86_pmu.get_event_constraints = hsw_get_event_constraints;
++		x86_pmu.limit_period = hsw_limit_period;
+ 		x86_pmu.lbr_double_abort = true;
+ 		extra_attr = boot_cpu_has(X86_FEATURE_RTM) ?
+ 			hsw_format_attr : nhm_format_attr;
 
