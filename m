@@ -1,100 +1,96 @@
-Return-Path: <stable+bounces-70104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70105-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7A9595E25C
-	for <lists+stable@lfdr.de>; Sun, 25 Aug 2024 09:16:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7EFB95E32E
+	for <lists+stable@lfdr.de>; Sun, 25 Aug 2024 13:59:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 243DB1C21388
-	for <lists+stable@lfdr.de>; Sun, 25 Aug 2024 07:16:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8BF381C20B45
+	for <lists+stable@lfdr.de>; Sun, 25 Aug 2024 11:59:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 652523C092;
-	Sun, 25 Aug 2024 07:16:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 504C8149C74;
+	Sun, 25 Aug 2024 11:58:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="NcRO8GXu"
 X-Original-To: stable@vger.kernel.org
-Received: from linuxtv.org (140-211-166-241-openstack.osuosl.org [140.211.166.241])
+Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1BEE17C61
-	for <stable@vger.kernel.org>; Sun, 25 Aug 2024 07:16:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=140.211.166.241
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13A03148FE1;
+	Sun, 25 Aug 2024 11:58:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724570210; cv=none; b=VLe1t9mdcFqILW7SBo8ALTLZzrUZcmNtJs1ArpMWsRlFLr3uFqBMLPzGBcmaQtKoi1lmqJkVU39zWs38sPuaKotXGjFfYns09pPhCizX/12165SL6rvR5bgHtUUKW+YpTUY9XK/0te3oRKwKKKbE/I4umGvEtSKaZkE2EmToPoc=
+	t=1724587137; cv=none; b=pHSUMSfcGpjSabGrw3cz4DI0myl/I1kFAG8lcKy2ch7qA5+QvHC/pvxOBhnzse3GnAbeWAGrS8aXbHxlXeTd/Uomklbd/OuXth53l2JmldFEy5rn+weNP27nh9m/7jVz3qmrVB2aC413Uf7Qu9azZwljF7fDc7u1ppz0ifNCfrQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724570210; c=relaxed/simple;
-	bh=ZKpCFYH4SsZ9irh4f1lBtF+pbP7WN1rXh9IOr3mQ05U=;
-	h=From:Date:Subject:To:Cc:Message-Id; b=CsJPWOWjIsYoPaWUB3PEo5pDA5L0+hXitGqMtAgJt6n9lWK8nGi79YANNkyLkd3j0gvyf2/63n4iZaw3QoAyt2jee6rmbFZVDNaPgxU0ofhAbXNCtrHrg3ixxoplDvw+2LZL3ZsTgBfZ6OM+LbVs/wPNKJJ9qd1o4XcBqRHL420=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=xs4all.nl; spf=pass smtp.mailfrom=linuxtv.org; arc=none smtp.client-ip=140.211.166.241
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=xs4all.nl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtv.org
-Received: from hverkuil by linuxtv.org with local (Exim 4.96)
-	(envelope-from <hverkuil@linuxtv.org>)
-	id 1si7UQ-0008Lu-0A;
-	Sun, 25 Aug 2024 07:16:42 +0000
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Date: Sun, 25 Aug 2024 07:16:07 +0000
-Subject: [git:media_stage/master] media: venus: fix use after free bug in venus_remove due to race condition
-To: linuxtv-commits@linuxtv.org
-Cc: Dikshita Agarwal <quic_dikshita@quicinc.com>, Stanimir Varbanov <stanimir.k.varbanov@gmail.com>, Zheng Wang <zyytlz.wz@163.com>, stable@vger.kernel.org
-Mail-followup-to: linux-media@vger.kernel.org
-Forward-to: linux-media@vger.kernel.org
-Reply-to: linux-media@vger.kernel.org
-Message-Id: <E1si7UQ-0008Lu-0A@linuxtv.org>
+	s=arc-20240116; t=1724587137; c=relaxed/simple;
+	bh=L6Uhnbjvvray5xcFbxymO9o9ahD5bexKxm1cklyDUQo=;
+	h=From:To:CC:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=YF9QPaIVpAhBCZUXTmaGw18snmhJA41EIpzgfNEhmwfASz0+0skWrKnLceVzjLBb21ThIWQ9u7CLxmFVa/fEddHFUQ8Rsh+UnXqhRkQr4BlQMM2wzhDxP6AIy7m1Bys+F5DsKSIj80WR2NzOigSiMyTTQNbMfaejBUZKfgLAlYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=NcRO8GXu; arc=none smtp.client-ip=198.47.19.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+	by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 47PBrfGW103864;
+	Sun, 25 Aug 2024 06:53:41 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1724586821;
+	bh=L6Uhnbjvvray5xcFbxymO9o9ahD5bexKxm1cklyDUQo=;
+	h=From:To:CC:Subject:In-Reply-To:References:Date;
+	b=NcRO8GXuXtpnZ6hgTfwkjxuE34ohgxhdwEV8+T2wBsBlsRVgmzxAZeOnJ8cwXnQku
+	 6kYWcRNfWztFiMAWm/EltLTBxIjF6m9XAsh6n724/rUKb9v6rqa+Pbs0vbSBeZawR6
+	 hqzX+nweVeQZLWxuuvxIcHk11j/Kdb6jSZCkYy6I=
+Received: from DLEE100.ent.ti.com (dlee100.ent.ti.com [157.170.170.30])
+	by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 47PBrfMR019974
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Sun, 25 Aug 2024 06:53:41 -0500
+Received: from DLEE115.ent.ti.com (157.170.170.26) by DLEE100.ent.ti.com
+ (157.170.170.30) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Sun, 25
+ Aug 2024 06:53:40 -0500
+Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DLEE115.ent.ti.com
+ (157.170.170.26) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Sun, 25 Aug 2024 06:53:40 -0500
+Received: from localhost (kamlesh.dhcp.ti.com [172.24.227.123])
+	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 47PBrekA078295;
+	Sun, 25 Aug 2024 06:53:40 -0500
+From: Kamlesh Gurudasani <kamlesh@ti.com>
+To: Ma Ke <make24@iscas.ac.cn>, <herbert@gondor.apana.org.au>,
+        <davem@davemloft.net>, <t-kristo@ti.com>, <j-keerthy@ti.com>
+CC: <linux-crypto@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Ma Ke
+	<make24@iscas.ac.cn>, <stable@vger.kernel.org>
+Subject: Re: [PATCH] crypto: sa2ul - fix memory leak in sa_cra_init_aead()
+In-Reply-To: <20240813074958.3988528-1-make24@iscas.ac.cn>
+References: <20240813074958.3988528-1-make24@iscas.ac.cn>
+Date: Sun, 25 Aug 2024 17:23:39 +0530
+Message-ID: <87ttf8n7i4.fsf@kamlesh.i-did-not-set--mail-host-address--so-tickle-me>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 
-This is an automatic generated email to let you know that the following patch were queued:
+Ma Ke <make24@iscas.ac.cn> writes:
 
-Subject: media: venus: fix use after free bug in venus_remove due to race condition
-Author:  Zheng Wang <zyytlz.wz@163.com>
-Date:    Tue Jun 18 14:55:59 2024 +0530
+> Currently the resource allocated by crypto_alloc_shash() is not freed in
+> case crypto_alloc_aead() fails, resulting in memory leak.
+>
+> Add crypto_free_shash() to fix it.
+>
+> Found by code review.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: d2c8ac187fc9 ("crypto: sa2ul - Add AEAD algorithm support")
+> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+LGTM.
 
-in venus_probe, core->work is bound with venus_sys_error_handler, which is
-used to handle error. The code use core->sys_err_done to make sync work.
-The core->work is started in venus_event_notify.
+Reviewed-by: Kamlesh Gurudasani <kamlesh@ti.com>
 
-If we call venus_remove, there might be an unfished work. The possible
-sequence is as follows:
 
-CPU0                  CPU1
-
-                     |venus_sys_error_handler
-venus_remove         |
-hfi_destroy	 		 |
-venus_hfi_destroy	 |
-kfree(hdev);	     |
-                     |hfi_reinit
-					 |venus_hfi_queues_reinit
-                     |//use hdev
-
-Fix it by canceling the work in venus_remove.
-
-Cc: stable@vger.kernel.org
-Fixes: af2c3834c8ca ("[media] media: venus: adding core part and helper functions")
-Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
-Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
-Signed-off-by: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-
- drivers/media/platform/qcom/venus/core.c | 1 +
- 1 file changed, 1 insertion(+)
-
----
-
-diff --git a/drivers/media/platform/qcom/venus/core.c b/drivers/media/platform/qcom/venus/core.c
-index 165c947a6703..84e95a46dfc9 100644
---- a/drivers/media/platform/qcom/venus/core.c
-+++ b/drivers/media/platform/qcom/venus/core.c
-@@ -430,6 +430,7 @@ static void venus_remove(struct platform_device *pdev)
- 	struct device *dev = core->dev;
- 	int ret;
- 
-+	cancel_delayed_work_sync(&core->work);
- 	ret = pm_runtime_get_sync(dev);
- 	WARN_ON(ret < 0);
- 
 
