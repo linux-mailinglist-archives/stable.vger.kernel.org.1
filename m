@@ -1,160 +1,134 @@
-Return-Path: <stable+bounces-70113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70114-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81EC695E461
-	for <lists+stable@lfdr.de>; Sun, 25 Aug 2024 18:37:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62DF595E4A6
+	for <lists+stable@lfdr.de>; Sun, 25 Aug 2024 20:06:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1142EB20FC1
-	for <lists+stable@lfdr.de>; Sun, 25 Aug 2024 16:37:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 15F2E1F213E7
+	for <lists+stable@lfdr.de>; Sun, 25 Aug 2024 18:06:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 619B515530F;
-	Sun, 25 Aug 2024 16:37:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3785D16C6AB;
+	Sun, 25 Aug 2024 18:05:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="aImeBj+X"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="M8b9ytw3"
 X-Original-To: stable@vger.kernel.org
-Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [95.215.58.187])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 065CA2E636
-	for <stable@vger.kernel.org>; Sun, 25 Aug 2024 16:36:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.187
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A1C14A2C
+	for <stable@vger.kernel.org>; Sun, 25 Aug 2024 18:05:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724603822; cv=none; b=Ia6ZH1dnSSQ7WMK3AvsnUnMY9e5sxmbUvI2eAyH70mP+u0REteF1wTU0HeaF9fSO1SLWDzajy6BfUJ3ZFiwpg8JSdFIZTrYhMs2gWHDvMMwgu2qWEen0/mdBmQQA3eKXuImZdaydtM1aS5UX0ep9aEIPbqIA/Vniy/2T6gSj5fc=
+	t=1724609154; cv=none; b=P3qI7NsmVhy01l4aQ6pKH5v8jdZBXiZSu/PsgWMeQpMds1c5eY2b+RQizue/LV3xg7kT6K3bnw+8QXSrz/gRddc/ajgU+vYzgtEAifjLvZ8ws4UnPIQGF3Mhl6rumVryr1EivQmiGbkxRN2iZ/Kf5gQHOMSzdLtsTb2oTb3cEx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724603822; c=relaxed/simple;
-	bh=BKejqw/69aK4ZVOdm6Ak7N9wzVVhqIvVKhZAUikd9Mk=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=NLSNiKZDkrsPmAB+4/xf981K2BRWSRbjNXxKO6igygJqjjrF7+IGof/EKEYRO9m+GCywWGTnSjR3nNmbBv7KHo8f4X/23b1j31iULmrLKG7GiFYkVnSTvdiWKqP8XhsCiyZ/IGI+DPx7KMT5qyxYGu9Q1Oc9TI2eZueHz15apEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=aImeBj+X; arc=none smtp.client-ip=95.215.58.187
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1724603818;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aeMNQe0tBKS3oiPHgYZoJ2ZhIrMsmPhNpyzgPq5fx+k=;
-	b=aImeBj+X5Tdaji6fVQN5YhFXRfjZGFHg6IFQPEigGIvNQj9L0IQpiNuD6s3q56H8si4y4B
-	T+8p7O6SmEZ4CYduT9EKdmhfKFsUeDH2nfpKUJytaBTEL9/2+88DdoGB8SXa3F7I1TvNGd
-	p/z0nWVmYdSlu7tXt7D4aSDIbjGyuBA=
-From: Hao Ge <hao.ge@linux.dev>
-To: akpm@linux-foundation.org,
-	surenb@google.com,
-	linmiaohe@huawei.com
-Cc: hao.ge@linux.dev,
-	david@redhat.com,
-	kent.overstreet@linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org,
-	nao.horiguchi@gmail.com,
-	pasha.tatashin@soleen.com,
-	Hao Ge <gehao@kylinos.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] codetag: debug: mark codetags for poisoned page as empty
-Date: Mon, 26 Aug 2024 00:36:49 +0800
-Message-Id: <20240825163649.33294-1-hao.ge@linux.dev>
-In-Reply-To: <aa6bde95-68e5-4d94-0ce4-c9a1d90fdcdc@linux.dev>
-References: <aa6bde95-68e5-4d94-0ce4-c9a1d90fdcdc@linux.dev>
+	s=arc-20240116; t=1724609154; c=relaxed/simple;
+	bh=LJWD5cjLfcvI40Ci+Z5t/UhfXs3V4IqTFTPAUwn80lA=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=FLfi0m7DQlrf9YPj7GqzG9iVWgBQUWvnCFqFJLHCaf8Fgc+jyUYnqnuyU2cP8jDXzbyTVXYwmwlQbPqMXRMOYANWyHYyy0h8a2nNNjMAUVWtQ361D5Sco/hDf+0cuRDFAOxmGWLr0QunxXMDo7V0gJ6mhZefbUFVvSQrxZ01yRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=M8b9ytw3; arc=none smtp.client-ip=209.85.221.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-3718ea278a8so524015f8f.3
+        for <stable@vger.kernel.org>; Sun, 25 Aug 2024 11:05:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1724609150; x=1725213950; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=JydotQLE8NcEmGdi6bR2mk1j+jVATNkPy6mshwtvk+M=;
+        b=M8b9ytw3ZbEQlfxzcJM5F/ARpgNE05jc7cBAn6eEu0qnqJ8ahZW8CpzTU6kMECw0pp
+         qym4yYQzaurHya6eI/2P9/aY+TCxwpu7IxIxbFIgYuvcD9nT9J+AoxWMpZn5udy1AJUg
+         Av6pf+FjUDJsTf32CIj6gBLQ9tvN7kwz8Ah2f0MIbc6KdneKYQFYm8x+chdgbGabF8Il
+         /+fDtYrskr2bEYz/AOoza5rE/uSJMjSdenwLqd9ynEMlofgmBVrCNQ/OcX2ArBNUYSio
+         HcBeL6s/q8wa8FnTNZwPnblke2eff3baCOQd2CDx1rFKW5rMOqOhNvgm14Zvn0kj6Cgp
+         EZFA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724609150; x=1725213950;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=JydotQLE8NcEmGdi6bR2mk1j+jVATNkPy6mshwtvk+M=;
+        b=XYHybTldtnPVd2azEZQaI3L/XmMq40XUgkAXkrH7VwYEbm1O04QDcqJkuxTCcCCBm0
+         hq3beQ6fOrqKTLY+DKBRQFNJt1Dzm6aV5NdC36uypWk0gqOqetI9/001fo4o1WO9DSK1
+         38L+GcDWRkEQwKgHVCF0vY7XTH2qUZF1kAfT2LOQn4IDtq91yHrvRHJHH7ZYuP98zrbK
+         gm6d/eMJrJ7p7R7qGVECwj0/trR5QtO/trCh+xyY7kF/UlwZ4/H3G5zBAxDLyC8di1tt
+         veTMVKs4d2v5bvUBZsAb01o78mYg2d8pXfXKjfx3A/+0jZc8/Bl4ZVaIRXHnl0Zms5ct
+         +c0w==
+X-Forwarded-Encrypted: i=1; AJvYcCWBTjYUcRj7qaPiPmfusgyCXMnMkHU8Ol+EYmVWZZjpOQVyXbbNNsOldw6sAQEnsH8LiS8QSBM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw6NWhF5OmO6VdNUomvzY54uN77DJVsHhNYgZN7TFVTqj8pVXax
+	RdG2ou/sEMeptEMfDf+4zm7d78NuZV0dXpw/jxbGsnKlWBLJO3iSpmsmLhAyIe4=
+X-Google-Smtp-Source: AGHT+IHdpS7K2bNJA2sKTBWBRGd1lUhDyRx7b7buaWzFAqTspCw0ycRlWL48DMa129b1eaCLq+UiVw==
+X-Received: by 2002:a5d:5f48:0:b0:35f:2584:76e9 with SMTP id ffacd0b85a97d-37311852317mr3445728f8f.2.1724609149547;
+        Sun, 25 Aug 2024 11:05:49 -0700 (PDT)
+Received: from [127.0.1.1] ([178.197.222.82])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37311dca113sm6438736f8f.16.2024.08.25.11.05.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 25 Aug 2024 11:05:48 -0700 (PDT)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 0/4] soc: versatile: fixes and compile test
+Date: Sun, 25 Aug 2024 20:05:21 +0200
+Message-Id: <20240825-soc-dev-fixes-v1-0-ff4b35abed83@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAGFyy2YC/x3LQQ5AMBBG4avIrE1SRZSriAX1YzYlnUQkjbtrL
+ L+8vESKKFAaikQRt6icIaMqC/LHHHawrNlkjW2Msy3r6XnFzZs8UIY3zvULXN31lJ8r4g95Gaf
+ 3/QAnzoXjXwAAAA==
+To: Linus Walleij <linus.walleij@linaro.org>, Arnd Bergmann <arnd@arndb.de>
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ stable@vger.kernel.org, 
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=openpgp-sha256; l=874;
+ i=krzysztof.kozlowski@linaro.org; h=from:subject:message-id;
+ bh=LJWD5cjLfcvI40Ci+Z5t/UhfXs3V4IqTFTPAUwn80lA=;
+ b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBmy3J1y1cAVfrpP2ehO5uXANH0zwCds6NAmKP8d
+ 8G2tNliVJSJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCZstydQAKCRDBN2bmhouD
+ 13+0D/4qW/balWzJ4RewENfM1PpseBCi1Aqc7MrPSRFFV7ixcBm42pxUyXL+R854LBZOkHmzEUr
+ jegiIj5tPnqhze97XEjM/35mx55ZZ0v+/VksJh0mxJ6ME2birpFKkpv5hFXLINpRDSPOEBGPfG2
+ VVBA9t2nN0gbcRVQ/3v4lFbOIW46RG62xPnHCRweFBDOU8Bopg/XIuXDj/00pALgD6ABTiA7vIQ
+ iMMKMrieAyXPsIsGY4PTeMhGbnj0LT1EEift8eXig6hqw55ytqJFWtHJC6NmY+XR4hw1hP3vqXm
+ mFoYVkvmO8c6DlJWa0YAHll9+Awhfnx48bDGlWEujuVzHHDLkq2C0Mm2kSgZ1WanFaD9RpX++l+
+ BuFg8Hqzva/Kpa08F6bJHpX9MtIPS6KM2W2pFhTV/7qQxvlnE6dupgxEF3iG2krds2UL1aLgREW
+ kD4U1g9xTf6ITbRspbnYhag2Dv7awiGQyG/eIXJ+9EmCTNJadpQGhoZYviTuygvfal9zU6FpMF7
+ VAGb35ZqrMuLy/pzkZsSxkVZal+MMphnKzg7nyWpDqAEWQqSNLG733/qcz/fzyo6AOtYqxyUBPs
+ VqvB1q8H6ybSvrvz5/m3D/fFkGIq0CU60nU4xoKJs3QxsAtizOGx8QY9Jtq/wWzqYQgu88LLHkt
+ mS/Zl+eIQ3E6yPg==
+X-Developer-Key: i=krzysztof.kozlowski@linaro.org; a=openpgp;
+ fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
 
-From: Hao Ge <gehao@kylinos.cn>
+Hi,
 
-When PG_hwpoison pages are freed,they are treated differently in
-free_pages_prepare() and instead of being released they are isolated.
+Three fixes for unbinding and error paths.  Enable also compile testing
+as cherry on top.
 
-Page allocation tag counters are decremented at this point since the
-page is considered not in use. Later on when such pages are released
-by unpoison_memory(), the allocation tag counters will be decremented
-again and the following warning gets reported:
+Best regards,
+Krzysztof
 
-[  113.930443][ T3282] ------------[ cut here ]------------
-[  113.931105][ T3282] alloc_tag was not set
-[  113.931576][ T3282] WARNING: CPU: 2 PID: 3282 at ./include/linux/alloc_tag.h:130 pgalloc_tag_sub.part.66+0x154/0x164
-[  113.932866][ T3282] Modules linked in: hwpoison_inject fuse ip6t_rpfilter ip6t_REJECT nf_reject_ipv6 ipt_REJECT nf_reject_ipv4 xt_conntrack ebtable_nat ebtable_broute ip6table_nat ip6table_man4
-[  113.941638][ T3282] CPU: 2 UID: 0 PID: 3282 Comm: madvise11 Kdump: loaded Tainted: G        W          6.11.0-rc4-dirty #18
-[  113.943003][ T3282] Tainted: [W]=WARN
-[  113.943453][ T3282] Hardware name: QEMU KVM Virtual Machine, BIOS unknown 2/2/2022
-[  113.944378][ T3282] pstate: 40400005 (nZcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[  113.945319][ T3282] pc : pgalloc_tag_sub.part.66+0x154/0x164
-[  113.946016][ T3282] lr : pgalloc_tag_sub.part.66+0x154/0x164
-[  113.946706][ T3282] sp : ffff800087093a10
-[  113.947197][ T3282] x29: ffff800087093a10 x28: ffff0000d7a9d400 x27: ffff80008249f0a0
-[  113.948165][ T3282] x26: 0000000000000000 x25: ffff80008249f2b0 x24: 0000000000000000
-[  113.949134][ T3282] x23: 0000000000000001 x22: 0000000000000001 x21: 0000000000000000
-[  113.950597][ T3282] x20: ffff0000c08fcad8 x19: ffff80008251e000 x18: ffffffffffffffff
-[  113.952207][ T3282] x17: 0000000000000000 x16: 0000000000000000 x15: ffff800081746210
-[  113.953161][ T3282] x14: 0000000000000000 x13: 205d323832335420 x12: 5b5d353031313339
-[  113.954120][ T3282] x11: ffff800087093500 x10: 000000000000005d x9 : 00000000ffffffd0
-[  113.955078][ T3282] x8 : 7f7f7f7f7f7f7f7f x7 : ffff80008236ba90 x6 : c0000000ffff7fff
-[  113.956036][ T3282] x5 : ffff000b34bf4dc8 x4 : ffff8000820aba90 x3 : 0000000000000001
-[  113.956994][ T3282] x2 : ffff800ab320f000 x1 : 841d1e35ac932e00 x0 : 0000000000000000
-[  113.957962][ T3282] Call trace:
-[  113.958350][ T3282]  pgalloc_tag_sub.part.66+0x154/0x164
-[  113.959000][ T3282]  pgalloc_tag_sub+0x14/0x1c
-[  113.959539][ T3282]  free_unref_page+0xf4/0x4b8
-[  113.960096][ T3282]  __folio_put+0xd4/0x120
-[  113.960614][ T3282]  folio_put+0x24/0x50
-[  113.961103][ T3282]  unpoison_memory+0x4f0/0x5b0
-[  113.961678][ T3282]  hwpoison_unpoison+0x30/0x48 [hwpoison_inject]
-[  113.962436][ T3282]  simple_attr_write_xsigned.isra.34+0xec/0x1cc
-[  113.963183][ T3282]  simple_attr_write+0x38/0x48
-[  113.963750][ T3282]  debugfs_attr_write+0x54/0x80
-[  113.964330][ T3282]  full_proxy_write+0x68/0x98
-[  113.964880][ T3282]  vfs_write+0xdc/0x4d0
-[  113.965372][ T3282]  ksys_write+0x78/0x100
-[  113.965875][ T3282]  __arm64_sys_write+0x24/0x30
-[  113.966440][ T3282]  invoke_syscall+0x7c/0x104
-[  113.966984][ T3282]  el0_svc_common.constprop.1+0x88/0x104
-[  113.967652][ T3282]  do_el0_svc+0x2c/0x38
-[  113.968893][ T3282]  el0_svc+0x3c/0x1b8
-[  113.969379][ T3282]  el0t_64_sync_handler+0x98/0xbc
-[  113.969980][ T3282]  el0t_64_sync+0x19c/0x1a0
-[  113.970511][ T3282] ---[ end trace 0000000000000000 ]---
-
-To fix this, clear the page tag reference after the page got isolated
-and accounted for.
-
-Fixes: d224eb0287fb ("codetag: debug: mark codetags for reserved pages as empty")
-Cc: stable@vger.kernel.org # v6.10
-Signed-off-by: Hao Ge <gehao@kylinos.cn>
 ---
-v2: adjusting the commit message and comments in the code
-    based on Suren's suggestions.
----
- mm/page_alloc.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+Krzysztof Kozlowski (4):
+      soc: versatile: integrator: fix OF node leak in probe() error path
+      soc: versatile: realview: fix memory leak during device remove
+      soc: versatile: realview: fix soc_dev leak during device remove
+      soc: versatile: enable compile testing
 
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index c565de8f48e9..91ace8ca97e2 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -1054,6 +1054,13 @@ __always_inline bool free_pages_prepare(struct page *page,
- 		reset_page_owner(page, order);
- 		page_table_check_free(page, order);
- 		pgalloc_tag_sub(page, 1 << order);
-+
-+		/*
-+		 * The page is isolated and accounted for.
-+		 * Mark the codetag as empty to avoid accounting error
-+		 * when the page is freed by unpoison_memory().
-+		 */
-+		clear_page_tag_ref(page);
- 		return false;
- 	}
- 
+ drivers/soc/Makefile                   |  2 +-
+ drivers/soc/versatile/Kconfig          |  4 ++--
+ drivers/soc/versatile/soc-integrator.c |  1 +
+ drivers/soc/versatile/soc-realview.c   | 20 ++++++++++++++++----
+ 4 files changed, 20 insertions(+), 7 deletions(-)
+---
+base-commit: 80a76294855640056006e29988f99d46438dcd2b
+change-id: 20240825-soc-dev-fixes-ec0889be8379
+
+Best regards,
 -- 
-2.25.1
+Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
 
