@@ -1,116 +1,100 @@
-Return-Path: <stable+bounces-73647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73653-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70E5496E16A
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 20:01:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2655096E197
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 20:09:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 921FE1C23A15
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 18:01:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 59B121C23D40
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 18:09:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4B3816C84B;
-	Thu,  5 Sep 2024 18:01:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dj3jh+D0"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B1C917BEA4;
+	Thu,  5 Sep 2024 18:09:25 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from linuxtv.org (140-211-166-241-openstack.osuosl.org [140.211.166.241])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 495547464;
-	Thu,  5 Sep 2024 18:01:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B06FD15B562
+	for <stable@vger.kernel.org>; Thu,  5 Sep 2024 18:09:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=140.211.166.241
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725559263; cv=none; b=a+K1BLV6CnrGeAM4PPMSTTqyxbM27G0f8CZ4OtQAOS0OQUZFa6Fs1itT1w4fUmmSxfAL0NovXBZx1codCxqdVMV6+OV0JR8womf6vw9+w9jWgxZiz/45FKmIZbo9MDf3Z4pDtwCL8Q+QpwYCjxLGg+aeooog1qDcxWltg2v1lG0=
+	t=1725559765; cv=none; b=LDd2R1TjtLcEKEQdp+eEiT2XjIxftHNKxtRu0rPmW5S1awio30niNWGOWDnR8xXWkCSeiJrSMn4Fx23S29F4J3R6eW/iqDS/sLgrkge4yGhAVNMQI3jfOjr268qDK20CZ2PTiJDrugZvhdLCZjPGU0b6GdJVNzjKWz7cMo1ZubY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725559263; c=relaxed/simple;
-	bh=zJ8GsSFyOKwFoRTc/PIB6h5ujpC6wCdOq68z/pqAI1U=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=k40DsX5/nfOg8poNEJHXwKLLfSIPFHuMvzv6C7TJiOB6ujvNsOJ3pqLQ7WSSW7pXAdW2VEwe0mnLFLP7xpSRGvnFfUHLdbnI5Tp7aWMhDNpa7oj8oESCphMboAbCku3gFZ/ONZJwghuMkvRoVx/4hgE4l+ozc6V0mJAqenH6Agw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dj3jh+D0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B67DAC4CEC3;
-	Thu,  5 Sep 2024 18:01:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725559262;
-	bh=zJ8GsSFyOKwFoRTc/PIB6h5ujpC6wCdOq68z/pqAI1U=;
-	h=From:To:Cc:Subject:Date:From;
-	b=dj3jh+D0kHyX4Sk/5s7vOAbK2Fw6VTTdl4Yb1n5o250MRfAgeXJy9mcZPLhzjN0n0
-	 q+Lq6nirZJXj5EHHl4IYFXWs4HbuWg1M+MG6+8kl6kelRDJD/mSa1VqW164ZG7yLFL
-	 NOgukOm3aZqDNKxR8Gm0qHSPOuvj1rFDmPl4IXxLAixpZ8cwITbIBsoR1KgWEM6YXy
-	 CIzx8W/Y4swwFQ1QE5KPJBnGVO3zDHr1/KSn+SiQiW96+7wkGlqlFLN6uHPMpts/Q+
-	 kmKyj9tr3sT0eGk1dwDuXO3DEZ4dv9VHAiIm/ruqQ1EDck4NG6ETwhBPDo4x5i9Y/O
-	 d9TA0P8idK95g==
-From: Andrii Nakryiko <andrii@kernel.org>
-To: linux-perf-users@vger.kernel.org,
-	peterz@infradead.org,
-	kan.liang@linux.intel.com
-Cc: x86@kernel.org,
-	mingo@redhat.com,
-	linux-kernel@vger.kernel.org,
-	bpf@vger.kernel.org,
-	acme@kernel.org,
-	kernel-team@meta.com,
-	Andrii Nakryiko <andrii@kernel.org>,
-	stable@vger.kernel.org
-Subject: [PATCH] perf/x86: fix wrong assumption that LBR is only useful for sampling events
-Date: Thu,  5 Sep 2024 11:00:55 -0700
-Message-ID: <20240905180055.1221620-1-andrii@kernel.org>
-X-Mailer: git-send-email 2.43.5
+	s=arc-20240116; t=1725559765; c=relaxed/simple;
+	bh=ZKpCFYH4SsZ9irh4f1lBtF+pbP7WN1rXh9IOr3mQ05U=;
+	h=From:Date:Subject:To:Cc:Message-Id; b=rzLnUE3S6cBaza6tp5OvthIWVMjFvm7LPTp0zNLJayF5PeqmcDdmCVRVxTdbPmYs5TaYXcRjrJkOVfqxGsvrjGYnxo66d88PQIxIFlmtpEianL09VXr/envybfqrRr0+B5Ea1hrmH8jUGHiaG3CG6Z9LYSomoSzP+oDQNhGaRsw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=xs4all.nl; spf=pass smtp.mailfrom=linuxtv.org; arc=none smtp.client-ip=140.211.166.241
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=xs4all.nl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtv.org
+Received: from mchehab by linuxtv.org with local (Exim 4.96)
+	(envelope-from <mchehab@linuxtv.org>)
+	id 1smGv1-0001iU-1u;
+	Thu, 05 Sep 2024 18:09:19 +0000
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Date: Sun, 25 Aug 2024 07:16:07 +0000
+Subject: [git:media_tree/master] media: venus: fix use after free bug in venus_remove due to race condition
+To: linuxtv-commits@linuxtv.org
+Cc: Zheng Wang <zyytlz.wz@163.com>, Dikshita Agarwal <quic_dikshita@quicinc.com>, Stanimir Varbanov <stanimir.k.varbanov@gmail.com>, stable@vger.kernel.org
+Mail-followup-to: linux-media@vger.kernel.org
+Forward-to: linux-media@vger.kernel.org
+Reply-to: linux-media@vger.kernel.org
+Message-Id: <E1smGv1-0001iU-1u@linuxtv.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-It's incorrect to assume that LBR can/should only be used with sampling
-events. BPF subsystem provides bpf_get_branch_snapshot() BPF helper,
-which expects a properly setup and activated perf event which allows
-kernel to capture LBR data.
+This is an automatic generated email to let you know that the following patch were queued:
 
-For instance, retsnoop tool ([0]) makes an extensive use of this
-functionality and sets up perf event as follows:
+Subject: media: venus: fix use after free bug in venus_remove due to race condition
+Author:  Zheng Wang <zyytlz.wz@163.com>
+Date:    Tue Jun 18 14:55:59 2024 +0530
 
-	struct perf_event_attr attr;
+in venus_probe, core->work is bound with venus_sys_error_handler, which is
+used to handle error. The code use core->sys_err_done to make sync work.
+The core->work is started in venus_event_notify.
 
-	memset(&attr, 0, sizeof(attr));
-	attr.size = sizeof(attr);
-	attr.type = PERF_TYPE_HARDWARE;
-	attr.config = PERF_COUNT_HW_CPU_CYCLES;
-	attr.sample_type = PERF_SAMPLE_BRANCH_STACK;
-	attr.branch_sample_type = PERF_SAMPLE_BRANCH_KERNEL;
+If we call venus_remove, there might be an unfished work. The possible
+sequence is as follows:
 
-Commit referenced in Fixes tag broke this setup by making invalid assumption
-that LBR is useful only for sampling events. Remove that assumption.
+CPU0                  CPU1
 
-Note, earlier we removed a similar assumption on AMD side of LBR support,
-see [1] for details.
+                     |venus_sys_error_handler
+venus_remove         |
+hfi_destroy	 		 |
+venus_hfi_destroy	 |
+kfree(hdev);	     |
+                     |hfi_reinit
+					 |venus_hfi_queues_reinit
+                     |//use hdev
 
-  [0] https://github.com/anakryiko/retsnoop
-  [1] 9794563d4d05 ("perf/x86/amd: Don't reject non-sampling events with configured LBR")
+Fix it by canceling the work in venus_remove.
 
-Cc: stable@vger.kernel.org # 6.8+
-Fixes: 85846b27072d ("perf/x86: Add PERF_X86_EVENT_NEEDS_BRANCH_STACK flag")
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: af2c3834c8ca ("[media] media: venus: adding core part and helper functions")
+Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
+Signed-off-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
+Signed-off-by: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+
+ drivers/media/platform/qcom/venus/core.c | 1 +
+ 1 file changed, 1 insertion(+)
+
 ---
- arch/x86/events/intel/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-index 9e519d8a810a..f82a342b8852 100644
---- a/arch/x86/events/intel/core.c
-+++ b/arch/x86/events/intel/core.c
-@@ -3972,7 +3972,7 @@ static int intel_pmu_hw_config(struct perf_event *event)
- 			x86_pmu.pebs_aliases(event);
- 	}
+diff --git a/drivers/media/platform/qcom/venus/core.c b/drivers/media/platform/qcom/venus/core.c
+index 165c947a6703..84e95a46dfc9 100644
+--- a/drivers/media/platform/qcom/venus/core.c
++++ b/drivers/media/platform/qcom/venus/core.c
+@@ -430,6 +430,7 @@ static void venus_remove(struct platform_device *pdev)
+ 	struct device *dev = core->dev;
+ 	int ret;
  
--	if (needs_branch_stack(event) && is_sampling_event(event))
-+	if (needs_branch_stack(event))
- 		event->hw.flags  |= PERF_X86_EVENT_NEEDS_BRANCH_STACK;
++	cancel_delayed_work_sync(&core->work);
+ 	ret = pm_runtime_get_sync(dev);
+ 	WARN_ON(ret < 0);
  
- 	if (branch_sample_counters(event)) {
--- 
-2.43.5
-
 
