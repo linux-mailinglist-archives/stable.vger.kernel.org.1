@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-70198-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70197-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F020695F0F1
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4395195F0F0
 	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 14:13:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9E4328AAB2
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E28FC1F225D9
 	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 12:13:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C882D1714B3;
-	Mon, 26 Aug 2024 12:08:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 971E1185933;
+	Mon, 26 Aug 2024 12:08:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MGLBqpQU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IiNmN24e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A22016F827
-	for <stable@vger.kernel.org>; Mon, 26 Aug 2024 12:08:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 556621714BC
+	for <stable@vger.kernel.org>; Mon, 26 Aug 2024 12:08:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724674138; cv=none; b=nZ3MWzyJ0ZGcNOrVzVS2S80+buWnSfLGZCCZVf5YTdb9yCJA8LsVpVPlgeX+kV3pCPlotzpjtAa08YdlO6vXK6jXNOJWtzjzkRNfSb1lmrru0+ZeZYyLsqLYAXNc8hS7Kd7vwqUWqsWsK5oma46a4f13ueIEBsODFId9wG/MI5o=
+	t=1724674129; cv=none; b=j9st72K1ObdOI4IagxuVelIrNim1KiCMxrH9zNU91qa0GyuYMyfaE0VtI8Mn/wFuwreCSXsKOy25xc3d7ckvFU9jsqkT8zYpOF45RStZlPctXZ+Kz8BH0arRdutJHbGtHuLETH91usRbgu3acsOyR8CPBmk5dB1M1FAYoWzQMd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724674138; c=relaxed/simple;
-	bh=eq75d3DR4YwamJDv2/Fs/ygE0/mnEZ+6w56lhRewlN4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=P920xkHiKyvdTGq5rE7eC9woEYE7M3O5L4Aqibi6RTWl6R5jCuxDNsdMH8GQucC5nqTfrfwWWLZPwgYUKUQss1W3Ig9rmqirO/nvfrlZH4MAfSqOpsto73kdcyYik4qyzdhdCT8+1InxgD8cdf3UuyyEvc/4r/KV65cKl3kEIPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MGLBqpQU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B892DC4DDED;
-	Mon, 26 Aug 2024 12:08:57 +0000 (UTC)
+	s=arc-20240116; t=1724674129; c=relaxed/simple;
+	bh=40R9dEeV24oBzAT+aVVYBB1i4FeL9m973xpJBdk1KMk=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=SbBn/5tSb5p5gq9hG1FRLdKmCC0GVhQjmVRbhKXTG99DkOf8PKiiKd+EXmw+ZzZQOsZEw4ruPaZpTwRZ2dSxC45dCGSrqh92r5O1iBu0o5Mc16Rwb4m9C5FR4B4zCAkFYDO0yh9tXszHn/V4AT7ADm7Ski8F88rWsJ5c1Iyv2Y0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IiNmN24e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B58FCC4DDEA;
+	Mon, 26 Aug 2024 12:08:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724674138;
-	bh=eq75d3DR4YwamJDv2/Fs/ygE0/mnEZ+6w56lhRewlN4=;
+	s=korg; t=1724674129;
+	bh=40R9dEeV24oBzAT+aVVYBB1i4FeL9m973xpJBdk1KMk=;
 	h=Subject:To:Cc:From:Date:From;
-	b=MGLBqpQUk01d42dM34vy/ECbidMr+L4bXxgeh21lJBPvnK4KHau5y0y2i4fR4slXD
-	 6cj2vB+qAH8ZwwCGXBVgdzarU2qDFJxksJIxkeV6dqFnp+xIbo199W7A/Kqk3mSrti
-	 aL+2CE30fKcFoo1NVITKFxFCyfnAuRyiqfNR1z3o=
-Subject: FAILED: patch "[PATCH] selftests: mptcp: join: validate fullmesh endp on 1st sf" failed to apply to 5.15-stable tree
+	b=IiNmN24e/b7bsoYescPjSwqobtIsJ+LzCwHvqJEGHYFZ3+NKaNSTKZbVuf+TSS2UX
+	 XE4xyZMWTSmXO5ZjeWTL/cMX74ZBTIY6vucFyxVmllqqqk7OucBxeAubsdw71LGAHJ
+	 wQS7gd88XMVtFMkcbL5xVBSQi6w+UfY5GUEVznW0=
+Subject: FAILED: patch "[PATCH] selftests: mptcp: join: validate fullmesh endp on 1st sf" failed to apply to 6.1-stable tree
 To: matttbe@kernel.org,kuba@kernel.org,martineau@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
 Date: Mon, 26 Aug 2024 14:08:46 +0200
-Message-ID: <2024082646-slang-phoniness-d213@gregkh>
+Message-ID: <2024082645-hurled-surprise-0a7c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 4878f9f8421f4587bee7b232c1c8a9d3a7d4d782
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024082646-slang-phoniness-d213@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024082645-hurled-surprise-0a7c@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
