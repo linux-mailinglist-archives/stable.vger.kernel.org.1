@@ -1,158 +1,131 @@
-Return-Path: <stable+bounces-70157-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70159-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 591BF95EF42
-	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 12:59:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5425B95EF57
+	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 13:03:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7EB9D1C22692
-	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 10:59:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF1EA1F26BBA
+	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 11:03:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FC38145B1D;
-	Mon, 26 Aug 2024 10:59:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="UgJV+MqF"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF53617ADF0;
+	Mon, 26 Aug 2024 11:01:44 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAB6B1422D4;
-	Mon, 26 Aug 2024 10:59:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3181617A59D
+	for <stable@vger.kernel.org>; Mon, 26 Aug 2024 11:01:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724669973; cv=none; b=cLiqba/pAMmZ4gJlZlE9wuRXCRR7GOUFpJW23Gnv2tu92UkZAQd0MebBQun1WKE57D+VZOTPI5F6CFEXn/GDpSdAmIG63NVWGZG6LqQIi9mqi79tgm/neNUI3BGjHvKfKaBO5INUu8GSv1ZGfjwA52l7cqGmOnVUCJL4eueHLnk=
+	t=1724670104; cv=none; b=QfA54tsOQzboBYRSRTMHNFYSC00/iWrzIXEAdzxIzq2YLaIZMAVpT1VFmizM+ahrvjW5HaYpUfp0EErtwEIXLrm+vpJc2GJJoIhtlPhyUHzvRyG8K3Y7S0Ubc2GFmgRmzglw7Sck2KMilJ6Tp9/lESIpeS0KILnUbeaFQpotEGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724669973; c=relaxed/simple;
-	bh=ExP3iZcuG4zTl1aQSBzUyD1/WbTZZomnCGnoIul1oTo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=M+TG1Qphz3KcUfpYfLQKC8mCn/PNir7o98owoMtH+OPE7bvZHKEBcsqNrBKoDunVJF4fTb3qJYVb2xBXCzkkf0wOuxQq9Zyqf7EmQ7mrwfSXZLLXyrr66lfnsvZnMHjiUWF5B7L6AE5cudSUyKZr5MxtgvKRuDElWmEtv1bcPtA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=UgJV+MqF; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from [192.168.88.20] (91-156-87-48.elisa-laajakaista.fi [91.156.87.48])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 2CC206CA;
-	Mon, 26 Aug 2024 12:58:24 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1724669904;
-	bh=ExP3iZcuG4zTl1aQSBzUyD1/WbTZZomnCGnoIul1oTo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=UgJV+MqFnVyoHItFQwRoxnhuhx8zVI9cy4UTIR4X6abMEZGP1CIqOGIYZCXFYwPH1
-	 +US1GEgaDd0tGCebK3dHzVp4GVdpMmcxD+UnnhE+DyEQosZTv4gOD6Sgd3Qw657fOy
-	 AeCvnlspWg36we2ipy+XqpJMXgiXki1OiC9gYpOY=
-Message-ID: <1fae7064-65af-4284-bd47-e29bd00027bd@ideasonboard.com>
-Date: Mon, 26 Aug 2024 13:59:27 +0300
+	s=arc-20240116; t=1724670104; c=relaxed/simple;
+	bh=XCv9DbDDnLpAdoPTfTvW8KEmMqcmziLXCjJSsMKKM74=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=OiOCCL8g28Sy/I4duBfEIQSHOEPoVG5mHdbEUF4A8vqUGH3TXyXhgPewnDa6tmVPS0nTOzud5nJaLoOXJQEGtefLlAFYNTtAkAzF3224k3sO53Wy5hMozKAftYFS3VudvMQlwLmuX7fDugfT5RPLMt4fJJXXvtyzw0X6pWMHwo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1siXTY-00047T-JG; Mon, 26 Aug 2024 13:01:32 +0200
+Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1siXTX-003Ae3-Ur; Mon, 26 Aug 2024 13:01:31 +0200
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1siXTX-004aRi-2p;
+	Mon, 26 Aug 2024 13:01:31 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Subject: [PATCH 00/12] mwifiex: two fixes and cleanup
+Date: Mon, 26 Aug 2024 13:01:21 +0200
+Message-Id: <20240826-mwifiex-cleanup-1-v1-0-56e6f8e056ec@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/7] media: sun4i_csi: Implement link validate for
- sun4i_csi subdev
-To: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
- linux-media@vger.kernel.org
-Cc: Chen-Yu Tsai <wens@csie.org>, Eugen Hristev
- <eugen.hristev@collabora.com>, Hans Verkuil <hverkuil-cisco@xs4all.nl>,
- Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
- Kieran Bingham <kieran.bingham@ideasonboard.com>,
- Maxime Ripard <mripard@kernel.org>, Sakari Ailus <sakari.ailus@iki.fi>,
- linux-renesas-soc@vger.kernel.org, linux-sunxi@lists.linux.dev,
- stable@vger.kernel.org
-References: <20240822154531.25912-1-laurent.pinchart+renesas@ideasonboard.com>
- <20240822154531.25912-3-laurent.pinchart+renesas@ideasonboard.com>
-Content-Language: en-US
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Autocrypt: addr=tomi.valkeinen@ideasonboard.com; keydata=
- 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
-In-Reply-To: <20240822154531.25912-3-laurent.pinchart+renesas@ideasonboard.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAIJgzGYC/x3MSQqAMAxA0atI1gZqHfEq4qLWRANapcUBxLtbX
+ L7F/w8E8kIB2uQBT6cE2VxEliZgZ+MmQhmjQStdqEZXuF7CQjfahYw7dsxwKFVe2poNcwWx2z2
+ x3P+z69/3A8IcFXBjAAAA
+To: Brian Norris <briannorris@chromium.org>, 
+ Francesco Dolcini <francesco@dolcini.it>, Kalle Valo <kvalo@kernel.org>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Sascha Hauer <s.hauer@pengutronix.de>, stable@vger.kernel.org
+X-Mailer: b4 0.12.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1724670091; l=2326;
+ i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
+ bh=XCv9DbDDnLpAdoPTfTvW8KEmMqcmziLXCjJSsMKKM74=;
+ b=jXMrf9s0nu7jrqA/8pLiO3WcuF4zRG0auyEspfIknHh/ZTS3c6PksaaHvE7rQlV5KjCws5Io5
+ 9LkJpoOZboXAUZr+vBSfJfcEzEyOxvq6bquP5R1EpC05NZzwDRGZd37
+X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
+ pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: s.hauer@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
 
-Hi,
+These are a few patches broken out from [1]. Kalle requested to limit
+the number of patches per series to approximately 12 and Francesco to
+move the fixes to the front of the series, so here we go.
 
-On 22/08/2024 18:45, Laurent Pinchart wrote:
-> The sun4i_csi driver doesn't implement link validation for the subdev it
-> registers, leaving the link between the subdev and its source
-> unvalidated. Fix it, using the v4l2_subdev_link_validate() helper.
-> 
-> Fixes: 577bbf23b758 ("media: sunxi: Add A10 CSI driver")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-> Acked-by: Chen-Yu Tsai <wens@csie.org>
-> ---
->   drivers/media/platform/sunxi/sun4i-csi/sun4i_csi.c | 5 +++++
->   1 file changed, 5 insertions(+)
-> 
-> diff --git a/drivers/media/platform/sunxi/sun4i-csi/sun4i_csi.c b/drivers/media/platform/sunxi/sun4i-csi/sun4i_csi.c
-> index 097a3a08ef7d..dbb26c7b2f8d 100644
-> --- a/drivers/media/platform/sunxi/sun4i-csi/sun4i_csi.c
-> +++ b/drivers/media/platform/sunxi/sun4i-csi/sun4i_csi.c
-> @@ -39,6 +39,10 @@ static const struct media_entity_operations sun4i_csi_video_entity_ops = {
->   	.link_validate = v4l2_subdev_link_validate,
->   };
->   
-> +static const struct media_entity_operations sun4i_csi_subdev_entity_ops = {
-> +	.link_validate = v4l2_subdev_link_validate,
-> +};
-> +
->   static int sun4i_csi_notify_bound(struct v4l2_async_notifier *notifier,
->   				  struct v4l2_subdev *subdev,
->   				  struct v4l2_async_connection *asd)
-> @@ -214,6 +218,7 @@ static int sun4i_csi_probe(struct platform_device *pdev)
->   	subdev->internal_ops = &sun4i_csi_subdev_internal_ops;
->   	subdev->flags = V4L2_SUBDEV_FL_HAS_DEVNODE | V4L2_SUBDEV_FL_HAS_EVENTS;
->   	subdev->entity.function = MEDIA_ENT_F_VID_IF_BRIDGE;
-> +	subdev->entity.ops = &sun4i_csi_subdev_entity_ops;
->   	subdev->owner = THIS_MODULE;
->   	snprintf(subdev->name, sizeof(subdev->name), "sun4i-csi-0");
->   	v4l2_set_subdevdata(subdev, csi);
+First two patches are fixes. First one is for host mlme support which
+currently is in wireless-next, so no stable tag needed, second one has a
+stable tag.
 
-Reviewed-by: Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>
+The remaining patches except the last one I have chosen to upstream
+first. I'll continue with the other patches after having this series
+in shape and merged.
 
-  Tomi
+The last one is a new patch not included in [1].
+
+Sascha
+
+[1] https://lore.kernel.org/all/20240820-mwifiex-cleanup-v1-0-320d8de4a4b7@pengutronix.de/
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+Sascha Hauer (12):
+      wifi: mwifiex: add missing locking
+      wifi: mwifiex: fix MAC address handling
+      wifi: mwifiex: deduplicate code in mwifiex_cmd_tx_rate_cfg()
+      wifi: mwifiex: use adapter as context pointer for mwifiex_hs_activated_event()
+      wifi: mwifiex: drop unnecessary initialization
+      wifi: mwifiex: make region_code_mapping_t const
+      wifi: mwifiex: pass adapter to mwifiex_dnld_cmd_to_fw()
+      wifi: mwifiex: simplify mwifiex_setup_ht_caps()
+      wifi: mwifiex: fix indention
+      wifi: mwifiex: make locally used function static
+      wifi: mwifiex: move common settings out of switch/case
+      wifi: mwifiex: drop asynchronous init waiting code
+
+ drivers/net/wireless/marvell/mwifiex/cfg80211.c | 38 ++++------
+ drivers/net/wireless/marvell/mwifiex/cfp.c      |  4 +-
+ drivers/net/wireless/marvell/mwifiex/cmdevt.c   | 76 +++++++-------------
+ drivers/net/wireless/marvell/mwifiex/init.c     | 19 ++---
+ drivers/net/wireless/marvell/mwifiex/main.c     | 94 +++++++++----------------
+ drivers/net/wireless/marvell/mwifiex/main.h     | 16 ++---
+ drivers/net/wireless/marvell/mwifiex/sta_cmd.c  | 49 ++++---------
+ drivers/net/wireless/marvell/mwifiex/txrx.c     |  3 +-
+ drivers/net/wireless/marvell/mwifiex/util.c     | 22 +-----
+ drivers/net/wireless/marvell/mwifiex/wmm.c      | 12 ++--
+ 10 files changed, 105 insertions(+), 228 deletions(-)
+---
+base-commit: 67a72043aa2e6f60f7bbe7bfa598ba168f16d04f
+change-id: 20240826-mwifiex-cleanup-1-b5035c7faff6
+
+Best regards,
+-- 
+Sascha Hauer <s.hauer@pengutronix.de>
 
 
