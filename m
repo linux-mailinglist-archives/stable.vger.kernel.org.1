@@ -1,30 +1,31 @@
-Return-Path: <stable+bounces-70159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70158-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5425B95EF57
-	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 13:03:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC2EC95EF4E
+	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 13:02:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF1EA1F26BBA
-	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 11:03:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8351A281069
+	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 11:02:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF53617ADF0;
-	Mon, 26 Aug 2024 11:01:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D819155A4F;
+	Mon, 26 Aug 2024 11:01:39 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3181617A59D
-	for <stable@vger.kernel.org>; Mon, 26 Aug 2024 11:01:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A329D14B965
+	for <stable@vger.kernel.org>; Mon, 26 Aug 2024 11:01:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724670104; cv=none; b=QfA54tsOQzboBYRSRTMHNFYSC00/iWrzIXEAdzxIzq2YLaIZMAVpT1VFmizM+ahrvjW5HaYpUfp0EErtwEIXLrm+vpJc2GJJoIhtlPhyUHzvRyG8K3Y7S0Ubc2GFmgRmzglw7Sck2KMilJ6Tp9/lESIpeS0KILnUbeaFQpotEGM=
+	t=1724670099; cv=none; b=uEuRT5AnRGTJliF6SAo4+FStEjMqMR22JaaiGuDHD8WcoxT1pGdgMF5RQKdd0rPkZ5mMsCNbb06prFXqGOrx1TTtKTihDMj3FBy9KQHMU08+n4IoUfBOWSrZ5sDX021Iq8nVazaVyC+y7NlUHcMpH0eWwMVEJz4EtY2Ys66IX6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724670104; c=relaxed/simple;
-	bh=XCv9DbDDnLpAdoPTfTvW8KEmMqcmziLXCjJSsMKKM74=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=OiOCCL8g28Sy/I4duBfEIQSHOEPoVG5mHdbEUF4A8vqUGH3TXyXhgPewnDa6tmVPS0nTOzud5nJaLoOXJQEGtefLlAFYNTtAkAzF3224k3sO53Wy5hMozKAftYFS3VudvMQlwLmuX7fDugfT5RPLMt4fJJXXvtyzw0X6pWMHwo4=
+	s=arc-20240116; t=1724670099; c=relaxed/simple;
+	bh=NkkGQ5SFMbTIT7y5aD7lg6eNcuu36qG/js++gvunC1k=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=BnKMkAfLTLWnP0EVm+GvDTdsNaPaCDZI6WcweYx6s+G9c2DVwUCRpxbipQNC/dD515Lmi+MjCo3he96IEx5CAPiPHIfG3e9YeUlbq/PFG7MkHRiHoDxRu6h0yA4C/NlQs71ITE0VIHg5iij5gUUcDMFkJVtzeYPAgfdY6NL1U7c=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -32,21 +33,20 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1siXTY-00047T-JG; Mon, 26 Aug 2024 13:01:32 +0200
+	id 1siXTY-00047V-Ll; Mon, 26 Aug 2024 13:01:32 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1siXTX-003Ae3-Ur; Mon, 26 Aug 2024 13:01:31 +0200
+	id 1siXTX-003Ae4-Vi; Mon, 26 Aug 2024 13:01:32 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1siXTX-004aRi-2p;
+	id 1siXTX-004aRi-2r;
 	Mon, 26 Aug 2024 13:01:31 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Subject: [PATCH 00/12] mwifiex: two fixes and cleanup
-Date: Mon, 26 Aug 2024 13:01:21 +0200
-Message-Id: <20240826-mwifiex-cleanup-1-v1-0-56e6f8e056ec@pengutronix.de>
+Date: Mon, 26 Aug 2024 13:01:23 +0200
+Subject: [PATCH 02/12] wifi: mwifiex: fix MAC address handling
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,19 +55,19 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAIJgzGYC/x3MSQqAMAxA0atI1gZqHfEq4qLWRANapcUBxLtbX
- L7F/w8E8kIB2uQBT6cE2VxEliZgZ+MmQhmjQStdqEZXuF7CQjfahYw7dsxwKFVe2poNcwWx2z2
- x3P+z69/3A8IcFXBjAAAA
+Message-Id: <20240826-mwifiex-cleanup-1-v1-2-56e6f8e056ec@pengutronix.de>
+References: <20240826-mwifiex-cleanup-1-v1-0-56e6f8e056ec@pengutronix.de>
+In-Reply-To: <20240826-mwifiex-cleanup-1-v1-0-56e6f8e056ec@pengutronix.de>
 To: Brian Norris <briannorris@chromium.org>, 
  Francesco Dolcini <francesco@dolcini.it>, Kalle Valo <kvalo@kernel.org>
 Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
  Sascha Hauer <s.hauer@pengutronix.de>, stable@vger.kernel.org
 X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1724670091; l=2326;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1724670091; l=6657;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=XCv9DbDDnLpAdoPTfTvW8KEmMqcmziLXCjJSsMKKM74=;
- b=jXMrf9s0nu7jrqA/8pLiO3WcuF4zRG0auyEspfIknHh/ZTS3c6PksaaHvE7rQlV5KjCws5Io5
- 9LkJpoOZboXAUZr+vBSfJfcEzEyOxvq6bquP5R1EpC05NZzwDRGZd37
+ bh=NkkGQ5SFMbTIT7y5aD7lg6eNcuu36qG/js++gvunC1k=;
+ b=FAPwdqEECNf8or9NUzlpb7A9gF10skWLPAcqjWGNcN3U7LhkhvUYS/aHZ0WiT0rhMtaoU5JHO
+ kPq0kOsNOQOCbiZjvsGVKwVvdbDmNVSJo96oy/ydefPGiqfbwN9AFm3
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
@@ -75,57 +75,179 @@ X-SA-Exim-Mail-From: s.hauer@pengutronix.de
 X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
 X-PTX-Original-Recipient: stable@vger.kernel.org
 
-These are a few patches broken out from [1]. Kalle requested to limit
-the number of patches per series to approximately 12 and Francesco to
-move the fixes to the front of the series, so here we go.
+The mwifiex driver tries to derive the MAC addresses of the virtual
+interfaces from the permanent address by adding the bss_num of the
+particular interface used. It does so each time the virtual interface
+is changed from AP to station or the other way round. This means that
+the devices MAC address changes during a change_virtual_intf call which
+is pretty unexpected by userspace.
 
-First two patches are fixes. First one is for host mlme support which
-currently is in wireless-next, so no stable tag needed, second one has a
-stable tag.
+Furthermore the driver doesn't use the permanent address to add the
+bss_num to, but instead the current MAC address increases each time
+we do a change_virtual_intf.
 
-The remaining patches except the last one I have chosen to upstream
-first. I'll continue with the other patches after having this series
-in shape and merged.
+Fix this by initializing the MAC address once from the permanent MAC
+address during creation of the virtual interface and never touch it
+again. This also means that userspace can set a different MAC address
+which then stays like this forever and is not unexpectedly changed
+by the driver.
 
-The last one is a new patch not included in [1].
-
-Sascha
-
-[1] https://lore.kernel.org/all/20240820-mwifiex-cleanup-v1-0-320d8de4a4b7@pengutronix.de/
+It is not clear how many (if any) MAC addresses after the permanent MAC
+address are reserved for a device, so set the locally admistered
+bit for all MAC addresses modified from the permanent address.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: stable@vger.kernel.org
 ---
-Sascha Hauer (12):
-      wifi: mwifiex: add missing locking
-      wifi: mwifiex: fix MAC address handling
-      wifi: mwifiex: deduplicate code in mwifiex_cmd_tx_rate_cfg()
-      wifi: mwifiex: use adapter as context pointer for mwifiex_hs_activated_event()
-      wifi: mwifiex: drop unnecessary initialization
-      wifi: mwifiex: make region_code_mapping_t const
-      wifi: mwifiex: pass adapter to mwifiex_dnld_cmd_to_fw()
-      wifi: mwifiex: simplify mwifiex_setup_ht_caps()
-      wifi: mwifiex: fix indention
-      wifi: mwifiex: make locally used function static
-      wifi: mwifiex: move common settings out of switch/case
-      wifi: mwifiex: drop asynchronous init waiting code
+ drivers/net/wireless/marvell/mwifiex/cfg80211.c |  4 +-
+ drivers/net/wireless/marvell/mwifiex/init.c     |  1 -
+ drivers/net/wireless/marvell/mwifiex/main.c     | 54 ++++++++++++-------------
+ drivers/net/wireless/marvell/mwifiex/main.h     |  5 ++-
+ 4 files changed, 30 insertions(+), 34 deletions(-)
 
- drivers/net/wireless/marvell/mwifiex/cfg80211.c | 38 ++++------
- drivers/net/wireless/marvell/mwifiex/cfp.c      |  4 +-
- drivers/net/wireless/marvell/mwifiex/cmdevt.c   | 76 +++++++-------------
- drivers/net/wireless/marvell/mwifiex/init.c     | 19 ++---
- drivers/net/wireless/marvell/mwifiex/main.c     | 94 +++++++++----------------
- drivers/net/wireless/marvell/mwifiex/main.h     | 16 ++---
- drivers/net/wireless/marvell/mwifiex/sta_cmd.c  | 49 ++++---------
- drivers/net/wireless/marvell/mwifiex/txrx.c     |  3 +-
- drivers/net/wireless/marvell/mwifiex/util.c     | 22 +-----
- drivers/net/wireless/marvell/mwifiex/wmm.c      | 12 ++--
- 10 files changed, 105 insertions(+), 228 deletions(-)
----
-base-commit: 67a72043aa2e6f60f7bbe7bfa598ba168f16d04f
-change-id: 20240826-mwifiex-cleanup-1-b5035c7faff6
+diff --git a/drivers/net/wireless/marvell/mwifiex/cfg80211.c b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+index 5697a02e6b8d3..d3e1424bea390 100644
+--- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
++++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+@@ -962,8 +962,6 @@ mwifiex_init_new_priv_params(struct mwifiex_private *priv,
+ 	adapter->rx_locked = false;
+ 	spin_unlock_bh(&adapter->rx_proc_lock);
+ 
+-	mwifiex_set_mac_address(priv, dev, false, NULL);
+-
+ 	return 0;
+ }
+ 
+@@ -3115,7 +3113,7 @@ struct wireless_dev *mwifiex_add_virtual_intf(struct wiphy *wiphy,
+ 	priv->netdev = dev;
+ 
+ 	if (!adapter->mfg_mode) {
+-		mwifiex_set_mac_address(priv, dev, false, NULL);
++		mwifiex_set_default_mac_address(priv, dev);
+ 
+ 		ret = mwifiex_send_cmd(priv, HostCmd_CMD_SET_BSS_MODE,
+ 				       HostCmd_ACT_GEN_SET, 0, NULL, true);
+diff --git a/drivers/net/wireless/marvell/mwifiex/init.c b/drivers/net/wireless/marvell/mwifiex/init.c
+index 8b61e45cd6678..0259c9f88486b 100644
+--- a/drivers/net/wireless/marvell/mwifiex/init.c
++++ b/drivers/net/wireless/marvell/mwifiex/init.c
+@@ -71,7 +71,6 @@ int mwifiex_init_priv(struct mwifiex_private *priv)
+ 	u32 i;
+ 
+ 	priv->media_connected = false;
+-	eth_broadcast_addr(priv->curr_addr);
+ 	priv->port_open = false;
+ 	priv->usb_port = MWIFIEX_USB_EP_DATA;
+ 	priv->pkt_tx_ctrl = 0;
+diff --git a/drivers/net/wireless/marvell/mwifiex/main.c b/drivers/net/wireless/marvell/mwifiex/main.c
+index 96d1f6039fbca..46acddd03ffd1 100644
+--- a/drivers/net/wireless/marvell/mwifiex/main.c
++++ b/drivers/net/wireless/marvell/mwifiex/main.c
+@@ -971,34 +971,16 @@ mwifiex_hard_start_xmit(struct sk_buff *skb, struct net_device *dev)
+ }
+ 
+ int mwifiex_set_mac_address(struct mwifiex_private *priv,
+-			    struct net_device *dev, bool external,
+-			    u8 *new_mac)
++			    struct net_device *dev, u8 *new_mac)
+ {
+ 	int ret;
+-	u64 mac_addr, old_mac_addr;
++	u64 old_mac_addr;
+ 
+-	old_mac_addr = ether_addr_to_u64(priv->curr_addr);
++	netdev_info(dev, "%s: old: %pM new: %pM\n", __func__, priv->curr_addr, new_mac);
+ 
+-	if (external) {
+-		mac_addr = ether_addr_to_u64(new_mac);
+-	} else {
+-		/* Internal mac address change */
+-		if (priv->bss_type == MWIFIEX_BSS_TYPE_ANY)
+-			return -EOPNOTSUPP;
+-
+-		mac_addr = old_mac_addr;
+-
+-		if (priv->bss_type == MWIFIEX_BSS_TYPE_P2P) {
+-			mac_addr |= BIT_ULL(MWIFIEX_MAC_LOCAL_ADMIN_BIT);
+-			mac_addr += priv->bss_num;
+-		} else if (priv->adapter->priv[0] != priv) {
+-			/* Set mac address based on bss_type/bss_num */
+-			mac_addr ^= BIT_ULL(priv->bss_type + 8);
+-			mac_addr += priv->bss_num;
+-		}
+-	}
++	old_mac_addr = ether_addr_to_u64(priv->curr_addr);
+ 
+-	u64_to_ether_addr(mac_addr, priv->curr_addr);
++	ether_addr_copy(priv->curr_addr, new_mac);
+ 
+ 	/* Send request to firmware */
+ 	ret = mwifiex_send_cmd(priv, HostCmd_CMD_802_11_MAC_ADDRESS,
+@@ -1015,6 +997,26 @@ int mwifiex_set_mac_address(struct mwifiex_private *priv,
+ 	return 0;
+ }
+ 
++int mwifiex_set_default_mac_address(struct mwifiex_private *priv,
++				    struct net_device *dev)
++{
++	int priv_num;
++	u8 mac[ETH_ALEN];
++
++	ether_addr_copy(mac, priv->adapter->perm_addr);
++
++	for (priv_num = 0; priv_num < priv->adapter->priv_num; priv_num++)
++		if (priv == priv->adapter->priv[priv_num])
++			break;
++
++	if (priv_num) {
++		eth_addr_add(mac, priv_num);
++		mac[0] |= 0x2;
++	}
++
++	return mwifiex_set_mac_address(priv, dev, mac);
++}
++
+ /* CFG802.11 network device handler for setting MAC address.
+  */
+ static int
+@@ -1023,7 +1025,7 @@ mwifiex_ndo_set_mac_address(struct net_device *dev, void *addr)
+ 	struct mwifiex_private *priv = mwifiex_netdev_get_priv(dev);
+ 	struct sockaddr *hw_addr = addr;
+ 
+-	return mwifiex_set_mac_address(priv, dev, true, hw_addr->sa_data);
++	return mwifiex_set_mac_address(priv, dev, hw_addr->sa_data);
+ }
+ 
+ /*
+@@ -1364,10 +1366,6 @@ void mwifiex_init_priv_params(struct mwifiex_private *priv,
+ 	priv->assocresp_idx = MWIFIEX_AUTO_IDX_MASK;
+ 	priv->gen_idx = MWIFIEX_AUTO_IDX_MASK;
+ 	priv->num_tx_timeout = 0;
+-	if (is_valid_ether_addr(dev->dev_addr))
+-		ether_addr_copy(priv->curr_addr, dev->dev_addr);
+-	else
+-		ether_addr_copy(priv->curr_addr, priv->adapter->perm_addr);
+ 
+ 	if (GET_BSS_ROLE(priv) == MWIFIEX_BSS_ROLE_STA ||
+ 	    GET_BSS_ROLE(priv) == MWIFIEX_BSS_ROLE_UAP) {
+diff --git a/drivers/net/wireless/marvell/mwifiex/main.h b/drivers/net/wireless/marvell/mwifiex/main.h
+index 529863edd7a25..dc07eb11f7752 100644
+--- a/drivers/net/wireless/marvell/mwifiex/main.h
++++ b/drivers/net/wireless/marvell/mwifiex/main.h
+@@ -1694,8 +1694,9 @@ void mwifiex_process_multi_chan_event(struct mwifiex_private *priv,
+ 				      struct sk_buff *event_skb);
+ void mwifiex_multi_chan_resync(struct mwifiex_adapter *adapter);
+ int mwifiex_set_mac_address(struct mwifiex_private *priv,
+-			    struct net_device *dev,
+-			    bool external, u8 *new_mac);
++			    struct net_device *dev, u8 *new_mac);
++int mwifiex_set_default_mac_address(struct mwifiex_private *priv,
++				    struct net_device *dev);
+ void mwifiex_devdump_tmo_func(unsigned long function_context);
+ 
+ #ifdef CONFIG_DEBUG_FS
 
-Best regards,
 -- 
-Sascha Hauer <s.hauer@pengutronix.de>
+2.39.2
 
 
