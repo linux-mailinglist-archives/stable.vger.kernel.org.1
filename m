@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-70164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70165-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42D3795EFE8
-	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 13:38:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4FB395EFE9
+	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 13:39:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 677A51C2141C
-	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 11:38:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 827A0281596
+	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 11:39:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B32D14EC77;
-	Mon, 26 Aug 2024 11:38:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B14E153BED;
+	Mon, 26 Aug 2024 11:39:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iGKj4NS0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bD9YKETa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BE1B1482E3
-	for <stable@vger.kernel.org>; Mon, 26 Aug 2024 11:38:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A1711482E3
+	for <stable@vger.kernel.org>; Mon, 26 Aug 2024 11:39:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724672318; cv=none; b=MdpT9MEXallMwIWqlfrn3vNIkrGq3+rMJvQOx3ENC97ICvguSr+8M0D2lnS7J5Q+/RI3/sRKHU/UjXJg/9d3HkeZakAuo5dtBIa6J+WMV1bDRNYyq7xai2fmMo+M2OhnErXSt3KO5IRrASDmE0P2umChYzemCD4s5ppDrTlrXuc=
+	t=1724672340; cv=none; b=suKPWT7rnyno6h04WOrL+0BKMv/ov0T9/Ko4VQpRnMCOinIfu9Lj2nyzw9dR58ctlf95BWfL4qSG+btzS9oXMk32XoSEnXE9qg1LSH2a6vw2VhdEjNV2rfTslZsJIYkKQKA7w2hd+VeNbrhbtV3PbJwI2+cIOUxFbfz4gNot6x8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724672318; c=relaxed/simple;
-	bh=m9+g823uM1dusP1KPaWMYHFgwJEgC0efPLIOipjnO9Y=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=a+zjpmvBWfR/Vvfc4+PKZ6C93R62RyBGaalHjhKEVHe/EUqIv7RxY1U2Yd1g/gkBWRI+5SlItjtTa4gppGrfRbjnQW3RKR8VV8wQZVC5MgSWCuIdMhSS/kMJb1NZDnAG4l1R1jT+w+GU2VnbkqXq+nZE/jAQj8v4uTFzgwAQZko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iGKj4NS0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D24EC51400;
-	Mon, 26 Aug 2024 11:38:37 +0000 (UTC)
+	s=arc-20240116; t=1724672340; c=relaxed/simple;
+	bh=ywlG7gciBlVm25WgKJWPbngTCj4Ecfrfrs/uJcHxBmY=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=mQcfj+a39R+m+Ku6ZUDU4tUrCw1pWTfWBqBplWuY2MnVOvQ5zj8tORoJo9qXABGMhFeePqWXkU3tcXVfl5B/Nd3i9IZhibHym5gV+PJwDYH/hdm9JUo56RW75ZNP3QItJG67nnm5xc1DAdlzbC2lnzaSRt8rD3mluaFDIACYnUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bD9YKETa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3276C5140E;
+	Mon, 26 Aug 2024 11:38:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724672317;
-	bh=m9+g823uM1dusP1KPaWMYHFgwJEgC0efPLIOipjnO9Y=;
+	s=korg; t=1724672340;
+	bh=ywlG7gciBlVm25WgKJWPbngTCj4Ecfrfrs/uJcHxBmY=;
 	h=Subject:To:Cc:From:Date:From;
-	b=iGKj4NS016g9g3U2Pu0/Rc/k5+wGg3C0C4w7VWBj9QuuI8rNwInC02et4jjFBiIOU
-	 jgeIcuXl9dL990w5fNEBGMzcRIzK8mruyfo150cx/5Posl3hgq8DwVk4pU/Fm6VghN
-	 aIrA3yCydJD5PFUNAjKgTpAWYEkgIRQcIlxRumyM=
-Subject: FAILED: patch "[PATCH] ksmbd: fix race condition between destroy_previous_session()" failed to apply to 6.6-stable tree
-To: linkinjeon@kernel.org,stfrench@microsoft.com
+	b=bD9YKETaAfFx/JEntrPpz0YxM8lyFnPIhHRDEcgGVemhAj/3b5rSvnI4b13SmHeYJ
+	 mO2Xlthi8PXnDv/LLQID0HgFUa4uNc02rmvzHvsDAqJkTk1yue5y6YwiPbVCiT2/n3
+	 Lz3V7/ek04QynkFtuuTLq3HbHwgSPrKUDVxwnEsc=
+Subject: FAILED: patch "[PATCH] drm/xe/display: Make display suspend/resume work on discrete" failed to apply to 6.10-stable tree
+To: maarten.lankhorst@linux.intel.com,rodrigo.vivi@intel.com,uma.shankar@intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 26 Aug 2024 13:38:26 +0200
-Message-ID: <2024082626-succulent-engraver-73cd@gregkh>
+Date: Mon, 26 Aug 2024 13:38:56 +0200
+Message-ID: <2024082656-unexposed-simply-c596@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,32 +53,24 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x 76e98a158b207771a6c9a0de0a60522a446a3447
+git cherry-pick -x ddf6492e0e508b7c2b42c8d5a4ac82bd38ef0dd5
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024082626-succulent-engraver-73cd@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024082656-unexposed-simply-c596@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
 
 Possible dependencies:
 
-76e98a158b20 ("ksmbd: fix race condition between destroy_previous_session() and smb2 operations()")
-d484d621d40f ("ksmbd: add durable scavenger timer")
-c8efcc786146 ("ksmbd: add support for durable handles v1/v2")
-fa9415d4024f ("ksmbd: mark SMB2_SESSION_EXPIRED to session when destroying previous session")
-c2a721eead71 ("ksmbd: lazy v2 lease break on smb2_write()")
-d47d9886aeef ("ksmbd: send v2 lease break notification for directory")
-eb547407f357 ("ksmbd: downgrade RWH lease caching state to RH for directory")
-2e450920d58b ("ksmbd: move oplock handling after unlock parent dir")
-4274a9dc6aeb ("ksmbd: separately allocate ci per dentry")
-864fb5d37163 ("ksmbd: fix possible deadlock in smb2_open")
+ddf6492e0e50 ("drm/xe/display: Make display suspend/resume work on discrete")
+e7b180b22022 ("drm/xe: Prepare display for D3Cold")
 
 thanks,
 
@@ -86,130 +78,111 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 76e98a158b207771a6c9a0de0a60522a446a3447 Mon Sep 17 00:00:00 2001
-From: Namjae Jeon <linkinjeon@kernel.org>
-Date: Sat, 17 Aug 2024 14:03:49 +0900
-Subject: [PATCH] ksmbd: fix race condition between destroy_previous_session()
- and smb2 operations()
+From ddf6492e0e508b7c2b42c8d5a4ac82bd38ef0dd5 Mon Sep 17 00:00:00 2001
+From: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Date: Tue, 6 Aug 2024 12:50:44 +0200
+Subject: [PATCH] drm/xe/display: Make display suspend/resume work on discrete
 
-If there is ->PreviousSessionId field in the session setup request,
-The session of the previous connection should be destroyed.
-During this, if the smb2 operation requests in the previous session are
-being processed, a racy issue could happen with ksmbd_destroy_file_table().
-This patch sets conn->status to KSMBD_SESS_NEED_RECONNECT to block
-incoming  operations and waits until on-going operations are complete
-(i.e. idle) before desctorying the previous session.
+We should unpin before evicting all memory, and repin after GT resume.
+This way, we preserve the contents of the framebuffers, and won't hang
+on resume due to migration engine not being restored yet.
 
-Fixes: c8efcc786146 ("ksmbd: add support for durable handles v1/v2")
-Cc: stable@vger.kernel.org # v6.6+
-Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-25040
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
+Cc: stable@vger.kernel.org # v6.8+
+Reviewed-by: Uma Shankar <uma.shankar@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240806105044.596842-3-maarten.lankhorst@linux.intel.com
+Signed-off-by: Maarten Lankhorst,,, <maarten.lankhorst@linux.intel.com>
+(cherry picked from commit cb8f81c1753187995b7a43e79c12959f14eb32d3)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 
-diff --git a/fs/smb/server/connection.c b/fs/smb/server/connection.c
-index 09e1e7771592..7889df8112b4 100644
---- a/fs/smb/server/connection.c
-+++ b/fs/smb/server/connection.c
-@@ -165,11 +165,43 @@ void ksmbd_all_conn_set_status(u64 sess_id, u32 status)
- 	up_read(&conn_list_lock);
+diff --git a/drivers/gpu/drm/xe/display/xe_display.c b/drivers/gpu/drm/xe/display/xe_display.c
+index ca4468c82078..49de4e4f8a75 100644
+--- a/drivers/gpu/drm/xe/display/xe_display.c
++++ b/drivers/gpu/drm/xe/display/xe_display.c
+@@ -283,6 +283,27 @@ static bool suspend_to_idle(void)
+ 	return false;
  }
  
--void ksmbd_conn_wait_idle(struct ksmbd_conn *conn, u64 sess_id)
-+void ksmbd_conn_wait_idle(struct ksmbd_conn *conn)
- {
- 	wait_event(conn->req_running_q, atomic_read(&conn->req_running) < 2);
- }
- 
-+int ksmbd_conn_wait_idle_sess_id(struct ksmbd_conn *curr_conn, u64 sess_id)
++static void xe_display_flush_cleanup_work(struct xe_device *xe)
 +{
-+	struct ksmbd_conn *conn;
-+	int rc, retry_count = 0, max_timeout = 120;
-+	int rcount = 1;
++	struct intel_crtc *crtc;
 +
-+retry_idle:
-+	if (retry_count >= max_timeout)
-+		return -EIO;
++	for_each_intel_crtc(&xe->drm, crtc) {
++		struct drm_crtc_commit *commit;
 +
-+	down_read(&conn_list_lock);
-+	list_for_each_entry(conn, &conn_list, conns_list) {
-+		if (conn->binding || xa_load(&conn->sessions, sess_id)) {
-+			if (conn == curr_conn)
-+				rcount = 2;
-+			if (atomic_read(&conn->req_running) >= rcount) {
-+				rc = wait_event_timeout(conn->req_running_q,
-+					atomic_read(&conn->req_running) < rcount,
-+					HZ);
-+				if (!rc) {
-+					up_read(&conn_list_lock);
-+					retry_count++;
-+					goto retry_idle;
-+				}
-+			}
++		spin_lock(&crtc->base.commit_lock);
++		commit = list_first_entry_or_null(&crtc->base.commit_list,
++						  struct drm_crtc_commit, commit_entry);
++		if (commit)
++			drm_crtc_commit_get(commit);
++		spin_unlock(&crtc->base.commit_lock);
++
++		if (commit) {
++			wait_for_completion(&commit->cleanup_done);
++			drm_crtc_commit_put(commit);
 +		}
 +	}
-+	up_read(&conn_list_lock);
-+
-+	return 0;
 +}
 +
- int ksmbd_conn_write(struct ksmbd_work *work)
+ void xe_display_pm_suspend(struct xe_device *xe, bool runtime)
  {
- 	struct ksmbd_conn *conn = work->conn;
-diff --git a/fs/smb/server/connection.h b/fs/smb/server/connection.h
-index 5c2845e47cf2..5b947175c048 100644
---- a/fs/smb/server/connection.h
-+++ b/fs/smb/server/connection.h
-@@ -145,7 +145,8 @@ extern struct list_head conn_list;
- extern struct rw_semaphore conn_list_lock;
+ 	bool s2idle = suspend_to_idle();
+@@ -300,6 +321,8 @@ void xe_display_pm_suspend(struct xe_device *xe, bool runtime)
+ 	if (!runtime)
+ 		intel_display_driver_suspend(xe);
  
- bool ksmbd_conn_alive(struct ksmbd_conn *conn);
--void ksmbd_conn_wait_idle(struct ksmbd_conn *conn, u64 sess_id);
-+void ksmbd_conn_wait_idle(struct ksmbd_conn *conn);
-+int ksmbd_conn_wait_idle_sess_id(struct ksmbd_conn *curr_conn, u64 sess_id);
- struct ksmbd_conn *ksmbd_conn_alloc(void);
- void ksmbd_conn_free(struct ksmbd_conn *conn);
- bool ksmbd_conn_lookup_dialect(struct ksmbd_conn *c);
-diff --git a/fs/smb/server/mgmt/user_session.c b/fs/smb/server/mgmt/user_session.c
-index 162a12685d2c..99416ce9f501 100644
---- a/fs/smb/server/mgmt/user_session.c
-+++ b/fs/smb/server/mgmt/user_session.c
-@@ -311,6 +311,7 @@ void destroy_previous_session(struct ksmbd_conn *conn,
- {
- 	struct ksmbd_session *prev_sess;
- 	struct ksmbd_user *prev_user;
-+	int err;
- 
- 	down_write(&sessions_table_lock);
- 	down_write(&conn->session_lock);
-@@ -325,8 +326,16 @@ void destroy_previous_session(struct ksmbd_conn *conn,
- 	    memcmp(user->passkey, prev_user->passkey, user->passkey_sz))
- 		goto out;
- 
-+	ksmbd_all_conn_set_status(id, KSMBD_SESS_NEED_RECONNECT);
-+	err = ksmbd_conn_wait_idle_sess_id(conn, id);
-+	if (err) {
-+		ksmbd_all_conn_set_status(id, KSMBD_SESS_NEED_NEGOTIATE);
-+		goto out;
-+	}
++	xe_display_flush_cleanup_work(xe);
 +
- 	ksmbd_destroy_file_table(&prev_sess->file_table);
- 	prev_sess->state = SMB2_SESSION_EXPIRED;
-+	ksmbd_all_conn_set_status(id, KSMBD_SESS_NEED_NEGOTIATE);
- 	ksmbd_launch_ksmbd_durable_scavenger();
- out:
- 	up_write(&conn->session_lock);
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index 3f4c56a10a86..cb7f487c96af 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -2213,7 +2213,7 @@ int smb2_session_logoff(struct ksmbd_work *work)
- 	ksmbd_conn_unlock(conn);
+ 	intel_dp_mst_suspend(xe);
  
- 	ksmbd_close_session_fds(work);
--	ksmbd_conn_wait_idle(conn, sess_id);
-+	ksmbd_conn_wait_idle(conn);
+ 	intel_hpd_cancel_work(xe);
+diff --git a/drivers/gpu/drm/xe/xe_pm.c b/drivers/gpu/drm/xe/xe_pm.c
+index de3b5df65e48..9a3f618d22dc 100644
+--- a/drivers/gpu/drm/xe/xe_pm.c
++++ b/drivers/gpu/drm/xe/xe_pm.c
+@@ -91,13 +91,13 @@ int xe_pm_suspend(struct xe_device *xe)
+ 	for_each_gt(gt, xe, id)
+ 		xe_gt_suspend_prepare(gt);
  
- 	/*
- 	 * Re-lookup session to validate if session is deleted
++	xe_display_pm_suspend(xe, false);
++
+ 	/* FIXME: Super racey... */
+ 	err = xe_bo_evict_all(xe);
+ 	if (err)
+ 		goto err;
+ 
+-	xe_display_pm_suspend(xe, false);
+-
+ 	for_each_gt(gt, xe, id) {
+ 		err = xe_gt_suspend(gt);
+ 		if (err) {
+@@ -151,11 +151,11 @@ int xe_pm_resume(struct xe_device *xe)
+ 
+ 	xe_irq_resume(xe);
+ 
+-	xe_display_pm_resume(xe, false);
+-
+ 	for_each_gt(gt, xe, id)
+ 		xe_gt_resume(gt);
+ 
++	xe_display_pm_resume(xe, false);
++
+ 	err = xe_bo_restore_user(xe);
+ 	if (err)
+ 		goto err;
+@@ -363,10 +363,11 @@ int xe_pm_runtime_suspend(struct xe_device *xe)
+ 	mutex_unlock(&xe->mem_access.vram_userfault.lock);
+ 
+ 	if (xe->d3cold.allowed) {
++		xe_display_pm_suspend(xe, true);
++
+ 		err = xe_bo_evict_all(xe);
+ 		if (err)
+ 			goto out;
+-		xe_display_pm_suspend(xe, true);
+ 	}
+ 
+ 	for_each_gt(gt, xe, id) {
 
 
