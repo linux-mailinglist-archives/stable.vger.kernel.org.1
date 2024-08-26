@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-70264-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70265-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8F0295F5ED
-	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 18:03:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E88D195F5F1
+	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 18:04:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 607DB282652
-	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 16:03:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 26DFF1C21DC4
+	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 16:04:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3425219AD87;
-	Mon, 26 Aug 2024 16:00:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D43FF19B3C7;
+	Mon, 26 Aug 2024 16:00:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zp98DFo9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="evCq5GcZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D586419AD71;
-	Mon, 26 Aug 2024 16:00:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 880551957F0;
+	Mon, 26 Aug 2024 16:00:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724688010; cv=none; b=B9yPngqdpZi3GS63Qw3HkcsOXdh+RClTFlbm6JFL2TV5oGgu8+eL3DLJ1SHWSxviSXbVPBd19C4STvRWDLJTbM+s8b3XSyPSewSGoPtNBwim4t65YFtrmvDVBFIS5MDX5ruPJqYh+g7HEAVZhPE48q7Lew7lAqB4Pi7Pg4+JJMA=
+	t=1724688013; cv=none; b=LAYlqwla5g0PHD1aCMKGYvsUXEZKo4ETs1TSTVSWKvI/AlSDfZoCpM8NC6ZOawAbye+uw+ZEwd+RevrrpUGREuMmdc9+2d6RO4Js5KSYfcl+FcHmbxgf70umM5PneYqRqKMCrlsuAZeVziCqewcCclHTj9eGNCKTEEr0IIiD5Rg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724688010; c=relaxed/simple;
-	bh=4r3aaWqCHbkENtzeXOKOApnAu7DESu9H4pZmgshijxE=;
+	s=arc-20240116; t=1724688013; c=relaxed/simple;
+	bh=HGVeSxEulKGiClhby5tzwf1iAGyaIukOorl21Lj+wJQ=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Sv1FAghWtqEA7L/WLO5Hj7BmlLM/Pf6KJQ2GUoQZz+eabT6dpoDksQUh6INICLIWt1dJEyb7C3UAVjvz0CWwrjxBfZ8gFBvu1qvMyafOizO6+0fHvEIoUVMfHf5R9tfl9/o6pZKpSWZajBFTJUk6Jg0g2vlKRCgoLuPwJV1esgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zp98DFo9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A8AFC4DDE5;
-	Mon, 26 Aug 2024 16:00:06 +0000 (UTC)
+	 In-Reply-To:To:Cc; b=Vmfd2ebzctSoLqQyN4lbNRAmWLosNhQ1/rfMBZdWQrVl38cMIUsiqzq0D5sc6IZuDQXz7gv19jqkcG5P1Alt3WzKE9pJZG5Ut8QEZM6r1d5fkCDaw/PS5TwgHZpvXGHHOaVLWM5UL7hIyxdyBLUuZwVBufnaNHBNew/8Av3y+vE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=evCq5GcZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09559C4DDF5;
+	Mon, 26 Aug 2024 16:00:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724688009;
-	bh=4r3aaWqCHbkENtzeXOKOApnAu7DESu9H4pZmgshijxE=;
+	s=k20201202; t=1724688013;
+	bh=HGVeSxEulKGiClhby5tzwf1iAGyaIukOorl21Lj+wJQ=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=Zp98DFo9bb35n/3cHSTNeMeGVxnTEHS7EV+o8YKd0ynH3EVHuoXoaBrWia06H7PiU
-	 tb6X4d9xFU5kwy1h1VEVvBVhyhI00lI/X45AG+JmkzUL0LkDquJnQzQsnB4SnaHORc
-	 hjwhcErvhOuSyPOxacaYFYzg2zMal/FfVtawAcRhoLu11a78GkklEI0dATDL6Cn1LH
-	 vP7HFQieeFpmKKT24kpJD6+qjg3wjsIKi3CVnojDUhFiyKY8Freq89bCgiyDGMI+V2
-	 53191dMIc+UfUYMdGL1Jp39JfZ0tTtUdCremoZ07Mywu3yYc3p2eczdObJkrE+utSc
-	 QG5ya4sQzlzpw==
+	b=evCq5GcZgDEaReWkuPWgSdSox2U+siWUvVEkYx0QbpDfLOrapnwlfeRtdvD9kZRQd
+	 cAfM4hiZb7C6E6THP7WFYW1qqIp8Wsd3e2YcqQBf2O4jsmr6AWc76i6fqkrXjMhSCL
+	 6NaLZ2QpDN7Q7CrJAc1XZCKREwuQiIFyYhK7WTlur5GN1Jar0m5C+cH/Ftbn6BLooy
+	 n42p3gkMxcrSCDYuMGMZlxqd4hVqNvVwh0y3tEoEZRYkcwF4GFMhqbx+0wf2Of31PO
+	 OqbsIYlRpJlQIEpeS9JaiAzmTqSxZ11Z2D1/B3rgVjQ69CQFK4MlMnR0gWjI/JEkVL
+	 /X75Em1wgTLHA==
 From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Mon, 26 Aug 2024 17:59:12 +0200
-Subject: [PATCH net 13/15] selftests: mptcp: join: validate event numbers
+Date: Mon, 26 Aug 2024 17:59:13 +0200
+Subject: [PATCH net 14/15] mptcp: pm: ADD_ADDR 0 is not a new address
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -52,7 +52,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240826-net-mptcp-more-pm-fix-v1-13-8cd6c87d1d6d@kernel.org>
+Message-Id: <20240826-net-mptcp-more-pm-fix-v1-14-8cd6c87d1d6d@kernel.org>
 References: <20240826-net-mptcp-more-pm-fix-v1-0-8cd6c87d1d6d@kernel.org>
 In-Reply-To: <20240826-net-mptcp-more-pm-fix-v1-0-8cd6c87d1d6d@kernel.org>
 To: mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>, 
@@ -64,185 +64,98 @@ Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, 
  "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, stable@vger.kernel.org
 X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5857; i=matttbe@kernel.org;
- h=from:subject:message-id; bh=4r3aaWqCHbkENtzeXOKOApnAu7DESu9H4pZmgshijxE=;
- b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBmzKZWEtqhIMPy0rlrqQ7EPOKWio83u65FlZukc
- 56WrFuFz+qJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZsymVgAKCRD2t4JPQmmg
- c4MgEAC736SD5JYysrCIMSPYLBXA7NMuMP3zCiyIi80m8s9LCf22FI6iFYtf+WLyuOZcsgbEcE/
- EOSg60ZWGHN64AtLrYOSX/EhiwKPqQhtxbGQd+eIJkwsgfaSLlSNbT0NB0E/CymrBaY5ehZ4Muh
- qrvqlTkfTpUJMAKQge8sKENSPOvgaoDV2W1rZC3bWww6CHsywX80rmmN1vzomgcRQjt8AsAfZq1
- q0CHvd6v7zJlTf3MBNXLpDxatE1tZsU6er3Bar3ShbrLfZ+c42VNn6ieJWD7xnOyJxm1lf6lOBd
- ouddWhaE54GGc8lxu29IV+0hI3HXH9sY9/xrsOOQgBtOWkUp/E8OAkK4DEscDu4kvx6blQWyYg7
- XSZuhgfQEO9pBhgx0uh8XokwDgaN0SmKK8oXLJ7Yv4Qm6YYYdawvIz5i3QRrWJNeIVa0M90y2bh
- /l3mCohP+4yAUsKsBtrVbjf5a4YZf7VCba/64xjltWZEIFCa1OyiSSZVhPEIl9F4qYKUF66soR3
- KPY/fPV1I4ws2aKGOs9BTGtA5zL1AnLE5vfy5FzFoRmKNQLNw0dtw7iE9BE3pprw6WS7wrkjT+7
- VbDhyWGE+cWdYoHUW/bBsjWIoBN7Hr1VyX+b2+41hwsygEz911RyteNp7wIq7Ul8x2fIyBnKw4n
- TjELY1vru11kNFg==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3331; i=matttbe@kernel.org;
+ h=from:subject:message-id; bh=HGVeSxEulKGiClhby5tzwf1iAGyaIukOorl21Lj+wJQ=;
+ b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBmzKZWN0lGhwYo2NLKz+xXFYlkCtxV23bPFves4
+ hykP412UISJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZsymVgAKCRD2t4JPQmmg
+ c18xD/0ZPHtQSOGIz6dWWtxiDac50V0cDztoUx1rkMEU3VX6gQ1d6I1UZSODUFnnSIkAQTUabHq
+ EdsQBxokbnBeURQ6tSw46/nQt7OO4F9y0ep9proja6L5t4FNHexDjrfQ7/IPMQDBbqFUkM4ZFR4
+ mRP+OgCVJn7lY5rZwVUqWwmHyBpt44Gt4Eysnter+HLrhExeJQujbZ0HvsKLL3O4lP7XaYMoqoE
+ AW3/F7LDDsQ3PJL48WtZvdJ0H7kYULFkhGuCU2NV3wj8I3dWLD81obP6oFeyXj2nhJSVZSDebsC
+ uzmtBNhx3jE3yNP0uZKfQEK+/69MtnzWUK9SxIT5/DvvHcKCLQ2R8ot/1sC5K1k9UYDBsxwt0sq
+ J5B8SdQaIP/6H/tQz8/VyBgsLVRkaSTMb6u+GT3NoClRgfeLqSZM6Obrsh1oQCuCr69u4l6zhxj
+ IvtnwtpYi8wXMSiq3Hse5HnwuNpuNcV5ZPBOTKRQSwh011RU1n3zCiUA0TplB36TDmu/vMlRV3J
+ XvGUB7E0pZP6OjOFLwVUYRPB+1XRV4MZqyFK1axmxNlAdWOQ7Mr+nIXwYqTemS+W1vPhyOOdPkg
+ kYVCebg+Np/lg2S6BmwuGbIMoU0ERxMl/pKuX+a/MI1YG5rsEBfUNFUhRNziVKj9KcgRkvYYLjP
+ DLEUdd+On8R1Ung==
 X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
  fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 
-This test extends "delete and re-add" and "delete re-add signal" to
-validate the previous commit: the number of MPTCP events are checked to
-make sure there are no duplicated or unexpected ones.
+The ADD_ADDR 0 with the address from the initial subflow should not be
+considered as a new address: this is not something new. If the host
+receives it, it simply means that the address is available again.
 
-A new helper has been introduced to easily check these events. The
-missing events have been added to the lib.
+When receiving an ADD_ADDR for the ID 0, the PM already doesn't consider
+it as new by not incrementing the 'add_addr_accepted' counter. But the
+'accept_addr' might not be set if the limit has already been reached:
+this can be bypassed in this case. But before, it is important to check
+that this ADD_ADDR for the ID 0 is for the same address as the initial
+subflow. If not, it is not something that should happen, and the
+ADD_ADDR can be ignored.
 
-The 'Fixes' tag here below is the same as the one from the previous
-commit: this patch here is not fixing anything wrong in the selftests,
-but it validates the previous fix for an issue introduced by this commit
-ID.
+Note that if an ADD_ADDR is received while there is already a subflow
+opened using the same address, this ADD_ADDR is ignored as well. It
+means that if multiple ADD_ADDR for ID 0 are received, there will not be
+any duplicated subflows created by the client.
 
-Fixes: b911c97c7dc7 ("mptcp: add netlink event support")
+Fixes: d0876b2284cf ("mptcp: add the incoming RM_ADDR support")
 Cc: stable@vger.kernel.org
 Reviewed-by: Mat Martineau <martineau@kernel.org>
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh | 74 ++++++++++++++++++++++++-
- tools/testing/selftests/net/mptcp/mptcp_lib.sh  |  4 ++
- 2 files changed, 75 insertions(+), 3 deletions(-)
+ net/mptcp/pm.c         | 4 +++-
+ net/mptcp/pm_netlink.c | 9 +++++++++
+ net/mptcp/protocol.h   | 2 ++
+ 3 files changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-index 7708ac99ccb6..597bf928e8f9 100755
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -420,12 +420,17 @@ reset_with_fail()
- 	fi
+diff --git a/net/mptcp/pm.c b/net/mptcp/pm.c
+index 3e6e0f5510bb..445a9b445971 100644
+--- a/net/mptcp/pm.c
++++ b/net/mptcp/pm.c
+@@ -226,7 +226,9 @@ void mptcp_pm_add_addr_received(const struct sock *ssk,
+ 		} else {
+ 			__MPTCP_INC_STATS(sock_net((struct sock *)msk), MPTCP_MIB_ADDADDRDROP);
+ 		}
+-	} else if (!READ_ONCE(pm->accept_addr)) {
++	/* id0 should not have a different address */
++	} else if ((addr->id == 0 && !mptcp_pm_nl_is_init_remote_addr(msk, addr)) ||
++		   (addr->id > 0 && !READ_ONCE(pm->accept_addr))) {
+ 		mptcp_pm_announce_addr(msk, addr, true);
+ 		mptcp_pm_add_addr_send_ack(msk);
+ 	} else if (mptcp_pm_schedule_work(msk, MPTCP_PM_ADD_ADDR_RECEIVED)) {
+diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
+index 591ae2ffb4dd..b5ff78464950 100644
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -760,6 +760,15 @@ static void mptcp_pm_nl_add_addr_received(struct mptcp_sock *msk)
+ 	}
  }
  
-+start_events()
++bool mptcp_pm_nl_is_init_remote_addr(struct mptcp_sock *msk,
++				     const struct mptcp_addr_info *remote)
 +{
-+	mptcp_lib_events "${ns1}" "${evts_ns1}" evts_ns1_pid
-+	mptcp_lib_events "${ns2}" "${evts_ns2}" evts_ns2_pid
++	struct mptcp_addr_info mpc_remote;
++
++	remote_address((struct sock_common *)msk, &mpc_remote);
++	return mptcp_addresses_equal(&mpc_remote, remote, remote->port);
 +}
 +
- reset_with_events()
+ void mptcp_pm_nl_addr_send_ack(struct mptcp_sock *msk)
  {
- 	reset "${1}" || return 1
- 
--	mptcp_lib_events "${ns1}" "${evts_ns1}" evts_ns1_pid
--	mptcp_lib_events "${ns2}" "${evts_ns2}" evts_ns2_pid
-+	start_events
- }
- 
- reset_with_tcp_filter()
-@@ -3333,6 +3338,36 @@ userspace_pm_chk_get_addr()
- 	fi
- }
- 
-+# $1: ns ; $2: event type ; $3: count
-+chk_evt_nr()
-+{
-+	local ns=${1}
-+	local evt_name="${2}"
-+	local exp="${3}"
-+
-+	local evts="${evts_ns1}"
-+	local evt="${!evt_name}"
-+	local count
-+
-+	evt_name="${evt_name:16}" # without MPTCP_LIB_EVENT_
-+	[ "${ns}" == "ns2" ] && evts="${evts_ns2}"
-+
-+	print_check "event ${ns} ${evt_name} (${exp})"
-+
-+	if [[ "${evt_name}" = "LISTENER_"* ]] &&
-+	   ! mptcp_lib_kallsyms_has "mptcp_event_pm_listener$"; then
-+		print_skip "event not supported"
-+		return
-+	fi
-+
-+	count=$(grep -cw "type:${evt}" "${evts}")
-+	if [ "${count}" != "${exp}" ]; then
-+		fail_test "got ${count} events, expected ${exp}"
-+	else
-+		print_ok
-+	fi
-+}
-+
- userspace_tests()
- {
- 	# userspace pm type prevents add_addr
-@@ -3575,6 +3610,7 @@ endpoint_tests()
- 
- 	if reset_with_tcp_filter "delete and re-add" ns2 10.0.3.2 REJECT OUTPUT &&
- 	   mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
-+		start_events
- 		pm_nl_set_limits $ns1 0 3
- 		pm_nl_set_limits $ns2 0 3
- 		pm_nl_add_endpoint $ns2 10.0.1.2 id 1 dev ns2eth1 flags subflow
-@@ -3626,12 +3662,28 @@ endpoint_tests()
- 
- 		mptcp_lib_kill_wait $tests_pid
- 
-+		kill_events_pids
-+		chk_evt_nr ns1 MPTCP_LIB_EVENT_LISTENER_CREATED 1
-+		chk_evt_nr ns1 MPTCP_LIB_EVENT_CREATED 1
-+		chk_evt_nr ns1 MPTCP_LIB_EVENT_ESTABLISHED 1
-+		chk_evt_nr ns1 MPTCP_LIB_EVENT_ANNOUNCED 0
-+		chk_evt_nr ns1 MPTCP_LIB_EVENT_REMOVED 4
-+		chk_evt_nr ns1 MPTCP_LIB_EVENT_SUB_ESTABLISHED 6
-+		chk_evt_nr ns1 MPTCP_LIB_EVENT_SUB_CLOSED 4
-+
-+		chk_evt_nr ns2 MPTCP_LIB_EVENT_CREATED 1
-+		chk_evt_nr ns2 MPTCP_LIB_EVENT_ESTABLISHED 1
-+		chk_evt_nr ns2 MPTCP_LIB_EVENT_ANNOUNCED 0
-+		chk_evt_nr ns2 MPTCP_LIB_EVENT_REMOVED 0
-+		chk_evt_nr ns2 MPTCP_LIB_EVENT_SUB_ESTABLISHED 6
-+		chk_evt_nr ns2 MPTCP_LIB_EVENT_SUB_CLOSED 5 # one has been closed before estab
-+
- 		chk_join_nr 6 6 6
- 		chk_rm_nr 4 4
- 	fi
- 
- 	# remove and re-add
--	if reset "delete re-add signal" &&
-+	if reset_with_events "delete re-add signal" &&
- 	   mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
- 		pm_nl_set_limits $ns1 0 3
- 		pm_nl_set_limits $ns2 3 3
-@@ -3672,6 +3724,22 @@ endpoint_tests()
- 		chk_mptcp_info subflows 3 subflows 3
- 		mptcp_lib_kill_wait $tests_pid
- 
-+		kill_events_pids
-+		chk_evt_nr ns1 MPTCP_LIB_EVENT_LISTENER_CREATED 1
-+		chk_evt_nr ns1 MPTCP_LIB_EVENT_CREATED 1
-+		chk_evt_nr ns1 MPTCP_LIB_EVENT_ESTABLISHED 1
-+		chk_evt_nr ns1 MPTCP_LIB_EVENT_ANNOUNCED 0
-+		chk_evt_nr ns1 MPTCP_LIB_EVENT_REMOVED 0
-+		chk_evt_nr ns1 MPTCP_LIB_EVENT_SUB_ESTABLISHED 4
-+		chk_evt_nr ns1 MPTCP_LIB_EVENT_SUB_CLOSED 2
-+
-+		chk_evt_nr ns2 MPTCP_LIB_EVENT_CREATED 1
-+		chk_evt_nr ns2 MPTCP_LIB_EVENT_ESTABLISHED 1
-+		chk_evt_nr ns2 MPTCP_LIB_EVENT_ANNOUNCED 5
-+		chk_evt_nr ns2 MPTCP_LIB_EVENT_REMOVED 3
-+		chk_evt_nr ns2 MPTCP_LIB_EVENT_SUB_ESTABLISHED 4
-+		chk_evt_nr ns2 MPTCP_LIB_EVENT_SUB_CLOSED 2
-+
- 		chk_join_nr 4 4 4
- 		chk_add_nr 5 5
- 		chk_rm_nr 3 2 invert
-diff --git a/tools/testing/selftests/net/mptcp/mptcp_lib.sh b/tools/testing/selftests/net/mptcp/mptcp_lib.sh
-index 438280e68434..4578a331041e 100644
---- a/tools/testing/selftests/net/mptcp/mptcp_lib.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_lib.sh
-@@ -12,10 +12,14 @@ readonly KSFT_SKIP=4
- readonly KSFT_TEST="${MPTCP_LIB_KSFT_TEST:-$(basename "${0}" .sh)}"
- 
- # These variables are used in some selftests, read-only
-+declare -rx MPTCP_LIB_EVENT_CREATED=1           # MPTCP_EVENT_CREATED
-+declare -rx MPTCP_LIB_EVENT_ESTABLISHED=2       # MPTCP_EVENT_ESTABLISHED
-+declare -rx MPTCP_LIB_EVENT_CLOSED=3            # MPTCP_EVENT_CLOSED
- declare -rx MPTCP_LIB_EVENT_ANNOUNCED=6         # MPTCP_EVENT_ANNOUNCED
- declare -rx MPTCP_LIB_EVENT_REMOVED=7           # MPTCP_EVENT_REMOVED
- declare -rx MPTCP_LIB_EVENT_SUB_ESTABLISHED=10  # MPTCP_EVENT_SUB_ESTABLISHED
- declare -rx MPTCP_LIB_EVENT_SUB_CLOSED=11       # MPTCP_EVENT_SUB_CLOSED
-+declare -rx MPTCP_LIB_EVENT_SUB_PRIORITY=13     # MPTCP_EVENT_SUB_PRIORITY
- declare -rx MPTCP_LIB_EVENT_LISTENER_CREATED=15 # MPTCP_EVENT_LISTENER_CREATED
- declare -rx MPTCP_LIB_EVENT_LISTENER_CLOSED=16  # MPTCP_EVENT_LISTENER_CLOSED
- 
+ 	struct mptcp_subflow_context *subflow;
+diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
+index 7e934ce0e4ff..b6100cc23cf4 100644
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -993,6 +993,8 @@ void mptcp_pm_add_addr_received(const struct sock *ssk,
+ void mptcp_pm_add_addr_echoed(struct mptcp_sock *msk,
+ 			      const struct mptcp_addr_info *addr);
+ void mptcp_pm_add_addr_send_ack(struct mptcp_sock *msk);
++bool mptcp_pm_nl_is_init_remote_addr(struct mptcp_sock *msk,
++				     const struct mptcp_addr_info *remote);
+ void mptcp_pm_nl_addr_send_ack(struct mptcp_sock *msk);
+ void mptcp_pm_rm_addr_received(struct mptcp_sock *msk,
+ 			       const struct mptcp_rm_list *rm_list);
 
 -- 
 2.45.2
