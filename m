@@ -1,167 +1,127 @@
-Return-Path: <stable+bounces-70212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70213-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F209A95F10C
-	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 14:15:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 103D195F130
+	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 14:21:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5E4B7B22E85
-	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 12:15:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 42E8D1C21C37
+	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 12:21:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B493192D6F;
-	Mon, 26 Aug 2024 12:11:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA311140369;
+	Mon, 26 Aug 2024 12:21:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="NN4pM6e7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="izHqe/T5"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B81A1922C5;
-	Mon, 26 Aug 2024 12:11:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CAFB433AD
+	for <stable@vger.kernel.org>; Mon, 26 Aug 2024 12:21:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724674280; cv=none; b=Xme7y8mlYpCVowWshMbKoe7siQDmufEUV97VLTE6miH/7DAjlC3bTRcNbmlznob6mDmZxEb1ofBX1fubr/pCswY7+VZ60R0p893IYGvsidPoDpFZwm3jhXrGWJ1yQXuPFpoyRAw3nT73amIDS8IYtL9Hcaoryughba6qo1cu19M=
+	t=1724674912; cv=none; b=WyRAO1ygL/8gpG/lu6Z4PgKJ0347369cE9jNoF7UdJwUGfxBIP8waCdgOIo7xF8gwJfUQtLJAJliGr+H7/Cgt6x1m4UFn+mL9c8OEjoGgoxVRyhKmYoOZWptj9XJY6PrphMJ+PvijqUQhKqGQ6klLqIUPVSR15aP3+6ISqUrsPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724674280; c=relaxed/simple;
-	bh=2LR4QjIA/PkoKFG4ghzl7hwL4NmodTxNSXJuhMxmrVk=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=Z7WNwSS2c1G0KNB2dW/jaZydJIcJqjYuSELWsN3x5FC/stAcb7XruNCbwqMWAuXIfgYBO+IDxKszuphAPwo6nOXVwcSg+/P8PTkm26hMDzXiVqsihlM4x3gK7z3xEvgavMcxKoS49ksxiHfWpsasEhX6RrJCeDwD8fnMnG1PFcQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=NN4pM6e7; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
-Received: from pps.filterd (m0279862.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47Q8MOnP017688;
-	Mon, 26 Aug 2024 12:11:11 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:date:from:in-reply-to:message-id:references:subject:to; s=
-	qcppdkim1; bh=X4BCi4GwH41+U+y5D6WUKqWUYYIsRuvsCMc7bjn8fTk=; b=NN
-	4pM6e7pcboVLpH6Wb6pTThprZaTcxU0+vfjPtZZouSAe0wiTHvjp0EcdopXjsrcr
-	DjVjJNd2v02PXPM3UTvdKf/7VQ61D6CjN4QWpU0UFuVYbNmhr/5/hFjIvqhdBVOj
-	gVIWPgVAcSYgld0U1D7pnQw9cLlIl3uUcqGKa/v3Wab+ZbMw+TgNLiXeUVwu70mi
-	ryZ150DCOK51W/+wvxdkzVg10Qcs65tC3Lj61ZXdNYGEWKiYFu2R0AArBy4krlr3
-	zKRWzZ4K95hxXdF65DV9o/f44FB77dnLc0kc4ufQtw6ySRKPt/yveQbqYXJe/mW5
-	U8s9n5tJ035+4Ts73fgw==
-Received: from apblrppmta02.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.18.19])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4179a1uhjd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 26 Aug 2024 12:11:10 +0000 (GMT)
-Received: from pps.filterd (APBLRPPMTA02.qualcomm.com [127.0.0.1])
-	by APBLRPPMTA02.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTP id 47QCB7Mn023402;
-	Mon, 26 Aug 2024 12:11:07 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by APBLRPPMTA02.qualcomm.com (PPS) with ESMTPS id 4178kkjan7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Mon, 26 Aug 2024 12:11:07 +0000
-Received: from APBLRPPMTA02.qualcomm.com (APBLRPPMTA02.qualcomm.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 47QCB7nU023396;
-	Mon, 26 Aug 2024 12:11:07 GMT
-Received: from hu-sgudaval-hyd.qualcomm.com (hu-msarkar-hyd.qualcomm.com [10.213.111.194])
-	by APBLRPPMTA02.qualcomm.com (PPS) with ESMTP id 47QCB75O023393;
-	Mon, 26 Aug 2024 12:11:07 +0000
-Received: by hu-sgudaval-hyd.qualcomm.com (Postfix, from userid 3891782)
-	id 66C5FB63; Mon, 26 Aug 2024 17:41:06 +0530 (+0530)
-From: Mrinmay Sarkar <quic_msarkar@quicinc.com>
-To: manivannan.sadhasivam@linaro.org, fancer.lancer@gmail.com,
-        vkoul@kernel.org
-Cc: quic_shazhuss@quicinc.com, quic_nitegupt@quicinc.com,
-        quic_ramkri@quicinc.com, quic_nayiluri@quicinc.com,
-        quic_krichai@quicinc.com, quic_vbadigan@quicinc.com,
-        Mrinmay Sarkar <quic_msarkar@quicinc.com>, stable@vger.kernel.org,
-        Cai Huoqing <cai.huoqing@linux.dev>, dmaengine@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v4 2/2] dmaengine: dw-edma: Do not enable watermark interrupts for HDMA
-Date: Mon, 26 Aug 2024 17:41:01 +0530
-Message-Id: <1724674261-3144-3-git-send-email-quic_msarkar@quicinc.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1724674261-3144-1-git-send-email-quic_msarkar@quicinc.com>
-References: <1724674261-3144-1-git-send-email-quic_msarkar@quicinc.com>
-X-QCInternal: smtphost
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-GUID: CWL01elRRLT20lk9S5NS2KdGYT3U3BpE
-X-Proofpoint-ORIG-GUID: CWL01elRRLT20lk9S5NS2KdGYT3U3BpE
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-08-26_08,2024-08-26_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 bulkscore=0
- phishscore=0 adultscore=0 mlxscore=0 lowpriorityscore=0 mlxlogscore=467
- spamscore=0 impostorscore=0 malwarescore=0 priorityscore=1501
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2407110000 definitions=main-2408260095
+	s=arc-20240116; t=1724674912; c=relaxed/simple;
+	bh=F7BWTktRPTNjZE6SDSRAk1ta1OIxDbdVr+RIzM5Qs5g=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=pr9r0jd/xDHgPjQzLpBv+V0w6neWJGV54iGc6UwZBFUuYbW3oA7FjDfsaHg07CKlDVYsbjcG5QKD1qj+WlQP5Il0GID1SQsbBKRgaQ5m+1NcZubcQaKF2TpD8KFEcQ6R1Z2IDm9o+rx1e9PxX0ayIq+aEg6Xf/EChZ//ODvbEeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=izHqe/T5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79BD8C4DDE7;
+	Mon, 26 Aug 2024 12:21:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1724674912;
+	bh=F7BWTktRPTNjZE6SDSRAk1ta1OIxDbdVr+RIzM5Qs5g=;
+	h=Subject:To:Cc:From:Date:From;
+	b=izHqe/T5v3hEnz0fbXecMsDfi+VZtXMVAbgeJQc9tgztRkSCx67ybaeQJ2ZfldH+z
+	 VuC96lF+lAPpBeUEeTOVNGg/UIUkkpyxxw8oQKu7eHkH0cRYAKPqWj9KTzlRa1pxWv
+	 AvKY5pFZvq2hvKamphC/uenx1/mXL0G9ZlO5nf0I=
+Subject: FAILED: patch "[PATCH] drm/amdgpu/sdma5.2: limit wptr workaround to sdma 5.2.1" failed to apply to 6.6-stable tree
+To: alexander.deucher@amd.com,ruijing.dong@amd.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 26 Aug 2024 14:21:48 +0200
+Message-ID: <2024082648-curry-rack-be6b@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-DW_HDMA_V0_LIE and DW_HDMA_V0_RIE are initialized as BIT(3) and BIT(4)
-respectively in dw_hdma_control enum. But as per HDMA register these
-bits are corresponds to LWIE and RWIE bit i.e local watermark interrupt
-enable and remote watermarek interrupt enable. In linked list mode LWIE
-and RWIE bits only enable the local and remote watermark interrupt.
 
-Since the watermark interrupts are not used but enabled, this leads to
-spurious interrupts getting generated. So remove the code that enables
-them to avoid generating spurious watermark interrupts.
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-And also rename DW_HDMA_V0_LIE to DW_HDMA_V0_LWIE and DW_HDMA_V0_RIE to
-DW_HDMA_V0_RWIE as there is no LIE and RIE bits in HDMA and those bits
-are corresponds to LWIE and RWIE bits.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Fixes: e74c39573d35 ("dmaengine: dw-edma: Add support for native HDMA")
-cc: stable@vger.kernel.org
-Signed-off-by: Mrinmay Sarkar <quic_msarkar@quicinc.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
----
- drivers/dma/dw-edma/dw-hdma-v0-core.c | 17 +++--------------
- 1 file changed, 3 insertions(+), 14 deletions(-)
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x e3e4bf58bad1576ac732a1429f53e3d4bfb82b4b
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024082648-curry-rack-be6b@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
-diff --git a/drivers/dma/dw-edma/dw-hdma-v0-core.c b/drivers/dma/dw-edma/dw-hdma-v0-core.c
-index 2addaca..e3f8db4 100644
---- a/drivers/dma/dw-edma/dw-hdma-v0-core.c
-+++ b/drivers/dma/dw-edma/dw-hdma-v0-core.c
-@@ -17,8 +17,8 @@ enum dw_hdma_control {
- 	DW_HDMA_V0_CB					= BIT(0),
- 	DW_HDMA_V0_TCB					= BIT(1),
- 	DW_HDMA_V0_LLP					= BIT(2),
--	DW_HDMA_V0_LIE					= BIT(3),
--	DW_HDMA_V0_RIE					= BIT(4),
-+	DW_HDMA_V0_LWIE					= BIT(3),
-+	DW_HDMA_V0_RWIE					= BIT(4),
- 	DW_HDMA_V0_CCS					= BIT(8),
- 	DW_HDMA_V0_LLE					= BIT(9),
- };
-@@ -195,25 +195,14 @@ static void dw_hdma_v0_write_ll_link(struct dw_edma_chunk *chunk,
- static void dw_hdma_v0_core_write_chunk(struct dw_edma_chunk *chunk)
- {
- 	struct dw_edma_burst *child;
--	struct dw_edma_chan *chan = chunk->chan;
- 	u32 control = 0, i = 0;
--	int j;
- 
- 	if (chunk->cb)
- 		control = DW_HDMA_V0_CB;
- 
--	j = chunk->bursts_alloc;
--	list_for_each_entry(child, &chunk->burst->list, list) {
--		j--;
--		if (!j) {
--			control |= DW_HDMA_V0_LIE;
--			if (!(chan->dw->chip->flags & DW_EDMA_CHIP_LOCAL))
--				control |= DW_HDMA_V0_RIE;
--		}
--
-+	list_for_each_entry(child, &chunk->burst->list, list)
- 		dw_hdma_v0_write_ll_data(chunk, i++, control, child->sz,
- 					 child->sar, child->dar);
--	}
- 
- 	control = DW_HDMA_V0_LLP | DW_HDMA_V0_TCB;
- 	if (!chunk->cb)
--- 
-2.7.4
+Possible dependencies:
+
+e3e4bf58bad1 ("drm/amdgpu/sdma5.2: limit wptr workaround to sdma 5.2.1")
+a03ebf116303 ("drm/amdgpu/sdma5.2: Update wptr registers as well as doorbell")
+94b1e028e15c ("drm/amdgpu/sdma5.2: add begin/end_use ring callbacks")
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From e3e4bf58bad1576ac732a1429f53e3d4bfb82b4b Mon Sep 17 00:00:00 2001
+From: Alex Deucher <alexander.deucher@amd.com>
+Date: Wed, 14 Aug 2024 10:28:24 -0400
+Subject: [PATCH] drm/amdgpu/sdma5.2: limit wptr workaround to sdma 5.2.1
+
+The workaround seems to cause stability issues on other
+SDMA 5.2.x IPs.
+
+Fixes: a03ebf116303 ("drm/amdgpu/sdma5.2: Update wptr registers as well as doorbell")
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3556
+Acked-by: Ruijing Dong <ruijing.dong@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 2dc3851ef7d9c5439ea8e9623fc36878f3b40649)
+Cc: stable@vger.kernel.org
+
+diff --git a/drivers/gpu/drm/amd/amdgpu/sdma_v5_2.c b/drivers/gpu/drm/amd/amdgpu/sdma_v5_2.c
+index af1e90159ce3..2e72d445415f 100644
+--- a/drivers/gpu/drm/amd/amdgpu/sdma_v5_2.c
++++ b/drivers/gpu/drm/amd/amdgpu/sdma_v5_2.c
+@@ -176,14 +176,16 @@ static void sdma_v5_2_ring_set_wptr(struct amdgpu_ring *ring)
+ 		DRM_DEBUG("calling WDOORBELL64(0x%08x, 0x%016llx)\n",
+ 				ring->doorbell_index, ring->wptr << 2);
+ 		WDOORBELL64(ring->doorbell_index, ring->wptr << 2);
+-		/* SDMA seems to miss doorbells sometimes when powergating kicks in.
+-		 * Updating the wptr directly will wake it. This is only safe because
+-		 * we disallow gfxoff in begin_use() and then allow it again in end_use().
+-		 */
+-		WREG32(sdma_v5_2_get_reg_offset(adev, ring->me, mmSDMA0_GFX_RB_WPTR),
+-		       lower_32_bits(ring->wptr << 2));
+-		WREG32(sdma_v5_2_get_reg_offset(adev, ring->me, mmSDMA0_GFX_RB_WPTR_HI),
+-		       upper_32_bits(ring->wptr << 2));
++		if (amdgpu_ip_version(adev, SDMA0_HWIP, 0) == IP_VERSION(5, 2, 1)) {
++			/* SDMA seems to miss doorbells sometimes when powergating kicks in.
++			 * Updating the wptr directly will wake it. This is only safe because
++			 * we disallow gfxoff in begin_use() and then allow it again in end_use().
++			 */
++			WREG32(sdma_v5_2_get_reg_offset(adev, ring->me, mmSDMA0_GFX_RB_WPTR),
++			       lower_32_bits(ring->wptr << 2));
++			WREG32(sdma_v5_2_get_reg_offset(adev, ring->me, mmSDMA0_GFX_RB_WPTR_HI),
++			       upper_32_bits(ring->wptr << 2));
++		}
+ 	} else {
+ 		DRM_DEBUG("Not using doorbell -- "
+ 				"mmSDMA%i_GFX_RB_WPTR == 0x%08x "
 
 
