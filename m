@@ -1,152 +1,100 @@
-Return-Path: <stable+bounces-70146-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70147-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E480A95ECAF
-	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 11:07:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4D2095ECC2
+	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 11:08:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F0D51B21B1F
-	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 09:07:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9116028165A
+	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 09:08:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB6AA13BACC;
-	Mon, 26 Aug 2024 09:07:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4923B13D2A9;
+	Mon, 26 Aug 2024 09:08:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="IBu13QF7"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NLbAqP7f"
 X-Original-To: stable@vger.kernel.org
-Received: from out162-62-57-252.mail.qq.com (out162-62-57-252.mail.qq.com [162.62.57.252])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5269A84047;
-	Mon, 26 Aug 2024 09:07:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.252
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1330E84A4D
+	for <stable@vger.kernel.org>; Mon, 26 Aug 2024 09:08:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724663226; cv=none; b=CfzNfPPxcwypP0UTsoaZBthKvVBeBON61hCMNyv7YbA9NMqH2K/RWXZrO9CQXVx6XZ2T6wnejP0vksFOBhzzfIF/tWwRTcpfGauZRb31BKfzLaI6f5K6BYhTPmLifdT4KsxuZugeInvLAT6a5nB09DFE7fsnw+s8mOYm9HH2CZc=
+	t=1724663334; cv=none; b=Gs0vXwf82WidxZSyd/BdlPq/9L4iOZJz2rq0eYfFSa3g6hRb6pS9H1u2sj6oUJF1CXDQCAJ9jnAynMFw5qRDnIvs9a0WpJVF5Z4ewqFudzMXCa1NW8e6jwn176ehsW7I6hKA1c1CiQdtUmnZaZ9mEOAdpn9mi37UjdlJiIO9v0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724663226; c=relaxed/simple;
-	bh=t6E3YyEOBf2I57/ODAt4w7a2zijQZIz76U604qLgUMY=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=JhNcoSYxYrLSQUGmE86EiNwSp32Gmmog9x+y96kUBd+c2LIwOe3gQoT3K64akiodngQu7WhfU4G8X4v1Is2wOuv32r5CfgwkX5eNSiLeCeAhgiwn4xIwCkGfLintSk9soZUAOL85FTlgRY90CcAOlHaFMD62cUtsNLRaOeIK5D8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=IBu13QF7; arc=none smtp.client-ip=162.62.57.252
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1724663212; bh=k3xkOZZAZTnOpfeg6oi7bd7/Sd8fmJuPwEsMntl666A=;
-	h=From:To:Cc:Subject:Date;
-	b=IBu13QF7AOChkMKbr8vaEpYcQbvEyVozEVzH2duHz+GjFyEOnX32/N435991eIBeU
-	 RyWicEkoIKje+Eia2AqHsxMU7HZHwObW/tE5QmcBOX+6ifo/Hkth83VLbppCUUW48Q
-	 oG/N8IotCGwBRsCuB8mtfM6mRPePwFN/47/11mk0=
-Received: from iZ2ze0ccts00nkjy9wuyo6Z.localdomain ([101.201.76.96])
-	by newxmesmtplogicsvrszc13-0.qq.com (NewEsmtp) with SMTP
-	id EA538643; Mon, 26 Aug 2024 16:58:37 +0800
-X-QQ-mid: xmsmtpt1724662717tlpv04lxd
-Message-ID: <tencent_13F0C81B16C09CC67E961B5E22F78CC72805@qq.com>
-X-QQ-XMAILINFO: MGJQUKeBeYZp2roOmIFYtI+BoU9OKKs64nMbZsBJuzJeeiPBtb738Cfrm+A6/N
-	 rcmEVG8H/6X+E9+8NYyPrTZ78Fd5mvCfAZvJ57jV0YlFtXtjwvs04y1XPFHFVc2YmDspKHll1hTL
-	 cxSf71xejKyDhn23SxIkk4eTBxfaN26CrbVf8pW66B/vNAJDrqw+7dQHXDw2G/4Vn9fQq39z58CF
-	 H0wlPTJA5NyPiAC6XhtJ4hfXcMuA5bcnCejQ58vrxaVzWWAJeJTmmfWQ54H8KzqvJlX6vhV2wTb8
-	 SRR8wsaIV8rURgxKuqqfSUih53MIOukBgSwhEfGmaugMqBGg3hIqyf4F9qNpOF0cbmlY/d4GJGhD
-	 cbq4s5W8ueqmVxonhqlKfMh1Bax1x8OBoSbx7ThRVV0edxCd4KgGsbXdkPoQs40Uy2UD6455WzWY
-	 S/6ylP02h90TEm4K5F6unHVs7CyF0SBlCcSGS5wAIdXSiY8jqtg59MNi1b7VNzkQHHwJQdqEkMjQ
-	 jrjfnSmOzM6J3/kX3vWlBraCztKeVNXN4dImiVxFu1+KmF/2NQUQOfnPjertnQQJp23BYdhx3Yla
-	 j5z4BQdiJIWre+ZhgfpD64AFa+qUTCR8khdHJOWo4lb4TKqJtmo7sG6koEXbfZUj+iyHRxrIUUlF
-	 MN77HX+DsEaY8Tyy/0idfF/UQZ56katFHzH82GNCxZP6Jst/TvLVy7igFLLZwNZB3ErmLZZlnUwD
-	 wlhJNAmrGdC/7hOiSqqaai5Zja4P2Azq3urm/j2yyxpIsWV6GjhcmZc/b1AZcIpDn566FoMyjgg6
-	 KtN8DyiI9cmGi2WGumt4C5dQOXI5McbbimphRFnpE2E+JCEHsLyFbk902yLCT31fAqM9cbFrv7xM
-	 FsO4yBNRrXxkJiOd8uk9jpS2pbwqIRxatWsKHveHKra2ivAPq2MGpFvTo9dTGgtvaICWy4++5iNB
-	 OFvu8jLTg+iMwKHCOaK5A65KIXaJbsY8VHiZzxGtI=
-X-QQ-XMRINFO: MPJ6Tf5t3I/ycC2BItcBVIA=
-From: Yanhao Dong <570260087@qq.com>
-To: rafael@kernel.org
-Cc: daniel.lezcano@linaro.org,
-	linux-pm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	ysaydong@gmail.com
-Subject: [PATCH] Fixes: 496d0a648509 ("cpuidle: Fix guest_halt_poll_ns failed to take effect when setting guest_halt_poll_allow_shrink=N")
-Date: Mon, 26 Aug 2024 16:58:36 +0800
-X-OQ-MSGID: <20240826085836.530152-1-570260087@qq.com>
-X-Mailer: git-send-email 2.43.5
+	s=arc-20240116; t=1724663334; c=relaxed/simple;
+	bh=mo86u66iaC6q0DfdJ4Ualr5PP0qrmGeeZ7lxltSheQM=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=RRHFZPNuUMBf7szb1CHHVFNf5LK0j6xzkng3gyXRA4Cz+EFK/zQfDjhQsCi+X/sGHOBfo0lreckICmPpS3454AMHXzIJgCtoj/vf+Law33iGB81cXPerNwNcJd6heiFeux0LV8ZMf5y7jTTaV9zsQB501VL1k0OCVZ/Uu0VB0Ok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NLbAqP7f; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1724663332; x=1756199332;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=mo86u66iaC6q0DfdJ4Ualr5PP0qrmGeeZ7lxltSheQM=;
+  b=NLbAqP7fLMJMedHeOPfahBXxuFQ1nUB5O0VM1dD8N1bMjLa8x1w0MyEW
+   PsPFJYFDie1nH98YVyZe2HQXiy/RvAJ6WiWXtF0MALRPD8Ka3Ms2PLSTC
+   vFr9XCA7kydWzHQJC2CvgK+ofc+VRFI5UAEbMLjPmD/TOYhpZ0Ku9sWZ0
+   R5VwCuUSQcneXzviwSj020m7ZNPDYwAZbOxVVazBkgAZc4S4CGvcD8eKz
+   leOuLNO8xcfIRcieaFXqTDEL+esdOaIbGRGWYuCbdqFicHUZZBHISzyMu
+   sKDnNI+3HNNEramgL6mYsBwDu4WHHeOCYOyC2psglgGHgWI7gM0OvUPN4
+   g==;
+X-CSE-ConnectionGUID: 1nX4XToHQBaILejyzX+pWw==
+X-CSE-MsgGUID: yGmFb6KrRkeT+gILH6L6Rg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11175"; a="34482468"
+X-IronPort-AV: E=Sophos;i="6.10,177,1719903600"; 
+   d="scan'208";a="34482468"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2024 02:08:51 -0700
+X-CSE-ConnectionGUID: 8bHituS5Sn23q+fEBXBi/A==
+X-CSE-MsgGUID: oJIngb+ZQ5OpOjp/QDNsmQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,177,1719903600"; 
+   d="scan'208";a="63165096"
+Received: from lkp-server01.sh.intel.com (HELO 9a732dc145d3) ([10.239.97.150])
+  by orviesa008.jf.intel.com with ESMTP; 26 Aug 2024 02:08:51 -0700
+Received: from kbuild by 9a732dc145d3 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1siViS-000GnU-0h;
+	Mon, 26 Aug 2024 09:08:48 +0000
+Date: Mon, 26 Aug 2024 17:07:53 +0800
+From: kernel test robot <lkp@intel.com>
+To: Yanhao Dong <570260087@qq.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH] Fixes: 496d0a648509 ("cpuidle: Fix guest_halt_poll_ns
+ failed to take effect when setting guest_halt_poll_allow_shrink=N")
+Message-ID: <ZsxF6Z_numqODL96@b85386817db7>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <tencent_13F0C81B16C09CC67E961B5E22F78CC72805@qq.com>
 
-From: ysay <ysaydong@gmail.com>
+Hi,
 
-When guest_halt_poll_allow_shrink=N,setting guest_halt_poll_ns
-from a large value to 0 does not reset the CPU polling time,
-despite guest_halt_poll_ns being intended as a mandatory maximum
-time limit.
+Thanks for your patch.
 
-The problem was situated in the adjust_poll_limit() within
-drivers/cpuidle/governors/haltpoll.c:79.
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-Specifically, when guest_halt_poll_allow_shrink was set to N,
-resetting guest_halt_poll_ns to zero did not lead to executing any
-section of code that adjusts dev->poll_limit_ns.
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
 
-The issue has been resolved by relocating the check and assignment for
-dev->poll_limit_ns outside of the conditional block.
-This ensures that every modification to guest_halt_poll_ns
-properly influences the CPU polling time.
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH] Fixes: 496d0a648509 ("cpuidle: Fix guest_halt_poll_ns failed to take effect when setting guest_halt_poll_allow_shrink=N")
+Link: https://lore.kernel.org/stable/tencent_13F0C81B16C09CC67E961B5E22F78CC72805%40qq.com
 
-Signed-off-by: ysay <ysaydong@gmail.com>
----
- drivers/cpuidle/governors/haltpoll.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/cpuidle/governors/haltpoll.c b/drivers/cpuidle/governors/haltpoll.c
-index 663b7f164..99c6260d7 100644
---- a/drivers/cpuidle/governors/haltpoll.c
-+++ b/drivers/cpuidle/governors/haltpoll.c
-@@ -78,26 +78,22 @@ static int haltpoll_select(struct cpuidle_driver *drv,
- 
- static void adjust_poll_limit(struct cpuidle_device *dev, u64 block_ns)
- {
--	unsigned int val;
-+	unsigned int val = dev->poll_limit_ns;
- 
- 	/* Grow cpu_halt_poll_us if
- 	 * cpu_halt_poll_us < block_ns < guest_halt_poll_us
- 	 */
- 	if (block_ns > dev->poll_limit_ns && block_ns <= guest_halt_poll_ns) {
--		val = dev->poll_limit_ns * guest_halt_poll_grow;
-+		val *= guest_halt_poll_grow;
- 
- 		if (val < guest_halt_poll_grow_start)
- 			val = guest_halt_poll_grow_start;
--		if (val > guest_halt_poll_ns)
--			val = guest_halt_poll_ns;
- 
- 		trace_guest_halt_poll_ns_grow(val, dev->poll_limit_ns);
--		dev->poll_limit_ns = val;
- 	} else if (block_ns > guest_halt_poll_ns &&
- 		   guest_halt_poll_allow_shrink) {
- 		unsigned int shrink = guest_halt_poll_shrink;
- 
--		val = dev->poll_limit_ns;
- 		if (shrink == 0) {
- 			val = 0;
- 		} else {
-@@ -108,8 +104,12 @@ static void adjust_poll_limit(struct cpuidle_device *dev, u64 block_ns)
- 		}
- 
- 		trace_guest_halt_poll_ns_shrink(val, dev->poll_limit_ns);
--		dev->poll_limit_ns = val;
- 	}
-+
-+	if (val > guest_halt_poll_ns)
-+		val = guest_halt_poll_ns;
-+
-+	dev->poll_limit_ns = val;
- }
- 
- /**
 -- 
-2.43.5
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
