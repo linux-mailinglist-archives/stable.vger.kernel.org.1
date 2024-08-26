@@ -1,151 +1,152 @@
-Return-Path: <stable+bounces-70145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70146-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BF2595EC66
-	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 10:53:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E480A95ECAF
+	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 11:07:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AE20AB21948
-	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 08:53:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F0D51B21B1F
+	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 09:07:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60E9713BC3F;
-	Mon, 26 Aug 2024 08:53:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB6AA13BACC;
+	Mon, 26 Aug 2024 09:07:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mork.no header.i=@mork.no header.b="DWXzhIlM"
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="IBu13QF7"
 X-Original-To: stable@vger.kernel.org
-Received: from dilbert.mork.no (dilbert.mork.no [65.108.154.246])
+Received: from out162-62-57-252.mail.qq.com (out162-62-57-252.mail.qq.com [162.62.57.252])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2E1F286A8;
-	Mon, 26 Aug 2024 08:52:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.108.154.246
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5269A84047;
+	Mon, 26 Aug 2024 09:07:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.252
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724662381; cv=none; b=VEywyoLKWEmO8t7Y0T8Nr5ILNKRLKqr/r4N1wp/sBo/X1b6OOjKocwUdxC+/OiKtciTOoq0TYH5QYaFAC0IETC9iOfKojhR7pgPZM7uN0vDczuOgOFMEGk4rZ0a5J3SB7AVLwPm6mv2FNJVCHxwRzlYemeUJe6VXVlwdz8tqCrY=
+	t=1724663226; cv=none; b=CfzNfPPxcwypP0UTsoaZBthKvVBeBON61hCMNyv7YbA9NMqH2K/RWXZrO9CQXVx6XZ2T6wnejP0vksFOBhzzfIF/tWwRTcpfGauZRb31BKfzLaI6f5K6BYhTPmLifdT4KsxuZugeInvLAT6a5nB09DFE7fsnw+s8mOYm9HH2CZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724662381; c=relaxed/simple;
-	bh=bpIxq9NrCbXHQ9xPNW9tXjBkteCqJ1McbEbD661SmJA=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=Nk9NClzX536iH+xXL4wAVeTh1F87ivXe7x/3+aZ4wpmwJl4L7H0sMFQ/KduC/22TWvNJijl6YLMGf/DwouAHJdcUbgMsB10r5xufk67BXppewYReefaaasE3noLrRj+rqxDBJxk4Cpae1CVouYVlyZWdtv71EIUq+BZIoXigrHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mork.no; spf=pass smtp.mailfrom=miraculix.mork.no; dkim=pass (1024-bit key) header.d=mork.no header.i=@mork.no header.b=DWXzhIlM; arc=none smtp.client-ip=65.108.154.246
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mork.no
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=miraculix.mork.no
-Received: from canardo.dyn.mork.no ([IPv6:2a01:799:10da:6900:0:0:0:1])
-	(authenticated bits=0)
-	by dilbert.mork.no (8.17.1.9/8.17.1.9) with ESMTPSA id 47Q8qaPw3895640
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
-	Mon, 26 Aug 2024 09:52:38 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mork.no; s=b;
-	t=1724662356; bh=T9Q3iY+bAR2dVrgAcNBgedK8JUDZWWxI1K8yXbLI9hY=;
-	h=From:To:Cc:Subject:References:Date:Message-ID:From;
-	b=DWXzhIlMXVwunwVJX9vkCXJ7TN0grgE3yZ2PEAzq5vDK6KKfz7AkvxutBX97gul8M
-	 1FZuZcy9lB8ou/zndcu7og6SstHPXe7cPK5lmzxgcEvnxJ1aJGPBuSCbC1mZgrVe1y
-	 BP/wZBp9deeAwjr+KXIvCjzrhpODE2sWGZ5dGcKM=
-Received: from miraculix.mork.no ([IPv6:2a01:799:10da:690a:d43d:737:5289:b66f])
-	(authenticated bits=0)
-	by canardo.dyn.mork.no (8.17.1.9/8.17.1.9) with ESMTPSA id 47Q8qaxU2415343
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
-	Mon, 26 Aug 2024 10:52:36 +0200
-Received: (nullmailer pid 1588942 invoked by uid 1000);
-	Mon, 26 Aug 2024 08:52:36 -0000
-From: =?utf-8?Q?Bj=C3=B8rn_Mork?= <bjorn@mork.no>
-To: "Maciej W. Rozycki" <macro@orcam.me.uk>
-Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        linux-kernel@vger.kernel.org,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH] MIPS: fw: Gracefully handle unknown firmware protocols
-Organization: m
-References: <20240824144133.1464835-1-bjorn@mork.no>
-	<7f0602dc-8a47-46cb-a12f-09afc082b48f@app.fastmail.com>
-	<87o75gy85b.fsf@miraculix.mork.no>
-	<alpine.DEB.2.21.2408251612500.30766@angie.orcam.me.uk>
-	<87jzg4y57g.fsf@miraculix.mork.no>
-	<alpine.DEB.2.21.2408252029130.30766@angie.orcam.me.uk>
-Date: Mon, 26 Aug 2024 10:52:36 +0200
-In-Reply-To: <alpine.DEB.2.21.2408252029130.30766@angie.orcam.me.uk> (Maciej
-	W. Rozycki's message of "Sun, 25 Aug 2024 20:59:26 +0100 (BST)")
-Message-ID: <87cylvy8bv.fsf@miraculix.mork.no>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1724663226; c=relaxed/simple;
+	bh=t6E3YyEOBf2I57/ODAt4w7a2zijQZIz76U604qLgUMY=;
+	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=JhNcoSYxYrLSQUGmE86EiNwSp32Gmmog9x+y96kUBd+c2LIwOe3gQoT3K64akiodngQu7WhfU4G8X4v1Is2wOuv32r5CfgwkX5eNSiLeCeAhgiwn4xIwCkGfLintSk9soZUAOL85FTlgRY90CcAOlHaFMD62cUtsNLRaOeIK5D8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=IBu13QF7; arc=none smtp.client-ip=162.62.57.252
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1724663212; bh=k3xkOZZAZTnOpfeg6oi7bd7/Sd8fmJuPwEsMntl666A=;
+	h=From:To:Cc:Subject:Date;
+	b=IBu13QF7AOChkMKbr8vaEpYcQbvEyVozEVzH2duHz+GjFyEOnX32/N435991eIBeU
+	 RyWicEkoIKje+Eia2AqHsxMU7HZHwObW/tE5QmcBOX+6ifo/Hkth83VLbppCUUW48Q
+	 oG/N8IotCGwBRsCuB8mtfM6mRPePwFN/47/11mk0=
+Received: from iZ2ze0ccts00nkjy9wuyo6Z.localdomain ([101.201.76.96])
+	by newxmesmtplogicsvrszc13-0.qq.com (NewEsmtp) with SMTP
+	id EA538643; Mon, 26 Aug 2024 16:58:37 +0800
+X-QQ-mid: xmsmtpt1724662717tlpv04lxd
+Message-ID: <tencent_13F0C81B16C09CC67E961B5E22F78CC72805@qq.com>
+X-QQ-XMAILINFO: MGJQUKeBeYZp2roOmIFYtI+BoU9OKKs64nMbZsBJuzJeeiPBtb738Cfrm+A6/N
+	 rcmEVG8H/6X+E9+8NYyPrTZ78Fd5mvCfAZvJ57jV0YlFtXtjwvs04y1XPFHFVc2YmDspKHll1hTL
+	 cxSf71xejKyDhn23SxIkk4eTBxfaN26CrbVf8pW66B/vNAJDrqw+7dQHXDw2G/4Vn9fQq39z58CF
+	 H0wlPTJA5NyPiAC6XhtJ4hfXcMuA5bcnCejQ58vrxaVzWWAJeJTmmfWQ54H8KzqvJlX6vhV2wTb8
+	 SRR8wsaIV8rURgxKuqqfSUih53MIOukBgSwhEfGmaugMqBGg3hIqyf4F9qNpOF0cbmlY/d4GJGhD
+	 cbq4s5W8ueqmVxonhqlKfMh1Bax1x8OBoSbx7ThRVV0edxCd4KgGsbXdkPoQs40Uy2UD6455WzWY
+	 S/6ylP02h90TEm4K5F6unHVs7CyF0SBlCcSGS5wAIdXSiY8jqtg59MNi1b7VNzkQHHwJQdqEkMjQ
+	 jrjfnSmOzM6J3/kX3vWlBraCztKeVNXN4dImiVxFu1+KmF/2NQUQOfnPjertnQQJp23BYdhx3Yla
+	 j5z4BQdiJIWre+ZhgfpD64AFa+qUTCR8khdHJOWo4lb4TKqJtmo7sG6koEXbfZUj+iyHRxrIUUlF
+	 MN77HX+DsEaY8Tyy/0idfF/UQZ56katFHzH82GNCxZP6Jst/TvLVy7igFLLZwNZB3ErmLZZlnUwD
+	 wlhJNAmrGdC/7hOiSqqaai5Zja4P2Azq3urm/j2yyxpIsWV6GjhcmZc/b1AZcIpDn566FoMyjgg6
+	 KtN8DyiI9cmGi2WGumt4C5dQOXI5McbbimphRFnpE2E+JCEHsLyFbk902yLCT31fAqM9cbFrv7xM
+	 FsO4yBNRrXxkJiOd8uk9jpS2pbwqIRxatWsKHveHKra2ivAPq2MGpFvTo9dTGgtvaICWy4++5iNB
+	 OFvu8jLTg+iMwKHCOaK5A65KIXaJbsY8VHiZzxGtI=
+X-QQ-XMRINFO: MPJ6Tf5t3I/ycC2BItcBVIA=
+From: Yanhao Dong <570260087@qq.com>
+To: rafael@kernel.org
+Cc: daniel.lezcano@linaro.org,
+	linux-pm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	ysaydong@gmail.com
+Subject: [PATCH] Fixes: 496d0a648509 ("cpuidle: Fix guest_halt_poll_ns failed to take effect when setting guest_halt_poll_allow_shrink=N")
+Date: Mon, 26 Aug 2024 16:58:36 +0800
+X-OQ-MSGID: <20240826085836.530152-1-570260087@qq.com>
+X-Mailer: git-send-email 2.43.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Virus-Scanned: clamav-milter 1.0.5 at canardo
-X-Virus-Status: Clean
+Content-Transfer-Encoding: 8bit
 
-"Maciej W. Rozycki" <macro@orcam.me.uk> writes:
+From: ysay <ysaydong@gmail.com>
 
-> Even those that do use the function have a choice to override the default=
-=20
-> handler by setting CONFIG_HAVE_PLAT_FW_INIT_CMDLINE.  Perhaps it's what=20
-> you need to do for your platform too.
+When guest_halt_poll_allow_shrink=N,setting guest_halt_poll_ns
+from a large value to 0 does not reset the CPU polling time,
+despite guest_halt_poll_ns being intended as a mandatory maximum
+time limit.
 
-Considered that, but this problem isn't directly platform-related, is
-it?  Many of the firmware implementations are multi-platform. And they
-support many of the same platforms.
+The problem was situated in the adjust_poll_limit() within
+drivers/cpuidle/governors/haltpoll.c:79.
 
-My concrete eample showed up on the "realtek" (rtl838x and rtl93xx SoCs)
-platform in OpenWrt, where a large number of boards from assorted
-vendors are currently supported. The current implementation works fine
-for most of them because they using U-Boot. But it failed in what I
-consider the ugliest way possible (no ooops, no error message, just
-hanging) on the boards from HPE because they use Bootware.
+Specifically, when guest_halt_poll_allow_shrink was set to N,
+resetting guest_halt_poll_ns to zero did not lead to executing any
+section of code that adjusts dev->poll_limit_ns.
 
-FWIW, there is also a vendor using BootBase for pretty much the same
-hardware.  But that's still unsupported in OpenWrt for various reasons.
+The issue has been resolved by relocating the check and assignment for
+dev->poll_limit_ns outside of the conditional block.
+This ensures that every modification to guest_halt_poll_ns
+properly influences the CPU polling time.
 
-So yes, this could be worked around by having a platform specific
-fw_init_cmdline().  Or even another out-of-tree OpenWrt specific patch.
-But whatever the solution is, it can't drop the U-Boot support since
-most of the boards actually use U-Boot.  Which is why I believe it's
-much better to solve this problem at the root, for the benefit of
-everyone else.
+Signed-off-by: ysay <ysaydong@gmail.com>
+---
+ drivers/cpuidle/governors/haltpoll.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-But of course, if necessary it would be possible to build X kernels with
-dfferent fw_init_cmdline() implementations to support the same hardware
-booted from X different boot firmwares.
+diff --git a/drivers/cpuidle/governors/haltpoll.c b/drivers/cpuidle/governors/haltpoll.c
+index 663b7f164..99c6260d7 100644
+--- a/drivers/cpuidle/governors/haltpoll.c
++++ b/drivers/cpuidle/governors/haltpoll.c
+@@ -78,26 +78,22 @@ static int haltpoll_select(struct cpuidle_driver *drv,
+ 
+ static void adjust_poll_limit(struct cpuidle_device *dev, u64 block_ns)
+ {
+-	unsigned int val;
++	unsigned int val = dev->poll_limit_ns;
+ 
+ 	/* Grow cpu_halt_poll_us if
+ 	 * cpu_halt_poll_us < block_ns < guest_halt_poll_us
+ 	 */
+ 	if (block_ns > dev->poll_limit_ns && block_ns <= guest_halt_poll_ns) {
+-		val = dev->poll_limit_ns * guest_halt_poll_grow;
++		val *= guest_halt_poll_grow;
+ 
+ 		if (val < guest_halt_poll_grow_start)
+ 			val = guest_halt_poll_grow_start;
+-		if (val > guest_halt_poll_ns)
+-			val = guest_halt_poll_ns;
+ 
+ 		trace_guest_halt_poll_ns_grow(val, dev->poll_limit_ns);
+-		dev->poll_limit_ns = val;
+ 	} else if (block_ns > guest_halt_poll_ns &&
+ 		   guest_halt_poll_allow_shrink) {
+ 		unsigned int shrink = guest_halt_poll_shrink;
+ 
+-		val = dev->poll_limit_ns;
+ 		if (shrink == 0) {
+ 			val = 0;
+ 		} else {
+@@ -108,8 +104,12 @@ static void adjust_poll_limit(struct cpuidle_device *dev, u64 block_ns)
+ 		}
+ 
+ 		trace_guest_halt_poll_ns_shrink(val, dev->poll_limit_ns);
+-		dev->poll_limit_ns = val;
+ 	}
++
++	if (val > guest_halt_poll_ns)
++		val = guest_halt_poll_ns;
++
++	dev->poll_limit_ns = val;
+ }
+ 
+ /**
+-- 
+2.43.5
 
->  It's clear to me that this mess has to be cleaned up.  Not all kinds of=
-=20
-> firmware permit the setting of arbitrary environment variables (or ones=20
-> that survive a reboot) though.
-
-Yes.  And I believe it can be solved by improving the pointer validation
-that's already there.  All we need is to reject argument values passed
-by other firmwares.
-
-But it's probably better to create an inline valid_fw_arg(() or similar
-function as proposed by Jiaxun, allowing the XKPHYS range too on 64 bit
-systems.
-
-If necessary we can improve further by adding an alignment requirement,
-which was a proposal that came up in the OpenWrt discussions.
-
-Another option is to connect the validation of all 4 arguments.  There
-is for example no reason to interpret the Bootware fw_arg2 value as an
-enviroment pointer after we've already rejected fw_arg1 as cmdline.
-
-It's also possible to validate command line argument pointers and
-environment variable pointers (except for alignment, I guess?), refusing
-anything which ends ut pointing outsde KSEG1 or XKPHYS.
-
-How complicated you want this is all a matter of taste IMHO.  I tried to
-make this a simple solution matching the current "forgiving"
-implementation.
-
-Another improvement would be a pr_info() dumping the fw_argX values. It
-would make it possible to understand why the code is hanging when the
-firmware does something unexpected. I don't think pr_debug() helps much
-in this particular case.
-
-
-
-Bj=C3=B8rn
 
