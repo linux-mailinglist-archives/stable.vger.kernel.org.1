@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-70204-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70205-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D65B95F0F7
-	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 14:13:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EED895F0F8
+	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 14:13:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AFE1E1C23824
-	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 12:13:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C1B581C2383F
+	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 12:13:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB0B31714C9;
-	Mon, 26 Aug 2024 12:09:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23D4518892C;
+	Mon, 26 Aug 2024 12:09:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lqmcsZJA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ldXz4BdZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AC86188920
-	for <stable@vger.kernel.org>; Mon, 26 Aug 2024 12:09:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D85F6146A61
+	for <stable@vger.kernel.org>; Mon, 26 Aug 2024 12:09:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724674171; cv=none; b=kb4bH+/VSSwmh9A4OJUl4Y+s6O5x+2HtmNo1oxEVQTbD5/7y8fLjTOgiXKAue/Ev5rv1iLV6r9tuqc7KN5VXY8Q/lI0QRCJbilHTMxr/xMIMB/pFyHT0iu3SPkRhruwWkaKBrAkPbF8KkkbwVhYZ6JtwaUirok7iLyMFZxwG9dI=
+	t=1724674174; cv=none; b=brbYn5o+ZTvIsfgAK3JXkGNeVYTT25FvZ2IbmsRtOyaLgp0SiuIMb3cO1HHfPsVMvnh42JN5vdI1xf42J7VNil7oQf50N6dN/8CaNyZWUyXhTH1cNl07jCqD44nGK5CAydPnZo2fmrDO3nF+7lDcnt6dSI1xAkxzQOD0p6RYawA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724674171; c=relaxed/simple;
-	bh=887LtlI0qpJwg32k6AY9b2FAjH8AavUPL0gBTRq8wQ4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=IcGLhxk7b+9tRES/CZaA12tQZe8ziAYJyS0EXpVMp6z3JptvwBG7GCdEKf5gVqFp+3HsClKdQweGggSirVkQctHFnueFsq1Qu8I/ZwAm9zn3VefvDYeNUGdG2YU1FB4RdMKLHl/rb9p4faqpQyVKYQu/bNNYFwQoWXMANHJjEn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lqmcsZJA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3E11C4DDEC;
-	Mon, 26 Aug 2024 12:09:30 +0000 (UTC)
+	s=arc-20240116; t=1724674174; c=relaxed/simple;
+	bh=Edik8iZWrVQyD8Dkiw3c2sumXiA1yQKjFPr6h8+HtbA=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=g4aDRtRJi61Bnq6qye8RG1UnaTJaCMAAPnHjIMnMn7Zfy685JFopUZpDe6Dnmzv+hzEloTze1ivSwfbw8nsEBzR+EuQnv3cEe9pzP5HMkxpVJR4ztA7ySB1VgfK7jXwCSZtPfQE33V1WbOe1S+8nNHnsq2W/vo4umqwsS5WmUtE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ldXz4BdZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D4EDC4DDF6;
+	Mon, 26 Aug 2024 12:09:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724674171;
-	bh=887LtlI0qpJwg32k6AY9b2FAjH8AavUPL0gBTRq8wQ4=;
+	s=korg; t=1724674174;
+	bh=Edik8iZWrVQyD8Dkiw3c2sumXiA1yQKjFPr6h8+HtbA=;
 	h=Subject:To:Cc:From:Date:From;
-	b=lqmcsZJAJK+imlqUF93VqNM6to4pHVI9S8gmWllA8CJgQi/excDlnlwZf9lyaJFKV
-	 BX5V4CZ/7x/aB13xtXEv5djc3/mDTv2iz+aqWmSZWlZpOI74r8ucut6NCoiufRj/Fj
-	 +RTTb6PJF6OnnrVE8Bl42DzhrcdtkbkhfkZrNQQU=
-Subject: FAILED: patch "[PATCH] selftests: mptcp: join: test for flush/re-add endpoints" failed to apply to 6.1-stable tree
+	b=ldXz4BdZzF7eR2H4h23Ctk1vx8nsuKqZ09lp2xouLeA4/3/8Ty3FXkBNW6WgWg4MY
+	 2z93Dc1YpUORu8937x5VIDtKtU9NbisijgfqmJXD1oTxO8bETMmZnPgH/tbFElnU2S
+	 X01EMO0JUPGl9rsnok1Whw66M4wzEgLbCh9WjUnA=
+Subject: FAILED: patch "[PATCH] selftests: mptcp: join: test for flush/re-add endpoints" failed to apply to 5.15-stable tree
 To: matttbe@kernel.org,kuba@kernel.org,martineau@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 26 Aug 2024 14:09:19 +0200
-Message-ID: <2024082618-wilt-deafness-0a89@gregkh>
+Date: Mon, 26 Aug 2024 14:09:20 +0200
+Message-ID: <2024082619-chair-irritable-03aa@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,42 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x e06959e9eebdfea4654390f53b65cff57691872e
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024082618-wilt-deafness-0a89@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024082619-chair-irritable-03aa@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
 e06959e9eebd ("selftests: mptcp: join: test for flush/re-add endpoints")
 b5e2fb832f48 ("selftests: mptcp: add explicit test case for remove/readd")
+ae7bd9ccecc3 ("selftests: mptcp: join: option to execute specific tests")
+e59300ce3ff8 ("selftests: mptcp: join: reset failing links")
+3afd0280e7d3 ("selftests: mptcp: join: define tests groups once")
+3c082695e78b ("selftests: mptcp: drop msg argument of chk_csum_nr")
+69c6ce7b6eca ("selftests: mptcp: add implicit endpoint test case")
+d045b9eb95a9 ("mptcp: introduce implicit endpoints")
+6fa0174a7c86 ("mptcp: more careful RM_ADDR generation")
+f98c2bca7b2b ("selftests: mptcp: Rename wait function")
+826d7bdca833 ("selftests: mptcp: join: allow running -cCi")
+7d9bf018f907 ("selftests: mptcp: update output info of chk_rm_nr")
+26516e10c433 ("selftests: mptcp: add more arguments for chk_join_nr")
+8117dac3e7c3 ("selftests: mptcp: add invert check in check_transfer")
+01542c9bf9ab ("selftests: mptcp: add fastclose testcase")
+cbfafac4cf8f ("selftests: mptcp: add extra_args in do_transfer")
+922fd2b39e5a ("selftests: mptcp: add the MP_RST mibs check")
+e8e947ef50f6 ("selftests: mptcp: add the MP_FASTCLOSE mibs check")
+9a0a93672c14 ("selftests: mptcp: adjust output alignment for more tests")
+aaa25a2fa796 ("Merge git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net")
 
 thanks,
 
