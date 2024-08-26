@@ -1,102 +1,118 @@
-Return-Path: <stable+bounces-70128-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70129-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4295B95E7AC
-	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 06:30:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D239295E7DD
+	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 07:19:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F39BA281644
-	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 04:30:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 47515B20E94
+	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 05:19:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DB3F58ABC;
-	Mon, 26 Aug 2024 04:30:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="A7NRUYYz"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19E6A7442F;
+	Mon, 26 Aug 2024 05:19:00 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C76A3BBE0
-	for <stable@vger.kernel.org>; Mon, 26 Aug 2024 04:30:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E1BC1119A;
+	Mon, 26 Aug 2024 05:18:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724646616; cv=none; b=jR/AgOHut8FFl/vCGUWK6hrRoIc9P0kH3VGd2BTdeI68HfxsYh3j0EQjWII9REgryFGFGn7YF2x/apdrGR1hg4S5n1gZOKheh1njwWJrv7YjUnyTDSJx/KEfqauXMCSCfM8dLKt8DGS1YNHBLL3IF3ce2KFbzOXUvjL4DNJ9XQo=
+	t=1724649539; cv=none; b=hGTbnLu7PQe6K62Ycm9h0dBm0Y5EfIhX9lwVY/8wh7N3zY+R4slF15g9Fs4pGcgxy7xbbuxh9Y9VrP8/yc6Ro5G0mPnrgJj0k/6OuKztfzE9M0Ev7gXU735Aqn6w3A8dNUi0Uik29pAwJ90uYUhfGGSR4NB9c35DlSekA1IQep4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724646616; c=relaxed/simple;
-	bh=agyhQfcNQ1E9nu9rmPP3nufi62taH7fRK1odNqqE+rU=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=jDdFVzVQV3XbhkZ5hfTvGk3FYlLnrNKchsDavlidZeuCoQh6mCS+sF329v8yXlZcbc+m+okQBpse6vx57z8iy7qEJoCK4k0hatQ/AMfs59aOUSVFJ7ziXgj1NuAI0JP7Lq/6y3iW7ijDCpZ+gFmAPlP4pLRK77WiFhOGc+T4/aI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=A7NRUYYz; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1724646614; x=1756182614;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=agyhQfcNQ1E9nu9rmPP3nufi62taH7fRK1odNqqE+rU=;
-  b=A7NRUYYzE3ejSCNwR2LICEBcTuaEgzzup3zeSJDied+lu+TLG5yy4oTw
-   fc2EeSzkK3diLY5CvvdH8J8pncb5Ipy0M3stqzGgWTi7VZUUm0c+C6wk/
-   VPnmzyT3gQC8s50tlSebAL4oqfjldURHp44LQk+p24l7bYF+4nlzMMWx/
-   7ywyd2egcKbX36ZhddmYl/+z6GO4t3nOQT9OsRomS04eTtlmFPtF4tL7C
-   5gV0v4cacdasSDEBqcvnzjI9J6ssWmF4X1IDD2bKg2Osv5Qx3ktBobBb0
-   HK3gCKYsyD1cSxqeTgKf+L1hS0FRSnCPTOymfkKFDWTiMtfV6e7AMSdLz
-   w==;
-X-CSE-ConnectionGUID: /+bMuxccQBmtPKtAlgj/Zw==
-X-CSE-MsgGUID: QlTS3zDXQgOGiFTF90LzWQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11175"; a="23217461"
-X-IronPort-AV: E=Sophos;i="6.10,176,1719903600"; 
-   d="scan'208";a="23217461"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2024 21:30:14 -0700
-X-CSE-ConnectionGUID: fuI5+Ig7QV+yJKwYFjIxvQ==
-X-CSE-MsgGUID: lGemIZ0LTnilUHe/PGp90Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,176,1719903600"; 
-   d="scan'208";a="62221403"
-Received: from lkp-server01.sh.intel.com (HELO 9a732dc145d3) ([10.239.97.150])
-  by orviesa010.jf.intel.com with ESMTP; 25 Aug 2024 21:30:13 -0700
-Received: from kbuild by 9a732dc145d3 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1siRMo-000Fuj-1g;
-	Mon, 26 Aug 2024 04:30:10 +0000
-Date: Mon, 26 Aug 2024 12:29:18 +0800
-From: kernel test robot <lkp@intel.com>
-To: Hans de Goede <hdegoede@redhat.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH 6.11 regression fix] ASoC: Intel: Boards: Fix NULL
- pointer deref in BYT/CHT boards harder
-Message-ID: <ZswEntCXPpKdXxgY@82455bb29b92>
+	s=arc-20240116; t=1724649539; c=relaxed/simple;
+	bh=BZ+tG3sPqkdp1r8WVl3AmA1qeUmicg7w7NSIoJ6H0IM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=RCnP/Y7JbMqp4Qkl6Z1StFkXHFl1sJ9z/tcYmDVSH41gmcAYbVNNWEmPEjScuIAvLU/+ncuLPIsHIhAU7tVeZPScKXrKpIADp0i8NgU1JmIPNeuADM11RCnmJQByKtCMsBYRzaQ68LpmEim5PpqirVIRTRBlTlRbwj9wjFLpOa0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
+	by APP-01 (Coremail) with SMTP id qwCowACnr0smEMxmxHKPCg--.37321S2;
+	Mon, 26 Aug 2024 13:18:33 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: nbd@nbd.name,
+	lorenzo@kernel.org,
+	ryder.lee@mediatek.com,
+	shayne.chen@mediatek.com,
+	sean.wang@mediatek.com,
+	kvalo@kernel.org,
+	matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com,
+	chui-hao.chiu@mediatek.com,
+	howard-yh.hsu@mediatek.com,
+	StanleyYP.Wang@mediatek.com,
+	benjamin-jw.lin@mediatek.com,
+	allen.ye@mediatek.com,
+	chank.chen@mediatek.com,
+	meichia.chiu@mediatek.com,
+	Bo.Jiao@mediatek.com,
+	Money.Wang@mediatek.com,
+	akpm@linux-foundation.org
+Cc: linux-wireless@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	Ma Ke <make24@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH RESEND] wifi: mt76: mt7996: fix NULL pointer dereference in mt7996_mcu_sta_bfer_he
+Date: Mon, 26 Aug 2024 13:18:22 +0800
+Message-Id: <20240826051822.2564194-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240823074217.14653-1-hdegoede@redhat.com>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qwCowACnr0smEMxmxHKPCg--.37321S2
+X-Coremail-Antispam: 1UD129KBjvdXoWruw4DZw1UtrWxKF1xJr13Jwb_yoWDXrXE9r
+	n29FnIqw48Kw48Kr429wnxuryay3ykZF97Gay5tayfta97J3yUZF1IvFn3Ar13uFn7ZF1U
+	J3ZrJFy0y395WjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbSxFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
+	Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AKxVWxJr
+	0_GcWlnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xv
+	F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r
+	4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I
+	648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI0_GFv_Wryl42xK82IYc2
+	Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s02
+	6x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIYrxkI7VAKI48JMIIF0x
+	vE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE
+	42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6x
+	kF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjTRKCJmDUUUU
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-Hi,
+Fix the NULL pointer dereference in mt7996_mcu_sta_bfer_he
+routine adding an sta interface to the mt7996 driver.
 
-Thanks for your patch.
+Found by code review.
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+Cc: stable@vger.kernel.org
+Fixes: 98686cd21624 ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+---
+ drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-3
-
-Rule: The upstream commit ID must be specified with a separate line above the commit text.
-Subject: [PATCH 6.11 regression fix] ASoC: Intel: Boards: Fix NULL pointer deref in BYT/CHT boards harder
-Link: https://lore.kernel.org/stable/20240823074217.14653-1-hdegoede%40redhat.com
-
-Please ignore this mail if the patch is not relevant for upstream.
-
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+index 2e4fa9f48dfb..cba28d8d5562 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+@@ -1544,6 +1544,9 @@ mt7996_mcu_sta_bfer_he(struct ieee80211_sta *sta, struct ieee80211_vif *vif,
+ 	u8 nss_mcs = mt7996_mcu_get_sta_nss(mcs_map);
+ 	u8 snd_dim, sts;
+ 
++	if (!vc)
++		return;
++
+ 	bf->tx_mode = MT_PHY_TYPE_HE_SU;
+ 
+ 	mt7996_mcu_sta_sounding_rate(bf);
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
+2.25.1
 
 
