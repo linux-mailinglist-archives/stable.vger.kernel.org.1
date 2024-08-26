@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-70163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70164-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8F4795EFE7
-	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 13:38:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42D3795EFE8
+	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 13:38:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A1511C21716
-	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 11:38:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 677A51C2141C
+	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 11:38:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A200714EC77;
-	Mon, 26 Aug 2024 11:38:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B32D14EC77;
+	Mon, 26 Aug 2024 11:38:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vGTlQzhL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iGKj4NS0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 632E51482E3
-	for <stable@vger.kernel.org>; Mon, 26 Aug 2024 11:38:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BE1B1482E3
+	for <stable@vger.kernel.org>; Mon, 26 Aug 2024 11:38:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724672309; cv=none; b=bx8tg4l3gXDUCQlyF5mac8JP2hFyMpoqvxqgzmu2HzqMkRdyz9G3whT4tsbr1du4Umb1lwKJgghOqTihNMFO0FgqDAOm0Vt57sGi0lVenCJTYx/DzCBBc6GJLbEYc2Y3iK9q/cXVEmlZS9pGPsSmYfanLjZ5dIqU7EwgGF8Yg48=
+	t=1724672318; cv=none; b=MdpT9MEXallMwIWqlfrn3vNIkrGq3+rMJvQOx3ENC97ICvguSr+8M0D2lnS7J5Q+/RI3/sRKHU/UjXJg/9d3HkeZakAuo5dtBIa6J+WMV1bDRNYyq7xai2fmMo+M2OhnErXSt3KO5IRrASDmE0P2umChYzemCD4s5ppDrTlrXuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724672309; c=relaxed/simple;
-	bh=U9Kh0Ks/d6tieOVdvkuqg/lWUoPt+P81dA+Ck3KEHbU=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=VljnLbqVhO4vsNeGg7/HRfRpOt/Lo2IJ0ZDUltVVuI08OcVoboACa/RclXMPy4dZYPAx/ON9Q4qiMREASvH0IMn1uaTs9ESXESEYydnb5r5ZweNI+RBs8ty194kqcwaNpjlSzXpzojgc7F2uIbEr9kvMQP8d+NqKbXXffoKqsgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vGTlQzhL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 762A6C5140C;
-	Mon, 26 Aug 2024 11:38:28 +0000 (UTC)
+	s=arc-20240116; t=1724672318; c=relaxed/simple;
+	bh=m9+g823uM1dusP1KPaWMYHFgwJEgC0efPLIOipjnO9Y=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=a+zjpmvBWfR/Vvfc4+PKZ6C93R62RyBGaalHjhKEVHe/EUqIv7RxY1U2Yd1g/gkBWRI+5SlItjtTa4gppGrfRbjnQW3RKR8VV8wQZVC5MgSWCuIdMhSS/kMJb1NZDnAG4l1R1jT+w+GU2VnbkqXq+nZE/jAQj8v4uTFzgwAQZko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iGKj4NS0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D24EC51400;
+	Mon, 26 Aug 2024 11:38:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724672308;
-	bh=U9Kh0Ks/d6tieOVdvkuqg/lWUoPt+P81dA+Ck3KEHbU=;
+	s=korg; t=1724672317;
+	bh=m9+g823uM1dusP1KPaWMYHFgwJEgC0efPLIOipjnO9Y=;
 	h=Subject:To:Cc:From:Date:From;
-	b=vGTlQzhLUEwR5WUADGauiFff3b0PWWzJWBNQfYQPwodDg7xPVbiOKTDLA/bsLjXyQ
-	 mXEuPMaUemxZrh0svaUJLFjskCoidl+EbBmcY0d0LPZ3xXXmeTAzC3wJr8Bhcm4x8x
-	 SoJHSRYvDbo3HeqsVRegSi3xKebsyT6ghX0nZ22g=
-Subject: FAILED: patch "[PATCH] ksmbd: fix race condition between destroy_previous_session()" failed to apply to 6.10-stable tree
+	b=iGKj4NS016g9g3U2Pu0/Rc/k5+wGg3C0C4w7VWBj9QuuI8rNwInC02et4jjFBiIOU
+	 jgeIcuXl9dL990w5fNEBGMzcRIzK8mruyfo150cx/5Posl3hgq8DwVk4pU/Fm6VghN
+	 aIrA3yCydJD5PFUNAjKgTpAWYEkgIRQcIlxRumyM=
+Subject: FAILED: patch "[PATCH] ksmbd: fix race condition between destroy_previous_session()" failed to apply to 6.6-stable tree
 To: linkinjeon@kernel.org,stfrench@microsoft.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 26 Aug 2024 13:38:25 +0200
-Message-ID: <2024082625-savior-clinic-1a91@gregkh>
+Date: Mon, 26 Aug 2024 13:38:26 +0200
+Message-ID: <2024082626-succulent-engraver-73cd@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,32 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.10-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x 76e98a158b207771a6c9a0de0a60522a446a3447
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024082625-savior-clinic-1a91@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024082626-succulent-engraver-73cd@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
 76e98a158b20 ("ksmbd: fix race condition between destroy_previous_session() and smb2 operations()")
 d484d621d40f ("ksmbd: add durable scavenger timer")
+c8efcc786146 ("ksmbd: add support for durable handles v1/v2")
+fa9415d4024f ("ksmbd: mark SMB2_SESSION_EXPIRED to session when destroying previous session")
+c2a721eead71 ("ksmbd: lazy v2 lease break on smb2_write()")
+d47d9886aeef ("ksmbd: send v2 lease break notification for directory")
+eb547407f357 ("ksmbd: downgrade RWH lease caching state to RH for directory")
+2e450920d58b ("ksmbd: move oplock handling after unlock parent dir")
+4274a9dc6aeb ("ksmbd: separately allocate ci per dentry")
+864fb5d37163 ("ksmbd: fix possible deadlock in smb2_open")
 
 thanks,
 
