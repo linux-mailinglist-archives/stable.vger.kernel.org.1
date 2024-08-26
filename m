@@ -1,82 +1,74 @@
-Return-Path: <stable+bounces-70144-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70145-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7EA795EBFB
-	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 10:31:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BF2595EC66
+	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 10:53:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 820AF1F20F66
-	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 08:31:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AE20AB21948
+	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 08:53:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73090145A16;
-	Mon, 26 Aug 2024 08:28:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60E9713BC3F;
+	Mon, 26 Aug 2024 08:53:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="BpLOR8Za"
+	dkim=pass (1024-bit key) header.d=mork.no header.i=@mork.no header.b="DWXzhIlM"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from dilbert.mork.no (dilbert.mork.no [65.108.154.246])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3660142E67
-	for <stable@vger.kernel.org>; Mon, 26 Aug 2024 08:28:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2E1F286A8;
+	Mon, 26 Aug 2024 08:52:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.108.154.246
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724660894; cv=none; b=cMvtyWaJeNhPKl5F9XolIAjSLZHw8YTBzzygbH087SxFkIfmlTGy35QDiwpuhCGLLMrUVmyAj/dOjufFzWLtdHISiD1gazRkgkjSXzbq3m1VRwuI+kHOFqukRrr3gaYMZNzzALwJIZSAKNio52zmY3tZrSrAv3kmaHiBbEBid/U=
+	t=1724662381; cv=none; b=VEywyoLKWEmO8t7Y0T8Nr5ILNKRLKqr/r4N1wp/sBo/X1b6OOjKocwUdxC+/OiKtciTOoq0TYH5QYaFAC0IETC9iOfKojhR7pgPZM7uN0vDczuOgOFMEGk4rZ0a5J3SB7AVLwPm6mv2FNJVCHxwRzlYemeUJe6VXVlwdz8tqCrY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724660894; c=relaxed/simple;
-	bh=vt7J5fux2isI7FeeCpAPhtTik4aGVuoRkW0tWzHij04=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iP7C4TQ7zsU78UfOndAJMN2dRG/Vrg/3sP+J+pvGJ3kUmhie6r/+h8sye4MACJwSa17+MBDRldkioIUhH5h4UWNBmhLsQ8rk1xASs6mKcvJ30b1HCn58Chsp2+V9mRdnmUc0qPJx5iYvxJV0aOJ1AcYwO7ht/OiIQIUNPxfbnjE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=BpLOR8Za; arc=none smtp.client-ip=209.85.214.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-201cd78c6a3so27166295ad.1
-        for <stable@vger.kernel.org>; Mon, 26 Aug 2024 01:28:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1724660892; x=1725265692; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=gnSngmqp5XPF4Gq535As1t8mXzDMy72BxOhWXC2WS8g=;
-        b=BpLOR8ZaKnca/dn97+srT6gkQvO2XtN/5geKwab6kSOi1dRDDZPXM+RFtZQaUZa1/b
-         SQ0GwGu6HtqlimC6FusTEqaV0ongKpep0aEZo3zAxLNLRO4jmWRpFMGRijOXU5g6trm8
-         kK5DwZsnW5acfs6wBv5XXPAutdN3i0PPZlF1daMkNSoQVC4QKD7Ymz/AUzu0PeCML2vE
-         E9FTRbzrhs1BySbrY8rLFDTbN/7z5ig3EDvfsNqt/F/eg+0+/Djh2e8PJUDVefjWdGgN
-         PYV1fs/7toLoKi9+7jwpQT9C28PwrBzXobPBckdg5cbB0+Z60UBTd1M2eAbowSbheGjJ
-         InlA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724660892; x=1725265692;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=gnSngmqp5XPF4Gq535As1t8mXzDMy72BxOhWXC2WS8g=;
-        b=czZTcuLm4ysKHCRhqIUlJSWv3nd03kXcOPdjl1AewrdkFkDu4SaY+nz7ZU8ee3uQGN
-         gCrdKEMGQ/eDUlOjSQmbFd9iDVV3V2WKEh5aa1koIIYWC5w9lJnGu2yZR9zWatsgsIgW
-         4+nTV1pbnzvUntXw8obtFuiurIIKuUtPTESY77bRkKjmmu7j35bVjLmUgj+/mNdfAXhn
-         ogRuxPkYYEfofPO4VZo6mOQNya4LU8vUPANM7JMpYFiZItN1LfOHH6E0bKFx6rPM4jdZ
-         xNxTCFbM9L6UCYHvlKa7RYnpCCqbyrU36kYcM24m9FALLBobYWV7PmTJlhbLDgQ15bWY
-         8bEw==
-X-Forwarded-Encrypted: i=1; AJvYcCXYCm8ibciAtJhLyE0HDKWE2PRK2tJlmgN4TljJrgDCncLu5AuWdbAegGJzcnetGyPCnw7+tyI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwHhb5OUp5VNjxh3Fdz8w72yI+VMMYZF4xueX221KUbn/49Dq8X
-	F1P1DJXZiYyHsk5szntq9A+c425FuoWacJ1CdRINJ3zuSVWBwvk06O53Qo/REQ==
-X-Google-Smtp-Source: AGHT+IF4dF7YIx5UOBAuR3Levd85eEDnPi0e521uYSc593XVFS3WuJodpsylh0iqMs4OnqtH2tw+Tg==
-X-Received: by 2002:a17:903:22c7:b0:203:a030:d0a1 with SMTP id d9443c01a7336-203a030df42mr113206305ad.58.1724660891917;
-        Mon, 26 Aug 2024 01:28:11 -0700 (PDT)
-Received: from thinkpad ([220.158.156.53])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2038560e53dsm63489725ad.191.2024.08.26.01.28.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Aug 2024 01:28:11 -0700 (PDT)
-Date: Mon, 26 Aug 2024 13:58:08 +0530
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: Fabio Porcedda <fabio.porcedda@gmail.com>
-Cc: Daniele Palmas <dnlplm@gmail.com>, mhi@lists.linux.dev,
-	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] bus: mhi: host: pci_generic: Fix the name for the Telit
- FE990A
-Message-ID: <20240826082808.gnsrbjfxvpqqi3fo@thinkpad>
-References: <20240820080439.837666-1-fabio.porcedda@gmail.com>
+	s=arc-20240116; t=1724662381; c=relaxed/simple;
+	bh=bpIxq9NrCbXHQ9xPNW9tXjBkteCqJ1McbEbD661SmJA=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=Nk9NClzX536iH+xXL4wAVeTh1F87ivXe7x/3+aZ4wpmwJl4L7H0sMFQ/KduC/22TWvNJijl6YLMGf/DwouAHJdcUbgMsB10r5xufk67BXppewYReefaaasE3noLrRj+rqxDBJxk4Cpae1CVouYVlyZWdtv71EIUq+BZIoXigrHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mork.no; spf=pass smtp.mailfrom=miraculix.mork.no; dkim=pass (1024-bit key) header.d=mork.no header.i=@mork.no header.b=DWXzhIlM; arc=none smtp.client-ip=65.108.154.246
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=mork.no
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=miraculix.mork.no
+Received: from canardo.dyn.mork.no ([IPv6:2a01:799:10da:6900:0:0:0:1])
+	(authenticated bits=0)
+	by dilbert.mork.no (8.17.1.9/8.17.1.9) with ESMTPSA id 47Q8qaPw3895640
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
+	Mon, 26 Aug 2024 09:52:38 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mork.no; s=b;
+	t=1724662356; bh=T9Q3iY+bAR2dVrgAcNBgedK8JUDZWWxI1K8yXbLI9hY=;
+	h=From:To:Cc:Subject:References:Date:Message-ID:From;
+	b=DWXzhIlMXVwunwVJX9vkCXJ7TN0grgE3yZ2PEAzq5vDK6KKfz7AkvxutBX97gul8M
+	 1FZuZcy9lB8ou/zndcu7og6SstHPXe7cPK5lmzxgcEvnxJ1aJGPBuSCbC1mZgrVe1y
+	 BP/wZBp9deeAwjr+KXIvCjzrhpODE2sWGZ5dGcKM=
+Received: from miraculix.mork.no ([IPv6:2a01:799:10da:690a:d43d:737:5289:b66f])
+	(authenticated bits=0)
+	by canardo.dyn.mork.no (8.17.1.9/8.17.1.9) with ESMTPSA id 47Q8qaxU2415343
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK);
+	Mon, 26 Aug 2024 10:52:36 +0200
+Received: (nullmailer pid 1588942 invoked by uid 1000);
+	Mon, 26 Aug 2024 08:52:36 -0000
+From: =?utf-8?Q?Bj=C3=B8rn_Mork?= <bjorn@mork.no>
+To: "Maciej W. Rozycki" <macro@orcam.me.uk>
+Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        linux-kernel@vger.kernel.org,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH] MIPS: fw: Gracefully handle unknown firmware protocols
+Organization: m
+References: <20240824144133.1464835-1-bjorn@mork.no>
+	<7f0602dc-8a47-46cb-a12f-09afc082b48f@app.fastmail.com>
+	<87o75gy85b.fsf@miraculix.mork.no>
+	<alpine.DEB.2.21.2408251612500.30766@angie.orcam.me.uk>
+	<87jzg4y57g.fsf@miraculix.mork.no>
+	<alpine.DEB.2.21.2408252029130.30766@angie.orcam.me.uk>
+Date: Mon, 26 Aug 2024 10:52:36 +0200
+In-Reply-To: <alpine.DEB.2.21.2408252029130.30766@angie.orcam.me.uk> (Maciej
+	W. Rozycki's message of "Sun, 25 Aug 2024 20:59:26 +0100 (BST)")
+Message-ID: <87cylvy8bv.fsf@miraculix.mork.no>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -84,62 +76,76 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240820080439.837666-1-fabio.porcedda@gmail.com>
+Content-Transfer-Encoding: quoted-printable
+X-Virus-Scanned: clamav-milter 1.0.5 at canardo
+X-Virus-Status: Clean
 
-On Tue, Aug 20, 2024 at 10:04:39AM +0200, Fabio Porcedda wrote:
-> Add a mhi_pci_dev_info struct specific for the Telit FE990A modem in
-> order to use the correct product name.
-> 
-> Cc: stable@vger.kernel.org # 6.1+
-> Fixes: 0724869ede9c ("bus: mhi: host: pci_generic: add support for Telit FE990 modem")
-> Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
+"Maciej W. Rozycki" <macro@orcam.me.uk> writes:
 
-Applied to mhi-next!
+> Even those that do use the function have a choice to override the default=
+=20
+> handler by setting CONFIG_HAVE_PLAT_FW_INIT_CMDLINE.  Perhaps it's what=20
+> you need to do for your platform too.
 
-- Mani
+Considered that, but this problem isn't directly platform-related, is
+it?  Many of the firmware implementations are multi-platform. And they
+support many of the same platforms.
 
-> ---
->  drivers/bus/mhi/host/pci_generic.c | 13 +++++++++++--
->  1 file changed, 11 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/bus/mhi/host/pci_generic.c b/drivers/bus/mhi/host/pci_generic.c
-> index 14a11880bcea..fb701c67f763 100644
-> --- a/drivers/bus/mhi/host/pci_generic.c
-> +++ b/drivers/bus/mhi/host/pci_generic.c
-> @@ -680,6 +680,15 @@ static const struct mhi_pci_dev_info mhi_telit_fn990_info = {
->  	.mru_default = 32768,
->  };
->  
-> +static const struct mhi_pci_dev_info mhi_telit_fe990a_info = {
-> +	.name = "telit-fe990a",
-> +	.config = &modem_telit_fn990_config,
-> +	.bar_num = MHI_PCI_DEFAULT_BAR_NUM,
-> +	.dma_data_width = 32,
-> +	.sideband_wake = false,
-> +	.mru_default = 32768,
-> +};
-> +
->  /* Keep the list sorted based on the PID. New VID should be added as the last entry */
->  static const struct pci_device_id mhi_pci_id_table[] = {
->  	{ PCI_DEVICE(PCI_VENDOR_ID_QCOM, 0x0304),
-> @@ -697,9 +706,9 @@ static const struct pci_device_id mhi_pci_id_table[] = {
->  	/* Telit FN990 */
->  	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_QCOM, 0x0308, 0x1c5d, 0x2010),
->  		.driver_data = (kernel_ulong_t) &mhi_telit_fn990_info },
-> -	/* Telit FE990 */
-> +	/* Telit FE990A */
->  	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_QCOM, 0x0308, 0x1c5d, 0x2015),
-> -		.driver_data = (kernel_ulong_t) &mhi_telit_fn990_info },
-> +		.driver_data = (kernel_ulong_t) &mhi_telit_fe990a_info },
->  	{ PCI_DEVICE(PCI_VENDOR_ID_QCOM, 0x0308),
->  		.driver_data = (kernel_ulong_t) &mhi_qcom_sdx65_info },
->  	{ PCI_DEVICE(PCI_VENDOR_ID_QCOM, 0x0309),
-> -- 
-> 2.46.0
-> 
+My concrete eample showed up on the "realtek" (rtl838x and rtl93xx SoCs)
+platform in OpenWrt, where a large number of boards from assorted
+vendors are currently supported. The current implementation works fine
+for most of them because they using U-Boot. But it failed in what I
+consider the ugliest way possible (no ooops, no error message, just
+hanging) on the boards from HPE because they use Bootware.
 
--- 
-மணிவண்ணன் சதாசிவம்
+FWIW, there is also a vendor using BootBase for pretty much the same
+hardware.  But that's still unsupported in OpenWrt for various reasons.
+
+So yes, this could be worked around by having a platform specific
+fw_init_cmdline().  Or even another out-of-tree OpenWrt specific patch.
+But whatever the solution is, it can't drop the U-Boot support since
+most of the boards actually use U-Boot.  Which is why I believe it's
+much better to solve this problem at the root, for the benefit of
+everyone else.
+
+But of course, if necessary it would be possible to build X kernels with
+dfferent fw_init_cmdline() implementations to support the same hardware
+booted from X different boot firmwares.
+
+>  It's clear to me that this mess has to be cleaned up.  Not all kinds of=
+=20
+> firmware permit the setting of arbitrary environment variables (or ones=20
+> that survive a reboot) though.
+
+Yes.  And I believe it can be solved by improving the pointer validation
+that's already there.  All we need is to reject argument values passed
+by other firmwares.
+
+But it's probably better to create an inline valid_fw_arg(() or similar
+function as proposed by Jiaxun, allowing the XKPHYS range too on 64 bit
+systems.
+
+If necessary we can improve further by adding an alignment requirement,
+which was a proposal that came up in the OpenWrt discussions.
+
+Another option is to connect the validation of all 4 arguments.  There
+is for example no reason to interpret the Bootware fw_arg2 value as an
+enviroment pointer after we've already rejected fw_arg1 as cmdline.
+
+It's also possible to validate command line argument pointers and
+environment variable pointers (except for alignment, I guess?), refusing
+anything which ends ut pointing outsde KSEG1 or XKPHYS.
+
+How complicated you want this is all a matter of taste IMHO.  I tried to
+make this a simple solution matching the current "forgiving"
+implementation.
+
+Another improvement would be a pr_info() dumping the fw_argX values. It
+would make it possible to understand why the code is hanging when the
+firmware does something unexpected. I don't think pr_debug() helps much
+in this particular case.
+
+
+
+Bj=C3=B8rn
 
