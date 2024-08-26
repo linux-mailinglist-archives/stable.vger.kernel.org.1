@@ -1,154 +1,122 @@
-Return-Path: <stable+bounces-70216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70218-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2828C95F13F
-	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 14:23:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4B2D95F158
+	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 14:33:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BC894B22701
-	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 12:23:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5E4621F227E4
+	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 12:33:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40D4E13BACE;
-	Mon, 26 Aug 2024 12:23:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF3FC13DDD9;
+	Mon, 26 Aug 2024 12:33:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="GK0bZZsd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z6SkKtFP"
 X-Original-To: stable@vger.kernel.org
-Received: from pv50p00im-hyfv10021501.me.com (pv50p00im-hyfv10021501.me.com [17.58.6.48])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDC0342AAA
-	for <stable@vger.kernel.org>; Mon, 26 Aug 2024 12:23:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.6.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A7D022071
+	for <stable@vger.kernel.org>; Mon, 26 Aug 2024 12:33:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724675019; cv=none; b=Z3ROuVOfuNv43NHy7DduHTtWluekSf0RCWnV+zxX1dpLOGmIpRhIJF7rDm1K8iTKBGl4U4uJCob4B9HwphCH8uIrcwxzWaZWhb7RjH/ANIxjub1emG0soe7Nm7r3waZkx8qlv1LXuYv6WGJHhXj8bOVUD/b3tddh61cWVhWgtfc=
+	t=1724675587; cv=none; b=ZYCYplp9tlWVtOCuQa3r35BwlcrfkyrC0H3Oj3g2SLgOn0pjtnrZPBoM/T4jYb+US/1Au/YKsi4XXkfWzfBxewf/YVB+QG5ZfNy6fbsEx15hcD2NPLcquGQhFjw1BhXDTpBhKNL7Lul4em2PsFzOX9Kq56KcVsrJT6b+uMUHtaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724675019; c=relaxed/simple;
-	bh=NGNuO7b6HqvQMZTRpQYtKXImvZv18AhKyVxbRvncbOw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=F70TyC/qCxoTLCnMeDWw6YOQXAGII56Tkz7FUb2Lb6bzhwU4ynJI6lnXB2yMIiHp/pRgtF8jY5Gm5mSGg0u8Wqi/1xtTBr2CANkRIDhtzTNzxJ9iwr4YHM95yw/wbesKDLHG1dudZ6JZYmq/pwZ8VFka3evYGilUU3ZDB8MoqBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=GK0bZZsd; arc=none smtp.client-ip=17.58.6.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
-	s=1a1hai; t=1724675017;
-	bh=arCgGz+KTYXJ008/MuCBxOBSjDGOop8UkjnG9nPczys=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To;
-	b=GK0bZZsd4XuPRGuSBXnziHY4wAlZDb7oOrv1UoG/1NquysNjr4oHTSPull/scooUM
-	 80CMge0F1+7uyl1WTECovjShNiFzwt3vyQr9aQc3z/KpqhG7D8bzkgh0JCTZDlG7WN
-	 IDuByJymHgqTXmEZisF6XWZPN+TdyJZGWP1keZFNjT8BmV3OiZJX59RL/bwuBQ80gX
-	 ODs3yHTyNUlssiTx5KhAdqQuTZvLSffht05lka3KHwxsGdAcwBGcG1zHiqvCB3/Czk
-	 uoqFmkvw+cdTzCMJOfzCTQEBE1m86C1uNcv5oCtigQ9r5ZGzsqlwEICY5MuDmWE/fQ
-	 SKzP/35wXZPhQ==
-Received: from [192.168.1.26] (pv50p00im-dlb-asmtp-mailmevip.me.com [17.56.9.10])
-	by pv50p00im-hyfv10021501.me.com (Postfix) with ESMTPSA id 992392C0322;
-	Mon, 26 Aug 2024 12:23:33 +0000 (UTC)
-From: Zijun Hu <zijun_hu@icloud.com>
-Date: Mon, 26 Aug 2024 20:23:06 +0800
-Subject: [PATCH RFC] driver core: bus: Correct return value for storing bus
- attribute drivers_probe
+	s=arc-20240116; t=1724675587; c=relaxed/simple;
+	bh=Yu51GZO+t13g9eTeqyn9QnmZIw04VeWkER8tVmBjdZM=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=gQZ8y3MSjaoSmh/lESbeDpTbXP2Ol9mb5Hrxle2WKJG3HzQ/Ly0kysZ7JgkzjFqVkuvGW7vRfS0Jap4wANAI/np548MnB9pvs6qgc1EIRrXfDI5abGgH7HAXyQmxLqvVuokFF4Q/N6noHJOrAbPYHEJrciLygTJXjSLzeZUepRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z6SkKtFP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9817EC5142D;
+	Mon, 26 Aug 2024 12:33:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1724675587;
+	bh=Yu51GZO+t13g9eTeqyn9QnmZIw04VeWkER8tVmBjdZM=;
+	h=Subject:To:Cc:From:Date:From;
+	b=Z6SkKtFPH7x8omFmWhZ9UA0aeEi5FlXoUxcnw1wIZevbJwFhXVtypoB3TVD1KRVw4
+	 09kIubB63XdjTIeIshHmSppnKBV2oqGMcTpp14hKKJ/b8T2UwVIRzs2JjgMUum3241
+	 sr2ku/7/s59zRM+G0L2KE8VnMXA2EsJLCASib0u8=
+Subject: FAILED: patch "[PATCH] thermal: of: Fix OF node leak in thermal_of_trips_init()" failed to apply to 6.6-stable tree
+To: krzysztof.kozlowski@linaro.org,daniel.lezcano@linaro.org,rafael.j.wysocki@intel.com,stable@vger.kernel.org,wenst@chromium.org
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 26 Aug 2024 14:32:55 +0200
+Message-ID: <2024082655-virtuous-reggae-54f4@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240826-fix_drivers_probe-v1-1-be511b0d54c5@quicinc.com>
-X-B4-Tracking: v=1; b=H4sIAKlzzGYC/x2MQQqAIBAAvxJ7TlAJsa5BD+gaEWZb7cVkBQmiv
- ycdB2bmgYRMmKCrHmDMlOgKBVRdgT9dOFDQVhi01I202oid7mVjyshpiXytKKz1xmnvlW1bKF1
- kLNL/nGAcepjf9wNI0UB+aAAAAA==
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- "Rafael J. Wysocki" <rafael@kernel.org>
-Cc: Zijun Hu <zijun_hu@icloud.com>, Greg Kroah-Hartman <gregkh@suse.de>, 
- linux-kernel@vger.kernel.org, Zijun Hu <quic_zijuhu@quicinc.com>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.14.1
-X-Proofpoint-ORIG-GUID: uAseHAhC_F9xXK6xPYQ1OG0a5f_uGONT
-X-Proofpoint-GUID: uAseHAhC_F9xXK6xPYQ1OG0a5f_uGONT
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
- definitions=2024-08-26_08,2024-08-26_01,2024-05-17_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 phishscore=0 adultscore=0
- bulkscore=0 clxscore=1015 suspectscore=0 mlxlogscore=999 malwarescore=0
- mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2308100000 definitions=main-2408260097
-X-Apple-Remote-Links: v=1;h=KCk=;charset=UTF-8
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-drivers_probe_store() regards bus_rescan_devices_helper()'s returned
-value 0 as success when find driver for a single device user specify
-that is wrong since the following 3 failed cases also return 0:
+The patch below does not apply to the 6.6-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-(1) the device is dead
-(2) bus fails to match() the device with any its driver
-(3) bus fails to probe() the device with any its driver
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Fixed by only regarding successfully attaching the device to a driver
-as success.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git checkout FETCH_HEAD
+git cherry-pick -x afc954fd223ded70b1fa000767e2531db55cce58
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024082655-virtuous-reggae-54f4@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
-Fixes: b8c5cec23d5c ("Driver core: udev triggered device-<>driver binding")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
----
- drivers/base/bus.c | 23 ++++++++++++++++++++++-
- 1 file changed, 22 insertions(+), 1 deletion(-)
+Possible dependencies:
 
-diff --git a/drivers/base/bus.c b/drivers/base/bus.c
-index abf090ace833..0a994e63785c 100644
---- a/drivers/base/bus.c
-+++ b/drivers/base/bus.c
-@@ -40,6 +40,20 @@ static struct kset *bus_kset;
- 	struct driver_attribute driver_attr_##_name =		\
- 		__ATTR_IGNORE_LOCKDEP(_name, _mode, _show, _store)
- 
-+/* Bus rescans drivers for a single device */
-+static int __must_check bus_rescan_single_device(struct device *dev)
-+{
-+	int ret;
-+
-+	if (dev->parent && dev->bus->need_parent_lock)
-+		device_lock(dev->parent);
-+	ret = device_attach(dev);
-+	if (dev->parent && dev->bus->need_parent_lock)
-+		device_unlock(dev->parent);
-+
-+	return ret;
-+}
-+
- static int __must_check bus_rescan_devices_helper(struct device *dev,
- 						void *data);
- 
-@@ -311,12 +325,19 @@ static ssize_t drivers_probe_store(const struct bus_type *bus,
+afc954fd223d ("thermal: of: Fix OF node leak in thermal_of_trips_init() error path")
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From afc954fd223ded70b1fa000767e2531db55cce58 Mon Sep 17 00:00:00 2001
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Date: Wed, 14 Aug 2024 21:58:21 +0200
+Subject: [PATCH] thermal: of: Fix OF node leak in thermal_of_trips_init()
+ error path
+
+Terminating for_each_child_of_node() loop requires dropping OF node
+reference, so bailing out after thermal_of_populate_trip() error misses
+this.  Solve the OF node reference leak with scoped
+for_each_child_of_node_scoped().
+
+Fixes: d0c75fa2c17f ("thermal/of: Initialize trip points separately")
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
+Reviewed-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://patch.msgid.link/20240814195823.437597-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+
+diff --git a/drivers/thermal/thermal_of.c b/drivers/thermal/thermal_of.c
+index aa34b6e82e26..30f8d6e70484 100644
+--- a/drivers/thermal/thermal_of.c
++++ b/drivers/thermal/thermal_of.c
+@@ -125,7 +125,7 @@ static int thermal_of_populate_trip(struct device_node *np,
+ static struct thermal_trip *thermal_of_trips_init(struct device_node *np, int *ntrips)
  {
- 	struct device *dev;
- 	int err = -EINVAL;
-+	int res;
+ 	struct thermal_trip *tt;
+-	struct device_node *trips, *trip;
++	struct device_node *trips;
+ 	int ret, count;
  
- 	dev = bus_find_device_by_name(bus, NULL, buf);
- 	if (!dev)
- 		return -ENODEV;
--	if (bus_rescan_devices_helper(dev, NULL) == 0)
-+
-+	res = bus_rescan_single_device(dev);
-+	/* Propagate error code upwards as far as possible */
-+	if (res < 0)
-+		err = res;
-+	else if (res == 1)
- 		err = count;
-+
- 	put_device(dev);
- 	return err;
- }
-
----
-base-commit: 888f67e621dda5c2804a696524e28d0ca4cf0a80
-change-id: 20240826-fix_drivers_probe-88c6a2cc1899
-
-Best regards,
--- 
-Zijun Hu <quic_zijuhu@quicinc.com>
+ 	trips = of_get_child_by_name(np, "trips");
+@@ -150,7 +150,7 @@ static struct thermal_trip *thermal_of_trips_init(struct device_node *np, int *n
+ 	*ntrips = count;
+ 
+ 	count = 0;
+-	for_each_child_of_node(trips, trip) {
++	for_each_child_of_node_scoped(trips, trip) {
+ 		ret = thermal_of_populate_trip(trip, &tt[count++]);
+ 		if (ret)
+ 			goto out_kfree;
 
 
