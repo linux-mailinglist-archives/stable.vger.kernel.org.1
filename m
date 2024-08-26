@@ -1,145 +1,228 @@
-Return-Path: <stable+bounces-70142-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70143-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D037495EB65
-	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 10:07:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5556C95EB88
+	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 10:14:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 80D741F21261
-	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 08:07:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 140812829A2
+	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 08:14:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F1ED12C465;
-	Mon, 26 Aug 2024 08:07:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C00D81369BC;
+	Mon, 26 Aug 2024 08:14:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="mGhkX/41"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="hWWCWAFk"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 970C78837
-	for <stable@vger.kernel.org>; Mon, 26 Aug 2024 08:07:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BEA2745F4;
+	Mon, 26 Aug 2024 08:13:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724659655; cv=none; b=LZALOByM9yA26Qhy0Dbd8RbMkfsnovU88zDR+x+iJaidY4r2kcbY6JH9FEhodNzRASrJWG8tkogSwA0UBaRZcRjFmnt3FUDIlBOvP32oaMSF1Tp/IYIC7hR8o0CTiIOUoOJVrHt7BxuxMb6v+w8xK/6OleYqx/ZsbZn0gCXlC2g=
+	t=1724660040; cv=none; b=lk7DIUQYD2bokINJqUv+vNcY/UBv1rfGTrOmr2H8pkKPFHtYLeUQrOMb+XV54URyXrShJ7rNCgxe7RwCuAS0J2Qe54k8v/l0NvKA/lI2F4AxsF/XtJsUVtOjMvJGKdhwDmInrMJB0UU5yUByWyGPD264g5ZgTeqKPzJOdsJp2xE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724659655; c=relaxed/simple;
-	bh=hV7TuaBbJxdh8PMDEbM6FyaOUO1HfxZZRMdSrK8OE5M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RRg208+J1aUVy7y/swzTU9uTVEZXUnRRu8ep1N2RwhD/4UqM5oPzzNpQFzglZM2joZ1IodoWepEmBbViYhbU5rB07HsiYPY3F49LiCTPi+zKIiZKjv0jOXcBJnice0ERf+xYTx802vVtvL/g+N1fCntxjtn247+4jo4PxWRjivk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=mGhkX/41; arc=none smtp.client-ip=209.85.216.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-2d3c9a67eaeso2834322a91.2
-        for <stable@vger.kernel.org>; Mon, 26 Aug 2024 01:07:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1724659653; x=1725264453; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=yvPqTM9lOHuvyIm7/RZh/RxFxg0X7bP4l3quDfoGQkE=;
-        b=mGhkX/41zpNBPhM4n3N6tSnwSYIJ9AnNlHHW9d4QKj0WsmQjdaP3XK6Duf2j4MiAEt
-         OJ6LeCMg63DuXUpn2JGsqPHUw1wfoyD0U2PQwyK25QT14nwvKdKfjsXvcrnNJ32Dl8Bt
-         byQGbhHsq/gcV5FpSaQl1MIz40bjgyZYxD2XXllPZ4aDE7txQyALd/ejJ3SptRntF+g9
-         FCU73xOR80nDekvOFMPlqm64+jYzoZF/GzSs2xdV5237vOKbSqgbjNwemLtCEPJST5QD
-         9yCObn6lUYYB5YdXKyJNGaT6qY+UFhY4wpf/Y5ISQ9ebXR/p6ZA8NgJkMi7vNbhR6mVv
-         AHUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724659653; x=1725264453;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yvPqTM9lOHuvyIm7/RZh/RxFxg0X7bP4l3quDfoGQkE=;
-        b=nozCC1c4hsHiTS19YLrM+PCKpWQYVN5myFXehQL7DQgmgaClCDhpPC8mQhOk5fkiuf
-         Fg8V4rY87RAe1NpO2ikXEI4yr7hNRytlOHomRwsVeljtH+gX8Jf1X1m0X6Z86V0qVEfc
-         d33h3CsVGts5ibp4K/zeZ2GxwciT0UMDR5sNIX7hUrsc+VU0g6/Qps+3vk1ZTW0Bpu3I
-         S/Xub1SENYs04amDCA8YVQJFweBL834T0W94ff8N7turfHFg1qOJ1dS7dNZcK8Ab1qXk
-         Tv7oFdWDGX/rv2dhe5H7Bqd0RBkqwqc558RWGGsA0VAxJg6gVAnKSBrX1K5BtfP+Iw0R
-         tHlw==
-X-Forwarded-Encrypted: i=1; AJvYcCWn2iEQqJbbyDYgN6hhnHV82WFqQVGbQ8/iena9jpiiqoRo1OYeAYkHa+0KhVB9tnKuHLG/DEQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyvX+ljM4jydJ6ktLq5mk9D8VyGYKzSG8+Qy0gat1yLj477ZBZ+
-	QQaDLG3Q4kMdHQUqkK2UY36R1WA9NrM45uOj57RYu9b7sX2d/lvuWUWeAZnjCw==
-X-Google-Smtp-Source: AGHT+IFX23Te10Zeki5eDRR2JQF2WuxBqrUSKbBm0Dtnccf1x4S1ehHPRhh557+EAHWGUsykWovd3Q==
-X-Received: by 2002:a17:90b:4f83:b0:2c9:80fd:a111 with SMTP id 98e67ed59e1d1-2d646bf2bd3mr8610579a91.18.1724659652847;
-        Mon, 26 Aug 2024 01:07:32 -0700 (PDT)
-Received: from thinkpad ([220.158.156.53])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2d613b1cc67sm9071887a91.51.2024.08.26.01.07.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Aug 2024 01:07:32 -0700 (PDT)
-Date: Mon, 26 Aug 2024 13:37:28 +0530
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To: Fabio Porcedda <fabio.porcedda@gmail.com>
-Cc: Daniele Palmas <dnlplm@gmail.com>, mhi@lists.linux.dev,
-	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] bus: mhi: host: pci_generic: Fix the name for the Telit
- FE990A
-Message-ID: <20240826080728.myy5whs5kmghnvvo@thinkpad>
-References: <20240820080439.837666-1-fabio.porcedda@gmail.com>
+	s=arc-20240116; t=1724660040; c=relaxed/simple;
+	bh=8OYMuhmZ8qAZW5PPqtyvvVb7qhA3xMlLBoIX0Yp8NGw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=P/LOQ5Hsa5Kmi6CeO42reEZ4C4AYCXff0GEm93z0BG3yeEGHxlZf4SD4OvGdqIgnGrdjWIWfQ3eppCPTVo9aWfD4KnrxJPl51AQBNLr3B7TdL00ONf/wBYeGk4SdMrzs+U4WpPWDpYEJhSKSL9NWY/WyGbuXdgwU7+upqT0p+Q8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=hWWCWAFk; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47PELtoj009250;
+	Mon, 26 Aug 2024 08:13:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
+	:to:cc:subject:date:message-id:mime-version:content-type
+	:content-transfer-encoding; s=pp1; bh=O1iQLz2pYTyt9Kii5Zr1p4XfYF
+	hxs1hC8sEBcVkRC0Y=; b=hWWCWAFk1ItNm1CGWcRdWoGdB56hqm30/Yho19l/9s
+	KjU1TYfYi0EBRjTgc1DRhuwbtznX1lKwR5RTJUjy5a45uA5pl+SStvzeds9dpgtc
+	bCytALS8wuSxMxfvoThdZ2yZoCUwhDW53Dcjc1yMDoCruaUEwjBWhLyAIZIf30pq
+	TUz3Ph7eSsTRikNlX7ZGN44tkdYw2KVHM1yjgomhO7OtX7n7l7hMngIpxAvNIU17
+	KoG/eJUOIkewaxIXlmZRhfrI8TAkfMZ6f8vIl5ftpB7k0A0LPT6cinTxFb/XTL+I
+	MoelrTfj7p/QanIDwMLdxNS6BaCN6e5i6UOO+kyCzGKw==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 417gr35s7w-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 26 Aug 2024 08:13:37 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 47Q8DaXX000646;
+	Mon, 26 Aug 2024 08:13:37 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 417gr35s7u-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 26 Aug 2024 08:13:36 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 47Q4rdV9027960;
+	Mon, 26 Aug 2024 08:13:35 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 417ubmw1ve-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 26 Aug 2024 08:13:35 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 47Q8DPFk54460918
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 26 Aug 2024 08:13:27 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 75CAE2004D;
+	Mon, 26 Aug 2024 08:13:25 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CC0C520040;
+	Mon, 26 Aug 2024 08:13:22 +0000 (GMT)
+Received: from li-80eaad4c-2afd-11b2-a85c-af8123d033e3.in.ibm.com (unknown [9.199.156.78])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 26 Aug 2024 08:13:22 +0000 (GMT)
+From: "Nysal Jan K.A." <nysal@linux.ibm.com>
+To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>
+Cc: "Nysal Jan K.A." <nysal@linux.ibm.com>, stable@vger.kernel.org,
+        Geetika Moolchandani <geetika@linux.ibm.com>,
+        Vaishnavi Bhat <vaish123@in.ibm.com>,
+        Jijo Varghese <vargjijo@in.ibm.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Naveen N Rao <naveen@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] powerpc/qspinlock: Fix deadlock in MCS queue
+Date: Mon, 26 Aug 2024 13:42:48 +0530
+Message-ID: <20240826081251.744325-1-nysal@linux.ibm.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240820080439.837666-1-fabio.porcedda@gmail.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: Qs9CwdLn9GG5joS3jClLeOfaG9fV77_K
+X-Proofpoint-ORIG-GUID: rOefFmJFp5CCftxSjp0akaSOkCDmx2t-
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-08-26_05,2024-08-23_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 adultscore=0
+ bulkscore=0 mlxscore=0 malwarescore=0 phishscore=0 lowpriorityscore=0
+ impostorscore=0 priorityscore=1501 mlxlogscore=534 spamscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2407110000 definitions=main-2408260064
 
-On Tue, Aug 20, 2024 at 10:04:39AM +0200, Fabio Porcedda wrote:
-> Add a mhi_pci_dev_info struct specific for the Telit FE990A modem in
-> order to use the correct product name.
-> 
-> Cc: stable@vger.kernel.org # 6.1+
-> Fixes: 0724869ede9c ("bus: mhi: host: pci_generic: add support for Telit FE990 modem")
-> Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
+If an interrupt occurs in queued_spin_lock_slowpath() after we increment
+qnodesp->count and before node->lock is initialized, another CPU might
+see stale lock values in get_tail_qnode(). If the stale lock value happens
+to match the lock on that CPU, then we write to the "next" pointer of
+the wrong qnode. This causes a deadlock as the former CPU, once it becomes
+the head of the MCS queue, will spin indefinitely until it's "next" pointer
+is set by its successor in the queue. This results in lockups similar to
+the following.
 
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+   watchdog: CPU 15 Hard LOCKUP
+   ......
+   NIP [c0000000000b78f4] queued_spin_lock_slowpath+0x1184/0x1490
+   LR [c000000001037c5c] _raw_spin_lock+0x6c/0x90
+   Call Trace:
+    0xc000002cfffa3bf0 (unreliable)
+    _raw_spin_lock+0x6c/0x90
+    raw_spin_rq_lock_nested.part.135+0x4c/0xd0
+    sched_ttwu_pending+0x60/0x1f0
+    __flush_smp_call_function_queue+0x1dc/0x670
+    smp_ipi_demux_relaxed+0xa4/0x100
+    xive_muxed_ipi_action+0x20/0x40
+    __handle_irq_event_percpu+0x80/0x240
+    handle_irq_event_percpu+0x2c/0x80
+    handle_percpu_irq+0x84/0xd0
+    generic_handle_irq+0x54/0x80
+    __do_irq+0xac/0x210
+    __do_IRQ+0x74/0xd0
+    0x0
+    do_IRQ+0x8c/0x170
+    hardware_interrupt_common_virt+0x29c/0x2a0
+   --- interrupt: 500 at queued_spin_lock_slowpath+0x4b8/0x1490
+   ......
+   NIP [c0000000000b6c28] queued_spin_lock_slowpath+0x4b8/0x1490
+   LR [c000000001037c5c] _raw_spin_lock+0x6c/0x90
+   --- interrupt: 500
+    0xc0000029c1a41d00 (unreliable)
+    _raw_spin_lock+0x6c/0x90
+    futex_wake+0x100/0x260
+    do_futex+0x21c/0x2a0
+    sys_futex+0x98/0x270
+    system_call_exception+0x14c/0x2f0
+    system_call_vectored_common+0x15c/0x2ec
 
-- Mani
+The following code flow illustrates how the deadlock occurs:
 
-> ---
->  drivers/bus/mhi/host/pci_generic.c | 13 +++++++++++--
->  1 file changed, 11 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/bus/mhi/host/pci_generic.c b/drivers/bus/mhi/host/pci_generic.c
-> index 14a11880bcea..fb701c67f763 100644
-> --- a/drivers/bus/mhi/host/pci_generic.c
-> +++ b/drivers/bus/mhi/host/pci_generic.c
-> @@ -680,6 +680,15 @@ static const struct mhi_pci_dev_info mhi_telit_fn990_info = {
->  	.mru_default = 32768,
->  };
->  
-> +static const struct mhi_pci_dev_info mhi_telit_fe990a_info = {
-> +	.name = "telit-fe990a",
-> +	.config = &modem_telit_fn990_config,
-> +	.bar_num = MHI_PCI_DEFAULT_BAR_NUM,
-> +	.dma_data_width = 32,
-> +	.sideband_wake = false,
-> +	.mru_default = 32768,
-> +};
-> +
->  /* Keep the list sorted based on the PID. New VID should be added as the last entry */
->  static const struct pci_device_id mhi_pci_id_table[] = {
->  	{ PCI_DEVICE(PCI_VENDOR_ID_QCOM, 0x0304),
-> @@ -697,9 +706,9 @@ static const struct pci_device_id mhi_pci_id_table[] = {
->  	/* Telit FN990 */
->  	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_QCOM, 0x0308, 0x1c5d, 0x2010),
->  		.driver_data = (kernel_ulong_t) &mhi_telit_fn990_info },
-> -	/* Telit FE990 */
-> +	/* Telit FE990A */
->  	{ PCI_DEVICE_SUB(PCI_VENDOR_ID_QCOM, 0x0308, 0x1c5d, 0x2015),
-> -		.driver_data = (kernel_ulong_t) &mhi_telit_fn990_info },
-> +		.driver_data = (kernel_ulong_t) &mhi_telit_fe990a_info },
->  	{ PCI_DEVICE(PCI_VENDOR_ID_QCOM, 0x0308),
->  		.driver_data = (kernel_ulong_t) &mhi_qcom_sdx65_info },
->  	{ PCI_DEVICE(PCI_VENDOR_ID_QCOM, 0x0309),
-> -- 
-> 2.46.0
-> 
+        CPU0                                   CPU1
+        ----                                   ----
+  spin_lock_irqsave(A)                          |
+  spin_unlock_irqrestore(A)                     |
+    spin_lock(B)                                |
+         |                                      |
+         ▼                                      |
+   id = qnodesp->count++;                       |
+  (Note that nodes[0].lock == A)                |
+         |                                      |
+         ▼                                      |
+      Interrupt                                 |
+  (happens before "nodes[0].lock = B")          |
+         |                                      |
+         ▼                                      |
+  spin_lock_irqsave(A)                          |
+         |                                      |
+         ▼                                      |
+   id = qnodesp->count++                        |
+   nodes[1].lock = A                            |
+         |                                      |
+         ▼                                      |
+  Tail of MCS queue                             |
+         |                             spin_lock_irqsave(A)
+         ▼                                      |
+  Head of MCS queue                             ▼
+         |                             CPU0 is previous tail
+         ▼                                      |
+   Spin indefinitely                            ▼
+  (until "nodes[1].next != NULL")      prev = get_tail_qnode(A, CPU0)
+                                                |
+                                                ▼
+                                       prev == &qnodes[CPU0].nodes[0]
+                                     (as qnodes[CPU0].nodes[0].lock == A)
+                                                |
+                                                ▼
+                                       WRITE_ONCE(prev->next, node)
+                                                |
+                                                ▼
+                                        Spin indefinitely
+                                     (until nodes[0].locked == 1)
 
+Thanks to Saket Kumar Bhaskar for help with recreating the issue
+
+Fixes: 84990b169557 ("powerpc/qspinlock: add mcs queueing for contended waiters")
+Cc: stable@vger.kernel.org # v6.2+
+Reported-by: Geetika Moolchandani <geetika@linux.ibm.com>
+Reported-by: Vaishnavi Bhat <vaish123@in.ibm.com>
+Reported-by: Jijo Varghese <vargjijo@in.ibm.com>
+Signed-off-by: Nysal Jan K.A. <nysal@linux.ibm.com>
+---
+ arch/powerpc/lib/qspinlock.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/arch/powerpc/lib/qspinlock.c b/arch/powerpc/lib/qspinlock.c
+index 5de4dd549f6e..59861c665cef 100644
+--- a/arch/powerpc/lib/qspinlock.c
++++ b/arch/powerpc/lib/qspinlock.c
+@@ -697,6 +697,12 @@ static __always_inline void queued_spin_lock_mcs_queue(struct qspinlock *lock, b
+ 	}
+ 
+ release:
++	/*
++	 * Clear the lock, as another CPU might see stale values if an
++	 * interrupt occurs after we increment qnodesp->count but before
++	 * node->lock is initialized
++	 */
++	node->lock = NULL;
+ 	qnodesp->count--; /* release the node */
+ }
+ 
 -- 
-மணிவண்ணன் சதாசிவம்
+2.46.0
+
 
