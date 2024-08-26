@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-70177-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70178-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A903595F052
-	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 14:02:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1617995F054
+	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 14:02:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64675286A7A
-	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 12:02:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B40311F223E0
+	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 12:02:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D550614A4D9;
-	Mon, 26 Aug 2024 12:02:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACF3015532A;
+	Mon, 26 Aug 2024 12:02:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GPNg2kCG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vryu8gI2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D84B15532A
-	for <stable@vger.kernel.org>; Mon, 26 Aug 2024 12:02:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D9611487EB
+	for <stable@vger.kernel.org>; Mon, 26 Aug 2024 12:02:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724673728; cv=none; b=D0ToPdcyRCkNVJ0WfIN+ajp3CVFYrVMBuKDSv2Fu0dY9ckCn1DUvIzD5dhOq5taxxWGS1Y5HvCLTgANLi56lhu5bQMOj8BK2BNNbogvorVtBoltf69KftpbUpJ6zYS2EfKSr0AWeYOukzlUu4hlAYJGeGhMc7gm5A0Xn7MWX8eo=
+	t=1724673770; cv=none; b=dXF+S1X+MS2FoGsW5Qy94HaMQqTTGPfTZLiNyvzMGTVy/flJMuwz2dB4g982S99L0fvjsMa82e0jwrc51FRo3dhkULCo5txfqIjbSYYCnoHKyhyMU2yL67Gy43S9Y2MZnLku988ZhEFUQ2mtvGrnz6mS+W9W7hm8kqIygYk9lx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724673728; c=relaxed/simple;
-	bh=ywXsdfRgkWan0b/7dOI3sMYXYHsalMb6Be3XO3gAB+k=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=EeArkxnBSA5P6q3Y4WjQO2KJpsT17FkgBVEzy4VHnJRZty36jfNS3u18RslY42Pi1H1IoGnsC5lpE74FnwXz6+lBmgT/oiQFFpZJXA6YufVX1Ma3JIFt3un0+iOCBtJlilXg0oW9cWM+EO34/hc2fyseYhrzgfF6mEO80J0DwJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GPNg2kCG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4B0DC51400;
-	Mon, 26 Aug 2024 12:02:07 +0000 (UTC)
+	s=arc-20240116; t=1724673770; c=relaxed/simple;
+	bh=PIPaX0fb2Pa69Gn7o5kOhqHhRf+FvLJKdTEwRZIHzYE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=LMLmokIIPn95nXkwyK4bGIDQ9YLiOdpQ69nTEM9QWvTsHwOti3iG5u4iI2uSHqHcEcjxpion9oaSjmnpM14jfpmnvfasz0KGSOnxAvgbm3jyzM2X+a+Krj585r2ZDwNqpkXWZ7NNR2ch60UNJV30c/ynDKTmLPSH9rh5buRG8rg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vryu8gI2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83624C51400;
+	Mon, 26 Aug 2024 12:02:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724673728;
-	bh=ywXsdfRgkWan0b/7dOI3sMYXYHsalMb6Be3XO3gAB+k=;
+	s=korg; t=1724673770;
+	bh=PIPaX0fb2Pa69Gn7o5kOhqHhRf+FvLJKdTEwRZIHzYE=;
 	h=Subject:To:Cc:From:Date:From;
-	b=GPNg2kCG/i3pfP62LzTOenq8gDwFgm5pYTOZdgcZXXL3VRGJpC/++/BsuD7FcTUw5
-	 vwBUt5PMqavnzcpXxjKo5oOR2p0iMnmvYo2+cCoDlpyFjpdKHOA0exfN8a6MbtQw+Z
-	 ov3+Eh5P2ucn8QPxqnwpkJVkVThzeq4uovuzbpLk=
-Subject: FAILED: patch "[PATCH] thermal: of: Fix OF node leak in thermal_of_zone_register()" failed to apply to 6.1-stable tree
-To: krzysztof.kozlowski@linaro.org,daniel.lezcano@linaro.org,rafael.j.wysocki@intel.com,stable@vger.kernel.org,wenst@chromium.org
+	b=Vryu8gI2W/rrirdIqMab9xKDsy6sb3NHXAgbkhsMEJ2jb1ur0HRG8B//0Htjkt/IK
+	 oBtzLtWCzVdfAzPkcKevwdIAB0UKNQJK1F2kE2f6tMHHtRfJ/MNuKHgxTVXQTRAW72
+	 BnCb8VOTRV9hnYYQfeyCi0RxIFoZ7n4m+37XPjJg=
+Subject: FAILED: patch "[PATCH] mptcp: pm: re-using ID of unused removed ADD_ADDR" failed to apply to 5.10-stable tree
+To: matttbe@kernel.org,kuba@kernel.org,martineau@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 26 Aug 2024 14:01:57 +0200
-Message-ID: <2024082656-step-coeditor-e1ab@gregkh>
+Date: Mon, 26 Aug 2024 14:02:46 +0200
+Message-ID: <2024082646-gondola-dainty-6096@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,27 +53,35 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x 662b52b761bfe0ba970e5823759798faf809b896
+git cherry-pick -x e255683c06df572ead96db5efb5d21be30c0efaa
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024082656-step-coeditor-e1ab@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024082646-gondola-dainty-6096@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
-662b52b761bf ("thermal: of: Fix OF node leak in thermal_of_zone_register()")
-698a1eb1f75e ("thermal: core: Store zone ops in struct thermal_zone_device")
-9b0a62758665 ("thermal: core: Store zone trips table in struct thermal_zone_device")
-755113d76786 ("thermal/debugfs: Add thermal cooling device debugfs information")
-d654362d53a8 ("Merge tag 'thermal-v6.8-rc1' of ssh://gitolite.kernel.org/pub/scm/linux/kernel/git/thermal/linux into thermal")
+e255683c06df ("mptcp: pm: re-using ID of unused removed ADD_ADDR")
+4b317e0eb287 ("mptcp: fix NL PM announced address accounting")
+6fa0174a7c86 ("mptcp: more careful RM_ADDR generation")
+7d9bf018f907 ("selftests: mptcp: update output info of chk_rm_nr")
+327b9a94e2a8 ("selftests: mptcp: more stable join tests-cases")
+6bb3ab4913e9 ("selftests: mptcp: add MP_FAIL mibs check")
+f7713dd5d23a ("selftests: mptcp: delete uncontinuous removing ids")
+4f49d63352da ("selftests: mptcp: add fullmesh testcases")
+0cddb4a6f4e3 ("selftests: mptcp: add deny_join_id0 testcases")
+af66d3e1c3fa ("selftests: mptcp: enable checksum in mptcp_join.sh")
+5e287fe76149 ("selftests: mptcp: remove id 0 address testcases")
+ef360019db40 ("selftests: mptcp: signal addresses testcases")
+efd13b71a3fa ("Merge git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net")
 
 thanks,
 
@@ -81,56 +89,39 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 662b52b761bfe0ba970e5823759798faf809b896 Mon Sep 17 00:00:00 2001
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Date: Wed, 14 Aug 2024 21:58:22 +0200
-Subject: [PATCH] thermal: of: Fix OF node leak in thermal_of_zone_register()
+From e255683c06df572ead96db5efb5d21be30c0efaa Mon Sep 17 00:00:00 2001
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Date: Mon, 19 Aug 2024 21:45:19 +0200
+Subject: [PATCH] mptcp: pm: re-using ID of unused removed ADD_ADDR
 
-thermal_of_zone_register() calls of_thermal_zone_find() which will
-iterate over OF nodes with for_each_available_child_of_node() to find
-matching thermal zone node.  When it finds such, it exits the loop and
-returns the node.  Prematurely ending for_each_available_child_of_node()
-loops requires dropping OF node reference, thus success of
-of_thermal_zone_find() means that caller must drop the reference.
+If no subflow is attached to the 'signal' endpoint that is being
+removed, the addr ID will not be marked as available again.
 
-Fixes: 3fd6d6e2b4e8 ("thermal/of: Rework the thermal device tree initialization")
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
-Reviewed-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://patch.msgid.link/20240814195823.437597-2-krzysztof.kozlowski@linaro.org
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Mark the linked ID as available when removing the address entry from the
+list to cover this case.
 
-diff --git a/drivers/thermal/thermal_of.c b/drivers/thermal/thermal_of.c
-index 30f8d6e70484..b08a9b64718d 100644
---- a/drivers/thermal/thermal_of.c
-+++ b/drivers/thermal/thermal_of.c
-@@ -491,7 +491,8 @@ static struct thermal_zone_device *thermal_of_zone_register(struct device_node *
- 	trips = thermal_of_trips_init(np, &ntrips);
- 	if (IS_ERR(trips)) {
- 		pr_err("Failed to find trip points for %pOFn id=%d\n", sensor, id);
--		return ERR_CAST(trips);
-+		ret = PTR_ERR(trips);
-+		goto out_of_node_put;
+Fixes: b6c08380860b ("mptcp: remove addr and subflow in PM netlink")
+Cc: stable@vger.kernel.org
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20240819-net-mptcp-pm-reusing-id-v1-1-38035d40de5b@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+
+diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
+index 4cae2aa7be5c..26f0329e16bb 100644
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -1431,7 +1431,10 @@ static bool mptcp_pm_remove_anno_addr(struct mptcp_sock *msk,
+ 	ret = remove_anno_list_by_saddr(msk, addr);
+ 	if (ret || force) {
+ 		spin_lock_bh(&msk->pm.lock);
+-		msk->pm.add_addr_signaled -= ret;
++		if (ret) {
++			__set_bit(addr->id, msk->pm.id_avail_bitmap);
++			msk->pm.add_addr_signaled--;
++		}
+ 		mptcp_pm_remove_addr(msk, &list);
+ 		spin_unlock_bh(&msk->pm.lock);
  	}
- 
- 	ret = thermal_of_monitor_init(np, &delay, &pdelay);
-@@ -519,6 +520,7 @@ static struct thermal_zone_device *thermal_of_zone_register(struct device_node *
- 		goto out_kfree_trips;
- 	}
- 
-+	of_node_put(np);
- 	kfree(trips);
- 
- 	ret = thermal_zone_device_enable(tz);
-@@ -533,6 +535,8 @@ static struct thermal_zone_device *thermal_of_zone_register(struct device_node *
- 
- out_kfree_trips:
- 	kfree(trips);
-+out_of_node_put:
-+	of_node_put(np);
- 
- 	return ERR_PTR(ret);
- }
 
 
