@@ -1,123 +1,93 @@
-Return-Path: <stable+bounces-70278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70279-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16C1F95FA38
-	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 21:58:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E79995FA5C
+	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 22:06:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 88EE61F2359D
-	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 19:58:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29C00280E74
+	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 20:06:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55DF2199EB0;
-	Mon, 26 Aug 2024 19:58:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BF53199EA1;
+	Mon, 26 Aug 2024 20:06:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="osEZQ6Dx";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="5z9EY5he"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ei6CbuRA"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 559311991B8;
-	Mon, 26 Aug 2024 19:58:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D60AD199259;
+	Mon, 26 Aug 2024 20:06:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724702314; cv=none; b=Q49zbjDczEDkIIUqMqH1LtsYETNdb5fIgnPgs565ItiPUYOOjdz+gYBdftL/QOg9foxxPbnvG9+zS2SzxVDVVZRJlSaah7YSuVPUmUzxuP91a/RLSyiMkDiKER36HW3blpzfUhq9Weio0xLiKGorlq7QhQ5ASkcRy4p3YbALwLM=
+	t=1724702768; cv=none; b=Wqc+7igizLDOpqtRILI6x59TpwIpOSxdjM9JXBn0emL6oQOt7fQMfNis2uJhpZNA6Wtzj8GqyPcutxPUOcPSsYa1LfaNy5WQmI7VQO1auZ/US9VJ8P+mxSGji84D9vS/r9Z4LYFBkYd6lUY/3U9JOGYktpXHLIMhf8COiks2ytA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724702314; c=relaxed/simple;
-	bh=BmuMNqwzgvM7DKlY+zSNGaTo20tKq6d6hmRvkEARdVs=;
-	h=Date:From:To:Subject:Cc:MIME-Version:Message-ID:Content-Type; b=BsdHiy7TVDFyhKQ2ltC+rKTXTQwG68Zky/e+rCtNR8xOXIwXfH2rMUnKObua2pY2XWHu7QXHBG77NVcwEm3Tt15N86xS0eZo7Eos5MaqaPou3vgOmxX//NI0THiaxJOWZW1Gk/mfS5cJdHfgccBOfDH5uQx68mGjTyLGuZq0Xxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=osEZQ6Dx; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=5z9EY5he; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-Date: Mon, 26 Aug 2024 19:58:29 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1724702310;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=DhhgRwj2YRc5cVJ8j9t533aTKEzCg9IQSYgbyaJf6XA=;
-	b=osEZQ6DxudUJi1NJke3YB4t3s9rNktg1Qqs3ZG6jWTqTXRlqpscVBNgo6uONIlmHOUkpw9
-	IJTexCoVa7gnbBwy3DMvwO31UNsMUmL+yM+hhK+UFxrRTb4rJmaKpbc8s/1nqOaqwgmiQ0
-	pUa5CmYuCx1yZPW8Dcq3ivpu7aOb7ixOL9qh+BLLUGojIkNk/IxsNgKbHkIacwb+JpZKS+
-	LfwhiPeFa8stzrW/GV/zmObR9U/skTtqX0PT18FAo/bqJcTHYyBjW4TjYJgCxNmlr4ZqtM
-	9eKaVQHQPyw4s9EqveR8t0yeQ95Msnpls6FseSBtLYqcipNVv3Hgo6Pm/+tHsA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1724702310;
-	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-	 content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-	bh=DhhgRwj2YRc5cVJ8j9t533aTKEzCg9IQSYgbyaJf6XA=;
-	b=5z9EY5heL9eC2JskpQRc6YuWRg04g1lynqGoDAqf7Eqm6tSNMZpiNmq6NRreN4deGlYswP
-	1BNhux1R8nLL9gAA==
-From: "tip-bot2 for Kirill A. Shutemov" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To: linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/tdx: Fix data leak in mmio_read()
-Cc: Sean Christopherson <seanjc@google.com>,
- "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, stable@vger.kernel.org,
- x86@kernel.org, linux-kernel@vger.kernel.org
+	s=arc-20240116; t=1724702768; c=relaxed/simple;
+	bh=4HdFyJdvZKE0tNyptE2wGNNoK+nN5uPzYDUa2pU7TkU=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=gTrjSm1Usy4b1NRvsTWiPmDeriQSFh/Ss/FEjUUyfovjBPb/xHkvhDA673UkxL4ODKsAJ7NHDKkO26moK08Ww2yT5lZBB8hsBVH0xZ2EJnQauQ0l4NINr17yowFSfCsyecvZ8zpHFyzUU6bY+LhMOKnxnhywJg8UWrmSoDKVppY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ei6CbuRA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C9A0C4FF72;
+	Mon, 26 Aug 2024 20:06:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724702768;
+	bh=4HdFyJdvZKE0tNyptE2wGNNoK+nN5uPzYDUa2pU7TkU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=ei6CbuRAuetpbe48frNv0DGa8REv90njY+nqhLw9yxilYkyp3e26ljbYaR+3K2zeE
+	 K0scN4JEpuWiDqj8Gd1HCwWF5EmuSjUnvWPgv5gs/ZjwSf0tScodjn/Ol2B2lZ+5C5
+	 Zo32ZQ0GNsXJSrHkV2I42Utxcr74h7YUaGg8pkMhxqUBdOXyu/Lyr9WPqupBgVi9KM
+	 q4ssm3PFUmJpJ6PIMXjvkir5hOPbMmnOKIICyxEYdLtaL9l+biaARTkEuZuB854jkR
+	 774AMH7bUIqMnszhvR4MB1rt/hHCLdKPg20oy48XlqMoylPjWpeMaYnyLyx7qeBmdr
+	 9RPFZHdGDUSuA==
+From: Kees Cook <kees@kernel.org>
+To: Greg Ungerer <gregungerer@westnet.com.au>,
+	linux-kernel@vger.kernel.org,
+	Max Filippov <jcmvbkbc@gmail.com>
+Cc: Kees Cook <kees@kernel.org>,
+	linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Eric Biederman <ebiederm@xmission.com>,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] binfmt_elf_fdpic: fix AUXV size calculation when ELF_HWCAP2 is defined
+Date: Mon, 26 Aug 2024 13:06:04 -0700
+Message-Id: <172470276219.1124110.5967273192476181059.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240826032745.3423812-1-jcmvbkbc@gmail.com>
+References: <20240826032745.3423812-1-jcmvbkbc@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-ID: <172470230968.2215.7634345902680513698.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe:
- Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Precedence: bulk
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-The following commit has been merged into the x86/urgent branch of tip:
+On Sun, 25 Aug 2024 20:27:45 -0700, Max Filippov wrote:
+> create_elf_fdpic_tables() does not correctly account the space for the
+> AUX vector when an architecture has ELF_HWCAP2 defined. Prior to the
+> commit 10e29251be0e ("binfmt_elf_fdpic: fix /proc/<pid>/auxv") it
+> resulted in the last entry of the AUX vector being set to zero, but with
+> that change it results in a kernel BUG.
+> 
+> Fix that by adding one to the number of AUXV entries (nitems) when
+> ELF_HWCAP2 is defined.
+> 
+> [...]
 
-Commit-ID:     b6fb565a2d15277896583d471b21bc14a0c99661
-Gitweb:        https://git.kernel.org/tip/b6fb565a2d15277896583d471b21bc14a0c99661
-Author:        Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-AuthorDate:    Mon, 26 Aug 2024 15:53:04 +03:00
-Committer:     Dave Hansen <dave.hansen@linux.intel.com>
-CommitterDate: Mon, 26 Aug 2024 12:45:19 -07:00
+Applied to for-linus/execve, thanks!
 
-x86/tdx: Fix data leak in mmio_read()
+[1/1] binfmt_elf_fdpic: fix AUXV size calculation when ELF_HWCAP2 is defined
+      https://git.kernel.org/kees/c/c6a09e342f8e
 
-The mmio_read() function makes a TDVMCALL to retrieve MMIO data for an
-address from the VMM.
+Take care,
 
-Sean noticed that mmio_read() unintentionally exposes the value of an
-initialized variable (val) on the stack to the VMM.
+-- 
+Kees Cook
 
-This variable is only needed as an output value. It did not need to be
-passed to the VMM in the first place.
-
-Do not send the original value of *val to the VMM.
-
-[ dhansen: clarify what 'val' is used for. ]
-
-Fixes: 31d58c4e557d ("x86/tdx: Handle in-kernel MMIO")
-Reported-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Cc:stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20240826125304.1566719-1-kirill.shutemov%40linux.intel.com
----
- arch/x86/coco/tdx/tdx.c | 1 -
- 1 file changed, 1 deletion(-)
-
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index 078e2ba..da8b66d 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -389,7 +389,6 @@ static bool mmio_read(int size, unsigned long addr, unsigned long *val)
- 		.r12 = size,
- 		.r13 = EPT_READ,
- 		.r14 = addr,
--		.r15 = *val,
- 	};
- 
- 	if (__tdx_hypercall(&args))
 
