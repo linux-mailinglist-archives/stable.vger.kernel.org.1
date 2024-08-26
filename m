@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-70165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70166-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4FB395EFE9
-	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 13:39:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9F8E95EFEA
+	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 13:39:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 827A0281596
-	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 11:39:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F8BB1F21D13
+	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 11:39:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B14E153BED;
-	Mon, 26 Aug 2024 11:39:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B599D1547D8;
+	Mon, 26 Aug 2024 11:39:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bD9YKETa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UxFPBpwe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A1711482E3
-	for <stable@vger.kernel.org>; Mon, 26 Aug 2024 11:39:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75D531482E3
+	for <stable@vger.kernel.org>; Mon, 26 Aug 2024 11:39:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724672340; cv=none; b=suKPWT7rnyno6h04WOrL+0BKMv/ov0T9/Ko4VQpRnMCOinIfu9Lj2nyzw9dR58ctlf95BWfL4qSG+btzS9oXMk32XoSEnXE9qg1LSH2a6vw2VhdEjNV2rfTslZsJIYkKQKA7w2hd+VeNbrhbtV3PbJwI2+cIOUxFbfz4gNot6x8=
+	t=1724672346; cv=none; b=pZnmTztlfB5UQrgnqNn43KZN5cqoiiSrhL9lH25sI/0nJPJcm+gBZr+B7LZ/ii64F1h+dVapN9xLKLxDycUCYUXcPxKx0uuDdW1d0fslrMVTOgRW+YxnQYTZlZGC7ku7k7B7fJqTrGdhkwhszyZaNaKzG7VLjdqvzwgS1MNYjAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724672340; c=relaxed/simple;
-	bh=ywlG7gciBlVm25WgKJWPbngTCj4Ecfrfrs/uJcHxBmY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=mQcfj+a39R+m+Ku6ZUDU4tUrCw1pWTfWBqBplWuY2MnVOvQ5zj8tORoJo9qXABGMhFeePqWXkU3tcXVfl5B/Nd3i9IZhibHym5gV+PJwDYH/hdm9JUo56RW75ZNP3QItJG67nnm5xc1DAdlzbC2lnzaSRt8rD3mluaFDIACYnUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bD9YKETa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3276C5140E;
-	Mon, 26 Aug 2024 11:38:59 +0000 (UTC)
+	s=arc-20240116; t=1724672346; c=relaxed/simple;
+	bh=K9pYGFXspMD2IbxVqDoOKtTVm4RCH4cJwOdUCBVnncQ=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=HO1eQ867MGtbkJCM6PJod3X8R0m04eEa+mgRumg64wzNsXBUA7DHTzFqnEifH0KesftSUMG/8b60CxJXvO+rwn3nNiuqL3t0P3DHphFt+5jo5MdMvT87SgnRepjxJjkgxZcvSQlIJIM2X1ORQL7Cizn9hjlzs770IPFURtFOwbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UxFPBpwe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDC4EC5140E;
+	Mon, 26 Aug 2024 11:39:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724672340;
-	bh=ywlG7gciBlVm25WgKJWPbngTCj4Ecfrfrs/uJcHxBmY=;
+	s=korg; t=1724672346;
+	bh=K9pYGFXspMD2IbxVqDoOKtTVm4RCH4cJwOdUCBVnncQ=;
 	h=Subject:To:Cc:From:Date:From;
-	b=bD9YKETaAfFx/JEntrPpz0YxM8lyFnPIhHRDEcgGVemhAj/3b5rSvnI4b13SmHeYJ
-	 mO2Xlthi8PXnDv/LLQID0HgFUa4uNc02rmvzHvsDAqJkTk1yue5y6YwiPbVCiT2/n3
-	 Lz3V7/ek04QynkFtuuTLq3HbHwgSPrKUDVxwnEsc=
-Subject: FAILED: patch "[PATCH] drm/xe/display: Make display suspend/resume work on discrete" failed to apply to 6.10-stable tree
-To: maarten.lankhorst@linux.intel.com,rodrigo.vivi@intel.com,uma.shankar@intel.com
+	b=UxFPBpwe5Yv9YM4fQeyv+82i0xYOsQ2EGwCTuR3dcb8xgnRMCCPvx/C1LVxV4HuBZ
+	 arthwq8wnLSjy1abSY4fLtywK/78QJATkIa1Ikl22ilHyA4vZRyxKhyusbE3pSabPC
+	 DYpaVXX3T41khWpelrc6wYyERtyiWXAE2TNSBCiE=
+Subject: FAILED: patch "[PATCH] drm/xe: prevent UAF around preempt fence" failed to apply to 6.10-stable tree
+To: matthew.auld@intel.com,matthew.brost@intel.com,rodrigo.vivi@intel.com,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 26 Aug 2024 13:38:56 +0200
-Message-ID: <2024082656-unexposed-simply-c596@gregkh>
+Date: Mon, 26 Aug 2024 13:39:03 +0200
+Message-ID: <2024082602-sneezing-kettle-88ca@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,15 +62,16 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x ddf6492e0e508b7c2b42c8d5a4ac82bd38ef0dd5
+git cherry-pick -x 730b72480e29f63fd644f5fa57c9d46109428953
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024082656-unexposed-simply-c596@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024082602-sneezing-kettle-88ca@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
 
 Possible dependencies:
 
-ddf6492e0e50 ("drm/xe/display: Make display suspend/resume work on discrete")
-e7b180b22022 ("drm/xe: Prepare display for D3Cold")
+730b72480e29 ("drm/xe: prevent UAF around preempt fence")
+731e46c03228 ("drm/xe/exec_queue: Rename xe_exec_queue::compute to xe_exec_queue::lr")
+b3181f433206 ("drm/xe/vm: Simplify if condition")
 
 thanks,
 
@@ -78,111 +79,91 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From ddf6492e0e508b7c2b42c8d5a4ac82bd38ef0dd5 Mon Sep 17 00:00:00 2001
-From: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Date: Tue, 6 Aug 2024 12:50:44 +0200
-Subject: [PATCH] drm/xe/display: Make display suspend/resume work on discrete
+From 730b72480e29f63fd644f5fa57c9d46109428953 Mon Sep 17 00:00:00 2001
+From: Matthew Auld <matthew.auld@intel.com>
+Date: Wed, 14 Aug 2024 12:01:30 +0100
+Subject: [PATCH] drm/xe: prevent UAF around preempt fence
 
-We should unpin before evicting all memory, and repin after GT resume.
-This way, we preserve the contents of the framebuffers, and won't hang
-on resume due to migration engine not being restored yet.
+The fence lock is part of the queue, therefore in the current design
+anything locking the fence should then also hold a ref to the queue to
+prevent the queue from being freed.
 
-Signed-off-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+However, currently it looks like we signal the fence and then drop the
+queue ref, but if something is waiting on the fence, the waiter is
+kicked to wake up at some later point, where upon waking up it first
+grabs the lock before checking the fence state. But if we have already
+dropped the queue ref, then the lock might already be freed as part of
+the queue, leading to uaf.
+
+To prevent this, move the fence lock into the fence itself so we don't
+run into lifetime issues. Alternative might be to have device level
+lock, or only release the queue in the fence release callback, however
+that might require pushing to another worker to avoid locking issues.
+
 Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
-Cc: stable@vger.kernel.org # v6.8+
-Reviewed-by: Uma Shankar <uma.shankar@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240806105044.596842-3-maarten.lankhorst@linux.intel.com
-Signed-off-by: Maarten Lankhorst,,, <maarten.lankhorst@linux.intel.com>
-(cherry picked from commit cb8f81c1753187995b7a43e79c12959f14eb32d3)
+References: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/2454
+References: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/2342
+References: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/2020
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: <stable@vger.kernel.org> # v6.8+
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240814110129.825847-2-matthew.auld@intel.com
+(cherry picked from commit 7116c35aacedc38be6d15bd21b2fc936eed0008b)
 Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 
-diff --git a/drivers/gpu/drm/xe/display/xe_display.c b/drivers/gpu/drm/xe/display/xe_display.c
-index ca4468c82078..49de4e4f8a75 100644
---- a/drivers/gpu/drm/xe/display/xe_display.c
-+++ b/drivers/gpu/drm/xe/display/xe_display.c
-@@ -283,6 +283,27 @@ static bool suspend_to_idle(void)
- 	return false;
- }
+diff --git a/drivers/gpu/drm/xe/xe_exec_queue.c b/drivers/gpu/drm/xe/xe_exec_queue.c
+index 16f24f4a7062..9731dcd0b1bd 100644
+--- a/drivers/gpu/drm/xe/xe_exec_queue.c
++++ b/drivers/gpu/drm/xe/xe_exec_queue.c
+@@ -643,7 +643,6 @@ int xe_exec_queue_create_ioctl(struct drm_device *dev, void *data,
  
-+static void xe_display_flush_cleanup_work(struct xe_device *xe)
-+{
-+	struct intel_crtc *crtc;
-+
-+	for_each_intel_crtc(&xe->drm, crtc) {
-+		struct drm_crtc_commit *commit;
-+
-+		spin_lock(&crtc->base.commit_lock);
-+		commit = list_first_entry_or_null(&crtc->base.commit_list,
-+						  struct drm_crtc_commit, commit_entry);
-+		if (commit)
-+			drm_crtc_commit_get(commit);
-+		spin_unlock(&crtc->base.commit_lock);
-+
-+		if (commit) {
-+			wait_for_completion(&commit->cleanup_done);
-+			drm_crtc_commit_put(commit);
-+		}
-+	}
-+}
-+
- void xe_display_pm_suspend(struct xe_device *xe, bool runtime)
+ 		if (xe_vm_in_preempt_fence_mode(vm)) {
+ 			q->lr.context = dma_fence_context_alloc(1);
+-			spin_lock_init(&q->lr.lock);
+ 
+ 			err = xe_vm_add_compute_exec_queue(vm, q);
+ 			if (XE_IOCTL_DBG(xe, err))
+diff --git a/drivers/gpu/drm/xe/xe_exec_queue_types.h b/drivers/gpu/drm/xe/xe_exec_queue_types.h
+index a35ce24c9798..f6ee0ae80fd6 100644
+--- a/drivers/gpu/drm/xe/xe_exec_queue_types.h
++++ b/drivers/gpu/drm/xe/xe_exec_queue_types.h
+@@ -126,8 +126,6 @@ struct xe_exec_queue {
+ 		u32 seqno;
+ 		/** @lr.link: link into VM's list of exec queues */
+ 		struct list_head link;
+-		/** @lr.lock: preemption fences lock */
+-		spinlock_t lock;
+ 	} lr;
+ 
+ 	/** @ops: submission backend exec queue operations */
+diff --git a/drivers/gpu/drm/xe/xe_preempt_fence.c b/drivers/gpu/drm/xe/xe_preempt_fence.c
+index e8b8ae5c6485..c453f45328b1 100644
+--- a/drivers/gpu/drm/xe/xe_preempt_fence.c
++++ b/drivers/gpu/drm/xe/xe_preempt_fence.c
+@@ -128,8 +128,9 @@ xe_preempt_fence_arm(struct xe_preempt_fence *pfence, struct xe_exec_queue *q,
  {
- 	bool s2idle = suspend_to_idle();
-@@ -300,6 +321,8 @@ void xe_display_pm_suspend(struct xe_device *xe, bool runtime)
- 	if (!runtime)
- 		intel_display_driver_suspend(xe);
+ 	list_del_init(&pfence->link);
+ 	pfence->q = xe_exec_queue_get(q);
++	spin_lock_init(&pfence->lock);
+ 	dma_fence_init(&pfence->base, &preempt_fence_ops,
+-		      &q->lr.lock, context, seqno);
++		      &pfence->lock, context, seqno);
  
-+	xe_display_flush_cleanup_work(xe);
-+
- 	intel_dp_mst_suspend(xe);
- 
- 	intel_hpd_cancel_work(xe);
-diff --git a/drivers/gpu/drm/xe/xe_pm.c b/drivers/gpu/drm/xe/xe_pm.c
-index de3b5df65e48..9a3f618d22dc 100644
---- a/drivers/gpu/drm/xe/xe_pm.c
-+++ b/drivers/gpu/drm/xe/xe_pm.c
-@@ -91,13 +91,13 @@ int xe_pm_suspend(struct xe_device *xe)
- 	for_each_gt(gt, xe, id)
- 		xe_gt_suspend_prepare(gt);
- 
-+	xe_display_pm_suspend(xe, false);
-+
- 	/* FIXME: Super racey... */
- 	err = xe_bo_evict_all(xe);
- 	if (err)
- 		goto err;
- 
--	xe_display_pm_suspend(xe, false);
--
- 	for_each_gt(gt, xe, id) {
- 		err = xe_gt_suspend(gt);
- 		if (err) {
-@@ -151,11 +151,11 @@ int xe_pm_resume(struct xe_device *xe)
- 
- 	xe_irq_resume(xe);
- 
--	xe_display_pm_resume(xe, false);
--
- 	for_each_gt(gt, xe, id)
- 		xe_gt_resume(gt);
- 
-+	xe_display_pm_resume(xe, false);
-+
- 	err = xe_bo_restore_user(xe);
- 	if (err)
- 		goto err;
-@@ -363,10 +363,11 @@ int xe_pm_runtime_suspend(struct xe_device *xe)
- 	mutex_unlock(&xe->mem_access.vram_userfault.lock);
- 
- 	if (xe->d3cold.allowed) {
-+		xe_display_pm_suspend(xe, true);
-+
- 		err = xe_bo_evict_all(xe);
- 		if (err)
- 			goto out;
--		xe_display_pm_suspend(xe, true);
- 	}
- 
- 	for_each_gt(gt, xe, id) {
+ 	return &pfence->base;
+ }
+diff --git a/drivers/gpu/drm/xe/xe_preempt_fence_types.h b/drivers/gpu/drm/xe/xe_preempt_fence_types.h
+index b54b5c29b533..312c3372a49f 100644
+--- a/drivers/gpu/drm/xe/xe_preempt_fence_types.h
++++ b/drivers/gpu/drm/xe/xe_preempt_fence_types.h
+@@ -25,6 +25,8 @@ struct xe_preempt_fence {
+ 	struct xe_exec_queue *q;
+ 	/** @preempt_work: work struct which issues preemption */
+ 	struct work_struct preempt_work;
++	/** @lock: dma-fence fence lock */
++	spinlock_t lock;
+ 	/** @error: preempt fence is in error state */
+ 	int error;
+ };
 
 
