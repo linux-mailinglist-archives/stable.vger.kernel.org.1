@@ -1,70 +1,70 @@
-Return-Path: <stable+bounces-70226-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70227-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5C0495F2B7
-	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 15:18:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B94995F2E9
+	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 15:27:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B5E7285240
-	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 13:18:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22FFA282B5A
+	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 13:27:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61B2518757A;
-	Mon, 26 Aug 2024 13:18:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44A0E13BACE;
+	Mon, 26 Aug 2024 13:27:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=flygoat.com header.i=@flygoat.com header.b="xAo5l42A";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Nk9TpX9U"
+	dkim=pass (2048-bit key) header.d=flygoat.com header.i=@flygoat.com header.b="vTaFJEqs";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="K4JQDMhw"
 X-Original-To: stable@vger.kernel.org
-Received: from fout6-smtp.messagingengine.com (fout6-smtp.messagingengine.com [103.168.172.149])
+Received: from fhigh1-smtp.messagingengine.com (fhigh1-smtp.messagingengine.com [103.168.172.152])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FD0518660E;
-	Mon, 26 Aug 2024 13:18:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.149
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79A6E184525;
+	Mon, 26 Aug 2024 13:27:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724678286; cv=none; b=b9pW7tvVbwAXnLW+yaz/vq0ePxKSnXDsPuAAgf+XNJKaAPvG6z5O99d7tTEdwMidQJDDlIhnnk/bPe6WpJ3g9qqJ3iDHnqMdtwAbWvsZkBmARVy6CrzhsfbJB1n0sk4AFY4tOCVUwJtSe3d1ZMofJ/mlrrwzpDJ2jY5xHxT11MM=
+	t=1724678861; cv=none; b=qhKbr44d187ZMwde538o5gQSRJEFy16M7OAZ0c+rV9SaLoGDubKi5gegoiJDis6HUV47hXK9IiVKD1k7ro2DVk1CHBFYby142beaBLcYYXBrUnkBZ04+8CjfNXdaPd+olICA4JPNOVIEdI9PKKBURAuQdwUq0ZblavT9CM6VlkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724678286; c=relaxed/simple;
-	bh=pmu7uXPGqcVzcXzrSfNLN44lOCpm1i7XA4x7XEEIdCo=;
+	s=arc-20240116; t=1724678861; c=relaxed/simple;
+	bh=sxR9SLe26AMTomZMo/9FDo95TDcNF60oshP3lqoIOWc=;
 	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=S7VeVo6g7QXoBbsi/ihgvp6A8InLk8SHbo/+IHdIXPwBN+okW05o0VVvhVw5XPuBZzBZ5FpkkITlnthX/Uqa2a2vxuw/v7CW3h6pBlsCX1vnf1Y0XQqHgfpHQt9P0yEUr0x+nETMSgN1fKP2Q5lkY9tWuJFDnTrvJCu6B871PaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=flygoat.com; spf=pass smtp.mailfrom=flygoat.com; dkim=pass (2048-bit key) header.d=flygoat.com header.i=@flygoat.com header.b=xAo5l42A; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Nk9TpX9U; arc=none smtp.client-ip=103.168.172.149
+	 Subject:Content-Type; b=mhr0E5zW//JLTs855w0k/c3vc1HlU76Hcg8kglDZFAOVotAd26etRW9cU8T/7uALuVlnrkjCe+KpIoMoAEsxjt58ravlaESN+wgSYa3Adg6OdIiOwj36YlTr/ymabmNShG/gYSuKeS9885FN2HjEZDyC3fpkBT/iUC5mXWgU2ng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=flygoat.com; spf=pass smtp.mailfrom=flygoat.com; dkim=pass (2048-bit key) header.d=flygoat.com header.i=@flygoat.com header.b=vTaFJEqs; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=K4JQDMhw; arc=none smtp.client-ip=103.168.172.152
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=flygoat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flygoat.com
 Received: from phl-compute-05.internal (phl-compute-05.nyi.internal [10.202.2.45])
-	by mailfout.nyi.internal (Postfix) with ESMTP id 2752A1388073;
-	Mon, 26 Aug 2024 09:18:03 -0400 (EDT)
+	by mailfhigh.nyi.internal (Postfix) with ESMTP id A87B11146FFD;
+	Mon, 26 Aug 2024 09:27:38 -0400 (EDT)
 Received: from phl-imap-12 ([10.202.2.86])
-  by phl-compute-05.internal (MEProxy); Mon, 26 Aug 2024 09:18:03 -0400
+  by phl-compute-05.internal (MEProxy); Mon, 26 Aug 2024 09:27:38 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
 	cc:cc:content-transfer-encoding:content-type:content-type:date
 	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1724678283;
-	 x=1724764683; bh=zkeHuNn5eQC5k7Li4eeQB4/dsmwDOJpcjedrrQwZgjw=; b=
-	xAo5l42AOfVfEcWQHh80Y7r/rlHcTguF1vYEtfsTO0UcdKZwFR9awOT9ksjAUrXZ
-	hNRa/LJVVRonvhHMUUbQWOJHO9pdbuCxTpaM/bTcjibLi7rgYNgtVH+k9l2oWXV7
-	81GyKdH87iigDmSNFQnaJDMt/UeNgXDrsmbWqhqKqrttDgWTRtQZoTGUh5ri5ZaY
-	fEkGBDImlGV4yQpUOfo/fCnUB0unMIWroTKRliJ0AJsd47Bdg5upBXSPoYMch4gE
-	90JjSnMWSAarVuLz0aa+aw6wLi0W1QqYB/pXmavZBHI0SFGX87CMVCB5ZB60KoXV
-	BCQNtcUxsj4SoFgAvZi2qg==
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1724678858;
+	 x=1724765258; bh=OICaw6XdMAULOdvzlRj2FPocYRjHUILsmuI+DTazDjI=; b=
+	vTaFJEqsRyFJDzsfuskKExxrw2EODwUTTeggZtD+Y91sdLgbvahSdeEnBbSoHoR/
+	5pA3OI84qpDe/9wJgq+9RnzLsuefxxao/0yzXQqAz7bumjY1j/BzxaYTz3QFJroG
+	f5nAu5MULbzak/V+/yX3NV6EPgLAffdTh1p0ANW9Lj5xNYjsDy/re3Ne2G209+NT
+	rsbPhonaSXL4X74dBc9Xj0edfvl8X8ifcl18j5sRT6XrE1BcA/Qo+vd95OPk0Usm
+	Rk/6qrnLUcSmpKpuGqx9exONiarMFo++Ug+3ccv2C2FrZDng1Z+Isu7VjAJ+W5m1
+	IamChL/cb5bJIRyeeTbx0g==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1724678283; x=
-	1724764683; bh=zkeHuNn5eQC5k7Li4eeQB4/dsmwDOJpcjedrrQwZgjw=; b=N
-	k9TpX9UYGhtDBR1bv+J3O3qPQAP9191EAXWs8mgUkvvHAle6BimUtn1e+uZoCgqZ
-	YZ4K/qHdXAEKZnp4FExYEwqCMF6SDqqIdwPkOcOs7YcFjLyopJv1ozCyLr8hvfHj
-	OQIt9Vebp8In9SiHejlycNapmWIpk35KcfpwJ3ncM/FqF9xRFUWV/UGpd1UtG0Gc
-	aWx4f8ukZgx/Z0gme798tFZIvXTMJX025pyn3EZHYbryA+geeU+8MDDV9DDASMKk
-	gxk+yKERy6zyNaMnMKeAaZ9rspuwi7gheAdFi9GYSMiQL31gbCKQPj793UUfdxWp
-	IwXgBlNQjaECbsITEbPEQ==
-X-ME-Sender: <xms:ioDMZhgvYOIG8yLCz8XkorYsmvrUqKpbC9Ic5HARzY9R9qLBdMrmUA>
-    <xme:ioDMZmC5WU82Z9ZrD2ANM63CsXELdBWDZL0K9G6k2efGEQtF2HYECQkza3DiLxnBh
-    xSIoBIajLWRRkxklx8>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddruddvkedgieduucetufdoteggodetrfdotf
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1724678858; x=
+	1724765258; bh=OICaw6XdMAULOdvzlRj2FPocYRjHUILsmuI+DTazDjI=; b=K
+	4JQDMhwoS3JuNqDi8bvoHDt2nkH0dsHq57d3hy6uuOsuoDbVf1btfrjNIboALe9u
+	MqgH22R/nez66agpbreMknakTtc32Pmq/+i1/cyGi9lTOWqhRkK004uwafM30TNr
+	isDb3SjCspf/6GEqU5pT7EVRw5UDASFnQjVZ/AoE4kbO1LgVAuSdHKvMHDmyJ7Vc
+	C+Kd6SWI8cDsC95ENN20svXZnSR5NbVCpK3nAxBXREluDf3LuF8EVVUwTpNHuL+C
+	JF4aKiui4ePxtz4dq4h3kQPpq91nF5XdM+l0ndmi1YXXhFwEzZFCQKrvHIMQ8DUr
+	lITaTkTHiinifABhWWd1Q==
+X-ME-Sender: <xms:yYLMZulqGFkcESLYh7Z00tz1lIpXVKi3bj1EmjYPxvbxjm1u-bm8QQ>
+    <xme:yYLMZl33NMQPu-HbDlg5wZLQ621eyPZ9WsFq_t8UAD2oXqAfSiquE740K8kdk-zYT
+    QSbo87nBDiPaSLdVmI>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddruddvkedgieefucetufdoteggodetrfdotf
     fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
     rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
     htshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtqhertdertdej
@@ -72,21 +72,22 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddruddvkedgieduucetufdoteggod
     hlhihgohgrthdrtghomheqnecuggftrfgrthhtvghrnhepjeehfeduvddtgffgvdffkeet
     hefhlefgvdevvdekuefffeekheehgeevhfevteejnecuvehluhhsthgvrhfuihiivgeptd
     enucfrrghrrghmpehmrghilhhfrhhomhepjhhirgiguhhnrdihrghnghesfhhlhihgohgr
-    thdrtghomhdpnhgspghrtghpthhtohepiedpmhhouggvpehsmhhtphhouhhtpdhrtghpth
-    htohepthhssghoghgvnhgusegrlhhphhgrrdhfrhgrnhhkvghnrdguvgdprhgtphhtthho
-    pehsthgvvhgvnhdrhhhilhhlsehimhhgthgvtgdrtghomhdprhgtphhtthhopegsjhhorh
-    hnsehmohhrkhdrnhhopdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdr
-    khgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqmhhiphhssehvghgvrhdrkh
-    gvrhhnvghlrdhorhhgpdhrtghpthhtohepshhtrggslhgvsehvghgvrhdrkhgvrhhnvghl
-    rdhorhhg
-X-ME-Proxy: <xmx:ioDMZhGGoIGFSLYRlqjBohaPNi1XyZvzqZqruZaXbkSSHZ64BN9obA>
-    <xmx:ioDMZmTHWwSvPoGryZ_JxxGjQfE_qJ7SZN248B-IMsPhcRmqlXAFdQ>
-    <xmx:ioDMZuyBqxQOOSGsxFiwiHKNXrMMKxR6x8MifYk4hDliuXJ2RcHjtg>
-    <xmx:ioDMZs71NtLmG27sRW6d95kiS0WYjYqkQy_nmLJNAdfx7QNDubQpBg>
-    <xmx:i4DMZlrbCd_BqEyQc8e4EHgDJztEUSYkvNngqar9bYohgmg61_VRK8x9>
+    thdrtghomhdpnhgspghrtghpthhtohepvddtpdhmohguvgepshhmthhpohhuthdprhgtph
+    htthhopehtshgsohhgvghnugesrghlphhhrgdrfhhrrghnkhgvnhdruggvpdhrtghpthht
+    ohepphgrvhgvlhesuggvnhigrdguvgdprhgtphhtthhopegrlhhlvghnrdhlkhhmlhesgh
+    hmrghilhdrtghomhdprhgtphhtthhopehfrdhfrghinhgvlhhlihesghhmrghilhdrtgho
+    mhdprhgtphhtthhopehsuhguihhpmhdrmhhukhhhvghrjhgvvgesghhmrghilhdrtghomh
+    dprhgtphhtthhopehrfigrrhhsohifsehgmhigrdguvgdprhgtphhtthhopegsrhhoohhn
+    ihgvsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegtohhnohhrsehkvghrnhgvlhdroh
+    hrghdprhgtphhtthhopehshhhurghhsehkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:yYLMZso458eEMQGirlSKgYunEugIPOgaxEeZh6KAWgZ9-O8XDmFmDg>
+    <xmx:yYLMZikWlKVrDDUNMuHI4qkE7WaUIiRg6ik8H3Muj5LczDxBvIK8lw>
+    <xmx:yYLMZs0JBsS1eF1hPEuo7Vho8PhXaDdpTG7lDF6N9kJan33ifadd8Q>
+    <xmx:yYLMZpv2QjPFjZKfm650873xp9fYRFVPxHLUk3tWE3yr2VY1RpnZ6g>
+    <xmx:yoLMZt4_58SRVWxxWcAakIUIDEXQO01DU7DidY8bv-m5aBHIlQnY-7Fz>
 Feedback-ID: ifd894703:Fastmail
 Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id 5A22F1C20064; Mon, 26 Aug 2024 09:18:02 -0400 (EDT)
+	id C7BAD1C20064; Mon, 26 Aug 2024 09:27:37 -0400 (EDT)
 X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -94,70 +95,101 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Mon, 26 Aug 2024 14:17:39 +0100
+Date: Mon, 26 Aug 2024 14:27:17 +0100
 From: "Jiaxun Yang" <jiaxun.yang@flygoat.com>
-To: =?UTF-8?Q?Bj=C3=B8rn_Mork?= <bjorn@mork.no>
-Cc: "Thomas Bogendoerfer" <tsbogend@alpha.franken.de>,
- "Steven J . Hill" <Steven.Hill@imgtec.com>,
- "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
- linux-kernel@vger.kernel.org,
+To: "Guenter Roeck" <linux@roeck-us.net>,
+ "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
  "stable@vger.kernel.org" <stable@vger.kernel.org>
-Message-Id: <8c49fec9-2afc-44ca-aebc-d08ae0d11305@app.fastmail.com>
-In-Reply-To: <87o75gy85b.fsf@miraculix.mork.no>
-References: <20240824144133.1464835-1-bjorn@mork.no>
- <7f0602dc-8a47-46cb-a12f-09afc082b48f@app.fastmail.com>
- <87o75gy85b.fsf@miraculix.mork.no>
-Subject: Re: [PATCH] MIPS: fw: Gracefully handle unknown firmware protocols
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ "Linus Torvalds" <torvalds@linux-foundation.org>,
+ "Andrew Morton" <akpm@linux-foundation.org>, shuah@kernel.org,
+ patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+ "Jonathan Hunter" <jonathanh@nvidia.com>,
+ "Florian Fainelli" <f.fainelli@gmail.com>, sudipm.mukherjee@gmail.com,
+ srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com,
+ broonie@kernel.org, "Thomas Bogendoerfer" <tsbogend@alpha.franken.de>
+Message-Id: <eb7fda2e-e3c3-42cb-b477-91bcafe3088a@app.fastmail.com>
+In-Reply-To: <135ef4fd-4fc9-40b4-b188-8e64946f47c4@roeck-us.net>
+References: <20240817075228.220424500@linuxfoundation.org>
+ <135ef4fd-4fc9-40b4-b188-8e64946f47c4@roeck-us.net>
+Subject: Re: [PATCH 5.15 000/479] 5.15.165-rc3 review
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
 
 
-=E5=9C=A82024=E5=B9=B48=E6=9C=8825=E6=97=A5=E5=85=AB=E6=9C=88 =E4=B8=8B=E5=
-=8D=883:44=EF=BC=8CBj=C3=B8rn Mork=E5=86=99=E9=81=93=EF=BC=9A
-> "Jiaxun Yang" <jiaxun.yang@flygoat.com> writes:
->> =E5=9C=A82024=E5=B9=B48=E6=9C=8824=E6=97=A5=E5=85=AB=E6=9C=88 =E4=B8=8B=
-=E5=8D=883:41=EF=BC=8CBj=C3=B8rn Mork=E5=86=99=E9=81=93=EF=BC=9A
->>> Boards based on the same SoC family can use different boot loaders.
->>> These may pass numeric arguments which we erroneously interpret as
->>> command line or environment pointers. Such errors will cause boot
->>> to halt at an early stage since commit 056a68cea01e ("mips: allow
->>> firmware to pass RNG seed to kernel").
->>>
->>> One known example of this issue is a HPE switch using a BootWare
->>> boot loader.  It was found to pass these arguments to the kernel:
->>>
->>>   0x00020000 0x00060000 0xfffdffff 0x0000416c
->>>
->>> We can avoid hanging by validating that both passed pointers are in
->>> KSEG1 as expected.
->>
->> Hi Bjorn,
->>
->> This is actually breaking 64 bit systems passing fw_args in XKPHYS or=
- KSEG0.
+=E5=9C=A82024=E5=B9=B48=E6=9C=8826=E6=97=A5=E5=85=AB=E6=9C=88 =E4=B8=8A=E5=
+=8D=882:04=EF=BC=8CGuenter Roeck=E5=86=99=E9=81=93=EF=BC=9A
+> On 8/17/24 01:00, Greg Kroah-Hartman wrote:
+>> This is the start of the stable review cycle for the 5.15.165 release.
+>> There are 479 patches in this series, all will be posted as a response
+>> to this one.  If anyone has any issues with these being applied, plea=
+se
+>> let me know.
+>>=20
+>> Responses should be made by Mon, 19 Aug 2024 07:51:05 +0000.
+>> Anything received after that time might be too late.
+>>=20
+> [ ... ]
+>> Jiaxun Yang <jiaxun.yang@flygoat.com>
+>>      MIPS: Loongson64: reset: Prioritise firmware service
+>>=20
 >
-> Ouch.  Thanks for the feedback.
->
-> But if so, then aren't those already broken with the current test
-> against CKSEG0?  I didn't add that.
->
+> This patch in v5.15.165 results in:
 
-Ah my bad. My impression was it is possible to pass args in XKPHYS with
-existing infra (and some PMON bootloader is doing that) but it turns out=
- that
-capability was somehow dropped when I was migrating various platforms to
-fw_init_cmdline.
+Thanks for reporting!
 
-Feel free to propose a patch and go with valid_fw_arg, it's always good =
-to have=20
-robust generic implementation for validating stuff.
-
-In long term we may need to clean up this as Maciej suggested, but IMO g=
-oing through
-jungle of platforms is not a feasible task for casual contributors.
+This patch should be reverted for 5.15 as the infra was not here and 5.15
+is not intended to support platforms that may be impacted by this issue.
 
 Thanks
+- Jiaxun
+
+>
+> Building mips:loongson2k_defconfig ... failed
+> --------------
+> Error log:
+> arch/mips/loongson64/reset.c:25:36: error: 'struct sys_off_data'=20
+> declared inside parameter list will not be visible outside of this=20
+> definition or declaration [-Werror]
+>     25 | static int firmware_restart(struct sys_off_data *unusedd)
+>        |                                    ^~~~~~~~~~~~
+> arch/mips/loongson64/reset.c:34:37: error: 'struct sys_off_data'=20
+> declared inside parameter list will not be visible outside of this=20
+> definition or declaration [-Werror]
+>     34 | static int firmware_poweroff(struct sys_off_data *unused)
+>        |                                     ^~~~~~~~~~~~
+> arch/mips/loongson64/reset.c: In function 'mips_reboot_setup':
+> arch/mips/loongson64/reset.c:144:17: error: implicit declaration of=20
+> function 'register_sys_off_handler'; did you mean=20
+> 'register_restart_handler'? [-Werror=3Dimplicit-function-declaration]
+>    144 |                 register_sys_off_handler(SYS_OFF_MODE_RESTART,
+>        |                 ^~~~~~~~~~~~~~~~~~~~~~~~
+>        |                 register_restart_handler
+> arch/mips/loongson64/reset.c:144:42: error: 'SYS_OFF_MODE_RESTART'=20
+> undeclared (first use in this function)
+>    144 |                 register_sys_off_handler(SYS_OFF_MODE_RESTART,
+>        |                                          ^~~~~~~~~~~~~~~~~~~~
+> arch/mips/loongson64/reset.c:144:42: note: each undeclared identifier=20
+> is reported only once for each function it appears in
+> arch/mips/loongson64/reset.c:145:34: error: 'SYS_OFF_PRIO_FIRMWARE'=20
+> undeclared (first use in this function)
+>    145 |                                  SYS_OFF_PRIO_FIRMWARE,
+>        |                                  ^~~~~~~~~~~~~~~~~~~~~
+> arch/mips/loongson64/reset.c:150:42: error: 'SYS_OFF_MODE_POWER_OFF'=20
+> undeclared (first use in this function); did you mean=20
+> 'SYSTEM_POWER_OFF'?
+>    150 |                =20
+> register_sys_off_handler(SYS_OFF_MODE_POWER_OFF,
+>        |                                          ^~~~~~~~~~~~~~~~~~~~=
+~~
+>        |                                          SYSTEM_POWER_OFF
+>
+> This is not entirely surprising since the missing functions and defines
+> do not exist in v5.15.y.
+>
+> Guenter
+
 --=20
 - Jiaxun
 
