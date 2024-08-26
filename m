@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-70185-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70186-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E82BE95F0D0
-	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 14:11:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52D4E95F0D7
+	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 14:12:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DA19287C70
-	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 12:11:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0639F288037
+	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 12:12:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D865176AD8;
-	Mon, 26 Aug 2024 12:06:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD0CD198A2A;
+	Mon, 26 Aug 2024 12:06:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h/3aaCbU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BQNKe6i6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E0D516F0EC
-	for <stable@vger.kernel.org>; Mon, 26 Aug 2024 12:06:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DEE817BEA5
+	for <stable@vger.kernel.org>; Mon, 26 Aug 2024 12:06:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724673990; cv=none; b=gOEO7AKLO62j17mBkXQpl5DbVICcaI2YCFvcbzIiiOK2UOl7lea4ZxVpQhQcXHNeqDABPxzjf8Lfw1V4s/3nZxM0jpR3/CmC06jRU//F3JbSuqIrY1RsJD1jABLEgs6W7KUqnDdzWXNIpCcL98gbh6LWOjqbcYmfDT2jtUHeS3M=
+	t=1724673999; cv=none; b=lsSzATK45qimBglBhSd5Y7F8YUqRqOFfAHfhhgbwtlSWGWEcSl69mopHH9kE/W5R6qPPbpVX30e1vS0KBTcEEe99yHqIWK1NecVuf2Ue0d/JKYT8QdvpQm4HEHoRnZ5yif33abxbSpahtBpRmgrbM+/aVYqT3tR0uaCbcCSZxFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724673990; c=relaxed/simple;
-	bh=IO3zNIUYTFa0RbYa4n9tLTHANiEaldVJXNTJiXSb8pQ=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=lVLU54HE07SoEHQGcGBzAomfdLjJ4EEyzJJ8Pym6uahFbKGcRg6qaVNF8xTC5VyDegPZc9u+vwl4WUc6upCfWaMvlviNix5ARLII3GCOaj0HKO/3jFjOZv9X4AHAybr1GTtX8KePlQdUsHnwnljhxGMGmGYM5LvCj3RuEGyre+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h/3aaCbU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B72FC5142F;
-	Mon, 26 Aug 2024 12:06:28 +0000 (UTC)
+	s=arc-20240116; t=1724673999; c=relaxed/simple;
+	bh=0+bQSWZOFrBHhgKGAxI2iHSZzcmQlvGJWOQWJiwDyvI=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=NSZAGzW5jOKOK5ikiDX3iSr8uRQkNA68KWWcuFTwZeVDuuoSexXS9O23DZtbEKBD66Z3ZPpSddlZucInSI+J20pXDVmBf0Sv3YfYBWIga7erY4fJJpAZH8wlHcdBCjVTwK+mtd0jTLSorluNEDQ5AbOApENWtKC8qowRzd5PL/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BQNKe6i6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92405C51435;
+	Mon, 26 Aug 2024 12:06:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724673989;
-	bh=IO3zNIUYTFa0RbYa4n9tLTHANiEaldVJXNTJiXSb8pQ=;
+	s=korg; t=1724673999;
+	bh=0+bQSWZOFrBHhgKGAxI2iHSZzcmQlvGJWOQWJiwDyvI=;
 	h=Subject:To:Cc:From:Date:From;
-	b=h/3aaCbUCMQzmlV2XmIPRrQTuGjh0isOUPxnikOzpnXTHbJFkuHAXwc3g+ZpAs4ul
-	 ncX2IX+v6XBex3Ktaw2NnHe1iCpscClFtZez3pSgX3jJItOtaZoPMJbO3YAQS4FIdN
-	 rw8M4yxGxliOHDIO86DePr1ti1epKhCfcBGl9YLs=
-Subject: FAILED: patch "[PATCH] mptcp: pm: only mark 'subflow' endp as available" failed to apply to 6.1-stable tree
+	b=BQNKe6i6g6An7vQ4+plaLtgHkOXC8F95w2itE1FsrM8p4rmOAoPNgBT3fpm8fiA9t
+	 09wtQogB9IlfDvmFvgEKBsPfcGo3dD7xVb/hkvCf8UKk1Vd+W0qFyQvR1v9QY/8tC4
+	 rT3b1K3MEf55tswV69YU1Jt/AmDYW8Xd8gKMfDoE=
+Subject: FAILED: patch "[PATCH] mptcp: pm: only mark 'subflow' endp as available" failed to apply to 5.15-stable tree
 To: matttbe@kernel.org,kuba@kernel.org,martineau@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 26 Aug 2024 14:06:26 +0200
-Message-ID: <2024082626-citadel-cortex-f8ef@gregkh>
+Date: Mon, 26 Aug 2024 14:06:27 +0200
+Message-ID: <2024082627-devotion-chewer-87af@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 322ea3778965da72862cca2a0c50253aacf65fe6
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024082626-citadel-cortex-f8ef@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024082627-devotion-chewer-87af@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -78,6 +78,17 @@ edd8b5d868a4 ("mptcp: pm: re-using ID of unused removed subflows")
 9bbec87ecfe8 ("mptcp: unify pm get_local_id interfaces")
 dc886bce753c ("mptcp: export local_address")
 8b1c94da1e48 ("mptcp: only send RM_ADDR in nl_cmd_remove")
+3ad14f54bd74 ("mptcp: more accurate MPC endpoint tracking")
+c157bbe776b7 ("mptcp: allow the in kernel PM to set MPC subflow priority")
+843b5e75efff ("mptcp: fix local endpoint accounting")
+d9a4594edabf ("mptcp: netlink: Add MPTCP_PM_CMD_REMOVE")
+9ab4807c84a4 ("mptcp: netlink: Add MPTCP_PM_CMD_ANNOUNCE")
+982f17ba1a25 ("mptcp: netlink: split mptcp_pm_parse_addr into two functions")
+8b20137012d9 ("mptcp: read attributes of addr entries managed by userspace PMs")
+4638de5aefe5 ("mptcp: handle local addrs announced by userspace PMs")
+0530020a7c8f ("mptcp: track and update contiguous data status")
+0348c690ed37 ("mptcp: add the fallback check")
+1761fed25678 ("mptcp: don't send RST for single subflow")
 
 thanks,
 
