@@ -1,137 +1,132 @@
-Return-Path: <stable+bounces-70267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70268-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A34C095F6F2
-	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 18:42:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CC9D95F77A
+	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 19:11:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3F8C0B20EF5
-	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 16:42:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3545B284AFD
+	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 17:11:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD3AD195F04;
-	Mon, 26 Aug 2024 16:42:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 576DA198A10;
+	Mon, 26 Aug 2024 17:11:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eUG8zLrC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zk3y5IwM"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98EF76F2E0;
-	Mon, 26 Aug 2024 16:42:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2A8578C89;
+	Mon, 26 Aug 2024 17:11:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724690525; cv=none; b=S40jUN2K2XtxAPdQsXvqmecqHhBRSP4sZqSaFIYI/ZibMpx8MbkQGzQAzLU2li0WpdpmL26GtMEUkGOAbRbq86YWmOH+8JR0YmAk2UGYtr3oFvA80und01px7n9QF5tMStzu0g2dIL/h5MK27VGnK3NUeoHaS4acqbwr5xG1S3w=
+	t=1724692289; cv=none; b=bFMvkPQzzw+seViK5fuAlCCgGVqz0fOWJK1eWoC55SUhBuPTh3Pm5K4x3pa9QXLSRKv8toBDc+6FFPUtTSa4qoIk83mwtc4Hgc66YwznobDzhViIXDQipr4qXjZjf4u2HG1Wtz6NJKVqcw/AsjhOSih6hd80NKb5ObV7CKZUW7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724690525; c=relaxed/simple;
-	bh=ppYu9K2ghwv6MVNvA0aC/JaiLii6mvIKIRd/twErs/g=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=D6Rw4qljeVTG/CRjEjD2P1pLcCWKBlGhQ5nPudoA8nZyubyBlGseZvvZT2pMl7OAg1OUu3vaH8BEBvWxB9wghdCHrSXCTN9t+gS4QQ66oxQ242fwGHhedV0SwPjvruZoT76KYFTzN6bu+4uA97sPyTSgqpXnjc/UmskqYTWobmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eUG8zLrC; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1724690524; x=1756226524;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=ppYu9K2ghwv6MVNvA0aC/JaiLii6mvIKIRd/twErs/g=;
-  b=eUG8zLrCywT1VVHVkzMEmKSNFz9h+g2J9nKmoIObxA0WFswHDEXRWi0J
-   KRr1H6UhvatMqJ8lIgPPiLS3k9bIn8hBJ6VWHojuTWPH+rhleXmcaVBWh
-   ZgjAHrT6dRBE/wf/wSpqcrTUZSpGwqOM57gFCoI+KbSnvBhZ37UP8Tt/M
-   vPttq9204h5B7eMo08lpQRALLj3T6fQShs2zYBRqZ/4D5++rxaP+dv6Pn
-   caAO3V0aEAYTIVZ9MIwmWwtxvTwU1mVpr/GeBLEaihppU2xHd7pzI75Cd
-   agZwmSAliBtFSAiTj5aQH6kz15OT5ZNUnXsqsXDJ/SWLAGGtOB/IAxNgK
-   Q==;
-X-CSE-ConnectionGUID: w8bk3wfiSKyDLovS0Xldxg==
-X-CSE-MsgGUID: zS0W7+oeR9yGvAtbOAcpzw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11176"; a="23256987"
-X-IronPort-AV: E=Sophos;i="6.10,178,1719903600"; 
-   d="scan'208";a="23256987"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2024 09:42:03 -0700
-X-CSE-ConnectionGUID: wNGhoRxcSWupt5gOaAAohA==
-X-CSE-MsgGUID: opGhL0+qR8KjngocHNLSiw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,178,1719903600"; 
-   d="scan'208";a="63300808"
-Received: from hcaldwel-desk1.amr.corp.intel.com (HELO [10.125.110.87]) ([10.125.110.87])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Aug 2024 09:42:02 -0700
-Message-ID: <7401a060-884a-4e7f-9d87-10f5c5ac754d@intel.com>
-Date: Mon, 26 Aug 2024 09:41:49 -0700
+	s=arc-20240116; t=1724692289; c=relaxed/simple;
+	bh=OjlRIP/YfMcFStEv3GSbKGrEZZShBXmsGgMZmpWuKoE=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=R2eN8yChufE7NL1rMtLSYHRwDY0Lgq0iTZ85zz2Hx83KF6DoyBSiJM5JBaIwGK8JVXucjB+s/exyo0RbzZKTJxbEnLHUs/6bHY248MIoPF22sMCS9pdY3ffEBuud07Tkx7uzSagV6embrAV44wGvEot+pLZjAhHR5HRHitJd2EM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zk3y5IwM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7B83C582B9;
+	Mon, 26 Aug 2024 17:11:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724692288;
+	bh=OjlRIP/YfMcFStEv3GSbKGrEZZShBXmsGgMZmpWuKoE=;
+	h=From:Subject:Date:To:Cc:From;
+	b=Zk3y5IwM3tZZZpj3Yczdp6ghADoDbdWFt7dM+jBLL+sjffW/NoPIFWfoTB+Nd/NKP
+	 ps+12We/LlWUv98/iGFbjc3LkPETV3YCSOmRBbfSasBg7O6U4JLONp0BcVKogmRTjP
+	 F46JT0/K1JE7hsiGyARLQ9qROymFJpSmCheN4MhW0WoNx14BZ1JKeCRUIzlsoTyPDV
+	 zuB9c7xiXKFEpe+PWfTs/DMbzwyIDqxkx6ENBBfaqnezMvCKh+NLkrzeoUJz4By6Wp
+	 s8EVcKMRt65h/e3+4+2pMIyL9UmpG9wiVmzIx4+h/g2uIcYbNTR8cQrrGs/5HZ0sta
+	 zns7TrkE5h3Nw==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: [PATCH net 0/4] mptcp: close subflow when receiving TCP+FIN and
+ misc.
+Date: Mon, 26 Aug 2024 19:11:17 +0200
+Message-Id: <20240826-net-mptcp-close-extra-sf-fin-v1-0-905199fe1172@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] x86/tdx: Fix data leak in mmio_read()
-To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>
-Cc: linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
- Sean Christopherson <seanjc@google.com>, stable@vger.kernel.org
-References: <20240826125304.1566719-1-kirill.shutemov@linux.intel.com>
-Content-Language: en-US
-From: Dave Hansen <dave.hansen@intel.com>
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20240826125304.1566719-1-kirill.shutemov@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIADW3zGYC/x3MQQqDMBBG4avIrDugIS3aq5QuwvinDmgMmVAE8
+ e4NXX6L904yFIXRszup4Kume2oYbh3JEtIHrHMzud75fnQPTqi85SqZZd0NjKOWwBY5auJhmj3
+ uIXiZhNoiF0Q9/vsXtZLe1/UD1b4aL3MAAAA=
+To: mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>, 
+ Geliang Tang <geliang@kernel.org>, "David S. Miller" <davem@davemloft.net>, 
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+ Paolo Abeni <pabeni@redhat.com>, Florian Westphal <fw@strlen.de>, 
+ Shuah Khan <shuah@kernel.org>
+Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, 
+ "Matthieu Baerts (NGI0)" <matttbe@kernel.org>, stable@vger.kernel.org
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1830; i=matttbe@kernel.org;
+ h=from:subject:message-id; bh=OjlRIP/YfMcFStEv3GSbKGrEZZShBXmsGgMZmpWuKoE=;
+ b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBmzLc9JZUW5F/lg9YktD1Wr1ePhZuARG2/gO24t
+ 4WWfuhbFGiJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZsy3PQAKCRD2t4JPQmmg
+ cy/lEADW9ymX2YFVRy1SQl2oH7snKHe/kKsDkN33iltiwF8JAA9Fll0E+ZZbKRK7ziewH4/NTH8
+ dkU6O5rOsX4sZ8DnCtpAja6RbqV/1/oNZyID4tCM9rNbpu9UrLYc5oPJwhfC0OHfv39+nFFiKtp
+ igENzx06TkOKIDB95HQo/+He1n3fyvBUfEok69PH0yMOsaa0nmkr9yhZTPirB+jCkRjxOwel7Rl
+ eD01VAH6hOHEX9A5024MGSRcMGkYiPHeF13/w2Orv+Pl89+QmdkKTlXvm5nEMJLKx4JTPIEMOiS
+ iaFP6ka3nAbfGIvWZqvETFZu2TnGNneD4Snv+6xqvHSUJgL9e9kcIZN6J5DUk3g2cxRlQSPWGrD
+ XTphIy1uRzMu6mFLBoukBlDfD+3A3LEUXtvGLi15L8kIXZjj+Tp/LLyFOP+95ek5FI6tkBB4lrz
+ AkpRnjBghq4CZXEHCQpZgVDS3301/f0yxQa2FKcn45kd2C9dXF9ttV4dbmrvmDktuqCSs+Ra1y3
+ YcWKwvdK6yHWObA7KaIdDKxz0d3fB2uErWBklAzJK+n0UhQ1JvpjCs1vMIkPP2MF9rY8EEfMehc
+ ecC9BTqxhr/nkSKvza1eYYlt79zosPJJhoO43D3f+WTyBwvxzHXneIe7+hhCNNvnTyBalVvj+iv
+ cgGn9lC8JeP+Qag==
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp;
+ fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 
-On 8/26/24 05:53, Kirill A. Shutemov wrote:
-> The mmio_read() function makes a TDVMCALL to retrieve MMIO data for an
-> address from the VMM.
-> 
-> Sean noticed that mmio_read() unintentionally exposes the value of an
-> initialized variable on the stack to the VMM.
-> 
-> Do not send the original value of *val to the VMM.
+Here are different fixes:
 
-The key to this is that 'val' is only used for the _return_ value, right?
+Patch 1 closes the subflow after having received a FIN, instead of
+leaving it half-closed until the end of the MPTCP connection. A fix for
+v5.12.
+
+Patch 2 validates the previous patch.
+
+Patch 3 is a fix for a recent fix to check both directions for the
+backup flag. It can follow the 'Fixes' commit and be backported up to
+v5.7.
+
+Patch 4 adds a missing \n at the end of pr_debug(), causing debug
+messages to be displayed with a delay, which confuses the debugger. A
+fix for v5.6.
+
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+---
+Note: Peter's email address has been removed from the Cc list, because
+it is bouncing.
+
+---
+Matthieu Baerts (NGI0) (4):
+      mptcp: close subflow when receiving TCP+FIN
+      selftests: mptcp: join: cannot rm sf if closed
+      mptcp: sched: check both backup in retrans
+      mptcp: pr_debug: add missing \n at the end
+
+ net/mptcp/fastopen.c                            |  4 +-
+ net/mptcp/options.c                             | 50 ++++++++++-----------
+ net/mptcp/pm.c                                  | 28 ++++++------
+ net/mptcp/pm_netlink.c                          | 20 ++++-----
+ net/mptcp/protocol.c                            | 59 +++++++++++++------------
+ net/mptcp/protocol.h                            |  4 +-
+ net/mptcp/sched.c                               |  4 +-
+ net/mptcp/sockopt.c                             |  4 +-
+ net/mptcp/subflow.c                             | 56 ++++++++++++-----------
+ tools/testing/selftests/net/mptcp/mptcp_join.sh | 11 ++---
+ 10 files changed, 122 insertions(+), 118 deletions(-)
+---
+base-commit: 31a972959ae57691a1e4f539399b2674ae576086
+change-id: 20240826-net-mptcp-close-extra-sf-fin-19d4e5aa4c9c
+
+Best regards,
+-- 
+Matthieu Baerts (NGI0) <matttbe@kernel.org>
+
 
