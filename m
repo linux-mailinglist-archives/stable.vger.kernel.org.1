@@ -1,108 +1,136 @@
-Return-Path: <stable+bounces-70154-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 603BD95EEB9
-	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 12:45:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF26195EF02
+	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 12:54:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B9B71B2171B
-	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 10:45:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2C1521C22615
+	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 10:54:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2F7A149DE8;
-	Mon, 26 Aug 2024 10:45:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21D831862B8;
+	Mon, 26 Aug 2024 10:51:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=anirudhrb.com header.i=anirudh@anirudhrb.com header.b="KcPpiaW1"
 X-Original-To: stable@vger.kernel.org
-Received: from exchange.fintech.ru (exchange.fintech.ru [195.54.195.159])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D26CC13A869;
-	Mon, 26 Aug 2024 10:45:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.54.195.159
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724669118; cv=none; b=NR22otmw8D97j1OQcJQeDzxuX3T85FRphaVR4czmQ2kxshXKKUBwxGAgqdzS+fHjaAmI/i1fB1hs47f4CoeWS7KnLnRmYiZ2jBQI+7rvTfgWFtkC072ymW3kqmXF5V9ZH4i5BA7oAQuTfco9EJX1Eii6UkstETLiAUR7BAOI0qU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724669118; c=relaxed/simple;
-	bh=5gWYyrNgg6sVsuz/4qTpQ/yQgUCkgur0kDiqSfQAaZE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=ugUMzWl/svTP2vpqo2rn52/X+2oQvNM6oCQpe0hRaINjZvACv/uAyzqpQEYy7XmdgaWgdCxJAxzwxPfQAYjTCgwgdrj7vxn0r8rT+GzeWncbKigqNGz5EjGMyMrHlEcXH0fzQOWVRuuMCIOS+HGNr7wnJJXXHlzmNSHnZrmGoCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fintech.ru; spf=pass smtp.mailfrom=fintech.ru; arc=none smtp.client-ip=195.54.195.159
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fintech.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fintech.ru
-Received: from Ex16-01.fintech.ru (10.0.10.18) by exchange.fintech.ru
- (195.54.195.159) with Microsoft SMTP Server (TLS) id 14.3.498.0; Mon, 26 Aug
- 2024 13:45:13 +0300
-Received: from [192.168.211.130] (10.0.253.138) by Ex16-01.fintech.ru
- (10.0.10.18) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2242.4; Mon, 26 Aug
- 2024 13:45:13 +0300
-Message-ID: <56362df7-7502-4b35-81da-f3fe9ff7da47@fintech.ru>
-Date: Mon, 26 Aug 2024 03:45:12 -0700
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DF10155399;
+	Mon, 26 Aug 2024 10:51:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.15
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1724669478; cv=pass; b=VY3oep2PW6us62IEx9SMmSsc9wq+ArkyRgsCsSQP5w4G0W34Jg14lc6hB8WUja+3OMRUGJ7asxVsG20/D47Yxw0WWjWhpkno3P9p9Utdc0ei+V47tliYRe+Ny/NeLXIqkRfLB3/CfhtbQbU7tY4eojWvhOw59pBEkJ9rtuKrXH4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1724669478; c=relaxed/simple;
+	bh=W5+2nQZiwgd9oh8fjL1chMh9ssNGHLa3VbDluY76Cls=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PbkyfgQMNmaXzf3qP8R1oLYg4BGufHIIwJvIHX4rtXocuTFGW2NSuToFWp9E0Y2t9YTmtaIQE2mmJimbKCYVl+7xpf7rCcKEXfXbbBDH+X7GTLrkeX1UhLHTrtOaugB/6mdBlLMYvcOZZnuw8FmcZ0ikwT4PzIFu/Xr3O1HuZqE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=anirudhrb.com; spf=pass smtp.mailfrom=anirudhrb.com; dkim=fail (0-bit key) header.d=anirudhrb.com header.i=anirudh@anirudhrb.com header.b=KcPpiaW1 reason="key not found in DNS"; arc=pass smtp.client-ip=136.143.188.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=anirudhrb.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=anirudhrb.com
+Delivered-To: anirudh@anirudhrb.com
+ARC-Seal: i=1; a=rsa-sha256; t=1724669446; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=cYRxKkPA/V42K7yahz8U1FMJw/4wlS0JnPHy6TGZCezzP0PIhfDlLSLMvh6j69cN2dfw2F8tfF5LFoSvRXu0b8gXJBO+AHw2Zl+w70U0+itCiNRfjjhjXgVfqr6fqT5URPB2UphxxWPmvYEiUFyU4Xv/OxOABrVJTTnr6fi45RI=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1724669446; h=Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:MIME-Version:Message-ID:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=1/23OMf4aWlagJ8xmOriveeKTGOTd7dntEF7lQZbVao=; 
+	b=PMk+qMwuVWINs4sd8nl3VO3USVUxwWCY7nbadI/fa2p0PFoUAOhL69NtyyzdljjurGu3w90q5IKOAScvW0n6YYlaXzlfZOrF5JcBSpZD3SXrsS74WfYaWNSxnQNOpeSRibn10MT5lc5dNdgmxg1fIrb1PH+mM25Lk2IRh1JpKaI=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=anirudhrb.com;
+	spf=pass  smtp.mailfrom=anirudh@anirudhrb.com;
+	dmarc=pass header.from=<anirudh@anirudhrb.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1724669446;
+	s=zoho; d=anirudhrb.com; i=anirudh@anirudhrb.com;
+	h=From:From:To:To:Cc:Cc:Subject:Subject:Date:Date:Message-ID:MIME-Version:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=1/23OMf4aWlagJ8xmOriveeKTGOTd7dntEF7lQZbVao=;
+	b=KcPpiaW1v7ltbCLoj5nFvEPJ3Du0QGsJ6bD76ROwQYfKQMLoNgb87KaMAs2FQbAx
+	Q/1A7nc8FXInmw1b7jUUZxihr7PKbo7MTCb7nGlfJuFr8u0byMWdJ7Dt6Lb5PH0iZYH
+	zD6bJcpD2vF+Bik1dK6hRDalSNToYqo24nXXVKbE=
+Received: by mx.zohomail.com with SMTPS id 1724669444045253.87925989552468;
+	Mon, 26 Aug 2024 03:50:44 -0700 (PDT)
+From: Anirudh Rayabharam <anirudh@anirudhrb.com>
+To: "K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Michael Kelley <mikelley@microsoft.com>,
+	Vitaly Kuznetsov <vkuznets@redhat.com>
+Cc: Anirudh Rayabharam <anirudh@anirudhrb.com>,
+	stable@vger.kernel.org,
+	linux-hyperv@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] x86/hyperv: fix kexec crash due to VP assist page corruption
+Date: Mon, 26 Aug 2024 16:20:29 +0530
+Message-ID: <20240826105029.3173782-1-anirudh@anirudhrb.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] drm/i915/guc: prevent a possible int overflow in wq
- offsets
-Content-Language: en-US
-To: Jani Nikula <jani.nikula@linux.intel.com>, Joonas Lahtinen
-	<joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>
-CC: David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
-	<intel-gfx@lists.freedesktop.org>, <dri-devel@lists.freedesktop.org>,
-	<linux-kernel@vger.kernel.org>, <lvc-project@linuxtesting.org>,
-	<stable@vger.kernel.org>, <n.zhandarovich@fintech.ru>
-References: <20240725155925.14707-1-n.zhandarovich@fintech.ru>
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-In-Reply-To: <20240725155925.14707-1-n.zhandarovich@fintech.ru>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: Ex16-02.fintech.ru (10.0.10.19) To Ex16-01.fintech.ru
- (10.0.10.18)
+Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
 
-Hi,
+From: Anirudh Rayabharam (Microsoft) <anirudh@anirudhrb.com>
 
-On 7/25/24 08:59, Nikita Zhandarovich wrote:
-> It may be possible for the sum of the values derived from
-> i915_ggtt_offset() and __get_parent_scratch_offset()/
-> i915_ggtt_offset() to go over the u32 limit before being assigned
-> to wq offsets of u64 type.
-> 
-> Mitigate these issues by expanding one of the right operands
-> to u64 to avoid any overflow issues just in case.
-> 
-> Found by Linux Verification Center (linuxtesting.org) with static
-> analysis tool SVACE.
-> 
-> Fixes: 2584b3549f4c ("drm/i915/guc: Update to GuC version 70.1.1")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-> ---
->  drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c b/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
-> index 9400d0eb682b..908ebfa22933 100644
-> --- a/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
-> +++ b/drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c
-> @@ -2842,9 +2842,9 @@ static void prepare_context_registration_info_v70(struct intel_context *ce,
->  		ce->parallel.guc.wqi_tail = 0;
->  		ce->parallel.guc.wqi_head = 0;
->  
-> -		wq_desc_offset = i915_ggtt_offset(ce->state) +
-> +		wq_desc_offset = (u64)i915_ggtt_offset(ce->state) +
->  				 __get_parent_scratch_offset(ce);
-> -		wq_base_offset = i915_ggtt_offset(ce->state) +
-> +		wq_base_offset = (u64)i915_ggtt_offset(ce->state) +
->  				 __get_wq_offset(ce);
->  		info->wq_desc_lo = lower_32_bits(wq_desc_offset);
->  		info->wq_desc_hi = upper_32_bits(wq_desc_offset);
+9636be85cc5b ("x86/hyperv: Fix hyperv_pcpu_input_arg handling when CPUs go
+online/offline") introduces a new cpuhp state for hyperv initialization.
 
-Gentle ping,
+cpuhp_setup_state() returns the state number if state is CPUHP_AP_ONLINE_DYN
+or CPUHP_BP_PREPARE_DYN and 0 for all other states. For the hyperv case,
+since a new cpuhp state was introduced it would return 0. However,
+in hv_machine_shutdown(), the cpuhp_remove_state() call is conditioned upon
+"hyperv_init_cpuhp > 0". This will never be true and so hv_cpu_die() won't be
+called on all CPUs. This means the VP assist page won't be reset. When the
+kexec kernel tries to setup the VP assist page again, the hypervisor corrupts
+the memory region of the old VP assist page causing a panic in case the kexec
+kernel is using that memory elsewhere. This was originally fixed in dfe94d4086e4
+("x86/hyperv: Fix kexec panic/hang issues").
 
-Regards,
-Nikita
+Set hyperv_init_cpuhp to CPUHP_AP_HYPERV_ONLINE upon successful setup so that
+the hyperv cpuhp state is removed correctly on kexec and the necessary cleanup
+takes place.
+
+Cc: stable@vger.kernel.org
+Fixes: 9636be85cc5b ("x86/hyperv: Fix hyperv_pcpu_input_arg handling when CPUs go online/offline")
+Signed-off-by: Anirudh Rayabharam (Microsoft) <anirudh@anirudhrb.com>
+---
+ arch/x86/hyperv/hv_init.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/x86/hyperv/hv_init.c b/arch/x86/hyperv/hv_init.c
+index 17a71e92a343..81d1981a75d1 100644
+--- a/arch/x86/hyperv/hv_init.c
++++ b/arch/x86/hyperv/hv_init.c
+@@ -607,7 +607,7 @@ void __init hyperv_init(void)
+ 
+ 	register_syscore_ops(&hv_syscore_ops);
+ 
+-	hyperv_init_cpuhp = cpuhp;
++	hyperv_init_cpuhp = CPUHP_AP_HYPERV_ONLINE;
+ 
+ 	if (cpuid_ebx(HYPERV_CPUID_FEATURES) & HV_ACCESS_PARTITION_ID)
+ 		hv_get_partition_id();
+@@ -637,7 +637,7 @@ void __init hyperv_init(void)
+ clean_guest_os_id:
+ 	wrmsrl(HV_X64_MSR_GUEST_OS_ID, 0);
+ 	hv_ivm_msr_write(HV_X64_MSR_GUEST_OS_ID, 0);
+-	cpuhp_remove_state(cpuhp);
++	cpuhp_remove_state(CPUHP_AP_HYPERV_ONLINE);
+ free_ghcb_page:
+ 	free_percpu(hv_ghcb_pg);
+ free_vp_assist_page:
+-- 
+2.45.2
+
 
