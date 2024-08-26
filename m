@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-70175-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70176-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D22E95F04C
-	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 14:00:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A1FC95F051
+	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 14:02:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB72A1F22444
-	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 12:00:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5DA941C21B2F
+	for <lists+stable@lfdr.de>; Mon, 26 Aug 2024 12:02:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84AAB14B08E;
-	Mon, 26 Aug 2024 11:59:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA2EC15B13A;
+	Mon, 26 Aug 2024 12:01:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0XEixi6a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bF4zpBc+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 447B1145B10
-	for <stable@vger.kernel.org>; Mon, 26 Aug 2024 11:59:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B138158D79
+	for <stable@vger.kernel.org>; Mon, 26 Aug 2024 12:01:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724673598; cv=none; b=swH0GODIuIkyILba704jy/PGHZuBjSyWcBNwZ1DLZVK2WJ5/QF8y5Jp4FOgTYMJn+8Pc7cgQzS04f36Rd5ugwWYwwg1o6qM7UAy3jLozY2bispIXJF6f8d2RSpmpWkkOJz01AaXpZv0NDygvZzC8HbYvzwmvIG2NAlsArmK21KA=
+	t=1724673719; cv=none; b=Iwl/5PnargRrZdkLhPj1MKbiLOFn+0K3X0BHqVj4XCh/nEEEfZQKZkP5q7XK/qVEevwTCDcJXAXAzvvdBXcrxNJEq1FhGfBuWIHchqXsj8nGssMTIeAGoYNY0FF9pIZP0YkuHpcK+to3Pr5t2pbFA5NL2iBkh4zLn6uFtSQZnhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724673598; c=relaxed/simple;
-	bh=8K8fh/JaNi4MV2J8ok0l0+2swN9zGU5zPgLN44Ax0FI=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=CfCIl1bcsigybSTvO4nxoKZmaFdAjJU0rTlhI3OIADF+/1Khdr33UTJ68W61Cw3yVkkvI66jx4+S5ftMmfTwLLKJWonixHWPhUh83T2kUwvVQCH9NvnjbCO44q6VJ98bSP4J3fBgemTrwcgAr04UKeXarOLABVt4Qy1XavJoyZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0XEixi6a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56E69C51400;
-	Mon, 26 Aug 2024 11:59:56 +0000 (UTC)
+	s=arc-20240116; t=1724673719; c=relaxed/simple;
+	bh=NlLNhyvW63fcn9RjjVuHMFzQKp25mFx59IOi4OYPfGU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Z5+ybBepT53U2GEhIi2jNj4ZSPs5RW+/NXW1Bfhk/F5Ir6DN1Oh5/E/PgY5PRCHls3ZB3ogilhL1/W9zcFSn9yYnoXKt9A9Bvc33W/HVClgT/4tek60FahAvnZPFUCtTxZ+W8Y8PDVl4v/YjlKvAiw5ueJIQ87rh2Fq46KI0n2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bF4zpBc+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B3B2C51400;
+	Mon, 26 Aug 2024 12:01:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724673596;
-	bh=8K8fh/JaNi4MV2J8ok0l0+2swN9zGU5zPgLN44Ax0FI=;
+	s=korg; t=1724673719;
+	bh=NlLNhyvW63fcn9RjjVuHMFzQKp25mFx59IOi4OYPfGU=;
 	h=Subject:To:Cc:From:Date:From;
-	b=0XEixi6adH8f5piM2vCsM05SCoJlSG+Ubwo08tYmEedp71xl9wMX7lPAiT2vIoGdr
-	 VRVvh4cQj6ZjSFKdwx4i6kTyNTHskzHs0+IWYfQpeiFy5jsQ3CMmludMdvVuz3oGLX
-	 DpzwdrPgdhFnPAYjlO/ekk0DRcbIJub1k4efdRqM=
-Subject: FAILED: patch "[PATCH] smb3: fix broken cached reads when posix locks" failed to apply to 4.19-stable tree
-To: stfrench@microsoft.com,dhowells@redhat.com,kevin.ottens@enioka.com,piastryyy@gmail.com
+	b=bF4zpBc+30DZl8PCybfup6mzkM7Imvbk4iAMRavxnSQ/+bxApEjprOXrv5Q5BGm3q
+	 GYUYJ8XS406GRnMdjZhEhVLooSPej0swPZE6XJroiXBn6805R6IE9rNSOb3PwQY/gO
+	 ZdUAMdnGuGGfnkY8RCDvqsrn5yTIv1ttBCD53Zqk=
+Subject: FAILED: patch "[PATCH] thermal: of: Fix OF node leak in thermal_of_zone_register()" failed to apply to 6.6-stable tree
+To: krzysztof.kozlowski@linaro.org,daniel.lezcano@linaro.org,rafael.j.wysocki@intel.com,stable@vger.kernel.org,wenst@chromium.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 26 Aug 2024 13:59:40 +0200
-Message-ID: <2024082640-fragrant-tarnish-604d@gregkh>
+Date: Mon, 26 Aug 2024 14:01:56 +0200
+Message-ID: <2024082656-bacterium-output-c8b2@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,35 +53,27 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x e4be320eeca842a3d7648258ee3673f1755a5a59
+git cherry-pick -x 662b52b761bfe0ba970e5823759798faf809b896
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024082640-fragrant-tarnish-604d@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024082656-bacterium-output-c8b2@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
-e4be320eeca8 ("smb3: fix broken cached reads when posix locks")
-3ee1a1fc3981 ("cifs: Cut over to using netfslib")
-69c3c023af25 ("cifs: Implement netfslib hooks")
-edea94a69730 ("cifs: Add mempools for cifs_io_request and cifs_io_subrequest structs")
-1a5b4edd97ce ("cifs: Move cifs_loose_read_iter() and cifs_file_write_iter() to file.c")
-ab58fbdeebc7 ("cifs: Use more fields from netfs_io_subrequest")
-a975a2f22cdc ("cifs: Replace cifs_writedata with a wrapper around netfs_io_subrequest")
-753b67eb630d ("cifs: Replace cifs_readdata with a wrapper around netfs_io_subrequest")
-0f7c0f3f5150 ("cifs: Use alternative invalidation to using launder_folio")
-2e9d7e4b984a ("mm: Remove the PG_fscache alias for PG_private_2")
-2ff1e97587f4 ("netfs: Replace PG_fscache by setting folio->private and marking dirty")
-f3dc1bdb6b0b ("cifs: Fix writeback data corruption")
-d1bba17e20d5 ("Merge tag '6.8-rc1-smb3-client-fixes' of git://git.samba.org/sfrench/cifs-2.6")
+662b52b761bf ("thermal: of: Fix OF node leak in thermal_of_zone_register()")
+698a1eb1f75e ("thermal: core: Store zone ops in struct thermal_zone_device")
+9b0a62758665 ("thermal: core: Store zone trips table in struct thermal_zone_device")
+755113d76786 ("thermal/debugfs: Add thermal cooling device debugfs information")
+d654362d53a8 ("Merge tag 'thermal-v6.8-rc1' of ssh://gitolite.kernel.org/pub/scm/linux/kernel/git/thermal/linux into thermal")
 
 thanks,
 
@@ -89,49 +81,56 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From e4be320eeca842a3d7648258ee3673f1755a5a59 Mon Sep 17 00:00:00 2001
-From: Steve French <stfrench@microsoft.com>
-Date: Thu, 15 Aug 2024 18:31:36 -0500
-Subject: [PATCH] smb3: fix broken cached reads when posix locks
+From 662b52b761bfe0ba970e5823759798faf809b896 Mon Sep 17 00:00:00 2001
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Date: Wed, 14 Aug 2024 21:58:22 +0200
+Subject: [PATCH] thermal: of: Fix OF node leak in thermal_of_zone_register()
 
-Mandatory locking is enforced for cached reads, which violates
-default posix semantics, and also it is enforced inconsistently.
-This affected recent versions of libreoffice, and can be
-demonstrated by opening a file twice from the same client,
-locking it from handle one and trying to read from it from
-handle two (which fails, returning EACCES).
+thermal_of_zone_register() calls of_thermal_zone_find() which will
+iterate over OF nodes with for_each_available_child_of_node() to find
+matching thermal zone node.  When it finds such, it exits the loop and
+returns the node.  Prematurely ending for_each_available_child_of_node()
+loops requires dropping OF node reference, thus success of
+of_thermal_zone_find() means that caller must drop the reference.
 
-There is already a mount option "forcemandatorylock"
-(which defaults to off), so with this change only when the user
-intentionally specifies "forcemandatorylock" on mount will we
-break posix semantics on read to a locked range (ie we will
-only fail in this case, if the user mounts with
-"forcemandatorylock").
+Fixes: 3fd6d6e2b4e8 ("thermal/of: Rework the thermal device tree initialization")
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
+Reviewed-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://patch.msgid.link/20240814195823.437597-2-krzysztof.kozlowski@linaro.org
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-An earlier patch fixed the write path.
-
-Fixes: 85160e03a79e ("CIFS: Implement caching mechanism for mandatory brlocks")
-Cc: stable@vger.kernel.org
-Cc: Pavel Shilovsky <piastryyy@gmail.com>
-Reviewed-by: David Howells <dhowells@redhat.com>
-Reported-by: abartlet@samba.org
-Reported-by: Kevin Ottens <kevin.ottens@enioka.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-
-diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
-index 1fc66bcf49eb..f9b302cb8233 100644
---- a/fs/smb/client/file.c
-+++ b/fs/smb/client/file.c
-@@ -2912,9 +2912,7 @@ cifs_strict_readv(struct kiocb *iocb, struct iov_iter *to)
- 	if (!CIFS_CACHE_READ(cinode))
- 		return netfs_unbuffered_read_iter(iocb, to);
+diff --git a/drivers/thermal/thermal_of.c b/drivers/thermal/thermal_of.c
+index 30f8d6e70484..b08a9b64718d 100644
+--- a/drivers/thermal/thermal_of.c
++++ b/drivers/thermal/thermal_of.c
+@@ -491,7 +491,8 @@ static struct thermal_zone_device *thermal_of_zone_register(struct device_node *
+ 	trips = thermal_of_trips_init(np, &ntrips);
+ 	if (IS_ERR(trips)) {
+ 		pr_err("Failed to find trip points for %pOFn id=%d\n", sensor, id);
+-		return ERR_CAST(trips);
++		ret = PTR_ERR(trips);
++		goto out_of_node_put;
+ 	}
  
--	if (cap_unix(tcon->ses) &&
--	    (CIFS_UNIX_FCNTL_CAP & le64_to_cpu(tcon->fsUnixInfo.Capability)) &&
--	    ((cifs_sb->mnt_cifs_flags & CIFS_MOUNT_NOPOSIXBRL) == 0)) {
-+	if ((cifs_sb->mnt_cifs_flags & CIFS_MOUNT_NOPOSIXBRL) == 0) {
- 		if (iocb->ki_flags & IOCB_DIRECT)
- 			return netfs_unbuffered_read_iter(iocb, to);
- 		return netfs_buffered_read_iter(iocb, to);
+ 	ret = thermal_of_monitor_init(np, &delay, &pdelay);
+@@ -519,6 +520,7 @@ static struct thermal_zone_device *thermal_of_zone_register(struct device_node *
+ 		goto out_kfree_trips;
+ 	}
+ 
++	of_node_put(np);
+ 	kfree(trips);
+ 
+ 	ret = thermal_zone_device_enable(tz);
+@@ -533,6 +535,8 @@ static struct thermal_zone_device *thermal_of_zone_register(struct device_node *
+ 
+ out_kfree_trips:
+ 	kfree(trips);
++out_of_node_put:
++	of_node_put(np);
+ 
+ 	return ERR_PTR(ret);
+ }
 
 
