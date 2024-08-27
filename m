@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-70841-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70596-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EB9B961048
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:07:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CEC0960F03
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:55:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF70E2823AF
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:07:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43BBA1F2228B
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:55:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A32A1C3F19;
-	Tue, 27 Aug 2024 15:07:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47D5719EEDB;
+	Tue, 27 Aug 2024 14:53:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CCISrxSL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A/rIFWdU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD30D1E520;
-	Tue, 27 Aug 2024 15:07:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 047EF1C689C;
+	Tue, 27 Aug 2024 14:53:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771238; cv=none; b=WkBSV9wLY3o3J26hyFPsLEiUP6/Zqel+fSLIRN4xJCKy9ND34M378A8iELOjOZIQZpp7SrOPgUQPOzzrf+GvaGlRb8tzQ9WKIzsyuKXK2WZYYlLNSx3WGvkvOfxNlbEVpeWrCIttwlK7rKElfC187skp0rV382k+FNdQKD1ebdI=
+	t=1724770433; cv=none; b=Vd2acXbHdsOWZGc5bFWZssEBVyMMmEXR4LWAzjzlesYDShmB1JgIwvOG/t5soxeMjG7olKK/QhGK+vlrqBF2BoxOhrLYpZ4cvc11HIg1V5O6WrViW0ybcgQnB6GaXfS4pfVkudiAzyEl4j1a4yRhsT5E/b1dUl1TZnJDh2RjDe0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771238; c=relaxed/simple;
-	bh=pcwwzmzmDVQa/NTHxlZmrft2Iw23T64s8MedKO4XgNE=;
+	s=arc-20240116; t=1724770433; c=relaxed/simple;
+	bh=AT8mImdo2bcwmBp8PnsJpQWmfXMFUmNj0Va0wmWvm/k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B7pHMCuZyaeIoKTFmmzAL5ZfOWuGnzJMYiRCtyQ7q1hdU0oo8jktkjcWuEoomfp/WqUCm1v3MZonzylPXPh9BcoPbxikx46k2adbqTWCekBQgJoPY2tB7xuHViPtHeiGBEP+7xEsQs8UExHwPLQFVPz5G/WTRaD4cjsJyLDcDEM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CCISrxSL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AE05C4AF55;
-	Tue, 27 Aug 2024 15:07:17 +0000 (UTC)
+	 MIME-Version; b=b8Xkn/2RahTZks3USiOXTn3YIv+r/ru1129JCTUqQbbvjr+qG3GqaTovZNWbjKPnQRtLiizPIA3XMyzPmQTX42yZWTOGdlRRME4ggq5cx1TPNLJnSyxJ4t4QEN3vgfoPn4I535fErtwSXGob6WTJ4OwY/SwrPSYEQBqWFPiftf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A/rIFWdU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BD48C6106F;
+	Tue, 27 Aug 2024 14:53:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771237;
-	bh=pcwwzmzmDVQa/NTHxlZmrft2Iw23T64s8MedKO4XgNE=;
+	s=korg; t=1724770432;
+	bh=AT8mImdo2bcwmBp8PnsJpQWmfXMFUmNj0Va0wmWvm/k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CCISrxSLbdyu32od3qFMwqGi0/rtOli0iMVIVYlGMq2oBiG7sari5GMCJIn3IqYB3
-	 EthSj5jWitKXJCjPT29DQqA7X8v7k6zcqts0D1Z9PriInxVxqOjyzNaPC1XLQjRURI
-	 gi7b3oFlFtViZw5skZ2EvIXdVzaGIPf17a7uy1ic=
+	b=A/rIFWdUt8QLzkRc4n423/8dab87trzQkcIQyfnyhJpJrfV4+AMU35rF+3qqkdfWG
+	 q7eyaNHnv1BuO1MlF+btzmEheba4/BxuvYDkjXpsrAXYPsuWpUUCo2dCvKAL22n/hS
+	 M/IrdZJ6B+3Ur/tWFmAi9Q9OTkLT9IzZWurugopo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
+	Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 127/273] rust: fix the default format for CONFIG_{RUSTC,BINDGEN}_VERSION_TEXT
+Subject: [PATCH 6.6 220/341] nvme: fix namespace removal list
 Date: Tue, 27 Aug 2024 16:37:31 +0200
-Message-ID: <20240827143838.238566877@linuxfoundation.org>
+Message-ID: <20240827143851.783259751@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Keith Busch <kbusch@kernel.org>
 
-[ Upstream commit aacf93e87f0d808ef46e621aa56caea336b4433c ]
+[ Upstream commit ff0ffe5b7c3c12c6e0cca16652905963ae817b44 ]
 
-Another oddity in these config entries is their default value can fall
-back to 'n', which is a value for bool or tristate symbols.
+This function wants to move a subset of a list from one element to the
+tail into another list. It also needs to use the srcu synchronize
+instead of the regular rcu version. Do this one element at a time
+because that's the only to do it.
 
-The '|| echo n' is an incorrect workaround to avoid the syntax error.
-This is not a big deal, as the entry is hidden by 'depends on RUST' in
-situations where '$(RUSTC) --version' or '$(BINDGEN) --version' fails.
-Anyway, it looks odd.
-
-The default of a string type symbol should be a double-quoted string
-literal. Turn it into an empty string when the version command fails.
-
-Fixes: 2f7ab1267dc9 ("Kbuild: add Rust support")
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Link: https://lore.kernel.org/r/20240727140302.1806011-2-masahiroy@kernel.org
-[ Rebased on top of v6.11-rc1. - Miguel ]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Fixes: be647e2c76b27f4 ("nvme: use srcu for iterating namespace list")
+Reported-by: Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>
+Tested-by: Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- init/Kconfig | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/nvme/host/core.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/init/Kconfig b/init/Kconfig
-index 051cbb22968bd..9684e5d2b81c6 100644
---- a/init/Kconfig
-+++ b/init/Kconfig
-@@ -1906,7 +1906,7 @@ config RUST
- config RUSTC_VERSION_TEXT
- 	string
- 	depends on RUST
--	default $(shell,$(RUSTC) --version 2>/dev/null || echo n)
-+	default "$(shell,$(RUSTC) --version 2>/dev/null)"
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index 2a1b555406dff..82509f3679373 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -3810,12 +3810,13 @@ static void nvme_remove_invalid_namespaces(struct nvme_ctrl *ctrl,
  
- config BINDGEN_VERSION_TEXT
- 	string
-@@ -1914,7 +1914,7 @@ config BINDGEN_VERSION_TEXT
- 	# The dummy parameter `workaround-for-0.69.0` is required to support 0.69.0
- 	# (https://github.com/rust-lang/rust-bindgen/pull/2678). It can be removed when
- 	# the minimum version is upgraded past that (0.69.1 already fixed the issue).
--	default $(shell,$(BINDGEN) --version workaround-for-0.69.0 2>/dev/null || echo n)
-+	default "$(shell,$(BINDGEN) --version workaround-for-0.69.0 2>/dev/null)"
+ 	mutex_lock(&ctrl->namespaces_lock);
+ 	list_for_each_entry_safe(ns, next, &ctrl->namespaces, list) {
+-		if (ns->head->ns_id > nsid)
+-			list_splice_init_rcu(&ns->list, &rm_list,
+-					     synchronize_rcu);
++		if (ns->head->ns_id > nsid) {
++			list_del_rcu(&ns->list);
++			synchronize_srcu(&ctrl->srcu);
++			list_add_tail_rcu(&ns->list, &rm_list);
++		}
+ 	}
+ 	mutex_unlock(&ctrl->namespaces_lock);
+-	synchronize_srcu(&ctrl->srcu);
  
- #
- # Place an empty function call at each tracepoint site. Can be
+ 	list_for_each_entry_safe(ns, next, &rm_list, list)
+ 		nvme_ns_remove(ns);
 -- 
 2.43.0
 
