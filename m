@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-71179-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70888-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97C89961226
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:27:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD95E961088
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:10:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3C06BB23A45
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:27:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 67F9DB23338
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:10:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D62E1C93A3;
-	Tue, 27 Aug 2024 15:26:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D18D81C57A9;
+	Tue, 27 Aug 2024 15:09:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aUf3Z/Fh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k0bANJiO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE7FF1BFE07;
-	Tue, 27 Aug 2024 15:26:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F1241C3F19;
+	Tue, 27 Aug 2024 15:09:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772361; cv=none; b=P4WrSGpV7Wf3tnHPwvjeQ8+QLpfpypeNYnx6F9WnX9HQqy3T5UI1EF88ss7GWttlcr5fIJYtHyRSGAZUlpDByBQXJ/rTHolhWdhHKwaV6yGPiL/3H3g4s3m2hOlbYbfYhiCEzX9QbUEfSiWPFveVXhM4wsQmPOPaKgYKs1LPlyw=
+	t=1724771395; cv=none; b=aYYMsXqK3ty8D2UA0VRSvmaG8rSeebWbJPxlX3AiXsUQPkt1z2T2N1HsaQSQ8TwsUvy5VxWft7wVg6n2T7Xo3DxinzTNIWenE1USklspzQAx/POBBChk23ntKVhsn4tR6TQN9/RUa2B6XPUcqtdiMuOOo/1UM3bFkP2QuqQPk+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772361; c=relaxed/simple;
-	bh=1UQdwxUwk8KE3gCzZE2mt0N1cOKbUDuGcBMLvswWomw=;
+	s=arc-20240116; t=1724771395; c=relaxed/simple;
+	bh=GwUJq2w93gigsGsLHekhkUnoad3FehYLa9Kt71opdto=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xwbk+GdOcmP8A14rBWxVGjXHvsIKmqGn3DBtNYgtX6KscJleiLfm3YzPTQy3Rl8Mr/hPbYZ0q1u5mQ3AWEUbomV4JL8F8cImLOaX6KopdbBd2dZYuFeO0VRWC+61QhW/zmR8Cnp5E9qq2PygAD/OopMOPFiNVehkv16/tYXyj88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aUf3Z/Fh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ADC5C61071;
-	Tue, 27 Aug 2024 15:25:59 +0000 (UTC)
+	 MIME-Version; b=o9RFLHb88RfkBG8lMnoU28McFzePpn87AfNI91z8o6Jy+lOs/B90HAy6FyytiPiuykT8lK5hpd7jiHjpeIUDE3bt3l5qvYZ0YKOUVsKuxjDuKLU58uAfe+nzGzHZXYgBhlprpokr2TFxyRiwYMkqSa1uSbkN2hhEL7ouO+9z4Ao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k0bANJiO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B37EC4AF52;
+	Tue, 27 Aug 2024 15:09:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772360;
-	bh=1UQdwxUwk8KE3gCzZE2mt0N1cOKbUDuGcBMLvswWomw=;
+	s=korg; t=1724771395;
+	bh=GwUJq2w93gigsGsLHekhkUnoad3FehYLa9Kt71opdto=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aUf3Z/FhZzKf15nf8ynVJQA7ADDQ8c1opJg8OPb9ltwL5X8gSDXCAUtpYJlohgxNs
-	 aZFUpQ6FWkSoV4n/lGF1xZtGBLgL9dcGnZ5I0EEssaNul8TbcN/x4UHabAq3rz0pKG
-	 jse65id28qop9Z1pZlVECb8MLtew/7pvrSMUA7dQ=
+	b=k0bANJiOzxdPI5ytmk0YGWfM4Ee18qlG1W4Gy3+/q8hz7kzl5UPfclUQFW2s1qS1Z
+	 e5kIDZK5Smr1i2hp72PCCRvD2ljrnb5u48f4QhFJeFxvjRWSSoGDr5k39j7DvsRHxj
+	 wj7heAp8ffOUNtYgSbutuj2nmf0RvDxUdw7t0A5Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Simon Horman <horms@kernel.org>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 191/321] firmware: cirrus: cs_dsp: Initialize debugfs_root to invalid
-Date: Tue, 27 Aug 2024 16:38:19 +0200
-Message-ID: <20240827143845.502007635@linuxfoundation.org>
+Subject: [PATCH 6.10 176/273] dpaa2-switch: Fix error checking in dpaa2_switch_seed_bp()
+Date: Tue, 27 Aug 2024 16:38:20 +0200
+Message-ID: <20240827143840.109413257@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 66626b15636b5f5cf3d7f6104799f77462748974 ]
+[ Upstream commit c50e7475961c36ec4d21d60af055b32f9436b431 ]
 
-Initialize debugfs_root to -ENODEV so that if the client never sets a
-valid debugfs root the debugfs files will not be created.
+The dpaa2_switch_add_bufs() function returns the number of bufs that it
+was able to add.  It returns BUFS_PER_CMD (7) for complete success or a
+smaller number if there are not enough pages available.  However, the
+error checking is looking at the total number of bufs instead of the
+number which were added on this iteration.  Thus the error checking
+only works correctly for the first iteration through the loop and
+subsequent iterations are always counted as a success.
 
-A NULL pointer passed to any of the debugfs_create_*() functions means
-"create in the root of debugfs". It doesn't mean "ignore".
+Fix this by checking only the bufs added in the current iteration.
 
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Link: https://msgid.link/r/20240307105353.40067-1-rf@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 0b1b71370458 ("staging: dpaa2-switch: handle Rx path on control interface")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Tested-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Link: https://patch.msgid.link/eec27f30-b43f-42b6-b8ee-04a6f83423b6@stanley.mountain
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/cirrus/cs_dsp.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/firmware/cirrus/cs_dsp.c b/drivers/firmware/cirrus/cs_dsp.c
-index ee4c32669607f..68005cce01360 100644
---- a/drivers/firmware/cirrus/cs_dsp.c
-+++ b/drivers/firmware/cirrus/cs_dsp.c
-@@ -490,7 +490,7 @@ void cs_dsp_cleanup_debugfs(struct cs_dsp *dsp)
+diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
+index a71f848adc054..a293b08f36d46 100644
+--- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
++++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
+@@ -2638,13 +2638,14 @@ static int dpaa2_switch_refill_bp(struct ethsw_core *ethsw)
+ 
+ static int dpaa2_switch_seed_bp(struct ethsw_core *ethsw)
  {
- 	cs_dsp_debugfs_clear(dsp);
- 	debugfs_remove_recursive(dsp->debugfs_root);
--	dsp->debugfs_root = NULL;
-+	dsp->debugfs_root = ERR_PTR(-ENODEV);
- }
- EXPORT_SYMBOL_GPL(cs_dsp_cleanup_debugfs);
- #else
-@@ -2300,6 +2300,11 @@ static int cs_dsp_common_init(struct cs_dsp *dsp)
+-	int *count, i;
++	int *count, ret, i;
  
- 	mutex_init(&dsp->pwr_lock);
+ 	for (i = 0; i < DPAA2_ETHSW_NUM_BUFS; i += BUFS_PER_CMD) {
++		ret = dpaa2_switch_add_bufs(ethsw, ethsw->bpid);
+ 		count = &ethsw->buf_count;
+-		*count += dpaa2_switch_add_bufs(ethsw, ethsw->bpid);
++		*count += ret;
  
-+#ifdef CONFIG_DEBUG_FS
-+	/* Ensure this is invalid if client never provides a debugfs root */
-+	dsp->debugfs_root = ERR_PTR(-ENODEV);
-+#endif
-+
- 	return 0;
- }
+-		if (unlikely(*count < BUFS_PER_CMD))
++		if (unlikely(ret < BUFS_PER_CMD))
+ 			return -ENOMEM;
+ 	}
  
 -- 
 2.43.0
