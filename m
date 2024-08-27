@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-71116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70549-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 074C29611B6
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:22:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FE09960EB7
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:51:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A496A1F2408C
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:22:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 18CF61F24A7E
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:51:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61C651C57BF;
-	Tue, 27 Aug 2024 15:22:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E5251C688B;
+	Tue, 27 Aug 2024 14:51:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mnEVnOOo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LoGpFsKW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ECA119F485;
-	Tue, 27 Aug 2024 15:22:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 084901BA87C;
+	Tue, 27 Aug 2024 14:51:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772154; cv=none; b=txO/z+TUa2frYN58hvW6OxXTGJltS1EatFPwviV6OZ0AdUjiivwM2VGHTnL0rtnwuCMrNxJujtg/rIDtTChLMBspeRCtWvLyg0yhIJIYralyxd8smlf48d9B4oVdgRcLKlakrpj4IsSQuV2Dqda63MUyF7wDQER/HHKnvR0laZk=
+	t=1724770277; cv=none; b=h3PA7vtM1j4oGa6NSrZLKIaAB9Ui2dHVpB2edrEwz4sLfZ5i4iBknEhOnPqfUVFGGoLTmpdNX5vrGR+Lh+qVdAWUChlJiWaawplP/3el+BfMLfdrHb0PdTBjFls83uucewciWc4YKhHMy1Y9IcwBbVb0TG+JjthjM6k7KBVmDeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772154; c=relaxed/simple;
-	bh=A6SzVQdB4WfEQz/9zlPPrh9CQTndiCwI/jk1ZAZivrc=;
+	s=arc-20240116; t=1724770277; c=relaxed/simple;
+	bh=Vet9b+lsNKJwPdpWDAWmfJ5URJFxnjvzYZL2r9cjkBk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nd0Zk0LGHLd2loVSQ2krleb25eRmxqZmA3a6iLHjWNRItg0XcEXOiGiERqGGvRkqPvJQS1wNF2FwXLLINaUp122dEltqaee646vAr7P5iLthHyfJXtLPqDzaRrdpfvgJjrLEvWhpCe9x8Qx2f/tZBDkUzJsKtsSBIxvlJgeS1EI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mnEVnOOo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33722C61042;
-	Tue, 27 Aug 2024 15:22:33 +0000 (UTC)
+	 MIME-Version; b=rXLwdxSUYPZXC6auGR/q+E5r/cRSKp+ohPJTwgq5DxFVYLpSkej4cNHTCpbOJ4jxs1IIR+V/qN4idklCWtwuRo1InyljTkVPf8azx8t5oZutNF67pjdG0J2W2BrXlY9CWEW3bLFAkuS3/U3dSVso7Ujkge0nJ2hAiaMxK+mo8Sw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LoGpFsKW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C0D6C4DDFF;
+	Tue, 27 Aug 2024 14:51:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772153;
-	bh=A6SzVQdB4WfEQz/9zlPPrh9CQTndiCwI/jk1ZAZivrc=;
+	s=korg; t=1724770276;
+	bh=Vet9b+lsNKJwPdpWDAWmfJ5URJFxnjvzYZL2r9cjkBk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mnEVnOOo9b9UVZ4A2hKBnNBqrDqgzzMyOURy/pCQubS63AdmaLlBhtJiLGfWVDAmm
-	 pBQdBe382seyj5MlnJeZ3PDEhqVxaiNlRYvpiRQv1Rvo7Z4nTOzs9vb+Rs0iMs2mjo
-	 4n6ZRhViiRpgeTJrs+aZpwHaeoDEwrbwWSNhXucs=
+	b=LoGpFsKW7kw95nu3gvTUey58F/+/Q5idOsjxz48rCCxF70SvI4VaDyf5RmdLULw4z
+	 Glc36u/pi01A/LMTzpJC9dMgIMy+jkMHbDpAgu09GcpPd1eT8/4nU30lOFCH3bKAFz
+	 bVxlYG/9F/sZTG9ms00spPQed3JDtDYko00Kvu2g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Phil Sutter <phil@nwl.cc>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	David Howells <dhowells@redhat.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	linux-afs@lists.infradead.org,
+	netdev@vger.kernel.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 102/321] netfilter: nf_tables: Carry s_idx in nft_obj_dump_ctx
-Date: Tue, 27 Aug 2024 16:36:50 +0200
-Message-ID: <20240827143842.132094161@linuxfoundation.org>
+Subject: [PATCH 6.6 180/341] rxrpc: Dont pick values out of the wire header when setting up security
+Date: Tue, 27 Aug 2024 16:36:51 +0200
+Message-ID: <20240827143850.263530780@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +68,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phil Sutter <phil@nwl.cc>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit 2eda95cfa2fc43bcb21a801dc1d16a0b7cc73860 ]
+[ Upstream commit a1c9af4d4467354132417c2d8db10d6e928a7f77 ]
 
-Prep work for moving the context into struct netlink_callback scratch
-area.
+Don't pick values out of the wire header in rxkad when setting up DATA
+packet security, but rather use other sources.  This makes it easier to get
+rid of txb->wire.
 
-Signed-off-by: Phil Sutter <phil@nwl.cc>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Stable-dep-of: bd662c4218f9 ("netfilter: nf_tables: Add locking for NFT_MSG_GETOBJ_RESET requests")
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: "David S. Miller" <davem@davemloft.net>
+cc: Eric Dumazet <edumazet@google.com>
+cc: Jakub Kicinski <kuba@kernel.org>
+cc: Paolo Abeni <pabeni@redhat.com>
+cc: linux-afs@lists.infradead.org
+cc: netdev@vger.kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ net/rxrpc/rxkad.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index f4bdfd5dd319a..48cd3e2dde69c 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -7417,6 +7417,7 @@ static void audit_log_obj_reset(const struct nft_table *table,
- }
+diff --git a/net/rxrpc/rxkad.c b/net/rxrpc/rxkad.c
+index 6b32d61d4cdc4..ad6c57a9f27c7 100644
+--- a/net/rxrpc/rxkad.c
++++ b/net/rxrpc/rxkad.c
+@@ -259,7 +259,7 @@ static int rxkad_secure_packet_auth(const struct rxrpc_call *call,
  
- struct nft_obj_dump_ctx {
-+	unsigned int	s_idx;
- 	char		*table;
- 	u32		type;
- };
-@@ -7424,14 +7425,14 @@ struct nft_obj_dump_ctx {
- static int nf_tables_dump_obj(struct sk_buff *skb, struct netlink_callback *cb)
- {
- 	const struct nfgenmsg *nfmsg = nlmsg_data(cb->nlh);
--	const struct nft_table *table;
--	unsigned int idx = 0, s_idx = cb->args[0];
- 	struct nft_obj_dump_ctx *ctx = cb->data;
- 	struct net *net = sock_net(skb->sk);
- 	int family = nfmsg->nfgen_family;
- 	struct nftables_pernet *nft_net;
-+	const struct nft_table *table;
- 	unsigned int entries = 0;
- 	struct nft_object *obj;
-+	unsigned int idx = 0;
- 	bool reset = false;
- 	int rc = 0;
+ 	_enter("");
  
-@@ -7450,7 +7451,7 @@ static int nf_tables_dump_obj(struct sk_buff *skb, struct netlink_callback *cb)
- 		list_for_each_entry_rcu(obj, &table->objects, list) {
- 			if (!nft_is_active(net, obj))
- 				goto cont;
--			if (idx < s_idx)
-+			if (idx < ctx->s_idx)
- 				goto cont;
- 			if (ctx->table && strcmp(ctx->table, table->name))
- 				goto cont;
-@@ -7480,7 +7481,7 @@ static int nf_tables_dump_obj(struct sk_buff *skb, struct netlink_callback *cb)
- 	}
- 	rcu_read_unlock();
+-	check = txb->seq ^ ntohl(txb->wire.callNumber);
++	check = txb->seq ^ call->call_id;
+ 	hdr->data_size = htonl((u32)check << 16 | txb->len);
  
--	cb->args[0] = idx;
-+	ctx->s_idx = idx;
- 	return skb->len;
- }
+ 	txb->len += sizeof(struct rxkad_level1_hdr);
+@@ -302,7 +302,7 @@ static int rxkad_secure_packet_encrypt(const struct rxrpc_call *call,
  
+ 	_enter("");
+ 
+-	check = txb->seq ^ ntohl(txb->wire.callNumber);
++	check = txb->seq ^ call->call_id;
+ 
+ 	rxkhdr->data_size = htonl(txb->len | (u32)check << 16);
+ 	rxkhdr->checksum = 0;
+@@ -362,9 +362,9 @@ static int rxkad_secure_packet(struct rxrpc_call *call, struct rxrpc_txbuf *txb)
+ 	memcpy(&iv, call->conn->rxkad.csum_iv.x, sizeof(iv));
+ 
+ 	/* calculate the security checksum */
+-	x = (ntohl(txb->wire.cid) & RXRPC_CHANNELMASK) << (32 - RXRPC_CIDSHIFT);
++	x = (call->cid & RXRPC_CHANNELMASK) << (32 - RXRPC_CIDSHIFT);
+ 	x |= txb->seq & 0x3fffffff;
+-	crypto.buf[0] = txb->wire.callNumber;
++	crypto.buf[0] = htonl(call->call_id);
+ 	crypto.buf[1] = htonl(x);
+ 
+ 	sg_init_one(&sg, crypto.buf, 8);
 -- 
 2.43.0
 
