@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-71167-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70657-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2AA29611FF
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:25:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A63C7960F62
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:59:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3EDDDB21F41
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:25:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F3401F24CFD
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:59:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7C7C1C57BF;
-	Tue, 27 Aug 2024 15:25:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 724611C9EAD;
+	Tue, 27 Aug 2024 14:57:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mh8DaKkR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rw6rAYGZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 675FA148302;
-	Tue, 27 Aug 2024 15:25:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E16E1C93B0;
+	Tue, 27 Aug 2024 14:57:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772321; cv=none; b=W4XOlJgNUXlD0QPaiE27qg1KnshtyOO/HzifXtS441t61pVVPwifJCC/0U64Y/iJIer/mMx1flkzzOCxFzGn6VvWRST9edqB9PyZvX5Gub5MTgFYjQw5OmgvpmRfcqoGJwSQit0xfIZ1tOa+R7QJSEaiG3Hr3oOaDZJs0Cj1jr8=
+	t=1724770637; cv=none; b=gR+C5Abt6Q5a3XGAFt5rXfwjBQUuMKVO5g+ZWyLjVLAD7Txzv+y+zMup2c+xF0E1T6zwygqCeqebxwi/XI0ia21HBxOevI0WsklRI6M7yT9gEnmKHFjZQzktUiWyYXhRqzkMqFDwb1nc33EwzNOV0ApAkB/Zg7hJ1NVqDdQagUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772321; c=relaxed/simple;
-	bh=m2ME+3V3pGeSr0pa7muPNxsnl2K9NEw/ALKN7z0SEkk=;
+	s=arc-20240116; t=1724770637; c=relaxed/simple;
+	bh=hv0e5Qd+v3WQ8gOc4ehnRzQYUENIqjXeHf3asPdBuK8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jl1Si6XqS3Nfv4I6YaF9KdEEMCzCH4c2X/iC3m9mdTpsJIavUjsl7hfHLUUQkO8HpimOygJ+SFCwQ62VDGRGxaCPq2HKnsFnDLhBFv1FCvHJoAaL3dLiNFYwoc0oG2SW3C605vtLwd7aAySwEaBoJaAMFa0lHZlYcLvOT/mhxzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mh8DaKkR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9DE6C6107A;
-	Tue, 27 Aug 2024 15:25:20 +0000 (UTC)
+	 MIME-Version; b=LAekt+FmT+wQJ2FaVFBEeolKHzF4Ti56MweNPGgPNhYD3X/XftTh0E1VN+z0SvKaxeFyVI12an57CgZ3kmyUNTIVOgDrFZT+Ym5yD7sunjr/yObJiP+emNqv6K0Tu8xp+19x5jfajNqI+BpOmfmLsayw1GmlRPEn0w3XqqlxMxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rw6rAYGZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 821EAC4FE02;
+	Tue, 27 Aug 2024 14:57:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772321;
-	bh=m2ME+3V3pGeSr0pa7muPNxsnl2K9NEw/ALKN7z0SEkk=;
+	s=korg; t=1724770637;
+	bh=hv0e5Qd+v3WQ8gOc4ehnRzQYUENIqjXeHf3asPdBuK8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mh8DaKkR0092PBGrSfvg6huck618xVajjyM93MhV0d5MLhXDuZscCXUutEo311KSV
-	 eqPmQjrxKEnosgJ598u1p4cTukxAQv4hVO/YrKvOpuv8zIhE8bD+GBx/v1rVZKAwy7
-	 fPUysgOW7hgtIbJ1WMxKa9Pe32MOlO7EmfgOS1dY=
+	b=rw6rAYGZEbEE251dcdDSnowQg8d3HFDvPa/mLvU+KsX68AbvZN5ZbrrugiKzXd/T4
+	 Ly7LiBQZwRzQAH+SlY8ka9WVBUXZ7xACzWmlnH0xlvzh+2PBfgWUVlC9TPyV+zc/U2
+	 sjdNoVPQGkdEm99xsTvw2obwdVJlngJRqKq8khOY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>,
-	Anand Jain <anand.jain@oracle.com>,
-	David Sterba <dsterba@suse.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 180/321] btrfs: delayed-inode: drop pointless BUG_ON in __btrfs_remove_delayed_item()
+Subject: [PATCH 6.6 257/341] bonding: fix null pointer deref in bond_ipsec_offload_ok
 Date: Tue, 27 Aug 2024 16:38:08 +0200
-Message-ID: <20240827143845.081655917@linuxfoundation.org>
+Message-ID: <20240827143853.186708836@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +64,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Sterba <dsterba@suse.com>
+From: Nikolay Aleksandrov <razor@blackwall.org>
 
-[ Upstream commit 778e618b8bfedcc39354373c1b072c5fe044fa7b ]
+[ Upstream commit 95c90e4ad89d493a7a14fa200082e466e2548f9d ]
 
-There's a BUG_ON checking for a valid pointer of fs_info::delayed_root
-but it is valid since init_mount_fs_info() and has the same lifetime as
-fs_info.
+We must check if there is an active slave before dereferencing the pointer.
 
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: Anand Jain <anand.jain@oracle.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 18cb261afd7b ("bonding: support hardware encryption offload to slaves")
+Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
+Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/delayed-inode.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/net/bonding/bond_main.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/btrfs/delayed-inode.c b/fs/btrfs/delayed-inode.c
-index 1494ce990d298..948104332b4da 100644
---- a/fs/btrfs/delayed-inode.c
-+++ b/fs/btrfs/delayed-inode.c
-@@ -420,8 +420,6 @@ static void __btrfs_remove_delayed_item(struct btrfs_delayed_item *delayed_item)
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index b4f8f5112edd5..a6eb907a9a273 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -604,6 +604,8 @@ static bool bond_ipsec_offload_ok(struct sk_buff *skb, struct xfrm_state *xs)
+ 	bond = netdev_priv(bond_dev);
+ 	rcu_read_lock();
+ 	curr_active = rcu_dereference(bond->curr_active_slave);
++	if (!curr_active)
++		goto out;
+ 	real_dev = curr_active->dev;
  
- 	delayed_root = delayed_node->root->fs_info->delayed_root;
- 
--	BUG_ON(!delayed_root);
--
- 	if (delayed_item->type == BTRFS_DELAYED_INSERTION_ITEM)
- 		root = &delayed_node->ins_root;
- 	else
+ 	if (BOND_MODE(bond) != BOND_MODE_ACTIVEBACKUP)
 -- 
 2.43.0
 
