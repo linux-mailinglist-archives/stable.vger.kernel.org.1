@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-70559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71068-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25336960EC2
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:52:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74C5796117F
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:21:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C417B1F24A8A
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:52:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 271D11F21E79
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:21:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CBD51C68B4;
-	Tue, 27 Aug 2024 14:51:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9123B1C8FD5;
+	Tue, 27 Aug 2024 15:19:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k6v2f3FX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KkECqmHS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2166B1C6888;
-	Tue, 27 Aug 2024 14:51:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CA871C6F57;
+	Tue, 27 Aug 2024 15:19:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770309; cv=none; b=RC5lqv5TFYQ/tm1bXigr7nzU91XVUUaihVrjOusAfm9TbMSeuHpM3F5C1hIcQ3tGgCeKG6cCwGN0tu9M00Je2diiu3IPNejQu6hDbY9GIE95TAObNv/1fwzOcW06GfKyfV2Iv5hWths68lkgXyHSd+jxlWsBATq/+G7/Z/muaIA=
+	t=1724771993; cv=none; b=EGK4W694N8VgfQLWzqV0w8enl3l2htKdpyPyzuxD2m0f4Bzn8xBK1Ymf1hxSOrgNf1bEAkzUU4+0I3UWAo5TzdA4MFk8XUwT0U7P4OFo5lbYDR8eviIpAgNpwHS4B91QhYwQSjgR004EEzfAYDZXn1PvtsSwU7Ssw7bswaCKln4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770309; c=relaxed/simple;
-	bh=e5LuU/nvbm0zw1XigW5Hscv/I1AAogPMJqXyeRhTzHs=;
+	s=arc-20240116; t=1724771993; c=relaxed/simple;
+	bh=8ZzSPe2TO7gef9dilcwWUdG8VYyhP7jpKQozaR3+ba8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M9m/ekvt/lu+cAcpmTWnqH6w+IWSsqG7vK70NOXmYKFW7R6jpd1h0Sv+Ft02IZhnZzJAHehte04lhN6zNgk/Tf5/5dJ4yinpnuDttpTRm8A0xqXUeNQJhNXt2PLh0o3xBlNb/NrxtZb/Xx40nmJ8QESp/hH4KLHQyJUnEk4vXUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k6v2f3FX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D55CC4DE03;
-	Tue, 27 Aug 2024 14:51:48 +0000 (UTC)
+	 MIME-Version; b=j8NQ6gT00+kFBKflfc46hYzLlK1DjG4fNr6sf2xkAfPdPnwwJa9jZlfxfmPHz1i+ri06EFkZWm1I6jUYn+nDZHL5RCbP6xAvfQTILcQH5aF1/Mi9NCb1QTyc3SFxS0dr7WsQWjkhzMOouzEo/ZZatot0W14CCFSml+K3IMNMV08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KkECqmHS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65C3CC4DDE8;
+	Tue, 27 Aug 2024 15:19:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770309;
-	bh=e5LuU/nvbm0zw1XigW5Hscv/I1AAogPMJqXyeRhTzHs=;
+	s=korg; t=1724771993;
+	bh=8ZzSPe2TO7gef9dilcwWUdG8VYyhP7jpKQozaR3+ba8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k6v2f3FXWmH0T5ptn7hWFgqmNbEggfPYrxM7GGutbr79LgsfLdZhP/cfTtCQnyyxM
-	 yMVOvCpYoSSTuzl8lsxUDvftKrbLvh5n1mJjuFSikqUqYdm0ZaCNFjZqs19Udn8RAc
-	 jGQtqFWWh7PaWbhUPOd7FtV0igk4bEY4J7pO6QXc=
+	b=KkECqmHSthLhkm0Iqe/flPnzTI/GHPPv5G+g9SIqqAp+PA6TqQX34PPCTzN4FwyAm
+	 YoYk5d9oCfrx2EAju9Tqg6Dq8PpHNKpGdxtDR6elqIK9Mc3S+3RSMda6UF7olWNoYt
+	 eBJF2e7pIt3ZgWasRUSkgxMGoCQjbke2znIDB3iU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
+	syzbot+78d5b129a762182225aa@syzkaller.appspotmail.com,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 159/341] quota: Remove BUG_ON from dqget()
+Subject: [PATCH 6.1 082/321] ALSA: usb: Fix UBSAN warning in parse_audio_unit()
 Date: Tue, 27 Aug 2024 16:36:30 +0200
-Message-ID: <20240827143849.466633299@linuxfoundation.org>
+Message-ID: <20240827143841.362564845@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 249f374eb9b6b969c64212dd860cc1439674c4a8 ]
+[ Upstream commit 2f38cf730caedaeacdefb7ff35b0a3c1168117f9 ]
 
-dqget() checks whether dquot->dq_sb is set when returning it using
-BUG_ON. Firstly this doesn't work as an invalidation check for quite
-some time (we release dquot with dq_sb set these days), secondly using
-BUG_ON is quite harsh. Use WARN_ON_ONCE and check whether dquot is still
-hashed instead.
+A malformed USB descriptor may pass the lengthy mixer description with
+a lot of channels, and this may overflow the 32bit integer shift
+size, as caught by syzbot UBSAN test.  Although this won't cause any
+real trouble, it's better to address.
 
-Signed-off-by: Jan Kara <jack@suse.cz>
+This patch introduces a sanity check of the number of channels to bail
+out the parsing when too many channels are found.
+
+Reported-by: syzbot+78d5b129a762182225aa@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/0000000000000adac5061d3c7355@google.com
+Link: https://patch.msgid.link/20240715123619.26612-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/quota/dquot.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ sound/usb/mixer.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/fs/quota/dquot.c b/fs/quota/dquot.c
-index 7a2c9b153be6e..23dbde1de2520 100644
---- a/fs/quota/dquot.c
-+++ b/fs/quota/dquot.c
-@@ -995,9 +995,8 @@ struct dquot *dqget(struct super_block *sb, struct kqid qid)
- 	 * smp_mb__before_atomic() in dquot_acquire().
- 	 */
- 	smp_rmb();
--#ifdef CONFIG_QUOTA_DEBUG
--	BUG_ON(!dquot->dq_sb);	/* Has somebody invalidated entry under us? */
--#endif
-+	/* Has somebody invalidated entry under us? */
-+	WARN_ON_ONCE(hlist_unhashed(&dquot->dq_hash));
- out:
- 	if (empty)
- 		do_destroy_dquot(empty);
+diff --git a/sound/usb/mixer.c b/sound/usb/mixer.c
+index 5699a62d17679..34ded71cb8077 100644
+--- a/sound/usb/mixer.c
++++ b/sound/usb/mixer.c
+@@ -2023,6 +2023,13 @@ static int parse_audio_feature_unit(struct mixer_build *state, int unitid,
+ 		bmaControls = ftr->bmaControls;
+ 	}
+ 
++	if (channels > 32) {
++		usb_audio_info(state->chip,
++			       "usbmixer: too many channels (%d) in unit %d\n",
++			       channels, unitid);
++		return -EINVAL;
++	}
++
+ 	/* parse the source unit */
+ 	err = parse_audio_unit(state, hdr->bSourceID);
+ 	if (err < 0)
 -- 
 2.43.0
 
