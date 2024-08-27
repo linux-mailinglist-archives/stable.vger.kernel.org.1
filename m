@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-70994-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4FF196110F
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:15:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34D1B961303
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:39:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 238DA1C23698
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:15:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3E9AEB26CBE
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:33:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00B521BC073;
-	Tue, 27 Aug 2024 15:15:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86C801C7B61;
+	Tue, 27 Aug 2024 15:30:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IGvF+w5Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TeAg2dG6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B11B017C96;
-	Tue, 27 Aug 2024 15:15:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45C901CFEBC;
+	Tue, 27 Aug 2024 15:30:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771745; cv=none; b=E0rLV4A6OoBilW8bV4g5gUho3rIndj4b3/9Rny9gSZmsVeNk/CCoDLqTWY8asM9SV9gE2Ro+sRX4J1t49THaXzru+h9leDNHxyOmgDt9HTcX1DA92C4xys+cjA9CJPHaURyX70BPS2ljVAdV8NWRtoKuudDldIeceXLzjgyo9Uc=
+	t=1724772657; cv=none; b=aPFTFXpJZFL0dccZdmYXuHzmbsrP5WxoDfU/tWfY9GbBOFRl4jwwXHHFmk4jxJbskD58XFOlPeIHPSSMBzX7mgTbkt5w83cETavYRMIwWnDA+5b5T9MZpscxtKVQBs9ovSxn6Dt9+XXYVORKnQE9SISmjHTGx431yCpYJ9Y0FnM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771745; c=relaxed/simple;
-	bh=jvgPA/DpyW3ospZNhxocN0nolptpNCZUXx4d18jKlVI=;
+	s=arc-20240116; t=1724772657; c=relaxed/simple;
+	bh=cG9kFtvAITUWaMGiS3jei3JtbBbrdUJMMAxnPYnyk8o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F9VP11q1sdDwK83Et2RhiEa0q0dlBk1uLqvNR84XdXXMkv2CHOAPkbS0VZOE+MYNkx8YmIa3LhPSyeXZ296laKu6m8PMdUxbHtlOY5cZMzLjJHwZVvckdOnCW/egrGQm1A6Lk9yY660tbJdnAfIwFu3550mc6V18zlCtTuqlY2w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IGvF+w5Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9EC5C4AF50;
-	Tue, 27 Aug 2024 15:15:44 +0000 (UTC)
+	 MIME-Version; b=SBD6/onfuupcug3SrA5RGa29jUOhGC80zsG64bdKfG615TXBBd9mkMlr5FloMtTeWtq46pksItDO7cRVYx1NqBkXOoZuVvAzrHUdHiN73zd3QYFDiW3weo1zUODfFCL6bJP3N0KCVgjSPo5xdSX2Gbw91CSBlgWhEMi0qpuE7Fk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TeAg2dG6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4DD9C4DDE9;
+	Tue, 27 Aug 2024 15:30:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771745;
-	bh=jvgPA/DpyW3ospZNhxocN0nolptpNCZUXx4d18jKlVI=;
+	s=korg; t=1724772657;
+	bh=cG9kFtvAITUWaMGiS3jei3JtbBbrdUJMMAxnPYnyk8o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IGvF+w5Q3SwqxQZ0NuNVqWL3uugXmRacpbdmZKostznYDPIdrQgPComd3wIgqsfVV
-	 oHsTXFcSa6wdkqZmCgqu02XYWcSwCjglgfzzeNnf2jADX7kIBHK1drK7rh5lL8Oe/t
-	 CYvw9CIyXrtvDqBEXCCKqf+iwAgQep+l2RucfDxE=
+	b=TeAg2dG64IEBWvu36Ys23Icc8E25APLZ6p+aUxed3ZqopU9CSVpmfUOU/ROLXB717
+	 XZAGX5JBs/jaytpDyUriOMPqSXTsqZjrHxcvDeM4XtB7wu5Hz3DtpgvOtCj3r+dncw
+	 15XsC4QUebIv6J0pJpmIxcMvoOWjaoQ0mK9WrUK4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.10 265/273] selftests: mptcp: join: validate fullmesh endp on 1st sf
+	Alex Hung <alex.hung@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 281/321] Revert "drm/amd/display: Validate hw_points_num before using it"
 Date: Tue, 27 Aug 2024 16:39:49 +0200
-Message-ID: <20240827143843.483948057@linuxfoundation.org>
+Message-ID: <20240827143848.946209421@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Alex Hung <alex.hung@amd.com>
 
-commit 4878f9f8421f4587bee7b232c1c8a9d3a7d4d782 upstream.
+commit 8f4bdbc8e99db6ec9cb0520748e49a2f2d7d1727 upstream.
 
-This case was not covered, and the wrong ID was set before the previous
-commit.
+This reverts commit 58c3b3341cea4f75dc8c003b89f8a6dd8ec55e50.
 
-The rest is not modified, it is just that it will increase the code
-coverage.
+[WHY & HOW]
+The writeback series cause a regression in thunderbolt display.
 
-The right address ID can be verified by looking at the packet traces. We
-could automate that using Netfilter with some cBPF code for example, but
-that's always a bit cryptic. Packetdrill seems better fitted for that.
-
-Fixes: 4f49d63352da ("selftests: mptcp: add fullmesh testcases")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20240819-net-mptcp-pm-reusing-id-v1-13-38035d40de5b@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/display/dc/dcn30/dcn30_dwb_cm.c |    3 ---
+ 1 file changed, 3 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -3058,6 +3058,7 @@ fullmesh_tests()
- 		pm_nl_set_limits $ns1 1 3
- 		pm_nl_set_limits $ns2 1 3
- 		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal
-+		pm_nl_add_endpoint $ns2 10.0.1.2 flags subflow,fullmesh
- 		fullmesh=1 speed=slow \
- 			run_tests $ns1 $ns2 10.0.1.1
- 		chk_join_nr 3 3 3
+--- a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_dwb_cm.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_dwb_cm.c
+@@ -243,9 +243,6 @@ static bool dwb3_program_ogam_lut(
+ 		return false;
+ 	}
+ 
+-	if (params->hw_points_num == 0)
+-		return false;
+-
+ 	REG_SET(DWB_OGAM_CONTROL, 0, DWB_OGAM_MODE, 2);
+ 
+ 	current_mode = dwb3_get_ogam_current(dwbc30);
 
 
 
