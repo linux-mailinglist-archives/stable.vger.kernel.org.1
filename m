@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-71140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70880-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23A439611D8
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:24:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3AB396107E
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:09:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CCAD9280C19
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:24:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 14B1E1C2360D
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:09:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 549E51C6F5B;
-	Tue, 27 Aug 2024 15:23:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49EE21C4EEF;
+	Tue, 27 Aug 2024 15:09:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qpa2vUhN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IedpErYm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09D471C4EDC;
-	Tue, 27 Aug 2024 15:23:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0742712E4D;
+	Tue, 27 Aug 2024 15:09:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772231; cv=none; b=qmRfBgRrbP16xphVBOuORSkDEkZ0q3VJlpphTmW+JcnwXALAKgZ0/kemToPmLjVpg9/Mn126TNIZP2GEal/AhDc3D11ZpcDW/EziX7KbxhoG4YyPhF/h4NdC0aiOxMXLeo5RzaV/7OUeGV9oGHsR5wF9h0+nFpstmKDmAMIvcpE=
+	t=1724771369; cv=none; b=ub0SLFOjOTnj2TTQfm9GcfJL0hddSw5d0bi/5rMvQa3aY0mQQQTc5t9U1DiieheinX5FCd1AsA1OrdRma+4QlkYcoKUE9DJstYMno4FzwwT425vjlohSt8eBSvp8t0BpNPHSFtE9i1q7CtykkcyBD7h9fcXoro0k7X0KQ5lMZRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772231; c=relaxed/simple;
-	bh=PE3pzd7qgkAtVfa012DNc/DLarDGo2dJCu0KSNXxbw8=;
+	s=arc-20240116; t=1724771369; c=relaxed/simple;
+	bh=M6uTAbUFP1+lQZeIPi8xnwPvbbMxoIp/nqHZ/nZLxK8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mcDmNB9Aw8cA053bnD31N6RWjFB3nY7ahPt/AFv1/YRboO1nCpKuQtq99UjkmJII45QX5FeUJeeRfIvd5ahdzf6tuSnXC7KAo1n7tnzervY9lZ2rN8SqmLp+C3D3GJ+OsgwlrNJN5vJBsJzaLe6nTSP2rL8AipD50AMRYri79dE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qpa2vUhN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BD2CC61062;
-	Tue, 27 Aug 2024 15:23:50 +0000 (UTC)
+	 MIME-Version; b=f24TSCXbs7hktxYHJ9foIB1WygcjwSfRx2Gr0uA0DWSqe759Nzp1xOVXTvBG5rH3dul4g6FaSu8P4/Z8z+LGoTTfdxIy0Kc4Gu9UvnC/Imhjv67BXlye4T5Py96AEiBMCMm6Z+w5VQtp7KlTVcPPM+ndMFDkqyZT8mr51tSNsys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IedpErYm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47828C4AF1A;
+	Tue, 27 Aug 2024 15:09:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772230;
-	bh=PE3pzd7qgkAtVfa012DNc/DLarDGo2dJCu0KSNXxbw8=;
+	s=korg; t=1724771368;
+	bh=M6uTAbUFP1+lQZeIPi8xnwPvbbMxoIp/nqHZ/nZLxK8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qpa2vUhNjp38vVvXEAXwQuYP6fxjW38lTbxdOlMEFNLaquAzcluX2zcgEcMkTTLEj
-	 tN+y7jbpCsJ4qT1ihONHHl5h1Bug/zYannL2V2OyG5hkjwy1vxmbcpSiD567iBWWy1
-	 7MDebX5hklWU3QP+hTTgKADoQqvmlPZOL9cmhR5o=
+	b=IedpErYm494R5ZqFBqs6Cwd4z2Zf55uzgVXy/l3lbt/m3hLbW03KKOILL3/fUvZhU
+	 sUSQt+gfWS61moD3Et9emp3oNF58eJsqQgpQGcuRq+e/N16jF32CNsoXl/cWqObYnd
+	 MHJnyIbiiv0GI20uBcuJQnUOln7XSmW8g/Tdqwdg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kunwu Chan <chentao@kylinos.cn>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Li Lingfeng <lilingfeng3@huawei.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 152/321] powerpc/xics: Check return value of kasprintf in icp_native_map_one_cpu
+Subject: [PATCH 6.10 136/273] block: Fix lockdep warning in blk_mq_mark_tag_wait
 Date: Tue, 27 Aug 2024 16:37:40 +0200
-Message-ID: <20240827143844.021167879@linuxfoundation.org>
+Message-ID: <20240827143838.579510592@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +65,213 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kunwu Chan <chentao@kylinos.cn>
+From: Li Lingfeng <lilingfeng3@huawei.com>
 
-[ Upstream commit 45b1ba7e5d1f6881050d558baf9bc74a2ae13930 ]
+[ Upstream commit b313a8c835516bdda85025500be866ac8a74e022 ]
 
-kasprintf() returns a pointer to dynamically allocated memory
-which can be NULL upon failure. Ensure the allocation was successful
-by checking the pointer validity.
+Lockdep reported a warning in Linux version 6.6:
 
-Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231122030651.3818-1-chentao@kylinos.cn
+[  414.344659] ================================
+[  414.345155] WARNING: inconsistent lock state
+[  414.345658] 6.6.0-07439-gba2303cacfda #6 Not tainted
+[  414.346221] --------------------------------
+[  414.346712] inconsistent {IN-SOFTIRQ-W} -> {SOFTIRQ-ON-W} usage.
+[  414.347545] kworker/u10:3/1152 [HC0[0]:SC0[0]:HE0:SE1] takes:
+[  414.349245] ffff88810edd1098 (&sbq->ws[i].wait){+.?.}-{2:2}, at: blk_mq_dispatch_rq_list+0x131c/0x1ee0
+[  414.351204] {IN-SOFTIRQ-W} state was registered at:
+[  414.351751]   lock_acquire+0x18d/0x460
+[  414.352218]   _raw_spin_lock_irqsave+0x39/0x60
+[  414.352769]   __wake_up_common_lock+0x22/0x60
+[  414.353289]   sbitmap_queue_wake_up+0x375/0x4f0
+[  414.353829]   sbitmap_queue_clear+0xdd/0x270
+[  414.354338]   blk_mq_put_tag+0xdf/0x170
+[  414.354807]   __blk_mq_free_request+0x381/0x4d0
+[  414.355335]   blk_mq_free_request+0x28b/0x3e0
+[  414.355847]   __blk_mq_end_request+0x242/0xc30
+[  414.356367]   scsi_end_request+0x2c1/0x830
+[  414.345155] WARNING: inconsistent lock state
+[  414.345658] 6.6.0-07439-gba2303cacfda #6 Not tainted
+[  414.346221] --------------------------------
+[  414.346712] inconsistent {IN-SOFTIRQ-W} -> {SOFTIRQ-ON-W} usage.
+[  414.347545] kworker/u10:3/1152 [HC0[0]:SC0[0]:HE0:SE1] takes:
+[  414.349245] ffff88810edd1098 (&sbq->ws[i].wait){+.?.}-{2:2}, at: blk_mq_dispatch_rq_list+0x131c/0x1ee0
+[  414.351204] {IN-SOFTIRQ-W} state was registered at:
+[  414.351751]   lock_acquire+0x18d/0x460
+[  414.352218]   _raw_spin_lock_irqsave+0x39/0x60
+[  414.352769]   __wake_up_common_lock+0x22/0x60
+[  414.353289]   sbitmap_queue_wake_up+0x375/0x4f0
+[  414.353829]   sbitmap_queue_clear+0xdd/0x270
+[  414.354338]   blk_mq_put_tag+0xdf/0x170
+[  414.354807]   __blk_mq_free_request+0x381/0x4d0
+[  414.355335]   blk_mq_free_request+0x28b/0x3e0
+[  414.355847]   __blk_mq_end_request+0x242/0xc30
+[  414.356367]   scsi_end_request+0x2c1/0x830
+[  414.356863]   scsi_io_completion+0x177/0x1610
+[  414.357379]   scsi_complete+0x12f/0x260
+[  414.357856]   blk_complete_reqs+0xba/0xf0
+[  414.358338]   __do_softirq+0x1b0/0x7a2
+[  414.358796]   irq_exit_rcu+0x14b/0x1a0
+[  414.359262]   sysvec_call_function_single+0xaf/0xc0
+[  414.359828]   asm_sysvec_call_function_single+0x1a/0x20
+[  414.360426]   default_idle+0x1e/0x30
+[  414.360873]   default_idle_call+0x9b/0x1f0
+[  414.361390]   do_idle+0x2d2/0x3e0
+[  414.361819]   cpu_startup_entry+0x55/0x60
+[  414.362314]   start_secondary+0x235/0x2b0
+[  414.362809]   secondary_startup_64_no_verify+0x18f/0x19b
+[  414.363413] irq event stamp: 428794
+[  414.363825] hardirqs last  enabled at (428793): [<ffffffff816bfd1c>] ktime_get+0x1dc/0x200
+[  414.364694] hardirqs last disabled at (428794): [<ffffffff85470177>] _raw_spin_lock_irq+0x47/0x50
+[  414.365629] softirqs last  enabled at (428444): [<ffffffff85474780>] __do_softirq+0x540/0x7a2
+[  414.366522] softirqs last disabled at (428419): [<ffffffff813f65ab>] irq_exit_rcu+0x14b/0x1a0
+[  414.367425]
+               other info that might help us debug this:
+[  414.368194]  Possible unsafe locking scenario:
+[  414.368900]        CPU0
+[  414.369225]        ----
+[  414.369548]   lock(&sbq->ws[i].wait);
+[  414.370000]   <Interrupt>
+[  414.370342]     lock(&sbq->ws[i].wait);
+[  414.370802]
+                *** DEADLOCK ***
+[  414.371569] 5 locks held by kworker/u10:3/1152:
+[  414.372088]  #0: ffff88810130e938 ((wq_completion)writeback){+.+.}-{0:0}, at: process_scheduled_works+0x357/0x13f0
+[  414.373180]  #1: ffff88810201fdb8 ((work_completion)(&(&wb->dwork)->work)){+.+.}-{0:0}, at: process_scheduled_works+0x3a3/0x13f0
+[  414.374384]  #2: ffffffff86ffbdc0 (rcu_read_lock){....}-{1:2}, at: blk_mq_run_hw_queue+0x637/0xa00
+[  414.375342]  #3: ffff88810edd1098 (&sbq->ws[i].wait){+.?.}-{2:2}, at: blk_mq_dispatch_rq_list+0x131c/0x1ee0
+[  414.376377]  #4: ffff888106205a08 (&hctx->dispatch_wait_lock){+.-.}-{2:2}, at: blk_mq_dispatch_rq_list+0x1337/0x1ee0
+[  414.378607]
+               stack backtrace:
+[  414.379177] CPU: 0 PID: 1152 Comm: kworker/u10:3 Not tainted 6.6.0-07439-gba2303cacfda #6
+[  414.380032] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.14.0-0-g155821a1990b-prebuilt.qemu.org 04/01/2014
+[  414.381177] Workqueue: writeback wb_workfn (flush-253:0)
+[  414.381805] Call Trace:
+[  414.382136]  <TASK>
+[  414.382429]  dump_stack_lvl+0x91/0xf0
+[  414.382884]  mark_lock_irq+0xb3b/0x1260
+[  414.383367]  ? __pfx_mark_lock_irq+0x10/0x10
+[  414.383889]  ? stack_trace_save+0x8e/0xc0
+[  414.384373]  ? __pfx_stack_trace_save+0x10/0x10
+[  414.384903]  ? graph_lock+0xcf/0x410
+[  414.385350]  ? save_trace+0x3d/0xc70
+[  414.385808]  mark_lock.part.20+0x56d/0xa90
+[  414.386317]  mark_held_locks+0xb0/0x110
+[  414.386791]  ? __pfx_do_raw_spin_lock+0x10/0x10
+[  414.387320]  lockdep_hardirqs_on_prepare+0x297/0x3f0
+[  414.387901]  ? _raw_spin_unlock_irq+0x28/0x50
+[  414.388422]  trace_hardirqs_on+0x58/0x100
+[  414.388917]  _raw_spin_unlock_irq+0x28/0x50
+[  414.389422]  __blk_mq_tag_busy+0x1d6/0x2a0
+[  414.389920]  __blk_mq_get_driver_tag+0x761/0x9f0
+[  414.390899]  blk_mq_dispatch_rq_list+0x1780/0x1ee0
+[  414.391473]  ? __pfx_blk_mq_dispatch_rq_list+0x10/0x10
+[  414.392070]  ? sbitmap_get+0x2b8/0x450
+[  414.392533]  ? __blk_mq_get_driver_tag+0x210/0x9f0
+[  414.393095]  __blk_mq_sched_dispatch_requests+0xd99/0x1690
+[  414.393730]  ? elv_attempt_insert_merge+0x1b1/0x420
+[  414.394302]  ? __pfx___blk_mq_sched_dispatch_requests+0x10/0x10
+[  414.394970]  ? lock_acquire+0x18d/0x460
+[  414.395456]  ? blk_mq_run_hw_queue+0x637/0xa00
+[  414.395986]  ? __pfx_lock_acquire+0x10/0x10
+[  414.396499]  blk_mq_sched_dispatch_requests+0x109/0x190
+[  414.397100]  blk_mq_run_hw_queue+0x66e/0xa00
+[  414.397616]  blk_mq_flush_plug_list.part.17+0x614/0x2030
+[  414.398244]  ? __pfx_blk_mq_flush_plug_list.part.17+0x10/0x10
+[  414.398897]  ? writeback_sb_inodes+0x241/0xcc0
+[  414.399429]  blk_mq_flush_plug_list+0x65/0x80
+[  414.399957]  __blk_flush_plug+0x2f1/0x530
+[  414.400458]  ? __pfx___blk_flush_plug+0x10/0x10
+[  414.400999]  blk_finish_plug+0x59/0xa0
+[  414.401467]  wb_writeback+0x7cc/0x920
+[  414.401935]  ? __pfx_wb_writeback+0x10/0x10
+[  414.402442]  ? mark_held_locks+0xb0/0x110
+[  414.402931]  ? __pfx_do_raw_spin_lock+0x10/0x10
+[  414.403462]  ? lockdep_hardirqs_on_prepare+0x297/0x3f0
+[  414.404062]  wb_workfn+0x2b3/0xcf0
+[  414.404500]  ? __pfx_wb_workfn+0x10/0x10
+[  414.404989]  process_scheduled_works+0x432/0x13f0
+[  414.405546]  ? __pfx_process_scheduled_works+0x10/0x10
+[  414.406139]  ? do_raw_spin_lock+0x101/0x2a0
+[  414.406641]  ? assign_work+0x19b/0x240
+[  414.407106]  ? lock_is_held_type+0x9d/0x110
+[  414.407604]  worker_thread+0x6f2/0x1160
+[  414.408075]  ? __kthread_parkme+0x62/0x210
+[  414.408572]  ? lockdep_hardirqs_on_prepare+0x297/0x3f0
+[  414.409168]  ? __kthread_parkme+0x13c/0x210
+[  414.409678]  ? __pfx_worker_thread+0x10/0x10
+[  414.410191]  kthread+0x33c/0x440
+[  414.410602]  ? __pfx_kthread+0x10/0x10
+[  414.411068]  ret_from_fork+0x4d/0x80
+[  414.411526]  ? __pfx_kthread+0x10/0x10
+[  414.411993]  ret_from_fork_asm+0x1b/0x30
+[  414.412489]  </TASK>
+
+When interrupt is turned on while a lock holding by spin_lock_irq it
+throws a warning because of potential deadlock.
+
+blk_mq_prep_dispatch_rq
+ blk_mq_get_driver_tag
+  __blk_mq_get_driver_tag
+   __blk_mq_alloc_driver_tag
+    blk_mq_tag_busy -> tag is already busy
+    // failed to get driver tag
+ blk_mq_mark_tag_wait
+  spin_lock_irq(&wq->lock) -> lock A (&sbq->ws[i].wait)
+  __add_wait_queue(wq, wait) -> wait queue active
+  blk_mq_get_driver_tag
+  __blk_mq_tag_busy
+-> 1) tag must be idle, which means there can't be inflight IO
+   spin_lock_irq(&tags->lock) -> lock B (hctx->tags)
+   spin_unlock_irq(&tags->lock) -> unlock B, turn on interrupt accidentally
+-> 2) context must be preempt by IO interrupt to trigger deadlock.
+
+As shown above, the deadlock is not possible in theory, but the warning
+still need to be fixed.
+
+Fix it by using spin_lock_irqsave to get lockB instead of spin_lock_irq.
+
+Fixes: 4f1731df60f9 ("blk-mq: fix potential io hang by wrong 'wake_batch'")
+Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Reviewed-by: Yu Kuai <yukuai3@huawei.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://lore.kernel.org/r/20240815024736.2040971-1-lilingfeng@huaweicloud.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/sysdev/xics/icp-native.c | 2 ++
- 1 file changed, 2 insertions(+)
+ block/blk-mq-tag.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/sysdev/xics/icp-native.c b/arch/powerpc/sysdev/xics/icp-native.c
-index edc17b6b1cc2f..9b2238d73003b 100644
---- a/arch/powerpc/sysdev/xics/icp-native.c
-+++ b/arch/powerpc/sysdev/xics/icp-native.c
-@@ -236,6 +236,8 @@ static int __init icp_native_map_one_cpu(int hw_id, unsigned long addr,
- 	rname = kasprintf(GFP_KERNEL, "CPU %d [0x%x] Interrupt Presentation",
- 			  cpu, hw_id);
+diff --git a/block/blk-mq-tag.c b/block/blk-mq-tag.c
+index cc57e2dd9a0bb..2cafcf11ee8be 100644
+--- a/block/blk-mq-tag.c
++++ b/block/blk-mq-tag.c
+@@ -38,6 +38,7 @@ static void blk_mq_update_wake_batch(struct blk_mq_tags *tags,
+ void __blk_mq_tag_busy(struct blk_mq_hw_ctx *hctx)
+ {
+ 	unsigned int users;
++	unsigned long flags;
+ 	struct blk_mq_tags *tags = hctx->tags;
  
-+	if (!rname)
-+		return -ENOMEM;
- 	if (!request_mem_region(addr, size, rname)) {
- 		pr_warn("icp_native: Could not reserve ICP MMIO for CPU %d, interrupt server #0x%x\n",
- 			cpu, hw_id);
+ 	/*
+@@ -56,11 +57,11 @@ void __blk_mq_tag_busy(struct blk_mq_hw_ctx *hctx)
+ 			return;
+ 	}
+ 
+-	spin_lock_irq(&tags->lock);
++	spin_lock_irqsave(&tags->lock, flags);
+ 	users = tags->active_queues + 1;
+ 	WRITE_ONCE(tags->active_queues, users);
+ 	blk_mq_update_wake_batch(tags, users);
+-	spin_unlock_irq(&tags->lock);
++	spin_unlock_irqrestore(&tags->lock, flags);
+ }
+ 
+ /*
 -- 
 2.43.0
 
