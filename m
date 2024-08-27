@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-71145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70602-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B5189611E0
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:24:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 362C5960F0A
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:55:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D3D9B1F23700
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:24:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D460B1F24744
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:55:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 126EB1C93AB;
-	Tue, 27 Aug 2024 15:24:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2920F1C6F57;
+	Tue, 27 Aug 2024 14:54:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SXGNIGie"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xXCb93AS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2D6B1C93A0;
-	Tue, 27 Aug 2024 15:24:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D99CE1E520;
+	Tue, 27 Aug 2024 14:54:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772247; cv=none; b=VViNlXfW4iIubx5U3PBwknf//G/+//p3N/MdkYbbCI9WAxtvibuSVv603pRd6fGkSHbrTFQTldHMvn1r421dLa2SgI5YHiXixYhUoOOy8nNaHTDTTLF5hphHh+UMKUJAJaI0X8fXP5Fn40KQ7IoCvM1xoTbFQAZYFhNjTFmtGzA=
+	t=1724770452; cv=none; b=X7JygAnURQ2DPKMAoICpSVqs7wO+7igAkxSOm5P91STwF7DaqGi5Q6CeCob6S8hB3kFyPKFO/t17tAA5PYGozkaKYS+eZmbN8QNWe0HCsa4VTqFykV7347J7AnvtXkWWPx9blUgFvmem1eg7Z+cKdsBwBwjnOXnmHHlmIKVR+vg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772247; c=relaxed/simple;
-	bh=b9ahZOiMGqBEmrPW3xH+gNx6zPHU/4XI7NgWBBGmOY0=;
+	s=arc-20240116; t=1724770452; c=relaxed/simple;
+	bh=FpzQZJ6YENy+ZhQelam/KP7jMuOdJz4+/EjBeI5AYUk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=awaOGuP69EY/gE24XQYKdD4DTAUFHDSaIL2lHbFpHKaVvoVSsv2gcBqJYSZPq04VKN9F9bgmMgud2L9we9QBqpNhVmAcTIsQ05R2wo/vIXQ0rsZbcZIUbFP2ZOEGis4z362NyTYn4PUnvaYg1nO01+th0MLSiPNrqCGIo78z0sc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SXGNIGie; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30490C61071;
-	Tue, 27 Aug 2024 15:24:06 +0000 (UTC)
+	 MIME-Version; b=SPDCd8gUv2pAXMMz3Fvchj7YXsvVTr7wA0dF7mqMCrEEvygpPoTunJJwg4Fa3xbtOSon285c1bp92+BB1IBJwD9LgK2JCbGxRo6c5qmj73IgR6UsTay+pYA4gWeHspQbitHRn7gvoBrwzQPPKq/kOnLPjr06NUpIjx8szflDC6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xXCb93AS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10211C4E673;
+	Tue, 27 Aug 2024 14:54:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772247;
-	bh=b9ahZOiMGqBEmrPW3xH+gNx6zPHU/4XI7NgWBBGmOY0=;
+	s=korg; t=1724770452;
+	bh=FpzQZJ6YENy+ZhQelam/KP7jMuOdJz4+/EjBeI5AYUk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SXGNIGieYfPt191X4V+oU/G/U82iohoCRJvt9okcJoF12KU88y5NB/ZFQdXV3qYwl
-	 FxvLXZeMwyfKda8+EDkdzK5C2wIK6BGgfvvcO/gA0NrgelmJluGkieziivGJlUBor1
-	 tKpdImoE533I21PUqbh0MP9w6ej7OBKRGwbjkmzU=
+	b=xXCb93ASEFLgNNbnvK5x+5bU635yt8ARXMr1Ar8H3leEenrAWyB4Cj4JPeLHg1Ws/
+	 vJHz205rqKrnCa6lY2ml8xlqCDkx5FSjAM+PKht27pHuqXAzSI2Y5hxTZV2AJcpIoN
+	 O3pO6IncspKCZU93Nw8lctXl+di5xIPXJGR5QV5Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Gruenbacher <agruenba@redhat.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Wayne Lin <wayne.lin@amd.com>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 157/321] gfs2: Refcounting fix in gfs2_thaw_super
+Subject: [PATCH 6.6 234/341] drm/amd/display: Adjust cursor position
 Date: Tue, 27 Aug 2024 16:37:45 +0200
-Message-ID: <20240827143844.208417746@linuxfoundation.org>
+Message-ID: <20240827143852.313927148@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +66,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
 
-[ Upstream commit 4e58543e7da4859c4ba61d15493e3522b6ad71fd ]
+[ Upstream commit 56fb276d0244d430496f249335a44ae114dd5f54 ]
 
-It turns out that the .freeze_super and .thaw_super operations require
-the filesystem to manage the superblock refcount itself.  We are using
-the freeze_super() and thaw_super() helpers to mostly take care of that
-for us, but this means that the superblock may no longer be around by
-when thaw_super() returns, and gfs2_thaw_super() will then access freed
-memory.  Take an extra superblock reference in gfs2_thaw_super() to fix
-that.
+[why & how]
+When the commit 9d84c7ef8a87 ("drm/amd/display: Correct cursor position
+on horizontal mirror") was introduced, it used the wrong calculation for
+the position copy for X. This commit uses the correct calculation for that
+based on the original patch.
 
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Fixes: 9d84c7ef8a87 ("drm/amd/display: Correct cursor position on horizontal mirror")
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Acked-by: Wayne Lin <wayne.lin@amd.com>
+Signed-off-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 8f9b23abbae5ffcd64856facd26a86b67195bc2f)
+Cc: stable@vger.kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/super.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/amd/display/dc/dcn10/dcn10_hw_sequencer.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
-index f9b47df485d17..aff8cdc61eff7 100644
---- a/fs/gfs2/super.c
-+++ b/fs/gfs2/super.c
-@@ -814,6 +814,7 @@ static int gfs2_thaw_super(struct super_block *sb)
- 	if (!test_bit(SDF_FREEZE_INITIATOR, &sdp->sd_flags))
- 		goto out;
- 
-+	atomic_inc(&sb->s_active);
- 	gfs2_freeze_unlock(&sdp->sd_freeze_gh);
- 
- 	error = gfs2_do_thaw(sdp);
-@@ -824,6 +825,7 @@ static int gfs2_thaw_super(struct super_block *sb)
- 	}
- out:
- 	mutex_unlock(&sdp->sd_freeze_mutex);
-+	deactivate_super(sb);
- 	return error;
- }
- 
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_hw_sequencer.c b/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_hw_sequencer.c
+index e3f4d497d32d5..c9f13c3768431 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_hw_sequencer.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_hw_sequencer.c
+@@ -3614,7 +3614,7 @@ void dcn10_set_cursor_position(struct pipe_ctx *pipe_ctx)
+ 						(int)hubp->curs_attr.width || pos_cpy.x
+ 						<= (int)hubp->curs_attr.width +
+ 						pipe_ctx->plane_state->src_rect.x) {
+-						pos_cpy.x = 2 * viewport_width - temp_x;
++						pos_cpy.x = temp_x + viewport_width;
+ 					}
+ 				}
+ 			} else {
 -- 
 2.43.0
 
