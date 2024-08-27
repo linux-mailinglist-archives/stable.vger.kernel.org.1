@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-71217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70673-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A17C96125E
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:30:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD000960F71
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:59:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE4AF1F23C7B
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:30:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97B9D286D22
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:59:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0108C1CFEB3;
-	Tue, 27 Aug 2024 15:28:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 059DF1CC15B;
+	Tue, 27 Aug 2024 14:58:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KhoHampk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eptRqwbU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1FBF1C8FCF;
-	Tue, 27 Aug 2024 15:28:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5B8C1C57BC;
+	Tue, 27 Aug 2024 14:58:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772482; cv=none; b=XUYpp2c/xJvfOLuB9kPqS4y0QujCzFQXPURE85cTZoCHNTE4WJXh3MfjLon5gLQN5VtXRO2ZqBdM/hd4aM+qrZCKwZ3hdHZ3Ql/V9NlikNiiE8PtFCEjKiXvQUA6QBhOEZL+LXSc5DaecQExx7P0Lsf1eMjvp16+9lDcotCO3mE=
+	t=1724770689; cv=none; b=h91Go94/npzYW4yogGDYFNt8xj6ALibAb9iWrIG9jxC8DwdPLHRzn43M3OwCUpSphwJp2GfQf7mmBvSVwlV4+fMwXDJcWIPaUxD4oZ58V82M2hg8wzT48zZ0nPlC9VSI2mUHFsClZVpUm68f738tUUwWCZisuzGtQNcVpQ/g61M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772482; c=relaxed/simple;
-	bh=XaPG7elh7R4q+SUxcgvamPeTyWW+Mk9H5x01beYapeU=;
+	s=arc-20240116; t=1724770689; c=relaxed/simple;
+	bh=6jDfW4Csqf9qmEG06euRkFvHKOixTBew3lmAWpfPT0U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lly3aAY7BX3/zniQpk2mL/z1KpX2VEmh+6IXpzNvtqnj8zH6L9lMzd6OPNI1mtufOwkwr/bjy2Gxt8zdxxNL3NJwpoDHFyVbnJQ18bKyRKZa31M60d2pxwdvAWFO1DOQIgA4dldMwvItTjQ653kUHxsgQQ8yxq473+i/O15+hls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KhoHampk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A589C61047;
-	Tue, 27 Aug 2024 15:28:01 +0000 (UTC)
+	 MIME-Version; b=dfV8lT+O9PDxDWLKaxkz/7rZ3yVmgAq/fZRLeU+B+yqMImppsz6shcXri5R7Of/Btrm3DQX3rKx87oSAXtKnZV7iUGWNLwncC25t0G20QUIPIrptwtY+U7yP2J96ZDS0uqsvwZRFEdw47UCllDYC8FLhWEHSJhzk7WIdHFePGYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eptRqwbU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 381A1C6107B;
+	Tue, 27 Aug 2024 14:58:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772482;
-	bh=XaPG7elh7R4q+SUxcgvamPeTyWW+Mk9H5x01beYapeU=;
+	s=korg; t=1724770689;
+	bh=6jDfW4Csqf9qmEG06euRkFvHKOixTBew3lmAWpfPT0U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KhoHampkUi4b+uhxYpiVS63SoTk1wW+Pp8SIGi8Tpgg41ddCe+4O3D9svr2J2UDi7
-	 uVX9tetnMpWatzi0/Yi4mIcbuAAyAARTOmaa6NhtM+lZdtfYqXvmIDvCE7rVwvkItS
-	 eBCjb6oiUiyWYhsw1m7bXiKx7YNBt3b5u3ZIoqpg=
+	b=eptRqwbUvAkOSm1r4sXeklg697HWdxy4f46w0pivHv5iezRPqbpowGJ1DEyt8BrAc
+	 LJrIfsrAon70Qhi2MARdSvoK4lfvJERpMPn0BRqOPcIQL9bj8Nluft7TZJvF1g1c7l
+	 yE9DJE0ujgW/4NtMD7Xi++tLUKFQIEnngoPrhpIM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Lucas Karpinski <lkarpins@redhat.com>,
-	Willem de Bruijn <willemb@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 228/321] selftests/net: synchronize udpgro tests tx and rx connection
+	Mengqi Zhang <mengqi.zhang@mediatek.com>,
+	stable@vger.stable.com,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.6 305/341] mmc: mtk-sd: receive cmd8 data when hs400 tuning fail
 Date: Tue, 27 Aug 2024 16:38:56 +0200
-Message-ID: <20240827143846.910450773@linuxfoundation.org>
+Message-ID: <20240827143854.995313695@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,157 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lucas Karpinski <lkarpins@redhat.com>
+From: Mengqi Zhang <mengqi.zhang@mediatek.com>
 
-[ Upstream commit 3bdd9fd29cb0f136b307559a19c107210ad5c314 ]
+commit 9374ae912dbb1eed8139ed75fd2c0f1b30ca454d upstream.
 
-The sockets used by udpgso_bench_tx aren't always ready when
-udpgso_bench_tx transmits packets. This issue is more prevalent in -rt
-kernels, but can occur in both. Replace the hacky sleep calls with a
-function that checks whether the ports in the namespace are ready for
-use.
+When we use cmd8 as the tuning command in hs400 mode, the command
+response sent back by some eMMC devices cannot be correctly sampled
+by MTK eMMC controller at some weak sample timing. In this case,
+command timeout error may occur. So we must receive the following
+data to make sure the next cmd8 send correctly.
 
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Lucas Karpinski <lkarpins@redhat.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 7167395a4be7 ("selftests: udpgro: report error when receive failed")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Mengqi Zhang <mengqi.zhang@mediatek.com>
+Fixes: c4ac38c6539b ("mmc: mtk-sd: Add HS400 online tuning support")
+Cc: stable@vger.stable.com
+Link: https://lore.kernel.org/r/20240716013704.10578-1-mengqi.zhang@mediatek.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/net_helper.sh     | 22 +++++++++++++++++++
- tools/testing/selftests/net/udpgro.sh         | 13 +++++------
- tools/testing/selftests/net/udpgro_bench.sh   |  5 +++--
- tools/testing/selftests/net/udpgro_frglist.sh |  5 +++--
- 4 files changed, 34 insertions(+), 11 deletions(-)
- create mode 100755 tools/testing/selftests/net/net_helper.sh
+ drivers/mmc/host/mtk-sd.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/tools/testing/selftests/net/net_helper.sh b/tools/testing/selftests/net/net_helper.sh
-new file mode 100755
-index 0000000000000..4fe0befa13fbc
---- /dev/null
-+++ b/tools/testing/selftests/net/net_helper.sh
-@@ -0,0 +1,22 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0
-+#
-+# Helper functions
-+
-+wait_local_port_listen()
-+{
-+	local listener_ns="${1}"
-+	local port="${2}"
-+	local protocol="${3}"
-+	local port_hex
-+	local i
-+
-+	port_hex="$(printf "%04X" "${port}")"
-+	for i in $(seq 10); do
-+		if ip netns exec "${listener_ns}" cat /proc/net/"${protocol}"* | \
-+		   grep -q "${port_hex}"; then
-+			break
-+		fi
-+		sleep 0.1
-+	done
-+}
-diff --git a/tools/testing/selftests/net/udpgro.sh b/tools/testing/selftests/net/udpgro.sh
-index 0c743752669af..af5dc57c8ce93 100755
---- a/tools/testing/selftests/net/udpgro.sh
-+++ b/tools/testing/selftests/net/udpgro.sh
-@@ -3,6 +3,8 @@
- #
- # Run a series of udpgro functional tests.
+--- a/drivers/mmc/host/mtk-sd.c
++++ b/drivers/mmc/host/mtk-sd.c
+@@ -1222,7 +1222,7 @@ static bool msdc_cmd_done(struct msdc_ho
+ 	}
  
-+source net_helper.sh
-+
- readonly PEER_NS="ns-peer-$(mktemp -u XXXXXX)"
- 
- BPF_FILE="../bpf/xdp_dummy.bpf.o"
-@@ -51,8 +53,7 @@ run_one() {
- 		echo "ok" || \
- 		echo "failed" &
- 
--	# Hack: let bg programs complete the startup
--	sleep 0.2
-+	wait_local_port_listen ${PEER_NS} 8000 udp
- 	./udpgso_bench_tx ${tx_args}
- 	ret=$?
- 	wait $(jobs -p)
-@@ -97,7 +98,7 @@ run_one_nat() {
- 		echo "ok" || \
- 		echo "failed"&
- 
--	sleep 0.1
-+	wait_local_port_listen "${PEER_NS}" 8000 udp
- 	./udpgso_bench_tx ${tx_args}
- 	ret=$?
- 	kill -INT $pid
-@@ -118,11 +119,9 @@ run_one_2sock() {
- 		echo "ok" || \
- 		echo "failed" &
- 
--	# Hack: let bg programs complete the startup
--	sleep 0.2
-+	wait_local_port_listen "${PEER_NS}" 12345 udp
- 	./udpgso_bench_tx ${tx_args} -p 12345
--	sleep 0.1
--	# first UDP GSO socket should be closed at this point
-+	wait_local_port_listen "${PEER_NS}" 8000 udp
- 	./udpgso_bench_tx ${tx_args}
- 	ret=$?
- 	wait $(jobs -p)
-diff --git a/tools/testing/selftests/net/udpgro_bench.sh b/tools/testing/selftests/net/udpgro_bench.sh
-index 894972877e8b0..cb664679b4342 100755
---- a/tools/testing/selftests/net/udpgro_bench.sh
-+++ b/tools/testing/selftests/net/udpgro_bench.sh
-@@ -3,6 +3,8 @@
- #
- # Run a series of udpgro benchmarks
- 
-+source net_helper.sh
-+
- readonly PEER_NS="ns-peer-$(mktemp -u XXXXXX)"
- 
- BPF_FILE="../bpf/xdp_dummy.bpf.o"
-@@ -40,8 +42,7 @@ run_one() {
- 	ip netns exec "${PEER_NS}" ./udpgso_bench_rx ${rx_args} -r &
- 	ip netns exec "${PEER_NS}" ./udpgso_bench_rx -t ${rx_args} -r &
- 
--	# Hack: let bg programs complete the startup
--	sleep 0.2
-+	wait_local_port_listen "${PEER_NS}" 8000 udp
- 	./udpgso_bench_tx ${tx_args}
- }
- 
-diff --git a/tools/testing/selftests/net/udpgro_frglist.sh b/tools/testing/selftests/net/udpgro_frglist.sh
-index 0a6359bed0b92..dd47fa96f6b3e 100755
---- a/tools/testing/selftests/net/udpgro_frglist.sh
-+++ b/tools/testing/selftests/net/udpgro_frglist.sh
-@@ -3,6 +3,8 @@
- #
- # Run a series of udpgro benchmarks
- 
-+source net_helper.sh
-+
- readonly PEER_NS="ns-peer-$(mktemp -u XXXXXX)"
- 
- BPF_FILE="../bpf/xdp_dummy.bpf.o"
-@@ -45,8 +47,7 @@ run_one() {
-         echo ${rx_args}
- 	ip netns exec "${PEER_NS}" ./udpgso_bench_rx ${rx_args} -r &
- 
--	# Hack: let bg programs complete the startup
--	sleep 0.2
-+	wait_local_port_listen "${PEER_NS}" 8000 udp
- 	./udpgso_bench_tx ${tx_args}
- }
- 
--- 
-2.43.0
-
+ 	if (!sbc_error && !(events & MSDC_INT_CMDRDY)) {
+-		if (events & MSDC_INT_CMDTMO ||
++		if ((events & MSDC_INT_CMDTMO && !host->hs400_tuning) ||
+ 		    (!mmc_op_tuning(cmd->opcode) && !host->hs400_tuning))
+ 			/*
+ 			 * should not clear fifo/interrupt as the tune data
+@@ -1315,9 +1315,9 @@ static void msdc_start_command(struct ms
+ static void msdc_cmd_next(struct msdc_host *host,
+ 		struct mmc_request *mrq, struct mmc_command *cmd)
+ {
+-	if ((cmd->error &&
+-	    !(cmd->error == -EILSEQ &&
+-	      (mmc_op_tuning(cmd->opcode) || host->hs400_tuning))) ||
++	if ((cmd->error && !host->hs400_tuning &&
++	     !(cmd->error == -EILSEQ &&
++	     mmc_op_tuning(cmd->opcode))) ||
+ 	    (mrq->sbc && mrq->sbc->error))
+ 		msdc_request_done(host, mrq);
+ 	else if (cmd == mrq->sbc)
 
 
 
