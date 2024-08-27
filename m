@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-70619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70869-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3319960F28
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:56:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8010C961070
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:08:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DD090B264FD
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:56:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F2B581F21D09
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:08:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E21371CB128;
-	Tue, 27 Aug 2024 14:55:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 794841C578E;
+	Tue, 27 Aug 2024 15:08:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UvjmgE4/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mXpeoogJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F21F1C9ECD;
-	Tue, 27 Aug 2024 14:55:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 354951C4EEF;
+	Tue, 27 Aug 2024 15:08:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770510; cv=none; b=eIvEQMYwJqWPUmvm7tkP73CLooIaZUwVJEKVzA8MYTUvOvALz1ULRDQiTihX+TO2YUpiD1YF5ea2z2APU9i+P/MhVDyQpTLDACJAdCRigcuxPgsi9pFtP6q9vNcQ2MWdsVatyPNKAqPoEIR39iYYP5FSw9A57gN3KV2mRdwoVT4=
+	t=1724771332; cv=none; b=uPDybjbKmaM9VUGC1s/iMO+OmsMUK1yAJOSaz7A8vLmUT9UU/aXzB/VZRGfWdJ71oDnHSkSScVQ+37orSxVQFG5HGIqV5YtJ2NedvOTkkFHBh6dTTd0FGz8onEwQj+0hEQ+hOE4VFV4vcqUZEGwFrubePVQL2N+L89Alc3JsiY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770510; c=relaxed/simple;
-	bh=TH0Q8mAElnzkCaFzulMpUDsL+fnu8si23pOJSdUqef8=;
+	s=arc-20240116; t=1724771332; c=relaxed/simple;
+	bh=yslTCyYrxq+aqK0BYwTZxj5kd4l0LcWCg0GYF7vMWsg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F1N55d9FIRz8yAxDDvw5Mkv7+VxfsRxF544qckcL279YJ4HNGtnFDi2gxZYABotUiTPBkT/hialhMXcZINnIItaZp4fVjMj7nSj8jGiD1Agf7B+xBgTpW52lOu4j5zIzuyytqxxHxmkNEcrvAcbLmj1IEY9LxCGbeUenMVKCJm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UvjmgE4/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18828C4E690;
-	Tue, 27 Aug 2024 14:55:09 +0000 (UTC)
+	 MIME-Version; b=nhXo9aMULBFcQS20KgqWyQglIdBha4BgGG7Aa21Df0y3PkrJVsGa9YGfDuZcDayH6kzX0BLPRt23dz1ba9gFxkiy0FaMOtJWG4m+1ZA15DQGRI7C/7tTZzFt3NGpgN98RAhD+UR/flNSGkfiMZ/49RnR31OTHXKw6p3OZjRbl/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mXpeoogJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 574F3C4AF18;
+	Tue, 27 Aug 2024 15:08:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770510;
-	bh=TH0Q8mAElnzkCaFzulMpUDsL+fnu8si23pOJSdUqef8=;
+	s=korg; t=1724771331;
+	bh=yslTCyYrxq+aqK0BYwTZxj5kd4l0LcWCg0GYF7vMWsg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UvjmgE4/MwykI6T+EXsqJE7cRJ6F2LzY/Qg1RfrEYpx4PphVKtqlAmlIGp3ykgEWa
-	 GD56WYuFbuNe7uBSUrseKD+5f6JUQa0kyv2bZD7H6PC1oyr387y7DNqvy4/JhgyJq/
-	 9IiDH9Qln9uJigV5UdX/cyesObPKhAq9YPqowEEE=
+	b=mXpeoogJRlc5w/6Xr8IgC2uq2GXrwYVuqyzO2GnDNVCe2RyHRN15AWsSM2n7mc9zm
+	 3CO9u9eIzbSPJwNxFv/uZcNKoGv1A1YEPZaG8yYyOkvMM3/H0vpxldZiUXcpSZiMce
+	 eNkORA3Ch/YPEX/1K6dBgx3AjxVIjChY826tVEdE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 249/341] tcp/dccp: do not care about families in inet_twsk_purge()
+Subject: [PATCH 6.10 156/273] net: mscc: ocelot: serialize access to the injection/extraction groups
 Date: Tue, 27 Aug 2024 16:38:00 +0200
-Message-ID: <20240827143852.882725994@linuxfoundation.org>
+Message-ID: <20240827143839.341391381@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,196 +62,246 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit 1eeb5043573981f3a1278876515851b7f6b1df1b ]
+[ Upstream commit c5e12ac3beb0dd3a718296b2d8af5528e9ab728e ]
 
-We lost ability to unload ipv6 module a long time ago.
+As explained by Horatiu Vultur in commit 603ead96582d ("net: sparx5: Add
+spinlock for frame transmission from CPU") which is for a similar
+hardware design, multiple CPUs can simultaneously perform injection
+or extraction. There are only 2 register groups for injection and 2
+for extraction, and the driver only uses one of each. So we'd better
+serialize access using spin locks, otherwise frame corruption is
+possible.
 
-Instead of calling expensive inet_twsk_purge() twice,
-we can handle all families in one round.
+Note that unlike in sparx5, FDMA in ocelot does not have this issue
+because struct ocelot_fdma_tx_ring already contains an xmit_lock.
 
-Also remove an extra line added in my prior patch,
-per Kuniyuki Iwashima feedback.
+I guess this is mostly a problem for NXP LS1028A, as that is dual core.
+I don't think VSC7514 is. So I'm blaming the commit where LS1028A (aka
+the felix DSA driver) started using register-based packet injection and
+extraction.
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/netdev/20240327192934.6843-1-kuniyu@amazon.com/
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://lore.kernel.org/r/20240329153203.345203-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 565d121b6998 ("tcp: prevent concurrent execution of tcp_sk_exit_batch")
+Fixes: 0a6f17c6ae21 ("net: dsa: tag_ocelot_8021q: add support for PTP timestamping")
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/inet_timewait_sock.h | 2 +-
- include/net/tcp.h                | 2 +-
- net/dccp/ipv4.c                  | 2 +-
- net/dccp/ipv6.c                  | 6 ------
- net/ipv4/inet_timewait_sock.c    | 9 +++------
- net/ipv4/tcp_ipv4.c              | 2 +-
- net/ipv4/tcp_minisocks.c         | 6 +++---
- net/ipv6/tcp_ipv6.c              | 6 ------
- 8 files changed, 10 insertions(+), 25 deletions(-)
+ drivers/net/dsa/ocelot/felix.c             | 11 +++++
+ drivers/net/ethernet/mscc/ocelot.c         | 52 ++++++++++++++++++++++
+ drivers/net/ethernet/mscc/ocelot_vsc7514.c |  4 ++
+ include/soc/mscc/ocelot.h                  |  9 ++++
+ 4 files changed, 76 insertions(+)
 
-diff --git a/include/net/inet_timewait_sock.h b/include/net/inet_timewait_sock.h
-index 4a8e578405cb3..9365e5af8d6da 100644
---- a/include/net/inet_timewait_sock.h
-+++ b/include/net/inet_timewait_sock.h
-@@ -114,7 +114,7 @@ static inline void inet_twsk_reschedule(struct inet_timewait_sock *tw, int timeo
+diff --git a/drivers/net/dsa/ocelot/felix.c b/drivers/net/dsa/ocelot/felix.c
+index 61e95487732dc..f5d26e724ae65 100644
+--- a/drivers/net/dsa/ocelot/felix.c
++++ b/drivers/net/dsa/ocelot/felix.c
+@@ -528,7 +528,9 @@ static int felix_tag_8021q_setup(struct dsa_switch *ds)
+ 	 * so we need to be careful that there are no extra frames to be
+ 	 * dequeued over MMIO, since we would never know to discard them.
+ 	 */
++	ocelot_lock_xtr_grp_bh(ocelot, 0);
+ 	ocelot_drain_cpu_queue(ocelot, 0);
++	ocelot_unlock_xtr_grp_bh(ocelot, 0);
  
- void inet_twsk_deschedule_put(struct inet_timewait_sock *tw);
- 
--void inet_twsk_purge(struct inet_hashinfo *hashinfo, int family);
-+void inet_twsk_purge(struct inet_hashinfo *hashinfo);
- 
- static inline
- struct net *twsk_net(const struct inet_timewait_sock *twsk)
-diff --git a/include/net/tcp.h b/include/net/tcp.h
-index 71af244104433..cc3b56bf19e05 100644
---- a/include/net/tcp.h
-+++ b/include/net/tcp.h
-@@ -344,7 +344,7 @@ void tcp_rcv_established(struct sock *sk, struct sk_buff *skb);
- void tcp_rcv_space_adjust(struct sock *sk);
- int tcp_twsk_unique(struct sock *sk, struct sock *sktw, void *twp);
- void tcp_twsk_destructor(struct sock *sk);
--void tcp_twsk_purge(struct list_head *net_exit_list, int family);
-+void tcp_twsk_purge(struct list_head *net_exit_list);
- ssize_t tcp_splice_read(struct socket *sk, loff_t *ppos,
- 			struct pipe_inode_info *pipe, size_t len,
- 			unsigned int flags);
-diff --git a/net/dccp/ipv4.c b/net/dccp/ipv4.c
-index 65a6733fc897f..ca31c3b096bbf 100644
---- a/net/dccp/ipv4.c
-+++ b/net/dccp/ipv4.c
-@@ -1042,7 +1042,7 @@ static void __net_exit dccp_v4_exit_net(struct net *net)
- 
- static void __net_exit dccp_v4_exit_batch(struct list_head *net_exit_list)
- {
--	inet_twsk_purge(&dccp_hashinfo, AF_INET);
-+	inet_twsk_purge(&dccp_hashinfo);
+ 	return 0;
  }
+@@ -1504,6 +1506,8 @@ static void felix_port_deferred_xmit(struct kthread_work *work)
+ 	int port = xmit_work->dp->index;
+ 	int retries = 10;
  
- static struct pernet_operations dccp_v4_ops = {
-diff --git a/net/dccp/ipv6.c b/net/dccp/ipv6.c
-index 683e4291b348a..d25e962b18a53 100644
---- a/net/dccp/ipv6.c
-+++ b/net/dccp/ipv6.c
-@@ -1122,15 +1122,9 @@ static void __net_exit dccp_v6_exit_net(struct net *net)
- 	inet_ctl_sock_destroy(pn->v6_ctl_sk);
++	ocelot_lock_inj_grp(ocelot, 0);
++
+ 	do {
+ 		if (ocelot_can_inject(ocelot, 0))
+ 			break;
+@@ -1512,6 +1516,7 @@ static void felix_port_deferred_xmit(struct kthread_work *work)
+ 	} while (--retries);
+ 
+ 	if (!retries) {
++		ocelot_unlock_inj_grp(ocelot, 0);
+ 		dev_err(ocelot->dev, "port %d failed to inject skb\n",
+ 			port);
+ 		ocelot_port_purge_txtstamp_skb(ocelot, port, skb);
+@@ -1521,6 +1526,8 @@ static void felix_port_deferred_xmit(struct kthread_work *work)
+ 
+ 	ocelot_port_inject_frame(ocelot, port, 0, rew_op, skb);
+ 
++	ocelot_unlock_inj_grp(ocelot, 0);
++
+ 	consume_skb(skb);
+ 	kfree(xmit_work);
  }
+@@ -1671,6 +1678,8 @@ static bool felix_check_xtr_pkt(struct ocelot *ocelot)
+ 	if (!felix->info->quirk_no_xtr_irq)
+ 		return false;
  
--static void __net_exit dccp_v6_exit_batch(struct list_head *net_exit_list)
--{
--	inet_twsk_purge(&dccp_hashinfo, AF_INET6);
--}
--
- static struct pernet_operations dccp_v6_ops = {
- 	.init   = dccp_v6_init_net,
- 	.exit   = dccp_v6_exit_net,
--	.exit_batch = dccp_v6_exit_batch,
- 	.id	= &dccp_v6_pernet_id,
- 	.size   = sizeof(struct dccp_v6_pernet),
- };
-diff --git a/net/ipv4/inet_timewait_sock.c b/net/ipv4/inet_timewait_sock.c
-index 55f60d1b46f2d..fff53144250c5 100644
---- a/net/ipv4/inet_timewait_sock.c
-+++ b/net/ipv4/inet_timewait_sock.c
-@@ -279,7 +279,7 @@ void __inet_twsk_schedule(struct inet_timewait_sock *tw, int timeo, bool rearm)
- EXPORT_SYMBOL_GPL(__inet_twsk_schedule);
- 
- /* Remove all non full sockets (TIME_WAIT and NEW_SYN_RECV) for dead netns */
--void inet_twsk_purge(struct inet_hashinfo *hashinfo, int family)
-+void inet_twsk_purge(struct inet_hashinfo *hashinfo)
- {
- 	struct inet_ehash_bucket *head = &hashinfo->ehash[0];
- 	unsigned int ehash_mask = hashinfo->ehash_mask;
-@@ -288,7 +288,6 @@ void inet_twsk_purge(struct inet_hashinfo *hashinfo, int family)
- 	struct sock *sk;
- 
- 	for (slot = 0; slot <= ehash_mask; slot++, head++) {
--
- 		if (hlist_nulls_empty(&head->chain))
- 			continue;
- 
-@@ -303,15 +302,13 @@ void inet_twsk_purge(struct inet_hashinfo *hashinfo, int family)
- 					     TCPF_NEW_SYN_RECV))
- 				continue;
- 
--			if (sk->sk_family != family ||
--			    refcount_read(&sock_net(sk)->ns.count))
-+			if (refcount_read(&sock_net(sk)->ns.count))
- 				continue;
- 
- 			if (unlikely(!refcount_inc_not_zero(&sk->sk_refcnt)))
- 				continue;
- 
--			if (unlikely(sk->sk_family != family ||
--				     refcount_read(&sock_net(sk)->ns.count))) {
-+			if (refcount_read(&sock_net(sk)->ns.count)) {
- 				sock_gen_put(sk);
- 				goto restart;
- 			}
-diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
-index 48ec2c1777d45..6ef51d253abb7 100644
---- a/net/ipv4/tcp_ipv4.c
-+++ b/net/ipv4/tcp_ipv4.c
-@@ -3304,7 +3304,7 @@ static void __net_exit tcp_sk_exit_batch(struct list_head *net_exit_list)
- {
- 	struct net *net;
- 
--	tcp_twsk_purge(net_exit_list, AF_INET);
-+	tcp_twsk_purge(net_exit_list);
- 
- 	list_for_each_entry(net, net_exit_list, exit_list) {
- 		inet_pernet_hashinfo_free(net->ipv4.tcp_death_row.hashinfo);
-diff --git a/net/ipv4/tcp_minisocks.c b/net/ipv4/tcp_minisocks.c
-index 260bfb9ada38d..78962c7f8c339 100644
---- a/net/ipv4/tcp_minisocks.c
-+++ b/net/ipv4/tcp_minisocks.c
-@@ -363,7 +363,7 @@ void tcp_twsk_destructor(struct sock *sk)
- }
- EXPORT_SYMBOL_GPL(tcp_twsk_destructor);
- 
--void tcp_twsk_purge(struct list_head *net_exit_list, int family)
-+void tcp_twsk_purge(struct list_head *net_exit_list)
- {
- 	bool purged_once = false;
- 	struct net *net;
-@@ -371,9 +371,9 @@ void tcp_twsk_purge(struct list_head *net_exit_list, int family)
- 	list_for_each_entry(net, net_exit_list, exit_list) {
- 		if (net->ipv4.tcp_death_row.hashinfo->pernet) {
- 			/* Even if tw_refcount == 1, we must clean up kernel reqsk */
--			inet_twsk_purge(net->ipv4.tcp_death_row.hashinfo, family);
-+			inet_twsk_purge(net->ipv4.tcp_death_row.hashinfo);
- 		} else if (!purged_once) {
--			inet_twsk_purge(&tcp_hashinfo, family);
-+			inet_twsk_purge(&tcp_hashinfo);
- 			purged_once = true;
- 		}
++	ocelot_lock_xtr_grp(ocelot, grp);
++
+ 	while (ocelot_read(ocelot, QS_XTR_DATA_PRESENT) & BIT(grp)) {
+ 		struct sk_buff *skb;
+ 		unsigned int type;
+@@ -1707,6 +1716,8 @@ static bool felix_check_xtr_pkt(struct ocelot *ocelot)
+ 		ocelot_drain_cpu_queue(ocelot, 0);
  	}
-diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
-index d0034916d386b..83b48dc2b3ee2 100644
---- a/net/ipv6/tcp_ipv6.c
-+++ b/net/ipv6/tcp_ipv6.c
-@@ -2213,15 +2213,9 @@ static void __net_exit tcpv6_net_exit(struct net *net)
- 	inet_ctl_sock_destroy(net->ipv6.tcp_sk);
+ 
++	ocelot_unlock_xtr_grp(ocelot, grp);
++
+ 	return true;
  }
  
--static void __net_exit tcpv6_net_exit_batch(struct list_head *net_exit_list)
--{
--	tcp_twsk_purge(net_exit_list, AF_INET6);
--}
--
- static struct pernet_operations tcpv6_net_ops = {
- 	.init	    = tcpv6_net_init,
- 	.exit	    = tcpv6_net_exit,
--	.exit_batch = tcpv6_net_exit_batch,
- };
+diff --git a/drivers/net/ethernet/mscc/ocelot.c b/drivers/net/ethernet/mscc/ocelot.c
+index 9301716e21d58..f4e027a6fe955 100644
+--- a/drivers/net/ethernet/mscc/ocelot.c
++++ b/drivers/net/ethernet/mscc/ocelot.c
+@@ -1099,6 +1099,48 @@ void ocelot_ptp_rx_timestamp(struct ocelot *ocelot, struct sk_buff *skb,
+ }
+ EXPORT_SYMBOL(ocelot_ptp_rx_timestamp);
  
- int __init tcpv6_init(void)
++void ocelot_lock_inj_grp(struct ocelot *ocelot, int grp)
++			 __acquires(&ocelot->inj_lock)
++{
++	spin_lock(&ocelot->inj_lock);
++}
++EXPORT_SYMBOL_GPL(ocelot_lock_inj_grp);
++
++void ocelot_unlock_inj_grp(struct ocelot *ocelot, int grp)
++			   __releases(&ocelot->inj_lock)
++{
++	spin_unlock(&ocelot->inj_lock);
++}
++EXPORT_SYMBOL_GPL(ocelot_unlock_inj_grp);
++
++void ocelot_lock_xtr_grp(struct ocelot *ocelot, int grp)
++			 __acquires(&ocelot->inj_lock)
++{
++	spin_lock(&ocelot->inj_lock);
++}
++EXPORT_SYMBOL_GPL(ocelot_lock_xtr_grp);
++
++void ocelot_unlock_xtr_grp(struct ocelot *ocelot, int grp)
++			   __releases(&ocelot->inj_lock)
++{
++	spin_unlock(&ocelot->inj_lock);
++}
++EXPORT_SYMBOL_GPL(ocelot_unlock_xtr_grp);
++
++void ocelot_lock_xtr_grp_bh(struct ocelot *ocelot, int grp)
++			    __acquires(&ocelot->xtr_lock)
++{
++	spin_lock_bh(&ocelot->xtr_lock);
++}
++EXPORT_SYMBOL_GPL(ocelot_lock_xtr_grp_bh);
++
++void ocelot_unlock_xtr_grp_bh(struct ocelot *ocelot, int grp)
++			      __releases(&ocelot->xtr_lock)
++{
++	spin_unlock_bh(&ocelot->xtr_lock);
++}
++EXPORT_SYMBOL_GPL(ocelot_unlock_xtr_grp_bh);
++
+ int ocelot_xtr_poll_frame(struct ocelot *ocelot, int grp, struct sk_buff **nskb)
+ {
+ 	u64 timestamp, src_port, len;
+@@ -1109,6 +1151,8 @@ int ocelot_xtr_poll_frame(struct ocelot *ocelot, int grp, struct sk_buff **nskb)
+ 	u32 val, *buf;
+ 	int err;
+ 
++	lockdep_assert_held(&ocelot->xtr_lock);
++
+ 	err = ocelot_xtr_poll_xfh(ocelot, grp, xfh);
+ 	if (err)
+ 		return err;
+@@ -1184,6 +1228,8 @@ bool ocelot_can_inject(struct ocelot *ocelot, int grp)
+ {
+ 	u32 val = ocelot_read(ocelot, QS_INJ_STATUS);
+ 
++	lockdep_assert_held(&ocelot->inj_lock);
++
+ 	if (!(val & QS_INJ_STATUS_FIFO_RDY(BIT(grp))))
+ 		return false;
+ 	if (val & QS_INJ_STATUS_WMARK_REACHED(BIT(grp)))
+@@ -1236,6 +1282,8 @@ void ocelot_port_inject_frame(struct ocelot *ocelot, int port, int grp,
+ 	u32 ifh[OCELOT_TAG_LEN / 4];
+ 	unsigned int i, count, last;
+ 
++	lockdep_assert_held(&ocelot->inj_lock);
++
+ 	ocelot_write_rix(ocelot, QS_INJ_CTRL_GAP_SIZE(1) |
+ 			 QS_INJ_CTRL_SOF, QS_INJ_CTRL, grp);
+ 
+@@ -1272,6 +1320,8 @@ EXPORT_SYMBOL(ocelot_port_inject_frame);
+ 
+ void ocelot_drain_cpu_queue(struct ocelot *ocelot, int grp)
+ {
++	lockdep_assert_held(&ocelot->xtr_lock);
++
+ 	while (ocelot_read(ocelot, QS_XTR_DATA_PRESENT) & BIT(grp))
+ 		ocelot_read_rix(ocelot, QS_XTR_RD, grp);
+ }
+@@ -2954,6 +3004,8 @@ int ocelot_init(struct ocelot *ocelot)
+ 	mutex_init(&ocelot->fwd_domain_lock);
+ 	spin_lock_init(&ocelot->ptp_clock_lock);
+ 	spin_lock_init(&ocelot->ts_id_lock);
++	spin_lock_init(&ocelot->inj_lock);
++	spin_lock_init(&ocelot->xtr_lock);
+ 
+ 	ocelot->owq = alloc_ordered_workqueue("ocelot-owq", 0);
+ 	if (!ocelot->owq)
+diff --git a/drivers/net/ethernet/mscc/ocelot_vsc7514.c b/drivers/net/ethernet/mscc/ocelot_vsc7514.c
+index 993212c3a7da6..c09dd2e3343cb 100644
+--- a/drivers/net/ethernet/mscc/ocelot_vsc7514.c
++++ b/drivers/net/ethernet/mscc/ocelot_vsc7514.c
+@@ -51,6 +51,8 @@ static irqreturn_t ocelot_xtr_irq_handler(int irq, void *arg)
+ 	struct ocelot *ocelot = arg;
+ 	int grp = 0, err;
+ 
++	ocelot_lock_xtr_grp(ocelot, grp);
++
+ 	while (ocelot_read(ocelot, QS_XTR_DATA_PRESENT) & BIT(grp)) {
+ 		struct sk_buff *skb;
+ 
+@@ -69,6 +71,8 @@ static irqreturn_t ocelot_xtr_irq_handler(int irq, void *arg)
+ 	if (err < 0)
+ 		ocelot_drain_cpu_queue(ocelot, 0);
+ 
++	ocelot_unlock_xtr_grp(ocelot, grp);
++
+ 	return IRQ_HANDLED;
+ }
+ 
+diff --git a/include/soc/mscc/ocelot.h b/include/soc/mscc/ocelot.h
+index 0297bc2277927..846132ca5503d 100644
+--- a/include/soc/mscc/ocelot.h
++++ b/include/soc/mscc/ocelot.h
+@@ -813,6 +813,9 @@ struct ocelot {
+ 	const u32 *const		*map;
+ 	struct list_head		stats_regions;
+ 
++	spinlock_t			inj_lock;
++	spinlock_t			xtr_lock;
++
+ 	u32				pool_size[OCELOT_SB_NUM][OCELOT_SB_POOL_NUM];
+ 	int				packet_buffer_size;
+ 	int				num_frame_refs;
+@@ -966,6 +969,12 @@ void __ocelot_target_write_ix(struct ocelot *ocelot, enum ocelot_target target,
+ 			      u32 val, u32 reg, u32 offset);
+ 
+ /* Packet I/O */
++void ocelot_lock_inj_grp(struct ocelot *ocelot, int grp);
++void ocelot_unlock_inj_grp(struct ocelot *ocelot, int grp);
++void ocelot_lock_xtr_grp(struct ocelot *ocelot, int grp);
++void ocelot_unlock_xtr_grp(struct ocelot *ocelot, int grp);
++void ocelot_lock_xtr_grp_bh(struct ocelot *ocelot, int grp);
++void ocelot_unlock_xtr_grp_bh(struct ocelot *ocelot, int grp);
+ bool ocelot_can_inject(struct ocelot *ocelot, int grp);
+ void ocelot_port_inject_frame(struct ocelot *ocelot, int port, int grp,
+ 			      u32 rew_op, struct sk_buff *skb);
 -- 
 2.43.0
 
