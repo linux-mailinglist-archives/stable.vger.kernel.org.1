@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-70767-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70518-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85F2B960FEF
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:04:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DDAF960E88
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:49:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28D1F1F21E2D
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:04:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 500341C232E5
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:49:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E84B51C6F5F;
-	Tue, 27 Aug 2024 15:03:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82E481A072D;
+	Tue, 27 Aug 2024 14:49:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j7PP5r8y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EzqVF/bU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A49461C461D;
-	Tue, 27 Aug 2024 15:03:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40C1344C8C;
+	Tue, 27 Aug 2024 14:49:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770995; cv=none; b=W8dFlqqz71crUrshoSQ6WlZu2TiqTBkVNJqM+nLx+qSmyCh7URc0qqCaVwRQTu5SugYZ54BKyC/Uo0hy7JE4OOnCvDl+BaLk/9uIhhTJEbVZUHGPyxUWRGPvScs1UE9Jx/dfeABV0IQNfjcmkfjfxb7qsSOfqRCG4oHBB3ezjFM=
+	t=1724770175; cv=none; b=AJ6Nq4K6rTY9cBmegYVE2AkNPkeFluPYx7jFzCWkM2k1Z7nk7vPYBaVlBWd8EgQssGr/t5QoTD2CH10ypd56U/y4cMal2wMk7bM523wKpD60Id8lpPFJUlbHR/TZRAXBPCAHedvnsj6hnfxNgkqY03nlWJ+QHKyTCK2wFh5WBmc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770995; c=relaxed/simple;
-	bh=7CSw1BxQgaWjO9gs5/GqguSNbhNk2n1qavc8j34PIFE=;
+	s=arc-20240116; t=1724770175; c=relaxed/simple;
+	bh=/3tk203zi4wM6s8ehTvVePxWCEVClve/4Gzc35f6+Y4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mt2zqeAcUmgUh8mnsGntPiqjTfiyiat2hiAtwgv+1V1X/YmDUcTP/ySSZE7n2KQ/vb3htSuO+J0UdT342eX/AkgdFdjw9UyPhiaj+qIJhdfk/XJ53dpdoaBXjXh/gpIWN4OHlyQAJLhe/ltd98/mTpVQyQbK2bChptCb9vZ9uiA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j7PP5r8y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDF62C61049;
-	Tue, 27 Aug 2024 15:03:14 +0000 (UTC)
+	 MIME-Version; b=JZYKjQAAZ00wjJEO727Tucvdu8ec3dL0Nw3t7Jwo/tO/SNftdWkzcnA5jPyls8fwiXG/GnTlCGkSBvyzgxGCTNf3zQvJG7L9nM+cqtG3MjABbXkzvI1HZZyGNf6Yam3UZqrj5RdZ65oRszMEDpWcQzD6nwKf0FSnMeLgyDp1/N0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EzqVF/bU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48A32C4AF52;
+	Tue, 27 Aug 2024 14:49:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770995;
-	bh=7CSw1BxQgaWjO9gs5/GqguSNbhNk2n1qavc8j34PIFE=;
+	s=korg; t=1724770174;
+	bh=/3tk203zi4wM6s8ehTvVePxWCEVClve/4Gzc35f6+Y4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j7PP5r8y9dyl7fRknuubnq6HjvuVG+Vinbxc/dYZ4HfvysjISGAvn5zhihY63T6Ct
-	 7vRzAl9GnsC4TJJbpkPL98uf3dL/sMMmJZZY0LLWKl9zqkiL5jzZa4h0Sk6QFDTKTn
-	 aQdo3MTaANUETLeyeQANQGM2YIzWzgFYtODpxUr0=
+	b=EzqVF/bU4ES/JeBOJeJLltsOeTn7MFHEG00i8wvwP3kfMoa31WQJLUgAoKGuwaFtj
+	 XJPUVEDFPv++AuXzjIJD66vUzkO35ZMdrCd7erCS9Q10k2rOJrsd+k+vXh0tmczIS5
+	 o44HJaaAsr0U5w2nIolbXA8++Faf+rHQVfkTsJwA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	James Bottomley <James.Bottomley@HansenPartnership.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.10 055/273] selftests: memfd_secret: dont build memfd_secret test on unsupported arches
+	Andy Yan <andy.yan@rock-chips.com>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 148/341] drm/rockchip: vop2: clear afbc en and transform bit for cluster window at linear mode
 Date: Tue, 27 Aug 2024 16:36:19 +0200
-Message-ID: <20240827143835.495019465@linuxfoundation.org>
+Message-ID: <20240827143849.052000241@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,78 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Muhammad Usama Anjum <usama.anjum@collabora.com>
+From: Andy Yan <andy.yan@rock-chips.com>
 
-commit 7c5e8d212d7d81991a580e7de3904ea213d9a852 upstream.
+[ Upstream commit 20529a68307feed00dd3d431d3fff0572616b0f2 ]
 
-[1] mentions that memfd_secret is only supported on arm64, riscv, x86 and
-x86_64 for now.  It doesn't support other architectures.  I found the
-build error on arm and decided to send the fix as it was creating noise on
-KernelCI:
+The enable bit and transform offset of cluster windows should be
+cleared when it work at linear mode, or we may have a iommu fault
+issue on rk3588 which cluster windows switch between afbc and linear
+mode.
 
-memfd_secret.c: In function 'memfd_secret':
-memfd_secret.c:42:24: error: '__NR_memfd_secret' undeclared (first use in this function);
-did you mean 'memfd_secret'?
-   42 |         return syscall(__NR_memfd_secret, flags);
-      |                        ^~~~~~~~~~~~~~~~~
-      |                        memfd_secret
+As the cluster windows of rk3568 only supports afbc format
+so is therefore not affected.
 
-Hence I'm adding condition that memfd_secret should only be compiled on
-supported architectures.
-
-Also check in run_vmtests script if memfd_secret binary is present before
-executing it.
-
-Link: https://lkml.kernel.org/r/20240812061522.1933054-1-usama.anjum@collabora.com
-Link: https://lore.kernel.org/all/20210518072034.31572-7-rppt@kernel.org/ [1]
-Link: https://lkml.kernel.org/r/20240809075642.403247-1-usama.anjum@collabora.com
-Fixes: 76fe17ef588a ("secretmem: test: add basic selftest for memfd_secret(2)")
-Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Cc: Albert Ou <aou@eecs.berkeley.edu>
-Cc: James Bottomley <James.Bottomley@HansenPartnership.com>
-Cc: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Andy Yan <andy.yan@rock-chips.com>
+Reviewed-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20231211115741.1784954-1-andyshrk@163.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/mm/Makefile       |    2 ++
- tools/testing/selftests/mm/run_vmtests.sh |    3 +++
- 2 files changed, 5 insertions(+)
+ drivers/gpu/drm/rockchip/rockchip_drm_vop2.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/tools/testing/selftests/mm/Makefile
-+++ b/tools/testing/selftests/mm/Makefile
-@@ -51,7 +51,9 @@ TEST_GEN_FILES += madv_populate
- TEST_GEN_FILES += map_fixed_noreplace
- TEST_GEN_FILES += map_hugetlb
- TEST_GEN_FILES += map_populate
-+ifneq (,$(filter $(ARCH),arm64 riscv riscv64 x86 x86_64))
- TEST_GEN_FILES += memfd_secret
-+endif
- TEST_GEN_FILES += migration
- TEST_GEN_FILES += mkdirty
- TEST_GEN_FILES += mlock-random-test
---- a/tools/testing/selftests/mm/run_vmtests.sh
-+++ b/tools/testing/selftests/mm/run_vmtests.sh
-@@ -367,8 +367,11 @@ CATEGORY="hmm" run_test bash ./test_hmm.
- # MADV_POPULATE_READ and MADV_POPULATE_WRITE tests
- CATEGORY="madv_populate" run_test ./madv_populate
+diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
+index f2a956f973613..d1de12e850e74 100644
+--- a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
++++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.c
+@@ -1260,6 +1260,11 @@ static void vop2_plane_atomic_update(struct drm_plane *plane,
+ 		vop2_win_write(win, VOP2_WIN_AFBC_ROTATE_270, rotate_270);
+ 		vop2_win_write(win, VOP2_WIN_AFBC_ROTATE_90, rotate_90);
+ 	} else {
++		if (vop2_cluster_window(win)) {
++			vop2_win_write(win, VOP2_WIN_AFBC_ENABLE, 0);
++			vop2_win_write(win, VOP2_WIN_AFBC_TRANSFORM_OFFSET, 0);
++		}
++
+ 		vop2_win_write(win, VOP2_WIN_YRGB_VIR, DIV_ROUND_UP(fb->pitches[0], 4));
+ 	}
  
-+if [ -x ./memfd_secret ]
-+then
- (echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope 2>&1) | tap_prefix
- CATEGORY="memfd_secret" run_test ./memfd_secret
-+fi
- 
- # KSM KSM_MERGE_TIME_HUGE_PAGES test with size of 100
- CATEGORY="ksm" run_test ./ksm_tests -H -s 100
+-- 
+2.43.0
+
 
 
 
