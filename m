@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-71141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70881-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 688EC9611D9
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:24:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A986B96107F
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:09:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E3621F2017A
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:24:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 44A06B228E0
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:09:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D80071C6F74;
-	Tue, 27 Aug 2024 15:23:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B37A51C5783;
+	Tue, 27 Aug 2024 15:09:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SR6AdLYL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nGYiNozr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9259A1C4EDD;
-	Tue, 27 Aug 2024 15:23:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7062A1BC9E3;
+	Tue, 27 Aug 2024 15:09:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772234; cv=none; b=Bm3K/uxsFI1IXtga/cbXzGcvtAYZA2rfg9nhYYOpgz5Z6/qc4EtdzZUNsDhem8r+vj/RNvav3CZZjVK3NgXb1gShlOv8untrAhWi9IKvMDuf4CRzknVqfQkJTFrk3PbkNpl48emmCkvn5BZXyrnRtTzcXvdMp6cs6/Lr88qYo/M=
+	t=1724771372; cv=none; b=mieRHFM0+QSGfuyuRRmaE1hd/GGTjsggFan/TGn7EU7kRNrCVO3SRoxDFkgAcRvfAZw5ovAxC9eLdHGC/zEspK/FUxBQvVJqkZX14+ftiNo4Nf5b5YwlP9GThvCfV7uhj+SakYr8aXYXTvIv4tw/zHJC/T5N9+ZEeFzBdzcWX8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772234; c=relaxed/simple;
-	bh=BufUokUzJL7tfCNUas87FKUzcq67twwpvyKAqLdxrw0=;
+	s=arc-20240116; t=1724771372; c=relaxed/simple;
+	bh=OCkMetbm6vVHqtsIK62w/aDUv0g0LeCo2K6O7mMTiL0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lbfl6udF6uSF+PPESgBXUEGpbPUu7wFPRP4XIST+Rtk2I5/U4ejsNW+0irnklD3h4xaCmijch42wMldCjCTfgRkl5hDrm2Ich+aeVgqyJczEruynVMZJR8lAfnmkWv77VXjEFfsnAl4T/lwPfxCS/BTtGtpw7sMbZ8TrMPyj2rI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SR6AdLYL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A719AC61062;
-	Tue, 27 Aug 2024 15:23:53 +0000 (UTC)
+	 MIME-Version; b=P3R9HpcMTXDCsUpMnmUVVhPnxG8m9lA7+dsoCeh2fl7dUN3Gl6aMOyD7lYpqaUcp2u1y73UjOcoexn/vDevPMSdvaeBj8fr2BJI/GdVDfZImlb8qYcSeXGW+GeG4RPMTjlG8otLGAKvuaMXpR/IpHO8qYjQwEh315Q61j22p3AM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nGYiNozr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D570AC4AF18;
+	Tue, 27 Aug 2024 15:09:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772234;
-	bh=BufUokUzJL7tfCNUas87FKUzcq67twwpvyKAqLdxrw0=;
+	s=korg; t=1724771372;
+	bh=OCkMetbm6vVHqtsIK62w/aDUv0g0LeCo2K6O7mMTiL0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SR6AdLYLY5uQ8X49z37pOLefApHussp5VZZ0u8rxmZjihkRxk9pA582QoMjzJIRMN
-	 wCT7w1uIWm3re/bZTXtTN7LUvsnFpT+ne6lqIv3jFlODwLbOEVBd7jVMBLiwa5iGwY
-	 UzIK0CkNNUNOyzeYtGQXE3Qkv1JTrIAZkZID+n4U=
+	b=nGYiNozrq99OsDw2/PmtssCmHt6g1hoTd2+UKeMlZ8DPTkTDMWzGAurxS+4vct1kp
+	 0l1BpxZFzSR4bai+1Lxuq/9Y6c3h2Uw9mK1oNubQvp+Jz7SZElSmyeLSkUf+jMU9e6
+	 OIK08wYQPrD0XbssW8LhCwSfUX4vbwnSBhDWt5B4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 153/321] ASoC: SOF: ipc4: check return value of snd_sof_ipc_msg_data
+	Gergo Koteles <soyer@irl.hu>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.10 137/273] drm/amd/display: Dont register panel_power_savings on OLED panels
 Date: Tue, 27 Aug 2024 16:37:41 +0200
-Message-ID: <20240827143844.058764289@linuxfoundation.org>
+Message-ID: <20240827143838.618120726@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +61,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bard Liao <yung-chuan.liao@linux.intel.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 2bd512626f8ea3957c981cadd2ebf75feff737dd ]
+commit 76cb763e6ea62e838ccc8f7a1ea4246d690fccc9 upstream.
 
-snd_sof_ipc_msg_data could return error.
+OLED panels don't support the ABM, they shouldn't offer the
+panel_power_savings attribute to the user. Check whether aux BL
+control support was enabled to decide whether to offer it.
 
-Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Link: https://lore.kernel.org/r/20231129122021.679-1-peter.ujfalusi@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Gergo Koteles <soyer@irl.hu>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3359
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Tested-by: Gergo Koteles <soyer@irl.hu>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/sof/ipc4.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |   29 ++++++++++++++++++----
+ 1 file changed, 25 insertions(+), 4 deletions(-)
 
-diff --git a/sound/soc/sof/ipc4.c b/sound/soc/sof/ipc4.c
-index 06e1872abfee7..1449837b0fb2c 100644
---- a/sound/soc/sof/ipc4.c
-+++ b/sound/soc/sof/ipc4.c
-@@ -616,7 +616,14 @@ static void sof_ipc4_rx_msg(struct snd_sof_dev *sdev)
- 			return;
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -6562,12 +6562,34 @@ static const struct attribute_group amdg
+ 	.attrs = amdgpu_attrs
+ };
  
- 		ipc4_msg->data_size = data_size;
--		snd_sof_ipc_msg_data(sdev, NULL, ipc4_msg->data_ptr, ipc4_msg->data_size);
-+		err = snd_sof_ipc_msg_data(sdev, NULL, ipc4_msg->data_ptr, ipc4_msg->data_size);
-+		if (err < 0) {
-+			dev_err(sdev->dev, "failed to read IPC notification data: %d\n", err);
-+			kfree(ipc4_msg->data_ptr);
-+			ipc4_msg->data_ptr = NULL;
-+			ipc4_msg->data_size = 0;
-+			return;
-+		}
- 	}
++static bool
++amdgpu_dm_should_create_sysfs(struct amdgpu_dm_connector *amdgpu_dm_connector)
++{
++	if (amdgpu_dm_abm_level >= 0)
++		return false;
++
++	if (amdgpu_dm_connector->base.connector_type != DRM_MODE_CONNECTOR_eDP)
++		return false;
++
++	/* check for OLED panels */
++	if (amdgpu_dm_connector->bl_idx >= 0) {
++		struct drm_device *drm = amdgpu_dm_connector->base.dev;
++		struct amdgpu_display_manager *dm = &drm_to_adev(drm)->dm;
++		struct amdgpu_dm_backlight_caps *caps;
++
++		caps = &dm->backlight_caps[amdgpu_dm_connector->bl_idx];
++		if (caps->aux_support)
++			return false;
++	}
++
++	return true;
++}
++
+ static void amdgpu_dm_connector_unregister(struct drm_connector *connector)
+ {
+ 	struct amdgpu_dm_connector *amdgpu_dm_connector = to_amdgpu_dm_connector(connector);
  
- 	sof_ipc4_log_header(sdev->dev, "ipc rx done ", ipc4_msg, true);
--- 
-2.43.0
-
+-	if (connector->connector_type == DRM_MODE_CONNECTOR_eDP &&
+-	    amdgpu_dm_abm_level < 0)
++	if (amdgpu_dm_should_create_sysfs(amdgpu_dm_connector))
+ 		sysfs_remove_group(&connector->kdev->kobj, &amdgpu_group);
+ 
+ 	drm_dp_aux_unregister(&amdgpu_dm_connector->dm_dp_aux.aux);
+@@ -6674,8 +6696,7 @@ amdgpu_dm_connector_late_register(struct
+ 		to_amdgpu_dm_connector(connector);
+ 	int r;
+ 
+-	if (connector->connector_type == DRM_MODE_CONNECTOR_eDP &&
+-	    amdgpu_dm_abm_level < 0) {
++	if (amdgpu_dm_should_create_sysfs(amdgpu_dm_connector)) {
+ 		r = sysfs_create_group(&connector->kdev->kobj,
+ 				       &amdgpu_group);
+ 		if (r)
 
 
 
