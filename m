@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-71184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70615-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FAEF961233
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:28:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A346960F1B
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:56:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C2E8E1C2387D
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:28:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 04681B22B5E
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:55:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60E7E1CC170;
-	Tue, 27 Aug 2024 15:26:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFA731C578D;
+	Tue, 27 Aug 2024 14:54:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XUsm24BC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mey/j3AP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F8F51C7B71;
-	Tue, 27 Aug 2024 15:26:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EA3E19F485;
+	Tue, 27 Aug 2024 14:54:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772377; cv=none; b=ke0zFY6HXZe2PKxJGekuEWVCLjri+Bqpqs0cx0+KeCwb5KjKzPBFhHijCuaomPPT52sjW/QerEkCyWcFbTPlqGZA1+8HOJukK0uE7QUk99znJTY5C7hJymZszAxzUq6YbNPyqTmkhQpHVSS0GyNj/Qa8O7G4PIG3RZsOnKWueDk=
+	t=1724770497; cv=none; b=bQHsgUXSVXMAGpuon4BYDTay6NRhEyPj8T4dsn5SKBOANwJwN7hIyZESVZcNBCJuE+H/31zO3dmV860NK3ERWNnC2Acn95XQWhFi+GE5ki8pEBaBIEcOGu0QoGgyDA6mt66i+HChECUg688188I+wTRd5Mra3ZiuhmW14GJBr7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772377; c=relaxed/simple;
-	bh=+QcArnx4CATao7C9Avtkh/4qVuKCv9hecm8yvVeWMF0=;
+	s=arc-20240116; t=1724770497; c=relaxed/simple;
+	bh=hN1H8H9FJDFd0aJ/c1X9TtQT+KlqWjaaiiVeYhtpwl0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QvUrtjzWssDLk8LrIx7N+P2mfNz/SktTBC91cBY2sqr+26nMzYOzm9m5MEumKzNYBLBTy1wdPbqH6tM3KCn4DX9V6jDW3eoLb/PtC8lS4deaL9k78CSc/Mv/pn5L7b++8PewRH8/EBoVfelrfu8oY+9JJq0/EzMj0jS95erPY0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XUsm24BC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D267C61071;
-	Tue, 27 Aug 2024 15:26:15 +0000 (UTC)
+	 MIME-Version; b=P7MV5meyByaVrb4/E7rnUw7L4x1COVW8T7wV3a1RBs/kDiu4oUkslJcSJf+TgpPHIp1NHDh1dceM/0Guuz7PP1c3TDVaBDs4XVMl5pZQOn5j/dmcRAv0lPQX8ypnfIgy9YqO3pBRGEbO29r+BoogvTcMWx6BckRhXimRpVEshxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mey/j3AP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D841C4E68F;
+	Tue, 27 Aug 2024 14:54:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772376;
-	bh=+QcArnx4CATao7C9Avtkh/4qVuKCv9hecm8yvVeWMF0=;
+	s=korg; t=1724770497;
+	bh=hN1H8H9FJDFd0aJ/c1X9TtQT+KlqWjaaiiVeYhtpwl0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XUsm24BCURX9rHuMSwvFdMDIrZCf0XpC/UDGq64PgH+8On5/VU9rSdpqUAau2VPNm
-	 oO/RFDo7oF2QIag3utWbdbZVmb2KduF2zSkeLxXgdOa5iy7O4riOrSrs2Wf9o6NKdr
-	 RQIpaBXqnttzz6GSk9RZak9SthU0QZS02BzznLfY=
+	b=Mey/j3APUzKy+CCo5CFpNdn1B/brGreF299FN7aiFD0Z6WTsSmNeDtu0mMswHHxdL
+	 1g8DkibxSZO/KTuJw1MopjxuX+AtB1vdoUP/XJRsO6BW+qx37ZF/Lw6b9OlVynH4Pd
+	 /xjOaVNwK9KQytwcBUmtWq52v0pIofYaGMOuZaaY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Erico Nunes <nunes.erico@gmail.com>,
-	Qiang Yu <yuq825@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 169/321] drm/lima: set gp bus_stop bit before hard reset
+Subject: [PATCH 6.6 246/341] tc-testing: dont access non-existent variable on exception
 Date: Tue, 27 Aug 2024 16:37:57 +0200
-Message-ID: <20240827143844.664349339@linuxfoundation.org>
+Message-ID: <20240827143852.769028178@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Erico Nunes <nunes.erico@gmail.com>
+From: Simon Horman <horms@kernel.org>
 
-[ Upstream commit 27aa58ec85f973d98d336df7b7941149308db80f ]
+[ Upstream commit a0c9fe5eecc97680323ee83780ea3eaf440ba1b7 ]
 
-This is required for reliable hard resets. Otherwise, doing a hard reset
-while a task is still running (such as a task which is being stopped by
-the drm_sched timeout handler) may result in random mmu write timeouts
-or lockups which cause the entire gpu to hang.
+Since commit 255c1c7279ab ("tc-testing: Allow test cases to be skipped")
+the variable test_ordinal doesn't exist in call_pre_case().
+So it should not be accessed when an exception occurs.
 
-Signed-off-by: Erico Nunes <nunes.erico@gmail.com>
-Signed-off-by: Qiang Yu <yuq825@gmail.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240124025947.2110659-5-nunes.erico@gmail.com
+This resolves the following splat:
+
+  ...
+  During handling of the above exception, another exception occurred:
+
+  Traceback (most recent call last):
+    File ".../tdc.py", line 1028, in <module>
+      main()
+    File ".../tdc.py", line 1022, in main
+      set_operation_mode(pm, parser, args, remaining)
+    File ".../tdc.py", line 966, in set_operation_mode
+      catresults = test_runner_serial(pm, args, alltests)
+    File ".../tdc.py", line 642, in test_runner_serial
+      (index, tsr) = test_runner(pm, args, alltests)
+    File ".../tdc.py", line 536, in test_runner
+      res = run_one_test(pm, args, index, tidx)
+    File ".../tdc.py", line 419, in run_one_test
+      pm.call_pre_case(tidx)
+    File ".../tdc.py", line 146, in call_pre_case
+      print('test_ordinal is {}'.format(test_ordinal))
+  NameError: name 'test_ordinal' is not defined
+
+Fixes: 255c1c7279ab ("tc-testing: Allow test cases to be skipped")
+Signed-off-by: Simon Horman <horms@kernel.org>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20240815-tdc-test-ordinal-v1-1-0255c122a427@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/lima/lima_gp.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ tools/testing/selftests/tc-testing/tdc.py | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/lima/lima_gp.c b/drivers/gpu/drm/lima/lima_gp.c
-index ca3842f719842..82071835ec9ed 100644
---- a/drivers/gpu/drm/lima/lima_gp.c
-+++ b/drivers/gpu/drm/lima/lima_gp.c
-@@ -166,6 +166,11 @@ static void lima_gp_task_run(struct lima_sched_pipe *pipe,
- 	gp_write(LIMA_GP_CMD, cmd);
- }
+diff --git a/tools/testing/selftests/tc-testing/tdc.py b/tools/testing/selftests/tc-testing/tdc.py
+index b98256f38447d..8f969f54ddf40 100755
+--- a/tools/testing/selftests/tc-testing/tdc.py
++++ b/tools/testing/selftests/tc-testing/tdc.py
+@@ -129,7 +129,6 @@ class PluginMgr:
+             except Exception as ee:
+                 print('exception {} in call to pre_case for {} plugin'.
+                       format(ee, pgn_inst.__class__))
+-                print('test_ordinal is {}'.format(test_ordinal))
+                 print('testid is {}'.format(caseinfo['id']))
+                 raise
  
-+static int lima_gp_bus_stop_poll(struct lima_ip *ip)
-+{
-+	return !!(gp_read(LIMA_GP_STATUS) & LIMA_GP_STATUS_BUS_STOPPED);
-+}
-+
- static int lima_gp_hard_reset_poll(struct lima_ip *ip)
- {
- 	gp_write(LIMA_GP_PERF_CNT_0_LIMIT, 0xC01A0000);
-@@ -179,6 +184,13 @@ static int lima_gp_hard_reset(struct lima_ip *ip)
- 
- 	gp_write(LIMA_GP_PERF_CNT_0_LIMIT, 0xC0FFE000);
- 	gp_write(LIMA_GP_INT_MASK, 0);
-+
-+	gp_write(LIMA_GP_CMD, LIMA_GP_CMD_STOP_BUS);
-+	ret = lima_poll_timeout(ip, lima_gp_bus_stop_poll, 10, 100);
-+	if (ret) {
-+		dev_err(dev->dev, "%s bus stop timeout\n", lima_ip_name(ip));
-+		return ret;
-+	}
- 	gp_write(LIMA_GP_CMD, LIMA_GP_CMD_RESET);
- 	ret = lima_poll_timeout(ip, lima_gp_hard_reset_poll, 10, 100);
- 	if (ret) {
 -- 
 2.43.0
 
