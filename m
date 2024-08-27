@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-70953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70702-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F34229610DA
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:13:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 96616960F98
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:00:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9DC291F239DA
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:13:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41FC61F21A9A
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:00:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E001B1C57AF;
-	Tue, 27 Aug 2024 15:13:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD7841C8FA0;
+	Tue, 27 Aug 2024 14:59:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tkB0vxZt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v0uXkrDL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C4C81A072D;
-	Tue, 27 Aug 2024 15:13:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A2491C8FBD;
+	Tue, 27 Aug 2024 14:59:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771610; cv=none; b=VNxUWoKQilpg4br87dAHoBOElK+UGwepraDztzCSOTTOBNB8MOUnMduCaaStGLPMHurni6GYeUvxFy/9/mjuqPif0JE7Zd/7vKy3WdmZ0JXT+CLe92XqFM9dCa0WJebEAh+5u2tJhtKcNWyFAmvnAkhW2kjGXlJU+eSXD3qrAr4=
+	t=1724770785; cv=none; b=TrUqYY2pKinwpU+b7XCQ5Jwa7/rSYFsOC57QO0VWUqLmlg6Cyl67uIj+x6rA1LvXU1QEt5PNR5AWxLP4UVfiS19cQN0ozQmE8f0xs8+9rySTkuLlP4JFOAPwM2UEv+z5SaNKXS+tyeRAnglYApUxkWhM04xu/ku8+DQViTBw4eo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771610; c=relaxed/simple;
-	bh=aH7LIceNVI7ohKujbTXnCkxuq+3NRo5bTuz6/yURVRI=;
+	s=arc-20240116; t=1724770785; c=relaxed/simple;
+	bh=/OUrT9Wdn2UOUE8T2NWO+ZOwsAGyhy04axXk+pF1XZc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JGh8Sxgfan2dTqGU/3gchPpaRlykgC1QwqzxEzdHKGYZR0sAQC3aPovQI1MCb421EMcbZpN696HG4ly+XzGoUNRUzJXl8c47/JAx9D61IODafrNWs11LjUJ/al56W2WgyP7cHQpGLazE8bTOoiKwTv4CbJ00xv7BBrGm7/7R/Ws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tkB0vxZt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6BBEC6105E;
-	Tue, 27 Aug 2024 15:13:29 +0000 (UTC)
+	 MIME-Version; b=m+okdpdKpOwwLzpm5uvLHvKHZNa9N2aqRV0l06m7w5uH1Sms9lMkdHQzj1xf5seuD1xvDEmW3fkxUIhUOXYtsmWoPecrUU0HiBRh2NDytDawlaQv/hWoenlBj+J3nHWCyEXBJSBJmv8NVhnPzJSUTTP0yf2Iy12fI2KuDmuoL1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v0uXkrDL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B008FC4AF5F;
+	Tue, 27 Aug 2024 14:59:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771610;
-	bh=aH7LIceNVI7ohKujbTXnCkxuq+3NRo5bTuz6/yURVRI=;
+	s=korg; t=1724770785;
+	bh=/OUrT9Wdn2UOUE8T2NWO+ZOwsAGyhy04axXk+pF1XZc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tkB0vxZtBoFdvn307Cmaby0oBmrGsc62cXy16D4nFV1R2uFkcbcmuZRSZT6yy7iFa
-	 7fOxXLud9+6SQ9VgbHb34OyA/XV2ksEs1bUfymqCkFILjNTP8/Jcr1B8IKpEExIdCw
-	 3rlcPrkp0JpztMc8m8sLk2EoF9SqdSYPZKwlntmk=
+	b=v0uXkrDLQQ7jitwLi3rBHRmJCZtY9sxGF54CE/CMgMLTXy9YYGoPjAXXv95Hnp1fi
+	 ayqIx1RvPu1YbViEJyrh+rG6SRFF4Dnga59Na7gK8Hcv23YY63rANr1X3w6ptUK6NJ
+	 gGmf28589AGoz+ax0LbmbE7NgPJysRMKYC81dIMo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikolay Kuratov <kniv@yandex-team.ru>,
-	Simon Horman <horms@kernel.org>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.10 241/273] cxgb4: add forgotten u64 ivlan cast before shift
+	Yonghong Song <yonghong.song@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Subject: [PATCH 6.6 334/341] selftests/bpf: Add a test to verify previous stacksafe() fix
 Date: Tue, 27 Aug 2024 16:39:25 +0200
-Message-ID: <20240827143842.574580125@linuxfoundation.org>
+Message-ID: <20240827143856.104495082@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikolay Kuratov <kniv@yandex-team.ru>
+From: Yonghong Song <yonghong.song@linux.dev>
 
-commit 80a1e7b83bb1834b5568a3872e64c05795d88f31 upstream.
+commit 662c3e2db00f92e50c26e9dc4fe47c52223d9982 upstream.
 
-It is done everywhere in cxgb4 code, e.g. in is_filter_exact_match()
-There is no reason it should not be done here
+A selftest is added such that without the previous patch,
+a crash can happen. With the previous patch, the test can
+run successfully. The new test is written in a way which
+mimics original crash case:
+  main_prog
+    static_prog_1
+      static_prog_2
+where static_prog_1 has different paths to static_prog_2
+and some path has stack allocated and some other path
+does not. A stacksafe() checking in static_prog_2()
+triggered the crash.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE
-
-Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
-Cc: stable@vger.kernel.org
-Fixes: 12b276fbf6e0 ("cxgb4: add support to create hash filters")
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20240819075408.92378-1-kniv@yandex-team.ru
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Yonghong Song <yonghong.song@linux.dev>
+Link: https://lore.kernel.org/r/20240812214852.214037-1-yonghong.song@linux.dev
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/chelsio/cxgb4/cxgb4_filter.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ tools/testing/selftests/bpf/progs/iters.c |   54 ++++++++++++++++++++++++++++++
+ 1 file changed, 54 insertions(+)
 
---- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_filter.c
-+++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_filter.c
-@@ -1244,7 +1244,8 @@ static u64 hash_filter_ntuple(struct ch_
- 	 * in the Compressed Filter Tuple.
- 	 */
- 	if (tp->vlan_shift >= 0 && fs->mask.ivlan)
--		ntuple |= (FT_VLAN_VLD_F | fs->val.ivlan) << tp->vlan_shift;
-+		ntuple |= (u64)(FT_VLAN_VLD_F |
-+				fs->val.ivlan) << tp->vlan_shift;
+--- a/tools/testing/selftests/bpf/progs/iters.c
++++ b/tools/testing/selftests/bpf/progs/iters.c
+@@ -1411,4 +1411,58 @@ __naked int checkpoint_states_deletion(v
+ 	);
+ }
  
- 	if (tp->port_shift >= 0 && fs->mask.iport)
- 		ntuple |= (u64)fs->val.iport << tp->port_shift;
++__u32 upper, select_n, result;
++__u64 global;
++
++static __noinline bool nest_2(char *str)
++{
++	/* some insns (including branch insns) to ensure stacksafe() is triggered
++	 * in nest_2(). This way, stacksafe() can compare frame associated with nest_1().
++	 */
++	if (str[0] == 't')
++		return true;
++	if (str[1] == 'e')
++		return true;
++	if (str[2] == 's')
++		return true;
++	if (str[3] == 't')
++		return true;
++	return false;
++}
++
++static __noinline bool nest_1(int n)
++{
++	/* case 0: allocate stack, case 1: no allocate stack */
++	switch (n) {
++	case 0: {
++		char comm[16];
++
++		if (bpf_get_current_comm(comm, 16))
++			return false;
++		return nest_2(comm);
++	}
++	case 1:
++		return nest_2((char *)&global);
++	default:
++		return false;
++	}
++}
++
++SEC("raw_tp")
++__success
++int iter_subprog_check_stacksafe(const void *ctx)
++{
++	long i;
++
++	bpf_for(i, 0, upper) {
++		if (!nest_1(select_n)) {
++			result = 1;
++			return 0;
++		}
++	}
++
++	result = 2;
++	return 0;
++}
++
+ char _license[] SEC("license") = "GPL";
 
 
 
