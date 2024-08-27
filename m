@@ -1,160 +1,161 @@
-Return-Path: <stable+bounces-71334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71335-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 764BD9615C1
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 19:48:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15D3E96162F
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 19:59:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B6E21C233F6
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:48:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 45EDE1C23797
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:59:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCEA21D1F52;
-	Tue, 27 Aug 2024 17:47:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XbYJbH7r"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 187021D1F70;
+	Tue, 27 Aug 2024 17:59:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31257126F1E;
-	Tue, 27 Aug 2024 17:47:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
+Received: from vmicros1.altlinux.org (vmicros1.altlinux.org [194.107.17.57])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E67461D1756;
+	Tue, 27 Aug 2024 17:59:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.107.17.57
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724780878; cv=none; b=R9TFCVp+965dP0Nif7Pko4uvANQckx5A9GFJbUxaOMH+UGUwiikGm1msLqnrd5tpIaYoyOp39VedQLIzFppZ/xoYRxxL4Us6yYKjniJKozsr+7DB/LL4CIKiTYL440AKUiwJLI7YoCApp1EtN31PlUCeXPnzloHEbAcFYYVOWGA=
+	t=1724781558; cv=none; b=eUJR8iGMoKk2zj6JMUKpd7VRUM6Vye+xN22inCMutQleNNnZ+t6x77tdnJw4AmFp01bjm5/xKY0YhrLH7LyuFP+2GMDP/WkEpNbqV6wy8SY8cVtvJCiG6DFMKe2IFeggcPsHQsN0lFIRKIbem8Fh7hshbZcU4Kf1SgXcp6ZQfeo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724780878; c=relaxed/simple;
-	bh=dYHoc8tAXja1j/gy+quwz+VAVNvuZkG5hw3yiikQ1eg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WudWNXPTLga/9cjY5NYJcUD14RDu45G5mYW9G/1ug9eCsyrHc87GeC7mzh5P1Wf0f6mzk5FpuQTqYCo8DFnIuXv7uOA1hgJ/qU3S3jFycvw1Bqc/+HZsjLL3X3MHXfWXsT/Ke8vfHJFedja6iW/AwvDyLZQ6p8ogkyDMI7WuZ04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XbYJbH7r; arc=none smtp.client-ip=209.85.210.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-7141d7b270dso4428763b3a.2;
-        Tue, 27 Aug 2024 10:47:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724780876; x=1725385676; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=HCUSrgJ+TJUnurxjMntJCkv6+wXwXOpsEspjhz3H0Yw=;
-        b=XbYJbH7rBpjD/HDL1RGX4gq675Ui6ijwGuPRro2XRZjsPmekCJcrME+MHzRSFtkf3j
-         snmvaBvPFio0FzTWX3fFWIh54p3I56jH8YVgNTZg4KmnA3Tcxc5I1CX/tzO08urfO20n
-         4JLBxclLSI0Rr8NHn26iNHfKf4+rpn/GWE/Z0UdcCmLaEXb14elAx9j/yCurrSIrZser
-         Y+rzHT62gzzYfx/nFHuTlbXl3sRAjTERAcalNJi+cDyhwYuiZXOgPYvMQYE2KD5flC8p
-         FvECKPKoj0wgTjDUfzomnuuQBXkUxiU8qzqgh8qRvOatWmlBBpSLJnXLbBpQA8z6pLPG
-         pSLA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724780876; x=1725385676;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=HCUSrgJ+TJUnurxjMntJCkv6+wXwXOpsEspjhz3H0Yw=;
-        b=Xsk4d6rUx4FgTdBEPdw8U5BbVeKATxy/xYKstHbEwKrnSC+gg7rCkXpNVef8eE4MYq
-         Ux5yyXZmXqG8xzFOGWE7SR4lTGJOtcD6V9qMpU0+pV2VtIX9AZrrg8+NXFHLt5JuV3IL
-         7qyPfd8iljEDXI1wJdEOtcvqR0Pyxez10Sm9LJrw4r4rMOFQWmxO7Z460f2OX+2WEW0d
-         hZagtsx+5sP1VVmMU+QOGwTeEJFyekVk3473KctSQE1P+yQigjVu/hg+BbttkLf+hxIP
-         b/3pQYsho/20sfKChjxl9UNu7MkiGXEMWVPb3dxw4d9kFN3mOpZuBkQCKzcJAVGH8Nq3
-         JlVg==
-X-Forwarded-Encrypted: i=1; AJvYcCUsUuL2lrAygkPv3x4aKB7sfe7bUo0kVqzAlG4UxY3c41LaLdkkYaduYaaihk0KrWkcp+TJ8mGN@vger.kernel.org, AJvYcCWM2ReZ2+0v7Z2qXBs/rHO8qL/D7N+XkvIEW66zfOi5RGZKb85X1mg9RFb3xs00pUl0/kZEQfeI2S76FGE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywis1sGc6HHjzmK1iXRI6V3qq5QDN+Gxa7BUxUILlUv54Vp+Km4
-	VjdNfxCPByVTgBa4Eym/79Q44otVSiI8/FKCmZe8zXewXz9QsJAQ
-X-Google-Smtp-Source: AGHT+IES6okLZnfj/yTGFxwPWh7nsD/tI3mz++Ei4dyFWneiXSsFd3im9erE2HEYmM+cxnd9sViCiA==
-X-Received: by 2002:a05:6a20:4f18:b0:1cc:9f24:3d with SMTP id adf61e73a8af0-1cc9f240253mr7540278637.25.1724780876432;
-        Tue, 27 Aug 2024 10:47:56 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-2038556686asm86076995ad.40.2024.08.27.10.47.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 27 Aug 2024 10:47:55 -0700 (PDT)
-Message-ID: <ffd773a0-d71c-4647-b7de-b22a008849ab@gmail.com>
-Date: Tue, 27 Aug 2024 10:47:53 -0700
+	s=arc-20240116; t=1724781558; c=relaxed/simple;
+	bh=48Q33iSBe30feBJajsdUjyXtMAg7Ws8PgEKICrBPRVo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jIKmHQausmxAxtN1ZhN9Op7862K4XAbeS2mFpfLaLjgIbCFrC3p126JMNFJhUV7Lh8POvDAsdXiulUyGCu+sAnQECE63b3VIqahxeJRQwN7xSibtMumY0qrT2vqHkHTvAZ0wtCXXKBo+WbZapDfqlCvwN9+m5RBtnxs54kaqMhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=194.107.17.57
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
+Received: from imap.altlinux.org (imap.altlinux.org [194.107.17.38])
+	by vmicros1.altlinux.org (Postfix) with ESMTP id BD9A472C8CC;
+	Tue, 27 Aug 2024 20:59:07 +0300 (MSK)
+Received: from altlinux.org (sole.flsd.net [185.75.180.6])
+	by imap.altlinux.org (Postfix) with ESMTPSA id A6D3E36D0184;
+	Tue, 27 Aug 2024 20:59:07 +0300 (MSK)
+Date: Tue, 27 Aug 2024 20:59:07 +0300
+From: Vitaly Chikunov <vt@altlinux.org>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Salvatore Bonaccorso <carnil@debian.org>,
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
+	Christian Heusel <christian@heusel.eu>,
+	Adrian Vladu <avladu@cloudbasesolutions.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	"alexander.duyck@gmail.com" <alexander.duyck@gmail.com>,
+	"arefev@swemel.ru" <arefev@swemel.ru>,
+	"davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>,
+	"jasowang@redhat.com" <jasowang@redhat.com>,
+	"kuba@kernel.org" <kuba@kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"willemb@google.com" <willemb@google.com>,
+	"regressions@lists.linux.dev" <regressions@lists.linux.dev>,
+	David =?utf-8?Q?Pr=C3=A9vot?= <taffit@debian.org>
+Subject: Re: [PATCH net] net: drop bad gso csum_start and offset in
+ virtio_net_hdr
+Message-ID: <20240827175907.ih2jjmmm6iyf5gsm@altlinux.org>
+References: <20240814055408-mutt-send-email-mst@kernel.org>
+ <c746a1d2-ba0d-40fe-8983-0bf1f7ce64a7@heusel.eu>
+ <PR3PR09MB5411FC965DBCCC26AF850EA5B0872@PR3PR09MB5411.eurprd09.prod.outlook.com>
+ <ad4d96b7-d033-4292-86df-91b8d7b427c4@heusel.eu>
+ <66bcb6f68172f_adbf529471@willemb.c.googlers.com.notmuch>
+ <zkpazbrdirbgp6xgrd54urzjv2b5o3gjfubj6hi673uf35aep3@hrqxcdd7vj5c>
+ <66c5f41884850_da1e7294d2@willemb.c.googlers.com.notmuch>
+ <ZsyMzW-4ee_U8NoX@eldamar.lan>
+ <ZszgliPW3QEodr5G@eldamar.lan>
+ <2024082741-crease-mug-f658@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.6 000/341] 6.6.48-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
- conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-References: <20240827143843.399359062@linuxfoundation.org>
-Content-Language: en-US
-From: Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2024082741-crease-mug-f658@gregkh>
 
-On 8/27/24 07:33, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.6.48 release.
-> There are 341 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Tue, Aug 27, 2024 at 03:16:50PM +0200, Greg KH wrote:
+> On Mon, Aug 26, 2024 at 10:07:50PM +0200, Salvatore Bonaccorso wrote:
+> > Hi,
+> > 
+> > On Mon, Aug 26, 2024 at 04:10:21PM +0200, Salvatore Bonaccorso wrote:
+> > > Hi,
+> > > 
+> > > On Wed, Aug 21, 2024 at 10:05:12AM -0400, Willem de Bruijn wrote:
+> > > > Vitaly Chikunov wrote:
+> > > > > Willem,
+> > > > > 
+> > > > > On Wed, Aug 14, 2024 at 09:53:58AM GMT, Willem de Bruijn wrote:
+> > > > > > Christian Heusel wrote:
+> > > > > > > On 24/08/14 10:10AM, Adrian Vladu wrote:
+> > > > > > > > Hello,
+> > > > > > > > 
+> > > > > > > > The 6.6.y branch has the patch already in the stable queue -> https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/commit/?id=3e713b73c01fac163a5c8cb0953d1e300407a773, and it should be available in the 6.6.46 upcoming minor.
+> > > > > > > > 
+> > > > > > > > Thanks, Adrian.
+> > > > > > > 
+> > > > > > > Yeah it's also queued up for 6.10, which I both missed (sorry for that!).
+> > > > > > > If I'm able to properly backport the patch for 6.1 I'll send that one,
+> > > > > > > but my hopes are not too high that this will work ..
+> > > > > > 
+> > > > > > There are two conflicts.
+> > > > > > 
+> > > > > > The one in include/linux/virtio_net.h is resolved by first backporting
+> > > > > > commit fc8b2a6194693 ("net: more strict VIRTIO_NET_HDR_GSO_UDP_L4
+> > > > > > validation")
+> > > > > > 
+> > > > > > We did not backport that to stable because there was some slight risk
+> > > > > > that applications might be affected. This has not surfaced.
+> > > > > > 
+> > > > > > The conflict in net/ipv4/udp_offload.c is not so easy to address.
+> > > > > > There were lots of patches between v6.1 and linus/master, with far
+> > > > > > fewer of these betwee v6.1 and linux-stable/linux-6.1.y.
+> > > > > 
+> > > > > BTW, we successfully cherry-picked 3 suggested[1] commits over v6.1.105 in
+> > > > > ALT, and there is no reported problems as of yet.
+> > > > > 
+> > > > >   89add40066f9 ("net: drop bad gso csum_start and offset in virtio_net_hdr")
+> > > > >   fc8b2a619469 ("net: more strict VIRTIO_NET_HDR_GSO_UDP_L4 validation")
+> > > > >   9840036786d9 ("gso: fix dodgy bit handling for GSO_UDP_L4")
+> > > > > 
+> > > > > [1] https://lore.kernel.org/all/2024081147-altitude-luminous-19d1@gregkh/
+> > > > 
+> > > > That's good to hear.
+> > > > 
+> > > > These are all fine to go to 6.1 stable.
+> > > 
+> > > FWIW, as we are hit by this issue for Debian bookworm, we have testing
+> > > as well from David Prévot <taffit@debian.org>, cf. the report in
+> > > https://bugs.debian.org/1079684 .
+> > > 
+> > > He mentions that the 9840036786d9 ("gso: fix dodgy bit handling for
+> > > GSO_UDP_L4") patch does not apply cleanly, looks to be because of
+> > > 1fd54773c267 ("udp: allow header check for dodgy GSO_UDP_L4 packets.")
+> > > from 6.2-rc1, which are reverted in the commit.
+> > 
+> > Just to give an additional confirmation: Applying
+> > 
+> > 1fd54773c267 ("udp: allow header check for dodgy GSO_UDP_L4 packets.")
+
+Interestingly, I don't need this commit cherry-picked when applying
+above patchset over v6.1.106 (with my git 2.42.2). It applies cleanly
+with two "Auto-merging" messages, then 2nd and 3rd hunks are not
+applied. It seems that 1fd54773c267 only adds the changes that
+following 9840036786d9 removes (in the 2nd and 3rd hunks). And the git
+is smart enough to figure that out and just don't apply them when
+cherry-picking. That explains why some commits that I say is apply
+cleanly some other people cannot apply.
+
+Thanks,
+
+> > 9840036786d9 ("gso: fix dodgy bit handling for GSO_UDP_L4")
+> > fc8b2a619469 ("net: more strict VIRTIO_NET_HDR_GSO_UDP_L4 validation")
+> > 89add40066f9 ("net: drop bad gso csum_start and offset in virtio_net_hdr")
 > 
-> Responses should be made by Thu, 29 Aug 2024 14:37:36 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.48-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-> and the diffstat can be found below.
-> 
-> thanks,
+> Ah, that works, thanks!
 > 
 > greg k-h
-
-Same problem as with the 6.1-rc, perf fails to build with:
-
-In file included from ./util/header.h:10,
-                  from pmu-events/pmu-events.c:9:
-../include/linux/bitmap.h: In function 'bitmap_zero':
-../include/linux/bitmap.h:28:34: warning: implicit declaration of 
-function 'ALIGN' [-Wimplicit-function-declaration]
-    28 | #define bitmap_size(nbits)      (ALIGN(nbits, BITS_PER_LONG) / 
-BITS_PER_BYTE)
-       |                                  ^~~~~
-../include/linux/bitmap.h:35:32: note: in expansion of macro 'bitmap_size'
-    35 |                 memset(dst, 0, bitmap_size(nbits));
-       |                                ^~~~~~~~~~~
-   LD 
-/local/users/fainelli/buildroot/output/arm/build/linux-custom/tools/perf/pmu-events/pmu-events-in.o
-   LINK 
-/local/users/fainelli/buildroot/output/arm/build/linux-custom/tools/perf/perf
-/local/stbopt_p/toolchains_303/stbgcc-12.3-1.0/bin/../lib/gcc/arm-unknown-linux-gnueabihf/12.3.0/../../../../arm-unknown-linux-gnueabihf/bin/ld: 
-/local/users/fainelli/buildroot/output/arm/build/linux-custom/tools/perf/perf-in.o: 
-in function `record__mmap_read_evlist':
-builtin-record.c:(.text+0x13578): undefined reference to `ALIGN'
-/local/stbopt_p/toolchains_303/stbgcc-12.3-1.0/bin/../lib/gcc/arm-unknown-linux-gnueabihf/12.3.0/../../../../arm-unknown-linux-gnueabihf/bin/ld: 
-/local/users/fainelli/buildroot/output/arm/build/linux-custom/tools/perf/perf-in.o: 
-in function `record__init_thread_masks_spec.constprop.0':
-builtin-record.c:(.text+0x13b10): undefined reference to `ALIGN'
-/local/stbopt_p/toolchains_303/stbgcc-12.3-1.0/bin/../lib/gcc/arm-unknown-linux-gnueabihf/12.3.0/../../../../arm-unknown-linux-gnueabihf/bin/ld: 
-builtin-record.c:(.text+0x13b68): undefined reference to `ALIGN'
-/local/stbopt_p/toolchains_303/stbgcc-12.3-1.0/bin/../lib/gcc/arm-unknown-linux-gnueabihf/12.3.0/../../../../arm-unknown-linux-gnueabihf/bin/ld: 
-builtin-record.c:(.text+0x13b9c): undefined reference to `ALIGN'
-/local/stbopt_p/toolchains_303/stbgcc-12.3-1.0/bin/../lib/gcc/arm-unknown-linux-gnueabihf/12.3.0/../../../../arm-unknown-linux-gnueabihf/bin/ld: 
-builtin-record.c:(.text+0x13bd8): undefined reference to `ALIGN'
-/local/stbopt_p/toolchains_303/stbgcc-12.3-1.0/bin/../lib/gcc/arm-unknown-linux-gnueabihf/12.3.0/../../../../arm-unknown-linux-gnueabihf/bin/ld: 
-/local/users/fainelli/buildroot/output/arm/build/linux-custom/tools/perf/perf-in.o:builtin-record.c:(.text+0x13c14): 
-more undefined references to `ALIGN' follow
-collect2: error: ld returned 1 exit status
-make[4]: *** [Makefile.perf:672: 
-/local/users/fainelli/buildroot/output/arm/build/linux-custom/tools/perf/perf] 
-Error 1
-make[3]: *** [Makefile.perf:242: sub-make] Error 2
-make[2]: *** [Makefile:70: all] Error 2
-make[1]: *** [package/pkg-generic.mk:294: 
-/local/users/fainelli/buildroot/output/arm/build/linux-tools/.stamp_built] 
-Error 2
-make: *** [Makefile:29: _all] Error 2
--- 
-Florian
-
 
