@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-70704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70955-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5FA4960F9A
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:00:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 235D89610DC
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:13:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB3751C23441
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:00:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7A0E5B22BC5
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:13:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C2C11C57B3;
-	Tue, 27 Aug 2024 14:59:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA2CA1C4EEC;
+	Tue, 27 Aug 2024 15:13:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b9iQucBj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y2R9sytG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 290CD1BA88C;
-	Tue, 27 Aug 2024 14:59:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A731D1A072D;
+	Tue, 27 Aug 2024 15:13:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770792; cv=none; b=U1CNkwAStp8zYAW01+zuv3e1+A+CizhrIQQnXT4Ucsy2RCobWdeILr3enAJG/Rjj5LQfdfj1zWtRdUUy2+udXKUbKxsmGocw8xH4DETJlhQYXAK5/gaUsWNsL+B456Naq4fKX7/5tveAqF+LD2LZcPy17n76uobVzl2RCwyGfVU=
+	t=1724771616; cv=none; b=l1tRPiqoFuCM1BSm/u/quVm3/EFZYT461EY6ww0FxFxou9GIbhfNdxvZgnJl4ggHcF40GzN2IRa67qeGrMkxYHpiMgTGPu+K0ppTFvpnExGlW2H9gEtg4vhWBkERp8WxzT6L5PJfJbF3v2ZizwhOGRj3AW0DndUnHawofBwM9/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770792; c=relaxed/simple;
-	bh=z2YaAQS2Ebpdb8CW/KCycVSH0QpQrBu2Ds223ifioFQ=;
+	s=arc-20240116; t=1724771616; c=relaxed/simple;
+	bh=9dc525tjQ8F5XA1BOHj3Vvz/u3idRsYdDCV0xp6P158=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DVTOqFCQeE1X+fLB8XeJLWuoZ3IuHRsLkui774fGfvcaRV3Ekql01QKkiMNp2r597y2LT7PYOmvxQ4mI91MkIor0RAC8f2uxvPKVHYCwP8zhNL0sO9Kehxjw5cxg+BBnTc9nnmAU272cnmJpLkHqoa8JqmO2lbNKePbUoTNQbZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b9iQucBj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5572C4AF1A;
-	Tue, 27 Aug 2024 14:59:51 +0000 (UTC)
+	 MIME-Version; b=t2a7MY3GjThO1EzPw7YMCShRcIqPvS9zXtUjMFUJKg2KY9U6Q7FAPTWHtZmoT11X4pcQcvxZ3vlC9808Dxy9ASppRUG2mSRNggjJzRjZ6siSzA3nXbXJvKYkuAiz8hb+hREKFGnQQfH/8w/uLXbXuATl6hAzzgQlYOl489Ffvgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y2R9sytG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BBD1C6105F;
+	Tue, 27 Aug 2024 15:13:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770792;
-	bh=z2YaAQS2Ebpdb8CW/KCycVSH0QpQrBu2Ds223ifioFQ=;
+	s=korg; t=1724771616;
+	bh=9dc525tjQ8F5XA1BOHj3Vvz/u3idRsYdDCV0xp6P158=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b9iQucBjttz4LaKjT2BCM4u0WavJFnzHV4xlG2KWZv88ZpsLtJwWh4NXvcbtwUlfn
-	 aeT2qGFO/eG7TL511tRErwA4d04QG6g+GyX7XMUOE6b3PpmKvgkX+UyQq+5t5yG6wv
-	 g85OM26wnvMVtBNC9ei8UZS1OQlpTOHca0+FWAQE=
+	b=Y2R9sytGAbiqDciuf9PPtKObzKcyPlfTtzOsqF7MO3+5dvDM5HytlPSafePNtGSMA
+	 W/CpvyTg8O2LqfT+Z4Ybk8fnBORk9z5RWZAVTQFzalJtMs4qKPC/HRQO88aZKCpIwW
+	 5k2YAiVunASx+iNOZzzSMwbK93j9c8TSJ9D2nSVo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Boyuan Zhang <boyuan.zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Ruijing Dong <ruijing.dong@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH 6.6 336/341] drm/amdgpu/vcn: identify unified queue in sw init
+	Alexander Potapenko <glider@google.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>
+Subject: [PATCH 6.10 243/273] KVM: arm64: Make ICC_*SGI*_EL1 undef in the absence of a vGICv3
 Date: Tue, 27 Aug 2024 16:39:27 +0200
-Message-ID: <20240827143856.179881152@linuxfoundation.org>
+Message-ID: <20240827143842.649457999@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,176 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boyuan Zhang <boyuan.zhang@amd.com>
+From: Marc Zyngier <maz@kernel.org>
 
-commit ecfa23c8df7ef3ea2a429dfe039341bf792e95b4 upstream.
+commit 3e6245ebe7ef341639e9a7e402b3ade8ad45a19f upstream.
 
-Determine whether VCN using unified queue in sw_init, instead of calling
-functions later on.
+On a system with a GICv3, if a guest hasn't been configured with
+GICv3 and that the host is not capable of GICv2 emulation,
+a write to any of the ICC_*SGI*_EL1 registers is trapped to EL2.
 
-v2: fix coding style
+We therefore try to emulate the SGI access, only to hit a NULL
+pointer as no private interrupt is allocated (no GIC, remember?).
 
-Signed-off-by: Boyuan Zhang <boyuan.zhang@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Ruijing Dong <ruijing.dong@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+The obvious fix is to give the guest what it deserves, in the
+shape of a UNDEF exception.
+
+Reported-by: Alexander Potapenko <glider@google.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240820100349.3544850-2-maz@kernel.org
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.c |   39 ++++++++++++--------------------
- drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.h |    1 
- 2 files changed, 16 insertions(+), 24 deletions(-)
+ arch/arm64/kvm/sys_regs.c  |    6 ++++++
+ arch/arm64/kvm/vgic/vgic.h |    7 +++++++
+ 2 files changed, 13 insertions(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.c
-@@ -135,6 +135,10 @@ int amdgpu_vcn_sw_init(struct amdgpu_dev
- 		}
- 	}
+--- a/arch/arm64/kvm/sys_regs.c
++++ b/arch/arm64/kvm/sys_regs.c
+@@ -33,6 +33,7 @@
+ #include <trace/events/kvm.h>
  
-+	/* from vcn4 and above, only unified queue is used */
-+	adev->vcn.using_unified_queue =
-+		adev->ip_versions[UVD_HWIP][0] >= IP_VERSION(4, 0, 0);
+ #include "sys_regs.h"
++#include "vgic/vgic.h"
+ 
+ #include "trace.h"
+ 
+@@ -428,6 +429,11 @@ static bool access_gic_sgi(struct kvm_vc
+ {
+ 	bool g1;
+ 
++	if (!kvm_has_gicv3(vcpu->kvm)) {
++		kvm_inject_undefined(vcpu);
++		return false;
++	}
 +
- 	hdr = (const struct common_firmware_header *)adev->vcn.fw->data;
- 	adev->vcn.fw_version = le32_to_cpu(hdr->ucode_version);
+ 	if (!p->is_write)
+ 		return read_from_write_only(vcpu, p, r);
  
-@@ -259,18 +263,6 @@ int amdgpu_vcn_sw_fini(struct amdgpu_dev
- 	return 0;
- }
+--- a/arch/arm64/kvm/vgic/vgic.h
++++ b/arch/arm64/kvm/vgic/vgic.h
+@@ -346,4 +346,11 @@ void vgic_v4_configure_vsgis(struct kvm
+ void vgic_v4_get_vlpi_state(struct vgic_irq *irq, bool *val);
+ int vgic_v4_request_vpe_irq(struct kvm_vcpu *vcpu, int irq);
  
--/* from vcn4 and above, only unified queue is used */
--static bool amdgpu_vcn_using_unified_queue(struct amdgpu_ring *ring)
--{
--	struct amdgpu_device *adev = ring->adev;
--	bool ret = false;
--
--	if (adev->ip_versions[UVD_HWIP][0] >= IP_VERSION(4, 0, 0))
--		ret = true;
--
--	return ret;
--}
--
- bool amdgpu_vcn_is_disabled_vcn(struct amdgpu_device *adev, enum vcn_ring_type type, uint32_t vcn_instance)
- {
- 	bool ret = false;
-@@ -707,12 +699,11 @@ static int amdgpu_vcn_dec_sw_send_msg(st
- 	struct amdgpu_job *job;
- 	struct amdgpu_ib *ib;
- 	uint64_t addr = AMDGPU_GPU_PAGE_ALIGN(ib_msg->gpu_addr);
--	bool sq = amdgpu_vcn_using_unified_queue(ring);
- 	uint32_t *ib_checksum;
- 	uint32_t ib_pack_in_dw;
- 	int i, r;
- 
--	if (sq)
-+	if (adev->vcn.using_unified_queue)
- 		ib_size_dw += 8;
- 
- 	r = amdgpu_job_alloc_with_ib(ring->adev, NULL, NULL,
-@@ -725,7 +716,7 @@ static int amdgpu_vcn_dec_sw_send_msg(st
- 	ib->length_dw = 0;
- 
- 	/* single queue headers */
--	if (sq) {
-+	if (adev->vcn.using_unified_queue) {
- 		ib_pack_in_dw = sizeof(struct amdgpu_vcn_decode_buffer) / sizeof(uint32_t)
- 						+ 4 + 2; /* engine info + decoding ib in dw */
- 		ib_checksum = amdgpu_vcn_unified_ring_ib_header(ib, ib_pack_in_dw, false);
-@@ -744,7 +735,7 @@ static int amdgpu_vcn_dec_sw_send_msg(st
- 	for (i = ib->length_dw; i < ib_size_dw; ++i)
- 		ib->ptr[i] = 0x0;
- 
--	if (sq)
-+	if (adev->vcn.using_unified_queue)
- 		amdgpu_vcn_unified_ring_ib_checksum(&ib_checksum, ib_pack_in_dw);
- 
- 	r = amdgpu_job_submit_direct(job, ring, &f);
-@@ -834,15 +825,15 @@ static int amdgpu_vcn_enc_get_create_msg
- 					 struct dma_fence **fence)
- {
- 	unsigned int ib_size_dw = 16;
-+	struct amdgpu_device *adev = ring->adev;
- 	struct amdgpu_job *job;
- 	struct amdgpu_ib *ib;
- 	struct dma_fence *f = NULL;
- 	uint32_t *ib_checksum = NULL;
- 	uint64_t addr;
--	bool sq = amdgpu_vcn_using_unified_queue(ring);
- 	int i, r;
- 
--	if (sq)
-+	if (adev->vcn.using_unified_queue)
- 		ib_size_dw += 8;
- 
- 	r = amdgpu_job_alloc_with_ib(ring->adev, NULL, NULL,
-@@ -856,7 +847,7 @@ static int amdgpu_vcn_enc_get_create_msg
- 
- 	ib->length_dw = 0;
- 
--	if (sq)
-+	if (adev->vcn.using_unified_queue)
- 		ib_checksum = amdgpu_vcn_unified_ring_ib_header(ib, 0x11, true);
- 
- 	ib->ptr[ib->length_dw++] = 0x00000018;
-@@ -878,7 +869,7 @@ static int amdgpu_vcn_enc_get_create_msg
- 	for (i = ib->length_dw; i < ib_size_dw; ++i)
- 		ib->ptr[i] = 0x0;
- 
--	if (sq)
-+	if (adev->vcn.using_unified_queue)
- 		amdgpu_vcn_unified_ring_ib_checksum(&ib_checksum, 0x11);
- 
- 	r = amdgpu_job_submit_direct(job, ring, &f);
-@@ -901,15 +892,15 @@ static int amdgpu_vcn_enc_get_destroy_ms
- 					  struct dma_fence **fence)
- {
- 	unsigned int ib_size_dw = 16;
-+	struct amdgpu_device *adev = ring->adev;
- 	struct amdgpu_job *job;
- 	struct amdgpu_ib *ib;
- 	struct dma_fence *f = NULL;
- 	uint32_t *ib_checksum = NULL;
- 	uint64_t addr;
--	bool sq = amdgpu_vcn_using_unified_queue(ring);
- 	int i, r;
- 
--	if (sq)
-+	if (adev->vcn.using_unified_queue)
- 		ib_size_dw += 8;
- 
- 	r = amdgpu_job_alloc_with_ib(ring->adev, NULL, NULL,
-@@ -923,7 +914,7 @@ static int amdgpu_vcn_enc_get_destroy_ms
- 
- 	ib->length_dw = 0;
- 
--	if (sq)
-+	if (adev->vcn.using_unified_queue)
- 		ib_checksum = amdgpu_vcn_unified_ring_ib_header(ib, 0x11, true);
- 
- 	ib->ptr[ib->length_dw++] = 0x00000018;
-@@ -945,7 +936,7 @@ static int amdgpu_vcn_enc_get_destroy_ms
- 	for (i = ib->length_dw; i < ib_size_dw; ++i)
- 		ib->ptr[i] = 0x0;
- 
--	if (sq)
-+	if (adev->vcn.using_unified_queue)
- 		amdgpu_vcn_unified_ring_ib_checksum(&ib_checksum, 0x11);
- 
- 	r = amdgpu_job_submit_direct(job, ring, &f);
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.h
-@@ -284,6 +284,7 @@ struct amdgpu_vcn {
- 
- 	uint16_t inst_mask;
- 	uint8_t	num_inst_per_aid;
-+	bool using_unified_queue;
- };
- 
- struct amdgpu_fw_shared_rb_ptrs_struct {
++static inline bool kvm_has_gicv3(struct kvm *kvm)
++{
++	return (static_branch_unlikely(&kvm_vgic_global_state.gicv3_cpuif) &&
++		irqchip_in_kernel(kvm) &&
++		kvm->arch.vgic.vgic_model == KVM_DEV_TYPE_ARM_VGIC_V3);
++}
++
+ #endif
 
 
 
