@@ -1,55 +1,61 @@
-Return-Path: <stable+bounces-70988-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71274-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1ECE961108
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:15:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5900A9612A2
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:33:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5F43CB24CCD
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:15:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0DCD21F21185
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:33:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7906A1C3F3B;
-	Tue, 27 Aug 2024 15:15:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDD531CB31B;
+	Tue, 27 Aug 2024 15:31:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Iyg53KK3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EREN9kRc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36A931DDEA;
-	Tue, 27 Aug 2024 15:15:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BCE11C93AB;
+	Tue, 27 Aug 2024 15:31:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771726; cv=none; b=Ap9mYAHI0bO0jXkM9zZ73GcKZc7AokI/KvXlEEegM2xotBl4TzDwMymISkR9uzhWAsQefvgWhRhglqxqiQZedGnTmm0drCPX95vL5oDjuJ5lYEogvd2TRC585B5u8d2GjvalbGO5h+w7a2VOlcnxLa4Gzyt+rAJg2H2rahNwRPA=
+	t=1724772670; cv=none; b=C4zdOd6G4wDhmlM8MyXQL0CS6lVhrNL/0IBpqtcWhr4WIdZfg9EU6mY6yVMHN4JYpaa4jkRm/VJGsGCqsuFq0QXQKQHCc2D2vjxDUuyZAx7OpXA3EonEZ0nJAZfszlik0vQYX+qmIM2S8phMiBu0Uy+USYWS/kAtRr5ysttGKaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771726; c=relaxed/simple;
-	bh=PkugcM2B1c8cPpnAEy8Fb1nyYuk0CvMU7Fa1PDFVEVU=;
+	s=arc-20240116; t=1724772670; c=relaxed/simple;
+	bh=bLKuIY4KgwuDVv51XHTZ5nQhbhMhG1LA2f1Cf9qJ4Uw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hgLx/Gkn3sm8lHk8n+w+A7BSsNgqsZvbSDOyUjY4mP8poVO3D2kw8sSDATsrxC4X+DANk0mtaITJ3NpLckb/d3RN1vCxmRgFelkoSxzi3hIy+0QVmtvwqOheNfBYzp/PVPAjSwtY7OwHb3DKqc7aZX+jG4Y3uiOKA2RjUjXqWCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Iyg53KK3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2B66C4DDFF;
-	Tue, 27 Aug 2024 15:15:25 +0000 (UTC)
+	 MIME-Version; b=SXm+8UjbHs6lPr57niojCR3quyzYCeSYksNlX3Glc/JZBZXO/KFMiwlB3fisoVfNV6/6DQsQdtdqO7od8+vzuuOhv3YTmC1ZynNKFwXOuFVunimKQ+W+zdQpNhma+Sy361Bh5uVS1APZVRefcg/lJYOdzWdz1wkgcuhxy9L2LwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EREN9kRc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFB4BC4DDE9;
+	Tue, 27 Aug 2024 15:31:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771726;
-	bh=PkugcM2B1c8cPpnAEy8Fb1nyYuk0CvMU7Fa1PDFVEVU=;
+	s=korg; t=1724772670;
+	bh=bLKuIY4KgwuDVv51XHTZ5nQhbhMhG1LA2f1Cf9qJ4Uw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Iyg53KK3n3dw/3H+XcRV0uT8WEL7PoLrNs5EMujUWi7aRndqwngUIo+iHNbciWnSF
-	 bd/zKb6x7HWPSU2kTolYuJnnC0pQJTg/bC6jIRDRRbgaq3sMYxrIHj44614OgJvrwk
-	 Q1pS8ZSBn1J2rKuIVbPBJ2HBa7xA4SpG3dp8cPI0=
+	b=EREN9kRcNOwoJoP6ogygFr9zFF0IY0MYmO5RCCw0BcP15327Rep+6LRmQ8KQocAvl
+	 oTusXAaAlswgyoOFKRLgw4itD/nVLDbcruggC6Inr3Rcz+AasdQdp5i5dwLQC3PGHm
+	 JVdVgEkSQBWrhqu2Yng7J1N9s14uETPpL7hYyWgQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Biggers <ebiggers@kernel.org>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.10 268/273] Revert "pidfd: prevent creation of pidfds for kthreads"
-Date: Tue, 27 Aug 2024 16:39:52 +0200
-Message-ID: <20240827143843.598137619@linuxfoundation.org>
+	Hailong Liu <hailong.liu@oppo.com>,
+	Tangquan Zheng <zhengtangquan@oppo.com>,
+	Baoquan He <bhe@redhat.com>,
+	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
+	Barry Song <baohua@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 285/321] mm/vmalloc: fix page mapping if vm_area_alloc_pages() with high order fallback to order 0
+Date: Tue, 27 Aug 2024 16:39:53 +0200
+Message-ID: <20240827143849.096663262@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,70 +67,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Brauner <brauner@kernel.org>
+From: Hailong Liu <hailong.liu@oppo.com>
 
-commit 232590ea7fc125986a526e03081b98e5783f70d2 upstream.
+commit 61ebe5a747da649057c37be1c37eb934b4af79ca upstream.
 
-This reverts commit 3b5bbe798b2451820e74243b738268f51901e7d0.
+The __vmap_pages_range_noflush() assumes its argument pages** contains
+pages with the same page shift.  However, since commit e9c3cda4d86e ("mm,
+vmalloc: fix high order __GFP_NOFAIL allocations"), if gfp_flags includes
+__GFP_NOFAIL with high order in vm_area_alloc_pages() and page allocation
+failed for high order, the pages** may contain two different page shifts
+(high order and order-0).  This could lead __vmap_pages_range_noflush() to
+perform incorrect mappings, potentially resulting in memory corruption.
 
-Eric reported that systemd-shutdown gets broken by blocking the creating
-of pidfds for kthreads as older versions seems to rely on being able to
-create a pidfd for any process in /proc.
+Users might encounter this as follows (vmap_allow_huge = true, 2M is for
+PMD_SIZE):
 
-Reported-by: Eric Biggers <ebiggers@kernel.org>
-Link: https://lore.kernel.org/r/20240818035818.GA1929@sol.localdomain
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+kvmalloc(2M, __GFP_NOFAIL|GFP_X)
+    __vmalloc_node_range_noprof(vm_flags=VM_ALLOW_HUGE_VMAP)
+        vm_area_alloc_pages(order=9) ---> order-9 allocation failed and fallback to order-0
+            vmap_pages_range()
+                vmap_pages_range_noflush()
+                    __vmap_pages_range_noflush(page_shift = 21) ----> wrong mapping happens
+
+We can remove the fallback code because if a high-order allocation fails,
+__vmalloc_node_range_noprof() will retry with order-0.  Therefore, it is
+unnecessary to fallback to order-0 here.  Therefore, fix this by removing
+the fallback code.
+
+Link: https://lkml.kernel.org/r/20240808122019.3361-1-hailong.liu@oppo.com
+Fixes: e9c3cda4d86e ("mm, vmalloc: fix high order __GFP_NOFAIL allocations")
+Signed-off-by: Hailong Liu <hailong.liu@oppo.com>
+Reported-by: Tangquan Zheng <zhengtangquan@oppo.com>
+Reviewed-by: Baoquan He <bhe@redhat.com>
+Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+Acked-by: Barry Song <baohua@kernel.org>
+Acked-by: Michal Hocko <mhocko@suse.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/fork.c |   25 +++----------------------
- 1 file changed, 3 insertions(+), 22 deletions(-)
+ mm/vmalloc.c |   11 ++---------
+ 1 file changed, 2 insertions(+), 9 deletions(-)
 
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -2069,23 +2069,10 @@ static int __pidfd_prepare(struct pid *p
-  */
- int pidfd_prepare(struct pid *pid, unsigned int flags, struct file **ret)
- {
--	if (!pid)
--		return -EINVAL;
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -2992,15 +2992,8 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
+ 			page = alloc_pages(alloc_gfp, order);
+ 		else
+ 			page = alloc_pages_node(nid, alloc_gfp, order);
+-		if (unlikely(!page)) {
+-			if (!nofail)
+-				break;
 -
--	scoped_guard(rcu) {
--		struct task_struct *tsk;
-+	bool thread = flags & PIDFD_THREAD;
- 
--		if (flags & PIDFD_THREAD)
--			tsk = pid_task(pid, PIDTYPE_PID);
--		else
--			tsk = pid_task(pid, PIDTYPE_TGID);
--		if (!tsk)
--			return -EINVAL;
--
--		/* Don't create pidfds for kernel threads for now. */
--		if (tsk->flags & PF_KTHREAD)
--			return -EINVAL;
--	}
-+	if (!pid || !pid_has_task(pid, thread ? PIDTYPE_PID : PIDTYPE_TGID))
-+		return -EINVAL;
- 
- 	return __pidfd_prepare(pid, flags, ret);
- }
-@@ -2432,12 +2419,6 @@ __latent_entropy struct task_struct *cop
- 	if (clone_flags & CLONE_PIDFD) {
- 		int flags = (clone_flags & CLONE_THREAD) ? PIDFD_THREAD : 0;
- 
--		/* Don't create pidfds for kernel threads for now. */
--		if (args->kthread) {
--			retval = -EINVAL;
--			goto bad_fork_free_pid;
+-			/* fall back to the zero order allocations */
+-			alloc_gfp |= __GFP_NOFAIL;
+-			order = 0;
+-			continue;
 -		}
--
- 		/* Note that no task has been attached to @pid yet. */
- 		retval = __pidfd_prepare(pid, flags, &pidfile);
- 		if (retval < 0)
++		if (unlikely(!page))
++			break;
+ 
+ 		/*
+ 		 * Higher order allocations must be able to be treated as
 
 
 
