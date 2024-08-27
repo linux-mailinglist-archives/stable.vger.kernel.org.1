@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-71234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70711-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BCEF961273
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:31:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 408AF960FA3
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:00:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE9A11C213BC
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:31:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EEA99B23E26
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:00:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A8821CC17D;
-	Tue, 27 Aug 2024 15:29:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 420F71C688E;
+	Tue, 27 Aug 2024 15:00:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ktn2wQ6s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BHcp/tjW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC5981C7B82;
-	Tue, 27 Aug 2024 15:29:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 001D973466;
+	Tue, 27 Aug 2024 15:00:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772540; cv=none; b=i5zA2+sV0R1Iwp8nJ3dk5ndIgg+BfJAxFc9IIRNBkLeYPqJkfUv7NSnT0de35oZfaKcK2VV3s9eoxB0of4QynsMhsiqvOu2S4WLELDUOcGqufa8lW0GGjRCYf2roCtmZ/uv1lbMGGBOIIcPYLklvDa3llNQ+MlDVSsSF0XPV/7Q=
+	t=1724770815; cv=none; b=n180kiRY4lziz3aibe/B0DCKwgr938i9bYC6pdJYwt8IlbuTgO6/BuMLz2QdCg21Vfjsa+67UyyYcRQ7Squ5WZWiV7WWf45SEgY+n+vWmzJez4u1D5M3RG5gNSKCl8RVJJcHU3yOQe0geQ+IYW8kDBky96X/NM5lHXNfdyKYY+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772540; c=relaxed/simple;
-	bh=FvA5kQKsxoXMdiHDhoXAeXTZIGfb/UdUB1/BrdTByZM=;
+	s=arc-20240116; t=1724770815; c=relaxed/simple;
+	bh=4lfSmRx7sonzPYGF0lIBcR8QjKkV5jhWiFR1VHu/iGE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b/nWL4H28jkeA3x80WOewQ434T0/77poOEWuvfXcYq5GWvKqDZ6k+EybrMR2Iup/VabonMIErMyEG4KdpsbPR9RCP52KnvS46BhKEngq3VUdH0iqD7+a7vAeNS+WJdcApl5BRvqdxnX96lewKwtOdNVi+8g3dpqd6KYf4SRVxv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ktn2wQ6s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2D24C6107E;
-	Tue, 27 Aug 2024 15:28:59 +0000 (UTC)
+	 MIME-Version; b=LRP2XPJLXML+ysLrBPPZR+Lv5pgK4ZTL6GGQ0CFrWz/eLJLjBPqMXGLK2Z5O+RiuqWgI3/uS9NQvaJogTbMJhBdCr0QCzmlVjIALG/FFLytZ0Z8DJ8N+Pr2do59MEk2OQ9gXxiNP+p9y1SPhx6Zjw/Hz/RtyfRu+s+iuNfgdtN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BHcp/tjW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6289AC4DDE2;
+	Tue, 27 Aug 2024 15:00:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772540;
-	bh=FvA5kQKsxoXMdiHDhoXAeXTZIGfb/UdUB1/BrdTByZM=;
+	s=korg; t=1724770814;
+	bh=4lfSmRx7sonzPYGF0lIBcR8QjKkV5jhWiFR1VHu/iGE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ktn2wQ6sIEF/JAqT8rPS4kJXE5P61FzDRxvren92C7202byhbfPNV4YCRyW1ese+y
-	 DBNHZuQdqwgK3wAysh4C2tRSPN3rzeATl4ZVjSqmAc/HyrJW2E2CPineFpHhxBnYjp
-	 ehIyjhw5sN/V02Z4AToSVT8TmsjE5K4Zws+F030g=
+	b=BHcp/tjWb0G2YiNyFhlk9hjPHZcDQbaDZST+ume33uRVho67+4BTYN3Y+bfOVwVWX
+	 f+mJjYL7ff3hjuidterQBSumQHlwZb+pBn41v9VnG04IpQK3CbPpygtWUMTh9TjV6S
+	 Nqr7KnMrwgU2GeT/NKV5T5nvLFl6sUPpnbVpmeK4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Chandan Kumar Rout <chandanx.rout@intel.com>
-Subject: [PATCH 6.1 246/321] ice: fix page reuse when PAGE_SIZE is over 8k
+	Alex Hung <alex.hung@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 323/341] Revert "drm/amd/display: Validate hw_points_num before using it"
 Date: Tue, 27 Aug 2024 16:39:14 +0200
-Message-ID: <20240827143847.608479264@linuxfoundation.org>
+Message-ID: <20240827143855.685141526@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+From: Alex Hung <alex.hung@amd.com>
 
-[ Upstream commit 50b2143356e888777fc5bca023c39f34f404613a ]
+commit 8f4bdbc8e99db6ec9cb0520748e49a2f2d7d1727 upstream.
 
-Architectures that have PAGE_SIZE >= 8192 such as arm64 should act the
-same as x86 currently, meaning reuse of a page should only take place
-when no one else is busy with it.
+This reverts commit 58c3b3341cea4f75dc8c003b89f8a6dd8ec55e50.
 
-Do two things independently of underlying PAGE_SIZE:
-- store the page count under ice_rx_buf::pgcnt
-- then act upon its value vs ice_rx_buf::pagecnt_bias when making the
-  decision regarding page reuse
+[WHY & HOW]
+The writeback series cause a regression in thunderbolt display.
 
-Fixes: 2b245cb29421 ("ice: Implement transmit and NAPI support")
-Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Tested-by: Chandan Kumar Rout <chandanx.rout@intel.com> (A Contingent Worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/ice/ice_txrx.c | 12 +++---------
- 1 file changed, 3 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dcn30/dcn30_dwb_cm.c |    3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_txrx.c b/drivers/net/ethernet/intel/ice/ice_txrx.c
-index 6f930d99b496b..6ad4bdb0124e7 100644
---- a/drivers/net/ethernet/intel/ice/ice_txrx.c
-+++ b/drivers/net/ethernet/intel/ice/ice_txrx.c
-@@ -807,16 +807,15 @@ ice_can_reuse_rx_page(struct ice_rx_buf *rx_buf)
- 	if (!dev_page_is_reusable(page))
+--- a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_dwb_cm.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_dwb_cm.c
+@@ -243,9 +243,6 @@ static bool dwb3_program_ogam_lut(
  		return false;
+ 	}
  
--#if (PAGE_SIZE < 8192)
- 	/* if we are only owner of page we can reuse it */
- 	if (unlikely(rx_buf->pgcnt - pagecnt_bias > 1))
- 		return false;
--#else
-+#if (PAGE_SIZE >= 8192)
- #define ICE_LAST_OFFSET \
- 	(SKB_WITH_OVERHEAD(PAGE_SIZE) - ICE_RXBUF_2048)
- 	if (rx_buf->page_offset > ICE_LAST_OFFSET)
- 		return false;
--#endif /* PAGE_SIZE < 8192) */
-+#endif /* PAGE_SIZE >= 8192) */
+-	if (params->hw_points_num == 0)
+-		return false;
+-
+ 	REG_SET(DWB_OGAM_CONTROL, 0, DWB_OGAM_MODE, 2);
  
- 	/* If we have drained the page fragment pool we need to update
- 	 * the pagecnt_bias and page count so that we fully restock the
-@@ -904,12 +903,7 @@ ice_get_rx_buf(struct ice_rx_ring *rx_ring, const unsigned int size,
- 	struct ice_rx_buf *rx_buf;
- 
- 	rx_buf = &rx_ring->rx_buf[ntc];
--	rx_buf->pgcnt =
--#if (PAGE_SIZE < 8192)
--		page_count(rx_buf->page);
--#else
--		0;
--#endif
-+	rx_buf->pgcnt = page_count(rx_buf->page);
- 	prefetchw(rx_buf->page);
- 
- 	if (!size)
--- 
-2.43.0
-
+ 	current_mode = dwb3_get_ogam_current(dwbc30);
 
 
 
