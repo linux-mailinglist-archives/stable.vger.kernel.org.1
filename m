@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-71299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70966-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1DF79612C1
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:34:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CE7A9610EB
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:14:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5549B1F21B0E
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:34:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3FF441C2357E
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:14:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A53751CEAA2;
-	Tue, 27 Aug 2024 15:32:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 417731C688E;
+	Tue, 27 Aug 2024 15:14:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wDc/toJU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wDwX5rnS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 634381CE70D;
-	Tue, 27 Aug 2024 15:32:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F289D1A072D;
+	Tue, 27 Aug 2024 15:14:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772755; cv=none; b=hDdyEjn99Cx7+xQJkna7gTtBmDXa5thwJEEaBGsKrg8lUHK4hyy/Ehy7oo8GKWyGOplp5SpkS+j4jFjYT5EH9FL37S0wvjyXEVlDCjUx3hH2wPurMQoJrlne47VmoIki1jEQRnzyRtAr61XXwpt2iGNVs31e08wWoJmPt1nahNU=
+	t=1724771653; cv=none; b=sRG0jDpPGXt/yqzDMUnjoFqU4gROQkWP5nE5MzLfveibQbbgy85AoSlLSm/JqbYWb65FfDnJFtaztk5/dVbWnYLOzzEj7+xge/x1YLN1J8WpiN+nNVrhqkvkEytaI3PFiuYP7EmGYIeYltHyw+ew63V4godsIFWmazC/IY1nPdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772755; c=relaxed/simple;
-	bh=J6r40iQXYh1go5tCYuk6gYtkuWeQ6dls26OmiAg9eZw=;
+	s=arc-20240116; t=1724771653; c=relaxed/simple;
+	bh=xiu6IaDLnOZ/tdJeNY+6aL1/QfY8JWphEz1CeRhIyuY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bOlymA5ep2JtGjrAGoHqf+Lu5CrUQYUQj2IrVHZ8WmonCL7V04Fz3Nh0/QmMLIp8fyVFqmWkON1hVq/YE04b9v4Yd3DzWba7PpAAL2IwhhZu7/g2+NjWgjF6rm8f5+NTK/LyQ6XE7Z4oDNepfy8zuBjCJwo6eRD5sDp9ABBlunA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wDc/toJU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE0D3C61041;
-	Tue, 27 Aug 2024 15:32:34 +0000 (UTC)
+	 MIME-Version; b=oaEPKOzkPglnE6SeZNH37saX3ojcPQ2WZMizCh9+VYe998zXpAk92FzEJzstK6dnjqhm0bxHvLfAl6Ogt5VDiFZrz1xRXlRKBkWWz9cIpWemSuGv2BYuyki5Ro6dvljOYA9ZVlkUUFSjzLqMTAX6wX0Y4WD4q/fcPKanukO0OjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wDwX5rnS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E798C61064;
+	Tue, 27 Aug 2024 15:14:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772755;
-	bh=J6r40iQXYh1go5tCYuk6gYtkuWeQ6dls26OmiAg9eZw=;
+	s=korg; t=1724771652;
+	bh=xiu6IaDLnOZ/tdJeNY+6aL1/QfY8JWphEz1CeRhIyuY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wDc/toJUA/8ePBKjwm6mGOeJxU4yOkJ8BEU3jdwIBSFEi+GaZjETkPHM/RcDEJhIB
-	 5khYmxZDDzjN2gWn+vPAFNnFb3r0dn6M2BF3lDQApV3saUg6XIG+6Irg4qEpvGvLI9
-	 XD9Q4+Sb6ElqmsEORdX+C5xJ3V3ycxbTa+ZGaRO8=
+	b=wDwX5rnSeG1Fr6wmDsjnVhN3qObHdd/qtI77FNZlKDFJhWavFP8UskhvUURk6PNAf
+	 5xXOvv+GwOgPHDM0+7yaB5MJWheIduar+0a9H+kHrBQuBFoKDuVwqKke40feNJCSnc
+	 FOfoELdGWevWCV5+NjsjaTsBM89R11ZedzPHUnDU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Gerecke <jason.gerecke@wacom.com>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 6.1 268/321] HID: wacom: Defer calculation of resolution until resolution_code is known
-Date: Tue, 27 Aug 2024 16:39:36 +0200
-Message-ID: <20240827143848.453667521@linuxfoundation.org>
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.10 253/273] thermal: of: Fix OF node leak in thermal_of_zone_register()
+Date: Tue, 27 Aug 2024 16:39:37 +0200
+Message-ID: <20240827143843.029195747@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gerecke <jason.gerecke@wacom.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit 1b8f9c1fb464968a5b18d3acc1da8c00bad24fad upstream.
+commit 662b52b761bfe0ba970e5823759798faf809b896 upstream.
 
-The Wacom driver maps the HID_DG_TWIST usage to ABS_Z (rather than ABS_RZ)
-for historic reasons. When the code to support twist was introduced in
-commit 50066a042da5 ("HID: wacom: generic: Add support for height, tilt,
-and twist usages"), we were careful to write it in such a way that it had
-HID calculate the resolution of the twist axis assuming ABS_RZ instead
-(so that we would get correct angular behavior). This was broken with
-the introduction of commit 08a46b4190d3 ("HID: wacom: Set a default
-resolution for older tablets"), which moved the resolution calculation
-to occur *before* the adjustment from ABS_Z to ABS_RZ occurred.
+thermal_of_zone_register() calls of_thermal_zone_find() which will
+iterate over OF nodes with for_each_available_child_of_node() to find
+matching thermal zone node.  When it finds such, it exits the loop and
+returns the node.  Prematurely ending for_each_available_child_of_node()
+loops requires dropping OF node reference, thus success of
+of_thermal_zone_find() means that caller must drop the reference.
 
-This commit moves the calculation of resolution after the point that
-we are finished setting things up for its proper use.
-
-Signed-off-by: Jason Gerecke <jason.gerecke@wacom.com>
-Fixes: 08a46b4190d3 ("HID: wacom: Set a default resolution for older tablets")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Fixes: 3fd6d6e2b4e8 ("thermal/of: Rework the thermal device tree initialization")
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
+Reviewed-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://patch.msgid.link/20240814195823.437597-2-krzysztof.kozlowski@linaro.org
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/wacom_wac.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/thermal/thermal_of.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/hid/wacom_wac.c
-+++ b/drivers/hid/wacom_wac.c
-@@ -1921,12 +1921,14 @@ static void wacom_map_usage(struct input
- 	int fmax = field->logical_maximum;
- 	unsigned int equivalent_usage = wacom_equivalent_usage(usage->hid);
- 	int resolution_code = code;
--	int resolution = hidinput_calc_abs_res(field, resolution_code);
-+	int resolution;
- 
- 	if (equivalent_usage == HID_DG_TWIST) {
- 		resolution_code = ABS_RZ;
+--- a/drivers/thermal/thermal_of.c
++++ b/drivers/thermal/thermal_of.c
+@@ -491,7 +491,8 @@ static struct thermal_zone_device *therm
+ 	trips = thermal_of_trips_init(np, &ntrips);
+ 	if (IS_ERR(trips)) {
+ 		pr_err("Failed to find trip points for %pOFn id=%d\n", sensor, id);
+-		return ERR_CAST(trips);
++		ret = PTR_ERR(trips);
++		goto out_of_node_put;
  	}
  
-+	resolution = hidinput_calc_abs_res(field, resolution_code);
-+
- 	if (equivalent_usage == HID_GD_X) {
- 		fmin += features->offset_left;
- 		fmax -= features->offset_right;
+ 	ret = thermal_of_monitor_init(np, &delay, &pdelay);
+@@ -519,6 +520,7 @@ static struct thermal_zone_device *therm
+ 		goto out_kfree_trips;
+ 	}
+ 
++	of_node_put(np);
+ 	kfree(trips);
+ 
+ 	ret = thermal_zone_device_enable(tz);
+@@ -533,6 +535,8 @@ static struct thermal_zone_device *therm
+ 
+ out_kfree_trips:
+ 	kfree(trips);
++out_of_node_put:
++	of_node_put(np);
+ 
+ 	return ERR_PTR(ret);
+ }
 
 
 
