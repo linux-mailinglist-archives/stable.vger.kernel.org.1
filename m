@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-70710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70961-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE6D9960F9F
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:00:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA2799610E6
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:14:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F24C11C234CD
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:00:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 54356B24690
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:14:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C9701C68AE;
-	Tue, 27 Aug 2024 15:00:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 816CE1C688E;
+	Tue, 27 Aug 2024 15:13:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mekW44LO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VNc2Dbq3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED1DB73466;
-	Tue, 27 Aug 2024 15:00:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F03A1C4ED4;
+	Tue, 27 Aug 2024 15:13:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770812; cv=none; b=MeOGk+zuQLpP2vVMkOAW98PByH9TPLEp24vd3UtWkSyn/7vCtPIDWTtNvi8Fb6jFVKGi+/WvJ6OsR37QipQgbA5DV7B91wYMiDYinTj4pdlnCk+OpvIcBAux7bZQf+RFa9RsY41ZJmYd9XHPEKqZaGSKSEdlpbLOnwPSPY5A2U0=
+	t=1724771636; cv=none; b=mC19kOgIYyN5lM4tidOLTxWNVYAohV0KubQyWk83NPZzzb9TkzO08CtWG9Cep+2Jf0Y9OAhS+fP1hstz1/X0KQcrGQe3ROUk80YHLwlB+ZhQRQIWt8oVUbEc3NTgco/Ew4pc6UHjpHtsVlhEP1kfnRKK6sCgKwBMT0+9oiJJ4XA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770812; c=relaxed/simple;
-	bh=gWrs3Wr1XlBHZ7HdbAkcg5EwxcIh2stTHGcmgJ/waY0=;
+	s=arc-20240116; t=1724771636; c=relaxed/simple;
+	bh=cOrjI6X10IM8sen43U46YfQNcVbSxXG1x2hu0TDt654=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H6PzNnL48/Jv2HwaJAQXBDrDnVpXYQBgCUvIv6XVfwlV9FDdKLZTK+QIAIYqOhQyn8X0fx7Bi8xUq1tgVM91u2VA8xGjObi45lBtQvGn6hRH56gEo5gCOdU+DqpcuTcDZJKCr0GHgW4WTavvaIkg7pizvU9XDsrbevr0hwwjg+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mekW44LO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68440C4AF1A;
-	Tue, 27 Aug 2024 15:00:11 +0000 (UTC)
+	 MIME-Version; b=kzxHK1JedX9TamV3OJ3mE6LbhAqZLsDm/FDy2v3ZEFjwQoaszhqEJSpH6buhug2kmAGMa91EBocm6t/Z0xq7mJY+byDtJXHktBP5ULz3SWD41bHeJz5EpfQjMijdWr5pZmmNWlsPC5Spa8UFvoFRjgw2bzZlfN9CrvveKjCYol8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VNc2Dbq3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1987C61064;
+	Tue, 27 Aug 2024 15:13:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770811;
-	bh=gWrs3Wr1XlBHZ7HdbAkcg5EwxcIh2stTHGcmgJ/waY0=;
+	s=korg; t=1724771636;
+	bh=cOrjI6X10IM8sen43U46YfQNcVbSxXG1x2hu0TDt654=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mekW44LO5adC3Kygqrr+L27gtbD0U0TdVVxHU3ti1l+Z/T4pNrBO5RM/PHEsHD6ej
-	 Poq1o5R6wzctg2aGC5XxwKGPlEN+4NWhqwALXglAblCPAq3yBbIh/byoJTay6A2rdy
-	 3wveYyrJ9kW+/IUpYbZzu9/txvNXYMARRFKh/A98=
+	b=VNc2Dbq3myQ5iiDzqw7jO0QZwXhebI3VskWy1yn16dncnqzQpChmNpgUmYxjI1G7g
+	 z3fB2U/8F0/DihjSPG+33R7IjSFjCwGZKDwSNzRQO3gkFrYR38lF2ncg1CVKlepskA
+	 sUW3UXBWRKnyI33i2y/l6JwogkzoLGj2zBBSKGxs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzbot+0122fa359a69694395d5@syzkaller.appspotmail.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	George Kennedy <george.kennedy@oracle.com>
-Subject: [PATCH 6.6 341/341] Input: MT - limit max slots
-Date: Tue, 27 Aug 2024 16:39:32 +0200
-Message-ID: <20240827143856.370648876@linuxfoundation.org>
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.10 249/273] pmdomain: imx: scu-pd: Remove duplicated clocks
+Date: Tue, 27 Aug 2024 16:39:33 +0200
+Message-ID: <20240827143842.878585927@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-commit 99d3bf5f7377d42f8be60a6b9cb60fb0be34dceb upstream.
+commit 50359c9c3cb3e55e840e3485f5ee37da5b2b16b6 upstream.
 
-syzbot is reporting too large allocation at input_mt_init_slots(), for
-num_slots is supplied from userspace using ioctl(UI_DEV_CREATE).
+These clocks are already added to the list. Remove the duplicates ones.
 
-Since nobody knows possible max slots, this patch chose 1024.
-
-Reported-by: syzbot <syzbot+0122fa359a69694395d5@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=0122fa359a69694395d5
-Suggested-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: George Kennedy <george.kennedy@oracle.com>
+Fixes: a67d780720ff ("genpd: imx: scu-pd: add more PDs")
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240717080334.2210988-1-alexander.stein@ew.tq-group.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/input-mt.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/pmdomain/imx/scu-pd.c |    5 -----
+ 1 file changed, 5 deletions(-)
 
---- a/drivers/input/input-mt.c
-+++ b/drivers/input/input-mt.c
-@@ -46,6 +46,9 @@ int input_mt_init_slots(struct input_dev
- 		return 0;
- 	if (mt)
- 		return mt->num_slots != num_slots ? -EINVAL : 0;
-+	/* Arbitrary limit for avoiding too large memory allocation. */
-+	if (num_slots > 1024)
-+		return -EINVAL;
+--- a/drivers/pmdomain/imx/scu-pd.c
++++ b/drivers/pmdomain/imx/scu-pd.c
+@@ -223,11 +223,6 @@ static const struct imx_sc_pd_range imx8
+ 	{ "lvds1-pwm", IMX_SC_R_LVDS_1_PWM_0, 1, false, 0 },
+ 	{ "lvds1-lpi2c", IMX_SC_R_LVDS_1_I2C_0, 2, true, 0 },
  
- 	mt = kzalloc(struct_size(mt, slots, num_slots), GFP_KERNEL);
- 	if (!mt)
+-	{ "mipi1", IMX_SC_R_MIPI_1, 1, 0 },
+-	{ "mipi1-pwm0", IMX_SC_R_MIPI_1_PWM_0, 1, 0 },
+-	{ "mipi1-i2c", IMX_SC_R_MIPI_1_I2C_0, 2, 1 },
+-	{ "lvds1", IMX_SC_R_LVDS_1, 1, 0 },
+-
+ 	/* DC SS */
+ 	{ "dc0", IMX_SC_R_DC_0, 1, false, 0 },
+ 	{ "dc0-pll", IMX_SC_R_DC_0_PLL_0, 2, true, 0 },
 
 
 
