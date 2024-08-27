@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-70481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71023-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80E95960E59
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:48:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AED0961146
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:18:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 211EAB22254
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:48:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07CCF1F23E1B
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:18:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AA1D1C6F52;
-	Tue, 27 Aug 2024 14:47:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04B3E1C6F51;
+	Tue, 27 Aug 2024 15:17:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ZAN9Qv1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JLiWCM3e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57F581C68B9;
-	Tue, 27 Aug 2024 14:47:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B78021C9EAA;
+	Tue, 27 Aug 2024 15:17:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770050; cv=none; b=SdWZieLkbxNJP3bapPJakoh3tFRtsU8Zg5CzMymBXrE4ql/qiLeJkax+zv034gvdvOEsmIba6UK1twOWq2tRxkoNg7vXZWouu9RhX0LhxG6vwd7HPQzJxaZ9GuZOx4ni+8RG5RHDhQk/iqkv8N93ukQ84J3mu6hgSmGOhjX+GXY=
+	t=1724771840; cv=none; b=GAytL9fqPy5R50bk1rVXdK1nvjCiYIVjbeGsHamnOP6Ao/M4C/o+CPhZsJXXFbIyGgSHCIgUINwgsFiuAEJIcA5mxKX9OZt5wq3Xw4qqTrsWi/wwKqrgfyBqQz2z80yALhPPa2h/xHm5MekKrHR4/XFVV3Y0jNro+ylwJ2+5hFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770050; c=relaxed/simple;
-	bh=S43R8YPu0yhvk/222N8GSbJEVa6eLxbZxxmkrwWh5fA=;
+	s=arc-20240116; t=1724771840; c=relaxed/simple;
+	bh=SNqENXjEKR5MbUuyH53J8LkeAKq77PyHAt/9ET4vo7g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tl1u4JpWJD9sIuZnNhgJ+VBHFehGPcmAnkSqKJhPkmGSGhwwlW9Rx4kGfmyzb4NkSlHLEZt4T4Vq64HOjvgDavGHuqwKLIkYoI/MvQbAMym87OUocseNiopPtGr9SND5mPn2sRBWbjfrYktEgMXkzF1tdOxIEqovcWkziGM4vkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ZAN9Qv1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70EE4C61045;
-	Tue, 27 Aug 2024 14:47:29 +0000 (UTC)
+	 MIME-Version; b=kyZsG+DZ5cnkznD7o4Zc4gD3VN8s9FidvsFKHZwrtrlnCQumfqwxTeGh+Gi8u5SVuDitzyWFA51z7dhnd1VVyoTWQYHN17cInjXzeLB6Ph9m1g8Ng5Cy5tMIfybSnCh2fCU8meEYA83ZehJNxbqAwwRBl4zbJ1xX4RL60AsqWLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JLiWCM3e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25650C4DE1E;
+	Tue, 27 Aug 2024 15:17:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770049;
-	bh=S43R8YPu0yhvk/222N8GSbJEVa6eLxbZxxmkrwWh5fA=;
+	s=korg; t=1724771840;
+	bh=SNqENXjEKR5MbUuyH53J8LkeAKq77PyHAt/9ET4vo7g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2ZAN9Qv11/nOQZtxA9d+UbXsevEnWyW88BOaXKfuqT+OBgdqEAdbv7eoznX3Stm+K
-	 enUz9hZ7cLR6z4VLAvYgH0jQDQC1U/1NsdcFvfh1wcHhuVAxlTobj7Pe8EaY8Pm6uP
-	 F9HxusNodGZgMfqXjbuKJDmzOhVwLIUDJUHyJm5I=
+	b=JLiWCM3eFEBa0WOrywmuWGKpDVwiKmrIpKFypf86n11zPN1XcGbnWDldv9sWEVv84
+	 NEar6Eye8Z1uFlVjOPhX03Gnf0XnqxhNCoFjMTMDOT81vS8ZNJRhQ+iEFYECpW2te5
+	 ODwP5ejuRefaIy7eZkbBuspLoDUj6p09sHIyyOfg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Deucher <alexander.deucher@amd.com>,
-	ZhenGuo Yin <zhenguo.yin@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 085/341] drm/amdgpu: access RLC_SPM_MC_CNTL through MMIO in SRIOV runtime
+	Karel Balej <balejk@matfyz.cz>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 6.1 008/321] xhci: Fix Panther point NULL pointer deref at full-speed re-enumeration
 Date: Tue, 27 Aug 2024 16:35:16 +0200
-Message-ID: <20240827143846.643302658@linuxfoundation.org>
+Message-ID: <20240827143838.516192619@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,92 +61,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ZhenGuo Yin <zhenguo.yin@amd.com>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-[ Upstream commit 9f05cfc78c6880e06940ea78fbc43f6392710f17 ]
+commit af8e119f52e9c13e556be9e03f27957554a84656 upstream.
 
-Register RLC_SPM_MC_CNTL is not blocked by L1 policy, VF can
-directly access it through MMIO during SRIOV runtime.
+re-enumerating full-speed devices after a failed address device command
+can trigger a NULL pointer dereference.
 
-v2: use SOC15 interface to access registers
+Full-speed devices may need to reconfigure the endpoint 0 Max Packet Size
+value during enumeration. Usb core calls usb_ep0_reinit() in this case,
+which ends up calling xhci_configure_endpoint().
 
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: ZhenGuo Yin <zhenguo.yin@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+On Panther point xHC the xhci_configure_endpoint() function will
+additionally check and reserve bandwidth in software. Other hosts do
+this in hardware
+
+If xHC address device command fails then a new xhci_virt_device structure
+is allocated as part of re-enabling the slot, but the bandwidth table
+pointers are not set up properly here.
+This triggers the NULL pointer dereference the next time usb_ep0_reinit()
+is called and xhci_configure_endpoint() tries to check and reserve
+bandwidth
+
+[46710.713538] usb 3-1: new full-speed USB device number 5 using xhci_hcd
+[46710.713699] usb 3-1: Device not responding to setup address.
+[46710.917684] usb 3-1: Device not responding to setup address.
+[46711.125536] usb 3-1: device not accepting address 5, error -71
+[46711.125594] BUG: kernel NULL pointer dereference, address: 0000000000000008
+[46711.125600] #PF: supervisor read access in kernel mode
+[46711.125603] #PF: error_code(0x0000) - not-present page
+[46711.125606] PGD 0 P4D 0
+[46711.125610] Oops: Oops: 0000 [#1] PREEMPT SMP PTI
+[46711.125615] CPU: 1 PID: 25760 Comm: kworker/1:2 Not tainted 6.10.3_2 #1
+[46711.125620] Hardware name: Gigabyte Technology Co., Ltd.
+[46711.125623] Workqueue: usb_hub_wq hub_event [usbcore]
+[46711.125668] RIP: 0010:xhci_reserve_bandwidth (drivers/usb/host/xhci.c
+
+Fix this by making sure bandwidth table pointers are set up correctly
+after a failed address device command, and additionally by avoiding
+checking for bandwidth in cases like this where no actual endpoints are
+added or removed, i.e. only context for default control endpoint 0 is
+evaluated.
+
+Reported-by: Karel Balej <balejk@matfyz.cz>
+Closes: https://lore.kernel.org/linux-usb/D3CKQQAETH47.1MUO22RTCH2O3@matfyz.cz/
+Cc: stable@vger.kernel.org
+Fixes: 651aaf36a7d7 ("usb: xhci: Handle USB transaction error on address command")
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20240815141117.2702314-2-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c | 13 +++----------
- drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c | 13 +++----------
- 2 files changed, 6 insertions(+), 20 deletions(-)
+ drivers/usb/host/xhci.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-index 3560a3f2c848e..cd594b92c6129 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-@@ -7892,22 +7892,15 @@ static int gfx_v10_0_update_gfx_clock_gating(struct amdgpu_device *adev,
- static void gfx_v10_0_update_spm_vmid_internal(struct amdgpu_device *adev,
- 					       unsigned int vmid)
- {
--	u32 reg, data;
-+	u32 data;
- 
- 	/* not for *_SOC15 */
--	reg = SOC15_REG_OFFSET(GC, 0, mmRLC_SPM_MC_CNTL);
--	if (amdgpu_sriov_is_pp_one_vf(adev))
--		data = RREG32_NO_KIQ(reg);
--	else
--		data = RREG32_SOC15(GC, 0, mmRLC_SPM_MC_CNTL);
-+	data = RREG32_SOC15_NO_KIQ(GC, 0, mmRLC_SPM_MC_CNTL);
- 
- 	data &= ~RLC_SPM_MC_CNTL__RLC_SPM_VMID_MASK;
- 	data |= (vmid & RLC_SPM_MC_CNTL__RLC_SPM_VMID_MASK) << RLC_SPM_MC_CNTL__RLC_SPM_VMID__SHIFT;
- 
--	if (amdgpu_sriov_is_pp_one_vf(adev))
--		WREG32_SOC15_NO_KIQ(GC, 0, mmRLC_SPM_MC_CNTL, data);
--	else
--		WREG32_SOC15(GC, 0, mmRLC_SPM_MC_CNTL, data);
-+	WREG32_SOC15_NO_KIQ(GC, 0, mmRLC_SPM_MC_CNTL, data);
- }
- 
- static void gfx_v10_0_update_spm_vmid(struct amdgpu_device *adev, unsigned int vmid)
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-index daab4c7a073ac..c81e98f0d17ff 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-@@ -4961,23 +4961,16 @@ static int gfx_v11_0_update_gfx_clock_gating(struct amdgpu_device *adev,
- 
- static void gfx_v11_0_update_spm_vmid(struct amdgpu_device *adev, unsigned vmid)
- {
--	u32 reg, data;
-+	u32 data;
- 
- 	amdgpu_gfx_off_ctrl(adev, false);
- 
--	reg = SOC15_REG_OFFSET(GC, 0, regRLC_SPM_MC_CNTL);
--	if (amdgpu_sriov_is_pp_one_vf(adev))
--		data = RREG32_NO_KIQ(reg);
--	else
--		data = RREG32(reg);
-+	data = RREG32_SOC15_NO_KIQ(GC, 0, regRLC_SPM_MC_CNTL);
- 
- 	data &= ~RLC_SPM_MC_CNTL__RLC_SPM_VMID_MASK;
- 	data |= (vmid & RLC_SPM_MC_CNTL__RLC_SPM_VMID_MASK) << RLC_SPM_MC_CNTL__RLC_SPM_VMID__SHIFT;
- 
--	if (amdgpu_sriov_is_pp_one_vf(adev))
--		WREG32_SOC15_NO_KIQ(GC, 0, regRLC_SPM_MC_CNTL, data);
--	else
--		WREG32_SOC15(GC, 0, regRLC_SPM_MC_CNTL, data);
-+	WREG32_SOC15_NO_KIQ(GC, 0, regRLC_SPM_MC_CNTL, data);
- 
- 	amdgpu_gfx_off_ctrl(adev, true);
- }
--- 
-2.43.0
-
+--- a/drivers/usb/host/xhci.c
++++ b/drivers/usb/host/xhci.c
+@@ -2971,7 +2971,7 @@ static int xhci_configure_endpoint(struc
+ 				xhci->num_active_eps);
+ 		return -ENOMEM;
+ 	}
+-	if ((xhci->quirks & XHCI_SW_BW_CHECKING) &&
++	if ((xhci->quirks & XHCI_SW_BW_CHECKING) && !ctx_change &&
+ 	    xhci_reserve_bandwidth(xhci, virt_dev, command->in_ctx)) {
+ 		if ((xhci->quirks & XHCI_EP_LIMIT_QUIRK))
+ 			xhci_free_host_resources(xhci, ctrl_ctx);
+@@ -4313,8 +4313,10 @@ static int xhci_setup_device(struct usb_
+ 		mutex_unlock(&xhci->mutex);
+ 		ret = xhci_disable_slot(xhci, udev->slot_id);
+ 		xhci_free_virt_device(xhci, udev->slot_id);
+-		if (!ret)
+-			xhci_alloc_dev(hcd, udev);
++		if (!ret) {
++			if (xhci_alloc_dev(hcd, udev) == 1)
++				xhci_setup_addressable_virt_dev(xhci, udev);
++		}
+ 		kfree(command->completion);
+ 		kfree(command);
+ 		return -EPROTO;
 
 
 
