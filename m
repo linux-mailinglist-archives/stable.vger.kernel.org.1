@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-71099-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70590-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBF789611A0
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:21:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98AEE960EF9
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:54:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9978D281579
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:21:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CAF671C233B3
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:54:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 963521C57AB;
-	Tue, 27 Aug 2024 15:21:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BB0B1C945B;
+	Tue, 27 Aug 2024 14:53:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xK7rh/Ym"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xNW7HmMy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54FF617C96;
-	Tue, 27 Aug 2024 15:21:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47F711C4601;
+	Tue, 27 Aug 2024 14:53:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772096; cv=none; b=rdfObM+eap9H++pXyVtrQxTFANoquqknfQDHSU4XhsBGaMA7BxCN1ziOqRaxeXlZ35MbVJtq/O5xim6txvCI7/eBlyVKdCT4ezffpl4HZTH8lEF1RPQA5tNnocLKHjX0VdqfVnCgsCYfwiDhEqq4gQFwNg2wRN3rbdYM9BOzePM=
+	t=1724770413; cv=none; b=GbxwXU74AEao3tAa2rh50CFHWkpDWFEh1kHf9YsY1f/XZHqWgxiUSKzXJOp1x3IOpfYOxfFUPx3diobSF20FEtfxP/f/PKnVz1nURMv2+RQw4vMDxFZ3ozdUSgdBz8COdGReUmAeG2vtm0PQpiwX31HgGmtZYYBACPSnaHAmYto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772096; c=relaxed/simple;
-	bh=LuTkmSQce773yXFJF8m6vgPBxsoqTnhInx2WxZOMBlk=;
+	s=arc-20240116; t=1724770413; c=relaxed/simple;
+	bh=4xByt+8LZcikY/OwOsViZ0MYbK9KCCg5qIt7cpd8gwE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bjPXs6Y5mZGABJC4CGNP10BtBwymFbW0TRHVIusg4AVdwMbxUFaaFgzBdNnhHtCH44Smo8b5/Y2KvGCJ4ViOm8YJCWA1eCuhYMB5gY0D2fPmMdiItezB60l27ls9hrDshkt2TheyNJB4oLeq5dvoROEyHUnAPdwnvmpMhcPexko=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xK7rh/Ym; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF5B8C4FE08;
-	Tue, 27 Aug 2024 15:21:35 +0000 (UTC)
+	 MIME-Version; b=Umqvo+EFjOqUrajJo8/7RsykIROk6+JuR/ko2RYxoeSV23nSdaK7qSyl13LM70mwKOsgAOvfBrDarOabdNXa6pMeQnkOqTi00oR8NDAez6AgOtetO1bdcW7d7pswOwkMU/0WRXF4jzGsikAXMOCC8WZE4TatB29R5IYv11JheSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xNW7HmMy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A92DC61053;
+	Tue, 27 Aug 2024 14:53:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772096;
-	bh=LuTkmSQce773yXFJF8m6vgPBxsoqTnhInx2WxZOMBlk=;
+	s=korg; t=1724770412;
+	bh=4xByt+8LZcikY/OwOsViZ0MYbK9KCCg5qIt7cpd8gwE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xK7rh/YmsbrE5dnfohZ14nkmclaD0yVGVZdW9zpJWrtCogJBHcOVLu0cK6c44NSKd
-	 fhHmr/5rUxDGMyVZnmR8OS8LCLkT/fIHqrzNHsQzUy7XrIGFwKWxOeGmMKFoCOd4cs
-	 5Juoj1GD9tdNDDMkAY8cP79aabPHPn7foATg3kGw=
+	b=xNW7HmMyoKj2gkpRFNhuO6OG/CVG1+FZhLz7DEyMozpFvJMGcwTPLT44JLHFKGQKt
+	 MaaZXSxPozuklMZy2GY+qSQJ4D0WP5971WrGAlI4Op1y0MAqgiQybxH2mNb7cLrFpG
+	 hlJP3VL6AX/q+s4a2mXWSIZMeODlenynVHcc8JnI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 113/321] wifi: cfg80211: check wiphy mutex is held for wdev mutex
+Subject: [PATCH 6.6 190/341] btrfs: send: handle unexpected data in header buffer in begin_cmd()
 Date: Tue, 27 Aug 2024 16:37:01 +0200
-Message-ID: <20240827143842.546537850@linuxfoundation.org>
+Message-ID: <20240827143850.643093209@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: David Sterba <dsterba@suse.com>
 
-[ Upstream commit 1474bc87fe57deac726cc10203f73daa6c3212f7 ]
+[ Upstream commit e80e3f732cf53c64b0d811e1581470d67f6c3228 ]
 
-This might seem pretty pointless rather than changing the locking
-immediately, but it seems safer to run for a while with checks and
-the old locking scheme, and then remove the wdev lock later.
+Change BUG_ON to a proper error handling in the unlikely case of seeing
+data when the command is started. This is supposed to be reset when the
+command is finished (send_cmd, send_encoded_extent).
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/core.h | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ fs/btrfs/send.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/net/wireless/core.h b/net/wireless/core.h
-index ee980965a7cfb..8118b8614ac68 100644
---- a/net/wireless/core.h
-+++ b/net/wireless/core.h
-@@ -228,6 +228,7 @@ void cfg80211_register_wdev(struct cfg80211_registered_device *rdev,
- static inline void wdev_lock(struct wireless_dev *wdev)
- 	__acquires(wdev)
- {
-+	lockdep_assert_held(&wdev->wiphy->mtx);
- 	mutex_lock(&wdev->mtx);
- 	__acquire(wdev->mtx);
- }
-@@ -235,11 +236,16 @@ static inline void wdev_lock(struct wireless_dev *wdev)
- static inline void wdev_unlock(struct wireless_dev *wdev)
- 	__releases(wdev)
- {
-+	lockdep_assert_held(&wdev->wiphy->mtx);
- 	__release(wdev->mtx);
- 	mutex_unlock(&wdev->mtx);
- }
+diff --git a/fs/btrfs/send.c b/fs/btrfs/send.c
+index 651f0865bb0df..b153f6a96fc8c 100644
+--- a/fs/btrfs/send.c
++++ b/fs/btrfs/send.c
+@@ -777,7 +777,12 @@ static int begin_cmd(struct send_ctx *sctx, int cmd)
+ 	if (WARN_ON(!sctx->send_buf))
+ 		return -EINVAL;
  
--#define ASSERT_WDEV_LOCK(wdev) lockdep_assert_held(&(wdev)->mtx)
-+static inline void ASSERT_WDEV_LOCK(struct wireless_dev *wdev)
-+{
-+	lockdep_assert_held(&wdev->wiphy->mtx);
-+	lockdep_assert_held(&wdev->mtx);
-+}
+-	BUG_ON(sctx->send_size);
++	if (unlikely(sctx->send_size != 0)) {
++		btrfs_err(sctx->send_root->fs_info,
++			  "send: command header buffer not empty cmd %d offset %llu",
++			  cmd, sctx->send_off);
++		return -EINVAL;
++	}
  
- static inline bool cfg80211_has_monitors_only(struct cfg80211_registered_device *rdev)
- {
+ 	sctx->send_size += sizeof(*hdr);
+ 	hdr = (struct btrfs_cmd_header *)sctx->send_buf;
 -- 
 2.43.0
 
