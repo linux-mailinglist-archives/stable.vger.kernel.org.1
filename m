@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-70895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70658-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E5B796108E
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:10:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 509B0960F63
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:59:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29CE7281DC2
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:10:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 83D041C23429
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:59:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D06611C4ED4;
-	Tue, 27 Aug 2024 15:10:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90EA31C3F0D;
+	Tue, 27 Aug 2024 14:57:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wsficfik"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OywqUxZU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F24E12E4D;
-	Tue, 27 Aug 2024 15:10:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C60B1C4603;
+	Tue, 27 Aug 2024 14:57:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771419; cv=none; b=qQBR7dnBmt20tDJm28wCKRXLgqVyQNdD+Jf7PsSHIuHanyhu/rWLe1ytaRz0koDnOrau8Nzu6UA1bYYjliijbPHQ+T4RqQASni65o4jZ2tldS2b7JzXWvNegXqMPwsckTzpsyId8lEfGW/Wh1JT0u2eZiGIAn9H8gyj3jluBAmk=
+	t=1724770640; cv=none; b=TZaO6porv/5Al4BuAr74vpggeX8sJzdWqosGiRWT4EfCxKmgK0rOn4WetqnDpq3PaTCgORMnuu/hZTnREK2Hfx15lmBXVdIi42z6qoRQ8ZIV6fqBMswmfCz3K4ZpJm0OEDh+aH3gTNIo9G6sFce0bXbgpzhLbonbNwvxeZACIcI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771419; c=relaxed/simple;
-	bh=8mgRHOaylaIjTUK2w+aEds/9NWuiViKJAq1h0O/jSFE=;
+	s=arc-20240116; t=1724770640; c=relaxed/simple;
+	bh=D2jJ1GOU9+VAY5Q7rKuK7LufFAnHjjsdXgQihhJr6fk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J1NEosjBALgUZwuaikRlEX+423VZWx10XtoJjY9sWcuaZDvhbaOk9p2fmZnszAvqnluMNo6TNGXtwRtxF5/cV/It96W23VLtAD4klvkRy8vubegiWQw3JMueClUkNhRcLADF3YPjYZP4PF/B7fLPnJa59WeW6m1m7Ml8dtYOmfQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wsficfik; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13395C4AF5F;
-	Tue, 27 Aug 2024 15:10:18 +0000 (UTC)
+	 MIME-Version; b=uNV6QB7dSEj6+Bg1xfpBff6PjHWPT5tUhd9wFJDGTnM65UZy2tmgBq2wFFGCiA23NaIh+MsWiCos9grcG1ge3iMniehoUGrLd8XxIOk5l0YJY+EwSX9rxRVyxJuHkd8G6/+tBDkCURXBJvv0XSrgRGtT+XPSrEkaB3/A+CHLRoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OywqUxZU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4BB9C4FE01;
+	Tue, 27 Aug 2024 14:57:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771419;
-	bh=8mgRHOaylaIjTUK2w+aEds/9NWuiViKJAq1h0O/jSFE=;
+	s=korg; t=1724770640;
+	bh=D2jJ1GOU9+VAY5Q7rKuK7LufFAnHjjsdXgQihhJr6fk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WsficfikXQWVgqoQWqvpbF6CMc6auQ3+nFQUBt13s6n/2+KuuUFJ3vLFLWiUP81rR
-	 T5MbzLBrHYhCR5a7YIHXRW6rIeYYAWwS9pqpNFYOOVBFYknL3Q4lt67gJVWG71i2ke
-	 ot67MRBYjqghwSN28iwt1oKUT5KY9coWbYXGIyVY=
+	b=OywqUxZUKawSiXT3kDeJyBdrAUTrZPo8nSeHMfpembmGKk64cU+oR92ezM9czW1LS
+	 u13aKqxneaV1eoc3+DR2r82XSUloUC/n4Gkm5KWCTtsXTKjHESHBTQ7E5SNaPGrDR7
+	 bhVjN35IMjOjBDoTK0FPi2+km3mLEczlyjtMyV+0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 165/273] netfilter: nft_counter: Disable BH in nft_counter_offload_stats().
+Subject: [PATCH 6.6 258/341] bonding: fix xfrm real_dev null pointer dereference
 Date: Tue, 27 Aug 2024 16:38:09 +0200
-Message-ID: <20240827143839.688675993@linuxfoundation.org>
+Message-ID: <20240827143853.223569802@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +63,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Nikolay Aleksandrov <razor@blackwall.org>
 
-[ Upstream commit 1eacdd71b3436b54d5fc8218c4bb0187d92a6892 ]
+[ Upstream commit f8cde9805981c50d0c029063dc7d82821806fc44 ]
 
-The sequence counter nft_counter_seq is a per-CPU counter. There is no
-lock associated with it. nft_counter_do_eval() is using the same counter
-and disables BH which suggest that it can be invoked from a softirq.
-This in turn means that nft_counter_offload_stats(), which disables only
-preemption, can be interrupted by nft_counter_do_eval() leading to two
-writer for one seqcount_t.
-This can lead to loosing stats or reading statistics while they are
-updated.
+We shouldn't set real_dev to NULL because packets can be in transit and
+xfrm might call xdo_dev_offload_ok() in parallel. All callbacks assume
+real_dev is set.
 
-Disable BH during stats update in nft_counter_offload_stats() to ensure
-one writer at a time.
+ Example trace:
+ kernel: BUG: unable to handle page fault for address: 0000000000001030
+ kernel: bond0: (slave eni0np1): making interface the new active one
+ kernel: #PF: supervisor write access in kernel mode
+ kernel: #PF: error_code(0x0002) - not-present page
+ kernel: PGD 0 P4D 0
+ kernel: Oops: 0002 [#1] PREEMPT SMP
+ kernel: CPU: 4 PID: 2237 Comm: ping Not tainted 6.7.7+ #12
+ kernel: Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-2.fc40 04/01/2014
+ kernel: RIP: 0010:nsim_ipsec_offload_ok+0xc/0x20 [netdevsim]
+ kernel: bond0: (slave eni0np1): bond_ipsec_add_sa_all: failed to add SA
+ kernel: Code: e0 0f 0b 48 83 7f 38 00 74 de 0f 0b 48 8b 47 08 48 8b 37 48 8b 78 40 e9 b2 e5 9a d7 66 90 0f 1f 44 00 00 48 8b 86 80 02 00 00 <83> 80 30 10 00 00 01 b8 01 00 00 00 c3 0f 1f 80 00 00 00 00 0f 1f
+ kernel: bond0: (slave eni0np1): making interface the new active one
+ kernel: RSP: 0018:ffffabde81553b98 EFLAGS: 00010246
+ kernel: bond0: (slave eni0np1): bond_ipsec_add_sa_all: failed to add SA
+ kernel:
+ kernel: RAX: 0000000000000000 RBX: ffff9eb404e74900 RCX: ffff9eb403d97c60
+ kernel: RDX: ffffffffc090de10 RSI: ffff9eb404e74900 RDI: ffff9eb3c5de9e00
+ kernel: RBP: ffff9eb3c0a42000 R08: 0000000000000010 R09: 0000000000000014
+ kernel: R10: 7974203030303030 R11: 3030303030303030 R12: 0000000000000000
+ kernel: R13: ffff9eb3c5de9e00 R14: ffffabde81553cc8 R15: ffff9eb404c53000
+ kernel: FS:  00007f2a77a3ad00(0000) GS:ffff9eb43bd00000(0000) knlGS:0000000000000000
+ kernel: CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ kernel: CR2: 0000000000001030 CR3: 00000001122ab000 CR4: 0000000000350ef0
+ kernel: bond0: (slave eni0np1): making interface the new active one
+ kernel: Call Trace:
+ kernel:  <TASK>
+ kernel:  ? __die+0x1f/0x60
+ kernel: bond0: (slave eni0np1): bond_ipsec_add_sa_all: failed to add SA
+ kernel:  ? page_fault_oops+0x142/0x4c0
+ kernel:  ? do_user_addr_fault+0x65/0x670
+ kernel:  ? kvm_read_and_reset_apf_flags+0x3b/0x50
+ kernel: bond0: (slave eni0np1): making interface the new active one
+ kernel:  ? exc_page_fault+0x7b/0x180
+ kernel:  ? asm_exc_page_fault+0x22/0x30
+ kernel:  ? nsim_bpf_uninit+0x50/0x50 [netdevsim]
+ kernel: bond0: (slave eni0np1): bond_ipsec_add_sa_all: failed to add SA
+ kernel:  ? nsim_ipsec_offload_ok+0xc/0x20 [netdevsim]
+ kernel: bond0: (slave eni0np1): making interface the new active one
+ kernel:  bond_ipsec_offload_ok+0x7b/0x90 [bonding]
+ kernel:  xfrm_output+0x61/0x3b0
+ kernel: bond0: (slave eni0np1): bond_ipsec_add_sa_all: failed to add SA
+ kernel:  ip_push_pending_frames+0x56/0x80
 
-Fixes: b72920f6e4a9d ("netfilter: nftables: counter hardware offload support")
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Reviewed-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 18cb261afd7b ("bonding: support hardware encryption offload to slaves")
+Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
+Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_counter.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/bonding/bond_main.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/net/netfilter/nft_counter.c b/net/netfilter/nft_counter.c
-index 291ed2026367e..16f40b503d379 100644
---- a/net/netfilter/nft_counter.c
-+++ b/net/netfilter/nft_counter.c
-@@ -265,7 +265,7 @@ static void nft_counter_offload_stats(struct nft_expr *expr,
- 	struct nft_counter *this_cpu;
- 	seqcount_t *myseq;
- 
--	preempt_disable();
-+	local_bh_disable();
- 	this_cpu = this_cpu_ptr(priv->counter);
- 	myseq = this_cpu_ptr(&nft_counter_seq);
- 
-@@ -273,7 +273,7 @@ static void nft_counter_offload_stats(struct nft_expr *expr,
- 	this_cpu->packets += stats->pkts;
- 	this_cpu->bytes += stats->bytes;
- 	write_seqcount_end(myseq);
--	preempt_enable();
-+	local_bh_enable();
- }
- 
- void nft_counter_init_seqcount(void)
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index a6eb907a9a273..566b02ca78261 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -582,7 +582,6 @@ static void bond_ipsec_del_sa_all(struct bonding *bond)
+ 		} else {
+ 			slave->dev->xfrmdev_ops->xdo_dev_state_delete(ipsec->xs);
+ 		}
+-		ipsec->xs->xso.real_dev = NULL;
+ 	}
+ 	spin_unlock_bh(&bond->ipsec_lock);
+ 	rcu_read_unlock();
 -- 
 2.43.0
 
