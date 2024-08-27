@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-70581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70832-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C182960EE1
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:53:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 092C096103E
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:06:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15621286335
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:53:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AEE351F23700
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:06:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 463E51C57A9;
-	Tue, 27 Aug 2024 14:53:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF5EE1C461D;
+	Tue, 27 Aug 2024 15:06:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vhVU1k3J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RyH58mUV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 014CE38DC7;
-	Tue, 27 Aug 2024 14:53:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E32019F485;
+	Tue, 27 Aug 2024 15:06:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770383; cv=none; b=P80s05+n/3oo/F0PzKcusY6bqhpu81KNdpHx2V0ZS7UAuGbN3zDF8s+UQqjVx0PonC/3UTluQoKYHeBYeQq1Y1oarzYC7Cn5AHd6UjqER9yeYqolpSPysKsXAi3btpqC+rTGCGq7DDBvpFoVAG8C+ImCDZWmk4Dbsrv+B+vWZbs=
+	t=1724771207; cv=none; b=DKSiR7jT8KnZHfbzo1cfdGklo7jGN+/2F8oEPmxQzZu2N3eX/GW2k1DnBMY3IlKd0tegu6i+5tFDQNErm6JPoVsPuzKIWJAXuHHHGBYERI2ABadavq8rWHcm3rLe7i7qpeZomJvo+gD5sIUdDgP2wD0HUIQAXOcQPF8uA7+CiOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770383; c=relaxed/simple;
-	bh=/XA2Bdi6fB4K/+d3Yqp/rWbAqnEsJCHDmF49mVimliM=;
+	s=arc-20240116; t=1724771207; c=relaxed/simple;
+	bh=Nc3r4DHEW/kKqjB8ZuDHQonvumZC7iOBHJOCBtAGuFE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iTTHZSg9WBEPq3M+4PbaGocipUYUcCQo6MUOYdZ+aLMiNh3AMmn+FHPo1u5iqXJbM+/NaouWwprZHOr9v84uhiF1OfxNvXa51C6LMtpggsnkqP5kErve8AH3ov/ea/MdOixCsqe1cojSCp+GSPLsSTw2MS8buiMzWipUavasn1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vhVU1k3J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40D0BC61042;
-	Tue, 27 Aug 2024 14:53:02 +0000 (UTC)
+	 MIME-Version; b=h3rA9eIVwMViiK3IsRkjaSt0uHIB/pyBgxsIpjcs6j99osDou0bHihL7Ih7OHHIEhUcPPJQnBkaPVfE2Uvzx6xw9FN0YvGszmPfwU8x9ZoqKaFaS2Yw3PEMi08qpTZldj0ECkF+T1jg2s8rMGLKnctSGEoqau+bRkRCto5Mwh0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RyH58mUV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF298C4AF55;
+	Tue, 27 Aug 2024 15:06:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770382;
-	bh=/XA2Bdi6fB4K/+d3Yqp/rWbAqnEsJCHDmF49mVimliM=;
+	s=korg; t=1724771207;
+	bh=Nc3r4DHEW/kKqjB8ZuDHQonvumZC7iOBHJOCBtAGuFE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vhVU1k3JseHxt75d0aHVWj7X04+6BeDgCrHwVGm1Ue8xzzHT8zWSs3CAWPeiX+PdZ
-	 HRrsoxqHbuVaPUhCbkrmrVdjmRNX6NEt04J7FP2nQOodVII7q3fi9tKokesZqN/uK/
-	 2l+0MzO8roj0yzhUCdM7QaV/YmM//Jud2y6x6vbA=
+	b=RyH58mUV2hGzOlILWXkPFuKThIJS9YIhzSe/xEh7S9CtVWOCSd5ij6Z80fiA9Xd3/
+	 o4qMauAZGMKx3UmlSkp/nUiqXJ1zKsoWxq5HzRCGx1T06en7+ilC8t5wGLQQznQLPA
+	 b2StwqlL5uFWKoLNLQHi1N4FtlXa8xW66EgnP4kg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cupertino Miranda <cupertino.miranda@oracle.com>,
-	jose.marchesi@oracle.com,
-	david.faust@oracle.com,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Andrii Nakryiko <andrii.nakryiko@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Song Liu <song@kernel.org>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Petr Mladek <pmladek@suse.com>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Kees Cook <kees@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 212/341] selftests/bpf: Fix a few tests for GCC related warnings.
+Subject: [PATCH 6.10 119/273] kallsyms: Do not cleanup .llvm.<hash> suffix before sorting symbols
 Date: Tue, 27 Aug 2024 16:37:23 +0200
-Message-ID: <20240827143851.478078237@linuxfoundation.org>
+Message-ID: <20240827143837.936401223@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,280 +64,126 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cupertino Miranda <cupertino.miranda@oracle.com>
+From: Song Liu <song@kernel.org>
 
-[ Upstream commit 5ddafcc377f98778acc08f660dee6400aece6a62 ]
+[ Upstream commit 020925ce92990c3bf59ab2cde386ac6d9ec734ff ]
 
-This patch corrects a few warnings to allow selftests to compile for
-GCC.
+Cleaning up the symbols causes various issues afterwards. Let's sort
+the list based on original name.
 
--- progs/cpumask_failure.c --
-
-progs/bpf_misc.h:136:22: error: ‘cpumask’ is used uninitialized
-[-Werror=uninitialized]
-  136 | #define __sink(expr) asm volatile("" : "+g"(expr))
-      |                      ^~~
-progs/cpumask_failure.c:68:9: note: in expansion of macro ‘__sink’
-   68 |         __sink(cpumask);
-
-The macro __sink(cpumask) with the '+' contraint modifier forces the
-the compiler to expect a read and write from cpumask. GCC detects
-that cpumask is never initialized and reports an error.
-This patch removes the spurious non required definitions of cpumask.
-
--- progs/dynptr_fail.c --
-
-progs/dynptr_fail.c:1444:9: error: ‘ptr1’ may be used uninitialized
-[-Werror=maybe-uninitialized]
- 1444 |         bpf_dynptr_clone(&ptr1, &ptr2);
-
-Many of the tests in the file are related to the detection of
-uninitialized pointers by the verifier. GCC is able to detect possible
-uninitialized values, and reports this as an error.
-The patch initializes all of the previous uninitialized structs.
-
--- progs/test_tunnel_kern.c --
-
-progs/test_tunnel_kern.c:590:9: error: array subscript 1 is outside
-array bounds of ‘struct geneve_opt[1]’ [-Werror=array-bounds=]
-  590 |         *(int *) &gopt.opt_data = bpf_htonl(0xdeadbeef);
-      |         ^~~~~~~~~~~~~~~~~~~~~~~
-progs/test_tunnel_kern.c:575:27: note: at offset 4 into object ‘gopt’ of
-size 4
-  575 |         struct geneve_opt gopt;
-
-This tests accesses beyond the defined data for the struct geneve_opt
-which contains as last field "u8 opt_data[0]" which clearly does not get
-reserved space (in stack) in the function header. This pattern is
-repeated in ip6geneve_set_tunnel and geneve_set_tunnel functions.
-GCC is able to see this and emits a warning.
-The patch introduces a local struct that allocates enough space to
-safely allow the write to opt_data field.
-
--- progs/jeq_infer_not_null_fail.c --
-
-progs/jeq_infer_not_null_fail.c:21:40: error: array subscript ‘struct
-bpf_map[0]’ is partly outside array bounds of ‘struct <anonymous>[1]’
-[-Werror=array-bounds=]
-   21 |         struct bpf_map *inner_map = map->inner_map_meta;
-      |                                        ^~
-progs/jeq_infer_not_null_fail.c:14:3: note: object ‘m_hash’ of size 32
-   14 | } m_hash SEC(".maps");
-
-This example defines m_hash in the context of the compilation unit and
-casts it to struct bpf_map which is much smaller than the size of struct
-bpf_map. It errors out in GCC when it attempts to access an element that
-would be defined in struct bpf_map outsize of the defined limits for
-m_hash.
-This patch disables the warning through a GCC pragma.
-
-This changes were tested in bpf-next master selftests without any
-regressions.
-
-Signed-off-by: Cupertino Miranda <cupertino.miranda@oracle.com>
-Cc: jose.marchesi@oracle.com
-Cc: david.faust@oracle.com
-Cc: Yonghong Song <yonghong.song@linux.dev>
-Cc: Eduard Zingerman <eddyz87@gmail.com>
-Cc: Andrii Nakryiko <andrii.nakryiko@gmail.com>
-Link: https://lore.kernel.org/r/20240510183850.286661-2-cupertino.miranda@oracle.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Song Liu <song@kernel.org>
+Fixes: 8cc32a9bbf29 ("kallsyms: strip LTO-only suffixes from promoted global functions")
+Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Tested-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Acked-by: Petr Mladek <pmladek@suse.com>
+Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
+Reviewed-by: Luis Chamberlain <mcgrof@kernel.org>
+Link: https://lore.kernel.org/r/20240807220513.3100483-2-song@kernel.org
+Signed-off-by: Kees Cook <kees@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../selftests/bpf/progs/cpumask_failure.c     |  3 --
- .../testing/selftests/bpf/progs/dynptr_fail.c | 12 ++---
- .../bpf/progs/jeq_infer_not_null_fail.c       |  4 ++
- .../selftests/bpf/progs/test_tunnel_kern.c    | 47 +++++++++++--------
- 4 files changed, 37 insertions(+), 29 deletions(-)
+ scripts/kallsyms.c      | 31 ++-----------------------------
+ scripts/link-vmlinux.sh |  4 ----
+ 2 files changed, 2 insertions(+), 33 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/progs/cpumask_failure.c b/tools/testing/selftests/bpf/progs/cpumask_failure.c
-index a9bf6ea336cf6..a988d2823b528 100644
---- a/tools/testing/selftests/bpf/progs/cpumask_failure.c
-+++ b/tools/testing/selftests/bpf/progs/cpumask_failure.c
-@@ -61,11 +61,8 @@ SEC("tp_btf/task_newtask")
- __failure __msg("bpf_cpumask_set_cpu args#1 expected pointer to STRUCT bpf_cpumask")
- int BPF_PROG(test_mutate_cpumask, struct task_struct *task, u64 clone_flags)
+diff --git a/scripts/kallsyms.c b/scripts/kallsyms.c
+index 55a423519f2e5..839d9c49f28ce 100644
+--- a/scripts/kallsyms.c
++++ b/scripts/kallsyms.c
+@@ -5,8 +5,7 @@
+  * This software may be used and distributed according to the terms
+  * of the GNU General Public License, incorporated herein by reference.
+  *
+- * Usage: kallsyms [--all-symbols] [--absolute-percpu]
+- *                         [--lto-clang] in.map > out.S
++ * Usage: kallsyms [--all-symbols] [--absolute-percpu]  in.map > out.S
+  *
+  *      Table compression uses all the unused char codes on the symbols and
+  *  maps these to the most used substrings (tokens). For instance, it might
+@@ -63,7 +62,6 @@ static struct sym_entry **table;
+ static unsigned int table_size, table_cnt;
+ static int all_symbols;
+ static int absolute_percpu;
+-static int lto_clang;
+ 
+ static int token_profit[0x10000];
+ 
+@@ -74,8 +72,7 @@ static unsigned char best_table_len[256];
+ 
+ static void usage(void)
  {
--	struct bpf_cpumask *cpumask;
+-	fprintf(stderr, "Usage: kallsyms [--all-symbols] [--absolute-percpu] "
+-			"[--lto-clang] in.map > out.S\n");
++	fprintf(stderr, "Usage: kallsyms [--all-symbols] [--absolute-percpu] in.map > out.S\n");
+ 	exit(1);
+ }
+ 
+@@ -345,25 +342,6 @@ static int symbol_absolute(const struct sym_entry *s)
+ 	return s->percpu_absolute;
+ }
+ 
+-static void cleanup_symbol_name(char *s)
+-{
+-	char *p;
 -
- 	/* Can't set the CPU of a non-struct bpf_cpumask. */
- 	bpf_cpumask_set_cpu(0, (struct bpf_cpumask *)task->cpus_ptr);
--	__sink(cpumask);
- 
- 	return 0;
- }
-diff --git a/tools/testing/selftests/bpf/progs/dynptr_fail.c b/tools/testing/selftests/bpf/progs/dynptr_fail.c
-index 7ce7e827d5f01..66a60bfb58672 100644
---- a/tools/testing/selftests/bpf/progs/dynptr_fail.c
-+++ b/tools/testing/selftests/bpf/progs/dynptr_fail.c
-@@ -80,7 +80,7 @@ SEC("?raw_tp")
- __failure __msg("Unreleased reference id=2")
- int ringbuf_missing_release1(void *ctx)
- {
--	struct bpf_dynptr ptr;
-+	struct bpf_dynptr ptr = {};
- 
- 	bpf_ringbuf_reserve_dynptr(&ringbuf, val, 0, &ptr);
- 
-@@ -1385,7 +1385,7 @@ SEC("?raw_tp")
- __failure __msg("Expected an initialized dynptr as arg #1")
- int dynptr_adjust_invalid(void *ctx)
- {
--	struct bpf_dynptr ptr;
-+	struct bpf_dynptr ptr = {};
- 
- 	/* this should fail */
- 	bpf_dynptr_adjust(&ptr, 1, 2);
-@@ -1398,7 +1398,7 @@ SEC("?raw_tp")
- __failure __msg("Expected an initialized dynptr as arg #1")
- int dynptr_is_null_invalid(void *ctx)
- {
--	struct bpf_dynptr ptr;
-+	struct bpf_dynptr ptr = {};
- 
- 	/* this should fail */
- 	bpf_dynptr_is_null(&ptr);
-@@ -1411,7 +1411,7 @@ SEC("?raw_tp")
- __failure __msg("Expected an initialized dynptr as arg #1")
- int dynptr_is_rdonly_invalid(void *ctx)
- {
--	struct bpf_dynptr ptr;
-+	struct bpf_dynptr ptr = {};
- 
- 	/* this should fail */
- 	bpf_dynptr_is_rdonly(&ptr);
-@@ -1424,7 +1424,7 @@ SEC("?raw_tp")
- __failure __msg("Expected an initialized dynptr as arg #1")
- int dynptr_size_invalid(void *ctx)
- {
--	struct bpf_dynptr ptr;
-+	struct bpf_dynptr ptr = {};
- 
- 	/* this should fail */
- 	bpf_dynptr_size(&ptr);
-@@ -1437,7 +1437,7 @@ SEC("?raw_tp")
- __failure __msg("Expected an initialized dynptr as arg #1")
- int clone_invalid1(void *ctx)
- {
--	struct bpf_dynptr ptr1;
-+	struct bpf_dynptr ptr1 = {};
- 	struct bpf_dynptr ptr2;
- 
- 	/* this should fail */
-diff --git a/tools/testing/selftests/bpf/progs/jeq_infer_not_null_fail.c b/tools/testing/selftests/bpf/progs/jeq_infer_not_null_fail.c
-index f46965053acb2..4d619bea9c758 100644
---- a/tools/testing/selftests/bpf/progs/jeq_infer_not_null_fail.c
-+++ b/tools/testing/selftests/bpf/progs/jeq_infer_not_null_fail.c
-@@ -4,6 +4,10 @@
- #include <bpf/bpf_helpers.h>
- #include "bpf_misc.h"
- 
-+#ifndef __clang__
-+#pragma GCC diagnostic ignored "-Warray-bounds"
-+#endif
-+
- char _license[] SEC("license") = "GPL";
- 
- struct {
-diff --git a/tools/testing/selftests/bpf/progs/test_tunnel_kern.c b/tools/testing/selftests/bpf/progs/test_tunnel_kern.c
-index f66af753bbbb8..e68da33d7631d 100644
---- a/tools/testing/selftests/bpf/progs/test_tunnel_kern.c
-+++ b/tools/testing/selftests/bpf/progs/test_tunnel_kern.c
-@@ -597,12 +597,18 @@ int ip6vxlan_get_tunnel_src(struct __sk_buff *skb)
- 	return TC_ACT_OK;
- }
- 
-+struct local_geneve_opt {
-+	struct geneve_opt gopt;
-+	int data;
-+};
-+
- SEC("tc")
- int geneve_set_tunnel(struct __sk_buff *skb)
+-	/*
+-	 * ASCII[.]   = 2e
+-	 * ASCII[0-9] = 30,39
+-	 * ASCII[A-Z] = 41,5a
+-	 * ASCII[_]   = 5f
+-	 * ASCII[a-z] = 61,7a
+-	 *
+-	 * As above, replacing the first '.' in ".llvm." with '\0' does not
+-	 * affect the main sorting, but it helps us with subsorting.
+-	 */
+-	p = strstr(s, ".llvm.");
+-	if (p)
+-		*p = '\0';
+-}
+-
+ static int compare_names(const void *a, const void *b)
  {
  	int ret;
- 	struct bpf_tunnel_key key;
--	struct geneve_opt gopt;
-+	struct local_geneve_opt local_gopt;
-+	struct geneve_opt *gopt = (struct geneve_opt *) &local_gopt;
+@@ -528,10 +506,6 @@ static void write_src(void)
+ 	output_address(relative_base);
+ 	printf("\n");
  
- 	__builtin_memset(&key, 0x0, sizeof(key));
- 	key.remote_ipv4 = 0xac100164; /* 172.16.1.100 */
-@@ -610,14 +616,14 @@ int geneve_set_tunnel(struct __sk_buff *skb)
- 	key.tunnel_tos = 0;
- 	key.tunnel_ttl = 64;
+-	if (lto_clang)
+-		for (i = 0; i < table_cnt; i++)
+-			cleanup_symbol_name((char *)table[i]->sym);
+-
+ 	sort_symbols_by_name();
+ 	output_label("kallsyms_seqs_of_names");
+ 	for (i = 0; i < table_cnt; i++)
+@@ -808,7 +782,6 @@ int main(int argc, char **argv)
+ 		static const struct option long_options[] = {
+ 			{"all-symbols",     no_argument, &all_symbols,     1},
+ 			{"absolute-percpu", no_argument, &absolute_percpu, 1},
+-			{"lto-clang",       no_argument, &lto_clang,       1},
+ 			{},
+ 		};
  
--	__builtin_memset(&gopt, 0x0, sizeof(gopt));
--	gopt.opt_class = bpf_htons(0x102); /* Open Virtual Networking (OVN) */
--	gopt.type = 0x08;
--	gopt.r1 = 0;
--	gopt.r2 = 0;
--	gopt.r3 = 0;
--	gopt.length = 2; /* 4-byte multiple */
--	*(int *) &gopt.opt_data = bpf_htonl(0xdeadbeef);
-+	__builtin_memset(gopt, 0x0, sizeof(local_gopt));
-+	gopt->opt_class = bpf_htons(0x102); /* Open Virtual Networking (OVN) */
-+	gopt->type = 0x08;
-+	gopt->r1 = 0;
-+	gopt->r2 = 0;
-+	gopt->r3 = 0;
-+	gopt->length = 2; /* 4-byte multiple */
-+	*(int *) &gopt->opt_data = bpf_htonl(0xdeadbeef);
+diff --git a/scripts/link-vmlinux.sh b/scripts/link-vmlinux.sh
+index 31581504489ef..1e41b330550e6 100755
+--- a/scripts/link-vmlinux.sh
++++ b/scripts/link-vmlinux.sh
+@@ -159,10 +159,6 @@ kallsyms()
+ 		kallsymopt="${kallsymopt} --absolute-percpu"
+ 	fi
  
- 	ret = bpf_skb_set_tunnel_key(skb, &key, sizeof(key),
- 				     BPF_F_ZERO_CSUM_TX);
-@@ -626,7 +632,7 @@ int geneve_set_tunnel(struct __sk_buff *skb)
- 		return TC_ACT_SHOT;
- 	}
+-	if is_enabled CONFIG_LTO_CLANG; then
+-		kallsymopt="${kallsymopt} --lto-clang"
+-	fi
+-
+ 	info KSYMS "${2}.S"
+ 	scripts/kallsyms ${kallsymopt} "${1}" > "${2}.S"
  
--	ret = bpf_skb_set_tunnel_opt(skb, &gopt, sizeof(gopt));
-+	ret = bpf_skb_set_tunnel_opt(skb, gopt, sizeof(local_gopt));
- 	if (ret < 0) {
- 		log_err(ret);
- 		return TC_ACT_SHOT;
-@@ -661,7 +667,8 @@ SEC("tc")
- int ip6geneve_set_tunnel(struct __sk_buff *skb)
- {
- 	struct bpf_tunnel_key key;
--	struct geneve_opt gopt;
-+	struct local_geneve_opt local_gopt;
-+	struct geneve_opt *gopt = (struct geneve_opt *) &local_gopt;
- 	int ret;
- 
- 	__builtin_memset(&key, 0x0, sizeof(key));
-@@ -677,16 +684,16 @@ int ip6geneve_set_tunnel(struct __sk_buff *skb)
- 		return TC_ACT_SHOT;
- 	}
- 
--	__builtin_memset(&gopt, 0x0, sizeof(gopt));
--	gopt.opt_class = bpf_htons(0x102); /* Open Virtual Networking (OVN) */
--	gopt.type = 0x08;
--	gopt.r1 = 0;
--	gopt.r2 = 0;
--	gopt.r3 = 0;
--	gopt.length = 2; /* 4-byte multiple */
--	*(int *) &gopt.opt_data = bpf_htonl(0xfeedbeef);
-+	__builtin_memset(gopt, 0x0, sizeof(local_gopt));
-+	gopt->opt_class = bpf_htons(0x102); /* Open Virtual Networking (OVN) */
-+	gopt->type = 0x08;
-+	gopt->r1 = 0;
-+	gopt->r2 = 0;
-+	gopt->r3 = 0;
-+	gopt->length = 2; /* 4-byte multiple */
-+	*(int *) &gopt->opt_data = bpf_htonl(0xfeedbeef);
- 
--	ret = bpf_skb_set_tunnel_opt(skb, &gopt, sizeof(gopt));
-+	ret = bpf_skb_set_tunnel_opt(skb, gopt, sizeof(gopt));
- 	if (ret < 0) {
- 		log_err(ret);
- 		return TC_ACT_SHOT;
 -- 
 2.43.0
 
