@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-71091-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70519-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4973B961199
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:21:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D983960E8D
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:49:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 797D01C2315E
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:21:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D06091C21431
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:49:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC7991C6F49;
-	Tue, 27 Aug 2024 15:21:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9685B1C57BF;
+	Tue, 27 Aug 2024 14:49:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sjdpAqoL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jCDcUeup"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BAFE19F485;
-	Tue, 27 Aug 2024 15:21:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52AE41C57B3;
+	Tue, 27 Aug 2024 14:49:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772070; cv=none; b=LLxKgjSMG9fepnr9QMZ4fUL+2YcUVaJ6ZHwlrKsMI75CUAi+jj0Sfa9C8BYe0Uxl9nMjHL5/H3MfjndAa0a0jS83aA2/6j5138Tcf5Xor1FB854dvq50U4jOy1n7tDQ+1Uaqd4Q4lNBhAYb8btQRPy3p9X2bu+hmc3NpfLxnqSw=
+	t=1724770178; cv=none; b=Q7rFIAFRQJDUO/VXwnaNG5+Kbbra2PLfF6xfZ2r68V1xDQH15kqyYEiyq9vQTRfz5hYw6byWhqp5HbpBcpS9Q8MQSlEAHiq4NDDBlz95Tl08W78yg0zLSkhA7GVUqYWck/W1KtcpoGJ+VWM742kP4eNgvXDJqbbpS5WuehMH71k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772070; c=relaxed/simple;
-	bh=jkz89yD2yBUgsM6n08B/jus5pkGmb79xsdo2Gc9DT3s=;
+	s=arc-20240116; t=1724770178; c=relaxed/simple;
+	bh=uFgy+9Zx+e5cdRQxzHYoHAGTdkyqfpDwUFyIcoQQbXU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Flc0QV3siHWlNYZ1Luu7epFJd51Yo1aX3H6aBYIO64JoaeoP/OAiptU2dz+w5Bwo267aD12laEuiS0h3Z8tOYDMi+l9Xw5efE/k4Wyl+IhlvnHG9M9NViVRGErm42t4arj9aeNjfd7SuYA4x1ciybNHJCFkKpZ6vW2EaMFhRTg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sjdpAqoL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E39DDC4FDFA;
-	Tue, 27 Aug 2024 15:21:09 +0000 (UTC)
+	 MIME-Version; b=OOTat3l1jtjGYFpaFQqy80FiDkaU7HUqmjDvOzCwOS8j/p3+POVmU+D1Dtcd14kpXxfvlhLlqff44+OMwtojVWQ1DdeD0OxiyK+rhG95lLPpVEPeQ0ClG0obXytbOIUIszt1Z9It8nTn7qddPVldiD/bEDU/lXKPVLi7HA4DTXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jCDcUeup; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB90DC4AF53;
+	Tue, 27 Aug 2024 14:49:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772070;
-	bh=jkz89yD2yBUgsM6n08B/jus5pkGmb79xsdo2Gc9DT3s=;
+	s=korg; t=1724770178;
+	bh=uFgy+9Zx+e5cdRQxzHYoHAGTdkyqfpDwUFyIcoQQbXU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sjdpAqoLmDzLkv3+IBMe4mSOyQ225ELh4rRG7klPv7+TYh3BAO8SU+buY5vuiTgvs
-	 9onb9aRm4T/uRgKXt2hKfHX5nHus3pPSqbRtqMSXBaesjm4J2acDqdk+ofc2VrW9sd
-	 IFoTPF3j8kuqwwzn7GT8eREr7dz+NMKrqE8PLe4A=
+	b=jCDcUeup8BASc1utgp1z2C29k1x8eE5ew+TAZeE6+3Ol5TRZYCfPl2tMjqRVinzcY
+	 xS2Lyl1tMw9gdTcYf5TRK4rJGxA1R7WfnVnFY5MPT2VTWcuDirmxdxrwVfAr/pKttI
+	 +093rpXlbSONcKu3ybROpCugY0WT1oEPQJISu3a4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Mimi Zohar <zohar@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 072/321] Bluetooth: RFCOMM: Fix not validating setsockopt user input
+Subject: [PATCH 6.6 149/341] evm: dont copy up security.evm xattr
 Date: Tue, 27 Aug 2024 16:36:20 +0200
-Message-ID: <20240827143840.983455212@linuxfoundation.org>
+Message-ID: <20240827143849.089902369@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +63,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Mimi Zohar <zohar@linux.ibm.com>
 
-[ Upstream commit a97de7bff13b1cc825c1b1344eaed8d6c2d3e695 ]
+[ Upstream commit 40ca4ee3136d2d09977d1cab8c0c0e1582c3359d ]
 
-syzbot reported rfcomm_sock_setsockopt_old() is copying data without
-checking user input length.
+The security.evm HMAC and the original file signatures contain
+filesystem specific data.  As a result, the HMAC and signature
+are not the same on the stacked and backing filesystems.
 
-BUG: KASAN: slab-out-of-bounds in copy_from_sockptr_offset
-include/linux/sockptr.h:49 [inline]
-BUG: KASAN: slab-out-of-bounds in copy_from_sockptr
-include/linux/sockptr.h:55 [inline]
-BUG: KASAN: slab-out-of-bounds in rfcomm_sock_setsockopt_old
-net/bluetooth/rfcomm/sock.c:632 [inline]
-BUG: KASAN: slab-out-of-bounds in rfcomm_sock_setsockopt+0x893/0xa70
-net/bluetooth/rfcomm/sock.c:673
-Read of size 4 at addr ffff8880209a8bc3 by task syz-executor632/5064
+Don't copy up 'security.evm'.
 
-Fixes: 9f2c8a03fbb3 ("Bluetooth: Replace RFCOMM link mode with security level")
-Fixes: bb23c0ab8246 ("Bluetooth: Add support for deferring RFCOMM connection setup")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Reviewed-by: Amir Goldstein <amir73il@gmail.com>
+Reviewed-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/rfcomm/sock.c | 14 +++++---------
- 1 file changed, 5 insertions(+), 9 deletions(-)
+ include/linux/evm.h               | 6 ++++++
+ security/integrity/evm/evm_main.c | 7 +++++++
+ security/security.c               | 2 +-
+ 3 files changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/rfcomm/sock.c b/net/bluetooth/rfcomm/sock.c
-index b54e8a530f55a..29aa07e9db9d7 100644
---- a/net/bluetooth/rfcomm/sock.c
-+++ b/net/bluetooth/rfcomm/sock.c
-@@ -629,7 +629,7 @@ static int rfcomm_sock_setsockopt_old(struct socket *sock, int optname,
+diff --git a/include/linux/evm.h b/include/linux/evm.h
+index 01fc495a83e27..36ec884320d9f 100644
+--- a/include/linux/evm.h
++++ b/include/linux/evm.h
+@@ -31,6 +31,7 @@ extern void evm_inode_post_setxattr(struct dentry *dentry,
+ 				    const char *xattr_name,
+ 				    const void *xattr_value,
+ 				    size_t xattr_value_len);
++extern int evm_inode_copy_up_xattr(const char *name);
+ extern int evm_inode_removexattr(struct mnt_idmap *idmap,
+ 				 struct dentry *dentry, const char *xattr_name);
+ extern void evm_inode_post_removexattr(struct dentry *dentry,
+@@ -117,6 +118,11 @@ static inline void evm_inode_post_setxattr(struct dentry *dentry,
+ 	return;
+ }
  
- 	switch (optname) {
- 	case RFCOMM_LM:
--		if (copy_from_sockptr(&opt, optval, sizeof(u32))) {
-+		if (bt_copy_from_sockptr(&opt, sizeof(opt), optval, optlen)) {
- 			err = -EFAULT;
- 			break;
- 		}
-@@ -664,7 +664,6 @@ static int rfcomm_sock_setsockopt(struct socket *sock, int level, int optname,
- 	struct sock *sk = sock->sk;
- 	struct bt_security sec;
- 	int err = 0;
--	size_t len;
- 	u32 opt;
++static inline int  evm_inode_copy_up_xattr(const char *name)
++{
++	return 0;
++}
++
+ static inline int evm_inode_removexattr(struct mnt_idmap *idmap,
+ 					struct dentry *dentry,
+ 					const char *xattr_name)
+diff --git a/security/integrity/evm/evm_main.c b/security/integrity/evm/evm_main.c
+index ff9a939dad8e4..2393230c03aa3 100644
+--- a/security/integrity/evm/evm_main.c
++++ b/security/integrity/evm/evm_main.c
+@@ -864,6 +864,13 @@ void evm_inode_post_setattr(struct dentry *dentry, int ia_valid)
+ 		evm_update_evmxattr(dentry, NULL, NULL, 0);
+ }
  
- 	BT_DBG("sk %p", sk);
-@@ -686,11 +685,9 @@ static int rfcomm_sock_setsockopt(struct socket *sock, int level, int optname,
++int evm_inode_copy_up_xattr(const char *name)
++{
++	if (strcmp(name, XATTR_NAME_EVM) == 0)
++		return 1; /* Discard */
++	return -EOPNOTSUPP;
++}
++
+ /*
+  * evm_inode_init_security - initializes security.evm HMAC value
+  */
+diff --git a/security/security.c b/security/security.c
+index dd26f21b2244b..b6144833c7a8e 100644
+--- a/security/security.c
++++ b/security/security.c
+@@ -2539,7 +2539,7 @@ int security_inode_copy_up_xattr(const char *name)
+ 			return rc;
+ 	}
  
- 		sec.level = BT_SECURITY_LOW;
+-	return LSM_RET_DEFAULT(inode_copy_up_xattr);
++	return evm_inode_copy_up_xattr(name);
+ }
+ EXPORT_SYMBOL(security_inode_copy_up_xattr);
  
--		len = min_t(unsigned int, sizeof(sec), optlen);
--		if (copy_from_sockptr(&sec, optval, len)) {
--			err = -EFAULT;
-+		err = bt_copy_from_sockptr(&sec, sizeof(sec), optval, optlen);
-+		if (err)
- 			break;
--		}
- 
- 		if (sec.level > BT_SECURITY_HIGH) {
- 			err = -EINVAL;
-@@ -706,10 +703,9 @@ static int rfcomm_sock_setsockopt(struct socket *sock, int level, int optname,
- 			break;
- 		}
- 
--		if (copy_from_sockptr(&opt, optval, sizeof(u32))) {
--			err = -EFAULT;
-+		err = bt_copy_from_sockptr(&opt, sizeof(opt), optval, optlen);
-+		if (err)
- 			break;
--		}
- 
- 		if (opt)
- 			set_bit(BT_SK_DEFER_SETUP, &bt_sk(sk)->flags);
 -- 
 2.43.0
 
