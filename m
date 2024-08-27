@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-70677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71221-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42FA4960F79
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:59:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50D119612A7
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:33:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F195E28320C
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:59:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1211DB2460C
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:30:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 117831BFE04;
-	Tue, 27 Aug 2024 14:58:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 923341CFECE;
+	Tue, 27 Aug 2024 15:28:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xBLXb4oz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z/yEDKym"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C47311C5792;
-	Tue, 27 Aug 2024 14:58:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EC8C1CB126;
+	Tue, 27 Aug 2024 15:28:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770702; cv=none; b=X7CGHqBlvQ9P0iYOoPO0t8TofiqbbgRZwHHgga6aOSxMlZPtAYRMVc26f21DGuhvwNmRRBo0TZq6LW88yIZTc+dPM465DBtlD9LWPeqeiOol7j/6DhlPbTJb9MlJsb7x8VhRHqPKSEPe19xJ/wGfk8WdzlMWIoz3J4UXKAuejTk=
+	t=1724772496; cv=none; b=gVTgLrFqSC/f700Npm1ilRUWgjsqErIxIAnBNiFCAztnNy4dGzcAyuwEJF8Sji8yL+0+PUB28P17wpJmMbHDsEw9YxKr1aZzgCOCW0DzKI9EvNtNrsrktEzQSVTMMdcfxC555ZxjlW0xqIGLWMSbWMqB/4gEaHuJi1dLNGwdg8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770702; c=relaxed/simple;
-	bh=d2Vojo40pMDVe6GoATSPq1qew5UseykpcG+oVZIvLyA=;
+	s=arc-20240116; t=1724772496; c=relaxed/simple;
+	bh=QmWfzQphO7UR/u2c13Ld5o9yJpTWXvBzcu4hJ/J6Ewo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qJS86sM4UExIyyuiLpObCQVKcUIotGJdlFnd93A98DAlLcq3ICETsRk6En3Fw2bhtbR3nA3koaB2bhMKQMF47NmBNDUtuv+7oOXJafJKy/x9b6oILhQhtpBumdTeFOXfBgRmIP0EWzk/C8NkIsdLjrphX/RWm1YKmT2Wf3fTeXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xBLXb4oz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4178AC61044;
-	Tue, 27 Aug 2024 14:58:22 +0000 (UTC)
+	 MIME-Version; b=of2/8XJuowrKRmUlZ2t6UrSJSXL3MdTbOiyO4e4lgRgEDfFmqFCHMudceOHajPiPgUipBnslxqN9SwPjuYyGxLCt/GyvfFpEvt4w+1FzHSU6spRtcexh49myL2pqdBt9dBk3QOEAxP5vVyKTfMl0hxZzW/1HHcorA9Hf5hBaTzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z/yEDKym; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FE4FC61047;
+	Tue, 27 Aug 2024 15:28:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770702;
-	bh=d2Vojo40pMDVe6GoATSPq1qew5UseykpcG+oVZIvLyA=;
+	s=korg; t=1724772496;
+	bh=QmWfzQphO7UR/u2c13Ld5o9yJpTWXvBzcu4hJ/J6Ewo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xBLXb4ozG+4XvquoJeKFM/hI5bDX9FRl2bXhGLaE1GzLfmnOYlbmKsvK8TN6LbDj5
-	 EEpHepVRTL7yPTBfdMsPycMNZ8EEb8HeizoEMEubk/QYRAbHZzkOcmRdYNMC7fhSDZ
-	 vyKWAbl3KTKZazJee5VA7Mi0J82z6ntOcPBedNXA=
+	b=z/yEDKymC6XzRHsnIUfn6GG4rm0dzD7oXu9rVlhy50KKXOcOH35ypWLTEIgmeyHgU
+	 E8crOifzgoNkceG4yFoXSm4VfT6gBrvsDZGqW9unidYKUmvebfHNlMkkpujfVxs/zt
+	 4TQlzFvxOaqjuWCTpVjElqRI31LN7jJa8i9x1JVg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacky Bai <ping.bai@nxp.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.6 308/341] pmdomain: imx: wait SSAR when i.MX93 power domain on
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 231/321] tcp/dccp: do not care about families in inet_twsk_purge()
 Date: Tue, 27 Aug 2024 16:38:59 +0200
-Message-ID: <20240827143855.109251859@linuxfoundation.org>
+Message-ID: <20240827143847.031097280@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +63,199 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 52dd070c62e4ae2b5e7411b920e3f7a64235ecfb upstream.
+[ Upstream commit 1eeb5043573981f3a1278876515851b7f6b1df1b ]
 
-With "quiet" set in bootargs, there is power domain failure:
-"imx93_power_domain 44462400.power-domain: pd_off timeout: name:
- 44462400.power-domain, stat: 4"
+We lost ability to unload ipv6 module a long time ago.
 
-The current power on opertation takes ISO state as power on finished
-flag, but it is wrong. Before powering on operation really finishes,
-powering off comes and powering off will never finish because the last
-powering on still not finishes, so the following powering off actually
-not trigger hardware state machine to run. SSAR is the last step when
-powering on a domain, so need to wait SSAR done when powering on.
+Instead of calling expensive inet_twsk_purge() twice,
+we can handle all families in one round.
 
-Since EdgeLock Enclave(ELE) handshake is involved in the flow, enlarge
-the waiting time to 10ms for both on and off to avoid timeout.
+Also remove an extra line added in my prior patch,
+per Kuniyuki Iwashima feedback.
 
-Cc: stable@vger.kernel.org
-Fixes: 0a0f7cc25d4a ("soc: imx: add i.MX93 SRC power domain driver")
-Reviewed-by: Jacky Bai <ping.bai@nxp.com>
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Link: https://lore.kernel.org/r/20240814124740.2778952-1-peng.fan@oss.nxp.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/netdev/20240327192934.6843-1-kuniyu@amazon.com/
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://lore.kernel.org/r/20240329153203.345203-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 565d121b6998 ("tcp: prevent concurrent execution of tcp_sk_exit_batch")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pmdomain/imx/imx93-pd.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ include/net/inet_timewait_sock.h | 2 +-
+ include/net/tcp.h                | 2 +-
+ net/dccp/ipv4.c                  | 2 +-
+ net/dccp/ipv6.c                  | 6 ------
+ net/ipv4/inet_timewait_sock.c    | 9 +++------
+ net/ipv4/tcp_ipv4.c              | 2 +-
+ net/ipv4/tcp_minisocks.c         | 6 +++---
+ net/ipv6/tcp_ipv6.c              | 6 ------
+ 8 files changed, 10 insertions(+), 25 deletions(-)
 
---- a/drivers/pmdomain/imx/imx93-pd.c
-+++ b/drivers/pmdomain/imx/imx93-pd.c
-@@ -20,6 +20,7 @@
- #define FUNC_STAT_PSW_STAT_MASK		BIT(0)
- #define FUNC_STAT_RST_STAT_MASK		BIT(2)
- #define FUNC_STAT_ISO_STAT_MASK		BIT(4)
-+#define FUNC_STAT_SSAR_STAT_MASK	BIT(8)
+diff --git a/include/net/inet_timewait_sock.h b/include/net/inet_timewait_sock.h
+index 4a8e578405cb3..9365e5af8d6da 100644
+--- a/include/net/inet_timewait_sock.h
++++ b/include/net/inet_timewait_sock.h
+@@ -114,7 +114,7 @@ static inline void inet_twsk_reschedule(struct inet_timewait_sock *tw, int timeo
  
- struct imx93_power_domain {
- 	struct generic_pm_domain genpd;
-@@ -50,7 +51,7 @@ static int imx93_pd_on(struct generic_pm
- 	writel(val, addr + MIX_SLICE_SW_CTRL_OFF);
+ void inet_twsk_deschedule_put(struct inet_timewait_sock *tw);
  
- 	ret = readl_poll_timeout(addr + MIX_FUNC_STAT_OFF, val,
--				 !(val & FUNC_STAT_ISO_STAT_MASK), 1, 10000);
-+				 !(val & FUNC_STAT_SSAR_STAT_MASK), 1, 10000);
- 	if (ret) {
- 		dev_err(domain->dev, "pd_on timeout: name: %s, stat: %x\n", genpd->name, val);
- 		return ret;
-@@ -72,7 +73,7 @@ static int imx93_pd_off(struct generic_p
- 	writel(val, addr + MIX_SLICE_SW_CTRL_OFF);
+-void inet_twsk_purge(struct inet_hashinfo *hashinfo, int family);
++void inet_twsk_purge(struct inet_hashinfo *hashinfo);
  
- 	ret = readl_poll_timeout(addr + MIX_FUNC_STAT_OFF, val,
--				 val & FUNC_STAT_PSW_STAT_MASK, 1, 1000);
-+				 val & FUNC_STAT_PSW_STAT_MASK, 1, 10000);
- 	if (ret) {
- 		dev_err(domain->dev, "pd_off timeout: name: %s, stat: %x\n", genpd->name, val);
- 		return ret;
+ static inline
+ struct net *twsk_net(const struct inet_timewait_sock *twsk)
+diff --git a/include/net/tcp.h b/include/net/tcp.h
+index cc314c383c532..c7501ca66dd34 100644
+--- a/include/net/tcp.h
++++ b/include/net/tcp.h
+@@ -352,7 +352,7 @@ void tcp_rcv_established(struct sock *sk, struct sk_buff *skb);
+ void tcp_rcv_space_adjust(struct sock *sk);
+ int tcp_twsk_unique(struct sock *sk, struct sock *sktw, void *twp);
+ void tcp_twsk_destructor(struct sock *sk);
+-void tcp_twsk_purge(struct list_head *net_exit_list, int family);
++void tcp_twsk_purge(struct list_head *net_exit_list);
+ ssize_t tcp_splice_read(struct socket *sk, loff_t *ppos,
+ 			struct pipe_inode_info *pipe, size_t len,
+ 			unsigned int flags);
+diff --git a/net/dccp/ipv4.c b/net/dccp/ipv4.c
+index f4a2dce3e1048..db8d54fb88060 100644
+--- a/net/dccp/ipv4.c
++++ b/net/dccp/ipv4.c
+@@ -1042,7 +1042,7 @@ static void __net_exit dccp_v4_exit_net(struct net *net)
+ 
+ static void __net_exit dccp_v4_exit_batch(struct list_head *net_exit_list)
+ {
+-	inet_twsk_purge(&dccp_hashinfo, AF_INET);
++	inet_twsk_purge(&dccp_hashinfo);
+ }
+ 
+ static struct pernet_operations dccp_v4_ops = {
+diff --git a/net/dccp/ipv6.c b/net/dccp/ipv6.c
+index 016af0301366d..d90bb941f2ada 100644
+--- a/net/dccp/ipv6.c
++++ b/net/dccp/ipv6.c
+@@ -1121,15 +1121,9 @@ static void __net_exit dccp_v6_exit_net(struct net *net)
+ 	inet_ctl_sock_destroy(pn->v6_ctl_sk);
+ }
+ 
+-static void __net_exit dccp_v6_exit_batch(struct list_head *net_exit_list)
+-{
+-	inet_twsk_purge(&dccp_hashinfo, AF_INET6);
+-}
+-
+ static struct pernet_operations dccp_v6_ops = {
+ 	.init   = dccp_v6_init_net,
+ 	.exit   = dccp_v6_exit_net,
+-	.exit_batch = dccp_v6_exit_batch,
+ 	.id	= &dccp_v6_pernet_id,
+ 	.size   = sizeof(struct dccp_v6_pernet),
+ };
+diff --git a/net/ipv4/inet_timewait_sock.c b/net/ipv4/inet_timewait_sock.c
+index 15d6ce41e5de7..6356a8a47b345 100644
+--- a/net/ipv4/inet_timewait_sock.c
++++ b/net/ipv4/inet_timewait_sock.c
+@@ -282,7 +282,7 @@ void __inet_twsk_schedule(struct inet_timewait_sock *tw, int timeo, bool rearm)
+ EXPORT_SYMBOL_GPL(__inet_twsk_schedule);
+ 
+ /* Remove all non full sockets (TIME_WAIT and NEW_SYN_RECV) for dead netns */
+-void inet_twsk_purge(struct inet_hashinfo *hashinfo, int family)
++void inet_twsk_purge(struct inet_hashinfo *hashinfo)
+ {
+ 	struct inet_ehash_bucket *head = &hashinfo->ehash[0];
+ 	unsigned int ehash_mask = hashinfo->ehash_mask;
+@@ -291,7 +291,6 @@ void inet_twsk_purge(struct inet_hashinfo *hashinfo, int family)
+ 	struct sock *sk;
+ 
+ 	for (slot = 0; slot <= ehash_mask; slot++, head++) {
+-
+ 		if (hlist_nulls_empty(&head->chain))
+ 			continue;
+ 
+@@ -306,15 +305,13 @@ void inet_twsk_purge(struct inet_hashinfo *hashinfo, int family)
+ 					     TCPF_NEW_SYN_RECV))
+ 				continue;
+ 
+-			if (sk->sk_family != family ||
+-			    refcount_read(&sock_net(sk)->ns.count))
++			if (refcount_read(&sock_net(sk)->ns.count))
+ 				continue;
+ 
+ 			if (unlikely(!refcount_inc_not_zero(&sk->sk_refcnt)))
+ 				continue;
+ 
+-			if (unlikely(sk->sk_family != family ||
+-				     refcount_read(&sock_net(sk)->ns.count))) {
++			if (refcount_read(&sock_net(sk)->ns.count)) {
+ 				sock_gen_put(sk);
+ 				goto restart;
+ 			}
+diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
+index c64ba4f8ddaa9..167de693981a8 100644
+--- a/net/ipv4/tcp_ipv4.c
++++ b/net/ipv4/tcp_ipv4.c
+@@ -3242,7 +3242,7 @@ static void __net_exit tcp_sk_exit_batch(struct list_head *net_exit_list)
+ {
+ 	struct net *net;
+ 
+-	tcp_twsk_purge(net_exit_list, AF_INET);
++	tcp_twsk_purge(net_exit_list);
+ 
+ 	list_for_each_entry(net, net_exit_list, exit_list) {
+ 		inet_pernet_hashinfo_free(net->ipv4.tcp_death_row.hashinfo);
+diff --git a/net/ipv4/tcp_minisocks.c b/net/ipv4/tcp_minisocks.c
+index b3bfa1a09df68..000dce7d0e2d0 100644
+--- a/net/ipv4/tcp_minisocks.c
++++ b/net/ipv4/tcp_minisocks.c
+@@ -347,7 +347,7 @@ void tcp_twsk_destructor(struct sock *sk)
+ }
+ EXPORT_SYMBOL_GPL(tcp_twsk_destructor);
+ 
+-void tcp_twsk_purge(struct list_head *net_exit_list, int family)
++void tcp_twsk_purge(struct list_head *net_exit_list)
+ {
+ 	bool purged_once = false;
+ 	struct net *net;
+@@ -355,9 +355,9 @@ void tcp_twsk_purge(struct list_head *net_exit_list, int family)
+ 	list_for_each_entry(net, net_exit_list, exit_list) {
+ 		if (net->ipv4.tcp_death_row.hashinfo->pernet) {
+ 			/* Even if tw_refcount == 1, we must clean up kernel reqsk */
+-			inet_twsk_purge(net->ipv4.tcp_death_row.hashinfo, family);
++			inet_twsk_purge(net->ipv4.tcp_death_row.hashinfo);
+ 		} else if (!purged_once) {
+-			inet_twsk_purge(&tcp_hashinfo, family);
++			inet_twsk_purge(&tcp_hashinfo);
+ 			purged_once = true;
+ 		}
+ 	}
+diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
+index eb6fc0e2a4533..06b4acbfd314b 100644
+--- a/net/ipv6/tcp_ipv6.c
++++ b/net/ipv6/tcp_ipv6.c
+@@ -2217,15 +2217,9 @@ static void __net_exit tcpv6_net_exit(struct net *net)
+ 	inet_ctl_sock_destroy(net->ipv6.tcp_sk);
+ }
+ 
+-static void __net_exit tcpv6_net_exit_batch(struct list_head *net_exit_list)
+-{
+-	tcp_twsk_purge(net_exit_list, AF_INET6);
+-}
+-
+ static struct pernet_operations tcpv6_net_ops = {
+ 	.init	    = tcpv6_net_init,
+ 	.exit	    = tcpv6_net_exit,
+-	.exit_batch = tcpv6_net_exit_batch,
+ };
+ 
+ int __init tcpv6_init(void)
+-- 
+2.43.0
+
 
 
 
