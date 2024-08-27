@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-70672-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71216-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B31E960F73
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:59:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7AC496125C
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:30:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 989D8B22E5D
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:59:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7340B1F21185
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:30:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D81F91CBE8F;
-	Tue, 27 Aug 2024 14:58:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC41F1CF289;
+	Tue, 27 Aug 2024 15:27:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Aw2pkDFi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S9MXt8Ek"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AFB01C7B62;
-	Tue, 27 Aug 2024 14:58:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 994A71CF284;
+	Tue, 27 Aug 2024 15:27:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770686; cv=none; b=MXmzM6zT8MsGsT1iOkntMOEtWNoH1YB+o0MiZeCYyrLLnmVhj/TNBhQamI//5SKS4fvnJ0eNMuJLaSZyBs/A7Vlrr8Z3wdwXHWvJxnqEzaeRfmhF4P0bWwGBJDr55uYHkC8wxNHn1dyXtBHnc3jjkqyACekXyGqaz6bcqjxiY8c=
+	t=1724772479; cv=none; b=EbiV7ChMFdONrxkDO2C0f3zdDJ/uOBDO21eUGIUNZJ9q/IHJPOZG+KWUDTaaVBYSoi3PyVY24+d/QkSU1VoBvdyXAvg0j4ejzAY9gGkNZzWMvYZ2eprr4isZ+wafJwQ8ZEkhglsBWCz8gmzpUTZ9rPMV+KjwIz0atrsGYrmwAXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770686; c=relaxed/simple;
-	bh=JVXBOk9MoD1iy63QPDDcNePvKmN5mn851n/LZ2tdiFU=;
+	s=arc-20240116; t=1724772479; c=relaxed/simple;
+	bh=LfRScGIY2T1otgKYTCUkFVzkcyvT77GkkwSMJU2lPmo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jqyIgIcGywlcO4mxpecCbTvfMFMCVbJtPV1N4JpTM+erZ6pwWap4SkFqrWyeWnSS5m2V26K2NEhApoBaUHkBTf+iUV/rtPVAi14iJ8nxtlvGDFvXRjiuKipkPo+5y4EeMMNmfyXHeg9EnSrxm1dyQXCUhMaQG2ARNZapxVd9Gco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Aw2pkDFi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15493C61044;
-	Tue, 27 Aug 2024 14:58:05 +0000 (UTC)
+	 MIME-Version; b=LWLJwXyl+o4CMaTjJoRRiuZPliStOplKBWv+XSIrbiPDPJNg0QK+EoP6c5xM5jlooDBsWHTdyvW54DxLGRX3yOlP7w7J29mh7S/7xbuzuXX7LR3clr4/+7tPKOSs49bvgmNpvEXJrxADK+ehkXrz3cbQz5fuH20WzK6sKdv/zd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S9MXt8Ek; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64F26C61047;
+	Tue, 27 Aug 2024 15:27:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770686;
-	bh=JVXBOk9MoD1iy63QPDDcNePvKmN5mn851n/LZ2tdiFU=;
+	s=korg; t=1724772479;
+	bh=LfRScGIY2T1otgKYTCUkFVzkcyvT77GkkwSMJU2lPmo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Aw2pkDFi5y4hQl0ufSdOOf1bA1PGheJguvdpoRuxGXp+j6HbpblcoOYSQOhsXelo8
-	 CBk9LnokTD2kI+yJZluhRpjHgTjoOhXyDtjDneAHabjqOtlvib0HagboCP0im7cexC
-	 vICcY3/uwcYkj1sekh5DOpNS9JXnwF47BA9RAa+8=
+	b=S9MXt8Ekv70aNe1bhrOD9a01chvjuiMzHtiRQvR2R3U/5BDj+ehhbl/bI986uFb2/
+	 iijr3vd9U4VdK+2oa0rXOhnH76f+8j2BdTdPq9FBIXlELcM8hDSBiH/qQwj95UKI/w
+	 zRqZ+vEo7d6LymHeStzX4NWe8Bkn5w/W5eweYa4k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Potapenko <glider@google.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oliver.upton@linux.dev>
-Subject: [PATCH 6.6 304/341] KVM: arm64: Make ICC_*SGI*_EL1 undef in the absence of a vGICv3
+	Simon Horman <horms@kernel.org>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 227/321] tc-testing: dont access non-existent variable on exception
 Date: Tue, 27 Aug 2024 16:38:55 +0200
-Message-ID: <20240827143854.958087263@linuxfoundation.org>
+Message-ID: <20240827143846.872912982@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Zyngier <maz@kernel.org>
+From: Simon Horman <horms@kernel.org>
 
-commit 3e6245ebe7ef341639e9a7e402b3ade8ad45a19f upstream.
+[ Upstream commit a0c9fe5eecc97680323ee83780ea3eaf440ba1b7 ]
 
-On a system with a GICv3, if a guest hasn't been configured with
-GICv3 and that the host is not capable of GICv2 emulation,
-a write to any of the ICC_*SGI*_EL1 registers is trapped to EL2.
+Since commit 255c1c7279ab ("tc-testing: Allow test cases to be skipped")
+the variable test_ordinal doesn't exist in call_pre_case().
+So it should not be accessed when an exception occurs.
 
-We therefore try to emulate the SGI access, only to hit a NULL
-pointer as no private interrupt is allocated (no GIC, remember?).
+This resolves the following splat:
 
-The obvious fix is to give the guest what it deserves, in the
-shape of a UNDEF exception.
+  ...
+  During handling of the above exception, another exception occurred:
 
-Reported-by: Alexander Potapenko <glider@google.com>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240820100349.3544850-2-maz@kernel.org
-Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  Traceback (most recent call last):
+    File ".../tdc.py", line 1028, in <module>
+      main()
+    File ".../tdc.py", line 1022, in main
+      set_operation_mode(pm, parser, args, remaining)
+    File ".../tdc.py", line 966, in set_operation_mode
+      catresults = test_runner_serial(pm, args, alltests)
+    File ".../tdc.py", line 642, in test_runner_serial
+      (index, tsr) = test_runner(pm, args, alltests)
+    File ".../tdc.py", line 536, in test_runner
+      res = run_one_test(pm, args, index, tidx)
+    File ".../tdc.py", line 419, in run_one_test
+      pm.call_pre_case(tidx)
+    File ".../tdc.py", line 146, in call_pre_case
+      print('test_ordinal is {}'.format(test_ordinal))
+  NameError: name 'test_ordinal' is not defined
+
+Fixes: 255c1c7279ab ("tc-testing: Allow test cases to be skipped")
+Signed-off-by: Simon Horman <horms@kernel.org>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20240815-tdc-test-ordinal-v1-1-0255c122a427@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kvm/sys_regs.c  |    6 ++++++
- arch/arm64/kvm/vgic/vgic.h |    7 +++++++
- 2 files changed, 13 insertions(+)
+ tools/testing/selftests/tc-testing/tdc.py | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/arch/arm64/kvm/sys_regs.c
-+++ b/arch/arm64/kvm/sys_regs.c
-@@ -32,6 +32,7 @@
- #include <trace/events/kvm.h>
+diff --git a/tools/testing/selftests/tc-testing/tdc.py b/tools/testing/selftests/tc-testing/tdc.py
+index ee22e3447ec7e..4702c99c99d3f 100755
+--- a/tools/testing/selftests/tc-testing/tdc.py
++++ b/tools/testing/selftests/tc-testing/tdc.py
+@@ -129,7 +129,6 @@ class PluginMgr:
+             except Exception as ee:
+                 print('exception {} in call to pre_case for {} plugin'.
+                       format(ee, pgn_inst.__class__))
+-                print('test_ordinal is {}'.format(test_ordinal))
+                 print('testid is {}'.format(caseinfo['id']))
+                 raise
  
- #include "sys_regs.h"
-+#include "vgic/vgic.h"
- 
- #include "trace.h"
- 
-@@ -301,6 +302,11 @@ static bool access_gic_sgi(struct kvm_vc
- {
- 	bool g1;
- 
-+	if (!kvm_has_gicv3(vcpu->kvm)) {
-+		kvm_inject_undefined(vcpu);
-+		return false;
-+	}
-+
- 	if (!p->is_write)
- 		return read_from_write_only(vcpu, p, r);
- 
---- a/arch/arm64/kvm/vgic/vgic.h
-+++ b/arch/arm64/kvm/vgic/vgic.h
-@@ -343,4 +343,11 @@ void vgic_v4_configure_vsgis(struct kvm
- void vgic_v4_get_vlpi_state(struct vgic_irq *irq, bool *val);
- int vgic_v4_request_vpe_irq(struct kvm_vcpu *vcpu, int irq);
- 
-+static inline bool kvm_has_gicv3(struct kvm *kvm)
-+{
-+	return (static_branch_unlikely(&kvm_vgic_global_state.gicv3_cpuif) &&
-+		irqchip_in_kernel(kvm) &&
-+		kvm->arch.vgic.vgic_model == KVM_DEV_TYPE_ARM_VGIC_V3);
-+}
-+
- #endif
+-- 
+2.43.0
+
 
 
 
