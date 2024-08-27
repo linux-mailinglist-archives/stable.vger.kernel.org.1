@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-71139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71150-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC9CB9611D7
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:24:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD8259611E5
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:25:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84C29281BD4
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:24:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 739E51F21777
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:25:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8272D148302;
-	Tue, 27 Aug 2024 15:23:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F42271BDA93;
+	Tue, 27 Aug 2024 15:24:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U1s5J/LP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aqY8EvN1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FBC71C4EDD;
-	Tue, 27 Aug 2024 15:23:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B23731C4EEA;
+	Tue, 27 Aug 2024 15:24:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772228; cv=none; b=QX6BpZ/9X2pkeYVFK8G354ePdvCmT6Fh4odhBbyKDDZJY8fZvx892Cn/ZQ3WmnOLjVB1u8JX5KPcfEnIsZEM9hw0xzHJGRhWz9QL3E77LocsFLXvo0GJIwBENajYKAG/Db7aBGUfQGpNDSI7BY9U0SRMO/lQ7xvL77ig2pdNDlk=
+	t=1724772266; cv=none; b=oVYg1l4a3GzORUf55Ff61egj+9E21RwT55iqr2SZ6DswEAUsGSzJ75PMZcsy1CQ99MW079QDSRUyqTsCBZehbdjTs+hIu0/3h8g8wg/P/XTHJVmKPIuyQDcj2YdEQwYmMnVy1P9DsaRte0tL45mznaTBLjpqyDjsFB3RWNMQxVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772228; c=relaxed/simple;
-	bh=Yxk2WDclNsLpS1UgMTXXDsOmGvHkAJdAc3+gslvlvp4=;
+	s=arc-20240116; t=1724772266; c=relaxed/simple;
+	bh=wvy20Qel9c8csIb2Q0KDoV1h6aGZhCUwugHOVAG8cfY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gPAPYf3Mg5bq+4pFoZbjtRrH11xyitjifcD0h1fXWUFqDrPFPDou0noNuCek6ZG+BgKuxYcBQJQLkfq2PzMw8OBDRlY1y0YevjGS97I+yAjMNT028LDhG8aIorBHLk5YBdb5u+LiyfjorJGW4BH2+4gcGRRe5SshGhShrRiO8cQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U1s5J/LP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51329C61062;
-	Tue, 27 Aug 2024 15:23:47 +0000 (UTC)
+	 MIME-Version; b=VeY9MywPCr/qqfC8lrUaBI9CCAJHo46lw8f8SX/ylO3IRkbBr0MhjdZTow7L6BAP9mOU1bqfXYnrsY3gVb0hW5MWuCKRSyJaW0oRI3hjzdYfq47Z0Yg5pHgPC9QewGp4RHysj7eJyjm5bK+JV2EoX5ANh8rM25Je8GUR/XFqoP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aqY8EvN1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7B3FC61071;
+	Tue, 27 Aug 2024 15:24:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772227;
-	bh=Yxk2WDclNsLpS1UgMTXXDsOmGvHkAJdAc3+gslvlvp4=;
+	s=korg; t=1724772264;
+	bh=wvy20Qel9c8csIb2Q0KDoV1h6aGZhCUwugHOVAG8cfY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U1s5J/LPR9aBsKolmUV9Mxvd4soVD0sCl6evE/Xt05Vo6UGSQ+/rCYgntmgA7Ad40
-	 HjtyC77ry9WEbzHWdmX+PUQgUoG/2Sk4Ts4+xDJPoHI4LYlOUY7laEIUmh7yb4viV6
-	 dqcLknBPStT4NIX5VtYTevl/XPHoyaaS6psZ8ZsY=
+	b=aqY8EvN1QK/FKACcbYtMAqSyJmJWVlowaFm64LELWw51ghMww6+x9L6nEaPodpwaN
+	 aoIz8hcVjklp838/X4wvQS5j+2K/jVk+FKyjWi0MUvbnD+XUG50kKV2bqZ5QQafF1c
+	 s7V3TmgNhb+brS0fV1H9Hxlnuq2KnquG+Web+rb8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ashish Mhetre <amhetre@nvidia.com>,
-	Mikko Perttunen <mperttunen@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 134/321] drm/tegra: Zero-initialize iosys_map
-Date: Tue, 27 Aug 2024 16:37:22 +0200
-Message-ID: <20240827143843.344694229@linuxfoundation.org>
+Subject: [PATCH 6.1 135/321] media: qcom: venus: fix incorrect return value
+Date: Tue, 27 Aug 2024 16:37:23 +0200
+Message-ID: <20240827143843.382942835@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
 References: <20240827143838.192435816@linuxfoundation.org>
@@ -67,35 +66,35 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mikko Perttunen <mperttunen@nvidia.com>
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-[ Upstream commit 3868ff006b572cf501a3327832d36c64a9eca86a ]
+[ Upstream commit 51b74c09ac8c5862007fc2bf0d465529d06dd446 ]
 
-UBSAN reports an invalid load for bool, as the iosys_map is read
-later without being initialized. Zero-initialize it to avoid this.
+'pd' can be NULL, and in that case it shouldn't be passed to
+PTR_ERR. Fixes a smatch warning:
 
-Reported-by: Ashish Mhetre <amhetre@nvidia.com>
-Signed-off-by: Mikko Perttunen <mperttunen@nvidia.com>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230901115910.701518-2-cyndis@kapsi.fi
+drivers/media/platform/qcom/venus/pm_helpers.c:873 vcodec_domains_get() warn: passing zero to 'PTR_ERR'
+
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/tegra/gem.c | 2 +-
+ drivers/media/platform/qcom/venus/pm_helpers.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/tegra/gem.c b/drivers/gpu/drm/tegra/gem.c
-index 81991090adcc9..cd06f25499549 100644
---- a/drivers/gpu/drm/tegra/gem.c
-+++ b/drivers/gpu/drm/tegra/gem.c
-@@ -175,7 +175,7 @@ static void tegra_bo_unpin(struct host1x_bo_mapping *map)
- static void *tegra_bo_mmap(struct host1x_bo *bo)
- {
- 	struct tegra_bo *obj = host1x_to_tegra_bo(bo);
--	struct iosys_map map;
-+	struct iosys_map map = { 0 };
- 	int ret;
+diff --git a/drivers/media/platform/qcom/venus/pm_helpers.c b/drivers/media/platform/qcom/venus/pm_helpers.c
+index 48c9084bb4dba..a1b127caa90a7 100644
+--- a/drivers/media/platform/qcom/venus/pm_helpers.c
++++ b/drivers/media/platform/qcom/venus/pm_helpers.c
+@@ -870,7 +870,7 @@ static int vcodec_domains_get(struct venus_core *core)
+ 		pd = dev_pm_domain_attach_by_name(dev,
+ 						  res->vcodec_pmdomains[i]);
+ 		if (IS_ERR_OR_NULL(pd))
+-			return PTR_ERR(pd) ? : -ENODATA;
++			return pd ? PTR_ERR(pd) : -ENODATA;
+ 		core->pmdomains[i] = pd;
+ 	}
  
- 	if (obj->vaddr) {
 -- 
 2.43.0
 
