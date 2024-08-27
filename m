@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-71198-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70909-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6EBE96123D
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:29:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69AC49610A1
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:11:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5DAEC281EDD
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:29:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C4161C237CB
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:11:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1835C1CDA3F;
-	Tue, 27 Aug 2024 15:27:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B30F1C688E;
+	Tue, 27 Aug 2024 15:11:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u5ve4y8c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Roe7wKor"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9C881C57AB;
-	Tue, 27 Aug 2024 15:27:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEF961C57B3;
+	Tue, 27 Aug 2024 15:11:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772422; cv=none; b=iAi8HH7leV996keYwSuQ9/xH/pA/z3Ki1M5LvQaZOSNtzjgz3pjII5CuYs18WceIbbpOOmecjxhV3+FVUIIRuPh4KxkOP2kzxbd101niIQtAB2xn/1da1x9QJG2hChODdXGPMtiSCslpo9uEM8y2ZgcA4zrplruMVEx5v9mgyaM=
+	t=1724771466; cv=none; b=ABrK4ngBscOsm9nEQylz6g71YdcRF22odan9uQBCIKS+BdOogWEIJhqDB7kN2LIeTTo9Dr1SYKZvw+CWgrbD98In09XKtzMzrio+934urrCIZlrSBHe/Pn1R5PN5pnPgbrOTAbTB9SBU69t/XN3vk5F9f3RBCRte03Hbaud8E/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772422; c=relaxed/simple;
-	bh=2g0dmbYt8PYNu4X3vGoD/8gR1E5/4v0rD8jl6/Jcdoo=;
+	s=arc-20240116; t=1724771466; c=relaxed/simple;
+	bh=Psp6SKZsEm/fN3f0SnqgSFa4UsW4PmRXpG9LgiyWlLQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NfJPqCVKTbWjaFRmzsZZxCNsKvUepcrqAvxK+y1ywdXic+tEMM7o9m1eXkWc+oBLfWt6KuavK71ybzxH8dhBBW9151w5s4WDcrPFC1WacF3j46SGqkie1zUgM65csujFFDU7E+SgWKqvJW7DJLPTycX4iJxbOpHm/Vgv8ejzUso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u5ve4y8c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31259C4DE18;
-	Tue, 27 Aug 2024 15:27:02 +0000 (UTC)
+	 MIME-Version; b=UMM5Cm8RQqOd4gk0oX8aOGTurQ88PhRV7QWhlaLS1RJnC/f/d4Jua2/pLcV/bY6cYYnGvp2ldojR7vypdzXHv32sqqVK/70EFb5IWNLxfr8gCenBnoJfRVL8hEFU+kpTK7QPaGoHUeP3oSMxWcDZ/AhnRGujo8lBbkZ6UsCiYUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Roe7wKor; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46584C4DDED;
+	Tue, 27 Aug 2024 15:11:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772422;
-	bh=2g0dmbYt8PYNu4X3vGoD/8gR1E5/4v0rD8jl6/Jcdoo=;
+	s=korg; t=1724771466;
+	bh=Psp6SKZsEm/fN3f0SnqgSFa4UsW4PmRXpG9LgiyWlLQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u5ve4y8cvdRVT91PBc1bAdoas+ST9asE8vqUQ8hEynC4FvBeegx7/ROcYjzwvAiyG
-	 jkY6v5ortpACpJK2g9oVERvxrafl8H5WDb1xJZA/TZfilo0T72+rT6qPLNTZsqUfV/
-	 QIzl4nwnh/q7WZq7zoBATwF64kTpamsftP5TsiYQ=
+	b=Roe7wKormmaUhFUB79ivwF8cfckcd/n8iEVwFjj7bE2JVFm8D+8+DuYF8uxjZsDc8
+	 vdgjM22lsFV3G0qDA2RhkXPi146x5CGOM+J2jTGuPk0/BzS+gwgQIhBAuq5Dz9jMRo
+	 1lV6mgrjZpLB4p7IyRCwUAxotRJcy/Cq8miSOt0s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Micha=C5=82=20Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>,
-	Dmitry Osipenko <digetx@gmail.com>,
-	Wolfram Sang <wsa@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Stephen Boyd <swboyd@chromium.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 211/321] i2c: tegra: allow VI support to be compiled out
+Subject: [PATCH 6.10 195/273] drm/msm/dp: reset the link phy params before link training
 Date: Tue, 27 Aug 2024 16:38:39 +0200
-Message-ID: <20240827143846.264090215@linuxfoundation.org>
+Message-ID: <20240827143840.829297897@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,148 +61,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michał Mirosław <mirq-linux@rere.qmqm.pl>
+From: Abhinav Kumar <quic_abhinavk@quicinc.com>
 
-[ Upstream commit 4f5d68c8591498c3955dc0228ed6606c1b138278 ]
+[ Upstream commit 319aca883bfa1b85ee08411541b51b9a934ac858 ]
 
-Save a bit of code for older Tegra platforms by compiling out
-VI's I2C mode support that's used only for Tegra210.
+Before re-starting link training reset the link phy params namely
+the pre-emphasis and voltage swing levels otherwise the next
+link training begins at the previously cached levels which can result
+in link training failures.
 
-$ size i2c-tegra.o
-   text    data     bss     dec     hex filename
-  11381     292       8   11681    2da1 i2c-tegra.o (full)
-  10193     292       8   10493    28fd i2c-tegra.o (no-dvc)
-   9145     292       8    9445    24e5 i2c-tegra.o (no-vi,no-dvc)
-
-Signed-off-by: Michał Mirosław <mirq-linux@rere.qmqm.pl>
-Reviewed-by: Dmitry Osipenko <digetx@gmail.com>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
-Stable-dep-of: 14d069d92951 ("i2c: tegra: Do not mark ACPI devices as irq safe")
+Fixes: 8ede2ecc3e5e ("drm/msm/dp: Add DP compliance tests on Snapdragon Chipsets")
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Tested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org> # SM8350-HDK
+Reviewed-by: Stephen Boyd <swboyd@chromium.org>
+Patchwork: https://patchwork.freedesktop.org/patch/605946/
+Link: https://lore.kernel.org/r/20240725220450.131245-1-quic_abhinavk@quicinc.com
+Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-tegra.c | 24 ++++++++++++++----------
- 1 file changed, 14 insertions(+), 10 deletions(-)
+ drivers/gpu/drm/msm/dp/dp_ctrl.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/i2c/busses/i2c-tegra.c b/drivers/i2c/busses/i2c-tegra.c
-index cc9dfd4f6c362..3792531b7ab7f 100644
---- a/drivers/i2c/busses/i2c-tegra.c
-+++ b/drivers/i2c/busses/i2c-tegra.c
-@@ -299,6 +299,7 @@ struct tegra_i2c_dev {
- };
+diff --git a/drivers/gpu/drm/msm/dp/dp_ctrl.c b/drivers/gpu/drm/msm/dp/dp_ctrl.c
+index 7bc8a9f0657a9..f342fc5ae41ec 100644
+--- a/drivers/gpu/drm/msm/dp/dp_ctrl.c
++++ b/drivers/gpu/drm/msm/dp/dp_ctrl.c
+@@ -1286,6 +1286,8 @@ static int dp_ctrl_link_train(struct dp_ctrl_private *ctrl,
+ 	link_info.rate = ctrl->link->link_params.rate;
+ 	link_info.capabilities = DP_LINK_CAP_ENHANCED_FRAMING;
  
- #define IS_DVC(dev) (IS_ENABLED(CONFIG_ARCH_TEGRA_2x_SOC) && (dev)->is_dvc)
-+#define IS_VI(dev)  (IS_ENABLED(CONFIG_ARCH_TEGRA_210_SOC) && (dev)->is_vi)
++	dp_link_reset_phy_params_vx_px(ctrl->link);
++
+ 	dp_aux_link_configure(ctrl->aux, &link_info);
  
- static void dvc_writel(struct tegra_i2c_dev *i2c_dev, u32 val,
- 		       unsigned int reg)
-@@ -319,7 +320,7 @@ static u32 tegra_i2c_reg_addr(struct tegra_i2c_dev *i2c_dev, unsigned int reg)
- {
- 	if (IS_DVC(i2c_dev))
- 		reg += (reg >= I2C_TX_FIFO) ? 0x10 : 0x40;
--	else if (i2c_dev->is_vi)
-+	else if (IS_VI(i2c_dev))
- 		reg = 0xc00 + (reg << 2);
- 
- 	return reg;
-@@ -332,7 +333,7 @@ static void i2c_writel(struct tegra_i2c_dev *i2c_dev, u32 val, unsigned int reg)
- 	/* read back register to make sure that register writes completed */
- 	if (reg != I2C_TX_FIFO)
- 		readl_relaxed(i2c_dev->base + tegra_i2c_reg_addr(i2c_dev, reg));
--	else if (i2c_dev->is_vi)
-+	else if (IS_VI(i2c_dev))
- 		readl_relaxed(i2c_dev->base + tegra_i2c_reg_addr(i2c_dev, I2C_INT_STATUS));
- }
- 
-@@ -448,7 +449,7 @@ static int tegra_i2c_init_dma(struct tegra_i2c_dev *i2c_dev)
- 	u32 *dma_buf;
- 	int err;
- 
--	if (i2c_dev->is_vi)
-+	if (IS_VI(i2c_dev))
- 		return 0;
- 
- 	if (i2c_dev->hw->has_apb_dma) {
-@@ -653,7 +654,7 @@ static int tegra_i2c_init(struct tegra_i2c_dev *i2c_dev)
- 	i2c_writel(i2c_dev, val, I2C_CNFG);
- 	i2c_writel(i2c_dev, 0, I2C_INT_MASK);
- 
--	if (i2c_dev->is_vi)
-+	if (IS_VI(i2c_dev))
- 		tegra_i2c_vi_init(i2c_dev);
- 
- 	switch (t->bus_freq_hz) {
-@@ -705,7 +706,7 @@ static int tegra_i2c_init(struct tegra_i2c_dev *i2c_dev)
- 		return err;
- 	}
- 
--	if (!IS_DVC(i2c_dev) && !i2c_dev->is_vi) {
-+	if (!IS_DVC(i2c_dev) && !IS_VI(i2c_dev)) {
- 		u32 sl_cfg = i2c_readl(i2c_dev, I2C_SL_CNFG);
- 
- 		sl_cfg |= I2C_SL_CNFG_NACK | I2C_SL_CNFG_NEWSL;
-@@ -848,7 +849,7 @@ static int tegra_i2c_fill_tx_fifo(struct tegra_i2c_dev *i2c_dev)
- 		i2c_dev->msg_buf_remaining = buf_remaining;
- 		i2c_dev->msg_buf = buf + words_to_transfer * BYTES_PER_FIFO_WORD;
- 
--		if (i2c_dev->is_vi)
-+		if (IS_VI(i2c_dev))
- 			i2c_writesl_vi(i2c_dev, buf, I2C_TX_FIFO, words_to_transfer);
- 		else
- 			i2c_writesl(i2c_dev, buf, I2C_TX_FIFO, words_to_transfer);
-@@ -1656,7 +1657,9 @@ static const struct tegra_i2c_hw_feature tegra194_i2c_hw = {
- static const struct of_device_id tegra_i2c_of_match[] = {
- 	{ .compatible = "nvidia,tegra194-i2c", .data = &tegra194_i2c_hw, },
- 	{ .compatible = "nvidia,tegra186-i2c", .data = &tegra186_i2c_hw, },
-+#if IS_ENABLED(CONFIG_ARCH_TEGRA_210_SOC)
- 	{ .compatible = "nvidia,tegra210-i2c-vi", .data = &tegra210_i2c_hw, },
-+#endif
- 	{ .compatible = "nvidia,tegra210-i2c", .data = &tegra210_i2c_hw, },
- 	{ .compatible = "nvidia,tegra124-i2c", .data = &tegra124_i2c_hw, },
- 	{ .compatible = "nvidia,tegra114-i2c", .data = &tegra114_i2c_hw, },
-@@ -1683,7 +1686,8 @@ static void tegra_i2c_parse_dt(struct tegra_i2c_dev *i2c_dev)
- 	    of_device_is_compatible(np, "nvidia,tegra20-i2c-dvc"))
- 		i2c_dev->is_dvc = true;
- 
--	if (of_device_is_compatible(np, "nvidia,tegra210-i2c-vi"))
-+	if (IS_ENABLED(CONFIG_ARCH_TEGRA_210_SOC) &&
-+	    of_device_is_compatible(np, "nvidia,tegra210-i2c-vi"))
- 		i2c_dev->is_vi = true;
- }
- 
-@@ -1712,7 +1716,7 @@ static int tegra_i2c_init_clocks(struct tegra_i2c_dev *i2c_dev)
- 	if (i2c_dev->hw == &tegra20_i2c_hw || i2c_dev->hw == &tegra30_i2c_hw)
- 		i2c_dev->clocks[i2c_dev->nclocks++].id = "fast-clk";
- 
--	if (i2c_dev->is_vi)
-+	if (IS_VI(i2c_dev))
- 		i2c_dev->clocks[i2c_dev->nclocks++].id = "slow";
- 
- 	err = devm_clk_bulk_get(i2c_dev->dev, i2c_dev->nclocks,
-@@ -1830,7 +1834,7 @@ static int tegra_i2c_probe(struct platform_device *pdev)
- 	 * VI I2C device shouldn't be marked as IRQ-safe because VI I2C won't
- 	 * be used for atomic transfers.
- 	 */
--	if (!i2c_dev->is_vi)
-+	if (!IS_VI(i2c_dev))
- 		pm_runtime_irq_safe(i2c_dev->dev);
- 
- 	pm_runtime_enable(i2c_dev->dev);
-@@ -1903,7 +1907,7 @@ static int __maybe_unused tegra_i2c_runtime_resume(struct device *dev)
- 	 * power ON/OFF during runtime PM resume/suspend, meaning that
- 	 * controller needs to be re-initialized after power ON.
- 	 */
--	if (i2c_dev->is_vi) {
-+	if (IS_VI(i2c_dev)) {
- 		err = tegra_i2c_init(i2c_dev);
- 		if (err)
- 			goto disable_clocks;
+ 	if (drm_dp_max_downspread(dpcd))
 -- 
 2.43.0
 
