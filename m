@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-70963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70715-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 517519610E9
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:14:27 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2691A960FA9
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:01:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8356F1C20366
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:14:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 96FDEB26F4D
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:01:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48DCA1C825E;
-	Tue, 27 Aug 2024 15:14:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 721F71C6F79;
+	Tue, 27 Aug 2024 15:00:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1dNRSj6H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y4tFaeMn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05AE11A072D;
-	Tue, 27 Aug 2024 15:14:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E9C0DDC1;
+	Tue, 27 Aug 2024 15:00:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771643; cv=none; b=m5ZK+YiwaUvpGBoaiIFpytL2pZbltKXtLYUnSJ05fBCbT49OnAiq2na6QkhCBFlwV9Glu6BvLlwjBKiXbwimyMk76SElHLoqcS8vUKiM/ni7zR44ZOezG/yPr0F7DvJRtHsvAnSRhXcESgulvSHjZwSX8EeRV1u7jHsofVZFIZ0=
+	t=1724770828; cv=none; b=o1jZ+Y9wtFuuAg78ZHKchYJlJ1i/Lz04ymSNsAoWFYitPF5r6oTE6d9uYmwXi/YJ8UKQRvYlhxiuBBdB7PMKGK9kaY+AXPhCoCb4R0Zq+UtgnIxYoo7muGHYnjz3UkLISAlF423rP8JDXu38QJoJkx5qEzud3jBP6VGJb3+5bNY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771643; c=relaxed/simple;
-	bh=wBCXTima3kipZhmATW5sVfDiuyd9TzVCUYVaHE6P9UU=;
+	s=arc-20240116; t=1724770828; c=relaxed/simple;
+	bh=5bfum5RmnohhU6L2FbvT94JC4mEa8nBhO/Mwh13CzZo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JtrGBGqMBuSmyNIIj7OHiTVxM3ImmXiV+etjD7G/HAOL4kndjjXs+1So3ZDNFpRvEGtIBr3PPOackkd0IEB4yQP+A1nFk6vM5YbjVVAN2oB9JNaWsnO1WhvUGsn2JfTl00NKuq+JRKDr4+O1W5t6mdrVgeulTkGB2OBcPSJb874=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1dNRSj6H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ED12C61064;
-	Tue, 27 Aug 2024 15:14:02 +0000 (UTC)
+	 MIME-Version; b=tKGy+KOzUS5JIjci/EuQkW3KQFjhUIUMrm75yO71fHqegOIZjUisjYTh/+fkvteiTD0C454LwuExpk84/tG2OEpZAMkX8Z0HMtHAP/5uzKEarMBLsNHG1lcRKSlFKoRYZEvFiwLWL1pGszC9e8EVyNEOpGadmodyZ7MxggHBTu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y4tFaeMn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC721C4AF1C;
+	Tue, 27 Aug 2024 15:00:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771642;
-	bh=wBCXTima3kipZhmATW5sVfDiuyd9TzVCUYVaHE6P9UU=;
+	s=korg; t=1724770828;
+	bh=5bfum5RmnohhU6L2FbvT94JC4mEa8nBhO/Mwh13CzZo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1dNRSj6HcPXWebvLnbL2gsXtubdeL4WLpMc/lqTCh/PoQ/a1nFkw/qrvr8gbHSRHc
-	 2pYi5zZEHryv8JLIJx2Pd3z00Nzt8v6SXOe2X1Y1IvtX1Sf72wcqSjCGmUGRNorqem
-	 HYUApB+nHcRR+BnE9ke2cgdcS70K/Ni9O3FTb3Cc=
+	b=Y4tFaeMnZJVbNkphT4aBAWx6/7+f3Ol8WIHW5MkWo96G9DVGVhLZ1/m8fpcukH6cz
+	 N2XC5gPTsApJNbY7aG0Jn5oY2/ozYUtP6SJL9+qN2z1th5nPj3fmbv3a3u0Ymppt7z
+	 7tHkpuwkvHBJ/hclX/I+I1Pcm0WxB6et5Sze5+Xk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mengyuan Lou <mengyuanlou@net-swift.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.10 233/273] net: ngbe: Fix phy mode set to external phy
-Date: Tue, 27 Aug 2024 16:39:17 +0200
-Message-ID: <20240827143842.273154608@linuxfoundation.org>
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Richard Acayan <mailingradian@gmail.com>
+Subject: [PATCH 6.6 327/341] drm/msm/mdss: specify cfg bandwidth for SDM670
+Date: Tue, 27 Aug 2024 16:39:18 +0200
+Message-ID: <20240827143855.840630373@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mengyuan Lou <mengyuanlou@net-swift.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-commit f2916c83d746eb99f50f42c15cf4c47c2ea5f3b3 upstream.
+commit 8d35217149daa33358c284aca6a56d5ab92cfc6c upstream.
 
-The MAC only has add the TX delay and it can not be modified.
-MAC and PHY are both set the TX delay cause transmission problems.
-So just disable TX delay in PHY, when use rgmii to attach to
-external phy, set PHY_INTERFACE_MODE_RGMII_RXID to phy drivers.
-And it is does not matter to internal phy.
+Lower the requested CFG bus bandwidth for the SDM670 platform. The
+default value is 153600 kBps, which is twice as big as required by the
+platform according to the vendor kernel.
 
-Fixes: bc2426d74aa3 ("net: ngbe: convert phylib to phylink")
-Signed-off-by: Mengyuan Lou <mengyuanlou@net-swift.com>
-Cc: stable@vger.kernel.org # 6.3+
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/E6759CF1387CF84C+20240820030425.93003-1-mengyuanlou@net-swift.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: a55c8ff252d3 ("drm/msm/mdss: Handle the reg bus ICC path")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Tested-by: Richard Acayan <mailingradian@gmail.com>
+Patchwork: https://patchwork.freedesktop.org/patch/572182/
+Link: https://lore.kernel.org/r/20231215013222.827975-1-dmitry.baryshkov@linaro.org
+Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/wangxun/ngbe/ngbe_mdio.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/msm/msm_mdss.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/net/ethernet/wangxun/ngbe/ngbe_mdio.c
-+++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_mdio.c
-@@ -124,8 +124,12 @@ static int ngbe_phylink_init(struct wx *
- 				   MAC_SYM_PAUSE | MAC_ASYM_PAUSE;
- 	config->mac_managed_pm = true;
+--- a/drivers/gpu/drm/msm/msm_mdss.c
++++ b/drivers/gpu/drm/msm/msm_mdss.c
+@@ -600,6 +600,7 @@ static const struct msm_mdss_data sm6125
+ 	.ubwc_dec_version = UBWC_3_0,
+ 	.ubwc_swizzle = 1,
+ 	.highest_bank_bit = 1,
++	.reg_bus_bw = 76800,
+ };
  
--	phy_mode = PHY_INTERFACE_MODE_RGMII_ID;
--	__set_bit(PHY_INTERFACE_MODE_RGMII_ID, config->supported_interfaces);
-+	/* The MAC only has add the Tx delay and it can not be modified.
-+	 * So just disable TX delay in PHY, and it is does not matter to
-+	 * internal phy.
-+	 */
-+	phy_mode = PHY_INTERFACE_MODE_RGMII_RXID;
-+	__set_bit(PHY_INTERFACE_MODE_RGMII_RXID, config->supported_interfaces);
- 
- 	phylink = phylink_create(config, NULL, phy_mode, &ngbe_mac_ops);
- 	if (IS_ERR(phylink))
+ static const struct msm_mdss_data sm8250_data = {
 
 
 
