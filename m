@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-70507-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71049-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AC91960E7C
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:49:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B669196116A
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:20:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3E0271C22E84
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:49:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 511D4B27C12
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:20:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3AB51A072D;
-	Tue, 27 Aug 2024 14:48:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F64A1C93B9;
+	Tue, 27 Aug 2024 15:18:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0UxzKSis"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bt2bSGjd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B15FC15F41B;
-	Tue, 27 Aug 2024 14:48:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B50B1C871E;
+	Tue, 27 Aug 2024 15:18:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770137; cv=none; b=PecBJUBON4zoggE311Qv/+ItG5p2EKSu5OpzGwIknNUsGZhq7gLWqS2psbpZgYD2+E7M9KAItDCTMPjF0SU6zn0z/7cSeMeJ4ryqxF+Kd7eCaMJNm3gJJ1rZcueoArgCLieXX0q5qRZXiiiq6l3Zc7P71SWQdDABhHegc24Js4w=
+	t=1724771928; cv=none; b=Uka5hqjL1AYle0aB2WljpjRHukaBVZkUoUKPgG1yMHFQSXCRpeuiRr4Q8OZkDZIROluRteOmPFOrslLLf92NarWkz3nEm5815Jpbo1BaI28lhsVZIKycpDwXWjDzeFchbaRl5S7D0o9Sv018E+SV6K/u8RtI63HWqHtem18TG/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770137; c=relaxed/simple;
-	bh=asdvhJhx+Fb5IBU5n6nKPnA6xBrNR4jx82FwpTNEoXo=;
+	s=arc-20240116; t=1724771928; c=relaxed/simple;
+	bh=lwqtUqikA00akbWUxBTEcJ9rgiEMZys0KQAYxgftQPY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YXaGiuW/mLUEL3oVqVA2oXnmZzGV0npBJFikojJ6Ba8+NJRJFHvn2VdKUREyB0C0YM9k3DWFGV558bkl/oyq05Xbg4/n7OL6wCi0dt+3XYwheLwIcMdOVP95qkxNl+esQWu+evPm47iE1HNum95+hd3y/DO+m61g50T+tk/tfWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0UxzKSis; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35D3DC61047;
-	Tue, 27 Aug 2024 14:48:57 +0000 (UTC)
+	 MIME-Version; b=ETGCgCv7H5X+i3YPjNpQiFOyc8zUfrz4YLFud2FEzW8b9rqrjpTmxBQQwft0ZLh4K+rB2OyOOVK1OjKjsrLzCqnb1eKYauUf0tFhDLeCc8Njdt0UcRjBImHlck35eQTTvwDF4IgwjaWBGGJh86W1v5gYVlv+bRGTaJvvkN6itAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bt2bSGjd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACC81C61067;
+	Tue, 27 Aug 2024 15:18:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770137;
-	bh=asdvhJhx+Fb5IBU5n6nKPnA6xBrNR4jx82FwpTNEoXo=;
+	s=korg; t=1724771928;
+	bh=lwqtUqikA00akbWUxBTEcJ9rgiEMZys0KQAYxgftQPY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0UxzKSissq4JG4YsWoK8oq+mALAWfB/WNwmtY5Lg/1GQUlO5ECOURwayO686wRAGm
-	 4rdB4rTPJztP8k+vc1MUhTrv4H1HY4UR1J2N43KT+BbRjXe9tw0PBtYRBvjGTyeDut
-	 lR6KaKrGqXI5CYjhbk1X/iQkDYq6sPYjbwAbIlCQ=
+	b=bt2bSGjdkTr1FC7ts51yK7UPaesdz/brcHnfPgZPAdYXuaW1vhG2wbcPuSkgqocY9
+	 CkO3df83LdLqOWygE+hRg/1cmiZSPk8iU5coBQ3ZRtydx3/B/lEAvNTGZQr0TGbm9B
+	 yyJJQ5RNRQ0/hBGT6yfk1z4vMRiW58+qH5onRfjw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	syzbot+6bdfd184eac7709e5cc9@syzkaller.appspotmail.com,
+	Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>,
+	Guillaume Nault <gnault@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 138/341] arm64: Fix KASAN random tag seed initialization
+Subject: [PATCH 6.1 061/321] pppoe: Fix memory leak in pppoe_sendmsg()
 Date: Tue, 27 Aug 2024 16:36:09 +0200
-Message-ID: <20240827143848.670165376@linuxfoundation.org>
+Message-ID: <20240827143840.560005336@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +64,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Samuel Holland <samuel.holland@sifive.com>
+From: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
 
-[ Upstream commit f75c235565f90c4a17b125e47f1c68ef6b8c2bce ]
+[ Upstream commit dc34ebd5c018b0edf47f39d11083ad8312733034 ]
 
-Currently, kasan_init_sw_tags() is called before setup_per_cpu_areas(),
-so per_cpu(prng_state, cpu) accesses the same address regardless of the
-value of "cpu", and the same seed value gets copied to the percpu area
-for every CPU. Fix this by moving the call to smp_prepare_boot_cpu(),
-which is the first architecture hook after setup_per_cpu_areas().
+syzbot reports a memory leak in pppoe_sendmsg [1].
 
-Fixes: 3c9e3aa11094 ("kasan: add tag related helper functions")
-Fixes: 3f41b6093823 ("kasan: fix random seed generation for tag-based mode")
-Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
-Reviewed-by: Andrey Konovalov <andreyknvl@gmail.com>
-Link: https://lore.kernel.org/r/20240814091005.969756-1-samuel.holland@sifive.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+The problem is in the pppoe_recvmsg() function that handles errors
+in the wrong order. For the skb_recv_datagram() function, check
+the pointer to skb for NULL first, and then check the 'error' variable,
+because the skb_recv_datagram() function can set 'error'
+to -EAGAIN in a loop but return a correct pointer to socket buffer
+after a number of attempts, though 'error' remains set to -EAGAIN.
+
+skb_recv_datagram
+      __skb_recv_datagram          // Loop. if (err == -EAGAIN) then
+                                   // go to the next loop iteration
+          __skb_try_recv_datagram  // if (skb != NULL) then return 'skb'
+                                   // else if a signal is received then
+                                   // return -EAGAIN
+
+Found by InfoTeCS on behalf of Linux Verification Center
+(linuxtesting.org) with Syzkaller.
+
+Link: https://syzkaller.appspot.com/bug?extid=6bdfd184eac7709e5cc9 [1]
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot+6bdfd184eac7709e5cc9@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=6bdfd184eac7709e5cc9
+Signed-off-by: Gavrilov Ilia <Ilia.Gavrilov@infotecs.ru>
+Reviewed-by: Guillaume Nault <gnault@redhat.com>
+Link: https://lore.kernel.org/r/20240214085814.3894917-1-Ilia.Gavrilov@infotecs.ru
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kernel/setup.c | 3 ---
- arch/arm64/kernel/smp.c   | 2 ++
- 2 files changed, 2 insertions(+), 3 deletions(-)
+ drivers/net/ppp/pppoe.c | 23 +++++++++--------------
+ 1 file changed, 9 insertions(+), 14 deletions(-)
 
-diff --git a/arch/arm64/kernel/setup.c b/arch/arm64/kernel/setup.c
-index 417a8a86b2db5..c583d1f335f8c 100644
---- a/arch/arm64/kernel/setup.c
-+++ b/arch/arm64/kernel/setup.c
-@@ -371,9 +371,6 @@ void __init __no_sanitize_address setup_arch(char **cmdline_p)
- 	smp_init_cpus();
- 	smp_build_mpidr_hash();
+diff --git a/drivers/net/ppp/pppoe.c b/drivers/net/ppp/pppoe.c
+index ce2cbb5903d7b..c6f44af35889d 100644
+--- a/drivers/net/ppp/pppoe.c
++++ b/drivers/net/ppp/pppoe.c
+@@ -1007,26 +1007,21 @@ static int pppoe_recvmsg(struct socket *sock, struct msghdr *m,
+ 	struct sk_buff *skb;
+ 	int error = 0;
  
--	/* Init percpu seeds for random tags after cpus are set up. */
--	kasan_init_sw_tags();
--
- #ifdef CONFIG_ARM64_SW_TTBR0_PAN
- 	/*
- 	 * Make sure init_thread_info.ttbr0 always generates translation
-diff --git a/arch/arm64/kernel/smp.c b/arch/arm64/kernel/smp.c
-index 960b98b43506d..14365ef842440 100644
---- a/arch/arm64/kernel/smp.c
-+++ b/arch/arm64/kernel/smp.c
-@@ -459,6 +459,8 @@ void __init smp_prepare_boot_cpu(void)
- 		init_gic_priority_masking();
+-	if (sk->sk_state & PPPOX_BOUND) {
+-		error = -EIO;
+-		goto end;
+-	}
++	if (sk->sk_state & PPPOX_BOUND)
++		return -EIO;
  
- 	kasan_init_hw_tags();
-+	/* Init percpu seeds for random tags after cpus are set up. */
-+	kasan_init_sw_tags();
+ 	skb = skb_recv_datagram(sk, flags, &error);
+-	if (error < 0)
+-		goto end;
++	if (!skb)
++		return error;
+ 
+-	if (skb) {
+-		total_len = min_t(size_t, total_len, skb->len);
+-		error = skb_copy_datagram_msg(skb, 0, m, total_len);
+-		if (error == 0) {
+-			consume_skb(skb);
+-			return total_len;
+-		}
++	total_len = min_t(size_t, total_len, skb->len);
++	error = skb_copy_datagram_msg(skb, 0, m, total_len);
++	if (error == 0) {
++		consume_skb(skb);
++		return total_len;
+ 	}
+ 
+ 	kfree_skb(skb);
+-end:
+ 	return error;
  }
  
- /*
 -- 
 2.43.0
 
