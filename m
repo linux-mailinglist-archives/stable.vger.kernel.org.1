@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-71076-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70785-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC439961186
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:21:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4592C961008
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:05:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94EBE280FE7
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:21:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EACC51F21CFA
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:05:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 227551C9EA8;
-	Tue, 27 Aug 2024 15:20:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD7241C578E;
+	Tue, 27 Aug 2024 15:04:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TTvLeGkf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="buSD2JG7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D55D617C96;
-	Tue, 27 Aug 2024 15:20:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C33A19F485;
+	Tue, 27 Aug 2024 15:04:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772020; cv=none; b=m9Q+c4ajM9KscKV2MGKaZ4iyCA16m0WGCKGr72Rzf8K3JyXnr/PeAzYcwFM5V1TMcSnv4PSVmDtiPXrA425+Tp1ouQ24V+aaUVYuksSr6a5bGDosDtLsOzrmvtId8IAw0EYT8AUMpaHlpvLwVN+GdhJ7heDJGNVN0Hcpx/5afa8=
+	t=1724771055; cv=none; b=aBLbAG3Rt60XyvhLltOwqBx6Q/WWeuLCobzRKYOZ9w7Mx1QbG6pWbfi7BtGuLPR+V4ecabmppZv2toneBPRZnt62wyw28jRQbXvyl4VdV9W2FqCe/3bMduhaOLMFmsNVjbgvk0jVLcCzHloKqjYxZuYqXUB5sWCa+Sbpr+I8YLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772020; c=relaxed/simple;
-	bh=Lt8tWWBDsN7/pPFpAvSYvpD8qmyWKWk6lzYMArX4XPA=;
+	s=arc-20240116; t=1724771055; c=relaxed/simple;
+	bh=Qj1gh5ZUAGGlsDFA91j6YsUS2tg32wOWDHRMma2bWYE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P2qsdBNEc8RcZ9zfOO2Gs3kXM+++0Kf5NVmUisEyBFNBh6a8hGeE1xSUx1h5bvzswNvR+cK9vYgtMKyMxNUv7qRMUfUhROp0N8y3oitmFfIbNJ79IWQ/J9lcG4JLRwQFjXA3KM3KWa3sfpxdc7VWQJhUbTp+AAh86GrU9EaraCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TTvLeGkf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 446EBC4DDED;
-	Tue, 27 Aug 2024 15:20:20 +0000 (UTC)
+	 MIME-Version; b=rEhAw+u6EgDduVowigI+Uij7pHX5OJc8T2GMpxDy55B94bzlbr1fIvhm/f6Y9il8u+EkCeNLpx9VVp+vdc92J1TqXs8h71nXBzLmHQrgFuxfkJq81Mb+jshs1hLZsXxfy0iwkugqwadM5/M61gmJrH2iOe0pyY+dL2EQlqGewYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=buSD2JG7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06AAEC6104C;
+	Tue, 27 Aug 2024 15:04:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772020;
-	bh=Lt8tWWBDsN7/pPFpAvSYvpD8qmyWKWk6lzYMArX4XPA=;
+	s=korg; t=1724771055;
+	bh=Qj1gh5ZUAGGlsDFA91j6YsUS2tg32wOWDHRMma2bWYE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TTvLeGkf+1gBqP0LNXzm994lpiPy05XHwT0FMJWiy6PyN0aZv/m7bIlVT8Urn2yk1
-	 SSkx5fozPvH8HAkPxMAEzqoB5FH8zPAf3tD5kM9ORw3Bo610OMHgTrUtEtIzHlKP/Y
-	 vV+5Txq70/SdY50bar55fQ1Imb4dEq9Ug/SLCHsQ=
+	b=buSD2JG76Uzuo5oRpr/N/S6y8RFv7V27nfpaLAWJYbjSGTB+awytsYjldOvMqd4hT
+	 kshj6+4zS+ljgbpVKnerrzw+BcFof708Y10cO/PG1vApgMraGmd+JY9KtjXrAgmscn
+	 hujzquSd9UI2PFJoG8T1HM/g08cB7Qb5D/zcTo88=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Pawel Dembicki <paweldembicki@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 089/321] net: dsa: vsc73xx: pass value in phy_write operation
-Date: Tue, 27 Aug 2024 16:36:37 +0200
-Message-ID: <20240827143841.627823003@linuxfoundation.org>
+	Leo Liu <leo.liu@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.10 074/273] drm/amdgpu/jpeg4: properly set atomics vmid field
+Date: Tue, 27 Aug 2024 16:36:38 +0200
+Message-ID: <20240827143836.231420079@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pawel Dembicki <paweldembicki@gmail.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 5b9eebc2c7a5f0cc7950d918c1e8a4ad4bed5010 ]
+commit e6c6bd6253e792cee6c5c065e106e87b9f0d9ae9 upstream.
 
-In the 'vsc73xx_phy_write' function, the register value is missing,
-and the phy write operation always sends zeros.
+This needs to be set as well if the IB uses atomics.
 
-This commit passes the value variable into the proper register.
-
-Fixes: 05bd97fc559d ("net: dsa: Add Vitesse VSC73xx DSA router driver")
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Pawel Dembicki <paweldembicki@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Leo Liu <leo.liu@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit c6c2e8b6a427d4fecc7c36cffccb908185afcab2)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/vitesse-vsc73xx-core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_3.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/dsa/vitesse-vsc73xx-core.c b/drivers/net/dsa/vitesse-vsc73xx-core.c
-index 3efd556690563..81d39dfe21f45 100644
---- a/drivers/net/dsa/vitesse-vsc73xx-core.c
-+++ b/drivers/net/dsa/vitesse-vsc73xx-core.c
-@@ -531,7 +531,7 @@ static int vsc73xx_phy_write(struct dsa_switch *ds, int phy, int regnum,
- 		return 0;
- 	}
+--- a/drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_3.c
++++ b/drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_3.c
+@@ -773,11 +773,11 @@ void jpeg_v4_0_3_dec_ring_emit_ib(struct
  
--	cmd = (phy << 21) | (regnum << 16);
-+	cmd = (phy << 21) | (regnum << 16) | val;
- 	ret = vsc73xx_write(vsc, VSC73XX_BLOCK_MII, 0, 1, cmd);
- 	if (ret)
- 		return ret;
--- 
-2.43.0
-
+ 	amdgpu_ring_write(ring, PACKETJ(regUVD_LMI_JRBC_IB_VMID_INTERNAL_OFFSET,
+ 		0, 0, PACKETJ_TYPE0));
+-	amdgpu_ring_write(ring, (vmid | (vmid << 4)));
++	amdgpu_ring_write(ring, (vmid | (vmid << 4) | (vmid << 8)));
+ 
+ 	amdgpu_ring_write(ring, PACKETJ(regUVD_LMI_JPEG_VMID_INTERNAL_OFFSET,
+ 		0, 0, PACKETJ_TYPE0));
+-	amdgpu_ring_write(ring, (vmid | (vmid << 4)));
++	amdgpu_ring_write(ring, (vmid | (vmid << 4) | (vmid << 8)));
+ 
+ 	amdgpu_ring_write(ring,	PACKETJ(regUVD_LMI_JRBC_IB_64BIT_BAR_LOW_INTERNAL_OFFSET,
+ 		0, 0, PACKETJ_TYPE0));
 
 
 
