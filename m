@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-71207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70664-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E0D9961283
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:31:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE6EF960F69
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:59:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4EA60B22B28
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:29:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2DBB11C23417
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:59:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A3DA1C8FD4;
-	Tue, 27 Aug 2024 15:27:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 285631C8FA0;
+	Tue, 27 Aug 2024 14:57:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nH6/Tehk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YsMmlXTl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19CA91C57BF;
-	Tue, 27 Aug 2024 15:27:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D924F19F485;
+	Tue, 27 Aug 2024 14:57:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772449; cv=none; b=bkpg2kZKFSgilqtofmcDQpHZPUoY5rHt25RXx+44/6wtWk5HzeVl01IlxJLUBS/wGPi5tzGyGpKUkNjcpelgi6jQxw0D9WLOGdaSePeM6Zw45MTAXyCNlDxojYoSVAmmK4vjyZgXGrrGcut3Gfl1kz2U6to1/qzC15dPD8RKFLY=
+	t=1724770660; cv=none; b=KVI7/LwLGy0LJ7oFZ+SMY0bFqDTSMNJVuRxtcdQ+3rNIgGnllnrT0sbtyZ+j9YLXH5zy8ufOWqJkJcL3IMU7WQfbNuE/pXUi36ISr+bNIKl63qMGOWx0k0pR6mdE3wqMvJsHLNWzcNq0YJg9trjDeH1UHLGT+/FXjZIoBbdz8Fg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772449; c=relaxed/simple;
-	bh=GCmwnawkoidqEsbdcz9sb6u3A794npnm300DXmaATfM=;
+	s=arc-20240116; t=1724770660; c=relaxed/simple;
+	bh=q1BunPWm7Vjog0RFa2gKtchMVHytCtxU3YQoS5xreiQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DDuCU5ecsebeOxyP8dmSl53cr4lzs6IRbP5SbMaLEh4gSllWY80fOLZGdt3TLdUOiHQmC4f1GoE04AL5ATgVugCeNCUDTSFBionqfYSKUP9kQxQNIFdB+Gx0/66AVSk0eV93yrPUzAAymPznX9OD/5xc+Dt5zwfExGX+OYiCOcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nH6/Tehk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FB6CC61047;
-	Tue, 27 Aug 2024 15:27:28 +0000 (UTC)
+	 MIME-Version; b=SBLOgb/0K0gfHQXzU75JZQLumTwYU7tCP+teMhbohIWWFyTgrd/glr77wTT1C016mGOzduPaR3IAncpgh0+3qW3UarlN0E6t17snpdWL2N6wUZuO3g8y/am8IuAAeoLUr8TQO6hPKEwBBQAvfWKBp6FfrfKh9zc1xp/tyQMYCxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YsMmlXTl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6B98C61040;
+	Tue, 27 Aug 2024 14:57:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772449;
-	bh=GCmwnawkoidqEsbdcz9sb6u3A794npnm300DXmaATfM=;
+	s=korg; t=1724770660;
+	bh=q1BunPWm7Vjog0RFa2gKtchMVHytCtxU3YQoS5xreiQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nH6/TehkuoLI1Z8eLMqPhpYqXtzwJ4SMd3dlmHqv4WM0WJKcyS88tgVVHxyteuQZO
-	 1TYlF6s+4XAhJk7JgVj4L1H4IkjlTRWfIX9S2H1oF78v0Yta+LzmEsL9bKZ9/q1MAf
-	 YjVApZU7slsHsnRudUcp5JUOPaTljBZJrTLQOPc8=
+	b=YsMmlXTlG7IRs5XzbFsq6B0jeWkxAOeJjEmB+05u/qO3NTLJEKDCMLVEu5WFhYLbo
+	 +pBRGBitBrZjfcYIkd/fCPB5GK4KAuZMQDiZOTPY5axMzChESAKevOJbNUh6yzLZaX
+	 ru9+m6q/ppnHhf+qgRD3Z0yET2K9cwPldKJNzKeI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lang Yu <Lang.Yu@amd.com>,
-	Felix Kuehling <Felix.Kuehling@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 219/321] drm/amdkfd: reserve the BO before validating it
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 296/341] ksmbd: the buffer of smb2 query dir response has at least 1 byte
 Date: Tue, 27 Aug 2024 16:38:47 +0200
-Message-ID: <20240827143846.569526586@linuxfoundation.org>
+Message-ID: <20240827143854.657832245@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,131 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lang Yu <Lang.Yu@amd.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit 0c93bd49576677ae1a18817d5ec000ef031d5187 ]
+commit ce61b605a00502c59311d0a4b1f58d62b48272d0 upstream.
 
-Fix a warning.
+When STATUS_NO_MORE_FILES status is set to smb2 query dir response,
+->StructureSize is set to 9, which mean buffer has 1 byte.
+This issue occurs because ->Buffer[1] in smb2_query_directory_rsp to
+flex-array.
 
-v2: Avoid unmapping attachment repeatedly when ERESTARTSYS.
-
-v3: Lock the BO before accessing ttm->sg to avoid race conditions.(Felix)
-
-[   41.708711] WARNING: CPU: 0 PID: 1463 at drivers/gpu/drm/ttm/ttm_bo.c:846 ttm_bo_validate+0x146/0x1b0 [ttm]
-[   41.708989] Call Trace:
-[   41.708992]  <TASK>
-[   41.708996]  ? show_regs+0x6c/0x80
-[   41.709000]  ? ttm_bo_validate+0x146/0x1b0 [ttm]
-[   41.709008]  ? __warn+0x93/0x190
-[   41.709014]  ? ttm_bo_validate+0x146/0x1b0 [ttm]
-[   41.709024]  ? report_bug+0x1f9/0x210
-[   41.709035]  ? handle_bug+0x46/0x80
-[   41.709041]  ? exc_invalid_op+0x1d/0x80
-[   41.709048]  ? asm_exc_invalid_op+0x1f/0x30
-[   41.709057]  ? amdgpu_amdkfd_gpuvm_dmaunmap_mem+0x2c/0x80 [amdgpu]
-[   41.709185]  ? ttm_bo_validate+0x146/0x1b0 [ttm]
-[   41.709197]  ? amdgpu_amdkfd_gpuvm_dmaunmap_mem+0x2c/0x80 [amdgpu]
-[   41.709337]  ? srso_alias_return_thunk+0x5/0x7f
-[   41.709346]  kfd_mem_dmaunmap_attachment+0x9e/0x1e0 [amdgpu]
-[   41.709467]  amdgpu_amdkfd_gpuvm_dmaunmap_mem+0x56/0x80 [amdgpu]
-[   41.709586]  kfd_ioctl_unmap_memory_from_gpu+0x1b7/0x300 [amdgpu]
-[   41.709710]  kfd_ioctl+0x1ec/0x650 [amdgpu]
-[   41.709822]  ? __pfx_kfd_ioctl_unmap_memory_from_gpu+0x10/0x10 [amdgpu]
-[   41.709945]  ? srso_alias_return_thunk+0x5/0x7f
-[   41.709949]  ? tomoyo_file_ioctl+0x20/0x30
-[   41.709959]  __x64_sys_ioctl+0x9c/0xd0
-[   41.709967]  do_syscall_64+0x3f/0x90
-[   41.709973]  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-
-Fixes: 101b8104307e ("drm/amdkfd: Move dma unmapping after TLB flush")
-Signed-off-by: Lang Yu <Lang.Yu@amd.com>
-Reviewed-by: Felix Kuehling <Felix.Kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: eb3e28c1e89b ("smb3: Replace smb2pdu 1-element arrays with flex-arrays")
+Cc: stable@vger.kernel.org # v6.1+
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.h    |  2 +-
- .../gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c  | 20 ++++++++++++++++---
- drivers/gpu/drm/amd/amdkfd/kfd_chardev.c      |  4 +++-
- 3 files changed, 21 insertions(+), 5 deletions(-)
+ fs/smb/server/smb2pdu.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.h
-index 585d608c10e8e..4b694886715cf 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.h
-@@ -286,7 +286,7 @@ int amdgpu_amdkfd_gpuvm_map_memory_to_gpu(struct amdgpu_device *adev,
- 					  struct kgd_mem *mem, void *drm_priv);
- int amdgpu_amdkfd_gpuvm_unmap_memory_from_gpu(
- 		struct amdgpu_device *adev, struct kgd_mem *mem, void *drm_priv);
--void amdgpu_amdkfd_gpuvm_dmaunmap_mem(struct kgd_mem *mem, void *drm_priv);
-+int amdgpu_amdkfd_gpuvm_dmaunmap_mem(struct kgd_mem *mem, void *drm_priv);
- int amdgpu_amdkfd_gpuvm_sync_memory(
- 		struct amdgpu_device *adev, struct kgd_mem *mem, bool intr);
- int amdgpu_amdkfd_gpuvm_map_gtt_bo_to_kernel(struct kgd_mem *mem,
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
-index 3e7f4d8dc9d13..d486f5dc052e4 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
-@@ -2025,21 +2025,35 @@ int amdgpu_amdkfd_gpuvm_map_memory_to_gpu(
- 	return ret;
- }
- 
--void amdgpu_amdkfd_gpuvm_dmaunmap_mem(struct kgd_mem *mem, void *drm_priv)
-+int amdgpu_amdkfd_gpuvm_dmaunmap_mem(struct kgd_mem *mem, void *drm_priv)
- {
- 	struct kfd_mem_attachment *entry;
- 	struct amdgpu_vm *vm;
-+	int ret;
- 
- 	vm = drm_priv_to_vm(drm_priv);
- 
- 	mutex_lock(&mem->lock);
- 
-+	ret = amdgpu_bo_reserve(mem->bo, true);
-+	if (ret)
-+		goto out;
-+
- 	list_for_each_entry(entry, &mem->attachments, list) {
--		if (entry->bo_va->base.vm == vm)
--			kfd_mem_dmaunmap_attachment(mem, entry);
-+		if (entry->bo_va->base.vm != vm)
-+			continue;
-+		if (entry->bo_va->base.bo->tbo.ttm &&
-+		    !entry->bo_va->base.bo->tbo.ttm->sg)
-+			continue;
-+
-+		kfd_mem_dmaunmap_attachment(mem, entry);
- 	}
- 
-+	amdgpu_bo_unreserve(mem->bo);
-+out:
- 	mutex_unlock(&mem->lock);
-+
-+	return ret;
- }
- 
- int amdgpu_amdkfd_gpuvm_unmap_memory_from_gpu(
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
-index 2b21ce967e766..e3cd66c4d95d8 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
-@@ -1410,7 +1410,9 @@ static int kfd_ioctl_unmap_memory_from_gpu(struct file *filep,
- 			kfd_flush_tlb(peer_pdd, TLB_FLUSH_HEAVYWEIGHT);
- 
- 		/* Remove dma mapping after tlb flush to avoid IO_PAGE_FAULT */
--		amdgpu_amdkfd_gpuvm_dmaunmap_mem(mem, peer_pdd->drm_priv);
-+		err = amdgpu_amdkfd_gpuvm_dmaunmap_mem(mem, peer_pdd->drm_priv);
-+		if (err)
-+			goto sync_memory_failed;
- 	}
- 
- 	mutex_unlock(&p->mutex);
--- 
-2.43.0
-
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -4406,7 +4406,8 @@ int smb2_query_dir(struct ksmbd_work *wo
+ 		rsp->OutputBufferLength = cpu_to_le32(0);
+ 		rsp->Buffer[0] = 0;
+ 		rc = ksmbd_iov_pin_rsp(work, (void *)rsp,
+-				       sizeof(struct smb2_query_directory_rsp));
++				       offsetof(struct smb2_query_directory_rsp, Buffer)
++				       + 1);
+ 		if (rc)
+ 			goto err_out;
+ 	} else {
 
 
 
