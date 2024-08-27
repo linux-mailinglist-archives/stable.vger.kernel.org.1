@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-70865-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71173-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF6CC96106C
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:08:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E14D96121A
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:27:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E3E61C20B5B
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:08:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4085C1C235FC
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:27:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2029A1C68AE;
-	Tue, 27 Aug 2024 15:08:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B48B1C6886;
+	Tue, 27 Aug 2024 15:25:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DTwi+SgV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="schROpee"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D041A1C6890;
-	Tue, 27 Aug 2024 15:08:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8E181C5792;
+	Tue, 27 Aug 2024 15:25:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771318; cv=none; b=uSU5U3E8n6FiZaK2CdF15brsHlOQYLqAytCgLLthZqlEce42058/QuxuaZSMFfNvU9ntmRBBNru2k8nD8ylAiAgjse1CDf5pYuMLQgkrDAhjfPJZlaEoQ8of6/W/cWGMQEeoaOoYhhChDmrp7XyvGHma48/2S0yqMP7VIOHpeIc=
+	t=1724772340; cv=none; b=XVf0zFN9kTMUGMYRjiy4zwtz4USsuWiFZrHuu9FVzAGJoR5CIGKTlO7bTEoO9JyDhDb9Fs+hQAD6EPUSO7vDwfe47rufZKJyzDalINm/vzEyThg8/QfrlnwJuseqZpiPZyckkIIC0UavZf+nxqd+AOD8HKCdfMHjoMot908DfaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771318; c=relaxed/simple;
-	bh=ZBOlzEm1ewq6S29oiUeZ+MOD54LnxZT6pFJa4IHBj4M=;
+	s=arc-20240116; t=1724772340; c=relaxed/simple;
+	bh=QudX2prelyG4mCFCLJNHTNfH83cwbhUCPrNLYFL9QNE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dIGT5chYASbPmXiCHLvHmy5IdUn6wmwXCqoXMVnZBpD4VVTy9BqyoUoXjPwhg0B4YJBFBND8l29IUyeQVFfCl4WGFAVUIpyPoxtPo6y4fuZ17tmHDWePYxf/6NCwka0aKPdSjTyTP/QXs03qIKeBYtgZMMX8GE0dBSyJgwDIwcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DTwi+SgV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDA2BC4AF11;
-	Tue, 27 Aug 2024 15:08:37 +0000 (UTC)
+	 MIME-Version; b=cERdY+Lhv1V8p2wLugI5LH2rVQ9wFUG0JNUzlPRNBadE9YVMaghNIYPZLVlxzjdG9WXxuzt+zQjvAUguQz1w51g/r12+RAHOaL+lJBywZSUZWtB2FVgx8fI8s4UnVQQh5ERO8vDrmINMxuxW2WHwsuP/S3yfGGJ7ZcF+8tlNhpo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=schROpee; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E033C61071;
+	Tue, 27 Aug 2024 15:25:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771318;
-	bh=ZBOlzEm1ewq6S29oiUeZ+MOD54LnxZT6pFJa4IHBj4M=;
+	s=korg; t=1724772340;
+	bh=QudX2prelyG4mCFCLJNHTNfH83cwbhUCPrNLYFL9QNE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DTwi+SgVDB5EI3UfZrDBfYCxAzahMXOgMdw9cJ7rYIcVD9AoxPEpD3a0dR1hy9DdB
-	 fSbr3htiG3HE/YeaHqDmkXcRL+ul7b2EuWuyvAd9OEnzHnhcWnw5FUokFIJcN4xQv2
-	 LiNZSlYQomLK9dLJJvRZLUATx3w3MfXdm5JTXg7o=
+	b=schROpeemQYUFPBC2+wVU66DLlAcmXHyDCkY/XCxoR4QClnfldZnAjZsDWOMB5Cpx
+	 7aoYWUkH+CtVOSvh5SdH59YIakl1Zs4gviNOYPVF+LwwB3GoPSPQzYeVLF8zhFZIt9
+	 gewD8ONBGhvKv+1rZEpWoeyzUfc6k3ur3mFwBsvs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sam Creasey <sammy@sammy.net>,
+	Kees Cook <keescook@chromium.org>,
+	Simon Horman <horms@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 152/273] Bluetooth: hci_core: Fix LE quote calculation
+Subject: [PATCH 6.1 168/321] net/sun3_82586: Avoid reading past buffer in debug output
 Date: Tue, 27 Aug 2024 16:37:56 +0200
-Message-ID: <20240827143839.189319091@linuxfoundation.org>
+Message-ID: <20240827143844.624888261@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,78 +65,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Kees Cook <keescook@chromium.org>
 
-[ Upstream commit 932021a11805b9da4bd6abf66fe233cccd59fe0e ]
+[ Upstream commit 4bea747f3fbec33c16d369b2f51e55981d7c78d0 ]
 
-Function hci_sched_le needs to update the respective counter variable
-inplace other the likes of hci_quote_sent would attempt to use the
-possible outdated value of conn->{le_cnt,acl_cnt}.
+Since NUM_XMIT_BUFFS is always 1, building m68k with sun3_defconfig and
+-Warraybounds, this build warning is visible[1]:
 
-Link: https://github.com/bluez/bluez/issues/915
-Fixes: 73d80deb7bdf ("Bluetooth: prioritizing data over HCI")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+drivers/net/ethernet/i825xx/sun3_82586.c: In function 'sun3_82586_timeout':
+drivers/net/ethernet/i825xx/sun3_82586.c:990:122: warning: array subscript 1 is above array bounds of 'volatile struct transmit_cmd_struct *[1]' [-Warray-bounds=]
+  990 |                 printk("%s: command-stats: %04x %04x\n",dev->name,swab16(p->xmit_cmds[0]->cmd_status),swab16(p->xmit_cmds[1]->cmd_status));
+      |                                                                                                               ~~~~~~~~~~~~^~~
+...
+drivers/net/ethernet/i825xx/sun3_82586.c:156:46: note: while referencing 'xmit_cmds'
+  156 |         volatile struct transmit_cmd_struct *xmit_cmds[NUM_XMIT_BUFFS];
+
+Avoid accessing index 1 since it doesn't exist.
+
+Link: https://github.com/KSPP/linux/issues/325 [1]
+Cc: Sam Creasey <sammy@sammy.net>
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Simon Horman <horms@kernel.org> # build-tested
+Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Link: https://lore.kernel.org/r/20240206161651.work.876-kees@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_core.c | 19 +++++++------------
- 1 file changed, 7 insertions(+), 12 deletions(-)
+ drivers/net/ethernet/i825xx/sun3_82586.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
-index 6ecb110bf46bc..b488d0742c966 100644
---- a/net/bluetooth/hci_core.c
-+++ b/net/bluetooth/hci_core.c
-@@ -3674,19 +3674,19 @@ static void hci_sched_le(struct hci_dev *hdev)
- {
- 	struct hci_chan *chan;
- 	struct sk_buff *skb;
--	int quote, cnt, tmp;
-+	int quote, *cnt, tmp;
- 
- 	BT_DBG("%s", hdev->name);
- 
- 	if (!hci_conn_num(hdev, LE_LINK))
- 		return;
- 
--	cnt = hdev->le_pkts ? hdev->le_cnt : hdev->acl_cnt;
-+	cnt = hdev->le_pkts ? &hdev->le_cnt : &hdev->acl_cnt;
- 
--	__check_timeout(hdev, cnt, LE_LINK);
-+	__check_timeout(hdev, *cnt, LE_LINK);
- 
--	tmp = cnt;
--	while (cnt && (chan = hci_chan_sent(hdev, LE_LINK, &quote))) {
-+	tmp = *cnt;
-+	while (*cnt && (chan = hci_chan_sent(hdev, LE_LINK, &quote))) {
- 		u32 priority = (skb_peek(&chan->data_q))->priority;
- 		while (quote-- && (skb = skb_peek(&chan->data_q))) {
- 			BT_DBG("chan %p skb %p len %d priority %u", chan, skb,
-@@ -3701,7 +3701,7 @@ static void hci_sched_le(struct hci_dev *hdev)
- 			hci_send_frame(hdev, skb);
- 			hdev->le_last_tx = jiffies;
- 
--			cnt--;
-+			(*cnt)--;
- 			chan->sent++;
- 			chan->conn->sent++;
- 
-@@ -3711,12 +3711,7 @@ static void hci_sched_le(struct hci_dev *hdev)
- 		}
- 	}
- 
--	if (hdev->le_pkts)
--		hdev->le_cnt = cnt;
--	else
--		hdev->acl_cnt = cnt;
--
--	if (cnt != tmp)
-+	if (*cnt != tmp)
- 		hci_prio_recalculate(hdev, LE_LINK);
- }
- 
+diff --git a/drivers/net/ethernet/i825xx/sun3_82586.c b/drivers/net/ethernet/i825xx/sun3_82586.c
+index 3909c6a0af89f..72d3b5328ebb4 100644
+--- a/drivers/net/ethernet/i825xx/sun3_82586.c
++++ b/drivers/net/ethernet/i825xx/sun3_82586.c
+@@ -986,7 +986,7 @@ static void sun3_82586_timeout(struct net_device *dev, unsigned int txqueue)
+ 	{
+ #ifdef DEBUG
+ 		printk("%s: xmitter timed out, try to restart! stat: %02x\n",dev->name,p->scb->cus);
+-		printk("%s: command-stats: %04x %04x\n",dev->name,swab16(p->xmit_cmds[0]->cmd_status),swab16(p->xmit_cmds[1]->cmd_status));
++		printk("%s: command-stats: %04x\n", dev->name, swab16(p->xmit_cmds[0]->cmd_status));
+ 		printk("%s: check, whether you set the right interrupt number!\n",dev->name);
+ #endif
+ 		sun3_82586_close(dev);
 -- 
 2.43.0
 
