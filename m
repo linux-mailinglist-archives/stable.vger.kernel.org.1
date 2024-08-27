@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-71004-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70730-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1479E96111A
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:16:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EE9D960FBA
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:01:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4DBB280CBD
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:16:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE0621C23516
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:01:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9F5A1BC9FC;
-	Tue, 27 Aug 2024 15:16:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8865B1C578E;
+	Tue, 27 Aug 2024 15:01:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vs4uK6Ye"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KC9njsrx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A714A4C634;
-	Tue, 27 Aug 2024 15:16:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46CC01C6F5F;
+	Tue, 27 Aug 2024 15:01:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771777; cv=none; b=enAxoQysVOsP8CJH67fyWK5ib8UVG6k76IINUCaj0iyoK5pBlT7iEO3b85zWErvEFdeKYX9DZC2uqMSDTnzivMSJh5GozCsJSZ0ZdnipuK7WGCDmOUj4Er+FRV+MeSOaE54SBkH7vLQaH9z7xvGQBZNKXmSxpogz73OLob5rdAE=
+	t=1724770877; cv=none; b=T9cIRom+/H4rND1Ff3zLpNPfRYydrRwf4RCREgw1fzRRtlv7PPPtKz3x6WhbQGcDuFo/JtfVcn8Gd3T3n/D4ftv/g2amACmrAZYNjJlpmKPy+RiVO5LEH11OoUSPCBg+LRsn7q8qdIQbQj6QUDgGXs4KQK1GqM3sfpmeec7UCX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771777; c=relaxed/simple;
-	bh=aL5/FEYDpAd1RybFEKMqEGhMyFwzef8ZfYCDP+Dd2ac=;
+	s=arc-20240116; t=1724770877; c=relaxed/simple;
+	bh=rbOmDiuGbPHOiKL4j72B14iher/rDzfpKyT3yqvRPYA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rar/wiMpso44j5d0R3S7Cwpesx6Gv0erfQr3kOURZSzWZDTvEXT9dH7LRoRmAtnsdgW2UUfMeJQ0oVd4hAJX+I/wi0AkfcTCjXGV9thmGZ1GHm8cj0RLQvPOBUPei0zQWcGDJhmvD94ixh+x7tj24siTt8gsBl9Wehqg3NRUIVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vs4uK6Ye; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1229EC4AF50;
-	Tue, 27 Aug 2024 15:16:16 +0000 (UTC)
+	 MIME-Version; b=BcOwthdV5M4gxg215FzjH3y7N0HzAHADKJ4BXJxi5gISs6m3Whv38dn0ydPmUyvTZcv8TAGwHdqIv9p2tZfAo7cgwnELG9zrqvYSWOKdv3S2uWXFlvfbj16e8ayqKe3oTA/TwdWW679dz646n9kNtUTBAUrkpR74mauE6A3HCOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KC9njsrx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82BFCC4AF1C;
+	Tue, 27 Aug 2024 15:01:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771777;
-	bh=aL5/FEYDpAd1RybFEKMqEGhMyFwzef8ZfYCDP+Dd2ac=;
+	s=korg; t=1724770876;
+	bh=rbOmDiuGbPHOiKL4j72B14iher/rDzfpKyT3yqvRPYA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vs4uK6YeND7Bf5EAlZU5wfhXvoqkWl74PjKZLkyursdQe+kU+dyP3RhT3V304TkN9
-	 1qjcRgMO81rN5uZuA8Nq0Y/NuF8xTGGw8WyUDCkcW3XXcI3Hlezw2Iwf8dhHRnnSgC
-	 3vx1iN1+KbvFbnvtvXId/Apifr1wbqNgF2VyyEEY=
+	b=KC9njsrxrh0MjfZ6BS71BRdU1P7VYnfPUnDrMsaJ3VU+f8aNX6x5NUNE8VYIoz8vW
+	 qz/SDCyUU346G4CJtkA48mOTzNTPFYGPo3ThKCoHp1lq50xx18efXozePmnS9V9OnU
+	 zxRXPqRzYhO4ttOgPwmY9aAMqZsWALZrsDvNnFDY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	David Sterba <dsterba@suse.com>,
-	Yury Norov <yury.norov@gmail.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.1 018/321] btrfs: rename bitmap_set_bits() -> btrfs_bitmap_set_bits()
+	stable <stable@kernel.org>,
+	Peng Fan <peng.fan@nxp.com>
+Subject: [PATCH 6.10 002/273] tty: serial: fsl_lpuart: mark last busy before uart_add_one_port
 Date: Tue, 27 Aug 2024 16:35:26 +0200
-Message-ID: <20240827143838.902786770@linuxfoundation.org>
+Message-ID: <20240827143833.469662084@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +61,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Lobakin <aleksander.lobakin@intel.com>
+From: Peng Fan <peng.fan@nxp.com>
 
-commit 4ca532d64648d4776d15512caed3efea05ca7195 upstream.
+commit dc98d76a15bc29a9a4e76f2f65f39f3e590fb15c upstream.
 
-bitmap_set_bits() does not start with the FS' prefix and may collide
-with a new generic helper one day. It operates with the FS-specific
-types, so there's no change those two could do the same thing.
-Just add the prefix to exclude such possible conflict.
+With "earlycon initcall_debug=1 loglevel=8" in bootargs, kernel
+sometimes boot hang. It is because normal console still is not ready,
+but runtime suspend is called, so early console putchar will hang
+in waiting TRDE set in UARTSTAT.
 
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Acked-by: David Sterba <dsterba@suse.com>
-Reviewed-by: Yury Norov <yury.norov@gmail.com>
-Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+The lpuart driver has auto suspend delay set to 3000ms, but during
+uart_add_one_port, a child device serial ctrl will added and probed with
+its pm runtime enabled(see serial_ctrl.c).
+The runtime suspend call path is:
+device_add
+     |-> bus_probe_device
+           |->device_initial_probe
+	           |->__device_attach
+                         |-> pm_runtime_get_sync(dev->parent);
+			 |-> pm_request_idle(dev);
+			 |-> pm_runtime_put(dev->parent);
+
+So in the end, before normal console ready, the lpuart get runtime
+suspended. And earlycon putchar will hang.
+
+To address the issue, mark last busy just after pm_runtime_enable,
+three seconds is long enough to switch from bootconsole to normal
+console.
+
+Fixes: 43543e6f539b ("tty: serial: fsl_lpuart: Add runtime pm support")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Link: https://lore.kernel.org/r/20240808140325.580105-1-peng.fan@oss.nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/free-space-cache.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/tty/serial/fsl_lpuart.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/btrfs/free-space-cache.c
-+++ b/fs/btrfs/free-space-cache.c
-@@ -1894,9 +1894,9 @@ static inline void bitmap_clear_bits(str
- 		ctl->free_space -= bytes;
- }
+--- a/drivers/tty/serial/fsl_lpuart.c
++++ b/drivers/tty/serial/fsl_lpuart.c
+@@ -2923,6 +2923,7 @@ static int lpuart_probe(struct platform_
+ 	pm_runtime_set_autosuspend_delay(&pdev->dev, UART_AUTOSUSPEND_TIMEOUT);
+ 	pm_runtime_set_active(&pdev->dev);
+ 	pm_runtime_enable(&pdev->dev);
++	pm_runtime_mark_last_busy(&pdev->dev);
  
--static void bitmap_set_bits(struct btrfs_free_space_ctl *ctl,
--			    struct btrfs_free_space *info, u64 offset,
--			    u64 bytes)
-+static void btrfs_bitmap_set_bits(struct btrfs_free_space_ctl *ctl,
-+				  struct btrfs_free_space *info, u64 offset,
-+				  u64 bytes)
- {
- 	unsigned long start, count, end;
- 	int extent_delta = 1;
-@@ -2232,7 +2232,7 @@ static u64 add_bytes_to_bitmap(struct bt
- 
- 	bytes_to_set = min(end - offset, bytes);
- 
--	bitmap_set_bits(ctl, info, offset, bytes_to_set);
-+	btrfs_bitmap_set_bits(ctl, info, offset, bytes_to_set);
- 
- 	return bytes_to_set;
- 
+ 	ret = lpuart_global_reset(sport);
+ 	if (ret)
 
 
 
