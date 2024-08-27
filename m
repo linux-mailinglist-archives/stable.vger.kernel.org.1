@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-71163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70629-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 938C89611F7
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:25:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E8D5960F36
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:57:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D0826B254A4
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:25:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 51F911C2332D
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:57:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26B9D1C6F51;
-	Tue, 27 Aug 2024 15:25:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0BCB1C5788;
+	Tue, 27 Aug 2024 14:55:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yq+SnZly"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h9xuDgPj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8BB41C57AB;
-	Tue, 27 Aug 2024 15:25:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE6DD1BB6BE;
+	Tue, 27 Aug 2024 14:55:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772307; cv=none; b=Kp+k3mCNBzioDZ3XN71JdVIcIuUMkO6aEJhlKJpL3GucqFTqJw/ygHVKa+xQvA31RYrw6NAkU42PvM17YjnjR1J7GBJE9fCU69kSgSOkO1whjaxa9wws85k2k37UNA9ewhWwfcuokK3MI1eG0D8/x+RiDobOma1F1yWRYUHjslA=
+	t=1724770545; cv=none; b=mcqjboBuvnklILY/oiPCsV1hRUdvSxXCMoYhqYI3Yj+j1a7tWo6ObjyS2SaTgcq2+E3146vtifxo8tnvKKzRODjWjz8/E9+cXcCkQE8sCeVAY1DrndF9N4rswcX1HJ8DOAWA/x7kLSIl9tRyLDr9GWI0sSN3fbFqJlu6DwF2US4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772307; c=relaxed/simple;
-	bh=AKLHcfFQkS8XFOB1Q2jI4OdvLf3i3XPDpeJcDGr1d/M=;
+	s=arc-20240116; t=1724770545; c=relaxed/simple;
+	bh=28PKdSUUaSN+0n/75/IruCj1nvt2KT2Bj7eYPPaKSRw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nsFoGmisPLz4WHP/VH5o1FD0pr0e0j+KP5ZEznBNrh0mj9+Biy/qc35d+NuZJOMVua80YzO/45ig0pqKAJMKMb8c8aVcCgGNHgDhPacoH3XS3K6tWyOyv0nSoQt6qljKF8uE789picjpMiO3PUY5iy+hCeAw4tEOxD3l4qW2w/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yq+SnZly; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BBD2C61071;
-	Tue, 27 Aug 2024 15:25:07 +0000 (UTC)
+	 MIME-Version; b=l5TBgA2kaBldS1rWnWe5K8SVzzE1WsUVM458USfzCFRZdGgrflrh8INUhU8OCi/sbk8f4/aB/ySgip1LYd/Y6zK70OcnSN3bv4vLl52uEg52aBcGQL93WueOTcJzaSF9g6YkgbYEzLKbZs920YiavW9Lxdb28puSAmrzcG8VIBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h9xuDgPj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13F37C4E699;
+	Tue, 27 Aug 2024 14:55:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772307;
-	bh=AKLHcfFQkS8XFOB1Q2jI4OdvLf3i3XPDpeJcDGr1d/M=;
+	s=korg; t=1724770545;
+	bh=28PKdSUUaSN+0n/75/IruCj1nvt2KT2Bj7eYPPaKSRw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yq+SnZlyr6GEUpBxLFmAg+cSfet9tnCSxHuZ01GjL0tiMMa1lc55W/ArdOFZBUHGV
-	 LHRheio43OUQN35WxO6Z9OA+/wQ8rhp6N8CGKWyUyj7FK8+HU+xeZcyIeI9g5jiq+r
-	 +eZnMJt2UgOkOMayMUV2I25Em2tNhBwGRcinCcxw=
+	b=h9xuDgPjXUCt4CYUWdHP9VxI/9aeeC6a4GF4v03AJpVolZo8IVWdXf9ISJP6U1qRX
+	 tVlBfZEHj8H+4fs57WsKIA4iXMBnLr3412MnPVakIIDC4viS1Qc+nQTdYZRWktggJQ
+	 +irBI53tHZsdADOTDiKv3HeHKxpQoQz2f8UHD2s8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe Kerello <christophe.kerello@foss.st.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 176/321] memory: stm32-fmc2-ebi: check regmap_read return value
+Subject: [PATCH 6.6 253/341] netfilter: nft_counter: Disable BH in nft_counter_offload_stats().
 Date: Tue, 27 Aug 2024 16:38:04 +0200
-Message-ID: <20240827143844.929164501@linuxfoundation.org>
+Message-ID: <20240827143853.037882262@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,285 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Kerello <christophe.kerello@foss.st.com>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-[ Upstream commit 722463f73bcf65a8c818752a38c14ee672c77da1 ]
+[ Upstream commit 1eacdd71b3436b54d5fc8218c4bb0187d92a6892 ]
 
-Check regmap_read return value to avoid to use uninitialized local
-variables.
+The sequence counter nft_counter_seq is a per-CPU counter. There is no
+lock associated with it. nft_counter_do_eval() is using the same counter
+and disables BH which suggest that it can be invoked from a softirq.
+This in turn means that nft_counter_offload_stats(), which disables only
+preemption, can be interrupted by nft_counter_do_eval() leading to two
+writer for one seqcount_t.
+This can lead to loosing stats or reading statistics while they are
+updated.
 
-Signed-off-by: Christophe Kerello <christophe.kerello@foss.st.com>
-Link: https://lore.kernel.org/r/20240226101428.37791-3-christophe.kerello@foss.st.com
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Disable BH during stats update in nft_counter_offload_stats() to ensure
+one writer at a time.
+
+Fixes: b72920f6e4a9d ("netfilter: nftables: counter hardware offload support")
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Reviewed-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/memory/stm32-fmc2-ebi.c | 122 +++++++++++++++++++++++---------
- 1 file changed, 88 insertions(+), 34 deletions(-)
+ net/netfilter/nft_counter.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/memory/stm32-fmc2-ebi.c b/drivers/memory/stm32-fmc2-ebi.c
-index ffec26a99313b..5c387d32c078f 100644
---- a/drivers/memory/stm32-fmc2-ebi.c
-+++ b/drivers/memory/stm32-fmc2-ebi.c
-@@ -179,8 +179,11 @@ static int stm32_fmc2_ebi_check_mux(struct stm32_fmc2_ebi *ebi,
- 				    int cs)
- {
- 	u32 bcr;
-+	int ret;
+diff --git a/net/netfilter/nft_counter.c b/net/netfilter/nft_counter.c
+index dccc68a5135ad..5a90c3c7268bf 100644
+--- a/net/netfilter/nft_counter.c
++++ b/net/netfilter/nft_counter.c
+@@ -265,7 +265,7 @@ static void nft_counter_offload_stats(struct nft_expr *expr,
+ 	struct nft_counter *this_cpu;
+ 	seqcount_t *myseq;
  
--	regmap_read(ebi->regmap, FMC2_BCR(cs), &bcr);
-+	ret = regmap_read(ebi->regmap, FMC2_BCR(cs), &bcr);
-+	if (ret)
-+		return ret;
+-	preempt_disable();
++	local_bh_disable();
+ 	this_cpu = this_cpu_ptr(priv->counter);
+ 	myseq = this_cpu_ptr(&nft_counter_seq);
  
- 	if (bcr & FMC2_BCR_MTYP)
- 		return 0;
-@@ -193,8 +196,11 @@ static int stm32_fmc2_ebi_check_waitcfg(struct stm32_fmc2_ebi *ebi,
- 					int cs)
- {
- 	u32 bcr, val = FIELD_PREP(FMC2_BCR_MTYP, FMC2_BCR_MTYP_NOR);
-+	int ret;
- 
--	regmap_read(ebi->regmap, FMC2_BCR(cs), &bcr);
-+	ret = regmap_read(ebi->regmap, FMC2_BCR(cs), &bcr);
-+	if (ret)
-+		return ret;
- 
- 	if ((bcr & FMC2_BCR_MTYP) == val && bcr & FMC2_BCR_BURSTEN)
- 		return 0;
-@@ -207,8 +213,11 @@ static int stm32_fmc2_ebi_check_sync_trans(struct stm32_fmc2_ebi *ebi,
- 					   int cs)
- {
- 	u32 bcr;
-+	int ret;
- 
--	regmap_read(ebi->regmap, FMC2_BCR(cs), &bcr);
-+	ret = regmap_read(ebi->regmap, FMC2_BCR(cs), &bcr);
-+	if (ret)
-+		return ret;
- 
- 	if (bcr & FMC2_BCR_BURSTEN)
- 		return 0;
-@@ -221,8 +230,11 @@ static int stm32_fmc2_ebi_check_async_trans(struct stm32_fmc2_ebi *ebi,
- 					    int cs)
- {
- 	u32 bcr;
-+	int ret;
- 
--	regmap_read(ebi->regmap, FMC2_BCR(cs), &bcr);
-+	ret = regmap_read(ebi->regmap, FMC2_BCR(cs), &bcr);
-+	if (ret)
-+		return ret;
- 
- 	if (!(bcr & FMC2_BCR_BURSTEN) || !(bcr & FMC2_BCR_CBURSTRW))
- 		return 0;
-@@ -235,8 +247,11 @@ static int stm32_fmc2_ebi_check_cpsize(struct stm32_fmc2_ebi *ebi,
- 				       int cs)
- {
- 	u32 bcr, val = FIELD_PREP(FMC2_BCR_MTYP, FMC2_BCR_MTYP_PSRAM);
-+	int ret;
- 
--	regmap_read(ebi->regmap, FMC2_BCR(cs), &bcr);
-+	ret = regmap_read(ebi->regmap, FMC2_BCR(cs), &bcr);
-+	if (ret)
-+		return ret;
- 
- 	if ((bcr & FMC2_BCR_MTYP) == val && bcr & FMC2_BCR_BURSTEN)
- 		return 0;
-@@ -249,12 +264,18 @@ static int stm32_fmc2_ebi_check_address_hold(struct stm32_fmc2_ebi *ebi,
- 					     int cs)
- {
- 	u32 bcr, bxtr, val = FIELD_PREP(FMC2_BXTR_ACCMOD, FMC2_BXTR_EXTMOD_D);
-+	int ret;
-+
-+	ret = regmap_read(ebi->regmap, FMC2_BCR(cs), &bcr);
-+	if (ret)
-+		return ret;
- 
--	regmap_read(ebi->regmap, FMC2_BCR(cs), &bcr);
- 	if (prop->reg_type == FMC2_REG_BWTR)
--		regmap_read(ebi->regmap, FMC2_BWTR(cs), &bxtr);
-+		ret = regmap_read(ebi->regmap, FMC2_BWTR(cs), &bxtr);
- 	else
--		regmap_read(ebi->regmap, FMC2_BTR(cs), &bxtr);
-+		ret = regmap_read(ebi->regmap, FMC2_BTR(cs), &bxtr);
-+	if (ret)
-+		return ret;
- 
- 	if ((!(bcr & FMC2_BCR_BURSTEN) || !(bcr & FMC2_BCR_CBURSTRW)) &&
- 	    ((bxtr & FMC2_BXTR_ACCMOD) == val || bcr & FMC2_BCR_MUXEN))
-@@ -268,12 +289,19 @@ static int stm32_fmc2_ebi_check_clk_period(struct stm32_fmc2_ebi *ebi,
- 					   int cs)
- {
- 	u32 bcr, bcr1;
-+	int ret;
- 
--	regmap_read(ebi->regmap, FMC2_BCR(cs), &bcr);
--	if (cs)
--		regmap_read(ebi->regmap, FMC2_BCR1, &bcr1);
--	else
-+	ret = regmap_read(ebi->regmap, FMC2_BCR(cs), &bcr);
-+	if (ret)
-+		return ret;
-+
-+	if (cs) {
-+		ret = regmap_read(ebi->regmap, FMC2_BCR1, &bcr1);
-+		if (ret)
-+			return ret;
-+	} else {
- 		bcr1 = bcr;
-+	}
- 
- 	if (bcr & FMC2_BCR_BURSTEN && (!cs || !(bcr1 & FMC2_BCR1_CCLKEN)))
- 		return 0;
-@@ -305,12 +333,18 @@ static u32 stm32_fmc2_ebi_ns_to_clk_period(struct stm32_fmc2_ebi *ebi,
- {
- 	u32 nb_clk_cycles = stm32_fmc2_ebi_ns_to_clock_cycles(ebi, cs, setup);
- 	u32 bcr, btr, clk_period;
-+	int ret;
-+
-+	ret = regmap_read(ebi->regmap, FMC2_BCR1, &bcr);
-+	if (ret)
-+		return ret;
- 
--	regmap_read(ebi->regmap, FMC2_BCR1, &bcr);
- 	if (bcr & FMC2_BCR1_CCLKEN || !cs)
--		regmap_read(ebi->regmap, FMC2_BTR1, &btr);
-+		ret = regmap_read(ebi->regmap, FMC2_BTR1, &btr);
- 	else
--		regmap_read(ebi->regmap, FMC2_BTR(cs), &btr);
-+		ret = regmap_read(ebi->regmap, FMC2_BTR(cs), &btr);
-+	if (ret)
-+		return ret;
- 
- 	clk_period = FIELD_GET(FMC2_BTR_CLKDIV, btr) + 1;
- 
-@@ -569,11 +603,16 @@ static int stm32_fmc2_ebi_set_address_setup(struct stm32_fmc2_ebi *ebi,
- 	if (ret)
- 		return ret;
- 
--	regmap_read(ebi->regmap, FMC2_BCR(cs), &bcr);
-+	ret = regmap_read(ebi->regmap, FMC2_BCR(cs), &bcr);
-+	if (ret)
-+		return ret;
-+
- 	if (prop->reg_type == FMC2_REG_BWTR)
--		regmap_read(ebi->regmap, FMC2_BWTR(cs), &bxtr);
-+		ret = regmap_read(ebi->regmap, FMC2_BWTR(cs), &bxtr);
- 	else
--		regmap_read(ebi->regmap, FMC2_BTR(cs), &bxtr);
-+		ret = regmap_read(ebi->regmap, FMC2_BTR(cs), &bxtr);
-+	if (ret)
-+		return ret;
- 
- 	if ((bxtr & FMC2_BXTR_ACCMOD) == val || bcr & FMC2_BCR_MUXEN)
- 		val = clamp_val(setup, 1, FMC2_BXTR_ADDSET_MAX);
-@@ -691,11 +730,14 @@ static int stm32_fmc2_ebi_set_max_low_pulse(struct stm32_fmc2_ebi *ebi,
- 					    int cs, u32 setup)
- {
- 	u32 old_val, new_val, pcscntr;
-+	int ret;
- 
- 	if (setup < 1)
- 		return 0;
- 
--	regmap_read(ebi->regmap, FMC2_PCSCNTR, &pcscntr);
-+	ret = regmap_read(ebi->regmap, FMC2_PCSCNTR, &pcscntr);
-+	if (ret)
-+		return ret;
- 
- 	/* Enable counter for the bank */
- 	regmap_update_bits(ebi->regmap, FMC2_PCSCNTR,
-@@ -942,17 +984,20 @@ static void stm32_fmc2_ebi_disable_bank(struct stm32_fmc2_ebi *ebi, int cs)
- 	regmap_update_bits(ebi->regmap, FMC2_BCR(cs), FMC2_BCR_MBKEN, 0);
+@@ -273,7 +273,7 @@ static void nft_counter_offload_stats(struct nft_expr *expr,
+ 	this_cpu->packets += stats->pkts;
+ 	this_cpu->bytes += stats->bytes;
+ 	write_seqcount_end(myseq);
+-	preempt_enable();
++	local_bh_enable();
  }
  
--static void stm32_fmc2_ebi_save_setup(struct stm32_fmc2_ebi *ebi)
-+static int stm32_fmc2_ebi_save_setup(struct stm32_fmc2_ebi *ebi)
- {
- 	unsigned int cs;
-+	int ret;
- 
- 	for (cs = 0; cs < FMC2_MAX_EBI_CE; cs++) {
--		regmap_read(ebi->regmap, FMC2_BCR(cs), &ebi->bcr[cs]);
--		regmap_read(ebi->regmap, FMC2_BTR(cs), &ebi->btr[cs]);
--		regmap_read(ebi->regmap, FMC2_BWTR(cs), &ebi->bwtr[cs]);
-+		ret = regmap_read(ebi->regmap, FMC2_BCR(cs), &ebi->bcr[cs]);
-+		ret |= regmap_read(ebi->regmap, FMC2_BTR(cs), &ebi->btr[cs]);
-+		ret |= regmap_read(ebi->regmap, FMC2_BWTR(cs), &ebi->bwtr[cs]);
-+		if (ret)
-+			return ret;
- 	}
- 
--	regmap_read(ebi->regmap, FMC2_PCSCNTR, &ebi->pcscntr);
-+	return regmap_read(ebi->regmap, FMC2_PCSCNTR, &ebi->pcscntr);
- }
- 
- static void stm32_fmc2_ebi_set_setup(struct stm32_fmc2_ebi *ebi)
-@@ -981,22 +1026,29 @@ static void stm32_fmc2_ebi_disable_banks(struct stm32_fmc2_ebi *ebi)
- }
- 
- /* NWAIT signal can not be connected to EBI controller and NAND controller */
--static bool stm32_fmc2_ebi_nwait_used_by_ctrls(struct stm32_fmc2_ebi *ebi)
-+static int stm32_fmc2_ebi_nwait_used_by_ctrls(struct stm32_fmc2_ebi *ebi)
- {
-+	struct device *dev = ebi->dev;
- 	unsigned int cs;
- 	u32 bcr;
-+	int ret;
- 
- 	for (cs = 0; cs < FMC2_MAX_EBI_CE; cs++) {
- 		if (!(ebi->bank_assigned & BIT(cs)))
- 			continue;
- 
--		regmap_read(ebi->regmap, FMC2_BCR(cs), &bcr);
-+		ret = regmap_read(ebi->regmap, FMC2_BCR(cs), &bcr);
-+		if (ret)
-+			return ret;
-+
- 		if ((bcr & FMC2_BCR_WAITEN || bcr & FMC2_BCR_ASYNCWAIT) &&
--		    ebi->bank_assigned & BIT(FMC2_NAND))
--			return true;
-+		    ebi->bank_assigned & BIT(FMC2_NAND)) {
-+			dev_err(dev, "NWAIT signal connected to EBI and NAND controllers\n");
-+			return -EINVAL;
-+		}
- 	}
- 
--	return false;
-+	return 0;
- }
- 
- static void stm32_fmc2_ebi_enable(struct stm32_fmc2_ebi *ebi)
-@@ -1083,10 +1135,9 @@ static int stm32_fmc2_ebi_parse_dt(struct stm32_fmc2_ebi *ebi)
- 		return -ENODEV;
- 	}
- 
--	if (stm32_fmc2_ebi_nwait_used_by_ctrls(ebi)) {
--		dev_err(dev, "NWAIT signal connected to EBI and NAND controllers\n");
--		return -EINVAL;
--	}
-+	ret = stm32_fmc2_ebi_nwait_used_by_ctrls(ebi);
-+	if (ret)
-+		return ret;
- 
- 	stm32_fmc2_ebi_enable(ebi);
- 
-@@ -1131,7 +1182,10 @@ static int stm32_fmc2_ebi_probe(struct platform_device *pdev)
- 	if (ret)
- 		goto err_release;
- 
--	stm32_fmc2_ebi_save_setup(ebi);
-+	ret = stm32_fmc2_ebi_save_setup(ebi);
-+	if (ret)
-+		goto err_release;
-+
- 	platform_set_drvdata(pdev, ebi);
- 
- 	return 0;
+ void nft_counter_init_seqcount(void)
 -- 
 2.43.0
 
