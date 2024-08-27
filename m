@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-71277-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85FA59612A4
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:33:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A94EF9610EE
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:14:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B8ACB1C22877
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:33:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5552D1F243D8
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:14:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 088E61CC163;
-	Tue, 27 Aug 2024 15:31:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A5851C6F5F;
+	Tue, 27 Aug 2024 15:14:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qI0g75Z5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KAq67la2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB42B1C6881;
-	Tue, 27 Aug 2024 15:31:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C29C1C4EEC;
+	Tue, 27 Aug 2024 15:14:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772680; cv=none; b=ZoAiUZvAk1IEcAyK4aQQm5+Ctq3j7UxFYwI2GG5BiY0g35QtunxhVdgHXq/Qn+GxlTn6prXDzPnTryj1CqsbIeC0kRpvrl+PPfT+mqvdGa4TXuB/FbaY3LE1A/N7pXnTv+a/MndnAZaP2p2Y2HkYSuJvUjdLH7ONQAd8oUH2oQI=
+	t=1724771657; cv=none; b=SHIhiIKPzKO2ZYVbVKX1Ou6E+rfG23mIwQNGjEjSt7Q9pN9QzHGfQvqBLj9zf/TgAZeUfwOCxYNpy3bIuE6C+CfCP5OYw2Ols5eC/rm6IKA4h80HO/yrmbkzLYcrxkIergwBo+2kINQpWPHUW/kbVV8u1cw6GTira/7vS0u2uLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772680; c=relaxed/simple;
-	bh=1qyc5WdDaIFC9Lr7UdkrACLqEBsddlNhQu3FlM7VUDM=;
+	s=arc-20240116; t=1724771657; c=relaxed/simple;
+	bh=v6esvDpBgAHQQvWnGGIXp1aXUDlDY+j2wSt+L8VdDkQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xnh1arWGaBuSt3sYOaH3ST+nks6uVIqvnrOY22PY4DYLPYVIEvfjRI8GIrnwlyGHGuIb7Q/kaWxfmO/d0VVoRW6jH44YdKmjSEcGQ21hL3NiP9suwztspMcO/dZpeUbSiMBWxwQKvsBup+6J90tcs1qtdfUTngKtnjFWKZUp/Lo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qI0g75Z5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DCD8C4DDF0;
-	Tue, 27 Aug 2024 15:31:19 +0000 (UTC)
+	 MIME-Version; b=bFL5YSut74s7i6HaTGuUic0mAOkgofJlanmDhzHKRGutBAhu1Ym2QP5CkfRkzB3ErO+bgU8yFNgvXBONw1mY6eKvPc6/YuxolGrtoLTK/LrIKmEsQWqCm3y/Zj7nYtap0QdP8DnCP0GocnSoAV53KNrL0DiVHwBWWFlTEM+c830=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KAq67la2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 391F4C6106E;
+	Tue, 27 Aug 2024 15:14:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772680;
-	bh=1qyc5WdDaIFC9Lr7UdkrACLqEBsddlNhQu3FlM7VUDM=;
+	s=korg; t=1724771656;
+	bh=v6esvDpBgAHQQvWnGGIXp1aXUDlDY+j2wSt+L8VdDkQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qI0g75Z5yZuqTWQ1EGUTPGSnkdYuNY5Yid6m9YMpyFwCS2CfPVhehvtnyCRAm5Q6o
-	 H2Bs9cU4J66mQqZKcuEgsQkxsS8jmDmcXHO2NVDn2bNddDA+qbxoZ9mfktyu/Ja6l5
-	 XwJQyuQJKcytCutO78VjnxQW86z1kugzH5dufhwo=
+	b=KAq67la25gQdQ4P8Fxlma5PHwPQcalE0Fx8KyunabIJne3XbuyQmhPTPPbnF+Z6uo
+	 VVBxjt9XmkeYwp+Q8Nq/QRZ73xdRB9othsq/faRxylA3AAtd/WJzCCk17lf+9ijprT
+	 GtH1AbCtos6yr4o/H+AMIaPTLR6sH9oXYolZFNog=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Werner Sembach <wse@tuxedocomputers.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.1 270/321] Input: i8042 - add forcenorestore quirk to leave controller untouched even on s3
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.10 254/273] thermal: of: Fix OF node leak in of_thermal_zone_find() error paths
 Date: Tue, 27 Aug 2024 16:39:38 +0200
-Message-ID: <20240827143848.529874755@linuxfoundation.org>
+Message-ID: <20240827143843.067344664@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,122 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Werner Sembach <wse@tuxedocomputers.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit 3d765ae2daccc570b3f4fbcb57eb321b12cdded2 upstream.
+commit c0a1ef9c5be72ff28a5413deb1b3e1a066593c13 upstream.
 
-On s3 resume the i8042 driver tries to restore the controller to a known
-state by reinitializing things, however this can confuse the controller
-with different effects. Mostly occasionally unresponsive keyboards after
-resume.
+Terminating for_each_available_child_of_node() loop requires dropping OF
+node reference, so bailing out on errors misses this.  Solve the OF node
+reference leak with scoped for_each_available_child_of_node_scoped().
 
-These issues do not rise on s0ix resume as here the controller is assumed
-to preserved its state from before suspend.
-
-This patch adds a quirk for devices where the reinitialization on s3 resume
-is not needed and might be harmful as described above. It does this by
-using the s0ix resume code path at selected locations.
-
-This new quirk goes beyond what the preexisting reset=never quirk does,
-which only skips some reinitialization steps.
-
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20240104183118.779778-2-wse@tuxedocomputers.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Fixes: 3fd6d6e2b4e8 ("thermal/of: Rework the thermal device tree initialization")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
+Reviewed-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://patch.msgid.link/20240814195823.437597-3-krzysztof.kozlowski@linaro.org
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/serio/i8042-acpipnpio.h |   10 +++++++---
- drivers/input/serio/i8042.c           |   10 +++++++---
- 2 files changed, 14 insertions(+), 6 deletions(-)
+ drivers/thermal/thermal_of.c |   13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
---- a/drivers/input/serio/i8042-acpipnpio.h
-+++ b/drivers/input/serio/i8042-acpipnpio.h
-@@ -83,6 +83,7 @@ static inline void i8042_write_command(i
- #define SERIO_QUIRK_KBDRESET		BIT(12)
- #define SERIO_QUIRK_DRITEK		BIT(13)
- #define SERIO_QUIRK_NOPNP		BIT(14)
-+#define SERIO_QUIRK_FORCENORESTORE	BIT(15)
- 
- /* Quirk table for different mainboards. Options similar or identical to i8042
-  * module parameters.
-@@ -1685,6 +1686,8 @@ static void __init i8042_check_quirks(vo
- 	if (quirks & SERIO_QUIRK_NOPNP)
- 		i8042_nopnp = true;
- #endif
-+	if (quirks & SERIO_QUIRK_FORCENORESTORE)
-+		i8042_forcenorestore = true;
- }
- #else
- static inline void i8042_check_quirks(void) {}
-@@ -1718,7 +1721,7 @@ static int __init i8042_platform_init(vo
- 
- 	i8042_check_quirks();
- 
--	pr_debug("Active quirks (empty means none):%s%s%s%s%s%s%s%s%s%s%s%s%s\n",
-+	pr_debug("Active quirks (empty means none):%s%s%s%s%s%s%s%s%s%s%s%s%s%s\n",
- 		i8042_nokbd ? " nokbd" : "",
- 		i8042_noaux ? " noaux" : "",
- 		i8042_nomux ? " nomux" : "",
-@@ -1738,10 +1741,11 @@ static int __init i8042_platform_init(vo
- 		"",
- #endif
- #ifdef CONFIG_PNP
--		i8042_nopnp ? " nopnp" : "");
-+		i8042_nopnp ? " nopnp" : "",
- #else
--		"");
-+		"",
- #endif
-+		i8042_forcenorestore ? " forcenorestore" : "");
- 
- 	retval = i8042_pnp_init();
- 	if (retval)
---- a/drivers/input/serio/i8042.c
-+++ b/drivers/input/serio/i8042.c
-@@ -115,6 +115,10 @@ module_param_named(nopnp, i8042_nopnp, b
- MODULE_PARM_DESC(nopnp, "Do not use PNP to detect controller settings");
- #endif
- 
-+static bool i8042_forcenorestore;
-+module_param_named(forcenorestore, i8042_forcenorestore, bool, 0);
-+MODULE_PARM_DESC(forcenorestore, "Force no restore on s3 resume, copying s2idle behaviour");
-+
- #define DEBUG
- #ifdef DEBUG
- static bool i8042_debug;
-@@ -1232,7 +1236,7 @@ static int i8042_pm_suspend(struct devic
- {
- 	int i;
- 
--	if (pm_suspend_via_firmware())
-+	if (!i8042_forcenorestore && pm_suspend_via_firmware())
- 		i8042_controller_reset(true);
- 
- 	/* Set up serio interrupts for system wakeup. */
-@@ -1248,7 +1252,7 @@ static int i8042_pm_suspend(struct devic
- 
- static int i8042_pm_resume_noirq(struct device *dev)
- {
--	if (!pm_resume_via_firmware())
-+	if (i8042_forcenorestore || !pm_resume_via_firmware())
- 		i8042_interrupt(0, NULL);
- 
- 	return 0;
-@@ -1271,7 +1275,7 @@ static int i8042_pm_resume(struct device
- 	 * not restore the controller state to whatever it had been at boot
- 	 * time, so we do not need to do anything.
+--- a/drivers/thermal/thermal_of.c
++++ b/drivers/thermal/thermal_of.c
+@@ -184,14 +184,14 @@ static struct device_node *of_thermal_zo
+ 	 * Search for each thermal zone, a defined sensor
+ 	 * corresponding to the one passed as parameter
  	 */
--	if (!pm_suspend_via_firmware())
-+	if (i8042_forcenorestore || !pm_suspend_via_firmware())
- 		return 0;
+-	for_each_available_child_of_node(np, tz) {
++	for_each_available_child_of_node_scoped(np, child) {
  
- 	/*
+ 		int count, i;
+ 
+-		count = of_count_phandle_with_args(tz, "thermal-sensors",
++		count = of_count_phandle_with_args(child, "thermal-sensors",
+ 						   "#thermal-sensor-cells");
+ 		if (count <= 0) {
+-			pr_err("%pOFn: missing thermal sensor\n", tz);
++			pr_err("%pOFn: missing thermal sensor\n", child);
+ 			tz = ERR_PTR(-EINVAL);
+ 			goto out;
+ 		}
+@@ -200,18 +200,19 @@ static struct device_node *of_thermal_zo
+ 
+ 			int ret;
+ 
+-			ret = of_parse_phandle_with_args(tz, "thermal-sensors",
++			ret = of_parse_phandle_with_args(child, "thermal-sensors",
+ 							 "#thermal-sensor-cells",
+ 							 i, &sensor_specs);
+ 			if (ret < 0) {
+-				pr_err("%pOFn: Failed to read thermal-sensors cells: %d\n", tz, ret);
++				pr_err("%pOFn: Failed to read thermal-sensors cells: %d\n", child, ret);
+ 				tz = ERR_PTR(ret);
+ 				goto out;
+ 			}
+ 
+ 			if ((sensor == sensor_specs.np) && id == (sensor_specs.args_count ?
+ 								  sensor_specs.args[0] : 0)) {
+-				pr_debug("sensor %pOFn id=%d belongs to %pOFn\n", sensor, id, tz);
++				pr_debug("sensor %pOFn id=%d belongs to %pOFn\n", sensor, id, child);
++				tz = no_free_ptr(child);
+ 				goto out;
+ 			}
+ 		}
 
 
 
