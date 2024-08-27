@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-71252-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70707-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9D3696129B
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:33:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71868960F9C
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:00:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 03A1BB267FD
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:32:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 27E871F22FB1
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:00:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8B101C6F7C;
-	Tue, 27 Aug 2024 15:29:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A20411C6F40;
+	Tue, 27 Aug 2024 15:00:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yPfVDr64"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EBgmv2Ck"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 774DC1C8228;
-	Tue, 27 Aug 2024 15:29:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 608D21C68AE;
+	Tue, 27 Aug 2024 15:00:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772597; cv=none; b=X4Idq6LEn7WjtDcYqjd0n0VDm7Yo7BOMxxxuVLVCctcQQcj0/DrDhsTYSVq+p+1T8FkXG9GcRJ2Me2YkN+vmGCKFfALyyYGa9UqtC1E1HnDaZiKBJ3WNZ28lqRgXk+bAGtmwcgMKFoL1ZNfJ4dwd8joDKGQ7Y0s88F+xcP98Dkg=
+	t=1724770802; cv=none; b=mOlicyJx6YYIft/UAOUgNH9zSuSCJNIZALKr+wpLncsOH+hjHJE1PwxuiVb6wPWCxY+/50TbgQkwQsBxyE4eRE4G1NRhd4FOhV1fRM+loZuglvEyamkEZFXfCkOe6sLiQs4kfwlCaJG2FLOmqwcq0gACUxN/y59juMNym/SYtDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772597; c=relaxed/simple;
-	bh=6p5IhR+HEBcdGwW3Ax+y58ToiBaUImbB7PCf/RxQYAk=;
+	s=arc-20240116; t=1724770802; c=relaxed/simple;
+	bh=ILXZ6vtbzym/ku9/4z6zx8Zx/xIc23BH8dBcq4x9zjg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H3ebc98+MClGweDRK0Gv/i7/q2bIG7OWsao/Yjk3XZMrPG1up32XxiKKwOiec1eYLOUd86HkDlGC0viheJu+uFWHXqT9usjsR13W1mhjICGwTHavDLX7inRAnce/2VYL1wRq+b++/5Dmdqt058NgW42l4RJ6aL1z8nRJ/jsGrNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yPfVDr64; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB081C6107E;
-	Tue, 27 Aug 2024 15:29:56 +0000 (UTC)
+	 MIME-Version; b=bykKPdUZviaslEJmoZKMscc3T750UOr08557EnBGakZMiyEvgYxUiL4DvC2GAnNW7K2UCIvSooU0yrjL71vK0855bKYwMMxcFylTxna9LAQyt+7PEv+mLPshBk+0Lbpul5TlgN8m2XMa00pHYtoOFZj6snQpfQY3e2PNycqilWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EBgmv2Ck; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C57D7C4AF1C;
+	Tue, 27 Aug 2024 15:00:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772597;
-	bh=6p5IhR+HEBcdGwW3Ax+y58ToiBaUImbB7PCf/RxQYAk=;
+	s=korg; t=1724770802;
+	bh=ILXZ6vtbzym/ku9/4z6zx8Zx/xIc23BH8dBcq4x9zjg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yPfVDr64MoEyvqWmnO/jPaMFPiD08AtHZPKbUNphw17CZXpvWyhAQVAcDBY9rqYJ3
-	 GvvUF+ck2xLjfz0DTIfqAKNGOBiXIGI/5Egb7a6JXeFvigCwlxiOxJzAnqpQpGbOOG
-	 r2TVN1azzoTfK7RgpxLTxR5dyNS9V0Exns7HBD+o=
+	b=EBgmv2Ck+VJgJTYUavIzdZlPnfcCB1ZWTiA2TtfMSwzbtp4exp0bjHG9Yfilg5YB3
+	 g5hyYOsVEqZy8mqYId5i+MbnRkh1ln++ChX417C/O4V2+Y9W7ssCppEeug+ACqCkfS
+	 ZD8nyZsEI3SQv/ygtjDXNmdTPX3nBfDJ9EPxAolM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 262/321] mmc: mmc_test: Fix NULL dereference on allocation failure
+	Mengyuan Lou <mengyuanlou@net-swift.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.6 339/341] net: ngbe: Fix phy mode set to external phy
 Date: Tue, 27 Aug 2024 16:39:30 +0200
-Message-ID: <20240827143848.221612783@linuxfoundation.org>
+Message-ID: <20240827143856.294333513@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Mengyuan Lou <mengyuanlou@net-swift.com>
 
-[ Upstream commit a1e627af32ed60713941cbfc8075d44cad07f6dd ]
+commit f2916c83d746eb99f50f42c15cf4c47c2ea5f3b3 upstream.
 
-If the "test->highmem = alloc_pages()" allocation fails then calling
-__free_pages(test->highmem) will result in a NULL dereference.  Also
-change the error code to -ENOMEM instead of returning success.
+The MAC only has add the TX delay and it can not be modified.
+MAC and PHY are both set the TX delay cause transmission problems.
+So just disable TX delay in PHY, when use rgmii to attach to
+external phy, set PHY_INTERFACE_MODE_RGMII_RXID to phy drivers.
+And it is does not matter to internal phy.
 
-Fixes: 2661081f5ab9 ("mmc_test: highmem tests")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/8c90be28-67b4-4b0d-a105-034dc72a0b31@stanley.mountain
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: bc2426d74aa3 ("net: ngbe: convert phylib to phylink")
+Signed-off-by: Mengyuan Lou <mengyuanlou@net-swift.com>
+Cc: stable@vger.kernel.org # 6.3+
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/E6759CF1387CF84C+20240820030425.93003-1-mengyuanlou@net-swift.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: mengyuanlou <mengyuanlou@net-swift.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/core/mmc_test.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/wangxun/ngbe/ngbe_mdio.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mmc/core/mmc_test.c b/drivers/mmc/core/mmc_test.c
-index 155ce2bdfe622..dbbcbdeab6c51 100644
---- a/drivers/mmc/core/mmc_test.c
-+++ b/drivers/mmc/core/mmc_test.c
-@@ -3109,13 +3109,13 @@ static ssize_t mtf_test_write(struct file *file, const char __user *buf,
- 	test->buffer = kzalloc(BUFFER_SIZE, GFP_KERNEL);
- #ifdef CONFIG_HIGHMEM
- 	test->highmem = alloc_pages(GFP_KERNEL | __GFP_HIGHMEM, BUFFER_ORDER);
-+	if (!test->highmem) {
-+		count = -ENOMEM;
-+		goto free_test_buffer;
-+	}
- #endif
+--- a/drivers/net/ethernet/wangxun/ngbe/ngbe_mdio.c
++++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_mdio.c
+@@ -215,10 +215,14 @@ int ngbe_phy_connect(struct wx *wx)
+ {
+ 	int ret;
  
--#ifdef CONFIG_HIGHMEM
--	if (test->buffer && test->highmem) {
--#else
- 	if (test->buffer) {
--#endif
- 		mutex_lock(&mmc_test_lock);
- 		mmc_test_run(test, testcase);
- 		mutex_unlock(&mmc_test_lock);
-@@ -3123,6 +3123,7 @@ static ssize_t mtf_test_write(struct file *file, const char __user *buf,
- 
- #ifdef CONFIG_HIGHMEM
- 	__free_pages(test->highmem, BUFFER_ORDER);
-+free_test_buffer:
- #endif
- 	kfree(test->buffer);
- 	kfree(test);
--- 
-2.43.0
-
++	/* The MAC only has add the Tx delay and it can not be modified.
++	 * So just disable TX delay in PHY, and it is does not matter to
++	 * internal phy.
++	 */
+ 	ret = phy_connect_direct(wx->netdev,
+ 				 wx->phydev,
+ 				 ngbe_handle_link_change,
+-				 PHY_INTERFACE_MODE_RGMII_ID);
++				 PHY_INTERFACE_MODE_RGMII_RXID);
+ 	if (ret) {
+ 		wx_err(wx, "PHY connect failed.\n");
+ 		return ret;
 
 
 
