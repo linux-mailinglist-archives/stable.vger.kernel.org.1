@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-70626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70878-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 598E5960F32
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:56:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DAB096107C
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:09:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 16FB6282191
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:56:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5327B1F21C33
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:09:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DD991CC150;
-	Tue, 27 Aug 2024 14:55:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48D681C5793;
+	Tue, 27 Aug 2024 15:09:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LLJfbY62"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ygLOO1T5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BE6C1C5783;
-	Tue, 27 Aug 2024 14:55:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04A291C5788;
+	Tue, 27 Aug 2024 15:09:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770536; cv=none; b=fdKn5iksKC1GYzNopWYAmBiRmtqSSIOt33pTK9xhlEHCX/FOF4bQzFUMJJynYpItyaDB3S5xinjMb9DHw9s+ro/B85BobRj4YU2dIh0yB6dJSTZ4FlAFaNYShCrlclaQyfaaWvzMJ7S/EmYr2BLUPj7ika+Nhg6FsYGKjLSwSGQ=
+	t=1724771362; cv=none; b=NwcTCBi6QNM8T5jEWx3c3O+VW31kLn7qyKmhbo/ULByEqwW4VgOlLVtGNakTn0EMRxyP/Z2qscUsyU/QfztKyHawKyLULu8rqpTo78uHnqVTkq0mr393Eh/WdQdLxRElmVT0etoiwynE/XFo7NwPdU0NcW9fI5lWx8wEdSQ0H2k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770536; c=relaxed/simple;
-	bh=1E34GTEh5bkvwkJOZETrfZ2QIQGsHFdr+TUAcbV0GkM=;
+	s=arc-20240116; t=1724771362; c=relaxed/simple;
+	bh=STbPJtgCURfIw83XG/Nm4vkV6Bz5lpuGQ0Ddgujpj5M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P1tTSApUsD7Ix2IsZ3DWJrtL+s3GCWxvUsSFtO8k1a5C/ZaDCVteYCpgVaFjKUHUuQGHYgZLJeNhJI8a9pXEEY64T023S8wtHUTfDjkNtrenH5TgHpB/3hw/qFZJL9EaaQ/ehxtb0VcsHrmSN3/1yiN+mIJDOpWnn3QE6bb7CNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LLJfbY62; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 877EEC4E698;
-	Tue, 27 Aug 2024 14:55:35 +0000 (UTC)
+	 MIME-Version; b=dBfWjgwoMqkMS+Iyb3mtM0J6hPa0HBVDB5QKUtGBd/m/6mDvRydcHxOGajwQ5KP+q3khqm4e86q9VtdaWu10msYdfcLWsSUOQl57cL8K5DzHLI7nnjCUUt6zXJCPSJBtOOuRTt/iGxnWNR1YEP60/SsmtGRuALTdK+8HB3OQSXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ygLOO1T5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 682B0C4AF1A;
+	Tue, 27 Aug 2024 15:09:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770535;
-	bh=1E34GTEh5bkvwkJOZETrfZ2QIQGsHFdr+TUAcbV0GkM=;
+	s=korg; t=1724771361;
+	bh=STbPJtgCURfIw83XG/Nm4vkV6Bz5lpuGQ0Ddgujpj5M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LLJfbY62jlHYmzpkQclMR/JinF+kd9dI3a0YRYuPnScW7kpOzA43FQfBPjWLoYiKc
-	 BbrpQvRcaieU0k0QnyrMIlCTt6V99eHPDyCUPvBjtm4E0Arz1/ialuL8y/IWFHnnYE
-	 BWvX+UCWz3y3OOnWubKwW2vD1rAbs3Ka7CplD8T8=
+	b=ygLOO1T5UDqaFEYlKkG9I3QQefY+RjVgIWs9fsUh+CjWhUYcKxzNR+QAmYBzDWR4d
+	 bbwlpsd+xmRBS9gALGA7PkL8F1TgT5k5WHXEYd8KvSq93PC8AksdyfSyeRg8evAtHc
+	 PKNkARAmSNbskTuyDGzitIDQXsMWgj4zwKzLH5AU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Itaru Kitayama <itaru.kitayama@linux.dev>,
-	Shuah Khan <shuah@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Ryo Takakura <takakura@valinux.co.jp>,
+	Petr Mladek <pmladek@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 227/341] tools/testing/selftests/mm/run_vmtests.sh: lower the ptrace permissions
+Subject: [PATCH 6.10 134/273] printk/panic: Allow cpu backtraces to be written into ringbuffer during panic
 Date: Tue, 27 Aug 2024 16:37:38 +0200
-Message-ID: <20240827143852.050709895@linuxfoundation.org>
+Message-ID: <20240827143838.502993950@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Itaru Kitayama <itaru.kitayama@linux.dev>
+From: Ryo Takakura <takakura@valinux.co.jp>
 
-[ Upstream commit 2ffc27b15b11c9584ac46335c2ed2248d2aa4137 ]
+[ Upstream commit bcc954c6caba01fca143162d5fbb90e46aa1ad80 ]
 
-On Ubuntu and probably other distros, ptrace permissions are tightend a
-bit by default; i.e., /proc/sys/kernel/yama/ptrace_score is set to 1.
-This cases memfd_secret's ptrace attach test fails with a permission
-error.  Set it to 0 piror to running the program.
+commit 779dbc2e78d7 ("printk: Avoid non-panic CPUs writing
+to ringbuffer") disabled non-panic CPUs to further write messages to
+ringbuffer after panicked.
 
-Link: https://lkml.kernel.org/r/20231030-selftest-v1-1-743df68bb996@linux.dev
-Signed-off-by: Itaru Kitayama <itaru.kitayama@linux.dev>
-Cc: Shuah Khan <shuah@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: 7c5e8d212d7d ("selftests: memfd_secret: don't build memfd_secret test on unsupported arches")
+Since the commit, non-panicked CPU's are not allowed to write to
+ring buffer after panicked and CPU backtrace which is triggered
+after panicked to sample non-panicked CPUs' backtrace no longer
+serves its function as it has nothing to print.
+
+Fix the issue by allowing non-panicked CPUs to write into ringbuffer
+while CPU backtrace is in flight.
+
+Fixes: 779dbc2e78d7 ("printk: Avoid non-panic CPUs writing to ringbuffer")
+Signed-off-by: Ryo Takakura <takakura@valinux.co.jp>
+Reviewed-by: Petr Mladek <pmladek@suse.com>
+Link: https://lore.kernel.org/r/20240812072703.339690-1-takakura@valinux.co.jp
+Signed-off-by: Petr Mladek <pmladek@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/mm/run_vmtests.sh | 1 +
- 1 file changed, 1 insertion(+)
+ include/linux/panic.h  | 1 +
+ kernel/panic.c         | 8 +++++++-
+ kernel/printk/printk.c | 2 +-
+ 3 files changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
-index 3e2bc818d566f..7d31718ce8343 100755
---- a/tools/testing/selftests/mm/run_vmtests.sh
-+++ b/tools/testing/selftests/mm/run_vmtests.sh
-@@ -303,6 +303,7 @@ CATEGORY="hmm" run_test bash ./test_hmm.sh smoke
- # MADV_POPULATE_READ and MADV_POPULATE_WRITE tests
- CATEGORY="madv_populate" run_test ./madv_populate
+diff --git a/include/linux/panic.h b/include/linux/panic.h
+index 6717b15e798c3..556b4e2ad9aa5 100644
+--- a/include/linux/panic.h
++++ b/include/linux/panic.h
+@@ -16,6 +16,7 @@ extern void oops_enter(void);
+ extern void oops_exit(void);
+ extern bool oops_may_print(void);
  
-+echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
- CATEGORY="memfd_secret" run_test ./memfd_secret
++extern bool panic_triggering_all_cpu_backtrace;
+ extern int panic_timeout;
+ extern unsigned long panic_print;
+ extern int panic_on_oops;
+diff --git a/kernel/panic.c b/kernel/panic.c
+index 8bff183d6180e..30342568e935f 100644
+--- a/kernel/panic.c
++++ b/kernel/panic.c
+@@ -63,6 +63,8 @@ unsigned long panic_on_taint;
+ bool panic_on_taint_nousertaint = false;
+ static unsigned int warn_limit __read_mostly;
  
- # KSM KSM_MERGE_TIME_HUGE_PAGES test with size of 100
++bool panic_triggering_all_cpu_backtrace;
++
+ int panic_timeout = CONFIG_PANIC_TIMEOUT;
+ EXPORT_SYMBOL_GPL(panic_timeout);
+ 
+@@ -252,8 +254,12 @@ void check_panic_on_warn(const char *origin)
+  */
+ static void panic_other_cpus_shutdown(bool crash_kexec)
+ {
+-	if (panic_print & PANIC_PRINT_ALL_CPU_BT)
++	if (panic_print & PANIC_PRINT_ALL_CPU_BT) {
++		/* Temporary allow non-panic CPUs to write their backtraces. */
++		panic_triggering_all_cpu_backtrace = true;
+ 		trigger_all_cpu_backtrace();
++		panic_triggering_all_cpu_backtrace = false;
++	}
+ 
+ 	/*
+ 	 * Note that smp_send_stop() is the usual SMP shutdown function,
+diff --git a/kernel/printk/printk.c b/kernel/printk/printk.c
+index dddb15f48d595..c5d844f727f63 100644
+--- a/kernel/printk/printk.c
++++ b/kernel/printk/printk.c
+@@ -2316,7 +2316,7 @@ asmlinkage int vprintk_emit(int facility, int level,
+ 	 * non-panic CPUs are generating any messages, they will be
+ 	 * silently dropped.
+ 	 */
+-	if (other_cpu_in_panic())
++	if (other_cpu_in_panic() && !panic_triggering_all_cpu_backtrace)
+ 		return 0;
+ 
+ 	if (level == LOGLEVEL_SCHED) {
 -- 
 2.43.0
 
