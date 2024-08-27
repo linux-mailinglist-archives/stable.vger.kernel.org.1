@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-70834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71157-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48AB6961040
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:06:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E25E09611EF
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:25:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F112C1F216F1
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:06:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 49E53B22394
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:25:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 816191C3F19;
-	Tue, 27 Aug 2024 15:06:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BB941C8228;
+	Tue, 27 Aug 2024 15:24:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0caS9YEr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IowDVF0J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FF1F1E520;
-	Tue, 27 Aug 2024 15:06:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37A521C6F65;
+	Tue, 27 Aug 2024 15:24:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771214; cv=none; b=ZG6kdrvvEin3gVVywIvLw1maZuYm+mMX9gik+rqeulZLk3SatoDJLXK0BGXWtLupPK+GCt5TJVghbjOwNju0Ep7GoDlFPZWzWDUok2MSkkopoJspJ41X0W8cyJiNS+ZxEupfagrb1Ltt+AkFeOO+v17kOZMQ3I0WbldzKvReA3Y=
+	t=1724772287; cv=none; b=WfsSg869UlETR4gWfY45N8pLanr64aK4v1iy/HxScDyeJY47nHabxHlvYPGQDEBJuVFlwM62jTbmkEEQG8SndIwYDXchDMV76ldDSDVhTsvNESyjM9rwq4Z7TGlsqVDgHq87y+40mf2VqRQgi7G4y4LE7SedHQC65COc2KjoK2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771214; c=relaxed/simple;
-	bh=Cd9gJGlhn/eW5k3V27Vq7ACuDfKGPxJZEXHSh2QHm3g=;
+	s=arc-20240116; t=1724772287; c=relaxed/simple;
+	bh=hGzSR6KCnf2uHX8OVtzrcrnVFBjRTJL3IkqX23dqejI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JG8bd+w20INRplF0vLi19BXtMWEVnMu9PA7TwNj2o8aeEkxQFuX8Vs6An6JgaKbBEqvMKr/8YNd8R0TPVH8Eg1Y9eo0UrIjPm9si95yDcnU344GESAQduYUDh01wLzfjdiQd1b+LU6wZSa+R9ejqmKfIOVUo9/AEHniWn+5Gl/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0caS9YEr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CFB7C4AF55;
-	Tue, 27 Aug 2024 15:06:53 +0000 (UTC)
+	 MIME-Version; b=hn6PSzR17/hG9SqbLEPQ9fWbqNPxplRyuDQcnsKRDdGys2G9hNON+Cwj6dftFM2j5B30nb/CogRUIqNIxksK1U/Y080CkwDKhyvf+luOP+vg5PEK0zV1nwGcMkJnftjswBhyyqo88eKMsj/DG8od4N6PMfTqDKKMxx4hrCaWzIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IowDVF0J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A313BC61071;
+	Tue, 27 Aug 2024 15:24:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771214;
-	bh=Cd9gJGlhn/eW5k3V27Vq7ACuDfKGPxJZEXHSh2QHm3g=;
+	s=korg; t=1724772287;
+	bh=hGzSR6KCnf2uHX8OVtzrcrnVFBjRTJL3IkqX23dqejI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0caS9YEr/1XfckUu8ojrWQrJqbXE4s5iaL0Mf/i7K7AWJtDUMq6lYsTxHVqYZt//2
-	 DnLXZXri1Al3RG6ax4nBjx4c7Ip5iKyfjH5vVpJh3FVx4ke8+U6RqRRrl2jS7ql8AF
-	 5Wb+ZrXumHWgCY8Yy3ya4w6xa22iZecS0BGQ6+28=
+	b=IowDVF0JHnG22tCPC+cQkGRKSRL3vvXf3LKLyCKz9NpCFP/NrgzAxf2EiNr2/DEJn
+	 ypYWqUCc9zyrIMDgBYLRoTZQWF7A21ycb1MQ3PTKEOQeawxV+YQkEvjwX8onWNLBe9
+	 ZYCwQrHHIjxJkCAtOGd/3ptHVV9tB+PCnfy/EI+4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Barak Biber <bbiber@nvidia.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Joerg Roedel <jroedel@suse.de>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Gregory Greenman <gregory.greenman@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 121/273] iommu: Restore lost return in iommu_report_device_fault()
-Date: Tue, 27 Aug 2024 16:37:25 +0200
-Message-ID: <20240827143838.012792686@linuxfoundation.org>
+Subject: [PATCH 6.1 138/321] wifi: iwlwifi: abort scan when rfkill on but device enabled
+Date: Tue, 27 Aug 2024 16:37:26 +0200
+Message-ID: <20240827143843.495002841@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Barak Biber <bbiber@nvidia.com>
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 
-[ Upstream commit fca5b78511e98bdff2cdd55c172b23200a7b3404 ]
+[ Upstream commit 3c6a0b1f0add72e7f522bc9145222b86d0a7712a ]
 
-When iommu_report_device_fault gets called with a partial fault it is
-supposed to collect the fault into the group and then return.
+In RFKILL we first set the RFKILL bit, then we abort scan
+(if one exists) by waiting for the notification from FW
+and notifying mac80211. And then we stop the device.
+But in case we have a scan ongoing in the period of time between
+rfkill on and before the device is stopped - we will not wait for the
+FW notification because of the iwl_mvm_is_radio_killed() condition,
+and then the scan_status and uid_status are misconfigured,
+(scan_status is cleared but uid_status not)
+and when the notification suddenly arrives (before stopping the device)
+we will get into the assert about scan_status and uid_status mismatch.
+Fix this by waiting for FW notif when rfkill is on but the device isn't
+disabled yet.
 
-Instead the return was accidently deleted which results in trying to
-process the fault and an eventual crash.
-
-Deleting the return was a typo, put it back.
-
-Fixes: 3dfa64aecbaf ("iommu: Make iommu_report_device_fault() return void")
-Signed-off-by: Barak Biber <bbiber@nvidia.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
-Link: https://lore.kernel.org/r/0-v1-e7153d9c8cee+1c6-iommu_fault_fix_jgg@nvidia.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+Link: https://lore.kernel.org/r/20231004123422.c43b69aa2c77.Icc7b5efb47974d6f499156ff7510b786e177993b@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/io-pgfault.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iommu/io-pgfault.c b/drivers/iommu/io-pgfault.c
-index 06d78fcc79fdb..f2c87c695a17c 100644
---- a/drivers/iommu/io-pgfault.c
-+++ b/drivers/iommu/io-pgfault.c
-@@ -192,6 +192,7 @@ void iommu_report_device_fault(struct device *dev, struct iopf_fault *evt)
- 		report_partial_fault(iopf_param, fault);
- 		iopf_put_dev_fault_param(iopf_param);
- 		/* A request that is not the last does not need to be ack'd */
-+		return;
- 	}
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+index 069bac72117fe..b58441c2af730 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+@@ -3226,7 +3226,7 @@ int iwl_mvm_scan_stop(struct iwl_mvm *mvm, int type, bool notify)
+ 	if (!(mvm->scan_status & type))
+ 		return 0;
  
- 	/*
+-	if (iwl_mvm_is_radio_killed(mvm)) {
++	if (!test_bit(STATUS_DEVICE_ENABLED, &mvm->trans->status)) {
+ 		ret = 0;
+ 		goto out;
+ 	}
 -- 
 2.43.0
 
