@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-71079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70537-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EB7996118A
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:21:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5FD1960EA3
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:50:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E6381C238CD
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:21:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FC661F21B92
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:50:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 552421CC889;
-	Tue, 27 Aug 2024 15:20:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD9721C4EF9;
+	Tue, 27 Aug 2024 14:50:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N7xJ8Rq0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ry6ZtAJw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12EAD1C6F5A;
-	Tue, 27 Aug 2024 15:20:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A9E61C4EDE;
+	Tue, 27 Aug 2024 14:50:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772031; cv=none; b=g/wjyFc/Uuy1WfIZ3RG/eHcM7IswoFDlLwCHysLvLH/xsZz9cYxIkoF/8Xg7s27ArQvsqp6zdzkEeS/txPX+GddxUt5jS1E4IYm7JD8CcSlRVb8kiYiTVUfbLJ4Dvtls0/HKPfNqdZ+ll8WLleqtQez/ACa4O0mWpR8h8XFSpLE=
+	t=1724770238; cv=none; b=i5tcsQRM9+kQVXoV1Yqvs/COirz1yqaxer1KbZvUyh4b1eVOnXQ0MXzQ0QpzqmemHYs7qowEpKCYVzkcZSzWJVBP4+0k0d67oMSq4Ra+cmXK+jAVut9Z4YSECnZZiwQlq378bqaKoahxFMXUaevB+EprSA2n/rB+hYkor+3ghvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772031; c=relaxed/simple;
-	bh=cfKNNhKcfFDrTI1V7Myw0PPSgsoO02GM/U05TI8Ye4A=;
+	s=arc-20240116; t=1724770238; c=relaxed/simple;
+	bh=c5hnKTqsSnIDptF4oFiTFMe/03PI/uCySKEm7MCQBP0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mOTDPkj8l42tBMmwJwGmVGsCKDIkxDhrjLFKmoj0qR2AtLTmIr4IkI7EoHUuSiklYUJn4Fb9MpALXFyf1BWMF8ZDuT9K6IPCc7EarmLnTt0gQHdWcbkhrNiumQOTeP0zHblexLlWocxKhbUKyv5EfOC1DrYEVkIi4r6TWAFnfBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N7xJ8Rq0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1976BC4DDE5;
-	Tue, 27 Aug 2024 15:20:29 +0000 (UTC)
+	 MIME-Version; b=SjYCPtL0sDKOZ3YJOZPSopkt8wwIEjszYGldjvinoK8vtmLHx1ph2ZxCq9oBDg0r91d66JaCvWAdilb1gPpfAAjLvO8f4+PTVFcjCka/pjNMeM7hyzfCc21mbRP6zrF1gHKaKMGsOZoPbTqQcxglmdn3/lah3wBS1Fk/1DltPQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ry6ZtAJw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0C82C4DDFB;
+	Tue, 27 Aug 2024 14:50:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772030;
-	bh=cfKNNhKcfFDrTI1V7Myw0PPSgsoO02GM/U05TI8Ye4A=;
+	s=korg; t=1724770238;
+	bh=c5hnKTqsSnIDptF4oFiTFMe/03PI/uCySKEm7MCQBP0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N7xJ8Rq037gabDCk/S2vfEmAfypFCyfj+PkOuiCQuk6K48nLQC5Gs9NRganAFELFO
-	 ulEQKk/burhH8r/nSx+RSJ5Z6DhmqlN70hM7g1BoeJfwFgiwbY5UPq7vzz4k0mGm0d
-	 NkpLdvHiHRTTEf5VBcPFCz9iAmrnnMebLza2hVlc=
+	b=ry6ZtAJw2GuymsDcNopRv73W11Ah8F9Vsm0/TsPk6w1756EjTvR3ajiePtcuxTQtZ
+	 zmIaDskZVLEG+8yUf3Ux3+XhHfQtnrli3nxOWED56u7cyHPBYEWCFH5kmgeeuP0hW3
+	 B5a+F34BcGt/nMfpp2y/aqgjeMKsGZhw4eDwutLI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yue Haibing <yuehaibing@huawei.com>,
-	Simon Horman <horms@kernel.org>,
-	Asmaa Mnebhi <asmaa@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 092/321] mlxbf_gige: Remove two unused function declarations
+Subject: [PATCH 6.6 169/341] gpio: sysfs: extend the critical section for unregistering sysfs devices
 Date: Tue, 27 Aug 2024 16:36:40 +0200
-Message-ID: <20240827143841.741250270@linuxfoundation.org>
+Message-ID: <20240827143849.844521931@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yue Haibing <yuehaibing@huawei.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-[ Upstream commit 98261be155f8de38f11b6542d4a8935e5532687b ]
+[ Upstream commit 59cba4a0e6ca1058fbf88fec22530a4e2841802a ]
 
-Commit f92e1869d74e ("Add Mellanox BlueField Gigabit Ethernet driver")
-declared but never implemented these.
+Checking the gdev->mockdev pointer for NULL must be part of the critical
+section.
 
-Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Asmaa Mnebhi <asmaa@nvidia.com>
-Link: https://lore.kernel.org/r/20230808145249.41596-1-yuehaibing@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: df934abb185c ("mlxbf_gige: disable RX filters until RX path initialized")
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Acked-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige.h | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/gpio/gpiolib-sysfs.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige.h b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige.h
-index 5a1027b072155..483fca0cc5a0c 100644
---- a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige.h
-+++ b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige.h
-@@ -148,9 +148,6 @@ enum mlxbf_gige_res {
- int mlxbf_gige_mdio_probe(struct platform_device *pdev,
- 			  struct mlxbf_gige *priv);
- void mlxbf_gige_mdio_remove(struct mlxbf_gige *priv);
--irqreturn_t mlxbf_gige_mdio_handle_phy_interrupt(int irq, void *dev_id);
--void mlxbf_gige_mdio_enable_phy_int(struct mlxbf_gige *priv);
--
- void mlxbf_gige_set_mac_rx_filter(struct mlxbf_gige *priv,
- 				  unsigned int index, u64 dmac);
- void mlxbf_gige_get_mac_rx_filter(struct mlxbf_gige *priv,
+diff --git a/drivers/gpio/gpiolib-sysfs.c b/drivers/gpio/gpiolib-sysfs.c
+index 12d853845bb80..6c27312c62788 100644
+--- a/drivers/gpio/gpiolib-sysfs.c
++++ b/drivers/gpio/gpiolib-sysfs.c
+@@ -1,6 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0
+ 
+ #include <linux/bitops.h>
++#include <linux/cleanup.h>
+ #include <linux/device.h>
+ #include <linux/idr.h>
+ #include <linux/init.h>
+@@ -774,15 +775,15 @@ void gpiochip_sysfs_unregister(struct gpio_device *gdev)
+ 	struct gpio_desc *desc;
+ 	struct gpio_chip *chip = gdev->chip;
+ 
+-	if (!gdev->mockdev)
+-		return;
++	scoped_guard(mutex, &sysfs_lock) {
++		if (!gdev->mockdev)
++			return;
+ 
+-	device_unregister(gdev->mockdev);
++		device_unregister(gdev->mockdev);
+ 
+-	/* prevent further gpiod exports */
+-	mutex_lock(&sysfs_lock);
+-	gdev->mockdev = NULL;
+-	mutex_unlock(&sysfs_lock);
++		/* prevent further gpiod exports */
++		gdev->mockdev = NULL;
++	}
+ 
+ 	/* unregister gpiod class devices owned by sysfs */
+ 	for_each_gpio_desc_with_flag(chip, desc, FLAG_SYSFS) {
 -- 
 2.43.0
 
