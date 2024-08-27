@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-70984-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70701-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8418961102
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:15:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59D7A960F97
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:00:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DADE81C2366A
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:15:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 14EF9285655
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:00:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D749E1C68A6;
-	Tue, 27 Aug 2024 15:15:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DCBB1C8FB0;
+	Tue, 27 Aug 2024 14:59:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C/3aELx0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vcEbJbeR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 944E51BC9FC;
-	Tue, 27 Aug 2024 15:15:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEA6D1BA88C;
+	Tue, 27 Aug 2024 14:59:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771713; cv=none; b=tKXViIIBRnFycBhHaP89n3fVjTIT8gnanPlw8VrPZdjmZBD1MKoN4jq83RlJl93pSlZzjcW2MOxwfTIs+6Hp5zV/nQPTLsNOzKeKd+CI5COciN2FT3RX2Ac34zWey0wOA55VWlKhIO2a5Wen55uPOI+X0jwGslr+1P4qdU2tl+c=
+	t=1724770782; cv=none; b=CxsdZMpP95gVGsLFy5xNteWAQYB/49IcbP5V7l+AD5vBsB33bU4kirgJh1xIr87sWxufPEfBqFRCk+830gOBvVvN83ijULTg7WVPL9l7+IdGUeR0B1qZV2qDYeSf2ybWw/MmPFlU9mdeivG3jC8RpLbQxR4FwgPDCMQjVm8YOOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771713; c=relaxed/simple;
-	bh=idSxrWsTuxWwjl/ombsewL/ef7W7d/Wxpio1T13Hjco=;
+	s=arc-20240116; t=1724770782; c=relaxed/simple;
+	bh=z+6VEaaQBH86POJbyor8o9NmUZWVxpcxbj8tc46pdok=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TDv5jihKHlaN4paGvOZAvS+B1lSNeV/cnzXAUl3Ft0XReqx1oyZGRwoKTprD/O+EgXlU/19aVYKEwOlCgpWZ0fMG5ieIqHmbuK9R6v0AjP8BU7j+Wxq4BQtFQClpMt9LRniImLwuiAwaA0r1YJxtvdnQfAKtH+ycr1ts17lFPAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C/3aELx0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED2F5C4AF50;
-	Tue, 27 Aug 2024 15:15:12 +0000 (UTC)
+	 MIME-Version; b=q1fhzNlgfTDeVI3M+EdJXZWlVcwqLJ7Kx3GDfyx1o/wqoqpRjiiNLcPDC6YBFIImyfb9DqcWEHnVpB8aCNRoUVNozHb4LcyZ+xtyWFT1CR/qaMbQjAR/DmyCBT3M43e1yj3u7P3owh+yJrR2MoFRieSSupwBe/TP8ov8edbSOIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vcEbJbeR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B0BBC4AF1A;
+	Tue, 27 Aug 2024 14:59:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771713;
-	bh=idSxrWsTuxWwjl/ombsewL/ef7W7d/Wxpio1T13Hjco=;
+	s=korg; t=1724770781;
+	bh=z+6VEaaQBH86POJbyor8o9NmUZWVxpcxbj8tc46pdok=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C/3aELx0255L+/4FRh5z/iInc5Vn98OljSMGsoXCOKoD9r0Pm6IoXX/brgEb6kk2y
-	 kUZBAKgJ10XF3buT3GzPsiP53xBjUbaDQCYKI46aseNxY3jq/a+5OnDoq0f6Ptd0uh
-	 iyMTo6/8TKsxjBiRyja20+ib8IZK/uUDf8JO05rI=
+	b=vcEbJbeRu1WZBSnnm8gLgUVQRZIes7Buc5WScjLwqFBxS1z9iTzUZg8FBAJ20ciIH
+	 frBXHcY7HTiiOoH7sXAXBUltocVi/J841C+n92Mo/QV5GoBAhfwEkHpNG2GdDvjD9W
+	 UsGLNzOXrFPd4qZBB2aRCtqk2I/mq+1mnnu6oeGA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Kolbj=C3=B8rn=20Barmen?= <linux-ppc@kolla.no>,
-	=?UTF-8?q?Jon=C3=A1=C5=A1=20Vidra?= <vidra@ufal.mff.cuni.cz>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Damien Le Moal <dlemoal@kernel.org>
-Subject: [PATCH 6.10 240/273] ata: pata_macio: Fix DMA table overflow
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Daniel Hodges <hodgesd@meta.com>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Subject: [PATCH 6.6 333/341] bpf: Fix a kernel verifier crash in stacksafe()
 Date: Tue, 27 Aug 2024 16:39:24 +0200
-Message-ID: <20240827143842.535423957@linuxfoundation.org>
+Message-ID: <20240827143856.067340828@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,125 +62,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Yonghong Song <yonghong.song@linux.dev>
 
-commit 822c8020aebcf5804a143b891e34f29873fee5e2 upstream.
+commit bed2eb964c70b780fb55925892a74f26cb590b25 upstream.
 
-Kolbjørn and Jonáš reported that their 32-bit PowerMacs were crashing
-in pata-macio since commit 09fe2bfa6b83 ("ata: pata_macio: Fix
-max_segment_size with PAGE_SIZE == 64K").
+Daniel Hodges reported a kernel verifier crash when playing with sched-ext.
+Further investigation shows that the crash is due to invalid memory access
+in stacksafe(). More specifically, it is the following code:
 
-For example:
+    if (exact != NOT_EXACT &&
+        old->stack[spi].slot_type[i % BPF_REG_SIZE] !=
+        cur->stack[spi].slot_type[i % BPF_REG_SIZE])
+            return false;
 
-  kernel BUG at drivers/ata/pata_macio.c:544!
-  Oops: Exception in kernel mode, sig: 5 [#1]
-  BE PAGE_SIZE=4K MMU=Hash SMP NR_CPUS=2 DEBUG_PAGEALLOC PowerMac
-  ...
-  NIP pata_macio_qc_prep+0xf4/0x190
-  LR  pata_macio_qc_prep+0xfc/0x190
-  Call Trace:
-    0xc1421660 (unreliable)
-    ata_qc_issue+0x14c/0x2d4
-    __ata_scsi_queuecmd+0x200/0x53c
-    ata_scsi_queuecmd+0x50/0xe0
-    scsi_queue_rq+0x788/0xb1c
-    __blk_mq_issue_directly+0x58/0xf4
-    blk_mq_plug_issue_direct+0x8c/0x1b4
-    blk_mq_flush_plug_list.part.0+0x584/0x5e0
-    __blk_flush_plug+0xf8/0x194
-    __submit_bio+0x1b8/0x2e0
-    submit_bio_noacct_nocheck+0x230/0x304
-    btrfs_work_helper+0x200/0x338
-    process_one_work+0x1a8/0x338
-    worker_thread+0x364/0x4c0
-    kthread+0x100/0x104
-    start_kernel_thread+0x10/0x14
+The 'i' iterates old->allocated_stack.
+If cur->allocated_stack < old->allocated_stack the out-of-bound
+access will happen.
 
-That commit increased max_segment_size to 64KB, with the justification
-that the SCSI core was already using that size when PAGE_SIZE == 64KB,
-and that there was existing logic to split over-sized requests.
+To fix the issue add 'i >= cur->allocated_stack' check such that if
+the condition is true, stacksafe() should fail. Otherwise,
+cur->stack[spi].slot_type[i % BPF_REG_SIZE] memory access is legal.
 
-However with a sufficiently large request, the splitting logic causes
-each sg to be split into two commands in the DMA table, leading to
-overflow of the DMA table, triggering the BUG_ON().
-
-With default settings the bug doesn't trigger, because the request size
-is limited by max_sectors_kb == 1280, however max_sectors_kb can be
-increased, and apparently some distros do that by default using udev
-rules.
-
-Fix the bug for 4KB kernels by reverting to the old max_segment_size.
-
-For 64KB kernels the sg_tablesize needs to be halved, to allow for the
-possibility that each sg will be split into two.
-
-Fixes: 09fe2bfa6b83 ("ata: pata_macio: Fix max_segment_size with PAGE_SIZE == 64K")
-Cc: stable@vger.kernel.org # v6.10+
-Reported-by: Kolbjørn Barmen <linux-ppc@kolla.no>
-Closes: https://lore.kernel.org/all/62d248bb-e97a-25d2-bcf2-9160c518cae5@kolla.no/
-Reported-by: Jonáš Vidra <vidra@ufal.mff.cuni.cz>
-Closes: https://lore.kernel.org/all/3b6441b8-06e6-45da-9e55-f92f2c86933e@ufal.mff.cuni.cz/
-Tested-by: Kolbjørn Barmen <linux-ppc@kolla.no>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Fixes: 2793a8b015f7 ("bpf: exact states comparison for iterator convergence checks")
+Cc: Eduard Zingerman <eddyz87@gmail.com>
+Reported-by: Daniel Hodges <hodgesd@meta.com>
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+Signed-off-by: Yonghong Song <yonghong.song@linux.dev>
+Link: https://lore.kernel.org/r/20240812214847.213612-1-yonghong.song@linux.dev
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+[ shung-hsi.yu: "exact" variable is bool instead enum because commit
+  4f81c16f50ba ("bpf: Recognize that two registers are safe when their
+  ranges match") is not present. ]
+Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/pata_macio.c | 23 +++++++++++++++--------
- 1 file changed, 15 insertions(+), 8 deletions(-)
+ kernel/bpf/verifier.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/ata/pata_macio.c b/drivers/ata/pata_macio.c
-index 1b85e8bf4ef9..1cb8d24b088f 100644
---- a/drivers/ata/pata_macio.c
-+++ b/drivers/ata/pata_macio.c
-@@ -208,6 +208,19 @@ static const char* macio_ata_names[] = {
- /* Don't let a DMA segment go all the way to 64K */
- #define MAX_DBDMA_SEG		0xff00
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -16124,8 +16124,9 @@ static bool stacksafe(struct bpf_verifie
+ 		spi = i / BPF_REG_SIZE;
  
-+#ifdef CONFIG_PAGE_SIZE_64KB
-+/*
-+ * The SCSI core requires the segment size to cover at least a page, so
-+ * for 64K page size kernels it must be at least 64K. However the
-+ * hardware can't handle 64K, so pata_macio_qc_prep() will split large
-+ * requests. To handle the split requests the tablesize must be halved.
-+ */
-+#define PATA_MACIO_MAX_SEGMENT_SIZE	SZ_64K
-+#define PATA_MACIO_SG_TABLESIZE		(MAX_DCMDS / 2)
-+#else
-+#define PATA_MACIO_MAX_SEGMENT_SIZE	MAX_DBDMA_SEG
-+#define PATA_MACIO_SG_TABLESIZE		MAX_DCMDS
-+#endif
+ 		if (exact &&
+-		    old->stack[spi].slot_type[i % BPF_REG_SIZE] !=
+-		    cur->stack[spi].slot_type[i % BPF_REG_SIZE])
++		    (i >= cur->allocated_stack ||
++		     old->stack[spi].slot_type[i % BPF_REG_SIZE] !=
++		     cur->stack[spi].slot_type[i % BPF_REG_SIZE]))
+ 			return false;
  
- /*
-  * Wait 1s for disk to answer on IDE bus after a hard reset
-@@ -912,16 +925,10 @@ static int pata_macio_do_resume(struct pata_macio_priv *priv)
- 
- static const struct scsi_host_template pata_macio_sht = {
- 	__ATA_BASE_SHT(DRV_NAME),
--	.sg_tablesize		= MAX_DCMDS,
-+	.sg_tablesize		= PATA_MACIO_SG_TABLESIZE,
- 	/* We may not need that strict one */
- 	.dma_boundary		= ATA_DMA_BOUNDARY,
--	/*
--	 * The SCSI core requires the segment size to cover at least a page, so
--	 * for 64K page size kernels this must be at least 64K. However the
--	 * hardware can't handle 64K, so pata_macio_qc_prep() will split large
--	 * requests.
--	 */
--	.max_segment_size	= SZ_64K,
-+	.max_segment_size	= PATA_MACIO_MAX_SEGMENT_SIZE,
- 	.device_configure	= pata_macio_device_configure,
- 	.sdev_groups		= ata_common_sdev_groups,
- 	.can_queue		= ATA_DEF_QUEUE,
--- 
-2.46.0
-
+ 		if (!(old->stack[spi].spilled_ptr.live & REG_LIVE_READ) && !exact) {
 
 
 
