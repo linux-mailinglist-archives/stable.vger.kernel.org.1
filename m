@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-71000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70492-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEE92961116
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:16:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81FD1960E64
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:48:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 798FD282B89
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:16:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B8FA1F248B6
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:48:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 160B61BFE07;
-	Tue, 27 Aug 2024 15:16:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 304451C57A9;
+	Tue, 27 Aug 2024 14:48:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UrNdR/Gn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zBGo4neY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7BCF1A072D;
-	Tue, 27 Aug 2024 15:16:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2CC7DDC1;
+	Tue, 27 Aug 2024 14:48:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771764; cv=none; b=ix9asvV8c1ac4TTuwfSVqyjyuz+zJtepVJv+m0LGTbN0NYugHKCesHtybqpkad9CDH4aGbsgEPPwrMf3gW5Mhzd1R3AwVMAZODLnthR6n9EWjGWzGfqKvE6FyaxMhg+idTn2LXIqdMJIZOBR1EHwuTZmHgkYUnDVv9uFgQKvOb4=
+	t=1724770087; cv=none; b=EQOylDid/fDE+cgJ94L1intIv6QdNz5iKMLssVpSrypvjJi8HoQFPKClbz239Kj2xOOc0nLV+WYLmobXNyIjGcY6HApYOdrOZbjzvCj5feFVVjjjan9TwGBpUpWnAmb5UIWuI7daAW/uQqzRJmJIzX0tsPdUfkK+RaQNjh5Nepw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771764; c=relaxed/simple;
-	bh=Pjn8o+Ur0ApsaxwYv65gcxXpC8V77oJnWc3m9wiEEC0=;
+	s=arc-20240116; t=1724770087; c=relaxed/simple;
+	bh=G2jv5jc705zai/WJ+gVSV6W4NhsbFL1Fx0hwE8FHkbQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KLQpKX84Qv9TrPfJ/Wd8rtrIy8wD9X0Li2EuHCgqiYeO1P0ls34rnbp0BeXRNk6E8L46x1GQomiosj2sna3P1LvqTNKZb4Ma4Lzj3C5UowuOQfFgGjo99hQMnfC97olb7woVkjehUooMerrLscpnNG16/FUes1dLFjsbuXHyXGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UrNdR/Gn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29938C4DE0F;
-	Tue, 27 Aug 2024 15:16:03 +0000 (UTC)
+	 MIME-Version; b=GueNA4/cwd0s/CrGd3LFRnuhcLdTQ63u1RIdXJ1Egk35O8o3djSgzudtPRXfLYFHDNk8rQ1DyXinO6kO7AbLHRkLrV0lMmAlPj1otSFcihWRk+26bKJn55NO+rOd0S66KTPtkNpdQIeYvyZ4TGNUU6bOaiic8UNZinsn24e2PpM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zBGo4neY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4984EC61046;
+	Tue, 27 Aug 2024 14:48:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771764;
-	bh=Pjn8o+Ur0ApsaxwYv65gcxXpC8V77oJnWc3m9wiEEC0=;
+	s=korg; t=1724770086;
+	bh=G2jv5jc705zai/WJ+gVSV6W4NhsbFL1Fx0hwE8FHkbQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UrNdR/GnjKzVhV5Bo9mxqXnigr+IlUh8eyO4jbs6YTDnbb1QWGX2WiK5dyvQEYcb6
-	 TD9t3hlY/Xnuz+LcDH6kqkTZ4d5honGxeveXRkk8NitLQW6g7wIk0b35EybpNfmQKP
-	 2daZ0J65jwq2voPqWEIBLPrVp6vAkBPIdz1zWDRw=
+	b=zBGo4neYLBQuxZxVkmfRhqmfOlwo/RFic/P1DyAwoe5GTE+xnWeVzkXKPCJbOSnxz
+	 mC6trGubGlbZQu5AdkYC0kcuDYBB/7Mf1U44YiA+dHARtjq/jsrI1NnxXBDKBZeOYv
+	 3AJ04XbraQlv0OEzQafBtBDkB5e96jhthjfKmp5A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Zdenek Kabelac <zkabelac@redhat.com>,
-	Mike Snitzer <snitzer@kernel.org>
-Subject: [PATCH 6.1 014/321] dm persistent data: fix memory allocation failure
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Gregory Greenman <gregory.greenman@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 091/341] wifi: iwlwifi: mvm: fix recovery flow in CSA
 Date: Tue, 27 Aug 2024 16:35:22 +0200
-Message-ID: <20240827143838.749040282@linuxfoundation.org>
+Message-ID: <20240827143846.870033792@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-commit faada2174c08662ae98b439c69efe3e79382c538 upstream.
+[ Upstream commit 828c79d9feb000acbd9c15bd1ed7e0914473b363 ]
 
-kmalloc is unreliable when allocating more than 8 pages of memory. It may
-fail when there is plenty of free memory but the memory is fragmented.
-Zdenek Kabelac observed such failure in his tests.
+If the firmware crashes in the de-activation / re-activation
+of the link during CSA, we will not have a valid phy_ctxt
+pointer in mvmvif. This is a legit case, but when mac80211
+removes the station to cleanup our state during the
+re-configuration, we need to make sure we clear ap_sta
+otherwise we won't re-add the station after the firmware has
+been restarted. Later on, we'd activate the link, try to send
+a TLC command crash again on ASSERT 3508.
 
-This commit changes kmalloc to kvmalloc - kvmalloc will fall back to
-vmalloc if the large allocation fails.
+Fix this by properly cleaning up our state.
 
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Reported-by: Zdenek Kabelac <zkabelac@redhat.com>
-Reviewed-by: Mike Snitzer <snitzer@kernel.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+Link: https://lore.kernel.org/r/20230913145231.2651e6f6a55a.I4cd50e88ee5c23c1c8dd5b157a800e4b4c96f236@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/persistent-data/dm-space-map-metadata.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/md/persistent-data/dm-space-map-metadata.c
-+++ b/drivers/md/persistent-data/dm-space-map-metadata.c
-@@ -274,7 +274,7 @@ static void sm_metadata_destroy(struct d
- {
- 	struct sm_metadata *smm = container_of(sm, struct sm_metadata, sm);
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index 8f49de1206e03..f973efbbc3795 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -1035,6 +1035,7 @@ static void iwl_mvm_cleanup_iterator(void *data, u8 *mac,
+ 	spin_unlock_bh(&mvm->time_event_lock);
  
--	kfree(smm);
-+	kvfree(smm);
- }
+ 	memset(&mvmvif->bf_data, 0, sizeof(mvmvif->bf_data));
++	mvmvif->ap_sta = NULL;
  
- static int sm_metadata_get_nr_blocks(struct dm_space_map *sm, dm_block_t *count)
-@@ -768,7 +768,7 @@ struct dm_space_map *dm_sm_metadata_init
- {
- 	struct sm_metadata *smm;
+ 	for_each_mvm_vif_valid_link(mvmvif, link_id) {
+ 		mvmvif->link[link_id]->ap_sta_id = IWL_MVM_INVALID_STA;
+@@ -3934,7 +3935,11 @@ int iwl_mvm_mac_sta_state_common(struct ieee80211_hw *hw,
  
--	smm = kmalloc(sizeof(*smm), GFP_KERNEL);
-+	smm = kvmalloc(sizeof(*smm), GFP_KERNEL);
- 	if (!smm)
- 		return ERR_PTR(-ENOMEM);
+ 	mutex_lock(&mvm->mutex);
  
+-	/* this would be a mac80211 bug ... but don't crash */
++	/* this would be a mac80211 bug ... but don't crash, unless we had a
++	 * firmware crash while we were activating a link, in which case it is
++	 * legit to have phy_ctxt = NULL. Don't bother not to WARN if we are in
++	 * recovery flow since we spit tons of error messages anyway.
++	 */
+ 	for_each_sta_active_link(vif, sta, link_sta, link_id) {
+ 		if (WARN_ON_ONCE(!mvmvif->link[link_id]->phy_ctxt)) {
+ 			mutex_unlock(&mvm->mutex);
+-- 
+2.43.0
+
 
 
 
