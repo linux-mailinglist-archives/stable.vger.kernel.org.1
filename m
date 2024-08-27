@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-70517-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71090-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35E52960E87
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:49:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 043A1961197
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:21:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 90D46B23EAE
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:49:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F7191C23086
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:21:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B03301C4ED8;
-	Tue, 27 Aug 2024 14:49:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C90D1C68BD;
+	Tue, 27 Aug 2024 15:21:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SxGu/sxK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BLv1BM9C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C6D9DDC1;
-	Tue, 27 Aug 2024 14:49:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AF0919F485;
+	Tue, 27 Aug 2024 15:21:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770171; cv=none; b=F+dsBT1YLHDs8NtDzP0BQdYKEVvwo6ItfIl2YXDyVA7mMEKCthlgUbxla2IUSSX88jeu1/GLqFI6Qu5KwOV6clAFoEYcN4i6Id2csPLfamsNhbk8g/l90mJfejJ8rTzJK/VxhJSB38Sh2wI2DqStnpSeUufobLYtn0TGrcyt0MU=
+	t=1724772067; cv=none; b=Xckr4a26XXJRfulAzHbygBeFDJRIRYMCVg9pzol56tn7b7w5E6uPLXL5SQGFIBgtyOpmN3SmKnwR28Ik/PkhTLOpxg/Jcnm0NojeHjHq2ro+p9solSThHiUzklznHA9v1SW86YRQktc2TJOx2XJRCXE0F59ygzV8VwwcekEFF6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770171; c=relaxed/simple;
-	bh=ZQoLHFM1FLCs96k/ApHvE/P6rKTeNpbL4IKZ47Ntmds=;
+	s=arc-20240116; t=1724772067; c=relaxed/simple;
+	bh=woBMP4lCge/ns6KLn4MNpPsLjKA+BHudd4XHl44IBUM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a756OgdtTRpExjhRIsZkyneUoAcH45dUMGtxK5L4T9vLk0mEAw2agATpsFiVrUQOF8PNLxsywAxEbpufQkzWykSTKlwFXho4redGCg1HPNeIbucSew0oxjtB5/wsi/IkcXHrIfuZhsW+E4E455IcHf23XrwoIqJemGhkwEjn+E4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SxGu/sxK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9458C4AF18;
-	Tue, 27 Aug 2024 14:49:30 +0000 (UTC)
+	 MIME-Version; b=Juiky9ivSFisOhu0hODNKwKRBnevrm64Dlwpuu989yo1XloSvAbVUa0FuZYgIyDLutb0jfkKKMbfCcJpdrtQ99RrmtawRB9kQVPVfWXQKFmh+ajnqhGJLHYQxgB06E1WXGby6C4Nk/w5JC3tpCTMAXVURWqN7uKyHPAaBSfIUxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BLv1BM9C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBCF6C4E66E;
+	Tue, 27 Aug 2024 15:21:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770171;
-	bh=ZQoLHFM1FLCs96k/ApHvE/P6rKTeNpbL4IKZ47Ntmds=;
+	s=korg; t=1724772067;
+	bh=woBMP4lCge/ns6KLn4MNpPsLjKA+BHudd4XHl44IBUM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SxGu/sxK1IDWz8EjHUYdDNeMppg0hI3qGB1rbbnI59DqWNAsKLhEFoXi5qFa4nI4c
-	 MQE5VK7SDEaH0ZYbH/Ki4oXkyBBQVU8KFMkfUw4pDxhkkj9tbrXQDtpv+FEUNefVX2
-	 Prc+UXCPt0UUQMb5q/Wu+7kJjzvlmqtvgMB1J380=
+	b=BLv1BM9CRFPtsqrXBeAUL8qhRCncraalgMJRQg58MhehZic957Ov8KDYffXGY9w54
+	 MwbhsmB7+8hylvX/EIpWGNUI3Z0uZyIf2rf2gf7XPvrAZvEd0ZQx2Ceyld0/CaUab6
+	 vOl/KeielYe0Z8lJvsxjfR/FK7/851DniCb+Us0w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shannon Nelson <shannon.nelson@amd.com>,
-	Brett Creeley <brett.creeley@amd.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	syzbot+1fa663a2100308ab6eab@syzkaller.appspotmail.com,
+	Alexei Starovoitov <ast@kernel.org>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 147/341] ionic: no fw read when PCI reset failed
-Date: Tue, 27 Aug 2024 16:36:18 +0200
-Message-ID: <20240827143849.014629759@linuxfoundation.org>
+Subject: [PATCH 6.1 071/321] bpf: Avoid kfree_rcu() under lock in bpf_lpm_trie.
+Date: Tue, 27 Aug 2024 16:36:19 +0200
+Message-ID: <20240827143840.945066797@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,95 +63,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shannon Nelson <shannon.nelson@amd.com>
+From: Alexei Starovoitov <ast@kernel.org>
 
-[ Upstream commit 219e183272b4a566650a37264aff90a8c613d9b5 ]
+[ Upstream commit 59f2f841179aa6a0899cb9cf53659149a35749b7 ]
 
-If there was a failed attempt to reset the PCI connection,
-don't later try to read from PCI as the space is unmapped
-and will cause a paging request crash.  When clearing the PCI
-setup we can clear the dev_info register pointer, and check
-it before using it in the fw_running test.
+syzbot reported the following lock sequence:
+cpu 2:
+  grabs timer_base lock
+    spins on bpf_lpm lock
 
-Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
-Reviewed-by: Brett Creeley <brett.creeley@amd.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+cpu 1:
+  grab rcu krcp lock
+    spins on timer_base lock
+
+cpu 0:
+  grab bpf_lpm lock
+    spins on rcu krcp lock
+
+bpf_lpm lock can be the same.
+timer_base lock can also be the same due to timer migration.
+but rcu krcp lock is always per-cpu, so it cannot be the same lock.
+Hence it's a false positive.
+To avoid lockdep complaining move kfree_rcu() after spin_unlock.
+
+Reported-by: syzbot+1fa663a2100308ab6eab@syzkaller.appspotmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20240329171439.37813-1-alexei.starovoitov@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ethernet/pensando/ionic/ionic_bus_pci.c   |  5 ++++
- .../net/ethernet/pensando/ionic/ionic_dev.c   | 23 +++++++++++++++----
- 2 files changed, 23 insertions(+), 5 deletions(-)
+ kernel/bpf/lpm_trie.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c b/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c
-index f0a7fde8f7fff..a5fa49fd21390 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c
-@@ -215,6 +215,11 @@ static int ionic_sriov_configure(struct pci_dev *pdev, int num_vfs)
- 
- static void ionic_clear_pci(struct ionic *ionic)
+diff --git a/kernel/bpf/lpm_trie.c b/kernel/bpf/lpm_trie.c
+index b80bffc59e5fb..37b510d91b810 100644
+--- a/kernel/bpf/lpm_trie.c
++++ b/kernel/bpf/lpm_trie.c
+@@ -308,6 +308,7 @@ static int trie_update_elem(struct bpf_map *map,
  {
-+	ionic->idev.dev_info_regs = NULL;
-+	ionic->idev.dev_cmd_regs = NULL;
-+	ionic->idev.intr_status = NULL;
-+	ionic->idev.intr_ctrl = NULL;
-+
- 	ionic_unmap_bars(ionic);
- 	pci_release_regions(ionic->pdev);
+ 	struct lpm_trie *trie = container_of(map, struct lpm_trie, map);
+ 	struct lpm_trie_node *node, *im_node = NULL, *new_node = NULL;
++	struct lpm_trie_node *free_node = NULL;
+ 	struct lpm_trie_node __rcu **slot;
+ 	struct bpf_lpm_trie_key_u8 *key = _key;
+ 	unsigned long irq_flags;
+@@ -382,7 +383,7 @@ static int trie_update_elem(struct bpf_map *map,
+ 			trie->n_entries--;
  
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_dev.c b/drivers/net/ethernet/pensando/ionic/ionic_dev.c
-index 22ab0a44fa8c7..b4e0fb25b96d7 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_dev.c
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_dev.c
-@@ -165,9 +165,19 @@ void ionic_dev_teardown(struct ionic *ionic)
- }
+ 		rcu_assign_pointer(*slot, new_node);
+-		kfree_rcu(node, rcu);
++		free_node = node;
  
- /* Devcmd Interface */
--bool ionic_is_fw_running(struct ionic_dev *idev)
-+static bool __ionic_is_fw_running(struct ionic_dev *idev, u8 *status_ptr)
- {
--	u8 fw_status = ioread8(&idev->dev_info_regs->fw_status);
-+	u8 fw_status;
-+
-+	if (!idev->dev_info_regs) {
-+		if (status_ptr)
-+			*status_ptr = 0xff;
-+		return false;
-+	}
-+
-+	fw_status = ioread8(&idev->dev_info_regs->fw_status);
-+	if (status_ptr)
-+		*status_ptr = fw_status;
- 
- 	/* firmware is useful only if the running bit is set and
- 	 * fw_status != 0xff (bad PCI read)
-@@ -175,6 +185,11 @@ bool ionic_is_fw_running(struct ionic_dev *idev)
- 	return (fw_status != 0xff) && (fw_status & IONIC_FW_STS_F_RUNNING);
- }
- 
-+bool ionic_is_fw_running(struct ionic_dev *idev)
-+{
-+	return __ionic_is_fw_running(idev, NULL);
-+}
-+
- int ionic_heartbeat_check(struct ionic *ionic)
- {
- 	unsigned long check_time, last_check_time;
-@@ -199,10 +214,8 @@ int ionic_heartbeat_check(struct ionic *ionic)
- 		goto do_check_time;
+ 		goto out;
+ 	}
+@@ -429,6 +430,7 @@ static int trie_update_elem(struct bpf_map *map,
  	}
  
--	fw_status = ioread8(&idev->dev_info_regs->fw_status);
--
- 	/* If fw_status is not ready don't bother with the generation */
--	if (!ionic_is_fw_running(idev)) {
-+	if (!__ionic_is_fw_running(idev, &fw_status)) {
- 		fw_status_ready = false;
- 	} else {
- 		fw_generation = fw_status & IONIC_FW_STS_F_GENERATION;
+ 	spin_unlock_irqrestore(&trie->lock, irq_flags);
++	kfree_rcu(free_node, rcu);
+ 
+ 	return ret;
+ }
+@@ -437,6 +439,7 @@ static int trie_update_elem(struct bpf_map *map,
+ static int trie_delete_elem(struct bpf_map *map, void *_key)
+ {
+ 	struct lpm_trie *trie = container_of(map, struct lpm_trie, map);
++	struct lpm_trie_node *free_node = NULL, *free_parent = NULL;
+ 	struct bpf_lpm_trie_key_u8 *key = _key;
+ 	struct lpm_trie_node __rcu **trim, **trim2;
+ 	struct lpm_trie_node *node, *parent;
+@@ -506,8 +509,8 @@ static int trie_delete_elem(struct bpf_map *map, void *_key)
+ 		else
+ 			rcu_assign_pointer(
+ 				*trim2, rcu_access_pointer(parent->child[0]));
+-		kfree_rcu(parent, rcu);
+-		kfree_rcu(node, rcu);
++		free_parent = parent;
++		free_node = node;
+ 		goto out;
+ 	}
+ 
+@@ -521,10 +524,12 @@ static int trie_delete_elem(struct bpf_map *map, void *_key)
+ 		rcu_assign_pointer(*trim, rcu_access_pointer(node->child[1]));
+ 	else
+ 		RCU_INIT_POINTER(*trim, NULL);
+-	kfree_rcu(node, rcu);
++	free_node = node;
+ 
+ out:
+ 	spin_unlock_irqrestore(&trie->lock, irq_flags);
++	kfree_rcu(free_parent, rcu);
++	kfree_rcu(free_node, rcu);
+ 
+ 	return ret;
+ }
 -- 
 2.43.0
 
