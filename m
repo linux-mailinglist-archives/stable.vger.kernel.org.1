@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-71142-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70599-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 385199611DC
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:24:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EA57960F06
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:55:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C7E1FB25C4D
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:24:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 517D71C23403
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:55:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5E8B1C7B71;
-	Tue, 27 Aug 2024 15:23:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B0E21C6F46;
+	Tue, 27 Aug 2024 14:54:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VbeWisLO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BxxvyfvI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A06CC1BC073;
-	Tue, 27 Aug 2024 15:23:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F9341A08A3;
+	Tue, 27 Aug 2024 14:54:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772237; cv=none; b=S/kmF69tflsKmJG8PoPvamsxGbI0HKMrgX5GdIsKGJV7sZ9MIaCA81ugEx9nfi+e5PXtGSSKpudGStQtKkpUfgygcqn7p5Nq2hMHtpf2u6DN3Y6/JPqWVvPVKeMpguqu438HFM/IEoboaWdKbMmqqbsy407oVcJZG42oh1MgQOY=
+	t=1724770443; cv=none; b=JbgfVIMiWdTll3YpebtltDPwpSyPKA2Tbv8QnSlL1ctaJFQUHh5xUzBE+w4IazH5xrq3sIjpdxMRvCTY6YN4/Huk+4+LnkJSfZaGwC4COHKCzBi/9vHQ2FeIU5BcNHuJ/2Wq/e5RzwAcOWT5Hkux1vBUWs6pRFeV1Hs95sFjOTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772237; c=relaxed/simple;
-	bh=NpIXwWfO3vTOMhKP07i5uJz/kib9KeVx8tKhpwWkkDI=;
+	s=arc-20240116; t=1724770443; c=relaxed/simple;
+	bh=lcxCFATHjnC9Kx5b5IDfcXpfPVmnHCfHfGnVrTtfZBU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SwbFSXcPUh03VsXGmpUC3zDrpvcJ/1BD0P+4AxCvdvE//KOsY/q9sGM0hfGCH+ivmijprgP42Yv6iiDtv46MJ4On83MfUjP31ayFdlk+6mOvNw+8/1i+4rAyyNVaQ1cLYiza9i1O/PibDkdCCaU2qdKra8GiL86E7gGX5jfyfAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VbeWisLO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E074C61062;
-	Tue, 27 Aug 2024 15:23:56 +0000 (UTC)
+	 MIME-Version; b=R+ode9X1gRtuLoNuVvVZwxmLZCzX1HktH/fLdyd0FMKuixm3dOoR8LmOW290D7rvDEdMkhXms5Nq2oRfdArXkixNVzGoNgH8O0CI7QvHcUn6eLgW1sweLwnVkFZOJw6IwxVBAMiTs7HafpXeBl3mgNGFnBYyFzUdrwgDDTe0Uxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BxxvyfvI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89E30C6106F;
+	Tue, 27 Aug 2024 14:54:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772237;
-	bh=NpIXwWfO3vTOMhKP07i5uJz/kib9KeVx8tKhpwWkkDI=;
+	s=korg; t=1724770443;
+	bh=lcxCFATHjnC9Kx5b5IDfcXpfPVmnHCfHfGnVrTtfZBU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VbeWisLO0ZZMTy50gACRdQ3e3E7kVtHV6dKQpKJ/kcz053/FBAhTWq+Vbcjikwi0Z
-	 Gwh4sSrr+1WOdYAdF1ow9okvznMYSXGoNj2HCcOqE1xbR7h5AJIwjkxPd6nt64JLjb
-	 w0WtMDoZQ812ukxA2Smwtpv1EHJucSPOBd5qfc28=
+	b=BxxvyfvIoXBPpp1Mr0hXs8Sg8OfXwtDg/oUd4L7lJZDttniFpEnMYzxQ3IC3E99aF
+	 v/EDZwlNX/FP6qz8NwPSVeoiGvfYFM0EImcGwkVafhXElF4fq1jBfdxoUaK8k00XA6
+	 05UBtmHhdY4W/a9UT8YR8Em4jFEnrIu6nr0Hy2cs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jim Cromie <jim.cromie@gmail.com>,
-	Jean Delvare <jdelvare@suse.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	linux-hwmon@vger.kernel.org,
-	Kees Cook <keescook@chromium.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Hailong Liu <hailong.liu@oppo.com>,
+	Tangquan Zheng <zhengtangquan@oppo.com>,
+	Baoquan He <bhe@redhat.com>,
+	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
+	Barry Song <baohua@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 154/321] hwmon: (pc87360) Bounds check data->innr usage
+Subject: [PATCH 6.6 231/341] mm/vmalloc: fix page mapping if vm_area_alloc_pages() with high order fallback to order 0
 Date: Tue, 27 Aug 2024 16:37:42 +0200
-Message-ID: <20240827143844.095930313@linuxfoundation.org>
+Message-ID: <20240827143852.200371192@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,62 +68,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <keescook@chromium.org>
+From: Hailong Liu <hailong.liu@oppo.com>
 
-[ Upstream commit 4265eb062a7303e537ab3792ade31f424c3c5189 ]
+[ Upstream commit 61ebe5a747da649057c37be1c37eb934b4af79ca ]
 
-Without visibility into the initializers for data->innr, GCC suspects
-using it as an index could walk off the end of the various 14-element
-arrays in data. Perform an explicit clamp to the array size. Silences
-the following warning with GCC 12+:
+The __vmap_pages_range_noflush() assumes its argument pages** contains
+pages with the same page shift.  However, since commit e9c3cda4d86e ("mm,
+vmalloc: fix high order __GFP_NOFAIL allocations"), if gfp_flags includes
+__GFP_NOFAIL with high order in vm_area_alloc_pages() and page allocation
+failed for high order, the pages** may contain two different page shifts
+(high order and order-0).  This could lead __vmap_pages_range_noflush() to
+perform incorrect mappings, potentially resulting in memory corruption.
 
-../drivers/hwmon/pc87360.c: In function 'pc87360_update_device':
-../drivers/hwmon/pc87360.c:341:49: warning: writing 1 byte into a region of size 0 [-Wstringop-overflow=]
-  341 |                                 data->in_max[i] = pc87360_read_value(data,
-      |                                 ~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~
-  342 |                                                   LD_IN, i,
-      |                                                   ~~~~~~~~~
-  343 |                                                   PC87365_REG_IN_MAX);
-      |                                                   ~~~~~~~~~~~~~~~~~~~
-../drivers/hwmon/pc87360.c:209:12: note: at offset 255 into destination object 'in_max' of size 14
-  209 |         u8 in_max[14];          /* Register value */
-      |            ^~~~~~
+Users might encounter this as follows (vmap_allow_huge = true, 2M is for
+PMD_SIZE):
 
-Cc: Jim Cromie <jim.cromie@gmail.com>
-Cc: Jean Delvare <jdelvare@suse.com>
-Cc: Guenter Roeck <linux@roeck-us.net>
-Cc: linux-hwmon@vger.kernel.org
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Link: https://lore.kernel.org/r/20231130200207.work.679-kees@kernel.org
-[groeck: Added comment into code clarifying context]
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+kvmalloc(2M, __GFP_NOFAIL|GFP_X)
+    __vmalloc_node_range_noprof(vm_flags=VM_ALLOW_HUGE_VMAP)
+        vm_area_alloc_pages(order=9) ---> order-9 allocation failed and fallback to order-0
+            vmap_pages_range()
+                vmap_pages_range_noflush()
+                    __vmap_pages_range_noflush(page_shift = 21) ----> wrong mapping happens
+
+We can remove the fallback code because if a high-order allocation fails,
+__vmalloc_node_range_noprof() will retry with order-0.  Therefore, it is
+unnecessary to fallback to order-0 here.  Therefore, fix this by removing
+the fallback code.
+
+Link: https://lkml.kernel.org/r/20240808122019.3361-1-hailong.liu@oppo.com
+Fixes: e9c3cda4d86e ("mm, vmalloc: fix high order __GFP_NOFAIL allocations")
+Signed-off-by: Hailong Liu <hailong.liu@oppo.com>
+Reported-by: Tangquan Zheng <zhengtangquan@oppo.com>
+Reviewed-by: Baoquan He <bhe@redhat.com>
+Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+Acked-by: Barry Song <baohua@kernel.org>
+Acked-by: Michal Hocko <mhocko@suse.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/pc87360.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ mm/vmalloc.c | 11 ++---------
+ 1 file changed, 2 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/hwmon/pc87360.c b/drivers/hwmon/pc87360.c
-index a4adc8bd531ff..534a6072036c9 100644
---- a/drivers/hwmon/pc87360.c
-+++ b/drivers/hwmon/pc87360.c
-@@ -323,7 +323,11 @@ static struct pc87360_data *pc87360_update_device(struct device *dev)
- 		}
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index 078f6b53f8d50..732ff66d1b513 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -3079,15 +3079,8 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
+ 			page = alloc_pages(alloc_gfp, order);
+ 		else
+ 			page = alloc_pages_node(nid, alloc_gfp, order);
+-		if (unlikely(!page)) {
+-			if (!nofail)
+-				break;
+-
+-			/* fall back to the zero order allocations */
+-			alloc_gfp |= __GFP_NOFAIL;
+-			order = 0;
+-			continue;
+-		}
++		if (unlikely(!page))
++			break;
  
- 		/* Voltages */
--		for (i = 0; i < data->innr; i++) {
-+		/*
-+		 * The min() below does not have any practical meaning and is
-+		 * only needed to silence a warning observed with gcc 12+.
-+		 */
-+		for (i = 0; i < min(data->innr, ARRAY_SIZE(data->in)); i++) {
- 			data->in_status[i] = pc87360_read_value(data, LD_IN, i,
- 					     PC87365_REG_IN_STATUS);
- 			/* Clear bits */
+ 		/*
+ 		 * Higher order allocations must be able to be treated as
 -- 
 2.43.0
 
