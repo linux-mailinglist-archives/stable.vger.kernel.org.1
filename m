@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-70817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71108-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85E7F96102E
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:06:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF0BD9611AB
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:22:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B840C1C225D0
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:06:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 65D4D1F2408A
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:22:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B97E1C4EC9;
-	Tue, 27 Aug 2024 15:05:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53CF11C57A9;
+	Tue, 27 Aug 2024 15:22:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RJL5/Nyv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I1acMpI2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 271F819F485;
-	Tue, 27 Aug 2024 15:05:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12AE917C96;
+	Tue, 27 Aug 2024 15:22:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771159; cv=none; b=UbkQBESowXZ4hgrpytPACSOdf2keg9t8OWlekNLmyZycu5HPzKX39jCjD2jKMa5e+nj9cjcYlGMNlTwP8kutXmE8XFh8xa73DSPklxFI67f8d8svg17DJ/WzI79OIDxXC+4uKv0vhy/tK5n5wlQvIKoEFGbJaztb5OEiWQPN5mE=
+	t=1724772127; cv=none; b=SyCLQiMH6Qc7TKr0n5JTxAr0H7R6yw8+Dafi2vp+g9vjey2a/pe3vbcsmLU/9Nn1EMnIgi1HEhmB0IF95ViCjqIunaZk0up94H7r/F4LjLWRCrxaukM5TE4HvFuhZyBWRpyZGTQD+qcQ2w4SHoR4oYvn7cZcUrOILWs/fMDJvsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771159; c=relaxed/simple;
-	bh=Ed+h21nICLvSnDN1BGXRT/NrNjRol82p0TJouatyf1Q=;
+	s=arc-20240116; t=1724772127; c=relaxed/simple;
+	bh=uwtb2RjtuDDwgPEln2LDeOHgsqlldx9o32pkgFj8l7Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OrBoPwrJBZh+4Y8Y6qDBDdliXdm8NUH4xlBpNAZHloSdMps2n4Iwo9DhrE2jOtiIkaiQpuaOgdEqRc6GaQaP4cCFpNQc4jYT0XW0lPdpQk43sPBRnvLsj8sICwYCgPxLO6ux7Nt1xhIkk9L23jTqBMk36nhcXDdz9lVr8Vflchs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RJL5/Nyv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89911C6107C;
-	Tue, 27 Aug 2024 15:05:58 +0000 (UTC)
+	 MIME-Version; b=sUKNzBVTQamxq67sOPwYHFGhVv4U6OwWvr6bBM8L0mWUMMWTfVNuzocg1YZXy/LujgEkHAXZUs5kbU/qqIijBj8Uj+OnJphUfG+UqKQ4CthcdKl+V7pEn7lx7wcpsgoF/P7Dpwu/423wFYB7ukdw12Wheer+Dagl7IaYim4O5sk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I1acMpI2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80E1DC4FE09;
+	Tue, 27 Aug 2024 15:22:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771159;
-	bh=Ed+h21nICLvSnDN1BGXRT/NrNjRol82p0TJouatyf1Q=;
+	s=korg; t=1724772126;
+	bh=uwtb2RjtuDDwgPEln2LDeOHgsqlldx9o32pkgFj8l7Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RJL5/NyvD5Rqf+d6Ojz0G/9B5zH36dSHoAdBcpM+54XP0HnU/9XSPVwr5RL6Ee+2c
-	 0g056/aTogtYY4gA0IGRzTVO/P2K3K1r2ng/XbbqDs9TjbfkMsqcZ6zTBDmTXX/diw
-	 11Lh31AI1/1UAdOOTcmxfxMu9333KAj6ajmffcxI=
+	b=I1acMpI2FqKYZu7Q1ulLsVs983UiFRoTYFrAYCgtlMdHHjSRvIM44wbQ/WM4fqPvM
+	 07qR7RPOmeYOeaJJGmK99XU7ffod1ueSrrlxI9l1MrqPky14HyLMbC/eemc71HjA0+
+	 xUoQbqCoYQiQn1SESXFcWNjNmivIBYLQiOpaAGlw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 105/273] netfilter: nf_queue: drop packets with cloned unconfirmed conntracks
+Subject: [PATCH 6.1 121/321] s390/smp,mcck: fix early IPI handling
 Date: Tue, 27 Aug 2024 16:37:09 +0200
-Message-ID: <20240827143837.404898324@linuxfoundation.org>
+Message-ID: <20240827143842.849906075@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,111 +64,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit 7d8dc1c7be8d3509e8f5164dd5df64c8e34d7eeb ]
+[ Upstream commit 4a1725281fc5b0009944b1c0e1d2c1dc311a09ec ]
 
-Conntrack assumes an unconfirmed entry (not yet committed to global hash
-table) has a refcount of 1 and is not visible to other cores.
+Both the external call as well as the emergency signal submask bits in
+control register 0 are set before any interrupt handler is registered.
 
-With multicast forwarding this assumption breaks down because such
-skbs get cloned after being picked up, i.e.  ct->use refcount is > 1.
+Change the order and first register the interrupt handler and only then
+enable the interrupts by setting the corresponding bits in control
+register 0.
 
-Likewise, bridge netfilter will clone broad/mutlicast frames and
-all frames in case they need to be flood-forwarded during learning
-phase.
+This prevents that the second part of the machine check handler for
+early machine check handling is not executed: the machine check handler
+sends an IPI to the CPU it runs on. If the corresponding interrupts are
+enabled, but no interrupt handler is present, the interrupt is ignored.
 
-For ip multicast forwarding or plain bridge flood-forward this will
-"work" because packets don't leave softirq and are implicitly
-serialized.
-
-With nfqueue this no longer holds true, the packets get queued
-and can be reinjected in arbitrary ways.
-
-Disable this feature, I see no other solution.
-
-After this patch, nfqueue cannot queue packets except the last
-multicast/broadcast packet.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Reviewed-by: Sven Schnelle <svens@linux.ibm.com>
+Acked-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_netfilter_hooks.c |  6 +++++-
- net/netfilter/nfnetlink_queue.c | 35 +++++++++++++++++++++++++++++++--
- 2 files changed, 38 insertions(+), 3 deletions(-)
+ arch/s390/kernel/early.c | 12 +++---------
+ arch/s390/kernel/smp.c   |  4 ++--
+ 2 files changed, 5 insertions(+), 11 deletions(-)
 
-diff --git a/net/bridge/br_netfilter_hooks.c b/net/bridge/br_netfilter_hooks.c
-index bf30c50b56895..a9e1b56f854d4 100644
---- a/net/bridge/br_netfilter_hooks.c
-+++ b/net/bridge/br_netfilter_hooks.c
-@@ -619,8 +619,12 @@ static unsigned int br_nf_local_in(void *priv,
- 	if (likely(nf_ct_is_confirmed(ct)))
- 		return NF_ACCEPT;
- 
-+	if (WARN_ON_ONCE(refcount_read(&nfct->use) != 1)) {
-+		nf_reset_ct(skb);
-+		return NF_ACCEPT;
-+	}
-+
- 	WARN_ON_ONCE(skb_shared(skb));
--	WARN_ON_ONCE(refcount_read(&nfct->use) != 1);
- 
- 	/* We can't call nf_confirm here, it would create a dependency
- 	 * on nf_conntrack module.
-diff --git a/net/netfilter/nfnetlink_queue.c b/net/netfilter/nfnetlink_queue.c
-index 55e28e1da66ec..e0716da256bf5 100644
---- a/net/netfilter/nfnetlink_queue.c
-+++ b/net/netfilter/nfnetlink_queue.c
-@@ -820,10 +820,41 @@ static bool nf_ct_drop_unconfirmed(const struct nf_queue_entry *entry)
- {
- #if IS_ENABLED(CONFIG_NF_CONNTRACK)
- 	static const unsigned long flags = IPS_CONFIRMED | IPS_DYING;
--	const struct nf_conn *ct = (void *)skb_nfct(entry->skb);
-+	struct nf_conn *ct = (void *)skb_nfct(entry->skb);
-+	unsigned long status;
-+	unsigned int use;
- 
--	if (ct && ((ct->status & flags) == IPS_DYING))
-+	if (!ct)
-+		return false;
-+
-+	status = READ_ONCE(ct->status);
-+	if ((status & flags) == IPS_DYING)
- 		return true;
-+
-+	if (status & IPS_CONFIRMED)
-+		return false;
-+
-+	/* in some cases skb_clone() can occur after initial conntrack
-+	 * pickup, but conntrack assumes exclusive skb->_nfct ownership for
-+	 * unconfirmed entries.
-+	 *
-+	 * This happens for br_netfilter and with ip multicast routing.
-+	 * We can't be solved with serialization here because one clone could
-+	 * have been queued for local delivery.
-+	 */
-+	use = refcount_read(&ct->ct_general.use);
-+	if (likely(use == 1))
-+		return false;
-+
-+	/* Can't decrement further? Exclusive ownership. */
-+	if (!refcount_dec_not_one(&ct->ct_general.use))
-+		return false;
-+
-+	skb_set_nfct(entry->skb, 0);
-+	/* No nf_ct_put(): we already decremented .use and it cannot
-+	 * drop down to 0.
-+	 */
-+	return true;
+diff --git a/arch/s390/kernel/early.c b/arch/s390/kernel/early.c
+index 9693c8630e73f..b3cb256ec6692 100644
+--- a/arch/s390/kernel/early.c
++++ b/arch/s390/kernel/early.c
+@@ -237,15 +237,9 @@ static inline void save_vector_registers(void)
  #endif
- 	return false;
  }
+ 
+-static inline void setup_control_registers(void)
++static inline void setup_low_address_protection(void)
+ {
+-	unsigned long reg;
+-
+-	__ctl_store(reg, 0, 0);
+-	reg |= CR0_LOW_ADDRESS_PROTECTION;
+-	reg |= CR0_EMERGENCY_SIGNAL_SUBMASK;
+-	reg |= CR0_EXTERNAL_CALL_SUBMASK;
+-	__ctl_load(reg, 0, 0);
++	__ctl_set_bit(0, 28);
+ }
+ 
+ static inline void setup_access_registers(void)
+@@ -304,7 +298,7 @@ void __init startup_init(void)
+ 	save_vector_registers();
+ 	setup_topology();
+ 	sclp_early_detect();
+-	setup_control_registers();
++	setup_low_address_protection();
+ 	setup_access_registers();
+ 	lockdep_on();
+ }
+diff --git a/arch/s390/kernel/smp.c b/arch/s390/kernel/smp.c
+index 0031325ce4bc9..436dbf4d743d8 100644
+--- a/arch/s390/kernel/smp.c
++++ b/arch/s390/kernel/smp.c
+@@ -1007,12 +1007,12 @@ void __init smp_fill_possible_mask(void)
+ 
+ void __init smp_prepare_cpus(unsigned int max_cpus)
+ {
+-	/* request the 0x1201 emergency signal external interrupt */
+ 	if (register_external_irq(EXT_IRQ_EMERGENCY_SIG, do_ext_call_interrupt))
+ 		panic("Couldn't request external interrupt 0x1201");
+-	/* request the 0x1202 external call external interrupt */
++	ctl_set_bit(0, 14);
+ 	if (register_external_irq(EXT_IRQ_EXTERNAL_CALL, do_ext_call_interrupt))
+ 		panic("Couldn't request external interrupt 0x1202");
++	ctl_set_bit(0, 13);
+ }
+ 
+ void __init smp_prepare_boot_cpu(void)
 -- 
 2.43.0
 
