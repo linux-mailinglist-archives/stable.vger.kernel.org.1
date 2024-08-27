@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-71194-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70873-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52535961239
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:29:27 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06357961075
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:09:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 851511C2389C
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:29:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6302BB21D4B
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:09:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD8E71CDFC3;
-	Tue, 27 Aug 2024 15:26:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E53E91C4EE6;
+	Tue, 27 Aug 2024 15:09:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vhjRpdKc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dni6B9c6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BB971C57AB;
-	Tue, 27 Aug 2024 15:26:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A25991E520;
+	Tue, 27 Aug 2024 15:09:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772409; cv=none; b=J7QhBYNM5ClIejSMAMc5296aDNp92ctCfxoDZ+d/bvKwEz33M25NwyABrCMBZW7A9Cm/VapBN3ny6bB/Zz+IM7cD9y4ciGzHpl+dtR+5ZYWIwZm/x6X0qVUtyzkT1mDaE5Cqsyo7k9v3yDMbwWkVPZCgpkozE5n6XpBAP0oqD+w=
+	t=1724771345; cv=none; b=aU1qYA4vXYz15rxMVPRbbGA/Be6XmjY1LmPMO67jaDBocf0Kzh5G7RoggkNxfXpAdzjFeyJ9+imrTqSSQ3VjKyy1L+ENZRqtGxQ/qM5t/s/H9kkKJOhIAuEM1lRNArK0eaIGlUfMvvqdzZviUP61nhm+wCWJX8t67FS64bgPI3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772409; c=relaxed/simple;
-	bh=rbUvelP94I0/FLjsdcksGYG9PWnKO4gLpQMeakjMJpM=;
+	s=arc-20240116; t=1724771345; c=relaxed/simple;
+	bh=V1FUd26nazDBcKrfJL/qVRL4/lX84TcxmDbssdEZatg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nGihHk8mJ+XFU94W0yyt2r1pjIKPKRb1Zca4/o2yuRN9WYTZzP6qfzelj1QrYL4cCPqfakw3FiAbKfj8K3kYfTMoXlmO8j5d7VwMLAeR0AVkisvfMCQIa4B79jMdgokFPziHfN3VhE/DICH2EbmVKe7SXLQwc50BNR//gwivhN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vhjRpdKc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DF8EC4DE12;
-	Tue, 27 Aug 2024 15:26:48 +0000 (UTC)
+	 MIME-Version; b=uYBXTlV4+DxkjYhZoAD3+33Ug1ErhT3bD24Uqkytg2gchBobsL4C/EgHtUPCMWdQhIA0uuRzxUiYG1E99SY8QKfublfq9RItu1vSQsYldeuo4ky5BvgYscJOZqYJV73fyhG27gw2x+5nhcd/nWMgvXzEzwDTM/5VdogItbl7Fdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dni6B9c6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD3AAC4AF1A;
+	Tue, 27 Aug 2024 15:09:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772409;
-	bh=rbUvelP94I0/FLjsdcksGYG9PWnKO4gLpQMeakjMJpM=;
+	s=korg; t=1724771345;
+	bh=V1FUd26nazDBcKrfJL/qVRL4/lX84TcxmDbssdEZatg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vhjRpdKcgxsykrsX/uytvoB2T7pjFCAyMp1AkAK1FT9uBk3vTYMjrsDvAo1+1p/6p
-	 u9EztR1v+YQPnuH7DNwv1AnuVqr6xwzGEMneutb4xCA08wAg4pMLHmf55AK8ePyIXk
-	 evKOa1hOBec9Zu8hZGInz8v1VbJkZdT8VCBoOE2s=
+	b=dni6B9c6Sw7OCSPzFVN3xhPDpbs7obvGyF8MM2jrzHDudZEy6Yk0plHLwZw8qXM7R
+	 +SHPM6s0nBWIgkbiJyTegKCArn+vcF4zp3G9gmkQAmaFUYl+42rnMOs5VEDFRkF5wa
+	 TNg22Ujl89zMQOZ4jOdf/FFtMwrDfzMfSaeYHufQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	y0un9n132@gmail.com,
-	Kees Cook <keescook@chromium.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Jiri Kosina <jkosina@suse.com>,
+	Simon Horman <horms@kernel.org>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 175/321] x86: Increase brk randomness entropy for 64-bit systems
+Subject: [PATCH 6.10 159/273] tc-testing: dont access non-existent variable on exception
 Date: Tue, 27 Aug 2024 16:38:03 +0200
-Message-ID: <20240827143844.891898677@linuxfoundation.org>
+Message-ID: <20240827143839.454784658@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <keescook@chromium.org>
+From: Simon Horman <horms@kernel.org>
 
-[ Upstream commit 44c76825d6eefee9eb7ce06c38e1a6632ac7eb7d ]
+[ Upstream commit a0c9fe5eecc97680323ee83780ea3eaf440ba1b7 ]
 
-In commit c1d171a00294 ("x86: randomize brk"), arch_randomize_brk() was
-defined to use a 32MB range (13 bits of entropy), but was never increased
-when moving to 64-bit. The default arch_randomize_brk() uses 32MB for
-32-bit tasks, and 1GB (18 bits of entropy) for 64-bit tasks.
+Since commit 255c1c7279ab ("tc-testing: Allow test cases to be skipped")
+the variable test_ordinal doesn't exist in call_pre_case().
+So it should not be accessed when an exception occurs.
 
-Update x86_64 to match the entropy used by arm64 and other 64-bit
-architectures.
+This resolves the following splat:
 
-Reported-by: y0un9n132@gmail.com
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Jiri Kosina <jkosina@suse.com>
-Closes: https://lore.kernel.org/linux-hardening/CA+2EKTVLvc8hDZc+2Yhwmus=dzOUG5E4gV7ayCbu0MPJTZzWkw@mail.gmail.com/
-Link: https://lore.kernel.org/r/20240217062545.1631668-1-keescook@chromium.org
+  ...
+  During handling of the above exception, another exception occurred:
+
+  Traceback (most recent call last):
+    File ".../tdc.py", line 1028, in <module>
+      main()
+    File ".../tdc.py", line 1022, in main
+      set_operation_mode(pm, parser, args, remaining)
+    File ".../tdc.py", line 966, in set_operation_mode
+      catresults = test_runner_serial(pm, args, alltests)
+    File ".../tdc.py", line 642, in test_runner_serial
+      (index, tsr) = test_runner(pm, args, alltests)
+    File ".../tdc.py", line 536, in test_runner
+      res = run_one_test(pm, args, index, tidx)
+    File ".../tdc.py", line 419, in run_one_test
+      pm.call_pre_case(tidx)
+    File ".../tdc.py", line 146, in call_pre_case
+      print('test_ordinal is {}'.format(test_ordinal))
+  NameError: name 'test_ordinal' is not defined
+
+Fixes: 255c1c7279ab ("tc-testing: Allow test cases to be skipped")
+Signed-off-by: Simon Horman <horms@kernel.org>
+Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Link: https://patch.msgid.link/20240815-tdc-test-ordinal-v1-1-0255c122a427@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/process.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ tools/testing/selftests/tc-testing/tdc.py | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/x86/kernel/process.c b/arch/x86/kernel/process.c
-index 279b5e9be80fc..acc83738bf5b4 100644
---- a/arch/x86/kernel/process.c
-+++ b/arch/x86/kernel/process.c
-@@ -991,7 +991,10 @@ unsigned long arch_align_stack(unsigned long sp)
+diff --git a/tools/testing/selftests/tc-testing/tdc.py b/tools/testing/selftests/tc-testing/tdc.py
+index ee349187636fc..4f255cec0c22e 100755
+--- a/tools/testing/selftests/tc-testing/tdc.py
++++ b/tools/testing/selftests/tc-testing/tdc.py
+@@ -143,7 +143,6 @@ class PluginMgr:
+             except Exception as ee:
+                 print('exception {} in call to pre_case for {} plugin'.
+                       format(ee, pgn_inst.__class__))
+-                print('test_ordinal is {}'.format(test_ordinal))
+                 print('testid is {}'.format(caseinfo['id']))
+                 raise
  
- unsigned long arch_randomize_brk(struct mm_struct *mm)
- {
--	return randomize_page(mm->brk, 0x02000000);
-+	if (mmap_is_ia32())
-+		return randomize_page(mm->brk, SZ_32M);
-+
-+	return randomize_page(mm->brk, SZ_1G);
- }
- 
- /*
 -- 
 2.43.0
 
