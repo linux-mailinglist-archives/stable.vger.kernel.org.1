@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-70916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70885-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D46559610AB
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:11:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71A92961084
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:09:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 03E201C23794
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:11:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 281711F22DEA
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:09:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E07B41C68B1;
-	Tue, 27 Aug 2024 15:11:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE9D21C6893;
+	Tue, 27 Aug 2024 15:09:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="REIxCs3b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LI2+Bkyf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C4D71C6890;
-	Tue, 27 Aug 2024 15:11:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B4171C57BF;
+	Tue, 27 Aug 2024 15:09:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771489; cv=none; b=PvubMzITPK4fgodRUkPvqxlX53yu4l/cckpzTVf9XK9lnWJCEiRpXJX4Q+raNa4vs3V+MLMlWVhmeuszT+EjuFwGWRSYQRccaWj3jTEVyOqH+SzMnJ+ksQqDEO7WiZ0z65jYC8G4Et1CREoOJeK3C0hhmj89GDEt4TS97bINopk=
+	t=1724771385; cv=none; b=t7ybcRvs7o7w3xS7dgYEg3NwrUKKDte8U9YcDaOt3Pe+ILTOhihxwaaINzK2LGCrOHGBHivVkdXjoQmx9cSXrwXfbILdM9Hz4jM4feFF3dp2utLPlio43DQY9Hl7RgE2SaNiY/6ciY6Q38VAptgwZGEaErqhm0gmIgLT0SlphZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771489; c=relaxed/simple;
-	bh=uwJStzhAFhtzb+T/leMICQxaSpR1Hp+hjSlwJ9faghE=;
+	s=arc-20240116; t=1724771385; c=relaxed/simple;
+	bh=G6WUCtWF+Yjqj9Quz3nukRTc9QjueeyZp/LS1WzKnOo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UTWqWa2dbVf/grLpQVyj2JGtnJWD0c4Tlqnqua/M6EpwcJDe7hpSg8yWm8BoKktLVaTpvqRm0WgQtTJPcibFHNvjriaupupl3GyHPvE1JDHkvDhQLO/35J/D1pBLOMb2L3u/zFIiBSGGkpCOXfPmn7ItXE9kLALwGlisCj4whcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=REIxCs3b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAF2EC4DDED;
-	Tue, 27 Aug 2024 15:11:28 +0000 (UTC)
+	 MIME-Version; b=Hv386XEvbXNaQPlhADyYZhz0zma3T4jFNDqb7gCSmN9x6/4Qn5FTSVydoVbWSC0XfZoThaIo5f7dp3YL3JoonrRTOz0mCeBPIzNEJjul7kQbg8DLUu9qSTuzRVW6HxEJ1ahFLSlgb0kJo5MF2sQiWEhmRy+Vp8IZjWoNS82CbcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LI2+Bkyf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05441C4AF1A;
+	Tue, 27 Aug 2024 15:09:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771489;
-	bh=uwJStzhAFhtzb+T/leMICQxaSpR1Hp+hjSlwJ9faghE=;
+	s=korg; t=1724771385;
+	bh=G6WUCtWF+Yjqj9Quz3nukRTc9QjueeyZp/LS1WzKnOo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=REIxCs3bkK7G1gQcZ5zfnG98TfwqaAIYTqPrTta8N0++Dw21204uLTObnRsRp5LfF
-	 HAoosXK7e0cn00aPdqZFiZxxbjmrwlcAx6oHlSPw8NEVUGfgugyChK1ZPCF3aIftuj
-	 VkhWH+kNIaHiqmOsA64c/HHCmthfJ4pEp1aqBoeo=
+	b=LI2+BkyfehwV14/8WebNREW9WGs+TykUp/tIqwTc3BAzh23ZWxj0IyBlagl2U7oJK
+	 GdxNFdxweqUdG7TfsZDyDRTz6NyLAsiDgc371pNjddaqKBKV7mIsqQOTnxCJ1ztKEm
+	 GneXVYis54VIecOUTmYvzib/ZCB09P/4UZCNx0A0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Luiz Capitulino <luizcap@redhat.com>,
 	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
 	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
 	Chandan Kumar Rout <chandanx.rout@intel.com>
-Subject: [PATCH 6.10 172/273] ice: fix page reuse when PAGE_SIZE is over 8k
-Date: Tue, 27 Aug 2024 16:38:16 +0200
-Message-ID: <20240827143839.953142977@linuxfoundation.org>
+Subject: [PATCH 6.10 173/273] ice: fix ICE_LAST_OFFSET formula
+Date: Tue, 27 Aug 2024 16:38:17 +0200
+Message-ID: <20240827143839.992343056@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
 References: <20240827143833.371588371@linuxfoundation.org>
@@ -69,63 +70,35 @@ Content-Transfer-Encoding: 8bit
 
 From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
 
-[ Upstream commit 50b2143356e888777fc5bca023c39f34f404613a ]
+[ Upstream commit b966ad832942b5a11e002f9b5ef102b08425b84a ]
 
-Architectures that have PAGE_SIZE >= 8192 such as arm64 should act the
-same as x86 currently, meaning reuse of a page should only take place
-when no one else is busy with it.
+For bigger PAGE_SIZE archs, ice driver works on 3k Rx buffers.
+Therefore, ICE_LAST_OFFSET should take into account ICE_RXBUF_3072, not
+ICE_RXBUF_2048.
 
-Do two things independently of underlying PAGE_SIZE:
-- store the page count under ice_rx_buf::pgcnt
-- then act upon its value vs ice_rx_buf::pagecnt_bias when making the
-  decision regarding page reuse
-
-Fixes: 2b245cb29421 ("ice: Implement transmit and NAPI support")
+Fixes: 7237f5b0dba4 ("ice: introduce legacy Rx flag")
+Suggested-by: Luiz Capitulino <luizcap@redhat.com>
 Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
 Tested-by: Chandan Kumar Rout <chandanx.rout@intel.com> (A Contingent Worker at Intel)
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_txrx.c | 12 +++---------
- 1 file changed, 3 insertions(+), 9 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_txrx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/net/ethernet/intel/ice/ice_txrx.c b/drivers/net/ethernet/intel/ice/ice_txrx.c
-index 8d25b69812698..50211188c1a7a 100644
+index 50211188c1a7a..4b690952bb403 100644
 --- a/drivers/net/ethernet/intel/ice/ice_txrx.c
 +++ b/drivers/net/ethernet/intel/ice/ice_txrx.c
-@@ -837,16 +837,15 @@ ice_can_reuse_rx_page(struct ice_rx_buf *rx_buf)
- 	if (!dev_page_is_reusable(page))
+@@ -842,7 +842,7 @@ ice_can_reuse_rx_page(struct ice_rx_buf *rx_buf)
  		return false;
- 
--#if (PAGE_SIZE < 8192)
- 	/* if we are only owner of page we can reuse it */
- 	if (unlikely(rx_buf->pgcnt - pagecnt_bias > 1))
- 		return false;
--#else
-+#if (PAGE_SIZE >= 8192)
+ #if (PAGE_SIZE >= 8192)
  #define ICE_LAST_OFFSET \
- 	(SKB_WITH_OVERHEAD(PAGE_SIZE) - ICE_RXBUF_2048)
+-	(SKB_WITH_OVERHEAD(PAGE_SIZE) - ICE_RXBUF_2048)
++	(SKB_WITH_OVERHEAD(PAGE_SIZE) - ICE_RXBUF_3072)
  	if (rx_buf->page_offset > ICE_LAST_OFFSET)
  		return false;
--#endif /* PAGE_SIZE < 8192) */
-+#endif /* PAGE_SIZE >= 8192) */
- 
- 	/* If we have drained the page fragment pool we need to update
- 	 * the pagecnt_bias and page count so that we fully restock the
-@@ -949,12 +948,7 @@ ice_get_rx_buf(struct ice_rx_ring *rx_ring, const unsigned int size,
- 	struct ice_rx_buf *rx_buf;
- 
- 	rx_buf = &rx_ring->rx_buf[ntc];
--	rx_buf->pgcnt =
--#if (PAGE_SIZE < 8192)
--		page_count(rx_buf->page);
--#else
--		0;
--#endif
-+	rx_buf->pgcnt = page_count(rx_buf->page);
- 	prefetchw(rx_buf->page);
- 
- 	if (!size)
+ #endif /* PAGE_SIZE >= 8192) */
 -- 
 2.43.0
 
