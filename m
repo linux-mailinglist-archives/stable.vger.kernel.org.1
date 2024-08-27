@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-71092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71060-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E09C996119A
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:21:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E864D961174
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:20:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B1261F23CA8
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:21:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9BBEF280EAA
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:20:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7A581C8FD3;
-	Tue, 27 Aug 2024 15:21:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 256561C4EE6;
+	Tue, 27 Aug 2024 15:19:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jnrHNC5n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VNMdp/Zr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9427B19F485;
-	Tue, 27 Aug 2024 15:21:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D77051C688E;
+	Tue, 27 Aug 2024 15:19:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772073; cv=none; b=MqL+zfZ6Bs6RWeZrtXYbCCJ9MKS1CcEA3dqRQyimXBmenzVBYe3B8uoA11HXR0IJjbVFisPMmdHJVxa5Z62faFnLcohOqCBr7GDIdDn4dTqy+kEBe72137UOCkYUG0HZPmwVC7O9b396xDZw+hkVaUKc2kc0u83vKKknPkj3dLc=
+	t=1724771965; cv=none; b=NBuiEqxGN32n0HTvYqNdy1M+s3zQOXUBd8emB+mxsZfSuUbiFtifQT1cWQm4K4qtdKrSps4v++adNTjsLd9qE2RqIMjRv0zyFiThtXr8+AuaR7ontxfgpuO23gnjg0nh+J+0KQHeFO4FjcYQntFK+pEAHuG+AyYvHIWjRv4motQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772073; c=relaxed/simple;
-	bh=8GSXK5bvTrcI2MRDpUtncSFjzMAYY3mBPLIVQnWDFC4=;
+	s=arc-20240116; t=1724771965; c=relaxed/simple;
+	bh=99sLLjl2fkiuCDegLgRitqHBpXDhElloHPlyaHsIFik=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MPnHcKX3NOEudobynCfRUhQoyiW0YHeYbLH4005e2aQkc0BwCYpcPZQt+qLdKrbuoGp+IPVBX85k5Wd82qgNiyPwKSHk1+y0Xf3wPq5QskD9gc4J42ZikcO57Hkq2pwiEvCpKY1RsP33yB+J1uSegzUUv5ai6SlfnwT8R5VjHnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jnrHNC5n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13D63C4FE02;
-	Tue, 27 Aug 2024 15:21:12 +0000 (UTC)
+	 MIME-Version; b=SZtIJIvR9GxY8XpfOOFl494MBgedWSZRT/A8F58G7cWlW8P0IcNxmlVo74+DmEOr2eOx/P1YRZpV1bWuQQfruGJX29B4mfR6SNHnTDUPjay5/jJtgznpLxpWXbF8Udo/aADV785Vlqa9KVaBHRbG6ixO/Clwcba88O3tO1uwmBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VNMdp/Zr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 465FFC4DDE1;
+	Tue, 27 Aug 2024 15:19:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772073;
-	bh=8GSXK5bvTrcI2MRDpUtncSFjzMAYY3mBPLIVQnWDFC4=;
+	s=korg; t=1724771965;
+	bh=99sLLjl2fkiuCDegLgRitqHBpXDhElloHPlyaHsIFik=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jnrHNC5nGLLlVTOCUEiQytBjaF7VcVoLVonCs4w5Zh/zF9Oql2IDbU1E2M5eVM8yP
-	 jA3ToX1ZGJoSoiqmhVP39C37RYTSfXLn8t0jVcVQGbGNNNLHMqb+kriLJ+BWpbpCly
-	 al+LN0hcTAdfO+AYaxGJwGJOLKwb3eMpRbkLCAP4=
+	b=VNMdp/ZrjTKtMXN6BiT7BpYIgzjbI6xOLSY1/p1DTHNSkISlBVFhhHO6US/Ukpfe+
+	 SKcFnMVOVWyGU1ZAvD0lU20gCdXZ3LHfm/s8aopyGv7stwIuGghXOLJlVmGv+TabPb
+	 LZaJwPCzXBMsgZcFhFs2aI/8kzXN3iUjnhDBUBDk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Zhong <floridsleeves@gmail.com>,
+	Jan Kara <jack@suse.cz>,
 	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 073/321] ext4: check the return value of ext4_xattr_inode_dec_ref()
-Date: Tue, 27 Aug 2024 16:36:21 +0200
-Message-ID: <20240827143841.021226101@linuxfoundation.org>
+Subject: [PATCH 6.1 074/321] ext4: fold quota accounting into ext4_xattr_inode_lookup_create()
+Date: Tue, 27 Aug 2024 16:36:22 +0200
+Message-ID: <20240827143841.059179319@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
 References: <20240827143838.192435816@linuxfoundation.org>
@@ -66,35 +66,117 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Li Zhong <floridsleeves@gmail.com>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit 56d0d0b9289dae041becc7ee6bd966a00dd610e0 ]
+[ Upstream commit 8208c41c43ad5e9b63dce6c45a73e326109ca658 ]
 
-Check the return value of ext4_xattr_inode_dec_ref(), which could
-return error code and need to be warned.
+When allocating EA inode, quota accounting is done just before
+ext4_xattr_inode_lookup_create(). Logically these two operations belong
+together so just fold quota accounting into
+ext4_xattr_inode_lookup_create(). We also make
+ext4_xattr_inode_lookup_create() return the looked up / created inode to
+convert the function to a more standard calling convention.
 
-Signed-off-by: Li Zhong <floridsleeves@gmail.com>
-Link: https://lore.kernel.org/r/20220917002816.3804400-1-floridsleeves@gmail.com
+Signed-off-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20240209112107.10585-1-jack@suse.cz
 Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Stable-dep-of: 0a46ef234756 ("ext4: do not create EA inode under buffer lock")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/xattr.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/ext4/xattr.c | 50 ++++++++++++++++++++++++-------------------------
+ 1 file changed, 24 insertions(+), 26 deletions(-)
 
 diff --git a/fs/ext4/xattr.c b/fs/ext4/xattr.c
-index f0a45d3ec4ebb..0df0a3ecba37a 100644
+index 0df0a3ecba37a..b18035b8887be 100644
 --- a/fs/ext4/xattr.c
 +++ b/fs/ext4/xattr.c
-@@ -1550,7 +1550,8 @@ static int ext4_xattr_inode_lookup_create(handle_t *handle, struct inode *inode,
+@@ -1522,46 +1522,49 @@ ext4_xattr_inode_cache_find(struct inode *inode, const void *value,
+ /*
+  * Add value of the EA in an inode.
+  */
+-static int ext4_xattr_inode_lookup_create(handle_t *handle, struct inode *inode,
+-					  const void *value, size_t value_len,
+-					  struct inode **ret_inode)
++static struct inode *ext4_xattr_inode_lookup_create(handle_t *handle,
++		struct inode *inode, const void *value, size_t value_len)
+ {
+ 	struct inode *ea_inode;
+ 	u32 hash;
+ 	int err;
+ 
++	/* Account inode & space to quota even if sharing... */
++	err = ext4_xattr_inode_alloc_quota(inode, value_len);
++	if (err)
++		return ERR_PTR(err);
++
+ 	hash = ext4_xattr_inode_hash(EXT4_SB(inode->i_sb), value, value_len);
+ 	ea_inode = ext4_xattr_inode_cache_find(inode, value, value_len, hash);
+ 	if (ea_inode) {
+ 		err = ext4_xattr_inode_inc_ref(handle, ea_inode);
+-		if (err) {
+-			iput(ea_inode);
+-			return err;
+-		}
+-
+-		*ret_inode = ea_inode;
+-		return 0;
++		if (err)
++			goto out_err;
++		return ea_inode;
+ 	}
+ 
+ 	/* Create an inode for the EA value */
+ 	ea_inode = ext4_xattr_inode_create(handle, inode, hash);
+-	if (IS_ERR(ea_inode))
+-		return PTR_ERR(ea_inode);
++	if (IS_ERR(ea_inode)) {
++		ext4_xattr_inode_free_quota(inode, NULL, value_len);
++		return ea_inode;
++	}
  
  	err = ext4_xattr_inode_write(handle, ea_inode, value, value_len);
  	if (err) {
--		ext4_xattr_inode_dec_ref(handle, ea_inode);
-+		if (ext4_xattr_inode_dec_ref(handle, ea_inode))
-+			ext4_warning_inode(ea_inode, "cleanup dec ref error %d", err);
- 		iput(ea_inode);
- 		return err;
+ 		if (ext4_xattr_inode_dec_ref(handle, ea_inode))
+ 			ext4_warning_inode(ea_inode, "cleanup dec ref error %d", err);
+-		iput(ea_inode);
+-		return err;
++		goto out_err;
+ 	}
+ 
+ 	if (EA_INODE_CACHE(inode))
+ 		mb_cache_entry_create(EA_INODE_CACHE(inode), GFP_NOFS, hash,
+ 				      ea_inode->i_ino, true /* reusable */);
+-
+-	*ret_inode = ea_inode;
+-	return 0;
++	return ea_inode;
++out_err:
++	iput(ea_inode);
++	ext4_xattr_inode_free_quota(inode, NULL, value_len);
++	return ERR_PTR(err);
+ }
+ 
+ /*
+@@ -1669,16 +1672,11 @@ static int ext4_xattr_set_entry(struct ext4_xattr_info *i,
+ 	if (i->value && in_inode) {
+ 		WARN_ON_ONCE(!i->value_len);
+ 
+-		ret = ext4_xattr_inode_alloc_quota(inode, i->value_len);
+-		if (ret)
+-			goto out;
+-
+-		ret = ext4_xattr_inode_lookup_create(handle, inode, i->value,
+-						     i->value_len,
+-						     &new_ea_inode);
+-		if (ret) {
++		new_ea_inode = ext4_xattr_inode_lookup_create(handle, inode,
++					i->value, i->value_len);
++		if (IS_ERR(new_ea_inode)) {
++			ret = PTR_ERR(new_ea_inode);
+ 			new_ea_inode = NULL;
+-			ext4_xattr_inode_free_quota(inode, NULL, i->value_len);
+ 			goto out;
+ 		}
  	}
 -- 
 2.43.0
