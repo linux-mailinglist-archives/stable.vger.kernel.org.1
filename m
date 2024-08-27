@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-70608-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70859-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05776960F11
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:55:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2E65961064
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:08:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6C145B263AB
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:55:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 36831B21DBE
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:08:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 256C51C7B73;
-	Tue, 27 Aug 2024 14:54:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC3251C57B7;
+	Tue, 27 Aug 2024 15:08:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KvX4Pl9U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bc8AaY9c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D048D19F485;
-	Tue, 27 Aug 2024 14:54:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 873591C57AB;
+	Tue, 27 Aug 2024 15:08:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770474; cv=none; b=Xbd53AVhzHPxr17PH3ZjzbJ/Yidf+O2tbh0y4xNd7U9SaykdJsed879FtQioNMLBnJf8CfZqag+bRI/DIPwwJk2B/IDgFUIenlFzBdT1oSV84TbVVe1kJ97hzmPbs4G4eK6DENuL9X7B8p9oCsh1pKUSIbUXQ7sRB9OSvadDhxM=
+	t=1724771298; cv=none; b=XR2AxSh0HeZKysBgTbwWnUWZPdt8wflEtwcuSPilkzOmf11//Uoe9s8Z+CCc3R8YB6qwQ20qYf9DqPc1UjRuNIVYftatwE7z0wNLnmw0qyOri0PElaP8avatETVT4dAEb2Kp4CaBULcla0lPX5qB/kfLr5rFSehxEgJqR+eY/qk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770474; c=relaxed/simple;
-	bh=Rj/i1w5rYgN23w9s7ficaAzG/ykTcfcGFxDCWb6MRD4=;
+	s=arc-20240116; t=1724771298; c=relaxed/simple;
+	bh=dYtMNhw1cswOCTUGzihN0ztJQ96FDjhyRXnAEAAyYEs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HlqMG2RNXfGuhUjYPImsbgFm9vyVCgppEv6ckb/yXZQC6d881ngO1xNc/K70DZPWdwUW2GeTFw0Fk2K5k5dBgicO+uLQ3B3sR4tKQZHFUXm4HCONSanZPXywzSkMqgXsI5VrrQAraRm78OlPlTs/GXXx2IDA3oXfi8j+Vnk/oGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KvX4Pl9U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06805C4E675;
-	Tue, 27 Aug 2024 14:54:33 +0000 (UTC)
+	 MIME-Version; b=iwqYPFPl+nsfHX9ycC1cBcCI0JPUQwUPO+6x93nOsn5uWPFJWqzFIoFE0/r8Xz6/TK/MSjF3HRwDw75alzkS44TOxWxBDN8L+LEYUFC9t0gkFBoU0B0+bf5fFrUlvfMSSPV0HMpKqe5K+LXWaEQckpwgPsV+d9hqD3HTislCzc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bc8AaY9c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 053F0C61074;
+	Tue, 27 Aug 2024 15:08:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770474;
-	bh=Rj/i1w5rYgN23w9s7ficaAzG/ykTcfcGFxDCWb6MRD4=;
+	s=korg; t=1724771298;
+	bh=dYtMNhw1cswOCTUGzihN0ztJQ96FDjhyRXnAEAAyYEs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KvX4Pl9ULBo+dZJCMHeUn8Xq4cxKUd4cSKS0Qo8hzQCMw8gvTdo4dn8BF9i6863A/
-	 mvzAzat+Txs8YjOLnoIsN3TCJ5h5GXzb3x9uF09yefkaakmgvK2KapKDI2gsZavXb8
-	 Z9Kf11bR1LuTvpOKB8wkSk3FZsCma6a2j9MWqDWA=
+	b=bc8AaY9c5yWOPW/AIlql/OHdgbt/BRAuBeqciSE9F8vvQWWFJziqo8itXhLdGEIOi
+	 UVDw/Oqlg8p6z/VsMbxA2fojCI4pLrbBOIwyYvfpooutn3FMd51w+bZvVEiOCEPY/v
+	 MI+2+QM6/fq4kqmQNHJurob3lGVPeCfSuRRls6Wc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	kernel test robot <lkp@intel.com>,
 	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 239/341] ALSA: hda/tas2781: Use correct endian conversion
-Date: Tue, 27 Aug 2024 16:37:50 +0200
-Message-ID: <20240827143852.504015146@linuxfoundation.org>
+Subject: [PATCH 6.10 147/273] ALSA: hda/tas2781: Use correct endian conversion
+Date: Tue, 27 Aug 2024 16:37:51 +0200
+Message-ID: <20240827143839.000060908@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,7 +62,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -88,10 +88,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/sound/pci/hda/tas2781_hda_i2c.c b/sound/pci/hda/tas2781_hda_i2c.c
-index 74d603524fbdb..e5bb1fed26a0c 100644
+index 1d4b044b78410..9e88d39eac1e2 100644
 --- a/sound/pci/hda/tas2781_hda_i2c.c
 +++ b/sound/pci/hda/tas2781_hda_i2c.c
-@@ -433,8 +433,8 @@ static void tas2781_apply_calib(struct tasdevice_priv *tas_priv)
+@@ -527,8 +527,8 @@ static void tas2781_apply_calib(struct tasdevice_priv *tas_priv)
  
  	for (i = 0; i < tas_priv->ndev; i++) {
  		for (j = 0; j < CALIB_MAX; j++) {
