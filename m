@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-71105-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70799-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCF829611A8
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:22:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5195D96101A
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:05:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 872BF1F23BCB
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:22:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A15A283137
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:05:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C19B1BC9E3;
-	Tue, 27 Aug 2024 15:21:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDC0F1C6887;
+	Tue, 27 Aug 2024 15:04:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bmQlAETP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1pLCLAU7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38BE919F485;
-	Tue, 27 Aug 2024 15:21:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 871931C6F71;
+	Tue, 27 Aug 2024 15:04:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772117; cv=none; b=iY6+/Yd7HLWum8xzViCA+p8KhHQavwYXlDXv4j9VcyWRokl+27Lc9a0o3wWZQXCk6sGldoFmibpWA+SD5oPJx07yRnGrCbvNn7M0vYiMPH0JeJVdCoOkB57U21d6j4rfHwx8jvqSjVKa+Es2YcsZzXZ22CoNta0nGHMM7P72CWs=
+	t=1724771099; cv=none; b=LhgPPZloMaa42IGUd6PYgM/B4dpGoWMJKB/qGe1/jpm8MPClyPv4sie2lJwGmQ2pt7ETr2r1CKdaqENnFiLUwYpVDWweglzOiilJP8NWT6NkRBe32TwP5AI6WtZ2vdNWS8MU8FGaPw+DSA/yc5GaHNhqif16wV9kL7RMCI0UNNk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772117; c=relaxed/simple;
-	bh=1JmpI9zJHzv7oRJ5RCNwNnCuY1GrpE1SkMN9zOcP7pQ=;
+	s=arc-20240116; t=1724771099; c=relaxed/simple;
+	bh=VNUYo+gpZGTswgFURh26QGxasfacZ60aukqrXI9ggKE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NaNtEB4nOUIJkrYkCpDHZ67gZMADyatmUgCP8aaQz9SfiA7xtYZFCdVykoAc2xa/HYAT+uvxHXYiCuKtIEOeTzJdUr5F2HXZ0LFRqv18Rx5VulcjkU/R8K2vcqnidwjTW3lb0fUWo+TdcBNxb5/i5nLkAwUeG8yyQTPWUQKktH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bmQlAETP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B282C4FE09;
-	Tue, 27 Aug 2024 15:21:56 +0000 (UTC)
+	 MIME-Version; b=EWB5ct7c7AKt0O8MRCAk1KRsvNiRti+7o+ik54jeD31YUenED9wMjKxrWcbYpO5mcQL+DGKQinpsOxFcPFiSHbk6Sj2x52zZ9q7ecUOe25rkL5U7ov9tPEmmaQ+y9dTsvrkypMKNq43VUf6xZ8W0n+JfHMTsSSckqWn8Lxu7aEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1pLCLAU7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECF30C6105B;
+	Tue, 27 Aug 2024 15:04:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772117;
-	bh=1JmpI9zJHzv7oRJ5RCNwNnCuY1GrpE1SkMN9zOcP7pQ=;
+	s=korg; t=1724771099;
+	bh=VNUYo+gpZGTswgFURh26QGxasfacZ60aukqrXI9ggKE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bmQlAETPPn6RsgGKWO3NWZ+JQ3kHGGrRChcg1j2fHlqi+ecMtyi6juj6Yi0VVhtaS
-	 FgeJOEFGryVgXwqpZ/xEnymMYL1QQE6X8l28KLqQZnMyZhVlNryOjewkgm7A9OT5en
-	 Har/g3IGjKIS3ChJeefDDBSzpAaPPZOZKRKZX7cM=
+	b=1pLCLAU7Cd2a8TSRtXovvOL0f1/v5r0BETt2fNJQkWqCEraUlv/rHiff0oCADNUzx
+	 Zg1dliCHpNf6sX99u8e7Ctb6NgeCnyKporfoczhgYrQc8lFkD0q2dYkMYliTfNghr2
+	 5H0EenbTdwoOKWBcX+0+oGei1I8h7n8RqajJJ29g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Phil Sutter <phil@nwl.cc>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Faizal Rahim <faizal.abdul.rahim@linux.intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 101/321] netfilter: nf_tables: A better name for nft_obj_filter
-Date: Tue, 27 Aug 2024 16:36:49 +0200
-Message-ID: <20240827143842.093783206@linuxfoundation.org>
+Subject: [PATCH 6.10 086/273] igc: Fix qbv_config_change_errors logics
+Date: Tue, 27 Aug 2024 16:36:50 +0200
+Message-ID: <20240827143836.687215351@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,106 +65,133 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phil Sutter <phil@nwl.cc>
+From: Faizal Rahim <faizal.abdul.rahim@linux.intel.com>
 
-[ Upstream commit ecf49cad807061d880bea27a5da8e0114ddc7690 ]
+[ Upstream commit f8d6acaee9d35cbff3c3cfad94641666c596f8da ]
 
-Name it for what it is supposed to become, a real nft_obj_dump_ctx. No
-functional change intended.
+When user issues these cmds:
+1. Either a) or b)
+   a) mqprio with hardware offload disabled
+   b) taprio with txtime-assist feature enabled
+2. etf
+3. tc qdisc delete
+4. taprio with base time in the past
 
-Signed-off-by: Phil Sutter <phil@nwl.cc>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Stable-dep-of: bd662c4218f9 ("netfilter: nf_tables: Add locking for NFT_MSG_GETOBJ_RESET requests")
+At step 4, qbv_config_change_errors wrongly increased by 1.
+
+Excerpt from IEEE 802.1Q-2018 8.6.9.3.1:
+"If AdminBaseTime specifies a time in the past, and the current schedule
+is running, then: Increment ConfigChangeError counter"
+
+qbv_config_change_errors should only increase if base time is in the past
+and no taprio is active. In user perspective, taprio was not active when
+first triggered at step 4. However, i225/6 reuses qbv for etf, so qbv is
+enabled with a dummy schedule at step 2 where it enters
+igc_tsn_enable_offload() and qbv_count got incremented to 1. At step 4, it
+enters igc_tsn_enable_offload() again, qbv_count is incremented to 2.
+Because taprio is running, tc_setup_type is TC_SETUP_QDISC_ETF and
+qbv_count > 1, qbv_config_change_errors value got incremented.
+
+This issue happens due to reliance on qbv_count field where a non-zero
+value indicates that taprio is running. But qbv_count increases
+regardless if taprio is triggered by user or by other tsn feature. It does
+not align with qbv_config_change_errors expectation where it is only
+concerned with taprio triggered by user.
+
+Fixing this by relocating the qbv_config_change_errors logic to
+igc_save_qbv_schedule(), eliminating reliance on qbv_count and its
+inaccuracies from i225/6's multiple uses of qbv feature for other TSN
+features.
+
+The new function created: igc_tsn_is_taprio_activated_by_user() uses
+taprio_offload_enable field to indicate that the current running taprio
+was triggered by user, instead of triggered by non-qbv feature like etf.
+
+Fixes: ae4fe4698300 ("igc: Add qbv_config_change_errors counter")
+Signed-off-by: Faizal Rahim <faizal.abdul.rahim@linux.intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 32 ++++++++++++++++----------------
- 1 file changed, 16 insertions(+), 16 deletions(-)
+ drivers/net/ethernet/intel/igc/igc_main.c |  8 ++++++--
+ drivers/net/ethernet/intel/igc/igc_tsn.c  | 16 ++++++++--------
+ drivers/net/ethernet/intel/igc/igc_tsn.h  |  1 +
+ 3 files changed, 15 insertions(+), 10 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 07140899a8d1d..f4bdfd5dd319a 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -7416,7 +7416,7 @@ static void audit_log_obj_reset(const struct nft_table *table,
- 	kfree(buf);
+diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
+index 33069880c86c0..3041f8142324f 100644
+--- a/drivers/net/ethernet/intel/igc/igc_main.c
++++ b/drivers/net/ethernet/intel/igc/igc_main.c
+@@ -6319,12 +6319,16 @@ static int igc_save_qbv_schedule(struct igc_adapter *adapter,
+ 	if (!validate_schedule(adapter, qopt))
+ 		return -EINVAL;
+ 
++	igc_ptp_read(adapter, &now);
++
++	if (igc_tsn_is_taprio_activated_by_user(adapter) &&
++	    is_base_time_past(qopt->base_time, &now))
++		adapter->qbv_config_change_errors++;
++
+ 	adapter->cycle_time = qopt->cycle_time;
+ 	adapter->base_time = qopt->base_time;
+ 	adapter->taprio_offload_enable = true;
+ 
+-	igc_ptp_read(adapter, &now);
+-
+ 	for (n = 0; n < qopt->num_entries; n++) {
+ 		struct tc_taprio_sched_entry *e = &qopt->entries[n];
+ 
+diff --git a/drivers/net/ethernet/intel/igc/igc_tsn.c b/drivers/net/ethernet/intel/igc/igc_tsn.c
+index 46d4c3275bbb5..8ed7b965484da 100644
+--- a/drivers/net/ethernet/intel/igc/igc_tsn.c
++++ b/drivers/net/ethernet/intel/igc/igc_tsn.c
+@@ -87,6 +87,14 @@ static void igc_tsn_restore_retx_default(struct igc_adapter *adapter)
+ 	wr32(IGC_RETX_CTL, retxctl);
  }
  
--struct nft_obj_filter {
-+struct nft_obj_dump_ctx {
- 	char		*table;
- 	u32		type;
- };
-@@ -7426,7 +7426,7 @@ static int nf_tables_dump_obj(struct sk_buff *skb, struct netlink_callback *cb)
- 	const struct nfgenmsg *nfmsg = nlmsg_data(cb->nlh);
- 	const struct nft_table *table;
- 	unsigned int idx = 0, s_idx = cb->args[0];
--	struct nft_obj_filter *filter = cb->data;
-+	struct nft_obj_dump_ctx *ctx = cb->data;
- 	struct net *net = sock_net(skb->sk);
- 	int family = nfmsg->nfgen_family;
- 	struct nftables_pernet *nft_net;
-@@ -7452,10 +7452,10 @@ static int nf_tables_dump_obj(struct sk_buff *skb, struct netlink_callback *cb)
- 				goto cont;
- 			if (idx < s_idx)
- 				goto cont;
--			if (filter->table && strcmp(filter->table, table->name))
-+			if (ctx->table && strcmp(ctx->table, table->name))
- 				goto cont;
--			if (filter->type != NFT_OBJECT_UNSPEC &&
--			    obj->ops->type->type != filter->type)
-+			if (ctx->type != NFT_OBJECT_UNSPEC &&
-+			    obj->ops->type->type != ctx->type)
- 				goto cont;
++bool igc_tsn_is_taprio_activated_by_user(struct igc_adapter *adapter)
++{
++	struct igc_hw *hw = &adapter->hw;
++
++	return (rd32(IGC_BASET_H) || rd32(IGC_BASET_L)) &&
++		adapter->taprio_offload_enable;
++}
++
+ /* Returns the TSN specific registers to their default values after
+  * the adapter is reset.
+  */
+@@ -296,14 +304,6 @@ static int igc_tsn_enable_offload(struct igc_adapter *adapter)
+ 		s64 n = div64_s64(ktime_sub_ns(systim, base_time), cycle);
  
- 			rc = nf_tables_fill_obj_info(skb, net,
-@@ -7487,33 +7487,33 @@ static int nf_tables_dump_obj(struct sk_buff *skb, struct netlink_callback *cb)
- static int nf_tables_dump_obj_start(struct netlink_callback *cb)
- {
- 	const struct nlattr * const *nla = cb->data;
--	struct nft_obj_filter *filter = NULL;
-+	struct nft_obj_dump_ctx *ctx = NULL;
+ 		base_time = ktime_add_ns(base_time, (n + 1) * cycle);
+-
+-		/* Increase the counter if scheduling into the past while
+-		 * Gate Control List (GCL) is running.
+-		 */
+-		if ((rd32(IGC_BASET_H) || rd32(IGC_BASET_L)) &&
+-		    (adapter->tc_setup_type == TC_SETUP_QDISC_TAPRIO) &&
+-		    (adapter->qbv_count > 1))
+-			adapter->qbv_config_change_errors++;
+ 	} else {
+ 		if (igc_is_device_id_i226(hw)) {
+ 			ktime_t adjust_time, expires_time;
+diff --git a/drivers/net/ethernet/intel/igc/igc_tsn.h b/drivers/net/ethernet/intel/igc/igc_tsn.h
+index b53e6af560b73..98ec845a86bf0 100644
+--- a/drivers/net/ethernet/intel/igc/igc_tsn.h
++++ b/drivers/net/ethernet/intel/igc/igc_tsn.h
+@@ -7,5 +7,6 @@
+ int igc_tsn_offload_apply(struct igc_adapter *adapter);
+ int igc_tsn_reset(struct igc_adapter *adapter);
+ void igc_tsn_adjust_txtime_offset(struct igc_adapter *adapter);
++bool igc_tsn_is_taprio_activated_by_user(struct igc_adapter *adapter);
  
--	filter = kzalloc(sizeof(*filter), GFP_ATOMIC);
--	if (!filter)
-+	ctx = kzalloc(sizeof(*ctx), GFP_ATOMIC);
-+	if (!ctx)
- 		return -ENOMEM;
- 
- 	if (nla[NFTA_OBJ_TABLE]) {
--		filter->table = nla_strdup(nla[NFTA_OBJ_TABLE], GFP_ATOMIC);
--		if (!filter->table) {
--			kfree(filter);
-+		ctx->table = nla_strdup(nla[NFTA_OBJ_TABLE], GFP_ATOMIC);
-+		if (!ctx->table) {
-+			kfree(ctx);
- 			return -ENOMEM;
- 		}
- 	}
- 
- 	if (nla[NFTA_OBJ_TYPE])
--		filter->type = ntohl(nla_get_be32(nla[NFTA_OBJ_TYPE]));
-+		ctx->type = ntohl(nla_get_be32(nla[NFTA_OBJ_TYPE]));
- 
--	cb->data = filter;
-+	cb->data = ctx;
- 	return 0;
- }
- 
- static int nf_tables_dump_obj_done(struct netlink_callback *cb)
- {
--	struct nft_obj_filter *filter = cb->data;
-+	struct nft_obj_dump_ctx *ctx = cb->data;
- 
--	kfree(filter->table);
--	kfree(filter);
-+	kfree(ctx->table);
-+	kfree(ctx);
- 
- 	return 0;
- }
+ #endif /* _IGC_BASE_H */
 -- 
 2.43.0
 
