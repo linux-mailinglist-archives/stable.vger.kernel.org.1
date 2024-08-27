@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-71236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70952-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77313961276
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:31:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C0619610D9
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:13:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32DC4281EDD
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:31:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32CD61F236B5
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:13:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC3FB1C7B71;
-	Tue, 27 Aug 2024 15:29:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 547191BD514;
+	Tue, 27 Aug 2024 15:13:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cHBlE2MA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fw6nXA0A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 690941BDA93;
-	Tue, 27 Aug 2024 15:29:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1099D1BC08A;
+	Tue, 27 Aug 2024 15:13:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772547; cv=none; b=kf6A81SElcxnvk6952C14sLtgko10xUzXIcGNUhX9GrgJD5MCwg+wXOpvnQydAMR34obZGXqQOc0OoNKBxAGSNHaUnnZYR+zlKuQbs/PCke56OwdkSer2YacNfIJHHS1rPJTEjC957sTFklfQoVtS/1U9aIFzZ5T8EPPokfsbSc=
+	t=1724771607; cv=none; b=AB2N/HOrW9OOyKDBsfI8dYmqPtDei0fEj4qhI9WZyUdFLgO5At4xwwapOm3hEILt8QOWI0BzHRDT1rB4Z1mt10664n8O04SZ56+d7Ljy6yQRm5nRMPMICDujw47qGtOq6Xbl0o6WKvVTINsGRHAgUAFlbMctNwDXX1nRRiikGDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772547; c=relaxed/simple;
-	bh=gaCZIbqAE1S2By3yLRxYM/KgIZTSaq0jcqOZa7evgqI=;
+	s=arc-20240116; t=1724771607; c=relaxed/simple;
+	bh=64aYKj6asY+3qfeHeLKiHIGfDr0YSawTztjf5oqU8FA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lzioU3zBzmTaZVlDFXL+BQixNrgczhplDfLtv7IXlfDzmwGjTLKrsNFNUHEpFq73vuh4ZoqJMj1qUUBOD9RPu38Cuz4DA4Y6UAwAlaCYZ5wsG2pZP/fdRt3opuoE9PbpX7gPJPt7k+zA+22mVLu0raMxmffqce6fIbS5qx6dEqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cHBlE2MA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C917FC6107E;
-	Tue, 27 Aug 2024 15:29:06 +0000 (UTC)
+	 MIME-Version; b=nU1ZdU8cZScZASFRysUvM4A6786JFQhQCtAdMTsEU5xSzwsBSnJ0i7DSAgXmF2lerNQLDOX8XAeCgEgT2NPsblgZF+ELst9o0sb2nviQG7kChxqSnbXrtvSa5iNgM1m2NGdHe9d2jf6IjSPxwIILRv2Tj7keD+lqaAytE8TPH+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fw6nXA0A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F3BAC6105E;
+	Tue, 27 Aug 2024 15:13:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772547;
-	bh=gaCZIbqAE1S2By3yLRxYM/KgIZTSaq0jcqOZa7evgqI=;
+	s=korg; t=1724771606;
+	bh=64aYKj6asY+3qfeHeLKiHIGfDr0YSawTztjf5oqU8FA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cHBlE2MAie7p8cbno9ujAUFa0br+Kgv1RwbwMvTkhDHyeurDrXmRzeNdrmrQqWbJ4
-	 tQ6CMgEyYg+FZCBgCzq7HOU1eoXzAQr8Jgj811e6UPCBI+qrqpTpAlETFrt+cmtHTq
-	 dCncSP+ANGfQuf6+vsEYaaDUYxm8XsQ3Hk15SYx8=
+	b=Fw6nXA0A4By8ll8V72Hj31LnN4cGdM8QN/n378z6tDyBRi3G/w/41pLjBWuhzej61
+	 m4eRDzkn1Rzy/xNeDXBf4q4XGma7Hj4M2XMCvmQjVgfP1eJhjhGcXI/FbgQ79i5f2i
+	 1L/3sQJ4KW3KMD+s5s5HZvIyvr6OY6HKIgYGlw+o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Simon Horman <horms@kernel.org>,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 248/321] dpaa2-switch: Fix error checking in dpaa2_switch_seed_bp()
+	Harald Freudenberger <freude@linux.ibm.com>,
+	Holger Dengler <dengler@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>
+Subject: [PATCH 6.10 232/273] s390/ap: Refine AP bus bindings complete processing
 Date: Tue, 27 Aug 2024 16:39:16 +0200
-Message-ID: <20240827143847.685752301@linuxfoundation.org>
+Message-ID: <20240827143842.235750355@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,60 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Harald Freudenberger <freude@linux.ibm.com>
 
-[ Upstream commit c50e7475961c36ec4d21d60af055b32f9436b431 ]
+commit b4f5bd60d558f6ba451d7e76aa05782c07a182a3 upstream.
 
-The dpaa2_switch_add_bufs() function returns the number of bufs that it
-was able to add.  It returns BUFS_PER_CMD (7) for complete success or a
-smaller number if there are not enough pages available.  However, the
-error checking is looking at the total number of bufs instead of the
-number which were added on this iteration.  Thus the error checking
-only works correctly for the first iteration through the loop and
-subsequent iterations are always counted as a success.
+With the rework of the AP bus scan and the introduction of
+a bindings complete completion also the timing until the
+userspace finally receives a AP bus binding complete uevent
+had increased. Unfortunately this event triggers some important
+jobs for preparation of KVM guests, for example the modification
+of card/queue masks to reassign AP resources to the alternate
+AP queue device driver (vfio_ap) which is the precondition
+for building mediated devices which may be a precondition for
+starting KVM guests using AP resources.
 
-Fix this by checking only the bufs added in the current iteration.
+This small fix now triggers the check for binding complete
+each time an AP device driver has registered. With this patch
+the bindings complete may be posted up to 30s earlier as there
+is no need to wait for the next AP bus scan any more.
 
-Fixes: 0b1b71370458 ("staging: dpaa2-switch: handle Rx path on control interface")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Ioana Ciornei <ioana.ciornei@nxp.com>
-Tested-by: Ioana Ciornei <ioana.ciornei@nxp.com>
-Link: https://patch.msgid.link/eec27f30-b43f-42b6-b8ee-04a6f83423b6@stanley.mountain
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 778412ab915d ("s390/ap: rearm APQNs bindings complete completion")
+Signed-off-by: Harald Freudenberger <freude@linux.ibm.com>
+Reviewed-by: Holger Dengler <dengler@linux.ibm.com>
+Cc: stable@vger.kernel.org
+Acked-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/s390/crypto/ap_bus.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
-index b98ef4ba172f6..d6c871f227947 100644
---- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
-+++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
-@@ -2583,13 +2583,14 @@ static int dpaa2_switch_refill_bp(struct ethsw_core *ethsw)
- 
- static int dpaa2_switch_seed_bp(struct ethsw_core *ethsw)
+diff --git a/drivers/s390/crypto/ap_bus.c b/drivers/s390/crypto/ap_bus.c
+index 0998b17ecb37..f9f682f19415 100644
+--- a/drivers/s390/crypto/ap_bus.c
++++ b/drivers/s390/crypto/ap_bus.c
+@@ -971,11 +971,16 @@ int ap_driver_register(struct ap_driver *ap_drv, struct module *owner,
+ 		       char *name)
  {
--	int *count, i;
-+	int *count, ret, i;
+ 	struct device_driver *drv = &ap_drv->driver;
++	int rc;
  
- 	for (i = 0; i < DPAA2_ETHSW_NUM_BUFS; i += BUFS_PER_CMD) {
-+		ret = dpaa2_switch_add_bufs(ethsw, ethsw->bpid);
- 		count = &ethsw->buf_count;
--		*count += dpaa2_switch_add_bufs(ethsw, ethsw->bpid);
-+		*count += ret;
- 
--		if (unlikely(*count < BUFS_PER_CMD))
-+		if (unlikely(ret < BUFS_PER_CMD))
- 			return -ENOMEM;
- 	}
+ 	drv->bus = &ap_bus_type;
+ 	drv->owner = owner;
+ 	drv->name = name;
+-	return driver_register(drv);
++	rc = driver_register(drv);
++
++	ap_check_bindings_complete();
++
++	return rc;
+ }
+ EXPORT_SYMBOL(ap_driver_register);
  
 -- 
-2.43.0
+2.46.0
 
 
 
