@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-71171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70912-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC2A5961218
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:27:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0DA39610A5
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:11:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF4031C20CDB
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:27:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9BFA428168A
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:11:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB8AC1CCB34;
-	Tue, 27 Aug 2024 15:25:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1BAB1C5793;
+	Tue, 27 Aug 2024 15:11:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Eu9IDrJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dWBVjnPi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61F771C5793;
-	Tue, 27 Aug 2024 15:25:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B092A1C3F19;
+	Tue, 27 Aug 2024 15:11:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772335; cv=none; b=mzaEsDlvoxiWFFADhS5vAawUMCVroI9U1pi5+TrWHlrtu+rugNcStyJrgDgR+wPi5cFotzaEdRuhGOawPA4lk+bYzYgtHQWPQnTO3kHK0RTOPqUy+fwFEp+Ef3sTXIAXBTeRK5mkPqtKFX4MDFAtnEONoTusFCco/RN4W+mtRto=
+	t=1724771476; cv=none; b=QomI77B+KnxbuA0atEk8cCYEtAWP5ruSAvxAMtZGKilrpk5usAnxcO7rnGI7nSo/390lcDw63A42GgoLy1DdFgrwl8icf/IBeEYELE7ZZIxzC/WEAAkxmWK6prUuhPdPd1X3vTb7qDpx5zJtooBsNauimmhfadQVKibjEOh8lu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772335; c=relaxed/simple;
-	bh=9uQeTeTrEqLFzh3+sW4TbiytWS5WNE70Z/f2eSpVXv0=;
+	s=arc-20240116; t=1724771476; c=relaxed/simple;
+	bh=UX2ow45SWD55L8hVvXK+LEfckR1xm5R4l3dlpiBDsi0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V6TY9MT+0BhMBKMcq0RjKu2xtIhbIH1Rb8WZSI5q62gOUQ8DxN/lz3pRey0HicRgcqv+saJwHdWW2Bw1/da7hOSVY4L+y3RbUx1fBmTfGoDryYSY3/9oR19lTnhQdA+XHx4sgwpIRcIPr/VnDjxlZIUwmN6Y6YSx2q9MHusFJok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Eu9IDrJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8056CC61071;
-	Tue, 27 Aug 2024 15:25:33 +0000 (UTC)
+	 MIME-Version; b=UYctcG51fZTnYQe95buzrSQ/MM4ZgPXfoWT2NTffRgiUSoNoMDM5ou2qXtcqq0KolRooFQQGvpC2WXrkAK77RiuTxtOeuOsOO8gW2M+rzgw5xZWiAnS+bV8+ESuoV9b0Gs74epS8Gt3ekNHV25NaCRTU4EwMNdOMdBiQh+j4vDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dWBVjnPi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CE09C4DDF2;
+	Tue, 27 Aug 2024 15:11:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772333;
-	bh=9uQeTeTrEqLFzh3+sW4TbiytWS5WNE70Z/f2eSpVXv0=;
+	s=korg; t=1724771476;
+	bh=UX2ow45SWD55L8hVvXK+LEfckR1xm5R4l3dlpiBDsi0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1Eu9IDrJgEp8PlyY+USNRxfX7RHS/cJbttsnarWtajS1bJV6xQ2wLCWnggVhxD/nx
-	 Iklzsag6xwEaq9mmn9j9Iy/kAqnjT478vYJLVCN6MueAokffieuq0flkwSHZMABh+L
-	 nSWa6zDQWyHW/Qc8B6pF9d1DQjQHYM2vyEyxTOt8=
+	b=dWBVjnPiEL36axWEmyUh8On/Xv5SdAxN4Wx42OCkDj/VysRFXzgFEwhBVxECFLnRD
+	 YT3iHgLZy+ZSvsRHY07bBUbQ5oIqY0+nG82eLHhFmN89oB3IgmWE/1QP3cSnFwW99A
+	 1wagKmHrx6V2QdvZq0RAiZIDpmKwHjNu40EeuAEM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Sterba <dsterba@suse.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 184/321] btrfs: send: handle unexpected data in header buffer in begin_cmd()
+Subject: [PATCH 6.10 168/273] bonding: fix bond_ipsec_offload_ok return type
 Date: Tue, 27 Aug 2024 16:38:12 +0200
-Message-ID: <20240827143845.233759557@linuxfoundation.org>
+Message-ID: <20240827143839.801874401@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Sterba <dsterba@suse.com>
+From: Nikolay Aleksandrov <razor@blackwall.org>
 
-[ Upstream commit e80e3f732cf53c64b0d811e1581470d67f6c3228 ]
+[ Upstream commit fc59b9a5f7201b9f7272944596113a82cc7773d5 ]
 
-Change BUG_ON to a proper error handling in the unlikely case of seeing
-data when the command is started. This is supposed to be reset when the
-command is finished (send_cmd, send_encoded_extent).
+Fix the return type which should be bool.
 
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 955b785ec6b3 ("bonding: fix suspicious RCU usage in bond_ipsec_offload_ok()")
+Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
+Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/send.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/net/bonding/bond_main.c | 18 ++++++------------
+ 1 file changed, 6 insertions(+), 12 deletions(-)
 
-diff --git a/fs/btrfs/send.c b/fs/btrfs/send.c
-index ec3db315f5618..cfbd3ab679117 100644
---- a/fs/btrfs/send.c
-+++ b/fs/btrfs/send.c
-@@ -720,7 +720,12 @@ static int begin_cmd(struct send_ctx *sctx, int cmd)
- 	if (WARN_ON(!sctx->send_buf))
- 		return -EINVAL;
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index 2ed0da0684906..2370da4632149 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -599,34 +599,28 @@ static bool bond_ipsec_offload_ok(struct sk_buff *skb, struct xfrm_state *xs)
+ 	struct net_device *real_dev;
+ 	struct slave *curr_active;
+ 	struct bonding *bond;
+-	int err;
++	bool ok = false;
  
--	BUG_ON(sctx->send_size);
-+	if (unlikely(sctx->send_size != 0)) {
-+		btrfs_err(sctx->send_root->fs_info,
-+			  "send: command header buffer not empty cmd %d offset %llu",
-+			  cmd, sctx->send_off);
-+		return -EINVAL;
-+	}
+ 	bond = netdev_priv(bond_dev);
+ 	rcu_read_lock();
+ 	curr_active = rcu_dereference(bond->curr_active_slave);
+ 	real_dev = curr_active->dev;
  
- 	sctx->send_size += sizeof(*hdr);
- 	hdr = (struct btrfs_cmd_header *)sctx->send_buf;
+-	if (BOND_MODE(bond) != BOND_MODE_ACTIVEBACKUP) {
+-		err = false;
++	if (BOND_MODE(bond) != BOND_MODE_ACTIVEBACKUP)
+ 		goto out;
+-	}
+ 
+-	if (!xs->xso.real_dev) {
+-		err = false;
++	if (!xs->xso.real_dev)
+ 		goto out;
+-	}
+ 
+ 	if (!real_dev->xfrmdev_ops ||
+ 	    !real_dev->xfrmdev_ops->xdo_dev_offload_ok ||
+-	    netif_is_bond_master(real_dev)) {
+-		err = false;
++	    netif_is_bond_master(real_dev))
+ 		goto out;
+-	}
+ 
+-	err = real_dev->xfrmdev_ops->xdo_dev_offload_ok(skb, xs);
++	ok = real_dev->xfrmdev_ops->xdo_dev_offload_ok(skb, xs);
+ out:
+ 	rcu_read_unlock();
+-	return err;
++	return ok;
+ }
+ 
+ static const struct xfrmdev_ops bond_xfrmdev_ops = {
 -- 
 2.43.0
 
