@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-71055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70733-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34B0C96116F
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:20:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2766960FBD
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:01:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5470B1C2364A
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:20:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 79F1C28257D
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:01:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3715F1BC9FC;
-	Tue, 27 Aug 2024 15:19:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AA1E1BC9E3;
+	Tue, 27 Aug 2024 15:01:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WMGwQqfs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n+4d0Nn3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E711C1C3F0D;
-	Tue, 27 Aug 2024 15:19:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 189FD2FB2;
+	Tue, 27 Aug 2024 15:01:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771949; cv=none; b=uDfESfYmJWLABOWD70psYH2PrLaLfggkUqZhtYpQ5P1lNHiVVtJt5P532iK7AfjwjwMHnJJI7/upp8PScPIsJjjCcTofM+9CymH58NZe3PMJ5xC3kTyFpDWdp92q3VWmFx058Mr2NSYOGaLN6k22SFtA/V//Is3Ygm/xj/Lc2hc=
+	t=1724770887; cv=none; b=IzkxhfxtBjSSHQHQTp2+cFfKtT7NcM4FxwPD4N4tBEWu9OQMteQUfHgxQlfpU9kEtZq5vRaiAfV3FJjkicRCBEENasJdHB3ovj2Zizake+mvglt3+1jv3dORP8idzChAh9F7uyZr0syrIO7yJmgNuMenc+//zYXjGg4byFjbcQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771949; c=relaxed/simple;
-	bh=dXL7xDwOhR6Isg7y6SylJ2omXcVu3XhUZ5OtFQ7ovNY=;
+	s=arc-20240116; t=1724770887; c=relaxed/simple;
+	bh=tIOGoouStaX77YsSSFmgZJOHdEvMTeHyH/Hsde8G9Pg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C7JHvPDJrNyGS2vnebUPv4LUc1d8svJS8XkSmFIPH3ilAnEUZCUWPQbrdTYWJIqR16P3kRIkK/3XQS4xt85dUQI7xNF1rR8YiRSkNNcUBtHluup9c0CBiTnJUfYODsQMN8haCSLY9Md8RZTqL0xZ5xY7CCq/lU7PxCTWrtMUQ/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WMGwQqfs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1327FC61067;
-	Tue, 27 Aug 2024 15:19:07 +0000 (UTC)
+	 MIME-Version; b=n0pGBO4Z8qT3OJUjGE74rpUn2/JsHVZU09T3KB8cjQLPmA4XsRccf2uKCkHHr5tZ+STfCrVr+YdP5Neh4Mqa4nV0GVR/kjTFj7/W0urqogPKwv4S1ZxM2FKVcaTsbvScWVSqTWmIf6JpuF2YuUpNIrOegQqhBMJPz1KJ43ed3bk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n+4d0Nn3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 843C8C4DDEF;
+	Tue, 27 Aug 2024 15:01:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771948;
-	bh=dXL7xDwOhR6Isg7y6SylJ2omXcVu3XhUZ5OtFQ7ovNY=;
+	s=korg; t=1724770887;
+	bh=tIOGoouStaX77YsSSFmgZJOHdEvMTeHyH/Hsde8G9Pg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WMGwQqfs6BGB4915s854DWp4ZZLCQd3uXyosHBUvfOOpwMD2DoBj4HMhyG22F4Kqd
-	 7BV4Bl+MDVZyLzxe0EpzJnkkYvANOTAS+guFApt4UMdz04w4CJtAPvBftMwp3kNhe7
-	 WwabiK3C4rnjGOXeSXr24mmjDu18Ky8B2+mpuFww=
+	b=n+4d0Nn3gaMWgkNrcSnmgIJTGjM/hrrTZdqp1sAyTliWI59zfypnCa5AJdcLWhcrd
+	 RqDVYk1q/KGBWVnMRgnu7bXpR9zbpzqCT+hf8Np3k3hTiWBAeMmgY8A5NVP0Rp4jFo
+	 2nXycRuwP4budTpmAPb6TSy2e54b78DBlkHHT4DE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Lorenz Bauer <lmb@isovalent.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 038/321] bpf: Split off basic BPF verifier log into separate file
+	Jan Hoeppner <hoeppner@linux.ibm.com>,
+	Stefan Haberland <sth@linux.ibm.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.10 022/273] s390/dasd: fix error recovery leading to data corruption on ESE devices
 Date: Tue, 27 Aug 2024 16:35:46 +0200
-Message-ID: <20240827143839.674243802@linuxfoundation.org>
+Message-ID: <20240827143834.232857562@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,296 +62,247 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrii Nakryiko <andrii@kernel.org>
+From: Stefan Haberland <sth@linux.ibm.com>
 
-[ Upstream commit 4294a0a7ab6282c3d92f03de84e762dda993c93d ]
+commit 7db4042336580dfd75cb5faa82c12cd51098c90b upstream.
 
-kernel/bpf/verifier.c file is large and growing larger all the time. So
-it's good to start splitting off more or less self-contained parts into
-separate files to keep source code size (somewhat) somewhat under
-control.
+Extent Space Efficient (ESE) or thin provisioned volumes need to be
+formatted on demand during usual IO processing.
 
-This patch is a one step in this direction, moving some of BPF verifier log
-routines into a separate kernel/bpf/log.c. Right now it's most low-level
-and isolated routines to append data to log, reset log to previous
-position, etc. Eventually we could probably move verifier state
-printing logic here as well, but this patch doesn't attempt to do that
-yet.
+The dasd_ese_needs_format function checks for error codes that signal
+the non existence of a proper track format.
 
-Subsequent patches will add more logic to verifier log management, so
-having basics in a separate file will make sure verifier.c doesn't grow
-more with new changes.
+The check for incorrect length is to imprecise since other error cases
+leading to transport of insufficient data also have this flag set.
+This might lead to data corruption in certain error cases for example
+during a storage server warmstart.
 
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Lorenz Bauer <lmb@isovalent.com>
-Link: https://lore.kernel.org/bpf/20230406234205.323208-2-andrii@kernel.org
-Stable-dep-of: cff36398bd4c ("bpf: drop unnecessary user-triggerable WARN_ONCE in verifierl log")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix by removing the check for incorrect length and replacing by
+explicitly checking for invalid track format in transport mode.
+
+Also remove the check for file protected since this is not a valid
+ESE handling case.
+
+Cc: stable@vger.kernel.org # 5.3+
+Fixes: 5e2b17e712cf ("s390/dasd: Add dynamic formatting support for ESE volumes")
+Reviewed-by: Jan Hoeppner <hoeppner@linux.ibm.com>
+Signed-off-by: Stefan Haberland <sth@linux.ibm.com>
+Link: https://lore.kernel.org/r/20240812125733.126431-3-sth@linux.ibm.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/bpf_verifier.h | 19 +++-----
- kernel/bpf/Makefile          |  3 +-
- kernel/bpf/log.c             | 85 ++++++++++++++++++++++++++++++++++++
- kernel/bpf/verifier.c        | 69 -----------------------------
- 4 files changed, 94 insertions(+), 82 deletions(-)
- create mode 100644 kernel/bpf/log.c
+ drivers/s390/block/dasd.c          |   36 +++++++++++++++---------
+ drivers/s390/block/dasd_3990_erp.c |   10 +-----
+ drivers/s390/block/dasd_eckd.c     |   55 ++++++++++++++++---------------------
+ drivers/s390/block/dasd_int.h      |    2 -
+ 4 files changed, 50 insertions(+), 53 deletions(-)
 
-diff --git a/include/linux/bpf_verifier.h b/include/linux/bpf_verifier.h
-index 131adc98080b8..33b073deb8c17 100644
---- a/include/linux/bpf_verifier.h
-+++ b/include/linux/bpf_verifier.h
-@@ -445,11 +445,6 @@ struct bpf_verifier_log {
- 	u32 len_total;
- };
+--- a/drivers/s390/block/dasd.c
++++ b/drivers/s390/block/dasd.c
+@@ -1601,9 +1601,15 @@ static int dasd_ese_needs_format(struct
+ 	if (!sense)
+ 		return 0;
  
--static inline bool bpf_verifier_log_full(const struct bpf_verifier_log *log)
--{
--	return log->len_used >= log->len_total - 1;
--}
--
- #define BPF_LOG_LEVEL1	1
- #define BPF_LOG_LEVEL2	2
- #define BPF_LOG_STATS	4
-@@ -459,6 +454,11 @@ static inline bool bpf_verifier_log_full(const struct bpf_verifier_log *log)
- #define BPF_LOG_MIN_ALIGNMENT 8U
- #define BPF_LOG_ALIGNMENT 40U
- 
-+static inline bool bpf_verifier_log_full(const struct bpf_verifier_log *log)
-+{
-+	return log->len_used >= log->len_total - 1;
-+}
+-	return !!(sense[1] & SNS1_NO_REC_FOUND) ||
+-		!!(sense[1] & SNS1_FILE_PROTECTED) ||
+-		scsw_cstat(&irb->scsw) == SCHN_STAT_INCORR_LEN;
++	if (sense[1] & SNS1_NO_REC_FOUND)
++		return 1;
 +
- static inline bool bpf_verifier_log_needed(const struct bpf_verifier_log *log)
- {
- 	return log &&
-@@ -466,13 +466,6 @@ static inline bool bpf_verifier_log_needed(const struct bpf_verifier_log *log)
- 		 log->level == BPF_LOG_KERNEL);
++	if ((sense[1] & SNS1_INV_TRACK_FORMAT) &&
++	    scsw_is_tm(&irb->scsw) &&
++	    !(sense[2] & SNS2_ENV_DATA_PRESENT))
++		return 1;
++
++	return 0;
  }
  
--static inline bool
--bpf_verifier_log_attr_valid(const struct bpf_verifier_log *log)
--{
--	return log->len_total >= 128 && log->len_total <= UINT_MAX >> 2 &&
--	       log->level && log->ubuf && !(log->level & ~BPF_LOG_MASK);
--}
--
- #define BPF_MAX_SUBPROGS 256
+ static int dasd_ese_oos_cond(u8 *sense)
+@@ -1624,7 +1630,7 @@ void dasd_int_handler(struct ccw_device
+ 	struct dasd_device *device;
+ 	unsigned long now;
+ 	int nrf_suppressed = 0;
+-	int fp_suppressed = 0;
++	int it_suppressed = 0;
+ 	struct request *req;
+ 	u8 *sense = NULL;
+ 	int expires;
+@@ -1679,8 +1685,9 @@ void dasd_int_handler(struct ccw_device
+ 		 */
+ 		sense = dasd_get_sense(irb);
+ 		if (sense) {
+-			fp_suppressed = (sense[1] & SNS1_FILE_PROTECTED) &&
+-				test_bit(DASD_CQR_SUPPRESS_FP, &cqr->flags);
++			it_suppressed =	(sense[1] & SNS1_INV_TRACK_FORMAT) &&
++				!(sense[2] & SNS2_ENV_DATA_PRESENT) &&
++				test_bit(DASD_CQR_SUPPRESS_IT, &cqr->flags);
+ 			nrf_suppressed = (sense[1] & SNS1_NO_REC_FOUND) &&
+ 				test_bit(DASD_CQR_SUPPRESS_NRF, &cqr->flags);
  
- struct bpf_subprog_info {
-@@ -556,12 +549,14 @@ struct bpf_verifier_env {
- 	char type_str_buf[TYPE_STR_BUF_LEN];
- };
+@@ -1695,7 +1702,7 @@ void dasd_int_handler(struct ccw_device
+ 				return;
+ 			}
+ 		}
+-		if (!(fp_suppressed || nrf_suppressed))
++		if (!(it_suppressed || nrf_suppressed))
+ 			device->discipline->dump_sense_dbf(device, irb, "int");
  
-+bool bpf_verifier_log_attr_valid(const struct bpf_verifier_log *log);
- __printf(2, 0) void bpf_verifier_vlog(struct bpf_verifier_log *log,
- 				      const char *fmt, va_list args);
- __printf(2, 3) void bpf_verifier_log_write(struct bpf_verifier_env *env,
- 					   const char *fmt, ...);
- __printf(2, 3) void bpf_log(struct bpf_verifier_log *log,
- 			    const char *fmt, ...);
-+void bpf_vlog_reset(struct bpf_verifier_log *log, u32 new_pos);
+ 		if (device->features & DASD_FEATURE_ERPLOG)
+@@ -2459,14 +2466,17 @@ retry:
+ 	rc = 0;
+ 	list_for_each_entry_safe(cqr, n, ccw_queue, blocklist) {
+ 		/*
+-		 * In some cases the 'File Protected' or 'Incorrect Length'
+-		 * error might be expected and error recovery would be
+-		 * unnecessary in these cases.	Check if the according suppress
+-		 * bit is set.
++		 * In some cases certain errors might be expected and
++		 * error recovery would be unnecessary in these cases.
++		 * Check if the according suppress bit is set.
+ 		 */
+ 		sense = dasd_get_sense(&cqr->irb);
+-		if (sense && sense[1] & SNS1_FILE_PROTECTED &&
+-		    test_bit(DASD_CQR_SUPPRESS_FP, &cqr->flags))
++		if (sense && (sense[1] & SNS1_INV_TRACK_FORMAT) &&
++		    !(sense[2] & SNS2_ENV_DATA_PRESENT) &&
++		    test_bit(DASD_CQR_SUPPRESS_IT, &cqr->flags))
++			continue;
++		if (sense && (sense[1] & SNS1_NO_REC_FOUND) &&
++		    test_bit(DASD_CQR_SUPPRESS_NRF, &cqr->flags))
+ 			continue;
+ 		if (scsw_cstat(&cqr->irb.scsw) == 0x40 &&
+ 		    test_bit(DASD_CQR_SUPPRESS_IL, &cqr->flags))
+--- a/drivers/s390/block/dasd_3990_erp.c
++++ b/drivers/s390/block/dasd_3990_erp.c
+@@ -1386,14 +1386,8 @@ dasd_3990_erp_file_prot(struct dasd_ccw_
  
- static inline struct bpf_func_state *cur_func(struct bpf_verifier_env *env)
+ 	struct dasd_device *device = erp->startdev;
+ 
+-	/*
+-	 * In some cases the 'File Protected' error might be expected and
+-	 * log messages shouldn't be written then.
+-	 * Check if the according suppress bit is set.
+-	 */
+-	if (!test_bit(DASD_CQR_SUPPRESS_FP, &erp->flags))
+-		dev_err(&device->cdev->dev,
+-			"Accessing the DASD failed because of a hardware error\n");
++	dev_err(&device->cdev->dev,
++		"Accessing the DASD failed because of a hardware error\n");
+ 
+ 	return dasd_3990_erp_cleanup(erp, DASD_CQR_FAILED);
+ 
+--- a/drivers/s390/block/dasd_eckd.c
++++ b/drivers/s390/block/dasd_eckd.c
+@@ -2274,6 +2274,7 @@ dasd_eckd_analysis_ccw(struct dasd_devic
+ 	cqr->status = DASD_CQR_FILLED;
+ 	/* Set flags to suppress output for expected errors */
+ 	set_bit(DASD_CQR_SUPPRESS_NRF, &cqr->flags);
++	set_bit(DASD_CQR_SUPPRESS_IT, &cqr->flags);
+ 
+ 	return cqr;
+ }
+@@ -2555,7 +2556,6 @@ dasd_eckd_build_check_tcw(struct dasd_de
+ 	cqr->buildclk = get_tod_clock();
+ 	cqr->status = DASD_CQR_FILLED;
+ 	/* Set flags to suppress output for expected errors */
+-	set_bit(DASD_CQR_SUPPRESS_FP, &cqr->flags);
+ 	set_bit(DASD_CQR_SUPPRESS_IL, &cqr->flags);
+ 
+ 	return cqr;
+@@ -4129,8 +4129,6 @@ static struct dasd_ccw_req *dasd_eckd_bu
+ 
+ 	/* Set flags to suppress output for expected errors */
+ 	if (dasd_eckd_is_ese(basedev)) {
+-		set_bit(DASD_CQR_SUPPRESS_FP, &cqr->flags);
+-		set_bit(DASD_CQR_SUPPRESS_IL, &cqr->flags);
+ 		set_bit(DASD_CQR_SUPPRESS_NRF, &cqr->flags);
+ 	}
+ 
+@@ -4632,9 +4630,8 @@ static struct dasd_ccw_req *dasd_eckd_bu
+ 
+ 	/* Set flags to suppress output for expected errors */
+ 	if (dasd_eckd_is_ese(basedev)) {
+-		set_bit(DASD_CQR_SUPPRESS_FP, &cqr->flags);
+-		set_bit(DASD_CQR_SUPPRESS_IL, &cqr->flags);
+ 		set_bit(DASD_CQR_SUPPRESS_NRF, &cqr->flags);
++		set_bit(DASD_CQR_SUPPRESS_IT, &cqr->flags);
+ 	}
+ 
+ 	return cqr;
+@@ -5779,36 +5776,32 @@ static void dasd_eckd_dump_sense(struct
  {
-diff --git a/kernel/bpf/Makefile b/kernel/bpf/Makefile
-index 341c94f208f4c..5b86ea9f09c46 100644
---- a/kernel/bpf/Makefile
-+++ b/kernel/bpf/Makefile
-@@ -6,7 +6,8 @@ cflags-nogcse-$(CONFIG_X86)$(CONFIG_CC_IS_GCC) := -fno-gcse
- endif
- CFLAGS_core.o += $(call cc-disable-warning, override-init) $(cflags-nogcse-yy)
+ 	u8 *sense = dasd_get_sense(irb);
  
--obj-$(CONFIG_BPF_SYSCALL) += syscall.o verifier.o inode.o helpers.o tnum.o bpf_iter.o map_iter.o task_iter.o prog_iter.o link_iter.o
-+obj-$(CONFIG_BPF_SYSCALL) += syscall.o verifier.o inode.o helpers.o tnum.o log.o
-+obj-$(CONFIG_BPF_SYSCALL) += bpf_iter.o map_iter.o task_iter.o prog_iter.o link_iter.o
- obj-$(CONFIG_BPF_SYSCALL) += hashtab.o arraymap.o percpu_freelist.o bpf_lru_list.o lpm_trie.o map_in_map.o bloom_filter.o
- obj-$(CONFIG_BPF_SYSCALL) += local_storage.o queue_stack_maps.o ringbuf.o
- obj-$(CONFIG_BPF_SYSCALL) += bpf_local_storage.o bpf_task_storage.o
-diff --git a/kernel/bpf/log.c b/kernel/bpf/log.c
-new file mode 100644
-index 0000000000000..920061e38d2e1
---- /dev/null
-+++ b/kernel/bpf/log.c
-@@ -0,0 +1,85 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/* Copyright (c) 2011-2014 PLUMgrid, http://plumgrid.com
-+ * Copyright (c) 2016 Facebook
-+ * Copyright (c) 2018 Covalent IO, Inc. http://covalent.io
-+ */
-+#include <uapi/linux/btf.h>
-+#include <linux/kernel.h>
-+#include <linux/types.h>
-+#include <linux/bpf.h>
-+#include <linux/bpf_verifier.h>
-+
-+bool bpf_verifier_log_attr_valid(const struct bpf_verifier_log *log)
-+{
-+	return log->len_total >= 128 && log->len_total <= UINT_MAX >> 2 &&
-+	       log->level && log->ubuf && !(log->level & ~BPF_LOG_MASK);
-+}
-+
-+void bpf_verifier_vlog(struct bpf_verifier_log *log, const char *fmt,
-+		       va_list args)
-+{
-+	unsigned int n;
-+
-+	n = vscnprintf(log->kbuf, BPF_VERIFIER_TMP_LOG_SIZE, fmt, args);
-+
-+	WARN_ONCE(n >= BPF_VERIFIER_TMP_LOG_SIZE - 1,
-+		  "verifier log line truncated - local buffer too short\n");
-+
-+	if (log->level == BPF_LOG_KERNEL) {
-+		bool newline = n > 0 && log->kbuf[n - 1] == '\n';
-+
-+		pr_err("BPF: %s%s", log->kbuf, newline ? "" : "\n");
+-	if (scsw_is_tm(&irb->scsw)) {
+-		/*
+-		 * In some cases the 'File Protected' or 'Incorrect Length'
+-		 * error might be expected and log messages shouldn't be written
+-		 * then. Check if the according suppress bit is set.
+-		 */
+-		if (sense && (sense[1] & SNS1_FILE_PROTECTED) &&
+-		    test_bit(DASD_CQR_SUPPRESS_FP, &req->flags))
+-			return;
+-		if (scsw_cstat(&irb->scsw) == 0x40 &&
+-		    test_bit(DASD_CQR_SUPPRESS_IL, &req->flags))
+-			return;
++	/*
++	 * In some cases certain errors might be expected and
++	 * log messages shouldn't be written then.
++	 * Check if the according suppress bit is set.
++	 */
++	if (sense && (sense[1] & SNS1_INV_TRACK_FORMAT) &&
++	    !(sense[2] & SNS2_ENV_DATA_PRESENT) &&
++	    test_bit(DASD_CQR_SUPPRESS_IT, &req->flags))
 +		return;
-+	}
+ 
+-		dasd_eckd_dump_sense_tcw(device, req, irb);
+-	} else {
+-		/*
+-		 * In some cases the 'Command Reject' or 'No Record Found'
+-		 * error might be expected and log messages shouldn't be
+-		 * written then. Check if the according suppress bit is set.
+-		 */
+-		if (sense && sense[0] & SNS0_CMD_REJECT &&
+-		    test_bit(DASD_CQR_SUPPRESS_CR, &req->flags))
+-			return;
++	if (sense && sense[0] & SNS0_CMD_REJECT &&
++	    test_bit(DASD_CQR_SUPPRESS_CR, &req->flags))
++		return;
+ 
+-		if (sense && sense[1] & SNS1_NO_REC_FOUND &&
+-		    test_bit(DASD_CQR_SUPPRESS_NRF, &req->flags))
+-			return;
++	if (sense && sense[1] & SNS1_NO_REC_FOUND &&
++	    test_bit(DASD_CQR_SUPPRESS_NRF, &req->flags))
++		return;
+ 
++	if (scsw_cstat(&irb->scsw) == 0x40 &&
++	    test_bit(DASD_CQR_SUPPRESS_IL, &req->flags))
++		return;
 +
-+	n = min(log->len_total - log->len_used - 1, n);
-+	log->kbuf[n] = '\0';
-+	if (!copy_to_user(log->ubuf + log->len_used, log->kbuf, n + 1))
-+		log->len_used += n;
++	if (scsw_is_tm(&irb->scsw))
++		dasd_eckd_dump_sense_tcw(device, req, irb);
 +	else
-+		log->ubuf = NULL;
-+}
-+
-+void bpf_vlog_reset(struct bpf_verifier_log *log, u32 new_pos)
-+{
-+	char zero = 0;
-+
-+	if (!bpf_verifier_log_needed(log))
-+		return;
-+
-+	log->len_used = new_pos;
-+	if (put_user(zero, log->ubuf + new_pos))
-+		log->ubuf = NULL;
-+}
-+
-+/* log_level controls verbosity level of eBPF verifier.
-+ * bpf_verifier_log_write() is used to dump the verification trace to the log,
-+ * so the user can figure out what's wrong with the program
-+ */
-+__printf(2, 3) void bpf_verifier_log_write(struct bpf_verifier_env *env,
-+					   const char *fmt, ...)
-+{
-+	va_list args;
-+
-+	if (!bpf_verifier_log_needed(&env->log))
-+		return;
-+
-+	va_start(args, fmt);
-+	bpf_verifier_vlog(&env->log, fmt, args);
-+	va_end(args);
-+}
-+EXPORT_SYMBOL_GPL(bpf_verifier_log_write);
-+
-+__printf(2, 3) void bpf_log(struct bpf_verifier_log *log,
-+			    const char *fmt, ...)
-+{
-+	va_list args;
-+
-+	if (!bpf_verifier_log_needed(log))
-+		return;
-+
-+	va_start(args, fmt);
-+	bpf_verifier_vlog(log, fmt, args);
-+	va_end(args);
-+}
-+EXPORT_SYMBOL_GPL(bpf_log);
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 8973d3c9597ce..4efa50eb07d72 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -291,61 +291,6 @@ find_linfo(const struct bpf_verifier_env *env, u32 insn_off)
- 	return &linfo[i - 1];
- }
- 
--void bpf_verifier_vlog(struct bpf_verifier_log *log, const char *fmt,
--		       va_list args)
--{
--	unsigned int n;
--
--	n = vscnprintf(log->kbuf, BPF_VERIFIER_TMP_LOG_SIZE, fmt, args);
--
--	WARN_ONCE(n >= BPF_VERIFIER_TMP_LOG_SIZE - 1,
--		  "verifier log line truncated - local buffer too short\n");
--
--	if (log->level == BPF_LOG_KERNEL) {
--		bool newline = n > 0 && log->kbuf[n - 1] == '\n';
--
--		pr_err("BPF: %s%s", log->kbuf, newline ? "" : "\n");
--		return;
+ 		dasd_eckd_dump_sense_ccw(device, req, irb);
 -	}
--
--	n = min(log->len_total - log->len_used - 1, n);
--	log->kbuf[n] = '\0';
--	if (!copy_to_user(log->ubuf + log->len_used, log->kbuf, n + 1))
--		log->len_used += n;
--	else
--		log->ubuf = NULL;
--}
--
--static void bpf_vlog_reset(struct bpf_verifier_log *log, u32 new_pos)
--{
--	char zero = 0;
--
--	if (!bpf_verifier_log_needed(log))
--		return;
--
--	log->len_used = new_pos;
--	if (put_user(zero, log->ubuf + new_pos))
--		log->ubuf = NULL;
--}
--
--/* log_level controls verbosity level of eBPF verifier.
-- * bpf_verifier_log_write() is used to dump the verification trace to the log,
-- * so the user can figure out what's wrong with the program
-- */
--__printf(2, 3) void bpf_verifier_log_write(struct bpf_verifier_env *env,
--					   const char *fmt, ...)
--{
--	va_list args;
--
--	if (!bpf_verifier_log_needed(&env->log))
--		return;
--
--	va_start(args, fmt);
--	bpf_verifier_vlog(&env->log, fmt, args);
--	va_end(args);
--}
--EXPORT_SYMBOL_GPL(bpf_verifier_log_write);
--
- __printf(2, 3) static void verbose(void *private_data, const char *fmt, ...)
- {
- 	struct bpf_verifier_env *env = private_data;
-@@ -359,20 +304,6 @@ __printf(2, 3) static void verbose(void *private_data, const char *fmt, ...)
- 	va_end(args);
  }
  
--__printf(2, 3) void bpf_log(struct bpf_verifier_log *log,
--			    const char *fmt, ...)
--{
--	va_list args;
--
--	if (!bpf_verifier_log_needed(log))
--		return;
--
--	va_start(args, fmt);
--	bpf_verifier_vlog(log, fmt, args);
--	va_end(args);
--}
--EXPORT_SYMBOL_GPL(bpf_log);
--
- static const char *ltrim(const char *s)
- {
- 	while (isspace(*s))
--- 
-2.43.0
-
+ static int dasd_eckd_reload_device(struct dasd_device *device)
+--- a/drivers/s390/block/dasd_int.h
++++ b/drivers/s390/block/dasd_int.h
+@@ -196,7 +196,7 @@ struct dasd_ccw_req {
+  * The following flags are used to suppress output of certain errors.
+  */
+ #define DASD_CQR_SUPPRESS_NRF	4	/* Suppress 'No Record Found' error */
+-#define DASD_CQR_SUPPRESS_FP	5	/* Suppress 'File Protected' error*/
++#define DASD_CQR_SUPPRESS_IT	5	/* Suppress 'Invalid Track' error*/
+ #define DASD_CQR_SUPPRESS_IL	6	/* Suppress 'Incorrect Length' error */
+ #define DASD_CQR_SUPPRESS_CR	7	/* Suppress 'Command Reject' error */
+ 
 
 
 
