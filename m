@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-70377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70382-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F37A1960DC6
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:41:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86C0C960DCB
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:41:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA5461F24140
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:41:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 42562284503
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:41:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDA731C4EF0;
-	Tue, 27 Aug 2024 14:41:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EF061C4EF1;
+	Tue, 27 Aug 2024 14:41:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O4BYEE9p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G0Lf9eEa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A6161C4EE2;
-	Tue, 27 Aug 2024 14:41:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AFAF1494AC;
+	Tue, 27 Aug 2024 14:41:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724769695; cv=none; b=GREVZcAjTMkatgjBNnt6+Q4VM70Q8/5Tte3EkuP09PbQfQlyUw4xYchMCsMTjtliEb9UjnZOVGlcxLAHU8WLmiRyCjIKYh9p756Lb0tENxMOfanx0VDeiQXWjqH7arIfaMyaHSDyy7Em4HrTsDHWtSRwyYOPqrHBXqMvf39Pm7c=
+	t=1724769711; cv=none; b=mHGK0BWle2PPP0iouxa4GHak5Q8iYr7re6MoKM6UqH3J2oHdk0mCIWCjOQB/iUKRx15wkfRd7XT8wCZAJdNCSxWCU/ZCfFyjOZC//M4PVHTPHEL5Ogy3FB7zzOiDRrtUboVsIl7i5NTvtSIPbvuj6wQT/OlXO/dOImvpI/ofxG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724769695; c=relaxed/simple;
-	bh=ExHEnE6gqtWYnrlxe9U9sg22iLReDE9YP1uSm9hv30U=;
+	s=arc-20240116; t=1724769711; c=relaxed/simple;
+	bh=A/VDI6mIIXVnhFubwbIhDSGMC8dldFGNi108UpBW998=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GFEPLpZBoKXq29EoM7ab4BKG+5RLbKz6O7Hm7dHbbKeO/Z4tXI8uj4ILm+NxUA2lLQL36vWs29wvAL0ALCKosXzuyDCqkhOQYRkEjNauBjl2C1S2Pxm3vB9bjtrYEVgRPJ0Q7GSuiAdqEwX7NiOULDXJ6wpW5/Jl7olasWjG3Eg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O4BYEE9p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B773C6107F;
-	Tue, 27 Aug 2024 14:41:34 +0000 (UTC)
+	 MIME-Version; b=FP4YGdtjWc+SxxmdjZ9VBGTlnOSwR/q2gOH9Q+z4g0K+pfqPDg0ejaniheWwvEFbcSAQ020UJd4kaJtLijpiFlBOGGx+m757CZriG7jRaGdXtRoYX+k1P8qkOj6AcW5cpPu/TtFutmzYiW89qI1zt4Ycl2ls/Nit624mYEW4/UQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G0Lf9eEa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93E1DC4AF1C;
+	Tue, 27 Aug 2024 14:41:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724769694;
-	bh=ExHEnE6gqtWYnrlxe9U9sg22iLReDE9YP1uSm9hv30U=;
+	s=korg; t=1724769711;
+	bh=A/VDI6mIIXVnhFubwbIhDSGMC8dldFGNi108UpBW998=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O4BYEE9pTRrpkn+5jkTPPnLo3p1QI1i9Au721jOsJ1N5EEMWql27AqsAcyYD+WBEt
-	 aNXULCnpdO9OS6fDU/FJP/qXKZXv3TSmVdSCQqSzvHwlhQKXkwElBFpgF1d16EMR8w
-	 XBlmCE+8BnMKpqSijnjtdS2VmyepCGLAuO/TaeSs=
+	b=G0Lf9eEa585Xrzvoi12ERNrBlUFDIoGIpJojcVPy43t/nu7mpPftIMDoejP4ItbU3
+	 Ym0bTXXpu1mT+ShVmZHJHq8WR8rbYJHiDj3VKoDrWyLwDDZz105qhvS+kPMWFAcmJh
+	 DvYkdLCyCfJmV1ulOS8NWz7EErb0Q12eWTIUjA4g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Mathieu Othacehe <othacehe@gnu.org>,
 	stable <stable@kernel.org>,
-	Peng Fan <peng.fan@nxp.com>
-Subject: [PATCH 6.6 001/341] tty: serial: fsl_lpuart: mark last busy before uart_add_one_port
-Date: Tue, 27 Aug 2024 16:33:52 +0200
-Message-ID: <20240827143843.459430626@linuxfoundation.org>
+	Alexander Dahl <ada@thorsis.com>
+Subject: [PATCH 6.6 002/341] tty: atmel_serial: use the correct RTS flag.
+Date: Tue, 27 Aug 2024 16:33:53 +0200
+Message-ID: <20240827143843.497707633@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
 References: <20240827143843.399359062@linuxfoundation.org>
@@ -65,53 +66,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Mathieu Othacehe <othacehe@gnu.org>
 
-commit dc98d76a15bc29a9a4e76f2f65f39f3e590fb15c upstream.
+commit c9f6613b16123989f2c3bd04b1d9b2365d6914e7 upstream.
 
-With "earlycon initcall_debug=1 loglevel=8" in bootargs, kernel
-sometimes boot hang. It is because normal console still is not ready,
-but runtime suspend is called, so early console putchar will hang
-in waiting TRDE set in UARTSTAT.
+In RS485 mode, the RTS pin is driven high by hardware when the transmitter
+is operating. This behaviour cannot be changed. This means that the driver
+should claim that it supports SER_RS485_RTS_ON_SEND and not
+SER_RS485_RTS_AFTER_SEND.
 
-The lpuart driver has auto suspend delay set to 3000ms, but during
-uart_add_one_port, a child device serial ctrl will added and probed with
-its pm runtime enabled(see serial_ctrl.c).
-The runtime suspend call path is:
-device_add
-     |-> bus_probe_device
-           |->device_initial_probe
-	           |->__device_attach
-                         |-> pm_runtime_get_sync(dev->parent);
-			 |-> pm_request_idle(dev);
-			 |-> pm_runtime_put(dev->parent);
+Otherwise, when configuring the port with the SER_RS485_RTS_ON_SEND, one
+get the following warning:
 
-So in the end, before normal console ready, the lpuart get runtime
-suspended. And earlycon putchar will hang.
+kern.warning kernel: atmel_usart_serial atmel_usart_serial.2.auto:
+ttyS1 (1): invalid RTS setting, using RTS_AFTER_SEND instead
 
-To address the issue, mark last busy just after pm_runtime_enable,
-three seconds is long enough to switch from bootconsole to normal
-console.
+which is contradictory with what's really happening.
 
-Fixes: 43543e6f539b ("tty: serial: fsl_lpuart: Add runtime pm support")
+Signed-off-by: Mathieu Othacehe <othacehe@gnu.org>
 Cc: stable <stable@kernel.org>
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Link: https://lore.kernel.org/r/20240808140325.580105-1-peng.fan@oss.nxp.com
+Tested-by: Alexander Dahl <ada@thorsis.com>
+Fixes: af47c491e3c7 ("serial: atmel: Fill in rs485_supported")
+Link: https://lore.kernel.org/r/20240808060637.19886-1-othacehe@gnu.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/fsl_lpuart.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/tty/serial/atmel_serial.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/tty/serial/fsl_lpuart.c
-+++ b/drivers/tty/serial/fsl_lpuart.c
-@@ -2930,6 +2930,7 @@ static int lpuart_probe(struct platform_
- 	pm_runtime_set_autosuspend_delay(&pdev->dev, UART_AUTOSUSPEND_TIMEOUT);
- 	pm_runtime_set_active(&pdev->dev);
- 	pm_runtime_enable(&pdev->dev);
-+	pm_runtime_mark_last_busy(&pdev->dev);
+--- a/drivers/tty/serial/atmel_serial.c
++++ b/drivers/tty/serial/atmel_serial.c
+@@ -2522,7 +2522,7 @@ static const struct uart_ops atmel_pops
+ };
  
- 	ret = lpuart_global_reset(sport);
- 	if (ret)
+ static const struct serial_rs485 atmel_rs485_supported = {
+-	.flags = SER_RS485_ENABLED | SER_RS485_RTS_AFTER_SEND | SER_RS485_RX_DURING_TX,
++	.flags = SER_RS485_ENABLED | SER_RS485_RTS_ON_SEND | SER_RS485_RX_DURING_TX,
+ 	.delay_rts_before_send = 1,
+ 	.delay_rts_after_send = 1,
+ };
 
 
 
