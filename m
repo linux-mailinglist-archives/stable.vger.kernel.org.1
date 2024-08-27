@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-71144-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70852-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 196E59611DF
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:24:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E98F7961059
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:07:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 78E5EB289CC
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:24:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27D271C235CB
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:07:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F07551C93AF;
-	Tue, 27 Aug 2024 15:24:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 687AD1E520;
+	Tue, 27 Aug 2024 15:07:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ka3hWhnU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SYyO1IH3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC7B51C8FDF;
-	Tue, 27 Aug 2024 15:24:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24F801C4EEF;
+	Tue, 27 Aug 2024 15:07:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772244; cv=none; b=ZYV24s79daRI6MLJmPfFgkb2kNEEsYsuXSZhLjYKnP6XOkgwkdmdz/z1VgSV80jqT66GBu4QhrcoPKMREOG7m890oJdfWDPW6HFVKVwXKSBYHZTvHZIM/+aEZTyvqUvQ6WrrmeLd7wkAMC6GDeLFiUgpe20K37h+PYPLgIfKvKE=
+	t=1724771275; cv=none; b=nha1Q6PGYhACUDZGfEAahqCAKQHmbhNuPSaF7XgTq6GIkZz6amaD99yRsmUQ23R8DiArjr22d8baPXMiJdcinNeAWKOGbfHPsL60TC1cZMVoRVQiztMxoKgfNw5ncPY4XvnxU0jdwmgmaM90yvrE+sZk5aqmos44/5COqdh43h0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772244; c=relaxed/simple;
-	bh=3ORSHeCg7fFDo7PWp7zxIHkijxK2+R2Acw7jK2ra9yI=;
+	s=arc-20240116; t=1724771275; c=relaxed/simple;
+	bh=rNcNCamtxguQZ/Pg03eIrmbWZSDFZ7kDa+bdepyB3Lo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YehT0ZoHId9Utf7HoDxH5WVe2/a5Ww390sRfqWv1Vlm6yWicaRgitJFriRxKsEOmQXsJbKZ4gAHekB0P8HPNHMhOiNdqQhWVeekgcXeUOoAD5EYOjksYKyV5v4tV7QyEfvdwjAJO/c27C4Cs3kPbUGSzvKexVOv1vuklHt046YE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ka3hWhnU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEF7CC61069;
-	Tue, 27 Aug 2024 15:24:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=TVSrWQMFWSrjY1U6g5Ne1j3C73tiP2KVwCUE28W+gO+5mh4RNidCFH54tCwkTcqW5HzfoIXCgyZ27q4JzC1MnmkiRB0/ZSCK/D7x4VXHWb4NTtyB4Ah5zuL9+VSJkk7zLAQ25ta+ThsIPLQmCq0XIVejszfhJYj3cGEltFmUrgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SYyO1IH3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7876FC6107E;
+	Tue, 27 Aug 2024 15:07:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772244;
-	bh=3ORSHeCg7fFDo7PWp7zxIHkijxK2+R2Acw7jK2ra9yI=;
+	s=korg; t=1724771275;
+	bh=rNcNCamtxguQZ/Pg03eIrmbWZSDFZ7kDa+bdepyB3Lo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ka3hWhnUa5rwOhM5nYTmI1qA5nCzEINhBmfzJakW/L7bXWJjqbgeadfUwKl/Qdaun
-	 aI8SGNKGtUXlie6a9K/1ONytP2V2rPFKrLA9shUUrzes+H+mczhiYhJkZAd3k4v6UX
-	 hdBADkC8gl9WjUqlKg9AeAP2f/oNZ0B8Hfy6J85s=
+	b=SYyO1IH3/H6MXnqCl8QTC523t7s+8fLC6K6opXjVtiaFHs1IpBMwcUoW6jAY/nKvp
+	 nTT5UgnpHcSu1rMZGcrHAvpaCDQaOIpBKMpMd12NyOphBlP34J62kY7mnfR6NWNHyH
+	 cVweglvt0tcYlWFiA8s85oKg5VCLWJxs0N+35ekI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	=?UTF-8?q?Peter=20K=C3=A4stle?= <peter@piie.net>,
+	Zhang Rui <rui.zhang@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 156/321] Bluetooth: hci_conn: Check non NULL function before calling for HFP offload
+Subject: [PATCH 6.10 140/273] thermal: gov_bang_bang: Add .manage() callback
 Date: Tue, 27 Aug 2024 16:37:44 +0200
-Message-ID: <20240827143844.170894365@linuxfoundation.org>
+Message-ID: <20240827143838.733419159@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,57 +61,98 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 132d0fd0b8418094c9e269e5bc33bf5b864f4a65 ]
+[ Upstream commit 5f64b4a1ab1b0412446d42e1fc2964c2cdb60b27 ]
 
-For some controllers such as QCA2066, it does not need to send
-HCI_Configure_Data_Path to configure non-HCI data transport path to support
-HFP offload, their device drivers may set hdev->get_codec_config_data as
-NULL, so Explicitly add this non NULL checking before calling the function.
+After recent changes, the Bang-bang governor may not adjust the
+initial configuration of cooling devices to the actual situation.
 
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Namely, if a cooling device bound to a certain trip point starts in
+the "on" state and the thermal zone temperature is below the threshold
+of that trip point, the trip point may never be crossed on the way up
+in which case the state of the cooling device will never be adjusted
+because the thermal core will never invoke the governor's
+.trip_crossed() callback.  [Note that there is no issue if the zone
+temperature is at the trip threshold or above it to start with because
+.trip_crossed() will be invoked then to indicate the start of thermal
+mitigation for the given trip.]
+
+To address this, add a .manage() callback to the Bang-bang governor
+and use it to ensure that all of the thermal instances managed by the
+governor have been initialized properly and the states of all of the
+cooling devices involved have been adjusted to the current zone
+temperature as appropriate.
+
+Fixes: 530c932bdf75 ("thermal: gov_bang_bang: Use .trip_crossed() instead of .throttle()")
+Link: https://lore.kernel.org/linux-pm/1bfbbae5-42b0-4c7d-9544-e98855715294@piie.net/
+Cc: 6.10+ <stable@vger.kernel.org> # 6.10+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Acked-by: Peter Kästle <peter@piie.net>
+Reviewed-by: Zhang Rui <rui.zhang@intel.com>
+Link: https://patch.msgid.link/8419356.T7Z3S40VBb@rjwysocki.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_conn.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/thermal/gov_bang_bang.c | 30 ++++++++++++++++++++++++++++++
+ 1 file changed, 30 insertions(+)
 
-diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
-index bac5a369d2bef..858c454e35e67 100644
---- a/net/bluetooth/hci_conn.c
-+++ b/net/bluetooth/hci_conn.c
-@@ -293,6 +293,13 @@ static int configure_datapath_sync(struct hci_dev *hdev, struct bt_codec *codec)
- 	__u8 vnd_len, *vnd_data = NULL;
- 	struct hci_op_configure_data_path *cmd = NULL;
+diff --git a/drivers/thermal/gov_bang_bang.c b/drivers/thermal/gov_bang_bang.c
+index 87cff3ea77a9d..bc55e0698bfa8 100644
+--- a/drivers/thermal/gov_bang_bang.c
++++ b/drivers/thermal/gov_bang_bang.c
+@@ -26,6 +26,7 @@ static void bang_bang_set_instance_target(struct thermal_instance *instance,
+ 	 * when the trip is crossed on the way down.
+ 	 */
+ 	instance->target = target;
++	instance->initialized = true;
  
-+	if (!codec->data_path || !hdev->get_codec_config_data)
-+		return 0;
+ 	dev_dbg(&instance->cdev->device, "target=%ld\n", instance->target);
+ 
+@@ -80,8 +81,37 @@ static void bang_bang_control(struct thermal_zone_device *tz,
+ 	}
+ }
+ 
++static void bang_bang_manage(struct thermal_zone_device *tz)
++{
++	const struct thermal_trip_desc *td;
++	struct thermal_instance *instance;
 +
-+	/* Do not take me as error */
-+	if (!hdev->get_codec_config_data)
-+		return 0;
++	for_each_trip_desc(tz, td) {
++		const struct thermal_trip *trip = &td->trip;
 +
- 	err = hdev->get_codec_config_data(hdev, ESCO_LINK, codec, &vnd_len,
- 					  &vnd_data);
- 	if (err < 0)
-@@ -338,9 +345,7 @@ static int hci_enhanced_setup_sync(struct hci_dev *hdev, void *data)
- 
- 	bt_dev_dbg(hdev, "hcon %p", conn);
- 
--	/* for offload use case, codec needs to configured before opening SCO */
--	if (conn->codec.data_path)
--		configure_datapath_sync(hdev, &conn->codec);
-+	configure_datapath_sync(hdev, &conn->codec);
- 
- 	conn->state = BT_CONNECT;
- 	conn->out = true;
++		if (tz->temperature >= td->threshold ||
++		    trip->temperature == THERMAL_TEMP_INVALID ||
++		    trip->type == THERMAL_TRIP_CRITICAL ||
++		    trip->type == THERMAL_TRIP_HOT)
++			continue;
++
++		/*
++		 * If the initial cooling device state is "on", but the zone
++		 * temperature is not above the trip point, the core will not
++		 * call bang_bang_control() until the zone temperature reaches
++		 * the trip point temperature which may be never.  In those
++		 * cases, set the initial state of the cooling device to 0.
++		 */
++		list_for_each_entry(instance, &tz->thermal_instances, tz_node) {
++			if (!instance->initialized && instance->trip == trip)
++				bang_bang_set_instance_target(instance, 0);
++		}
++	}
++}
++
+ static struct thermal_governor thermal_gov_bang_bang = {
+ 	.name		= "bang_bang",
+ 	.trip_crossed	= bang_bang_control,
++	.manage		= bang_bang_manage,
+ };
+ THERMAL_GOVERNOR_DECLARE(thermal_gov_bang_bang);
 -- 
 2.43.0
 
