@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-71050-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70759-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2747961169
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:20:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC82A960FE6
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:03:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7CFCD1F21ECA
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:20:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A6BE286A33
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:03:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58F841C93A4;
-	Tue, 27 Aug 2024 15:18:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B1041C86F6;
+	Tue, 27 Aug 2024 15:02:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v8I2hQiq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lAPP5z5x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 140B11C6F55;
-	Tue, 27 Aug 2024 15:18:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D9991C68B1;
+	Tue, 27 Aug 2024 15:02:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771932; cv=none; b=OxMVdu70JE2oYWjw13erusNYQ+9YBnsxkk0O9Orf91EObEulJOLCfNdP0JtBSKmS9Y4GM6qKu8BQhcyhZBGwuj8Qi3uv7sJoSOSPO/mIzkYi8gTplHWaFjV1P8DIjFewi08TdnseJpZE9cCVR7aiVKytri3hQyGqUWlY8vyoVe4=
+	t=1724770969; cv=none; b=sOcOZo/zrJw+GY0Uecf0KOxARJR4Lu8p3TvSoO1KrW4NYTFVWjh1MUGJ/lUYhOblHwIYJNTkVGTvabCQrN8MO8ptIN1Kkv/4Avmwz+LunegrloADV2tFzYiCS6Fl1DlxTbj/q3GxK/6AK2IC7vNWMdiCyW1dphUaNIzidMQqVHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771932; c=relaxed/simple;
-	bh=5WWOconbX6jJZCVnuAhw+VuL7VjuaCaALN6/UtKzB20=;
+	s=arc-20240116; t=1724770969; c=relaxed/simple;
+	bh=AJG7MIXzwFc9igr6NqUgNQNbDESdJ8/bn3bSE+qQlgM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OZADO3eANthRCv0jhcfqFFr5463y8mVClZq/7QhXb+ZsE1Bl1d0VA+Lzso096/SQIhVFA+9/c6eycyvG+vEAkvc4vv97pmmZmAQ6rNJgZ0BcPELZtJ9sfQ3r5ol7on0aANq5fbqYd1C8LRkUnHWLIBboCs7v6+Bee/aa5LXeLcI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v8I2hQiq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15187C61067;
-	Tue, 27 Aug 2024 15:18:50 +0000 (UTC)
+	 MIME-Version; b=HU+w7HrKPdmjy36j2bQ10fqtYYLhF4UmrSo4T49zpdEuwWnwqCAJYS2qfcdo7D+o3bZ71xABf2/S6pFYvo9Rj6tLGT0t7Q6DF/XQzZLzg4NVRzwdaM+1aSmyVZzSCcGKWKKhhduIKIt78hN1sh9nJApgVSImRPbGRWBb1/VKjQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lAPP5z5x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 959D8C61042;
+	Tue, 27 Aug 2024 15:02:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771931;
-	bh=5WWOconbX6jJZCVnuAhw+VuL7VjuaCaALN6/UtKzB20=;
+	s=korg; t=1724770969;
+	bh=AJG7MIXzwFc9igr6NqUgNQNbDESdJ8/bn3bSE+qQlgM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v8I2hQiqmw9G2JtGbN2mS3DzWdPAWUWO2ShIbQHHfan6o2iPZSZJQyL4948WA5vhN
-	 Ixw1bhW4HuB5maMO4qp1JKZ2PwOfZwU0w4KOo//9vpVMdwceWGJTWGdpeXbQRPsBxL
-	 8CpD5rOYR8ZlWNLatMyCD83WfbJE1sHq2qfPUFW8=
+	b=lAPP5z5xFFBj56T+RsnCD79fYN8NN2pRINI1k79zrsrr/1LlpO9+VUyRh0eON7EnR
+	 UxYY3mCsoqxDDluMpaxAfv0TxxYWyOoHy0DTCPiP5d+u3JAjKJUEiGmVoLdaxfzIvZ
+	 8sv3wuMG7EPLZWX3E4KQTjh86vGdpTn6XUlhyiW8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Fietkau <nbd@nbd.name>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 062/321] wifi: mac80211: fix and simplify unencrypted drop check for mesh
-Date: Tue, 27 Aug 2024 16:36:10 +0200
-Message-ID: <20240827143840.597294089@linuxfoundation.org>
+	Hans de Goede <hdegoede@redhat.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 6.10 047/273] media: atomisp: Fix streaming no longer working on BYT / ISP2400 devices
+Date: Tue, 27 Aug 2024 16:36:11 +0200
+Message-ID: <20240827143835.188966668@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,105 +61,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 94b9b9de05b62ac54d8766caa9865fb4d82cc47e ]
+commit 63de936b513f7a9ce559194d3269ac291f4f4662 upstream.
 
-ieee80211_drop_unencrypted is called from ieee80211_rx_h_mesh_fwding and
-ieee80211_frame_allowed.
+Commit a0821ca14bb8 ("media: atomisp: Remove test pattern generator (TPG)
+support") broke BYT support because it removed a seemingly unused field
+from struct sh_css_sp_config and a seemingly unused value from enum
+ia_css_input_mode.
 
-Since ieee80211_rx_h_mesh_fwding can forward packets for other mesh nodes
-and is called earlier, it needs to check the decryptions status and if the
-packet is using the control protocol on its own, instead of deferring to
-the later call from ieee80211_frame_allowed.
+But these are part of the ABI between the kernel and firmware on ISP2400
+and this part of the TPG support removal changes broke ISP2400 support.
 
-Because of that, ieee80211_drop_unencrypted has a mesh specific check
-that skips over the mesh header in order to check the payload protocol.
-This code is invalid when called from ieee80211_frame_allowed, since that
-happens after the 802.11->802.3 conversion.
+ISP2401 support was not affected because on ISP2401 only a part of
+struct sh_css_sp_config is used.
 
-Fix this by moving the mesh specific check directly into
-ieee80211_rx_h_mesh_fwding.
+Restore the removed field and enum value to fix this.
 
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Link: https://lore.kernel.org/r/20221201135730.19723-1-nbd@nbd.name
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Stable-dep-of: 9ad797485692 ("wifi: cfg80211: check A-MSDU format more carefully")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a0821ca14bb8 ("media: atomisp: Remove test pattern generator (TPG) support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/rx.c | 38 ++++++++++----------------------------
- 1 file changed, 10 insertions(+), 28 deletions(-)
+ drivers/staging/media/atomisp/pci/ia_css_stream_public.h |    8 ++++--
+ drivers/staging/media/atomisp/pci/sh_css_internal.h      |   19 ++++++++++++---
+ 2 files changed, 22 insertions(+), 5 deletions(-)
 
-diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
-index c4c80037df91d..b68a9200403e7 100644
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -2408,7 +2408,6 @@ static int ieee80211_802_1x_port_control(struct ieee80211_rx_data *rx)
+--- a/drivers/staging/media/atomisp/pci/ia_css_stream_public.h
++++ b/drivers/staging/media/atomisp/pci/ia_css_stream_public.h
+@@ -27,12 +27,16 @@
+ #include "ia_css_prbs.h"
+ #include "ia_css_input_port.h"
  
- static int ieee80211_drop_unencrypted(struct ieee80211_rx_data *rx, __le16 fc)
- {
--	struct ieee80211_hdr *hdr = (void *)rx->skb->data;
- 	struct sk_buff *skb = rx->skb;
- 	struct ieee80211_rx_status *status = IEEE80211_SKB_RXCB(skb);
+-/* Input modes, these enumerate all supported input modes.
+- *  Note that not all ISP modes support all input modes.
++/*
++ * Input modes, these enumerate all supported input modes.
++ * This enum is part of the atomisp firmware ABI and must
++ * NOT be changed!
++ * Note that not all ISP modes support all input modes.
+  */
+ enum ia_css_input_mode {
+ 	IA_CSS_INPUT_MODE_SENSOR, /** data from sensor */
+ 	IA_CSS_INPUT_MODE_FIFO,   /** data from input-fifo */
++	IA_CSS_INPUT_MODE_TPG,    /** data from test-pattern generator */
+ 	IA_CSS_INPUT_MODE_PRBS,   /** data from pseudo-random bit stream */
+ 	IA_CSS_INPUT_MODE_MEMORY, /** data from a frame in memory */
+ 	IA_CSS_INPUT_MODE_BUFFERED_SENSOR /** data is sent through mipi buffer */
+--- a/drivers/staging/media/atomisp/pci/sh_css_internal.h
++++ b/drivers/staging/media/atomisp/pci/sh_css_internal.h
+@@ -341,7 +341,14 @@ struct sh_css_sp_input_formatter_set {
  
-@@ -2419,31 +2418,6 @@ static int ieee80211_drop_unencrypted(struct ieee80211_rx_data *rx, __le16 fc)
- 	if (status->flag & RX_FLAG_DECRYPTED)
- 		return 0;
+ #define IA_CSS_MIPI_SIZE_CHECK_MAX_NOF_ENTRIES_PER_PORT (3)
  
--	/* check mesh EAPOL frames first */
--	if (unlikely(rx->sta && ieee80211_vif_is_mesh(&rx->sdata->vif) &&
--		     ieee80211_is_data(fc))) {
--		struct ieee80211s_hdr *mesh_hdr;
--		u16 hdr_len = ieee80211_hdrlen(fc);
--		u16 ethertype_offset;
--		__be16 ethertype;
--
--		if (!ether_addr_equal(hdr->addr1, rx->sdata->vif.addr))
--			goto drop_check;
--
--		/* make sure fixed part of mesh header is there, also checks skb len */
--		if (!pskb_may_pull(rx->skb, hdr_len + 6))
--			goto drop_check;
--
--		mesh_hdr = (struct ieee80211s_hdr *)(skb->data + hdr_len);
--		ethertype_offset = hdr_len + ieee80211_get_mesh_hdrlen(mesh_hdr) +
--				   sizeof(rfc1042_header);
--
--		if (skb_copy_bits(rx->skb, ethertype_offset, &ethertype, 2) == 0 &&
--		    ethertype == rx->sdata->control_port_protocol)
--			return 0;
--	}
--
--drop_check:
- 	/* Drop unencrypted frames if key is set. */
- 	if (unlikely(!ieee80211_has_protected(fc) &&
- 		     !ieee80211_is_any_nullfunc(fc) &&
-@@ -2897,8 +2871,16 @@ ieee80211_rx_h_mesh_fwding(struct ieee80211_rx_data *rx)
- 	hdr = (struct ieee80211_hdr *) skb->data;
- 	mesh_hdr = (struct ieee80211s_hdr *) (skb->data + hdrlen);
+-/* SP configuration information */
++/*
++ * SP configuration information
++ *
++ * This struct is part of the atomisp firmware ABI and is directly copied
++ * to ISP DRAM by sh_css_store_sp_group_to_ddr()
++ *
++ * Do NOT change this struct's layout or remove seemingly unused fields!
++ */
+ struct sh_css_sp_config {
+ 	u8			no_isp_sync; /* Signal host immediately after start */
+ 	u8			enable_raw_pool_locking; /** Enable Raw Buffer Locking for HALv3 Support */
+@@ -351,6 +358,10 @@ struct sh_css_sp_config {
+ 	     host (true) or when they are passed to the preview/video pipe
+ 	     (false). */
  
--	if (ieee80211_drop_unencrypted(rx, hdr->frame_control))
--		return RX_DROP_MONITOR;
-+	if (ieee80211_drop_unencrypted(rx, hdr->frame_control)) {
-+		int offset = hdrlen + ieee80211_get_mesh_hdrlen(mesh_hdr) +
-+			     sizeof(rfc1042_header);
-+		__be16 ethertype;
-+
-+		if (!ether_addr_equal(hdr->addr1, rx->sdata->vif.addr) ||
-+		    skb_copy_bits(rx->skb, offset, &ethertype, 2) != 0 ||
-+		    ethertype != rx->sdata->control_port_protocol)
-+			return RX_DROP_MONITOR;
-+	}
++	 /*
++	  * Note the fields below are only used on the ISP2400 not on the ISP2401,
++	  * sh_css_store_sp_group_to_ddr() skip copying these when run on the ISP2401.
++	  */
+ 	struct {
+ 		u8					a_changed;
+ 		u8					b_changed;
+@@ -360,11 +371,13 @@ struct sh_css_sp_config {
+ 	} input_formatter;
  
- 	/* frame is in RMC, don't forward */
- 	if (ieee80211_is_data(hdr->frame_control) &&
--- 
-2.43.0
-
+ 	sync_generator_cfg_t	sync_gen;
++	tpg_cfg_t		tpg;
+ 	prbs_cfg_t		prbs;
+ 	input_system_cfg_t	input_circuit;
+ 	u8			input_circuit_cfg_changed;
+-	u32		mipi_sizes_for_check[N_CSI_PORTS][IA_CSS_MIPI_SIZE_CHECK_MAX_NOF_ENTRIES_PER_PORT];
+-	u8                 enable_isys_event_queue;
++	u32			mipi_sizes_for_check[N_CSI_PORTS][IA_CSS_MIPI_SIZE_CHECK_MAX_NOF_ENTRIES_PER_PORT];
++	/* These last 2 fields are used on both the ISP2400 and the ISP2401 */
++	u8			enable_isys_event_queue;
+ 	u8			disable_cont_vf;
+ };
+ 
 
 
 
