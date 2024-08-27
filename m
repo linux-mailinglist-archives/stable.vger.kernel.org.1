@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-70463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71004-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65DD8960E41
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:47:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1479E96111A
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:16:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2331F28489A
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:47:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4DBB280CBD
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:16:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19BED1C4EE6;
-	Tue, 27 Aug 2024 14:46:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9F5A1BC9FC;
+	Tue, 27 Aug 2024 15:16:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mWCMtjX2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vs4uK6Ye"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC741DDC1;
-	Tue, 27 Aug 2024 14:46:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A714A4C634;
+	Tue, 27 Aug 2024 15:16:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724769989; cv=none; b=h9G61/S9NEAMo4pZ//75zrBuvi3M9FxdRb8K2b3/JjxQwuCHtwYJpKQkDVFd3LLT8mfDjvaihPossNped+dobY2DrW4Y9yz90BFhpSCfz62o1IvNe2QpbvK12cAAnpzYcuHmsbbvcuGTokJkJtcVGnloSVmOykM2oOVZ0imtG9c=
+	t=1724771777; cv=none; b=enAxoQysVOsP8CJH67fyWK5ib8UVG6k76IINUCaj0iyoK5pBlT7iEO3b85zWErvEFdeKYX9DZC2uqMSDTnzivMSJh5GozCsJSZ0ZdnipuK7WGCDmOUj4Er+FRV+MeSOaE54SBkH7vLQaH9z7xvGQBZNKXmSxpogz73OLob5rdAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724769989; c=relaxed/simple;
-	bh=h83k4+CiOdnJwSf/60bCOFoVn5rnxXXIJb/kwRPopCo=;
+	s=arc-20240116; t=1724771777; c=relaxed/simple;
+	bh=aL5/FEYDpAd1RybFEKMqEGhMyFwzef8ZfYCDP+Dd2ac=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B6G0fLSuneBRgbOXl/21S+xo0G4+D7cOGDv+Rz3npROPeQ2SRRwzU5Bd6TD+hYCbsvl+Zh2NSQsziZiK3s+UqNH1jBC1kxh0W5KIusM55cGQKGbC5ekUnD1pBKENt/YfBPbYTpx7ryk1Wt+Ix8M3hR7omd6DcfJK2DalWQPBN5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mWCMtjX2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5CE5C6106D;
-	Tue, 27 Aug 2024 14:46:28 +0000 (UTC)
+	 MIME-Version; b=Rar/wiMpso44j5d0R3S7Cwpesx6Gv0erfQr3kOURZSzWZDTvEXT9dH7LRoRmAtnsdgW2UUfMeJQ0oVd4hAJX+I/wi0AkfcTCjXGV9thmGZ1GHm8cj0RLQvPOBUPei0zQWcGDJhmvD94ixh+x7tj24siTt8gsBl9Wehqg3NRUIVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vs4uK6Ye; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1229EC4AF50;
+	Tue, 27 Aug 2024 15:16:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724769989;
-	bh=h83k4+CiOdnJwSf/60bCOFoVn5rnxXXIJb/kwRPopCo=;
+	s=korg; t=1724771777;
+	bh=aL5/FEYDpAd1RybFEKMqEGhMyFwzef8ZfYCDP+Dd2ac=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mWCMtjX2IuhPPkVQoM29CuRUHGmhojT5eHntmoVXwkEw+Q+YJAgxSu9nHvkm8QtaR
-	 iWuCaQpvq1xykYZ8eqDledl1LwrS+oqyLhjOV2UaYoWjLxluEO8d7gleU4GJNrVEB1
-	 uGzKbLhSUTu9bYNM+pIFHqnsoMEHALO66NU35LrM=
+	b=vs4uK6YeND7Bf5EAlZU5wfhXvoqkWl74PjKZLkyursdQe+kU+dyP3RhT3V304TkN9
+	 1qjcRgMO81rN5uZuA8Nq0Y/NuF8xTGGw8WyUDCkcW3XXcI3Hlezw2Iwf8dhHRnnSgC
+	 3vx1iN1+KbvFbnvtvXId/Apifr1wbqNgF2VyyEEY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	David Sterba <dsterba@suse.com>,
 	Yury Norov <yury.norov@gmail.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Mel Gorman <mgorman@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 095/341] sched/topology: Handle NUMA_NO_NODE in sched_numa_find_nth_cpu()
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.1 018/321] btrfs: rename bitmap_set_bits() -> btrfs_bitmap_set_bits()
 Date: Tue, 27 Aug 2024 16:35:26 +0200
-Message-ID: <20240827143847.022606069@linuxfoundation.org>
+Message-ID: <20240827143838.902786770@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yury Norov <yury.norov@gmail.com>
+From: Alexander Lobakin <aleksander.lobakin@intel.com>
 
-[ Upstream commit 9ecea9ae4d3127a09fb5dfcea87f248937a39ff5 ]
+commit 4ca532d64648d4776d15512caed3efea05ca7195 upstream.
 
-sched_numa_find_nth_cpu() doesn't handle NUMA_NO_NODE properly, and
-may crash kernel if passed with it. On the other hand, the only user
-of sched_numa_find_nth_cpu() has to check NUMA_NO_NODE case explicitly.
+bitmap_set_bits() does not start with the FS' prefix and may collide
+with a new generic helper one day. It operates with the FS-specific
+types, so there's no change those two could do the same thing.
+Just add the prefix to exclude such possible conflict.
 
-It would be easier for users if this logic will get moved into
-sched_numa_find_nth_cpu().
-
-Signed-off-by: Yury Norov <yury.norov@gmail.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Mel Gorman <mgorman@suse.de>
-Link: https://lore.kernel.org/r/20230819141239.287290-6-yury.norov@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Acked-by: David Sterba <dsterba@suse.com>
+Reviewed-by: Yury Norov <yury.norov@gmail.com>
+Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/sched/topology.c | 3 +++
- lib/cpumask.c           | 4 +---
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ fs/btrfs/free-space-cache.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
-index 8c1e183329d97..3a13cecf17740 100644
---- a/kernel/sched/topology.c
-+++ b/kernel/sched/topology.c
-@@ -2126,6 +2126,9 @@ int sched_numa_find_nth_cpu(const struct cpumask *cpus, int cpu, int node)
- 	struct cpumask ***hop_masks;
- 	int hop, ret = nr_cpu_ids;
+--- a/fs/btrfs/free-space-cache.c
++++ b/fs/btrfs/free-space-cache.c
+@@ -1894,9 +1894,9 @@ static inline void bitmap_clear_bits(str
+ 		ctl->free_space -= bytes;
+ }
  
-+	if (node == NUMA_NO_NODE)
-+		return cpumask_nth_and(cpu, cpus, cpu_online_mask);
-+
- 	rcu_read_lock();
+-static void bitmap_set_bits(struct btrfs_free_space_ctl *ctl,
+-			    struct btrfs_free_space *info, u64 offset,
+-			    u64 bytes)
++static void btrfs_bitmap_set_bits(struct btrfs_free_space_ctl *ctl,
++				  struct btrfs_free_space *info, u64 offset,
++				  u64 bytes)
+ {
+ 	unsigned long start, count, end;
+ 	int extent_delta = 1;
+@@ -2232,7 +2232,7 @@ static u64 add_bytes_to_bitmap(struct bt
  
- 	/* CPU-less node entries are uninitialized in sched_domains_numa_masks */
-diff --git a/lib/cpumask.c b/lib/cpumask.c
-index a7fd02b5ae264..34335c1e72653 100644
---- a/lib/cpumask.c
-+++ b/lib/cpumask.c
-@@ -146,9 +146,7 @@ unsigned int cpumask_local_spread(unsigned int i, int node)
- 	/* Wrap: we always want a cpu. */
- 	i %= num_online_cpus();
+ 	bytes_to_set = min(end - offset, bytes);
  
--	cpu = (node == NUMA_NO_NODE) ?
--		cpumask_nth(i, cpu_online_mask) :
--		sched_numa_find_nth_cpu(cpu_online_mask, i, node);
-+	cpu = sched_numa_find_nth_cpu(cpu_online_mask, i, node);
+-	bitmap_set_bits(ctl, info, offset, bytes_to_set);
++	btrfs_bitmap_set_bits(ctl, info, offset, bytes_to_set);
  
- 	WARN_ON(cpu >= nr_cpu_ids);
- 	return cpu;
--- 
-2.43.0
-
+ 	return bytes_to_set;
+ 
 
 
 
