@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-71175-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70632-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8288A96121C
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:27:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6F5E960F3B
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:57:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3CC40281847
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:27:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C3861F22313
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:57:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA41D1C6893;
-	Tue, 27 Aug 2024 15:25:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACC5D1C8719;
+	Tue, 27 Aug 2024 14:55:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ctoNl3c+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WUZB/y9d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68B1B1A072D;
-	Tue, 27 Aug 2024 15:25:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BDDD1C824B;
+	Tue, 27 Aug 2024 14:55:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772347; cv=none; b=PMrfHEtnipazypuv+qLWCoNGDvoQ7jJEw6LyyfXWLU7M7cJyzD9HR1sZc4pVTy4vsMtyVuYBjPYwuUskF+AXU1PyPQEhgxSn47STYFfIEykCfSC5x4Sy/F+faoR7ty5+JupcCjqBMT2PcZ9eHn0xoSKmdZrhXuA+70sWiOuv/WM=
+	t=1724770555; cv=none; b=EziTv+LgkKSYiu3sfREe2OcxZouQhGEeo7RDr4gIIQfzJFrqgF0WOUMWkVZ7BWCuLvQo5QACurMuVy/GDmaK1C18o7SBU6LkTBFcoLbnaOJZdsMPtK8zRsbobzMRWRDx8XuacqfgP/bLNIH+wo+vE+h318ooiTIMBc2ZLnifVJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772347; c=relaxed/simple;
-	bh=s2TGYNV4ztuek0xbxTVSuypRca5HkGAWN8e3OsV1wDQ=;
+	s=arc-20240116; t=1724770555; c=relaxed/simple;
+	bh=fn739rP3weeLsGsdEDnhWrSSiYk6+D9r9GiyiyLY7ms=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h4wpnUP3KBbTjxQcTWD5jxBPIgv/GNqVQtOFgVgGVelhqtmqm4hhoJARGNqjDoblb7kPYZ/tE9op4OVH7Kh7TgCgHCEwTied92oUPsFQRlPHr3ZGEr483LZ1xXrAl5MkBNLLcsmizuHj8IUxn1rO6L5UCLA6SvgeXYyB/Vfl4Jk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ctoNl3c+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3027C6107A;
-	Tue, 27 Aug 2024 15:25:46 +0000 (UTC)
+	 MIME-Version; b=Ld3xUiycr8tMSxLJhDkZs/FfxGDpRn9XstUIviJRIOSsZPFm2JCD3vmWUgiDmxt16bhHIXrX8f68/ADCnH+U36nnqZ5lnBqtchqG4EKc50lZFukwa85wIkoxTtdp0yWI/PDcK2jTV1z3nMLhYlETYueMhwX5TWpDxATRtRJ8+iw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WUZB/y9d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE8A7C4FDE1;
+	Tue, 27 Aug 2024 14:55:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772347;
-	bh=s2TGYNV4ztuek0xbxTVSuypRca5HkGAWN8e3OsV1wDQ=;
+	s=korg; t=1724770555;
+	bh=fn739rP3weeLsGsdEDnhWrSSiYk6+D9r9GiyiyLY7ms=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ctoNl3c+8QKtft1jlWh49fanF3bpw+HNhJL1HdzsjqnKFGzHTS1Uueo9HyHNrPWaI
-	 iwZJJbQCkJ0OLn9OfZ3Xwl5/X7goYxjCSdCHDItw71FrN8MOkCqRseJ/AXOJ4DVy2j
-	 lYLM6cMY2sdoZwwq0mfK3fAqz5tuhSGAmNL9y7io=
+	b=WUZB/y9de6qMBAC7FBPiOvUAk1Z/DFfbBXDKpzAWJ4mJtybD4aqR01rr1VBzwRvk1
+	 phgV8VPzr5pfLSd+Ydtj9TDTZC/rEnrV1hrYlbEHp5ncEX391BtIlmIosDvEWDf8LC
+	 p9qjZjFW804fUXgjjSiZimEyO9lGfICIPGoIZwMM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhiguo Niu <zhiguo.niu@unisoc.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Jan Tluka <jtluka@redhat.com>,
+	Jirka Hladky <jhladky@redhat.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Corinna Vinschen <vinschen@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 187/321] f2fs: fix to do sanity check in update_sit_entry
+Subject: [PATCH 6.6 264/341] igb: cope with large MAX_SKB_FRAGS
 Date: Tue, 27 Aug 2024 16:38:15 +0200
-Message-ID: <20240827143845.349787237@linuxfoundation.org>
+Message-ID: <20240827143853.453249887@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +66,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhiguo Niu <zhiguo.niu@unisoc.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit 36959d18c3cf09b3c12157c6950e18652067de77 ]
+[ Upstream commit 8aba27c4a5020abdf60149239198297f88338a8d ]
 
-If GET_SEGNO return NULL_SEGNO for some unecpected case,
-update_sit_entry will access invalid memory address,
-cause system crash. It is better to do sanity check about
-GET_SEGNO just like update_segment_mtime & locate_dirty_segment.
+Sabrina reports that the igb driver does not cope well with large
+MAX_SKB_FRAG values: setting MAX_SKB_FRAG to 45 causes payload
+corruption on TX.
 
-Also remove some redundant judgment code.
+An easy reproducer is to run ssh to connect to the machine.  With
+MAX_SKB_FRAGS=17 it works, with MAX_SKB_FRAGS=45 it fails.  This has
+been reported originally in
+https://bugzilla.redhat.com/show_bug.cgi?id=2265320
 
-Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+The root cause of the issue is that the driver does not take into
+account properly the (possibly large) shared info size when selecting
+the ring layout, and will try to fit two packets inside the same 4K
+page even when the 1st fraglist will trump over the 2nd head.
+
+Address the issue by checking if 2K buffers are insufficient.
+
+Fixes: 3948b05950fd ("net: introduce a config option to tweak MAX_SKB_FRAGS")
+Reported-by: Jan Tluka <jtluka@redhat.com>
+Reported-by: Jirka Hladky <jhladky@redhat.com>
+Reported-by: Sabrina Dubroca <sd@queasysnail.net>
+Tested-by: Sabrina Dubroca <sd@queasysnail.net>
+Tested-by: Corinna Vinschen <vinschen@redhat.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Corinna Vinschen <vinschen@redhat.com>
+Link: https://patch.msgid.link/20240816152034.1453285-1-vinschen@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/segment.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/igb/igb_main.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
-index 1264a350d4d75..947849e66b0a7 100644
---- a/fs/f2fs/segment.c
-+++ b/fs/f2fs/segment.c
-@@ -2191,6 +2191,8 @@ static void update_sit_entry(struct f2fs_sb_info *sbi, block_t blkaddr, int del)
+diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethernet/intel/igb/igb_main.c
+index 4431e7693d45f..8c8894ef33886 100644
+--- a/drivers/net/ethernet/intel/igb/igb_main.c
++++ b/drivers/net/ethernet/intel/igb/igb_main.c
+@@ -4833,6 +4833,7 @@ static void igb_set_rx_buffer_len(struct igb_adapter *adapter,
+ 
+ #if (PAGE_SIZE < 8192)
+ 	if (adapter->max_frame_size > IGB_MAX_FRAME_BUILD_SKB ||
++	    IGB_2K_TOO_SMALL_WITH_PADDING ||
+ 	    rd32(E1000_RCTL) & E1000_RCTL_SBP)
+ 		set_ring_uses_large_buffer(rx_ring);
  #endif
- 
- 	segno = GET_SEGNO(sbi, blkaddr);
-+	if (segno == NULL_SEGNO)
-+		return;
- 
- 	se = get_seg_entry(sbi, segno);
- 	new_vblocks = se->valid_blocks + del;
-@@ -3286,8 +3288,7 @@ void f2fs_allocate_data_block(struct f2fs_sb_info *sbi, struct page *page,
- 	 * since SSR needs latest valid block information.
- 	 */
- 	update_sit_entry(sbi, *new_blkaddr, 1);
--	if (GET_SEGNO(sbi, old_blkaddr) != NULL_SEGNO)
--		update_sit_entry(sbi, old_blkaddr, -1);
-+	update_sit_entry(sbi, old_blkaddr, -1);
- 
- 	if (!__has_curseg_space(sbi, curseg)) {
- 		if (from_gc)
 -- 
 2.43.0
 
