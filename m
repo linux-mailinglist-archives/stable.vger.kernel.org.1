@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-71115-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70574-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5334E9611B3
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:22:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16937960ED9
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:53:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 80B9B1C237A4
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:22:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 495F61C2339A
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:53:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8E751C462B;
-	Tue, 27 Aug 2024 15:22:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D26121A0B13;
+	Tue, 27 Aug 2024 14:52:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lpX9YhFe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ep6YCPcz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66F0D1A072D;
-	Tue, 27 Aug 2024 15:22:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8591E1C6F49;
+	Tue, 27 Aug 2024 14:52:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772150; cv=none; b=cRI//Z8plzmeAtDI8K6V3WTeogDiWq2/HGuzLryzLjnz697HiXFKIkjEbiiD6GkIAUyUA+r1pTNrsmXa8FqLjQsbBgE/E4J0rYR4QBVNQrVpPKjWJHpD5n/yf2TqKYsWHNpcBF5peNXLXFLMDQUe6vouNaW0yppWlkmF+fW40zw=
+	t=1724770359; cv=none; b=ZbkHpGYupPYvK8h+83sAe8JbS8MHUHTmjTBsgzOM81d1B7e6/swf16yn6H1W01IiR5dLnGmdDTRqFCOlFVNEy2TvMsvJ8/wio7SfKbnqfUEJkyaEsbYdw/ni/jQhM0wiy4MI/6JJsaSrIi/OnkcpZrgITp8vu+kLJrzvPhFytoc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772150; c=relaxed/simple;
-	bh=x9JJnD2zAlEK8aQOT/tcxK6WqxRjGCoYt230lBWtMRk=;
+	s=arc-20240116; t=1724770359; c=relaxed/simple;
+	bh=llRsFzuSTSOakTvRpjl38KCMYuUJVlIt7TaIO+SLTK8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=In9tdCMB5TrfTrynp5oZjfbL1UpPbX8enMNdufFzmFXp9EaRn2qHc6jSt/W4b06FtqSN9qYN5MEljVT3puAzl6pR+onSQUz9dV8Vb7A/cOH0T7+zJr4NxkkAjbC79e89T9fIOpgUHwz7MHGrKA0HHrdc5J9UUEbOgApy5u7rg9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lpX9YhFe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C794DC61043;
-	Tue, 27 Aug 2024 15:22:29 +0000 (UTC)
+	 MIME-Version; b=llKsr1/JlnGm4JFWJralMjTyW5Se26w5es2Kb+OA9qoEyv9REoWBAJtayQpl2yogPNpTk5cgBRhpRU4tTFuBp7HdRpVQOXP1HZHNWQQklRn3hs+4BPP3Jm9OPPQdwA6QcMVWBYW35JD6uzlj0cF9yNVKeHByDDNtarEUMgKqRXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ep6YCPcz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A8E6C6104E;
+	Tue, 27 Aug 2024 14:52:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772150;
-	bh=x9JJnD2zAlEK8aQOT/tcxK6WqxRjGCoYt230lBWtMRk=;
+	s=korg; t=1724770359;
+	bh=llRsFzuSTSOakTvRpjl38KCMYuUJVlIt7TaIO+SLTK8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lpX9YhFed25tjHwzmvbOU+k3OO0V7MLYE/egV+o2u0MS62fzqsPJ93ybMoMwuB34Y
-	 qctgWsyoqJVs8qYG42oV54WSe9d2aW5zuwzEuNC7vvgD6F+dR9nMTS97gNSuyJvepm
-	 AiwKNCY8wIcVZelflSd3XX73cxAy/3I3+zf4a/BU=
+	b=ep6YCPczWpBri64hcxGePJQic4M9XaxYr4ysfatWeQnoPyidPRYDmp+wNzvoU3zqm
+	 x7q5x6ZMykkZuE8F8bZp0nZ73Xo6lP4Abr+YDtj6NLAy2zrefNn6lBDH+07cAL9y6Y
+	 ECe1s+bLApp3V3tFlal17adnOS5Oo0XcrxNIIXiA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Grzeschik <m.grzeschik@pengutronix.de>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 128/321] usb: gadget: uvc: cleanup request when not in correct state
+Subject: [PATCH 6.6 205/341] irqchip/renesas-rzg2l: Do not set TIEN and TINT source at the same time
 Date: Tue, 27 Aug 2024 16:37:16 +0200
-Message-ID: <20240827143843.117083510@linuxfoundation.org>
+Message-ID: <20240827143851.214578765@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Grzeschik <m.grzeschik@pengutronix.de>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-[ Upstream commit 52a39f2cf62bb5430ad1f54cd522dbfdab1d71ba ]
+[ Upstream commit dce0919c83c325ac9dec5bc8838d5de6d32c01b1 ]
 
-The uvc_video_enable function of the uvc-gadget driver is dequeing and
-immediately deallocs all requests on its disable codepath. This is not
-save since the dequeue function is async and does not ensure that the
-requests are left unlinked in the controller driver.
+As per the hardware team, TIEN and TINT source should not set at the same
+time due to a possible hardware race leading to spurious IRQ.
 
-By adding the ep_free_request into the completion path of the requests
-we ensure that the request will be properly deallocated.
+Currently on some scenarios hardware settings for TINT detection is not in
+sync with TINT source as the enable/disable overrides source setting value
+leading to hardware inconsistent state. For eg: consider the case GPIOINT0
+is used as TINT interrupt and configuring GPIOINT5 as edge type. During
+rzg2l_irq_set_type(), TINT source for GPIOINT5 is set. On disable(),
+clearing of the entire bytes of TINT source selection for GPIOINT5 is same
+as GPIOINT0 with TIEN disabled. Apart from this during enable(), the
+setting of GPIOINT5 with TIEN results in spurious IRQ as due to a HW race,
+it is possible that IP can use the TIEN with previous source value
+(GPIOINT0).
 
-Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Link: https://lore.kernel.org/r/20230911140530.2995138-3-m.grzeschik@pengutronix.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+So, just update TIEN during enable/disable as TINT source is already set
+during rzg2l_irq_set_type(). This will make the consistent hardware
+settings for detection method tied with TINT source and allows to simplify
+the code.
+
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/uvc_video.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/irqchip/irq-renesas-rzg2l.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/usb/gadget/function/uvc_video.c b/drivers/usb/gadget/function/uvc_video.c
-index be48d5ab17c7b..95e3611811cd6 100644
---- a/drivers/usb/gadget/function/uvc_video.c
-+++ b/drivers/usb/gadget/function/uvc_video.c
-@@ -259,6 +259,12 @@ uvc_video_complete(struct usb_ep *ep, struct usb_request *req)
- 	struct uvc_device *uvc = video->uvc;
- 	unsigned long flags;
+diff --git a/drivers/irqchip/irq-renesas-rzg2l.c b/drivers/irqchip/irq-renesas-rzg2l.c
+index 02ab6a944539f..ea4b921e5e158 100644
+--- a/drivers/irqchip/irq-renesas-rzg2l.c
++++ b/drivers/irqchip/irq-renesas-rzg2l.c
+@@ -132,7 +132,7 @@ static void rzg2l_irqc_irq_disable(struct irq_data *d)
  
-+	if (uvc->state == UVC_STATE_CONNECTED) {
-+		usb_ep_free_request(video->ep, ureq->req);
-+		ureq->req = NULL;
-+		return;
-+	}
-+
- 	switch (req->status) {
- 	case 0:
- 		break;
+ 		raw_spin_lock(&priv->lock);
+ 		reg = readl_relaxed(priv->base + TSSR(tssr_index));
+-		reg &= ~(TSSEL_MASK << TSSEL_SHIFT(tssr_offset));
++		reg &= ~(TIEN << TSSEL_SHIFT(tssr_offset));
+ 		writel_relaxed(reg, priv->base + TSSR(tssr_index));
+ 		raw_spin_unlock(&priv->lock);
+ 	}
+@@ -144,7 +144,6 @@ static void rzg2l_irqc_irq_enable(struct irq_data *d)
+ 	unsigned int hw_irq = irqd_to_hwirq(d);
+ 
+ 	if (hw_irq >= IRQC_TINT_START && hw_irq < IRQC_NUM_IRQ) {
+-		unsigned long tint = (uintptr_t)irq_data_get_irq_chip_data(d);
+ 		struct rzg2l_irqc_priv *priv = irq_data_to_priv(d);
+ 		u32 offset = hw_irq - IRQC_TINT_START;
+ 		u32 tssr_offset = TSSR_OFFSET(offset);
+@@ -153,7 +152,7 @@ static void rzg2l_irqc_irq_enable(struct irq_data *d)
+ 
+ 		raw_spin_lock(&priv->lock);
+ 		reg = readl_relaxed(priv->base + TSSR(tssr_index));
+-		reg |= (TIEN | tint) << TSSEL_SHIFT(tssr_offset);
++		reg |= TIEN << TSSEL_SHIFT(tssr_offset);
+ 		writel_relaxed(reg, priv->base + TSSR(tssr_index));
+ 		raw_spin_unlock(&priv->lock);
+ 	}
 -- 
 2.43.0
 
