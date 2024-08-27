@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-70560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71069-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D334960EC8
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:52:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 030EA961180
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:21:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BECCE286D50
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:52:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 773801F23227
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:21:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBA381C6F43;
-	Tue, 27 Aug 2024 14:51:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61B0F1C6F57;
+	Tue, 27 Aug 2024 15:19:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c9PZ+HYR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OpaD47XI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 813E51C7B92;
-	Tue, 27 Aug 2024 14:51:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2121D1C5793;
+	Tue, 27 Aug 2024 15:19:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770312; cv=none; b=qVNNW9mH2E5rBlA03uuQA5uPrkBV7jQWdgPnguUDh85yBRrXzgybYolpMYvJtLtiMZM0kbt4JiRjobr8nDYZtbVRarz8LJhvOOUHlPdQ0+W7mtEzNRCH43QP4Zff3auVheK3KI5MFC7XHQVVU4wYbZfWBtUSaRSjjofKzAOGseU=
+	t=1724771998; cv=none; b=cES31mBYw3sxFRUBoPYyMBgIX1ioDQigSvEBKgeWBKjdM1j2xdwVmRENJ0Al44ouh7n8ZXP2+fzgdD0q9y2OX6mhHNeTwTBX5xyhlWTUGi6wy9nUurfJGQ78pmHNyXF/+j0qRD83AjT/zGY4s/T/AwSuLel4+5Nrm4Ol1RePxsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770312; c=relaxed/simple;
-	bh=wVTSHXcjhM1RR8VqmByMHMJdgMVcR3p3nsjJ0BPD+gs=;
+	s=arc-20240116; t=1724771998; c=relaxed/simple;
+	bh=CT1ux54aaa4gp00PTf1A81MQbupNoleKrP1dbJ1tU/M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Xxyb59HNOw6zjHeLTbeQLxFbkwseS90Wu7B/v3F77C7iiKd+4Kjtb9IyseFqotjygf6N38xfUTWjS46y8F0ePov/cXoWFZldOrc0f3t7LWcUbViOQZREe3ZTcLBhFbSscfp8Rc5fhHoWerO8xZXMG+f0j9mDaU1E4TtNmHUGpCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c9PZ+HYR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA808C4DE0F;
-	Tue, 27 Aug 2024 14:51:51 +0000 (UTC)
+	 MIME-Version; b=h3KmGWaZaQ7E2Fy5LLrtFCZWQ7gK2t18/KEpc+Sz8Ki8wnWF9lvvGm+AwgMoo94F9O/QChehNaFzBmKxID5tNqzQotruBowNyruTdJA36lMsGaVMFyVJWLn/rJIM3VY+0nlfVWj0a5EC6igeiySc6P+QO8BJUhW4pKgusTaStwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OpaD47XI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FA22C4DDE5;
+	Tue, 27 Aug 2024 15:19:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770312;
-	bh=wVTSHXcjhM1RR8VqmByMHMJdgMVcR3p3nsjJ0BPD+gs=;
+	s=korg; t=1724771996;
+	bh=CT1ux54aaa4gp00PTf1A81MQbupNoleKrP1dbJ1tU/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c9PZ+HYRfkYxhCINbp6TMjOJvmwmJvJUEi4320yIXbxjbazIgeXrfHnhOdHUj3K6y
-	 jesl6eb6MSjICOQzpKCY1OUwRQPVOv6FBPFUJLNhEjr1otbnLYIP8MGlaUhuTZBeWF
-	 CESoJAIayRHmDXwj7e+tURihkXniyy4LQqdVruMY=
+	b=OpaD47XIW/nSv+M5keYS5Kmp1styO4rx7aguE8ZQttLAiSJ2qJN6+8PfVJirEIuHU
+	 EyFx/B3S7dqV2ao9hZ+XN0Fq+tnzZ1PY/6YHLB3KN8IpqSXIu7ZBbSAx342DH9TG4t
+	 SYtAti6pw6uwyYwVpJxVZ49EKyfCDLbr3cefqVg8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
-	Charlie Jenkins <charlie@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Muhammad Husaini Zulkifli <muhammad.husaini.zulkifli@intel.com>,
+	Sasha Neftin <sasha.neftin@intel.com>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Naama Meir <naamax.meir@linux.intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 160/341] riscv: blacklist assembly symbols for kprobe
+Subject: [PATCH 6.1 083/321] igc: Correct the launchtime offset
 Date: Tue, 27 Aug 2024 16:36:31 +0200
-Message-ID: <20240827143849.504335749@linuxfoundation.org>
+Message-ID: <20240827143841.401161408@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,85 +64,172 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Clément Léger <cleger@rivosinc.com>
+From: Muhammad Husaini Zulkifli <muhammad.husaini.zulkifli@intel.com>
 
-[ Upstream commit 5014396af9bbac0f28d9afee7eae405206d01ee7 ]
+[ Upstream commit 790835fcc0cb9992349ae3c9010dbc7321aaa24d ]
 
-Adding kprobes on some assembly functions (mainly exception handling)
-will result in crashes (either recursive trap or panic). To avoid such
-errors, add ASM_NOKPROBE() macro which allow adding specific symbols
-into the __kprobe_blacklist section and use to blacklist the following
-symbols that showed to be problematic:
-- handle_exception()
-- ret_from_exception()
-- handle_kernel_stack_overflow()
+The launchtime offset should be corrected according to sections 7.5.2.6
+Transmit Scheduling Latency of the Intel Ethernet I225/I226 Software
+User Manual.
 
-Signed-off-by: Clément Léger <cleger@rivosinc.com>
-Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
-Link: https://lore.kernel.org/r/20231004131009.409193-1-cleger@rivosinc.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Software can compensate the latency between the transmission scheduling
+and the time that packet is transmitted to the network by setting this
+GTxOffset register. Without setting this register, there may be a
+significant delay between the packet scheduling and the network point.
+
+This patch helps to reduce the latency for each of the link speed.
+
+Before:
+
+10Mbps   : 11000 - 13800 nanosecond
+100Mbps  : 1300 - 1700 nanosecond
+1000Mbps : 190 - 600 nanosecond
+2500Mbps : 1400 - 1700 nanosecond
+
+After:
+
+10Mbps   : less than 750 nanosecond
+100Mbps  : less than 192 nanosecond
+1000Mbps : less than 128 nanosecond
+2500Mbps : less than 128 nanosecond
+
+Test Setup:
+
+Talker : Use l2_tai.c to generate the launchtime into packet payload.
+Listener: Use timedump.c to compute the delta between packet arrival and
+LaunchTime packet payload.
+
+Signed-off-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Signed-off-by: Muhammad Husaini Zulkifli <muhammad.husaini.zulkifli@intel.com>
+Acked-by: Sasha Neftin <sasha.neftin@intel.com>
+Acked-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Tested-by: Naama Meir <naamax.meir@linux.intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Stable-dep-of: e037a26ead18 ("igc: Fix packet still tx after gate close by reducing i226 MAC retry buffer")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/include/asm/asm.h | 10 ++++++++++
- arch/riscv/kernel/entry.S    |  3 +++
- 2 files changed, 13 insertions(+)
+ drivers/net/ethernet/intel/igc/igc_defines.h |  9 ++++++
+ drivers/net/ethernet/intel/igc/igc_main.c    |  7 +++++
+ drivers/net/ethernet/intel/igc/igc_regs.h    |  1 +
+ drivers/net/ethernet/intel/igc/igc_tsn.c     | 30 ++++++++++++++++++++
+ drivers/net/ethernet/intel/igc/igc_tsn.h     |  1 +
+ 5 files changed, 48 insertions(+)
 
-diff --git a/arch/riscv/include/asm/asm.h b/arch/riscv/include/asm/asm.h
-index bfb4c26f113c4..b5b84c6be01e1 100644
---- a/arch/riscv/include/asm/asm.h
-+++ b/arch/riscv/include/asm/asm.h
-@@ -164,6 +164,16 @@
- 	REG_L x31, PT_T6(sp)
- 	.endm
+diff --git a/drivers/net/ethernet/intel/igc/igc_defines.h b/drivers/net/ethernet/intel/igc/igc_defines.h
+index efdabcbd66ddd..63fa7608861b2 100644
+--- a/drivers/net/ethernet/intel/igc/igc_defines.h
++++ b/drivers/net/ethernet/intel/igc/igc_defines.h
+@@ -402,6 +402,15 @@
+ #define IGC_DTXMXPKTSZ_TSN	0x19 /* 1600 bytes of max TX DMA packet size */
+ #define IGC_DTXMXPKTSZ_DEFAULT	0x98 /* 9728-byte Jumbo frames */
  
-+/* Annotate a function as being unsuitable for kprobes. */
-+#ifdef CONFIG_KPROBES
-+#define ASM_NOKPROBE(name)				\
-+	.pushsection "_kprobe_blacklist", "aw";		\
-+	RISCV_PTR name;					\
-+	.popsection
-+#else
-+#define ASM_NOKPROBE(name)
-+#endif
++/* Transmit Scheduling Latency */
++/* Latency between transmission scheduling (LaunchTime) and the time
++ * the packet is transmitted to the network in nanosecond.
++ */
++#define IGC_TXOFFSET_SPEED_10	0x000034BC
++#define IGC_TXOFFSET_SPEED_100	0x00000578
++#define IGC_TXOFFSET_SPEED_1000	0x0000012C
++#define IGC_TXOFFSET_SPEED_2500	0x00000578
 +
- #endif /* __ASSEMBLY__ */
+ /* Time Sync Interrupt Causes */
+ #define IGC_TSICR_SYS_WRAP	BIT(0) /* SYSTIM Wrap around. */
+ #define IGC_TSICR_TXTS		BIT(1) /* Transmit Timestamp. */
+diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
+index e052f49cc08d7..39f8f28288aaa 100644
+--- a/drivers/net/ethernet/intel/igc/igc_main.c
++++ b/drivers/net/ethernet/intel/igc/igc_main.c
+@@ -5586,6 +5586,13 @@ static void igc_watchdog_task(struct work_struct *work)
+ 				break;
+ 			}
  
- #endif /* _ASM_RISCV_ASM_H */
-diff --git a/arch/riscv/kernel/entry.S b/arch/riscv/kernel/entry.S
-index 278d01d2911fd..ed7baf2cf7e87 100644
---- a/arch/riscv/kernel/entry.S
-+++ b/arch/riscv/kernel/entry.S
-@@ -105,6 +105,7 @@ _save_context:
- 1:
- 	tail do_trap_unknown
- SYM_CODE_END(handle_exception)
-+ASM_NOKPROBE(handle_exception)
++			/* Once the launch time has been set on the wire, there
++			 * is a delay before the link speed can be determined
++			 * based on link-up activity. Write into the register
++			 * as soon as we know the correct link speed.
++			 */
++			igc_tsn_adjust_txtime_offset(adapter);
++
+ 			if (adapter->link_speed != SPEED_1000)
+ 				goto no_wait;
  
- /*
-  * The ret_from_exception must be called with interrupt disabled. Here is the
-@@ -171,6 +172,7 @@ SYM_CODE_START_NOALIGN(ret_from_exception)
- 	sret
- #endif
- SYM_CODE_END(ret_from_exception)
-+ASM_NOKPROBE(ret_from_exception)
+diff --git a/drivers/net/ethernet/intel/igc/igc_regs.h b/drivers/net/ethernet/intel/igc/igc_regs.h
+index c0d8214148d1d..01c86d36856d2 100644
+--- a/drivers/net/ethernet/intel/igc/igc_regs.h
++++ b/drivers/net/ethernet/intel/igc/igc_regs.h
+@@ -224,6 +224,7 @@
+ /* Transmit Scheduling Registers */
+ #define IGC_TQAVCTRL		0x3570
+ #define IGC_TXQCTL(_n)		(0x3344 + 0x4 * (_n))
++#define IGC_GTXOFFSET		0x3310
+ #define IGC_BASET_L		0x3314
+ #define IGC_BASET_H		0x3318
+ #define IGC_QBVCYCLET		0x331C
+diff --git a/drivers/net/ethernet/intel/igc/igc_tsn.c b/drivers/net/ethernet/intel/igc/igc_tsn.c
+index 31ea0781b65ec..83f02b00735d3 100644
+--- a/drivers/net/ethernet/intel/igc/igc_tsn.c
++++ b/drivers/net/ethernet/intel/igc/igc_tsn.c
+@@ -49,6 +49,35 @@ static unsigned int igc_tsn_new_flags(struct igc_adapter *adapter)
+ 	return new_flags;
+ }
  
- #ifdef CONFIG_VMAP_STACK
- SYM_CODE_START_LOCAL(handle_kernel_stack_overflow)
-@@ -206,6 +208,7 @@ SYM_CODE_START_LOCAL(handle_kernel_stack_overflow)
- 	move a0, sp
- 	tail handle_bad_stack
- SYM_CODE_END(handle_kernel_stack_overflow)
-+ASM_NOKPROBE(handle_kernel_stack_overflow)
- #endif
++void igc_tsn_adjust_txtime_offset(struct igc_adapter *adapter)
++{
++	struct igc_hw *hw = &adapter->hw;
++	u16 txoffset;
++
++	if (!is_any_launchtime(adapter))
++		return;
++
++	switch (adapter->link_speed) {
++	case SPEED_10:
++		txoffset = IGC_TXOFFSET_SPEED_10;
++		break;
++	case SPEED_100:
++		txoffset = IGC_TXOFFSET_SPEED_100;
++		break;
++	case SPEED_1000:
++		txoffset = IGC_TXOFFSET_SPEED_1000;
++		break;
++	case SPEED_2500:
++		txoffset = IGC_TXOFFSET_SPEED_2500;
++		break;
++	default:
++		txoffset = 0;
++		break;
++	}
++
++	wr32(IGC_GTXOFFSET, txoffset);
++}
++
+ /* Returns the TSN specific registers to their default values after
+  * the adapter is reset.
+  */
+@@ -58,6 +87,7 @@ static int igc_tsn_disable_offload(struct igc_adapter *adapter)
+ 	u32 tqavctrl;
+ 	int i;
  
- SYM_CODE_START(ret_from_fork)
++	wr32(IGC_GTXOFFSET, 0);
+ 	wr32(IGC_TXPBS, I225_TXPBSIZE_DEFAULT);
+ 	wr32(IGC_DTXMXPKTSZ, IGC_DTXMXPKTSZ_DEFAULT);
+ 
+diff --git a/drivers/net/ethernet/intel/igc/igc_tsn.h b/drivers/net/ethernet/intel/igc/igc_tsn.h
+index 1512307f5a528..b53e6af560b73 100644
+--- a/drivers/net/ethernet/intel/igc/igc_tsn.h
++++ b/drivers/net/ethernet/intel/igc/igc_tsn.h
+@@ -6,5 +6,6 @@
+ 
+ int igc_tsn_offload_apply(struct igc_adapter *adapter);
+ int igc_tsn_reset(struct igc_adapter *adapter);
++void igc_tsn_adjust_txtime_offset(struct igc_adapter *adapter);
+ 
+ #endif /* _IGC_BASE_H */
 -- 
 2.43.0
 
