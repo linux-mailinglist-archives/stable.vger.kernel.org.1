@@ -1,152 +1,76 @@
-Return-Path: <stable+bounces-70292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70291-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F7B395FFDE
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 05:35:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E86C95FFD7
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 05:33:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF7CA283954
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 03:35:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59109282ED5
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 03:33:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED93A1B964;
-	Tue, 27 Aug 2024 03:35:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BEFC1BF54;
+	Tue, 27 Aug 2024 03:33:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="mhejfn4D"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mVIjOuxV"
 X-Original-To: stable@vger.kernel.org
-Received: from out162-62-57-49.mail.qq.com (out162-62-57-49.mail.qq.com [162.62.57.49])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C648617D2;
-	Tue, 27 Aug 2024 03:35:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 078CA171AF;
+	Tue, 27 Aug 2024 03:33:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724729747; cv=none; b=ixUl0ugiGh3ATUBmCNj3IvcTHLHNZNEV+fgFlGoJ+Ts121X5Aw+UJT3m4Hp2760sqcSuAb58+jD0Im3gkgjUG/9iqlT+REYRcRVBHJ0m5arqIFBj0qyLmzl9yICnXZoshM1wkbp/zqJiUENW951kxfZzhErPQAJOy80XnTa7bgM=
+	t=1724729590; cv=none; b=KL9r+e3S+xRSk4XYGm2RxzzolZtRLSymsUYAIIvAQFTv4ipLbIDZWXH6/slBA8IuqEsDXoUOfCFuTnnQZ8Oq5fBVnTbX8NBc3gN0VArcJaRDRDce1qlHQN6IejNJMyyS5lDDI84Bmable45VmHO206Orz1CPadl/g2sjvkJ8MB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724729747; c=relaxed/simple;
-	bh=JxOOw3I8hM8McboYblBC9AuhxVq0E8rfFp3biyQnsSg=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=de/yF5J/wHxmxFjxMiwZwsJHLyWpnUGqm+m6p0sg5RaJMIbiaLy+edksvq1MidKHvtWtNjCyUMcWdnI7/36ZKYU5tLXT6LFTwkjKQ5pnWkGCbJg9HHyhwkckYS13ybp6a6aeUtImOaelP0R9khcHlsfhYQXnlwMzqP8R7oBNfWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=mhejfn4D; arc=none smtp.client-ip=162.62.57.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1724729739; bh=6mdDp6P8g3MUmwup0fCL42gvss1KTTQoo2H9D0IBPFo=;
-	h=From:To:Cc:Subject:Date;
-	b=mhejfn4DL6LjoxNVeGzOPDL06kxY86StNKmPq6Pm9wjIbcN7opSVCC18eKRI3ToAD
-	 +ayiSS0Y7jAEROX7YV3CSLC0P6SBfOoLgankxQ2aNAZQ3t7v9QBVkNv0YIRs+4gfi8
-	 Ypscy2tUG6HOGtQoLjeM/GHuoStWtb+JmqbssQxY=
-Received: from iZ2ze0ccts00nkjy9wuyo6Z.localdomain ([101.201.76.96])
-	by newxmesmtplogicsvrszc13-0.qq.com (NewEsmtp) with SMTP
-	id 68AAC261; Tue, 27 Aug 2024 11:26:10 +0800
-X-QQ-mid: xmsmtpt1724729170tmbqb2psx
-Message-ID: <tencent_65D10BAC9579867D29B79F44D999AED1E506@qq.com>
-X-QQ-XMAILINFO: Nd//4bIXhHdblwXXSM2RepgMK+NRSGkdF6VKULRYDdCpUJg0sJ+v7FlfJp5fdS
-	 /WFPHfVibXsNVcyuGPgke193vtFmA49du/P5MjPDQbPa5wO8ccAfszDhCDHtJhjfX3iGNZ2eNlRD
-	 ntNXAY3gmdPYPYfpGH0jdVEmW1hRsgCVXGQ7xnagSJbVqFmU2sJ25J25tPvqTQDzpm3QNlEYhm5y
-	 wCqllSCLA/QiM2NnYINQUUJZ84gfIIMiQJaRXHb+KTNGL5b/DrpDsNgNTtVsDNUcFoK7wIwkLPLz
-	 3RJgQujvnViRRvD67E3hT+SF7ZzmGONQ1nCWNqmIKXdi5TqcOaWSf5wNDlvpCPyHB1TCLsgNOMDs
-	 LhsS8DVd/moN6vuv3TjZzy0S3FFboQTtZiQKyU9fZeNJsoetSPvVpACCMO4xencOvbHe2bqwuX/P
-	 8jBRdqkXhV5f/7LTeNnkCl0NqV3/MUj7NE5Ltl2ZPTJ7wYDKrdIqhPmaEaiz2KvhFFwB2H9brFSD
-	 /lFHoBcSzB3H1M2d7LKUn74tvXR35jQpzZf4IyPB+KdrvMvlbg9e80Qu7RDUP73+Jb0ukxLddwN1
-	 t8v1P5wCOTjRT+P24tUGgjqScc3c3CN+PBOOEi7oPmaS2woLf7GGZ34wV/yIK0vlFErsNkrLOyia
-	 Qby9AXfnLGOEfU+tXxlIZF006TmGaPgkNB5EagG2NiEXeF9qFOYeExaRBW27yuYi8eV94VaIpdM5
-	 Eq0l/I8iKbMpgrCXVUWZtOPZFoddglYr188GMir+d+lkBmd9y/tvLf6Ud6pmfX23xgz16+eBVUT5
-	 c8NtLm66AC0sL8LMJOlsCMRsvQCIuDyUbpNr9O0pQ/Ls/XweCjIQbZm60gt+2Xpyp/Dg/ewh6TQA
-	 /Xq2FlUL69ddOldzcrcDb9kxdNzF30vf2uZm0CzeHdOzv5yRxpCMw=
-X-QQ-XMRINFO: NI4Ajvh11aEj8Xl/2s1/T8w=
-From: Yanhao Dong <570260087@qq.com>
-To: rafael@kernel.org
-Cc: daniel.lezcano@linaro.org,
-	linux-pm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	ysaydong@gmail.com
-Subject: [PATCH] cpuidle: haltpoll: Fix guest_halt_poll_ns failed to take effect
-Date: Tue, 27 Aug 2024 11:26:09 +0800
-X-OQ-MSGID: <20240827032609.531946-1-570260087@qq.com>
-X-Mailer: git-send-email 2.43.5
+	s=arc-20240116; t=1724729590; c=relaxed/simple;
+	bh=6PzS5Tdk8YQgNBjy4ccnPSGnXknsU27HU1R/5Y8rlWU=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=XbI4NlCpaaMlQq8bS3THhfHi9+IWDI3kTs9vmssivL0ejD4c9E/vFeRvClJ2sgXQZJ5dbLvb2wFbSE3VXihD4ShJINuWGdIFNWJOePFjpQPF2Sz/KuAYHyqIKU2sswXMIatOeJqWqAcaEiIy7LJ1AGaHBb7uJ6SofxhMVlGfvuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mVIjOuxV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AA0DC8B7A3;
+	Tue, 27 Aug 2024 03:33:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724729589;
+	bh=6PzS5Tdk8YQgNBjy4ccnPSGnXknsU27HU1R/5Y8rlWU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=mVIjOuxVw9qlfJ0a3XOELpEd9UlRzEf6/MNAG1ZLtdNBIjWNxKWPeIolha/JFJeIR
+	 TWrJjZ8/upkMPbudUDOwUR1Vx7AR9QdUo9x0vwyGd9YxKhMn/aZn4v99c6rkTe21T0
+	 xxldGRDpf0G64BvhxWoSzBFXEdOumFsypgmOUJnk82kOhE2HK7vNkWI7vfnZ5+MEdV
+	 pey62m470J8A2naSktnQFiN5iIJ+TT7eFyx6WpQf6Xn/nDjclCxTpVSL1uzsOpW9zX
+	 B7Yla7DPiFT9pGSF+ARUNhmtX9Cu8jqfb/rY4qt2CgPyfi+bSoVtGTKYWUhC3L3cqO
+	 hcxlwV5KSyzeg==
+Date: Mon, 26 Aug 2024 20:33:08 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Cc: mptcp@lists.linux.dev, Mat Martineau <martineau@kernel.org>, Geliang
+ Tang <geliang@kernel.org>, "David S. Miller" <davem@davemloft.net>, Eric
+ Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Florian
+ Westphal <fw@strlen.de>, Shuah Khan <shuah@kernel.org>,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH net 0/4] mptcp: close subflow when receiving TCP+FIN and
+ misc.
+Message-ID: <20240826203308.7cc1bd5c@kernel.org>
+In-Reply-To: <20240826-net-mptcp-close-extra-sf-fin-v1-0-905199fe1172@kernel.org>
+References: <20240826-net-mptcp-close-extra-sf-fin-v1-0-905199fe1172@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: ysay <ysaydong@gmail.com>
+On Mon, 26 Aug 2024 19:11:17 +0200 Matthieu Baerts (NGI0) wrote:
+> Matthieu Baerts (NGI0) (4):
+>       mptcp: close subflow when receiving TCP+FIN
+>       selftests: mptcp: join: cannot rm sf if closed
+>       mptcp: sched: check both backup in retrans
+>       mptcp: pr_debug: add missing \n at the end
 
-When guest_halt_poll_allow_shrink=N,setting guest_halt_poll_ns
-from a large value to 0 does not reset the CPU polling time,
-despite guest_halt_poll_ns being intended as a mandatory maximum
-time limit.
-
-The problem was situated in the adjust_poll_limit() within
-drivers/cpuidle/governors/haltpoll.c:79.
-
-Specifically, when guest_halt_poll_allow_shrink was set to N,
-resetting guest_halt_poll_ns to zero did not lead to executing any
-section of code that adjusts dev->poll_limit_ns.
-
-The issue has been resolved by relocating the check and assignment for
-dev->poll_limit_ns outside of the conditional block.
-This ensures that every modification to guest_halt_poll_ns
-properly influences the CPU polling time.
-
-Signed-off-by: ysay <ysaydong@gmail.com>
-Fixes: 2cffe9f6b96f ("cpuidle: add haltpoll governor")
----
- drivers/cpuidle/governors/haltpoll.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
-
-diff --git a/drivers/cpuidle/governors/haltpoll.c b/drivers/cpuidle/governors/haltpoll.c
-index 663b7f164..99c6260d7 100644
---- a/drivers/cpuidle/governors/haltpoll.c
-+++ b/drivers/cpuidle/governors/haltpoll.c
-@@ -78,26 +78,22 @@ static int haltpoll_select(struct cpuidle_driver *drv,
- 
- static void adjust_poll_limit(struct cpuidle_device *dev, u64 block_ns)
- {
--	unsigned int val;
-+	unsigned int val = dev->poll_limit_ns;
- 
- 	/* Grow cpu_halt_poll_us if
- 	 * cpu_halt_poll_us < block_ns < guest_halt_poll_us
- 	 */
- 	if (block_ns > dev->poll_limit_ns && block_ns <= guest_halt_poll_ns) {
--		val = dev->poll_limit_ns * guest_halt_poll_grow;
-+		val *= guest_halt_poll_grow;
- 
- 		if (val < guest_halt_poll_grow_start)
- 			val = guest_halt_poll_grow_start;
--		if (val > guest_halt_poll_ns)
--			val = guest_halt_poll_ns;
- 
- 		trace_guest_halt_poll_ns_grow(val, dev->poll_limit_ns);
--		dev->poll_limit_ns = val;
- 	} else if (block_ns > guest_halt_poll_ns &&
- 		   guest_halt_poll_allow_shrink) {
- 		unsigned int shrink = guest_halt_poll_shrink;
- 
--		val = dev->poll_limit_ns;
- 		if (shrink == 0) {
- 			val = 0;
- 		} else {
-@@ -108,8 +104,12 @@ static void adjust_poll_limit(struct cpuidle_device *dev, u64 block_ns)
- 		}
- 
- 		trace_guest_halt_poll_ns_shrink(val, dev->poll_limit_ns);
--		dev->poll_limit_ns = val;
- 	}
-+
-+	if (val > guest_halt_poll_ns)
-+		val = guest_halt_poll_ns;
-+
-+	dev->poll_limit_ns = val;
- }
- 
- /**
--- 
-2.43.5
-
+Why are you submitting two series to the same tree at once?
+The limit of 15 patches applies, no matter how you post.
 
