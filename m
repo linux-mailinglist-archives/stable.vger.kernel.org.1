@@ -1,50 +1,58 @@
-Return-Path: <stable+bounces-70354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70355-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5174960B5E
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:09:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83559960B78
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:13:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 137951C22A67
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 13:09:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4112B2870C6
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 13:13:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C472B1C32E2;
-	Tue, 27 Aug 2024 13:08:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE15D1BD036;
+	Tue, 27 Aug 2024 13:10:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JkK54FaK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="We6EHxD7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 839FE1C32E1
-	for <stable@vger.kernel.org>; Tue, 27 Aug 2024 13:08:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A3BC1BA875;
+	Tue, 27 Aug 2024 13:10:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724764093; cv=none; b=hL8fAbuDi4WiYAqQgRpSy/s57590GAbKKcLK7a7HxUKKJKISgYTaaF6Gc6NuZN4MFapcF8Sbrwr+zbzBzeyr2sh/pccszWCanqeDB2BfLmGNswFArtR6/sNx0gz4xGBQ+mi9HPY8tvC6TnIba3Ibbg0mZAdknbPVrJhCfnvurm0=
+	t=1724764213; cv=none; b=rOxGaP1oSBKh+S4MXjzDrM3XMhZO2fRzv/01VZrRPl6i52wSaNfLGEliTfjnias1GtHMT9Nc6E2eUUhIZe/K+xE1sLc32GM99p9xe3y6YjXSRWMvWk7zBL8YrcWrXiSPi1YGmOgYlapFKVhQwVavu2hDV6CxjX9iDgukvut3smE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724764093; c=relaxed/simple;
-	bh=YNI7tvyihxFxNgX89FeybS1Fu2KlsvYNg3kCzA5me6I=;
+	s=arc-20240116; t=1724764213; c=relaxed/simple;
+	bh=2huZQ9X3XwSEo8LeL5E6EMGsFsv20dAkqIQdgKsmyfY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kkMrEX1j5W8DFLuwrxg5TFfuIDPaHM5JBYYMyBtji3m9T0kZK2yJCL4Gtxj5Y3bhQN2LMh5QTWdM1IfDxJxy7lExC8m4WmG9nVT3eXjgmlwG5iUMSm3sbywWd4Dfa0YAGStT3Y3116AqH1kcb8kwU1NPOQ3RGoKbHCUPIntEVpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JkK54FaK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8AE4C61047;
-	Tue, 27 Aug 2024 13:08:12 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=UZ4Lnky6fT1/Znx01p5OYo+RbnHGgAhyFOIuQBOL7x9ErZGp8xtK6qmCHFIsoGArqkVAFlIyF3N9r2BpviuEH/2jGxEGwziyS7iOFECCI9EZ0Amc8+iCDv70EcQiEtjkEu1aI2mTC6+g0VCsUamKjXyh1t/vvth3RG+Pxy12s6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=We6EHxD7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92EE9C61047;
+	Tue, 27 Aug 2024 13:10:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724764093;
-	bh=YNI7tvyihxFxNgX89FeybS1Fu2KlsvYNg3kCzA5me6I=;
+	s=korg; t=1724764213;
+	bh=2huZQ9X3XwSEo8LeL5E6EMGsFsv20dAkqIQdgKsmyfY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JkK54FaK1+SVqRVWjbDGilzZHVo8B0VFwXLfc7Icjqi72t+OrBSKJMYXUel3C/Cfg
-	 D1umJcRQ/83+GDw6L1zW+ngpyjTPgSxmnQbT928dHTiOY3g1PpgFWOBx8LpRx8zzgZ
-	 l3ELJmrZXr1lAm5qsvFzdWrwZA3BXa2gdEJnj8Lo=
-Date: Tue, 27 Aug 2024 15:08:10 +0200
+	b=We6EHxD7WtHu+7vU4VpLYXWAPrJWszHtp0QDTBeln/dC5Doa9HUg+Uc41tS6mRX+h
+	 x82DeaG92201rsMH7L1vdBFRQgJ28+IHO4Qgt1SGgdXC+mu5ezwybSQhbYCZQ+e94M
+	 apFgl6Y52xqq4vcCOnVMwNjnnfA7301fbuwMlFhY=
+Date: Tue, 27 Aug 2024 15:10:10 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Mario Limonciello <superm1@kernel.org>
-Cc: stable@vger.kernel.org, Mario Limonciello <mario.limonciello@amd.com>
-Subject: Re: [PATCH 6.1 0/2] VCN power saving improvements
-Message-ID: <2024082701-radiance-ranging-e2e2@gregkh>
-References: <20240826155519.2030932-1-superm1@kernel.org>
+To: David Hunter <david.hunter.linux@gmail.com>
+Cc: seanjc@google.com, dave.hansen@linux.intel.com, hpa@zytor.com,
+	javier.carrasco.cruz@gmail.com, jmattson@google.com,
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+	lirongqing@baidu.com, pbonzini@redhat.com, pshier@google.com,
+	shuah@kernel.org, stable@vger.kernel.org, x86@kernel.org,
+	Haitao Shan <hshan@google.com>
+Subject: Re: [PATCH 6.1.y 2/2 V2] KVM: x86: Fix lapic timer interrupt lost
+ after loading a snapshot.
+Message-ID: <2024082759-theatrics-sulk-85f2@gregkh>
+References: <ZsSiQkQVSz0DarYC@google.com>
+ <20240826221336.14023-1-david.hunter.linux@gmail.com>
+ <20240826221336.14023-3-david.hunter.linux@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,28 +61,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240826155519.2030932-1-superm1@kernel.org>
+In-Reply-To: <20240826221336.14023-3-david.hunter.linux@gmail.com>
 
-On Mon, Aug 26, 2024 at 10:55:17AM -0500, Mario Limonciello wrote:
-> From: Mario Limonciello <mario.limonciello@amd.com>
+On Mon, Aug 26, 2024 at 06:13:36PM -0400, David Hunter wrote:
 > 
-> This is a backport of patches from 6.11-rc1 that improve power savings
-> for VCN when hardware accelerated video playback is active.
-> 
-> Boyuan Zhang (2):
->   drm/amdgpu/vcn: identify unified queue in sw init
->   drm/amdgpu/vcn: not pause dpg for unified queue
-> 
->  drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.c | 53 ++++++++++++-------------
->  drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.h |  1 +
->  2 files changed, 27 insertions(+), 27 deletions(-)
-> 
-> -- 
-> 2.43.0
-> 
-> 
+> [ Upstream Commit 9cfec6d097c607e36199cf0cfbb8cf5acbd8e9b2]
 
-Now queued up, thanks.
+This is already in the 6.1.66 release, so do you want it applied again?
+
+> From: Haitao Shan <hshan@google.com>
+> Date:   Tue Sep 12 16:55:45 2023 -0700 
+> 
+> When running android emulator (which is based on QEMU 2.12) on
+> certain Intel hosts with kernel version 6.3-rc1 or above, guest
+> will freeze after loading a snapshot. This is almost 100%
+> reproducible. By default, the android emulator will use snapshot
+> to speed up the next launching of the same android guest. So
+> this breaks the android emulator badly.
+> 
+> I tested QEMU 8.0.4 from Debian 12 with an Ubuntu 22.04 guest by
+> running command "loadvm" after "savevm". The same issue is
+> observed. At the same time, none of our AMD platforms is impacted.
+> More experiments show that loading the KVM module with
+> "enable_apicv=false" can workaround it.
+> 
+> The issue started to show up after commit 8e6ed96cdd50 ("KVM: x86:
+> fire timer when it is migrated and expired, and in oneshot mode").
+> However, as is pointed out by Sean Christopherson, it is introduced
+> by commit 967235d32032 ("KVM: vmx: clear pending interrupts on
+> KVM_SET_LAPIC"). commit 8e6ed96cdd50 ("KVM: x86: fire timer when
+> it is migrated and expired, and in oneshot mode") just makes it
+> easier to hit the issue.
+> 
+> Having both commits, the oneshot lapic timer gets fired immediately
+> inside the KVM_SET_LAPIC call when loading the snapshot. On Intel
+> platforms with APIC virtualization and posted interrupt processing,
+> this eventually leads to setting the corresponding PIR bit. However,
+> the whole PIR bits get cleared later in the same KVM_SET_LAPIC call
+> by apicv_post_state_restore. This leads to timer interrupt lost.
+> 
+> The fix is to move vmx_apicv_post_state_restore to the beginning of
+> the KVM_SET_LAPIC call and rename to vmx_apicv_pre_state_restore.
+> What vmx_apicv_post_state_restore does is actually clearing any
+> former apicv state and this behavior is more suitable to carry out
+> in the beginning.
+> 
+> Fixes: 967235d32032 ("KVM: vmx: clear pending interrupts on KVM_SET_LAPIC")
+> Cc: stable@vger.kernel.org
+> Suggested-by: Sean Christopherson <seanjc@google.com>
+> Signed-off-by: Haitao Shan <hshan@google.com>
+> Link: https://lore.kernel.org/r/20230913000215.478387-1-hshan@google.com
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> 
+> (Cherry-Picked from commit 9cfec6d097c607e36199cf0cfbb8cf5acbd8e9b2)
+> Signed-off-by: David Hunter <david.hunter.linux@gmail.com>
+> ---
+>  arch/x86/kvm/vmx/vmx.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+> index 87abf4eebf8a..4040075bbd5a 100644
+> --- a/arch/x86/kvm/vmx/vmx.c
+> +++ b/arch/x86/kvm/vmx/vmx.c
+> @@ -8203,6 +8203,7 @@ static struct kvm_x86_ops vmx_x86_ops __initdata = {
+>  	.load_eoi_exitmap = vmx_load_eoi_exitmap,
+>  	.apicv_pre_state_restore = vmx_apicv_pre_state_restore,
+>  	.check_apicv_inhibit_reasons = vmx_check_apicv_inhibit_reasons,
+> +	.required_apicv_inhibits = VMX_REQUIRED_APICV_INHIBITS,
+>  	.hwapic_irr_update = vmx_hwapic_irr_update,
+>  	.hwapic_isr_update = vmx_hwapic_isr_update,
+>  	.guest_apic_has_interrupt = vmx_guest_apic_has_interrupt,
+
+Wait, this is just one hunk?  This feels wrong, you didn't say why you
+modfied this from the original commit, or backport, what was wrong with
+that?
+
+thanks,
 
 greg k-h
 
