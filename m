@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-70959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71253-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FC419610E3
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:13:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 545F296128B
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:32:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D0807B24822
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:13:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 129B1282E63
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:32:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEA871C6F46;
-	Tue, 27 Aug 2024 15:13:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 805DD1C93B0;
+	Tue, 27 Aug 2024 15:30:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sqMu7Maz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R1YTCDsb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD2F71C68AE;
-	Tue, 27 Aug 2024 15:13:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BCE61C8228;
+	Tue, 27 Aug 2024 15:30:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771629; cv=none; b=NKaiZvyi+YyFRZiaUV8J/ywpY3XINUea305jpYccxxi9W4Zn4+eR+JhgygVxRs5NfeUX89k+TNkawXa3r3Fa1MmQ7x3IRU+ghIZf2P3epC/vA+LYpG84k5p/PM26NjETl7hOb+X+c/BYgX+BUBlwpMQoOlSnNxczHxfscdSs13w=
+	t=1724772601; cv=none; b=febWQbFG0ZF7nJdHMyjTHV2gykdKLDW4/oBEPiMjnYD/bZrP6Rl6BFzeTnZyONxZZUlF3lW4RNQ9q79aJO330ojptcK2nmC8qkFFjIP/7jvmCcSic+4dT9hnoA3yw5T3eAASfriu1ZW1sXQSIWK1AH5zjhYCDGBd/TLVLUMM3lY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771629; c=relaxed/simple;
-	bh=Iut19NSt1YkxrJBSwfXJogKJDs/aaxKqe5TIUdZIGDg=;
+	s=arc-20240116; t=1724772601; c=relaxed/simple;
+	bh=5yVtnz92O3elg7uBIU/nU5bU0VIS381+KvaLqmIBXkE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UGrvsy7TbM/ek4oLVq/p6SiUB3jVXD62mYYVPaWVoUGaZhZ52+mKvpG52IznZmIoOl6oA91yL35F3yViMT5vcyD46E89+HVc/zy3jgGQzA9BAsR6iTmJDcfolkTDu8chA2Im8puDLA1SRpNHeX2xr9RmfzpXuRslht8VMEx3Np8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sqMu7Maz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FC24C6106B;
-	Tue, 27 Aug 2024 15:13:48 +0000 (UTC)
+	 MIME-Version; b=QDQHYS/KN9O7CbEuV/8CFXPfRXNGwo4CxSGlcIcWCj/k/jVm/489iYkJ32cD8sEz75HsoiQGPqfbiKE+L+7jCCqnc5iL/ezhG4vafRIfBEx0yviLyyxrDnv877HuntKKgamxsYyF0BZVHlnUvTd0RhTWJOZWW0rU+njxoKn9eT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R1YTCDsb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CDAFC4AF15;
+	Tue, 27 Aug 2024 15:30:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771629;
-	bh=Iut19NSt1YkxrJBSwfXJogKJDs/aaxKqe5TIUdZIGDg=;
+	s=korg; t=1724772600;
+	bh=5yVtnz92O3elg7uBIU/nU5bU0VIS381+KvaLqmIBXkE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sqMu7Maz0sYx2a/dxPMBlpq8yL0SXV4ytmgdqUqmbMNs3El7mq0b5LSlr0gdaTfCq
-	 rUgR+8H/HR5wZerSn/T2dT3s1sIWiZ9UwpSSPctTZzXnAcz9gBAZX9Yx7CaZXirvDE
-	 8SyRf5h7upuwnZO4NttX2tFVXNDOhC6I3w950ndg=
+	b=R1YTCDsbbxpCBxkeIrw50Ewan2hjYe1snpQf4dEiZnWbuzxC6tJou7+DPLKmmPuLK
+	 DU7gPrIulBFp8U0L/H+8u0SnW/YEtgMRwzj7hQt8CeO03Cmq0cxWmjosHDjI7ot7eM
+	 XZHkAg6N8m4oXlvP9YnUH6UgPSYW5d3r8mrXT1qY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ben Whitten <ben.whitten@gmail.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.10 247/273] mmc: dw_mmc: allow biu and ciu clocks to defer
+	Stable <stable@kernel.org>,
+	Griffin Kroah-Hartman <griffin@kroah.com>,
+	Yiwei Zhang <zhan4630@purdue.edu>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.1 263/321] Bluetooth: MGMT: Add error handling to pair_device()
 Date: Tue, 27 Aug 2024 16:39:31 +0200
-Message-ID: <20240827143842.803177048@linuxfoundation.org>
+Message-ID: <20240827143848.259677980@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Whitten <ben.whitten@gmail.com>
+From: Griffin Kroah-Hartman <griffin@kroah.com>
 
-commit 6275c7bc8dd07644ea8142a1773d826800f0f3f7 upstream.
+commit 538fd3921afac97158d4177139a0ad39f056dbb2 upstream.
 
-Fix a race condition if the clock provider comes up after mmc is probed,
-this causes mmc to fail without retrying.
-When given the DEFER error from the clk source, pass it on up the chain.
+hci_conn_params_add() never checks for a NULL value and could lead to a NULL
+pointer dereference causing a crash.
 
-Fixes: f90a0612f0e1 ("mmc: dw_mmc: lookup for optional biu and ciu clocks")
-Signed-off-by: Ben Whitten <ben.whitten@gmail.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240811212212.123255-1-ben.whitten@gmail.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Fixed by adding error handling in the function.
+
+Cc: Stable <stable@kernel.org>
+Fixes: 5157b8a503fa ("Bluetooth: Fix initializing conn_params in scan phase")
+Signed-off-by: Griffin Kroah-Hartman <griffin@kroah.com>
+Reported-by: Yiwei Zhang <zhan4630@purdue.edu>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/dw_mmc.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ net/bluetooth/mgmt.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/mmc/host/dw_mmc.c
-+++ b/drivers/mmc/host/dw_mmc.c
-@@ -3293,6 +3293,10 @@ int dw_mci_probe(struct dw_mci *host)
- 	host->biu_clk = devm_clk_get(host->dev, "biu");
- 	if (IS_ERR(host->biu_clk)) {
- 		dev_dbg(host->dev, "biu clock not available\n");
-+		ret = PTR_ERR(host->biu_clk);
-+		if (ret == -EPROBE_DEFER)
-+			return ret;
-+
- 	} else {
- 		ret = clk_prepare_enable(host->biu_clk);
- 		if (ret) {
-@@ -3304,6 +3308,10 @@ int dw_mci_probe(struct dw_mci *host)
- 	host->ciu_clk = devm_clk_get(host->dev, "ciu");
- 	if (IS_ERR(host->ciu_clk)) {
- 		dev_dbg(host->dev, "ciu clock not available\n");
-+		ret = PTR_ERR(host->ciu_clk);
-+		if (ret == -EPROBE_DEFER)
-+			goto err_clk_biu;
-+
- 		host->bus_hz = host->pdata->bus_hz;
- 	} else {
- 		ret = clk_prepare_enable(host->ciu_clk);
+--- a/net/bluetooth/mgmt.c
++++ b/net/bluetooth/mgmt.c
+@@ -3524,6 +3524,10 @@ static int pair_device(struct sock *sk,
+ 		 * will be kept and this function does nothing.
+ 		 */
+ 		p = hci_conn_params_add(hdev, &cp->addr.bdaddr, addr_type);
++		if (!p) {
++			err = -EIO;
++			goto unlock;
++		}
+ 
+ 		if (p->auto_connect == HCI_AUTO_CONN_EXPLICIT)
+ 			p->auto_connect = HCI_AUTO_CONN_DISABLED;
 
 
 
