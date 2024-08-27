@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-70839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71160-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B05A961046
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:07:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA79D9611F2
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:25:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E3EFD1F225A1
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:07:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0C319B21D86
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:25:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E42B1C2DB1;
-	Tue, 27 Aug 2024 15:07:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 184021C8FC4;
+	Tue, 27 Aug 2024 15:24:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VklIDWk1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q1T3cB7o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D3D01E520;
-	Tue, 27 Aug 2024 15:07:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB8A71A072D;
+	Tue, 27 Aug 2024 15:24:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771231; cv=none; b=J/B5GnjpEdC/5Mni6vjCvAOUZEQPHzld2Zqkh9q6710um1RdF39mHYvmx0jpAJCNe/ApWBfk7gueNMlkA/A73U3Oq1vpK+vIh2MMxcuBV5RJNTzk6NumzUyaPekN4iJevRjwzMtpyEtiA1+dmR9MN+FtfFMx6yeD6jFg/aP1lg4=
+	t=1724772297; cv=none; b=eeu67fl3U8zpQHG+/dqVG+jrWp6EnU2j/I/RUmrTAzl5jjfzpKJnXP81pUWKEl4Pfn5D9usyeaaXxV9rMKqRVz+DcuoeTzDG+bAbd3UJpW/pXHiCPYuiGeLQ3VyGs6GvZJ8PC4IkgOWRwpfC5k+41ef/PyOt5wK4uBdqhKnO65A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771231; c=relaxed/simple;
-	bh=M4Oig4K/4QXzR3E9wqoEw0Pd8OXUVsGqsyZK9z4ANNQ=;
+	s=arc-20240116; t=1724772297; c=relaxed/simple;
+	bh=Dq84TwTx8ImUWtaYVOk2tSiMz7d1vi+xTLOkFYunedc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oyXYSDtADSQ/VrvxMYGYxLJyTmBffIFvxLiym5HLAKuSN3iWfdTUs0Pp4fzLOVuyQxWeGzuITAoOidSuhf0VQIcI14AEGQ3Eb8gVDSZrI4xeuxf0dFSDbbIhVL3S1Tg+lpRDvYYMBRgMIy+nnmfT0nGdSeV306NE5vHA2Fen/ic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VklIDWk1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1BCFC4AF55;
-	Tue, 27 Aug 2024 15:07:10 +0000 (UTC)
+	 MIME-Version; b=t4dh9FTBVOm6BNNc75CPwgfWTDFOd1TUKeJcC2C0HyNX31Yf1q/Tsbdg7vIEbxMCaq2tzpkcoQcK7/xiCFlKaesBNJfRlWBcRwoip5KV/rJmHC96Ag9pmaqSTt2SViFwXC75sP/ou/BiCJUbMdpINhAm0rDRYdsS3djKuLKaukA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q1T3cB7o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 422DCC61071;
+	Tue, 27 Aug 2024 15:24:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771231;
-	bh=M4Oig4K/4QXzR3E9wqoEw0Pd8OXUVsGqsyZK9z4ANNQ=;
+	s=korg; t=1724772297;
+	bh=Dq84TwTx8ImUWtaYVOk2tSiMz7d1vi+xTLOkFYunedc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VklIDWk1YRjqyZaqjwuRcm27LURmwWrPsu/HcA7FiRYa7iUuwOD+15GYnXf7vn0IW
-	 pUsrdU7LgbQqOBpg6gkKssZ95A1Uyn/YKmkOGvjnhmOFBgFc4RoVNxExAJK8fO7Ayt
-	 xdxxcLXZhrIP/hjoAUJ9ocX0HPaPBKoBE0wSTTdA=
+	b=Q1T3cB7oshzyEpMMJN23acDvFYEjTomjTTpprLMCbYS4lxQk8Ih0psArhfNoZgvwF
+	 /BVWTRh69TaQQYy7ZGXPY8ENRleo3xoXVrtMleBfWiR3WCQk4emyvF6I1JL2s9i9PT
+	 o6hRnNoewPvrRQmzxUzjz2eRFG6pAf2Tct0XgrYc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Finn Behrens <me@kloenk.dev>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
+	Chengfeng Ye <dg573847474@gmail.com>,
+	Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 125/273] rust: work around `bindgen` 0.69.0 issue
+Subject: [PATCH 6.1 141/321] IB/hfi1: Fix potential deadlock on &irq_src_lock and &dd->uctxt_lock
 Date: Tue, 27 Aug 2024 16:37:29 +0200
-Message-ID: <20240827143838.162868859@linuxfoundation.org>
+Message-ID: <20240827143843.606358632@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,74 +63,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Chengfeng Ye <dg573847474@gmail.com>
 
-[ Upstream commit 9e98db17837093cb0f4dcfcc3524739d93249c45 ]
+[ Upstream commit 2f19c4b8395ccb6eb25ccafee883c8cfbe3fc193 ]
 
-`bindgen` 0.69.0 contains a bug: `--version` does not work without
-providing a header [1]:
+handle_receive_interrupt_napi_sp() running inside interrupt handler
+could introduce inverse lock ordering between &dd->irq_src_lock
+and &dd->uctxt_lock, if read_mod_write() is preempted by the isr.
 
-    error: the following required arguments were not provided:
-      <HEADER>
+          [CPU0]                                        |          [CPU1]
+hfi1_ipoib_dev_open()                                   |
+--> hfi1_netdev_enable_queues()                         |
+--> enable_queues(rx)                                   |
+--> hfi1_rcvctrl()                                      |
+--> set_intr_bits()                                     |
+--> read_mod_write()                                    |
+--> spin_lock(&dd->irq_src_lock)                        |
+                                                        | hfi1_poll()
+                                                        | --> poll_next()
+                                                        | --> spin_lock_irq(&dd->uctxt_lock)
+                                                        |
+                                                        | --> hfi1_rcvctrl()
+                                                        | --> set_intr_bits()
+                                                        | --> read_mod_write()
+                                                        | --> spin_lock(&dd->irq_src_lock)
+<interrupt>                                             |
+   --> handle_receive_interrupt_napi_sp()               |
+   --> set_all_fastpath()                               |
+   --> hfi1_rcd_get_by_index()                          |
+   --> spin_lock_irqsave(&dd->uctxt_lock)               |
 
-    Usage: bindgen <FLAGS> <OPTIONS> <HEADER> -- <CLANG_ARGS>...
+This flaw was found by an experimental static analysis tool I am
+developing for irq-related deadlock.
 
-Thus, in preparation for supporting several `bindgen` versions, work
-around the issue by passing a dummy argument.
+To prevent the potential deadlock, the patch use spin_lock_irqsave()
+on &dd->irq_src_lock inside read_mod_write() to prevent the possible
+deadlock scenario.
 
-Include a comment so that we can remove the workaround in the future.
-
-Link: https://github.com/rust-lang/rust-bindgen/pull/2678 [1]
-Reviewed-by: Finn Behrens <me@kloenk.dev>
-Tested-by: Benno Lossin <benno.lossin@proton.me>
-Tested-by: Andreas Hindborg <a.hindborg@samsung.com>
-Link: https://lore.kernel.org/r/20240709160615.998336-9-ojeda@kernel.org
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Stable-dep-of: 5ce86c6c8613 ("rust: suppress error messages from CONFIG_{RUSTC,BINDGEN}_VERSION_TEXT")
+Signed-off-by: Chengfeng Ye <dg573847474@gmail.com>
+Link: https://lore.kernel.org/r/20230926101116.2797-1-dg573847474@gmail.com
+Acked-by: Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- init/Kconfig                 | 5 ++++-
- scripts/rust_is_available.sh | 6 +++++-
- 2 files changed, 9 insertions(+), 2 deletions(-)
+ drivers/infiniband/hw/hfi1/chip.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/init/Kconfig b/init/Kconfig
-index 6e97693b675f2..b7683506264f0 100644
---- a/init/Kconfig
-+++ b/init/Kconfig
-@@ -1911,7 +1911,10 @@ config RUSTC_VERSION_TEXT
- config BINDGEN_VERSION_TEXT
- 	string
- 	depends on RUST
--	default $(shell,command -v $(BINDGEN) >/dev/null 2>&1 && $(BINDGEN) --version || echo n)
-+	# The dummy parameter `workaround-for-0.69.0` is required to support 0.69.0
-+	# (https://github.com/rust-lang/rust-bindgen/pull/2678). It can be removed when
-+	# the minimum version is upgraded past that (0.69.1 already fixed the issue).
-+	default $(shell,command -v $(BINDGEN) >/dev/null 2>&1 && $(BINDGEN) --version workaround-for-0.69.0 || echo n)
+diff --git a/drivers/infiniband/hw/hfi1/chip.c b/drivers/infiniband/hw/hfi1/chip.c
+index 194cac40da653..c560552244ae8 100644
+--- a/drivers/infiniband/hw/hfi1/chip.c
++++ b/drivers/infiniband/hw/hfi1/chip.c
+@@ -13183,15 +13183,16 @@ static void read_mod_write(struct hfi1_devdata *dd, u16 src, u64 bits,
+ {
+ 	u64 reg;
+ 	u16 idx = src / BITS_PER_REGISTER;
++	unsigned long flags;
  
- #
- # Place an empty function call at each tracepoint site. Can be
-diff --git a/scripts/rust_is_available.sh b/scripts/rust_is_available.sh
-index 117018946b577..a6fdcf13e0e53 100755
---- a/scripts/rust_is_available.sh
-+++ b/scripts/rust_is_available.sh
-@@ -129,8 +129,12 @@ fi
- # Check that the Rust bindings generator is suitable.
- #
- # Non-stable and distributions' versions may have a version suffix, e.g. `-dev`.
-+#
-+# The dummy parameter `workaround-for-0.69.0` is required to support 0.69.0
-+# (https://github.com/rust-lang/rust-bindgen/pull/2678). It can be removed when
-+# the minimum version is upgraded past that (0.69.1 already fixed the issue).
- rust_bindings_generator_output=$( \
--	LC_ALL=C "$BINDGEN" --version 2>/dev/null
-+	LC_ALL=C "$BINDGEN" --version workaround-for-0.69.0 2>/dev/null
- ) || rust_bindings_generator_code=$?
- if [ -n "$rust_bindings_generator_code" ]; then
- 	echo >&2 "***"
+-	spin_lock(&dd->irq_src_lock);
++	spin_lock_irqsave(&dd->irq_src_lock, flags);
+ 	reg = read_csr(dd, CCE_INT_MASK + (8 * idx));
+ 	if (set)
+ 		reg |= bits;
+ 	else
+ 		reg &= ~bits;
+ 	write_csr(dd, CCE_INT_MASK + (8 * idx), reg);
+-	spin_unlock(&dd->irq_src_lock);
++	spin_unlock_irqrestore(&dd->irq_src_lock, flags);
+ }
+ 
+ /**
 -- 
 2.43.0
 
