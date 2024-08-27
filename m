@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-70769-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70524-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9518960FF1
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:04:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82C84960E93
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:50:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 67754287153
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:04:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E6A8BB24946
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:49:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C67F1C7B60;
-	Tue, 27 Aug 2024 15:03:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 628551C4EF9;
+	Tue, 27 Aug 2024 14:49:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SYT5MW5J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a6VoQl12"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFF4F1BA88C;
-	Tue, 27 Aug 2024 15:03:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2109A1A072D;
+	Tue, 27 Aug 2024 14:49:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771002; cv=none; b=M3R7xELmkbqwPjS7kEXnfmq8euJXHIxq0tAtka1y3jSXK1HmhA6IAd2sg7MmJOLKq9FcljJ6MKq8V87i9UGMiITSD/5s+FPAEI0YT6c6P+m6P0D48IqRd6AoPcW5Ohekaar4q4b8g65+H36LgHgw6QX7awuc1v6uhBh+ajPH+eU=
+	t=1724770195; cv=none; b=Eoh6ydkkoO2qEcBPhTI0OAPr5uHngDIjlkkYw2ZUh3/28TjAeqJQCycFt+1pMgCBmYTJokx50R3+/y4hdkn73J7UNM/94mBzMVi4bIFuEKlpO1Yri6C4G26QMBRP691eOlShd/FpDvgzm8ABVqgVRyP0NUr4xaA3vrq/MDy9aAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771002; c=relaxed/simple;
-	bh=3RdubchbyW94y9MGHZk1lPMfuojcMBS4679TA7sgwVo=;
+	s=arc-20240116; t=1724770195; c=relaxed/simple;
+	bh=FISunt2bYraKNIX1iczucc51zlV8cBiqxgNCm9zPvRM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PZkyNnB5OQQ2vUgQAI77Qu3zBVIGN7iMtFCApUbB4a0tv/A2KaTmtKV//tQgH35+PTmEIeE3b1UGYMk9xYM0w0KHWSvAHKVlu7z4FoajfXxuCZ7bo6nGmcAKz1d00uOnrrkzFf8+nSfqUgyK6v+HtPN9dYEpi6jwtCxHDpJFydE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SYT5MW5J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44955C61049;
-	Tue, 27 Aug 2024 15:03:21 +0000 (UTC)
+	 MIME-Version; b=U/5M4QNkyY1Je5XAsuyWLbkNbSZhIE2uD7lbInNRbyITJgJ6IGN6LaAeqf4g18iUfNlNBuT3CW7gHxLJt519xFFvrkG/bApTL7avCJWJUBsb3bxVyPJUw9mJZx0Lyjdi5AmtA2brXjxxm4TzDgqBS3NpbMcNkFTnblkj+jnkNbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a6VoQl12; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 251DEC4DDEA;
+	Tue, 27 Aug 2024 14:49:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771001;
-	bh=3RdubchbyW94y9MGHZk1lPMfuojcMBS4679TA7sgwVo=;
+	s=korg; t=1724770194;
+	bh=FISunt2bYraKNIX1iczucc51zlV8cBiqxgNCm9zPvRM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SYT5MW5JeQATnqBla5+RBolcoymghvBqud/j5ypcPdkvqAyXpfMbcEuRyzT+vg0Em
-	 k0E/MOeY1HH1nVUeRdurFnoq5MSflf9+tH4FoNiwblC1hk1NSQ+qNUQDLwXOFPrleQ
-	 zX9yPZE87Ko4NupJ0qu+E+Sga+XxbDf/sLRFQIp4=
+	b=a6VoQl12kOeG8SDemy0pH1bH31IoowhI5/4idcexapRjyI+8oaOQ3WsQfJ3Fq41/q
+	 akwvzSMZcipo+5gQfZ4ZQE3yHrHhxhRc4I4OyjHqKmSyoZwM+7hkqFJ+2vUwjJQRpX
+	 uakxfskZzcp/bvgzuiXjVxoYlbp9FQskpLf9omh4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael van der Westhuizen <rmikey@meta.com>,
-	Breno Leitao <leitao@debian.org>,
-	Dmitry Osipenko <digetx@gmail.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 6.10 030/273] i2c: tegra: Do not mark ACPI devices as irq safe
-Date: Tue, 27 Aug 2024 16:35:54 +0200
-Message-ID: <20240827143834.539418545@linuxfoundation.org>
+	Mike Christie <michael.christie@oracle.com>,
+	Christoph Hellwig <hch@lst.de>,
+	John Garry <john.g.garry@oracle.com>,
+	Martin Wilck <mwilck@suse.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 124/341] scsi: spi: Fix sshdr use
+Date: Tue, 27 Aug 2024 16:35:55 +0200
+Message-ID: <20240827143848.134926351@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,63 +65,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Mike Christie <michael.christie@oracle.com>
 
-commit 14d069d92951a3e150c0a81f2ca3b93e54da913b upstream.
+[ Upstream commit 0b149cee836aa53989ea089af1cb9d90d7c6ac9e ]
 
-On ACPI machines, the tegra i2c module encounters an issue due to a
-mutex being called inside a spinlock. This leads to the following bug:
+If scsi_execute_cmd returns < 0, it doesn't initialize the sshdr, so we
+shouldn't access the sshdr. If it returns 0, then the cmd executed
+successfully, so there is no need to check the sshdr. This has us access
+the sshdr when we get a return value > 0.
 
-	BUG: sleeping function called from invalid context at kernel/locking/mutex.c:585
-	...
-
-	Call trace:
-	__might_sleep
-	__mutex_lock_common
-	mutex_lock_nested
-	acpi_subsys_runtime_resume
-	rpm_resume
-	tegra_i2c_xfer
-
-The problem arises because during __pm_runtime_resume(), the spinlock
-&dev->power.lock is acquired before rpm_resume() is called. Later,
-rpm_resume() invokes acpi_subsys_runtime_resume(), which relies on
-mutexes, triggering the error.
-
-To address this issue, devices on ACPI are now marked as not IRQ-safe,
-considering the dependency of acpi_subsys_runtime_resume() on mutexes.
-
-Fixes: bd2fdedbf2ba ("i2c: tegra: Add the ACPI support")
-Cc: <stable@vger.kernel.org> # v5.17+
-Co-developed-by: Michael van der Westhuizen <rmikey@meta.com>
-Signed-off-by: Michael van der Westhuizen <rmikey@meta.com>
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Dmitry Osipenko <digetx@gmail.com>
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Mike Christie <michael.christie@oracle.com>
+Link: https://lore.kernel.org/r/20231004210013.5601-7-michael.christie@oracle.com
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: John Garry <john.g.garry@oracle.com>
+Reviewed-by: Martin Wilck <mwilck@suse.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-tegra.c |    4 ++--
+ drivers/scsi/scsi_transport_spi.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/i2c/busses/i2c-tegra.c
-+++ b/drivers/i2c/busses/i2c-tegra.c
-@@ -1802,9 +1802,9 @@ static int tegra_i2c_probe(struct platfo
- 	 * domain.
- 	 *
- 	 * VI I2C device shouldn't be marked as IRQ-safe because VI I2C won't
--	 * be used for atomic transfers.
-+	 * be used for atomic transfers. ACPI device is not IRQ safe also.
- 	 */
--	if (!IS_VI(i2c_dev))
-+	if (!IS_VI(i2c_dev) && !has_acpi_companion(i2c_dev->dev))
- 		pm_runtime_irq_safe(i2c_dev->dev);
+diff --git a/drivers/scsi/scsi_transport_spi.c b/drivers/scsi/scsi_transport_spi.c
+index 2442d4d2e3f38..f668c1c0a98f2 100644
+--- a/drivers/scsi/scsi_transport_spi.c
++++ b/drivers/scsi/scsi_transport_spi.c
+@@ -676,10 +676,10 @@ spi_dv_device_echo_buffer(struct scsi_device *sdev, u8 *buffer,
+ 	for (r = 0; r < retries; r++) {
+ 		result = spi_execute(sdev, spi_write_buffer, REQ_OP_DRV_OUT,
+ 				     buffer, len, &sshdr);
+-		if(result || !scsi_device_online(sdev)) {
++		if (result || !scsi_device_online(sdev)) {
  
- 	pm_runtime_enable(i2c_dev->dev);
+ 			scsi_device_set_state(sdev, SDEV_QUIESCE);
+-			if (scsi_sense_valid(&sshdr)
++			if (result > 0 && scsi_sense_valid(&sshdr)
+ 			    && sshdr.sense_key == ILLEGAL_REQUEST
+ 			    /* INVALID FIELD IN CDB */
+ 			    && sshdr.asc == 0x24 && sshdr.ascq == 0x00)
+-- 
+2.43.0
+
 
 
 
