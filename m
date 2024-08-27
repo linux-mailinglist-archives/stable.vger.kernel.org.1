@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-70990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71275-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4C8996110C
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:15:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E39D796130E
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:40:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 617C128299F
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:15:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6C5A6B2AEB9
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:33:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A8E31C6F5E;
-	Tue, 27 Aug 2024 15:15:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 232731D049A;
+	Tue, 27 Aug 2024 15:31:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GB9mDcwd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gzvFyWTn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDAC71C6F51;
-	Tue, 27 Aug 2024 15:15:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D64421CFEC6;
+	Tue, 27 Aug 2024 15:31:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771733; cv=none; b=S2J0YfTwas4uTxJ7aESBnRfmuKO5eGLGjH0ypG3jxUgMozaeer+sLso7nTN51elp9cfjvErH+kSuYTWztUUSUOn9s5wCfXfl9iNMg68Fs3Gt83kXVeXqW46Qe5XlyAUpsXazgFx9o5jMdQuEiosKd/+2dUbIQb5hUt/EQTKfnrE=
+	t=1724772673; cv=none; b=lhue8ykfbM8XLyJdvVMZ9FvTouy7R7kQt8tUh6Q6Xiykaj2pZKsniZUMwmMLfbGDzRMmyfd/acJUMbGxw51Y7dmgbN50nEVENRgG/5C3ReTJjXJw9G3bIaZU2m44HGBESjaz/Maja0uj/3KXb5cgdb+8Xk94mgQi0xUEQfcvaX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771733; c=relaxed/simple;
-	bh=GbehYxQN3TerK1eCeo/Vzx5cXzjcwRI8gdeuU84wLSs=;
+	s=arc-20240116; t=1724772673; c=relaxed/simple;
+	bh=DpHFqEKkxh/QlDPSEjgCn55aAkhxbHQ1za7p2DwIJSE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WNxCszlZEhMEbpasmapI3baRHloM7UgE/TS7TqUu9iHa81UtKX42udWKQlsTDwfLT+ZYt3XOlnV+2LwNB9ujfNyEK6pOZl2q6BNyAOSMvEkTp2qdo7aRYETdI7Zj/Ol8uxqKEsxQ8pXe8x2OYIstawyKNRus/YdA46gD6zsWe20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GB9mDcwd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BCBDC4DDFF;
-	Tue, 27 Aug 2024 15:15:31 +0000 (UTC)
+	 MIME-Version; b=SfB4s+MwScciulcjROR6CaN4/fzYy/0jg5wSQcn9zOsC2dm0jOOo4SJ3M/xM73lS3GakPd6LKjIvHrl367r3Tt8d10skEKShxYH9IWL1sU5bUhXCamcIFfE/7AhRHPZBlNx/52F1VpSR2WxGG9GG0d82lx7AiqLmw+DDa/TnagU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gzvFyWTn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 471B6C4DDF0;
+	Tue, 27 Aug 2024 15:31:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771732;
-	bh=GbehYxQN3TerK1eCeo/Vzx5cXzjcwRI8gdeuU84wLSs=;
+	s=korg; t=1724772673;
+	bh=DpHFqEKkxh/QlDPSEjgCn55aAkhxbHQ1za7p2DwIJSE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GB9mDcwd/pEGjcFucbpaUku+au9xk0tiA15r6GHPG3qCT058kqzx1VAvCVd2A1by3
-	 e3TRuApkMi898PSOAGiWuqI9bofi57f5WRr/A0knwno56rQ1N+b26hTkNSlaXwOkZY
-	 e/Smec+sIQWgXKHO309Y9XQl9gGCJam9NiGgDt+0=
+	b=gzvFyWTn5uOo/T2IZnC1hKyWGHvLs0dp4akgLNPMVgmLjHcz7LPq4H7aAcPe8R3K4
+	 022qFoR4n2guucwlSwoIiSRka3Xsrfg8P0V8E6UVAqt1tJBNJztU1lWy/knxDIuuo7
+	 kgFYIitGERW+VCz/orbNNTDrMDimJjOjBeTaXKiI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Boyuan Zhang <boyuan.zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Ruijing Dong <ruijing.dong@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH 6.10 270/273] drm/amdgpu/vcn: not pause dpg for unified queue
+	"Huang, Ying" <ying.huang@intel.com>,
+	Zi Yan <ziy@nvidia.com>,
+	David Hildenbrand <david@redhat.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Mel Gorman <mgorman@suse.de>,
+	Yang Shi <shy828301@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 286/321] mm/numa: no task_numa_fault() call if PMD is changed
 Date: Tue, 27 Aug 2024 16:39:54 +0200
-Message-ID: <20240827143843.673056202@linuxfoundation.org>
+Message-ID: <20240827143849.134273253@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +67,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boyuan Zhang <boyuan.zhang@amd.com>
+From: Zi Yan <ziy@nvidia.com>
 
-commit 7d75ef3736a025db441be652c8cc8e84044a215f upstream.
+commit fd8c35a92910f4829b7c99841f39b1b952c259d5 upstream.
 
-For unified queue, DPG pause for encoding is done inside VCN firmware,
-so there is no need to pause dpg based on ring type in kernel.
+When handling a numa page fault, task_numa_fault() should be called by a
+process that restores the page table of the faulted folio to avoid
+duplicated stats counting.  Commit c5b5a3dd2c1f ("mm: thp: refactor NUMA
+fault handling") restructured do_huge_pmd_numa_page() and did not avoid
+task_numa_fault() call in the second page table check after a numa
+migration failure.  Fix it by making all !pmd_same() return immediately.
 
-For VCN3 and below, pausing DPG for encoding in kernel is still needed.
+This issue can cause task_numa_fault() being called more than necessary
+and lead to unexpected numa balancing results (It is hard to tell whether
+the issue will cause positive or negative performance impact due to
+duplicated numa fault counting).
 
-v2: add more comments
-v3: update commit message
-
-Signed-off-by: Boyuan Zhang <boyuan.zhang@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Ruijing Dong <ruijing.dong@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://lkml.kernel.org/r/20240809145906.1513458-3-ziy@nvidia.com
+Fixes: c5b5a3dd2c1f ("mm: thp: refactor NUMA fault handling")
+Reported-by: "Huang, Ying" <ying.huang@intel.com>
+Closes: https://lore.kernel.org/linux-mm/87zfqfw0yw.fsf@yhuang6-desk2.ccr.corp.intel.com/
+Signed-off-by: Zi Yan <ziy@nvidia.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: "Huang, Ying" <ying.huang@intel.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Mel Gorman <mgorman@suse.de>
+Cc: Yang Shi <shy828301@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.c |   14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ mm/huge_memory.c |   30 +++++++++++++-----------------
+ 1 file changed, 13 insertions(+), 17 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.c
-@@ -393,7 +393,9 @@ static void amdgpu_vcn_idle_work_handler
- 		for (i = 0; i < adev->vcn.num_enc_rings; ++i)
- 			fence[j] += amdgpu_fence_count_emitted(&adev->vcn.inst[j].ring_enc[i]);
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -1492,7 +1492,7 @@ vm_fault_t do_huge_pmd_numa_page(struct
+ 	vmf->ptl = pmd_lock(vma->vm_mm, vmf->pmd);
+ 	if (unlikely(!pmd_same(oldpmd, *vmf->pmd))) {
+ 		spin_unlock(vmf->ptl);
+-		goto out;
++		return 0;
+ 	}
  
--		if (adev->pg_flags & AMD_PG_SUPPORT_VCN_DPG)	{
-+		/* Only set DPG pause for VCN3 or below, VCN4 and above will be handled by FW */
-+		if (adev->pg_flags & AMD_PG_SUPPORT_VCN_DPG &&
-+		    !adev->vcn.using_unified_queue) {
- 			struct dpg_pause_state new_state;
+ 	pmd = pmd_modify(oldpmd, vma->vm_page_prot);
+@@ -1525,23 +1525,16 @@ vm_fault_t do_huge_pmd_numa_page(struct
+ 	if (migrated) {
+ 		flags |= TNF_MIGRATED;
+ 		page_nid = target_nid;
+-	} else {
+-		flags |= TNF_MIGRATE_FAIL;
+-		vmf->ptl = pmd_lock(vma->vm_mm, vmf->pmd);
+-		if (unlikely(!pmd_same(oldpmd, *vmf->pmd))) {
+-			spin_unlock(vmf->ptl);
+-			goto out;
+-		}
+-		goto out_map;
++		task_numa_fault(last_cpupid, page_nid, HPAGE_PMD_NR, flags);
++		return 0;
+ 	}
  
- 			if (fence[j] ||
-@@ -439,7 +441,9 @@ void amdgpu_vcn_ring_begin_use(struct am
- 	amdgpu_device_ip_set_powergating_state(adev, AMD_IP_BLOCK_TYPE_VCN,
- 	       AMD_PG_STATE_UNGATE);
- 
--	if (adev->pg_flags & AMD_PG_SUPPORT_VCN_DPG)	{
-+	/* Only set DPG pause for VCN3 or below, VCN4 and above will be handled by FW */
-+	if (adev->pg_flags & AMD_PG_SUPPORT_VCN_DPG &&
-+	    !adev->vcn.using_unified_queue) {
- 		struct dpg_pause_state new_state;
- 
- 		if (ring->funcs->type == AMDGPU_RING_TYPE_VCN_ENC) {
-@@ -465,8 +469,12 @@ void amdgpu_vcn_ring_begin_use(struct am
- 
- void amdgpu_vcn_ring_end_use(struct amdgpu_ring *ring)
- {
-+	struct amdgpu_device *adev = ring->adev;
+-out:
+-	if (page_nid != NUMA_NO_NODE)
+-		task_numa_fault(last_cpupid, page_nid, HPAGE_PMD_NR,
+-				flags);
+-
+-	return 0;
+-
++	flags |= TNF_MIGRATE_FAIL;
++	vmf->ptl = pmd_lock(vma->vm_mm, vmf->pmd);
++	if (unlikely(!pmd_same(oldpmd, *vmf->pmd))) {
++		spin_unlock(vmf->ptl);
++		return 0;
++	}
+ out_map:
+ 	/* Restore the PMD */
+ 	pmd = pmd_modify(oldpmd, vma->vm_page_prot);
+@@ -1551,7 +1544,10 @@ out_map:
+ 	set_pmd_at(vma->vm_mm, haddr, vmf->pmd, pmd);
+ 	update_mmu_cache_pmd(vma, vmf->address, vmf->pmd);
+ 	spin_unlock(vmf->ptl);
+-	goto out;
 +
-+	/* Only set DPG pause for VCN3 or below, VCN4 and above will be handled by FW */
- 	if (ring->adev->pg_flags & AMD_PG_SUPPORT_VCN_DPG &&
--		ring->funcs->type == AMDGPU_RING_TYPE_VCN_ENC)
-+	    ring->funcs->type == AMDGPU_RING_TYPE_VCN_ENC &&
-+	    !adev->vcn.using_unified_queue)
- 		atomic_dec(&ring->adev->vcn.inst[ring->me].dpg_enc_submission_cnt);
++	if (page_nid != NUMA_NO_NODE)
++		task_numa_fault(last_cpupid, page_nid, HPAGE_PMD_NR, flags);
++	return 0;
+ }
  
- 	atomic_dec(&ring->adev->vcn.total_submission_cnt);
+ /*
 
 
 
