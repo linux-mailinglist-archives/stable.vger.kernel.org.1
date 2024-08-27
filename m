@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-71159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70587-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF0169611F0
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:25:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72534960EEC
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:53:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 977A7281349
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:25:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1ADC21F24ADD
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:53:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 523EB1C6F49;
-	Tue, 27 Aug 2024 15:24:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45E041C6F52;
+	Tue, 27 Aug 2024 14:53:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a2vN8Lxd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CPxi+FNU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F7C61C689C;
-	Tue, 27 Aug 2024 15:24:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFC801C68B9;
+	Tue, 27 Aug 2024 14:53:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772294; cv=none; b=oNe8SS+Ittq0Fb/qNP5+ljoAdor3FqfvshaMEYLtEB8WovJsCXa8kuePxhi6hHCNqq+0FUwAt5pfDM5d4dF9qXvPHu2hTt9Iz03DEP9ggOXfzEe3Uo8d/18cOYpRUY3oR1llFOaTnZ0f0k6RZdQO994glH0lr8vqshCtMBgyu7w=
+	t=1724770403; cv=none; b=CdRJSU4JSbE1F8gns8dg8WXzrZGr0r+xJRFYLsWWk0iCeNYeFpDAEYVCM4/A2V+A+/ycE3aAPWXl9nkovsBiUTWDi+m9U+aOC6H2OkMQfHl8MEhCOhHDQqIe82K12VALvRs8gdpPPYPC+FMWGPUUJ7LO6rvPfWisw4MBq3B4nss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772294; c=relaxed/simple;
-	bh=mJugoMKZaO8QmixlGDQhOssOuIK04DIE4AmGL5jOxuE=;
+	s=arc-20240116; t=1724770403; c=relaxed/simple;
+	bh=1inr30y1vMcQIZHQEhNxtGpNoO6NUvvjmUWKTlxIG/w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MUD5J5Ha6k6U7BIzltVjVukmwZTUIOueuwU/kMeMqwNqYarHEA1OSaOJd+OdnuM8DpUl1WOS+4QNbsjNs1UNb2hm2TbKuD2XU1EtgKO68GLzIueYjM2zm/A/jBvR0JlXqnVC1C3bQX/GwIZl9hJvvN3GSiTHfTAAkAFg8w4m6Wc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a2vN8Lxd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75EBDC61071;
-	Tue, 27 Aug 2024 15:24:53 +0000 (UTC)
+	 MIME-Version; b=ail9u5BOSPcYsG/oaYtH55+nl9w/CvCCrqlVCsTdNj+XyUdhvyoF4LsjS7RVvd+u0jckSeYa56ICy5o+L4i+toLpjYKx9irh1ME06vW8XKc/yora1jQe5EwA8vP33YRsxyMWyJTQ/k58j7KrvoP4vdT1N+ubG6uFbhzChRHvcYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CPxi+FNU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A897C61050;
+	Tue, 27 Aug 2024 14:53:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772293;
-	bh=mJugoMKZaO8QmixlGDQhOssOuIK04DIE4AmGL5jOxuE=;
+	s=korg; t=1724770402;
+	bh=1inr30y1vMcQIZHQEhNxtGpNoO6NUvvjmUWKTlxIG/w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a2vN8Lxd/e435GTpFN/KH4gpTRwvlRs7DOxk+YIB9V+6Spq+hyQ1PosubZNL/xSnx
-	 XXYz97hf7UpMKQwpe9XXs5ppSx2nCT2+wd5EeIw6U1c+9g2rKS1rZ39KgGXGM0wObX
-	 sioMqRDHyrQRZvMHR0J7KFuR3SJgqq9k2wStgs5A=
+	b=CPxi+FNU64bYk2lZZWD2EWAkdCW/fV6gCuJ0jY5r5CVifPWaJ2cHuqzUYX73jS032
+	 6Rw38ED9eKIJBAAKuAA8/AoTrN7/zhfsqKq/M/KmHNFKXAYWii0CKm8VE2eBWpWGWb
+	 oq4MBjS+Pj5wud3vmfjZKyTrvoT/0b5cOMqhyFgE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kees Cook <keescook@chromium.org>,
-	Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Brett Creeley <brett.creeley@amd.com>,
+	Shannon Nelson <shannon.nelson@amd.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 140/321] clk: visconti: Add bounds-checking coverage for struct visconti_pll_provider
+Subject: [PATCH 6.6 217/341] ionic: use pci_is_enabled not open code
 Date: Tue, 27 Aug 2024 16:37:28 +0200
-Message-ID: <20240827143843.568906101@linuxfoundation.org>
+Message-ID: <20240827143851.669381437@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,81 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gustavo A. R. Silva <gustavoars@kernel.org>
+From: Shannon Nelson <shannon.nelson@amd.com>
 
-[ Upstream commit 397d887c1601a71e8a8abdb6beea67d58f0472d3 ]
+[ Upstream commit 121e4dcba3700b30e63f25203d09ddfccbab4a09 ]
 
-In order to gain the bounds-checking coverage that __counted_by provides
-to flexible-array members at run-time via CONFIG_UBSAN_BOUNDS (for array
-indexing) and CONFIG_FORTIFY_SOURCE (for strcpy/memcpy-family functions),
-we must make sure that the counter member, in this particular case `num`,
-is updated before the first access to the flex-array member, in this
-particular case array `hws`. See below:
+Since there is a utility available for this, use
+the API rather than open code.
 
-commit f316cdff8d67 ("clk: Annotate struct clk_hw_onecell_data with
-__counted_by") introduced `__counted_by` for `struct clk_hw_onecell_data`
-together with changes to relocate some of assignments of counter `num`
-before `hws` is accessed:
-
-include/linux/clk-provider.h:
-1380 struct clk_hw_onecell_data {
-1381         unsigned int num;
-1382         struct clk_hw *hws[] __counted_by(num);
-1383 };
-
-However, this structure is used as a member in other structs, in this
-case in `struct visconti_pll_provider`:
-
-drivers/clk/visconti/pll.h:
- 16 struct visconti_pll_provider {
- 17         void __iomem *reg_base;
- 18         struct device_node *node;
- 19
- 20         /* Must be last */
- 21         struct clk_hw_onecell_data clk_data;
- 22 };
-
-Hence, we need to move the assignments to `ctx->clk_data.num` after
-allocation for `struct visconti_pll_provider` and before accessing the
-flexible array `ctx->clk_data.hws`. And, as assignments for all members
-in `struct visconti_pll_provider` are originally adjacent to each other,
-relocate all assignments together, so we don't split up
-`ctx->clk_data.hws = nr_plls` from the rest. :)
-
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Acked-by: Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Link: https://lore.kernel.org/r/e3189f3e40e8723b6d794fb2260e2e9ab6b960bd.1697492890.git.gustavoars@kernel.org
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Fixes: 13943d6c8273 ("ionic: prevent pci disable of already disabled device")
+Reviewed-by: Brett Creeley <brett.creeley@amd.com>
+Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/visconti/pll.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/visconti/pll.c b/drivers/clk/visconti/pll.c
-index 1f3234f226674..e9cd80e085dc3 100644
---- a/drivers/clk/visconti/pll.c
-+++ b/drivers/clk/visconti/pll.c
-@@ -329,12 +329,12 @@ struct visconti_pll_provider * __init visconti_init_pll(struct device_node *np,
- 	if (!ctx)
- 		return ERR_PTR(-ENOMEM);
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c b/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c
+index a5fa49fd21390..35099ad5eccc8 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c
++++ b/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c
+@@ -223,7 +223,7 @@ static void ionic_clear_pci(struct ionic *ionic)
+ 	ionic_unmap_bars(ionic);
+ 	pci_release_regions(ionic->pdev);
  
--	for (i = 0; i < nr_plls; ++i)
--		ctx->clk_data.hws[i] = ERR_PTR(-ENOENT);
--
- 	ctx->node = np;
- 	ctx->reg_base = base;
- 	ctx->clk_data.num = nr_plls;
- 
-+	for (i = 0; i < nr_plls; ++i)
-+		ctx->clk_data.hws[i] = ERR_PTR(-ENOENT);
-+
- 	return ctx;
+-	if (atomic_read(&ionic->pdev->enable_cnt) > 0)
++	if (pci_is_enabled(ionic->pdev))
+ 		pci_disable_device(ionic->pdev);
  }
+ 
 -- 
 2.43.0
 
