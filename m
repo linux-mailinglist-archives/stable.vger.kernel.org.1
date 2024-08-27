@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-70522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71031-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A133F960E90
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:49:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 04ED4961151
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:19:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4B2AB1F24802
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:49:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A37991F2347F
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:19:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5A7F1C4EDE;
-	Tue, 27 Aug 2024 14:49:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E54771C86FB;
+	Tue, 27 Aug 2024 15:17:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="poEytfFw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="re0gkmH/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7567244C8C;
-	Tue, 27 Aug 2024 14:49:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F9B81C7B9D;
+	Tue, 27 Aug 2024 15:17:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770188; cv=none; b=l7gMsNZ53u/UxkxPW+9BquPnI2JTq87LTjaI8++9lFiUfbTSCx7Re9hqMQxE8wY630C1EI0LdBdsSf32MXLHgiApUX+zW5VTUZ2qIqi9j+TC9amkowW1LCRmxKWeyOb3gXRI0zgi4BAsE9NWmoWSdbJQhCH4ph4IbOqwqlymRUw=
+	t=1724771867; cv=none; b=WF3wNloPAMhtjoWtwUIRGAioYm1ayfgPj0YxbzYiEL0RyAWI2jKPrZ9l68YOy96LXuJn6zIhdk+mmMrtpjzZayZHgnRWljXvYZVWdQVLLfobHlL5CIfALmslHBISz2hP4rYncNU7Z8DNXj9sdTKMAzs5/7kz1qHor/LKhJDY+4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770188; c=relaxed/simple;
-	bh=02MzllkMX1LqfgjT2lLDmmbpWQuVtebv/qr0j0HLt4k=;
+	s=arc-20240116; t=1724771867; c=relaxed/simple;
+	bh=m/vEOTo3VzeDYYM2JEillxT7K3W9e7hKkpEDRKzW0oQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dI7n0IA2tR5yyblEAjryGF/KqIPZXXrYgtVq9CLrPzhr/QuBNInoqKNFVujMwSBezfJugGD5i0Z8UvDBfogQ2jea5dqfgZCVKxVBuqtGQ46KaISnKH3JsfgLN8bH4LHu2wbpIYcLrPuXAUzJguwfUVjJnqKEQGqkYoHZDRb8cdM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=poEytfFw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 755C2C4AF1C;
-	Tue, 27 Aug 2024 14:49:47 +0000 (UTC)
+	 MIME-Version; b=eM3MEuu7uDWcRg/RNF75Az34+aQhLn+unaUPdBRpkekRx47VAjEpJUWHD24uczxmGFzYe7aKZzQS/vQOe85Gj2QCAE64le9WAWc22upEthEc9rZ3WcgIaZr1xJPmw7i325EyTBq/rDSCLL3gIzawjdur5f8xoPWEJPlfpFgiW2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=re0gkmH/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12B69C61051;
+	Tue, 27 Aug 2024 15:17:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770188;
-	bh=02MzllkMX1LqfgjT2lLDmmbpWQuVtebv/qr0j0HLt4k=;
+	s=korg; t=1724771867;
+	bh=m/vEOTo3VzeDYYM2JEillxT7K3W9e7hKkpEDRKzW0oQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=poEytfFwzZDKE8VwUMN3+noxU0D+5C+KeVklYeIgQEimKUkqj8exEjz8fqrg8YwSn
-	 mTvr7pNOGUnG0slgxZbWtAb3aDtd6/2K6VB2r8pNeEFzmMkKtYC6pz5wfB2vn9Y1ql
-	 aoX1y8H3KsjGBq0uD//gFHJT8ksbiIzX0OHLW134=
+	b=re0gkmH/PG70EEUTkurVFLxeLS+nQwer0dXIo3AXB6rzdotPclIp5u0zYkSdXv8vw
+	 EzJ4g2gKmyogtc7bYUMIt9uenFzaSCOp1mRunr2ZhbsTDkX5yFerqyxh08k4nkZ6Th
+	 x144ThPiMZGOzpipKycSJaZ0fdEkeC7IaUuUYRcQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Acayan <mailingradian@gmail.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 122/341] iommu/arm-smmu-qcom: Add SDM670 MDSS compatible
+Subject: [PATCH 6.1 045/321] gfs2: Rename SDF_{FS_FROZEN => FREEZE_INITIATOR}
 Date: Tue, 27 Aug 2024 16:35:53 +0200
-Message-ID: <20240827143848.057795063@linuxfoundation.org>
+Message-ID: <20240827143839.943724802@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +60,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Acayan <mailingradian@gmail.com>
+From: Andreas Gruenbacher <agruenba@redhat.com>
 
-[ Upstream commit 270a1470408e44619a55be1079254bf2ba0567fb ]
+[ Upstream commit cad1e15804a83afd9a5c1d95a428d60d1f9c0340 ]
 
-Add the compatible for the MDSS client on the Snapdragon 670 so it can
-be properly configured by the IOMMU driver.
+Rename the SDF_FS_FROZEN flag to SDF_FREEZE_INITIATOR to indicate more
+clearly that the node that has this flag set is the initiator of the
+freeze.
 
-Otherwise, there is an unhandled context fault.
-
-Signed-off-by: Richard Acayan <mailingradian@gmail.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20230925234246.900351-3-mailingradian@gmail.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com
+Stable-dep-of: f66af88e3321 ("gfs2: Stop using gfs2_make_fs_ro for withdraw")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/gfs2/incore.h | 2 +-
+ fs/gfs2/super.c  | 8 ++++----
+ fs/gfs2/sys.c    | 2 +-
+ fs/gfs2/util.c   | 2 +-
+ 4 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
-index 40503376d80cc..6e6cb19c81f59 100644
---- a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
-+++ b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
-@@ -252,6 +252,7 @@ static const struct of_device_id qcom_smmu_client_of_match[] __maybe_unused = {
- 	{ .compatible = "qcom,sc7280-mss-pil" },
- 	{ .compatible = "qcom,sc8180x-mdss" },
- 	{ .compatible = "qcom,sc8280xp-mdss" },
-+	{ .compatible = "qcom,sdm670-mdss" },
- 	{ .compatible = "qcom,sdm845-mdss" },
- 	{ .compatible = "qcom,sdm845-mss-pil" },
- 	{ .compatible = "qcom,sm6350-mdss" },
+diff --git a/fs/gfs2/incore.h b/fs/gfs2/incore.h
+index d09d9892cd055..113aeb5877027 100644
+--- a/fs/gfs2/incore.h
++++ b/fs/gfs2/incore.h
+@@ -600,7 +600,7 @@ enum {
+ 	SDF_RORECOVERY		= 7, /* read only recovery */
+ 	SDF_SKIP_DLM_UNLOCK	= 8,
+ 	SDF_FORCE_AIL_FLUSH     = 9,
+-	SDF_FS_FROZEN           = 10,
++	SDF_FREEZE_INITIATOR	= 10,
+ 	SDF_WITHDRAWING		= 11, /* Will withdraw eventually */
+ 	SDF_WITHDRAW_IN_PROG	= 12, /* Withdraw is in progress */
+ 	SDF_REMOTE_WITHDRAW	= 13, /* Performing remote recovery */
+diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
+index cb05332e473bd..cdfbfda046945 100644
+--- a/fs/gfs2/super.c
++++ b/fs/gfs2/super.c
+@@ -676,8 +676,8 @@ void gfs2_freeze_func(struct work_struct *work)
+ 		gfs2_freeze_unlock(&freeze_gh);
+ 	}
+ 	deactivate_super(sb);
+-	clear_bit_unlock(SDF_FS_FROZEN, &sdp->sd_flags);
+-	wake_up_bit(&sdp->sd_flags, SDF_FS_FROZEN);
++	clear_bit_unlock(SDF_FREEZE_INITIATOR, &sdp->sd_flags);
++	wake_up_bit(&sdp->sd_flags, SDF_FREEZE_INITIATOR);
+ 	return;
+ }
+ 
+@@ -720,7 +720,7 @@ static int gfs2_freeze_super(struct super_block *sb)
+ 		fs_err(sdp, "retrying...\n");
+ 		msleep(1000);
+ 	}
+-	set_bit(SDF_FS_FROZEN, &sdp->sd_flags);
++	set_bit(SDF_FREEZE_INITIATOR, &sdp->sd_flags);
+ out:
+ 	mutex_unlock(&sdp->sd_freeze_mutex);
+ 	return error;
+@@ -745,7 +745,7 @@ static int gfs2_thaw_super(struct super_block *sb)
+ 
+ 	gfs2_freeze_unlock(&sdp->sd_freeze_gh);
+ 	mutex_unlock(&sdp->sd_freeze_mutex);
+-	return wait_on_bit(&sdp->sd_flags, SDF_FS_FROZEN, TASK_INTERRUPTIBLE);
++	return wait_on_bit(&sdp->sd_flags, SDF_FREEZE_INITIATOR, TASK_INTERRUPTIBLE);
+ }
+ 
+ /**
+diff --git a/fs/gfs2/sys.c b/fs/gfs2/sys.c
+index d87ea98cf5350..e1fa76d4a7c22 100644
+--- a/fs/gfs2/sys.c
++++ b/fs/gfs2/sys.c
+@@ -110,7 +110,7 @@ static ssize_t status_show(struct gfs2_sbd *sdp, char *buf)
+ 		     test_bit(SDF_RORECOVERY, &f),
+ 		     test_bit(SDF_SKIP_DLM_UNLOCK, &f),
+ 		     test_bit(SDF_FORCE_AIL_FLUSH, &f),
+-		     test_bit(SDF_FS_FROZEN, &f),
++		     test_bit(SDF_FREEZE_INITIATOR, &f),
+ 		     test_bit(SDF_WITHDRAWING, &f),
+ 		     test_bit(SDF_WITHDRAW_IN_PROG, &f),
+ 		     test_bit(SDF_REMOTE_WITHDRAW, &f),
+diff --git a/fs/gfs2/util.c b/fs/gfs2/util.c
+index 1195ea08f9ca4..ebf87fb7b3bf5 100644
+--- a/fs/gfs2/util.c
++++ b/fs/gfs2/util.c
+@@ -187,7 +187,7 @@ static void signal_our_withdraw(struct gfs2_sbd *sdp)
+ 	}
+ 	sdp->sd_jinode_gh.gh_flags |= GL_NOCACHE;
+ 	gfs2_glock_dq(&sdp->sd_jinode_gh);
+-	if (test_bit(SDF_FS_FROZEN, &sdp->sd_flags)) {
++	if (test_bit(SDF_FREEZE_INITIATOR, &sdp->sd_flags)) {
+ 		/* Make sure gfs2_thaw_super works if partially-frozen */
+ 		flush_work(&sdp->sd_freeze_work);
+ 		atomic_set(&sdp->sd_freeze_state, SFS_FROZEN);
 -- 
 2.43.0
 
