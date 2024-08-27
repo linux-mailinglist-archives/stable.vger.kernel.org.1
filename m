@@ -1,177 +1,166 @@
-Return-Path: <stable+bounces-71332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71333-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0462896152D
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 19:11:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 822B99615B4
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 19:46:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE9031F244C4
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:11:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0DD411F2370D
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:46:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B899C1CC163;
-	Tue, 27 Aug 2024 17:11:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5A7F81745;
+	Tue, 27 Aug 2024 17:46:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="Of1t6hNS"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NjVjmYRY"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D6B443AD9
-	for <stable@vger.kernel.org>; Tue, 27 Aug 2024 17:11:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 207631C7B63;
+	Tue, 27 Aug 2024 17:46:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724778694; cv=none; b=PM3MtdEisKJU3TIQr0pCPPQeeoUCvhzlqJpyC/Dv652LYC3bHFp4iVNLgNzlRphw37ZzbBqoUqjfcvGfqs6uYGl/x2YPg0OffERv/gAI0/Qiec8hyZh1wCo5SJZodIovJ3e8w0l+mCMWlKHAPLN+x6Z6lgO3dicblVxmq2uTGTk=
+	t=1724780783; cv=none; b=bP/HGYHtc+U+ZvdZ4/1GQsBR1s2kBLGO9JRuPdw2auVqSJiDKQfe+bMYpPII69ktWYQVZOQFiqb2uC9kHGJhXyNQp/tJY+B+nexiq2CMGc8+2x+H9eLHfs/PvC3dNc2GWNcD4RWvQSXgibAV1mrGwIVMduk3sULp+luZPCpiAE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724778694; c=relaxed/simple;
-	bh=hwcAKO0iibtPZF8CUiwMzKWCtbx88883ElUrEobeEmM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=n9PIYEq9wvKKRsST4NnsczDpmZA5knOxVRhwJIVQOHV1zfWsMn3BY0FSnC29ajRFGKdIAY1tjII4Lq8W4hw0kIlk1nNruso+WKMrqZb2ejIZGlRtW5E8w6NAweJ8z1wszreKzMmnZywFB8wHD1LPfd+hppDB0vE97RcwlUppiSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=Of1t6hNS; arc=none smtp.client-ip=209.85.210.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-70cec4aa1e4so4006121b3a.1
-        for <stable@vger.kernel.org>; Tue, 27 Aug 2024 10:11:32 -0700 (PDT)
+	s=arc-20240116; t=1724780783; c=relaxed/simple;
+	bh=eOyNGEmTLD27An2vpi67uo7UjKLCKax+jWOJwOGKrOM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LD86wyYzauBUm3hA1oIj/PmEY5CTCaBbesV9ft6HxJNAcEv4Oji+vvBfTriRHIbLSd88tC0Me0GDXhA8kVxWRFct3omJJMtOpYPpXGNGya1T9mBxNNAJ84/A06zqOrFnNvGUCvXcrO0P/peOXTCT2VwrvYPqRz5UseYNTOCgza4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NjVjmYRY; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-201e52ca0caso40973845ad.3;
+        Tue, 27 Aug 2024 10:46:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1724778692; x=1725383492; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=IK8SEiBum8hunhZQDt0oY44SDt3A4Q0KuG3fIX/3rsg=;
-        b=Of1t6hNSG0JezN0kQH2cnusk5uhZ9eINfXkUlumjAonj3wcwYdFPSBYT20sng14oqS
-         7/N2SqseLaBuDf/de1OSfRGfBBzVRLIJFsyVdkpxHqZ1EgsE9wGt0c8kUTP24qi9asvl
-         GqFt6BrTrS7bxoe5OqmI5bzIvkPQ6AYmeTtgs=
+        d=gmail.com; s=20230601; t=1724780781; x=1725385581; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=5s3YAABYrMbP+Js2IaEndStvu7oMvLUb7JcLN3rS6YU=;
+        b=NjVjmYRYWcaRoEwYJLB5dyWzPQ+AitepiULJG8eJnxz+QUrIBo/EPwHH4IUJhSUg5r
+         yQppzPFr8yR0S4QSKcDR8IIRDMj4rSXXKsfS10pCQhHX6BFeASTq9ZV4pdAljLOfF2vL
+         GpuU3fszu7THBzRcJ/Kzdx0kFRk/hO7kAU9ZgSRowC9BbMKoVKJ9rk+OSY5OIrRD5H9P
+         13NUr7zIvFxfeMpznH41O2I2dZhVn2UkYBbitlovyFNqJ83QnzY8y2GJTatJKJ0tPv/6
+         GYWb0Pd3h0YaHPGQFoMqWnS5K3ygBIGqvB1UczwmoBMV70LUtLPRnb7kjc/sTi05V+Zj
+         8M3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724778692; x=1725383492;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=IK8SEiBum8hunhZQDt0oY44SDt3A4Q0KuG3fIX/3rsg=;
-        b=Ii06Ez0T2cMPVLu7J4PJwfMmy4SM0Ts5cvO+T2A0yTVHfsTYiBZgumjRpD4WFxwV7o
-         tX3y47QMTAU3xZ1QfaGaIHtj9z9k8W3kV8RfiXYaT1UendOsTIaR40oMK0jj5dfjmsjz
-         WajoyKfhXRcpKV+MLn3XSkb0Uf8x548F8ziiK6do2TdSoTibFQCTkN+sWJ9RTAJCW7Fx
-         7kSxhejpg1lYOVBTl4nEwhfOn/PMfCp8owNUQLVUmo9jvNbIvxP8fHgNyEfpicFNPE0c
-         pM10JBIJpJe9Xwsqr4fqtZZYnNjnuSbZvPWVMLwEUhIhrOnI3GEYiVg09qPEzAgolvko
-         OTdg==
-X-Forwarded-Encrypted: i=1; AJvYcCVTmgrmGI8Dsx64+CChd0EB+RnTKz1Eavh1LFhA0zygQlME+HDfERtgQ2UXiifprgFyYZetEwg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwDSJDP95E8CzaGoP3p9FK9p6Kn0UyztPxfZDKNhZWXhOEingQF
-	rIw8e31i9rc5IGc0+Fhw6nEkf9Rb7mnauDu/I9pVdwn6jXsmAC2xX2viCDN9VIU05KVH1W5qJSw
-	=
-X-Google-Smtp-Source: AGHT+IG4YPDdFUYtuMPkwkokpmaThrJJFJG1W58Oml09/8xPYFTHvK1DWSTRwqLa9pqAVl8Dy0b24w==
-X-Received: by 2002:a05:6a00:918b:b0:70d:2b95:d9cd with SMTP id d2e1a72fcca58-714457d35c7mr14736149b3a.16.1724778692187;
-        Tue, 27 Aug 2024 10:11:32 -0700 (PDT)
-Received: from localhost ([2a00:79e0:2e14:7:9f27:3f59:914a:3d90])
-        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-71434330425sm8813341b3a.190.2024.08.27.10.11.31
+        d=1e100.net; s=20230601; t=1724780781; x=1725385581;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=5s3YAABYrMbP+Js2IaEndStvu7oMvLUb7JcLN3rS6YU=;
+        b=Rpz7D4QwCs3OfNfBVbvxY/c1SvZOHXBwT7gKB26SQIpnSdxPizVABRxpKKEp9nCPZ+
+         VCpFwUBiKZiiq95C5NSxNb8TzpwBoneeQ77i482F+IsDoF6EZ1IBt4bCYb6sLR1CTaHo
+         HCDOUVZMpI3PLx+j7B+aHDvtYwtVYWHvB8UqUEGMJqxr1Tqw2aLkdrSYNOO8nlk4FiI1
+         PtlxM/56VS8CSZ7n/eRDnAi+P41WtkXbFT9gkL3p3Gt8poX1JsXyQaB57BjF8Wr4q6QD
+         b6TVDnUY72CT3h/9yZA/Sf45KXyy25uRmXOrk55+pdoupiJY03WokcasV7d2RHvz+KDS
+         eYOg==
+X-Forwarded-Encrypted: i=1; AJvYcCWW2IcbPzFSFDfDOXV2oW44qvcA3QF8hjXmkvZ4uX/VagBrJMfFVtssHQlLSa7mJ6NSmaHzIRHY@vger.kernel.org, AJvYcCWgXI2I9Cr0RQBZ51+4LHmH4NBI3CT8VoAH4IpbQ0pCWYtxATs6oWXbbMN5smzaRcyJOxaTsR8s/bt5Gck=@vger.kernel.org
+X-Gm-Message-State: AOJu0YySLsUKA+L/xTMP+dABCk6a7d7jKQVf4nujaLaGvLmwSdbTWZXX
+	jNp9+KtG4q5Qa7n3XIY9auB9TJaFklALkFY2s1fu4hB+0EpPsLuj
+X-Google-Smtp-Source: AGHT+IGwgC5fluupGUSSSCBjGFmyd2CCuVbz0MB5XZL5BC5ZQZh3Ak+CPzHAQ5WagxrDBmLdBcvsPg==
+X-Received: by 2002:a17:902:cecb:b0:1fb:8cab:ccc9 with SMTP id d9443c01a7336-2039e4e8468mr129533605ad.45.1724780781284;
+        Tue, 27 Aug 2024 10:46:21 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id d9443c01a7336-203859f0121sm85724665ad.246.2024.08.27.10.46.19
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 27 Aug 2024 10:11:31 -0700 (PDT)
-From: Brian Norris <briannorris@chromium.org>
-To: Mark Brown <broonie@kernel.org>
-Cc: Jon Lin <jon.lin@rock-chips.com>,
-	=?UTF-8?q?Ond=C5=99ej=20Jirman?= <megi@xff.cz>,
-	Brian Norris <briannorris@chromium.org>,
-	stable@vger.kernel.org,
-	Heiko Stuebner <heiko@sntech.de>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-rockchip@lists.infradead.org,
-	linux-spi@vger.kernel.org,
-	shengfei Xu <xsf@rock-chips.com>
-Subject: [PATCH v3] spi: rockchip: Resolve unbalanced runtime PM / system PM handling
-Date: Tue, 27 Aug 2024 10:11:16 -0700
-Message-ID: <20240827171126.1115748-1-briannorris@chromium.org>
-X-Mailer: git-send-email 2.46.0.295.g3b9ea8a38a-goog
+        Tue, 27 Aug 2024 10:46:20 -0700 (PDT)
+Message-ID: <45689fa1-ad89-4360-9d09-c99597e17595@gmail.com>
+Date: Tue, 27 Aug 2024 10:46:18 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.1 000/321] 6.1.107-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+References: <20240827143838.192435816@linuxfoundation.org>
+Content-Language: en-US
+From: Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Commit e882575efc77 ("spi: rockchip: Suspend and resume the bus during
-NOIRQ_SYSTEM_SLEEP_PM ops") stopped respecting runtime PM status and
-simply disabled clocks unconditionally when suspending the system. This
-causes problems when the device is already runtime suspended when we go
-to sleep -- in which case we double-disable clocks and produce a
-WARNing.
+On 8/27/24 07:35, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.107 release.
+> There are 321 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Thu, 29 Aug 2024 14:37:36 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.107-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-Switch back to pm_runtime_force_{suspend,resume}(), because that still
-seems like the right thing to do, and the aforementioned commit makes no
-explanation why it stopped using it.
+Loads and loads of the below warning plus linking failure building perf:
 
-Also, refactor some of the resume() error handling, because it's not
-actually a good idea to re-disable clocks on failure.
+../include/linux/bitmap.h: In function 'bitmap_zero':
+../include/linux/bitmap.h:28:34: warning: implicit declaration of 
+function 'ALIGN' [-Wimplicit-function-declaration]
+    28 | #define bitmap_size(nbits)      (ALIGN(nbits, BITS_PER_LONG) / 
+BITS_PER_BYTE)
+       |                                  ^~~~~
+../include/linux/bitmap.h:35:32: note: in expansion of macro 'bitmap_size'
+    35 |                 memset(dst, 0, bitmap_size(nbits));
+       |                                ^~~~~~~~~~~
+   CC      /local/users/fainelli/buildroot/output/arm/build/li
 
-Fixes: e882575efc77 ("spi: rockchip: Suspend and resume the bus during NOIRQ_SYSTEM_SLEEP_PM ops")
-Cc: <stable@vger.kernel.org>
-Reported-by: "Ondřej Jirman" <megi@xff.cz>
-Closes: https://lore.kernel.org/lkml/20220621154218.sau54jeij4bunf56@core/
-Signed-off-by: Brian Norris <briannorris@chromium.org>
----
+/local/stbopt_p/toolchains_303/stbgcc-12.3-1.0/bin/../lib/gcc/arm-unknown-linux-gnueabihf/12.3.0/../../../../arm-unknown-linux-gnueabihf/bin/ld: 
+/local/users/fainelli/buildroot/output/arm/build/linux-custom/tools/perf/perf-in.o: 
+in function `bitmap_zero':
+/local/users/fainelli/buildroot/output/arm/build/linux-custom/tools/perf/../include/linux/bitmap.h:35: 
+undefined reference to `ALIGN'
+/local/stbopt_p/toolchains_303/stbgcc-12.3-1.0/bin/../lib/gcc/arm-unknown-linux-gnueabihf/12.3.0/../../../../arm-unknown-linux-gnueabihf/bin/ld: 
+/local/users/fainelli/buildroot/output/arm/build/linux-custom/tools/perf/perf-in.o: 
+in function `bitmap_zalloc':
+/local/users/fainelli/buildroot/output/arm/build/linux-custom/tools/perf/../include/linux/bitmap.h:121: 
+undefined reference to `ALIGN'
+/local/stbopt_p/toolchains_303/stbgcc-12.3-1.0/bin/../lib/gcc/arm-unknown-linux-gnueabihf/12.3.0/../../../../arm-unknown-linux-gnueabihf/bin/ld: 
+/local/users/fainelli/buildroot/output/arm/build/linux-custom/tools/perf/../include/linux/bitmap.h:121: 
+undefined reference to `ALIGN'
+/local/stbopt_p/toolchains_303/stbgcc-12.3-1.0/bin/../lib/gcc/arm-unknown-linux-gnueabihf/12.3.0/../../../../arm-unknown-linux-gnueabihf/bin/ld: 
+/local/users/fainelli/buildroot/output/arm/build/linux-custom/tools/perf/../include/linux/bitmap.h:121: 
+undefined reference to `ALIGN'
+/local/stbopt_p/toolchains_303/stbgcc-12.3-1.0/bin/../lib/gcc/arm-unknown-linux-gnueabihf/12.3.0/../../../../arm-unknown-linux-gnueabihf/bin/ld: 
+/local/users/fainelli/buildroot/output/arm/build/linux-custom/tools/perf/../include/linux/bitmap.h:121: 
+undefined reference to `ALIGN'
+/local/stbopt_p/toolchains_303/stbgcc-12.3-1.0/bin/../lib/gcc/arm-unknown-linux-gnueabihf/12.3.0/../../../../arm-unknown-linux-gnueabihf/bin/ld: 
+/local/users/fainelli/buildroot/output/arm/build/linux-custom/tools/perf/perf-in.o:/local/users/fainelli/buildroot/output/arm/build/linux-custom/tools/perf/../include/linux/bitmap.h:121: 
+more undefined references to `ALIGN' follow
+collect2: error: ld returned 1 exit status
+make[4]: *** [Makefile.perf:675: 
+/local/users/fainelli/buildroot/output/arm/build/linux-custom/tools/perf/perf] 
+Error 1
+make[3]: *** [Makefile.perf:240: sub-make] Error 2
+make[2]: *** [Makefile:70: all] Error 2
+make[1]: *** [package/pkg-generic.mk:294: 
+/local/users/fainelli/buildroot/output/arm/build/linux-tools/.stamp_built] 
+Error 2
+make: *** [Makefile:29: _all] Error 2
 
-Changes in v3:
- - actually CC the appropriate lists (sorry, I accidentally dropped them
-   on v2)
+This was already reported here for 5.10.225-rc1:
 
-Changes in v2:
- - fix unused 'rs' warning
+https://lore.kernel.org/all/96ad9bc6-1cac-4ebf-8385-661c0d4f1b99@gmail.com/
 
- drivers/spi/spi-rockchip.c | 23 +++++++----------------
- 1 file changed, 7 insertions(+), 16 deletions(-)
-
-diff --git a/drivers/spi/spi-rockchip.c b/drivers/spi/spi-rockchip.c
-index e1ecd96c7858..0bb33c43b1b4 100644
---- a/drivers/spi/spi-rockchip.c
-+++ b/drivers/spi/spi-rockchip.c
-@@ -945,14 +945,16 @@ static int rockchip_spi_suspend(struct device *dev)
- {
- 	int ret;
- 	struct spi_controller *ctlr = dev_get_drvdata(dev);
--	struct rockchip_spi *rs = spi_controller_get_devdata(ctlr);
- 
- 	ret = spi_controller_suspend(ctlr);
- 	if (ret < 0)
- 		return ret;
- 
--	clk_disable_unprepare(rs->spiclk);
--	clk_disable_unprepare(rs->apb_pclk);
-+	ret = pm_runtime_force_suspend(dev);
-+	if (ret < 0) {
-+		spi_controller_resume(ctlr);
-+		return ret;
-+	}
- 
- 	pinctrl_pm_select_sleep_state(dev);
- 
-@@ -963,25 +965,14 @@ static int rockchip_spi_resume(struct device *dev)
- {
- 	int ret;
- 	struct spi_controller *ctlr = dev_get_drvdata(dev);
--	struct rockchip_spi *rs = spi_controller_get_devdata(ctlr);
- 
- 	pinctrl_pm_select_default_state(dev);
- 
--	ret = clk_prepare_enable(rs->apb_pclk);
-+	ret = pm_runtime_force_resume(dev);
- 	if (ret < 0)
- 		return ret;
- 
--	ret = clk_prepare_enable(rs->spiclk);
--	if (ret < 0)
--		clk_disable_unprepare(rs->apb_pclk);
--
--	ret = spi_controller_resume(ctlr);
--	if (ret < 0) {
--		clk_disable_unprepare(rs->spiclk);
--		clk_disable_unprepare(rs->apb_pclk);
--	}
--
--	return 0;
-+	return spi_controller_resume(ctlr);
- }
- #endif /* CONFIG_PM_SLEEP */
- 
--- 
-2.46.0.295.g3b9ea8a38a-goog
-
+and it is the same root cause.
+--
+Florian
 
