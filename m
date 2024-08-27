@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-70968-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71293-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0C4A9610F2
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:15:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBED59612B6
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:34:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D1C128312E
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:14:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1AD541C2303A
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:34:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7CAD1C9446;
-	Tue, 27 Aug 2024 15:14:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ADDD1CDFCE;
+	Tue, 27 Aug 2024 15:32:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nTETuWK5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MzMebNSd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97F741C7B67;
-	Tue, 27 Aug 2024 15:14:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A22554648;
+	Tue, 27 Aug 2024 15:32:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771660; cv=none; b=mUAhXixOcBvPHNBe9v8Bqle3UFdcLNc4BR+3+d5XpL9EEnZAPhFaWfve2v67OYJDVF3s5O3+6bzfj7Kp09DQ3ULDcfnZbfe9HKfqnyCiudf83Akd0zX32Db8p3ue1DH097fB3Cbl2U5rrLXoB94SSnB71Tou+QYR1S0tbybE9Kw=
+	t=1724772735; cv=none; b=GuiU2cFJp3tcPMJHZu2kiv6qgLGytQXLzAlsJ5rxqdAPvl58ajSucs8LUCvbWh74ArIABc29X/O+wf1LyVggEwQZe6rAEuzwVc5+FAQhg3wxbx5MhkqTMnw0XBAozLdUco52deYJjTfa3YghI2e5VfcrQiI/qyb4INxy5zObiEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771660; c=relaxed/simple;
-	bh=SG0p9F0Qs0z39m5S/pcOQ6wg3ok5eYs+5mCzJTIkQhI=;
+	s=arc-20240116; t=1724772735; c=relaxed/simple;
+	bh=f372yoSnTnRsbINh56tWoDgxgDyEp/fcfKYYL8ou8MY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jBqpSt585KSth4srjFIsRtQHM5MHwMOsG6pGTz8Db1kgs9aCVqRhodXY8BiyDsdBwSlR9M6Y/CNfPQOfOF5aoKiHiQT0DVKf7jbXUcAs0GdG5GbI90WYBgnNfJ2Ayl0LBkYUu2ATWFYVB2y+9anUKy4S1nGI4upUPB0HImx5eXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nTETuWK5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F148C4AF09;
-	Tue, 27 Aug 2024 15:14:19 +0000 (UTC)
+	 MIME-Version; b=aBuYajN6mjSYmNbIJcObjFpqZyueTHSwWw34HyMdAwnfX5jr2RdPG3KuP8r2PMxOh5TtJTm83KbhkpLfbKtApKOEIrlVA0gKviGE/KDyPjkK38n0MGfxp9pRA+fWiowk+sRcrDxfJoB1CNTfM0geyE/qK0D6Xpm3mhX2ndcdr1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MzMebNSd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99B1DC4DDF0;
+	Tue, 27 Aug 2024 15:32:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771660;
-	bh=SG0p9F0Qs0z39m5S/pcOQ6wg3ok5eYs+5mCzJTIkQhI=;
+	s=korg; t=1724772735;
+	bh=f372yoSnTnRsbINh56tWoDgxgDyEp/fcfKYYL8ou8MY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nTETuWK5ZADG8RxQSi1vNnIovPUbWDxoQCmqrnopBiVxDrif7A6IagECgAJSwA4NF
-	 Z7aZ/oQcM9/FwbltpYqeYRcsf/RcdsHZJbGH56CRBl+IOowrmZ7CrQ7e4Q7H7NXPWt
-	 /AJJLidxlka40gW7QnDyXYddBx9h3dTLRs2Dj71Y=
+	b=MzMebNSd5egOVkDdMRodiieqVZh9pQa9kUJYcPKOaCEQUANegaZyc2k/akLhZ6XTI
+	 GtVSLIP/KzJBp+3Fi1BHkktKqqgIr3zlz72X2AOwbG7epJKCZuzJbyPLGCSc26pxpk
+	 OA/IFMbY38oKzrQ6HAJ7MGoLlK+ciTonSEID7IQo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Nikolay Kuratov <kniv@yandex-team.ru>,
+	Simon Horman <horms@kernel.org>,
+	Jacob Keller <jacob.e.keller@intel.com>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.10 255/273] mptcp: pm: re-using ID of unused removed ADD_ADDR
-Date: Tue, 27 Aug 2024 16:39:39 +0200
-Message-ID: <20240827143843.104709435@linuxfoundation.org>
+Subject: [PATCH 6.1 272/321] cxgb4: add forgotten u64 ivlan cast before shift
+Date: Tue, 27 Aug 2024 16:39:40 +0200
+Message-ID: <20240827143848.604904386@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Nikolay Kuratov <kniv@yandex-team.ru>
 
-commit e255683c06df572ead96db5efb5d21be30c0efaa upstream.
+commit 80a1e7b83bb1834b5568a3872e64c05795d88f31 upstream.
 
-If no subflow is attached to the 'signal' endpoint that is being
-removed, the addr ID will not be marked as available again.
+It is done everywhere in cxgb4 code, e.g. in is_filter_exact_match()
+There is no reason it should not be done here
 
-Mark the linked ID as available when removing the address entry from the
-list to cover this case.
+Found by Linux Verification Center (linuxtesting.org) with SVACE
 
-Fixes: b6c08380860b ("mptcp: remove addr and subflow in PM netlink")
+Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
 Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20240819-net-mptcp-pm-reusing-id-v1-1-38035d40de5b@kernel.org
+Fixes: 12b276fbf6e0 ("cxgb4: add support to create hash filters")
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20240819075408.92378-1-kniv@yandex-team.ru
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/pm_netlink.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/chelsio/cxgb4/cxgb4_filter.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -1431,7 +1431,10 @@ static bool mptcp_pm_remove_anno_addr(st
- 	ret = remove_anno_list_by_saddr(msk, addr);
- 	if (ret || force) {
- 		spin_lock_bh(&msk->pm.lock);
--		msk->pm.add_addr_signaled -= ret;
-+		if (ret) {
-+			__set_bit(addr->id, msk->pm.id_avail_bitmap);
-+			msk->pm.add_addr_signaled--;
-+		}
- 		mptcp_pm_remove_addr(msk, &list);
- 		spin_unlock_bh(&msk->pm.lock);
- 	}
+--- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_filter.c
++++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_filter.c
+@@ -1244,7 +1244,8 @@ static u64 hash_filter_ntuple(struct ch_
+ 	 * in the Compressed Filter Tuple.
+ 	 */
+ 	if (tp->vlan_shift >= 0 && fs->mask.ivlan)
+-		ntuple |= (FT_VLAN_VLD_F | fs->val.ivlan) << tp->vlan_shift;
++		ntuple |= (u64)(FT_VLAN_VLD_F |
++				fs->val.ivlan) << tp->vlan_shift;
+ 
+ 	if (tp->port_shift >= 0 && fs->mask.iport)
+ 		ntuple |= (u64)fs->val.iport << tp->port_shift;
 
 
 
