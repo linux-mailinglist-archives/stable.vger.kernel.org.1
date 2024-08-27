@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-70391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70402-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89094960DDD
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:42:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5637B960DE9
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:43:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F7B01F24508
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:42:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7BB7A1C23226
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:43:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82DC81C4EE2;
-	Tue, 27 Aug 2024 14:42:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C72AF1C4EFB;
+	Tue, 27 Aug 2024 14:43:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2J1WKFPp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m7uSXT+h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3452B1C57A6;
-	Tue, 27 Aug 2024 14:42:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82E501C4EE8;
+	Tue, 27 Aug 2024 14:43:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724769743; cv=none; b=SsFePGznbdwxxJMl+Ez7b/dXarh8v9SbN0x1Uh+lj9gzDMuNB8/8aW2s2XmQxKCOnbSJCuSLHIoLNqJpDjtaTYKDLa1xFOudl275wGp7ZdsiUfAYC8BNdV4ubzwIQh0Udh2Dj4J0P5zlar5+918mIEh9O0QIverNDRzqXmrRjNU=
+	t=1724769780; cv=none; b=jKzSqs+aFLMi4ZZaxAb4Zb29PkWdC84E/fJoKMhgO8ZeKR0KA76HRSAJap73gYtqL9yFhmgzKUq9jmKg61vLPUjUbg6dXwjgxczujXyFqGyrxQJeZnlkbmz/xJ33lB2eVuE6aUI2hqEVJazDoi/owEz3v2bduO+P7RSgXO0fyhQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724769743; c=relaxed/simple;
-	bh=QnwtOiheCebMJ5zwxqu+35mZ4YI1oe97ir6dVzGUwAo=;
+	s=arc-20240116; t=1724769780; c=relaxed/simple;
+	bh=QLM+QZQIGXDh0jxpri9zMrNjDu0pgCaeYDzzOTKIdiw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=II26tQlT6AIDJs9UDSFUc+4kUSuSFxuYucdtARQ+6fVcyow/HSxQg3jmY3L88vzh+EOoROn+MBXO5xN/Ab8CPzAhWNpqF5S7fifIJl2Apl0Rkz9Ec+HUtHcFvGHkOTvmdHSpoghSkNlFiQIaCAye8P9IvT2voIBG3xqD1uwEq1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2J1WKFPp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E503C61067;
-	Tue, 27 Aug 2024 14:42:22 +0000 (UTC)
+	 MIME-Version; b=ATBwDDfbZjXMzu9Ykb75ZV1F506y+G0+iB+4F/Le39GReoTehMkYfr7bL//+mD6pWi6BpJSLT8krB5X86C6iylL5cOX5akNFd4g5iipVp3uNJ11y6oDz0YgyvUrMUdRWmtxFrUeUGRRAmiKCuxaN9oa3zvTts0IYM8tkXr+RlDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m7uSXT+h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA2E5C6104E;
+	Tue, 27 Aug 2024 14:42:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724769743;
-	bh=QnwtOiheCebMJ5zwxqu+35mZ4YI1oe97ir6dVzGUwAo=;
+	s=korg; t=1724769780;
+	bh=QLM+QZQIGXDh0jxpri9zMrNjDu0pgCaeYDzzOTKIdiw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2J1WKFPpyJgXkERFuIUh9PuTfXpXbpBOyl93Tkcj0J3z/I4JzvgB1GMR59zVxj5qN
-	 u/sLpTDCb6mUyXOPhcc2qLd6WBO4VFV6PpctyzAVBQ0c5XWHZidfOvgriUQQxk2irj
-	 n7UlKfyqHjFIgHKtpXeGiZKxxVJfuWfFeFllchb4=
+	b=m7uSXT+hn1YE/UNENoLqULIkAhagFFWyXZW5niSr6zApOFr1p2q2lYDhVskYht7ZX
+	 kj31ulmOwMHZ8JLJSK5ZzsEuJ8SsKAqZnUoxsZSUkFnPt/D0ozNbcXzRHkgy9GBT3B
+	 0xguxNcT7ZwheQZ5k14A9+X6i8kwm6EDhsteTBdU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baojun Xu <baojun.xu@ti.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 015/341] ALSA: hda/tas2781: fix wrong calibrated data order
-Date: Tue, 27 Aug 2024 16:34:06 +0200
-Message-ID: <20240827143843.985485665@linuxfoundation.org>
+	Jan Hoeppner <hoeppner@linux.ibm.com>,
+	Stefan Haberland <sth@linux.ibm.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.6 016/341] s390/dasd: fix error recovery leading to data corruption on ESE devices
+Date: Tue, 27 Aug 2024 16:34:07 +0200
+Message-ID: <20240827143844.022359701@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
 References: <20240827143843.399359062@linuxfoundation.org>
@@ -65,67 +66,243 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Baojun Xu <baojun.xu@ti.com>
+From: Stefan Haberland <sth@linux.ibm.com>
 
-commit 3beddef84d90590270465a907de1cfe2539ac70d upstream.
+commit 7db4042336580dfd75cb5faa82c12cd51098c90b upstream.
 
-Wrong calibration data order cause sound too low in some device.
-Fix wrong calibrated data order, add calibration data converssion
-by get_unaligned_be32() after reading from UEFI.
+Extent Space Efficient (ESE) or thin provisioned volumes need to be
+formatted on demand during usual IO processing.
 
-Fixes: 5be27f1e3ec9 ("ALSA: hda/tas2781: Add tas2781 HDA driver")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Baojun Xu <baojun.xu@ti.com>
-Link: https://patch.msgid.link/20240813043749.108-1-shenghao-ding@ti.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+The dasd_ese_needs_format function checks for error codes that signal
+the non existence of a proper track format.
+
+The check for incorrect length is to imprecise since other error cases
+leading to transport of insufficient data also have this flag set.
+This might lead to data corruption in certain error cases for example
+during a storage server warmstart.
+
+Fix by removing the check for incorrect length and replacing by
+explicitly checking for invalid track format in transport mode.
+
+Also remove the check for file protected since this is not a valid
+ESE handling case.
+
+Cc: stable@vger.kernel.org # 5.3+
+Fixes: 5e2b17e712cf ("s390/dasd: Add dynamic formatting support for ESE volumes")
+Reviewed-by: Jan Hoeppner <hoeppner@linux.ibm.com>
+Signed-off-by: Stefan Haberland <sth@linux.ibm.com>
+Link: https://lore.kernel.org/r/20240812125733.126431-3-sth@linux.ibm.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/tas2781_hda_i2c.c |   14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ drivers/s390/block/dasd.c          |   36 +++++++++++++++---------
+ drivers/s390/block/dasd_3990_erp.c |   10 +-----
+ drivers/s390/block/dasd_eckd.c     |   55 ++++++++++++++++---------------------
+ drivers/s390/block/dasd_int.h      |    2 -
+ 4 files changed, 50 insertions(+), 53 deletions(-)
 
---- a/sound/pci/hda/tas2781_hda_i2c.c
-+++ b/sound/pci/hda/tas2781_hda_i2c.c
-@@ -2,10 +2,12 @@
- //
- // TAS2781 HDA I2C driver
- //
--// Copyright 2023 Texas Instruments, Inc.
-+// Copyright 2023 - 2024 Texas Instruments, Inc.
- //
- // Author: Shenghao Ding <shenghao-ding@ti.com>
-+// Current maintainer: Baojun Xu <baojun.xu@ti.com>
+--- a/drivers/s390/block/dasd.c
++++ b/drivers/s390/block/dasd.c
+@@ -1599,9 +1599,15 @@ static int dasd_ese_needs_format(struct
+ 	if (!sense)
+ 		return 0;
  
-+#include <asm/unaligned.h>
- #include <linux/acpi.h>
- #include <linux/crc8.h>
- #include <linux/crc32.h>
-@@ -425,20 +427,22 @@ static void tas2781_apply_calib(struct t
- 	static const unsigned char rgno_array[CALIB_MAX] = {
- 		0x74, 0x0c, 0x14, 0x70, 0x7c,
- 	};
--	unsigned char *data;
-+	int offset = 0;
- 	int i, j, rc;
-+	__be32 data;
- 
- 	for (i = 0; i < tas_priv->ndev; i++) {
--		data = tas_priv->cali_data.data +
--			i * TASDEVICE_SPEAKER_CALIBRATION_SIZE;
- 		for (j = 0; j < CALIB_MAX; j++) {
-+			data = get_unaligned_be32(
-+				&tas_priv->cali_data.data[offset]);
- 			rc = tasdevice_dev_bulk_write(tas_priv, i,
- 				TASDEVICE_REG(0, page_array[j], rgno_array[j]),
--				&(data[4 * j]), 4);
-+				(unsigned char *)&data, 4);
- 			if (rc < 0)
- 				dev_err(tas_priv->dev,
- 					"chn %d calib %d bulk_wr err = %d\n",
- 					i, j, rc);
-+			offset += 4;
- 		}
- 	}
+-	return !!(sense[1] & SNS1_NO_REC_FOUND) ||
+-		!!(sense[1] & SNS1_FILE_PROTECTED) ||
+-		scsw_cstat(&irb->scsw) == SCHN_STAT_INCORR_LEN;
++	if (sense[1] & SNS1_NO_REC_FOUND)
++		return 1;
++
++	if ((sense[1] & SNS1_INV_TRACK_FORMAT) &&
++	    scsw_is_tm(&irb->scsw) &&
++	    !(sense[2] & SNS2_ENV_DATA_PRESENT))
++		return 1;
++
++	return 0;
  }
+ 
+ static int dasd_ese_oos_cond(u8 *sense)
+@@ -1622,7 +1628,7 @@ void dasd_int_handler(struct ccw_device
+ 	struct dasd_device *device;
+ 	unsigned long now;
+ 	int nrf_suppressed = 0;
+-	int fp_suppressed = 0;
++	int it_suppressed = 0;
+ 	struct request *req;
+ 	u8 *sense = NULL;
+ 	int expires;
+@@ -1677,8 +1683,9 @@ void dasd_int_handler(struct ccw_device
+ 		 */
+ 		sense = dasd_get_sense(irb);
+ 		if (sense) {
+-			fp_suppressed = (sense[1] & SNS1_FILE_PROTECTED) &&
+-				test_bit(DASD_CQR_SUPPRESS_FP, &cqr->flags);
++			it_suppressed =	(sense[1] & SNS1_INV_TRACK_FORMAT) &&
++				!(sense[2] & SNS2_ENV_DATA_PRESENT) &&
++				test_bit(DASD_CQR_SUPPRESS_IT, &cqr->flags);
+ 			nrf_suppressed = (sense[1] & SNS1_NO_REC_FOUND) &&
+ 				test_bit(DASD_CQR_SUPPRESS_NRF, &cqr->flags);
+ 
+@@ -1693,7 +1700,7 @@ void dasd_int_handler(struct ccw_device
+ 				return;
+ 			}
+ 		}
+-		if (!(fp_suppressed || nrf_suppressed))
++		if (!(it_suppressed || nrf_suppressed))
+ 			device->discipline->dump_sense_dbf(device, irb, "int");
+ 
+ 		if (device->features & DASD_FEATURE_ERPLOG)
+@@ -2465,14 +2472,17 @@ retry:
+ 	rc = 0;
+ 	list_for_each_entry_safe(cqr, n, ccw_queue, blocklist) {
+ 		/*
+-		 * In some cases the 'File Protected' or 'Incorrect Length'
+-		 * error might be expected and error recovery would be
+-		 * unnecessary in these cases.	Check if the according suppress
+-		 * bit is set.
++		 * In some cases certain errors might be expected and
++		 * error recovery would be unnecessary in these cases.
++		 * Check if the according suppress bit is set.
+ 		 */
+ 		sense = dasd_get_sense(&cqr->irb);
+-		if (sense && sense[1] & SNS1_FILE_PROTECTED &&
+-		    test_bit(DASD_CQR_SUPPRESS_FP, &cqr->flags))
++		if (sense && (sense[1] & SNS1_INV_TRACK_FORMAT) &&
++		    !(sense[2] & SNS2_ENV_DATA_PRESENT) &&
++		    test_bit(DASD_CQR_SUPPRESS_IT, &cqr->flags))
++			continue;
++		if (sense && (sense[1] & SNS1_NO_REC_FOUND) &&
++		    test_bit(DASD_CQR_SUPPRESS_NRF, &cqr->flags))
+ 			continue;
+ 		if (scsw_cstat(&cqr->irb.scsw) == 0x40 &&
+ 		    test_bit(DASD_CQR_SUPPRESS_IL, &cqr->flags))
+--- a/drivers/s390/block/dasd_3990_erp.c
++++ b/drivers/s390/block/dasd_3990_erp.c
+@@ -1406,14 +1406,8 @@ dasd_3990_erp_file_prot(struct dasd_ccw_
+ 
+ 	struct dasd_device *device = erp->startdev;
+ 
+-	/*
+-	 * In some cases the 'File Protected' error might be expected and
+-	 * log messages shouldn't be written then.
+-	 * Check if the according suppress bit is set.
+-	 */
+-	if (!test_bit(DASD_CQR_SUPPRESS_FP, &erp->flags))
+-		dev_err(&device->cdev->dev,
+-			"Accessing the DASD failed because of a hardware error\n");
++	dev_err(&device->cdev->dev,
++		"Accessing the DASD failed because of a hardware error\n");
+ 
+ 	return dasd_3990_erp_cleanup(erp, DASD_CQR_FAILED);
+ 
+--- a/drivers/s390/block/dasd_eckd.c
++++ b/drivers/s390/block/dasd_eckd.c
+@@ -2289,6 +2289,7 @@ dasd_eckd_analysis_ccw(struct dasd_devic
+ 	cqr->status = DASD_CQR_FILLED;
+ 	/* Set flags to suppress output for expected errors */
+ 	set_bit(DASD_CQR_SUPPRESS_NRF, &cqr->flags);
++	set_bit(DASD_CQR_SUPPRESS_IT, &cqr->flags);
+ 
+ 	return cqr;
+ }
+@@ -2570,7 +2571,6 @@ dasd_eckd_build_check_tcw(struct dasd_de
+ 	cqr->buildclk = get_tod_clock();
+ 	cqr->status = DASD_CQR_FILLED;
+ 	/* Set flags to suppress output for expected errors */
+-	set_bit(DASD_CQR_SUPPRESS_FP, &cqr->flags);
+ 	set_bit(DASD_CQR_SUPPRESS_IL, &cqr->flags);
+ 
+ 	return cqr;
+@@ -4146,8 +4146,6 @@ static struct dasd_ccw_req *dasd_eckd_bu
+ 
+ 	/* Set flags to suppress output for expected errors */
+ 	if (dasd_eckd_is_ese(basedev)) {
+-		set_bit(DASD_CQR_SUPPRESS_FP, &cqr->flags);
+-		set_bit(DASD_CQR_SUPPRESS_IL, &cqr->flags);
+ 		set_bit(DASD_CQR_SUPPRESS_NRF, &cqr->flags);
+ 	}
+ 
+@@ -4649,9 +4647,8 @@ static struct dasd_ccw_req *dasd_eckd_bu
+ 
+ 	/* Set flags to suppress output for expected errors */
+ 	if (dasd_eckd_is_ese(basedev)) {
+-		set_bit(DASD_CQR_SUPPRESS_FP, &cqr->flags);
+-		set_bit(DASD_CQR_SUPPRESS_IL, &cqr->flags);
+ 		set_bit(DASD_CQR_SUPPRESS_NRF, &cqr->flags);
++		set_bit(DASD_CQR_SUPPRESS_IT, &cqr->flags);
+ 	}
+ 
+ 	return cqr;
+@@ -5820,36 +5817,32 @@ static void dasd_eckd_dump_sense(struct
+ {
+ 	u8 *sense = dasd_get_sense(irb);
+ 
+-	if (scsw_is_tm(&irb->scsw)) {
+-		/*
+-		 * In some cases the 'File Protected' or 'Incorrect Length'
+-		 * error might be expected and log messages shouldn't be written
+-		 * then. Check if the according suppress bit is set.
+-		 */
+-		if (sense && (sense[1] & SNS1_FILE_PROTECTED) &&
+-		    test_bit(DASD_CQR_SUPPRESS_FP, &req->flags))
+-			return;
+-		if (scsw_cstat(&irb->scsw) == 0x40 &&
+-		    test_bit(DASD_CQR_SUPPRESS_IL, &req->flags))
+-			return;
++	/*
++	 * In some cases certain errors might be expected and
++	 * log messages shouldn't be written then.
++	 * Check if the according suppress bit is set.
++	 */
++	if (sense && (sense[1] & SNS1_INV_TRACK_FORMAT) &&
++	    !(sense[2] & SNS2_ENV_DATA_PRESENT) &&
++	    test_bit(DASD_CQR_SUPPRESS_IT, &req->flags))
++		return;
+ 
+-		dasd_eckd_dump_sense_tcw(device, req, irb);
+-	} else {
+-		/*
+-		 * In some cases the 'Command Reject' or 'No Record Found'
+-		 * error might be expected and log messages shouldn't be
+-		 * written then. Check if the according suppress bit is set.
+-		 */
+-		if (sense && sense[0] & SNS0_CMD_REJECT &&
+-		    test_bit(DASD_CQR_SUPPRESS_CR, &req->flags))
+-			return;
++	if (sense && sense[0] & SNS0_CMD_REJECT &&
++	    test_bit(DASD_CQR_SUPPRESS_CR, &req->flags))
++		return;
+ 
+-		if (sense && sense[1] & SNS1_NO_REC_FOUND &&
+-		    test_bit(DASD_CQR_SUPPRESS_NRF, &req->flags))
+-			return;
++	if (sense && sense[1] & SNS1_NO_REC_FOUND &&
++	    test_bit(DASD_CQR_SUPPRESS_NRF, &req->flags))
++		return;
+ 
++	if (scsw_cstat(&irb->scsw) == 0x40 &&
++	    test_bit(DASD_CQR_SUPPRESS_IL, &req->flags))
++		return;
++
++	if (scsw_is_tm(&irb->scsw))
++		dasd_eckd_dump_sense_tcw(device, req, irb);
++	else
+ 		dasd_eckd_dump_sense_ccw(device, req, irb);
+-	}
+ }
+ 
+ static int dasd_eckd_reload_device(struct dasd_device *device)
+--- a/drivers/s390/block/dasd_int.h
++++ b/drivers/s390/block/dasd_int.h
+@@ -225,7 +225,7 @@ struct dasd_ccw_req {
+  * The following flags are used to suppress output of certain errors.
+  */
+ #define DASD_CQR_SUPPRESS_NRF	4	/* Suppress 'No Record Found' error */
+-#define DASD_CQR_SUPPRESS_FP	5	/* Suppress 'File Protected' error*/
++#define DASD_CQR_SUPPRESS_IT	5	/* Suppress 'Invalid Track' error*/
+ #define DASD_CQR_SUPPRESS_IL	6	/* Suppress 'Incorrect Length' error */
+ #define DASD_CQR_SUPPRESS_CR	7	/* Suppress 'Command Reject' error */
+ 
 
 
 
