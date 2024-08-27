@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-70826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71118-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3FE9961037
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:06:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C8BC9611B9
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:22:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E55B11C20919
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:06:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 28361B26B83
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:22:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51F391C2DB1;
-	Tue, 27 Aug 2024 15:06:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCFB11C68AE;
+	Tue, 27 Aug 2024 15:22:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W6KN40/m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tKhWdpqh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D5A519F485;
-	Tue, 27 Aug 2024 15:06:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7790F1C578D;
+	Tue, 27 Aug 2024 15:22:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771188; cv=none; b=Dbyo1oKF2woDKsspo1ZeUwZvwqX38uJ/p4XAMCgbY3xGllEAlF5XK6reT5b1ZTWlSiPWEUSa/3z1j1wIKtMvnfWEowFLd/XS1u53n3e+10GI1dxyB3vIcGwSjhMknh/pQdEs9C+ow8hfBM6BuLQyxSR9lg0iXtx4h7ZJ5gWmXk0=
+	t=1724772160; cv=none; b=stkDGFhMRCUIQfiAscW/Ohox3REcAOEUz9kgF5K2RAlgkuYjEkUSS+umlJVH5cWZONYcLZ7KDG7pnEHYyo2KgQN2iqj+uTavdGdkVq6UKFi7EGp8Va5WjVs2ug4XfujJ3OogRoGgPOygh5kPnvtOZsNDw0F9zowtCCDAK4opNIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771188; c=relaxed/simple;
-	bh=9nsEIzb+uwktQLlq5kVasOSWOBHwY3vUSQXxKAni6P4=;
+	s=arc-20240116; t=1724772160; c=relaxed/simple;
+	bh=kuYb+fyMwVaF82Eo38rjH8W+MnQ5W/XW586vHYK+s4U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hL+7pZQcpV7vKHrZ6UiEhOg7GxBRZtw+lx06Zpv2vFJnZr9Gy1yuPSKXX+FKCwRbDKpFG3SPORlwSpaNS+DjJhA0bFXOhTbJwIPVZ4UBcmYu42eqVZVJ8bg5vG1WAYVpnKxoBIw2c76ZJ7HR0IgFZBh8vsys1GYxOYNPlu0RocY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W6KN40/m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CCD8C4AF55;
-	Tue, 27 Aug 2024 15:06:27 +0000 (UTC)
+	 MIME-Version; b=iKuDaO9chCCkJOcVgZhPLI0hAhDVu0TKpz1VKETW65Sae02DZrcn7aLcNz1utZHXkmnORv+FU8tKeGtsLJagiIFpjWi4YKjXJviPaM/il2rakvMIM/Vhm1m3f8ok5okjnvfL3bMvn0+p4qSvExsWXj9Vd5KNyIN2zgA/ar2LQNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tKhWdpqh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 847FEC61041;
+	Tue, 27 Aug 2024 15:22:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771187;
-	bh=9nsEIzb+uwktQLlq5kVasOSWOBHwY3vUSQXxKAni6P4=;
+	s=korg; t=1724772160;
+	bh=kuYb+fyMwVaF82Eo38rjH8W+MnQ5W/XW586vHYK+s4U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W6KN40/m2LefcCeuLAEnNcKzYs6R34JQDldxNvIg05GvQ65ClZL5WgMTmZ8LMaNlv
-	 y1/lmcrTqILO4LkZTv7ik0uUpIGpbCGX4JUFdkMD8Y7f7iojj9cqdbA2r0itXIHsnT
-	 8F2aevb78D4DfRQr3BLVdXNrAaXVuDKQ398A5uOA=
+	b=tKhWdpqhe8sRrFaeL7n27YqThzx5QA43/PCcXUZlIehUMGYN0WdpXdSU3+rZnsj4z
+	 jdXNCMZZWv/0VJ77UhA5EC9UIskJjBKhf+s0xuTGBEtHfAi/3eoFalqeYPZjrh14EM
+	 93uq5QdLj/ixqaIdV+1tI/UcrpzHlnvkRCJevCL0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peiyang Wang <wangpeiyang1@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Chengfeng Ye <dg573847474@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 114/273] net: hns3: use the users cfg after reset
+Subject: [PATCH 6.1 130/321] staging: ks7010: disable bh on tx_dev_lock
 Date: Tue, 27 Aug 2024 16:37:18 +0200
-Message-ID: <20240827143837.747700647@linuxfoundation.org>
+Message-ID: <20240827143843.193292294@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,124 +61,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peiyang Wang <wangpeiyang1@huawei.com>
+From: Chengfeng Ye <dg573847474@gmail.com>
 
-[ Upstream commit 30545e17eac1f50c5ef49644daf6af205100a965 ]
+[ Upstream commit 058cbee52ccd7be77e373d31a4f14670cfd32018 ]
 
-Consider the followed case that the user change speed and reset the net
-interface. Before the hw change speed successfully, the driver get old
-old speed from hw by timer task. After reset, the previous speed is config
-to hw. As a result, the new speed is configed successfully but lost after
-PF reset. The followed pictured shows more dirrectly.
+As &priv->tx_dev.tx_dev_lock is also acquired by xmit callback which
+could be call from timer under softirq context, use spin_lock_bh()
+on it to prevent potential deadlock.
 
-+------+              +----+                 +----+
-| USER |              | PF |                 | HW |
-+---+--+              +-+--+                 +-+--+
-    |  ethtool -s 100G  |                      |
-    +------------------>|   set speed 100G     |
-    |                   +--------------------->|
-    |                   |  set successfully    |
-    |                   |<---------------------+---+
-    |                   |query cfg (timer task)|   |
-    |                   +--------------------->|   | handle speed
-    |                   |     return 200G      |   | changing event
-    |  ethtool --reset  |<---------------------+   | (100G)
-    +------------------>|  cfg previous speed  |<--+
-    |                   |  after reset (200G)  |
-    |                   +--------------------->|
-    |                   |                      +---+
-    |                   |query cfg (timer task)|   |
-    |                   +--------------------->|   | handle speed
-    |                   |     return 100G      |   | changing event
-    |                   |<---------------------+   | (200G)
-    |                   |                      |<--+
-    |                   |query cfg (timer task)|
-    |                   +--------------------->|
-    |                   |     return 200G      |
-    |                   |<---------------------+
-    |                   |                      |
-    v                   v                      v
+hostif_sme_work()
+--> hostif_sme_set_pmksa()
+--> hostif_mib_set_request()
+--> ks_wlan_hw_tx()
+--> spin_lock(&priv->tx_dev.tx_dev_lock)
 
-This patch save new speed if hw change speed successfully, which will be
-used after reset successfully.
+ks_wlan_start_xmit()
+--> hostif_data_request()
+--> ks_wlan_hw_tx()
+--> spin_lock(&priv->tx_dev.tx_dev_lock)
 
-Fixes: 2d03eacc0b7e ("net: hns3: Only update mac configuation when necessary")
-Signed-off-by: Peiyang Wang <wangpeiyang1@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Chengfeng Ye <dg573847474@gmail.com>
+Link: https://lore.kernel.org/r/20230926161323.41928-1-dg573847474@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../hisilicon/hns3/hns3pf/hclge_main.c        | 24 ++++++++++++++-----
- .../hisilicon/hns3/hns3pf/hclge_mdio.c        |  3 +++
- 2 files changed, 21 insertions(+), 6 deletions(-)
+ drivers/staging/ks7010/ks7010_sdio.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-index 125e04434611d..465f0d5822837 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-@@ -2653,8 +2653,17 @@ static int hclge_cfg_mac_speed_dup_h(struct hnae3_handle *handle, int speed,
- {
- 	struct hclge_vport *vport = hclge_get_vport(handle);
- 	struct hclge_dev *hdev = vport->back;
-+	int ret;
-+
-+	ret = hclge_cfg_mac_speed_dup(hdev, speed, duplex, lane_num);
+diff --git a/drivers/staging/ks7010/ks7010_sdio.c b/drivers/staging/ks7010/ks7010_sdio.c
+index 9fb118e77a1f0..f1d44e4955fc6 100644
+--- a/drivers/staging/ks7010/ks7010_sdio.c
++++ b/drivers/staging/ks7010/ks7010_sdio.c
+@@ -395,9 +395,9 @@ int ks_wlan_hw_tx(struct ks_wlan_private *priv, void *p, unsigned long size,
+ 	priv->hostt.buff[priv->hostt.qtail] = le16_to_cpu(hdr->event);
+ 	priv->hostt.qtail = (priv->hostt.qtail + 1) % SME_EVENT_BUFF_SIZE;
  
--	return hclge_cfg_mac_speed_dup(hdev, speed, duplex, lane_num);
-+	if (ret)
-+		return ret;
-+
-+	hdev->hw.mac.req_speed = speed;
-+	hdev->hw.mac.req_duplex = duplex;
-+
-+	return 0;
- }
+-	spin_lock(&priv->tx_dev.tx_dev_lock);
++	spin_lock_bh(&priv->tx_dev.tx_dev_lock);
+ 	result = enqueue_txdev(priv, p, size, complete_handler, skb);
+-	spin_unlock(&priv->tx_dev.tx_dev_lock);
++	spin_unlock_bh(&priv->tx_dev.tx_dev_lock);
  
- static int hclge_set_autoneg_en(struct hclge_dev *hdev, bool enable)
-@@ -2956,17 +2965,20 @@ static int hclge_mac_init(struct hclge_dev *hdev)
- 	if (!test_bit(HCLGE_STATE_RST_HANDLING, &hdev->state))
- 		hdev->hw.mac.duplex = HCLGE_MAC_FULL;
- 
--	ret = hclge_cfg_mac_speed_dup_hw(hdev, hdev->hw.mac.speed,
--					 hdev->hw.mac.duplex, hdev->hw.mac.lane_num);
--	if (ret)
--		return ret;
--
- 	if (hdev->hw.mac.support_autoneg) {
- 		ret = hclge_set_autoneg_en(hdev, hdev->hw.mac.autoneg);
- 		if (ret)
- 			return ret;
- 	}
- 
-+	if (!hdev->hw.mac.autoneg) {
-+		ret = hclge_cfg_mac_speed_dup_hw(hdev, hdev->hw.mac.req_speed,
-+						 hdev->hw.mac.req_duplex,
-+						 hdev->hw.mac.lane_num);
-+		if (ret)
-+			return ret;
-+	}
-+
- 	mac->link = 0;
- 
- 	if (mac->user_fec_mode & BIT(HNAE3_FEC_USER_DEF)) {
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mdio.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mdio.c
-index 85fb11de43a12..80079657afebe 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mdio.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mdio.c
-@@ -191,6 +191,9 @@ static void hclge_mac_adjust_link(struct net_device *netdev)
- 	if (ret)
- 		netdev_err(netdev, "failed to adjust link.\n");
- 
-+	hdev->hw.mac.req_speed = (u32)speed;
-+	hdev->hw.mac.req_duplex = (u8)duplex;
-+
- 	ret = hclge_cfg_flowctrl(hdev);
- 	if (ret)
- 		netdev_err(netdev, "failed to configure flow control.\n");
+ 	if (txq_has_space(priv))
+ 		queue_delayed_work(priv->wq, &priv->rw_dwork, 0);
 -- 
 2.43.0
 
