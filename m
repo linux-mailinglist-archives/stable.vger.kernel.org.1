@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-71201-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70692-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93B16961240
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:29:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5218C960F89
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:00:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6CFC1C22CC1
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:29:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 114CA2860ED
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:00:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 584C01C68A6;
-	Tue, 27 Aug 2024 15:27:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B37561C7B67;
+	Tue, 27 Aug 2024 14:59:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ua03tLK+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xM62nq3t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C2A01C3F17;
-	Tue, 27 Aug 2024 15:27:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7170F1494AC;
+	Tue, 27 Aug 2024 14:59:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772433; cv=none; b=G5aHfj4+9RE+BLJnzW2UAGQHCPKAmK1mDW7iK3xJtHcRoUuVh3Fi4GaEk79pllVQEx7AOr150i0Wnxq3XSDLTTf7jAPnUHcgU9zu4AGUUk7qD1avnmoKj+dzcDiShYw+T1RUGLuRQn7ahFWHFenDa5mnH6bm7kyAdWzxxZqbugA=
+	t=1724770752; cv=none; b=DXiMxe9FCWachi/9AcArlqcLNHVBvyqs1qMfRrS3h0DPaoM7ZRnI7X1LMCSYFhiGcsAAq0gQwFMGGhyeiNU6MViYqXWdv8nPVAqA1lZ9Ol4pajkTK9vzC3f28C0PEDWTUlC5553LkAvJkhoeBMH8Z+R9XRgfErlck5zJjWFvi1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772433; c=relaxed/simple;
-	bh=dbyKoEikQANwG/2IJbjQLgvRfb0WoJp2Ra9IU/tq+VM=;
+	s=arc-20240116; t=1724770752; c=relaxed/simple;
+	bh=BKb7GG5RsIkDAPD790CU1cd/gmyjzM+cUHTZWaxMOD4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rc8Vmk+1GxwW8wyH4d5LvCF3EcECOdKY/Lfb0++PyfeQSa9bYeG75/u88Y8/bvRlwoM2KoGN/njeSHhcC82LsPcwFiHugkNUdAWf6ncE9qLG1BZ/mlre3Kfz+GueyaFzUrR2cH2ocqHeBbuPNfbPaSKaGUrKFIqM32NLkQUUJoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ua03tLK+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 080F5C4DE14;
-	Tue, 27 Aug 2024 15:27:11 +0000 (UTC)
+	 MIME-Version; b=tf8bEO1XHYvdMrbf5qiBzralqOvX+tzNmWdnMqwmR16DLqofeLRg7lrOleIZAfYwDwgezsmfGY7GtjzZbvWMscJqA2cGt7Eks2A+Kln4nT7ofKXhVinqVt/3pMQ0geYXMIMlwWgQZj5jxZ+EAyFmFXBrSoNMAtzuEGL9Oqw275g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xM62nq3t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECF6AC4AF1A;
+	Tue, 27 Aug 2024 14:59:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772432;
-	bh=dbyKoEikQANwG/2IJbjQLgvRfb0WoJp2Ra9IU/tq+VM=;
+	s=korg; t=1724770752;
+	bh=BKb7GG5RsIkDAPD790CU1cd/gmyjzM+cUHTZWaxMOD4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ua03tLK+cf9iJLt0WvzIUw46Z28HoEMTBin6Ls8jRoajA5Rf0aiX/RNQ43QtE1CNN
-	 jY5Ls3sm+F7tEPExKOUiyXCf4LsVSfe2QGtrYtMk89jIA4AyquHD+K26dR3AHa5gcU
-	 OoNq56lcOjr/HURcZM0t9Fnj5F2KAzmZNHJEdDvU=
+	b=xM62nq3tOXHAf4NQ9y8qCqSZB2LrmPrvy4xKsu4esmXRJLU99yU6reImnYMjyydMn
+	 Rek50Nq7yWB8h3fdZX2vvW9I/XlnHt0WE7eP4xoQkxwPneUdq/+g0LQo7cpNjIGNmN
+	 0bvdePo2YrVlJOKEDTnjJt3BmQFhy9dBW57ObDc0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Long Li <longli@microsoft.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 214/321] net: mana: Fix doorbell out of order violation and avoid unnecessary doorbell rings
-Date: Tue, 27 Aug 2024 16:38:42 +0200
-Message-ID: <20240827143846.379315559@linuxfoundation.org>
+Subject: [PATCH 6.6 292/341] mmc: mmc_test: Fix NULL dereference on allocation failure
+Date: Tue, 27 Aug 2024 16:38:43 +0200
+Message-ID: <20240827143854.506615568@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,99 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Long Li <longli@microsoft.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 58a63729c957621f1990c3494c702711188ca347 ]
+[ Upstream commit a1e627af32ed60713941cbfc8075d44cad07f6dd ]
 
-After napi_complete_done() is called when NAPI is polling in the current
-process context, another NAPI may be scheduled and start running in
-softirq on another CPU and may ring the doorbell before the current CPU
-does. When combined with unnecessary rings when there is no need to arm
-the CQ, it triggers error paths in the hardware.
+If the "test->highmem = alloc_pages()" allocation fails then calling
+__free_pages(test->highmem) will result in a NULL dereference.  Also
+change the error code to -ENOMEM instead of returning success.
 
-This patch fixes this by calling napi_complete_done() after doorbell
-rings. It limits the number of unnecessary rings when there is
-no need to arm. MANA hardware specifies that there must be one doorbell
-ring every 8 CQ wraparounds. This driver guarantees one doorbell ring as
-soon as the number of consumed CQEs exceeds 4 CQ wraparounds. In practical
-workloads, the 4 CQ wraparounds proves to be big enough that it rarely
-exceeds this limit before all the napi weight is consumed.
-
-To implement this, add a per-CQ counter cq->work_done_since_doorbell,
-and make sure the CQ is armed as soon as passing 4 wraparounds of the CQ.
-
-Cc: stable@vger.kernel.org
-Fixes: e1b5683ff62e ("net: mana: Move NAPI from EQ to CQ")
-Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
-Signed-off-by: Long Li <longli@microsoft.com>
-Link: https://patch.msgid.link/1723219138-29887-1-git-send-email-longli@linuxonhyperv.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 2661081f5ab9 ("mmc_test: highmem tests")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/8c90be28-67b4-4b0d-a105-034dc72a0b31@stanley.mountain
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/microsoft/mana/mana.h    |  1 +
- drivers/net/ethernet/microsoft/mana/mana_en.c | 24 ++++++++++++-------
- 2 files changed, 16 insertions(+), 9 deletions(-)
+ drivers/mmc/core/mmc_test.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/microsoft/mana/mana.h b/drivers/net/ethernet/microsoft/mana/mana.h
-index d58be64374c84..41c99eabf40a0 100644
---- a/drivers/net/ethernet/microsoft/mana/mana.h
-+++ b/drivers/net/ethernet/microsoft/mana/mana.h
-@@ -262,6 +262,7 @@ struct mana_cq {
- 	/* NAPI data */
- 	struct napi_struct napi;
- 	int work_done;
-+	int work_done_since_doorbell;
- 	int budget;
- };
+diff --git a/drivers/mmc/core/mmc_test.c b/drivers/mmc/core/mmc_test.c
+index 0f6a563103fd2..d780880ddd14b 100644
+--- a/drivers/mmc/core/mmc_test.c
++++ b/drivers/mmc/core/mmc_test.c
+@@ -3104,13 +3104,13 @@ static ssize_t mtf_test_write(struct file *file, const char __user *buf,
+ 	test->buffer = kzalloc(BUFFER_SIZE, GFP_KERNEL);
+ #ifdef CONFIG_HIGHMEM
+ 	test->highmem = alloc_pages(GFP_KERNEL | __GFP_HIGHMEM, BUFFER_ORDER);
++	if (!test->highmem) {
++		count = -ENOMEM;
++		goto free_test_buffer;
++	}
+ #endif
  
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-index b751b03eddfb1..e7d1ce68f05e3 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -1311,7 +1311,6 @@ static void mana_poll_rx_cq(struct mana_cq *cq)
- static int mana_cq_handler(void *context, struct gdma_queue *gdma_queue)
- {
- 	struct mana_cq *cq = context;
--	u8 arm_bit;
- 	int w;
+-#ifdef CONFIG_HIGHMEM
+-	if (test->buffer && test->highmem) {
+-#else
+ 	if (test->buffer) {
+-#endif
+ 		mutex_lock(&mmc_test_lock);
+ 		mmc_test_run(test, testcase);
+ 		mutex_unlock(&mmc_test_lock);
+@@ -3118,6 +3118,7 @@ static ssize_t mtf_test_write(struct file *file, const char __user *buf,
  
- 	WARN_ON_ONCE(cq->gdma_cq != gdma_queue);
-@@ -1322,16 +1321,23 @@ static int mana_cq_handler(void *context, struct gdma_queue *gdma_queue)
- 		mana_poll_tx_cq(cq);
- 
- 	w = cq->work_done;
--
--	if (w < cq->budget &&
--	    napi_complete_done(&cq->napi, w)) {
--		arm_bit = SET_ARM_BIT;
--	} else {
--		arm_bit = 0;
-+	cq->work_done_since_doorbell += w;
-+
-+	if (w < cq->budget) {
-+		mana_gd_ring_cq(gdma_queue, SET_ARM_BIT);
-+		cq->work_done_since_doorbell = 0;
-+		napi_complete_done(&cq->napi, w);
-+	} else if (cq->work_done_since_doorbell >
-+		   cq->gdma_cq->queue_size / COMP_ENTRY_SIZE * 4) {
-+		/* MANA hardware requires at least one doorbell ring every 8
-+		 * wraparounds of CQ even if there is no need to arm the CQ.
-+		 * This driver rings the doorbell as soon as we have exceeded
-+		 * 4 wraparounds.
-+		 */
-+		mana_gd_ring_cq(gdma_queue, 0);
-+		cq->work_done_since_doorbell = 0;
- 	}
- 
--	mana_gd_ring_cq(gdma_queue, arm_bit);
--
- 	return w;
- }
- 
+ #ifdef CONFIG_HIGHMEM
+ 	__free_pages(test->highmem, BUFFER_ORDER);
++free_test_buffer:
+ #endif
+ 	kfree(test->buffer);
+ 	kfree(test);
 -- 
 2.43.0
 
