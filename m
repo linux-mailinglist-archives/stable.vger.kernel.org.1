@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-70964-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71258-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 700CE9610EC
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:14:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A53F961297
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:33:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C752EB24AC4
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:14:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 39913B24D33
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:32:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0D631C6F58;
-	Tue, 27 Aug 2024 15:14:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B96E1CE6F8;
+	Tue, 27 Aug 2024 15:30:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JozmiFkU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="koTEZkxf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D9B41C5783;
-	Tue, 27 Aug 2024 15:14:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56D6DD517;
+	Tue, 27 Aug 2024 15:30:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771646; cv=none; b=s9yFEGGdvqEhdRUR1ldYLqzj7OIhV4y4coQIG1FeTi3EeOVo/TqSDcVCag7soxu6sCGnIBZr1JguW5mzFWXnAw/HfArE36czdNnS3Zye257maadFzscs8iio36g9ilsLgfiKKY+CQcfuqSVH3B0wNPMNMkNnmK76cyw7s7hbW/s=
+	t=1724772617; cv=none; b=uoUeYF11t4edT9A99ZH1/EHp9VqjPl3pC7O+la3pwy36Xr44mT7PAC0vVlqU9BVAX3lqb/6tt/JqoaS//JavDjFZSyvwP5uQzB0YO00b+h14OIYpxxgqwTBxJ+AmgiPhena4Gb+QS++9XCKpefb2nwz17KLB7YMTFIHg4ISh9Lc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771646; c=relaxed/simple;
-	bh=YhDdmzIds/CkaSM7d3CCTGz6UqA/1K7e7HSyNZGAWH4=;
+	s=arc-20240116; t=1724772617; c=relaxed/simple;
+	bh=HhKGzgy+cVa4kgMw/YXbfcUM94Kn1uEJjdSHKXmRDi8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VQ/0T7128mYXGkyi2a1tvHf6m4DF546Z3LACP6gW2+V2HJvP8JJWaK65n4dZwjyirIZO15/eaqE1Lh8LXZriyr2PPN4t8TuuhIksJFskG5kkAmILlgZtuDZ3IasF91F1aJ+GnYbJLfh3IxftR512PY99jTNsz4lv6bQUqwbB5HI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JozmiFkU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2A37C61064;
-	Tue, 27 Aug 2024 15:14:05 +0000 (UTC)
+	 MIME-Version; b=oeFEk3eLJBxT0vC72KPvbhxhCxLMYUFGLxcX7U7hMA1a4tzM1LMidl2RWRjtlyXlIpeb9MVpQJfgD26GIfiL3XHcJZOb3JpnFOXSE0XqH56iaGoXf5tiB0Bo3/s/B98/ayOO7m8LbFotUnnDZL7L16qGjGg8D2xIf6P+LtIa45o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=koTEZkxf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAFFEC4AF65;
+	Tue, 27 Aug 2024 15:30:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771646;
-	bh=YhDdmzIds/CkaSM7d3CCTGz6UqA/1K7e7HSyNZGAWH4=;
+	s=korg; t=1724772617;
+	bh=HhKGzgy+cVa4kgMw/YXbfcUM94Kn1uEJjdSHKXmRDi8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JozmiFkUpy7eNMSQOq3vTMXK5PDCSflWOaLOwpbR795EJSh8nXIuYl2/ZhXLqmCzR
-	 X1l90jenD1WXZOdutpgVCplX106jr2vpJB4s1lwX9leCxv0MwIaTD/JmX1P5ovNelK
-	 msHdJEkyy+Fsy72MvororE3VlFdCoKeWxkZPdqi8=
+	b=koTEZkxfpxi6FrtSgzfmj99oAE2/mAoDBNDZM4fKPaspDfySlgDhsF2IwfYVHkznI
+	 7zLHZDkNTRDKTqNTyJY6n3NVGwNvPgv3g/TEEeR30+cx3uBmiyOFp4uxhQBcv5oIEH
+	 kj1wTeGDOU7/dEsDNtSfAVESuYesvzHopdrw6GMg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Airlie <airlied@redhat.com>,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH 6.10 251/273] nouveau/firmware: use dma non-coherent allocator
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 6.1 267/321] MIPS: Loongson64: Set timer mode in cpu-probe
 Date: Tue, 27 Aug 2024 16:39:35 +0200
-Message-ID: <20240827143842.954036326@linuxfoundation.org>
+Message-ID: <20240827143848.416378818@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,113 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Airlie <airlied@redhat.com>
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
-commit 9b340aeb26d50e9a9ec99599e2a39b035fac978e upstream.
+commit 1cb6ab446424649f03c82334634360c2e3043684 upstream.
 
-Currently, enabling SG_DEBUG in the kernel will cause nouveau to hit a
-BUG() on startup, when the iommu is enabled:
+Loongson64 C and G processors have EXTIMER feature which
+is conflicting with CP0 counter.
 
-kernel BUG at include/linux/scatterlist.h:187!
-invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
-CPU: 7 PID: 930 Comm: (udev-worker) Not tainted 6.9.0-rc3Lyude-Test+ #30
-Hardware name: MSI MS-7A39/A320M GAMING PRO (MS-7A39), BIOS 1.I0 01/22/2019
-RIP: 0010:sg_init_one+0x85/0xa0
-Code: 69 88 32 01 83 e1 03 f6 c3 03 75 20 a8 01 75 1e 48 09 cb 41 89 54
-24 08 49 89 1c 24 41 89 6c 24 0c 5b 5d 41 5c e9 7b b9 88 00 <0f> 0b 0f 0b
-0f 0b 48 8b 05 5e 46 9a 01 eb b2 66 66 2e 0f 1f 84 00
-RSP: 0018:ffffa776017bf6a0 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: ffffa77600d87000 RCX: 000000000000002b
-RDX: 0000000000000001 RSI: 0000000000000000 RDI: ffffa77680d87000
-RBP: 000000000000e000 R08: 0000000000000000 R09: 0000000000000000
-R10: ffff98f4c46aa508 R11: 0000000000000000 R12: ffff98f4c46aa508
-R13: ffff98f4c46aa008 R14: ffffa77600d4a000 R15: ffffa77600d4a018
-FS:  00007feeb5aae980(0000) GS:ffff98f5c4dc0000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f22cb9a4520 CR3: 00000001043ba000 CR4: 00000000003506f0
-Call Trace:
- <TASK>
- ? die+0x36/0x90
- ? do_trap+0xdd/0x100
- ? sg_init_one+0x85/0xa0
- ? do_error_trap+0x65/0x80
- ? sg_init_one+0x85/0xa0
- ? exc_invalid_op+0x50/0x70
- ? sg_init_one+0x85/0xa0
- ? asm_exc_invalid_op+0x1a/0x20
- ? sg_init_one+0x85/0xa0
- nvkm_firmware_ctor+0x14a/0x250 [nouveau]
- nvkm_falcon_fw_ctor+0x42/0x70 [nouveau]
- ga102_gsp_booter_ctor+0xb4/0x1a0 [nouveau]
- r535_gsp_oneinit+0xb3/0x15f0 [nouveau]
- ? srso_return_thunk+0x5/0x5f
- ? srso_return_thunk+0x5/0x5f
- ? nvkm_udevice_new+0x95/0x140 [nouveau]
- ? srso_return_thunk+0x5/0x5f
- ? srso_return_thunk+0x5/0x5f
- ? ktime_get+0x47/0xb0
+Although the processor resets in EXTIMER disabled & INTIMER
+enabled mode, which is compatible with MIPS CP0 compare, firmware
+may attempt to enable EXTIMER and interfere CP0 compare.
 
-Fix this by using the non-coherent allocator instead, I think there
-might be a better answer to this, but it involve ripping up some of
-APIs using sg lists.
+Set timer mode back to MIPS compatible mode to fix booting on
+systems with such firmware before we have an actual driver for
+EXTIMER.
 
 Cc: stable@vger.kernel.org
-Fixes: 2541626cfb79 ("drm/nouveau/acr: use common falcon HS FW code for ACR FWs")
-Signed-off-by: Dave Airlie <airlied@redhat.com>
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240815201923.632803-1-airlied@gmail.com
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/nouveau/nvkm/core/firmware.c |    9 ++++++---
- drivers/gpu/drm/nouveau/nvkm/falcon/fw.c     |    6 ++++++
- 2 files changed, 12 insertions(+), 3 deletions(-)
+ arch/mips/kernel/cpu-probe.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/gpu/drm/nouveau/nvkm/core/firmware.c
-+++ b/drivers/gpu/drm/nouveau/nvkm/core/firmware.c
-@@ -205,7 +205,8 @@ nvkm_firmware_dtor(struct nvkm_firmware
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -1723,12 +1723,16 @@ static inline void cpu_probe_loongson(st
+ 		c->ases |= (MIPS_ASE_LOONGSON_MMI | MIPS_ASE_LOONGSON_CAM |
+ 			MIPS_ASE_LOONGSON_EXT | MIPS_ASE_LOONGSON_EXT2);
+ 		c->ases &= ~MIPS_ASE_VZ; /* VZ of Loongson-3A2000/3000 is incomplete */
++		change_c0_config6(LOONGSON_CONF6_EXTIMER | LOONGSON_CONF6_INTIMER,
++				  LOONGSON_CONF6_INTIMER);
  		break;
- 	case NVKM_FIRMWARE_IMG_DMA:
- 		nvkm_memory_unref(&memory);
--		dma_free_coherent(fw->device->dev, sg_dma_len(&fw->mem.sgl), fw->img, fw->phys);
-+		dma_free_noncoherent(fw->device->dev, sg_dma_len(&fw->mem.sgl),
-+				     fw->img, fw->phys, DMA_TO_DEVICE);
+ 	case PRID_IMP_LOONGSON_64G:
+ 		__cpu_name[cpu] = "ICT Loongson-3";
+ 		set_elf_platform(cpu, "loongson3a");
+ 		set_isa(c, MIPS_CPU_ISA_M64R2);
+ 		decode_cpucfg(c);
++		change_c0_config6(LOONGSON_CONF6_EXTIMER | LOONGSON_CONF6_INTIMER,
++				  LOONGSON_CONF6_INTIMER);
  		break;
- 	case NVKM_FIRMWARE_IMG_SGT:
- 		nvkm_memory_unref(&memory);
-@@ -236,10 +237,12 @@ nvkm_firmware_ctor(const struct nvkm_fir
- 		break;
- 	case NVKM_FIRMWARE_IMG_DMA: {
- 		dma_addr_t addr;
--
- 		len = ALIGN(fw->len, PAGE_SIZE);
- 
--		fw->img = dma_alloc_coherent(fw->device->dev, len, &addr, GFP_KERNEL);
-+		fw->img = dma_alloc_noncoherent(fw->device->dev,
-+						len, &addr,
-+						DMA_TO_DEVICE,
-+						GFP_KERNEL);
- 		if (fw->img) {
- 			memcpy(fw->img, src, fw->len);
- 			fw->phys = addr;
---- a/drivers/gpu/drm/nouveau/nvkm/falcon/fw.c
-+++ b/drivers/gpu/drm/nouveau/nvkm/falcon/fw.c
-@@ -89,6 +89,12 @@ nvkm_falcon_fw_boot(struct nvkm_falcon_f
- 		nvkm_falcon_fw_dtor_sigs(fw);
- 	}
- 
-+	/* after last write to the img, sync dma mappings */
-+	dma_sync_single_for_device(fw->fw.device->dev,
-+				   fw->fw.phys,
-+				   sg_dma_len(&fw->fw.mem.sgl),
-+				   DMA_TO_DEVICE);
-+
- 	FLCNFW_DBG(fw, "resetting");
- 	fw->func->reset(fw);
- 
+ 	default:
+ 		panic("Unknown Loongson Processor ID!");
 
 
 
