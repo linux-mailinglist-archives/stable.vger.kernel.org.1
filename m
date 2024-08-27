@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-70683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70934-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67BE3960F81
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:00:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 547559610C3
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:12:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A48D1C20A85
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:00:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1253C282096
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:12:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A74121CC8AE;
-	Tue, 27 Aug 2024 14:58:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 875F51C57AB;
+	Tue, 27 Aug 2024 15:12:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tw2yH9rT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Sw9c56H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6571C1C945D;
-	Tue, 27 Aug 2024 14:58:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4646B1C4ED4;
+	Tue, 27 Aug 2024 15:12:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770722; cv=none; b=L43jW8O1XaZBuEBSIOHFhiaDF6pQDp+ejeFpo8s1VpvdZ6PkMZKy23jtzpFd86GzZKROpDwMSMau0IEuK1C58g1Z57/yq23Hl1MRmvw7VWvzvuENVb2ug4k2rhtDjIq2hMRdCdMvehbQB76tWgu4lEZKxD3zDve+QaI2JqIGIOk=
+	t=1724771548; cv=none; b=PKNDw198iNUfKUwHLerlTHyJwsAYz/cz6S3ZLvMwv+d9fVBORBAH4zlbWY1QKHpIiH1ATkBzngksbC3ZB0p985BnxUI+RTbOr6zTdLZBRc0JnuiTaYWs0WmBuvz73HNCG3DgKwbGnylTX6D0KO5w+YOQY6It+aC605CZqQC0VNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770722; c=relaxed/simple;
-	bh=3kFO04Z4dPkHgtdUQ9tlgBC58v5eYptPpp9L+IAHGi0=;
+	s=arc-20240116; t=1724771548; c=relaxed/simple;
+	bh=bCsV9W7Qr7s2XhCouGwJXm4ytRRDCZE0vWvWt/xmQr4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nGKqsfkuihYQ1lEcW7fFcDLxWJ4T1arEAh5bLfRTkaRqJw6VJJjASLMoRt+W0NIJY4S2VRp+gJvETZv9L1cAONnl7vpqP9A+uIyusfgjM1ynUHckcgisVnC8+g60lpVMNFZUGx+dskFuJARw8KTS+f5piPwXdv91flhiBVK0BYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tw2yH9rT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C695BC4AF1A;
-	Tue, 27 Aug 2024 14:58:41 +0000 (UTC)
+	 MIME-Version; b=hnyYY63q495gzumsKmgDqHaZypTuwUZpD93j0cgC8x9XICC7E8cykmyEGuXkhNEc8PzLUjhwTs7sLF6eQE0rGhcSaZb/xNF4cRn+kjc3W1MvKlm1l04utC6ZMMG2CIk9BcDdMZs7lcjGyRIekn1gtvPUSEvbqYDpjr4FiOFnjVg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Sw9c56H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C165CC61042;
+	Tue, 27 Aug 2024 15:12:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770722;
-	bh=3kFO04Z4dPkHgtdUQ9tlgBC58v5eYptPpp9L+IAHGi0=;
+	s=korg; t=1724771548;
+	bh=bCsV9W7Qr7s2XhCouGwJXm4ytRRDCZE0vWvWt/xmQr4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tw2yH9rTTo6cUv9pcbnXMtVMPa11lUyYmddl6tjXNZ2cuF71jSS+CzpTbpPryyEY6
-	 C24vAHFm6pfI4TNm4wi2JmaaDL4vVp9MLh+i9saFF3JV2ofPxkAK7oGB0TiP7Eb6zL
-	 CVqjBdra2GZhnUrugXZ5mdNsg0bMTtK9hZ1XsZUU=
+	b=2Sw9c56HNJeP7lJXgpF+//+xbNcHv9eT8Srb08rmwyiokeveqbuuYSuMZ0zq2PRA2
+	 2v525MXFwoMX6YXOcEpvvnUBVFOYk9DbMRp+/W7gv98NQnn318cPCkJ+PPK8GqZQd+
+	 rroRmqfHlzzo7yGG33f4IPiLeRCRzOYkDu3LL06A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 314/341] mptcp: pm: only mark subflow endp as available
+	Marc <1marc1@gmail.com>,
+	"Anthony Nandaa (Microsoft)" <profnandaa@gmail.com>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 221/273] smb: client: ignore unhandled reparse tags
 Date: Tue, 27 Aug 2024 16:39:05 +0200
-Message-ID: <20240827143855.334035359@linuxfoundation.org>
+Message-ID: <20240827143841.816554040@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,119 +64,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Paulo Alcantara <pc@manguebit.com>
 
-commit 322ea3778965da72862cca2a0c50253aacf65fe6 upstream.
+[ Upstream commit ec686804117a0421cf31d54427768aaf93aa0069 ]
 
-Adding the following warning ...
+Just ignore reparse points that the client can't parse rather than
+bailing out and not opening the file or directory.
 
-  WARN_ON_ONCE(msk->pm.local_addr_used == 0)
-
-... before decrementing the local_addr_used counter helped to find a bug
-when running the "remove single address" subtest from the mptcp_join.sh
-selftests.
-
-Removing a 'signal' endpoint will trigger the removal of all subflows
-linked to this endpoint via mptcp_pm_nl_rm_addr_or_subflow() with
-rm_type == MPTCP_MIB_RMSUBFLOW. This will decrement the local_addr_used
-counter, which is wrong in this case because this counter is linked to
-'subflow' endpoints, and here it is a 'signal' endpoint that is being
-removed.
-
-Now, the counter is decremented, only if the ID is being used outside
-of mptcp_pm_nl_rm_addr_or_subflow(), only for 'subflow' endpoints, and
-if the ID is not 0 -- local_addr_used is not taking into account these
-ones. This marking of the ID as being available, and the decrement is
-done no matter if a subflow using this ID is currently available,
-because the subflow could have been closed before.
-
-Fixes: 06faa2271034 ("mptcp: remove multi addresses and subflows in PM")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20240819-net-mptcp-pm-reusing-id-v1-8-38035d40de5b@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Marc <1marc1@gmail.com>
+Closes: https://lore.kernel.org/r/CAMHwNVv-B+Q6wa0FEXrAuzdchzcJRsPKDDRrNaYZJd6X-+iJzw@mail.gmail.com
+Fixes: 539aad7f14da ("smb: client: introduce ->parse_reparse_point()")
+Tested-by: Anthony Nandaa (Microsoft) <profnandaa@gmail.com>
+Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/pm_netlink.c |   26 +++++++++++++++++---------
- 1 file changed, 17 insertions(+), 9 deletions(-)
+ fs/smb/client/reparse.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -841,10 +841,10 @@ static void mptcp_pm_nl_rm_addr_or_subfl
- 			if (rm_type == MPTCP_MIB_RMSUBFLOW)
- 				__MPTCP_INC_STATS(sock_net(sk), rm_type);
- 		}
--		if (rm_type == MPTCP_MIB_RMSUBFLOW)
--			__set_bit(rm_id ? rm_id : msk->mpc_endpoint_id, msk->pm.id_avail_bitmap);
--		else if (rm_type == MPTCP_MIB_RMADDR)
-+
-+		if (rm_type == MPTCP_MIB_RMADDR)
- 			__MPTCP_INC_STATS(sock_net(sk), rm_type);
-+
- 		if (!removed)
- 			continue;
- 
-@@ -854,8 +854,6 @@ static void mptcp_pm_nl_rm_addr_or_subfl
- 		if (rm_type == MPTCP_MIB_RMADDR) {
- 			msk->pm.add_addr_accepted--;
- 			WRITE_ONCE(msk->pm.accept_addr, true);
--		} else if (rm_type == MPTCP_MIB_RMSUBFLOW) {
--			msk->pm.local_addr_used--;
- 		}
- 	}
- }
-@@ -1472,6 +1470,14 @@ static bool mptcp_pm_remove_anno_addr(st
- 	return ret;
- }
- 
-+static void __mark_subflow_endp_available(struct mptcp_sock *msk, u8 id)
-+{
-+	/* If it was marked as used, and not ID 0, decrement local_addr_used */
-+	if (!__test_and_set_bit(id ? : msk->mpc_endpoint_id, msk->pm.id_avail_bitmap) &&
-+	    id && !WARN_ON_ONCE(msk->pm.local_addr_used == 0))
-+		msk->pm.local_addr_used--;
-+}
-+
- static int mptcp_nl_remove_subflow_and_signal_addr(struct net *net,
- 						   const struct mptcp_pm_addr_entry *entry)
+diff --git a/fs/smb/client/reparse.c b/fs/smb/client/reparse.c
+index 689d8a506d459..48c27581ec511 100644
+--- a/fs/smb/client/reparse.c
++++ b/fs/smb/client/reparse.c
+@@ -378,6 +378,8 @@ int parse_reparse_point(struct reparse_data_buffer *buf,
+ 			u32 plen, struct cifs_sb_info *cifs_sb,
+ 			bool unicode, struct cifs_open_info_data *data)
  {
-@@ -1505,11 +1511,11 @@ static int mptcp_nl_remove_subflow_and_s
- 			spin_lock_bh(&msk->pm.lock);
- 			mptcp_pm_nl_rm_subflow_received(msk, &list);
- 			spin_unlock_bh(&msk->pm.lock);
--		} else if (entry->flags & MPTCP_PM_ADDR_FLAG_SUBFLOW) {
--			/* If the subflow has been used, but now closed */
-+		}
++	struct cifs_tcon *tcon = cifs_sb_master_tcon(cifs_sb);
 +
-+		if (entry->flags & MPTCP_PM_ADDR_FLAG_SUBFLOW) {
- 			spin_lock_bh(&msk->pm.lock);
--			if (!__test_and_set_bit(entry->addr.id, msk->pm.id_avail_bitmap))
--				msk->pm.local_addr_used--;
-+			__mark_subflow_endp_available(msk, list.ids[0]);
- 			spin_unlock_bh(&msk->pm.lock);
- 		}
+ 	data->reparse.buf = buf;
  
-@@ -1547,6 +1553,7 @@ static int mptcp_nl_remove_id_zero_addre
- 		spin_lock_bh(&msk->pm.lock);
- 		mptcp_pm_remove_addr(msk, &list);
- 		mptcp_pm_nl_rm_subflow_received(msk, &list);
-+		__mark_subflow_endp_available(msk, 0);
- 		spin_unlock_bh(&msk->pm.lock);
- 		release_sock(sk);
- 
-@@ -1939,6 +1946,7 @@ static void mptcp_pm_nl_fullmesh(struct
- 
- 	spin_lock_bh(&msk->pm.lock);
- 	mptcp_pm_nl_rm_subflow_received(msk, &list);
-+	__mark_subflow_endp_available(msk, list.ids[0]);
- 	mptcp_pm_create_subflow_or_signal_addr(msk);
- 	spin_unlock_bh(&msk->pm.lock);
+ 	/* See MS-FSCC 2.1.2 */
+@@ -394,12 +396,13 @@ int parse_reparse_point(struct reparse_data_buffer *buf,
+ 	case IO_REPARSE_TAG_LX_FIFO:
+ 	case IO_REPARSE_TAG_LX_CHR:
+ 	case IO_REPARSE_TAG_LX_BLK:
+-		return 0;
++		break;
+ 	default:
+-		cifs_dbg(VFS, "%s: unhandled reparse tag: 0x%08x\n",
+-			 __func__, le32_to_cpu(buf->ReparseTag));
+-		return -EOPNOTSUPP;
++		cifs_tcon_dbg(VFS | ONCE, "unhandled reparse tag: 0x%08x\n",
++			      le32_to_cpu(buf->ReparseTag));
++		break;
+ 	}
++	return 0;
  }
+ 
+ int smb2_parse_reparse_point(struct cifs_sb_info *cifs_sb,
+-- 
+2.43.0
+
 
 
 
