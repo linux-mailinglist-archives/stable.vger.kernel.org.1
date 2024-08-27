@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-70846-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71104-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70B0B961052
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:07:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 428A09611A7
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:22:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2EDA1281644
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:07:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 734541C234B8
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:22:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82AFE1C5792;
-	Tue, 27 Aug 2024 15:07:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28AE81C68BD;
+	Tue, 27 Aug 2024 15:21:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cxW33V6E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VUA2wOYF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FB931C2DB1;
-	Tue, 27 Aug 2024 15:07:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D94681BC9E3;
+	Tue, 27 Aug 2024 15:21:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771255; cv=none; b=oj2ZDXwVXHcbVtGNo4TKX3hOwkTU6wPfL/nlv4lbAPpL9Lt1F5J6KiSuuxVduKObl4kyEGXFaXNQ9GTDjVUUAlOorVbqk0tT2/YotL6/hrnrUVEJ875EspuPPBEhVI4lWLw/ucCP0f/Vsl4bwlv8KK+xdwaiuCZZgSQsXtWyeI8=
+	t=1724772113; cv=none; b=GHymKZaB4gJzcgSQFgDoT6zB3NrH/7fogFcWldZ3ZyntrI+G5JAeMHPJGNaprl4n7yTlR7K9vZdw6N1EYwHyE1mSvrqrql5TPW5783z11wJcu1tWBvgjw6WDfFtfEKZVqQPu9QiTbS2gE6dPy8XWyustg7Dt4ylnE4IMCVyrWNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771255; c=relaxed/simple;
-	bh=giybfBXFNK5RuJZu5WtnQX8AYSmNIdTOC/3NzZ5TASQ=;
+	s=arc-20240116; t=1724772113; c=relaxed/simple;
+	bh=dq0FsvhSUB6Vpvk7UdvcgP2X2lJb8GjKIwRbcMcC4W8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZXGQKIN1KUfR7XGWvgMt2J/dE0lDlJp7Hkqcv22iz195CHq4XRt9NprJNveYgK+pZU2axcuigw4Oitucdjlp0iQWugwgW3SN1HHpfzzysGK/8c4RY7AXXoN1IZ9fAMN5nayJT7OuWuQCRUp3jc19yqAEvF4rPy+hCtRBy3pZvPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cxW33V6E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D37AC61040;
-	Tue, 27 Aug 2024 15:07:34 +0000 (UTC)
+	 MIME-Version; b=R19Ga7VoFB/QBwHnprlG575Sfeld60dAhqwVaKO8qsNBSbARKxXSWpZz01t6P4qdg4kgUKzt5r96+MAa1pvsfe+LQZxBzItVcQS73f5GNVQ6WYhL+2bir2T4o/82PBQf2g0ZkdZwzsAmdROtiejYsy1iLbvyLG8E6w/tjHiNexk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VUA2wOYF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EE75C4FE08;
+	Tue, 27 Aug 2024 15:21:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771254;
-	bh=giybfBXFNK5RuJZu5WtnQX8AYSmNIdTOC/3NzZ5TASQ=;
+	s=korg; t=1724772113;
+	bh=dq0FsvhSUB6Vpvk7UdvcgP2X2lJb8GjKIwRbcMcC4W8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cxW33V6E+CAcA99lSZRITr+B6T6iMJ1IHMV59vntx7SStuwsCo3sb8iP4IhCzm0z2
-	 XCjsBaviqWvDbY/m1iZA+s9WoSPJoBnz0Avb5gTzTGTyBsqyFxdzyCjjm8TzKDuCMD
-	 G2Ame7CNFz9kRtzBFAb0BgrDLvuOiXIqp6ItY+sw=
+	b=VUA2wOYFc6Oodc9Ro5XCNRuWccrHqj8Kh3zVr3zX6T9YWjHtbyF2NJvUHQgSveBQh
+	 bNH6WXDHonJ1YMJnqgPhhpLBfcAxg4zbb7gEWLbAKqZmCYCm0bzb/ELGvNSXkyt6ZU
+	 FG8kzFB7JRemYHGj25s5O0fw6TMXuwqWuQyi2zcI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Hughes <tom@compton.nu>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Kamalesh Babulal <kamalesh.babulal@oracle.com>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 102/273] netfilter: allow ipv6 fragments to arrive on different devices
+Subject: [PATCH 6.1 118/321] cgroup: Avoid extra dereference in css_populate_dir()
 Date: Tue, 27 Aug 2024 16:37:06 +0200
-Message-ID: <20240827143837.291725505@linuxfoundation.org>
+Message-ID: <20240827143842.734988379@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tom Hughes <tom@compton.nu>
+From: Kamalesh Babulal <kamalesh.babulal@oracle.com>
 
-[ Upstream commit 3cd740b985963f874a1a094f1969e998b9d05554 ]
+[ Upstream commit d24f05987ce8bf61e62d86fedbe47523dc5c3393 ]
 
-Commit 264640fc2c5f4 ("ipv6: distinguish frag queues by device
-for multicast and link-local packets") modified the ipv6 fragment
-reassembly logic to distinguish frag queues by device for multicast
-and link-local packets but in fact only the main reassembly code
-limits the use of the device to those address types and the netfilter
-reassembly code uses the device for all packets.
+Use css directly instead of dereferencing it from &cgroup->self, while
+adding the cgroup v2 cft base and psi files in css_populate_dir(). Both
+points to the same css, when css->ss is NULL, this avoids extra deferences
+and makes code consistent in usage across the function.
 
-This means that if fragments of a packet arrive on different interfaces
-then netfilter will fail to reassemble them and the fragments will be
-expired without going any further through the filters.
-
-Fixes: 648700f76b03 ("inet: frags: use rhashtables for reassembly units")
-Signed-off-by: Tom Hughes <tom@compton.nu>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Kamalesh Babulal <kamalesh.babulal@oracle.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/netfilter/nf_conntrack_reasm.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ kernel/cgroup/cgroup.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv6/netfilter/nf_conntrack_reasm.c b/net/ipv6/netfilter/nf_conntrack_reasm.c
-index 5e1b50c6a44d2..3e9779ed7daec 100644
---- a/net/ipv6/netfilter/nf_conntrack_reasm.c
-+++ b/net/ipv6/netfilter/nf_conntrack_reasm.c
-@@ -154,6 +154,10 @@ static struct frag_queue *fq_find(struct net *net, __be32 id, u32 user,
- 	};
- 	struct inet_frag_queue *q;
+diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
+index 489c25713edcb..455f67ff31b57 100644
+--- a/kernel/cgroup/cgroup.c
++++ b/kernel/cgroup/cgroup.c
+@@ -1751,13 +1751,13 @@ static int css_populate_dir(struct cgroup_subsys_state *css)
  
-+	if (!(ipv6_addr_type(&hdr->daddr) & (IPV6_ADDR_MULTICAST |
-+					    IPV6_ADDR_LINKLOCAL)))
-+		key.iif = 0;
-+
- 	q = inet_frag_find(nf_frag->fqdir, &key);
- 	if (!q)
- 		return NULL;
+ 	if (!css->ss) {
+ 		if (cgroup_on_dfl(cgrp)) {
+-			ret = cgroup_addrm_files(&cgrp->self, cgrp,
++			ret = cgroup_addrm_files(css, cgrp,
+ 						 cgroup_base_files, true);
+ 			if (ret < 0)
+ 				return ret;
+ 
+ 			if (cgroup_psi_enabled()) {
+-				ret = cgroup_addrm_files(&cgrp->self, cgrp,
++				ret = cgroup_addrm_files(css, cgrp,
+ 							 cgroup_psi_files, true);
+ 				if (ret < 0)
+ 					return ret;
 -- 
 2.43.0
 
