@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-70766-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71089-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBDB6960FEE
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:04:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D442961196
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:21:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1AD6C1C22F06
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:04:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A50F71F24099
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:21:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D0921C57B3;
-	Tue, 27 Aug 2024 15:03:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54CC41C462B;
+	Tue, 27 Aug 2024 15:21:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e8B6M+Hc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j0uJKLYP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29FA11C461D;
-	Tue, 27 Aug 2024 15:03:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10ADF19F485;
+	Tue, 27 Aug 2024 15:21:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770992; cv=none; b=Jyj5b+I/DE/Xy9iFVwOn2xnORiBcOy4RgVBNKFN3thC+x35qWqjHIc7fuzIwuLR8px7putG15F0BC96ln3OrAtm9YE+s+yheZke5v88UDvn24GmcQ7FXd5mZ6edV+tJUOcB9fG4uFz2Uen3QlYQjxIXXTQ6eNOtnDNJiYKnVCeo=
+	t=1724772064; cv=none; b=MeVsDSnWHUtr4BqrcQJwFVoLwNyR7+ge0gpsagATwABiD18PzLmt0R2M+0OUfqpyJPTBWoCp1wXG2VgFc+Ru+XhFqiqItQ7IVWUB4hcn6/3FLSt06ozUG+85yrnp2XM2roERYrDizl62/TMsKWg4bCkKujEKYHtP0kasuAwWhKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770992; c=relaxed/simple;
-	bh=5yax7yNoXJqXPxjJ+8DlZkcKk2hqj8mevbINnZj9sgQ=;
+	s=arc-20240116; t=1724772064; c=relaxed/simple;
+	bh=4x2E113EWDwshWX1ZmkIBOnSl+7sqeJnAGDQ3Uo95Uw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SyJLYd0OmCMTOM7F9a9yKdyRWzHQGwF7RzsnHlhyb/ETSWv8yQGkLfHNB0CYryDdVbPmEkixG0j5Tcaz8eUZCMUxLz6afH6PwsOZ5pbhX/jV7L44cxxsxvQo/hcJQBySk6WJ4DiP79JX5DbUvtNkcpu2QTNxmqYZS+lFwmZuQ9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e8B6M+Hc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87785C61049;
-	Tue, 27 Aug 2024 15:03:11 +0000 (UTC)
+	 MIME-Version; b=Zv3v7xSxogadDRg6bTyp0FRi4kmevhlMiifW5uUc0Vx4Qr4ErEsxtf47VBDOh7aZCgn5k+BcCVohtMh5A2/gnlxT53DQeEMRcpYBBGVe58/RiuCfJOf4OkhDyGSjGxXaJt7uvgb811FLE2wCwRXhJAsy8Oh6UVjgdg3RqtZlcQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j0uJKLYP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 868ADC4FDFA;
+	Tue, 27 Aug 2024 15:21:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770992;
-	bh=5yax7yNoXJqXPxjJ+8DlZkcKk2hqj8mevbINnZj9sgQ=;
+	s=korg; t=1724772063;
+	bh=4x2E113EWDwshWX1ZmkIBOnSl+7sqeJnAGDQ3Uo95Uw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e8B6M+HcXTgvtCSatE7AZyLHq27GO7hcSDtQd07TROyitk9a1zPpNKQWN9EM3Gq9v
-	 F8067mtilJ24IYNiR0bG/xissNFSIj3L8GTi7aMGYSI4jQLBMoPs0OJYgFNwfqiE/Y
-	 xDsXr/BOpj2/hxBmz9s56O1AgRfvEsmkHlIyDjRA=
+	b=j0uJKLYP72ZxlJx2LYgvxlgfIwXWeyKQZ44REBROWOv1RkMsDxuGliFbZqTzel8rm
+	 ZN3k06dbTA7cPg/nPYa7pC/xPXboGcSKz7EHeTut/ZqEqavvbbZoV0R8kpEdoVDNY/
+	 26VcScQYihlKq1X77W1XYcnAkQgWKWpAiVNo/Qo4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Waiman Long <longman@redhat.com>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	"Huang, Ying" <ying.huang@intel.com>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Len Brown <len.brown@intel.com>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.10 054/273] mm/memory-failure: use raw_spinlock_t in struct memory_failure_cpu
+	Mark Rutland <mark.rutland@arm.com>,
+	Kees Cook <keescook@chromium.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 070/321] bpf: Replace bpf_lpm_trie_key 0-length array with flexible array
 Date: Tue, 27 Aug 2024 16:36:18 +0200
-Message-ID: <20240827143835.457067906@linuxfoundation.org>
+Message-ID: <20240827143840.906417674@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,134 +64,385 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Waiman Long <longman@redhat.com>
+From: Kees Cook <keescook@chromium.org>
 
-commit d75abd0d0bc29e6ebfebbf76d11b4067b35844af upstream.
+[ Upstream commit 896880ff30866f386ebed14ab81ce1ad3710cfc4 ]
 
-The memory_failure_cpu structure is a per-cpu structure.  Access to its
-content requires the use of get_cpu_var() to lock in the current CPU and
-disable preemption.  The use of a regular spinlock_t for locking purpose
-is fine for a non-RT kernel.
+Replace deprecated 0-length array in struct bpf_lpm_trie_key with
+flexible array. Found with GCC 13:
 
-Since the integration of RT spinlock support into the v5.15 kernel, a
-spinlock_t in a RT kernel becomes a sleeping lock and taking a sleeping
-lock in a preemption disabled context is illegal resulting in the
-following kind of warning.
+../kernel/bpf/lpm_trie.c:207:51: warning: array subscript i is outside array bounds of 'const __u8[0]' {aka 'const unsigned char[]'} [-Warray-bounds=]
+  207 |                                        *(__be16 *)&key->data[i]);
+      |                                                   ^~~~~~~~~~~~~
+../include/uapi/linux/swab.h:102:54: note: in definition of macro '__swab16'
+  102 | #define __swab16(x) (__u16)__builtin_bswap16((__u16)(x))
+      |                                                      ^
+../include/linux/byteorder/generic.h:97:21: note: in expansion of macro '__be16_to_cpu'
+   97 | #define be16_to_cpu __be16_to_cpu
+      |                     ^~~~~~~~~~~~~
+../kernel/bpf/lpm_trie.c:206:28: note: in expansion of macro 'be16_to_cpu'
+  206 |                 u16 diff = be16_to_cpu(*(__be16 *)&node->data[i]
+^
+      |                            ^~~~~~~~~~~
+In file included from ../include/linux/bpf.h:7:
+../include/uapi/linux/bpf.h:82:17: note: while referencing 'data'
+   82 |         __u8    data[0];        /* Arbitrary size */
+      |                 ^~~~
 
-  [12135.732244] BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
-  [12135.732248] in_atomic(): 1, irqs_disabled(): 0, non_block: 0, pid: 270076, name: kworker/0:0
-  [12135.732252] preempt_count: 1, expected: 0
-  [12135.732255] RCU nest depth: 2, expected: 2
-    :
-  [12135.732420] Hardware name: Dell Inc. PowerEdge R640/0HG0J8, BIOS 2.10.2 02/24/2021
-  [12135.732423] Workqueue: kacpi_notify acpi_os_execute_deferred
-  [12135.732433] Call Trace:
-  [12135.732436]  <TASK>
-  [12135.732450]  dump_stack_lvl+0x57/0x81
-  [12135.732461]  __might_resched.cold+0xf4/0x12f
-  [12135.732479]  rt_spin_lock+0x4c/0x100
-  [12135.732491]  memory_failure_queue+0x40/0xe0
-  [12135.732503]  ghes_do_memory_failure+0x53/0x390
-  [12135.732516]  ghes_do_proc.constprop.0+0x229/0x3e0
-  [12135.732575]  ghes_proc+0xf9/0x1a0
-  [12135.732591]  ghes_notify_hed+0x6a/0x150
-  [12135.732602]  notifier_call_chain+0x43/0xb0
-  [12135.732626]  blocking_notifier_call_chain+0x43/0x60
-  [12135.732637]  acpi_ev_notify_dispatch+0x47/0x70
-  [12135.732648]  acpi_os_execute_deferred+0x13/0x20
-  [12135.732654]  process_one_work+0x41f/0x500
-  [12135.732695]  worker_thread+0x192/0x360
-  [12135.732715]  kthread+0x111/0x140
-  [12135.732733]  ret_from_fork+0x29/0x50
-  [12135.732779]  </TASK>
+And found at run-time under CONFIG_FORTIFY_SOURCE:
 
-Fix it by using a raw_spinlock_t for locking instead.
+  UBSAN: array-index-out-of-bounds in kernel/bpf/lpm_trie.c:218:49
+  index 0 is out of range for type '__u8 [*]'
 
-Also move the pr_err() out of the lock critical section and after
-put_cpu_ptr() to avoid indeterminate latency and the possibility of sleep
-with this call.
+Changing struct bpf_lpm_trie_key is difficult since has been used by
+userspace. For example, in Cilium:
 
-[longman@redhat.com: don't hold percpu ref across pr_err(), per Miaohe]
-  Link: https://lkml.kernel.org/r/20240807181130.1122660-1-longman@redhat.com
-Link: https://lkml.kernel.org/r/20240806164107.1044956-1-longman@redhat.com
-Fixes: 0f383b6dc96e ("locking/spinlock: Provide RT variant")
-Signed-off-by: Waiman Long <longman@redhat.com>
-Acked-by: Miaohe Lin <linmiaohe@huawei.com>
-Cc: "Huang, Ying" <ying.huang@intel.com>
-Cc: Juri Lelli <juri.lelli@redhat.com>
-Cc: Len Brown <len.brown@intel.com>
-Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+	struct egress_gw_policy_key {
+	        struct bpf_lpm_trie_key lpm_key;
+	        __u32 saddr;
+	        __u32 daddr;
+	};
+
+While direct references to the "data" member haven't been found, there
+are static initializers what include the final member. For example,
+the "{}" here:
+
+        struct egress_gw_policy_key in_key = {
+                .lpm_key = { 32 + 24, {} },
+                .saddr   = CLIENT_IP,
+                .daddr   = EXTERNAL_SVC_IP & 0Xffffff,
+        };
+
+To avoid the build time and run time warnings seen with a 0-sized
+trailing array for struct bpf_lpm_trie_key, introduce a new struct
+that correctly uses a flexible array for the trailing bytes,
+struct bpf_lpm_trie_key_u8. As part of this, include the "header"
+portion (which is just the "prefixlen" member), so it can be used
+by anything building a bpf_lpr_trie_key that has trailing members that
+aren't a u8 flexible array (like the self-test[1]), which is named
+struct bpf_lpm_trie_key_hdr.
+
+Unfortunately, C++ refuses to parse the __struct_group() helper, so
+it is not possible to define struct bpf_lpm_trie_key_hdr directly in
+struct bpf_lpm_trie_key_u8, so we must open-code the union directly.
+
+Adjust the kernel code to use struct bpf_lpm_trie_key_u8 through-out,
+and for the selftest to use struct bpf_lpm_trie_key_hdr. Add a comment
+to the UAPI header directing folks to the two new options.
+
+Reported-by: Mark Rutland <mark.rutland@arm.com>
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Closes: https://paste.debian.net/hidden/ca500597/
+Link: https://lore.kernel.org/all/202206281009.4332AA33@keescook/ [1]
+Link: https://lore.kernel.org/bpf/20240222155612.it.533-kees@kernel.org
+Stable-dep-of: 59f2f841179a ("bpf: Avoid kfree_rcu() under lock in bpf_lpm_trie.")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/memory-failure.c |   20 +++++++++++---------
- 1 file changed, 11 insertions(+), 9 deletions(-)
+ Documentation/bpf/map_lpm_trie.rst            |  2 +-
+ include/uapi/linux/bpf.h                      | 19 +++++++++++++++++-
+ kernel/bpf/lpm_trie.c                         | 20 +++++++++----------
+ samples/bpf/map_perf_test_user.c              |  2 +-
+ samples/bpf/xdp_router_ipv4_user.c            |  2 +-
+ tools/include/uapi/linux/bpf.h                | 19 +++++++++++++++++-
+ .../selftests/bpf/progs/map_ptr_kern.c        |  2 +-
+ tools/testing/selftests/bpf/test_lpm_map.c    | 18 ++++++++---------
+ 8 files changed, 59 insertions(+), 25 deletions(-)
 
---- a/mm/memory-failure.c
-+++ b/mm/memory-failure.c
-@@ -2406,7 +2406,7 @@ struct memory_failure_entry {
- struct memory_failure_cpu {
- 	DECLARE_KFIFO(fifo, struct memory_failure_entry,
- 		      MEMORY_FAILURE_FIFO_SIZE);
--	spinlock_t lock;
-+	raw_spinlock_t lock;
- 	struct work_struct work;
+diff --git a/Documentation/bpf/map_lpm_trie.rst b/Documentation/bpf/map_lpm_trie.rst
+index 31be1aa7ba2cb..b4fce3f7c98ff 100644
+--- a/Documentation/bpf/map_lpm_trie.rst
++++ b/Documentation/bpf/map_lpm_trie.rst
+@@ -17,7 +17,7 @@ significant byte.
+ 
+ LPM tries may be created with a maximum prefix length that is a multiple
+ of 8, in the range from 8 to 2048. The key used for lookup and update
+-operations is a ``struct bpf_lpm_trie_key``, extended by
++operations is a ``struct bpf_lpm_trie_key_u8``, extended by
+ ``max_prefixlen/8`` bytes.
+ 
+ - For IPv4 addresses the data length is 4 bytes
+diff --git a/include/uapi/linux/bpf.h b/include/uapi/linux/bpf.h
+index a17688011440e..58c7fc75da752 100644
+--- a/include/uapi/linux/bpf.h
++++ b/include/uapi/linux/bpf.h
+@@ -76,12 +76,29 @@ struct bpf_insn {
+ 	__s32	imm;		/* signed immediate constant */
  };
  
-@@ -2432,20 +2432,22 @@ void memory_failure_queue(unsigned long
+-/* Key of an a BPF_MAP_TYPE_LPM_TRIE entry */
++/* Deprecated: use struct bpf_lpm_trie_key_u8 (when the "data" member is needed for
++ * byte access) or struct bpf_lpm_trie_key_hdr (when using an alternative type for
++ * the trailing flexible array member) instead.
++ */
+ struct bpf_lpm_trie_key {
+ 	__u32	prefixlen;	/* up to 32 for AF_INET, 128 for AF_INET6 */
+ 	__u8	data[0];	/* Arbitrary size */
+ };
+ 
++/* Header for bpf_lpm_trie_key structs */
++struct bpf_lpm_trie_key_hdr {
++	__u32	prefixlen;
++};
++
++/* Key of an a BPF_MAP_TYPE_LPM_TRIE entry, with trailing byte array. */
++struct bpf_lpm_trie_key_u8 {
++	union {
++		struct bpf_lpm_trie_key_hdr	hdr;
++		__u32				prefixlen;
++	};
++	__u8	data[];		/* Arbitrary size */
++};
++
+ struct bpf_cgroup_storage_key {
+ 	__u64	cgroup_inode_id;	/* cgroup inode id */
+ 	__u32	attach_type;		/* program attach type (enum bpf_attach_type) */
+diff --git a/kernel/bpf/lpm_trie.c b/kernel/bpf/lpm_trie.c
+index ce3a091d52e89..b80bffc59e5fb 100644
+--- a/kernel/bpf/lpm_trie.c
++++ b/kernel/bpf/lpm_trie.c
+@@ -164,13 +164,13 @@ static inline int extract_bit(const u8 *data, size_t index)
+  */
+ static size_t longest_prefix_match(const struct lpm_trie *trie,
+ 				   const struct lpm_trie_node *node,
+-				   const struct bpf_lpm_trie_key *key)
++				   const struct bpf_lpm_trie_key_u8 *key)
  {
- 	struct memory_failure_cpu *mf_cpu;
- 	unsigned long proc_flags;
-+	bool buffer_overflow;
- 	struct memory_failure_entry entry = {
- 		.pfn =		pfn,
- 		.flags =	flags,
- 	};
+ 	u32 limit = min(node->prefixlen, key->prefixlen);
+ 	u32 prefixlen = 0, i = 0;
  
- 	mf_cpu = &get_cpu_var(memory_failure_cpu);
--	spin_lock_irqsave(&mf_cpu->lock, proc_flags);
--	if (kfifo_put(&mf_cpu->fifo, entry))
-+	raw_spin_lock_irqsave(&mf_cpu->lock, proc_flags);
-+	buffer_overflow = !kfifo_put(&mf_cpu->fifo, entry);
-+	if (!buffer_overflow)
- 		schedule_work_on(smp_processor_id(), &mf_cpu->work);
--	else
-+	raw_spin_unlock_irqrestore(&mf_cpu->lock, proc_flags);
-+	put_cpu_var(memory_failure_cpu);
-+	if (buffer_overflow)
- 		pr_err("buffer overflow when queuing memory failure at %#lx\n",
- 		       pfn);
--	spin_unlock_irqrestore(&mf_cpu->lock, proc_flags);
--	put_cpu_var(memory_failure_cpu);
- }
- EXPORT_SYMBOL_GPL(memory_failure_queue);
+ 	BUILD_BUG_ON(offsetof(struct lpm_trie_node, data) % sizeof(u32));
+-	BUILD_BUG_ON(offsetof(struct bpf_lpm_trie_key, data) % sizeof(u32));
++	BUILD_BUG_ON(offsetof(struct bpf_lpm_trie_key_u8, data) % sizeof(u32));
  
-@@ -2458,9 +2460,9 @@ static void memory_failure_work_func(str
+ #if defined(CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS) && defined(CONFIG_64BIT)
  
- 	mf_cpu = container_of(work, struct memory_failure_cpu, work);
- 	for (;;) {
--		spin_lock_irqsave(&mf_cpu->lock, proc_flags);
-+		raw_spin_lock_irqsave(&mf_cpu->lock, proc_flags);
- 		gotten = kfifo_get(&mf_cpu->fifo, &entry);
--		spin_unlock_irqrestore(&mf_cpu->lock, proc_flags);
-+		raw_spin_unlock_irqrestore(&mf_cpu->lock, proc_flags);
- 		if (!gotten)
- 			break;
- 		if (entry.flags & MF_SOFT_OFFLINE)
-@@ -2490,7 +2492,7 @@ static int __init memory_failure_init(vo
+@@ -229,7 +229,7 @@ static void *trie_lookup_elem(struct bpf_map *map, void *_key)
+ {
+ 	struct lpm_trie *trie = container_of(map, struct lpm_trie, map);
+ 	struct lpm_trie_node *node, *found = NULL;
+-	struct bpf_lpm_trie_key *key = _key;
++	struct bpf_lpm_trie_key_u8 *key = _key;
  
- 	for_each_possible_cpu(cpu) {
- 		mf_cpu = &per_cpu(memory_failure_cpu, cpu);
--		spin_lock_init(&mf_cpu->lock);
-+		raw_spin_lock_init(&mf_cpu->lock);
- 		INIT_KFIFO(mf_cpu->fifo);
- 		INIT_WORK(&mf_cpu->work, memory_failure_work_func);
+ 	if (key->prefixlen > trie->max_prefixlen)
+ 		return NULL;
+@@ -309,7 +309,7 @@ static int trie_update_elem(struct bpf_map *map,
+ 	struct lpm_trie *trie = container_of(map, struct lpm_trie, map);
+ 	struct lpm_trie_node *node, *im_node = NULL, *new_node = NULL;
+ 	struct lpm_trie_node __rcu **slot;
+-	struct bpf_lpm_trie_key *key = _key;
++	struct bpf_lpm_trie_key_u8 *key = _key;
+ 	unsigned long irq_flags;
+ 	unsigned int next_bit;
+ 	size_t matchlen = 0;
+@@ -437,7 +437,7 @@ static int trie_update_elem(struct bpf_map *map,
+ static int trie_delete_elem(struct bpf_map *map, void *_key)
+ {
+ 	struct lpm_trie *trie = container_of(map, struct lpm_trie, map);
+-	struct bpf_lpm_trie_key *key = _key;
++	struct bpf_lpm_trie_key_u8 *key = _key;
+ 	struct lpm_trie_node __rcu **trim, **trim2;
+ 	struct lpm_trie_node *node, *parent;
+ 	unsigned long irq_flags;
+@@ -536,7 +536,7 @@ static int trie_delete_elem(struct bpf_map *map, void *_key)
+ 				 sizeof(struct lpm_trie_node))
+ #define LPM_VAL_SIZE_MIN	1
+ 
+-#define LPM_KEY_SIZE(X)		(sizeof(struct bpf_lpm_trie_key) + (X))
++#define LPM_KEY_SIZE(X)		(sizeof(struct bpf_lpm_trie_key_u8) + (X))
+ #define LPM_KEY_SIZE_MAX	LPM_KEY_SIZE(LPM_DATA_SIZE_MAX)
+ #define LPM_KEY_SIZE_MIN	LPM_KEY_SIZE(LPM_DATA_SIZE_MIN)
+ 
+@@ -568,7 +568,7 @@ static struct bpf_map *trie_alloc(union bpf_attr *attr)
+ 	/* copy mandatory map attributes */
+ 	bpf_map_init_from_attr(&trie->map, attr);
+ 	trie->data_size = attr->key_size -
+-			  offsetof(struct bpf_lpm_trie_key, data);
++			  offsetof(struct bpf_lpm_trie_key_u8, data);
+ 	trie->max_prefixlen = trie->data_size * 8;
+ 
+ 	spin_lock_init(&trie->lock);
+@@ -619,7 +619,7 @@ static int trie_get_next_key(struct bpf_map *map, void *_key, void *_next_key)
+ {
+ 	struct lpm_trie_node *node, *next_node = NULL, *parent, *search_root;
+ 	struct lpm_trie *trie = container_of(map, struct lpm_trie, map);
+-	struct bpf_lpm_trie_key *key = _key, *next_key = _next_key;
++	struct bpf_lpm_trie_key_u8 *key = _key, *next_key = _next_key;
+ 	struct lpm_trie_node **node_stack = NULL;
+ 	int err = 0, stack_ptr = -1;
+ 	unsigned int next_bit;
+@@ -706,7 +706,7 @@ static int trie_get_next_key(struct bpf_map *map, void *_key, void *_next_key)
  	}
+ do_copy:
+ 	next_key->prefixlen = next_node->prefixlen;
+-	memcpy((void *)next_key + offsetof(struct bpf_lpm_trie_key, data),
++	memcpy((void *)next_key + offsetof(struct bpf_lpm_trie_key_u8, data),
+ 	       next_node->data, trie->data_size);
+ free_stack:
+ 	kfree(node_stack);
+@@ -718,7 +718,7 @@ static int trie_check_btf(const struct bpf_map *map,
+ 			  const struct btf_type *key_type,
+ 			  const struct btf_type *value_type)
+ {
+-	/* Keys must have struct bpf_lpm_trie_key embedded. */
++	/* Keys must have struct bpf_lpm_trie_key_u8 embedded. */
+ 	return BTF_INFO_KIND(key_type->info) != BTF_KIND_STRUCT ?
+ 	       -EINVAL : 0;
+ }
+diff --git a/samples/bpf/map_perf_test_user.c b/samples/bpf/map_perf_test_user.c
+index 1bb53f4b29e11..cb5c776103b99 100644
+--- a/samples/bpf/map_perf_test_user.c
++++ b/samples/bpf/map_perf_test_user.c
+@@ -370,7 +370,7 @@ static void run_perf_test(int tasks)
+ 
+ static void fill_lpm_trie(void)
+ {
+-	struct bpf_lpm_trie_key *key;
++	struct bpf_lpm_trie_key_u8 *key;
+ 	unsigned long value = 0;
+ 	unsigned int i;
+ 	int r;
+diff --git a/samples/bpf/xdp_router_ipv4_user.c b/samples/bpf/xdp_router_ipv4_user.c
+index 683913bbf2797..28bae295d0ed1 100644
+--- a/samples/bpf/xdp_router_ipv4_user.c
++++ b/samples/bpf/xdp_router_ipv4_user.c
+@@ -91,7 +91,7 @@ static int recv_msg(struct sockaddr_nl sock_addr, int sock)
+ static void read_route(struct nlmsghdr *nh, int nll)
+ {
+ 	char dsts[24], gws[24], ifs[16], dsts_len[24], metrics[24];
+-	struct bpf_lpm_trie_key *prefix_key;
++	struct bpf_lpm_trie_key_u8 *prefix_key;
+ 	struct rtattr *rt_attr;
+ 	struct rtmsg *rt_msg;
+ 	int rtm_family;
+diff --git a/tools/include/uapi/linux/bpf.h b/tools/include/uapi/linux/bpf.h
+index a17688011440e..58c7fc75da752 100644
+--- a/tools/include/uapi/linux/bpf.h
++++ b/tools/include/uapi/linux/bpf.h
+@@ -76,12 +76,29 @@ struct bpf_insn {
+ 	__s32	imm;		/* signed immediate constant */
+ };
+ 
+-/* Key of an a BPF_MAP_TYPE_LPM_TRIE entry */
++/* Deprecated: use struct bpf_lpm_trie_key_u8 (when the "data" member is needed for
++ * byte access) or struct bpf_lpm_trie_key_hdr (when using an alternative type for
++ * the trailing flexible array member) instead.
++ */
+ struct bpf_lpm_trie_key {
+ 	__u32	prefixlen;	/* up to 32 for AF_INET, 128 for AF_INET6 */
+ 	__u8	data[0];	/* Arbitrary size */
+ };
+ 
++/* Header for bpf_lpm_trie_key structs */
++struct bpf_lpm_trie_key_hdr {
++	__u32	prefixlen;
++};
++
++/* Key of an a BPF_MAP_TYPE_LPM_TRIE entry, with trailing byte array. */
++struct bpf_lpm_trie_key_u8 {
++	union {
++		struct bpf_lpm_trie_key_hdr	hdr;
++		__u32				prefixlen;
++	};
++	__u8	data[];		/* Arbitrary size */
++};
++
+ struct bpf_cgroup_storage_key {
+ 	__u64	cgroup_inode_id;	/* cgroup inode id */
+ 	__u32	attach_type;		/* program attach type (enum bpf_attach_type) */
+diff --git a/tools/testing/selftests/bpf/progs/map_ptr_kern.c b/tools/testing/selftests/bpf/progs/map_ptr_kern.c
+index db388f593d0a2..96eed198af361 100644
+--- a/tools/testing/selftests/bpf/progs/map_ptr_kern.c
++++ b/tools/testing/selftests/bpf/progs/map_ptr_kern.c
+@@ -311,7 +311,7 @@ struct lpm_trie {
+ } __attribute__((preserve_access_index));
+ 
+ struct lpm_key {
+-	struct bpf_lpm_trie_key trie_key;
++	struct bpf_lpm_trie_key_hdr trie_key;
+ 	__u32 data;
+ };
+ 
+diff --git a/tools/testing/selftests/bpf/test_lpm_map.c b/tools/testing/selftests/bpf/test_lpm_map.c
+index c028d621c744d..d98c72dc563ea 100644
+--- a/tools/testing/selftests/bpf/test_lpm_map.c
++++ b/tools/testing/selftests/bpf/test_lpm_map.c
+@@ -211,7 +211,7 @@ static void test_lpm_map(int keysize)
+ 	volatile size_t n_matches, n_matches_after_delete;
+ 	size_t i, j, n_nodes, n_lookups;
+ 	struct tlpm_node *t, *list = NULL;
+-	struct bpf_lpm_trie_key *key;
++	struct bpf_lpm_trie_key_u8 *key;
+ 	uint8_t *data, *value;
+ 	int r, map;
+ 
+@@ -331,8 +331,8 @@ static void test_lpm_map(int keysize)
+ static void test_lpm_ipaddr(void)
+ {
+ 	LIBBPF_OPTS(bpf_map_create_opts, opts, .map_flags = BPF_F_NO_PREALLOC);
+-	struct bpf_lpm_trie_key *key_ipv4;
+-	struct bpf_lpm_trie_key *key_ipv6;
++	struct bpf_lpm_trie_key_u8 *key_ipv4;
++	struct bpf_lpm_trie_key_u8 *key_ipv6;
+ 	size_t key_size_ipv4;
+ 	size_t key_size_ipv6;
+ 	int map_fd_ipv4;
+@@ -423,7 +423,7 @@ static void test_lpm_ipaddr(void)
+ static void test_lpm_delete(void)
+ {
+ 	LIBBPF_OPTS(bpf_map_create_opts, opts, .map_flags = BPF_F_NO_PREALLOC);
+-	struct bpf_lpm_trie_key *key;
++	struct bpf_lpm_trie_key_u8 *key;
+ 	size_t key_size;
+ 	int map_fd;
+ 	__u64 value;
+@@ -532,7 +532,7 @@ static void test_lpm_delete(void)
+ static void test_lpm_get_next_key(void)
+ {
+ 	LIBBPF_OPTS(bpf_map_create_opts, opts, .map_flags = BPF_F_NO_PREALLOC);
+-	struct bpf_lpm_trie_key *key_p, *next_key_p;
++	struct bpf_lpm_trie_key_u8 *key_p, *next_key_p;
+ 	size_t key_size;
+ 	__u32 value = 0;
+ 	int map_fd;
+@@ -693,9 +693,9 @@ static void *lpm_test_command(void *arg)
+ {
+ 	int i, j, ret, iter, key_size;
+ 	struct lpm_mt_test_info *info = arg;
+-	struct bpf_lpm_trie_key *key_p;
++	struct bpf_lpm_trie_key_u8 *key_p;
+ 
+-	key_size = sizeof(struct bpf_lpm_trie_key) + sizeof(__u32);
++	key_size = sizeof(*key_p) + sizeof(__u32);
+ 	key_p = alloca(key_size);
+ 	for (iter = 0; iter < info->iter; iter++)
+ 		for (i = 0; i < MAX_TEST_KEYS; i++) {
+@@ -717,7 +717,7 @@ static void *lpm_test_command(void *arg)
+ 				ret = bpf_map_lookup_elem(info->map_fd, key_p, &value);
+ 				assert(ret == 0 || errno == ENOENT);
+ 			} else {
+-				struct bpf_lpm_trie_key *next_key_p = alloca(key_size);
++				struct bpf_lpm_trie_key_u8 *next_key_p = alloca(key_size);
+ 				ret = bpf_map_get_next_key(info->map_fd, key_p, next_key_p);
+ 				assert(ret == 0 || errno == ENOENT || errno == ENOMEM);
+ 			}
+@@ -752,7 +752,7 @@ static void test_lpm_multi_thread(void)
+ 
+ 	/* create a trie */
+ 	value_size = sizeof(__u32);
+-	key_size = sizeof(struct bpf_lpm_trie_key) + value_size;
++	key_size = sizeof(struct bpf_lpm_trie_key_hdr) + value_size;
+ 	map_fd = bpf_map_create(BPF_MAP_TYPE_LPM_TRIE, NULL, key_size, value_size, 100, &opts);
+ 
+ 	/* create 4 threads to test update, delete, lookup and get_next_key */
+-- 
+2.43.0
+
 
 
 
