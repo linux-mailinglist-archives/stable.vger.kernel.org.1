@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-70532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71074-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C720960E9B
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:50:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A8D2961184
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:21:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B98541F2442B
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:50:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4CFDB1C222CA
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:21:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C83471C4EE6;
-	Tue, 27 Aug 2024 14:50:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DF381C9EC9;
+	Tue, 27 Aug 2024 15:20:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UJHyr7Mf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HZduE/hG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86EED19F485;
-	Tue, 27 Aug 2024 14:50:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C8661C86FF;
+	Tue, 27 Aug 2024 15:20:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770221; cv=none; b=s0d+PWx9/GiYOmPWl5Sz36b5+TRcyUIMyq8as8WgT9bDYcnpPagj/guHEDRY/J/7oB2FjNnagZPTQAPZOCXF4E9aw+0CZdaL03bO2CJlh5A2FV4dKNRK3M9+YbU+leMg6GNh4IynP4lkRDkTUTSUZWIm/F10jewrRwkD0Vup83M=
+	t=1724772014; cv=none; b=i7jBzck+38vl8gOChCUC4reMPdpMTSTbBZn3aauEX9R/iXrSbry6xm+KrHR9vSVdNGB5dOkwxw96IxdGLlzPpres5hOOU/5noIfawicIOqBc/AIQg5QkY42yLPScbESa3IjLvYKXhL5DJxcIIyk07XR1jX4c9uckSy095B+mfvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770221; c=relaxed/simple;
-	bh=84gKEwTgPBFji81vOGX0RCT/t4fty+mfkNmv97U3Ipc=;
+	s=arc-20240116; t=1724772014; c=relaxed/simple;
+	bh=nmgki1iY2mKRa9OY0Wcp3JZFS0gskM164zXyZQ19hlg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X4tgBDVgvcjPWFk4fg2DF9dysPiBdFGtXRvIfPiB00ycT9i9NowFmEm6XuBnQPaOlbuJfkxvjH5mKK7C3U5cukEgbcuvo6XzKO06LHvASRlfF5g7xJ50SbvhYaBD+C8AfoBmxOL/bd4QdmFx5S2ZaPLJHOS7I0fExioeNyLWKJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UJHyr7Mf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A41C6C4DDF5;
-	Tue, 27 Aug 2024 14:50:20 +0000 (UTC)
+	 MIME-Version; b=gCEm9dSGGrpnBPd2L81zcMyBTMY8CuAArKGzWRjJ0CDc/YX4FnAXrSDHUTLWZQyUkuC3s941KYnMhWPXbDttNA1Uyit3bAXduDmTrmuMHFZja53k3VHL99Ebz13cBm7Lpdpx1atQzXwrkYeWSej8OdCB6WaVv5Aw0dQi6D3Sy0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HZduE/hG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60B6AC4DDEB;
+	Tue, 27 Aug 2024 15:20:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770221;
-	bh=84gKEwTgPBFji81vOGX0RCT/t4fty+mfkNmv97U3Ipc=;
+	s=korg; t=1724772013;
+	bh=nmgki1iY2mKRa9OY0Wcp3JZFS0gskM164zXyZQ19hlg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UJHyr7MfmmcWye6UxIYfEM2uEIuJiWdJWlDS1Oprx+cFeOuHStsPkvX48iey8LK5L
-	 wrvnuuJFToLNeOShDhF18x+W/3UniQakmLFFRfgr/v9Z0AmIeAnj8WWLqqN8dJAhlr
-	 Gi39z7kMNcr/EPCSzojkooWhvDuJAfDSCtCJjf44=
+	b=HZduE/hGxbc4uSpfehY6GQjFiIyLvKBqigP4mwV+M9i5EMt392XbSQ6C30rAX75WR
+	 xQkorRh9v0Fve16EBwYdXzF2tn+2T44eAt0mumn+LWs1aphEt2ul7aeBtKzb0v/+WF
+	 8/YOsEoCMbIIPfO6PNnCaSdSbCAFuFxTyMdvpa3Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Tee <justin.tee@broadcom.com>,
-	Himanshu Madhani <himanshu.madhani@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 164/341] scsi: lpfc: Initialize status local variable in lpfc_sli4_repost_sgl_list()
+Subject: [PATCH 6.1 087/321] atm: idt77252: prevent use after free in dequeue_rx()
 Date: Tue, 27 Aug 2024 16:36:35 +0200
-Message-ID: <20240827143849.653140572@linuxfoundation.org>
+Message-ID: <20240827143841.551768948@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Tee <justin.tee@broadcom.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 3d0f9342ae200aa1ddc4d6e7a573c6f8f068d994 ]
+[ Upstream commit a9a18e8f770c9b0703dab93580d0b02e199a4c79 ]
 
-A static code analyzer tool indicates that the local variable called status
-in the lpfc_sli4_repost_sgl_list() routine could be used to print garbage
-uninitialized values in the routine's log message.
+We can't dereference "skb" after calling vcc->push() because the skb
+is released.
 
-Fix by initializing to zero.
-
-Signed-off-by: Justin Tee <justin.tee@broadcom.com>
-Link: https://lore.kernel.org/r/20240131185112.149731-2-justintee8345@gmail.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/lpfc/lpfc_sli.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/atm/idt77252.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/scsi/lpfc/lpfc_sli.c b/drivers/scsi/lpfc/lpfc_sli.c
-index 5af669b930193..9cd22588c8eb3 100644
---- a/drivers/scsi/lpfc/lpfc_sli.c
-+++ b/drivers/scsi/lpfc/lpfc_sli.c
-@@ -7577,7 +7577,7 @@ lpfc_sli4_repost_sgl_list(struct lpfc_hba *phba,
- 	struct lpfc_sglq *sglq_entry = NULL;
- 	struct lpfc_sglq *sglq_entry_next = NULL;
- 	struct lpfc_sglq *sglq_entry_first = NULL;
--	int status, total_cnt;
-+	int status = 0, total_cnt;
- 	int post_cnt = 0, num_posted = 0, block_cnt = 0;
- 	int last_xritag = NO_XRI;
- 	LIST_HEAD(prep_sgl_list);
+diff --git a/drivers/atm/idt77252.c b/drivers/atm/idt77252.c
+index 2daf50d4cd47a..7810f974b2ca9 100644
+--- a/drivers/atm/idt77252.c
++++ b/drivers/atm/idt77252.c
+@@ -1118,8 +1118,8 @@ dequeue_rx(struct idt77252_dev *card, struct rsq_entry *rsqe)
+ 	rpp->len += skb->len;
+ 
+ 	if (stat & SAR_RSQE_EPDU) {
++		unsigned int len, truesize;
+ 		unsigned char *l1l2;
+-		unsigned int len;
+ 
+ 		l1l2 = (unsigned char *) ((unsigned long) skb->data + skb->len - 6);
+ 
+@@ -1189,14 +1189,15 @@ dequeue_rx(struct idt77252_dev *card, struct rsq_entry *rsqe)
+ 		ATM_SKB(skb)->vcc = vcc;
+ 		__net_timestamp(skb);
+ 
++		truesize = skb->truesize;
+ 		vcc->push(vcc, skb);
+ 		atomic_inc(&vcc->stats->rx);
+ 
+-		if (skb->truesize > SAR_FB_SIZE_3)
++		if (truesize > SAR_FB_SIZE_3)
+ 			add_rx_skb(card, 3, SAR_FB_SIZE_3, 1);
+-		else if (skb->truesize > SAR_FB_SIZE_2)
++		else if (truesize > SAR_FB_SIZE_2)
+ 			add_rx_skb(card, 2, SAR_FB_SIZE_2, 1);
+-		else if (skb->truesize > SAR_FB_SIZE_1)
++		else if (truesize > SAR_FB_SIZE_1)
+ 			add_rx_skb(card, 1, SAR_FB_SIZE_1, 1);
+ 		else
+ 			add_rx_skb(card, 0, SAR_FB_SIZE_0, 1);
 -- 
 2.43.0
 
