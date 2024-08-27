@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-70788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71079-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C4D896100B
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:05:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EB7996118A
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:21:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28FF7285A45
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:05:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E6381C238CD
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:21:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7F831C4EE8;
-	Tue, 27 Aug 2024 15:04:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 552421CC889;
+	Tue, 27 Aug 2024 15:20:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kT7oK5qB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N7xJ8Rq0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76DA71C2DB1;
-	Tue, 27 Aug 2024 15:04:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12EAD1C6F5A;
+	Tue, 27 Aug 2024 15:20:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771062; cv=none; b=E7yykW3tVfSkhySPK/WZBmKbROASQaYx/kpVwg6ykER1iPE1OSiAWj4vOHHTWs/RInR4WYdnQVvXEFWZtT8kMAxTlx1GMFYjF/uIE7rv80hJifUwbi7npDH0EefxbRI+nCdYQyUSB55GXFrD+alDU5LFV3pVrHgML5lToR89r2I=
+	t=1724772031; cv=none; b=g/wjyFc/Uuy1WfIZ3RG/eHcM7IswoFDlLwCHysLvLH/xsZz9cYxIkoF/8Xg7s27ArQvsqp6zdzkEeS/txPX+GddxUt5jS1E4IYm7JD8CcSlRVb8kiYiTVUfbLJ4Dvtls0/HKPfNqdZ+ll8WLleqtQez/ACa4O0mWpR8h8XFSpLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771062; c=relaxed/simple;
-	bh=TMCsF+WWv8j93AjIfIB/RnrFpFPEv/895Fd2DIN9tao=;
+	s=arc-20240116; t=1724772031; c=relaxed/simple;
+	bh=cfKNNhKcfFDrTI1V7Myw0PPSgsoO02GM/U05TI8Ye4A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=akk+o+BbBGgb6uLDMABSCGVczAgOZG9kouzb270jSasqQEdPnxgp1c/gmkcnXTQFrzE889r9jEz6eMFz/BR/QfVln8IzsY70/doSiLxMAx90TetrP76kx/ejpqmNhn81xAAw1U5+RaWIFtLWl1ThdXdEhG0TGHwPzS5Z5kPXXkQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kT7oK5qB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD0EBC6105B;
-	Tue, 27 Aug 2024 15:04:21 +0000 (UTC)
+	 MIME-Version; b=mOTDPkj8l42tBMmwJwGmVGsCKDIkxDhrjLFKmoj0qR2AtLTmIr4IkI7EoHUuSiklYUJn4Fb9MpALXFyf1BWMF8ZDuT9K6IPCc7EarmLnTt0gQHdWcbkhrNiumQOTeP0zHblexLlWocxKhbUKyv5EfOC1DrYEVkIi4r6TWAFnfBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N7xJ8Rq0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1976BC4DDE5;
+	Tue, 27 Aug 2024 15:20:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771062;
-	bh=TMCsF+WWv8j93AjIfIB/RnrFpFPEv/895Fd2DIN9tao=;
+	s=korg; t=1724772030;
+	bh=cfKNNhKcfFDrTI1V7Myw0PPSgsoO02GM/U05TI8Ye4A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kT7oK5qBJWf6Xmd0iXktS16kXFfOedOwrBw37XzngExfsG4xyjm8zCCo99lffxVAO
-	 Ezcno+FsTxI7lY6zvQM0uJvFHQn7mfGwMKZm6PvXwdnKI+liDny8ZxogCuoEP4niFE
-	 PLS4zcjNiJpoR3OE0OM4E0ru40qhknwJ9KJLbd0E=
+	b=N7xJ8Rq037gabDCk/S2vfEmAfypFCyfj+PkOuiCQuk6K48nLQC5Gs9NRganAFELFO
+	 ulEQKk/burhH8r/nSx+RSJ5Z6DhmqlN70hM7g1BoeJfwFgiwbY5UPq7vzz4k0mGm0d
+	 NkpLdvHiHRTTEf5VBcPFCz9iAmrnnMebLza2hVlc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.10 076/273] pidfd: prevent creation of pidfds for kthreads
+	Yue Haibing <yuehaibing@huawei.com>,
+	Simon Horman <horms@kernel.org>,
+	Asmaa Mnebhi <asmaa@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 092/321] mlxbf_gige: Remove two unused function declarations
 Date: Tue, 27 Aug 2024 16:36:40 +0200
-Message-ID: <20240827143836.306470810@linuxfoundation.org>
+Message-ID: <20240827143841.741250270@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,71 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Brauner <brauner@kernel.org>
+From: Yue Haibing <yuehaibing@huawei.com>
 
-commit 3b5bbe798b2451820e74243b738268f51901e7d0 upstream.
+[ Upstream commit 98261be155f8de38f11b6542d4a8935e5532687b ]
 
-It's currently possible to create pidfds for kthreads but it is unclear
-what that is supposed to mean. Until we have use-cases for it and we
-figured out what behavior we want block the creation of pidfds for
-kthreads.
+Commit f92e1869d74e ("Add Mellanox BlueField Gigabit Ethernet driver")
+declared but never implemented these.
 
-Link: https://lore.kernel.org/r/20240731-gleis-mehreinnahmen-6bbadd128383@brauner
-Fixes: 32fcb426ec00 ("pid: add pidfd_open()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Yue Haibing <yuehaibing@huawei.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Asmaa Mnebhi <asmaa@nvidia.com>
+Link: https://lore.kernel.org/r/20230808145249.41596-1-yuehaibing@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: df934abb185c ("mlxbf_gige: disable RX filters until RX path initialized")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/fork.c |   25 ++++++++++++++++++++++---
- 1 file changed, 22 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige.h | 3 ---
+ 1 file changed, 3 deletions(-)
 
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -2069,11 +2069,24 @@ static int __pidfd_prepare(struct pid *p
-  */
- int pidfd_prepare(struct pid *pid, unsigned int flags, struct file **ret)
- {
--	bool thread = flags & PIDFD_THREAD;
+diff --git a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige.h b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige.h
+index 5a1027b072155..483fca0cc5a0c 100644
+--- a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige.h
++++ b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige.h
+@@ -148,9 +148,6 @@ enum mlxbf_gige_res {
+ int mlxbf_gige_mdio_probe(struct platform_device *pdev,
+ 			  struct mlxbf_gige *priv);
+ void mlxbf_gige_mdio_remove(struct mlxbf_gige *priv);
+-irqreturn_t mlxbf_gige_mdio_handle_phy_interrupt(int irq, void *dev_id);
+-void mlxbf_gige_mdio_enable_phy_int(struct mlxbf_gige *priv);
 -
--	if (!pid || !pid_has_task(pid, thread ? PIDTYPE_PID : PIDTYPE_TGID))
-+	if (!pid)
- 		return -EINVAL;
- 
-+	scoped_guard(rcu) {
-+		struct task_struct *tsk;
-+
-+		if (flags & PIDFD_THREAD)
-+			tsk = pid_task(pid, PIDTYPE_PID);
-+		else
-+			tsk = pid_task(pid, PIDTYPE_TGID);
-+		if (!tsk)
-+			return -EINVAL;
-+
-+		/* Don't create pidfds for kernel threads for now. */
-+		if (tsk->flags & PF_KTHREAD)
-+			return -EINVAL;
-+	}
-+
- 	return __pidfd_prepare(pid, flags, ret);
- }
- 
-@@ -2419,6 +2432,12 @@ __latent_entropy struct task_struct *cop
- 	if (clone_flags & CLONE_PIDFD) {
- 		int flags = (clone_flags & CLONE_THREAD) ? PIDFD_THREAD : 0;
- 
-+		/* Don't create pidfds for kernel threads for now. */
-+		if (args->kthread) {
-+			retval = -EINVAL;
-+			goto bad_fork_free_pid;
-+		}
-+
- 		/* Note that no task has been attached to @pid yet. */
- 		retval = __pidfd_prepare(pid, flags, &pidfile);
- 		if (retval < 0)
+ void mlxbf_gige_set_mac_rx_filter(struct mlxbf_gige *priv,
+ 				  unsigned int index, u64 dmac);
+ void mlxbf_gige_get_mac_rx_filter(struct mlxbf_gige *priv,
+-- 
+2.43.0
+
 
 
 
