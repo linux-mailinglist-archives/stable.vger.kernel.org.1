@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-71218-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70676-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D641B961288
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:32:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F3EE960F78
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:59:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 36691B2A5BC
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:30:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5AF25282569
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:59:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 649E81CF2B7;
-	Tue, 27 Aug 2024 15:28:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB7071C8FD9;
+	Tue, 27 Aug 2024 14:58:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZAiL7Qi+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JzuQPP4H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22AA31C8FCF;
-	Tue, 27 Aug 2024 15:28:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77FB81CC14E;
+	Tue, 27 Aug 2024 14:58:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772486; cv=none; b=LoFfRPm50nsYgoF4LAa4Qo8BRjRaANlBuuNcOlRj5vtpYJwfaIo3M4IuNakhFAdyFwwI3pKMOOX2rzFWPeCXAaGz9xilcmUM7+YZEQEKr73y6OXDa/Z3lpQYWkksDxGy/H1oHxud3bqItWnb5cp+M64p//8b4RuCrO3iZNgfTVY=
+	t=1724770699; cv=none; b=HRkXR2FLI3LrmyWZoBKe/OOQl/DmfXpncgOZVolsQY50UWHM8+OvK1znCMGO5F4PoclOss0Y/JE1HVPxteelZp71xnJHz2HhEmuMd7YahKGEBdkpV9c5c5snKzpC6Yv9t/JE+AgDgoQPJs5/h6PwIreC8zh+PDOtZgI2U5R+7II=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772486; c=relaxed/simple;
-	bh=i0ZBk0oUNe170wuKTsDCbMv0r/JYqd2WP77U/s0udx8=;
+	s=arc-20240116; t=1724770699; c=relaxed/simple;
+	bh=OmLTncWUGFyDMBo5l3DbyuuDX7EXqGZ5nvMAeMel7ik=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rss6u1cKaCJPQ/I4Ia0q23BOADnPJ6wuy+or9Ax2kYGA35ytD4d70HvGCl1LL0h2Xs79N+7aD0RSy7dNzYxuFkA9mlBnhGEp59OokPfPWfdHKYyq9pKhSVLs5/Zcz6bECCuQaFOIPGTdhq4rAMQXD0FW5SMMhJZP1QP1kdMX/SA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZAiL7Qi+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 904B1C61047;
-	Tue, 27 Aug 2024 15:28:05 +0000 (UTC)
+	 MIME-Version; b=NSXtWFCmIWrotwHBkm6MokX4kHJjbI1RX7sRrLGz+DPaCGzq4QQcARw2RzGdBw1Xu6DTvYS085MKkH/9BthqQvTTCWBDCIWx6H791+LU3BXEm2nDxkFnbtCrt7vwYy9SU4Joe8S/HH7huTBKDI0LOMxWTe8/Dhg2JKWwSnSY6QI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JzuQPP4H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1410C61058;
+	Tue, 27 Aug 2024 14:58:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772486;
-	bh=i0ZBk0oUNe170wuKTsDCbMv0r/JYqd2WP77U/s0udx8=;
+	s=korg; t=1724770699;
+	bh=OmLTncWUGFyDMBo5l3DbyuuDX7EXqGZ5nvMAeMel7ik=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZAiL7Qi+HhZDMJGIr5r2oFTYgmj4WfJm+IR8zHscWR0UM4cpVjkzvfhxWTLsj6jqW
-	 Lc5IkDeF0oxZWqMHnvp6kE2X1e3imgWwjqU5PhaYyRRlYWqAwrpWtzb59eDBihYAXw
-	 dIzl9jLH8QTdtjNlTeHpt66i11zCn89eDDzCplnk=
+	b=JzuQPP4HO4y1crlZKPJfOop5b/qWMX4CJGEw1oRqj68eAdJopkolp71k3+pisUrof
+	 DuEEIHW6KyGX2fah/2BZGbFF+JYwCglmERrb92i87OSa0Rv0NX1WmENHhOdpYP8kXf
+	 xy/UUDef4wYmVQt83ejBUGj9+iHVKbXjKHOPekCY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 229/321] selftests: udpgro: report error when receive failed
-Date: Tue, 27 Aug 2024 16:38:57 +0200
-Message-ID: <20240827143846.948320721@linuxfoundation.org>
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.6 307/341] pmdomain: imx: scu-pd: Remove duplicated clocks
+Date: Tue, 27 Aug 2024 16:38:58 +0200
+Message-ID: <20240827143855.071308712@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,143 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-[ Upstream commit 7167395a4be7930ecac6a33b4e54d7e3dd9ee209 ]
+commit 50359c9c3cb3e55e840e3485f5ee37da5b2b16b6 upstream.
 
-Currently, we only check the latest senders's exit code. If the receiver
-report failed, it is not recoreded. Fix it by checking the exit code
-of all the involved processes.
+These clocks are already added to the list. Remove the duplicates ones.
 
-Before:
-  bad GRO lookup       ok
-  multiple GRO socks   ./udpgso_bench_rx: recv: bad packet len, got 1452, expected 14520
-
- ./udpgso_bench_rx: recv: bad packet len, got 1452, expected 14520
-
- failed
- $ echo $?
- 0
-
-After:
-  bad GRO lookup       ok
-  multiple GRO socks   ./udpgso_bench_rx: recv: bad packet len, got 1452, expected 14520
-
- ./udpgso_bench_rx: recv: bad packet len, got 1452, expected 14520
-
- failed
- $ echo $?
- 1
-
-Fixes: 3327a9c46352 ("selftests: add functionals test for UDP GRO")
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a67d780720ff ("genpd: imx: scu-pd: add more PDs")
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240717080334.2210988-1-alexander.stein@ew.tq-group.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/udpgro.sh | 44 ++++++++++++++++-----------
- 1 file changed, 27 insertions(+), 17 deletions(-)
+ drivers/pmdomain/imx/scu-pd.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/tools/testing/selftests/net/udpgro.sh b/tools/testing/selftests/net/udpgro.sh
-index af5dc57c8ce93..241c6c37994d8 100755
---- a/tools/testing/selftests/net/udpgro.sh
-+++ b/tools/testing/selftests/net/udpgro.sh
-@@ -46,17 +46,19 @@ run_one() {
- 	local -r all="$@"
- 	local -r tx_args=${all%rx*}
- 	local -r rx_args=${all#*rx}
-+	local ret=0
+diff --git a/drivers/pmdomain/imx/scu-pd.c b/drivers/pmdomain/imx/scu-pd.c
+index 05841b0bf7f3..01d465d88f60 100644
+--- a/drivers/pmdomain/imx/scu-pd.c
++++ b/drivers/pmdomain/imx/scu-pd.c
+@@ -223,11 +223,6 @@ static const struct imx_sc_pd_range imx8qxp_scu_pd_ranges[] = {
+ 	{ "lvds1-pwm", IMX_SC_R_LVDS_1_PWM_0, 1, false, 0 },
+ 	{ "lvds1-lpi2c", IMX_SC_R_LVDS_1_I2C_0, 2, true, 0 },
  
- 	cfg_veth
- 
--	ip netns exec "${PEER_NS}" ./udpgso_bench_rx -C 1000 -R 10 ${rx_args} && \
--		echo "ok" || \
--		echo "failed" &
-+	ip netns exec "${PEER_NS}" ./udpgso_bench_rx -C 1000 -R 10 ${rx_args} &
-+	local PID1=$!
- 
- 	wait_local_port_listen ${PEER_NS} 8000 udp
- 	./udpgso_bench_tx ${tx_args}
--	ret=$?
--	wait $(jobs -p)
-+	check_err $?
-+	wait ${PID1}
-+	check_err $?
-+	[ "$ret" -eq 0 ] && echo "ok" || echo "failed"
- 	return $ret
- }
- 
-@@ -73,6 +75,7 @@ run_one_nat() {
- 	local -r all="$@"
- 	local -r tx_args=${all%rx*}
- 	local -r rx_args=${all#*rx}
-+	local ret=0
- 
- 	if [[ ${tx_args} = *-4* ]]; then
- 		ipt_cmd=iptables
-@@ -93,16 +96,17 @@ run_one_nat() {
- 	# ... so that GRO will match the UDP_GRO enabled socket, but packets
- 	# will land on the 'plain' one
- 	ip netns exec "${PEER_NS}" ./udpgso_bench_rx -G ${family} -b ${addr1} -n 0 &
--	pid=$!
--	ip netns exec "${PEER_NS}" ./udpgso_bench_rx -C 1000 -R 10 ${family} -b ${addr2%/*} ${rx_args} && \
--		echo "ok" || \
--		echo "failed"&
-+	local PID1=$!
-+	ip netns exec "${PEER_NS}" ./udpgso_bench_rx -C 1000 -R 10 ${family} -b ${addr2%/*} ${rx_args} &
-+	local PID2=$!
- 
- 	wait_local_port_listen "${PEER_NS}" 8000 udp
- 	./udpgso_bench_tx ${tx_args}
--	ret=$?
--	kill -INT $pid
--	wait $(jobs -p)
-+	check_err $?
-+	kill -INT ${PID1}
-+	wait ${PID2}
-+	check_err $?
-+	[ "$ret" -eq 0 ] && echo "ok" || echo "failed"
- 	return $ret
- }
- 
-@@ -111,20 +115,26 @@ run_one_2sock() {
- 	local -r all="$@"
- 	local -r tx_args=${all%rx*}
- 	local -r rx_args=${all#*rx}
-+	local ret=0
- 
- 	cfg_veth
- 
- 	ip netns exec "${PEER_NS}" ./udpgso_bench_rx -C 1000 -R 10 ${rx_args} -p 12345 &
--	ip netns exec "${PEER_NS}" ./udpgso_bench_rx -C 2000 -R 10 ${rx_args} && \
--		echo "ok" || \
--		echo "failed" &
-+	local PID1=$!
-+	ip netns exec "${PEER_NS}" ./udpgso_bench_rx -C 2000 -R 10 ${rx_args} &
-+	local PID2=$!
- 
- 	wait_local_port_listen "${PEER_NS}" 12345 udp
- 	./udpgso_bench_tx ${tx_args} -p 12345
-+	check_err $?
- 	wait_local_port_listen "${PEER_NS}" 8000 udp
- 	./udpgso_bench_tx ${tx_args}
--	ret=$?
--	wait $(jobs -p)
-+	check_err $?
-+	wait ${PID1}
-+	check_err $?
-+	wait ${PID2}
-+	check_err $?
-+	[ "$ret" -eq 0 ] && echo "ok" || echo "failed"
- 	return $ret
- }
- 
+-	{ "mipi1", IMX_SC_R_MIPI_1, 1, 0 },
+-	{ "mipi1-pwm0", IMX_SC_R_MIPI_1_PWM_0, 1, 0 },
+-	{ "mipi1-i2c", IMX_SC_R_MIPI_1_I2C_0, 2, 1 },
+-	{ "lvds1", IMX_SC_R_LVDS_1, 1, 0 },
+-
+ 	/* DC SS */
+ 	{ "dc0", IMX_SC_R_DC_0, 1, false, 0 },
+ 	{ "dc0-pll", IMX_SC_R_DC_0_PLL_0, 2, true, 0 },
 -- 
-2.43.0
+2.46.0
 
 
 
