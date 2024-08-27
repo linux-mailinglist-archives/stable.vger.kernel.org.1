@@ -1,67 +1,57 @@
-Return-Path: <stable+bounces-71027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70736-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70A9A96114B
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:19:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E316960FC4
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:02:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 24EF31F20F25
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:19:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DF2B0B266CD
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:02:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C17B01A072D;
-	Tue, 27 Aug 2024 15:17:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2E831C689C;
+	Tue, 27 Aug 2024 15:01:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bdfm+abX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DMiQDSOC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F1041C6F65;
-	Tue, 27 Aug 2024 15:17:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 824F61C6F76;
+	Tue, 27 Aug 2024 15:01:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771854; cv=none; b=LUf9+4M3QgQ1Y1Rz8WxGbXHBM4y4zdsMRD5KdlY4MK7gfvfIwjLXv1qHm+52NdcPrrmI8uIEIMaVGNDvYgBSuxRuWVkf7xhZ8iAULli6gMIQJnK6zOZNQqOzC1GFtQSGgEbi73SN/aLyz+31Zg0O/Z29aqzDBLoBy5kbmVnmrW8=
+	t=1724770896; cv=none; b=ReZ/gF/fLUkCpyeJ89JN/G/rRBYPQiSVZIVfEllFlAUedTy1mM+CeyiQ1cqM4ccfS+IQZAQKYtpa1+dIbW4B4SXuqgoKQqTyN/3xdC/fubhwBkR2u+MJUr7NPfpE2HTfS/XaK+LP12uZvnt3Yvg0mD5B8kVqF8bP8XXB1QxeQo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771854; c=relaxed/simple;
-	bh=A1UGIdtskHirueZ2AkZUieyBWTPngsvdlvxaOrNwCrI=;
+	s=arc-20240116; t=1724770896; c=relaxed/simple;
+	bh=rbDQzMb8H5X+vCwv8rsMkcoLBa+kCPMgY9agJZa/068=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s3rSZ5xM5+zbHI2sFPiObmrTrsjHn4NSvnDFexnMv68HE6NIZb6pZgLpz037MCZBmcKDJ1d5+4EiAw5SD6BScMuYwiwjji9VHzrFnW+p4Im10VYGpOMDrBo/kW8cKgnR4aBQ/H4gYXVNFoe3y9/SyUEU5msSCJMKWlXXyFpp2zA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bdfm+abX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C319C61040;
-	Tue, 27 Aug 2024 15:17:33 +0000 (UTC)
+	 MIME-Version; b=GDHtghrbxVpb9eyw/K6TADYjt3chYBjtOpxswiyHg2PZ33BEkdyztG29WPLZR3cbQu1+IVV+OkjjQI2ymdYa81JDJvzr4vE9MY0k7kwX9B2j3Gg4BFHZFnmy71RIbpuF1c9i1TkpA/IPz+qT/rKEk/7u9k3NWJ+BtGdezbnnBD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DMiQDSOC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03606C4DDEF;
+	Tue, 27 Aug 2024 15:01:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771854;
-	bh=A1UGIdtskHirueZ2AkZUieyBWTPngsvdlvxaOrNwCrI=;
+	s=korg; t=1724770896;
+	bh=rbDQzMb8H5X+vCwv8rsMkcoLBa+kCPMgY9agJZa/068=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bdfm+abXMqW4DsXVdr4tJnV0xQO3jW4DIIbQb+yvGXaod8ZuHMdKmXV/2VeoKsl40
-	 nQLZKVLQyqV9YxuATTkEwhwNopfcr1EGhkb/yrtynWzQyfkfZJuoHD+wXy1Lzmu/hv
-	 wrSO10oAplkcxwqgvoncgUxotA+FkNyfqGBiLvXs=
+	b=DMiQDSOCgVIoquMnf5AZrUUKQh9Gpo92o/lcveiGdwekpeMT6IkwWQJDSAMetW9gQ
+	 BCEtdAPtRVQ5LKwnIjWoYvc/El8TNATbnUzVmHQW8ccx6hB70X1/zZNyf+Ucx7B0jK
+	 aUmYl9LkXHkcaMwSrF8iFsNNcl++y+oteMNFV98E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Brauner <brauner@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Jeff Xu <jeffxu@google.com>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Daniel Verkamp <dverkamp@chromium.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	syzbot+ac3b41786a2d0565b6d5@syzkaller.appspotmail.com,
-	Kees Cook <keescook@chromium.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 041/321] pid: Replace struct pid 1-element array with flex-array
+	Richard Weinberger <richard@nod.at>,
+	kernel test robot <lkp@intel.com>,
+	David Gstir <david@sigma-star.at>,
+	Jarkko Sakkinen <jarkko@kernel.org>
+Subject: [PATCH 6.10 025/273] KEYS: trusted: fix DCP blob payload length assignment
 Date: Tue, 27 Aug 2024 16:35:49 +0200
-Message-ID: <20240827143839.790192652@linuxfoundation.org>
+Message-ID: <20240827143834.347793319@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,97 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <keescook@chromium.org>
+From: David Gstir <david@sigma-star.at>
 
-[ Upstream commit b69f0aeb068980af983d399deafc7477cec8bc04 ]
+commit 6486cad00a8b7f8585983408c152bbe33dda529b upstream.
 
-For pid namespaces, struct pid uses a dynamically sized array member,
-"numbers".  This was implemented using the ancient 1-element fake
-flexible array, which has been deprecated for decades.
+The DCP trusted key type uses the wrong helper function to store
+the blob's payload length which can lead to the wrong byte order
+being used in case this would ever run on big endian architectures.
 
-Replace it with a C99 flexible array, refactor the array size
-calculations to use struct_size(), and address elements via indexes.
-Note that the static initializer (which defines a single element) works
-as-is, and requires no special handling.
+Fix by using correct helper function.
 
-Without this, CONFIG_UBSAN_BOUNDS (and potentially
-CONFIG_FORTIFY_SOURCE) will trigger bounds checks:
-
-  https://lore.kernel.org/lkml/20230517-bushaltestelle-super-e223978c1ba6@brauner
-
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Jan Kara <jack@suse.cz>
-Cc: Jeff Xu <jeffxu@google.com>
-Cc: Andreas Gruenbacher <agruenba@redhat.com>
-Cc: Daniel Verkamp <dverkamp@chromium.org>
-Cc: "Paul E. McKenney" <paulmck@kernel.org>
-Cc: Jeff Xu <jeffxu@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>
-Cc: Luis Chamberlain <mcgrof@kernel.org>
-Cc: Frederic Weisbecker <frederic@kernel.org>
-Reported-by: syzbot+ac3b41786a2d0565b6d5@syzkaller.appspotmail.com
-[brauner: dropped unrelated changes and remove 0 with NULL cast]
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org # v6.10+
+Fixes: 2e8a0f40a39c ("KEYS: trusted: Introduce NXP DCP-backed trusted keys")
+Suggested-by: Richard Weinberger <richard@nod.at>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202405240610.fj53EK0q-lkp@intel.com/
+Signed-off-by: David Gstir <david@sigma-star.at>
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/pid.h    | 2 +-
- kernel/pid.c           | 7 +++++--
- kernel/pid_namespace.c | 2 +-
- 3 files changed, 7 insertions(+), 4 deletions(-)
+ security/keys/trusted-keys/trusted_dcp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/pid.h b/include/linux/pid.h
-index 343abf22092e6..bf3af54de6165 100644
---- a/include/linux/pid.h
-+++ b/include/linux/pid.h
-@@ -67,7 +67,7 @@ struct pid
- 	/* wait queue for pidfd notifications */
- 	wait_queue_head_t wait_pidfd;
- 	struct rcu_head rcu;
--	struct upid numbers[1];
-+	struct upid numbers[];
- };
+diff --git a/security/keys/trusted-keys/trusted_dcp.c b/security/keys/trusted-keys/trusted_dcp.c
+index b5f81a05be36..b0947f072a98 100644
+--- a/security/keys/trusted-keys/trusted_dcp.c
++++ b/security/keys/trusted-keys/trusted_dcp.c
+@@ -222,7 +222,7 @@ static int trusted_dcp_seal(struct trusted_key_payload *p, char *datablob)
+ 		return ret;
+ 	}
  
- extern struct pid init_struct_pid;
-diff --git a/kernel/pid.c b/kernel/pid.c
-index 3fbc5e46b7217..74834c04a0818 100644
---- a/kernel/pid.c
-+++ b/kernel/pid.c
-@@ -661,8 +661,11 @@ void __init pid_idr_init(void)
- 
- 	idr_init(&init_pid_ns.idr);
- 
--	init_pid_ns.pid_cachep = KMEM_CACHE(pid,
--			SLAB_HWCACHE_ALIGN | SLAB_PANIC | SLAB_ACCOUNT);
-+	init_pid_ns.pid_cachep = kmem_cache_create("pid",
-+			struct_size((struct pid *)NULL, numbers, 1),
-+			__alignof__(struct pid),
-+			SLAB_HWCACHE_ALIGN | SLAB_PANIC | SLAB_ACCOUNT,
-+			NULL);
+-	b->payload_len = get_unaligned_le32(&p->key_len);
++	put_unaligned_le32(p->key_len, &b->payload_len);
+ 	p->blob_len = blen;
+ 	return 0;
  }
- 
- static struct file *__pidfd_fget(struct task_struct *task, int fd)
-diff --git a/kernel/pid_namespace.c b/kernel/pid_namespace.c
-index 1daadbefcee3a..a575fabf697eb 100644
---- a/kernel/pid_namespace.c
-+++ b/kernel/pid_namespace.c
-@@ -47,7 +47,7 @@ static struct kmem_cache *create_pid_cachep(unsigned int level)
- 		return kc;
- 
- 	snprintf(name, sizeof(name), "pid_%u", level + 1);
--	len = sizeof(struct pid) + level * sizeof(struct upid);
-+	len = struct_size((struct pid *)NULL, numbers, level + 1);
- 	mutex_lock(&pid_caches_mutex);
- 	/* Name collision forces to do allocation under mutex. */
- 	if (!*pkc)
 -- 
-2.43.0
+2.46.0
 
 
 
