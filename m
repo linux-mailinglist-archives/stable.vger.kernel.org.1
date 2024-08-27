@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-70524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70774-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82C84960E93
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:50:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8262960FF7
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:04:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E6A8BB24946
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:49:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 82A1228342C
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:04:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 628551C4EF9;
-	Tue, 27 Aug 2024 14:49:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CD901C578D;
+	Tue, 27 Aug 2024 15:03:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a6VoQl12"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2kUFwM/N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2109A1A072D;
-	Tue, 27 Aug 2024 14:49:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 591F21BA294;
+	Tue, 27 Aug 2024 15:03:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770195; cv=none; b=Eoh6ydkkoO2qEcBPhTI0OAPr5uHngDIjlkkYw2ZUh3/28TjAeqJQCycFt+1pMgCBmYTJokx50R3+/y4hdkn73J7UNM/94mBzMVi4bIFuEKlpO1Yri6C4G26QMBRP691eOlShd/FpDvgzm8ABVqgVRyP0NUr4xaA3vrq/MDy9aAc=
+	t=1724771020; cv=none; b=P+IIy6A/WXpef9R/IvP6EpjATuOmNnKyxyUkAwUhywF8l8rCjPsjhAiu3xtA6MJ7GGJ8zjMBG4SqrJ30YNvLqaytpJn3z8ANz67JY4a42x2OxRStUTBNCSacBJr3GtFX9vcB2HjGe6uUF6mE4LyGmGHT6hrts1eQxPhxEIn08vY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770195; c=relaxed/simple;
-	bh=FISunt2bYraKNIX1iczucc51zlV8cBiqxgNCm9zPvRM=;
+	s=arc-20240116; t=1724771020; c=relaxed/simple;
+	bh=Ap25EbMwHBQDSVu9muloJBt0Hfx4JWDVkg0KT1tOI04=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U/5M4QNkyY1Je5XAsuyWLbkNbSZhIE2uD7lbInNRbyITJgJ6IGN6LaAeqf4g18iUfNlNBuT3CW7gHxLJt519xFFvrkG/bApTL7avCJWJUBsb3bxVyPJUw9mJZx0Lyjdi5AmtA2brXjxxm4TzDgqBS3NpbMcNkFTnblkj+jnkNbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a6VoQl12; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 251DEC4DDEA;
-	Tue, 27 Aug 2024 14:49:53 +0000 (UTC)
+	 MIME-Version; b=F0ebxJR7p/fQJV7tID1v+KGG4E7F0bTQ/WMaqyBTGw5+dkoT8L/5umFNNczHMvKZlXSK+Jn3XDexYZTWpjOHYGaus1tdYVQZBzU9ZLD8qRp96nAaSCEuhcGD2+8LXb/PCbeWXI6Ud676pR0DTc7T2EYPuMEL6MkLkUzv2VVvtjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2kUFwM/N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7642DC61056;
+	Tue, 27 Aug 2024 15:03:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770194;
-	bh=FISunt2bYraKNIX1iczucc51zlV8cBiqxgNCm9zPvRM=;
+	s=korg; t=1724771018;
+	bh=Ap25EbMwHBQDSVu9muloJBt0Hfx4JWDVkg0KT1tOI04=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a6VoQl12kOeG8SDemy0pH1bH31IoowhI5/4idcexapRjyI+8oaOQ3WsQfJ3Fq41/q
-	 akwvzSMZcipo+5gQfZ4ZQE3yHrHhxhRc4I4OyjHqKmSyoZwM+7hkqFJ+2vUwjJQRpX
-	 uakxfskZzcp/bvgzuiXjVxoYlbp9FQskpLf9omh4=
+	b=2kUFwM/NHDSTO6xAQ2UPq2EO3n9Y20wDpP2wk9lFGC6a25igWPND4HCypEw5NMlII
+	 t2AaFYNnVtCdWR1GKBCAN6q8FNy2UJHOTeBqpFTr3jeXGXfYW3y8ntWbBl5H9NyNyG
+	 oETd31Sw5U/xP/rP92V/mEJVaiR4fNkpdW9qStTM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Christie <michael.christie@oracle.com>,
-	Christoph Hellwig <hch@lst.de>,
-	John Garry <john.g.garry@oracle.com>,
-	Martin Wilck <mwilck@suse.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 124/341] scsi: spi: Fix sshdr use
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Hans de Goede <hdegoede@redhat.com>
+Subject: [PATCH 6.10 031/273] ACPICA: Add a depth argument to acpi_execute_reg_methods()
 Date: Tue, 27 Aug 2024 16:35:55 +0200
-Message-ID: <20240827143848.134926351@linuxfoundation.org>
+Message-ID: <20240827143834.579112981@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,50 +61,140 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Christie <michael.christie@oracle.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 0b149cee836aa53989ea089af1cb9d90d7c6ac9e ]
+commit cdf65d73e001fde600b18d7e45afadf559425ce5 upstream.
 
-If scsi_execute_cmd returns < 0, it doesn't initialize the sshdr, so we
-shouldn't access the sshdr. If it returns 0, then the cmd executed
-successfully, so there is no need to check the sshdr. This has us access
-the sshdr when we get a return value > 0.
+A subsequent change will need to pass a depth argument to
+acpi_execute_reg_methods(), so prepare that function for it.
 
-Signed-off-by: Mike Christie <michael.christie@oracle.com>
-Link: https://lore.kernel.org/r/20231004210013.5601-7-michael.christie@oracle.com
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Reviewed-by: Martin Wilck <mwilck@suse.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+No intentional functional changes.
+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Cc: All applicable <stable@vger.kernel.org>
+Link: https://patch.msgid.link/8451567.NyiUUSuA9g@rjwysocki.net
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/scsi_transport_spi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/acpi/acpica/acevents.h |    2 +-
+ drivers/acpi/acpica/evregion.c |    6 ++++--
+ drivers/acpi/acpica/evxfregn.c |   10 +++++++---
+ drivers/acpi/ec.c              |    2 +-
+ include/acpi/acpixf.h          |    1 +
+ 5 files changed, 14 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/scsi/scsi_transport_spi.c b/drivers/scsi/scsi_transport_spi.c
-index 2442d4d2e3f38..f668c1c0a98f2 100644
---- a/drivers/scsi/scsi_transport_spi.c
-+++ b/drivers/scsi/scsi_transport_spi.c
-@@ -676,10 +676,10 @@ spi_dv_device_echo_buffer(struct scsi_device *sdev, u8 *buffer,
- 	for (r = 0; r < retries; r++) {
- 		result = spi_execute(sdev, spi_write_buffer, REQ_OP_DRV_OUT,
- 				     buffer, len, &sshdr);
--		if(result || !scsi_device_online(sdev)) {
-+		if (result || !scsi_device_online(sdev)) {
+--- a/drivers/acpi/acpica/acevents.h
++++ b/drivers/acpi/acpica/acevents.h
+@@ -188,7 +188,7 @@ acpi_ev_detach_region(union acpi_operand
+ 		      u8 acpi_ns_is_locked);
  
- 			scsi_device_set_state(sdev, SDEV_QUIESCE);
--			if (scsi_sense_valid(&sshdr)
-+			if (result > 0 && scsi_sense_valid(&sshdr)
- 			    && sshdr.sense_key == ILLEGAL_REQUEST
- 			    /* INVALID FIELD IN CDB */
- 			    && sshdr.asc == 0x24 && sshdr.ascq == 0x00)
--- 
-2.43.0
-
+ void
+-acpi_ev_execute_reg_methods(struct acpi_namespace_node *node,
++acpi_ev_execute_reg_methods(struct acpi_namespace_node *node, u32 max_depth,
+ 			    acpi_adr_space_type space_id, u32 function);
+ 
+ acpi_status
+--- a/drivers/acpi/acpica/evregion.c
++++ b/drivers/acpi/acpica/evregion.c
+@@ -65,6 +65,7 @@ acpi_status acpi_ev_initialize_op_region
+ 						acpi_gbl_default_address_spaces
+ 						[i])) {
+ 			acpi_ev_execute_reg_methods(acpi_gbl_root_node,
++						    ACPI_UINT32_MAX,
+ 						    acpi_gbl_default_address_spaces
+ 						    [i], ACPI_REG_CONNECT);
+ 		}
+@@ -672,6 +673,7 @@ cleanup1:
+  * FUNCTION:    acpi_ev_execute_reg_methods
+  *
+  * PARAMETERS:  node            - Namespace node for the device
++ *              max_depth       - Depth to which search for _REG
+  *              space_id        - The address space ID
+  *              function        - Passed to _REG: On (1) or Off (0)
+  *
+@@ -683,7 +685,7 @@ cleanup1:
+  ******************************************************************************/
+ 
+ void
+-acpi_ev_execute_reg_methods(struct acpi_namespace_node *node,
++acpi_ev_execute_reg_methods(struct acpi_namespace_node *node, u32 max_depth,
+ 			    acpi_adr_space_type space_id, u32 function)
+ {
+ 	struct acpi_reg_walk_info info;
+@@ -717,7 +719,7 @@ acpi_ev_execute_reg_methods(struct acpi_
+ 	 * regions and _REG methods. (i.e. handlers must be installed for all
+ 	 * regions of this Space ID before we can run any _REG methods)
+ 	 */
+-	(void)acpi_ns_walk_namespace(ACPI_TYPE_ANY, node, ACPI_UINT32_MAX,
++	(void)acpi_ns_walk_namespace(ACPI_TYPE_ANY, node, max_depth,
+ 				     ACPI_NS_WALK_UNLOCK, acpi_ev_reg_run, NULL,
+ 				     &info, NULL);
+ 
+--- a/drivers/acpi/acpica/evxfregn.c
++++ b/drivers/acpi/acpica/evxfregn.c
+@@ -85,7 +85,8 @@ acpi_install_address_space_handler_inter
+ 	/* Run all _REG methods for this address space */
+ 
+ 	if (run_reg) {
+-		acpi_ev_execute_reg_methods(node, space_id, ACPI_REG_CONNECT);
++		acpi_ev_execute_reg_methods(node, ACPI_UINT32_MAX, space_id,
++					    ACPI_REG_CONNECT);
+ 	}
+ 
+ unlock_and_exit:
+@@ -263,6 +264,7 @@ ACPI_EXPORT_SYMBOL(acpi_remove_address_s
+  * FUNCTION:    acpi_execute_reg_methods
+  *
+  * PARAMETERS:  device          - Handle for the device
++ *              max_depth       - Depth to which search for _REG
+  *              space_id        - The address space ID
+  *
+  * RETURN:      Status
+@@ -271,7 +273,8 @@ ACPI_EXPORT_SYMBOL(acpi_remove_address_s
+  *
+  ******************************************************************************/
+ acpi_status
+-acpi_execute_reg_methods(acpi_handle device, acpi_adr_space_type space_id)
++acpi_execute_reg_methods(acpi_handle device, u32 max_depth,
++			 acpi_adr_space_type space_id)
+ {
+ 	struct acpi_namespace_node *node;
+ 	acpi_status status;
+@@ -296,7 +299,8 @@ acpi_execute_reg_methods(acpi_handle dev
+ 
+ 		/* Run all _REG methods for this address space */
+ 
+-		acpi_ev_execute_reg_methods(node, space_id, ACPI_REG_CONNECT);
++		acpi_ev_execute_reg_methods(node, max_depth, space_id,
++					    ACPI_REG_CONNECT);
+ 	} else {
+ 		status = AE_BAD_PARAMETER;
+ 	}
+--- a/drivers/acpi/ec.c
++++ b/drivers/acpi/ec.c
+@@ -1506,7 +1506,7 @@ static int ec_install_handlers(struct ac
+ 	}
+ 
+ 	if (call_reg && !test_bit(EC_FLAGS_EC_REG_CALLED, &ec->flags)) {
+-		acpi_execute_reg_methods(scope_handle, ACPI_ADR_SPACE_EC);
++		acpi_execute_reg_methods(scope_handle, ACPI_UINT32_MAX, ACPI_ADR_SPACE_EC);
+ 		set_bit(EC_FLAGS_EC_REG_CALLED, &ec->flags);
+ 	}
+ 
+--- a/include/acpi/acpixf.h
++++ b/include/acpi/acpixf.h
+@@ -660,6 +660,7 @@ ACPI_EXTERNAL_RETURN_STATUS(acpi_status
+ 			     void *context))
+ ACPI_EXTERNAL_RETURN_STATUS(acpi_status
+ 			    acpi_execute_reg_methods(acpi_handle device,
++						     u32 nax_depth,
+ 						     acpi_adr_space_type
+ 						     space_id))
+ ACPI_EXTERNAL_RETURN_STATUS(acpi_status
 
 
 
