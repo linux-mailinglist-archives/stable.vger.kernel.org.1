@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-71192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70870-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8FA32961238
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:29:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5449C961071
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:08:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C25281C2399E
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:29:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0FCD32867A1
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:08:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F27881CDA3C;
-	Tue, 27 Aug 2024 15:26:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C82F1C4EEF;
+	Tue, 27 Aug 2024 15:08:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tnP3CcR0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PgiVCM+/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0A061CDA37;
-	Tue, 27 Aug 2024 15:26:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A8241C4ED4;
+	Tue, 27 Aug 2024 15:08:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772402; cv=none; b=DZomxXaikXrk6+CAFP/O7vbfhMJbMrNRJz/vmGBGRBg4bgYMN3yX1+iy1/wBBfb+6nGYcxnqTWtxqtVcufSR++pT8iqGt6ozVC5AcPVmq/m2K2MK21H072hN5Qh7ZOTs57vvMrdWr6YD8JwJcWj8fI5MS9UagZnxJObxgLY2CIY=
+	t=1724771335; cv=none; b=P9OUMeS2xolZzgIxzT4JnlJANP+3jWHjND/2zO8FF+ezuU9bFEhjQPNZSycs9jj31uwifnqbvrSW1raoEeNYYO8UzVz/JaCtQeldkOuVGQLXu+/By3vJfn+U8puhqeLW1/IB/ZWJHbybRQ8SoeRP+Sxcw6vnri8xpeEySCEwqBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772402; c=relaxed/simple;
-	bh=WgjVbHepYknzpwK4sZnUp9IW/V+S9HuAfwi2QR4C97Y=;
+	s=arc-20240116; t=1724771335; c=relaxed/simple;
+	bh=TkbOrLnD6YkB6gOMQL/A1nIvOV40Yr8tpTj+z0ZGF+Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kDU1urQh1pUErRoPP4CCSTv/9GOj/8ZvDeUwAaGsJwrR95O3G6wHH6qcojcOtVIPw1D/JzwENK8KLQcGX4pF/OvH/JZMr4l3tp8NuXbqvUEedyqE4T596OF8v0nM+rSSj9MyZnj17KzY3bWoQgQOpFTYjsts0MGKf3clwx/B3tc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tnP3CcR0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33D02C4DE12;
-	Tue, 27 Aug 2024 15:26:42 +0000 (UTC)
+	 MIME-Version; b=CcX+y7YID4mkO/PKB458SFgLMrUnFlhvkagSuUYjJXPNh9CzizCtnNyYd9HjVpWMphexU6cVaFLK8DSPtgeBxg0O1/BXeA2sMzGtnY7zK+MlGNesckIns6yQMLAOU/C8lIZ6O2Bh6NVUnLNkKDykm2AJh56ckqJu1oyyRrAyi2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PgiVCM+/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAE84C4AF13;
+	Tue, 27 Aug 2024 15:08:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772402;
-	bh=WgjVbHepYknzpwK4sZnUp9IW/V+S9HuAfwi2QR4C97Y=;
+	s=korg; t=1724771335;
+	bh=TkbOrLnD6YkB6gOMQL/A1nIvOV40Yr8tpTj+z0ZGF+Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tnP3CcR0zlgllqsMSVHO10tp1UNuefATTokQXPEFddgwoVOOikA7jZwRApRq5oF89
-	 6ARPoi04/vGkeh31ZoVXmnbwACtfYyMtfZgcsixfDN/6DnQV0TIgxTODZAwIltcBJq
-	 MsUUroguspvBJ59yDy1o28Zo8wg22EYyd2gy7eac=
+	b=PgiVCM+/U54zj8kfAJsiki5X2Q5a24WzNvkVPQBZYGU0XB+N1G1K6zigZsTnlrSR8
+	 tqkelNDOlWDHBCpLj69rbWNFrS4M9Y5LHaN+1qJGOsiNaWdhe3ZRouEh1Mpm7IO8Zr
+	 OLEvTvbYQ65l5L+KVt0vxlW8qR1HdHJVGe9qy6MA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jiri Pirko <jiri@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Carolina Jubran <cjubran@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 173/321] netlink: hold nlk->cb_mutex longer in __netlink_dump_start()
+Subject: [PATCH 6.10 157/273] net/mlx5e: XPS, Fix oversight of Multi-PF Netdev changes
 Date: Tue, 27 Aug 2024 16:38:01 +0200
-Message-ID: <20240827143844.817145674@linuxfoundation.org>
+Message-ID: <20240827143839.378650433@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,82 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Carolina Jubran <cjubran@nvidia.com>
 
-[ Upstream commit b5590270068c4324dac4a2b5a4a156e02e21339f ]
+[ Upstream commit a07e953dafe5ebd88942dc861dfb06eaf055fb07 ]
 
-__netlink_dump_start() releases nlk->cb_mutex right before
-calling netlink_dump() which grabs it again.
+The offending commit overlooked the Multi-PF Netdev changes.
 
-This seems dangerous, even if KASAN did not bother yet.
+Revert mlx5e_set_default_xps_cpumasks to incorporate Multi-PF Netdev
+changes.
 
-Add a @lock_taken parameter to netlink_dump() to let it
-grab the mutex if called from netlink_recvmsg() only.
-
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: bcee093751f8 ("net/mlx5e: Modifying channels number and updating TX queues")
+Signed-off-by: Carolina Jubran <cjubran@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20240815071611.2211873-4-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netlink/af_netlink.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_main.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
-index e9b81cba1e2b4..8d26bd2ae3d55 100644
---- a/net/netlink/af_netlink.c
-+++ b/net/netlink/af_netlink.c
-@@ -130,7 +130,7 @@ static const char *const nlk_cb_mutex_key_strings[MAX_LINKS + 1] = {
- 	"nlk_cb_mutex-MAX_LINKS"
- };
- 
--static int netlink_dump(struct sock *sk);
-+static int netlink_dump(struct sock *sk, bool lock_taken);
- 
- /* nl_table locking explained:
-  * Lookup and traversal are protected with an RCU read-side lock. Insertion
-@@ -1953,7 +1953,7 @@ static int netlink_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
- 
- 	if (READ_ONCE(nlk->cb_running) &&
- 	    atomic_read(&sk->sk_rmem_alloc) <= sk->sk_rcvbuf / 2) {
--		ret = netlink_dump(sk);
-+		ret = netlink_dump(sk, false);
- 		if (ret) {
- 			WRITE_ONCE(sk->sk_err, -ret);
- 			sk_error_report(sk);
-@@ -2163,7 +2163,7 @@ static int netlink_dump_done(struct netlink_sock *nlk, struct sk_buff *skb,
- 	return 0;
- }
- 
--static int netlink_dump(struct sock *sk)
-+static int netlink_dump(struct sock *sk, bool lock_taken)
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+index eedbcba226894..409f525f1703c 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_main.c
+@@ -3005,15 +3005,18 @@ int mlx5e_update_tx_netdev_queues(struct mlx5e_priv *priv)
+ static void mlx5e_set_default_xps_cpumasks(struct mlx5e_priv *priv,
+ 					   struct mlx5e_params *params)
  {
- 	struct netlink_sock *nlk = nlk_sk(sk);
- 	struct netlink_ext_ack extack = {};
-@@ -2175,7 +2175,8 @@ static int netlink_dump(struct sock *sk)
- 	int alloc_min_size;
- 	int alloc_size;
- 
--	mutex_lock(nlk->cb_mutex);
-+	if (!lock_taken)
-+		mutex_lock(nlk->cb_mutex);
- 	if (!nlk->cb_running) {
- 		err = -EINVAL;
- 		goto errout_skb;
-@@ -2330,9 +2331,7 @@ int __netlink_dump_start(struct sock *ssk, struct sk_buff *skb,
- 	WRITE_ONCE(nlk->cb_running, true);
- 	nlk->dump_done_errno = INT_MAX;
- 
--	mutex_unlock(nlk->cb_mutex);
+-	struct mlx5_core_dev *mdev = priv->mdev;
+-	int num_comp_vectors, ix, irq;
 -
--	ret = netlink_dump(sk);
-+	ret = netlink_dump(sk, true);
+-	num_comp_vectors = mlx5_comp_vectors_max(mdev);
++	int ix;
  
- 	sock_put(sk);
+ 	for (ix = 0; ix < params->num_channels; ix++) {
++		int num_comp_vectors, irq, vec_ix;
++		struct mlx5_core_dev *mdev;
++
++		mdev = mlx5_sd_ch_ix_get_dev(priv->mdev, ix);
++		num_comp_vectors = mlx5_comp_vectors_max(mdev);
+ 		cpumask_clear(priv->scratchpad.cpumask);
++		vec_ix = mlx5_sd_ch_ix_get_vec_ix(mdev, ix);
  
+-		for (irq = ix; irq < num_comp_vectors; irq += params->num_channels) {
++		for (irq = vec_ix; irq < num_comp_vectors; irq += params->num_channels) {
+ 			int cpu = mlx5_comp_vector_get_cpu(mdev, irq);
+ 
+ 			cpumask_set_cpu(cpu, priv->scratchpad.cpumask);
 -- 
 2.43.0
 
