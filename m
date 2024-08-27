@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-70691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70918-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E486960F8C
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:00:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B4E49610AD
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:11:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 06D5FB221A5
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:00:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08CDE2819EB
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:11:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 978F51C2DCA;
-	Tue, 27 Aug 2024 14:59:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52C791C6886;
+	Tue, 27 Aug 2024 15:11:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DNWemmXX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="weNICcNY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 565611C2DB1;
-	Tue, 27 Aug 2024 14:59:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 114251C5783;
+	Tue, 27 Aug 2024 15:11:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770749; cv=none; b=INLypyAEHGEmYRaL9o34GDZE4r55JYVxJGT5cNtJH++y3Y7ZNI3SZAT2Orpzv44dPBTw/DTQc7ZEqp6R5BhYzkZKABuws/aC+yCC3lX/Nfs5VFQqP6TtXX/o604CfkocY9dKX6mo6cEhvja+MsKaZSHOPp4RIntUjK5/u9BYbi4=
+	t=1724771496; cv=none; b=liRwi1HSGR7DNcxtnz6jvoDJbt8BALVdghLBVaP7EXcPf05DfjuMxrwlj+kKccDzkYcB2bmnn0vC/X2fjXcxFb8dEaYkICPOTGqYtypUPYZAibSHHj/DqDi1p1QxCZEYw3H9yWJs3t3iu3ld83qfxLRfRlzxMyv8+8Kt1Mc8ivc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770749; c=relaxed/simple;
-	bh=7x5e7ouBBb82insgZn1ZGbYCvYg8HEm9w/RZMzCvmXQ=;
+	s=arc-20240116; t=1724771496; c=relaxed/simple;
+	bh=BNFoQeFeBo4m8jYO0KyQ0fzqxpT+Dsu8o2E+BW9uZsI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VOIecnOn+XMVgbQoV3pXzOVAWGxiAmoykdVWezhQnfGPILGd/KYW9iglwhONBf/BbQODx/Pygnbc7YsdxLcb1I8i7uryLMylsM0tZ6zQNLtPZKRBa2n7DS7WEizmJ44Q1gT54MR3pHsqkyk5UiVknytDJahmjdEvMwnABUIiQ6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DNWemmXX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8A28C4AF1A;
-	Tue, 27 Aug 2024 14:59:08 +0000 (UTC)
+	 MIME-Version; b=npq4a/xFijmC6UkHQCahtNKH+bKnJ5alOBqEnhagRN9Ywsg+D1Iwsa/9TMNE1AqRPkNTehIe7sM2//iZAGjYONsjgxQhCJlOfmiYsHxMdmy3+GoRevwrhnOC82nVgEQeHOXEDWR+Wqgl+hc1hiU0bRcQddn6OICP3HUACM7gkRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=weNICcNY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 874E7C4DDEE;
+	Tue, 27 Aug 2024 15:11:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770749;
-	bh=7x5e7ouBBb82insgZn1ZGbYCvYg8HEm9w/RZMzCvmXQ=;
+	s=korg; t=1724771495;
+	bh=BNFoQeFeBo4m8jYO0KyQ0fzqxpT+Dsu8o2E+BW9uZsI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DNWemmXXA9v1aPvrzaNcbqc7GKMqOW99BOrCtlhWJ9UB5VwUHlnpb4YWMUKB8jfEM
-	 Gei1DZYiXEw0FoMdyWDRD2bjWC0fUX2jRJkNAz8qNsIOmg5Gr0qe24nQJfMDyQY93C
-	 lH2RzTMHvkKK1EHVsnfBs1T3onALX4URiHtEnlwE=
+	b=weNICcNYTLL9a/iv3yMCV17cNoGO85ZiwK+Eghahtxafiv/0F0+fL9c4/p3kpKv80
+	 ZGQ78JPko5okrK5wUNbK25QktVVLDKRmDR6lV42+A8mE/7v9EQVZw07SHogfWQ5Jon
+	 JmG5d6UEABYivO0Q0j3WGNO9DE1uMqV9hrnXTol0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rob Clark <robdclark@gmail.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Stephen Boyd <swboyd@chromium.org>
-Subject: [PATCH 6.6 291/341] drm/msm: fix the highest_bank_bit for sc7180
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 198/273] drm/msm/dpu: relax YUV requirements
 Date: Tue, 27 Aug 2024 16:38:42 +0200
-Message-ID: <20240827143854.467790946@linuxfoundation.org>
+Message-ID: <20240827143840.944936538@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abhinav Kumar <quic_abhinavk@quicinc.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 3e30296b374af33cb4c12ff93df0b1e5b2d0f80b ]
+[ Upstream commit cb18195914e353ece0e789e365a5a16872169805 ]
 
-sc7180 programs the ubwc settings as 0x1e as that would mean a
-highest bank bit of 14 which matches what the GPU sets as well.
+YUV formats require only CSC to be enabled. Even decimated formats
+should not require scaler. Relax the requirement and don't check for the
+scaler block while checking if YUV format can be enabled.
 
-However, the highest_bank_bit field of the msm_mdss_data which is
-being used to program the SSPP's fetch configuration is programmed
-to a highest bank bit of 16 as 0x3 translates to 16 and not 14.
-
-Fix the highest bank bit field used for the SSPP to match the mdss
-and gpu settings.
-
-Fixes: 6f410b246209 ("drm/msm/mdss: populate missing data")
-Reviewed-by: Rob Clark <robdclark@gmail.com>
-Tested-by: Stephen Boyd <swboyd@chromium.org> # Trogdor.Lazor
-Patchwork: https://patchwork.freedesktop.org/patch/607625/
-Link: https://lore.kernel.org/r/20240808235227.2701479-1-quic_abhinavk@quicinc.com
+Fixes: 25fdd5933e4c ("drm/msm: Add SDM845 DPU support")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/601049/
+Link: https://lore.kernel.org/r/20240627-dpu-virtual-wide-v5-2-5efb90cbb8be@linaro.org
 Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/msm_mdss.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/msm_mdss.c b/drivers/gpu/drm/msm/msm_mdss.c
-index 222b72dc52269..69d10acd8ca74 100644
---- a/drivers/gpu/drm/msm/msm_mdss.c
-+++ b/drivers/gpu/drm/msm/msm_mdss.c
-@@ -531,7 +531,7 @@ static const struct msm_mdss_data sc7180_data = {
- 	.ubwc_enc_version = UBWC_2_0,
- 	.ubwc_dec_version = UBWC_2_0,
- 	.ubwc_static = 0x1e,
--	.highest_bank_bit = 0x3,
-+	.highest_bank_bit = 0x1,
- 	.reg_bus_bw = 76800,
- };
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c
+index eabc4813c649c..cbdb9628d962d 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c
+@@ -746,10 +746,9 @@ static int dpu_plane_atomic_check_pipe(struct dpu_plane *pdpu,
+ 	min_src_size = MSM_FORMAT_IS_YUV(fmt) ? 2 : 1;
+ 
+ 	if (MSM_FORMAT_IS_YUV(fmt) &&
+-	    (!pipe->sspp->cap->sblk->scaler_blk.len ||
+-	     !pipe->sspp->cap->sblk->csc_blk.len)) {
++	    !pipe->sspp->cap->sblk->csc_blk.len) {
+ 		DPU_DEBUG_PLANE(pdpu,
+-				"plane doesn't have scaler/csc for yuv\n");
++				"plane doesn't have csc for yuv\n");
+ 		return -EINVAL;
+ 	}
  
 -- 
 2.43.0
