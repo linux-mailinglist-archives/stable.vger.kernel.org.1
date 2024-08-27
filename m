@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-70722-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF17E960FB0
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:01:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 676B8960E51
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:47:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB7E72821BD
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:01:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2443E286B65
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:47:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F0481BC9F1;
-	Tue, 27 Aug 2024 15:00:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6049C1C7B83;
+	Tue, 27 Aug 2024 14:47:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rhVJm0Mo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BccwQANL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DD3E2FB2;
-	Tue, 27 Aug 2024 15:00:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D29A1C7B67;
+	Tue, 27 Aug 2024 14:47:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770851; cv=none; b=psk0oWC5aGYZnGQVgr6qLUHNLG4Jxgwhe8ZtrqcKyHUxkmTzmYolhDO5N/mtQ7PCxqZYbi23drgUewqLH4fXsYuh7u84YnHjWSnvwzCf2bruk+axqyejKWQrR/ES8sUj/te77O52Fr1Of4751gb4IofOnmVinmNcyDUvhWpm4mw=
+	t=1724770030; cv=none; b=djBvFqZ37EzyFFwyYgInaVJcP3lQuXZ+J56FfrTOuU9kouthjgtWag9MY8hbAxckL5g7xJbt+Rg3jKvl3KAb4sWlwF2GkOE/zmoMoY/ZGkx7gsJlsjYfdJHSjLrmYcfOqwbIwC0qPtXT5TEzTlPtPA7HyJsXSWkdIvTyDf6xZkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770851; c=relaxed/simple;
-	bh=44oT7pECC/MNJDxqoCh5/q+alw7Di+E+tQTwlXZ6t3A=;
+	s=arc-20240116; t=1724770030; c=relaxed/simple;
+	bh=i0OYeKMo3BPlj1vhkyJK3GPTW8EzEJ2qO7IP0fITTeA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u/7o+sJYpbYuTIjYRxzPbZu+Py6n9E8GK/bv8ChLkJT6aJ7dpWgpnL8Z0r0P0Zh9l1LfehtJGATHnujY8R+aOfdUz3lsfUypebsM6+jx25iwZmKGkncp4jO4AIzzJRmvhMqgl6n5iKVZqWlyrN/GBlvpXCqnjHMqv0EZWYLZjZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rhVJm0Mo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E646C4AF1C;
-	Tue, 27 Aug 2024 15:00:50 +0000 (UTC)
+	 MIME-Version; b=fLkQWbOqtJkWwwbsytyRXNdL8SdNUQCDI/y+WRfpBTYCCqSjw1cLTjBQGSlWj6R9/pz3wzttXgOsluW+xjdKiPhRvHleasY0GLPMj2EjLqOkHJFufrqqaJWjjgH0Q5i+WQHXdc1QQ6VQBw0Mfp9UOly1w6XRG3snLWwY8azmIfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BccwQANL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78709C4AF0E;
+	Tue, 27 Aug 2024 14:47:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770851;
-	bh=44oT7pECC/MNJDxqoCh5/q+alw7Di+E+tQTwlXZ6t3A=;
+	s=korg; t=1724770030;
+	bh=i0OYeKMo3BPlj1vhkyJK3GPTW8EzEJ2qO7IP0fITTeA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rhVJm0MoSV8pCdLJUlrAF4rKwAbcOTk7ptijpYAU/Egbz/u3PcRJaLCitjgMdJOhA
-	 mrKKub8tFwYBzDrDeMs2XhAXFHlm7F1LCGLLUMhXbOWlMJ+uVAH/fKe2Pw9/g//V5u
-	 aC/iL0EAoPiWYMwjp+bLDj54GEz4dcMGXQoGQoVM=
+	b=BccwQANLQiig2i6znpipjMDfuI2aZd9bW6A8vmVYYvIPIOR49MIE0vx/Ura6WitbZ
+	 DD3uaO7MmkiyjHOc5gNp5h5/0AimA0WsjXbXDXQlwKMQjuQxZezmP8ISiLQ202iPRo
+	 scExDb8aniI8XH2tMxTCfNLqiP0MpNdWhGt2/HQQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Eli Billauer <eli.billauer@gmail.com>
-Subject: [PATCH 6.10 012/273] char: xillybus: Refine workqueue handling
-Date: Tue, 27 Aug 2024 16:35:36 +0200
-Message-ID: <20240827143833.852270692@linuxfoundation.org>
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 106/341] media: radio-isa: use dev_name to fill in bus_info
+Date: Tue, 27 Aug 2024 16:35:37 +0200
+Message-ID: <20240827143847.443351494@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eli Billauer <eli.billauer@gmail.com>
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-commit ad899c301c880766cc709aad277991b3ab671b66 upstream.
+[ Upstream commit 8b7f3cf4eb9a95940eaabad3226caeaa0d9aa59d ]
 
-As the wakeup work item now runs on a separate workqueue, it needs to be
-flushed separately along with flushing the device's workqueue.
+This fixes this warning:
 
-Also, move the destroy_workqueue() call to the end of the exit method,
-so that deinitialization is done in the opposite order of
-initialization.
+drivers/media/radio/radio-isa.c: In function 'radio_isa_querycap':
+drivers/media/radio/radio-isa.c:39:57: warning: '%s' directive output may be truncated writing up to 35 bytes into a region of size 28 [-Wformat-truncation=]
+   39 |         snprintf(v->bus_info, sizeof(v->bus_info), "ISA:%s", isa->v4l2_dev.name);
+      |                                                         ^~
+drivers/media/radio/radio-isa.c:39:9: note: 'snprintf' output between 5 and 40 bytes into a destination of size 32
+   39 |         snprintf(v->bus_info, sizeof(v->bus_info), "ISA:%s", isa->v4l2_dev.name);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Fixes: ccbde4b128ef ("char: xillybus: Don't destroy workqueue from work item running on it")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Eli Billauer <eli.billauer@gmail.com>
-Link: https://lore.kernel.org/r/20240816070200.50695-1-eli.billauer@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/xillybus/xillyusb.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/media/radio/radio-isa.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/char/xillybus/xillyusb.c
-+++ b/drivers/char/xillybus/xillyusb.c
-@@ -2093,9 +2093,11 @@ static int xillyusb_discovery(struct usb
- 	 * just after responding with the IDT, there is no reason for any
- 	 * work item to be running now. To be sure that xdev->channels
- 	 * is updated on anything that might run in parallel, flush the
--	 * workqueue, which rarely does anything.
-+	 * device's workqueue and the wakeup work item. This rarely
-+	 * does anything.
- 	 */
- 	flush_workqueue(xdev->workq);
-+	flush_work(&xdev->wakeup_workitem);
+diff --git a/drivers/media/radio/radio-isa.c b/drivers/media/radio/radio-isa.c
+index c591c0851fa28..ad49151f5ff09 100644
+--- a/drivers/media/radio/radio-isa.c
++++ b/drivers/media/radio/radio-isa.c
+@@ -36,7 +36,7 @@ static int radio_isa_querycap(struct file *file, void  *priv,
  
- 	xdev->num_channels = num_channels;
- 
-@@ -2274,9 +2276,9 @@ static int __init xillyusb_init(void)
- 
- static void __exit xillyusb_exit(void)
- {
--	destroy_workqueue(wakeup_wq);
--
- 	usb_deregister(&xillyusb_driver);
-+
-+	destroy_workqueue(wakeup_wq);
+ 	strscpy(v->driver, isa->drv->driver.driver.name, sizeof(v->driver));
+ 	strscpy(v->card, isa->drv->card, sizeof(v->card));
+-	snprintf(v->bus_info, sizeof(v->bus_info), "ISA:%s", isa->v4l2_dev.name);
++	snprintf(v->bus_info, sizeof(v->bus_info), "ISA:%s", dev_name(isa->v4l2_dev.dev));
+ 	return 0;
  }
  
- module_init(xillyusb_init);
+-- 
+2.43.0
+
 
 
 
