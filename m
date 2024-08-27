@@ -1,110 +1,166 @@
-Return-Path: <stable+bounces-70301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70302-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC90B96029B
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 08:58:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C261F96030C
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 09:28:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB95628398C
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 06:58:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D881280BF5
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 07:28:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD1D31494DB;
-	Tue, 27 Aug 2024 06:57:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01057154439;
+	Tue, 27 Aug 2024 07:28:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eHBFgHo+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HN3Ft3iF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63FDC13E028
-	for <stable@vger.kernel.org>; Tue, 27 Aug 2024 06:57:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3141145B10
+	for <stable@vger.kernel.org>; Tue, 27 Aug 2024 07:28:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724741872; cv=none; b=ERb/gceZEmMVOiJBh1xnNRkW0yxbq6lCzGNPnImar2Y5eAOszxvlqVj9CC1uK/iUbdYYM7v3MmfDeB4NDLIzdqO5jKn2QltivKUp3pnexM+uWlJdNfIoLP06g5sSeXdA5HPy4GhY4OiDtFhPE+FXQVstIiZzt2Z8sQHv35nmwJY=
+	t=1724743724; cv=none; b=ZE+DCmdY1JI7NON4rax2frqi3QgT/QA8D4RwM8xuHLHriy5SsCJIOHYraUncB2L57cCaELkiSfC4Ky4LGYLhRSd54YceMlcfOCQXw7ZEMUecd5BYSKwOgzFYoUagxyrHXlTu8Pr7iYUr0lOOyqKgcW3DgxK2lPzBKp/Z/2G2P6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724741872; c=relaxed/simple;
-	bh=UiMXWQ8rKp7T8gM8ljIJ/zVAHzfuKXG3lWJ9j7FZ+YI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=diiXS8dXzFRvmzL4PYPD0KhsFxUu56u205DbytOarpwOgl6VugPhiEcTO3DTGvGO2yKMto/bn1qIatA7LpJC8xhUB4XLCc8/YvEUVd5Zak/QDDwHlaCzGZiBz037NT+92Km9WGCblJhWcuQbTuMzCdcySruix+rxMO3z0pnxBoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eHBFgHo+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 747EBC4FF0B;
-	Tue, 27 Aug 2024 06:57:51 +0000 (UTC)
+	s=arc-20240116; t=1724743724; c=relaxed/simple;
+	bh=CqUCaJOVvT8rRgyjq5M2tsRiDE1LraeJ0P5Rs4HIfQU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=V5YLDEgzEkcAl+zEuEUAhtd4K7oJORyeeN741fRqJXb2nTikz0jzLrmHoFPsgUtA/9rVkkbFUVMbOapj76aDtLUt6kTammxme3L9s1fmJ0NvVyecYQEJHicOjIdTU/eMYDhZXpoSwMt8rJkUfHNn8hl3EhkLSeEpZxpqLYHqSfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HN3Ft3iF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1DEDC8B7A0;
+	Tue, 27 Aug 2024 07:28:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724741871;
-	bh=UiMXWQ8rKp7T8gM8ljIJ/zVAHzfuKXG3lWJ9j7FZ+YI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=eHBFgHo+hdA/2OVcwtrIP60LiUgSTQ65YJN+MKi+DsSUO2uMrM1+DcSLelfzkA2un
-	 xx0o60xSrskMVGt1yuRAH60brNpDOXT8jw7/O8lY6jYOaLj0sFFdNDpI/PdO+MOsv5
-	 dp7oHl5lpADh+1pLMMsxgDkzKFkKmnC05z7yGMr0=
-Date: Tue, 27 Aug 2024 08:57:48 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Namjae Jeon <linkinjeon@kernel.org>
-Cc: stfrench@microsoft.com, stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] ksmbd: the buffer of smb2 query dir
- response has at least 1" failed to apply to 5.15-stable tree
-Message-ID: <2024082706-spray-simply-cd72@gregkh>
-References: <2024082604-depose-iphone-7d55@gregkh>
- <CAKYAXd_KPR0FAsx+6DrEfU3J-ahnMtfA64gqyxHCOMHS3ZZejA@mail.gmail.com>
- <2024082730-squire-entire-f488@gregkh>
- <CAKYAXd_7ipUOCPOOJTGCKWQOzcc34pX4dDHzG=d+O-4+o67kRA@mail.gmail.com>
+	s=korg; t=1724743724;
+	bh=CqUCaJOVvT8rRgyjq5M2tsRiDE1LraeJ0P5Rs4HIfQU=;
+	h=Subject:To:Cc:From:Date:From;
+	b=HN3Ft3iFUS/MaWty2dnr87bKSceXtUoj7QiVfJ85zZSmVx/ixRegex1uSktNXlcvd
+	 vrqGUSiwTJSuHye4+sazmA5CU4iY0yMw5852y5HHkZPcmpbOHSLfcJvSQTRd3qkhBA
+	 Pjd3wu8/Erj9tW6XOkr3ZGbRcNKaqXqG5LxfliKI=
+Subject: FAILED: patch "[PATCH] igc: Fix qbv tx latency by setting gtxoffset" failed to apply to 6.1-stable tree
+To: faizal.abdul.rahim@linux.intel.com,anthony.l.nguyen@intel.com,horms@kernel.org,morx.bar.gabay@intel.com,vinicius.gomes@intel.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Tue, 27 Aug 2024 09:28:41 +0200
+Message-ID: <2024082740-citadel-facelift-bc00@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAKYAXd_7ipUOCPOOJTGCKWQOzcc34pX4dDHzG=d+O-4+o67kRA@mail.gmail.com>
 
-On Tue, Aug 27, 2024 at 03:45:40PM +0900, Namjae Jeon wrote:
-> On Tue, Aug 27, 2024 at 2:14 PM Greg KH <gregkh@linuxfoundation.org> wrote:
-> >
-> > On Tue, Aug 27, 2024 at 11:54:56AM +0900, Namjae Jeon wrote:
-> > > On Mon, Aug 26, 2024 at 8:38 PM <gregkh@linuxfoundation.org> wrote:
-> > > >
-> > > >
-> > > > The patch below does not apply to the 5.15-stable tree.
-> > > > If someone wants it applied there, or to any other stable or longterm
-> > > > tree, then please email the backport, including the original git commit
-> > > > id to <stable@vger.kernel.org>.
-> > > As follows, I have marked stable tag(v6.1+) in patch to apply to 6.1
-> > > kernel versions or later.
-> > >
-> > >  Cc: stable@vger.kernel.org # v6.1+
-> >
-> > Yes, but you also say:
-> >
-> >         Fixes: eb3e28c1e89b ("smb3: Replace smb2pdu 1-element arrays with flex-arrays")
-> >
-> > Which has been backported to the 5.10.y and 5.15.y kernel trees, so this
-> > is why the FAILED email was triggered.
-> >
-> > > This patch does not need to be applied to 5.15 or 5.10.
-> >
-> > Are you sure?
-> Yes, I have checked it.
-> 5.10 : ksmbd is not here because it was merged into the 5.15 kernel.
-> 5.15: smb client developer backported eb3e28c1e89b commit for only smb
-> client's header.
-> So it doesn't affect the ksmbd server.
 
-Ok, thanks for looking into this.
+The patch below does not apply to the 6.1-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-> > If so, why is that the Fixes: tag?
-> checkpatch.pl guide to add Fixes tag if there is a stable tag in the patch.
-> 
-> WARNING: The commit message has 'stable@', perhaps it also needs a 'Fixes:' tag?
-> 
-> In this case, I should not add fixes: tag...? I didn't know that.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-No, it is correct to do so, smb is a bit odd in how things have been
-backported recently to different kernel trees, so all is good.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git checkout FETCH_HEAD
+git cherry-pick -x 6c3fc0b1c3d073bd6fc3bf43dbd0e64240537464
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024082740-citadel-facelift-bc00@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
-Thanks!
+Possible dependencies:
+
+6c3fc0b1c3d0 ("igc: Fix qbv tx latency by setting gtxoffset")
+790835fcc0cb ("igc: Correct the launchtime offset")
+
+thanks,
 
 greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 6c3fc0b1c3d073bd6fc3bf43dbd0e64240537464 Mon Sep 17 00:00:00 2001
+From: Faizal Rahim <faizal.abdul.rahim@linux.intel.com>
+Date: Sun, 7 Jul 2024 08:53:18 -0400
+Subject: [PATCH] igc: Fix qbv tx latency by setting gtxoffset
+
+A large tx latency issue was discovered during testing when only QBV was
+enabled. The issue occurs because gtxoffset was not set when QBV is
+active, it was only set when launch time is active.
+
+The patch "igc: Correct the launchtime offset" only sets gtxoffset when
+the launchtime_enable field is set by the user. Enabling launchtime_enable
+ultimately sets the register IGC_TXQCTL_QUEUE_MODE_LAUNCHT (referred to as
+LaunchT in the SW user manual).
+
+Section 7.5.2.6 of the IGC i225/6 SW User Manual Rev 1.2.4 states:
+"The latency between transmission scheduling (launch time) and the
+time the packet is transmitted to the network is listed in Table 7-61."
+
+However, the patch misinterprets the phrase "launch time" in that section
+by assuming it specifically refers to the LaunchT register, whereas it
+actually denotes the generic term for when a packet is released from the
+internal buffer to the MAC transmit logic.
+
+This launch time, as per that section, also implicitly refers to the QBV
+gate open time, where a packet waits in the buffer for the QBV gate to
+open. Therefore, latency applies whenever QBV is in use. TSN features such
+as QBU and QAV reuse QBV, making the latency universal to TSN features.
+
+Discussed with i226 HW owner (Shalev, Avi) and we were in agreement that
+the term "launch time" used in Section 7.5.2.6 is not clear and can be
+easily misinterpreted. Avi will update this section to:
+"When TQAVCTRL.TRANSMIT_MODE = TSN, the latency between transmission
+scheduling and the time the packet is transmitted to the network is listed
+in Table 7-61."
+
+Fix this issue by using igc_tsn_is_tx_mode_in_tsn() as a condition to
+write to gtxoffset, aligning with the newly updated SW User Manual.
+
+Tested:
+1. Enrol taprio on talker board
+   base-time 0
+   cycle-time 1000000
+   flags 0x2
+   index 0 cmd S gatemask 0x1 interval1
+   index 0 cmd S gatemask 0x1 interval2
+
+   Note:
+   interval1 = interval for a 64 bytes packet to go through
+   interval2 = cycle-time - interval1
+
+2. Take tcpdump on listener board
+
+3. Use udp tai app on talker to send packets to listener
+
+4. Check the timestamp on listener via wireshark
+
+Test Result:
+100 Mbps: 113 ~193 ns
+1000 Mbps: 52 ~ 84 ns
+2500 Mbps: 95 ~ 223 ns
+
+Note that the test result is similar to the patch "igc: Correct the
+launchtime offset".
+
+Fixes: 790835fcc0cb ("igc: Correct the launchtime offset")
+Signed-off-by: Faizal Rahim <faizal.abdul.rahim@linux.intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+
+diff --git a/drivers/net/ethernet/intel/igc/igc_tsn.c b/drivers/net/ethernet/intel/igc/igc_tsn.c
+index ada751430517..d68fa7f3d5f0 100644
+--- a/drivers/net/ethernet/intel/igc/igc_tsn.c
++++ b/drivers/net/ethernet/intel/igc/igc_tsn.c
+@@ -61,7 +61,7 @@ void igc_tsn_adjust_txtime_offset(struct igc_adapter *adapter)
+ 	struct igc_hw *hw = &adapter->hw;
+ 	u16 txoffset;
+ 
+-	if (!is_any_launchtime(adapter))
++	if (!igc_tsn_is_tx_mode_in_tsn(adapter))
+ 		return;
+ 
+ 	switch (adapter->link_speed) {
+
 
