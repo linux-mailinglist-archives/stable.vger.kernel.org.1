@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-70985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71236-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E24D6961104
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:15:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77313961276
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:31:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 20A571C236C3
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:15:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32DC4281EDD
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:31:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 099F21C6891;
-	Tue, 27 Aug 2024 15:15:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC3FB1C7B71;
+	Tue, 27 Aug 2024 15:29:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dYrFKqwe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cHBlE2MA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFA241C688E;
-	Tue, 27 Aug 2024 15:15:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 690941BDA93;
+	Tue, 27 Aug 2024 15:29:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771716; cv=none; b=mlxO46+8w2I9BTJBsOUiIJ7xzNuegAbVKKjvLIOKAioMMlUBSw3z67wLI0QiC/jWlzLZk7klC6vIIoe87i7ddI5F3odRHtPLhWTT37t05zB8ggKHsE/sGp1YZDMpAVqR4tjAPUAkgY1Tye19DJoaffaDTGiytxHGKwdSjdszhc0=
+	t=1724772547; cv=none; b=kf6A81SElcxnvk6952C14sLtgko10xUzXIcGNUhX9GrgJD5MCwg+wXOpvnQydAMR34obZGXqQOc0OoNKBxAGSNHaUnnZYR+zlKuQbs/PCke56OwdkSer2YacNfIJHHS1rPJTEjC957sTFklfQoVtS/1U9aIFzZ5T8EPPokfsbSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771716; c=relaxed/simple;
-	bh=Vuizdvi6Ode9Ppy6g+XoWWIOm5O4v4NYQZUZQRuJgj8=;
+	s=arc-20240116; t=1724772547; c=relaxed/simple;
+	bh=gaCZIbqAE1S2By3yLRxYM/KgIZTSaq0jcqOZa7evgqI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KkqDhUQxw6+eidFHAkvqtQTPeNNX/RhToC9UI8pdzSLfEN+65sWhNAfrUTVoCR1TA5VA/XRpdAwcyDoY8gYvsubSZHpfk0VV5JaNbKOoh7cxSRvRr/t0psOcwOyn6r2doa/XTQV2L7LT4RWD2pCq0uwaFp4zub6yaVqNY0qcNQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dYrFKqwe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 269EFC4DDEF;
-	Tue, 27 Aug 2024 15:15:15 +0000 (UTC)
+	 MIME-Version; b=lzioU3zBzmTaZVlDFXL+BQixNrgczhplDfLtv7IXlfDzmwGjTLKrsNFNUHEpFq73vuh4ZoqJMj1qUUBOD9RPu38Cuz4DA4Y6UAwAlaCYZ5wsG2pZP/fdRt3opuoE9PbpX7gPJPt7k+zA+22mVLu0raMxmffqce6fIbS5qx6dEqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cHBlE2MA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C917FC6107E;
+	Tue, 27 Aug 2024 15:29:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771716;
-	bh=Vuizdvi6Ode9Ppy6g+XoWWIOm5O4v4NYQZUZQRuJgj8=;
+	s=korg; t=1724772547;
+	bh=gaCZIbqAE1S2By3yLRxYM/KgIZTSaq0jcqOZa7evgqI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dYrFKqwezbMRsEguvbZQqZLxIOGknmroKXcqUwpS60+yM2r+6UdUykADvB2yNWAZg
-	 aK94xkuBhPAopOzNhGOCwZQ6yXZxrXMtUP+HlEffzjq93OVom1rYUeFUuGl2Z5qACA
-	 vssEZKPjLg2q/z3WZFKBYKvOaF6Jw6+r2FFQat2E=
+	b=cHBlE2MAie7p8cbno9ujAUFa0br+Kgv1RwbwMvTkhDHyeurDrXmRzeNdrmrQqWbJ4
+	 tQ6CMgEyYg+FZCBgCzq7HOU1eoXzAQr8Jgj811e6UPCBI+qrqpTpAlETFrt+cmtHTq
+	 dCncSP+ANGfQuf6+vsEYaaDUYxm8XsQ3Hk15SYx8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.10 231/273] platform/x86: ISST: Fix return value on last invalid resource
-Date: Tue, 27 Aug 2024 16:39:15 +0200
-Message-ID: <20240827143842.196062660@linuxfoundation.org>
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Simon Horman <horms@kernel.org>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 248/321] dpaa2-switch: Fix error checking in dpaa2_switch_seed_bp()
+Date: Tue, 27 Aug 2024 16:39:16 +0200
+Message-ID: <20240827143847.685752301@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,55 +62,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 46ee21e9f59205e54943dfe51b2dc8a9352ca37d upstream.
+[ Upstream commit c50e7475961c36ec4d21d60af055b32f9436b431 ]
 
-When only the last resource is invalid, tpmi_sst_dev_add() is returing
-error even if there are other valid resources before. This function
-should return error when there are no valid resources.
+The dpaa2_switch_add_bufs() function returns the number of bufs that it
+was able to add.  It returns BUFS_PER_CMD (7) for complete success or a
+smaller number if there are not enough pages available.  However, the
+error checking is looking at the total number of bufs instead of the
+number which were added on this iteration.  Thus the error checking
+only works correctly for the first iteration through the loop and
+subsequent iterations are always counted as a success.
 
-Here tpmi_sst_dev_add() is returning "ret" variable. But this "ret"
-variable contains the failure status of last call to sst_main(), which
-failed for the invalid resource. But there may be other valid resources
-before the last entry.
+Fix this by checking only the bufs added in the current iteration.
 
-To address this, do not update "ret" variable for sst_main() return
-status.
-
-If there are no valid resources, it is already checked for by !inst
-below the loop and -ENODEV is returned.
-
-Fixes: 9d1d36268f3d ("platform/x86: ISST: Support partitioned systems")
-Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Cc: stable@vger.kernel.org # 6.10+
-Link: https://lore.kernel.org/r/20240816163626.415762-1-srinivas.pandruvada@linux.intel.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0b1b71370458 ("staging: dpaa2-switch: handle Rx path on control interface")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Tested-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Link: https://patch.msgid.link/eec27f30-b43f-42b6-b8ee-04a6f83423b6@stanley.mountain
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c
-+++ b/drivers/platform/x86/intel/speed_select_if/isst_tpmi_core.c
-@@ -1549,8 +1549,7 @@ int tpmi_sst_dev_add(struct auxiliary_de
- 			goto unlock_free;
- 		}
+diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
+index b98ef4ba172f6..d6c871f227947 100644
+--- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
++++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
+@@ -2583,13 +2583,14 @@ static int dpaa2_switch_refill_bp(struct ethsw_core *ethsw)
  
--		ret = sst_main(auxdev, &pd_info[i]);
--		if (ret) {
-+		if (sst_main(auxdev, &pd_info[i])) {
- 			/*
- 			 * This entry is not valid, hardware can partially
- 			 * populate dies. In this case MMIO will have 0xFFs.
+ static int dpaa2_switch_seed_bp(struct ethsw_core *ethsw)
+ {
+-	int *count, i;
++	int *count, ret, i;
+ 
+ 	for (i = 0; i < DPAA2_ETHSW_NUM_BUFS; i += BUFS_PER_CMD) {
++		ret = dpaa2_switch_add_bufs(ethsw, ethsw->bpid);
+ 		count = &ethsw->buf_count;
+-		*count += dpaa2_switch_add_bufs(ethsw, ethsw->bpid);
++		*count += ret;
+ 
+-		if (unlikely(*count < BUFS_PER_CMD))
++		if (unlikely(ret < BUFS_PER_CMD))
+ 			return -ENOMEM;
+ 	}
+ 
+-- 
+2.43.0
+
 
 
 
