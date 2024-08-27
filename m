@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-70949-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70666-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C5E69610D6
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:13:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B458960F6B
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:59:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B53451F23255
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:13:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E2CA1C234B4
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:59:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D6C91C6F46;
-	Tue, 27 Aug 2024 15:13:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5065F1C93A8;
+	Tue, 27 Aug 2024 14:57:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X2TZEDdt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E8R6oLdq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B6F51C5783;
-	Tue, 27 Aug 2024 15:13:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E72119F485;
+	Tue, 27 Aug 2024 14:57:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771597; cv=none; b=sgry3DRWgoBlh8zhUeyT5svx19hqMqb4yNgUbJsfH5S7jGjTE6ZBl0aIVE++L0cHJuC39j9jxGyN4U7qvfoTHwiMlivbdvDCgq6zDI3hULTlltL0rc2dlHGRm5q9QjEfGpA9o5Pr/p5hFEKbbfQ788qf0Hke1F4wEO/vMoKrnK0=
+	t=1724770667; cv=none; b=BgPkGHFILzA7oDCGML27whbxP+nrsNxDSPkVAehBiAfTOucHi+YKQGxpqSlhdsE/D+8si/JgyvuhaYeONq/S0ijAVbKE3QYgVSH8cUXZrWxAGT3LpREnud4b/9ty+5raCud4pTbJ86+6KJbKuxgn0B2DM1ZZ03pd7j2Yl/rt7Ns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771597; c=relaxed/simple;
-	bh=2owPgvtwIZCobc/hwf3ShDNI79f99v8XnmOj30PDMh4=;
+	s=arc-20240116; t=1724770667; c=relaxed/simple;
+	bh=cqgeuON9WvRw1scvtbCKJwGG5+h29C+u/JFcCKZAwBQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c3qwsK90z9YIFw4AvtIjPJdK7k8gGu4w4q49zpTy3vDXCUaWJjj2NDSqNW+bH3sHff64T+u2Uypd+pz+4mPgdYgHu5mSvKDJ1EWCsWJHIgZET3bYKObSh+PwVmlgmyUisUIYqnC5uhTlJzR4QYL5ROCvJyjy9um6Dj9t4iZS3eI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X2TZEDdt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E973C4FE9A;
-	Tue, 27 Aug 2024 15:13:16 +0000 (UTC)
+	 MIME-Version; b=Tisd8SXHhYSM04xySgvdaiL9YFpE9d86wyrzrflba8JXRuqORDq7A7swuRNUR5XF2gNE0P7P1SzAc70cOjvgFroYN4s26vmWpmhsVhrYDRhk4/L/LnABmZDp3sbcKI6xtEyFNXihFrspF8i3QOQDnil7czsU39LwpgV1RNuxMf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E8R6oLdq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63C9AC61044;
+	Tue, 27 Aug 2024 14:57:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771597;
-	bh=2owPgvtwIZCobc/hwf3ShDNI79f99v8XnmOj30PDMh4=;
+	s=korg; t=1724770666;
+	bh=cqgeuON9WvRw1scvtbCKJwGG5+h29C+u/JFcCKZAwBQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X2TZEDdtLDUF2T++T3eVi0kUNw67ovZA/wPNvJeXHsnEK5nXnaDwjxYFbF52jMglU
-	 1ACfs0opttqUdxh0yoQtQ5NdXTyEB9h7amZrxlB8smBr0U9nkSnNwAQG6ezm+WyGMA
-	 pDmzwqorNDswKXl6PWVFemSUHrx53V86z5/409PE=
+	b=E8R6oLdqEVE8blvyTZgqLk296bfIVvIQXOLekJsD0a0r+Nwh3LfgFzezcxjUQOyPq
+	 +8vccLsJnidjg2WCL/xa4th2YTsXOSIhbGnJDkHW3I/BH7uukoRFWWGZ0wIXg0FEsq
+	 bZIpbxFgEdrXQorzCyOdZZUhFHb/3B/WFeLhiX20=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Auld <matthew.auld@intel.com>,
-	Andrzej Hajda <andrzej.hajda@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 205/273] drm/xe/display: stop calling domains_driver_remove twice
+	Martin Whitaker <foss@martin-whitaker.me.uk>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Arun Ramadoss <arun.ramadoss@microchip.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 298/341] net: dsa: microchip: fix PTP config failure when using multiple ports
 Date: Tue, 27 Aug 2024 16:38:49 +0200
-Message-ID: <20240827143841.211892705@linuxfoundation.org>
+Message-ID: <20240827143854.732962896@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Auld <matthew.auld@intel.com>
+From: Martin Whitaker <foss@martin-whitaker.me.uk>
 
-[ Upstream commit 48d74a0a45201de4efa016fb2f556889db37ed28 ]
+commit 6efea5135417ae8194485d1d05ea79a21cf1a11c upstream.
 
-Unclear why we call this twice.
+When performing the port_hwtstamp_set operation, ptp_schedule_worker()
+will be called if hardware timestamoing is enabled on any of the ports.
+When using multiple ports for PTP, port_hwtstamp_set is executed for
+each port. When called for the first time ptp_schedule_worker() returns
+0. On subsequent calls it returns 1, indicating the worker is already
+scheduled. Currently the ksz driver treats 1 as an error and fails to
+complete the port_hwtstamp_set operation, thus leaving the timestamping
+configuration for those ports unchanged.
 
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Andrzej Hajda <andrzej.hajda@intel.com>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240522102143.128069-35-matthew.auld@intel.com
-Stable-dep-of: f4b2a0ae1a31 ("drm/xe: Fix opregion leak")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This patch fixes this by ignoring the ptp_schedule_worker() return
+value.
+
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/7aae307a-35ca-4209-a850-7b2749d40f90@martin-whitaker.me.uk
+Fixes: bb01ad30570b0 ("net: dsa: microchip: ptp: manipulating absolute time using ptp hw clock")
+Signed-off-by: Martin Whitaker <foss@martin-whitaker.me.uk>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Acked-by: Arun Ramadoss <arun.ramadoss@microchip.com>
+Link: https://patch.msgid.link/20240817094141.3332-1-foss@martin-whitaker.me.uk
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/display/xe_display.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/dsa/microchip/ksz_ptp.c |    5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/display/xe_display.c b/drivers/gpu/drm/xe/display/xe_display.c
-index 0de0566e5b394..6ecaf83264d55 100644
---- a/drivers/gpu/drm/xe/display/xe_display.c
-+++ b/drivers/gpu/drm/xe/display/xe_display.c
-@@ -134,7 +134,6 @@ static void xe_display_fini_noirq(struct drm_device *dev, void *dummy)
- 		return;
+--- a/drivers/net/dsa/microchip/ksz_ptp.c
++++ b/drivers/net/dsa/microchip/ksz_ptp.c
+@@ -266,7 +266,6 @@ static int ksz_ptp_enable_mode(struct ks
+ 	struct ksz_port *prt;
+ 	struct dsa_port *dp;
+ 	bool tag_en = false;
+-	int ret;
  
- 	intel_display_driver_remove_noirq(xe);
--	intel_power_domains_driver_remove(xe);
- }
+ 	dsa_switch_for_each_user_port(dp, dev->ds) {
+ 		prt = &dev->ports[dp->index];
+@@ -277,9 +276,7 @@ static int ksz_ptp_enable_mode(struct ks
+ 	}
  
- int xe_display_init_noirq(struct xe_device *xe)
--- 
-2.43.0
-
+ 	if (tag_en) {
+-		ret = ptp_schedule_worker(ptp_data->clock, 0);
+-		if (ret)
+-			return ret;
++		ptp_schedule_worker(ptp_data->clock, 0);
+ 	} else {
+ 		ptp_cancel_worker_sync(ptp_data->clock);
+ 	}
 
 
 
