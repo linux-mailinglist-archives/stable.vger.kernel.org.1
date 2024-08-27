@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-70528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70773-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97E12960E96
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:50:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A267F960FF5
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:04:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1927FB22E65
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:50:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 48A371F2237D
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:04:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CE5B1A0B13;
-	Tue, 27 Aug 2024 14:50:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 392B81C6F76;
+	Tue, 27 Aug 2024 15:03:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="niKTM7dL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LALDLwOf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A1FB44C8C;
-	Tue, 27 Aug 2024 14:50:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9B311C2DB1;
+	Tue, 27 Aug 2024 15:03:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770208; cv=none; b=oeyckkQZ0U+/lWoV226byXwuKSIiUOE4oTmO1uOUdIX5mS1rrF3uUw+qX8DqR6mANtvGSf12O9iCbZEB7ouUVmIllY70tX+e4G8dnTixjGXhmX5SRfdh/LDqWVSgU+/R/xigCmbjLZchHIug1dT+MHI1JdkARIYLVoDLOr6LzOM=
+	t=1724771016; cv=none; b=Omi5UCdeTAUw9G1mkICeSQuxjn1+5oyHZL/AVPLurgUdvnKGDTIsAEdlxnPSB3rM/Bk4KFMiXYJWwZvZ9fqkkAHmFFA5WUgEJ1Zol1stXA3Ir8mSGPbJH835L3O+XotUTaw4d4DvTBttSDlteZu35hwrhv96Mz1Vp9gxKMMfjrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770208; c=relaxed/simple;
-	bh=Pg8sDlpUhcqrodSYrPPMiInw37CyOWc/5IE4NasnOXY=;
+	s=arc-20240116; t=1724771016; c=relaxed/simple;
+	bh=cW2AuZW5Kub98Bkvd3MeJRt7V7xmX2dE5KA6z0V35Ao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DpMT7g1UxVmUn2xX7Brh1tnmq0t4F3eBd4K2B+rEK3qUa8XA2tUkVQwNw+OAmoNIWA1G2g9CJO5cMB04d6c1DHCpM0cjUWIt5ZuYxK5oT5VMsR9+NSkG+SIegpScEETtgVe/OdyegJqN18A+nseTN7zeNmEfTLp6HeJLpi/xWnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=niKTM7dL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FEC0C4DDF3;
-	Tue, 27 Aug 2024 14:50:07 +0000 (UTC)
+	 MIME-Version; b=T+8nvKuhZm9Zx/xagt/wHnXzXC19Dpmrb279Hsms6WUXqKB3KANzIWVDFQdmFqgQe8dPy+rSodZHRjz7AL8qv3LjLCQWl+2F6dSCeauHS/TMQapdjCmnO4n7vxcu0NOs65AsF3XuXMg7H1KlvUbO2nVzzi3iUAmgOsQrVkFPZlY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LALDLwOf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00BCFC6104C;
+	Tue, 27 Aug 2024 15:03:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770207;
-	bh=Pg8sDlpUhcqrodSYrPPMiInw37CyOWc/5IE4NasnOXY=;
+	s=korg; t=1724771015;
+	bh=cW2AuZW5Kub98Bkvd3MeJRt7V7xmX2dE5KA6z0V35Ao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=niKTM7dLyM6SEkIWNZrY/Iqmn0rMcABXcE05ukJ2TBHzhen+amw8w6/oow39rywm5
-	 7E6KPveyQ5o/JRRAXKvzuUofT613ldcBj6r4csx+R2c2wWECKnq6CxQBnvi/6twnD2
-	 j1f3DfW3P0kLllIs+0TyJfigCzhPAit3OXQ9hEnc=
+	b=LALDLwOfrmQ36lidQDG56WX4l/fmwBMkVuLNp6R5cu85RHTHcXrP9atsRNCN4SlRS
+	 Osr//Qqp2tadnoddGvYe8Ka1qto6AdbdEIk8MzsNpaNtbMZfE3XLTlzTNSjLllVSGS
+	 wRRqqK/w9JvH/tEGe0gRjX82z3TQhfa6z5hvElhQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Luck <tony.luck@intel.com>,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 152/341] EDAC/skx_common: Filter out the invalid address
-Date: Tue, 27 Aug 2024 16:36:23 +0200
-Message-ID: <20240827143849.202278154@linuxfoundation.org>
+	Kota <nospam@kota.moe>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.10 060/273] btrfs: tree-checker: reject BTRFS_FT_UNKNOWN dir type
+Date: Tue, 27 Aug 2024 16:36:24 +0200
+Message-ID: <20240827143835.686323433@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit 1e92af09fab1b5589f3a7ae68109e3c6a5ca6c6e ]
+commit 31723c9542dba1681cc3720571fdf12ffe0eddd9 upstream.
 
-Decoding an invalid address with certain firmware decoders could
-cause a #PF (Page Fault) in the EFI runtime context, which could
-subsequently hang the system. To make {i10nm,skx}_edac more robust
-against such bogus firmware decoders, filter out invalid addresses
-before allowing the firmware decoder to process them.
+[REPORT]
+There is a bug report that kernel is rejecting a mismatching inode mode
+and its dir item:
 
-Suggested-by: Tony Luck <tony.luck@intel.com>
-Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Signed-off-by: Tony Luck <tony.luck@intel.com>
-Link: https://lore.kernel.org/r/20231207014512.78564-1-qiuxu.zhuo@intel.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  [ 1881.553937] BTRFS critical (device dm-0): inode mode mismatch with
+  dir: inode mode=040700 btrfs type=2 dir type=0
+
+[CAUSE]
+It looks like the inode mode is correct, while the dir item type
+0 is BTRFS_FT_UNKNOWN, which should not be generated by btrfs at all.
+
+This may be caused by a memory bit flip.
+
+[ENHANCEMENT]
+Although tree-checker is not able to do any cross-leaf verification, for
+this particular case we can at least reject any dir type with
+BTRFS_FT_UNKNOWN.
+
+So here we enhance the dir type check from [0, BTRFS_FT_MAX), to
+(0, BTRFS_FT_MAX).
+Although the existing corruption can not be fixed just by such enhanced
+checking, it should prevent the same 0x2->0x0 bitflip for dir type to
+reach disk in the future.
+
+Reported-by: Kota <nospam@kota.moe>
+Link: https://lore.kernel.org/linux-btrfs/CACsxjPYnQF9ZF-0OhH16dAx50=BXXOcP74MxBc3BG+xae4vTTw@mail.gmail.com/
+CC: stable@vger.kernel.org # 5.4+
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/edac/skx_common.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ fs/btrfs/tree-checker.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/edac/skx_common.c b/drivers/edac/skx_common.c
-index 03d7a74ca22dc..f4b192420be47 100644
---- a/drivers/edac/skx_common.c
-+++ b/drivers/edac/skx_common.c
-@@ -659,6 +659,10 @@ int skx_mce_check_error(struct notifier_block *nb, unsigned long val,
- 	memset(&res, 0, sizeof(res));
- 	res.mce  = mce;
- 	res.addr = mce->addr & MCI_ADDR_PHYSADDR;
-+	if (!pfn_to_online_page(res.addr >> PAGE_SHIFT)) {
-+		pr_err("Invalid address 0x%llx in IA32_MC%d_ADDR\n", mce->addr, mce->bank);
-+		return NOTIFY_DONE;
-+	}
+--- a/fs/btrfs/tree-checker.c
++++ b/fs/btrfs/tree-checker.c
+@@ -551,9 +551,10 @@ static int check_dir_item(struct extent_
  
- 	/* Try driver decoder first */
- 	if (!(driver_decode && driver_decode(&res))) {
--- 
-2.43.0
-
+ 		/* dir type check */
+ 		dir_type = btrfs_dir_ftype(leaf, di);
+-		if (unlikely(dir_type >= BTRFS_FT_MAX)) {
++		if (unlikely(dir_type <= BTRFS_FT_UNKNOWN ||
++			     dir_type >= BTRFS_FT_MAX)) {
+ 			dir_item_err(leaf, slot,
+-			"invalid dir item type, have %u expect [0, %u)",
++			"invalid dir item type, have %u expect (0, %u)",
+ 				dir_type, BTRFS_FT_MAX);
+ 			return -EUCLEAN;
+ 		}
 
 
 
