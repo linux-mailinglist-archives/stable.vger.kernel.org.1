@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-71034-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70775-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F299961156
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:19:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5616A960FFA
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:04:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E8995B27442
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:19:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 88B811C22977
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:04:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B0291CC882;
-	Tue, 27 Aug 2024 15:17:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08CB71C4EC9;
+	Tue, 27 Aug 2024 15:03:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HRu/Ly1G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iHtp5Pq5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 531941C871E;
-	Tue, 27 Aug 2024 15:17:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B92B91C6893;
+	Tue, 27 Aug 2024 15:03:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771878; cv=none; b=gcMVYE9S6iVFHq7ICS3kmxPDl07rvYocZMbvDCPPQ6lEv+Ensucssoz8Wz8Ol80BkGU+w7CORat69WTen9Mrdx/oVmlHalo6/qezWJYbYj8DLTjJhepDcDuF+XmTc4SIx3ZTga0jRomk6BJAlLeGci11DUZ2riVdM+6A4O372xg=
+	t=1724771022; cv=none; b=aFyvAj2hWSTgBb/nuaXJ8/GDsnbtvAzB6zISepttVSvBzX/zPKmyr64FkjexMtMDy0sXJ7sddSEB/Nr73NCXzN1g+0vPTFrACvyA3pWoZTzfiXHKwvfaVOtIyZsSWsAzS+91r1VaJk637YG+q5zuwFLsCYOaJ/QIZqNJDtqwKoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771878; c=relaxed/simple;
-	bh=y65lppWrOd2N0WnpWWApHc2ynYPnLuqCOb489SMJdjE=;
+	s=arc-20240116; t=1724771022; c=relaxed/simple;
+	bh=jNMfTrG/Z3yAaVi2CnSEoByF+1+H4qc8Jbglygd8kI0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Guz7HKYkFSydJ54qbkg+Yq1y/uJa2bWx3fw8EA0PYLqkGqCVazbcGBlkgCZBEZfm2mHo5Fj1qNAK26gPWd3z6oGjX3y9CYxPBYwGt8cE6RvPrj5zY0Rx5xHFQI97TYvnydHvfmO7bjbnJ8DVJMehupGAUKPo9KeQPBWaNQHPQW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HRu/Ly1G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B160DC61067;
-	Tue, 27 Aug 2024 15:17:57 +0000 (UTC)
+	 MIME-Version; b=dAxE8yQeJRWd2RNkRbL3D4nUN++YRr+eWK71skcN8aLih4AM7W5E0bjnPkY6d1/+7cAYXwluv3Jc/Ui/N5T1hy6SJxRqOxzwXuE6w40uMlkx8x61z/+uy/zmsVrCzuCch47EuF4ed+SRBbGXn79FZPHviKzbhTtKqHfOuUUU9+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iHtp5Pq5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BABBFC61056;
+	Tue, 27 Aug 2024 15:03:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771878;
-	bh=y65lppWrOd2N0WnpWWApHc2ynYPnLuqCOb489SMJdjE=;
+	s=korg; t=1724771022;
+	bh=jNMfTrG/Z3yAaVi2CnSEoByF+1+H4qc8Jbglygd8kI0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HRu/Ly1G9z44h4oKX8tICevslSpjCgpQLr+frnMN+UuoBgz/nr6nszJflMddP3Hks
-	 ZWuO9jdq61LaVZWBbWXkSVcbE8tasfgLHkL+zwDuC8FBLox34XTkfOlNC3439lX9j4
-	 rAKd/LGuxoY9+vliVP+Ef+7a7oiYW9+/RwNOvmE0=
+	b=iHtp5Pq5/fVuEC57IlQV0ZcxyxNO8VvFze1HuYfGe7NaEEQX4EeE1PCQkWT2oCPtg
+	 w/q1m3PkUDm/0jQj76VPqRQubYXvCN1kJkUpeEYnJYZWNqDM65jdvsc712hmfMOYTm
+	 xfaP9yr5bwcNcUMGSBr/7oMfxoxjrIXljfsbxBpA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ying Hsu <yinghsu@chromium.org>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 048/321] Bluetooth: Fix hci_link_tx_to RCU lock usage
+	Hans de Goede <hdegoede@redhat.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.10 032/273] ACPI: EC: Evaluate _REG outside the EC scope more carefully
 Date: Tue, 27 Aug 2024 16:35:56 +0200
-Message-ID: <20240827143840.059458532@linuxfoundation.org>
+Message-ID: <20240827143834.616972659@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +61,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ying Hsu <yinghsu@chromium.org>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit c7eaf80bfb0c8cef852cce9501b95dd5a6bddcb9 ]
+commit 71bf41b8e913ec9fc91f0d39ab8fb320229ec604 upstream.
 
-Syzbot found a bug "BUG: sleeping function called from invalid context
-at kernel/locking/mutex.c:580". It is because hci_link_tx_to holds an
-RCU read lock and calls hci_disconnect which would hold a mutex lock
-since the commit a13f316e90fd ("Bluetooth: hci_conn: Consolidate code
-for aborting connections"). Here's an example call trace:
+Commit 60fa6ae6e6d0 ("ACPI: EC: Install address space handler at the
+namespace root") caused _REG methods for EC operation regions outside
+the EC device scope to be evaluated which on some systems leads to the
+evaluation of _REG methods in the scopes of device objects representing
+devices that are not present and not functional according to the _STA
+return values. Some of those device objects represent EC "alternatives"
+and if _REG is evaluated for their operation regions, the platform
+firmware may be confused and the platform may start to behave
+incorrectly.
 
-   __dump_stack lib/dump_stack.c:88 [inline]
-   dump_stack_lvl+0xfc/0x174 lib/dump_stack.c:106
-   ___might_sleep+0x4a9/0x4d3 kernel/sched/core.c:9663
-   __mutex_lock_common kernel/locking/mutex.c:576 [inline]
-   __mutex_lock+0xc7/0x6e7 kernel/locking/mutex.c:732
-   hci_cmd_sync_queue+0x3a/0x287 net/bluetooth/hci_sync.c:388
-   hci_abort_conn+0x2cd/0x2e4 net/bluetooth/hci_conn.c:1812
-   hci_disconnect+0x207/0x237 net/bluetooth/hci_conn.c:244
-   hci_link_tx_to net/bluetooth/hci_core.c:3254 [inline]
-   __check_timeout net/bluetooth/hci_core.c:3419 [inline]
-   __check_timeout+0x310/0x361 net/bluetooth/hci_core.c:3399
-   hci_sched_le net/bluetooth/hci_core.c:3602 [inline]
-   hci_tx_work+0xe8f/0x12d0 net/bluetooth/hci_core.c:3652
-   process_one_work+0x75c/0xba1 kernel/workqueue.c:2310
-   worker_thread+0x5b2/0x73a kernel/workqueue.c:2457
-   kthread+0x2f7/0x30b kernel/kthread.c:319
-   ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:298
+To avoid this problem, only evaluate _REG for EC operation regions
+located in the scopes of device objects representing known-to-be-present
+devices.
 
-This patch releases RCU read lock before calling hci_disconnect and
-reacquires it afterward to fix the bug.
+For this purpose, partially revert commit 60fa6ae6e6d0 and trigger the
+evaluation of _REG for EC operation regions from acpi_bus_attach() for
+the known-valid devices.
 
-Fixes: a13f316e90fd ("Bluetooth: hci_conn: Consolidate code for aborting connections")
-Signed-off-by: Ying Hsu <yinghsu@chromium.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 60fa6ae6e6d0 ("ACPI: EC: Install address space handler at the namespace root")
+Link: https://lore.kernel.org/linux-acpi/1f76b7e2-1928-4598-8037-28a1785c2d13@redhat.com
+Link: https://bugzilla.redhat.com/show_bug.cgi?id=2298938
+Link: https://bugzilla.redhat.com/show_bug.cgi?id=2302253
+Reported-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Cc: All applicable <stable@vger.kernel.org>
+Link: https://patch.msgid.link/23612351.6Emhk5qWAg@rjwysocki.net
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_core.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/acpi/ec.c       |   11 +++++++++--
+ drivers/acpi/internal.h |    1 +
+ drivers/acpi/scan.c     |    2 ++
+ 3 files changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
-index 398a324657697..cf164ec9899c3 100644
---- a/net/bluetooth/hci_core.c
-+++ b/net/bluetooth/hci_core.c
-@@ -3419,7 +3419,12 @@ static void hci_link_tx_to(struct hci_dev *hdev, __u8 type)
- 		if (c->type == type && c->sent) {
- 			bt_dev_err(hdev, "killing stalled connection %pMR",
- 				   &c->dst);
-+			/* hci_disconnect might sleep, so, we have to release
-+			 * the RCU read lock before calling it.
-+			 */
-+			rcu_read_unlock();
- 			hci_disconnect(c, HCI_ERROR_REMOTE_USER_TERM);
-+			rcu_read_lock();
- 		}
+--- a/drivers/acpi/ec.c
++++ b/drivers/acpi/ec.c
+@@ -1487,12 +1487,13 @@ static bool install_gpio_irq_event_handl
+ static int ec_install_handlers(struct acpi_ec *ec, struct acpi_device *device,
+ 			       bool call_reg)
+ {
+-	acpi_handle scope_handle = ec == first_ec ? ACPI_ROOT_OBJECT : ec->handle;
+ 	acpi_status status;
+ 
+ 	acpi_ec_start(ec, false);
+ 
+ 	if (!test_bit(EC_FLAGS_EC_HANDLER_INSTALLED, &ec->flags)) {
++		acpi_handle scope_handle = ec == first_ec ? ACPI_ROOT_OBJECT : ec->handle;
++
+ 		acpi_ec_enter_noirq(ec);
+ 		status = acpi_install_address_space_handler_no_reg(scope_handle,
+ 								   ACPI_ADR_SPACE_EC,
+@@ -1506,7 +1507,7 @@ static int ec_install_handlers(struct ac
  	}
  
--- 
-2.43.0
-
+ 	if (call_reg && !test_bit(EC_FLAGS_EC_REG_CALLED, &ec->flags)) {
+-		acpi_execute_reg_methods(scope_handle, ACPI_UINT32_MAX, ACPI_ADR_SPACE_EC);
++		acpi_execute_reg_methods(ec->handle, ACPI_UINT32_MAX, ACPI_ADR_SPACE_EC);
+ 		set_bit(EC_FLAGS_EC_REG_CALLED, &ec->flags);
+ 	}
+ 
+@@ -1721,6 +1722,12 @@ static void acpi_ec_remove(struct acpi_d
+ 	}
+ }
+ 
++void acpi_ec_register_opregions(struct acpi_device *adev)
++{
++	if (first_ec && first_ec->handle != adev->handle)
++		acpi_execute_reg_methods(adev->handle, 1, ACPI_ADR_SPACE_EC);
++}
++
+ static acpi_status
+ ec_parse_io_ports(struct acpi_resource *resource, void *context)
+ {
+--- a/drivers/acpi/internal.h
++++ b/drivers/acpi/internal.h
+@@ -223,6 +223,7 @@ int acpi_ec_add_query_handler(struct acp
+ 			      acpi_handle handle, acpi_ec_query_func func,
+ 			      void *data);
+ void acpi_ec_remove_query_handler(struct acpi_ec *ec, u8 query_bit);
++void acpi_ec_register_opregions(struct acpi_device *adev);
+ 
+ #ifdef CONFIG_PM_SLEEP
+ void acpi_ec_flush_work(void);
+--- a/drivers/acpi/scan.c
++++ b/drivers/acpi/scan.c
+@@ -2264,6 +2264,8 @@ static int acpi_bus_attach(struct acpi_d
+ 	if (device->handler)
+ 		goto ok;
+ 
++	acpi_ec_register_opregions(device);
++
+ 	if (!device->flags.initialized) {
+ 		device->flags.power_manageable =
+ 			device->power.states[ACPI_STATE_D0].flags.valid;
 
 
 
