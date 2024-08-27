@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-70464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70738-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DF28960E42
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:47:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10A06960FC6
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:02:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B4F828439A
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:47:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 43B8A1C238F8
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:02:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 191321C4EF6;
-	Tue, 27 Aug 2024 14:46:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D9051C6F5E;
+	Tue, 27 Aug 2024 15:01:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tPNWcFIG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PYfpbuXB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBC5EDDC1;
-	Tue, 27 Aug 2024 14:46:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C04F81C6887;
+	Tue, 27 Aug 2024 15:01:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724769992; cv=none; b=FGz7+xB+PuXvbGSAia0c8x2ke3wqgZI3Bfb+fZvkAGSbV2lNjnsBq8gqzY9EqL21XczUcEto0vQIp94G/8hvbLF+dfYkG1hWFNwhwzSK6WFQkwG6aX1zgdZ0S7xhyHg3gGq+DaoNKb94JIZf8FnEVF0Jjd11rKcSjbmTAtmUI8A=
+	t=1724770902; cv=none; b=L8V5uGRv/YUoajFVVbPVhy0FEs9yRyePF0AqTFsdHAEUSW40qVXZ/XY/v5PKvElm/oRFTUyuPrUIW49wMEe2+RgXh2KKYsZBALs5K4h3jDhzY5XBfgtQUwB01gs312QEicmP7co/Eedg6LUscn040geE5+FEd1qclezgtaYAL+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724769992; c=relaxed/simple;
-	bh=s+R7ASurKyZcvNlN00I5KtnMANAUImekWb7DfikpPdw=;
+	s=arc-20240116; t=1724770902; c=relaxed/simple;
+	bh=NitfEoV6gR+O8l+kU2GxNtpsT5R8vGu8vaRYb2FKEVQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LrHs4JU03YInB1xqBr+XPewd696Sg8dvFY/vLiklinlnIRdMPS/hwrgc5ROKgiMhNiLJyjXD9Xx/Am4x7IIWmwOuwL5WaUFh4ugZjTs1kletX1VJHkWkGKOpB4iLpnacnUzrsrpmYTgRevdf8UPgBjAKojkOgTJk7hf3aV4xeLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tPNWcFIG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E0D5C6106D;
-	Tue, 27 Aug 2024 14:46:32 +0000 (UTC)
+	 MIME-Version; b=GthPJRl/TQzxqJp5+tj1FHxHjTCGcls6mN0RnK8I3W1O2UCg883nlQCVj6UQTe9TGsGomfGKh8Pk8wQoivcSSIydOmrPFpLmIl43W6MgGiTMgJlhvkkOq5NsPdsFYEImV0LtT2f8KMeZhvB06BUAPDySPxSUer544znJYTtruEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PYfpbuXB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A414C4AF1C;
+	Tue, 27 Aug 2024 15:01:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724769992;
-	bh=s+R7ASurKyZcvNlN00I5KtnMANAUImekWb7DfikpPdw=;
+	s=korg; t=1724770902;
+	bh=NitfEoV6gR+O8l+kU2GxNtpsT5R8vGu8vaRYb2FKEVQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tPNWcFIGuGvfcdXD6yn7mAv4x07QQdQjtWS7C0TH9vTNlcI9Ii4debZaMWZIzqL49
-	 vrL173xfGMzYFKJvpaF+txC0qY0inunWWC91j1e7MdLtuMW5odHlkL8Fz09Mlt8wkm
-	 ItmiMC4B0n81n7zw8mhAEgHRrDSueS6bAshRsN6Y=
+	b=PYfpbuXBk1c1gs7Bj8jgrPsMDDhuJnDEplI6O+jSTCcGezhi32lYeaT0Uhpi7i29X
+	 rqyrEXfbjnSyjrixgzve9f14q0lZhj+8D0mqnZTVl+sPx7CZrHVHIgaK/jM/MZ6FEr
+	 8OTJvPV2SwMRzDxuCSwHeJD6rH2N+k+vJkTYa/20=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 096/341] wifi: cw1200: Avoid processing an invalid TIM IE
+	Mathieu Othacehe <othacehe@gnu.org>,
+	stable <stable@kernel.org>,
+	Alexander Dahl <ada@thorsis.com>
+Subject: [PATCH 6.10 003/273] tty: atmel_serial: use the correct RTS flag.
 Date: Tue, 27 Aug 2024 16:35:27 +0200
-Message-ID: <20240827143847.060859024@linuxfoundation.org>
+Message-ID: <20240827143833.507389844@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Johnson <quic_jjohnson@quicinc.com>
+From: Mathieu Othacehe <othacehe@gnu.org>
 
-[ Upstream commit b7bcea9c27b3d87b54075735c870500123582145 ]
+commit c9f6613b16123989f2c3bd04b1d9b2365d6914e7 upstream.
 
-While converting struct ieee80211_tim_ie::virtual_map to be a flexible
-array it was observed that the TIM IE processing in cw1200_rx_cb()
-could potentially process a malformed IE in a manner that could result
-in a buffer over-read. Add logic to verify that the TIM IE length is
-large enough to hold a valid TIM payload before processing it.
+In RS485 mode, the RTS pin is driven high by hardware when the transmitter
+is operating. This behaviour cannot be changed. This means that the driver
+should claim that it supports SER_RS485_RTS_ON_SEND and not
+SER_RS485_RTS_AFTER_SEND.
 
-Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230831-ieee80211_tim_ie-v3-1-e10ff584ab5d@quicinc.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Otherwise, when configuring the port with the SER_RS485_RTS_ON_SEND, one
+get the following warning:
+
+kern.warning kernel: atmel_usart_serial atmel_usart_serial.2.auto:
+ttyS1 (1): invalid RTS setting, using RTS_AFTER_SEND instead
+
+which is contradictory with what's really happening.
+
+Signed-off-by: Mathieu Othacehe <othacehe@gnu.org>
+Cc: stable <stable@kernel.org>
+Tested-by: Alexander Dahl <ada@thorsis.com>
+Fixes: af47c491e3c7 ("serial: atmel: Fill in rs485_supported")
+Link: https://lore.kernel.org/r/20240808060637.19886-1-othacehe@gnu.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/st/cw1200/txrx.c | 2 +-
+ drivers/tty/serial/atmel_serial.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/st/cw1200/txrx.c b/drivers/net/wireless/st/cw1200/txrx.c
-index 6894b919ff94b..e16e9ae90d204 100644
---- a/drivers/net/wireless/st/cw1200/txrx.c
-+++ b/drivers/net/wireless/st/cw1200/txrx.c
-@@ -1166,7 +1166,7 @@ void cw1200_rx_cb(struct cw1200_common *priv,
- 		size_t ies_len = skb->len - (ies - (u8 *)(skb->data));
+--- a/drivers/tty/serial/atmel_serial.c
++++ b/drivers/tty/serial/atmel_serial.c
+@@ -2514,7 +2514,7 @@ static const struct uart_ops atmel_pops
+ };
  
- 		tim_ie = cfg80211_find_ie(WLAN_EID_TIM, ies, ies_len);
--		if (tim_ie) {
-+		if (tim_ie && tim_ie[1] >= sizeof(struct ieee80211_tim_ie)) {
- 			struct ieee80211_tim_ie *tim =
- 				(struct ieee80211_tim_ie *)&tim_ie[2];
- 
--- 
-2.43.0
-
+ static const struct serial_rs485 atmel_rs485_supported = {
+-	.flags = SER_RS485_ENABLED | SER_RS485_RTS_AFTER_SEND | SER_RS485_RX_DURING_TX,
++	.flags = SER_RS485_ENABLED | SER_RS485_RTS_ON_SEND | SER_RS485_RX_DURING_TX,
+ 	.delay_rts_before_send = 1,
+ 	.delay_rts_after_send = 1,
+ };
 
 
 
