@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-70510-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71059-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0BA8960E7F
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:49:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 725B9961173
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:20:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D8B6282261
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:49:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A5FB41C236C3
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:20:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 066681C57A3;
-	Tue, 27 Aug 2024 14:49:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC5681C57AB;
+	Tue, 27 Aug 2024 15:19:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kDJXDE+o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UKOdY+xl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8C7815F41B;
-	Tue, 27 Aug 2024 14:49:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 764A91C5792;
+	Tue, 27 Aug 2024 15:19:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770147; cv=none; b=H9556xCmIppVfHBa2D8nNMxp6Ci8iuxPG39iWg2hL++xpROQ8rixk1947tLwT3wcggTDOyMlt1pbr+XMuoxzNFJNe2+YdzgyKXDfCkLlhKtVEQ5/MuZ2s54UI+39YUgnplE1Uav5r2eWBGQm09XuGLdluc1wcLW/JH++NK6VzTQ=
+	t=1724771962; cv=none; b=n6waJDjInyxMizt0AH0xJz76vAtoqrPFHTtvXHp4PyslT/XsM23Cw6tGyB/xcs0qmHE0e33nIqP2s+Gr558Cl3ogP4SF5UtKxQ/mLik0v1LyBpNIyqv22etAjq9LSLd7T4i3vg5iBSvTocaWTr0vYW/fouWkTqK3YmfPUd3jrhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770147; c=relaxed/simple;
-	bh=lU7YCi8sa+I4NQOSH7v7ssjPGu0TtAxCDRbU9BbvREc=;
+	s=arc-20240116; t=1724771962; c=relaxed/simple;
+	bh=kYK9+Xj4pYIhuR8VYGXq32j9JHM8NZghIkhoB5nEHkU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gHBdRdqCy+1v4ooyofSYNopSx1d/DvZGAvUFNKwIxMtoGPH0vyLh8b5Jpiw4jIUw4XXKXY5IaSaR6j1x687HaWNyF6wLBceD3goGLQ+J0ySjHWTuWSRgV+HcQ6jX166avF8tHAoXYJJydI3F2Ah4Yr3+1Zn7ySqYUaM7YQDvAk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kDJXDE+o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24A0CC4AF10;
-	Tue, 27 Aug 2024 14:49:06 +0000 (UTC)
+	 MIME-Version; b=sQXhbOxkLrB+xJaz7d20fAg9HXCTjdBEHXiQYIW9t7ODaDdIVAQBiIiywZiJsp1+x+LUSVkboQaoXublsCRfHmwxgcuCG+ocwNC9PLbWskAEnshm7zuG7v4NQ/ddq4Y2sVd+QFWbZJK1Cx0WPZ2Sz5kRK12Wkr/9JyFmxDFkMQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UKOdY+xl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD85FC61067;
+	Tue, 27 Aug 2024 15:19:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770147;
-	bh=lU7YCi8sa+I4NQOSH7v7ssjPGu0TtAxCDRbU9BbvREc=;
+	s=korg; t=1724771962;
+	bh=kYK9+Xj4pYIhuR8VYGXq32j9JHM8NZghIkhoB5nEHkU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kDJXDE+orRMJ7TRFgv3jS6HjOldlWzlPNQS54o+xT/Iy6B40ISLuvaq0nc/EuIzNV
-	 E+yz/+VHfGtjKu5UQkCSAt9AGtUfKaU8Cq8lQquCtM+A+wLBSVE/rJx4J7OsF+50O8
-	 OH8J1glM3rmdZR62DyD5tVYSqRj4eRXPDdWBO7pA=
+	b=UKOdY+xlf97b6X4kk8/DuwRr3v6NLwpizhrjui161cch5v5nN7D1TqfhNGhYkDp+3
+	 XY7FYZvc+gNY0rwKqXdTjnT+UL0OaxFZZaEhvb0xaXsKDGs2sz0FpqtMCt/W3ts7tq
+	 BLT7rujvSCO+QBE1/E2tIJ4oCGxSC4AnYu3jeacA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ashish Mhetre <amhetre@nvidia.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Felix Fietkau <nbd@nbd.name>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 141/341] memory: tegra: Skip SID programming if SID registers arent set
-Date: Tue, 27 Aug 2024 16:36:12 +0200
-Message-ID: <20240827143848.785279232@linuxfoundation.org>
+Subject: [PATCH 6.1 065/321] wifi: mac80211: remove mesh forwarding congestion check
+Date: Tue, 27 Aug 2024 16:36:13 +0200
+Message-ID: <20240827143840.713296877@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ashish Mhetre <amhetre@nvidia.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit 0d6c918011ce4764ed277de4726a468b7ffe5fed ]
+[ Upstream commit 5c1e269aa5ebafeec69b68ff560522faa5bcb6c1 ]
 
-There are few MC clients where SID security and override register
-offsets are not specified like "sw_cluster0" in tegra234. Don't program
-SID override for such clients because it leads to access to invalid
-addresses.
+Now that all drivers use iTXQ, it does not make sense to check to drop
+tx forwarding packets when the driver has stopped the queues.
+fq_codel will take care of dropping packets when the queues fill up
 
-Signed-off-by: Ashish Mhetre <amhetre@nvidia.com>
-Link: https://lore.kernel.org/r/20231107112713.21399-2-amhetre@nvidia.com
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Link: https://lore.kernel.org/r/20230213100855.34315-3-nbd@nbd.name
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Stable-dep-of: 9ad797485692 ("wifi: cfg80211: check A-MSDU format more carefully")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/memory/tegra/tegra186.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/mac80211/debugfs_netdev.c | 3 ---
+ net/mac80211/ieee80211_i.h    | 1 -
+ net/mac80211/rx.c             | 5 -----
+ 3 files changed, 9 deletions(-)
 
-diff --git a/drivers/memory/tegra/tegra186.c b/drivers/memory/tegra/tegra186.c
-index 533f85a4b2bdb..7633481e547d2 100644
---- a/drivers/memory/tegra/tegra186.c
-+++ b/drivers/memory/tegra/tegra186.c
-@@ -75,6 +75,9 @@ static void tegra186_mc_client_sid_override(struct tegra_mc *mc,
- {
- 	u32 value, old;
+diff --git a/net/mac80211/debugfs_netdev.c b/net/mac80211/debugfs_netdev.c
+index 08a1d7564b7f2..8ced615add712 100644
+--- a/net/mac80211/debugfs_netdev.c
++++ b/net/mac80211/debugfs_netdev.c
+@@ -603,8 +603,6 @@ IEEE80211_IF_FILE(fwded_mcast, u.mesh.mshstats.fwded_mcast, DEC);
+ IEEE80211_IF_FILE(fwded_unicast, u.mesh.mshstats.fwded_unicast, DEC);
+ IEEE80211_IF_FILE(fwded_frames, u.mesh.mshstats.fwded_frames, DEC);
+ IEEE80211_IF_FILE(dropped_frames_ttl, u.mesh.mshstats.dropped_frames_ttl, DEC);
+-IEEE80211_IF_FILE(dropped_frames_congestion,
+-		  u.mesh.mshstats.dropped_frames_congestion, DEC);
+ IEEE80211_IF_FILE(dropped_frames_no_route,
+ 		  u.mesh.mshstats.dropped_frames_no_route, DEC);
  
-+	if (client->regs.sid.security == 0 && client->regs.sid.override == 0)
-+		return;
-+
- 	value = readl(mc->regs + client->regs.sid.security);
- 	if ((value & MC_SID_STREAMID_SECURITY_OVERRIDE) == 0) {
- 		/*
+@@ -741,7 +739,6 @@ static void add_mesh_stats(struct ieee80211_sub_if_data *sdata)
+ 	MESHSTATS_ADD(fwded_frames);
+ 	MESHSTATS_ADD(dropped_frames_ttl);
+ 	MESHSTATS_ADD(dropped_frames_no_route);
+-	MESHSTATS_ADD(dropped_frames_congestion);
+ #undef MESHSTATS_ADD
+ }
+ 
+diff --git a/net/mac80211/ieee80211_i.h b/net/mac80211/ieee80211_i.h
+index 709eb7bfcf194..8a3af4144d3f0 100644
+--- a/net/mac80211/ieee80211_i.h
++++ b/net/mac80211/ieee80211_i.h
+@@ -327,7 +327,6 @@ struct mesh_stats {
+ 	__u32 fwded_frames;		/* Mesh total forwarded frames */
+ 	__u32 dropped_frames_ttl;	/* Not transmitted since mesh_ttl == 0*/
+ 	__u32 dropped_frames_no_route;	/* Not transmitted, no route found */
+-	__u32 dropped_frames_congestion;/* Not forwarded due to congestion */
+ };
+ 
+ #define PREQ_Q_F_START		0x1
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index b68a9200403e7..1d50126aebbc8 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -2931,11 +2931,6 @@ ieee80211_rx_h_mesh_fwding(struct ieee80211_rx_data *rx)
+ 		return RX_CONTINUE;
+ 
+ 	ac = ieee802_1d_to_ac[skb->priority];
+-	q = sdata->vif.hw_queue[ac];
+-	if (ieee80211_queue_stopped(&local->hw, q)) {
+-		IEEE80211_IFSTA_MESH_CTR_INC(ifmsh, dropped_frames_congestion);
+-		return RX_DROP_MONITOR;
+-	}
+ 	skb_set_queue_mapping(skb, ac);
+ 
+ 	if (!--mesh_hdr->ttl) {
 -- 
 2.43.0
 
