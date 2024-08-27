@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-71098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB94D96119F
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:21:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB25096102D
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:06:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65C0428163D
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:21:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 901FB1C20D16
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:06:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 468791C5788;
-	Tue, 27 Aug 2024 15:21:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59A9B1C3F0D;
+	Tue, 27 Aug 2024 15:05:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hB4Q+u3j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rMk6OgG2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0566817C96;
-	Tue, 27 Aug 2024 15:21:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 174E41E520;
+	Tue, 27 Aug 2024 15:05:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772093; cv=none; b=omfOR1iuLGV9rfreW/njbgtkktRWMRDLkbtGkWaQ/AE9q4EXBDcVTKd+ZKlZKTX0bLnhbynQj9xyhQ9k787mPf2NdWQRbk3Av8ITX6monem4lV6XePrb0XFqCQygriadmW5LBw8iniFvqNEYRXpBmVVGsK5SGrEHFkY+bITh8Rs=
+	t=1724771156; cv=none; b=USHIJ4M35CFY+AdxEd/r4ZfesC9Va94dlPTNSV4rTehqBr5BCKs1bwJiq/G+C2JEGdMZe628DbZFa5ptyPwXRP68nm2nNWMOsjGRxqeiXFoQvQM/8e1bTZrDXeyA2ExFUuQpWmpqCRclmsa0bt9Zh7gh6zRvm84NHF2teJ10P5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772093; c=relaxed/simple;
-	bh=AysjqKyg6ks8yN0uOq15HzwQveglUmAndXz7reXU7sU=;
+	s=arc-20240116; t=1724771156; c=relaxed/simple;
+	bh=osUHyiZU8Hf1iEaVmp3GsUTBJnbaHuTCHFqV8ABUqlo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DBE9iIwjg/egtWklUv1cpm3Z6RlH7B7UjUs2QKqeuKdy3yHzF9+A1eL4UJtM/yiHkFOHdxe8QPBwZkhYGOSdwnk2sFr3RJmWVWAM9DDWFzQU4QZyMVJk5pIudTfbrgUUmOYapb0SNA65brnRD0pwy8BPypy5WZKmiyDtBRZHzs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hB4Q+u3j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72370C4FE0B;
-	Tue, 27 Aug 2024 15:21:32 +0000 (UTC)
+	 MIME-Version; b=CJkVYcET68ByURJo3E0jO8qm/hBCY817aghygFAeVw5/dP94bNV9R9TwpTOOZQmJZYzkPl35bNh9gwAfe8XAJxzwbpg6+Pgmx2MihX/cLuOLzN2MJs1Ticiev1dRq2l1KBV5QwwfqpC1xAZ3eAzP2HZQr07Rn485n9cYlwZGla8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rMk6OgG2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DD35C61073;
+	Tue, 27 Aug 2024 15:05:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772092;
-	bh=AysjqKyg6ks8yN0uOq15HzwQveglUmAndXz7reXU7sU=;
+	s=korg; t=1724771156;
+	bh=osUHyiZU8Hf1iEaVmp3GsUTBJnbaHuTCHFqV8ABUqlo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hB4Q+u3jiOxpbL9Qd0ZN8OkrVJRmCYUW23KARqJuwvZEBdY8+cYUSHpXmdg3vEmuU
-	 9yVjxRKspj1tgyXzWuDtxoDrvXX9EoEAYVZdmNZKkZDKnSccZ9sCkK4GQY3X6oZhda
-	 HjoFAn4sQSLd1ctjpjbYmJO8yKn6trNX1docVIzM=
+	b=rMk6OgG2gi1pdGQ66X1Ht6Ttkj2xTswXkdhhX6FRCILjLF+Vx2IKYpvmKed2yY840
+	 cp3LF2qKe0x1eHMgHK1zyCcC3Ib5F/Hpo8QThRdCL3OI2nTHR4i8R2WABEO8uQA7Ob
+	 cEZ+F6SYL7/FHeZ7Bs/fIvcm+QRCJvtwTRRc+y0A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rand Deeb <rand.sec96@gmail.com>,
-	Larry Finger <Larry.Finger@lwfinger.net>,
-	=?UTF-8?q?Michael=20B=C3=BCsch?= <m@bues.ch>,
-	Kalle Valo <kvalo@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Pawel Dembicki <paweldembicki@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 112/321] ssb: Fix division by zero issue in ssb_calc_clock_rate
+Subject: [PATCH 6.10 096/273] net: dsa: vsc73xx: pass value in phy_write operation
 Date: Tue, 27 Aug 2024 16:37:00 +0200
-Message-ID: <20240827143842.508903839@linuxfoundation.org>
+Message-ID: <20240827143837.064543384@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rand Deeb <rand.sec96@gmail.com>
+From: Pawel Dembicki <paweldembicki@gmail.com>
 
-[ Upstream commit e0b5127fa134fe0284d58877b6b3133939c8b3ce ]
+[ Upstream commit 5b9eebc2c7a5f0cc7950d918c1e8a4ad4bed5010 ]
 
-In ssb_calc_clock_rate(), there is a potential issue where the value of
-m1 could be zero due to initialization using clkfactor_f6_resolv(). This
-situation raised concerns about the possibility of a division by zero
-error.
+In the 'vsc73xx_phy_write' function, the register value is missing,
+and the phy write operation always sends zeros.
 
-We fixed it by following the suggestions provided by Larry Finger
-<Larry.Finger@lwfinger.net> and Michael Büsch <m@bues.ch>. The fix
-involves returning a value of 1 instead of 0 in clkfactor_f6_resolv().
-This modification ensures the proper functioning of the code and
-eliminates the risk of division by zero errors.
+This commit passes the value variable into the proper register.
 
-Signed-off-by: Rand Deeb <rand.sec96@gmail.com>
-Acked-by: Larry Finger <Larry.Finger@lwfinger.net>
-Acked-by: Michael Büsch <m@bues.ch>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230904232346.34991-1-rand.sec96@gmail.com
+Fixes: 05bd97fc559d ("net: dsa: Add Vitesse VSC73xx DSA router driver")
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Pawel Dembicki <paweldembicki@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ssb/main.c | 2 +-
+ drivers/net/dsa/vitesse-vsc73xx-core.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/ssb/main.c b/drivers/ssb/main.c
-index 8a93c83cb6f80..d52e91258e989 100644
---- a/drivers/ssb/main.c
-+++ b/drivers/ssb/main.c
-@@ -837,7 +837,7 @@ static u32 clkfactor_f6_resolve(u32 v)
- 	case SSB_CHIPCO_CLK_F6_7:
- 		return 7;
+diff --git a/drivers/net/dsa/vitesse-vsc73xx-core.c b/drivers/net/dsa/vitesse-vsc73xx-core.c
+index fc4030976bdce..2725541b3c36f 100644
+--- a/drivers/net/dsa/vitesse-vsc73xx-core.c
++++ b/drivers/net/dsa/vitesse-vsc73xx-core.c
+@@ -534,7 +534,7 @@ static int vsc73xx_phy_write(struct dsa_switch *ds, int phy, int regnum,
+ 		return 0;
  	}
--	return 0;
-+	return 1;
- }
  
- /* Calculate the speed the backplane would run at a given set of clockcontrol values */
+-	cmd = (phy << 21) | (regnum << 16);
++	cmd = (phy << 21) | (regnum << 16) | val;
+ 	ret = vsc73xx_write(vsc, VSC73XX_BLOCK_MII, 0, 1, cmd);
+ 	if (ret)
+ 		return ret;
 -- 
 2.43.0
 
