@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-70489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70997-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F11B960E61
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:48:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 320B1961114
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:16:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B29681C22665
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:48:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B00CBB26882
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:15:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B401A1A072D;
-	Tue, 27 Aug 2024 14:47:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 661EE1C688E;
+	Tue, 27 Aug 2024 15:15:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zi0v58pN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qKWumsME"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FC2F1C4EE6;
-	Tue, 27 Aug 2024 14:47:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2073F4C634;
+	Tue, 27 Aug 2024 15:15:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770077; cv=none; b=JZeW7eCBXBWFaEfbrnXO2jLw52Y3NLPCKqWDpGtQah6HG8fxcFEtkvdCnS6GD9EcVPN+6I6LPRoXhwlFzaDuVrVO3sHs53xbaPi+ih84sh+cxCtWbrwTGjZ5pN3fHuLNIhuDevbfbeljpU+uLoHH7/OSO73yGWHXgXOn3Vpf1yI=
+	t=1724771755; cv=none; b=Sujvf3T7AQfMGJfw5VPRQd95ahmj0fF4/6j+lnbSRbesJiJEfGeHBd2gDCdMn7AKCCefkeOnR1+sIUBSGjXGXxmGwkWuPexJLWMypTmoDl2M2NrPAdanVGbB7ljapqGMklbd54dL5+Qcq8h7zcgjgvHESJyI9lyW5sAjNhjffQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770077; c=relaxed/simple;
-	bh=llMjLvsDGmnH1A2St0WlXHIO7KSuZ92UvF7nW+yktyg=;
+	s=arc-20240116; t=1724771755; c=relaxed/simple;
+	bh=ApvPfaL60bKYF07rBdaTAf3dFlZohpgVKVwM0a9OTgg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mu5uXD1aaA46GuyiuGbMRLQ28t2+duXLZ7d9IplFZDYEA2DEgDvo7+4qZyedV6MC3eALB6n3/p5eUZ9vqaeDne3zi1kO7rot93j6S9wLvegCS2BFF/VbPotYMXVnruTzPT6x05SLghmHV5tkf6xRqyNfZZTR8LsZEKQpyOhS5Hw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zi0v58pN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 918B8C61040;
-	Tue, 27 Aug 2024 14:47:56 +0000 (UTC)
+	 MIME-Version; b=Jye/vS/ZIqg037ApA99Fn2qXCdobGjy/DsMe2wgly7IFHbykjzmFFXMkxrqmGONaqRqr9/F+3rD2fqWerxNRE0Qoz6196EpOXgB5b9ULlK08vk+gc4rh92yJNAZrCjSZBoujjANbDgpSAJrXa/z7gsXrj9bVCuIrK3Atvgb8XMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qKWumsME; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8593DC4AF50;
+	Tue, 27 Aug 2024 15:15:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770077;
-	bh=llMjLvsDGmnH1A2St0WlXHIO7KSuZ92UvF7nW+yktyg=;
+	s=korg; t=1724771755;
+	bh=ApvPfaL60bKYF07rBdaTAf3dFlZohpgVKVwM0a9OTgg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zi0v58pNE5p95rT0vqXNBZvOFqhSHZIlQ3Uar0s1O9nikqcGXDtFl3sIYjG6oFCiD
-	 Dpi653KEz6tnEL4jw1jsq9SV8EKf0GL+nrGn5vvjkoSwjidOFaUDthzVilyRv7PR6E
-	 e2R8R+XShB96hSPdRrDBqip5LLuBnhc5xo9yTyxk=
+	b=qKWumsME2FS7QD11D4LnWWnbyPLHhiWk/RaLAwIInO28MOcwys2na9MHyVIKDqggv
+	 7ehNgsqkALYcmKVyv152IFPJL8Q0KQTOw3JLRKHuSvcppuydtYnSaS+EHFYioBzShR
+	 eVXbRdUU8uCqnYr9AHEqQehmielu2SN9mj5lWGxo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 088/341] wifi: mac80211: lock wiphy in IP address notifier
+	Nam Cao <namcao@linutronix.de>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>
+Subject: [PATCH 6.1 011/321] riscv: change XIPs kernel_map.size to be size of the entire kernel
 Date: Tue, 27 Aug 2024 16:35:19 +0200
-Message-ID: <20240827143846.757004232@linuxfoundation.org>
+Message-ID: <20240827143838.633996006@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,104 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Nam Cao <namcao@linutronix.de>
 
-[ Upstream commit 730538edc8e0eb14b02708f65100a0deaf43e6cd ]
+commit 57d76bc51fd80824bcc0c84a5b5ec944f1b51edd upstream.
 
-Lock the wiphy in the IP address notifier as another
-place that should have it locked before calling into
-the driver. This needs a bit of attention since the
-notifier can be called while the wiphy is already
-locked, when we remove an interface. Handle this by
-not running the notifier in this case, and instead
-calling out to the driver directly.
+With XIP kernel, kernel_map.size is set to be only the size of data part of
+the kernel. This is inconsistent with "normal" kernel, who sets it to be
+the size of the entire kernel.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+More importantly, XIP kernel fails to boot if CONFIG_DEBUG_VIRTUAL is
+enabled, because there are checks on virtual addresses with the assumption
+that kernel_map.size is the size of the entire kernel (these checks are in
+arch/riscv/mm/physaddr.c).
+
+Change XIP's kernel_map.size to be the size of the entire kernel.
+
+Signed-off-by: Nam Cao <namcao@linutronix.de>
+Cc: <stable@vger.kernel.org> # v6.1+
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/20240508191917.2892064-1-namcao@linutronix.de
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/iface.c | 14 ++++++++++++++
- net/mac80211/main.c  | 22 +++++++++++++++++++++-
- 2 files changed, 35 insertions(+), 1 deletion(-)
+ arch/riscv/mm/init.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/mac80211/iface.c b/net/mac80211/iface.c
-index 52b048807feae..a7c39e895b1e5 100644
---- a/net/mac80211/iface.c
-+++ b/net/mac80211/iface.c
-@@ -2315,6 +2315,20 @@ void ieee80211_remove_interfaces(struct ieee80211_local *local)
- 	list_for_each_entry_safe(sdata, tmp, &unreg_list, list) {
- 		bool netdev = sdata->dev;
+--- a/arch/riscv/mm/init.c
++++ b/arch/riscv/mm/init.c
+@@ -816,7 +816,7 @@ static void __init create_kernel_page_ta
+ 				   PMD_SIZE, PAGE_KERNEL_EXEC);
  
-+		/*
-+		 * Remove IP addresses explicitly, since the notifier will
-+		 * skip the callbacks if wdev->registered is false, since
-+		 * we can't acquire the wiphy_lock() again there if already
-+		 * inside this locked section.
-+		 */
-+		sdata_lock(sdata);
-+		sdata->vif.cfg.arp_addr_cnt = 0;
-+		if (sdata->vif.type == NL80211_IFTYPE_STATION &&
-+		    sdata->u.mgd.associated)
-+			ieee80211_vif_cfg_change_notify(sdata,
-+							BSS_CHANGED_ARP_FILTER);
-+		sdata_unlock(sdata);
-+
- 		list_del(&sdata->list);
- 		cfg80211_unregister_wdev(&sdata->wdev);
+ 	/* Map the data in RAM */
+-	end_va = kernel_map.virt_addr + XIP_OFFSET + kernel_map.size;
++	end_va = kernel_map.virt_addr + kernel_map.size;
+ 	for (va = kernel_map.virt_addr + XIP_OFFSET; va < end_va; va += PMD_SIZE)
+ 		create_pgd_mapping(pgdir, va,
+ 				   kernel_map.phys_addr + (va - (kernel_map.virt_addr + XIP_OFFSET)),
+@@ -947,7 +947,7 @@ asmlinkage void __init setup_vm(uintptr_
  
-diff --git a/net/mac80211/main.c b/net/mac80211/main.c
-index e0c701c5e5f93..066424e62ff09 100644
---- a/net/mac80211/main.c
-+++ b/net/mac80211/main.c
-@@ -443,7 +443,7 @@ static int ieee80211_ifa_changed(struct notifier_block *nb,
- 	if (!wdev)
- 		return NOTIFY_DONE;
+ 	phys_ram_base = CONFIG_PHYS_RAM_BASE;
+ 	kernel_map.phys_addr = (uintptr_t)CONFIG_PHYS_RAM_BASE;
+-	kernel_map.size = (uintptr_t)(&_end) - (uintptr_t)(&_sdata);
++	kernel_map.size = (uintptr_t)(&_end) - (uintptr_t)(&_start);
  
--	if (wdev->wiphy != local->hw.wiphy)
-+	if (wdev->wiphy != local->hw.wiphy || !wdev->registered)
- 		return NOTIFY_DONE;
- 
- 	sdata = IEEE80211_DEV_TO_SUB_IF(ndev);
-@@ -458,6 +458,25 @@ static int ieee80211_ifa_changed(struct notifier_block *nb,
- 		return NOTIFY_DONE;
- 
- 	ifmgd = &sdata->u.mgd;
-+
-+	/*
-+	 * The nested here is needed to convince lockdep that this is
-+	 * all OK. Yes, we lock the wiphy mutex here while we already
-+	 * hold the notifier rwsem, that's the normal case. And yes,
-+	 * we also acquire the notifier rwsem again when unregistering
-+	 * a netdev while we already hold the wiphy mutex, so it does
-+	 * look like a typical ABBA deadlock.
-+	 *
-+	 * However, both of these things happen with the RTNL held
-+	 * already. Therefore, they can't actually happen, since the
-+	 * lock orders really are ABC and ACB, which is fine due to
-+	 * the RTNL (A).
-+	 *
-+	 * We still need to prevent recursion, which is accomplished
-+	 * by the !wdev->registered check above.
-+	 */
-+	mutex_lock_nested(&local->hw.wiphy->mtx, 1);
-+	__acquire(&local->hw.wiphy->mtx);
- 	sdata_lock(sdata);
- 
- 	/* Copy the addresses to the vif config list */
-@@ -476,6 +495,7 @@ static int ieee80211_ifa_changed(struct notifier_block *nb,
- 		ieee80211_vif_cfg_change_notify(sdata, BSS_CHANGED_ARP_FILTER);
- 
- 	sdata_unlock(sdata);
-+	wiphy_unlock(local->hw.wiphy);
- 
- 	return NOTIFY_OK;
- }
--- 
-2.43.0
-
+ 	kernel_map.va_kernel_xip_pa_offset = kernel_map.virt_addr - kernel_map.xiprom;
+ #else
 
 
 
