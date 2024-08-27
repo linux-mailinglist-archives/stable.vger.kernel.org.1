@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-70342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A972960AA7
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:40:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03FA4960AB7
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:43:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 72117B22EA2
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 12:39:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 985BB1F2391B
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 12:43:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5CA319885D;
-	Tue, 27 Aug 2024 12:39:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BA061A01C4;
+	Tue, 27 Aug 2024 12:43:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MBng4F5I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EoL0H5Gq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 597101BA86C;
-	Tue, 27 Aug 2024 12:39:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AC6B1448C7
+	for <stable@vger.kernel.org>; Tue, 27 Aug 2024 12:43:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724762393; cv=none; b=r3lamOHyvgthV9Q0PZ3CdPk99T8L5OJ+dT9gpKFkUc3aLYElGp7gg9aBmDq69i8uXgL1kYidNyLdv1VIBbfirjnsRbpKFm/VIK4KEDJWEkh/Lqw0jw5+sQMzw2adCiZjyyreR4hn7deQfna/7JRWqsa/8p/Ng62te0iVsJ2vduE=
+	t=1724762587; cv=none; b=HjWY4Bz8ePJtGnn49o8N06vxNQTMqckk7c/sOA1UWUnGsiSXcfLMqmMwaCjDOJB46ZFfN+g7623bMsx+YXkyOdhGDMR8XxuYt/EBSb8iIVsRA5rWnBg9e+DeL6MG09n8A9RURSE7U36oaCNltnlY6jqu5KuiRNaqweCX6XIgi4Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724762393; c=relaxed/simple;
-	bh=mudCoXkz4CTSYt8dzE8uGRUx6U0FFoETk2nwROgEuSc=;
+	s=arc-20240116; t=1724762587; c=relaxed/simple;
+	bh=3Tlx4UW44mUjn7mJws5LT4HTEyMiMy1rKeauMqAK8Tg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KIT/+3QMr2IEogsF57+7Do+JoFmOg43k05FSBHKwfv+LS3o2QxT0UnAuwtUHffwugoMHNSiTCAYz3lTz3YLZKPkawqu7vfZ6VYqBDJs1RoLcw7y7TQE+hcqodD86bH5BXPKKpgBN40cG5ZTIQiaRsigwUN0amVDfk7WmGxB8I6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MBng4F5I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 743B1C4FDF7;
-	Tue, 27 Aug 2024 12:39:52 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=rcZBy2dcjhj/6E+hb72hJpppMtD7vpNT1P2Il/nOBAKduKcJdtFSRpV8q6Z29EmicH0sxb4nCLHFrYk7Rt+p947W3bUwBRBdGO4PSbUm5GbO4MBFIr4LKbaS9N5I7Bq3W18bCEjFeh3brf0vMf0TnYQ7jxoNIA4vqqJpwSAGKuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EoL0H5Gq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ABDBC4FF5B;
+	Tue, 27 Aug 2024 12:43:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724762392;
-	bh=mudCoXkz4CTSYt8dzE8uGRUx6U0FFoETk2nwROgEuSc=;
+	s=korg; t=1724762586;
+	bh=3Tlx4UW44mUjn7mJws5LT4HTEyMiMy1rKeauMqAK8Tg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MBng4F5IaIf0EmY0FAIrYQxcpXbk6sFB3e/4GqPny91B/moEHfnsGcTe4b4z/oN4V
-	 Sd1fD45i0BEGeL5X/1vPT/ex1WUyA+H7rhPs2tJ5nO1vCQRKm+8bhOSZ9bu04cRnu4
-	 aNklSOKtcwOZPxZt9pnCqTm41CeLjxLud0NkY6B0=
-Date: Tue, 27 Aug 2024 14:39:44 +0200
+	b=EoL0H5GqM2qXGSrYS4UzQGrWCnCvXOGcZgthqVBq6Ylsa3u00rBm5o2nvon3IxU+v
+	 XXQh2l8ZtzBJLO7wATmXNDO8PPg87ruQ+1tdjGNXlmOMaLv7FcliQkeEmP7zzXekJr
+	 OfqJ/g3N4qGN7QJRc1Uv50krVDvselH76+aeU1L8=
+Date: Tue, 27 Aug 2024 14:43:03 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Felix Kuehling <felix.kuehling@amd.com>
-Cc: stable@vger.kernel.org, stable-commits@vger.kernel.org,
-	Philip.Yang@amd.com, Alex Deucher <alexander.deucher@amd.com>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	Xinhui Pan <Xinhui.Pan@amd.com>, David Airlie <airlied@gmail.com>,
-	Daniel Vetter <daniel@ffwll.ch>
-Subject: Re: Patch "drm/amdkfd: Move dma unmapping after TLB flush" has been
- added to the 6.6-stable tree
-Message-ID: <2024082704-stilt-bacteria-1d73@gregkh>
-References: <20240820120055.2972871-1-sashal@kernel.org>
- <16bbce82-35bc-4ee7-ad00-b8319148a415@amd.com>
+To: Zi Yan <ziy@nvidia.com>
+Cc: stable@vger.kernel.org, "Huang, Ying" <ying.huang@intel.com>,
+	David Hildenbrand <david@redhat.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Mel Gorman <mgorman@suse.de>, Yang Shi <shy828301@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH 5.15.y] mm/numa: no task_numa_fault() call if PTE is
+ changed
+Message-ID: <2024082752-prototype-turkey-0001@gregkh>
+References: <2024081934-embargo-primer-a23e@gregkh>
+ <20240821161017.2399833-1-ziy@nvidia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,19 +60,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <16bbce82-35bc-4ee7-ad00-b8319148a415@amd.com>
+In-Reply-To: <20240821161017.2399833-1-ziy@nvidia.com>
 
-On Tue, Aug 20, 2024 at 11:58:30AM -0400, Felix Kuehling wrote:
-> This patch introduced a regression. If you want to backport it, I'd recommend including this fix as well:
+On Wed, Aug 21, 2024 at 12:10:17PM -0400, Zi Yan wrote:
+> When handling a numa page fault, task_numa_fault() should be called by a
+> process that restores the page table of the faulted folio to avoid
+> duplicated stats counting.  Commit b99a342d4f11 ("NUMA balancing: reduce
+> TLB flush via delaying mapping on hint page fault") restructured
+> do_numa_page() and did not avoid task_numa_fault() call in the second page
+> table check after a numa migration failure.  Fix it by making all
+> !pte_same() return immediately.
 > 
-> commit 9c29282ecbeeb1b43fced3055c6a5bb244b9390b
+> This issue can cause task_numa_fault() being called more than necessary
+> and lead to unexpected numa balancing results (It is hard to tell whether
+> the issue will cause positive or negative performance impact due to
+> duplicated numa fault counting).
+> 
+> Link: https://lkml.kernel.org/r/20240809145906.1513458-2-ziy@nvidia.com
+> Fixes: b99a342d4f11 ("NUMA balancing: reduce TLB flush via delaying mapping on hint page fault")
+> Signed-off-by: Zi Yan <ziy@nvidia.com>
+> Reported-by: "Huang, Ying" <ying.huang@intel.com>
+> Closes: https://lore.kernel.org/linux-mm/87zfqfw0yw.fsf@yhuang6-desk2.ccr.corp.intel.com/
+> Acked-by: David Hildenbrand <david@redhat.com>
+> Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+> Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+> Cc: Mel Gorman <mgorman@suse.de>
+> Cc: Yang Shi <shy828301@gmail.com>
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> (cherry picked from commit 40b760cfd44566bca791c80e0720d70d75382b84)
+> ---
+>  mm/memory.c | 29 ++++++++++++++---------------
+>  1 file changed, 14 insertions(+), 15 deletions(-)
 
-Wrong git id :(
-
-Or right one, but the amd graphics tree is so messed up it's hard to
-tell, there's a different commit with the same content but different id.
-
-{sigh}
+All now queued up, thanks.
 
 greg k-h
 
