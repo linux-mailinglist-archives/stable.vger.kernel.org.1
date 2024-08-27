@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-71278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70993-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 132789612A5
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:33:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAA96961111
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:15:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4BFC283D22
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:33:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ED756B2396F
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:15:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 487AF1C6881;
-	Tue, 27 Aug 2024 15:31:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3E1F1C6891;
+	Tue, 27 Aug 2024 15:15:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TOnNoS7e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uQRSU+89"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0729A1C7B97;
-	Tue, 27 Aug 2024 15:31:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B22181BC073;
+	Tue, 27 Aug 2024 15:15:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772684; cv=none; b=KSB1bvAJy2sdQZ14qnHW5Kq6iFQZcQEXo+UTlPthrpOwjVborDngfGzyYbNj5NWLssCvnjhARSkYJy1YXigxkKKkFB8OTZR0o/CH+N2T9TbdPyAkmjGsIzz4CPU6jIOQI7wxok588Y3I5DTng5zbU51YJP5w6eXKougMRw81IRo=
+	t=1724771742; cv=none; b=s3S1oW39CAstnCRMGdasd/iSuLzufSPOzmED/K72R9j+gAwDeNmRQqbmmZSCyTcDod6QP4nSNCesLcyyNn5ljE4ma2m6ly5ZnobO2ggfIFXFRFDabq09MlPKwKrTXkOVz7wBoEiGM5Q+DYR+ehVS/4Kr4DN+VoS/bI0bncoq4Z0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772684; c=relaxed/simple;
-	bh=Lq+KSAcRZ5WXEbmipjcTCPIr+/hY+fIN+EbCYNhERoI=;
+	s=arc-20240116; t=1724771742; c=relaxed/simple;
+	bh=Sy4c7bYR+NwiZ523EEx1qkkOdGvQHR1XHKHZzY2fLEc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pv6s5/Jrq7ngBW2BHdQMiQq7QYfKEkbvyvW1AXla1Pi2ddyZJc0F7RU1Tz1K+W6xIfXTsNSvbWzvAPJ0twfzCUP+8dX2RtoSA5yMoNI/TDghfAEKdD6Wo7PdukgmHx4TfUK7i81qaduFUGQIeYlrwd9sVqh6WJSH4Awk3Hvh/hs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TOnNoS7e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68A92C4DDF0;
-	Tue, 27 Aug 2024 15:31:23 +0000 (UTC)
+	 MIME-Version; b=NUtQjmIs6R09MegZ5NN1Gx3/nby+v2Le9QUAVf6tjJTXX5Qfo78jeO1nWg2JcIBTFY1Qol8I+5G7rOM0ZDjg/1I6ZVrGDY/EE70+CQM5yXjE0YKkyHerXVXEg7VnK1jk8APgaEaE/jnpU1BDj6IDEkVRDPIQJL9j1drru9l+iwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uQRSU+89; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6986C4AF50;
+	Tue, 27 Aug 2024 15:15:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772683;
-	bh=Lq+KSAcRZ5WXEbmipjcTCPIr+/hY+fIN+EbCYNhERoI=;
+	s=korg; t=1724771742;
+	bh=Sy4c7bYR+NwiZ523EEx1qkkOdGvQHR1XHKHZzY2fLEc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TOnNoS7eZXYAKIjb4qjquTLZ2POnpN1ftmTzGRZGK+DPv7K/COZCvsGinCnmr1I4K
-	 Z22OnlLXxxabAhwYbkiX1/h8J00CHG0gyfRt+9Pk6TjF8CKCc3T5VptM1hfQNXSzUu
-	 g1JAs48Nz4vjyuSkdBdCU169ikgW7rRUGoH9jUC8=
+	b=uQRSU+89Pirdq8aczw9Ez4++2h8lcW+UgJQA9xsHjurjD9+/wemUN6gCaMMt54kbB
+	 WzS99dfkrE3hLF4XhTk+ZXAMWzeucx5QnquGQXfOIn99E7i4cD6skAf8BzUiFwnoO1
+	 d2T9O98h4MFDDn4Ebcc6PsXPvKrNr6kR6PzLvrXQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	NeilBrown <neilb@suse.de>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.1 288/321] nfsd: Simplify code around svc_exit_thread() call in nfsd()
-Date: Tue, 27 Aug 2024 16:39:56 +0200
-Message-ID: <20240827143849.211262411@linuxfoundation.org>
+	syzbot <syzbot+0122fa359a69694395d5@syzkaller.appspotmail.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	George Kennedy <george.kennedy@oracle.com>
+Subject: [PATCH 6.10 273/273] Input: MT - limit max slots
+Date: Tue, 27 Aug 2024 16:39:57 +0200
+Message-ID: <20240827143843.786282031@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,87 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: NeilBrown <neilb@suse.de>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-[ Upstream commit 18e4cf915543257eae2925671934937163f5639b ]
+commit 99d3bf5f7377d42f8be60a6b9cb60fb0be34dceb upstream.
 
-Previously a thread could exit asynchronously (due to a signal) so some
-care was needed to hold nfsd_mutex over the last svc_put() call.  Now a
-thread can only exit when svc_set_num_threads() is called, and this is
-always called under nfsd_mutex.  So no care is needed.
+syzbot is reporting too large allocation at input_mt_init_slots(), for
+num_slots is supplied from userspace using ioctl(UI_DEV_CREATE).
 
-Not only is the mutex held when a thread exits now, but the svc refcount
-is elevated, so the svc_put() in svc_exit_thread() will never be a final
-put, so the mutex isn't even needed at this point in the code.
+Since nobody knows possible max slots, this patch chose 1024.
 
-Signed-off-by: NeilBrown <neilb@suse.de>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Reported-by: syzbot <syzbot+0122fa359a69694395d5@syzkaller.appspotmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=0122fa359a69694395d5
+Suggested-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: George Kennedy <george.kennedy@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfssvc.c           |   23 -----------------------
- include/linux/sunrpc/svc.h |   13 -------------
- 2 files changed, 36 deletions(-)
+ drivers/input/input-mt.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/nfsd/nfssvc.c
-+++ b/fs/nfsd/nfssvc.c
-@@ -983,31 +983,8 @@ nfsd(void *vrqstp)
- 	atomic_dec(&nfsd_th_cnt);
+--- a/drivers/input/input-mt.c
++++ b/drivers/input/input-mt.c
+@@ -46,6 +46,9 @@ int input_mt_init_slots(struct input_dev
+ 		return 0;
+ 	if (mt)
+ 		return mt->num_slots != num_slots ? -EINVAL : 0;
++	/* Arbitrary limit for avoiding too large memory allocation. */
++	if (num_slots > 1024)
++		return -EINVAL;
  
- out:
--	/* Take an extra ref so that the svc_put in svc_exit_thread()
--	 * doesn't call svc_destroy()
--	 */
--	svc_get(nn->nfsd_serv);
--
- 	/* Release the thread */
- 	svc_exit_thread(rqstp);
--
--	/* We need to drop a ref, but may not drop the last reference
--	 * without holding nfsd_mutex, and we cannot wait for nfsd_mutex as that
--	 * could deadlock with nfsd_shutdown_threads() waiting for us.
--	 * So three options are:
--	 * - drop a non-final reference,
--	 * - get the mutex without waiting
--	 * - sleep briefly andd try the above again
--	 */
--	while (!svc_put_not_last(nn->nfsd_serv)) {
--		if (mutex_trylock(&nfsd_mutex)) {
--			nfsd_put(net);
--			mutex_unlock(&nfsd_mutex);
--			break;
--		}
--		msleep(20);
--	}
--
- 	return 0;
- }
- 
---- a/include/linux/sunrpc/svc.h
-+++ b/include/linux/sunrpc/svc.h
-@@ -123,19 +123,6 @@ static inline void svc_put(struct svc_se
- 	kref_put(&serv->sv_refcnt, svc_destroy);
- }
- 
--/**
-- * svc_put_not_last - decrement non-final reference count on SUNRPC serv
-- * @serv:  the svc_serv to have count decremented
-- *
-- * Returns: %true is refcount was decremented.
-- *
-- * If the refcount is 1, it is not decremented and instead failure is reported.
-- */
--static inline bool svc_put_not_last(struct svc_serv *serv)
--{
--	return refcount_dec_not_one(&serv->sv_refcnt.refcount);
--}
--
- /*
-  * Maximum payload size supported by a kernel RPC server.
-  * This is use to determine the max number of pages nfsd is
+ 	mt = kzalloc(struct_size(mt, slots, num_slots), GFP_KERNEL);
+ 	if (!mt)
 
 
 
