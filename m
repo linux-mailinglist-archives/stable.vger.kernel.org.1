@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-70535-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70786-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96233960EA2
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:50:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A6BC961009
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:05:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F18F9B2399A
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:50:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 402FA1C234D6
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:05:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15E221C6F52;
-	Tue, 27 Aug 2024 14:50:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D3961C6886;
+	Tue, 27 Aug 2024 15:04:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cTjYYLEL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="coAEMKBN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8E771C6F45;
-	Tue, 27 Aug 2024 14:50:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCFFE12B93;
+	Tue, 27 Aug 2024 15:04:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770231; cv=none; b=QIwYN9foeP7O9irLUWkP7yQNX6o0jmon+Purizsfqcf0XPLHi028JmqsmCY2kZ3R9SqulN7v1TlMIUlPIxBqeI77PWO33J4egqbi9JgGG4cNglGxmznI/Yki9dhdyTLwlfTH1AVq6753ua1qqeSJTYOGi/N/2ctsfbtDSsjYzD8=
+	t=1724771059; cv=none; b=IM4PBMXPho7nGU4QL5/J2fLsAehjVNVs74DhV256CjP1BXFGM0uQHGLKBu5gAAzkN6XHI6DCWSOHBsXocBXyhT1v6nZjvzD8+H+PuwmS2CJaG58jCgfvgr72Tfy24UmnxVeih95y6bIctZWkeez+RbG1N8RRtHzeoXBw2ELnzLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770231; c=relaxed/simple;
-	bh=Gwn+XsmgRN+kdUtfpA9weenWQXUm4d6bm5T32u4wLHs=;
+	s=arc-20240116; t=1724771059; c=relaxed/simple;
+	bh=ZcLYtZ7y0ka4NOd2eJfYgYJhZsIOu8xrOERxVx7swDo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BI5f2by9vLrtrVkl3tPSuSMOLyJAtPlQAUj2e0VMc+k4nEk6VmkO9Z6W7R74h5ypLYqqJH6Yoev5D3mDCgjoYW5EdLVziYQDRDMVDQAO7vxe44MfefEEOP+KO5HAi0vqQAFZ6fnAu8BPKlG4eFf8IE6XkZwW2b/bAy6834GjRso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cTjYYLEL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3646BC4DDF9;
-	Tue, 27 Aug 2024 14:50:30 +0000 (UTC)
+	 MIME-Version; b=klo8psOVfJ0Y9bBbEx8lB9GyzjdKZCtPpQceKHcSQ5ZsLvPV2aeedHkiiKTKwo8VqFIJbrzCJ+jKdKI8r9dI5Oj2Ge+YfN0IEZeNLp7uUT645VbXp5uC8HqZx4tNbHZvmSoqDmfqkS6SEl5ETuqiWCgo7xoC++mcyIA4Nt69msk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=coAEMKBN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F50FC61055;
+	Tue, 27 Aug 2024 15:04:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770231;
-	bh=Gwn+XsmgRN+kdUtfpA9weenWQXUm4d6bm5T32u4wLHs=;
+	s=korg; t=1724771058;
+	bh=ZcLYtZ7y0ka4NOd2eJfYgYJhZsIOu8xrOERxVx7swDo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cTjYYLELpUX0yChxc6oX6gZ4lErfuMNAbo732XVE81v7HtSTM3wSpyWPudK/695BS
-	 QPUhv1Z1qth9x4A5L+8lbRgww+nBVCaJ9qg8QGC+Dxpha9GYBwGbplzHXYOdJ3V/Zz
-	 ipfx/6ISfwe/Okv/5lsmLov19KrnkSfPCchF3OpM=
+	b=coAEMKBNzFIn0Swxn7CD6pwrw1syPgrcQw18Ij0P1epzHXkIwLkIcj8zzuKccpDaT
+	 /EvbOe/o4LWokG+PGCBg+BeOQWaOS7gK+w0t4FtKlz4LmvG1omcCQq1iVtU5xaoNqF
+	 iIYofvkCQPloE+rdAd7I7kWgs5zGJhbHtzYdAJjw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sam Creasey <sammy@sammy.net>,
-	Kees Cook <keescook@chromium.org>,
-	Simon Horman <horms@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 167/341] net/sun3_82586: Avoid reading past buffer in debug output
-Date: Tue, 27 Aug 2024 16:36:38 +0200
-Message-ID: <20240827143849.765877144@linuxfoundation.org>
+	Alex Deucher <alexander.deucher@amd.com>,
+	"David (Ming Qiang) Wu" <David.Wu3@amd.com>
+Subject: [PATCH 6.10 075/273] drm/amd/amdgpu: command submission parser for JPEG
+Date: Tue, 27 Aug 2024 16:36:39 +0200
+Message-ID: <20240827143836.269267067@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,56 +61,177 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <keescook@chromium.org>
+From: David (Ming Qiang) Wu <David.Wu3@amd.com>
 
-[ Upstream commit 4bea747f3fbec33c16d369b2f51e55981d7c78d0 ]
+commit 470516c2925493594a690bc4d05b1f4471d9f996 upstream.
 
-Since NUM_XMIT_BUFFS is always 1, building m68k with sun3_defconfig and
--Warraybounds, this build warning is visible[1]:
+Add JPEG IB command parser to ensure registers
+in the command are within the JPEG IP block.
 
-drivers/net/ethernet/i825xx/sun3_82586.c: In function 'sun3_82586_timeout':
-drivers/net/ethernet/i825xx/sun3_82586.c:990:122: warning: array subscript 1 is above array bounds of 'volatile struct transmit_cmd_struct *[1]' [-Warray-bounds=]
-  990 |                 printk("%s: command-stats: %04x %04x\n",dev->name,swab16(p->xmit_cmds[0]->cmd_status),swab16(p->xmit_cmds[1]->cmd_status));
-      |                                                                                                               ~~~~~~~~~~~~^~~
-...
-drivers/net/ethernet/i825xx/sun3_82586.c:156:46: note: while referencing 'xmit_cmds'
-  156 |         volatile struct transmit_cmd_struct *xmit_cmds[NUM_XMIT_BUFFS];
-
-Avoid accessing index 1 since it doesn't exist.
-
-Link: https://github.com/KSPP/linux/issues/325 [1]
-Cc: Sam Creasey <sammy@sammy.net>
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Simon Horman <horms@kernel.org> # build-tested
-Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Link: https://lore.kernel.org/r/20240206161651.work.876-kees@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: David (Ming Qiang) Wu <David.Wu3@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit a7f670d5d8e77b092404ca8a35bb0f8f89ed3117)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/i825xx/sun3_82586.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c   |    3 +
+ drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_3.c |   61 ++++++++++++++++++++++++++++++-
+ drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_3.h |    7 +++
+ drivers/gpu/drm/amd/amdgpu/jpeg_v5_0_0.c |    1 
+ drivers/gpu/drm/amd/amdgpu/soc15d.h      |    6 +++
+ 5 files changed, 76 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/i825xx/sun3_82586.c b/drivers/net/ethernet/i825xx/sun3_82586.c
-index 5e27470c6b1ef..f2d4669c81cf2 100644
---- a/drivers/net/ethernet/i825xx/sun3_82586.c
-+++ b/drivers/net/ethernet/i825xx/sun3_82586.c
-@@ -987,7 +987,7 @@ static void sun3_82586_timeout(struct net_device *dev, unsigned int txqueue)
- 	{
- #ifdef DEBUG
- 		printk("%s: xmitter timed out, try to restart! stat: %02x\n",dev->name,p->scb->cus);
--		printk("%s: command-stats: %04x %04x\n",dev->name,swab16(p->xmit_cmds[0]->cmd_status),swab16(p->xmit_cmds[1]->cmd_status));
-+		printk("%s: command-stats: %04x\n", dev->name, swab16(p->xmit_cmds[0]->cmd_status));
- 		printk("%s: check, whether you set the right interrupt number!\n",dev->name);
- #endif
- 		sun3_82586_close(dev);
--- 
-2.43.0
-
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
+@@ -1057,6 +1057,9 @@ static int amdgpu_cs_patch_ibs(struct am
+ 			r = amdgpu_ring_parse_cs(ring, p, job, ib);
+ 			if (r)
+ 				return r;
++
++			if (ib->sa_bo)
++				ib->gpu_addr =  amdgpu_sa_bo_gpu_addr(ib->sa_bo);
+ 		} else {
+ 			ib->ptr = (uint32_t *)kptr;
+ 			r = amdgpu_ring_patch_cs_in_place(ring, p, job, ib);
+--- a/drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_3.c
++++ b/drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_3.c
+@@ -23,6 +23,7 @@
+ 
+ #include "amdgpu.h"
+ #include "amdgpu_jpeg.h"
++#include "amdgpu_cs.h"
+ #include "soc15.h"
+ #include "soc15d.h"
+ #include "jpeg_v4_0_3.h"
+@@ -773,7 +774,11 @@ void jpeg_v4_0_3_dec_ring_emit_ib(struct
+ 
+ 	amdgpu_ring_write(ring, PACKETJ(regUVD_LMI_JRBC_IB_VMID_INTERNAL_OFFSET,
+ 		0, 0, PACKETJ_TYPE0));
+-	amdgpu_ring_write(ring, (vmid | (vmid << 4) | (vmid << 8)));
++
++	if (ring->funcs->parse_cs)
++		amdgpu_ring_write(ring, 0);
++	else
++		amdgpu_ring_write(ring, (vmid | (vmid << 4) | (vmid << 8)));
+ 
+ 	amdgpu_ring_write(ring, PACKETJ(regUVD_LMI_JPEG_VMID_INTERNAL_OFFSET,
+ 		0, 0, PACKETJ_TYPE0));
+@@ -1063,6 +1068,7 @@ static const struct amdgpu_ring_funcs jp
+ 	.get_rptr = jpeg_v4_0_3_dec_ring_get_rptr,
+ 	.get_wptr = jpeg_v4_0_3_dec_ring_get_wptr,
+ 	.set_wptr = jpeg_v4_0_3_dec_ring_set_wptr,
++	.parse_cs = jpeg_v4_0_3_dec_ring_parse_cs,
+ 	.emit_frame_size =
+ 		SOC15_FLUSH_GPU_TLB_NUM_WREG * 6 +
+ 		SOC15_FLUSH_GPU_TLB_NUM_REG_WAIT * 8 +
+@@ -1227,3 +1233,56 @@ static void jpeg_v4_0_3_set_ras_funcs(st
+ {
+ 	adev->jpeg.ras = &jpeg_v4_0_3_ras;
+ }
++
++/**
++ * jpeg_v4_0_3_dec_ring_parse_cs - command submission parser
++ *
++ * @parser: Command submission parser context
++ * @job: the job to parse
++ * @ib: the IB to parse
++ *
++ * Parse the command stream, return -EINVAL for invalid packet,
++ * 0 otherwise
++ */
++int jpeg_v4_0_3_dec_ring_parse_cs(struct amdgpu_cs_parser *parser,
++			     struct amdgpu_job *job,
++			     struct amdgpu_ib *ib)
++{
++	uint32_t i, reg, res, cond, type;
++	struct amdgpu_device *adev = parser->adev;
++
++	for (i = 0; i < ib->length_dw ; i += 2) {
++		reg  = CP_PACKETJ_GET_REG(ib->ptr[i]);
++		res  = CP_PACKETJ_GET_RES(ib->ptr[i]);
++		cond = CP_PACKETJ_GET_COND(ib->ptr[i]);
++		type = CP_PACKETJ_GET_TYPE(ib->ptr[i]);
++
++		if (res) /* only support 0 at the moment */
++			return -EINVAL;
++
++		switch (type) {
++		case PACKETJ_TYPE0:
++			if (cond != PACKETJ_CONDITION_CHECK0 || reg < JPEG_REG_RANGE_START || reg > JPEG_REG_RANGE_END) {
++				dev_err(adev->dev, "Invalid packet [0x%08x]!\n", ib->ptr[i]);
++				return -EINVAL;
++			}
++			break;
++		case PACKETJ_TYPE3:
++			if (cond != PACKETJ_CONDITION_CHECK3 || reg < JPEG_REG_RANGE_START || reg > JPEG_REG_RANGE_END) {
++				dev_err(adev->dev, "Invalid packet [0x%08x]!\n", ib->ptr[i]);
++				return -EINVAL;
++			}
++			break;
++		case PACKETJ_TYPE6:
++			if (ib->ptr[i] == CP_PACKETJ_NOP)
++				continue;
++			dev_err(adev->dev, "Invalid packet [0x%08x]!\n", ib->ptr[i]);
++			return -EINVAL;
++		default:
++			dev_err(adev->dev, "Unknown packet type %d !\n", type);
++			return -EINVAL;
++		}
++	}
++
++	return 0;
++}
+--- a/drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_3.h
++++ b/drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_3.h
+@@ -46,6 +46,9 @@
+ 
+ #define JRBC_DEC_EXTERNAL_REG_WRITE_ADDR				0x18000
+ 
++#define JPEG_REG_RANGE_START						0x4000
++#define JPEG_REG_RANGE_END						0x41c2
++
+ extern const struct amdgpu_ip_block_version jpeg_v4_0_3_ip_block;
+ 
+ void jpeg_v4_0_3_dec_ring_emit_ib(struct amdgpu_ring *ring,
+@@ -62,5 +65,7 @@ void jpeg_v4_0_3_dec_ring_insert_end(str
+ void jpeg_v4_0_3_dec_ring_emit_wreg(struct amdgpu_ring *ring, uint32_t reg, uint32_t val);
+ void jpeg_v4_0_3_dec_ring_emit_reg_wait(struct amdgpu_ring *ring, uint32_t reg,
+ 					uint32_t val, uint32_t mask);
+-
++int jpeg_v4_0_3_dec_ring_parse_cs(struct amdgpu_cs_parser *parser,
++				  struct amdgpu_job *job,
++				  struct amdgpu_ib *ib);
+ #endif /* __JPEG_V4_0_3_H__ */
+--- a/drivers/gpu/drm/amd/amdgpu/jpeg_v5_0_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/jpeg_v5_0_0.c
+@@ -523,6 +523,7 @@ static const struct amdgpu_ring_funcs jp
+ 	.get_rptr = jpeg_v5_0_0_dec_ring_get_rptr,
+ 	.get_wptr = jpeg_v5_0_0_dec_ring_get_wptr,
+ 	.set_wptr = jpeg_v5_0_0_dec_ring_set_wptr,
++	.parse_cs = jpeg_v4_0_3_dec_ring_parse_cs,
+ 	.emit_frame_size =
+ 		SOC15_FLUSH_GPU_TLB_NUM_WREG * 6 +
+ 		SOC15_FLUSH_GPU_TLB_NUM_REG_WAIT * 8 +
+--- a/drivers/gpu/drm/amd/amdgpu/soc15d.h
++++ b/drivers/gpu/drm/amd/amdgpu/soc15d.h
+@@ -76,6 +76,12 @@
+ 			 ((cond & 0xF) << 24) |				\
+ 			 ((type & 0xF) << 28))
+ 
++#define CP_PACKETJ_NOP		0x60000000
++#define CP_PACKETJ_GET_REG(x)  ((x) & 0x3FFFF)
++#define CP_PACKETJ_GET_RES(x)  (((x) >> 18) & 0x3F)
++#define CP_PACKETJ_GET_COND(x) (((x) >> 24) & 0xF)
++#define CP_PACKETJ_GET_TYPE(x) (((x) >> 28) & 0xF)
++
+ /* Packet 3 types */
+ #define	PACKET3_NOP					0x10
+ #define	PACKET3_SET_BASE				0x11
 
 
 
