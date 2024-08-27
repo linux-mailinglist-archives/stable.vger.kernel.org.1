@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-70962-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71257-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 169D19610E8
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:14:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4E8F96128F
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:32:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8CE40B249A5
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:14:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E7B761C209D6
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:32:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8BF11C7B8C;
-	Tue, 27 Aug 2024 15:13:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B8791CE6FF;
+	Tue, 27 Aug 2024 15:30:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S7rkfZ4u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="APoNNDKA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3C411C7B6F;
-	Tue, 27 Aug 2024 15:13:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE9621C93C8;
+	Tue, 27 Aug 2024 15:30:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771639; cv=none; b=NCTM1d2Qrk2HO8yL+Xhdg3JJ1c5mV8/oPmQjQuHj05N4hj1wHh3U8uPFb8sIqKh55/S6yd7FPDqr9EGMS843dzXmrjosiGny8rNpEz0MeSqZoSPaap50poA4fJRuGN5eIyZzE4n6Wl8u5i24K36OeMrBqv6wYuYj+uhXP7GW2SA=
+	t=1724772614; cv=none; b=qPkicX17G8ACo/b/XIGHtwFjUk+f/lcwRIyuY+VuWHobkJjQCbeu96iU2YZvXBkiNsk4WYNlSW2RtVwxTwDaK6xt8SoYHT50xH906wihOk4xFQpK6rp8Y4iPldDUDsPGR0R1fX2o3/GOsi4enKsIbuMV/NbfmJAENqDmD6GcgV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771639; c=relaxed/simple;
-	bh=kIQLU48wIob8v19HAyulWIZHUkAHEgghiJ++ldkOFrA=;
+	s=arc-20240116; t=1724772614; c=relaxed/simple;
+	bh=aI+GoCYHkMcYRBjoMOxjpTgbRCCaJN+fJNBh6m+MQdo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BV5x6I1Kmh1qort5jUbusZqjWEyF/dP+bJrrAfa8Ah1rh/UrGZlzjdB6TjCRiPw/G9Md30vkn34l/vREJSz6i/GUEV6/O59FkVMDI0BvNAVMkMWXjo+Jkjerd7Che9p825OQV2X3BI4UovmQrs3d3hS7UJuw0iMzBsG8l0Z6g0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S7rkfZ4u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07C2DC6106B;
-	Tue, 27 Aug 2024 15:13:58 +0000 (UTC)
+	 MIME-Version; b=Dr0YVM+zjjPu9SUEr4FKlfbi5yED+qRa8hB8+Miw27yayJxnHMU5W2eifFa69aBu+7ur6LE1Y0QmJUZS/lmHly4PFWzUqcfJlr1VzD6UJyvddnYnZJ1gh/JBa3sEplJ633YS81KUnF2pNm5Wz/i2+pyekBj+gNBhB5/y9YIqF2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=APoNNDKA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68114C4AF65;
+	Tue, 27 Aug 2024 15:30:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771639;
-	bh=kIQLU48wIob8v19HAyulWIZHUkAHEgghiJ++ldkOFrA=;
+	s=korg; t=1724772613;
+	bh=aI+GoCYHkMcYRBjoMOxjpTgbRCCaJN+fJNBh6m+MQdo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S7rkfZ4uikGaCBsl68TLxsGJ27GlS90r68f0Y6mfDd9HRzJwjXu8MIhvlUyeqdT39
-	 ZMGgseb22iu1rJN7OTr4T0yWSbuy8itUJRV1erNa08E4TH9AlEtYiWVT5JarqyI6MD
-	 NrY6rke9s7mzrhW/kZHtamDb3Ss2uM6DAwAEvDeM=
+	b=APoNNDKALR2Bgo2qRLvHYDHrtubC+aYJVQyDDQlcDbkU90SoEPZp994NT19ZNM1MX
+	 u/7zeVtll3uOp28+f9mweML9nGgqs0/VPvNmyb5XubS1JjDj/jM41ipIjXrCJ3ekhb
+	 +l5d0Ok9OruX6auq7UiK/J60EIhso7/uBY8Ot/vg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacky Bai <ping.bai@nxp.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.10 250/273] pmdomain: imx: wait SSAR when i.MX93 power domain on
+	Candice Li <candice.li@amd.com>,
+	Hawking Zhang <Hawking.Zhang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 266/321] drm/amdgpu: Validate TA binary size
 Date: Tue, 27 Aug 2024 16:39:34 +0200
-Message-ID: <20240827143842.916354136@linuxfoundation.org>
+Message-ID: <20240827143848.378115873@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Candice Li <candice.li@amd.com>
 
-commit 52dd070c62e4ae2b5e7411b920e3f7a64235ecfb upstream.
+commit c99769bceab4ecb6a067b9af11f9db281eea3e2a upstream.
 
-With "quiet" set in bootargs, there is power domain failure:
-"imx93_power_domain 44462400.power-domain: pd_off timeout: name:
- 44462400.power-domain, stat: 4"
+Add TA binary size validation to avoid OOB write.
 
-The current power on opertation takes ISO state as power on finished
-flag, but it is wrong. Before powering on operation really finishes,
-powering off comes and powering off will never finish because the last
-powering on still not finishes, so the following powering off actually
-not trigger hardware state machine to run. SSAR is the last step when
-powering on a domain, so need to wait SSAR done when powering on.
-
-Since EdgeLock Enclave(ELE) handshake is involved in the flow, enlarge
-the waiting time to 10ms for both on and off to avoid timeout.
-
+Signed-off-by: Candice Li <candice.li@amd.com>
+Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit c0a04e3570d72aaf090962156ad085e37c62e442)
 Cc: stable@vger.kernel.org
-Fixes: 0a0f7cc25d4a ("soc: imx: add i.MX93 SRC power domain driver")
-Reviewed-by: Jacky Bai <ping.bai@nxp.com>
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Link: https://lore.kernel.org/r/20240814124740.2778952-1-peng.fan@oss.nxp.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pmdomain/imx/imx93-pd.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_psp_ta.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/pmdomain/imx/imx93-pd.c
-+++ b/drivers/pmdomain/imx/imx93-pd.c
-@@ -20,6 +20,7 @@
- #define FUNC_STAT_PSW_STAT_MASK		BIT(0)
- #define FUNC_STAT_RST_STAT_MASK		BIT(2)
- #define FUNC_STAT_ISO_STAT_MASK		BIT(4)
-+#define FUNC_STAT_SSAR_STAT_MASK	BIT(8)
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_psp_ta.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_psp_ta.c
+@@ -148,6 +148,9 @@ static ssize_t ta_if_load_debugfs_write(
+ 	if (ret)
+ 		return -EINVAL;
  
- struct imx93_power_domain {
- 	struct generic_pm_domain genpd;
-@@ -50,7 +51,7 @@ static int imx93_pd_on(struct generic_pm
- 	writel(val, addr + MIX_SLICE_SW_CTRL_OFF);
++	if (ta_bin_len > PSP_1_MEG)
++		return -EINVAL;
++
+ 	copy_pos += sizeof(uint32_t);
  
- 	ret = readl_poll_timeout(addr + MIX_FUNC_STAT_OFF, val,
--				 !(val & FUNC_STAT_ISO_STAT_MASK), 1, 10000);
-+				 !(val & FUNC_STAT_SSAR_STAT_MASK), 1, 10000);
- 	if (ret) {
- 		dev_err(domain->dev, "pd_on timeout: name: %s, stat: %x\n", genpd->name, val);
- 		return ret;
-@@ -72,7 +73,7 @@ static int imx93_pd_off(struct generic_p
- 	writel(val, addr + MIX_SLICE_SW_CTRL_OFF);
- 
- 	ret = readl_poll_timeout(addr + MIX_FUNC_STAT_OFF, val,
--				 val & FUNC_STAT_PSW_STAT_MASK, 1, 1000);
-+				 val & FUNC_STAT_PSW_STAT_MASK, 1, 10000);
- 	if (ret) {
- 		dev_err(domain->dev, "pd_off timeout: name: %s, stat: %x\n", genpd->name, val);
- 		return ret;
+ 	ta_bin = kzalloc(ta_bin_len, GFP_KERNEL);
 
 
 
