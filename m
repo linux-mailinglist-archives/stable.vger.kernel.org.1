@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-70571-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70823-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54157960ED6
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:53:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EA34961034
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:06:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 86CF31C23382
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:53:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 720E41C20919
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:06:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73EA81C57AF;
-	Tue, 27 Aug 2024 14:52:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 791101B4C4E;
+	Tue, 27 Aug 2024 15:06:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RQTkzHjv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kQ/FQe/B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30AB81C689C;
-	Tue, 27 Aug 2024 14:52:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37C201E520;
+	Tue, 27 Aug 2024 15:06:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770349; cv=none; b=L5dzPDquSq/jzTzbiO0NO7WCIm6qiulWy2ty88mJ/2T1Nz4W+I9eXWihao0Plez6h2x5LqJaBHmxln93d7K7nfKReSsnZO4NgPhILTK3OuV2BsOphlqtoym8IEFSm4nEMJl0J8o4vRdPOrqdLWK4FJ+XcR3CaJfI93YwpCUBN0Q=
+	t=1724771178; cv=none; b=YE4P2fKadW5kZ8Vuw8o90pb6f+u9C0c3/iOW5bI2rWt897A5L6gze5mKFKLnIDtWjf7/f/D8SLwD4JSXbLkDHXX/bEmeUUPJEm2erOr225aaBpSzIV/hciyMnn6X9K4KD18TFsMbIfdnylOLXKk8w2mbJrfabvl4HPcSfdW3wVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770349; c=relaxed/simple;
-	bh=taEQLkR2KGb0eHfcbkFMs1pydCo2bDgpp5G9PPqK7Go=;
+	s=arc-20240116; t=1724771178; c=relaxed/simple;
+	bh=hgAPDYDhq7N+i6ZV+m2P8iOOnfOh277+C3Ptuwby8LY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eaof25NkX08rbDLDYPu7BlcFxFFoe4Tqq0wMEArfKWepN204qV2+cxzToY/DJ1+YlpBzr7b5onJB6IAbCTRE6RyIGorMjQ5tyVTjBTrecmA+8+ImbvV6++HteKCEGAPc7sppVrmILZtYtEwD3Xih9M0K+E6nDQBIjDRi/LYvmt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RQTkzHjv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EEF6C61042;
-	Tue, 27 Aug 2024 14:52:28 +0000 (UTC)
+	 MIME-Version; b=c98ykUr0xyHGcNHsfyi4c910t3Ae+0raaoqCr28GcosnXsyPdqqCmxAqXXzNqP1PUjLGTNT8wgWoOs/y3BCgcQWt6wHp5+UNObrWYAGNs8bkLppQqJQxl+ZLI7fResv5B2sMbO4F6q+UF4c5AEXA9NBcAKIsUBg1uVSHVh4862o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kQ/FQe/B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFD67C6107C;
+	Tue, 27 Aug 2024 15:06:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770349;
-	bh=taEQLkR2KGb0eHfcbkFMs1pydCo2bDgpp5G9PPqK7Go=;
+	s=korg; t=1724771178;
+	bh=hgAPDYDhq7N+i6ZV+m2P8iOOnfOh277+C3Ptuwby8LY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RQTkzHjvlZwI4egxeFvEhJ1XhNQ7tvCXCttBWjH5NhbZ/oE6A50KVe9iT0US6QwI6
-	 L0Oy+MicCOBqt8cTQ6M7xKsPLs0iJailQLC797kwiNHabW+9NYbiaUiR4B/ZRzVfru
-	 vo7mq6ZG4UO/C610shFVL6u3OpdeDYaAzy5OTZfg=
+	b=kQ/FQe/BiV80TDYAr5BRjIbTdn7u5YCm0je+6EEmMQEYuXZxRYtyA8YU+suBp3yfx
+	 ilsD+UfSzHaH5ExcAx5AhM1JUhnMbhp6aAeLXKSUAIWS5Mx5DAjr/mohafErLCSbKp
+	 Tf9KZSWPmSHVEIo2xt1XQQelhoLjCw2atvgIrrkM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oreoluwa Babatunde <quic_obabatun@quicinc.com>,
-	Stafford Horne <shorne@gmail.com>,
+	Geliang Tang <geliang@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 203/341] openrisc: Call setup_memory() earlier in the init sequence
-Date: Tue, 27 Aug 2024 16:37:14 +0200
-Message-ID: <20240827143851.139349245@linuxfoundation.org>
+Subject: [PATCH 6.10 111/273] selftests: net: lib: ignore possible errors
+Date: Tue, 27 Aug 2024 16:37:15 +0200
+Message-ID: <20240827143837.633250367@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oreoluwa Babatunde <quic_obabatun@quicinc.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit 7b432bf376c9c198a7ff48f1ed14a14c0ffbe1fe ]
+[ Upstream commit 7e0620bc6a5ec6b340a0be40054f294ca26c010f ]
 
-The unflatten_and_copy_device_tree() function contains a call to
-memblock_alloc(). This means that memblock is allocating memory before
-any of the reserved memory regions are set aside in the setup_memory()
-function which calls early_init_fdt_scan_reserved_mem(). Therefore,
-there is a possibility for memblock to allocate from any of the
-reserved memory regions.
+No need to disable errexit temporary, simply ignore the only possible
+and not handled error.
 
-Hence, move the call to setup_memory() to be earlier in the init
-sequence so that the reserved memory regions are set aside before any
-allocations are done using memblock.
-
-Signed-off-by: Oreoluwa Babatunde <quic_obabatun@quicinc.com>
-Signed-off-by: Stafford Horne <shorne@gmail.com>
+Reviewed-by: Geliang Tang <geliang@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://lore.kernel.org/r/20240607-upstream-net-next-20240607-selftests-mptcp-net-lib-v1-1-e36986faac94@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 7965a7f32a53 ("selftests: net: lib: kill PIDs before del netns")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/openrisc/kernel/setup.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ tools/testing/selftests/net/lib.sh | 10 +---------
+ 1 file changed, 1 insertion(+), 9 deletions(-)
 
-diff --git a/arch/openrisc/kernel/setup.c b/arch/openrisc/kernel/setup.c
-index 9cf7fb60441f8..be56eaafc8b95 100644
---- a/arch/openrisc/kernel/setup.c
-+++ b/arch/openrisc/kernel/setup.c
-@@ -255,6 +255,9 @@ void calibrate_delay(void)
- 
- void __init setup_arch(char **cmdline_p)
+diff --git a/tools/testing/selftests/net/lib.sh b/tools/testing/selftests/net/lib.sh
+index 9155c914c064f..b2572aff6286f 100644
+--- a/tools/testing/selftests/net/lib.sh
++++ b/tools/testing/selftests/net/lib.sh
+@@ -128,25 +128,17 @@ slowwait_for_counter()
+ cleanup_ns()
  {
-+	/* setup memblock allocator */
-+	setup_memory();
-+
- 	unflatten_and_copy_device_tree();
+ 	local ns=""
+-	local errexit=0
+ 	local ret=0
  
- 	setup_cpuinfo();
-@@ -278,9 +281,6 @@ void __init setup_arch(char **cmdline_p)
- 	}
- #endif
- 
--	/* setup memblock allocator */
--	setup_memory();
+-	# disable errexit temporary
+-	if [[ $- =~ "e" ]]; then
+-		errexit=1
+-		set +e
+-	fi
 -
- 	/* paging_init() sets up the MMU and marks all pages as reserved */
- 	paging_init();
+ 	for ns in "$@"; do
+ 		[ -z "${ns}" ] && continue
+-		ip netns delete "${ns}" &> /dev/null
++		ip netns delete "${ns}" &> /dev/null || true
+ 		if ! busywait $BUSYWAIT_TIMEOUT ip netns list \| grep -vq "^$ns$" &> /dev/null; then
+ 			echo "Warn: Failed to remove namespace $ns"
+ 			ret=1
+ 		fi
+ 	done
+ 
+-	[ $errexit -eq 1 ] && set -e
+ 	return $ret
+ }
  
 -- 
 2.43.0
