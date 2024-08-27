@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-70609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71152-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AD26960F13
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:55:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 030B79611E7
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:25:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CCA2DB21FC0
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:55:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 35B771C237DE
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:25:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 604CD1C7B8C;
-	Tue, 27 Aug 2024 14:54:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CC6C1C57AB;
+	Tue, 27 Aug 2024 15:24:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hwLJwdA0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I87Dld23"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E00F19F485;
-	Tue, 27 Aug 2024 14:54:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD7EB1C4EE6;
+	Tue, 27 Aug 2024 15:24:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770478; cv=none; b=W/fNDoiwu8kihugqEmDXdx6Y0k8TZQk3VdKxkx2IKQCIbW1whzdtZ2NXy9Sj9vySjhtVBB3kdzHHiU/vql543zmoWIA+Nl4OcqV+i/WbAivNeDVnZDxX+Q1aYWVajyKPkdKSxFQT5u3o3QlnUhAYPvMk2bI3/A4ikQod06F73no=
+	t=1724772270; cv=none; b=ZdKCeDbKmC5QhXp/FzwcZsSD8W7xYGnkzHZtxJcYdKzYrFsGmorsgjNYoK0j6aoEG4H0O5imMLrHHgaJAt3YiyS941kOureK7qMnwkY/BbhVk/6QP1AeUUF0fcku/4lIFI2Rm6bY8jvSwQZXfDhYsb++W+VCusICCK6OOWwtsr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770478; c=relaxed/simple;
-	bh=p/YywS6pHoxoskLlo4uZ7zPGLC4RrI0HMp2TPO2XMqw=;
+	s=arc-20240116; t=1724772270; c=relaxed/simple;
+	bh=TnGDE5GvqJPwUL6+ljwvOIX2T/sPNsEH0nlnk8HW6ZA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YvKsXAp9BZR0oa78+DMwcFk3pUpv86BrsgATO8x9bxf14+jPjlWevrLZWQpLZA0jZftoVDUlBatNT32Wa9yf+/lpzNVbnHEQoxm/77dRpgJEbnz+RiRsS0k9fbGfhy9XTdHe36FQFO58YACattUFnfkSEAN/WQWhz0mY3qRwSvo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hwLJwdA0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FE8AC4E673;
-	Tue, 27 Aug 2024 14:54:36 +0000 (UTC)
+	 MIME-Version; b=kHMiS+o/Eyxr32cVZxtSw6E2TSdPOixkRe/a2CWEOpWY/PH/ui0nivyoqCQeCJBikmAJiXm9dqAxh+qU4h4n7eTlaybJ3dtZMoWEfUMlMS8CkleRCo4u6ul+J3mVuZXG/Wm6k+6gzn3+IgyzXAfhD3fckwooljaYCDVdrDjMNs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I87Dld23; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A74FC61071;
+	Tue, 27 Aug 2024 15:24:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770477;
-	bh=p/YywS6pHoxoskLlo4uZ7zPGLC4RrI0HMp2TPO2XMqw=;
+	s=korg; t=1724772270;
+	bh=TnGDE5GvqJPwUL6+ljwvOIX2T/sPNsEH0nlnk8HW6ZA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hwLJwdA0UnoQG0JvdJIm9CneWr1osOp87KQWX/cOmGV2HZScq4/i18Sbcrzu6QZBY
-	 6gm5xTJwvITT2BtFB8C0g3BoBu7LCvL0D65UV9a+Y0R1r9S8PXbBwsmE4NRV8kd3oI
-	 tnuennf19eYq8tTir9HAsMEfIdhc9FbJIYUQvSZc=
+	b=I87Dld23Y10tZlZcWIBBI+tKuFRKnIcErvv9jITJ/nYrJcVVjFRVO8jueACA2+47A
+	 idGID/W9x3ku8Kh0nVt/UigelXUQvbOIfOZnAP0VCLSfeSzB17920K9+oDWgKa6F0I
+	 bn2T81kHAACnAfVocuBBy0kQ657ohr7pcvyTejl0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lang Yu <Lang.Yu@amd.com>,
-	Felix Kuehling <Felix.Kuehling@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Neel Natu <neelnatu@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 240/341] drm/amdkfd: reserve the BO before validating it
+Subject: [PATCH 6.1 163/321] kernfs: fix false-positive WARN(nr_mmapped) in kernfs_drain_open_files
 Date: Tue, 27 Aug 2024 16:37:51 +0200
-Message-ID: <20240827143852.541544698@linuxfoundation.org>
+Message-ID: <20240827143844.435919905@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,128 +61,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lang Yu <Lang.Yu@amd.com>
+From: Neel Natu <neelnatu@google.com>
 
-[ Upstream commit 0c93bd49576677ae1a18817d5ec000ef031d5187 ]
+[ Upstream commit 05d8f255867e3196565bb31a911a437697fab094 ]
 
-Fix a warning.
+Prior to this change 'on->nr_mmapped' tracked the total number of
+mmaps across all of its associated open files via kernfs_fop_mmap().
+Thus if the file descriptor associated with a kernfs_open_file was
+mmapped 10 times then we would have: 'of->mmapped = true' and
+'of_on(of)->nr_mmapped = 10'.
 
-v2: Avoid unmapping attachment repeatedly when ERESTARTSYS.
+The problem is that closing or draining a 'of->mmapped' file would
+only decrement one from the 'of_on(of)->nr_mmapped' counter.
 
-v3: Lock the BO before accessing ttm->sg to avoid race conditions.(Felix)
+For e.g. we have this from kernfs_unlink_open_file():
+        if (of->mmapped)
+                on->nr_mmapped--;
 
-[   41.708711] WARNING: CPU: 0 PID: 1463 at drivers/gpu/drm/ttm/ttm_bo.c:846 ttm_bo_validate+0x146/0x1b0 [ttm]
-[   41.708989] Call Trace:
-[   41.708992]  <TASK>
-[   41.708996]  ? show_regs+0x6c/0x80
-[   41.709000]  ? ttm_bo_validate+0x146/0x1b0 [ttm]
-[   41.709008]  ? __warn+0x93/0x190
-[   41.709014]  ? ttm_bo_validate+0x146/0x1b0 [ttm]
-[   41.709024]  ? report_bug+0x1f9/0x210
-[   41.709035]  ? handle_bug+0x46/0x80
-[   41.709041]  ? exc_invalid_op+0x1d/0x80
-[   41.709048]  ? asm_exc_invalid_op+0x1f/0x30
-[   41.709057]  ? amdgpu_amdkfd_gpuvm_dmaunmap_mem+0x2c/0x80 [amdgpu]
-[   41.709185]  ? ttm_bo_validate+0x146/0x1b0 [ttm]
-[   41.709197]  ? amdgpu_amdkfd_gpuvm_dmaunmap_mem+0x2c/0x80 [amdgpu]
-[   41.709337]  ? srso_alias_return_thunk+0x5/0x7f
-[   41.709346]  kfd_mem_dmaunmap_attachment+0x9e/0x1e0 [amdgpu]
-[   41.709467]  amdgpu_amdkfd_gpuvm_dmaunmap_mem+0x56/0x80 [amdgpu]
-[   41.709586]  kfd_ioctl_unmap_memory_from_gpu+0x1b7/0x300 [amdgpu]
-[   41.709710]  kfd_ioctl+0x1ec/0x650 [amdgpu]
-[   41.709822]  ? __pfx_kfd_ioctl_unmap_memory_from_gpu+0x10/0x10 [amdgpu]
-[   41.709945]  ? srso_alias_return_thunk+0x5/0x7f
-[   41.709949]  ? tomoyo_file_ioctl+0x20/0x30
-[   41.709959]  __x64_sys_ioctl+0x9c/0xd0
-[   41.709967]  do_syscall_64+0x3f/0x90
-[   41.709973]  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+The WARN_ON_ONCE(on->nr_mmapped) in kernfs_drain_open_files() is
+easy to reproduce by:
+1. opening a (mmap-able) kernfs file.
+2. mmap-ing that file more than once (mapping just once masks the issue).
+3. trigger a drain of that kernfs file.
 
-Fixes: 101b8104307e ("drm/amdkfd: Move dma unmapping after TLB flush")
-Signed-off-by: Lang Yu <Lang.Yu@amd.com>
-Reviewed-by: Felix Kuehling <Felix.Kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Modulo out-of-tree patches I was able to trigger this reliably by
+identifying pci device nodes in sysfs that have resource regions
+that are mmap-able and that don't have any driver attached to them
+(steps 1 and 2). For step 3 we can "echo 1 > remove" to trigger a
+kernfs_drain.
+
+Signed-off-by: Neel Natu <neelnatu@google.com>
+Link: https://lore.kernel.org/r/20240127234636.609265-1-neelnatu@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.h    |  2 +-
- .../gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c  | 20 ++++++++++++++++---
- drivers/gpu/drm/amd/amdkfd/kfd_chardev.c      |  4 +++-
- 3 files changed, 21 insertions(+), 5 deletions(-)
+ fs/kernfs/file.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.h
-index 5e4fb33b97351..db5b1c6beba75 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.h
-@@ -303,7 +303,7 @@ int amdgpu_amdkfd_gpuvm_map_memory_to_gpu(struct amdgpu_device *adev,
- 					  struct kgd_mem *mem, void *drm_priv);
- int amdgpu_amdkfd_gpuvm_unmap_memory_from_gpu(
- 		struct amdgpu_device *adev, struct kgd_mem *mem, void *drm_priv);
--void amdgpu_amdkfd_gpuvm_dmaunmap_mem(struct kgd_mem *mem, void *drm_priv);
-+int amdgpu_amdkfd_gpuvm_dmaunmap_mem(struct kgd_mem *mem, void *drm_priv);
- int amdgpu_amdkfd_gpuvm_sync_memory(
- 		struct amdgpu_device *adev, struct kgd_mem *mem, bool intr);
- int amdgpu_amdkfd_gpuvm_map_gtt_bo_to_kernel(struct kgd_mem *mem,
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
-index c2d1d57a6c668..9d72bb0a0eaec 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
-@@ -2038,21 +2038,35 @@ int amdgpu_amdkfd_gpuvm_map_memory_to_gpu(
- 	return ret;
- }
+diff --git a/fs/kernfs/file.c b/fs/kernfs/file.c
+index e4a50e4ff0d23..adf3536cfec81 100644
+--- a/fs/kernfs/file.c
++++ b/fs/kernfs/file.c
+@@ -532,9 +532,11 @@ static int kernfs_fop_mmap(struct file *file, struct vm_area_struct *vma)
+ 		goto out_put;
  
--void amdgpu_amdkfd_gpuvm_dmaunmap_mem(struct kgd_mem *mem, void *drm_priv)
-+int amdgpu_amdkfd_gpuvm_dmaunmap_mem(struct kgd_mem *mem, void *drm_priv)
- {
- 	struct kfd_mem_attachment *entry;
- 	struct amdgpu_vm *vm;
-+	int ret;
- 
- 	vm = drm_priv_to_vm(drm_priv);
- 
- 	mutex_lock(&mem->lock);
- 
-+	ret = amdgpu_bo_reserve(mem->bo, true);
-+	if (ret)
-+		goto out;
-+
- 	list_for_each_entry(entry, &mem->attachments, list) {
--		if (entry->bo_va->base.vm == vm)
--			kfd_mem_dmaunmap_attachment(mem, entry);
-+		if (entry->bo_va->base.vm != vm)
-+			continue;
-+		if (entry->bo_va->base.bo->tbo.ttm &&
-+		    !entry->bo_va->base.bo->tbo.ttm->sg)
-+			continue;
-+
-+		kfd_mem_dmaunmap_attachment(mem, entry);
- 	}
- 
-+	amdgpu_bo_unreserve(mem->bo);
-+out:
- 	mutex_unlock(&mem->lock);
-+
-+	return ret;
- }
- 
- int amdgpu_amdkfd_gpuvm_unmap_memory_from_gpu(
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
-index 045280c2b607c..9d10530283705 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
-@@ -1442,7 +1442,9 @@ static int kfd_ioctl_unmap_memory_from_gpu(struct file *filep,
- 			kfd_flush_tlb(peer_pdd, TLB_FLUSH_HEAVYWEIGHT);
- 
- 		/* Remove dma mapping after tlb flush to avoid IO_PAGE_FAULT */
--		amdgpu_amdkfd_gpuvm_dmaunmap_mem(mem, peer_pdd->drm_priv);
-+		err = amdgpu_amdkfd_gpuvm_dmaunmap_mem(mem, peer_pdd->drm_priv);
-+		if (err)
-+			goto sync_memory_failed;
- 	}
- 
- 	mutex_unlock(&p->mutex);
+ 	rc = 0;
+-	of->mmapped = true;
+-	of_on(of)->nr_mmapped++;
+-	of->vm_ops = vma->vm_ops;
++	if (!of->mmapped) {
++		of->mmapped = true;
++		of_on(of)->nr_mmapped++;
++		of->vm_ops = vma->vm_ops;
++	}
+ 	vma->vm_ops = &kernfs_vm_ops;
+ out_put:
+ 	kernfs_put_active(of->kn);
 -- 
 2.43.0
 
