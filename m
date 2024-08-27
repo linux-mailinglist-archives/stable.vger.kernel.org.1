@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-70502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71044-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A325D960E73
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:48:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2399961161
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:19:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 421F51F23D24
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:48:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D55FC1C237D2
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:19:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8986A1C57BF;
-	Tue, 27 Aug 2024 14:48:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00CFA1C93AB;
+	Tue, 27 Aug 2024 15:18:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pQs4cDb6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mglv0wSB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4567538DC7;
-	Tue, 27 Aug 2024 14:48:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEF7D1C8FD4;
+	Tue, 27 Aug 2024 15:18:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770121; cv=none; b=mN7gczYguKO5YDk4ZnAMurIwaf8hefMKGtEMTLyGJqNa5OZoZ+ReT4HFtlw9K6MhmepFJr3ADxUxzcQfFj9RxWgW56UO8w95P9mclyty6Vb9id9HbfH52im4lHA1B+X/qP0hyrEFRqIp7mxCfv5Mpl3V6Ah07JGIGdFgq+5vss4=
+	t=1724771911; cv=none; b=J1mm1TVPvkjOy2tg3e3YxH2KQU8Q7odj8+bnGvIf53FfsxG//pZM4pltpPfHdJ94A7KY17pAU+bQMSZ+NzUDtx8MZsP+kOpU8DLNehQIw1plK1T/eSQ+/JsyTmHZsoh9FqHKAdrjFBmSKzEC+S8xNHD3bzy2U+5e6Fat1FDWMdw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770121; c=relaxed/simple;
-	bh=PtlrwdTXBHZ7WdmeFVbfLnm9DzGRQotquQz67hU3/iQ=;
+	s=arc-20240116; t=1724771911; c=relaxed/simple;
+	bh=OYmQlU1T8pRm5RMfYJpV5gxixJoaaVVHgYdzSb3NyIQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MEQKe4CF3irKj2xf/S3b7TM7eK98642xNM6/D0CL8Rz38PmhOgaHoQkOWfUdHeCur6fXpeT6sG/ySiUxF+MuwYXJi4Z9S3dEDcQLc6+ep6BBuY3LQmC76FIb7szDqGwtGGK/MT245ae+k6uPtg0JTcqvfKmPJG3qa0uBuJMKDeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pQs4cDb6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD344C61047;
-	Tue, 27 Aug 2024 14:48:40 +0000 (UTC)
+	 MIME-Version; b=qSzjMUxZfuLcHRkQDbx8FB/M6WSHGz+Y7DB+Pv26zpbP42JcgLDedTB9H82yjbnYBbQXgsvtPRer71hV0lB1eZ68WJKoWy4Qi3s6f77ZJ7EHi3ULGBmEsJg73kFIgw5k/NrnSThudl0MN5GyrcEu4OvEznCXwscvk+jT5cbajpw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mglv0wSB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DB4CC61067;
+	Tue, 27 Aug 2024 15:18:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770121;
-	bh=PtlrwdTXBHZ7WdmeFVbfLnm9DzGRQotquQz67hU3/iQ=;
+	s=korg; t=1724771911;
+	bh=OYmQlU1T8pRm5RMfYJpV5gxixJoaaVVHgYdzSb3NyIQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pQs4cDb6BS5ExGHtrok//7yTktERSpJtCwGYzOKt6VHsDrPzAWmMqZMX/LGJ0mhWX
-	 nU95Tip1L9tF9eM3fjBk6MlJCYC8VPPbnk1elqeNnKXPl1csSkRR7EA49Mk2JbHsTS
-	 UxSmcX23E2odCioEwdLPxaJ56/MlgeHn1TAERnDQ=
+	b=mglv0wSBsyaY+GEiT5t0Utk8lYvZpSYREwPpmL+FyC75eN7+By/0sQD25xx1d4syN
+	 RnqUornQa09a0viSI7BTiY4xQ+Bkw5hHQ1Jz6GzGYsjmNh0IfGWjScwVB4ADuCAfRk
+	 1hME1KLRD2ImAIRvyUM/M1QPdcynxLmHD0PDew58=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 134/341] rust: suppress error messages from CONFIG_{RUSTC,BINDGEN}_VERSION_TEXT
+	Yue Hu <huyue2@coolpad.com>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+6c746eea496f34b3161d@syzkaller.appspotmail.com
+Subject: [PATCH 6.1 057/321] erofs: avoid debugging output for (de)compressed data
 Date: Tue, 27 Aug 2024 16:36:05 +0200
-Message-ID: <20240827143848.517913587@linuxfoundation.org>
+Message-ID: <20240827143840.405788901@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-[ Upstream commit 5ce86c6c861352c9346ebb5c96ed70cb67414aa3 ]
+[ Upstream commit 496530c7c1dfc159d59a75ae00b572f570710c53 ]
 
-While this is a somewhat unusual case, I encountered odd error messages
-when I ran Kconfig in a foreign architecture chroot.
+Syzbot reported a KMSAN warning,
+erofs: (device loop0): z_erofs_lz4_decompress_mem: failed to decompress -12 in[46, 4050] out[917]
+=====================================================
+BUG: KMSAN: uninit-value in hex_dump_to_buffer+0xae9/0x10f0 lib/hexdump.c:194
+  ..
+  print_hex_dump+0x13d/0x3e0 lib/hexdump.c:276
+  z_erofs_lz4_decompress_mem fs/erofs/decompressor.c:252 [inline]
+  z_erofs_lz4_decompress+0x257e/0x2a70 fs/erofs/decompressor.c:311
+  z_erofs_decompress_pcluster fs/erofs/zdata.c:1290 [inline]
+  z_erofs_decompress_queue+0x338c/0x6460 fs/erofs/zdata.c:1372
+  z_erofs_runqueue+0x36cd/0x3830
+  z_erofs_read_folio+0x435/0x810 fs/erofs/zdata.c:1843
 
-  $ make allmodconfig
-  sh: 1: rustc: not found
-  sh: 1: bindgen: not found
-  #
-  # configuration written to .config
-  #
+The root cause is that the printed decompressed buffer may be filled
+incompletely due to decompression failure.  Since they were once only
+used for debugging, get rid of them now.
 
-The successful execution of 'command -v rustc' does not necessarily mean
-that 'rustc --version' will succeed.
-
-  $ sh -c 'command -v rustc'
-  /home/masahiro/.cargo/bin/rustc
-  $ sh -c 'rustc --version'
-  sh: 1: rustc: not found
-
-Here, 'rustc' is built for x86, and I ran it in an arm64 system.
-
-The current code:
-
-  command -v $(RUSTC) >/dev/null 2>&1 && $(RUSTC) --version || echo n
-
-can be turned into:
-
-  command -v $(RUSTC) >/dev/null 2>&1 && $(RUSTC) --version 2>/dev/null || echo n
-
-However, I did not understand the necessity of 'command -v $(RUSTC)'.
-
-I simplified it to:
-
-  $(RUSTC) --version 2>/dev/null || echo n
-
-Fixes: 2f7ab1267dc9 ("Kbuild: add Rust support")
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Link: https://lore.kernel.org/r/20240727140302.1806011-1-masahiroy@kernel.org
-[ Rebased on top of v6.11-rc1. - Miguel ]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Reported-and-tested-by: syzbot+6c746eea496f34b3161d@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/r/000000000000321c24060d7cfa1c@google.com
+Reviewed-by: Yue Hu <huyue2@coolpad.com>
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20231227151903.2900413-1-hsiangkao@linux.alibaba.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- init/Kconfig | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/erofs/decompressor.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-diff --git a/init/Kconfig b/init/Kconfig
-index 777113dceca55..b5bcc863bf608 100644
---- a/init/Kconfig
-+++ b/init/Kconfig
-@@ -1916,7 +1916,7 @@ config RUST
- config RUSTC_VERSION_TEXT
- 	string
- 	depends on RUST
--	default $(shell,command -v $(RUSTC) >/dev/null 2>&1 && $(RUSTC) --version || echo n)
-+	default $(shell,$(RUSTC) --version 2>/dev/null || echo n)
- 
- config BINDGEN_VERSION_TEXT
- 	string
-@@ -1924,7 +1924,7 @@ config BINDGEN_VERSION_TEXT
- 	# The dummy parameter `workaround-for-0.69.0` is required to support 0.69.0
- 	# (https://github.com/rust-lang/rust-bindgen/pull/2678). It can be removed when
- 	# the minimum version is upgraded past that (0.69.1 already fixed the issue).
--	default $(shell,command -v $(BINDGEN) >/dev/null 2>&1 && $(BINDGEN) --version workaround-for-0.69.0 || echo n)
-+	default $(shell,$(BINDGEN) --version workaround-for-0.69.0 2>/dev/null || echo n)
- 
- #
- # Place an empty function call at each tracepoint site. Can be
+diff --git a/fs/erofs/decompressor.c b/fs/erofs/decompressor.c
+index 1eefa4411e066..708bf142b1888 100644
+--- a/fs/erofs/decompressor.c
++++ b/fs/erofs/decompressor.c
+@@ -248,15 +248,9 @@ static int z_erofs_lz4_decompress_mem(struct z_erofs_lz4_decompress_ctx *ctx,
+ 	if (ret != rq->outputsize) {
+ 		erofs_err(rq->sb, "failed to decompress %d in[%u, %u] out[%u]",
+ 			  ret, rq->inputsize, inputmargin, rq->outputsize);
+-
+-		print_hex_dump(KERN_DEBUG, "[ in]: ", DUMP_PREFIX_OFFSET,
+-			       16, 1, src + inputmargin, rq->inputsize, true);
+-		print_hex_dump(KERN_DEBUG, "[out]: ", DUMP_PREFIX_OFFSET,
+-			       16, 1, out, rq->outputsize, true);
+-
+ 		if (ret >= 0)
+ 			memset(out + ret, 0, rq->outputsize - ret);
+-		ret = -EIO;
++		ret = -EFSCORRUPTED;
+ 	} else {
+ 		ret = 0;
+ 	}
 -- 
 2.43.0
 
