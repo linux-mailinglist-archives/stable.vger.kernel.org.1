@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-70499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71041-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9EA4960E70
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:48:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8722796115D
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:19:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 28CFB1C23283
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:48:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D31B28279E
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:19:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E89671C6F43;
-	Tue, 27 Aug 2024 14:48:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25FFD1CCB52;
+	Tue, 27 Aug 2024 15:18:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qL/kUERa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b4it8JR/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A43661C68AE;
-	Tue, 27 Aug 2024 14:48:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D73EA17C96;
+	Tue, 27 Aug 2024 15:18:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770110; cv=none; b=TuJmO8hXJlm/A92yYmK2tFO6x4TmeOudlMgZV4aXJiaY5Grd3sErrBFS1CeNsnInrEBL+rztg8ZJdVSnuWZ+a24lJnbFJXi9ZF1lnEppICdiqolnLwS4MqLNB8gIhAuT8WW0lju6guux+zYqz4Hq3cqHySKluKoU+fri3XK5abI=
+	t=1724771901; cv=none; b=CWVcaqW0DT4QRvbySTo5BUV1RRZr/qdkPM2sO8a+R4Z+i0TcuBLmWLa84Fs6Ny8PAIukxqP64AIcu+jR3rAVxdNxdwDWopPb2elmR2HMFfKpd9hZGfgUEuH1/RClvuBuqJirrpplT7DqS3xB8wPmP9x2e8zud3ymOtWEcKp0ucE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770110; c=relaxed/simple;
-	bh=SMT3xHBrSIRblYImAMh12G/OzNy6T39+exZcJ7Kc59g=;
+	s=arc-20240116; t=1724771901; c=relaxed/simple;
+	bh=0PsNdS8ySdwRu7F5uBCLs48Qc2e+uDFkNRAwQUwumtU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=koiCRKWtVyLASdW/VkzJOwiDIAZyRayPjkI6kY+71/tvr9M4pfocdu1P9l/NyEUwq71zSrlAhX3NywUkULxbR8jC1jCJH8xRw82dgjUOyLgSD62D3cOAYr47Nm2HBKlPMVvzAtl88HauOfDJMr7VBPqRkncRAFllFT+V35sb8j4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qL/kUERa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13C9AC4AF14;
-	Tue, 27 Aug 2024 14:48:29 +0000 (UTC)
+	 MIME-Version; b=CZEcKwwnuUOLMr6QFmhp8xATxjyP7GXEfBpxoxe6xqTs8trLmS2Ajlzq1poUICcTtD0EPNebTQLg7IBJ8G+oH3JSXJ3fXqup9jGX8hw3ncaHgZmqOW4EmZDbnZdAr8cZljKaJj26koKv6oURcwwX0ZHXSdht3/9CYm/7QRtEgyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b4it8JR/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FF43C61067;
+	Tue, 27 Aug 2024 15:18:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770110;
-	bh=SMT3xHBrSIRblYImAMh12G/OzNy6T39+exZcJ7Kc59g=;
+	s=korg; t=1724771901;
+	bh=0PsNdS8ySdwRu7F5uBCLs48Qc2e+uDFkNRAwQUwumtU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qL/kUERan9zFVb3QrWH6YbUGnylKMT12p+YQToRB9WO9uRDRjro2xYmnmG5umZhL4
-	 0rqHdklwUJEH5AIbghOcZcCSzH3Ghh+jUz31Y1YI63Q1DqSDffzbbMB7jNwmyeDlkp
-	 MaWx7kpqPaciO2HjbeiL9c4TwHIFNhZfj+UXrnL0=
+	b=b4it8JR/Jqi2hrLlg7a++dZr62ekKBvkP7c9tyq1KNXZ0tAkk/s+MP/mHCs4a7J6g
+	 XhJ2b6FyxmdefIBUe+08Mmgw0fBdw/O9wM/h40oi/HT9NcDldIr+Gq/EYnkTojHoUf
+	 t7/byr8zHQZrqBeThEnqUFm/YakpKSabGdEPgu80=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chengfeng Ye <dg573847474@gmail.com>,
-	Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	syzbot+32d3767580a1ea339a81@syzkaller.appspotmail.com,
+	Lizhi Xu <lizhi.xu@windriver.com>,
+	Phillip Lougher <phillip@squashfs.org.uk>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 131/341] IB/hfi1: Fix potential deadlock on &irq_src_lock and &dd->uctxt_lock
+Subject: [PATCH 6.1 054/321] squashfs: squashfs_read_data need to check if the length is 0
 Date: Tue, 27 Aug 2024 16:36:02 +0200
-Message-ID: <20240827143848.402150006@linuxfoundation.org>
+Message-ID: <20240827143840.291699459@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengfeng Ye <dg573847474@gmail.com>
+From: Lizhi Xu <lizhi.xu@windriver.com>
 
-[ Upstream commit 2f19c4b8395ccb6eb25ccafee883c8cfbe3fc193 ]
+[ Upstream commit eb66b8abae98f869c224f7c852b685ae02144564 ]
 
-handle_receive_interrupt_napi_sp() running inside interrupt handler
-could introduce inverse lock ordering between &dd->irq_src_lock
-and &dd->uctxt_lock, if read_mod_write() is preempted by the isr.
+When the length passed in is 0, the pagemap_scan_test_walk() caller should
+bail.  This error causes at least a WARN_ON().
 
-          [CPU0]                                        |          [CPU1]
-hfi1_ipoib_dev_open()                                   |
---> hfi1_netdev_enable_queues()                         |
---> enable_queues(rx)                                   |
---> hfi1_rcvctrl()                                      |
---> set_intr_bits()                                     |
---> read_mod_write()                                    |
---> spin_lock(&dd->irq_src_lock)                        |
-                                                        | hfi1_poll()
-                                                        | --> poll_next()
-                                                        | --> spin_lock_irq(&dd->uctxt_lock)
-                                                        |
-                                                        | --> hfi1_rcvctrl()
-                                                        | --> set_intr_bits()
-                                                        | --> read_mod_write()
-                                                        | --> spin_lock(&dd->irq_src_lock)
-<interrupt>                                             |
-   --> handle_receive_interrupt_napi_sp()               |
-   --> set_all_fastpath()                               |
-   --> hfi1_rcd_get_by_index()                          |
-   --> spin_lock_irqsave(&dd->uctxt_lock)               |
-
-This flaw was found by an experimental static analysis tool I am
-developing for irq-related deadlock.
-
-To prevent the potential deadlock, the patch use spin_lock_irqsave()
-on &dd->irq_src_lock inside read_mod_write() to prevent the possible
-deadlock scenario.
-
-Signed-off-by: Chengfeng Ye <dg573847474@gmail.com>
-Link: https://lore.kernel.org/r/20230926101116.2797-1-dg573847474@gmail.com
-Acked-by: Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Link: https://lkml.kernel.org/r/20231116031352.40853-1-lizhi.xu@windriver.com
+Reported-by: syzbot+32d3767580a1ea339a81@syzkaller.appspotmail.com
+Closes: https://lkml.kernel.org/r/0000000000000526f2060a30a085@google.com
+Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
+Reviewed-by: Phillip Lougher <phillip@squashfs.org.uk>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hfi1/chip.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ fs/squashfs/block.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/hfi1/chip.c b/drivers/infiniband/hw/hfi1/chip.c
-index 0814291a04120..9b542f7c6c115 100644
---- a/drivers/infiniband/hw/hfi1/chip.c
-+++ b/drivers/infiniband/hw/hfi1/chip.c
-@@ -13185,15 +13185,16 @@ static void read_mod_write(struct hfi1_devdata *dd, u16 src, u64 bits,
- {
- 	u64 reg;
- 	u16 idx = src / BITS_PER_REGISTER;
-+	unsigned long flags;
- 
--	spin_lock(&dd->irq_src_lock);
-+	spin_lock_irqsave(&dd->irq_src_lock, flags);
- 	reg = read_csr(dd, CCE_INT_MASK + (8 * idx));
- 	if (set)
- 		reg |= bits;
- 	else
- 		reg &= ~bits;
- 	write_csr(dd, CCE_INT_MASK + (8 * idx), reg);
--	spin_unlock(&dd->irq_src_lock);
-+	spin_unlock_irqrestore(&dd->irq_src_lock, flags);
- }
- 
- /**
+diff --git a/fs/squashfs/block.c b/fs/squashfs/block.c
+index 833aca92301f0..45ea5d62cef42 100644
+--- a/fs/squashfs/block.c
++++ b/fs/squashfs/block.c
+@@ -198,7 +198,7 @@ int squashfs_read_data(struct super_block *sb, u64 index, int length,
+ 		TRACE("Block @ 0x%llx, %scompressed size %d\n", index - 2,
+ 		      compressed ? "" : "un", length);
+ 	}
+-	if (length < 0 || length > output->length ||
++	if (length <= 0 || length > output->length ||
+ 			(index + length) > msblk->bytes_used) {
+ 		res = -EIO;
+ 		goto out;
 -- 
 2.43.0
 
