@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-70494-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71028-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EEFF960E68
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:48:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DC2896114C
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:19:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 96DFFB247A5
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:48:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59D17281256
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:19:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE48D1C6886;
-	Tue, 27 Aug 2024 14:48:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCAD01CE704;
+	Tue, 27 Aug 2024 15:17:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kLCdb+0n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wJDcabQa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F97744C8C;
-	Tue, 27 Aug 2024 14:48:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B4D21C7B61;
+	Tue, 27 Aug 2024 15:17:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770093; cv=none; b=FFhHZXcrmxtRW6LJ+5Lz0XVgYkyyS5q0U996q/WwtUoEP5GFrmBjN92jv2gBU/Xyl6e5tZjW7BiVybzg1nCwfO0alHfDgzfEaP5sxP2QnK4qaqHsGXPpWB4VWyESyy2p0HESapXF0epd8YToPsHa4r2gYcDrMgiuqyyCLXD79ws=
+	t=1724771857; cv=none; b=LNw65c2AHsD8Fw5ZTf7bob8QQMwZBtL8Azfklxg3bB4NU65GXqW5QsM/vp4iwNh4vRBpIJvZeJIx2aJDri2bZx1N54ENA6U3XXFnZFsrg7ZP9V+LxXF7I+ZPMD14DxyfjpsNnEegZnmB6ioJNM9bxj+3Jjg8qojJ1pLHKSB+rUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770093; c=relaxed/simple;
-	bh=rMJ9X/xa+fKYjKsiAj2bWw+o1frLzTsjhImXaxH3ySQ=;
+	s=arc-20240116; t=1724771857; c=relaxed/simple;
+	bh=JIaB3MKH0Ni1TsUG/Niy/tAat12zKXi7bqset3OSGSI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BNEsMCIJ7kLQaGj+h5UZmiGd6wRR2/YksdR9m6odhgJ6IkL35sfWMgExGimdzMOdPX488Nt9cECcDfA86cXrA1u24rR2B+rNXXkMA5TFs9so59ujL4KN6Wty4LM5ifrn9WEmC+Gi6CJLf1R/HkMhNdslR6sGZiK+5rLSb2oKdwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kLCdb+0n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEE50C61047;
-	Tue, 27 Aug 2024 14:48:12 +0000 (UTC)
+	 MIME-Version; b=ibe4sSh5cqDXIhY47mi5AdvpZgxVgWYcHDWHSSJ3vum2I0I0f70bofZE8SN3waLJivEvJ2reQKIrw6HIyu3nEZ07VRuj7rgvSexxjxmJ/VgYwHu0POt7AKI06l04yEFwHOV0SzdLjQmoUGTnBAC4Xt73FQTiAL9nqFtokkN2wZ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wJDcabQa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 214D8C61040;
+	Tue, 27 Aug 2024 15:17:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770093;
-	bh=rMJ9X/xa+fKYjKsiAj2bWw+o1frLzTsjhImXaxH3ySQ=;
+	s=korg; t=1724771857;
+	bh=JIaB3MKH0Ni1TsUG/Niy/tAat12zKXi7bqset3OSGSI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kLCdb+0nxRDtF9J/do845pD9GLBkpfzzdgrNS33gNQriD2nj7bc7CDQvR6gAieSS0
-	 +AUR+aszQrP0B3MPbHzZeUzt7jgT1EjjO1xoOt4b6RB/3fb5XTgBqxWxMcmQ4UW8rn
-	 GCs5RQRCHtorfYI6KaYC/29PWySvIhfFcGQIlYpg=
+	b=wJDcabQaRwZbIrOeeOsLswh8CHIy2+YrAtjdy+NKga9byfuNA3fKEggEWqVKiL+WQ
+	 41+dwsOIac0oHyk/ZJi3SEPM+8s/xYt0rB/xmYRW4/KUEly8RINiSxB5Gkq/OTTKu0
+	 oIuc8ttfyYZXEgtkmbDebhvucoTWlq2Be8EYaBFs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Song Liu <song@kernel.org>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 118/341] md/raid5-cache: use READ_ONCE/WRITE_ONCE for conf->log
-Date: Tue, 27 Aug 2024 16:35:49 +0200
-Message-ID: <20240827143847.903611018@linuxfoundation.org>
+Subject: [PATCH 6.1 042/321] gfs2: Rename remaining "transaction" glock references
+Date: Tue, 27 Aug 2024 16:35:50 +0200
+Message-ID: <20240827143839.829297882@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,227 +61,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Andreas Gruenbacher <agruenba@redhat.com>
 
-[ Upstream commit 06a4d0d8c642b5ea654e832b74dca12965356da0 ]
+[ Upstream commit af1abe11466f1a6cb6ba22ee0d815c21c3559947 ]
 
-'conf->log' is set with 'reconfig_mutex' grabbed, however, readers are
-not procted, hence protect it with READ_ONCE/WRITE_ONCE to prevent
-reading abnormal values.
+The transaction glock was repurposed to serve as the new freeze glock
+years ago.  Don't refer to it as the transaction glock anymore.
 
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20231010151958.145896-3-yukuai1@huaweicloud.com
+Also, to be more precise, call it the "freeze glock" instead of the
+"freeze lock".  Ditto for the journal glock.
+
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Stable-dep-of: f66af88e3321 ("gfs2: Stop using gfs2_make_fs_ro for withdraw")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/raid5-cache.c | 47 +++++++++++++++++++++-------------------
- 1 file changed, 25 insertions(+), 22 deletions(-)
+ fs/gfs2/glock.c      | 4 ++--
+ fs/gfs2/ops_fstype.c | 2 +-
+ fs/gfs2/recovery.c   | 8 ++++----
+ fs/gfs2/super.c      | 2 +-
+ fs/gfs2/util.c       | 2 +-
+ 5 files changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/md/raid5-cache.c b/drivers/md/raid5-cache.c
-index 518b7cfa78b9d..889bba60d6ff7 100644
---- a/drivers/md/raid5-cache.c
-+++ b/drivers/md/raid5-cache.c
-@@ -327,8 +327,9 @@ void r5l_wake_reclaim(struct r5l_log *log, sector_t space);
- void r5c_check_stripe_cache_usage(struct r5conf *conf)
- {
- 	int total_cached;
-+	struct r5l_log *log = READ_ONCE(conf->log);
- 
--	if (!r5c_is_writeback(conf->log))
-+	if (!r5c_is_writeback(log))
- 		return;
- 
- 	total_cached = atomic_read(&conf->r5c_cached_partial_stripes) +
-@@ -344,7 +345,7 @@ void r5c_check_stripe_cache_usage(struct r5conf *conf)
- 	 */
- 	if (total_cached > conf->min_nr_stripes * 1 / 2 ||
- 	    atomic_read(&conf->empty_inactive_list_nr) > 0)
--		r5l_wake_reclaim(conf->log, 0);
-+		r5l_wake_reclaim(log, 0);
- }
- 
- /*
-@@ -353,7 +354,9 @@ void r5c_check_stripe_cache_usage(struct r5conf *conf)
-  */
- void r5c_check_cached_full_stripe(struct r5conf *conf)
- {
--	if (!r5c_is_writeback(conf->log))
-+	struct r5l_log *log = READ_ONCE(conf->log);
-+
-+	if (!r5c_is_writeback(log))
- 		return;
- 
- 	/*
-@@ -363,7 +366,7 @@ void r5c_check_cached_full_stripe(struct r5conf *conf)
- 	if (atomic_read(&conf->r5c_cached_full_stripes) >=
- 	    min(R5C_FULL_STRIPE_FLUSH_BATCH(conf),
- 		conf->chunk_sectors >> RAID5_STRIPE_SHIFT(conf)))
--		r5l_wake_reclaim(conf->log, 0);
-+		r5l_wake_reclaim(log, 0);
- }
- 
- /*
-@@ -396,7 +399,7 @@ void r5c_check_cached_full_stripe(struct r5conf *conf)
-  */
- static sector_t r5c_log_required_to_flush_cache(struct r5conf *conf)
- {
--	struct r5l_log *log = conf->log;
-+	struct r5l_log *log = READ_ONCE(conf->log);
- 
- 	if (!r5c_is_writeback(log))
- 		return 0;
-@@ -449,7 +452,7 @@ static inline void r5c_update_log_state(struct r5l_log *log)
- void r5c_make_stripe_write_out(struct stripe_head *sh)
- {
- 	struct r5conf *conf = sh->raid_conf;
--	struct r5l_log *log = conf->log;
-+	struct r5l_log *log = READ_ONCE(conf->log);
- 
- 	BUG_ON(!r5c_is_writeback(log));
- 
-@@ -491,7 +494,7 @@ static void r5c_handle_parity_cached(struct stripe_head *sh)
-  */
- static void r5c_finish_cache_stripe(struct stripe_head *sh)
- {
--	struct r5l_log *log = sh->raid_conf->log;
-+	struct r5l_log *log = READ_ONCE(sh->raid_conf->log);
- 
- 	if (log->r5c_journal_mode == R5C_JOURNAL_MODE_WRITE_THROUGH) {
- 		BUG_ON(test_bit(STRIPE_R5C_CACHING, &sh->state));
-@@ -692,7 +695,7 @@ static void r5c_disable_writeback_async(struct work_struct *work)
- 
- 	/* wait superblock change before suspend */
- 	wait_event(mddev->sb_wait,
--		   conf->log == NULL ||
-+		   !READ_ONCE(conf->log) ||
- 		   (!test_bit(MD_SB_CHANGE_PENDING, &mddev->sb_flags) &&
- 		    (locked = mddev_trylock(mddev))));
- 	if (locked) {
-@@ -1151,7 +1154,7 @@ static void r5l_run_no_space_stripes(struct r5l_log *log)
- static sector_t r5c_calculate_new_cp(struct r5conf *conf)
- {
- 	struct stripe_head *sh;
--	struct r5l_log *log = conf->log;
-+	struct r5l_log *log = READ_ONCE(conf->log);
- 	sector_t new_cp;
- 	unsigned long flags;
- 
-@@ -1159,12 +1162,12 @@ static sector_t r5c_calculate_new_cp(struct r5conf *conf)
- 		return log->next_checkpoint;
- 
- 	spin_lock_irqsave(&log->stripe_in_journal_lock, flags);
--	if (list_empty(&conf->log->stripe_in_journal_list)) {
-+	if (list_empty(&log->stripe_in_journal_list)) {
- 		/* all stripes flushed */
- 		spin_unlock_irqrestore(&log->stripe_in_journal_lock, flags);
- 		return log->next_checkpoint;
+diff --git a/fs/gfs2/glock.c b/fs/gfs2/glock.c
+index 95353982e643a..be05c43b89a59 100644
+--- a/fs/gfs2/glock.c
++++ b/fs/gfs2/glock.c
+@@ -146,8 +146,8 @@ static void gfs2_glock_dealloc(struct rcu_head *rcu)
+  *
+  * We need to allow some glocks to be enqueued, dequeued, promoted, and demoted
+  * when we're withdrawn. For example, to maintain metadata integrity, we should
+- * disallow the use of inode and rgrp glocks when withdrawn. Other glocks, like
+- * iopen or the transaction glocks may be safely used because none of their
++ * disallow the use of inode and rgrp glocks when withdrawn. Other glocks like
++ * the iopen or freeze glock may be safely used because none of their
+  * metadata goes through the journal. So in general, we should disallow all
+  * glocks that are journaled, and allow all the others. One exception is:
+  * we need to allow our active journal to be promoted and demoted so others
+diff --git a/fs/gfs2/ops_fstype.c b/fs/gfs2/ops_fstype.c
+index c0cf1d2d0ef5b..c7f6208ad98c0 100644
+--- a/fs/gfs2/ops_fstype.c
++++ b/fs/gfs2/ops_fstype.c
+@@ -434,7 +434,7 @@ static int init_locking(struct gfs2_sbd *sdp, struct gfs2_holder *mount_gh,
+ 	error = gfs2_glock_get(sdp, GFS2_FREEZE_LOCK, &gfs2_freeze_glops,
+ 			       CREATE, &sdp->sd_freeze_gl);
+ 	if (error) {
+-		fs_err(sdp, "can't create transaction glock: %d\n", error);
++		fs_err(sdp, "can't create freeze glock: %d\n", error);
+ 		goto fail_rename;
  	}
--	sh = list_first_entry(&conf->log->stripe_in_journal_list,
-+	sh = list_first_entry(&log->stripe_in_journal_list,
- 			      struct stripe_head, r5c);
- 	new_cp = sh->log_start;
- 	spin_unlock_irqrestore(&log->stripe_in_journal_lock, flags);
-@@ -1399,7 +1402,7 @@ void r5c_flush_cache(struct r5conf *conf, int num)
- 	struct stripe_head *sh, *next;
  
- 	lockdep_assert_held(&conf->device_lock);
--	if (!conf->log)
-+	if (!READ_ONCE(conf->log))
- 		return;
+diff --git a/fs/gfs2/recovery.c b/fs/gfs2/recovery.c
+index 2bb085a72e8ee..d8e522f389aa7 100644
+--- a/fs/gfs2/recovery.c
++++ b/fs/gfs2/recovery.c
+@@ -420,10 +420,10 @@ void gfs2_recover_func(struct work_struct *work)
+ 	if (sdp->sd_args.ar_spectator)
+ 		goto fail;
+ 	if (jd->jd_jid != sdp->sd_lockstruct.ls_jid) {
+-		fs_info(sdp, "jid=%u: Trying to acquire journal lock...\n",
++		fs_info(sdp, "jid=%u: Trying to acquire journal glock...\n",
+ 			jd->jd_jid);
+ 		jlocked = 1;
+-		/* Acquire the journal lock so we can do recovery */
++		/* Acquire the journal glock so we can do recovery */
  
- 	count = 0;
-@@ -1420,7 +1423,7 @@ void r5c_flush_cache(struct r5conf *conf, int num)
+ 		error = gfs2_glock_nq_num(sdp, jd->jd_jid, &gfs2_journal_glops,
+ 					  LM_ST_EXCLUSIVE,
+@@ -465,10 +465,10 @@ void gfs2_recover_func(struct work_struct *work)
+ 		ktime_ms_delta(t_jhd, t_jlck));
  
- static void r5c_do_reclaim(struct r5conf *conf)
- {
--	struct r5l_log *log = conf->log;
-+	struct r5l_log *log = READ_ONCE(conf->log);
- 	struct stripe_head *sh;
- 	int count = 0;
- 	unsigned long flags;
-@@ -1549,7 +1552,7 @@ static void r5l_reclaim_thread(struct md_thread *thread)
- {
- 	struct mddev *mddev = thread->mddev;
- 	struct r5conf *conf = mddev->private;
--	struct r5l_log *log = conf->log;
-+	struct r5l_log *log = READ_ONCE(conf->log);
+ 	if (!(head.lh_flags & GFS2_LOG_HEAD_UNMOUNT)) {
+-		fs_info(sdp, "jid=%u: Acquiring the transaction lock...\n",
++		fs_info(sdp, "jid=%u: Acquiring the freeze glock...\n",
+ 			jd->jd_jid);
  
- 	if (!log)
- 		return;
-@@ -1591,7 +1594,7 @@ void r5l_quiesce(struct r5l_log *log, int quiesce)
+-		/* Acquire a shared hold on the freeze lock */
++		/* Acquire a shared hold on the freeze glock */
  
- bool r5l_log_disk_error(struct r5conf *conf)
- {
--	struct r5l_log *log = conf->log;
-+	struct r5l_log *log = READ_ONCE(conf->log);
- 
- 	/* don't allow write if journal disk is missing */
- 	if (!log)
-@@ -2635,7 +2638,7 @@ int r5c_try_caching_write(struct r5conf *conf,
- 			  struct stripe_head_state *s,
- 			  int disks)
- {
--	struct r5l_log *log = conf->log;
-+	struct r5l_log *log = READ_ONCE(conf->log);
- 	int i;
- 	struct r5dev *dev;
- 	int to_cache = 0;
-@@ -2802,7 +2805,7 @@ void r5c_finish_stripe_write_out(struct r5conf *conf,
- 				 struct stripe_head *sh,
- 				 struct stripe_head_state *s)
- {
--	struct r5l_log *log = conf->log;
-+	struct r5l_log *log = READ_ONCE(conf->log);
- 	int i;
- 	int do_wakeup = 0;
- 	sector_t tree_index;
-@@ -2941,7 +2944,7 @@ int r5c_cache_data(struct r5l_log *log, struct stripe_head *sh)
- /* check whether this big stripe is in write back cache. */
- bool r5c_big_stripe_cached(struct r5conf *conf, sector_t sect)
- {
--	struct r5l_log *log = conf->log;
-+	struct r5l_log *log = READ_ONCE(conf->log);
- 	sector_t tree_index;
- 	void *slot;
- 
-@@ -3049,14 +3052,14 @@ int r5l_start(struct r5l_log *log)
- void r5c_update_on_rdev_error(struct mddev *mddev, struct md_rdev *rdev)
- {
- 	struct r5conf *conf = mddev->private;
--	struct r5l_log *log = conf->log;
-+	struct r5l_log *log = READ_ONCE(conf->log);
- 
- 	if (!log)
- 		return;
- 
- 	if ((raid5_calc_degraded(conf) > 0 ||
- 	     test_bit(Journal, &rdev->flags)) &&
--	    conf->log->r5c_journal_mode == R5C_JOURNAL_MODE_WRITE_BACK)
-+	    log->r5c_journal_mode == R5C_JOURNAL_MODE_WRITE_BACK)
- 		schedule_work(&log->disable_writeback_work);
+ 		error = gfs2_freeze_lock(sdp, &thaw_gh, LM_FLAG_PRIORITY);
+ 		if (error)
+diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
+index 6107cd680176c..c87fafbe710a6 100644
+--- a/fs/gfs2/super.c
++++ b/fs/gfs2/super.c
+@@ -463,7 +463,7 @@ static int gfs2_write_inode(struct inode *inode, struct writeback_control *wbc)
+  * @flags: The type of dirty
+  *
+  * Unfortunately it can be called under any combination of inode
+- * glock and transaction lock, so we have to check carefully.
++ * glock and freeze glock, so we have to check carefully.
+  *
+  * At the moment this deals only with atime - it should be possible
+  * to expand that role in future, once a review of the locking has
+diff --git a/fs/gfs2/util.c b/fs/gfs2/util.c
+index 48c69aa60cd17..86d1415932a43 100644
+--- a/fs/gfs2/util.c
++++ b/fs/gfs2/util.c
+@@ -107,7 +107,7 @@ int gfs2_freeze_lock(struct gfs2_sbd *sdp, struct gfs2_holder *freeze_gh,
+ 	error = gfs2_glock_nq_init(sdp->sd_freeze_gl, LM_ST_SHARED, flags,
+ 				   freeze_gh);
+ 	if (error && error != GLR_TRYFAILED)
+-		fs_err(sdp, "can't lock the freeze lock: %d\n", error);
++		fs_err(sdp, "can't lock the freeze glock: %d\n", error);
+ 	return error;
  }
- 
-@@ -3145,7 +3148,7 @@ int r5l_init_log(struct r5conf *conf, struct md_rdev *rdev)
- 	spin_lock_init(&log->stripe_in_journal_lock);
- 	atomic_set(&log->stripe_in_journal_count, 0);
- 
--	conf->log = log;
-+	WRITE_ONCE(conf->log, log);
- 
- 	set_bit(MD_HAS_JOURNAL, &conf->mddev->flags);
- 	return 0;
-@@ -3173,7 +3176,7 @@ void r5l_exit_log(struct r5conf *conf)
- 	 * 'reconfig_mutex' is held by caller, set 'confg->log' to NULL to
- 	 * ensure disable_writeback_work wakes up and exits.
- 	 */
--	conf->log = NULL;
-+	WRITE_ONCE(conf->log, NULL);
- 	wake_up(&conf->mddev->sb_wait);
- 	flush_work(&log->disable_writeback_work);
  
 -- 
 2.43.0
