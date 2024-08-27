@@ -1,148 +1,72 @@
-Return-Path: <stable+bounces-70329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70330-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB1ED9609F8
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:23:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A77469609FE
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:24:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F81C1F2401D
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 12:23:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA78E1C22303
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 12:24:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA2791A0AE6;
-	Tue, 27 Aug 2024 12:23:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 604571B2507;
+	Tue, 27 Aug 2024 12:24:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x4uTMl7D"
 X-Original-To: stable@vger.kernel.org
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C71AB19EEBD;
-	Tue, 27 Aug 2024 12:23:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EF2F1B14E8
+	for <stable@vger.kernel.org>; Tue, 27 Aug 2024 12:24:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724761410; cv=none; b=EORiGyLx92zi32gve1uk7WYUZLuxQzL0E3QwLFzHbLEpuFz1QhpySo7Z/UlezPoy8ZSXjBCq3IFM3HoTRtuCtGfOK5+V+X410YBLP0rbqNA+X5I0weGmrIyAQVTj+DJwGDc9Xu8OFYbnSj8gGAsOiFoTZXWQceQEB+KJOwhd/nQ=
+	t=1724761457; cv=none; b=JnRUa8m7io2JniRwOy6FtGOYnpCFIVzs6I5GKGqjLK206QwDj2OoPw2O98QJRQ64xekadWAkS1sLbq4DA9OFjipzMqpzNxL2gKMbNVMYS0z4MjGkpGb7gzn+feT12PJ5mnRR3Ni6sfrdzY17hUgvndBwpXVYJzDLBIC7wCS96UM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724761410; c=relaxed/simple;
-	bh=DlcCI5dqbxV19MynyTVWrTsqnSy9wcndP02vRILSOJw=;
+	s=arc-20240116; t=1724761457; c=relaxed/simple;
+	bh=zfTElYcgaiZ8VSyHl+ymj+C4SExhDElZDGHw3/4FS14=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Z6Y5Mmo0TNUx6xt/OT3GLPCCgBBK/jPAHnMCCtxwfzbmHwTg1kgXOD9sPMPtgzn07r3czjoloJbEiUc6YX44VezvLWLCBdZ3xFnQr1SUW95mXlLNtHlFpTgi4DKGqXflEpOkS07elOC2MOKfjosCcoHywiBFQ1/MJEHbsTwcFWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id 0E9F61C009B; Tue, 27 Aug 2024 14:23:27 +0200 (CEST)
-Date: Tue, 27 Aug 2024 14:23:26 +0200
-From: Pavel Machek <pavel@denx.de>
-To: Sasha Levin <sashal@kernel.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Aleksandr Mishin <amishin@t-argos.ru>,
-	Bjorn Helgaas <helgaas@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, jonnyc@amazon.com,
-	lpieralisi@kernel.org, kw@linux.com, linux-pci@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 5.15 25/47] PCI: al: Check IORESOURCE_BUS
- existence during probe
-Message-ID: <Zs3FPsfjnO5+6QcT@duo.ucw.cz>
-References: <20240801003256.3937416-1-sashal@kernel.org>
- <20240801003256.3937416-25-sashal@kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Dc6liwNNqH4kfS0OW7X+3mUBwy7rmMCyxMjkD47K6UnsDZFVruT2jn36wTc9z2qMhK1ktHqhVEFB5YzkKCvxuxxRY+RPPQAG2lJg3/S7AOSU6K8R6OzhgqGKOtDS06LrpoQ1rAcxJdWncZgPSspYMz8i2Nl2Vuzt2llyDzu9mrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x4uTMl7D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 342E9C61042;
+	Tue, 27 Aug 2024 12:24:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1724761456;
+	bh=zfTElYcgaiZ8VSyHl+ymj+C4SExhDElZDGHw3/4FS14=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=x4uTMl7DZAwNpKjX8HM9sJuvxS3uFR7Mw9QwJXju7Y5sUt2WZtftKR3mNlNrNTUFj
+	 UJ9UNjp97cP2kCtVe3gp8kEdfxC6qPKSwGmwrLfcfeyKPvZoKS68tLPXF+iELG4O5B
+	 jbTmm5ApfbtVLnVVrJF30kaVshOSj1Fn5GgdM+nw=
+Date: Tue, 27 Aug 2024 14:24:12 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Mario Limonciello <mario.limonciello@amd.com>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: Re: VCN power consumption improvement for 6.10.y
+Message-ID: <2024082705-surface-doornail-3a27@gregkh>
+References: <0cc223ce-5350-4780-94d5-513079531cc4@amd.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="T0sGyw0kuOTLMwMR"
-Content-Disposition: inline
-In-Reply-To: <20240801003256.3937416-25-sashal@kernel.org>
-
-
---T0sGyw0kuOTLMwMR
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <0cc223ce-5350-4780-94d5-513079531cc4@amd.com>
 
-Hi!
+On Mon, Aug 26, 2024 at 10:56:15AM -0500, Mario Limonciello wrote:
+> Hi,
+> 
+> The following patches in 6.11-rc1 help VCN power consumption on a lot of
+> modern products.  Can we please take then to 6.10.y so more people can get
+> the power savings?
+> 
+> commit ecfa23c8df7e ("drm/amdgpu/vcn: identify unified queue in sw init")
+> commit 7d75ef3736a0 ("drm/amdgpu/vcn: not pause dpg for unified queue")
 
-> [ Upstream commit a9927c2cac6e9831361e43a14d91277818154e6a ]
->=20
-> If IORESOURCE_BUS is not provided in Device Tree it will be fabricated in
-> of_pci_parse_bus_range(), so NULL pointer dereference should not happen
-> here.
->=20
-> But that's hard to verify, so check for NULL anyway.
->=20
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Both now queued up, thanks.
 
-If the NULL can't happen, we should not really apply this to -stable.
-
-Best regards,
-								Pavel
-							=09
-> +++ b/drivers/pci/controller/dwc/pcie-al.c
-> @@ -242,18 +242,24 @@ static struct pci_ops al_child_pci_ops =3D {
->  	.write =3D pci_generic_config_write,
->  };
-> =20
-> -static void al_pcie_config_prepare(struct al_pcie *pcie)
-> +static int al_pcie_config_prepare(struct al_pcie *pcie)
->  {
->  	struct al_pcie_target_bus_cfg *target_bus_cfg;
->  	struct pcie_port *pp =3D &pcie->pci->pp;
->  	unsigned int ecam_bus_mask;
-> +	struct resource_entry *ft;
->  	u32 cfg_control_offset;
-> +	struct resource *bus;
->  	u8 subordinate_bus;
->  	u8 secondary_bus;
->  	u32 cfg_control;
->  	u32 reg;
-> -	struct resource *bus =3D resource_list_first_type(&pp->bridge->windows,=
- IORESOURCE_BUS)->res;
-> =20
-> +	ft =3D resource_list_first_type(&pp->bridge->windows, IORESOURCE_BUS);
-> +	if (!ft)
-> +		return -ENODEV;
-> +
-> +	bus =3D ft->res;
->  	target_bus_cfg =3D &pcie->target_bus_cfg;
-> =20
->  	ecam_bus_mask =3D (pcie->ecam_size >> PCIE_ECAM_BUS_SHIFT) - 1;
-> @@ -287,6 +293,8 @@ static void al_pcie_config_prepare(struct al_pcie *pc=
-ie)
->  	       FIELD_PREP(CFG_CONTROL_SEC_BUS_MASK, secondary_bus);
-> =20
->  	al_pcie_controller_writel(pcie, cfg_control_offset, reg);
-> +
-> +	return 0;
->  }
-> =20
->  static int al_pcie_host_init(struct pcie_port *pp)
-> @@ -305,7 +313,9 @@ static int al_pcie_host_init(struct pcie_port *pp)
->  	if (rc)
->  		return rc;
-> =20
-> -	al_pcie_config_prepare(pcie);
-> +	rc =3D al_pcie_config_prepare(pcie);
-> +	if (rc)
-> +		return rc;
-> =20
->  	return 0;
->  }
-
---=20
-DENX Software Engineering GmbH,        Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-
---T0sGyw0kuOTLMwMR
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZs3FPgAKCRAw5/Bqldv6
-8vfvAJoD7xh8OBIk3HaGLcwuPv0YOpd8vQCgkzB1k0M8tLtvsEV6HojnZcVqV8Y=
-=j2Sj
------END PGP SIGNATURE-----
-
---T0sGyw0kuOTLMwMR--
+greg k-h
 
