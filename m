@@ -1,64 +1,59 @@
-Return-Path: <stable+bounces-70754-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70504-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3829960FDE
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:03:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12AD3960E78
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:49:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E851C1C234DF
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:03:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE4651F240C8
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:49:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 238BD1C578D;
-	Tue, 27 Aug 2024 15:02:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DFE81C6F46;
+	Tue, 27 Aug 2024 14:48:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q+UE9+Kk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TW4fexY0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CADE11C6881;
-	Tue, 27 Aug 2024 15:02:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F13DB1C68BD;
+	Tue, 27 Aug 2024 14:48:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770952; cv=none; b=YXO+MltAm7lanjTdKUzNsGhB1aRHli49l9WcbVNi0hAS65UHU0et8YsSOyttaIZlo3KVr0oemHjlbZzXAD9htRRvtK8/C/2lUkKWLqpOzyRaXyqiExjye2fM1dgH5NHCwz6yZK71h0gdGhJ7pAr/qk9Jv+CgQRJyx+jDe/lce3M=
+	t=1724770128; cv=none; b=qc5aULvWw4zX1fF7/3u/7HdTWRafopTMrRu0p/7oYD2wfM1CX24BWjm0vKXiv0yNXCMGccjLTp42pLbW3yRuEm4OJrZYI48IXzrVBOnZ1os6PjPnc4Q5oNgYz21/sbbgLS7RLUoVidKOItvKwgJPgud0GuHmU87UWtH/1cpeum0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770952; c=relaxed/simple;
-	bh=tblbooLA8IVUYzXDNdJQmBzGBoeIpa2E5lpbiKA/0Fo=;
+	s=arc-20240116; t=1724770128; c=relaxed/simple;
+	bh=xn8N+jSjdXQdsFl4PRDnhSM74sio84qfAN/nkWTZd9I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KYtRghDyCTNgM9EBN4m9EMArY4YXDi2UuJECR6UKj22RoUizuuvQZjEtknxt56Jyzz9k9ajtS9c4M/LHrkd4GLiReomKBrT4pUiDKzJVThh/6+r/BxYqx6kldSXVKIDqf+Gsz41tZ9Y+ejX7MvKroSppDffvg0rpOgBVzcbYoAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q+UE9+Kk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2109EC61042;
-	Tue, 27 Aug 2024 15:02:32 +0000 (UTC)
+	 MIME-Version; b=U2sHZu1dm2e6D8wx2a73wku4PYnbZnrPHlSS6UUwfCi5ZgcOTZTehyFqhRhQcq9DAOr59OiFehPsEewVHJpqdre5Oun5HRn8R2PgB11xvZRMHRpYGG2IXKZmIp0/GHr0vD37i8ZHwG0xm8AUBn8+zs7tOj4nFxArYVQ2vborJI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TW4fexY0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C1B1C61047;
+	Tue, 27 Aug 2024 14:48:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770952;
-	bh=tblbooLA8IVUYzXDNdJQmBzGBoeIpa2E5lpbiKA/0Fo=;
+	s=korg; t=1724770127;
+	bh=xn8N+jSjdXQdsFl4PRDnhSM74sio84qfAN/nkWTZd9I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q+UE9+KkT2apJWctGM6xBW+XZBogot9vRIHLgZ04ivqGCIMQmiyjHYfsrNrZYsDDI
-	 rDCOdjasvDpyHvq3SxHmlFpWI+XaTacgwof8ThgrMmzAD/TbwWG+MKVYX5g1bErryB
-	 IWqga6OyJYLQ7BiDVqirJpbYAuk+UBOBiPO4eerY=
+	b=TW4fexY0c4m75TbubveYCUO1WuvxUh0fjngQYZBXS775DSLl0uzIAo2Tw2eYj7jL/
+	 WHmPDnl8hEYOd99HkajMob7HmH6C+Woz8COOCuS9IS5uCvkmS7TcF/6/0LkZoukk/1
+	 1p41YOawzWGjQJtUyNB0t98hYOqIZPA01WyHvuAM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-	Jianxiong Gao <jxgao@google.com>,
-	David Hildenbrand <david@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Mel Gorman <mgorman@suse.de>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.10 043/273] mm: fix endless reclaim on machines with unaccepted memory
+	Tyrel Datwyler <tyreld@linux.ibm.com>,
+	"Nysal Jan K.A" <nysal@linux.ibm.com>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 136/341] cpu/SMT: Enable SMT only if a core is online
 Date: Tue, 27 Aug 2024 16:36:07 +0200
-Message-ID: <20240827143835.036236133@linuxfoundation.org>
+Message-ID: <20240827143848.594190440@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,162 +65,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+From: Nysal Jan K.A <nysal@linux.ibm.com>
 
-commit 807174a93d24c456503692dc3f5af322ee0b640a upstream.
+[ Upstream commit 6c17ea1f3eaa330d445ac14a9428402ce4e3055e ]
 
-Unaccepted memory is considered unusable free memory, which is not counted
-as free on the zone watermark check.  This causes get_page_from_freelist()
-to accept more memory to hit the high watermark, but it creates problems
-in the reclaim path.
+If a core is offline then enabling SMT should not online CPUs of
+this core. By enabling SMT, what is intended is either changing the SMT
+value from "off" to "on" or setting the SMT level (threads per core) from a
+lower to higher value.
 
-The reclaim path encounters a failed zone watermark check and attempts to
-reclaim memory.  This is usually successful, but if there is little or no
-reclaimable memory, it can result in endless reclaim with little to no
-progress.  This can occur early in the boot process, just after start of
-the init process when the only reclaimable memory is the page cache of the
-init executable and its libraries.
+On PowerPC the ppc64_cpu utility can be used, among other things, to
+perform the following functions:
 
-Make unaccepted memory free from watermark check point of view.  This way
-unaccepted memory will never be the trigger of memory reclaim.  Accept
-more memory in the get_page_from_freelist() if needed.
+ppc64_cpu --cores-on                # Get the number of online cores
+ppc64_cpu --cores-on=X              # Put exactly X cores online
+ppc64_cpu --offline-cores=X[,Y,...] # Put specified cores offline
+ppc64_cpu --smt={on|off|value}      # Enable, disable or change SMT level
 
-Link: https://lkml.kernel.org/r/20240809114854.3745464-2-kirill.shutemov@linux.intel.com
-Fixes: dcdfdd40fa82 ("mm: Add support for unaccepted memory")
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Reported-by: Jianxiong Gao <jxgao@google.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Tested-by: Jianxiong Gao <jxgao@google.com>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Mel Gorman <mgorman@suse.de>
-Cc: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Cc: Tom Lendacky <thomas.lendacky@amd.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: <stable@vger.kernel.org>	[6.5+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+If the user has decided to offline certain cores, enabling SMT should
+not online CPUs in those cores. This patch fixes the issue and changes
+the behaviour as described, by introducing an arch specific function
+topology_is_core_online(). It is currently implemented only for PowerPC.
+
+Fixes: 73c58e7e1412 ("powerpc: Add HOTPLUG_SMT support")
+Reported-by: Tyrel Datwyler <tyreld@linux.ibm.com>
+Closes: https://groups.google.com/g/powerpc-utils-devel/c/wrwVzAAnRlI/m/5KJSoqP4BAAJ
+Signed-off-by: Nysal Jan K.A <nysal@linux.ibm.com>
+Reviewed-by: Shrikanth Hegde <sshegde@linux.ibm.com>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240731030126.956210-2-nysal@linux.ibm.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/page_alloc.c |   42 ++++++++++++++++++++----------------------
- 1 file changed, 20 insertions(+), 22 deletions(-)
+ Documentation/ABI/testing/sysfs-devices-system-cpu |  3 ++-
+ kernel/cpu.c                                       | 12 +++++++++++-
+ 2 files changed, 13 insertions(+), 2 deletions(-)
 
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -287,7 +287,7 @@ EXPORT_SYMBOL(nr_online_nodes);
+diff --git a/Documentation/ABI/testing/sysfs-devices-system-cpu b/Documentation/ABI/testing/sysfs-devices-system-cpu
+index 34b6f6ab47422..657bdee28d845 100644
+--- a/Documentation/ABI/testing/sysfs-devices-system-cpu
++++ b/Documentation/ABI/testing/sysfs-devices-system-cpu
+@@ -565,7 +565,8 @@ Description:	Control Symmetric Multi Threading (SMT)
+ 			 ================ =========================================
  
- static bool page_contains_unaccepted(struct page *page, unsigned int order);
- static void accept_page(struct page *page, unsigned int order);
--static bool try_to_accept_memory(struct zone *zone, unsigned int order);
-+static bool cond_accept_memory(struct zone *zone, unsigned int order);
- static inline bool has_unaccepted_memory(void);
- static bool __free_unaccepted(struct page *page);
+ 			 If control status is "forceoff" or "notsupported" writes
+-			 are rejected.
++			 are rejected. Note that enabling SMT on PowerPC skips
++			 offline cores.
  
-@@ -3059,9 +3059,6 @@ static inline long __zone_watermark_unus
- 	if (!(alloc_flags & ALLOC_CMA))
- 		unusable_free += zone_page_state(z, NR_FREE_CMA_PAGES);
- #endif
--#ifdef CONFIG_UNACCEPTED_MEMORY
--	unusable_free += zone_page_state(z, NR_UNACCEPTED);
--#endif
- 
- 	return unusable_free;
- }
-@@ -3355,6 +3352,8 @@ retry:
- 			}
- 		}
- 
-+		cond_accept_memory(zone, order);
-+
- 		/*
- 		 * Detect whether the number of free pages is below high
- 		 * watermark.  If so, we will decrease pcp->high and free
-@@ -3380,10 +3379,8 @@ check_alloc_wmark:
- 				       gfp_mask)) {
- 			int ret;
- 
--			if (has_unaccepted_memory()) {
--				if (try_to_accept_memory(zone, order))
--					goto try_this_zone;
--			}
-+			if (cond_accept_memory(zone, order))
-+				goto try_this_zone;
- 
- #ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT
- 			/*
-@@ -3437,10 +3434,8 @@ try_this_zone:
- 
- 			return page;
- 		} else {
--			if (has_unaccepted_memory()) {
--				if (try_to_accept_memory(zone, order))
--					goto try_this_zone;
--			}
-+			if (cond_accept_memory(zone, order))
-+				goto try_this_zone;
- 
- #ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT
- 			/* Try again if zone has deferred pages */
-@@ -6933,9 +6928,6 @@ static bool try_to_accept_memory_one(str
- 	struct page *page;
- 	bool last;
- 
--	if (list_empty(&zone->unaccepted_pages))
--		return false;
--
- 	spin_lock_irqsave(&zone->lock, flags);
- 	page = list_first_entry_or_null(&zone->unaccepted_pages,
- 					struct page, lru);
-@@ -6961,23 +6953,29 @@ static bool try_to_accept_memory_one(str
- 	return true;
- }
- 
--static bool try_to_accept_memory(struct zone *zone, unsigned int order)
-+static bool cond_accept_memory(struct zone *zone, unsigned int order)
- {
- 	long to_accept;
--	int ret = false;
-+	bool ret = false;
-+
-+	if (!has_unaccepted_memory())
-+		return false;
-+
-+	if (list_empty(&zone->unaccepted_pages))
-+		return false;
- 
- 	/* How much to accept to get to high watermark? */
- 	to_accept = high_wmark_pages(zone) -
- 		    (zone_page_state(zone, NR_FREE_PAGES) -
--		    __zone_watermark_unusable_free(zone, order, 0));
-+		    __zone_watermark_unusable_free(zone, order, 0) -
-+		    zone_page_state(zone, NR_UNACCEPTED));
- 
--	/* Accept at least one page */
--	do {
-+	while (to_accept > 0) {
- 		if (!try_to_accept_memory_one(zone))
- 			break;
- 		ret = true;
- 		to_accept -= MAX_ORDER_NR_PAGES;
--	} while (to_accept > 0);
-+	}
- 
+ What:		/sys/devices/system/cpu/cpuX/power/energy_perf_bias
+ Date:		March 2019
+diff --git a/kernel/cpu.c b/kernel/cpu.c
+index 874bfb952e6e8..0c72b94ed076a 100644
+--- a/kernel/cpu.c
++++ b/kernel/cpu.c
+@@ -2728,6 +2728,16 @@ int cpuhp_smt_disable(enum cpuhp_smt_control ctrlval)
  	return ret;
  }
-@@ -7020,7 +7018,7 @@ static void accept_page(struct page *pag
- {
- }
  
--static bool try_to_accept_memory(struct zone *zone, unsigned int order)
-+static bool cond_accept_memory(struct zone *zone, unsigned int order)
++/**
++ * Check if the core a CPU belongs to is online
++ */
++#if !defined(topology_is_core_online)
++static inline bool topology_is_core_online(unsigned int cpu)
++{
++	return true;
++}
++#endif
++
+ int cpuhp_smt_enable(void)
  {
- 	return false;
- }
+ 	int cpu, ret = 0;
+@@ -2738,7 +2748,7 @@ int cpuhp_smt_enable(void)
+ 		/* Skip online CPUs and CPUs on offline nodes */
+ 		if (cpu_online(cpu) || !node_online(cpu_to_node(cpu)))
+ 			continue;
+-		if (!cpu_smt_thread_allowed(cpu))
++		if (!cpu_smt_thread_allowed(cpu) || !topology_is_core_online(cpu))
+ 			continue;
+ 		ret = _cpu_up(cpu, 0, CPUHP_ONLINE);
+ 		if (ret)
+-- 
+2.43.0
+
 
 
 
