@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-70588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70839-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D01E960EF4
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:54:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B05A961046
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:07:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 441DD1F21804
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:54:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E3EFD1F225A1
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:07:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95B7B1C8FD4;
-	Tue, 27 Aug 2024 14:53:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E42B1C2DB1;
+	Tue, 27 Aug 2024 15:07:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KZxFYC9H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VklIDWk1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D3311BC9E3;
-	Tue, 27 Aug 2024 14:53:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D3D01E520;
+	Tue, 27 Aug 2024 15:07:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770406; cv=none; b=dGDfiJgeOlfi7Hp2ISKVNWCJBtWe2CuCicvUg3i/vfa1+1M3/S3cPEukSHnRreBMcAulNgsO88EweuoI/Ulk5GHOImmS48UA0NDKtFpZzAe7wRsj2hoq1cm1HEvhvXuh+EEgpHIWT8z8aLBUbEvIkM7DcDNxO0Bo80qyXTC7m/g=
+	t=1724771231; cv=none; b=J/B5GnjpEdC/5Mni6vjCvAOUZEQPHzld2Zqkh9q6710um1RdF39mHYvmx0jpAJCNe/ApWBfk7gueNMlkA/A73U3Oq1vpK+vIh2MMxcuBV5RJNTzk6NumzUyaPekN4iJevRjwzMtpyEtiA1+dmR9MN+FtfFMx6yeD6jFg/aP1lg4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770406; c=relaxed/simple;
-	bh=Mde3a2+hda2qfamTRSBMcD4tEtNeL4SbcHDE8jBiNoA=;
+	s=arc-20240116; t=1724771231; c=relaxed/simple;
+	bh=M4Oig4K/4QXzR3E9wqoEw0Pd8OXUVsGqsyZK9z4ANNQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dzFhxUTfOtYwaxshxOaJ6ugyQAzBNj1XVjI2c8TchWOM+Hts8ib0codshU/vP2vbTSRscMEC0JmFBmxcEv7h1WL2DjhwalgWbc27zPhbVNytIBL+2tNOI+K5/zplyARUMC3o8bbeJhOyItTCDvL7S4+v4ADw53MXX2pbhEth/3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KZxFYC9H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE4DBC6107C;
-	Tue, 27 Aug 2024 14:53:25 +0000 (UTC)
+	 MIME-Version; b=oyXYSDtADSQ/VrvxMYGYxLJyTmBffIFvxLiym5HLAKuSN3iWfdTUs0Pp4fzLOVuyQxWeGzuITAoOidSuhf0VQIcI14AEGQ3Eb8gVDSZrI4xeuxf0dFSDbbIhVL3S1Tg+lpRDvYYMBRgMIy+nnmfT0nGdSeV306NE5vHA2Fen/ic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VklIDWk1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1BCFC4AF55;
+	Tue, 27 Aug 2024 15:07:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770406;
-	bh=Mde3a2+hda2qfamTRSBMcD4tEtNeL4SbcHDE8jBiNoA=;
+	s=korg; t=1724771231;
+	bh=M4Oig4K/4QXzR3E9wqoEw0Pd8OXUVsGqsyZK9z4ANNQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KZxFYC9HYmZMMdppkaHtYLMO2tPM49XcmJon/XN+wKQYlFak0Nqoc7n/FNxcCH1Qs
-	 BbNlJVYPW6QLj1DXzGX9jVC83voedIQEZ3snGgH89qi0HDKoj4/9Tx6UWGuAw8KV45
-	 KCxj3wjMVYx4aZdpYAmnrdVtn1QqRIaZBul9jvU8=
+	b=VklIDWk1YRjqyZaqjwuRcm27LURmwWrPsu/HcA7FiRYa7iUuwOD+15GYnXf7vn0IW
+	 pUsrdU7LgbQqOBpg6gkKssZ95A1Uyn/YKmkOGvjnhmOFBgFc4RoVNxExAJK8fO7Ayt
+	 xdxxcLXZhrIP/hjoAUJ9ocX0HPaPBKoBE0wSTTdA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brett Creeley <brett.creeley@amd.com>,
-	Shannon Nelson <shannon.nelson@amd.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Finn Behrens <me@kloenk.dev>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 218/341] ionic: check cmd_regs before copying in or out
+Subject: [PATCH 6.10 125/273] rust: work around `bindgen` 0.69.0 issue
 Date: Tue, 27 Aug 2024 16:37:29 +0200
-Message-ID: <20240827143851.707567584@linuxfoundation.org>
+Message-ID: <20240827143838.162868859@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,131 +64,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shannon Nelson <shannon.nelson@amd.com>
+From: Miguel Ojeda <ojeda@kernel.org>
 
-[ Upstream commit 7662fad348ac54120e9e6443cb0bbe4f3b582219 ]
+[ Upstream commit 9e98db17837093cb0f4dcfcc3524739d93249c45 ]
 
-Since we now have potential cases of NULL cmd_regs and info_regs
-during a reset recovery, and left NULL if a reset recovery has
-failed, we need to check that they exist before we use them.
-Most of the cases were covered in the original patch where we
-verify before doing the ioreadb() for health or cmd status.
-However, we need to protect a few uses of io mem that could
-be hit in error recovery or asynchronous threads calls as well
-(e.g. ethtool or devlink handlers).
+`bindgen` 0.69.0 contains a bug: `--version` does not work without
+providing a header [1]:
 
-Fixes: 219e183272b4 ("ionic: no fw read when PCI reset failed")
-Reviewed-by: Brett Creeley <brett.creeley@amd.com>
-Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+    error: the following required arguments were not provided:
+      <HEADER>
+
+    Usage: bindgen <FLAGS> <OPTIONS> <HEADER> -- <CLANG_ARGS>...
+
+Thus, in preparation for supporting several `bindgen` versions, work
+around the issue by passing a dummy argument.
+
+Include a comment so that we can remove the workaround in the future.
+
+Link: https://github.com/rust-lang/rust-bindgen/pull/2678 [1]
+Reviewed-by: Finn Behrens <me@kloenk.dev>
+Tested-by: Benno Lossin <benno.lossin@proton.me>
+Tested-by: Andreas Hindborg <a.hindborg@samsung.com>
+Link: https://lore.kernel.org/r/20240709160615.998336-9-ojeda@kernel.org
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Stable-dep-of: 5ce86c6c8613 ("rust: suppress error messages from CONFIG_{RUSTC,BINDGEN}_VERSION_TEXT")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/pensando/ionic/ionic_dev.c     | 10 ++++++++++
- drivers/net/ethernet/pensando/ionic/ionic_ethtool.c |  7 ++++++-
- drivers/net/ethernet/pensando/ionic/ionic_fw.c      |  5 +++++
- drivers/net/ethernet/pensando/ionic/ionic_main.c    |  3 +++
- 4 files changed, 24 insertions(+), 1 deletion(-)
+ init/Kconfig                 | 5 ++++-
+ scripts/rust_is_available.sh | 6 +++++-
+ 2 files changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_dev.c b/drivers/net/ethernet/pensando/ionic/ionic_dev.c
-index b4e0fb25b96d7..e242166f0afe7 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_dev.c
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_dev.c
-@@ -319,22 +319,32 @@ int ionic_heartbeat_check(struct ionic *ionic)
+diff --git a/init/Kconfig b/init/Kconfig
+index 6e97693b675f2..b7683506264f0 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -1911,7 +1911,10 @@ config RUSTC_VERSION_TEXT
+ config BINDGEN_VERSION_TEXT
+ 	string
+ 	depends on RUST
+-	default $(shell,command -v $(BINDGEN) >/dev/null 2>&1 && $(BINDGEN) --version || echo n)
++	# The dummy parameter `workaround-for-0.69.0` is required to support 0.69.0
++	# (https://github.com/rust-lang/rust-bindgen/pull/2678). It can be removed when
++	# the minimum version is upgraded past that (0.69.1 already fixed the issue).
++	default $(shell,command -v $(BINDGEN) >/dev/null 2>&1 && $(BINDGEN) --version workaround-for-0.69.0 || echo n)
  
- u8 ionic_dev_cmd_status(struct ionic_dev *idev)
- {
-+	if (!idev->dev_cmd_regs)
-+		return (u8)PCI_ERROR_RESPONSE;
- 	return ioread8(&idev->dev_cmd_regs->comp.comp.status);
- }
- 
- bool ionic_dev_cmd_done(struct ionic_dev *idev)
- {
-+	if (!idev->dev_cmd_regs)
-+		return false;
- 	return ioread32(&idev->dev_cmd_regs->done) & IONIC_DEV_CMD_DONE;
- }
- 
- void ionic_dev_cmd_comp(struct ionic_dev *idev, union ionic_dev_cmd_comp *comp)
- {
-+	if (!idev->dev_cmd_regs)
-+		return;
- 	memcpy_fromio(comp, &idev->dev_cmd_regs->comp, sizeof(*comp));
- }
- 
- void ionic_dev_cmd_go(struct ionic_dev *idev, union ionic_dev_cmd *cmd)
- {
- 	idev->opcode = cmd->cmd.opcode;
-+
-+	if (!idev->dev_cmd_regs)
-+		return;
-+
- 	memcpy_toio(&idev->dev_cmd_regs->cmd, cmd, sizeof(*cmd));
- 	iowrite32(0, &idev->dev_cmd_regs->done);
- 	iowrite32(1, &idev->dev_cmd_regs->doorbell);
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c b/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
-index 3a6b0a9bc2414..35829a2851fa7 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_ethtool.c
-@@ -90,18 +90,23 @@ static void ionic_get_regs(struct net_device *netdev, struct ethtool_regs *regs,
- 			   void *p)
- {
- 	struct ionic_lif *lif = netdev_priv(netdev);
-+	struct ionic_dev *idev;
- 	unsigned int offset;
- 	unsigned int size;
- 
- 	regs->version = IONIC_DEV_CMD_REG_VERSION;
- 
-+	idev = &lif->ionic->idev;
-+	if (!idev->dev_info_regs)
-+		return;
-+
- 	offset = 0;
- 	size = IONIC_DEV_INFO_REG_COUNT * sizeof(u32);
- 	memcpy_fromio(p + offset, lif->ionic->idev.dev_info_regs->words, size);
- 
- 	offset += size;
- 	size = IONIC_DEV_CMD_REG_COUNT * sizeof(u32);
--	memcpy_fromio(p + offset, lif->ionic->idev.dev_cmd_regs->words, size);
-+	memcpy_fromio(p + offset, idev->dev_cmd_regs->words, size);
- }
- 
- static void ionic_get_link_ext_stats(struct net_device *netdev,
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_fw.c b/drivers/net/ethernet/pensando/ionic/ionic_fw.c
-index 5f40324cd243f..3c209c1a23373 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_fw.c
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_fw.c
-@@ -109,6 +109,11 @@ int ionic_firmware_update(struct ionic_lif *lif, const struct firmware *fw,
- 	dl = priv_to_devlink(ionic);
- 	devlink_flash_update_status_notify(dl, "Preparing to flash", NULL, 0, 0);
- 
-+	if (!idev->dev_cmd_regs) {
-+		err = -ENXIO;
-+		goto err_out;
-+	}
-+
- 	buf_sz = sizeof(idev->dev_cmd_regs->data);
- 
- 	netdev_dbg(netdev,
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_main.c b/drivers/net/ethernet/pensando/ionic/ionic_main.c
-index f019277fec572..3ca6893d1bf26 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_main.c
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_main.c
-@@ -438,6 +438,9 @@ static void ionic_dev_cmd_clean(struct ionic *ionic)
- {
- 	struct ionic_dev *idev = &ionic->idev;
- 
-+	if (!idev->dev_cmd_regs)
-+		return;
-+
- 	iowrite32(0, &idev->dev_cmd_regs->doorbell);
- 	memset_io(&idev->dev_cmd_regs->cmd, 0, sizeof(idev->dev_cmd_regs->cmd));
- }
+ #
+ # Place an empty function call at each tracepoint site. Can be
+diff --git a/scripts/rust_is_available.sh b/scripts/rust_is_available.sh
+index 117018946b577..a6fdcf13e0e53 100755
+--- a/scripts/rust_is_available.sh
++++ b/scripts/rust_is_available.sh
+@@ -129,8 +129,12 @@ fi
+ # Check that the Rust bindings generator is suitable.
+ #
+ # Non-stable and distributions' versions may have a version suffix, e.g. `-dev`.
++#
++# The dummy parameter `workaround-for-0.69.0` is required to support 0.69.0
++# (https://github.com/rust-lang/rust-bindgen/pull/2678). It can be removed when
++# the minimum version is upgraded past that (0.69.1 already fixed the issue).
+ rust_bindings_generator_output=$( \
+-	LC_ALL=C "$BINDGEN" --version 2>/dev/null
++	LC_ALL=C "$BINDGEN" --version workaround-for-0.69.0 2>/dev/null
+ ) || rust_bindings_generator_code=$?
+ if [ -n "$rust_bindings_generator_code" ]; then
+ 	echo >&2 "***"
 -- 
 2.43.0
 
