@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-70725-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70477-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FBDB960FB3
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:01:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D67E2960E54
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:47:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0CF4B283084
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:01:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93BC12867E6
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:47:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C5B51C5783;
-	Tue, 27 Aug 2024 15:01:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F26571C57B7;
+	Tue, 27 Aug 2024 14:47:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QKuaon5J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z2l0IGNo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCCF11A08A3;
-	Tue, 27 Aug 2024 15:01:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEBFA1A072D;
+	Tue, 27 Aug 2024 14:47:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770861; cv=none; b=uwRf5MBZs5h3X0Y/YXlk2ujUROGmmnaD8wLd0928p6SCwUIndUE4nDeWLdSjP/2k1qRnM3N3yrkHd6G2sbDJenWWOQ4HtoI3NtTK3d9x3aJkWW2Fd1ILcMaajVCgiHiuhigT+wEhl8JAGgGXR3ZdiaZZOz/qsbWJhn8x6QavyyA=
+	t=1724770036; cv=none; b=qd9qqFrzVmhad+ZfI1sSMuZs3M4xbV5aa2s31fv/pv9JCbjnTNrFWQO+0Z25InUDPARm0CYimARvAyKNQjFLUKcE+niFLZqZ8gwvetMYCbYD9/e+UlnKQIX3uowk7Zv1v8d2YWdOhsuagYL1Ebk9tECmREJYIGMUZmTYSXtGv5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770861; c=relaxed/simple;
-	bh=kL5qmHEXTqgiUk1SdPjnQNkRhBgp8nKKb3xO3DIcDNI=;
+	s=arc-20240116; t=1724770036; c=relaxed/simple;
+	bh=TtZGVnd0c5S3ScyYyC499UDRCHul+OF9eGQFUOpYV/A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=B+bwTrxE0qoqLc9V/dgNDtor9gUzqwAzHGmr8DmqUTNjzSoHPWLqHB99A+3fYojTSRQwRP0DNxNFksxF/jo1b/hXUANGsfC4RaIs9qpNB3fVMiVAgZt0sy6xi5QWkd3mWmcelpDjjZKcBzqbEoQsKetNOgMidMVKQm8pKiRWMH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QKuaon5J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 445CFC4AF1C;
-	Tue, 27 Aug 2024 15:01:00 +0000 (UTC)
+	 MIME-Version; b=RUY2/tej1CCvOmvhtuBMp8JQ8X+dGc5qTgSILcz0g4Tr3QGscmiPeZvBI66ilHAtKSe/k+srpRnyM9I/XSB9YfmOJrvbzDf/GOvwR26ENUpvYh6+Y3+wsyF1W6EgfIWMamui822/BbTc6/9txh14bcTZny/UjYQz6YsKcyJk4Oc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z2l0IGNo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F9E9C4AF12;
+	Tue, 27 Aug 2024 14:47:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770860;
-	bh=kL5qmHEXTqgiUk1SdPjnQNkRhBgp8nKKb3xO3DIcDNI=;
+	s=korg; t=1724770036;
+	bh=TtZGVnd0c5S3ScyYyC499UDRCHul+OF9eGQFUOpYV/A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QKuaon5JTpicM7Wy4icPXzJ81vSpPDCLmV5/DDDz9xbs2JS0JrqVC7ReV5yiPGjCD
-	 kY/2ORTvxHpCUPsqFV9PZpQQcCkwUlq7B3DpkPzFLL30xv85C3/jqNuNT8aDb/8Pr/
-	 PNEEdN70TerKSi5puZkCHcrH4QS6KogGTfP+kwR0=
+	b=Z2l0IGNoaKwcH7pLd0sczgc5nG1mumZbidR8NlndOeFJwTyUp2AeyYk9PvnFq9gXg
+	 DHIsblj3vseq5fGq64qDqEv+6/wxnrPsf9VOtX30uyi7tKr5a/hVqPM9T3g31UvIu3
+	 5qgCBIQIYWudR1B7Os1sXx2QZwxv9bNSc9eTBxew=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Juan=20Jos=C3=A9=20Arboleda?= <soyjuanarbol@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.10 015/273] ALSA: usb-audio: Support Yamaha P-125 quirk entry
+	David Lechner <dlechner@baylibre.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 108/341] staging: iio: resolver: ad2s1210: fix use before initialization
 Date: Tue, 27 Aug 2024 16:35:39 +0200
-Message-ID: <20240827143833.967000889@linuxfoundation.org>
+Message-ID: <20240827143847.520779660@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,38 +60,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juan José Arboleda <soyjuanarbol@gmail.com>
+From: David Lechner <dlechner@baylibre.com>
 
-commit c286f204ce6ba7b48e3dcba53eda7df8eaa64dd9 upstream.
+[ Upstream commit 7fe2d05cee46b1c4d9f1efaeab08cc31a0dfff60 ]
 
-This patch adds a USB quirk for the Yamaha P-125 digital piano.
+This fixes a use before initialization in ad2s1210_probe(). The
+ad2s1210_setup_gpios() function uses st->sdev but it was being called
+before this field was initialized.
 
-Signed-off-by: Juan José Arboleda <soyjuanarbol@gmail.com>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20240813161053.70256-1-soyjuanarbol@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Link: https://lore.kernel.org/r/20230929-ad2s1210-mainline-v3-2-fa4364281745@baylibre.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/quirks-table.h |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/staging/iio/resolver/ad2s1210.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/sound/usb/quirks-table.h
-+++ b/sound/usb/quirks-table.h
-@@ -273,6 +273,7 @@ YAMAHA_DEVICE(0x105a, NULL),
- YAMAHA_DEVICE(0x105b, NULL),
- YAMAHA_DEVICE(0x105c, NULL),
- YAMAHA_DEVICE(0x105d, NULL),
-+YAMAHA_DEVICE(0x1718, "P-125"),
- {
- 	USB_DEVICE(0x0499, 0x1503),
- 	.driver_info = (unsigned long) & (const struct snd_usb_audio_quirk) {
+diff --git a/drivers/staging/iio/resolver/ad2s1210.c b/drivers/staging/iio/resolver/ad2s1210.c
+index 06de5823eb8e3..d38c4674cd6d7 100644
+--- a/drivers/staging/iio/resolver/ad2s1210.c
++++ b/drivers/staging/iio/resolver/ad2s1210.c
+@@ -658,9 +658,6 @@ static int ad2s1210_probe(struct spi_device *spi)
+ 	if (!indio_dev)
+ 		return -ENOMEM;
+ 	st = iio_priv(indio_dev);
+-	ret = ad2s1210_setup_gpios(st);
+-	if (ret < 0)
+-		return ret;
+ 
+ 	spi_set_drvdata(spi, indio_dev);
+ 
+@@ -671,6 +668,10 @@ static int ad2s1210_probe(struct spi_device *spi)
+ 	st->resolution = 12;
+ 	st->fexcit = AD2S1210_DEF_EXCIT;
+ 
++	ret = ad2s1210_setup_gpios(st);
++	if (ret < 0)
++		return ret;
++
+ 	indio_dev->info = &ad2s1210_info;
+ 	indio_dev->modes = INDIO_DIRECT_MODE;
+ 	indio_dev->channels = ad2s1210_channels;
+-- 
+2.43.0
+
 
 
 
