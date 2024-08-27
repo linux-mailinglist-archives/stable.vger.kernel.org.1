@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-71162-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70613-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3247E9611F4
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:25:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2ED2D960F16
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:55:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A022DB28B4A
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:25:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DEE7C283439
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:55:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9D0A1C68BE;
-	Tue, 27 Aug 2024 15:25:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 559001C6F51;
+	Tue, 27 Aug 2024 14:54:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ohqxaCW/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PY35u66U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 982691A072D;
-	Tue, 27 Aug 2024 15:25:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14BD719F485;
+	Tue, 27 Aug 2024 14:54:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772304; cv=none; b=RPzhWsJHCNl79OvTtn23Wx3r8l8QLaxDfG8e9NIukcDXBK3G65Kxu01pcxunrkXDPQ1GySudbp/+GEHchfXejpWZmNvRldA5y7WJCz0WLYUpZHzHfbu95UHq3g92k+XqluDk12gqxYzrDukOd58STniOtfXSmn3WZbQr0lk8ucs=
+	t=1724770491; cv=none; b=pRt0H0IQZfwlEuYrxhzEh0NbFxIRKSWRuNoduPEO8t3+pfF4JE7Eqouv8AwddBCRx31IpG4MDuW+Bi/rfY8GZbigNVwDWzK5PchHqSJkdOvwl9gxvrl6dSn8aicUJiznaTpMGQqzmwIAYqVuagyGarAQUhsggolubqK+nBuNOLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772304; c=relaxed/simple;
-	bh=A5YIl5fVS/cOGGeXQrUS2ETiJxBTbUHRyKTWPJM30og=;
+	s=arc-20240116; t=1724770491; c=relaxed/simple;
+	bh=ii2uObJYDLT+cb9P+Ky6mJ9ZGjceUxFPpL9xw2QQlbk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ipwnyi7riiS8SnCh+iqtGPBYpd4iNS459Q4IcpJUiWUEglrYHJ0lXDM7xkR5ackEadczJG5cvG3hD7NHBeZfAYnDdh+ftIKN7E0/o/4v2sG4vODXM9hR9vxgMz7WyXVm5zIQCK3SoUtlAXHbMK6cJbLHYOdqO7Peg8jItl95cdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ohqxaCW/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07936C61071;
-	Tue, 27 Aug 2024 15:25:03 +0000 (UTC)
+	 MIME-Version; b=o18bpOtMR+4tNDeTr3Y0Y3JTQ0TRXQAYzpc6PEVxK529kx5AnM0o++eSGqAj24J/tHlnee1HrMBjIRR31Eiegywegy69OgdA30Ju6VVusBrJNwQn5+hpwGiB1yy3ih8UMCiVLSv8tKptDf8e5KNDKDWD/FmfRS3EXKn2tP6hi5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PY35u66U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79D5EC4E68D;
+	Tue, 27 Aug 2024 14:54:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772304;
-	bh=A5YIl5fVS/cOGGeXQrUS2ETiJxBTbUHRyKTWPJM30og=;
+	s=korg; t=1724770491;
+	bh=ii2uObJYDLT+cb9P+Ky6mJ9ZGjceUxFPpL9xw2QQlbk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ohqxaCW/4Cs3wufFVB/+JI42fpkOzHJ+Tz+f+F4RIhxMme2a0M7sLJ0v2Zhcqg6Rv
-	 8Xnpk67Q6AxPF8Gc5hr52Q2IYMBu1AkFv8J0dh1W81c+A+Q2IxxqHCnnUUyEhkpMrn
-	 gyGKn0Ne+4aCf6mpyuAZTVBUau5x1FIzzqeoUzk4=
+	b=PY35u66UV9FkVcYySEoUmQLco5BpVmdVFtD7AmwzR3yu5kB612jHxkDbo9yKUCuHn
+	 9lKPUm9I8mf+1HJqAse+qknPbuYMHRu8ttAQY/f2dmXg2wCykVb0rr9hVNaDhb2Tlz
+	 spWOcNhC9cV2M8mQahts6phVlwxLKpBCFKRLkEas=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Airlie <airlied@redhat.com>,
-	Philipp Stanner <pstanner@redhat.com>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 167/321] media: drivers/media/dvb-core: copy user arrays safely
+Subject: [PATCH 6.6 244/341] net: mscc: ocelot: fix QoS class for injected packets with "ocelot-8021q"
 Date: Tue, 27 Aug 2024 16:37:55 +0200
-Message-ID: <20240827143844.587518518@linuxfoundation.org>
+Message-ID: <20240827143852.694696801@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +62,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Philipp Stanner <pstanner@redhat.com>
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
 
-[ Upstream commit 102fb77c2deb0df3683ef8ff7a6f4cf91dc456e2 ]
+[ Upstream commit e1b9e80236c540fa85d76e2d510d1b38e1968c5d ]
 
-At several positions in dvb_frontend.c, memdup_user() is utilized to
-copy userspace arrays. This is done without overflow checks.
+There are 2 distinct code paths (listed below) in the source code which
+set up an injection header for Ocelot(-like) switches. Code path (2)
+lacks the QoS class and source port being set correctly. Especially the
+improper QoS classification is a problem for the "ocelot-8021q"
+alternative DSA tagging protocol, because we support tc-taprio and each
+packet needs to be scheduled precisely through its time slot. This
+includes PTP, which is normally assigned to a traffic class other than
+0, but would be sent through TC 0 nonetheless.
 
-Use the new wrapper memdup_array_user() to copy the arrays more safely.
+The code paths are:
 
-Link: https://lore.kernel.org/linux-media/20231102191633.52592-2-pstanner@redhat.com
-Suggested-by: Dave Airlie <airlied@redhat.com>
-Signed-off-by: Philipp Stanner <pstanner@redhat.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+(1) ocelot_xmit_common() from net/dsa/tag_ocelot.c - called only by the
+    standard "ocelot" DSA tagging protocol which uses NPI-based
+    injection - sets up bit fields in the tag manually to account for
+    a small difference (destination port offset) between Ocelot and
+    Seville. Namely, ocelot_ifh_set_dest() is omitted out of
+    ocelot_xmit_common(), because there's also seville_ifh_set_dest().
+
+(2) ocelot_ifh_set_basic(), called by:
+    - ocelot_fdma_prepare_skb() for FDMA transmission of the ocelot
+      switchdev driver
+    - ocelot_port_xmit() -> ocelot_port_inject_frame() for
+      register-based transmission of the ocelot switchdev driver
+    - felix_port_deferred_xmit() -> ocelot_port_inject_frame() for the
+      DSA tagger ocelot-8021q when it must transmit PTP frames (also
+      through register-based injection).
+    sets the bit fields according to its own logic.
+
+The problem is that (2) doesn't call ocelot_ifh_set_qos_class().
+Copying that logic from ocelot_xmit_common() fixes that.
+
+Unfortunately, although desirable, it is not easily possible to
+de-duplicate code paths (1) and (2), and make net/dsa/tag_ocelot.c
+directly call ocelot_ifh_set_basic()), because of the ocelot/seville
+difference. This is the "minimal" fix with some logic duplicated (but
+at least more consolidated).
+
+Fixes: 0a6f17c6ae21 ("net: dsa: tag_ocelot_8021q: add support for PTP timestamping")
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/dvb-core/dvb_frontend.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/mscc/ocelot.c      | 10 +++++++++-
+ drivers/net/ethernet/mscc/ocelot_fdma.c |  1 -
+ 2 files changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/dvb-core/dvb_frontend.c b/drivers/media/dvb-core/dvb_frontend.c
-index fce0e20940780..a1a3dbb0e7388 100644
---- a/drivers/media/dvb-core/dvb_frontend.c
-+++ b/drivers/media/dvb-core/dvb_frontend.c
-@@ -2160,7 +2160,8 @@ static int dvb_frontend_handle_compat_ioctl(struct file *file, unsigned int cmd,
- 		if (!tvps->num || (tvps->num > DTV_IOCTL_MAX_MSGS))
- 			return -EINVAL;
+diff --git a/drivers/net/ethernet/mscc/ocelot.c b/drivers/net/ethernet/mscc/ocelot.c
+index c739124b394b5..4e01abf6cc72c 100644
+--- a/drivers/net/ethernet/mscc/ocelot.c
++++ b/drivers/net/ethernet/mscc/ocelot.c
+@@ -1208,13 +1208,21 @@ void ocelot_ifh_set_basic(void *ifh, struct ocelot *ocelot, int port,
+ 			  u32 rew_op, struct sk_buff *skb)
+ {
+ 	struct ocelot_port *ocelot_port = ocelot->ports[port];
++	struct net_device *dev = skb->dev;
+ 	u64 vlan_tci, tag_type;
++	int qos_class;
  
--		tvp = memdup_user(compat_ptr(tvps->props), tvps->num * sizeof(*tvp));
-+		tvp = memdup_array_user(compat_ptr(tvps->props),
-+					tvps->num, sizeof(*tvp));
- 		if (IS_ERR(tvp))
- 			return PTR_ERR(tvp);
+ 	ocelot_xmit_get_vlan_info(skb, ocelot_port->bridge, &vlan_tci,
+ 				  &tag_type);
  
-@@ -2191,7 +2192,8 @@ static int dvb_frontend_handle_compat_ioctl(struct file *file, unsigned int cmd,
- 		if (!tvps->num || (tvps->num > DTV_IOCTL_MAX_MSGS))
- 			return -EINVAL;
++	qos_class = netdev_get_num_tc(dev) ?
++		    netdev_get_prio_tc_map(dev, skb->priority) : skb->priority;
++
++	memset(ifh, 0, OCELOT_TAG_LEN);
+ 	ocelot_ifh_set_bypass(ifh, 1);
++	ocelot_ifh_set_src(ifh, BIT_ULL(ocelot->num_phys_ports));
+ 	ocelot_ifh_set_dest(ifh, BIT_ULL(port));
++	ocelot_ifh_set_qos_class(ifh, qos_class);
+ 	ocelot_ifh_set_tag_type(ifh, tag_type);
+ 	ocelot_ifh_set_vlan_tci(ifh, vlan_tci);
+ 	if (rew_op)
+@@ -1225,7 +1233,7 @@ EXPORT_SYMBOL(ocelot_ifh_set_basic);
+ void ocelot_port_inject_frame(struct ocelot *ocelot, int port, int grp,
+ 			      u32 rew_op, struct sk_buff *skb)
+ {
+-	u32 ifh[OCELOT_TAG_LEN / 4] = {0};
++	u32 ifh[OCELOT_TAG_LEN / 4];
+ 	unsigned int i, count, last;
  
--		tvp = memdup_user(compat_ptr(tvps->props), tvps->num * sizeof(*tvp));
-+		tvp = memdup_array_user(compat_ptr(tvps->props),
-+					tvps->num, sizeof(*tvp));
- 		if (IS_ERR(tvp))
- 			return PTR_ERR(tvp);
+ 	ocelot_write_rix(ocelot, QS_INJ_CTRL_GAP_SIZE(1) |
+diff --git a/drivers/net/ethernet/mscc/ocelot_fdma.c b/drivers/net/ethernet/mscc/ocelot_fdma.c
+index 87b59cc5e4416..00326ae8c708b 100644
+--- a/drivers/net/ethernet/mscc/ocelot_fdma.c
++++ b/drivers/net/ethernet/mscc/ocelot_fdma.c
+@@ -665,7 +665,6 @@ static int ocelot_fdma_prepare_skb(struct ocelot *ocelot, int port, u32 rew_op,
  
-@@ -2368,7 +2370,8 @@ static int dvb_get_property(struct dvb_frontend *fe, struct file *file,
- 	if (!tvps->num || tvps->num > DTV_IOCTL_MAX_MSGS)
- 		return -EINVAL;
+ 	ifh = skb_push(skb, OCELOT_TAG_LEN);
+ 	skb_put(skb, ETH_FCS_LEN);
+-	memset(ifh, 0, OCELOT_TAG_LEN);
+ 	ocelot_ifh_set_basic(ifh, ocelot, port, rew_op, skb);
  
--	tvp = memdup_user((void __user *)tvps->props, tvps->num * sizeof(*tvp));
-+	tvp = memdup_array_user((void __user *)tvps->props,
-+				tvps->num, sizeof(*tvp));
- 	if (IS_ERR(tvp))
- 		return PTR_ERR(tvp);
- 
-@@ -2446,7 +2449,8 @@ static int dvb_frontend_handle_ioctl(struct file *file,
- 		if (!tvps->num || (tvps->num > DTV_IOCTL_MAX_MSGS))
- 			return -EINVAL;
- 
--		tvp = memdup_user((void __user *)tvps->props, tvps->num * sizeof(*tvp));
-+		tvp = memdup_array_user((void __user *)tvps->props,
-+					tvps->num, sizeof(*tvp));
- 		if (IS_ERR(tvp))
- 			return PTR_ERR(tvp);
- 
+ 	return 0;
 -- 
 2.43.0
 
