@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-70684-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71260-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB857960F83
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:00:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E725961306
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:39:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A079F1F226C3
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:00:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 36264B26AE0
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:32:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 094591CDA23;
-	Tue, 27 Aug 2024 14:58:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6A891D1F7B;
+	Tue, 27 Aug 2024 15:30:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k9fAl2rL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MA2mocZz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB9091BC9E3;
-	Tue, 27 Aug 2024 14:58:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5B361CEAD3;
+	Tue, 27 Aug 2024 15:30:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770725; cv=none; b=BexJrXyLc3zFskBV37OULUZlOriNB8PONIw9Ga5bDEQE33Zo1y20qNxMi2HJHm8yjp4A5TaBRDfPiS1Snmf29Z1xNeOgOjeglJ9Tddm2q8ytQiY3Zrxkb/rpyVKeezO4ipfU2/EGd8FcXYz5EOX4949MvF93UcJkbYaxzNPRRng=
+	t=1724772624; cv=none; b=aPz5xmm5iAIem+JozUtCmX7LISZPI9FRwTmmZem/nb3tTD8OxssqX5tFPn+VvVCqiTpbYoUBPCkW8KyIuwrWmn9JD7TLgPTk7HUEbWiNQAR9oqlNhKyRqtInwNVUTubcQYYlouyHwKAX30YyToJ9hvTfBxa12GBGu/G8fpVQ7eY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770725; c=relaxed/simple;
-	bh=MC6O1tERv/4nfiTmBULjpBSuHsNEiGU58BqlhQAmpaQ=;
+	s=arc-20240116; t=1724772624; c=relaxed/simple;
+	bh=MZ60MQz/2H2UZVPKZTTAvEKJXLpIVCkxYCxIBgQegcY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aL7pEADQLNHmAfJmG8Y23gRyH/qBqdlLBrO89QOc7PVHnwz7htfvvSPUrmU4lpCN6MuK8z69OTy6EjPT1wDhe1KPr2gbosZecGVbAM71+jJruO0J8F2KcHhCFSf1dmFhYJE8XfeJeiZXrtttSp87u9p/rIZebtAYegTVYm7BFP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k9fAl2rL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16D41C4AF52;
-	Tue, 27 Aug 2024 14:58:44 +0000 (UTC)
+	 MIME-Version; b=sy4Dia226R8yp/am9uoqKfS1gU4gNh8MNd2wusYUAmGrD5e7o/uYAmsBkDf52gVcE8X0uY9mYwA5vLshEpgfKmoFm15UECCWSVBhuuMZWQ8o2guFdlzsZ2aixxICWVXiFXWph30H6m80iDdEZ6y1RUcnHSVMNxjByMN5iy3gZjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MA2mocZz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E25BAC4AF65;
+	Tue, 27 Aug 2024 15:30:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770725;
-	bh=MC6O1tERv/4nfiTmBULjpBSuHsNEiGU58BqlhQAmpaQ=;
+	s=korg; t=1724772624;
+	bh=MZ60MQz/2H2UZVPKZTTAvEKJXLpIVCkxYCxIBgQegcY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k9fAl2rLLmses78U+q7qp3VTCtGRyA7Esvll3ANpvq7KJ4stpRcBiNomBhTKM0fVW
-	 nMTrB6HtkyMsRPg/Ta/ygtuV2BagoaT+YUfYfp+EXyqVKMKCnZGAxsF0CKT07xx1Wl
-	 AocVyJ4yq7Qg4z8ghTU93nk3q6wzJyASAdKoEFuQ=
+	b=MA2mocZzRohyaba1A5PFsUcFHjDVJwvqBHWJfRiKonpMAfGwKTcolyL5aPJak8KeK
+	 high+XFP/ja96Mx6w1UDsg6arq6AIRy9LitGj0tBiIumXyKyUNOOw6SgZmehgYDAdj
+	 7tA4AWM8+FxLp+aKpkSsxtiWwY8AaHZN4o5BMR40=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 315/341] mptcp: pm: only decrement add_addr_accepted for MPJ req
-Date: Tue, 27 Aug 2024 16:39:06 +0200
-Message-ID: <20240827143855.376899713@linuxfoundation.org>
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 239/321] bonding: fix null pointer deref in bond_ipsec_offload_ok
+Date: Tue, 27 Aug 2024 16:39:07 +0200
+Message-ID: <20240827143847.335214491@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Nikolay Aleksandrov <razor@blackwall.org>
 
-commit 1c1f721375989579e46741f59523e39ec9b2a9bd upstream.
+[ Upstream commit 95c90e4ad89d493a7a14fa200082e466e2548f9d ]
 
-Adding the following warning ...
+We must check if there is an active slave before dereferencing the pointer.
 
-  WARN_ON_ONCE(msk->pm.add_addr_accepted == 0)
-
-... before decrementing the add_addr_accepted counter helped to find a
-bug when running the "remove single subflow" subtest from the
-mptcp_join.sh selftest.
-
-Removing a 'subflow' endpoint will first trigger a RM_ADDR, then the
-subflow closure. Before this patch, and upon the reception of the
-RM_ADDR, the other peer will then try to decrement this
-add_addr_accepted. That's not correct because the attached subflows have
-not been created upon the reception of an ADD_ADDR.
-
-A way to solve that is to decrement the counter only if the attached
-subflow was an MP_JOIN to a remote id that was not 0, and initiated by
-the host receiving the RM_ADDR.
-
-Fixes: d0876b2284cf ("mptcp: add the incoming RM_ADDR support")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20240819-net-mptcp-pm-reusing-id-v1-9-38035d40de5b@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 18cb261afd7b ("bonding: support hardware encryption offload to slaves")
+Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
+Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/pm_netlink.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/net/bonding/bond_main.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -837,7 +837,7 @@ static void mptcp_pm_nl_rm_addr_or_subfl
- 			mptcp_close_ssk(sk, ssk, subflow);
- 			spin_lock_bh(&msk->pm.lock);
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index 5c7b249a1bcfa..2414861e04eb0 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -600,6 +600,8 @@ static bool bond_ipsec_offload_ok(struct sk_buff *skb, struct xfrm_state *xs)
+ 	bond = netdev_priv(bond_dev);
+ 	rcu_read_lock();
+ 	curr_active = rcu_dereference(bond->curr_active_slave);
++	if (!curr_active)
++		goto out;
+ 	real_dev = curr_active->dev;
  
--			removed = true;
-+			removed |= subflow->request_join;
- 			if (rm_type == MPTCP_MIB_RMSUBFLOW)
- 				__MPTCP_INC_STATS(sock_net(sk), rm_type);
- 		}
-@@ -851,7 +851,11 @@ static void mptcp_pm_nl_rm_addr_or_subfl
- 		if (!mptcp_pm_is_kernel(msk))
- 			continue;
- 
--		if (rm_type == MPTCP_MIB_RMADDR) {
-+		if (rm_type == MPTCP_MIB_RMADDR && rm_id &&
-+		    !WARN_ON_ONCE(msk->pm.add_addr_accepted == 0)) {
-+			/* Note: if the subflow has been closed before, this
-+			 * add_addr_accepted counter will not be decremented.
-+			 */
- 			msk->pm.add_addr_accepted--;
- 			WRITE_ONCE(msk->pm.accept_addr, true);
- 		}
+ 	if (BOND_MODE(bond) != BOND_MODE_ACTIVEBACKUP)
+-- 
+2.43.0
+
 
 
 
