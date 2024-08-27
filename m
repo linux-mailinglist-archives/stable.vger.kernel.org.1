@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-70705-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70957-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91AFA960F9D
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:00:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 226A99610DE
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:13:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 014E3B24BC9
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:00:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D1CD2281A8D
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:13:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABB0A1C6886;
-	Tue, 27 Aug 2024 14:59:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F62C1C4EEC;
+	Tue, 27 Aug 2024 15:13:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p41GJlri"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kmM3NS/Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69AE31BA88C;
-	Tue, 27 Aug 2024 14:59:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C9881A072D;
+	Tue, 27 Aug 2024 15:13:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770795; cv=none; b=cySOgyPMesN5Df/eRIBfHsIiQww9Q7tkfMXQPWMRK8dg9H5UR2ducY4p8vstfKZJ76Mf1cS89K4jJRjDp8VbogDAXnvN6/koobigtccy/BFKc6gMbOT5EFD7js+dWNo+JpuYDlxrG7LHvPwyGxKsTiRD8FS6VznMoxCPxlP1GY8=
+	t=1724771623; cv=none; b=A/VcZwowK5wfz4iz9Y0asP68sxyLIyT6rgygSND1ch8M5pwniKv7iKHEqcaZ1qvti2n/bNcyS8PBobEpsn6Cwn3fI9BkAdcwQ63zQFQQnKRrKGZJNouZrwD6CgsoFbpmA/M1tiKR/QFAlwNLlWAXGUzz4xjsaOWvs7PYoA+011A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770795; c=relaxed/simple;
-	bh=xdlhbcpGfW5BSkYEMOv1skEkKqU1hgGm7B1bn18J2cE=;
+	s=arc-20240116; t=1724771623; c=relaxed/simple;
+	bh=rxfhOWx1NWaVkZwHrk+0fQes72/CrAtaVMVHeoVYXOQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k16Nrv4/KQjuQtQAdhpnRtN20HdGAqCXwskMU2dH2iqACa8Yjl+lGvkZMuggXCHsXojREra7aCjm+muwPeTt96k8jA1jcZwpqPYh5d39e/663hUGNXDCGjCa8IGdAjZ26uaOnxBNhdSYL8L1FBiCHse7+hyGCbLUQaUdCdq4P/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p41GJlri; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCCB5C4AF1C;
-	Tue, 27 Aug 2024 14:59:54 +0000 (UTC)
+	 MIME-Version; b=Jm08lgPEbVZv4FBKkSOExEKoUuGXnSNnTTw5aEImVWEBffU8jAkOi3hc7zv3IcF2vDqVK94Od1mbLkFfWWNsfeRRIth0dIeDgrgpCC5g8pnLLSkyN3xRQJy+U5694C/v/ZtSlrzB5WhBwIaGe8xq7lE1TG7rPU2V+brBh6JtYUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kmM3NS/Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D5A9C6105F;
+	Tue, 27 Aug 2024 15:13:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770795;
-	bh=xdlhbcpGfW5BSkYEMOv1skEkKqU1hgGm7B1bn18J2cE=;
+	s=korg; t=1724771622;
+	bh=rxfhOWx1NWaVkZwHrk+0fQes72/CrAtaVMVHeoVYXOQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p41GJlriEFvtoO3QnE8wMw7rB2Z5NJcWagI+kEotTEAjP6ZMzO7S4qhwI4YcrLfKp
-	 FO6fudq2WzKqGqBAPIcAovoH8OJu8aobE4+yRAfsrW6BWyKcJseazI7pC1ixdTJNJj
-	 OTYxZL1gPIfQK6tcNuqf9WNpNoQbsklZs9CheX0I=
+	b=kmM3NS/QS8g6MY+Hiy2I2pEBGRF67iQXXLopIS7dgguBWyoNtmGGbZL8d3lEc7wGn
+	 a+1vEOu7aATrl/Yr2xH81efIcXD2p5d7SMyNMqkVzKdA+c8tjPYm2wGFsei5fvRRpW
+	 GnrzfbFMR+CGf8V11Tk8Y9L5DReWguHi20L8d1no=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Boyuan Zhang <boyuan.zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Ruijing Dong <ruijing.dong@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH 6.6 337/341] drm/amdgpu/vcn: not pause dpg for unified queue
-Date: Tue, 27 Aug 2024 16:39:28 +0200
-Message-ID: <20240827143856.218261387@linuxfoundation.org>
+	Chen Ridong <chenridong@huawei.com>,
+	Waiman Long <longman@redhat.com>,
+	Tejun Heo <tj@kernel.org>
+Subject: [PATCH 6.10 245/273] cgroup/cpuset: Clear effective_xcpus on cpus_allowed clearing only if cpus.exclusive not set
+Date: Tue, 27 Aug 2024 16:39:29 +0200
+Message-ID: <20240827143842.726795656@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boyuan Zhang <boyuan.zhang@amd.com>
+From: Waiman Long <longman@redhat.com>
 
-commit 7d75ef3736a025db441be652c8cc8e84044a215f upstream.
+commit 311a1bdc44a8e06024df4fd3392be0dfc8298655 upstream.
 
-For unified queue, DPG pause for encoding is done inside VCN firmware,
-so there is no need to pause dpg based on ring type in kernel.
+Commit e2ffe502ba45 ("cgroup/cpuset: Add cpuset.cpus.exclusive for
+v2") adds a user writable cpuset.cpus.exclusive file for setting
+exclusive CPUs to be used for the creation of partitions. Since then
+effective_xcpus depends on both the cpuset.cpus and cpuset.cpus.exclusive
+setting. If cpuset.cpus.exclusive is set, effective_xcpus will depend
+only on cpuset.cpus.exclusive.  When it is not set, effective_xcpus
+will be set according to the cpuset.cpus value when the cpuset becomes
+a valid partition root.
 
-For VCN3 and below, pausing DPG for encoding in kernel is still needed.
+When cpuset.cpus is being cleared by the user, effective_xcpus should
+only be cleared when cpuset.cpus.exclusive is not set. However, that
+is not currently the case.
 
-v2: add more comments
-v3: update commit message
+  # cd /sys/fs/cgroup/
+  # mkdir test
+  # echo +cpuset > cgroup.subtree_control
+  # cd test
+  # echo 3 > cpuset.cpus.exclusive
+  # cat cpuset.cpus.exclusive.effective
+  3
+  # echo > cpuset.cpus
+  # cat cpuset.cpus.exclusive.effective // was cleared
 
-Signed-off-by: Boyuan Zhang <boyuan.zhang@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Reviewed-by: Ruijing Dong <ruijing.dong@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Fix it by clearing effective_xcpus only if cpuset.cpus.exclusive is
+not set.
+
+Fixes: e2ffe502ba45 ("cgroup/cpuset: Add cpuset.cpus.exclusive for v2")
+Cc: stable@vger.kernel.org # v6.7+
+Reported-by: Chen Ridong <chenridong@huawei.com>
+Signed-off-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.c |   14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ kernel/cgroup/cpuset.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.c
-@@ -372,7 +372,9 @@ static void amdgpu_vcn_idle_work_handler
- 		for (i = 0; i < adev->vcn.num_enc_rings; ++i)
- 			fence[j] += amdgpu_fence_count_emitted(&adev->vcn.inst[j].ring_enc[i]);
- 
--		if (adev->pg_flags & AMD_PG_SUPPORT_VCN_DPG)	{
-+		/* Only set DPG pause for VCN3 or below, VCN4 and above will be handled by FW */
-+		if (adev->pg_flags & AMD_PG_SUPPORT_VCN_DPG &&
-+		    !adev->vcn.using_unified_queue) {
- 			struct dpg_pause_state new_state;
- 
- 			if (fence[j] ||
-@@ -418,7 +420,9 @@ void amdgpu_vcn_ring_begin_use(struct am
- 	amdgpu_device_ip_set_powergating_state(adev, AMD_IP_BLOCK_TYPE_VCN,
- 	       AMD_PG_STATE_UNGATE);
- 
--	if (adev->pg_flags & AMD_PG_SUPPORT_VCN_DPG)	{
-+	/* Only set DPG pause for VCN3 or below, VCN4 and above will be handled by FW */
-+	if (adev->pg_flags & AMD_PG_SUPPORT_VCN_DPG &&
-+	    !adev->vcn.using_unified_queue) {
- 		struct dpg_pause_state new_state;
- 
- 		if (ring->funcs->type == AMDGPU_RING_TYPE_VCN_ENC) {
-@@ -444,8 +448,12 @@ void amdgpu_vcn_ring_begin_use(struct am
- 
- void amdgpu_vcn_ring_end_use(struct amdgpu_ring *ring)
- {
-+	struct amdgpu_device *adev = ring->adev;
-+
-+	/* Only set DPG pause for VCN3 or below, VCN4 and above will be handled by FW */
- 	if (ring->adev->pg_flags & AMD_PG_SUPPORT_VCN_DPG &&
--		ring->funcs->type == AMDGPU_RING_TYPE_VCN_ENC)
-+	    ring->funcs->type == AMDGPU_RING_TYPE_VCN_ENC &&
-+	    !adev->vcn.using_unified_queue)
- 		atomic_dec(&ring->adev->vcn.inst[ring->me].dpg_enc_submission_cnt);
- 
- 	atomic_dec(&ring->adev->vcn.total_submission_cnt);
+--- a/kernel/cgroup/cpuset.c
++++ b/kernel/cgroup/cpuset.c
+@@ -2474,7 +2474,8 @@ static int update_cpumask(struct cpuset
+ 	 */
+ 	if (!*buf) {
+ 		cpumask_clear(trialcs->cpus_allowed);
+-		cpumask_clear(trialcs->effective_xcpus);
++		if (cpumask_empty(trialcs->exclusive_cpus))
++			cpumask_clear(trialcs->effective_xcpus);
+ 	} else {
+ 		retval = cpulist_parse(buf, trialcs->cpus_allowed);
+ 		if (retval < 0)
 
 
 
