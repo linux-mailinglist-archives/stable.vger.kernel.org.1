@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-70646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3ABD4960F56
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:58:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73F43961092
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:10:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EABD32845F8
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:58:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 312132821DF
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:10:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2CD11C6F4A;
-	Tue, 27 Aug 2024 14:56:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD65A1C5783;
+	Tue, 27 Aug 2024 15:10:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MtMn9Z1/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EAQJZ7Ul"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A64071C68A6;
-	Tue, 27 Aug 2024 14:56:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B31912E4D;
+	Tue, 27 Aug 2024 15:10:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770600; cv=none; b=E4qlBm/xDL+cpvtjrfT/TqXE4fZpheNDRL9nVZZkfwcggh4/kb0Z/Wek5rlAlJg0606O5QF8bSEi4z1YDcqpZFDoIcP9IHxwM9Gp0vI3QvGYDeOuJmyA9K4QUpmU6x9gMWxIk6Rv6SCJB6nqfyLY02UA4pRgO60ZBW7vS9N5mZk=
+	t=1724771426; cv=none; b=msFUDXjdjrIb72wrcBMU4POkxhdX7Pf9YqqVMU8R2l1yraHEfl6I5Oxd84JekJGPlf8z64xug7MozxpjBToxmCsKKLmtrgbnVpD03Aftet95mEP+A9/JqUOL0A2KYZ28plkXXnF2aalLRQWUMJYgwJYZO5rwvjxWpYgAoU/pUWc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770600; c=relaxed/simple;
-	bh=gUd9ayelm0oUEE//Sm6H1uWT66+kwp2JbBAGcYIuVgc=;
+	s=arc-20240116; t=1724771426; c=relaxed/simple;
+	bh=s3b1qsJFyaxD8tZH+73j+Y+bqC1b2pJSnyLOlZEVhoc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KOG3hK3upjV634iKi7FvTzPYAQMjKN6hy9MWtHSTW3ioevcY9a9n1uLDGTpXFRoUFEtbDqxLur+cTsemiugjbNaiXEkPNqG8/p16YHGvBjoOYwMnLy3FK66bnnt7SUlEpFVhi0h5thsgS0/NTKBnWxKUwWG4ykJbjKLt7tuaR5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MtMn9Z1/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AF4BC4FE02;
-	Tue, 27 Aug 2024 14:56:39 +0000 (UTC)
+	 MIME-Version; b=inCmgGb+lmV5ZqCOVWSF5OtAt2FwsEoFt5Hz8hfhSVWuf/NIHJkEP0LcUnlDVBYsdQDtowHWlO35DPuijoKSiAlG+mcGJf5SvZRfvjngxOpzB7mquwkwt+VjhHNiF5TqBFPyDQXEio/ljcMufHhH/SQfPHQHfIGtmUKktg3enyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EAQJZ7Ul; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B219C4AF52;
+	Tue, 27 Aug 2024 15:10:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770600;
-	bh=gUd9ayelm0oUEE//Sm6H1uWT66+kwp2JbBAGcYIuVgc=;
+	s=korg; t=1724771426;
+	bh=s3b1qsJFyaxD8tZH+73j+Y+bqC1b2pJSnyLOlZEVhoc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MtMn9Z1/ayQZB01MBkWjr05CdmtjVAKksKfMtS4v1uD+fcR/GtwhrNIqtBkHnb3qk
-	 lzc+0FJj9ktp+w0awR5hnoeDh8A+2Bl0f1T2tGG8h/FWSnxQiw/EjOumqhgXxZN5qP
-	 6R5D7vcfVrX5XQsIfbFVkQ6qttX2H1GpcituWG+M=
+	b=EAQJZ7UloT0mEuJ5Ty6S4qn86ekyfLx6SqzpofR9CarKs911wthezsb2OcRmlo4gv
+	 a9nTaARmtRodxRpIcjEvfppIBYsYC3SaPYuer4D+gi+bfPBwBxudbpXaGtfuXV/ZkS
+	 sC/a2Etn4mfY6RFfBn9lMqbqhAuVRTH1en6gI2IE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Vasily Averin <vasily.averin@linux.dev>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 277/341] drm/msm/dpu: dont play tricks with debug macros
+Subject: [PATCH 6.10 184/273] ipv6: prevent possible UAF in ip6_xmit()
 Date: Tue, 27 Aug 2024 16:38:28 +0200
-Message-ID: <20240827143853.940100457@linuxfoundation.org>
+Message-ID: <20240827143840.411507022@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit df24373435f5899a2a98b7d377479c8d4376613b ]
+[ Upstream commit 2d5ff7e339d04622d8282661df36151906d0e1c7 ]
 
-DPU debugging macros need to be converted to a proper drm_debug_*
-macros, however this is a going an intrusive patch, not suitable for a
-fix. Wire DPU_DEBUG and DPU_DEBUG_DRIVER to always use DRM_DEBUG_DRIVER
-to make sure that DPU debugging messages always end up in the drm debug
-messages and are controlled via the usual drm.debug mask.
+If skb_expand_head() returns NULL, skb has been freed
+and the associated dst/idev could also have been freed.
 
-I don't think that it is a good idea for a generic DPU_DEBUG macro to be
-tied to DRM_UT_KMS. It is used to report a debug message from driver, so by
-default it should go to the DRM_UT_DRIVER channel. While refactoring
-debug macros later on we might end up with particular messages going to
-ATOMIC or KMS, but DRIVER should be the default.
+We must use rcu_read_lock() to prevent a possible UAF.
 
-Fixes: 25fdd5933e4c ("drm/msm: Add SDM845 DPU support")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/606932/
-Link: https://lore.kernel.org/r/20240802-dpu-fix-wb-v2-2-7eac9eb8e895@linaro.org
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Fixes: 0c9f227bee11 ("ipv6: use skb_expand_head in ip6_xmit")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Vasily Averin <vasily.averin@linux.dev>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20240820160859.3786976-4-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h | 14 ++------------
- 1 file changed, 2 insertions(+), 12 deletions(-)
+ net/ipv6/ip6_output.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h b/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h
-index f5473d4dea92f..8cb3cf842c52c 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h
-@@ -31,24 +31,14 @@
-  * @fmt: Pointer to format string
-  */
- #define DPU_DEBUG(fmt, ...)                                                \
--	do {                                                               \
--		if (drm_debug_enabled(DRM_UT_KMS))                         \
--			DRM_DEBUG(fmt, ##__VA_ARGS__); \
--		else                                                       \
--			pr_debug(fmt, ##__VA_ARGS__);                      \
--	} while (0)
-+	DRM_DEBUG_DRIVER(fmt, ##__VA_ARGS__)
+diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
+index 8778431acffda..c49344d8311ab 100644
+--- a/net/ipv6/ip6_output.c
++++ b/net/ipv6/ip6_output.c
+@@ -287,11 +287,15 @@ int ip6_xmit(const struct sock *sk, struct sk_buff *skb, struct flowi6 *fl6,
+ 		head_room += opt->opt_nflen + opt->opt_flen;
  
- /**
-  * DPU_DEBUG_DRIVER - macro for hardware driver logging
-  * @fmt: Pointer to format string
-  */
- #define DPU_DEBUG_DRIVER(fmt, ...)                                         \
--	do {                                                               \
--		if (drm_debug_enabled(DRM_UT_DRIVER))                      \
--			DRM_ERROR(fmt, ##__VA_ARGS__); \
--		else                                                       \
--			pr_debug(fmt, ##__VA_ARGS__);                      \
--	} while (0)
-+	DRM_DEBUG_DRIVER(fmt, ##__VA_ARGS__)
+ 	if (unlikely(head_room > skb_headroom(skb))) {
++		/* Make sure idev stays alive */
++		rcu_read_lock();
+ 		skb = skb_expand_head(skb, head_room);
+ 		if (!skb) {
+ 			IP6_INC_STATS(net, idev, IPSTATS_MIB_OUTDISCARDS);
++			rcu_read_unlock();
+ 			return -ENOBUFS;
+ 		}
++		rcu_read_unlock();
+ 	}
  
- #define DPU_ERROR(fmt, ...) pr_err("[dpu error]" fmt, ##__VA_ARGS__)
- #define DPU_ERROR_RATELIMITED(fmt, ...) pr_err_ratelimited("[dpu error]" fmt, ##__VA_ARGS__)
+ 	if (opt) {
 -- 
 2.43.0
 
