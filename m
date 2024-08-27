@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-71086-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71127-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 845B9961195
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:21:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 111169611C7
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:23:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 014C1B222BE
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:21:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A1EC9B28624
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:23:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C57B1C86F6;
-	Tue, 27 Aug 2024 15:20:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5150C1C824B;
+	Tue, 27 Aug 2024 15:23:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ExT6lS1H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mHpNk6/a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 380E71C6F5F;
-	Tue, 27 Aug 2024 15:20:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F8EF1C7B9D;
+	Tue, 27 Aug 2024 15:23:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772054; cv=none; b=m/KstTZbCogwnx3zI0WbgOyNwnk2ELKgLrNtIDpMQtdyZf5WcP/Ftn9L43s7680i+7vjjKjaeqDdAEPMtgk8vWqWMTRPG8SPzGuOd607o79o7aEpUSHdXIR924g6c0uclkowlZs1RYd1LzGte31or4/xrjnqfwh95D8fE7XRJDE=
+	t=1724772187; cv=none; b=uP3Z324/d6lLeYAGQ/vBmCrG8mE5fc2S/j0ZZbLsX2DyLXC20jpxtKof8c8oitH06YZupTOCVUdyoUHuI33ccDwV3gjbZymt2stAM2LZXFSvpLncD6TLMu1TV7c1gESDx6X5s0W6C4cReLvYBwRDQl+Te1xOhki6CcSXaKzCOGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772054; c=relaxed/simple;
-	bh=qnBbF2E9yCfXJaZUWYUb1gKjdT6nbabRDQKOdDzqYeY=;
+	s=arc-20240116; t=1724772187; c=relaxed/simple;
+	bh=+/rrNBS0NHkMj03tE/jKv52n/P4jitiNCihy7nNeggk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ectf2sw3r6r0YN2mBA+E4Hbm1uB0GmFHa8f6CnO/2N3uT5TouvOPq3VtDkKLBnplIj5g1+co3YxNwZofkC2pDTqrlGFulqmDwCeEaY3YzSpvDnZBNxgDJC3G2PVBE454S/hyEMETXy5GtO7Fr4wnJJnYvt4EjCAy+Gii1T1AM1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ExT6lS1H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0D9CC4DE1E;
-	Tue, 27 Aug 2024 15:20:53 +0000 (UTC)
+	 MIME-Version; b=chH3gSCm1NRosXMtx4pDUaNQdnAH3RhfOxHCIXrAlfc29490nCR0j3ruOWZlhjK8ZEdMHQXIeDO1JoWQD/yh56pGAMQdaJxohOR3rEIxkgvGNuYjZGJTKl1jukZ/gql3av4dOIGnZqEZSpKTI6pGhmb3NjHpANY91f5s20q1blc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mHpNk6/a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C62CC6104C;
+	Tue, 27 Aug 2024 15:23:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772054;
-	bh=qnBbF2E9yCfXJaZUWYUb1gKjdT6nbabRDQKOdDzqYeY=;
+	s=korg; t=1724772186;
+	bh=+/rrNBS0NHkMj03tE/jKv52n/P4jitiNCihy7nNeggk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ExT6lS1HqEBBiars78avmlxd14Nurce3CLBtzddX6saGsX/hwWTrggL2/2XLokf5N
-	 R3vGRFBpYENuz18X7vOAgbAv10C4taNkAOi+3dTwyEmQgu/vkH2XuA9J2b7p3xkE9M
-	 hZQG8JlWgGla01YfTDx38Evdu34kq8WGllonDESM=
+	b=mHpNk6/aTmAfRjfd0A4FvQDG6GOL7YHqT+h5uPXq5PWGaY8t6L5hnSOUFZQLGknNh
+	 AP3ygOPp205yC05bfvYIE+9KW6rMEUxpXXnfTO4feJhl1MOUFFMVNcl5/DwlZPWDp0
+	 HF5Ocr9a8BTo9jw13qu4OvBIwKjq6MukvHkhbj/4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Phil Sutter <phil@nwl.cc>,
-	Florian Westphal <fw@strlen.de>,
 	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 098/321] netfilter: nf_tables: Audit log dump reset after the fact
-Date: Tue, 27 Aug 2024 16:36:46 +0200
-Message-ID: <20240827143841.978590160@linuxfoundation.org>
+Subject: [PATCH 6.1 099/321] netfilter: nf_tables: Drop pointless memset in nf_tables_dump_obj
+Date: Tue, 27 Aug 2024 16:36:47 +0200
+Message-ID: <20240827143842.017049606@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
 References: <20240827143838.192435816@linuxfoundation.org>
@@ -69,87 +68,33 @@ Content-Transfer-Encoding: 8bit
 
 From: Phil Sutter <phil@nwl.cc>
 
-[ Upstream commit e0b6648b0446e59522819c75ba1dcb09e68d3e94 ]
+[ Upstream commit ff16111cc10c82ee065ffbd9fa8d6210394ff8c6 ]
 
-In theory, dumpreset may fail and invalidate the preceeding log message.
-Fix this and use the occasion to prepare for object reset locking, which
-benefits from a few unrelated changes:
+The code does not make use of cb->args fields past the first one, no
+need to zero them.
 
-* Add an early call to nfnetlink_unicast if not resetting which
-  effectively skips the audit logging but also unindents it.
-* Extract the table's name from the netlink attribute (which is verified
-  via earlier table lookup) to not rely upon validity of the looked up
-  table pointer.
-* Do not use local variable family, it will vanish.
-
-Fixes: 8e6cf365e1d5 ("audit: log nftables configuration change events")
 Signed-off-by: Phil Sutter <phil@nwl.cc>
-Reviewed-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Stable-dep-of: bd662c4218f9 ("netfilter: nf_tables: Add locking for NFT_MSG_GETOBJ_RESET requests")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 28 +++++++++++++---------------
- 1 file changed, 13 insertions(+), 15 deletions(-)
+ net/netfilter/nf_tables_api.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
 diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 10180d280e792..747033129c0fe 100644
+index 747033129c0fe..ddf84f226822b 100644
 --- a/net/netfilter/nf_tables_api.c
 +++ b/net/netfilter/nf_tables_api.c
-@@ -7531,6 +7531,7 @@ static int nf_tables_dump_obj_done(struct netlink_callback *cb)
- static int nf_tables_getobj(struct sk_buff *skb, const struct nfnl_info *info,
- 			    const struct nlattr * const nla[])
- {
-+	const struct nftables_pernet *nft_net = nft_pernet(info->net);
- 	struct netlink_ext_ack *extack = info->extack;
- 	u8 genmask = nft_genmask_cur(info->net);
- 	u8 family = info->nfmsg->nfgen_family;
-@@ -7540,6 +7541,7 @@ static int nf_tables_getobj(struct sk_buff *skb, const struct nfnl_info *info,
- 	struct sk_buff *skb2;
- 	bool reset = false;
- 	u32 objtype;
-+	char *buf;
- 	int err;
- 
- 	if (info->nlh->nlmsg_flags & NLM_F_DUMP) {
-@@ -7578,27 +7580,23 @@ static int nf_tables_getobj(struct sk_buff *skb, const struct nfnl_info *info,
- 	if (NFNL_MSG_TYPE(info->nlh->nlmsg_type) == NFT_MSG_GETOBJ_RESET)
- 		reset = true;
- 
--	if (reset) {
--		const struct nftables_pernet *nft_net;
--		char *buf;
--
--		nft_net = nft_pernet(net);
--		buf = kasprintf(GFP_ATOMIC, "%s:%u", table->name, nft_net->base_seq);
--
--		audit_log_nfcfg(buf,
--				family,
--				1,
--				AUDIT_NFT_OP_OBJ_RESET,
--				GFP_ATOMIC);
--		kfree(buf);
--	}
--
- 	err = nf_tables_fill_obj_info(skb2, net, NETLINK_CB(skb).portid,
- 				      info->nlh->nlmsg_seq, NFT_MSG_NEWOBJ, 0,
- 				      family, table, obj, reset);
- 	if (err < 0)
- 		goto err_fill_obj_info;
- 
-+	if (!reset)
-+		return nfnetlink_unicast(skb2, net, NETLINK_CB(skb).portid);
-+
-+	buf = kasprintf(GFP_ATOMIC, "%.*s:%u",
-+			nla_len(nla[NFTA_OBJ_TABLE]),
-+			(char *)nla_data(nla[NFTA_OBJ_TABLE]),
-+			nft_net->base_seq);
-+	audit_log_nfcfg(buf, info->nfmsg->nfgen_family, 1,
-+			AUDIT_NFT_OP_OBJ_RESET, GFP_ATOMIC);
-+	kfree(buf);
-+
- 	return nfnetlink_unicast(skb2, net, NETLINK_CB(skb).portid);
- 
- err_fill_obj_info:
+@@ -7452,9 +7452,6 @@ static int nf_tables_dump_obj(struct sk_buff *skb, struct netlink_callback *cb)
+ 				goto cont;
+ 			if (idx < s_idx)
+ 				goto cont;
+-			if (idx > s_idx)
+-				memset(&cb->args[1], 0,
+-				       sizeof(cb->args) - sizeof(cb->args[0]));
+ 			if (filter && filter->table &&
+ 			    strcmp(filter->table, table->name))
+ 				goto cont;
 -- 
 2.43.0
 
