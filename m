@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-70723-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71016-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D02DD960FB1
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:01:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AA84961130
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:17:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0EEDD1C23696
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:01:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C32B1C23589
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:17:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5CEF1C3F19;
-	Tue, 27 Aug 2024 15:00:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 488F71C4EEA;
+	Tue, 27 Aug 2024 15:16:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CLawY+Ma"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mzwub8p2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A49EE2FB2;
-	Tue, 27 Aug 2024 15:00:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECF2E1C57A0;
+	Tue, 27 Aug 2024 15:16:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770854; cv=none; b=lIDURhsIjqJ94d4RxYsaqM0afsv/+QLhR25rm7EJXaFN8VVWjz3itaHrUxjVrksnAa0jWJSdgMIlwa81LGn9dg3ZJh6eoyn4+K4ll6HXvvicd4ENsVACsKtoJM4xTaNm6KqZaC9nxhFLPe8CHPGVfn2eMehIXb7HdPK5G1Ipv/c=
+	t=1724771817; cv=none; b=lhuEjZGy2PJbK3XWhGsaNSEJTo4TvcMhhiUHHClv7GyPdyDxje1GUd16nT6QUF+i/ifn9li1zpPnHMmRXv1EaIBqKHVq+A+cZwxyn7USYuslQWaStvz+sm0wr4h8cmPip/PoR6dYJH0QTqS8miv7BLBtdCLUaU9M3ATbXhLR8T0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770854; c=relaxed/simple;
-	bh=DhQeX+z589qlAfqJgxfD9Q1XGAC4z1xwAMrpLJ05iu8=;
+	s=arc-20240116; t=1724771817; c=relaxed/simple;
+	bh=UP/AzkAM6aCAVFgvER3BCA2HP/uyACkM8mCjg9SLEwc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dCOcTytMKQjcUe4svnSZMoMgMY5H8pmXHmBOz8ptZMFqWW8e7zcggqnfV2EOgbuol8SbCrJr058CnuwkQe5SViEfR8iE5YSQfEZObBgaC3xOlHtjOzm9ATTSqi0KeKUnb/M4HS4rEUzojGmkb8OfkGxp9z0rDNrE6mj1VxnsLgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CLawY+Ma; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAF71C4AF1C;
-	Tue, 27 Aug 2024 15:00:53 +0000 (UTC)
+	 MIME-Version; b=BTZpiVTbH6aIVzxAiXcFx2WBQeGVvE9hQ68S91fhWhjS6+PNmaWewKlKW1WL0inOXYas9SWJKbjplDKeyBU9qUYwS7mZ3BrYt1cWLxHCccfMKdO1WPz9ib2TjlzdDJxMb4VI0RoWOFBjP+Y5uSo/t3Eo/6U8IeT/87cxY8p/VS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mzwub8p2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63BC6C4DE1D;
+	Tue, 27 Aug 2024 15:16:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770854;
-	bh=DhQeX+z589qlAfqJgxfD9Q1XGAC4z1xwAMrpLJ05iu8=;
+	s=korg; t=1724771816;
+	bh=UP/AzkAM6aCAVFgvER3BCA2HP/uyACkM8mCjg9SLEwc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CLawY+MafOruXc9WP6CxTfBTwXFU7F5DHwgUTvTaAvcW/3jK4cdZhBomOK9iBEZLF
-	 RqUjaTy738XnoxLqvJCxVAQ9SCp4/LgmxgBHE+nJ9JjiCMw/DVcu6pFXGAEirJRHM9
-	 sMZqhXL7LRcQdTaUvdiMTIXyJ0K1UV+hQhiIZAT4=
+	b=mzwub8p2ULWvsoMdqD9svK8qfQFl3t3nhBJuOVZaoaEgyypU9fjHmsUU2RA9S50UY
+	 4go9BFZlK97aCrEKndZqX4IZvnk+yo04/OcBkWsFxRGlZ7PjysFBemLRyY3jAHBIfX
+	 HzRRDMC1wxGgWDZIDP6obF7Yy0FmFJ+Lmkc8YtN8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+eac39cba052f2e750dbe@syzkaller.appspotmail.com,
-	stable <stable@kernel.org>,
-	Eli Billauer <eli.billauer@gmail.com>
-Subject: [PATCH 6.10 013/273] char: xillybus: Check USB endpoints when probing device
+	Andrew Morton <akpm@linux-foundation.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Al Viro <viro@zeniv.linux.org.uk>
+Subject: [PATCH 6.1 029/321] memcg_write_event_control(): fix a user-triggerable oops
 Date: Tue, 27 Aug 2024 16:35:37 +0200
-Message-ID: <20240827143833.890727135@linuxfoundation.org>
+Message-ID: <20240827143839.325890308@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,98 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eli Billauer <eli.billauer@gmail.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-commit 2374bf7558de915edc6ec8cb10ec3291dfab9594 upstream.
+commit 046667c4d3196938e992fba0dfcde570aa85cd0e upstream.
 
-Ensure, as the driver probes the device, that all endpoints that the
-driver may attempt to access exist and are of the correct type.
+we are *not* guaranteed that anything past the terminating NUL
+is mapped (let alone initialized with anything sane).
 
-All XillyUSB devices must have a Bulk IN and Bulk OUT endpoint at
-address 1. This is verified in xillyusb_setup_base_eps().
-
-On top of that, a XillyUSB device may have additional Bulk OUT
-endpoints. The information about these endpoints' addresses is deduced
-from a data structure (the IDT) that the driver fetches from the device
-while probing it. These endpoints are checked in setup_channels().
-
-A XillyUSB device never has more than one IN endpoint, as all data
-towards the host is multiplexed in this single Bulk IN endpoint. This is
-why setup_channels() only checks OUT endpoints.
-
-Reported-by: syzbot+eac39cba052f2e750dbe@syzkaller.appspotmail.com
-Cc: stable <stable@kernel.org>
-Closes: https://lore.kernel.org/all/0000000000001d44a6061f7a54ee@google.com/T/
-Fixes: a53d1202aef1 ("char: xillybus: Add driver for XillyUSB (Xillybus variant for USB)").
-Signed-off-by: Eli Billauer <eli.billauer@gmail.com>
-Link: https://lore.kernel.org/r/20240816070200.50695-2-eli.billauer@gmail.com
+Fixes: 0dea116876ee ("cgroup: implement eventfd-based generic API for notifications")
+Cc: stable@vger.kernel.org
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Acked-by: Michal Hocko <mhocko@suse.com>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/xillybus/xillyusb.c |   22 ++++++++++++++++++++--
- 1 file changed, 20 insertions(+), 2 deletions(-)
+ mm/memcontrol.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/char/xillybus/xillyusb.c
-+++ b/drivers/char/xillybus/xillyusb.c
-@@ -1903,6 +1903,13 @@ static const struct file_operations xill
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -4857,9 +4857,12 @@ static ssize_t memcg_write_event_control
+ 	buf = endp + 1;
  
- static int xillyusb_setup_base_eps(struct xillyusb_dev *xdev)
- {
-+	struct usb_device *udev = xdev->udev;
-+
-+	/* Verify that device has the two fundamental bulk in/out endpoints */
-+	if (usb_pipe_type_check(udev, usb_sndbulkpipe(udev, MSG_EP_NUM)) ||
-+	    usb_pipe_type_check(udev, usb_rcvbulkpipe(udev, IN_EP_NUM)))
-+		return -ENODEV;
-+
- 	xdev->msg_ep = endpoint_alloc(xdev, MSG_EP_NUM | USB_DIR_OUT,
- 				      bulk_out_work, 1, 2);
- 	if (!xdev->msg_ep)
-@@ -1932,14 +1939,15 @@ static int setup_channels(struct xillyus
- 			  __le16 *chandesc,
- 			  int num_channels)
- {
--	struct xillyusb_channel *chan;
-+	struct usb_device *udev = xdev->udev;
-+	struct xillyusb_channel *chan, *new_channels;
- 	int i;
+ 	cfd = simple_strtoul(buf, &endp, 10);
+-	if ((*endp != ' ') && (*endp != '\0'))
++	if (*endp == '\0')
++		buf = endp;
++	else if (*endp == ' ')
++		buf = endp + 1;
++	else
+ 		return -EINVAL;
+-	buf = endp + 1;
  
- 	chan = kcalloc(num_channels, sizeof(*chan), GFP_KERNEL);
- 	if (!chan)
- 		return -ENOMEM;
- 
--	xdev->channels = chan;
-+	new_channels = chan;
- 
- 	for (i = 0; i < num_channels; i++, chan++) {
- 		unsigned int in_desc = le16_to_cpu(*chandesc++);
-@@ -1968,6 +1976,15 @@ static int setup_channels(struct xillyus
- 		 */
- 
- 		if ((out_desc & 0x80) && i < 14) { /* Entry is valid */
-+			if (usb_pipe_type_check(udev,
-+						usb_sndbulkpipe(udev, i + 2))) {
-+				dev_err(xdev->dev,
-+					"Missing BULK OUT endpoint %d\n",
-+					i + 2);
-+				kfree(new_channels);
-+				return -ENODEV;
-+			}
-+
- 			chan->writable = 1;
- 			chan->out_synchronous = !!(out_desc & 0x40);
- 			chan->out_seekable = !!(out_desc & 0x20);
-@@ -1977,6 +1994,7 @@ static int setup_channels(struct xillyus
- 		}
- 	}
- 
-+	xdev->channels = new_channels;
- 	return 0;
- }
- 
+ 	event = kzalloc(sizeof(*event), GFP_KERNEL);
+ 	if (!event)
 
 
 
