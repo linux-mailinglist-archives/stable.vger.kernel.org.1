@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-70780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70516-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8221E961002
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:05:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFAE6960E86
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:49:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 36B181F226EC
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:05:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2C88AB22D8A
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:49:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68F621C6F57;
-	Tue, 27 Aug 2024 15:03:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4795644C8C;
+	Tue, 27 Aug 2024 14:49:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="niKHjs6C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WgqscGBO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25D431C57BF;
-	Tue, 27 Aug 2024 15:03:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0610FDDC1;
+	Tue, 27 Aug 2024 14:49:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771039; cv=none; b=m0FZ+TZvoyj12BmaNuozZhpbTerd9iY5k961HTCBw5JYyEYKNFUzAYMToWFbH5kvQeA9QG/L/STsV1fmUDBsFvQhZZx/1AGlDfw2+2pIvo7GEpc6FL/kFH6a2iEe13DME42GiBpgT1effyRIrsWTkMQERL/HbVoZMuPwLGrB8cQ=
+	t=1724770168; cv=none; b=j89imqTeCvgoVuyAtyBjXmqIeF5cR1lxfD0+6LVeMnwn1y1Q/vnaPQhPwrneWEdebqRuN3LEz5ZjZ/Eq4vWouInhNrv6OjBwlcam4SpYkWZqfOZDvcXXme50qtQacEny35AfwQq+e2+npatzOdN4VsbLoGDYbz8CEdZl+K3HHpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771039; c=relaxed/simple;
-	bh=qhpqsKLcSMXN8ICIRtS3BPHzpCEo04UN55CoqgJSpnI=;
+	s=arc-20240116; t=1724770168; c=relaxed/simple;
+	bh=s/M7E2uq2vv4yQCV5JWTvk6zKJbN1Rhwt9N5mOaJYfU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DV1UdO/vfxor0pKnkPFuUCyinlKZG9jH9jlIRGTEAuMwJn+V8/BsRLrJfrdlIOT258+pfvR/eqK9oP0bm0uAmNxs5MsP2g3wbn0uD3wF3JsRFGyt6C3BCcdbp+NVpxNbj/dq/mwdWT12wopZ+ghLlK6JpXVYZ4c2ZQExg1rA5PQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=niKHjs6C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 877ECC6104C;
-	Tue, 27 Aug 2024 15:03:58 +0000 (UTC)
+	 MIME-Version; b=pfQj/EbKvvwmRQ9Pao+tlF8m1j013Rrlp2UIe9ehV20stHE4Kspzir2bGGOHV71DGWBb7QU2zHiNh9mltF2zwJ+7D87nf327Px0haq729l7PVO+VlAy3IEYb0/u51WQBwLscLBtk9UJbYKHA/Cq0x6V/a2vRraTcyUU2311dS7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WgqscGBO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EB29C4AF1B;
+	Tue, 27 Aug 2024 14:49:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771039;
-	bh=qhpqsKLcSMXN8ICIRtS3BPHzpCEo04UN55CoqgJSpnI=;
+	s=korg; t=1724770167;
+	bh=s/M7E2uq2vv4yQCV5JWTvk6zKJbN1Rhwt9N5mOaJYfU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=niKHjs6CWG2tr3aWI5sJKOTu4qqZ2+BwsEMeua7PGJxs/nNQWSHI7qprYfgB0TcgN
-	 U15Pkq4R22rdzHvi5/Nm9BuFxrYbND3XFHgnEQKgOl1R1WVj96ZE/rdzvsgN7chz7C
-	 khg5xfIhPjNjnTx5IU/r3DhhvcTCmera0KymJfeU=
+	b=WgqscGBOHhD0Q7A/tEfbA+RuVpX3TuoBKNhu2nSzeCLY11N1WFXKcnbu4bdZelZbR
+	 S9hKQvn+RawfRqQWasclC1Qvi10U96vVKqr8NP1WUXeJmK52XOHqEN5fnSjesS90or
+	 Z2o5cjCnujQlwd0OLWHpR3cGUBLKDXRZIiWh9CJc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nam Cao <namcao@linutronix.de>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH 6.10 027/273] riscv: change XIPs kernel_map.size to be size of the entire kernel
+	Ashish Mhetre <amhetre@nvidia.com>,
+	Mikko Perttunen <mperttunen@nvidia.com>,
+	Thierry Reding <treding@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 120/341] drm/tegra: Zero-initialize iosys_map
 Date: Tue, 27 Aug 2024 16:35:51 +0200
-Message-ID: <20240827143834.425643561@linuxfoundation.org>
+Message-ID: <20240827143847.980417207@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nam Cao <namcao@linutronix.de>
+From: Mikko Perttunen <mperttunen@nvidia.com>
 
-commit 57d76bc51fd80824bcc0c84a5b5ec944f1b51edd upstream.
+[ Upstream commit 3868ff006b572cf501a3327832d36c64a9eca86a ]
 
-With XIP kernel, kernel_map.size is set to be only the size of data part of
-the kernel. This is inconsistent with "normal" kernel, who sets it to be
-the size of the entire kernel.
+UBSAN reports an invalid load for bool, as the iosys_map is read
+later without being initialized. Zero-initialize it to avoid this.
 
-More importantly, XIP kernel fails to boot if CONFIG_DEBUG_VIRTUAL is
-enabled, because there are checks on virtual addresses with the assumption
-that kernel_map.size is the size of the entire kernel (these checks are in
-arch/riscv/mm/physaddr.c).
-
-Change XIP's kernel_map.size to be the size of the entire kernel.
-
-Signed-off-by: Nam Cao <namcao@linutronix.de>
-Cc: <stable@vger.kernel.org> # v6.1+
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Link: https://lore.kernel.org/r/20240508191917.2892064-1-namcao@linutronix.de
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Ashish Mhetre <amhetre@nvidia.com>
+Signed-off-by: Mikko Perttunen <mperttunen@nvidia.com>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230901115910.701518-2-cyndis@kapsi.fi
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/mm/init.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/tegra/gem.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/riscv/mm/init.c
-+++ b/arch/riscv/mm/init.c
-@@ -931,7 +931,7 @@ static void __init create_kernel_page_ta
- 				   PMD_SIZE, PAGE_KERNEL_EXEC);
+diff --git a/drivers/gpu/drm/tegra/gem.c b/drivers/gpu/drm/tegra/gem.c
+index a4023163493dc..a825fbbc01af6 100644
+--- a/drivers/gpu/drm/tegra/gem.c
++++ b/drivers/gpu/drm/tegra/gem.c
+@@ -177,7 +177,7 @@ static void tegra_bo_unpin(struct host1x_bo_mapping *map)
+ static void *tegra_bo_mmap(struct host1x_bo *bo)
+ {
+ 	struct tegra_bo *obj = host1x_to_tegra_bo(bo);
+-	struct iosys_map map;
++	struct iosys_map map = { 0 };
+ 	int ret;
  
- 	/* Map the data in RAM */
--	end_va = kernel_map.virt_addr + XIP_OFFSET + kernel_map.size;
-+	end_va = kernel_map.virt_addr + kernel_map.size;
- 	for (va = kernel_map.virt_addr + XIP_OFFSET; va < end_va; va += PMD_SIZE)
- 		create_pgd_mapping(pgdir, va,
- 				   kernel_map.phys_addr + (va - (kernel_map.virt_addr + XIP_OFFSET)),
-@@ -1100,7 +1100,7 @@ asmlinkage void __init setup_vm(uintptr_
- 
- 	phys_ram_base = CONFIG_PHYS_RAM_BASE;
- 	kernel_map.phys_addr = (uintptr_t)CONFIG_PHYS_RAM_BASE;
--	kernel_map.size = (uintptr_t)(&_end) - (uintptr_t)(&_sdata);
-+	kernel_map.size = (uintptr_t)(&_end) - (uintptr_t)(&_start);
- 
- 	kernel_map.va_kernel_xip_pa_offset = kernel_map.virt_addr - kernel_map.xiprom;
- #else
+ 	if (obj->vaddr) {
+-- 
+2.43.0
+
 
 
 
