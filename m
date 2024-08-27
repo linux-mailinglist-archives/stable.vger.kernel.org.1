@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-70457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70426-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69B7B960E37
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:46:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EB15960E0C
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:44:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27C5B2859CD
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:46:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C11E281973
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:44:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5908B1C689B;
-	Tue, 27 Aug 2024 14:46:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14EB01C4EF9;
+	Tue, 27 Aug 2024 14:44:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="twPNVMC1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="124GG/Yk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16B0119D88C;
-	Tue, 27 Aug 2024 14:46:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3D9E1C57AB;
+	Tue, 27 Aug 2024 14:44:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724769970; cv=none; b=WCFHN4gMQTHr1rPStoOwSn6mgpKXETfGx4OvNoIAyGJ7WWOcZ+Zn1eweTpVnayqiaFVyaWDYf8HPylT0bV40S2NFS+iC4Ly8mLUoTyUW2Xl37gAVsBrZM+bcO5Q4spq9b6nCfHwC2iG0GvfGb8ATyOQZ6lZ+o67DJHSPTBbuW2Y=
+	t=1724769861; cv=none; b=riJW0gVOgKi1+wcETlHebwbKkvjT5HkI2eQTQ8VX40688tUsUfOp1at9FP8wdFyGF2cE7WMu1whR23Mh3vB+UAww2V/m5LskF5GjXDdyd6FX8Wfw4d5/X2E2PM14OYZ4+TCUqU523cn7reXxpPX1Z/1NmqAjJtu1DmsWn0wlAKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724769970; c=relaxed/simple;
-	bh=ZsnQVeGbAK3j5dXEPQzCkAS+lVgIqk/hqX/deXkx6uA=;
+	s=arc-20240116; t=1724769861; c=relaxed/simple;
+	bh=lZ7mqgdyvLufmAvAMwJyxNYLiFTFfXg1eJ7CvF0gnM0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PpWOPaDSh8U9/TD3Hw7sX9I2+ZCzFD6yxoYOpCiWUJpsZxij9fnNnoVOd2j0TRwaEeDYN9CSYwkdYh7ydR8tNQLQ5TMvWEI2ml74OyNoIs7mr3803itWpaIzkCP9X3mVwaauxP/KF2D66JV4innr989J18xvdyJ39lLkulbBbmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=twPNVMC1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8786CC61063;
-	Tue, 27 Aug 2024 14:46:09 +0000 (UTC)
+	 MIME-Version; b=gigQ/x979oFtqx21cSDRr2qgcvtN4uqfFj9RBZYkAiRXGbXf+gdIEmRvlyPY/gQtb1zcC87W9dHUIwo10t9GBxDQNBCfx5qa3FKBecr+Tdb3ZIYBtHJuFWW9jenUDZMl+doA4D2jyG6jYLhiQTE/rbYMjzedspbm30L/eg4Om5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=124GG/Yk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3D99C61063;
+	Tue, 27 Aug 2024 14:44:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724769970;
-	bh=ZsnQVeGbAK3j5dXEPQzCkAS+lVgIqk/hqX/deXkx6uA=;
+	s=korg; t=1724769861;
+	bh=lZ7mqgdyvLufmAvAMwJyxNYLiFTFfXg1eJ7CvF0gnM0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=twPNVMC1ZmyWiY4/8s+ijQW51tJSH14GrhRI54lKccPHHcVzSIUhDH8pKQ0BRZh9J
-	 i2IZK0pOSQHUUmwKtDHSjB+T8stDC/u2dspnXYxKOW+ugNaCNypK7F9UrEqmFCOCMj
-	 YHYb6PKPMnO9iIKc441yxNjVFlFR6trY5eRq9tuc=
+	b=124GG/YkhegvyI9iqmOC5fKB86hOUjlljhj3YTn6Gpje6D1OZQRN6YH0hKEr6sXxe
+	 1wmyl/RRDjCVvK5nrwqZ4SB5T+Dqb0RvQCtdrrmKVX5xhXmaSh860zE3oy3RuBkgZL
+	 S6eXdEwAf+m3wDc+Il1m77zjhBMPJcg7Hawsj42A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Russell King <linux@armlinux.org.uk>,
-	Andrew Lunn <andrew@lunn.ch>,
 	Linus Walleij <linus.walleij@linaro.org>,
 	Florian Fainelli <florian.fainelli@broadcom.com>,
 	Pawel Dembicki <paweldembicki@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 057/341] net: dsa: vsc73xx: use read_poll_timeout instead delay loop
-Date: Tue, 27 Aug 2024 16:34:48 +0200
-Message-ID: <20240827143845.587458805@linuxfoundation.org>
+Subject: [PATCH 6.6 058/341] net: dsa: vsc73xx: check busy flag in MDIO operations
+Date: Tue, 27 Aug 2024 16:34:49 +0200
+Message-ID: <20240827143845.624448670@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
 References: <20240827143843.399359062@linuxfoundation.org>
@@ -72,96 +70,110 @@ Content-Transfer-Encoding: 8bit
 
 From: Pawel Dembicki <paweldembicki@gmail.com>
 
-[ Upstream commit eb7e33d01db3aec128590391b2397384bab406b6 ]
+[ Upstream commit fa63c6434b6f6aaf9d8d599dc899bc0a074cc0ad ]
 
-Switch the delay loop during the Arbiter empty check from
-vsc73xx_adjust_link() to use read_poll_timeout(). Functionally,
-one msleep() call is eliminated at the end of the loop in the timeout
-case.
+The VSC73xx has a busy flag used during MDIO operations. It is raised
+when MDIO read/write operations are in progress. Without it, PHYs are
+misconfigured and bus operations do not work as expected.
 
-As Russell King suggested:
-
-"This [change] avoids the issue that on the last iteration, the code reads
-the register, tests it, finds the condition that's being waiting for is
-false, _then_ waits and end up printing the error message - that last
-wait is rather useless, and as the arbiter state isn't checked after
-waiting, it could be that we had success during the last wait."
-
-Suggested-by: Russell King <linux@armlinux.org.uk>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Fixes: 05bd97fc559d ("net: dsa: Add Vitesse VSC73xx DSA router driver")
 Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
 Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
 Signed-off-by: Pawel Dembicki <paweldembicki@gmail.com>
-Link: https://lore.kernel.org/r/20240417205048.3542839-2-paweldembicki@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: fa63c6434b6f ("net: dsa: vsc73xx: check busy flag in MDIO operations")
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/vitesse-vsc73xx-core.c | 30 ++++++++++++++------------
- 1 file changed, 16 insertions(+), 14 deletions(-)
+ drivers/net/dsa/vitesse-vsc73xx-core.c | 37 +++++++++++++++++++++++++-
+ 1 file changed, 36 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/dsa/vitesse-vsc73xx-core.c b/drivers/net/dsa/vitesse-vsc73xx-core.c
-index dedebb95ece6c..d8f368df8b06f 100644
+index d8f368df8b06f..23bd8b3f89931 100644
 --- a/drivers/net/dsa/vitesse-vsc73xx-core.c
 +++ b/drivers/net/dsa/vitesse-vsc73xx-core.c
-@@ -17,6 +17,7 @@
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/device.h>
-+#include <linux/iopoll.h>
- #include <linux/of.h>
- #include <linux/of_mdio.h>
- #include <linux/bitops.h>
-@@ -268,6 +269,9 @@
- #define IS_7398(a) ((a)->chipid == VSC73XX_CHIPID_ID_7398)
+@@ -38,6 +38,10 @@
+ #define VSC73XX_BLOCK_ARBITER	0x5 /* Only subblock 0 */
+ #define VSC73XX_BLOCK_SYSTEM	0x7 /* Only subblock 0 */
+ 
++/* MII Block subblock */
++#define VSC73XX_BLOCK_MII_INTERNAL	0x0 /* Internal MDIO subblock */
++#define VSC73XX_BLOCK_MII_EXTERNAL	0x1 /* External MDIO subblock */
++
+ #define CPU_PORT	6 /* CPU port */
+ 
+ /* MAC Block registers */
+@@ -196,6 +200,8 @@
+ #define VSC73XX_MII_CMD		0x1
+ #define VSC73XX_MII_DATA	0x2
+ 
++#define VSC73XX_MII_STAT_BUSY	BIT(3)
++
+ /* Arbiter block 5 registers */
+ #define VSC73XX_ARBEMPTY		0x0c
+ #define VSC73XX_ARBDISC			0x0e
+@@ -270,6 +276,7 @@
  #define IS_739X(a) (IS_7395(a) || IS_7398(a))
  
-+#define VSC73XX_POLL_SLEEP_US		1000
-+#define VSC73XX_POLL_TIMEOUT_US		10000
-+
+ #define VSC73XX_POLL_SLEEP_US		1000
++#define VSC73XX_MDIO_POLL_SLEEP_US	5
+ #define VSC73XX_POLL_TIMEOUT_US		10000
+ 
  struct vsc73xx_counter {
- 	u8 counter;
- 	const char *name;
-@@ -779,7 +783,7 @@ static void vsc73xx_adjust_link(struct dsa_switch *ds, int port,
- 	 * after a PHY or the CPU port comes up or down.
- 	 */
- 	if (!phydev->link) {
--		int maxloop = 10;
-+		int ret, err;
+@@ -487,6 +494,22 @@ static int vsc73xx_detect(struct vsc73xx *vsc)
+ 	return 0;
+ }
  
- 		dev_dbg(vsc->dev, "port %d: went down\n",
- 			port);
-@@ -794,19 +798,17 @@ static void vsc73xx_adjust_link(struct dsa_switch *ds, int port,
- 				    VSC73XX_ARBDISC, BIT(port), BIT(port));
++static int vsc73xx_mdio_busy_check(struct vsc73xx *vsc)
++{
++	int ret, err;
++	u32 val;
++
++	ret = read_poll_timeout(vsc73xx_read, err,
++				err < 0 || !(val & VSC73XX_MII_STAT_BUSY),
++				VSC73XX_MDIO_POLL_SLEEP_US,
++				VSC73XX_POLL_TIMEOUT_US, false, vsc,
++				VSC73XX_BLOCK_MII, VSC73XX_BLOCK_MII_INTERNAL,
++				VSC73XX_MII_STAT, &val);
++	if (ret)
++		return ret;
++	return err;
++}
++
+ static int vsc73xx_phy_read(struct dsa_switch *ds, int phy, int regnum)
+ {
+ 	struct vsc73xx *vsc = ds->priv;
+@@ -494,12 +517,20 @@ static int vsc73xx_phy_read(struct dsa_switch *ds, int phy, int regnum)
+ 	u32 val;
+ 	int ret;
  
- 		/* Wait until queue is empty */
--		vsc73xx_read(vsc, VSC73XX_BLOCK_ARBITER, 0,
--			     VSC73XX_ARBEMPTY, &val);
--		while (!(val & BIT(port))) {
--			msleep(1);
--			vsc73xx_read(vsc, VSC73XX_BLOCK_ARBITER, 0,
--				     VSC73XX_ARBEMPTY, &val);
--			if (--maxloop == 0) {
--				dev_err(vsc->dev,
--					"timeout waiting for block arbiter\n");
--				/* Continue anyway */
--				break;
--			}
--		}
-+		ret = read_poll_timeout(vsc73xx_read, err,
-+					err < 0 || (val & BIT(port)),
-+					VSC73XX_POLL_SLEEP_US,
-+					VSC73XX_POLL_TIMEOUT_US, false,
-+					vsc, VSC73XX_BLOCK_ARBITER, 0,
-+					VSC73XX_ARBEMPTY, &val);
-+		if (ret)
-+			dev_err(vsc->dev,
-+				"timeout waiting for block arbiter\n");
-+		else if (err < 0)
-+			dev_err(vsc->dev, "error reading arbiter\n");
++	ret = vsc73xx_mdio_busy_check(vsc);
++	if (ret)
++		return ret;
++
+ 	/* Setting bit 26 means "read" */
+ 	cmd = BIT(26) | (phy << 21) | (regnum << 16);
+ 	ret = vsc73xx_write(vsc, VSC73XX_BLOCK_MII, 0, 1, cmd);
+ 	if (ret)
+ 		return ret;
+-	msleep(2);
++
++	ret = vsc73xx_mdio_busy_check(vsc);
++	if (ret)
++		return ret;
++
+ 	ret = vsc73xx_read(vsc, VSC73XX_BLOCK_MII, 0, 2, &val);
+ 	if (ret)
+ 		return ret;
+@@ -523,6 +554,10 @@ static int vsc73xx_phy_write(struct dsa_switch *ds, int phy, int regnum,
+ 	u32 cmd;
+ 	int ret;
  
- 		/* Put this port into reset */
- 		vsc73xx_write(vsc, VSC73XX_BLOCK_MAC, port, VSC73XX_MAC_CFG,
++	ret = vsc73xx_mdio_busy_check(vsc);
++	if (ret)
++		return ret;
++
+ 	/* It was found through tedious experiments that this router
+ 	 * chip really hates to have it's PHYs reset. They
+ 	 * never recover if that happens: autonegotiation stops
 -- 
 2.43.0
 
