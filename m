@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-70701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71245-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59D7A960F97
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:00:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FB8496127D
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:31:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 14EF9285655
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:00:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A80A1F23470
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:31:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DCBB1C8FB0;
-	Tue, 27 Aug 2024 14:59:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C1751C5792;
+	Tue, 27 Aug 2024 15:29:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vcEbJbeR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mkWGGH9Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEA6D1BA88C;
-	Tue, 27 Aug 2024 14:59:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 592551C6F57;
+	Tue, 27 Aug 2024 15:29:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770782; cv=none; b=CxsdZMpP95gVGsLFy5xNteWAQYB/49IcbP5V7l+AD5vBsB33bU4kirgJh1xIr87sWxufPEfBqFRCk+830gOBvVvN83ijULTg7WVPL9l7+IdGUeR0B1qZV2qDYeSf2ybWw/MmPFlU9mdeivG3jC8RpLbQxR4FwgPDCMQjVm8YOOM=
+	t=1724772578; cv=none; b=CWKOWJTJac3RPG+6W+PsgI96eaK1+Fy6iGDvMcs5KxG54LqwVaDb9YRc5wdjO9ZskbkEjiDRRp57AG/+ZrlY5yb4L4ea9P/FGmsiBclgdNnVH4h1kE9qHDy5Bez3Mzn/HvnIRlCr5M3iG5zoo9b29TZbgKxSCea4LUAl9Nz4r8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770782; c=relaxed/simple;
-	bh=z+6VEaaQBH86POJbyor8o9NmUZWVxpcxbj8tc46pdok=;
+	s=arc-20240116; t=1724772578; c=relaxed/simple;
+	bh=4HqDvBoLaaOYBAYsiBxijxCWQCENXY2H7BQZnvTNuiE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q1fhzNlgfTDeVI3M+EdJXZWlVcwqLJ7Kx3GDfyx1o/wqoqpRjiiNLcPDC6YBFIImyfb9DqcWEHnVpB8aCNRoUVNozHb4LcyZ+xtyWFT1CR/qaMbQjAR/DmyCBT3M43e1yj3u7P3owh+yJrR2MoFRieSSupwBe/TP8ov8edbSOIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vcEbJbeR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B0BBC4AF1A;
-	Tue, 27 Aug 2024 14:59:41 +0000 (UTC)
+	 MIME-Version; b=iJGZhWgFTDXr3huqNJ76JUIb1wukWPsc+0jsPp8jxs9zJM8/Y+cDeHzrsI5uNBWsyOeHlZ072tbJytSSOFPHYQimy3Qb2TjjEceXSW0/8oTlwd/eMwUogoD9YN1jIwwOcrSM6xf14+CJOXEyOH/2syF8AA/Lb0bMJXg8fo0HxB8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mkWGGH9Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5428CC4AF49;
+	Tue, 27 Aug 2024 15:29:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770781;
-	bh=z+6VEaaQBH86POJbyor8o9NmUZWVxpcxbj8tc46pdok=;
+	s=korg; t=1724772577;
+	bh=4HqDvBoLaaOYBAYsiBxijxCWQCENXY2H7BQZnvTNuiE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vcEbJbeRu1WZBSnnm8gLgUVQRZIes7Buc5WScjLwqFBxS1z9iTzUZg8FBAJ20ciIH
-	 frBXHcY7HTiiOoH7sXAXBUltocVi/J841C+n92Mo/QV5GoBAhfwEkHpNG2GdDvjD9W
-	 UsGLNzOXrFPd4qZBB2aRCtqk2I/mq+1mnnu6oeGA=
+	b=mkWGGH9YCbQm4IP8hguxTHiB8NxuwA9sWBEXQYBI2rzI9BOKrf9sm4z/nD3QFASCB
+	 FPGNuhTBhIJkn45+aQ5v/AcxvquDKrxLOlCuWuWhMhEOf+CvsuSircbqFS8pdYRRSR
+	 MJu32DEuCJfMZ7QYjjqZDeGL02aaEGkv59wspD9w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Daniel Hodges <hodgesd@meta.com>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Subject: [PATCH 6.6 333/341] bpf: Fix a kernel verifier crash in stacksafe()
+	Sean Anderson <sean.anderson@linux.dev>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 256/321] net: xilinx: axienet: Always disable promiscuous mode
 Date: Tue, 27 Aug 2024 16:39:24 +0200
-Message-ID: <20240827143856.067340828@linuxfoundation.org>
+Message-ID: <20240827143847.989180156@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yonghong Song <yonghong.song@linux.dev>
+From: Sean Anderson <sean.anderson@linux.dev>
 
-commit bed2eb964c70b780fb55925892a74f26cb590b25 upstream.
+[ Upstream commit 4ae738dfef2c0323752ab81786e2d298c9939321 ]
 
-Daniel Hodges reported a kernel verifier crash when playing with sched-ext.
-Further investigation shows that the crash is due to invalid memory access
-in stacksafe(). More specifically, it is the following code:
+If promiscuous mode is disabled when there are fewer than four multicast
+addresses, then it will not be reflected in the hardware. Fix this by
+always clearing the promiscuous mode flag even when we program multicast
+addresses.
 
-    if (exact != NOT_EXACT &&
-        old->stack[spi].slot_type[i % BPF_REG_SIZE] !=
-        cur->stack[spi].slot_type[i % BPF_REG_SIZE])
-            return false;
-
-The 'i' iterates old->allocated_stack.
-If cur->allocated_stack < old->allocated_stack the out-of-bound
-access will happen.
-
-To fix the issue add 'i >= cur->allocated_stack' check such that if
-the condition is true, stacksafe() should fail. Otherwise,
-cur->stack[spi].slot_type[i % BPF_REG_SIZE] memory access is legal.
-
-Fixes: 2793a8b015f7 ("bpf: exact states comparison for iterator convergence checks")
-Cc: Eduard Zingerman <eddyz87@gmail.com>
-Reported-by: Daniel Hodges <hodgesd@meta.com>
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Signed-off-by: Yonghong Song <yonghong.song@linux.dev>
-Link: https://lore.kernel.org/r/20240812214847.213612-1-yonghong.song@linux.dev
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-[ shung-hsi.yu: "exact" variable is bool instead enum because commit
-  4f81c16f50ba ("bpf: Recognize that two registers are safe when their
-  ranges match") is not present. ]
-Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8a3b7a252dca ("drivers/net/ethernet/xilinx: added Xilinx AXI Ethernet driver")
+Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20240822154059.1066595-2-sean.anderson@linux.dev
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/xilinx/xilinx_axienet_main.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -16124,8 +16124,9 @@ static bool stacksafe(struct bpf_verifie
- 		spi = i / BPF_REG_SIZE;
+diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+index ff777735be66b..ff4b31e93d75f 100644
+--- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
++++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+@@ -429,6 +429,10 @@ static void axienet_set_multicast_list(struct net_device *ndev)
+ 	} else if (!netdev_mc_empty(ndev)) {
+ 		struct netdev_hw_addr *ha;
  
- 		if (exact &&
--		    old->stack[spi].slot_type[i % BPF_REG_SIZE] !=
--		    cur->stack[spi].slot_type[i % BPF_REG_SIZE])
-+		    (i >= cur->allocated_stack ||
-+		     old->stack[spi].slot_type[i % BPF_REG_SIZE] !=
-+		     cur->stack[spi].slot_type[i % BPF_REG_SIZE]))
- 			return false;
- 
- 		if (!(old->stack[spi].spilled_ptr.live & REG_LIVE_READ) && !exact) {
++		reg = axienet_ior(lp, XAE_FMI_OFFSET);
++		reg &= ~XAE_FMI_PM_MASK;
++		axienet_iow(lp, XAE_FMI_OFFSET, reg);
++
+ 		i = 0;
+ 		netdev_for_each_mc_addr(ha, ndev) {
+ 			if (i >= XAE_MULTICAST_CAM_TABLE_NUM)
+-- 
+2.43.0
+
 
 
 
