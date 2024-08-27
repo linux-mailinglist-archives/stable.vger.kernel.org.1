@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-70703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71248-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCD24960F99
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:00:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84227961281
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:31:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8748F1F240C9
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:00:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B6AC21C22E09
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:31:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 208C21C57AB;
-	Tue, 27 Aug 2024 14:59:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83C541CDA39;
+	Tue, 27 Aug 2024 15:29:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kjzx6ROx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qMcma7IJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1D1B1C4EF9;
-	Tue, 27 Aug 2024 14:59:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FFA21CDA26;
+	Tue, 27 Aug 2024 15:29:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770788; cv=none; b=K+Y3GBd7whXqHlJ3LWJIAyLLc/fUFCah3FHjqegVN8MMk55IelER8XDnv6Vppzi60OUvWKt7EJ40Xr+gk7riDYloATevtJ6dfX0bnrBAFx5pnJDIJ2cUalbyUDfO4qotqIy/kgHK/RmNT8LtM/YHHY1Kfr78s6jKSsdVAoIuhmg=
+	t=1724772584; cv=none; b=go9YuxJmV8ZvoSo2KPyjpCwoXiSvmcZZD1o1UfUgeRJkWCkLjUbfyfzIha2Rxmj6tqLL4zEQbnQV55diRmjq7fCAG3ErqD0saVTyozyyOcH1Dx1R5wGI0j/nLNx18lulgy1b7EDoEck0snYVE2oKrv1lcdX+1YLJGee+CoQr4Q8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770788; c=relaxed/simple;
-	bh=fmthrTYexew87ihGTxc4eo6dp2jE/KEKEoSyJi5h0mE=;
+	s=arc-20240116; t=1724772584; c=relaxed/simple;
+	bh=NmyjO1XW4FBWJwW1PBr3JPA89ihOVdjaEopQq9z9BDk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uXRyPRsT89JX2rAjyZdrKyCi4T/RNN6jAEw5Y1CZK2j98PFknsUm00ORPCjKDDmpMX3rW4mKSc6Ki0NiDdQZNypj43Kh/7aKKdhhbykXqQGRfmphw0Uy7E9NoQ4tN8j9EQV5CfBtzWu77CBeNPKzBznHrtwHnTsYDYHrn+ZWoEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kjzx6ROx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40800C4AF1C;
-	Tue, 27 Aug 2024 14:59:48 +0000 (UTC)
+	 MIME-Version; b=Yu4Y+dJ8zaNo4MZdSzdlyAVkmJF8xXXc+GVS9MbwYz3+FBBnlTkhnPM4Z/5YqZ9RoAnzPezdFFSyygkMy57OMpgmJxRc77lCqBLBLTpIFGy7OmnD8ojLIt61fCSwvQYQZQmABSXEpkyOi/uz65t5Hh+9F3hf9LlsqjgjLSeFNTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qMcma7IJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A862BC6107E;
+	Tue, 27 Aug 2024 15:29:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770788;
-	bh=fmthrTYexew87ihGTxc4eo6dp2jE/KEKEoSyJi5h0mE=;
+	s=korg; t=1724772584;
+	bh=NmyjO1XW4FBWJwW1PBr3JPA89ihOVdjaEopQq9z9BDk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kjzx6ROxsDrvhKh8MuTzAk198Mv+oEYSoG0GThKROEKLSe5lY1q/Eh4YQVFLlfQH1
-	 7lkVffUlG/bHe/dZjIF/50uOjbvmKqA/n6J9tQZXZlz247xgAZR4AqgccEevmA+3YL
-	 gmanHkbXR9Rb18C7mjQG8T7tYp0ZVpr35rivKkbg=
+	b=qMcma7IJiIWB2EdgFI+Zx+BAeXIFinOp/bSGbxTspFb17gYhvdyqg5JM//M6x3Onz
+	 h53c+jlytA2mQ2DDt1zZtPcf7/USGBGq1D2lEIyDCfS67nJjzxK+TYLdGgo6iGujWe
+	 Qbt0OqaZmFMfGFc/MrT6iDxAWrew3URNMfFr0rF0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	NeilBrown <neilb@suse.de>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Li Lingfeng <lilingfeng3@huawei.com>
-Subject: [PATCH 6.6 335/341] NFSD: simplify error paths in nfsd_svc()
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 258/321] drm/msm/dpu: dont play tricks with debug macros
 Date: Tue, 27 Aug 2024 16:39:26 +0200
-Message-ID: <20240827143856.141540017@linuxfoundation.org>
+Message-ID: <20240827143848.065214062@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,93 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: NeilBrown <neilb@suse.de>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-commit bf32075256e9dd9c6b736859e2c5813981339908 upstream.
+[ Upstream commit df24373435f5899a2a98b7d377479c8d4376613b ]
 
-The error paths in nfsd_svc() are needlessly complex and can result in a
-final call to svc_put() without nfsd_last_thread() being called.  This
-results in the listening sockets not being closed properly.
+DPU debugging macros need to be converted to a proper drm_debug_*
+macros, however this is a going an intrusive patch, not suitable for a
+fix. Wire DPU_DEBUG and DPU_DEBUG_DRIVER to always use DRM_DEBUG_DRIVER
+to make sure that DPU debugging messages always end up in the drm debug
+messages and are controlled via the usual drm.debug mask.
 
-The per-netns setup provided by nfsd_startup_new() and removed by
-nfsd_shutdown_net() is needed precisely when there are running threads.
-So we don't need nfsd_up_before.  We don't need to know if it *was* up.
-We only need to know if any threads are left.  If none are, then we must
-call nfsd_shutdown_net().  But we don't need to do that explicitly as
-nfsd_last_thread() does that for us.
+I don't think that it is a good idea for a generic DPU_DEBUG macro to be
+tied to DRM_UT_KMS. It is used to report a debug message from driver, so by
+default it should go to the DRM_UT_DRIVER channel. While refactoring
+debug macros later on we might end up with particular messages going to
+ATOMIC or KMS, but DRIVER should be the default.
 
-So simply call nfsd_last_thread() before the last svc_put() if there are
-no running threads.  That will always do the right thing.
-
-Also discard:
- pr_info("nfsd: last server has exited, flushing export cache\n");
-It may not be true if an attempt to start the first server failed, and
-it isn't particularly helpful and it simply reports normal behaviour.
-
-Signed-off-by: NeilBrown <neilb@suse.de>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Reported-by: Li Lingfeng <lilingfeng3@huawei.com>
-Suggested-by: Li Lingfeng <lilingfeng3@huawei.com>
-Tested-by: Li Lingfeng <lilingfeng3@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 25fdd5933e4c ("drm/msm: Add SDM845 DPU support")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/606932/
+Link: https://lore.kernel.org/r/20240802-dpu-fix-wb-v2-2-7eac9eb8e895@linaro.org
+Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfssvc.c |   14 ++++----------
- 1 file changed, 4 insertions(+), 10 deletions(-)
+ drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h | 14 ++------------
+ 1 file changed, 2 insertions(+), 12 deletions(-)
 
---- a/fs/nfsd/nfssvc.c
-+++ b/fs/nfsd/nfssvc.c
-@@ -567,7 +567,6 @@ void nfsd_last_thread(struct net *net)
- 		return;
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h b/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h
+index bb35aa5f5709f..41e44a77c2beb 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_kms.h
+@@ -31,24 +31,14 @@
+  * @fmt: Pointer to format string
+  */
+ #define DPU_DEBUG(fmt, ...)                                                \
+-	do {                                                               \
+-		if (drm_debug_enabled(DRM_UT_KMS))                         \
+-			DRM_DEBUG(fmt, ##__VA_ARGS__); \
+-		else                                                       \
+-			pr_debug(fmt, ##__VA_ARGS__);                      \
+-	} while (0)
++	DRM_DEBUG_DRIVER(fmt, ##__VA_ARGS__)
  
- 	nfsd_shutdown_net(net);
--	pr_info("nfsd: last server has exited, flushing export cache\n");
- 	nfsd_export_flush(net);
- }
+ /**
+  * DPU_DEBUG_DRIVER - macro for hardware driver logging
+  * @fmt: Pointer to format string
+  */
+ #define DPU_DEBUG_DRIVER(fmt, ...)                                         \
+-	do {                                                               \
+-		if (drm_debug_enabled(DRM_UT_DRIVER))                      \
+-			DRM_ERROR(fmt, ##__VA_ARGS__); \
+-		else                                                       \
+-			pr_debug(fmt, ##__VA_ARGS__);                      \
+-	} while (0)
++	DRM_DEBUG_DRIVER(fmt, ##__VA_ARGS__)
  
-@@ -783,7 +782,6 @@ int
- nfsd_svc(int nrservs, struct net *net, const struct cred *cred)
- {
- 	int	error;
--	bool	nfsd_up_before;
- 	struct nfsd_net *nn = net_generic(net, nfsd_net_id);
- 	struct svc_serv *serv;
- 
-@@ -803,8 +801,6 @@ nfsd_svc(int nrservs, struct net *net, c
- 	error = nfsd_create_serv(net);
- 	if (error)
- 		goto out;
--
--	nfsd_up_before = nn->nfsd_net_up;
- 	serv = nn->nfsd_serv;
- 
- 	error = nfsd_startup_net(net, cred);
-@@ -812,17 +808,15 @@ nfsd_svc(int nrservs, struct net *net, c
- 		goto out_put;
- 	error = svc_set_num_threads(serv, NULL, nrservs);
- 	if (error)
--		goto out_shutdown;
-+		goto out_put;
- 	error = serv->sv_nrthreads;
--	if (error == 0)
--		nfsd_last_thread(net);
--out_shutdown:
--	if (error < 0 && !nfsd_up_before)
--		nfsd_shutdown_net(net);
- out_put:
- 	/* Threads now hold service active */
- 	if (xchg(&nn->keep_active, 0))
- 		svc_put(serv);
-+
-+	if (serv->sv_nrthreads == 0)
-+		nfsd_last_thread(net);
- 	svc_put(serv);
- out:
- 	mutex_unlock(&nfsd_mutex);
+ #define DPU_ERROR(fmt, ...) pr_err("[dpu error]" fmt, ##__VA_ARGS__)
+ #define DPU_ERROR_RATELIMITED(fmt, ...) pr_err_ratelimited("[dpu error]" fmt, ##__VA_ARGS__)
+-- 
+2.43.0
+
 
 
 
