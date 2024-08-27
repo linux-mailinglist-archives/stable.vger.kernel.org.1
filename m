@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-71243-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70700-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F7799612C3
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:34:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BFD0960F95
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:00:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A0600B29E5D
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:31:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EDE7028638F
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:00:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 519CB1C8FDE;
-	Tue, 27 Aug 2024 15:29:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6E451C86F6;
+	Tue, 27 Aug 2024 14:59:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LEkvz4mQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mZZJRYIm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F0D119F485;
-	Tue, 27 Aug 2024 15:29:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 858ED1BA88C;
+	Tue, 27 Aug 2024 14:59:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772571; cv=none; b=e5891XIa1Y1Z+Cvo3294G0x9a4fM9mseW8CMj9KGagAqxmFj9oIq+duAx5teUhwB8oIZBZL0NzmZS5u/grw3veMKwg5llGWwd86SMmuECz2ib43CtO2Rda9OtJcBSsakj7T+cqzQi1ni0Np26z3ZniUoNqPayaEzbyY783mzdas=
+	t=1724770778; cv=none; b=X0AQn6LJ2KA8saIo/a0blm84LlBM5mQVEwhZvyBgiecte2lzN5DtnJUg/Rg/m8q3+hmugf5YqeuYqZxEd7eVe4PPuJ+0WmkVgcV1EirQv3ER/c00mEz6Z5Wi8tVD87apH50NS5COdZHjz6ipzn4zrwdgTouqAcafKQcafiuf9Vs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772571; c=relaxed/simple;
-	bh=edtodNoOfSvh0r1LKR76iE/IBFzPoAz3kIaaZixsWNg=;
+	s=arc-20240116; t=1724770778; c=relaxed/simple;
+	bh=ckCds5YXTqSll9moIUQHSrzqqGCaelLu2exf3ba32q8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hKuUyFEaVLnRu25EWdsAfCezWDGkYkdkv0R9BlIBIo+SaxKzGCK4xPyf8WUZHOX/lqRfTi7638XL1HnesvqcN34wFgmDWc1adNrpkfJdoPeOkh2wJav27Ixn3g1AByAz5JHGtjswcVV8s1+b3TXUd1W01QKD/AAOKK6gD/Mmc5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LEkvz4mQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80E3DC6107E;
-	Tue, 27 Aug 2024 15:29:30 +0000 (UTC)
+	 MIME-Version; b=G7agd4LERoyEx1BN92zoZcXvaBKHUydjtjxBSqXftVo/tedRu+istV+gAIfv7rixpG/1u+B81bQ2xCHgUvsUeK3Ol5b7ch6sYoVDnTB1ADYEWUNnWTjwkNS7GlViBXyutHD5w1h9BlfQYQKjbfioGOlj/v46j/V8Gyo3eK9PAok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mZZJRYIm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F40EFC4AF1C;
+	Tue, 27 Aug 2024 14:59:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772570;
-	bh=edtodNoOfSvh0r1LKR76iE/IBFzPoAz3kIaaZixsWNg=;
+	s=korg; t=1724770778;
+	bh=ckCds5YXTqSll9moIUQHSrzqqGCaelLu2exf3ba32q8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LEkvz4mQZpbcN3TtSu/Y5EoBYQVVltWhLogACttl4Ldl6VbVE9b7VL4vsg29gDbsw
-	 zig+3RKVgmSMlabqnzG1RoByAmKT/AKM/W7w0A2AY7I5kD179UBWCx7/1bcVmHYweZ
-	 YIG4jRzOQTsEAPbhhL7rsx+N149LGt2rHdWLCa6E=
+	b=mZZJRYImX+agFl4E5MRhgWSg98iDGtjHLWnWCgCBFKURWlsiUVFfaSrn4vOoSQ6f4
+	 PcglB5weyZMIuFojxK9RhcMmeVm+cH5DCehLay/tHIMJ/x+8NF0YPa7tBsHsLBaf7h
+	 7f92AiJnUaCFrrQFoY3wzhkpksHfkw6LHNidsa84=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+8407d9bb88cd4c6bf61a@syzkaller.appspotmail.com,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 254/321] netfilter: flowtable: validate vlan header
-Date: Tue, 27 Aug 2024 16:39:22 +0200
-Message-ID: <20240827143847.912870403@linuxfoundation.org>
+	Zi Yan <ziy@nvidia.com>,
+	"Huang, Ying" <ying.huang@intel.com>,
+	David Hildenbrand <david@redhat.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Mel Gorman <mgorman@suse.de>,
+	Yang Shi <shy828301@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 332/341] mm/numa: no task_numa_fault() call if PTE is changed
+Date: Tue, 27 Aug 2024 16:39:23 +0200
+Message-ID: <20240827143856.027636153@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +67,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Zi Yan <ziy@nvidia.com>
 
-[ Upstream commit 6ea14ccb60c8ab829349979b22b58a941ec4a3ee ]
+commit 40b760cfd44566bca791c80e0720d70d75382b84 upstream.
 
-Ensure there is sufficient room to access the protocol field of the
-VLAN header, validate it once before the flowtable lookup.
+When handling a numa page fault, task_numa_fault() should be called by a
+process that restores the page table of the faulted folio to avoid
+duplicated stats counting.  Commit b99a342d4f11 ("NUMA balancing: reduce
+TLB flush via delaying mapping on hint page fault") restructured
+do_numa_page() and did not avoid task_numa_fault() call in the second page
+table check after a numa migration failure.  Fix it by making all
+!pte_same() return immediately.
 
-=====================================================
-BUG: KMSAN: uninit-value in nf_flow_offload_inet_hook+0x45a/0x5f0 net/netfilter/nf_flow_table_inet.c:32
- nf_flow_offload_inet_hook+0x45a/0x5f0 net/netfilter/nf_flow_table_inet.c:32
- nf_hook_entry_hookfn include/linux/netfilter.h:154 [inline]
- nf_hook_slow+0xf4/0x400 net/netfilter/core.c:626
- nf_hook_ingress include/linux/netfilter_netdev.h:34 [inline]
- nf_ingress net/core/dev.c:5440 [inline]
+This issue can cause task_numa_fault() being called more than necessary
+and lead to unexpected numa balancing results (It is hard to tell whether
+the issue will cause positive or negative performance impact due to
+duplicated numa fault counting).
 
-Fixes: 4cd91f7c290f ("netfilter: flowtable: add vlan support")
-Reported-by: syzbot+8407d9bb88cd4c6bf61a@syzkaller.appspotmail.com
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20240809145906.1513458-2-ziy@nvidia.com
+Fixes: b99a342d4f11 ("NUMA balancing: reduce TLB flush via delaying mapping on hint page fault")
+Signed-off-by: Zi Yan <ziy@nvidia.com>
+Reported-by: "Huang, Ying" <ying.huang@intel.com>
+Closes: https://lore.kernel.org/linux-mm/87zfqfw0yw.fsf@yhuang6-desk2.ccr.corp.intel.com/
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Mel Gorman <mgorman@suse.de>
+Cc: Yang Shi <shy828301@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_flow_table_inet.c | 3 +++
- net/netfilter/nf_flow_table_ip.c   | 3 +++
- 2 files changed, 6 insertions(+)
+ mm/memory.c |   33 ++++++++++++++++-----------------
+ 1 file changed, 16 insertions(+), 17 deletions(-)
 
-diff --git a/net/netfilter/nf_flow_table_inet.c b/net/netfilter/nf_flow_table_inet.c
-index 6eef15648b7b0..b0f1991719324 100644
---- a/net/netfilter/nf_flow_table_inet.c
-+++ b/net/netfilter/nf_flow_table_inet.c
-@@ -17,6 +17,9 @@ nf_flow_offload_inet_hook(void *priv, struct sk_buff *skb,
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -4775,7 +4775,7 @@ static vm_fault_t do_numa_page(struct vm
+ 	spin_lock(vmf->ptl);
+ 	if (unlikely(!pte_same(ptep_get(vmf->pte), vmf->orig_pte))) {
+ 		pte_unmap_unlock(vmf->pte, vmf->ptl);
+-		goto out;
++		return 0;
+ 	}
  
- 	switch (skb->protocol) {
- 	case htons(ETH_P_8021Q):
-+		if (!pskb_may_pull(skb, skb_mac_offset(skb) + sizeof(*veth)))
-+			return NF_ACCEPT;
-+
- 		veth = (struct vlan_ethhdr *)skb_mac_header(skb);
- 		proto = veth->h_vlan_encapsulated_proto;
- 		break;
-diff --git a/net/netfilter/nf_flow_table_ip.c b/net/netfilter/nf_flow_table_ip.c
-index 22bc0e3d8a0b5..34be2c9bc39d8 100644
---- a/net/netfilter/nf_flow_table_ip.c
-+++ b/net/netfilter/nf_flow_table_ip.c
-@@ -275,6 +275,9 @@ static bool nf_flow_skb_encap_protocol(struct sk_buff *skb, __be16 proto,
+ 	/* Get the normal PTE  */
+@@ -4840,23 +4840,19 @@ static vm_fault_t do_numa_page(struct vm
+ 	if (migrate_misplaced_page(page, vma, target_nid)) {
+ 		page_nid = target_nid;
+ 		flags |= TNF_MIGRATED;
+-	} else {
+-		flags |= TNF_MIGRATE_FAIL;
+-		vmf->pte = pte_offset_map_lock(vma->vm_mm, vmf->pmd,
+-					       vmf->address, &vmf->ptl);
+-		if (unlikely(!vmf->pte))
+-			goto out;
+-		if (unlikely(!pte_same(ptep_get(vmf->pte), vmf->orig_pte))) {
+-			pte_unmap_unlock(vmf->pte, vmf->ptl);
+-			goto out;
+-		}
+-		goto out_map;
++		task_numa_fault(last_cpupid, page_nid, 1, flags);
++		return 0;
+ 	}
  
- 	switch (skb->protocol) {
- 	case htons(ETH_P_8021Q):
-+		if (!pskb_may_pull(skb, skb_mac_offset(skb) + sizeof(*veth)))
-+			return false;
+-out:
+-	if (page_nid != NUMA_NO_NODE)
+-		task_numa_fault(last_cpupid, page_nid, 1, flags);
+-	return 0;
++	flags |= TNF_MIGRATE_FAIL;
++	vmf->pte = pte_offset_map_lock(vma->vm_mm, vmf->pmd,
++				       vmf->address, &vmf->ptl);
++	if (unlikely(!vmf->pte))
++		return 0;
++	if (unlikely(!pte_same(ptep_get(vmf->pte), vmf->orig_pte))) {
++		pte_unmap_unlock(vmf->pte, vmf->ptl);
++		return 0;
++	}
+ out_map:
+ 	/*
+ 	 * Make it present again, depending on how arch implements
+@@ -4870,7 +4866,10 @@ out_map:
+ 	ptep_modify_prot_commit(vma, vmf->address, vmf->pte, old_pte, pte);
+ 	update_mmu_cache_range(vmf, vma, vmf->address, vmf->pte, 1);
+ 	pte_unmap_unlock(vmf->pte, vmf->ptl);
+-	goto out;
 +
- 		veth = (struct vlan_ethhdr *)skb_mac_header(skb);
- 		if (veth->h_vlan_encapsulated_proto == proto) {
- 			*offset += VLAN_HLEN;
--- 
-2.43.0
-
++	if (page_nid != NUMA_NO_NODE)
++		task_numa_fault(last_cpupid, page_nid, 1, flags);
++	return 0;
+ }
+ 
+ static inline vm_fault_t create_huge_pmd(struct vm_fault *vmf)
 
 
 
