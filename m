@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-71251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70706-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7A08961289
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:32:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80FEE960F9B
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:00:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9204C1F22144
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:32:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E3FE1F21A9A
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:00:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AF7C1C8700;
-	Tue, 27 Aug 2024 15:29:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 146FF1C688F;
+	Tue, 27 Aug 2024 14:59:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oTHxs2rl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1R2LUOLw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18B291C8228;
-	Tue, 27 Aug 2024 15:29:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7C2E1A01C8;
+	Tue, 27 Aug 2024 14:59:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772594; cv=none; b=aotNbvjiI8ifuu7wztba5B4e0OTYW2PMNBXqmm/TtNWuyR8rL2rsefqKv+Pk2Ulo+To5OmL04GgBp1D6hyIxt0Evmw2rx2WgrEOgRPeZjjpsfQH1t3VNtT3toQESi8bC7bNmJT2tb14pwdQ2FxNfKg6ikb0j3frRY2M9+rahtP4=
+	t=1724770798; cv=none; b=j4eq64DksLJV/6Jx6WSsHArq/A3m9E5EuOnizjA1L6XPQY1NeXxRtSr5M+lbgnQC5S9ZqdqqCd1dEhHMd6R2QBRU6WELFha/Tqu4uxHamTKoKYIe05usPQcgSpQAcaPnrVkT6PUDDOUxApUJKLe54RK6KwxStWL6uS0Q0iaoGZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772594; c=relaxed/simple;
-	bh=RYHom4vxaLRscwG+zQWhrh4sHEpRvT+KcT/yEi5BPTM=;
+	s=arc-20240116; t=1724770798; c=relaxed/simple;
+	bh=I6JIMr3WZ9N65riXj+JLhaDaziwnoHEtxHjB0cX9uz8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fCpn1uTpYykRkY78rp+83IN0JVCxh11Vug/tdzZbN5zZapn0Uhk0z6c3xs/hFP2Qt17EiGrjN9UVOLzl/uEiuD/oLAXirdZK52wnHYRlGdfZ5cwkHDkMOsDw8u7VEGNyO+ebFUUJtV/7XfQQb4FVaXR0nGbvQCbSH9IsOV4ydEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oTHxs2rl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E6DCC6107E;
-	Tue, 27 Aug 2024 15:29:53 +0000 (UTC)
+	 MIME-Version; b=AdK5MuGPQCXqCo2eDiv1LPUQluMi/w11poW/m2kV+XCV6+Loxsl6j8eLIya9Wwi+ATXfANL/RUtiWt/4q0pRXmIEyCUie4fiJjCAhM8Ad70ND525S9+iCDqf8XtSnIizALgpsurZFlDKpeGf8ttQ/h+E16fvemhvV4tV80dxO+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1R2LUOLw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36577C4AF1A;
+	Tue, 27 Aug 2024 14:59:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772594;
-	bh=RYHom4vxaLRscwG+zQWhrh4sHEpRvT+KcT/yEi5BPTM=;
+	s=korg; t=1724770798;
+	bh=I6JIMr3WZ9N65riXj+JLhaDaziwnoHEtxHjB0cX9uz8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oTHxs2rlbl/Z9aNVcBsVsE5JNGxmVoF6PgOYuLhHvrnhoyXVfxuXo4f3zDKnuZqrb
-	 kDpvMiy3sb8IsUZ90xw0Y1gC9oV1IIH9ucq6bZ1iUohfLbvzkX6Q1w8h92X5nTcZ2P
-	 fj1DWvjax7vLN78ho9qoS0QwtVDdHHbUHWlGgEV4=
+	b=1R2LUOLwYgOxVBDTCMKnpOntR/Fpr4JBj/AOQ1vI8T/WJXggQgAc50mVaZbrH/P5r
+	 qjgm08bkdRQW6SfCJhIqoRjoA5urU3NyAr/N8NB0oOe9vrV/QyYQifIDoskQkBpcbP
+	 TQ/1XQTq+pPUAUdRl+1xKICT1Tb/h9KSEmZHNNIQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 261/321] drm/msm/dpu: cleanup FB if dpu_format_populate_layout fails
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	zdi-disclosures@trendmicro.com
+Subject: [PATCH 6.6 338/341] ksmbd: fix race condition between destroy_previous_session() and smb2 operations()
 Date: Tue, 27 Aug 2024 16:39:29 +0200
-Message-ID: <20240827143848.183580345@linuxfoundation.org>
+Message-ID: <20240827143856.254733076@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +62,131 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit bfa1a6283be390947d3649c482e5167186a37016 ]
+[ Upstream commit 76e98a158b207771a6c9a0de0a60522a446a3447 ]
 
-If the dpu_format_populate_layout() fails, then FB is prepared, but not
-cleaned up. This ends up leaking the pin_count on the GEM object and
-causes a splat during DRM file closure:
+If there is ->PreviousSessionId field in the session setup request,
+The session of the previous connection should be destroyed.
+During this, if the smb2 operation requests in the previous session are
+being processed, a racy issue could happen with ksmbd_destroy_file_table().
+This patch sets conn->status to KSMBD_SESS_NEED_RECONNECT to block
+incoming  operations and waits until on-going operations are complete
+(i.e. idle) before desctorying the previous session.
 
-msm_obj->pin_count
-WARNING: CPU: 2 PID: 569 at drivers/gpu/drm/msm/msm_gem.c:121 update_lru_locked+0xc4/0xcc
-[...]
-Call trace:
- update_lru_locked+0xc4/0xcc
- put_pages+0xac/0x100
- msm_gem_free_object+0x138/0x180
- drm_gem_object_free+0x1c/0x30
- drm_gem_object_handle_put_unlocked+0x108/0x10c
- drm_gem_object_release_handle+0x58/0x70
- idr_for_each+0x68/0xec
- drm_gem_release+0x28/0x40
- drm_file_free+0x174/0x234
- drm_release+0xb0/0x160
- __fput+0xc0/0x2c8
- __fput_sync+0x50/0x5c
- __arm64_sys_close+0x38/0x7c
- invoke_syscall+0x48/0x118
- el0_svc_common.constprop.0+0x40/0xe0
- do_el0_svc+0x1c/0x28
- el0_svc+0x4c/0x120
- el0t_64_sync_handler+0x100/0x12c
- el0t_64_sync+0x190/0x194
-irq event stamp: 129818
-hardirqs last  enabled at (129817): [<ffffa5f6d953fcc0>] console_unlock+0x118/0x124
-hardirqs last disabled at (129818): [<ffffa5f6da7dcf04>] el1_dbg+0x24/0x8c
-softirqs last  enabled at (129808): [<ffffa5f6d94afc18>] handle_softirqs+0x4c8/0x4e8
-softirqs last disabled at (129785): [<ffffa5f6d94105e4>] __do_softirq+0x14/0x20
-
-Fixes: 25fdd5933e4c ("drm/msm: Add SDM845 DPU support")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/600714/
-Link: https://lore.kernel.org/r/20240625-dpu-mode-config-width-v5-1-501d984d634f@linaro.org
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c8efcc786146 ("ksmbd: add support for durable handles v1/v2")
+Cc: stable@vger.kernel.org # v6.6+
+Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-25040
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/smb/server/connection.c        |   34 +++++++++++++++++++++++++++++++++-
+ fs/smb/server/connection.h        |    3 ++-
+ fs/smb/server/mgmt/user_session.c |    8 ++++++++
+ fs/smb/server/smb2pdu.c           |    2 +-
+ 4 files changed, 44 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c
-index 62d48c0f905e4..61c456c5015a5 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c
-@@ -889,6 +889,9 @@ static int dpu_plane_prepare_fb(struct drm_plane *plane,
- 			new_state->fb, &layout);
- 	if (ret) {
- 		DPU_ERROR_PLANE(pdpu, "failed to get format layout, %d\n", ret);
-+		if (pstate->aspace)
-+			msm_framebuffer_cleanup(new_state->fb, pstate->aspace,
-+						pstate->needs_dirtyfb);
- 		return ret;
- 	}
+--- a/fs/smb/server/connection.c
++++ b/fs/smb/server/connection.c
+@@ -165,11 +165,43 @@ void ksmbd_all_conn_set_status(u64 sess_
+ 	up_read(&conn_list_lock);
+ }
  
--- 
-2.43.0
-
+-void ksmbd_conn_wait_idle(struct ksmbd_conn *conn, u64 sess_id)
++void ksmbd_conn_wait_idle(struct ksmbd_conn *conn)
+ {
+ 	wait_event(conn->req_running_q, atomic_read(&conn->req_running) < 2);
+ }
+ 
++int ksmbd_conn_wait_idle_sess_id(struct ksmbd_conn *curr_conn, u64 sess_id)
++{
++	struct ksmbd_conn *conn;
++	int rc, retry_count = 0, max_timeout = 120;
++	int rcount = 1;
++
++retry_idle:
++	if (retry_count >= max_timeout)
++		return -EIO;
++
++	down_read(&conn_list_lock);
++	list_for_each_entry(conn, &conn_list, conns_list) {
++		if (conn->binding || xa_load(&conn->sessions, sess_id)) {
++			if (conn == curr_conn)
++				rcount = 2;
++			if (atomic_read(&conn->req_running) >= rcount) {
++				rc = wait_event_timeout(conn->req_running_q,
++					atomic_read(&conn->req_running) < rcount,
++					HZ);
++				if (!rc) {
++					up_read(&conn_list_lock);
++					retry_count++;
++					goto retry_idle;
++				}
++			}
++		}
++	}
++	up_read(&conn_list_lock);
++
++	return 0;
++}
++
+ int ksmbd_conn_write(struct ksmbd_work *work)
+ {
+ 	struct ksmbd_conn *conn = work->conn;
+--- a/fs/smb/server/connection.h
++++ b/fs/smb/server/connection.h
+@@ -145,7 +145,8 @@ extern struct list_head conn_list;
+ extern struct rw_semaphore conn_list_lock;
+ 
+ bool ksmbd_conn_alive(struct ksmbd_conn *conn);
+-void ksmbd_conn_wait_idle(struct ksmbd_conn *conn, u64 sess_id);
++void ksmbd_conn_wait_idle(struct ksmbd_conn *conn);
++int ksmbd_conn_wait_idle_sess_id(struct ksmbd_conn *curr_conn, u64 sess_id);
+ struct ksmbd_conn *ksmbd_conn_alloc(void);
+ void ksmbd_conn_free(struct ksmbd_conn *conn);
+ bool ksmbd_conn_lookup_dialect(struct ksmbd_conn *c);
+--- a/fs/smb/server/mgmt/user_session.c
++++ b/fs/smb/server/mgmt/user_session.c
+@@ -310,6 +310,7 @@ void destroy_previous_session(struct ksm
+ {
+ 	struct ksmbd_session *prev_sess;
+ 	struct ksmbd_user *prev_user;
++	int err;
+ 
+ 	down_write(&sessions_table_lock);
+ 	down_write(&conn->session_lock);
+@@ -324,8 +325,15 @@ void destroy_previous_session(struct ksm
+ 	    memcmp(user->passkey, prev_user->passkey, user->passkey_sz))
+ 		goto out;
+ 
++	ksmbd_all_conn_set_status(id, KSMBD_SESS_NEED_RECONNECT);
++	err = ksmbd_conn_wait_idle_sess_id(conn, id);
++	if (err) {
++		ksmbd_all_conn_set_status(id, KSMBD_SESS_NEED_NEGOTIATE);
++		goto out;
++	}
+ 	ksmbd_destroy_file_table(&prev_sess->file_table);
+ 	prev_sess->state = SMB2_SESSION_EXPIRED;
++	ksmbd_all_conn_set_status(id, KSMBD_SESS_NEED_NEGOTIATE);
+ out:
+ 	up_write(&conn->session_lock);
+ 	up_write(&sessions_table_lock);
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -2210,7 +2210,7 @@ int smb2_session_logoff(struct ksmbd_wor
+ 	ksmbd_conn_unlock(conn);
+ 
+ 	ksmbd_close_session_fds(work);
+-	ksmbd_conn_wait_idle(conn, sess_id);
++	ksmbd_conn_wait_idle(conn);
+ 
+ 	/*
+ 	 * Re-lookup session to validate if session is deleted
 
 
 
