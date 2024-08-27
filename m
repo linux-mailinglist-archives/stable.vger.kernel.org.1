@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-70772-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70528-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59F2E960FF3
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:04:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97E12960E96
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:50:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 112491F23A43
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:04:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1927FB22E65
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:50:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EF341C6F7C;
-	Tue, 27 Aug 2024 15:03:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CE5B1A0B13;
+	Tue, 27 Aug 2024 14:50:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IaGe13N0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="niKTM7dL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C0C91B4C4E;
-	Tue, 27 Aug 2024 15:03:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A1FB44C8C;
+	Tue, 27 Aug 2024 14:50:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771012; cv=none; b=X/55Ugwwtxf1URzot8mNet3z6AnhOoRmQsiGSTe7sclHB+w/h2+zM2AMvZEf6RRqOnrIDCM29cIjVXxjkM/WfAsn1YlkRzCfAuMXkZzKwtHPuMG1HV9W/Nk9CvubkH4hzYEO3Lny+5TUe4eUyTfY+PUNjUO3PZDJDHDYSmHpw14=
+	t=1724770208; cv=none; b=oeyckkQZ0U+/lWoV226byXwuKSIiUOE4oTmO1uOUdIX5mS1rrF3uUw+qX8DqR6mANtvGSf12O9iCbZEB7ouUVmIllY70tX+e4G8dnTixjGXhmX5SRfdh/LDqWVSgU+/R/xigCmbjLZchHIug1dT+MHI1JdkARIYLVoDLOr6LzOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771012; c=relaxed/simple;
-	bh=HscT6FzO6yqkdfVDb4caFwTuxDQrOaOF6kph0fIFn2E=;
+	s=arc-20240116; t=1724770208; c=relaxed/simple;
+	bh=Pg8sDlpUhcqrodSYrPPMiInw37CyOWc/5IE4NasnOXY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pM4AAhgPl10qb2O2RKjnlC9fBhViINw2i+K4eJmrZCTRQZCKXOOQgxmTmzTb0V1etcLZthBLY041Gj/afWR37tkwZlBSb/1/SbSnZbZgYTpl74Y7dR0O4CndaUrdZMv7h0AOEXr1xCWp7feXm/7vwgNbc2/5sQ2Ac4ORLNb1n00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IaGe13N0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65D5AC61049;
-	Tue, 27 Aug 2024 15:03:31 +0000 (UTC)
+	 MIME-Version; b=DpMT7g1UxVmUn2xX7Brh1tnmq0t4F3eBd4K2B+rEK3qUa8XA2tUkVQwNw+OAmoNIWA1G2g9CJO5cMB04d6c1DHCpM0cjUWIt5ZuYxK5oT5VMsR9+NSkG+SIegpScEETtgVe/OdyegJqN18A+nseTN7zeNmEfTLp6HeJLpi/xWnA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=niKTM7dL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FEC0C4DDF3;
+	Tue, 27 Aug 2024 14:50:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771012;
-	bh=HscT6FzO6yqkdfVDb4caFwTuxDQrOaOF6kph0fIFn2E=;
+	s=korg; t=1724770207;
+	bh=Pg8sDlpUhcqrodSYrPPMiInw37CyOWc/5IE4NasnOXY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IaGe13N0hM3xcc90HJ8p8GTuDMg6PsBgxqoKIOoa7aSLLkCBnxha/OCkI4qI67h6R
-	 P5Zh8nuaWYlOx7IFts82TYToxLIRwhC35cllrE835l1tkA29Of3tl2IfiVXAtRtIRy
-	 B8bkATFEaIDfd8NiRKhvlNquK9fxEVgRJP36jDSc=
+	b=niKTM7dLyM6SEkIWNZrY/Iqmn0rMcABXcE05ukJ2TBHzhen+amw8w6/oow39rywm5
+	 7E6KPveyQ5o/JRRAXKvzuUofT613ldcBj6r4csx+R2c2wWECKnq6CxQBnvi/6twnD2
+	 j1f3DfW3P0kLllIs+0TyJfigCzhPAit3OXQ9hEnc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zi Yan <ziy@nvidia.com>,
-	"Huang, Ying" <ying.huang@intel.com>,
-	David Hildenbrand <david@redhat.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Mel Gorman <mgorman@suse.de>,
-	Yang Shi <shy828301@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.10 059/273] mm/numa: no task_numa_fault() call if PTE is changed
+	Tony Luck <tony.luck@intel.com>,
+	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 152/341] EDAC/skx_common: Filter out the invalid address
 Date: Tue, 27 Aug 2024 16:36:23 +0200
-Message-ID: <20240827143835.647803770@linuxfoundation.org>
+Message-ID: <20240827143849.202278154@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,102 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zi Yan <ziy@nvidia.com>
+From: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
 
-commit 40b760cfd44566bca791c80e0720d70d75382b84 upstream.
+[ Upstream commit 1e92af09fab1b5589f3a7ae68109e3c6a5ca6c6e ]
 
-When handling a numa page fault, task_numa_fault() should be called by a
-process that restores the page table of the faulted folio to avoid
-duplicated stats counting.  Commit b99a342d4f11 ("NUMA balancing: reduce
-TLB flush via delaying mapping on hint page fault") restructured
-do_numa_page() and did not avoid task_numa_fault() call in the second page
-table check after a numa migration failure.  Fix it by making all
-!pte_same() return immediately.
+Decoding an invalid address with certain firmware decoders could
+cause a #PF (Page Fault) in the EFI runtime context, which could
+subsequently hang the system. To make {i10nm,skx}_edac more robust
+against such bogus firmware decoders, filter out invalid addresses
+before allowing the firmware decoder to process them.
 
-This issue can cause task_numa_fault() being called more than necessary
-and lead to unexpected numa balancing results (It is hard to tell whether
-the issue will cause positive or negative performance impact due to
-duplicated numa fault counting).
-
-Link: https://lkml.kernel.org/r/20240809145906.1513458-2-ziy@nvidia.com
-Fixes: b99a342d4f11 ("NUMA balancing: reduce TLB flush via delaying mapping on hint page fault")
-Signed-off-by: Zi Yan <ziy@nvidia.com>
-Reported-by: "Huang, Ying" <ying.huang@intel.com>
-Closes: https://lore.kernel.org/linux-mm/87zfqfw0yw.fsf@yhuang6-desk2.ccr.corp.intel.com/
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Mel Gorman <mgorman@suse.de>
-Cc: Yang Shi <shy828301@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Tony Luck <tony.luck@intel.com>
+Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Link: https://lore.kernel.org/r/20231207014512.78564-1-qiuxu.zhuo@intel.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/memory.c |   33 ++++++++++++++++-----------------
- 1 file changed, 16 insertions(+), 17 deletions(-)
+ drivers/edac/skx_common.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -5155,7 +5155,7 @@ static vm_fault_t do_numa_page(struct vm
- 
- 	if (unlikely(!pte_same(old_pte, vmf->orig_pte))) {
- 		pte_unmap_unlock(vmf->pte, vmf->ptl);
--		goto out;
-+		return 0;
- 	}
- 
- 	pte = pte_modify(old_pte, vma->vm_page_prot);
-@@ -5218,23 +5218,19 @@ static vm_fault_t do_numa_page(struct vm
- 	if (!migrate_misplaced_folio(folio, vma, target_nid)) {
- 		nid = target_nid;
- 		flags |= TNF_MIGRATED;
--	} else {
--		flags |= TNF_MIGRATE_FAIL;
--		vmf->pte = pte_offset_map_lock(vma->vm_mm, vmf->pmd,
--					       vmf->address, &vmf->ptl);
--		if (unlikely(!vmf->pte))
--			goto out;
--		if (unlikely(!pte_same(ptep_get(vmf->pte), vmf->orig_pte))) {
--			pte_unmap_unlock(vmf->pte, vmf->ptl);
--			goto out;
--		}
--		goto out_map;
-+		task_numa_fault(last_cpupid, nid, nr_pages, flags);
-+		return 0;
- 	}
- 
--out:
--	if (nid != NUMA_NO_NODE)
--		task_numa_fault(last_cpupid, nid, nr_pages, flags);
--	return 0;
-+	flags |= TNF_MIGRATE_FAIL;
-+	vmf->pte = pte_offset_map_lock(vma->vm_mm, vmf->pmd,
-+				       vmf->address, &vmf->ptl);
-+	if (unlikely(!vmf->pte))
-+		return 0;
-+	if (unlikely(!pte_same(ptep_get(vmf->pte), vmf->orig_pte))) {
-+		pte_unmap_unlock(vmf->pte, vmf->ptl);
-+		return 0;
+diff --git a/drivers/edac/skx_common.c b/drivers/edac/skx_common.c
+index 03d7a74ca22dc..f4b192420be47 100644
+--- a/drivers/edac/skx_common.c
++++ b/drivers/edac/skx_common.c
+@@ -659,6 +659,10 @@ int skx_mce_check_error(struct notifier_block *nb, unsigned long val,
+ 	memset(&res, 0, sizeof(res));
+ 	res.mce  = mce;
+ 	res.addr = mce->addr & MCI_ADDR_PHYSADDR;
++	if (!pfn_to_online_page(res.addr >> PAGE_SHIFT)) {
++		pr_err("Invalid address 0x%llx in IA32_MC%d_ADDR\n", mce->addr, mce->bank);
++		return NOTIFY_DONE;
 +	}
- out_map:
- 	/*
- 	 * Make it present again, depending on how arch implements
-@@ -5247,7 +5243,10 @@ out_map:
- 		numa_rebuild_single_mapping(vmf, vma, vmf->address, vmf->pte,
- 					    writable);
- 	pte_unmap_unlock(vmf->pte, vmf->ptl);
--	goto out;
-+
-+	if (nid != NUMA_NO_NODE)
-+		task_numa_fault(last_cpupid, nid, nr_pages, flags);
-+	return 0;
- }
  
- static inline vm_fault_t create_huge_pmd(struct vm_fault *vmf)
+ 	/* Try driver decoder first */
+ 	if (!(driver_decode && driver_decode(&res))) {
+-- 
+2.43.0
+
 
 
 
