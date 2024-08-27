@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-70484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71055-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C7E4960E5B
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:48:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34B0C96116F
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:20:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1684B1F2487D
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:48:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5470B1C2364A
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:20:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B2461C6F5E;
-	Tue, 27 Aug 2024 14:47:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3715F1BC9FC;
+	Tue, 27 Aug 2024 15:19:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iPTjzY9c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WMGwQqfs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16E0B1A0B13;
-	Tue, 27 Aug 2024 14:47:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E711C1C3F0D;
+	Tue, 27 Aug 2024 15:19:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770060; cv=none; b=H5/Dt0Bqs9CD+kZLBjNzwaUMo6xHzBi7s6P3ld08i5M2eX4iWa3wdgLkPpA1zxGGIYjl2D3PFtUsYU/FoPA44oXCrBPvFk3eIwLHsAU9HNY4onOzFqXqx549EFJr4LBnvdZX75tHHLz4EdAcQtdFwpFbGVJR4BJYbjOU5BPN5uU=
+	t=1724771949; cv=none; b=uDfESfYmJWLABOWD70psYH2PrLaLfggkUqZhtYpQ5P1lNHiVVtJt5P532iK7AfjwjwMHnJJI7/upp8PScPIsJjjCcTofM+9CymH58NZe3PMJ5xC3kTyFpDWdp92q3VWmFx058Mr2NSYOGaLN6k22SFtA/V//Is3Ygm/xj/Lc2hc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770060; c=relaxed/simple;
-	bh=131xuYtn3O2Mjh9RfGIhYDiEqt7wOnbAUCAx60N3npk=;
+	s=arc-20240116; t=1724771949; c=relaxed/simple;
+	bh=dXL7xDwOhR6Isg7y6SylJ2omXcVu3XhUZ5OtFQ7ovNY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f9UXTWsOtm5ZL7MrZDOhyMU5bKXdojXoWivoH6J2P5Lmfn4olixvYtNOAvHcWF24iqNBBLl20tLa61BjcKIyOrttiRew3wQs9QalZ7hFdq6dms74E1hen7KHAvYahLm48rvN7PivaSQRIMwdj2jQbkEnP65DoE0Ue8MRujSfu5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iPTjzY9c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79FB5C61040;
-	Tue, 27 Aug 2024 14:47:39 +0000 (UTC)
+	 MIME-Version; b=C7JHvPDJrNyGS2vnebUPv4LUc1d8svJS8XkSmFIPH3ilAnEUZCUWPQbrdTYWJIqR16P3kRIkK/3XQS4xt85dUQI7xNF1rR8YiRSkNNcUBtHluup9c0CBiTnJUfYODsQMN8haCSLY9Md8RZTqL0xZ5xY7CCq/lU7PxCTWrtMUQ/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WMGwQqfs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1327FC61067;
+	Tue, 27 Aug 2024 15:19:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770060;
-	bh=131xuYtn3O2Mjh9RfGIhYDiEqt7wOnbAUCAx60N3npk=;
+	s=korg; t=1724771948;
+	bh=dXL7xDwOhR6Isg7y6SylJ2omXcVu3XhUZ5OtFQ7ovNY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iPTjzY9cuRxYN6s2182rzQ4hVwCuYRlQ9Qbj/TflFNuskFLb2QNmIWsHnLEInKgPC
-	 C8TI9l/pfHloWcMorMZrjLBchvb6h4g79FsaqJ3OZQUaM8aG+ktDUuAxvgiTL6ihbw
-	 5A9rIz8uPc0RuuBOyvd1hQLz0nGT0Gzw5NmUFU34=
+	b=WMGwQqfs6BGB4915s854DWp4ZZLCQd3uXyosHBUvfOOpwMD2DoBj4HMhyG22F4Kqd
+	 7BV4Bl+MDVZyLzxe0EpzJnkkYvANOTAS+guFApt4UMdz04w4CJtAPvBftMwp3kNhe7
+	 WwabiK3C4rnjGOXeSXr24mmjDu18Ky8B2+mpuFww=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chengfeng Ye <dg573847474@gmail.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Lorenz Bauer <lmb@isovalent.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 114/341] media: s5p-mfc: Fix potential deadlock on condlock
-Date: Tue, 27 Aug 2024 16:35:45 +0200
-Message-ID: <20240827143847.750725773@linuxfoundation.org>
+Subject: [PATCH 6.1 038/321] bpf: Split off basic BPF verifier log into separate file
+Date: Tue, 27 Aug 2024 16:35:46 +0200
+Message-ID: <20240827143839.674243802@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +63,293 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengfeng Ye <dg573847474@gmail.com>
+From: Andrii Nakryiko <andrii@kernel.org>
 
-[ Upstream commit 04d19e65137e3cd4a5004e624c85c762933d115c ]
+[ Upstream commit 4294a0a7ab6282c3d92f03de84e762dda993c93d ]
 
-As &dev->condlock is acquired under irq context along the following
-call chain from s5p_mfc_irq(), other acquisition of the same lock
-inside process context or softirq context should disable irq avoid double
-lock. enc_post_frame_start() seems to be one such function that execute
-under process context or softirq context.
+kernel/bpf/verifier.c file is large and growing larger all the time. So
+it's good to start splitting off more or less self-contained parts into
+separate files to keep source code size (somewhat) somewhat under
+control.
 
-<deadlock #1>
+This patch is a one step in this direction, moving some of BPF verifier log
+routines into a separate kernel/bpf/log.c. Right now it's most low-level
+and isolated routines to append data to log, reset log to previous
+position, etc. Eventually we could probably move verifier state
+printing logic here as well, but this patch doesn't attempt to do that
+yet.
 
-enc_post_frame_start()
---> clear_work_bit()
---> spin_loc(&dev->condlock)
-<interrupt>
-   --> s5p_mfc_irq()
-   --> s5p_mfc_handle_frame()
-   --> clear_work_bit()
-   --> spin_lock(&dev->condlock)
+Subsequent patches will add more logic to verifier log management, so
+having basics in a separate file will make sure verifier.c doesn't grow
+more with new changes.
 
-This flaw was found by an experimental static analysis tool I am
-developing for irq-related deadlock.
-
-To prevent the potential deadlock, the patch change clear_work_bit()
-inside enc_post_frame_start() to clear_work_bit_irqsave().
-
-Signed-off-by: Chengfeng Ye <dg573847474@gmail.com>
-Acked-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Lorenz Bauer <lmb@isovalent.com>
+Link: https://lore.kernel.org/bpf/20230406234205.323208-2-andrii@kernel.org
+Stable-dep-of: cff36398bd4c ("bpf: drop unnecessary user-triggerable WARN_ONCE in verifierl log")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/samsung/s5p-mfc/s5p_mfc_enc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/bpf_verifier.h | 19 +++-----
+ kernel/bpf/Makefile          |  3 +-
+ kernel/bpf/log.c             | 85 ++++++++++++++++++++++++++++++++++++
+ kernel/bpf/verifier.c        | 69 -----------------------------
+ 4 files changed, 94 insertions(+), 82 deletions(-)
+ create mode 100644 kernel/bpf/log.c
 
-diff --git a/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_enc.c b/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_enc.c
-index f62703cebb77c..4b4c129c09e70 100644
---- a/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_enc.c
-+++ b/drivers/media/platform/samsung/s5p-mfc/s5p_mfc_enc.c
-@@ -1297,7 +1297,7 @@ static int enc_post_frame_start(struct s5p_mfc_ctx *ctx)
- 	if (ctx->state == MFCINST_FINISHING && ctx->ref_queue_cnt == 0)
- 		src_ready = false;
- 	if (!src_ready || ctx->dst_queue_cnt == 0)
--		clear_work_bit(ctx);
-+		clear_work_bit_irqsave(ctx);
+diff --git a/include/linux/bpf_verifier.h b/include/linux/bpf_verifier.h
+index 131adc98080b8..33b073deb8c17 100644
+--- a/include/linux/bpf_verifier.h
++++ b/include/linux/bpf_verifier.h
+@@ -445,11 +445,6 @@ struct bpf_verifier_log {
+ 	u32 len_total;
+ };
  
- 	return 0;
+-static inline bool bpf_verifier_log_full(const struct bpf_verifier_log *log)
+-{
+-	return log->len_used >= log->len_total - 1;
+-}
+-
+ #define BPF_LOG_LEVEL1	1
+ #define BPF_LOG_LEVEL2	2
+ #define BPF_LOG_STATS	4
+@@ -459,6 +454,11 @@ static inline bool bpf_verifier_log_full(const struct bpf_verifier_log *log)
+ #define BPF_LOG_MIN_ALIGNMENT 8U
+ #define BPF_LOG_ALIGNMENT 40U
+ 
++static inline bool bpf_verifier_log_full(const struct bpf_verifier_log *log)
++{
++	return log->len_used >= log->len_total - 1;
++}
++
+ static inline bool bpf_verifier_log_needed(const struct bpf_verifier_log *log)
+ {
+ 	return log &&
+@@ -466,13 +466,6 @@ static inline bool bpf_verifier_log_needed(const struct bpf_verifier_log *log)
+ 		 log->level == BPF_LOG_KERNEL);
  }
+ 
+-static inline bool
+-bpf_verifier_log_attr_valid(const struct bpf_verifier_log *log)
+-{
+-	return log->len_total >= 128 && log->len_total <= UINT_MAX >> 2 &&
+-	       log->level && log->ubuf && !(log->level & ~BPF_LOG_MASK);
+-}
+-
+ #define BPF_MAX_SUBPROGS 256
+ 
+ struct bpf_subprog_info {
+@@ -556,12 +549,14 @@ struct bpf_verifier_env {
+ 	char type_str_buf[TYPE_STR_BUF_LEN];
+ };
+ 
++bool bpf_verifier_log_attr_valid(const struct bpf_verifier_log *log);
+ __printf(2, 0) void bpf_verifier_vlog(struct bpf_verifier_log *log,
+ 				      const char *fmt, va_list args);
+ __printf(2, 3) void bpf_verifier_log_write(struct bpf_verifier_env *env,
+ 					   const char *fmt, ...);
+ __printf(2, 3) void bpf_log(struct bpf_verifier_log *log,
+ 			    const char *fmt, ...);
++void bpf_vlog_reset(struct bpf_verifier_log *log, u32 new_pos);
+ 
+ static inline struct bpf_func_state *cur_func(struct bpf_verifier_env *env)
+ {
+diff --git a/kernel/bpf/Makefile b/kernel/bpf/Makefile
+index 341c94f208f4c..5b86ea9f09c46 100644
+--- a/kernel/bpf/Makefile
++++ b/kernel/bpf/Makefile
+@@ -6,7 +6,8 @@ cflags-nogcse-$(CONFIG_X86)$(CONFIG_CC_IS_GCC) := -fno-gcse
+ endif
+ CFLAGS_core.o += $(call cc-disable-warning, override-init) $(cflags-nogcse-yy)
+ 
+-obj-$(CONFIG_BPF_SYSCALL) += syscall.o verifier.o inode.o helpers.o tnum.o bpf_iter.o map_iter.o task_iter.o prog_iter.o link_iter.o
++obj-$(CONFIG_BPF_SYSCALL) += syscall.o verifier.o inode.o helpers.o tnum.o log.o
++obj-$(CONFIG_BPF_SYSCALL) += bpf_iter.o map_iter.o task_iter.o prog_iter.o link_iter.o
+ obj-$(CONFIG_BPF_SYSCALL) += hashtab.o arraymap.o percpu_freelist.o bpf_lru_list.o lpm_trie.o map_in_map.o bloom_filter.o
+ obj-$(CONFIG_BPF_SYSCALL) += local_storage.o queue_stack_maps.o ringbuf.o
+ obj-$(CONFIG_BPF_SYSCALL) += bpf_local_storage.o bpf_task_storage.o
+diff --git a/kernel/bpf/log.c b/kernel/bpf/log.c
+new file mode 100644
+index 0000000000000..920061e38d2e1
+--- /dev/null
++++ b/kernel/bpf/log.c
+@@ -0,0 +1,85 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/* Copyright (c) 2011-2014 PLUMgrid, http://plumgrid.com
++ * Copyright (c) 2016 Facebook
++ * Copyright (c) 2018 Covalent IO, Inc. http://covalent.io
++ */
++#include <uapi/linux/btf.h>
++#include <linux/kernel.h>
++#include <linux/types.h>
++#include <linux/bpf.h>
++#include <linux/bpf_verifier.h>
++
++bool bpf_verifier_log_attr_valid(const struct bpf_verifier_log *log)
++{
++	return log->len_total >= 128 && log->len_total <= UINT_MAX >> 2 &&
++	       log->level && log->ubuf && !(log->level & ~BPF_LOG_MASK);
++}
++
++void bpf_verifier_vlog(struct bpf_verifier_log *log, const char *fmt,
++		       va_list args)
++{
++	unsigned int n;
++
++	n = vscnprintf(log->kbuf, BPF_VERIFIER_TMP_LOG_SIZE, fmt, args);
++
++	WARN_ONCE(n >= BPF_VERIFIER_TMP_LOG_SIZE - 1,
++		  "verifier log line truncated - local buffer too short\n");
++
++	if (log->level == BPF_LOG_KERNEL) {
++		bool newline = n > 0 && log->kbuf[n - 1] == '\n';
++
++		pr_err("BPF: %s%s", log->kbuf, newline ? "" : "\n");
++		return;
++	}
++
++	n = min(log->len_total - log->len_used - 1, n);
++	log->kbuf[n] = '\0';
++	if (!copy_to_user(log->ubuf + log->len_used, log->kbuf, n + 1))
++		log->len_used += n;
++	else
++		log->ubuf = NULL;
++}
++
++void bpf_vlog_reset(struct bpf_verifier_log *log, u32 new_pos)
++{
++	char zero = 0;
++
++	if (!bpf_verifier_log_needed(log))
++		return;
++
++	log->len_used = new_pos;
++	if (put_user(zero, log->ubuf + new_pos))
++		log->ubuf = NULL;
++}
++
++/* log_level controls verbosity level of eBPF verifier.
++ * bpf_verifier_log_write() is used to dump the verification trace to the log,
++ * so the user can figure out what's wrong with the program
++ */
++__printf(2, 3) void bpf_verifier_log_write(struct bpf_verifier_env *env,
++					   const char *fmt, ...)
++{
++	va_list args;
++
++	if (!bpf_verifier_log_needed(&env->log))
++		return;
++
++	va_start(args, fmt);
++	bpf_verifier_vlog(&env->log, fmt, args);
++	va_end(args);
++}
++EXPORT_SYMBOL_GPL(bpf_verifier_log_write);
++
++__printf(2, 3) void bpf_log(struct bpf_verifier_log *log,
++			    const char *fmt, ...)
++{
++	va_list args;
++
++	if (!bpf_verifier_log_needed(log))
++		return;
++
++	va_start(args, fmt);
++	bpf_verifier_vlog(log, fmt, args);
++	va_end(args);
++}
++EXPORT_SYMBOL_GPL(bpf_log);
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 8973d3c9597ce..4efa50eb07d72 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -291,61 +291,6 @@ find_linfo(const struct bpf_verifier_env *env, u32 insn_off)
+ 	return &linfo[i - 1];
+ }
+ 
+-void bpf_verifier_vlog(struct bpf_verifier_log *log, const char *fmt,
+-		       va_list args)
+-{
+-	unsigned int n;
+-
+-	n = vscnprintf(log->kbuf, BPF_VERIFIER_TMP_LOG_SIZE, fmt, args);
+-
+-	WARN_ONCE(n >= BPF_VERIFIER_TMP_LOG_SIZE - 1,
+-		  "verifier log line truncated - local buffer too short\n");
+-
+-	if (log->level == BPF_LOG_KERNEL) {
+-		bool newline = n > 0 && log->kbuf[n - 1] == '\n';
+-
+-		pr_err("BPF: %s%s", log->kbuf, newline ? "" : "\n");
+-		return;
+-	}
+-
+-	n = min(log->len_total - log->len_used - 1, n);
+-	log->kbuf[n] = '\0';
+-	if (!copy_to_user(log->ubuf + log->len_used, log->kbuf, n + 1))
+-		log->len_used += n;
+-	else
+-		log->ubuf = NULL;
+-}
+-
+-static void bpf_vlog_reset(struct bpf_verifier_log *log, u32 new_pos)
+-{
+-	char zero = 0;
+-
+-	if (!bpf_verifier_log_needed(log))
+-		return;
+-
+-	log->len_used = new_pos;
+-	if (put_user(zero, log->ubuf + new_pos))
+-		log->ubuf = NULL;
+-}
+-
+-/* log_level controls verbosity level of eBPF verifier.
+- * bpf_verifier_log_write() is used to dump the verification trace to the log,
+- * so the user can figure out what's wrong with the program
+- */
+-__printf(2, 3) void bpf_verifier_log_write(struct bpf_verifier_env *env,
+-					   const char *fmt, ...)
+-{
+-	va_list args;
+-
+-	if (!bpf_verifier_log_needed(&env->log))
+-		return;
+-
+-	va_start(args, fmt);
+-	bpf_verifier_vlog(&env->log, fmt, args);
+-	va_end(args);
+-}
+-EXPORT_SYMBOL_GPL(bpf_verifier_log_write);
+-
+ __printf(2, 3) static void verbose(void *private_data, const char *fmt, ...)
+ {
+ 	struct bpf_verifier_env *env = private_data;
+@@ -359,20 +304,6 @@ __printf(2, 3) static void verbose(void *private_data, const char *fmt, ...)
+ 	va_end(args);
+ }
+ 
+-__printf(2, 3) void bpf_log(struct bpf_verifier_log *log,
+-			    const char *fmt, ...)
+-{
+-	va_list args;
+-
+-	if (!bpf_verifier_log_needed(log))
+-		return;
+-
+-	va_start(args, fmt);
+-	bpf_verifier_vlog(log, fmt, args);
+-	va_end(args);
+-}
+-EXPORT_SYMBOL_GPL(bpf_log);
+-
+ static const char *ltrim(const char *s)
+ {
+ 	while (isspace(*s))
 -- 
 2.43.0
 
