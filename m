@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-70714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70963-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC07C960FA6
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:01:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 517519610E9
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:14:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF93C1C23510
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:01:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8356F1C20366
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:14:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A00771C6F6D;
-	Tue, 27 Aug 2024 15:00:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48DCA1C825E;
+	Tue, 27 Aug 2024 15:14:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IBPyGkfS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1dNRSj6H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5492F1C6F69;
-	Tue, 27 Aug 2024 15:00:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05AE11A072D;
+	Tue, 27 Aug 2024 15:14:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770825; cv=none; b=n6JQ4hS0VRYgC7nTle16hAWJZ3iC9fWggw/NrT6Kd230dRyFk8ZXtyFkmBwPPrGaYqsBWS72Q/5dgOnOD4gkTt4FQ2EoqGn7WTMBYF8VC7vABH2Sq43+O9PTEwvtwaHF1NFY2vB3Gz0uN3PC5Huu1MWiVxAnM8DfuMCCCSqnSCs=
+	t=1724771643; cv=none; b=m5ZK+YiwaUvpGBoaiIFpytL2pZbltKXtLYUnSJ05fBCbT49OnAiq2na6QkhCBFlwV9Glu6BvLlwjBKiXbwimyMk76SElHLoqcS8vUKiM/ni7zR44ZOezG/yPr0F7DvJRtHsvAnSRhXcESgulvSHjZwSX8EeRV1u7jHsofVZFIZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770825; c=relaxed/simple;
-	bh=jmwphznRUkAPkeMtjJWQUdxMXr5PQ1ieQuACM4EHEKk=;
+	s=arc-20240116; t=1724771643; c=relaxed/simple;
+	bh=wBCXTima3kipZhmATW5sVfDiuyd9TzVCUYVaHE6P9UU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YpINLTis7paWro1GmVgYPa+oCX1P/xLF2n7FDlOWEzGtuXZfWyh1R1MBczqKUHa2wpvzzqsfQev5zVIu/HZqRoxblDeJSBwLUP7/bDnvZnWTBjkliXsPDIqx1/PZsXEn5gueZ6Or9Xr2XSPobG53z1/y6vI7kt6LIgNPUPdqR98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IBPyGkfS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77ACBC4DDEF;
-	Tue, 27 Aug 2024 15:00:24 +0000 (UTC)
+	 MIME-Version; b=JtrGBGqMBuSmyNIIj7OHiTVxM3ImmXiV+etjD7G/HAOL4kndjjXs+1So3ZDNFpRvEGtIBr3PPOackkd0IEB4yQP+A1nFk6vM5YbjVVAN2oB9JNaWsnO1WhvUGsn2JfTl00NKuq+JRKDr4+O1W5t6mdrVgeulTkGB2OBcPSJb874=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1dNRSj6H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ED12C61064;
+	Tue, 27 Aug 2024 15:14:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770824;
-	bh=jmwphznRUkAPkeMtjJWQUdxMXr5PQ1ieQuACM4EHEKk=;
+	s=korg; t=1724771642;
+	bh=wBCXTima3kipZhmATW5sVfDiuyd9TzVCUYVaHE6P9UU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IBPyGkfScvr8vp4yVyV4e72klzoZz5xyQjZIN9FO2E1Hb/OjbvrsO+obuFXt4yZ3p
-	 74vR9R5+vWY3fRJhIYC1yj8l9LVL2z0AtFDl5OhxNM7TB4bwsb/UwcBr0F5hQ/EzMi
-	 a4rPALoA5squuIo6oTzMIjSkl6TxQ/We73I5c4to=
+	b=1dNRSj6HcPXWebvLnbL2gsXtubdeL4WLpMc/lqTCh/PoQ/a1nFkw/qrvr8gbHSRHc
+	 2pYi5zZEHryv8JLIJx2Pd3z00Nzt8v6SXOe2X1Y1IvtX1Sf72wcqSjCGmUGRNorqem
+	 HYUApB+nHcRR+BnE9ke2cgdcS70K/Ni9O3FTb3Cc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 6.6 326/341] hwmon: (ltc2992) Fix memory leak in ltc2992_parse_dt()
+	Mengyuan Lou <mengyuanlou@net-swift.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.10 233/273] net: ngbe: Fix phy mode set to external phy
 Date: Tue, 27 Aug 2024 16:39:17 +0200
-Message-ID: <20240827143855.800522210@linuxfoundation.org>
+Message-ID: <20240827143842.273154608@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Mengyuan Lou <mengyuanlou@net-swift.com>
 
-commit a94ff8e50c20bde6d50864849a98b106e45d30c6 upstream.
+commit f2916c83d746eb99f50f42c15cf4c47c2ea5f3b3 upstream.
 
-A new error path was added to the fwnode_for_each_available_node() loop
-in ltc2992_parse_dt(), which leads to an early return that requires a
-call to fwnode_handle_put() to avoid a memory leak in that case.
+The MAC only has add the TX delay and it can not be modified.
+MAC and PHY are both set the TX delay cause transmission problems.
+So just disable TX delay in PHY, when use rgmii to attach to
+external phy, set PHY_INTERFACE_MODE_RGMII_RXID to phy drivers.
+And it is does not matter to internal phy.
 
-Add the missing fwnode_handle_put() in the error path from a zero value
-shunt resistor.
-
-Cc: stable@vger.kernel.org
-Fixes: 10b029020487 ("hwmon: (ltc2992) Avoid division by zero")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Link: https://lore.kernel.org/r/20240523-fwnode_for_each_available_child_node_scoped-v2-1-701f3a03f2fb@gmail.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: bc2426d74aa3 ("net: ngbe: convert phylib to phylink")
+Signed-off-by: Mengyuan Lou <mengyuanlou@net-swift.com>
+Cc: stable@vger.kernel.org # 6.3+
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/E6759CF1387CF84C+20240820030425.93003-1-mengyuanlou@net-swift.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/ltc2992.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/wangxun/ngbe/ngbe_mdio.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/drivers/hwmon/ltc2992.c
-+++ b/drivers/hwmon/ltc2992.c
-@@ -876,9 +876,11 @@ static int ltc2992_parse_dt(struct ltc29
+--- a/drivers/net/ethernet/wangxun/ngbe/ngbe_mdio.c
++++ b/drivers/net/ethernet/wangxun/ngbe/ngbe_mdio.c
+@@ -124,8 +124,12 @@ static int ngbe_phylink_init(struct wx *
+ 				   MAC_SYM_PAUSE | MAC_ASYM_PAUSE;
+ 	config->mac_managed_pm = true;
  
- 		ret = fwnode_property_read_u32(child, "shunt-resistor-micro-ohms", &val);
- 		if (!ret) {
--			if (!val)
-+			if (!val) {
-+				fwnode_handle_put(child);
- 				return dev_err_probe(&st->client->dev, -EINVAL,
- 						     "shunt resistor value cannot be zero\n");
-+			}
- 			st->r_sense_uohm[addr] = val;
- 		}
- 	}
+-	phy_mode = PHY_INTERFACE_MODE_RGMII_ID;
+-	__set_bit(PHY_INTERFACE_MODE_RGMII_ID, config->supported_interfaces);
++	/* The MAC only has add the Tx delay and it can not be modified.
++	 * So just disable TX delay in PHY, and it is does not matter to
++	 * internal phy.
++	 */
++	phy_mode = PHY_INTERFACE_MODE_RGMII_RXID;
++	__set_bit(PHY_INTERFACE_MODE_RGMII_RXID, config->supported_interfaces);
+ 
+ 	phylink = phylink_create(config, NULL, phy_mode, &ngbe_mac_ops);
+ 	if (IS_ERR(phylink))
 
 
 
