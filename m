@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-70794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70544-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52AEC961010
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:05:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45889960EAF
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:51:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F929283565
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:05:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04C88286E44
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:51:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B05951C68B1;
-	Tue, 27 Aug 2024 15:04:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45D741C825C;
+	Tue, 27 Aug 2024 14:51:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Itm6sCl9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ndDSZEOU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F3621C3F19;
-	Tue, 27 Aug 2024 15:04:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 055791C57BD;
+	Tue, 27 Aug 2024 14:51:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771082; cv=none; b=aDTJpZNGdwGraVAvidCLbSr9pzXKFraYs6INBgY+tqX6JNsK4h5GDUivffgDWyJWYF70PupN0cryx5XXB8NsbWfkUE43vA0qobqjL4B9gENBPscyyX+eMbSKfvYoA+i07NEmLacUjzum84wm5JUVj5rUZtJGa1941MLjehk7w08=
+	t=1724770261; cv=none; b=P75tJNkJcpFp9kL/8Ez1iK+FK3/9bdFhWoXyPB+eMvfin3hcW8HZ5m/QuexiJgDx5iSgFIB5ahIMKPJlFkPaiZMTnKkFq7+R5JNglvLwBtlwjQ6O+Qir8wdpGIi0KZ2ybsDpSuy0hbguqizlkc03E+c/FPCZZfIwfK1w9CzQyqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771082; c=relaxed/simple;
-	bh=kUg39chzhFNKVYigZ9bwonUaRRBnw2niUCu7yVYE6IY=;
+	s=arc-20240116; t=1724770261; c=relaxed/simple;
+	bh=15THewnaL3j6CycV+DrdH3/NFLdQ9V+SthRM2ALRREc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nSjVALdUcLsN+gWU7+lGB8Eey7jynwTuBm/8v2FquAF4465o8Zjcn+mUaeq6P90lqFggi+2Y+2M/y1q20X++CRZPgPJ2w1dubSs2kr2BGvaRWl8i+sYjURVF5eiq+0iRqn60mOWStTwMJkn03qXIWrTA+h9fVXxTPCEB1hlyzzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Itm6sCl9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3D50C6105B;
-	Tue, 27 Aug 2024 15:04:41 +0000 (UTC)
+	 MIME-Version; b=GCI1CdD/Vu4yLN5XYs4v/kkDXzfLkTzkNkX5t7Ttbu2h+DjSm/4zwLFfuYoGa9nPfQCzShtOmpNPBIiRxO12csAe3sC6/TJ25IRiypPdSFNuGjfepZVJueXN3FG5Hahjzhi32YGnUa1pilMLFzf36ZxpcRsON2Ekr6ApsYDnfyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ndDSZEOU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65EB2C4DE02;
+	Tue, 27 Aug 2024 14:51:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771082;
-	bh=kUg39chzhFNKVYigZ9bwonUaRRBnw2niUCu7yVYE6IY=;
+	s=korg; t=1724770260;
+	bh=15THewnaL3j6CycV+DrdH3/NFLdQ9V+SthRM2ALRREc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Itm6sCl9yRn7nmC78700Cru2I86wL5II1Jwg71FNBRbWgLCdEvDr19TJPz8OQaSS1
-	 nSZbahvk0CjplQZsJl9jXDUx+DPiONb+uoZg926GD+g6VmnC6zeCpfAnmLF671e1gX
-	 87kp2iPMtOYTg1oV4osvW9yxppMHHfpM3+r74cNE=
+	b=ndDSZEOUKYJihgiKf+UcBtCU/n+oIizgI1vvjPCYz/4y1z7udEWZUjdZuI6Ug/QxE
+	 hEKUNCdMJye4QHyvv8L4bQLFM8Lwa1y9mHi21lTyOrUwK9n7tKLbjAVRs18uA8+4dB
+	 haPRsuK0C4iD2rbpb2zjvH2JYuxp2HQRHw0hZIa8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Leon Hwang <leon.hwang@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 081/273] bpf: Fix updating attached freplace prog in prog_array map
-Date: Tue, 27 Aug 2024 16:36:45 +0200
-Message-ID: <20240827143836.495137247@linuxfoundation.org>
+Subject: [PATCH 6.6 175/341] netlink: hold nlk->cb_mutex longer in __netlink_dump_start()
+Date: Tue, 27 Aug 2024 16:36:46 +0200
+Message-ID: <20240827143850.074189597@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +61,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Hwang <leon.hwang@linux.dev>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit fdad456cbcca739bae1849549c7a999857c56f88 ]
+[ Upstream commit b5590270068c4324dac4a2b5a4a156e02e21339f ]
 
-The commit f7866c358733 ("bpf: Fix null pointer dereference in resolve_prog_type() for BPF_PROG_TYPE_EXT")
-fixed a NULL pointer dereference panic, but didn't fix the issue that
-fails to update attached freplace prog to prog_array map.
+__netlink_dump_start() releases nlk->cb_mutex right before
+calling netlink_dump() which grabs it again.
 
-Since commit 1c123c567fb1 ("bpf: Resolve fext program type when checking map compatibility"),
-freplace prog and its target prog are able to tail call each other.
+This seems dangerous, even if KASAN did not bother yet.
 
-And the commit 3aac1ead5eb6 ("bpf: Move prog->aux->linked_prog and trampoline into bpf_link on attach")
-sets prog->aux->dst_prog as NULL after attaching freplace prog to its
-target prog.
+Add a @lock_taken parameter to netlink_dump() to let it
+grab the mutex if called from netlink_recvmsg() only.
 
-After loading freplace the prog_array's owner type is BPF_PROG_TYPE_SCHED_CLS.
-Then, after attaching freplace its prog->aux->dst_prog is NULL.
-Then, while updating freplace in prog_array the bpf_prog_map_compatible()
-incorrectly returns false because resolve_prog_type() returns
-BPF_PROG_TYPE_EXT instead of BPF_PROG_TYPE_SCHED_CLS.
-After this patch the resolve_prog_type() returns BPF_PROG_TYPE_SCHED_CLS
-and update to prog_array can succeed.
-
-Fixes: f7866c358733 ("bpf: Fix null pointer dereference in resolve_prog_type() for BPF_PROG_TYPE_EXT")
-Cc: Toke Høiland-Jørgensen <toke@redhat.com>
-Cc: Martin KaFai Lau <martin.lau@kernel.org>
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Signed-off-by: Leon Hwang <leon.hwang@linux.dev>
-Link: https://lore.kernel.org/r/20240728114612.48486-2-leon.hwang@linux.dev
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/bpf_verifier.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/netlink/af_netlink.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
-diff --git a/include/linux/bpf_verifier.h b/include/linux/bpf_verifier.h
-index ff2a6cdb1fa3f..5db4a3f354804 100644
---- a/include/linux/bpf_verifier.h
-+++ b/include/linux/bpf_verifier.h
-@@ -846,8 +846,8 @@ static inline u32 type_flag(u32 type)
- /* only use after check_attach_btf_id() */
- static inline enum bpf_prog_type resolve_prog_type(const struct bpf_prog *prog)
- {
--	return (prog->type == BPF_PROG_TYPE_EXT && prog->aux->dst_prog) ?
--		prog->aux->dst_prog->type : prog->type;
-+	return (prog->type == BPF_PROG_TYPE_EXT && prog->aux->saved_dst_prog_type) ?
-+		prog->aux->saved_dst_prog_type : prog->type;
+diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
+index 6ae782efb1ee3..db49fc4d42cf7 100644
+--- a/net/netlink/af_netlink.c
++++ b/net/netlink/af_netlink.c
+@@ -130,7 +130,7 @@ static const char *const nlk_cb_mutex_key_strings[MAX_LINKS + 1] = {
+ 	"nlk_cb_mutex-MAX_LINKS"
+ };
+ 
+-static int netlink_dump(struct sock *sk);
++static int netlink_dump(struct sock *sk, bool lock_taken);
+ 
+ /* nl_table locking explained:
+  * Lookup and traversal are protected with an RCU read-side lock. Insertion
+@@ -1989,7 +1989,7 @@ static int netlink_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
+ 
+ 	if (READ_ONCE(nlk->cb_running) &&
+ 	    atomic_read(&sk->sk_rmem_alloc) <= sk->sk_rcvbuf / 2) {
+-		ret = netlink_dump(sk);
++		ret = netlink_dump(sk, false);
+ 		if (ret) {
+ 			WRITE_ONCE(sk->sk_err, -ret);
+ 			sk_error_report(sk);
+@@ -2198,7 +2198,7 @@ static int netlink_dump_done(struct netlink_sock *nlk, struct sk_buff *skb,
+ 	return 0;
  }
  
- static inline bool bpf_prog_check_recur(const struct bpf_prog *prog)
+-static int netlink_dump(struct sock *sk)
++static int netlink_dump(struct sock *sk, bool lock_taken)
+ {
+ 	struct netlink_sock *nlk = nlk_sk(sk);
+ 	struct netlink_ext_ack extack = {};
+@@ -2210,7 +2210,8 @@ static int netlink_dump(struct sock *sk)
+ 	int alloc_min_size;
+ 	int alloc_size;
+ 
+-	mutex_lock(nlk->cb_mutex);
++	if (!lock_taken)
++		mutex_lock(nlk->cb_mutex);
+ 	if (!nlk->cb_running) {
+ 		err = -EINVAL;
+ 		goto errout_skb;
+@@ -2367,9 +2368,7 @@ int __netlink_dump_start(struct sock *ssk, struct sk_buff *skb,
+ 	WRITE_ONCE(nlk->cb_running, true);
+ 	nlk->dump_done_errno = INT_MAX;
+ 
+-	mutex_unlock(nlk->cb_mutex);
+-
+-	ret = netlink_dump(sk);
++	ret = netlink_dump(sk, true);
+ 
+ 	sock_put(sk);
+ 
 -- 
 2.43.0
 
