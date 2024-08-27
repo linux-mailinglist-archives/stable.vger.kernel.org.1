@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-70546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71094-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AC79960EB3
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:51:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8FC296119C
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:21:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2221F1F24AE9
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:51:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 758EDB257CC
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:21:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DB901C6899;
-	Tue, 27 Aug 2024 14:51:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 940C11C86FF;
+	Tue, 27 Aug 2024 15:21:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QKqeGWWy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MFDw6vsh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CC3F1C57BD;
-	Tue, 27 Aug 2024 14:51:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54ECA19F485;
+	Tue, 27 Aug 2024 15:21:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770267; cv=none; b=QY7llCBnUweFFDvjwTuSsTn3aUiRMabPHMP4rTXKOP0I7Lk/JF0GY1nxx8Ig+wEIRQKZiM/C4BwfgQGLY8LmK6EVFmR8Zk6xc4zje1AbzPDDCngItix1bIBMWC2ocFHmDbEI0UVhdasVdSGA0GUX0/icKABLUneRjxUI1kYWVAI=
+	t=1724772080; cv=none; b=jyJs2rkJLyXwppaLh0r5lY+5fMyqfs6rVUHc47vQnrKfbrecXZyJxUuUH+JoAauT46BR0OA6YpimklRIwrSjkKOrDjlwnK2/D7EjmpsNXvbSfHP/bH+kt7FJbrMna3y3GgyVJBfLM0l4+vd0RTbwQhZqVgh+m4ztpDLJQtn0ykQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770267; c=relaxed/simple;
-	bh=zacF1ZLgh3Vyo+7+pAcJYu7qUY+k0jxccVKHnZO6cHQ=;
+	s=arc-20240116; t=1724772080; c=relaxed/simple;
+	bh=JPePcFBIwwPVwahL9YJg9DX8vmGobDAshUjkghZpNGg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m21Dv6sZn27JTmLSYXfqioLPbqXY6XVKj0+l4Agmz4ZG7SNTrGWsJUqhVLa2QGjMWul57LF1K75NaYZc4urBVAIMvhTZePKvppVe3chfNq6M3r1mLq0Q4K3PjOnIXlddfERmxFV1ZZ9Waa4AFnk/8MEbTmOycYVSEKxXGI6eOEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QKqeGWWy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8D26C4DDFF;
-	Tue, 27 Aug 2024 14:51:06 +0000 (UTC)
+	 MIME-Version; b=JqEtqqJ4DrkfDXEw83jM9OfzMUbj5tB2wimvP+XUcOAaq7QExfQcm/rtJ2Z1ZqVZrqcG/zJrCq066Fy8nyAjF8JwnhU2f2bDkcwyQN+kls/USRNGXZMb0MG5ykboRrrwDLfcEhhDsAQmQwtJXO/RRK+NmHjfKVkI85lYPHgpeqg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MFDw6vsh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 595EAC4FDFA;
+	Tue, 27 Aug 2024 15:21:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770267;
-	bh=zacF1ZLgh3Vyo+7+pAcJYu7qUY+k0jxccVKHnZO6cHQ=;
+	s=korg; t=1724772079;
+	bh=JPePcFBIwwPVwahL9YJg9DX8vmGobDAshUjkghZpNGg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QKqeGWWy1MBIbirTqMMXQIvmfDQggnIofJTGlN8GWZRbLDizU+xKD/Huql5JvMmud
-	 +q+PXndf9gB6cD71gvkpaBnqQz+eMKKYJT2PCyc4w2E1w03h9RzPjldbg9jmmppWMH
-	 aTl2wCXWQ190RRPdkGAwWGOUSQb62S/Di7MukfMs=
+	b=MFDw6vshDzb0UE9iSQgs8tO+Xz3LX1XDXOUDhVAyspjikbakxziUNSeWFWxJCNARa
+	 8J+zDxL6hikF/UTyujp3Y7Psrno+g8QiVmfeEmasVqEeYDSpdAxHP/NqnfqYD+VKVk
+	 5KXhv5PspTObGoXF4i5Wp0I2khYO5bzOa8qnC2Kg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	y0un9n132@gmail.com,
-	Kees Cook <keescook@chromium.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Jiri Kosina <jkosina@suse.com>,
+	Phil Sutter <phil@nwl.cc>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 177/341] x86: Increase brk randomness entropy for 64-bit systems
+Subject: [PATCH 6.1 100/321] netfilter: nf_tables: Unconditionally allocate nft_obj_filter
 Date: Tue, 27 Aug 2024 16:36:48 +0200
-Message-ID: <20240827143850.149472707@linuxfoundation.org>
+Message-ID: <20240827143842.055214312@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +62,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <keescook@chromium.org>
+From: Phil Sutter <phil@nwl.cc>
 
-[ Upstream commit 44c76825d6eefee9eb7ce06c38e1a6632ac7eb7d ]
+[ Upstream commit 4279cc60b354d2d2b970655a70a151cbfa1d958b ]
 
-In commit c1d171a00294 ("x86: randomize brk"), arch_randomize_brk() was
-defined to use a 32MB range (13 bits of entropy), but was never increased
-when moving to 64-bit. The default arch_randomize_brk() uses 32MB for
-32-bit tasks, and 1GB (18 bits of entropy) for 64-bit tasks.
+Prep work for moving the filter into struct netlink_callback's scratch
+area.
 
-Update x86_64 to match the entropy used by arm64 and other 64-bit
-architectures.
-
-Reported-by: y0un9n132@gmail.com
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Jiri Kosina <jkosina@suse.com>
-Closes: https://lore.kernel.org/linux-hardening/CA+2EKTVLvc8hDZc+2Yhwmus=dzOUG5E4gV7ayCbu0MPJTZzWkw@mail.gmail.com/
-Link: https://lore.kernel.org/r/20240217062545.1631668-1-keescook@chromium.org
+Signed-off-by: Phil Sutter <phil@nwl.cc>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Stable-dep-of: bd662c4218f9 ("netfilter: nf_tables: Add locking for NFT_MSG_GETOBJ_RESET requests")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/process.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/netfilter/nf_tables_api.c | 36 +++++++++++++++--------------------
+ 1 file changed, 15 insertions(+), 21 deletions(-)
 
-diff --git a/arch/x86/kernel/process.c b/arch/x86/kernel/process.c
-index b6f4e8399fca2..5351f293f770b 100644
---- a/arch/x86/kernel/process.c
-+++ b/arch/x86/kernel/process.c
-@@ -1030,7 +1030,10 @@ unsigned long arch_align_stack(unsigned long sp)
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index ddf84f226822b..07140899a8d1d 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -7452,11 +7452,9 @@ static int nf_tables_dump_obj(struct sk_buff *skb, struct netlink_callback *cb)
+ 				goto cont;
+ 			if (idx < s_idx)
+ 				goto cont;
+-			if (filter && filter->table &&
+-			    strcmp(filter->table, table->name))
++			if (filter->table && strcmp(filter->table, table->name))
+ 				goto cont;
+-			if (filter &&
+-			    filter->type != NFT_OBJECT_UNSPEC &&
++			if (filter->type != NFT_OBJECT_UNSPEC &&
+ 			    obj->ops->type->type != filter->type)
+ 				goto cont;
  
- unsigned long arch_randomize_brk(struct mm_struct *mm)
- {
--	return randomize_page(mm->brk, 0x02000000);
-+	if (mmap_is_ia32())
-+		return randomize_page(mm->brk, SZ_32M);
+@@ -7491,23 +7489,21 @@ static int nf_tables_dump_obj_start(struct netlink_callback *cb)
+ 	const struct nlattr * const *nla = cb->data;
+ 	struct nft_obj_filter *filter = NULL;
+ 
+-	if (nla[NFTA_OBJ_TABLE] || nla[NFTA_OBJ_TYPE]) {
+-		filter = kzalloc(sizeof(*filter), GFP_ATOMIC);
+-		if (!filter)
+-			return -ENOMEM;
++	filter = kzalloc(sizeof(*filter), GFP_ATOMIC);
++	if (!filter)
++		return -ENOMEM;
+ 
+-		if (nla[NFTA_OBJ_TABLE]) {
+-			filter->table = nla_strdup(nla[NFTA_OBJ_TABLE], GFP_ATOMIC);
+-			if (!filter->table) {
+-				kfree(filter);
+-				return -ENOMEM;
+-			}
++	if (nla[NFTA_OBJ_TABLE]) {
++		filter->table = nla_strdup(nla[NFTA_OBJ_TABLE], GFP_ATOMIC);
++		if (!filter->table) {
++			kfree(filter);
++			return -ENOMEM;
+ 		}
+-
+-		if (nla[NFTA_OBJ_TYPE])
+-			filter->type = ntohl(nla_get_be32(nla[NFTA_OBJ_TYPE]));
+ 	}
+ 
++	if (nla[NFTA_OBJ_TYPE])
++		filter->type = ntohl(nla_get_be32(nla[NFTA_OBJ_TYPE]));
 +
-+	return randomize_page(mm->brk, SZ_1G);
+ 	cb->data = filter;
+ 	return 0;
  }
+@@ -7516,10 +7512,8 @@ static int nf_tables_dump_obj_done(struct netlink_callback *cb)
+ {
+ 	struct nft_obj_filter *filter = cb->data;
  
- /*
+-	if (filter) {
+-		kfree(filter->table);
+-		kfree(filter);
+-	}
++	kfree(filter->table);
++	kfree(filter);
+ 
+ 	return 0;
+ }
 -- 
 2.43.0
 
