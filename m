@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-70700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BFD0960F95
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:00:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F0BA96127C
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:31:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EDE7028638F
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:00:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CECDD1F23457
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:31:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6E451C86F6;
-	Tue, 27 Aug 2024 14:59:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE2591CCEEE;
+	Tue, 27 Aug 2024 15:29:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mZZJRYIm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RPKXovcb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 858ED1BA88C;
-	Tue, 27 Aug 2024 14:59:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AA971C7B63;
+	Tue, 27 Aug 2024 15:29:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770778; cv=none; b=X0AQn6LJ2KA8saIo/a0blm84LlBM5mQVEwhZvyBgiecte2lzN5DtnJUg/Rg/m8q3+hmugf5YqeuYqZxEd7eVe4PPuJ+0WmkVgcV1EirQv3ER/c00mEz6Z5Wi8tVD87apH50NS5COdZHjz6ipzn4zrwdgTouqAcafKQcafiuf9Vs=
+	t=1724772574; cv=none; b=i3wOl9AEI6IWcxJiiBAK3NNm32AoY1cije9V6d6BvsqIo9zTHxRx9gIGf8C0+SvTf3+YpPULjZh8FTARUIXZ2TZ19h5jo4AXvCF014grOSkxqpN+jO7TsAoIGULVUSrRZOl0hYS8WH7fUns9MjIoqBmxTfk6vD/g4Xtb0Y7cUvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770778; c=relaxed/simple;
-	bh=ckCds5YXTqSll9moIUQHSrzqqGCaelLu2exf3ba32q8=;
+	s=arc-20240116; t=1724772574; c=relaxed/simple;
+	bh=7C5DcqVDokNErgjZ8N66k6BD2Nb2xn1js6o7nXCU3Sw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G7agd4LERoyEx1BN92zoZcXvaBKHUydjtjxBSqXftVo/tedRu+istV+gAIfv7rixpG/1u+B81bQ2xCHgUvsUeK3Ol5b7ch6sYoVDnTB1ADYEWUNnWTjwkNS7GlViBXyutHD5w1h9BlfQYQKjbfioGOlj/v46j/V8Gyo3eK9PAok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mZZJRYIm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F40EFC4AF1C;
-	Tue, 27 Aug 2024 14:59:37 +0000 (UTC)
+	 MIME-Version; b=AKQxi/+SCgEp8CyCNdpwG55uy0UqrL0ed0qGMuoXlhh9lr6wIG8FirEl0FH8YSCnRMIFJvT8eDWtUZeHbGiFLo+KWdWEilRWFqNUrwC6Cz8/70o8fNzv62BFOnBksZOcL99Hu39MhjF5DoPG8YNXyt0y2lSosgs9iAl6yMcT61Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RPKXovcb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8F74C6107E;
+	Tue, 27 Aug 2024 15:29:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770778;
-	bh=ckCds5YXTqSll9moIUQHSrzqqGCaelLu2exf3ba32q8=;
+	s=korg; t=1724772574;
+	bh=7C5DcqVDokNErgjZ8N66k6BD2Nb2xn1js6o7nXCU3Sw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mZZJRYImX+agFl4E5MRhgWSg98iDGtjHLWnWCgCBFKURWlsiUVFfaSrn4vOoSQ6f4
-	 PcglB5weyZMIuFojxK9RhcMmeVm+cH5DCehLay/tHIMJ/x+8NF0YPa7tBsHsLBaf7h
-	 7f92AiJnUaCFrrQFoY3wzhkpksHfkw6LHNidsa84=
+	b=RPKXovcbiHQY/rznWocFqyO8ncewHYuG8PStTzRjizDEdLUnHqoUHRXKJ8SRW+q/T
+	 InWreCUkRdDS3WxjbTc1u888cHv1hT0T2Niedb0g6YHER4JBwuF3rlKlXzsbDpo47x
+	 yGKHuK1MlSkQrExpHelKPKUkBe+6Rtg6gvnpgK6g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zi Yan <ziy@nvidia.com>,
-	"Huang, Ying" <ying.huang@intel.com>,
-	David Hildenbrand <david@redhat.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Mel Gorman <mgorman@suse.de>,
-	Yang Shi <shy828301@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 332/341] mm/numa: no task_numa_fault() call if PTE is changed
+	Bharat Bhushan <bbhushan2@marvell.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 255/321] octeontx2-af: Fix CPT AF register offset calculation
 Date: Tue, 27 Aug 2024 16:39:23 +0200
-Message-ID: <20240827143856.027636153@linuxfoundation.org>
+Message-ID: <20240827143847.951077360@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,102 +63,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zi Yan <ziy@nvidia.com>
+From: Bharat Bhushan <bbhushan2@marvell.com>
 
-commit 40b760cfd44566bca791c80e0720d70d75382b84 upstream.
+[ Upstream commit af688a99eb1fc7ef69774665d61e6be51cea627a ]
 
-When handling a numa page fault, task_numa_fault() should be called by a
-process that restores the page table of the faulted folio to avoid
-duplicated stats counting.  Commit b99a342d4f11 ("NUMA balancing: reduce
-TLB flush via delaying mapping on hint page fault") restructured
-do_numa_page() and did not avoid task_numa_fault() call in the second page
-table check after a numa migration failure.  Fix it by making all
-!pte_same() return immediately.
+Some CPT AF registers are per LF and others are global. Translation
+of PF/VF local LF slot number to actual LF slot number is required
+only for accessing perf LF registers. CPT AF global registers access
+do not require any LF slot number. Also, there is no reason CPT
+PF/VF to know actual lf's register offset.
 
-This issue can cause task_numa_fault() being called more than necessary
-and lead to unexpected numa balancing results (It is hard to tell whether
-the issue will cause positive or negative performance impact due to
-duplicated numa fault counting).
+Without this fix microcode loading will fail, VFs cannot be created
+and hardware is not usable.
 
-Link: https://lkml.kernel.org/r/20240809145906.1513458-2-ziy@nvidia.com
-Fixes: b99a342d4f11 ("NUMA balancing: reduce TLB flush via delaying mapping on hint page fault")
-Signed-off-by: Zi Yan <ziy@nvidia.com>
-Reported-by: "Huang, Ying" <ying.huang@intel.com>
-Closes: https://lore.kernel.org/linux-mm/87zfqfw0yw.fsf@yhuang6-desk2.ccr.corp.intel.com/
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Mel Gorman <mgorman@suse.de>
-Cc: Yang Shi <shy828301@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: bc35e28af789 ("octeontx2-af: replace cpt slot with lf id on reg write")
+Signed-off-by: Bharat Bhushan <bbhushan2@marvell.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20240821070558.1020101-1-bbhushan2@marvell.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/memory.c |   33 ++++++++++++++++-----------------
- 1 file changed, 16 insertions(+), 17 deletions(-)
+ .../ethernet/marvell/octeontx2/af/rvu_cpt.c   | 23 +++++++++----------
+ 1 file changed, 11 insertions(+), 12 deletions(-)
 
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -4775,7 +4775,7 @@ static vm_fault_t do_numa_page(struct vm
- 	spin_lock(vmf->ptl);
- 	if (unlikely(!pte_same(ptep_get(vmf->pte), vmf->orig_pte))) {
- 		pte_unmap_unlock(vmf->pte, vmf->ptl);
--		goto out;
-+		return 0;
- 	}
- 
- 	/* Get the normal PTE  */
-@@ -4840,23 +4840,19 @@ static vm_fault_t do_numa_page(struct vm
- 	if (migrate_misplaced_page(page, vma, target_nid)) {
- 		page_nid = target_nid;
- 		flags |= TNF_MIGRATED;
--	} else {
--		flags |= TNF_MIGRATE_FAIL;
--		vmf->pte = pte_offset_map_lock(vma->vm_mm, vmf->pmd,
--					       vmf->address, &vmf->ptl);
--		if (unlikely(!vmf->pte))
--			goto out;
--		if (unlikely(!pte_same(ptep_get(vmf->pte), vmf->orig_pte))) {
--			pte_unmap_unlock(vmf->pte, vmf->ptl);
--			goto out;
--		}
--		goto out_map;
-+		task_numa_fault(last_cpupid, page_nid, 1, flags);
-+		return 0;
- 	}
- 
--out:
--	if (page_nid != NUMA_NO_NODE)
--		task_numa_fault(last_cpupid, page_nid, 1, flags);
--	return 0;
-+	flags |= TNF_MIGRATE_FAIL;
-+	vmf->pte = pte_offset_map_lock(vma->vm_mm, vmf->pmd,
-+				       vmf->address, &vmf->ptl);
-+	if (unlikely(!vmf->pte))
-+		return 0;
-+	if (unlikely(!pte_same(ptep_get(vmf->pte), vmf->orig_pte))) {
-+		pte_unmap_unlock(vmf->pte, vmf->ptl);
-+		return 0;
-+	}
- out_map:
- 	/*
- 	 * Make it present again, depending on how arch implements
-@@ -4870,7 +4866,10 @@ out_map:
- 	ptep_modify_prot_commit(vma, vmf->address, vmf->pte, old_pte, pte);
- 	update_mmu_cache_range(vmf, vma, vmf->address, vmf->pte, 1);
- 	pte_unmap_unlock(vmf->pte, vmf->ptl);
--	goto out;
-+
-+	if (page_nid != NUMA_NO_NODE)
-+		task_numa_fault(last_cpupid, page_nid, 1, flags);
-+	return 0;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cpt.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cpt.c
+index b226a4d376aab..160e044c25c24 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cpt.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cpt.c
+@@ -632,7 +632,9 @@ int rvu_mbox_handler_cpt_inline_ipsec_cfg(struct rvu *rvu,
+ 	return ret;
  }
  
- static inline vm_fault_t create_huge_pmd(struct vm_fault *vmf)
+-static bool is_valid_offset(struct rvu *rvu, struct cpt_rd_wr_reg_msg *req)
++static bool validate_and_update_reg_offset(struct rvu *rvu,
++					   struct cpt_rd_wr_reg_msg *req,
++					   u64 *reg_offset)
+ {
+ 	u64 offset = req->reg_offset;
+ 	int blkaddr, num_lfs, lf;
+@@ -663,6 +665,11 @@ static bool is_valid_offset(struct rvu *rvu, struct cpt_rd_wr_reg_msg *req)
+ 		if (lf < 0)
+ 			return false;
+ 
++		/* Translate local LF's offset to global CPT LF's offset to
++		 * access LFX register.
++		 */
++		*reg_offset = (req->reg_offset & 0xFF000) + (lf << 3);
++
+ 		return true;
+ 	} else if (!(req->hdr.pcifunc & RVU_PFVF_FUNC_MASK)) {
+ 		/* Registers that can be accessed from PF */
+@@ -697,7 +704,7 @@ int rvu_mbox_handler_cpt_rd_wr_register(struct rvu *rvu,
+ 					struct cpt_rd_wr_reg_msg *rsp)
+ {
+ 	u64 offset = req->reg_offset;
+-	int blkaddr, lf;
++	int blkaddr;
+ 
+ 	blkaddr = validate_and_get_cpt_blkaddr(req->blkaddr);
+ 	if (blkaddr < 0)
+@@ -708,18 +715,10 @@ int rvu_mbox_handler_cpt_rd_wr_register(struct rvu *rvu,
+ 	    !is_cpt_vf(rvu, req->hdr.pcifunc))
+ 		return CPT_AF_ERR_ACCESS_DENIED;
+ 
+-	if (!is_valid_offset(rvu, req))
++	if (!validate_and_update_reg_offset(rvu, req, &offset))
+ 		return CPT_AF_ERR_ACCESS_DENIED;
+ 
+-	/* Translate local LF used by VFs to global CPT LF */
+-	lf = rvu_get_lf(rvu, &rvu->hw->block[blkaddr], req->hdr.pcifunc,
+-			(offset & 0xFFF) >> 3);
+-
+-	/* Translate local LF's offset to global CPT LF's offset */
+-	offset &= 0xFF000;
+-	offset += lf << 3;
+-
+-	rsp->reg_offset = offset;
++	rsp->reg_offset = req->reg_offset;
+ 	rsp->ret_val = req->ret_val;
+ 	rsp->is_write = req->is_write;
+ 
+-- 
+2.43.0
+
 
 
 
