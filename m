@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-71169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70906-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 018B8961200
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:25:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E23E096109D
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:10:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AB7971F226ED
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:25:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8BD0B1F23700
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:10:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14099148302;
-	Tue, 27 Aug 2024 15:25:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84E9F1C3F19;
+	Tue, 27 Aug 2024 15:10:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VxkRFMiY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rSZcC2mH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C52B019F485;
-	Tue, 27 Aug 2024 15:25:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42B5B12E4D;
+	Tue, 27 Aug 2024 15:10:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772327; cv=none; b=ZFZIGYYXAB8TWdc7r2Ome7/tiEB7L9VDspS/xO1vEf3qdce50Z8gCWJxfssCsLZ435RK16GXnPuOLt0euf8J9JlexQJikMADafff8n4eFQ2I63lcLWwHkXFUarWIUAbCh53UakAf0CVgIyzMTxEOF792sBCfBn3NSvHztoTnJqo=
+	t=1724771457; cv=none; b=WDCkZ9gb4cGy5Y+o+cDKNIg7LIr/dRjGqc3Om0T+k0yEdLOmL0iQXvlP9cYbaTSmmqy4XvqUu4B9wzZLwh/stQhaSu5NmM0GDJqjNLVSliLOeKmyEx8F3iANTHKBw38s6hcc03LHKvvcE6dpjts+i7jWCKFP44AHZOQ0LXw0D8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772327; c=relaxed/simple;
-	bh=oltVRjQcTu4XyXyQYbckKW+n+an05iMYvzFDvwoaRiU=;
+	s=arc-20240116; t=1724771457; c=relaxed/simple;
+	bh=nWcu2xGcmh8DYWsZ39T/L+9xqL1wD8o39s7GMa86Vdk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jn5sOsLpF8WQX/to8O03VqxmVsLEFm9vRl9cqgUFCrkv+1PKImJlBlc0COZTwKsx4hGe2/JSOSFy8oMMnUeeiNmOkNGYpvmwNAopywM38AUDxses+V5kk4DWkwbffFKEDV9qqcDJfV3c7cAY/oyzkAX70cg4WwIX4uNuYD45bsw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VxkRFMiY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42493C61071;
-	Tue, 27 Aug 2024 15:25:27 +0000 (UTC)
+	 MIME-Version; b=SV395s1/zGgD5FQ7cCwUjtJdVkYsxSjrCqrOgvBob+tzeOWv/C1vdr394oLaz3fhOW1oZc6AiZRIIJhCDDFlydeIz+36KPH+0Vj6a3RSmktDjwoXmQ9pnMAdaf/06E+oNfVIdhAjqaUX58HygP9O8JlrYU5prm9nUPb4ZJrfEF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rSZcC2mH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0B77C4DDE8;
+	Tue, 27 Aug 2024 15:10:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772327;
-	bh=oltVRjQcTu4XyXyQYbckKW+n+an05iMYvzFDvwoaRiU=;
+	s=korg; t=1724771457;
+	bh=nWcu2xGcmh8DYWsZ39T/L+9xqL1wD8o39s7GMa86Vdk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VxkRFMiY49vHQ+BbGIeX5o6DLXCsJl3ZdfdgejyXC3dPy6eDHe1kBbESsdz+ef7dd
-	 SX7b+xmdbklLthp4lBuaWdSBqQX5Suu4i16PmwIKkI3qqmaT+x7PsPzKTXNdAF1RC/
-	 VbkruuAnZCz6UkXeBM0CM5x7PTK/TvtlUG8YKesU=
+	b=rSZcC2mHFPzjLVYzibvIV3J1AutvC3KtYa6bEIPWIvYGAtay+KJP48fJAzg9NCyt4
+	 ThfBsTn8v+h1SwS9MHZjO61yaEMy1IgDq5pjA0QdM0HqGij6gSNZex5vlzauri3Wyj
+	 2AZNwpLQ/pn6jIPM8xdXAC8oTTjOL48KXtEuPnlU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Sterba <dsterba@suse.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 182/321] btrfs: tests: allocate dummy fs_info and root in test_find_delalloc()
+Subject: [PATCH 6.10 166/273] netfilter: nft_counter: Synchronize nft_counter_reset() against reader.
 Date: Tue, 27 Aug 2024 16:38:10 +0200
-Message-ID: <20240827143845.157556793@linuxfoundation.org>
+Message-ID: <20240827143839.726975638@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,95 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Sterba <dsterba@suse.com>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-[ Upstream commit b2136cc288fce2f24a92f3d656531b2d50ebec5a ]
+[ Upstream commit a0b39e2dc7017ac667b70bdeee5293e410fab2fb ]
 
-Allocate fs_info and root to have a valid fs_info pointer in case it's
-dereferenced by a helper outside of tests, like find_lock_delalloc_range().
+nft_counter_reset() resets the counter by subtracting the previously
+retrieved value from the counter. This is a write operation on the
+counter and as such it requires to be performed with a write sequence of
+nft_counter_seq to serialize against its possible reader.
 
-Signed-off-by: David Sterba <dsterba@suse.com>
+Update the packets/ bytes within write-sequence of nft_counter_seq.
+
+Fixes: d84701ecbcd6a ("netfilter: nft_counter: rework atomic dump and reset")
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Reviewed-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/tests/extent-io-tests.c | 28 ++++++++++++++++++++++++----
- 1 file changed, 24 insertions(+), 4 deletions(-)
+ net/netfilter/nft_counter.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/fs/btrfs/tests/extent-io-tests.c b/fs/btrfs/tests/extent-io-tests.c
-index 350da449db084..d6a5e6afd5dc0 100644
---- a/fs/btrfs/tests/extent-io-tests.c
-+++ b/fs/btrfs/tests/extent-io-tests.c
-@@ -11,6 +11,7 @@
- #include "btrfs-tests.h"
- #include "../ctree.h"
- #include "../extent_io.h"
-+#include "../disk-io.h"
- #include "../btrfs_inode.h"
- 
- #define PROCESS_UNLOCK		(1 << 0)
-@@ -105,9 +106,11 @@ static void dump_extent_io_tree(const struct extent_io_tree *tree)
- 	}
- }
- 
--static int test_find_delalloc(u32 sectorsize)
-+static int test_find_delalloc(u32 sectorsize, u32 nodesize)
+diff --git a/net/netfilter/nft_counter.c b/net/netfilter/nft_counter.c
+index 16f40b503d379..eab0dc66bee6b 100644
+--- a/net/netfilter/nft_counter.c
++++ b/net/netfilter/nft_counter.c
+@@ -107,11 +107,16 @@ static void nft_counter_reset(struct nft_counter_percpu_priv *priv,
+ 			      struct nft_counter *total)
  {
--	struct inode *inode;
-+	struct btrfs_fs_info *fs_info;
-+	struct btrfs_root *root = NULL;
-+	struct inode *inode = NULL;
- 	struct extent_io_tree *tmp;
- 	struct page *page;
- 	struct page *locked_page = NULL;
-@@ -121,12 +124,27 @@ static int test_find_delalloc(u32 sectorsize)
+ 	struct nft_counter *this_cpu;
++	seqcount_t *myseq;
  
- 	test_msg("running find delalloc tests");
- 
-+	fs_info = btrfs_alloc_dummy_fs_info(nodesize, sectorsize);
-+	if (!fs_info) {
-+		test_std_err(TEST_ALLOC_FS_INFO);
-+		return -ENOMEM;
-+	}
+ 	local_bh_disable();
+ 	this_cpu = this_cpu_ptr(priv->counter);
++	myseq = this_cpu_ptr(&nft_counter_seq);
 +
-+	root = btrfs_alloc_dummy_root(fs_info);
-+	if (IS_ERR(root)) {
-+		test_std_err(TEST_ALLOC_ROOT);
-+		ret = PTR_ERR(root);
-+		goto out;
-+	}
-+
- 	inode = btrfs_new_test_inode();
- 	if (!inode) {
- 		test_std_err(TEST_ALLOC_INODE);
--		return -ENOMEM;
-+		ret = -ENOMEM;
-+		goto out;
- 	}
- 	tmp = &BTRFS_I(inode)->io_tree;
-+	BTRFS_I(inode)->root = root;
- 
- 	/*
- 	 * Passing NULL as we don't have fs_info but tracepoints are not used
-@@ -316,6 +334,8 @@ static int test_find_delalloc(u32 sectorsize)
- 	process_page_range(inode, 0, total_dirty - 1,
- 			   PROCESS_UNLOCK | PROCESS_RELEASE);
- 	iput(inode);
-+	btrfs_free_dummy_root(root);
-+	btrfs_free_dummy_fs_info(fs_info);
- 	return ret;
++	write_seqcount_begin(myseq);
+ 	this_cpu->packets -= total->packets;
+ 	this_cpu->bytes -= total->bytes;
++	write_seqcount_end(myseq);
+ 	local_bh_enable();
  }
- 
-@@ -598,7 +618,7 @@ int btrfs_test_extent_io(u32 sectorsize, u32 nodesize)
- 
- 	test_msg("running extent I/O tests");
- 
--	ret = test_find_delalloc(sectorsize);
-+	ret = test_find_delalloc(sectorsize, nodesize);
- 	if (ret)
- 		goto out;
  
 -- 
 2.43.0
