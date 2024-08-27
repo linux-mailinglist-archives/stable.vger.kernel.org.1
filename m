@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-70765-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAF90960FED
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:04:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF308960E85
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:49:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99916286D81
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:04:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E4271C22F6F
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:49:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20FC21C57BC;
-	Tue, 27 Aug 2024 15:03:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C1D91C4EE6;
+	Tue, 27 Aug 2024 14:49:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PJ/90oOb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gvSKSbbr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D00E91BC08A;
-	Tue, 27 Aug 2024 15:03:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8A69DDC1;
+	Tue, 27 Aug 2024 14:49:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770988; cv=none; b=SfNFtiID8XfFtSGbsotDf35l6SwTrznJzvD6E8gIkYCtqmt8j/9nDBK24tzf1b3XPKONpPdxnjpkZzW1UImgXA3oQUcT+eoePaYfaxsPEwd5wqyDwHt12rDKhOKdhV8JUMVJL31+LyVY0ogpAbg2g5Ygmqo+GBl45NHmANg0CZ8=
+	t=1724770164; cv=none; b=UzX2jv5cKL8CJv7J/+VwDk2hysSs38x6CGOhhKxX5DukX3U68bBbS0gVUkUioLpds3o2VogIL0gTFFeETPcgKxTCRbuh9uWHcCZcQnjmEe3BjxrvPkXTR9U+0+k29DF+3QkPKoR36qwuD+/JFVyGNtjdGuZSqbXqUYEME/C6K9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770988; c=relaxed/simple;
-	bh=beSGFQJgSQZTh5T02Q7808bb/hDN8ckHoLDTKWrlCKE=;
+	s=arc-20240116; t=1724770164; c=relaxed/simple;
+	bh=NouojukfAE/D3q4gkTDorjSZkj5YA4klKFhvUgKczpw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F9qYw368vZRmFp+lIlRfmokYkNUd7oC0QmY/n8Xu/ykViDoi0NHbEwQ49Nd559wilbqboNR8orFOk0uOYho9OemrvWkGwScP0i/26MKZOyAyzPNfhCAzOazkULWu5y/SAQxpbu1itSjtCJ2yydW4VwcBHjRH5xPwxLEQCTOpdKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PJ/90oOb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4778DC6104B;
-	Tue, 27 Aug 2024 15:03:08 +0000 (UTC)
+	 MIME-Version; b=XGcYjq8GioIutYbVjS4U+PM1ibyPSKl9Jlt8O9pePWQHBNIgWKMzGbOXrK5CsH99bXqzpKsAuI3uGh8g3/Oj42MkAuA+jCCllq/qNQa5k0eTFBltVVdBtD8R/+ebXDlm9hGT7W3Em1L2x06XGrKMs9/5zgzklsPt5zLbCWjRIbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gvSKSbbr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30D4AC4AF18;
+	Tue, 27 Aug 2024 14:49:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770988;
-	bh=beSGFQJgSQZTh5T02Q7808bb/hDN8ckHoLDTKWrlCKE=;
+	s=korg; t=1724770164;
+	bh=NouojukfAE/D3q4gkTDorjSZkj5YA4klKFhvUgKczpw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PJ/90oObfJDns1vwGfNLiJ667Lsr4N0X1zJE+AMKWAFZz2V0FYdjV0bp8CzFFtiG7
-	 a2A3meUzoFj96kB6f0TpvZJY8RX6tysmJACFafaILfu8JXYK4Q5/XO4gVoMVKRK1yl
-	 UzU2mtzKM5L50OBzyLdTKSXmE6JK0vv/vZkcSuGs=
+	b=gvSKSbbrEPzycNa8zoG3ShfYclja3K0Q0r9Ws6FzuJkMoBZRDeLg1Qp2lLFJKK/Tc
+	 EapHe8dc+oLA0W7L/g6rV+ir9lu8AglZEStT1iGGD06gFWHwq2BmYV/SyQPACMOvsa
+	 ysrTZW/YAIK8iltfQEX2YqLBCWZgPYHSI+MZCFOo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suren Baghdasaryan <surenb@google.com>,
-	David Hildenbrand <david@redhat.com>,
-	Kees Cook <keescook@chromium.org>,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Sourav Panda <souravpanda@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.10 053/273] alloc_tag: mark pages reserved during CMA activation as not tagged
+	Shannon Nelson <shannon.nelson@amd.com>,
+	Brett Creeley <brett.creeley@amd.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 146/341] ionic: prevent pci disable of already disabled device
 Date: Tue, 27 Aug 2024 16:36:17 +0200
-Message-ID: <20240827143835.417314211@linuxfoundation.org>
+Message-ID: <20240827143848.976968549@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,46 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Suren Baghdasaryan <surenb@google.com>
+From: Shannon Nelson <shannon.nelson@amd.com>
 
-commit 766c163c2068b45330664fb67df67268e588a22d upstream.
+[ Upstream commit 13943d6c82730a2a4e40e05d6deaca26a8de0a4d ]
 
-During CMA activation, pages in CMA area are prepared and then freed
-without being allocated.  This triggers warnings when memory allocation
-debug config (CONFIG_MEM_ALLOC_PROFILING_DEBUG) is enabled.  Fix this by
-marking these pages not tagged before freeing them.
+If a reset fails, the PCI device is left in a disabled
+state, so don't try to disable it again on driver remove.
+This prevents a scary looking WARN trace in the kernel log.
 
-Link: https://lkml.kernel.org/r/20240813150758.855881-2-surenb@google.com
-Fixes: d224eb0287fb ("codetag: debug: mark codetags for reserved pages as empty")
-Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Sourav Panda <souravpanda@google.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: <stable@vger.kernel.org>	[6.10]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    ionic 0000:2b:00.0: disabling already-disabled device
+
+Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
+Reviewed-by: Brett Creeley <brett.creeley@amd.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/mm_init.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/mm/mm_init.c
-+++ b/mm/mm_init.c
-@@ -2293,6 +2293,8 @@ void __init init_cma_reserved_pageblock(
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c b/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c
+index fa4237c27e061..f0a7fde8f7fff 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c
++++ b/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c
+@@ -217,7 +217,9 @@ static void ionic_clear_pci(struct ionic *ionic)
+ {
+ 	ionic_unmap_bars(ionic);
+ 	pci_release_regions(ionic->pdev);
+-	pci_disable_device(ionic->pdev);
++
++	if (atomic_read(&ionic->pdev->enable_cnt) > 0)
++		pci_disable_device(ionic->pdev);
+ }
  
- 	set_pageblock_migratetype(page, MIGRATE_CMA);
- 	set_page_refcounted(page);
-+	/* pages were reserved and not allocated */
-+	clear_page_tag_ref(page);
- 	__free_pages(page, pageblock_order);
- 
- 	adjust_managed_page_count(page, pageblock_nr_pages);
+ static int ionic_setup_one(struct ionic *ionic)
+-- 
+2.43.0
+
 
 
 
