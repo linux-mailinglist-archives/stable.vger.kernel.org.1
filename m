@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-70556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70793-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F26AC960EBE
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:52:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96319961011
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:05:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 314021C2337C
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:52:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ED7CFB223E6
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:05:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0C531C5783;
-	Tue, 27 Aug 2024 14:51:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 577181C688E;
+	Tue, 27 Aug 2024 15:04:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yO3uDobX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LarUD0zh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F20A38DC7;
-	Tue, 27 Aug 2024 14:51:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14FBA73466;
+	Tue, 27 Aug 2024 15:04:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770299; cv=none; b=Jnu5L9pBNjSoP+SjxQS9Vwig3mT4Mu1k6ApYoCy+si1UzCvvH0ZfrhM95IUz8WnSLYgP2tZ0z9/33nhP04ihib96C/rQ3iXuTA0S7xImn2iL24skaC0Zhrj8LbbJzr/Fs6/mlhpGK5/0r6cBGoxT/Al9pgWhL1XdY9w9A8FnPTI=
+	t=1724771079; cv=none; b=lRpucAbzArej0Xbd/fB9V5NlNkPEbKBu6inp1GqJeI0efoKGJgibKEfvrFixbFfaQWEG5V00RWWMYpQBFOX4GV8lXLiJ6a9bsreULgW48f3PDCCTEhmieVUyVXZ4f3sUGUVk0I+ghhp4fqMFrRaLwokgV7pZMNWBzhUgccyoBGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770299; c=relaxed/simple;
-	bh=28mCluQ9GJSFiNLecNeWdTA6cQWevECOm04G9QRtqZw=;
+	s=arc-20240116; t=1724771079; c=relaxed/simple;
+	bh=XTg4ck2+XtfpzyXadXdaSaWygskpYvLln/thlaZkeK8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=urLXSdLnXh9I+sbk439WVHFcwODBTTupRprhG7cUVXPvIsScfDrUHxlgoomqHeJcoFXK+OokwNB+JPmBIYm6S+9jFkeCBpVoToe3rxHVBuzYoe1CjRiB2YTJ6uPy6LK/kaplcwgLVhHt/qnt+sosaOLWPJrvwMCMGl9muCgjamc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yO3uDobX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D78CFC4DE03;
-	Tue, 27 Aug 2024 14:51:38 +0000 (UTC)
+	 MIME-Version; b=FswWdxNSqNBBn7qE9mpvUJrP+ehSnWQ4jW1Lla4+d8CysWWG4qdRRm01GHP2B7qtCp7oOLn+ZEnFzH6D874v+xp6MSkAK5fKT9XNCRWm6k57QbGbLsPJEZDwIR9nGsGfL1D47zIwZvTVJAEG8UdZdKUraXkMYJzlaamZyE1mFbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LarUD0zh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 780ADC6105B;
+	Tue, 27 Aug 2024 15:04:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770299;
-	bh=28mCluQ9GJSFiNLecNeWdTA6cQWevECOm04G9QRtqZw=;
+	s=korg; t=1724771079;
+	bh=XTg4ck2+XtfpzyXadXdaSaWygskpYvLln/thlaZkeK8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yO3uDobXTM8jSYfBe90X7fORYU/ORoidXFc9O+HJJWK3L7TjgqhplDzUKjtAS9NBx
-	 U6ZCgiBwdrzstrzhvHFQZDLsWNhsHTD4u4BojR/i18xPurPH0sFmPHsY+4Tb2uzkAD
-	 LpKX2bJuL/06RNv7qnPD89h/cq1knmfIdSFTtEYc=
+	b=LarUD0zhR7w2vTah9qx7IuOawfuBiHghIc6TFjTzjwDwf34s/9UyUOg5yEaCDxR+i
+	 FVRwOcS/hN93EahLeq5Ovq/M8SaMdwKxVKY8Zdz+a/PekyCqoQen6mi4eWzspsciHi
+	 wyIpscFGr5PhYZleWmAVY0XovT8UtPE1c/1P0Hm8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Brauner <brauner@kernel.org>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 156/341] afs: fix __afs_break_callback() / afs_drop_open_mmap() race
+	kzd <kzd@56709.net>,
+	Octavia Togami <octavia.togami@gmail.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.10 063/273] btrfs: only run the extent map shrinker from kswapd tasks
 Date: Tue, 27 Aug 2024 16:36:27 +0200
-Message-ID: <20240827143849.353607920@linuxfoundation.org>
+Message-ID: <20240827143835.805799008@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +63,144 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 275655d3207b9e65d1561bf21c06a622d9ec1d43 ]
+commit ae1e766f623f7a2a889a0b09eb076dd9a60efbe9 upstream.
 
-In __afs_break_callback() we might check ->cb_nr_mmap and if it's non-zero
-do queue_work(&vnode->cb_work).  In afs_drop_open_mmap() we decrement
-->cb_nr_mmap and do flush_work(&vnode->cb_work) if it reaches zero.
+Currently the extent map shrinker can be run by any task when attempting
+to allocate memory and there's enough memory pressure to trigger it.
 
-The trouble is, there's nothing to prevent __afs_break_callback() from
-seeing ->cb_nr_mmap before the decrement and do queue_work() after both
-the decrement and flush_work().  If that happens, we might be in trouble -
-vnode might get freed before the queued work runs.
+To avoid too much latency we stop iterating over extent maps and removing
+them once the task needs to reschedule. This logic was introduced in commit
+b3ebb9b7e92a ("btrfs: stop extent map shrinker if reschedule is needed").
 
-__afs_break_callback() is always done under ->cb_lock, so let's make
-sure that ->cb_nr_mmap can change from non-zero to zero while holding
-->cb_lock (the spinlock component of it - it's a seqlock and we don't
-need to mess with the counter).
+While that solved high latency problems for some use cases, it's still
+not enough because with a too high number of tasks entering the extent map
+shrinker code, either due to memory allocations or because they are a
+kswapd task, we end up having a very high level of contention on some
+spin locks, namely:
 
-Acked-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+1) The fs_info->fs_roots_radix_lock spin lock, which we need to find
+   roots to iterate over their inodes;
+
+2) The spin lock of the xarray used to track open inodes for a root
+   (struct btrfs_root::inodes) - on 6.10 kernels and below, it used to
+   be a red black tree and the spin lock was root->inode_lock;
+
+3) The fs_info->delayed_iput_lock spin lock since the shrinker adds
+   delayed iputs (calls btrfs_add_delayed_iput()).
+
+Instead of allowing the extent map shrinker to be run by any task, make
+it run only by kswapd tasks. This still solves the problem of running
+into OOM situations due to an unbounded extent map creation, which is
+simple to trigger by direct IO writes, as described in the changelog
+of commit 956a17d9d050 ("btrfs: add a shrinker for extent maps"), and
+by a similar case when doing buffered IO on files with a very large
+number of holes (keeping the file open and creating many holes, whose
+extent maps are only released when the file is closed).
+
+Reported-by: kzd <kzd@56709.net>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=219121
+Reported-by: Octavia Togami <octavia.togami@gmail.com>
+Link: https://lore.kernel.org/linux-btrfs/CAHPNGSSt-a4ZZWrtJdVyYnJFscFjP9S7rMcvEMaNSpR556DdLA@mail.gmail.com/
+Fixes: 956a17d9d050 ("btrfs: add a shrinker for extent maps")
+CC: stable@vger.kernel.org # 6.10+
+Tested-by: kzd <kzd@56709.net>
+Tested-by: Octavia Togami <octavia.togami@gmail.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/afs/file.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ fs/btrfs/extent_map.c |   22 ++++++----------------
+ fs/btrfs/super.c      |   10 ++++++++++
+ 2 files changed, 16 insertions(+), 16 deletions(-)
 
-diff --git a/fs/afs/file.c b/fs/afs/file.c
-index d37dd201752ba..0012ea300eb53 100644
---- a/fs/afs/file.c
-+++ b/fs/afs/file.c
-@@ -529,13 +529,17 @@ static void afs_add_open_mmap(struct afs_vnode *vnode)
+--- a/fs/btrfs/extent_map.c
++++ b/fs/btrfs/extent_map.c
+@@ -1065,8 +1065,7 @@ static long btrfs_scan_inode(struct btrf
+ 		return 0;
  
- static void afs_drop_open_mmap(struct afs_vnode *vnode)
- {
--	if (!atomic_dec_and_test(&vnode->cb_nr_mmap))
-+	if (atomic_add_unless(&vnode->cb_nr_mmap, -1, 1))
- 		return;
+ 	/*
+-	 * We want to be fast because we can be called from any path trying to
+-	 * allocate memory, so if the lock is busy we don't want to spend time
++	 * We want to be fast so if the lock is busy we don't want to spend time
+ 	 * waiting for it - either some task is about to do IO for the inode or
+ 	 * we may have another task shrinking extent maps, here in this code, so
+ 	 * skip this inode.
+@@ -1109,9 +1108,7 @@ next:
+ 		/*
+ 		 * Stop if we need to reschedule or there's contention on the
+ 		 * lock. This is to avoid slowing other tasks trying to take the
+-		 * lock and because the shrinker might be called during a memory
+-		 * allocation path and we want to avoid taking a very long time
+-		 * and slowing down all sorts of tasks.
++		 * lock.
+ 		 */
+ 		if (need_resched() || rwlock_needbreak(&tree->lock))
+ 			break;
+@@ -1139,12 +1136,7 @@ static long btrfs_scan_root(struct btrfs
+ 		if (ctx->scanned >= ctx->nr_to_scan)
+ 			break;
  
- 	down_write(&vnode->volume->cell->fs_open_mmaps_lock);
+-		/*
+-		 * We may be called from memory allocation paths, so we don't
+-		 * want to take too much time and slowdown tasks.
+-		 */
+-		if (need_resched())
+-			break;
++		cond_resched();
  
--	if (atomic_read(&vnode->cb_nr_mmap) == 0)
-+	read_seqlock_excl(&vnode->cb_lock);
-+	// the only place where ->cb_nr_mmap may hit 0
-+	// see __afs_break_callback() for the other side...
-+	if (atomic_dec_and_test(&vnode->cb_nr_mmap))
- 		list_del_init(&vnode->cb_mmap_link);
-+	read_sequnlock_excl(&vnode->cb_lock);
+ 		inode = btrfs_find_first_inode(root, min_ino);
+ 	}
+@@ -1202,14 +1194,12 @@ long btrfs_free_extent_maps(struct btrfs
+ 							   ctx.last_ino);
+ 	}
  
- 	up_write(&vnode->volume->cell->fs_open_mmaps_lock);
- 	flush_work(&vnode->cb_work);
--- 
-2.43.0
-
+-	/*
+-	 * We may be called from memory allocation paths, so we don't want to
+-	 * take too much time and slowdown tasks, so stop if we need reschedule.
+-	 */
+-	while (ctx.scanned < ctx.nr_to_scan && !need_resched()) {
++	while (ctx.scanned < ctx.nr_to_scan) {
+ 		struct btrfs_root *root;
+ 		unsigned long count;
+ 
++		cond_resched();
++
+ 		spin_lock(&fs_info->fs_roots_radix_lock);
+ 		count = radix_tree_gang_lookup(&fs_info->fs_roots_radix,
+ 					       (void **)&root,
+--- a/fs/btrfs/super.c
++++ b/fs/btrfs/super.c
+@@ -28,6 +28,7 @@
+ #include <linux/btrfs.h>
+ #include <linux/security.h>
+ #include <linux/fs_parser.h>
++#include <linux/swap.h>
+ #include "messages.h"
+ #include "delayed-inode.h"
+ #include "ctree.h"
+@@ -2394,6 +2395,15 @@ static long btrfs_free_cached_objects(st
+ 	const long nr_to_scan = min_t(unsigned long, LONG_MAX, sc->nr_to_scan);
+ 	struct btrfs_fs_info *fs_info = btrfs_sb(sb);
+ 
++	/*
++	 * We may be called from any task trying to allocate memory and we don't
++	 * want to slow it down with scanning and dropping extent maps. It would
++	 * also cause heavy lock contention if many tasks concurrently enter
++	 * here. Therefore only allow kswapd tasks to scan and drop extent maps.
++	 */
++	if (!current_is_kswapd())
++		return 0;
++
+ 	return btrfs_free_extent_maps(fs_info, nr_to_scan);
+ }
+ 
 
 
 
