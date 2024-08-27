@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-70785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71077-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4592C961008
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:05:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00678961188
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:21:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EACC51F21CFA
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:05:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 327DE1C238C0
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:21:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD7241C578E;
-	Tue, 27 Aug 2024 15:04:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37A7E1C9DF7;
+	Tue, 27 Aug 2024 15:20:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="buSD2JG7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vblTKyoV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C33A19F485;
-	Tue, 27 Aug 2024 15:04:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA6E217C96;
+	Tue, 27 Aug 2024 15:20:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771055; cv=none; b=aBLbAG3Rt60XyvhLltOwqBx6Q/WWeuLCobzRKYOZ9w7Mx1QbG6pWbfi7BtGuLPR+V4ecabmppZv2toneBPRZnt62wyw28jRQbXvyl4VdV9W2FqCe/3bMduhaOLMFmsNVjbgvk0jVLcCzHloKqjYxZuYqXUB5sWCa+Sbpr+I8YLM=
+	t=1724772024; cv=none; b=CH5eY8GDNgo6svirs+aqIkuzpx7hcNa89eQsHhQvfgnJvgbTOytjCdelb15O0dcKJSga5vjQ+ZEkBQpxzM3p6qhmSwEvo3jagjsmQin90FcB8/jUj1h4E8GEWF8sZrNbzK1i8om9DEGr0Zp+OjsPqx2lD5Qry3uXq1/g8KcVgs8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771055; c=relaxed/simple;
-	bh=Qj1gh5ZUAGGlsDFA91j6YsUS2tg32wOWDHRMma2bWYE=;
+	s=arc-20240116; t=1724772024; c=relaxed/simple;
+	bh=nuXZo3y8sg+DkDsMAXua3KZfIVhD4l49qWnYfIiLjOY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rEhAw+u6EgDduVowigI+Uij7pHX5OJc8T2GMpxDy55B94bzlbr1fIvhm/f6Y9il8u+EkCeNLpx9VVp+vdc92J1TqXs8h71nXBzLmHQrgFuxfkJq81Mb+jshs1hLZsXxfy0iwkugqwadM5/M61gmJrH2iOe0pyY+dL2EQlqGewYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=buSD2JG7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06AAEC6104C;
-	Tue, 27 Aug 2024 15:04:14 +0000 (UTC)
+	 MIME-Version; b=khoIIaCX6MBftmMtkeoZS0gUh8At/xyKQ8O/cvOJCFhNpnQhtU7UkRWOMEvfM40j3/nC9FH14HPY8lzRgas0EJDiWxXLHSUUy7eKtHDo9+mv5TOmTmdDhvBSyucmEORSoOEYoBXMZmY3vl+B+4PIthnBa97/Q7a6pX4MwTIL5AA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vblTKyoV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DAB6C4DDE5;
+	Tue, 27 Aug 2024 15:20:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771055;
-	bh=Qj1gh5ZUAGGlsDFA91j6YsUS2tg32wOWDHRMma2bWYE=;
+	s=korg; t=1724772023;
+	bh=nuXZo3y8sg+DkDsMAXua3KZfIVhD4l49qWnYfIiLjOY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=buSD2JG76Uzuo5oRpr/N/S6y8RFv7V27nfpaLAWJYbjSGTB+awytsYjldOvMqd4hT
-	 kshj6+4zS+ljgbpVKnerrzw+BcFof708Y10cO/PG1vApgMraGmd+JY9KtjXrAgmscn
-	 hujzquSd9UI2PFJoG8T1HM/g08cB7Qb5D/zcTo88=
+	b=vblTKyoVsIjgqm6viiuuuH2pocSMbe8BpyjTqq5puhW3fkQrQW2+gTVhZAO4c2feg
+	 53kHdndbwUgrRAmifxYymH9nSjTSqSglm/dIvzlNWo62gq7m53j8alqgi4wN2f6K7h
+	 +4TKmxP1vlTYRN92z95pOMfEbhoNVph6uoZLdpw0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leo Liu <leo.liu@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.10 074/273] drm/amdgpu/jpeg4: properly set atomics vmid field
+	Russell King <linux@armlinux.org.uk>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Pawel Dembicki <paweldembicki@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 090/321] net: dsa: vsc73xx: use read_poll_timeout instead delay loop
 Date: Tue, 27 Aug 2024 16:36:38 +0200
-Message-ID: <20240827143836.231420079@linuxfoundation.org>
+Message-ID: <20240827143841.665303334@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +66,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Pawel Dembicki <paweldembicki@gmail.com>
 
-commit e6c6bd6253e792cee6c5c065e106e87b9f0d9ae9 upstream.
+[ Upstream commit eb7e33d01db3aec128590391b2397384bab406b6 ]
 
-This needs to be set as well if the IB uses atomics.
+Switch the delay loop during the Arbiter empty check from
+vsc73xx_adjust_link() to use read_poll_timeout(). Functionally,
+one msleep() call is eliminated at the end of the loop in the timeout
+case.
 
-Reviewed-by: Leo Liu <leo.liu@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit c6c2e8b6a427d4fecc7c36cffccb908185afcab2)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+As Russell King suggested:
+
+"This [change] avoids the issue that on the last iteration, the code reads
+the register, tests it, finds the condition that's being waiting for is
+false, _then_ waits and end up printing the error message - that last
+wait is rather useless, and as the arbiter state isn't checked after
+waiting, it could be that we had success during the last wait."
+
+Suggested-by: Russell King <linux@armlinux.org.uk>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Pawel Dembicki <paweldembicki@gmail.com>
+Link: https://lore.kernel.org/r/20240417205048.3542839-2-paweldembicki@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: fa63c6434b6f ("net: dsa: vsc73xx: check busy flag in MDIO operations")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_3.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/dsa/vitesse-vsc73xx-core.c | 30 ++++++++++++++------------
+ 1 file changed, 16 insertions(+), 14 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_3.c
-+++ b/drivers/gpu/drm/amd/amdgpu/jpeg_v4_0_3.c
-@@ -773,11 +773,11 @@ void jpeg_v4_0_3_dec_ring_emit_ib(struct
+diff --git a/drivers/net/dsa/vitesse-vsc73xx-core.c b/drivers/net/dsa/vitesse-vsc73xx-core.c
+index 81d39dfe21f45..92087f9d73550 100644
+--- a/drivers/net/dsa/vitesse-vsc73xx-core.c
++++ b/drivers/net/dsa/vitesse-vsc73xx-core.c
+@@ -17,6 +17,7 @@
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+ #include <linux/device.h>
++#include <linux/iopoll.h>
+ #include <linux/of.h>
+ #include <linux/of_device.h>
+ #include <linux/of_mdio.h>
+@@ -269,6 +270,9 @@
+ #define IS_7398(a) ((a)->chipid == VSC73XX_CHIPID_ID_7398)
+ #define IS_739X(a) (IS_7395(a) || IS_7398(a))
  
- 	amdgpu_ring_write(ring, PACKETJ(regUVD_LMI_JRBC_IB_VMID_INTERNAL_OFFSET,
- 		0, 0, PACKETJ_TYPE0));
--	amdgpu_ring_write(ring, (vmid | (vmid << 4)));
-+	amdgpu_ring_write(ring, (vmid | (vmid << 4) | (vmid << 8)));
++#define VSC73XX_POLL_SLEEP_US		1000
++#define VSC73XX_POLL_TIMEOUT_US		10000
++
+ struct vsc73xx_counter {
+ 	u8 counter;
+ 	const char *name;
+@@ -780,7 +784,7 @@ static void vsc73xx_adjust_link(struct dsa_switch *ds, int port,
+ 	 * after a PHY or the CPU port comes up or down.
+ 	 */
+ 	if (!phydev->link) {
+-		int maxloop = 10;
++		int ret, err;
  
- 	amdgpu_ring_write(ring, PACKETJ(regUVD_LMI_JPEG_VMID_INTERNAL_OFFSET,
- 		0, 0, PACKETJ_TYPE0));
--	amdgpu_ring_write(ring, (vmid | (vmid << 4)));
-+	amdgpu_ring_write(ring, (vmid | (vmid << 4) | (vmid << 8)));
+ 		dev_dbg(vsc->dev, "port %d: went down\n",
+ 			port);
+@@ -795,19 +799,17 @@ static void vsc73xx_adjust_link(struct dsa_switch *ds, int port,
+ 				    VSC73XX_ARBDISC, BIT(port), BIT(port));
  
- 	amdgpu_ring_write(ring,	PACKETJ(regUVD_LMI_JRBC_IB_64BIT_BAR_LOW_INTERNAL_OFFSET,
- 		0, 0, PACKETJ_TYPE0));
+ 		/* Wait until queue is empty */
+-		vsc73xx_read(vsc, VSC73XX_BLOCK_ARBITER, 0,
+-			     VSC73XX_ARBEMPTY, &val);
+-		while (!(val & BIT(port))) {
+-			msleep(1);
+-			vsc73xx_read(vsc, VSC73XX_BLOCK_ARBITER, 0,
+-				     VSC73XX_ARBEMPTY, &val);
+-			if (--maxloop == 0) {
+-				dev_err(vsc->dev,
+-					"timeout waiting for block arbiter\n");
+-				/* Continue anyway */
+-				break;
+-			}
+-		}
++		ret = read_poll_timeout(vsc73xx_read, err,
++					err < 0 || (val & BIT(port)),
++					VSC73XX_POLL_SLEEP_US,
++					VSC73XX_POLL_TIMEOUT_US, false,
++					vsc, VSC73XX_BLOCK_ARBITER, 0,
++					VSC73XX_ARBEMPTY, &val);
++		if (ret)
++			dev_err(vsc->dev,
++				"timeout waiting for block arbiter\n");
++		else if (err < 0)
++			dev_err(vsc->dev, "error reading arbiter\n");
+ 
+ 		/* Put this port into reset */
+ 		vsc73xx_write(vsc, VSC73XX_BLOCK_MAC, port, VSC73XX_MAC_CFG,
+-- 
+2.43.0
+
 
 
 
