@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-71067-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70559-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2620096117E
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:21:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 25336960EC2
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:52:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C4F561F238F9
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:21:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C417B1F24A8A
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:52:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 300E21C8FD3;
-	Tue, 27 Aug 2024 15:19:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CBD51C68B4;
+	Tue, 27 Aug 2024 14:51:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G89+lyE9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k6v2f3FX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0F771C68A6;
-	Tue, 27 Aug 2024 15:19:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2166B1C6888;
+	Tue, 27 Aug 2024 14:51:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771990; cv=none; b=qWkNT8svE/t7BBk7fCQ7TqTJBCXcA9UBxU/+3nWaVrZUzYfUmZNF0aTlQ+9913OAGG1+M+FVxjhXZRM+IdwqxMW5Okpko1cBbyt7lpAtiOj/ADtaeFkmbIYxClArYzOYMMv07YF7cw4Kr7ymGyx5lJq9W7a857bxTLhfE9kBcaw=
+	t=1724770309; cv=none; b=RC5lqv5TFYQ/tm1bXigr7nzU91XVUUaihVrjOusAfm9TbMSeuHpM3F5C1hIcQ3tGgCeKG6cCwGN0tu9M00Je2diiu3IPNejQu6hDbY9GIE95TAObNv/1fwzOcW06GfKyfV2Iv5hWths68lkgXyHSd+jxlWsBATq/+G7/Z/muaIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771990; c=relaxed/simple;
-	bh=E8LaoK0hpOdg0x6KwXbid+iADB2SH9DFxZokEy2h10U=;
+	s=arc-20240116; t=1724770309; c=relaxed/simple;
+	bh=e5LuU/nvbm0zw1XigW5Hscv/I1AAogPMJqXyeRhTzHs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jrYvEGYC2Lta6A2nEuijNSiUbDQTWVp9fkcpeMPvpa1enP3Sl5mPouBO0v3ElUvX7/P02L0HoD7wwHsFtsywMVo/oVNYlg6aYrL6pRfh/PIBqxuzUSXF777YtNNU6dCxaZNqmGYYnzpocExoAJHqp+A3504hYSAhryruuDNBoF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G89+lyE9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA126C4AF68;
-	Tue, 27 Aug 2024 15:19:48 +0000 (UTC)
+	 MIME-Version; b=M9m/ekvt/lu+cAcpmTWnqH6w+IWSsqG7vK70NOXmYKFW7R6jpd1h0Sv+Ft02IZhnZzJAHehte04lhN6zNgk/Tf5/5dJ4yinpnuDttpTRm8A0xqXUeNQJhNXt2PLh0o3xBlNb/NrxtZb/Xx40nmJ8QESp/hH4KLHQyJUnEk4vXUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k6v2f3FX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D55CC4DE03;
+	Tue, 27 Aug 2024 14:51:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771989;
-	bh=E8LaoK0hpOdg0x6KwXbid+iADB2SH9DFxZokEy2h10U=;
+	s=korg; t=1724770309;
+	bh=e5LuU/nvbm0zw1XigW5Hscv/I1AAogPMJqXyeRhTzHs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G89+lyE9u2jaBtbBWZJJ6csNCs9ktzXnIsV9wKyeTnRM0gHX/z72e5+BWnA0tfYKE
-	 fZp/mnALNnKaN35Ui9Py7s7D8PCpOyKkcAZvtF1WWlXDiJCRJsf3MxGB1W6Y8TzYtl
-	 2HTk008RR5cPr5e2M4etgnkK8XWi25Qqw2jy6rac=
+	b=k6v2f3FXWmH0T5ptn7hWFgqmNbEggfPYrxM7GGutbr79LgsfLdZhP/cfTtCQnyyxM
+	 yMVOvCpYoSSTuzl8lsxUDvftKrbLvh5n1mJjuFSikqUqYdm0ZaCNFjZqs19Udn8RAc
+	 jGQtqFWWh7PaWbhUPOd7FtV0igk4bEY4J7pO6QXc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+36bb70085ef6edc2ebb9@syzkaller.appspotmail.com,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Jan Kara <jack@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 081/321] fs/ntfs3: Do copy_to_user out of run_lock
-Date: Tue, 27 Aug 2024 16:36:29 +0200
-Message-ID: <20240827143841.325148943@linuxfoundation.org>
+Subject: [PATCH 6.6 159/341] quota: Remove BUG_ON from dqget()
+Date: Tue, 27 Aug 2024 16:36:30 +0200
+Message-ID: <20240827143849.466633299@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,147 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit d57431c6f511bf020e474026d9f3123d7bfbea8c ]
+[ Upstream commit 249f374eb9b6b969c64212dd860cc1439674c4a8 ]
 
-In order not to call copy_to_user (from fiemap_fill_next_extent)
-we allocate memory in the kernel, fill it and copy it to user memory
-after up_read(run_lock).
+dqget() checks whether dquot->dq_sb is set when returning it using
+BUG_ON. Firstly this doesn't work as an invalidation check for quite
+some time (we release dquot with dq_sb set these days), secondly using
+BUG_ON is quite harsh. Use WARN_ON_ONCE and check whether dquot is still
+hashed instead.
 
-Reported-by: syzbot+36bb70085ef6edc2ebb9@syzkaller.appspotmail.com
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/frecord.c | 75 ++++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 72 insertions(+), 3 deletions(-)
+ fs/quota/dquot.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/fs/ntfs3/frecord.c b/fs/ntfs3/frecord.c
-index 02465ab3f398c..6cce71cc750ea 100644
---- a/fs/ntfs3/frecord.c
-+++ b/fs/ntfs3/frecord.c
-@@ -1897,6 +1897,47 @@ enum REPARSE_SIGN ni_parse_reparse(struct ntfs_inode *ni, struct ATTRIB *attr,
- 	return REPARSE_LINK;
- }
- 
-+/*
-+ * fiemap_fill_next_extent_k - a copy of fiemap_fill_next_extent
-+ * but it accepts kernel address for fi_extents_start
-+ */
-+static int fiemap_fill_next_extent_k(struct fiemap_extent_info *fieinfo,
-+				     u64 logical, u64 phys, u64 len, u32 flags)
-+{
-+	struct fiemap_extent extent;
-+	struct fiemap_extent __user *dest = fieinfo->fi_extents_start;
-+
-+	/* only count the extents */
-+	if (fieinfo->fi_extents_max == 0) {
-+		fieinfo->fi_extents_mapped++;
-+		return (flags & FIEMAP_EXTENT_LAST) ? 1 : 0;
-+	}
-+
-+	if (fieinfo->fi_extents_mapped >= fieinfo->fi_extents_max)
-+		return 1;
-+
-+	if (flags & FIEMAP_EXTENT_DELALLOC)
-+		flags |= FIEMAP_EXTENT_UNKNOWN;
-+	if (flags & FIEMAP_EXTENT_DATA_ENCRYPTED)
-+		flags |= FIEMAP_EXTENT_ENCODED;
-+	if (flags & (FIEMAP_EXTENT_DATA_TAIL | FIEMAP_EXTENT_DATA_INLINE))
-+		flags |= FIEMAP_EXTENT_NOT_ALIGNED;
-+
-+	memset(&extent, 0, sizeof(extent));
-+	extent.fe_logical = logical;
-+	extent.fe_physical = phys;
-+	extent.fe_length = len;
-+	extent.fe_flags = flags;
-+
-+	dest += fieinfo->fi_extents_mapped;
-+	memcpy(dest, &extent, sizeof(extent));
-+
-+	fieinfo->fi_extents_mapped++;
-+	if (fieinfo->fi_extents_mapped == fieinfo->fi_extents_max)
-+		return 1;
-+	return (flags & FIEMAP_EXTENT_LAST) ? 1 : 0;
-+}
-+
- /*
-  * ni_fiemap - Helper for file_fiemap().
-  *
-@@ -1907,6 +1948,8 @@ int ni_fiemap(struct ntfs_inode *ni, struct fiemap_extent_info *fieinfo,
- 	      __u64 vbo, __u64 len)
- {
- 	int err = 0;
-+	struct fiemap_extent __user *fe_u = fieinfo->fi_extents_start;
-+	struct fiemap_extent *fe_k = NULL;
- 	struct ntfs_sb_info *sbi = ni->mi.sbi;
- 	u8 cluster_bits = sbi->cluster_bits;
- 	struct runs_tree *run;
-@@ -1954,6 +1997,18 @@ int ni_fiemap(struct ntfs_inode *ni, struct fiemap_extent_info *fieinfo,
- 		goto out;
- 	}
- 
-+	/*
-+	 * To avoid lock problems replace pointer to user memory by pointer to kernel memory.
-+	 */
-+	fe_k = kmalloc_array(fieinfo->fi_extents_max,
-+			     sizeof(struct fiemap_extent),
-+			     GFP_NOFS | __GFP_ZERO);
-+	if (!fe_k) {
-+		err = -ENOMEM;
-+		goto out;
-+	}
-+	fieinfo->fi_extents_start = fe_k;
-+
- 	end = vbo + len;
- 	alloc_size = le64_to_cpu(attr->nres.alloc_size);
- 	if (end > alloc_size)
-@@ -2042,8 +2097,9 @@ int ni_fiemap(struct ntfs_inode *ni, struct fiemap_extent_info *fieinfo,
- 			if (vbo + dlen >= end)
- 				flags |= FIEMAP_EXTENT_LAST;
- 
--			err = fiemap_fill_next_extent(fieinfo, vbo, lbo, dlen,
--						      flags);
-+			err = fiemap_fill_next_extent_k(fieinfo, vbo, lbo, dlen,
-+							flags);
-+
- 			if (err < 0)
- 				break;
- 			if (err == 1) {
-@@ -2063,7 +2119,8 @@ int ni_fiemap(struct ntfs_inode *ni, struct fiemap_extent_info *fieinfo,
- 		if (vbo + bytes >= end)
- 			flags |= FIEMAP_EXTENT_LAST;
- 
--		err = fiemap_fill_next_extent(fieinfo, vbo, lbo, bytes, flags);
-+		err = fiemap_fill_next_extent_k(fieinfo, vbo, lbo, bytes,
-+						flags);
- 		if (err < 0)
- 			break;
- 		if (err == 1) {
-@@ -2076,7 +2133,19 @@ int ni_fiemap(struct ntfs_inode *ni, struct fiemap_extent_info *fieinfo,
- 
- 	up_read(run_lock);
- 
-+	/*
-+	 * Copy to user memory out of lock
-+	 */
-+	if (copy_to_user(fe_u, fe_k,
-+			 fieinfo->fi_extents_max *
-+				 sizeof(struct fiemap_extent))) {
-+		err = -EFAULT;
-+	}
-+
+diff --git a/fs/quota/dquot.c b/fs/quota/dquot.c
+index 7a2c9b153be6e..23dbde1de2520 100644
+--- a/fs/quota/dquot.c
++++ b/fs/quota/dquot.c
+@@ -995,9 +995,8 @@ struct dquot *dqget(struct super_block *sb, struct kqid qid)
+ 	 * smp_mb__before_atomic() in dquot_acquire().
+ 	 */
+ 	smp_rmb();
+-#ifdef CONFIG_QUOTA_DEBUG
+-	BUG_ON(!dquot->dq_sb);	/* Has somebody invalidated entry under us? */
+-#endif
++	/* Has somebody invalidated entry under us? */
++	WARN_ON_ONCE(hlist_unhashed(&dquot->dq_hash));
  out:
-+	/* Restore original pointer. */
-+	fieinfo->fi_extents_start = fe_u;
-+	kfree(fe_k);
- 	return err;
- }
- 
+ 	if (empty)
+ 		do_destroy_dquot(empty);
 -- 
 2.43.0
 
