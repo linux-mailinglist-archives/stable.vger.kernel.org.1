@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-70719-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70462-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F8E6960FAC
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:01:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5719B960E40
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:47:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EF494B24CEE
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:01:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D9B81F21DD3
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:47:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 444681C4ED4;
-	Tue, 27 Aug 2024 15:00:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 746E01C578D;
+	Tue, 27 Aug 2024 14:46:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RQISOpGk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EFao1fNH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 009611E487;
-	Tue, 27 Aug 2024 15:00:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31A66DDC1;
+	Tue, 27 Aug 2024 14:46:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770841; cv=none; b=X7DUWBWVOWc6smn67bKjkfmJLW/crFWbIbePUO1dXK/oVF7h+AAC7bWs07KjqSwZXLDxJF9kMTRkzgSWpCoSgNAOfrSqAjG0q1Xo4RF/nmj+WGO9x78JdUJjnWLd6+PKeLc+VSUrfxLUBh1uehTfdfR8To8DT+FbJ+XncyL+u7E=
+	t=1724769986; cv=none; b=AvZY1f8MOPxBYCZw8UpHWoDXY7G2B/HcHPKcfEijHcPmZEEP2+i0O8lPY/890oiboaVao1Dc0aGRVr8/sRMPyQLo3Yy6JHT3jH7AVId4e97/iGO7VGp9eAEGYA/UTDaiQhhcg5tr0nE5etwEsZBfrJZNBdWHJxkyl8gY65f48ko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770841; c=relaxed/simple;
-	bh=q+Det+yOpmVrU8s1u0JlkfJUWkAkJbqJxM9vaerIZUE=;
+	s=arc-20240116; t=1724769986; c=relaxed/simple;
+	bh=ZLqRsvN2LSvR08mcItj9ttMDQznzCodKCQUNRVzSgWI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rXdXmbklFpxGEXlvHOIgM5YJhRqOz6sZoiFqvQd5VLtrSrK+lnHg69zhsZ3KAEd8FyY7DTBE+/7Qh0m3ni9XSv8h8fA32uc0lWFp3sLwSATewvpSCYdiNJbiFIcpItcaC2XY2RzUW/fGh53Np6A+F9Dhfh6QcjElhAu5+kSsfUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RQISOpGk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F9CFC4AF1C;
-	Tue, 27 Aug 2024 15:00:40 +0000 (UTC)
+	 MIME-Version; b=u2j9LNGzCJwz6kr47BugpYCddNn2flwsyMALIyM/vAf3u14lIQ5PGTjsVwtuLqi9dLtuTJAgRm/7vpLvqQpVIFknQ9WF8vNCXUQVW/nErDzyiG00huf5mWzjlN8DH9ovLGvHJaf/lWlcPnzwH2oLluM8deXid8W17C+bbrqQEak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EFao1fNH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89855C6106D;
+	Tue, 27 Aug 2024 14:46:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770840;
-	bh=q+Det+yOpmVrU8s1u0JlkfJUWkAkJbqJxM9vaerIZUE=;
+	s=korg; t=1724769986;
+	bh=ZLqRsvN2LSvR08mcItj9ttMDQznzCodKCQUNRVzSgWI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RQISOpGkNY5ClnhP6J1rDZ7Ap7mHSWQcXBiYnN2HTtsHLM9LrLaqIUDlAzh/HaBBV
-	 FNm0G1kBweC8we4vNSuNEj44XHqG6wbRHgI+6P9TKhP8+hu4rOzXpWQxuAJh3qJXbh
-	 MNEhjk+RK1ZeZJUBmWOIxWj2wH4hhzcbQkTrynT8=
+	b=EFao1fNHtgRADTiB5VkjyJCRKhopsSSYfRLbufEpbJEwCfJP9VaOeNZJk7PNah3TR
+	 0dI2LSHY4uN2KGdyqeIuP8FRmAvY1pvhYXASBCswzvJMgkhbBeILW15EXaY+0UBgM+
+	 DYfnMuAY6Nld6NY3mPPh2JL5KlCW7DK7fwOCzSYE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Daniel Gomez <da.gomez@samsung.com>,
-	Masahiro Yamada <masahiroy@kernel.org>
-Subject: [PATCH 6.10 001/273] tty: vt: conmakehash: remove non-portable code printing comment header
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 094/341] net: ethernet: mtk_wed: check update_wo_rx_stats in mtk_wed_update_rx_stats()
 Date: Tue, 27 Aug 2024 16:35:25 +0200
-Message-ID: <20240827143833.431480608@linuxfoundation.org>
+Message-ID: <20240827143846.982982312@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,110 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-commit 7258fdd7d7459616b3fe1a603e33900584b10c13 upstream.
+[ Upstream commit 486e6ca6b48d68d7fefc99e15cc1865e2210d893 ]
 
-Commit 6e20753da6bc ("tty: vt: conmakehash: cope with abs_srctree no
-longer in env") included <linux/limits.h>, which invoked another
-(wrong) patch that tried to address a build error on macOS.
+Check if update_wo_rx_stats function pointer is properly set in
+mtk_wed_update_rx_stats routine before accessing it.
 
-According to the specification [1], the correct header to use PATH_MAX
-is <limits.h>.
-
-The minimal fix would be to replace <linux/limits.h> with <limits.h>.
-
-However, the following commits seem questionable to me:
-
- - 3bd85c6c97b2 ("tty: vt: conmakehash: Don't mention the full path of the input in output")
- - 6e20753da6bc ("tty: vt: conmakehash: cope with abs_srctree no longer in env")
-
-These commits made too many efforts to cope with a comment header in
-drivers/tty/vt/consolemap_deftbl.c:
-
-  /*
-   * Do not edit this file; it was automatically generated by
-   *
-   * conmakehash drivers/tty/vt/cp437.uni > [this file]
-   *
-   */
-
-With this commit, the header part of the generate C file will be
-simplified as follows:
-
-  /*
-   * Automatically generated file; Do not edit.
-   */
-
-BTW, another series of excessive efforts for a comment header can be
-seen in the following:
-
- - 5ef6dc08cfde ("lib/build_OID_registry: don't mention the full path of the script in output")
- - 2fe29fe94563 ("lib/build_OID_registry: avoid non-destructive substitution for Perl < 5.13.2 compat")
-
-[1]: https://pubs.opengroup.org/onlinepubs/009695399/basedefs/limits.h.html
-
-Fixes: 6e20753da6bc ("tty: vt: conmakehash: cope with abs_srctree no longer in env")
-Cc: stable <stable@kernel.org>
-Reported-by: Daniel Gomez <da.gomez@samsung.com>
-Closes: https://lore.kernel.org/all/20240807-macos-build-support-v1-11-4cd1ded85694@samsung.com/
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Link: https://lore.kernel.org/r/20240809160853.1269466-1-masahiroy@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/b0d233386e059bccb59f18f69afb79a7806e5ded.1694507226.git.lorenzo@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/vt/conmakehash.c | 12 ++----------
- 1 file changed, 2 insertions(+), 10 deletions(-)
+ drivers/net/ethernet/mediatek/mtk_wed_mcu.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/tty/vt/conmakehash.c b/drivers/tty/vt/conmakehash.c
-index 82d9db68b2ce..a931fcde7ad9 100644
---- a/drivers/tty/vt/conmakehash.c
-+++ b/drivers/tty/vt/conmakehash.c
-@@ -11,8 +11,6 @@
-  * Copyright (C) 1995-1997 H. Peter Anvin
-  */
+diff --git a/drivers/net/ethernet/mediatek/mtk_wed_mcu.c b/drivers/net/ethernet/mediatek/mtk_wed_mcu.c
+index 071ed3dea860d..72bcdaed12a94 100644
+--- a/drivers/net/ethernet/mediatek/mtk_wed_mcu.c
++++ b/drivers/net/ethernet/mediatek/mtk_wed_mcu.c
+@@ -68,6 +68,9 @@ mtk_wed_update_rx_stats(struct mtk_wed_device *wed, struct sk_buff *skb)
+ 	struct mtk_wed_wo_rx_stats *stats;
+ 	int i;
  
--#include <libgen.h>
--#include <linux/limits.h>
- #include <stdio.h>
- #include <stdlib.h>
- #include <sysexits.h>
-@@ -79,7 +77,6 @@ int main(int argc, char *argv[])
- {
-   FILE *ctbl;
-   const char *tblname;
--  char base_tblname[PATH_MAX];
-   char buffer[65536];
-   int fontlen;
-   int i, nuni, nent;
-@@ -245,20 +242,15 @@ int main(int argc, char *argv[])
-   for ( i = 0 ; i < fontlen ; i++ )
-     nuni += unicount[i];
++	if (!wed->wlan.update_wo_rx_stats)
++		return;
++
+ 	if (count * sizeof(*stats) > skb->len - sizeof(u32))
+ 		return;
  
--  strncpy(base_tblname, tblname, PATH_MAX);
--  base_tblname[PATH_MAX - 1] = 0;
-   printf("\
- /*\n\
-- * Do not edit this file; it was automatically generated by\n\
-- *\n\
-- * conmakehash %s > [this file]\n\
-- *\n\
-+ * Automatically generated file; Do not edit.\n\
-  */\n\
- \n\
- #include <linux/types.h>\n\
- \n\
- u8 dfont_unicount[%d] = \n\
--{\n\t", basename(base_tblname), fontlen);
-+{\n\t", fontlen);
- 
-   for ( i = 0 ; i < fontlen ; i++ )
-     {
 -- 
-2.46.0
+2.43.0
 
 
 
