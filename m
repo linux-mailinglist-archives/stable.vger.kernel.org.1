@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-70917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71166-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8A029610AC
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:11:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB8949611FB
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:25:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 277BC1C23797
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:11:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B36A1C2387D
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:25:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64DC81C68AE;
-	Tue, 27 Aug 2024 15:11:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EB511C6886;
+	Tue, 27 Aug 2024 15:25:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2inAAVVD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j7NMIkbg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20B171C57BC;
-	Tue, 27 Aug 2024 15:11:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E455148302;
+	Tue, 27 Aug 2024 15:25:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771493; cv=none; b=TghWZhlleBr4t/ltuVUw7eJKtYytn9HaC0WEki+qZySqMKfmWvYSTe8E3r/lZ+D7f4kGK0T46bqnMMJuEVMGGRMPtvJap7njVo1AJsVJxR2JjF8zpxrNpeHcQvnEpanf6GvfcWK7VfdXq4mp45npCJnrUzk/xa0dJAlXYs6ofbU=
+	t=1724772318; cv=none; b=L3Y/MYHcXpENAWYxIEUHGYB0iJA6fk5KjhvipixDlfboUbzHmWQMBnSJQrypSkReEc84bHFSA0dUXhJPx2tOdUtexZ3obVbE0ZlIAB+SXclZonGgY5zWtCiQRBuGPw7JYDUmWba2FByCie5cvCFct6WJPK4U+KGb5OedhkUN6FY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771493; c=relaxed/simple;
-	bh=7Exdw7mq41xZhCTgGsxCR0ep5l+qSbcyrMYtvSz1Eyc=;
+	s=arc-20240116; t=1724772318; c=relaxed/simple;
+	bh=EJGCWiUGHUZJjMq6ezCCKJE5XdbibBQ7ykgAeDivKo4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i7yxYgnWegUBfUwPhmOsgdp1vrBMNSL+wQRsIIbGXuSINOTCI8DZPlysDFR2TRdjh76SHGww+ZcKVNJkVgFN/oziS/rCWzyE9EBelM4vmJ5SvIIQUjVMQ5aoxpZbqf4RD6iyG2ys07yelDsg5Sirh2/MPUEC7/Y5l3zsn778YSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2inAAVVD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B4D3C4DDED;
-	Tue, 27 Aug 2024 15:11:31 +0000 (UTC)
+	 MIME-Version; b=Mb2s9AN0/ku9CLuRizHo/3sT6Tz6pJ5NFjXU0zvDgLRFOeNIlce8g8MvkgjOE8xudswHMU5R/XnA/bv6zQFUwgwqSrIQDm01IHU4mSSHK91NIXLyx2d4NVTL8o0XByOKD8sVo1sRgEEuhe1zI0vKPk9xZtH4nmm6YfJaVqpRoDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j7NMIkbg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85ADAC61071;
+	Tue, 27 Aug 2024 15:25:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771492;
-	bh=7Exdw7mq41xZhCTgGsxCR0ep5l+qSbcyrMYtvSz1Eyc=;
+	s=korg; t=1724772317;
+	bh=EJGCWiUGHUZJjMq6ezCCKJE5XdbibBQ7ykgAeDivKo4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2inAAVVD3kewq1xpNW4b/95RFBi3g51+hnB2SmDqzdCG2GhH9Fkr3tBU0GDPUSb/E
-	 4PWGO3TaHCJ6nft5Zsxn9dMRwtygH42GxIikC7icG94VCOz96FB3DV1tMYskX7FjPf
-	 ZpQzgpP3TiRZVuVQDn3bjde9RQGwZNRjUmWn6qZY=
+	b=j7NMIkbgLssU0e31lA742LmI0Bn64EscxTUFzG/UYrxXfW74bEtzfTd7WIeu0x2Qk
+	 +o7pnBu3fnbRMUv4rEHtvYtXFzrb6wkJpUFpsyd8IAW6gCEqXEj1z8k1nkXsalA9J9
+	 olZWsvDMKIkrsxNSg6O07EEp0LIEP4DAG4M0HRrc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Jeremy Kerr <jk@codeconstruct.com.au>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 163/273] net: mctp: test: Use correct skb for route input check
+Subject: [PATCH 6.1 179/321] powerpc/boot: Only free if realloc() succeeds
 Date: Tue, 27 Aug 2024 16:38:07 +0200
-Message-ID: <20240827143839.611026899@linuxfoundation.org>
+Message-ID: <20240827143845.044082846@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeremy Kerr <jk@codeconstruct.com.au>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-[ Upstream commit ce335db0621648472f9bb4b7191eb2e13a5793cf ]
+[ Upstream commit f2d5bccaca3e8c09c9b9c8485375f7bdbb2631d2 ]
 
-In the MCTP route input test, we're routing one skb, then (when delivery
-is expected) checking the resulting routed skb.
+simple_realloc() frees the original buffer (ptr) even if the
+reallocation failed.
 
-However, we're currently checking the original skb length, rather than
-the routed skb. Check the routed skb instead; the original will have
-been freed at this point.
+Fix it to behave like standard realloc() and only free the original
+buffer if the reallocation succeeded.
 
-Fixes: 8892c0490779 ("mctp: Add route input to socket tests")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/kernel-janitors/4ad204f0-94cf-46c5-bdab-49592addf315@kili.mountain/
-Signed-off-by: Jeremy Kerr <jk@codeconstruct.com.au>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20240816-mctp-kunit-skb-fix-v1-1-3c367ac89c27@codeconstruct.com.au
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240229115149.749264-1-mpe@ellerman.id.au
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mctp/test/route-test.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/boot/simple_alloc.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/net/mctp/test/route-test.c b/net/mctp/test/route-test.c
-index 77e5dd4222580..8551dab1d1e69 100644
---- a/net/mctp/test/route-test.c
-+++ b/net/mctp/test/route-test.c
-@@ -366,7 +366,7 @@ static void mctp_test_route_input_sk(struct kunit *test)
+diff --git a/arch/powerpc/boot/simple_alloc.c b/arch/powerpc/boot/simple_alloc.c
+index db9aaa5face3f..d07796fdf91aa 100644
+--- a/arch/powerpc/boot/simple_alloc.c
++++ b/arch/powerpc/boot/simple_alloc.c
+@@ -112,10 +112,11 @@ static void *simple_realloc(void *ptr, unsigned long size)
+ 		return ptr;
  
- 		skb2 = skb_recv_datagram(sock->sk, MSG_DONTWAIT, &rc);
- 		KUNIT_EXPECT_NOT_ERR_OR_NULL(test, skb2);
--		KUNIT_EXPECT_EQ(test, skb->len, 1);
-+		KUNIT_EXPECT_EQ(test, skb2->len, 1);
+ 	new = simple_malloc(size);
+-	if (new)
++	if (new) {
+ 		memcpy(new, ptr, p->size);
++		simple_free(ptr);
++	}
  
- 		skb_free_datagram(sock->sk, skb2);
+-	simple_free(ptr);
+ 	return new;
+ }
  
 -- 
 2.43.0
