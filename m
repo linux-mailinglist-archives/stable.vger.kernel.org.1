@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-70657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70895-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A63C7960F62
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:59:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E5B796108E
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:10:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F3401F24CFD
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:59:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29CE7281DC2
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:10:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 724611C9EAD;
-	Tue, 27 Aug 2024 14:57:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D06611C4ED4;
+	Tue, 27 Aug 2024 15:10:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rw6rAYGZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wsficfik"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E16E1C93B0;
-	Tue, 27 Aug 2024 14:57:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F24E12E4D;
+	Tue, 27 Aug 2024 15:10:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770637; cv=none; b=gR+C5Abt6Q5a3XGAFt5rXfwjBQUuMKVO5g+ZWyLjVLAD7Txzv+y+zMup2c+xF0E1T6zwygqCeqebxwi/XI0ia21HBxOevI0WsklRI6M7yT9gEnmKHFjZQzktUiWyYXhRqzkMqFDwb1nc33EwzNOV0ApAkB/Zg7hJ1NVqDdQagUE=
+	t=1724771419; cv=none; b=qQBR7dnBmt20tDJm28wCKRXLgqVyQNdD+Jf7PsSHIuHanyhu/rWLe1ytaRz0koDnOrau8Nzu6UA1bYYjliijbPHQ+T4RqQASni65o4jZ2tldS2b7JzXWvNegXqMPwsckTzpsyId8lEfGW/Wh1JT0u2eZiGIAn9H8gyj3jluBAmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770637; c=relaxed/simple;
-	bh=hv0e5Qd+v3WQ8gOc4ehnRzQYUENIqjXeHf3asPdBuK8=;
+	s=arc-20240116; t=1724771419; c=relaxed/simple;
+	bh=8mgRHOaylaIjTUK2w+aEds/9NWuiViKJAq1h0O/jSFE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LAekt+FmT+wQJ2FaVFBEeolKHzF4Ti56MweNPGgPNhYD3X/XftTh0E1VN+z0SvKaxeFyVI12an57CgZ3kmyUNTIVOgDrFZT+Ym5yD7sunjr/yObJiP+emNqv6K0Tu8xp+19x5jfajNqI+BpOmfmLsayw1GmlRPEn0w3XqqlxMxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rw6rAYGZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 821EAC4FE02;
-	Tue, 27 Aug 2024 14:57:16 +0000 (UTC)
+	 MIME-Version; b=J1NEosjBALgUZwuaikRlEX+423VZWx10XtoJjY9sWcuaZDvhbaOk9p2fmZnszAvqnluMNo6TNGXtwRtxF5/cV/It96W23VLtAD4klvkRy8vubegiWQw3JMueClUkNhRcLADF3YPjYZP4PF/B7fLPnJa59WeW6m1m7Ml8dtYOmfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wsficfik; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13395C4AF5F;
+	Tue, 27 Aug 2024 15:10:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770637;
-	bh=hv0e5Qd+v3WQ8gOc4ehnRzQYUENIqjXeHf3asPdBuK8=;
+	s=korg; t=1724771419;
+	bh=8mgRHOaylaIjTUK2w+aEds/9NWuiViKJAq1h0O/jSFE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rw6rAYGZEbEE251dcdDSnowQg8d3HFDvPa/mLvU+KsX68AbvZN5ZbrrugiKzXd/T4
-	 Ly7LiBQZwRzQAH+SlY8ka9WVBUXZ7xACzWmlnH0xlvzh+2PBfgWUVlC9TPyV+zc/U2
-	 sjdNoVPQGkdEm99xsTvw2obwdVJlngJRqKq8khOY=
+	b=WsficfikXQWVgqoQWqvpbF6CMc6auQ3+nFQUBt13s6n/2+KuuUFJ3vLFLWiUP81rR
+	 T5MbzLBrHYhCR5a7YIHXRW6rIeYYAWwS9pqpNFYOOVBFYknL3Q4lt67gJVWG71i2ke
+	 ot67MRBYjqghwSN28iwt1oKUT5KY9coWbYXGIyVY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 257/341] bonding: fix null pointer deref in bond_ipsec_offload_ok
-Date: Tue, 27 Aug 2024 16:38:08 +0200
-Message-ID: <20240827143853.186708836@linuxfoundation.org>
+Subject: [PATCH 6.10 165/273] netfilter: nft_counter: Disable BH in nft_counter_offload_stats().
+Date: Tue, 27 Aug 2024 16:38:09 +0200
+Message-ID: <20240827143839.688675993@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,39 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikolay Aleksandrov <razor@blackwall.org>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-[ Upstream commit 95c90e4ad89d493a7a14fa200082e466e2548f9d ]
+[ Upstream commit 1eacdd71b3436b54d5fc8218c4bb0187d92a6892 ]
 
-We must check if there is an active slave before dereferencing the pointer.
+The sequence counter nft_counter_seq is a per-CPU counter. There is no
+lock associated with it. nft_counter_do_eval() is using the same counter
+and disables BH which suggest that it can be invoked from a softirq.
+This in turn means that nft_counter_offload_stats(), which disables only
+preemption, can be interrupted by nft_counter_do_eval() leading to two
+writer for one seqcount_t.
+This can lead to loosing stats or reading statistics while they are
+updated.
 
-Fixes: 18cb261afd7b ("bonding: support hardware encryption offload to slaves")
-Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Disable BH during stats update in nft_counter_offload_stats() to ensure
+one writer at a time.
+
+Fixes: b72920f6e4a9d ("netfilter: nftables: counter hardware offload support")
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Reviewed-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bonding/bond_main.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/netfilter/nft_counter.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index b4f8f5112edd5..a6eb907a9a273 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -604,6 +604,8 @@ static bool bond_ipsec_offload_ok(struct sk_buff *skb, struct xfrm_state *xs)
- 	bond = netdev_priv(bond_dev);
- 	rcu_read_lock();
- 	curr_active = rcu_dereference(bond->curr_active_slave);
-+	if (!curr_active)
-+		goto out;
- 	real_dev = curr_active->dev;
+diff --git a/net/netfilter/nft_counter.c b/net/netfilter/nft_counter.c
+index 291ed2026367e..16f40b503d379 100644
+--- a/net/netfilter/nft_counter.c
++++ b/net/netfilter/nft_counter.c
+@@ -265,7 +265,7 @@ static void nft_counter_offload_stats(struct nft_expr *expr,
+ 	struct nft_counter *this_cpu;
+ 	seqcount_t *myseq;
  
- 	if (BOND_MODE(bond) != BOND_MODE_ACTIVEBACKUP)
+-	preempt_disable();
++	local_bh_disable();
+ 	this_cpu = this_cpu_ptr(priv->counter);
+ 	myseq = this_cpu_ptr(&nft_counter_seq);
+ 
+@@ -273,7 +273,7 @@ static void nft_counter_offload_stats(struct nft_expr *expr,
+ 	this_cpu->packets += stats->pkts;
+ 	this_cpu->bytes += stats->bytes;
+ 	write_seqcount_end(myseq);
+-	preempt_enable();
++	local_bh_enable();
+ }
+ 
+ void nft_counter_init_seqcount(void)
 -- 
 2.43.0
 
