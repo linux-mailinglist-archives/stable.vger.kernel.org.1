@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-70638-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70889-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 669EA960F4A
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:58:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34F23961087
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:10:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 100611F24B0E
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:58:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 685671C23555
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:10:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C97B61C86E7;
-	Tue, 27 Aug 2024 14:56:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E0681C57B3;
+	Tue, 27 Aug 2024 15:09:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jpMLE3q6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2h9cjOOa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 898E71C6F49;
-	Tue, 27 Aug 2024 14:56:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C03E01C57AF;
+	Tue, 27 Aug 2024 15:09:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770574; cv=none; b=nreS4H9PWj3FVMigORaojQOysjaKNiJXBoc1LRTg02AX3fe+K/hTAOcWz3bpj/JMzRiyic4p70qDK4+zzI3NOkcpHyG2H4AeS65GRPBTSHAzlEeWQfUuNZsGZ0XLNDw/jQwU2qyGYj9G8jepA24HlwCgOs3hsWOaI26WOTrXJ7I=
+	t=1724771398; cv=none; b=gqWoI6EbykpFxJ17QmfO3I8/MsZn9zxl1a5zqVAxyUmIoJt7fkWFiwDNySGo8jqF3LWlEkeNLAnNckT7lb+GTNUCdxxEbM2DPVBwSuMWcx7TiepfzKNF4GGoPBNcxKB3dS3IlQRp2ilXM4dBgt17D5c0V9DSSi+gppphEmn/IWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770574; c=relaxed/simple;
-	bh=Li3zc/tJPbV87PArrPyMb0EXDKyNmOOY7aEG/C82ezQ=;
+	s=arc-20240116; t=1724771398; c=relaxed/simple;
+	bh=k1lkAirTn5QG/WLyiGlIqWbWytbpHpbahN7HiSQBZEo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nRdx9pJwI1J7t0VxGyvjMr1Hk1guCbj6nEQikuzqZgAnjlpGg/uA4l6OWfvQxPHDEboDdcqZGMReVN6tUIekUQo3+mFeqo82SwRUCD4dbPti7vB4dww4A8mPgHg7cN7CQv5ieCDDGibDocTAFULPLTZNfDf0xsNVZt4ttsksfC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jpMLE3q6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F122C4E699;
-	Tue, 27 Aug 2024 14:56:13 +0000 (UTC)
+	 MIME-Version; b=YLS0KXAQsOkoRkA3wiXSh9884+1PRBVT/PBc98wWzvqHOf4OXZe+g890wKQ60cVzWsM+1d0DzArnnOGope4tdrh484vIYPzZcV4YC3gbldoyQLr3TFfNza0Ed5mOOlHnYYWAcrAUI+/D0suQa1+SWkQwrn95ENbREN4IsBCIRZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2h9cjOOa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34463C4AF53;
+	Tue, 27 Aug 2024 15:09:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770574;
-	bh=Li3zc/tJPbV87PArrPyMb0EXDKyNmOOY7aEG/C82ezQ=;
+	s=korg; t=1724771398;
+	bh=k1lkAirTn5QG/WLyiGlIqWbWytbpHpbahN7HiSQBZEo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jpMLE3q6CHpA2yfxVa4k05tmf7qtCIRa6nC41oQ0MovMpHsVym9l7lWk8GUzrqFfO
-	 WGDQO96NtJwxiB4JHdJsk2IMTGFnK4VrdD29TpObT8J4B2y71DKhR9vQLYXRvzjWft
-	 Lq3Hl4DcZ8Vvv0KPtyYGW2oNQ0ItSWoLHb909nIs=
+	b=2h9cjOOa1e3J71wsBKQ+dTGh8iIwnMZeGyQOc8CmIiToriTMw8D1TZorA3BvTkK3d
+	 4dgNGp6Ru6MCx7BjNoQQUzsdDGy9LAA/kzzhxDrBP40D7zMN0QtuWK1znCyd6FyJmE
+	 upYsSz4cc0OKpkbFBuTOgQm+wNGizigp80yzszcM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Vasily Averin <vasily.averin@linux.dev>,
-	David Ahern <dsahern@kernel.org>,
+	Jan Tluka <jtluka@redhat.com>,
+	Jirka Hladky <jhladky@redhat.com>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Corinna Vinschen <vinschen@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 270/341] ipv6: prevent possible UAF in ip6_xmit()
+Subject: [PATCH 6.10 177/273] igb: cope with large MAX_SKB_FRAGS
 Date: Tue, 27 Aug 2024 16:38:21 +0200
-Message-ID: <20240827143853.675201065@linuxfoundation.org>
+Message-ID: <20240827143840.146864089@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +66,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Paolo Abeni <pabeni@redhat.com>
 
-[ Upstream commit 2d5ff7e339d04622d8282661df36151906d0e1c7 ]
+[ Upstream commit 8aba27c4a5020abdf60149239198297f88338a8d ]
 
-If skb_expand_head() returns NULL, skb has been freed
-and the associated dst/idev could also have been freed.
+Sabrina reports that the igb driver does not cope well with large
+MAX_SKB_FRAG values: setting MAX_SKB_FRAG to 45 causes payload
+corruption on TX.
 
-We must use rcu_read_lock() to prevent a possible UAF.
+An easy reproducer is to run ssh to connect to the machine.  With
+MAX_SKB_FRAGS=17 it works, with MAX_SKB_FRAGS=45 it fails.  This has
+been reported originally in
+https://bugzilla.redhat.com/show_bug.cgi?id=2265320
 
-Fixes: 0c9f227bee11 ("ipv6: use skb_expand_head in ip6_xmit")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Vasily Averin <vasily.averin@linux.dev>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20240820160859.3786976-4-edumazet@google.com
+The root cause of the issue is that the driver does not take into
+account properly the (possibly large) shared info size when selecting
+the ring layout, and will try to fit two packets inside the same 4K
+page even when the 1st fraglist will trump over the 2nd head.
+
+Address the issue by checking if 2K buffers are insufficient.
+
+Fixes: 3948b05950fd ("net: introduce a config option to tweak MAX_SKB_FRAGS")
+Reported-by: Jan Tluka <jtluka@redhat.com>
+Reported-by: Jirka Hladky <jhladky@redhat.com>
+Reported-by: Sabrina Dubroca <sd@queasysnail.net>
+Tested-by: Sabrina Dubroca <sd@queasysnail.net>
+Tested-by: Corinna Vinschen <vinschen@redhat.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Corinna Vinschen <vinschen@redhat.com>
+Link: https://patch.msgid.link/20240816152034.1453285-1-vinschen@redhat.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ip6_output.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/ethernet/intel/igb/igb_main.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
-index 9cff86c01abca..5d8d86c159dc3 100644
---- a/net/ipv6/ip6_output.c
-+++ b/net/ipv6/ip6_output.c
-@@ -281,11 +281,15 @@ int ip6_xmit(const struct sock *sk, struct sk_buff *skb, struct flowi6 *fl6,
- 		head_room += opt->opt_nflen + opt->opt_flen;
+diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethernet/intel/igb/igb_main.c
+index fce2930ae6af7..b6aa449aa56af 100644
+--- a/drivers/net/ethernet/intel/igb/igb_main.c
++++ b/drivers/net/ethernet/intel/igb/igb_main.c
+@@ -4809,6 +4809,7 @@ static void igb_set_rx_buffer_len(struct igb_adapter *adapter,
  
- 	if (unlikely(head_room > skb_headroom(skb))) {
-+		/* Make sure idev stays alive */
-+		rcu_read_lock();
- 		skb = skb_expand_head(skb, head_room);
- 		if (!skb) {
- 			IP6_INC_STATS(net, idev, IPSTATS_MIB_OUTDISCARDS);
-+			rcu_read_unlock();
- 			return -ENOBUFS;
- 		}
-+		rcu_read_unlock();
- 	}
- 
- 	if (opt) {
+ #if (PAGE_SIZE < 8192)
+ 	if (adapter->max_frame_size > IGB_MAX_FRAME_BUILD_SKB ||
++	    IGB_2K_TOO_SMALL_WITH_PADDING ||
+ 	    rd32(E1000_RCTL) & E1000_RCTL_SBP)
+ 		set_ring_uses_large_buffer(rx_ring);
+ #endif
 -- 
 2.43.0
 
