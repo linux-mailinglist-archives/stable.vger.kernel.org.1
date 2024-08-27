@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-71130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70841-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72CE89611CB
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:24:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EB9B961048
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:07:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A4E671C228BC
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:23:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF70E2823AF
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:07:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B301E1C9EC9;
-	Tue, 27 Aug 2024 15:23:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A32A1C3F19;
+	Tue, 27 Aug 2024 15:07:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v6hsue+W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CCISrxSL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DE791C8FDF;
-	Tue, 27 Aug 2024 15:23:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD30D1E520;
+	Tue, 27 Aug 2024 15:07:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772197; cv=none; b=IaY23wcf9hCuT3ttRJ+1JRCFNohQm1Mbt4NSgQ/kypdAO6ptEoJ4a7rI035UBfyNSLFV0uuzfPPirBkatRCimXEHeK50qxomSmo6ezZ9uNjpkXCSLrKubriuXS0VnyLxgtj6PUeKcxJ88PGpcCwxqJnQNLN0O4x/ODgRR1r/puk=
+	t=1724771238; cv=none; b=WkBSV9wLY3o3J26hyFPsLEiUP6/Zqel+fSLIRN4xJCKy9ND34M378A8iELOjOZIQZpp7SrOPgUQPOzzrf+GvaGlRb8tzQ9WKIzsyuKXK2WZYYlLNSx3WGvkvOfxNlbEVpeWrCIttwlK7rKElfC187skp0rV382k+FNdQKD1ebdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772197; c=relaxed/simple;
-	bh=Ja4GV8VvfaHb9Xf0YhFvimdf70iesISEqZocGR19k9Q=;
+	s=arc-20240116; t=1724771238; c=relaxed/simple;
+	bh=pcwwzmzmDVQa/NTHxlZmrft2Iw23T64s8MedKO4XgNE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Af+PJAQ2tw2NJbcphTxQHhxuDTmQzOpKozTLXKDCMNHfQG27i+Eismb9ANDyuTeaR74k5nWZOrddR8DvX0GYJNKFXuK+wl7W9CBlMuTOysL+pHH8eXy/QMuWHJywNEjyRjT9Jca6ddQCTC4BPQwStDnu580iFmHifoqlU5CY5ic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v6hsue+W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAABDC6105D;
-	Tue, 27 Aug 2024 15:23:16 +0000 (UTC)
+	 MIME-Version; b=B7pHMCuZyaeIoKTFmmzAL5ZfOWuGnzJMYiRCtyQ7q1hdU0oo8jktkjcWuEoomfp/WqUCm1v3MZonzylPXPh9BcoPbxikx46k2adbqTWCekBQgJoPY2tB7xuHViPtHeiGBEP+7xEsQs8UExHwPLQFVPz5G/WTRaD4cjsJyLDcDEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CCISrxSL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AE05C4AF55;
+	Tue, 27 Aug 2024 15:07:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772197;
-	bh=Ja4GV8VvfaHb9Xf0YhFvimdf70iesISEqZocGR19k9Q=;
+	s=korg; t=1724771237;
+	bh=pcwwzmzmDVQa/NTHxlZmrft2Iw23T64s8MedKO4XgNE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v6hsue+WWv+7GLYTyWq8aoip8zmbFxfpUzXmqR39gG5aO91Q7ZXrqb0k7Trofzqah
-	 kcgnNAHOqSkReRm1zJ220aKxety3G/UfSEm52KqFLzf5f6iiQZZpou0m1WOAsaSs5J
-	 XwPKJSxKWpNk963yk1VIwMbl/bD9fVv5YA3aSvqM=
+	b=CCISrxSLbdyu32od3qFMwqGi0/rtOli0iMVIVYlGMq2oBiG7sari5GMCJIn3IqYB3
+	 EthSj5jWitKXJCjPT29DQqA7X8v7k6zcqts0D1Z9PriInxVxqOjyzNaPC1XLQjRURI
+	 gi7b3oFlFtViZw5skZ2EvIXdVzaGIPf17a7uy1ic=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
 	Masahiro Yamada <masahiroy@kernel.org>,
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
 	Miguel Ojeda <ojeda@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 143/321] kbuild: rust_is_available: normalize version matching
+Subject: [PATCH 6.10 127/273] rust: fix the default format for CONFIG_{RUSTC,BINDGEN}_VERSION_TEXT
 Date: Tue, 27 Aug 2024 16:37:31 +0200
-Message-ID: <20240827143843.682389537@linuxfoundation.org>
+Message-ID: <20240827143838.238566877@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,74 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit 7cd6a3e1f94bab4f2a3425e06f70ab13eb8190d4 ]
+[ Upstream commit aacf93e87f0d808ef46e621aa56caea336b4433c ]
 
-In order to match the version string, `sed` is used in a couple
-cases, and `grep` and `head` in a couple others.
+Another oddity in these config entries is their default value can fall
+back to 'n', which is a value for bool or tristate symbols.
 
-Make the script more consistent and easier to understand by
-using the same method, `sed`, for all of them.
+The '|| echo n' is an incorrect workaround to avoid the syntax error.
+This is not a big deal, as the entry is hidden by 'depends on RUST' in
+situations where '$(RUSTC) --version' or '$(BINDGEN) --version' fails.
+Anyway, it looks odd.
 
-This makes the version matching also a bit more strict for
-the changed cases, since the strings `rustc ` and `bindgen `
-will now be required, which should be fine since `rustc`
-complains if one attempts to call it with another program
-name, and `bindgen` uses a hardcoded string.
+The default of a string type symbol should be a double-quoted string
+literal. Turn it into an empty string when the version command fails.
 
-In addition, clarify why one of the existing `sed` commands
-does not provide an address like the others.
-
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Masahiro Yamada <masahiroy@kernel.org>
-Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Link: https://lore.kernel.org/r/20230616001631.463536-9-ojeda@kernel.org
+Fixes: 2f7ab1267dc9 ("Kbuild: add Rust support")
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Link: https://lore.kernel.org/r/20240727140302.1806011-2-masahiroy@kernel.org
+[ Rebased on top of v6.11-rc1. - Miguel ]
 Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Stable-dep-of: 5ce86c6c8613 ("rust: suppress error messages from CONFIG_{RUSTC,BINDGEN}_VERSION_TEXT")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/rust_is_available.sh | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ init/Kconfig | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/scripts/rust_is_available.sh b/scripts/rust_is_available.sh
-index 7a925d2b20fc7..db4519945f534 100755
---- a/scripts/rust_is_available.sh
-+++ b/scripts/rust_is_available.sh
-@@ -40,8 +40,7 @@ fi
- # Non-stable and distributions' versions may have a version suffix, e.g. `-dev`.
- rust_compiler_version=$( \
- 	LC_ALL=C "$RUSTC" --version 2>/dev/null \
--		| head -n 1 \
--		| grep -oE '[0-9]+\.[0-9]+\.[0-9]+' \
-+		| sed -nE '1s:.*rustc ([0-9]+\.[0-9]+\.[0-9]+).*:\1:p'
- )
- rust_compiler_min_version=$($min_tool_version rustc)
- rust_compiler_cversion=$(get_canonical_version $rust_compiler_version)
-@@ -67,8 +66,7 @@ fi
- # Non-stable and distributions' versions may have a version suffix, e.g. `-dev`.
- rust_bindings_generator_version=$( \
- 	LC_ALL=C "$BINDGEN" --version 2>/dev/null \
--		| head -n 1 \
--		| grep -oE '[0-9]+\.[0-9]+\.[0-9]+' \
-+		| sed -nE '1s:.*bindgen ([0-9]+\.[0-9]+\.[0-9]+).*:\1:p'
- )
- rust_bindings_generator_min_version=$($min_tool_version bindgen)
- rust_bindings_generator_cversion=$(get_canonical_version $rust_bindings_generator_version)
-@@ -110,6 +108,9 @@ fi
+diff --git a/init/Kconfig b/init/Kconfig
+index 051cbb22968bd..9684e5d2b81c6 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -1906,7 +1906,7 @@ config RUST
+ config RUSTC_VERSION_TEXT
+ 	string
+ 	depends on RUST
+-	default $(shell,$(RUSTC) --version 2>/dev/null || echo n)
++	default "$(shell,$(RUSTC) --version 2>/dev/null)"
  
- # `bindgen` returned successfully, thus use the output to check that the version
- # of the `libclang` found by the Rust bindings generator is suitable.
-+#
-+# Unlike other version checks, note that this one does not necessarily appear
-+# in the first line of the output, thus no `sed` address is provided.
- bindgen_libclang_version=$( \
- 	echo "$bindgen_libclang_output" \
- 		| sed -nE 's:.*clang version ([0-9]+\.[0-9]+\.[0-9]+).*:\1:p'
+ config BINDGEN_VERSION_TEXT
+ 	string
+@@ -1914,7 +1914,7 @@ config BINDGEN_VERSION_TEXT
+ 	# The dummy parameter `workaround-for-0.69.0` is required to support 0.69.0
+ 	# (https://github.com/rust-lang/rust-bindgen/pull/2678). It can be removed when
+ 	# the minimum version is upgraded past that (0.69.1 already fixed the issue).
+-	default $(shell,$(BINDGEN) --version workaround-for-0.69.0 2>/dev/null || echo n)
++	default "$(shell,$(BINDGEN) --version workaround-for-0.69.0 2>/dev/null)"
+ 
+ #
+ # Place an empty function call at each tracepoint site. Can be
 -- 
 2.43.0
 
