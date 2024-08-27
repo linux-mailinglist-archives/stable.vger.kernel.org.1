@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-70842-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71131-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFE5796104B
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:07:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A24019611CF
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:24:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5D81FB23222
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:07:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 13B70B287B8
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:24:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A8DE1C579F;
-	Tue, 27 Aug 2024 15:07:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DED01C6F58;
+	Tue, 27 Aug 2024 15:23:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oJh6odc5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K/HhyqNO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBAE01C5788;
-	Tue, 27 Aug 2024 15:07:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE1FF1C57BF;
+	Tue, 27 Aug 2024 15:23:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771241; cv=none; b=H4ts/FGCGKPFIo4s+aX+2eetqZvNE6NyhxTFoFPFpv7u+UHiMLIV3lmpYvLFZ4CDhBwGXv3xHmmmlmr/ILKcDntxPJhKS4F5+zrQ+G3j5gQQ9fGz8Z0PAIG0SUFIOp6EVa6w2XkkzS5qz3w/TZlT1DGvnkMrieXo+IwRZL9Eahc=
+	t=1724772201; cv=none; b=LuXxiuYN8PoomPZF0m0/+IsXOw4BG9xVR0zImUl5sPWvW66RKpp1JMYlKLbHPiCiOg3fzgiVUxQETGo6BQo+VVzkl4SYbiQ4EcSuafXF9b/fetfLFC861tHaLPKtqodtSxANLlpefmdB751BwIdI7frY+Tam5FTbaOqIeh5EHgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771241; c=relaxed/simple;
-	bh=UqkTVO9gN7t60I0Er88heCdBO17coSu9lm5I/tnNj/g=;
+	s=arc-20240116; t=1724772201; c=relaxed/simple;
+	bh=nYxZ4zvw5B4ZhcOnFKLIlivTV2g8hFt/kS6iOtoVMmM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OegZTnVSgE7z0mPQKoy4/VbGisSkrHE5YFosl2YKCODAnc1fZkI76ozm8YMXyHpft1vX7I9hwZiKiZq53O9bEx+35Wl2WHKh+ClxLap/mMQx5ylrUPCxbah4xRb2gsCJrMTeyoYDbQjtSwLMcKYBDe8azfKe+0wvA8EUKWo4264=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oJh6odc5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB6F0C4DDF5;
-	Tue, 27 Aug 2024 15:07:20 +0000 (UTC)
+	 MIME-Version; b=OfM1ixOl53fS8CFwASZ5TfE/qvWzArTa6racOFhM2P/j6Fa0qcqlOlC3qcUAAxj9xvnzbfltWydI49EuDl4dUnHYsB7WNN05ITgqNPHOijuer8H7Q+wrzWPSgiz+UFC9ESFc4Kxjq6JqQ/UpN3bz/JX6EZh9OheuvvVEsl/YPqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K/HhyqNO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 218BAC6105E;
+	Tue, 27 Aug 2024 15:23:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771241;
-	bh=UqkTVO9gN7t60I0Er88heCdBO17coSu9lm5I/tnNj/g=;
+	s=korg; t=1724772200;
+	bh=nYxZ4zvw5B4ZhcOnFKLIlivTV2g8hFt/kS6iOtoVMmM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oJh6odc5jZQidQgHN1Pw0N61smVykshgPABuaj1L9gwFEsB8QFiumBF/Ks93fcQyP
-	 bU5Js2byhW2QG3msG4J1cf6Owvy4bFciiFtXe3MSlzKeycfs1YH9HI0dRlb5oQIY3s
-	 /tsl5A3Z/wMXRBbQjBph0Do7R/m7H0obACTLIcA8=
+	b=K/HhyqNO4kGTMNQgR3agxFfnzcfBtGUIghWH9qnYQOVw8vFcsTbtzgD7dRP2PtEtQ
+	 Xi1vrHS7cDS6NjMrnU6EOmSr5sMlUGIN9zEGMltIV8M515rNkoEdJXL4ZDkc5cPKxK
+	 6mN7g9ajAcc9pjwJSgVeD2vnYnCjSy3sEUokuZzA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Haberland <sth@linux.ibm.com>,
-	Eric Farman <farman@linux.ibm.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 128/273] s390/dasd: Remove DMA alignment
+Subject: [PATCH 6.1 144/321] kbuild: rust_is_available: handle failures calling `$RUSTC`/`$BINDGEN`
 Date: Tue, 27 Aug 2024 16:37:32 +0200
-Message-ID: <20240827143838.276224577@linuxfoundation.org>
+Message-ID: <20240827143843.719414862@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,97 +63,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Farman <farman@linux.ibm.com>
+From: Miguel Ojeda <ojeda@kernel.org>
 
-[ Upstream commit 2a07bb64d80152701d507b1498237ed1b8d83866 ]
+[ Upstream commit f295522886a4ebb628cadb2cd74d0661d6292978 ]
 
-This reverts commit bc792884b76f ("s390/dasd: Establish DMA alignment").
+The script already checks if `$RUSTC` and `$BINDGEN` exists via
+`command`, but the environment variables may point to a
+non-executable file, or the programs may fail for some other reason.
+While the script successfully exits with a failure as it should,
+the error given can be quite confusing depending on the shell and
+the behavior of its `command`. For instance, with `dash`:
 
-Quoting the original commit:
-    linux-next commit bf8d08532bc1 ("iomap: add support for dma aligned
-    direct-io") changes the alignment requirement to come from the block
-    device rather than the block size, and the default alignment
-    requirement is 512-byte boundaries. Since DASD I/O has page
-    alignments for IDAW/TIDAW requests, let's override this value to
-    restore the expected behavior.
+    $ RUSTC=./mm BINDGEN=bindgen CC=clang scripts/rust_is_available.sh
+    scripts/rust_is_available.sh: 19: arithmetic expression: expecting primary: "100000 *  + 100 *  + "
 
-I mentioned TIDAW, but that was wrong. TIDAWs have no distinct alignment
-requirement (per p. 15-70 of POPS SA22-7832-13):
+Thus detect failure exit codes when calling `$RUSTC` and `$BINDGEN` and
+print a better message, in a similar way to what we do when extracting
+the `libclang` version found by `bindgen`.
 
-   Unless otherwise specified, TIDAWs may designate
-   a block of main storage on any boundary and length
-   up to 4K bytes, provided the specified block does not
-   cross a 4 K-byte boundary.
-
-IDAWs do, but the original commit neglected that while ECKD DASD are
-typically formatted in 4096-byte blocks, they don't HAVE to be. Formatting
-an ECKD volume with smaller blocks is permitted (dasdfmt -b xxx), and the
-problematic commit enforces alignment properties to such a device that
-will result in errors, such as:
-
-   [test@host ~]# lsdasd -l a367 | grep blksz
-     blksz:				512
-   [test@host ~]# mkfs.xfs -f /dev/disk/by-path/ccw-0.0.a367-part1
-   meta-data=/dev/dasdc1            isize=512    agcount=4, agsize=230075 blks
-            =                       sectsz=512   attr=2, projid32bit=1
-            =                       crc=1        finobt=1, sparse=1, rmapbt=1
-            =                       reflink=1    bigtime=1 inobtcount=1 nrext64=1
-   data     =                       bsize=4096   blocks=920299, imaxpct=25
-            =                       sunit=0      swidth=0 blks
-   naming   =version 2              bsize=4096   ascii-ci=0, ftype=1
-   log      =internal log           bsize=4096   blocks=16384, version=2
-            =                       sectsz=512   sunit=0 blks, lazy-count=1
-   realtime =none                   extsz=4096   blocks=0, rtextents=0
-   error reading existing superblock: Invalid argument
-   mkfs.xfs: pwrite failed: Invalid argument
-   libxfs_bwrite: write failed on (unknown) bno 0x70565c/0x100, err=22
-   mkfs.xfs: Releasing dirty buffer to free list!
-   found dirty buffer (bulk) on free list!
-   mkfs.xfs: pwrite failed: Invalid argument
-   ...snipped...
-
-The original commit omitted the FBA discipline for just this reason,
-but the formatted block size of the other disciplines was overlooked.
-The solution to all of this is to revert to the original behavior,
-such that the block size can be respected. There were two commits [1]
-that moved this code in the interim, so a straight git-revert is not
-possible, but the change is straightforward.
-
-But what of the original problem? That was manifested with a direct-io
-QEMU guest, where QEMU itself was changed a month or two later with
-commit 25474d90aa ("block: use the request length for iov alignment")
-such that the blamed kernel commit is unnecessary.
-
-[1] commit 0127a47f58c6 ("dasd: move queue setup to common code")
-    commit fde07a4d74e3 ("dasd: use the atomic queue limits API")
-
-Fixes: bc792884b76f ("s390/dasd: Establish DMA alignment")
-Reviewed-by: Stefan Haberland <sth@linux.ibm.com>
-Signed-off-by: Eric Farman <farman@linux.ibm.com>
-Signed-off-by: Stefan Haberland <sth@linux.ibm.com>
-Link: https://lore.kernel.org/r/20240812125733.126431-2-sth@linux.ibm.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Link: https://lore.kernel.org/rust-for-linux/CAK7LNAQYk6s11MASRHW6oxtkqF00EJVqhHOP=5rynWt-QDUsXw@mail.gmail.com/
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Link: https://lore.kernel.org/r/20230616001631.463536-10-ojeda@kernel.org
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Stable-dep-of: 5ce86c6c8613 ("rust: suppress error messages from CONFIG_{RUSTC,BINDGEN}_VERSION_TEXT")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/block/dasd_genhd.c | 1 -
- 1 file changed, 1 deletion(-)
+ scripts/rust_is_available.sh | 28 ++++++++++++++++++++++++++--
+ 1 file changed, 26 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/s390/block/dasd_genhd.c b/drivers/s390/block/dasd_genhd.c
-index 4533dd055ca8e..23d6e638f381d 100644
---- a/drivers/s390/block/dasd_genhd.c
-+++ b/drivers/s390/block/dasd_genhd.c
-@@ -41,7 +41,6 @@ int dasd_gendisk_alloc(struct dasd_block *block)
- 		 */
- 		.max_segment_size = PAGE_SIZE,
- 		.seg_boundary_mask = PAGE_SIZE - 1,
--		.dma_alignment = PAGE_SIZE - 1,
- 		.max_segments = USHRT_MAX,
- 	};
- 	struct gendisk *gdp;
+diff --git a/scripts/rust_is_available.sh b/scripts/rust_is_available.sh
+index db4519945f534..1c9081d9dbea7 100755
+--- a/scripts/rust_is_available.sh
++++ b/scripts/rust_is_available.sh
+@@ -38,8 +38,20 @@ fi
+ # Check that the Rust compiler version is suitable.
+ #
+ # Non-stable and distributions' versions may have a version suffix, e.g. `-dev`.
++rust_compiler_output=$( \
++	LC_ALL=C "$RUSTC" --version 2>/dev/null
++) || rust_compiler_code=$?
++if [ -n "$rust_compiler_code" ]; then
++	echo >&2 "***"
++	echo >&2 "*** Running '$RUSTC' to check the Rust compiler version failed with"
++	echo >&2 "*** code $rust_compiler_code. See output and docs below for details:"
++	echo >&2 "***"
++	echo >&2 "$rust_compiler_output"
++	echo >&2 "***"
++	exit 1
++fi
+ rust_compiler_version=$( \
+-	LC_ALL=C "$RUSTC" --version 2>/dev/null \
++	echo "$rust_compiler_output" \
+ 		| sed -nE '1s:.*rustc ([0-9]+\.[0-9]+\.[0-9]+).*:\1:p'
+ )
+ rust_compiler_min_version=$($min_tool_version rustc)
+@@ -64,8 +76,20 @@ fi
+ # Check that the Rust bindings generator is suitable.
+ #
+ # Non-stable and distributions' versions may have a version suffix, e.g. `-dev`.
++rust_bindings_generator_output=$( \
++	LC_ALL=C "$BINDGEN" --version 2>/dev/null
++) || rust_bindings_generator_code=$?
++if [ -n "$rust_bindings_generator_code" ]; then
++	echo >&2 "***"
++	echo >&2 "*** Running '$BINDGEN' to check the Rust bindings generator version failed with"
++	echo >&2 "*** code $rust_bindings_generator_code. See output and docs below for details:"
++	echo >&2 "***"
++	echo >&2 "$rust_bindings_generator_output"
++	echo >&2 "***"
++	exit 1
++fi
+ rust_bindings_generator_version=$( \
+-	LC_ALL=C "$BINDGEN" --version 2>/dev/null \
++	echo "$rust_bindings_generator_output" \
+ 		| sed -nE '1s:.*bindgen ([0-9]+\.[0-9]+\.[0-9]+).*:\1:p'
+ )
+ rust_bindings_generator_min_version=$($min_tool_version bindgen)
 -- 
 2.43.0
 
