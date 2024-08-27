@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-71151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70608-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2DCA9611E6
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:25:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05776960F11
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:55:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E58691C23884
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:25:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6C145B263AB
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:55:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4BA71C9DF7;
-	Tue, 27 Aug 2024 15:24:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 256C51C7B73;
+	Tue, 27 Aug 2024 14:54:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yeC8nL68"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KvX4Pl9U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A067B1C5793;
-	Tue, 27 Aug 2024 15:24:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D048D19F485;
+	Tue, 27 Aug 2024 14:54:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772267; cv=none; b=CPo40Z7KmP2zko/Yg0lJDusa3i2KMv2zYoqUJkY1CoXmgXTKiGbOJKNPu9J3sDfxGgRLDyglJu5EN2lBIjoPrc4l2eaYdP57m9VFMam8d///tsL6vmD2kFoNxzUo7N2HbWKehaatm7bEIIWH+I95eUkk4yhYOHRTQp7g7YfsMLY=
+	t=1724770474; cv=none; b=Xbd53AVhzHPxr17PH3ZjzbJ/Yidf+O2tbh0y4xNd7U9SaykdJsed879FtQioNMLBnJf8CfZqag+bRI/DIPwwJk2B/IDgFUIenlFzBdT1oSV84TbVVe1kJ97hzmPbs4G4eK6DENuL9X7B8p9oCsh1pKUSIbUXQ7sRB9OSvadDhxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772267; c=relaxed/simple;
-	bh=UFe/IWM+WJq38ghUb7UBkHDzf1BoEfuJsa1f+iNAudo=;
+	s=arc-20240116; t=1724770474; c=relaxed/simple;
+	bh=Rj/i1w5rYgN23w9s7ficaAzG/ykTcfcGFxDCWb6MRD4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jNCSbm9CyTTCDew2S+bunlp4HMP7THkGZ6oMpgjqRKRX6Ep6YVDlxEEYrREkxqblXxQZ4M/nqeONPUsG9+PgMgfwfiHop579HyDl9j73et7RQqwi/6s7CNxSU5iAABq/3Znr6jjB0KLUzVYxO2oduKMj9MnnhU5cTIWR60NU+Vw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yeC8nL68; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20BA5C61071;
-	Tue, 27 Aug 2024 15:24:26 +0000 (UTC)
+	 MIME-Version; b=HlqMG2RNXfGuhUjYPImsbgFm9vyVCgppEv6ckb/yXZQC6d881ngO1xNc/K70DZPWdwUW2GeTFw0Fk2K5k5dBgicO+uLQ3B3sR4tKQZHFUXm4HCONSanZPXywzSkMqgXsI5VrrQAraRm78OlPlTs/GXXx2IDA3oXfi8j+Vnk/oGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KvX4Pl9U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06805C4E675;
+	Tue, 27 Aug 2024 14:54:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772267;
-	bh=UFe/IWM+WJq38ghUb7UBkHDzf1BoEfuJsa1f+iNAudo=;
+	s=korg; t=1724770474;
+	bh=Rj/i1w5rYgN23w9s7ficaAzG/ykTcfcGFxDCWb6MRD4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yeC8nL689Yh7R769m3anLFPErjTqKifBYSlbQ4TpPLI/2U+z4i3c4k9NsLx4GCdyz
-	 miVjG/4eLLjmF/eT9hRBls2rjcgY7C/Tk06psXFd2qchlfCig287dhTFK+wCXmtn79
-	 WJGRypuGu2+tddHD1JRO6UaanAv0EW/rKKVvQ794=
+	b=KvX4Pl9ULBo+dZJCMHeUn8Xq4cxKUd4cSKS0Qo8hzQCMw8gvTdo4dn8BF9i6863A/
+	 mvzAzat+Txs8YjOLnoIsN3TCJ5h5GXzb3x9uF09yefkaakmgvK2KapKDI2gsZavXb8
+	 Z9Kf11bR1LuTvpOKB8wkSk3FZsCma6a2j9MWqDWA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
+	kernel test robot <lkp@intel.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 162/321] quota: Remove BUG_ON from dqget()
+Subject: [PATCH 6.6 239/341] ALSA: hda/tas2781: Use correct endian conversion
 Date: Tue, 27 Aug 2024 16:37:50 +0200
-Message-ID: <20240827143844.397140404@linuxfoundation.org>
+Message-ID: <20240827143852.504015146@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 249f374eb9b6b969c64212dd860cc1439674c4a8 ]
+[ Upstream commit 829e2a23121fb36ee30ea5145c2a85199f68e2c8 ]
 
-dqget() checks whether dquot->dq_sb is set when returning it using
-BUG_ON. Firstly this doesn't work as an invalidation check for quite
-some time (we release dquot with dq_sb set these days), secondly using
-BUG_ON is quite harsh. Use WARN_ON_ONCE and check whether dquot is still
-hashed instead.
+The data conversion is done rather by a wrong function.  We convert to
+BE32, not from BE32.  Although the end result must be same, this was
+complained by the compiler.
 
-Signed-off-by: Jan Kara <jack@suse.cz>
+Fix the code again and align with another similar function
+tas2563_apply_calib() that does already right.
+
+Fixes: 3beddef84d90 ("ALSA: hda/tas2781: fix wrong calibrated data order")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202408141630.DiDUB8Z4-lkp@intel.com/
+Link: https://patch.msgid.link/20240814100500.1944-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/quota/dquot.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ sound/pci/hda/tas2781_hda_i2c.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/quota/dquot.c b/fs/quota/dquot.c
-index b67557647d61f..f7ab6b44011b5 100644
---- a/fs/quota/dquot.c
-+++ b/fs/quota/dquot.c
-@@ -995,9 +995,8 @@ struct dquot *dqget(struct super_block *sb, struct kqid qid)
- 	 * smp_mb__before_atomic() in dquot_acquire().
- 	 */
- 	smp_rmb();
--#ifdef CONFIG_QUOTA_DEBUG
--	BUG_ON(!dquot->dq_sb);	/* Has somebody invalidated entry under us? */
--#endif
-+	/* Has somebody invalidated entry under us? */
-+	WARN_ON_ONCE(hlist_unhashed(&dquot->dq_hash));
- out:
- 	if (empty)
- 		do_destroy_dquot(empty);
+diff --git a/sound/pci/hda/tas2781_hda_i2c.c b/sound/pci/hda/tas2781_hda_i2c.c
+index 74d603524fbdb..e5bb1fed26a0c 100644
+--- a/sound/pci/hda/tas2781_hda_i2c.c
++++ b/sound/pci/hda/tas2781_hda_i2c.c
+@@ -433,8 +433,8 @@ static void tas2781_apply_calib(struct tasdevice_priv *tas_priv)
+ 
+ 	for (i = 0; i < tas_priv->ndev; i++) {
+ 		for (j = 0; j < CALIB_MAX; j++) {
+-			data = get_unaligned_be32(
+-				&tas_priv->cali_data.data[offset]);
++			data = cpu_to_be32(
++				*(uint32_t *)&tas_priv->cali_data.data[offset]);
+ 			rc = tasdevice_dev_bulk_write(tas_priv, i,
+ 				TASDEVICE_REG(0, page_array[j], rgno_array[j]),
+ 				(unsigned char *)&data, 4);
 -- 
 2.43.0
 
