@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-71029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70747-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA4F596114E
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:19:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7370E960FD7
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:03:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64CAE2835BC
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:19:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A69BE1C238C0
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:03:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5C5F1CE71F;
-	Tue, 27 Aug 2024 15:17:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D28B01C942C;
+	Tue, 27 Aug 2024 15:02:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o4BYTU5Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wVxQodak"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 655A21C7B7B;
-	Tue, 27 Aug 2024 15:17:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 912461C7B6F;
+	Tue, 27 Aug 2024 15:02:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771861; cv=none; b=mqlCaQ6mr4Sub6qGnwpWK7t69MWh4iSJE/UkJBYRDQ1ritB0tm+uDkwGey0253v8svZ+i918jIegGvesNoCdYw9BmcgqOQ42LkwiKD5cXFd0t4ZDCqJmHED4TaztnkbPRnphJJ4SJ5d6oKvWMT2Eu+ZbXMyIRQYuTHAKPkV6Rck=
+	t=1724770929; cv=none; b=Bk7Bxl1Pq1VtisnDPEfYPN58nVcN8XmSoyhvngpd2o56b6Da9mKYcabmvnuWykrXFCknDNRuRMmAs8/Oa/1udB7RGyY/E/nZtaHVF4a3XBOSu/A8POFwB4sK2+W5LGw4RzyC3Dr9cZoX9LSpj6URatfFKLeL90U2qKwbi/+Hy2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771861; c=relaxed/simple;
-	bh=TkyGlNsQYwfbHRhftEiYuQf/wHE3Fkl9jQeimIoaJjQ=;
+	s=arc-20240116; t=1724770929; c=relaxed/simple;
+	bh=LQ0EAmPOUUu8DdZibmMuLskhjjknjTWTRatM2YrB3DA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tNjhF+7gMaRTFhXIF4pCgpjTu8tF6qHYuWkj6t3qRW7wviUb236FYSik6ayaxk0Kd3VluvVS0Haq1emyQy/PVoxrDMlVQRoHZMkYrezyIHH+hE9bNSs4hutoYwHemwBha/uKcxczczgoMb4HPekMgc3UafqnG7K64QBJP3/18aw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o4BYTU5Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CACFC61067;
-	Tue, 27 Aug 2024 15:17:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=VDiFYyhzCL9MOsiVLFyHQrXir94eItqhVwXtFuh8AUyeLTVNvaBakgUcic/Btiz9DJPZZKPISYU88ZyluhMO8s1jOFRYogJnZdAi40WKv4O3SuREFpk5Uc9NlqpmBhyZPgu5Z0mNMicWsxJ+v6xCeQFosgj3mDjA2UE96pcqG4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wVxQodak; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0A39C4DDF5;
+	Tue, 27 Aug 2024 15:02:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771861;
-	bh=TkyGlNsQYwfbHRhftEiYuQf/wHE3Fkl9jQeimIoaJjQ=;
+	s=korg; t=1724770929;
+	bh=LQ0EAmPOUUu8DdZibmMuLskhjjknjTWTRatM2YrB3DA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o4BYTU5Y3p5J2U7O2b4FKdsaHzLHDjdXFCRul8TH9f7KxOZHJQKrMWOlCPCZpuPbX
-	 +5jOO9Y51GgHG0cSZ9oMsYm4vM9nYw3wdIpXZWDFNb+zSUq1kgY5M9Q1mONU3m5go6
-	 O/NTSt5p7dmYJCW/tgIcB+veH6HFxY5hMVU3TxWc=
+	b=wVxQodakSga4kxSnCBP/mJPc/YqXi1LGsuXpKWwHBO6p0A7J4HZY1yKOEGc2R/fqs
+	 /HZcKGoSJJXexFoEfQWWGIp49CGc2jSEl4xjRgxNow+i6c6W/04X7FmtQzghySkSrT
+	 lla7RKO44bnoU3wesleeGoElEHWkcV4mBmoiUOhg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 043/321] gfs2: Rename the {freeze,thaw}_super callbacks
-Date: Tue, 27 Aug 2024 16:35:51 +0200
-Message-ID: <20240827143839.867706907@linuxfoundation.org>
+	"Dmitry V. Levin" <ldv@strace.io>,
+	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
+	Celeste Liu <CoelacanthusHex@gmail.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>
+Subject: [PATCH 6.10 028/273] riscv: entry: always initialize regs->a0 to -ENOSYS
+Date: Tue, 27 Aug 2024 16:35:52 +0200
+Message-ID: <20240827143834.464714731@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,89 +61,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Celeste Liu <coelacanthushex@gmail.com>
 
-[ Upstream commit 097cca525adf10f35c9dac037155564f1b1a688b ]
+commit 61119394631f219e23ce98bcc3eb993a64a8ea64 upstream.
 
-Rename gfs2_freeze to gfs2_freeze_super and gfs2_unfreeze to
-gfs2_thaw_super to match the names of the corresponding super
-operations.
+Otherwise when the tracer changes syscall number to -1, the kernel fails
+to initialize a0 with -ENOSYS and subsequently fails to return the error
+code of the failed syscall to userspace. For example, it will break
+strace syscall tampering.
 
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
-Stable-dep-of: f66af88e3321 ("gfs2: Stop using gfs2_make_fs_ro for withdraw")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 52449c17bdd1 ("riscv: entry: set a0 = -ENOSYS only when syscall != -1")
+Reported-by: "Dmitry V. Levin" <ldv@strace.io>
+Reviewed-by: Björn Töpel <bjorn@rivosinc.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Celeste Liu <CoelacanthusHex@gmail.com>
+Link: https://lore.kernel.org/r/20240627142338.5114-2-CoelacanthusHex@gmail.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/gfs2/super.c | 12 ++++++------
- fs/gfs2/util.c  |  2 +-
- 2 files changed, 7 insertions(+), 7 deletions(-)
+ arch/riscv/kernel/traps.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
-index c87fafbe710a6..d7b3a982552cf 100644
---- a/fs/gfs2/super.c
-+++ b/fs/gfs2/super.c
-@@ -682,12 +682,12 @@ void gfs2_freeze_func(struct work_struct *work)
- }
+--- a/arch/riscv/kernel/traps.c
++++ b/arch/riscv/kernel/traps.c
+@@ -319,6 +319,7 @@ void do_trap_ecall_u(struct pt_regs *reg
  
- /**
-- * gfs2_freeze - prevent further writes to the filesystem
-+ * gfs2_freeze_super - prevent further writes to the filesystem
-  * @sb: the VFS structure for the filesystem
-  *
-  */
+ 		regs->epc += 4;
+ 		regs->orig_a0 = regs->a0;
++		regs->a0 = -ENOSYS;
  
--static int gfs2_freeze(struct super_block *sb)
-+static int gfs2_freeze_super(struct super_block *sb)
- {
- 	struct gfs2_sbd *sdp = sb->s_fs_info;
- 	int error;
-@@ -727,12 +727,12 @@ static int gfs2_freeze(struct super_block *sb)
- }
+ 		riscv_v_vstate_discard(regs);
  
- /**
-- * gfs2_unfreeze - reallow writes to the filesystem
-+ * gfs2_thaw_super - reallow writes to the filesystem
-  * @sb: the VFS structure for the filesystem
-  *
-  */
+@@ -328,8 +329,7 @@ void do_trap_ecall_u(struct pt_regs *reg
  
--static int gfs2_unfreeze(struct super_block *sb)
-+static int gfs2_thaw_super(struct super_block *sb)
- {
- 	struct gfs2_sbd *sdp = sb->s_fs_info;
- 
-@@ -1499,8 +1499,8 @@ const struct super_operations gfs2_super_ops = {
- 	.evict_inode		= gfs2_evict_inode,
- 	.put_super		= gfs2_put_super,
- 	.sync_fs		= gfs2_sync_fs,
--	.freeze_super		= gfs2_freeze,
--	.thaw_super		= gfs2_unfreeze,
-+	.freeze_super		= gfs2_freeze_super,
-+	.thaw_super		= gfs2_thaw_super,
- 	.statfs			= gfs2_statfs,
- 	.drop_inode		= gfs2_drop_inode,
- 	.show_options		= gfs2_show_options,
-diff --git a/fs/gfs2/util.c b/fs/gfs2/util.c
-index 86d1415932a43..11cc59ac64fdc 100644
---- a/fs/gfs2/util.c
-+++ b/fs/gfs2/util.c
-@@ -188,7 +188,7 @@ static void signal_our_withdraw(struct gfs2_sbd *sdp)
- 	sdp->sd_jinode_gh.gh_flags |= GL_NOCACHE;
- 	gfs2_glock_dq(&sdp->sd_jinode_gh);
- 	if (test_bit(SDF_FS_FROZEN, &sdp->sd_flags)) {
--		/* Make sure gfs2_unfreeze works if partially-frozen */
-+		/* Make sure gfs2_thaw_super works if partially-frozen */
- 		flush_work(&sdp->sd_freeze_work);
- 		atomic_set(&sdp->sd_freeze_state, SFS_FROZEN);
- 		thaw_super(sdp->sd_vfs);
--- 
-2.43.0
-
+ 		if (syscall >= 0 && syscall < NR_syscalls)
+ 			syscall_handler(regs, syscall);
+-		else if (syscall != -1)
+-			regs->a0 = -ENOSYS;
++
+ 		/*
+ 		 * Ultimately, this value will get limited by KSTACK_OFFSET_MAX(),
+ 		 * so the maximum stack offset is 1k bytes (10 bits).
 
 
 
