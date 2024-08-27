@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-71041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70749-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8722796115D
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:19:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC3E9960FDB
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:03:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D31B28279E
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:19:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE6651C23124
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:03:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25FFD1CCB52;
-	Tue, 27 Aug 2024 15:18:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31F921C9EC5;
+	Tue, 27 Aug 2024 15:02:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b4it8JR/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZlctolpJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D73EA17C96;
-	Tue, 27 Aug 2024 15:18:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2B501C9DF1;
+	Tue, 27 Aug 2024 15:02:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771901; cv=none; b=CWVcaqW0DT4QRvbySTo5BUV1RRZr/qdkPM2sO8a+R4Z+i0TcuBLmWLa84Fs6Ny8PAIukxqP64AIcu+jR3rAVxdNxdwDWopPb2elmR2HMFfKpd9hZGfgUEuH1/RClvuBuqJirrpplT7DqS3xB8wPmP9x2e8zud3ymOtWEcKp0ucE=
+	t=1724770936; cv=none; b=q0EATypEqSrdTWss4DW5E24yVJaXk8TLrNtkstwaIn6ltUHTqy0s1a5zac7rnyxck0ZbMFV7pp4ZC+Q+Vlvbm2bZEtYRM8eOQYci+k6Yc45M1EwUjQmc2Kt5wGoIXuourMETaNNb/9MhiZSjn1OJuS9chpdz4+UBCaWV9E4/ADE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771901; c=relaxed/simple;
-	bh=0PsNdS8ySdwRu7F5uBCLs48Qc2e+uDFkNRAwQUwumtU=;
+	s=arc-20240116; t=1724770936; c=relaxed/simple;
+	bh=Mvuzoh5C3ZnMP+UwxMGabHp0rpX1efSkQquxDV7ms8c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CZEcKwwnuUOLMr6QFmhp8xATxjyP7GXEfBpxoxe6xqTs8trLmS2Ajlzq1poUICcTtD0EPNebTQLg7IBJ8G+oH3JSXJ3fXqup9jGX8hw3ncaHgZmqOW4EmZDbnZdAr8cZljKaJj26koKv6oURcwwX0ZHXSdht3/9CYm/7QRtEgyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b4it8JR/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FF43C61067;
-	Tue, 27 Aug 2024 15:18:21 +0000 (UTC)
+	 MIME-Version; b=jxpG/d8FIQjuinjnjRXsWsTkwJRZZgCnT6VB49zkDldohYgs+yV3HplZbgDsef5sdf0LZx7HY8eaes5OgVYQcSUadrvmEmCxnLdn+ZgSXL+wMKpZDjR7F4yHhmLeJm2AVegHXSIlgQcO1PJG8YpUbY/PEBefZ9Gb4kvWraDWqaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZlctolpJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B516C4DDFC;
+	Tue, 27 Aug 2024 15:02:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771901;
-	bh=0PsNdS8ySdwRu7F5uBCLs48Qc2e+uDFkNRAwQUwumtU=;
+	s=korg; t=1724770935;
+	bh=Mvuzoh5C3ZnMP+UwxMGabHp0rpX1efSkQquxDV7ms8c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b4it8JR/Jqi2hrLlg7a++dZr62ekKBvkP7c9tyq1KNXZ0tAkk/s+MP/mHCs4a7J6g
-	 XhJ2b6FyxmdefIBUe+08Mmgw0fBdw/O9wM/h40oi/HT9NcDldIr+Gq/EYnkTojHoUf
-	 t7/byr8zHQZrqBeThEnqUFm/YakpKSabGdEPgu80=
+	b=ZlctolpJOXgVJDy4cUIW48jDg2utiNqj/dwddI2vWT231NDdR2X7k4W4qX4JCRwS1
+	 bro+Mol9au3KoDTaYHPC+uICry22eUrFQ/UJHyy1VDuqF8CNzZFa6dl0kNwObNqlUX
+	 qbyxEsoTCooNNgk+9j9PL6mKWCdSRIUlRtmIcwHg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+32d3767580a1ea339a81@syzkaller.appspotmail.com,
-	Lizhi Xu <lizhi.xu@windriver.com>,
-	Phillip Lougher <phillip@squashfs.org.uk>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 054/321] squashfs: squashfs_read_data need to check if the length is 0
+	Gaosheng Cui <cuigaosheng1@huawei.com>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 6.10 038/273] i2c: qcom-geni: Add missing geni_icc_disable in geni_i2c_runtime_resume
 Date: Tue, 27 Aug 2024 16:36:02 +0200
-Message-ID: <20240827143840.291699459@linuxfoundation.org>
+Message-ID: <20240827143834.845491381@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lizhi Xu <lizhi.xu@windriver.com>
+From: Andi Shyti <andi.shyti@kernel.org>
 
-[ Upstream commit eb66b8abae98f869c224f7c852b685ae02144564 ]
+commit 4e91fa1ef3ce6290b4c598e54b5eb6cf134fbec8 upstream.
 
-When the length passed in is 0, the pagemap_scan_test_walk() caller should
-bail.  This error causes at least a WARN_ON().
+Add the missing geni_icc_disable() call before returning in the
+geni_i2c_runtime_resume() function.
 
-Link: https://lkml.kernel.org/r/20231116031352.40853-1-lizhi.xu@windriver.com
-Reported-by: syzbot+32d3767580a1ea339a81@syzkaller.appspotmail.com
-Closes: https://lkml.kernel.org/r/0000000000000526f2060a30a085@google.com
-Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
-Reviewed-by: Phillip Lougher <phillip@squashfs.org.uk>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Commit 9ba48db9f77c ("i2c: qcom-geni: Add missing
+geni_icc_disable in geni_i2c_runtime_resume") by Gaosheng missed
+disabling the interconnect in one case.
+
+Fixes: bf225ed357c6 ("i2c: i2c-qcom-geni: Add interconnect support")
+Cc: Gaosheng Cui <cuigaosheng1@huawei.com>
+Cc: stable@vger.kernel.org # v5.9+
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/squashfs/block.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/i2c/busses/i2c-qcom-geni.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/squashfs/block.c b/fs/squashfs/block.c
-index 833aca92301f0..45ea5d62cef42 100644
---- a/fs/squashfs/block.c
-+++ b/fs/squashfs/block.c
-@@ -198,7 +198,7 @@ int squashfs_read_data(struct super_block *sb, u64 index, int length,
- 		TRACE("Block @ 0x%llx, %scompressed size %d\n", index - 2,
- 		      compressed ? "" : "un", length);
- 	}
--	if (length < 0 || length > output->length ||
-+	if (length <= 0 || length > output->length ||
- 			(index + length) > msblk->bytes_used) {
- 		res = -EIO;
- 		goto out;
--- 
-2.43.0
-
+--- a/drivers/i2c/busses/i2c-qcom-geni.c
++++ b/drivers/i2c/busses/i2c-qcom-geni.c
+@@ -986,8 +986,10 @@ static int __maybe_unused geni_i2c_runti
+ 		return ret;
+ 
+ 	ret = clk_prepare_enable(gi2c->core_clk);
+-	if (ret)
++	if (ret) {
++		geni_icc_disable(&gi2c->se);
+ 		return ret;
++	}
+ 
+ 	ret = geni_se_resources_on(&gi2c->se);
+ 	if (ret) {
 
 
 
