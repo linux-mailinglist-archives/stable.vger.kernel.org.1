@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-70982-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71243-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E344D961103
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:15:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F7799612C3
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:34:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 79F60B247E0
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:15:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A0600B29E5D
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:31:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71B1817C96;
-	Tue, 27 Aug 2024 15:15:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 519CB1C8FDE;
+	Tue, 27 Aug 2024 15:29:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zlgHrmZf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LEkvz4mQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AFFA1C7B9D;
-	Tue, 27 Aug 2024 15:15:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F0D119F485;
+	Tue, 27 Aug 2024 15:29:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771707; cv=none; b=nM7Z/jd9rn9loKO8d4sEeclzs5Wo4+5wTzBshBYtrDHFrojfzMLqFqg6cUBYMYSZsGi+BCB6exUOuejiFVh+eVsL7/adK9q74Hg5ofYcX+G2IbLtOv6wl2lxOdfkIL+eI2txpIVaatFF0ZgfjgsILSg5VeVfpWY42EMhPMgtcYo=
+	t=1724772571; cv=none; b=e5891XIa1Y1Z+Cvo3294G0x9a4fM9mseW8CMj9KGagAqxmFj9oIq+duAx5teUhwB8oIZBZL0NzmZS5u/grw3veMKwg5llGWwd86SMmuECz2ib43CtO2Rda9OtJcBSsakj7T+cqzQi1ni0Np26z3ZniUoNqPayaEzbyY783mzdas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771707; c=relaxed/simple;
-	bh=IfM8ohYfP1SkaA4pSHdq8QVTZrATo2PdOzVsiX53H7o=;
+	s=arc-20240116; t=1724772571; c=relaxed/simple;
+	bh=edtodNoOfSvh0r1LKR76iE/IBFzPoAz3kIaaZixsWNg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PlK6+JOGO6lnjnIFfqczEEzhQ/YcXtVOB7H5XpT73MdsQ7Zb8L8r/abNsa6Jsm1fgO+83o/TmyUTDGJ07HZfijYJwFlVuLMOEogiual2PGLYDUaD4F/DGWoqwSJbHieSMu/mvfDvWcXZMur2uxlLRL8ZoxJ5t1lZrJ/ac9iN9vM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zlgHrmZf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B46DC4AF50;
-	Tue, 27 Aug 2024 15:15:06 +0000 (UTC)
+	 MIME-Version; b=hKuUyFEaVLnRu25EWdsAfCezWDGkYkdkv0R9BlIBIo+SaxKzGCK4xPyf8WUZHOX/lqRfTi7638XL1HnesvqcN34wFgmDWc1adNrpkfJdoPeOkh2wJav27Ixn3g1AByAz5JHGtjswcVV8s1+b3TXUd1W01QKD/AAOKK6gD/Mmc5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LEkvz4mQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80E3DC6107E;
+	Tue, 27 Aug 2024 15:29:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771706;
-	bh=IfM8ohYfP1SkaA4pSHdq8QVTZrATo2PdOzVsiX53H7o=;
+	s=korg; t=1724772570;
+	bh=edtodNoOfSvh0r1LKR76iE/IBFzPoAz3kIaaZixsWNg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zlgHrmZf0b0xeqDYNbCEvLF7ReUyEFWUIwy9mrGK+ixMAEpnABEDnrN6VjiY7aKrS
-	 yu4MhcSLn56EAuvtvrDs1yV3wQ42Bnuqz4R3JXtResD7fXEBlhbdXwiAvWr60DbXNb
-	 mtTSL4yfFKswrDIF7ue7AKkZ8H1UqVZ6HXFksOq4=
+	b=LEkvz4mQZpbcN3TtSu/Y5EoBYQVVltWhLogACttl4Ldl6VbVE9b7VL4vsg29gDbsw
+	 zig+3RKVgmSMlabqnzG1RoByAmKT/AKM/W7w0A2AY7I5kD179UBWCx7/1bcVmHYweZ
+	 YIG4jRzOQTsEAPbhhL7rsx+N149LGt2rHdWLCa6E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Werner Sembach <wse@tuxedocomputers.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.10 238/273] Input: i8042 - add forcenorestore quirk to leave controller untouched even on s3
+	syzbot+8407d9bb88cd4c6bf61a@syzkaller.appspotmail.com,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 254/321] netfilter: flowtable: validate vlan header
 Date: Tue, 27 Aug 2024 16:39:22 +0200
-Message-ID: <20240827143842.460781472@linuxfoundation.org>
+Message-ID: <20240827143847.912870403@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,122 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Werner Sembach <wse@tuxedocomputers.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit 3d765ae2daccc570b3f4fbcb57eb321b12cdded2 upstream.
+[ Upstream commit 6ea14ccb60c8ab829349979b22b58a941ec4a3ee ]
 
-On s3 resume the i8042 driver tries to restore the controller to a known
-state by reinitializing things, however this can confuse the controller
-with different effects. Mostly occasionally unresponsive keyboards after
-resume.
+Ensure there is sufficient room to access the protocol field of the
+VLAN header, validate it once before the flowtable lookup.
 
-These issues do not rise on s0ix resume as here the controller is assumed
-to preserved its state from before suspend.
+=====================================================
+BUG: KMSAN: uninit-value in nf_flow_offload_inet_hook+0x45a/0x5f0 net/netfilter/nf_flow_table_inet.c:32
+ nf_flow_offload_inet_hook+0x45a/0x5f0 net/netfilter/nf_flow_table_inet.c:32
+ nf_hook_entry_hookfn include/linux/netfilter.h:154 [inline]
+ nf_hook_slow+0xf4/0x400 net/netfilter/core.c:626
+ nf_hook_ingress include/linux/netfilter_netdev.h:34 [inline]
+ nf_ingress net/core/dev.c:5440 [inline]
 
-This patch adds a quirk for devices where the reinitialization on s3 resume
-is not needed and might be harmful as described above. It does this by
-using the s0ix resume code path at selected locations.
-
-This new quirk goes beyond what the preexisting reset=never quirk does,
-which only skips some reinitialization steps.
-
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20240104183118.779778-2-wse@tuxedocomputers.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4cd91f7c290f ("netfilter: flowtable: add vlan support")
+Reported-by: syzbot+8407d9bb88cd4c6bf61a@syzkaller.appspotmail.com
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/serio/i8042-acpipnpio.h |   10 +++++++---
- drivers/input/serio/i8042.c           |   10 +++++++---
- 2 files changed, 14 insertions(+), 6 deletions(-)
+ net/netfilter/nf_flow_table_inet.c | 3 +++
+ net/netfilter/nf_flow_table_ip.c   | 3 +++
+ 2 files changed, 6 insertions(+)
 
---- a/drivers/input/serio/i8042-acpipnpio.h
-+++ b/drivers/input/serio/i8042-acpipnpio.h
-@@ -83,6 +83,7 @@ static inline void i8042_write_command(i
- #define SERIO_QUIRK_KBDRESET		BIT(12)
- #define SERIO_QUIRK_DRITEK		BIT(13)
- #define SERIO_QUIRK_NOPNP		BIT(14)
-+#define SERIO_QUIRK_FORCENORESTORE	BIT(15)
+diff --git a/net/netfilter/nf_flow_table_inet.c b/net/netfilter/nf_flow_table_inet.c
+index 6eef15648b7b0..b0f1991719324 100644
+--- a/net/netfilter/nf_flow_table_inet.c
++++ b/net/netfilter/nf_flow_table_inet.c
+@@ -17,6 +17,9 @@ nf_flow_offload_inet_hook(void *priv, struct sk_buff *skb,
  
- /* Quirk table for different mainboards. Options similar or identical to i8042
-  * module parameters.
-@@ -1685,6 +1686,8 @@ static void __init i8042_check_quirks(vo
- 	if (quirks & SERIO_QUIRK_NOPNP)
- 		i8042_nopnp = true;
- #endif
-+	if (quirks & SERIO_QUIRK_FORCENORESTORE)
-+		i8042_forcenorestore = true;
- }
- #else
- static inline void i8042_check_quirks(void) {}
-@@ -1718,7 +1721,7 @@ static int __init i8042_platform_init(vo
- 
- 	i8042_check_quirks();
- 
--	pr_debug("Active quirks (empty means none):%s%s%s%s%s%s%s%s%s%s%s%s%s\n",
-+	pr_debug("Active quirks (empty means none):%s%s%s%s%s%s%s%s%s%s%s%s%s%s\n",
- 		i8042_nokbd ? " nokbd" : "",
- 		i8042_noaux ? " noaux" : "",
- 		i8042_nomux ? " nomux" : "",
-@@ -1738,10 +1741,11 @@ static int __init i8042_platform_init(vo
- 		"",
- #endif
- #ifdef CONFIG_PNP
--		i8042_nopnp ? " nopnp" : "");
-+		i8042_nopnp ? " nopnp" : "",
- #else
--		"");
-+		"",
- #endif
-+		i8042_forcenorestore ? " forcenorestore" : "");
- 
- 	retval = i8042_pnp_init();
- 	if (retval)
---- a/drivers/input/serio/i8042.c
-+++ b/drivers/input/serio/i8042.c
-@@ -115,6 +115,10 @@ module_param_named(nopnp, i8042_nopnp, b
- MODULE_PARM_DESC(nopnp, "Do not use PNP to detect controller settings");
- #endif
- 
-+static bool i8042_forcenorestore;
-+module_param_named(forcenorestore, i8042_forcenorestore, bool, 0);
-+MODULE_PARM_DESC(forcenorestore, "Force no restore on s3 resume, copying s2idle behaviour");
+ 	switch (skb->protocol) {
+ 	case htons(ETH_P_8021Q):
++		if (!pskb_may_pull(skb, skb_mac_offset(skb) + sizeof(*veth)))
++			return NF_ACCEPT;
 +
- #define DEBUG
- #ifdef DEBUG
- static bool i8042_debug;
-@@ -1232,7 +1236,7 @@ static int i8042_pm_suspend(struct devic
- {
- 	int i;
+ 		veth = (struct vlan_ethhdr *)skb_mac_header(skb);
+ 		proto = veth->h_vlan_encapsulated_proto;
+ 		break;
+diff --git a/net/netfilter/nf_flow_table_ip.c b/net/netfilter/nf_flow_table_ip.c
+index 22bc0e3d8a0b5..34be2c9bc39d8 100644
+--- a/net/netfilter/nf_flow_table_ip.c
++++ b/net/netfilter/nf_flow_table_ip.c
+@@ -275,6 +275,9 @@ static bool nf_flow_skb_encap_protocol(struct sk_buff *skb, __be16 proto,
  
--	if (pm_suspend_via_firmware())
-+	if (!i8042_forcenorestore && pm_suspend_via_firmware())
- 		i8042_controller_reset(true);
- 
- 	/* Set up serio interrupts for system wakeup. */
-@@ -1248,7 +1252,7 @@ static int i8042_pm_suspend(struct devic
- 
- static int i8042_pm_resume_noirq(struct device *dev)
- {
--	if (!pm_resume_via_firmware())
-+	if (i8042_forcenorestore || !pm_resume_via_firmware())
- 		i8042_interrupt(0, NULL);
- 
- 	return 0;
-@@ -1271,7 +1275,7 @@ static int i8042_pm_resume(struct device
- 	 * not restore the controller state to whatever it had been at boot
- 	 * time, so we do not need to do anything.
- 	 */
--	if (!pm_suspend_via_firmware())
-+	if (i8042_forcenorestore || !pm_suspend_via_firmware())
- 		return 0;
- 
- 	/*
+ 	switch (skb->protocol) {
+ 	case htons(ETH_P_8021Q):
++		if (!pskb_may_pull(skb, skb_mac_offset(skb) + sizeof(*veth)))
++			return false;
++
+ 		veth = (struct vlan_ethhdr *)skb_mac_header(skb);
+ 		if (veth->h_vlan_encapsulated_proto == proto) {
+ 			*offset += VLAN_HLEN;
+-- 
+2.43.0
+
 
 
 
