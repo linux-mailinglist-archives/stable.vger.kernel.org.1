@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-70519-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70770-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D983960E8D
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:49:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51742960FF2
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:04:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D06091C21431
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:49:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD90EB220A8
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:04:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9685B1C57BF;
-	Tue, 27 Aug 2024 14:49:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC2DB1C6F63;
+	Tue, 27 Aug 2024 15:03:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jCDcUeup"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EnrAgYBi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52AE41C57B3;
-	Tue, 27 Aug 2024 14:49:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 772A81BC9F1;
+	Tue, 27 Aug 2024 15:03:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770178; cv=none; b=Q7rFIAFRQJDUO/VXwnaNG5+Kbbra2PLfF6xfZ2r68V1xDQH15kqyYEiyq9vQTRfz5hYw6byWhqp5HbpBcpS9Q8MQSlEAHiq4NDDBlz95Tl08W78yg0zLSkhA7GVUqYWck/W1KtcpoGJ+VWM742kP4eNgvXDJqbbpS5WuehMH71k=
+	t=1724771005; cv=none; b=iaj7QLHDLDiKTxzMIZqCiYFgraxU0h8PGyf2nKd32qr435TiHp0Zswhis5S/1pf+GTeXIrF8uO1Eo0eDLSSh1HlB5fgk9WbqA3hFZkODOHNChk0TsKEa1cbathbgZskP30LU6VDWZsEAhmUP877o25lVDXPmBdeZ4zbRF1cURuE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770178; c=relaxed/simple;
-	bh=uFgy+9Zx+e5cdRQxzHYoHAGTdkyqfpDwUFyIcoQQbXU=;
+	s=arc-20240116; t=1724771005; c=relaxed/simple;
+	bh=lJRy8kIatNM+8ckHAtvsFKISzE5bcZmkuKrAvlkq0JU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OOTat3l1jtjGYFpaFQqy80FiDkaU7HUqmjDvOzCwOS8j/p3+POVmU+D1Dtcd14kpXxfvlhLlqff44+OMwtojVWQ1DdeD0OxiyK+rhG95lLPpVEPeQ0ClG0obXytbOIUIszt1Z9It8nTn7qddPVldiD/bEDU/lXKPVLi7HA4DTXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jCDcUeup; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB90DC4AF53;
-	Tue, 27 Aug 2024 14:49:37 +0000 (UTC)
+	 MIME-Version; b=jmZTHv+TgypoxGHIHxNQ+4NGf3iVuVA4XMAT/FHA9uIgu/Ppzs6RReHG5nSG7gpjvR5C3smLpyxL+XSbWXMHAFTg5zWMQb9Btf+fsPAPwmBuLx7f6BWVRopu61Pmys90RNq/iQo95Xf9iH6jqWdmRhDGMRwckMKYz8uy7lSSIB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EnrAgYBi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 885BEC61049;
+	Tue, 27 Aug 2024 15:03:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770178;
-	bh=uFgy+9Zx+e5cdRQxzHYoHAGTdkyqfpDwUFyIcoQQbXU=;
+	s=korg; t=1724771005;
+	bh=lJRy8kIatNM+8ckHAtvsFKISzE5bcZmkuKrAvlkq0JU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jCDcUeup8BASc1utgp1z2C29k1x8eE5ew+TAZeE6+3Ol5TRZYCfPl2tMjqRVinzcY
-	 xS2Lyl1tMw9gdTcYf5TRK4rJGxA1R7WfnVnFY5MPT2VTWcuDirmxdxrwVfAr/pKttI
-	 +093rpXlbSONcKu3ybROpCugY0WT1oEPQJISu3a4=
+	b=EnrAgYBispTEpuxIQkgOEMEMxiXtMF6G5yspc6ZyLs9e+ZOdIKlhRgPlb0OfhKCXb
+	 rxnqNnI8e8EZHq7Amk5ubSAx16nJ5J55oYQ7hdzCLl0Qg0t53/CaVQQzFHPHrMmMvF
+	 ebRDCuJ+fpvyp6L7u5PCsGDRpgjKlBDLyZqsD0Ls=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amir Goldstein <amir73il@gmail.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Mimi Zohar <zohar@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 149/341] evm: dont copy up security.evm xattr
-Date: Tue, 27 Aug 2024 16:36:20 +0200
-Message-ID: <20240827143849.089902369@linuxfoundation.org>
+	"Huang, Ying" <ying.huang@intel.com>,
+	Zi Yan <ziy@nvidia.com>,
+	David Hildenbrand <david@redhat.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Mel Gorman <mgorman@suse.de>,
+	Yang Shi <shy828301@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.10 057/273] mm/numa: no task_numa_fault() call if PMD is changed
+Date: Tue, 27 Aug 2024 16:36:21 +0200
+Message-ID: <20240827143835.572540490@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +67,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mimi Zohar <zohar@linux.ibm.com>
+From: Zi Yan <ziy@nvidia.com>
 
-[ Upstream commit 40ca4ee3136d2d09977d1cab8c0c0e1582c3359d ]
+commit fd8c35a92910f4829b7c99841f39b1b952c259d5 upstream.
 
-The security.evm HMAC and the original file signatures contain
-filesystem specific data.  As a result, the HMAC and signature
-are not the same on the stacked and backing filesystems.
+When handling a numa page fault, task_numa_fault() should be called by a
+process that restores the page table of the faulted folio to avoid
+duplicated stats counting.  Commit c5b5a3dd2c1f ("mm: thp: refactor NUMA
+fault handling") restructured do_huge_pmd_numa_page() and did not avoid
+task_numa_fault() call in the second page table check after a numa
+migration failure.  Fix it by making all !pmd_same() return immediately.
 
-Don't copy up 'security.evm'.
+This issue can cause task_numa_fault() being called more than necessary
+and lead to unexpected numa balancing results (It is hard to tell whether
+the issue will cause positive or negative performance impact due to
+duplicated numa fault counting).
 
-Reviewed-by: Amir Goldstein <amir73il@gmail.com>
-Reviewed-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20240809145906.1513458-3-ziy@nvidia.com
+Fixes: c5b5a3dd2c1f ("mm: thp: refactor NUMA fault handling")
+Reported-by: "Huang, Ying" <ying.huang@intel.com>
+Closes: https://lore.kernel.org/linux-mm/87zfqfw0yw.fsf@yhuang6-desk2.ccr.corp.intel.com/
+Signed-off-by: Zi Yan <ziy@nvidia.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: "Huang, Ying" <ying.huang@intel.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Mel Gorman <mgorman@suse.de>
+Cc: Yang Shi <shy828301@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/evm.h               | 6 ++++++
- security/integrity/evm/evm_main.c | 7 +++++++
- security/security.c               | 2 +-
- 3 files changed, 14 insertions(+), 1 deletion(-)
+ mm/huge_memory.c |   29 +++++++++++++----------------
+ 1 file changed, 13 insertions(+), 16 deletions(-)
 
-diff --git a/include/linux/evm.h b/include/linux/evm.h
-index 01fc495a83e27..36ec884320d9f 100644
---- a/include/linux/evm.h
-+++ b/include/linux/evm.h
-@@ -31,6 +31,7 @@ extern void evm_inode_post_setxattr(struct dentry *dentry,
- 				    const char *xattr_name,
- 				    const void *xattr_value,
- 				    size_t xattr_value_len);
-+extern int evm_inode_copy_up_xattr(const char *name);
- extern int evm_inode_removexattr(struct mnt_idmap *idmap,
- 				 struct dentry *dentry, const char *xattr_name);
- extern void evm_inode_post_removexattr(struct dentry *dentry,
-@@ -117,6 +118,11 @@ static inline void evm_inode_post_setxattr(struct dentry *dentry,
- 	return;
- }
- 
-+static inline int  evm_inode_copy_up_xattr(const char *name)
-+{
-+	return 0;
-+}
-+
- static inline int evm_inode_removexattr(struct mnt_idmap *idmap,
- 					struct dentry *dentry,
- 					const char *xattr_name)
-diff --git a/security/integrity/evm/evm_main.c b/security/integrity/evm/evm_main.c
-index ff9a939dad8e4..2393230c03aa3 100644
---- a/security/integrity/evm/evm_main.c
-+++ b/security/integrity/evm/evm_main.c
-@@ -864,6 +864,13 @@ void evm_inode_post_setattr(struct dentry *dentry, int ia_valid)
- 		evm_update_evmxattr(dentry, NULL, NULL, 0);
- }
- 
-+int evm_inode_copy_up_xattr(const char *name)
-+{
-+	if (strcmp(name, XATTR_NAME_EVM) == 0)
-+		return 1; /* Discard */
-+	return -EOPNOTSUPP;
-+}
-+
- /*
-  * evm_inode_init_security - initializes security.evm HMAC value
-  */
-diff --git a/security/security.c b/security/security.c
-index dd26f21b2244b..b6144833c7a8e 100644
---- a/security/security.c
-+++ b/security/security.c
-@@ -2539,7 +2539,7 @@ int security_inode_copy_up_xattr(const char *name)
- 			return rc;
+--- a/mm/huge_memory.c
++++ b/mm/huge_memory.c
+@@ -1672,7 +1672,7 @@ vm_fault_t do_huge_pmd_numa_page(struct
+ 	vmf->ptl = pmd_lock(vma->vm_mm, vmf->pmd);
+ 	if (unlikely(!pmd_same(oldpmd, *vmf->pmd))) {
+ 		spin_unlock(vmf->ptl);
+-		goto out;
++		return 0;
  	}
  
--	return LSM_RET_DEFAULT(inode_copy_up_xattr);
-+	return evm_inode_copy_up_xattr(name);
- }
- EXPORT_SYMBOL(security_inode_copy_up_xattr);
+ 	pmd = pmd_modify(oldpmd, vma->vm_page_prot);
+@@ -1715,22 +1715,16 @@ vm_fault_t do_huge_pmd_numa_page(struct
+ 	if (!migrate_misplaced_folio(folio, vma, target_nid)) {
+ 		flags |= TNF_MIGRATED;
+ 		nid = target_nid;
+-	} else {
+-		flags |= TNF_MIGRATE_FAIL;
+-		vmf->ptl = pmd_lock(vma->vm_mm, vmf->pmd);
+-		if (unlikely(!pmd_same(oldpmd, *vmf->pmd))) {
+-			spin_unlock(vmf->ptl);
+-			goto out;
+-		}
+-		goto out_map;
+-	}
+-
+-out:
+-	if (nid != NUMA_NO_NODE)
+ 		task_numa_fault(last_cpupid, nid, HPAGE_PMD_NR, flags);
++		return 0;
++	}
  
--- 
-2.43.0
-
+-	return 0;
+-
++	flags |= TNF_MIGRATE_FAIL;
++	vmf->ptl = pmd_lock(vma->vm_mm, vmf->pmd);
++	if (unlikely(!pmd_same(oldpmd, *vmf->pmd))) {
++		spin_unlock(vmf->ptl);
++		return 0;
++	}
+ out_map:
+ 	/* Restore the PMD */
+ 	pmd = pmd_modify(oldpmd, vma->vm_page_prot);
+@@ -1740,7 +1734,10 @@ out_map:
+ 	set_pmd_at(vma->vm_mm, haddr, vmf->pmd, pmd);
+ 	update_mmu_cache_pmd(vma, vmf->address, vmf->pmd);
+ 	spin_unlock(vmf->ptl);
+-	goto out;
++
++	if (nid != NUMA_NO_NODE)
++		task_numa_fault(last_cpupid, nid, HPAGE_PMD_NR, flags);
++	return 0;
+ }
+ 
+ /*
 
 
 
