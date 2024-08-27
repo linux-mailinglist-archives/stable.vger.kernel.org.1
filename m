@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-70490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70998-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D35B8960E62
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:48:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F7A4961113
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:16:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 11B6E1C23299
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:48:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C7F7282B73
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:15:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D051E1A0B13;
-	Tue, 27 Aug 2024 14:48:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FD2D1C3F0D;
+	Tue, 27 Aug 2024 15:15:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N7Q6niWN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pRA4aDLa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CECE1BA87C;
-	Tue, 27 Aug 2024 14:48:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D5BE1A072D;
+	Tue, 27 Aug 2024 15:15:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770080; cv=none; b=qcUJGEEi97OVy+45bNrb587z48CrAI+rTkVfUthlKcbiASMKfp+XboK+aeIIBkZqsDpYmTVT3sECQcagp/iHazW+5teLd003XX+GI+2OGaqx2JId4uZ9Jy779pgJmQMx19Flph8HOX1C7I9xuz6fbDu8MeRF+/peaQVcGkIoohE=
+	t=1724771758; cv=none; b=AWGq+PTmcKluq8nDg7Jb1kBFnR4cGD9DhbXkx42eGmKYOl63EJX63gRNR492HIgyz2W5sOWAZlJeCeMZTEtku0JENoYTEo0JQQ58R2dD2ejuUjKXbKjBRns4xpwVca2OSVVGbiAVkisM0tQ5/kCXGVR45rZSkpkZheezM3/MF8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770080; c=relaxed/simple;
-	bh=1dWWL4oD/uB2a3h+Atb7kvbbPHzcOkSdiwCKWMC8SGU=;
+	s=arc-20240116; t=1724771758; c=relaxed/simple;
+	bh=VOuTtdMuloZ2tZ0Xg7pKO+zCgE2dUK8KNP/A47ImTlo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SRf4nVuKsHEa7yrHBG9HIpWURtVsydvjiHwlpkOEkNfnTTohIulGnqCrSH9HJxZps0z24eEBwXsXwEw7LM9ODKOkeG1AAZppyjT3p3DGU+o2YqBsQnbV9woRio96VI1Sgm1otkdfHRGaOlTpyr0VTEUpQnVZWCBiFdF16B4NuAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N7Q6niWN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E928CC61040;
-	Tue, 27 Aug 2024 14:47:59 +0000 (UTC)
+	 MIME-Version; b=a82pOPq3CdxNk7gT1n90a3ugAcGfAaiGKNwsWNR19TQgkjD8S+WWWfsqHYG1dOgpLCMWxa5X0UniP0SRl7H+Egp/J0invX6YNe9G1uKCl0uD/ndgFopkVGEoxv5yMFt/tlMtipKZTWft6bkBQcAzLKxpwwWugSYgPWWYJZwiZTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pRA4aDLa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C00A1C4AF50;
+	Tue, 27 Aug 2024 15:15:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770080;
-	bh=1dWWL4oD/uB2a3h+Atb7kvbbPHzcOkSdiwCKWMC8SGU=;
+	s=korg; t=1724771758;
+	bh=VOuTtdMuloZ2tZ0Xg7pKO+zCgE2dUK8KNP/A47ImTlo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N7Q6niWNFriwMhGWlfrZn7rSKKh/z5UwoDhin85xrwvbwogSooiyUZ05sT1QiL37W
-	 /Rg5D7BVlF/nSx76AWK9b+FkiFi4ajMa+wWSs6imP5RmjgnfX6Op2dVyHIgznrCUzf
-	 7ihj1EQl5DZ7Q0wwSsfWSLb7D2grmAq6glhNB2ks=
+	b=pRA4aDLaLi5AoiI1nGIgWfiHVGK+OmBLrIPkWMMMPBHPJf8SWXKFvhK0u6TGY0XYQ
+	 6kvAYs6gNYVZF/tyFr/Rm/eFlhybkdJ6BPB4PnLrYT0fjhsIZhndCJeKc0An7Totz3
+	 NplbUZSa7WEm06mpjLMH2/uDBekwxp9t9TKJUhos=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 089/341] wifi: cfg80211: check wiphy mutex is held for wdev mutex
+	Andrew Jones <ajones@ventanamicro.com>,
+	Haibo Xu <haibo1.xu@intel.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Sunil V L <sunilvl@ventanamicro.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Hanjun Guo <guohanjun@huawei.com>
+Subject: [PATCH 6.1 012/321] arm64: ACPI: NUMA: initialize all values of acpi_early_node_map to NUMA_NO_NODE
 Date: Tue, 27 Aug 2024 16:35:20 +0200
-Message-ID: <20240827143846.794100356@linuxfoundation.org>
+Message-ID: <20240827143838.672890418@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +66,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Haibo Xu <haibo1.xu@intel.com>
 
-[ Upstream commit 1474bc87fe57deac726cc10203f73daa6c3212f7 ]
+commit a21dcf0ea8566ebbe011c79d6ed08cdfea771de3 upstream.
 
-This might seem pretty pointless rather than changing the locking
-immediately, but it seems safer to run for a while with checks and
-the old locking scheme, and then remove the wdev lock later.
+Currently, only acpi_early_node_map[0] was initialized to NUMA_NO_NODE.
+To ensure all the values were properly initialized, switch to initialize
+all of them to NUMA_NO_NODE.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e18962491696 ("arm64: numa: rework ACPI NUMA initialization")
+Cc: <stable@vger.kernel.org> # 4.19.x
+Reported-by: Andrew Jones <ajones@ventanamicro.com>
+Suggested-by: Andrew Jones <ajones@ventanamicro.com>
+Signed-off-by: Haibo Xu <haibo1.xu@intel.com>
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Reviewed-by: Sunil V L <sunilvl@ventanamicro.com>
+Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
+Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+Acked-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Reviewed-by: Hanjun Guo <guohanjun@huawei.com>
+Link: https://lore.kernel.org/r/853d7f74aa243f6f5999e203246f0d1ae92d2b61.1722828421.git.haibo1.xu@intel.com
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/wireless/core.h | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ arch/arm64/kernel/acpi_numa.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/wireless/core.h b/net/wireless/core.h
-index f0a3a23176385..c955be6c6daa4 100644
---- a/net/wireless/core.h
-+++ b/net/wireless/core.h
-@@ -228,6 +228,7 @@ void cfg80211_register_wdev(struct cfg80211_registered_device *rdev,
- static inline void wdev_lock(struct wireless_dev *wdev)
- 	__acquires(wdev)
- {
-+	lockdep_assert_held(&wdev->wiphy->mtx);
- 	mutex_lock(&wdev->mtx);
- 	__acquire(wdev->mtx);
- }
-@@ -235,11 +236,16 @@ static inline void wdev_lock(struct wireless_dev *wdev)
- static inline void wdev_unlock(struct wireless_dev *wdev)
- 	__releases(wdev)
- {
-+	lockdep_assert_held(&wdev->wiphy->mtx);
- 	__release(wdev->mtx);
- 	mutex_unlock(&wdev->mtx);
- }
+--- a/arch/arm64/kernel/acpi_numa.c
++++ b/arch/arm64/kernel/acpi_numa.c
+@@ -27,7 +27,7 @@
  
--#define ASSERT_WDEV_LOCK(wdev) lockdep_assert_held(&(wdev)->mtx)
-+static inline void ASSERT_WDEV_LOCK(struct wireless_dev *wdev)
-+{
-+	lockdep_assert_held(&wdev->wiphy->mtx);
-+	lockdep_assert_held(&wdev->mtx);
-+}
+ #include <asm/numa.h>
  
- static inline bool cfg80211_has_monitors_only(struct cfg80211_registered_device *rdev)
+-static int acpi_early_node_map[NR_CPUS] __initdata = { NUMA_NO_NODE };
++static int acpi_early_node_map[NR_CPUS] __initdata = { [0 ... NR_CPUS - 1] = NUMA_NO_NODE };
+ 
+ int __init acpi_numa_get_nid(unsigned int cpu)
  {
--- 
-2.43.0
-
 
 
 
