@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-71156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70834-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE9BD9611ED
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:25:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48AB6961040
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:06:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2CB851C238A9
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:25:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F112C1F216F1
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:06:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FE2D1C86FB;
-	Tue, 27 Aug 2024 15:24:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 816191C3F19;
+	Tue, 27 Aug 2024 15:06:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sV8JS2Cp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0caS9YEr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D4FD1C7B9D;
-	Tue, 27 Aug 2024 15:24:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FF1F1E520;
+	Tue, 27 Aug 2024 15:06:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772284; cv=none; b=VwUg6/q3zu4dcHZlzz9amrNQBMTPt3zwFFEk+igUBsRn4LuqURGNZX+uBG3yx5SmjAyQHJTzGbEsz6xkC1mSLIR7fuKhHirKvbY+euy00i9q9ofbeW3o55eocxaoQuq1N5yX3uyUNcyCEs3zLQUUhktF9uoBUdpAKesPS3/+Wa4=
+	t=1724771214; cv=none; b=ZG6kdrvvEin3gVVywIvLw1maZuYm+mMX9gik+rqeulZLk3SatoDJLXK0BGXWtLupPK+GCt5TJVghbjOwNju0Ep7GoDlFPZWzWDUok2MSkkopoJspJ41X0W8cyJiNS+ZxEupfagrb1Ltt+AkFeOO+v17kOZMQ3I0WbldzKvReA3Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772284; c=relaxed/simple;
-	bh=iteDeW351vigif8/yifKPU6DLf7GxweLG2l8ILaUqAw=;
+	s=arc-20240116; t=1724771214; c=relaxed/simple;
+	bh=Cd9gJGlhn/eW5k3V27Vq7ACuDfKGPxJZEXHSh2QHm3g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LYixckgtldgrVEdU9GPQPYIAWIgOR/XkV8/BpKyRvBYX6fwClR4NiiareK6KfXZBRfZL2K0W5Kxa0FmTLplFqThzHcKChMaaYFuqzft/omn2VuTf9/ymzfgaYxBmdTDCAwAL8vSLmz23Zyyxop4EwrBtRO0XtgQq6a7Eyer3zAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sV8JS2Cp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 869D6C6107C;
-	Tue, 27 Aug 2024 15:24:43 +0000 (UTC)
+	 MIME-Version; b=JG8bd+w20INRplF0vLi19BXtMWEVnMu9PA7TwNj2o8aeEkxQFuX8Vs6An6JgaKbBEqvMKr/8YNd8R0TPVH8Eg1Y9eo0UrIjPm9si95yDcnU344GESAQduYUDh01wLzfjdiQd1b+LU6wZSa+R9ejqmKfIOVUo9/AEHniWn+5Gl/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0caS9YEr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CFB7C4AF55;
+	Tue, 27 Aug 2024 15:06:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772284;
-	bh=iteDeW351vigif8/yifKPU6DLf7GxweLG2l8ILaUqAw=;
+	s=korg; t=1724771214;
+	bh=Cd9gJGlhn/eW5k3V27Vq7ACuDfKGPxJZEXHSh2QHm3g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sV8JS2CpgNNe38BdakzCtR64+obeO+5PCc+gueOHdeyqxB4PgOs+2IDFsnx4YZiYp
-	 b2e8D2aB4yLh5WhC+RTODyMqwtXDZwssM2ZpwTX5AGlIbUqp6xoYSEhIM2+9xNC83v
-	 6X0dRG8+C8WYyPIp+yEClUAWpt/SS5rly1DJjAtw=
+	b=0caS9YEr/1XfckUu8ojrWQrJqbXE4s5iaL0Mf/i7K7AWJtDUMq6lYsTxHVqYZt//2
+	 DnLXZXri1Al3RG6ax4nBjx4c7Ip5iKyfjH5vVpJh3FVx4ke8+U6RqRRrl2jS7ql8AF
+	 5Wb+ZrXumHWgCY8Yy3ya4w6xa22iZecS0BGQ6+28=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Gruenbacher <agruenba@redhat.com>,
+	Barak Biber <bbiber@nvidia.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Joerg Roedel <jroedel@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 137/321] gfs2: setattr_chown: Add missing initialization
+Subject: [PATCH 6.10 121/273] iommu: Restore lost return in iommu_report_device_fault()
 Date: Tue, 27 Aug 2024 16:37:25 +0200
-Message-ID: <20240827143843.458463623@linuxfoundation.org>
+Message-ID: <20240827143838.012792686@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Barak Biber <bbiber@nvidia.com>
 
-[ Upstream commit 2d8d7990619878a848b1d916c2f936d3012ee17d ]
+[ Upstream commit fca5b78511e98bdff2cdd55c172b23200a7b3404 ]
 
-Add a missing initialization of variable ap in setattr_chown().
-Without, chown() may be able to bypass quotas.
+When iommu_report_device_fault gets called with a partial fault it is
+supposed to collect the fault into the group and then return.
 
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Instead the return was accidently deleted which results in trying to
+process the fault and an eventual crash.
+
+Deleting the return was a typo, put it back.
+
+Fixes: 3dfa64aecbaf ("iommu: Make iommu_report_device_fault() return void")
+Signed-off-by: Barak Biber <bbiber@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
+Link: https://lore.kernel.org/r/0-v1-e7153d9c8cee+1c6-iommu_fault_fix_jgg@nvidia.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/inode.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iommu/io-pgfault.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/gfs2/inode.c b/fs/gfs2/inode.c
-index 23e6962cdd6e3..04fc3e72a96e4 100644
---- a/fs/gfs2/inode.c
-+++ b/fs/gfs2/inode.c
-@@ -1907,7 +1907,7 @@ static int setattr_chown(struct inode *inode, struct iattr *attr)
- 	kuid_t ouid, nuid;
- 	kgid_t ogid, ngid;
- 	int error;
--	struct gfs2_alloc_parms ap;
-+	struct gfs2_alloc_parms ap = {};
+diff --git a/drivers/iommu/io-pgfault.c b/drivers/iommu/io-pgfault.c
+index 06d78fcc79fdb..f2c87c695a17c 100644
+--- a/drivers/iommu/io-pgfault.c
++++ b/drivers/iommu/io-pgfault.c
+@@ -192,6 +192,7 @@ void iommu_report_device_fault(struct device *dev, struct iopf_fault *evt)
+ 		report_partial_fault(iopf_param, fault);
+ 		iopf_put_dev_fault_param(iopf_param);
+ 		/* A request that is not the last does not need to be ack'd */
++		return;
+ 	}
  
- 	ouid = inode->i_uid;
- 	ogid = inode->i_gid;
+ 	/*
 -- 
 2.43.0
 
