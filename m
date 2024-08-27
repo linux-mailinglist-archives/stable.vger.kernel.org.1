@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-71026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70726-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AE0E96114A
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:19:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93CBD960FB4
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:01:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6DF5B1C2364F
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:19:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A25C1F23218
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:01:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4473B1C57AB;
-	Tue, 27 Aug 2024 15:17:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 656831C57A9;
+	Tue, 27 Aug 2024 15:01:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="locIy7iW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MGYMy07O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F09461CE701;
-	Tue, 27 Aug 2024 15:17:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2244312B93;
+	Tue, 27 Aug 2024 15:01:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771851; cv=none; b=I2D+lWCb5cMGY1pVcWlKOD9S2YzSwe8QoGmQc7oQcNmu8K0SZW01UJB5pE0dXwKo2um+aPzPeLZuGkydOhDxjHfCs9A22Wkr3sCpCL6oCE/s/4q/OcbgORV5V533kxvebQ4gr3Xx7HX1ZtMU1z03dqDQCy56FLTPfP5QG/xBC3o=
+	t=1724770864; cv=none; b=HQVKYlx85e1drtEYZZOdWwR8mAQhrAq/A/YsaeWlBXN98MOcG6adMj/yoGkNs6b3ScGmI13r3SfY0xmT9F8GL2UJ5DAPYwCIiE1GMb6a1++6+oQ8ROzSV6zcJj9z/LzaT24d7oz/7917yPg0rtydntjFedAq+CdtN6A13+4NM6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771851; c=relaxed/simple;
-	bh=jmRx+2VgslOmfNRh5XvIAkvPJY0V3pZQH9U8h4cfPDM=;
+	s=arc-20240116; t=1724770864; c=relaxed/simple;
+	bh=S/jtrc/eZyOgeTjkcY/vSZ+mDBCjODzB5UhYHiwdPuY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jWyPoW6M4l9J/Oh6uPgdmthHSqWF5ci3YmaYv4QmjjUOx7SYwIXs3RXpG1gJCpNqPUQROr5mPA1br3gOvzx0EyGNQAm2cyCcJwW1Hws5W6d/uMeFedzm4/0G/xmZ9GoRhUt7cvYAz06G1/ASi01pO7xITXuUISraVIRE9H+FkIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=locIy7iW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4275AC61068;
-	Tue, 27 Aug 2024 15:17:30 +0000 (UTC)
+	 MIME-Version; b=T1kietqGjS6VCQpZA1wmKN4qgA7x4pH+S2dXvPn4/u4NgB4uSyDJvHFtwVtD+uz4tMDg1vSwfdQJOacxH2Qgzr5y8uT5n0BdT27D8vBaNdXF7DT3NCK9vrDrYNbLB2RNZCKSPDf00mujNdSBC/G4HRHkickd+hdNJ+y7S4nfdMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MGYMy07O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99B3CC4AF1C;
+	Tue, 27 Aug 2024 15:01:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771850;
-	bh=jmRx+2VgslOmfNRh5XvIAkvPJY0V3pZQH9U8h4cfPDM=;
+	s=korg; t=1724770864;
+	bh=S/jtrc/eZyOgeTjkcY/vSZ+mDBCjODzB5UhYHiwdPuY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=locIy7iWSq0Fqq0bgznl4foLOfUcfDclX93vVlbB59YI4YAGuBjVSHSfZ812sil9I
-	 eFlisxopzIlsPfHn9xK3SSUJWk28kBwv3+nDGtFS97gBIMQEy4tiCtXFZuPYdxIBnA
-	 wG5pp6hTgp3GZQxANjalacgubWxDEL/jDFTnV2cI=
+	b=MGYMy07OQ8KsZB6u592PjOXVoyc55IMsk0k7rz3h2ax2pL2FRap+hpGgNqHQj0+eO
+	 bpA2ZvBKvcrU2e/xKBoiZQI3DbCvR/PH1oYAJj/PQCfHWPq+CBU2WZUa7ZT8o3lWSN
+	 asIP+ToYcAYO618ZxyG9Pv48yRyx/cQ+VltyAxrI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Leon Hwang <leon.hwang@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 032/321] bpf: Fix updating attached freplace prog in prog_array map
+	stable <stable@kernel.org>,
+	Hans de Goede <hdegoede@redhat.com>
+Subject: [PATCH 6.10 016/273] usb: misc: ljca: Add Lunar Lake ljca GPIO HID to ljca_gpio_hids[]
 Date: Tue, 27 Aug 2024 16:35:40 +0200
-Message-ID: <20240827143839.441232641@linuxfoundation.org>
+Message-ID: <20240827143834.004518660@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +59,39 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Hwang <leon.hwang@linux.dev>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit fdad456cbcca739bae1849549c7a999857c56f88 ]
+commit 3ed486e383ccee9b0c8d727608f12a937c6603ca upstream.
 
-The commit f7866c358733 ("bpf: Fix null pointer dereference in resolve_prog_type() for BPF_PROG_TYPE_EXT")
-fixed a NULL pointer dereference panic, but didn't fix the issue that
-fails to update attached freplace prog to prog_array map.
+Add LJCA GPIO support for the Lunar Lake platform.
 
-Since commit 1c123c567fb1 ("bpf: Resolve fext program type when checking map compatibility"),
-freplace prog and its target prog are able to tail call each other.
+New HID taken from out of tree ivsc-driver git repo.
 
-And the commit 3aac1ead5eb6 ("bpf: Move prog->aux->linked_prog and trampoline into bpf_link on attach")
-sets prog->aux->dst_prog as NULL after attaching freplace prog to its
-target prog.
-
-After loading freplace the prog_array's owner type is BPF_PROG_TYPE_SCHED_CLS.
-Then, after attaching freplace its prog->aux->dst_prog is NULL.
-Then, while updating freplace in prog_array the bpf_prog_map_compatible()
-incorrectly returns false because resolve_prog_type() returns
-BPF_PROG_TYPE_EXT instead of BPF_PROG_TYPE_SCHED_CLS.
-After this patch the resolve_prog_type() returns BPF_PROG_TYPE_SCHED_CLS
-and update to prog_array can succeed.
-
-Fixes: f7866c358733 ("bpf: Fix null pointer dereference in resolve_prog_type() for BPF_PROG_TYPE_EXT")
-Cc: Toke Høiland-Jørgensen <toke@redhat.com>
-Cc: Martin KaFai Lau <martin.lau@kernel.org>
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Signed-off-by: Leon Hwang <leon.hwang@linux.dev>
-Link: https://lore.kernel.org/r/20240728114612.48486-2-leon.hwang@linux.dev
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://github.com/intel/ivsc-driver/commit/47e7c4a446c8ea8c741ff5a32fa7b19f9e6fd47e
+Cc: stable <stable@kernel.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20240812095038.555837-1-hdegoede@redhat.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/bpf_verifier.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/misc/usb-ljca.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/linux/bpf_verifier.h b/include/linux/bpf_verifier.h
-index 6a524c5462a6f..131adc98080b8 100644
---- a/include/linux/bpf_verifier.h
-+++ b/include/linux/bpf_verifier.h
-@@ -645,8 +645,8 @@ static inline u32 type_flag(u32 type)
- /* only use after check_attach_btf_id() */
- static inline enum bpf_prog_type resolve_prog_type(const struct bpf_prog *prog)
- {
--	return (prog->type == BPF_PROG_TYPE_EXT && prog->aux->dst_prog) ?
--		prog->aux->dst_prog->type : prog->type;
-+	return (prog->type == BPF_PROG_TYPE_EXT && prog->aux->saved_dst_prog_type) ?
-+		prog->aux->saved_dst_prog_type : prog->type;
- }
+--- a/drivers/usb/misc/usb-ljca.c
++++ b/drivers/usb/misc/usb-ljca.c
+@@ -169,6 +169,7 @@ static const struct acpi_device_id ljca_
+ 	{ "INTC1096" },
+ 	{ "INTC100B" },
+ 	{ "INTC10D1" },
++	{ "INTC10B5" },
+ 	{},
+ };
  
- static inline bool bpf_prog_check_recur(const struct bpf_prog *prog)
--- 
-2.43.0
-
 
 
 
