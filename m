@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-70644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B387960F4F
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:58:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B96C961260
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:30:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 24C671F246E6
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:58:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A4A2CB2981D
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:29:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7F581C6887;
-	Tue, 27 Aug 2024 14:56:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A8931CC8B2;
+	Tue, 27 Aug 2024 15:26:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zHUssLUT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZllKIVwL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6288073466;
-	Tue, 27 Aug 2024 14:56:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD0BB1CC889;
+	Tue, 27 Aug 2024 15:26:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770594; cv=none; b=UQlmv+FqO5B/q4gA5giKBaEbqZ90H/UfVpSoYsn9L/mOt6uKX3MunU+Cal29SL8wfnsGbrOfnS0duh611K+iYasQjBgp0J+my4y9cEMY4yZBy6Gqw3Un7WGzmJFspRBDYB9AGHSQrQ7t8vFgtJMIim/+VRym9Hu2VZLxsZ+y8Bk=
+	t=1724772386; cv=none; b=fASRMZ1RoxU9hpggHzO+RDtGrm0S0bWgBt32mPSiPPi5P4XZU/D2fORi1nXZ7AfYvFIsO7c3U/hZufUNO/goVrGLeQXvAsY4ghe0ZLEQN0pD++/3x+iArfyG27Nzh37Hj42F3eW+wYjKEPwMmgUNwoaNLU3IcVg0pMhjimIUrWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770594; c=relaxed/simple;
-	bh=dbP2hSCUi4zr/ohACVfTzeFNN9ydKcm4jgB+ZNu7MeE=;
+	s=arc-20240116; t=1724772386; c=relaxed/simple;
+	bh=htQKbMhhXjS/8+bPrWROjYPKDzv8LGSuamwP4d4NJpY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gInV7u5unz4O2x3IpCW4cet65Vg5H7lt8IgYAPK4F1Xo9oe6bslymZXC1gj+KQGkB6YgJaFqA5YoOuvml9yYZDcYEomEovJzlbY0CG93DDQ1iUXdG5kJcsiakKLnvC3W1Rp4ebf0+2OyazTzVoQQ+h7zNhkYibZ9JjV8lmw6ebw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zHUssLUT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 642D4C4FE01;
-	Tue, 27 Aug 2024 14:56:33 +0000 (UTC)
+	 MIME-Version; b=fUqFy6gTF31oQyEDOjRtolN0gKNKv4tSnVsxWgerTIN+wsS0StVmqfMdUo0WsfXsYMjw2FEHN1nftjWtAIRrvVJ1+LRk3WGj6gDuAaarkGTCamMxg4FCyDMQhDt+77DO28fCGo5b2QpQkkvxp9gcRJf5xsEGfgL+VHrgg4uT1xw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZllKIVwL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DF17C6107C;
+	Tue, 27 Aug 2024 15:26:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770593;
-	bh=dbP2hSCUi4zr/ohACVfTzeFNN9ydKcm4jgB+ZNu7MeE=;
+	s=korg; t=1724772386;
+	bh=htQKbMhhXjS/8+bPrWROjYPKDzv8LGSuamwP4d4NJpY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zHUssLUTyGxMfdaus3UJyaB3A+JFyXnBka9YN1ujKub7Ta4+7Xz+XxPkZyqTxHsVL
-	 RcYJb1IkwCpmk+wOvbDrTBuU5KmTPaaDoZYHWOYm2pJDHKbLfCYY/Zh3FSgTRvdW3a
-	 2EDDnNUC2SplKg5rvyVWs/FkAhN5bGUCZa1i9HLA=
+	b=ZllKIVwLVWoxDytfdYMvOtNH4tX14R9Bz6IIFXAQQ9rX0NvGxk861wod6Q7S2OIfG
+	 PCqJVk2fjrdAvB3cXMM8CSCviIJYD1IFiKClwbl1RP136yastmr214iKT5ucscuOsk
+	 NLmCyLfUJB1K/ls+KoW6/ukbdBprRqN/CwqeQ1hQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Anderson <sean.anderson@linux.dev>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 275/341] net: xilinx: axienet: Fix dangling multicast addresses
+Subject: [PATCH 6.1 198/321] irqchip/renesas-rzg2l: Do not set TIEN and TINT source at the same time
 Date: Tue, 27 Aug 2024 16:38:26 +0200
-Message-ID: <20240827143853.862771441@linuxfoundation.org>
+Message-ID: <20240827143845.769493379@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,96 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Anderson <sean.anderson@linux.dev>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-[ Upstream commit 797a68c9de0f5a5447baf4bd3bb9c10a3993435b ]
+[ Upstream commit dce0919c83c325ac9dec5bc8838d5de6d32c01b1 ]
 
-If a multicast address is removed but there are still some multicast
-addresses, that address would remain programmed into the frame filter.
-Fix this by explicitly setting the enable bit for each filter.
+As per the hardware team, TIEN and TINT source should not set at the same
+time due to a possible hardware race leading to spurious IRQ.
 
-Fixes: 8a3b7a252dca ("drivers/net/ethernet/xilinx: added Xilinx AXI Ethernet driver")
-Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20240822154059.1066595-3-sean.anderson@linux.dev
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Currently on some scenarios hardware settings for TINT detection is not in
+sync with TINT source as the enable/disable overrides source setting value
+leading to hardware inconsistent state. For eg: consider the case GPIOINT0
+is used as TINT interrupt and configuring GPIOINT5 as edge type. During
+rzg2l_irq_set_type(), TINT source for GPIOINT5 is set. On disable(),
+clearing of the entire bytes of TINT source selection for GPIOINT5 is same
+as GPIOINT0 with TIEN disabled. Apart from this during enable(), the
+setting of GPIOINT5 with TIEN results in spurious IRQ as due to a HW race,
+it is possible that IP can use the TIEN with previous source value
+(GPIOINT0).
+
+So, just update TIEN during enable/disable as TINT source is already set
+during rzg2l_irq_set_type(). This will make the consistent hardware
+settings for detection method tied with TINT source and allows to simplify
+the code.
+
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/xilinx/xilinx_axienet.h  |  1 +
- .../net/ethernet/xilinx/xilinx_axienet_main.c | 21 ++++++++-----------
- 2 files changed, 10 insertions(+), 12 deletions(-)
+ drivers/irqchip/irq-renesas-rzg2l.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet.h b/drivers/net/ethernet/xilinx/xilinx_axienet.h
-index a62c2b4c6b2f2..f09f10f17d7ea 100644
---- a/drivers/net/ethernet/xilinx/xilinx_axienet.h
-+++ b/drivers/net/ethernet/xilinx/xilinx_axienet.h
-@@ -169,6 +169,7 @@
- #define XAE_UAW0_OFFSET		0x00000700 /* Unicast address word 0 */
- #define XAE_UAW1_OFFSET		0x00000704 /* Unicast address word 1 */
- #define XAE_FMI_OFFSET		0x00000708 /* Frame Filter Control */
-+#define XAE_FFE_OFFSET		0x0000070C /* Frame Filter Enable */
- #define XAE_AF0_OFFSET		0x00000710 /* Address Filter 0 */
- #define XAE_AF1_OFFSET		0x00000714 /* Address Filter 1 */
+diff --git a/drivers/irqchip/irq-renesas-rzg2l.c b/drivers/irqchip/irq-renesas-rzg2l.c
+index be71459c7465a..70279ca7e6278 100644
+--- a/drivers/irqchip/irq-renesas-rzg2l.c
++++ b/drivers/irqchip/irq-renesas-rzg2l.c
+@@ -132,7 +132,7 @@ static void rzg2l_irqc_irq_disable(struct irq_data *d)
  
-diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-index 9afd9b7f3044e..144feb7a2fdac 100644
---- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-+++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-@@ -412,7 +412,7 @@ static int netdev_set_mac_address(struct net_device *ndev, void *p)
-  */
- static void axienet_set_multicast_list(struct net_device *ndev)
- {
--	int i;
-+	int i = 0;
- 	u32 reg, af0reg, af1reg;
- 	struct axienet_local *lp = netdev_priv(ndev);
- 
-@@ -434,7 +434,6 @@ static void axienet_set_multicast_list(struct net_device *ndev)
- 		reg &= ~XAE_FMI_PM_MASK;
- 		axienet_iow(lp, XAE_FMI_OFFSET, reg);
- 
--		i = 0;
- 		netdev_for_each_mc_addr(ha, ndev) {
- 			if (i >= XAE_MULTICAST_CAM_TABLE_NUM)
- 				break;
-@@ -453,6 +452,7 @@ static void axienet_set_multicast_list(struct net_device *ndev)
- 			axienet_iow(lp, XAE_FMI_OFFSET, reg);
- 			axienet_iow(lp, XAE_AF0_OFFSET, af0reg);
- 			axienet_iow(lp, XAE_AF1_OFFSET, af1reg);
-+			axienet_iow(lp, XAE_FFE_OFFSET, 1);
- 			i++;
- 		}
- 	} else {
-@@ -460,18 +460,15 @@ static void axienet_set_multicast_list(struct net_device *ndev)
- 		reg &= ~XAE_FMI_PM_MASK;
- 
- 		axienet_iow(lp, XAE_FMI_OFFSET, reg);
--
--		for (i = 0; i < XAE_MULTICAST_CAM_TABLE_NUM; i++) {
--			reg = axienet_ior(lp, XAE_FMI_OFFSET) & 0xFFFFFF00;
--			reg |= i;
--
--			axienet_iow(lp, XAE_FMI_OFFSET, reg);
--			axienet_iow(lp, XAE_AF0_OFFSET, 0);
--			axienet_iow(lp, XAE_AF1_OFFSET, 0);
--		}
--
- 		dev_info(&ndev->dev, "Promiscuous mode disabled.\n");
+ 		raw_spin_lock(&priv->lock);
+ 		reg = readl_relaxed(priv->base + TSSR(tssr_index));
+-		reg &= ~(TSSEL_MASK << TSSEL_SHIFT(tssr_offset));
++		reg &= ~(TIEN << TSSEL_SHIFT(tssr_offset));
+ 		writel_relaxed(reg, priv->base + TSSR(tssr_index));
+ 		raw_spin_unlock(&priv->lock);
  	}
-+
-+	for (; i < XAE_MULTICAST_CAM_TABLE_NUM; i++) {
-+		reg = axienet_ior(lp, XAE_FMI_OFFSET) & 0xFFFFFF00;
-+		reg |= i;
-+		axienet_iow(lp, XAE_FMI_OFFSET, reg);
-+		axienet_iow(lp, XAE_FFE_OFFSET, 0);
-+	}
- }
+@@ -145,7 +145,6 @@ static void rzg2l_irqc_irq_enable(struct irq_data *d)
  
- /**
+ 	if (hw_irq >= IRQC_TINT_START && hw_irq < IRQC_NUM_IRQ) {
+ 		struct rzg2l_irqc_priv *priv = irq_data_to_priv(d);
+-		unsigned long tint = (uintptr_t)d->chip_data;
+ 		u32 offset = hw_irq - IRQC_TINT_START;
+ 		u32 tssr_offset = TSSR_OFFSET(offset);
+ 		u8 tssr_index = TSSR_INDEX(offset);
+@@ -153,7 +152,7 @@ static void rzg2l_irqc_irq_enable(struct irq_data *d)
+ 
+ 		raw_spin_lock(&priv->lock);
+ 		reg = readl_relaxed(priv->base + TSSR(tssr_index));
+-		reg |= (TIEN | tint) << TSSEL_SHIFT(tssr_offset);
++		reg |= TIEN << TSSEL_SHIFT(tssr_offset);
+ 		writel_relaxed(reg, priv->base + TSSR(tssr_index));
+ 		raw_spin_unlock(&priv->lock);
+ 	}
 -- 
 2.43.0
 
