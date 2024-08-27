@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-71191-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70619-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2C13961237
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:29:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3319960F28
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:56:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9024B281567
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:29:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DD090B264FD
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:56:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADE501CDA08;
-	Tue, 27 Aug 2024 15:26:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E21371CB128;
+	Tue, 27 Aug 2024 14:55:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FVUD6DfP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UvjmgE4/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B3EE1CCEF3;
-	Tue, 27 Aug 2024 15:26:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F21F1C9ECD;
+	Tue, 27 Aug 2024 14:55:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772399; cv=none; b=gcyn/35WTDly34GgBmGC6qdQl/hhYReORXDX/i0FvRi/4F0CJyA21k3g2UDDrPWcF+lAJH3SzI+Cazee0ExcXBnAUoq6u/dWGYvqjpQRdRf4Sqau4AiKkXYqztK7ZpWaj39Gip5OTfHdIumvmb+HTR8cDR2412lVKf6jokZ2b7w=
+	t=1724770510; cv=none; b=eIvEQMYwJqWPUmvm7tkP73CLooIaZUwVJEKVzA8MYTUvOvALz1ULRDQiTihX+TO2YUpiD1YF5ea2z2APU9i+P/MhVDyQpTLDACJAdCRigcuxPgsi9pFtP6q9vNcQ2MWdsVatyPNKAqPoEIR39iYYP5FSw9A57gN3KV2mRdwoVT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772399; c=relaxed/simple;
-	bh=rFmk9UnZOTwmx7Ba90nzAAa2KGljqqbzXFEFetNhOYo=;
+	s=arc-20240116; t=1724770510; c=relaxed/simple;
+	bh=TH0Q8mAElnzkCaFzulMpUDsL+fnu8si23pOJSdUqef8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=St6mAteKSIiwSqp0Mhq1Vg6KZBQ/lzWpmKaOjIbN9+hb1gWIUDaVjwMX/u6ACNtFEybux4ETs85GCoKn+xa+UmdvfzPZqBdMj8csEjEeh3X/ifSCMGoHef5avxlIaZaN8kzan7JLAMRgE4r1OH1bYjL7Vyd72uBA+yQHq5B0vSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FVUD6DfP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4369C4DE12;
-	Tue, 27 Aug 2024 15:26:38 +0000 (UTC)
+	 MIME-Version; b=F1N55d9FIRz8yAxDDvw5Mkv7+VxfsRxF544qckcL279YJ4HNGtnFDi2gxZYABotUiTPBkT/hialhMXcZINnIItaZp4fVjMj7nSj8jGiD1Agf7B+xBgTpW52lOu4j5zIzuyytqxxHxmkNEcrvAcbLmj1IEY9LxCGbeUenMVKCJm8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UvjmgE4/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18828C4E690;
+	Tue, 27 Aug 2024 14:55:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772399;
-	bh=rFmk9UnZOTwmx7Ba90nzAAa2KGljqqbzXFEFetNhOYo=;
+	s=korg; t=1724770510;
+	bh=TH0Q8mAElnzkCaFzulMpUDsL+fnu8si23pOJSdUqef8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FVUD6DfP+y/iLusQ3wVFFYYOvvvyNDwo6vhf1u1M2Q2RECYKxA5ki5/BOhZmo9Ob6
-	 L3c3GfiTgq0HbPWpMVDU1EgjOPqG9Sww/jvNfDKyx/J5KW1G5NVpwAZni+eHUZScZN
-	 GAZrJrhq9ez3jI7BJON7J+BYJzTLiPivJ81/kA2k=
+	b=UvjmgE4/MwykI6T+EXsqJE7cRJ6F2LzY/Qg1RfrEYpx4PphVKtqlAmlIGp3ykgEWa
+	 GD56WYuFbuNe7uBSUrseKD+5f6JUQa0kyv2bZD7H6PC1oyr387y7DNqvy4/JhgyJq/
+	 9IiDH9Qln9uJigV5UdX/cyesObPKhAq9YPqowEEE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 172/321] clocksource/drivers/arm_global_timer: Guard against division by zero
+Subject: [PATCH 6.6 249/341] tcp/dccp: do not care about families in inet_twsk_purge()
 Date: Tue, 27 Aug 2024 16:38:00 +0200
-Message-ID: <20240827143844.778997377@linuxfoundation.org>
+Message-ID: <20240827143852.882725994@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +63,196 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit e651f2fae33634175fae956d896277cf916f5d09 ]
+[ Upstream commit 1eeb5043573981f3a1278876515851b7f6b1df1b ]
 
-The result of the division of new_rate by gt_target_rate can be zero (if
-new_rate is smaller than gt_target_rate). Using that result as divisor
-without checking can result in a division by zero error. Guard against
-this by checking for a zero value earlier.
-While here, also change the psv variable to an unsigned long to make
-sure we don't overflow the datatype as all other types involved are also
-unsiged long.
+We lost ability to unload ipv6 module a long time ago.
 
-Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20240225151336.2728533-3-martin.blumenstingl@googlemail.com
+Instead of calling expensive inet_twsk_purge() twice,
+we can handle all families in one round.
+
+Also remove an extra line added in my prior patch,
+per Kuniyuki Iwashima feedback.
+
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://lore.kernel.org/netdev/20240327192934.6843-1-kuniyu@amazon.com/
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://lore.kernel.org/r/20240329153203.345203-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 565d121b6998 ("tcp: prevent concurrent execution of tcp_sk_exit_batch")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clocksource/arm_global_timer.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ include/net/inet_timewait_sock.h | 2 +-
+ include/net/tcp.h                | 2 +-
+ net/dccp/ipv4.c                  | 2 +-
+ net/dccp/ipv6.c                  | 6 ------
+ net/ipv4/inet_timewait_sock.c    | 9 +++------
+ net/ipv4/tcp_ipv4.c              | 2 +-
+ net/ipv4/tcp_minisocks.c         | 6 +++---
+ net/ipv6/tcp_ipv6.c              | 6 ------
+ 8 files changed, 10 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/clocksource/arm_global_timer.c b/drivers/clocksource/arm_global_timer.c
-index e1c773bb55359..22a58d35a41fa 100644
---- a/drivers/clocksource/arm_global_timer.c
-+++ b/drivers/clocksource/arm_global_timer.c
-@@ -290,18 +290,17 @@ static int gt_clk_rate_change_cb(struct notifier_block *nb,
- 	switch (event) {
- 	case PRE_RATE_CHANGE:
- 	{
--		int psv;
-+		unsigned long psv;
+diff --git a/include/net/inet_timewait_sock.h b/include/net/inet_timewait_sock.h
+index 4a8e578405cb3..9365e5af8d6da 100644
+--- a/include/net/inet_timewait_sock.h
++++ b/include/net/inet_timewait_sock.h
+@@ -114,7 +114,7 @@ static inline void inet_twsk_reschedule(struct inet_timewait_sock *tw, int timeo
  
--		psv = DIV_ROUND_CLOSEST(ndata->new_rate,
--					gt_target_rate);
+ void inet_twsk_deschedule_put(struct inet_timewait_sock *tw);
+ 
+-void inet_twsk_purge(struct inet_hashinfo *hashinfo, int family);
++void inet_twsk_purge(struct inet_hashinfo *hashinfo);
+ 
+ static inline
+ struct net *twsk_net(const struct inet_timewait_sock *twsk)
+diff --git a/include/net/tcp.h b/include/net/tcp.h
+index 71af244104433..cc3b56bf19e05 100644
+--- a/include/net/tcp.h
++++ b/include/net/tcp.h
+@@ -344,7 +344,7 @@ void tcp_rcv_established(struct sock *sk, struct sk_buff *skb);
+ void tcp_rcv_space_adjust(struct sock *sk);
+ int tcp_twsk_unique(struct sock *sk, struct sock *sktw, void *twp);
+ void tcp_twsk_destructor(struct sock *sk);
+-void tcp_twsk_purge(struct list_head *net_exit_list, int family);
++void tcp_twsk_purge(struct list_head *net_exit_list);
+ ssize_t tcp_splice_read(struct socket *sk, loff_t *ppos,
+ 			struct pipe_inode_info *pipe, size_t len,
+ 			unsigned int flags);
+diff --git a/net/dccp/ipv4.c b/net/dccp/ipv4.c
+index 65a6733fc897f..ca31c3b096bbf 100644
+--- a/net/dccp/ipv4.c
++++ b/net/dccp/ipv4.c
+@@ -1042,7 +1042,7 @@ static void __net_exit dccp_v4_exit_net(struct net *net)
+ 
+ static void __net_exit dccp_v4_exit_batch(struct list_head *net_exit_list)
+ {
+-	inet_twsk_purge(&dccp_hashinfo, AF_INET);
++	inet_twsk_purge(&dccp_hashinfo);
+ }
+ 
+ static struct pernet_operations dccp_v4_ops = {
+diff --git a/net/dccp/ipv6.c b/net/dccp/ipv6.c
+index 683e4291b348a..d25e962b18a53 100644
+--- a/net/dccp/ipv6.c
++++ b/net/dccp/ipv6.c
+@@ -1122,15 +1122,9 @@ static void __net_exit dccp_v6_exit_net(struct net *net)
+ 	inet_ctl_sock_destroy(pn->v6_ctl_sk);
+ }
+ 
+-static void __net_exit dccp_v6_exit_batch(struct list_head *net_exit_list)
+-{
+-	inet_twsk_purge(&dccp_hashinfo, AF_INET6);
+-}
 -
--		if (abs(gt_target_rate - (ndata->new_rate / psv)) > MAX_F_ERR)
-+		psv = DIV_ROUND_CLOSEST(ndata->new_rate, gt_target_rate);
-+		if (!psv ||
-+		    abs(gt_target_rate - (ndata->new_rate / psv)) > MAX_F_ERR)
- 			return NOTIFY_BAD;
+ static struct pernet_operations dccp_v6_ops = {
+ 	.init   = dccp_v6_init_net,
+ 	.exit   = dccp_v6_exit_net,
+-	.exit_batch = dccp_v6_exit_batch,
+ 	.id	= &dccp_v6_pernet_id,
+ 	.size   = sizeof(struct dccp_v6_pernet),
+ };
+diff --git a/net/ipv4/inet_timewait_sock.c b/net/ipv4/inet_timewait_sock.c
+index 55f60d1b46f2d..fff53144250c5 100644
+--- a/net/ipv4/inet_timewait_sock.c
++++ b/net/ipv4/inet_timewait_sock.c
+@@ -279,7 +279,7 @@ void __inet_twsk_schedule(struct inet_timewait_sock *tw, int timeo, bool rearm)
+ EXPORT_SYMBOL_GPL(__inet_twsk_schedule);
  
- 		psv--;
+ /* Remove all non full sockets (TIME_WAIT and NEW_SYN_RECV) for dead netns */
+-void inet_twsk_purge(struct inet_hashinfo *hashinfo, int family)
++void inet_twsk_purge(struct inet_hashinfo *hashinfo)
+ {
+ 	struct inet_ehash_bucket *head = &hashinfo->ehash[0];
+ 	unsigned int ehash_mask = hashinfo->ehash_mask;
+@@ -288,7 +288,6 @@ void inet_twsk_purge(struct inet_hashinfo *hashinfo, int family)
+ 	struct sock *sk;
  
- 		/* prescaler within legal range? */
--		if (psv < 0 || psv > GT_CONTROL_PRESCALER_MAX)
-+		if (psv > GT_CONTROL_PRESCALER_MAX)
- 			return NOTIFY_BAD;
+ 	for (slot = 0; slot <= ehash_mask; slot++, head++) {
+-
+ 		if (hlist_nulls_empty(&head->chain))
+ 			continue;
  
- 		/*
+@@ -303,15 +302,13 @@ void inet_twsk_purge(struct inet_hashinfo *hashinfo, int family)
+ 					     TCPF_NEW_SYN_RECV))
+ 				continue;
+ 
+-			if (sk->sk_family != family ||
+-			    refcount_read(&sock_net(sk)->ns.count))
++			if (refcount_read(&sock_net(sk)->ns.count))
+ 				continue;
+ 
+ 			if (unlikely(!refcount_inc_not_zero(&sk->sk_refcnt)))
+ 				continue;
+ 
+-			if (unlikely(sk->sk_family != family ||
+-				     refcount_read(&sock_net(sk)->ns.count))) {
++			if (refcount_read(&sock_net(sk)->ns.count)) {
+ 				sock_gen_put(sk);
+ 				goto restart;
+ 			}
+diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
+index 48ec2c1777d45..6ef51d253abb7 100644
+--- a/net/ipv4/tcp_ipv4.c
++++ b/net/ipv4/tcp_ipv4.c
+@@ -3304,7 +3304,7 @@ static void __net_exit tcp_sk_exit_batch(struct list_head *net_exit_list)
+ {
+ 	struct net *net;
+ 
+-	tcp_twsk_purge(net_exit_list, AF_INET);
++	tcp_twsk_purge(net_exit_list);
+ 
+ 	list_for_each_entry(net, net_exit_list, exit_list) {
+ 		inet_pernet_hashinfo_free(net->ipv4.tcp_death_row.hashinfo);
+diff --git a/net/ipv4/tcp_minisocks.c b/net/ipv4/tcp_minisocks.c
+index 260bfb9ada38d..78962c7f8c339 100644
+--- a/net/ipv4/tcp_minisocks.c
++++ b/net/ipv4/tcp_minisocks.c
+@@ -363,7 +363,7 @@ void tcp_twsk_destructor(struct sock *sk)
+ }
+ EXPORT_SYMBOL_GPL(tcp_twsk_destructor);
+ 
+-void tcp_twsk_purge(struct list_head *net_exit_list, int family)
++void tcp_twsk_purge(struct list_head *net_exit_list)
+ {
+ 	bool purged_once = false;
+ 	struct net *net;
+@@ -371,9 +371,9 @@ void tcp_twsk_purge(struct list_head *net_exit_list, int family)
+ 	list_for_each_entry(net, net_exit_list, exit_list) {
+ 		if (net->ipv4.tcp_death_row.hashinfo->pernet) {
+ 			/* Even if tw_refcount == 1, we must clean up kernel reqsk */
+-			inet_twsk_purge(net->ipv4.tcp_death_row.hashinfo, family);
++			inet_twsk_purge(net->ipv4.tcp_death_row.hashinfo);
+ 		} else if (!purged_once) {
+-			inet_twsk_purge(&tcp_hashinfo, family);
++			inet_twsk_purge(&tcp_hashinfo);
+ 			purged_once = true;
+ 		}
+ 	}
+diff --git a/net/ipv6/tcp_ipv6.c b/net/ipv6/tcp_ipv6.c
+index d0034916d386b..83b48dc2b3ee2 100644
+--- a/net/ipv6/tcp_ipv6.c
++++ b/net/ipv6/tcp_ipv6.c
+@@ -2213,15 +2213,9 @@ static void __net_exit tcpv6_net_exit(struct net *net)
+ 	inet_ctl_sock_destroy(net->ipv6.tcp_sk);
+ }
+ 
+-static void __net_exit tcpv6_net_exit_batch(struct list_head *net_exit_list)
+-{
+-	tcp_twsk_purge(net_exit_list, AF_INET6);
+-}
+-
+ static struct pernet_operations tcpv6_net_ops = {
+ 	.init	    = tcpv6_net_init,
+ 	.exit	    = tcpv6_net_exit,
+-	.exit_batch = tcpv6_net_exit_batch,
+ };
+ 
+ int __init tcpv6_init(void)
 -- 
 2.43.0
 
