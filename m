@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-70860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70610-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB501961066
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:08:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49A1E960F12
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:55:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3980FB25D35
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:08:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E81381F22A3A
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:55:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 306B51C4EEC;
-	Tue, 27 Aug 2024 15:08:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78A351C8228;
+	Tue, 27 Aug 2024 14:54:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C2un1pYs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tbDfoj04"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E057C1C5783;
-	Tue, 27 Aug 2024 15:08:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 372851A0B13;
+	Tue, 27 Aug 2024 14:54:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771302; cv=none; b=ZLiUi/xgBwm8dJq2c7Zaymb4RV7cyVyp3lTobSH5O2BlUhrPCrtTWZ1RynkHo3S+YTpuQt6c6tlCKGwfmJYkGr1Yf2fC3X6l+4ADudpG+yR8rdE7Z1yJbDK96rmPmvPFglFfgCfNVGjgP95HWDD4kdgWQVw8bUKuLJ8ruUlIfFs=
+	t=1724770481; cv=none; b=L5BjIAPI4PkwsPOpEhk3++4yAH0xb2hsl8bKmwBtxKlbbZu0Noi3WcDLGtQ2GXF2y1WlY9kIy35mEgda7SLIZ6jgnP0LyH7hvPswRF71pfooxG4+UpLNOyOjw2rkXloDb3UXLfUjEGLFWKVNleKinQluuCRoom95ZVGocKl28j4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771302; c=relaxed/simple;
-	bh=UeMeYboT1q57XjQZ+1216pdqY+1inKqJ0NBLOoF1W6w=;
+	s=arc-20240116; t=1724770481; c=relaxed/simple;
+	bh=X0LRK+7eGajU0xinLto5PvrR0JKGdmYogflO97ayhEU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m9U/w+v858DTZ3PL6YoatGr7A6EMDNVAYmrfA8Mx35muTsxfP6EzjyXCcHj0b0okuMu5lXg6Q8f1r0Xbb7LJi66LnFCIu+9D08hI7ZZfD2hJeGVmZhcRyHtp7D3eHXEINPVzt7mw/CYsDnuFO0EKamNk4lbxTjBRO42YLYeRioE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C2un1pYs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D52AC61074;
-	Tue, 27 Aug 2024 15:08:21 +0000 (UTC)
+	 MIME-Version; b=nwH90Dr5K1tO8w1KwmDdvZbm/+LYIQhCNK5KJeOQ2xcW0eARgVS6bsYuLPLLEBNG/wtyVeiwM9GYO9frc7wQy4tKvUVwacrQgKDlpe4ocBzNzKKjolMniXBgOo3w+HP4Hqwj3YTkMl0TbOtqJXGfLeuQzMAVdLQqRaZYLbK51pQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tbDfoj04; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CC6EC4E679;
+	Tue, 27 Aug 2024 14:54:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771301;
-	bh=UeMeYboT1q57XjQZ+1216pdqY+1inKqJ0NBLOoF1W6w=;
+	s=korg; t=1724770481;
+	bh=X0LRK+7eGajU0xinLto5PvrR0JKGdmYogflO97ayhEU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C2un1pYsDtyMC9GjA3bMS6C9ga9zYj5lxJhFwX825NmidNk46d7vXY+rdOkYVdBl6
-	 54UlkZNHPzPFJVrq1F73Rtbcx18f65KnLcGUtkL+obBH7QlNdZ++JRg2uh5Dbl1nfa
-	 eAks+IQf5Px6gH4ehZo5gBRE0r/gk63us6l4M6IM=
+	b=tbDfoj04pFRHSnRV+4dtgnFJ5H2AFhmNDS8EYCMLbFks+2Yj/j34XyV/1vYVcgyEA
+	 VvMEeQxXqVqe3i/bZfiqWrrYpeVGTmhYZt7woppLpMmFVUVJm5o2seCUItNUPLm5xA
+	 uLGSd2S6IjuZwjxXXkuEGSWmDQLN1MkKSqPZ1OSs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Courbot <gnurou@gmail.com>,
-	Nicolas Schier <nicolas@fjasle.eu>,
-	Masahiro Yamada <masahiroy@kernel.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 148/273] Makefile: add $(srctree) to dependency of compile_commands.json target
+Subject: [PATCH 6.6 241/341] Bluetooth: hci_core: Fix LE quote calculation
 Date: Tue, 27 Aug 2024 16:37:52 +0200
-Message-ID: <20240827143839.037198211@linuxfoundation.org>
+Message-ID: <20240827143852.579094939@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +61,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandre Courbot <gnurou@gmail.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 6fc9aacad49e3fbecd270c266850d50c453d52ef ]
+[ Upstream commit 932021a11805b9da4bd6abf66fe233cccd59fe0e ]
 
-When trying to build compile_commands.json for an external module against
-the kernel built in a separate output directory, the following error is
-displayed:
+Function hci_sched_le needs to update the respective counter variable
+inplace other the likes of hci_quote_sent would attempt to use the
+possible outdated value of conn->{le_cnt,acl_cnt}.
 
-  make[1]: *** No rule to make target 'scripts/clang-tools/gen_compile_commands.py',
-  needed by 'compile_commands.json'. Stop.
-
-This is because gen_compile_commands.py was previously looked up using a
-relative path to $(srctree), but commit b1992c3772e6 ("kbuild: use
-$(src) instead of $(srctree)/$(src) for source directory") stopped
-defining VPATH for external module builds.
-
-Prefixing gen_compile_commands.py with $(srctree) fixes the problem.
-
-Fixes: b1992c3772e6 ("kbuild: use $(src) instead of $(srctree)/$(src) for source directory")
-Signed-off-by: Alexandre Courbot <gnurou@gmail.com>
-Reviewed-by: Nicolas Schier <nicolas@fjasle.eu>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Link: https://github.com/bluez/bluez/issues/915
+Fixes: 73d80deb7bdf ("Bluetooth: prioritizing data over HCI")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/bluetooth/hci_core.c | 19 +++++++------------
+ 1 file changed, 7 insertions(+), 12 deletions(-)
 
-diff --git a/Makefile b/Makefile
-index 361a70264e1fb..194841a4efde9 100644
---- a/Makefile
-+++ b/Makefile
-@@ -1986,7 +1986,7 @@ nsdeps: modules
- quiet_cmd_gen_compile_commands = GEN     $@
-       cmd_gen_compile_commands = $(PYTHON3) $< -a $(AR) -o $@ $(filter-out $<, $(real-prereqs))
+diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
+index c137f85a7fed7..e660b3d661dae 100644
+--- a/net/bluetooth/hci_core.c
++++ b/net/bluetooth/hci_core.c
+@@ -3637,19 +3637,19 @@ static void hci_sched_le(struct hci_dev *hdev)
+ {
+ 	struct hci_chan *chan;
+ 	struct sk_buff *skb;
+-	int quote, cnt, tmp;
++	int quote, *cnt, tmp;
  
--$(extmod_prefix)compile_commands.json: scripts/clang-tools/gen_compile_commands.py \
-+$(extmod_prefix)compile_commands.json: $(srctree)/scripts/clang-tools/gen_compile_commands.py \
- 	$(if $(KBUILD_EXTMOD),, vmlinux.a $(KBUILD_VMLINUX_LIBS)) \
- 	$(if $(CONFIG_MODULES), $(MODORDER)) FORCE
- 	$(call if_changed,gen_compile_commands)
+ 	BT_DBG("%s", hdev->name);
+ 
+ 	if (!hci_conn_num(hdev, LE_LINK))
+ 		return;
+ 
+-	cnt = hdev->le_pkts ? hdev->le_cnt : hdev->acl_cnt;
++	cnt = hdev->le_pkts ? &hdev->le_cnt : &hdev->acl_cnt;
+ 
+-	__check_timeout(hdev, cnt, LE_LINK);
++	__check_timeout(hdev, *cnt, LE_LINK);
+ 
+-	tmp = cnt;
+-	while (cnt && (chan = hci_chan_sent(hdev, LE_LINK, &quote))) {
++	tmp = *cnt;
++	while (*cnt && (chan = hci_chan_sent(hdev, LE_LINK, &quote))) {
+ 		u32 priority = (skb_peek(&chan->data_q))->priority;
+ 		while (quote-- && (skb = skb_peek(&chan->data_q))) {
+ 			BT_DBG("chan %p skb %p len %d priority %u", chan, skb,
+@@ -3664,7 +3664,7 @@ static void hci_sched_le(struct hci_dev *hdev)
+ 			hci_send_frame(hdev, skb);
+ 			hdev->le_last_tx = jiffies;
+ 
+-			cnt--;
++			(*cnt)--;
+ 			chan->sent++;
+ 			chan->conn->sent++;
+ 
+@@ -3674,12 +3674,7 @@ static void hci_sched_le(struct hci_dev *hdev)
+ 		}
+ 	}
+ 
+-	if (hdev->le_pkts)
+-		hdev->le_cnt = cnt;
+-	else
+-		hdev->acl_cnt = cnt;
+-
+-	if (cnt != tmp)
++	if (*cnt != tmp)
+ 		hci_prio_recalculate(hdev, LE_LINK);
+ }
+ 
 -- 
 2.43.0
 
