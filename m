@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-70907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70696-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F82896109E
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:11:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E256B960F8E
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:00:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D24D11C233A5
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:11:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F345283666
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:00:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 109B21C3F19;
-	Tue, 27 Aug 2024 15:11:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABF931C7B6F;
+	Tue, 27 Aug 2024 14:59:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X7nVWwTz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sEFsRhYy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1FCE1BC9E3;
-	Tue, 27 Aug 2024 15:11:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 694D41E487;
+	Tue, 27 Aug 2024 14:59:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771461; cv=none; b=QxlvUkhYEazWZhJQED10if8hW1DmK0GquYEVq2NUzPYLA5dAOk0D2eTsxsi95RT9pp4iqBNS/h49Xxbl7EVeLBB/CnZYgpj8KjoIlYkr1QUqcfkggtk2AkfULbsDBOie3qDHzj8TjOlFhanWKAWlzKELKCSt5Sj/Hov5OxnfNuk=
+	t=1724770765; cv=none; b=Duh1ACM83eT7XKdIW7/Ybx+UPyVsJ41xEbZEdHuyR/Pq47zCGfF9J0xVSKbLt2R3XXt9eKzlRvtSC3VpNNV21lctTDQSOlFGKq2nl5xj0OzLdfKPPzidSeTRSXPAU7OSlYlsI8WuO2W8sZ+TA+pnAp6RGQ9aq+1M12Voe1qlt+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771461; c=relaxed/simple;
-	bh=a3O8Bru38vOwflVN4Uid/NEGw51WV9uIF70Atx2Qs6M=;
+	s=arc-20240116; t=1724770765; c=relaxed/simple;
+	bh=yWUPjenCvkp1PuSfJF9b7nzTwUsPjZ9ZMPjceNOMoH0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PzpnkKRcxSUK/Gmti+KYrjmZylhlCTH1oag0W6ql+1JxCwFW8tp3DSPj+tbB3LVIGmAuZ+6dLg3+WFkM038DO03pjWO0G50d2p5vZ3hdRjBGzN7HEx7IVPXZcZdwHm4iJnEzdIP40KaZu3U2t7qXpAWat7nMJ4nJQVOWkX/My4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X7nVWwTz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4852C4DDED;
-	Tue, 27 Aug 2024 15:10:59 +0000 (UTC)
+	 MIME-Version; b=Kh55uVDECXBmraBYyMForMejd36TjZRoTxlr8YF828s+pLtkxwMVpAmX9yHn1DWaj0OL4vDTwTEJDXMywI2UtSV13svLylzBusNM95vG6bWslycgNntWpC9kKX/Po2eGZ+4CWYUJEzWtZe8T4fL8yxj24BmJELO2X7gxMPDVYfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sEFsRhYy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0921C61044;
+	Tue, 27 Aug 2024 14:59:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771460;
-	bh=a3O8Bru38vOwflVN4Uid/NEGw51WV9uIF70Atx2Qs6M=;
+	s=korg; t=1724770765;
+	bh=yWUPjenCvkp1PuSfJF9b7nzTwUsPjZ9ZMPjceNOMoH0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X7nVWwTzC7SS8eZQCBB6tJKub05/XRidUfHriBS6C8PtKXrRgtOoHrKEXQ721rUV5
-	 UnlQnTgICvIFNgZ3cpwmxvRk7RbZEidnuBPHB7czeWNAyvWUKVzJAmUCRB4FSzn0g9
-	 7d7Ekqef3xW0Pbtw3AxNl6Gp9L89CmbZRG/D1e3c=
+	b=sEFsRhYyzfu8yA4eqTS40azyGOefJl53OKVRrTubmqlX9nhC+j3Wfp7wfaj2munGr
+	 wcdaUeR0p8nnWpbZR8prFtaYUmp5LZ1w6C89/yHlGQuUG5R8oDc6x8BiZHYYEnetym
+	 kZPvRQRLxNepyw8BD8zTRis0bi7g3ZjGBjiRgzRs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Stephen Boyd <swboyd@chromium.org>,
 	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 193/273] drm/msm/dp: fix the max supported bpp logic
+Subject: [PATCH 6.6 286/341] drm/msm/dpu: try multirect based on mdp clock limits
 Date: Tue, 27 Aug 2024 16:38:37 +0200
-Message-ID: <20240827143840.751278505@linuxfoundation.org>
+Message-ID: <20240827143854.280881466@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,93 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Abhinav Kumar <quic_abhinavk@quicinc.com>
 
-[ Upstream commit d19d5b8d8f6dab942ce5ddbcf34bf7275e778250 ]
+[ Upstream commit e6c0de5f445091d250b75dabc4c60dd2643b8c98 ]
 
-Fix the dp_panel_get_supported_bpp() API to return the minimum
-supported bpp correctly for relevant cases and use this API
-to correct the behavior of DP driver which hard-codes the max supported
-bpp to 30.
+It's certainly possible that for large resolutions a single DPU SSPP
+cannot process the image without exceeding the MDP clock limits but
+it can still process it in multirect mode because the source rectangles
+will get divided and can fall within the MDP clock limits.
 
-This is incorrect because the number of lanes and max data rate
-supported by the lanes need to be taken into account.
+If the SSPP cannot process the image even in multirect mode, then it
+will be rejected in dpu_plane_atomic_check_pipe().
 
-Replace the hardcoded limit with the appropriate math which accounts
-for the accurate number of lanes and max data rate.
+Hence try using multirect for resolutions which cannot be processed
+by a single SSPP without exceeding the MDP clock limits.
 
 changes in v2:
-	- Fix the dp_panel_get_supported_bpp() and use it
-	- Drop the max_t usage as dp_panel_get_supported_bpp() already
-	  returns the min_bpp correctly now
+	- use crtc_state's adjusted_mode instead of mode
+	- fix the UBWC condition to check maxlinewidth
 
-changes in v3:
-	- replace min_t with just min as all params are u32
-
-Fixes: c943b4948b58 ("drm/msm/dp: add displayPort driver support")
-Reported-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Closes: https://gitlab.freedesktop.org/drm/msm/-/issues/43
-Tested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org> # SM8350-HDK
-Reviewed-by: Stephen Boyd <swboyd@chromium.org>
-Patchwork: https://patchwork.freedesktop.org/patch/607073/
-Link: https://lore.kernel.org/r/20240805202009.1120981-1-quic_abhinavk@quicinc.com
-Signed-off-by: Stephen Boyd <swboyd@chromium.org>
 Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Tested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/556817/
+Link: https://lore.kernel.org/r/20230911221627.9569-2-quic_abhinavk@quicinc.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Stable-dep-of: d3a785e4f983 ("drm/msm/dpu: take plane rotation into account for wide planes")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/dp/dp_panel.c | 19 ++++++++++---------
- 1 file changed, 10 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/dp/dp_panel.c b/drivers/gpu/drm/msm/dp/dp_panel.c
-index 07db8f37cd06a..017fb8cc8ab67 100644
---- a/drivers/gpu/drm/msm/dp/dp_panel.c
-+++ b/drivers/gpu/drm/msm/dp/dp_panel.c
-@@ -90,22 +90,22 @@ static int dp_panel_read_dpcd(struct dp_panel *dp_panel)
- static u32 dp_panel_get_supported_bpp(struct dp_panel *dp_panel,
- 		u32 mode_edid_bpp, u32 mode_pclk_khz)
- {
--	struct dp_link_info *link_info;
-+	const struct dp_link_info *link_info;
- 	const u32 max_supported_bpp = 30, min_supported_bpp = 18;
--	u32 bpp = 0, data_rate_khz = 0;
-+	u32 bpp, data_rate_khz;
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c
+index 5ffbf131e1e80..3c2a8c0ddaf76 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c
+@@ -795,6 +795,8 @@ static int dpu_plane_atomic_check(struct drm_plane *plane,
+ 										 plane);
+ 	int ret = 0, min_scale;
+ 	struct dpu_plane *pdpu = to_dpu_plane(plane);
++	struct dpu_kms *kms = _dpu_plane_get_kms(&pdpu->base);
++	u64 max_mdp_clk_rate = kms->perf.max_core_clk_rate;
+ 	struct dpu_plane_state *pstate = to_dpu_plane_state(new_plane_state);
+ 	struct dpu_sw_pipe *pipe = &pstate->pipe;
+ 	struct dpu_sw_pipe *r_pipe = &pstate->r_pipe;
+@@ -863,14 +865,16 @@ static int dpu_plane_atomic_check(struct drm_plane *plane,
  
--	bpp = min_t(u32, mode_edid_bpp, max_supported_bpp);
-+	bpp = min(mode_edid_bpp, max_supported_bpp);
+ 	max_linewidth = pdpu->catalog->caps->max_linewidth;
  
- 	link_info = &dp_panel->link_info;
- 	data_rate_khz = link_info->num_lanes * link_info->rate * 8;
- 
--	while (bpp > min_supported_bpp) {
-+	do {
- 		if (mode_pclk_khz * bpp <= data_rate_khz)
--			break;
-+			return bpp;
- 		bpp -= 6;
--	}
-+	} while (bpp > min_supported_bpp);
- 
--	return bpp;
-+	return min_supported_bpp;
- }
- 
- static int dp_panel_update_modes(struct drm_connector *connector,
-@@ -442,8 +442,9 @@ int dp_panel_init_panel_info(struct dp_panel *dp_panel)
- 				drm_mode->clock);
- 	drm_dbg_dp(panel->drm_dev, "bpp = %d\n", dp_panel->dp_mode.bpp);
- 
--	dp_panel->dp_mode.bpp = max_t(u32, 18,
--				min_t(u32, dp_panel->dp_mode.bpp, 30));
-+	dp_panel->dp_mode.bpp = dp_panel_get_mode_bpp(dp_panel, dp_panel->dp_mode.bpp,
-+						      dp_panel->dp_mode.drm_mode.clock);
-+
- 	drm_dbg_dp(panel->drm_dev, "updated bpp = %d\n",
- 				dp_panel->dp_mode.bpp);
- 
+-	if (drm_rect_width(&pipe_cfg->src_rect) > max_linewidth) {
++	if ((drm_rect_width(&pipe_cfg->src_rect) > max_linewidth) ||
++	     _dpu_plane_calc_clk(&crtc_state->adjusted_mode, pipe_cfg) > max_mdp_clk_rate) {
+ 		/*
+ 		 * In parallel multirect case only the half of the usual width
+ 		 * is supported for tiled formats. If we are here, we know that
+ 		 * full width is more than max_linewidth, thus each rect is
+ 		 * wider than allowed.
+ 		 */
+-		if (DPU_FORMAT_IS_UBWC(fmt)) {
++		if (DPU_FORMAT_IS_UBWC(fmt) &&
++		    drm_rect_width(&pipe_cfg->src_rect) > max_linewidth) {
+ 			DPU_DEBUG_PLANE(pdpu, "invalid src " DRM_RECT_FMT " line:%u, tiled format\n",
+ 					DRM_RECT_ARG(&pipe_cfg->src_rect), max_linewidth);
+ 			return -E2BIG;
 -- 
 2.43.0
 
