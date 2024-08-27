@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-71146-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70603-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EDA19611E1
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:24:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3885A960F0B
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:55:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 341F42818EB
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:24:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E8338281F57
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:55:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 830051C93B9;
-	Tue, 27 Aug 2024 15:24:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3800A1C6F69;
+	Tue, 27 Aug 2024 14:54:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GWY1XzkV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jEQl62g8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 404591C7B61;
-	Tue, 27 Aug 2024 15:24:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E792E1BA294;
+	Tue, 27 Aug 2024 14:54:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772251; cv=none; b=muA9/qS8elCdxHTCtxwnTcBGxkbFMU/QmC/6cVk4bQ7vhbnXeqqmatWAGziLtGVfnGVlSl27sCLMjMawN4hdtTx1L64bLHDHwvP8NF8jtlXDgOU2HQjGp6JUbXEHYEYDIxxzGiVflQy3l69eNu/GoF3c9ixt0q+7mXH3BnXPb0E=
+	t=1724770457; cv=none; b=lvjhDvkZroWD6m5MTyKHO/GT5Nn8KrX5txmd7PL0yuF/rgo8/9/bAq8CwbuUs6/xnUl489UzVrbOUzoUoiZkBwO6MUgkSMJf8DyeN2GQK93MtSo+0j+Gz+mMNJBCSEKvZqwoTXLXm4DFnjhM/gsf5l2/MNA3cBxdP1shi3Kf3Yk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772251; c=relaxed/simple;
-	bh=ZXEZFghgRImd3dTFUq79NYrHa9aROwF9hqS524swmxU=;
+	s=arc-20240116; t=1724770457; c=relaxed/simple;
+	bh=Q+/4+n5I758kDMiOU1iYcvRBUgYAMXun2m1vfGNmFac=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LtVnROP5Z42Vatyi6T/Ri++wNQ8XsoMZcs8DiCqJprjx5EXj2NuC6K9HSeq1gL6xtyyHXxrarBbLOnUplfbJhef94rfzXCt30x1X3PJnFPaRSKWAwmo6GFNFudNag29EMezKbbGaMZdwKyx2ZeHolWOTKPxUr66Crl1RPCym8Xc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GWY1XzkV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5FB9C61069;
-	Tue, 27 Aug 2024 15:24:10 +0000 (UTC)
+	 MIME-Version; b=Uv3kbE1uYj8k14cDOGMgCuhPjZz9YyucLH9tqMmynYO2dhTAqFy8b15aIeGgv3g9ASFci6AJ3TCu/Dx/1OrCY0Kp4vPcH0qQV7rtu87KUFSztmpcWe45mBsJLGRizy1/yteccoZU5IQnGbPQRhnORDF2w5RAUAtNdf7E85DHFTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jEQl62g8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E043C6106F;
+	Tue, 27 Aug 2024 14:54:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772251;
-	bh=ZXEZFghgRImd3dTFUq79NYrHa9aROwF9hqS524swmxU=;
+	s=korg; t=1724770456;
+	bh=Q+/4+n5I758kDMiOU1iYcvRBUgYAMXun2m1vfGNmFac=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GWY1XzkV4aqNhP7K0OEAoIAkVKgzcodKXpw9f9/IWdvkcU2WariZQ1eWddpD5mHLH
-	 6WMaOv1BwRejvvbT5RlkjpPkFMhWp/LxmW6fnTeOL0/04lSCy5y4SdGZ24Duj7Ic11
-	 xPi78KyCdq3V6eLPUpeUzPS/ECwqFBFEsrBltulE=
+	b=jEQl62g8r7oX161rJWSwYtmymqfxcAV8okWDSyruyZ36yAZJDcd18XpHTAWR786Hm
+	 UfDgf6M5F0OYjD9BU00iI/wTUoarO256WvVqqf8AJ89KWKdopdnW14E8RdrNmVRPui
+	 P8T8jlAUS5XXD/eleNBsUHW7ZaeJZbnmS68z7uDk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hannes Reinecke <hare@suse.de>,
-	Daniel Wagner <dwagner@suse.de>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Alvin Lee <alvin.lee2@amd.com>,
+	Loan Chen <lo-an.chen@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 158/321] nvmet-trace: avoid dereferencing pointer too early
+Subject: [PATCH 6.6 235/341] drm/amd/display: Enable otg synchronization logic for DCN321
 Date: Tue, 27 Aug 2024 16:37:46 +0200
-Message-ID: <20240827143844.245876337@linuxfoundation.org>
+Message-ID: <20240827143852.351758978@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,143 +66,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Wagner <dwagner@suse.de>
+From: Loan Chen <lo-an.chen@amd.com>
 
-[ Upstream commit 0e716cec6fb11a14c220ee17c404b67962e902f7 ]
+[ Upstream commit 0dbb81d44108a2a1004e5b485ef3fca5bc078424 ]
 
-The first command issued from the host to the target is the fabrics
-connect command. At this point, neither the target queue nor the
-controller have been allocated. But we already try to trace this command
-in nvmet_req_init.
+[Why]
+Tiled display cannot synchronize properly after S3.
+The fix for commit 5f0c74915815 ("drm/amd/display: Fix for otg
+synchronization logic") is not enable in DCN321, which causes
+the otg is excluded from synchronization.
 
-Reported by KASAN.
+[How]
+Enable otg synchronization logic in dcn321.
 
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: Daniel Wagner <dwagner@suse.de>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fixes: 5f0c74915815 ("drm/amd/display: Fix for otg synchronization logic")
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
+Signed-off-by: Loan Chen <lo-an.chen@amd.com>
+Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit d6ed53712f583423db61fbb802606759e023bf7b)
+Cc: stable@vger.kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/trace.c |  6 +++---
- drivers/nvme/target/trace.h | 28 +++++++++++++++++-----------
- 2 files changed, 20 insertions(+), 14 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dcn321/dcn321_resource.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/nvme/target/trace.c b/drivers/nvme/target/trace.c
-index bff454d46255b..6ee1f3db81d04 100644
---- a/drivers/nvme/target/trace.c
-+++ b/drivers/nvme/target/trace.c
-@@ -211,7 +211,7 @@ const char *nvmet_trace_disk_name(struct trace_seq *p, char *name)
- 	return ret;
- }
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn321/dcn321_resource.c b/drivers/gpu/drm/amd/display/dc/dcn321/dcn321_resource.c
+index 8d73cceb485bf..aa4c64eec7b3d 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn321/dcn321_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn321/dcn321_resource.c
+@@ -1756,6 +1756,9 @@ static bool dcn321_resource_construct(
+ 	dc->caps.color.mpc.ogam_rom_caps.hlg = 0;
+ 	dc->caps.color.mpc.ocsc = 1;
  
--const char *nvmet_trace_ctrl_name(struct trace_seq *p, struct nvmet_ctrl *ctrl)
-+const char *nvmet_trace_ctrl_id(struct trace_seq *p, u16 ctrl_id)
- {
- 	const char *ret = trace_seq_buffer_ptr(p);
- 
-@@ -224,8 +224,8 @@ const char *nvmet_trace_ctrl_name(struct trace_seq *p, struct nvmet_ctrl *ctrl)
- 	 * If we can know the extra data of the connect command in this stage,
- 	 * we can update this print statement later.
- 	 */
--	if (ctrl)
--		trace_seq_printf(p, "%d", ctrl->cntlid);
-+	if (ctrl_id)
-+		trace_seq_printf(p, "%d", ctrl_id);
- 	else
- 		trace_seq_printf(p, "_");
- 	trace_seq_putc(p, 0);
-diff --git a/drivers/nvme/target/trace.h b/drivers/nvme/target/trace.h
-index 974d99d47f514..7f7ebf9558e50 100644
---- a/drivers/nvme/target/trace.h
-+++ b/drivers/nvme/target/trace.h
-@@ -32,18 +32,24 @@ const char *nvmet_trace_parse_fabrics_cmd(struct trace_seq *p, u8 fctype,
- 	 nvmet_trace_parse_nvm_cmd(p, opcode, cdw10) :			\
- 	 nvmet_trace_parse_admin_cmd(p, opcode, cdw10)))
- 
--const char *nvmet_trace_ctrl_name(struct trace_seq *p, struct nvmet_ctrl *ctrl);
--#define __print_ctrl_name(ctrl)				\
--	nvmet_trace_ctrl_name(p, ctrl)
-+const char *nvmet_trace_ctrl_id(struct trace_seq *p, u16 ctrl_id);
-+#define __print_ctrl_id(ctrl_id)			\
-+	nvmet_trace_ctrl_id(p, ctrl_id)
- 
- const char *nvmet_trace_disk_name(struct trace_seq *p, char *name);
- #define __print_disk_name(name)				\
- 	nvmet_trace_disk_name(p, name)
- 
- #ifndef TRACE_HEADER_MULTI_READ
--static inline struct nvmet_ctrl *nvmet_req_to_ctrl(struct nvmet_req *req)
-+static inline u16 nvmet_req_to_ctrl_id(struct nvmet_req *req)
- {
--	return req->sq->ctrl;
-+	/*
-+	 * The queue and controller pointers are not valid until an association
-+	 * has been established.
-+	 */
-+	if (!req->sq || !req->sq->ctrl)
-+		return 0;
-+	return req->sq->ctrl->cntlid;
- }
- 
- static inline void __assign_req_name(char *name, struct nvmet_req *req)
-@@ -62,7 +68,7 @@ TRACE_EVENT(nvmet_req_init,
- 	TP_ARGS(req, cmd),
- 	TP_STRUCT__entry(
- 		__field(struct nvme_command *, cmd)
--		__field(struct nvmet_ctrl *, ctrl)
-+		__field(u16, ctrl_id)
- 		__array(char, disk, DISK_NAME_LEN)
- 		__field(int, qid)
- 		__field(u16, cid)
-@@ -75,7 +81,7 @@ TRACE_EVENT(nvmet_req_init,
- 	),
- 	TP_fast_assign(
- 		__entry->cmd = cmd;
--		__entry->ctrl = nvmet_req_to_ctrl(req);
-+		__entry->ctrl_id = nvmet_req_to_ctrl_id(req);
- 		__assign_req_name(__entry->disk, req);
- 		__entry->qid = req->sq->qid;
- 		__entry->cid = cmd->common.command_id;
-@@ -89,7 +95,7 @@ TRACE_EVENT(nvmet_req_init,
- 	),
- 	TP_printk("nvmet%s: %sqid=%d, cmdid=%u, nsid=%u, flags=%#x, "
- 		  "meta=%#llx, cmd=(%s, %s)",
--		__print_ctrl_name(__entry->ctrl),
-+		__print_ctrl_id(__entry->ctrl_id),
- 		__print_disk_name(__entry->disk),
- 		__entry->qid, __entry->cid, __entry->nsid,
- 		__entry->flags, __entry->metadata,
-@@ -103,7 +109,7 @@ TRACE_EVENT(nvmet_req_complete,
- 	TP_PROTO(struct nvmet_req *req),
- 	TP_ARGS(req),
- 	TP_STRUCT__entry(
--		__field(struct nvmet_ctrl *, ctrl)
-+		__field(u16, ctrl_id)
- 		__array(char, disk, DISK_NAME_LEN)
- 		__field(int, qid)
- 		__field(int, cid)
-@@ -111,7 +117,7 @@ TRACE_EVENT(nvmet_req_complete,
- 		__field(u16, status)
- 	),
- 	TP_fast_assign(
--		__entry->ctrl = nvmet_req_to_ctrl(req);
-+		__entry->ctrl_id = nvmet_req_to_ctrl_id(req);
- 		__entry->qid = req->cq->qid;
- 		__entry->cid = req->cqe->command_id;
- 		__entry->result = le64_to_cpu(req->cqe->result.u64);
-@@ -119,7 +125,7 @@ TRACE_EVENT(nvmet_req_complete,
- 		__assign_req_name(__entry->disk, req);
- 	),
- 	TP_printk("nvmet%s: %sqid=%d, cmdid=%u, res=%#llx, status=%#x",
--		__print_ctrl_name(__entry->ctrl),
-+		__print_ctrl_id(__entry->ctrl_id),
- 		__print_disk_name(__entry->disk),
- 		__entry->qid, __entry->cid, __entry->result, __entry->status)
- 
++	/* Use pipe context based otg sync logic */
++	dc->config.use_pipe_ctx_sync_logic = true;
++
+ 	dc->config.dc_mode_clk_limit_support = true;
+ 	/* read VBIOS LTTPR caps */
+ 	{
 -- 
 2.43.0
 
