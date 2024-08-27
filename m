@@ -1,67 +1,67 @@
-Return-Path: <stable+bounces-70295-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70296-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCA34960055
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 06:33:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3250796005D
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 06:39:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D033D1C21033
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 04:33:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B41C91F227CE
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 04:39:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 254911BF54;
-	Tue, 27 Aug 2024 04:33:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07FC63A27E;
+	Tue, 27 Aug 2024 04:39:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="HgMXzBdz"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="IXiHthNx"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DE1B179A8
-	for <stable@vger.kernel.org>; Tue, 27 Aug 2024 04:33:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28DEAF507
+	for <stable@vger.kernel.org>; Tue, 27 Aug 2024 04:39:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724733209; cv=none; b=kc7+p5hJeTv2XqKFJNTgWgepQ+PL22JUlPIh3kln3OJEgBoJnf3Hxy5CwmGsMzJaVje1ODFs22tuOLuhjeLPGPvyXmF8A+ziW2ty+CNZT3SbkRtDflSq+YEyf1XFgqq+spovRBSmG/8tsKcUPep3BaviJfIy7lUO3iUjqcuD9p8=
+	t=1724733557; cv=none; b=Mu9zZUpoSixf6QcxyC8X0K7tHH26wTRQCGtPpnNHpPF22+aSHAEUTjf5wT9Dc3S6GLnGgXEQ4ttlcs3n9pdTDreDYJaZrwxpY2UnyoY3PxKTh4LBV6GjWivrcMDITmt6iL3vlS3z9SMGhPfiKn5yeMyT+KCQfMLqP0td+17OBw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724733209; c=relaxed/simple;
-	bh=+RktWthfz65ZKT4TmGsanaWrbJYzNQm599AuaRM8psE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OkxpkWyVG0NfUArp4WZEGoAW0VhOOG08NfiWsD85zY7/MSIAa2whNzcXgf+06m+Rjnx3Cs6HYcMtl8qxJVNs6rxlw5/XHhA/8eF3f1Assx0HFQsQAT7JRm9HaQljs4O9jxvLKpWCKw22F2LlItIE6PuS9d1Mc2LP3CyF0I7gjH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=HgMXzBdz; arc=none smtp.client-ip=209.85.222.177
+	s=arc-20240116; t=1724733557; c=relaxed/simple;
+	bh=7efmavAVYDFr6/k+ei6YAwD77NodNyNJUHAEEg6TgxU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=I+AYxn0g+SyehHTBoanZYd6JIs9b3ojfyiDE0AsuedWUhVmkiq+l1KFzMN/JT8bODiyzGi8bHQldZksU3NBpjiUSb1AVJuNY3wPvxpaKkDy5aIV7vcpFGWAk5Bi6bAGBziE/sCOQxW+81pB//okZqcFrwEV+3dWPg4fPHdyGSfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=IXiHthNx; arc=none smtp.client-ip=209.85.160.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-7a3574acafeso328280185a.1
-        for <stable@vger.kernel.org>; Mon, 26 Aug 2024 21:33:27 -0700 (PDT)
+Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-45006bcb482so25471641cf.3
+        for <stable@vger.kernel.org>; Mon, 26 Aug 2024 21:39:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1724733207; x=1725338007; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1724733555; x=1725338355; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=jO3b/HQbgIsaJ6GcQxLwnZeZj3dlyeqCaKQpgY4bypg=;
-        b=HgMXzBdzwjk/BfU8H29f6c77AVuRNoI72QiUurNABnInlDqIBR7lVC9sNORsVVw3zH
-         Ja2FwZo0CZcSBB/M6uHm01ILvcZNSnDoYj6/Qeoad8Sf/V1LrUTQqUm5EnfryaojSaDv
-         TsNVpbW7adVTpPIvneeq+WoIZPmGKx/rpEHTg=
+        bh=1bocdzyvmHkkepK3+LJbzi9IWUaQMoy+e/hXMzNP8MY=;
+        b=IXiHthNxfGJ/bkVO5UjGgOawU/DoJbW7ZOCqXd6US2R7WNHYBiVXVbLC7FfCeaS22A
+         GnQk32mW7k8idqyl2A/1jQswimnfNHSnRhGm6pzpzusmtaB30o5EMHpMZakW4cv6i677
+         T5ObJlxzvvIDjo06I08Laq3CZ27XZ/j1o/5lk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724733207; x=1725338007;
+        d=1e100.net; s=20230601; t=1724733555; x=1725338355;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=jO3b/HQbgIsaJ6GcQxLwnZeZj3dlyeqCaKQpgY4bypg=;
-        b=eurPPP20QxfS3KVt+/BqAevMV+paKX6IAMi/TluSOIzRfZ4vkkSxBudr6R9WZ4VUKo
-         MPYaa8c/2mVH1TTLWA3Kb2iEZdRdNgHV6UUvM07FQgd4Nu6QYddyWO2mRb+qpdkT2vSA
-         BJkbxE0PU+tW7ARqKS9UmpmF1HYIzbOi5oTK7m2XeAcrNPMalimXqBQ7yxo6O5s0R+dE
-         Ex8bSP3x4h4qo+hZAS2VttMnldTIzwte/rfUNhGzWBZ4NGSXXLKazQrR2GM42qOG3ep+
-         FfoiHClHSiCWLDVohpP8922dr0D/OIY0GRiUYUPpupKooBqUqfHZYXjkrZICu5Sf2kJH
-         663Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXlcL/lPraLQDK02GdveIeZgDZHMx0JgF+A8Qat1spVRQ62789i0vtBbcbUwA4YceHEHtCc9F8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YysxDyZSx+TNDfA5kWvbnPVmAiEJHYjJKWnseFtU9Kq/UYBz/QG
-	66ICcRhzTwd+YRb9gud+JDVXFTiBpRrbAdUtD5JDYpHJ+ckOxTzm3lfpqOqZAQ==
-X-Google-Smtp-Source: AGHT+IH8jM3t0qpSTWzftDdR4vyON6uBqO9e4LDu0vWeptUBNKXD6dZnd+MukBUEVgPdQFuVaWU7xQ==
-X-Received: by 2002:a05:620a:4096:b0:79d:6169:7ab9 with SMTP id af79cd13be357-7a7e4e717aemr197587485a.68.1724733206628;
-        Mon, 26 Aug 2024 21:33:26 -0700 (PDT)
-Received: from localhost.localdomain ([192.19.144.250])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7a67f341e14sm518060585a.30.2024.08.26.21.33.25
+        bh=1bocdzyvmHkkepK3+LJbzi9IWUaQMoy+e/hXMzNP8MY=;
+        b=j8GdvzmsblKSkDIkkcy6XK76tFSu+RclFuI0EEOyx5MPXsy+Ob5/skyftykMoOvNYG
+         lvLtgP11A5NqL3oZkpwVdyuwZ8E/k762MbPcTy4Y77jPo+iUm4tkNA2SOUhFf4n59jrF
+         heSurHp/vw8788eV0Hj8aJtEbQMuUKxc+HAI596Qei3+O87f5LunIc/sYwb9W+y3us6z
+         sKD9a1Bjq5qyRW7/V0EECJGROaPpxI47jbw7+7RbDNo/Wyom2dtHy20ikHgPTVlVeN+k
+         vZ4IKcXT2K14ZTD2ifkKdnmXvt1uRLasV8kAPDR2cURW8A0eojszVRu81JqS4hAseoim
+         lJhA==
+X-Forwarded-Encrypted: i=1; AJvYcCWmZJsvXevcuHKWSwpOah43j5evFyGj0mVTGfu5sMzNwqtm5FjBLlh+u1849OTv/l9tRFIdNyc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwLrA7KoLC0NDK22Oz5lql3YO2B1nYadBwuS/SdlzhVhdlWU4vY
+	riq20d8brfZAvyFhWfTdPnT0cMDzBgsPdroISucVYzJcFnci0zgPJQWyLWf1cw==
+X-Google-Smtp-Source: AGHT+IGd4XZ9D7c9hn/Cx4gBCjZy0Tf59omb8CgUBnisLTa8ZI7ofU9G/JgaupnYRIs4Br6+p1oj+A==
+X-Received: by 2002:ac8:7f94:0:b0:456:45d8:2f08 with SMTP id d75a77b69052e-45645d83036mr109629691cf.46.1724733554679;
+        Mon, 26 Aug 2024 21:39:14 -0700 (PDT)
+Received: from localhost.localdomain (pool-173-49-113-140.phlapa.fios.verizon.net. [173.49.113.140])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-454fe0dba78sm49731841cf.35.2024.08.26.21.39.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Aug 2024 21:33:26 -0700 (PDT)
+        Mon, 26 Aug 2024 21:39:14 -0700 (PDT)
 From: Zack Rusin <zack.rusin@broadcom.com>
 To: dri-devel@lists.freedesktop.org
 Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
@@ -70,9 +70,9 @@ Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
 	maaz.mombasawala@broadcom.com,
 	Zack Rusin <zack.rusin@broadcom.com>,
 	stable@vger.kernel.org
-Subject: [PATCH] drm/vmwgfx: Cleanup kms setup without 3d
-Date: Tue, 27 Aug 2024 00:33:19 -0400
-Message-ID: <20240827043319.466910-1-zack.rusin@broadcom.com>
+Subject: [PATCH v2] drm/vmwgfx: Cleanup kms setup without 3d
+Date: Tue, 27 Aug 2024 00:39:05 -0400
+Message-ID: <20240827043905.472825-1-zack.rusin@broadcom.com>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -91,6 +91,8 @@ practical benefit to it because kms framebuffer coherence is disabled
 on configurations without 3d but with those changes the code actually
 makes sense.
 
+v2: Remove the now unused format variable
+
 Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
 Fixes: d6667f0ddf46 ("drm/vmwgfx: Fix handling of dumb buffers")
 Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
@@ -99,18 +101,45 @@ Cc: <stable@vger.kernel.org> # v6.9+
 Cc: Maaz Mombasawala <maaz.mombasawala@broadcom.com>
 Cc: Martin Krastev <martin.krastev@broadcom.com>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_kms.c     | 9 ---------
- drivers/gpu/drm/vmwgfx/vmwgfx_surface.c | 9 ++++++---
- 2 files changed, 6 insertions(+), 12 deletions(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_kms.c     | 29 -------------------------
+ drivers/gpu/drm/vmwgfx/vmwgfx_surface.c |  9 +++++---
+ 2 files changed, 6 insertions(+), 32 deletions(-)
 
 diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-index 288ed0bb75cb..b5fc5a9e123a 100644
+index 288ed0bb75cb..282b6153bcdd 100644
 --- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
 +++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-@@ -1339,15 +1339,6 @@ static int vmw_kms_new_framebuffer_surface(struct vmw_private *dev_priv,
+@@ -1283,7 +1283,6 @@ static int vmw_kms_new_framebuffer_surface(struct vmw_private *dev_priv,
+ {
+ 	struct drm_device *dev = &dev_priv->drm;
+ 	struct vmw_framebuffer_surface *vfbs;
+-	enum SVGA3dSurfaceFormat format;
+ 	struct vmw_surface *surface;
+ 	int ret;
+ 
+@@ -1320,34 +1319,6 @@ static int vmw_kms_new_framebuffer_surface(struct vmw_private *dev_priv,
  		return -EINVAL;
  	}
  
+-	switch (mode_cmd->pixel_format) {
+-	case DRM_FORMAT_ARGB8888:
+-		format = SVGA3D_A8R8G8B8;
+-		break;
+-	case DRM_FORMAT_XRGB8888:
+-		format = SVGA3D_X8R8G8B8;
+-		break;
+-	case DRM_FORMAT_RGB565:
+-		format = SVGA3D_R5G6B5;
+-		break;
+-	case DRM_FORMAT_XRGB1555:
+-		format = SVGA3D_A1R5G5B5;
+-		break;
+-	default:
+-		DRM_ERROR("Invalid pixel format: %p4cc\n",
+-			  &mode_cmd->pixel_format);
+-		return -EINVAL;
+-	}
+-
 -	/*
 -	 * For DX, surface format validation is done when surface->scanout
 -	 * is set.
