@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-70966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71266-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CE7A9610EB
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:14:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F17396129C
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:33:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3FF441C2357E
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:14:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D1E7281AC1
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:33:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 417731C688E;
-	Tue, 27 Aug 2024 15:14:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43CD91CF293;
+	Tue, 27 Aug 2024 15:30:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wDwX5rnS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bnNaW+nY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F289D1A072D;
-	Tue, 27 Aug 2024 15:14:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2B3D1C93A0;
+	Tue, 27 Aug 2024 15:30:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771653; cv=none; b=sRG0jDpPGXt/yqzDMUnjoFqU4gROQkWP5nE5MzLfveibQbbgy85AoSlLSm/JqbYWb65FfDnJFtaztk5/dVbWnYLOzzEj7+xge/x1YLN1J8WpiN+nNVrhqkvkEytaI3PFiuYP7EmGYIeYltHyw+ew63V4godsIFWmazC/IY1nPdk=
+	t=1724772645; cv=none; b=Ra9jnv0t//+hguvuDMAakBW4UVq+m70BbVQIXt/033osEk4iiByi3ollj4ADRRGbV1Z0J4VgBHcTb/3nXfjlKyKSsTwKQFiz+nKkIaVEXLnDTtU59uIyHvgRlLOyIdvx6PlsT2tRbMPYnoggkYgneWf0Y4vYlxjG6bKJAPV2gFU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771653; c=relaxed/simple;
-	bh=xiu6IaDLnOZ/tdJeNY+6aL1/QfY8JWphEz1CeRhIyuY=;
+	s=arc-20240116; t=1724772645; c=relaxed/simple;
+	bh=RAgQa6MzCWFDY8dNSAQ7FU9lvlYBk8yUOaeSKbadiFU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oaEPKOzkPglnE6SeZNH37saX3ojcPQ2WZMizCh9+VYe998zXpAk92FzEJzstK6dnjqhm0bxHvLfAl6Ogt5VDiFZrz1xRXlRKBkWWz9cIpWemSuGv2BYuyki5Ro6dvljOYA9ZVlkUUFSjzLqMTAX6wX0Y4WD4q/fcPKanukO0OjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wDwX5rnS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E798C61064;
-	Tue, 27 Aug 2024 15:14:12 +0000 (UTC)
+	 MIME-Version; b=Xe0ZtufPws+CcxiyDxFajjZN4lpXEnWYgGR6uLtcQZmIxjHJS3zjKatncJhttfAbynhXUslxAMfpw/mPoberMYgvE8K7tbggt7Rbzc6TmArUPmSdlY0iJluVECujeI2npI2bN+iU9KpdN0jWwmQ6svu0MVgtfNkes+SWiCWDveo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bnNaW+nY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32C81C4DDE3;
+	Tue, 27 Aug 2024 15:30:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771652;
-	bh=xiu6IaDLnOZ/tdJeNY+6aL1/QfY8JWphEz1CeRhIyuY=;
+	s=korg; t=1724772644;
+	bh=RAgQa6MzCWFDY8dNSAQ7FU9lvlYBk8yUOaeSKbadiFU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wDwX5rnSeG1Fr6wmDsjnVhN3qObHdd/qtI77FNZlKDFJhWavFP8UskhvUURk6PNAf
-	 5xXOvv+GwOgPHDM0+7yaB5MJWheIduar+0a9H+kHrBQuBFoKDuVwqKke40feNJCSnc
-	 FOfoELdGWevWCV5+NjsjaTsBM89R11ZedzPHUnDU=
+	b=bnNaW+nYIeTVXNLiHk1ttELjRiqmhOwkhioUHqEB/nPzlBADm3kYA1C4V5m8mtEt4
+	 7V4JuJFCQiF1bs6jgR9tVVXRp5hUfvmAne+1ZdE9m5Rt6a2nYJownCDfeOP8BKqWXX
+	 ygiE9pDesufXlKK+HaQDWzFrW131aFgVEmrI1vOQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Chen-Yu Tsai <wenst@chromium.org>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.10 253/273] thermal: of: Fix OF node leak in thermal_of_zone_register()
+	Bastien Nocera <hadess@hadess.net>,
+	Siarhei Vishniakou <svv@google.com>,
+	Jiri Kosina <jkosina@suse.cz>
+Subject: [PATCH 6.1 269/321] HID: microsoft: Add rumble support to latest xbox controllers
 Date: Tue, 27 Aug 2024 16:39:37 +0200
-Message-ID: <20240827143843.029195747@linuxfoundation.org>
+Message-ID: <20240827143848.491960136@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +62,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Siarhei Vishniakou <svv@google.com>
 
-commit 662b52b761bfe0ba970e5823759798faf809b896 upstream.
+commit f5554725f30475b05b5178b998366f11ecb50c7f upstream.
 
-thermal_of_zone_register() calls of_thermal_zone_find() which will
-iterate over OF nodes with for_each_available_child_of_node() to find
-matching thermal zone node.  When it finds such, it exits the loop and
-returns the node.  Prematurely ending for_each_available_child_of_node()
-loops requires dropping OF node reference, thus success of
-of_thermal_zone_find() means that caller must drop the reference.
+Currently, rumble is only supported via bluetooth on a single xbox
+controller, called 'model 1708'. On the back of the device, it's named
+'wireless controller for xbox one'. However, in 2021, Microsoft released
+a firmware update for this controller. As part of this update, the HID
+descriptor of the device changed. The product ID was also changed from
+0x02fd to 0x0b20. On this controller, rumble was supported via
+hid-microsoft, which matched against the old product id (0x02fd). As a
+result, the firmware update broke rumble support on this controller.
 
-Fixes: 3fd6d6e2b4e8 ("thermal/of: Rework the thermal device tree initialization")
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
-Reviewed-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://patch.msgid.link/20240814195823.437597-2-krzysztof.kozlowski@linaro.org
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+See:
+https://news.xbox.com/en-us/2021/09/08/xbox-controller-firmware-update-rolling-out-to-insiders-starting-today/
+
+The hid-microsoft driver actually supports rumble on the new firmware,
+as well. So simply adding new product id is sufficient to bring back
+this support.
+
+After discussing further with the xbox team, it was pointed out that
+another xbox controller, xbox elite series 2, can be supported in a
+similar way.
+
+Add rumble support for all of these devices in this patch. Two of the
+devices have received firmware updates that caused their product id's to
+change. Both old and new firmware versions of these devices were tested.
+
+The tested controllers are:
+
+1. 'wireless controller for xbox one', model 1708
+2. 'xbox wireless controller', model 1914. This is also sometimes
+   referred to as 'xbox series S|X'.
+3. 'elite series 2', model 1797.
+
+The tested configurations are:
+1. model 1708, pid 0x02fd (old firmware)
+2. model 1708, pid 0x0b20 (new firmware)
+3. model 1914, pid 0x0b13
+4. model 1797, pid 0x0b05 (old firmware)
+5. model 1797, pid 0x0b22 (new firmware)
+
+I verified rumble support on both bluetooth and usb.
+
+Reviewed-by: Bastien Nocera <hadess@hadess.net>
+Signed-off-by: Siarhei Vishniakou <svv@google.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thermal/thermal_of.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/hid/hid-ids.h       |   10 +++++++++-
+ drivers/hid/hid-microsoft.c |   11 ++++++++++-
+ 2 files changed, 19 insertions(+), 2 deletions(-)
 
---- a/drivers/thermal/thermal_of.c
-+++ b/drivers/thermal/thermal_of.c
-@@ -491,7 +491,8 @@ static struct thermal_zone_device *therm
- 	trips = thermal_of_trips_init(np, &ntrips);
- 	if (IS_ERR(trips)) {
- 		pr_err("Failed to find trip points for %pOFn id=%d\n", sensor, id);
--		return ERR_CAST(trips);
-+		ret = PTR_ERR(trips);
-+		goto out_of_node_put;
- 	}
- 
- 	ret = thermal_of_monitor_init(np, &delay, &pdelay);
-@@ -519,6 +520,7 @@ static struct thermal_zone_device *therm
- 		goto out_kfree_trips;
- 	}
- 
-+	of_node_put(np);
- 	kfree(trips);
- 
- 	ret = thermal_zone_device_enable(tz);
-@@ -533,6 +535,8 @@ static struct thermal_zone_device *therm
- 
- out_kfree_trips:
- 	kfree(trips);
-+out_of_node_put:
-+	of_node_put(np);
- 
- 	return ERR_PTR(ret);
- }
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -924,7 +924,15 @@
+ #define USB_DEVICE_ID_MS_TYPE_COVER_2    0x07a9
+ #define USB_DEVICE_ID_MS_POWER_COVER     0x07da
+ #define USB_DEVICE_ID_MS_SURFACE3_COVER		0x07de
+-#define USB_DEVICE_ID_MS_XBOX_ONE_S_CONTROLLER	0x02fd
++/*
++ * For a description of the Xbox controller models, refer to:
++ * https://en.wikipedia.org/wiki/Xbox_Wireless_Controller#Summary
++ */
++#define USB_DEVICE_ID_MS_XBOX_CONTROLLER_MODEL_1708	0x02fd
++#define USB_DEVICE_ID_MS_XBOX_CONTROLLER_MODEL_1708_BLE	0x0b20
++#define USB_DEVICE_ID_MS_XBOX_CONTROLLER_MODEL_1914	0x0b13
++#define USB_DEVICE_ID_MS_XBOX_CONTROLLER_MODEL_1797	0x0b05
++#define USB_DEVICE_ID_MS_XBOX_CONTROLLER_MODEL_1797_BLE	0x0b22
+ #define USB_DEVICE_ID_MS_PIXART_MOUSE    0x00cb
+ #define USB_DEVICE_ID_8BITDO_SN30_PRO_PLUS      0x02e0
+ #define USB_DEVICE_ID_MS_MOUSE_0783      0x0783
+--- a/drivers/hid/hid-microsoft.c
++++ b/drivers/hid/hid-microsoft.c
+@@ -446,7 +446,16 @@ static const struct hid_device_id ms_dev
+ 		.driver_data = MS_PRESENTER },
+ 	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_MICROSOFT, 0x091B),
+ 		.driver_data = MS_SURFACE_DIAL },
+-	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_MICROSOFT, USB_DEVICE_ID_MS_XBOX_ONE_S_CONTROLLER),
++
++	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_MICROSOFT, USB_DEVICE_ID_MS_XBOX_CONTROLLER_MODEL_1708),
++		.driver_data = MS_QUIRK_FF },
++	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_MICROSOFT, USB_DEVICE_ID_MS_XBOX_CONTROLLER_MODEL_1708_BLE),
++		.driver_data = MS_QUIRK_FF },
++	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_MICROSOFT, USB_DEVICE_ID_MS_XBOX_CONTROLLER_MODEL_1914),
++		.driver_data = MS_QUIRK_FF },
++	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_MICROSOFT, USB_DEVICE_ID_MS_XBOX_CONTROLLER_MODEL_1797),
++		.driver_data = MS_QUIRK_FF },
++	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_MICROSOFT, USB_DEVICE_ID_MS_XBOX_CONTROLLER_MODEL_1797_BLE),
+ 		.driver_data = MS_QUIRK_FF },
+ 	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_MICROSOFT, USB_DEVICE_ID_8BITDO_SN30_PRO_PLUS),
+ 		.driver_data = MS_QUIRK_FF },
 
 
 
