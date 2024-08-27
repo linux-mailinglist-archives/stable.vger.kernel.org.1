@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-70775-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70525-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5616A960FFA
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:04:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1942A960E92
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:50:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 88B811C22977
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:04:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C9F7E281192
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:49:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08CB71C4EC9;
-	Tue, 27 Aug 2024 15:03:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A56C71BFE06;
+	Tue, 27 Aug 2024 14:49:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iHtp5Pq5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vc1YjiRG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B92B91C6893;
-	Tue, 27 Aug 2024 15:03:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5336A44C8C;
+	Tue, 27 Aug 2024 14:49:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771022; cv=none; b=aFyvAj2hWSTgBb/nuaXJ8/GDsnbtvAzB6zISepttVSvBzX/zPKmyr64FkjexMtMDy0sXJ7sddSEB/Nr73NCXzN1g+0vPTFrACvyA3pWoZTzfiXHKwvfaVOtIyZsSWsAzS+91r1VaJk637YG+q5zuwFLsCYOaJ/QIZqNJDtqwKoU=
+	t=1724770198; cv=none; b=TtRzRXn1OSXFozmek1xG2qXYIg5Z61Indiage6GsuUGzNhdYpgyKgOsruAy6L/EsjAHncJyo7AYlkvzsnRG157Upzc5gXDJHiJLnccqegn+DorjX6KClBlkT0altek96DCUI2Fma51FzWoQMAmjhuA2YpKP55B6MqWjRcKB8svE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771022; c=relaxed/simple;
-	bh=jNMfTrG/Z3yAaVi2CnSEoByF+1+H4qc8Jbglygd8kI0=;
+	s=arc-20240116; t=1724770198; c=relaxed/simple;
+	bh=yeUd57RHLgAHOGJBe0L604qJm8wW3U2iUw81g32w6dc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dAxE8yQeJRWd2RNkRbL3D4nUN++YRr+eWK71skcN8aLih4AM7W5E0bjnPkY6d1/+7cAYXwluv3Jc/Ui/N5T1hy6SJxRqOxzwXuE6w40uMlkx8x61z/+uy/zmsVrCzuCch47EuF4ed+SRBbGXn79FZPHviKzbhTtKqHfOuUUU9+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iHtp5Pq5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BABBFC61056;
-	Tue, 27 Aug 2024 15:03:41 +0000 (UTC)
+	 MIME-Version; b=Mq/ciCVIl52EGQ/ej6t0laBe7/h4/r8vytdPV4h1aD1WJbzdwm8DK/IWSiGUxVeMLDg2X8uwr3ZGi0LoKKi0kTB5fjoQ3mcVM3UBhSyOD3fBbmffiTedpUPytkjXJRYVcVuJVJww6Ry4dtDzbarqE5ZfOhYkzO3cEdf9h7LQvtM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vc1YjiRG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81E24C4DDEA;
+	Tue, 27 Aug 2024 14:49:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771022;
-	bh=jNMfTrG/Z3yAaVi2CnSEoByF+1+H4qc8Jbglygd8kI0=;
+	s=korg; t=1724770197;
+	bh=yeUd57RHLgAHOGJBe0L604qJm8wW3U2iUw81g32w6dc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iHtp5Pq5/fVuEC57IlQV0ZcxyxNO8VvFze1HuYfGe7NaEEQX4EeE1PCQkWT2oCPtg
-	 w/q1m3PkUDm/0jQj76VPqRQubYXvCN1kJkUpeEYnJYZWNqDM65jdvsc712hmfMOYTm
-	 xfaP9yr5bwcNcUMGSBr/7oMfxoxjrIXljfsbxBpA=
+	b=vc1YjiRG/V/Vp7FF2JXyJBfoWO+TCjH/CPTUxXM++Hfq0xP67dj2GXs1u2xrP53qe
+	 bkri66G19wqMKn5un1LAedEsMRDCU3LNt4Ad2PDrW4WeSbkzxfZJX8BeVQNRyFd5xI
+	 kw2oBR16o3rgOw2fKM7wO7GNYZ1dBrUZ0QkyJw3k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.10 032/273] ACPI: EC: Evaluate _REG outside the EC scope more carefully
+	Johannes Berg <johannes.berg@intel.com>,
+	Gregory Greenman <gregory.greenman@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 125/341] wifi: mac80211: flush STA queues on unauthorization
 Date: Tue, 27 Aug 2024 16:35:56 +0200
-Message-ID: <20240827143834.616972659@linuxfoundation.org>
+Message-ID: <20240827143848.172666021@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,108 +62,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit 71bf41b8e913ec9fc91f0d39ab8fb320229ec604 upstream.
+[ Upstream commit 06d6af4e1223339bb597b02fa8ad3f979ddb5511 ]
 
-Commit 60fa6ae6e6d0 ("ACPI: EC: Install address space handler at the
-namespace root") caused _REG methods for EC operation regions outside
-the EC device scope to be evaluated which on some systems leads to the
-evaluation of _REG methods in the scopes of device objects representing
-devices that are not present and not functional according to the _STA
-return values. Some of those device objects represent EC "alternatives"
-and if _REG is evaluated for their operation regions, the platform
-firmware may be confused and the platform may start to behave
-incorrectly.
+When the station is marked as no longer authorized, we shouldn't
+transmit to it any longer, but in particular we shouldn't be able
+to transmit to it after removing keys, which might lead to frames
+being sent out unencrypted depending on the exact hardware offload
+mechanism. Thus, instead of flushing only on station destruction,
+which covers only some cases, always flush on unauthorization.
 
-To avoid this problem, only evaluate _REG for EC operation regions
-located in the scopes of device objects representing known-to-be-present
-devices.
-
-For this purpose, partially revert commit 60fa6ae6e6d0 and trigger the
-evaluation of _REG for EC operation regions from acpi_bus_attach() for
-the known-valid devices.
-
-Fixes: 60fa6ae6e6d0 ("ACPI: EC: Install address space handler at the namespace root")
-Link: https://lore.kernel.org/linux-acpi/1f76b7e2-1928-4598-8037-28a1785c2d13@redhat.com
-Link: https://bugzilla.redhat.com/show_bug.cgi?id=2298938
-Link: https://bugzilla.redhat.com/show_bug.cgi?id=2302253
-Reported-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Cc: All applicable <stable@vger.kernel.org>
-Link: https://patch.msgid.link/23612351.6Emhk5qWAg@rjwysocki.net
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+Link: https://lore.kernel.org/r/20230928172905.d47f528829e7.I96903652c7ee0c5c66891f8b2364383da8e45a1f@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/ec.c       |   11 +++++++++--
- drivers/acpi/internal.h |    1 +
- drivers/acpi/scan.c     |    2 ++
- 3 files changed, 12 insertions(+), 2 deletions(-)
+ net/mac80211/sta_info.c | 32 ++++++++++++++++++++------------
+ 1 file changed, 20 insertions(+), 12 deletions(-)
 
---- a/drivers/acpi/ec.c
-+++ b/drivers/acpi/ec.c
-@@ -1487,12 +1487,13 @@ static bool install_gpio_irq_event_handl
- static int ec_install_handlers(struct acpi_ec *ec, struct acpi_device *device,
- 			       bool call_reg)
+diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
+index 42ba51a9700f2..5d71e8d084c45 100644
+--- a/net/mac80211/sta_info.c
++++ b/net/mac80211/sta_info.c
+@@ -1284,6 +1284,8 @@ static int _sta_info_move_state(struct sta_info *sta,
+ 				enum ieee80211_sta_state new_state,
+ 				bool recalc)
  {
--	acpi_handle scope_handle = ec == first_ec ? ACPI_ROOT_OBJECT : ec->handle;
- 	acpi_status status;
- 
- 	acpi_ec_start(ec, false);
- 
- 	if (!test_bit(EC_FLAGS_EC_HANDLER_INSTALLED, &ec->flags)) {
-+		acpi_handle scope_handle = ec == first_ec ? ACPI_ROOT_OBJECT : ec->handle;
++	struct ieee80211_local *local = sta->local;
 +
- 		acpi_ec_enter_noirq(ec);
- 		status = acpi_install_address_space_handler_no_reg(scope_handle,
- 								   ACPI_ADR_SPACE_EC,
-@@ -1506,7 +1507,7 @@ static int ec_install_handlers(struct ac
+ 	might_sleep();
+ 
+ 	if (sta->sta_state == new_state)
+@@ -1359,6 +1361,24 @@ static int _sta_info_move_state(struct sta_info *sta,
+ 		} else if (sta->sta_state == IEEE80211_STA_AUTHORIZED) {
+ 			ieee80211_vif_dec_num_mcast(sta->sdata);
+ 			clear_bit(WLAN_STA_AUTHORIZED, &sta->_flags);
++
++			/*
++			 * If we have encryption offload, flush (station) queues
++			 * (after ensuring concurrent TX completed) so we won't
++			 * transmit anything later unencrypted if/when keys are
++			 * also removed, which might otherwise happen depending
++			 * on how the hardware offload works.
++			 */
++			if (local->ops->set_key) {
++				synchronize_net();
++				if (local->ops->flush_sta)
++					drv_flush_sta(local, sta->sdata, sta);
++				else
++					ieee80211_flush_queues(local,
++							       sta->sdata,
++							       false);
++			}
++
+ 			ieee80211_clear_fast_xmit(sta);
+ 			ieee80211_clear_fast_rx(sta);
+ 		}
+@@ -1424,18 +1444,6 @@ static void __sta_info_destroy_part2(struct sta_info *sta, bool recalc)
+ 		WARN_ON_ONCE(ret);
  	}
  
- 	if (call_reg && !test_bit(EC_FLAGS_EC_REG_CALLED, &ec->flags)) {
--		acpi_execute_reg_methods(scope_handle, ACPI_UINT32_MAX, ACPI_ADR_SPACE_EC);
-+		acpi_execute_reg_methods(ec->handle, ACPI_UINT32_MAX, ACPI_ADR_SPACE_EC);
- 		set_bit(EC_FLAGS_EC_REG_CALLED, &ec->flags);
- 	}
+-	/* Flush queues before removing keys, as that might remove them
+-	 * from hardware, and then depending on the offload method, any
+-	 * frames sitting on hardware queues might be sent out without
+-	 * any encryption at all.
+-	 */
+-	if (local->ops->set_key) {
+-		if (local->ops->flush_sta)
+-			drv_flush_sta(local, sta->sdata, sta);
+-		else
+-			ieee80211_flush_queues(local, sta->sdata, false);
+-	}
+-
+ 	/* now keys can no longer be reached */
+ 	ieee80211_free_sta_keys(local, sta);
  
-@@ -1721,6 +1722,12 @@ static void acpi_ec_remove(struct acpi_d
- 	}
- }
- 
-+void acpi_ec_register_opregions(struct acpi_device *adev)
-+{
-+	if (first_ec && first_ec->handle != adev->handle)
-+		acpi_execute_reg_methods(adev->handle, 1, ACPI_ADR_SPACE_EC);
-+}
-+
- static acpi_status
- ec_parse_io_ports(struct acpi_resource *resource, void *context)
- {
---- a/drivers/acpi/internal.h
-+++ b/drivers/acpi/internal.h
-@@ -223,6 +223,7 @@ int acpi_ec_add_query_handler(struct acp
- 			      acpi_handle handle, acpi_ec_query_func func,
- 			      void *data);
- void acpi_ec_remove_query_handler(struct acpi_ec *ec, u8 query_bit);
-+void acpi_ec_register_opregions(struct acpi_device *adev);
- 
- #ifdef CONFIG_PM_SLEEP
- void acpi_ec_flush_work(void);
---- a/drivers/acpi/scan.c
-+++ b/drivers/acpi/scan.c
-@@ -2264,6 +2264,8 @@ static int acpi_bus_attach(struct acpi_d
- 	if (device->handler)
- 		goto ok;
- 
-+	acpi_ec_register_opregions(device);
-+
- 	if (!device->flags.initialized) {
- 		device->flags.power_manageable =
- 			device->power.states[ACPI_STATE_D0].flags.valid;
+-- 
+2.43.0
+
 
 
 
