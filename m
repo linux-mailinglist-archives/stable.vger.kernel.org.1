@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-71114-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70572-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 841039611B2
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:22:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C8DB0960ED7
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:53:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B592B1C2361F
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:22:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 86DD92842E0
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:53:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E3B11C6893;
-	Tue, 27 Aug 2024 15:22:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E41D21C68B9;
+	Tue, 27 Aug 2024 14:52:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cs1lmyEg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FrTBFS22"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C43817C96;
-	Tue, 27 Aug 2024 15:22:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1A361C6899;
+	Tue, 27 Aug 2024 14:52:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772147; cv=none; b=qBNUlN5j0+Z/E6v8h9Kamn9IE6JzrYbBIBBFbcHusDaU7il4arwxIGizUG6bqisdNEcVdyotCXlwk9gfuCuzv8MR6u6IaieNWQp0ms6SQkDeb+mL0dqRQXmxcTivN2ib4T1bZaHcuPQ9SwWVqGhFTce88xe1TnnqD5gZgr+Fk7o=
+	t=1724770352; cv=none; b=LaJCre9FERGqNCthPqp9VO3PKiUzg5AVJ3P6KNvVUZk/Icifw1s90bxTKyJEsp6Pis8VpWAsb96Qfj9Hq0NcyQmHhPrmluqTeuhmETiCcFGzxqXywV1+5uB620ow4owKDcol3k/iiduYSi8Gn8ViQVf8nrgw6aQG0rkaf1nHC1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772147; c=relaxed/simple;
-	bh=UqzBvJruT0QSET6LHNQOsvcwzr7Mqhh+MU9VIyGDN4g=;
+	s=arc-20240116; t=1724770352; c=relaxed/simple;
+	bh=TCce4rAJnXtZCCVcbq8VQUaW2UXpQIIgNUa31uyPUfs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ps1QGGVU9HrR9RRUq9k1ST4qo57O84FBHGsoKtFCLYOeNeW93SY9MitlAcrJnFJ/pVojw+FNywzHa1WBKg4SmW10o6E4cd5ONkItUeltiZpOv/SKfFg7ZwW5oV/oEs/D7V/ghCZTu0WEFq9kCHUuP7OdjHGkR4hoo6NIFy1NSRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cs1lmyEg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BAFDC61041;
-	Tue, 27 Aug 2024 15:22:26 +0000 (UTC)
+	 MIME-Version; b=FceqLPy7kC4O+tERbZPis66aqEPfPnkUrFoDXRK+Gl9LU/CoLfIw8czAfDa1/DhBcKt7K7RxL62+xidVgIrtzNhS4aDWnjvW7GuFQaMdw3Xo/KCjBULR9TnMF2Vci4lWDB3c33KOgH+8NguFAKIjHLN1hiXHu798znU0qFFxb5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FrTBFS22; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C910C61042;
+	Tue, 27 Aug 2024 14:52:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772147;
-	bh=UqzBvJruT0QSET6LHNQOsvcwzr7Mqhh+MU9VIyGDN4g=;
+	s=korg; t=1724770352;
+	bh=TCce4rAJnXtZCCVcbq8VQUaW2UXpQIIgNUa31uyPUfs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cs1lmyEgc0ImMiFJfSXkYPljc5CZUoadyNt0f0FnByfdBz9oFEQWZpfMKkH9Qbegn
-	 xiSO3nW/cpGnKoNiASJk10IcKw7isCK1Ulp4ZhSdou8PYjA+f1uSyO0fptMzwqvkzi
-	 CB8J4RxMSdCCJ/OmlAGIG3QDMio0B5qgQM0S2mKk=
+	b=FrTBFS22IrL+lEb950oRDjQP6NEnaTiaBqDB0ueSuT6bnNBe0Xbsul3vJLfrCsZpr
+	 jgPE0OpmJF+lyzKMoNFDz6rRQIvTjfEv814chSQKDhEBtwKa1z2eZj8X/7aTbScX3x
+	 BLvMAmG2ZkToowdxh3m4ataxUsEXrT2ZrWYcGQUU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Alexandra Winter <wintera@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 127/321] staging: iio: resolver: ad2s1210: fix use before initialization
+Subject: [PATCH 6.6 204/341] s390/iucv: fix receive buffer virtual vs physical address confusion
 Date: Tue, 27 Aug 2024 16:37:15 +0200
-Message-ID: <20240827143843.078635046@linuxfoundation.org>
+Message-ID: <20240827143851.177624331@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Alexander Gordeev <agordeev@linux.ibm.com>
 
-[ Upstream commit 7fe2d05cee46b1c4d9f1efaeab08cc31a0dfff60 ]
+[ Upstream commit 4e8477aeb46dfe74e829c06ea588dd00ba20c8cc ]
 
-This fixes a use before initialization in ad2s1210_probe(). The
-ad2s1210_setup_gpios() function uses st->sdev but it was being called
-before this field was initialized.
+Fix IUCV_IPBUFLST-type buffers virtual vs physical address confusion.
+This does not fix a bug since virtual and physical address spaces are
+currently the same.
 
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Link: https://lore.kernel.org/r/20230929-ad2s1210-mainline-v3-2-fa4364281745@baylibre.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/iio/resolver/ad2s1210.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ net/iucv/iucv.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/staging/iio/resolver/ad2s1210.c b/drivers/staging/iio/resolver/ad2s1210.c
-index 636c45b128438..afe89c91c89ea 100644
---- a/drivers/staging/iio/resolver/ad2s1210.c
-+++ b/drivers/staging/iio/resolver/ad2s1210.c
-@@ -657,9 +657,6 @@ static int ad2s1210_probe(struct spi_device *spi)
- 	if (!indio_dev)
- 		return -ENOMEM;
- 	st = iio_priv(indio_dev);
--	ret = ad2s1210_setup_gpios(st);
--	if (ret < 0)
--		return ret;
- 
- 	spi_set_drvdata(spi, indio_dev);
- 
-@@ -670,6 +667,10 @@ static int ad2s1210_probe(struct spi_device *spi)
- 	st->resolution = 12;
- 	st->fexcit = AD2S1210_DEF_EXCIT;
- 
-+	ret = ad2s1210_setup_gpios(st);
-+	if (ret < 0)
-+		return ret;
-+
- 	indio_dev->info = &ad2s1210_info;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
- 	indio_dev->channels = ad2s1210_channels;
+diff --git a/net/iucv/iucv.c b/net/iucv/iucv.c
+index db41eb2d977f2..038e1ba9aec27 100644
+--- a/net/iucv/iucv.c
++++ b/net/iucv/iucv.c
+@@ -1090,8 +1090,7 @@ static int iucv_message_receive_iprmdata(struct iucv_path *path,
+ 		size = (size < 8) ? size : 8;
+ 		for (array = buffer; size > 0; array++) {
+ 			copy = min_t(size_t, size, array->length);
+-			memcpy((u8 *)(addr_t) array->address,
+-				rmmsg, copy);
++			memcpy(phys_to_virt(array->address), rmmsg, copy);
+ 			rmmsg += copy;
+ 			size -= copy;
+ 		}
 -- 
 2.43.0
 
