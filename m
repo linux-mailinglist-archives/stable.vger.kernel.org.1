@@ -1,147 +1,147 @@
-Return-Path: <stable+bounces-70318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70319-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4E7596056A
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 11:20:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACFA096064F
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 11:55:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61BD0282389
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 09:20:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3AA78B20D66
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 09:55:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55F8019D886;
-	Tue, 27 Aug 2024 09:20:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C84A19CCE8;
+	Tue, 27 Aug 2024 09:54:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=xs4all.nl header.i=@xs4all.nl header.b="ZZo481WI"
+	dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b="lYJCSq4x"
 X-Original-To: stable@vger.kernel.org
-Received: from ewsoutbound.kpnmail.nl (ewsoutbound.kpnmail.nl [195.121.94.183])
+Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25118196D98
-	for <stable@vger.kernel.org>; Tue, 27 Aug 2024 09:20:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.121.94.183
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93A5C82D91;
+	Tue, 27 Aug 2024 09:54:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.69.126.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724750435; cv=none; b=m7NnxXK2838fd30MEQ97Gmt+nnp7AoAR3AFZnbvltrDO1BmcsbWftEyRrQ8izqwgO2R0jUwXEcYgtAkaq4FbnsZRJNyE/MZ3aNJhNoaRWhaCDeL+rhQbiA+uDSn7gcw2m2C1VGapxHcrL4vo4TZy5jbhHMY6msHuQYgJv6gFSEw=
+	t=1724752498; cv=none; b=IneYrDEfKhwH2Kdf1pPAr2DSC5WidfmAe7pD403DszKZMIq+5xJabDgUHCobQW5OOR/sWTgOp+sNsZNmLYaZHx+mgJo9fP+G3rW7z88NTkT9DJfoLwmMKiq1th5yXHw1xyq54yWzePM8nmp3YGBKCaW0cNt66Dh6PbQ0nS2E2DA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724750435; c=relaxed/simple;
-	bh=YXJcwnamKTneYzWhbIRpPcOE4uUMYra/8+ezm0om+4g=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bU3epNToztmYewLO7qUc5iR+LOBWIpr1PHRG9ReUsUMMUPjljxRiiFQnha8ZrTmVTPtNPJUVNdh1y9KYMdHcbndZfk5pGcKrRLCxH6oMn8MQUpRl0vM5fmxTrKkyKhkdrKbmur1rdtgDTX4G0mspkGMGVrViFrE7Ibnh9bL0m7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xs4all.nl; spf=pass smtp.mailfrom=xs4all.nl; dkim=pass (2048-bit key) header.d=xs4all.nl header.i=@xs4all.nl header.b=ZZo481WI; arc=none smtp.client-ip=195.121.94.183
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xs4all.nl
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xs4all.nl
-X-KPN-MessageId: 71ca1d8a-6455-11ef-a718-005056992ed3
-Received: from smtp.kpnmail.nl (unknown [10.31.155.8])
-	by ewsoutbound.so.kpn.org (Halon) with ESMTPS
-	id 71ca1d8a-6455-11ef-a718-005056992ed3;
-	Tue, 27 Aug 2024 11:19:21 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=xs4all.nl; s=xs4all01;
-	h=content-type:from:to:subject:mime-version:date:message-id;
-	bh=V/VSBddE/qzk24cDCK4vWX7YbZzTTEE/YqfbXNez6UU=;
-	b=ZZo481WI89gE3379OzGw6y5OPj/TNCDntxui/QfgG1C6uc9VuKe8qrp5iaCAVJkbYm7sZFrV18pb4
-	 lPe1RFY7m/oaie15QlLTfcz0rDabYl5mS1zqA3T4cSpwfurh5kCTpkfn1HBOyVt3NdeexigXO9JbxA
-	 Lhgbb6yZnC7AOFGpFlueJyikL4pNYU/ukrmo9BKoP4+LuFfyz55h/v7QCmnOAFt4inAG6XBPFrpfdF
-	 ulCTTKbifuQtNlM7equVNl2tbZVAY+TP2J8FXlLc0GovXaVahfhQTMgPcNhgy4wVcoYwJAVSQPzOrm
-	 Z3fOZ41GLP9+45sGL1DmxBt4SIdMB4A==
-X-KPN-MID: 33|bdowf2YyZJ73p+l+KxIvNI4hvd9rDe/13af7bekCi8bzO5YkMXfFnu25Tws2Hwl
- HaqvfwOX7JfL7F3g+NY6Uro/1HrEcg9A/cI8TWTrkvME=
-X-KPN-VerifiedSender: Yes
-X-CMASSUN: 33|6NS6lpYyLEehUIERFyp4etbYUh4rZ2KTnTSbQ2dPJpKSr8FglKSBe9fPCUhjjny
- skgJHTlvgVkLI2FAqH78N8A==
-Received: from [10.47.75.249] (unknown [173.38.220.48])
-	by smtp.xs4all.nl (Halon) with ESMTPSA
-	id 7229cf0a-6455-11ef-8748-00505699d6e5;
-	Tue, 27 Aug 2024 11:19:22 +0200 (CEST)
-Message-ID: <1f41c045-da75-429b-9d3e-0dc531bbd5db@xs4all.nl>
-Date: Tue, 27 Aug 2024 11:19:22 +0200
+	s=arc-20240116; t=1724752498; c=relaxed/simple;
+	bh=FI10dEkXRoEqfg6u3Q2Dk6B7FUz2tABo2Vlbk9C316k=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=F248bkgsBXd82ykfggDMSXriU9ffNQH8wQByn5um6MogsiLn4Hx6YhCQXMCARRo9+TVZrq94J4GcWzwl4fCWW6y1ObrAfL+qg7sUw/Uoo4WbOZEao6KFEvKq8ZpDIEDOWGEx92WyXxYe++Olf1SJpoDfggSlfewZWD5iMht4xWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; spf=pass smtp.mailfrom=weissschuh.net; dkim=pass (1024-bit key) header.d=weissschuh.net header.i=@weissschuh.net header.b=lYJCSq4x; arc=none smtp.client-ip=159.69.126.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=weissschuh.net
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
+	s=mail; t=1724752485;
+	bh=FI10dEkXRoEqfg6u3Q2Dk6B7FUz2tABo2Vlbk9C316k=;
+	h=From:Date:Subject:To:Cc:From;
+	b=lYJCSq4xVpHE+cQK3ydTfc7R+h08/E3nryaC3+wegsJUN62L0jB2LSgT0Vumi3Ti7
+	 mKZ1Tcw3FG3qMy7Z3aw3DRVTImtVXNGXo99HKGJExWe9Gc0LtnhHtsmSA5OSBLgsey
+	 Tw4RRdtrMgIEr091KB0I0ygsmDvAp/6mZOQWKHvo=
+From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
+Date: Tue, 27 Aug 2024 11:54:43 +0200
+Subject: [PATCH] sysctl: avoid spurious permanent empty tables
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] media: videobuf2: Drop minimum allocation requirement of
- 2 buffers
-Content-Language: en-US
-To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Cc: linux-media@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
- Tomasz Figa <tfiga@chromium.org>, Marek Szyprowski
- <m.szyprowski@samsung.com>,
- Benjamin Gaignard <benjamin.gaignard@collabora.com>, stable@vger.kernel.org
-References: <20240825232449.25905-1-laurent.pinchart+renesas@ideasonboard.com>
- <fbdc2a88-bffc-4603-8ceb-25817967ade8@xs4all.nl>
- <20240827091528.GD23129@pendragon.ideasonboard.com>
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-In-Reply-To: <20240827091528.GD23129@pendragon.ideasonboard.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20240827-sysctl-const-shared-identity-v1-1-2714a798c4ff@weissschuh.net>
+X-B4-Tracking: v=1; b=H4sIAGKizWYC/x3MSwqAMAwA0atI1ga0+L+KuKhtqgGp0hRRxLtbX
+ D4Y5gGhwCQwZA8EOll49wllnoFZtV8I2SaDKlRVdKpFucXEDc3uJaKsOpBNCfnI8cZez13ZUO2
+ smyEtjkCOr38/Tu/7ATpks/FuAAAA
+To: Luis Chamberlain <mcgrof@kernel.org>, Kees Cook <kees@kernel.org>, 
+ Joel Granados <j.granados@samsung.com>
+Cc: Nathan Chancellor <nathan@kernel.org>, 
+ Nick Desaulniers <ndesaulniers@google.com>, 
+ Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
+ linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+ llvm@lists.linux.dev, kernel test robot <oliver.sang@intel.com>, 
+ stable@vger.kernel.org, 
+ =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1724752485; l=2962;
+ i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
+ bh=FI10dEkXRoEqfg6u3Q2Dk6B7FUz2tABo2Vlbk9C316k=;
+ b=P41gnbdv8wnYCR3Jy/tGAVFr6kZg1Y61NS35L88Tmn9hFgmek9RBBh+ZeYOgYD73HwW/DRQds
+ LZWja3uU0A4BTl4eJU7IQIqwWV15p75mh1h1wz/XdwM9FV8jNo8NIe8
+X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
+ pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
 
-On 8/27/24 11:15, Laurent Pinchart wrote:
-> Hi Hans,
-> 
-> Please let me know if you expect a pull request, otherwise I'll consider
-> you will take this in your tree.
+The test if a table is a permanently empty one, inspects the address of
+the registered ctl_table argument.
+However as sysctl_mount_point is an empty array and does not occupy and
+space it can end up sharing an address with another object in memory.
+If that other object itself is a "struct ctl_table" then registering
+that table will fail as it's incorrectly recognized as permanently empty.
 
-Can you add it to your "Miscellaneous V4L2 patches" PR and post a v2 of that today?
+Avoid this issue by adding a dummy element to the array so that the
+array is not empty anymore and the potential address sharing is avoided.
+Explicitly register the table with zero elements as otherwise the dummy
+element would be recognized as a sentinel element which would lead to a
+runtime warning from the sysctl core.
 
-Regards,
+While the issue seems unlikely to be encountered at this time, this
+seems mostly be due to luck.
+Also a future change, constifying sysctl_mount_point and root_table, can
+reliably trigger this issue on clang 18.
 
-	Hans
+Given that empty arrays are non-standard in the first place,
+avoid them if possible.
 
-> 
-> On Mon, Aug 26, 2024 at 08:31:13AM +0200, Hans Verkuil wrote:
->> On 26/08/2024 01:24, Laurent Pinchart wrote:
->>> When introducing the ability for drivers to indicate the minimum number
->>> of buffers they require an application to allocate, commit 6662edcd32cc
->>> ("media: videobuf2: Add min_reqbufs_allocation field to vb2_queue
->>> structure") also introduced a global minimum of 2 buffers. It turns out
->>> this breaks the Renesas R-Car VSP test suite, where a test that
->>> allocates a single buffer fails when two buffers are used.
->>>
->>> One may consider debatable whether test suite failures without failures
->>> in production use cases should be considered as a regression, but
->>> operation with a single buffer is a valid use case. While full frame
->>> rate can't be maintained, memory-to-memory devices can still be used
->>> with a decent efficiency, and requiring applications to allocate
->>> multiple buffers for single-shot use cases with capture devices would
->>> just waste memory.
->>>
->>> For those reasons, fix the regression by dropping the global minimum of
->>> buffers. Individual drivers can still set their own minimum.
->>>
->>> Fixes: 6662edcd32cc ("media: videobuf2: Add min_reqbufs_allocation field to vb2_queue structure")
->>> Cc: stable@vger.kernel.org
->>> Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
->>
->> Reviewed-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
->>
->>> ---
->>>  drivers/media/common/videobuf2/videobuf2-core.c | 7 -------
->>>  1 file changed, 7 deletions(-)
->>>
->>> diff --git a/drivers/media/common/videobuf2/videobuf2-core.c b/drivers/media/common/videobuf2/videobuf2-core.c
->>> index 500a4e0c84ab..29a8d876e6c2 100644
->>> --- a/drivers/media/common/videobuf2/videobuf2-core.c
->>> +++ b/drivers/media/common/videobuf2/videobuf2-core.c
->>> @@ -2632,13 +2632,6 @@ int vb2_core_queue_init(struct vb2_queue *q)
->>>  	if (WARN_ON(q->supports_requests && q->min_queued_buffers))
->>>  		return -EINVAL;
->>>  
->>> -	/*
->>> -	 * The minimum requirement is 2: one buffer is used
->>> -	 * by the hardware while the other is being processed by userspace.
->>> -	 */
->>> -	if (q->min_reqbufs_allocation < 2)
->>> -		q->min_reqbufs_allocation = 2;
->>> -
->>>  	/*
->>>  	 * If the driver needs 'min_queued_buffers' in the queue before
->>>  	 * calling start_streaming() then the minimum requirement is
->>>
->>> base-commit: a043ea54bbb975ca9239c69fd17f430488d33522
-> 
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202408051453.f638857e-lkp@intel.com
+Fixes: 4a7b29f65094 ("sysctl: move sysctl type to ctl_table_header")
+Fixes: a35dd3a786f5 ("sysctl: drop now unnecessary out-of-bounds check")
+Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+---
+This was originally part of a feature series [0], but is resubmitted on
+its own to make it into v6.11To.
+
+[0] https://lore.kernel.org/lkml/20240805-sysctl-const-api-v2-0-52c85f02ee5e@weissschuh.net/
+---
+ fs/proc/proc_sysctl.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
+
+diff --git a/fs/proc/proc_sysctl.c b/fs/proc/proc_sysctl.c
+index 9553e77c9d31..d11ebc055ce0 100644
+--- a/fs/proc/proc_sysctl.c
++++ b/fs/proc/proc_sysctl.c
+@@ -29,8 +29,13 @@ static const struct inode_operations proc_sys_inode_operations;
+ static const struct file_operations proc_sys_dir_file_operations;
+ static const struct inode_operations proc_sys_dir_operations;
+ 
+-/* Support for permanently empty directories */
+-static struct ctl_table sysctl_mount_point[] = { };
++/*
++ * Support for permanently empty directories.
++ * Must be non-empty to avoid sharing an address with other tables.
++ */
++static struct ctl_table sysctl_mount_point[] = {
++	{ }
++};
+ 
+ /**
+  * register_sysctl_mount_point() - registers a sysctl mount point
+@@ -42,7 +47,7 @@ static struct ctl_table sysctl_mount_point[] = { };
+  */
+ struct ctl_table_header *register_sysctl_mount_point(const char *path)
+ {
+-	return register_sysctl(path, sysctl_mount_point);
++	return register_sysctl_sz(path, sysctl_mount_point, 0);
+ }
+ EXPORT_SYMBOL(register_sysctl_mount_point);
+ 
+
+---
+base-commit: 3e9bff3bbe1355805de919f688bef4baefbfd436
+change-id: 20240827-sysctl-const-shared-identity-9ab816e5fdfb
+
+Best regards,
+-- 
+Thomas Weißschuh <linux@weissschuh.net>
 
 
