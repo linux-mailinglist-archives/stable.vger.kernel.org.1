@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-71106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70847-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AE8E9611AA
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:22:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B867961053
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:07:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EB33EB2594F
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:22:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 81F92B25ADE
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:07:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 455981C4EE8;
-	Tue, 27 Aug 2024 15:22:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 909431C57AB;
+	Tue, 27 Aug 2024 15:07:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cUcmgmP2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kzBrGPWY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04ED519F485;
-	Tue, 27 Aug 2024 15:22:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46D6B1C461D;
+	Tue, 27 Aug 2024 15:07:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772121; cv=none; b=iE1aLpu8wok/ePx+dCRfmMbHJ9Pvbr99hK1p1xdzAYMhPGSJ9yvb09IwPKWwkcodsGFs/aAZU5YvgzxAcKRDkj3YgflXL9IETrVXlZlN0EcRz2TMuIQaLDUjuqZiNvvAuC29R4kV4wpP5RvYQhiBGNdE7imhL9Hp03WqLiZf0Ho=
+	t=1724771258; cv=none; b=NjqEcC+bBNAFfuI5oUMO6EjKzhG1FWLah3joUnKO4doJGUmBjJAZb/uUzD8RIzFf6lvZLwvl5p3y/oHINID0cdVFXEf9QoQcn7e2xdHsh+JwE7jBGI44In0dh/e2dM5xCF8Xoi0FDXOWcQC0gD6jhFDqV+ashDu/yKTq3fEZnNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772121; c=relaxed/simple;
-	bh=Pygm6PpR1+Phjpd3Pya3Yid+V4A+8Vs2QLfYbaeDyAw=;
+	s=arc-20240116; t=1724771258; c=relaxed/simple;
+	bh=WvoJqAGV/Vq4tLWEVO8lfqvvSAVerT1CAKrsGKsougg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QpiNxYYzotWCp4rmml2a8DNgVQnjE4e8F8mV6pQ6KFWsFqoM8kuiAKxJNVY0qQR2Ntk/5oIi5al+Lki23uoamh2Ha0DFLq96IKCCbkENYbz+Bys9T0BeEhsSacOW8FKIWCO6fjTxiV8njzh4rWrU+/N4ckuA8ajyh7v82BEAVGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cUcmgmP2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06D09C4FE08;
-	Tue, 27 Aug 2024 15:21:59 +0000 (UTC)
+	 MIME-Version; b=TUtVuzrUShMDkan7HdKf/aGJ89AstM3cHd7XRy22GOnjOkwwzEk/8adkqQnNVa3UFNevKhsEWMucD3XeGEoCL+CnZy9/d3ggN5eeRjI7XJYm5zl42x+Xyj+hP336Nl+lRGrXDcO90Y8rxWHCQZjjpnywPxoIJO3LMoW2f7PpE74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kzBrGPWY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDBBAC61040;
+	Tue, 27 Aug 2024 15:07:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772120;
-	bh=Pygm6PpR1+Phjpd3Pya3Yid+V4A+8Vs2QLfYbaeDyAw=;
+	s=korg; t=1724771258;
+	bh=WvoJqAGV/Vq4tLWEVO8lfqvvSAVerT1CAKrsGKsougg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cUcmgmP2wyKSGxdWnOGb+h0QGneeKF5UhDDQhbBTFO/OwXsWd651Kpd+8FBS/d0Vn
-	 gSeAKcMeH88OUqvk39l+8FoYyhq+20IV7NojlvBDh8ylA2ff/3+DDb7xwLPzNLWig3
-	 Z5fGOCTby2q9vWQpTC8GRgxjkBy9gnssIz20dn1s=
+	b=kzBrGPWYSj0ltkb5RlOIRWpDH4yMUpt7vqqP1AuaKMDCUsHVRIDhyoH0gN8eEzOY2
+	 gvD1MWZkN59S7LHL9fx2iMkIL4G+a7eEJWaGaiS/YP8Ucc0v69apsbqZvGbKN9u5x3
+	 Fx2FEdL0oo/d1SRKHKEQ0sKMSzp3TpOP8ZT8Xs7Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Wolfram Sang <wsa@kernel.org>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 119/321] i2c: riic: avoid potential division by zero
+Subject: [PATCH 6.10 103/273] netfilter: nfnetlink: Initialise extack before use in ACKs
 Date: Tue, 27 Aug 2024 16:37:07 +0200
-Message-ID: <20240827143842.772813277@linuxfoundation.org>
+Message-ID: <20240827143837.329769323@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,37 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Donald Hunter <donald.hunter@gmail.com>
 
-[ Upstream commit 7890fce6201aed46d3576e3d641f9ee5c1f0e16f ]
+[ Upstream commit d1a7b382a9d3f0f3e5a80e0be2991c075fa4f618 ]
 
-Value comes from DT, so it could be 0. Unlikely, but could be.
+Add missing extack initialisation when ACKing BATCH_BEGIN and BATCH_END.
 
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
+Fixes: bf2ac490d28c ("netfilter: nfnetlink: Handle ACK flags for batch messages")
+Signed-off-by: Donald Hunter <donald.hunter@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-riic.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/nfnetlink.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/i2c/busses/i2c-riic.c b/drivers/i2c/busses/i2c-riic.c
-index 849848ccb0802..b9959621cc5d7 100644
---- a/drivers/i2c/busses/i2c-riic.c
-+++ b/drivers/i2c/busses/i2c-riic.c
-@@ -314,7 +314,7 @@ static int riic_init_hw(struct riic_dev *riic, struct i2c_timings *t)
- 	 * frequency with only 62 clock ticks max (31 high, 31 low).
- 	 * Aim for a duty of 60% LOW, 40% HIGH.
- 	 */
--	total_ticks = DIV_ROUND_UP(rate, t->bus_freq_hz);
-+	total_ticks = DIV_ROUND_UP(rate, t->bus_freq_hz ?: 1);
+diff --git a/net/netfilter/nfnetlink.c b/net/netfilter/nfnetlink.c
+index 4abf660c7baff..932b3ddb34f13 100644
+--- a/net/netfilter/nfnetlink.c
++++ b/net/netfilter/nfnetlink.c
+@@ -427,8 +427,10 @@ static void nfnetlink_rcv_batch(struct sk_buff *skb, struct nlmsghdr *nlh,
  
- 	for (cks = 0; cks < 7; cks++) {
- 		/*
+ 	nfnl_unlock(subsys_id);
+ 
+-	if (nlh->nlmsg_flags & NLM_F_ACK)
++	if (nlh->nlmsg_flags & NLM_F_ACK) {
++		memset(&extack, 0, sizeof(extack));
+ 		nfnl_err_add(&err_list, nlh, 0, &extack);
++	}
+ 
+ 	while (skb->len >= nlmsg_total_size(0)) {
+ 		int msglen, type;
+@@ -577,6 +579,7 @@ static void nfnetlink_rcv_batch(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 			ss->abort(net, oskb, NFNL_ABORT_NONE);
+ 			netlink_ack(oskb, nlmsg_hdr(oskb), err, NULL);
+ 		} else if (nlh->nlmsg_flags & NLM_F_ACK) {
++			memset(&extack, 0, sizeof(extack));
+ 			nfnl_err_add(&err_list, nlh, 0, &extack);
+ 		}
+ 	} else {
 -- 
 2.43.0
 
