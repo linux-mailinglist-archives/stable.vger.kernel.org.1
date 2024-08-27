@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-70857-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71149-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 509AC96105F
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:08:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3331B9611E4
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:25:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 089F628174B
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:08:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 653EA1C237BF
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:25:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 405531E520;
-	Tue, 27 Aug 2024 15:08:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 781D31C6893;
+	Tue, 27 Aug 2024 15:24:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YQTT2tm8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C5KsCf7X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEFCA12E4D;
-	Tue, 27 Aug 2024 15:08:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3598E1C3F17;
+	Tue, 27 Aug 2024 15:24:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771292; cv=none; b=qXCNaLQlUjU2GLQrEoAHYiJPOm2cfqBkeMiZP5yDgEsrtJhdRpUloV84YhhHrSmqXnQC5Y5tWU5lo1jm9JHxCQJIjoHeIgAasZISzbHi5o/1V61Cy5wGwwfR/QQXvXMlycMMlpBr/gD9Bdg95XqN/zzOM1s0P6OewZOTxQT1nsQ=
+	t=1724772261; cv=none; b=f0UWACK2n1mDDe/3Z1nEbQKoJMqFgRWe/b2HVSreqSuoZ6BiRVv9SHA/8ucaSqrF90OOYWXwDWpnSf7VZhTMpP8KtHff13Y0N/MPEJsSyuegrZI4BWuQ4BdaA/kv8ZkzfQS8JeeBM75qtn9YCFi0f1wNLELNJbZg6PMzlIGpxW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771292; c=relaxed/simple;
-	bh=Hjbl1raZC+wVEyc5AW8JiZYJDdHpTxlvpil0oMwb9Hg=;
+	s=arc-20240116; t=1724772261; c=relaxed/simple;
+	bh=+80s9FWsOsH8/UJemULJ7cV55rNNvSfXnKxwZ3ENxp4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L246Kg7PXMmN3GWHkTAujb9Ek/MW0AcAS29JK1C7dBvoyZX3crjRhdBMUiLAOpVhSS+K0E0jxUvVY5o1oczIti1o09V2rb4HQSyE5qnDRqSK84P6EYNnogONRlESfF6FkoYc5eaF5yHgOLi2g25QrChBQQzhrvYWOYuWTKQHevw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YQTT2tm8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D2A3C61074;
-	Tue, 27 Aug 2024 15:08:11 +0000 (UTC)
+	 MIME-Version; b=VkKkioWkUbKYGCtnRCT3ABMn/v/5J68XDyzP946osRHcNCvFfbLteroRvO2SWyBJLy03v2kuZilTC6BQ87Qfax2Lyx/InLUanYP7WIqn5p5caG+fjuV/qkiUxyP3j7hWQAF7bHs/awWReLZTsr33/6JJ3VXanBFSdoXTPgpl17Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C5KsCf7X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95E0CC61069;
+	Tue, 27 Aug 2024 15:24:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771291;
-	bh=Hjbl1raZC+wVEyc5AW8JiZYJDdHpTxlvpil0oMwb9Hg=;
+	s=korg; t=1724772261;
+	bh=+80s9FWsOsH8/UJemULJ7cV55rNNvSfXnKxwZ3ENxp4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YQTT2tm8QxuM5lr0Dd9bKwAPDT2eOlnem1s0nmoVGRZGuT61bmrpDkl0vlu8ggr+R
-	 YNmDmK6qGdRqTd5cqOpayvTsc4Xp/S6b0QN23zeard3TXUb97bgR72y5iNgu5q8pP0
-	 Bj4ECwqsed02+ihv5B4hc9fUIjtYC8Gz/egZdk6M=
+	b=C5KsCf7X2KVpNkRSbyYT4TLDGQ0OsmQpfeUuKLE+sS0kvdw4GxSdf8drpq+Iujnxy
+	 9nePhGUJFfzacvODb5rk+PZpx9v4VSxGeCg3+eOWzj6lrJX3dAIQukJiv+W9rQkp7x
+	 qOBbfulbBbp9cA2dSE4YZXqZBFlSr9t1zSXFkpto=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baochen Qiang <quic_bqiang@quicinc.com>,
-	Mark Pearson <mpearson-lenovo@squebb.ca>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 145/273] wifi: ath12k: use 128 bytes aligned iova in transmit path for WCN7850
+Subject: [PATCH 6.1 161/321] fuse: fix UAF in rcu pathwalks
 Date: Tue, 27 Aug 2024 16:37:49 +0200
-Message-ID: <20240827143838.924976567@linuxfoundation.org>
+Message-ID: <20240827143844.359694392@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,220 +61,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baochen Qiang <quic_bqiang@quicinc.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit 38055789d15155109b41602ad719d770af507030 ]
+[ Upstream commit 053fc4f755ad43cf35210677bcba798ccdc48d0c ]
 
-In transmit path, it is likely that the iova is not aligned to PCIe TLP
-max payload size, which is 128 for WCN7850. Normally in such cases hardware
-is expected to split the packet into several parts in a manner such that
-they, other than the first one, have aligned iova. However due to hardware
-limitations, WCN7850 does not behave like that properly with some specific
-unaligned iova in transmit path. This easily results in target hang in a
-KPI transmit test: packet send/receive failure, WMI command send timeout
-etc. Also fatal error seen in PCIe level:
+->permission(), ->get_link() and ->inode_get_acl() might dereference
+->s_fs_info (and, in case of ->permission(), ->s_fs_info->fc->user_ns
+as well) when called from rcu pathwalk.
 
-	...
-	Capabilities: ...
-		...
-		DevSta: ... FatalErr+ ...
-		...
-	...
+Freeing ->s_fs_info->fc is rcu-delayed; we need to make freeing ->s_fs_info
+and dropping ->user_ns rcu-delayed too.
 
-Work around this by manually moving/reallocating payload buffer such that
-we can map it to a 128 bytes aligned iova. The moving requires sufficient
-head room or tail room in skb: for the former we can do ourselves a favor
-by asking some extra bytes when registering with mac80211, while for the
-latter we can do nothing.
-
-Moving/reallocating buffer consumes additional CPU cycles, but the good news
-is that an aligned iova increases PCIe efficiency. In my tests on some X86
-platforms the KPI results are almost consistent.
-
-Since this is seen only with WCN7850, add a new hardware parameter to
-differentiate from others.
-
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-
-Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Cc: <stable@vger.kernel.org>
-Tested-by: Mark Pearson <mpearson-lenovo@squebb.ca>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://patch.msgid.link/20240715023814.20242-1-quic_bqiang@quicinc.com
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/dp_tx.c | 72 +++++++++++++++++++++++++
- drivers/net/wireless/ath/ath12k/hw.c    |  6 +++
- drivers/net/wireless/ath/ath12k/hw.h    |  4 ++
- drivers/net/wireless/ath/ath12k/mac.c   |  1 +
- 4 files changed, 83 insertions(+)
+ fs/fuse/cuse.c   |  3 +--
+ fs/fuse/fuse_i.h |  1 +
+ fs/fuse/inode.c  | 15 +++++++++++----
+ 3 files changed, 13 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/dp_tx.c b/drivers/net/wireless/ath/ath12k/dp_tx.c
-index a7c7a868c14ce..fca9f7e510b41 100644
---- a/drivers/net/wireless/ath/ath12k/dp_tx.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_tx.c
-@@ -124,6 +124,60 @@ static void ath12k_hal_tx_cmd_ext_desc_setup(struct ath12k_base *ab,
- 						 HAL_TX_MSDU_EXT_INFO1_ENCRYPT_TYPE);
+diff --git a/fs/fuse/cuse.c b/fs/fuse/cuse.c
+index c7d882a9fe339..295344a462e1d 100644
+--- a/fs/fuse/cuse.c
++++ b/fs/fuse/cuse.c
+@@ -474,8 +474,7 @@ static int cuse_send_init(struct cuse_conn *cc)
+ 
+ static void cuse_fc_release(struct fuse_conn *fc)
+ {
+-	struct cuse_conn *cc = fc_to_cc(fc);
+-	kfree_rcu(cc, fc.rcu);
++	kfree(fc_to_cc(fc));
  }
  
-+static void ath12k_dp_tx_move_payload(struct sk_buff *skb,
-+				      unsigned long delta,
-+				      bool head)
+ /**
+diff --git a/fs/fuse/fuse_i.h b/fs/fuse/fuse_i.h
+index 253b9b78d6f13..66c2a99994683 100644
+--- a/fs/fuse/fuse_i.h
++++ b/fs/fuse/fuse_i.h
+@@ -872,6 +872,7 @@ struct fuse_mount {
+ 
+ 	/* Entry on fc->mounts */
+ 	struct list_head fc_entry;
++	struct rcu_head rcu;
+ };
+ 
+ static inline struct fuse_mount *get_fuse_mount_super(struct super_block *sb)
+diff --git a/fs/fuse/inode.c b/fs/fuse/inode.c
+index f19bdd7cbd779..64618548835b4 100644
+--- a/fs/fuse/inode.c
++++ b/fs/fuse/inode.c
+@@ -925,6 +925,14 @@ void fuse_conn_init(struct fuse_conn *fc, struct fuse_mount *fm,
+ }
+ EXPORT_SYMBOL_GPL(fuse_conn_init);
+ 
++static void delayed_release(struct rcu_head *p)
 +{
-+	unsigned long len = skb->len;
++	struct fuse_conn *fc = container_of(p, struct fuse_conn, rcu);
 +
-+	if (head) {
-+		skb_push(skb, delta);
-+		memmove(skb->data, skb->data + delta, len);
-+		skb_trim(skb, len);
-+	} else {
-+		skb_put(skb, delta);
-+		memmove(skb->data + delta, skb->data, len);
-+		skb_pull(skb, delta);
-+	}
++	put_user_ns(fc->user_ns);
++	fc->release(fc);
 +}
 +
-+static int ath12k_dp_tx_align_payload(struct ath12k_base *ab,
-+				      struct sk_buff **pskb)
-+{
-+	u32 iova_mask = ab->hw_params->iova_mask;
-+	unsigned long offset, delta1, delta2;
-+	struct sk_buff *skb2, *skb = *pskb;
-+	unsigned int headroom = skb_headroom(skb);
-+	int tailroom = skb_tailroom(skb);
-+	int ret = 0;
-+
-+	offset = (unsigned long)skb->data & iova_mask;
-+	delta1 = offset;
-+	delta2 = iova_mask - offset + 1;
-+
-+	if (headroom >= delta1) {
-+		ath12k_dp_tx_move_payload(skb, delta1, true);
-+	} else if (tailroom >= delta2) {
-+		ath12k_dp_tx_move_payload(skb, delta2, false);
-+	} else {
-+		skb2 = skb_realloc_headroom(skb, iova_mask);
-+		if (!skb2) {
-+			ret = -ENOMEM;
-+			goto out;
-+		}
-+
-+		dev_kfree_skb_any(skb);
-+
-+		offset = (unsigned long)skb2->data & iova_mask;
-+		if (offset)
-+			ath12k_dp_tx_move_payload(skb2, offset, true);
-+		*pskb = skb2;
-+	}
-+
-+out:
-+	return ret;
-+}
-+
- int ath12k_dp_tx(struct ath12k *ar, struct ath12k_vif *arvif,
- 		 struct sk_buff *skb)
+ void fuse_conn_put(struct fuse_conn *fc)
  {
-@@ -145,6 +199,7 @@ int ath12k_dp_tx(struct ath12k *ar, struct ath12k_vif *arvif,
- 	u8 ring_selector, ring_map = 0;
- 	bool tcl_ring_retry;
- 	bool msdu_ext_desc = false;
-+	u32 iova_mask = ab->hw_params->iova_mask;
- 
- 	if (test_bit(ATH12K_FLAG_CRASH_FLUSH, &ar->ab->dev_flags))
- 		return -ESHUTDOWN;
-@@ -240,6 +295,23 @@ int ath12k_dp_tx(struct ath12k *ar, struct ath12k_vif *arvif,
- 		goto fail_remove_tx_buf;
+ 	if (refcount_dec_and_test(&fc->count)) {
+@@ -936,13 +944,12 @@ void fuse_conn_put(struct fuse_conn *fc)
+ 		if (fiq->ops->release)
+ 			fiq->ops->release(fiq);
+ 		put_pid_ns(fc->pid_ns);
+-		put_user_ns(fc->user_ns);
+ 		bucket = rcu_dereference_protected(fc->curr_bucket, 1);
+ 		if (bucket) {
+ 			WARN_ON(atomic_read(&bucket->count) != 1);
+ 			kfree(bucket);
+ 		}
+-		fc->release(fc);
++		call_rcu(&fc->rcu, delayed_release);
  	}
+ }
+ EXPORT_SYMBOL_GPL(fuse_conn_put);
+@@ -1356,7 +1363,7 @@ EXPORT_SYMBOL_GPL(fuse_send_init);
+ void fuse_free_conn(struct fuse_conn *fc)
+ {
+ 	WARN_ON(!list_empty(&fc->devices));
+-	kfree_rcu(fc, rcu);
++	kfree(fc);
+ }
+ EXPORT_SYMBOL_GPL(fuse_free_conn);
  
-+	if (iova_mask &&
-+	    (unsigned long)skb->data & iova_mask) {
-+		ret = ath12k_dp_tx_align_payload(ab, &skb);
-+		if (ret) {
-+			ath12k_warn(ab, "failed to align TX buffer %d\n", ret);
-+			/* don't bail out, give original buffer
-+			 * a chance even unaligned.
-+			 */
-+			goto map;
-+		}
-+
-+		/* hdr is pointing to a wrong place after alignment,
-+		 * so refresh it for later use.
-+		 */
-+		hdr = (void *)skb->data;
-+	}
-+map:
- 	ti.paddr = dma_map_single(ab->dev, skb->data, skb->len, DMA_TO_DEVICE);
- 	if (dma_mapping_error(ab->dev, ti.paddr)) {
- 		atomic_inc(&ab->soc_stats.tx_err.misc_fail);
-diff --git a/drivers/net/wireless/ath/ath12k/hw.c b/drivers/net/wireless/ath/ath12k/hw.c
-index bff8cf97a18c6..2a92147d15fa1 100644
---- a/drivers/net/wireless/ath/ath12k/hw.c
-+++ b/drivers/net/wireless/ath/ath12k/hw.c
-@@ -922,6 +922,8 @@ static const struct ath12k_hw_params ath12k_hw_params[] = {
- 		.supports_sta_ps = false,
+@@ -1895,7 +1902,7 @@ static void fuse_sb_destroy(struct super_block *sb)
+ void fuse_mount_destroy(struct fuse_mount *fm)
+ {
+ 	fuse_conn_put(fm->fc);
+-	kfree(fm);
++	kfree_rcu(fm, rcu);
+ }
+ EXPORT_SYMBOL(fuse_mount_destroy);
  
- 		.acpi_guid = NULL,
-+
-+		.iova_mask = 0,
- 	},
- 	{
- 		.name = "wcn7850 hw2.0",
-@@ -997,6 +999,8 @@ static const struct ath12k_hw_params ath12k_hw_params[] = {
- 		.supports_sta_ps = true,
- 
- 		.acpi_guid = &wcn7850_uuid,
-+
-+		.iova_mask = ATH12K_PCIE_MAX_PAYLOAD_SIZE - 1,
- 	},
- 	{
- 		.name = "qcn9274 hw2.0",
-@@ -1067,6 +1071,8 @@ static const struct ath12k_hw_params ath12k_hw_params[] = {
- 		.supports_sta_ps = false,
- 
- 		.acpi_guid = NULL,
-+
-+		.iova_mask = 0,
- 	},
- };
- 
-diff --git a/drivers/net/wireless/ath/ath12k/hw.h b/drivers/net/wireless/ath/ath12k/hw.h
-index 2a314cfc8cb84..400bda17e02f6 100644
---- a/drivers/net/wireless/ath/ath12k/hw.h
-+++ b/drivers/net/wireless/ath/ath12k/hw.h
-@@ -96,6 +96,8 @@
- #define ATH12K_M3_FILE			"m3.bin"
- #define ATH12K_REGDB_FILE_NAME		"regdb.bin"
- 
-+#define ATH12K_PCIE_MAX_PAYLOAD_SIZE	128
-+
- enum ath12k_hw_rate_cck {
- 	ATH12K_HW_RATE_CCK_LP_11M = 0,
- 	ATH12K_HW_RATE_CCK_LP_5_5M,
-@@ -214,6 +216,8 @@ struct ath12k_hw_params {
- 	bool supports_sta_ps;
- 
- 	const guid_t *acpi_guid;
-+
-+	u32 iova_mask;
- };
- 
- struct ath12k_hw_ops {
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index ead37a4e002a2..8474e25d2ac64 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -8737,6 +8737,7 @@ static int ath12k_mac_hw_register(struct ath12k_hw *ah)
- 
- 	hw->vif_data_size = sizeof(struct ath12k_vif);
- 	hw->sta_data_size = sizeof(struct ath12k_sta);
-+	hw->extra_tx_headroom = ab->hw_params->iova_mask;
- 
- 	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_CQM_RSSI_LIST);
- 	wiphy_ext_feature_set(wiphy, NL80211_EXT_FEATURE_STA_TX_PWR);
 -- 
 2.43.0
 
