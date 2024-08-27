@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-71209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70948-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 221AC961250
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:29:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91A439610D4
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:13:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3696281A31
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:29:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A9E61F2180E
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:13:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B0D31C93A3;
-	Tue, 27 Aug 2024 15:27:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9EF01C6F4C;
+	Tue, 27 Aug 2024 15:13:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vyI4Irw2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="crZ6jHOj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC7871C8FD5;
-	Tue, 27 Aug 2024 15:27:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7E841C6F46;
+	Tue, 27 Aug 2024 15:13:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772456; cv=none; b=QAPU7DF5fL3q/FUfG6P9BFBIo4N35bl1I4FRFRAcTA7J2GF8cXzeIXodBblSjoJpHBhdtjzXXnLcv/GFSccdWjpab4j7g3mVEEN5j9IHkag8jbn1c+QnDDY75dkxvWdbGicHlU/wZZOZpIpwB9wNr5ALohroy7eRNgolqM60dBs=
+	t=1724771593; cv=none; b=KRgewgCp8//q+ysVkWxvhQRj5E2jwsBj31thYm5qeFeLfQctTxlIzDx/bckTMiNhzX8FL5sY4B96Vllv6wTTzr/a1zd5lqucrlSQ1KKvx7SPdAjGq0674Z3KdUtG5yaZJn/3BcLZPFhAkh7CkhrcEiuWz+93WypRILlfBdzuXFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772456; c=relaxed/simple;
-	bh=FUAi67p6r1s8ZHscUoy03VSueZZ326O5Yc4nABwdSW8=;
+	s=arc-20240116; t=1724771593; c=relaxed/simple;
+	bh=Mhxlj3fBiDACg/pC6pqkZLB/7aGiaApzRa8/vxgjTAg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cNGPdyeFFlRCDz64NFAnQOnMTCHRFtD+lMBa1BFvX13TO7GaA2Cl8iI7ULvKO5bs5mavpjZADFIZk/I+yk9xfeLstY1Ei7hpP09lb7N037LilUD7PsWej+6Y//8sT8xiP+JjkFeUubYmDs9vVqWkkw3DwUkvpREZOtjt+Eu5H4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vyI4Irw2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CC22C61040;
-	Tue, 27 Aug 2024 15:27:35 +0000 (UTC)
+	 MIME-Version; b=cYaf+d/xi2BZe1pfl2PRj7YPIm7mHyYDMwwsJyGZPlHnDXlYUHm+UL9xtKfDGFdpV6GAG9lq1PeSeW2JCC/fFWerxgytLQ5LyyW+F6r3arMQgGoEa8wNGQGxePOBm4kHju3ZTx/3iEX23Mm3SpRkkVSE2vlPQKK6TUnNJYdP5/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=crZ6jHOj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CDF0C61053;
+	Tue, 27 Aug 2024 15:13:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772455;
-	bh=FUAi67p6r1s8ZHscUoy03VSueZZ326O5Yc4nABwdSW8=;
+	s=korg; t=1724771593;
+	bh=Mhxlj3fBiDACg/pC6pqkZLB/7aGiaApzRa8/vxgjTAg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vyI4Irw2ipY1gmi4T8woCpvEGtQZkaSbrLVk65e9W8S2+KpfEAnztyW3lNVph+Y+9
-	 MQeG7B82iVhfaA3sH3dL6R/ngdyryczOtV8rjfdc+BmAgr6NGGK4VxCZl8TRdBaRtV
-	 6wbyZRH76j8ztIbORpt/PtnxxCYOcYaqfM9sbS24=
+	b=crZ6jHOjpKmZPRtbpHj1GVstmiAVNR2ARR3Y7ln2pAMqmK/5Pohr2gdbGfxmRZt1K
+	 2+3V2h1wTQNJJBGuOsi2B4GYi3yWO7NQl+u1dORdWjOiQgoQY5+mlRA+FicJzisztL
+	 w2tr54CFyFFSjpJlerOLbeDnwfkP+cI/tmYYMILY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Suraj Kandpal <suraj.kandpal@intel.com>,
+	Ankit Nautiyal <ankit.k.nautiyal@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 220/321] Bluetooth: hci_core: Fix LE quote calculation
+Subject: [PATCH 6.10 204/273] drm/i915/hdcp: Use correct cp_irq_count
 Date: Tue, 27 Aug 2024 16:38:48 +0200
-Message-ID: <20240827143846.606971338@linuxfoundation.org>
+Message-ID: <20240827143841.173802807@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,78 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Suraj Kandpal <suraj.kandpal@intel.com>
 
-[ Upstream commit 932021a11805b9da4bd6abf66fe233cccd59fe0e ]
+[ Upstream commit 5d41eeb6725e3e24853629e5d7635e4bc45d736e ]
 
-Function hci_sched_le needs to update the respective counter variable
-inplace other the likes of hci_quote_sent would attempt to use the
-possible outdated value of conn->{le_cnt,acl_cnt}.
+We are checking cp_irq_count from the wrong hdcp structure which
+ends up giving timed out errors. We only increment the cp_irq_count
+of the primary connector's hdcp structure but here in case of
+multidisplay setup we end up checking the secondary connector's hdcp
+structure, which will not have its cp_irq_count incremented. This leads
+to a timed out at CP_IRQ error even though a CP_IRQ was raised. Extract
+it from the correct intel_hdcp structure.
 
-Link: https://github.com/bluez/bluez/issues/915
-Fixes: 73d80deb7bdf ("Bluetooth: prioritizing data over HCI")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+--v2
+-Explain why it was the wrong hdcp structure [Jani]
+
+Fixes: 8c9e4f68b861 ("drm/i915/hdcp: Use per-device debugs")
+Signed-off-by: Suraj Kandpal <suraj.kandpal@intel.com>
+Reviewed-by: Ankit Nautiyal <ankit.k.nautiyal@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240809114127.3940699-2-suraj.kandpal@intel.com
+(cherry picked from commit dd925902634def895690426bf10e0a8b3e56f56d)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_core.c | 19 +++++++------------
- 1 file changed, 7 insertions(+), 12 deletions(-)
+ drivers/gpu/drm/i915/display/intel_dp_hdcp.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
-index cf164ec9899c3..210e03a3609d4 100644
---- a/net/bluetooth/hci_core.c
-+++ b/net/bluetooth/hci_core.c
-@@ -3744,19 +3744,19 @@ static void hci_sched_le(struct hci_dev *hdev)
+diff --git a/drivers/gpu/drm/i915/display/intel_dp_hdcp.c b/drivers/gpu/drm/i915/display/intel_dp_hdcp.c
+index 92b03073acdd5..555428606e127 100644
+--- a/drivers/gpu/drm/i915/display/intel_dp_hdcp.c
++++ b/drivers/gpu/drm/i915/display/intel_dp_hdcp.c
+@@ -39,7 +39,9 @@ static u32 transcoder_to_stream_enc_status(enum transcoder cpu_transcoder)
+ static void intel_dp_hdcp_wait_for_cp_irq(struct intel_connector *connector,
+ 					  int timeout)
  {
- 	struct hci_chan *chan;
- 	struct sk_buff *skb;
--	int quote, cnt, tmp;
-+	int quote, *cnt, tmp;
+-	struct intel_hdcp *hdcp = &connector->hdcp;
++	struct intel_digital_port *dig_port = intel_attached_dig_port(connector);
++	struct intel_dp *dp = &dig_port->dp;
++	struct intel_hdcp *hdcp = &dp->attached_connector->hdcp;
+ 	long ret;
  
- 	BT_DBG("%s", hdev->name);
- 
- 	if (!hci_conn_num(hdev, LE_LINK))
- 		return;
- 
--	cnt = hdev->le_pkts ? hdev->le_cnt : hdev->acl_cnt;
-+	cnt = hdev->le_pkts ? &hdev->le_cnt : &hdev->acl_cnt;
- 
--	__check_timeout(hdev, cnt, LE_LINK);
-+	__check_timeout(hdev, *cnt, LE_LINK);
- 
--	tmp = cnt;
--	while (cnt && (chan = hci_chan_sent(hdev, LE_LINK, &quote))) {
-+	tmp = *cnt;
-+	while (*cnt && (chan = hci_chan_sent(hdev, LE_LINK, &quote))) {
- 		u32 priority = (skb_peek(&chan->data_q))->priority;
- 		while (quote-- && (skb = skb_peek(&chan->data_q))) {
- 			BT_DBG("chan %p skb %p len %d priority %u", chan, skb,
-@@ -3771,7 +3771,7 @@ static void hci_sched_le(struct hci_dev *hdev)
- 			hci_send_frame(hdev, skb);
- 			hdev->le_last_tx = jiffies;
- 
--			cnt--;
-+			(*cnt)--;
- 			chan->sent++;
- 			chan->conn->sent++;
- 
-@@ -3781,12 +3781,7 @@ static void hci_sched_le(struct hci_dev *hdev)
- 		}
- 	}
- 
--	if (hdev->le_pkts)
--		hdev->le_cnt = cnt;
--	else
--		hdev->acl_cnt = cnt;
--
--	if (cnt != tmp)
-+	if (*cnt != tmp)
- 		hci_prio_recalculate(hdev, LE_LINK);
- }
- 
+ #define C (hdcp->cp_irq_count_cached != atomic_read(&hdcp->cp_irq_count))
 -- 
 2.43.0
 
