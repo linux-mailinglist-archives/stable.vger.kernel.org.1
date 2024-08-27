@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-71170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70911-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29283961208
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:26:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D83999610A4
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:11:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D510F280361
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:26:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9633A2822C3
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:11:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D51D1CB326;
-	Tue, 27 Aug 2024 15:25:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEA641C6887;
+	Tue, 27 Aug 2024 15:11:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ljVIYy7G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T/sxVoxp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE2EF19F485;
-	Tue, 27 Aug 2024 15:25:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D8F41C6881;
+	Tue, 27 Aug 2024 15:11:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772330; cv=none; b=Qpwc02g7kSGFuFfCNb3qI//qTlQBCnfNc8/hwqmPbVJ+8Jyr4eSr8C6wYmg/stcaTw1B/sMhlzJM4vFqh4bQIfRVcxKmd7B/9dmVJVJlYaHwE0Qu5hucPxqITvqKZbPADGrrDMbGdXYgBf/g/6bZTjlQCgBR6WjqkGbqN1M5WO0=
+	t=1724771473; cv=none; b=mfCg9doJFO0PvSmEG0PvSOGgDrlTLWJ83GvlZWdsnlMv9d30pWl1EWgkcfLExeHOy0Xl5c9aOcxeqoEMIeULYBPWlhkqG6cYAPM3Jt7dyMR2wvZD4QZe2yG6Bn8hMvXhY/hG0P92w5esYpg60FzexX650NFTsiEs1w+COVVQFbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772330; c=relaxed/simple;
-	bh=pMUkovxrgxnOeQw8ddqGHhybtbjRaF4y39MosUIm7lY=;
+	s=arc-20240116; t=1724771473; c=relaxed/simple;
+	bh=04L+D9jArrrlnYWljTwMt9fWdMjedjP73Z1jGJiypcQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S6OS/xZ5/ozqyjliP73DLqcJpaxiNntG8COkXSKKY+fOEQybZRKkHOkCOMwz9SilVdjj79JaonSV9wozeOuX7eYm6Dsd7u9QvhhFpem/f1svvMdeHAujcwrp/WZwJzrf5+WXnqpP1SZuEei/cA/vySOao4IgsfClSygPS7IaCh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ljVIYy7G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DEC1C4DDF5;
-	Tue, 27 Aug 2024 15:25:30 +0000 (UTC)
+	 MIME-Version; b=CrzdPY9jlpV+14/49wrUHbGRbohCLyS2ocdu0MVDwp8e3SC7Yc0Zqa+YEpGx9zyK4MO/9cs5WOefGGL+od+8L3uq5xDmwtj8SZP2b71Kvhu3LddLPuW5GsK7HK/D+P1fJHvi+hTz4AvPZlza6TqwHkzcyoO1aK1CRBPLSUyL27c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T/sxVoxp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC7DEC4DDF2;
+	Tue, 27 Aug 2024 15:11:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772330;
-	bh=pMUkovxrgxnOeQw8ddqGHhybtbjRaF4y39MosUIm7lY=;
+	s=korg; t=1724771473;
+	bh=04L+D9jArrrlnYWljTwMt9fWdMjedjP73Z1jGJiypcQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ljVIYy7GDj5txBIW1EmCja+BVnXtyWJwf/5wLg0kdq8NXlJ5/naAuHxH88lwn1rnA
-	 OpxKRLhQYg5m/QEg+5eAOvBA5J2gSyn8XZtiejcO0foLlb4JjENtkP7zGFY+yQdUHD
-	 R29BFbWgj0DWgBXDB51scaproz9UADxl7J++kNtY=
+	b=T/sxVoxpBUdIDY/udlNFxSOlYylQOx+e6yzY3EyjJE8sJ/rWgSxJkJoijdPtSttNm
+	 h5WWSExbYUPcCqOPU525AyBQN3lSoC8HaM2F5aorZu9PaWvoaq0KHCYqtDEix17nnS
+	 yoKZKXIqG7wtybM2prHD2/dnOhv7gGxUqyuaSGjs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Sterba <dsterba@suse.com>,
+	Thomas Bogendoerfer <tbogendoerfer@suse.de>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 183/321] btrfs: handle invalid root reference found in may_destroy_subvol()
+Subject: [PATCH 6.10 167/273] ip6_tunnel: Fix broken GRO
 Date: Tue, 27 Aug 2024 16:38:11 +0200
-Message-ID: <20240827143845.195816710@linuxfoundation.org>
+Message-ID: <20240827143839.764135272@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Sterba <dsterba@suse.com>
+From: Thomas Bogendoerfer <tbogendoerfer@suse.de>
 
-[ Upstream commit 6fbc6f4ac1f4907da4fc674251527e7dc79ffbf6 ]
+[ Upstream commit 4b3e33fcc38f7750604b065c55a43e94c5bc3145 ]
 
-The may_destroy_subvol() looks up a root by a key, allowing to do an
-inexact search when key->offset is -1.  It's never expected to find such
-item, as it would break the allowed range of a root id.
+GRO code checks for matching layer 2 headers to see, if packet belongs
+to the same flow and because ip6 tunnel set dev->hard_header_len
+this check fails in cases, where it shouldn't. To fix this don't
+set hard_header_len, but use needed_headroom like ipv4/ip_tunnel.c
+does.
 
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Thomas Bogendoerfer <tbogendoerfer@suse.de>
+Link: https://patch.msgid.link/20240815151419.109864-1-tbogendoerfer@suse.de
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/inode.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ net/ipv6/ip6_tunnel.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-index 10ded9c2be03b..bd3388e1b532e 100644
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -4614,7 +4614,14 @@ static noinline int may_destroy_subvol(struct btrfs_root *root)
- 	ret = btrfs_search_slot(NULL, fs_info->tree_root, &key, path, 0, 0);
- 	if (ret < 0)
- 		goto out;
--	BUG_ON(ret == 0);
-+	if (ret == 0) {
-+		/*
-+		 * Key with offset -1 found, there would have to exist a root
-+		 * with such id, but this is out of valid range.
-+		 */
-+		ret = -EUCLEAN;
-+		goto out;
-+	}
+diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
+index 9dee0c1279554..87dfb565a9f81 100644
+--- a/net/ipv6/ip6_tunnel.c
++++ b/net/ipv6/ip6_tunnel.c
+@@ -1507,7 +1507,8 @@ static void ip6_tnl_link_config(struct ip6_tnl *t)
+ 			tdev = __dev_get_by_index(t->net, p->link);
  
- 	ret = 0;
- 	if (path->slots[0] > 0) {
+ 		if (tdev) {
+-			dev->hard_header_len = tdev->hard_header_len + t_hlen;
++			dev->needed_headroom = tdev->hard_header_len +
++				tdev->needed_headroom + t_hlen;
+ 			mtu = min_t(unsigned int, tdev->mtu, IP6_MAX_MTU);
+ 
+ 			mtu = mtu - t_hlen;
+@@ -1731,7 +1732,9 @@ ip6_tnl_siocdevprivate(struct net_device *dev, struct ifreq *ifr,
+ int ip6_tnl_change_mtu(struct net_device *dev, int new_mtu)
+ {
+ 	struct ip6_tnl *tnl = netdev_priv(dev);
++	int t_hlen;
+ 
++	t_hlen = tnl->hlen + sizeof(struct ipv6hdr);
+ 	if (tnl->parms.proto == IPPROTO_IPV6) {
+ 		if (new_mtu < IPV6_MIN_MTU)
+ 			return -EINVAL;
+@@ -1740,10 +1743,10 @@ int ip6_tnl_change_mtu(struct net_device *dev, int new_mtu)
+ 			return -EINVAL;
+ 	}
+ 	if (tnl->parms.proto == IPPROTO_IPV6 || tnl->parms.proto == 0) {
+-		if (new_mtu > IP6_MAX_MTU - dev->hard_header_len)
++		if (new_mtu > IP6_MAX_MTU - dev->hard_header_len - t_hlen)
+ 			return -EINVAL;
+ 	} else {
+-		if (new_mtu > IP_MAX_MTU - dev->hard_header_len)
++		if (new_mtu > IP_MAX_MTU - dev->hard_header_len - t_hlen)
+ 			return -EINVAL;
+ 	}
+ 	WRITE_ONCE(dev->mtu, new_mtu);
+@@ -1887,12 +1890,11 @@ ip6_tnl_dev_init_gen(struct net_device *dev)
+ 	t_hlen = t->hlen + sizeof(struct ipv6hdr);
+ 
+ 	dev->type = ARPHRD_TUNNEL6;
+-	dev->hard_header_len = LL_MAX_HEADER + t_hlen;
+ 	dev->mtu = ETH_DATA_LEN - t_hlen;
+ 	if (!(t->parms.flags & IP6_TNL_F_IGN_ENCAP_LIMIT))
+ 		dev->mtu -= 8;
+ 	dev->min_mtu = ETH_MIN_MTU;
+-	dev->max_mtu = IP6_MAX_MTU - dev->hard_header_len;
++	dev->max_mtu = IP6_MAX_MTU - dev->hard_header_len - t_hlen;
+ 
+ 	netdev_hold(dev, &t->dev_tracker, GFP_KERNEL);
+ 	netdev_lockdep_set_classes(dev);
 -- 
 2.43.0
 
