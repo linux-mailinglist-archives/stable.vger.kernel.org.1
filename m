@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-70483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70732-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4292E960E5C
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:48:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB4CB960FBB
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:01:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B7752B2208A
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:48:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54BC91F2499A
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:01:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DF3C1C57BE;
-	Tue, 27 Aug 2024 14:47:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 112611BA294;
+	Tue, 27 Aug 2024 15:01:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tc8TtELz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qgiuXlEl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57E6D1C5781;
-	Tue, 27 Aug 2024 14:47:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C43EA2FB2;
+	Tue, 27 Aug 2024 15:01:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770057; cv=none; b=WWZBfmUKklDXD6Sx13tRQDw8Q1VMVRCqr5TtvShu/I4cQjxIATOXdW5WFSCCp1Nn5zpIqmdIfAk6TrL/Ig9qrYw3RtPp7jJnafu1HfJyM4y6oEX4DBJzgIOhaWqPqAizEEG0cm74ZRBjQsSPDc6wSAKTt2gVM978fSOtl4x8cVo=
+	t=1724770883; cv=none; b=X55QABQURl15PuORei0klCGAoxnOU/7tUcf+nQo/T+iBGp84Y0ZD2xQjWvyqC7l+RMgBmzVda0AyFNSIoGTvDTMNEBww2bTbCthlZPIEu9HqskAns5PIxZ7qsH9IZrzzC8pJ3pUIy4kz4+Ivh33OncfhuKl4uPuizxsgi70hf3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770057; c=relaxed/simple;
-	bh=LkXlyQg+zBMcDb6P4TrTyygQIC9vo6bETtFextKFLZo=;
+	s=arc-20240116; t=1724770883; c=relaxed/simple;
+	bh=QYDQY3t21NfF099hwcsGk9Xmm0artxKpH1J5cqFiBGU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dgdwjvxNgTOAgWkR+p642oGRL9fyu8urzaH9F8/HKkUqCPYM76D0me51YHBFS1Lem40Ch/9EljfwrG0OYY6u1tswps0wQD0r/ewsNmAlvXIz67/AFYgIlsIW2g6scXiYuf8HIqBcUn40Q2TJxppkDuQ1mSTUAc/DOBURjOoc2dc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tc8TtELz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D78EC61040;
-	Tue, 27 Aug 2024 14:47:36 +0000 (UTC)
+	 MIME-Version; b=XiCYuLITFN+tlIc7eR5L8b0Ab9nx5kjGO6hiHIU2fEAGUN7ED9IEaRPRNYZ1qCgQxXQHx6cMrDJ+YdctHMEZQXkfHEKMPaxfZzDGc90ONR07ua83IzAeWbtR0babETGVWwb8JM8d0wE1KaMa0L2YmQxoHeVjPcB466qtmf7gCYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qgiuXlEl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35BAAC4AF1C;
+	Tue, 27 Aug 2024 15:01:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770056;
-	bh=LkXlyQg+zBMcDb6P4TrTyygQIC9vo6bETtFextKFLZo=;
+	s=korg; t=1724770883;
+	bh=QYDQY3t21NfF099hwcsGk9Xmm0artxKpH1J5cqFiBGU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tc8TtELz8LV8XxTDyXYfwOC9LxOX5bpQLHmSsUtTXGnMaDmY2vbQc4ayrDJSzIuPs
-	 d2ZKJvk0YEz+3deZKQQSnJV5lTKPtoucK0zmRLL+WhZ66yaV6qrCbiqL5zVxH/2r12
-	 x6nDCq/gaGjjMBYPEl+zPN2f471iLc8Et3ScUmRQ=
+	b=qgiuXlEl2FMxNZCbEF30lp7ontZizAoprkrTxQsjDPdBsUGFfjJYQQdfW27CLUHdA
+	 2ELQNvTflTlZRVNX1hB3vAyAEtRVMUPGMoxwr18uTqDky2taz3XxXcfLyzUnSRhB+z
+	 ox6D1giFU9CEzY6evAuQLFVB79nQbVXOYnSUzHAU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jithu Joseph <jithu.joseph@intel.com>,
-	Tony Luck <tony.luck@intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Pengfei Xu <pengfei.xu@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 113/341] platform/x86/intel/ifs: Validate image size
-Date: Tue, 27 Aug 2024 16:35:44 +0200
-Message-ID: <20240827143847.712310528@linuxfoundation.org>
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.10 021/273] ALSA: timer: Relax start tick time check for slave timer elements
+Date: Tue, 27 Aug 2024 16:35:45 +0200
+Message-ID: <20240827143834.195026824@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +58,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jithu Joseph <jithu.joseph@intel.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 25a76dbb36dd58ad4df7f6a4dc43061a10b0d817 ]
+commit ccbfcac05866ebe6eb3bc6d07b51d4ed4fcde436 upstream.
 
-Perform additional validation prior to loading IFS image.
+The recent addition of a sanity check for a too low start tick time
+seems breaking some applications that uses aloop with a certain slave
+timer setup.  They may have the initial resolution 0, hence it's
+treated as if it were a too low value.
 
-Error out if the size of the file being loaded doesn't match the size
-specified in the header.
+Relax and skip the check for the slave timer instance for addressing
+the regression.
 
-Signed-off-by: Jithu Joseph <jithu.joseph@intel.com>
-Reviewed-by: Tony Luck <tony.luck@intel.com>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Tested-by: Pengfei Xu <pengfei.xu@intel.com>
-Link: https://lore.kernel.org/r/20231005195137.3117166-6-jithu.joseph@intel.com
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 4a63bd179fa8 ("ALSA: timer: Set lower bound of start tick time")
+Cc: <stable@vger.kernel.org>
+Link: https://github.com/raspberrypi/linux/issues/6294
+Link: https://patch.msgid.link/20240810084833.10939-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/intel/ifs/load.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ sound/core/timer.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/intel/ifs/load.c b/drivers/platform/x86/intel/ifs/load.c
-index cefd0d886cfd4..ae52de138a6ea 100644
---- a/drivers/platform/x86/intel/ifs/load.c
-+++ b/drivers/platform/x86/intel/ifs/load.c
-@@ -260,6 +260,7 @@ int ifs_load_firmware(struct device *dev)
- {
- 	const struct ifs_test_caps *test = ifs_get_test_caps(dev);
- 	struct ifs_data *ifsd = ifs_get_data(dev);
-+	unsigned int expected_size;
- 	const struct firmware *fw;
- 	char scan_path[64];
- 	int ret = -EINVAL;
-@@ -274,6 +275,13 @@ int ifs_load_firmware(struct device *dev)
- 		goto done;
+--- a/sound/core/timer.c
++++ b/sound/core/timer.c
+@@ -547,7 +547,7 @@ static int snd_timer_start1(struct snd_t
+ 	/* check the actual time for the start tick;
+ 	 * bail out as error if it's way too low (< 100us)
+ 	 */
+-	if (start) {
++	if (start && !(timer->hw.flags & SNDRV_TIMER_HW_SLAVE)) {
+ 		if ((u64)snd_timer_hw_resolution(timer) * ticks < 100000)
+ 			return -EINVAL;
  	}
- 
-+	expected_size = ((struct microcode_header_intel *)fw->data)->totalsize;
-+	if (fw->size != expected_size) {
-+		dev_err(dev, "File size mismatch (expected %u, actual %zu). Corrupted IFS image.\n",
-+			expected_size, fw->size);
-+		return -EINVAL;
-+	}
-+
- 	ret = image_sanity_check(dev, (struct microcode_header_intel *)fw->data);
- 	if (ret)
- 		goto release;
--- 
-2.43.0
-
 
 
 
