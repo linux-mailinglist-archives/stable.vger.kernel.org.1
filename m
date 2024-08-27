@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-71093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70760-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F170396119B
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:21:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D1EF960FE7
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:04:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2B9321C20ACE
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:21:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C27FD1F21AAC
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:04:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 065811C8FA0;
-	Tue, 27 Aug 2024 15:21:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D85591C6F6D;
+	Tue, 27 Aug 2024 15:02:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TojBMLUy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aX5Fpc4s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8B9019F485;
-	Tue, 27 Aug 2024 15:21:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 948161C6F49;
+	Tue, 27 Aug 2024 15:02:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772076; cv=none; b=p8of0+Fy3fv9B0Sk/C+IMv9GWhZxAWbE+Nak7ktIoC798HwkOM8BkBRf3sKwX3lVmQUT4sB2h8a8hnFVlWHIA2km6xJdAxxUtTWtRyVaT6cK8+Zkuc7/ADIKNq1G65A0qj4cpH0jDCSoeIR8ztQ3KKq9S9rheXypvx36FEnlTDU=
+	t=1724770972; cv=none; b=F8ckA4cPthBcpW4JqXgH+X89sepKbSUVMpiFBPE492U3/KcWHb2fuOnGxLm02D7xPpqKYYPj3wOQ8RArtQEumTH8CvjAJtz+AvFyLSwow8ZE5mfMzs6G9STJCZz9TlaoBbtn4SYH8DxQykXvqVWZguLKS9cbAKnzR4ovbqp+sxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772076; c=relaxed/simple;
-	bh=8ChAghU4OLbtg8biKnMYE+RCUZBytg94tROosmVJPts=;
+	s=arc-20240116; t=1724770972; c=relaxed/simple;
+	bh=d/gM7Tuh0MGTI9jCNmw/JcfNw4r8+rVUN2piBbOjx9g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fewj4JERvCO7cyWgue+2YAHYyud/fb2AY1VZo0m28heGbpH3Two58BaZn9lHJ8pLT7LEa7wkUgQBZzxjoo6QChRJtPtmXo6Jexy6fBLIZj+m8ZTRUI59nyYMxE46r+22iiHzsOJGLYbIHHbXHt8U94Z+Hs0wJBi+F6pRHP3OF6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TojBMLUy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27768C4FE00;
-	Tue, 27 Aug 2024 15:21:15 +0000 (UTC)
+	 MIME-Version; b=Si+NwNUwWkXVNh/vFlqQiucnCSY6fPGoGZBWzUGjoFBdXfmWF9jpP03M2o73QaNjY2q3bcLSftGMNchd+gGUyl17eM3+xtO933qAgfJ8OA6ZjgjabXuoepNKii2cCgwKO3jUrXlwKVU0ESTfKFBKbtSCd1Iyk0OpPRb4lFoJa1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aX5Fpc4s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17A44C61049;
+	Tue, 27 Aug 2024 15:02:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772076;
-	bh=8ChAghU4OLbtg8biKnMYE+RCUZBytg94tROosmVJPts=;
+	s=korg; t=1724770972;
+	bh=d/gM7Tuh0MGTI9jCNmw/JcfNw4r8+rVUN2piBbOjx9g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TojBMLUykWQntsYGaS6nJDIBSiVLOD5tAEE68K/gipC6bWoN1LltvH9f79MLJ4XtW
-	 QUdlfdx2byJFt7aF+kUz0Z65f6cKb1kkL51DR8ByiuHCwFHaU77Pid4P2ORpxtrH2C
-	 Zx2s/AsxXqhzE0wG44XNDG4cH+bO1RsWaAX+jYCA=
+	b=aX5Fpc4sfHdROPqaSjVs23bGiVK8Idqc6pCzs28bXUXl6dWIS2GEpA0uwgq9spR/j
+	 aCUN+vCtbc73yZRvRx3yHsx3vbEqUdnoDjpdfvc80sTeaEx+ERv7Y+Bp7nEy92MmGv
+	 nVWXo0AhuZ7UHtNcUgaaKOu5EJ/l1oHxEnJ8w3rs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Fietkau <nbd@nbd.name>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 064/321] wifi: cfg80211: factor out bridge tunnel / RFC1042 header check
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Long Li <longli@microsoft.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.10 048/273] net: mana: Fix doorbell out of order violation and avoid unnecessary doorbell rings
 Date: Tue, 27 Aug 2024 16:36:12 +0200
-Message-ID: <20240827143840.674333067@linuxfoundation.org>
+Message-ID: <20240827143835.226999546@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,96 +62,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Long Li <longli@microsoft.com>
 
-[ Upstream commit 9f718554e7eacea62d3f972cae24d969755bf3b6 ]
+commit 58a63729c957621f1990c3494c702711188ca347 upstream.
 
-The same check is done in multiple places, unify it.
+After napi_complete_done() is called when NAPI is polling in the current
+process context, another NAPI may be scheduled and start running in
+softirq on another CPU and may ring the doorbell before the current CPU
+does. When combined with unnecessary rings when there is no need to arm
+the CQ, it triggers error paths in the hardware.
 
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Link: https://lore.kernel.org/r/20230213100855.34315-2-nbd@nbd.name
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Stable-dep-of: 9ad797485692 ("wifi: cfg80211: check A-MSDU format more carefully")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This patch fixes this by calling napi_complete_done() after doorbell
+rings. It limits the number of unnecessary rings when there is
+no need to arm. MANA hardware specifies that there must be one doorbell
+ring every 8 CQ wraparounds. This driver guarantees one doorbell ring as
+soon as the number of consumed CQEs exceeds 4 CQ wraparounds. In practical
+workloads, the 4 CQ wraparounds proves to be big enough that it rarely
+exceeds this limit before all the napi weight is consumed.
+
+To implement this, add a per-CQ counter cq->work_done_since_doorbell,
+and make sure the CQ is armed as soon as passing 4 wraparounds of the CQ.
+
+Cc: stable@vger.kernel.org
+Fixes: e1b5683ff62e ("net: mana: Move NAPI from EQ to CQ")
+Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
+Signed-off-by: Long Li <longli@microsoft.com>
+Link: https://patch.msgid.link/1723219138-29887-1-git-send-email-longli@linuxonhyperv.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/wireless/util.c | 34 ++++++++++++++++++----------------
- 1 file changed, 18 insertions(+), 16 deletions(-)
+ drivers/net/ethernet/microsoft/mana/mana_en.c |   22 ++++++++++++++--------
+ include/net/mana/mana.h                       |    1 +
+ 2 files changed, 15 insertions(+), 8 deletions(-)
 
-diff --git a/net/wireless/util.c b/net/wireless/util.c
-index 4680e65460c85..8597694a0cfdb 100644
---- a/net/wireless/util.c
-+++ b/net/wireless/util.c
-@@ -542,6 +542,21 @@ unsigned int ieee80211_get_mesh_hdrlen(struct ieee80211s_hdr *meshhdr)
- }
- EXPORT_SYMBOL(ieee80211_get_mesh_hdrlen);
- 
-+static bool ieee80211_get_8023_tunnel_proto(const void *hdr, __be16 *proto)
-+{
-+	const __be16 *hdr_proto = hdr + ETH_ALEN;
-+
-+	if (!(ether_addr_equal(hdr, rfc1042_header) &&
-+	      *hdr_proto != htons(ETH_P_AARP) &&
-+	      *hdr_proto != htons(ETH_P_IPX)) &&
-+	    !ether_addr_equal(hdr, bridge_tunnel_header))
-+		return false;
-+
-+	*proto = *hdr_proto;
-+
-+	return true;
-+}
-+
- int ieee80211_data_to_8023_exthdr(struct sk_buff *skb, struct ethhdr *ehdr,
- 				  const u8 *addr, enum nl80211_iftype iftype,
- 				  u8 data_offset, bool is_amsdu)
-@@ -633,14 +648,9 @@ int ieee80211_data_to_8023_exthdr(struct sk_buff *skb, struct ethhdr *ehdr,
- 
- 	if (likely(!is_amsdu &&
- 		   skb_copy_bits(skb, hdrlen, &payload, sizeof(payload)) == 0 &&
--	           ((ether_addr_equal(payload.hdr, rfc1042_header) &&
--		     payload.proto != htons(ETH_P_AARP) &&
--		     payload.proto != htons(ETH_P_IPX)) ||
--		    ether_addr_equal(payload.hdr, bridge_tunnel_header)))) {
--		/* remove RFC1042 or Bridge-Tunnel encapsulation and
--		 * replace EtherType */
-+		   ieee80211_get_8023_tunnel_proto(&payload, &tmp.h_proto))) {
-+		/* remove RFC1042 or Bridge-Tunnel encapsulation */
- 		hdrlen += ETH_ALEN + 2;
--		tmp.h_proto = payload.proto;
- 		skb_postpull_rcsum(skb, &payload, ETH_ALEN + 2);
- 	} else {
- 		tmp.h_proto = htons(skb->len - hdrlen);
-@@ -756,8 +766,6 @@ void ieee80211_amsdu_to_8023s(struct sk_buff *skb, struct sk_buff_head *list,
+--- a/drivers/net/ethernet/microsoft/mana/mana_en.c
++++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+@@ -1777,7 +1777,6 @@ static void mana_poll_rx_cq(struct mana_
+ static int mana_cq_handler(void *context, struct gdma_queue *gdma_queue)
  {
- 	unsigned int hlen = ALIGN(extra_headroom, 4);
- 	struct sk_buff *frame = NULL;
--	u16 ethertype;
--	u8 *payload;
- 	int offset = 0, remaining;
- 	struct ethhdr eth;
- 	bool reuse_frag = skb->head_frag && !skb_has_frag_list(skb);
-@@ -811,14 +819,8 @@ void ieee80211_amsdu_to_8023s(struct sk_buff *skb, struct sk_buff_head *list,
- 		frame->dev = skb->dev;
- 		frame->priority = skb->priority;
+ 	struct mana_cq *cq = context;
+-	u8 arm_bit;
+ 	int w;
  
--		payload = frame->data;
--		ethertype = (payload[6] << 8) | payload[7];
--		if (likely((ether_addr_equal(payload, rfc1042_header) &&
--			    ethertype != ETH_P_AARP && ethertype != ETH_P_IPX) ||
--			   ether_addr_equal(payload, bridge_tunnel_header))) {
--			eth.h_proto = htons(ethertype);
-+		if (likely(ieee80211_get_8023_tunnel_proto(frame->data, &eth.h_proto)))
- 			skb_pull(frame, ETH_ALEN + 2);
--		}
+ 	WARN_ON_ONCE(cq->gdma_cq != gdma_queue);
+@@ -1788,16 +1787,23 @@ static int mana_cq_handler(void *context
+ 		mana_poll_tx_cq(cq);
  
- 		memcpy(skb_push(frame, sizeof(eth)), &eth, sizeof(eth));
- 		__skb_queue_tail(list, frame);
--- 
-2.43.0
-
+ 	w = cq->work_done;
++	cq->work_done_since_doorbell += w;
+ 
+-	if (w < cq->budget &&
+-	    napi_complete_done(&cq->napi, w)) {
+-		arm_bit = SET_ARM_BIT;
+-	} else {
+-		arm_bit = 0;
++	if (w < cq->budget) {
++		mana_gd_ring_cq(gdma_queue, SET_ARM_BIT);
++		cq->work_done_since_doorbell = 0;
++		napi_complete_done(&cq->napi, w);
++	} else if (cq->work_done_since_doorbell >
++		   cq->gdma_cq->queue_size / COMP_ENTRY_SIZE * 4) {
++		/* MANA hardware requires at least one doorbell ring every 8
++		 * wraparounds of CQ even if there is no need to arm the CQ.
++		 * This driver rings the doorbell as soon as we have exceeded
++		 * 4 wraparounds.
++		 */
++		mana_gd_ring_cq(gdma_queue, 0);
++		cq->work_done_since_doorbell = 0;
+ 	}
+ 
+-	mana_gd_ring_cq(gdma_queue, arm_bit);
+-
+ 	return w;
+ }
+ 
+--- a/include/net/mana/mana.h
++++ b/include/net/mana/mana.h
+@@ -274,6 +274,7 @@ struct mana_cq {
+ 	/* NAPI data */
+ 	struct napi_struct napi;
+ 	int work_done;
++	int work_done_since_doorbell;
+ 	int budget;
+ };
+ 
 
 
 
