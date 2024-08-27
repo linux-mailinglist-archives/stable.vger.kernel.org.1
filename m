@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-70623-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70861-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E67B960F2A
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:56:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 556B6961065
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:08:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D16D21C20A9C
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:56:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 134602849C2
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:08:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6A1B1C578E;
-	Tue, 27 Aug 2024 14:55:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72F191C4EE8;
+	Tue, 27 Aug 2024 15:08:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mviBEPgh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CF8Y+Pmw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71E6F19EEDB;
-	Tue, 27 Aug 2024 14:55:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EA501E520;
+	Tue, 27 Aug 2024 15:08:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770523; cv=none; b=MTJTZ68tU/MVgv6GRV5JB28Z0obrlij+0P1OTh1EoT8t2jQt9jeu1tiWHHx7Hy1KBmeYLuilCO7wZhqFQthOFAR7AKPL6afPZY6ZfIaoW9ahxxpUs/5Ia679xBG3EPraOczdMM0+O/VJm2bcjpFjSxxJear34ykHNdh7Zd6Psgs=
+	t=1724771305; cv=none; b=fEmVI4c3lMsimTAa3MMwGE4MWOBh26KozE1FZ0dHQiQKDvB7fVfkQTl+Ox4o1fDSBl6hNP/ZPi5sEJ0wu+OyjoSiEubcWk+5VvYT91muXNe+uLzwaOypJUSdeG+0zvgnp7VAF1QdJNWKEO9kNDDOY6GAzNpwKT/r0N0u5wqGdkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770523; c=relaxed/simple;
-	bh=jQTQ7DkM3iX9u2YC0Rj7LgztclmoJLnNLGn6HdYXv68=;
+	s=arc-20240116; t=1724771305; c=relaxed/simple;
+	bh=vYtCjiz820ZLc63TBCbkpY6/WXJMYtOr5GAoFpIcyXY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=O/7pokfQV/fAZIdsHEi5N+o0l42Z5qyR4tDvZJE5t7jp57YE1obyjscUX7QtVCnfVgJKxhK+H9tspHcfgkqveQamfBgRm3Jy5/XA7X15E3rBTuZgIRVzrpTiwcqDYZ7XatcYl9lf8frgzNgwl+n1p19lA0aDU60VBOwiFXMqhKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mviBEPgh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAAE6C4E691;
-	Tue, 27 Aug 2024 14:55:22 +0000 (UTC)
+	 MIME-Version; b=W+vv1xl2VsvgRWpMgUtXQ4JFlqlXyw/nCsZgX+AY4YgxdL4Xtqy8lzK3NNoGbPSyI2HMb77x/Cd3YPr7cV7n8x+3vyoOp0pQPNtAIa5FgfoYKiE+XuVQIQBuuY3GwqgvRPNduhjLW2UkYByjghnEjxkmEVYuwM9GYKyBpRnHffQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CF8Y+Pmw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90C8DC61074;
+	Tue, 27 Aug 2024 15:08:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770523;
-	bh=jQTQ7DkM3iX9u2YC0Rj7LgztclmoJLnNLGn6HdYXv68=;
+	s=korg; t=1724771305;
+	bh=vYtCjiz820ZLc63TBCbkpY6/WXJMYtOr5GAoFpIcyXY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mviBEPghsRw2oQ8j6BDsakBnY38VtVafqSokYbzs/0Kwa3ltLBLD2p+qBM5+NQFlm
-	 NdnNJiwsUE+65yCc0wYPYNgQgGjf+5ghYDJl/8857K1gxq/DqQHO4bDpmuSwA/YXXD
-	 HEXisGqOq4T3XQkasxR9Z0hQCmk4iu6DyjvhLG2M=
+	b=CF8Y+Pmwr+mBTQbfNv1I+R9/AAbqxSzxdWRcsqIpELcKW6mabB8u74WZrdElcvonY
+	 6MxwYBw2Vdgkdn8TuUp1sB0nt1wWpagmwfWVxwDHZ8UJbeiGJRxRcTia5j93HdvJca
+	 c20kH5IqMMiCULimDNoJoHAkcA5UK2QA5OHw83Uw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Dmitry V. Levin" <ldv@strace.io>,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
-	Celeste Liu <CoelacanthusHex@gmail.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	Olivier Langlois <olivier@trillion01.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 224/341] riscv: entry: always initialize regs->a0 to -ENOSYS
+Subject: [PATCH 6.10 131/273] io_uring/napi: check napi_enabled in io_napi_add() before proceeding
 Date: Tue, 27 Aug 2024 16:37:35 +0200
-Message-ID: <20240827143851.936180385@linuxfoundation.org>
+Message-ID: <20240827143838.388989958@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +60,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Celeste Liu <coelacanthushex@gmail.com>
+From: Olivier Langlois <olivier@trillion01.com>
 
-[ Upstream commit 61119394631f219e23ce98bcc3eb993a64a8ea64 ]
+[ Upstream commit 84f2eecf95018386c145ada19bb45b03bdb80d9e ]
 
-Otherwise when the tracer changes syscall number to -1, the kernel fails
-to initialize a0 with -ENOSYS and subsequently fails to return the error
-code of the failed syscall to userspace. For example, it will break
-strace syscall tampering.
+doing so avoids the overhead of adding napi ids to all the rings that do
+not enable napi.
 
-Fixes: 52449c17bdd1 ("riscv: entry: set a0 = -ENOSYS only when syscall != -1")
-Reported-by: "Dmitry V. Levin" <ldv@strace.io>
-Reviewed-by: Björn Töpel <bjorn@rivosinc.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Celeste Liu <CoelacanthusHex@gmail.com>
-Link: https://lore.kernel.org/r/20240627142338.5114-2-CoelacanthusHex@gmail.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+if no id is added to napi_list because napi is disabled,
+__io_napi_busy_loop() will not be called.
+
+Signed-off-by: Olivier Langlois <olivier@trillion01.com>
+Fixes: b4ccc4dd1330 ("io_uring/napi: enable even with a timeout of 0")
+Link: https://lore.kernel.org/r/bd989ccef5fda14f5fd9888faf4fefcf66bd0369.1723400131.git.olivier@trillion01.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/traps.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ io_uring/napi.c | 2 +-
+ io_uring/napi.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/riscv/kernel/traps.c b/arch/riscv/kernel/traps.c
-index 67d0073fb624d..2158b7a65d74f 100644
---- a/arch/riscv/kernel/traps.c
-+++ b/arch/riscv/kernel/traps.c
-@@ -311,6 +311,7 @@ asmlinkage __visible __trap_section void do_trap_ecall_u(struct pt_regs *regs)
+diff --git a/io_uring/napi.c b/io_uring/napi.c
+index 6bdb267e9c33c..ab5d68d4440c4 100644
+--- a/io_uring/napi.c
++++ b/io_uring/napi.c
+@@ -311,7 +311,7 @@ void __io_napi_busy_loop(struct io_ring_ctx *ctx, struct io_wait_queue *iowq)
+ {
+ 	iowq->napi_prefer_busy_poll = READ_ONCE(ctx->napi_prefer_busy_poll);
  
- 		regs->epc += 4;
- 		regs->orig_a0 = regs->a0;
-+		regs->a0 = -ENOSYS;
+-	if (!(ctx->flags & IORING_SETUP_SQPOLL) && ctx->napi_enabled)
++	if (!(ctx->flags & IORING_SETUP_SQPOLL))
+ 		io_napi_blocking_busy_loop(ctx, iowq);
+ }
  
- 		riscv_v_vstate_discard(regs);
+diff --git a/io_uring/napi.h b/io_uring/napi.h
+index babbee36cd3eb..341d010cf66bc 100644
+--- a/io_uring/napi.h
++++ b/io_uring/napi.h
+@@ -55,7 +55,7 @@ static inline void io_napi_add(struct io_kiocb *req)
+ 	struct io_ring_ctx *ctx = req->ctx;
+ 	struct socket *sock;
  
-@@ -318,8 +319,6 @@ asmlinkage __visible __trap_section void do_trap_ecall_u(struct pt_regs *regs)
+-	if (!READ_ONCE(ctx->napi_busy_poll_dt))
++	if (!READ_ONCE(ctx->napi_enabled))
+ 		return;
  
- 		if (syscall >= 0 && syscall < NR_syscalls)
- 			syscall_handler(regs, syscall);
--		else if (syscall != -1)
--			regs->a0 = -ENOSYS;
- 
- 		syscall_exit_to_user_mode(regs);
- 	} else {
+ 	sock = sock_from_file(req->file);
 -- 
 2.43.0
 
