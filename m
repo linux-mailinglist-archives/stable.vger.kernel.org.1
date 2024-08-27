@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-70849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71097-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31BEE961055
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:07:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 039849611A1
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:21:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BAAB32829A9
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:07:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5C275B2581B
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:21:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A1E91C462B;
-	Tue, 27 Aug 2024 15:07:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBEB31BC073;
+	Tue, 27 Aug 2024 15:21:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Smk6R0F8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gx3Kn30h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 253411C0DE7;
-	Tue, 27 Aug 2024 15:07:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8B7D1C2317;
+	Tue, 27 Aug 2024 15:21:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771265; cv=none; b=aBCS41SzG7rnnIStGHbPUU0F6u9AUORW3bTBUSet36Kzm1rMYAC70Z4yze15GCFgiJ5Nbo0GNJyVlV1Vnx/9pK4geIB6JReDXDHb+iQDLhIvmtYtDLpHgIB52cIRpYKWdI9IBPDEbV6O55BGIjuONcQCQ47zTVPmNb7MoYP+AUQ=
+	t=1724772089; cv=none; b=UxN4BIhIxnMq/a59hzjT8YDeEyMWyyo37kgu+vA4oXrGyINfn55BEAVYj5ak24FEiGa52MPKrAvfPoijUbSoXOyQIXa22wjMMPyk4vRlnzmhFBCW/Xo/9gm3iCULAUPkCRu4zqfmQjRNtg6JKYZb4NWtOaFiNN/02rqK5N0W+7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771265; c=relaxed/simple;
-	bh=oKerNYziGbt1zykAO1pdE94j69DQlxekujaz+zEfDKc=;
+	s=arc-20240116; t=1724772089; c=relaxed/simple;
+	bh=MfWsnnL7ExarNgkufm0yw15lDJinELGG1eHwR1wQImI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RkcNic3kg/2Xpak4rkLWb3sZ3UVrwLrxgoq3yU2ps4pSFGe1FEPg7Sb4QAVkXzOTgjFpgcFlTFmlg6wMQf6sERUBwiGYaB+YNMg4mF4UfPZceDzx2737E6cv66q1MhHNNbTacrFfo0pNbZcFXJ06W84enNQGsOFu64Da9m6nFWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Smk6R0F8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87597C61046;
-	Tue, 27 Aug 2024 15:07:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nmEeHQ+O1DD/pZ6qngMAtQKyLpf+/H7gfsRRc7xNSeuncBz6/Xyn+GARYT+gvd8+ke49K9yjX2ZNUgGuytGfA7EqFPgYOpVhwNPfXTpUAKvL57XaWrBng1Ivf7Vep0vvVbV0v1e503SaTORyF7hBv1btymYDkCOIxmZNShybvM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gx3Kn30h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28F86C4FE08;
+	Tue, 27 Aug 2024 15:21:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771265;
-	bh=oKerNYziGbt1zykAO1pdE94j69DQlxekujaz+zEfDKc=;
+	s=korg; t=1724772089;
+	bh=MfWsnnL7ExarNgkufm0yw15lDJinELGG1eHwR1wQImI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Smk6R0F8yE1UMqwwts2XDmbVU3o5hv8DPG66jcSAumAKw0untoSrhNdbCqceiYm8j
-	 kMKbIJntSWrbtnMl7D7w1c3z45aDcuyHE8pu2wlQl42dpNMMaSTWHKaR3IfQU6lMZg
-	 iEJsBNCv4atlbWhpUlgZ8qpGd6q42rhw4P2cTcX4=
+	b=gx3Kn30hcGeTXPic3SxPd55eKPKwr3buHTDHfsyKX2v80Kp0MwSBgnsywCiCE79YT
+	 DX3C4NawXGYzKjbsB3FFix8MNPcknGMgDq17KvwyB8K1PrpA//spZ93dwwsVUrueVY
+	 lppTKp/dynP+C6I3b4WEaQkhaLb+jyvVlMI+SOuU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Pawel Dembicki <paweldembicki@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Lee Jones <lee@kernel.org>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 095/273] net: dsa: vsc73xx: fix port MAC configuration in full duplex mode
+Subject: [PATCH 6.1 111/321] drm/amd/amdgpu/imu_v11_0: Increase buffer size to ensure all possible values can be stored
 Date: Tue, 27 Aug 2024 16:36:59 +0200
-Message-ID: <20240827143837.027061764@linuxfoundation.org>
+Message-ID: <20240827143842.470873042@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +60,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pawel Dembicki <paweldembicki@gmail.com>
+From: Lee Jones <lee@kernel.org>
 
-[ Upstream commit 63796bc2e97cd5ebcef60bad4953259d4ad11cb4 ]
+[ Upstream commit a728342ae4ec2a7fdab0038b11427579424f133e ]
 
-According to the datasheet description ("Port Mode Procedure" in 5.6.2),
-the VSC73XX_MAC_CFG_WEXC_DIS bit is configured only for half duplex mode.
+Fixes the following W=1 kernel build warning(s):
 
-The WEXC_DIS bit is responsible for MAC behavior after an excessive
-collision. Let's set it as described in the datasheet.
+ drivers/gpu/drm/amd/amdgpu/imu_v11_0.c: In function ‘imu_v11_0_init_microcode’:
+ drivers/gpu/drm/amd/amdgpu/imu_v11_0.c:52:54: warning: ‘_imu.bin’ directive output may be truncated writing 8 bytes into a region of size between 4 and 33 [-Wformat-truncation=]
+ drivers/gpu/drm/amd/amdgpu/imu_v11_0.c:52:9: note: ‘snprintf’ output between 16 and 45 bytes into a destination of size 40
 
-Fixes: 05bd97fc559d ("net: dsa: Add Vitesse VSC73xx DSA router driver")
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Pawel Dembicki <paweldembicki@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/vitesse-vsc73xx-core.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/imu_v11_0.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/dsa/vitesse-vsc73xx-core.c b/drivers/net/dsa/vitesse-vsc73xx-core.c
-index 4b031fefcec68..fc4030976bdce 100644
---- a/drivers/net/dsa/vitesse-vsc73xx-core.c
-+++ b/drivers/net/dsa/vitesse-vsc73xx-core.c
-@@ -817,6 +817,11 @@ static void vsc73xx_mac_link_up(struct phylink_config *config,
+diff --git a/drivers/gpu/drm/amd/amdgpu/imu_v11_0.c b/drivers/gpu/drm/amd/amdgpu/imu_v11_0.c
+index 95548c512f4fb..3c21128fa1d82 100644
+--- a/drivers/gpu/drm/amd/amdgpu/imu_v11_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/imu_v11_0.c
+@@ -38,7 +38,7 @@ MODULE_FIRMWARE("amdgpu/gc_11_0_3_imu.bin");
  
- 	if (duplex == DUPLEX_FULL)
- 		val |= VSC73XX_MAC_CFG_FDX;
-+	else
-+		/* In datasheet description ("Port Mode Procedure" in 5.6.2)
-+		 * this bit is configured only for half duplex.
-+		 */
-+		val |= VSC73XX_MAC_CFG_WEXC_DIS;
- 
- 	/* This routine is described in the datasheet (below ARBDISC register
- 	 * description)
-@@ -827,7 +832,6 @@ static void vsc73xx_mac_link_up(struct phylink_config *config,
- 	get_random_bytes(&seed, 1);
- 	val |= seed << VSC73XX_MAC_CFG_SEED_OFFSET;
- 	val |= VSC73XX_MAC_CFG_SEED_LOAD;
--	val |= VSC73XX_MAC_CFG_WEXC_DIS;
- 	vsc73xx_write(vsc, VSC73XX_BLOCK_MAC, port, VSC73XX_MAC_CFG, val);
- 
- 	/* Flow control for the PHY facing ports:
+ static int imu_v11_0_init_microcode(struct amdgpu_device *adev)
+ {
+-	char fw_name[40];
++	char fw_name[45];
+ 	char ucode_prefix[30];
+ 	int err;
+ 	const struct imu_firmware_header_v1_0 *imu_hdr;
 -- 
 2.43.0
 
