@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-70596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70607-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CEC0960F03
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:55:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18B21960F0F
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:55:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43BBA1F2228B
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:55:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B51E1C23442
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:55:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47D5719EEDB;
-	Tue, 27 Aug 2024 14:53:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A5351C7B82;
+	Tue, 27 Aug 2024 14:54:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A/rIFWdU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PqOP69J7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 047EF1C689C;
-	Tue, 27 Aug 2024 14:53:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38A361C4EF6;
+	Tue, 27 Aug 2024 14:54:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770433; cv=none; b=Vd2acXbHdsOWZGc5bFWZssEBVyMMmEXR4LWAzjzlesYDShmB1JgIwvOG/t5soxeMjG7olKK/QhGK+vlrqBF2BoxOhrLYpZ4cvc11HIg1V5O6WrViW0ybcgQnB6GaXfS4pfVkudiAzyEl4j1a4yRhsT5E/b1dUl1TZnJDh2RjDe0=
+	t=1724770471; cv=none; b=ovah564StdMAPfvjOrbOHs/fzMUjpGVc09xmJJqwmj+F1B1RHoUQjfAxkAS3j0YxW6c9X/Q1Uv8Uq4pJdY23mpKoGGuKtqCkm98cogpmwSTriRrSaKzOAb0jMRs+qA8PCOr+oGYkfBpfAW94XdLV5EgLWvkAbsk0ucRhSgcOGxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770433; c=relaxed/simple;
-	bh=AT8mImdo2bcwmBp8PnsJpQWmfXMFUmNj0Va0wmWvm/k=;
+	s=arc-20240116; t=1724770471; c=relaxed/simple;
+	bh=k8w3YW3xhErvruaDt7ZwTcYrLbwYYBoP3SCU3N307XE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b8Xkn/2RahTZks3USiOXTn3YIv+r/ru1129JCTUqQbbvjr+qG3GqaTovZNWbjKPnQRtLiizPIA3XMyzPmQTX42yZWTOGdlRRME4ggq5cx1TPNLJnSyxJ4t4QEN3vgfoPn4I535fErtwSXGob6WTJ4OwY/SwrPSYEQBqWFPiftf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A/rIFWdU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BD48C6106F;
-	Tue, 27 Aug 2024 14:53:52 +0000 (UTC)
+	 MIME-Version; b=FPoBl59WZM2GEiBjxJvw+JSCh7xT84M9dorynDxtvIcW3QGkRlHYudkJw3vdiN9kot4XA/GclQ8EaerW6v3voDjqBCkNyg4ECmonyWYlgu/Ezw1O/fmBEDR0G8W+8swIRaN34QEUMzukKA7FKuV8KaQpIUmnSMCcSxlS862vkeU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PqOP69J7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91177C4E675;
+	Tue, 27 Aug 2024 14:54:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770432;
-	bh=AT8mImdo2bcwmBp8PnsJpQWmfXMFUmNj0Va0wmWvm/k=;
+	s=korg; t=1724770471;
+	bh=k8w3YW3xhErvruaDt7ZwTcYrLbwYYBoP3SCU3N307XE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A/rIFWdUt8QLzkRc4n423/8dab87trzQkcIQyfnyhJpJrfV4+AMU35rF+3qqkdfWG
-	 q7eyaNHnv1BuO1MlF+btzmEheba4/BxuvYDkjXpsrAXYPsuWpUUCo2dCvKAL22n/hS
-	 M/IrdZJ6B+3Ur/tWFmAi9Q9OTkLT9IzZWurugopo=
+	b=PqOP69J7r46XnCl6/9pl3BTqkC768EsGfn3x46Ohs1d/V0IrMEuVmX2/UpxaiK0U/
+	 0rtVYpEWIl/vOe4xg8/a2wsnEtN0PWrujHSe6tJQNpCBHj16QpH0OL/o6Ep1sUZ0Eu
+	 25NPLpIg3ZXEyDfol0RNzr7wxE8zLWvq5gKKEK6k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>,
-	Keith Busch <kbusch@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 220/341] nvme: fix namespace removal list
-Date: Tue, 27 Aug 2024 16:37:31 +0200
-Message-ID: <20240827143851.783259751@linuxfoundation.org>
+	Eric Dumazet <edumazet@google.com>,
+	Harald Welte <laforge@gnumonks.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 221/341] gtp: pull network headers in gtp_dev_xmit()
+Date: Tue, 27 Aug 2024 16:37:32 +0200
+Message-ID: <20240827143851.822421970@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
 References: <20240827143843.399359062@linuxfoundation.org>
@@ -66,49 +67,94 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Keith Busch <kbusch@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit ff0ffe5b7c3c12c6e0cca16652905963ae817b44 ]
+commit 3a3be7ff9224f424e485287b54be00d2c6bd9c40 upstream.
 
-This function wants to move a subset of a list from one element to the
-tail into another list. It also needs to use the srcu synchronize
-instead of the regular rcu version. Do this one element at a time
-because that's the only to do it.
+syzbot/KMSAN reported use of uninit-value in get_dev_xmit() [1]
 
-Fixes: be647e2c76b27f4 ("nvme: use srcu for iterating namespace list")
-Reported-by: Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>
-Tested-by: Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+We must make sure the IPv4 or Ipv6 header is pulled in skb->head
+before accessing fields in them.
+
+Use pskb_inet_may_pull() to fix this issue.
+
+[1]
+BUG: KMSAN: uninit-value in ipv6_pdp_find drivers/net/gtp.c:220 [inline]
+ BUG: KMSAN: uninit-value in gtp_build_skb_ip6 drivers/net/gtp.c:1229 [inline]
+ BUG: KMSAN: uninit-value in gtp_dev_xmit+0x1424/0x2540 drivers/net/gtp.c:1281
+  ipv6_pdp_find drivers/net/gtp.c:220 [inline]
+  gtp_build_skb_ip6 drivers/net/gtp.c:1229 [inline]
+  gtp_dev_xmit+0x1424/0x2540 drivers/net/gtp.c:1281
+  __netdev_start_xmit include/linux/netdevice.h:4913 [inline]
+  netdev_start_xmit include/linux/netdevice.h:4922 [inline]
+  xmit_one net/core/dev.c:3580 [inline]
+  dev_hard_start_xmit+0x247/0xa20 net/core/dev.c:3596
+  __dev_queue_xmit+0x358c/0x5610 net/core/dev.c:4423
+  dev_queue_xmit include/linux/netdevice.h:3105 [inline]
+  packet_xmit+0x9c/0x6c0 net/packet/af_packet.c:276
+  packet_snd net/packet/af_packet.c:3145 [inline]
+  packet_sendmsg+0x90e3/0xa3a0 net/packet/af_packet.c:3177
+  sock_sendmsg_nosec net/socket.c:730 [inline]
+  __sock_sendmsg+0x30f/0x380 net/socket.c:745
+  __sys_sendto+0x685/0x830 net/socket.c:2204
+  __do_sys_sendto net/socket.c:2216 [inline]
+  __se_sys_sendto net/socket.c:2212 [inline]
+  __x64_sys_sendto+0x125/0x1d0 net/socket.c:2212
+  x64_sys_call+0x3799/0x3c10 arch/x86/include/generated/asm/syscalls_64.h:45
+  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+  do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Uninit was created at:
+  slab_post_alloc_hook mm/slub.c:3994 [inline]
+  slab_alloc_node mm/slub.c:4037 [inline]
+  kmem_cache_alloc_node_noprof+0x6bf/0xb80 mm/slub.c:4080
+  kmalloc_reserve+0x13d/0x4a0 net/core/skbuff.c:583
+  __alloc_skb+0x363/0x7b0 net/core/skbuff.c:674
+  alloc_skb include/linux/skbuff.h:1320 [inline]
+  alloc_skb_with_frags+0xc8/0xbf0 net/core/skbuff.c:6526
+  sock_alloc_send_pskb+0xa81/0xbf0 net/core/sock.c:2815
+  packet_alloc_skb net/packet/af_packet.c:2994 [inline]
+  packet_snd net/packet/af_packet.c:3088 [inline]
+  packet_sendmsg+0x749c/0xa3a0 net/packet/af_packet.c:3177
+  sock_sendmsg_nosec net/socket.c:730 [inline]
+  __sock_sendmsg+0x30f/0x380 net/socket.c:745
+  __sys_sendto+0x685/0x830 net/socket.c:2204
+  __do_sys_sendto net/socket.c:2216 [inline]
+  __se_sys_sendto net/socket.c:2212 [inline]
+  __x64_sys_sendto+0x125/0x1d0 net/socket.c:2212
+  x64_sys_call+0x3799/0x3c10 arch/x86/include/generated/asm/syscalls_64.h:45
+  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+  do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+CPU: 0 UID: 0 PID: 7115 Comm: syz.1.515 Not tainted 6.11.0-rc1-syzkaller-00043-g94ede2a3e913 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 06/27/2024
+
+Fixes: 999cb275c807 ("gtp: add IPv6 support")
+Fixes: 459aa660eb1d ("gtp: add initial driver for datapath of GPRS Tunneling Protocol (GTP-U)")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Harald Welte <laforge@gnumonks.org>
+Reviewed-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Link: https://patch.msgid.link/20240808132455.3413916-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/host/core.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/net/gtp.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index 2a1b555406dff..82509f3679373 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -3810,12 +3810,13 @@ static void nvme_remove_invalid_namespaces(struct nvme_ctrl *ctrl,
+--- a/drivers/net/gtp.c
++++ b/drivers/net/gtp.c
+@@ -901,6 +901,9 @@ static netdev_tx_t gtp_dev_xmit(struct s
+ 	if (skb_cow_head(skb, dev->needed_headroom))
+ 		goto tx_err;
  
- 	mutex_lock(&ctrl->namespaces_lock);
- 	list_for_each_entry_safe(ns, next, &ctrl->namespaces, list) {
--		if (ns->head->ns_id > nsid)
--			list_splice_init_rcu(&ns->list, &rm_list,
--					     synchronize_rcu);
-+		if (ns->head->ns_id > nsid) {
-+			list_del_rcu(&ns->list);
-+			synchronize_srcu(&ctrl->srcu);
-+			list_add_tail_rcu(&ns->list, &rm_list);
-+		}
- 	}
- 	mutex_unlock(&ctrl->namespaces_lock);
--	synchronize_srcu(&ctrl->srcu);
++	if (!pskb_inet_may_pull(skb))
++		goto tx_err;
++
+ 	skb_reset_inner_headers(skb);
  
- 	list_for_each_entry_safe(ns, next, &rm_list, list)
- 		nvme_ns_remove(ns);
--- 
-2.43.0
-
+ 	/* PDP context lookups in gtp_build_skb_*() need rcu read-side lock. */
 
 
 
