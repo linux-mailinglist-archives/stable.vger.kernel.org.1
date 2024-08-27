@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-70604-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 236FC960F0C
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:55:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A4C4961060
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:08:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5635B1C23336
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:55:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B2C71B25C3D
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:08:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 322B91C7B61;
-	Tue, 27 Aug 2024 14:54:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E88081E520;
+	Tue, 27 Aug 2024 15:08:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CLfGNtez"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oftFSZxR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E416F1A08A3;
-	Tue, 27 Aug 2024 14:54:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6A2D1C4603;
+	Tue, 27 Aug 2024 15:08:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770461; cv=none; b=eeIAm7pAU6u/l/hWygb68c7OoSFc/dl1/QiqwPQRWIkJy6XJyzB9xal89LoBgJ3BBbx/QjpIY5HlCHSeNX45jD2f8Crv6dWK4QOTvRALkR8wyGbc5nbj3jGcPhA1+9V4mkVfhwINk5RM1uLoWiZ9kgmbkGHQ32730m/UhRYpCM4=
+	t=1724771285; cv=none; b=e5/lVI6VOQDeikW7ETADdZZdaB0OmMbu4jT8BsHJ8bbPQlqAwtcNI5PZ38XPoe9zj1NRMC359JH///CwK6RDRDDhLgAgFK7CESX5GlOvTcFtAW/5Ljz7/qq0/batsh1RN0ZsE7pMm8j3YZVrSkbJtS3ZhX2AAmV0fljvJt3P5c4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770461; c=relaxed/simple;
-	bh=8+DcCbpUzYnTWFhQuZP+dPe4XNDXqPahPiS4yJgdif0=;
+	s=arc-20240116; t=1724771285; c=relaxed/simple;
+	bh=Xz0ugJlz+TlxT71gsJSTlh9PspqV5yxanuYOeGNz4AU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VN8CDYmIMBx9gzdQBoRL8mLS//wX+1hlyUAPaCRv6yK8vpw1esDLfN0k6II+05ZezzSk0fUAkJcZQm+S+vHnurxuTy/gWunstY8nPnecrxkNl5nS7EHW4NArOctKsjSCS7VuzyOT5Yj5SKYOfl9rHPVMFp7lwYe+9eLkhotdWRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CLfGNtez; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1D72C4E673;
-	Tue, 27 Aug 2024 14:54:19 +0000 (UTC)
+	 MIME-Version; b=WU9Wh/hAZlwmyhJZch0oQwNw2DxXTj4eI25D8M00tzl795hecXVjT5jFWH46xxN5OtF3PMEzn4Gh84y+9spNtZDLapX+nR/fr4od+ump5AXjYlBSM06PVAgYDBAtANlB1d1sK6wBUOro0FuZwT5XjKyV7vgN2SDcWqjsI1ty5L4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oftFSZxR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2F06C61074;
+	Tue, 27 Aug 2024 15:08:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770460;
-	bh=8+DcCbpUzYnTWFhQuZP+dPe4XNDXqPahPiS4yJgdif0=;
+	s=korg; t=1724771285;
+	bh=Xz0ugJlz+TlxT71gsJSTlh9PspqV5yxanuYOeGNz4AU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CLfGNtezgBUBBIzrOKUSFU11gi847daBs5j/4mzu7QhVvVfQ8gKj2CbiYGN1yBRxV
-	 ObGe98fZNalI5Mj9FScdj019Kh+DA6lfTg5gwz/AFg8VYw+51cBVUEHCFHYyTZBHa6
-	 XBF/vlOdEMCoK5jGGTbTch87aHEz8nipT/VgPP+E=
+	b=oftFSZxRSd7zWrK7WhZheRAPHeepz7YIqpN56W8Hxdvit7vxgA9kETywxFMhsGPyP
+	 Pc6VkuR7jLH1WN7bZAKFbb8CLOo3e/bEcgIMW9x/g4eREiN9ecLF1s14mZk3AUz0Y4
+	 vTcoF172mMBgpUlglZn9bft5PaFghUfqsIuDVOGw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xaver Hugl <xaver.hugl@gmail.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Melissa Wen <mwen@igalia.com>,
-	Hamza Mahfooz <hamza.mahfooz@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	David Howells <dhowells@redhat.com>,
+	Su Hui <suhui@nfschina.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 236/341] drm/amd/display: fix cursor offset on rotation 180
+Subject: [PATCH 6.10 143/273] smb/client: avoid possible NULL dereference in cifs_free_subrequest()
 Date: Tue, 27 Aug 2024 16:37:47 +0200
-Message-ID: <20240827143852.388936671@linuxfoundation.org>
+Message-ID: <20240827143838.849466058@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,57 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Melissa Wen <mwen@igalia.com>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit 737222cebecbdbcdde2b69475c52bcb9ecfeb830 ]
+[ Upstream commit 74c2ab6d653b4c2354df65a7f7f2df1925a40a51 ]
 
-[why & how]
-Cursor gets clipped off in the middle of the screen with hw
-rotation 180. Fix a miscalculation of cursor offset when it's
-placed near the edges in the pipe split case.
+Clang static checker (scan-build) warning:
+	cifsglob.h:line 890, column 3
+	Access to field 'ops' results in a dereference of a null pointer.
 
-Cursor bugs with hw rotation were reported on AMD issue
-tracker:
-https://gitlab.freedesktop.org/drm/amd/-/issues/2247
+Commit 519be989717c ("cifs: Add a tracepoint to track credits involved in
+R/W requests") adds a check for 'rdata->server', and let clang throw this
+warning about NULL dereference.
 
-The issues on rotation 270 was fixed by:
-https://lore.kernel.org/amd-gfx/20221118125935.4013669-22-Brian.Chang@amd.com/
-that partially addressed the rotation 180 too. So, this patch is the
-final bits for rotation 180.
+When 'rdata->credits.value != 0 && rdata->server == NULL' happens,
+add_credits_and_wake_if() will call rdata->server->ops->add_credits().
+This will cause NULL dereference problem. Add a check for 'rdata->server'
+to avoid NULL dereference.
 
-Reported-by: Xaver Hugl <xaver.hugl@gmail.com>
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/2247
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Fixes: 9d84c7ef8a87 ("drm/amd/display: Correct cursor position on horizontal mirror")
-Signed-off-by: Melissa Wen <mwen@igalia.com>
-Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 1fd2cf090096af8a25bf85564341cfc21cec659d)
 Cc: stable@vger.kernel.org
+Fixes: 69c3c023af25 ("cifs: Implement netfslib hooks")
+Reviewed-by: David Howells <dhowells@redhat.com>
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn10/dcn10_hw_sequencer.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/client/file.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_hw_sequencer.c b/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_hw_sequencer.c
-index c9f13c3768431..ff38a85c4fa22 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_hw_sequencer.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_hw_sequencer.c
-@@ -3521,7 +3521,7 @@ void dcn10_set_cursor_position(struct pipe_ctx *pipe_ctx)
- 						(int)hubp->curs_attr.width || pos_cpy.x
- 						<= (int)hubp->curs_attr.width +
- 						pipe_ctx->plane_state->src_rect.x) {
--						pos_cpy.x = temp_x + viewport_width;
-+						pos_cpy.x = 2 * viewport_width - temp_x;
- 					}
- 				}
- 			} else {
+diff --git a/fs/smb/client/file.c b/fs/smb/client/file.c
+index b413cfef05422..1fc66bcf49eb4 100644
+--- a/fs/smb/client/file.c
++++ b/fs/smb/client/file.c
+@@ -316,7 +316,7 @@ static void cifs_free_subrequest(struct netfs_io_subrequest *subreq)
+ #endif
+ 	}
+ 
+-	if (rdata->credits.value != 0)
++	if (rdata->credits.value != 0) {
+ 		trace_smb3_rw_credits(rdata->rreq->debug_id,
+ 				      rdata->subreq.debug_index,
+ 				      rdata->credits.value,
+@@ -324,8 +324,12 @@ static void cifs_free_subrequest(struct netfs_io_subrequest *subreq)
+ 				      rdata->server ? rdata->server->in_flight : 0,
+ 				      -rdata->credits.value,
+ 				      cifs_trace_rw_credits_free_subreq);
++		if (rdata->server)
++			add_credits_and_wake_if(rdata->server, &rdata->credits, 0);
++		else
++			rdata->credits.value = 0;
++	}
+ 
+-	add_credits_and_wake_if(rdata->server, &rdata->credits, 0);
+ 	if (rdata->have_xid)
+ 		free_xid(rdata->xid);
+ }
 -- 
 2.43.0
 
