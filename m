@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-71241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD33C961279
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:31:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 786C5960F96
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:00:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E03541C22AA7
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:31:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E18F9B24B20
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:00:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE73A1CCB50;
-	Tue, 27 Aug 2024 15:29:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A57D1C825E;
+	Tue, 27 Aug 2024 14:59:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vY4vpRKC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mOfnBGlE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BC0519F485;
-	Tue, 27 Aug 2024 15:29:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECAFE1C825C;
+	Tue, 27 Aug 2024 14:59:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772564; cv=none; b=jDFPH7pCzP0oSCX4592ROhnyJTxVw33mI2nWAbAGwJ2Sw/y0JQ5NJ2a3Mum3IDEvamFFtYN8CluHfWtEt0HMSLu6hqwYY1FDu1uWrhrsxdOwBotShVs7QeguXIhHPuZEwdGhm3/uAlg4WlUactbN2fzxMW/zPZ8tQFKXSY8x1XY=
+	t=1724770772; cv=none; b=T58B4Ik5/EOEGlF8lIalVqKj5v73PaDHY4hy+sQ6aT3PuglyRq+Ve7uXjc/oJLA5Kh1XQzOxM9Yw7vDQtBQBINBEXcefkaYV2/jQ7WgV2uA8cAiQ7GQXj6+sqIro9ZWCRUwZqu53gloIrUj3gT4xwfjNA74JAcEN7ju4xhgkaPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772564; c=relaxed/simple;
-	bh=qo85rHt/CzfTBx+iepjiUcF3cawH8syv/LkPBugROyU=;
+	s=arc-20240116; t=1724770772; c=relaxed/simple;
+	bh=IJtXsM2gpLd12V8w+WT0gpMwBA2Nr6sKcqfQzpNSNNU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h/9G3vOrQ8Srl3Pt4s0NrDx+PSWpU0yw7+UgwnpX/ArWJV1oGAfcBMO367cZvY36okVP7fpz48KBg7OdZMQIj3LyT0VKsSVW3SMbuXW7sasHUYThoQhWkOnGEUOb3Ex06krvAhHUWnQoGpQjEYGgLPX1DKzv1ueyjmGrjyLBDn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vY4vpRKC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2436C6107E;
-	Tue, 27 Aug 2024 15:29:23 +0000 (UTC)
+	 MIME-Version; b=PNfg3bsuYOOvn1r4oT1uDv8Cd1ga2a9+SwsDpiZsPhnpFRL+K2zVinx5Us1HHYcsUr/Ox3aeZyWGSqTuuEz4gNFqKsVdQ2QCvubBaV6CWP0zqyPlBFxiUwQMTjMCmVMcleL1yB4AtMyBpZRqrDLqnfc6O+F4VceYtDJGK2nhRNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mOfnBGlE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CE7CC61044;
+	Tue, 27 Aug 2024 14:59:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772564;
-	bh=qo85rHt/CzfTBx+iepjiUcF3cawH8syv/LkPBugROyU=;
+	s=korg; t=1724770771;
+	bh=IJtXsM2gpLd12V8w+WT0gpMwBA2Nr6sKcqfQzpNSNNU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vY4vpRKCgRMP6UQbmCRPzevFP/EiGz++n8MnGlgKZTIJyKjQlWj8R5JHZtI1GT35C
-	 moOuuA84H9fJfMfeLqiBzCdY6L/at/PJL7cqwQFMrkpvdCvD3X/3VYodX20HOzaeR9
-	 O5956l2VfPXrolJ2LOCjLf8jPVnLfJkEosjyN+7o=
+	b=mOfnBGlEpXwW+6u5+W2cqEZw+5nvO3RrE9wbmL1ABnHZaGqY2pjlB8krmsUaOivKf
+	 sq1JRuXCuYJrlnxIaLnV7v3G+Bb3OEVLa5JwzyO8BkLAXNagR2fjRuoO+JmH5ksc7o
+	 2Xm5YGMfH8y6RqJw+lwgzBuLowGDyjtPNqcH/W1E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Vasily Averin <vasily.averin@linux.dev>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 253/321] ipv6: prevent possible UAF in ip6_xmit()
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 330/341] ALSA: timer: Relax start tick time check for slave timer elements
 Date: Tue, 27 Aug 2024 16:39:21 +0200
-Message-ID: <20240827143847.874966246@linuxfoundation.org>
+Message-ID: <20240827143855.953207946@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +60,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 2d5ff7e339d04622d8282661df36151906d0e1c7 ]
+commit ccbfcac05866ebe6eb3bc6d07b51d4ed4fcde436 upstream.
 
-If skb_expand_head() returns NULL, skb has been freed
-and the associated dst/idev could also have been freed.
+The recent addition of a sanity check for a too low start tick time
+seems breaking some applications that uses aloop with a certain slave
+timer setup.  They may have the initial resolution 0, hence it's
+treated as if it were a too low value.
 
-We must use rcu_read_lock() to prevent a possible UAF.
+Relax and skip the check for the slave timer instance for addressing
+the regression.
 
-Fixes: 0c9f227bee11 ("ipv6: use skb_expand_head in ip6_xmit")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Vasily Averin <vasily.averin@linux.dev>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20240820160859.3786976-4-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 4a63bd179fa8 ("ALSA: timer: Set lower bound of start tick time")
+Cc: <stable@vger.kernel.org>
+Link: https://github.com/raspberrypi/linux/issues/6294
+Link: https://patch.msgid.link/20240810084833.10939-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/ip6_output.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ sound/core/timer.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
-index cfca9627398ee..f2227e662d1cf 100644
---- a/net/ipv6/ip6_output.c
-+++ b/net/ipv6/ip6_output.c
-@@ -278,11 +278,15 @@ int ip6_xmit(const struct sock *sk, struct sk_buff *skb, struct flowi6 *fl6,
- 		head_room += opt->opt_nflen + opt->opt_flen;
- 
- 	if (unlikely(head_room > skb_headroom(skb))) {
-+		/* Make sure idev stays alive */
-+		rcu_read_lock();
- 		skb = skb_expand_head(skb, head_room);
- 		if (!skb) {
- 			IP6_INC_STATS(net, idev, IPSTATS_MIB_OUTDISCARDS);
-+			rcu_read_unlock();
- 			return -ENOBUFS;
- 		}
-+		rcu_read_unlock();
- 	}
- 
- 	if (opt) {
--- 
-2.43.0
-
+--- a/sound/core/timer.c
++++ b/sound/core/timer.c
+@@ -556,7 +556,7 @@ static int snd_timer_start1(struct snd_t
+ 	/* check the actual time for the start tick;
+ 	 * bail out as error if it's way too low (< 100us)
+ 	 */
+-	if (start) {
++	if (start && !(timer->hw.flags & SNDRV_TIMER_HW_SLAVE)) {
+ 		if ((u64)snd_timer_hw_resolution(timer) * ticks < 100000) {
+ 			result = -EINVAL;
+ 			goto unlock;
 
 
 
