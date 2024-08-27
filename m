@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-70980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71240-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 492EA9610FF
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:15:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C938C961291
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:32:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05A9E282306
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:15:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 91BAFB26650
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:31:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 683F41A072D;
-	Tue, 27 Aug 2024 15:15:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6409B1CCB2C;
+	Tue, 27 Aug 2024 15:29:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mMGfcvex"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rVf2swvF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 266C41C6F79;
-	Tue, 27 Aug 2024 15:15:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21CED19F485;
+	Tue, 27 Aug 2024 15:29:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771700; cv=none; b=iCcnCtpEZJor8ofMoYOn5wKJnogK/e6T/yFnz9jipMCnMCQnwSH7cTY4v8wOJeYUs0oQJDAGps0vtMwpNlEeGvEg4HNauWuZeHncFkAqhsX/s85rlj/CXcPQcaOMpp3BeLL9csrFM9nmYHPwA4BbcB6OSAYEcY9rhBzq5uRaxyY=
+	t=1724772561; cv=none; b=tpEaeAK7qy1Mv1X8kl4n+MD+pqsTypSvjCU23ey+CfE9fPx/d6uIuRSBr411I/KZUIW0cJPJoJjQ1xvxMCVDIu6RsXrtyMgXMxGEjqyPgkLnckGkPaHaRbzkLQQNSgcFWPV+qDRrl3bAg5aLVi67uS5o/PE6BktjJV5XVmCGCQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771700; c=relaxed/simple;
-	bh=bbZJbdXz2EX6NG4/aTVkcoP7KX1Z1XUEu4DwlAzmUZY=;
+	s=arc-20240116; t=1724772561; c=relaxed/simple;
+	bh=LGTexLJ4HVhM+rSEsGpGBcAnRUX9YjsjZA5+tw3ppoA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o/z6A5GaYMOPCKgPhl/WRoI2i48hFif4im8DK4hbQjZzJZMWQ+ZLGfI4cHU7yMznOPU5CnS+tpsi//1UQ+Y+ztIQEidq4xUghAGeLh9r81Xf8Bg75r2HSv4+xF1KrPBgFzB/YG0IMAlEol38fBrzIn8kgTt0ojuVZfGOoCuUceQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mMGfcvex; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97D12C61075;
-	Tue, 27 Aug 2024 15:14:59 +0000 (UTC)
+	 MIME-Version; b=GIqjn+IoTK0gpsBHjDVilnItIrH/XkHTxPGN/uEbYu0xRy/3Qx1WZKiroucZ1DUwn1RgPPaZ7h+suQ0JQzmSYmUmH+jAN44l3num+zaqRCrhAC40A470qraUNS0EynNPEkYHM7QNgK3jZ3hGnFBecw5Ho4oDN1c4Zep71Mdx7jo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rVf2swvF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ED25C6107E;
+	Tue, 27 Aug 2024 15:29:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771700;
-	bh=bbZJbdXz2EX6NG4/aTVkcoP7KX1Z1XUEu4DwlAzmUZY=;
+	s=korg; t=1724772561;
+	bh=LGTexLJ4HVhM+rSEsGpGBcAnRUX9YjsjZA5+tw3ppoA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mMGfcvexQft4Tbv4GT2TwIHUR7fjDOph4f4qRbmSUorew72gHRXcDB77HX0XxfgNt
-	 GGgn+pVaZZ31koi4JJcaB9QiaB41fBOy6aWnfpWiM+P5BUf0afoIsTlF2B2/7RIVIo
-	 U9v44BlID4xr35+aipJZS0YP6zGniqyMmLCNoDF0=
+	b=rVf2swvF+xsIBosbXVw6YidWUhO2uP24Lej5Qwhbm+J1ZvqiZjXF244qTzG6+5Xvv
+	 aPm1eK8HVCM8h2m5h8yXqaDVXtVTH/t6a+S9qD4dW6ZNEx6pXI2Ee6OwKBXAKrKRRL
+	 VKX8J8pkm7yD2sxhiNblZCSi+I4828IvF33jakns=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Gerecke <jason.gerecke@wacom.com>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 6.10 236/273] HID: wacom: Defer calculation of resolution until resolution_code is known
+	Eric Dumazet <edumazet@google.com>,
+	Vasily Averin <vasily.averin@linux.dev>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 252/321] ipv6: fix possible UAF in ip6_finish_output2()
 Date: Tue, 27 Aug 2024 16:39:20 +0200
-Message-ID: <20240827143842.386682633@linuxfoundation.org>
+Message-ID: <20240827143847.836699540@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gerecke <jason.gerecke@wacom.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 1b8f9c1fb464968a5b18d3acc1da8c00bad24fad upstream.
+[ Upstream commit da273b377ae0d9bd255281ed3c2adb228321687b ]
 
-The Wacom driver maps the HID_DG_TWIST usage to ABS_Z (rather than ABS_RZ)
-for historic reasons. When the code to support twist was introduced in
-commit 50066a042da5 ("HID: wacom: generic: Add support for height, tilt,
-and twist usages"), we were careful to write it in such a way that it had
-HID calculate the resolution of the twist axis assuming ABS_RZ instead
-(so that we would get correct angular behavior). This was broken with
-the introduction of commit 08a46b4190d3 ("HID: wacom: Set a default
-resolution for older tablets"), which moved the resolution calculation
-to occur *before* the adjustment from ABS_Z to ABS_RZ occurred.
+If skb_expand_head() returns NULL, skb has been freed
+and associated dst/idev could also have been freed.
 
-This commit moves the calculation of resolution after the point that
-we are finished setting things up for its proper use.
+We need to hold rcu_read_lock() to make sure the dst and
+associated idev are alive.
 
-Signed-off-by: Jason Gerecke <jason.gerecke@wacom.com>
-Fixes: 08a46b4190d3 ("HID: wacom: Set a default resolution for older tablets")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5796015fa968 ("ipv6: allocate enough headroom in ip6_finish_output2()")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Vasily Averin <vasily.averin@linux.dev>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20240820160859.3786976-3-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/wacom_wac.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/ipv6/ip6_output.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/hid/wacom_wac.c
-+++ b/drivers/hid/wacom_wac.c
-@@ -1924,12 +1924,14 @@ static void wacom_map_usage(struct input
- 	int fmax = field->logical_maximum;
- 	unsigned int equivalent_usage = wacom_equivalent_usage(usage->hid);
- 	int resolution_code = code;
--	int resolution = hidinput_calc_abs_res(field, resolution_code);
-+	int resolution;
+diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
+index 796cf0a0a4225..cfca9627398ee 100644
+--- a/net/ipv6/ip6_output.c
++++ b/net/ipv6/ip6_output.c
+@@ -69,11 +69,15 @@ static int ip6_finish_output2(struct net *net, struct sock *sk, struct sk_buff *
  
- 	if (equivalent_usage == HID_DG_TWIST) {
- 		resolution_code = ABS_RZ;
+ 	/* Be paranoid, rather than too clever. */
+ 	if (unlikely(hh_len > skb_headroom(skb)) && dev->header_ops) {
++		/* Make sure idev stays alive */
++		rcu_read_lock();
+ 		skb = skb_expand_head(skb, hh_len);
+ 		if (!skb) {
+ 			IP6_INC_STATS(net, idev, IPSTATS_MIB_OUTDISCARDS);
++			rcu_read_unlock();
+ 			return -ENOMEM;
+ 		}
++		rcu_read_unlock();
  	}
  
-+	resolution = hidinput_calc_abs_res(field, resolution_code);
-+
- 	if (equivalent_usage == HID_GD_X) {
- 		fmin += features->offset_left;
- 		fmax -= features->offset_right;
+ 	hdr = ipv6_hdr(skb);
+-- 
+2.43.0
+
 
 
 
