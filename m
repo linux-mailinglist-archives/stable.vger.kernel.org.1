@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-70941-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70718-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4936C9610CB
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:12:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 294F9960FAA
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:01:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C984DB21615
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:12:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D35921F2214D
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:01:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 460731C5793;
-	Tue, 27 Aug 2024 15:12:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 077731C7B7B;
+	Tue, 27 Aug 2024 15:00:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FcxsN30M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xSDVHrXm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 051291BC9E3;
-	Tue, 27 Aug 2024 15:12:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9E4F1E487;
+	Tue, 27 Aug 2024 15:00:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771571; cv=none; b=imRtF5sJeQXXr4K+h89dj5OHKajIMh++O6R2nRh62nSU1NIrV60ZLpmPQX86PHW0eTMwamPdYWIGcQSyjYGNqPeM82pK4eD9kR6HEBhhrYb5qc/ZShelYLzlhskWJ8txSK1UdxyZlLWk1zineWGbPKZrhg+h7sbMhj2RfeboEpg=
+	t=1724770837; cv=none; b=th2KA5Y1w33ojijl1XSgbZWkTgySnsc8NOOGJwrSRJGUFGLjoVoR/vQMfImgV3RNYqo1FBXn+bNSTBCWOqTh9DZDa6WFofLw8MeZc/2sJJunICz0qcryLLUp5KPd5Ty2+2b5VTYTomZ+D3abXtIU4TsW/ZeXMJOMV4R1na3EDXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771571; c=relaxed/simple;
-	bh=xDS/JsDo8NzZRw7Fv/ZadosCPYa3c+H/aU2kIv/eULo=;
+	s=arc-20240116; t=1724770837; c=relaxed/simple;
+	bh=uV8v/bUYZCcKrSYnINsz4sB99F9PbAhyWOa493ymxBQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CkHILx/9qzwCwV471raApaHb01hlpmp4HCtPPq3MNM+PFe/ab5muVYa3Qfn4XqJ35KqLnssQJNU+OSXH7AKTCVXb6fx0yJLGQAlubc8GQaxstjukxckgFXIm5gBBj0c0p0phZ3wsRCfVGynXjlLvnIvgoho45doA3ROYX4PTfrQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FcxsN30M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69ADDC61043;
-	Tue, 27 Aug 2024 15:12:50 +0000 (UTC)
+	 MIME-Version; b=UZYLWWHRniCKd4FBeAt1UvMR4WLZr1M5kPsHjDEw/vsY7OTt6m72AAtdPzUVllStLCHuSYGPicIWZbizYoVQ1w7l8e5IUS8s3akAUrVcHRlPBELJi9wCXiuLuxptlwvaI/a0hE8JddCvZiC2NM/qAdDdbCCnEN7plfssveIIwTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xSDVHrXm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDAFAC4AF1C;
+	Tue, 27 Aug 2024 15:00:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771570;
-	bh=xDS/JsDo8NzZRw7Fv/ZadosCPYa3c+H/aU2kIv/eULo=;
+	s=korg; t=1724770837;
+	bh=uV8v/bUYZCcKrSYnINsz4sB99F9PbAhyWOa493ymxBQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FcxsN30MHMkTMZaN4HJylGd2970H4MbS/1LCj33LpV44h1zSCPoJpaZWG29+g5e1x
-	 yiN7+xGskrOoqHkXpE2FWn6pa2aNfGTu01pnMRap5rnaHnCCUwpmwjPJxjMbl9BxJE
-	 wbyN3fFcpbO61os4izpevI8UvR+pfRRR97EPJKWI=
+	b=xSDVHrXmFnof3iSLjKkrHfR98qzRDrat4aw1QCjzLvatH6pO+k2zhGEmu8y0MTUS5
+	 ptAns4vC+9kenhOHdNzldM+R9nnbr9B99bdYYP0JoU9H/FGaMF80BTCQPhKtO4nmt9
+	 MYz3pD9oDxS/E6olFVPeFXfB1IR7jpgL9Q3+yaC4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ruijing Dong <ruijing.dong@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.10 227/273] drm/amdgpu/sdma5.2: limit wptr workaround to sdma 5.2.1
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 320/341] selftests: mptcp: join: validate fullmesh endp on 1st sf
 Date: Tue, 27 Aug 2024 16:39:11 +0200
-Message-ID: <20240827143842.045645458@linuxfoundation.org>
+Message-ID: <20240827143855.571598140@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit e3e4bf58bad1576ac732a1429f53e3d4bfb82b4b upstream.
+commit 4878f9f8421f4587bee7b232c1c8a9d3a7d4d782 upstream.
 
-The workaround seems to cause stability issues on other
-SDMA 5.2.x IPs.
+This case was not covered, and the wrong ID was set before the previous
+commit.
 
-Fixes: a03ebf116303 ("drm/amdgpu/sdma5.2: Update wptr registers as well as doorbell")
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3556
-Acked-by: Ruijing Dong <ruijing.dong@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 2dc3851ef7d9c5439ea8e9623fc36878f3b40649)
+The rest is not modified, it is just that it will increase the code
+coverage.
+
+The right address ID can be verified by looking at the packet traces. We
+could automate that using Netfilter with some cBPF code for example, but
+that's always a bit cryptic. Packetdrill seems better fitted for that.
+
+Fixes: 4f49d63352da ("selftests: mptcp: add fullmesh testcases")
 Cc: stable@vger.kernel.org
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20240819-net-mptcp-pm-reusing-id-v1-13-38035d40de5b@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/sdma_v5_2.c |   18 ++++++++++--------
- 1 file changed, 10 insertions(+), 8 deletions(-)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/sdma_v5_2.c
-+++ b/drivers/gpu/drm/amd/amdgpu/sdma_v5_2.c
-@@ -176,14 +176,16 @@ static void sdma_v5_2_ring_set_wptr(stru
- 		DRM_DEBUG("calling WDOORBELL64(0x%08x, 0x%016llx)\n",
- 				ring->doorbell_index, ring->wptr << 2);
- 		WDOORBELL64(ring->doorbell_index, ring->wptr << 2);
--		/* SDMA seems to miss doorbells sometimes when powergating kicks in.
--		 * Updating the wptr directly will wake it. This is only safe because
--		 * we disallow gfxoff in begin_use() and then allow it again in end_use().
--		 */
--		WREG32(sdma_v5_2_get_reg_offset(adev, ring->me, mmSDMA0_GFX_RB_WPTR),
--		       lower_32_bits(ring->wptr << 2));
--		WREG32(sdma_v5_2_get_reg_offset(adev, ring->me, mmSDMA0_GFX_RB_WPTR_HI),
--		       upper_32_bits(ring->wptr << 2));
-+		if (amdgpu_ip_version(adev, SDMA0_HWIP, 0) == IP_VERSION(5, 2, 1)) {
-+			/* SDMA seems to miss doorbells sometimes when powergating kicks in.
-+			 * Updating the wptr directly will wake it. This is only safe because
-+			 * we disallow gfxoff in begin_use() and then allow it again in end_use().
-+			 */
-+			WREG32(sdma_v5_2_get_reg_offset(adev, ring->me, mmSDMA0_GFX_RB_WPTR),
-+			       lower_32_bits(ring->wptr << 2));
-+			WREG32(sdma_v5_2_get_reg_offset(adev, ring->me, mmSDMA0_GFX_RB_WPTR_HI),
-+			       upper_32_bits(ring->wptr << 2));
-+		}
- 	} else {
- 		DRM_DEBUG("Not using doorbell -- "
- 				"mmSDMA%i_GFX_RB_WPTR == 0x%08x "
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -3220,6 +3220,7 @@ fullmesh_tests()
+ 		pm_nl_set_limits $ns1 1 3
+ 		pm_nl_set_limits $ns2 1 3
+ 		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal
++		pm_nl_add_endpoint $ns2 10.0.1.2 flags subflow,fullmesh
+ 		fullmesh=1 speed=slow \
+ 			run_tests $ns1 $ns2 10.0.1.1
+ 		chk_join_nr 3 3 3
 
 
 
