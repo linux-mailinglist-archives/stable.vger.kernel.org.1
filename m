@@ -1,172 +1,155 @@
-Return-Path: <stable+bounces-70308-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70309-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5537E96040C
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 10:09:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD772960432
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 10:19:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0745B284071
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 08:09:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6E388282DD3
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 08:19:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18BEB199242;
-	Tue, 27 Aug 2024 08:08:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20133192594;
+	Tue, 27 Aug 2024 08:19:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=anirudhrb.com header.i=anirudh@anirudhrb.com header.b="SYKbZR39"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="iFgxyKp2"
 X-Original-To: stable@vger.kernel.org
-Received: from sender4-op-o15.zoho.com (sender4-op-o15.zoho.com [136.143.188.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EE72194136;
-	Tue, 27 Aug 2024 08:08:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.15
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724746123; cv=pass; b=XorO425WzeCwWqNYZSHwN93YVDOSCdMmBOhNH5n0X1+rkrRVTHHueVt4HRT1CoBbeHn0YCktX4NRsRs+WEXw3x+34oiXUN1CgaOCQO/McWpPgI7+iBQOl6tGrcl/iKiX5iMTLk0kL+SQnIywdFyrgOVjOeyaSVVebxFHTd0CcX8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724746123; c=relaxed/simple;
-	bh=0HsOksNJT9R9KbeUb6IVcPk2ehrn0odcjcGVeX1aFnU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NgFl8MkN2NA0KNV+XFPgLrCowZ6Vq4/ol45QtZIHrD8j3Ck8rzfezgGKyEZPbChW8VawwcIGE67KyNZ1ZFB0/tsnB1ZCj+nweIDNjLj2d2klhoTXj69DkE1O2SbanCQwTf4aW4mjAF8f/GEmzVsbEHG885nwEwQEuY73H3v7ZbY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=anirudhrb.com; spf=pass smtp.mailfrom=anirudhrb.com; dkim=fail (0-bit key) header.d=anirudhrb.com header.i=anirudh@anirudhrb.com header.b=SYKbZR39 reason="key not found in DNS"; arc=pass smtp.client-ip=136.143.188.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=anirudhrb.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=anirudhrb.com
-ARC-Seal: i=1; a=rsa-sha256; t=1724746097; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=cgxVTTMHZzvapGuM7vngv+DBMxw2qlQ1gNHPRVrZnmoezXjNbF+/MkZc+RVEk6VXt9DTRGAnd6/mDlbIyGDbC/EKktcimUdilEyUbEl4IRQRF4DRn2LodLGXlzBJWrWCAPg312IG0CDCHqEbTtUhOn7377rJkqTPmJYL6VbaQi4=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1724746097; h=Content-Type:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=Yhda3ZaakIRr5Jfh9tLkpGI4s2ObP0t0lO8nd/HrFCI=; 
-	b=aUx0I7HHauNRq3i045wRmuB0ePWWSxjR9eh5uH3WVnmNmL33NXHei/lpn1KB2tePG/rhwtXFGakJLB57LG1h+sWN7hhC5yc/Yc3+VsJ8a2DFH9niiPYWQHC2lwX12gabnbiLYWo4meMqL4asU4FAzZeiQ2pB/wrQWlTAHr9h1cY=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=anirudhrb.com;
-	spf=pass  smtp.mailfrom=anirudh@anirudhrb.com;
-	dmarc=pass header.from=<anirudh@anirudhrb.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1724746097;
-	s=zoho; d=anirudhrb.com; i=anirudh@anirudhrb.com;
-	h=Date:Date:From:From:To:To:Cc:Cc:Subject:Subject:Message-ID:References:MIME-Version:Content-Type:In-Reply-To:Message-Id:Reply-To;
-	bh=Yhda3ZaakIRr5Jfh9tLkpGI4s2ObP0t0lO8nd/HrFCI=;
-	b=SYKbZR39/CIGEAZT0wX9xS9l/bTRgeUH5SIxC6ymVgqCSBa2WL/qxLHrnTyInQy9
-	65GmWv+EdpPs/ps8fY3K6MTUnBgDhM90hLo3P5hpKVGsgYuFr6ryp/f/bB//8+GhpMS
-	/awoMc3XVbvNkdIM36SWvk4sAAMwZyJCfItCCQ5E=
-Received: by mx.zohomail.com with SMTPS id 1724746096946252.20843917403852;
-	Tue, 27 Aug 2024 01:08:16 -0700 (PDT)
-Date: Tue, 27 Aug 2024 08:08:10 +0000
-From: Anirudh Rayabharam <anirudh@anirudhrb.com>
-To: Vitaly Kuznetsov <vkuznets@redhat.com>
-Cc: stable@vger.kernel.org, linux-hyperv@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	"K. Y. Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Michael Kelley <mikelley@microsoft.com>
-Subject: Re: [PATCH] x86/hyperv: fix kexec crash due to VP assist page
- corruption
-Message-ID: <Zs2JamdDJs07WCS5@anirudh-surface.>
-References: <20240826105029.3173782-1-anirudh@anirudhrb.com>
- <87zfozxxyb.fsf@redhat.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C9671487F4
+	for <stable@vger.kernel.org>; Tue, 27 Aug 2024 08:19:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1724746785; cv=none; b=YBhivU6kV6nyGscvVnSAYhUBZhxsYolciqte9j6IfZeMp8sgJc2fbIPSL0K08Ci5VQ2xhS66lwuEt7hFJIhC+XSiAhokpGD2b8vijtlg8AqbVLhtvmNyBgriO0mVIGxwK8k2GGvW/o0OI0HLFC2muq1roKxAROpI+2cBRfCInH8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1724746785; c=relaxed/simple;
+	bh=spR3CGSFlcWxd61znYrOMywbunOudD26HRQTshpPnAg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=FtmO1JNxE4/GBv53+lUNxwUotAZvs0Cp+h4Zq6J6D2fQ44K/ZYkjA3stIhpLYPiiOfADDh5yOR6RNbGPCSOg3xJjlX/2Mimv8758dng2ANMkkTPqBp9EuyQd3Ue4+PofFzhYfPmAL22qxpX/MwJWB6klSsJ3/R0ALf+LlKY0VCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=iFgxyKp2; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-201cd78c6a3so35717455ad.1
+        for <stable@vger.kernel.org>; Tue, 27 Aug 2024 01:19:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1724746783; x=1725351583; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=huD3ev31mLebmA06NYxn0TFHXgDRdCiQozZGR5G/ENM=;
+        b=iFgxyKp2Jp1jrjiJCGOqeDCqzu22EdQX5fHSaCaxx7eiu1a4aoJDChFZLTXmQw/Or9
+         6CxpdvdysCvmA84B7wSb34K1fZ9JTqLzZW65oIolMqSsvL/V3TTOvdtLffaKnvJwuMCl
+         19jUCQn/UThCGdj0gY0K+7cTlIrXlBnrpaPOs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724746783; x=1725351583;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=huD3ev31mLebmA06NYxn0TFHXgDRdCiQozZGR5G/ENM=;
+        b=kFxONGREdYVl/6Gk4s7EbpZStZmHliCj6eeKa6vlLt1Fdb/0OYCYtgTGyM6/AWev6C
+         9bjvycNSWkl9GY691yOfG/WyG3WyZR7WaRKP0VIzqwx+qLxpHmb3kXzgkblmBhTVAkGq
+         uxva5LPKApO7763qfmMsjT/QLFxWrfbKk+bfWkckrsdgGkZoyh6jtWwdzlw/uFFewJX7
+         MKf+5TEZ4p5swS0/+/U14+pRUKURr5J4ltcpN7REczB9ian7IVB2rxTcVSEesyofM4wf
+         M5UWzroThaljBiGUFATYVVOAOEyIdullD34tKNsFCJBC+uPHm9MjCMerR2x4o900GBYG
+         HOtw==
+X-Forwarded-Encrypted: i=1; AJvYcCV+x/p8vibG0D7FbaE6QV27H2KdBftnvHqArlt6p9UkyBm4TqJSWp2LIsMg5RwQadP/Zh/3wb4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyfXcVJT/ktR26dx/Yk6qNZgk6rOT9VZppbR/JD5lsvGQLNbY87
+	10/P8mNjGWQ498sQguAzagkIN5YPyG0A0xXKVEibeXv5pbcTcmvIbNYRFMBNfO+/US+O23N15GK
+	+wbXr
+X-Google-Smtp-Source: AGHT+IE53Bt8Ie6W4k2wrv7t6M+wMLCEnoVX0ol/7CbOoaThPkcxBmB+bt5v7Wvpg0FDOlD1HUZTMw==
+X-Received: by 2002:a17:902:f60a:b0:203:a279:a144 with SMTP id d9443c01a7336-204df45d558mr22481925ad.25.1724746782748;
+        Tue, 27 Aug 2024 01:19:42 -0700 (PDT)
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com. [209.85.214.175])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20385ae7267sm78558705ad.244.2024.08.27.01.19.42
+        for <stable@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 27 Aug 2024 01:19:42 -0700 (PDT)
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-201fed75b38so131175ad.1
+        for <stable@vger.kernel.org>; Tue, 27 Aug 2024 01:19:42 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCWhGCUC+nOrS0Ic0orGzRz8yfMoRAZnDDXAUDi4W6bcF2AAcQLqV8hVd46ETo+7W/0x6+JazJU=@vger.kernel.org
+X-Received: by 2002:a17:902:e5d2:b0:1f9:bc99:d94a with SMTP id
+ d9443c01a7336-204e4c627fdmr1870895ad.5.1724746781507; Tue, 27 Aug 2024
+ 01:19:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87zfozxxyb.fsf@redhat.com>
-X-ZohoMailClient: External
+References: <20240825232449.25905-1-laurent.pinchart+renesas@ideasonboard.com>
+In-Reply-To: <20240825232449.25905-1-laurent.pinchart+renesas@ideasonboard.com>
+From: Tomasz Figa <tfiga@chromium.org>
+Date: Tue, 27 Aug 2024 17:19:23 +0900
+X-Gmail-Original-Message-ID: <CAAFQd5DDwFTX48EPksjqQ5bdRWUkQn+ZCBUbKid2H1GeZZSzOg@mail.gmail.com>
+Message-ID: <CAAFQd5DDwFTX48EPksjqQ5bdRWUkQn+ZCBUbKid2H1GeZZSzOg@mail.gmail.com>
+Subject: Re: [PATCH] media: videobuf2: Drop minimum allocation requirement of
+ 2 buffers
+To: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Cc: linux-media@vger.kernel.org, linux-renesas-soc@vger.kernel.org, 
+	Marek Szyprowski <m.szyprowski@samsung.com>, Hans Verkuil <hverkuil-cisco@xs4all.nl>, 
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Aug 26, 2024 at 02:36:44PM +0200, Vitaly Kuznetsov wrote:
-> Anirudh Rayabharam <anirudh@anirudhrb.com> writes:
-> 
-> > From: Anirudh Rayabharam (Microsoft) <anirudh@anirudhrb.com>
-> >
-> > 9636be85cc5b ("x86/hyperv: Fix hyperv_pcpu_input_arg handling when CPUs go
-> > online/offline") introduces a new cpuhp state for hyperv initialization.
-> >
-> > cpuhp_setup_state() returns the state number if state is CPUHP_AP_ONLINE_DYN
-> > or CPUHP_BP_PREPARE_DYN and 0 for all other states. For the hyperv case,
-> > since a new cpuhp state was introduced it would return 0. However,
-> > in hv_machine_shutdown(), the cpuhp_remove_state() call is conditioned upon
-> > "hyperv_init_cpuhp > 0". This will never be true and so hv_cpu_die() won't be
-> > called on all CPUs. This means the VP assist page won't be reset. When the
-> > kexec kernel tries to setup the VP assist page again, the hypervisor corrupts
-> > the memory region of the old VP assist page causing a panic in case the kexec
-> > kernel is using that memory elsewhere. This was originally fixed in dfe94d4086e4
-> > ("x86/hyperv: Fix kexec panic/hang issues").
-> >
-> > Set hyperv_init_cpuhp to CPUHP_AP_HYPERV_ONLINE upon successful setup so that
-> > the hyperv cpuhp state is removed correctly on kexec and the necessary cleanup
-> > takes place.
-> >
-> > Cc: stable@vger.kernel.org
-> > Fixes: 9636be85cc5b ("x86/hyperv: Fix hyperv_pcpu_input_arg handling when CPUs go online/offline")
-> > Signed-off-by: Anirudh Rayabharam (Microsoft) <anirudh@anirudhrb.com>
-> > ---
-> >  arch/x86/hyperv/hv_init.c | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/arch/x86/hyperv/hv_init.c b/arch/x86/hyperv/hv_init.c
-> > index 17a71e92a343..81d1981a75d1 100644
-> > --- a/arch/x86/hyperv/hv_init.c
-> > +++ b/arch/x86/hyperv/hv_init.c
-> > @@ -607,7 +607,7 @@ void __init hyperv_init(void)
-> >  
-> >  	register_syscore_ops(&hv_syscore_ops);
-> >  
-> > -	hyperv_init_cpuhp = cpuhp;
-> > +	hyperv_init_cpuhp = CPUHP_AP_HYPERV_ONLINE;
-> 
-> Do we really need 'hyperv_init_cpuhp' at all? I.e. post-change (which
-> LGTM btw), I can only see one usage in hv_machine_shutdown():
-> 
->    if (kexec_in_progress && hyperv_init_cpuhp > 0)
->            cpuhp_remove_state(hyperv_init_cpuhp);
-> 
-> and I'm wondering if the 'hyperv_init_cpuhp' check is really
-> needed. This only case where this check would fail is if we're crashing
-> in between ms_hyperv_init_platform() and hyperv_init() afaiu. Does it
+On Mon, Aug 26, 2024 at 8:24=E2=80=AFAM Laurent Pinchart
+<laurent.pinchart+renesas@ideasonboard.com> wrote:
+>
+> When introducing the ability for drivers to indicate the minimum number
+> of buffers they require an application to allocate, commit 6662edcd32cc
+> ("media: videobuf2: Add min_reqbufs_allocation field to vb2_queue
+> structure") also introduced a global minimum of 2 buffers. It turns out
+> this breaks the Renesas R-Car VSP test suite, where a test that
+> allocates a single buffer fails when two buffers are used.
+>
+> One may consider debatable whether test suite failures without failures
+> in production use cases should be considered as a regression, but
+> operation with a single buffer is a valid use case. While full frame
+> rate can't be maintained, memory-to-memory devices can still be used
+> with a decent efficiency, and requiring applications to allocate
+> multiple buffers for single-shot use cases with capture devices would
+> just waste memory.
+>
+> For those reasons, fix the regression by dropping the global minimum of
+> buffers. Individual drivers can still set their own minimum.
+>
+> Fixes: 6662edcd32cc ("media: videobuf2: Add min_reqbufs_allocation field =
+to vb2_queue structure")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.co=
+m>
+> ---
+>  drivers/media/common/videobuf2/videobuf2-core.c | 7 -------
+>  1 file changed, 7 deletions(-)
+>
+> diff --git a/drivers/media/common/videobuf2/videobuf2-core.c b/drivers/me=
+dia/common/videobuf2/videobuf2-core.c
+> index 500a4e0c84ab..29a8d876e6c2 100644
+> --- a/drivers/media/common/videobuf2/videobuf2-core.c
+> +++ b/drivers/media/common/videobuf2/videobuf2-core.c
+> @@ -2632,13 +2632,6 @@ int vb2_core_queue_init(struct vb2_queue *q)
+>         if (WARN_ON(q->supports_requests && q->min_queued_buffers))
+>                 return -EINVAL;
+>
+> -       /*
+> -        * The minimum requirement is 2: one buffer is used
+> -        * by the hardware while the other is being processed by userspac=
+e.
+> -        */
+> -       if (q->min_reqbufs_allocation < 2)
+> -               q->min_reqbufs_allocation =3D 2;
+> -
+>         /*
+>          * If the driver needs 'min_queued_buffers' in the queue before
+>          * calling start_streaming() then the minimum requirement is
+>
+> base-commit: a043ea54bbb975ca9239c69fd17f430488d33522
 
-Or if we fail to setup the cpuhp state for some reason but don't
-actually crash and then later do a kexec?
+Thanks for the patch!
 
-I guess I was just trying to be extra safe and make sure we have
-actually setup the cpuhp state before calling cpuhp_remove_state()
-for it. However, looking elsewhere in the kernel code I don't
-see anybody doing this for custom states...
+Acked-by: Tomasz Figa <tfiga@chromium.org>
 
-> hurt if we try cpuhp_remove_state() anyway?
-
-cpuhp_invoke_callback() would trigger a WARNING if we try to remove a
-cpuhp state that was never setup.
-
-184         if (cpuhp_step_empty(bringup, step)) {
-185                 WARN_ON_ONCE(1);
-186                 return 0;
-187         }
-
-Thanks,
-Anirudh
-
-> 
-> >  
-> >  	if (cpuid_ebx(HYPERV_CPUID_FEATURES) & HV_ACCESS_PARTITION_ID)
-> >  		hv_get_partition_id();
-> > @@ -637,7 +637,7 @@ void __init hyperv_init(void)
-> >  clean_guest_os_id:
-> >  	wrmsrl(HV_X64_MSR_GUEST_OS_ID, 0);
-> >  	hv_ivm_msr_write(HV_X64_MSR_GUEST_OS_ID, 0);
-> > -	cpuhp_remove_state(cpuhp);
-> > +	cpuhp_remove_state(CPUHP_AP_HYPERV_ONLINE);
-> >  free_ghcb_page:
-> >  	free_percpu(hv_ghcb_pg);
-> >  free_vp_assist_page:
-> 
-> -- 
-> Vitaly
-> 
+Best regards,
+Tomasz
 
