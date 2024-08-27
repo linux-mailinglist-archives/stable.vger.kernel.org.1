@@ -1,48 +1,49 @@
-Return-Path: <stable+bounces-70337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70338-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28009960A1F
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:26:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3779C960A32
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:28:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B97EDB21592
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 12:26:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E63872834F2
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 12:28:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81DA61B5314;
-	Tue, 27 Aug 2024 12:26:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AAC61A7077;
+	Tue, 27 Aug 2024 12:27:39 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B901A1B4C24;
-	Tue, 27 Aug 2024 12:26:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEBDD19FA8A;
+	Tue, 27 Aug 2024 12:27:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724761573; cv=none; b=WsR+V7YHB0/QEj8PbizrZ3hIV9qu1C5AFCXwrc8BhQRLya0W0F5/3eWXu0nbRshScKrndvH3xQmpzubcfrpfhi3US9OhgPpvkhjYqHdQwnyW4y7rzh7Kq2zV9PSppEOH9Sq4dSENzAuakMp1rfYRqh6JLwwgRSD51gOkwjG7rgo=
+	t=1724761659; cv=none; b=Wj49M5+koEeBg4WGrT4VPdUhvREWii4q0wCMUMgYRYewDtpoT7V4vG9Sj/2scVd5zMf/2NPduvHyLtxqzKvJyqmaXivRKUvRDc0zI7DLszy1y1Z2kD4+A7KYXorBj/nycHLAP3SuPTZkzKTh3ve0Ihul3iF6RP78z9ocaQuus5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724761573; c=relaxed/simple;
-	bh=zvVebIsWAlJ8QkELiQXoohTKQj4SJCXpgtbrW33XvsE=;
+	s=arc-20240116; t=1724761659; c=relaxed/simple;
+	bh=LeXt/vBqDdXsVT9es4rU6NCTbbEFAxFI3QplTGehT0c=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WgSP/UwCW82za0voI2UfLtc1JXhcQl85wu1bJZSLDVF5YRchFJuR9YG/LEniWm/MmqJWITduKysFAVEoVZu3F6g010eII3FNYns/PAVB1RZoKsWyc98yJnQLd2nv6TGLC3uobD+GdBi76NoEq+1YU86kRzqP0St7OPwBdIGtMY4=
+	 Content-Type:Content-Disposition:In-Reply-To; b=a/t5VhnL4/Tzi2aEVYO1pTh9PfY0U1YemSxZUzFD5+nvANSYMmlX+4X8O3BPU9O6Fo36qs8KD+c5R+VyMneZUkakcPCsTuxtu7JY+mK33oK+cvMfWg+akvXDdB2qn5xELbie8i6u+oiyys5LpM2RmOEnQZcdSWVZ4caP0gLu5h0=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
 Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id 197D51C009E; Tue, 27 Aug 2024 14:26:10 +0200 (CEST)
-Date: Tue, 27 Aug 2024 14:26:09 +0200
+	id 380821C009E; Tue, 27 Aug 2024 14:27:36 +0200 (CEST)
+Date: Tue, 27 Aug 2024 14:27:35 +0200
 From: Pavel Machek <pavel@denx.de>
 To: Sasha Levin <sashal@kernel.org>
 Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Takashi Iwai <tiwai@suse.de>, Paul Menzel <pmenzel@molgen.mpg.de>,
-	Jaroslav Kysela <perex@perex.cz>, tiwai@suse.com,
-	linux-sound@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 5.10 26/38] ALSA: vmaster: Return error for
- invalid input values
-Message-ID: <Zs3F4Xp/2WfTJjli@duo.ucw.cz>
-References: <20240801003643.3938534-1-sashal@kernel.org>
- <20240801003643.3938534-26-sashal@kernel.org>
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Kalle Valo <quic_kvalo@quicinc.com>, kvalo@kernel.org,
+	jjohnson@kernel.org, linux-wireless@vger.kernel.org,
+	ath11k@lists.infradead.org
+Subject: Re: [PATCH AUTOSEL 6.1 21/61] wifi: ath11k: initialize 'ret' in
+ ath11k_qmi_load_file_target_mem()
+Message-ID: <Zs3GN2FH4uzzMEFY@duo.ucw.cz>
+References: <20240801002803.3935985-1-sashal@kernel.org>
+ <20240801002803.3935985-21-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,70 +51,63 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="b3yops5eByklRyDt"
+	protocol="application/pgp-signature"; boundary="HldkCQvBm5fG8i0J"
 Content-Disposition: inline
-In-Reply-To: <20240801003643.3938534-26-sashal@kernel.org>
+In-Reply-To: <20240801002803.3935985-21-sashal@kernel.org>
 
 
---b3yops5eByklRyDt
+--HldkCQvBm5fG8i0J
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
 Hi!
 
-> From: Takashi Iwai <tiwai@suse.de>
+> [ Upstream commit 199f149e97dc7be80e5eed4b232529c1d1aa8055 ]
 >=20
-> [ Upstream commit 10457f5042b4890a667e2f15a2e783490dda44d2 ]
+> smatch flagged the following issue:
 >=20
-> So far the vmaster code has been tolerant about the input values and
-> accepts any values by correcting internally.  But now our own selftest
-> starts complaining about this behavior, so let's be picky and change
-> the behavior to return -EINVAL for invalid input values instead.
+> drivers/net/wireless/ath/ath11k/qmi.c:2401 ath11k_qmi_load_file_target_me=
+m() error: uninitialized symbol 'ret'.
+>=20
+> The reality is that 'ret' is initialized in every path through
+> ath11k_qmi_load_file_target_mem() except one, the case where the input
+> 'len' is 0, and hence the "while (remaining)" loop is never entered.
+> But to make sure this case is also handled, add an initializer to the
+> declaration of 'ret'.
+>=20
+> No functional changes, compile tested only.
 
-Does it fix a bug serious enough for -stable?
+Just a cleanup. Does not match -stable rules.
 
 Best regards,
-								Pavel
-
-> +++ b/sound/core/vmaster.c
-> @@ -204,6 +204,12 @@ static int follower_put(struct snd_kcontrol *kcontro=
-l,
->  	err =3D follower_init(follower);
->  	if (err < 0)
->  		return err;
-> +	for (ch =3D 0; ch < follower->info.count; ch++) {
-> +		if (ucontrol->value.integer.value[ch] < follower->info.min_val ||
-> +		    ucontrol->value.integer.value[ch] > follower->info.max_val)
-> +			return -EINVAL;
-> +	}
-> +
->  	for (ch =3D 0; ch < follower->info.count; ch++) {
->  		if (follower->vals[ch] !=3D ucontrol->value.integer.value[ch]) {
->  			changed =3D 1;
-> @@ -344,6 +350,8 @@ static int master_put(struct snd_kcontrol *kcontrol,
->  	new_val =3D ucontrol->value.integer.value[0];
->  	if (new_val =3D=3D old_val)
->  		return 0;
-> +	if (new_val < master->info.min_val || new_val > master->info.max_val)
-> +		return -EINVAL;
+							Pavel
+						=09
+> +++ b/drivers/net/wireless/ath/ath11k/qmi.c
+> @@ -2293,7 +2293,7 @@ static int ath11k_qmi_load_file_target_mem(struct a=
+th11k_base *ab,
+>  	struct qmi_txn txn;
+>  	const u8 *temp =3D data;
+>  	void __iomem *bdf_addr =3D NULL;
+> -	int ret;
+> +	int ret =3D 0;
+>  	u32 remaining =3D len;
 > =20
->  	err =3D sync_followers(master, old_val, new_val);
->  	if (err < 0)
+>  	req =3D kzalloc(sizeof(*req), GFP_KERNEL);
 
 --=20
 DENX Software Engineering GmbH,        Managing Director: Erika Unter
 HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 
---b3yops5eByklRyDt
+--HldkCQvBm5fG8i0J
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZs3F4QAKCRAw5/Bqldv6
-8mnzAKC+I46IgPijebkMd8eNpfSGO5Fs1wCghMcYHOhWs3vZNlMEGfonq5vj8m0=
-=d/8A
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZs3GNwAKCRAw5/Bqldv6
+8kiMAJ4gB7fc1FbbwRzBA4C9ElhfyH8CYwCeM0c4ux7PN2ixW6KMksB6oTRfXkw=
+=T0fI
 -----END PGP SIGNATURE-----
 
---b3yops5eByklRyDt--
+--HldkCQvBm5fG8i0J--
 
