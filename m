@@ -1,51 +1,52 @@
-Return-Path: <stable+bounces-70424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70391-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3792960E0A
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:44:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89094960DDD
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:42:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6FD23286427
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:44:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F7B01F24508
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:42:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 824C41C5792;
-	Tue, 27 Aug 2024 14:44:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82DC81C4EE2;
+	Tue, 27 Aug 2024 14:42:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wqqkULZD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2J1WKFPp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ECD01A08A3;
-	Tue, 27 Aug 2024 14:44:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3452B1C57A6;
+	Tue, 27 Aug 2024 14:42:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724769855; cv=none; b=GojPUscG3MZL8x8z+zgk/QDaotFeYPcUPDtMo3vKw9ViEuMVxR39hNq706jdFnspxDhgtmCcEmxgWRnNYLNtdQx4sbIa0SwkTqaJzE+lYzq1X4rX8SEfGqcW8lE4Goci5vA0M3X1OLQ/QI9X+go7SomwMHH97aG5aBDAedw5Y5g=
+	t=1724769743; cv=none; b=SsFePGznbdwxxJMl+Ez7b/dXarh8v9SbN0x1Uh+lj9gzDMuNB8/8aW2s2XmQxKCOnbSJCuSLHIoLNqJpDjtaTYKDLa1xFOudl275wGp7ZdsiUfAYC8BNdV4ubzwIQh0Udh2Dj4J0P5zlar5+918mIEh9O0QIverNDRzqXmrRjNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724769855; c=relaxed/simple;
-	bh=uUgdvIdbr4Mixhpf85cR/Og9ML2jc/51LNLb+mlo/as=;
+	s=arc-20240116; t=1724769743; c=relaxed/simple;
+	bh=QnwtOiheCebMJ5zwxqu+35mZ4YI1oe97ir6dVzGUwAo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BHIpeK19ZX3TAWqaKEGFm4A5/AT1tzdUr/kUpS9Bt841Q6DlTBIsRol7OIe8Hh9fdYIcVyjQyi4GltKJHZgYHghAk/hbpqyO0gEVo0lau1EBu07lkcuSMnfpoI8gKiYEnb9W0x6Bsm/DD4u7sYP0iMKcFiUeYIZzAAdl5lx9zfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wqqkULZD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E6E6C6105D;
-	Tue, 27 Aug 2024 14:44:14 +0000 (UTC)
+	 MIME-Version; b=II26tQlT6AIDJs9UDSFUc+4kUSuSFxuYucdtARQ+6fVcyow/HSxQg3jmY3L88vzh+EOoROn+MBXO5xN/Ab8CPzAhWNpqF5S7fifIJl2Apl0Rkz9Ec+HUtHcFvGHkOTvmdHSpoghSkNlFiQIaCAye8P9IvT2voIBG3xqD1uwEq1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2J1WKFPp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E503C61067;
+	Tue, 27 Aug 2024 14:42:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724769854;
-	bh=uUgdvIdbr4Mixhpf85cR/Og9ML2jc/51LNLb+mlo/as=;
+	s=korg; t=1724769743;
+	bh=QnwtOiheCebMJ5zwxqu+35mZ4YI1oe97ir6dVzGUwAo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wqqkULZD9SoR+NVH+GkXicpJzOfHoPspfuIveAHwEicQDS5V59UijBTkJs5Zt9xfX
-	 A8CDliW1mtLv1J4hFDmxymBXXAsNp05ZSdMh1hPB3Yv8ZeG8C9RuMhAeSD4Iw7ZMwI
-	 NXWbt5iZuiBnetTBoGwCVtAIAmGCNt30P5ezn7n0=
+	b=2J1WKFPpyJgXkERFuIUh9PuTfXpXbpBOyl93Tkcj0J3z/I4JzvgB1GMR59zVxj5qN
+	 u/sLpTDCb6mUyXOPhcc2qLd6WBO4VFV6PpctyzAVBQ0c5XWHZidfOvgriUQQxk2irj
+	 n7UlKfyqHjFIgHKtpXeGiZKxxVJfuWfFeFllchb4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 6.6 014/341] thunderbolt: Mark XDomain as unplugged when router is removed
-Date: Tue, 27 Aug 2024 16:34:05 +0200
-Message-ID: <20240827143843.947936784@linuxfoundation.org>
+	Baojun Xu <baojun.xu@ti.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 015/341] ALSA: hda/tas2781: fix wrong calibrated data order
+Date: Tue, 27 Aug 2024 16:34:06 +0200
+Message-ID: <20240827143843.985485665@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
 References: <20240827143843.399359062@linuxfoundation.org>
@@ -64,40 +65,67 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
+From: Baojun Xu <baojun.xu@ti.com>
 
-commit e2006140ad2e01a02ed0aff49cc2ae3ceeb11f8d upstream.
+commit 3beddef84d90590270465a907de1cfe2539ac70d upstream.
 
-I noticed that when we do discrete host router NVM upgrade and it gets
-hot-removed from the PCIe side as a result of NVM firmware authentication,
-if there is another host connected with enabled paths we hang in tearing
-them down. This is due to fact that the Thunderbolt networking driver
-also tries to cleanup the paths and ends up blocking in
-tb_disconnect_xdomain_paths() waiting for the domain lock.
+Wrong calibration data order cause sound too low in some device.
+Fix wrong calibrated data order, add calibration data converssion
+by get_unaligned_be32() after reading from UEFI.
 
-However, at this point we already cleaned the paths in tb_stop() so
-there is really no need for tb_disconnect_xdomain_paths() to do that
-anymore. Furthermore it already checks if the XDomain is unplugged and
-bails out early so take advantage of that and mark the XDomain as
-unplugged when we remove the parent router.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Fixes: 5be27f1e3ec9 ("ALSA: hda/tas2781: Add tas2781 HDA driver")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Baojun Xu <baojun.xu@ti.com>
+Link: https://patch.msgid.link/20240813043749.108-1-shenghao-ding@ti.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thunderbolt/switch.c |    1 +
- 1 file changed, 1 insertion(+)
+ sound/pci/hda/tas2781_hda_i2c.c |   14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
---- a/drivers/thunderbolt/switch.c
-+++ b/drivers/thunderbolt/switch.c
-@@ -3159,6 +3159,7 @@ void tb_switch_remove(struct tb_switch *
- 			tb_switch_remove(port->remote->sw);
- 			port->remote = NULL;
- 		} else if (port->xdomain) {
-+			port->xdomain->is_unplugged = true;
- 			tb_xdomain_remove(port->xdomain);
- 			port->xdomain = NULL;
+--- a/sound/pci/hda/tas2781_hda_i2c.c
++++ b/sound/pci/hda/tas2781_hda_i2c.c
+@@ -2,10 +2,12 @@
+ //
+ // TAS2781 HDA I2C driver
+ //
+-// Copyright 2023 Texas Instruments, Inc.
++// Copyright 2023 - 2024 Texas Instruments, Inc.
+ //
+ // Author: Shenghao Ding <shenghao-ding@ti.com>
++// Current maintainer: Baojun Xu <baojun.xu@ti.com>
+ 
++#include <asm/unaligned.h>
+ #include <linux/acpi.h>
+ #include <linux/crc8.h>
+ #include <linux/crc32.h>
+@@ -425,20 +427,22 @@ static void tas2781_apply_calib(struct t
+ 	static const unsigned char rgno_array[CALIB_MAX] = {
+ 		0x74, 0x0c, 0x14, 0x70, 0x7c,
+ 	};
+-	unsigned char *data;
++	int offset = 0;
+ 	int i, j, rc;
++	__be32 data;
+ 
+ 	for (i = 0; i < tas_priv->ndev; i++) {
+-		data = tas_priv->cali_data.data +
+-			i * TASDEVICE_SPEAKER_CALIBRATION_SIZE;
+ 		for (j = 0; j < CALIB_MAX; j++) {
++			data = get_unaligned_be32(
++				&tas_priv->cali_data.data[offset]);
+ 			rc = tasdevice_dev_bulk_write(tas_priv, i,
+ 				TASDEVICE_REG(0, page_array[j], rgno_array[j]),
+-				&(data[4 * j]), 4);
++				(unsigned char *)&data, 4);
+ 			if (rc < 0)
+ 				dev_err(tas_priv->dev,
+ 					"chn %d calib %d bulk_wr err = %d\n",
+ 					i, j, rc);
++			offset += 4;
  		}
+ 	}
+ }
 
 
 
