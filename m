@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-71274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70989-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5900A9612A2
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:33:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEB58961107
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:15:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0DCD21F21185
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:33:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E2DB91C235A5
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:15:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDD531CB31B;
-	Tue, 27 Aug 2024 15:31:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFE131C3F0D;
+	Tue, 27 Aug 2024 15:15:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EREN9kRc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dN+r5LVJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BCE11C93AB;
-	Tue, 27 Aug 2024 15:31:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DBBA1DDEA;
+	Tue, 27 Aug 2024 15:15:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772670; cv=none; b=C4zdOd6G4wDhmlM8MyXQL0CS6lVhrNL/0IBpqtcWhr4WIdZfg9EU6mY6yVMHN4JYpaa4jkRm/VJGsGCqsuFq0QXQKQHCc2D2vjxDUuyZAx7OpXA3EonEZ0nJAZfszlik0vQYX+qmIM2S8phMiBu0Uy+USYWS/kAtRr5ysttGKaQ=
+	t=1724771729; cv=none; b=LRr4/muMJ3bE5g28o9C4njImeQnn/OSsROidg6Ccytc7c+7513dTvmReKTmORM9CbhoPGEs2J6jrUBhDWQBv/K/jxs71+I8MjY8xclnhxV2KKbkT9R3WyWBRc6PEfVnBZrcKdcrdGcJHyxjE1062Mizn77pisGW+v3M3+3W0YfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772670; c=relaxed/simple;
-	bh=bLKuIY4KgwuDVv51XHTZ5nQhbhMhG1LA2f1Cf9qJ4Uw=;
+	s=arc-20240116; t=1724771729; c=relaxed/simple;
+	bh=E1gnnG7FGtgOEEVy3LmGlkaRNUzu5qIvt1Stlh1MFZA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SXm+8UjbHs6lPr57niojCR3quyzYCeSYksNlX3Glc/JZBZXO/KFMiwlB3fisoVfNV6/6DQsQdtdqO7od8+vzuuOhv3YTmC1ZynNKFwXOuFVunimKQ+W+zdQpNhma+Sy361Bh5uVS1APZVRefcg/lJYOdzWdz1wkgcuhxy9L2LwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EREN9kRc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFB4BC4DDE9;
-	Tue, 27 Aug 2024 15:31:09 +0000 (UTC)
+	 MIME-Version; b=tLiF68OHfMPzLVSX+dBd3LuNs+PKVObk4hPAXr/ymnLxDOGA0UuonmsSBHLC2ITPt1xJK5vA+EVxg0bHI0DK/0jweyXx3XmlYZOGoFcXuLAsvUE++InKuQwwVk1p/+i8BsxtqXLAUUahmkaRzTbffiqPnOFdUJS3A8x+JULVzVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dN+r5LVJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDA7FC4AF50;
+	Tue, 27 Aug 2024 15:15:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772670;
-	bh=bLKuIY4KgwuDVv51XHTZ5nQhbhMhG1LA2f1Cf9qJ4Uw=;
+	s=korg; t=1724771729;
+	bh=E1gnnG7FGtgOEEVy3LmGlkaRNUzu5qIvt1Stlh1MFZA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EREN9kRcNOwoJoP6ogygFr9zFF0IY0MYmO5RCCw0BcP15327Rep+6LRmQ8KQocAvl
-	 oTusXAaAlswgyoOFKRLgw4itD/nVLDbcruggC6Inr3Rcz+AasdQdp5i5dwLQC3PGHm
-	 JVdVgEkSQBWrhqu2Yng7J1N9s14uETPpL7hYyWgQ=
+	b=dN+r5LVJNo7ooyO1ox/UBjdi1ijAAEWEj/+EJu6CYSHMCNEshircOirAnGW7F7lhS
+	 u4e9OMc6S/sGAJt4XTZ6vHMSrNxUuN78FO4wmbuxdi1wa7vp1+h+LL70KPEFa1DzFw
+	 Fr4DpMTNu4YzeCs/qUSgPE4lg6FZSVH66RDwsuzI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hailong Liu <hailong.liu@oppo.com>,
-	Tangquan Zheng <zhengtangquan@oppo.com>,
-	Baoquan He <bhe@redhat.com>,
-	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
-	Barry Song <baohua@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 285/321] mm/vmalloc: fix page mapping if vm_area_alloc_pages() with high order fallback to order 0
+	Boyuan Zhang <boyuan.zhang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Ruijing Dong <ruijing.dong@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>
+Subject: [PATCH 6.10 269/273] drm/amdgpu/vcn: identify unified queue in sw init
 Date: Tue, 27 Aug 2024 16:39:53 +0200
-Message-ID: <20240827143849.096663262@linuxfoundation.org>
+Message-ID: <20240827143843.635499261@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,73 +63,176 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hailong Liu <hailong.liu@oppo.com>
+From: Boyuan Zhang <boyuan.zhang@amd.com>
 
-commit 61ebe5a747da649057c37be1c37eb934b4af79ca upstream.
+commit ecfa23c8df7ef3ea2a429dfe039341bf792e95b4 upstream.
 
-The __vmap_pages_range_noflush() assumes its argument pages** contains
-pages with the same page shift.  However, since commit e9c3cda4d86e ("mm,
-vmalloc: fix high order __GFP_NOFAIL allocations"), if gfp_flags includes
-__GFP_NOFAIL with high order in vm_area_alloc_pages() and page allocation
-failed for high order, the pages** may contain two different page shifts
-(high order and order-0).  This could lead __vmap_pages_range_noflush() to
-perform incorrect mappings, potentially resulting in memory corruption.
+Determine whether VCN using unified queue in sw_init, instead of calling
+functions later on.
 
-Users might encounter this as follows (vmap_allow_huge = true, 2M is for
-PMD_SIZE):
+v2: fix coding style
 
-kvmalloc(2M, __GFP_NOFAIL|GFP_X)
-    __vmalloc_node_range_noprof(vm_flags=VM_ALLOW_HUGE_VMAP)
-        vm_area_alloc_pages(order=9) ---> order-9 allocation failed and fallback to order-0
-            vmap_pages_range()
-                vmap_pages_range_noflush()
-                    __vmap_pages_range_noflush(page_shift = 21) ----> wrong mapping happens
-
-We can remove the fallback code because if a high-order allocation fails,
-__vmalloc_node_range_noprof() will retry with order-0.  Therefore, it is
-unnecessary to fallback to order-0 here.  Therefore, fix this by removing
-the fallback code.
-
-Link: https://lkml.kernel.org/r/20240808122019.3361-1-hailong.liu@oppo.com
-Fixes: e9c3cda4d86e ("mm, vmalloc: fix high order __GFP_NOFAIL allocations")
-Signed-off-by: Hailong Liu <hailong.liu@oppo.com>
-Reported-by: Tangquan Zheng <zhengtangquan@oppo.com>
-Reviewed-by: Baoquan He <bhe@redhat.com>
-Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
-Acked-by: Barry Song <baohua@kernel.org>
-Acked-by: Michal Hocko <mhocko@suse.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Boyuan Zhang <boyuan.zhang@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Ruijing Dong <ruijing.dong@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Cc: Mario Limonciello <mario.limonciello@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/vmalloc.c |   11 ++---------
- 1 file changed, 2 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.c |   39 ++++++++++++--------------------
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.h |    1 
+ 2 files changed, 16 insertions(+), 24 deletions(-)
 
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -2992,15 +2992,8 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
- 			page = alloc_pages(alloc_gfp, order);
- 		else
- 			page = alloc_pages_node(nid, alloc_gfp, order);
--		if (unlikely(!page)) {
--			if (!nofail)
--				break;
--
--			/* fall back to the zero order allocations */
--			alloc_gfp |= __GFP_NOFAIL;
--			order = 0;
--			continue;
--		}
-+		if (unlikely(!page))
-+			break;
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.c
+@@ -151,6 +151,10 @@ int amdgpu_vcn_sw_init(struct amdgpu_dev
+ 		}
+ 	}
  
- 		/*
- 		 * Higher order allocations must be able to be treated as
++	/* from vcn4 and above, only unified queue is used */
++	adev->vcn.using_unified_queue =
++		amdgpu_ip_version(adev, UVD_HWIP, 0) >= IP_VERSION(4, 0, 0);
++
+ 	hdr = (const struct common_firmware_header *)adev->vcn.fw[0]->data;
+ 	adev->vcn.fw_version = le32_to_cpu(hdr->ucode_version);
+ 
+@@ -279,18 +283,6 @@ int amdgpu_vcn_sw_fini(struct amdgpu_dev
+ 	return 0;
+ }
+ 
+-/* from vcn4 and above, only unified queue is used */
+-static bool amdgpu_vcn_using_unified_queue(struct amdgpu_ring *ring)
+-{
+-	struct amdgpu_device *adev = ring->adev;
+-	bool ret = false;
+-
+-	if (amdgpu_ip_version(adev, UVD_HWIP, 0) >= IP_VERSION(4, 0, 0))
+-		ret = true;
+-
+-	return ret;
+-}
+-
+ bool amdgpu_vcn_is_disabled_vcn(struct amdgpu_device *adev, enum vcn_ring_type type, uint32_t vcn_instance)
+ {
+ 	bool ret = false;
+@@ -728,12 +720,11 @@ static int amdgpu_vcn_dec_sw_send_msg(st
+ 	struct amdgpu_job *job;
+ 	struct amdgpu_ib *ib;
+ 	uint64_t addr = AMDGPU_GPU_PAGE_ALIGN(ib_msg->gpu_addr);
+-	bool sq = amdgpu_vcn_using_unified_queue(ring);
+ 	uint32_t *ib_checksum;
+ 	uint32_t ib_pack_in_dw;
+ 	int i, r;
+ 
+-	if (sq)
++	if (adev->vcn.using_unified_queue)
+ 		ib_size_dw += 8;
+ 
+ 	r = amdgpu_job_alloc_with_ib(ring->adev, NULL, NULL,
+@@ -746,7 +737,7 @@ static int amdgpu_vcn_dec_sw_send_msg(st
+ 	ib->length_dw = 0;
+ 
+ 	/* single queue headers */
+-	if (sq) {
++	if (adev->vcn.using_unified_queue) {
+ 		ib_pack_in_dw = sizeof(struct amdgpu_vcn_decode_buffer) / sizeof(uint32_t)
+ 						+ 4 + 2; /* engine info + decoding ib in dw */
+ 		ib_checksum = amdgpu_vcn_unified_ring_ib_header(ib, ib_pack_in_dw, false);
+@@ -765,7 +756,7 @@ static int amdgpu_vcn_dec_sw_send_msg(st
+ 	for (i = ib->length_dw; i < ib_size_dw; ++i)
+ 		ib->ptr[i] = 0x0;
+ 
+-	if (sq)
++	if (adev->vcn.using_unified_queue)
+ 		amdgpu_vcn_unified_ring_ib_checksum(&ib_checksum, ib_pack_in_dw);
+ 
+ 	r = amdgpu_job_submit_direct(job, ring, &f);
+@@ -855,15 +846,15 @@ static int amdgpu_vcn_enc_get_create_msg
+ 					 struct dma_fence **fence)
+ {
+ 	unsigned int ib_size_dw = 16;
++	struct amdgpu_device *adev = ring->adev;
+ 	struct amdgpu_job *job;
+ 	struct amdgpu_ib *ib;
+ 	struct dma_fence *f = NULL;
+ 	uint32_t *ib_checksum = NULL;
+ 	uint64_t addr;
+-	bool sq = amdgpu_vcn_using_unified_queue(ring);
+ 	int i, r;
+ 
+-	if (sq)
++	if (adev->vcn.using_unified_queue)
+ 		ib_size_dw += 8;
+ 
+ 	r = amdgpu_job_alloc_with_ib(ring->adev, NULL, NULL,
+@@ -877,7 +868,7 @@ static int amdgpu_vcn_enc_get_create_msg
+ 
+ 	ib->length_dw = 0;
+ 
+-	if (sq)
++	if (adev->vcn.using_unified_queue)
+ 		ib_checksum = amdgpu_vcn_unified_ring_ib_header(ib, 0x11, true);
+ 
+ 	ib->ptr[ib->length_dw++] = 0x00000018;
+@@ -899,7 +890,7 @@ static int amdgpu_vcn_enc_get_create_msg
+ 	for (i = ib->length_dw; i < ib_size_dw; ++i)
+ 		ib->ptr[i] = 0x0;
+ 
+-	if (sq)
++	if (adev->vcn.using_unified_queue)
+ 		amdgpu_vcn_unified_ring_ib_checksum(&ib_checksum, 0x11);
+ 
+ 	r = amdgpu_job_submit_direct(job, ring, &f);
+@@ -922,15 +913,15 @@ static int amdgpu_vcn_enc_get_destroy_ms
+ 					  struct dma_fence **fence)
+ {
+ 	unsigned int ib_size_dw = 16;
++	struct amdgpu_device *adev = ring->adev;
+ 	struct amdgpu_job *job;
+ 	struct amdgpu_ib *ib;
+ 	struct dma_fence *f = NULL;
+ 	uint32_t *ib_checksum = NULL;
+ 	uint64_t addr;
+-	bool sq = amdgpu_vcn_using_unified_queue(ring);
+ 	int i, r;
+ 
+-	if (sq)
++	if (adev->vcn.using_unified_queue)
+ 		ib_size_dw += 8;
+ 
+ 	r = amdgpu_job_alloc_with_ib(ring->adev, NULL, NULL,
+@@ -944,7 +935,7 @@ static int amdgpu_vcn_enc_get_destroy_ms
+ 
+ 	ib->length_dw = 0;
+ 
+-	if (sq)
++	if (adev->vcn.using_unified_queue)
+ 		ib_checksum = amdgpu_vcn_unified_ring_ib_header(ib, 0x11, true);
+ 
+ 	ib->ptr[ib->length_dw++] = 0x00000018;
+@@ -966,7 +957,7 @@ static int amdgpu_vcn_enc_get_destroy_ms
+ 	for (i = ib->length_dw; i < ib_size_dw; ++i)
+ 		ib->ptr[i] = 0x0;
+ 
+-	if (sq)
++	if (adev->vcn.using_unified_queue)
+ 		amdgpu_vcn_unified_ring_ib_checksum(&ib_checksum, 0x11);
+ 
+ 	r = amdgpu_job_submit_direct(job, ring, &f);
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.h
+@@ -329,6 +329,7 @@ struct amdgpu_vcn {
+ 
+ 	uint16_t inst_mask;
+ 	uint8_t	num_inst_per_aid;
++	bool using_unified_queue;
+ };
+ 
+ struct amdgpu_fw_shared_rb_ptrs_struct {
 
 
 
