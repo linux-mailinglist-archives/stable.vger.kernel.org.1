@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-71254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70683-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B6F596128C
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:32:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67BE3960F81
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:00:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ADC1E1C22982
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:32:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A48D1C20A85
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:00:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 832A11C9EB0;
-	Tue, 27 Aug 2024 15:30:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A74121CC8AE;
+	Tue, 27 Aug 2024 14:58:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M4sY4PUU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tw2yH9rT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40C6919EEA2;
-	Tue, 27 Aug 2024 15:30:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6571C1C945D;
+	Tue, 27 Aug 2024 14:58:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772604; cv=none; b=gXWXU6soDzEnihmSjId/NMNg/QIdpu7/PLIxXubJEzDVKkiCRAaysj5CXpP+fz07dyluTX90lwDwBpkv3Jdmw3Ce02Klo5UxXRBnAp+j+w+OTk6wJEu8K1XtWRvUSLWUlfxuKOSQbYqZze+C5GchTDOutomYVQlmLiPUPVDMGz0=
+	t=1724770722; cv=none; b=L43jW8O1XaZBuEBSIOHFhiaDF6pQDp+ejeFpo8s1VpvdZ6PkMZKy23jtzpFd86GzZKROpDwMSMau0IEuK1C58g1Z57/yq23Hl1MRmvw7VWvzvuENVb2ug4k2rhtDjIq2hMRdCdMvehbQB76tWgu4lEZKxD3zDve+QaI2JqIGIOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772604; c=relaxed/simple;
-	bh=SPnHnYW3tVRVh98U+iW3xjSNlYtEcfLMawljcbSclAs=;
+	s=arc-20240116; t=1724770722; c=relaxed/simple;
+	bh=3kFO04Z4dPkHgtdUQ9tlgBC58v5eYptPpp9L+IAHGi0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ij6rScgrn0fwh/n1eZMZJ5CXIm2ZfThcRT9cHitvKUPI2/UnLcmippQuHo77f1Cryp9GpSBAmqGi73EbZ+DvEIaW7zTH0PtvzEC34aOce+wDOpwHyBtqyzCC7Hl0vr/7tlUe6t7J7AXr5oej3Byhdt4T6Ck4IO7my5l+0ATDzT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M4sY4PUU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA6ECC4AF15;
-	Tue, 27 Aug 2024 15:30:03 +0000 (UTC)
+	 MIME-Version; b=nGKqsfkuihYQ1lEcW7fFcDLxWJ4T1arEAh5bLfRTkaRqJw6VJJjASLMoRt+W0NIJY4S2VRp+gJvETZv9L1cAONnl7vpqP9A+uIyusfgjM1ynUHckcgisVnC8+g60lpVMNFZUGx+dskFuJARw8KTS+f5piPwXdv91flhiBVK0BYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tw2yH9rT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C695BC4AF1A;
+	Tue, 27 Aug 2024 14:58:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772604;
-	bh=SPnHnYW3tVRVh98U+iW3xjSNlYtEcfLMawljcbSclAs=;
+	s=korg; t=1724770722;
+	bh=3kFO04Z4dPkHgtdUQ9tlgBC58v5eYptPpp9L+IAHGi0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M4sY4PUUTo8a3d6Si3Vl1e8CWTeBhJ0BpJ6L8d21oZbybGX++VIeaxWUvjR3yoXF1
-	 jGUMlTPhwMJAO7OfLLvnrKRkY+PsHiwW/UnTAp54kX4myQxEtwFHtv96K3U4G1X0oF
-	 pe3BW8vCeAI0qyOOABHfiw/hY1CP/XXqm+RzW0kE=
+	b=Tw2yH9rTTo6cUv9pcbnXMtVMPa11lUyYmddl6tjXNZ2cuF71jSS+CzpTbpPryyEY6
+	 C24vAHFm6pfI4TNm4wi2JmaaDL4vVp9MLh+i9saFF3JV2ofPxkAK7oGB0TiP7Eb6zL
+	 CVqjBdra2GZhnUrugXZ5mdNsg0bMTtK9hZ1XsZUU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Bogendoerfer <tbogendoerfer@suse.de>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 237/321] ip6_tunnel: Fix broken GRO
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 314/341] mptcp: pm: only mark subflow endp as available
 Date: Tue, 27 Aug 2024 16:39:05 +0200
-Message-ID: <20240827143847.257637287@linuxfoundation.org>
+Message-ID: <20240827143855.334035359@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +62,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Bogendoerfer <tbogendoerfer@suse.de>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit 4b3e33fcc38f7750604b065c55a43e94c5bc3145 ]
+commit 322ea3778965da72862cca2a0c50253aacf65fe6 upstream.
 
-GRO code checks for matching layer 2 headers to see, if packet belongs
-to the same flow and because ip6 tunnel set dev->hard_header_len
-this check fails in cases, where it shouldn't. To fix this don't
-set hard_header_len, but use needed_headroom like ipv4/ip_tunnel.c
-does.
+Adding the following warning ...
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Thomas Bogendoerfer <tbogendoerfer@suse.de>
-Link: https://patch.msgid.link/20240815151419.109864-1-tbogendoerfer@suse.de
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  WARN_ON_ONCE(msk->pm.local_addr_used == 0)
+
+... before decrementing the local_addr_used counter helped to find a bug
+when running the "remove single address" subtest from the mptcp_join.sh
+selftests.
+
+Removing a 'signal' endpoint will trigger the removal of all subflows
+linked to this endpoint via mptcp_pm_nl_rm_addr_or_subflow() with
+rm_type == MPTCP_MIB_RMSUBFLOW. This will decrement the local_addr_used
+counter, which is wrong in this case because this counter is linked to
+'subflow' endpoints, and here it is a 'signal' endpoint that is being
+removed.
+
+Now, the counter is decremented, only if the ID is being used outside
+of mptcp_pm_nl_rm_addr_or_subflow(), only for 'subflow' endpoints, and
+if the ID is not 0 -- local_addr_used is not taking into account these
+ones. This marking of the ID as being available, and the decrement is
+done no matter if a subflow using this ID is currently available,
+because the subflow could have been closed before.
+
+Fixes: 06faa2271034 ("mptcp: remove multi addresses and subflows in PM")
+Cc: stable@vger.kernel.org
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20240819-net-mptcp-pm-reusing-id-v1-8-38035d40de5b@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/ip6_tunnel.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ net/mptcp/pm_netlink.c |   26 +++++++++++++++++---------
+ 1 file changed, 17 insertions(+), 9 deletions(-)
 
-diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
-index 2699915bb85be..f3324f2a40466 100644
---- a/net/ipv6/ip6_tunnel.c
-+++ b/net/ipv6/ip6_tunnel.c
-@@ -1510,7 +1510,8 @@ static void ip6_tnl_link_config(struct ip6_tnl *t)
- 			tdev = __dev_get_by_index(t->net, p->link);
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -841,10 +841,10 @@ static void mptcp_pm_nl_rm_addr_or_subfl
+ 			if (rm_type == MPTCP_MIB_RMSUBFLOW)
+ 				__MPTCP_INC_STATS(sock_net(sk), rm_type);
+ 		}
+-		if (rm_type == MPTCP_MIB_RMSUBFLOW)
+-			__set_bit(rm_id ? rm_id : msk->mpc_endpoint_id, msk->pm.id_avail_bitmap);
+-		else if (rm_type == MPTCP_MIB_RMADDR)
++
++		if (rm_type == MPTCP_MIB_RMADDR)
+ 			__MPTCP_INC_STATS(sock_net(sk), rm_type);
++
+ 		if (!removed)
+ 			continue;
  
- 		if (tdev) {
--			dev->hard_header_len = tdev->hard_header_len + t_hlen;
-+			dev->needed_headroom = tdev->hard_header_len +
-+				tdev->needed_headroom + t_hlen;
- 			mtu = min_t(unsigned int, tdev->mtu, IP6_MAX_MTU);
+@@ -854,8 +854,6 @@ static void mptcp_pm_nl_rm_addr_or_subfl
+ 		if (rm_type == MPTCP_MIB_RMADDR) {
+ 			msk->pm.add_addr_accepted--;
+ 			WRITE_ONCE(msk->pm.accept_addr, true);
+-		} else if (rm_type == MPTCP_MIB_RMSUBFLOW) {
+-			msk->pm.local_addr_used--;
+ 		}
+ 	}
+ }
+@@ -1472,6 +1470,14 @@ static bool mptcp_pm_remove_anno_addr(st
+ 	return ret;
+ }
  
- 			mtu = mtu - t_hlen;
-@@ -1734,7 +1735,9 @@ ip6_tnl_siocdevprivate(struct net_device *dev, struct ifreq *ifr,
- int ip6_tnl_change_mtu(struct net_device *dev, int new_mtu)
++static void __mark_subflow_endp_available(struct mptcp_sock *msk, u8 id)
++{
++	/* If it was marked as used, and not ID 0, decrement local_addr_used */
++	if (!__test_and_set_bit(id ? : msk->mpc_endpoint_id, msk->pm.id_avail_bitmap) &&
++	    id && !WARN_ON_ONCE(msk->pm.local_addr_used == 0))
++		msk->pm.local_addr_used--;
++}
++
+ static int mptcp_nl_remove_subflow_and_signal_addr(struct net *net,
+ 						   const struct mptcp_pm_addr_entry *entry)
  {
- 	struct ip6_tnl *tnl = netdev_priv(dev);
-+	int t_hlen;
+@@ -1505,11 +1511,11 @@ static int mptcp_nl_remove_subflow_and_s
+ 			spin_lock_bh(&msk->pm.lock);
+ 			mptcp_pm_nl_rm_subflow_received(msk, &list);
+ 			spin_unlock_bh(&msk->pm.lock);
+-		} else if (entry->flags & MPTCP_PM_ADDR_FLAG_SUBFLOW) {
+-			/* If the subflow has been used, but now closed */
++		}
++
++		if (entry->flags & MPTCP_PM_ADDR_FLAG_SUBFLOW) {
+ 			spin_lock_bh(&msk->pm.lock);
+-			if (!__test_and_set_bit(entry->addr.id, msk->pm.id_avail_bitmap))
+-				msk->pm.local_addr_used--;
++			__mark_subflow_endp_available(msk, list.ids[0]);
+ 			spin_unlock_bh(&msk->pm.lock);
+ 		}
  
-+	t_hlen = tnl->hlen + sizeof(struct ipv6hdr);
- 	if (tnl->parms.proto == IPPROTO_IPV6) {
- 		if (new_mtu < IPV6_MIN_MTU)
- 			return -EINVAL;
-@@ -1743,10 +1746,10 @@ int ip6_tnl_change_mtu(struct net_device *dev, int new_mtu)
- 			return -EINVAL;
- 	}
- 	if (tnl->parms.proto == IPPROTO_IPV6 || tnl->parms.proto == 0) {
--		if (new_mtu > IP6_MAX_MTU - dev->hard_header_len)
-+		if (new_mtu > IP6_MAX_MTU - dev->hard_header_len - t_hlen)
- 			return -EINVAL;
- 	} else {
--		if (new_mtu > IP_MAX_MTU - dev->hard_header_len)
-+		if (new_mtu > IP_MAX_MTU - dev->hard_header_len - t_hlen)
- 			return -EINVAL;
- 	}
- 	dev->mtu = new_mtu;
-@@ -1892,12 +1895,11 @@ ip6_tnl_dev_init_gen(struct net_device *dev)
- 	t_hlen = t->hlen + sizeof(struct ipv6hdr);
+@@ -1547,6 +1553,7 @@ static int mptcp_nl_remove_id_zero_addre
+ 		spin_lock_bh(&msk->pm.lock);
+ 		mptcp_pm_remove_addr(msk, &list);
+ 		mptcp_pm_nl_rm_subflow_received(msk, &list);
++		__mark_subflow_endp_available(msk, 0);
+ 		spin_unlock_bh(&msk->pm.lock);
+ 		release_sock(sk);
  
- 	dev->type = ARPHRD_TUNNEL6;
--	dev->hard_header_len = LL_MAX_HEADER + t_hlen;
- 	dev->mtu = ETH_DATA_LEN - t_hlen;
- 	if (!(t->parms.flags & IP6_TNL_F_IGN_ENCAP_LIMIT))
- 		dev->mtu -= 8;
- 	dev->min_mtu = ETH_MIN_MTU;
--	dev->max_mtu = IP6_MAX_MTU - dev->hard_header_len;
-+	dev->max_mtu = IP6_MAX_MTU - dev->hard_header_len - t_hlen;
+@@ -1939,6 +1946,7 @@ static void mptcp_pm_nl_fullmesh(struct
  
- 	netdev_hold(dev, &t->dev_tracker, GFP_KERNEL);
- 	return 0;
--- 
-2.43.0
-
+ 	spin_lock_bh(&msk->pm.lock);
+ 	mptcp_pm_nl_rm_subflow_received(msk, &list);
++	__mark_subflow_endp_available(msk, list.ids[0]);
+ 	mptcp_pm_create_subflow_or_signal_addr(msk);
+ 	spin_unlock_bh(&msk->pm.lock);
+ }
 
 
 
