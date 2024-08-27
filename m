@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-70590-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70827-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98AEE960EF9
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:54:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0718961039
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:06:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CAF671C233B3
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:54:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2393BB258CD
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:06:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BB0B1C945B;
-	Tue, 27 Aug 2024 14:53:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AD241C3F0D;
+	Tue, 27 Aug 2024 15:06:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xNW7HmMy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wSkX2QcK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47F711C4601;
-	Tue, 27 Aug 2024 14:53:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47FB01E520;
+	Tue, 27 Aug 2024 15:06:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770413; cv=none; b=GbxwXU74AEao3tAa2rh50CFHWkpDWFEh1kHf9YsY1f/XZHqWgxiUSKzXJOp1x3IOpfYOxfFUPx3diobSF20FEtfxP/f/PKnVz1nURMv2+RQw4vMDxFZ3ozdUSgdBz8COdGReUmAeG2vtm0PQpiwX31HgGmtZYYBACPSnaHAmYto=
+	t=1724771191; cv=none; b=ooFJAROpt159f3NxnyYLS6d4+ypJmTfQn+Z1YBX7F1v8xbDVe1l0qfk1ePY6ug9PNwn7UCr3ZFvg4t3KN8zLsn9aQXb++CBt8PV56ho0+z+dP4roFv4nqygeAzdTjJK4zHRgilrbz2L26/yD6COKC8vfE6u4m1oRRD9zI2iZqpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770413; c=relaxed/simple;
-	bh=4xByt+8LZcikY/OwOsViZ0MYbK9KCCg5qIt7cpd8gwE=;
+	s=arc-20240116; t=1724771191; c=relaxed/simple;
+	bh=5iF+I+FfLIewQoc6KUXP87gSu+XAp/8HgmRViBdFEYs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Umqvo+EFjOqUrajJo8/7RsykIROk6+JuR/ko2RYxoeSV23nSdaK7qSyl13LM70mwKOsgAOvfBrDarOabdNXa6pMeQnkOqTi00oR8NDAez6AgOtetO1bdcW7d7pswOwkMU/0WRXF4jzGsikAXMOCC8WZE4TatB29R5IYv11JheSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xNW7HmMy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A92DC61053;
-	Tue, 27 Aug 2024 14:53:32 +0000 (UTC)
+	 MIME-Version; b=TRvuzA0rVJwLNAvn64vQFYRGdIoTNXC2jZl4GWv2ds8njEv6yMg2TNkSxFvfXYhEq+WLMKTY73mg+N7F0aehaQ7lrIg+ytg1tklyNPPWsqrsEu+Es6KSO1hnVOQeiTc83v9Pz3ZiSL9bezO/SthpRZ+OuoDo2b9XFi/kpXDPRNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wSkX2QcK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B19EFC6107C;
+	Tue, 27 Aug 2024 15:06:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770412;
-	bh=4xByt+8LZcikY/OwOsViZ0MYbK9KCCg5qIt7cpd8gwE=;
+	s=korg; t=1724771191;
+	bh=5iF+I+FfLIewQoc6KUXP87gSu+XAp/8HgmRViBdFEYs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xNW7HmMyoKj2gkpRFNhuO6OG/CVG1+FZhLz7DEyMozpFvJMGcwTPLT44JLHFKGQKt
-	 MaaZXSxPozuklMZy2GY+qSQJ4D0WP5971WrGAlI4Op1y0MAqgiQybxH2mNb7cLrFpG
-	 hlJP3VL6AX/q+s4a2mXWSIZMeODlenynVHcc8JnI=
+	b=wSkX2QcKn072wRyQbBO5nZKHwGFXlTicNai8f+H/j5zD2feCUsM+Nn7Jrs2jCX5fg
+	 QEF181duKBpwnHt51IcFn4QZxoacT3kX13B09W6eJarWdG3oJ9b6skxyy3+RMMo8qK
+	 HaeSjXILv52Xzr1z3gAAwk+Lm309Or/+h6dmONKU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Sterba <dsterba@suse.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Pawel Dembicki <paweldembicki@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 190/341] btrfs: send: handle unexpected data in header buffer in begin_cmd()
+Subject: [PATCH 6.10 097/273] net: dsa: vsc73xx: check busy flag in MDIO operations
 Date: Tue, 27 Aug 2024 16:37:01 +0200
-Message-ID: <20240827143850.643093209@linuxfoundation.org>
+Message-ID: <20240827143837.102644782@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +64,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Sterba <dsterba@suse.com>
+From: Pawel Dembicki <paweldembicki@gmail.com>
 
-[ Upstream commit e80e3f732cf53c64b0d811e1581470d67f6c3228 ]
+[ Upstream commit fa63c6434b6f6aaf9d8d599dc899bc0a074cc0ad ]
 
-Change BUG_ON to a proper error handling in the unlikely case of seeing
-data when the command is started. This is supposed to be reset when the
-command is finished (send_cmd, send_encoded_extent).
+The VSC73xx has a busy flag used during MDIO operations. It is raised
+when MDIO read/write operations are in progress. Without it, PHYs are
+misconfigured and bus operations do not work as expected.
 
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 05bd97fc559d ("net: dsa: Add Vitesse VSC73xx DSA router driver")
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Pawel Dembicki <paweldembicki@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/send.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/net/dsa/vitesse-vsc73xx-core.c | 37 +++++++++++++++++++++++++-
+ 1 file changed, 36 insertions(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/send.c b/fs/btrfs/send.c
-index 651f0865bb0df..b153f6a96fc8c 100644
---- a/fs/btrfs/send.c
-+++ b/fs/btrfs/send.c
-@@ -777,7 +777,12 @@ static int begin_cmd(struct send_ctx *sctx, int cmd)
- 	if (WARN_ON(!sctx->send_buf))
- 		return -EINVAL;
+diff --git a/drivers/net/dsa/vitesse-vsc73xx-core.c b/drivers/net/dsa/vitesse-vsc73xx-core.c
+index 2725541b3c36f..56bb77dbd28a2 100644
+--- a/drivers/net/dsa/vitesse-vsc73xx-core.c
++++ b/drivers/net/dsa/vitesse-vsc73xx-core.c
+@@ -38,6 +38,10 @@
+ #define VSC73XX_BLOCK_ARBITER	0x5 /* Only subblock 0 */
+ #define VSC73XX_BLOCK_SYSTEM	0x7 /* Only subblock 0 */
  
--	BUG_ON(sctx->send_size);
-+	if (unlikely(sctx->send_size != 0)) {
-+		btrfs_err(sctx->send_root->fs_info,
-+			  "send: command header buffer not empty cmd %d offset %llu",
-+			  cmd, sctx->send_off);
-+		return -EINVAL;
-+	}
++/* MII Block subblock */
++#define VSC73XX_BLOCK_MII_INTERNAL	0x0 /* Internal MDIO subblock */
++#define VSC73XX_BLOCK_MII_EXTERNAL	0x1 /* External MDIO subblock */
++
+ #define CPU_PORT	6 /* CPU port */
  
- 	sctx->send_size += sizeof(*hdr);
- 	hdr = (struct btrfs_cmd_header *)sctx->send_buf;
+ /* MAC Block registers */
+@@ -196,6 +200,8 @@
+ #define VSC73XX_MII_CMD		0x1
+ #define VSC73XX_MII_DATA	0x2
+ 
++#define VSC73XX_MII_STAT_BUSY	BIT(3)
++
+ /* Arbiter block 5 registers */
+ #define VSC73XX_ARBEMPTY		0x0c
+ #define VSC73XX_ARBDISC			0x0e
+@@ -270,6 +276,7 @@
+ #define IS_739X(a) (IS_7395(a) || IS_7398(a))
+ 
+ #define VSC73XX_POLL_SLEEP_US		1000
++#define VSC73XX_MDIO_POLL_SLEEP_US	5
+ #define VSC73XX_POLL_TIMEOUT_US		10000
+ 
+ struct vsc73xx_counter {
+@@ -487,6 +494,22 @@ static int vsc73xx_detect(struct vsc73xx *vsc)
+ 	return 0;
+ }
+ 
++static int vsc73xx_mdio_busy_check(struct vsc73xx *vsc)
++{
++	int ret, err;
++	u32 val;
++
++	ret = read_poll_timeout(vsc73xx_read, err,
++				err < 0 || !(val & VSC73XX_MII_STAT_BUSY),
++				VSC73XX_MDIO_POLL_SLEEP_US,
++				VSC73XX_POLL_TIMEOUT_US, false, vsc,
++				VSC73XX_BLOCK_MII, VSC73XX_BLOCK_MII_INTERNAL,
++				VSC73XX_MII_STAT, &val);
++	if (ret)
++		return ret;
++	return err;
++}
++
+ static int vsc73xx_phy_read(struct dsa_switch *ds, int phy, int regnum)
+ {
+ 	struct vsc73xx *vsc = ds->priv;
+@@ -494,12 +517,20 @@ static int vsc73xx_phy_read(struct dsa_switch *ds, int phy, int regnum)
+ 	u32 val;
+ 	int ret;
+ 
++	ret = vsc73xx_mdio_busy_check(vsc);
++	if (ret)
++		return ret;
++
+ 	/* Setting bit 26 means "read" */
+ 	cmd = BIT(26) | (phy << 21) | (regnum << 16);
+ 	ret = vsc73xx_write(vsc, VSC73XX_BLOCK_MII, 0, 1, cmd);
+ 	if (ret)
+ 		return ret;
+-	msleep(2);
++
++	ret = vsc73xx_mdio_busy_check(vsc);
++	if (ret)
++		return ret;
++
+ 	ret = vsc73xx_read(vsc, VSC73XX_BLOCK_MII, 0, 2, &val);
+ 	if (ret)
+ 		return ret;
+@@ -523,6 +554,10 @@ static int vsc73xx_phy_write(struct dsa_switch *ds, int phy, int regnum,
+ 	u32 cmd;
+ 	int ret;
+ 
++	ret = vsc73xx_mdio_busy_check(vsc);
++	if (ret)
++		return ret;
++
+ 	/* It was found through tedious experiments that this router
+ 	 * chip really hates to have it's PHYs reset. They
+ 	 * never recover if that happens: autonegotiation stops
 -- 
 2.43.0
 
