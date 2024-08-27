@@ -1,61 +1,57 @@
-Return-Path: <stable+bounces-70768-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71091-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA84C960FF0
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:04:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4973B961199
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:21:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 62B0B1F2383A
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:04:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 797D01C2315E
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:21:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D51F1C57AB;
-	Tue, 27 Aug 2024 15:03:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC7991C6F49;
+	Tue, 27 Aug 2024 15:21:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GZGfYhmu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sjdpAqoL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C89A21B4C4E;
-	Tue, 27 Aug 2024 15:03:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BAFE19F485;
+	Tue, 27 Aug 2024 15:21:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770998; cv=none; b=aFvN5fdu2+a31uNArQm8AmQVaS5g3S7AO3bcfBVnMEhDizmXZsBX7vOMQFZHav6suSWyFMb241CWvgTX520MWy1fuJG+8Kcj3zbpohb72EAPiQKZy4gZBru2Jnfflasv+S9cuRn/tkV2bdzUSirSgGzaYP7ygAZ4Ac6SLaxX+YQ=
+	t=1724772070; cv=none; b=LLxKgjSMG9fepnr9QMZ4fUL+2YcUVaJ6ZHwlrKsMI75CUAi+jj0Sfa9C8BYe0Uxl9nMjHL5/H3MfjndAa0a0jS83aA2/6j5138Tcf5Xor1FB854dvq50U4jOy1n7tDQ+1Uaqd4Q4lNBhAYb8btQRPy3p9X2bu+hmc3NpfLxnqSw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770998; c=relaxed/simple;
-	bh=3cOXsv4A2Tk06gjWNrGRRpdCZSuUTDn5ad7ezTeOHck=;
+	s=arc-20240116; t=1724772070; c=relaxed/simple;
+	bh=jkz89yD2yBUgsM6n08B/jus5pkGmb79xsdo2Gc9DT3s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JPc2LksgPOqg/oKfe1ncPw43P0Y8gzYZdGEuorH5VKMCZI0IwCy/wGSMKCpgnupiFHCnWIFnwTMKOY+uKWU28FhxZL4FYasabHAx3/AsWrMb+9gYhh9AKsbmjouNaBS0btDkur6YBIZc4W6I9BO6vL3cdNz1wRYJ85wUlFpenoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GZGfYhmu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 005CAC61049;
-	Tue, 27 Aug 2024 15:03:17 +0000 (UTC)
+	 MIME-Version; b=Flc0QV3siHWlNYZ1Luu7epFJd51Yo1aX3H6aBYIO64JoaeoP/OAiptU2dz+w5Bwo267aD12laEuiS0h3Z8tOYDMi+l9Xw5efE/k4Wyl+IhlvnHG9M9NViVRGErm42t4arj9aeNjfd7SuYA4x1ciybNHJCFkKpZ6vW2EaMFhRTg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sjdpAqoL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E39DDC4FDFA;
+	Tue, 27 Aug 2024 15:21:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770998;
-	bh=3cOXsv4A2Tk06gjWNrGRRpdCZSuUTDn5ad7ezTeOHck=;
+	s=korg; t=1724772070;
+	bh=jkz89yD2yBUgsM6n08B/jus5pkGmb79xsdo2Gc9DT3s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GZGfYhmu7W7+0MpwK1+haYI/E2vI28rjpjBqFPFJ/LjxlyU7zBFDzyvGGJg0yiWvf
-	 BzE+lfGkgOab95N4zVbyDGZIm1fiurNXRiJYS2GuIg4MYtI9MchSvC/Rp3/PUX1FqA
-	 7ekPk6I+dXpK0Yz4+wrOQzSRzYm/FfxPkH7qYd0M=
+	b=sjdpAqoLmDzLkv3+IBMe4mSOyQ225ELh4rRG7klPv7+TYh3BAO8SU+buY5vuiTgvs
+	 9onb9aRm4T/uRgKXt2hKfHX5nHus3pPSqbRtqMSXBaesjm4J2acDqdk+ofc2VrW9sd
+	 IFoTPF3j8kuqwwzn7GT8eREr7dz+NMKrqE8PLe4A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suren Baghdasaryan <surenb@google.com>,
-	David Hildenbrand <david@redhat.com>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Kees Cook <keescook@chromium.org>,
-	Kent Overstreet <kent.overstreet@linux.dev>,
-	Sourav Panda <souravpanda@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.10 056/273] alloc_tag: introduce clear_page_tag_ref() helper function
+	syzbot <syzkaller@googlegroups.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 072/321] Bluetooth: RFCOMM: Fix not validating setsockopt user input
 Date: Tue, 27 Aug 2024 16:36:20 +0200
-Message-ID: <20240827143835.532796134@linuxfoundation.org>
+Message-ID: <20240827143840.983455212@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,105 +63,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Suren Baghdasaryan <surenb@google.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-commit a8fc28dad6d574582cdf2f7e78c73c59c623df30 upstream.
+[ Upstream commit a97de7bff13b1cc825c1b1344eaed8d6c2d3e695 ]
 
-In several cases we are freeing pages which were not allocated using
-common page allocators.  For such cases, in order to keep allocation
-accounting correct, we should clear the page tag to indicate that the page
-being freed is expected to not have a valid allocation tag.  Introduce
-clear_page_tag_ref() helper function to be used for this.
+syzbot reported rfcomm_sock_setsockopt_old() is copying data without
+checking user input length.
 
-Link: https://lkml.kernel.org/r/20240813150758.855881-1-surenb@google.com
-Fixes: d224eb0287fb ("codetag: debug: mark codetags for reserved pages as empty")
-Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-Suggested-by: David Hildenbrand <david@redhat.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Sourav Panda <souravpanda@google.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: <stable@vger.kernel.org>	[6.10]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+BUG: KASAN: slab-out-of-bounds in copy_from_sockptr_offset
+include/linux/sockptr.h:49 [inline]
+BUG: KASAN: slab-out-of-bounds in copy_from_sockptr
+include/linux/sockptr.h:55 [inline]
+BUG: KASAN: slab-out-of-bounds in rfcomm_sock_setsockopt_old
+net/bluetooth/rfcomm/sock.c:632 [inline]
+BUG: KASAN: slab-out-of-bounds in rfcomm_sock_setsockopt+0x893/0xa70
+net/bluetooth/rfcomm/sock.c:673
+Read of size 4 at addr ffff8880209a8bc3 by task syz-executor632/5064
+
+Fixes: 9f2c8a03fbb3 ("Bluetooth: Replace RFCOMM link mode with security level")
+Fixes: bb23c0ab8246 ("Bluetooth: Add support for deferring RFCOMM connection setup")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/pgalloc_tag.h |   13 +++++++++++++
- mm/mm_init.c                |   10 +---------
- mm/page_alloc.c             |    9 +--------
- 3 files changed, 15 insertions(+), 17 deletions(-)
+ net/bluetooth/rfcomm/sock.c | 14 +++++---------
+ 1 file changed, 5 insertions(+), 9 deletions(-)
 
---- a/include/linux/pgalloc_tag.h
-+++ b/include/linux/pgalloc_tag.h
-@@ -43,6 +43,18 @@ static inline void put_page_tag_ref(unio
- 	page_ext_put(page_ext_from_codetag_ref(ref));
- }
+diff --git a/net/bluetooth/rfcomm/sock.c b/net/bluetooth/rfcomm/sock.c
+index b54e8a530f55a..29aa07e9db9d7 100644
+--- a/net/bluetooth/rfcomm/sock.c
++++ b/net/bluetooth/rfcomm/sock.c
+@@ -629,7 +629,7 @@ static int rfcomm_sock_setsockopt_old(struct socket *sock, int optname,
  
-+static inline void clear_page_tag_ref(struct page *page)
-+{
-+	if (mem_alloc_profiling_enabled()) {
-+		union codetag_ref *ref = get_page_tag_ref(page);
-+
-+		if (ref) {
-+			set_codetag_empty(ref);
-+			put_page_tag_ref(ref);
-+		}
-+	}
-+}
-+
- static inline void pgalloc_tag_add(struct page *page, struct task_struct *task,
- 				   unsigned int nr)
- {
-@@ -126,6 +138,7 @@ static inline void pgalloc_tag_sub_pages
+ 	switch (optname) {
+ 	case RFCOMM_LM:
+-		if (copy_from_sockptr(&opt, optval, sizeof(u32))) {
++		if (bt_copy_from_sockptr(&opt, sizeof(opt), optval, optlen)) {
+ 			err = -EFAULT;
+ 			break;
+ 		}
+@@ -664,7 +664,6 @@ static int rfcomm_sock_setsockopt(struct socket *sock, int level, int optname,
+ 	struct sock *sk = sock->sk;
+ 	struct bt_security sec;
+ 	int err = 0;
+-	size_t len;
+ 	u32 opt;
  
- static inline union codetag_ref *get_page_tag_ref(struct page *page) { return NULL; }
- static inline void put_page_tag_ref(union codetag_ref *ref) {}
-+static inline void clear_page_tag_ref(struct page *page) {}
- static inline void pgalloc_tag_add(struct page *page, struct task_struct *task,
- 				   unsigned int nr) {}
- static inline void pgalloc_tag_sub(struct page *page, unsigned int nr) {}
---- a/mm/mm_init.c
-+++ b/mm/mm_init.c
-@@ -2507,15 +2507,7 @@ void __init memblock_free_pages(struct p
- 	}
+ 	BT_DBG("sk %p", sk);
+@@ -686,11 +685,9 @@ static int rfcomm_sock_setsockopt(struct socket *sock, int level, int optname,
  
- 	/* pages were reserved and not allocated */
--	if (mem_alloc_profiling_enabled()) {
--		union codetag_ref *ref = get_page_tag_ref(page);
--
--		if (ref) {
--			set_codetag_empty(ref);
--			put_page_tag_ref(ref);
+ 		sec.level = BT_SECURITY_LOW;
+ 
+-		len = min_t(unsigned int, sizeof(sec), optlen);
+-		if (copy_from_sockptr(&sec, optval, len)) {
+-			err = -EFAULT;
++		err = bt_copy_from_sockptr(&sec, sizeof(sec), optval, optlen);
++		if (err)
+ 			break;
 -		}
--	}
--
-+	clear_page_tag_ref(page);
- 	__free_pages_core(page, order);
- }
  
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -5806,14 +5806,7 @@ unsigned long free_reserved_area(void *s
+ 		if (sec.level > BT_SECURITY_HIGH) {
+ 			err = -EINVAL;
+@@ -706,10 +703,9 @@ static int rfcomm_sock_setsockopt(struct socket *sock, int level, int optname,
+ 			break;
+ 		}
  
- void free_reserved_page(struct page *page)
- {
--	if (mem_alloc_profiling_enabled()) {
--		union codetag_ref *ref = get_page_tag_ref(page);
--
--		if (ref) {
--			set_codetag_empty(ref);
--			put_page_tag_ref(ref);
+-		if (copy_from_sockptr(&opt, optval, sizeof(u32))) {
+-			err = -EFAULT;
++		err = bt_copy_from_sockptr(&opt, sizeof(opt), optval, optlen);
++		if (err)
+ 			break;
 -		}
--	}
-+	clear_page_tag_ref(page);
- 	ClearPageReserved(page);
- 	init_page_count(page);
- 	__free_page(page);
+ 
+ 		if (opt)
+ 			set_bit(BT_SK_DEFER_SETUP, &bt_sk(sk)->flags);
+-- 
+2.43.0
+
 
 
 
