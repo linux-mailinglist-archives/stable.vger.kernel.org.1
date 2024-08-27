@@ -1,48 +1,49 @@
-Return-Path: <stable+bounces-70327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70328-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96CDF9609D9
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:18:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FE6D9609F5
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:22:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 40A1E1F211F1
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 12:18:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B82FF282A10
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 12:22:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AF521A01BC;
-	Tue, 27 Aug 2024 12:18:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEDB31A073A;
+	Tue, 27 Aug 2024 12:22:11 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 352D819F466;
-	Tue, 27 Aug 2024 12:18:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A52A917279C;
+	Tue, 27 Aug 2024 12:22:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724761133; cv=none; b=ukJz7s6ZdBtOQZ3HXbOxXyrxz6jGf7ORNCEg14jBnbZ9TA5O799dcaZ340F76vgH+QECPKywCZEAfbG/bDXedkG3mwIm+n3ObKdB7fEfMVvQAxrBewsPGrv/BzgXRWsRUNDj780fRAo7/YojdjmZMH/+S9Kqcg0daaP3JnyZSAU=
+	t=1724761331; cv=none; b=i3Yq1WORBKBbGLhadkBmduXChOwiwA91cHV21W1h9UdZe7jxatwtQ7ZM8y1d8SZtj5CAQq3NQoZ28E9R69DI6t2mzVxBIEtC8HjayqUaPGMXo/vkkzE8CHyKStomxw1NirjjjHHT3uvVsLt5iAUKae0+g3ZfuoBj6tgUuAo3ASg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724761133; c=relaxed/simple;
-	bh=aepOSfjAE0/4/STeaK9DfgC3Tuqxfkj3mGK+g0Exu7o=;
+	s=arc-20240116; t=1724761331; c=relaxed/simple;
+	bh=Rh0k3l07tbKglLHLw1y4gsuovdwN5weoMX8vOP8pF5Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Z8rlj/C+M0cVW0ucnZTMp17FPH/QEr3HMASarbTscCxfblATS9ruG8cVgrHqT05KlLw7qrWP9P/7yDRqPDdwvD746x/RaaAwzNPrTyj6Tm3x9ZBcMwcqsAgBVt45zOULvOkgJKhqrBOqq2835mrARaw8MWn3R6Q3TLTW6Xm1tJM=
+	 Content-Type:Content-Disposition:In-Reply-To; b=iBEr68ncAcuOrNADP/DuCljrY6LTTIkyzsrutH0hP/yMudUth/48yVWqaBsDfnMEHvFtqv9uADb3uoMHG1oQfEEHSV5tXFBiSIOl7zRh5e2JNtsvWeaWyFQghH1H+/jcYRC5lEAO25OxaMK34ucuYj1QPpmgh/dJpwN6Yfh9qew=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
 Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id 520F91C0082; Tue, 27 Aug 2024 14:18:43 +0200 (CEST)
-Date: Tue, 27 Aug 2024 14:18:42 +0200
+	id A0D701C0082; Tue, 27 Aug 2024 14:22:07 +0200 (CEST)
+Date: Tue, 27 Aug 2024 14:22:07 +0200
 From: Pavel Machek <pavel@denx.de>
 To: Sasha Levin <sashal@kernel.org>
 Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Alexey Dobriyan <adobriyan@gmail.com>, Kees Cook <kees@kernel.org>,
-	viro@zeniv.linux.org.uk, brauner@kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH AUTOSEL 4.19 06/14] ELF: fix kernel.randomize_va_space
- double read
-Message-ID: <Zs3EIrnulQ38qJ6o@duo.ucw.cz>
-References: <20240801004037.3939932-1-sashal@kernel.org>
- <20240801004037.3939932-6-sashal@kernel.org>
+	Ma Jun <Jun.Ma2@amd.com>, Tim Huang <Tim.Huang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>, christian.koenig@amd.com,
+	Xinhui.Pan@amd.com, airlied@gmail.com, daniel@ffwll.ch,
+	amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH AUTOSEL 6.10 034/121] drm/amdgpu: Fix out-of-bounds read
+ of df_v1_7_channel_number
+Message-ID: <Zs3E7w1dSdxC7XoT@duo.ucw.cz>
+References: <20240801000834.3930818-1-sashal@kernel.org>
+ <20240801000834.3930818-34-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,68 +51,58 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="0H/kKR1q4BOCT0lu"
+	protocol="application/pgp-signature"; boundary="OqRI4MIqpBt9dQxF"
 Content-Disposition: inline
-In-Reply-To: <20240801004037.3939932-6-sashal@kernel.org>
+In-Reply-To: <20240801000834.3930818-34-sashal@kernel.org>
 
 
---0H/kKR1q4BOCT0lu
+--OqRI4MIqpBt9dQxF
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
 Hi!
 
-> [ Upstream commit 2a97388a807b6ab5538aa8f8537b2463c6988bd2 ]
+> [ Upstream commit d768394fa99467bcf2703bde74ddc96eeb0b71fa ]
 >=20
-> ELF loader uses "randomize_va_space" twice. It is sysctl and can change
-> at any moment, so 2 loads could see 2 different values in theory with
-> unpredictable consequences.
->=20
-> Issue exactly one load for consistent value across one exec.
->=20
-> Signed-off-by: Alexey Dobriyan <adobriyan@gmail.com>
-> Link: https://lore.kernel.org/r/3329905c-7eb8-400a-8f0a-d87cff979b5b@p183
-> Signed-off-by: Kees Cook <kees@kernel.org>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->  fs/binfmt_elf.c | 5 +++--
->  1 file changed, 3 insertions(+), 2 deletions(-)
->=20
-> diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
-> index c41c568ad1b8a..af8830878fa0b 100644
-> --- a/fs/binfmt_elf.c
-> +++ b/fs/binfmt_elf.c
-> @@ -876,7 +876,8 @@ static int load_elf_binary(struct linux_binprm *bprm)
->  	if (elf_read_implies_exec(loc->elf_ex, executable_stack))
->  		current->personality |=3D READ_IMPLIES_EXEC;
-> =20
-> -	if (!(current->personality & ADDR_NO_RANDOMIZE) && randomize_va_space)
-> +	const int snapshot_randomize_va_space =3D READ_ONCE(randomize_va_space);
-> +	if (!(current->personality & ADDR_NO_RANDOMIZE) && snapshot_randomize_v=
-a_space)
->  		current->flags |=3D PF_RANDOMIZE;
-> =20
->  	setup_new_exec(bprm);
+> Check the fb_channel_number range to avoid the array out-of-bounds
+> read error
 
-We normally put variable declaration at start of the function. I'd not
-be surprised if this broke with older compilers.
+We can still have array out-of-bounds, right? As soon as that function
+returns 0x8000 0000.
+
+drivers/gpu/drm/amd/amdgpu/amdgpu_df.h: u32 (*get_fb_channel_number)(struct=
+ amdgpu_device *adev);
+
+int fb_channel_number should really be u32.
 
 Best regards,
 								Pavel
+> +++ b/drivers/gpu/drm/amd/amdgpu/df_v1_7.c
+> @@ -70,6 +70,8 @@ static u32 df_v1_7_get_hbm_channel_number(struct amdgpu=
+_device *adev)
+>  	int fb_channel_number;
+> =20
+>  	fb_channel_number =3D adev->df.funcs->get_fb_channel_number(adev);
+> +	if (fb_channel_number >=3D ARRAY_SIZE(df_v1_7_channel_number))
+> +		fb_channel_number =3D 0;
+> =20
+>  	return df_v1_7_channel_number[fb_channel_number];
+>  }
+
 --=20
 DENX Software Engineering GmbH,        Managing Director: Erika Unter
 HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 
---0H/kKR1q4BOCT0lu
+--OqRI4MIqpBt9dQxF
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZs3EIgAKCRAw5/Bqldv6
-8rWzAKCw9WxXBUQFNz70zssjVcP983gl5gCfWUO5DlUA2oNoLPx9KUEZXqVmqRo=
-=PKkY
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZs3E7wAKCRAw5/Bqldv6
+8l6xAKCvBvtdsPWLS+2akXJN38ECL3P8nQCcCKMijsSiArutJxOsPYklJw/UZZg=
+=fM5x
 -----END PGP SIGNATURE-----
 
---0H/kKR1q4BOCT0lu--
+--OqRI4MIqpBt9dQxF--
 
