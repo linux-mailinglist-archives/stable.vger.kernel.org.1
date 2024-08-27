@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-70492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71001-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81FD1960E64
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:48:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5C7E961117
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:16:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B8FA1F248B6
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:48:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9BB2A283000
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:16:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 304451C57A9;
-	Tue, 27 Aug 2024 14:48:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A0E01BC9FC;
+	Tue, 27 Aug 2024 15:16:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zBGo4neY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y+wpprG2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2CC7DDC1;
-	Tue, 27 Aug 2024 14:48:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA2164C634;
+	Tue, 27 Aug 2024 15:16:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770087; cv=none; b=EQOylDid/fDE+cgJ94L1intIv6QdNz5iKMLssVpSrypvjJi8HoQFPKClbz239Kj2xOOc0nLV+WYLmobXNyIjGcY6HApYOdrOZbjzvCj5feFVVjjjan9TwGBpUpWnAmb5UIWuI7daAW/uQqzRJmJIzX0tsPdUfkK+RaQNjh5Nepw=
+	t=1724771768; cv=none; b=Ox7+MTo3vCCA/+kutAiYNPd6A9IuO1/0RWpj+IY2gPgpaI1y2UCcUHB9mqG1cS5a02J0JRpoSMN06qWcNZYSYKPbKLF0kcRx9SlPfsf+6mowFNc/X8dia6PhEZxqKSGoQSzBf1xB0mzaiYEk3B1FKpAGxBiRZopuqE6uqxw4apE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770087; c=relaxed/simple;
-	bh=G2jv5jc705zai/WJ+gVSV6W4NhsbFL1Fx0hwE8FHkbQ=;
+	s=arc-20240116; t=1724771768; c=relaxed/simple;
+	bh=haiOJndP5JftcRPA8Pj2yuw/mLvlxGQvqFE0qljWdos=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GueNA4/cwd0s/CrGd3LFRnuhcLdTQ63u1RIdXJ1Egk35O8o3djSgzudtPRXfLYFHDNk8rQ1DyXinO6kO7AbLHRkLrV0lMmAlPj1otSFcihWRk+26bKJn55NO+rOd0S66KTPtkNpdQIeYvyZ4TGNUU6bOaiic8UNZinsn24e2PpM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zBGo4neY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4984EC61046;
-	Tue, 27 Aug 2024 14:48:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lGBi4ftTuCfkmvF+LZaY5QQrOzuODElNRy3Y+iKn25drnZRqJiyJeg9H9RyFa2AQCmWiMtW0bmCXijn8nbfjqH7NJGguhlT8aW4kHEbvkwh4HL5WgZYveCGH2knCYkgDGExKeFLnx7LXD2v+zCzt/qaPvMGMVeMNJRpPoRxOpBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y+wpprG2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68786C4AF50;
+	Tue, 27 Aug 2024 15:16:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770086;
-	bh=G2jv5jc705zai/WJ+gVSV6W4NhsbFL1Fx0hwE8FHkbQ=;
+	s=korg; t=1724771767;
+	bh=haiOJndP5JftcRPA8Pj2yuw/mLvlxGQvqFE0qljWdos=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zBGo4neYLBQuxZxVkmfRhqmfOlwo/RFic/P1DyAwoe5GTE+xnWeVzkXKPCJbOSnxz
-	 mC6trGubGlbZQu5AdkYC0kcuDYBB/7Mf1U44YiA+dHARtjq/jsrI1NnxXBDKBZeOYv
-	 3AJ04XbraQlv0OEzQafBtBDkB5e96jhthjfKmp5A=
+	b=Y+wpprG2KeXkC0upHfBjy+ovS80gmj/mmEL0d3bwb92MwgQu40b17ioaMzcQB5Jer
+	 KFY9cvETlEhZIer3u26BGjJ7M9MTVCjDm7H7Vz6urcU/5enEU2jz6nLVKQ+Cdu517f
+	 ImE0YFiVe+dn6KpgOQI6sb/YmoV1sQ8zC9JAkrBk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Gregory Greenman <gregory.greenman@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 091/341] wifi: iwlwifi: mvm: fix recovery flow in CSA
-Date: Tue, 27 Aug 2024 16:35:22 +0200
-Message-ID: <20240827143846.870033792@linuxfoundation.org>
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Mateusz Guzik <mjguzik@gmail.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.1 015/321] vfs: Dont evict inode under the inode lru traversing context
+Date: Tue, 27 Aug 2024 16:35:23 +0200
+Message-ID: <20240827143838.786401303@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +61,220 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: Zhihao Cheng <chengzhihao1@huawei.com>
 
-[ Upstream commit 828c79d9feb000acbd9c15bd1ed7e0914473b363 ]
+commit 2a0629834cd82f05d424bbc193374f9a43d1f87d upstream.
 
-If the firmware crashes in the de-activation / re-activation
-of the link during CSA, we will not have a valid phy_ctxt
-pointer in mvmvif. This is a legit case, but when mac80211
-removes the station to cleanup our state during the
-re-configuration, we need to make sure we clear ap_sta
-otherwise we won't re-add the station after the firmware has
-been restarted. Later on, we'd activate the link, try to send
-a TLC command crash again on ASSERT 3508.
+The inode reclaiming process(See function prune_icache_sb) collects all
+reclaimable inodes and mark them with I_FREEING flag at first, at that
+time, other processes will be stuck if they try getting these inodes
+(See function find_inode_fast), then the reclaiming process destroy the
+inodes by function dispose_list(). Some filesystems(eg. ext4 with
+ea_inode feature, ubifs with xattr) may do inode lookup in the inode
+evicting callback function, if the inode lookup is operated under the
+inode lru traversing context, deadlock problems may happen.
 
-Fix this by properly cleaning up our state.
+Case 1: In function ext4_evict_inode(), the ea inode lookup could happen
+        if ea_inode feature is enabled, the lookup process will be stuck
+	under the evicting context like this:
 
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20230913145231.2651e6f6a55a.I4cd50e88ee5c23c1c8dd5b157a800e4b4c96f236@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ 1. File A has inode i_reg and an ea inode i_ea
+ 2. getfattr(A, xattr_buf) // i_ea is added into lru // lru->i_ea
+ 3. Then, following three processes running like this:
+
+    PA                              PB
+ echo 2 > /proc/sys/vm/drop_caches
+  shrink_slab
+   prune_dcache_sb
+   // i_reg is added into lru, lru->i_ea->i_reg
+   prune_icache_sb
+    list_lru_walk_one
+     inode_lru_isolate
+      i_ea->i_state |= I_FREEING // set inode state
+     inode_lru_isolate
+      __iget(i_reg)
+      spin_unlock(&i_reg->i_lock)
+      spin_unlock(lru_lock)
+                                     rm file A
+                                      i_reg->nlink = 0
+      iput(i_reg) // i_reg->nlink is 0, do evict
+       ext4_evict_inode
+        ext4_xattr_delete_inode
+         ext4_xattr_inode_dec_ref_all
+          ext4_xattr_inode_iget
+           ext4_iget(i_ea->i_ino)
+            iget_locked
+             find_inode_fast
+              __wait_on_freeing_inode(i_ea) ----→ AA deadlock
+    dispose_list // cannot be executed by prune_icache_sb
+     wake_up_bit(&i_ea->i_state)
+
+Case 2: In deleted inode writing function ubifs_jnl_write_inode(), file
+        deleting process holds BASEHD's wbuf->io_mutex while getting the
+	xattr inode, which could race with inode reclaiming process(The
+        reclaiming process could try locking BASEHD's wbuf->io_mutex in
+	inode evicting function), then an ABBA deadlock problem would
+	happen as following:
+
+ 1. File A has inode ia and a xattr(with inode ixa), regular file B has
+    inode ib and a xattr.
+ 2. getfattr(A, xattr_buf) // ixa is added into lru // lru->ixa
+ 3. Then, following three processes running like this:
+
+        PA                PB                        PC
+                echo 2 > /proc/sys/vm/drop_caches
+                 shrink_slab
+                  prune_dcache_sb
+                  // ib and ia are added into lru, lru->ixa->ib->ia
+                  prune_icache_sb
+                   list_lru_walk_one
+                    inode_lru_isolate
+                     ixa->i_state |= I_FREEING // set inode state
+                    inode_lru_isolate
+                     __iget(ib)
+                     spin_unlock(&ib->i_lock)
+                     spin_unlock(lru_lock)
+                                                   rm file B
+                                                    ib->nlink = 0
+ rm file A
+  iput(ia)
+   ubifs_evict_inode(ia)
+    ubifs_jnl_delete_inode(ia)
+     ubifs_jnl_write_inode(ia)
+      make_reservation(BASEHD) // Lock wbuf->io_mutex
+      ubifs_iget(ixa->i_ino)
+       iget_locked
+        find_inode_fast
+         __wait_on_freeing_inode(ixa)
+          |          iput(ib) // ib->nlink is 0, do evict
+          |           ubifs_evict_inode
+          |            ubifs_jnl_delete_inode(ib)
+          ↓             ubifs_jnl_write_inode
+     ABBA deadlock ←-----make_reservation(BASEHD)
+                   dispose_list // cannot be executed by prune_icache_sb
+                    wake_up_bit(&ixa->i_state)
+
+Fix the possible deadlock by using new inode state flag I_LRU_ISOLATING
+to pin the inode in memory while inode_lru_isolate() reclaims its pages
+instead of using ordinary inode reference. This way inode deletion
+cannot be triggered from inode_lru_isolate() thus avoiding the deadlock.
+evict() is made to wait for I_LRU_ISOLATING to be cleared before
+proceeding with inode cleanup.
+
+Link: https://lore.kernel.org/all/37c29c42-7685-d1f0-067d-63582ffac405@huaweicloud.com/
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=219022
+Fixes: e50e5129f384 ("ext4: xattr-in-inode support")
+Fixes: 7959cf3a7506 ("ubifs: journal: Handle xattrs like files")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Link: https://lore.kernel.org/r/20240809031628.1069873-1-chengzhihao@huaweicloud.com
+Reviewed-by: Jan Kara <jack@suse.cz>
+Suggested-by: Jan Kara <jack@suse.cz>
+Suggested-by: Mateusz Guzik <mjguzik@gmail.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ fs/inode.c         |   39 +++++++++++++++++++++++++++++++++++++--
+ include/linux/fs.h |    5 +++++
+ 2 files changed, 42 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-index 8f49de1206e03..f973efbbc3795 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
-@@ -1035,6 +1035,7 @@ static void iwl_mvm_cleanup_iterator(void *data, u8 *mac,
- 	spin_unlock_bh(&mvm->time_event_lock);
+--- a/fs/inode.c
++++ b/fs/inode.c
+@@ -486,6 +486,39 @@ static void inode_lru_list_del(struct in
+ 		this_cpu_dec(nr_unused);
+ }
  
- 	memset(&mvmvif->bf_data, 0, sizeof(mvmvif->bf_data));
-+	mvmvif->ap_sta = NULL;
++static void inode_pin_lru_isolating(struct inode *inode)
++{
++	lockdep_assert_held(&inode->i_lock);
++	WARN_ON(inode->i_state & (I_LRU_ISOLATING | I_FREEING | I_WILL_FREE));
++	inode->i_state |= I_LRU_ISOLATING;
++}
++
++static void inode_unpin_lru_isolating(struct inode *inode)
++{
++	spin_lock(&inode->i_lock);
++	WARN_ON(!(inode->i_state & I_LRU_ISOLATING));
++	inode->i_state &= ~I_LRU_ISOLATING;
++	smp_mb();
++	wake_up_bit(&inode->i_state, __I_LRU_ISOLATING);
++	spin_unlock(&inode->i_lock);
++}
++
++static void inode_wait_for_lru_isolating(struct inode *inode)
++{
++	spin_lock(&inode->i_lock);
++	if (inode->i_state & I_LRU_ISOLATING) {
++		DEFINE_WAIT_BIT(wq, &inode->i_state, __I_LRU_ISOLATING);
++		wait_queue_head_t *wqh;
++
++		wqh = bit_waitqueue(&inode->i_state, __I_LRU_ISOLATING);
++		spin_unlock(&inode->i_lock);
++		__wait_on_bit(wqh, &wq, bit_wait, TASK_UNINTERRUPTIBLE);
++		spin_lock(&inode->i_lock);
++		WARN_ON(inode->i_state & I_LRU_ISOLATING);
++	}
++	spin_unlock(&inode->i_lock);
++}
++
+ /**
+  * inode_sb_list_add - add inode to the superblock list of inodes
+  * @inode: inode to add
+@@ -654,6 +687,8 @@ static void evict(struct inode *inode)
  
- 	for_each_mvm_vif_valid_link(mvmvif, link_id) {
- 		mvmvif->link[link_id]->ap_sta_id = IWL_MVM_INVALID_STA;
-@@ -3934,7 +3935,11 @@ int iwl_mvm_mac_sta_state_common(struct ieee80211_hw *hw,
+ 	inode_sb_list_del(inode);
  
- 	mutex_lock(&mvm->mutex);
++	inode_wait_for_lru_isolating(inode);
++
+ 	/*
+ 	 * Wait for flusher thread to be done with the inode so that filesystem
+ 	 * does not start destroying it while writeback is still running. Since
+@@ -855,7 +890,7 @@ static enum lru_status inode_lru_isolate
+ 	 * be under pressure before the cache inside the highmem zone.
+ 	 */
+ 	if (inode_has_buffers(inode) || !mapping_empty(&inode->i_data)) {
+-		__iget(inode);
++		inode_pin_lru_isolating(inode);
+ 		spin_unlock(&inode->i_lock);
+ 		spin_unlock(lru_lock);
+ 		if (remove_inode_buffers(inode)) {
+@@ -868,7 +903,7 @@ static enum lru_status inode_lru_isolate
+ 			if (current->reclaim_state)
+ 				current->reclaim_state->reclaimed_slab += reap;
+ 		}
+-		iput(inode);
++		inode_unpin_lru_isolating(inode);
+ 		spin_lock(lru_lock);
+ 		return LRU_RETRY;
+ 	}
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -2507,6 +2507,9 @@ static inline void kiocb_clone(struct ki
+  *
+  * I_PINNING_FSCACHE_WB	Inode is pinning an fscache object for writeback.
+  *
++ * I_LRU_ISOLATING	Inode is pinned being isolated from LRU without holding
++ *			i_count.
++ *
+  * Q: What is the difference between I_WILL_FREE and I_FREEING?
+  */
+ #define I_DIRTY_SYNC		(1 << 0)
+@@ -2530,6 +2533,8 @@ static inline void kiocb_clone(struct ki
+ #define I_DONTCACHE		(1 << 16)
+ #define I_SYNC_QUEUED		(1 << 17)
+ #define I_PINNING_FSCACHE_WB	(1 << 18)
++#define __I_LRU_ISOLATING	19
++#define I_LRU_ISOLATING		(1 << __I_LRU_ISOLATING)
  
--	/* this would be a mac80211 bug ... but don't crash */
-+	/* this would be a mac80211 bug ... but don't crash, unless we had a
-+	 * firmware crash while we were activating a link, in which case it is
-+	 * legit to have phy_ctxt = NULL. Don't bother not to WARN if we are in
-+	 * recovery flow since we spit tons of error messages anyway.
-+	 */
- 	for_each_sta_active_link(vif, sta, link_sta, link_id) {
- 		if (WARN_ON_ONCE(!mvmvif->link[link_id]->phy_ctxt)) {
- 			mutex_unlock(&mvm->mutex);
--- 
-2.43.0
-
+ #define I_DIRTY_INODE (I_DIRTY_SYNC | I_DIRTY_DATASYNC)
+ #define I_DIRTY (I_DIRTY_INODE | I_DIRTY_PAGES)
 
 
 
