@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-71068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70810-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74C5796117F
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:21:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C66F7961027
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:05:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 271D11F21E79
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:21:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 66FBF1F218C2
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:05:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9123B1C8FD5;
-	Tue, 27 Aug 2024 15:19:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7A191BC9E3;
+	Tue, 27 Aug 2024 15:05:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KkECqmHS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ogurIJ0N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CA871C6F57;
-	Tue, 27 Aug 2024 15:19:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 667171C3F19;
+	Tue, 27 Aug 2024 15:05:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771993; cv=none; b=EGK4W694N8VgfQLWzqV0w8enl3l2htKdpyPyzuxD2m0f4Bzn8xBK1Ymf1hxSOrgNf1bEAkzUU4+0I3UWAo5TzdA4MFk8XUwT0U7P4OFo5lbYDR8eviIpAgNpwHS4B91QhYwQSjgR004EEzfAYDZXn1PvtsSwU7Ssw7bswaCKln4=
+	t=1724771135; cv=none; b=ob6UfDtTJB6IwGb/sNSileH8zSS9In+mYjFKn5mA/HEhUxQ2xd4vtPqIaNcykP3FU6TwcvBQiLPOX0G4FqW45Vkg3rDnFwBROTTs3v0NzyDxwAVIr8MJlt4u4Z1QtGi1ZXY+O1BDqMLfqdNYsFvwjGQISBlV01YJRaYtnF47VEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771993; c=relaxed/simple;
-	bh=8ZzSPe2TO7gef9dilcwWUdG8VYyhP7jpKQozaR3+ba8=;
+	s=arc-20240116; t=1724771135; c=relaxed/simple;
+	bh=eFnK8jpqBxbWdJP0uM9fqI9vOa+HNcBMu8Ymr9odrQA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j8NQ6gT00+kFBKflfc46hYzLlK1DjG4fNr6sf2xkAfPdPnwwJa9jZlfxfmPHz1i+ri06EFkZWm1I6jUYn+nDZHL5RCbP6xAvfQTILcQH5aF1/Mi9NCb1QTyc3SFxS0dr7WsQWjkhzMOouzEo/ZZatot0W14CCFSml+K3IMNMV08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KkECqmHS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65C3CC4DDE8;
-	Tue, 27 Aug 2024 15:19:52 +0000 (UTC)
+	 MIME-Version; b=jCqG1zfMa7Bq/Nkc2aBU1TkbkYodyy5/XyTHmHc14+nMywO4TBo/irECeT5r71OJMDAIz4sXH2PWTlTjstunxayEmBCHHpDEh/lWx9v87eolsZpG/QNxkSTt8mzzWbdGm8uz8adFpymNYXxe2Q3v+BtWK8B4nH3HGPkSqKUv9wk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ogurIJ0N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF254C6106C;
+	Tue, 27 Aug 2024 15:05:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771993;
-	bh=8ZzSPe2TO7gef9dilcwWUdG8VYyhP7jpKQozaR3+ba8=;
+	s=korg; t=1724771135;
+	bh=eFnK8jpqBxbWdJP0uM9fqI9vOa+HNcBMu8Ymr9odrQA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KkECqmHSthLhkm0Iqe/flPnzTI/GHPPv5G+g9SIqqAp+PA6TqQX34PPCTzN4FwyAm
-	 YoYk5d9oCfrx2EAju9Tqg6Dq8PpHNKpGdxtDR6elqIK9Mc3S+3RSMda6UF7olWNoYt
-	 eBJF2e7pIt3ZgWasRUSkgxMGoCQjbke2znIDB3iU=
+	b=ogurIJ0NS5JxBzCNcRjycTs73qA2EioImkg60zP9aKGUK0VTo8bunD4WHrE1qMKiA
+	 dKZ5tbc322aNmTWDrIr46jrrkt0e3a1Cikxtyj4jDvzfYqd+Dx84zYcxDyu7tCExQE
+	 mh+SpZ6/xzF926BB/ZDMMRkSTFboNVdOcDkeZgks=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+78d5b129a762182225aa@syzkaller.appspotmail.com,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 082/321] ALSA: usb: Fix UBSAN warning in parse_audio_unit()
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.10 066/273] btrfs: only enable extent map shrinker for DEBUG builds
 Date: Tue, 27 Aug 2024 16:36:30 +0200
-Message-ID: <20240827143841.362564845@linuxfoundation.org>
+Message-ID: <20240827143835.925652700@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit 2f38cf730caedaeacdefb7ff35b0a3c1168117f9 ]
+commit 534f7eff9239c1b0af852fc33f5af2b62c00eddf upstream.
 
-A malformed USB descriptor may pass the lengthy mixer description with
-a lot of channels, and this may overflow the 32bit integer shift
-size, as caught by syzbot UBSAN test.  Although this won't cause any
-real trouble, it's better to address.
+Although there are several patches improving the extent map shrinker,
+there are still reports of too frequent shrinker behavior, taking too
+much CPU for the kswapd process.
 
-This patch introduces a sanity check of the number of channels to bail
-out the parsing when too many channels are found.
+So let's only enable extent shrinker for now, until we got more
+comprehensive understanding and a better solution.
 
-Reported-by: syzbot+78d5b129a762182225aa@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/0000000000000adac5061d3c7355@google.com
-Link: https://patch.msgid.link/20240715123619.26612-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/linux-btrfs/3df4acd616a07ef4d2dc6bad668701504b412ffc.camel@intelfx.name/
+Link: https://lore.kernel.org/linux-btrfs/c30fd6b3-ca7a-4759-8a53-d42878bf84f7@gmail.com/
+Fixes: 956a17d9d050 ("btrfs: add a shrinker for extent maps")
+CC: stable@vger.kernel.org # 6.10+
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/mixer.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ fs/btrfs/super.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/sound/usb/mixer.c b/sound/usb/mixer.c
-index 5699a62d17679..34ded71cb8077 100644
---- a/sound/usb/mixer.c
-+++ b/sound/usb/mixer.c
-@@ -2023,6 +2023,13 @@ static int parse_audio_feature_unit(struct mixer_build *state, int unitid,
- 		bmaControls = ftr->bmaControls;
- 	}
+--- a/fs/btrfs/super.c
++++ b/fs/btrfs/super.c
+@@ -2387,7 +2387,13 @@ static long btrfs_nr_cached_objects(stru
  
-+	if (channels > 32) {
-+		usb_audio_info(state->chip,
-+			       "usbmixer: too many channels (%d) in unit %d\n",
-+			       channels, unitid);
-+		return -EINVAL;
-+	}
-+
- 	/* parse the source unit */
- 	err = parse_audio_unit(state, hdr->bSourceID);
- 	if (err < 0)
--- 
-2.43.0
-
+ 	trace_btrfs_extent_map_shrinker_count(fs_info, nr);
+ 
+-	return nr;
++	/*
++	 * Only report the real number for DEBUG builds, as there are reports of
++	 * serious performance degradation caused by too frequent shrinks.
++	 */
++	if (IS_ENABLED(CONFIG_BTRFS_DEBUG))
++		return nr;
++	return 0;
+ }
+ 
+ static long btrfs_free_cached_objects(struct super_block *sb, struct shrink_control *sc)
 
 
 
