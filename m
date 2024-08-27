@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-70970-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71295-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A304C9610F7
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:15:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CE889612E1
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:36:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3DB65B26624
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:15:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DF804B2B45C
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:34:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F1691C824B;
-	Tue, 27 Aug 2024 15:14:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C56A1C8FC4;
+	Tue, 27 Aug 2024 15:32:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AA2zUjWe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CxROK+DL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C0DE1C6F71;
-	Tue, 27 Aug 2024 15:14:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE24C54648;
+	Tue, 27 Aug 2024 15:32:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771667; cv=none; b=ROEKnth65b+5thvevMSQsTmEkuWh5tWZLuVQMBNcJDv3B7zgijSKFxXwPtXlnQ5dp7jnkHp7AqOmWoms94R4ZG1p7ByoJHTFnIWdS7zAybdWejBqbxzYp6yebGFsIJBGfiSWnAWIhHGHfpphtqVPoYj/dOQpVyZT9cmfK0XiQ8I=
+	t=1724772742; cv=none; b=rNBctKsOQmhV+hoc+JdFfyKqmzCx8e7d15T3/ppICGcdIlIFRwYWCu6eX4Y+dgg1yO3mTxU+MhJ5baLb8jMH3mRNf6gjHE0p5TZ2wtttHXh+1FE5HgpjY6SUtqPx3kt5UkSbkkrPq0vdzfmd0HJgMRhqgLagPoA5lJiIC3+hP8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771667; c=relaxed/simple;
-	bh=UEV6iAq+oNtyUZzBj3+UEQBDukdcuWgloWXg5t9lvX4=;
+	s=arc-20240116; t=1724772742; c=relaxed/simple;
+	bh=o+DzccuT4GP/WjDi83/FQmsqND+tzZtqYXsNhtRWprY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qHXw9LPJftJdx0LYF3SDBAJGkTFZOeukxJCE0iOF3SlYfq1M8W69A2WpiL6/gaNzI8nnH0j2k2cViG5GEG/GlbtpRjC/jM04qSaueMa9iertb/9KnLCYMKT5dSBbF/+VnC9wOryUeEwVWanZjZmZrqP9HZqThpCzy4YsvRvn1ls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AA2zUjWe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75E52C61064;
-	Tue, 27 Aug 2024 15:14:26 +0000 (UTC)
+	 MIME-Version; b=FeW/3QoQT+yZOFphOwSKg8xAWhIHCF2OBF0qC1QFL56i3q9Ry1UTYkAZv+nd4Q5qWS6P/RZ+hIHmnvai7txZgrBuVjofY8z1EOXrB5bjBTo8oTi7eUA/eBA1AZsSX5Wl92jJFFc4MoTGn1GEZ6DKbNXVAccX+BGxW9+RFfVyevg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CxROK+DL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F133C4DE04;
+	Tue, 27 Aug 2024 15:32:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771666;
-	bh=UEV6iAq+oNtyUZzBj3+UEQBDukdcuWgloWXg5t9lvX4=;
+	s=korg; t=1724772741;
+	bh=o+DzccuT4GP/WjDi83/FQmsqND+tzZtqYXsNhtRWprY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AA2zUjWe0ba9tNunItEfvIpWs5AsqzEH+WuqnpS12uENRKnKNbV5xJ62KxvIjtUBN
-	 aNFDF4HSTpxj5uiViJJU9xHvHCvmsDYq4WUX1Kp5kzyH+f5Fzxdl8tFBF87ii/QoaQ
-	 eq8Ko+ZfOE7met5p7159+iOfY81PDNM5LbKK9Ea0=
+	b=CxROK+DLH0O9XShAtl3seyiB8i09NVYBvW6al58VJpVPjdRLbmpLouMjqFW+zt1pR
+	 FspUGSRq1WMSxU7Qcme+nuQ/fj4JjsoF6ZM8mZftu1f4gzP/DertHABayEu8dkMsnn
+	 yUZCWa74reaMQBAJMNxFYXM8InfPjrw3u4dq1FVM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.10 257/273] mptcp: pm: re-using ID of unused flushed subflows
-Date: Tue, 27 Aug 2024 16:39:41 +0200
-Message-ID: <20240827143843.179603128@linuxfoundation.org>
+	Ben Whitten <ben.whitten@gmail.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.1 274/321] mmc: dw_mmc: allow biu and ciu clocks to defer
+Date: Tue, 27 Aug 2024 16:39:42 +0200
+Message-ID: <20240827143848.682011745@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Ben Whitten <ben.whitten@gmail.com>
 
-commit ef34a6ea0cab1800f4b3c9c3c2cefd5091e03379 upstream.
+commit 6275c7bc8dd07644ea8142a1773d826800f0f3f7 upstream.
 
-If no subflows are attached to the 'subflow' endpoints that are being
-flushed, the corresponding addr IDs will not be marked as available
-again.
+Fix a race condition if the clock provider comes up after mmc is probed,
+this causes mmc to fail without retrying.
+When given the DEFER error from the clk source, pass it on up the chain.
 
-Mark all ID as being available when flushing all the 'subflow'
-endpoints, and reset local_addr_used counter to cover these cases.
-
-Note that mptcp_pm_remove_addrs_and_subflows() helper is only called for
-flushing operations, not to remove a specific set of addresses and
-subflows.
-
-Fixes: 06faa2271034 ("mptcp: remove multi addresses and subflows in PM")
+Fixes: f90a0612f0e1 ("mmc: dw_mmc: lookup for optional biu and ciu clocks")
+Signed-off-by: Ben Whitten <ben.whitten@gmail.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20240819-net-mptcp-pm-reusing-id-v1-5-38035d40de5b@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lore.kernel.org/r/20240811212212.123255-1-ben.whitten@gmail.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/pm_netlink.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/mmc/host/dw_mmc.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -1623,8 +1623,15 @@ static void mptcp_pm_remove_addrs_and_su
- 		mptcp_pm_remove_addr(msk, &alist);
- 		spin_unlock_bh(&msk->pm.lock);
- 	}
+--- a/drivers/mmc/host/dw_mmc.c
++++ b/drivers/mmc/host/dw_mmc.c
+@@ -3295,6 +3295,10 @@ int dw_mci_probe(struct dw_mci *host)
+ 	host->biu_clk = devm_clk_get(host->dev, "biu");
+ 	if (IS_ERR(host->biu_clk)) {
+ 		dev_dbg(host->dev, "biu clock not available\n");
++		ret = PTR_ERR(host->biu_clk);
++		if (ret == -EPROBE_DEFER)
++			return ret;
 +
- 	if (slist.nr)
- 		mptcp_pm_remove_subflow(msk, &slist);
+ 	} else {
+ 		ret = clk_prepare_enable(host->biu_clk);
+ 		if (ret) {
+@@ -3306,6 +3310,10 @@ int dw_mci_probe(struct dw_mci *host)
+ 	host->ciu_clk = devm_clk_get(host->dev, "ciu");
+ 	if (IS_ERR(host->ciu_clk)) {
+ 		dev_dbg(host->dev, "ciu clock not available\n");
++		ret = PTR_ERR(host->ciu_clk);
++		if (ret == -EPROBE_DEFER)
++			goto err_clk_biu;
 +
-+	/* Reset counters: maybe some subflows have been removed before */
-+	spin_lock_bh(&msk->pm.lock);
-+	bitmap_fill(msk->pm.id_avail_bitmap, MPTCP_PM_MAX_ADDR_ID + 1);
-+	msk->pm.local_addr_used = 0;
-+	spin_unlock_bh(&msk->pm.lock);
- }
- 
- static void mptcp_nl_remove_addrs_list(struct net *net,
+ 		host->bus_hz = host->pdata->bus_hz;
+ 	} else {
+ 		ret = clk_prepare_enable(host->ciu_clk);
 
 
 
