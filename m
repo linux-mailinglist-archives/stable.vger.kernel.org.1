@@ -1,233 +1,168 @@
-Return-Path: <stable+bounces-70371-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70372-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F08C3960D38
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:10:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCE93960D66
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:18:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 727E41F22F28
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:10:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9B6FBB21C05
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:18:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D249B1C4601;
-	Tue, 27 Aug 2024 14:10:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B65D1C4607;
+	Tue, 27 Aug 2024 14:18:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="eW7jW+ca"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Aqau8kJw"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2046.outbound.protection.outlook.com [40.107.220.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BC6C1BFDFF
-	for <stable@vger.kernel.org>; Tue, 27 Aug 2024 14:10:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724767845; cv=fail; b=V9bsSmjPk8eopXefxAEfJfsNxDgJPAmAG2myHMcucaQym91vte8FJI/0kT/b9xWS3ySX9J3UiCYq+WdFPo3tIODl8SZ5w+HttljUZJB8gU/IwjHXfmazqlrKWMEjWmi34/A8RmGWveU48R+Ov4RaWxpkR5c4Vp6yByiGAgyYIG0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724767845; c=relaxed/simple;
-	bh=dycKns8cQMFvB39V/bwjO4eJQHc5GfpSHRI4CqVE41s=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=WReNW4kT27ABFSn50AIRQCprEOQ//nh96xbw4joRVy1J5FncYGi7xDuci+MpQJYxLo1PXBceCYkFukCnhawPEB+4alTM8bl6FJC4eLoYXp1tzHiG6TXra0aiGsS4LF9yFKqyXUUm2aCFzKWbPD3i4UhkPs1s0tw5RlTDqKAz5hw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=eW7jW+ca; arc=fail smtp.client-ip=40.107.220.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=CeGrwmXIhfsYg8WHpdd834niJLlEHbs/YM+Rllz92t/t8o5FhqcJLid8AMOce2glGg0RQAguiFHFusaiNZuABMKnAvWLZ47DDiPDnM93l6EXi2pHsLyQFJ2e0hUAGob/0xBBMb9CuxJXNC7+UabjaCKqb0W9GxBO+dQiqpZp4O3ZfDOU3biF7pem7OpDacKkpwm/b9ILYBY6NuBFKDPKxw41kU+xtEgDr+sa0vgApjXfePEzPAw/zqdpLwpXoD912xy0eQmFGBevD2/D1PrYFi6JtkKdnqGByYVoMVFLFMh5b254Ejjzp9fpBZrmYXtjLuYAdSeu1ql2OplvvzbwHA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=W1OzyBcMo/0SgZAWd0gtdv7McC0E1mflKGl1sOOTSvI=;
- b=adoGZ5dD42ZM7IbBvgd2uVxalW46YxyziIGpaD0HrxEw9Qk267KAjzlKKAWfZUXRWcBAyotf5u9jUAzoXKkgvenU+SW3mDhKTw45W0eveS6ISUX4yJ6Nim2o4mzMWwRVAd3zGazQpAQHl835z+e9YlQoNRE3LoewXHZ496Zz5t8yV+IPaPyttgGIxsxptMPDub3nZf0yNmg/0MebEffWOFh6JaSG57ftZrTy2bWW64aiWsCp9eUOF0RL+IJCZLYIhbDQ1salp7vrQUo75/DQfj6awdyHV43kTwJ/TYpr9PZQF8FW5RTGglC60R7e7fiuTlR10pIynn1PcIPeXC/w6w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
- dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
- header.from=amd.com; dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=W1OzyBcMo/0SgZAWd0gtdv7McC0E1mflKGl1sOOTSvI=;
- b=eW7jW+camnmRAUTiLKdRZdk/+eW66cZBEvkKDBo3SaA+iYpgv/Hg9OYPtk+fOYxbNIMr2HwzaEHSWTIgfp5Uwt4GnWe5oqWAhw3gUpbw/Up4vV8dYVaPil7NbRe85BDJ9B7Lr1T2WeVWZJ8HtAD+e4rSAOyzjXZ7xn1Nmi+P86M=
-Received: from SJ0PR03CA0044.namprd03.prod.outlook.com (2603:10b6:a03:33e::19)
- by SA3PR12MB9177.namprd12.prod.outlook.com (2603:10b6:806:39d::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7897.25; Tue, 27 Aug
- 2024 14:10:41 +0000
-Received: from SJ5PEPF00000207.namprd05.prod.outlook.com
- (2603:10b6:a03:33e:cafe::25) by SJ0PR03CA0044.outlook.office365.com
- (2603:10b6:a03:33e::19) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7897.25 via Frontend
- Transport; Tue, 27 Aug 2024 14:10:41 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- SJ5PEPF00000207.mail.protection.outlook.com (10.167.244.40) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7918.13 via Frontend Transport; Tue, 27 Aug 2024 14:10:41 +0000
-Received: from tr4.amd.com (10.180.168.240) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 27 Aug
- 2024 09:10:39 -0500
-From: Alex Deucher <alexander.deucher@amd.com>
-To: <stable@vger.kernel.org>, <gregkh@linuxfoundation.org>,
-	<sashal@kernel.org>
-CC: Jack Xiao <Jack.Xiao@amd.com>, Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH] drm/amdgpu/mes: fix mes ring buffer overflow
-Date: Tue, 27 Aug 2024 10:10:25 -0400
-Message-ID: <20240827141025.1329567-1-alexander.deucher@amd.com>
-X-Mailer: git-send-email 2.46.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0EB033E8
+	for <stable@vger.kernel.org>; Tue, 27 Aug 2024 14:18:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1724768321; cv=none; b=sPaalscTEuxpXr1tuYVPMHEwzU0AJPjS1PXkCbl8kWbd7iu4z41t8iqPGJqFJk75STBzifSjI+89v+elGGfiVLrTqYuHeyTqLTOr6YYAR0TlaFWpElcfez8vLziTRm4tL2FpqsdiJac6G6DdU83p5GLSBpN+Z6iqQAmmSijXQj0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1724768321; c=relaxed/simple;
+	bh=UKnl0EcKOYffxxpmbNckKPSMHac6VQM0xSV14iXeG6E=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=thcuD3fQ6I8HC/zBdDNUk88gpK3Zxo8tthFLosP1jjxlrTas5ZRjpmJFYbG8HxIBrk8qQ3anSnWiYQp9NRhVsPfZe09RxNC4atTvIlPBrJ8CV/ebClzmirs4RCW3udoLsVdmVdTguCDVDcVxcjCPASwlzzQnEZsIt7BLJWNATGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Aqau8kJw; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-201f577d35aso3903475ad.1
+        for <stable@vger.kernel.org>; Tue, 27 Aug 2024 07:18:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1724768319; x=1725373119; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=KjBmWerqC6TUh045gIHyLYQ6+zsOtBpX2XwcFqpm9Rw=;
+        b=Aqau8kJw4uM00R0f2aSZgdsE+yqGztMJU0iTqzDiXfUYh+M0hrxEzspo+twY+GH+GU
+         wlpc1Zhr5bV0GLOPhxdPE2I5VovJqlqMgrWD3wjTv6Ipov5OU+CzKeVLtxxsFiZ+yLzJ
+         jLK43Q7xPdTrUvN0KGeOLlhUqnCjmfcO4UKlY+zVYdV4IjMaQ6gjIWr3Xpb/5K05+e3u
+         i/DAQLtBwUU5llA42qMl3I2tnGdon75eLeARuRrwCYcRL/bsDh2JOg1IQahLxPWRqyNA
+         A2xfcza5pRCjpu0B+vINci3XBmtixD0/vsP1e+M53AQ7kxvTc/S/x11fLD9qIenry0zJ
+         velA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724768319; x=1725373119;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=KjBmWerqC6TUh045gIHyLYQ6+zsOtBpX2XwcFqpm9Rw=;
+        b=v74Ny5zbL7l2NosHfxBvLJhJZhP9n4aDM7wUg0dNciNIYi8UzlZTd1j0La0YR+0KBB
+         J0mTgJLoKFx/tY9bxPrJQAHCCnMl6VCEa0tj/hU8iPg3cvw83PvAySZ+9uOdtjvJa8fW
+         GiO15eIiblw+j1lg8asdgCfAbIj/WbOjAf+x4E3sLwv88oSPQva+twhtrNci/AhqYpIg
+         wrzV+ZJptaM9D98TZMOw/ZO49eGIWKKxOLFDZISVKsBU6X3GYlg4RSVsJtMy9jS1yhci
+         sydiFOc+jhEY/Q/zQEt4o5Od4ejE9VYo+uC2uN0DLhlLtVb5zFDyUNMdEYnQp1Kevu8h
+         JMnw==
+X-Forwarded-Encrypted: i=1; AJvYcCVNRtzQpVEoYDrbDzTNEcGk5Hr5vRJzLrQDsf50FEuVtRKFAZbDIkvFDYJn52zcCDI1Sj0vudA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx5uR3hFaui/t+RFWLTwxNGejkSBmv318N/vIsLfM/WhXcQMhxp
+	wT2kPspJa+TUvzGxzefGAzzXG2xPxMtjxzgCrc2Krme+gSa8pSWDsadYGWmdUeWeJbXvrTwBp11
+	wjfZTWF7GiEMAw+FllP/YeOGSRuTXofgT
+X-Google-Smtp-Source: AGHT+IGAgkTOlcRp7zgYGJNflHX7StCIJ0sZFV05To4fRH2E6W++LasaeiKxJ4pOOL9eLGayn3aXBSXt7wJHqgRRQuo=
+X-Received: by 2002:a17:903:32c1:b0:202:18d7:7ffb with SMTP id
+ d9443c01a7336-2039e703c29mr91695645ad.11.1724768318865; Tue, 27 Aug 2024
+ 07:18:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
- (10.181.40.145)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ5PEPF00000207:EE_|SA3PR12MB9177:EE_
-X-MS-Office365-Filtering-Correlation-Id: a07991b1-1959-47eb-d29b-08dcc6a208ee
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|36860700013|82310400026|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?XaWTMzCkFjf31LqUyAdNIQyEG86ro9E8hOJ8gggLVacWo+UKHZ8uoSwVSrM5?=
- =?us-ascii?Q?eJXoUMf+qmEhqAMPXL+WXpqM5zLZJ6dRRgZ0Hx5tGLJM2tqkOm1mxtvg9R46?=
- =?us-ascii?Q?OTv4GeqoEZCxcXthQAHpAc/ua8vOZMV6RfODlfrKNkhirlYoWbaV2LQMIuaw?=
- =?us-ascii?Q?MxNLBTEjZ19JhPwY646lzvwA3nRUJerIjvwxOd2uyKqWk0RMXrwhB+mawKm1?=
- =?us-ascii?Q?ssAtxo916lyoyvuLoJdOVbPkoGTQmgydh5JhQftuv+9ENOFHV2yCVi6W7oKa?=
- =?us-ascii?Q?F5k1JBBJqTWIQfSOxka5p4caELM7AK+ZO49LYsFlVg3oOrTWBKXl9/JmJT3p?=
- =?us-ascii?Q?META3kY9r3Z876pwQ+549V63L/Ubi3XF81veGJrzBmgvlijR8nLNlQlAUhZ2?=
- =?us-ascii?Q?WNvC2ezO6YgrQlyHClHj8E73kL2fjAgn+HgusFdr2a3pTRFOsIkXJxkuUSM0?=
- =?us-ascii?Q?JFoO8YZxoUNjj+Wtx9MTIb0MvgzeE9jVo1dxLj9JmdZcDDZ49MSTLMQqKqdD?=
- =?us-ascii?Q?3JiVYF4jBIXprCx+aE2neoOXzMj+tgFeL+evLO7sK7ETzQFbHwedbi7RYt/t?=
- =?us-ascii?Q?YtIhMFcgO4jxZsxlB98NC2oIEymWYHVx7A1HpDPBXOQztOvjQHHn6r/dZQWk?=
- =?us-ascii?Q?IeNZR8j3QmQqhcdvDc85adwWkt/7lsi+WdbxblyFiUxsyk8059c2+V4uenNO?=
- =?us-ascii?Q?i7IbJ9f7CVFux2XsTGiclOgHtYW78PbUNN/6P8G+LM+26kNhNakBlnj9PITa?=
- =?us-ascii?Q?JY3kwUlETMHjpUbYXOGn3JGbaaLgfr/mHVh9KatgdAmvPmheT9d/NvBf+3pe?=
- =?us-ascii?Q?rULwV/Ke+tsNS1leJHCuGZRMwiYDwqdxx5Gbm2LTcvlgYCFfaurnpBYIHTJL?=
- =?us-ascii?Q?x19B22mqXmibOKRzuM3kGlkmtw7RVX6t3qlYthkZ2f5p2KRKe6Hxy6jG8mxE?=
- =?us-ascii?Q?r7UUXtz5hk/+bSwyp5xBxwWzoInWV/f9W49wVqVQxhsRnSvV2+Ok+xA6CMYd?=
- =?us-ascii?Q?CAIQSAHVzagNLoSRt8vCcJULpkVuMCUwkgKo4BjjFDuJraSd6moFbnj7a7qf?=
- =?us-ascii?Q?gJpEIKOHMPFBekGmA/hrX65eASos1Div3iP4URhmf8IR2XCjvRMkAPHdhtnt?=
- =?us-ascii?Q?OPy4W9PTTaN1wUy8G6vJR3FDPnSZuPB38BmTwtjc6RG6ecNHLwnHuncYwOyB?=
- =?us-ascii?Q?lmWKuYp1QloDT+CeMB6v7Rx/k7hzhl2k81cSmwrRZaJdn52yizo/mEX2CRm4?=
- =?us-ascii?Q?GriXbDuYKqFzc9/ag9fHoFj23P8YAApLKB/Z2JjXDUILgkFOQIS41PlcX1Lo?=
- =?us-ascii?Q?rW0dq6ztTcphSd6GKxRSre/VquuRzoll0lu/FBFCHLT8DZQ0mMo6iy32WJOJ?=
- =?us-ascii?Q?Exfep50b3yKxj3x8r4X1+p3PK/gH?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700013)(82310400026)(376014);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Aug 2024 14:10:41.4607
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: a07991b1-1959-47eb-d29b-08dcc6a208ee
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SJ5PEPF00000207.namprd05.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA3PR12MB9177
+References: <2024081247-until-audacious-6383@gregkh> <07bbc66f-5689-405d-9232-87ba59d2f421@amd.com>
+ <CADnq5_MXBZ_WykSMv-GtHZv60aNzvLFVBOvze09o6da3-4-dTQ@mail.gmail.com>
+ <2024081558-filtrate-stuffed-db5b@gregkh> <CADnq5_OFxhxrm-cAfhB8DzdmEcMq_HbkU52vbynqoS1_L0rhzg@mail.gmail.com>
+ <2024082439-extending-dramatize-09ca@gregkh>
+In-Reply-To: <2024082439-extending-dramatize-09ca@gregkh>
+From: Alex Deucher <alexdeucher@gmail.com>
+Date: Tue, 27 Aug 2024 10:18:27 -0400
+Message-ID: <CADnq5_OeJ7LD0DvXjXmr-dV2ciEhfiEEEZsZn3w1MKnOvL=KUA@mail.gmail.com>
+Subject: Re: AMD drm patch workflow is broken for stable trees
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Felix Kuehling <felix.kuehling@amd.com>, amd-gfx@lists.freedesktop.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Jack Xiao <Jack.Xiao@amd.com>
+On Sat, Aug 24, 2024 at 1:23=E2=80=AFAM Greg KH <gregkh@linuxfoundation.org=
+> wrote:
+>
+> On Fri, Aug 23, 2024 at 05:23:46PM -0400, Alex Deucher wrote:
+> > On Thu, Aug 15, 2024 at 1:11=E2=80=AFAM Greg KH <gregkh@linuxfoundation=
+.org> wrote:
+> > >
+> > > On Wed, Aug 14, 2024 at 05:30:08PM -0400, Alex Deucher wrote:
+> > > > On Wed, Aug 14, 2024 at 4:55=E2=80=AFPM Felix Kuehling <felix.kuehl=
+ing@amd.com> wrote:
+> > > > >
+> > > > > On 2024-08-12 11:00, Greg KH wrote:
+> > > > > > Hi all,
+> > > > > >
+> > > > > > As some of you have noticed, there's a TON of failure messages =
+being
+> > > > > > sent out for AMD gpu driver commits that are tagged for stable
+> > > > > > backports.  In short, you all are doing something really wrong =
+with how
+> > > > > > you are tagging these.
+> > > > > Hi Greg,
+> > > > >
+> > > > > I got notifications about one KFD patch failing to apply on six b=
+ranches
+> > > > > (6.10, 6.6, 6.1, 5.15, 5.10 and 5.4). The funny thing is, that yo=
+u
+> > > > > already applied this patch on two branches back in May. The email=
+s had a
+> > > > > suspicious looking date in the header (Sep 17, 2001). I wonder if=
+ there
+> > > > > was some date glitch that caused a whole bunch of patches to be r=
+e-sent
+> > > > > to stable somehow:
+> > > >
+> > > > I think the crux of the problem is that sometimes patches go into
+> > > > -next with stable tags and they end getting taken into -fixes as we=
+ll
+> > > > so after the merge window they end up getting picked up for stable
+> > > > again.  Going forward, if they land in -next, I'll cherry-pick -x t=
+he
+> > > > changes into -fixes so there is better traceability.
+> > >
+> > > Please do so, and also work to not have duplicate commits like this i=
+n
+> > > different branches.  Git can handle merges quite well, please use it.
+> > >
+> > > If this shows up again in the next -rc1 merge window without any
+> > > changes, I'll have to just blackhole all amd drm patches going forwar=
+d
+> > > until you all tell me you have fixed your development process.
+> >
+> > Just a heads up, you will see some of these when the 6.12 merge window
+> > due to what is currently in -next and the fixes that went into 6.11,
+> > but going forward we have updated our process and it should be better.
+>
+> Can you give me a list of the git ids that I should be ignoring for
+> 6.12-rc1?  Otherwise again, it's a huge waste of time on my side trying
+> to sift through them and figure out if the rejection is real or not...
 
-wait memory room until enough before writing mes packets
-to avoid ring buffer overflow.
+8151a6c13111 drm/amd/display: Skip Recompute DSC Params if no Stream on Lin=
+k
+fbfb5f034225 drm/amdgpu: fix contiguous handling for IB parsing v2
+ec0d7abbb0d4 drm/amd/display: Fix Potential Null Dereference
+332315885d3c drm/amd/display: Remove ASSERT if significance is zero in
+math_ceil2
+295d91cbc700 drm/amd/display: Check for NULL pointer
+6472de66c0aa drm/amd/amdgpu: Fix uninitialized variable warnings
+93381e6b6180 drm/amdgpu: fix a possible null pointer dereference
+7a38efeee6b5 drm/radeon: fix null pointer dereference in radeon_add_common_=
+modes
 
-v2: squash in sched_hw_submission fix
+Thanks.
 
-Backport from 6.11.
+Alex
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3571
-Fixes: de3246254156 ("drm/amdgpu: cleanup MES11 command submission")
-Fixes: fffe347e1478 ("drm/amdgpu: cleanup MES12 command submission")
-Signed-off-by: Jack Xiao <Jack.Xiao@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 34e087e8920e635c62e2ed6a758b0cd27f836d13)
-Cc: stable@vger.kernel.org # 6.10.x
-(cherry picked from commit 11752c013f562a1124088a35bd314aa0e9f0e88f)
----
- drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c |  2 ++
- drivers/gpu/drm/amd/amdgpu/mes_v11_0.c   | 18 ++++++++++++++----
- 2 files changed, 16 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
-index 06f0a6534a94..88ffb15e25cc 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
-@@ -212,6 +212,8 @@ int amdgpu_ring_init(struct amdgpu_device *adev, struct amdgpu_ring *ring,
- 	 */
- 	if (ring->funcs->type == AMDGPU_RING_TYPE_KIQ)
- 		sched_hw_submission = max(sched_hw_submission, 256);
-+	if (ring->funcs->type == AMDGPU_RING_TYPE_MES)
-+		sched_hw_submission = 8;
- 	else if (ring == &adev->sdma.instance[0].page)
- 		sched_hw_submission = 256;
- 
-diff --git a/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c b/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
-index 32d4519541c6..e1a66d585f5e 100644
---- a/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
-@@ -163,7 +163,7 @@ static int mes_v11_0_submit_pkt_and_poll_completion(struct amdgpu_mes *mes,
- 	const char *op_str, *misc_op_str;
- 	unsigned long flags;
- 	u64 status_gpu_addr;
--	u32 status_offset;
-+	u32 seq, status_offset;
- 	u64 *status_ptr;
- 	signed long r;
- 	int ret;
-@@ -191,6 +191,13 @@ static int mes_v11_0_submit_pkt_and_poll_completion(struct amdgpu_mes *mes,
- 	if (r)
- 		goto error_unlock_free;
- 
-+	seq = ++ring->fence_drv.sync_seq;
-+	r = amdgpu_fence_wait_polling(ring,
-+				      seq - ring->fence_drv.num_fences_mask,
-+				      timeout);
-+	if (r < 1)
-+		goto error_undo;
-+
- 	api_status = (struct MES_API_STATUS *)((char *)pkt + api_status_off);
- 	api_status->api_completion_fence_addr = status_gpu_addr;
- 	api_status->api_completion_fence_value = 1;
-@@ -203,8 +210,7 @@ static int mes_v11_0_submit_pkt_and_poll_completion(struct amdgpu_mes *mes,
- 	mes_status_pkt.header.dwsize = API_FRAME_SIZE_IN_DWORDS;
- 	mes_status_pkt.api_status.api_completion_fence_addr =
- 		ring->fence_drv.gpu_addr;
--	mes_status_pkt.api_status.api_completion_fence_value =
--		++ring->fence_drv.sync_seq;
-+	mes_status_pkt.api_status.api_completion_fence_value = seq;
- 
- 	amdgpu_ring_write_multiple(ring, &mes_status_pkt,
- 				   sizeof(mes_status_pkt) / 4);
-@@ -224,7 +230,7 @@ static int mes_v11_0_submit_pkt_and_poll_completion(struct amdgpu_mes *mes,
- 		dev_dbg(adev->dev, "MES msg=%d was emitted\n",
- 			x_pkt->header.opcode);
- 
--	r = amdgpu_fence_wait_polling(ring, ring->fence_drv.sync_seq, timeout);
-+	r = amdgpu_fence_wait_polling(ring, seq, timeout);
- 	if (r < 1 || !*status_ptr) {
- 
- 		if (misc_op_str)
-@@ -247,6 +253,10 @@ static int mes_v11_0_submit_pkt_and_poll_completion(struct amdgpu_mes *mes,
- 	amdgpu_device_wb_free(adev, status_offset);
- 	return 0;
- 
-+error_undo:
-+	dev_err(adev->dev, "MES ring buffer is full.\n");
-+	amdgpu_ring_undo(ring);
-+
- error_unlock_free:
- 	spin_unlock_irqrestore(&mes->ring_lock, flags);
- 
--- 
-2.46.0
-
+>
+> thanks,
+>
+> greg k-h
 
