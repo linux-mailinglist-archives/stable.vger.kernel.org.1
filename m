@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-70515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71088-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF308960E85
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:49:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 516C8961198
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:21:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1E4271C22F6F
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:49:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A16A7B22656
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:21:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C1D91C4EE6;
-	Tue, 27 Aug 2024 14:49:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E83F1C8FBE;
+	Tue, 27 Aug 2024 15:21:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gvSKSbbr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jARut/kD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8A69DDC1;
-	Tue, 27 Aug 2024 14:49:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3F801C68AE;
+	Tue, 27 Aug 2024 15:21:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770164; cv=none; b=UzX2jv5cKL8CJv7J/+VwDk2hysSs38x6CGOhhKxX5DukX3U68bBbS0gVUkUioLpds3o2VogIL0gTFFeETPcgKxTCRbuh9uWHcCZcQnjmEe3BjxrvPkXTR9U+0+k29DF+3QkPKoR36qwuD+/JFVyGNtjdGuZSqbXqUYEME/C6K9c=
+	t=1724772060; cv=none; b=nr1ccpSgcfNewDqGtm3RUCirIp04Dko4qdq1RcLylnfxCBr0wBkezN17awqToGIi/v/IOk+tOvV2jlvm+l6p3+gjVyObso1vPTsnT/CDs7CxcAKIJ4xUKVU0zCQjpn1X8ILJk78ggmd0PltHOr0jRyv86VppfGM6hc9/8+PxJHc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770164; c=relaxed/simple;
-	bh=NouojukfAE/D3q4gkTDorjSZkj5YA4klKFhvUgKczpw=;
+	s=arc-20240116; t=1724772060; c=relaxed/simple;
+	bh=9HTtO9Wo99P6IKcTT3JqsxXC6wClCyPJBymDEo8D4QY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XGcYjq8GioIutYbVjS4U+PM1ibyPSKl9Jlt8O9pePWQHBNIgWKMzGbOXrK5CsH99bXqzpKsAuI3uGh8g3/Oj42MkAuA+jCCllq/qNQa5k0eTFBltVVdBtD8R/+ebXDlm9hGT7W3Em1L2x06XGrKMs9/5zgzklsPt5zLbCWjRIbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gvSKSbbr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30D4AC4AF18;
-	Tue, 27 Aug 2024 14:49:24 +0000 (UTC)
+	 MIME-Version; b=mL3FXrx4+Hfx+a20tTtAeBp5e+W5pNk+NNueDr+s0IPc//3p9yJ9WxQcxu7T1wL7vhDZWyiVKXX0ep6Cm3SNeEX69iY4Amte3P6DsSRYnDM0qbP76zTnbAmdlpQjgI9M9DcAhL2sbkK7QNrPCipIRnf9hTzYW6+aHHXIUbWTp2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jARut/kD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A918C4E66E;
+	Tue, 27 Aug 2024 15:21:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770164;
-	bh=NouojukfAE/D3q4gkTDorjSZkj5YA4klKFhvUgKczpw=;
+	s=korg; t=1724772060;
+	bh=9HTtO9Wo99P6IKcTT3JqsxXC6wClCyPJBymDEo8D4QY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gvSKSbbrEPzycNa8zoG3ShfYclja3K0Q0r9Ws6FzuJkMoBZRDeLg1Qp2lLFJKK/Tc
-	 EapHe8dc+oLA0W7L/g6rV+ir9lu8AglZEStT1iGGD06gFWHwq2BmYV/SyQPACMOvsa
-	 ysrTZW/YAIK8iltfQEX2YqLBCWZgPYHSI+MZCFOo=
+	b=jARut/kD3CxQIt5tnPjwwU7zqmILu04krxH4O9aULBuqhJhJ7DzhyH0g2u6GGwoKN
+	 9BEX5Sv3s/hqfy/QiVxafs3Ut+rR7ubH6mOAXhi16YzWNsp+aG8qV0zRDTgjJe5Q6S
+	 /6+RTep9Zc4uz5C4x8VpguApVAmyd8smCenow9uE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shannon Nelson <shannon.nelson@amd.com>,
-	Brett Creeley <brett.creeley@amd.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 146/341] ionic: prevent pci disable of already disabled device
+Subject: [PATCH 6.1 069/321] docs/bpf: Document BPF_MAP_TYPE_LPM_TRIE map
 Date: Tue, 27 Aug 2024 16:36:17 +0200
-Message-ID: <20240827143848.976968549@linuxfoundation.org>
+Message-ID: <20240827143840.868364776@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,214 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shannon Nelson <shannon.nelson@amd.com>
+From: Donald Hunter <donald.hunter@gmail.com>
 
-[ Upstream commit 13943d6c82730a2a4e40e05d6deaca26a8de0a4d ]
+[ Upstream commit 83177c0dca3811faa051124731a692609caee7c7 ]
 
-If a reset fails, the PCI device is left in a disabled
-state, so don't try to disable it again on driver remove.
-This prevents a scary looking WARN trace in the kernel log.
+Add documentation for BPF_MAP_TYPE_LPM_TRIE including kernel
+BPF helper usage, userspace usage and examples.
 
-    ionic 0000:2b:00.0: disabling already-disabled device
-
-Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
-Reviewed-by: Brett Creeley <brett.creeley@amd.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Donald Hunter <donald.hunter@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20221101114542.24481-2-donald.hunter@gmail.com
+Stable-dep-of: 59f2f841179a ("bpf: Avoid kfree_rcu() under lock in bpf_lpm_trie.")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ Documentation/bpf/map_lpm_trie.rst | 181 +++++++++++++++++++++++++++++
+ 1 file changed, 181 insertions(+)
+ create mode 100644 Documentation/bpf/map_lpm_trie.rst
 
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c b/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c
-index fa4237c27e061..f0a7fde8f7fff 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_bus_pci.c
-@@ -217,7 +217,9 @@ static void ionic_clear_pci(struct ionic *ionic)
- {
- 	ionic_unmap_bars(ionic);
- 	pci_release_regions(ionic->pdev);
--	pci_disable_device(ionic->pdev);
+diff --git a/Documentation/bpf/map_lpm_trie.rst b/Documentation/bpf/map_lpm_trie.rst
+new file mode 100644
+index 0000000000000..31be1aa7ba2cb
+--- /dev/null
++++ b/Documentation/bpf/map_lpm_trie.rst
+@@ -0,0 +1,181 @@
++.. SPDX-License-Identifier: GPL-2.0-only
++.. Copyright (C) 2022 Red Hat, Inc.
 +
-+	if (atomic_read(&ionic->pdev->enable_cnt) > 0)
-+		pci_disable_device(ionic->pdev);
- }
- 
- static int ionic_setup_one(struct ionic *ionic)
++=====================
++BPF_MAP_TYPE_LPM_TRIE
++=====================
++
++.. note::
++   - ``BPF_MAP_TYPE_LPM_TRIE`` was introduced in kernel version 4.11
++
++``BPF_MAP_TYPE_LPM_TRIE`` provides a longest prefix match algorithm that
++can be used to match IP addresses to a stored set of prefixes.
++Internally, data is stored in an unbalanced trie of nodes that uses
++``prefixlen,data`` pairs as its keys. The ``data`` is interpreted in
++network byte order, i.e. big endian, so ``data[0]`` stores the most
++significant byte.
++
++LPM tries may be created with a maximum prefix length that is a multiple
++of 8, in the range from 8 to 2048. The key used for lookup and update
++operations is a ``struct bpf_lpm_trie_key``, extended by
++``max_prefixlen/8`` bytes.
++
++- For IPv4 addresses the data length is 4 bytes
++- For IPv6 addresses the data length is 16 bytes
++
++The value type stored in the LPM trie can be any user defined type.
++
++.. note::
++   When creating a map of type ``BPF_MAP_TYPE_LPM_TRIE`` you must set the
++   ``BPF_F_NO_PREALLOC`` flag.
++
++Usage
++=====
++
++Kernel BPF
++----------
++
++.. c:function::
++   void *bpf_map_lookup_elem(struct bpf_map *map, const void *key)
++
++The longest prefix entry for a given data value can be found using the
++``bpf_map_lookup_elem()`` helper. This helper returns a pointer to the
++value associated with the longest matching ``key``, or ``NULL`` if no
++entry was found.
++
++The ``key`` should have ``prefixlen`` set to ``max_prefixlen`` when
++performing longest prefix lookups. For example, when searching for the
++longest prefix match for an IPv4 address, ``prefixlen`` should be set to
++``32``.
++
++.. c:function::
++   long bpf_map_update_elem(struct bpf_map *map, const void *key, const void *value, u64 flags)
++
++Prefix entries can be added or updated using the ``bpf_map_update_elem()``
++helper. This helper replaces existing elements atomically.
++
++``bpf_map_update_elem()`` returns ``0`` on success, or negative error in
++case of failure.
++
++ .. note::
++    The flags parameter must be one of BPF_ANY, BPF_NOEXIST or BPF_EXIST,
++    but the value is ignored, giving BPF_ANY semantics.
++
++.. c:function::
++   long bpf_map_delete_elem(struct bpf_map *map, const void *key)
++
++Prefix entries can be deleted using the ``bpf_map_delete_elem()``
++helper. This helper will return 0 on success, or negative error in case
++of failure.
++
++Userspace
++---------
++
++Access from userspace uses libbpf APIs with the same names as above, with
++the map identified by ``fd``.
++
++.. c:function::
++   int bpf_map_get_next_key (int fd, const void *cur_key, void *next_key)
++
++A userspace program can iterate through the entries in an LPM trie using
++libbpf's ``bpf_map_get_next_key()`` function. The first key can be
++fetched by calling ``bpf_map_get_next_key()`` with ``cur_key`` set to
++``NULL``. Subsequent calls will fetch the next key that follows the
++current key. ``bpf_map_get_next_key()`` returns ``0`` on success,
++``-ENOENT`` if ``cur_key`` is the last key in the trie, or negative
++error in case of failure.
++
++``bpf_map_get_next_key()`` will iterate through the LPM trie elements
++from leftmost leaf first. This means that iteration will return more
++specific keys before less specific ones.
++
++Examples
++========
++
++Please see ``tools/testing/selftests/bpf/test_lpm_map.c`` for examples
++of LPM trie usage from userspace. The code snippets below demonstrate
++API usage.
++
++Kernel BPF
++----------
++
++The following BPF code snippet shows how to declare a new LPM trie for IPv4
++address prefixes:
++
++.. code-block:: c
++
++    #include <linux/bpf.h>
++    #include <bpf/bpf_helpers.h>
++
++    struct ipv4_lpm_key {
++            __u32 prefixlen;
++            __u32 data;
++    };
++
++    struct {
++            __uint(type, BPF_MAP_TYPE_LPM_TRIE);
++            __type(key, struct ipv4_lpm_key);
++            __type(value, __u32);
++            __uint(map_flags, BPF_F_NO_PREALLOC);
++            __uint(max_entries, 255);
++    } ipv4_lpm_map SEC(".maps");
++
++The following BPF code snippet shows how to lookup by IPv4 address:
++
++.. code-block:: c
++
++    void *lookup(__u32 ipaddr)
++    {
++            struct ipv4_lpm_key key = {
++                    .prefixlen = 32,
++                    .data = ipaddr
++            };
++
++            return bpf_map_lookup_elem(&ipv4_lpm_map, &key);
++    }
++
++Userspace
++---------
++
++The following snippet shows how to insert an IPv4 prefix entry into an
++LPM trie:
++
++.. code-block:: c
++
++    int add_prefix_entry(int lpm_fd, __u32 addr, __u32 prefixlen, struct value *value)
++    {
++            struct ipv4_lpm_key ipv4_key = {
++                    .prefixlen = prefixlen,
++                    .data = addr
++            };
++            return bpf_map_update_elem(lpm_fd, &ipv4_key, value, BPF_ANY);
++    }
++
++The following snippet shows a userspace program walking through the entries
++of an LPM trie:
++
++
++.. code-block:: c
++
++    #include <bpf/libbpf.h>
++    #include <bpf/bpf.h>
++
++    void iterate_lpm_trie(int map_fd)
++    {
++            struct ipv4_lpm_key *cur_key = NULL;
++            struct ipv4_lpm_key next_key;
++            struct value value;
++            int err;
++
++            for (;;) {
++                    err = bpf_map_get_next_key(map_fd, cur_key, &next_key);
++                    if (err)
++                            break;
++
++                    bpf_map_lookup_elem(map_fd, &next_key, &value);
++
++                    /* Use key and value here */
++
++                    cur_key = &next_key;
++            }
++    }
 -- 
 2.43.0
 
