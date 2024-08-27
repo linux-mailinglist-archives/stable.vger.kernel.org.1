@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-71102-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70593-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5D689611A4
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:22:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2F53960F00
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:55:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E80551C22E99
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:22:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 716FA286CFF
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:55:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9D691C3F0D;
-	Tue, 27 Aug 2024 15:21:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D8BE1C57B1;
+	Tue, 27 Aug 2024 14:53:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kntlbvOK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JYhrILHU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 762CF1BC9E3;
-	Tue, 27 Aug 2024 15:21:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B2241C6887;
+	Tue, 27 Aug 2024 14:53:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772106; cv=none; b=JKCUfT/V0GU0/06ZBIp66SjLmvxfpDkkzxQhQB7je72EKp5mGjuspQY/G3QiAVeVnJyJqEfLt/VsSmwgALO0oFhSHWLar0YERNLw2GfDbedL+oy9R2EW1SIJrwmJeB1Db6vPDCMWGZn+pmg0gK6kh7ZTNhjpA9ANIjxRF7WhJjU=
+	t=1724770423; cv=none; b=PR0KMFe66Z9uHnuo9r981k5P28ls/NsFNGhIcEpS2+5wCiV/Aksk3CeUSIENii92HUocfeO8ma1XuqzpsVFWC7y50cGuk9kLKJ64Mqld7+9oy9yYdh9UoRY07iY/Cc6DM3eTEEinn3TIJTHoWcVB9158pwxcgMkJfyY2ddMpB5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772106; c=relaxed/simple;
-	bh=qPINfyVZEUwRtnkix2Pcb7gkRW04INERPxAKcTMIrAM=;
+	s=arc-20240116; t=1724770423; c=relaxed/simple;
+	bh=EHAGfcXZ4LCYIR5iEfhvGMpmV7n92mNnZa0geDYrDqw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gllNUl+5kYcQTEmNPuF4lAReE2qmzD0ISr7zCZ765YRbXMPT2L6NDrjxX5yqwoKhGfbKspLWCae6IgPfBtvi4ugzxREgWYJ6xl2x/prpyamz01MpSf8j0sGR6L1G5zXZ114H5A7MMayrm1WwXQdd/lxeT1hYISyFIsHDzD3qS+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kntlbvOK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D63ADC4FE09;
-	Tue, 27 Aug 2024 15:21:45 +0000 (UTC)
+	 MIME-Version; b=menjDG4T4zBrfzHpnhaQ3LK9OoewGaPn+msVJiHPkz2B4P2f03O7xkIvN3ydn56F2/vDNYhBdRIQ9Gll2raYy3O3eynuzHHdU9MCoGSWZx/goLtRcHt03UcmNbszGLZCQvukOFOvxvmM3lcjXe/4EwJG6t1m3Yg+9EjcbXGbCvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JYhrILHU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96316C61053;
+	Tue, 27 Aug 2024 14:53:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772106;
-	bh=qPINfyVZEUwRtnkix2Pcb7gkRW04INERPxAKcTMIrAM=;
+	s=korg; t=1724770423;
+	bh=EHAGfcXZ4LCYIR5iEfhvGMpmV7n92mNnZa0geDYrDqw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kntlbvOKlQx7FhHD08bea5si658aoSLzZQKrgIiZK/vpY+Mwtzy1g6ToicQGSAndB
-	 xyIq9zNv5yo6GAanUlTLG/ca+5SlJ3uaoxABjoNdjQFa5dXaNJ+q7zgWcRvPbMMMK5
-	 Aj2Nnebh0cFYZbK1pULYOyJmDegP/jghUAp4czzs=
+	b=JYhrILHU9ubgh6xxRy5pVzq5ym3mVNlFUiKCp6Sng0mRV0XapP0wMuNDDPDlaeu4m
+	 DNAqf1V3dKYj2A4KcnPnseuhPO+05ocVvCPQu2gPeBLjwAYEZazAOurjGIkNcODwfy
+	 6rzGImO/dWXZ8hEKfS5hjrN/3ovD/0NzjqDYj3xg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Frederic Weisbecker <frederic@kernel.org>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 116/321] rcu: Eliminate rcu_gp_slow_unregister() false positive
+Subject: [PATCH 6.6 193/341] btrfs: delete pointless BUG_ON check on quota root in btrfs_qgroup_account_extent()
 Date: Tue, 27 Aug 2024 16:37:04 +0200
-Message-ID: <20240827143842.659936477@linuxfoundation.org>
+Message-ID: <20240827143850.756571096@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul E. McKenney <paulmck@kernel.org>
+From: David Sterba <dsterba@suse.com>
 
-[ Upstream commit 0ae9942f03d0d034fdb0a4f44fc99f62a3107987 ]
+[ Upstream commit f40a3ea94881f668084f68f6b9931486b1606db0 ]
 
-When using rcutorture as a module, there are a number of conditions that
-can abort the modprobe operation, for example, when attempting to run
-both RCU CPU stall warning tests and forward-progress tests.  This can
-cause rcu_torture_cleanup() to be invoked on the unwind path out of
-rcu_rcu_torture_init(), which will mean that rcu_gp_slow_unregister()
-is invoked without a matching rcu_gp_slow_register().  This will cause
-a splat because rcu_gp_slow_unregister() is passed rcu_fwd_cb_nodelay,
-which does not match a NULL pointer.
+The BUG_ON is deep in the qgroup code where we can expect that it
+exists. A NULL pointer would cause a crash.
 
-This commit therefore forgives a mismatch involving a NULL pointer, thus
-avoiding this false-positive splat.
+It was added long ago in 550d7a2ed5db35 ("btrfs: qgroup: Add new qgroup
+calculation function btrfs_qgroup_account_extents()."). It maybe made
+sense back then as the quota enable/disable state machine was not that
+robust as it is nowadays, so we can just delete it.
 
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/rcu/tree.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/btrfs/qgroup.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
-index 86923a8914007..dd6e15ca63b0c 100644
---- a/kernel/rcu/tree.c
-+++ b/kernel/rcu/tree.c
-@@ -1336,7 +1336,7 @@ EXPORT_SYMBOL_GPL(rcu_gp_slow_register);
- /* Unregister a counter, with NULL for not caring which. */
- void rcu_gp_slow_unregister(atomic_t *rgssp)
- {
--	WARN_ON_ONCE(rgssp && rgssp != rcu_gp_slow_suppress);
-+	WARN_ON_ONCE(rgssp && rgssp != rcu_gp_slow_suppress && rcu_gp_slow_suppress != NULL);
+diff --git a/fs/btrfs/qgroup.c b/fs/btrfs/qgroup.c
+index 223dfbf009938..efe84be65a440 100644
+--- a/fs/btrfs/qgroup.c
++++ b/fs/btrfs/qgroup.c
+@@ -2725,8 +2725,6 @@ int btrfs_qgroup_account_extent(struct btrfs_trans_handle *trans, u64 bytenr,
+ 	if (nr_old_roots == 0 && nr_new_roots == 0)
+ 		goto out_free;
  
- 	WRITE_ONCE(rcu_gp_slow_suppress, NULL);
- }
+-	BUG_ON(!fs_info->quota_root);
+-
+ 	trace_btrfs_qgroup_account_extent(fs_info, trans->transid, bytenr,
+ 					num_bytes, nr_old_roots, nr_new_roots);
+ 
 -- 
 2.43.0
 
