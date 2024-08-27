@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-71231-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70681-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65CEE96126F
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:31:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1364D960F7D
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:59:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 105071F21FB9
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:31:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C3C7028397A
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:59:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 682C01D1F4C;
-	Tue, 27 Aug 2024 15:28:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 215151C6890;
+	Tue, 27 Aug 2024 14:58:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rdN6liC2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Om1yF2GK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 268591D174F;
-	Tue, 27 Aug 2024 15:28:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D48C71BC097;
+	Tue, 27 Aug 2024 14:58:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772530; cv=none; b=r8iTB3J3O8fzKyiHueKt3F78U4KzT2Hn0GLJa9D6SXu5ahx0Dc/5C4j2ydXfwLnA8lzZ4lj/7WXr4ONitvpNgrQjLE+lttZTAhxAECxqmPmYpr6p0Dy83PrRWhGbRXWamGWpCgf9SRK1Cz4+Dgmp0z9NdhXHSrGL6JNjR7ZZxa4=
+	t=1724770715; cv=none; b=jK8ZptSeeeDDha0jenD0ifvFmiRSs85F7MKzIvjH33EPVNYRiFGUf0DIvc36YZJIJmrytTsu/km5QAOSXlBnEM6KU5A/t8moKkR8geGbK6fSdM++R+rwk5hE/U5RLiQTOgFmxEkwNX4TQGUs5Uf3EEnUbKPdJpWKjOG3Z/RfZE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772530; c=relaxed/simple;
-	bh=3tacsCwSmjYxUWHEK3OC51OjppYtl7Trjc5sPmSGynI=;
+	s=arc-20240116; t=1724770715; c=relaxed/simple;
+	bh=o24bC8guVMjSC0cl8eCOAhr9mTLhdrpjnYlTrVOjD8o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R9TCUDClJ10DvBtAjXCJhUVmcdoPlGll5XvDGbniLoiCBABUQO3/AnlcUR+y9SfRSaY+uX9vEWmnm0HfJk/XjsVGinWzZHdshu+aPS5UWNz751BTuO/h3pyyZQ9KmTdOB4RmNLqGewZWnh7H44QfYnqvh79Jzkbi7JYuybOBoUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rdN6liC2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97439C6107E;
-	Tue, 27 Aug 2024 15:28:49 +0000 (UTC)
+	 MIME-Version; b=J6/WEmSRY1t0fFbvcb3+Uybj2UEGLrDHa9KIx3o6nPKEj9/JEOngsqavAA9tMX8FIJ6mmHG01WWigqNgmOhrtDCoWaUsx5T1nLk1v8g2Oq3WPlbTVnhY7maYh+yXsJbxf0ZwdaIlusOa5sQqCnBFRPjWmjBwbiAy7KIjNMSFP/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Om1yF2GK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42FEEC61044;
+	Tue, 27 Aug 2024 14:58:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772530;
-	bh=3tacsCwSmjYxUWHEK3OC51OjppYtl7Trjc5sPmSGynI=;
+	s=korg; t=1724770715;
+	bh=o24bC8guVMjSC0cl8eCOAhr9mTLhdrpjnYlTrVOjD8o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rdN6liC2gZBCTTyuB30c0MdoHUJyVtq1RiMR9ckNjJyE9wFxlZT6xz4JqIB+Oy9V3
-	 2j59xjmZ8TkJu59M8/B1G5W+GPsdo2QXHGV8eFPttZoCrcV1FFGLjvlTf7UJegAp0i
-	 HUfsHfoxQRmDnNmAkzIX1/jl/oR9ZoFA8sEJBk6s=
+	b=Om1yF2GKm7nA4ltcJ7KaQLPviJYlpGSFGh1VaXjIo7Ohh93eSzCujFt68CUtKxUti
+	 cdza60NTi2wghzm/7rcvPO+ubGCbdtfHMFyyPn8aWOjymxe7Jwn3I8Mww/hzj57tpy
+	 qdk7rn7obCO6efSpWeQnEj1BWooMByqrzTRGkB5Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 235/321] netfilter: nft_counter: Disable BH in nft_counter_offload_stats().
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 312/341] mptcp: pm: re-using ID of unused flushed subflows
 Date: Tue, 27 Aug 2024 16:39:03 +0200
-Message-ID: <20240827143847.182030879@linuxfoundation.org>
+Message-ID: <20240827143855.259589142@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit 1eacdd71b3436b54d5fc8218c4bb0187d92a6892 ]
+commit ef34a6ea0cab1800f4b3c9c3c2cefd5091e03379 upstream.
 
-The sequence counter nft_counter_seq is a per-CPU counter. There is no
-lock associated with it. nft_counter_do_eval() is using the same counter
-and disables BH which suggest that it can be invoked from a softirq.
-This in turn means that nft_counter_offload_stats(), which disables only
-preemption, can be interrupted by nft_counter_do_eval() leading to two
-writer for one seqcount_t.
-This can lead to loosing stats or reading statistics while they are
-updated.
+If no subflows are attached to the 'subflow' endpoints that are being
+flushed, the corresponding addr IDs will not be marked as available
+again.
 
-Disable BH during stats update in nft_counter_offload_stats() to ensure
-one writer at a time.
+Mark all ID as being available when flushing all the 'subflow'
+endpoints, and reset local_addr_used counter to cover these cases.
 
-Fixes: b72920f6e4a9d ("netfilter: nftables: counter hardware offload support")
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Reviewed-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Note that mptcp_pm_remove_addrs_and_subflows() helper is only called for
+flushing operations, not to remove a specific set of addresses and
+subflows.
+
+Fixes: 06faa2271034 ("mptcp: remove multi addresses and subflows in PM")
+Cc: stable@vger.kernel.org
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20240819-net-mptcp-pm-reusing-id-v1-5-38035d40de5b@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nft_counter.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/mptcp/pm_netlink.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/net/netfilter/nft_counter.c b/net/netfilter/nft_counter.c
-index b5fe7fe4b60db..73e4d278d6c13 100644
---- a/net/netfilter/nft_counter.c
-+++ b/net/netfilter/nft_counter.c
-@@ -264,7 +264,7 @@ static void nft_counter_offload_stats(struct nft_expr *expr,
- 	struct nft_counter *this_cpu;
- 	seqcount_t *myseq;
- 
--	preempt_disable();
-+	local_bh_disable();
- 	this_cpu = this_cpu_ptr(priv->counter);
- 	myseq = this_cpu_ptr(&nft_counter_seq);
- 
-@@ -272,7 +272,7 @@ static void nft_counter_offload_stats(struct nft_expr *expr,
- 	this_cpu->packets += stats->pkts;
- 	this_cpu->bytes += stats->bytes;
- 	write_seqcount_end(myseq);
--	preempt_enable();
-+	local_bh_enable();
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -1654,8 +1654,15 @@ void mptcp_pm_remove_addrs_and_subflows(
+ 		mptcp_pm_remove_addr(msk, &alist);
+ 		spin_unlock_bh(&msk->pm.lock);
+ 	}
++
+ 	if (slist.nr)
+ 		mptcp_pm_remove_subflow(msk, &slist);
++
++	/* Reset counters: maybe some subflows have been removed before */
++	spin_lock_bh(&msk->pm.lock);
++	bitmap_fill(msk->pm.id_avail_bitmap, MPTCP_PM_MAX_ADDR_ID + 1);
++	msk->pm.local_addr_used = 0;
++	spin_unlock_bh(&msk->pm.lock);
  }
  
- void nft_counter_init_seqcount(void)
--- 
-2.43.0
-
+ static void mptcp_nl_remove_addrs_list(struct net *net,
 
 
 
