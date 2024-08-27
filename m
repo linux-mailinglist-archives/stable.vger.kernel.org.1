@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-70738-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71007-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10A06960FC6
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:02:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7216961120
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:16:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 43B8A1C238F8
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:02:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07B741C23510
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:16:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D9051C6F5E;
-	Tue, 27 Aug 2024 15:01:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77C301C8228;
+	Tue, 27 Aug 2024 15:16:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PYfpbuXB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vt3NlYff"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C04F81C6887;
-	Tue, 27 Aug 2024 15:01:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35D4717C96;
+	Tue, 27 Aug 2024 15:16:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770902; cv=none; b=L8V5uGRv/YUoajFVVbPVhy0FEs9yRyePF0AqTFsdHAEUSW40qVXZ/XY/v5PKvElm/oRFTUyuPrUIW49wMEe2+RgXh2KKYsZBALs5K4h3jDhzY5XBfgtQUwB01gs312QEicmP7co/Eedg6LUscn040geE5+FEd1qclezgtaYAL+I=
+	t=1724771787; cv=none; b=hHGNU9M1HItifsvfhVsJ5L1/AclimxCKQfKxXxtqisiz+Elrzuhlc9iPZQweTgLpV+8pQjr5+dvBUvfUgy4tPoeDv2+rgnZkDxbRs7E7qy3rm/GpVR/4gQ6jA96EcF1kqxMGSo9RN1ewhgawWjEQKHYVSMBtrmt4RfN2Xq+RDmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770902; c=relaxed/simple;
-	bh=NitfEoV6gR+O8l+kU2GxNtpsT5R8vGu8vaRYb2FKEVQ=;
+	s=arc-20240116; t=1724771787; c=relaxed/simple;
+	bh=AMZFAmD/fK6RNfJGtOds69koBBHhUTte+TKIRRImcVw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GthPJRl/TQzxqJp5+tj1FHxHjTCGcls6mN0RnK8I3W1O2UCg883nlQCVj6UQTe9TGsGomfGKh8Pk8wQoivcSSIydOmrPFpLmIl43W6MgGiTMgJlhvkkOq5NsPdsFYEImV0LtT2f8KMeZhvB06BUAPDySPxSUer544znJYTtruEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PYfpbuXB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A414C4AF1C;
-	Tue, 27 Aug 2024 15:01:42 +0000 (UTC)
+	 MIME-Version; b=Xol9D4SYPHjp6DIbMYcHCGQV25ag8KrAdQhMbAWZXvuXeIFyjgqcSOhyLFIbH9fkcLshqMLnsCvnckyNXY9fpD+/f+Hq00jnBOdSvwwb28jV/uxQ8fzhf3+iCkAa3BOuWVcor6kycifNE+ovTS2F6IMWtb9lvO7YBkLFkg/ZPxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vt3NlYff; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A69D9C4DE10;
+	Tue, 27 Aug 2024 15:16:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770902;
-	bh=NitfEoV6gR+O8l+kU2GxNtpsT5R8vGu8vaRYb2FKEVQ=;
+	s=korg; t=1724771787;
+	bh=AMZFAmD/fK6RNfJGtOds69koBBHhUTte+TKIRRImcVw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PYfpbuXBk1c1gs7Bj8jgrPsMDDhuJnDEplI6O+jSTCcGezhi32lYeaT0Uhpi7i29X
-	 rqyrEXfbjnSyjrixgzve9f14q0lZhj+8D0mqnZTVl+sPx7CZrHVHIgaK/jM/MZ6FEr
-	 8OTJvPV2SwMRzDxuCSwHeJD6rH2N+k+vJkTYa/20=
+	b=vt3NlYffJeq5QSBKvzeZCPFZxvHfJzjf8l00Xjudnrn9t3jnJi1tjsQOjjxCNHYqW
+	 TZfxmTsfzUXpeSkB1R80aLNQ/lys5vfoFvpWlpTK6TSjiAQpseMhB7zsGX//uaYPAN
+	 iEkxlLkOxbFwBTjrRr58yw5RR0VR0BKETD6xrXEU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mathieu Othacehe <othacehe@gnu.org>,
-	stable <stable@kernel.org>,
-	Alexander Dahl <ada@thorsis.com>
-Subject: [PATCH 6.10 003/273] tty: atmel_serial: use the correct RTS flag.
-Date: Tue, 27 Aug 2024 16:35:27 +0200
-Message-ID: <20240827143833.507389844@linuxfoundation.org>
+	Al Viro <viro@zeniv.linux.org.uk>
+Subject: [PATCH 6.1 020/321] fix bitmap corruption on close_range() with CLOSE_RANGE_UNSHARE
+Date: Tue, 27 Aug 2024 16:35:28 +0200
+Message-ID: <20240827143838.979105793@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +60,189 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathieu Othacehe <othacehe@gnu.org>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-commit c9f6613b16123989f2c3bd04b1d9b2365d6914e7 upstream.
+commit 9a2fa1472083580b6c66bdaf291f591e1170123a upstream.
 
-In RS485 mode, the RTS pin is driven high by hardware when the transmitter
-is operating. This behaviour cannot be changed. This means that the driver
-should claim that it supports SER_RS485_RTS_ON_SEND and not
-SER_RS485_RTS_AFTER_SEND.
+copy_fd_bitmaps(new, old, count) is expected to copy the first
+count/BITS_PER_LONG bits from old->full_fds_bits[] and fill
+the rest with zeroes.  What it does is copying enough words
+(BITS_TO_LONGS(count/BITS_PER_LONG)), then memsets the rest.
+That works fine, *if* all bits past the cutoff point are
+clear.  Otherwise we are risking garbage from the last word
+we'd copied.
 
-Otherwise, when configuring the port with the SER_RS485_RTS_ON_SEND, one
-get the following warning:
+For most of the callers that is true - expand_fdtable() has
+count equal to old->max_fds, so there's no open descriptors
+past count, let alone fully occupied words in ->open_fds[],
+which is what bits in ->full_fds_bits[] correspond to.
 
-kern.warning kernel: atmel_usart_serial atmel_usart_serial.2.auto:
-ttyS1 (1): invalid RTS setting, using RTS_AFTER_SEND instead
+The other caller (dup_fd()) passes sane_fdtable_size(old_fdt, max_fds),
+which is the smallest multiple of BITS_PER_LONG that covers all
+opened descriptors below max_fds.  In the common case (copying on
+fork()) max_fds is ~0U, so all opened descriptors will be below
+it and we are fine, by the same reasons why the call in expand_fdtable()
+is safe.
 
-which is contradictory with what's really happening.
+Unfortunately, there is a case where max_fds is less than that
+and where we might, indeed, end up with junk in ->full_fds_bits[] -
+close_range(from, to, CLOSE_RANGE_UNSHARE) with
+	* descriptor table being currently shared
+	* 'to' being above the current capacity of descriptor table
+	* 'from' being just under some chunk of opened descriptors.
+In that case we end up with observably wrong behaviour - e.g. spawn
+a child with CLONE_FILES, get all descriptors in range 0..127 open,
+then close_range(64, ~0U, CLOSE_RANGE_UNSHARE) and watch dup(0) ending
+up with descriptor #128, despite #64 being observably not open.
 
-Signed-off-by: Mathieu Othacehe <othacehe@gnu.org>
-Cc: stable <stable@kernel.org>
-Tested-by: Alexander Dahl <ada@thorsis.com>
-Fixes: af47c491e3c7 ("serial: atmel: Fill in rs485_supported")
-Link: https://lore.kernel.org/r/20240808060637.19886-1-othacehe@gnu.org
+The minimally invasive fix would be to deal with that in dup_fd().
+If this proves to add measurable overhead, we can go that way, but
+let's try to fix copy_fd_bitmaps() first.
+
+* new helper: bitmap_copy_and_expand(to, from, bits_to_copy, size).
+* make copy_fd_bitmaps() take the bitmap size in words, rather than
+bits; it's 'count' argument is always a multiple of BITS_PER_LONG,
+so we are not losing any information, and that way we can use the
+same helper for all three bitmaps - compiler will see that count
+is a multiple of BITS_PER_LONG for the large ones, so it'll generate
+plain memcpy()+memset().
+
+Reproducer added to tools/testing/selftests/core/close_range_test.c
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/atmel_serial.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/file.c                                       |   28 ++++++++-----------
+ include/linux/bitmap.h                          |   12 ++++++++
+ tools/testing/selftests/core/close_range_test.c |   35 ++++++++++++++++++++++++
+ 3 files changed, 59 insertions(+), 16 deletions(-)
 
---- a/drivers/tty/serial/atmel_serial.c
-+++ b/drivers/tty/serial/atmel_serial.c
-@@ -2514,7 +2514,7 @@ static const struct uart_ops atmel_pops
- };
+--- a/fs/file.c
++++ b/fs/file.c
+@@ -46,27 +46,23 @@ static void free_fdtable_rcu(struct rcu_
+ #define BITBIT_NR(nr)	BITS_TO_LONGS(BITS_TO_LONGS(nr))
+ #define BITBIT_SIZE(nr)	(BITBIT_NR(nr) * sizeof(long))
  
- static const struct serial_rs485 atmel_rs485_supported = {
--	.flags = SER_RS485_ENABLED | SER_RS485_RTS_AFTER_SEND | SER_RS485_RX_DURING_TX,
-+	.flags = SER_RS485_ENABLED | SER_RS485_RTS_ON_SEND | SER_RS485_RX_DURING_TX,
- 	.delay_rts_before_send = 1,
- 	.delay_rts_after_send = 1,
- };
++#define fdt_words(fdt) ((fdt)->max_fds / BITS_PER_LONG) // words in ->open_fds
+ /*
+  * Copy 'count' fd bits from the old table to the new table and clear the extra
+  * space if any.  This does not copy the file pointers.  Called with the files
+  * spinlock held for write.
+  */
+-static void copy_fd_bitmaps(struct fdtable *nfdt, struct fdtable *ofdt,
+-			    unsigned int count)
++static inline void copy_fd_bitmaps(struct fdtable *nfdt, struct fdtable *ofdt,
++			    unsigned int copy_words)
+ {
+-	unsigned int cpy, set;
++	unsigned int nwords = fdt_words(nfdt);
+ 
+-	cpy = count / BITS_PER_BYTE;
+-	set = (nfdt->max_fds - count) / BITS_PER_BYTE;
+-	memcpy(nfdt->open_fds, ofdt->open_fds, cpy);
+-	memset((char *)nfdt->open_fds + cpy, 0, set);
+-	memcpy(nfdt->close_on_exec, ofdt->close_on_exec, cpy);
+-	memset((char *)nfdt->close_on_exec + cpy, 0, set);
+-
+-	cpy = BITBIT_SIZE(count);
+-	set = BITBIT_SIZE(nfdt->max_fds) - cpy;
+-	memcpy(nfdt->full_fds_bits, ofdt->full_fds_bits, cpy);
+-	memset((char *)nfdt->full_fds_bits + cpy, 0, set);
++	bitmap_copy_and_extend(nfdt->open_fds, ofdt->open_fds,
++			copy_words * BITS_PER_LONG, nwords * BITS_PER_LONG);
++	bitmap_copy_and_extend(nfdt->close_on_exec, ofdt->close_on_exec,
++			copy_words * BITS_PER_LONG, nwords * BITS_PER_LONG);
++	bitmap_copy_and_extend(nfdt->full_fds_bits, ofdt->full_fds_bits,
++			copy_words, nwords);
+ }
+ 
+ /*
+@@ -84,7 +80,7 @@ static void copy_fdtable(struct fdtable
+ 	memcpy(nfdt->fd, ofdt->fd, cpy);
+ 	memset((char *)nfdt->fd + cpy, 0, set);
+ 
+-	copy_fd_bitmaps(nfdt, ofdt, ofdt->max_fds);
++	copy_fd_bitmaps(nfdt, ofdt, fdt_words(ofdt));
+ }
+ 
+ /*
+@@ -374,7 +370,7 @@ struct files_struct *dup_fd(struct files
+ 		open_files = sane_fdtable_size(old_fdt, max_fds);
+ 	}
+ 
+-	copy_fd_bitmaps(new_fdt, old_fdt, open_files);
++	copy_fd_bitmaps(new_fdt, old_fdt, open_files / BITS_PER_LONG);
+ 
+ 	old_fds = old_fdt->fd;
+ 	new_fds = new_fdt->fd;
+--- a/include/linux/bitmap.h
++++ b/include/linux/bitmap.h
+@@ -281,6 +281,18 @@ static inline void bitmap_copy_clear_tai
+ 		dst[nbits / BITS_PER_LONG] &= BITMAP_LAST_WORD_MASK(nbits);
+ }
+ 
++static inline void bitmap_copy_and_extend(unsigned long *to,
++					  const unsigned long *from,
++					  unsigned int count, unsigned int size)
++{
++	unsigned int copy = BITS_TO_LONGS(count);
++
++	memcpy(to, from, copy * sizeof(long));
++	if (count % BITS_PER_LONG)
++		to[copy - 1] &= BITMAP_LAST_WORD_MASK(count);
++	memset(to + copy, 0, bitmap_size(size) - copy * sizeof(long));
++}
++
+ /*
+  * On 32-bit systems bitmaps are represented as u32 arrays internally. On LE64
+  * machines the order of hi and lo parts of numbers match the bitmap structure.
+--- a/tools/testing/selftests/core/close_range_test.c
++++ b/tools/testing/selftests/core/close_range_test.c
+@@ -563,4 +563,39 @@ TEST(close_range_cloexec_unshare_syzbot)
+ 	EXPECT_EQ(close(fd3), 0);
+ }
+ 
++TEST(close_range_bitmap_corruption)
++{
++	pid_t pid;
++	int status;
++	struct __clone_args args = {
++		.flags = CLONE_FILES,
++		.exit_signal = SIGCHLD,
++	};
++
++	/* get the first 128 descriptors open */
++	for (int i = 2; i < 128; i++)
++		EXPECT_GE(dup2(0, i), 0);
++
++	/* get descriptor table shared */
++	pid = sys_clone3(&args, sizeof(args));
++	ASSERT_GE(pid, 0);
++
++	if (pid == 0) {
++		/* unshare and truncate descriptor table down to 64 */
++		if (sys_close_range(64, ~0U, CLOSE_RANGE_UNSHARE))
++			exit(EXIT_FAILURE);
++
++		ASSERT_EQ(fcntl(64, F_GETFD), -1);
++		/* ... and verify that the range 64..127 is not
++		   stuck "fully used" according to secondary bitmap */
++		EXPECT_EQ(dup(0), 64)
++			exit(EXIT_FAILURE);
++		exit(EXIT_SUCCESS);
++	}
++
++	EXPECT_EQ(waitpid(pid, &status, 0), pid);
++	EXPECT_EQ(true, WIFEXITED(status));
++	EXPECT_EQ(0, WEXITSTATUS(status));
++}
++
+ TEST_HARNESS_MAIN
 
 
 
