@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-71240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70717-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C938C961291
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:32:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1063960FA8
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:01:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 91BAFB26650
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:31:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D638D1C22FC1
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:01:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6409B1CCB2C;
-	Tue, 27 Aug 2024 15:29:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC9D21C7B6F;
+	Tue, 27 Aug 2024 15:00:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rVf2swvF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X9Zevky0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21CED19F485;
-	Tue, 27 Aug 2024 15:29:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1E0B1E487;
+	Tue, 27 Aug 2024 15:00:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772561; cv=none; b=tpEaeAK7qy1Mv1X8kl4n+MD+pqsTypSvjCU23ey+CfE9fPx/d6uIuRSBr411I/KZUIW0cJPJoJjQ1xvxMCVDIu6RsXrtyMgXMxGEjqyPgkLnckGkPaHaRbzkLQQNSgcFWPV+qDRrl3bAg5aLVi67uS5o/PE6BktjJV5XVmCGCQ0=
+	t=1724770834; cv=none; b=gnkEsiWxfmtW/P1ezW1KQrfMmit6WNxJXKmrL/IGk+fxmBCdp6d3f3Of2uTj17fX9EvVxxbWQVq/CrdqXBSqSW/BMnLkq15yc78I9G0WuyIyXdrUWddd6V1+qiNXWAWHDGrHQfBhj6+k4YU77iVk1UsX6Jz1g5rd+/zJ+rYlZTo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772561; c=relaxed/simple;
-	bh=LGTexLJ4HVhM+rSEsGpGBcAnRUX9YjsjZA5+tw3ppoA=;
+	s=arc-20240116; t=1724770834; c=relaxed/simple;
+	bh=6gioIMrMfgXMnfS1e5xaQ/VdAjj9wWfy6CRR6gs/G2E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GIqjn+IoTK0gpsBHjDVilnItIrH/XkHTxPGN/uEbYu0xRy/3Qx1WZKiroucZ1DUwn1RgPPaZ7h+suQ0JQzmSYmUmH+jAN44l3num+zaqRCrhAC40A470qraUNS0EynNPEkYHM7QNgK3jZ3hGnFBecw5Ho4oDN1c4Zep71Mdx7jo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rVf2swvF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4ED25C6107E;
-	Tue, 27 Aug 2024 15:29:20 +0000 (UTC)
+	 MIME-Version; b=hA1rijHy2Ttn0l7Hml5H374nrz8vaL5lnFmtgTtF6L14mSmGmIsFPWRA7uRBboIhfoyAG++1m0zjxg2vF0D+/4nBYlBotarx1ZyCnAWioMuY6HQWXL9Uw7X3jHPvvSdnm95cpWpqxv/0BcrWVPcFc7DhUn7qhS+AcopcjuwjEdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X9Zevky0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D186AC4AF1C;
+	Tue, 27 Aug 2024 15:00:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772561;
-	bh=LGTexLJ4HVhM+rSEsGpGBcAnRUX9YjsjZA5+tw3ppoA=;
+	s=korg; t=1724770834;
+	bh=6gioIMrMfgXMnfS1e5xaQ/VdAjj9wWfy6CRR6gs/G2E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rVf2swvF+xsIBosbXVw6YidWUhO2uP24Lej5Qwhbm+J1ZvqiZjXF244qTzG6+5Xvv
-	 aPm1eK8HVCM8h2m5h8yXqaDVXtVTH/t6a+S9qD4dW6ZNEx6pXI2Ee6OwKBXAKrKRRL
-	 VKX8J8pkm7yD2sxhiNblZCSi+I4828IvF33jakns=
+	b=X9Zevky0vJSTMThMwaiwk1LXwL6lRN3HUM8TzCbfy7Wn2dWsP05Gh3BLVThNa0fUR
+	 TGFGo5rmF7gIU8erTHaYfLPZ2ewJKfqT1Ux5BqaiG/koVNjM6egIgZECkm5DkZd+94
+	 ImwOPZ1f83z5oJsrMPdCOKADl4ubc7J0J5/449pw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Vasily Averin <vasily.averin@linux.dev>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 252/321] ipv6: fix possible UAF in ip6_finish_output2()
+	Faizal Rahim <faizal.abdul.rahim@linux.intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>
+Subject: [PATCH 6.6 329/341] igc: Fix qbv tx latency by setting gtxoffset
 Date: Tue, 27 Aug 2024 16:39:20 +0200
-Message-ID: <20240827143847.836699540@linuxfoundation.org>
+Message-ID: <20240827143855.914983330@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +64,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Faizal Rahim <faizal.abdul.rahim@linux.intel.com>
 
-[ Upstream commit da273b377ae0d9bd255281ed3c2adb228321687b ]
+commit 6c3fc0b1c3d073bd6fc3bf43dbd0e64240537464 upstream.
 
-If skb_expand_head() returns NULL, skb has been freed
-and associated dst/idev could also have been freed.
+A large tx latency issue was discovered during testing when only QBV was
+enabled. The issue occurs because gtxoffset was not set when QBV is
+active, it was only set when launch time is active.
 
-We need to hold rcu_read_lock() to make sure the dst and
-associated idev are alive.
+The patch "igc: Correct the launchtime offset" only sets gtxoffset when
+the launchtime_enable field is set by the user. Enabling launchtime_enable
+ultimately sets the register IGC_TXQCTL_QUEUE_MODE_LAUNCHT (referred to as
+LaunchT in the SW user manual).
 
-Fixes: 5796015fa968 ("ipv6: allocate enough headroom in ip6_finish_output2()")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Vasily Averin <vasily.averin@linux.dev>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20240820160859.3786976-3-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Section 7.5.2.6 of the IGC i225/6 SW User Manual Rev 1.2.4 states:
+"The latency between transmission scheduling (launch time) and the
+time the packet is transmitted to the network is listed in Table 7-61."
+
+However, the patch misinterprets the phrase "launch time" in that section
+by assuming it specifically refers to the LaunchT register, whereas it
+actually denotes the generic term for when a packet is released from the
+internal buffer to the MAC transmit logic.
+
+This launch time, as per that section, also implicitly refers to the QBV
+gate open time, where a packet waits in the buffer for the QBV gate to
+open. Therefore, latency applies whenever QBV is in use. TSN features such
+as QBU and QAV reuse QBV, making the latency universal to TSN features.
+
+Discussed with i226 HW owner (Shalev, Avi) and we were in agreement that
+the term "launch time" used in Section 7.5.2.6 is not clear and can be
+easily misinterpreted. Avi will update this section to:
+"When TQAVCTRL.TRANSMIT_MODE = TSN, the latency between transmission
+scheduling and the time the packet is transmitted to the network is listed
+in Table 7-61."
+
+Fix this issue by using igc_tsn_is_tx_mode_in_tsn() as a condition to
+write to gtxoffset, aligning with the newly updated SW User Manual.
+
+Tested:
+1. Enrol taprio on talker board
+   base-time 0
+   cycle-time 1000000
+   flags 0x2
+   index 0 cmd S gatemask 0x1 interval1
+   index 0 cmd S gatemask 0x1 interval2
+
+   Note:
+   interval1 = interval for a 64 bytes packet to go through
+   interval2 = cycle-time - interval1
+
+2. Take tcpdump on listener board
+
+3. Use udp tai app on talker to send packets to listener
+
+4. Check the timestamp on listener via wireshark
+
+Test Result:
+100 Mbps: 113 ~193 ns
+1000 Mbps: 52 ~ 84 ns
+2500 Mbps: 95 ~ 223 ns
+
+Note that the test result is similar to the patch "igc: Correct the
+launchtime offset".
+
+Fixes: 790835fcc0cb ("igc: Correct the launchtime offset")
+Signed-off-by: Faizal Rahim <faizal.abdul.rahim@linux.intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/ip6_output.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/ethernet/intel/igc/igc_tsn.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
-index 796cf0a0a4225..cfca9627398ee 100644
---- a/net/ipv6/ip6_output.c
-+++ b/net/ipv6/ip6_output.c
-@@ -69,11 +69,15 @@ static int ip6_finish_output2(struct net *net, struct sock *sk, struct sk_buff *
+--- a/drivers/net/ethernet/intel/igc/igc_tsn.c
++++ b/drivers/net/ethernet/intel/igc/igc_tsn.c
+@@ -61,7 +61,7 @@ void igc_tsn_adjust_txtime_offset(struct
+ 	struct igc_hw *hw = &adapter->hw;
+ 	u16 txoffset;
  
- 	/* Be paranoid, rather than too clever. */
- 	if (unlikely(hh_len > skb_headroom(skb)) && dev->header_ops) {
-+		/* Make sure idev stays alive */
-+		rcu_read_lock();
- 		skb = skb_expand_head(skb, hh_len);
- 		if (!skb) {
- 			IP6_INC_STATS(net, idev, IPSTATS_MIB_OUTDISCARDS);
-+			rcu_read_unlock();
- 			return -ENOMEM;
- 		}
-+		rcu_read_unlock();
- 	}
+-	if (!is_any_launchtime(adapter))
++	if (!igc_tsn_is_tx_mode_in_tsn(adapter))
+ 		return;
  
- 	hdr = ipv6_hdr(skb);
--- 
-2.43.0
-
+ 	switch (adapter->link_speed) {
 
 
 
