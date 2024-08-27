@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-70413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70418-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B4B1960DFA
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:43:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 239DC960E01
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:44:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD7F81C2327E
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:43:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE2AA1F22784
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:44:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 248241C57B1;
-	Tue, 27 Aug 2024 14:43:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A01F61C579D;
+	Tue, 27 Aug 2024 14:43:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tK/JlEhW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ei8ce8fE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D49FA73466;
-	Tue, 27 Aug 2024 14:43:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F25119EEA2;
+	Tue, 27 Aug 2024 14:43:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724769818; cv=none; b=fJZ/g8KfSRuB4OYUyjtXyCRgEHvrKYOkxSPrjeBjOAZZALJUwYn6jdUyheqjW3a2DOhUaDzwNtuBwA2jvgeUHWlzJv/9hEJuPXJIYDF52W8R7RQOucKghwTQyY3J3Ba0DeO47qCiWdpt675lrs9gocozbJQ/g73/aYIN5bPpUoQ=
+	t=1724769835; cv=none; b=ju1kP8oi+KgKEr3A9W2V6ZkG9/a80hLiN8O5k9OpxqWlRZtcQkemsONfNt5LzCthxnAjA0xWJ2TzBNYEvngIeEC/uPF+/PEndohf6pPlV5oZ+Nz3/HPHG82stW7L6UoFawh0jBXeEGDMzqVKKt4SKqScawoHB5HfEqQ+wx0bKmg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724769818; c=relaxed/simple;
-	bh=GAhAapvkGMNWY28DsB1GE7EXHxkvXuA/tC2TWE1Mv5w=;
+	s=arc-20240116; t=1724769835; c=relaxed/simple;
+	bh=VQKeQjGJ39gt29xD3hT00OxW/ZsQ5TEVMF5hZPU7FBI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F7SJtRjSM1lYAGq8XAQBy9TZXfSVpYhQMHQnYQivxTgpCx6P6xoaLSt8rZXzV6W+4WUqGepbh80yZvzo5NFqJ9lyrhPfWQi4e0g6qwlixvOIdxGpijUEaqHvOlaNI4MelptZDbv0KtPhjEC28GpJILa8Keapnal9Gj/GyhxYL9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tK/JlEhW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E23C2C61052;
-	Tue, 27 Aug 2024 14:43:37 +0000 (UTC)
+	 MIME-Version; b=WkDmE91ozldTGxDq9KRZJwMWIf9cG7kAFvFZamuvdFwubnnNdDMCsS0qScyoTg2HW8nmwD6cdmFfhW73Q28V/wzEE/iFPM3YaCYi+ob8dW+6VFETf6Z9pcL8wByhxvRc2+yy5Ey6EypCbngqds2RtB/jlulncRI8TABJqpNvfRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ei8ce8fE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9593AC61053;
+	Tue, 27 Aug 2024 14:43:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724769818;
-	bh=GAhAapvkGMNWY28DsB1GE7EXHxkvXuA/tC2TWE1Mv5w=;
+	s=korg; t=1724769835;
+	bh=VQKeQjGJ39gt29xD3hT00OxW/ZsQ5TEVMF5hZPU7FBI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tK/JlEhW2nYWid0m0xTwgrUrgsqPGsPP9tVlIfA/YzxMB/ZDVMGRijtau4MuG6VRS
-	 cmJ3qns1kgPuiWkeOIFUPAiSdO4kbanrtgyZdhw9mO1cXUC5p3NIF82Tr1leL6mWl7
-	 kA/2WO6RffeQUbiL1Y+9MoL/7LIi0CspcClsIyhE=
+	b=ei8ce8fEmUDhNlrlL55QmF3vW2hdpsb8DvXEuZy6GPP7oW/mgUoL9V292dfVwXV7+
+	 /oCNwu47BpmKMXXN+dgpFiqPXjFEDaza+sI0Axa1zS7bPciZ4sptFX4ntu6QoZUDo7
+	 GYSW6XIwFI0lBpKU5QQkCN0kJ6eVi6j/9CY1dlTg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Michael Mueller <mimu@linux.ibm.com>,
-	Janosch Frank <frankja@linux.ibm.com>
-Subject: [PATCH 6.6 017/341] KVM: s390: fix validity interception issue when gisa is switched off
-Date: Tue, 27 Aug 2024 16:34:08 +0200
-Message-ID: <20240827143844.061113693@linuxfoundation.org>
+	Nam Cao <namcao@linutronix.de>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>
+Subject: [PATCH 6.6 018/341] riscv: change XIPs kernel_map.size to be size of the entire kernel
+Date: Tue, 27 Aug 2024 16:34:09 +0200
+Message-ID: <20240827143844.098458235@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
 References: <20240827143843.399359062@linuxfoundation.org>
@@ -66,89 +66,51 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Michael Mueller <mimu@linux.ibm.com>
+From: Nam Cao <namcao@linutronix.de>
 
-commit 5a44bb061d04b0306f2aa8add761d86d152b9377 upstream.
+commit 57d76bc51fd80824bcc0c84a5b5ec944f1b51edd upstream.
 
-We might run into a SIE validity if gisa has been disabled either via using
-kernel parameter "kvm.use_gisa=0" or by setting the related sysfs
-attribute to N (echo N >/sys/module/kvm/parameters/use_gisa).
+With XIP kernel, kernel_map.size is set to be only the size of data part of
+the kernel. This is inconsistent with "normal" kernel, who sets it to be
+the size of the entire kernel.
 
-The validity is caused by an invalid value in the SIE control block's
-gisa designation. That happens because we pass the uninitialized gisa
-origin to virt_to_phys() before writing it to the gisa designation.
+More importantly, XIP kernel fails to boot if CONFIG_DEBUG_VIRTUAL is
+enabled, because there are checks on virtual addresses with the assumption
+that kernel_map.size is the size of the entire kernel (these checks are in
+arch/riscv/mm/physaddr.c).
 
-To fix this we return 0 in kvm_s390_get_gisa_desc() if the origin is 0.
-kvm_s390_get_gisa_desc() is used to determine which gisa designation to
-set in the SIE control block. A value of 0 in the gisa designation disables
-gisa usage.
+Change XIP's kernel_map.size to be the size of the entire kernel.
 
-The issue surfaces in the host kernel with the following kernel message as
-soon a new kvm guest start is attemted.
-
-kvm: unhandled validity intercept 0x1011
-WARNING: CPU: 0 PID: 781237 at arch/s390/kvm/intercept.c:101 kvm_handle_sie_intercept+0x42e/0x4d0 [kvm]
-Modules linked in: vhost_net tap tun xt_CHECKSUM xt_MASQUERADE xt_conntrack ipt_REJECT xt_tcpudp nft_compat x_tables nf_nat_tftp nf_conntrack_tftp vfio_pci_core irqbypass vhost_vsock vmw_vsock_virtio_transport_common vsock vhost vhost_iotlb kvm nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 ip_set nf_tables sunrpc mlx5_ib ib_uverbs ib_core mlx5_core uvdevice s390_trng eadm_sch vfio_ccw zcrypt_cex4 mdev vfio_iommu_type1 vfio sch_fq_codel drm i2c_core loop drm_panel_orientation_quirks configfs nfnetlink lcs ctcm fsm dm_service_time ghash_s390 prng chacha_s390 libchacha aes_s390 des_s390 libdes sha3_512_s390 sha3_256_s390 sha512_s390 sha256_s390 sha1_s390 sha_common dm_mirror dm_region_hash dm_log zfcp scsi_transport_fc scsi_dh_rdac scsi_dh_emc scsi_dh_alua pkey zcrypt dm_multipath rng_core autofs4 [last unloaded: vfio_pci]
-CPU: 0 PID: 781237 Comm: CPU 0/KVM Not tainted 6.10.0-08682-gcad9f11498ea #6
-Hardware name: IBM 3931 A01 701 (LPAR)
-Krnl PSW : 0704c00180000000 000003d93deb0122 (kvm_handle_sie_intercept+0x432/0x4d0 [kvm])
-           R:0 T:1 IO:1 EX:1 Key:0 M:1 W:0 P:0 AS:3 CC:0 PM:0 RI:0 EA:3
-Krnl GPRS: 000003d900000027 000003d900000023 0000000000000028 000002cd00000000
-           000002d063a00900 00000359c6daf708 00000000000bebb5 0000000000001eff
-           000002cfd82e9000 000002cfd80bc000 0000000000001011 000003d93deda412
-           000003ff8962df98 000003d93de77ce0 000003d93deb011e 00000359c6daf960
-Krnl Code: 000003d93deb0112: c020fffe7259	larl	%r2,000003d93de7e5c4
-           000003d93deb0118: c0e53fa8beac	brasl	%r14,000003d9bd3c7e70
-          #000003d93deb011e: af000000		mc	0,0
-          >000003d93deb0122: a728ffea		lhi	%r2,-22
-           000003d93deb0126: a7f4fe24		brc	15,000003d93deafd6e
-           000003d93deb012a: 9101f0b0		tm	176(%r15),1
-           000003d93deb012e: a774fe48		brc	7,000003d93deafdbe
-           000003d93deb0132: 40a0f0ae		sth	%r10,174(%r15)
-Call Trace:
- [<000003d93deb0122>] kvm_handle_sie_intercept+0x432/0x4d0 [kvm]
-([<000003d93deb011e>] kvm_handle_sie_intercept+0x42e/0x4d0 [kvm])
- [<000003d93deacc10>] vcpu_post_run+0x1d0/0x3b0 [kvm]
- [<000003d93deaceda>] __vcpu_run+0xea/0x2d0 [kvm]
- [<000003d93dead9da>] kvm_arch_vcpu_ioctl_run+0x16a/0x430 [kvm]
- [<000003d93de93ee0>] kvm_vcpu_ioctl+0x190/0x7c0 [kvm]
- [<000003d9bd728b4e>] vfs_ioctl+0x2e/0x70
- [<000003d9bd72a092>] __s390x_sys_ioctl+0xc2/0xd0
- [<000003d9be0e9222>] __do_syscall+0x1f2/0x2e0
- [<000003d9be0f9a90>] system_call+0x70/0x98
-Last Breaking-Event-Address:
- [<000003d9bd3c7f58>] __warn_printk+0xe8/0xf0
-
-Cc: stable@vger.kernel.org
-Reported-by: Christian Borntraeger <borntraeger@linux.ibm.com>
-Fixes: fe0ef0030463 ("KVM: s390: sort out physical vs virtual pointers usage")
-Signed-off-by: Michael Mueller <mimu@linux.ibm.com>
-Tested-by: Christian Borntraeger <borntraeger@linux.ibm.com>
-Reviewed-by: Janosch Frank <frankja@linux.ibm.com>
-Link: https://lore.kernel.org/r/20240801123109.2782155-1-mimu@linux.ibm.com
-Message-ID: <20240801123109.2782155-1-mimu@linux.ibm.com>
-Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
+Signed-off-by: Nam Cao <namcao@linutronix.de>
+Cc: <stable@vger.kernel.org> # v6.1+
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/20240508191917.2892064-1-namcao@linutronix.de
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/kvm/kvm-s390.h |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ arch/riscv/mm/init.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/s390/kvm/kvm-s390.h
-+++ b/arch/s390/kvm/kvm-s390.h
-@@ -249,7 +249,12 @@ static inline unsigned long kvm_s390_get
+--- a/arch/riscv/mm/init.c
++++ b/arch/riscv/mm/init.c
+@@ -912,7 +912,7 @@ static void __init create_kernel_page_ta
+ 				   PMD_SIZE, PAGE_KERNEL_EXEC);
  
- static inline u32 kvm_s390_get_gisa_desc(struct kvm *kvm)
- {
--	u32 gd = virt_to_phys(kvm->arch.gisa_int.origin);
-+	u32 gd;
-+
-+	if (!kvm->arch.gisa_int.origin)
-+		return 0;
-+
-+	gd = virt_to_phys(kvm->arch.gisa_int.origin);
+ 	/* Map the data in RAM */
+-	end_va = kernel_map.virt_addr + XIP_OFFSET + kernel_map.size;
++	end_va = kernel_map.virt_addr + kernel_map.size;
+ 	for (va = kernel_map.virt_addr + XIP_OFFSET; va < end_va; va += PMD_SIZE)
+ 		create_pgd_mapping(pgdir, va,
+ 				   kernel_map.phys_addr + (va - (kernel_map.virt_addr + XIP_OFFSET)),
+@@ -1081,7 +1081,7 @@ asmlinkage void __init setup_vm(uintptr_
  
- 	if (gd && sclp.has_gisaf)
- 		gd |= GISA_FORMAT1;
+ 	phys_ram_base = CONFIG_PHYS_RAM_BASE;
+ 	kernel_map.phys_addr = (uintptr_t)CONFIG_PHYS_RAM_BASE;
+-	kernel_map.size = (uintptr_t)(&_end) - (uintptr_t)(&_sdata);
++	kernel_map.size = (uintptr_t)(&_end) - (uintptr_t)(&_start);
+ 
+ 	kernel_map.va_kernel_xip_pa_offset = kernel_map.virt_addr - kernel_map.xiprom;
+ #else
 
 
 
