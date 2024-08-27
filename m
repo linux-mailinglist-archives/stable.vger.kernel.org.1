@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-71056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86DDD961170
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:20:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9589D960E5E
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:48:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA8691C237E2
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:20:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A8811F21E3B
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:48:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B2061C7B63;
-	Tue, 27 Aug 2024 15:19:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0568C1C6F62;
+	Tue, 27 Aug 2024 14:47:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A8ozKVna"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lyhHQ2as"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A3011C688E;
-	Tue, 27 Aug 2024 15:19:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B768C1C4EE6;
+	Tue, 27 Aug 2024 14:47:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771952; cv=none; b=qEkeXMue0ERe4DhlSuNrhTcQWHUyQDAJHTxyvXKZjasARaeI/SYcH5j1keYL5jENQiYI3BPaePuQYuBXMe49R273r7xBSrUyJ0qk069tZYXcEycbe6Nyjf1O8oCxlm7tgWfld9vhK0S3ltADju8jn05cEdrEoWTJCT2eC6imCNs=
+	t=1724770066; cv=none; b=KSYqPoJkaW5Td3uH+Bu/dFGgYzSD3rdogvs7f+VDT7Vj72K9MeBXEoX0V1qUiXAMlTw+SgfwgT55Igv0EyDA8bVCjoshfktQrnUY811P3KaxknibJ1GIaXNX6BUow7XJvLh6Wf9nJP0FLaypMiJvEwGXtRpoZhEnE6q/8xEcITg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771952; c=relaxed/simple;
-	bh=EtnsMetHgYP7vZeliFDknJiff2twx3mveX2PCR9Q2h0=;
+	s=arc-20240116; t=1724770066; c=relaxed/simple;
+	bh=Bj1TaO+o2I/2EYlab2dQbuHC82VEErgFoJNuyipXrW4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lOu6RAFVkVVeZyCcA2EolWJZwGK/tnpu9KLNem3DrmihjyVfxRpSwgEuxMDos3gzt9Vl7rubZhhe031UMmxZSEf47sK6+KygTHpN42yo1tC+hcvWLIkJVxuUoSUXxJYVFQlgJEHChAtBwReRVLBE5d/i/tbYjmnXoZ1WffU80eo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A8ozKVna; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBE82C61067;
-	Tue, 27 Aug 2024 15:19:11 +0000 (UTC)
+	 MIME-Version; b=CvJT/vcw5RT9DQVx5VoLD+S2vkaAi+DwMCME6BPtPUcbe3lrVskRs89kCFkSCEGh94p60+yeuHRuIHetgNpWZKL09lHeBICnzQYef3O7kOH+EW91T8aVIROamGRJagZm7gxLtr//4getekCifr17/1M0LYOaWCXjdw4MNWBtxPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lyhHQ2as; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24799C61040;
+	Tue, 27 Aug 2024 14:47:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771952;
-	bh=EtnsMetHgYP7vZeliFDknJiff2twx3mveX2PCR9Q2h0=;
+	s=korg; t=1724770066;
+	bh=Bj1TaO+o2I/2EYlab2dQbuHC82VEErgFoJNuyipXrW4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A8ozKVnapBb62xU0HKi97EVqyc6mUUFq8KC6X/0WC27YOn/fC146Y6bbr/luKcqIW
-	 JmwldmE+9JkYx1HGDkQcr5TQkJpUuoF7OJpzdvxbUo0XI4CT8cre3Rgbb1rVYIUBN/
-	 hbm+m46ceWkPsVt12nOSvsdN5J+yOmFfGUMtaAec=
+	b=lyhHQ2as/mfTKxMpjnzJ6KsqHOC1YOUS1sngfhmODZOK2e0VZLkvqZW77m6eplgm8
+	 guM97U4kICiOgpOaZlwRPaS03W0sEAzgMB5Z3cLaedx2M9jk9bENn21pRSLnjgOvO4
+	 rqYn8X3JapjUTLVTgfu0i1ryHvRFKL5k5MhKa70k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+8b2a08dfbd25fd933d75@syzkaller.appspotmail.com,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Tomer Tayar <ttayar@habana.ai>,
+	Oded Gabbay <ogabbay@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 039/321] bpf: drop unnecessary user-triggerable WARN_ONCE in verifierl log
+Subject: [PATCH 6.6 116/341] accel/habanalabs: export dma-buf only if size/offset multiples of PAGE_SIZE
 Date: Tue, 27 Aug 2024 16:35:47 +0200
-Message-ID: <20240827143839.713603791@linuxfoundation.org>
+Message-ID: <20240827143847.828564806@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrii Nakryiko <andrii@kernel.org>
+From: Tomer Tayar <ttayar@habana.ai>
 
-[ Upstream commit cff36398bd4c7d322d424433db437f3c3391c491 ]
+[ Upstream commit 0b75cb5b240fddf181c284d415ee77ef61b418d6 ]
 
-It's trivial for user to trigger "verifier log line truncated" warning,
-as verifier has a fixed-sized buffer of 1024 bytes (as of now), and there are at
-least two pieces of user-provided information that can be output through
-this buffer, and both can be arbitrarily sized by user:
-  - BTF names;
-  - BTF.ext source code lines strings.
+It is currently allowed for a user to export dma-buf with size and
+offset that are not multiples of PAGE_SIZE.
+The exported memory is mapped for the importer device, and there it will
+be rounded to PAGE_SIZE, leading to actually exporting more than the
+user intended to.
+To make the user be aware of it, accept only size and offset which are
+multiple of PAGE_SIZE.
 
-Verifier log buffer should be properly sized for typical verifier state
-output. But it's sort-of expected that this buffer won't be long enough
-in some circumstances. So let's drop the check. In any case code will
-work correctly, at worst truncating a part of a single line output.
-
-Reported-by: syzbot+8b2a08dfbd25fd933d75@syzkaller.appspotmail.com
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/r/20230516180409.3549088-1-andrii@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Tomer Tayar <ttayar@habana.ai>
+Reviewed-by: Oded Gabbay <ogabbay@kernel.org>
+Signed-off-by: Oded Gabbay <ogabbay@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/log.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/accel/habanalabs/common/memory.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/bpf/log.c b/kernel/bpf/log.c
-index 920061e38d2e1..cd1b7113fbfd0 100644
---- a/kernel/bpf/log.c
-+++ b/kernel/bpf/log.c
-@@ -22,9 +22,6 @@ void bpf_verifier_vlog(struct bpf_verifier_log *log, const char *fmt,
+diff --git a/drivers/accel/habanalabs/common/memory.c b/drivers/accel/habanalabs/common/memory.c
+index 4fc72a07d2f59..5b7d9a351133f 100644
+--- a/drivers/accel/habanalabs/common/memory.c
++++ b/drivers/accel/habanalabs/common/memory.c
+@@ -1878,16 +1878,16 @@ static int export_dmabuf(struct hl_ctx *ctx,
  
- 	n = vscnprintf(log->kbuf, BPF_VERIFIER_TMP_LOG_SIZE, fmt, args);
+ static int validate_export_params_common(struct hl_device *hdev, u64 device_addr, u64 size)
+ {
+-	if (!IS_ALIGNED(device_addr, PAGE_SIZE)) {
++	if (!PAGE_ALIGNED(device_addr)) {
+ 		dev_dbg(hdev->dev,
+-			"exported device memory address 0x%llx should be aligned to 0x%lx\n",
++			"exported device memory address 0x%llx should be aligned to PAGE_SIZE 0x%lx\n",
+ 			device_addr, PAGE_SIZE);
+ 		return -EINVAL;
+ 	}
  
--	WARN_ONCE(n >= BPF_VERIFIER_TMP_LOG_SIZE - 1,
--		  "verifier log line truncated - local buffer too short\n");
--
- 	if (log->level == BPF_LOG_KERNEL) {
- 		bool newline = n > 0 && log->kbuf[n - 1] == '\n';
+-	if (size < PAGE_SIZE) {
++	if (!size || !PAGE_ALIGNED(size)) {
+ 		dev_dbg(hdev->dev,
+-			"exported device memory size %llu should be equal to or greater than %lu\n",
++			"exported device memory size %llu should be a multiple of PAGE_SIZE %lu\n",
+ 			size, PAGE_SIZE);
+ 		return -EINVAL;
+ 	}
+@@ -1938,6 +1938,13 @@ static int validate_export_params(struct hl_device *hdev, u64 device_addr, u64 s
+ 	if (rc)
+ 		return rc;
  
++	if (!PAGE_ALIGNED(offset)) {
++		dev_dbg(hdev->dev,
++			"exported device memory offset %llu should be a multiple of PAGE_SIZE %lu\n",
++			offset, PAGE_SIZE);
++		return -EINVAL;
++	}
++
+ 	if ((offset + size) > phys_pg_pack->total_size) {
+ 		dev_dbg(hdev->dev, "offset %#llx and size %#llx exceed total map size %#llx\n",
+ 				offset, size, phys_pg_pack->total_size);
 -- 
 2.43.0
 
