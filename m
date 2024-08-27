@@ -1,113 +1,132 @@
-Return-Path: <stable+bounces-70369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AF0F960CB7
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:57:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 195A8960CD8
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:01:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D4B68282044
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 13:57:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB00E285C20
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:01:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED2341C32E5;
-	Tue, 27 Aug 2024 13:57:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50A7A1C4608;
+	Tue, 27 Aug 2024 14:01:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DlIhxQ3e"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="cCa9/KYC"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fllv0016.ext.ti.com (fllv0016.ext.ti.com [198.47.19.142])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CA231A0721;
-	Tue, 27 Aug 2024 13:57:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29B4A19CCE7;
+	Tue, 27 Aug 2024 14:01:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.142
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724767029; cv=none; b=UKHd+eqfltrH7vfvWDecwPZDX7/G7s9fcvfe3jOc/qtNLe9pLlnx+URNWkiISSv3mH8saPB8Qmfxs2kS9bbw0RBSDvhZ6ixhCxW6RaQ5jXMdXbsRud8qiW6fRvNRoD/L5ZjGdy7XZ2GiSuFBOzLhjy56PRMjp2X0ROCMRH6qWaA=
+	t=1724767285; cv=none; b=T2CRHyrD9j34xiCwbOMvtrxktGeFRJNcskZ2rOKMArTOTNaUT4hu9Rl9lUHIOxkgl1UqfJ5YarNiWRAFlkdG1x1IWJdyk3T/tZ7TpUoFjELjfTR/gBFPnJwm6XtynTJ7OEhrKn69xofo7oQ5PjdX3YK64vVbJCwnzpb2qHD1nmY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724767029; c=relaxed/simple;
-	bh=reO3QG+v1itNZN54c+wyIa0kyddzc2cUrltFlAiFcDc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=axgTXl9Sg7QHBIVFMoqv6sEruIn7+PPxu/EcqqCi2tWg7lce6X0InpyFBMR7n7osTEdG81Y/XhT7ChOKs9HcPr3q2rSgB/dbRi6aNG/Bdu0B8uLReKSd8MPvTrsR7DMEhSAgfmzvyyXImGZ0wPQdHXKkUHnoSaBU9ODEV309WWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DlIhxQ3e; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-428101fa30aso48022095e9.3;
-        Tue, 27 Aug 2024 06:57:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724767026; x=1725371826; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=WZEqvc6zEHEfwAN7IHcwm2DC5T9Ho962g1TGUZnthTU=;
-        b=DlIhxQ3edTCpWkZ+mbayL7Q0GzZPc78qRIDO3hC0LWwjNGBrccdPtjHMVzjQhaeVc6
-         wQHJLGyOIAvdF40kYe2PEtebp+UfEHhu/Hoycymtqm7N43OBptczbJW0viP70Py6RR3N
-         UiBEoTtdjlPTR4hI8/VZbfO3FgPELpf7xNqdxM1g26S78NKa6O4qTq7SFOwHxy4Z40yw
-         XbyHSlep/6iwjwEmPgYX2cuoElI3o1Ah5DZAhWGuCHq6ykMJDRpMS7b+3cHx+gcHmd1x
-         or6BR17wS2P2uvt5y3Nz72vGGSz8+9fOLeNbEDe4h9k2XLk9e7lNSqPGZDd+0uBvJr88
-         9RIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724767026; x=1725371826;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=WZEqvc6zEHEfwAN7IHcwm2DC5T9Ho962g1TGUZnthTU=;
-        b=YH/d8bviB1EErflor87fRoH3l5S0ibU6DvdoJNRTNuwaAaFyh5wQY6l1UIcfDp9NOK
-         m7RuHbnzqKH9xzAHiL1luhKx7i05lYxcjv4PsaWwAYO1Qqae/F93b62SXc/RST3mKxFy
-         9UIhmxkVwe/Ti1ouGi77QNj4JNVlt2EYb7765cYIk38QGIjgKbeYUGWmZFpUv77otTtZ
-         Pa5ipdTBV+UTK0w8x8J85ENRcvHiZFQvox50Zk/MOeb/80Uux+3NY3tuHwX6Lx9vegFU
-         BlFssj5+TA0W8u/twz5pX75Y0l+yTXvQsAYBanou5cgz3cZM1y8oZKk471Llq0077r1D
-         j0jw==
-X-Forwarded-Encrypted: i=1; AJvYcCVz90iX54khsaxc+MAMtBBsFvLlV0FL2pMAeSpXbLrolixLKUEFdJrRElyS2AGGjwZM+eP95m0Hl65fdV4=@vger.kernel.org, AJvYcCX7EDsX4UHO0JSD9pns+yJkbw6pnU8MjowM5LLf1I9KfGvYQ4qmKvK/1bw1d+/TN7SMRAChqMAYT3McjFg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxV/eHV47tUEs7xOMWE9LhkALPE3LBupBuPED5hMa4ZiT9AryuE
-	e+Gm+S2kIFxTtuQRtZzPQXa4RNT3uW6W7RqM61xDWxSRb0fWFYmR
-X-Google-Smtp-Source: AGHT+IEjaBiDkWtaA95khky22P6PC5R3VYIlTNatnUSbe9dgj0TFqbAkCCvOcvJ7G8YL9qcSzKRZMQ==
-X-Received: by 2002:a05:600c:1d03:b0:42a:a6aa:4135 with SMTP id 5b1f17b1804b1-42b9adf0b5fmr23266855e9.20.1724767025987;
-        Tue, 27 Aug 2024 06:57:05 -0700 (PDT)
-Received: from localhost (p200300e41f29d300f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f29:d300:f22f:74ff:fe1f:3a53])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42ac5162322sm185664985e9.24.2024.08.27.06.57.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Aug 2024 06:57:05 -0700 (PDT)
-From: Thierry Reding <thierry.reding@gmail.com>
-To: Thierry Reding <thierry.reding@gmail.com>,
-	Jonathan Hunter <jonathanh@nvidia.com>,
-	Timo Alho <talho@nvidia.com>,
-	linux-tegra@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] firmware: tegra: bpmp: drop unused mbox_client_to_bpmp()
-Date: Tue, 27 Aug 2024 15:57:01 +0200
-Message-ID: <172476700282.1247158.4472584146310216649.b4-ty@nvidia.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240816135722.105945-1-krzysztof.kozlowski@linaro.org>
-References: <20240816135722.105945-1-krzysztof.kozlowski@linaro.org>
+	s=arc-20240116; t=1724767285; c=relaxed/simple;
+	bh=JTFS2PVVJIJrI9zvTKz1C0Bfs/Ut4i1CDsZqM/4JB7I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=FRnjZ0TIKmRrj9WJ0j8mnr9S4pawtn15MJMoWVcQVR8U2P5e21A96cTzjHqUx2h2Z+7k555SolbnY/ddRVswLWet/B3FhwSysrpL96bhyZA00Pdu3SAJ5YNyKN62tK6Zcj0xJNyP9b3jUXUNYvpYYUkHsUHvuHklnZcyIAeWRYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=cCa9/KYC; arc=none smtp.client-ip=198.47.19.142
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from fllv0034.itg.ti.com ([10.64.40.246])
+	by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 47RE0puQ039507;
+	Tue, 27 Aug 2024 09:00:51 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1724767251;
+	bh=9ZEIfkkxyG9bAFYtC9wPW17DasVSTlWqXzVbnjgOKhY=;
+	h=Date:Subject:To:CC:References:From:In-Reply-To;
+	b=cCa9/KYCU5ZxksszyLamCdcrMtXjwHslW0JHn0OkEWEzAAH47H9zHJ6BNOoL1RwtE
+	 32aI6DvEXc2o6BCqhIHIod4XbQr4lvouII8ZAtrVI8010hWpZO5RoAiVU/9sv0ry5M
+	 pVnFx2Gpl5nh2FA2aAfasRNodzooMa08NRmmp488=
+Received: from DFLE100.ent.ti.com (dfle100.ent.ti.com [10.64.6.21])
+	by fllv0034.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 47RE0p1f108182
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Tue, 27 Aug 2024 09:00:51 -0500
+Received: from DFLE112.ent.ti.com (10.64.6.33) by DFLE100.ent.ti.com
+ (10.64.6.21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Tue, 27
+ Aug 2024 09:00:51 -0500
+Received: from lelvsmtp6.itg.ti.com (10.180.75.249) by DFLE112.ent.ti.com
+ (10.64.6.33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Tue, 27 Aug 2024 09:00:51 -0500
+Received: from [10.249.141.75] ([10.249.141.75])
+	by lelvsmtp6.itg.ti.com (8.15.2/8.15.2) with ESMTP id 47RE0kO8115169;
+	Tue, 27 Aug 2024 09:00:47 -0500
+Message-ID: <6843a1b4-e331-435d-9cc7-9b457955d3cd@ti.com>
+Date: Tue, 27 Aug 2024 19:30:45 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] PCI: dra7xx: Fix error handling when IRQ request
+ fails in probe
+To: Siddharth Vadapalli <s-vadapalli@ti.com>, <bhelgaas@google.com>,
+        <lpieralisi@kernel.org>, <kw@linux.com>, <robh@kernel.org>,
+        <vigneshr@ti.com>, <kishon@kernel.org>,
+        <manivannan.sadhasivam@linaro.org>, <j-keerthy@ti.com>
+CC: <linux-omap@vger.kernel.org>, <linux-pci@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+        <stable@vger.kernel.org>, <srk@ti.com>
+References: <20240827122422.985547-1-s-vadapalli@ti.com>
+ <20240827122422.985547-3-s-vadapalli@ti.com>
+Content-Language: en-US
+From: "Kumar, Udit" <u-kumar1@ti.com>
+In-Reply-To: <20240827122422.985547-3-s-vadapalli@ti.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-EXCLAIMER-MD-CONFIG: e1e8a2fd-e40a-4ac6-ac9b-f7e9cc9ee180
 
-From: Thierry Reding <treding@nvidia.com>
+
+On 8/27/2024 5:54 PM, Siddharth Vadapalli wrote:
+> Commit d4c7d1a089d6 ("PCI: dwc: dra7xx: Push request_irq() call to the
+> bottom of probe") moved the IRQ request for "dra7xx-pcie-main" towards
+> the end of dra7xx_pcie_probe(). However, the error handling does not take
+> into account the initialization performed by either dra7xx_add_pcie_port()
+> or dra7xx_add_pcie_ep(), depending on the mode of operation. Fix the error
+> handling to address this.
+>
+> Fixes: d4c7d1a089d6 ("PCI: dwc: dra7xx: Push request_irq() call to the bottom of probe")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+> ---
+>   drivers/pci/controller/dwc/pci-dra7xx.c | 8 +++++++-
+>   1 file changed, 7 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/pci/controller/dwc/pci-dra7xx.c b/drivers/pci/controller/dwc/pci-dra7xx.c
+> index 20fb50741f3d..5c62e1a3ba52 100644
+> --- a/drivers/pci/controller/dwc/pci-dra7xx.c
+> +++ b/drivers/pci/controller/dwc/pci-dra7xx.c
+> @@ -854,11 +854,17 @@ static int dra7xx_pcie_probe(struct platform_device *pdev)
+>   					"dra7xx-pcie-main", dra7xx);
+>   	if (ret) {
+>   		dev_err(dev, "failed to request irq\n");
+> -		goto err_gpio;
+> +		goto err_deinit;
+>   	}
+>   
+>   	return 0;
+>   
+> +err_deinit:
+> +	if (dra7xx->mode == DW_PCIE_RC_TYPE)
+> +		dw_pcie_host_deinit(&dra7xx->pci->pp);
+> +	else
+> +		dw_pcie_ep_deinit(&dra7xx->pci->ep);
 
 
-On Fri, 16 Aug 2024 15:57:21 +0200, Krzysztof Kozlowski wrote:
-> mbox_client_to_bpmp() is not used, W=1 builds:
-> 
->   drivers/firmware/tegra/bpmp.c:28:1: error: unused function 'mbox_client_to_bpmp' [-Werror,-Wunused-function]
-> 
-> 
+dw_pcie_ep_deinit may not be available in previous kernels
 
-Applied, thanks!
+Otherwise
+Tested-by: Udit Kumar <u-kumar1@ti.com>
 
-[1/2] firmware: tegra: bpmp: drop unused mbox_client_to_bpmp()
-      commit: 6aa3ed11978d55f6d0377fdc58f1ef19dbd03af7
-[2/2] firmware: tegra: bpmp: use scoped device node handling to simplify error paths
-      commit: d281ecc22a0da7f2f067f61f563c3475d9d90059
-
-Best regards,
--- 
-Thierry Reding <treding@nvidia.com>
+> +
+>   err_gpio:
+>   err_get_sync:
+>   	pm_runtime_put(dev);
 
