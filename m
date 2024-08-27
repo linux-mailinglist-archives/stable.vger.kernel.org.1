@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-70789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70538-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A530796100C
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:05:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE9E0960EA4
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:50:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B7751F235A6
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:05:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D579A1C2103C
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:50:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14E861C4EE6;
-	Tue, 27 Aug 2024 15:04:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 195D21C57A9;
+	Tue, 27 Aug 2024 14:50:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p22GUbIx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o0Q+ir7w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1DE71C2DB1;
-	Tue, 27 Aug 2024 15:04:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC31344C8C;
+	Tue, 27 Aug 2024 14:50:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771065; cv=none; b=Oyy19NeXUPY9u3KaaPUBmjGlSwQ8wbp0MS4tCf29Rxz0I8rc+Ovu2ozIzrUv5qplt1OtE7hWCpeYOKXt/Lzrd6t2I/D13dBFg4Lx/IjMzUZlQO+P4S0E9BRj+KmpU+o30ODM6ZDHJ30sE5FxeCGPA4f4qvjbwEvPsYZD2Tm27CE=
+	t=1724770241; cv=none; b=FIYoA/IBKi1iIPwx9OFSEmFoCuosP4KjUNcOciUnjILCTPwJpq9DWlHWE7feGJwfQjlLMuZ4gLjdAhcLaieUgX9SQEyEW7UA+NqHKKbUhw9bJSedPXHkt/kVP8HIBfogAuzAVJTmnoNI9c03bDiiEwZGQjgRjqC6ZsVUxPtS0gE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771065; c=relaxed/simple;
-	bh=VyQ8j96z/tpAjIdS5DuXKrloN1KJHdkbg5wG1f6qeI8=;
+	s=arc-20240116; t=1724770241; c=relaxed/simple;
+	bh=/xSYDMAA/dl71aOqmWMZbl5PxXH7dyEfnOdb+sOlD0E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S3QEEeNJFzBM9WK7WcDjsGqH0YkJUaO0WDArAU8bmIWCUXX3noKHdGG/S7njx3CVJLPVTVtB82SMoGzc/cIwH17FX20l3sWhZrnLT5JCFqBVa5LJv6BotN89SbZrMWj1V6hZhqt2sQnK8/d+W4eHVRduVfMgh7v53d+HqZ1sKuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p22GUbIx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B1E4C61056;
-	Tue, 27 Aug 2024 15:04:24 +0000 (UTC)
+	 MIME-Version; b=GF4xdPbzEYovWemQZpqqB8ZySXitl0NHLtV/W/k2MsHIwPHYAePrcocTCkXhZuKH5SxWnryK1qlDw0z3G5g89GlvKENtO0aHTgDqD1mfiACG4S9rf5/o0uKFBAJtxCESELmFCsQzCpMk8hidT4TWMYj97adUmPt5Xkc+uogBhVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o0Q+ir7w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53838C4DDFB;
+	Tue, 27 Aug 2024 14:50:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771065;
-	bh=VyQ8j96z/tpAjIdS5DuXKrloN1KJHdkbg5wG1f6qeI8=;
+	s=korg; t=1724770241;
+	bh=/xSYDMAA/dl71aOqmWMZbl5PxXH7dyEfnOdb+sOlD0E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p22GUbIxNbS8D04i0ChbHJEIFc/u4D9DqmojfIM3hM61ncDviHdRKtKab4oxAemuq
-	 QF4HshulgmhCsd9OVpeNt4M3OhgQcooSwja6fO0P2KGpXXsBEAiV2cPPyWgiGzr9qY
-	 6Xztql292rMepiR/6RYCr5uyOIUgpMuhluwiDUz0=
+	b=o0Q+ir7wgrXe93Tk7PztgrcO+vdhnpGBKJxEeeEhe08GBkXL4Ioyd7kfcwILLzkcp
+	 i4AisOJ6Lz1gcIaeihFThlvPoZbJt+Pull5RJEuZ+v2jweNoIpvdBTQ+0rbhDIw+ri
+	 QXC0j2qqqSATbykL6YCsqZ1SGtgup1xSlL1uILRA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudio Imbrenda <imbrenda@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Steffen Eiden <seiden@linux.ibm.com>,
-	Janosch Frank <frankja@linux.ibm.com>,
+	Waiman Long <longman@redhat.com>,
+	Costa Shulyupin <costa.shul@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 077/273] s390/uv: Panic for set and remove shared access UVC errors
+Subject: [PATCH 6.6 170/341] hrtimer: Select housekeeping CPU during migration
 Date: Tue, 27 Aug 2024 16:36:41 +0200
-Message-ID: <20240827143836.344030991@linuxfoundation.org>
+Message-ID: <20240827143849.883298843@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,62 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+From: Costa Shulyupin <costa.shul@redhat.com>
 
-[ Upstream commit cff59d8631e1409ffdd22d9d717e15810181b32c ]
+[ Upstream commit 56c2cb10120894be40c40a9bf0ce798da14c50f6 ]
 
-The return value uv_set_shared() and uv_remove_shared() (which are
-wrappers around the share() function) is not always checked. The system
-integrity of a protected guest depends on the Share and Unshare UVCs
-being successful. This means that any caller that fails to check the
-return value will compromise the security of the protected guest.
+During CPU-down hotplug, hrtimers may migrate to isolated CPUs,
+compromising CPU isolation.
 
-No code path that would lead to such violation of the security
-guarantees is currently exercised, since all the areas that are shared
-never get unshared during the lifetime of the system. This might
-change and become an issue in the future.
+Address this issue by masking valid CPUs for hrtimers using
+housekeeping_cpumask(HK_TYPE_TIMER).
 
-The Share and Unshare UVCs can only fail in case of hypervisor
-misbehaviour (either a bug or malicious behaviour). In such cases there
-is no reasonable way forward, and the system needs to panic.
-
-This patch replaces the return at the end of the share() function with
-a panic, to guarantee system integrity.
-
-Fixes: 5abb9351dfd9 ("s390/uv: introduce guest side ultravisor code")
-Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
-Reviewed-by: Steffen Eiden <seiden@linux.ibm.com>
-Reviewed-by: Janosch Frank <frankja@linux.ibm.com>
-Link: https://lore.kernel.org/r/20240801112548.85303-1-imbrenda@linux.ibm.com
-Message-ID: <20240801112548.85303-1-imbrenda@linux.ibm.com>
-[frankja@linux.ibm.com: Fixed up patch subject]
-Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
+Suggested-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Costa Shulyupin <costa.shul@redhat.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Waiman Long <longman@redhat.com>
+Link: https://lore.kernel.org/r/20240222200856.569036-1-costa.shul@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/include/asm/uv.h | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ kernel/time/hrtimer.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/s390/include/asm/uv.h b/arch/s390/include/asm/uv.h
-index 0e7bd3873907f..b2e2f9a4163c5 100644
---- a/arch/s390/include/asm/uv.h
-+++ b/arch/s390/include/asm/uv.h
-@@ -442,7 +442,10 @@ static inline int share(unsigned long addr, u16 cmd)
+diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
+index edb0f821dceaa..6057fe2e179b0 100644
+--- a/kernel/time/hrtimer.c
++++ b/kernel/time/hrtimer.c
+@@ -38,6 +38,7 @@
+ #include <linux/sched/deadline.h>
+ #include <linux/sched/nohz.h>
+ #include <linux/sched/debug.h>
++#include <linux/sched/isolation.h>
+ #include <linux/timer.h>
+ #include <linux/freezer.h>
+ #include <linux/compat.h>
+@@ -2223,8 +2224,8 @@ static void migrate_hrtimer_list(struct hrtimer_clock_base *old_base,
  
- 	if (!uv_call(0, (u64)&uvcb))
- 		return 0;
--	return -EINVAL;
-+	pr_err("%s UVC failed (rc: 0x%x, rrc: 0x%x), possible hypervisor bug.\n",
-+	       uvcb.header.cmd == UVC_CMD_SET_SHARED_ACCESS ? "Share" : "Unshare",
-+	       uvcb.header.rc, uvcb.header.rrc);
-+	panic("System security cannot be guaranteed unless the system panics now.\n");
- }
+ int hrtimers_cpu_dying(unsigned int dying_cpu)
+ {
++	int i, ncpu = cpumask_any_and(cpu_active_mask, housekeeping_cpumask(HK_TYPE_TIMER));
+ 	struct hrtimer_cpu_base *old_base, *new_base;
+-	int i, ncpu = cpumask_first(cpu_active_mask);
  
- /*
+ 	tick_cancel_sched_timer(dying_cpu);
+ 
 -- 
 2.43.0
 
