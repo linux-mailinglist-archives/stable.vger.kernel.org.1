@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-70664-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70947-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE6EF960F69
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:59:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C9DE9610D5
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:13:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2DBB11C23417
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:59:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1FDB4B2445B
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:13:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 285631C8FA0;
-	Tue, 27 Aug 2024 14:57:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 836211C68BE;
+	Tue, 27 Aug 2024 15:13:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YsMmlXTl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jI0YQNP6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D924F19F485;
-	Tue, 27 Aug 2024 14:57:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FC011BD514;
+	Tue, 27 Aug 2024 15:13:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770660; cv=none; b=KVI7/LwLGy0LJ7oFZ+SMY0bFqDTSMNJVuRxtcdQ+3rNIgGnllnrT0sbtyZ+j9YLXH5zy8ufOWqJkJcL3IMU7WQfbNuE/pXUi36ISr+bNIKl63qMGOWx0k0pR6mdE3wqMvJsHLNWzcNq0YJg9trjDeH1UHLGT+/FXjZIoBbdz8Fg=
+	t=1724771590; cv=none; b=Omo48bmT24BhMTP9DZdCzA+CF8thASIOmBiv1/sAIxI58hVmg/Am3IYc5Znzhobj2oimsDzshh5F+PzgN5YACSqa/J6L9A87T0WjmzSuTcRMJpJFekanGn/hF80Rlj0NSsO323IkCIQvWvxCgjxfJLYKkvFvLKv70fKaXvG0P+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770660; c=relaxed/simple;
-	bh=q1BunPWm7Vjog0RFa2gKtchMVHytCtxU3YQoS5xreiQ=;
+	s=arc-20240116; t=1724771590; c=relaxed/simple;
+	bh=q6RAYBdVxeiR0nZ/epzsAVhm8vUzUcg8Y9AeTtADteE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SBLOgb/0K0gfHQXzU75JZQLumTwYU7tCP+teMhbohIWWFyTgrd/glr77wTT1C016mGOzduPaR3IAncpgh0+3qW3UarlN0E6t17snpdWL2N6wUZuO3g8y/am8IuAAeoLUr8TQO6hPKEwBBQAvfWKBp6FfrfKh9zc1xp/tyQMYCxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YsMmlXTl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6B98C61040;
-	Tue, 27 Aug 2024 14:57:39 +0000 (UTC)
+	 MIME-Version; b=VsRHo5N5JN5rFHQfeiPtRaV1K0RR18mbEGc978JstWIvPbthCDfANell/3EIxVNWNqZ+UeRBqo9953nrbu9QObgTCgl4Q/sKsCfwK3PX80wbssCR9p9GxLmXrdVeNMkfVbjA5RUP5GqYMhzT0UmgSfV5Hv+T6V+JbsrpC7hZFWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jI0YQNP6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4022C61048;
+	Tue, 27 Aug 2024 15:13:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770660;
-	bh=q1BunPWm7Vjog0RFa2gKtchMVHytCtxU3YQoS5xreiQ=;
+	s=korg; t=1724771590;
+	bh=q6RAYBdVxeiR0nZ/epzsAVhm8vUzUcg8Y9AeTtADteE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YsMmlXTlG7IRs5XzbFsq6B0jeWkxAOeJjEmB+05u/qO3NTLJEKDCMLVEu5WFhYLbo
-	 +pBRGBitBrZjfcYIkd/fCPB5GK4KAuZMQDiZOTPY5axMzChESAKevOJbNUh6yzLZaX
-	 ru9+m6q/ppnHhf+qgRD3Z0yET2K9cwPldKJNzKeI=
+	b=jI0YQNP6HvjqzoVzOuOOhFqNusoDN3PpNB6IgV+QrAXYkicJmys8IFdOF40fvl0tY
+	 sfdfQd7BOtymMR/mwH3iRMPBlLxr9EptuXBFXs8l1QIgdhPY7gNw7/XG1qc0+hSoJW
+	 P6a75nT1JJGP6R7A91qi0YuvpQv92D+qi2xu7/xI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 296/341] ksmbd: the buffer of smb2 query dir response has at least 1 byte
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 203/273] spi: spi-cadence-quadspi: Fix OSPI NOR failures during system resume
 Date: Tue, 27 Aug 2024 16:38:47 +0200
-Message-ID: <20240827143854.657832245@linuxfoundation.org>
+Message-ID: <20240827143841.136241767@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Vignesh Raghavendra <vigneshr@ti.com>
 
-commit ce61b605a00502c59311d0a4b1f58d62b48272d0 upstream.
+[ Upstream commit 57d5af2660e9443b081eeaf1c373b3ce48477828 ]
 
-When STATUS_NO_MORE_FILES status is set to smb2 query dir response,
-->StructureSize is set to 9, which mean buffer has 1 byte.
-This issue occurs because ->Buffer[1] in smb2_query_directory_rsp to
-flex-array.
+Its necessary to call pm_runtime_force_*() hooks as part of system
+suspend/resume calls so that the runtime_pm hooks get called. This
+ensures latest state of the IP is cached and restored during system
+sleep. This is especially true if runtime autosuspend is enabled as
+runtime suspend hooks may not be called at all before system sleeps.
 
-Fixes: eb3e28c1e89b ("smb3: Replace smb2pdu 1-element arrays with flex-arrays")
-Cc: stable@vger.kernel.org # v6.1+
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Without this patch, OSPI NOR enumeration (READ_ID) fails during resume
+as context saved during suspend path is inconsistent.
+
+Fixes: 078d62de433b ("spi: cadence-qspi: add system-wide suspend and resume callbacks")
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+Link: https://patch.msgid.link/20240814151237.3856184-1-vigneshr@ti.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2pdu.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/spi/spi-cadence-quadspi.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -4406,7 +4406,8 @@ int smb2_query_dir(struct ksmbd_work *wo
- 		rsp->OutputBufferLength = cpu_to_le32(0);
- 		rsp->Buffer[0] = 0;
- 		rc = ksmbd_iov_pin_rsp(work, (void *)rsp,
--				       sizeof(struct smb2_query_directory_rsp));
-+				       offsetof(struct smb2_query_directory_rsp, Buffer)
-+				       + 1);
- 		if (rc)
- 			goto err_out;
- 	} else {
+diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
+index 05ebb03d319fc..d4607cb89c484 100644
+--- a/drivers/spi/spi-cadence-quadspi.c
++++ b/drivers/spi/spi-cadence-quadspi.c
+@@ -2000,13 +2000,25 @@ static int cqspi_runtime_resume(struct device *dev)
+ static int cqspi_suspend(struct device *dev)
+ {
+ 	struct cqspi_st *cqspi = dev_get_drvdata(dev);
++	int ret;
+ 
+-	return spi_controller_suspend(cqspi->host);
++	ret = spi_controller_suspend(cqspi->host);
++	if (ret)
++		return ret;
++
++	return pm_runtime_force_suspend(dev);
+ }
+ 
+ static int cqspi_resume(struct device *dev)
+ {
+ 	struct cqspi_st *cqspi = dev_get_drvdata(dev);
++	int ret;
++
++	ret = pm_runtime_force_resume(dev);
++	if (ret) {
++		dev_err(dev, "pm_runtime_force_resume failed on resume\n");
++		return ret;
++	}
+ 
+ 	return spi_controller_resume(cqspi->host);
+ }
+-- 
+2.43.0
+
 
 
 
