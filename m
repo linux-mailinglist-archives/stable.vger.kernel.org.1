@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-71206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70695-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E135961280
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:31:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87F4A960F8D
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:00:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 14151B2A36C
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:29:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB4E41C234EA
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:00:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1F271C8FC4;
-	Tue, 27 Aug 2024 15:27:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AB371C6893;
+	Tue, 27 Aug 2024 14:59:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gMZTwG12"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qLlh8Zl4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DCDF1C57BF;
-	Tue, 27 Aug 2024 15:27:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5920C1E487;
+	Tue, 27 Aug 2024 14:59:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772445; cv=none; b=aWviDdqNnT3aIgLcyw43lbCHKo4KbZLh+HSnw5PJoos92XcnWKHfs4+wT8kZgcVBzJ2nx8s8+v97IvF29gL3FQVcVHZD3QUnb7921ptjTOlux+zRr5KGXQNRLIkOil67KV3jQfr4qwLP2jL6maNTzS07XKvhO5hFOL9nVfmDvmU=
+	t=1724770762; cv=none; b=kJlfkrWtyITiM1FOJ3Adqnr3f2RgSglfw1SnTulf28Eygh8w7DonRb/ReKxD9hL2G8rWdya2M324OYgNGmPjYxXK4+jFT9++5iuNigHF9ntYkr7Ju36oQXs4pLnqCcqfIWQHBciNrcaW01dcvTuqwdu+WSbJYf2zBWgumn9SfCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772445; c=relaxed/simple;
-	bh=sSJaAXNXn0X7KddNAvknljEQZDhwP3OUyfe5uDsWjIk=;
+	s=arc-20240116; t=1724770762; c=relaxed/simple;
+	bh=8ioMCcEUOusC0EciMTuglR1j1hi0e4Mj0/e8M0pOzPo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lyPVpZdX9q625j3hj/TO1hh/O/Lrx8AdmjP5QmFZbxS43Uwb/4ov2rVaVhCHfKSeS21vpOSFufOXg6ZGKyNU30BsNgcHVF/qP/aQNnK+B+tmZT52LQoIaCQ7VkXUwCm4iF4ImMzmApCSGNS9wD2gfJ4+aCfCkuk541tr2inxvaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gMZTwG12; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14B05C61068;
-	Tue, 27 Aug 2024 15:27:24 +0000 (UTC)
+	 MIME-Version; b=k2yuGn2EmI0emUJ1+4fBv2YoG9QfAROup6LacPOreBjtzCCa5qVFyFGGp94G4EaLe3ZgBZqOfLlCzUtwi14Y3rDiLKliAcJdi6OH1DnY8nPB/dY/P1gckHDPFcBLwNWFRZZTpauoKhw+yy2dWWr9uYnfsrO4FOgOJsN8EKRbP3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qLlh8Zl4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6BFBC61044;
+	Tue, 27 Aug 2024 14:59:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772445;
-	bh=sSJaAXNXn0X7KddNAvknljEQZDhwP3OUyfe5uDsWjIk=;
+	s=korg; t=1724770762;
+	bh=8ioMCcEUOusC0EciMTuglR1j1hi0e4Mj0/e8M0pOzPo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gMZTwG12WMGBmvt6Fuw8BsBYGAVurDri05RIYAQSnGDDnLteAYWAW9E1kWpClS73m
-	 55sr0Y3WSC0ziMcu7R9EBXWUO6s7GOuuLMVFBWjlC6IK9eKAolja4UvKMxTvI5Hqo4
-	 FO6I6en8R4TyrlaIn8OC/J+btF53pB2WMy0StBZ0=
+	b=qLlh8Zl4RsSiFtyK0vIZpG2XxRM+3XztZ9JgiCF0bd+AsT9iw5bjJLtsjAo7S8aVq
+	 44TvlLaHz66L40rkEoRN+tfR98XhxoKetdWJ5RFiDyvZLBe7e9F+qAVd9Zij7G+e5v
+	 75m/j6yeYnc7NRTSoE6nbNY5zK2Q5LGA1Ri1ss7g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maximilian Luz <luzmaximilian@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 218/321] platform/surface: aggregator: Fix warning when controller is destroyed in probe
+	Chaotian Jing <chaotian.jing@mediatek.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.6 295/341] scsi: core: Fix the return value of scsi_logical_block_count()
 Date: Tue, 27 Aug 2024 16:38:46 +0200
-Message-ID: <20240827143846.531939166@linuxfoundation.org>
+Message-ID: <20240827143854.620173514@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,69 +60,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maximilian Luz <luzmaximilian@gmail.com>
+From: Chaotian Jing <chaotian.jing@mediatek.com>
 
-[ Upstream commit bc923d594db21bee0ead128eb4bb78f7e77467a4 ]
+commit f03e94f23b04c2b71c0044c1534921b3975ef10c upstream.
 
-There is a small window in ssam_serial_hub_probe() where the controller
-is initialized but has not been started yet. Specifically, between
-ssam_controller_init() and ssam_controller_start(). Any failure in this
-window, for example caused by a failure of serdev_device_open(),
-currently results in an incorrect warning being emitted.
+scsi_logical_block_count() should return the block count of a given SCSI
+command. The original implementation ended up shifting twice, leading to an
+incorrect count being returned. Fix the conversion between bytes and
+logical blocks.
 
-In particular, any failure in this window results in the controller
-being destroyed via ssam_controller_destroy(). This function checks the
-state of the controller and, in an attempt to validate that the
-controller has been cleanly shut down before we try and deallocate any
-resources, emits a warning if that state is not SSAM_CONTROLLER_STOPPED.
-
-However, since we have only just initialized the controller and have not
-yet started it, its state is SSAM_CONTROLLER_INITIALIZED. Note that this
-is the only point at which the controller has this state, as it will
-change after we start the controller with ssam_controller_start() and
-never revert back. Further, at this point no communication has taken
-place and the sender and receiver threads have not been started yet (and
-we may not even have an open serdev device either).
-
-Therefore, it is perfectly safe to call ssam_controller_destroy() with a
-state of SSAM_CONTROLLER_INITIALIZED. This, however, means that the
-warning currently being emitted is incorrect. Fix it by extending the
-check.
-
-Fixes: c167b9c7e3d6 ("platform/surface: Add Surface Aggregator subsystem")
-Signed-off-by: Maximilian Luz <luzmaximilian@gmail.com>
-Link: https://lore.kernel.org/r/20240811124645.246016-1-luzmaximilian@gmail.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 6a20e21ae1e2 ("scsi: core: Add helper to return number of logical blocks in a request")
+Signed-off-by: Chaotian Jing <chaotian.jing@mediatek.com>
+Link: https://lore.kernel.org/r/20240813053534.7720-1-chaotian.jing@mediatek.com
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/surface/aggregator/controller.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/scsi/scsi_cmnd.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/platform/surface/aggregator/controller.c b/drivers/platform/surface/aggregator/controller.c
-index 30cea324ff95f..a6a8f4b1836a6 100644
---- a/drivers/platform/surface/aggregator/controller.c
-+++ b/drivers/platform/surface/aggregator/controller.c
-@@ -1354,7 +1354,8 @@ void ssam_controller_destroy(struct ssam_controller *ctrl)
- 	if (ctrl->state == SSAM_CONTROLLER_UNINITIALIZED)
- 		return;
+--- a/include/scsi/scsi_cmnd.h
++++ b/include/scsi/scsi_cmnd.h
+@@ -234,7 +234,7 @@ static inline sector_t scsi_get_lba(stru
  
--	WARN_ON(ctrl->state != SSAM_CONTROLLER_STOPPED);
-+	WARN_ON(ctrl->state != SSAM_CONTROLLER_STOPPED &&
-+		ctrl->state != SSAM_CONTROLLER_INITIALIZED);
+ static inline unsigned int scsi_logical_block_count(struct scsi_cmnd *scmd)
+ {
+-	unsigned int shift = ilog2(scmd->device->sector_size) - SECTOR_SHIFT;
++	unsigned int shift = ilog2(scmd->device->sector_size);
  
- 	/*
- 	 * Note: New events could still have been received after the previous
--- 
-2.43.0
-
+ 	return blk_rq_bytes(scsi_cmd_to_rq(scmd)) >> shift;
+ }
 
 
 
