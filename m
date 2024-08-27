@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-70942-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70697-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43BB59610CC
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:12:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97723960F93
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:00:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED5261F216F6
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:12:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CABAC1C23506
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:00:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88FC21C5788;
-	Tue, 27 Aug 2024 15:12:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4BD11C86EA;
+	Tue, 27 Aug 2024 14:59:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="llu1ABkd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y6XfVBV4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46AAD1BC9E3;
-	Tue, 27 Aug 2024 15:12:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92DB81C825C;
+	Tue, 27 Aug 2024 14:59:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771574; cv=none; b=aWjSF1F0oi7ANEA5V4xIZ0OdSa3pEyVL/0Iha+Hc/LuH2dB1f4nkYvGadyELgjrslf2VWzJchbHb1PvMZ1uOFfep+iztAgYVISD6gMgy/OiybM1n8guE/KHpeB9EoA1hcppEStRbC/vI5tunfs5mdFUqtnSOdr1BLt1vKKkEEhs=
+	t=1724770768; cv=none; b=uVb03x9Goi/rQMt2tqQ4Ns3s5LsI8SIbb0s1TmNXRCp+YcfBY0NLa4W/Pl4FYIOhTYeBRjyXTGPceRs6/r6Yfxx0eIQ5SCZfz+OBk75HH2O0T8No7e/TlufN58N+K7xQvyaYzNlCOB+AGZ05Tk98BOJzX8unAleSOkJfDOmhoFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771574; c=relaxed/simple;
-	bh=2RP35QYCoBQ/LLiYlokbIvsFcaJkJm55gQHOFl39Aw0=;
+	s=arc-20240116; t=1724770768; c=relaxed/simple;
+	bh=g9l38UhvPVQ/4ZBVc7/C/5ayHhD2LyfvbnT2WF+Yqrw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F9Cb+kqIUsUe2MzZpu6IquBlW/E9NF7YStdvodYQ3R88IqS5hisyFPElj7jBNTRu8rJkV7/Ff1u9Zjhxo23b7SzFkv1POLWkwnhZFFNrky05hicZ9ZL2IEpRxIkJ4QTE5f1Egzk5EW1O+hhDP8ZLcWFTrmCbJruDajJ4qi1wGOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=llu1ABkd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA6B8C61043;
-	Tue, 27 Aug 2024 15:12:53 +0000 (UTC)
+	 MIME-Version; b=EHvNlGtq3+fP1uVd+g7+sbQqM0YMa0R25SMRy3G1/KJs5DeRdZUVziHG1u84UauSyodl/P6Q9zv+1LIKJJoA0PtMBe6oJ8Fpa9M3g27iD6sPRjg3JB3KJlkzT1aQXe/jaC6dRQbvDv2aiqybrO0AKRq0LoE2PbdIodT9CCc9OVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y6XfVBV4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D33EC61044;
+	Tue, 27 Aug 2024 14:59:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771574;
-	bh=2RP35QYCoBQ/LLiYlokbIvsFcaJkJm55gQHOFl39Aw0=;
+	s=korg; t=1724770768;
+	bh=g9l38UhvPVQ/4ZBVc7/C/5ayHhD2LyfvbnT2WF+Yqrw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=llu1ABkd2PXJrH3TXJTC9mUGtYcnVeEOIlWJn/h/R/EquxNUCaZqTTnpwMJbhPPQi
-	 F4543yvQ0XF+zfIDH3r3Ls3jVPeKIusRiKF/ypOgtPr3pKKB6pU5fQczFmgyrq6mpE
-	 9k+US4vR+GIM9vsHsOQG+8RIE+gWZ5ut+jPpXMf0=
+	b=y6XfVBV4vzbSkb5ZoWL0C3Iy8Rl2+dRYZ6e4cvZVA+SaSvCxi3h+aCmmkpW7bkWr6
+	 XAPCbGlGkO01kORy06Qx3JyHZ2NdZ9cZaKT8lKOpQLB/Tmj7iezCrYWon6ihAFS4u2
+	 NqAEkSVKmJIRXFEOu27zM/EmJSbn8mZK6XrJfFaI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.10 228/273] ACPI: video: Add Dell UART backlight controller detection
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 321/341] selftests: mptcp: join: check re-using ID of closed subflow
 Date: Tue, 27 Aug 2024 16:39:12 +0200
-Message-ID: <20240827143842.083681796@linuxfoundation.org>
+Message-ID: <20240827143855.608633894@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,93 +62,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit cd8e468efb4fb2742e06328a75b282c35c1abf8d upstream.
+commit 65fb58afa341ad68e71e5c4d816b407e6a683a66 upstream.
 
-Dell All In One (AIO) models released after 2017 use a backlight
-controller board connected to an UART.
+This test extends "delete and re-add" to validate the previous commit. A
+new 'subflow' endpoint is added, but the subflow request will be
+rejected. The result is that no subflow will be established from this
+address.
 
-In DSDT this uart port will be defined as:
+Later, the endpoint is removed and re-added after having cleared the
+firewall rule. Before the previous commit, the client would not have
+been able to create this new subflow.
 
-   Name (_HID, "DELL0501")
-   Name (_CID, EisaId ("PNP0501")
+While at it, extra checks have been added to validate the expected
+numbers of MPJ and RM_ADDR.
 
-Commit 484bae9e4d6a ("platform/x86: Add new Dell UART backlight driver")
-has added support for this, but I neglected to tie this into
-acpi_video_get_backlight_type().
+The 'Fixes' tag here below is the same as the one from the previous
+commit: this patch here is not fixing anything wrong in the selftests,
+but it validates the previous fix for an issue introduced by this commit
+ID.
 
-Now the first AIO has turned up which has not only the DSDT bits for this,
-but also an actual controller attached to the UART, yet it is not using
-this controller for backlight control.
-
-Add support to acpi_video_get_backlight_type() for a new dell_uart
-backlight type. So that the existing infra to override the backlight
-control method on the commandline or with DMI quirks can be used.
-
-Fixes: 484bae9e4d6a ("platform/x86: Add new Dell UART backlight driver")
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Link: https://patch.msgid.link/20240814190159.15650-2-hdegoede@redhat.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: b6c08380860b ("mptcp: remove addr and subflow in PM netlink")
+Cc: stable@vger.kernel.org
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20240819-net-mptcp-pm-reusing-id-v1-4-38035d40de5b@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/video_detect.c |    7 +++++++
- include/acpi/video.h        |    1 +
- 2 files changed, 8 insertions(+)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |   27 +++++++++++++++++++-----
+ 1 file changed, 22 insertions(+), 5 deletions(-)
 
---- a/drivers/acpi/video_detect.c
-+++ b/drivers/acpi/video_detect.c
-@@ -54,6 +54,8 @@ static void acpi_video_parse_cmdline(voi
- 		acpi_backlight_cmdline = acpi_backlight_nvidia_wmi_ec;
- 	if (!strcmp("apple_gmux", acpi_video_backlight_string))
- 		acpi_backlight_cmdline = acpi_backlight_apple_gmux;
-+	if (!strcmp("dell_uart", acpi_video_backlight_string))
-+		acpi_backlight_cmdline = acpi_backlight_dell_uart;
- 	if (!strcmp("none", acpi_video_backlight_string))
- 		acpi_backlight_cmdline = acpi_backlight_none;
- }
-@@ -902,6 +904,7 @@ enum acpi_backlight_type __acpi_video_ge
- 	static DEFINE_MUTEX(init_mutex);
- 	static bool nvidia_wmi_ec_present;
- 	static bool apple_gmux_present;
-+	static bool dell_uart_present;
- 	static bool native_available;
- 	static bool init_done;
- 	static long video_caps;
-@@ -916,6 +919,7 @@ enum acpi_backlight_type __acpi_video_ge
- 				    &video_caps, NULL);
- 		nvidia_wmi_ec_present = nvidia_wmi_ec_supported();
- 		apple_gmux_present = apple_gmux_detect(NULL, NULL);
-+		dell_uart_present = acpi_dev_present("DELL0501", NULL, -1);
- 		init_done = true;
- 	}
- 	if (native)
-@@ -946,6 +950,9 @@ enum acpi_backlight_type __acpi_video_ge
- 	if (apple_gmux_present)
- 		return acpi_backlight_apple_gmux;
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -481,9 +481,10 @@ reset_with_tcp_filter()
+ 	local ns="${!1}"
+ 	local src="${2}"
+ 	local target="${3}"
++	local chain="${4:-INPUT}"
  
-+	if (dell_uart_present)
-+		return acpi_backlight_dell_uart;
+ 	if ! ip netns exec "${ns}" ${iptables} \
+-			-A INPUT \
++			-A "${chain}" \
+ 			-s "${src}" \
+ 			-p tcp \
+ 			-j "${target}"; then
+@@ -3575,10 +3576,10 @@ endpoint_tests()
+ 		mptcp_lib_kill_wait $tests_pid
+ 	fi
+ 
+-	if reset "delete and re-add" &&
++	if reset_with_tcp_filter "delete and re-add" ns2 10.0.3.2 REJECT OUTPUT &&
+ 	   mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
+-		pm_nl_set_limits $ns1 1 1
+-		pm_nl_set_limits $ns2 1 1
++		pm_nl_set_limits $ns1 0 2
++		pm_nl_set_limits $ns2 0 2
+ 		pm_nl_add_endpoint $ns2 10.0.2.2 id 2 dev ns2eth2 flags subflow
+ 		test_linkfail=4 speed=20 \
+ 			run_tests $ns1 $ns2 10.0.1.1 &
+@@ -3595,11 +3596,27 @@ endpoint_tests()
+ 		chk_subflow_nr "after delete" 1
+ 		chk_mptcp_info subflows 0 subflows 0
+ 
+-		pm_nl_add_endpoint $ns2 10.0.2.2 dev ns2eth2 flags subflow
++		pm_nl_add_endpoint $ns2 10.0.2.2 id 2 dev ns2eth2 flags subflow
+ 		wait_mpj $ns2
+ 		chk_subflow_nr "after re-add" 2
+ 		chk_mptcp_info subflows 1 subflows 1
 +
- 	/* Use ACPI video if available, except when native should be preferred. */
- 	if ((video_caps & ACPI_VIDEO_BACKLIGHT) &&
- 	     !(native_available && prefer_native_over_acpi_video()))
---- a/include/acpi/video.h
-+++ b/include/acpi/video.h
-@@ -50,6 +50,7 @@ enum acpi_backlight_type {
- 	acpi_backlight_native,
- 	acpi_backlight_nvidia_wmi_ec,
- 	acpi_backlight_apple_gmux,
-+	acpi_backlight_dell_uart,
- };
++		pm_nl_add_endpoint $ns2 10.0.3.2 id 3 flags subflow
++		wait_attempt_fail $ns2
++		chk_subflow_nr "after new reject" 2
++		chk_mptcp_info subflows 1 subflows 1
++
++		ip netns exec "${ns2}" ${iptables} -D OUTPUT -s "10.0.3.2" -p tcp -j REJECT
++		pm_nl_del_endpoint $ns2 3 10.0.3.2
++		pm_nl_add_endpoint $ns2 10.0.3.2 id 3 flags subflow
++		wait_mpj $ns2
++		chk_subflow_nr "after no reject" 3
++		chk_mptcp_info subflows 2 subflows 2
++
+ 		mptcp_lib_kill_wait $tests_pid
++
++		chk_join_nr 3 3 3
++		chk_rm_nr 1 1
+ 	fi
+ }
  
- #if IS_ENABLED(CONFIG_ACPI_VIDEO)
 
 
 
