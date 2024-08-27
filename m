@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-70480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70728-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C9BA960E57
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:48:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24CC8960FB7
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:01:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 068C3285E83
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:48:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7D3D1B26F6F
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:01:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 094F41C68B4;
-	Tue, 27 Aug 2024 14:47:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F1BE1C6893;
+	Tue, 27 Aug 2024 15:01:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kcHhccCJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TQAKPNLE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B992244C8C;
-	Tue, 27 Aug 2024 14:47:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D3C31C3F0D;
+	Tue, 27 Aug 2024 15:01:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770046; cv=none; b=u5ly4W05lVZZ9dWpkTmRcy4PWcTG17bEHhi2EcEX2jMN62zNNjCwaSucZ1PEECwOx9d1nlhrVBKEMlM5O80dUg+ZTQPobhzEnJq+mGW4/+YAQxuaRRtOuV1+SXKJtbSk2cMq93lYfvq7A2xtfvcnSPu/qtYymh1yh5FdKbSlJDE=
+	t=1724770871; cv=none; b=VsdNLw1kaNNoX8Wij9bT3H1EZzKZd6HFlLe3JwERDkkA4C76Yoc8cUvOlkcFIQqtCYVn6Ds9gOS8P4pzu4DXKXVrAXA2u7ExM7N3NA4eVqwP9gu8YQCNhp2UzyQnIidvwUlNMiC/Ay3YoIP6goGIV6ahUyklWUSWKvGflQiWmZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770046; c=relaxed/simple;
-	bh=qPWR7XVsG/jviL4CwtM3adXQm2Qj+V1UMjIa7ntY740=;
+	s=arc-20240116; t=1724770871; c=relaxed/simple;
+	bh=E9VjLaAclTZQikv3WduQ8MgR8WgWWJM1TbQ8EoorMAs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t4+8Kpa5Y19EKTuS53IeqI/MwIo/P9LKgkkmD94SnX+qyrT57BDq5/sa7NO+3Yb2pwyaWqPoVetEzWvHwIOwFmuLOevB4rGgqsJO6sdeMgb62puMHb5i8Uc9tOXlqU8RsV/bBjqb9jBwBQE8wbniZeP9NhKDGQcwnTb6B6pGLY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kcHhccCJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DA22C61040;
-	Tue, 27 Aug 2024 14:47:25 +0000 (UTC)
+	 MIME-Version; b=FMLtQ4ojvJjEu9z4G2eOGrsU4J3wP9C43wObvJFMCxaaFqvBaLRh0mYjCr13HohEu6KZPbijsSV3mm/2ihcOutskn1XxfFKb7clbwgPuSpDz9o/CUVUzGOyYCd9/rDoOwm2yFmD3VpU/6HyLFLYmieRus7G5NF0Q5Zs2StEW5og=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TQAKPNLE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C17EC4DDF3;
+	Tue, 27 Aug 2024 15:01:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770046;
-	bh=qPWR7XVsG/jviL4CwtM3adXQm2Qj+V1UMjIa7ntY740=;
+	s=korg; t=1724770870;
+	bh=E9VjLaAclTZQikv3WduQ8MgR8WgWWJM1TbQ8EoorMAs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kcHhccCJno6wYTjfj3qsKx0fP3dlWYx45kjlSvk2AacIbl5sI6HjMyEDvUoVGpjH+
-	 HQRJSwuNNvvkBpZxciN+lte4tNuD1vZ2GRqSKl1J8CmBbavCx2MiUVjrj0BAuABxyX
-	 qjTnh+SEaN+8OduLAsCjGKZFN3XwW4Bi7na8yM4M=
+	b=TQAKPNLE1pbw25vsIMnghVr2HAx0f2peoG6xHsYqDKcqTrR5UKq5lK3SXhl3zlauM
+	 mQobF9R4C/HhMN0Rm4uMDqZfcrkX1stcbkhDXG/g0GEYyvWo3HxWbG5lSWqsE9rQUH
+	 /qwTb+0HtDjAVF4IFFut/9CdqD0k5OqwQQRZlvr4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 111/341] drm/amd/display: Validate hw_points_num before using it
+	Karel Balej <balejk@matfyz.cz>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 6.10 018/273] xhci: Fix Panther point NULL pointer deref at full-speed re-enumeration
 Date: Tue, 27 Aug 2024 16:35:42 +0200
-Message-ID: <20240827143847.635844276@linuxfoundation.org>
+Message-ID: <20240827143834.081501838@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +61,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-[ Upstream commit 58c3b3341cea4f75dc8c003b89f8a6dd8ec55e50 ]
+commit af8e119f52e9c13e556be9e03f27957554a84656 upstream.
 
-[WHAT]
-hw_points_num is 0 before ogam LUT is programmed; however, function
-"dwb3_program_ogam_pwl" assumes hw_points_num is always greater than 0,
-i.e. substracting it by 1 as an array index.
+re-enumerating full-speed devices after a failed address device command
+can trigger a NULL pointer dereference.
 
-[HOW]
-Check hw_points_num is not equal to 0 before using it.
+Full-speed devices may need to reconfigure the endpoint 0 Max Packet Size
+value during enumeration. Usb core calls usb_ep0_reinit() in this case,
+which ends up calling xhci_configure_endpoint().
 
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+On Panther point xHC the xhci_configure_endpoint() function will
+additionally check and reserve bandwidth in software. Other hosts do
+this in hardware
+
+If xHC address device command fails then a new xhci_virt_device structure
+is allocated as part of re-enabling the slot, but the bandwidth table
+pointers are not set up properly here.
+This triggers the NULL pointer dereference the next time usb_ep0_reinit()
+is called and xhci_configure_endpoint() tries to check and reserve
+bandwidth
+
+[46710.713538] usb 3-1: new full-speed USB device number 5 using xhci_hcd
+[46710.713699] usb 3-1: Device not responding to setup address.
+[46710.917684] usb 3-1: Device not responding to setup address.
+[46711.125536] usb 3-1: device not accepting address 5, error -71
+[46711.125594] BUG: kernel NULL pointer dereference, address: 0000000000000008
+[46711.125600] #PF: supervisor read access in kernel mode
+[46711.125603] #PF: error_code(0x0000) - not-present page
+[46711.125606] PGD 0 P4D 0
+[46711.125610] Oops: Oops: 0000 [#1] PREEMPT SMP PTI
+[46711.125615] CPU: 1 PID: 25760 Comm: kworker/1:2 Not tainted 6.10.3_2 #1
+[46711.125620] Hardware name: Gigabyte Technology Co., Ltd.
+[46711.125623] Workqueue: usb_hub_wq hub_event [usbcore]
+[46711.125668] RIP: 0010:xhci_reserve_bandwidth (drivers/usb/host/xhci.c
+
+Fix this by making sure bandwidth table pointers are set up correctly
+after a failed address device command, and additionally by avoiding
+checking for bandwidth in cases like this where no actual endpoints are
+added or removed, i.e. only context for default control endpoint 0 is
+evaluated.
+
+Reported-by: Karel Balej <balejk@matfyz.cz>
+Closes: https://lore.kernel.org/linux-usb/D3CKQQAETH47.1MUO22RTCH2O3@matfyz.cz/
+Cc: stable@vger.kernel.org
+Fixes: 651aaf36a7d7 ("usb: xhci: Handle USB transaction error on address command")
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20240815141117.2702314-2-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn30/dcn30_dwb_cm.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/usb/host/xhci.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_dwb_cm.c b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_dwb_cm.c
-index 701c7d8bc038a..03a50c32fcfe1 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_dwb_cm.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_dwb_cm.c
-@@ -243,6 +243,9 @@ static bool dwb3_program_ogam_lut(
- 		return false;
+--- a/drivers/usb/host/xhci.c
++++ b/drivers/usb/host/xhci.c
+@@ -2837,7 +2837,7 @@ static int xhci_configure_endpoint(struc
+ 				xhci->num_active_eps);
+ 		return -ENOMEM;
  	}
- 
-+	if (params->hw_points_num == 0)
-+		return false;
-+
- 	REG_SET(DWB_OGAM_CONTROL, 0, DWB_OGAM_MODE, 2);
- 
- 	current_mode = dwb3_get_ogam_current(dwbc30);
--- 
-2.43.0
-
+-	if ((xhci->quirks & XHCI_SW_BW_CHECKING) &&
++	if ((xhci->quirks & XHCI_SW_BW_CHECKING) && !ctx_change &&
+ 	    xhci_reserve_bandwidth(xhci, virt_dev, command->in_ctx)) {
+ 		if ((xhci->quirks & XHCI_EP_LIMIT_QUIRK))
+ 			xhci_free_host_resources(xhci, ctrl_ctx);
+@@ -4200,8 +4200,10 @@ static int xhci_setup_device(struct usb_
+ 		mutex_unlock(&xhci->mutex);
+ 		ret = xhci_disable_slot(xhci, udev->slot_id);
+ 		xhci_free_virt_device(xhci, udev->slot_id);
+-		if (!ret)
+-			xhci_alloc_dev(hcd, udev);
++		if (!ret) {
++			if (xhci_alloc_dev(hcd, udev) == 1)
++				xhci_setup_addressable_virt_dev(xhci, udev);
++		}
+ 		kfree(command->completion);
+ 		kfree(command);
+ 		return -EPROTO;
 
 
 
