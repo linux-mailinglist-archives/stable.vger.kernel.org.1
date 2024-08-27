@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-70734-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70527-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D9C6960FBE
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:01:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B20BE960E95
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:50:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE0E71C23712
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:01:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 668E11F2225A
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:50:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B4891C2DB1;
-	Tue, 27 Aug 2024 15:01:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED4BA1C4EDE;
+	Tue, 27 Aug 2024 14:50:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mh1QTFu7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NsTEYJoy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 584532FB2;
-	Tue, 27 Aug 2024 15:01:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8CAD1A072D;
+	Tue, 27 Aug 2024 14:50:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770890; cv=none; b=hPeqJzX/4a88W4eTmQCxkNb61my1OWbnjkJYy/oJT8LuAOh96BSBaFxSWAoHdTaeB6d/TTGugNiaZwBE6k40YEUDR52zXaNDfje3g9GoF0gX7UnpzYg1w0IcjBiQtINgetxEKO8e7YA9iJfRchIBkgiRT3mzMLiAmQ6ey07Ql48=
+	t=1724770204; cv=none; b=B7U0hl3EGQNwf2E/A3Pi7YH/Ywt/eipZpqgaCvkDQykI/2hsVoBDNaspKN+hp6tTzOKscrwVUYlTSBLqmNO4Uyw4sk4rcco0BDe/XSG9beIYR2Hh465bL+cyOFvQ1oeD7j8sfX60pqguOIfVe3TNpLEt1i/mNXpeADlLK3PvhZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770890; c=relaxed/simple;
-	bh=hPsGJyCYasHZSKU9t47CXQWJCZr2V8GbGf+s7FvT7vQ=;
+	s=arc-20240116; t=1724770204; c=relaxed/simple;
+	bh=ZO86yeuV8FHPBdGdb2Glq41NOPt2V0Eif4hcb+k/n5Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uAnB13oU7QtVdqZbRdB6y0xRnFYNyTTX9CIQ/aM7TBkqTURAshX63MaBNr/lX5UqzdMX0qith/FE7rooe0IWW8P3BOg0OU7ALY45M9NNfMMzCRttYZb5kefpcfXKd9iQBjYiUrwu+hxr2zgL6/TnHG6WkS9EMAzvP+5M6dCAgnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mh1QTFu7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA853C4AF1C;
-	Tue, 27 Aug 2024 15:01:29 +0000 (UTC)
+	 MIME-Version; b=N7YsapeU3aBIv24zkUQdnGTZ2um8gFoPkMXUdIbtXGy+skkROJFH2J8OuhfIQfakykDMwLVuGXZ9tdUIkzFC44ZdtTUC8kQZGrNvFSjfDRmQFBSFbzp584rnYj34m3m49L+0x8PCXxYqSYD4wp4kqOGQANosREK6rtp6wCM6XFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NsTEYJoy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F140C4DDEB;
+	Tue, 27 Aug 2024 14:50:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770890;
-	bh=hPsGJyCYasHZSKU9t47CXQWJCZr2V8GbGf+s7FvT7vQ=;
+	s=korg; t=1724770204;
+	bh=ZO86yeuV8FHPBdGdb2Glq41NOPt2V0Eif4hcb+k/n5Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mh1QTFu7+vs6q/3BZ1rkekCBktIrLsvSllYpDuV+4HtM44EZNuGbm+tZgT8HREz5G
-	 VL8u0CK6qpEzvWNSS5JYe9aFn9X9F9nJfYW+caItkOTbF6oTSUQBQNKx3ngGeAeJk2
-	 mzTjiUgb1buXUTq174LQsAtClRObRB2ahz3wEuA0=
+	b=NsTEYJoyA7IVStc722/DKkmF9bsvbxO8QW7yn6rkvQrxLBYEvQCez+kGAByf2oJej
+	 0Caq1y1hJdLWvDqBZcl/SegrGdNK3cI1XOtGI0NQGRZ3Hf6SKEDiE7EX2tEsyEmYx2
+	 zn50hMu2iq7zqbPtTS7gSOm0yxeVs0ibd1oVX3tY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Michael Mueller <mimu@linux.ibm.com>,
-	Janosch Frank <frankja@linux.ibm.com>
-Subject: [PATCH 6.10 023/273] KVM: s390: fix validity interception issue when gisa is switched off
-Date: Tue, 27 Aug 2024 16:35:47 +0200
-Message-ID: <20240827143834.272121911@linuxfoundation.org>
+	farah kassabri <fkassabri@habana.ai>,
+	Oded Gabbay <ogabbay@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 117/341] accel/habanalabs: fix bug in timestamp interrupt handling
+Date: Tue, 27 Aug 2024 16:35:48 +0200
+Message-ID: <20240827143847.865844688@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,93 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Mueller <mimu@linux.ibm.com>
+From: farah kassabri <fkassabri@habana.ai>
 
-commit 5a44bb061d04b0306f2aa8add761d86d152b9377 upstream.
+[ Upstream commit 0165994c215f321e2d055368f89b424756e340eb ]
 
-We might run into a SIE validity if gisa has been disabled either via using
-kernel parameter "kvm.use_gisa=0" or by setting the related sysfs
-attribute to N (echo N >/sys/module/kvm/parameters/use_gisa).
+There is a potential race between user thread seeking to re-use
+a timestamp record with new interrupt id, while this record is still
+in the middle of interrupt handling and it is about to be freed.
+Imagine the driver set the record in_use to 0 and only then fill the
+free_node information. This might lead to unpleasant scenario where
+the new registration thread detects the record as free to use, and
+change the cq buff address. That will cause the free_node to get
+the wrong buffer address to put refcount to.
 
-The validity is caused by an invalid value in the SIE control block's
-gisa designation. That happens because we pass the uninitialized gisa
-origin to virt_to_phys() before writing it to the gisa designation.
-
-To fix this we return 0 in kvm_s390_get_gisa_desc() if the origin is 0.
-kvm_s390_get_gisa_desc() is used to determine which gisa designation to
-set in the SIE control block. A value of 0 in the gisa designation disables
-gisa usage.
-
-The issue surfaces in the host kernel with the following kernel message as
-soon a new kvm guest start is attemted.
-
-kvm: unhandled validity intercept 0x1011
-WARNING: CPU: 0 PID: 781237 at arch/s390/kvm/intercept.c:101 kvm_handle_sie_intercept+0x42e/0x4d0 [kvm]
-Modules linked in: vhost_net tap tun xt_CHECKSUM xt_MASQUERADE xt_conntrack ipt_REJECT xt_tcpudp nft_compat x_tables nf_nat_tftp nf_conntrack_tftp vfio_pci_core irqbypass vhost_vsock vmw_vsock_virtio_transport_common vsock vhost vhost_iotlb kvm nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 ip_set nf_tables sunrpc mlx5_ib ib_uverbs ib_core mlx5_core uvdevice s390_trng eadm_sch vfio_ccw zcrypt_cex4 mdev vfio_iommu_type1 vfio sch_fq_codel drm i2c_core loop drm_panel_orientation_quirks configfs nfnetlink lcs ctcm fsm dm_service_time ghash_s390 prng chacha_s390 libchacha aes_s390 des_s390 libdes sha3_512_s390 sha3_256_s390 sha512_s390 sha256_s390 sha1_s390 sha_common dm_mirror dm_region_hash dm_log zfcp scsi_transport_fc scsi_dh_rdac scsi_dh_emc scsi_dh_alua pkey zcrypt dm_multipath rng_core autofs4 [last unloaded: vfio_pci]
-CPU: 0 PID: 781237 Comm: CPU 0/KVM Not tainted 6.10.0-08682-gcad9f11498ea #6
-Hardware name: IBM 3931 A01 701 (LPAR)
-Krnl PSW : 0704c00180000000 000003d93deb0122 (kvm_handle_sie_intercept+0x432/0x4d0 [kvm])
-           R:0 T:1 IO:1 EX:1 Key:0 M:1 W:0 P:0 AS:3 CC:0 PM:0 RI:0 EA:3
-Krnl GPRS: 000003d900000027 000003d900000023 0000000000000028 000002cd00000000
-           000002d063a00900 00000359c6daf708 00000000000bebb5 0000000000001eff
-           000002cfd82e9000 000002cfd80bc000 0000000000001011 000003d93deda412
-           000003ff8962df98 000003d93de77ce0 000003d93deb011e 00000359c6daf960
-Krnl Code: 000003d93deb0112: c020fffe7259	larl	%r2,000003d93de7e5c4
-           000003d93deb0118: c0e53fa8beac	brasl	%r14,000003d9bd3c7e70
-          #000003d93deb011e: af000000		mc	0,0
-          >000003d93deb0122: a728ffea		lhi	%r2,-22
-           000003d93deb0126: a7f4fe24		brc	15,000003d93deafd6e
-           000003d93deb012a: 9101f0b0		tm	176(%r15),1
-           000003d93deb012e: a774fe48		brc	7,000003d93deafdbe
-           000003d93deb0132: 40a0f0ae		sth	%r10,174(%r15)
-Call Trace:
- [<000003d93deb0122>] kvm_handle_sie_intercept+0x432/0x4d0 [kvm]
-([<000003d93deb011e>] kvm_handle_sie_intercept+0x42e/0x4d0 [kvm])
- [<000003d93deacc10>] vcpu_post_run+0x1d0/0x3b0 [kvm]
- [<000003d93deaceda>] __vcpu_run+0xea/0x2d0 [kvm]
- [<000003d93dead9da>] kvm_arch_vcpu_ioctl_run+0x16a/0x430 [kvm]
- [<000003d93de93ee0>] kvm_vcpu_ioctl+0x190/0x7c0 [kvm]
- [<000003d9bd728b4e>] vfs_ioctl+0x2e/0x70
- [<000003d9bd72a092>] __s390x_sys_ioctl+0xc2/0xd0
- [<000003d9be0e9222>] __do_syscall+0x1f2/0x2e0
- [<000003d9be0f9a90>] system_call+0x70/0x98
-Last Breaking-Event-Address:
- [<000003d9bd3c7f58>] __warn_printk+0xe8/0xf0
-
-Cc: stable@vger.kernel.org
-Reported-by: Christian Borntraeger <borntraeger@linux.ibm.com>
-Fixes: fe0ef0030463 ("KVM: s390: sort out physical vs virtual pointers usage")
-Signed-off-by: Michael Mueller <mimu@linux.ibm.com>
-Tested-by: Christian Borntraeger <borntraeger@linux.ibm.com>
-Reviewed-by: Janosch Frank <frankja@linux.ibm.com>
-Link: https://lore.kernel.org/r/20240801123109.2782155-1-mimu@linux.ibm.com
-Message-ID: <20240801123109.2782155-1-mimu@linux.ibm.com>
-Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: farah kassabri <fkassabri@habana.ai>
+Reviewed-by: Oded Gabbay <ogabbay@kernel.org>
+Signed-off-by: Oded Gabbay <ogabbay@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kvm/kvm-s390.h |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/accel/habanalabs/common/irq.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/arch/s390/kvm/kvm-s390.h
-+++ b/arch/s390/kvm/kvm-s390.h
-@@ -267,7 +267,12 @@ static inline unsigned long kvm_s390_get
+diff --git a/drivers/accel/habanalabs/common/irq.c b/drivers/accel/habanalabs/common/irq.c
+index b1010d206c2ef..813315cea4a7b 100644
+--- a/drivers/accel/habanalabs/common/irq.c
++++ b/drivers/accel/habanalabs/common/irq.c
+@@ -271,6 +271,9 @@ static int handle_registration_node(struct hl_device *hdev, struct hl_user_pendi
+ 	free_node->cq_cb = pend->ts_reg_info.cq_cb;
+ 	list_add(&free_node->free_objects_node, *free_list);
  
- static inline u32 kvm_s390_get_gisa_desc(struct kvm *kvm)
- {
--	u32 gd = virt_to_phys(kvm->arch.gisa_int.origin);
-+	u32 gd;
++	/* Mark TS record as free */
++	pend->ts_reg_info.in_use = false;
 +
-+	if (!kvm->arch.gisa_int.origin)
-+		return 0;
-+
-+	gd = virt_to_phys(kvm->arch.gisa_int.origin);
+ 	return 0;
+ }
  
- 	if (gd && sclp.has_gisaf)
- 		gd |= GISA_FORMAT1;
+-- 
+2.43.0
+
 
 
 
