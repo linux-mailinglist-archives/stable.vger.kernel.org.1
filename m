@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-70511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70761-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE8F4960E80
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:49:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB732960FE8
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:04:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F27461C232DF
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:49:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2AC781C234A1
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:04:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B62C1C57BD;
-	Tue, 27 Aug 2024 14:49:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 528C21C8FD4;
+	Tue, 27 Aug 2024 15:02:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YHDlspwW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KAHo7Dr9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 399071C57B0;
-	Tue, 27 Aug 2024 14:49:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB11A1C8FC4;
+	Tue, 27 Aug 2024 15:02:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770151; cv=none; b=emcu3z8PVWcFMzQeROM94ptDqRX/CvXQ+QHDTGh2RmQiKLDkbRHihuxvprIP9lkjVN58iqwOUrercxoaHyVi7fPEdv9hkZR8dtc75629Txg8jOTgCkTeUz7IYcQ0F9FOpxPvEbegwAKB5alVqdvPCJUQgxNWxrjLwxA3iUrVHzY=
+	t=1724770976; cv=none; b=uo4gQvlMKnTKRkR/L/AA6trweJG4uOlghELzXIWKtLlwMu4MCDEE9caHUDdS7MSxwjvtf3W6R7XmqGCKA+08nC9P6WvbUerAn5juwLwt47x5LfNbdD0rF5QhXKMESTyCzz8vLtJapBjsYMW1ENDmuSEt1AhU8osGX+1GNOKR1fk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770151; c=relaxed/simple;
-	bh=iWDAeBo/SCMlyzIDgBSPigaoWUu+VbYp3HFGVitQjT8=;
+	s=arc-20240116; t=1724770976; c=relaxed/simple;
+	bh=c8MRR+iMxxerwivBq1bJce6UQLRur8XPgMwylWusI+k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DA4++VWd2W5njdQlSIvGhw7uASu4zF4ay6UPNVIn+9Rh8iMj7130jkpg3cko5KlXdJxGA9MnGfGpEGB0Uu9wvky2hwOLRp+u11mQzuSQ6GEi9wJ7FbFyyvWwXCz5QRZDF5dLmWXt6gvtqmPI/j4hHXw/XrO+nzEFWw8JNK+1oXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YHDlspwW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B52FC4AF10;
-	Tue, 27 Aug 2024 14:49:10 +0000 (UTC)
+	 MIME-Version; b=Dt8QsDZ/k3VxluMDdHy3rfp0z7sSchnEPsHXG8JwZ+IGZEDAT86bIdQ76m8oEmPCfjjQ+6rkTxq/syJoI/4aut9URX6lWYO0N2E7qyaPp3KCRUsOUQxV4g4wVfkdsSC0TMADK6oRWnE3RYdJNc4UeWHJR05E3pYI2i3Bw3JmjWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KAHo7Dr9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27A0FC61043;
+	Tue, 27 Aug 2024 15:02:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770151;
-	bh=iWDAeBo/SCMlyzIDgBSPigaoWUu+VbYp3HFGVitQjT8=;
+	s=korg; t=1724770975;
+	bh=c8MRR+iMxxerwivBq1bJce6UQLRur8XPgMwylWusI+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YHDlspwWCTgl3D+AVbkab8g9rnaOaOMI3OwlX7ZK9TqbH+gZRl9yfam0bE+XfW66z
-	 EQOGBdFnzsa0m29x+Yw62YTkf3ZiRQY1fV+cT3YvM1f2/y7xadPXkQ80At2+zCXxAV
-	 n+MRJ+2cbn3DyG4/tySHiyjxx5HnmevtWTSdS4T0=
+	b=KAHo7Dr9SdWtxq1H0CO4UFxxwQZQTz90+1dJ3T9h8bRn45geh2ncwJKBeyZEmmj2B
+	 7FjwLi93Wa7Fz3Q4C1O8c44zeHCgYOgFeG8gu05xb7kpPl/ruhTw+dOv/pmH626Dkc
+	 p9xXhINxANs84IpR9e+1dMG+yhTtyEZz/PDDnv34=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kunwu Chan <chentao@kylinos.cn>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 142/341] powerpc/xics: Check return value of kasprintf in icp_native_map_one_cpu
+	Janne Grunau <j@jannau.net>,
+	Neal Gompa <neal@gompa.dev>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Kalle Valo <kvalo@kernel.org>
+Subject: [PATCH 6.10 049/273] wifi: brcmfmac: cfg80211: Handle SSID based pmksa deletion
 Date: Tue, 27 Aug 2024 16:36:13 +0200
-Message-ID: <20240827143848.823922476@linuxfoundation.org>
+Message-ID: <20240827143835.264966263@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kunwu Chan <chentao@kylinos.cn>
+From: Janne Grunau <j@jannau.net>
 
-[ Upstream commit 45b1ba7e5d1f6881050d558baf9bc74a2ae13930 ]
+commit 2ad4e1ada8eebafa2d75a4b75eeeca882de6ada1 upstream.
 
-kasprintf() returns a pointer to dynamically allocated memory
-which can be NULL upon failure. Ensure the allocation was successful
-by checking the pointer validity.
+wpa_supplicant 2.11 sends since 1efdba5fdc2c ("Handle PMKSA flush in the
+driver for SAE/OWE offload cases") SSID based PMKSA del commands.
+brcmfmac is not prepared and tries to dereference the NULL bssid and
+pmkid pointers in cfg80211_pmksa. PMKID_V3 operations support SSID based
+updates so copy the SSID.
 
-Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20231122030651.3818-1-chentao@kylinos.cn
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a96202acaea4 ("wifi: brcmfmac: cfg80211: Add support for PMKID_V3 operations")
+Cc: stable@vger.kernel.org # 6.4.x
+Signed-off-by: Janne Grunau <j@jannau.net>
+Reviewed-by: Neal Gompa <neal@gompa.dev>
+Acked-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://patch.msgid.link/20240803-brcmfmac_pmksa_del_ssid-v1-1-4e85f19135e1@jannau.net
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/sysdev/xics/icp-native.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c |   13 +++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/sysdev/xics/icp-native.c b/arch/powerpc/sysdev/xics/icp-native.c
-index f6ec6dba92dcb..700b67476a7d8 100644
---- a/arch/powerpc/sysdev/xics/icp-native.c
-+++ b/arch/powerpc/sysdev/xics/icp-native.c
-@@ -236,6 +236,8 @@ static int __init icp_native_map_one_cpu(int hw_id, unsigned long addr,
- 	rname = kasprintf(GFP_KERNEL, "CPU %d [0x%x] Interrupt Presentation",
- 			  cpu, hw_id);
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c
+@@ -4320,9 +4320,16 @@ brcmf_pmksa_v3_op(struct brcmf_if *ifp,
+ 		/* Single PMK operation */
+ 		pmk_op->count = cpu_to_le16(1);
+ 		length += sizeof(struct brcmf_pmksa_v3);
+-		memcpy(pmk_op->pmk[0].bssid, pmksa->bssid, ETH_ALEN);
+-		memcpy(pmk_op->pmk[0].pmkid, pmksa->pmkid, WLAN_PMKID_LEN);
+-		pmk_op->pmk[0].pmkid_len = WLAN_PMKID_LEN;
++		if (pmksa->bssid)
++			memcpy(pmk_op->pmk[0].bssid, pmksa->bssid, ETH_ALEN);
++		if (pmksa->pmkid) {
++			memcpy(pmk_op->pmk[0].pmkid, pmksa->pmkid, WLAN_PMKID_LEN);
++			pmk_op->pmk[0].pmkid_len = WLAN_PMKID_LEN;
++		}
++		if (pmksa->ssid && pmksa->ssid_len) {
++			memcpy(pmk_op->pmk[0].ssid.SSID, pmksa->ssid, pmksa->ssid_len);
++			pmk_op->pmk[0].ssid.SSID_len = pmksa->ssid_len;
++		}
+ 		pmk_op->pmk[0].time_left = cpu_to_le32(alive ? BRCMF_PMKSA_NO_EXPIRY : 0);
+ 	}
  
-+	if (!rname)
-+		return -ENOMEM;
- 	if (!request_mem_region(addr, size, rname)) {
- 		pr_warn("icp_native: Could not reserve ICP MMIO for CPU %d, interrupt server #0x%x\n",
- 			cpu, hw_id);
--- 
-2.43.0
-
 
 
 
