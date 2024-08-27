@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-71024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70487-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95AFB961147
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:18:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D47A960E5F
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:48:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4EA3F284FAF
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:18:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5350A285672
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:48:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 486751C9EC8;
-	Tue, 27 Aug 2024 15:17:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C86321C57B3;
+	Tue, 27 Aug 2024 14:47:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eqyiI+si"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y78OAoGm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06A031C9EAA;
-	Tue, 27 Aug 2024 15:17:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 866151C4EF6;
+	Tue, 27 Aug 2024 14:47:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771844; cv=none; b=mlPwLLbq+SdfJS6dyPLDoaa0OfVmrXl/J/F/Q3wScC9BksWnnUJGNei1CrQejuGPjWnmMMncH/kQucGqhS4+I/fHRhH/NhA/9Ki7buy/yDYG+GSz67W3yC51+Almr861Qz6zLVZNVUXZIwuBl6/d4FJRt6vJ9vYIyglDOtJaGCg=
+	t=1724770070; cv=none; b=G1EAzsHE1ogMa3sNs/LhJ/ro/0owlSfijdz48E8QjsmzEqOJyrtb3hQAZ+6b0Qw12qn6uXo9wgpovkGN+U7Xk+wI/gdlT9W3/9cE7AcePul9PO+fQEs8KJUTzTR7J2+D9CiQg5PAnRFPxJ/G2dd/dDI2BoaDhmRbHETV+Gla+Cg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771844; c=relaxed/simple;
-	bh=sR8w9Rc71oUBMG4OM1K4idhH2+bqai5TWXcfWWOQctQ=;
+	s=arc-20240116; t=1724770070; c=relaxed/simple;
+	bh=N6lWjtihlU4gBUj5LZSMXRkFgnNaS6+3Z3AOXyxMSdY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aVO3FVvNFDXt9WD/NfEIOs7P0BXK40Z6njVr7cQlSOkMOdCoyOVCsbjpiesDRFXKReb2KdNPCiSTOrtsJV5yTejvPzPuHMimoIJxYll3qmau4Ye8o+h2GQEz/X5HKRpwiF/+eFRAH/L8oBi/C7owpoEcAErg/D6DF6OKmnEFBT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eqyiI+si; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ABEBC61044;
-	Tue, 27 Aug 2024 15:17:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=aovSPkLyslbWBBysZ3I6eIkOQ+VVrkAa6KbKG3GAgKtu05M1UgY2Giy/mydImOH97ilUSoy5EaA3VTyK7e5UWm8MFNa5bT7hmjCQN+5dvZd6hQ/SknLaA5x90HOBcaoxU8UBE1PrbI55X/6oEh5V3avXNykHfZWXJXTBC9CFOCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y78OAoGm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81BAFC61045;
+	Tue, 27 Aug 2024 14:47:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771843;
-	bh=sR8w9Rc71oUBMG4OM1K4idhH2+bqai5TWXcfWWOQctQ=;
+	s=korg; t=1724770070;
+	bh=N6lWjtihlU4gBUj5LZSMXRkFgnNaS6+3Z3AOXyxMSdY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eqyiI+siEkOsAQdrMNOWruWQoHR23eWzndo0SEzxhzV3YXSgVf7V47YB0+fJ4C2It
-	 +MgT43GIsuC+sQfw2ucB4oaUnKVW4rnaoTV/HPmU3ZAMv9uUUfsZ0ZKyew9DBv07TS
-	 5IwnGy34Fu3Co/xWGgz/7xyZqDhj91VSKbz5N4gw=
+	b=Y78OAoGmXAWDHInulpODkzSyvmuG2njqWlycXvvpj2TKpNkRLB2fah6sYc9YYTHYW
+	 Z2tnwD3qK8BO8Ts39ZcP3pl3kMwhj5yKSbAa53GARP+xHI1qVDXnp4DflFIUlPR+cy
+	 6VEPwRuN2h8nyeZ0lTJ8HgdqGe6cSaiBOD4GsU+M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 6.1 009/321] thunderbolt: Mark XDomain as unplugged when router is removed
+	Rand Deeb <rand.sec96@gmail.com>,
+	Larry Finger <Larry.Finger@lwfinger.net>,
+	=?UTF-8?q?Michael=20B=C3=BCsch?= <m@bues.ch>,
+	Kalle Valo <kvalo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 086/341] ssb: Fix division by zero issue in ssb_calc_clock_rate
 Date: Tue, 27 Aug 2024 16:35:17 +0200
-Message-ID: <20240827143838.554013789@linuxfoundation.org>
+Message-ID: <20240827143846.681478493@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,46 +62,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
+From: Rand Deeb <rand.sec96@gmail.com>
 
-commit e2006140ad2e01a02ed0aff49cc2ae3ceeb11f8d upstream.
+[ Upstream commit e0b5127fa134fe0284d58877b6b3133939c8b3ce ]
 
-I noticed that when we do discrete host router NVM upgrade and it gets
-hot-removed from the PCIe side as a result of NVM firmware authentication,
-if there is another host connected with enabled paths we hang in tearing
-them down. This is due to fact that the Thunderbolt networking driver
-also tries to cleanup the paths and ends up blocking in
-tb_disconnect_xdomain_paths() waiting for the domain lock.
+In ssb_calc_clock_rate(), there is a potential issue where the value of
+m1 could be zero due to initialization using clkfactor_f6_resolv(). This
+situation raised concerns about the possibility of a division by zero
+error.
 
-However, at this point we already cleaned the paths in tb_stop() so
-there is really no need for tb_disconnect_xdomain_paths() to do that
-anymore. Furthermore it already checks if the XDomain is unplugged and
-bails out early so take advantage of that and mark the XDomain as
-unplugged when we remove the parent router.
+We fixed it by following the suggestions provided by Larry Finger
+<Larry.Finger@lwfinger.net> and Michael Büsch <m@bues.ch>. The fix
+involves returning a value of 1 instead of 0 in clkfactor_f6_resolv().
+This modification ensures the proper functioning of the code and
+eliminates the risk of division by zero errors.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Rand Deeb <rand.sec96@gmail.com>
+Acked-by: Larry Finger <Larry.Finger@lwfinger.net>
+Acked-by: Michael Büsch <m@bues.ch>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20230904232346.34991-1-rand.sec96@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thunderbolt/switch.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/ssb/main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/thunderbolt/switch.c
-+++ b/drivers/thunderbolt/switch.c
-@@ -3086,6 +3086,7 @@ void tb_switch_remove(struct tb_switch *
- 			tb_switch_remove(port->remote->sw);
- 			port->remote = NULL;
- 		} else if (port->xdomain) {
-+			port->xdomain->is_unplugged = true;
- 			tb_xdomain_remove(port->xdomain);
- 			port->xdomain = NULL;
- 		}
+diff --git a/drivers/ssb/main.c b/drivers/ssb/main.c
+index 0c736d51566dc..070a99a4180cc 100644
+--- a/drivers/ssb/main.c
++++ b/drivers/ssb/main.c
+@@ -839,7 +839,7 @@ static u32 clkfactor_f6_resolve(u32 v)
+ 	case SSB_CHIPCO_CLK_F6_7:
+ 		return 7;
+ 	}
+-	return 0;
++	return 1;
+ }
+ 
+ /* Calculate the speed the backplane would run at a given set of clockcontrol values */
+-- 
+2.43.0
+
 
 
 
