@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-70801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBF4496101C
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:05:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1790960EBA
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:51:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 798122830E7
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:05:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3088BB253A4
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:51:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 831851C4ED4;
-	Tue, 27 Aug 2024 15:05:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E32D1C6F55;
+	Tue, 27 Aug 2024 14:51:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RHMVmYC8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SfA/z8aR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D81B1C7B97;
-	Tue, 27 Aug 2024 15:05:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0F2C1C5792;
+	Tue, 27 Aug 2024 14:51:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771106; cv=none; b=f9gTnIEzRA2ToPj1K95RP8m2t7Z6/7lGNUZx6zoxNLRhLoAkHnmJvxryN7MXjSFwp7Y4P6hH5tAbswOYu4tOxn1dCK04ZjEWuxWJoulpRY2V36Z9jsHTifAhaPazobOm0NVmkHb9k2eHYHClcXTFioA5Zpr1kwvhfkQv71i41B4=
+	t=1724770283; cv=none; b=SnzzZEAZRDg7BjKowhQfoghxyew983JcgjsN8rvJ44oIzH3mZXzktmLzaaqXRURESGY0nU+5pgyr3Vs5TgvKMS7lIfxfkTC4rLK625ep73dRU5ev+myu027vp94csVDaqy6Z3CORWU4z6prBDiHf+7Y85SsKb84MsJ0nLrEyHPw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771106; c=relaxed/simple;
-	bh=TfTXIDrsavKZm+q5CCYOUe9B9kUY6dVIgYG+9S/NU8k=;
+	s=arc-20240116; t=1724770283; c=relaxed/simple;
+	bh=NDEg030/0cHAiOK+exZh1CnxtA0/O4GlCuexvbznrZQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jY0Gdp0Q381IV/AzYJH5c9q69C5NWzTyQQUhuwqiakKXfyZDmTKl2/grzhnv3b8AdZPonL25UFs4EwwWcHtvZd5VSRFGOpJGppts584Ie9jWTF85U7K/QzgIIj5DtKqV29xN0NAc5rjO5gnI8qbZWQZF6NZmUwnlMHJboqznnl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RHMVmYC8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 983B2C6105B;
-	Tue, 27 Aug 2024 15:05:05 +0000 (UTC)
+	 MIME-Version; b=k4b50mo5lWDyUZ3n+NAKjL7c0gC+EBemGDS3xUVKV6xbidTj1nXRJ+7SD53ZS6axACC0RFvuLuRkR7czQAsCsSfmmwsMlWKnnD3xw2CgXQZehFVqSq6Gu0uQNdejdxfVkbPZQ5OT015T2VqGWOGalPgqkLSSkrscJGYUvUQaY1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SfA/z8aR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7818C4DE03;
+	Tue, 27 Aug 2024 14:51:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771106;
-	bh=TfTXIDrsavKZm+q5CCYOUe9B9kUY6dVIgYG+9S/NU8k=;
+	s=korg; t=1724770283;
+	bh=NDEg030/0cHAiOK+exZh1CnxtA0/O4GlCuexvbznrZQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RHMVmYC8Ys6hmYDv8N+TqjE2ODfI2pJmgsHQqzcQCYaQIVvwCrYpBoQnoRDSTrFjr
-	 6rBp+DPg2/7nbYJoAax1HknLJoExmVDaaSQE92rxOl7yX8ONtXIDW94upBbZGqV/iU
-	 +RUDmXWObiZ4s5AtNDocVDScw90pKA3PNSMa9YuY=
+	b=SfA/z8aRL9iRrcUgiCz+yGe30Er5M829T1IyEfdE2ihNFQS9UDd9FPBPYzLAoiSFR
+	 X+J/LNKW1YHGB6bDnlSC0xeNcMcFAPkXbt+3aD43teKbdqGwXJLuyeIJegsgR5o4VG
+	 idbP663FFGDj6B8sg0hyeBaIk3JqhkvMQIvq//Uo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Faizal Rahim <faizal.abdul.rahim@linux.intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Zhiguo Niu <zhiguo.niu@unisoc.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 088/273] igc: Fix qbv tx latency by setting gtxoffset
+Subject: [PATCH 6.6 181/341] f2fs: stop checkpoint when get a out-of-bounds segment
 Date: Tue, 27 Aug 2024 16:36:52 +0200
-Message-ID: <20240827143836.762249642@linuxfoundation.org>
+Message-ID: <20240827143850.301883134@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,97 +63,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Faizal Rahim <faizal.abdul.rahim@linux.intel.com>
+From: Zhiguo Niu <zhiguo.niu@unisoc.com>
 
-[ Upstream commit 6c3fc0b1c3d073bd6fc3bf43dbd0e64240537464 ]
+[ Upstream commit f9e28904e6442019043a8e94ec6747a064d06003 ]
 
-A large tx latency issue was discovered during testing when only QBV was
-enabled. The issue occurs because gtxoffset was not set when QBV is
-active, it was only set when launch time is active.
+There is low probability that an out-of-bounds segment will be got
+on a small-capacity device. In order to prevent subsequent write requests
+allocating block address from this invalid segment, which may cause
+unexpected issue, stop checkpoint should be performed.
 
-The patch "igc: Correct the launchtime offset" only sets gtxoffset when
-the launchtime_enable field is set by the user. Enabling launchtime_enable
-ultimately sets the register IGC_TXQCTL_QUEUE_MODE_LAUNCHT (referred to as
-LaunchT in the SW user manual).
+Also introduce a new stop cp reason: STOP_CP_REASON_NO_SEGMENT.
 
-Section 7.5.2.6 of the IGC i225/6 SW User Manual Rev 1.2.4 states:
-"The latency between transmission scheduling (launch time) and the
-time the packet is transmitted to the network is listed in Table 7-61."
+Note, f2fs_stop_checkpoint(, false) is complex and it may sleep, so we should
+move it outside segmap_lock spinlock coverage in get_new_segment().
 
-However, the patch misinterprets the phrase "launch time" in that section
-by assuming it specifically refers to the LaunchT register, whereas it
-actually denotes the generic term for when a packet is released from the
-internal buffer to the MAC transmit logic.
-
-This launch time, as per that section, also implicitly refers to the QBV
-gate open time, where a packet waits in the buffer for the QBV gate to
-open. Therefore, latency applies whenever QBV is in use. TSN features such
-as QBU and QAV reuse QBV, making the latency universal to TSN features.
-
-Discussed with i226 HW owner (Shalev, Avi) and we were in agreement that
-the term "launch time" used in Section 7.5.2.6 is not clear and can be
-easily misinterpreted. Avi will update this section to:
-"When TQAVCTRL.TRANSMIT_MODE = TSN, the latency between transmission
-scheduling and the time the packet is transmitted to the network is listed
-in Table 7-61."
-
-Fix this issue by using igc_tsn_is_tx_mode_in_tsn() as a condition to
-write to gtxoffset, aligning with the newly updated SW User Manual.
-
-Tested:
-1. Enrol taprio on talker board
-   base-time 0
-   cycle-time 1000000
-   flags 0x2
-   index 0 cmd S gatemask 0x1 interval1
-   index 0 cmd S gatemask 0x1 interval2
-
-   Note:
-   interval1 = interval for a 64 bytes packet to go through
-   interval2 = cycle-time - interval1
-
-2. Take tcpdump on listener board
-
-3. Use udp tai app on talker to send packets to listener
-
-4. Check the timestamp on listener via wireshark
-
-Test Result:
-100 Mbps: 113 ~193 ns
-1000 Mbps: 52 ~ 84 ns
-2500 Mbps: 95 ~ 223 ns
-
-Note that the test result is similar to the patch "igc: Correct the
-launchtime offset".
-
-Fixes: 790835fcc0cb ("igc: Correct the launchtime offset")
-Signed-off-by: Faizal Rahim <faizal.abdul.rahim@linux.intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/igc/igc_tsn.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/f2fs/segment.c       | 12 +++++++++++-
+ include/linux/f2fs_fs.h |  1 +
+ 2 files changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/igc/igc_tsn.c b/drivers/net/ethernet/intel/igc/igc_tsn.c
-index ada7514305171..d68fa7f3d5f07 100644
---- a/drivers/net/ethernet/intel/igc/igc_tsn.c
-+++ b/drivers/net/ethernet/intel/igc/igc_tsn.c
-@@ -61,7 +61,7 @@ void igc_tsn_adjust_txtime_offset(struct igc_adapter *adapter)
- 	struct igc_hw *hw = &adapter->hw;
- 	u16 txoffset;
+diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
+index 804958c6de34c..50c7537eb2250 100644
+--- a/fs/f2fs/segment.c
++++ b/fs/f2fs/segment.c
+@@ -2646,6 +2646,7 @@ static void get_new_segment(struct f2fs_sb_info *sbi,
+ 	unsigned int old_zoneno = GET_ZONE_FROM_SEG(sbi, *newseg);
+ 	bool init = true;
+ 	int i;
++	int ret = 0;
  
--	if (!is_any_launchtime(adapter))
-+	if (!igc_tsn_is_tx_mode_in_tsn(adapter))
- 		return;
+ 	spin_lock(&free_i->segmap_lock);
  
- 	switch (adapter->link_speed) {
+@@ -2670,7 +2671,10 @@ static void get_new_segment(struct f2fs_sb_info *sbi,
+ 	if (secno >= MAIN_SECS(sbi)) {
+ 		secno = find_first_zero_bit(free_i->free_secmap,
+ 							MAIN_SECS(sbi));
+-		f2fs_bug_on(sbi, secno >= MAIN_SECS(sbi));
++		if (secno >= MAIN_SECS(sbi)) {
++			ret = -ENOSPC;
++			goto out_unlock;
++		}
+ 	}
+ 	segno = GET_SEG_FROM_SEC(sbi, secno);
+ 	zoneno = GET_ZONE_FROM_SEC(sbi, secno);
+@@ -2700,7 +2704,13 @@ static void get_new_segment(struct f2fs_sb_info *sbi,
+ 	f2fs_bug_on(sbi, test_bit(segno, free_i->free_segmap));
+ 	__set_inuse(sbi, segno);
+ 	*newseg = segno;
++out_unlock:
+ 	spin_unlock(&free_i->segmap_lock);
++
++	if (ret) {
++		f2fs_stop_checkpoint(sbi, false, STOP_CP_REASON_NO_SEGMENT);
++		f2fs_bug_on(sbi, 1);
++	}
+ }
+ 
+ static void reset_curseg(struct f2fs_sb_info *sbi, int type, int modified)
+diff --git a/include/linux/f2fs_fs.h b/include/linux/f2fs_fs.h
+index 3b04657787d09..1352a24d72ef4 100644
+--- a/include/linux/f2fs_fs.h
++++ b/include/linux/f2fs_fs.h
+@@ -76,6 +76,7 @@ enum stop_cp_reason {
+ 	STOP_CP_REASON_CORRUPTED_SUMMARY,
+ 	STOP_CP_REASON_UPDATE_INODE,
+ 	STOP_CP_REASON_FLUSH_FAIL,
++	STOP_CP_REASON_NO_SEGMENT,
+ 	STOP_CP_REASON_MAX,
+ };
+ 
 -- 
 2.43.0
 
