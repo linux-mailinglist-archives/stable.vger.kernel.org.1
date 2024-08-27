@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-71262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70938-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59128961298
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:33:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 273899610C8
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:12:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B8B71C22B68
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:33:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 45A871C233F8
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:12:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C8361CF2A1;
-	Tue, 27 Aug 2024 15:30:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9EEC1C5793;
+	Tue, 27 Aug 2024 15:12:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jDFVqHd2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AF1cwWea"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C04AD1CEAAF;
-	Tue, 27 Aug 2024 15:30:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68DB51BC9E3;
+	Tue, 27 Aug 2024 15:12:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772631; cv=none; b=jq0n0ngvDxiGZts1lA6r5MCPWu/qGa1JtVOW83p7ObYKKVXdmmkbvMqeVvta6YudsnyVuQ627AlwpfA7LYw77VH96Mf9MYU0cn4yQI9yV8JdHawGPRNSTO7gqJekpn58i67AmVH1cP1AiKEPgfdxW75c8kEbHZQh7TI9kEl8EYs=
+	t=1724771561; cv=none; b=H87SkgfxKmqD/BhvCYwG6PuL/r2qbnKh21SEcUtioF2JBzWR6DoensdN9w8WNMVvDTeQkPWFqtQ2Rva11iOHyQs8YuA6X9F7Uj1Z7u2Zfg9d+pjq3DsJPR48tKdiLh/mDGAmKD9gq6e4qdlWYdF3JUdr2xSUCTwqm6b+wp1XAT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772631; c=relaxed/simple;
-	bh=aJe7TvTETCHT86xX5abo8SHtoVVcE8ciW4c805+4vzE=;
+	s=arc-20240116; t=1724771561; c=relaxed/simple;
+	bh=y19mRIT2Lj3nrlpdd3KfMRu1+wNnKConr8ghTfw1354=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q2NZ57ItWdel5DlAG9PSVg5+uqc4c8CpjOkVGhPzxqeshUrQbkymBEYCh/XFCicgxTZg02Y6LNm+/CE2MvqKKEiMyPRj3I5CDUtxDTsWoIscqzt5ZFSiCpxlUKcUBSxfMH2RhFL9vy07V+CMpl7w4vOESzo+MO5SMjpUWagZvdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jDFVqHd2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30CE4C4AF65;
-	Tue, 27 Aug 2024 15:30:31 +0000 (UTC)
+	 MIME-Version; b=ktV3gi/t1OMtqAQ9PhJe5Jip83vcujWEYddvfcGNnNho/dDrl4nGEsA55yAHZgNgWiog5IOHZIXowMLKa28OZB3i/4bb7AhO78LcqxMsdgzNnb21d6ist6knNn0OGwPNmPPUfJqXSs9oLVBVwunG29eS2jLkoGdJ8CQSVhglioU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AF1cwWea; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3E62C61042;
+	Tue, 27 Aug 2024 15:12:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772631;
-	bh=aJe7TvTETCHT86xX5abo8SHtoVVcE8ciW4c805+4vzE=;
+	s=korg; t=1724771561;
+	bh=y19mRIT2Lj3nrlpdd3KfMRu1+wNnKConr8ghTfw1354=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jDFVqHd23i9r0buOCxDEb+x4uo3MFJbDn2Dd78vQy8bz8+qFeuRYeKTbg7sdj+ocT
-	 If0RBoMb8Q5YhbOApfc606SfGr/z2V1H9Qnuk/YGyJ/c9P32xB6MEvIZpLuPd4ZXAu
-	 ogY3r6qmrmb9kffZWyTbVhvNGqIgbEg5ek0o5M6E=
+	b=AF1cwWea9p9pZEc+J3L6891sxfKlsalirb/8HcdPv3w+NyQXeG5U/8ZPmBEIgfZMI
+	 Bv/zeulirubqBEX1bSCKtaBRW+mt/OlC8HnpWl9MheiAxVxk/7qD3n1f8gs7r98TxO
+	 wqk1ime8JdPO3sikXFcuuifXQPDBV39RFAN1+vHo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 241/321] bonding: fix xfrm state handling when clearing active slave
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.10 225/273] ksmbd: the buffer of smb2 query dir response has at least 1 byte
 Date: Tue, 27 Aug 2024 16:39:09 +0200
-Message-ID: <20240827143847.413600500@linuxfoundation.org>
+Message-ID: <20240827143841.968719369@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikolay Aleksandrov <razor@blackwall.org>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit c4c5c5d2ef40a9f67a9241dc5422eac9ffe19547 ]
+commit ce61b605a00502c59311d0a4b1f58d62b48272d0 upstream.
 
-If the active slave is cleared manually the xfrm state is not flushed.
-This leads to xfrm add/del imbalance and adding the same state multiple
-times. For example when the device cannot handle anymore states we get:
- [ 1169.884811] bond0: (slave eni0np1): bond_ipsec_add_sa_all: failed to add SA
-because it's filled with the same state after multiple active slave
-clearings. This change also has a few nice side effects: user-space
-gets a notification for the change, the old device gets its mac address
-and promisc/mcast adjusted properly.
+When STATUS_NO_MORE_FILES status is set to smb2 query dir response,
+->StructureSize is set to 9, which mean buffer has 1 byte.
+This issue occurs because ->Buffer[1] in smb2_query_directory_rsp to
+flex-array.
 
-Fixes: 18cb261afd7b ("bonding: support hardware encryption offload to slaves")
-Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: eb3e28c1e89b ("smb3: Replace smb2pdu 1-element arrays with flex-arrays")
+Cc: stable@vger.kernel.org # v6.1+
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/bonding/bond_options.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/server/smb2pdu.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/bonding/bond_options.c b/drivers/net/bonding/bond_options.c
-index 685fb4703ee1f..06c4cd0f00024 100644
---- a/drivers/net/bonding/bond_options.c
-+++ b/drivers/net/bonding/bond_options.c
-@@ -932,7 +932,7 @@ static int bond_option_active_slave_set(struct bonding *bond,
- 	/* check to see if we are clearing active */
- 	if (!slave_dev) {
- 		netdev_dbg(bond->dev, "Clearing current active slave\n");
--		RCU_INIT_POINTER(bond->curr_active_slave, NULL);
-+		bond_change_active_slave(bond, NULL);
- 		bond_select_active_slave(bond);
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -4406,7 +4406,8 @@ int smb2_query_dir(struct ksmbd_work *wo
+ 		rsp->OutputBufferLength = cpu_to_le32(0);
+ 		rsp->Buffer[0] = 0;
+ 		rc = ksmbd_iov_pin_rsp(work, (void *)rsp,
+-				       sizeof(struct smb2_query_directory_rsp));
++				       offsetof(struct smb2_query_directory_rsp, Buffer)
++				       + 1);
+ 		if (rc)
+ 			goto err_out;
  	} else {
- 		struct slave *old_active = rtnl_dereference(bond->curr_active_slave);
--- 
-2.43.0
-
 
 
 
