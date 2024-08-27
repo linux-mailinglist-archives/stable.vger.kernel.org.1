@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-71256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70962-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06EA4961296
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:33:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 169D19610E8
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:14:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2416DB2AB15
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:32:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8CE40B249A5
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:14:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15C131C5788;
-	Tue, 27 Aug 2024 15:30:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8BF11C7B8C;
+	Tue, 27 Aug 2024 15:13:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wJHlM6F9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S7rkfZ4u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7A8DD517;
-	Tue, 27 Aug 2024 15:30:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3C411C7B6F;
+	Tue, 27 Aug 2024 15:13:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772610; cv=none; b=dFpchrL89v+/IrAHEZucvV+EZ/gxf0vdbbb+tuZT1n8aHO3L3ElLBbph4fBjq4A76wNHUA/i24ANwOFFtWJzg5MeFBb2nHOCE0UB6YOEp9JbrfU/GzQkPVcxEzI5lAqOZwjX3ZBrnh7dqkFb+OPh+pPQ6XYavDtv/zNNrLlp4QQ=
+	t=1724771639; cv=none; b=NCTM1d2Qrk2HO8yL+Xhdg3JJ1c5mV8/oPmQjQuHj05N4hj1wHh3U8uPFb8sIqKh55/S6yd7FPDqr9EGMS843dzXmrjosiGny8rNpEz0MeSqZoSPaap50poA4fJRuGN5eIyZzE4n6Wl8u5i24K36OeMrBqv6wYuYj+uhXP7GW2SA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772610; c=relaxed/simple;
-	bh=zwrZI+KnGXqsM6SlD3gPmm5X1NVQbBrAEOoETPLhunA=;
+	s=arc-20240116; t=1724771639; c=relaxed/simple;
+	bh=kIQLU48wIob8v19HAyulWIZHUkAHEgghiJ++ldkOFrA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LsRPQPOB4wdbkm3U5rMDpaTVhV4qpectHbuOLAqZE22QUBYbaPQKxPAw8xejJut3wjg0Eomzensb4/6W/9fUFc+iljbh7bCEyFkI57J+EvuLGe4gY2R9Y0fnOI7WR2jWe6H4Qb1qLIesramExjxAD4r1P8a8wHIaZtGd2m/OmbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wJHlM6F9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33601C4AF64;
-	Tue, 27 Aug 2024 15:30:10 +0000 (UTC)
+	 MIME-Version; b=BV5x6I1Kmh1qort5jUbusZqjWEyF/dP+bJrrAfa8Ah1rh/UrGZlzjdB6TjCRiPw/G9Md30vkn34l/vREJSz6i/GUEV6/O59FkVMDI0BvNAVMkMWXjo+Jkjerd7Che9p825OQV2X3BI4UovmQrs3d3hS7UJuw0iMzBsG8l0Z6g0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S7rkfZ4u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07C2DC6106B;
+	Tue, 27 Aug 2024 15:13:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772610;
-	bh=zwrZI+KnGXqsM6SlD3gPmm5X1NVQbBrAEOoETPLhunA=;
+	s=korg; t=1724771639;
+	bh=kIQLU48wIob8v19HAyulWIZHUkAHEgghiJ++ldkOFrA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wJHlM6F9WGvPLY8PgH4q1FcvDgQ3HGYyIc+KlP2AH3fzxOZQwtojzJrs14u+hS3Lk
-	 r7CxHbW3squHmyjmWSg+Ti5ePJacq44QEOn/AlJjRYpkeqqGTxQ2Al2lyOOI3WC8TZ
-	 N99ZxBOrzJ+8sSoJl+2q+uW9A5dBSp6EAIt+e+zY=
+	b=S7rkfZ4uikGaCBsl68TLxsGJ27GlS90r68f0Y6mfDd9HRzJwjXu8MIhvlUyeqdT39
+	 ZMGgseb22iu1rJN7OTr4T0yWSbuy8itUJRV1erNa08E4TH9AlEtYiWVT5JarqyI6MD
+	 NrY6rke9s7mzrhW/kZHtamDb3Ss2uM6DAwAEvDeM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 265/321] ksmbd: the buffer of smb2 query dir response has at least 1 byte
-Date: Tue, 27 Aug 2024 16:39:33 +0200
-Message-ID: <20240827143848.337196424@linuxfoundation.org>
+	Jacky Bai <ping.bai@nxp.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.10 250/273] pmdomain: imx: wait SSAR when i.MX93 power domain on
+Date: Tue, 27 Aug 2024 16:39:34 +0200
+Message-ID: <20240827143842.916354136@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Peng Fan <peng.fan@nxp.com>
 
-commit ce61b605a00502c59311d0a4b1f58d62b48272d0 upstream.
+commit 52dd070c62e4ae2b5e7411b920e3f7a64235ecfb upstream.
 
-When STATUS_NO_MORE_FILES status is set to smb2 query dir response,
-->StructureSize is set to 9, which mean buffer has 1 byte.
-This issue occurs because ->Buffer[1] in smb2_query_directory_rsp to
-flex-array.
+With "quiet" set in bootargs, there is power domain failure:
+"imx93_power_domain 44462400.power-domain: pd_off timeout: name:
+ 44462400.power-domain, stat: 4"
 
-Fixes: eb3e28c1e89b ("smb3: Replace smb2pdu 1-element arrays with flex-arrays")
-Cc: stable@vger.kernel.org # v6.1+
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+The current power on opertation takes ISO state as power on finished
+flag, but it is wrong. Before powering on operation really finishes,
+powering off comes and powering off will never finish because the last
+powering on still not finishes, so the following powering off actually
+not trigger hardware state machine to run. SSAR is the last step when
+powering on a domain, so need to wait SSAR done when powering on.
+
+Since EdgeLock Enclave(ELE) handshake is involved in the flow, enlarge
+the waiting time to 10ms for both on and off to avoid timeout.
+
+Cc: stable@vger.kernel.org
+Fixes: 0a0f7cc25d4a ("soc: imx: add i.MX93 SRC power domain driver")
+Reviewed-by: Jacky Bai <ping.bai@nxp.com>
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Link: https://lore.kernel.org/r/20240814124740.2778952-1-peng.fan@oss.nxp.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/smb2pdu.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/pmdomain/imx/imx93-pd.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -4169,7 +4169,8 @@ int smb2_query_dir(struct ksmbd_work *wo
- 		rsp->OutputBufferLength = cpu_to_le32(0);
- 		rsp->Buffer[0] = 0;
- 		rc = ksmbd_iov_pin_rsp(work, (void *)rsp,
--				       sizeof(struct smb2_query_directory_rsp));
-+				       offsetof(struct smb2_query_directory_rsp, Buffer)
-+				       + 1);
- 		if (rc)
- 			goto err_out;
- 	} else {
+--- a/drivers/pmdomain/imx/imx93-pd.c
++++ b/drivers/pmdomain/imx/imx93-pd.c
+@@ -20,6 +20,7 @@
+ #define FUNC_STAT_PSW_STAT_MASK		BIT(0)
+ #define FUNC_STAT_RST_STAT_MASK		BIT(2)
+ #define FUNC_STAT_ISO_STAT_MASK		BIT(4)
++#define FUNC_STAT_SSAR_STAT_MASK	BIT(8)
+ 
+ struct imx93_power_domain {
+ 	struct generic_pm_domain genpd;
+@@ -50,7 +51,7 @@ static int imx93_pd_on(struct generic_pm
+ 	writel(val, addr + MIX_SLICE_SW_CTRL_OFF);
+ 
+ 	ret = readl_poll_timeout(addr + MIX_FUNC_STAT_OFF, val,
+-				 !(val & FUNC_STAT_ISO_STAT_MASK), 1, 10000);
++				 !(val & FUNC_STAT_SSAR_STAT_MASK), 1, 10000);
+ 	if (ret) {
+ 		dev_err(domain->dev, "pd_on timeout: name: %s, stat: %x\n", genpd->name, val);
+ 		return ret;
+@@ -72,7 +73,7 @@ static int imx93_pd_off(struct generic_p
+ 	writel(val, addr + MIX_SLICE_SW_CTRL_OFF);
+ 
+ 	ret = readl_poll_timeout(addr + MIX_FUNC_STAT_OFF, val,
+-				 val & FUNC_STAT_PSW_STAT_MASK, 1, 1000);
++				 val & FUNC_STAT_PSW_STAT_MASK, 1, 10000);
+ 	if (ret) {
+ 		dev_err(domain->dev, "pd_off timeout: name: %s, stat: %x\n", genpd->name, val);
+ 		return ret;
 
 
 
