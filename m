@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-70668-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C620960F6E
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:59:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D35289610AF
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:11:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CF7C5B24741
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:59:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4217AB26331
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:11:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF2F119F485;
-	Tue, 27 Aug 2024 14:57:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F6041C5783;
+	Tue, 27 Aug 2024 15:11:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NB7T5TBc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nRUFZ0Hv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B1571C5781;
-	Tue, 27 Aug 2024 14:57:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BC871BD514;
+	Tue, 27 Aug 2024 15:11:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770673; cv=none; b=u1PqfUso1ZILe/tuRAq2vKztYYE6leRLXQpUK+fK4vCmEOkGbuirswtRc39gJqVMaNI+hmn8GNx+ZIfvuZRCPCufAoiXSvz/OctDXbdpEfrJidLT3kNPAUuZ7L4BNvvah3eqTZSQGWf61j/9MgjiSsl0BwqoPhdY8VTYmjcDhxQ=
+	t=1724771499; cv=none; b=ffz/c/3He45mTClP2JgOBM4bBcYeGY8Pw68cVeKCKwKJhZ2CXxwYRUfpkEX/F2jTReOAS04vqWH/oNMjjy9Lft9oiTwW4+ph7KXq/ZiNFMjN9WP3CiLGDFDojqIHsbzDsmhTyEPpTXHJR6TOHdHYKo4z705YdjR/HdnVGvCJ9aE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770673; c=relaxed/simple;
-	bh=N5OQqige8QxLn9jADV4a6XG9jaHwfq05yq8LiA/NHfY=;
+	s=arc-20240116; t=1724771499; c=relaxed/simple;
+	bh=pcT0INRNCBJEwOtSG0VT0SZtKbs6ztEm0dLGMI0tmfw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vv1MzIgNeIQhx95ACHgYIMbqDQV38Dl8kFDhccHceh+zH3ANkUom8+XGxMEofQc9TVdLh9pb7wpCAScznFxR5YKfX4SUYbUCOBUGkB23Ry4lFvb9Pmmj/PHrNb1+s4e3qikl1tIoqWhDr+kLEXEQbOgnc4LH4Yxwh8fSNy4yI/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NB7T5TBc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF549C61044;
-	Tue, 27 Aug 2024 14:57:52 +0000 (UTC)
+	 MIME-Version; b=gTOaQfrF7tj7wF9kuzo+h7HvIhf7U3P3LAAqvF3+L26J3lpmUs6TvjC290xUxiyMIcqnrMvarZKqfGiYFlrOtWsu+XllcNzJ1Nw5nYWPvyiFYy1WM+NSyykdWXJ4e5oai9uXCMvTO0Qm39EbFG+IdFTZYfeyzQZufqBAp/6jSVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nRUFZ0Hv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8B45C4DDED;
+	Tue, 27 Aug 2024 15:11:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770673;
-	bh=N5OQqige8QxLn9jADV4a6XG9jaHwfq05yq8LiA/NHfY=;
+	s=korg; t=1724771499;
+	bh=pcT0INRNCBJEwOtSG0VT0SZtKbs6ztEm0dLGMI0tmfw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NB7T5TBcgV3WSWgSj4LchHR7PqwJwQeVTcyAMTodI8gdenq7wlKAjdsF11VWH9d8R
-	 LJXJQSQ4SObDyk4IhB5nRvuKuh39t2NBvqDabfZsuPkms59V2M6VM1mvfOyDe1AmpP
-	 FVNGjDbAStkvajvAlLnMg/pLWNVlSBvTwC4hIM4k=
+	b=nRUFZ0HvA1XbGF4FjTZ7lHyMnP9MGnh/Glbq7D3OYceqb89xqn8nKvR6LKC3xxFUP
+	 NUYDAtnP+DhGT9hBMLoPYqFTRJfTp4+r5CKubT5VCxubAeZG9uNowMoItUAj0WwB+N
+	 pPT4BNDAk5lB/d0tyOnIyee9MlR3KxHkKNW9E4y0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Gerecke <jason.gerecke@wacom.com>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 6.6 300/341] HID: wacom: Defer calculation of resolution until resolution_code is known
+	Matthew Auld <matthew.auld@intel.com>,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 207/273] drm/xe/mmio: move mmio_fini over to devm
 Date: Tue, 27 Aug 2024 16:38:51 +0200
-Message-ID: <20240827143854.808924592@linuxfoundation.org>
+Message-ID: <20240827143841.287561172@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gerecke <jason.gerecke@wacom.com>
+From: Matthew Auld <matthew.auld@intel.com>
 
-commit 1b8f9c1fb464968a5b18d3acc1da8c00bad24fad upstream.
+[ Upstream commit a0b834c8957a7d2848face008a12382a0ad11ffc ]
 
-The Wacom driver maps the HID_DG_TWIST usage to ABS_Z (rather than ABS_RZ)
-for historic reasons. When the code to support twist was introduced in
-commit 50066a042da5 ("HID: wacom: generic: Add support for height, tilt,
-and twist usages"), we were careful to write it in such a way that it had
-HID calculate the resolution of the twist axis assuming ABS_RZ instead
-(so that we would get correct angular behavior). This was broken with
-the introduction of commit 08a46b4190d3 ("HID: wacom: Set a default
-resolution for older tablets"), which moved the resolution calculation
-to occur *before* the adjustment from ABS_Z to ABS_RZ occurred.
+Not valid to touch mmio once the device is removed, so make sure we
+unmap on removal and not just when driver instance goes away. Also set
+the mmio pointers to NULL to hopefully catch such issues more easily.
 
-This commit moves the calculation of resolution after the point that
-we are finished setting things up for its proper use.
-
-Signed-off-by: Jason Gerecke <jason.gerecke@wacom.com>
-Fixes: 08a46b4190d3 ("HID: wacom: Set a default resolution for older tablets")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240522102143.128069-32-matthew.auld@intel.com
+Stable-dep-of: 15939ca77d44 ("drm/xe: Fix tile fini sequence")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/wacom_wac.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/xe/xe_mmio.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/hid/wacom_wac.c
-+++ b/drivers/hid/wacom_wac.c
-@@ -1924,12 +1924,14 @@ static void wacom_map_usage(struct input
- 	int fmax = field->logical_maximum;
- 	unsigned int equivalent_usage = wacom_equivalent_usage(usage->hid);
- 	int resolution_code = code;
--	int resolution = hidinput_calc_abs_res(field, resolution_code);
-+	int resolution;
- 
- 	if (equivalent_usage == HID_DG_TWIST) {
- 		resolution_code = ABS_RZ;
+diff --git a/drivers/gpu/drm/xe/xe_mmio.c b/drivers/gpu/drm/xe/xe_mmio.c
+index 334637511e750..2ebb2f0d6874e 100644
+--- a/drivers/gpu/drm/xe/xe_mmio.c
++++ b/drivers/gpu/drm/xe/xe_mmio.c
+@@ -386,13 +386,16 @@ void xe_mmio_probe_tiles(struct xe_device *xe)
  	}
+ }
  
-+	resolution = hidinput_calc_abs_res(field, resolution_code);
+-static void mmio_fini(struct drm_device *drm, void *arg)
++static void mmio_fini(void *arg)
+ {
+ 	struct xe_device *xe = arg;
+ 
+ 	pci_iounmap(to_pci_dev(xe->drm.dev), xe->mmio.regs);
+ 	if (xe->mem.vram.mapping)
+ 		iounmap(xe->mem.vram.mapping);
 +
- 	if (equivalent_usage == HID_GD_X) {
- 		fmin += features->offset_left;
- 		fmax -= features->offset_right;
++	xe->mem.vram.mapping = NULL;
++	xe->mmio.regs = NULL;
+ }
+ 
+ int xe_mmio_init(struct xe_device *xe)
+@@ -417,7 +420,7 @@ int xe_mmio_init(struct xe_device *xe)
+ 	root_tile->mmio.size = SZ_16M;
+ 	root_tile->mmio.regs = xe->mmio.regs;
+ 
+-	return drmm_add_action_or_reset(&xe->drm, mmio_fini, xe);
++	return devm_add_action_or_reset(xe->drm.dev, mmio_fini, xe);
+ }
+ 
+ u8 xe_mmio_read8(struct xe_gt *gt, struct xe_reg reg)
+-- 
+2.43.0
+
 
 
 
