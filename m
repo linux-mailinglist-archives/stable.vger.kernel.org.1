@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-71271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70986-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EAE09612A0
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:33:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49EC9961105
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:15:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3CAFA282C4C
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:33:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0754D281813
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:15:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E58AA1CFEDE;
-	Tue, 27 Aug 2024 15:31:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA8271BFE07;
+	Tue, 27 Aug 2024 15:15:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ceb5myww"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="caPaBsyS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2BBE1CFEBC;
-	Tue, 27 Aug 2024 15:31:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A91B71BC9FC;
+	Tue, 27 Aug 2024 15:15:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772660; cv=none; b=jkqFIsKicn2Wxux3wCRO6RvbfXujs0mu1lYmtZpOFrCCY5Vwqs+SuV+5AIDVr3vo2I2IaJThQFVxLmcYqqIRjnjYyw1Y8iyVXUlGx98HB4xFpUaBJL/HkytroRC1i7QG5Mw9OaM9M8e+HYCLyzbZdmTeP5GYCiRSHd/oMlIovnM=
+	t=1724771719; cv=none; b=AnH4qBVU4bPuz5SMIykX+NkyszJnXIU0WDprOF9QMP0RBtdrAxBEx/lmd6e0JGGlIvnMtM+pzbdNafT1X19uDhx7C3/VO/tP+HdIpGQJv4xyYFqkEd6G7aSWgEAFw8pnxme9F8RGBSQ3cEUQKh9If1l30giRtjMP26fMfhQ9/GY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772660; c=relaxed/simple;
-	bh=+BN+vr3oU8RUomEsL9BttEL86ECDdB38eJVFYwpvlGM=;
+	s=arc-20240116; t=1724771719; c=relaxed/simple;
+	bh=OJmT0OTqT9Q4toPM/RApOoo1RY3orXpNTMIXWkFQHEs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LT+M5breT2eme9py7onQ0/bgCYC+IzmEj31qKS0uNnxRyExTExYvqS9g0u6i20gFl85kfKfFEuN1Y8AzzFieTVZQADZxtRhF6Ge9QTIMZ0c1i1d/53JrmUEVYlkEYbZ+Hdlqas18N4WUYGrgnJQVVHAG2v/Bl8yXlxAKgKHJDSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ceb5myww; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13D74C4DDE4;
-	Tue, 27 Aug 2024 15:30:59 +0000 (UTC)
+	 MIME-Version; b=hG/057Eua6lbxjMUE1/i1+R6YpCylM4EnTRsWTrCQR4KIR0ffEoAfJg71M/X7/sjy9XmzyEwtC55ofO7tatdLOqxd7T/GgoKSbjH6hAekYvTFTG47aHYxPCfRx5BNxAPEUuQgj0Kiq4nX3YI72K+IveMecrDfNc9h7qycMuP1YE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=caPaBsyS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 308ECC4AF50;
+	Tue, 27 Aug 2024 15:15:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772660;
-	bh=+BN+vr3oU8RUomEsL9BttEL86ECDdB38eJVFYwpvlGM=;
+	s=korg; t=1724771719;
+	bh=OJmT0OTqT9Q4toPM/RApOoo1RY3orXpNTMIXWkFQHEs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ceb5mywwNK2V+EL36pmm4hINu8bWd/SlGQ3BxvLEX8pk47UDH4eLplvNEi1nfOp9t
-	 tJHGuHca8yrGy5/K72q9/roO3PKfdrk21k3y7ajXOPFp9kkpvRYev+0EOGJFfY9CpF
-	 CdipvNh1hFl7R3w0MiqNykU1HeXkuemVC8OxQV6U=
+	b=caPaBsySplKNrdoOE4OzLTF/7BsSd5oMKVHOH4yFUDKT0rBJ0NpjcPMKm3mdb5VJ8
+	 QOx7I1nfRs+pCdlpVqn7rgXI/rEMbr50u23T86dCN7gHn8/sCZhxvDPcr+b+tFOHph
+	 SQysagqnOjeFa5HJ5yTrFp+CG9Cr2iwu5f3YbrK4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.1 282/321] tcp: do not export tcp_twsk_purge()
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.10 266/273] selftests: mptcp: join: check re-using ID of closed subflow
 Date: Tue, 27 Aug 2024 16:39:50 +0200
-Message-ID: <20240827143848.983304855@linuxfoundation.org>
+Message-ID: <20240827143843.522354652@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +62,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit c51db4ac10d57c366f9a92121e3889bfc6c324cd upstream.
+commit 65fb58afa341ad68e71e5c4d816b407e6a683a66 upstream.
 
-After commit 1eeb50435739 ("tcp/dccp: do not care about
-families in inet_twsk_purge()") tcp_twsk_purge() is
-no longer potentially called from a module.
+This test extends "delete and re-add" to validate the previous commit. A
+new 'subflow' endpoint is added, but the subflow request will be
+rejected. The result is that no subflow will be established from this
+address.
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Later, the endpoint is removed and re-added after having cleared the
+firewall rule. Before the previous commit, the client would not have
+been able to create this new subflow.
+
+While at it, extra checks have been added to validate the expected
+numbers of MPJ and RM_ADDR.
+
+The 'Fixes' tag here below is the same as the one from the previous
+commit: this patch here is not fixing anything wrong in the selftests,
+but it validates the previous fix for an issue introduced by this commit
+ID.
+
+Fixes: b6c08380860b ("mptcp: remove addr and subflow in PM netlink")
+Cc: stable@vger.kernel.org
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20240819-net-mptcp-pm-reusing-id-v1-4-38035d40de5b@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp_minisocks.c |    1 -
- 1 file changed, 1 deletion(-)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |   27 +++++++++++++++++++-----
+ 1 file changed, 22 insertions(+), 5 deletions(-)
 
---- a/net/ipv4/tcp_minisocks.c
-+++ b/net/ipv4/tcp_minisocks.c
-@@ -362,7 +362,6 @@ void tcp_twsk_purge(struct list_head *ne
- 		}
- 	}
- }
--EXPORT_SYMBOL_GPL(tcp_twsk_purge);
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -436,9 +436,10 @@ reset_with_tcp_filter()
+ 	local ns="${!1}"
+ 	local src="${2}"
+ 	local target="${3}"
++	local chain="${4:-INPUT}"
  
- /* Warning : This function is called without sk_listener being locked.
-  * Be sure to read socket fields once, as their value could change under us.
+ 	if ! ip netns exec "${ns}" ${iptables} \
+-			-A INPUT \
++			-A "${chain}" \
+ 			-s "${src}" \
+ 			-p tcp \
+ 			-j "${target}"; then
+@@ -3572,10 +3573,10 @@ endpoint_tests()
+ 		mptcp_lib_kill_wait $tests_pid
+ 	fi
+ 
+-	if reset "delete and re-add" &&
++	if reset_with_tcp_filter "delete and re-add" ns2 10.0.3.2 REJECT OUTPUT &&
+ 	   mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
+-		pm_nl_set_limits $ns1 1 1
+-		pm_nl_set_limits $ns2 1 1
++		pm_nl_set_limits $ns1 0 2
++		pm_nl_set_limits $ns2 0 2
+ 		pm_nl_add_endpoint $ns2 10.0.2.2 id 2 dev ns2eth2 flags subflow
+ 		test_linkfail=4 speed=20 \
+ 			run_tests $ns1 $ns2 10.0.1.1 &
+@@ -3592,11 +3593,27 @@ endpoint_tests()
+ 		chk_subflow_nr "after delete" 1
+ 		chk_mptcp_info subflows 0 subflows 0
+ 
+-		pm_nl_add_endpoint $ns2 10.0.2.2 dev ns2eth2 flags subflow
++		pm_nl_add_endpoint $ns2 10.0.2.2 id 2 dev ns2eth2 flags subflow
+ 		wait_mpj $ns2
+ 		chk_subflow_nr "after re-add" 2
+ 		chk_mptcp_info subflows 1 subflows 1
++
++		pm_nl_add_endpoint $ns2 10.0.3.2 id 3 flags subflow
++		wait_attempt_fail $ns2
++		chk_subflow_nr "after new reject" 2
++		chk_mptcp_info subflows 1 subflows 1
++
++		ip netns exec "${ns2}" ${iptables} -D OUTPUT -s "10.0.3.2" -p tcp -j REJECT
++		pm_nl_del_endpoint $ns2 3 10.0.3.2
++		pm_nl_add_endpoint $ns2 10.0.3.2 id 3 flags subflow
++		wait_mpj $ns2
++		chk_subflow_nr "after no reject" 3
++		chk_mptcp_info subflows 2 subflows 2
++
+ 		mptcp_lib_kill_wait $tests_pid
++
++		chk_join_nr 3 3 3
++		chk_rm_nr 1 1
+ 	fi
+ }
+ 
 
 
 
