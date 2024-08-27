@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-71300-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71311-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 530F79612E2
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:36:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D3089612CB
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:35:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A2EAEB2B8AC
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:34:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E49311F2415A
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:35:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C6B01CEAB4;
-	Tue, 27 Aug 2024 15:32:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73A2F1CE703;
+	Tue, 27 Aug 2024 15:33:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="md4o2WCP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SKAI3Hte"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB11D1CEAAD;
-	Tue, 27 Aug 2024 15:32:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EEF1D517;
+	Tue, 27 Aug 2024 15:33:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772759; cv=none; b=ktju/VuqBgqFaMfHM8yrqVQy7tx1IxXa0Dz37ZsjD58+2wbuYdVwaMTGoBJrZJLdRLYGNSxEmVXuJppftg0MCvgu0OMuTPn4ay7yUCvPWmGr2obHEXnFL+h2Z9hNngR0DubqWEW/ixSRWq9OHAfxvVKecVcXz3SPz0bwDI8is1c=
+	t=1724772796; cv=none; b=oH7dOOKHcZtrFwU2k+wtVniDqayzTBvuUljAlIr0BDGNsL0kVYEL3UVXmy21k3jhj8LnD8tfUkr+Oy67cYCmJb8EqmZxtWsAI1e7Qz/S4zqxubZ3l1TFR18gf4+f/mUS8t3CRCnwGRSyYLX4425zHmjxdbZk55jivlV813bFgQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772759; c=relaxed/simple;
-	bh=pCeEPbEGf+GLMo3z2JnNHcgRUGMOi5Ja26TVWkOxpOw=;
+	s=arc-20240116; t=1724772796; c=relaxed/simple;
+	bh=b+Ix5Y51hiF4qP9XNMLC+HlklOan+Hio8apxDUAEXk0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gyDlE8V+miU/h9d9bvvOERmIXg9qq6NMudJTvaKCYkMZjZSL3SDN1J7oOBN/pzG+g9fn2AT4OFwFNZok3rMtgnftyP/LmSTCp0yT8MspmY+TKKuLFC/vBUwogSolJuYYbrTGYLpS6XnckxvWw7ErQquK1EAQh5915E7XskBYO1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=md4o2WCP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14026C61041;
-	Tue, 27 Aug 2024 15:32:37 +0000 (UTC)
+	 MIME-Version; b=I3htWA+z3Y6PD1s2MLLZNXxmPX/V7VK4Gr1Yq2VkiI7aJRn1F0Tm4JXYdzwNDKqdNTYvFUOtlcEzr4feuiwbU57W5jtkxuE81fnReXBinpq31FxNMPyCt0iwKj1ySHvGyj66b20upBrABW8atmgaechRQvPUrY+Nh3Dk339dwSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SKAI3Hte; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CF5CC61050;
+	Tue, 27 Aug 2024 15:33:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772758;
-	bh=pCeEPbEGf+GLMo3z2JnNHcgRUGMOi5Ja26TVWkOxpOw=;
+	s=korg; t=1724772796;
+	bh=b+Ix5Y51hiF4qP9XNMLC+HlklOan+Hio8apxDUAEXk0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=md4o2WCPou1ir3GPShCcldUewkPN2vA9NTUKV59JdGWjozs6jrnN6XGR2niUhl+Al
-	 8hzRgXeQ0K1DIJu195r1eS5UOjQzS8nKESfgGYKwowRMQLXWCF8gNGqKe1P+oHDdEa
-	 pmvHPmHaS4OqbmQie7K3LcpdTI+dtO8eDKTpCjgc=
+	b=SKAI3HteXW/mYNC7TdpavuE3rj9x5xS35QZL1tCvtTnrfbI7Ln/zuGliQoKqmo8sj
+	 9V1JUUbfZItAJgqxs/7YtW7emGc2zMZaODOBX+8AJw6Hmk9hA9EY5ePTUhnyqwNlU7
+	 G/JR8TeL2L/ODAzrhxtscOzH3JJaaKYvl4nXyI18=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 303/321] net: drop bad gso csum_start and offset in virtio_net_hdr
-Date: Tue, 27 Aug 2024 16:40:11 +0200
-Message-ID: <20240827143849.790400325@linuxfoundation.org>
+	Stephen Rothwell <sfr@canb.auug.org.au>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.1 304/321] wifi: mac80211: add documentation for amsdu_mesh_control
+Date: Tue, 27 Aug 2024 16:40:12 +0200
+Message-ID: <20240827143849.827588377@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
 References: <20240827143838.192435816@linuxfoundation.org>
@@ -65,148 +65,32 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Willem de Bruijn <willemb@google.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit 89add40066f9ed9abe5f7f886fe5789ff7e0c50e upstream.
+commit 3caf31e7b18a90b74a2709d761a0dfa423f2c2e4 upstream.
 
-Tighten csum_start and csum_offset checks in virtio_net_hdr_to_skb
-for GSO packets.
+This documentation wasn't added in the original patch,
+add it now.
 
-The function already checks that a checksum requested with
-VIRTIO_NET_HDR_F_NEEDS_CSUM is in skb linear. But for GSO packets
-this might not hold for segs after segmentation.
-
-Syzkaller demonstrated to reach this warning in skb_checksum_help
-
-	offset = skb_checksum_start_offset(skb);
-	ret = -EINVAL;
-	if (WARN_ON_ONCE(offset >= skb_headlen(skb)))
-
-By injecting a TSO packet:
-
-WARNING: CPU: 1 PID: 3539 at net/core/dev.c:3284 skb_checksum_help+0x3d0/0x5b0
- ip_do_fragment+0x209/0x1b20 net/ipv4/ip_output.c:774
- ip_finish_output_gso net/ipv4/ip_output.c:279 [inline]
- __ip_finish_output+0x2bd/0x4b0 net/ipv4/ip_output.c:301
- iptunnel_xmit+0x50c/0x930 net/ipv4/ip_tunnel_core.c:82
- ip_tunnel_xmit+0x2296/0x2c70 net/ipv4/ip_tunnel.c:813
- __gre_xmit net/ipv4/ip_gre.c:469 [inline]
- ipgre_xmit+0x759/0xa60 net/ipv4/ip_gre.c:661
- __netdev_start_xmit include/linux/netdevice.h:4850 [inline]
- netdev_start_xmit include/linux/netdevice.h:4864 [inline]
- xmit_one net/core/dev.c:3595 [inline]
- dev_hard_start_xmit+0x261/0x8c0 net/core/dev.c:3611
- __dev_queue_xmit+0x1b97/0x3c90 net/core/dev.c:4261
- packet_snd net/packet/af_packet.c:3073 [inline]
-
-The geometry of the bad input packet at tcp_gso_segment:
-
-[   52.003050][ T8403] skb len=12202 headroom=244 headlen=12093 tailroom=0
-[   52.003050][ T8403] mac=(168,24) mac_len=24 net=(192,52) trans=244
-[   52.003050][ T8403] shinfo(txflags=0 nr_frags=1 gso(size=1552 type=3 segs=0))
-[   52.003050][ T8403] csum(0x60000c7 start=199 offset=1536
-ip_summed=3 complete_sw=0 valid=0 level=0)
-
-Mitigate with stricter input validation.
-
-csum_offset: for GSO packets, deduce the correct value from gso_type.
-This is already done for USO. Extend it to TSO. Let UFO be:
-udp[46]_ufo_fragment ignores these fields and always computes the
-checksum in software.
-
-csum_start: finding the real offset requires parsing to the transport
-header. Do not add a parser, use existing segmentation parsing. Thanks
-to SKB_GSO_DODGY, that also catches bad packets that are hw offloaded.
-Again test both TSO and USO. Do not test UFO for the above reason, and
-do not test UDP tunnel offload.
-
-GSO packet are almost always CHECKSUM_PARTIAL. USO packets may be
-CHECKSUM_NONE since commit 10154dbded6d6 ("udp: Allow GSO transmit
-from devices with no checksum offload"), but then still these fields
-are initialized correctly in udp4_hwcsum/udp6_hwcsum_outgoing. So no
-need to test for ip_summed == CHECKSUM_PARTIAL first.
-
-This revises an existing fix mentioned in the Fixes tag, which broke
-small packets with GSO offload, as detected by kselftests.
-
-Link: https://syzkaller.appspot.com/bug?extid=e1db31216c789f552871
-Link: https://lore.kernel.org/netdev/20240723223109.2196886-1-kuba@kernel.org
-Fixes: e269d79c7d35 ("net: missing check virtio")
-Cc: stable@vger.kernel.org
-Signed-off-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20240729201108.1615114-1-willemdebruijn.kernel@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+Fixes: 6e4c0d0460bd ("wifi: mac80211: add a workaround for receiving non-standard mesh A-MSDU")
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/virtio_net.h |   16 +++++-----------
- net/ipv4/tcp_offload.c     |    3 +++
- net/ipv4/udp_offload.c     |    4 ++++
- 3 files changed, 12 insertions(+), 11 deletions(-)
+ net/mac80211/sta_info.h |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/include/linux/virtio_net.h
-+++ b/include/linux/virtio_net.h
-@@ -51,7 +51,6 @@ static inline int virtio_net_hdr_to_skb(
- 	unsigned int thlen = 0;
- 	unsigned int p_off = 0;
- 	unsigned int ip_proto;
--	u64 ret, remainder, gso_size;
- 
- 	if (hdr->gso_type != VIRTIO_NET_HDR_GSO_NONE) {
- 		switch (hdr->gso_type & ~VIRTIO_NET_HDR_GSO_ECN) {
-@@ -88,16 +87,6 @@ static inline int virtio_net_hdr_to_skb(
- 		u32 off = __virtio16_to_cpu(little_endian, hdr->csum_offset);
- 		u32 needed = start + max_t(u32, thlen, off + sizeof(__sum16));
- 
--		if (hdr->gso_size) {
--			gso_size = __virtio16_to_cpu(little_endian, hdr->gso_size);
--			ret = div64_u64_rem(skb->len, gso_size, &remainder);
--			if (!(ret && (hdr->gso_size > needed) &&
--						((remainder > needed) || (remainder == 0)))) {
--				return -EINVAL;
--			}
--			skb_shinfo(skb)->tx_flags |= SKBFL_SHARED_FRAG;
--		}
--
- 		if (!pskb_may_pull(skb, needed))
- 			return -EINVAL;
- 
-@@ -170,6 +159,11 @@ retry:
- 			if (gso_type != SKB_GSO_UDP_L4)
- 				return -EINVAL;
- 			break;
-+		case SKB_GSO_TCPV4:
-+		case SKB_GSO_TCPV6:
-+			if (skb->csum_offset != offsetof(struct tcphdr, check))
-+				return -EINVAL;
-+			break;
- 		}
- 
- 		/* Kernel has a special handling for GSO_BY_FRAGS. */
---- a/net/ipv4/tcp_offload.c
-+++ b/net/ipv4/tcp_offload.c
-@@ -72,6 +72,9 @@ struct sk_buff *tcp_gso_segment(struct s
- 	if (thlen < sizeof(*th))
- 		goto out;
- 
-+	if (unlikely(skb_checksum_start(skb) != skb_transport_header(skb)))
-+		goto out;
-+
- 	if (!pskb_may_pull(skb, thlen))
- 		goto out;
- 
---- a/net/ipv4/udp_offload.c
-+++ b/net/ipv4/udp_offload.c
-@@ -277,6 +277,10 @@ struct sk_buff *__udp_gso_segment(struct
- 	if (gso_skb->len <= sizeof(*uh) + mss)
- 		return ERR_PTR(-EINVAL);
- 
-+	if (unlikely(skb_checksum_start(gso_skb) !=
-+		     skb_transport_header(gso_skb)))
-+		return ERR_PTR(-EINVAL);
-+
- 	if (skb_gso_ok(gso_skb, features | NETIF_F_GSO_ROBUST)) {
- 		/* Packet is from an untrusted source, reset gso_segs. */
- 		skb_shinfo(gso_skb)->gso_segs = DIV_ROUND_UP(gso_skb->len - sizeof(*uh),
+--- a/net/mac80211/sta_info.h
++++ b/net/mac80211/sta_info.h
+@@ -621,6 +621,8 @@ struct link_sta_info {
+  *	taken from HT/VHT capabilities or VHT operating mode notification
+  * @cparams: CoDel parameters for this station.
+  * @reserved_tid: reserved TID (if any, otherwise IEEE80211_TID_UNRESERVED)
++ * @amsdu_mesh_control: track the mesh A-MSDU format used by the peer
++ *	(-1: not yet known, 0: non-standard [without mesh header], 1: standard)
+  * @fast_tx: TX fastpath information
+  * @fast_rx: RX fastpath information
+  * @tdls_chandef: a TDLS peer can have a wider chandef that is compatible to
 
 
 
