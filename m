@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-70902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71225-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22533961098
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:10:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C5AF961263
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:30:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CCE9D28140D
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:10:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 328871F22FBB
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:30:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94A4B1C688E;
-	Tue, 27 Aug 2024 15:10:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E1DB1CB126;
+	Tue, 27 Aug 2024 15:28:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="az07hbhC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O5qLgZLC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51E1B12E4D;
-	Tue, 27 Aug 2024 15:10:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E82931C8FCF;
+	Tue, 27 Aug 2024 15:28:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771444; cv=none; b=pmkcrkz9CN/jWgiyIbWuHrtZWNTYFjdF8A5E4DPCjtFoeWtkoFD90y1JhUdLAe4mrG3zDGQP7AP1P8blN0T/tFq7+bNSExzQicKgXyz6ubHcEgkhkrZxWAlJ+4UfXJ9aK90IvJAzOd2jX/FjtIVbCPFS2biQvUXV8vGNiSlpts4=
+	t=1724772510; cv=none; b=h3EN8e8Gew+zdftnImUqieG+dtGZrhdANRry0yQWSuZBsKn6Ilnu7c8ILMJFZ1OVAJdQQaNT4cvvFrQrQtCYKIS0OxZDDQibQd7UzfqmO3nV4KAYUUds45/pgJj3n3c6Z5aWEf7Sg8ZX1apnYwNtac7Ow9pT8R60k3KvnSlw/iU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771444; c=relaxed/simple;
-	bh=koFcD5NsZFM88yH8dLsYj2ZMgqoqcejqHtyWwnEK0Vc=;
+	s=arc-20240116; t=1724772510; c=relaxed/simple;
+	bh=15ND0/OmnlhDWZQU/Pfj1+qXlnppLPNQlonez7Tw9QQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i+9eM05cFyTSDSw48tFMwADxgZrllNk9xbgIlNwQ9OYy6Fbc9u5jDeBPDh3Gkq7qlYZHn+xKXUB6gmyK7p5IMKpOf12Dj6WwNlcMouQ1N1VHTVHdWGhcDBKe38ToXd4yp1BgAFm2arSTXL+evhIQSe5Whji12P3UMlwlyH8UCCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=az07hbhC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5668DC4DDEB;
-	Tue, 27 Aug 2024 15:10:43 +0000 (UTC)
+	 MIME-Version; b=oJSkaX+wJUvx/6vekYqGxZnHyB6tuAUbPtGv1B9EP7Ra+ixpivqBq5BHcdHmxYgIwBfCzVIs8G/FGWT/3RlSCS9h/If/ISRg+ZjmnxMYDTlHl9tZHh6VUrfJF1O5yET0Rl7rqXX3SFcaFUxZmKI10+mLayO29rO+1vSSsdJEWBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O5qLgZLC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68D85C6104E;
+	Tue, 27 Aug 2024 15:28:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771444;
-	bh=koFcD5NsZFM88yH8dLsYj2ZMgqoqcejqHtyWwnEK0Vc=;
+	s=korg; t=1724772509;
+	bh=15ND0/OmnlhDWZQU/Pfj1+qXlnppLPNQlonez7Tw9QQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=az07hbhCotxzPU9GzZfr0xf/mDCs4uIL1JEHTGJfw0AtYar/5KHfvWh1go2HnEJor
-	 zicAJ9jQu2SYcQ9XNa+3LS2jHPOcCF5wD8mHWxijH1Zfh6fk3wI7Z8svaCptBNXWSF
-	 FLZIV+HyHuIqMURvwEfmVOdqICarUy0/peCdU3Jg=
+	b=O5qLgZLCPHgHdE9/ZcSmICGbQyFCaAxfLcrRosKz/3yjJ+pUU2MVAF1tYXTOusBj8
+	 Q2BH1xtMO+Iels9cB223SdHL8mtZY+a1rnyQAdQ4PZ+0LKwfcVOZcvlTIB/oYlgwLT
+	 S843TIhCG1QVg2P6lJL8pS8/PgMxZ+h92b/tsK+E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Anderson <sean.anderson@linux.dev>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 189/273] net: xilinx: axienet: Fix dangling multicast addresses
+Subject: [PATCH 6.1 205/321] nvmet-rdma: fix possible bad dereference when freeing rsps
 Date: Tue, 27 Aug 2024 16:38:33 +0200
-Message-ID: <20240827143840.600163059@linuxfoundation.org>
+Message-ID: <20240827143846.037511249@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,96 +63,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Anderson <sean.anderson@linux.dev>
+From: Sagi Grimberg <sagi@grimberg.me>
 
-[ Upstream commit 797a68c9de0f5a5447baf4bd3bb9c10a3993435b ]
+[ Upstream commit 73964c1d07c054376f1b32a62548571795159148 ]
 
-If a multicast address is removed but there are still some multicast
-addresses, that address would remain programmed into the frame filter.
-Fix this by explicitly setting the enable bit for each filter.
+It is possible that the host connected and saw a cm established
+event and started sending nvme capsules on the qp, however the
+ctrl did not yet see an established event. This is why the
+rsp_wait_list exists (for async handling of these cmds, we move
+them to a pending list).
 
-Fixes: 8a3b7a252dca ("drivers/net/ethernet/xilinx: added Xilinx AXI Ethernet driver")
-Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20240822154059.1066595-3-sean.anderson@linux.dev
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Furthermore, it is possible that the ctrl cm times out, resulting
+in a connect-error cm event. in this case we hit a bad deref [1]
+because in nvmet_rdma_free_rsps we assume that all the responses
+are in the free list.
+
+We are freeing the cmds array anyways, so don't even bother to
+remove the rsp from the free_list. It is also guaranteed that we
+are not racing anything when we are releasing the queue so no
+other context accessing this array should be running.
+
+[1]:
+--
+Workqueue: nvmet-free-wq nvmet_rdma_free_queue_work [nvmet_rdma]
+[...]
+pc : nvmet_rdma_free_rsps+0x78/0xb8 [nvmet_rdma]
+lr : nvmet_rdma_free_queue_work+0x88/0x120 [nvmet_rdma]
+ Call trace:
+ nvmet_rdma_free_rsps+0x78/0xb8 [nvmet_rdma]
+ nvmet_rdma_free_queue_work+0x88/0x120 [nvmet_rdma]
+ process_one_work+0x1ec/0x4a0
+ worker_thread+0x48/0x490
+ kthread+0x158/0x160
+ ret_from_fork+0x10/0x18
+--
+
+Signed-off-by: Sagi Grimberg <sagi@grimberg.me>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/xilinx/xilinx_axienet.h  |  1 +
- .../net/ethernet/xilinx/xilinx_axienet_main.c | 21 ++++++++-----------
- 2 files changed, 10 insertions(+), 12 deletions(-)
+ drivers/nvme/target/rdma.c | 16 ++++------------
+ 1 file changed, 4 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet.h b/drivers/net/ethernet/xilinx/xilinx_axienet.h
-index c7d9221fafdcb..09c9f9787180b 100644
---- a/drivers/net/ethernet/xilinx/xilinx_axienet.h
-+++ b/drivers/net/ethernet/xilinx/xilinx_axienet.h
-@@ -170,6 +170,7 @@
- #define XAE_UAW0_OFFSET		0x00000700 /* Unicast address word 0 */
- #define XAE_UAW1_OFFSET		0x00000704 /* Unicast address word 1 */
- #define XAE_FMI_OFFSET		0x00000708 /* Frame Filter Control */
-+#define XAE_FFE_OFFSET		0x0000070C /* Frame Filter Enable */
- #define XAE_AF0_OFFSET		0x00000710 /* Address Filter 0 */
- #define XAE_AF1_OFFSET		0x00000714 /* Address Filter 1 */
+diff --git a/drivers/nvme/target/rdma.c b/drivers/nvme/target/rdma.c
+index 4597bca43a6d8..a6d55ebb82382 100644
+--- a/drivers/nvme/target/rdma.c
++++ b/drivers/nvme/target/rdma.c
+@@ -473,12 +473,8 @@ nvmet_rdma_alloc_rsps(struct nvmet_rdma_queue *queue)
+ 	return 0;
  
-diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-index b2e4d0b11a7d7..559c0d60d9483 100644
---- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-+++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-@@ -432,7 +432,7 @@ static int netdev_set_mac_address(struct net_device *ndev, void *p)
-  */
- static void axienet_set_multicast_list(struct net_device *ndev)
- {
--	int i;
-+	int i = 0;
- 	u32 reg, af0reg, af1reg;
- 	struct axienet_local *lp = netdev_priv(ndev);
- 
-@@ -454,7 +454,6 @@ static void axienet_set_multicast_list(struct net_device *ndev)
- 		reg &= ~XAE_FMI_PM_MASK;
- 		axienet_iow(lp, XAE_FMI_OFFSET, reg);
- 
--		i = 0;
- 		netdev_for_each_mc_addr(ha, ndev) {
- 			if (i >= XAE_MULTICAST_CAM_TABLE_NUM)
- 				break;
-@@ -473,6 +472,7 @@ static void axienet_set_multicast_list(struct net_device *ndev)
- 			axienet_iow(lp, XAE_FMI_OFFSET, reg);
- 			axienet_iow(lp, XAE_AF0_OFFSET, af0reg);
- 			axienet_iow(lp, XAE_AF1_OFFSET, af1reg);
-+			axienet_iow(lp, XAE_FFE_OFFSET, 1);
- 			i++;
- 		}
- 	} else {
-@@ -480,18 +480,15 @@ static void axienet_set_multicast_list(struct net_device *ndev)
- 		reg &= ~XAE_FMI_PM_MASK;
- 
- 		axienet_iow(lp, XAE_FMI_OFFSET, reg);
+ out_free:
+-	while (--i >= 0) {
+-		struct nvmet_rdma_rsp *rsp = &queue->rsps[i];
 -
--		for (i = 0; i < XAE_MULTICAST_CAM_TABLE_NUM; i++) {
--			reg = axienet_ior(lp, XAE_FMI_OFFSET) & 0xFFFFFF00;
--			reg |= i;
+-		list_del(&rsp->free_list);
+-		nvmet_rdma_free_rsp(ndev, rsp);
+-	}
++	while (--i >= 0)
++		nvmet_rdma_free_rsp(ndev, &queue->rsps[i]);
+ 	kfree(queue->rsps);
+ out:
+ 	return ret;
+@@ -489,12 +485,8 @@ static void nvmet_rdma_free_rsps(struct nvmet_rdma_queue *queue)
+ 	struct nvmet_rdma_device *ndev = queue->dev;
+ 	int i, nr_rsps = queue->recv_queue_size * 2;
+ 
+-	for (i = 0; i < nr_rsps; i++) {
+-		struct nvmet_rdma_rsp *rsp = &queue->rsps[i];
 -
--			axienet_iow(lp, XAE_FMI_OFFSET, reg);
--			axienet_iow(lp, XAE_AF0_OFFSET, 0);
--			axienet_iow(lp, XAE_AF1_OFFSET, 0);
--		}
--
- 		dev_info(&ndev->dev, "Promiscuous mode disabled.\n");
- 	}
-+
-+	for (; i < XAE_MULTICAST_CAM_TABLE_NUM; i++) {
-+		reg = axienet_ior(lp, XAE_FMI_OFFSET) & 0xFFFFFF00;
-+		reg |= i;
-+		axienet_iow(lp, XAE_FMI_OFFSET, reg);
-+		axienet_iow(lp, XAE_FFE_OFFSET, 0);
-+	}
+-		list_del(&rsp->free_list);
+-		nvmet_rdma_free_rsp(ndev, rsp);
+-	}
++	for (i = 0; i < nr_rsps; i++)
++		nvmet_rdma_free_rsp(ndev, &queue->rsps[i]);
+ 	kfree(queue->rsps);
  }
  
- /**
 -- 
 2.43.0
 
