@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-71074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A8D2961184
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:21:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A84BF960E9E
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:50:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4CFDB1C222CA
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:21:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 173BFB24D33
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:50:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DF381C9EC9;
-	Tue, 27 Aug 2024 15:20:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22F091C5781;
+	Tue, 27 Aug 2024 14:50:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HZduE/hG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z7N9XY6L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C8661C86FF;
-	Tue, 27 Aug 2024 15:20:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D39CD44C8C;
+	Tue, 27 Aug 2024 14:50:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772014; cv=none; b=i7jBzck+38vl8gOChCUC4reMPdpMTSTbBZn3aauEX9R/iXrSbry6xm+KrHR9vSVdNGB5dOkwxw96IxdGLlzPpres5hOOU/5noIfawicIOqBc/AIQg5QkY42yLPScbESa3IjLvYKXhL5DJxcIIyk07XR1jX4c9uckSy095B+mfvY=
+	t=1724770224; cv=none; b=OnuMyP5vwYolz9nOIZ14FkqiRTDmW4/Ttg2+PJSCh5L2fTal5GPwNDzDqRVphaOMHbGLplnk+5sIiXFfjJVcgko0Z5F4GORBCJaG6qQ3rXtLCtBFManelEPvoGrHw2pWh8uONGOguhcQKl4QCO9ncFiQ0yeHYsYPQAahtzTG5IE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772014; c=relaxed/simple;
-	bh=nmgki1iY2mKRa9OY0Wcp3JZFS0gskM164zXyZQ19hlg=;
+	s=arc-20240116; t=1724770224; c=relaxed/simple;
+	bh=eKDPRZcr0VKdN39Nu+pqIL5T31r83PG97rgcRaoqMGQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gCEm9dSGGrpnBPd2L81zcMyBTMY8CuAArKGzWRjJ0CDc/YX4FnAXrSDHUTLWZQyUkuC3s941KYnMhWPXbDttNA1Uyit3bAXduDmTrmuMHFZja53k3VHL99Ebz13cBm7Lpdpx1atQzXwrkYeWSej8OdCB6WaVv5Aw0dQi6D3Sy0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HZduE/hG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60B6AC4DDEB;
-	Tue, 27 Aug 2024 15:20:13 +0000 (UTC)
+	 MIME-Version; b=mkhpKsESlmJY3ERQpCQpJV01/uUTngr5uIhWmQu0vTwxtRmoYK1WJeX+Y0WfI3Hkzw5trYGT5VraHrN8wJPNzcaFZMPppqLhlpPTScslO2gbqm0/kXGwKT79ooORys6eAmXQRTjZ+fEeGtnhPjES3bLOnn2pWq3Inl62J74CDeo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z7N9XY6L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C255C4DDF5;
+	Tue, 27 Aug 2024 14:50:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772013;
-	bh=nmgki1iY2mKRa9OY0Wcp3JZFS0gskM164zXyZQ19hlg=;
+	s=korg; t=1724770224;
+	bh=eKDPRZcr0VKdN39Nu+pqIL5T31r83PG97rgcRaoqMGQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HZduE/hGxbc4uSpfehY6GQjFiIyLvKBqigP4mwV+M9i5EMt392XbSQ6C30rAX75WR
-	 xQkorRh9v0Fve16EBwYdXzF2tn+2T44eAt0mumn+LWs1aphEt2ul7aeBtKzb0v/+WF
-	 8/YOsEoCMbIIPfO6PNnCaSdSbCAFuFxTyMdvpa3Y=
+	b=Z7N9XY6LpM7yYpXZ629rPYq/iomj/8bdese7GcL6tRfeQd8TcVY3Z5MWYzqI1nkcg
+	 7dVBkSOEMv49A80Rnk05qZxSgq5PYhfWLGhY5CylfvY7/BhKlo+fk2hLHdQvqakhgo
+	 yF0Js4vY3ol6i2XK/ZEgKL60fvNIDmfdnjgFf75U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Dave Airlie <airlied@redhat.com>,
+	Philipp Stanner <pstanner@redhat.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 087/321] atm: idt77252: prevent use after free in dequeue_rx()
-Date: Tue, 27 Aug 2024 16:36:35 +0200
-Message-ID: <20240827143841.551768948@linuxfoundation.org>
+Subject: [PATCH 6.6 165/341] media: drivers/media/dvb-core: copy user arrays safely
+Date: Tue, 27 Aug 2024 16:36:36 +0200
+Message-ID: <20240827143849.690354776@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Philipp Stanner <pstanner@redhat.com>
 
-[ Upstream commit a9a18e8f770c9b0703dab93580d0b02e199a4c79 ]
+[ Upstream commit 102fb77c2deb0df3683ef8ff7a6f4cf91dc456e2 ]
 
-We can't dereference "skb" after calling vcc->push() because the skb
-is released.
+At several positions in dvb_frontend.c, memdup_user() is utilized to
+copy userspace arrays. This is done without overflow checks.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Use the new wrapper memdup_array_user() to copy the arrays more safely.
+
+Link: https://lore.kernel.org/linux-media/20231102191633.52592-2-pstanner@redhat.com
+Suggested-by: Dave Airlie <airlied@redhat.com>
+Signed-off-by: Philipp Stanner <pstanner@redhat.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/atm/idt77252.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/media/dvb-core/dvb_frontend.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/atm/idt77252.c b/drivers/atm/idt77252.c
-index 2daf50d4cd47a..7810f974b2ca9 100644
---- a/drivers/atm/idt77252.c
-+++ b/drivers/atm/idt77252.c
-@@ -1118,8 +1118,8 @@ dequeue_rx(struct idt77252_dev *card, struct rsq_entry *rsqe)
- 	rpp->len += skb->len;
+diff --git a/drivers/media/dvb-core/dvb_frontend.c b/drivers/media/dvb-core/dvb_frontend.c
+index 9293b058ab997..93d3378a0df4b 100644
+--- a/drivers/media/dvb-core/dvb_frontend.c
++++ b/drivers/media/dvb-core/dvb_frontend.c
+@@ -2168,7 +2168,8 @@ static int dvb_frontend_handle_compat_ioctl(struct file *file, unsigned int cmd,
+ 		if (!tvps->num || (tvps->num > DTV_IOCTL_MAX_MSGS))
+ 			return -EINVAL;
  
- 	if (stat & SAR_RSQE_EPDU) {
-+		unsigned int len, truesize;
- 		unsigned char *l1l2;
--		unsigned int len;
+-		tvp = memdup_user(compat_ptr(tvps->props), tvps->num * sizeof(*tvp));
++		tvp = memdup_array_user(compat_ptr(tvps->props),
++					tvps->num, sizeof(*tvp));
+ 		if (IS_ERR(tvp))
+ 			return PTR_ERR(tvp);
  
- 		l1l2 = (unsigned char *) ((unsigned long) skb->data + skb->len - 6);
+@@ -2199,7 +2200,8 @@ static int dvb_frontend_handle_compat_ioctl(struct file *file, unsigned int cmd,
+ 		if (!tvps->num || (tvps->num > DTV_IOCTL_MAX_MSGS))
+ 			return -EINVAL;
  
-@@ -1189,14 +1189,15 @@ dequeue_rx(struct idt77252_dev *card, struct rsq_entry *rsqe)
- 		ATM_SKB(skb)->vcc = vcc;
- 		__net_timestamp(skb);
+-		tvp = memdup_user(compat_ptr(tvps->props), tvps->num * sizeof(*tvp));
++		tvp = memdup_array_user(compat_ptr(tvps->props),
++					tvps->num, sizeof(*tvp));
+ 		if (IS_ERR(tvp))
+ 			return PTR_ERR(tvp);
  
-+		truesize = skb->truesize;
- 		vcc->push(vcc, skb);
- 		atomic_inc(&vcc->stats->rx);
+@@ -2379,7 +2381,8 @@ static int dvb_get_property(struct dvb_frontend *fe, struct file *file,
+ 	if (!tvps->num || tvps->num > DTV_IOCTL_MAX_MSGS)
+ 		return -EINVAL;
  
--		if (skb->truesize > SAR_FB_SIZE_3)
-+		if (truesize > SAR_FB_SIZE_3)
- 			add_rx_skb(card, 3, SAR_FB_SIZE_3, 1);
--		else if (skb->truesize > SAR_FB_SIZE_2)
-+		else if (truesize > SAR_FB_SIZE_2)
- 			add_rx_skb(card, 2, SAR_FB_SIZE_2, 1);
--		else if (skb->truesize > SAR_FB_SIZE_1)
-+		else if (truesize > SAR_FB_SIZE_1)
- 			add_rx_skb(card, 1, SAR_FB_SIZE_1, 1);
- 		else
- 			add_rx_skb(card, 0, SAR_FB_SIZE_0, 1);
+-	tvp = memdup_user((void __user *)tvps->props, tvps->num * sizeof(*tvp));
++	tvp = memdup_array_user((void __user *)tvps->props,
++				tvps->num, sizeof(*tvp));
+ 	if (IS_ERR(tvp))
+ 		return PTR_ERR(tvp);
+ 
+@@ -2457,7 +2460,8 @@ static int dvb_frontend_handle_ioctl(struct file *file,
+ 		if (!tvps->num || (tvps->num > DTV_IOCTL_MAX_MSGS))
+ 			return -EINVAL;
+ 
+-		tvp = memdup_user((void __user *)tvps->props, tvps->num * sizeof(*tvp));
++		tvp = memdup_array_user((void __user *)tvps->props,
++					tvps->num, sizeof(*tvp));
+ 		if (IS_ERR(tvp))
+ 			return PTR_ERR(tvp);
+ 
 -- 
 2.43.0
 
