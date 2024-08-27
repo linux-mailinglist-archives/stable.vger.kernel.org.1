@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-71133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70622-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 840819611D1
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:24:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C83B7960F29
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:56:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B71EE1C23840
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:24:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C58C282F12
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:56:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E06FB1C942C;
-	Tue, 27 Aug 2024 15:23:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C8FD1C688F;
+	Tue, 27 Aug 2024 14:55:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qEjnIALc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JItcZ2NG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DE361C5792;
-	Tue, 27 Aug 2024 15:23:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B2601C5793;
+	Tue, 27 Aug 2024 14:55:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772207; cv=none; b=bd6ABSAvgB4PvZ1mqoiImRKA+FCVZV3M483Mi0KL63QdKJxZmV1088GgmDdM9NP81ZKpJz7/NGFBgDL+FE9kXjNhA+MbRWMfhDCPALfVM3Em8mqgOSOtIe44w7bv03gperpOciC5SAjefikmeHrSPjWiIsBnT+Ubn97Kfh3TVoc=
+	t=1724770520; cv=none; b=Gzx06WdZ2STPyPsFZ+WSiGIspCIOHOZVV0YYHl+o068ivgO1orZwz79Bxhf7Fdkzvji+wTXgqTMbc8bx2bOSI1g4+9rjK0TaGjM5+o56Ym7K7UWr61lHmjpoy8eclz+T9WCaWkoVYYWtxA9uEnPSg7js/04R2X53mfpGJicdEFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772207; c=relaxed/simple;
-	bh=H43b3knOD0FE49V7V1p7NBfC9bClP9vzsdefcml+v04=;
+	s=arc-20240116; t=1724770520; c=relaxed/simple;
+	bh=Y6fhQpDKi5GBSGm0peyTuKPel4oSysW6BkxCO9feXR4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F01qqO2WSw3x7ElT0zIgzUMBLKOmutFFb6osbypQQWfUeM0PhjHCtrMmwR0aqP7N0vjRY/xq0OjhK6njRYptr2NH+EmFYA4QO2t5ygCkxzbDPb79B5C2G8267GT8ERRyz5q2VdvNSJsMgdDskHmG9wOAxMoe1xj0QQ6gAyg2s7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qEjnIALc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F1E3C61062;
-	Tue, 27 Aug 2024 15:23:26 +0000 (UTC)
+	 MIME-Version; b=H710/KIlEJtzRMtw7ObCe8+8dEwZ9GgBJGuL19hqueue1DAnoech5ZefHpqBHeuNHihfwutRJjvBH3F8la5WFQtZbjQHF5oha23Mrfiwi45HgZmocPG/iYAu0lGkvw3yemxB52/c8xq0MjoHubZdC+MaOKL1vAYZW2ga6hv/pJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JItcZ2NG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3AE6C4E690;
+	Tue, 27 Aug 2024 14:55:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772207;
-	bh=H43b3knOD0FE49V7V1p7NBfC9bClP9vzsdefcml+v04=;
+	s=korg; t=1724770520;
+	bh=Y6fhQpDKi5GBSGm0peyTuKPel4oSysW6BkxCO9feXR4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qEjnIALcQGycsmOz0qqT3XU3W5LlUGS0vV7GZJEauP1+PhdiaFzVU3cGySlUW5IjM
-	 0icbm0RFNeWikSa3a/x7NGwxOKFkvUbjI0D8QQZZyyjbVFYuofP5YdLECdS6TgmMMd
-	 Jo4Ang9OUmFZlaXBrlr/IZyiNLalJKZhE1vChZMM=
+	b=JItcZ2NGsygiEm5iDwmOasSSkmJGB2bMJRwA4n2kGxbHQUbGX2M9rQsPlWRji8SAD
+	 AvkqhjNln+vj1JVkuejOEFnov+QpZOtDh8o/s8/ZwM6DB9hFV10piP5ZXMc5xy24EB
+	 W6wd/4f+yPo3l4cZosIirQb52mFgrINf+BnHev0c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 146/321] rust: suppress error messages from CONFIG_{RUSTC,BINDGEN}_VERSION_TEXT
+	Sean Nyekjaer <sean@geanix.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Wolfram Sang <wsa@kernel.org>,
+	Christoph Niedermaier <cniedermaier@dh-electronics.com>
+Subject: [PATCH 6.6 223/341] i2c: stm32f7: Add atomic_xfer method to driver
 Date: Tue, 27 Aug 2024 16:37:34 +0200
-Message-ID: <20240827143843.795264988@linuxfoundation.org>
+Message-ID: <20240827143851.898632425@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +63,134 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Sean Nyekjaer <sean@geanix.com>
 
-[ Upstream commit 5ce86c6c861352c9346ebb5c96ed70cb67414aa3 ]
+commit 470a662688563d8f5e0fb164930d6f5507a883e4 upstream.
 
-While this is a somewhat unusual case, I encountered odd error messages
-when I ran Kconfig in a foreign architecture chroot.
+Add an atomic_xfer method to the driver so that it behaves correctly
+when controlling a PMIC that is responsible for device shutdown.
 
-  $ make allmodconfig
-  sh: 1: rustc: not found
-  sh: 1: bindgen: not found
-  #
-  # configuration written to .config
-  #
+The atomic_xfer method added is similar to the one from the i2c-mv64xxx
+driver. When running an atomic_xfer a bool flag in the driver data is
+set, the interrupt is not unmasked on transfer start, and the IRQ
+handler is manually invoked while waiting for pending transfers to
+complete.
 
-The successful execution of 'command -v rustc' does not necessarily mean
-that 'rustc --version' will succeed.
-
-  $ sh -c 'command -v rustc'
-  /home/masahiro/.cargo/bin/rustc
-  $ sh -c 'rustc --version'
-  sh: 1: rustc: not found
-
-Here, 'rustc' is built for x86, and I ran it in an arm64 system.
-
-The current code:
-
-  command -v $(RUSTC) >/dev/null 2>&1 && $(RUSTC) --version || echo n
-
-can be turned into:
-
-  command -v $(RUSTC) >/dev/null 2>&1 && $(RUSTC) --version 2>/dev/null || echo n
-
-However, I did not understand the necessity of 'command -v $(RUSTC)'.
-
-I simplified it to:
-
-  $(RUSTC) --version 2>/dev/null || echo n
-
-Fixes: 2f7ab1267dc9 ("Kbuild: add Rust support")
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Link: https://lore.kernel.org/r/20240727140302.1806011-1-masahiroy@kernel.org
-[ Rebased on top of v6.11-rc1. - Miguel ]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Sean Nyekjaer <sean@geanix.com>
+Acked-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
+Cc: Christoph Niedermaier <cniedermaier@dh-electronics.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- init/Kconfig | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/i2c/busses/i2c-stm32f7.c |   51 +++++++++++++++++++++++++++++++++++----
+ 1 file changed, 47 insertions(+), 4 deletions(-)
 
-diff --git a/init/Kconfig b/init/Kconfig
-index 19de862768239..85e8bf76aeccb 100644
---- a/init/Kconfig
-+++ b/init/Kconfig
-@@ -1942,7 +1942,7 @@ config RUST
- config RUSTC_VERSION_TEXT
- 	string
- 	depends on RUST
--	default $(shell,command -v $(RUSTC) >/dev/null 2>&1 && $(RUSTC) --version || echo n)
-+	default $(shell,$(RUSTC) --version 2>/dev/null || echo n)
+--- a/drivers/i2c/busses/i2c-stm32f7.c
++++ b/drivers/i2c/busses/i2c-stm32f7.c
+@@ -357,6 +357,7 @@ struct stm32f7_i2c_dev {
+ 	u32 dnf_dt;
+ 	u32 dnf;
+ 	struct stm32f7_i2c_alert *alert;
++	bool atomic;
+ };
  
- config BINDGEN_VERSION_TEXT
- 	string
-@@ -1950,7 +1950,7 @@ config BINDGEN_VERSION_TEXT
- 	# The dummy parameter `workaround-for-0.69.0` is required to support 0.69.0
- 	# (https://github.com/rust-lang/rust-bindgen/pull/2678). It can be removed when
- 	# the minimum version is upgraded past that (0.69.1 already fixed the issue).
--	default $(shell,command -v $(BINDGEN) >/dev/null 2>&1 && $(BINDGEN) --version workaround-for-0.69.0 || echo n)
-+	default $(shell,$(BINDGEN) --version workaround-for-0.69.0 2>/dev/null || echo n)
+ /*
+@@ -915,7 +916,8 @@ static void stm32f7_i2c_xfer_msg(struct
  
- #
- # Place an empty function call at each tracepoint site. Can be
--- 
-2.43.0
-
+ 	/* Configure DMA or enable RX/TX interrupt */
+ 	i2c_dev->use_dma = false;
+-	if (i2c_dev->dma && f7_msg->count >= STM32F7_I2C_DMA_LEN_MIN) {
++	if (i2c_dev->dma && f7_msg->count >= STM32F7_I2C_DMA_LEN_MIN
++	    && !i2c_dev->atomic) {
+ 		ret = stm32_i2c_prep_dma_xfer(i2c_dev->dev, i2c_dev->dma,
+ 					      msg->flags & I2C_M_RD,
+ 					      f7_msg->count, f7_msg->buf,
+@@ -939,6 +941,9 @@ static void stm32f7_i2c_xfer_msg(struct
+ 			cr1 |= STM32F7_I2C_CR1_TXDMAEN;
+ 	}
+ 
++	if (i2c_dev->atomic)
++		cr1 &= ~STM32F7_I2C_ALL_IRQ_MASK; /* Disable all interrupts */
++
+ 	/* Configure Start/Repeated Start */
+ 	cr2 |= STM32F7_I2C_CR2_START;
+ 
+@@ -1673,7 +1678,22 @@ static irqreturn_t stm32f7_i2c_isr_error
+ 	return IRQ_HANDLED;
+ }
+ 
+-static int stm32f7_i2c_xfer(struct i2c_adapter *i2c_adap,
++static int stm32f7_i2c_wait_polling(struct stm32f7_i2c_dev *i2c_dev)
++{
++	ktime_t timeout = ktime_add_ms(ktime_get(), i2c_dev->adap.timeout);
++
++	while (ktime_compare(ktime_get(), timeout) < 0) {
++		udelay(5);
++		stm32f7_i2c_isr_event(0, i2c_dev);
++
++		if (completion_done(&i2c_dev->complete))
++			return 1;
++	}
++
++	return 0;
++}
++
++static int stm32f7_i2c_xfer_core(struct i2c_adapter *i2c_adap,
+ 			    struct i2c_msg msgs[], int num)
+ {
+ 	struct stm32f7_i2c_dev *i2c_dev = i2c_get_adapdata(i2c_adap);
+@@ -1697,8 +1717,12 @@ static int stm32f7_i2c_xfer(struct i2c_a
+ 
+ 	stm32f7_i2c_xfer_msg(i2c_dev, msgs);
+ 
+-	time_left = wait_for_completion_timeout(&i2c_dev->complete,
+-						i2c_dev->adap.timeout);
++	if (!i2c_dev->atomic)
++		time_left = wait_for_completion_timeout(&i2c_dev->complete,
++							i2c_dev->adap.timeout);
++	else
++		time_left = stm32f7_i2c_wait_polling(i2c_dev);
++
+ 	ret = f7_msg->result;
+ 	if (ret) {
+ 		if (i2c_dev->use_dma)
+@@ -1730,6 +1754,24 @@ pm_free:
+ 	return (ret < 0) ? ret : num;
+ }
+ 
++static int stm32f7_i2c_xfer(struct i2c_adapter *i2c_adap,
++			    struct i2c_msg msgs[], int num)
++{
++	struct stm32f7_i2c_dev *i2c_dev = i2c_get_adapdata(i2c_adap);
++
++	i2c_dev->atomic = false;
++	return stm32f7_i2c_xfer_core(i2c_adap, msgs, num);
++}
++
++static int stm32f7_i2c_xfer_atomic(struct i2c_adapter *i2c_adap,
++			    struct i2c_msg msgs[], int num)
++{
++	struct stm32f7_i2c_dev *i2c_dev = i2c_get_adapdata(i2c_adap);
++
++	i2c_dev->atomic = true;
++	return stm32f7_i2c_xfer_core(i2c_adap, msgs, num);
++}
++
+ static int stm32f7_i2c_smbus_xfer(struct i2c_adapter *adapter, u16 addr,
+ 				  unsigned short flags, char read_write,
+ 				  u8 command, int size,
+@@ -2098,6 +2140,7 @@ static u32 stm32f7_i2c_func(struct i2c_a
+ 
+ static const struct i2c_algorithm stm32f7_i2c_algo = {
+ 	.master_xfer = stm32f7_i2c_xfer,
++	.master_xfer_atomic = stm32f7_i2c_xfer_atomic,
+ 	.smbus_xfer = stm32f7_i2c_smbus_xfer,
+ 	.functionality = stm32f7_i2c_func,
+ 	.reg_slave = stm32f7_i2c_reg_slave,
 
 
 
