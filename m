@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-70921-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70671-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB5959610B1
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:11:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D2FF960F70
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:59:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 766ECB23731
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:11:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 80E071C2340C
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:59:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 838251C5788;
-	Tue, 27 Aug 2024 15:11:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1458E1CBEB2;
+	Tue, 27 Aug 2024 14:58:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j9rGMvAA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iV4p26Pz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 416231C4ED4;
-	Tue, 27 Aug 2024 15:11:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7D681C86F2;
+	Tue, 27 Aug 2024 14:58:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771506; cv=none; b=WsaEFRzslnqkv+2eRX7pqx6z/UJ38djqopytFxEKT80OHEp8xIgl/1eMHmSu50CbFj3yRrQmdRs1UOG4r7C8eQ3XBiXHcTpCF2PHN2IYhT9/7eI6zPICsP5Nd45dxzksZ5v2VU8U19gszbj+nnu+mUy2/7JW+JfjSYnu29Qi/7M=
+	t=1724770683; cv=none; b=PQ+mhd2ct4im4tHgcFELxwklvyi501EKNhQFf7YkuBAg0BdiAVm3O1PIVcDXEz5GKdLoksWISluwViEBgcFADQv4DUd2ZT9FRe93bZP/kviQ1qQ3mJmICLWUqRB4OzwCGw2iDnvr7R/URqZQHRIVzuNY8Apjh5cMcwusAtjSyP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771506; c=relaxed/simple;
-	bh=K8hD9zw1Dwxm5UdsEnOSSluA1CfEMrms6R9KSH7wnfU=;
+	s=arc-20240116; t=1724770683; c=relaxed/simple;
+	bh=RveLwkQizGakuy5Uxn0WEQYIZsFn6D7nZgufaD2Uq8o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=giTx+89CCWLozpDmt3EXHs5qfsEyQQ6WukkrEaEz8l5QuViwzqUH/sB0cKk0AeKMsgpL5ih/NGPNiXUP5rCJyCZzvWcd8XZJkrd5CUU5yQSBb+fOt7GkE7hLRfIKgv0fIu/tY+EGSc28zKpbphPc0PUOf28PkjMH0s7lCVepcjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j9rGMvAA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5498BC4DDF2;
-	Tue, 27 Aug 2024 15:11:45 +0000 (UTC)
+	 MIME-Version; b=m96/ln9r7eW2chh8g3I5gHYAhfZma4+zze9NhN8+ZQKlqXMwY0LujDLEv7BZrhlyRuCG8epE5HS4eUxNbucbpDqgofBaevgrBfwRJjdhPcZTSVnh2paSrXCGpAHjXvdB8GxljJtlJhQ23jIDrjLNuz2WM0a30Pn56Usqywg7/vs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iV4p26Pz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFE37C61044;
+	Tue, 27 Aug 2024 14:58:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771505;
-	bh=K8hD9zw1Dwxm5UdsEnOSSluA1CfEMrms6R9KSH7wnfU=;
+	s=korg; t=1724770683;
+	bh=RveLwkQizGakuy5Uxn0WEQYIZsFn6D7nZgufaD2Uq8o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j9rGMvAAvzSblCfpi1aoKbJdAje4EYZ1k4eo+vR3ZTsmqRFVEocthmt571nJpHsLh
-	 l2gGRkzFm/Qde/+GXnAztW1ms+jqloaRfxxen0a3GZ94MqdpB0S5XySpzGflWT31hw
-	 LQo8s8VfY7NRfuTLsZAcr9FBSWYF1/0oQ8SYCx5s=
+	b=iV4p26PzGJ20LIC4FU5kM8TcxY6b+/T69Kgyr/1R0En1hKXm4U1tTRVYncjlO8Tzg
+	 WImd83Rl2P3jSuAkDMLWd3Kx8ie8tfo9sSuM5l1q5TJ1spLxov1mcm+8MW0h1v42B6
+	 nPDlFM+4aVbIgMYZWlscvjl4QPdrAEvDKHXX9PqA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Brost <matthew.brost@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 209/273] drm/xe: Fix tile fini sequence
-Date: Tue, 27 Aug 2024 16:38:53 +0200
-Message-ID: <20240827143841.363115521@linuxfoundation.org>
+	Nikolay Kuratov <kniv@yandex-team.ru>,
+	Simon Horman <horms@kernel.org>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 303/341] cxgb4: add forgotten u64 ivlan cast before shift
+Date: Tue, 27 Aug 2024 16:38:54 +0200
+Message-ID: <20240827143854.920580342@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,59 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Brost <matthew.brost@intel.com>
+From: Nikolay Kuratov <kniv@yandex-team.ru>
 
-[ Upstream commit 15939ca77d4424f736e1e4953b4da2351cc9689d ]
+commit 80a1e7b83bb1834b5568a3872e64c05795d88f31 upstream.
 
-Only set tile->mmio.regs to NULL if not the root tile in tile_fini. The
-root tile mmio regs is setup ealier in MMIO init thus it should be set
-to NULL in mmio_fini.
+It is done everywhere in cxgb4 code, e.g. in is_filter_exact_match()
+There is no reason it should not be done here
 
-Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Reviewed-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240809232830.3302251-1-matthew.brost@intel.com
-(cherry picked from commit 3396900aa273903639a1792afa4d23dc09bec291)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Found by Linux Verification Center (linuxtesting.org) with SVACE
+
+Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
+Cc: stable@vger.kernel.org
+Fixes: 12b276fbf6e0 ("cxgb4: add support to create hash filters")
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20240819075408.92378-1-kniv@yandex-team.ru
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_mmio.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/chelsio/cxgb4/cxgb4_filter.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_mmio.c b/drivers/gpu/drm/xe/xe_mmio.c
-index 9d8fafdf51453..beb4e276ba845 100644
---- a/drivers/gpu/drm/xe/xe_mmio.c
-+++ b/drivers/gpu/drm/xe/xe_mmio.c
-@@ -355,7 +355,8 @@ static void tiles_fini(void *arg)
- 	int id;
+--- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_filter.c
++++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_filter.c
+@@ -1244,7 +1244,8 @@ static u64 hash_filter_ntuple(struct ch_
+ 	 * in the Compressed Filter Tuple.
+ 	 */
+ 	if (tp->vlan_shift >= 0 && fs->mask.ivlan)
+-		ntuple |= (FT_VLAN_VLD_F | fs->val.ivlan) << tp->vlan_shift;
++		ntuple |= (u64)(FT_VLAN_VLD_F |
++				fs->val.ivlan) << tp->vlan_shift;
  
- 	for_each_tile(tile, xe, id)
--		tile->mmio.regs = NULL;
-+		if (tile != xe_device_get_root_tile(xe))
-+			tile->mmio.regs = NULL;
- }
- 
- int xe_mmio_probe_tiles(struct xe_device *xe)
-@@ -416,9 +417,11 @@ int xe_mmio_probe_tiles(struct xe_device *xe)
- static void mmio_fini(void *arg)
- {
- 	struct xe_device *xe = arg;
-+	struct xe_tile *root_tile = xe_device_get_root_tile(xe);
- 
- 	pci_iounmap(to_pci_dev(xe->drm.dev), xe->mmio.regs);
- 	xe->mmio.regs = NULL;
-+	root_tile->mmio.regs = NULL;
- }
- 
- int xe_mmio_init(struct xe_device *xe)
--- 
-2.43.0
-
+ 	if (tp->port_shift >= 0 && fs->mask.iport)
+ 		ntuple |= (u64)fs->val.iport << tp->port_shift;
 
 
 
