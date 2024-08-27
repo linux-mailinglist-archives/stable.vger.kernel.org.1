@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-70555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70781-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD8DC960EBD
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:51:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE6AE961003
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:05:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 944C52844AE
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:51:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 651221F21EAC
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:05:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0274E1494AC;
-	Tue, 27 Aug 2024 14:51:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFA211C86F3;
+	Tue, 27 Aug 2024 15:04:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TwfiHz1t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1oKhpsRD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B502038DC7;
-	Tue, 27 Aug 2024 14:51:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97C1719F485;
+	Tue, 27 Aug 2024 15:04:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770296; cv=none; b=VGLippLeVoXwyd/7VMNRonntD500rdzkUyORjhApy1VKZ7cCGimc4c/QE1m92oil3i69JMxpP/CcFHoFjgJfqmtOmr2UsUbAyp+fVYxBDx4vsXpU1VWJJ9VM1e5hbSdOHAhiDfo4AUzEr84/z8Uo+e6MAsTL2oslNKYJMo+a9fc=
+	t=1724771042; cv=none; b=j0xvnGSNWqzT7swORvLJnITYaaabnvuClkI7XMidzX5ddmNdVXF08PIJdbMx77yoG4u4RoNErp9R4lCFDDk26B3JuH0jVEuMrdE8Xd47h/aNq3eRMaztjKLSS3Kyxd64srEY76eWBlL4sv+VTeQqBWEse590/gna8MMB6J/mLVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770296; c=relaxed/simple;
-	bh=B5tLFnn2o1VSaT9HcKDEj+0J82kx/a7bko6h8Osjhhw=;
+	s=arc-20240116; t=1724771042; c=relaxed/simple;
+	bh=YLmAQMwSrndJAkIVCkl1qJitDYBDUDL1+NmtXXA1bR8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bHjvB8cu0zJ7n05YSgfG38zLserTZm2y1jHqAdTmoqPBgJTpWGrJmBQkErXf0rqirVYFiWdy85tyzvTRD5Vg817p3KmB5AwP0zSle53oNGv0oP01wd39GpbWfdShElRCPtBq0d3ucpuYHZdHTZPwUlzVURlQSz/Z9IdnXd+InWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TwfiHz1t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC641C4DE05;
-	Tue, 27 Aug 2024 14:51:35 +0000 (UTC)
+	 MIME-Version; b=Dfhgg/WJJEI33TbxtUDC9bUQ0qavf+B6U/9ZyUJwGuVy0U3SDILLkLv00svZiwS9OdG9x+xkX4nvPlQYP5/1T4AZRC9tW5d/cMap5QrrYsyCUZcXl0aAQvTSIwMIvfZuokTuBtpk021rikS6NZqc78714+hmzxxl9BmrnqYHVRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1oKhpsRD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 097B0C6104C;
+	Tue, 27 Aug 2024 15:04:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770296;
-	bh=B5tLFnn2o1VSaT9HcKDEj+0J82kx/a7bko6h8Osjhhw=;
+	s=korg; t=1724771042;
+	bh=YLmAQMwSrndJAkIVCkl1qJitDYBDUDL1+NmtXXA1bR8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TwfiHz1tfurss5oWmO4ArKb9dTGAGkEgZFDrTrRHxlrejAiL4DQHEv5qrHFTwhnwC
-	 QaBzAKYxt6LJnvkRqrk07mr9z3wFS+PvFdyD8syUwXCqeN8DA9Peu+CEBJqkBcwkgh
-	 Xdd5tZ6rp2LgnJ3PKjQmvgnNlOZ5TV1TVISQsXBY=
+	b=1oKhpsRD37b/2TnwkU50hh37ivo/P8q1iqOvm+dq4i0Xh0QtdHXk1K7uMejgspV6o
+	 74Jnw00OMBqr3iEENWJztXKXXr00mTJxhRrJBHriJ32+uOkBtbgC5S/ZlQw9ADEcWV
+	 nrpvFTWpHoFj6WJfJ8dHN47W8PdG/VGDxCj96U4U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 155/341] btrfs: zlib: fix and simplify the inline extent decompression
+	Filipe Manana <fdmanana@suse.com>,
+	Josef Bacik <josef@toxicpanda.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.10 062/273] btrfs: check delayed refs when were checking if a ref exists
 Date: Tue, 27 Aug 2024 16:36:26 +0200
-Message-ID: <20240827143849.315546062@linuxfoundation.org>
+Message-ID: <20240827143835.766550830@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,275 +62,258 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Josef Bacik <josef@toxicpanda.com>
 
-[ Upstream commit 2c25716dcc25a0420c4ad49d6e6bf61e60a21434 ]
+commit 42fac187b5c746227c92d024f1caf33bc1d337e4 upstream.
 
-[BUG]
+In the patch 78c52d9eb6b7 ("btrfs: check for refs on snapshot delete
+resume") I added some code to handle file systems that had been
+corrupted by a bug that incorrectly skipped updating the drop progress
+key while dropping a snapshot.  This code would check to see if we had
+already deleted our reference for a child block, and skip the deletion
+if we had already.
 
-If we have a filesystem with 4k sectorsize, and an inlined compressed
-extent created like this:
+Unfortunately there is a bug, as the check would only check the on-disk
+references.  I made an incorrect assumption that blocks in an already
+deleted snapshot that was having the deletion resume on mount wouldn't
+be modified.
 
-	item 4 key (257 INODE_ITEM 0) itemoff 15863 itemsize 160
-		generation 8 transid 8 size 4096 nbytes 4096
-		block group 0 mode 100600 links 1 uid 0 gid 0 rdev 0
-		sequence 1 flags 0x0(none)
-	item 5 key (257 INODE_REF 256) itemoff 15839 itemsize 24
-		index 2 namelen 14 name: source_inlined
-	item 6 key (257 EXTENT_DATA 0) itemoff 15770 itemsize 69
-		generation 8 type 0 (inline)
-		inline extent data size 48 ram_bytes 4096 compression 1 (zlib)
+If we have 2 pending deleted snapshots that share blocks, we can easily
+modify the rules for a block.  Take the following example
 
-Which has an inline compressed extent at file offset 0, and its
-decompressed size is 4K, allowing us to reflink that 4K range to another
-location (which will not be compressed).
+subvolume a exists, and subvolume b is a snapshot of subvolume a.  They
+share references to block 1.  Block 1 will have 2 full references, one
+for subvolume a and one for subvolume b, and it belongs to subvolume a
+(btrfs_header_owner(block 1) == subvolume a).
 
-If we do such reflink on a subpage system, it would fail like this:
+When deleting subvolume a, we will drop our full reference for block 1,
+and because we are the owner we will drop our full reference for all of
+block 1's children, convert block 1 to FULL BACKREF, and add a shared
+reference to all of block 1's children.
 
-  # xfs_io -f -c "reflink $mnt/source_inlined 0 60k 4k" $mnt/dest
-  XFS_IOC_CLONE_RANGE: Input/output error
+Then we will start the snapshot deletion of subvolume b.  We look up the
+extent info for block 1, which checks delayed refs and tells us that
+FULL BACKREF is set, so sets parent to the bytenr of block 1.  However
+because this is a resumed snapshot deletion, we call into
+check_ref_exists().  Because check_ref_exists() only looks at the disk,
+it doesn't find the shared backref for the child of block 1, and thus
+returns 0 and we skip deleting the reference for the child of block 1
+and continue.  This orphans the child of block 1.
 
-[CAUSE]
-In zlib_decompress(), we didn't treat @start_byte as just a page offset,
-but also use it as an indicator on whether we should switch our output
-buffer.
+The fix is to lookup the delayed refs, similar to what we do in
+btrfs_lookup_extent_info().  However we only care about whether the
+reference exists or not.  If we fail to find our reference on disk, go
+look up the bytenr in the delayed refs, and if it exists look for an
+existing ref in the delayed ref head.  If that exists then we know we
+can delete the reference safely and carry on.  If it doesn't exist we
+know we have to skip over this block.
 
-In reality, for subpage cases, although @start_byte can be non-zero,
-we should never switch input/output buffer, since the whole input/output
-buffer should never exceed one sector.
+This bug has existed since I introduced this fix, however requires
+having multiple deleted snapshots pending when we unmount.  We noticed
+this in production because our shutdown path stops the container on the
+system, which deletes a bunch of subvolumes, and then reboots the box.
+This gives us plenty of opportunities to hit this issue.  Looking at the
+history we've seen this occasionally in production, but we had a big
+spike recently thanks to faster machines getting jobs with multiple
+subvolumes in the job.
 
-Note: The above assumption is only not true if we're going to support
-multi-page sectorsize.
+Chris Mason wrote a reproducer which does the following
 
-Thus the current code using @start_byte as a condition to switch
-input/output buffer or finish the decompression is completely incorrect.
+mount /dev/nvme4n1 /btrfs
+btrfs subvol create /btrfs/s1
+simoop -E -f 4k -n 200000 -z /btrfs/s1
+while(true) ; do
+	btrfs subvol snap /btrfs/s1 /btrfs/s2
+	simoop -f 4k -n 200000 -r 10 -z /btrfs/s2
+	btrfs subvol snap /btrfs/s2 /btrfs/s3
+	btrfs balance start -dusage=80 /btrfs
+	btrfs subvol del /btrfs/s2 /btrfs/s3
+	umount /btrfs
+	btrfsck /dev/nvme4n1 || exit 1
+	mount /dev/nvme4n1 /btrfs
+done
 
-[FIX]
-The fix involves several modifications:
+On the second loop this would fail consistently, with my patch it has
+been running for hours and hasn't failed.
 
-- Rename @start_byte to @dest_pgoff to properly express its meaning
+I also used dm-log-writes to capture the state of the failure so I could
+debug the problem.  Using the existing failure case to test my patch
+validated that it fixes the problem.
 
-- Add an extra ASSERT() inside btrfs_decompress() to make sure the
-  input/output size never exceeds one sector.
-
-- Use Z_FINISH flag to make sure the decompression happens in one go
-
-- Remove the loop needed to switch input/output buffers
-
-- Use correct destination offset inside the destination page
-
-- Consider early end as an error
-
-After the fix, even on 64K page sized aarch64, above reflink now
-works as expected:
-
-  # xfs_io -f -c "reflink $mnt/source_inlined 0 60k 4k" $mnt/dest
-  linked 4096/4096 bytes at offset 61440
-
-And resulted a correct file layout:
-
-	item 9 key (258 INODE_ITEM 0) itemoff 15542 itemsize 160
-		generation 10 transid 10 size 65536 nbytes 4096
-		block group 0 mode 100600 links 1 uid 0 gid 0 rdev 0
-		sequence 1 flags 0x0(none)
-	item 10 key (258 INODE_REF 256) itemoff 15528 itemsize 14
-		index 3 namelen 4 name: dest
-	item 11 key (258 XATTR_ITEM 3817753667) itemoff 15445 itemsize 83
-		location key (0 UNKNOWN.0 0) type XATTR
-		transid 10 data_len 37 name_len 16
-		name: security.selinux
-		data unconfined_u:object_r:unlabeled_t:s0
-	item 12 key (258 EXTENT_DATA 61440) itemoff 15392 itemsize 53
-		generation 10 type 1 (regular)
-		extent data disk byte 13631488 nr 4096
-		extent data offset 0 nr 4096 ram 4096
-		extent compression 0 (none)
-
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
+Fixes: 78c52d9eb6b7 ("btrfs: check for refs on snapshot delete resume")
+CC: stable@vger.kernel.org # 5.4+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
 Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/compression.c | 23 +++++++++----
- fs/btrfs/compression.h |  2 +-
- fs/btrfs/zlib.c        | 73 +++++++++++-------------------------------
- 3 files changed, 36 insertions(+), 62 deletions(-)
+ fs/btrfs/delayed-ref.c |   67 +++++++++++++++++++++++++++++++++++++++++++++++++
+ fs/btrfs/delayed-ref.h |    2 +
+ fs/btrfs/extent-tree.c |   51 ++++++++++++++++++++++++++++++++-----
+ 3 files changed, 114 insertions(+), 6 deletions(-)
 
-diff --git a/fs/btrfs/compression.c b/fs/btrfs/compression.c
-index a815ce9cfb518..e6acf09a1507c 100644
---- a/fs/btrfs/compression.c
-+++ b/fs/btrfs/compression.c
-@@ -140,16 +140,16 @@ static int compression_decompress_bio(struct list_head *ws,
+--- a/fs/btrfs/delayed-ref.c
++++ b/fs/btrfs/delayed-ref.c
+@@ -1169,6 +1169,73 @@ btrfs_find_delayed_ref_head(struct btrfs
+ 	return find_ref_head(delayed_refs, bytenr, false);
  }
  
- static int compression_decompress(int type, struct list_head *ws,
--               const u8 *data_in, struct page *dest_page,
--               unsigned long start_byte, size_t srclen, size_t destlen)
-+		const u8 *data_in, struct page *dest_page,
-+		unsigned long dest_pgoff, size_t srclen, size_t destlen)
- {
- 	switch (type) {
- 	case BTRFS_COMPRESS_ZLIB: return zlib_decompress(ws, data_in, dest_page,
--						start_byte, srclen, destlen);
-+						dest_pgoff, srclen, destlen);
- 	case BTRFS_COMPRESS_LZO:  return lzo_decompress(ws, data_in, dest_page,
--						start_byte, srclen, destlen);
-+						dest_pgoff, srclen, destlen);
- 	case BTRFS_COMPRESS_ZSTD: return zstd_decompress(ws, data_in, dest_page,
--						start_byte, srclen, destlen);
-+						dest_pgoff, srclen, destlen);
- 	case BTRFS_COMPRESS_NONE:
- 	default:
- 		/*
-@@ -941,14 +941,23 @@ static int btrfs_decompress_bio(struct compressed_bio *cb)
-  * start_byte tells us the offset into the compressed data we're interested in
-  */
- int btrfs_decompress(int type, const u8 *data_in, struct page *dest_page,
--		     unsigned long start_byte, size_t srclen, size_t destlen)
-+		     unsigned long dest_pgoff, size_t srclen, size_t destlen)
- {
-+	struct btrfs_fs_info *fs_info = btrfs_sb(dest_page->mapping->host->i_sb);
- 	struct list_head *workspace;
-+	const u32 sectorsize = fs_info->sectorsize;
- 	int ret;
- 
-+	/*
-+	 * The full destination page range should not exceed the page size.
-+	 * And the @destlen should not exceed sectorsize, as this is only called for
-+	 * inline file extents, which should not exceed sectorsize.
-+	 */
-+	ASSERT(dest_pgoff + destlen <= PAGE_SIZE && destlen <= sectorsize);
++static int find_comp(struct btrfs_delayed_ref_node *entry, u64 root, u64 parent)
++{
++	int type = parent ? BTRFS_SHARED_BLOCK_REF_KEY : BTRFS_TREE_BLOCK_REF_KEY;
 +
- 	workspace = get_workspace(type, 0);
- 	ret = compression_decompress(type, workspace, data_in, dest_page,
--				     start_byte, srclen, destlen);
-+				     dest_pgoff, srclen, destlen);
- 	put_workspace(type, workspace);
- 
- 	return ret;
-diff --git a/fs/btrfs/compression.h b/fs/btrfs/compression.h
-index 03bb9d143fa75..609865c940658 100644
---- a/fs/btrfs/compression.h
-+++ b/fs/btrfs/compression.h
-@@ -143,7 +143,7 @@ int zlib_compress_pages(struct list_head *ws, struct address_space *mapping,
- 		unsigned long *total_in, unsigned long *total_out);
- int zlib_decompress_bio(struct list_head *ws, struct compressed_bio *cb);
- int zlib_decompress(struct list_head *ws, const u8 *data_in,
--		struct page *dest_page, unsigned long start_byte, size_t srclen,
-+		struct page *dest_page, unsigned long dest_pgoff, size_t srclen,
- 		size_t destlen);
- struct list_head *zlib_alloc_workspace(unsigned int level);
- void zlib_free_workspace(struct list_head *ws);
-diff --git a/fs/btrfs/zlib.c b/fs/btrfs/zlib.c
-index 6c231a116a29c..9f60d0bbd5306 100644
---- a/fs/btrfs/zlib.c
-+++ b/fs/btrfs/zlib.c
-@@ -354,18 +354,13 @@ int zlib_decompress_bio(struct list_head *ws, struct compressed_bio *cb)
- }
- 
- int zlib_decompress(struct list_head *ws, const u8 *data_in,
--		struct page *dest_page, unsigned long start_byte, size_t srclen,
-+		struct page *dest_page, unsigned long dest_pgoff, size_t srclen,
- 		size_t destlen)
- {
- 	struct workspace *workspace = list_entry(ws, struct workspace, list);
- 	int ret = 0;
- 	int wbits = MAX_WBITS;
--	unsigned long bytes_left;
--	unsigned long total_out = 0;
--	unsigned long pg_offset = 0;
--
--	destlen = min_t(unsigned long, destlen, PAGE_SIZE);
--	bytes_left = destlen;
-+	unsigned long to_copy;
- 
- 	workspace->strm.next_in = data_in;
- 	workspace->strm.avail_in = srclen;
-@@ -390,60 +385,30 @@ int zlib_decompress(struct list_head *ws, const u8 *data_in,
- 		return -EIO;
- 	}
- 
--	while (bytes_left > 0) {
--		unsigned long buf_start;
--		unsigned long buf_offset;
--		unsigned long bytes;
--
--		ret = zlib_inflate(&workspace->strm, Z_NO_FLUSH);
--		if (ret != Z_OK && ret != Z_STREAM_END)
--			break;
--
--		buf_start = total_out;
--		total_out = workspace->strm.total_out;
--
--		if (total_out == buf_start) {
--			ret = -EIO;
--			break;
--		}
--
--		if (total_out <= start_byte)
--			goto next;
--
--		if (total_out > start_byte && buf_start < start_byte)
--			buf_offset = start_byte - buf_start;
--		else
--			buf_offset = 0;
--
--		bytes = min(PAGE_SIZE - pg_offset,
--			    PAGE_SIZE - (buf_offset % PAGE_SIZE));
--		bytes = min(bytes, bytes_left);
-+	/*
-+	 * Everything (in/out buf) should be at most one sector, there should
-+	 * be no need to switch any input/output buffer.
-+	 */
-+	ret = zlib_inflate(&workspace->strm, Z_FINISH);
-+	to_copy = min(workspace->strm.total_out, destlen);
-+	if (ret != Z_STREAM_END)
-+		goto out;
- 
--		memcpy_to_page(dest_page, pg_offset,
--			       workspace->buf + buf_offset, bytes);
-+	memcpy_to_page(dest_page, dest_pgoff, workspace->buf, to_copy);
- 
--		pg_offset += bytes;
--		bytes_left -= bytes;
--next:
--		workspace->strm.next_out = workspace->buf;
--		workspace->strm.avail_out = workspace->buf_size;
--	}
--
--	if (ret != Z_STREAM_END && bytes_left != 0)
-+out:
-+	if (unlikely(to_copy != destlen)) {
-+		pr_warn_ratelimited("BTRFS: infalte failed, decompressed=%lu expected=%zu\n",
-+					to_copy, destlen);
- 		ret = -EIO;
--	else
++	if (type < entry->type)
++		return -1;
++	if (type > entry->type)
++		return 1;
++
++	if (type == BTRFS_TREE_BLOCK_REF_KEY) {
++		if (root < entry->ref_root)
++			return -1;
++		if (root > entry->ref_root)
++			return 1;
 +	} else {
- 		ret = 0;
++		if (parent < entry->parent)
++			return -1;
++		if (parent > entry->parent)
++			return 1;
 +	}
++	return 0;
++}
++
++/*
++ * Check to see if a given root/parent reference is attached to the head.  This
++ * only checks for BTRFS_ADD_DELAYED_REF references that match, as that
++ * indicates the reference exists for the given root or parent.  This is for
++ * tree blocks only.
++ *
++ * @head: the head of the bytenr we're searching.
++ * @root: the root objectid of the reference if it is a normal reference.
++ * @parent: the parent if this is a shared backref.
++ */
++bool btrfs_find_delayed_tree_ref(struct btrfs_delayed_ref_head *head,
++				 u64 root, u64 parent)
++{
++	struct rb_node *node;
++	bool found = false;
++
++	lockdep_assert_held(&head->mutex);
++
++	spin_lock(&head->lock);
++	node = head->ref_tree.rb_root.rb_node;
++	while (node) {
++		struct btrfs_delayed_ref_node *entry;
++		int ret;
++
++		entry = rb_entry(node, struct btrfs_delayed_ref_node, ref_node);
++		ret = find_comp(entry, root, parent);
++		if (ret < 0) {
++			node = node->rb_left;
++		} else if (ret > 0) {
++			node = node->rb_right;
++		} else {
++			/*
++			 * We only want to count ADD actions, as drops mean the
++			 * ref doesn't exist.
++			 */
++			if (entry->action == BTRFS_ADD_DELAYED_REF)
++				found = true;
++			break;
++		}
++	}
++	spin_unlock(&head->lock);
++	return found;
++}
++
+ void __cold btrfs_delayed_ref_exit(void)
+ {
+ 	kmem_cache_destroy(btrfs_delayed_ref_head_cachep);
+--- a/fs/btrfs/delayed-ref.h
++++ b/fs/btrfs/delayed-ref.h
+@@ -389,6 +389,8 @@ int btrfs_delayed_refs_rsv_refill(struct
+ void btrfs_migrate_to_delayed_refs_rsv(struct btrfs_fs_info *fs_info,
+ 				       u64 num_bytes);
+ bool btrfs_check_space_for_delayed_refs(struct btrfs_fs_info *fs_info);
++bool btrfs_find_delayed_tree_ref(struct btrfs_delayed_ref_head *head,
++				 u64 root, u64 parent);
  
- 	zlib_inflateEnd(&workspace->strm);
+ static inline u64 btrfs_delayed_ref_owner(struct btrfs_delayed_ref_node *node)
+ {
+--- a/fs/btrfs/extent-tree.c
++++ b/fs/btrfs/extent-tree.c
+@@ -5387,23 +5387,62 @@ static int check_ref_exists(struct btrfs
+ 			    struct btrfs_root *root, u64 bytenr, u64 parent,
+ 			    int level)
+ {
++	struct btrfs_delayed_ref_root *delayed_refs;
++	struct btrfs_delayed_ref_head *head;
+ 	struct btrfs_path *path;
+ 	struct btrfs_extent_inline_ref *iref;
+ 	int ret;
++	bool exists = false;
  
--	/*
--	 * this should only happen if zlib returned fewer bytes than we
--	 * expected.  btrfs_get_block is responsible for zeroing from the
--	 * end of the inline extent (destlen) to the end of the page
--	 */
--	if (pg_offset < destlen) {
--		memzero_page(dest_page, pg_offset, destlen - pg_offset);
--	}
-+	if (unlikely(to_copy < destlen))
-+		memzero_page(dest_page, dest_pgoff + to_copy, destlen - to_copy);
- 	return ret;
+ 	path = btrfs_alloc_path();
+ 	if (!path)
+ 		return -ENOMEM;
+-
++again:
+ 	ret = lookup_extent_backref(trans, path, &iref, bytenr,
+ 				    root->fs_info->nodesize, parent,
+ 				    btrfs_root_id(root), level, 0);
++	if (ret != -ENOENT) {
++		/*
++		 * If we get 0 then we found our reference, return 1, else
++		 * return the error if it's not -ENOENT;
++		 */
++		btrfs_free_path(path);
++		return (ret < 0 ) ? ret : 1;
++	}
++
++	/*
++	 * We could have a delayed ref with this reference, so look it up while
++	 * we're holding the path open to make sure we don't race with the
++	 * delayed ref running.
++	 */
++	delayed_refs = &trans->transaction->delayed_refs;
++	spin_lock(&delayed_refs->lock);
++	head = btrfs_find_delayed_ref_head(delayed_refs, bytenr);
++	if (!head)
++		goto out;
++	if (!mutex_trylock(&head->mutex)) {
++		/*
++		 * We're contended, means that the delayed ref is running, get a
++		 * reference and wait for the ref head to be complete and then
++		 * try again.
++		 */
++		refcount_inc(&head->refs);
++		spin_unlock(&delayed_refs->lock);
++
++		btrfs_release_path(path);
++
++		mutex_lock(&head->mutex);
++		mutex_unlock(&head->mutex);
++		btrfs_put_delayed_ref_head(head);
++		goto again;
++	}
++
++	exists = btrfs_find_delayed_tree_ref(head, root->root_key.objectid, parent);
++	mutex_unlock(&head->mutex);
++out:
++	spin_unlock(&delayed_refs->lock);
+ 	btrfs_free_path(path);
+-	if (ret == -ENOENT)
+-		return 0;
+-	if (ret < 0)
+-		return ret;
+-	return 1;
++	return exists ? 1 : 0;
  }
  
--- 
-2.43.0
-
+ /*
 
 
 
