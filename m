@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-71324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71325-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E101196139F
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 18:06:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C23D9613C1
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 18:13:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C6172822A7
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:06:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 079F11F2433E
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:13:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13C781C6896;
-	Tue, 27 Aug 2024 16:06:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2499C1C93AF;
+	Tue, 27 Aug 2024 16:13:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N0NTtfa+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZWVv48bg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9A0664A;
-	Tue, 27 Aug 2024 16:06:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF99F1A0B13
+	for <stable@vger.kernel.org>; Tue, 27 Aug 2024 16:13:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724774796; cv=none; b=AQNugwwhalE5bPSGe8dMq/bu1nyUFClHRagug+vexkarHbqU+ys3KMi92VAsmfjWjlC7Xf1YWwXX4vMTPyNh5c9Il+YbAf5mY/ZgEN/4r5TY2l8VXFZAwuYI6L7MpZqkfh1H5+ho+G1wVFkFEXNET/3pQw4kA7VhZa4tCTZzr4w=
+	t=1724775218; cv=none; b=pxP2fpQCl6+KD7cteYpd61+4BeJ1974eDvg5G9NSWuaMW+uZIv/mHRbgTPrjEgoqH02HuGWzapJlJfWG1fXGWWgmUmtGrO6lYB03nEsjMFI/oWf8CDktr8b46CrXRvag9mfCYfIlIGLYH5u3N88JY2fQ/yNTbj4LTRuGaTVz7n8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724774796; c=relaxed/simple;
-	bh=JW7JOo58wN9tCu7+RvlOCcsQ0sT32Uaxjwj6pWPrCv8=;
+	s=arc-20240116; t=1724775218; c=relaxed/simple;
+	bh=N1U0C8ab2h45FWIcOFzWL8LthVcbCZSCs8Dh2JBqz5Y=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qH4djPJYUiDQVltmMsHKn95O/ARXslE4/3SlJiy5q0RmnkhhoRXby1xSz5yxmu9SVOU0y+Bp0pcOc1iAATiq005iOhrZE0a2Yu72lLy2meXkAz8vDSuj1CtPAKlJjYiwnUmZHLZQ2yqrKZYirkziZ1kyuYwPNJM+vq8yfhEdKNA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N0NTtfa+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B701FC581B0;
-	Tue, 27 Aug 2024 16:06:35 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=q/e+4bscJjQUAkoMSgo28VNkERnU10cb7NVvifrggCoDunTo2RyfU5r4Huf1ShWay7ZjBbmU4i6tyyCmvQ+4ZCGL/csfU4EAKgiuGdxpLnjiXdLLStS9ny2akrouy74pqcNFWk0v8rJDklQBwnj6wkcDxSLetDpSAfv86YfINjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZWVv48bg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28DC1C4FEBB;
+	Tue, 27 Aug 2024 16:13:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724774796;
-	bh=JW7JOo58wN9tCu7+RvlOCcsQ0sT32Uaxjwj6pWPrCv8=;
+	s=korg; t=1724775218;
+	bh=N1U0C8ab2h45FWIcOFzWL8LthVcbCZSCs8Dh2JBqz5Y=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=N0NTtfa+WUEBc65GdCwsVj9wGCVJbF7WVi/aHECav0CN2oQk9fA6P8O0IP+R7fh2o
-	 15Hbm8Ci3ZrjgU+WL9HQFZjXK6XBjaWlubYJIO8BXyYIIakKxSGMBybA5zPPdzaqej
-	 3197hCHw1Fm1L+B5hVpcJiqwCZiNfFzHCzrjK9xw=
-Date: Tue, 27 Aug 2024 18:06:32 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Michael Grzeschik <mgr@pengutronix.de>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.6 110/341] usb: gadget: uvc: cleanup request when not
- in correct state
-Message-ID: <2024082701-ivory-antibody-af9d@gregkh>
-References: <20240827143843.399359062@linuxfoundation.org>
- <20240827143847.597379131@linuxfoundation.org>
- <Zs3q7KGX_i99-B4_@pengutronix.de>
+	b=ZWVv48bgP56ztEj3dwoTqawXiuFbjOfejGkgKkXolC1S4TbMPTz2HQ7bIRfIIrKJS
+	 dsJcfQcDLFmwXgFBQVm0LvBfPfxRuMGjKSrTuYwkZIle9oV7QzA46YJTRTLnRfC5f/
+	 OIVWASZ/zHrmGvTAWeJzjL8DigMAP2JSRE3mhmZ4=
+Date: Tue, 27 Aug 2024 18:13:35 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: "Deucher, Alexander" <Alexander.Deucher@amd.com>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"sashal@kernel.org" <sashal@kernel.org>,
+	"Xiao, Jack" <Jack.Xiao@amd.com>
+Subject: Re: [PATCH] drm/amdgpu/mes: fix mes ring buffer overflow
+Message-ID: <2024082743-corset-cloud-338c@gregkh>
+References: <20240827141025.1329567-1-alexander.deucher@amd.com>
+ <2024082746-amendment-unread-593d@gregkh>
+ <BL1PR12MB514422F9FA07573AC2A2759BF7942@BL1PR12MB5144.namprd12.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,22 +57,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Zs3q7KGX_i99-B4_@pengutronix.de>
+In-Reply-To: <BL1PR12MB514422F9FA07573AC2A2759BF7942@BL1PR12MB5144.namprd12.prod.outlook.com>
 
-On Tue, Aug 27, 2024 at 05:04:12PM +0200, Michael Grzeschik wrote:
-> On Tue, Aug 27, 2024 at 04:35:41PM +0200, Greg Kroah-Hartman wrote:
-> > 6.6-stable review patch.  If anyone has any objections, please let me know.
+On Tue, Aug 27, 2024 at 03:01:54PM +0000, Deucher, Alexander wrote:
+> [Public]
 > 
-> Since this change is not actually in Mainline anymore as you reverted it
-> immediatly afterwards, it probably make no sense to pick it up.
+> > -----Original Message-----
+> > From: Greg KH <gregkh@linuxfoundation.org>
+> > Sent: Tuesday, August 27, 2024 10:21 AM
+> > To: Deucher, Alexander <Alexander.Deucher@amd.com>
+> > Cc: stable@vger.kernel.org; sashal@kernel.org; Xiao, Jack
+> > <Jack.Xiao@amd.com>
+> > Subject: Re: [PATCH] drm/amdgpu/mes: fix mes ring buffer overflow
+> >
+> > On Tue, Aug 27, 2024 at 10:10:25AM -0400, Alex Deucher wrote:
+> > > From: Jack Xiao <Jack.Xiao@amd.com>
+> > >
+> > > wait memory room until enough before writing mes packets to avoid ring
+> > > buffer overflow.
+> > >
+> > > v2: squash in sched_hw_submission fix
+> > >
+> > > Backport from 6.11.
+> > >
+> > > Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3571
+> > > Fixes: de3246254156 ("drm/amdgpu: cleanup MES11 command
+> > submission")
+> > > Fixes: fffe347e1478 ("drm/amdgpu: cleanup MES12 command submission")
+> >
+> > These commits are in 6.11-rc1.
 > 
-> I saw this patch and its revert past me the last week while being
-> applied on some other stable trees.
+> de3246254156 ("drm/amdgpu: cleanup MES11 command submission")
+> was ported to 6.10 as well:
+> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c?h=linux-6.10.y&id=e356d321d0240663a09b139fa3658ddbca163e27
+> So this fix is applicable there.
 
-I took the revert as well.  That way our scripts don't try to pick it up
-again in the future as they would go "hey, here's a patch you missed!"
+No, commit e356d321d024 ("drm/amdgpu: cleanup MES11 command submission")
+is in the 6.10 release, but commit de3246254156 ("drm/amdgpu: cleanup
+MES11 command submission") is in 6.11-rc1!
 
-thanks,
+So how in the world are we supposed to know anything here?
+
+See how broken this all is?
+
+I give up.
+
+If you all want any AMD patches applied to stable trees, manually send
+us a set of backported patches, AND be sure to get the git ids right.
+
+I'll leave what I have right now in the queues, but after this round of
+-rc releases, all AMD patches with cc: stable are going to be
+automatically dropped and ignored.  I NEED you all to manually send them
+to me now as this is just insane.
+
+Time to go buy a Intel gpu card as there's no way this is going to work
+out well over time...
+
+{sigh}
 
 greg k-h
 
