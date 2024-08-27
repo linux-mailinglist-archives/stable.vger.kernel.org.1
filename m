@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-71037-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70727-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E14F961158
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:19:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9107B960FB5
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:01:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7EDFDB27488
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:19:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F39728217A
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:01:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B143B1CCB21;
-	Tue, 27 Aug 2024 15:18:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C20431C688E;
+	Tue, 27 Aug 2024 15:01:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="06zQmsTC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PE6HcOwy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D35F1C8FA0;
-	Tue, 27 Aug 2024 15:18:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EE7B19F485;
+	Tue, 27 Aug 2024 15:01:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771888; cv=none; b=V5rL77Oo67dEMiAOP2cB9JeLZOx2wYKjQFaNZlftiquqQFVYU4eC3FD3Tlvcv03pBN4jOodXMRSriOFGZsy69leEUuASSd42q8gA1gM9H/raNs4E24u8yxrNg4hubDC32IQ7ECTKIHto0qgPnqugrpg1z6m/OH2S6kNaBNyJ/vI=
+	t=1724770867; cv=none; b=lAnquvQdnUoFTcTh0x+U1FW89qkdJQj69OdLRDROKD+S/NlBRrCVf970J1St5OQC0aPVXYLMT7mvMzNkK6/arjCyGXU61CTwPjAhEnc4++MRBWJYyI8r7kl8kNkCxpQVDTlAC6ZLPB2EPwAGC4AEyFWe1IeIcCskn+qauQ+6oQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771888; c=relaxed/simple;
-	bh=IqFASUc3H6qemN099wco2gEPP3vvnbwn/WKjRTYV0EA=;
+	s=arc-20240116; t=1724770867; c=relaxed/simple;
+	bh=eTixWjT5F8WWaG4guHRfCRX01y/qdH4TWHS+9d8SDg8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q6g17Kr7dx/MBtj41xeyctbsbfYXqx+d4uzkmFcZhIyf0Y/8MIoDnqQNAqW5snZyAE2Hj5AC2D4RU2SsoPaWNETxW9RNTLsWlkRY/f7XyzLDapVHQaI6/OqRlkzfUzHJybDq66UwAvVKdHeOOSXsSqE5HmOxL1e0Cx2m7BWMWWA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=06zQmsTC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6197C61058;
-	Tue, 27 Aug 2024 15:18:07 +0000 (UTC)
+	 MIME-Version; b=spOlVsj2bzKLsV7xqHzqN/jrhpqGHXa55Q0sv3zDodwK9UXAGfUFoKVov3k45085ksX/kO1vFyQCYOw0vQXKQ64c24k3WbvUVJL3LIx7jQ6L7GdYiNzF3fEFq+JUkav9BDeAgiajYIQBVLzC+0D8ZQd2kCfQpED1CqOyr2oRW0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PE6HcOwy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3B8FC4AF1C;
+	Tue, 27 Aug 2024 15:01:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771888;
-	bh=IqFASUc3H6qemN099wco2gEPP3vvnbwn/WKjRTYV0EA=;
+	s=korg; t=1724770867;
+	bh=eTixWjT5F8WWaG4guHRfCRX01y/qdH4TWHS+9d8SDg8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=06zQmsTCa44hM2tog62+E06GpjzwURDZISZHLEuVJx8CFnS6gWowKlJ7kzDfsLj0o
-	 xbX9B2esJP/sYAmvx+pJWEMRc+y9E0/yEpARdBd/dUy4OVuw4pFV2wHwvActZ5esOo
-	 H4PgWzmS17pgglj+5iUqYQ26xSovFlWi3tiedvhs=
+	b=PE6HcOwy4lnJvG+Pmt6opmcFRpuQbW3vKf6fPgpqLQfUJaCPucJR9lCxp66MbeTUp
+	 iej+DNjCAsRXtq+3dyHFiiW9aLnkcIBMFUaBY+tnVTX2hl0wM8P7qHlX3lWGMZfL8L
+	 JJqpyvDjVAIos5BTYoyKIt03ctQBmxAZjHRq0gEU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	syzbot+cbff7a52b6f99059e67f@syzkaller.appspotmail.com,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 033/321] nilfs2: prevent WARNING in nilfs_dat_commit_end()
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Wesley Cheng <quic_wcheng@quicinc.com>,
+	Marc Zyngier <maz@kernel.org>
+Subject: [PATCH 6.10 017/273] usb: xhci: Check for xhci->interrupters being allocated in xhci_mem_clearup()
 Date: Tue, 27 Aug 2024 16:35:41 +0200
-Message-ID: <20240827143839.479876775@linuxfoundation.org>
+Message-ID: <20240827143834.042505557@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Marc Zyngier <maz@kernel.org>
 
-[ Upstream commit 602ce7b8e1343b19c0cf93a3dd1926838ac5a1cc ]
+commit dcdb52d948f3a17ccd3fce757d9bd981d7c32039 upstream.
 
-If nilfs2 reads a corrupted disk image and its DAT metadata file contains
-invalid lifetime data for a virtual block number, a kernel warning can be
-generated by the WARN_ON check in nilfs_dat_commit_end() and can panic if
-the kernel is booted with panic_on_warn.
+If xhci_mem_init() fails, it calls into xhci_mem_cleanup() to mop
+up the damage. If it fails early enough, before xhci->interrupters
+is allocated but after xhci->max_interrupters has been set, which
+happens in most (all?) cases, things get uglier, as xhci_mem_cleanup()
+unconditionally derefences xhci->interrupters. With prejudice.
 
-This patch avoids the issue with a sanity check that treats it as an
-error.
+Gate the interrupt freeing loop with a check on xhci->interrupters
+being non-NULL.
 
-Since error return is not allowed in the execution phase of
-nilfs_dat_commit_end(), this inserts that sanity check in
-nilfs_dat_prepare_end(), which prepares for nilfs_dat_commit_end().
+Found while debugging a DMA allocation issue that led the XHCI driver
+on this exact path.
 
-As the error code, -EINVAL is returned to notify bmap layer of the
-metadata corruption.  When the bmap layer sees this code, it handles the
-abnormal situation and replaces the return code with -EIO as it should.
-
-Link: https://lkml.kernel.org/r/000000000000154d2c05e9ec7df6@google.com
-Link: https://lkml.kernel.org/r/20230127132202.6083-1-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: <syzbot+cbff7a52b6f99059e67f@syzkaller.appspotmail.com>
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c99b38c41234 ("xhci: add support to allocate several interrupters")
+Cc: Mathias Nyman <mathias.nyman@linux.intel.com>
+Cc: Wesley Cheng <quic_wcheng@quicinc.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Cc: stable@vger.kernel.org # 6.8+
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20240809124408.505786-2-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/dat.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/usb/host/xhci-mem.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nilfs2/dat.c b/fs/nilfs2/dat.c
-index 242cc36bf1e97..351010828d883 100644
---- a/fs/nilfs2/dat.c
-+++ b/fs/nilfs2/dat.c
-@@ -158,6 +158,7 @@ void nilfs_dat_commit_start(struct inode *dat, struct nilfs_palloc_req *req,
- int nilfs_dat_prepare_end(struct inode *dat, struct nilfs_palloc_req *req)
- {
- 	struct nilfs_dat_entry *entry;
-+	__u64 start;
- 	sector_t blocknr;
- 	void *kaddr;
- 	int ret;
-@@ -169,6 +170,7 @@ int nilfs_dat_prepare_end(struct inode *dat, struct nilfs_palloc_req *req)
- 	kaddr = kmap_atomic(req->pr_entry_bh->b_page);
- 	entry = nilfs_palloc_block_get_entry(dat, req->pr_entry_nr,
- 					     req->pr_entry_bh, kaddr);
-+	start = le64_to_cpu(entry->de_start);
- 	blocknr = le64_to_cpu(entry->de_blocknr);
- 	kunmap_atomic(kaddr);
+--- a/drivers/usb/host/xhci-mem.c
++++ b/drivers/usb/host/xhci-mem.c
+@@ -1877,7 +1877,7 @@ void xhci_mem_cleanup(struct xhci_hcd *x
  
-@@ -179,6 +181,15 @@ int nilfs_dat_prepare_end(struct inode *dat, struct nilfs_palloc_req *req)
- 			return ret;
- 		}
- 	}
-+	if (unlikely(start > nilfs_mdt_cno(dat))) {
-+		nilfs_err(dat->i_sb,
-+			  "vblocknr = %llu has abnormal lifetime: start cno (= %llu) > current cno (= %llu)",
-+			  (unsigned long long)req->pr_entry_nr,
-+			  (unsigned long long)start,
-+			  (unsigned long long)nilfs_mdt_cno(dat));
-+		nilfs_dat_abort_entry(dat, req);
-+		return -EINVAL;
-+	}
+ 	cancel_delayed_work_sync(&xhci->cmd_timer);
  
- 	return 0;
- }
--- 
-2.43.0
-
+-	for (i = 0; i < xhci->max_interrupters; i++) {
++	for (i = 0; xhci->interrupters && i < xhci->max_interrupters; i++) {
+ 		if (xhci->interrupters[i]) {
+ 			xhci_remove_interrupter(xhci, xhci->interrupters[i]);
+ 			xhci_free_interrupter(xhci, xhci->interrupters[i]);
 
 
 
