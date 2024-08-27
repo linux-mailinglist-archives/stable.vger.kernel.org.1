@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-70777-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ED7B960FFE
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:04:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8B4D960E67
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:48:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B56128255B
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:04:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 271081C232B9
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:48:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DFC61C6894;
-	Tue, 27 Aug 2024 15:03:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A6551C57B3;
+	Tue, 27 Aug 2024 14:48:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WAAxktot"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hjd5mRfA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD3581BA294;
-	Tue, 27 Aug 2024 15:03:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16EB6DDC1;
+	Tue, 27 Aug 2024 14:48:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771029; cv=none; b=kdgM4KO6B12YktUQB7VrXOMxiE9X9VbxTsHIKUSbGvj+ibhjYrDqmshqumFbOjyZOVQkWFzXRfMfU6E617xBI7IqKXDGqTJ2BtPKvyFS+Ft4rjRwczIBUSbbIQgCC6wZrmFuxWszjBfMrV5zbr6IR1encvqI540PffkzmZ/7lNA=
+	t=1724770100; cv=none; b=gGPAKZvASBAfIjR/GG6bBp4slVf1wgUyKOaaUIvNt6NxgGPZ3jYuwRBBKF+Cn3TogpXr22uq0msB8ceNEL1UeKDF2UkWTBQuLiw6akFhcmVe+nqdjHF4mnU5oCjEB/PJ2XNDyqg9lQv36J01G1SqxcPZ35mBCGd1x5Xez42Hjec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771029; c=relaxed/simple;
-	bh=evqOJihfgod0AbXq4l1hjeqrYix0Tqepgu6+fVnC5i4=;
+	s=arc-20240116; t=1724770100; c=relaxed/simple;
+	bh=5JGCJNP9fyyO83Y1pU6IIdHu1LF1isQoUKT1v5buies=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Je81XVNT9HWzMO418vj/IHqS2Lc7+Pl53NoyUuqOUK+YRJSL1Hp5/kiIiIYqF/y2Y/SYz9Jd3QN7F/TLXXl70BhBFmfy6avl2QU2iTr7dw4qiTiB19zly7SCu7cuATMqvbZ5DxOoIfgsc4O1oOPPOoInRnTva0gsyeBYKVxOxVM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WAAxktot; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DCBAC6104C;
-	Tue, 27 Aug 2024 15:03:48 +0000 (UTC)
+	 MIME-Version; b=GrGYjwePXj3i8FBod06cqDiOv40t9QcGdMKfbWTPI2gnYs1Rbq16JgUFT2+4gC+Ri8Wmz3MyPL9/B7pX5WOF/wN3vHQ1TtMOCMeVnhdETE27AZl8LtjYZEO0F5GKgqqL9ZQpiFCej8dWPiMkjJmMZFSzwpW6z0w8FEoNgnoLdTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hjd5mRfA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 941FCC61047;
+	Tue, 27 Aug 2024 14:48:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771028;
-	bh=evqOJihfgod0AbXq4l1hjeqrYix0Tqepgu6+fVnC5i4=;
+	s=korg; t=1724770100;
+	bh=5JGCJNP9fyyO83Y1pU6IIdHu1LF1isQoUKT1v5buies=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WAAxktotU0JICUM5pFufuDdwVCEeArw0QyU4Szg2URkMyhPLJQoae40bl/hH2kmHt
-	 gDlPIYkjL184P2O18E0U6TQE9YGlZ1D+wTRZW+c/Tm4flvwzGdT1UN9ICFH4J3X2eE
-	 R1yPKkv7Irtyg9cVJ2l6QT9/6LLoLt4W81pRNacI=
+	b=hjd5mRfA2IOkNPI0Tx0Q9xsc0pHXgojgTnGhHttkvWtFIzzqZ9g0mXwQa+AToql0H
+	 ETtp7a5VsFO4gGoRVCMzQ6bqpGPQKau3W4GaMLW6l3Q44J5XKKuliUM/HDMitO+pPv
+	 4FYkvp6HvQOteHwjbhN3dQEJUSVypRbHINRFlKwg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Khazhismel Kumykov <khazhy@google.com>
-Subject: [PATCH 6.10 034/273] dm resume: dont return EINVAL when signalled
-Date: Tue, 27 Aug 2024 16:35:58 +0200
-Message-ID: <20240827143834.694310165@linuxfoundation.org>
+	Mukesh Sisodiya <mukesh.sisodiya@intel.com>,
+	Gregory Greenman <gregory.greenman@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 128/341] wifi: iwlwifi: fw: Fix debugfs command sending
+Date: Tue, 27 Aug 2024 16:35:59 +0200
+Message-ID: <20240827143848.287146671@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Khazhismel Kumykov <khazhy@google.com>
+From: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
 
-commit 7a636b4f03af9d541205f69e373672e7b2b60a8a upstream.
+[ Upstream commit 048449fc666d736a1a17d950fde0b5c5c8fd10cc ]
 
-If the dm_resume method is called on a device that is not suspended, the
-method will suspend the device briefly, before resuming it (so that the
-table will be swapped).
+During debugfs command handling transport function is used directly,
+this bypasses the locking used by runtime operation function
+and leads to a kernel warning when two commands are
+sent in parallel.
 
-However, there was a bug that the return value of dm_suspended_md was not
-checked. dm_suspended_md may return an error when it is interrupted by a
-signal. In this case, do_resume would call dm_swap_table, which would
-return -EINVAL.
+Fix it by using runtime operations function when sending
+debugfs command.
 
-This commit fixes the logic, so that error returned by dm_suspend is
-checked and the resume operation is undone.
-
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Signed-off-by: Khazhismel Kumykov <khazhy@google.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+Link: https://lore.kernel.org/r/20231004123422.4f80ac90658a.Ia1dfa1195c919f3002fe08db3eefbd2bfa921bbf@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-ioctl.c |   22 ++++++++++++++++++++--
- 1 file changed, 20 insertions(+), 2 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/fw/debugfs.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/md/dm-ioctl.c
-+++ b/drivers/md/dm-ioctl.c
-@@ -1181,8 +1181,26 @@ static int do_resume(struct dm_ioctl *pa
- 			suspend_flags &= ~DM_SUSPEND_LOCKFS_FLAG;
- 		if (param->flags & DM_NOFLUSH_FLAG)
- 			suspend_flags |= DM_SUSPEND_NOFLUSH_FLAG;
--		if (!dm_suspended_md(md))
--			dm_suspend(md, suspend_flags);
-+		if (!dm_suspended_md(md)) {
-+			r = dm_suspend(md, suspend_flags);
-+			if (r) {
-+				down_write(&_hash_lock);
-+				hc = dm_get_mdptr(md);
-+				if (hc && !hc->new_map) {
-+					hc->new_map = new_map;
-+					new_map = NULL;
-+				} else {
-+					r = -ENXIO;
-+				}
-+				up_write(&_hash_lock);
-+				if (new_map) {
-+					dm_sync_table(md);
-+					dm_table_destroy(new_map);
-+				}
-+				dm_put(md);
-+				return r;
-+			}
-+		}
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c b/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
+index 3cdbc6ac7ae5d..3356e36e2af73 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
+@@ -141,7 +141,11 @@ static int iwl_dbgfs_enabled_severities_write(struct iwl_fw_runtime *fwrt,
  
- 		old_size = dm_get_size(md);
- 		old_map = dm_swap_table(md, new_map);
+ 	event_cfg.enabled_severities = cpu_to_le32(enabled_severities);
+ 
+-	ret = iwl_trans_send_cmd(fwrt->trans, &hcmd);
++	if (fwrt->ops && fwrt->ops->send_hcmd)
++		ret = fwrt->ops->send_hcmd(fwrt->ops_ctx, &hcmd);
++	else
++		ret = -EPERM;
++
+ 	IWL_INFO(fwrt,
+ 		 "sent host event cfg with enabled_severities: %u, ret: %d\n",
+ 		 enabled_severities, ret);
+-- 
+2.43.0
+
 
 
 
