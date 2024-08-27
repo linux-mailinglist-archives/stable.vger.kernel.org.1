@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-70830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70579-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 866D896103C
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:06:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CD94960EDF
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:53:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA5F31C2341C
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:06:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B61EA1C233E7
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:53:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B8311C4603;
-	Tue, 27 Aug 2024 15:06:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75E271C6894;
+	Tue, 27 Aug 2024 14:52:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gQOx6Zxt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="frR3xl2K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD31A1C2DB1;
-	Tue, 27 Aug 2024 15:06:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31A9B1C57BF;
+	Tue, 27 Aug 2024 14:52:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771200; cv=none; b=SaH32mk4C9Pv7KT0lej8ORyCXpvw76r00uSjTmRWh+y+PYNhdiQQcFaTK4j1Pd+jHXioHaZ/VlZ4Kc3IaR43nDyXGUyrGQG9fpaTX/SxJc/QdIWZ4vxaGeLEL/Lt+Z79vzRLh0TOcNyqxUgJfePNqaIjMdzacj6sg1e41OUudiU=
+	t=1724770376; cv=none; b=sWgM89Of5rtUsMLpmcnvE9OHzEAh0N5sYFWl4ynqcpSvqMdXhVUk/ZDBc+p1IKQpwXai7Gr/MJ9B1/jmBDmHHP5fDMDAW3zPp6W8c8BoT6Vx1eeHSE8+vPSGAckSmvDjtjNPB4i6jkIqVOM5Y5yv4kNo6AovR9MuOPG37DXzX64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771200; c=relaxed/simple;
-	bh=h0/PHHKvj5wF08rH/AQKjzSBQwPKdknOhnwAOvtAPXM=;
+	s=arc-20240116; t=1724770376; c=relaxed/simple;
+	bh=6WTD6ODEuyYfrYcSP6FWBw013N/ua5sgminz1eyBLIU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ttcxXGG6F5iEnitN2G41nzLsJCqGZqSyolo3ifz7eRQ99gC6GWhqryaQ2UvLjG+RZr4kGLe61/Q2lcEToaJrhp1qF5ZkzkW5CKP+Vgiy6W44kE9Vyr54cbAKFzH7TRnt8jtkUtClquqUIju6h897ywxMqiLM00hRURg9v/ZkcZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gQOx6Zxt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D813C6107C;
-	Tue, 27 Aug 2024 15:06:40 +0000 (UTC)
+	 MIME-Version; b=MVq15kgpUccT5LnP57YlvzZNYmzBo3C/2Xh2p8MhTf3M3xjAGWZ/RnvALR/ri0sfDpvXXFlAhbVZ+eC90s7jZsI3O5zqa9nEnqqbMLnifFU5gujeYgDdd5n3EnSAAKGXfEV4bRgOZNfDEIs7akK88NsAC6SusUl9JEpT9i9H2jo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=frR3xl2K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93FC7C61049;
+	Tue, 27 Aug 2024 14:52:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771200;
-	bh=h0/PHHKvj5wF08rH/AQKjzSBQwPKdknOhnwAOvtAPXM=;
+	s=korg; t=1724770376;
+	bh=6WTD6ODEuyYfrYcSP6FWBw013N/ua5sgminz1eyBLIU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gQOx6ZxtWTWIoG/r+pPfmp6PDfrZmW/nUiz2U5VJmXhFJeEkK9R4EzhQPgPoyT/vh
-	 nwCmbJpZNHwM3fIFp6acou070EXT292Is67hl0f5fF9G3mjJRZd7zaRKysIFAZKFrL
-	 FGH/QE4CCS9grGsSzJ7auUTHlGPv1TEhaLxJmSj0=
+	b=frR3xl2KtfcH75771F5VLIn4GYWsdCNa5ThMV64kuDZW5ORZBNA9vx+F4Nxtf5i+M
+	 mgj3v8/F5yoURI8Kt2oMlFmgPWkB8tp4+YP/1xI142zAQPp3vLPIjhZ1n8fpPb/SQw
+	 u1zlHJ+nwofuQNdekdFPihlaAXHYcnExRpdaAt+Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>,
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 117/273] kbuild: remove PROVIDE() for kallsyms symbols
+Subject: [PATCH 6.6 210/341] ext4: set the type of max_zeroout to unsigned int to avoid overflow
 Date: Tue, 27 Aug 2024 16:37:21 +0200
-Message-ID: <20240827143837.861072853@linuxfoundation.org>
+Message-ID: <20240827143851.404221587@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,146 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit c442db3f49f27e5a60a641b2ac9a3c6320796ed6 ]
+[ Upstream commit 261341a932d9244cbcd372a3659428c8723e5a49 ]
 
-This reimplements commit 951bcae6c5a0 ("kallsyms: Avoid weak references
-for kallsyms symbols") because I am not a big fan of PROVIDE().
+The max_zeroout is of type int and the s_extent_max_zeroout_kb is of
+type uint, and the s_extent_max_zeroout_kb can be freely modified via
+the sysfs interface. When the block size is 1024, max_zeroout may
+overflow, so declare it as unsigned int to avoid overflow.
 
-As an alternative solution, this commit prepends one more kallsyms step.
-
-    KSYMS   .tmp_vmlinux.kallsyms0.S          # added
-    AS      .tmp_vmlinux.kallsyms0.o          # added
-    LD      .tmp_vmlinux.btf
-    BTF     .btf.vmlinux.bin.o
-    LD      .tmp_vmlinux.kallsyms1
-    NM      .tmp_vmlinux.kallsyms1.syms
-    KSYMS   .tmp_vmlinux.kallsyms1.S
-    AS      .tmp_vmlinux.kallsyms1.o
-    LD      .tmp_vmlinux.kallsyms2
-    NM      .tmp_vmlinux.kallsyms2.syms
-    KSYMS   .tmp_vmlinux.kallsyms2.S
-    AS      .tmp_vmlinux.kallsyms2.o
-    LD      vmlinux
-
-Step 0 takes /dev/null as input, and generates .tmp_vmlinux.kallsyms0.o,
-which has a valid kallsyms format with the empty symbol list, and can be
-linked to vmlinux. Since it is really small, the added compile-time cost
-is negligible.
-
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Reviewed-by: Nicolas Schier <nicolas@fjasle.eu>
-Stable-dep-of: 020925ce9299 ("kallsyms: Do not cleanup .llvm.<hash> suffix before sorting symbols")
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20240319113325.3110393-9-libaokun1@huawei.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/asm-generic/vmlinux.lds.h | 19 -------------------
- kernel/kallsyms_internal.h        |  5 -----
- scripts/kallsyms.c                |  6 ------
- scripts/link-vmlinux.sh           |  9 +++++++--
- 4 files changed, 7 insertions(+), 32 deletions(-)
+ fs/ext4/extents.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/include/asm-generic/vmlinux.lds.h b/include/asm-generic/vmlinux.lds.h
-index 70bf1004076b2..f00a8e18f389f 100644
---- a/include/asm-generic/vmlinux.lds.h
-+++ b/include/asm-generic/vmlinux.lds.h
-@@ -451,30 +451,11 @@
- #endif
- #endif
+diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
+index d393df22431a0..448e0ea49b31d 100644
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -3402,9 +3402,10 @@ static int ext4_ext_convert_to_initialized(handle_t *handle,
+ 	struct ext4_extent *ex, *abut_ex;
+ 	ext4_lblk_t ee_block, eof_block;
+ 	unsigned int ee_len, depth, map_len = map->m_len;
+-	int allocated = 0, max_zeroout = 0;
+ 	int err = 0;
+ 	int split_flag = EXT4_EXT_DATA_VALID2;
++	int allocated = 0;
++	unsigned int max_zeroout = 0;
  
--/*
-- * Some symbol definitions will not exist yet during the first pass of the
-- * link, but are guaranteed to exist in the final link. Provide preliminary
-- * definitions that will be superseded in the final link to avoid having to
-- * rely on weak external linkage, which requires a GOT when used in position
-- * independent code.
-- */
--#define PRELIMINARY_SYMBOL_DEFINITIONS					\
--	PROVIDE(kallsyms_addresses = .);				\
--	PROVIDE(kallsyms_offsets = .);					\
--	PROVIDE(kallsyms_names = .);					\
--	PROVIDE(kallsyms_num_syms = .);					\
--	PROVIDE(kallsyms_relative_base = .);				\
--	PROVIDE(kallsyms_token_table = .);				\
--	PROVIDE(kallsyms_token_index = .);				\
--	PROVIDE(kallsyms_markers = .);					\
--	PROVIDE(kallsyms_seqs_of_names = .);
--
- /*
-  * Read only Data
-  */
- #define RO_DATA(align)							\
- 	. = ALIGN((align));						\
--	PRELIMINARY_SYMBOL_DEFINITIONS					\
- 	.rodata           : AT(ADDR(.rodata) - LOAD_OFFSET) {		\
- 		__start_rodata = .;					\
- 		*(.rodata) *(.rodata.*)					\
-diff --git a/kernel/kallsyms_internal.h b/kernel/kallsyms_internal.h
-index 85480274fc8fb..925f2ab22639a 100644
---- a/kernel/kallsyms_internal.h
-+++ b/kernel/kallsyms_internal.h
-@@ -4,11 +4,6 @@
- 
- #include <linux/types.h>
- 
--/*
-- * These will be re-linked against their real values during the second link
-- * stage. Preliminary values must be provided in the linker script using the
-- * PROVIDE() directive so that the first link stage can complete successfully.
-- */
- extern const unsigned long kallsyms_addresses[];
- extern const int kallsyms_offsets[];
- extern const u8 kallsyms_names[];
-diff --git a/scripts/kallsyms.c b/scripts/kallsyms.c
-index 47978efe4797c..fa53b5eef5530 100644
---- a/scripts/kallsyms.c
-+++ b/scripts/kallsyms.c
-@@ -259,12 +259,6 @@ static void shrink_table(void)
- 		}
- 	}
- 	table_cnt = pos;
--
--	/* When valid symbol is not registered, exit to error */
--	if (!table_cnt) {
--		fprintf(stderr, "No valid symbol.\n");
--		exit(1);
--	}
- }
- 
- static void read_map(const char *in)
-diff --git a/scripts/link-vmlinux.sh b/scripts/link-vmlinux.sh
-index 3d9d7257143a0..83d605ba7241a 100755
---- a/scripts/link-vmlinux.sh
-+++ b/scripts/link-vmlinux.sh
-@@ -227,6 +227,10 @@ btf_vmlinux_bin_o=
- kallsymso=
- strip_debug=
- 
-+if is_enabled CONFIG_KALLSYMS; then
-+	kallsyms /dev/null .tmp_vmlinux.kallsyms0
-+fi
-+
- if is_enabled CONFIG_DEBUG_INFO_BTF; then
- 	if ! gen_btf .tmp_vmlinux.btf .btf.vmlinux.bin.o ; then
- 		echo >&2 "Failed to generate BTF for vmlinux"
-@@ -239,9 +243,10 @@ if is_enabled CONFIG_KALLSYMS; then
- 
- 	# kallsyms support
- 	# Generate section listing all symbols and add it into vmlinux
--	# It's a three step process:
-+	# It's a four step process:
-+	# 0)  Generate a dummy __kallsyms with empty symbol list.
- 	# 1)  Link .tmp_vmlinux.kallsyms1 so it has all symbols and sections,
--	#     but __kallsyms is empty.
-+	#     with a dummy __kallsyms.
- 	#     Running kallsyms on that gives us .tmp_kallsyms1.o with
- 	#     the right size
- 	# 2)  Link .tmp_vmlinux.kallsyms2 so it now has a __kallsyms section of
+ 	ext_debug(inode, "logical block %llu, max_blocks %u\n",
+ 		  (unsigned long long)map->m_lblk, map_len);
 -- 
 2.43.0
 
