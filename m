@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-70531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70814-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C840F960E9A
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:50:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A4C596102B
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:06:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71E171F244DA
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:50:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F18D51F23AFB
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:06:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D0381BFE06;
-	Tue, 27 Aug 2024 14:50:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C21751C578E;
+	Tue, 27 Aug 2024 15:05:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nukhPI0x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m8qKoQDg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C57344C8C;
-	Tue, 27 Aug 2024 14:50:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8033573466;
+	Tue, 27 Aug 2024 15:05:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770218; cv=none; b=CnpEw/SecEF8FY8P/bdjWIUPLHB7w9Z9n8Z6czuKLgcgVrPxOuuYxEDIrBAk1GJy7SS/jziAtpgSAfN9/Gpa9Li6LWyNESOQe5sPsq70pdy4FgjJFrA5C34UOyAHktm6c5piz3qXLjc/kJrVVm6ErskYVAr2693gXFFBIRLmReU=
+	t=1724771149; cv=none; b=E6z/kFfNQdNRDQ6CZ2CXuobp7wBBJ9boXd4rEhpCbUwPgyLymwmWrQEarvdTPVgVjSoZwEzJpl2jFRrh6qPGwrLrM8KemNFfzmlwAvg8pY15MupcGd45WEH/o5JPmAYoR9rRDAUvj2s95zKDtPywjkgMoPaNmiXa0+TLIhD/Qs0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770218; c=relaxed/simple;
-	bh=09YV7xuHPPZXF2GUsAYeuKexKRXS6Jsr3sCmCEyt0hs=;
+	s=arc-20240116; t=1724771149; c=relaxed/simple;
+	bh=QkxtvJPzg2gZlok0EPU1QaTkk+fKA6rh5WkVAYxx01E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oVE4KViVcGQT2OPbqFY/NOkic1i8JY8GyldAqSyzlPhPX/L51eELEJ9N3qxA5nsU3CyvHYXEl68nuP8V6KOkcfMSe8nPouj7nfsgegxayYrmBQtq3yNPV0n/w7uDXtykD+y+4OG6HHpZeDVPQOS21cC08PyHTQfiDSfkObat6TM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nukhPI0x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94416C4DDEF;
-	Tue, 27 Aug 2024 14:50:17 +0000 (UTC)
+	 MIME-Version; b=UVn5xOnJUT8gIr+H0KLc2u2+ynaVyX9XmAfDD4n98KRE5SbltXdKh6TpnvWIfJXFn6P8hzVcGodS0zxcHmpvCu9CsQeHalpbXVbjKDUsHWNjgkiwP83W2GpR1L/vnm7VJvbDY2cCsU5rlRhwriiQNwHa/zsfy+dOW2kzVifvLqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m8qKoQDg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24357C6106C;
+	Tue, 27 Aug 2024 15:05:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770218;
-	bh=09YV7xuHPPZXF2GUsAYeuKexKRXS6Jsr3sCmCEyt0hs=;
+	s=korg; t=1724771149;
+	bh=QkxtvJPzg2gZlok0EPU1QaTkk+fKA6rh5WkVAYxx01E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nukhPI0xRo4f8xv+c/nc0DRIthLhbHux5bU+QlI+ynGp3T4HFIiZQ0ltLgkEFzcVZ
-	 8MgwaFUcTQO6zMSTYW8ZDO/nuDoOwPKamtiwuPaDekMVxqmxgX317+r4vG/iJxJFwT
-	 HdztUTWotJTlGcK9mkE6/gbGLBQquyNxdSz+llYk=
+	b=m8qKoQDgWKNbBATTQeKpaqjTrHoho6bV6IXCRvXhQ//tHdZNV0+d8uMhL2dfmBiOq
+	 lE05OUD1gcMoAyio5nuhYM4TXvojL4vUhWcZm9h3bkgvLoU1pYu6RKCAb73r1ujPdw
+	 zGAbIzFx7MEGaSqKQ2NzR/ZwU7/jFo6h8lXPoSmI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Max Filippov <jcmvbkbc@gmail.com>,
-	Kees Cook <keescook@chromium.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 163/341] fs: binfmt_elf_efpic: dont use missing interpreters properties
+	Roman Li <roman.li@amd.com>,
+	Hamza Mahfooz <hamza.mahfooz@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.10 070/273] drm/amd/display: fix s2idle entry for DCN3.5+
 Date: Tue, 27 Aug 2024 16:36:34 +0200
-Message-ID: <20240827143849.615922598@linuxfoundation.org>
+Message-ID: <20240827143836.079639947@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Max Filippov <jcmvbkbc@gmail.com>
+From: Hamza Mahfooz <hamza.mahfooz@amd.com>
 
-[ Upstream commit 15fd1dc3dadb4268207fa6797e753541aca09a2a ]
+commit f6098641d3e1e4d4052ff9378857c831f9675f6b upstream.
 
-Static FDPIC executable may get an executable stack even when it has
-non-executable GNU_STACK segment. This happens when STACK segment has rw
-permissions, but does not specify stack size. In that case FDPIC loader
-uses permissions of the interpreter's stack, and for static executables
-with no interpreter it results in choosing the arch-default permissions
-for the stack.
+To be able to get to the lowest power state when suspending systems with
+DCN3.5+, we must be in IPS before the display hardware is put into
+D3cold. So, to ensure that the system always reaches the lowest power
+state while suspending, force systems that support IPS to enter idle
+optimizations before entering D3cold.
 
-Fix that by using the interpreter's properties only when the interpreter
-is actually used.
-
-Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
-Link: https://lore.kernel.org/r/20240118150637.660461-1-jcmvbkbc@gmail.com
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Roman Li <roman.li@amd.com>
+Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 237193e21b29d4aa0617ffeea3d6f49e72999708)
+Cc: stable@vger.kernel.org # 6.10+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/binfmt_elf_fdpic.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/binfmt_elf_fdpic.c b/fs/binfmt_elf_fdpic.c
-index 206812ce544ae..96a8b13b57d96 100644
---- a/fs/binfmt_elf_fdpic.c
-+++ b/fs/binfmt_elf_fdpic.c
-@@ -320,7 +320,7 @@ static int load_elf_fdpic_binary(struct linux_binprm *bprm)
- 	else
- 		executable_stack = EXSTACK_DEFAULT;
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -2724,6 +2724,9 @@ static int dm_suspend(void *handle)
  
--	if (stack_size == 0) {
-+	if (stack_size == 0 && interp_params.flags & ELF_FDPIC_FLAG_PRESENT) {
- 		stack_size = interp_params.stack_size;
- 		if (interp_params.flags & ELF_FDPIC_FLAG_EXEC_STACK)
- 			executable_stack = EXSTACK_ENABLE_X;
--- 
-2.43.0
-
+ 	hpd_rx_irq_work_suspend(dm);
+ 
++	if (adev->dm.dc->caps.ips_support)
++		dc_allow_idle_optimizations(adev->dm.dc, true);
++
+ 	dc_set_power_state(dm->dc, DC_ACPI_CM_POWER_STATE_D3);
+ 	dc_dmub_srv_set_power_state(dm->dc->ctx->dmub_srv, DC_ACPI_CM_POWER_STATE_D3);
+ 
 
 
 
