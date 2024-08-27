@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-70597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71141-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE544960F04
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:55:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 688EC9611D9
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:24:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C83C2822C3
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:55:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E3621F2017A
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:24:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA1311C68B6;
-	Tue, 27 Aug 2024 14:53:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D80071C6F74;
+	Tue, 27 Aug 2024 15:23:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ijWe5gCq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SR6AdLYL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 682911A08A3;
-	Tue, 27 Aug 2024 14:53:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9259A1C4EDD;
+	Tue, 27 Aug 2024 15:23:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770436; cv=none; b=rzoyxRwRCHTLBW2cl0SFjl2XawzJmIubVUZVBUBpcSfA90QAJJPy3puGW8bkjg3PHd6mH8jirXLqnsFp72DmkQUZ1zZATI6bQSyxWvRmXanv0usLxmOyO0a5u9aCi6mcahbQlYWoMBSEbGKKo7JCl2Q2XLdObzkETuvBDwioQUo=
+	t=1724772234; cv=none; b=Bm3K/uxsFI1IXtga/cbXzGcvtAYZA2rfg9nhYYOpgz5Z6/qc4EtdzZUNsDhem8r+vj/RNvav3CZZjVK3NgXb1gShlOv8untrAhWi9IKvMDuf4CRzknVqfQkJTFrk3PbkNpl48emmCkvn5BZXyrnRtTzcXvdMp6cs6/Lr88qYo/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770436; c=relaxed/simple;
-	bh=ItnV7OVJnE/qSWuzkYFR40gQcYeJXoOfA56uWPTxtp8=;
+	s=arc-20240116; t=1724772234; c=relaxed/simple;
+	bh=BufUokUzJL7tfCNUas87FKUzcq67twwpvyKAqLdxrw0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LmJnklAffzhFLpR/u0rzOsXSqA329MKqwD9bufJDD/ErY/JbqkLycmqscOINpsb/ZEk05l+MM/YX/0C8eNy8Dtvawl1Kf6rVe1Zfu2LstBI13FGbdo69w23541+xMVS1zLv0W/Cg3rA89ZswDOk9umwJ/C0rCjhTtGNoXZdHPBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ijWe5gCq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAD1CC6106F;
-	Tue, 27 Aug 2024 14:53:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lbfl6udF6uSF+PPESgBXUEGpbPUu7wFPRP4XIST+Rtk2I5/U4ejsNW+0irnklD3h4xaCmijch42wMldCjCTfgRkl5hDrm2Ich+aeVgqyJczEruynVMZJR8lAfnmkWv77VXjEFfsnAl4T/lwPfxCS/BTtGtpw7sMbZ8TrMPyj2rI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SR6AdLYL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A719AC61062;
+	Tue, 27 Aug 2024 15:23:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770436;
-	bh=ItnV7OVJnE/qSWuzkYFR40gQcYeJXoOfA56uWPTxtp8=;
+	s=korg; t=1724772234;
+	bh=BufUokUzJL7tfCNUas87FKUzcq67twwpvyKAqLdxrw0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ijWe5gCqq4w2v7LKoQqSx293Lz2B5KXwbxWGFxuRvanHNpw8L7MTK0MeiOHohoKEW
-	 7Fy6ModrEIfeH/tz4LfeBBkguZWDItuc5pVTqHAqThLDIxIy5/IF76Lg3wJTdVA1BJ
-	 PLtlEeKKVG775DdcU99VCVPOYcnS/f8kUaG+6cC0=
+	b=SR6AdLYLY5uQ8X49z37pOLefApHussp5VZZ0u8rxmZjihkRxk9pA582QoMjzJIRMN
+	 wCT7w1uIWm3re/bZTXtTN7LUvsnFpT+ne6lqIv3jFlODwLbOEVBd7jVMBLiwa5iGwY
+	 UzIK0CkNNUNOyzeYtGQXE3Qkv1JTrIAZkZID+n4U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	James Bottomley <James.Bottomley@HansenPartnership.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 229/341] selftests: memfd_secret: dont build memfd_secret test on unsupported arches
-Date: Tue, 27 Aug 2024 16:37:40 +0200
-Message-ID: <20240827143852.125252731@linuxfoundation.org>
+Subject: [PATCH 6.1 153/321] ASoC: SOF: ipc4: check return value of snd_sof_ipc_msg_data
+Date: Tue, 27 Aug 2024 16:37:41 +0200
+Message-ID: <20240827143844.058764289@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,84 +62,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Muhammad Usama Anjum <usama.anjum@collabora.com>
+From: Bard Liao <yung-chuan.liao@linux.intel.com>
 
-[ Upstream commit 7c5e8d212d7d81991a580e7de3904ea213d9a852 ]
+[ Upstream commit 2bd512626f8ea3957c981cadd2ebf75feff737dd ]
 
-[1] mentions that memfd_secret is only supported on arm64, riscv, x86 and
-x86_64 for now.  It doesn't support other architectures.  I found the
-build error on arm and decided to send the fix as it was creating noise on
-KernelCI:
+snd_sof_ipc_msg_data could return error.
 
-memfd_secret.c: In function 'memfd_secret':
-memfd_secret.c:42:24: error: '__NR_memfd_secret' undeclared (first use in this function);
-did you mean 'memfd_secret'?
-   42 |         return syscall(__NR_memfd_secret, flags);
-      |                        ^~~~~~~~~~~~~~~~~
-      |                        memfd_secret
-
-Hence I'm adding condition that memfd_secret should only be compiled on
-supported architectures.
-
-Also check in run_vmtests script if memfd_secret binary is present before
-executing it.
-
-Link: https://lkml.kernel.org/r/20240812061522.1933054-1-usama.anjum@collabora.com
-Link: https://lore.kernel.org/all/20210518072034.31572-7-rppt@kernel.org/ [1]
-Link: https://lkml.kernel.org/r/20240809075642.403247-1-usama.anjum@collabora.com
-Fixes: 76fe17ef588a ("secretmem: test: add basic selftest for memfd_secret(2)")
-Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
-Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Cc: Albert Ou <aou@eecs.berkeley.edu>
-Cc: James Bottomley <James.Bottomley@HansenPartnership.com>
-Cc: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Link: https://lore.kernel.org/r/20231129122021.679-1-peter.ujfalusi@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/mm/Makefile       | 2 ++
- tools/testing/selftests/mm/run_vmtests.sh | 3 +++
- 2 files changed, 5 insertions(+)
+ sound/soc/sof/ipc4.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/mm/Makefile b/tools/testing/selftests/mm/Makefile
-index 8b2b9bb8bad10..c9fcbc6e5121e 100644
---- a/tools/testing/selftests/mm/Makefile
-+++ b/tools/testing/selftests/mm/Makefile
-@@ -51,7 +51,9 @@ TEST_GEN_FILES += madv_populate
- TEST_GEN_FILES += map_fixed_noreplace
- TEST_GEN_FILES += map_hugetlb
- TEST_GEN_FILES += map_populate
-+ifneq (,$(filter $(ARCH),arm64 riscv riscv64 x86 x86_64))
- TEST_GEN_FILES += memfd_secret
-+endif
- TEST_GEN_FILES += migration
- TEST_GEN_FILES += mkdirty
- TEST_GEN_FILES += mlock-random-test
-diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
-index 7fae86e482613..d7b2c9d07eec5 100755
---- a/tools/testing/selftests/mm/run_vmtests.sh
-+++ b/tools/testing/selftests/mm/run_vmtests.sh
-@@ -329,8 +329,11 @@ CATEGORY="hmm" run_test bash ./test_hmm.sh smoke
- # MADV_POPULATE_READ and MADV_POPULATE_WRITE tests
- CATEGORY="madv_populate" run_test ./madv_populate
+diff --git a/sound/soc/sof/ipc4.c b/sound/soc/sof/ipc4.c
+index 06e1872abfee7..1449837b0fb2c 100644
+--- a/sound/soc/sof/ipc4.c
++++ b/sound/soc/sof/ipc4.c
+@@ -616,7 +616,14 @@ static void sof_ipc4_rx_msg(struct snd_sof_dev *sdev)
+ 			return;
  
-+if [ -x ./memfd_secret ]
-+then
- (echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope 2>&1) | tap_prefix
- CATEGORY="memfd_secret" run_test ./memfd_secret
-+fi
+ 		ipc4_msg->data_size = data_size;
+-		snd_sof_ipc_msg_data(sdev, NULL, ipc4_msg->data_ptr, ipc4_msg->data_size);
++		err = snd_sof_ipc_msg_data(sdev, NULL, ipc4_msg->data_ptr, ipc4_msg->data_size);
++		if (err < 0) {
++			dev_err(sdev->dev, "failed to read IPC notification data: %d\n", err);
++			kfree(ipc4_msg->data_ptr);
++			ipc4_msg->data_ptr = NULL;
++			ipc4_msg->data_size = 0;
++			return;
++		}
+ 	}
  
- # KSM KSM_MERGE_TIME_HUGE_PAGES test with size of 100
- CATEGORY="ksm" run_test ./ksm_tests -H -s 100
+ 	sof_ipc4_log_header(sdev->dev, "ipc rx done ", ipc4_msg, true);
 -- 
 2.43.0
 
