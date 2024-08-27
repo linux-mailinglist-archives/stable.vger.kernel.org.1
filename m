@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-70661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70913-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C5CF960F65
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:59:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FCF59610A6
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:11:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 578C3286970
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:59:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AEE091F21A6D
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:11:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91DFE1C86F6;
-	Tue, 27 Aug 2024 14:57:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 423701C57AF;
+	Tue, 27 Aug 2024 15:11:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="arU3EZNo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bpgs0xGx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E3BC1E487;
-	Tue, 27 Aug 2024 14:57:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3EC01BA294;
+	Tue, 27 Aug 2024 15:11:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770650; cv=none; b=gTESZ/P5wtcrbnj5fNx/dgmmqBdiKypItjMvjQ4JkAakIrU9yMjcCOsdt6AtPsJiUbGXeglXegfadBouFeSdNtzO2cXLGGOioDULluCnn2TKC/SdxbKw/zY3UiHiilNZNKUZjERgV5P2Id6t3iSpzZB9smTpJJuAlClq2jZxxi4=
+	t=1724771480; cv=none; b=N7hr9/lmBqb69gWmQ2mREv4SDz3oM3ScJBUdwvtc+HnMFwKwjit9SfOdFik9VHdYL/oLD9FM5nkvFX/pYUsFbtkwiIAjP6Zw2T8jhACAY0FVaUfi6SmArSHmXT+cn5d5O7f/fQxKAgQEkK7SbtP7S4QGfZ2Seb3xPZj8z4GTkTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770650; c=relaxed/simple;
-	bh=zVeqEwykI/B0OvqHDlsCsQKe5Luo7bKVKe73+fpNXWo=;
+	s=arc-20240116; t=1724771480; c=relaxed/simple;
+	bh=HlxWOut96c5Cu+s2N7Ek8a6JpymZOmZxFdJO4p5OMb8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m3I6OF/eV7UIoA2Wz13DirDeT6OJ09ljMSB0gGVizisu7WwTBFIqYTMaL3Lgefs6T8nx/S8Skg7RC3/eBCtAAcR7G7xHDk6G5U4stossQgCzAhRF9RInxcPSmDqw4/S1waNVDL0G2+bZS+oE92XkRumcHN1B6svfDalJKSeaq34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=arU3EZNo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB760C61040;
-	Tue, 27 Aug 2024 14:57:29 +0000 (UTC)
+	 MIME-Version; b=GAEfwUCyx7s/bmRAvBY/1F6j8Va0TVXTLa+m70DNCFXFZDbe1euy9WrPTUPhVLKbfNinNkws0BUB1qXH8b+WEdOwVYlJ5qydzS7/akIRBeBtqtZueI9ISIaln/NjaiVHXYzqHAjp1viuHxEqBTe81C3VWHzJt83KfZtJBteZWlU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bpgs0xGx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F373C4DDED;
+	Tue, 27 Aug 2024 15:11:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770650;
-	bh=zVeqEwykI/B0OvqHDlsCsQKe5Luo7bKVKe73+fpNXWo=;
+	s=korg; t=1724771479;
+	bh=HlxWOut96c5Cu+s2N7Ek8a6JpymZOmZxFdJO4p5OMb8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=arU3EZNoNd2CQQrT4/zeLHeRieZu4e/Ys5pAip+8Ey+gIz+YXfeABaQzlMmjzLlTm
-	 XkWExXCqCHezobZ0DPbEtPOSRhK/gu7pJ+XUni+5F1dmWQzfgyA+f/5zAXVjNZ4HUV
-	 cV9mt/ch+GeeAKn8dAzIxeK3WJmLXrZU0XOXfOio=
+	b=bpgs0xGxLFF2htsZ0COlTglUVSAhMw9rLYZQUNJKyv7dnpZdMluRhYj7uFrcnuA0p
+	 lBYnM5ochn242a6FYkyuURldBr3iUQFN6nUSiF+75jC3rK7ZuLXkC66G8McwVWd0CN
+	 tc2uX+xqVV+PW8grIhOaYq+br3u3BA0So9YoYbd8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Capitulino <luizcap@redhat.com>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Chandan Kumar Rout <chandanx.rout@intel.com>
-Subject: [PATCH 6.6 261/341] ice: fix ICE_LAST_OFFSET formula
-Date: Tue, 27 Aug 2024 16:38:12 +0200
-Message-ID: <20240827143853.336647451@linuxfoundation.org>
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 169/273] bonding: fix null pointer deref in bond_ipsec_offload_ok
+Date: Tue, 27 Aug 2024 16:38:13 +0200
+Message-ID: <20240827143839.839769499@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,41 +64,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+From: Nikolay Aleksandrov <razor@blackwall.org>
 
-[ Upstream commit b966ad832942b5a11e002f9b5ef102b08425b84a ]
+[ Upstream commit 95c90e4ad89d493a7a14fa200082e466e2548f9d ]
 
-For bigger PAGE_SIZE archs, ice driver works on 3k Rx buffers.
-Therefore, ICE_LAST_OFFSET should take into account ICE_RXBUF_3072, not
-ICE_RXBUF_2048.
+We must check if there is an active slave before dereferencing the pointer.
 
-Fixes: 7237f5b0dba4 ("ice: introduce legacy Rx flag")
-Suggested-by: Luiz Capitulino <luizcap@redhat.com>
-Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Tested-by: Chandan Kumar Rout <chandanx.rout@intel.com> (A Contingent Worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: 18cb261afd7b ("bonding: support hardware encryption offload to slaves")
+Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
+Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_txrx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/bonding/bond_main.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_txrx.c b/drivers/net/ethernet/intel/ice/ice_txrx.c
-index 8e53195df2b1c..55faa8384bcfe 100644
---- a/drivers/net/ethernet/intel/ice/ice_txrx.c
-+++ b/drivers/net/ethernet/intel/ice/ice_txrx.c
-@@ -839,7 +839,7 @@ ice_can_reuse_rx_page(struct ice_rx_buf *rx_buf)
- 		return false;
- #if (PAGE_SIZE >= 8192)
- #define ICE_LAST_OFFSET \
--	(SKB_WITH_OVERHEAD(PAGE_SIZE) - ICE_RXBUF_2048)
-+	(SKB_WITH_OVERHEAD(PAGE_SIZE) - ICE_RXBUF_3072)
- 	if (rx_buf->page_offset > ICE_LAST_OFFSET)
- 		return false;
- #endif /* PAGE_SIZE >= 8192) */
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index 2370da4632149..55841a0e05a47 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -604,6 +604,8 @@ static bool bond_ipsec_offload_ok(struct sk_buff *skb, struct xfrm_state *xs)
+ 	bond = netdev_priv(bond_dev);
+ 	rcu_read_lock();
+ 	curr_active = rcu_dereference(bond->curr_active_slave);
++	if (!curr_active)
++		goto out;
+ 	real_dev = curr_active->dev;
+ 
+ 	if (BOND_MODE(bond) != BOND_MODE_ACTIVEBACKUP)
 -- 
 2.43.0
 
