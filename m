@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-71149-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70858-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3331B9611E4
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:25:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F179961062
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:08:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 653EA1C237BF
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:25:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3CD9EB21A70
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:08:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 781D31C6893;
-	Tue, 27 Aug 2024 15:24:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 915BE1C4EE8;
+	Tue, 27 Aug 2024 15:08:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C5KsCf7X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="prbO6xoW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3598E1C3F17;
-	Tue, 27 Aug 2024 15:24:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F17D1C4603;
+	Tue, 27 Aug 2024 15:08:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772261; cv=none; b=f0UWACK2n1mDDe/3Z1nEbQKoJMqFgRWe/b2HVSreqSuoZ6BiRVv9SHA/8ucaSqrF90OOYWXwDWpnSf7VZhTMpP8KtHff13Y0N/MPEJsSyuegrZI4BWuQ4BdaA/kv8ZkzfQS8JeeBM75qtn9YCFi0f1wNLELNJbZg6PMzlIGpxW8=
+	t=1724771295; cv=none; b=u3jPQ9mPELPAI09khe2FEeE+lETBGo6FfpoQtV2ToIrnYw3ATkIiITZlRKH5IMIGqYEKZNRGEilsy88gh9Sy5LOytwyygZfavQuzu3D9vdzNDCYFNa8oHYEoV1TeLrbkZpwKmYGytrIMS3mGpaSwI6+i8YS+2jMARtVfYrlWYHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772261; c=relaxed/simple;
-	bh=+80s9FWsOsH8/UJemULJ7cV55rNNvSfXnKxwZ3ENxp4=;
+	s=arc-20240116; t=1724771295; c=relaxed/simple;
+	bh=F19FFBHTh7tmfUyS02H/rehiHi0pEA6/vuUm5pSV1FU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VkKkioWkUbKYGCtnRCT3ABMn/v/5J68XDyzP946osRHcNCvFfbLteroRvO2SWyBJLy03v2kuZilTC6BQ87Qfax2Lyx/InLUanYP7WIqn5p5caG+fjuV/qkiUxyP3j7hWQAF7bHs/awWReLZTsr33/6JJ3VXanBFSdoXTPgpl17Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C5KsCf7X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95E0CC61069;
-	Tue, 27 Aug 2024 15:24:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Tj534CPbbIThuSPfS8tQ3SIDFH7wzGxjcexNvT9uxIkTb6K4/gn8tpUnSMyNpEPzUqGb5I6tcOM6vvbomSmEUqP4nTKPYmbckWJ50b/7u2lD9ProSEOevvKXy4zafOrT4iH21A7uu+Zc2SJNawFXinYcPwf+TcGu5BM6/O/611g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=prbO6xoW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCF1BC61074;
+	Tue, 27 Aug 2024 15:08:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772261;
-	bh=+80s9FWsOsH8/UJemULJ7cV55rNNvSfXnKxwZ3ENxp4=;
+	s=korg; t=1724771295;
+	bh=F19FFBHTh7tmfUyS02H/rehiHi0pEA6/vuUm5pSV1FU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C5KsCf7X2KVpNkRSbyYT4TLDGQ0OsmQpfeUuKLE+sS0kvdw4GxSdf8drpq+Iujnxy
-	 9nePhGUJFfzacvODb5rk+PZpx9v4VSxGeCg3+eOWzj6lrJX3dAIQukJiv+W9rQkp7x
-	 qOBbfulbBbp9cA2dSE4YZXqZBFlSr9t1zSXFkpto=
+	b=prbO6xoWOHC2m0vqBME2HpKMA4G6rogL470FmGe2gAkuS6LV6dDI7sltphLBnR+9h
+	 k/FR7jz7nBPHID8zyC9+OB5NAjP3Qmxz6rhnrEkP4fCd+vczyofj1PSaWiyxbqS7/r
+	 fsNjH2VIc8Qda3yEBVb46nNYQ/QlPdsaBZpMhM6c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
+	Maximilian Luz <luzmaximilian@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 161/321] fuse: fix UAF in rcu pathwalks
-Date: Tue, 27 Aug 2024 16:37:49 +0200
-Message-ID: <20240827143844.359694392@linuxfoundation.org>
+Subject: [PATCH 6.10 146/273] platform/surface: aggregator: Fix warning when controller is destroyed in probe
+Date: Tue, 27 Aug 2024 16:37:50 +0200
+Message-ID: <20240827143838.962507217@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,109 +60,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Maximilian Luz <luzmaximilian@gmail.com>
 
-[ Upstream commit 053fc4f755ad43cf35210677bcba798ccdc48d0c ]
+[ Upstream commit bc923d594db21bee0ead128eb4bb78f7e77467a4 ]
 
-->permission(), ->get_link() and ->inode_get_acl() might dereference
-->s_fs_info (and, in case of ->permission(), ->s_fs_info->fc->user_ns
-as well) when called from rcu pathwalk.
+There is a small window in ssam_serial_hub_probe() where the controller
+is initialized but has not been started yet. Specifically, between
+ssam_controller_init() and ssam_controller_start(). Any failure in this
+window, for example caused by a failure of serdev_device_open(),
+currently results in an incorrect warning being emitted.
 
-Freeing ->s_fs_info->fc is rcu-delayed; we need to make freeing ->s_fs_info
-and dropping ->user_ns rcu-delayed too.
+In particular, any failure in this window results in the controller
+being destroyed via ssam_controller_destroy(). This function checks the
+state of the controller and, in an attempt to validate that the
+controller has been cleanly shut down before we try and deallocate any
+resources, emits a warning if that state is not SSAM_CONTROLLER_STOPPED.
 
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+However, since we have only just initialized the controller and have not
+yet started it, its state is SSAM_CONTROLLER_INITIALIZED. Note that this
+is the only point at which the controller has this state, as it will
+change after we start the controller with ssam_controller_start() and
+never revert back. Further, at this point no communication has taken
+place and the sender and receiver threads have not been started yet (and
+we may not even have an open serdev device either).
+
+Therefore, it is perfectly safe to call ssam_controller_destroy() with a
+state of SSAM_CONTROLLER_INITIALIZED. This, however, means that the
+warning currently being emitted is incorrect. Fix it by extending the
+check.
+
+Fixes: c167b9c7e3d6 ("platform/surface: Add Surface Aggregator subsystem")
+Signed-off-by: Maximilian Luz <luzmaximilian@gmail.com>
+Link: https://lore.kernel.org/r/20240811124645.246016-1-luzmaximilian@gmail.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fuse/cuse.c   |  3 +--
- fs/fuse/fuse_i.h |  1 +
- fs/fuse/inode.c  | 15 +++++++++++----
- 3 files changed, 13 insertions(+), 6 deletions(-)
+ drivers/platform/surface/aggregator/controller.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/fuse/cuse.c b/fs/fuse/cuse.c
-index c7d882a9fe339..295344a462e1d 100644
---- a/fs/fuse/cuse.c
-+++ b/fs/fuse/cuse.c
-@@ -474,8 +474,7 @@ static int cuse_send_init(struct cuse_conn *cc)
+diff --git a/drivers/platform/surface/aggregator/controller.c b/drivers/platform/surface/aggregator/controller.c
+index 7fc602e01487d..7e89f547999b2 100644
+--- a/drivers/platform/surface/aggregator/controller.c
++++ b/drivers/platform/surface/aggregator/controller.c
+@@ -1354,7 +1354,8 @@ void ssam_controller_destroy(struct ssam_controller *ctrl)
+ 	if (ctrl->state == SSAM_CONTROLLER_UNINITIALIZED)
+ 		return;
  
- static void cuse_fc_release(struct fuse_conn *fc)
- {
--	struct cuse_conn *cc = fc_to_cc(fc);
--	kfree_rcu(cc, fc.rcu);
-+	kfree(fc_to_cc(fc));
- }
+-	WARN_ON(ctrl->state != SSAM_CONTROLLER_STOPPED);
++	WARN_ON(ctrl->state != SSAM_CONTROLLER_STOPPED &&
++		ctrl->state != SSAM_CONTROLLER_INITIALIZED);
  
- /**
-diff --git a/fs/fuse/fuse_i.h b/fs/fuse/fuse_i.h
-index 253b9b78d6f13..66c2a99994683 100644
---- a/fs/fuse/fuse_i.h
-+++ b/fs/fuse/fuse_i.h
-@@ -872,6 +872,7 @@ struct fuse_mount {
- 
- 	/* Entry on fc->mounts */
- 	struct list_head fc_entry;
-+	struct rcu_head rcu;
- };
- 
- static inline struct fuse_mount *get_fuse_mount_super(struct super_block *sb)
-diff --git a/fs/fuse/inode.c b/fs/fuse/inode.c
-index f19bdd7cbd779..64618548835b4 100644
---- a/fs/fuse/inode.c
-+++ b/fs/fuse/inode.c
-@@ -925,6 +925,14 @@ void fuse_conn_init(struct fuse_conn *fc, struct fuse_mount *fm,
- }
- EXPORT_SYMBOL_GPL(fuse_conn_init);
- 
-+static void delayed_release(struct rcu_head *p)
-+{
-+	struct fuse_conn *fc = container_of(p, struct fuse_conn, rcu);
-+
-+	put_user_ns(fc->user_ns);
-+	fc->release(fc);
-+}
-+
- void fuse_conn_put(struct fuse_conn *fc)
- {
- 	if (refcount_dec_and_test(&fc->count)) {
-@@ -936,13 +944,12 @@ void fuse_conn_put(struct fuse_conn *fc)
- 		if (fiq->ops->release)
- 			fiq->ops->release(fiq);
- 		put_pid_ns(fc->pid_ns);
--		put_user_ns(fc->user_ns);
- 		bucket = rcu_dereference_protected(fc->curr_bucket, 1);
- 		if (bucket) {
- 			WARN_ON(atomic_read(&bucket->count) != 1);
- 			kfree(bucket);
- 		}
--		fc->release(fc);
-+		call_rcu(&fc->rcu, delayed_release);
- 	}
- }
- EXPORT_SYMBOL_GPL(fuse_conn_put);
-@@ -1356,7 +1363,7 @@ EXPORT_SYMBOL_GPL(fuse_send_init);
- void fuse_free_conn(struct fuse_conn *fc)
- {
- 	WARN_ON(!list_empty(&fc->devices));
--	kfree_rcu(fc, rcu);
-+	kfree(fc);
- }
- EXPORT_SYMBOL_GPL(fuse_free_conn);
- 
-@@ -1895,7 +1902,7 @@ static void fuse_sb_destroy(struct super_block *sb)
- void fuse_mount_destroy(struct fuse_mount *fm)
- {
- 	fuse_conn_put(fm->fc);
--	kfree(fm);
-+	kfree_rcu(fm, rcu);
- }
- EXPORT_SYMBOL(fuse_mount_destroy);
- 
+ 	/*
+ 	 * Note: New events could still have been received after the previous
 -- 
 2.43.0
 
