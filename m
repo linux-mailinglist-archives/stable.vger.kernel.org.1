@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-70972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71296-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F5ED9610F6
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:15:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59FCF9612B8
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:34:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C44B21C23627
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:15:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F40CF1F20EFC
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:34:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C02131C6F47;
-	Tue, 27 Aug 2024 15:14:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AB8C1C6F49;
+	Tue, 27 Aug 2024 15:32:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qT9Bijkq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mDssdvqi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DA791C688E;
-	Tue, 27 Aug 2024 15:14:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5862054648;
+	Tue, 27 Aug 2024 15:32:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771674; cv=none; b=XwMn/KlYl9KBM1emKPPnYjr3o6vHKxTxQpvJLwWezw1Bf80HI9Y+zZqpaeVY1c8S5ED8evUVP70Nzn0hxwt8n/WWg3/FNRliaRWyFRYbKIzL84l8ywlX/ocpDNEP9+AnKcm4wM7afUYmT3sKyNMimqQMMjNgA8/fbvgWhv3bwqY=
+	t=1724772745; cv=none; b=llkVGnP/zZ5pasNCCJRCgbIjN5v7rNtqWo5mnvmxxiDEPvduRIeMnPeb0JL2VStzCv7mKuB2mxvNjTJk5YKZrVglAdbcjIwMMPQktD4yevn4Ir+2HOQEpOTfp39tKA/1ZE+lFSEsknoGDcxwiu82DCE3zj1dkNTz+u9WTTbmPCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771674; c=relaxed/simple;
-	bh=SF82Ry0FqO0+31RAUAGzQB9G90ExcBNmgwx7VpB+3VI=;
+	s=arc-20240116; t=1724772745; c=relaxed/simple;
+	bh=Eo6uCYLw400DjkWQNLNJZFw4MJu/ABGgftC6a2OlMj8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ueFb0paSuqer+uJQxWm+uSVKOltSAx50NoUkzSrtQSC2Dq3dNJ75MIhT1ys5gA3eL+tY7NS95Gr5LZXNVADIO9tDlT7/1qv17BPZHtUXhr+QoEKK0UAVFfMrVuspng5CT8OXJ83o5qyl9e1B/lf+uva2VvnFPwQ+g6pE5K+98xM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qT9Bijkq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AB1CC61064;
-	Tue, 27 Aug 2024 15:14:32 +0000 (UTC)
+	 MIME-Version; b=GN4SsIl51+rJm7bjHPgGmgEcZseYQUquJWGdvEwYDwhsKfaxKtXVpGTgDqKutjBROmQxMvaa32ZcgE2et5bhHa0rdNf/XLkO/+pFH5K/blQqndZdRDuWhyyPZVYA3PKFT4oRX4FXntr/N93ZsDmo4f+TE+GcCqw6rjX6sdrr1Gs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mDssdvqi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAECAC61041;
+	Tue, 27 Aug 2024 15:32:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771673;
-	bh=SF82Ry0FqO0+31RAUAGzQB9G90ExcBNmgwx7VpB+3VI=;
+	s=korg; t=1724772745;
+	bh=Eo6uCYLw400DjkWQNLNJZFw4MJu/ABGgftC6a2OlMj8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qT9BijkqWm7bogzcdCtZML6fraWFDhv7iOqMDYgM1H+ltkCpm5IjabBNAPm+i2lNa
-	 hq4oOJ0JpjACS7/1HiavJIF6FBYTLK1ZtRsRza/Vk/5P1V085mhbrHStSbvyV7U4gw
-	 1mx3/GsmQYHbk/bTYxD5Ry5ply9nyg1+lFKTZiZc=
+	b=mDssdvqiGxlWenHNJ/WwWEO0RAOh+4lji8e/mhnaOQVqSMacVO82kVtewwTDL6PRR
+	 FtDa2f1gAsnROhsxL3K/+yl1C2dJhAZmPuy8GETLPmuXUV1r5Jwe7wobAqZynikxuC
+	 qfPMk8wKTQCXy+jHLQIfArJiKyzsvf8QcZ5F56NU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.10 259/273] mptcp: pm: only mark subflow endp as available
+	Jacky Bai <ping.bai@nxp.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.1 275/321] pmdomain: imx: wait SSAR when i.MX93 power domain on
 Date: Tue, 27 Aug 2024 16:39:43 +0200
-Message-ID: <20240827143843.255429186@linuxfoundation.org>
+Message-ID: <20240827143848.720547229@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,119 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Peng Fan <peng.fan@nxp.com>
 
-commit 322ea3778965da72862cca2a0c50253aacf65fe6 upstream.
+commit 52dd070c62e4ae2b5e7411b920e3f7a64235ecfb upstream.
 
-Adding the following warning ...
+With "quiet" set in bootargs, there is power domain failure:
+"imx93_power_domain 44462400.power-domain: pd_off timeout: name:
+ 44462400.power-domain, stat: 4"
 
-  WARN_ON_ONCE(msk->pm.local_addr_used == 0)
+The current power on opertation takes ISO state as power on finished
+flag, but it is wrong. Before powering on operation really finishes,
+powering off comes and powering off will never finish because the last
+powering on still not finishes, so the following powering off actually
+not trigger hardware state machine to run. SSAR is the last step when
+powering on a domain, so need to wait SSAR done when powering on.
 
-... before decrementing the local_addr_used counter helped to find a bug
-when running the "remove single address" subtest from the mptcp_join.sh
-selftests.
+Since EdgeLock Enclave(ELE) handshake is involved in the flow, enlarge
+the waiting time to 10ms for both on and off to avoid timeout.
 
-Removing a 'signal' endpoint will trigger the removal of all subflows
-linked to this endpoint via mptcp_pm_nl_rm_addr_or_subflow() with
-rm_type == MPTCP_MIB_RMSUBFLOW. This will decrement the local_addr_used
-counter, which is wrong in this case because this counter is linked to
-'subflow' endpoints, and here it is a 'signal' endpoint that is being
-removed.
-
-Now, the counter is decremented, only if the ID is being used outside
-of mptcp_pm_nl_rm_addr_or_subflow(), only for 'subflow' endpoints, and
-if the ID is not 0 -- local_addr_used is not taking into account these
-ones. This marking of the ID as being available, and the decrement is
-done no matter if a subflow using this ID is currently available,
-because the subflow could have been closed before.
-
-Fixes: 06faa2271034 ("mptcp: remove multi addresses and subflows in PM")
 Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20240819-net-mptcp-pm-reusing-id-v1-8-38035d40de5b@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 0a0f7cc25d4a ("soc: imx: add i.MX93 SRC power domain driver")
+Reviewed-by: Jacky Bai <ping.bai@nxp.com>
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Link: https://lore.kernel.org/r/20240814124740.2778952-1-peng.fan@oss.nxp.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/pm_netlink.c |   26 +++++++++++++++++---------
- 1 file changed, 17 insertions(+), 9 deletions(-)
+ drivers/soc/imx/imx93-pd.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -833,10 +833,10 @@ static void mptcp_pm_nl_rm_addr_or_subfl
- 			if (rm_type == MPTCP_MIB_RMSUBFLOW)
- 				__MPTCP_INC_STATS(sock_net(sk), rm_type);
- 		}
--		if (rm_type == MPTCP_MIB_RMSUBFLOW)
--			__set_bit(rm_id ? rm_id : msk->mpc_endpoint_id, msk->pm.id_avail_bitmap);
--		else if (rm_type == MPTCP_MIB_RMADDR)
-+
-+		if (rm_type == MPTCP_MIB_RMADDR)
- 			__MPTCP_INC_STATS(sock_net(sk), rm_type);
-+
- 		if (!removed)
- 			continue;
+--- a/drivers/soc/imx/imx93-pd.c
++++ b/drivers/soc/imx/imx93-pd.c
+@@ -20,6 +20,7 @@
+ #define FUNC_STAT_PSW_STAT_MASK		BIT(0)
+ #define FUNC_STAT_RST_STAT_MASK		BIT(2)
+ #define FUNC_STAT_ISO_STAT_MASK		BIT(4)
++#define FUNC_STAT_SSAR_STAT_MASK	BIT(8)
  
-@@ -846,8 +846,6 @@ static void mptcp_pm_nl_rm_addr_or_subfl
- 		if (rm_type == MPTCP_MIB_RMADDR) {
- 			msk->pm.add_addr_accepted--;
- 			WRITE_ONCE(msk->pm.accept_addr, true);
--		} else if (rm_type == MPTCP_MIB_RMSUBFLOW) {
--			msk->pm.local_addr_used--;
- 		}
- 	}
- }
-@@ -1441,6 +1439,14 @@ static bool mptcp_pm_remove_anno_addr(st
- 	return ret;
- }
+ struct imx93_power_domain {
+ 	struct generic_pm_domain genpd;
+@@ -50,7 +51,7 @@ static int imx93_pd_on(struct generic_pm
+ 	writel(val, addr + MIX_SLICE_SW_CTRL_OFF);
  
-+static void __mark_subflow_endp_available(struct mptcp_sock *msk, u8 id)
-+{
-+	/* If it was marked as used, and not ID 0, decrement local_addr_used */
-+	if (!__test_and_set_bit(id ? : msk->mpc_endpoint_id, msk->pm.id_avail_bitmap) &&
-+	    id && !WARN_ON_ONCE(msk->pm.local_addr_used == 0))
-+		msk->pm.local_addr_used--;
-+}
-+
- static int mptcp_nl_remove_subflow_and_signal_addr(struct net *net,
- 						   const struct mptcp_pm_addr_entry *entry)
- {
-@@ -1474,11 +1480,11 @@ static int mptcp_nl_remove_subflow_and_s
- 			spin_lock_bh(&msk->pm.lock);
- 			mptcp_pm_nl_rm_subflow_received(msk, &list);
- 			spin_unlock_bh(&msk->pm.lock);
--		} else if (entry->flags & MPTCP_PM_ADDR_FLAG_SUBFLOW) {
--			/* If the subflow has been used, but now closed */
-+		}
-+
-+		if (entry->flags & MPTCP_PM_ADDR_FLAG_SUBFLOW) {
- 			spin_lock_bh(&msk->pm.lock);
--			if (!__test_and_set_bit(entry->addr.id, msk->pm.id_avail_bitmap))
--				msk->pm.local_addr_used--;
-+			__mark_subflow_endp_available(msk, list.ids[0]);
- 			spin_unlock_bh(&msk->pm.lock);
- 		}
+ 	ret = readl_poll_timeout(addr + MIX_FUNC_STAT_OFF, val,
+-				 !(val & FUNC_STAT_ISO_STAT_MASK), 1, 10000);
++				 !(val & FUNC_STAT_SSAR_STAT_MASK), 1, 10000);
+ 	if (ret) {
+ 		dev_err(domain->dev, "pd_on timeout: name: %s, stat: %x\n", genpd->name, val);
+ 		return ret;
+@@ -72,7 +73,7 @@ static int imx93_pd_off(struct generic_p
+ 	writel(val, addr + MIX_SLICE_SW_CTRL_OFF);
  
-@@ -1516,6 +1522,7 @@ static int mptcp_nl_remove_id_zero_addre
- 		spin_lock_bh(&msk->pm.lock);
- 		mptcp_pm_remove_addr(msk, &list);
- 		mptcp_pm_nl_rm_subflow_received(msk, &list);
-+		__mark_subflow_endp_available(msk, 0);
- 		spin_unlock_bh(&msk->pm.lock);
- 		release_sock(sk);
- 
-@@ -1917,6 +1924,7 @@ static void mptcp_pm_nl_fullmesh(struct
- 
- 	spin_lock_bh(&msk->pm.lock);
- 	mptcp_pm_nl_rm_subflow_received(msk, &list);
-+	__mark_subflow_endp_available(msk, list.ids[0]);
- 	mptcp_pm_create_subflow_or_signal_addr(msk);
- 	spin_unlock_bh(&msk->pm.lock);
- }
+ 	ret = readl_poll_timeout(addr + MIX_FUNC_STAT_OFF, val,
+-				 val & FUNC_STAT_PSW_STAT_MASK, 1, 1000);
++				 val & FUNC_STAT_PSW_STAT_MASK, 1, 10000);
+ 	if (ret) {
+ 		dev_err(domain->dev, "pd_off timeout: name: %s, stat: %x\n", genpd->name, val);
+ 		return ret;
 
 
 
