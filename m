@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-71127-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 111169611C7
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:23:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F1EF960EB2
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:51:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A1EC9B28624
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:23:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF499286E3B
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:51:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5150C1C824B;
-	Tue, 27 Aug 2024 15:23:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C73701C6F71;
+	Tue, 27 Aug 2024 14:51:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mHpNk6/a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YiGtOdc1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F8EF1C7B9D;
-	Tue, 27 Aug 2024 15:23:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ADB11C688E;
+	Tue, 27 Aug 2024 14:51:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772187; cv=none; b=uP3Z324/d6lLeYAGQ/vBmCrG8mE5fc2S/j0ZZbLsX2DyLXC20jpxtKof8c8oitH06YZupTOCVUdyoUHuI33ccDwV3gjbZymt2stAM2LZXFSvpLncD6TLMu1TV7c1gESDx6X5s0W6C4cReLvYBwRDQl+Te1xOhki6CcSXaKzCOGs=
+	t=1724770264; cv=none; b=bq+jzWCVe0OVFWeImkbEboheQpmI2gv5IE+PTz6Eox8vR5Y+xZ/bk5d7IwDa4SaXgZHDgYaZAvIJlevBSFovxT/WjbsT8wQ3XVhjSdJbJTsjrUy/+cAV9/i2CEdJfxWEH8wHW56ppU4fjy1hZs1CGzzWr1O0feZmC2tih4+bkQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772187; c=relaxed/simple;
-	bh=+/rrNBS0NHkMj03tE/jKv52n/P4jitiNCihy7nNeggk=;
+	s=arc-20240116; t=1724770264; c=relaxed/simple;
+	bh=Yjjqw6/8ps5SGMhQmeHj5MqEb2BvIyCANE+1HWRG/1o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=chH3gSCm1NRosXMtx4pDUaNQdnAH3RhfOxHCIXrAlfc29490nCR0j3ruOWZlhjK8ZEdMHQXIeDO1JoWQD/yh56pGAMQdaJxohOR3rEIxkgvGNuYjZGJTKl1jukZ/gql3av4dOIGnZqEZSpKTI6pGhmb3NjHpANY91f5s20q1blc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mHpNk6/a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C62CC6104C;
-	Tue, 27 Aug 2024 15:23:06 +0000 (UTC)
+	 MIME-Version; b=Bz/k7tMoqRG5s+RClMN00phvhxaAkMnVsrqj97S8l8LCvuJUQIM44L8CvyjtVyG6/ZP4hSojzorEJzvw8L6bC4vvrIEYMiIZC8GItyKszhGrzUI3fy0I3G24tQnPIwUs+5mHHj8224VOtODkwnm2R6RVtku8o7cQ8uMYGT+BoAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YiGtOdc1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5ACCC4DDFF;
+	Tue, 27 Aug 2024 14:51:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772186;
-	bh=+/rrNBS0NHkMj03tE/jKv52n/P4jitiNCihy7nNeggk=;
+	s=korg; t=1724770264;
+	bh=Yjjqw6/8ps5SGMhQmeHj5MqEb2BvIyCANE+1HWRG/1o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mHpNk6/aTmAfRjfd0A4FvQDG6GOL7YHqT+h5uPXq5PWGaY8t6L5hnSOUFZQLGknNh
-	 AP3ygOPp205yC05bfvYIE+9KW6rMEUxpXXnfTO4feJhl1MOUFFMVNcl5/DwlZPWDp0
-	 HF5Ocr9a8BTo9jw13qu4OvBIwKjq6MukvHkhbj/4=
+	b=YiGtOdc1Whc72T3s+HBrvFKYjzPvChu7zMaPQiyNM9Ooz/j0NNZNIp8iVzgs66hll
+	 JyRs16l9q+d+AikFUQX2wpDUhkunxVgGzqVMGP47rwwa9RKW60bkT2V/M0I575R+s3
+	 G8F7kedRHTNITrkDjEbD0XOKKc1kIxDNI2KuljKw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Phil Sutter <phil@nwl.cc>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Li Nan <linan122@huawei.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Song Liu <song@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 099/321] netfilter: nf_tables: Drop pointless memset in nf_tables_dump_obj
+Subject: [PATCH 6.6 176/341] md: clean up invalid BUG_ON in md_ioctl
 Date: Tue, 27 Aug 2024 16:36:47 +0200
-Message-ID: <20240827143842.017049606@linuxfoundation.org>
+Message-ID: <20240827143850.112057994@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phil Sutter <phil@nwl.cc>
+From: Li Nan <linan122@huawei.com>
 
-[ Upstream commit ff16111cc10c82ee065ffbd9fa8d6210394ff8c6 ]
+[ Upstream commit 9dd8702e7cd28ebf076ff838933f29cf671165ec ]
 
-The code does not make use of cb->args fields past the first one, no
-need to zero them.
+'disk->private_data' is set to mddev in md_alloc() and never set to NULL,
+and users need to open mddev before submitting ioctl. So mddev must not
+have been freed during ioctl, and there is no need to check mddev here.
+Clean up it.
 
-Signed-off-by: Phil Sutter <phil@nwl.cc>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Stable-dep-of: bd662c4218f9 ("netfilter: nf_tables: Add locking for NFT_MSG_GETOBJ_RESET requests")
+Signed-off-by: Li Nan <linan122@huawei.com>
+Reviewed-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20240226031444.3606764-4-linan666@huaweicloud.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/md/md.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 747033129c0fe..ddf84f226822b 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -7452,9 +7452,6 @@ static int nf_tables_dump_obj(struct sk_buff *skb, struct netlink_callback *cb)
- 				goto cont;
- 			if (idx < s_idx)
- 				goto cont;
--			if (idx > s_idx)
--				memset(&cb->args[1], 0,
--				       sizeof(cb->args) - sizeof(cb->args[0]));
- 			if (filter && filter->table &&
- 			    strcmp(filter->table, table->name))
- 				goto cont;
+diff --git a/drivers/md/md.c b/drivers/md/md.c
+index 35b003b83ef1b..d1f6770c5cc09 100644
+--- a/drivers/md/md.c
++++ b/drivers/md/md.c
+@@ -7652,11 +7652,6 @@ static int md_ioctl(struct block_device *bdev, blk_mode_t mode,
+ 
+ 	mddev = bdev->bd_disk->private_data;
+ 
+-	if (!mddev) {
+-		BUG();
+-		goto out;
+-	}
+-
+ 	/* Some actions do not requires the mutex */
+ 	switch (cmd) {
+ 	case GET_ARRAY_INFO:
 -- 
 2.43.0
 
