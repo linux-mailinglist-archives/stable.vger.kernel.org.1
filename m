@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-70749-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71042-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC3E9960FDB
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:03:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8405896115E
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:19:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE6651C23124
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:03:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B6E741C237B5
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:19:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31F921C9EC5;
-	Tue, 27 Aug 2024 15:02:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD7C71C8FDC;
+	Tue, 27 Aug 2024 15:18:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZlctolpJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IXU1PNUX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2B501C9DF1;
-	Tue, 27 Aug 2024 15:02:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 821A317C96;
+	Tue, 27 Aug 2024 15:18:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770936; cv=none; b=q0EATypEqSrdTWss4DW5E24yVJaXk8TLrNtkstwaIn6ltUHTqy0s1a5zac7rnyxck0ZbMFV7pp4ZC+Q+Vlvbm2bZEtYRM8eOQYci+k6Yc45M1EwUjQmc2Kt5wGoIXuourMETaNNb/9MhiZSjn1OJuS9chpdz4+UBCaWV9E4/ADE=
+	t=1724771905; cv=none; b=LI0ZlFzkNnpBjQPnjwuSulKM3RiW0tiDJ2WuUoxNFdwkocy9gBXGNcCjLHB5WNzmwfo9CvVlnYx1bCguXAfw0/6ywRUcXKImFDCHUnqURm+N82VbVH/DNa6FQuR0+hfjAMAXdIO62HfyV96Md65Li2Lx0JlDcLlFrPF1wXyEaWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770936; c=relaxed/simple;
-	bh=Mvuzoh5C3ZnMP+UwxMGabHp0rpX1efSkQquxDV7ms8c=;
+	s=arc-20240116; t=1724771905; c=relaxed/simple;
+	bh=3rGxtGj/Hyvb3hsXw3NL83U95VMHHNgom53/uH2/j1o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jxpG/d8FIQjuinjnjRXsWsTkwJRZZgCnT6VB49zkDldohYgs+yV3HplZbgDsef5sdf0LZx7HY8eaes5OgVYQcSUadrvmEmCxnLdn+ZgSXL+wMKpZDjR7F4yHhmLeJm2AVegHXSIlgQcO1PJG8YpUbY/PEBefZ9Gb4kvWraDWqaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZlctolpJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B516C4DDFC;
-	Tue, 27 Aug 2024 15:02:15 +0000 (UTC)
+	 MIME-Version; b=S0Ima2CsULMsFe3aIehSjQTrSHFH+PrF5+kn86qhglTKt1hrXKaeUEBBgJZzpSO0NTIkySHd+AH4hKH9ImeNISdNbQkjuFlhjB0yb98mMc3PjXjcQABI1klUsY0CHOnESYoHZY25hClkLaxRCeunugjYRGHJ0hzTqHes9MShUvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IXU1PNUX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3145C61067;
+	Tue, 27 Aug 2024 15:18:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770935;
-	bh=Mvuzoh5C3ZnMP+UwxMGabHp0rpX1efSkQquxDV7ms8c=;
+	s=korg; t=1724771905;
+	bh=3rGxtGj/Hyvb3hsXw3NL83U95VMHHNgom53/uH2/j1o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZlctolpJOXgVJDy4cUIW48jDg2utiNqj/dwddI2vWT231NDdR2X7k4W4qX4JCRwS1
-	 bro+Mol9au3KoDTaYHPC+uICry22eUrFQ/UJHyy1VDuqF8CNzZFa6dl0kNwObNqlUX
-	 qbyxEsoTCooNNgk+9j9PL6mKWCdSRIUlRtmIcwHg=
+	b=IXU1PNUXYjAAKwbXR7NtH3zJfEBmzli9noKXtCX7kQr74c4ihoDC2AE4H5uWOxIlt
+	 +MLR9M7usbbyIk3RAjPjxhUSxLCxgBt1GC2c1u0EX6NVx7crowv/vZWuuroteeNdeE
+	 W1aYkcpIOyYA9t5ZuL6qT6xBg8ynczFXyQB+255g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gaosheng Cui <cuigaosheng1@huawei.com>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 6.10 038/273] i2c: qcom-geni: Add missing geni_icc_disable in geni_i2c_runtime_resume
-Date: Tue, 27 Aug 2024 16:36:02 +0200
-Message-ID: <20240827143834.845491381@linuxfoundation.org>
+	Phillip Lougher <phillip@squashfs.org.uk>,
+	syzbot+604424eb051c2f696163@syzkaller.appspotmail.com,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 055/321] Squashfs: fix variable overflow triggered by sysbot
+Date: Tue, 27 Aug 2024 16:36:03 +0200
+Message-ID: <20240827143840.330031774@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andi Shyti <andi.shyti@kernel.org>
+From: Phillip Lougher <phillip@squashfs.org.uk>
 
-commit 4e91fa1ef3ce6290b4c598e54b5eb6cf134fbec8 upstream.
+[ Upstream commit 12427de9439d68b8e96ba6f50b601ef15f437612 ]
 
-Add the missing geni_icc_disable() call before returning in the
-geni_i2c_runtime_resume() function.
+Sysbot reports a slab out of bounds write in squashfs_readahead().
 
-Commit 9ba48db9f77c ("i2c: qcom-geni: Add missing
-geni_icc_disable in geni_i2c_runtime_resume") by Gaosheng missed
-disabling the interconnect in one case.
+This is ultimately caused by a file reporting an (infeasibly) large file
+size (1407374883553280 bytes) with the minimum block size of 4K.
 
-Fixes: bf225ed357c6 ("i2c: i2c-qcom-geni: Add interconnect support")
-Cc: Gaosheng Cui <cuigaosheng1@huawei.com>
-Cc: stable@vger.kernel.org # v5.9+
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This causes variable overflow.
+
+Link: https://lkml.kernel.org/r/20231113160901.6444-1-phillip@squashfs.org.uk
+Signed-off-by: Phillip Lougher <phillip@squashfs.org.uk>
+Reported-by: syzbot+604424eb051c2f696163@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/000000000000b1fda20609ede0d1@google.com/
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-qcom-geni.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/squashfs/file.c        | 3 ++-
+ fs/squashfs/file_direct.c | 6 +++---
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
---- a/drivers/i2c/busses/i2c-qcom-geni.c
-+++ b/drivers/i2c/busses/i2c-qcom-geni.c
-@@ -986,8 +986,10 @@ static int __maybe_unused geni_i2c_runti
- 		return ret;
+diff --git a/fs/squashfs/file.c b/fs/squashfs/file.c
+index 8ba8c4c507707..e8df6430444b0 100644
+--- a/fs/squashfs/file.c
++++ b/fs/squashfs/file.c
+@@ -544,7 +544,8 @@ static void squashfs_readahead(struct readahead_control *ractl)
+ 	struct squashfs_page_actor *actor;
+ 	unsigned int nr_pages = 0;
+ 	struct page **pages;
+-	int i, file_end = i_size_read(inode) >> msblk->block_log;
++	int i;
++	loff_t file_end = i_size_read(inode) >> msblk->block_log;
+ 	unsigned int max_pages = 1UL << shift;
  
- 	ret = clk_prepare_enable(gi2c->core_clk);
--	if (ret)
-+	if (ret) {
-+		geni_icc_disable(&gi2c->se);
- 		return ret;
-+	}
+ 	readahead_expand(ractl, start, (len | mask) + 1);
+diff --git a/fs/squashfs/file_direct.c b/fs/squashfs/file_direct.c
+index f1ccad519e28c..763a3f7a75f6d 100644
+--- a/fs/squashfs/file_direct.c
++++ b/fs/squashfs/file_direct.c
+@@ -26,10 +26,10 @@ int squashfs_readpage_block(struct page *target_page, u64 block, int bsize,
+ 	struct inode *inode = target_page->mapping->host;
+ 	struct squashfs_sb_info *msblk = inode->i_sb->s_fs_info;
  
- 	ret = geni_se_resources_on(&gi2c->se);
- 	if (ret) {
+-	int file_end = (i_size_read(inode) - 1) >> PAGE_SHIFT;
++	loff_t file_end = (i_size_read(inode) - 1) >> PAGE_SHIFT;
+ 	int mask = (1 << (msblk->block_log - PAGE_SHIFT)) - 1;
+-	int start_index = target_page->index & ~mask;
+-	int end_index = start_index | mask;
++	loff_t start_index = target_page->index & ~mask;
++	loff_t end_index = start_index | mask;
+ 	int i, n, pages, bytes, res = -ENOMEM;
+ 	struct page **page;
+ 	struct squashfs_page_actor *actor;
+-- 
+2.43.0
+
 
 
 
