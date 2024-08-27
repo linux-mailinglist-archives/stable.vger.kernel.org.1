@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-70562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70573-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF389960ECB
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:52:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC0D6960ED8
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:53:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9CC68286EFB
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:52:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A9261C233AE
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:53:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C5E11C6F5E;
-	Tue, 27 Aug 2024 14:51:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CDB01C688B;
+	Tue, 27 Aug 2024 14:52:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dVOVdV2o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jjcLijKr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A7351C57A9;
-	Tue, 27 Aug 2024 14:51:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD6FA1A0B13;
+	Tue, 27 Aug 2024 14:52:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770319; cv=none; b=Xqn33ggyXencCdC78k3uxrzceGFob5PwFr2OLU7KFe2ROiDv7e/F6vqQBwMiqOjwPZ/2JiAClETDOyaHsZy9Le4BW3wA2DaRCRBKDRSMAtN92fE9npyfu3+Q2W2LaOSo3tL9p0lhiLtPHoT/3q8nZL7QrlLK67W33AHE7pHuHhE=
+	t=1724770356; cv=none; b=LscdK026RxkPMwtWPyQuHpRn29m+/jUcP117w9RHemL145qZuBkMRAQKj/rhbpU76B8BHv/yCiA4fCWhyeNv9BI6OgM64b239V5+6tmu1fKxMls5IhiiscXVorvl81paj7LNIkm1yyxJYpkwjSj+d6RbJngj617HXgLkMWlVe60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770319; c=relaxed/simple;
-	bh=ALe79kDi8ngO6t2sFtGkDvn0a9VsptVQE8PgBp3BOpA=;
+	s=arc-20240116; t=1724770356; c=relaxed/simple;
+	bh=WT5Wt4xgOyyEnlL+z954iGYzO4q2PFfPkgDhy3YzjKY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Na0sUMZqSVNh9/XgcXJTSuo1ZFAGZn7DX8vGbMNzuBT4cwgPqFBcLK9ENF/zDgNfn2zPPzyVA6vqFq9clXAlY7yptTyvrLfdO5DgWA5A2wFfGxvczYXVxsqu5aNt0P0pBDc9riw8MkgqWb9KsRjghb3YVGOS9KNLhHPRS2wPIUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dVOVdV2o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDCFBC4DE06;
-	Tue, 27 Aug 2024 14:51:58 +0000 (UTC)
+	 MIME-Version; b=BsXnVquLgI7TU+tySqrGdGHtAHrTJ7wtnyFoU34okS7n7EGgHKXQZn+Q3NEAwoVqtorEavm2sSmDnhCIUpacpd5fXe6MEKTQsTaxmwU+lTcDZziViECFty4J6rybSEsyME86EAnx1T+wdMLsoGGhshXFPh9Vi9+9mymgVIpuQBs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jjcLijKr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5107DC61042;
+	Tue, 27 Aug 2024 14:52:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770319;
-	bh=ALe79kDi8ngO6t2sFtGkDvn0a9VsptVQE8PgBp3BOpA=;
+	s=korg; t=1724770355;
+	bh=WT5Wt4xgOyyEnlL+z954iGYzO4q2PFfPkgDhy3YzjKY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dVOVdV2or8WTnW+UZPR+8b/O9jyzuPP2h3x2MKZ13x71JB5cG/DUHwNfh1RtXLDce
-	 TCR1qsprZEVb7fLRnsdjSyOXl1nI1Vfj234N6csunhQ0z1KsZf9PEcqsCIlGMN8d09
-	 tbfTfqto3nhMlCgUtnXO6ETmw7EHBjIEusr/7mW8=
+	b=jjcLijKrB25e8z/ovMUDhdOmlRoO62/eQ4L5m+7gx1JT2wWTOqpLH2suw9PVZU5K0
+	 28XEMIBtIg7gFEvSTCvowdNAKvvdJQmVAAAuqcujjS5auYqqWQy6rI0fbnamoEZvEv
+	 afe8tp1zFF4yylxzTuKG/RSILlLRMjI7pfVzOaRc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>,
-	Anand Jain <anand.jain@oracle.com>,
 	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 186/341] btrfs: change BUG_ON to assertion when checking for delayed_node root
-Date: Tue, 27 Aug 2024 16:36:57 +0200
-Message-ID: <20240827143850.490585183@linuxfoundation.org>
+Subject: [PATCH 6.6 187/341] btrfs: tests: allocate dummy fs_info and root in test_find_delalloc()
+Date: Tue, 27 Aug 2024 16:36:58 +0200
+Message-ID: <20240827143850.527345178@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
 References: <20240827143843.399359062@linuxfoundation.org>
@@ -69,31 +67,89 @@ Content-Transfer-Encoding: 8bit
 
 From: David Sterba <dsterba@suse.com>
 
-[ Upstream commit be73f4448b607e6b7ce41cd8ef2214fdf6e7986f ]
+[ Upstream commit b2136cc288fce2f24a92f3d656531b2d50ebec5a ]
 
-The pointer to root is initialized in btrfs_init_delayed_node(), no need
-to check for it again. Change the BUG_ON to assertion.
+Allocate fs_info and root to have a valid fs_info pointer in case it's
+dereferenced by a helper outside of tests, like find_lock_delalloc_range().
 
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: Anand Jain <anand.jain@oracle.com>
 Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/delayed-inode.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/btrfs/tests/extent-io-tests.c | 28 ++++++++++++++++++++++++----
+ 1 file changed, 24 insertions(+), 4 deletions(-)
 
-diff --git a/fs/btrfs/delayed-inode.c b/fs/btrfs/delayed-inode.c
-index 12ff91d6f570f..32c5f5a8a0e93 100644
---- a/fs/btrfs/delayed-inode.c
-+++ b/fs/btrfs/delayed-inode.c
-@@ -973,7 +973,7 @@ static void btrfs_release_delayed_inode(struct btrfs_delayed_node *delayed_node)
+diff --git a/fs/btrfs/tests/extent-io-tests.c b/fs/btrfs/tests/extent-io-tests.c
+index 1cc86af97dc6e..f4fd3fb7c887b 100644
+--- a/fs/btrfs/tests/extent-io-tests.c
++++ b/fs/btrfs/tests/extent-io-tests.c
+@@ -11,6 +11,7 @@
+ #include "btrfs-tests.h"
+ #include "../ctree.h"
+ #include "../extent_io.h"
++#include "../disk-io.h"
+ #include "../btrfs_inode.h"
  
- 	if (delayed_node &&
- 	    test_bit(BTRFS_DELAYED_NODE_INODE_DIRTY, &delayed_node->flags)) {
--		BUG_ON(!delayed_node->root);
-+		ASSERT(delayed_node->root);
- 		clear_bit(BTRFS_DELAYED_NODE_INODE_DIRTY, &delayed_node->flags);
- 		delayed_node->count--;
+ #define PROCESS_UNLOCK		(1 << 0)
+@@ -105,9 +106,11 @@ static void dump_extent_io_tree(const struct extent_io_tree *tree)
+ 	}
+ }
+ 
+-static int test_find_delalloc(u32 sectorsize)
++static int test_find_delalloc(u32 sectorsize, u32 nodesize)
+ {
+-	struct inode *inode;
++	struct btrfs_fs_info *fs_info;
++	struct btrfs_root *root = NULL;
++	struct inode *inode = NULL;
+ 	struct extent_io_tree *tmp;
+ 	struct page *page;
+ 	struct page *locked_page = NULL;
+@@ -121,12 +124,27 @@ static int test_find_delalloc(u32 sectorsize)
+ 
+ 	test_msg("running find delalloc tests");
+ 
++	fs_info = btrfs_alloc_dummy_fs_info(nodesize, sectorsize);
++	if (!fs_info) {
++		test_std_err(TEST_ALLOC_FS_INFO);
++		return -ENOMEM;
++	}
++
++	root = btrfs_alloc_dummy_root(fs_info);
++	if (IS_ERR(root)) {
++		test_std_err(TEST_ALLOC_ROOT);
++		ret = PTR_ERR(root);
++		goto out;
++	}
++
+ 	inode = btrfs_new_test_inode();
+ 	if (!inode) {
+ 		test_std_err(TEST_ALLOC_INODE);
+-		return -ENOMEM;
++		ret = -ENOMEM;
++		goto out;
+ 	}
+ 	tmp = &BTRFS_I(inode)->io_tree;
++	BTRFS_I(inode)->root = root;
+ 
+ 	/*
+ 	 * Passing NULL as we don't have fs_info but tracepoints are not used
+@@ -316,6 +334,8 @@ static int test_find_delalloc(u32 sectorsize)
+ 	process_page_range(inode, 0, total_dirty - 1,
+ 			   PROCESS_UNLOCK | PROCESS_RELEASE);
+ 	iput(inode);
++	btrfs_free_dummy_root(root);
++	btrfs_free_dummy_fs_info(fs_info);
+ 	return ret;
+ }
+ 
+@@ -794,7 +814,7 @@ int btrfs_test_extent_io(u32 sectorsize, u32 nodesize)
+ 
+ 	test_msg("running extent I/O tests");
+ 
+-	ret = test_find_delalloc(sectorsize);
++	ret = test_find_delalloc(sectorsize, nodesize);
+ 	if (ret)
+ 		goto out;
  
 -- 
 2.43.0
