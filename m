@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-71238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70979-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC6BD9612FA
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:38:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A2A89610FE
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:15:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EBAE2B24471
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:31:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA4DB2832D0
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:15:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F1D01CCB21;
-	Tue, 27 Aug 2024 15:29:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B2B81C6F69;
+	Tue, 27 Aug 2024 15:14:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yKq4FihW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1q064BBa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A79F19F485;
-	Tue, 27 Aug 2024 15:29:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D590A1C7B60;
+	Tue, 27 Aug 2024 15:14:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772554; cv=none; b=Ddxotbjik0BpKxmW103OH9Mc6LacJoH7CKvkqnPSQgjEvskigWekAj3Zo/IB5/4WOwUX7KJoS6ItiW68FRSiOSAPXEkUNM9ls+5BUSFpJi0nymUZMGJK/4lHea2kpKMEwoDwfl1EIogX2wFDLqdTiaD5XKmMJuERFgrC3Vn34cg=
+	t=1724771696; cv=none; b=rdpdBV97C/i8CAxpESlAdNcSusDAltZIN9i6yhPD99VLI2k3eea1BHEg5a3GY6ngHJ6KOe1ApkYVmjwtk/2ZtRC/wq7NBMtoYDFJ0rO3aL5tY4bsjWka+NU2Xq0sFRhyDPkKym4ie8fjIH3qcB+us+ii/4wBAuVfuet7o9YSZws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772554; c=relaxed/simple;
-	bh=IET7mE/ZH5BPGayuh6htU8o5+X0/e2g0HWaieHV3r/Q=;
+	s=arc-20240116; t=1724771696; c=relaxed/simple;
+	bh=z3KjcKF53Eb1WGsEy25QBXGaWa7qQ4MSkA755tVr1ps=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MnJlYgGbg6l4XNTDO1xxE+99WI3IMCI+IJ3oFJzjoTqoIjKMfWsceXG7P30Qu4cPC66tJk9TKtEOw4e55/P7jPzPD+7BZ5GOOc2xBtCFLWYU7UJlGkaYy5JiHDkoB0nx5JXvO2CcqULo0rxK78TE6BqrZfr8MVBBzaEjmxhyuTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yKq4FihW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75715C6107E;
-	Tue, 27 Aug 2024 15:29:13 +0000 (UTC)
+	 MIME-Version; b=DtzWQiglBp8zoeEtGDC5kLwxjcifyxPJTuZ+Nbl10WtJatks7gWt+rZ8f3LzADo0uknmpfIuXJYgwBV3oX0WE7/NVjweLUG051F9yekgUYbNHcu786z+gimTXHx+rW6MtE4Un9+s7SjSVYcDArDj+m3sYyF5Woe7ZMMhz4EPFoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1q064BBa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E4CBC6106E;
+	Tue, 27 Aug 2024 15:14:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772554;
-	bh=IET7mE/ZH5BPGayuh6htU8o5+X0/e2g0HWaieHV3r/Q=;
+	s=korg; t=1724771696;
+	bh=z3KjcKF53Eb1WGsEy25QBXGaWa7qQ4MSkA755tVr1ps=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yKq4FihWFxWZZZb4M1lxs7qZnOdkKmxb/9IQ0mKg2uOCpbPK+zTX0h/sczLr71CMx
-	 aauJvWgu4Xg4SqpCsO+j2LWHpWfkJslXtLsbf9QngfE9G9WevmVpkM9JviXll92vI+
-	 IogzzuH+Ii183SMxlpH7WSanDsPWLaEjQvd/u90c=
+	b=1q064BBaPn6cb6qT/OFco0ZR5kXPXF262SOCnF+Z+fRN0yethIfNN43KWp08nz5B2
+	 Wh/jOIvR61QoYzQ/Lne3pUHDANV/gjPQTKXRe+8tKk7D294vEETXezlXJt+TaelzkP
+	 Nu7yTrdWzZZLHwCK2TRk/LykmF2Uiu2jApQ4y4kQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Budimir Markovic <markovicbudimir@gmail.com>,
-	Stephen Hemminger <stephen@networkplumber.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 250/321] netem: fix return value if duplicate enqueue fails
-Date: Tue, 27 Aug 2024 16:39:18 +0200
-Message-ID: <20240827143847.761773317@linuxfoundation.org>
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 6.10 235/273] MIPS: Loongson64: Set timer mode in cpu-probe
+Date: Tue, 27 Aug 2024 16:39:19 +0200
+Message-ID: <20240827143842.349356291@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,143 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen Hemminger <stephen@networkplumber.org>
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
 
-[ Upstream commit c07ff8592d57ed258afee5a5e04991a48dbaf382 ]
+commit 1cb6ab446424649f03c82334634360c2e3043684 upstream.
 
-There is a bug in netem_enqueue() introduced by
-commit 5845f706388a ("net: netem: fix skb length BUG_ON in __skb_to_sgvec")
-that can lead to a use-after-free.
+Loongson64 C and G processors have EXTIMER feature which
+is conflicting with CP0 counter.
 
-This commit made netem_enqueue() always return NET_XMIT_SUCCESS
-when a packet is duplicated, which can cause the parent qdisc's q.qlen
-to be mistakenly incremented. When this happens qlen_notify() may be
-skipped on the parent during destruction, leaving a dangling pointer
-for some classful qdiscs like DRR.
+Although the processor resets in EXTIMER disabled & INTIMER
+enabled mode, which is compatible with MIPS CP0 compare, firmware
+may attempt to enable EXTIMER and interfere CP0 compare.
 
-There are two ways for the bug happen:
+Set timer mode back to MIPS compatible mode to fix booting on
+systems with such firmware before we have an actual driver for
+EXTIMER.
 
-- If the duplicated packet is dropped by rootq->enqueue() and then
-  the original packet is also dropped.
-- If rootq->enqueue() sends the duplicated packet to a different qdisc
-  and the original packet is dropped.
-
-In both cases NET_XMIT_SUCCESS is returned even though no packets
-are enqueued at the netem qdisc.
-
-The fix is to defer the enqueue of the duplicate packet until after
-the original packet has been guaranteed to return NET_XMIT_SUCCESS.
-
-Fixes: 5845f706388a ("net: netem: fix skb length BUG_ON in __skb_to_sgvec")
-Reported-by: Budimir Markovic <markovicbudimir@gmail.com>
-Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20240819175753.5151-1-stephen@networkplumber.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_netem.c | 47 ++++++++++++++++++++++++++-----------------
- 1 file changed, 29 insertions(+), 18 deletions(-)
+ arch/mips/kernel/cpu-probe.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
-index d0e045116d4e9..a18b24c125f4e 100644
---- a/net/sched/sch_netem.c
-+++ b/net/sched/sch_netem.c
-@@ -437,12 +437,10 @@ static int netem_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	struct netem_sched_data *q = qdisc_priv(sch);
- 	/* We don't fill cb now as skb_unshare() may invalidate it */
- 	struct netem_skb_cb *cb;
--	struct sk_buff *skb2;
-+	struct sk_buff *skb2 = NULL;
- 	struct sk_buff *segs = NULL;
- 	unsigned int prev_len = qdisc_pkt_len(skb);
- 	int count = 1;
--	int rc = NET_XMIT_SUCCESS;
--	int rc_drop = NET_XMIT_DROP;
- 
- 	/* Do not fool qdisc_drop_all() */
- 	skb->prev = NULL;
-@@ -471,19 +469,11 @@ static int netem_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 		skb_orphan_partial(skb);
- 
- 	/*
--	 * If we need to duplicate packet, then re-insert at top of the
--	 * qdisc tree, since parent queuer expects that only one
--	 * skb will be queued.
-+	 * If we need to duplicate packet, then clone it before
-+	 * original is modified.
- 	 */
--	if (count > 1 && (skb2 = skb_clone(skb, GFP_ATOMIC)) != NULL) {
--		struct Qdisc *rootq = qdisc_root_bh(sch);
--		u32 dupsave = q->duplicate; /* prevent duplicating a dup... */
--
--		q->duplicate = 0;
--		rootq->enqueue(skb2, rootq, to_free);
--		q->duplicate = dupsave;
--		rc_drop = NET_XMIT_SUCCESS;
--	}
-+	if (count > 1)
-+		skb2 = skb_clone(skb, GFP_ATOMIC);
- 
- 	/*
- 	 * Randomized packet corruption.
-@@ -495,7 +485,8 @@ static int netem_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 		if (skb_is_gso(skb)) {
- 			skb = netem_segment(skb, sch, to_free);
- 			if (!skb)
--				return rc_drop;
-+				goto finish_segs;
-+
- 			segs = skb->next;
- 			skb_mark_not_on_list(skb);
- 			qdisc_skb_cb(skb)->pkt_len = skb->len;
-@@ -521,7 +512,24 @@ static int netem_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 		/* re-link segs, so that qdisc_drop_all() frees them all */
- 		skb->next = segs;
- 		qdisc_drop_all(skb, sch, to_free);
--		return rc_drop;
-+		if (skb2)
-+			__qdisc_drop(skb2, to_free);
-+		return NET_XMIT_DROP;
-+	}
-+
-+	/*
-+	 * If doing duplication then re-insert at top of the
-+	 * qdisc tree, since parent queuer expects that only one
-+	 * skb will be queued.
-+	 */
-+	if (skb2) {
-+		struct Qdisc *rootq = qdisc_root_bh(sch);
-+		u32 dupsave = q->duplicate; /* prevent duplicating a dup... */
-+
-+		q->duplicate = 0;
-+		rootq->enqueue(skb2, rootq, to_free);
-+		q->duplicate = dupsave;
-+		skb2 = NULL;
- 	}
- 
- 	qdisc_qstats_backlog_inc(sch, skb);
-@@ -592,9 +600,12 @@ static int netem_enqueue(struct sk_buff *skb, struct Qdisc *sch,
- 	}
- 
- finish_segs:
-+	if (skb2)
-+		__qdisc_drop(skb2, to_free);
-+
- 	if (segs) {
- 		unsigned int len, last_len;
--		int nb;
-+		int rc, nb;
- 
- 		len = skb ? skb->len : 0;
- 		nb = skb ? 1 : 0;
--- 
-2.43.0
-
+--- a/arch/mips/kernel/cpu-probe.c
++++ b/arch/mips/kernel/cpu-probe.c
+@@ -1724,12 +1724,16 @@ static inline void cpu_probe_loongson(st
+ 		c->ases |= (MIPS_ASE_LOONGSON_MMI | MIPS_ASE_LOONGSON_CAM |
+ 			MIPS_ASE_LOONGSON_EXT | MIPS_ASE_LOONGSON_EXT2);
+ 		c->ases &= ~MIPS_ASE_VZ; /* VZ of Loongson-3A2000/3000 is incomplete */
++		change_c0_config6(LOONGSON_CONF6_EXTIMER | LOONGSON_CONF6_INTIMER,
++				  LOONGSON_CONF6_INTIMER);
+ 		break;
+ 	case PRID_IMP_LOONGSON_64G:
+ 		__cpu_name[cpu] = "ICT Loongson-3";
+ 		set_elf_platform(cpu, "loongson3a");
+ 		set_isa(c, MIPS_CPU_ISA_M64R2);
+ 		decode_cpucfg(c);
++		change_c0_config6(LOONGSON_CONF6_EXTIMER | LOONGSON_CONF6_INTIMER,
++				  LOONGSON_CONF6_INTIMER);
+ 		break;
+ 	default:
+ 		panic("Unknown Loongson Processor ID!");
 
 
 
