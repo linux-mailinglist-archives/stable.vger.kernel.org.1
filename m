@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-70642-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71186-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C688B960F4E
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:58:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23CF3961259
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:30:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 049C21C2341E
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:58:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6FAD0B29754
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:29:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF76A1C5792;
-	Tue, 27 Aug 2024 14:56:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85AAA1C7B71;
+	Tue, 27 Aug 2024 15:26:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bLdTc2NO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t+DUvNcd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8BBA1BC097;
-	Tue, 27 Aug 2024 14:56:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40C8719F485;
+	Tue, 27 Aug 2024 15:26:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770587; cv=none; b=bF4a72S0hikC2dhV850mLJaCqBqx4VhV91u0Dq0MYZL70xHXt0URhDDbxcqN9B+CWGe8M0Ssf1Jt6J8mVId1nB5FKIEe6X0Iu4O29Ye6BNz/haK+4utjt8BXQzrM4Ol/cNm1DEMGDoEXZquTrqFuw6wXW0prEOMFlWIkWjMSt90=
+	t=1724772383; cv=none; b=QY20oO9MAA//qSAchIQiJm2EM5WJP+0MKINVODmVlUuOY3dh7skyJmEIafSdjksTfvVrji28Ze1bI3fSyBfljJMB0gC1i0FnX7L6+UmMjdKPw8XiJEkrfiUwwbYFXW9Prtr+wNvcVoTQLoqymcXIdtg6Bw9ZQ09cPmj6iBovQO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770587; c=relaxed/simple;
-	bh=Z9ObqPLBiXxW07aTy7KA4lwgfEOa2Fhlp2DdWZK6FAw=;
+	s=arc-20240116; t=1724772383; c=relaxed/simple;
+	bh=gI6ru+9ElY2t0hk5kJYLq/yatyvlnf/wDho2KV2P1G8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VFaBYbeFyiTLqxXjUFBzSZp/lBtx3ZvDpeV3LAgTk5GFxrI/j1cTJjUK+oW2gN7huh5SmGVU3vlMnKA71v/Bu/x2tg9ysGozS/ot+q/GiC1V2OvLBQcgWowP2LYpMaB1dkREFWhK/quM2r6UPtQYMp6rZINoAzQNS4Vok0hT8sM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bLdTc2NO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10AC3C4FE01;
-	Tue, 27 Aug 2024 14:56:26 +0000 (UTC)
+	 MIME-Version; b=ZdA0m0SImtpetUbLmLQVy7hawwKeODSEj7XBJw/mWtHdtJMxK355cXVgJrTC2PKHSNNOrcKphctNrwo2B2cCkc3imAgbooykXaJyuRBuzI8G/qUCIznRl2WypAkSs/q/XeWg9VMIXYmld4EYKv2oOvLCAGDPBLv2jMF547+D214=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t+DUvNcd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6592C61071;
+	Tue, 27 Aug 2024 15:26:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770587;
-	bh=Z9ObqPLBiXxW07aTy7KA4lwgfEOa2Fhlp2DdWZK6FAw=;
+	s=korg; t=1724772383;
+	bh=gI6ru+9ElY2t0hk5kJYLq/yatyvlnf/wDho2KV2P1G8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bLdTc2NOZKoIcwSarsWhbyAjik2p1E5cqg3dOL/01x6vA2LPUhYOzpVe+VdLJPidu
-	 MZhvPwkXSwf56V+5xQ3B17OprYcDOGFGvhAbOrIgh3bkX/8ABdP4ddk+MH5z53LeBC
-	 R8Gm/QBLDpolokinHSoGicVdPUtFe/1bUTExsuq0=
+	b=t+DUvNcdiRz12sCV8Yry0TTvOuQVZ5OdXziYKRmsra/mwtw6JwrUyTQuJ8jDu2WI2
+	 G7pzro7JPJ9CGKoB46RBPG2Dai75wFADfLHCiuBBLA4pbZcc1U7oYC8/+vKEmNArKv
+	 3cT/b8hbxiapuy/9EA6AMifkHHjy4g2RcH3z7kxA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bharat Bhushan <bbhushan2@marvell.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Alexandra Winter <wintera@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 273/341] octeontx2-af: Fix CPT AF register offset calculation
-Date: Tue, 27 Aug 2024 16:38:24 +0200
-Message-ID: <20240827143853.787615039@linuxfoundation.org>
+Subject: [PATCH 6.1 197/321] s390/iucv: fix receive buffer virtual vs physical address confusion
+Date: Tue, 27 Aug 2024 16:38:25 +0200
+Message-ID: <20240827143845.729755614@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bharat Bhushan <bbhushan2@marvell.com>
+From: Alexander Gordeev <agordeev@linux.ibm.com>
 
-[ Upstream commit af688a99eb1fc7ef69774665d61e6be51cea627a ]
+[ Upstream commit 4e8477aeb46dfe74e829c06ea588dd00ba20c8cc ]
 
-Some CPT AF registers are per LF and others are global. Translation
-of PF/VF local LF slot number to actual LF slot number is required
-only for accessing perf LF registers. CPT AF global registers access
-do not require any LF slot number. Also, there is no reason CPT
-PF/VF to know actual lf's register offset.
+Fix IUCV_IPBUFLST-type buffers virtual vs physical address confusion.
+This does not fix a bug since virtual and physical address spaces are
+currently the same.
 
-Without this fix microcode loading will fail, VFs cannot be created
-and hardware is not usable.
-
-Fixes: bc35e28af789 ("octeontx2-af: replace cpt slot with lf id on reg write")
-Signed-off-by: Bharat Bhushan <bbhushan2@marvell.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20240821070558.1020101-1-bbhushan2@marvell.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ethernet/marvell/octeontx2/af/rvu_cpt.c   | 23 +++++++++----------
- 1 file changed, 11 insertions(+), 12 deletions(-)
+ net/iucv/iucv.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cpt.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cpt.c
-index 3e09d22858147..daf4b951e9059 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cpt.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cpt.c
-@@ -632,7 +632,9 @@ int rvu_mbox_handler_cpt_inline_ipsec_cfg(struct rvu *rvu,
- 	return ret;
- }
- 
--static bool is_valid_offset(struct rvu *rvu, struct cpt_rd_wr_reg_msg *req)
-+static bool validate_and_update_reg_offset(struct rvu *rvu,
-+					   struct cpt_rd_wr_reg_msg *req,
-+					   u64 *reg_offset)
- {
- 	u64 offset = req->reg_offset;
- 	int blkaddr, num_lfs, lf;
-@@ -663,6 +665,11 @@ static bool is_valid_offset(struct rvu *rvu, struct cpt_rd_wr_reg_msg *req)
- 		if (lf < 0)
- 			return false;
- 
-+		/* Translate local LF's offset to global CPT LF's offset to
-+		 * access LFX register.
-+		 */
-+		*reg_offset = (req->reg_offset & 0xFF000) + (lf << 3);
-+
- 		return true;
- 	} else if (!(req->hdr.pcifunc & RVU_PFVF_FUNC_MASK)) {
- 		/* Registers that can be accessed from PF */
-@@ -697,7 +704,7 @@ int rvu_mbox_handler_cpt_rd_wr_register(struct rvu *rvu,
- 					struct cpt_rd_wr_reg_msg *rsp)
- {
- 	u64 offset = req->reg_offset;
--	int blkaddr, lf;
-+	int blkaddr;
- 
- 	blkaddr = validate_and_get_cpt_blkaddr(req->blkaddr);
- 	if (blkaddr < 0)
-@@ -708,18 +715,10 @@ int rvu_mbox_handler_cpt_rd_wr_register(struct rvu *rvu,
- 	    !is_cpt_vf(rvu, req->hdr.pcifunc))
- 		return CPT_AF_ERR_ACCESS_DENIED;
- 
--	if (!is_valid_offset(rvu, req))
-+	if (!validate_and_update_reg_offset(rvu, req, &offset))
- 		return CPT_AF_ERR_ACCESS_DENIED;
- 
--	/* Translate local LF used by VFs to global CPT LF */
--	lf = rvu_get_lf(rvu, &rvu->hw->block[blkaddr], req->hdr.pcifunc,
--			(offset & 0xFFF) >> 3);
--
--	/* Translate local LF's offset to global CPT LF's offset */
--	offset &= 0xFF000;
--	offset += lf << 3;
--
--	rsp->reg_offset = offset;
-+	rsp->reg_offset = req->reg_offset;
- 	rsp->ret_val = req->ret_val;
- 	rsp->is_write = req->is_write;
- 
+diff --git a/net/iucv/iucv.c b/net/iucv/iucv.c
+index db41eb2d977f2..038e1ba9aec27 100644
+--- a/net/iucv/iucv.c
++++ b/net/iucv/iucv.c
+@@ -1090,8 +1090,7 @@ static int iucv_message_receive_iprmdata(struct iucv_path *path,
+ 		size = (size < 8) ? size : 8;
+ 		for (array = buffer; size > 0; array++) {
+ 			copy = min_t(size_t, size, array->length);
+-			memcpy((u8 *)(addr_t) array->address,
+-				rmmsg, copy);
++			memcpy(phys_to_virt(array->address), rmmsg, copy);
+ 			rmmsg += copy;
+ 			size -= copy;
+ 		}
 -- 
 2.43.0
 
