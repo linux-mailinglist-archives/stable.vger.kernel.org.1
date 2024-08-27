@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-70790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71082-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0855A96100E
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:05:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5657961191
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:21:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 99F7AB22728
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:05:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5342FB25648
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:21:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 990E11C578D;
-	Tue, 27 Aug 2024 15:04:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BE1D1CCB2B;
+	Tue, 27 Aug 2024 15:20:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jwg+UwCG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rdbCfr3l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 574AE1E520;
-	Tue, 27 Aug 2024 15:04:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD35C1CCB21;
+	Tue, 27 Aug 2024 15:20:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771069; cv=none; b=jnRiMXLVjaAUEg6+ilvAtKHdGU9YE6ko69C5u1JBbyrnu/mATQB8O8Zd7t9fS2Fo56zcrce6+XRoUl5xTOsy3Y75ICuxq8KHMV7mE4PSNMOYsmfwF8aPTTSpm0yY31E0I+Ye4e/tY2bx8//i0meP8mxAa7eB+LLZ1ABgweeRqMc=
+	t=1724772040; cv=none; b=VoIw17V3OBRc7elPE7YbBP1qxXviTayG5xfWJFEE/prD0N4uOhrxtRmVHe/Q7S+ZdoIN/VX5PhDno+uIs0z1GUttUGVbKidbqSzczj9xhdVW4YBhVLrLQADvWf87vJmh+LbqE0QLvfec3XG/7XiWXacJ5PUCh4PeKNLW4aPdcv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771069; c=relaxed/simple;
-	bh=5XMbVOnzvnFnjc8IUewAj+HEz2XTgcny9Y7EqFV5mCE=;
+	s=arc-20240116; t=1724772040; c=relaxed/simple;
+	bh=GgnKxpOScFf1quBB1XHLhXSXKwirYidlDDNy7UIQbf0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n4t0hcf8POBwbiu1fK2rYwCZTYsD9/5XPs0/lV827Cr/jb61Amb3YSp3ziRPA+ycnG1Id2muKlPXmEjWbuUETpmQ3EduH9LI4W7M5jdGG0/yXtfEBCTYiUKzRaINWfofR1sLIb5beUpTQkmKlZIJEgCeC4RnjzWRLDE/HyIecQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jwg+UwCG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAFA7C6105B;
-	Tue, 27 Aug 2024 15:04:28 +0000 (UTC)
+	 MIME-Version; b=eyiHgzDbKFZ+jjCDtwJHyWAIhED+rF+mmIyeKVpsvggKYk4CbxkdajXORh3EZ2skHgSMwFChpK1Ix0PDWfr+6Jb+qBq9h/sYKPxDSscqrMfRR9ipgx+IG0NjgHTJPpW/rzx4L2jaiajAa/XEZqqXegllykjlGQip/Cms8s6UTmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rdbCfr3l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55ECEC4DE1E;
+	Tue, 27 Aug 2024 15:20:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771069;
-	bh=5XMbVOnzvnFnjc8IUewAj+HEz2XTgcny9Y7EqFV5mCE=;
+	s=korg; t=1724772040;
+	bh=GgnKxpOScFf1quBB1XHLhXSXKwirYidlDDNy7UIQbf0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jwg+UwCG2BK+KAbt+51WBL59XfBokIYJsCMJWmT+2f3PMbvfhL5fSdTMPzNSkdCTq
-	 YhxpWmluRJzPSdB7tayyv4iKaBTEYVSesLzoCgjGd4CcYCljDIx2NqX8t+QwOR9q3e
-	 IH2eIO2IXq2E+0cgAe0ibJ/oUHWVqpXUJGCnaro4=
+	b=rdbCfr3l9NeuesRJ8vgixK8RiuRCFX7BgGWdky1UrnCHJRaRLSJU7LVfw9NiK1350
+	 N604ddBQ87eyAOFu5epr2cZ2NkMqdJN6/Wb1/oUz/DVyThQ4GjSAFvP0TdG2giRezL
+	 ulCHEBZWmaspZ2LMOcmmmwZHOoMeSeTt8qPa4dxg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Jeff Layton <jlayton@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
+	Eugene Syromiatnikov <esyr@redhat.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 078/273] netfs: Fault in smaller chunks for non-large folio mappings
+Subject: [PATCH 6.1 094/321] mptcp: correct MPTCP_SUBFLOW_ATTR_SSN_OFFSET reserved size
 Date: Tue, 27 Aug 2024 16:36:42 +0200
-Message-ID: <20240827143836.382152347@linuxfoundation.org>
+Message-ID: <20240827143841.817466483@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Eugene Syromiatnikov <esyr@redhat.com>
 
-[ Upstream commit 98055bc3595500bcf2126b93b1595354bdb86a66 ]
+[ Upstream commit 655111b838cdabdb604f3625a9ff08c5eedb11da ]
 
-As in commit 4e527d5841e2 ("iomap: fault in smaller chunks for non-large
-folio mappings"), we can see a performance loss for filesystems
-which have not yet been converted to large folios.
+ssn_offset field is u32 and is placed into the netlink response with
+nla_put_u32(), but only 2 bytes are reserved for the attribute payload
+in subflow_get_info_size() (even though it makes no difference
+in the end, as it is aligned up to 4 bytes).  Supply the correct
+argument to the relevant nla_total_size() call to make it less
+confusing.
 
-Fixes: c38f4e96e605 ("netfs: Provide func to copy data to pagecache for buffered write")
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Link: https://lore.kernel.org/r/20240527201735.1898381-1-willy@infradead.org
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Fixes: 5147dfb50832 ("mptcp: allow dumping subflow context to userspace")
+Signed-off-by: Eugene Syromiatnikov <esyr@redhat.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20240812065024.GA19719@asgard.redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/netfs/buffered_write.c | 2 +-
+ net/mptcp/diag.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/netfs/buffered_write.c b/fs/netfs/buffered_write.c
-index ecbc99ec7d367..18055c1e01835 100644
---- a/fs/netfs/buffered_write.c
-+++ b/fs/netfs/buffered_write.c
-@@ -184,7 +184,7 @@ ssize_t netfs_perform_write(struct kiocb *iocb, struct iov_iter *iter,
- 	unsigned int bdp_flags = (iocb->ki_flags & IOCB_NOWAIT) ? BDP_ASYNC : 0;
- 	ssize_t written = 0, ret, ret2;
- 	loff_t i_size, pos = iocb->ki_pos, from, to;
--	size_t max_chunk = PAGE_SIZE << MAX_PAGECACHE_ORDER;
-+	size_t max_chunk = mapping_max_folio_size(mapping);
- 	bool maybe_trouble = false;
- 
- 	if (unlikely(test_bit(NETFS_ICTX_WRITETHROUGH, &ctx->flags) ||
+diff --git a/net/mptcp/diag.c b/net/mptcp/diag.c
+index 7017dd60659dc..b2199cc282384 100644
+--- a/net/mptcp/diag.c
++++ b/net/mptcp/diag.c
+@@ -95,7 +95,7 @@ static size_t subflow_get_info_size(const struct sock *sk)
+ 		nla_total_size(4) +	/* MPTCP_SUBFLOW_ATTR_RELWRITE_SEQ */
+ 		nla_total_size_64bit(8) +	/* MPTCP_SUBFLOW_ATTR_MAP_SEQ */
+ 		nla_total_size(4) +	/* MPTCP_SUBFLOW_ATTR_MAP_SFSEQ */
+-		nla_total_size(2) +	/* MPTCP_SUBFLOW_ATTR_SSN_OFFSET */
++		nla_total_size(4) +	/* MPTCP_SUBFLOW_ATTR_SSN_OFFSET */
+ 		nla_total_size(2) +	/* MPTCP_SUBFLOW_ATTR_MAP_DATALEN */
+ 		nla_total_size(4) +	/* MPTCP_SUBFLOW_ATTR_FLAGS */
+ 		nla_total_size(1) +	/* MPTCP_SUBFLOW_ATTR_ID_REM */
 -- 
 2.43.0
 
