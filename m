@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-71232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70942-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C1809612F6
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:37:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43BB59610CC
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:12:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5696FB263D6
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:31:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED5261F216F6
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:12:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3894D1D1F50;
-	Tue, 27 Aug 2024 15:28:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88FC21C5788;
+	Tue, 27 Aug 2024 15:12:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dSQWUVxf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="llu1ABkd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9D471D174F;
-	Tue, 27 Aug 2024 15:28:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46AAD1BC9E3;
+	Tue, 27 Aug 2024 15:12:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772534; cv=none; b=oD89OWb0+7xyEYIyD1RXe0BJjRN1+aXFWjpdv8KIeDC9mnrAxAQJ5AYl8G9Y1wMP4FYH7wop+LxHET/LnhpX4kKims6/qmPkwXA6ytvsihcmMFlvQvzb+yVBnyBNIgP4mdY6qEkIyIsdTkV9cGH7pq2rmo94Z/KZKbDyRwbf8H8=
+	t=1724771574; cv=none; b=aWjSF1F0oi7ANEA5V4xIZ0OdSa3pEyVL/0Iha+Hc/LuH2dB1f4nkYvGadyELgjrslf2VWzJchbHb1PvMZ1uOFfep+iztAgYVISD6gMgy/OiybM1n8guE/KHpeB9EoA1hcppEStRbC/vI5tunfs5mdFUqtnSOdr1BLt1vKKkEEhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772534; c=relaxed/simple;
-	bh=DpYKXuT/db6wa5Uv9kPyESmTcQNpOVemY3rJ5mJnDIA=;
+	s=arc-20240116; t=1724771574; c=relaxed/simple;
+	bh=2RP35QYCoBQ/LLiYlokbIvsFcaJkJm55gQHOFl39Aw0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CO9HZcoGlBbT8OKvORDI4NcIRowpvkdrCE/BJYa5elmv4Hf2AZvG+9KyQbs0j1x/LutAvC2eRA+SEfsZDCsofMsKSWSx15i0OYpIAH/7RMn1nSLSbt9+EVGM4+XtrgpsMTHcp/dtV5AXAwn0/S9XPalZLp51OFWCg5pchM/drWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dSQWUVxf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02583C6107E;
-	Tue, 27 Aug 2024 15:28:52 +0000 (UTC)
+	 MIME-Version; b=F9Cb+kqIUsUe2MzZpu6IquBlW/E9NF7YStdvodYQ3R88IqS5hisyFPElj7jBNTRu8rJkV7/Ff1u9Zjhxo23b7SzFkv1POLWkwnhZFFNrky05hicZ9ZL2IEpRxIkJ4QTE5f1Egzk5EW1O+hhDP8ZLcWFTrmCbJruDajJ4qi1wGOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=llu1ABkd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA6B8C61043;
+	Tue, 27 Aug 2024 15:12:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772533;
-	bh=DpYKXuT/db6wa5Uv9kPyESmTcQNpOVemY3rJ5mJnDIA=;
+	s=korg; t=1724771574;
+	bh=2RP35QYCoBQ/LLiYlokbIvsFcaJkJm55gQHOFl39Aw0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dSQWUVxf09OY5PPQ3ZM4kJxyWAu6/AmfC7loJf3QKNLSwW+Klzstn+JxGBWOagJyD
-	 VqK0g4ULTphQdqgNuMu8pnkgt7YC8MD5fKuR7uBqqDqi+PXvc/oFEWnGHqcDaKgbOJ
-	 4TnwJQmEIyCFnJaHKAnplsZAyymo4+++dZDE0Wg0=
+	b=llu1ABkd2PXJrH3TXJTC9mUGtYcnVeEOIlWJn/h/R/EquxNUCaZqTTnpwMJbhPPQi
+	 F4543yvQ0XF+zfIDH3r3Ls3jVPeKIusRiKF/ypOgtPr3pKKB6pU5fQczFmgyrq6mpE
+	 9k+US4vR+GIM9vsHsOQG+8RIE+gWZ5ut+jPpXMf0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Alexander Lobakin <alexandr.lobakin@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 244/321] ice: Store page count inside ice_rx_buf
+	Hans de Goede <hdegoede@redhat.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.10 228/273] ACPI: video: Add Dell UART backlight controller detection
 Date: Tue, 27 Aug 2024 16:39:12 +0200
-Message-ID: <20240827143847.530999329@linuxfoundation.org>
+Message-ID: <20240827143842.083681796@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,183 +62,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit ac0753391195011ded23696d7882428e5c419a98 ]
+commit cd8e468efb4fb2742e06328a75b282c35c1abf8d upstream.
 
-This will allow us to avoid carrying additional auxiliary array of page
-counts when dealing with XDP multi buffer support. Previously combining
-fragmented frame to skb was not affected in the same way as XDP would be
-as whole frame is needed to be in place before executing XDP prog.
-Therefore, when going through HW Rx descriptors one-by-one, calls to
-ice_put_rx_buf() need to be taken *after* running XDP prog on a
-potentially multi buffered frame, so some additional storage of
-page count is needed.
+Dell All In One (AIO) models released after 2017 use a backlight
+controller board connected to an UART.
 
-By adding page count to rx buf, it will make it easier to walk through
-processed entries at the end of rx cleaning routine and decide whether
-or not buffers should be recycled.
+In DSDT this uart port will be defined as:
 
-While at it, bump ice_rx_buf::pagecnt_bias from u16 up to u32. It was
-proven many times that calculations on variables smaller than standard
-register size are harmful. This was also the case during experiments
-with embedding page count to ice_rx_buf - when this was added as u16 it
-had a performance impact.
+   Name (_HID, "DELL0501")
+   Name (_CID, EisaId ("PNP0501")
 
-Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Reviewed-by: Alexander Lobakin <alexandr.lobakin@intel.com>
-Link: https://lore.kernel.org/bpf/20230131204506.219292-4-maciej.fijalkowski@intel.com
-Stable-dep-of: 50b2143356e8 ("ice: fix page reuse when PAGE_SIZE is over 8k")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Commit 484bae9e4d6a ("platform/x86: Add new Dell UART backlight driver")
+has added support for this, but I neglected to tie this into
+acpi_video_get_backlight_type().
+
+Now the first AIO has turned up which has not only the DSDT bits for this,
+but also an actual controller attached to the UART, yet it is not using
+this controller for backlight control.
+
+Add support to acpi_video_get_backlight_type() for a new dell_uart
+backlight type. So that the existing infra to override the backlight
+control method on the commandline or with DMI quirks can be used.
+
+Fixes: 484bae9e4d6a ("platform/x86: Add new Dell UART backlight driver")
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Link: https://patch.msgid.link/20240814190159.15650-2-hdegoede@redhat.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/ice/ice_txrx.c | 26 +++++++++--------------
- drivers/net/ethernet/intel/ice/ice_txrx.h |  3 ++-
- 2 files changed, 12 insertions(+), 17 deletions(-)
+ drivers/acpi/video_detect.c |    7 +++++++
+ include/acpi/video.h        |    1 +
+ 2 files changed, 8 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_txrx.c b/drivers/net/ethernet/intel/ice/ice_txrx.c
-index d3411170f3eaf..977b268802dfa 100644
---- a/drivers/net/ethernet/intel/ice/ice_txrx.c
-+++ b/drivers/net/ethernet/intel/ice/ice_txrx.c
-@@ -791,7 +791,6 @@ ice_rx_buf_adjust_pg_offset(struct ice_rx_buf *rx_buf, unsigned int size)
- /**
-  * ice_can_reuse_rx_page - Determine if page can be reused for another Rx
-  * @rx_buf: buffer containing the page
-- * @rx_buf_pgcnt: rx_buf page refcount pre xdp_do_redirect() call
-  *
-  * If page is reusable, we have a green light for calling ice_reuse_rx_page,
-  * which will assign the current buffer to the buffer that next_to_alloc is
-@@ -799,7 +798,7 @@ ice_rx_buf_adjust_pg_offset(struct ice_rx_buf *rx_buf, unsigned int size)
-  * page freed
-  */
- static bool
--ice_can_reuse_rx_page(struct ice_rx_buf *rx_buf, int rx_buf_pgcnt)
-+ice_can_reuse_rx_page(struct ice_rx_buf *rx_buf)
- {
- 	unsigned int pagecnt_bias = rx_buf->pagecnt_bias;
- 	struct page *page = rx_buf->page;
-@@ -810,7 +809,7 @@ ice_can_reuse_rx_page(struct ice_rx_buf *rx_buf, int rx_buf_pgcnt)
+--- a/drivers/acpi/video_detect.c
++++ b/drivers/acpi/video_detect.c
+@@ -54,6 +54,8 @@ static void acpi_video_parse_cmdline(voi
+ 		acpi_backlight_cmdline = acpi_backlight_nvidia_wmi_ec;
+ 	if (!strcmp("apple_gmux", acpi_video_backlight_string))
+ 		acpi_backlight_cmdline = acpi_backlight_apple_gmux;
++	if (!strcmp("dell_uart", acpi_video_backlight_string))
++		acpi_backlight_cmdline = acpi_backlight_dell_uart;
+ 	if (!strcmp("none", acpi_video_backlight_string))
+ 		acpi_backlight_cmdline = acpi_backlight_none;
+ }
+@@ -902,6 +904,7 @@ enum acpi_backlight_type __acpi_video_ge
+ 	static DEFINE_MUTEX(init_mutex);
+ 	static bool nvidia_wmi_ec_present;
+ 	static bool apple_gmux_present;
++	static bool dell_uart_present;
+ 	static bool native_available;
+ 	static bool init_done;
+ 	static long video_caps;
+@@ -916,6 +919,7 @@ enum acpi_backlight_type __acpi_video_ge
+ 				    &video_caps, NULL);
+ 		nvidia_wmi_ec_present = nvidia_wmi_ec_supported();
+ 		apple_gmux_present = apple_gmux_detect(NULL, NULL);
++		dell_uart_present = acpi_dev_present("DELL0501", NULL, -1);
+ 		init_done = true;
+ 	}
+ 	if (native)
+@@ -946,6 +950,9 @@ enum acpi_backlight_type __acpi_video_ge
+ 	if (apple_gmux_present)
+ 		return acpi_backlight_apple_gmux;
  
- #if (PAGE_SIZE < 8192)
- 	/* if we are only owner of page we can reuse it */
--	if (unlikely((rx_buf_pgcnt - pagecnt_bias) > 1))
-+	if (unlikely(rx_buf->pgcnt - pagecnt_bias > 1))
- 		return false;
- #else
- #define ICE_LAST_OFFSET \
-@@ -894,19 +893,17 @@ ice_reuse_rx_page(struct ice_rx_ring *rx_ring, struct ice_rx_buf *old_buf)
-  * ice_get_rx_buf - Fetch Rx buffer and synchronize data for use
-  * @rx_ring: Rx descriptor ring to transact packets on
-  * @size: size of buffer to add to skb
-- * @rx_buf_pgcnt: rx_buf page refcount
-  *
-  * This function will pull an Rx buffer from the ring and synchronize it
-  * for use by the CPU.
-  */
- static struct ice_rx_buf *
--ice_get_rx_buf(struct ice_rx_ring *rx_ring, const unsigned int size,
--	       int *rx_buf_pgcnt)
-+ice_get_rx_buf(struct ice_rx_ring *rx_ring, const unsigned int size)
- {
- 	struct ice_rx_buf *rx_buf;
- 
- 	rx_buf = &rx_ring->rx_buf[rx_ring->next_to_clean];
--	*rx_buf_pgcnt =
-+	rx_buf->pgcnt =
- #if (PAGE_SIZE < 8192)
- 		page_count(rx_buf->page);
- #else
-@@ -1042,15 +1039,13 @@ ice_construct_skb(struct ice_rx_ring *rx_ring, struct ice_rx_buf *rx_buf,
-  * ice_put_rx_buf - Clean up used buffer and either recycle or free
-  * @rx_ring: Rx descriptor ring to transact packets on
-  * @rx_buf: Rx buffer to pull data from
-- * @rx_buf_pgcnt: Rx buffer page count pre xdp_do_redirect()
-  *
-  * This function will update next_to_clean and then clean up the contents
-  * of the rx_buf. It will either recycle the buffer or unmap it and free
-  * the associated resources.
-  */
- static void
--ice_put_rx_buf(struct ice_rx_ring *rx_ring, struct ice_rx_buf *rx_buf,
--	       int rx_buf_pgcnt)
-+ice_put_rx_buf(struct ice_rx_ring *rx_ring, struct ice_rx_buf *rx_buf)
- {
- 	u16 ntc = rx_ring->next_to_clean + 1;
- 
-@@ -1061,7 +1056,7 @@ ice_put_rx_buf(struct ice_rx_ring *rx_ring, struct ice_rx_buf *rx_buf,
- 	if (!rx_buf)
- 		return;
- 
--	if (ice_can_reuse_rx_page(rx_buf, rx_buf_pgcnt)) {
-+	if (ice_can_reuse_rx_page(rx_buf)) {
- 		/* hand second half of page back to the ring */
- 		ice_reuse_rx_page(rx_ring, rx_buf);
- 	} else {
-@@ -1137,7 +1132,6 @@ int ice_clean_rx_irq(struct ice_rx_ring *rx_ring, int budget)
- 		unsigned char *hard_start;
- 		unsigned int size;
- 		u16 stat_err_bits;
--		int rx_buf_pgcnt;
- 		u16 vlan_tag = 0;
- 		u16 rx_ptype;
- 
-@@ -1166,7 +1160,7 @@ int ice_clean_rx_irq(struct ice_rx_ring *rx_ring, int budget)
- 			if (rx_desc->wb.rxdid == FDIR_DESC_RXDID &&
- 			    ctrl_vsi->vf)
- 				ice_vc_fdir_irq_handler(ctrl_vsi, rx_desc);
--			ice_put_rx_buf(rx_ring, NULL, 0);
-+			ice_put_rx_buf(rx_ring, NULL);
- 			cleaned_count++;
- 			continue;
- 		}
-@@ -1175,7 +1169,7 @@ int ice_clean_rx_irq(struct ice_rx_ring *rx_ring, int budget)
- 			ICE_RX_FLX_DESC_PKT_LEN_M;
- 
- 		/* retrieve a buffer from the ring */
--		rx_buf = ice_get_rx_buf(rx_ring, size, &rx_buf_pgcnt);
-+		rx_buf = ice_get_rx_buf(rx_ring, size);
- 
- 		if (!size) {
- 			xdp->data = NULL;
-@@ -1209,7 +1203,7 @@ int ice_clean_rx_irq(struct ice_rx_ring *rx_ring, int budget)
- 		total_rx_pkts++;
- 
- 		cleaned_count++;
--		ice_put_rx_buf(rx_ring, rx_buf, rx_buf_pgcnt);
-+		ice_put_rx_buf(rx_ring, rx_buf);
- 		continue;
- construct_skb:
- 		if (skb) {
-@@ -1228,7 +1222,7 @@ int ice_clean_rx_irq(struct ice_rx_ring *rx_ring, int budget)
- 			break;
- 		}
- 
--		ice_put_rx_buf(rx_ring, rx_buf, rx_buf_pgcnt);
-+		ice_put_rx_buf(rx_ring, rx_buf);
- 		cleaned_count++;
- 
- 		/* skip if it is NOP desc */
-diff --git a/drivers/net/ethernet/intel/ice/ice_txrx.h b/drivers/net/ethernet/intel/ice/ice_txrx.h
-index ef8245f795c5b..c1d9b3cebb059 100644
---- a/drivers/net/ethernet/intel/ice/ice_txrx.h
-+++ b/drivers/net/ethernet/intel/ice/ice_txrx.h
-@@ -172,7 +172,8 @@ struct ice_rx_buf {
- 	dma_addr_t dma;
- 	struct page *page;
- 	unsigned int page_offset;
--	u16 pagecnt_bias;
-+	unsigned int pgcnt;
-+	unsigned int pagecnt_bias;
++	if (dell_uart_present)
++		return acpi_backlight_dell_uart;
++
+ 	/* Use ACPI video if available, except when native should be preferred. */
+ 	if ((video_caps & ACPI_VIDEO_BACKLIGHT) &&
+ 	     !(native_available && prefer_native_over_acpi_video()))
+--- a/include/acpi/video.h
++++ b/include/acpi/video.h
+@@ -50,6 +50,7 @@ enum acpi_backlight_type {
+ 	acpi_backlight_native,
+ 	acpi_backlight_nvidia_wmi_ec,
+ 	acpi_backlight_apple_gmux,
++	acpi_backlight_dell_uart,
  };
  
- struct ice_q_stats {
--- 
-2.43.0
-
+ #if IS_ENABLED(CONFIG_ACPI_VIDEO)
 
 
 
