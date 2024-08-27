@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-71246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70953-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 706F296127E
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:31:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F34229610DA
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:13:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A406C1C22AF9
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:31:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9DC291F239DA
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:13:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D9DA1C68A0;
-	Tue, 27 Aug 2024 15:29:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E001B1C57AF;
+	Tue, 27 Aug 2024 15:13:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bNS9uWIu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tkB0vxZt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 026FD1C3F17;
-	Tue, 27 Aug 2024 15:29:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C4C81A072D;
+	Tue, 27 Aug 2024 15:13:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772581; cv=none; b=I8a9rcD1YWM7m4xETnkOBN/qIpx83QW2552CjsfpwW/ue2tF4hPef+cz0hNs6SXmKGF0qq4uxMBi3CczyHEY6lmtEeuvcsxaYdbOqyBNX0XMTZ2yxxskkKgzIx7npSbIPS2xjH1sgsNYHzD0UXxH9xZTfqxQDDLFgbQ9MxEBJJw=
+	t=1724771610; cv=none; b=VNxUWoKQilpg4br87dAHoBOElK+UGwepraDztzCSOTTOBNB8MOUnMduCaaStGLPMHurni6GYeUvxFy/9/mjuqPif0JE7Zd/7vKy3WdmZ0JXT+CLe92XqFM9dCa0WJebEAh+5u2tJhtKcNWyFAmvnAkhW2kjGXlJU+eSXD3qrAr4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772581; c=relaxed/simple;
-	bh=d0C2Jpfon2yw5tosKBA+YBUJaKhNILEr3DafF9/22Hc=;
+	s=arc-20240116; t=1724771610; c=relaxed/simple;
+	bh=aH7LIceNVI7ohKujbTXnCkxuq+3NRo5bTuz6/yURVRI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aBFmk2WzcVFaucA77Kf+ttZTvdjcz114b4QIvgkKYE9MAssSE/vvMk51tTzk/GXWd49CtLyNSar1gTaXUizlJiE1SeKbO6gN5IQlL/oWlJld7wzmDLZb1COFUitYZZ9p32E0Kb3skD4qAw9OJdYbAWN3lrTPRR46301UYIOeMQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bNS9uWIu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C4D2C4AF19;
-	Tue, 27 Aug 2024 15:29:40 +0000 (UTC)
+	 MIME-Version; b=JGh8Sxgfan2dTqGU/3gchPpaRlykgC1QwqzxEzdHKGYZR0sAQC3aPovQI1MCb421EMcbZpN696HG4ly+XzGoUNRUzJXl8c47/JAx9D61IODafrNWs11LjUJ/al56W2WgyP7cHQpGLazE8bTOoiKwTv4CbJ00xv7BBrGm7/7R/Ws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tkB0vxZt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6BBEC6105E;
+	Tue, 27 Aug 2024 15:13:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772580;
-	bh=d0C2Jpfon2yw5tosKBA+YBUJaKhNILEr3DafF9/22Hc=;
+	s=korg; t=1724771610;
+	bh=aH7LIceNVI7ohKujbTXnCkxuq+3NRo5bTuz6/yURVRI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bNS9uWIuplm9nVQnvnkJde0JceipmukXJCB4KMwTRAo8k8QG4pGeS4zBQQWrJVXfD
-	 9ZGuWO4J2sug6sEGtn0z1HYiqpWFiW+6IkgJjZDKo1FpRIlp5XWjO14UmelPQFt1lO
-	 HKd21YIf6EFzrRVNfE/JjW0jClleynb21Kp8UIME=
+	b=tkB0vxZtBoFdvn307Cmaby0oBmrGsc62cXy16D4nFV1R2uFkcbcmuZRSZT6yy7iFa
+	 7fOxXLud9+6SQ9VgbHb34OyA/XV2ksEs1bUfymqCkFILjNTP8/Jcr1B8IKpEExIdCw
+	 3rlcPrkp0JpztMc8m8sLk2EoF9SqdSYPZKwlntmk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Anderson <sean.anderson@linux.dev>,
+	Nikolay Kuratov <kniv@yandex-team.ru>,
 	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 257/321] net: xilinx: axienet: Fix dangling multicast addresses
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.10 241/273] cxgb4: add forgotten u64 ivlan cast before shift
 Date: Tue, 27 Aug 2024 16:39:25 +0200
-Message-ID: <20240827143848.026662078@linuxfoundation.org>
+Message-ID: <20240827143842.574580125@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,99 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Anderson <sean.anderson@linux.dev>
+From: Nikolay Kuratov <kniv@yandex-team.ru>
 
-[ Upstream commit 797a68c9de0f5a5447baf4bd3bb9c10a3993435b ]
+commit 80a1e7b83bb1834b5568a3872e64c05795d88f31 upstream.
 
-If a multicast address is removed but there are still some multicast
-addresses, that address would remain programmed into the frame filter.
-Fix this by explicitly setting the enable bit for each filter.
+It is done everywhere in cxgb4 code, e.g. in is_filter_exact_match()
+There is no reason it should not be done here
 
-Fixes: 8a3b7a252dca ("drivers/net/ethernet/xilinx: added Xilinx AXI Ethernet driver")
-Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+Found by Linux Verification Center (linuxtesting.org) with SVACE
+
+Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
+Cc: stable@vger.kernel.org
+Fixes: 12b276fbf6e0 ("cxgb4: add support to create hash filters")
 Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20240822154059.1066595-3-sean.anderson@linux.dev
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20240819075408.92378-1-kniv@yandex-team.ru
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/xilinx/xilinx_axienet.h  |  1 +
- .../net/ethernet/xilinx/xilinx_axienet_main.c | 21 ++++++++-----------
- 2 files changed, 10 insertions(+), 12 deletions(-)
+ drivers/net/ethernet/chelsio/cxgb4/cxgb4_filter.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet.h b/drivers/net/ethernet/xilinx/xilinx_axienet.h
-index 969bea5541976..503c32413474a 100644
---- a/drivers/net/ethernet/xilinx/xilinx_axienet.h
-+++ b/drivers/net/ethernet/xilinx/xilinx_axienet.h
-@@ -169,6 +169,7 @@
- #define XAE_UAW0_OFFSET		0x00000700 /* Unicast address word 0 */
- #define XAE_UAW1_OFFSET		0x00000704 /* Unicast address word 1 */
- #define XAE_FMI_OFFSET		0x00000708 /* Frame Filter Control */
-+#define XAE_FFE_OFFSET		0x0000070C /* Frame Filter Enable */
- #define XAE_AF0_OFFSET		0x00000710 /* Address Filter 0 */
- #define XAE_AF1_OFFSET		0x00000714 /* Address Filter 1 */
+--- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_filter.c
++++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_filter.c
+@@ -1244,7 +1244,8 @@ static u64 hash_filter_ntuple(struct ch_
+ 	 * in the Compressed Filter Tuple.
+ 	 */
+ 	if (tp->vlan_shift >= 0 && fs->mask.ivlan)
+-		ntuple |= (FT_VLAN_VLD_F | fs->val.ivlan) << tp->vlan_shift;
++		ntuple |= (u64)(FT_VLAN_VLD_F |
++				fs->val.ivlan) << tp->vlan_shift;
  
-diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-index ff4b31e93d75f..59d1cfbf7d6b7 100644
---- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-+++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-@@ -411,7 +411,7 @@ static int netdev_set_mac_address(struct net_device *ndev, void *p)
-  */
- static void axienet_set_multicast_list(struct net_device *ndev)
- {
--	int i;
-+	int i = 0;
- 	u32 reg, af0reg, af1reg;
- 	struct axienet_local *lp = netdev_priv(ndev);
- 
-@@ -433,7 +433,6 @@ static void axienet_set_multicast_list(struct net_device *ndev)
- 		reg &= ~XAE_FMI_PM_MASK;
- 		axienet_iow(lp, XAE_FMI_OFFSET, reg);
- 
--		i = 0;
- 		netdev_for_each_mc_addr(ha, ndev) {
- 			if (i >= XAE_MULTICAST_CAM_TABLE_NUM)
- 				break;
-@@ -452,6 +451,7 @@ static void axienet_set_multicast_list(struct net_device *ndev)
- 			axienet_iow(lp, XAE_FMI_OFFSET, reg);
- 			axienet_iow(lp, XAE_AF0_OFFSET, af0reg);
- 			axienet_iow(lp, XAE_AF1_OFFSET, af1reg);
-+			axienet_iow(lp, XAE_FFE_OFFSET, 1);
- 			i++;
- 		}
- 	} else {
-@@ -459,18 +459,15 @@ static void axienet_set_multicast_list(struct net_device *ndev)
- 		reg &= ~XAE_FMI_PM_MASK;
- 
- 		axienet_iow(lp, XAE_FMI_OFFSET, reg);
--
--		for (i = 0; i < XAE_MULTICAST_CAM_TABLE_NUM; i++) {
--			reg = axienet_ior(lp, XAE_FMI_OFFSET) & 0xFFFFFF00;
--			reg |= i;
--
--			axienet_iow(lp, XAE_FMI_OFFSET, reg);
--			axienet_iow(lp, XAE_AF0_OFFSET, 0);
--			axienet_iow(lp, XAE_AF1_OFFSET, 0);
--		}
--
- 		dev_info(&ndev->dev, "Promiscuous mode disabled.\n");
- 	}
-+
-+	for (; i < XAE_MULTICAST_CAM_TABLE_NUM; i++) {
-+		reg = axienet_ior(lp, XAE_FMI_OFFSET) & 0xFFFFFF00;
-+		reg |= i;
-+		axienet_iow(lp, XAE_FMI_OFFSET, reg);
-+		axienet_iow(lp, XAE_FFE_OFFSET, 0);
-+	}
- }
- 
- /**
--- 
-2.43.0
-
+ 	if (tp->port_shift >= 0 && fs->mask.iport)
+ 		ntuple |= (u64)fs->val.iport << tp->port_shift;
 
 
 
