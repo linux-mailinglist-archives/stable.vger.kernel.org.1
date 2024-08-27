@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-70467-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71009-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EAE0960E46
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:47:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0438F961125
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:17:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F11D1C22665
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:47:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A27191F24467
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:17:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EF761C4EFC;
-	Tue, 27 Aug 2024 14:46:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F11B1C8FDD;
+	Tue, 27 Aug 2024 15:16:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SaSTVgSm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V9/YPWzG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18992DDC1;
-	Tue, 27 Aug 2024 14:46:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E227E1C8FC4;
+	Tue, 27 Aug 2024 15:16:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770003; cv=none; b=nsotbe9JJYNenXqOThj9buAZ7IKp6vEJ6L/tRU4Gep+NNhhuB39MVxX5Rw1X+OvUHfRBihDRIvmvxNiuL0kdLRyi7UBc4AYbcONid5XPvqvGDno6kb1c06kJ3wuTPxpZ51ujQwYKuIezwa98My8cTfvO2q4nPCfd4/kIzLRnDeA=
+	t=1724771794; cv=none; b=F454aR5jgZBeOHiTaAXwtBvYulFfIjxRkR+hLBNcEmxHpNLQzmT62oMfNHseJ4UjKtWCx9yU9ilahNUU2tERR8/k1sft53UndUJ8zs5dCBhTyu+tYk0xokCkfI7FSl8JuYnSkFq76ekk6fhCFihw5XsDHb29vjJpDUL+DyDVdkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770003; c=relaxed/simple;
-	bh=RA4o3+UUCNrZV0R3Lk9SitGzEGR1YZCWFJxwdWSqfSc=;
+	s=arc-20240116; t=1724771794; c=relaxed/simple;
+	bh=n28mZzZLRSASG3EFkrKENjPfcCNpurvWmcf/hadaLag=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eBRzKrPrnTpZAqmFBKdRsufKyzmfr0dJhU/Raj0ueCc1o8GqxXmnO4nNpRHBVoaTYqV+rTzrvVwm9mg4b7YxNWHTz7XrBF0i6/h+iHH98Ru7Vhq6PZpaEAmwqJW2++wnXCYg5JWzxp3Lnk5YNbGS3NjgtgV6A+Sa+3ICerIvEFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SaSTVgSm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 251E9C6106D;
-	Tue, 27 Aug 2024 14:46:41 +0000 (UTC)
+	 MIME-Version; b=QlGL6myeugSsk601XlKjyn02p7tr5OW1VtJuaUuNaleP5sEs1NotKHxhWvRgE3+gIjd14S4cvzFrBy18PEyrexSRIfdT/O7QCoO2/LzNlQuc0PsfAoFCr5TKt5PsLeh3z8Yu59BihldpFTzL1mHbq6Xk7WZC8bf8JD9e8/26vs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V9/YPWzG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13AC8C4DE16;
+	Tue, 27 Aug 2024 15:16:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770002;
-	bh=RA4o3+UUCNrZV0R3Lk9SitGzEGR1YZCWFJxwdWSqfSc=;
+	s=korg; t=1724771793;
+	bh=n28mZzZLRSASG3EFkrKENjPfcCNpurvWmcf/hadaLag=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SaSTVgSmF1+VeYWd0MvaVsI9comGaOrs0ZF0lAzCiWrZIoxkRlZ0vxvXdNUtn1sd+
-	 Nxl+8SY0MATfW7V3XoOls4jqq07/vHlAS/wLEXRK8vzhRXDzoFhW54f/AijRe9AzEt
-	 5Eo5vbd36UM5voE+s8pmJb11RBAXnMntmW8bTTv0=
+	b=V9/YPWzGI+qlloZscZVcRFi0RhibpxJTeB9hgs/CKTecYulK6AZat8fLFNmVbZtjQ
+	 duxdbYBTk86NGy1XRAXrgCmQyn1Gqx9gPA6Xv9+M4A3zCFjc0J+DrtL+Y2mlTTwBzl
+	 LSuxmH2fZkd9xIKejGVCseiADrARYETbMzl4WLPM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 099/341] RDMA/rtrs: Fix the problem of variable not initialized fully
+	John Kacur <jkacur@redhat.com>,
+	"Luis Claudio R. Goncalves" <lgoncalv@redhat.com>,
+	Clark Williams <williams@redhat.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.1 022/321] rtla/osnoise: Prevent NULL dereference in error handling
 Date: Tue, 27 Aug 2024 16:35:30 +0200
-Message-ID: <20240827143847.174117273@linuxfoundation.org>
+Message-ID: <20240827143839.056124610@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhu Yanjun <yanjun.zhu@linux.dev>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit c5930a1aa08aafe6ffe15b5d28fe875f88f6ac86 ]
+commit 90574d2a675947858b47008df8d07f75ea50d0d0 upstream.
 
-No functionality change. The variable which is not initialized fully
-will introduce potential risks.
+If the "tool->data" allocation fails then there is no need to call
+osnoise_free_top() and, in fact, doing so will lead to a NULL dereference.
 
-Signed-off-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Link: https://lore.kernel.org/r/20230919020806.534183-1-yanjun.zhu@intel.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Cc: John Kacur <jkacur@redhat.com>
+Cc: "Luis Claudio R. Goncalves" <lgoncalv@redhat.com>
+Cc: Clark Williams <williams@redhat.com>
+Fixes: 1eceb2fc2ca5 ("rtla/osnoise: Add osnoise top mode")
+Link: https://lore.kernel.org/f964ed1f-64d2-4fde-ad3e-708331f8f358@stanley.mountain
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/ulp/rtrs/rtrs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/tracing/rtla/src/osnoise_top.c |   11 ++++-------
+ 1 file changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/infiniband/ulp/rtrs/rtrs.c b/drivers/infiniband/ulp/rtrs/rtrs.c
-index 3696f367ff515..d80edfffd2e49 100644
---- a/drivers/infiniband/ulp/rtrs/rtrs.c
-+++ b/drivers/infiniband/ulp/rtrs/rtrs.c
-@@ -255,7 +255,7 @@ static int create_cq(struct rtrs_con *con, int cq_vector, int nr_cqe,
- static int create_qp(struct rtrs_con *con, struct ib_pd *pd,
- 		     u32 max_send_wr, u32 max_recv_wr, u32 max_sge)
- {
--	struct ib_qp_init_attr init_attr = {NULL};
-+	struct ib_qp_init_attr init_attr = {};
- 	struct rdma_cm_id *cm_id = con->cm_id;
- 	int ret;
+--- a/tools/tracing/rtla/src/osnoise_top.c
++++ b/tools/tracing/rtla/src/osnoise_top.c
+@@ -520,8 +520,10 @@ struct osnoise_tool *osnoise_init_top(st
+ 		return NULL;
  
--- 
-2.43.0
-
+ 	tool->data = osnoise_alloc_top(nr_cpus);
+-	if (!tool->data)
+-		goto out_err;
++	if (!tool->data) {
++		osnoise_destroy_tool(tool);
++		return NULL;
++	}
+ 
+ 	tool->params = params;
+ 
+@@ -529,11 +531,6 @@ struct osnoise_tool *osnoise_init_top(st
+ 				   osnoise_top_handler, NULL);
+ 
+ 	return tool;
+-
+-out_err:
+-	osnoise_free_top(tool->data);
+-	osnoise_destroy_tool(tool);
+-	return NULL;
+ }
+ 
+ static int stop_tracing;
 
 
 
