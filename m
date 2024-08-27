@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-70747-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70521-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7370E960FD7
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:03:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E602E960E8F
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:49:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A69BE1C238C0
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:03:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23FC81C2327D
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:49:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D28B01C942C;
-	Tue, 27 Aug 2024 15:02:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF6BE1BFE06;
+	Tue, 27 Aug 2024 14:49:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wVxQodak"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MRjrBHGb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 912461C7B6F;
-	Tue, 27 Aug 2024 15:02:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACBD8DDC1;
+	Tue, 27 Aug 2024 14:49:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770929; cv=none; b=Bk7Bxl1Pq1VtisnDPEfYPN58nVcN8XmSoyhvngpd2o56b6Da9mKYcabmvnuWykrXFCknDNRuRMmAs8/Oa/1udB7RGyY/E/nZtaHVF4a3XBOSu/A8POFwB4sK2+W5LGw4RzyC3Dr9cZoX9LSpj6URatfFKLeL90U2qKwbi/+Hy2A=
+	t=1724770184; cv=none; b=qORViAgywRFAWO2aVcFRjHhb4TmzrCPmq8IGPspeX0bq+75zZ4ot1CYmBu5qLCs3lILYzEWP3xQtk4TLErTSy1ROfO0D+J4DDrP6TNFLIQO1J0zvBms5oxij+4aauWc39p0dr5IIbIDtNx3pS5bz/rit8QKJAdPLEF2XQq+8Q5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770929; c=relaxed/simple;
-	bh=LQ0EAmPOUUu8DdZibmMuLskhjjknjTWTRatM2YrB3DA=;
+	s=arc-20240116; t=1724770184; c=relaxed/simple;
+	bh=TexKarRH9vEKwzuf/mQxvvnbV3WEqiVUMfuXEnz8+Jk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VDiFYyhzCL9MOsiVLFyHQrXir94eItqhVwXtFuh8AUyeLTVNvaBakgUcic/Btiz9DJPZZKPISYU88ZyluhMO8s1jOFRYogJnZdAi40WKv4O3SuREFpk5Uc9NlqpmBhyZPgu5Z0mNMicWsxJ+v6xCeQFosgj3mDjA2UE96pcqG4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wVxQodak; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0A39C4DDF5;
-	Tue, 27 Aug 2024 15:02:08 +0000 (UTC)
+	 MIME-Version; b=bDsBQ76nraYjV/5pnBPFZfPQsk146oq/5NeuXsovD2w82zEp3cDtGN0F/GQvUfpfdazF+r6k1aE4u2fPpbL7Be3Gx0f9AHaEHmg0+i0EtPYi9rMEumZgCDRHLZsFS4U0sGU38iPci6ve8avo/st/EnlnwJTl7L/A6Uf0zNoTPMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MRjrBHGb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36999C4AF1C;
+	Tue, 27 Aug 2024 14:49:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770929;
-	bh=LQ0EAmPOUUu8DdZibmMuLskhjjknjTWTRatM2YrB3DA=;
+	s=korg; t=1724770184;
+	bh=TexKarRH9vEKwzuf/mQxvvnbV3WEqiVUMfuXEnz8+Jk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wVxQodakSga4kxSnCBP/mJPc/YqXi1LGsuXpKWwHBO6p0A7J4HZY1yKOEGc2R/fqs
-	 /HZcKGoSJJXexFoEfQWWGIp49CGc2jSEl4xjRgxNow+i6c6W/04X7FmtQzghySkSrT
-	 lla7RKO44bnoU3wesleeGoElEHWkcV4mBmoiUOhg=
+	b=MRjrBHGbWljapLRvDIwRag7UmQARfhXEicfeQ/mgM4rgmzYzuNAUdy8vQ0vxouZGW
+	 WiC6QGkOEQIcQzPCFGx/PCWOB63VAYIT/KW+N4kXSdev/9BvL3CD229ndJaOtPdUbG
+	 uGguLQQKZmmVH/Wj3Hn71t6qAmRmv9vW/dAsF4VY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Dmitry V. Levin" <ldv@strace.io>,
-	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
-	Celeste Liu <CoelacanthusHex@gmail.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH 6.10 028/273] riscv: entry: always initialize regs->a0 to -ENOSYS
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 121/341] media: qcom: venus: fix incorrect return value
 Date: Tue, 27 Aug 2024 16:35:52 +0200
-Message-ID: <20240827143834.464714731@linuxfoundation.org>
+Message-ID: <20240827143848.018424175@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +60,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Celeste Liu <coelacanthushex@gmail.com>
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-commit 61119394631f219e23ce98bcc3eb993a64a8ea64 upstream.
+[ Upstream commit 51b74c09ac8c5862007fc2bf0d465529d06dd446 ]
 
-Otherwise when the tracer changes syscall number to -1, the kernel fails
-to initialize a0 with -ENOSYS and subsequently fails to return the error
-code of the failed syscall to userspace. For example, it will break
-strace syscall tampering.
+'pd' can be NULL, and in that case it shouldn't be passed to
+PTR_ERR. Fixes a smatch warning:
 
-Fixes: 52449c17bdd1 ("riscv: entry: set a0 = -ENOSYS only when syscall != -1")
-Reported-by: "Dmitry V. Levin" <ldv@strace.io>
-Reviewed-by: Björn Töpel <bjorn@rivosinc.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Celeste Liu <CoelacanthusHex@gmail.com>
-Link: https://lore.kernel.org/r/20240627142338.5114-2-CoelacanthusHex@gmail.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+drivers/media/platform/qcom/venus/pm_helpers.c:873 vcodec_domains_get() warn: passing zero to 'PTR_ERR'
+
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/kernel/traps.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/media/platform/qcom/venus/pm_helpers.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/riscv/kernel/traps.c
-+++ b/arch/riscv/kernel/traps.c
-@@ -319,6 +319,7 @@ void do_trap_ecall_u(struct pt_regs *reg
+diff --git a/drivers/media/platform/qcom/venus/pm_helpers.c b/drivers/media/platform/qcom/venus/pm_helpers.c
+index 48c9084bb4dba..a1b127caa90a7 100644
+--- a/drivers/media/platform/qcom/venus/pm_helpers.c
++++ b/drivers/media/platform/qcom/venus/pm_helpers.c
+@@ -870,7 +870,7 @@ static int vcodec_domains_get(struct venus_core *core)
+ 		pd = dev_pm_domain_attach_by_name(dev,
+ 						  res->vcodec_pmdomains[i]);
+ 		if (IS_ERR_OR_NULL(pd))
+-			return PTR_ERR(pd) ? : -ENODATA;
++			return pd ? PTR_ERR(pd) : -ENODATA;
+ 		core->pmdomains[i] = pd;
+ 	}
  
- 		regs->epc += 4;
- 		regs->orig_a0 = regs->a0;
-+		regs->a0 = -ENOSYS;
- 
- 		riscv_v_vstate_discard(regs);
- 
-@@ -328,8 +329,7 @@ void do_trap_ecall_u(struct pt_regs *reg
- 
- 		if (syscall >= 0 && syscall < NR_syscalls)
- 			syscall_handler(regs, syscall);
--		else if (syscall != -1)
--			regs->a0 = -ENOSYS;
-+
- 		/*
- 		 * Ultimately, this value will get limited by KSTACK_OFFSET_MAX(),
- 		 * so the maximum stack offset is 1k bytes (10 bits).
+-- 
+2.43.0
+
 
 
 
