@@ -1,167 +1,105 @@
-Return-Path: <stable+bounces-70787-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71120-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22A5B96100A
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:05:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 092259611BC
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:23:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 549741C2359D
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:05:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A63D71F24125
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:23:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 174771BA88C;
-	Tue, 27 Aug 2024 15:04:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68B7D1C8700;
+	Tue, 27 Aug 2024 15:22:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="W4KF0RGN"
 X-Original-To: stable@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3B011C5793
-	for <stable@vger.kernel.org>; Tue, 27 Aug 2024 15:04:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B938F1A072D;
+	Tue, 27 Aug 2024 15:22:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771059; cv=none; b=ZWPHuzxaNGu3x87ItHtiY9HqMQQ9O+OV6xR3TchZqXmeh6EgzIto1104GtuyPusV1Riw8/bsZFnCwzRUK8jFItY5fIViWuV8JZqxCadoqkhkxEBSSATfgVX1EHXBrddnUQr0GoctEoK3G0eRuzHg81+kd0Nxnp2+HZ0+igt9+qk=
+	t=1724772164; cv=none; b=nEbYftbGPYwacDEmcgqXW4O2dsLXHV6+aai6OCOPxz7asHaVIZwaXXh+SKiIR3MTaVfU311hAiAPMEIrhUMEUWrFgqpt3t8ghAOMD0mV9qQqw19h5E0sSkgUCn4BeVlKqxA1pqh4S7EtJ+YrcXc7XQE53ynlD2K6gYqEUDt3zrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771059; c=relaxed/simple;
-	bh=sitoU9GOPCZKdPbVj7kj1YOt9IJlulo4vgrNAHs3Sv4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OnvNBymmOtC8/rc7feU4CmyxMqXKL/KZmH8rqec9rH+36TwvSKOxpqWgKlw4Sz5Sr+f7bZwdOA/iMYJHg4ipgLy4JES7YktFjC74x/ZAA22yxCXLVspgClYzITDa4tFVTAVOWRpaRdvvvBHBAQrpEE0ouYSbNYUAWUZLYEaCAMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mgr@pengutronix.de>)
-	id 1sixjx-0001uh-8l; Tue, 27 Aug 2024 17:04:13 +0200
-Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <mgr@pengutronix.de>)
-	id 1sixjw-003SPu-RS; Tue, 27 Aug 2024 17:04:12 +0200
-Received: from mgr by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mgr@pengutronix.de>)
-	id 1sixjw-008zUs-2O;
-	Tue, 27 Aug 2024 17:04:12 +0200
-Date: Tue, 27 Aug 2024 17:04:12 +0200
-From: Michael Grzeschik <mgr@pengutronix.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.6 110/341] usb: gadget: uvc: cleanup request when not
- in correct state
-Message-ID: <Zs3q7KGX_i99-B4_@pengutronix.de>
-References: <20240827143843.399359062@linuxfoundation.org>
- <20240827143847.597379131@linuxfoundation.org>
+	s=arc-20240116; t=1724772164; c=relaxed/simple;
+	bh=uX2VF1ISl15ZvFiOQ8kAznCsbp8tplhrTRlmCK22HiI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=F4P4tYjT4v7Zc326+mYzm98hVWGZVVArBfz1nQGlShvyLwfomAorGAKav4wZYcnRS/4n6BdzIgdJKSzh4k4ZyHupGTlD9AibjORJJb3AUzwV3repx/83W1DjM3FdUqjlXezjoksGjkgXHazII5MEXG6hiMmwPKVNsCtuPGJ00Uk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=W4KF0RGN; arc=none smtp.client-ip=83.149.199.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
+Received: from fpc.intra.ispras.ru (unknown [10.10.165.16])
+	by mail.ispras.ru (Postfix) with ESMTPSA id 1214840B1E79;
+	Tue, 27 Aug 2024 15:13:34 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 1214840B1E79
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+	s=default; t=1724771614;
+	bh=5W38TwAm/xm3LEpuuE3aTN7FkHlJ4T793ps5j3TMybM=;
+	h=From:To:Cc:Subject:Date:From;
+	b=W4KF0RGNIRlmPn4U1pYvfTblFtPVcoUVKSQ3nhjgds0Lv6oKbjkoZSeV6oXyq4Udy
+	 mzwDaq2CX5sNGUKCpusoPnLnNHQ6AxaHAvqv7se8zo47HnAp5Td+ogOM2v4sgfWQy0
+	 mIL4c37zfGXwvXUDrp3u/MMqvwK+i9NFQ4T/BE1c=
+From: Fedor Pchelkin <pchelkin@ispras.ru>
+To: David Sterba <dsterba@suse.com>
+Cc: Fedor Pchelkin <pchelkin@ispras.ru>,
+	Chris Mason <clm@fb.com>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Boris Burkov <boris@bur.io>,
+	linux-btrfs@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	syzbot+81670362c283f3dd889c@syzkaller.appspotmail.com,
+	stable@vger.kernel.org
+Subject: [PATCH] btrfs: qgroup: add missing extent changeset release
+Date: Tue, 27 Aug 2024 18:12:43 +0300
+Message-Id: <20240827151243.63493-1-pchelkin@ispras.ru>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ixqf0Tl6Cb5DiHsx"
-Content-Disposition: inline
-In-Reply-To: <20240827143847.597379131@linuxfoundation.org>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mgr@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
+Content-Transfer-Encoding: 8bit
 
+The extent changeset may have some additional memory dynamically allocated
+for ulist in result of clear_record_extent_bits() execution.
 
---ixqf0Tl6Cb5DiHsx
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Release it after the local changeset is no longer needed in
+BTRFS_QGROUP_MODE_DISABLED case.
 
-On Tue, Aug 27, 2024 at 04:35:41PM +0200, Greg Kroah-Hartman wrote:
->6.6-stable review patch.  If anyone has any objections, please let me know.
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
 
-Since this change is not actually in Mainline anymore as you reverted it
-immediatly afterwards, it probably make no sense to pick it up.
+Reported-by: syzbot+81670362c283f3dd889c@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/lkml/000000000000aa8c0c060ade165e@google.com
+Fixes: af0e2aab3b70 ("btrfs: qgroup: flush reservations during quota disable")
+Cc: stable@vger.kernel.org # 6.10+
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+---
+ fs/btrfs/qgroup.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-I saw this patch and its revert past me the last week while being
-applied on some other stable trees.
+diff --git a/fs/btrfs/qgroup.c b/fs/btrfs/qgroup.c
+index 5d57a285d59b..4f1fa5d427e1 100644
+--- a/fs/btrfs/qgroup.c
++++ b/fs/btrfs/qgroup.c
+@@ -4345,9 +4345,10 @@ static int __btrfs_qgroup_release_data(struct btrfs_inode *inode,
+ 
+ 	if (btrfs_qgroup_mode(inode->root->fs_info) == BTRFS_QGROUP_MODE_DISABLED) {
+ 		extent_changeset_init(&changeset);
+-		return clear_record_extent_bits(&inode->io_tree, start,
+-						start + len - 1,
+-						EXTENT_QGROUP_RESERVED, &changeset);
++		ret = clear_record_extent_bits(&inode->io_tree, start,
++					       start + len - 1,
++					       EXTENT_QGROUP_RESERVED, &changeset);
++		goto out;
+ 	}
+ 
+ 	/* In release case, we shouldn't have @reserved */
+-- 
+2.39.2
 
-
->------------------
->
->From: Michael Grzeschik <m.grzeschik@pengutronix.de>
->
->[ Upstream commit 52a39f2cf62bb5430ad1f54cd522dbfdab1d71ba ]
->
->The uvc_video_enable function of the uvc-gadget driver is dequeing and
->immediately deallocs all requests on its disable codepath. This is not
->save since the dequeue function is async and does not ensure that the
->requests are left unlinked in the controller driver.
->
->By adding the ep_free_request into the completion path of the requests
->we ensure that the request will be properly deallocated.
->
->Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
->Link: https://lore.kernel.org/r/20230911140530.2995138-3-m.grzeschik@pengu=
-tronix.de
->Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->Signed-off-by: Sasha Levin <sashal@kernel.org>
->---
-> drivers/usb/gadget/function/uvc_video.c | 6 ++++++
-> 1 file changed, 6 insertions(+)
->
->diff --git a/drivers/usb/gadget/function/uvc_video.c b/drivers/usb/gadget/=
-function/uvc_video.c
->index 281e75027b344..678ed30ada2b7 100644
->--- a/drivers/usb/gadget/function/uvc_video.c
->+++ b/drivers/usb/gadget/function/uvc_video.c
->@@ -259,6 +259,12 @@ uvc_video_complete(struct usb_ep *ep, struct usb_requ=
-est *req)
-> 	struct uvc_device *uvc =3D video->uvc;
-> 	unsigned long flags;
->
->+	if (uvc->state =3D=3D UVC_STATE_CONNECTED) {
->+		usb_ep_free_request(video->ep, ureq->req);
->+		ureq->req =3D NULL;
->+		return;
->+	}
->+
-> 	switch (req->status) {
-> 	case 0:
-> 		break;
->--=20
->2.43.0
->
->
->
->
-
---=20
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
---ixqf0Tl6Cb5DiHsx
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEElXvEUs6VPX6mDPT8C+njFXoeLGQFAmbN6ukACgkQC+njFXoe
-LGSocxAAwkIN1q1RKSRl3Igq6Ln8Hu6xf135pzG8cl+b7VX9nqYsKB1QmsAVZTJr
-+cIBNTxD1h/1mFMOQKGXLj37XhwKoEkDrPejR1csyY9ulw+gFPTmeiPzACHWFOMk
-IO8ITsV+dsUT87M/b0vcTUd7ZANh+qHDc87nEliIrMDXi8ZKPUUzMeLiK40VPaJE
-+qAOulkqV2aC9rFfxj68JIhksQKcr4CdvPO5yDaEYkfPanNZwOOlkFjOtw9VdRKt
-83lbMO1+sIe/sovgmv7D04ZKfar3179XyCHyOKN+BSCqDpOQ3XTe4gTP1IvGTgcL
-FaHM7S0w9V43r3i+0YQCiVmoyy1Pvp/37LxqnWccGkMtCKNkbDn3vRfXlSsjlTvL
-vWOP9tNcjRykealtAWRvSqZSYjnB1E3mKEZYzI2Fq2yGocJ+aZXNHX0mzrqsTDWj
-We1Cw355kK9U//0QXNJny4nhfAA/JIV6hSQRE8hF2JsRIA/vXI3bz7nKtS6gdECq
-B2DxK2rBpKVACrJllMtP22643htRffg08LfFWijRxW8cRihJPZxYhwj/bnEnfftC
-GeU4QoFJuiZy3SL0jKloSAoPkzl1zMatG7ZT+gwyS8Lb+0HiwQ20POuWAp3Gz6kG
-mg5n8TnlUEOnzuoLFbCN9d4Zu3TeudIjPyxoEITsuwnQu9subeI=
-=wckj
------END PGP SIGNATURE-----
-
---ixqf0Tl6Cb5DiHsx--
 
