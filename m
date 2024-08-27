@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-70835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71158-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F36A961041
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:07:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65C2C9611EE
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:25:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCE851F21F1B
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:06:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 987531C236A9
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:25:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3310F1C461D;
-	Tue, 27 Aug 2024 15:06:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D67541C57BF;
+	Tue, 27 Aug 2024 15:24:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="leMaR/fl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iiBTy9Ue"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E641F1E520;
-	Tue, 27 Aug 2024 15:06:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 949921C689C;
+	Tue, 27 Aug 2024 15:24:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771218; cv=none; b=nhZ54Mq0PHTelxb6km9AHyKnUexlIkqrPpcZhXVAcFkn+eg08M0//zxfF260dxq+TS0puqYh5TVuFKbV+rzYfRg6Hp9IPnrMB/fxM4yJkJhVvdPfbDhTAU6Fh+iOkPbQ0NrL+GDMNmGzQ3qRVuWXVOZlzk1XPdfQ/kZSEX8TFDs=
+	t=1724772290; cv=none; b=Y28UeB3ZhcTG0iNXtdctvBHlbOt6X1mgPH4FK91GkvR2r76CmbZ9e+SJMWcVEV/k6Mb8ufHqmGhgZdQhQhf5nsN/hoyusH383NKpDJuY6VT0u3t6BVeB+uf9A3bSW2tEvn0MuN2e3eE7+/yOI3+0Q+3LUaTGCHirSWr2gW7Da2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771218; c=relaxed/simple;
-	bh=07WZJ9mM0bs2qEmtSTHFWam8KCgTR73mlTaYSekXpXo=;
+	s=arc-20240116; t=1724772290; c=relaxed/simple;
+	bh=cLtwn3BVhUx32xL5LFOQSU2xm0evSJ0PIRfHxMzba4I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JVwZHmlR2ZyF2IWlAE+D9+73TJDwRn3c+2H0THcI6NLzTeX260nTd4KxDuLxLnv24JlW43dTsC+aJFzTifAIX+VDaclSBThTJvm5btrpHuLZANBws3s50ckJpcUHs7vtJxcL9I8l0l14KUCByHm6G6XaGQRomx9aC/pCpKSgDtA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=leMaR/fl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25C20C4AF55;
-	Tue, 27 Aug 2024 15:06:56 +0000 (UTC)
+	 MIME-Version; b=ZOfX7vgyJYqY8XgSbtolzfs2AzZBF2p3JfNCSRyroh0RT8A95rJ/ZLwsNIFnO3on92t9CvCDaf8RjIMdkjxW2f8VsFSbaTcE+XuVQ8jX2uVkH5iXwCUSxs73bJd4CBO81Us4Jhxsh3dyXdi3H/oAEKPRAB7jDX0V3OSOS00ecfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iiBTy9Ue; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 011D3C61071;
+	Tue, 27 Aug 2024 15:24:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771217;
-	bh=07WZJ9mM0bs2qEmtSTHFWam8KCgTR73mlTaYSekXpXo=;
+	s=korg; t=1724772290;
+	bh=cLtwn3BVhUx32xL5LFOQSU2xm0evSJ0PIRfHxMzba4I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=leMaR/fl3ymws4gdTKds7U9DB6KVIMjdd3PaxCP8uh32YetvEAUyUfmJsufmX8ztx
-	 VK7139wDf6eGtmjp2uBzQyW1NjjToz7c6mXu4HmcHxnT3tMqzmsMBCSMkBjyWY7we2
-	 vcBcgUBQ2U/roTp6wycO+hfidDYRVQR8gluttWdI=
+	b=iiBTy9UecmTuNyckDjPYYO424ce1PaM/XYrNzKLvR1a7aFiou+NYUcqye1sHGTQ5/
+	 bgEbtX6XIuSmAl5NtKsXoP2YLTMNt5GcOO51A4kdwGszSllq6R84kuiHfA3AqfdjOq
+	 KETwSC/7e9vE1yCnydKlXxYmGEqC46bNwHx+lBxE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Asmaa Mnebhi <asmaa@nvidia.com>,
-	David Thompson <davthompson@nvidia.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Mukesh Sisodiya <mukesh.sisodiya@intel.com>,
+	Gregory Greenman <gregory.greenman@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 122/273] gpio: mlxbf3: Support shutdown() function
-Date: Tue, 27 Aug 2024 16:37:26 +0200
-Message-ID: <20240827143838.050251028@linuxfoundation.org>
+Subject: [PATCH 6.1 139/321] wifi: iwlwifi: fw: Fix debugfs command sending
+Date: Tue, 27 Aug 2024 16:37:27 +0200
+Message-ID: <20240827143843.531739978@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,93 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Asmaa Mnebhi <asmaa@nvidia.com>
+From: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
 
-[ Upstream commit aad41832326723627ad8ac9ee8a543b6dca4454d ]
+[ Upstream commit 048449fc666d736a1a17d950fde0b5c5c8fd10cc ]
 
-During Linux graceful reboot, the GPIO interrupts are not disabled.
-Since the drivers are not removed during graceful reboot,
-the logic to call mlxbf3_gpio_irq_disable() is not triggered.
-Interrupts that remain enabled can cause issues on subsequent boots.
+During debugfs command handling transport function is used directly,
+this bypasses the locking used by runtime operation function
+and leads to a kernel warning when two commands are
+sent in parallel.
 
-For example, the mlxbf-gige driver contains PHY logic to bring up the link.
-If the gpio-mlxbf3 driver loads first, the mlxbf-gige driver
-will use a GPIO interrupt to bring up the link.
-Otherwise, it will use polling.
-The next time Linux boots and loads the drivers in this order, we encounter the issue:
-- mlxbf-gige loads first and uses polling while the GPIO10
-  interrupt is still enabled from the previous boot. So if
-  the interrupt triggers, there is nothing to clear it.
-- gpio-mlxbf3 loads.
-- i2c-mlxbf loads. The interrupt doesn't trigger for I2C
-  because it is shared with the GPIO interrupt line which
-  was not cleared.
+Fix it by using runtime operations function when sending
+debugfs command.
 
-The solution is to add a shutdown function to the GPIO driver to clear and disable
-all interrupts. Also clear the interrupt after disabling it in mlxbf3_gpio_irq_disable().
-
-Fixes: 38a700efc510 ("gpio: mlxbf3: Add gpio driver support")
-Signed-off-by: Asmaa Mnebhi <asmaa@nvidia.com>
-Reviewed-by: David Thompson <davthompson@nvidia.com>
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/20240611171509.22151-1-asmaa@nvidia.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
+Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
+Link: https://lore.kernel.org/r/20231004123422.4f80ac90658a.Ia1dfa1195c919f3002fe08db3eefbd2bfa921bbf@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-mlxbf3.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/fw/debugfs.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpio/gpio-mlxbf3.c b/drivers/gpio/gpio-mlxbf3.c
-index d5906d419b0ab..10ea71273c891 100644
---- a/drivers/gpio/gpio-mlxbf3.c
-+++ b/drivers/gpio/gpio-mlxbf3.c
-@@ -39,6 +39,8 @@
- #define MLXBF_GPIO_CAUSE_OR_EVTEN0        0x14
- #define MLXBF_GPIO_CAUSE_OR_CLRCAUSE      0x18
+diff --git a/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c b/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
+index 607e07ed2477c..7d4340c56628a 100644
+--- a/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
++++ b/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
+@@ -163,7 +163,11 @@ static int iwl_dbgfs_enabled_severities_write(struct iwl_fw_runtime *fwrt,
  
-+#define MLXBF_GPIO_CLR_ALL_INTS           GENMASK(31, 0)
+ 	event_cfg.enabled_severities = cpu_to_le32(enabled_severities);
+ 
+-	ret = iwl_trans_send_cmd(fwrt->trans, &hcmd);
++	if (fwrt->ops && fwrt->ops->send_hcmd)
++		ret = fwrt->ops->send_hcmd(fwrt->ops_ctx, &hcmd);
++	else
++		ret = -EPERM;
 +
- struct mlxbf3_gpio_context {
- 	struct gpio_chip gc;
- 
-@@ -82,6 +84,8 @@ static void mlxbf3_gpio_irq_disable(struct irq_data *irqd)
- 	val = readl(gs->gpio_cause_io + MLXBF_GPIO_CAUSE_OR_EVTEN0);
- 	val &= ~BIT(offset);
- 	writel(val, gs->gpio_cause_io + MLXBF_GPIO_CAUSE_OR_EVTEN0);
-+
-+	writel(BIT(offset), gs->gpio_cause_io + MLXBF_GPIO_CAUSE_OR_CLRCAUSE);
- 	raw_spin_unlock_irqrestore(&gs->gc.bgpio_lock, flags);
- 
- 	gpiochip_disable_irq(gc, offset);
-@@ -253,6 +257,15 @@ static int mlxbf3_gpio_probe(struct platform_device *pdev)
- 	return 0;
- }
- 
-+static void mlxbf3_gpio_shutdown(struct platform_device *pdev)
-+{
-+	struct mlxbf3_gpio_context *gs = platform_get_drvdata(pdev);
-+
-+	/* Disable and clear all interrupts */
-+	writel(0, gs->gpio_cause_io + MLXBF_GPIO_CAUSE_OR_EVTEN0);
-+	writel(MLXBF_GPIO_CLR_ALL_INTS, gs->gpio_cause_io + MLXBF_GPIO_CAUSE_OR_CLRCAUSE);
-+}
-+
- static const struct acpi_device_id mlxbf3_gpio_acpi_match[] = {
- 	{ "MLNXBF33", 0 },
- 	{}
-@@ -265,6 +278,7 @@ static struct platform_driver mlxbf3_gpio_driver = {
- 		.acpi_match_table = mlxbf3_gpio_acpi_match,
- 	},
- 	.probe    = mlxbf3_gpio_probe,
-+	.shutdown = mlxbf3_gpio_shutdown,
- };
- module_platform_driver(mlxbf3_gpio_driver);
- 
+ 	IWL_INFO(fwrt,
+ 		 "sent host event cfg with enabled_severities: %u, ret: %d\n",
+ 		 enabled_severities, ret);
 -- 
 2.43.0
 
