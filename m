@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-71237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70714-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05D1B961277
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:31:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC07C960FA6
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:01:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A39F41F2408A
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:31:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF93C1C23510
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:01:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A6C81CC882;
-	Tue, 27 Aug 2024 15:29:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A00771C6F6D;
+	Tue, 27 Aug 2024 15:00:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qDLy0MgB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IBPyGkfS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBB0419F485;
-	Tue, 27 Aug 2024 15:29:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5492F1C6F69;
+	Tue, 27 Aug 2024 15:00:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772551; cv=none; b=DlcDHIdRGs5QmulS5mKmufhFI+wj53JHiNCAfNYK3NjijEuOuNM2YbhUSdmD2C7/RSi7z5taKrbuSAYGgMlCLQLRMJ25fPusYpoV//PJcW1/y7sW2Bq57v4AwZUxamayUaCZPa8hQDjhDZQjdacy3ramN7hGAY1qIzN0C67hstg=
+	t=1724770825; cv=none; b=n6JQ4hS0VRYgC7nTle16hAWJZ3iC9fWggw/NrT6Kd230dRyFk8ZXtyFkmBwPPrGaYqsBWS72Q/5dgOnOD4gkTt4FQ2EoqGn7WTMBYF8VC7vABH2Sq43+O9PTEwvtwaHF1NFY2vB3Gz0uN3PC5Huu1MWiVxAnM8DfuMCCCSqnSCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772551; c=relaxed/simple;
-	bh=Vv4tBNx9pH7CyYplIOfEJ6aZtkQnNPq3MovZL7LUMFI=;
+	s=arc-20240116; t=1724770825; c=relaxed/simple;
+	bh=jmwphznRUkAPkeMtjJWQUdxMXr5PQ1ieQuACM4EHEKk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bkAX+5ngP5tZauucSoyE/I6ZkfRdJPf4wBosYjPOM9bsA6GC4YaetjYXz9vslWqei2YPcIG0Xcxwn9pwI0L3VP6v9fYlZpYtjdVfn6nhqHCzVf/GOtZtOFYqreUN5vGOjcdfESmzvGfO/JdLru39juN93893Yr6E1VvcvuB1kqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qDLy0MgB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18B83C6107E;
-	Tue, 27 Aug 2024 15:29:09 +0000 (UTC)
+	 MIME-Version; b=YpINLTis7paWro1GmVgYPa+oCX1P/xLF2n7FDlOWEzGtuXZfWyh1R1MBczqKUHa2wpvzzqsfQev5zVIu/HZqRoxblDeJSBwLUP7/bDnvZnWTBjkliXsPDIqx1/PZsXEn5gueZ6Or9Xr2XSPobG53z1/y6vI7kt6LIgNPUPdqR98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IBPyGkfS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77ACBC4DDEF;
+	Tue, 27 Aug 2024 15:00:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772550;
-	bh=Vv4tBNx9pH7CyYplIOfEJ6aZtkQnNPq3MovZL7LUMFI=;
+	s=korg; t=1724770824;
+	bh=jmwphznRUkAPkeMtjJWQUdxMXr5PQ1ieQuACM4EHEKk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qDLy0MgB1GXlZAla3C/zbm5k3srvVQ/v+J6fEN/kwPrj6tf+UCD/NQ+EJ42sjSsz7
-	 HAPq/b4Kexh542fXbsnsKGE8qdgi6yi2/QwoGklYrGqAOqMcmaxJ/rkEDK8t4daptP
-	 WGPIZv4Ko5ez9PiiXqGzY7LcnnSYIJuadypW4SEk=
+	b=IBPyGkfScvr8vp4yVyV4e72klzoZz5xyQjZIN9FO2E1Hb/OjbvrsO+obuFXt4yZ3p
+	 74vR9R5+vWY3fRJhIYC1yj8l9LVL2z0AtFDl5OhxNM7TB4bwsb/UwcBr0F5hQ/EzMi
+	 a4rPALoA5squuIo6oTzMIjSkl6TxQ/We73I5c4to=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joseph Huang <Joseph.Huang@garmin.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 249/321] net: dsa: mv88e6xxx: Fix out-of-bound access
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 6.6 326/341] hwmon: (ltc2992) Fix memory leak in ltc2992_parse_dt()
 Date: Tue, 27 Aug 2024 16:39:17 +0200
-Message-ID: <20240827143847.723581130@linuxfoundation.org>
+Message-ID: <20240827143855.800522210@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joseph Huang <Joseph.Huang@garmin.com>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-[ Upstream commit 528876d867a23b5198022baf2e388052ca67c952 ]
+commit a94ff8e50c20bde6d50864849a98b106e45d30c6 upstream.
 
-If an ATU violation was caused by a CPU Load operation, the SPID could
-be larger than DSA_MAX_PORTS (the size of mv88e6xxx_chip.ports[] array).
+A new error path was added to the fwnode_for_each_available_node() loop
+in ltc2992_parse_dt(), which leads to an early return that requires a
+call to fwnode_handle_put() to avoid a memory leak in that case.
 
-Fixes: 75c05a74e745 ("net: dsa: mv88e6xxx: Fix counting of ATU violations")
-Signed-off-by: Joseph Huang <Joseph.Huang@garmin.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20240819235251.1331763-1-Joseph.Huang@garmin.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Add the missing fwnode_handle_put() in the error path from a zero value
+shunt resistor.
+
+Cc: stable@vger.kernel.org
+Fixes: 10b029020487 ("hwmon: (ltc2992) Avoid division by zero")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Link: https://lore.kernel.org/r/20240523-fwnode_for_each_available_child_node_scoped-v2-1-701f3a03f2fb@gmail.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/mv88e6xxx/global1_atu.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/hwmon/ltc2992.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/dsa/mv88e6xxx/global1_atu.c b/drivers/net/dsa/mv88e6xxx/global1_atu.c
-index 7c513a03789cf..17fd62616ce6d 100644
---- a/drivers/net/dsa/mv88e6xxx/global1_atu.c
-+++ b/drivers/net/dsa/mv88e6xxx/global1_atu.c
-@@ -453,7 +453,8 @@ static irqreturn_t mv88e6xxx_g1_atu_prob_irq_thread_fn(int irq, void *dev_id)
- 		trace_mv88e6xxx_atu_full_violation(chip->dev, spid,
- 						   entry.portvec, entry.mac,
- 						   fid);
--		chip->ports[spid].atu_full_violation++;
-+		if (spid < ARRAY_SIZE(chip->ports))
-+			chip->ports[spid].atu_full_violation++;
- 	}
- 	mv88e6xxx_reg_unlock(chip);
+--- a/drivers/hwmon/ltc2992.c
++++ b/drivers/hwmon/ltc2992.c
+@@ -876,9 +876,11 @@ static int ltc2992_parse_dt(struct ltc29
  
--- 
-2.43.0
-
+ 		ret = fwnode_property_read_u32(child, "shunt-resistor-micro-ohms", &val);
+ 		if (!ret) {
+-			if (!val)
++			if (!val) {
++				fwnode_handle_put(child);
+ 				return dev_err_probe(&st->client->dev, -EINVAL,
+ 						     "shunt resistor value cannot be zero\n");
++			}
+ 			st->r_sense_uohm[addr] = val;
+ 		}
+ 	}
 
 
 
