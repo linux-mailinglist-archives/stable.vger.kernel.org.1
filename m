@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-70574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70824-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16937960ED9
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:53:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2263B961035
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:06:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 495F61C2339A
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:53:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5552C1C21437
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:06:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D26121A0B13;
-	Tue, 27 Aug 2024 14:52:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A03D51C0DE7;
+	Tue, 27 Aug 2024 15:06:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ep6YCPcz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xVrprAEr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8591E1C6F49;
-	Tue, 27 Aug 2024 14:52:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 606D919F485;
+	Tue, 27 Aug 2024 15:06:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770359; cv=none; b=ZbkHpGYupPYvK8h+83sAe8JbS8MHUHTmjTBsgzOM81d1B7e6/swf16yn6H1W01IiR5dLnGmdDTRqFCOlFVNEy2TvMsvJ8/wio7SfKbnqfUEJkyaEsbYdw/ni/jQhM0wiy4MI/6JJsaSrIi/OnkcpZrgITp8vu+kLJrzvPhFytoc=
+	t=1724771181; cv=none; b=ex1eHxPBIzLJc0x73dB8sCuHzm81uJzqpYpPhGFras+0nXCaegzcydvr6n3lgLvyUF5J9SvCp/F5l7pTsg/94VTUvscC7sRL8zKs5IoAW5TT3tdY8BwE2KoUkQ+AKmqCTZQC1AUlw9SAHn3lLXAsLQ/DBsdO02+bvmYEVrRuGi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770359; c=relaxed/simple;
-	bh=llRsFzuSTSOakTvRpjl38KCMYuUJVlIt7TaIO+SLTK8=;
+	s=arc-20240116; t=1724771181; c=relaxed/simple;
+	bh=kPe4ve067nEKhbGCn+LK+zlpYgVUk3tko2lRx/AQeMc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=llKsr1/JlnGm4JFWJralMjTyW5Se26w5es2Kb+OA9qoEyv9REoWBAJtayQpl2yogPNpTk5cgBRhpRU4tTFuBp7HdRpVQOXP1HZHNWQQklRn3hs+4BPP3Jm9OPPQdwA6QcMVWBYW35JD6uzlj0cF9yNVKeHByDDNtarEUMgKqRXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ep6YCPcz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A8E6C6104E;
-	Tue, 27 Aug 2024 14:52:38 +0000 (UTC)
+	 MIME-Version; b=nqccCMmB5UB3WlY8tpCxW5J2Oc3wPuI3vaIcWQeYRTaeSQWDhbwHlKgq6MNaKexdV5zHF7nC7tIjTq1e7v16wDdeM9mTCDJU0Ba2fnDqCyVF65WdnNsof/x0HYTCdt5a4Eqai5uUp4xGEYzqV37bbdDf+1HPJSsAjwfUTOWeqoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xVrprAEr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA39AC6107C;
+	Tue, 27 Aug 2024 15:06:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770359;
-	bh=llRsFzuSTSOakTvRpjl38KCMYuUJVlIt7TaIO+SLTK8=;
+	s=korg; t=1724771181;
+	bh=kPe4ve067nEKhbGCn+LK+zlpYgVUk3tko2lRx/AQeMc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ep6YCPczWpBri64hcxGePJQic4M9XaxYr4ysfatWeQnoPyidPRYDmp+wNzvoU3zqm
-	 x7q5x6ZMykkZuE8F8bZp0nZ73Xo6lP4Abr+YDtj6NLAy2zrefNn6lBDH+07cAL9y6Y
-	 ECe1s+bLApp3V3tFlal17adnOS5Oo0XcrxNIIXiA=
+	b=xVrprAErNEl6zu9h2nIHRam7SExr/5Zjk483hxolWPrDq3Q29hKOPcHYdrzGC8KRY
+	 d1bLrEMeIV0lr6TgLg6fAIOg2YcmQRRqUPLIIRphTcBq5tCQon0tfSiMuBXONqGlmm
+	 u8CqQLjDzyroXdQeBEFzCWBzt0wvkLg27N/SWoPo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Florian Westphal <fw@strlen.de>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 205/341] irqchip/renesas-rzg2l: Do not set TIEN and TINT source at the same time
+Subject: [PATCH 6.10 112/273] selftests: net: lib: kill PIDs before del netns
 Date: Tue, 27 Aug 2024 16:37:16 +0200
-Message-ID: <20240827143851.214578765@linuxfoundation.org>
+Message-ID: <20240827143837.671440494@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +65,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit dce0919c83c325ac9dec5bc8838d5de6d32c01b1 ]
+[ Upstream commit 7965a7f32a53d9ad807ce2c53bdda69ba104974f ]
 
-As per the hardware team, TIEN and TINT source should not set at the same
-time due to a possible hardware race leading to spurious IRQ.
+When deleting netns, it is possible to still have some tasks running,
+e.g. background tasks like tcpdump running in the background, not
+stopped because the test has been interrupted.
 
-Currently on some scenarios hardware settings for TINT detection is not in
-sync with TINT source as the enable/disable overrides source setting value
-leading to hardware inconsistent state. For eg: consider the case GPIOINT0
-is used as TINT interrupt and configuring GPIOINT5 as edge type. During
-rzg2l_irq_set_type(), TINT source for GPIOINT5 is set. On disable(),
-clearing of the entire bytes of TINT source selection for GPIOINT5 is same
-as GPIOINT0 with TIEN disabled. Apart from this during enable(), the
-setting of GPIOINT5 with TIEN results in spurious IRQ as due to a HW race,
-it is possible that IP can use the TIEN with previous source value
-(GPIOINT0).
+Before deleting the netns, it is then safer to kill all attached PIDs,
+if any. That should reduce some noises after the end of some tests, and
+help with the debugging of some issues. That's why this modification is
+seen as a "fix".
 
-So, just update TIEN during enable/disable as TINT source is already set
-during rzg2l_irq_set_type(). This will make the consistent hardware
-settings for detection method tied with TINT source and allows to simplify
-the code.
-
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Fixes: 25ae948b4478 ("selftests/net: add lib.sh")
+Acked-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Acked-by: Florian Westphal <fw@strlen.de>
+Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
+Link: https://patch.msgid.link/20240813-upstream-net-20240813-selftests-net-lib-kill-v1-1-27b689b248b8@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-renesas-rzg2l.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ tools/testing/selftests/net/lib.sh | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/irqchip/irq-renesas-rzg2l.c b/drivers/irqchip/irq-renesas-rzg2l.c
-index 02ab6a944539f..ea4b921e5e158 100644
---- a/drivers/irqchip/irq-renesas-rzg2l.c
-+++ b/drivers/irqchip/irq-renesas-rzg2l.c
-@@ -132,7 +132,7 @@ static void rzg2l_irqc_irq_disable(struct irq_data *d)
+diff --git a/tools/testing/selftests/net/lib.sh b/tools/testing/selftests/net/lib.sh
+index b2572aff6286f..93de05fedd91a 100644
+--- a/tools/testing/selftests/net/lib.sh
++++ b/tools/testing/selftests/net/lib.sh
+@@ -132,6 +132,7 @@ cleanup_ns()
  
- 		raw_spin_lock(&priv->lock);
- 		reg = readl_relaxed(priv->base + TSSR(tssr_index));
--		reg &= ~(TSSEL_MASK << TSSEL_SHIFT(tssr_offset));
-+		reg &= ~(TIEN << TSSEL_SHIFT(tssr_offset));
- 		writel_relaxed(reg, priv->base + TSSR(tssr_index));
- 		raw_spin_unlock(&priv->lock);
- 	}
-@@ -144,7 +144,6 @@ static void rzg2l_irqc_irq_enable(struct irq_data *d)
- 	unsigned int hw_irq = irqd_to_hwirq(d);
- 
- 	if (hw_irq >= IRQC_TINT_START && hw_irq < IRQC_NUM_IRQ) {
--		unsigned long tint = (uintptr_t)irq_data_get_irq_chip_data(d);
- 		struct rzg2l_irqc_priv *priv = irq_data_to_priv(d);
- 		u32 offset = hw_irq - IRQC_TINT_START;
- 		u32 tssr_offset = TSSR_OFFSET(offset);
-@@ -153,7 +152,7 @@ static void rzg2l_irqc_irq_enable(struct irq_data *d)
- 
- 		raw_spin_lock(&priv->lock);
- 		reg = readl_relaxed(priv->base + TSSR(tssr_index));
--		reg |= (TIEN | tint) << TSSEL_SHIFT(tssr_offset);
-+		reg |= TIEN << TSSEL_SHIFT(tssr_offset);
- 		writel_relaxed(reg, priv->base + TSSR(tssr_index));
- 		raw_spin_unlock(&priv->lock);
- 	}
+ 	for ns in "$@"; do
+ 		[ -z "${ns}" ] && continue
++		ip netns pids "${ns}" 2> /dev/null | xargs -r kill || true
+ 		ip netns delete "${ns}" &> /dev/null || true
+ 		if ! busywait $BUSYWAIT_TIMEOUT ip netns list \| grep -vq "^$ns$" &> /dev/null; then
+ 			echo "Warn: Failed to remove namespace $ns"
 -- 
 2.43.0
 
