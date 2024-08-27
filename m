@@ -1,197 +1,147 @@
-Return-Path: <stable+bounces-70317-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70318-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA9CB960557
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 11:17:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4E7596056A
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 11:20:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4DFD11F21B7E
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 09:17:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61BD0282389
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 09:20:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C11E676056;
-	Tue, 27 Aug 2024 09:17:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55F8019D886;
+	Tue, 27 Aug 2024 09:20:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="BIUoBI5u"
+	dkim=pass (2048-bit key) header.d=xs4all.nl header.i=@xs4all.nl header.b="ZZo481WI"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-f52.google.com (mail-io1-f52.google.com [209.85.166.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from ewsoutbound.kpnmail.nl (ewsoutbound.kpnmail.nl [195.121.94.183])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE0C54DA1F
-	for <stable@vger.kernel.org>; Tue, 27 Aug 2024 09:17:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25118196D98
+	for <stable@vger.kernel.org>; Tue, 27 Aug 2024 09:20:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.121.94.183
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724750231; cv=none; b=rUWkPgitRYxyMokaCGGBhy+zf8Z7UiIx6mGMGt6KyNvP06M23I/PTP8HBvrZlo2C1P3yU2byTp1subN+jskanhe+q3BAk4v9PdbF3/0RVg3cH8+x1zMfE0oFteL+V83CHe+qGRvam02R8sLMQh5TUVBcSB+2BgAh9WP+C+A45+8=
+	t=1724750435; cv=none; b=m7NnxXK2838fd30MEQ97Gmt+nnp7AoAR3AFZnbvltrDO1BmcsbWftEyRrQ8izqwgO2R0jUwXEcYgtAkaq4FbnsZRJNyE/MZ3aNJhNoaRWhaCDeL+rhQbiA+uDSn7gcw2m2C1VGapxHcrL4vo4TZy5jbhHMY6msHuQYgJv6gFSEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724750231; c=relaxed/simple;
-	bh=Oud4iNFW62t2JL4wPQWu8C1R6PlF+gJoG20fr0NSNUo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ocs5Sv/fWPqNdNOznWRd3/bLVfg6fOH5A/1rMHVYVu5pvm7Ax/8GMLmDRDYOLurbxsJDgpXHnfzR3wSXkjhQrjMo3XdiV+NjqM5EAqD7XfYLNY3zxGtRWkY3gTnXBOuBUcXOsEzntTbN4dqzeU+S8KWnW9IOU7PhNacv1kIgJi0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=BIUoBI5u; arc=none smtp.client-ip=209.85.166.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-io1-f52.google.com with SMTP id ca18e2360f4ac-8252bc7b00bso193975939f.1
-        for <stable@vger.kernel.org>; Tue, 27 Aug 2024 02:17:09 -0700 (PDT)
+	s=arc-20240116; t=1724750435; c=relaxed/simple;
+	bh=YXJcwnamKTneYzWhbIRpPcOE4uUMYra/8+ezm0om+4g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bU3epNToztmYewLO7qUc5iR+LOBWIpr1PHRG9ReUsUMMUPjljxRiiFQnha8ZrTmVTPtNPJUVNdh1y9KYMdHcbndZfk5pGcKrRLCxH6oMn8MQUpRl0vM5fmxTrKkyKhkdrKbmur1rdtgDTX4G0mspkGMGVrViFrE7Ibnh9bL0m7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xs4all.nl; spf=pass smtp.mailfrom=xs4all.nl; dkim=pass (2048-bit key) header.d=xs4all.nl header.i=@xs4all.nl header.b=ZZo481WI; arc=none smtp.client-ip=195.121.94.183
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=xs4all.nl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=xs4all.nl
+X-KPN-MessageId: 71ca1d8a-6455-11ef-a718-005056992ed3
+Received: from smtp.kpnmail.nl (unknown [10.31.155.8])
+	by ewsoutbound.so.kpn.org (Halon) with ESMTPS
+	id 71ca1d8a-6455-11ef-a718-005056992ed3;
+	Tue, 27 Aug 2024 11:19:21 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1724750229; x=1725355029; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GdMODqh85uSFZ7j3d6O0gNItgJn+faeygZ7qlxL9/8E=;
-        b=BIUoBI5ujsZDwnWgjEBNCt8m22QHL2kF/lKGrroJwy36BNbTjnayeMbhwr78fEZSQT
-         Ofr9PwMSEk5K0/gUCEDGFnNQ2lj1/vpOZc8ceulWw+z4Me5lirIpXQY7lJzsBuouWtWp
-         HD9H4eM/tKkNCx3lbDeymbE5/xUTpl0emeT/E=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724750229; x=1725355029;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GdMODqh85uSFZ7j3d6O0gNItgJn+faeygZ7qlxL9/8E=;
-        b=LaWPWkyLxJGtOdamb/RPAyfHLLmcxsz5sxL11f1ecM0rRCxwDMu3+kS7F8DADXu8L/
-         U3QVBtA6l/+veLwIhG46KjeQJAPgrWGs3LiUC67WyGPhP8w6hWRdMFjJNnZ1oLhnWNUY
-         MbA+/oybtDMRqochdp8S5m00tG+0mTAAHUad7QXNeP0KcbNecJNN238OwGHAXuN7Gsak
-         7q+sEJT8FyPPyDMWHDAKlk2yegiJU+s8MoN1CGFcH2OxjkOZkX7pu6t29jMj1IVmfDwf
-         jt9l4jQg0vFrv+YODWPpTJ4nsNP1esyMQxMmcLdkV+753yikhZ/h4PrxaDmFh+XJMnHC
-         jH1g==
-X-Forwarded-Encrypted: i=1; AJvYcCV0kcfQgeZO5IN3Wj5ZN/Ydlz19iYSfuY24p7VJnVRERG01/T3+UOaLweKqA0gm2AHIHLS3T+s=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyqeO0lCK3iUUAJxBOSQL5nyTT4OYqQz0YxtgNm6quiae5VAcQa
-	FAgBT5Upi2/RCh5u8RW03E/sOWuGsFRD9APQmbKuOFpkKZT/D2IT1JVgVYkfeeRjx1JRJA+H7+L
-	7FRBbPUzExwpNz3zJjoReMSty0yNUrsDmZVu7
-X-Google-Smtp-Source: AGHT+IEF2B0KcCm8AcUmPhOOOimTQQOhUbMObYq1rz+SR4njavyaogDQUT2qrp8CiwU8zfuzCXWIZDvdom9e8SKDWKM=
-X-Received: by 2002:a05:6602:1652:b0:81f:a54e:f1eb with SMTP id
- ca18e2360f4ac-827881c318emr1532937639f.17.1724750228971; Tue, 27 Aug 2024
- 02:17:08 -0700 (PDT)
+	d=xs4all.nl; s=xs4all01;
+	h=content-type:from:to:subject:mime-version:date:message-id;
+	bh=V/VSBddE/qzk24cDCK4vWX7YbZzTTEE/YqfbXNez6UU=;
+	b=ZZo481WI89gE3379OzGw6y5OPj/TNCDntxui/QfgG1C6uc9VuKe8qrp5iaCAVJkbYm7sZFrV18pb4
+	 lPe1RFY7m/oaie15QlLTfcz0rDabYl5mS1zqA3T4cSpwfurh5kCTpkfn1HBOyVt3NdeexigXO9JbxA
+	 Lhgbb6yZnC7AOFGpFlueJyikL4pNYU/ukrmo9BKoP4+LuFfyz55h/v7QCmnOAFt4inAG6XBPFrpfdF
+	 ulCTTKbifuQtNlM7equVNl2tbZVAY+TP2J8FXlLc0GovXaVahfhQTMgPcNhgy4wVcoYwJAVSQPzOrm
+	 Z3fOZ41GLP9+45sGL1DmxBt4SIdMB4A==
+X-KPN-MID: 33|bdowf2YyZJ73p+l+KxIvNI4hvd9rDe/13af7bekCi8bzO5YkMXfFnu25Tws2Hwl
+ HaqvfwOX7JfL7F3g+NY6Uro/1HrEcg9A/cI8TWTrkvME=
+X-KPN-VerifiedSender: Yes
+X-CMASSUN: 33|6NS6lpYyLEehUIERFyp4etbYUh4rZ2KTnTSbQ2dPJpKSr8FglKSBe9fPCUhjjny
+ skgJHTlvgVkLI2FAqH78N8A==
+Received: from [10.47.75.249] (unknown [173.38.220.48])
+	by smtp.xs4all.nl (Halon) with ESMTPSA
+	id 7229cf0a-6455-11ef-8748-00505699d6e5;
+	Tue, 27 Aug 2024 11:19:22 +0200 (CEST)
+Message-ID: <1f41c045-da75-429b-9d3e-0dc531bbd5db@xs4all.nl>
+Date: Tue, 27 Aug 2024 11:19:22 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240827043905.472825-1-zack.rusin@broadcom.com>
-In-Reply-To: <20240827043905.472825-1-zack.rusin@broadcom.com>
-From: Martin Krastev <martin.krastev@broadcom.com>
-Date: Tue, 27 Aug 2024 12:16:58 +0300
-Message-ID: <CAKLwHdVTFELspB7oqEBu+ZUbap=1QJLqNR=RLvmN1=gdN3FGAQ@mail.gmail.com>
-Subject: Re: [PATCH v2] drm/vmwgfx: Cleanup kms setup without 3d
-To: Zack Rusin <zack.rusin@broadcom.com>
-Cc: dri-devel@lists.freedesktop.org, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, ian.forbes@broadcom.com, 
-	maaz.mombasawala@broadcom.com, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] media: videobuf2: Drop minimum allocation requirement of
+ 2 buffers
+Content-Language: en-US
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Cc: linux-media@vger.kernel.org, linux-renesas-soc@vger.kernel.org,
+ Tomasz Figa <tfiga@chromium.org>, Marek Szyprowski
+ <m.szyprowski@samsung.com>,
+ Benjamin Gaignard <benjamin.gaignard@collabora.com>, stable@vger.kernel.org
+References: <20240825232449.25905-1-laurent.pinchart+renesas@ideasonboard.com>
+ <fbdc2a88-bffc-4603-8ceb-25817967ade8@xs4all.nl>
+ <20240827091528.GD23129@pendragon.ideasonboard.com>
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+In-Reply-To: <20240827091528.GD23129@pendragon.ideasonboard.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Aug 27, 2024 at 7:39=E2=80=AFAM Zack Rusin <zack.rusin@broadcom.com=
-> wrote:
->
-> Do not validate format equality for the non 3d cases to allow xrgb to
-> argb copies and make sure the dx binding flags are only used
-> on dx compatible surfaces.
->
-> Fixes basic 2d kms setup on configurations without 3d. There's little
-> practical benefit to it because kms framebuffer coherence is disabled
-> on configurations without 3d but with those changes the code actually
-> makes sense.
->
-> v2: Remove the now unused format variable
->
-> Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-> Fixes: d6667f0ddf46 ("drm/vmwgfx: Fix handling of dumb buffers")
-> Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadc=
-om.com>
-> Cc: dri-devel@lists.freedesktop.org
-> Cc: <stable@vger.kernel.org> # v6.9+
-> Cc: Maaz Mombasawala <maaz.mombasawala@broadcom.com>
-> Cc: Martin Krastev <martin.krastev@broadcom.com>
-> ---
->  drivers/gpu/drm/vmwgfx/vmwgfx_kms.c     | 29 -------------------------
->  drivers/gpu/drm/vmwgfx/vmwgfx_surface.c |  9 +++++---
->  2 files changed, 6 insertions(+), 32 deletions(-)
->
-> diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c b/drivers/gpu/drm/vmwgfx=
-/vmwgfx_kms.c
-> index 288ed0bb75cb..282b6153bcdd 100644
-> --- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-> +++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-> @@ -1283,7 +1283,6 @@ static int vmw_kms_new_framebuffer_surface(struct v=
-mw_private *dev_priv,
->  {
->         struct drm_device *dev =3D &dev_priv->drm;
->         struct vmw_framebuffer_surface *vfbs;
-> -       enum SVGA3dSurfaceFormat format;
->         struct vmw_surface *surface;
->         int ret;
->
-> @@ -1320,34 +1319,6 @@ static int vmw_kms_new_framebuffer_surface(struct =
-vmw_private *dev_priv,
->                 return -EINVAL;
->         }
->
-> -       switch (mode_cmd->pixel_format) {
-> -       case DRM_FORMAT_ARGB8888:
-> -               format =3D SVGA3D_A8R8G8B8;
-> -               break;
-> -       case DRM_FORMAT_XRGB8888:
-> -               format =3D SVGA3D_X8R8G8B8;
-> -               break;
-> -       case DRM_FORMAT_RGB565:
-> -               format =3D SVGA3D_R5G6B5;
-> -               break;
-> -       case DRM_FORMAT_XRGB1555:
-> -               format =3D SVGA3D_A1R5G5B5;
-> -               break;
-> -       default:
-> -               DRM_ERROR("Invalid pixel format: %p4cc\n",
-> -                         &mode_cmd->pixel_format);
-> -               return -EINVAL;
-> -       }
-> -
-> -       /*
-> -        * For DX, surface format validation is done when surface->scanou=
-t
-> -        * is set.
-> -        */
-> -       if (!has_sm4_context(dev_priv) && format !=3D surface->metadata.f=
-ormat) {
-> -               DRM_ERROR("Invalid surface format for requested mode.\n")=
-;
-> -               return -EINVAL;
-> -       }
-> -
->         vfbs =3D kzalloc(sizeof(*vfbs), GFP_KERNEL);
->         if (!vfbs) {
->                 ret =3D -ENOMEM;
-> diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_surface.c b/drivers/gpu/drm/vm=
-wgfx/vmwgfx_surface.c
-> index 1625b30d9970..5721c74da3e0 100644
-> --- a/drivers/gpu/drm/vmwgfx/vmwgfx_surface.c
-> +++ b/drivers/gpu/drm/vmwgfx/vmwgfx_surface.c
-> @@ -2276,9 +2276,12 @@ int vmw_dumb_create(struct drm_file *file_priv,
->         const struct SVGA3dSurfaceDesc *desc =3D vmw_surface_get_desc(for=
-mat);
->         SVGA3dSurfaceAllFlags flags =3D SVGA3D_SURFACE_HINT_TEXTURE |
->                                       SVGA3D_SURFACE_HINT_RENDERTARGET |
-> -                                     SVGA3D_SURFACE_SCREENTARGET |
-> -                                     SVGA3D_SURFACE_BIND_SHADER_RESOURCE=
- |
-> -                                     SVGA3D_SURFACE_BIND_RENDER_TARGET;
-> +                                     SVGA3D_SURFACE_SCREENTARGET;
-> +
-> +       if (vmw_surface_is_dx_screen_target_format(format)) {
-> +               flags |=3D SVGA3D_SURFACE_BIND_SHADER_RESOURCE |
-> +                        SVGA3D_SURFACE_BIND_RENDER_TARGET;
-> +       }
->
->         /*
->          * Without mob support we're just going to use raw memory buffer
-> --
-> 2.43.0
->
+On 8/27/24 11:15, Laurent Pinchart wrote:
+> Hi Hans,
+> 
+> Please let me know if you expect a pull request, otherwise I'll consider
+> you will take this in your tree.
 
-LGTM.
-
-Reviewed-by: Martin Krastev <martin.krastev@broadcom.com>
+Can you add it to your "Miscellaneous V4L2 patches" PR and post a v2 of that today?
 
 Regards,
-Martin
+
+	Hans
+
+> 
+> On Mon, Aug 26, 2024 at 08:31:13AM +0200, Hans Verkuil wrote:
+>> On 26/08/2024 01:24, Laurent Pinchart wrote:
+>>> When introducing the ability for drivers to indicate the minimum number
+>>> of buffers they require an application to allocate, commit 6662edcd32cc
+>>> ("media: videobuf2: Add min_reqbufs_allocation field to vb2_queue
+>>> structure") also introduced a global minimum of 2 buffers. It turns out
+>>> this breaks the Renesas R-Car VSP test suite, where a test that
+>>> allocates a single buffer fails when two buffers are used.
+>>>
+>>> One may consider debatable whether test suite failures without failures
+>>> in production use cases should be considered as a regression, but
+>>> operation with a single buffer is a valid use case. While full frame
+>>> rate can't be maintained, memory-to-memory devices can still be used
+>>> with a decent efficiency, and requiring applications to allocate
+>>> multiple buffers for single-shot use cases with capture devices would
+>>> just waste memory.
+>>>
+>>> For those reasons, fix the regression by dropping the global minimum of
+>>> buffers. Individual drivers can still set their own minimum.
+>>>
+>>> Fixes: 6662edcd32cc ("media: videobuf2: Add min_reqbufs_allocation field to vb2_queue structure")
+>>> Cc: stable@vger.kernel.org
+>>> Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+>>
+>> Reviewed-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+>>
+>>> ---
+>>>  drivers/media/common/videobuf2/videobuf2-core.c | 7 -------
+>>>  1 file changed, 7 deletions(-)
+>>>
+>>> diff --git a/drivers/media/common/videobuf2/videobuf2-core.c b/drivers/media/common/videobuf2/videobuf2-core.c
+>>> index 500a4e0c84ab..29a8d876e6c2 100644
+>>> --- a/drivers/media/common/videobuf2/videobuf2-core.c
+>>> +++ b/drivers/media/common/videobuf2/videobuf2-core.c
+>>> @@ -2632,13 +2632,6 @@ int vb2_core_queue_init(struct vb2_queue *q)
+>>>  	if (WARN_ON(q->supports_requests && q->min_queued_buffers))
+>>>  		return -EINVAL;
+>>>  
+>>> -	/*
+>>> -	 * The minimum requirement is 2: one buffer is used
+>>> -	 * by the hardware while the other is being processed by userspace.
+>>> -	 */
+>>> -	if (q->min_reqbufs_allocation < 2)
+>>> -		q->min_reqbufs_allocation = 2;
+>>> -
+>>>  	/*
+>>>  	 * If the driver needs 'min_queued_buffers' in the queue before
+>>>  	 * calling start_streaming() then the minimum requirement is
+>>>
+>>> base-commit: a043ea54bbb975ca9239c69fd17f430488d33522
+> 
+
 
