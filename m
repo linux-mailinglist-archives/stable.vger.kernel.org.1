@@ -1,151 +1,93 @@
-Return-Path: <stable+bounces-71321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71322-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4515D961308
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:39:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD9A196135B
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:53:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E3E631F243D8
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:39:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 162BC1C22A38
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:53:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1591C1C6F5E;
-	Tue, 27 Aug 2024 15:39:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E91F1CC150;
+	Tue, 27 Aug 2024 15:52:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="cshmBU59"
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="ztapJpgI"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oo1-f51.google.com (mail-oo1-f51.google.com [209.85.161.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from 008.lax.mailroute.net (008.lax.mailroute.net [199.89.1.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 528CA1C3F17
-	for <stable@vger.kernel.org>; Tue, 27 Aug 2024 15:39:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 913621C4EE3;
+	Tue, 27 Aug 2024 15:52:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724773187; cv=none; b=JUoeveIdXA+PBujzc17CYOHnlQNUEoEk6EnMNBNDafeNBaLA2PpxQKmKCzwpMy1lIfx09gisLHzRAS/TCjTrOrE64jlyVJE7RJcWlOhpH5mR+88oXxkOPl3eQ8f5hyQkx8ZIGD6J2Wj2SBG/uYVgQRX9eAr+28SgVHb5SPFzmIg=
+	t=1724773947; cv=none; b=Rtkhu9BnbH5cuKe+0W8zxhtXB0zwIJm1GoxO9mEcXPdlJHE77ScZvjmiC+iJjPyJcJU2GwLBHLnzjVwMZG9HcD+9sKxalmoznh43kQp3ALYhs65/mczk/kAyufOyRZHXXcEIDg/TvAMTDZZ3/DADzU+ilHfzrjloYnpNpPW8Wg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724773187; c=relaxed/simple;
-	bh=J8i0Lb2oWbc6JBapK1BY0lUoCq02D7GVagTSdbkqv1Q=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PdcsSRkM2zkOAZszb8c9SxJosYgnFKo54SIuBwzXJm80wWLJ5RXTLMxYfLGjU3O44MJEW5P05OHptce7L9TvB2ni/gxTRlBLp8wKJqWbAFthqgJolxw1SeeNW9PZOpk8ilN1Z+afILfCJxM2C2ZzTNT8jmiCcSdZhjyd26Nq2qk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=cshmBU59; arc=none smtp.client-ip=209.85.161.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-5d5e1c86b83so4530374eaf.3
-        for <stable@vger.kernel.org>; Tue, 27 Aug 2024 08:39:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1724773185; x=1725377985; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=ABrGPaQeXTHEpHj1nG5eL4qDwA/TNxf5sECkQr9qYBQ=;
-        b=cshmBU59B8Y5XavgvLSrMfF/g+ab0w0/qNjaBmPn8DOLpyzD5OfHW28NZoxO+y/oTC
-         BrJSIy0yTwDQX7gSxm81rMLhIk1MTNjXSx51UHSRZuE8VxYP5IE4EeJFMOL4FR2/51jP
-         6fejy1vw2Q1cIQz3hekKQqAjtD2xRdcfl0IdLNyd/fJVP+6hLH9D2bDNJFicZvbFF/b8
-         jlxBTQdCHX43+sQ/2rGVN1RH1SY1RJcYYrwV1WQl+wdrAwGiEiVS8epmlrjbWSFnOJHe
-         w/P9zdhuWd4r+18VLvYdph2jW4Ml7UYQXD6el0w4QvHnNdGBN0Y/NKFShBbs03paQD++
-         dwGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724773185; x=1725377985;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ABrGPaQeXTHEpHj1nG5eL4qDwA/TNxf5sECkQr9qYBQ=;
-        b=iyoO+4ntOwYf2PI94nkvwXUaB8R9Kv54mqjzi0ZBc/qqwR3WoD/PZniPvpbxP9iPv+
-         Je2mLNgI/RmNcdO2Jl4eJYBasxd8p78BJJn6Y4sh6G4Fa5z/kLTAX9E7tjToKevznogz
-         yEZECAqm+qvpISI/n7tpeW/WNlZCbPFKBsr4JSVNuuBf9x8hi3rk3lriQhJWWiKlyn3h
-         YD72AjbMVuO98SH/hEeHfPkb7cFiVUa1jIDllVnDhEpBst9nYOUramBui1Tl0RFB8HLy
-         EOEWGv+yY3SGhvPs06c+1Ywqpg9lPgRjU1AQarMQAte/vtZf+0TuyAGNUBA5GlII7NMa
-         WjRg==
-X-Gm-Message-State: AOJu0YyM224Rl5RTK76MrATTWeofznQjtFMJZdIQqccMnjyOh3+EmZyZ
-	9NE4KIdHZHI4SR9dp77MxGHFDYMU9JHkUAPZjYYg4i9MAVz0JJEon2X32bNnE9l/7jhUuCGA0UJ
-	UpfKjXoZMg+ULcxYvqhLlbgXJwk3Z9c9ftS0nGw==
-X-Google-Smtp-Source: AGHT+IE+kcBunpFXfOGpuNdas/X5FdTgaWsUmcSrsoP0VkiG4IG6IRfZg8+GgGc5TZDGinb+7wjme3MyFaQZ0qKWfPE=
-X-Received: by 2002:a05:6358:430f:b0:1aa:c49e:587d with SMTP id
- e5c5f4694b2df-1b5c215d7efmr1740185555d.18.1724773185173; Tue, 27 Aug 2024
- 08:39:45 -0700 (PDT)
+	s=arc-20240116; t=1724773947; c=relaxed/simple;
+	bh=0Vo4GnU/h3M3K1jWnYOrEc1dy12RZqxDX2LQX4mlL3w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=oIY7pU4+fFCzmBL3Yt9zG1XiMdadt1koQoEzuOlRIwiPl4YRGMk8/QK8THWP8KOPqWi3afm/s70lYqffS9Kxa+JravSsBh6zPuOkhMZOu/2+STV/Ysy1WTkab515AT1uMQx/2tDP7cRcJPjB628gruk3MsH38eKLaINqZ2phdvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=ztapJpgI; arc=none smtp.client-ip=199.89.1.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+Received: from localhost (localhost [127.0.0.1])
+	by 008.lax.mailroute.net (Postfix) with ESMTP id 4WtX9h5XBBz6ClY97;
+	Tue, 27 Aug 2024 15:52:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1724773938; x=1727365939; bh=0Vo4GnU/h3M3K1jWnYOrEc1d
+	y12RZqxDX2LQX4mlL3w=; b=ztapJpgICCnsXGCJu7kgE0+enJV1LzHbwWNGlzmx
+	auGf9hOOGL+UGoKbrTAgScgPk1OD0j6sw+swwydeZZ7gw63oSkHYmYRWmHWk4oJi
+	qQ3Yg1Q6FKoik9XoCycETbaURLYPuozjVOoyVrQ9vcVbSwK4eZGz/jnhnttqOXsh
+	iyk57fa9YUONwaEmyYxlbrM7zL7agA7IzJs1i/ukCaTytGfPhnUO15bV/PGbRep6
+	8irOJ1rpUb510XiDy7G/IaDYsqCHm5wyNjRXpkKWbeXox1h3sDRwezaTr2tXHZdL
+	NydiTksKCQTvYc7EToU5FpRq8TUho+zvNaalyx3GC3KwJw==
+X-Virus-Scanned: by MailRoute
+Received: from 008.lax.mailroute.net ([127.0.0.1])
+ by localhost (008.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id V4rI_lcFRZEJ; Tue, 27 Aug 2024 15:52:18 +0000 (UTC)
+Received: from [172.16.58.82] (modemcable170.180-37-24.static.videotron.ca [24.37.180.170])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 008.lax.mailroute.net (Postfix) with ESMTPSA id 4WtX9T39Txz6ClY91;
+	Tue, 27 Aug 2024 15:52:12 +0000 (UTC)
+Message-ID: <d2916681-09df-4fe3-9c19-397edd488aa5@acm.org>
+Date: Tue, 27 Aug 2024 11:52:11 -0400
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240827143843.399359062@linuxfoundation.org>
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Tue, 27 Aug 2024 21:09:33 +0530
-Message-ID: <CA+G9fYuibSowhidTVByMzSRdqudz1Eg_aYBs9rVS3bYEBesiUA@mail.gmail.com>
-Subject: Re: [PATCH 6.6 000/341] 6.6.48-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
-	broonie@kernel.org, rcu <rcu@vger.kernel.org>, 
-	"Paul E. McKenney" <paulmck@kernel.org>, Zhen Lei <thunder.leizhen@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] ufs: core: complete scsi command after release
+To: peter.wang@mediatek.com, linux-scsi@vger.kernel.org,
+ martin.petersen@oracle.com, avri.altman@wdc.com, alim.akhtar@samsung.com,
+ jejb@linux.ibm.com
+Cc: wsd_upstream@mediatek.com, linux-mediatek@lists.infradead.org,
+ chun-hung.wu@mediatek.com, alice.chao@mediatek.com, cc.chou@mediatek.com,
+ chaotian.jing@mediatek.com, jiajie.hao@mediatek.com, powen.kao@mediatek.com,
+ qilin.tan@mediatek.com, lin.gui@mediatek.com, tun-yu.yu@mediatek.com,
+ eddie.huang@mediatek.com, naomi.chu@mediatek.com, chu.stanley@gmail.com,
+ stable@vger.kernel.org
+References: <20240826034509.17677-1-peter.wang@mediatek.com>
+ <20240826034509.17677-2-peter.wang@mediatek.com>
+Content-Language: en-US
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <20240826034509.17677-2-peter.wang@mediatek.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, 27 Aug 2024 at 20:12, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.6.48 release.
-> There are 341 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 29 Aug 2024 14:37:36 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.48-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+On 8/25/24 8:45 PM, peter.wang@mediatek.com wrote:
+> When the error handler successfully aborts a MCQ request,
+> it only releases the command and does not notify the SCSI layer.
+> This may cause another abort after 30 seconds timeout.
+> This patch notifies the SCSI layer to requeue the request.
 
-The tinyconfig builds failed due to following build warnings / errors on the
-stable-rc linux.6.6.y.
-
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-
-Build error:
--------
-kernel/rcu/update.c:49:
-kernel/rcu/rcu.h: In function 'debug_rcu_head_callback':
-/kernel/rcu/rcu.h:255:17: error: implicit declaration of function
-'kmem_dump_obj'; did you mean 'mem_dump_obj'?
-[-Werror=implicit-function-declaration]
-  255 |                 kmem_dump_obj(rhp);
-      |                 ^~~~~~~~~~~~~
-      |                 mem_dump_obj
-cc1: some warnings being treated as errors
-
-Build log links,
-------
- - https://storage.tuxsuite.com/public/linaro/lkft/builds/2lFMi7HOL2XF8hQWViw6CjE3NAF/
-
- metadata:
-----
-  git describe: v6.6.47-342-g0ec2cf1e20ad
-  git repo: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-  git sha: 0ec2cf1e20adc2c8dcc5f58f3ebd40111c280944
-  kernel config:
-https://storage.tuxsuite.com/public/linaro/lkft/builds/2lFMi7HOL2XF8hQWViw6CjE3NAF/config
-  build url: https://storage.tuxsuite.com/public/linaro/lkft/builds/2lFMi7HOL2XF8hQWViw6CjE3NAF/
-  toolchain: clang-18 and gcc-13
-  config: tinyconfig
-
-
-steps to reproduce:
-------
-# tuxmake --runtime podman --target-arch arm64 --toolchain gcc-13
---kconfig tinyconfig
-
---
-Linaro LKFT
-https://lkft.linaro.org
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
 
