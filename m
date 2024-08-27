@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-70805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70554-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 734C4961020
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:05:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A16D7960EBB
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:51:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F75A28259F
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:05:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65C67286DE6
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:51:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2E4B1BA88C;
-	Tue, 27 Aug 2024 15:05:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F4BF1C2DB1;
+	Tue, 27 Aug 2024 14:51:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W847VLfg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XKkFftTb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81C1512B93;
-	Tue, 27 Aug 2024 15:05:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CACD38DC7;
+	Tue, 27 Aug 2024 14:51:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771119; cv=none; b=gcl9GMz4E2w0S0PFM+tmiWzwEvwQHW9pxelkzcMq9Nno+hnw3DG/JauGDUxXa9Fv/1gzzT5pe+l8qO3Ww0i5SsnOQrO1vNOX3arxET4P+uSBhO0TC/bLTvZrofqKK+/X6ixjFBSAlfB9ICHtDYOhCYyv2fBuEX+qkKPRvilhC0s=
+	t=1724770293; cv=none; b=P+mHfjv2uwzam6d6XMnp2Q/UToN6bRe+iyTAHx1u8NSMIqhV2VeeS4Ca50nN3YdKqTPN8Y0zXFO2fG2fc75GtOwaCGjzi2tn7bMDLr4LHmdLCn1z9MqSE27F/G5tWjyLlsHfj48gIJEp8u2ayqwsYRKMal8kIRo9CknpRc48zdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771119; c=relaxed/simple;
-	bh=GIIk5WEY2/vHnJw5hw6NlOeCP+NYu6zsuyneHaeeHfk=;
+	s=arc-20240116; t=1724770293; c=relaxed/simple;
+	bh=opH/8vDOhpGtPBbE7wDQb/TctlNGFa4YxtoeTfEA8Tk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Spe/pUk6vyUX1npfy5V25KX9TzSy26plfDdc1DsoLbwnFiJPVVUEiGtKYlAYTSPhasCKIINLp6M7go/vq81hNqM5GIZF1XUphcZXFtQEoyzoHDOLyrQejZgFZk9mnRlOGwiu8rEiAz6C4WdC7ABn54CcnPiIt0gMD+zAU9S/sQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W847VLfg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A5D3C6105B;
-	Tue, 27 Aug 2024 15:05:18 +0000 (UTC)
+	 MIME-Version; b=QSogHIYYSc8vMp37yQgSlgZ0SJ1pCdHp07NWUw5ygfL1tuTtGjGjrMQKNIucIgyAvqjRgCS4DiYO/6c8KH3MRuVxVmg0uiVwE2lNOkTjhbu90XLsi9Pudc2AmTSdP+qA/kg1U58KsO1xaxwkpZOmGAJJgXjABw7zSHPCxoYPbjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XKkFftTb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84EAFC4DE03;
+	Tue, 27 Aug 2024 14:51:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771119;
-	bh=GIIk5WEY2/vHnJw5hw6NlOeCP+NYu6zsuyneHaeeHfk=;
+	s=korg; t=1724770292;
+	bh=opH/8vDOhpGtPBbE7wDQb/TctlNGFa4YxtoeTfEA8Tk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W847VLfgWJVXcR8Gys0e5302ldkGyG56BMtoPZArs3MieV+54RCDw3I6UQPkq/Ier
-	 T7Y9p9Q0DBdqsFNr0k19F7R6fkKXZOOEyj1/hMENwb/LKUWWmfhrKLG/lCko826SOt
-	 H8GlMf5/JyLsOr5gL59XcIx7mSrTBlKQOXMMSFmA=
+	b=XKkFftTbTb8b37Nj7zQU763+L6HtWatyOZSKeLzdLIO+qwNdM5VqYvywtdV/cEd1K
+	 kc6Ky0XLxBmoLjQoCpgQPj+EExS5ciwxV5LGlQt4IFntc+yD6PG7qvp6VwbALaLhMe
+	 ZrREj6orCMkUSK/UYL/5SAxj5U9BdXIYXNBfAE74=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Breno Leitao <leitao@debian.org>,
-	Moshe Shemesh <moshe@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Anand Jain <anand.jain@oracle.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 091/273] net/mlx5e: Take state lock during tx timeout reporter
+Subject: [PATCH 6.6 184/341] btrfs: delayed-inode: drop pointless BUG_ON in __btrfs_remove_delayed_item()
 Date: Tue, 27 Aug 2024 16:36:55 +0200
-Message-ID: <20240827143836.876372244@linuxfoundation.org>
+Message-ID: <20240827143850.415090923@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,47 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dragos Tatulea <dtatulea@nvidia.com>
+From: David Sterba <dsterba@suse.com>
 
-[ Upstream commit e6b5afd30b99b43682a7764e1a74a42fe4d5f4b3 ]
+[ Upstream commit 778e618b8bfedcc39354373c1b072c5fe044fa7b ]
 
-mlx5e_safe_reopen_channels() requires the state lock taken. The
-referenced changed in the Fixes tag removed the lock to fix another
-issue. This patch adds it back but at a later point (when calling
-mlx5e_safe_reopen_channels()) to avoid the deadlock referenced in the
-Fixes tag.
+There's a BUG_ON checking for a valid pointer of fs_info::delayed_root
+but it is valid since init_mount_fs_info() and has the same lifetime as
+fs_info.
 
-Fixes: eab0da38912e ("net/mlx5e: Fix possible deadlock on mlx5e_tx_timeout_work")
-Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
-Link: https://lore.kernel.org/all/ZplpKq8FKi3vwfxv@gmail.com/T/
-Reviewed-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20240808144107.2095424-4-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: Anand Jain <anand.jain@oracle.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en/reporter_tx.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/btrfs/delayed-inode.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/reporter_tx.c b/drivers/net/ethernet/mellanox/mlx5/core/en/reporter_tx.c
-index 22918b2ef7f12..09433b91be176 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/reporter_tx.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/reporter_tx.c
-@@ -146,7 +146,9 @@ static int mlx5e_tx_reporter_timeout_recover(void *ctx)
- 		return err;
- 	}
+diff --git a/fs/btrfs/delayed-inode.c b/fs/btrfs/delayed-inode.c
+index 6d562f18d3f80..12ff91d6f570f 100644
+--- a/fs/btrfs/delayed-inode.c
++++ b/fs/btrfs/delayed-inode.c
+@@ -425,8 +425,6 @@ static void __btrfs_remove_delayed_item(struct btrfs_delayed_item *delayed_item)
  
-+	mutex_lock(&priv->state_lock);
- 	err = mlx5e_safe_reopen_channels(priv);
-+	mutex_unlock(&priv->state_lock);
- 	if (!err) {
- 		to_ctx->status = 1; /* all channels recovered */
- 		return err;
+ 	delayed_root = delayed_node->root->fs_info->delayed_root;
+ 
+-	BUG_ON(!delayed_root);
+-
+ 	if (delayed_item->type == BTRFS_DELAYED_INSERTION_ITEM)
+ 		root = &delayed_node->ins_root;
+ 	else
 -- 
 2.43.0
 
