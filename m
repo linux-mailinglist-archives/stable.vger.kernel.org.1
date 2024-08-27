@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-70509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71051-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFA9A960E7E
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:49:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2194B96116B
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:20:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6A7DF1F237C1
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:49:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB6D71F23C2E
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:20:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B7331BA87C;
-	Tue, 27 Aug 2024 14:49:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A75A1C6F55;
+	Tue, 27 Aug 2024 15:18:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FyvQbgQ+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dn89lj4v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 592B31C578D;
-	Tue, 27 Aug 2024 14:49:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27E001C6F56;
+	Tue, 27 Aug 2024 15:18:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770144; cv=none; b=uqrpqmu2c6nuanRVuYkCLQXLb+IxTqLRDbfMjJV+a9C7Gtp5MKXs23pEww3kOlsdXSmSCM84zg9xEXrWYreEso8aA+68SI4pKaCcXSMPguveUk+mCN1xXSuC2d97+6IQSr3ru8HpOUHNL18Np4WhwOPRKAva9toFwGJ5+YmcMFg=
+	t=1724771935; cv=none; b=YGvi7HlmTQxEbRtGkLZdwSEwpPfjL1gt46aUR5rnJmOsTnClrlHFrXNXOXFe+aRI6z8vGpnOlazkARRIU6zNwgay+CzPIr3dOiLkdQ4wg8gx3oOZl9MdEIKzsodBOfhB5xepz7Uj05jTATogUID1rqF3a18cY0qfgKP/srbJvIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770144; c=relaxed/simple;
-	bh=ATtyuePT89OZPPFD5WAwa5dYeDiQw+wZZGFdIfBwXuU=;
+	s=arc-20240116; t=1724771935; c=relaxed/simple;
+	bh=UW6THs8ZwpTU6s1K5lDfEMI35inB5dAQIoNnoY5GaoM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NqPwzzM+L9WcSQDFTUb7kuswwMcLkTNjqZmF2K6ylpREsnu+W3/56Lc3s4fX+tilOIElj1IOlJoaTCwk7pUaOGL6Sk+RjjHxGT6eqbzAP/69XbPVV0rgI26GTWx9ppOBXfCgZKkNoOLE3JhHaAX95ipX03q7fy4oaL60ZNeGUfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FyvQbgQ+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCC72C4AF0E;
-	Tue, 27 Aug 2024 14:49:03 +0000 (UTC)
+	 MIME-Version; b=abiMwm5GaUxqDEX5My14+5ArsCy9zBYUdWA02R5dBJMz6IuhGsy2rxv6PoegF8gCSe5/aUlIxYO0LAgxe3STQ2bGkUYiknYugBq9jnkcBmn1Z32UDyjY5aKdbdT5WUm42t8shlfpJb/1Rm1lN1DmjBBYYbt3RixMk+6oZNcAxyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dn89lj4v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8944CC61067;
+	Tue, 27 Aug 2024 15:18:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770144;
-	bh=ATtyuePT89OZPPFD5WAwa5dYeDiQw+wZZGFdIfBwXuU=;
+	s=korg; t=1724771935;
+	bh=UW6THs8ZwpTU6s1K5lDfEMI35inB5dAQIoNnoY5GaoM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FyvQbgQ+xTREptzJDUmtLURGCloLA1SdXEXwUKKQupAS8vR/ku0ACydaltEUoJKcB
-	 K2A5d7Mzj8jB1WhDNt4IdI0FO/y2GS/MuJPxuc7wW2nSYLtCdkJlylMUVTd6J3LCTR
-	 jU3zsc4tYEoR1mgoNF8j/vum9VuNvS4LAC3jGS44=
+	b=dn89lj4vhjoN/vIbgUpQL8A5Axm9IWO9YMRWy5Yuqdx3nBL2jdvgdJi3lqMpgnOs9
+	 pA+HJMDonaRKVSyL/MoFsaFcJ+SQE4yN7vIiY6sAsIL044CpbAY1tLMfk0Voe4DtEy
+	 b9rq/HvW4kKz1hBIcQ/XbS70wVpUTrUPAWJXfRnI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rob Clark <robdclark@chromium.org>,
+	Felix Fietkau <nbd@nbd.name>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 140/341] drm/msm: Reduce fallout of fence signaling vs reclaim hangs
+Subject: [PATCH 6.1 063/321] wifi: cfg80211: move A-MSDU check in ieee80211_data_to_8023_exthdr
 Date: Tue, 27 Aug 2024 16:36:11 +0200
-Message-ID: <20240827143848.747180385@linuxfoundation.org>
+Message-ID: <20240827143840.636374629@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Clark <robdclark@chromium.org>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit 4bea53b9c7c72fd12a0ceebe88a71723c0a514b8 ]
+[ Upstream commit 0f690e6b4dcd7243e2805a76981b252c2d4bdce6 ]
 
-Until various PM devfreq/QoS and interconnect patches land, we could
-potentially trigger reclaim from gpu scheduler thread, and under enough
-memory pressure that could trigger a sort of deadlock.  Eventually the
-wait will timeout and we'll move on to consider other GEM objects.  But
-given that there is still a potential for deadlock/stalling, we should
-reduce the timeout to contain the damage.
+When parsing the outer A-MSDU header, don't check for inner bridge tunnel
+or RFC1042 headers. This is handled by ieee80211_amsdu_to_8023s already.
 
-Signed-off-by: Rob Clark <robdclark@chromium.org>
-Patchwork: https://patchwork.freedesktop.org/patch/568031/
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Link: https://lore.kernel.org/r/20230213100855.34315-1-nbd@nbd.name
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Stable-dep-of: 9ad797485692 ("wifi: cfg80211: check A-MSDU format more carefully")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/msm_gem_shrinker.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/wireless/util.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/msm_gem_shrinker.c b/drivers/gpu/drm/msm/msm_gem_shrinker.c
-index f38296ad87434..0641f5bb8649a 100644
---- a/drivers/gpu/drm/msm/msm_gem_shrinker.c
-+++ b/drivers/gpu/drm/msm/msm_gem_shrinker.c
-@@ -76,7 +76,7 @@ static bool
- wait_for_idle(struct drm_gem_object *obj)
- {
- 	enum dma_resv_usage usage = dma_resv_usage_rw(true);
--	return dma_resv_wait_timeout(obj->resv, usage, false, 1000) > 0;
-+	return dma_resv_wait_timeout(obj->resv, usage, false, 10) > 0;
- }
+diff --git a/net/wireless/util.c b/net/wireless/util.c
+index 1665320d22146..4680e65460c85 100644
+--- a/net/wireless/util.c
++++ b/net/wireless/util.c
+@@ -631,8 +631,9 @@ int ieee80211_data_to_8023_exthdr(struct sk_buff *skb, struct ethhdr *ehdr,
+ 		break;
+ 	}
  
- static bool
+-	if (likely(skb_copy_bits(skb, hdrlen, &payload, sizeof(payload)) == 0 &&
+-	           ((!is_amsdu && ether_addr_equal(payload.hdr, rfc1042_header) &&
++	if (likely(!is_amsdu &&
++		   skb_copy_bits(skb, hdrlen, &payload, sizeof(payload)) == 0 &&
++	           ((ether_addr_equal(payload.hdr, rfc1042_header) &&
+ 		     payload.proto != htons(ETH_P_AARP) &&
+ 		     payload.proto != htons(ETH_P_IPX)) ||
+ 		    ether_addr_equal(payload.hdr, bridge_tunnel_header)))) {
 -- 
 2.43.0
 
