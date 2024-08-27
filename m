@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-70928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48D489610BB
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:12:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D51B5961274
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:31:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 617AC1C233C8
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:12:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9032AB29DF5
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:30:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D338A1BD514;
-	Tue, 27 Aug 2024 15:12:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04B5B1CFEC9;
+	Tue, 27 Aug 2024 15:28:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wHHXHH5J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FnQU1ZNN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9202773466;
-	Tue, 27 Aug 2024 15:12:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B48931CFEBC;
+	Tue, 27 Aug 2024 15:28:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771530; cv=none; b=tzExzWX7ZGUNq+D9A80sGlIw6fy1K5GcweJtPfK9y5gVp9+cA0NDtAo32/ypo9MkRYxf2QwxlM/KBK3pin4ZOMWzsY0LwHnPtXzqFKrjv9jNSFnKlj7qo8U9ywQdXqOMEroQqIPeuhSIQjIxpGYaCOE1wkKHmSnMy05DBDi9MpQ=
+	t=1724772499; cv=none; b=kyk+PovY7fOesnEc5MH4bxt8siDpPckfduSx4BMF803bhmKdRwTk2WCQoePIweGMyRUz1MRBdUP08Ner8RtnYgvFBjaMPzlcyLZg575CO4PaoY1o/ngxJvabUj4Pd0BdWMExqOIakihcUVmu98As7d21LgadUcTR54cCHk0aB2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771530; c=relaxed/simple;
-	bh=0S11KY+RA0yLmZyiLiAxFGC1hm9h6QdY5JT35YFI6bU=;
+	s=arc-20240116; t=1724772499; c=relaxed/simple;
+	bh=x8wGCYmN2ReGqhmFMLLx/38GjZQx5gDVOryzbRrhJNo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HKuQIkMRdR/d/cE/h9oc6XC1rRUWMeTMXXrsVgegY1GcKKI+f/+WYV9hjre+DIcDWIhrnuzFAm2n3R3tZ3yK0NVFAzW3kpMrB6QwFrctjy2hqGwsoz+ii/+Cbs6cb7XbrU5bOKl9qbr/k5OejPq+ZCU6cxAso3zuJEThKqw8rDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wHHXHH5J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72CB5C4DDF2;
-	Tue, 27 Aug 2024 15:12:08 +0000 (UTC)
+	 MIME-Version; b=Lt0ii8WvTDtowpt4sX2aOfMFX/wELmpX1nQgehSaWDxVdrY1Cg+ANXXPfHJY4CxdaQogqqF5A0bbDCOI4t+8zbXUdXeUPd3r1bFFN6nt4xL0Ul6Nn1U0dltWq9FoYbniQ41v6KA1Qbw+6uoi9nZ6LEkzYHA0UI/KzZF0pYsXbM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FnQU1ZNN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A40BC61047;
+	Tue, 27 Aug 2024 15:28:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771528;
-	bh=0S11KY+RA0yLmZyiLiAxFGC1hm9h6QdY5JT35YFI6bU=;
+	s=korg; t=1724772499;
+	bh=x8wGCYmN2ReGqhmFMLLx/38GjZQx5gDVOryzbRrhJNo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wHHXHH5JaxGKtAAqNpeEqTRO6NCpplzpVtryHMHWhPKA+iU5E7QE3PJL9+1TqHHWa
-	 2I/xxWMxlBK5pOLjjwtxcOLO6dYtRyi7heSafcnp9QR+dWohm+oHKtaO9WHgsqNlkS
-	 O/ZoFit78j/pSQDfWA75ZR6xRbVq2evpmkL8KOfM=
+	b=FnQU1ZNNMm6IyqCTt3z11VeG9M4G3eUvrHo0xlyhkjFcaFg5V9vO+nsoWWlLlWQ7g
+	 73wSbZEtXStOWJf2MqGlR0rGs079M3yxj3RL6ZGvuobhU01yKQjQlf6VqAeZssfoKS
+	 22mT+Jpm8AVDaCeCT3dZD0YbWhpDmL4WK0bmb/1g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: [PATCH 6.10 216/273] drm/xe: Dont initialize fences at xe_sched_job_create()
+	syzbot+8ea26396ff85d23a8929@syzkaller.appspotmail.com,
+	Florian Westphal <fw@strlen.de>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jason Xing <kerneljasonxing@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 232/321] tcp: prevent concurrent execution of tcp_sk_exit_batch
 Date: Tue, 27 Aug 2024 16:39:00 +0200
-Message-ID: <20240827143841.627900992@linuxfoundation.org>
+Message-ID: <20240827143847.068990799@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,479 +64,113 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 0ac7a2c745e8a42803378b944fa0f4455b7240f6 ]
+[ Upstream commit 565d121b69980637f040eb4d84289869cdaabedf ]
 
-Pre-allocate but don't initialize fences at xe_sched_job_create(),
-and initialize / arm them instead at xe_sched_job_arm(). This
-makes it possible to move xe_sched_job_create() with its memory
-allocation out of any lock that is required for fence
-initialization, and that may not allow memory allocation under it.
+Its possible that two threads call tcp_sk_exit_batch() concurrently,
+once from the cleanup_net workqueue, once from a task that failed to clone
+a new netns.  In the latter case, error unwinding calls the exit handlers
+in reverse order for the 'failed' netns.
 
-Replaces the struct dma_fence_array for parallell jobs with a
-struct dma_fence_chain, since the former doesn't allow
-a split-up between allocation and initialization.
+tcp_sk_exit_batch() calls tcp_twsk_purge().
+Problem is that since commit b099ce2602d8 ("net: Batch inet_twsk_purge"),
+this function picks up twsk in any dying netns, not just the one passed
+in via exit_batch list.
 
-v2:
-- Rebase.
-- Don't always use the first lrc when initializing parallel
-  lrc fences.
-- Use dma_fence_chain_contained() to access the lrc fences.
+This means that the error unwind of setup_net() can "steal" and destroy
+timewait sockets belonging to the exiting netns.
 
-v4:
-- Add an assert that job->lrc_seqno == fence->seqno.
-  (Matthew Brost)
+This allows the netns exit worker to proceed to call
 
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com> #v2
-Link: https://patchwork.freedesktop.org/patch/msgid/20240527135912.152156-4-thomas.hellstrom@linux.intel.com
-Stable-dep-of: 9e7f30563677 ("drm/xe: Free job before xe_exec_queue_put")
+WARN_ON_ONCE(!refcount_dec_and_test(&net->ipv4.tcp_death_row.tw_refcount));
+
+without the expected 1 -> 0 transition, which then splats.
+
+At same time, error unwind path that is also running inet_twsk_purge()
+will splat as well:
+
+WARNING: .. at lib/refcount.c:31 refcount_warn_saturate+0x1ed/0x210
+...
+ refcount_dec include/linux/refcount.h:351 [inline]
+ inet_twsk_kill+0x758/0x9c0 net/ipv4/inet_timewait_sock.c:70
+ inet_twsk_deschedule_put net/ipv4/inet_timewait_sock.c:221
+ inet_twsk_purge+0x725/0x890 net/ipv4/inet_timewait_sock.c:304
+ tcp_sk_exit_batch+0x1c/0x170 net/ipv4/tcp_ipv4.c:3522
+ ops_exit_list+0x128/0x180 net/core/net_namespace.c:178
+ setup_net+0x714/0xb40 net/core/net_namespace.c:375
+ copy_net_ns+0x2f0/0x670 net/core/net_namespace.c:508
+ create_new_namespaces+0x3ea/0xb10 kernel/nsproxy.c:110
+
+... because refcount_dec() of tw_refcount unexpectedly dropped to 0.
+
+This doesn't seem like an actual bug (no tw sockets got lost and I don't
+see a use-after-free) but as erroneous trigger of debug check.
+
+Add a mutex to force strict ordering: the task that calls tcp_twsk_purge()
+blocks other task from doing final _dec_and_test before mutex-owner has
+removed all tw sockets of dying netns.
+
+Fixes: e9bd0cca09d1 ("tcp: Don't allocate tcp_death_row outside of struct netns_ipv4.")
+Reported-by: syzbot+8ea26396ff85d23a8929@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/0000000000003a5292061f5e4e19@google.com/
+Link: https://lore.kernel.org/netdev/20240812140104.GA21559@breakpoint.cc/
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20240812222857.29837-1-fw@strlen.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_exec_queue.c       |   5 -
- drivers/gpu/drm/xe/xe_exec_queue_types.h |  10 --
- drivers/gpu/drm/xe/xe_ring_ops.c         |  12 +-
- drivers/gpu/drm/xe/xe_sched_job.c        | 161 +++++++++++++----------
- drivers/gpu/drm/xe/xe_sched_job_types.h  |  18 ++-
- drivers/gpu/drm/xe/xe_trace.h            |   2 +-
- 6 files changed, 115 insertions(+), 93 deletions(-)
+ net/ipv4/tcp_ipv4.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/drivers/gpu/drm/xe/xe_exec_queue.c b/drivers/gpu/drm/xe/xe_exec_queue.c
-index 79d099e054916..2ae4420e29353 100644
---- a/drivers/gpu/drm/xe/xe_exec_queue.c
-+++ b/drivers/gpu/drm/xe/xe_exec_queue.c
-@@ -96,11 +96,6 @@ static struct xe_exec_queue *__xe_exec_queue_alloc(struct xe_device *xe,
- 		}
- 	}
+diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
+index 167de693981a8..1327447a3aade 100644
+--- a/net/ipv4/tcp_ipv4.c
++++ b/net/ipv4/tcp_ipv4.c
+@@ -93,6 +93,8 @@ EXPORT_SYMBOL(tcp_hashinfo);
  
--	if (xe_exec_queue_is_parallel(q)) {
--		q->parallel.composite_fence_ctx = dma_fence_context_alloc(1);
--		q->parallel.composite_fence_seqno = 0;
--	}
--
- 	return q;
- }
+ static DEFINE_PER_CPU(struct sock *, ipv4_tcp_sk);
  
-diff --git a/drivers/gpu/drm/xe/xe_exec_queue_types.h b/drivers/gpu/drm/xe/xe_exec_queue_types.h
-index ee78d497d838a..f0c40e8ad80a1 100644
---- a/drivers/gpu/drm/xe/xe_exec_queue_types.h
-+++ b/drivers/gpu/drm/xe/xe_exec_queue_types.h
-@@ -103,16 +103,6 @@ struct xe_exec_queue {
- 		struct xe_guc_exec_queue *guc;
- 	};
- 
--	/**
--	 * @parallel: parallel submission state
--	 */
--	struct {
--		/** @parallel.composite_fence_ctx: context composite fence */
--		u64 composite_fence_ctx;
--		/** @parallel.composite_fence_seqno: seqno for composite fence */
--		u32 composite_fence_seqno;
--	} parallel;
--
- 	/** @sched_props: scheduling properties */
- 	struct {
- 		/** @sched_props.timeslice_us: timeslice period in micro-seconds */
-diff --git a/drivers/gpu/drm/xe/xe_ring_ops.c b/drivers/gpu/drm/xe/xe_ring_ops.c
-index 3b6aad8dea99a..c59c4373aefad 100644
---- a/drivers/gpu/drm/xe/xe_ring_ops.c
-+++ b/drivers/gpu/drm/xe/xe_ring_ops.c
-@@ -380,7 +380,7 @@ static void emit_migration_job_gen12(struct xe_sched_job *job,
- 
- 	dw[i++] = MI_ARB_ON_OFF | MI_ARB_DISABLE; /* Enabled again below */
- 
--	i = emit_bb_start(job->batch_addr[0], BIT(8), dw, i);
-+	i = emit_bb_start(job->ptrs[0].batch_addr, BIT(8), dw, i);
- 
- 	if (!IS_SRIOV_VF(gt_to_xe(job->q->gt))) {
- 		/* XXX: Do we need this? Leaving for now. */
-@@ -389,7 +389,7 @@ static void emit_migration_job_gen12(struct xe_sched_job *job,
- 		dw[i++] = preparser_disable(false);
- 	}
- 
--	i = emit_bb_start(job->batch_addr[1], BIT(8), dw, i);
-+	i = emit_bb_start(job->ptrs[1].batch_addr, BIT(8), dw, i);
- 
- 	dw[i++] = MI_FLUSH_DW | MI_INVALIDATE_TLB | job->migrate_flush_flags |
- 		MI_FLUSH_DW_OP_STOREDW | MI_FLUSH_IMM_DW;
-@@ -411,7 +411,7 @@ static void emit_job_gen12_gsc(struct xe_sched_job *job)
- 	xe_gt_assert(gt, job->q->width <= 1); /* no parallel submission for GSCCS */
- 
- 	__emit_job_gen12_simple(job, job->q->lrc,
--				job->batch_addr[0],
-+				job->ptrs[0].batch_addr,
- 				xe_sched_job_lrc_seqno(job));
- }
- 
-@@ -427,7 +427,7 @@ static void emit_job_gen12_copy(struct xe_sched_job *job)
- 
- 	for (i = 0; i < job->q->width; ++i)
- 		__emit_job_gen12_simple(job, job->q->lrc + i,
--					job->batch_addr[i],
-+					job->ptrs[i].batch_addr,
- 					xe_sched_job_lrc_seqno(job));
- }
- 
-@@ -438,7 +438,7 @@ static void emit_job_gen12_video(struct xe_sched_job *job)
- 	/* FIXME: Not doing parallel handshake for now */
- 	for (i = 0; i < job->q->width; ++i)
- 		__emit_job_gen12_video(job, job->q->lrc + i,
--				       job->batch_addr[i],
-+				       job->ptrs[i].batch_addr,
- 				       xe_sched_job_lrc_seqno(job));
- }
- 
-@@ -448,7 +448,7 @@ static void emit_job_gen12_render_compute(struct xe_sched_job *job)
- 
- 	for (i = 0; i < job->q->width; ++i)
- 		__emit_job_gen12_render_compute(job, job->q->lrc + i,
--						job->batch_addr[i],
-+						job->ptrs[i].batch_addr,
- 						xe_sched_job_lrc_seqno(job));
- }
- 
-diff --git a/drivers/gpu/drm/xe/xe_sched_job.c b/drivers/gpu/drm/xe/xe_sched_job.c
-index 874450be327ec..29f3201d7dfac 100644
---- a/drivers/gpu/drm/xe/xe_sched_job.c
-+++ b/drivers/gpu/drm/xe/xe_sched_job.c
-@@ -6,7 +6,7 @@
- #include "xe_sched_job.h"
- 
- #include <drm/xe_drm.h>
--#include <linux/dma-fence-array.h>
-+#include <linux/dma-fence-chain.h>
- #include <linux/slab.h>
- 
- #include "xe_device.h"
-@@ -29,7 +29,7 @@ int __init xe_sched_job_module_init(void)
- 	xe_sched_job_slab =
- 		kmem_cache_create("xe_sched_job",
- 				  sizeof(struct xe_sched_job) +
--				  sizeof(u64), 0,
-+				  sizeof(struct xe_job_ptrs), 0,
- 				  SLAB_HWCACHE_ALIGN, NULL);
- 	if (!xe_sched_job_slab)
- 		return -ENOMEM;
-@@ -37,7 +37,7 @@ int __init xe_sched_job_module_init(void)
- 	xe_sched_job_parallel_slab =
- 		kmem_cache_create("xe_sched_job_parallel",
- 				  sizeof(struct xe_sched_job) +
--				  sizeof(u64) *
-+				  sizeof(struct xe_job_ptrs) *
- 				  XE_HW_ENGINE_MAX_INSTANCE, 0,
- 				  SLAB_HWCACHE_ALIGN, NULL);
- 	if (!xe_sched_job_parallel_slab) {
-@@ -79,26 +79,33 @@ static struct xe_device *job_to_xe(struct xe_sched_job *job)
- 	return gt_to_xe(job->q->gt);
- }
- 
-+/* Free unused pre-allocated fences */
-+static void xe_sched_job_free_fences(struct xe_sched_job *job)
-+{
-+	int i;
++static DEFINE_MUTEX(tcp_exit_batch_mutex);
 +
-+	for (i = 0; i < job->q->width; ++i) {
-+		struct xe_job_ptrs *ptrs = &job->ptrs[i];
-+
-+		if (ptrs->lrc_fence)
-+			xe_lrc_free_seqno_fence(ptrs->lrc_fence);
-+		if (ptrs->chain_fence)
-+			dma_fence_chain_free(ptrs->chain_fence);
-+	}
-+}
-+
- struct xe_sched_job *xe_sched_job_create(struct xe_exec_queue *q,
- 					 u64 *batch_addr)
+ static u32 tcp_v4_init_seq(const struct sk_buff *skb)
  {
--	struct xe_sched_job *job;
--	struct dma_fence **fences;
- 	bool is_migration = xe_sched_job_is_migration(q);
-+	struct xe_sched_job *job;
- 	int err;
--	int i, j;
-+	int i;
- 	u32 width;
- 
- 	/* only a kernel context can submit a vm-less job */
- 	XE_WARN_ON(!q->vm && !(q->flags & EXEC_QUEUE_FLAG_KERNEL));
- 
--	/* Migration and kernel engines have their own locking */
--	if (!(q->flags & (EXEC_QUEUE_FLAG_KERNEL | EXEC_QUEUE_FLAG_VM))) {
--		lockdep_assert_held(&q->vm->lock);
--		if (!xe_vm_in_lr_mode(q->vm))
--			xe_vm_assert_held(q->vm);
--	}
--
- 	job = job_alloc(xe_exec_queue_is_parallel(q) || is_migration);
- 	if (!job)
- 		return ERR_PTR(-ENOMEM);
-@@ -111,43 +118,25 @@ struct xe_sched_job *xe_sched_job_create(struct xe_exec_queue *q,
- 	if (err)
- 		goto err_free;
- 
--	if (!xe_exec_queue_is_parallel(q)) {
--		job->fence = xe_lrc_create_seqno_fence(q->lrc);
--		if (IS_ERR(job->fence)) {
--			err = PTR_ERR(job->fence);
--			goto err_sched_job;
--		}
--		job->lrc_seqno = job->fence->seqno;
--	} else {
--		struct dma_fence_array *cf;
-+	for (i = 0; i < q->width; ++i) {
-+		struct dma_fence *fence = xe_lrc_alloc_seqno_fence();
-+		struct dma_fence_chain *chain;
- 
--		fences = kmalloc_array(q->width, sizeof(*fences), GFP_KERNEL);
--		if (!fences) {
--			err = -ENOMEM;
-+		if (IS_ERR(fence)) {
-+			err = PTR_ERR(fence);
- 			goto err_sched_job;
- 		}
-+		job->ptrs[i].lrc_fence = fence;
- 
--		for (j = 0; j < q->width; ++j) {
--			fences[j] = xe_lrc_create_seqno_fence(q->lrc + j);
--			if (IS_ERR(fences[j])) {
--				err = PTR_ERR(fences[j]);
--				goto err_fences;
--			}
--			if (!j)
--				job->lrc_seqno = fences[0]->seqno;
--		}
-+		if (i + 1 == q->width)
-+			continue;
- 
--		cf = dma_fence_array_create(q->width, fences,
--					    q->parallel.composite_fence_ctx,
--					    q->parallel.composite_fence_seqno++,
--					    false);
--		if (!cf) {
--			--q->parallel.composite_fence_seqno;
-+		chain = dma_fence_chain_alloc();
-+		if (!chain) {
- 			err = -ENOMEM;
--			goto err_fences;
-+			goto err_sched_job;
- 		}
--
--		job->fence = &cf->base;
-+		job->ptrs[i].chain_fence = chain;
- 	}
- 
- 	width = q->width;
-@@ -155,19 +144,14 @@ struct xe_sched_job *xe_sched_job_create(struct xe_exec_queue *q,
- 		width = 2;
- 
- 	for (i = 0; i < width; ++i)
--		job->batch_addr[i] = batch_addr[i];
-+		job->ptrs[i].batch_addr = batch_addr[i];
- 
- 	xe_pm_runtime_get_noresume(job_to_xe(job));
- 	trace_xe_sched_job_create(job);
- 	return job;
- 
--err_fences:
--	for (j = j - 1; j >= 0; --j) {
--		--q->lrc[j].fence_ctx.next_seqno;
--		dma_fence_put(fences[j]);
--	}
--	kfree(fences);
- err_sched_job:
-+	xe_sched_job_free_fences(job);
- 	drm_sched_job_cleanup(&job->drm);
- err_free:
- 	xe_exec_queue_put(q);
-@@ -188,6 +172,7 @@ void xe_sched_job_destroy(struct kref *ref)
- 		container_of(ref, struct xe_sched_job, refcount);
- 	struct xe_device *xe = job_to_xe(job);
- 
-+	xe_sched_job_free_fences(job);
- 	xe_exec_queue_put(job->q);
- 	dma_fence_put(job->fence);
- 	drm_sched_job_cleanup(&job->drm);
-@@ -195,27 +180,32 @@ void xe_sched_job_destroy(struct kref *ref)
- 	xe_pm_runtime_put(xe);
- }
- 
--void xe_sched_job_set_error(struct xe_sched_job *job, int error)
-+/* Set the error status under the fence to avoid racing with signaling */
-+static bool xe_fence_set_error(struct dma_fence *fence, int error)
+ 	return secure_tcp_seq(ip_hdr(skb)->daddr,
+@@ -3242,6 +3244,16 @@ static void __net_exit tcp_sk_exit_batch(struct list_head *net_exit_list)
  {
--	if (test_bit(DMA_FENCE_FLAG_SIGNALED_BIT, &job->fence->flags))
--		return;
-+	unsigned long irq_flags;
-+	bool signaled;
+ 	struct net *net;
+ 
++	/* make sure concurrent calls to tcp_sk_exit_batch from net_cleanup_work
++	 * and failed setup_net error unwinding path are serialized.
++	 *
++	 * tcp_twsk_purge() handles twsk in any dead netns, not just those in
++	 * net_exit_list, the thread that dismantles a particular twsk must
++	 * do so without other thread progressing to refcount_dec_and_test() of
++	 * tcp_death_row.tw_refcount.
++	 */
++	mutex_lock(&tcp_exit_batch_mutex);
 +
-+	spin_lock_irqsave(fence->lock, irq_flags);
-+	signaled = test_bit(DMA_FENCE_FLAG_SIGNALED_BIT, &fence->flags);
-+	if (!signaled)
-+		dma_fence_set_error(fence, error);
-+	spin_unlock_irqrestore(fence->lock, irq_flags);
+ 	tcp_twsk_purge(net_exit_list);
  
--	dma_fence_set_error(job->fence, error);
-+	return signaled;
-+}
- 
--	if (dma_fence_is_array(job->fence)) {
--		struct dma_fence_array *array =
--			to_dma_fence_array(job->fence);
--		struct dma_fence **child = array->fences;
--		unsigned int nchild = array->num_fences;
-+void xe_sched_job_set_error(struct xe_sched_job *job, int error)
-+{
-+	if (xe_fence_set_error(job->fence, error))
-+		return;
- 
--		do {
--			struct dma_fence *current_fence = *child++;
-+	if (dma_fence_is_chain(job->fence)) {
-+		struct dma_fence *iter;
- 
--			if (test_bit(DMA_FENCE_FLAG_SIGNALED_BIT,
--				     &current_fence->flags))
--				continue;
--			dma_fence_set_error(current_fence, error);
--		} while (--nchild);
-+		dma_fence_chain_for_each(iter, job->fence)
-+			xe_fence_set_error(dma_fence_chain_contained(iter),
-+					   error);
+ 	list_for_each_entry(net, net_exit_list, exit_list) {
+@@ -3249,6 +3261,8 @@ static void __net_exit tcp_sk_exit_batch(struct list_head *net_exit_list)
+ 		WARN_ON_ONCE(!refcount_dec_and_test(&net->ipv4.tcp_death_row.tw_refcount));
+ 		tcp_fastopen_ctx_destroy(net);
  	}
- 
- 	trace_xe_sched_job_set_error(job);
-@@ -230,7 +220,7 @@ bool xe_sched_job_started(struct xe_sched_job *job)
- 
- 	return !__dma_fence_is_later(xe_sched_job_lrc_seqno(job),
- 				     xe_lrc_start_seqno(lrc),
--				     dma_fence_array_first(job->fence)->ops);
-+				     dma_fence_chain_contained(job->fence)->ops);
++
++	mutex_unlock(&tcp_exit_batch_mutex);
  }
  
- bool xe_sched_job_completed(struct xe_sched_job *job)
-@@ -244,13 +234,24 @@ bool xe_sched_job_completed(struct xe_sched_job *job)
- 
- 	return !__dma_fence_is_later(xe_sched_job_lrc_seqno(job),
- 				     xe_lrc_seqno(lrc),
--				     dma_fence_array_first(job->fence)->ops);
-+				     dma_fence_chain_contained(job->fence)->ops);
- }
- 
- void xe_sched_job_arm(struct xe_sched_job *job)
- {
- 	struct xe_exec_queue *q = job->q;
-+	struct dma_fence *fence, *prev;
- 	struct xe_vm *vm = q->vm;
-+	u64 seqno = 0;
-+	int i;
-+
-+	/* Migration and kernel engines have their own locking */
-+	if (IS_ENABLED(CONFIG_LOCKDEP) &&
-+	    !(q->flags & (EXEC_QUEUE_FLAG_KERNEL | EXEC_QUEUE_FLAG_VM))) {
-+		lockdep_assert_held(&q->vm->lock);
-+		if (!xe_vm_in_lr_mode(q->vm))
-+			xe_vm_assert_held(q->vm);
-+	}
- 
- 	if (vm && !xe_sched_job_is_migration(q) && !xe_vm_in_lr_mode(vm) &&
- 	    (vm->batch_invalidate_tlb || vm->tlb_flush_seqno != q->tlb_flush_seqno)) {
-@@ -259,6 +260,27 @@ void xe_sched_job_arm(struct xe_sched_job *job)
- 		job->ring_ops_flush_tlb = true;
- 	}
- 
-+	/* Arm the pre-allocated fences */
-+	for (i = 0; i < q->width; prev = fence, ++i) {
-+		struct dma_fence_chain *chain;
-+
-+		fence = job->ptrs[i].lrc_fence;
-+		xe_lrc_init_seqno_fence(&q->lrc[i], fence);
-+		job->ptrs[i].lrc_fence = NULL;
-+		if (!i) {
-+			job->lrc_seqno = fence->seqno;
-+			continue;
-+		} else {
-+			xe_assert(gt_to_xe(q->gt), job->lrc_seqno == fence->seqno);
-+		}
-+
-+		chain = job->ptrs[i - 1].chain_fence;
-+		dma_fence_chain_init(chain, prev, fence, seqno++);
-+		job->ptrs[i - 1].chain_fence = NULL;
-+		fence = &chain->base;
-+	}
-+
-+	job->fence = fence;
- 	drm_sched_job_arm(&job->drm);
- }
- 
-@@ -318,7 +340,8 @@ xe_sched_job_snapshot_capture(struct xe_sched_job *job)
- 
- 	snapshot->batch_addr_len = q->width;
- 	for (i = 0; i < q->width; i++)
--		snapshot->batch_addr[i] = xe_device_uncanonicalize_addr(xe, job->batch_addr[i]);
-+		snapshot->batch_addr[i] =
-+			xe_device_uncanonicalize_addr(xe, job->ptrs[i].batch_addr);
- 
- 	return snapshot;
- }
-diff --git a/drivers/gpu/drm/xe/xe_sched_job_types.h b/drivers/gpu/drm/xe/xe_sched_job_types.h
-index 990ddac55ed62..0d3f76fb05cea 100644
---- a/drivers/gpu/drm/xe/xe_sched_job_types.h
-+++ b/drivers/gpu/drm/xe/xe_sched_job_types.h
-@@ -11,6 +11,20 @@
- #include <drm/gpu_scheduler.h>
- 
- struct xe_exec_queue;
-+struct dma_fence;
-+struct dma_fence_chain;
-+
-+/**
-+ * struct xe_job_ptrs - Per hw engine instance data
-+ */
-+struct xe_job_ptrs {
-+	/** @lrc_fence: Pre-allocated uinitialized lrc fence.*/
-+	struct dma_fence *lrc_fence;
-+	/** @chain_fence: Pre-allocated ninitialized fence chain node. */
-+	struct dma_fence_chain *chain_fence;
-+	/** @batch_addr: Batch buffer address. */
-+	u64 batch_addr;
-+};
- 
- /**
-  * struct xe_sched_job - XE schedule job (batch buffer tracking)
-@@ -43,8 +57,8 @@ struct xe_sched_job {
- 	u32 migrate_flush_flags;
- 	/** @ring_ops_flush_tlb: The ring ops need to flush TLB before payload. */
- 	bool ring_ops_flush_tlb;
--	/** @batch_addr: batch buffer address of job */
--	u64 batch_addr[];
-+	/** @ptrs: per instance pointers. */
-+	struct xe_job_ptrs ptrs[];
- };
- 
- struct xe_sched_job_snapshot {
-diff --git a/drivers/gpu/drm/xe/xe_trace.h b/drivers/gpu/drm/xe/xe_trace.h
-index 6c6cecc58f63b..450f407c66e8f 100644
---- a/drivers/gpu/drm/xe/xe_trace.h
-+++ b/drivers/gpu/drm/xe/xe_trace.h
-@@ -272,7 +272,7 @@ DECLARE_EVENT_CLASS(xe_sched_job,
- 			   __entry->flags = job->q->flags;
- 			   __entry->error = job->fence->error;
- 			   __entry->fence = job->fence;
--			   __entry->batch_addr = (u64)job->batch_addr[0];
-+			   __entry->batch_addr = (u64)job->ptrs[0].batch_addr;
- 			   ),
- 
- 		    TP_printk("fence=%p, seqno=%u, lrc_seqno=%u, guc_id=%d, batch_addr=0x%012llx, guc_state=0x%x, flags=0x%x, error=%d",
+ static struct pernet_operations __net_initdata tcp_sk_ops = {
 -- 
 2.43.0
 
