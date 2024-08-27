@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-70521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71030-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E602E960E8F
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:49:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C895A961150
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:19:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23FC81C2327D
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:49:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 78EEE1F21366
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:19:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF6BE1BFE06;
-	Tue, 27 Aug 2024 14:49:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8CE31CB327;
+	Tue, 27 Aug 2024 15:17:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MRjrBHGb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DSVZUk4r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACBD8DDC1;
-	Tue, 27 Aug 2024 14:49:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61F1D1C7B9D;
+	Tue, 27 Aug 2024 15:17:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770184; cv=none; b=qORViAgywRFAWO2aVcFRjHhb4TmzrCPmq8IGPspeX0bq+75zZ4ot1CYmBu5qLCs3lILYzEWP3xQtk4TLErTSy1ROfO0D+J4DDrP6TNFLIQO1J0zvBms5oxij+4aauWc39p0dr5IIbIDtNx3pS5bz/rit8QKJAdPLEF2XQq+8Q5s=
+	t=1724771864; cv=none; b=i61rSr3W0RedkfFg54pCmshbwgDF82mXEWcYdv2lnfpV9jtPAySdZ1YMp/5NwFruAAF3rZh+Z2QlmPYJ6GNwVmxjwou8bRZmYMcyFT80+nRSnai1e0choj2WW2I9URhVNEBKzugGFaaOzb+uT5FltkzxSms0GViu/N2MtcsWm5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770184; c=relaxed/simple;
-	bh=TexKarRH9vEKwzuf/mQxvvnbV3WEqiVUMfuXEnz8+Jk=;
+	s=arc-20240116; t=1724771864; c=relaxed/simple;
+	bh=VdSEvipIU5e0q7V0vbGs1puAnadvbDw94nR4psOr+3g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bDsBQ76nraYjV/5pnBPFZfPQsk146oq/5NeuXsovD2w82zEp3cDtGN0F/GQvUfpfdazF+r6k1aE4u2fPpbL7Be3Gx0f9AHaEHmg0+i0EtPYi9rMEumZgCDRHLZsFS4U0sGU38iPci6ve8avo/st/EnlnwJTl7L/A6Uf0zNoTPMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MRjrBHGb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36999C4AF1C;
-	Tue, 27 Aug 2024 14:49:44 +0000 (UTC)
+	 MIME-Version; b=LEAUm7QmN76UuU8eiqcMwLvQdbaHoGaGEkilejo+HKRjquT5WnFqmLGI2xLwEYotnKIiB1bX9L+lSNpZKRL5Bi1qfc99XMOJgh0r8UNLhpm784do47fmBLYuC2Ll6CDYb7DnqerT/JHzML9ibQVyAp2BsE4CcJEKtAa6ZDPRBcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DSVZUk4r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6F6AC61040;
+	Tue, 27 Aug 2024 15:17:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770184;
-	bh=TexKarRH9vEKwzuf/mQxvvnbV3WEqiVUMfuXEnz8+Jk=;
+	s=korg; t=1724771864;
+	bh=VdSEvipIU5e0q7V0vbGs1puAnadvbDw94nR4psOr+3g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MRjrBHGbWljapLRvDIwRag7UmQARfhXEicfeQ/mgM4rgmzYzuNAUdy8vQ0vxouZGW
-	 WiC6QGkOEQIcQzPCFGx/PCWOB63VAYIT/KW+N4kXSdev/9BvL3CD229ndJaOtPdUbG
-	 uGguLQQKZmmVH/Wj3Hn71t6qAmRmv9vW/dAsF4VY=
+	b=DSVZUk4recS38Fn7Bi9JjWE3qsJCQI/Xx8Pd3NCaPEaE7gsEuSYMaEGJM5fldCRD0
+	 b7Yw6MkWD0IpkileK1h3SSDQYoPGkPy0HpTrd8YAX3mbhJoNmev+ObnbFjq37srpwP
+	 VzmygYflNl4HJlAxPE10HYoYHPdGppRqVRkf9jO8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 121/341] media: qcom: venus: fix incorrect return value
+Subject: [PATCH 6.1 044/321] gfs2: Rename gfs2_freeze_lock{ => _shared }
 Date: Tue, 27 Aug 2024 16:35:52 +0200
-Message-ID: <20240827143848.018424175@linuxfoundation.org>
+Message-ID: <20240827143839.906015662@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +61,125 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+From: Andreas Gruenbacher <agruenba@redhat.com>
 
-[ Upstream commit 51b74c09ac8c5862007fc2bf0d465529d06dd446 ]
+[ Upstream commit e392edd5d52a6742595ecaf8270c1af3e96b9a38 ]
 
-'pd' can be NULL, and in that case it shouldn't be passed to
-PTR_ERR. Fixes a smatch warning:
+Rename gfs2_freeze_lock to gfs2_freeze_lock_shared to make it a bit more
+obvious that this function establishes the "thawed" state of the freeze
+glock.
 
-drivers/media/platform/qcom/venus/pm_helpers.c:873 vcodec_domains_get() warn: passing zero to 'PTR_ERR'
-
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Stable-dep-of: f66af88e3321 ("gfs2: Stop using gfs2_make_fs_ro for withdraw")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/qcom/venus/pm_helpers.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/gfs2/ops_fstype.c |  4 ++--
+ fs/gfs2/recovery.c   |  2 +-
+ fs/gfs2/super.c      |  2 +-
+ fs/gfs2/util.c       | 10 +++++-----
+ fs/gfs2/util.h       |  5 +++--
+ 5 files changed, 12 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/media/platform/qcom/venus/pm_helpers.c b/drivers/media/platform/qcom/venus/pm_helpers.c
-index 48c9084bb4dba..a1b127caa90a7 100644
---- a/drivers/media/platform/qcom/venus/pm_helpers.c
-+++ b/drivers/media/platform/qcom/venus/pm_helpers.c
-@@ -870,7 +870,7 @@ static int vcodec_domains_get(struct venus_core *core)
- 		pd = dev_pm_domain_attach_by_name(dev,
- 						  res->vcodec_pmdomains[i]);
- 		if (IS_ERR_OR_NULL(pd))
--			return PTR_ERR(pd) ? : -ENODATA;
-+			return pd ? PTR_ERR(pd) : -ENODATA;
- 		core->pmdomains[i] = pd;
+diff --git a/fs/gfs2/ops_fstype.c b/fs/gfs2/ops_fstype.c
+index c7f6208ad98c0..e427fb7fbe998 100644
+--- a/fs/gfs2/ops_fstype.c
++++ b/fs/gfs2/ops_fstype.c
+@@ -1266,7 +1266,7 @@ static int gfs2_fill_super(struct super_block *sb, struct fs_context *fc)
+ 		}
  	}
  
+-	error = gfs2_freeze_lock(sdp, &freeze_gh, 0);
++	error = gfs2_freeze_lock_shared(sdp, &freeze_gh, 0);
+ 	if (error)
+ 		goto fail_per_node;
+ 
+@@ -1587,7 +1587,7 @@ static int gfs2_reconfigure(struct fs_context *fc)
+ 	if ((sb->s_flags ^ fc->sb_flags) & SB_RDONLY) {
+ 		struct gfs2_holder freeze_gh;
+ 
+-		error = gfs2_freeze_lock(sdp, &freeze_gh, 0);
++		error = gfs2_freeze_lock_shared(sdp, &freeze_gh, 0);
+ 		if (error)
+ 			return -EINVAL;
+ 
+diff --git a/fs/gfs2/recovery.c b/fs/gfs2/recovery.c
+index d8e522f389aa7..61ef07da40b22 100644
+--- a/fs/gfs2/recovery.c
++++ b/fs/gfs2/recovery.c
+@@ -470,7 +470,7 @@ void gfs2_recover_func(struct work_struct *work)
+ 
+ 		/* Acquire a shared hold on the freeze glock */
+ 
+-		error = gfs2_freeze_lock(sdp, &thaw_gh, LM_FLAG_PRIORITY);
++		error = gfs2_freeze_lock_shared(sdp, &thaw_gh, LM_FLAG_PRIORITY);
+ 		if (error)
+ 			goto fail_gunlock_ji;
+ 
+diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
+index d7b3a982552cf..cb05332e473bd 100644
+--- a/fs/gfs2/super.c
++++ b/fs/gfs2/super.c
+@@ -662,7 +662,7 @@ void gfs2_freeze_func(struct work_struct *work)
+ 	struct super_block *sb = sdp->sd_vfs;
+ 
+ 	atomic_inc(&sb->s_active);
+-	error = gfs2_freeze_lock(sdp, &freeze_gh, 0);
++	error = gfs2_freeze_lock_shared(sdp, &freeze_gh, 0);
+ 	if (error) {
+ 		gfs2_assert_withdraw(sdp, 0);
+ 	} else {
+diff --git a/fs/gfs2/util.c b/fs/gfs2/util.c
+index 11cc59ac64fdc..1195ea08f9ca4 100644
+--- a/fs/gfs2/util.c
++++ b/fs/gfs2/util.c
+@@ -93,13 +93,13 @@ int check_journal_clean(struct gfs2_sbd *sdp, struct gfs2_jdesc *jd,
+ }
+ 
+ /**
+- * gfs2_freeze_lock - hold the freeze glock
++ * gfs2_freeze_lock_shared - hold the freeze glock
+  * @sdp: the superblock
+  * @freeze_gh: pointer to the requested holder
+  * @caller_flags: any additional flags needed by the caller
+  */
+-int gfs2_freeze_lock(struct gfs2_sbd *sdp, struct gfs2_holder *freeze_gh,
+-		     int caller_flags)
++int gfs2_freeze_lock_shared(struct gfs2_sbd *sdp, struct gfs2_holder *freeze_gh,
++			    int caller_flags)
+ {
+ 	int flags = LM_FLAG_NOEXP | GL_EXACT | caller_flags;
+ 	int error;
+@@ -157,8 +157,8 @@ static void signal_our_withdraw(struct gfs2_sbd *sdp)
+ 		gfs2_holder_mark_uninitialized(&freeze_gh);
+ 		if (sdp->sd_freeze_gl &&
+ 		    !gfs2_glock_is_locked_by_me(sdp->sd_freeze_gl)) {
+-			ret = gfs2_freeze_lock(sdp, &freeze_gh,
+-				       log_write_allowed ? 0 : LM_FLAG_TRY);
++			ret = gfs2_freeze_lock_shared(sdp, &freeze_gh,
++					log_write_allowed ? 0 : LM_FLAG_TRY);
+ 			if (ret == GLR_TRYFAILED)
+ 				ret = 0;
+ 		}
+diff --git a/fs/gfs2/util.h b/fs/gfs2/util.h
+index 78ec190f4155b..3291e33e81e97 100644
+--- a/fs/gfs2/util.h
++++ b/fs/gfs2/util.h
+@@ -149,8 +149,9 @@ int gfs2_io_error_i(struct gfs2_sbd *sdp, const char *function,
+ 
+ extern int check_journal_clean(struct gfs2_sbd *sdp, struct gfs2_jdesc *jd,
+ 			       bool verbose);
+-extern int gfs2_freeze_lock(struct gfs2_sbd *sdp,
+-			    struct gfs2_holder *freeze_gh, int caller_flags);
++extern int gfs2_freeze_lock_shared(struct gfs2_sbd *sdp,
++				   struct gfs2_holder *freeze_gh,
++				   int caller_flags);
+ extern void gfs2_freeze_unlock(struct gfs2_holder *freeze_gh);
+ 
+ #define gfs2_io_error(sdp) \
 -- 
 2.43.0
 
