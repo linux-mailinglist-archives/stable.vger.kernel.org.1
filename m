@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-70594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71103-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 188B2960F01
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:55:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66DEF9611A6
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:22:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B71991F212E0
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:55:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BFC5DB21CFD
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:22:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B18B1C6891;
-	Tue, 27 Aug 2024 14:53:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91DA41C6F57;
+	Tue, 27 Aug 2024 15:21:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h/tLHZLv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xibqdXPE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A4E51C578E;
-	Tue, 27 Aug 2024 14:53:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EDE91C689C;
+	Tue, 27 Aug 2024 15:21:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770426; cv=none; b=oV1rIirs/CPjfPsCouWZkJ0s4c2SptlqCG9tLmWuKqhMawaCjzMLXeVfTqXDQjeiml4IMf0FBifqyGrKRrqxxuLUJ1IBLKyu2eyMQaMLT+WjVND+a56Rwnwm97B1M5ICYnVu7WG8cJtVGOOfi3qWHDh2waCXC1oi57Ww61Ed1hg=
+	t=1724772110; cv=none; b=GbTAwIBXchqcdQfbGr1+lmIHBtERk/d3oCcSVM5VWnZYFHOoT+Qv+55ycCM2tW5Yee4Yr7bfGnw/CNES8MPNytHWk4+ZmI4GztQU+znqr6GQ6APsdPZZYFNg4nJd1PldEDBu8CbDi66xrzvhdtfVKEjdIgKWByceD+l/PtoVt0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770426; c=relaxed/simple;
-	bh=vtzgXNNNCcCiJDUwoj/jS5pt+AWLONQM49lyjcD60wQ=;
+	s=arc-20240116; t=1724772110; c=relaxed/simple;
+	bh=I1TGjy/mcQVSUYccvnuTmPCEaJN4O89XFlC0L2Yicvw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gihqu7TUb4xghMVFBunwXg+Ju7l5Q+lwvGldDsuL8jE/G2cG0Kpf3DdNndpfpA1OzghGrlsC9NQVBD7yKfKiko8kPT/+p+CTIpD0/r3duxxp5iYcB7r2XSZCK0a3ZGFm9Y/jajiQBigPXGt0FDNiiF0yMdr9bIR9mnFQiJX7SN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h/tLHZLv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AA64C61053;
-	Tue, 27 Aug 2024 14:53:45 +0000 (UTC)
+	 MIME-Version; b=AoIDizd5+wqPXlsXuSzybKD7HYnxsoL3Mi7KlKapYaHRWde+UGE4lCz+Ifo/Q8u3ePvZFIgXz/e2xczvIhWgb/nd49gOlmbiJRenfy7YAvIxeul480UlIiYoVB8ebg3GAUvmQgWLJadlxasQ8gRrFEAKvkWG9Y5LN/DIN0NfPt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xibqdXPE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35A19C4FE08;
+	Tue, 27 Aug 2024 15:21:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770426;
-	bh=vtzgXNNNCcCiJDUwoj/jS5pt+AWLONQM49lyjcD60wQ=;
+	s=korg; t=1724772109;
+	bh=I1TGjy/mcQVSUYccvnuTmPCEaJN4O89XFlC0L2Yicvw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h/tLHZLv/9uqWzIQORwBR/SMXPJiBirKVIQy1ex+eJgd5UXc0B5iaOK0Qc94S7JlC
-	 O5LI6kTsYsy6wFMDcxUWFKk+O07ZkMO6gxEq5JZ48p3DfkIFfo3w5wm4kkLX4obWe2
-	 Ftu2UgMHqyKBM0QrTIM1JOCGlJLeDOTUNSD+d7yg=
+	b=xibqdXPEd5gxZXzgrszf8grwXauSYM7udN+cS6I9Qo2DsjiwYpQOqYN4BFcO32Jk8
+	 nTJSv9V6BBuMnfIfCwyvypRucX6zlY9TDymqLC5eFWrUoerAHjsxKgVi6yWoIdXojo
+	 DTyOohzlJpSh6i6mwGHmwioZ1wRnZ4AjZKPU0vwA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhiguo Niu <zhiguo.niu@unisoc.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 194/341] f2fs: fix to do sanity check in update_sit_entry
+Subject: [PATCH 6.1 117/321] wifi: cw1200: Avoid processing an invalid TIM IE
 Date: Tue, 27 Aug 2024 16:37:05 +0200
-Message-ID: <20240827143850.793413263@linuxfoundation.org>
+Message-ID: <20240827143842.697842615@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhiguo Niu <zhiguo.niu@unisoc.com>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
 
-[ Upstream commit 36959d18c3cf09b3c12157c6950e18652067de77 ]
+[ Upstream commit b7bcea9c27b3d87b54075735c870500123582145 ]
 
-If GET_SEGNO return NULL_SEGNO for some unecpected case,
-update_sit_entry will access invalid memory address,
-cause system crash. It is better to do sanity check about
-GET_SEGNO just like update_segment_mtime & locate_dirty_segment.
+While converting struct ieee80211_tim_ie::virtual_map to be a flexible
+array it was observed that the TIM IE processing in cw1200_rx_cb()
+could potentially process a malformed IE in a manner that could result
+in a buffer over-read. Add logic to verify that the TIM IE length is
+large enough to hold a valid TIM payload before processing it.
 
-Also remove some redundant judgment code.
-
-Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20230831-ieee80211_tim_ie-v3-1-e10ff584ab5d@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/segment.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/wireless/st/cw1200/txrx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
-index 50c7537eb2250..e3e2c0b2f4959 100644
---- a/fs/f2fs/segment.c
-+++ b/fs/f2fs/segment.c
-@@ -2398,6 +2398,8 @@ static void update_sit_entry(struct f2fs_sb_info *sbi, block_t blkaddr, int del)
- #endif
+diff --git a/drivers/net/wireless/st/cw1200/txrx.c b/drivers/net/wireless/st/cw1200/txrx.c
+index 6894b919ff94b..e16e9ae90d204 100644
+--- a/drivers/net/wireless/st/cw1200/txrx.c
++++ b/drivers/net/wireless/st/cw1200/txrx.c
+@@ -1166,7 +1166,7 @@ void cw1200_rx_cb(struct cw1200_common *priv,
+ 		size_t ies_len = skb->len - (ies - (u8 *)(skb->data));
  
- 	segno = GET_SEGNO(sbi, blkaddr);
-+	if (segno == NULL_SEGNO)
-+		return;
+ 		tim_ie = cfg80211_find_ie(WLAN_EID_TIM, ies, ies_len);
+-		if (tim_ie) {
++		if (tim_ie && tim_ie[1] >= sizeof(struct ieee80211_tim_ie)) {
+ 			struct ieee80211_tim_ie *tim =
+ 				(struct ieee80211_tim_ie *)&tim_ie[2];
  
- 	se = get_seg_entry(sbi, segno);
- 	new_vblocks = se->valid_blocks + del;
-@@ -3481,8 +3483,7 @@ void f2fs_allocate_data_block(struct f2fs_sb_info *sbi, struct page *page,
- 	 * since SSR needs latest valid block information.
- 	 */
- 	update_sit_entry(sbi, *new_blkaddr, 1);
--	if (GET_SEGNO(sbi, old_blkaddr) != NULL_SEGNO)
--		update_sit_entry(sbi, old_blkaddr, -1);
-+	update_sit_entry(sbi, old_blkaddr, -1);
- 
- 	/*
- 	 * If the current segment is full, flush it out and replace it with a
 -- 
 2.43.0
 
