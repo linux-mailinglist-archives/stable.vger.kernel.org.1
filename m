@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-71118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70576-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C8BC9611B9
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:22:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3B02960EDA
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:53:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 28361B26B83
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:22:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B09F0286F21
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:53:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCFB11C68AE;
-	Tue, 27 Aug 2024 15:22:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 668391C4EE6;
+	Tue, 27 Aug 2024 14:52:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tKhWdpqh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T7eUjIUe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7790F1C578D;
-	Tue, 27 Aug 2024 15:22:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 234AC1C0DE7;
+	Tue, 27 Aug 2024 14:52:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772160; cv=none; b=stkDGFhMRCUIQfiAscW/Ohox3REcAOEUz9kgF5K2RAlgkuYjEkUSS+umlJVH5cWZONYcLZ7KDG7pnEHYyo2KgQN2iqj+uTavdGdkVq6UKFi7EGp8Va5WjVs2ug4XfujJ3OogRoGgPOygh5kPnvtOZsNDw0F9zowtCCDAK4opNIQ=
+	t=1724770366; cv=none; b=HZOPVf2HgJuqosX02CslAmGYd3KSgitLwGzwbH/xnGooF2pCtIoUwDR15D4ZUhHf26Ixd0/9LH97ktDZ4t6N0/E1LVZL5EP0rUEOKeuxFbUueT8teHrAlEtPWMDTjRljEW5B3b6QL+ix6QwMzeOSDkmYv96VrxQx5D6zx8EwgpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772160; c=relaxed/simple;
-	bh=kuYb+fyMwVaF82Eo38rjH8W+MnQ5W/XW586vHYK+s4U=;
+	s=arc-20240116; t=1724770366; c=relaxed/simple;
+	bh=Yae9FylSBRUmx17pQOrgYqAvHe7VRaoyxaLTqsEhscw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iKuDaO9chCCkJOcVgZhPLI0hAhDVu0TKpz1VKETW65Sae02DZrcn7aLcNz1utZHXkmnORv+FU8tKeGtsLJagiIFpjWi4YKjXJviPaM/il2rakvMIM/Vhm1m3f8ok5okjnvfL3bMvn0+p4qSvExsWXj9Vd5KNyIN2zgA/ar2LQNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tKhWdpqh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 847FEC61041;
-	Tue, 27 Aug 2024 15:22:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=oiMuOc0rFd4e9ofW/UCA2JQpa7PjeQzLuMIDlO7oTw5sgwb2tCpPiR7AC4XS5GEWx1alEwi1k1h+qrQyUzpb75VYyjqu7UBpDMvpWuA1MzZWFBS8dHaTcDlj3mSHa2G8jRth75ihzea84QHgw4fbNX4nxdIM95wdpO0fg4oPY+g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T7eUjIUe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2215AC61042;
+	Tue, 27 Aug 2024 14:52:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772160;
-	bh=kuYb+fyMwVaF82Eo38rjH8W+MnQ5W/XW586vHYK+s4U=;
+	s=korg; t=1724770365;
+	bh=Yae9FylSBRUmx17pQOrgYqAvHe7VRaoyxaLTqsEhscw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tKhWdpqhe8sRrFaeL7n27YqThzx5QA43/PCcXUZlIehUMGYN0WdpXdSU3+rZnsj4z
-	 jdXNCMZZWv/0VJ77UhA5EC9UIskJjBKhf+s0xuTGBEtHfAi/3eoFalqeYPZjrh14EM
-	 93uq5QdLj/ixqaIdV+1tI/UcrpzHlnvkRCJevCL0=
+	b=T7eUjIUezjT32FuxdcbM7zuhdO4DLO5hKYWw3SJoUH0s0z6U91a6szaOOV4YiHlIF
+	 qFaVZmrRDqx/xGkXZzNjZ72HgUS1BHYyVkg1Zabp4S6HCBILijgpMxsJ7CG/FZ6NJN
+	 BWBbG/oazbc6tB8uYkgXo/TGW+akx21QqFY016wc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chengfeng Ye <dg573847474@gmail.com>,
+	Gergo Koteles <soyer@irl.hu>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 130/321] staging: ks7010: disable bh on tx_dev_lock
+Subject: [PATCH 6.6 207/341] platform/x86: lg-laptop: fix %s null argument warning
 Date: Tue, 27 Aug 2024 16:37:18 +0200
-Message-ID: <20240827143843.193292294@linuxfoundation.org>
+Message-ID: <20240827143851.290399923@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,55 +61,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengfeng Ye <dg573847474@gmail.com>
+From: Gergo Koteles <soyer@irl.hu>
 
-[ Upstream commit 058cbee52ccd7be77e373d31a4f14670cfd32018 ]
+[ Upstream commit e71c8481692582c70cdfd0996c20cdcc71e425d3 ]
 
-As &priv->tx_dev.tx_dev_lock is also acquired by xmit callback which
-could be call from timer under softirq context, use spin_lock_bh()
-on it to prevent potential deadlock.
+W=1 warns about null argument to kprintf:
+warning: ‘%s’ directive argument is null [-Wformat-overflow=]
+pr_info("product: %s  year: %d\n", product, year);
 
-hostif_sme_work()
---> hostif_sme_set_pmksa()
---> hostif_mib_set_request()
---> ks_wlan_hw_tx()
---> spin_lock(&priv->tx_dev.tx_dev_lock)
+Use "unknown" instead of NULL.
 
-ks_wlan_start_xmit()
---> hostif_data_request()
---> ks_wlan_hw_tx()
---> spin_lock(&priv->tx_dev.tx_dev_lock)
-
-Signed-off-by: Chengfeng Ye <dg573847474@gmail.com>
-Link: https://lore.kernel.org/r/20230926161323.41928-1-dg573847474@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Gergo Koteles <soyer@irl.hu>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Link: https://lore.kernel.org/r/33d40e976f08f82b9227d0ecae38c787fcc0c0b2.1712154684.git.soyer@irl.hu
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/ks7010/ks7010_sdio.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/platform/x86/lg-laptop.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/staging/ks7010/ks7010_sdio.c b/drivers/staging/ks7010/ks7010_sdio.c
-index 9fb118e77a1f0..f1d44e4955fc6 100644
---- a/drivers/staging/ks7010/ks7010_sdio.c
-+++ b/drivers/staging/ks7010/ks7010_sdio.c
-@@ -395,9 +395,9 @@ int ks_wlan_hw_tx(struct ks_wlan_private *priv, void *p, unsigned long size,
- 	priv->hostt.buff[priv->hostt.qtail] = le16_to_cpu(hdr->event);
- 	priv->hostt.qtail = (priv->hostt.qtail + 1) % SME_EVENT_BUFF_SIZE;
+diff --git a/drivers/platform/x86/lg-laptop.c b/drivers/platform/x86/lg-laptop.c
+index a1e27334cdf54..78c48a1f9c68a 100644
+--- a/drivers/platform/x86/lg-laptop.c
++++ b/drivers/platform/x86/lg-laptop.c
+@@ -715,7 +715,7 @@ static int acpi_add(struct acpi_device *device)
+ 		default:
+ 			year = 2019;
+ 		}
+-	pr_info("product: %s  year: %d\n", product, year);
++	pr_info("product: %s  year: %d\n", product ?: "unknown", year);
  
--	spin_lock(&priv->tx_dev.tx_dev_lock);
-+	spin_lock_bh(&priv->tx_dev.tx_dev_lock);
- 	result = enqueue_txdev(priv, p, size, complete_handler, skb);
--	spin_unlock(&priv->tx_dev.tx_dev_lock);
-+	spin_unlock_bh(&priv->tx_dev.tx_dev_lock);
- 
- 	if (txq_has_space(priv))
- 		queue_delayed_work(priv->wq, &priv->rw_dwork, 0);
+ 	if (year >= 2019)
+ 		battery_limit_use_wmbb = 1;
 -- 
 2.43.0
 
