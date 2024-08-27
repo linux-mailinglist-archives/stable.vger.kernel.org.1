@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-70757-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71050-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 599D6960FE3
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:03:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2747961169
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:20:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15B0B285959
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:03:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7CFCD1F21ECA
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:20:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCCB41C6F46;
-	Tue, 27 Aug 2024 15:02:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58F841C93A4;
+	Tue, 27 Aug 2024 15:18:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uLvZWwyb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v8I2hQiq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AE601C68BD;
-	Tue, 27 Aug 2024 15:02:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 140B11C6F55;
+	Tue, 27 Aug 2024 15:18:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770962; cv=none; b=GIRV2nh7unt73gz2ACrrEyCmULYEHTGmSR3P0if0GQcSjz+IbhyRW5Vg3i87pyXYif0WYaNd00sLHYmBVXtI9KX9n6zLYyaKU5w0wpQRf+3qZVBdC17oA5Qf7HEG92iEOk44gV1GZZfkM229kK1YsX/ErGF3q1+3zYEUIbVV14c=
+	t=1724771932; cv=none; b=OxMVdu70JE2oYWjw13erusNYQ+9YBnsxkk0O9Orf91EObEulJOLCfNdP0JtBSKmS9Y4GM6qKu8BQhcyhZBGwuj8Qi3uv7sJoSOSPO/mIzkYi8gTplHWaFjV1P8DIjFewi08TdnseJpZE9cCVR7aiVKytri3hQyGqUWlY8vyoVe4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770962; c=relaxed/simple;
-	bh=u10Jrvd+VvSiusOjyPkjAsKNiADXCFWDRkBco1WBA/s=;
+	s=arc-20240116; t=1724771932; c=relaxed/simple;
+	bh=5WWOconbX6jJZCVnuAhw+VuL7VjuaCaALN6/UtKzB20=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dm5Zo5qcCT/C/VVcqPfQOA2oeB4retleVrVT5t2l1a2pojp/wllOEMm+T9tbzUzWkCG9Jn8d12rd/ihVTL2xdywKPTs2XNoRyTzEFGTQld5PYhjoP3iZwXJ5ytzGppFnnH+kp5EsHLEwdmL55pVkNAhv18YSKRklJ8qwOscjZzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uLvZWwyb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E529C61043;
-	Tue, 27 Aug 2024 15:02:41 +0000 (UTC)
+	 MIME-Version; b=OZADO3eANthRCv0jhcfqFFr5463y8mVClZq/7QhXb+ZsE1Bl1d0VA+Lzso096/SQIhVFA+9/c6eycyvG+vEAkvc4vv97pmmZmAQ6rNJgZ0BcPELZtJ9sfQ3r5ol7on0aANq5fbqYd1C8LRkUnHWLIBboCs7v6+Bee/aa5LXeLcI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v8I2hQiq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15187C61067;
+	Tue, 27 Aug 2024 15:18:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770962;
-	bh=u10Jrvd+VvSiusOjyPkjAsKNiADXCFWDRkBco1WBA/s=;
+	s=korg; t=1724771931;
+	bh=5WWOconbX6jJZCVnuAhw+VuL7VjuaCaALN6/UtKzB20=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uLvZWwyb1d6azv0gVjyPB4nvWO/0AUJeZNmVbf+jLC1QScSei076P/AITTRyG9a9P
-	 y9UAnVoW8/Wgyke0rJpQdlCg5LNRjjs1lzwpefhRgtHVf7LuMn9UA6jv8btmeFZAFf
-	 lF2HH5IJDvZKBqteuKANrFzqmrY8gNSWqjJ03cHs=
+	b=v8I2hQiqmw9G2JtGbN2mS3DzWdPAWUWO2ShIbQHHfan6o2iPZSZJQyL4948WA5vhN
+	 Ixw1bhW4HuB5maMO4qp1JKZ2PwOfZwU0w4KOo//9vpVMdwceWGJTWGdpeXbQRPsBxL
+	 8CpD5rOYR8ZlWNLatMyCD83WfbJE1sHq2qfPUFW8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Long Li <longli@microsoft.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.10 046/273] net: mana: Fix RX buf alloc_size alignment and atomic op panic
+	Felix Fietkau <nbd@nbd.name>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 062/321] wifi: mac80211: fix and simplify unencrypted drop check for mesh
 Date: Tue, 27 Aug 2024 16:36:10 +0200
-Message-ID: <20240827143835.150832042@linuxfoundation.org>
+Message-ID: <20240827143840.597294089@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +62,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haiyang Zhang <haiyangz@microsoft.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-commit 32316f676b4ee87c0404d333d248ccf777f739bc upstream.
+[ Upstream commit 94b9b9de05b62ac54d8766caa9865fb4d82cc47e ]
 
-The MANA driver's RX buffer alloc_size is passed into napi_build_skb() to
-create SKB. skb_shinfo(skb) is located at the end of skb, and its alignment
-is affected by the alloc_size passed into napi_build_skb(). The size needs
-to be aligned properly for better performance and atomic operations.
-Otherwise, on ARM64 CPU, for certain MTU settings like 4000, atomic
-operations may panic on the skb_shinfo(skb)->dataref due to alignment fault.
+ieee80211_drop_unencrypted is called from ieee80211_rx_h_mesh_fwding and
+ieee80211_frame_allowed.
 
-To fix this bug, add proper alignment to the alloc_size calculation.
+Since ieee80211_rx_h_mesh_fwding can forward packets for other mesh nodes
+and is called earlier, it needs to check the decryptions status and if the
+packet is using the control protocol on its own, instead of deferring to
+the later call from ieee80211_frame_allowed.
 
-Sample panic info:
-[  253.298819] Unable to handle kernel paging request at virtual address ffff000129ba5cce
-[  253.300900] Mem abort info:
-[  253.301760]   ESR = 0x0000000096000021
-[  253.302825]   EC = 0x25: DABT (current EL), IL = 32 bits
-[  253.304268]   SET = 0, FnV = 0
-[  253.305172]   EA = 0, S1PTW = 0
-[  253.306103]   FSC = 0x21: alignment fault
-Call trace:
- __skb_clone+0xfc/0x198
- skb_clone+0x78/0xe0
- raw6_local_deliver+0xfc/0x228
- ip6_protocol_deliver_rcu+0x80/0x500
- ip6_input_finish+0x48/0x80
- ip6_input+0x48/0xc0
- ip6_sublist_rcv_finish+0x50/0x78
- ip6_sublist_rcv+0x1cc/0x2b8
- ipv6_list_rcv+0x100/0x150
- __netif_receive_skb_list_core+0x180/0x220
- netif_receive_skb_list_internal+0x198/0x2a8
- __napi_poll+0x138/0x250
- net_rx_action+0x148/0x330
- handle_softirqs+0x12c/0x3a0
+Because of that, ieee80211_drop_unencrypted has a mesh specific check
+that skips over the mesh header in order to check the payload protocol.
+This code is invalid when called from ieee80211_frame_allowed, since that
+happens after the 802.11->802.3 conversion.
 
-Cc: stable@vger.kernel.org
-Fixes: 80f6215b450e ("net: mana: Add support for jumbo frame")
-Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
-Reviewed-by: Long Li <longli@microsoft.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this by moving the mesh specific check directly into
+ieee80211_rx_h_mesh_fwding.
+
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Link: https://lore.kernel.org/r/20221201135730.19723-1-nbd@nbd.name
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Stable-dep-of: 9ad797485692 ("wifi: cfg80211: check A-MSDU format more carefully")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/microsoft/mana/mana_en.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ net/mac80211/rx.c | 38 ++++++++++----------------------------
+ 1 file changed, 10 insertions(+), 28 deletions(-)
 
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -599,7 +599,11 @@ static void mana_get_rxbuf_cfg(int mtu,
- 	else
- 		*headroom = XDP_PACKET_HEADROOM;
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index c4c80037df91d..b68a9200403e7 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -2408,7 +2408,6 @@ static int ieee80211_802_1x_port_control(struct ieee80211_rx_data *rx)
  
--	*alloc_size = mtu + MANA_RXBUF_PAD + *headroom;
-+	*alloc_size = SKB_DATA_ALIGN(mtu + MANA_RXBUF_PAD + *headroom);
+ static int ieee80211_drop_unencrypted(struct ieee80211_rx_data *rx, __le16 fc)
+ {
+-	struct ieee80211_hdr *hdr = (void *)rx->skb->data;
+ 	struct sk_buff *skb = rx->skb;
+ 	struct ieee80211_rx_status *status = IEEE80211_SKB_RXCB(skb);
+ 
+@@ -2419,31 +2418,6 @@ static int ieee80211_drop_unencrypted(struct ieee80211_rx_data *rx, __le16 fc)
+ 	if (status->flag & RX_FLAG_DECRYPTED)
+ 		return 0;
+ 
+-	/* check mesh EAPOL frames first */
+-	if (unlikely(rx->sta && ieee80211_vif_is_mesh(&rx->sdata->vif) &&
+-		     ieee80211_is_data(fc))) {
+-		struct ieee80211s_hdr *mesh_hdr;
+-		u16 hdr_len = ieee80211_hdrlen(fc);
+-		u16 ethertype_offset;
+-		__be16 ethertype;
+-
+-		if (!ether_addr_equal(hdr->addr1, rx->sdata->vif.addr))
+-			goto drop_check;
+-
+-		/* make sure fixed part of mesh header is there, also checks skb len */
+-		if (!pskb_may_pull(rx->skb, hdr_len + 6))
+-			goto drop_check;
+-
+-		mesh_hdr = (struct ieee80211s_hdr *)(skb->data + hdr_len);
+-		ethertype_offset = hdr_len + ieee80211_get_mesh_hdrlen(mesh_hdr) +
+-				   sizeof(rfc1042_header);
+-
+-		if (skb_copy_bits(rx->skb, ethertype_offset, &ethertype, 2) == 0 &&
+-		    ethertype == rx->sdata->control_port_protocol)
+-			return 0;
+-	}
+-
+-drop_check:
+ 	/* Drop unencrypted frames if key is set. */
+ 	if (unlikely(!ieee80211_has_protected(fc) &&
+ 		     !ieee80211_is_any_nullfunc(fc) &&
+@@ -2897,8 +2871,16 @@ ieee80211_rx_h_mesh_fwding(struct ieee80211_rx_data *rx)
+ 	hdr = (struct ieee80211_hdr *) skb->data;
+ 	mesh_hdr = (struct ieee80211s_hdr *) (skb->data + hdrlen);
+ 
+-	if (ieee80211_drop_unencrypted(rx, hdr->frame_control))
+-		return RX_DROP_MONITOR;
++	if (ieee80211_drop_unencrypted(rx, hdr->frame_control)) {
++		int offset = hdrlen + ieee80211_get_mesh_hdrlen(mesh_hdr) +
++			     sizeof(rfc1042_header);
++		__be16 ethertype;
 +
-+	/* Using page pool in this case, so alloc_size is PAGE_SIZE */
-+	if (*alloc_size < PAGE_SIZE)
-+		*alloc_size = PAGE_SIZE;
++		if (!ether_addr_equal(hdr->addr1, rx->sdata->vif.addr) ||
++		    skb_copy_bits(rx->skb, offset, &ethertype, 2) != 0 ||
++		    ethertype != rx->sdata->control_port_protocol)
++			return RX_DROP_MONITOR;
++	}
  
- 	*datasize = mtu + ETH_HLEN;
- }
+ 	/* frame is in RMC, don't forward */
+ 	if (ieee80211_is_data(hdr->frame_control) &&
+-- 
+2.43.0
+
 
 
 
