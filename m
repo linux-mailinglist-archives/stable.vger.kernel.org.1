@@ -1,62 +1,55 @@
-Return-Path: <stable+bounces-70599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70882-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EA57960F06
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:55:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3F29961080
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:09:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 517D71C23403
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:55:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8CE581F2180E
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:09:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B0E21C6F46;
-	Tue, 27 Aug 2024 14:54:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 065421C4ED4;
+	Tue, 27 Aug 2024 15:09:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BxxvyfvI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mp1DHc5R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F9341A08A3;
-	Tue, 27 Aug 2024 14:54:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B71AE12E4D;
+	Tue, 27 Aug 2024 15:09:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770443; cv=none; b=JbgfVIMiWdTll3YpebtltDPwpSyPKA2Tbv8QnSlL1ctaJFQUHh5xUzBE+w4IazH5xrq3sIjpdxMRvCTY6YN4/Huk+4+LnkJSfZaGwC4COHKCzBi/9vHQ2FeIU5BcNHuJ/2Wq/e5RzwAcOWT5Hkux1vBUWs6pRFeV1Hs95sFjOTQ=
+	t=1724771375; cv=none; b=MNlRKELWvXHFKX+bzmxJZJPe2nMuRRy2mDHi9MI4GEhOe3pH4iz657MuOSrZYCY/0dKf0At4vdjFvLNhDVHuY6CBZZfwsVdc72++qNOM3YsKU68JmtK/MSBEmuk9w2XUk80plMwqYSLy7ILkUJG7k1T937x/lbBroQs5FEHyLNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770443; c=relaxed/simple;
-	bh=lcxCFATHjnC9Kx5b5IDfcXpfPVmnHCfHfGnVrTtfZBU=;
+	s=arc-20240116; t=1724771375; c=relaxed/simple;
+	bh=mPueHzAW2wlMyleXHTJGchr1DA4AqsZiWjipr33LXbQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R+ode9X1gRtuLoNuVvVZwxmLZCzX1HktH/fLdyd0FMKuixm3dOoR8LmOW290D7rvDEdMkhXms5Nq2oRfdArXkixNVzGoNgH8O0CI7QvHcUn6eLgW1sweLwnVkFZOJw6IwxVBAMiTs7HafpXeBl3mgNGFnBYyFzUdrwgDDTe0Uxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BxxvyfvI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89E30C6106F;
-	Tue, 27 Aug 2024 14:54:02 +0000 (UTC)
+	 MIME-Version; b=CKNUBz5YgC2KB+Uf50VLuIURbgoIlQzSfglckzbxF1sI31X9cZlLnzH61IDC7qWJMuCh+IQTvTs+1XefcurYA1Ub15LehIo91TDHP5tqcYyw+844tdGaUPi9xLzO7WpRbiPKD5Bew3dJZEvz4nFYx8o6ZZ0TB2NxsP6KlUsk6j0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mp1DHc5R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24752C4AF49;
+	Tue, 27 Aug 2024 15:09:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770443;
-	bh=lcxCFATHjnC9Kx5b5IDfcXpfPVmnHCfHfGnVrTtfZBU=;
+	s=korg; t=1724771375;
+	bh=mPueHzAW2wlMyleXHTJGchr1DA4AqsZiWjipr33LXbQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BxxvyfvIoXBPpp1Mr0hXs8Sg8OfXwtDg/oUd4L7lJZDttniFpEnMYzxQ3IC3E99aF
-	 v/EDZwlNX/FP6qz8NwPSVeoiGvfYFM0EImcGwkVafhXElF4fq1jBfdxoUaK8k00XA6
-	 05UBtmHhdY4W/a9UT8YR8Em4jFEnrIu6nr0Hy2cs=
+	b=mp1DHc5RINQfJG3rDk53ydoiOdJIfxKxifdy+5ONgfT8EFzxH1sB64v8kCfVmVzoM
+	 RD9gShZTeajU1xEIUzcKZzi0ASEsPbo0D+rjGdhTqG0P9NQgefwM/gzidRzzrvn3zx
+	 lK5HVqv/4AvxDCsNTMdEhexEacEpDqTZsNv67jX8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hailong Liu <hailong.liu@oppo.com>,
-	Tangquan Zheng <zhengtangquan@oppo.com>,
-	Baoquan He <bhe@redhat.com>,
-	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
-	Barry Song <baohua@kernel.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 231/341] mm/vmalloc: fix page mapping if vm_area_alloc_pages() with high order fallback to order 0
+Subject: [PATCH 6.10 138/273] thermal: gov_bang_bang: Drop unnecessary cooling device target state checks
 Date: Tue, 27 Aug 2024 16:37:42 +0200
-Message-ID: <20240827143852.200371192@linuxfoundation.org>
+Message-ID: <20240827143838.656634409@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,75 +61,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hailong Liu <hailong.liu@oppo.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 61ebe5a747da649057c37be1c37eb934b4af79ca ]
+[ Upstream commit 2c637af8a74d9a2a52ee5456a75dd29c8cb52da5 ]
 
-The __vmap_pages_range_noflush() assumes its argument pages** contains
-pages with the same page shift.  However, since commit e9c3cda4d86e ("mm,
-vmalloc: fix high order __GFP_NOFAIL allocations"), if gfp_flags includes
-__GFP_NOFAIL with high order in vm_area_alloc_pages() and page allocation
-failed for high order, the pages** may contain two different page shifts
-(high order and order-0).  This could lead __vmap_pages_range_noflush() to
-perform incorrect mappings, potentially resulting in memory corruption.
+Some cooling device target state checks in bang_bang_control()
+done before setting the new target state are not necessary after
+recent changes, so drop them.
 
-Users might encounter this as follows (vmap_allow_huge = true, 2M is for
-PMD_SIZE):
+Also avoid updating the target state before checking it for
+unexpected values.
 
-kvmalloc(2M, __GFP_NOFAIL|GFP_X)
-    __vmalloc_node_range_noprof(vm_flags=VM_ALLOW_HUGE_VMAP)
-        vm_area_alloc_pages(order=9) ---> order-9 allocation failed and fallback to order-0
-            vmap_pages_range()
-                vmap_pages_range_noflush()
-                    __vmap_pages_range_noflush(page_shift = 21) ----> wrong mapping happens
-
-We can remove the fallback code because if a high-order allocation fails,
-__vmalloc_node_range_noprof() will retry with order-0.  Therefore, it is
-unnecessary to fallback to order-0 here.  Therefore, fix this by removing
-the fallback code.
-
-Link: https://lkml.kernel.org/r/20240808122019.3361-1-hailong.liu@oppo.com
-Fixes: e9c3cda4d86e ("mm, vmalloc: fix high order __GFP_NOFAIL allocations")
-Signed-off-by: Hailong Liu <hailong.liu@oppo.com>
-Reported-by: Tangquan Zheng <zhengtangquan@oppo.com>
-Reviewed-by: Baoquan He <bhe@redhat.com>
-Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
-Acked-by: Barry Song <baohua@kernel.org>
-Acked-by: Michal Hocko <mhocko@suse.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Stable-dep-of: 84248e35d9b6 ("thermal: gov_bang_bang: Split bang_bang_control()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/vmalloc.c | 11 ++---------
- 1 file changed, 2 insertions(+), 9 deletions(-)
+ drivers/thermal/gov_bang_bang.c | 14 +++-----------
+ 1 file changed, 3 insertions(+), 11 deletions(-)
 
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index 078f6b53f8d50..732ff66d1b513 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -3079,15 +3079,8 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
- 			page = alloc_pages(alloc_gfp, order);
- 		else
- 			page = alloc_pages_node(nid, alloc_gfp, order);
--		if (unlikely(!page)) {
--			if (!nofail)
--				break;
--
--			/* fall back to the zero order allocations */
--			alloc_gfp |= __GFP_NOFAIL;
--			order = 0;
--			continue;
--		}
-+		if (unlikely(!page))
-+			break;
+diff --git a/drivers/thermal/gov_bang_bang.c b/drivers/thermal/gov_bang_bang.c
+index 2a6a651e9d921..b9474c6af72b5 100644
+--- a/drivers/thermal/gov_bang_bang.c
++++ b/drivers/thermal/gov_bang_bang.c
+@@ -57,24 +57,16 @@ static void bang_bang_control(struct thermal_zone_device *tz,
+ 		if (instance->trip != trip)
+ 			continue;
  
+-		if (instance->target == THERMAL_NO_TARGET)
+-			instance->target = 0;
+-
+-		if (instance->target != 0 && instance->target != 1) {
++		if (instance->target != 0 && instance->target != 1 &&
++		    instance->target != THERMAL_NO_TARGET)
+ 			pr_debug("Unexpected state %ld of thermal instance %s in bang-bang\n",
+ 				 instance->target, instance->name);
+ 
+-			instance->target = 1;
+-		}
+-
  		/*
- 		 * Higher order allocations must be able to be treated as
+ 		 * Enable the fan when the trip is crossed on the way up and
+ 		 * disable it when the trip is crossed on the way down.
+ 		 */
+-		if (instance->target == 0 && crossed_up)
+-			instance->target = 1;
+-		else if (instance->target == 1 && !crossed_up)
+-			instance->target = 0;
++		instance->target = crossed_up;
+ 
+ 		dev_dbg(&instance->cdev->device, "target=%ld\n", instance->target);
+ 
 -- 
 2.43.0
 
