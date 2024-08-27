@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-70840-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70628-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80586961047
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:07:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D90FE960F35
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:57:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E6092824CD
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:07:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 179661C218E6
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:57:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCC081C462B;
-	Tue, 27 Aug 2024 15:07:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6BC11CCB48;
+	Tue, 27 Aug 2024 14:55:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a73jH0e8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vT/uSqDj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AA3F1C3F19;
-	Tue, 27 Aug 2024 15:07:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8256D1BB6BE;
+	Tue, 27 Aug 2024 14:55:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771234; cv=none; b=HaAF5mu3wofGWwoTEnJyK5V+NU+cNR+1vcsyLB+2fs86ut/loTKlN8qBMt+v0oYOyE55nWxKz4oh6cX14Tfm78n7OgA0fwgd7NDb+GHr2CKpOkItYo6Tkozm7y4kapT3ZDpFMelX5QIO2AmDi5s0MoFeOTq7r8pSRUW3BTNpksU=
+	t=1724770542; cv=none; b=XaBkpl/BEDJeDwJ4n/rIzfssKMnN9T55Vl01MT6yyDEQdQERW7wex2p2AseYlvBfc6Y4OuXGFZoOxSg5y2FNGost5zBjdp9HR/UE7twGflFEMiTwj0KRiHRLGr/rzdj4a9tDBjNcRBTMLm7Ng3k5Rz8NFYIUvUJHKpI5ueLggdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771234; c=relaxed/simple;
-	bh=1LoZ0vPb1E28HvZrETJT5nRFVfuwb6mq6xNieWtimN0=;
+	s=arc-20240116; t=1724770542; c=relaxed/simple;
+	bh=SW8C3U6EpucqLj5yzXZamxMpvprwj6zp+q/OhaysuYs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NaG7gwdYyW9ExTLv1nDX4gk3S9obB3tSoZa+hYYld/hKwczM4BbdfVTRRktsGZglfelrBAwnv1tX4Q2oet50qFgVzIFPKZDIKvipTg5LTg3nWHB4lHcbqOXgQOziPUemh12/QQITg0zodRWhx5ygTT9lJP5COvE7O+W5hSxyttM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a73jH0e8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E344FC4AF55;
-	Tue, 27 Aug 2024 15:07:13 +0000 (UTC)
+	 MIME-Version; b=CkjUpwEljOYP3q1Q/I9xOAm2maV4hH8RtGqQvl2Kz8quY7ysyBUGTUVB72zf592facTCpz1llvyuMi76AQIj5PRaPz4M6eJaVj4/st6JYnEsrCyZC1AjKTVKEvTjw95NcONIEMYyl1axMaSceYdgYGfbzYYK9Jygp6/vGxG6CtE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vT/uSqDj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0007C4FDEE;
+	Tue, 27 Aug 2024 14:55:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771234;
-	bh=1LoZ0vPb1E28HvZrETJT5nRFVfuwb6mq6xNieWtimN0=;
+	s=korg; t=1724770542;
+	bh=SW8C3U6EpucqLj5yzXZamxMpvprwj6zp+q/OhaysuYs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a73jH0e8hOqo//4TvVMiaydJynXUgJfp/VOvuRdaChN3Vfa+nXP8zT85oRwahD3Bg
-	 mdtKH3U7t3hTB6LlKBIXlLIRd3zhF6J6x7FCun9BrvioygpmUFxzZa2rXQjJeRe7Kq
-	 eUGZInJ7DdP9eaclrpJ23GB5z9wwgWnuzyTgtZnU=
+	b=vT/uSqDjeFWmsbaI0VnJ/bzOI0Sm5kzu3OnsBWVTWFR0fK69cxKkOd0mrzpWKw9AD
+	 Hr6jACLtWzk5rz0feecsVvf5JGek3bmarRScxMgHE9JD5eV6SSh7XTv8U/uMoQJR//
+	 KC/0XHoiaYzayS4LRorGJHfPQxDdYLsctDZ0R+mU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
+	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+	Tony Luck <tony.luck@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 126/273] rust: suppress error messages from CONFIG_{RUSTC,BINDGEN}_VERSION_TEXT
+Subject: [PATCH 6.6 219/341] EDAC/skx_common: Allow decoding of SGX addresses
 Date: Tue, 27 Aug 2024 16:37:30 +0200
-Message-ID: <20240827143838.201137985@linuxfoundation.org>
+Message-ID: <20240827143851.745814849@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
 
-[ Upstream commit 5ce86c6c861352c9346ebb5c96ed70cb67414aa3 ]
+[ Upstream commit e0d335077831196bffe6a634ffe385fc684192ca ]
 
-While this is a somewhat unusual case, I encountered odd error messages
-when I ran Kconfig in a foreign architecture chroot.
+There are no "struct page" associations with SGX pages, causing the check
+pfn_to_online_page() to fail. This results in the inability to decode the
+SGX addresses and warning messages like:
 
-  $ make allmodconfig
-  sh: 1: rustc: not found
-  sh: 1: bindgen: not found
-  #
-  # configuration written to .config
-  #
+  Invalid address 0x34cc9a98840 in IA32_MC17_ADDR
 
-The successful execution of 'command -v rustc' does not necessarily mean
-that 'rustc --version' will succeed.
+Add an additional check to allow the decoding of the error address and to
+skip the warning message, if the error address is an SGX address.
 
-  $ sh -c 'command -v rustc'
-  /home/masahiro/.cargo/bin/rustc
-  $ sh -c 'rustc --version'
-  sh: 1: rustc: not found
-
-Here, 'rustc' is built for x86, and I ran it in an arm64 system.
-
-The current code:
-
-  command -v $(RUSTC) >/dev/null 2>&1 && $(RUSTC) --version || echo n
-
-can be turned into:
-
-  command -v $(RUSTC) >/dev/null 2>&1 && $(RUSTC) --version 2>/dev/null || echo n
-
-However, I did not understand the necessity of 'command -v $(RUSTC)'.
-
-I simplified it to:
-
-  $(RUSTC) --version 2>/dev/null || echo n
-
-Fixes: 2f7ab1267dc9 ("Kbuild: add Rust support")
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Link: https://lore.kernel.org/r/20240727140302.1806011-1-masahiroy@kernel.org
-[ Rebased on top of v6.11-rc1. - Miguel ]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Fixes: 1e92af09fab1 ("EDAC/skx_common: Filter out the invalid address")
+Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Link: https://lore.kernel.org/r/20240408120419.50234-1-qiuxu.zhuo@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- init/Kconfig | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/edac/skx_common.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/init/Kconfig b/init/Kconfig
-index b7683506264f0..051cbb22968bd 100644
---- a/init/Kconfig
-+++ b/init/Kconfig
-@@ -1906,7 +1906,7 @@ config RUST
- config RUSTC_VERSION_TEXT
- 	string
- 	depends on RUST
--	default $(shell,command -v $(RUSTC) >/dev/null 2>&1 && $(RUSTC) --version || echo n)
-+	default $(shell,$(RUSTC) --version 2>/dev/null || echo n)
- 
- config BINDGEN_VERSION_TEXT
- 	string
-@@ -1914,7 +1914,7 @@ config BINDGEN_VERSION_TEXT
- 	# The dummy parameter `workaround-for-0.69.0` is required to support 0.69.0
- 	# (https://github.com/rust-lang/rust-bindgen/pull/2678). It can be removed when
- 	# the minimum version is upgraded past that (0.69.1 already fixed the issue).
--	default $(shell,command -v $(BINDGEN) >/dev/null 2>&1 && $(BINDGEN) --version workaround-for-0.69.0 || echo n)
-+	default $(shell,$(BINDGEN) --version workaround-for-0.69.0 2>/dev/null || echo n)
- 
- #
- # Place an empty function call at each tracepoint site. Can be
+diff --git a/drivers/edac/skx_common.c b/drivers/edac/skx_common.c
+index f4b192420be47..8d18099fd528c 100644
+--- a/drivers/edac/skx_common.c
++++ b/drivers/edac/skx_common.c
+@@ -659,7 +659,7 @@ int skx_mce_check_error(struct notifier_block *nb, unsigned long val,
+ 	memset(&res, 0, sizeof(res));
+ 	res.mce  = mce;
+ 	res.addr = mce->addr & MCI_ADDR_PHYSADDR;
+-	if (!pfn_to_online_page(res.addr >> PAGE_SHIFT)) {
++	if (!pfn_to_online_page(res.addr >> PAGE_SHIFT) && !arch_is_platform_page(res.addr)) {
+ 		pr_err("Invalid address 0x%llx in IA32_MC%d_ADDR\n", mce->addr, mce->bank);
+ 		return NOTIFY_DONE;
+ 	}
 -- 
 2.43.0
 
