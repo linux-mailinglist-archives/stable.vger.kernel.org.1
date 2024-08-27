@@ -1,49 +1,51 @@
-Return-Path: <stable+bounces-70338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70339-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3779C960A32
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:28:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5414960A42
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:29:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E63872834F2
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 12:28:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C3F31F22F18
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 12:29:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AAC61A7077;
-	Tue, 27 Aug 2024 12:27:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C431D1B3B39;
+	Tue, 27 Aug 2024 12:29:19 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEBDD19FA8A;
-	Tue, 27 Aug 2024 12:27:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF46E19FA8A;
+	Tue, 27 Aug 2024 12:29:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724761659; cv=none; b=Wj49M5+koEeBg4WGrT4VPdUhvREWii4q0wCMUMgYRYewDtpoT7V4vG9Sj/2scVd5zMf/2NPduvHyLtxqzKvJyqmaXivRKUvRDc0zI7DLszy1y1Z2kD4+A7KYXorBj/nycHLAP3SuPTZkzKTh3ve0Ihul3iF6RP78z9ocaQuus5o=
+	t=1724761759; cv=none; b=rm96XNvT2+OjIrTOZZ/TVJt6P8dk12qLJ29SkIB8o/wwKq3IzHPtIqWplbHsDN19WHVyuTbQR9a31urEneKNj+iQKnHzzCNplYID1xIUIRBOHDgIw4ynilwWvyhfNIS8/cZ2eJtcHnAF43y5y467KovoB53gTUvzaWFCXFWdxuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724761659; c=relaxed/simple;
-	bh=LeXt/vBqDdXsVT9es4rU6NCTbbEFAxFI3QplTGehT0c=;
+	s=arc-20240116; t=1724761759; c=relaxed/simple;
+	bh=/u+8IG85UE1UCSKu2EZgx1AAgvnYYY2Ik+dwBQe+Eno=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=a/t5VhnL4/Tzi2aEVYO1pTh9PfY0U1YemSxZUzFD5+nvANSYMmlX+4X8O3BPU9O6Fo36qs8KD+c5R+VyMneZUkakcPCsTuxtu7JY+mK33oK+cvMfWg+akvXDdB2qn5xELbie8i6u+oiyys5LpM2RmOEnQZcdSWVZ4caP0gLu5h0=
+	 Content-Type:Content-Disposition:In-Reply-To; b=iNKW4FQByE8aziPIz4+Q7+dR3v++oTrcr4W3h8wXcyJB6ut593OxGy6xmJhGUEgbjphN28WBdwGyLWMneqkbJRn/gdw99KgVi3AchVz+ZNbQFhMjQLkT1qnGHG4yFfzLQ2AAwCwOpj7vjzPMcde6IFDEsrF3wmPMzV2Uq91iGus=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
 Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id 380821C009E; Tue, 27 Aug 2024 14:27:36 +0200 (CEST)
-Date: Tue, 27 Aug 2024 14:27:35 +0200
+	id 2DAEB1C009E; Tue, 27 Aug 2024 14:29:16 +0200 (CEST)
+Date: Tue, 27 Aug 2024 14:29:15 +0200
 From: Pavel Machek <pavel@denx.de>
 To: Sasha Levin <sashal@kernel.org>
 Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Kalle Valo <quic_kvalo@quicinc.com>, kvalo@kernel.org,
-	jjohnson@kernel.org, linux-wireless@vger.kernel.org,
-	ath11k@lists.infradead.org
-Subject: Re: [PATCH AUTOSEL 6.1 21/61] wifi: ath11k: initialize 'ret' in
- ath11k_qmi_load_file_target_mem()
-Message-ID: <Zs3GN2FH4uzzMEFY@duo.ucw.cz>
+	Jesse Zhang <jesse.zhang@amd.com>, Tim Huang <Tim.Huang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>, kenneth.feng@amd.com,
+	christian.koenig@amd.com, Xinhui.Pan@amd.com, airlied@gmail.com,
+	daniel@ffwll.ch, Jun.Ma2@amd.com, mario.limonciello@amd.com,
+	yifan1.zhang@amd.com, lijo.lazar@amd.com,
+	amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
+Subject: Re: [PATCH AUTOSEL 6.1 05/61] drm/amd/pm: Fix negative array index
+ read
+Message-ID: <Zs3Gm4KIIN6EMNYP@duo.ucw.cz>
 References: <20240801002803.3935985-1-sashal@kernel.org>
- <20240801002803.3935985-21-sashal@kernel.org>
+ <20240801002803.3935985-5-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -51,63 +53,60 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="HldkCQvBm5fG8i0J"
+	protocol="application/pgp-signature"; boundary="scNabhc75NExd7rZ"
 Content-Disposition: inline
-In-Reply-To: <20240801002803.3935985-21-sashal@kernel.org>
+In-Reply-To: <20240801002803.3935985-5-sashal@kernel.org>
 
 
---HldkCQvBm5fG8i0J
+--scNabhc75NExd7rZ
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
 Hi!
 
-> [ Upstream commit 199f149e97dc7be80e5eed4b232529c1d1aa8055 ]
+> From: Jesse Zhang <jesse.zhang@amd.com>
 >=20
-> smatch flagged the following issue:
+> [ Upstream commit c8c19ebf7c0b202a6a2d37a52ca112432723db5f ]
 >=20
-> drivers/net/wireless/ath/ath11k/qmi.c:2401 ath11k_qmi_load_file_target_me=
-m() error: uninitialized symbol 'ret'.
+> Avoid using the negative values
+> for clk_idex as an index into an array pptable->DpmDescriptor.
 >=20
-> The reality is that 'ret' is initialized in every path through
-> ath11k_qmi_load_file_target_mem() except one, the case where the input
-> 'len' is 0, and hence the "while (remaining)" loop is never entered.
-> But to make sure this case is also handled, add an initializer to the
-> declaration of 'ret'.
->=20
-> No functional changes, compile tested only.
+> V2: fix clk_index return check (Tim Huang)
 
-Just a cleanup. Does not match -stable rules.
+>  	dpm_desc =3D &pptable->DpmDescriptor[clk_index];
+> =20
+>  	/* 0 - Fine grained DPM, 1 - Discrete DPM */
+> -	return dpm_desc->SnapToDiscrete =3D=3D 0;
+> +	return dpm_desc->SnapToDiscrete =3D=3D 0 ? 1 : 0;
+>  }
+>
+
+Original code was already returning 0/1, no need for this. You could
+use !!() to emphatise that, but really....
+
+> +		if (ret) {
+>  			soft_max_level =3D (soft_max_level >=3D 1 ? 1 : 0);
+>  			soft_min_level =3D (soft_min_level >=3D 1 ? 1 : 0);
+
+Same here.
 
 Best regards,
-							Pavel
-						=09
-> +++ b/drivers/net/wireless/ath/ath11k/qmi.c
-> @@ -2293,7 +2293,7 @@ static int ath11k_qmi_load_file_target_mem(struct a=
-th11k_base *ab,
->  	struct qmi_txn txn;
->  	const u8 *temp =3D data;
->  	void __iomem *bdf_addr =3D NULL;
-> -	int ret;
-> +	int ret =3D 0;
->  	u32 remaining =3D len;
-> =20
->  	req =3D kzalloc(sizeof(*req), GFP_KERNEL);
+								Pavel
 
 --=20
 DENX Software Engineering GmbH,        Managing Director: Erika Unter
 HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 
---HldkCQvBm5fG8i0J
+--scNabhc75NExd7rZ
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZs3GNwAKCRAw5/Bqldv6
-8kiMAJ4gB7fc1FbbwRzBA4C9ElhfyH8CYwCeM0c4ux7PN2ixW6KMksB6oTRfXkw=
-=T0fI
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZs3GmwAKCRAw5/Bqldv6
+8lzgAJ9HRFMKO7ykdGp/Lv4c4NpdGaVW4ACgqKiVFPb39w9n2HaoIoNKdgJiFJk=
+=aWwY
 -----END PGP SIGNATURE-----
 
---HldkCQvBm5fG8i0J--
+--scNabhc75NExd7rZ--
 
