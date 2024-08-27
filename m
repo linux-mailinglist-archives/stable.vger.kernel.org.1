@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-71095-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70807-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 165B896119E
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:21:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 551A7961023
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:05:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A7FB2B27D43
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:21:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 017E01F21736
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:05:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 627271C5793;
-	Tue, 27 Aug 2024 15:21:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27B411C4EE6;
+	Tue, 27 Aug 2024 15:05:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EfQ695r3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P0wIapqS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F11919F485;
-	Tue, 27 Aug 2024 15:21:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8D6F1BC9E3;
+	Tue, 27 Aug 2024 15:05:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772083; cv=none; b=HtGLdVSiyMaMNSeNLBJcA+WYcaJ2gWG6MEOLeRM0rjVKl/6VaJJ6ucha3CxPaYZhG7R9mAh/bMp8trQmZN7RqNfMEYSJ8QyYg9nRNAo0Tn2THYgs27uj75jsL5RCTBecRhj978IJhbWMgsDgOlkD8YOgGJQOXkZaBGFBgLXNkaM=
+	t=1724771125; cv=none; b=IKm63KqddLeQ7d7wbQ8QjyhQ5vfETmCpKkvte7/OMc8WyMnIkVsGOt9a/XaBg0pieqpmzszpBTrhGVISS6Bzldlzpi9hyN0TLK6mS5umqQiB5/szPNrNVXPejEuCSaTNBnrEGMt4Mxl/R+qGlTylM0rjtmw/c/URYGh87GMrCos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772083; c=relaxed/simple;
-	bh=ots0cEN/nTq/ZVEs32JOMuDJezkKaDRzgaRUurXrt+Q=;
+	s=arc-20240116; t=1724771125; c=relaxed/simple;
+	bh=6s+TVL6QrCvUI24uxB7FDtqaBItX/a57yQTIuj9HfOY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lFHjBs9l8PK+L1a9NfN4VLQ5jsNOQviGwuIGNL9pxk7ZA8+/3B3j/9MDcZLik5QVk6jVjxR8X359v22kBWM6MPUoH39BkQ0En8eUhYz1hGV7QHBx0ul0Q1v70daq9aVPlnT0ZeFfKJRgf12mE3ZSpQTMDBBrgl5XAevlmiIpuXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EfQ695r3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 983FDC4FE08;
-	Tue, 27 Aug 2024 15:21:22 +0000 (UTC)
+	 MIME-Version; b=uIbyc9pzS4ySUomRqkbafdFwwUMPfhEbEX5wW9EhybfPfIYBmahZ9fvze0DxkciWE0qvzvSbFBvL/wqXMcBnfM/p6fNZXbckiryYIYX+x21DAR+Pez2ctStCzNfi/QGRfTtVncIUyI/+GcOIM5MxnyDdWdKxhbpba3KKUcVj87Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P0wIapqS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46D5DC6106C;
+	Tue, 27 Aug 2024 15:05:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772083;
-	bh=ots0cEN/nTq/ZVEs32JOMuDJezkKaDRzgaRUurXrt+Q=;
+	s=korg; t=1724771125;
+	bh=6s+TVL6QrCvUI24uxB7FDtqaBItX/a57yQTIuj9HfOY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EfQ695r3QmyDvYbTY8G5FjcAx+/HnhZmwUgGVumA/y4siZXkQgxXNWiooY0MzJzWB
-	 vtpXHeBYpucu9iMcMHwLx5Gi+Vo6AW2K0rr7wkjXPNNYAOjx7F6OHB0PmukNTY1d6x
-	 1SisqaPBLPAJVJUCps9wZPdAd8RvioZH+rMBXmwQ=
+	b=P0wIapqSq3iKqjDKfAuRFF8sMISIdCGhjZaCL0EyxQd3QYitMfxFuyHqYy0PQjRWv
+	 K1SRUpl9Hd37upJtQcp9SoUFc0RlBMI3kpnO4sNhAzyYLYtbjlHcb0pTBaoiAhyTlb
+	 LSeMIp3hzvU05+Ls8eGIjuUcDlMWSD5NrdePnrTo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jie Wang <wangjie125@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 109/321] net: hns3: fix a deadlock problem when config TC during resetting
+Subject: [PATCH 6.10 093/273] atm: idt77252: prevent use after free in dequeue_rx()
 Date: Tue, 27 Aug 2024 16:36:57 +0200
-Message-ID: <20240827143842.395409183@linuxfoundation.org>
+Message-ID: <20240827143836.951802493@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,78 +60,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jie Wang <wangjie125@huawei.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit be5e816d00a506719e9dbb1a9c861c5ced30a109 ]
+[ Upstream commit a9a18e8f770c9b0703dab93580d0b02e199a4c79 ]
 
-When config TC during the reset process, may cause a deadlock, the flow is
-as below:
-                             pf reset start
-                                 │
-                                 ▼
-                              ......
-setup tc                         │
-    │                            ▼
-    ▼                      DOWN: napi_disable()
-napi_disable()(skip)             │
-    │                            │
-    ▼                            ▼
-  ......                      ......
-    │                            │
-    ▼                            │
-napi_enable()                    │
-                                 ▼
-                           UINIT: netif_napi_del()
-                                 │
-                                 ▼
-                              ......
-                                 │
-                                 ▼
-                           INIT: netif_napi_add()
-                                 │
-                                 ▼
-                              ......                 global reset start
-                                 │                      │
-                                 ▼                      ▼
-                           UP: napi_enable()(skip)    ......
-                                 │                      │
-                                 ▼                      ▼
-                              ......                 napi_disable()
+We can't dereference "skb" after calling vcc->push() because the skb
+is released.
 
-In reset process, the driver will DOWN the port and then UINIT, in this
-case, the setup tc process will UP the port before UINIT, so cause the
-problem. Adds a DOWN process in UINIT to fix it.
-
-Fixes: bb6b94a896d4 ("net: hns3: Add reset interface implementation in client")
-Signed-off-by: Jie Wang <wangjie125@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3_enet.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/atm/idt77252.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-index 4ce43c3a00a37..0377a056aaecc 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-@@ -5728,6 +5728,9 @@ static int hns3_reset_notify_uninit_enet(struct hnae3_handle *handle)
- 	struct net_device *netdev = handle->kinfo.netdev;
- 	struct hns3_nic_priv *priv = netdev_priv(netdev);
+diff --git a/drivers/atm/idt77252.c b/drivers/atm/idt77252.c
+index e7f713cd70d3f..a876024d8a05f 100644
+--- a/drivers/atm/idt77252.c
++++ b/drivers/atm/idt77252.c
+@@ -1118,8 +1118,8 @@ dequeue_rx(struct idt77252_dev *card, struct rsq_entry *rsqe)
+ 	rpp->len += skb->len;
  
-+	if (!test_bit(HNS3_NIC_STATE_DOWN, &priv->state))
-+		hns3_nic_net_stop(netdev);
-+
- 	if (!test_and_clear_bit(HNS3_NIC_STATE_INITED, &priv->state)) {
- 		netdev_warn(netdev, "already uninitialized\n");
- 		return 0;
+ 	if (stat & SAR_RSQE_EPDU) {
++		unsigned int len, truesize;
+ 		unsigned char *l1l2;
+-		unsigned int len;
+ 
+ 		l1l2 = (unsigned char *) ((unsigned long) skb->data + skb->len - 6);
+ 
+@@ -1189,14 +1189,15 @@ dequeue_rx(struct idt77252_dev *card, struct rsq_entry *rsqe)
+ 		ATM_SKB(skb)->vcc = vcc;
+ 		__net_timestamp(skb);
+ 
++		truesize = skb->truesize;
+ 		vcc->push(vcc, skb);
+ 		atomic_inc(&vcc->stats->rx);
+ 
+-		if (skb->truesize > SAR_FB_SIZE_3)
++		if (truesize > SAR_FB_SIZE_3)
+ 			add_rx_skb(card, 3, SAR_FB_SIZE_3, 1);
+-		else if (skb->truesize > SAR_FB_SIZE_2)
++		else if (truesize > SAR_FB_SIZE_2)
+ 			add_rx_skb(card, 2, SAR_FB_SIZE_2, 1);
+-		else if (skb->truesize > SAR_FB_SIZE_1)
++		else if (truesize > SAR_FB_SIZE_1)
+ 			add_rx_skb(card, 1, SAR_FB_SIZE_1, 1);
+ 		else
+ 			add_rx_skb(card, 0, SAR_FB_SIZE_0, 1);
 -- 
 2.43.0
 
