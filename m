@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-70731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70483-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF437960FBC
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:01:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4292E960E5C
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:48:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 39B15B24EB7
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:01:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B7752B2208A
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:48:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C24121C6890;
-	Tue, 27 Aug 2024 15:01:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DF3C1C57BE;
+	Tue, 27 Aug 2024 14:47:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2TPVjQal"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tc8TtELz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FDDA1B4C4E;
-	Tue, 27 Aug 2024 15:01:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57E6D1C5781;
+	Tue, 27 Aug 2024 14:47:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770880; cv=none; b=bA80LB/oHORVxecou8FBahYcHrhSGV7mF1uilvBhk/lePMOZURiiOhUSvji4AaTYzN9pZF3Dgm9ytMZiJbBlbec48knXkuuAnW4tNZwSTX0YL3/ohZurYopn7g7APChO5fdz40F2pmWslSj2zSAfSf5X23lC3aqUpK1ESB9lJCk=
+	t=1724770057; cv=none; b=WWZBfmUKklDXD6Sx13tRQDw8Q1VMVRCqr5TtvShu/I4cQjxIATOXdW5WFSCCp1Nn5zpIqmdIfAk6TrL/Ig9qrYw3RtPp7jJnafu1HfJyM4y6oEX4DBJzgIOhaWqPqAizEEG0cm74ZRBjQsSPDc6wSAKTt2gVM978fSOtl4x8cVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770880; c=relaxed/simple;
-	bh=MNf7lwvlNQ4gJVzSSutSKubcFzku9QwnqfoV12Ah6A4=;
+	s=arc-20240116; t=1724770057; c=relaxed/simple;
+	bh=LkXlyQg+zBMcDb6P4TrTyygQIC9vo6bETtFextKFLZo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GMkI56txpoPQFs8VYJk6lunyfpJAGKvugDvwRnS5qJseIbxZyZeGZoqqNT+Q0jKNdjpuQrQAqnbGxbEr4lpYTyJ8guv/eHt+dknprUNIMTSQH0g4Yc91d5vENvf5kfJdRpijvNX4ypyb7H2lstLcF80bifZ5nK7HvJiM9rP78V8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2TPVjQal; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0E97C4AF1C;
-	Tue, 27 Aug 2024 15:01:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dgdwjvxNgTOAgWkR+p642oGRL9fyu8urzaH9F8/HKkUqCPYM76D0me51YHBFS1Lem40Ch/9EljfwrG0OYY6u1tswps0wQD0r/ewsNmAlvXIz67/AFYgIlsIW2g6scXiYuf8HIqBcUn40Q2TJxppkDuQ1mSTUAc/DOBURjOoc2dc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tc8TtELz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D78EC61040;
+	Tue, 27 Aug 2024 14:47:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770880;
-	bh=MNf7lwvlNQ4gJVzSSutSKubcFzku9QwnqfoV12Ah6A4=;
+	s=korg; t=1724770056;
+	bh=LkXlyQg+zBMcDb6P4TrTyygQIC9vo6bETtFextKFLZo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2TPVjQalGM33g7uuR5lVxeJP8odsRGzcW1UFfiE41V479mn5pUmIH/tNk2dhgprdL
-	 tIYiGWnK5Z4mGYRrKlitomiNZKRI+1e99qs/rltPbVVnglC7JDtbjTtojmw/5g5Im5
-	 ylO0bQahY0phQ6a3TjgB3HecCP6xcd8cFJWNL4Gg=
+	b=Tc8TtELz8LV8XxTDyXYfwOC9LxOX5bpQLHmSsUtTXGnMaDmY2vbQc4ayrDJSzIuPs
+	 d2ZKJvk0YEz+3deZKQQSnJV5lTKPtoucK0zmRLL+WhZ66yaV6qrCbiqL5zVxH/2r12
+	 x6nDCq/gaGjjMBYPEl+zPN2f471iLc8Et3ScUmRQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baojun Xu <baojun.xu@ti.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.10 020/273] ALSA: hda/tas2781: fix wrong calibrated data order
+	Jithu Joseph <jithu.joseph@intel.com>,
+	Tony Luck <tony.luck@intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Pengfei Xu <pengfei.xu@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 113/341] platform/x86/intel/ifs: Validate image size
 Date: Tue, 27 Aug 2024 16:35:44 +0200
-Message-ID: <20240827143834.157099366@linuxfoundation.org>
+Message-ID: <20240827143847.712310528@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,73 +62,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baojun Xu <baojun.xu@ti.com>
+From: Jithu Joseph <jithu.joseph@intel.com>
 
-commit 3beddef84d90590270465a907de1cfe2539ac70d upstream.
+[ Upstream commit 25a76dbb36dd58ad4df7f6a4dc43061a10b0d817 ]
 
-Wrong calibration data order cause sound too low in some device.
-Fix wrong calibrated data order, add calibration data converssion
-by get_unaligned_be32() after reading from UEFI.
+Perform additional validation prior to loading IFS image.
 
-Fixes: 5be27f1e3ec9 ("ALSA: hda/tas2781: Add tas2781 HDA driver")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Baojun Xu <baojun.xu@ti.com>
-Link: https://patch.msgid.link/20240813043749.108-1-shenghao-ding@ti.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Error out if the size of the file being loaded doesn't match the size
+specified in the header.
+
+Signed-off-by: Jithu Joseph <jithu.joseph@intel.com>
+Reviewed-by: Tony Luck <tony.luck@intel.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Tested-by: Pengfei Xu <pengfei.xu@intel.com>
+Link: https://lore.kernel.org/r/20231005195137.3117166-6-jithu.joseph@intel.com
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/tas2781_hda_i2c.c |   14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ drivers/platform/x86/intel/ifs/load.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/sound/pci/hda/tas2781_hda_i2c.c
-+++ b/sound/pci/hda/tas2781_hda_i2c.c
-@@ -2,10 +2,12 @@
- //
- // TAS2781 HDA I2C driver
- //
--// Copyright 2023 Texas Instruments, Inc.
-+// Copyright 2023 - 2024 Texas Instruments, Inc.
- //
- // Author: Shenghao Ding <shenghao-ding@ti.com>
-+// Current maintainer: Baojun Xu <baojun.xu@ti.com>
- 
-+#include <asm/unaligned.h>
- #include <linux/acpi.h>
- #include <linux/crc8.h>
- #include <linux/crc32.h>
-@@ -519,20 +521,22 @@ static void tas2781_apply_calib(struct t
- 	static const unsigned char rgno_array[CALIB_MAX] = {
- 		0x74, 0x0c, 0x14, 0x70, 0x7c,
- 	};
--	unsigned char *data;
-+	int offset = 0;
- 	int i, j, rc;
-+	__be32 data;
- 
- 	for (i = 0; i < tas_priv->ndev; i++) {
--		data = tas_priv->cali_data.data +
--			i * TASDEVICE_SPEAKER_CALIBRATION_SIZE;
- 		for (j = 0; j < CALIB_MAX; j++) {
-+			data = get_unaligned_be32(
-+				&tas_priv->cali_data.data[offset]);
- 			rc = tasdevice_dev_bulk_write(tas_priv, i,
- 				TASDEVICE_REG(0, page_array[j], rgno_array[j]),
--				&(data[4 * j]), 4);
-+				(unsigned char *)&data, 4);
- 			if (rc < 0)
- 				dev_err(tas_priv->dev,
- 					"chn %d calib %d bulk_wr err = %d\n",
- 					i, j, rc);
-+			offset += 4;
- 		}
+diff --git a/drivers/platform/x86/intel/ifs/load.c b/drivers/platform/x86/intel/ifs/load.c
+index cefd0d886cfd4..ae52de138a6ea 100644
+--- a/drivers/platform/x86/intel/ifs/load.c
++++ b/drivers/platform/x86/intel/ifs/load.c
+@@ -260,6 +260,7 @@ int ifs_load_firmware(struct device *dev)
+ {
+ 	const struct ifs_test_caps *test = ifs_get_test_caps(dev);
+ 	struct ifs_data *ifsd = ifs_get_data(dev);
++	unsigned int expected_size;
+ 	const struct firmware *fw;
+ 	char scan_path[64];
+ 	int ret = -EINVAL;
+@@ -274,6 +275,13 @@ int ifs_load_firmware(struct device *dev)
+ 		goto done;
  	}
- }
+ 
++	expected_size = ((struct microcode_header_intel *)fw->data)->totalsize;
++	if (fw->size != expected_size) {
++		dev_err(dev, "File size mismatch (expected %u, actual %zu). Corrupted IFS image.\n",
++			expected_size, fw->size);
++		return -EINVAL;
++	}
++
+ 	ret = image_sanity_check(dev, (struct microcode_header_intel *)fw->data);
+ 	if (ret)
+ 		goto release;
+-- 
+2.43.0
+
 
 
 
