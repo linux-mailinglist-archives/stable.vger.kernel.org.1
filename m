@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-70883-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70618-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B90DF961081
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:09:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22EE7960F25
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:56:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EAF971C20D54
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:09:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D257B280DFD
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:56:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42F4C1C4EEF;
-	Tue, 27 Aug 2024 15:09:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9E581C9DC2;
+	Tue, 27 Aug 2024 14:55:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mp1bkcTa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xjcn2ADg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0084D12E4D;
-	Tue, 27 Aug 2024 15:09:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4A381C93C8;
+	Tue, 27 Aug 2024 14:55:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771379; cv=none; b=f6QIu3IewSgQ6hJ3W4iv8cEx3g5zAvT8cxBsBO8PEobKd0RLY57J9GxTc1pSyUMOl607YDwQOWnI4AI/848NfTSqPRWmMEmf8xyI97G7QTLRdHPN0NqoooUYLinY8/tOVDi9zV/aS70+eMKf5fLPdfdV004Zwrhdjx9r3Upfnkk=
+	t=1724770507; cv=none; b=jTUtkAv3+dOF7AJOmA8ZvX9UCuMIjw9xYGAXfP8rPtD+1zY/rYPJhlqOXypg+89u/+4QsN+8sQ0Kn3EKXAYETiLGpSx2DwzQMP14pQFiSJLP5lMvsZWLl95L61yvu7ZMbzGc5EpGrsmKZ+Qr13Kje0eNNfstYAZqk3T+ycZlaX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771379; c=relaxed/simple;
-	bh=4z4/k55Dw6hxoXeWJ/eXnvnSQhsZW5zDAnKeqrqSA3E=;
+	s=arc-20240116; t=1724770507; c=relaxed/simple;
+	bh=OVEsacFfPq8H3uaSz4X2Tp7jZ30QV5rdlAnGiuGJV94=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s1MZA9/8xNSiUJfDhytJ/zUA7CwWEyAxFpprPxV4RncINrF9Rg/AECLiDsjiu3kT5pDL1yB3ppidB0yZ9ksBuEJaL22gy/kspWdG1T5YgTIj9dWXfEXIJl5uFqUnY1EmdXIBffU0a2YtHx7GHHG7+Vq3nDbfRMvJXa/YbKThUUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mp1bkcTa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AEA3C4AF1A;
-	Tue, 27 Aug 2024 15:09:38 +0000 (UTC)
+	 MIME-Version; b=mFah3IF9HIy1/q1fRnAdpkOIvhaYfHyoYsGyA3XCKUwMoeD6ZayUTv/BjGd1MgwtpZImZ0G9zDBc24/H2Dk2o9eHrk9G0qMarf5+Qew8Y178Bx5FVkNgKANaB3nT739d5kFAL22gHsKxeOKdc9HzQRT/BE8TO82qStV4vwblh5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xjcn2ADg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 161D1C4E692;
+	Tue, 27 Aug 2024 14:55:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771378;
-	bh=4z4/k55Dw6hxoXeWJ/eXnvnSQhsZW5zDAnKeqrqSA3E=;
+	s=korg; t=1724770507;
+	bh=OVEsacFfPq8H3uaSz4X2Tp7jZ30QV5rdlAnGiuGJV94=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mp1bkcTavK89gDI+8YRXEic8CikD7QQ89/wCsDzOX8uZEngxSlFdsnm+4xUMtMsg/
-	 74cSR6rtJVXA0jvBHejLUoQhqq76hBs/wXG9BW2vfQ9QnKvYuZ+c+p/4VOI6y0tq86
-	 LKNljA9JhXtVnvGUwXvXNFWsIQi6utt5S2TTbJbM=
+	b=xjcn2ADgLVrYsyRAboAbs4yCZ+L2ildX4C+Ccr+br6T0+4l/Ik7buxOFXqvkUQBPZ
+	 tVndsLyTVMjL2m0hwgKheE1+8qteiMkvn3XB0qryjNfEjmFxAtsMm2OjU1WUPaS27o
+	 8EAXaWIHRBbtfGu3AYh/Jz0FFhJT7rqkr9ACV9EU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@toblux.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 129/273] io_uring/napi: Remove unnecessary s64 cast
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Manas Ghandat <ghandatmanas@gmail.com>
+Subject: [PATCH 6.6 222/341] jfs: define xtree root and page independently
 Date: Tue, 27 Aug 2024 16:37:33 +0200
-Message-ID: <20240827143838.313763698@linuxfoundation.org>
+Message-ID: <20240827143851.860176650@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +61,170 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@toblux.com>
+From: Dave Kleikamp <dave.kleikamp@oracle.com>
 
-[ Upstream commit f7c696a56cc7d70515774a24057b473757ec6089 ]
+commit a779ed754e52d582b8c0e17959df063108bd0656 upstream.
 
-Since the do_div() macro casts the divisor to u32 anyway, remove the
-unnecessary s64 cast and fix the following Coccinelle/coccicheck
-warning reported by do_div.cocci:
+In order to make array bounds checking sane, provide a separate
+definition of the in-inode xtree root and the external xtree page.
 
-  WARNING: do_div() does a 64-by-32 division, please consider using div64_s64 instead
-
-Signed-off-by: Thorsten Blum <thorsten.blum@toblux.com>
-Link: https://lore.kernel.org/r/20240710010520.384009-2-thorsten.blum@toblux.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Stable-dep-of: 84f2eecf9501 ("io_uring/napi: check napi_enabled in io_napi_add() before proceeding")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Tested-by: Manas Ghandat <ghandatmanas@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/napi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/jfs/jfs_dinode.h |    2 +-
+ fs/jfs/jfs_imap.c   |    6 +++---
+ fs/jfs/jfs_incore.h |    2 +-
+ fs/jfs/jfs_txnmgr.c |    4 ++--
+ fs/jfs/jfs_xtree.c  |    4 ++--
+ fs/jfs/jfs_xtree.h  |   37 +++++++++++++++++++++++--------------
+ 6 files changed, 32 insertions(+), 23 deletions(-)
 
-diff --git a/io_uring/napi.c b/io_uring/napi.c
-index 080d10e0e0afd..327e5f3a8abe0 100644
---- a/io_uring/napi.c
-+++ b/io_uring/napi.c
-@@ -285,7 +285,7 @@ void __io_napi_adjust_timeout(struct io_ring_ctx *ctx, struct io_wait_queue *iow
- 			s64 poll_to_ns = timespec64_to_ns(ts);
- 			if (poll_to_ns > 0) {
- 				u64 val = poll_to_ns + 999;
--				do_div(val, (s64) 1000);
-+				do_div(val, 1000);
- 				poll_to = val;
- 			}
+--- a/fs/jfs/jfs_dinode.h
++++ b/fs/jfs/jfs_dinode.h
+@@ -96,7 +96,7 @@ struct dinode {
+ #define di_gengen	u._file._u1._imap._gengen
+ 
+ 			union {
+-				xtpage_t _xtroot;
++				xtroot_t _xtroot;
+ 				struct {
+ 					u8 unused[16];	/* 16: */
+ 					dxd_t _dxd;	/* 16: */
+--- a/fs/jfs/jfs_imap.c
++++ b/fs/jfs/jfs_imap.c
+@@ -673,7 +673,7 @@ int diWrite(tid_t tid, struct inode *ip)
+ 		 * This is the special xtree inside the directory for storing
+ 		 * the directory table
+ 		 */
+-		xtpage_t *p, *xp;
++		xtroot_t *p, *xp;
+ 		xad_t *xad;
+ 
+ 		jfs_ip->xtlid = 0;
+@@ -687,7 +687,7 @@ int diWrite(tid_t tid, struct inode *ip)
+ 		 * copy xtree root from inode to dinode:
+ 		 */
+ 		p = &jfs_ip->i_xtroot;
+-		xp = (xtpage_t *) &dp->di_dirtable;
++		xp = (xtroot_t *) &dp->di_dirtable;
+ 		lv = ilinelock->lv;
+ 		for (n = 0; n < ilinelock->index; n++, lv++) {
+ 			memcpy(&xp->xad[lv->offset], &p->xad[lv->offset],
+@@ -716,7 +716,7 @@ int diWrite(tid_t tid, struct inode *ip)
+ 	 *	regular file: 16 byte (XAD slot) granularity
+ 	 */
+ 	if (type & tlckXTREE) {
+-		xtpage_t *p, *xp;
++		xtroot_t *p, *xp;
+ 		xad_t *xad;
+ 
+ 		/*
+--- a/fs/jfs/jfs_incore.h
++++ b/fs/jfs/jfs_incore.h
+@@ -66,7 +66,7 @@ struct jfs_inode_info {
+ 	lid_t	xtlid;		/* lid of xtree lock on directory */
+ 	union {
+ 		struct {
+-			xtpage_t _xtroot;	/* 288: xtree root */
++			xtroot_t _xtroot;	/* 288: xtree root */
+ 			struct inomap *_imap;	/* 4: inode map header	*/
+ 		} file;
+ 		struct {
+--- a/fs/jfs/jfs_txnmgr.c
++++ b/fs/jfs/jfs_txnmgr.c
+@@ -783,7 +783,7 @@ struct tlock *txLock(tid_t tid, struct i
+ 			if (mp->xflag & COMMIT_PAGE)
+ 				p = (xtpage_t *) mp->data;
+ 			else
+-				p = &jfs_ip->i_xtroot;
++				p = (xtpage_t *) &jfs_ip->i_xtroot;
+ 			xtlck->lwm.offset =
+ 			    le16_to_cpu(p->header.nextindex);
  		}
--- 
-2.43.0
-
+@@ -1676,7 +1676,7 @@ static void xtLog(struct jfs_log * log,
+ 
+ 	if (tlck->type & tlckBTROOT) {
+ 		lrd->log.redopage.type |= cpu_to_le16(LOG_BTROOT);
+-		p = &JFS_IP(ip)->i_xtroot;
++		p = (xtpage_t *) &JFS_IP(ip)->i_xtroot;
+ 		if (S_ISDIR(ip->i_mode))
+ 			lrd->log.redopage.type |=
+ 			    cpu_to_le16(LOG_DIR_XTREE);
+--- a/fs/jfs/jfs_xtree.c
++++ b/fs/jfs/jfs_xtree.c
+@@ -1213,7 +1213,7 @@ xtSplitRoot(tid_t tid,
+ 	struct xtlock *xtlck;
+ 	int rc;
+ 
+-	sp = &JFS_IP(ip)->i_xtroot;
++	sp = (xtpage_t *) &JFS_IP(ip)->i_xtroot;
+ 
+ 	INCREMENT(xtStat.split);
+ 
+@@ -2098,7 +2098,7 @@ int xtAppend(tid_t tid,		/* transaction
+  */
+ void xtInitRoot(tid_t tid, struct inode *ip)
+ {
+-	xtpage_t *p;
++	xtroot_t *p;
+ 
+ 	/*
+ 	 * acquire a transaction lock on the root
+--- a/fs/jfs/jfs_xtree.h
++++ b/fs/jfs/jfs_xtree.h
+@@ -65,24 +65,33 @@ struct xadlist {
+ #define XTPAGEMAXSLOT	256
+ #define XTENTRYSTART	2
+ 
++struct xtheader {
++	__le64 next;	/* 8: */
++	__le64 prev;	/* 8: */
++
++	u8 flag;	/* 1: */
++	u8 rsrvd1;	/* 1: */
++	__le16 nextindex;	/* 2: next index = number of entries */
++	__le16 maxentry;	/* 2: max number of entries */
++	__le16 rsrvd2;	/* 2: */
++
++	pxd_t self;	/* 8: self */
++};
++
+ /*
+- *	xtree page:
++ *	xtree root (in inode):
+  */
+ typedef union {
+-	struct xtheader {
+-		__le64 next;	/* 8: */
+-		__le64 prev;	/* 8: */
+-
+-		u8 flag;	/* 1: */
+-		u8 rsrvd1;	/* 1: */
+-		__le16 nextindex;	/* 2: next index = number of entries */
+-		__le16 maxentry;	/* 2: max number of entries */
+-		__le16 rsrvd2;	/* 2: */
+-
+-		pxd_t self;	/* 8: self */
+-	} header;		/* (32) */
+-
++	struct xtheader header;
+ 	xad_t xad[XTROOTMAXSLOT];	/* 16 * maxentry: xad array */
++} xtroot_t;
++
++/*
++ *	xtree page:
++ */
++typedef union {
++	struct xtheader header;
++	xad_t xad[XTPAGEMAXSLOT];	/* 16 * maxentry: xad array */
+ } xtpage_t;
+ 
+ /*
 
 
 
