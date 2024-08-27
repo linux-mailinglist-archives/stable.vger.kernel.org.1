@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-70910-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71199-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D201A9610A3
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:11:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1F0196123E
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:29:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88C0028111F
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:11:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 20D011C22BE8
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:29:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ABAC1C57BC;
-	Tue, 27 Aug 2024 15:11:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5BB01CC8A3;
+	Tue, 27 Aug 2024 15:27:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vyc68ZTQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pHVniVnb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28B671C57A9;
-	Tue, 27 Aug 2024 15:11:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73CEC1C4EEA;
+	Tue, 27 Aug 2024 15:27:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771470; cv=none; b=NFGQpRBS0GnWhYMlSjgF1kf9PbnGaSNyjzbgYVqtwhRuC8ae7TafwC7RpBzNwxmRgEnK2I5HrdbaBq4XbPa/OTfDCJyvlQKgYuRZ6hRKUqfo1RrpH3Z6Xhci1AY3JRtdPTVPj6ceEUJ+vkBUXo6RadMvOgDyEYvJlmJ8d8Jj9Dc=
+	t=1724772426; cv=none; b=oao6uzLDskQ/QMHkOhR5xbXFtWAbqMS1x/XUKYIwO2AQk3CEg2K3urI3fJRnKY9nMlw3t1UkBTiftT9Mme/v9fvaWS+QLJ4NUXG8p8s/AsWX5YvbZm3fzHlHNdjD9z5a5KB5MMC/AhntBHBLiRMQ21C350apBcTOm1D06P8HcvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771470; c=relaxed/simple;
-	bh=V0bpvby739mAYOnxEWKk4ICa+/PvKKcHXuDQ2HZool4=;
+	s=arc-20240116; t=1724772426; c=relaxed/simple;
+	bh=LxSNKAAlMNt30KP0tlHGHW3GHQypv7GF4LrfyJNQ8Sg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jcQCSk4tIOsiQmC860BA4N7mW/sMe82wXjjVqnyGHCjVHLbZbPmYGT0YZh4Gk3MLt+t1UJlV+hY2bH4klmIAvlZs14iM1CJVZf79hnxpGQeocXlj95xXrbmBsb5/Ho8tegdevpn94wPyZgwMsoaRaopO7D+9Qrw3ioIgN+M3IM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vyc68ZTQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89E98C4DDED;
-	Tue, 27 Aug 2024 15:11:09 +0000 (UTC)
+	 MIME-Version; b=pRQlwvQmCkAwJxruykk10v+azltyg9gXJ1k6DYXSrCY66Y78p+PCcJAW2qwAReHxs5FSrxxDKPMlDIgBtDFC5wDPySDLZhjdklTQ+RpH4ALWnz8TIhMir902JcF4/iYwo89ZbD7FFtOjs0GtvpvEG1bAfl8jd1llRQnUpjUwKwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pHVniVnb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7412BC4DE18;
+	Tue, 27 Aug 2024 15:27:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771470;
-	bh=V0bpvby739mAYOnxEWKk4ICa+/PvKKcHXuDQ2HZool4=;
+	s=korg; t=1724772425;
+	bh=LxSNKAAlMNt30KP0tlHGHW3GHQypv7GF4LrfyJNQ8Sg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vyc68ZTQ8R6+FwuoXGWRV+hElYrm5ncnhUoBajGqSTqYZSkMsVIJbTgxS0dV8k64A
-	 IiZcjkLKp/RLgOpK2UAi/IQJXUHfiEou8AUebjplDls8SY/IY0KnYywZJloxnSalGA
-	 /DBgM8xPbwAln33uFKpKsLuP0xs5xsRg2tioiZIs=
+	b=pHVniVnbucTpCY1igElnx8UDW6aPvdiRgVD7a5xKYqQ/5xAPRinY8GJcFnoZ0ciIh
+	 pWad+vCmqstbIdkIpBAd0dO12hkmUwHlPWjZvtp2Z5nbFpewPeJM/FfLu6prPOgTra
+	 LSNu7y4eoYWqqhTPmQjsxN+DF2x0TRi9Jaz513ZU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Michael van der Westhuizen <rmikey@meta.com>,
+	Breno Leitao <leitao@debian.org>,
+	Dmitry Osipenko <digetx@gmail.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Andi Shyti <andi.shyti@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 196/273] drm/msm/dpu: cleanup FB if dpu_format_populate_layout fails
+Subject: [PATCH 6.1 212/321] i2c: tegra: Do not mark ACPI devices as irq safe
 Date: Tue, 27 Aug 2024 16:38:40 +0200
-Message-ID: <20240827143840.868101388@linuxfoundation.org>
+Message-ID: <20240827143846.302130822@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +65,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit bfa1a6283be390947d3649c482e5167186a37016 ]
+[ Upstream commit 14d069d92951a3e150c0a81f2ca3b93e54da913b ]
 
-If the dpu_format_populate_layout() fails, then FB is prepared, but not
-cleaned up. This ends up leaking the pin_count on the GEM object and
-causes a splat during DRM file closure:
+On ACPI machines, the tegra i2c module encounters an issue due to a
+mutex being called inside a spinlock. This leads to the following bug:
 
-msm_obj->pin_count
-WARNING: CPU: 2 PID: 569 at drivers/gpu/drm/msm/msm_gem.c:121 update_lru_locked+0xc4/0xcc
-[...]
-Call trace:
- update_lru_locked+0xc4/0xcc
- put_pages+0xac/0x100
- msm_gem_free_object+0x138/0x180
- drm_gem_object_free+0x1c/0x30
- drm_gem_object_handle_put_unlocked+0x108/0x10c
- drm_gem_object_release_handle+0x58/0x70
- idr_for_each+0x68/0xec
- drm_gem_release+0x28/0x40
- drm_file_free+0x174/0x234
- drm_release+0xb0/0x160
- __fput+0xc0/0x2c8
- __fput_sync+0x50/0x5c
- __arm64_sys_close+0x38/0x7c
- invoke_syscall+0x48/0x118
- el0_svc_common.constprop.0+0x40/0xe0
- do_el0_svc+0x1c/0x28
- el0_svc+0x4c/0x120
- el0t_64_sync_handler+0x100/0x12c
- el0t_64_sync+0x190/0x194
-irq event stamp: 129818
-hardirqs last  enabled at (129817): [<ffffa5f6d953fcc0>] console_unlock+0x118/0x124
-hardirqs last disabled at (129818): [<ffffa5f6da7dcf04>] el1_dbg+0x24/0x8c
-softirqs last  enabled at (129808): [<ffffa5f6d94afc18>] handle_softirqs+0x4c8/0x4e8
-softirqs last disabled at (129785): [<ffffa5f6d94105e4>] __do_softirq+0x14/0x20
+	BUG: sleeping function called from invalid context at kernel/locking/mutex.c:585
+	...
 
-Fixes: 25fdd5933e4c ("drm/msm: Add SDM845 DPU support")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/600714/
-Link: https://lore.kernel.org/r/20240625-dpu-mode-config-width-v5-1-501d984d634f@linaro.org
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+	Call trace:
+	__might_sleep
+	__mutex_lock_common
+	mutex_lock_nested
+	acpi_subsys_runtime_resume
+	rpm_resume
+	tegra_i2c_xfer
+
+The problem arises because during __pm_runtime_resume(), the spinlock
+&dev->power.lock is acquired before rpm_resume() is called. Later,
+rpm_resume() invokes acpi_subsys_runtime_resume(), which relies on
+mutexes, triggering the error.
+
+To address this issue, devices on ACPI are now marked as not IRQ-safe,
+considering the dependency of acpi_subsys_runtime_resume() on mutexes.
+
+Fixes: bd2fdedbf2ba ("i2c: tegra: Add the ACPI support")
+Cc: <stable@vger.kernel.org> # v5.17+
+Co-developed-by: Michael van der Westhuizen <rmikey@meta.com>
+Signed-off-by: Michael van der Westhuizen <rmikey@meta.com>
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Dmitry Osipenko <digetx@gmail.com>
+Reviewed-by: Andy Shevchenko <andy@kernel.org>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/i2c/busses/i2c-tegra.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c
-index 1c3a2657450c6..eabc4813c649c 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c
-@@ -680,6 +680,9 @@ static int dpu_plane_prepare_fb(struct drm_plane *plane,
- 			new_state->fb, &layout);
- 	if (ret) {
- 		DPU_ERROR_PLANE(pdpu, "failed to get format layout, %d\n", ret);
-+		if (pstate->aspace)
-+			msm_framebuffer_cleanup(new_state->fb, pstate->aspace,
-+						pstate->needs_dirtyfb);
- 		return ret;
- 	}
+diff --git a/drivers/i2c/busses/i2c-tegra.c b/drivers/i2c/busses/i2c-tegra.c
+index 3792531b7ab7f..f7b4977d66496 100644
+--- a/drivers/i2c/busses/i2c-tegra.c
++++ b/drivers/i2c/busses/i2c-tegra.c
+@@ -1832,9 +1832,9 @@ static int tegra_i2c_probe(struct platform_device *pdev)
+ 	 * domain.
+ 	 *
+ 	 * VI I2C device shouldn't be marked as IRQ-safe because VI I2C won't
+-	 * be used for atomic transfers.
++	 * be used for atomic transfers. ACPI device is not IRQ safe also.
+ 	 */
+-	if (!IS_VI(i2c_dev))
++	if (!IS_VI(i2c_dev) && !has_acpi_companion(i2c_dev->dev))
+ 		pm_runtime_irq_safe(i2c_dev->dev);
  
+ 	pm_runtime_enable(i2c_dev->dev);
 -- 
 2.43.0
 
