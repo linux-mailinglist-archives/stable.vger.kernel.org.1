@@ -1,60 +1,54 @@
-Return-Path: <stable+bounces-71039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70748-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B6B4961159
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:19:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67E05960FD9
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:03:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB3711F22825
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:19:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6FF2B1C2378A
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:03:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B16A1C8FA0;
-	Tue, 27 Aug 2024 15:18:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20E2C1C9EAA;
+	Tue, 27 Aug 2024 15:02:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s6rITSbg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fELm28jH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57F961C6891;
-	Tue, 27 Aug 2024 15:18:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1AD51C7B63;
+	Tue, 27 Aug 2024 15:02:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771895; cv=none; b=tagoGnOiIXWyaadxGRa+o9DoORkcc7V3ptcjsIglpxnEQ9cnbggnPc9fHmGmtLej2+QcUSwDV0xVel7gecrqUtJ65ZXxPmTPPskoxrq/UAIF/A52+ZahjtD2Cqzxn0GP0pLlaYyMA0V5Vu8reVaJ723+x0N3QR6nanDmUU/GfXc=
+	t=1724770932; cv=none; b=u7EzgCaw/x8UVv2BwPAn87h9R8TF+Z+/lGaaX3xeZ6UzmjnMk9nNFhoxeJngvtDPdvCBInGKa0FJbEsjqtc1PDyZcmyezeDpaxLlrOWl2E0zcNLginox68rNVFuA4L63sOOBUemZ236VhFJemCGK88hxG4Y20jF4OI8df5gq/Xo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771895; c=relaxed/simple;
-	bh=1hvXQgOkGNJ835OHE5kRaE96UVkHT8SucvfHoIq+v7s=;
+	s=arc-20240116; t=1724770932; c=relaxed/simple;
+	bh=uH6aa7jwlE1lYdKOH5H4kc7m0GKqmVqsJqoW1eW89oo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uCW+XGEGGlwoWpfNF1EBsv5SfYg5AWoXYJZsyzNPEe+mh6u1jVbBN9OAUNfTAJo3CeCD994l7iTakzGHBkPbWZ3pthFxtt5iz2GlG5T+W7AgDl7EL9WM7EEttVPuOW3CUq5nu6YjcRZ7xuaz0fl4IWeMdGLO7w+EyVwITCXQ9cw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s6rITSbg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A782C61067;
-	Tue, 27 Aug 2024 15:18:14 +0000 (UTC)
+	 MIME-Version; b=JDyjXW7EL/R5yw+ln+4Y5rRLZnyaZqai6ERorJTKEIG4Unm+8EGvkVIDAO4e2Ti07rsN1o+jdablecRsQYUBgQFDhaeOly4pDCOKMOhHNFhS8+3xxirAUP2TXPlWAuFsBdV7bFj/pDYbPiVNRVlDKQ6bdWWamty5pX6D9bnBkto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fELm28jH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 599D3C4DDEF;
+	Tue, 27 Aug 2024 15:02:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771895;
-	bh=1hvXQgOkGNJ835OHE5kRaE96UVkHT8SucvfHoIq+v7s=;
+	s=korg; t=1724770932;
+	bh=uH6aa7jwlE1lYdKOH5H4kc7m0GKqmVqsJqoW1eW89oo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s6rITSbgbU6WsPMeXtlbxaM221sRLOiD2ICp30oA76iUp7Wn5uu2AU3hvia9qYZkK
-	 cRnr6oA9vW37ter6pOhqj7zXYC6MbUlpku25y/tweUvvRNMMGT0QMxcLNoOPEknQM/
-	 gkJSmknvgTZeQEDVo9Ks/sGcR7RaQKaZ3y2wl9fk=
+	b=fELm28jHNkSeiJk3caduvVtxjaZKdQ5OkfzRX49XumxD1dRmMTvxxZ77VKgLRW2aA
+	 c0AxGuP/pyOueCe43JVmwu4uvvvZUxoh2dzEYr7L5+FWSL4G4HlF/a3oe7dGR1CNru
+	 J7tVgtU+C6k15kICVZENnQY+FPad3NhvQOqOCd9k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d55372214aff0faa1f1f@syzkaller.appspotmail.com,
-	Jiri Pirko <jiri@nvidia.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 052/321] net: dont dump stack on queue timeout
-Date: Tue, 27 Aug 2024 16:36:00 +0200
-Message-ID: <20240827143840.215908002@linuxfoundation.org>
+	Al Viro <viro@zeniv.linux.org.uk>
+Subject: [PATCH 6.10 037/273] fix bitmap corruption on close_range() with CLOSE_RANGE_UNSHARE
+Date: Tue, 27 Aug 2024 16:36:01 +0200
+Message-ID: <20240827143834.808021969@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,73 +60,189 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit e316dd1cf1358ff9c44b37c7be273a7dc4349986 ]
+commit 9a2fa1472083580b6c66bdaf291f591e1170123a upstream.
 
-The top syzbot report for networking (#14 for the entire kernel)
-is the queue timeout splat. We kept it around for a long time,
-because in real life it provides pretty strong signal that
-something is wrong with the driver or the device.
+copy_fd_bitmaps(new, old, count) is expected to copy the first
+count/BITS_PER_LONG bits from old->full_fds_bits[] and fill
+the rest with zeroes.  What it does is copying enough words
+(BITS_TO_LONGS(count/BITS_PER_LONG)), then memsets the rest.
+That works fine, *if* all bits past the cutoff point are
+clear.  Otherwise we are risking garbage from the last word
+we'd copied.
 
-Removing it is also likely to break monitoring for those who
-track it as a kernel warning.
+For most of the callers that is true - expand_fdtable() has
+count equal to old->max_fds, so there's no open descriptors
+past count, let alone fully occupied words in ->open_fds[],
+which is what bits in ->full_fds_bits[] correspond to.
 
-Nevertheless, WARN()ings are best suited for catching kernel
-programming bugs. If a Tx queue gets starved due to a pause
-storm, priority configuration, or other weirdness - that's
-obviously a problem, but not a problem we can fix at
-the kernel level.
+The other caller (dup_fd()) passes sane_fdtable_size(old_fdt, max_fds),
+which is the smallest multiple of BITS_PER_LONG that covers all
+opened descriptors below max_fds.  In the common case (copying on
+fork()) max_fds is ~0U, so all opened descriptors will be below
+it and we are fine, by the same reasons why the call in expand_fdtable()
+is safe.
 
-Bite the bullet and convert the WARN() to a print.
+Unfortunately, there is a case where max_fds is less than that
+and where we might, indeed, end up with junk in ->full_fds_bits[] -
+close_range(from, to, CLOSE_RANGE_UNSHARE) with
+	* descriptor table being currently shared
+	* 'to' being above the current capacity of descriptor table
+	* 'from' being just under some chunk of opened descriptors.
+In that case we end up with observably wrong behaviour - e.g. spawn
+a child with CLONE_FILES, get all descriptors in range 0..127 open,
+then close_range(64, ~0U, CLOSE_RANGE_UNSHARE) and watch dup(0) ending
+up with descriptor #128, despite #64 being observably not open.
 
-Before:
+The minimally invasive fix would be to deal with that in dup_fd().
+If this proves to add measurable overhead, we can go that way, but
+let's try to fix copy_fd_bitmaps() first.
 
-  NETDEV WATCHDOG: eni1np1 (netdevsim): transmit queue 0 timed out 1975 ms
-  WARNING: CPU: 0 PID: 0 at net/sched/sch_generic.c:525 dev_watchdog+0x39e/0x3b0
-  [... completely pointless stack trace of a timer follows ...]
+* new helper: bitmap_copy_and_expand(to, from, bits_to_copy, size).
+* make copy_fd_bitmaps() take the bitmap size in words, rather than
+bits; it's 'count' argument is always a multiple of BITS_PER_LONG,
+so we are not losing any information, and that way we can use the
+same helper for all three bitmaps - compiler will see that count
+is a multiple of BITS_PER_LONG for the large ones, so it'll generate
+plain memcpy()+memset().
 
-Now:
+Reproducer added to tools/testing/selftests/core/close_range_test.c
 
-  netdevsim netdevsim1 eni1np1: NETDEV WATCHDOG: CPU: 0: transmit queue 0 timed out 1769 ms
-
-Alternatively we could mark the drivers which syzbot has
-learned to abuse as "print-instead-of-WARN" selectively.
-
-Reported-by: syzbot+d55372214aff0faa1f1f@syzkaller.appspotmail.com
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_generic.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ fs/file.c                                       |   28 ++++++++-----------
+ include/linux/bitmap.h                          |   12 ++++++++
+ tools/testing/selftests/core/close_range_test.c |   35 ++++++++++++++++++++++++
+ 3 files changed, 59 insertions(+), 16 deletions(-)
 
-diff --git a/net/sched/sch_generic.c b/net/sched/sch_generic.c
-index 4023c955036b1..6ab9359c1706f 100644
---- a/net/sched/sch_generic.c
-+++ b/net/sched/sch_generic.c
-@@ -522,8 +522,9 @@ static void dev_watchdog(struct timer_list *t)
+--- a/fs/file.c
++++ b/fs/file.c
+@@ -46,27 +46,23 @@ static void free_fdtable_rcu(struct rcu_
+ #define BITBIT_NR(nr)	BITS_TO_LONGS(BITS_TO_LONGS(nr))
+ #define BITBIT_SIZE(nr)	(BITBIT_NR(nr) * sizeof(long))
  
- 			if (unlikely(timedout_ms)) {
- 				trace_net_dev_xmit_timeout(dev, i);
--				WARN_ONCE(1, "NETDEV WATCHDOG: %s (%s): transmit queue %u timed out %u ms\n",
--					  dev->name, netdev_drivername(dev), i, timedout_ms);
-+				netdev_crit(dev, "NETDEV WATCHDOG: CPU: %d: transmit queue %u timed out %u ms\n",
-+					    raw_smp_processor_id(),
-+					    i, timedout_ms);
- 				netif_freeze_queues(dev);
- 				dev->netdev_ops->ndo_tx_timeout(dev, i);
- 				netif_unfreeze_queues(dev);
--- 
-2.43.0
-
++#define fdt_words(fdt) ((fdt)->max_fds / BITS_PER_LONG) // words in ->open_fds
+ /*
+  * Copy 'count' fd bits from the old table to the new table and clear the extra
+  * space if any.  This does not copy the file pointers.  Called with the files
+  * spinlock held for write.
+  */
+-static void copy_fd_bitmaps(struct fdtable *nfdt, struct fdtable *ofdt,
+-			    unsigned int count)
++static inline void copy_fd_bitmaps(struct fdtable *nfdt, struct fdtable *ofdt,
++			    unsigned int copy_words)
+ {
+-	unsigned int cpy, set;
++	unsigned int nwords = fdt_words(nfdt);
+ 
+-	cpy = count / BITS_PER_BYTE;
+-	set = (nfdt->max_fds - count) / BITS_PER_BYTE;
+-	memcpy(nfdt->open_fds, ofdt->open_fds, cpy);
+-	memset((char *)nfdt->open_fds + cpy, 0, set);
+-	memcpy(nfdt->close_on_exec, ofdt->close_on_exec, cpy);
+-	memset((char *)nfdt->close_on_exec + cpy, 0, set);
+-
+-	cpy = BITBIT_SIZE(count);
+-	set = BITBIT_SIZE(nfdt->max_fds) - cpy;
+-	memcpy(nfdt->full_fds_bits, ofdt->full_fds_bits, cpy);
+-	memset((char *)nfdt->full_fds_bits + cpy, 0, set);
++	bitmap_copy_and_extend(nfdt->open_fds, ofdt->open_fds,
++			copy_words * BITS_PER_LONG, nwords * BITS_PER_LONG);
++	bitmap_copy_and_extend(nfdt->close_on_exec, ofdt->close_on_exec,
++			copy_words * BITS_PER_LONG, nwords * BITS_PER_LONG);
++	bitmap_copy_and_extend(nfdt->full_fds_bits, ofdt->full_fds_bits,
++			copy_words, nwords);
+ }
+ 
+ /*
+@@ -84,7 +80,7 @@ static void copy_fdtable(struct fdtable
+ 	memcpy(nfdt->fd, ofdt->fd, cpy);
+ 	memset((char *)nfdt->fd + cpy, 0, set);
+ 
+-	copy_fd_bitmaps(nfdt, ofdt, ofdt->max_fds);
++	copy_fd_bitmaps(nfdt, ofdt, fdt_words(ofdt));
+ }
+ 
+ /*
+@@ -379,7 +375,7 @@ struct files_struct *dup_fd(struct files
+ 		open_files = sane_fdtable_size(old_fdt, max_fds);
+ 	}
+ 
+-	copy_fd_bitmaps(new_fdt, old_fdt, open_files);
++	copy_fd_bitmaps(new_fdt, old_fdt, open_files / BITS_PER_LONG);
+ 
+ 	old_fds = old_fdt->fd;
+ 	new_fds = new_fdt->fd;
+--- a/include/linux/bitmap.h
++++ b/include/linux/bitmap.h
+@@ -270,6 +270,18 @@ static inline void bitmap_copy_clear_tai
+ 		dst[nbits / BITS_PER_LONG] &= BITMAP_LAST_WORD_MASK(nbits);
+ }
+ 
++static inline void bitmap_copy_and_extend(unsigned long *to,
++					  const unsigned long *from,
++					  unsigned int count, unsigned int size)
++{
++	unsigned int copy = BITS_TO_LONGS(count);
++
++	memcpy(to, from, copy * sizeof(long));
++	if (count % BITS_PER_LONG)
++		to[copy - 1] &= BITMAP_LAST_WORD_MASK(count);
++	memset(to + copy, 0, bitmap_size(size) - copy * sizeof(long));
++}
++
+ /*
+  * On 32-bit systems bitmaps are represented as u32 arrays internally. On LE64
+  * machines the order of hi and lo parts of numbers match the bitmap structure.
+--- a/tools/testing/selftests/core/close_range_test.c
++++ b/tools/testing/selftests/core/close_range_test.c
+@@ -589,4 +589,39 @@ TEST(close_range_cloexec_unshare_syzbot)
+ 	EXPECT_EQ(close(fd3), 0);
+ }
+ 
++TEST(close_range_bitmap_corruption)
++{
++	pid_t pid;
++	int status;
++	struct __clone_args args = {
++		.flags = CLONE_FILES,
++		.exit_signal = SIGCHLD,
++	};
++
++	/* get the first 128 descriptors open */
++	for (int i = 2; i < 128; i++)
++		EXPECT_GE(dup2(0, i), 0);
++
++	/* get descriptor table shared */
++	pid = sys_clone3(&args, sizeof(args));
++	ASSERT_GE(pid, 0);
++
++	if (pid == 0) {
++		/* unshare and truncate descriptor table down to 64 */
++		if (sys_close_range(64, ~0U, CLOSE_RANGE_UNSHARE))
++			exit(EXIT_FAILURE);
++
++		ASSERT_EQ(fcntl(64, F_GETFD), -1);
++		/* ... and verify that the range 64..127 is not
++		   stuck "fully used" according to secondary bitmap */
++		EXPECT_EQ(dup(0), 64)
++			exit(EXIT_FAILURE);
++		exit(EXIT_SUCCESS);
++	}
++
++	EXPECT_EQ(waitpid(pid, &status, 0), pid);
++	EXPECT_EQ(true, WIFEXITED(status));
++	EXPECT_EQ(0, WEXITSTATUS(status));
++}
++
+ TEST_HARNESS_MAIN
 
 
 
