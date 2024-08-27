@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-71084-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70543-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D8F0961192
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:21:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03F66960EAE
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:51:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7618B1C232AD
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:21:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A09F51F2482F
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:51:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 201811CC8AE;
-	Tue, 27 Aug 2024 15:20:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64EF11C824B;
+	Tue, 27 Aug 2024 14:51:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TWU0ptva"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t9+F08+U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2F4A1CFBC;
-	Tue, 27 Aug 2024 15:20:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21FAC1C7B62;
+	Tue, 27 Aug 2024 14:50:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772047; cv=none; b=aE+gpUlQyRZOVyyAVlTFOUWMOiqvu3z4h6U3vnYkDvlBgqOxscKtO6n6sqH+7VZ9AIJP88IL0qK2qaFRb2rXMNpZWMsyKgnMlzz0Noklr6NRXxEEFj7ZV4ZidkmtMzCZ8MZuJWBWnpyZ0bxbUri3hEZ7O9HSlUn2uXC5tBz2PPU=
+	t=1724770260; cv=none; b=lbBrl3kGXVWOOPZX6b8vTJdV1raS31FtmEjy83SORjt41l6bMiJPPsksbF1QVun3zjPwwBUUY5JI9Wm1A3MzgMEsuOsagpRhvfgQ7Jw8lp+QV1yN3n2y9qY/R52EWWtq8s6Z/wDOOezDsE19TgR955hNE6QgtvqIYqLw4FX4dw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772047; c=relaxed/simple;
-	bh=1bJJWE9omHDivhWajsBY2oooY+X6XV/rEREQFxCLMm4=;
+	s=arc-20240116; t=1724770260; c=relaxed/simple;
+	bh=mIGBsvgPRE55uQsyjeymZUGC5ducbcKJQbeOvrLE8xQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZnTJ/+ktw8sedquiTfbCodntSHW/hC57lNreP2Ag+1iLPXEW+ZABADOUjsRhLzPs7gL2in8zEc58Dg2JuL44P+olh6JcXSKeDpnkrpmTVY9p8ycSswfm8qA7YZ7gavKSLIJHnsKFw9GJu+OcQJVBDMxUMFv0hr+6e2oN4flTaYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TWU0ptva; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B2F6C4E693;
-	Tue, 27 Aug 2024 15:20:46 +0000 (UTC)
+	 MIME-Version; b=lQiuTKkrJNkyH6nLouOo9l8ChRk9XWUrWE4e6G7qNZqNvTEef0MGBAqI+VjVHgxN6ZW54vWNXMZFC2+haO1INuhXRaSL9bAlaiRecuYXH3/OG+qlUUi69g1wCT/wbcye05M+EaojSb9ytOTzlBiJw3PRyg/qRLD+1g0tOBHFvLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t9+F08+U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 424B6C4DE02;
+	Tue, 27 Aug 2024 14:50:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772047;
-	bh=1bJJWE9omHDivhWajsBY2oooY+X6XV/rEREQFxCLMm4=;
+	s=korg; t=1724770257;
+	bh=mIGBsvgPRE55uQsyjeymZUGC5ducbcKJQbeOvrLE8xQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TWU0ptvaoXSUdQfKaDEqC+V3gL1cCjuaEyDw3Vt0a7tF0QSv47Ux0S1IHEpZD8zX8
-	 3PWJzOQQEwRFdraw46avYXveOPd+0tAByez8cRnyu/lHSMIAQ7Uxe1HoNOSU7zY81j
-	 XcBY4YfrS65rB7SR7GWgGfJCqRsZmsoBQXxwDGLg=
+	b=t9+F08+U/r/BfLYG0wVV+PlPs0XSZ4GZzrFADqUIYSCO/WbUfIRIp6/NIdzXdzclk
+	 qom2JnsHq7hA6PTqKIakspqW3vRrn0f1NyUjNboRN5tqwCAe98WwIDFMJCSSFI2GDT
+	 c6b+CBpJ640O+F0yAdnLzKr3u2frYAcdI0Is51es=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 096/321] netfilter: flowtable: initialise extack before use
-Date: Tue, 27 Aug 2024 16:36:44 +0200
-Message-ID: <20240827143841.893712067@linuxfoundation.org>
+Subject: [PATCH 6.6 174/341] tick: Move got_idle_tick away from common flags
+Date: Tue, 27 Aug 2024 16:36:45 +0200
+Message-ID: <20240827143850.036033079@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Donald Hunter <donald.hunter@gmail.com>
+From: Frederic Weisbecker <frederic@kernel.org>
 
-[ Upstream commit e9767137308daf906496613fd879808a07f006a2 ]
+[ Upstream commit 3ce74f1a8566dbbc9774f85fb0ce781fe290fd32 ]
 
-Fix missing initialisation of extack in flow offload.
+tick_nohz_idle_got_tick() is called by cpuidle_reflect() within the idle
+loop with interrupts enabled. This function modifies the struct
+tick_sched's bitfield "got_idle_tick". However this bitfield is stored
+within the same mask as other bitfields that can be modified from
+interrupts.
 
-Fixes: c29f74e0df7a ("netfilter: nf_flow_table: hardware offload support")
-Signed-off-by: Donald Hunter <donald.hunter@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fortunately so far it looks like the only race that can happen is while
+writing ->got_idle_tick to 0, an interrupt fires and writes the
+->idle_active field to 0. It's then possible that the interrupted write
+to ->got_idle_tick writes back the old value of ->idle_active back to 1.
+
+However if that happens, the worst possible outcome is that the time
+spent between that interrupt and the upcoming call to
+tick_nohz_idle_exit() is accounted as idle, which is negligible quantity.
+
+Still all the bitfield writes within this struct tick_sched's shadow
+mask should be IRQ-safe. Therefore move this bitfield out to its own
+storage to avoid further suprises.
+
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/r/20240225225508.11587-12-frederic@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_flow_table_offload.c | 2 +-
+ kernel/time/tick-sched.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_flow_table_offload.c b/net/netfilter/nf_flow_table_offload.c
-index 1c26f03fc6617..1904a4f295d4a 100644
---- a/net/netfilter/nf_flow_table_offload.c
-+++ b/net/netfilter/nf_flow_table_offload.c
-@@ -841,8 +841,8 @@ static int nf_flow_offload_tuple(struct nf_flowtable *flowtable,
- 				 struct list_head *block_cb_list)
- {
- 	struct flow_cls_offload cls_flow = {};
-+	struct netlink_ext_ack extack = {};
- 	struct flow_block_cb *block_cb;
--	struct netlink_ext_ack extack;
- 	__be16 proto = ETH_P_ALL;
- 	int err, i = 0;
+diff --git a/kernel/time/tick-sched.h b/kernel/time/tick-sched.h
+index 5ed5a9d41d5a7..03a586e12cf89 100644
+--- a/kernel/time/tick-sched.h
++++ b/kernel/time/tick-sched.h
+@@ -61,7 +61,6 @@ struct tick_sched {
+ 	unsigned int			tick_stopped	: 1;
+ 	unsigned int			idle_active	: 1;
+ 	unsigned int			do_timer_last	: 1;
+-	unsigned int			got_idle_tick	: 1;
  
+ 	/* Tick handling: jiffies stall check */
+ 	unsigned int			stalled_jiffies;
+@@ -73,6 +72,7 @@ struct tick_sched {
+ 	ktime_t				next_tick;
+ 	unsigned long			idle_jiffies;
+ 	ktime_t				idle_waketime;
++	unsigned int			got_idle_tick;
+ 
+ 	/* Idle entry */
+ 	seqcount_t			idle_sleeptime_seq;
 -- 
 2.43.0
 
