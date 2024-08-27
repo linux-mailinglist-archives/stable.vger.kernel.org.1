@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-70573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70808-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC0D6960ED8
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:53:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70948961025
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:05:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A9261C233AE
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:53:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 18B221F243E8
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:05:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CDB01C688B;
-	Tue, 27 Aug 2024 14:52:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79E7B1C5788;
+	Tue, 27 Aug 2024 15:05:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jjcLijKr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nxa4Vvtv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD6FA1A0B13;
-	Tue, 27 Aug 2024 14:52:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 382C31BC9E3;
+	Tue, 27 Aug 2024 15:05:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770356; cv=none; b=LscdK026RxkPMwtWPyQuHpRn29m+/jUcP117w9RHemL145qZuBkMRAQKj/rhbpU76B8BHv/yCiA4fCWhyeNv9BI6OgM64b239V5+6tmu1fKxMls5IhiiscXVorvl81paj7LNIkm1yyxJYpkwjSj+d6RbJngj617HXgLkMWlVe60=
+	t=1724771129; cv=none; b=fR9OoI5Vl50l+W3wAn+JlmV+Eh5CsXKwMxhiiaH8UAffPrNxQ7Wt5MOoknGgZe92ovOO1hOA29caproXRhu5g8wDb0omOWm5izhL1DgT6zz/kcNDORMzO1cexSqOuqCfd4y/Tk2QZeSfFkdOQnzpGMtLx4K9JOYu9v3gs3r/0g8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770356; c=relaxed/simple;
-	bh=WT5Wt4xgOyyEnlL+z954iGYzO4q2PFfPkgDhy3YzjKY=;
+	s=arc-20240116; t=1724771129; c=relaxed/simple;
+	bh=RPkQulpKIYakRivXehERTB1OyNiWTuDvySgvcsq1apw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BsXnVquLgI7TU+tySqrGdGHtAHrTJ7wtnyFoU34okS7n7EGgHKXQZn+Q3NEAwoVqtorEavm2sSmDnhCIUpacpd5fXe6MEKTQsTaxmwU+lTcDZziViECFty4J6rybSEsyME86EAnx1T+wdMLsoGGhshXFPh9Vi9+9mymgVIpuQBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jjcLijKr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5107DC61042;
-	Tue, 27 Aug 2024 14:52:35 +0000 (UTC)
+	 MIME-Version; b=U9aI34gtOAwDoGmNV4qqi+RcPtgtwndB45EWPw6WNg7c8rE9g2R2K2HrGwxCeVoKa9otOpwaTYGwlrhmoamD4rc01PZURmivRrPW4Ro20K5TkVyrKiellTrbxc1rLO7FenHfGN9bgKU9advWNB/fAlz+vA6qVwHYM9UIcyrwp+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nxa4Vvtv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68EAEC6106C;
+	Tue, 27 Aug 2024 15:05:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770355;
-	bh=WT5Wt4xgOyyEnlL+z954iGYzO4q2PFfPkgDhy3YzjKY=;
+	s=korg; t=1724771128;
+	bh=RPkQulpKIYakRivXehERTB1OyNiWTuDvySgvcsq1apw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jjcLijKrB25e8z/ovMUDhdOmlRoO62/eQ4L5m+7gx1JT2wWTOqpLH2suw9PVZU5K0
-	 28XEMIBtIg7gFEvSTCvowdNAKvvdJQmVAAAuqcujjS5auYqqWQy6rI0fbnamoEZvEv
-	 afe8tp1zFF4yylxzTuKG/RSILlLRMjI7pfVzOaRc=
+	b=Nxa4Vvtvy//prNRoh/dXqKJobRLnkE3ISCBWD9Eg5xpGct8EYceBCO+uvxsqXDL0t
+	 V8jkX0KNvYT/viWp98OscKlJeAUzV+KDOj73q8Ct1+SmTzbS65i5nQwdya0wkGGnvV
+	 oeYDR4SH3ykHNdKtg/f1D4nwyiS6ULixGnPVZ6HI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Sterba <dsterba@suse.com>,
+	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 187/341] btrfs: tests: allocate dummy fs_info and root in test_find_delalloc()
+Subject: [PATCH 6.10 094/273] net: axienet: Fix register defines comment description
 Date: Tue, 27 Aug 2024 16:36:58 +0200
-Message-ID: <20240827143850.527345178@linuxfoundation.org>
+Message-ID: <20240827143836.989476893@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,95 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Sterba <dsterba@suse.com>
+From: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
 
-[ Upstream commit b2136cc288fce2f24a92f3d656531b2d50ebec5a ]
+[ Upstream commit 9ff2f816e2aa65ca9a1cdf0954842f8173c0f48d ]
 
-Allocate fs_info and root to have a valid fs_info pointer in case it's
-dereferenced by a helper outside of tests, like find_lock_delalloc_range().
+In axiethernet header fix register defines comment description to be
+inline with IP documentation. It updates MAC configuration register,
+MDIO configuration register and frame filter control description.
 
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 8a3b7a252dca ("drivers/net/ethernet/xilinx: added Xilinx AXI Ethernet driver")
+Signed-off-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/tests/extent-io-tests.c | 28 ++++++++++++++++++++++++----
- 1 file changed, 24 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/xilinx/xilinx_axienet.h | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/fs/btrfs/tests/extent-io-tests.c b/fs/btrfs/tests/extent-io-tests.c
-index 1cc86af97dc6e..f4fd3fb7c887b 100644
---- a/fs/btrfs/tests/extent-io-tests.c
-+++ b/fs/btrfs/tests/extent-io-tests.c
-@@ -11,6 +11,7 @@
- #include "btrfs-tests.h"
- #include "../ctree.h"
- #include "../extent_io.h"
-+#include "../disk-io.h"
- #include "../btrfs_inode.h"
+diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet.h b/drivers/net/ethernet/xilinx/xilinx_axienet.h
+index fa5500decc960..c7d9221fafdcb 100644
+--- a/drivers/net/ethernet/xilinx/xilinx_axienet.h
++++ b/drivers/net/ethernet/xilinx/xilinx_axienet.h
+@@ -160,16 +160,16 @@
+ #define XAE_RCW1_OFFSET		0x00000404 /* Rx Configuration Word 1 */
+ #define XAE_TC_OFFSET		0x00000408 /* Tx Configuration */
+ #define XAE_FCC_OFFSET		0x0000040C /* Flow Control Configuration */
+-#define XAE_EMMC_OFFSET		0x00000410 /* EMAC mode configuration */
+-#define XAE_PHYC_OFFSET		0x00000414 /* RGMII/SGMII configuration */
++#define XAE_EMMC_OFFSET		0x00000410 /* MAC speed configuration */
++#define XAE_PHYC_OFFSET		0x00000414 /* RX Max Frame Configuration */
+ #define XAE_ID_OFFSET		0x000004F8 /* Identification register */
+-#define XAE_MDIO_MC_OFFSET	0x00000500 /* MII Management Config */
+-#define XAE_MDIO_MCR_OFFSET	0x00000504 /* MII Management Control */
+-#define XAE_MDIO_MWD_OFFSET	0x00000508 /* MII Management Write Data */
+-#define XAE_MDIO_MRD_OFFSET	0x0000050C /* MII Management Read Data */
++#define XAE_MDIO_MC_OFFSET	0x00000500 /* MDIO Setup */
++#define XAE_MDIO_MCR_OFFSET	0x00000504 /* MDIO Control */
++#define XAE_MDIO_MWD_OFFSET	0x00000508 /* MDIO Write Data */
++#define XAE_MDIO_MRD_OFFSET	0x0000050C /* MDIO Read Data */
+ #define XAE_UAW0_OFFSET		0x00000700 /* Unicast address word 0 */
+ #define XAE_UAW1_OFFSET		0x00000704 /* Unicast address word 1 */
+-#define XAE_FMI_OFFSET		0x00000708 /* Filter Mask Index */
++#define XAE_FMI_OFFSET		0x00000708 /* Frame Filter Control */
+ #define XAE_AF0_OFFSET		0x00000710 /* Address Filter 0 */
+ #define XAE_AF1_OFFSET		0x00000714 /* Address Filter 1 */
  
- #define PROCESS_UNLOCK		(1 << 0)
-@@ -105,9 +106,11 @@ static void dump_extent_io_tree(const struct extent_io_tree *tree)
- 	}
- }
+@@ -308,7 +308,7 @@
+  */
+ #define XAE_UAW1_UNICASTADDR_MASK	0x0000FFFF
  
--static int test_find_delalloc(u32 sectorsize)
-+static int test_find_delalloc(u32 sectorsize, u32 nodesize)
- {
--	struct inode *inode;
-+	struct btrfs_fs_info *fs_info;
-+	struct btrfs_root *root = NULL;
-+	struct inode *inode = NULL;
- 	struct extent_io_tree *tmp;
- 	struct page *page;
- 	struct page *locked_page = NULL;
-@@ -121,12 +124,27 @@ static int test_find_delalloc(u32 sectorsize)
- 
- 	test_msg("running find delalloc tests");
- 
-+	fs_info = btrfs_alloc_dummy_fs_info(nodesize, sectorsize);
-+	if (!fs_info) {
-+		test_std_err(TEST_ALLOC_FS_INFO);
-+		return -ENOMEM;
-+	}
-+
-+	root = btrfs_alloc_dummy_root(fs_info);
-+	if (IS_ERR(root)) {
-+		test_std_err(TEST_ALLOC_ROOT);
-+		ret = PTR_ERR(root);
-+		goto out;
-+	}
-+
- 	inode = btrfs_new_test_inode();
- 	if (!inode) {
- 		test_std_err(TEST_ALLOC_INODE);
--		return -ENOMEM;
-+		ret = -ENOMEM;
-+		goto out;
- 	}
- 	tmp = &BTRFS_I(inode)->io_tree;
-+	BTRFS_I(inode)->root = root;
- 
- 	/*
- 	 * Passing NULL as we don't have fs_info but tracepoints are not used
-@@ -316,6 +334,8 @@ static int test_find_delalloc(u32 sectorsize)
- 	process_page_range(inode, 0, total_dirty - 1,
- 			   PROCESS_UNLOCK | PROCESS_RELEASE);
- 	iput(inode);
-+	btrfs_free_dummy_root(root);
-+	btrfs_free_dummy_fs_info(fs_info);
- 	return ret;
- }
- 
-@@ -794,7 +814,7 @@ int btrfs_test_extent_io(u32 sectorsize, u32 nodesize)
- 
- 	test_msg("running extent I/O tests");
- 
--	ret = test_find_delalloc(sectorsize);
-+	ret = test_find_delalloc(sectorsize, nodesize);
- 	if (ret)
- 		goto out;
+-/* Bit masks for Axi Ethernet FMI register */
++/* Bit masks for Axi Ethernet FMC register */
+ #define XAE_FMI_PM_MASK			0x80000000 /* Promis. mode enable */
+ #define XAE_FMI_IND_MASK		0x00000003 /* Index Mask */
  
 -- 
 2.43.0
