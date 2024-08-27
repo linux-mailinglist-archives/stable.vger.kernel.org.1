@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-71148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70856-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D72C79611E3
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:25:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 235D696105E
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:08:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 15F231C23389
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:25:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B97F01F23A7A
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:08:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39E331C942C;
-	Tue, 27 Aug 2024 15:24:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D89061C4EE8;
+	Tue, 27 Aug 2024 15:08:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="snshsirY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UAXReP/B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA47E1C3F17;
-	Tue, 27 Aug 2024 15:24:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9302D1C4603;
+	Tue, 27 Aug 2024 15:08:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772258; cv=none; b=gMOrj/EDckeZymjadGbaE+0r67PhhHZduUobilaWOB+MyC180Z+VR9fzeUQlavR9AdsRmbxR1DLigaSyj7UX4SoA0DlRxnUdHCCUCCZtbSWjV8FyRzTB26dXIVmq1ab/GhvFgPozn1WSgt750TQTMYHHz7hoTdZLRJxDlT76eeQ=
+	t=1724771288; cv=none; b=RkMPUxISECFAu52wpJUOFF41olRFpofZpShAppSd8iA3Wx9v9JnfIw/U+lZi2q20awTCzOh9Uw85a0Aie+DfWiqx5kxpgqUspUvsaXwubm103FFcxP3h45t3gTywiAAg5iCHICnnuhE1oFS4xKMqDcL2L3PgZ+84hhvrskc3efY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772258; c=relaxed/simple;
-	bh=Mf00OFfW+zeysMJhKy0VkRileOcsjdjg6pEfI+XG9F8=;
+	s=arc-20240116; t=1724771288; c=relaxed/simple;
+	bh=HFck/GUtvPPD1UZK01PQl2Ib2QX3uxl28CkrCqCfOlQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uC0vIkPVl1HgFcHyYliZl6aia1EpRxInRs4I4q5qKE7tcPmrJ73qkxR1YqtjXLF/D1FZlVEjLyAtB3UM8nupBTcXETRwjfV8EyOJpTKP/0fZ/i/1yvgdLSgjCExZxLdCLQFAZLGqoMu3DUkfcClSP4XfcURN9itaS6QAcDn0PqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=snshsirY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52DBFC61069;
-	Tue, 27 Aug 2024 15:24:17 +0000 (UTC)
+	 MIME-Version; b=dJblap137FH8fmEbi39UxcKKL41vXanDj2RzEZjp0D3IjD/gIr2WrmffsKIyYCAjpp6ufuWs94+T2I6WCIZ05gni49lV1e0mODwNa8jwjqz0MqsTmgTgKcpzuz/aUU8WezG0jXCrk57XscwPe0qyipKl1qCZQrMgGqA1tpj1RcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UAXReP/B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11523C61074;
+	Tue, 27 Aug 2024 15:08:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772257;
-	bh=Mf00OFfW+zeysMJhKy0VkRileOcsjdjg6pEfI+XG9F8=;
+	s=korg; t=1724771288;
+	bh=HFck/GUtvPPD1UZK01PQl2Ib2QX3uxl28CkrCqCfOlQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=snshsirY07KPYEvXWxA/dao5/0ABfxY/oin2l6FCttKLq3MwU/3v0U9FtHwa/Gd8F
-	 e8BtB2NgLUSmeJKveX3x+wiGn6NOiE/LBAjSYcWMceIA8OHpQ0Sq70Yg49GBxBPEra
-	 AvtRM1HXUUq9nK+N0M/YBiO74MX6L59A95T7k/gs=
+	b=UAXReP/BBWEf55NEiaSv+RbaWJIhVnbOiiAcdHZ+jNH+CvXQrDtN7XkqrBX1FhVYr
+	 EMB0xw5Ui4oe4MEacqJ2zkqea5b3yVx6mEDmV93KdtuT9wftUMZRoM5+GvGSwfTyp1
+	 e6HvUw3IVLGNZdCNSTyEx3D7T2L5NKRqjfAZG9gA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Brauner <brauner@kernel.org>,
-	Al Viro <viro@zeniv.linux.org.uk>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 160/321] afs: fix __afs_break_callback() / afs_drop_open_mmap() race
+Subject: [PATCH 6.10 144/273] dm suspend: return -ERESTARTSYS instead of -EINTR
 Date: Tue, 27 Aug 2024 16:37:48 +0200
-Message-ID: <20240827143844.321844622@linuxfoundation.org>
+Message-ID: <20240827143838.887280167@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-[ Upstream commit 275655d3207b9e65d1561bf21c06a622d9ec1d43 ]
+[ Upstream commit 1e1fd567d32fcf7544c6e09e0e5bc6c650da6e23 ]
 
-In __afs_break_callback() we might check ->cb_nr_mmap and if it's non-zero
-do queue_work(&vnode->cb_work).  In afs_drop_open_mmap() we decrement
-->cb_nr_mmap and do flush_work(&vnode->cb_work) if it reaches zero.
+This commit changes device mapper, so that it returns -ERESTARTSYS
+instead of -EINTR when it is interrupted by a signal (so that the ioctl
+can be restarted).
 
-The trouble is, there's nothing to prevent __afs_break_callback() from
-seeing ->cb_nr_mmap before the decrement and do queue_work() after both
-the decrement and flush_work().  If that happens, we might be in trouble -
-vnode might get freed before the queued work runs.
+The manpage signal(7) says that the ioctl function should be restarted if
+the signal was handled with SA_RESTART.
 
-__afs_break_callback() is always done under ->cb_lock, so let's make
-sure that ->cb_nr_mmap can change from non-zero to zero while holding
-->cb_lock (the spinlock component of it - it's a seqlock and we don't
-need to mess with the counter).
-
-Acked-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Cc: stable@vger.kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/afs/file.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/md/dm.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/afs/file.c b/fs/afs/file.c
-index 2eeab57df133a..9051ed0085544 100644
---- a/fs/afs/file.c
-+++ b/fs/afs/file.c
-@@ -525,13 +525,17 @@ static void afs_add_open_mmap(struct afs_vnode *vnode)
+diff --git a/drivers/md/dm.c b/drivers/md/dm.c
+index 13037d6a6f62a..6e15ac4e0845c 100644
+--- a/drivers/md/dm.c
++++ b/drivers/md/dm.c
+@@ -2594,7 +2594,7 @@ static int dm_wait_for_bios_completion(struct mapped_device *md, unsigned int ta
+ 			break;
  
- static void afs_drop_open_mmap(struct afs_vnode *vnode)
- {
--	if (!atomic_dec_and_test(&vnode->cb_nr_mmap))
-+	if (atomic_add_unless(&vnode->cb_nr_mmap, -1, 1))
- 		return;
+ 		if (signal_pending_state(task_state, current)) {
+-			r = -EINTR;
++			r = -ERESTARTSYS;
+ 			break;
+ 		}
  
- 	down_write(&vnode->volume->cell->fs_open_mmaps_lock);
+@@ -2619,7 +2619,7 @@ static int dm_wait_for_completion(struct mapped_device *md, unsigned int task_st
+ 			break;
  
--	if (atomic_read(&vnode->cb_nr_mmap) == 0)
-+	read_seqlock_excl(&vnode->cb_lock);
-+	// the only place where ->cb_nr_mmap may hit 0
-+	// see __afs_break_callback() for the other side...
-+	if (atomic_dec_and_test(&vnode->cb_nr_mmap))
- 		list_del_init(&vnode->cb_mmap_link);
-+	read_sequnlock_excl(&vnode->cb_lock);
+ 		if (signal_pending_state(task_state, current)) {
+-			r = -EINTR;
++			r = -ERESTARTSYS;
+ 			break;
+ 		}
  
- 	up_write(&vnode->volume->cell->fs_open_mmaps_lock);
- 	flush_work(&vnode->cb_work);
 -- 
 2.43.0
 
