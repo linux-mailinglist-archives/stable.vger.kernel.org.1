@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-71273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70988-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA2009612A1
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:33:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1ECE961108
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:15:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 184A71C2269F
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:33:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5F43CB24CCD
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:15:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 794AD1D0490;
-	Tue, 27 Aug 2024 15:31:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7906A1C3F3B;
+	Tue, 27 Aug 2024 15:15:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DyBZZrkF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Iyg53KK3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37DE01CFEC6;
-	Tue, 27 Aug 2024 15:31:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36A931DDEA;
+	Tue, 27 Aug 2024 15:15:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772667; cv=none; b=YHuPGQeWWgjNtCuzqPE9HT3kqnc1nmebIMnxwA3WSZiMGTmJA/rKC1GuDZe2vzl57sB3xSgrg4Gk5xd9/cB+347ZpzbLmODPWLNYZxWNX6DAwVzI4vKyDT0faUbzDh7cQ0/+B0/TqlKEDNlTYnJXlbxXdjQpG+T2Wx8NQFdlKYk=
+	t=1724771726; cv=none; b=Ap9mYAHI0bO0jXkM9zZ73GcKZc7AokI/KvXlEEegM2xotBl4TzDwMymISkR9uzhWAsQefvgWhRhglqxqiQZedGnTmm0drCPX95vL5oDjuJ5lYEogvd2TRC585B5u8d2GjvalbGO5h+w7a2VOlcnxLa4Gzyt+rAJg2H2rahNwRPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772667; c=relaxed/simple;
-	bh=4gxgVft50Ex2eviS12QxHOIg2mZUN0+X3vfu7DORWS8=;
+	s=arc-20240116; t=1724771726; c=relaxed/simple;
+	bh=PkugcM2B1c8cPpnAEy8Fb1nyYuk0CvMU7Fa1PDFVEVU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sE3ysgpTk17mjXY0eoAUDEhfEob+ghJLNQaad7aGUM9V7xpW19WHIDacfUm53f1cBwyemVkEclHQGxMaFJ7+zz1cSqBUoxA9ug+Y4kKi3SRq3tcn1JhxNTsIrSZHUSrq5oYIzZel8jDUp/PDCZXcU1Lj8rIvWU0yqhKsuexdDWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DyBZZrkF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98DFFC4DDE9;
-	Tue, 27 Aug 2024 15:31:06 +0000 (UTC)
+	 MIME-Version; b=hgLx/Gkn3sm8lHk8n+w+A7BSsNgqsZvbSDOyUjY4mP8poVO3D2kw8sSDATsrxC4X+DANk0mtaITJ3NpLckb/d3RN1vCxmRgFelkoSxzi3hIy+0QVmtvwqOheNfBYzp/PVPAjSwtY7OwHb3DKqc7aZX+jG4Y3uiOKA2RjUjXqWCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Iyg53KK3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2B66C4DDFF;
+	Tue, 27 Aug 2024 15:15:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772667;
-	bh=4gxgVft50Ex2eviS12QxHOIg2mZUN0+X3vfu7DORWS8=;
+	s=korg; t=1724771726;
+	bh=PkugcM2B1c8cPpnAEy8Fb1nyYuk0CvMU7Fa1PDFVEVU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DyBZZrkFKVlxKMxcPInEXr8H+T8MV3nDkznMDnTwyaEcSkbojX1sq7g7R3BvOijQF
-	 b8h6r83wJ4p5Kr3Mgr4DoEaPqi1djI827iItAfMP1xTgWHnDZ7dzOvi6XgfzFMBDWR
-	 gd1+pY/Q6nxvOzWb84Edl/rXvBonNkS7fatWz5/Y=
+	b=Iyg53KK3n3dw/3H+XcRV0uT8WEL7PoLrNs5EMujUWi7aRndqwngUIo+iHNbciWnSF
+	 bd/zKb6x7HWPSU2kTolYuJnnC0pQJTg/bC6jIRDRRbgaq3sMYxrIHj44614OgJvrwk
+	 Q1pS8ZSBn1J2rKuIVbPBJ2HBa7xA4SpG3dp8cPI0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 284/321] ALSA: timer: Relax start tick time check for slave timer elements
+	Eric Biggers <ebiggers@kernel.org>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.10 268/273] Revert "pidfd: prevent creation of pidfds for kthreads"
 Date: Tue, 27 Aug 2024 16:39:52 +0200
-Message-ID: <20240827143849.059514139@linuxfoundation.org>
+Message-ID: <20240827143843.598137619@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +61,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Christian Brauner <brauner@kernel.org>
 
-commit ccbfcac05866ebe6eb3bc6d07b51d4ed4fcde436 upstream.
+commit 232590ea7fc125986a526e03081b98e5783f70d2 upstream.
 
-The recent addition of a sanity check for a too low start tick time
-seems breaking some applications that uses aloop with a certain slave
-timer setup.  They may have the initial resolution 0, hence it's
-treated as if it were a too low value.
+This reverts commit 3b5bbe798b2451820e74243b738268f51901e7d0.
 
-Relax and skip the check for the slave timer instance for addressing
-the regression.
+Eric reported that systemd-shutdown gets broken by blocking the creating
+of pidfds for kthreads as older versions seems to rely on being able to
+create a pidfd for any process in /proc.
 
-Fixes: 4a63bd179fa8 ("ALSA: timer: Set lower bound of start tick time")
-Cc: <stable@vger.kernel.org>
-Link: https://github.com/raspberrypi/linux/issues/6294
-Link: https://patch.msgid.link/20240810084833.10939-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Reported-by: Eric Biggers <ebiggers@kernel.org>
+Link: https://lore.kernel.org/r/20240818035818.GA1929@sol.localdomain
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/core/timer.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/fork.c |   25 +++----------------------
+ 1 file changed, 3 insertions(+), 22 deletions(-)
 
---- a/sound/core/timer.c
-+++ b/sound/core/timer.c
-@@ -556,7 +556,7 @@ static int snd_timer_start1(struct snd_t
- 	/* check the actual time for the start tick;
- 	 * bail out as error if it's way too low (< 100us)
- 	 */
--	if (start) {
-+	if (start && !(timer->hw.flags & SNDRV_TIMER_HW_SLAVE)) {
- 		if ((u64)snd_timer_hw_resolution(timer) * ticks < 100000) {
- 			result = -EINVAL;
- 			goto unlock;
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -2069,23 +2069,10 @@ static int __pidfd_prepare(struct pid *p
+  */
+ int pidfd_prepare(struct pid *pid, unsigned int flags, struct file **ret)
+ {
+-	if (!pid)
+-		return -EINVAL;
+-
+-	scoped_guard(rcu) {
+-		struct task_struct *tsk;
++	bool thread = flags & PIDFD_THREAD;
+ 
+-		if (flags & PIDFD_THREAD)
+-			tsk = pid_task(pid, PIDTYPE_PID);
+-		else
+-			tsk = pid_task(pid, PIDTYPE_TGID);
+-		if (!tsk)
+-			return -EINVAL;
+-
+-		/* Don't create pidfds for kernel threads for now. */
+-		if (tsk->flags & PF_KTHREAD)
+-			return -EINVAL;
+-	}
++	if (!pid || !pid_has_task(pid, thread ? PIDTYPE_PID : PIDTYPE_TGID))
++		return -EINVAL;
+ 
+ 	return __pidfd_prepare(pid, flags, ret);
+ }
+@@ -2432,12 +2419,6 @@ __latent_entropy struct task_struct *cop
+ 	if (clone_flags & CLONE_PIDFD) {
+ 		int flags = (clone_flags & CLONE_THREAD) ? PIDFD_THREAD : 0;
+ 
+-		/* Don't create pidfds for kernel threads for now. */
+-		if (args->kthread) {
+-			retval = -EINVAL;
+-			goto bad_fork_free_pid;
+-		}
+-
+ 		/* Note that no task has been attached to @pid yet. */
+ 		retval = __pidfd_prepare(pid, flags, &pidfile);
+ 		if (retval < 0)
 
 
 
