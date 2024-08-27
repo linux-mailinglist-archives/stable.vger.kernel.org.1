@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-70547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70798-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 186E0960EB4
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:51:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FE45961019
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:05:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8CCC91F24AFD
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:51:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB3C7282DFC
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:05:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C51B71C6F49;
-	Tue, 27 Aug 2024 14:51:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D4761C6F40;
+	Tue, 27 Aug 2024 15:04:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E0Ba6CY0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zbqODWV9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 816961C688E;
-	Tue, 27 Aug 2024 14:51:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28F221BFE04;
+	Tue, 27 Aug 2024 15:04:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770270; cv=none; b=t7zRg8EXmTYYJ/s//jzI7GTWQHykcdzZ9nZvAcKoZ8DU+UJBCB6oZ2FuYKdLNzs5keyKgtlJluCHovgqp31Q7GOfZ1uF5oll8k4/sB42VfUuvVu8RLHQMGplfdWYwGeb/+ZWLZVI3mQfOAVnygAD5PCrvgYbFG8S/ljeYMWxl50=
+	t=1724771096; cv=none; b=ZHHIFqRZKuyQ++1VjAVWUkJrNwPTo0x+ETKt2ZkknbylPbQNUbVKLWk4RhmFtYtXRL+1PwkQz3dLmlTWeCnVMpcc0QWO06z5qdt+5cmjjcRqMqkSvcPTtB9w1DtzXHyBaCL/bqi/hHHGpFYyiX2WZQbwNWnmNVZgnpX7iwuvKz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770270; c=relaxed/simple;
-	bh=gg8t6uKcGC/1aBymuGfQEE1Uqb66bOuPPYex0XNJLCI=;
+	s=arc-20240116; t=1724771096; c=relaxed/simple;
+	bh=fSWGMwGnuPziGOYPArayVztW+PHNljRKBOIHUw7srDw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BOpT+L2TVJ/BhqWxbsigub555G1mSaLMDXABcgyNW0zE47WtxZakfe8b2TEa9VAb1J7A+AVZtP7kVYylybSso1uPuhB7d/qZ4tzc80OcRmvQwsWVqJEDGExK0lvKGiQ6eAXtB4h1TSE+JzOGMw/QnauNVBTd+vivv+fOIsSH1SI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E0Ba6CY0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E353AC4DDFF;
-	Tue, 27 Aug 2024 14:51:09 +0000 (UTC)
+	 MIME-Version; b=o6JpDdbSHJV8C+qA2WbZVVpXDlESTeULRd/Zdq1aX42Z5F/rgjpmZ5QUij/ceU0EMXfDMIwTxCPLLIMKROrnF3OWfsLYGQ6Aoz5VdryQC4OUj9LZE/eqprogr6elfuZjPgWrsPXFjc0/pVrCcp3V/Xz1FxgmGvygMGsp1di7Xo8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zbqODWV9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90C44C6105B;
+	Tue, 27 Aug 2024 15:04:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770270;
-	bh=gg8t6uKcGC/1aBymuGfQEE1Uqb66bOuPPYex0XNJLCI=;
+	s=korg; t=1724771096;
+	bh=fSWGMwGnuPziGOYPArayVztW+PHNljRKBOIHUw7srDw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E0Ba6CY0AGTn0/3OYDClShia43OpP7QTdFM8pvocL7bOIqdiak5Lfa1Q4awWGH2np
-	 yGcovpobM59EACL/5xGm8ugkFsRIybsjgs37vOtdXolj6sO4KMqyyr1Hf3n5Fizu39
-	 WwJbqzj+79aG3Dn8nPuJra7vsWXcjlTri3F6Ll3M=
+	b=zbqODWV9uzmKBAu9dyQdSMqUkmjArcSwcAULIw1/KC973m0GMI7xcMN8YBmt3zGEM
+	 Vlzr44r0KoFPfX6C7okn3yDCRjUgxMhx3RXN5COHwwGgChN9Dyi6K2jhgrRWGIcU4a
+	 2KdHSqDJ7x6h/gWxolrTInv9n3cPELqMVrsHlakY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe Kerello <christophe.kerello@foss.st.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Faizal Rahim <faizal.abdul.rahim@linux.intel.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 178/341] memory: stm32-fmc2-ebi: check regmap_read return value
+Subject: [PATCH 6.10 085/273] igc: Fix packet still tx after gate close by reducing i226 MAC retry buffer
 Date: Tue, 27 Aug 2024 16:36:49 +0200
-Message-ID: <20240827143850.187252915@linuxfoundation.org>
+Message-ID: <20240827143836.649798049@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,285 +64,150 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Kerello <christophe.kerello@foss.st.com>
+From: Faizal Rahim <faizal.abdul.rahim@linux.intel.com>
 
-[ Upstream commit 722463f73bcf65a8c818752a38c14ee672c77da1 ]
+[ Upstream commit e037a26ead187901f83cad9c503ccece5ff6817a ]
 
-Check regmap_read return value to avoid to use uninitialized local
-variables.
+Testing uncovered that even when the taprio gate is closed, some packets
+still transmit.
 
-Signed-off-by: Christophe Kerello <christophe.kerello@foss.st.com>
-Link: https://lore.kernel.org/r/20240226101428.37791-3-christophe.kerello@foss.st.com
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+According to i225/6 hardware errata [1], traffic might overflow the
+planned QBV window. This happens because MAC maintains an internal buffer,
+primarily for supporting half duplex retries. Therefore, even when the
+gate closes, residual MAC data in the buffer may still transmit.
+
+To mitigate this for i226, reduce the MAC's internal buffer from 192 bytes
+to the recommended 88 bytes by modifying the RETX_CTL register value.
+
+This follows guidelines from:
+[1] Ethernet Controller I225/I22 Spec Update Rev 2.1 Errata Item 9:
+    TSN: Packet Transmission Might Cross Qbv Window
+[2] I225/6 SW User Manual Rev 1.2.4: Section 8.11.5 Retry Buffer Control
+
+Note that the RETX_CTL register can't be used in TSN mode because half
+duplex feature cannot coexist with TSN.
+
+Test Steps:
+1.  Send taprio cmd to board A:
+    tc qdisc replace dev enp1s0 parent root handle 100 taprio \
+    num_tc 4 \
+    map 3 2 1 0 3 3 3 3 3 3 3 3 3 3 3 3 \
+    queues 1@0 1@1 1@2 1@3 \
+    base-time 0 \
+    sched-entry S 0x07 500000 \
+    sched-entry S 0x0f 500000 \
+    flags 0x2 \
+    txtime-delay 0
+
+    Note that for TC3, gate should open for 500us and close for another
+    500us.
+
+3.  Take tcpdump log on Board B.
+
+4.  Send udp packets via UDP tai app from Board A to Board B.
+
+5.  Analyze tcpdump log via wireshark log on Board B. Ensure that the
+    total time from the first to the last packet received during one cycle
+    for TC3 does not exceed 500us.
+
+Fixes: 43546211738e ("igc: Add new device ID's")
+Signed-off-by: Faizal Rahim <faizal.abdul.rahim@linux.intel.com>
+Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/memory/stm32-fmc2-ebi.c | 122 +++++++++++++++++++++++---------
- 1 file changed, 88 insertions(+), 34 deletions(-)
+ drivers/net/ethernet/intel/igc/igc_defines.h |  6 ++++
+ drivers/net/ethernet/intel/igc/igc_tsn.c     | 34 ++++++++++++++++++++
+ 2 files changed, 40 insertions(+)
 
-diff --git a/drivers/memory/stm32-fmc2-ebi.c b/drivers/memory/stm32-fmc2-ebi.c
-index 9015e8277dc8a..871f3de69102e 100644
---- a/drivers/memory/stm32-fmc2-ebi.c
-+++ b/drivers/memory/stm32-fmc2-ebi.c
-@@ -181,8 +181,11 @@ static int stm32_fmc2_ebi_check_mux(struct stm32_fmc2_ebi *ebi,
- 				    int cs)
- {
- 	u32 bcr;
-+	int ret;
+diff --git a/drivers/net/ethernet/intel/igc/igc_defines.h b/drivers/net/ethernet/intel/igc/igc_defines.h
+index 5f92b3c7c3d4a..511384f3ec5cb 100644
+--- a/drivers/net/ethernet/intel/igc/igc_defines.h
++++ b/drivers/net/ethernet/intel/igc/igc_defines.h
+@@ -404,6 +404,12 @@
+ #define IGC_DTXMXPKTSZ_TSN	0x19 /* 1600 bytes of max TX DMA packet size */
+ #define IGC_DTXMXPKTSZ_DEFAULT	0x98 /* 9728-byte Jumbo frames */
  
--	regmap_read(ebi->regmap, FMC2_BCR(cs), &bcr);
-+	ret = regmap_read(ebi->regmap, FMC2_BCR(cs), &bcr);
-+	if (ret)
-+		return ret;
- 
- 	if (bcr & FMC2_BCR_MTYP)
- 		return 0;
-@@ -195,8 +198,11 @@ static int stm32_fmc2_ebi_check_waitcfg(struct stm32_fmc2_ebi *ebi,
- 					int cs)
- {
- 	u32 bcr, val = FIELD_PREP(FMC2_BCR_MTYP, FMC2_BCR_MTYP_NOR);
-+	int ret;
- 
--	regmap_read(ebi->regmap, FMC2_BCR(cs), &bcr);
-+	ret = regmap_read(ebi->regmap, FMC2_BCR(cs), &bcr);
-+	if (ret)
-+		return ret;
- 
- 	if ((bcr & FMC2_BCR_MTYP) == val && bcr & FMC2_BCR_BURSTEN)
- 		return 0;
-@@ -209,8 +215,11 @@ static int stm32_fmc2_ebi_check_sync_trans(struct stm32_fmc2_ebi *ebi,
- 					   int cs)
- {
- 	u32 bcr;
-+	int ret;
- 
--	regmap_read(ebi->regmap, FMC2_BCR(cs), &bcr);
-+	ret = regmap_read(ebi->regmap, FMC2_BCR(cs), &bcr);
-+	if (ret)
-+		return ret;
- 
- 	if (bcr & FMC2_BCR_BURSTEN)
- 		return 0;
-@@ -223,8 +232,11 @@ static int stm32_fmc2_ebi_check_async_trans(struct stm32_fmc2_ebi *ebi,
- 					    int cs)
- {
- 	u32 bcr;
-+	int ret;
- 
--	regmap_read(ebi->regmap, FMC2_BCR(cs), &bcr);
-+	ret = regmap_read(ebi->regmap, FMC2_BCR(cs), &bcr);
-+	if (ret)
-+		return ret;
- 
- 	if (!(bcr & FMC2_BCR_BURSTEN) || !(bcr & FMC2_BCR_CBURSTRW))
- 		return 0;
-@@ -237,8 +249,11 @@ static int stm32_fmc2_ebi_check_cpsize(struct stm32_fmc2_ebi *ebi,
- 				       int cs)
- {
- 	u32 bcr, val = FIELD_PREP(FMC2_BCR_MTYP, FMC2_BCR_MTYP_PSRAM);
-+	int ret;
- 
--	regmap_read(ebi->regmap, FMC2_BCR(cs), &bcr);
-+	ret = regmap_read(ebi->regmap, FMC2_BCR(cs), &bcr);
-+	if (ret)
-+		return ret;
- 
- 	if ((bcr & FMC2_BCR_MTYP) == val && bcr & FMC2_BCR_BURSTEN)
- 		return 0;
-@@ -251,12 +266,18 @@ static int stm32_fmc2_ebi_check_address_hold(struct stm32_fmc2_ebi *ebi,
- 					     int cs)
- {
- 	u32 bcr, bxtr, val = FIELD_PREP(FMC2_BXTR_ACCMOD, FMC2_BXTR_EXTMOD_D);
-+	int ret;
++/* Retry Buffer Control */
++#define IGC_RETX_CTL			0x041C
++#define IGC_RETX_CTL_WATERMARK_MASK	0xF
++#define IGC_RETX_CTL_QBVFULLTH_SHIFT	8 /* QBV Retry Buffer Full Threshold */
++#define IGC_RETX_CTL_QBVFULLEN	0x1000 /* Enable QBV Retry Buffer Full Threshold */
 +
-+	ret = regmap_read(ebi->regmap, FMC2_BCR(cs), &bcr);
-+	if (ret)
-+		return ret;
- 
--	regmap_read(ebi->regmap, FMC2_BCR(cs), &bcr);
- 	if (prop->reg_type == FMC2_REG_BWTR)
--		regmap_read(ebi->regmap, FMC2_BWTR(cs), &bxtr);
-+		ret = regmap_read(ebi->regmap, FMC2_BWTR(cs), &bxtr);
- 	else
--		regmap_read(ebi->regmap, FMC2_BTR(cs), &bxtr);
-+		ret = regmap_read(ebi->regmap, FMC2_BTR(cs), &bxtr);
-+	if (ret)
-+		return ret;
- 
- 	if ((!(bcr & FMC2_BCR_BURSTEN) || !(bcr & FMC2_BCR_CBURSTRW)) &&
- 	    ((bxtr & FMC2_BXTR_ACCMOD) == val || bcr & FMC2_BCR_MUXEN))
-@@ -270,12 +291,19 @@ static int stm32_fmc2_ebi_check_clk_period(struct stm32_fmc2_ebi *ebi,
- 					   int cs)
- {
- 	u32 bcr, bcr1;
-+	int ret;
- 
--	regmap_read(ebi->regmap, FMC2_BCR(cs), &bcr);
--	if (cs)
--		regmap_read(ebi->regmap, FMC2_BCR1, &bcr1);
--	else
-+	ret = regmap_read(ebi->regmap, FMC2_BCR(cs), &bcr);
-+	if (ret)
-+		return ret;
-+
-+	if (cs) {
-+		ret = regmap_read(ebi->regmap, FMC2_BCR1, &bcr1);
-+		if (ret)
-+			return ret;
-+	} else {
- 		bcr1 = bcr;
-+	}
- 
- 	if (bcr & FMC2_BCR_BURSTEN && (!cs || !(bcr1 & FMC2_BCR1_CCLKEN)))
- 		return 0;
-@@ -307,12 +335,18 @@ static u32 stm32_fmc2_ebi_ns_to_clk_period(struct stm32_fmc2_ebi *ebi,
- {
- 	u32 nb_clk_cycles = stm32_fmc2_ebi_ns_to_clock_cycles(ebi, cs, setup);
- 	u32 bcr, btr, clk_period;
-+	int ret;
-+
-+	ret = regmap_read(ebi->regmap, FMC2_BCR1, &bcr);
-+	if (ret)
-+		return ret;
- 
--	regmap_read(ebi->regmap, FMC2_BCR1, &bcr);
- 	if (bcr & FMC2_BCR1_CCLKEN || !cs)
--		regmap_read(ebi->regmap, FMC2_BTR1, &btr);
-+		ret = regmap_read(ebi->regmap, FMC2_BTR1, &btr);
- 	else
--		regmap_read(ebi->regmap, FMC2_BTR(cs), &btr);
-+		ret = regmap_read(ebi->regmap, FMC2_BTR(cs), &btr);
-+	if (ret)
-+		return ret;
- 
- 	clk_period = FIELD_GET(FMC2_BTR_CLKDIV, btr) + 1;
- 
-@@ -571,11 +605,16 @@ static int stm32_fmc2_ebi_set_address_setup(struct stm32_fmc2_ebi *ebi,
- 	if (ret)
- 		return ret;
- 
--	regmap_read(ebi->regmap, FMC2_BCR(cs), &bcr);
-+	ret = regmap_read(ebi->regmap, FMC2_BCR(cs), &bcr);
-+	if (ret)
-+		return ret;
-+
- 	if (prop->reg_type == FMC2_REG_BWTR)
--		regmap_read(ebi->regmap, FMC2_BWTR(cs), &bxtr);
-+		ret = regmap_read(ebi->regmap, FMC2_BWTR(cs), &bxtr);
- 	else
--		regmap_read(ebi->regmap, FMC2_BTR(cs), &bxtr);
-+		ret = regmap_read(ebi->regmap, FMC2_BTR(cs), &bxtr);
-+	if (ret)
-+		return ret;
- 
- 	if ((bxtr & FMC2_BXTR_ACCMOD) == val || bcr & FMC2_BCR_MUXEN)
- 		val = clamp_val(setup, 1, FMC2_BXTR_ADDSET_MAX);
-@@ -693,11 +732,14 @@ static int stm32_fmc2_ebi_set_max_low_pulse(struct stm32_fmc2_ebi *ebi,
- 					    int cs, u32 setup)
- {
- 	u32 old_val, new_val, pcscntr;
-+	int ret;
- 
- 	if (setup < 1)
- 		return 0;
- 
--	regmap_read(ebi->regmap, FMC2_PCSCNTR, &pcscntr);
-+	ret = regmap_read(ebi->regmap, FMC2_PCSCNTR, &pcscntr);
-+	if (ret)
-+		return ret;
- 
- 	/* Enable counter for the bank */
- 	regmap_update_bits(ebi->regmap, FMC2_PCSCNTR,
-@@ -944,17 +986,20 @@ static void stm32_fmc2_ebi_disable_bank(struct stm32_fmc2_ebi *ebi, int cs)
- 	regmap_update_bits(ebi->regmap, FMC2_BCR(cs), FMC2_BCR_MBKEN, 0);
+ /* Transmit Scheduling Latency */
+ /* Latency between transmission scheduling (LaunchTime) and the time
+  * the packet is transmitted to the network in nanosecond.
+diff --git a/drivers/net/ethernet/intel/igc/igc_tsn.c b/drivers/net/ethernet/intel/igc/igc_tsn.c
+index 22cefb1eeedfa..46d4c3275bbb5 100644
+--- a/drivers/net/ethernet/intel/igc/igc_tsn.c
++++ b/drivers/net/ethernet/intel/igc/igc_tsn.c
+@@ -78,6 +78,15 @@ void igc_tsn_adjust_txtime_offset(struct igc_adapter *adapter)
+ 	wr32(IGC_GTXOFFSET, txoffset);
  }
  
--static void stm32_fmc2_ebi_save_setup(struct stm32_fmc2_ebi *ebi)
-+static int stm32_fmc2_ebi_save_setup(struct stm32_fmc2_ebi *ebi)
- {
- 	unsigned int cs;
-+	int ret;
- 
- 	for (cs = 0; cs < FMC2_MAX_EBI_CE; cs++) {
--		regmap_read(ebi->regmap, FMC2_BCR(cs), &ebi->bcr[cs]);
--		regmap_read(ebi->regmap, FMC2_BTR(cs), &ebi->btr[cs]);
--		regmap_read(ebi->regmap, FMC2_BWTR(cs), &ebi->bwtr[cs]);
-+		ret = regmap_read(ebi->regmap, FMC2_BCR(cs), &ebi->bcr[cs]);
-+		ret |= regmap_read(ebi->regmap, FMC2_BTR(cs), &ebi->btr[cs]);
-+		ret |= regmap_read(ebi->regmap, FMC2_BWTR(cs), &ebi->bwtr[cs]);
-+		if (ret)
-+			return ret;
- 	}
- 
--	regmap_read(ebi->regmap, FMC2_PCSCNTR, &ebi->pcscntr);
-+	return regmap_read(ebi->regmap, FMC2_PCSCNTR, &ebi->pcscntr);
- }
- 
- static void stm32_fmc2_ebi_set_setup(struct stm32_fmc2_ebi *ebi)
-@@ -983,22 +1028,29 @@ static void stm32_fmc2_ebi_disable_banks(struct stm32_fmc2_ebi *ebi)
- }
- 
- /* NWAIT signal can not be connected to EBI controller and NAND controller */
--static bool stm32_fmc2_ebi_nwait_used_by_ctrls(struct stm32_fmc2_ebi *ebi)
-+static int stm32_fmc2_ebi_nwait_used_by_ctrls(struct stm32_fmc2_ebi *ebi)
- {
-+	struct device *dev = ebi->dev;
- 	unsigned int cs;
- 	u32 bcr;
-+	int ret;
- 
- 	for (cs = 0; cs < FMC2_MAX_EBI_CE; cs++) {
- 		if (!(ebi->bank_assigned & BIT(cs)))
- 			continue;
- 
--		regmap_read(ebi->regmap, FMC2_BCR(cs), &bcr);
-+		ret = regmap_read(ebi->regmap, FMC2_BCR(cs), &bcr);
-+		if (ret)
-+			return ret;
++static void igc_tsn_restore_retx_default(struct igc_adapter *adapter)
++{
++	struct igc_hw *hw = &adapter->hw;
++	u32 retxctl;
 +
- 		if ((bcr & FMC2_BCR_WAITEN || bcr & FMC2_BCR_ASYNCWAIT) &&
--		    ebi->bank_assigned & BIT(FMC2_NAND))
--			return true;
-+		    ebi->bank_assigned & BIT(FMC2_NAND)) {
-+			dev_err(dev, "NWAIT signal connected to EBI and NAND controllers\n");
-+			return -EINVAL;
-+		}
- 	}
- 
--	return false;
-+	return 0;
- }
- 
- static void stm32_fmc2_ebi_enable(struct stm32_fmc2_ebi *ebi)
-@@ -1085,10 +1137,9 @@ static int stm32_fmc2_ebi_parse_dt(struct stm32_fmc2_ebi *ebi)
- 		return -ENODEV;
- 	}
- 
--	if (stm32_fmc2_ebi_nwait_used_by_ctrls(ebi)) {
--		dev_err(dev, "NWAIT signal connected to EBI and NAND controllers\n");
--		return -EINVAL;
--	}
-+	ret = stm32_fmc2_ebi_nwait_used_by_ctrls(ebi);
-+	if (ret)
-+		return ret;
- 
- 	stm32_fmc2_ebi_enable(ebi);
- 
-@@ -1133,7 +1184,10 @@ static int stm32_fmc2_ebi_probe(struct platform_device *pdev)
- 	if (ret)
- 		goto err_release;
- 
--	stm32_fmc2_ebi_save_setup(ebi);
-+	ret = stm32_fmc2_ebi_save_setup(ebi);
-+	if (ret)
-+		goto err_release;
++	retxctl = rd32(IGC_RETX_CTL) & IGC_RETX_CTL_WATERMARK_MASK;
++	wr32(IGC_RETX_CTL, retxctl);
++}
 +
- 	platform_set_drvdata(pdev, ebi);
+ /* Returns the TSN specific registers to their default values after
+  * the adapter is reset.
+  */
+@@ -91,6 +100,9 @@ static int igc_tsn_disable_offload(struct igc_adapter *adapter)
+ 	wr32(IGC_TXPBS, I225_TXPBSIZE_DEFAULT);
+ 	wr32(IGC_DTXMXPKTSZ, IGC_DTXMXPKTSZ_DEFAULT);
  
++	if (igc_is_device_id_i226(hw))
++		igc_tsn_restore_retx_default(adapter);
++
+ 	tqavctrl = rd32(IGC_TQAVCTRL);
+ 	tqavctrl &= ~(IGC_TQAVCTRL_TRANSMIT_MODE_TSN |
+ 		      IGC_TQAVCTRL_ENHANCED_QAV | IGC_TQAVCTRL_FUTSCDDIS);
+@@ -111,6 +123,25 @@ static int igc_tsn_disable_offload(struct igc_adapter *adapter)
  	return 0;
+ }
+ 
++/* To partially fix i226 HW errata, reduce MAC internal buffering from 192 Bytes
++ * to 88 Bytes by setting RETX_CTL register using the recommendation from:
++ * a) Ethernet Controller I225/I226 Specification Update Rev 2.1
++ *    Item 9: TSN: Packet Transmission Might Cross the Qbv Window
++ * b) I225/6 SW User Manual Rev 1.2.4: Section 8.11.5 Retry Buffer Control
++ */
++static void igc_tsn_set_retx_qbvfullthreshold(struct igc_adapter *adapter)
++{
++	struct igc_hw *hw = &adapter->hw;
++	u32 retxctl, watermark;
++
++	retxctl = rd32(IGC_RETX_CTL);
++	watermark = retxctl & IGC_RETX_CTL_WATERMARK_MASK;
++	/* Set QBVFULLTH value using watermark and set QBVFULLEN */
++	retxctl |= (watermark << IGC_RETX_CTL_QBVFULLTH_SHIFT) |
++		   IGC_RETX_CTL_QBVFULLEN;
++	wr32(IGC_RETX_CTL, retxctl);
++}
++
+ static int igc_tsn_enable_offload(struct igc_adapter *adapter)
+ {
+ 	struct igc_hw *hw = &adapter->hw;
+@@ -123,6 +154,9 @@ static int igc_tsn_enable_offload(struct igc_adapter *adapter)
+ 	wr32(IGC_DTXMXPKTSZ, IGC_DTXMXPKTSZ_TSN);
+ 	wr32(IGC_TXPBS, IGC_TXPBSIZE_TSN);
+ 
++	if (igc_is_device_id_i226(hw))
++		igc_tsn_set_retx_qbvfullthreshold(adapter);
++
+ 	for (i = 0; i < adapter->num_tx_queues; i++) {
+ 		struct igc_ring *ring = adapter->tx_ring[i];
+ 		u32 txqctl = 0;
 -- 
 2.43.0
 
