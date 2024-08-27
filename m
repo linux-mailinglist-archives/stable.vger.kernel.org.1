@@ -1,153 +1,120 @@
-Return-Path: <stable+bounces-70363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70364-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31098960BFE
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:27:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06175960C41
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:37:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DEA6D280E69
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 13:27:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B52F528319D
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 13:37:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32D7F1C579D;
-	Tue, 27 Aug 2024 13:24:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32F231BF334;
+	Tue, 27 Aug 2024 13:37:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Udj1fjaq"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="bk04D5LQ"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B2E11BFE07
-	for <stable@vger.kernel.org>; Tue, 27 Aug 2024 13:24:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F39E01A0730
+	for <stable@vger.kernel.org>; Tue, 27 Aug 2024 13:37:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724765087; cv=none; b=bmAJ1pnFNwXXAYrS9Dl5wiD+jP7KCp4vd8EKfgSmWwMRdRKRq9xOPK8cg0IAEjG0NYnwWdAUCVBvzOZF0HgQL3JWoRUJBWED8A/3qR2GCGCwkSJAAz7sXnz14J0RzJachUEi2nhHvio0KtVab8DNAF/R2bcw+0d1GjoBl2iH0nc=
+	t=1724765864; cv=none; b=uftnDMI4a0DNvH3nCYJsvBHpGVHIKqSRRgt+f+sGv82JGT+aL945mW2fIf4fYdzpoXA0vG+J2vq8kBIXfmCbJIpPcwZ7d8jhqaCjmeMwSFcPprepRV3iT2xaUnI5eEZl5lH+smu7TkDnJzJTQXSo7VZpwMK7Yrt8IQWWBeIcwz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724765087; c=relaxed/simple;
-	bh=C1Psij49NxzQQVs/fLfKOjdWLfmrzStbUTmG4qlgoDQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qeTh6wneubHDMCtnMcpaPMvuNSd49F+M1V7k4cqaSYS9g3cfcWM92CVB4jxiCaHU8nPi1Mh+hltKH2ogij+pkhPnwzK0LraYVpZ++8+IfHOPHtafJbeikZ9zXX3Xh6i2dTGlarRb/eVAi1ymdDPsaCD+dkM6GIERyxtGud0aiOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Udj1fjaq; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1724765084;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ca7L2Ypf1IuSrNf2s487D4RaOYQ0VQUUHqLQBFjj34U=;
-	b=Udj1fjaqf9+otj6J/nodPA7HFRGwEtwLXLfuY0Q7u2WtX9KaCf55fNWJ2Wvb6kF8PuMvxW
-	6wD25uKuoOm5hhweg+wHNt7fJtZXwlfd7M1y9/Jr0cJxv4RGb+zhvWDOPkI0U1PkdAulBm
-	IR14/h2USuLSHPPCpPyUSjY99gtDKrM=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-643-15vKzajhM5OfR5tG72w6TA-1; Tue, 27 Aug 2024 09:24:43 -0400
-X-MC-Unique: 15vKzajhM5OfR5tG72w6TA-1
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-428fb72245bso28767125e9.1
-        for <stable@vger.kernel.org>; Tue, 27 Aug 2024 06:24:43 -0700 (PDT)
+	s=arc-20240116; t=1724765864; c=relaxed/simple;
+	bh=wXsFWmD5dBtUKOpD/T8KdCEFMfFAVqUNboZ9+9Off0o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gIXwEDfqhdgQWwEZLh3gl2rqv2rCsSpg40P1F1AG4omyLH7DH2n18oMB43h2Rpi2mVZVh5e0OJukIaeJcM8y7KXNUt0dk5umrXlspydt/0lYnlmPYLd+LMjexmH4sjpJdH8yTWRu41qsSVp9ZiBwLpKYK8vXu1n6ij+yuOhFSas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=bk04D5LQ; arc=none smtp.client-ip=209.85.208.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-2f409c87b07so65085031fa.0
+        for <stable@vger.kernel.org>; Tue, 27 Aug 2024 06:37:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1724765860; x=1725370660; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=AT4VXmb4R9vLR4EZHGzi0KQ518kZdDJ1Wc7PbdyET90=;
+        b=bk04D5LQumPJQrJeVrYScMfKlYwwb8Hn/9maV2wbNo1daMNdFCpZ7g7JgjNyoXrdYr
+         SU7OLIGEphcDAsnVtyDUXYw9w4sfot90BYiUKoKA4UamQIM7X0w1ScqQ9sbW5HANloa3
+         0599YvGCiRxG7yADvCFhchX12dTWdkYNY5aWsjfWrgZIvH1frklOYIYgJiaEOsY/+Z4U
+         0jVLPFYRSHsOUjqkUiclmj2rTD0QpAQxJjhYtA3+k/XmMbvdT6StNGddMGcTwaPF3kWv
+         5MsmqE0jhC0Dh5Ymc5MWZIcZl+nbj7lW5Oo/nab7QszNtH4xlJt3n3Vfv9BlJZKIio+Y
+         c7pQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724765082; x=1725369882;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ca7L2Ypf1IuSrNf2s487D4RaOYQ0VQUUHqLQBFjj34U=;
-        b=XNavyxpH0OXjXteXbxq4oxmkMN3Jks9B8tocHbHzMNQ1+5BwYI2f1xKzYsu6dsmq9e
-         EGJV7R8Qx+usWtaELBMeGEapqEZHe3PzKp9HCEyox4HENo1AOuaGjVsbaK7ZeHAGS0j/
-         A0SdtSo6jyM5Ky4sdiJWTwjBGK5Cqv4uig/gI3XRtOCEGdPAkdRItRlYAhuL/okVQBeK
-         72qiY9mdSwsc2VXQYZGZ85xxPvkB3HgdXkFlWSF0pr1ZlVJWTHzrlPzY29l9pzXV1oqm
-         FuoXocgYEX14Uh0u863cu2DZZhipUpQRbo0bi8w8lvRfaeeWA1dYHOOJgo5HyT2ro2gh
-         UFYg==
-X-Forwarded-Encrypted: i=1; AJvYcCWHN/9YoltT60AYHbOKpXK5+2J5uTR0Z1VWnf4w6t1VW35ZcqYiitC/caolVLnljwnjS1XaYm8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz9lNTInnLJUKWWhrg0e/HLtuAm+otZa3BJwuUaDzb2kndecSEO
-	mi/tK7wdkInnBSN7G5PdRIsdI/BathU48DyACjKElV4SkqkqG5J0Eslbx2zJH74aOFwIti2Hnqt
-	1KGxMFYrylpZLciU22Mk//4iNS0/7CneseyAUkdsC2dW0Ue/7mNeywA==
-X-Received: by 2002:a05:600c:4f01:b0:424:8dbe:817d with SMTP id 5b1f17b1804b1-42b9a46d558mr18972095e9.10.1724765081987;
-        Tue, 27 Aug 2024 06:24:41 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF7rF2xZXsNit3rnRpHiOnC7cRxUpFHU0F4taw8YckE22isH+1s8w1ewwo4oiz7G7HWJwsUVA==
-X-Received: by 2002:a05:600c:4f01:b0:424:8dbe:817d with SMTP id 5b1f17b1804b1-42b9a46d558mr18971815e9.10.1724765081469;
-        Tue, 27 Aug 2024 06:24:41 -0700 (PDT)
-Received: from ?IPV6:2a0d:3344:1b67:7410:c8c6:fe2f:6a21:6a5a? ([2a0d:3344:1b67:7410:c8c6:fe2f:6a21:6a5a])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42ac51622b6sm184917205e9.22.2024.08.27.06.24.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 27 Aug 2024 06:24:41 -0700 (PDT)
-Message-ID: <43c572e1-11bd-4fb6-8463-7940f57b8c7d@redhat.com>
-Date: Tue, 27 Aug 2024 15:24:39 +0200
+        d=1e100.net; s=20230601; t=1724765860; x=1725370660;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AT4VXmb4R9vLR4EZHGzi0KQ518kZdDJ1Wc7PbdyET90=;
+        b=uUMFrnnY5iFj/RQUCTFdOv5yIYP1LcjTTwUV4TYJPseoVJTK9UvJUJnH26Gq5n8RTh
+         XtgRjJu6N3sZghzsjGKQYHHvpabE2kizI4Wid/BrQqMS+uMhFMeQ3iqadPLB+9fJ0k+Q
+         DXpiA/j3PFIBrZzdi6yMr5OdTBgS+ulemdMqzdPbEpYoTvrDuy8zV46Wh6sNJ0V8o8OV
+         tWKO8DMD/+zE7uRU7/ycfeB8r//aGT3aEmv+HnnEPhL9Nk3+OlhBvUNjrwh321Exwamv
+         gyZf8mrTosLVk0sQ/NXNVJywhlQm6BPM9Yw+gGhPbJVtsyXF59Ne8rIqRMboZST1oftP
+         mxEw==
+X-Forwarded-Encrypted: i=1; AJvYcCVSIak2Fzhvmy9lyhTPbcWJceJKNGRk8pZEGHtHQUBAwpCDyHhtn7Ur/6pJ9xIIPqtlfBynYx0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz43S+y9IveFeXhi5q1WjgYzCXqy0XbVeumXYaREZKhxgO+4N95
+	DYi35PArcgyAGSZaFJM+97XtbiQa96nZ8EM0CHJZrWNWYN/PqLlOWsRxU7QHMEY=
+X-Google-Smtp-Source: AGHT+IHLZaTBk7t7Tm5sDsRxPVC4MnBBYf4HikHA9gnfnsCOTEJ+b/dFLLVXn/7+6yLZPfm13I9ibA==
+X-Received: by 2002:a05:651c:b1f:b0:2ef:2b53:c77e with SMTP id 38308e7fff4ca-2f4f48d605dmr94846181fa.7.1724765859849;
+        Tue, 27 Aug 2024 06:37:39 -0700 (PDT)
+Received: from localhost (109-81-92-122.rct.o2.cz. [109.81.92.122])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5c0bb1c2d45sm1029610a12.12.2024.08.27.06.37.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 27 Aug 2024 06:37:39 -0700 (PDT)
+Date: Tue, 27 Aug 2024 15:37:38 +0200
+From: Michal Hocko <mhocko@suse.com>
+To: Uladzislau Rezki <urezki@gmail.com>
+Cc: Hailong Liu <hailong.liu@oppo.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Barry Song <21cnbao@gmail.com>,
+	Christoph Hellwig <hch@infradead.org>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Tangquan Zheng <zhengtangquan@oppo.com>, stable@vger.kernel.org,
+	Baoquan He <bhe@redhat.com>, Matthew Wilcox <willy@infradead.org>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Subject: Re: [RESEND PATCH v1] mm/vmalloc: fix page mapping if
+ vm_area_alloc_pages() with high order fallback to order 0
+Message-ID: <Zs3WouJpDk3AWV4D@tiehlicka>
+References: <20240815220709.47f66f200fd0a072777cc348@linux-foundation.org>
+ <20240816091232.fsliktqgza5o5x6t@oppo.com>
+ <Zr8mQbc3ETdeOMIK@pc636>
+ <20240816114626.jmhqh5ducbk7qeur@oppo.com>
+ <Zr9G-d6bMU4_QodJ@tiehlicka>
+ <Zsi8Byjo4ayJORgS@pc638.lan>
+ <Zsw0Sv9alVUb1DV2@tiehlicka>
+ <Zsx3ULRaVu5Lh46Q@pc636>
+ <Zs12_8AZ0k_WRWUE@tiehlicka>
+ <Zs3K4h5ulL1zlj6L@pc636>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net 2/3] i2c: designware: add device private data passing
- to lock functions
-To: Jiawen Wu <jiawenwu@trustnetic.com>, andi.shyti@kernel.org,
- jarkko.nikula@linux.intel.com, andriy.shevchenko@linux.intel.com,
- mika.westerberg@linux.intel.com, jsd@semihalf.com, davem@davemloft.net,
- edumazet@google.com, kuba@kernel.org, rmk+kernel@armlinux.org.uk,
- piotr.raczynski@intel.com, andrew@lunn.ch, linux-i2c@vger.kernel.org,
- netdev@vger.kernel.org
-Cc: mengyuanlou@net-swift.com, duanqiangwen@net-swift.com,
- stable@vger.kernel.org
-References: <20240823030242.3083528-1-jiawenwu@trustnetic.com>
- <20240823030242.3083528-3-jiawenwu@trustnetic.com>
-Content-Language: en-US
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20240823030242.3083528-3-jiawenwu@trustnetic.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Zs3K4h5ulL1zlj6L@pc636>
 
+On Tue 27-08-24 14:47:30, Uladzislau Rezki wrote:
+> On Tue, Aug 27, 2024 at 08:49:35AM +0200, Michal Hocko wrote:
+[...]
+> > > 2. High-order allocations. Do you think we should not care much about
+> > > it when __GFP_NOFAIL is set? Same here, there is a fallback for order-0
+> > > if "high" fails, it is more likely NO_FAIL succeed for order-0. Thus
+> > > keeping NOFAIL for high-order sounds like not a good approach to me.
+> > 
+> > We should avoid high order allocations with GFP_NOFAIL at all cost.
+> > 
+> What do you propose here? Fail such request?
 
-
-On 8/23/24 05:02, Jiawen Wu wrote:
-> In order to add the hardware lock for Wangxun devices with minimal
-> modification, pass struct dw_i2c_dev to the acquire and release lock
-> functions.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 2f8d1ed79345 ("i2c: designware: Add driver support for Wangxun 10Gb NIC")
-> Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
-> ---
->   drivers/i2c/busses/i2c-designware-amdpsp.c   |  4 ++--
->   drivers/i2c/busses/i2c-designware-baytrail.c | 14 ++++++++++++--
->   drivers/i2c/busses/i2c-designware-common.c   |  4 ++--
->   drivers/i2c/busses/i2c-designware-core.h     |  4 ++--
->   4 files changed, 18 insertions(+), 8 deletions(-)
-> 
-> diff --git a/drivers/i2c/busses/i2c-designware-amdpsp.c b/drivers/i2c/busses/i2c-designware-amdpsp.c
-> index 63454b06e5da..ee7cc4b33f4b 100644
-> --- a/drivers/i2c/busses/i2c-designware-amdpsp.c
-> +++ b/drivers/i2c/busses/i2c-designware-amdpsp.c
-> @@ -167,7 +167,7 @@ static void psp_release_i2c_bus_deferred(struct work_struct *work)
->   }
->   static DECLARE_DELAYED_WORK(release_queue, psp_release_i2c_bus_deferred);
->   
-> -static int psp_acquire_i2c_bus(void)
-> +static int psp_acquire_i2c_bus(struct dw_i2c_dev *dev)
->   {
->   	int status;
->   
-
-This function is used in a few other places in this compilation unit. 
-You need to update all the users accordingly.
-
-> @@ -206,7 +206,7 @@ static int psp_acquire_i2c_bus(void)
->   	return 0;
->   }
->   
-> -static void psp_release_i2c_bus(void)
-> +static void psp_release_i2c_bus(struct dw_i2c_dev *dev)
->   {
->   	mutex_lock(&psp_i2c_access_mutex);
->   
-
-The same here.
-
-Cheers,
-
-Paolo
-
+We shouldn't have any hard requirements for higher order allocations in the vmalloc
+right? In other words we can always fallback to base pages.
+-- 
+Michal Hocko
+SUSE Labs
 
