@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-70498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71040-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D546960E6A
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:48:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 757E196115C
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:19:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 805D81C22461
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:48:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D6BB1F23726
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:19:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A33015F41B;
-	Tue, 27 Aug 2024 14:48:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C841D1C68A6;
+	Tue, 27 Aug 2024 15:18:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OrsWd4Pj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1FHQT5is"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48E73DDC1;
-	Tue, 27 Aug 2024 14:48:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 833751CCB2C;
+	Tue, 27 Aug 2024 15:18:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770107; cv=none; b=TfKYTruLUjrtamh9MuTB1XrwAnhCx6KdtDXsnMpKRQ4IUsSG6OG2x/Bo8mTuy/zppy+XEhu+yj9SxaGgnnHqbg+CIv9Hiz0E226oU0ZKCvRxV2wOnKLpSVsC79O5yozBv80BMsn7rrIYRo0Cc3iDb7xOmm5QC/7rdZaPW1yT4N4=
+	t=1724771898; cv=none; b=Ylm2je4VVGhfKxMNl4Ew+//w5fipfJnjnmn3TCBX46sSTF6+5v0VGfTPcJ83piWwHm56CxCdm0NNouDFCNA8altfL630JHtQ7gXy59z0FrTN+Aqom7qpsG88bQZKU45VmFTITikwPr1Xh6LgCMKRfBT0xF9YeWGLUXVmzzBCRKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770107; c=relaxed/simple;
-	bh=ahU1hCT/+BsBAF11OUihw4kM1OJBWmozfstSfnxBjZw=;
+	s=arc-20240116; t=1724771898; c=relaxed/simple;
+	bh=kfUHONCxlveMOpPJy+5sdzviDmceVdZ4V1jBzobIpPY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l0GBa4D/sur18dqxXx4To1XR2PKmUfWjyKzSx3NkGsrWqpEPDf7N+4AwXvowMFxSpVgGd5k8qyH+SvR/Vn3IgxyWkOizNNuAH5nHuacHSw+MS83SwnKeG1caNwYZnVHMjuClT+Pr83++4id7trk78yqcevQkBKUAXhuLU3w6Pjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OrsWd4Pj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A58E1C61047;
-	Tue, 27 Aug 2024 14:48:26 +0000 (UTC)
+	 MIME-Version; b=G3kSQRDyP3A/Ynw7XxP1rYroaOcynwHW0v6elLI/0dwk3U6mlIAKktyC31cHhlNG7xdmAM2IV9Xfeb7EDsFBxIks7uSMt4gJjZwBMP/vgwKEJsSAjiYWIHZQuusAWJO2+qoDmuL0cBsx8bsNgwDkgUIW9DXy44ZRuGMUM8PZmSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1FHQT5is; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD8CCC61067;
+	Tue, 27 Aug 2024 15:18:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770107;
-	bh=ahU1hCT/+BsBAF11OUihw4kM1OJBWmozfstSfnxBjZw=;
+	s=korg; t=1724771898;
+	bh=kfUHONCxlveMOpPJy+5sdzviDmceVdZ4V1jBzobIpPY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OrsWd4PjsrzPmFcNEDYcgcOKe+jREhu2D7uWF46kfx3ADFQ5KXwtyr9Pyt6cPrgYF
-	 aFcXkPBuAVuixYURl+CKuB8+bSIIWg9/5skC5IF88meRJn2yYnwjZzVC7cfKQZ1/ls
-	 HNGezNA/oUmBIKMkg4YevPGQOBB16t3SPz8N6qPI=
+	b=1FHQT5is/qoNHUlfR6Ec6zzFUyfDSs/9PFSyol/ZVh6P+CPGKhkIOzrdUhgbT5yOu
+	 vGjYkmtTLU7NohwcKOYi9ZWhJcnnwGWTqtOV1FVwd9zbpqlMsoDIds5fwtI0OgFEol
+	 ktyUwm8TtJKL4nBqEnejeR6I1B+M20qGSpsagmcQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kees Cook <keescook@chromium.org>,
-	Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Stephen Boyd <sboyd@kernel.org>,
+	syzbot+411debe54d318eaed386@syzkaller.appspotmail.com,
+	Manas Ghandat <ghandatmanas@gmail.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 130/341] clk: visconti: Add bounds-checking coverage for struct visconti_pll_provider
+Subject: [PATCH 6.1 053/321] jfs: fix shift-out-of-bounds in dbJoin
 Date: Tue, 27 Aug 2024 16:36:01 +0200
-Message-ID: <20240827143848.363672912@linuxfoundation.org>
+Message-ID: <20240827143840.253366173@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,81 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gustavo A. R. Silva <gustavoars@kernel.org>
+From: Manas Ghandat <ghandatmanas@gmail.com>
 
-[ Upstream commit 397d887c1601a71e8a8abdb6beea67d58f0472d3 ]
+[ Upstream commit cca974daeb6c43ea971f8ceff5a7080d7d49ee30 ]
 
-In order to gain the bounds-checking coverage that __counted_by provides
-to flexible-array members at run-time via CONFIG_UBSAN_BOUNDS (for array
-indexing) and CONFIG_FORTIFY_SOURCE (for strcpy/memcpy-family functions),
-we must make sure that the counter member, in this particular case `num`,
-is updated before the first access to the flex-array member, in this
-particular case array `hws`. See below:
+Currently while joining the leaf in a buddy system there is shift out
+of bound error in calculation of BUDSIZE. Added the required check
+to the BUDSIZE and fixed the documentation as well.
 
-commit f316cdff8d67 ("clk: Annotate struct clk_hw_onecell_data with
-__counted_by") introduced `__counted_by` for `struct clk_hw_onecell_data`
-together with changes to relocate some of assignments of counter `num`
-before `hws` is accessed:
-
-include/linux/clk-provider.h:
-1380 struct clk_hw_onecell_data {
-1381         unsigned int num;
-1382         struct clk_hw *hws[] __counted_by(num);
-1383 };
-
-However, this structure is used as a member in other structs, in this
-case in `struct visconti_pll_provider`:
-
-drivers/clk/visconti/pll.h:
- 16 struct visconti_pll_provider {
- 17         void __iomem *reg_base;
- 18         struct device_node *node;
- 19
- 20         /* Must be last */
- 21         struct clk_hw_onecell_data clk_data;
- 22 };
-
-Hence, we need to move the assignments to `ctx->clk_data.num` after
-allocation for `struct visconti_pll_provider` and before accessing the
-flexible array `ctx->clk_data.hws`. And, as assignments for all members
-in `struct visconti_pll_provider` are originally adjacent to each other,
-relocate all assignments together, so we don't split up
-`ctx->clk_data.hws = nr_plls` from the rest. :)
-
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Acked-by: Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Link: https://lore.kernel.org/r/e3189f3e40e8723b6d794fb2260e2e9ab6b960bd.1697492890.git.gustavoars@kernel.org
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Reported-by: syzbot+411debe54d318eaed386@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=411debe54d318eaed386
+Signed-off-by: Manas Ghandat <ghandatmanas@gmail.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/visconti/pll.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/jfs/jfs_dmap.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clk/visconti/pll.c b/drivers/clk/visconti/pll.c
-index 1f3234f226674..e9cd80e085dc3 100644
---- a/drivers/clk/visconti/pll.c
-+++ b/drivers/clk/visconti/pll.c
-@@ -329,12 +329,12 @@ struct visconti_pll_provider * __init visconti_init_pll(struct device_node *np,
- 	if (!ctx)
- 		return ERR_PTR(-ENOMEM);
- 
--	for (i = 0; i < nr_plls; ++i)
--		ctx->clk_data.hws[i] = ERR_PTR(-ENOENT);
--
- 	ctx->node = np;
- 	ctx->reg_base = base;
- 	ctx->clk_data.num = nr_plls;
- 
-+	for (i = 0; i < nr_plls; ++i)
-+		ctx->clk_data.hws[i] = ERR_PTR(-ENOENT);
+diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
+index 4462274e325ac..8d064c9e9605d 100644
+--- a/fs/jfs/jfs_dmap.c
++++ b/fs/jfs/jfs_dmap.c
+@@ -2763,7 +2763,9 @@ static int dbBackSplit(dmtree_t *tp, int leafno, bool is_ctl)
+  *	leafno	- the number of the leaf to be updated.
+  *	newval	- the new value for the leaf.
+  *
+- * RETURN VALUES: none
++ * RETURN VALUES:
++ *  0		- success
++ *	-EIO	- i/o error
+  */
+ static int dbJoin(dmtree_t *tp, int leafno, int newval, bool is_ctl)
+ {
+@@ -2790,6 +2792,10 @@ static int dbJoin(dmtree_t *tp, int leafno, int newval, bool is_ctl)
+ 		 * get the buddy size (number of words covered) of
+ 		 * the new value.
+ 		 */
 +
- 	return ctx;
- }
++		if ((newval - tp->dmt_budmin) > BUDMIN)
++			return -EIO;
++
+ 		budsz = BUDSIZE(newval, tp->dmt_budmin);
+ 
+ 		/* try to join.
 -- 
 2.43.0
 
