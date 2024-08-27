@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-71174-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6202D96121B
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:27:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5B81960F38
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:57:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 196D21F23BA3
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:27:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A6621F24B52
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:57:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B345E148302;
-	Tue, 27 Aug 2024 15:25:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FB421C825E;
+	Tue, 27 Aug 2024 14:55:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VvkQ8Plq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BvWqCWCJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FD541BFE07;
-	Tue, 27 Aug 2024 15:25:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E29C0DDC1;
+	Tue, 27 Aug 2024 14:55:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772344; cv=none; b=MYlHuDwkkqR5zHEPw3PBw2ivLeHrjRJXwMLzVh6ywCUP3sXXR93gf8cyxkiP+z3ju//bqgdTJF8YAtKzO6bm7rO/yQurd2Bm9V6aR5qymE3LwJrKuGj3Rhx/BH74Kg7Jh6YgK9qlfS/G+SYzRX8xNhs0yPbs/8PF4GxB/dEY7+c=
+	t=1724770552; cv=none; b=K0a+siALYhKW0rNTULiKaG6Vl10HUOP/Xk57bBbD9OG9YZXzIn8dSXKjVHRT3vQ+0pyt5eTmZ+cG4HX22vxIejUHnJoNk+EDsrwAN6QHxVftnMB5VdmWj5VfBLdrbz8j7u/4j+XM5Leh7lxV/mdYByohjqQiwwtjePsFY29+FLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772344; c=relaxed/simple;
-	bh=okZIhDwxvspKhCwYn4wFnI/NgJp7/8vTsk1qL6+4Jo4=;
+	s=arc-20240116; t=1724770552; c=relaxed/simple;
+	bh=q3XeGpHgydLyySxrLnOfmNx2bhTe0wNyb7H7oNbibNY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X8JMKE6TIELFZwoUinhCSP9WsF/JGiDyCNgF4uSO1On61YUQRIdsBQZ29XgMNZVjpJQdUSljymAtQ6FrIYS52cvya0gEu2SnV2spJ5dMnba7DKSwTWZTd03s1UMWHvYQW4zNPbgACqp/1JQqRwA+4M7f30Dq+azoWVExrkxiyjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VvkQ8Plq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6D41C61071;
-	Tue, 27 Aug 2024 15:25:43 +0000 (UTC)
+	 MIME-Version; b=PE8zOdoA6wxSZUXRQ9+vQ+6ePoVlqtRp+Kl2vhCo/ssp4swPTIYUHhDC2aRhlHxQs1nx6rVsTt3rDU0DIIdGHgVrshKs7s0v/mdl/Crfyni+8v703FfHvyhoFo5e/WC24DAZpMhUc8Grtzi1siuxiGCXL9HTeI+zE2p2HWg/Vi0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BvWqCWCJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69A6CC4FDF5;
+	Tue, 27 Aug 2024 14:55:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772344;
-	bh=okZIhDwxvspKhCwYn4wFnI/NgJp7/8vTsk1qL6+4Jo4=;
+	s=korg; t=1724770551;
+	bh=q3XeGpHgydLyySxrLnOfmNx2bhTe0wNyb7H7oNbibNY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VvkQ8Plq9afI5BDongtQW5UU3g7vL0H7SrXB26wedIIA4B4w9PzMWdqt+xbSyG3zl
-	 9nZgms3Q1pG1jIulQkJZ3lmp9A9jKNYjFr+XCm1K0sVsbfaCjuN5CoeJitxRZqKFdO
-	 Ld3W68pGZWHFkPu+BCEaR6PI6COo3XuN20t2oDEA=
+	b=BvWqCWCJoP1Emdt8CSJnHwb2u1Ea6oad8vQZi9SjH5bY8eu+tZqZnWMz8r0hxfiv0
+	 ikLPgKcxqhf/yD0sU0omOjJ5mj/MqWTI38RM4FX+F+OpS8cKgNYqW0uaVeFSxHQzWs
+	 Zv1Ey8A2PHml80CMulW2X1aIv1LJZPv/PhRf3Ofo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Sterba <dsterba@suse.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Simon Horman <horms@kernel.org>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 186/321] btrfs: delete pointless BUG_ON check on quota root in btrfs_qgroup_account_extent()
+Subject: [PATCH 6.6 263/341] dpaa2-switch: Fix error checking in dpaa2_switch_seed_bp()
 Date: Tue, 27 Aug 2024 16:38:14 +0200
-Message-ID: <20240827143845.309105507@linuxfoundation.org>
+Message-ID: <20240827143853.415071660@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Sterba <dsterba@suse.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit f40a3ea94881f668084f68f6b9931486b1606db0 ]
+[ Upstream commit c50e7475961c36ec4d21d60af055b32f9436b431 ]
 
-The BUG_ON is deep in the qgroup code where we can expect that it
-exists. A NULL pointer would cause a crash.
+The dpaa2_switch_add_bufs() function returns the number of bufs that it
+was able to add.  It returns BUFS_PER_CMD (7) for complete success or a
+smaller number if there are not enough pages available.  However, the
+error checking is looking at the total number of bufs instead of the
+number which were added on this iteration.  Thus the error checking
+only works correctly for the first iteration through the loop and
+subsequent iterations are always counted as a success.
 
-It was added long ago in 550d7a2ed5db35 ("btrfs: qgroup: Add new qgroup
-calculation function btrfs_qgroup_account_extents()."). It maybe made
-sense back then as the quota enable/disable state machine was not that
-robust as it is nowadays, so we can just delete it.
+Fix this by checking only the bufs added in the current iteration.
 
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 0b1b71370458 ("staging: dpaa2-switch: handle Rx path on control interface")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Tested-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Link: https://patch.msgid.link/eec27f30-b43f-42b6-b8ee-04a6f83423b6@stanley.mountain
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/qgroup.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/fs/btrfs/qgroup.c b/fs/btrfs/qgroup.c
-index e482889667ec9..f3b066b442807 100644
---- a/fs/btrfs/qgroup.c
-+++ b/fs/btrfs/qgroup.c
-@@ -2697,8 +2697,6 @@ int btrfs_qgroup_account_extent(struct btrfs_trans_handle *trans, u64 bytenr,
- 	if (nr_old_roots == 0 && nr_new_roots == 0)
- 		goto out_free;
+diff --git a/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c b/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
+index e01a246124ac6..a05a8525caa45 100644
+--- a/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
++++ b/drivers/net/ethernet/freescale/dpaa2/dpaa2-switch.c
+@@ -2603,13 +2603,14 @@ static int dpaa2_switch_refill_bp(struct ethsw_core *ethsw)
  
--	BUG_ON(!fs_info->quota_root);
--
- 	trace_btrfs_qgroup_account_extent(fs_info, trans->transid, bytenr,
- 					num_bytes, nr_old_roots, nr_new_roots);
+ static int dpaa2_switch_seed_bp(struct ethsw_core *ethsw)
+ {
+-	int *count, i;
++	int *count, ret, i;
+ 
+ 	for (i = 0; i < DPAA2_ETHSW_NUM_BUFS; i += BUFS_PER_CMD) {
++		ret = dpaa2_switch_add_bufs(ethsw, ethsw->bpid);
+ 		count = &ethsw->buf_count;
+-		*count += dpaa2_switch_add_bufs(ethsw, ethsw->bpid);
++		*count += ret;
+ 
+-		if (unlikely(*count < BUFS_PER_CMD))
++		if (unlikely(ret < BUFS_PER_CMD))
+ 			return -ENOMEM;
+ 	}
  
 -- 
 2.43.0
