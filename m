@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-70673-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70924-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD000960F71
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:59:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B02D39610B4
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:11:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97B9D286D22
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:59:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6621A1F21BB5
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:11:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 059DF1CC15B;
-	Tue, 27 Aug 2024 14:58:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4CF31BC9E3;
+	Tue, 27 Aug 2024 15:11:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eptRqwbU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0erS8vJk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5B8C1C57BC;
-	Tue, 27 Aug 2024 14:58:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2EBD1BD514;
+	Tue, 27 Aug 2024 15:11:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770689; cv=none; b=h91Go94/npzYW4yogGDYFNt8xj6ALibAb9iWrIG9jxC8DwdPLHRzn43M3OwCUpSphwJp2GfQf7mmBvSVwlV4+fMwXDJcWIPaUxD4oZ58V82M2hg8wzT48zZ0nPlC9VSI2mUHFsClZVpUm68f738tUUwWCZisuzGtQNcVpQ/g61M=
+	t=1724771515; cv=none; b=HIevUwMDrDqbPRpUOC0PKQd0dWAE5doRpUdyCK2JsSXExO71wMdaW7le+qyXh/aeyhdlAD/ndIquFcrty5xeN5Mi/GL5nvOLgc7FrCyTSvLitOkwLj3CCfHoVQhLySqkCtMgYNmHUmdzS3/cajGVLq/I0GZcP6QuMikICL65988=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770689; c=relaxed/simple;
-	bh=6jDfW4Csqf9qmEG06euRkFvHKOixTBew3lmAWpfPT0U=;
+	s=arc-20240116; t=1724771515; c=relaxed/simple;
+	bh=F7YYLDvnQID+YXI1/Fu7UpZddiw1P4rp006fV4PzMQg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dfV8lT+O9PDxDWLKaxkz/7rZ3yVmgAq/fZRLeU+B+yqMImppsz6shcXri5R7Of/Btrm3DQX3rKx87oSAXtKnZV7iUGWNLwncC25t0G20QUIPIrptwtY+U7yP2J96ZDS0uqsvwZRFEdw47UCllDYC8FLhWEHSJhzk7WIdHFePGYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eptRqwbU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 381A1C6107B;
-	Tue, 27 Aug 2024 14:58:09 +0000 (UTC)
+	 MIME-Version; b=J8B49/QSoR5AHOL+U1kpu+fzViDSRLYVXZ+ZIxcBckpdpifogj1D5p+4+7dkJnk2XCtkT0cqsFC76Va6DsysVjac5x69Y3a/7zDUiWmkNUz7fefRuKGemtXa2cLKz6llwuvs9AmFAehLxP81cHITxU/e8gRdfWJGz21UwsqAi+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0erS8vJk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05C95C4DDEE;
+	Tue, 27 Aug 2024 15:11:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770689;
-	bh=6jDfW4Csqf9qmEG06euRkFvHKOixTBew3lmAWpfPT0U=;
+	s=korg; t=1724771515;
+	bh=F7YYLDvnQID+YXI1/Fu7UpZddiw1P4rp006fV4PzMQg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eptRqwbUvAkOSm1r4sXeklg697HWdxy4f46w0pivHv5iezRPqbpowGJ1DEyt8BrAc
-	 LJrIfsrAon70Qhi2MARdSvoK4lfvJERpMPn0BRqOPcIQL9bj8Nluft7TZJvF1g1c7l
-	 yE9DJE0ujgW/4NtMD7Xi++tLUKFQIEnngoPrhpIM=
+	b=0erS8vJk8qq8+IfvMcGPnQlv/+nz2nfldYehJVUI5GsG6GE3svbSfjOO0+vHWwntu
+	 JwEdVFtjRBrJN8QfdgdkMG/UtN0+0cMvj8bcaWh/NJz0X5ZLSBad8s9Tz5iQeQY3Kw
+	 qHBGUv1TX4PO66chxRUYzGwSzhO/EwfXAP1bxdsw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mengqi Zhang <mengqi.zhang@mediatek.com>,
-	stable@vger.stable.com,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.6 305/341] mmc: mtk-sd: receive cmd8 data when hs400 tuning fail
+	Stuart Summers <stuart.summers@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 212/273] drm/xe: Fix missing workqueue destroy in xe_gt_pagefault
 Date: Tue, 27 Aug 2024 16:38:56 +0200
-Message-ID: <20240827143854.995313695@linuxfoundation.org>
+Message-ID: <20240827143841.476802526@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mengqi Zhang <mengqi.zhang@mediatek.com>
+From: Stuart Summers <stuart.summers@intel.com>
 
-commit 9374ae912dbb1eed8139ed75fd2c0f1b30ca454d upstream.
+[ Upstream commit a6f78359ac75f24cac3c1bdd753c49c1877bcd82 ]
 
-When we use cmd8 as the tuning command in hs400 mode, the command
-response sent back by some eMMC devices cannot be correctly sampled
-by MTK eMMC controller at some weak sample timing. In this case,
-command timeout error may occur. So we must receive the following
-data to make sure the next cmd8 send correctly.
+On driver reload we never free up the memory for the pagefault and
+access counter workqueues. Add those destroy calls here.
 
-Signed-off-by: Mengqi Zhang <mengqi.zhang@mediatek.com>
-Fixes: c4ac38c6539b ("mmc: mtk-sd: Add HS400 online tuning support")
-Cc: stable@vger.stable.com
-Link: https://lore.kernel.org/r/20240716013704.10578-1-mengqi.zhang@mediatek.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
+Signed-off-by: Stuart Summers <stuart.summers@intel.com>
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/c9a951505271dc3a7aee76de7656679f69c11518.1723862633.git.stuart.summers@intel.com
+(cherry picked from commit 7586fc52b14e0b8edd0d1f8a434e0de2078b7b2b)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/mtk-sd.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/xe/xe_gt_pagefault.c | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
---- a/drivers/mmc/host/mtk-sd.c
-+++ b/drivers/mmc/host/mtk-sd.c
-@@ -1222,7 +1222,7 @@ static bool msdc_cmd_done(struct msdc_ho
- 	}
+diff --git a/drivers/gpu/drm/xe/xe_gt_pagefault.c b/drivers/gpu/drm/xe/xe_gt_pagefault.c
+index fa9e9853c53ba..67e8efcaa93f1 100644
+--- a/drivers/gpu/drm/xe/xe_gt_pagefault.c
++++ b/drivers/gpu/drm/xe/xe_gt_pagefault.c
+@@ -402,6 +402,18 @@ static void pf_queue_work_func(struct work_struct *w)
  
- 	if (!sbc_error && !(events & MSDC_INT_CMDRDY)) {
--		if (events & MSDC_INT_CMDTMO ||
-+		if ((events & MSDC_INT_CMDTMO && !host->hs400_tuning) ||
- 		    (!mmc_op_tuning(cmd->opcode) && !host->hs400_tuning))
- 			/*
- 			 * should not clear fifo/interrupt as the tune data
-@@ -1315,9 +1315,9 @@ static void msdc_start_command(struct ms
- static void msdc_cmd_next(struct msdc_host *host,
- 		struct mmc_request *mrq, struct mmc_command *cmd)
+ static void acc_queue_work_func(struct work_struct *w);
+ 
++static void pagefault_fini(void *arg)
++{
++	struct xe_gt *gt = arg;
++	struct xe_device *xe = gt_to_xe(gt);
++
++	if (!xe->info.has_usm)
++		return;
++
++	destroy_workqueue(gt->usm.acc_wq);
++	destroy_workqueue(gt->usm.pf_wq);
++}
++
+ int xe_gt_pagefault_init(struct xe_gt *gt)
  {
--	if ((cmd->error &&
--	    !(cmd->error == -EILSEQ &&
--	      (mmc_op_tuning(cmd->opcode) || host->hs400_tuning))) ||
-+	if ((cmd->error && !host->hs400_tuning &&
-+	     !(cmd->error == -EILSEQ &&
-+	     mmc_op_tuning(cmd->opcode))) ||
- 	    (mrq->sbc && mrq->sbc->error))
- 		msdc_request_done(host, mrq);
- 	else if (cmd == mrq->sbc)
+ 	struct xe_device *xe = gt_to_xe(gt);
+@@ -429,10 +441,12 @@ int xe_gt_pagefault_init(struct xe_gt *gt)
+ 	gt->usm.acc_wq = alloc_workqueue("xe_gt_access_counter_work_queue",
+ 					 WQ_UNBOUND | WQ_HIGHPRI,
+ 					 NUM_ACC_QUEUE);
+-	if (!gt->usm.acc_wq)
++	if (!gt->usm.acc_wq) {
++		destroy_workqueue(gt->usm.pf_wq);
+ 		return -ENOMEM;
++	}
+ 
+-	return 0;
++	return devm_add_action_or_reset(xe->drm.dev, pagefault_fini, gt);
+ }
+ 
+ void xe_gt_pagefault_reset(struct xe_gt *gt)
+-- 
+2.43.0
+
 
 
 
