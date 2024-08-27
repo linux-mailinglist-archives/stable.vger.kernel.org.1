@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-71104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70563-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 428A09611A7
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:22:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E266960ECD
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:52:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 734541C234B8
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:22:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D90FD1F24AC9
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:52:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28AE81C68BD;
-	Tue, 27 Aug 2024 15:21:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B153A1C825E;
+	Tue, 27 Aug 2024 14:52:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VUA2wOYF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tiGy4p+g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D94681BC9E3;
-	Tue, 27 Aug 2024 15:21:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F7711C57B3;
+	Tue, 27 Aug 2024 14:52:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772113; cv=none; b=GHymKZaB4gJzcgSQFgDoT6zB3NrH/7fogFcWldZ3ZyntrI+G5JAeMHPJGNaprl4n7yTlR7K9vZdw6N1EYwHyE1mSvrqrql5TPW5783z11wJcu1tWBvgjw6WDfFtfEKZVqQPu9QiTbS2gE6dPy8XWyustg7Dt4ylnE4IMCVyrWNI=
+	t=1724770322; cv=none; b=PBwVQ/k3Xau7saT7OOIi1Qoo7YvyIjdHChMi3r1/OkKUdhXPLoKPoGAJVRLvvYAZy3Tlkbc8sy8ZuTn+Yik/ttI05b+Idcj80zkGALMRoux6oufSEdUKasDfgh6ZAu2up+XVjuiNRgRy6v+rXAxb9PA7p9zkFkqWtNsn+5dBMX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772113; c=relaxed/simple;
-	bh=dq0FsvhSUB6Vpvk7UdvcgP2X2lJb8GjKIwRbcMcC4W8=;
+	s=arc-20240116; t=1724770322; c=relaxed/simple;
+	bh=570j3/MzFzE7PoxuFCdMllXPaUGVG1+Ygt5JgSNFqJw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R19Ga7VoFB/QBwHnprlG575Sfeld60dAhqwVaKO8qsNBSbARKxXSWpZz01t6P4qdg4kgUKzt5r96+MAa1pvsfe+LQZxBzItVcQS73f5GNVQ6WYhL+2bir2T4o/82PBQf2g0ZkdZwzsAmdROtiejYsy1iLbvyLG8E6w/tjHiNexk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VUA2wOYF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EE75C4FE08;
-	Tue, 27 Aug 2024 15:21:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=F3cCrVAJ7KlB56w2gVPDYeV/BR67JRD009p46FQ8Brp0mW/qYhrV1lv5fpURaLqxMoY57pn42DUN2U8n76MwZnSp+JreQ1vbzTl13oCwHTBQRVrMzHOjtuCRjkk2ZZg9GUHDzw8zbF3jw8Cln8u8jFrWdTQrYxBJS5a1wRryY18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tiGy4p+g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E81D6C4DE12;
+	Tue, 27 Aug 2024 14:52:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772113;
-	bh=dq0FsvhSUB6Vpvk7UdvcgP2X2lJb8GjKIwRbcMcC4W8=;
+	s=korg; t=1724770322;
+	bh=570j3/MzFzE7PoxuFCdMllXPaUGVG1+Ygt5JgSNFqJw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VUA2wOYFc6Oodc9Ro5XCNRuWccrHqj8Kh3zVr3zX6T9YWjHtbyF2NJvUHQgSveBQh
-	 bNH6WXDHonJ1YMJnqgPhhpLBfcAxg4zbb7gEWLbAKqZmCYCm0bzb/ELGvNSXkyt6ZU
-	 FG8kzFB7JRemYHGj25s5O0fw6TMXuwqWuQyi2zcI=
+	b=tiGy4p+gJxYVRBI74z6r3LLTaa4Jd2FVht+Y4oDQ2G4Lyc+97rhNKEnDcOgqjGrU+
+	 hSvfE/bbe4UWM6d7ifRS0RJmrwN9AlepPb6HV7c+1pxcEwz4OsappxvC7Kry8uh5D9
+	 POH3byRbVwyXy4ISuk/TTg+itP+RIix+Qe1zwk2o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kamalesh Babulal <kamalesh.babulal@oracle.com>,
-	Tejun Heo <tj@kernel.org>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 118/321] cgroup: Avoid extra dereference in css_populate_dir()
+Subject: [PATCH 6.6 195/341] usb: gadget: fsl: Increase size of name buffer for endpoints
 Date: Tue, 27 Aug 2024 16:37:06 +0200
-Message-ID: <20240827143842.734988379@linuxfoundation.org>
+Message-ID: <20240827143850.831536649@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,48 +59,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kamalesh Babulal <kamalesh.babulal@oracle.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit d24f05987ce8bf61e62d86fedbe47523dc5c3393 ]
+[ Upstream commit 87850f6cc20911e35eafcbc1d56b0d649ae9162d ]
 
-Use css directly instead of dereferencing it from &cgroup->self, while
-adding the cgroup v2 cft base and psi files in css_populate_dir(). Both
-points to the same css, when css->ss is NULL, this avoids extra deferences
-and makes code consistent in usage across the function.
+This fixes a W=1 warning about sprintf writing up to 16 bytes into a
+buffer of size 14. There is no practical relevance because there are not
+more than 32 endpoints.
 
-Signed-off-by: Kamalesh Babulal <kamalesh.babulal@oracle.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Link: https://lore.kernel.org/r/6754df25c56aae04f8110594fad2cd2452b1862a.1708709120.git.u.kleine-koenig@pengutronix.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/cgroup/cgroup.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/gadget/udc/fsl_udc_core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
-index 489c25713edcb..455f67ff31b57 100644
---- a/kernel/cgroup/cgroup.c
-+++ b/kernel/cgroup/cgroup.c
-@@ -1751,13 +1751,13 @@ static int css_populate_dir(struct cgroup_subsys_state *css)
+diff --git a/drivers/usb/gadget/udc/fsl_udc_core.c b/drivers/usb/gadget/udc/fsl_udc_core.c
+index ee5705d336e3d..10a82527626eb 100644
+--- a/drivers/usb/gadget/udc/fsl_udc_core.c
++++ b/drivers/usb/gadget/udc/fsl_udc_core.c
+@@ -2486,7 +2486,7 @@ static int fsl_udc_probe(struct platform_device *pdev)
+ 	/* setup the udc->eps[] for non-control endpoints and link
+ 	 * to gadget.ep_list */
+ 	for (i = 1; i < (int)(udc_controller->max_ep / 2); i++) {
+-		char name[14];
++		char name[16];
  
- 	if (!css->ss) {
- 		if (cgroup_on_dfl(cgrp)) {
--			ret = cgroup_addrm_files(&cgrp->self, cgrp,
-+			ret = cgroup_addrm_files(css, cgrp,
- 						 cgroup_base_files, true);
- 			if (ret < 0)
- 				return ret;
- 
- 			if (cgroup_psi_enabled()) {
--				ret = cgroup_addrm_files(&cgrp->self, cgrp,
-+				ret = cgroup_addrm_files(css, cgrp,
- 							 cgroup_psi_files, true);
- 				if (ret < 0)
- 					return ret;
+ 		sprintf(name, "ep%dout", i);
+ 		struct_ep_setup(udc_controller, i * 2, name, 1);
 -- 
 2.43.0
 
