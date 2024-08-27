@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-70687-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70937-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 179CA960F86
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:00:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99D679610C7
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:12:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B0AA1C234D1
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:00:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 357A7B219D8
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:12:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 056FB1C0DE7;
-	Tue, 27 Aug 2024 14:58:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 412A71C5788;
+	Tue, 27 Aug 2024 15:12:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1WsiS7kT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GGw5ShQ+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7FB1DDC1;
-	Tue, 27 Aug 2024 14:58:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00DC91BD514;
+	Tue, 27 Aug 2024 15:12:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770735; cv=none; b=p7AxKz4fo933RRhqxjeGdbPwZPCBFHmfFnLlJqz5BR22kFz+YnYXU+8AVK6ShB19Gz1kzIT+FsNeBMB8Iws+rkpuwgbdHKBV4Is0gYH1Ee7N5BJMZfVxJMxXNUoj1JzlodFRHtrCtvhBK79xZHk3g1S+ndjgzmqnuVLUNkkB7Ac=
+	t=1724771558; cv=none; b=fcPS1ny2C5T5HH55h67Ut6XJI1cWa+WQmu07b0SrhVJmQ9SBfAf5DUWdteIbS6SALc6KjeXa9Fr+cYP+MvU3WOjl/9EvXjnOOt6d5GqM5150m4uekdipfWvrn99RFExzSYgucIayEQSGvux8Q9+JMK2sjo1ReXCAX5B4szfXzs8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770735; c=relaxed/simple;
-	bh=ajwQheiqwf64DL0lTS1Xq454k6eq24uKu7ayDmJkv/U=;
+	s=arc-20240116; t=1724771558; c=relaxed/simple;
+	bh=8o5W3h52bsCHvHnt0qFUDVx5YBmhbS7hEM7Q9TLjhkI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CWGlN5cg1tPdpI9Ikpyt4I2qEip6B6ZbKCGuQi+qWJzj/dBCc1f5xHo0Yjy5vrUYbywoBDc1MfcvtzxUZKn6rVahsOvdOrn0jSZKDf2g8V2izlbV1UFa6RG5SHLCkjm/94JKSKP7PijZmRF4pSQpgxmjzHn2uHD4rILqLteuHBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1WsiS7kT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28346C4AF1B;
-	Tue, 27 Aug 2024 14:58:54 +0000 (UTC)
+	 MIME-Version; b=VH3g5Hw1pE4yjobslolrfNDmAxqeXUNDekXQrLt+7Lp+jKohOuqSoOfNcxv2Grf2rIBFZf/CJCAF1SATEJI87prJTBc7bkHLlHGWN0yVaW3lcQD57/2F6ztK4mLKXFooWFOoPvgi3o1Pc3Z6J0t2zHRu9MJ3OcoiLynb0xGTVR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GGw5ShQ+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 676FCC61042;
+	Tue, 27 Aug 2024 15:12:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770735;
-	bh=ajwQheiqwf64DL0lTS1Xq454k6eq24uKu7ayDmJkv/U=;
+	s=korg; t=1724771557;
+	bh=8o5W3h52bsCHvHnt0qFUDVx5YBmhbS7hEM7Q9TLjhkI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1WsiS7kTAy7gqnL1Dg1P8fuGIwHH/yZwwuSinWIkPdX4Ajq69PXw6xuIiNvNNX/ve
-	 +LqSqHN60wBru95wVdOyWP5ygUAP78wkOLUwRawJBCjVgZC8FqEiQUijR10FtaOV/Y
-	 wjGcOGntFUSFlGfpRWoRmb/r4Dllpwo9szHbChDA=
+	b=GGw5ShQ+crixpHrUtJyI9xwf4CkX3xeT+jZfJRNTcgVK9wjHGKBDcIZaXCz7KvT+r
+	 r8HsWWbT4PvuHoJD/ezKWYt1+oN474sLuC4ppIrtB+87ITtwxqo246v95jO8XXXC4R
+	 U4tCj52nLGN2bNFpZlahXrFwTSXReqs3DH1hnznE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <geliang@kernel.org>,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 317/341] mptcp: pm: only in-kernel cannot have entries with ID 0
+	Chaotian Jing <chaotian.jing@mediatek.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.10 224/273] scsi: core: Fix the return value of scsi_logical_block_count()
 Date: Tue, 27 Aug 2024 16:39:08 +0200
-Message-ID: <20240827143855.458737138@linuxfoundation.org>
+Message-ID: <20240827143841.929332131@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Chaotian Jing <chaotian.jing@mediatek.com>
 
-commit ca6e55a703ca2894611bb5c5bca8bfd2290fd91e upstream.
+commit f03e94f23b04c2b71c0044c1534921b3975ef10c upstream.
 
-The ID 0 is specific per MPTCP connections. The per netns entries cannot
-have this special ID 0 then.
+scsi_logical_block_count() should return the block count of a given SCSI
+command. The original implementation ended up shifting twice, leading to an
+incorrect count being returned. Fix the conversion between bytes and
+logical blocks.
 
-But that's different for the userspace PM where the entries are per
-connection, they can then use this special ID 0.
-
-Fixes: f40be0db0b76 ("mptcp: unify pm get_flags_and_ifindex_by_id")
 Cc: stable@vger.kernel.org
-Acked-by: Geliang Tang <geliang@kernel.org>
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20240819-net-mptcp-pm-reusing-id-v1-11-38035d40de5b@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 6a20e21ae1e2 ("scsi: core: Add helper to return number of logical blocks in a request")
+Signed-off-by: Chaotian Jing <chaotian.jing@mediatek.com>
+Link: https://lore.kernel.org/r/20240813053534.7720-1-chaotian.jing@mediatek.com
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/pm.c         |    3 ---
- net/mptcp/pm_netlink.c |    4 ++++
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ include/scsi/scsi_cmnd.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/mptcp/pm.c
-+++ b/net/mptcp/pm.c
-@@ -435,9 +435,6 @@ int mptcp_pm_get_flags_and_ifindex_by_id
- 	*flags = 0;
- 	*ifindex = 0;
+--- a/include/scsi/scsi_cmnd.h
++++ b/include/scsi/scsi_cmnd.h
+@@ -234,7 +234,7 @@ static inline sector_t scsi_get_lba(stru
  
--	if (!id)
--		return 0;
--
- 	if (mptcp_pm_is_userspace(msk))
- 		return mptcp_userspace_pm_get_flags_and_ifindex_by_id(msk, id, flags, ifindex);
- 	return mptcp_pm_nl_get_flags_and_ifindex_by_id(msk, id, flags, ifindex);
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -1426,6 +1426,10 @@ int mptcp_pm_nl_get_flags_and_ifindex_by
- 	struct sock *sk = (struct sock *)msk;
- 	struct net *net = sock_net(sk);
+ static inline unsigned int scsi_logical_block_count(struct scsi_cmnd *scmd)
+ {
+-	unsigned int shift = ilog2(scmd->device->sector_size) - SECTOR_SHIFT;
++	unsigned int shift = ilog2(scmd->device->sector_size);
  
-+	/* No entries with ID 0 */
-+	if (id == 0)
-+		return 0;
-+
- 	rcu_read_lock();
- 	entry = __lookup_addr_by_id(pm_nl_get_pernet(net), id);
- 	if (entry) {
+ 	return blk_rq_bytes(scsi_cmd_to_rq(scmd)) >> shift;
+ }
 
 
 
