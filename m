@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-70903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70653-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87A0996109A
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:10:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03668960F5D
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:58:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 441022822B0
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:10:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B452A285208
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:58:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D277C1C3F19;
-	Tue, 27 Aug 2024 15:10:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCD081C6F71;
+	Tue, 27 Aug 2024 14:57:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eUO14Bl+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="inxA8+Zs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9210D1C6893;
-	Tue, 27 Aug 2024 15:10:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BAEF1C6894;
+	Tue, 27 Aug 2024 14:57:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771447; cv=none; b=o25dZvUtJaQ4fWaOGXTvIB6Gsa45qqcwjEBe/JxJ6+SUDCOPvjIBrmdBObSnqg4WI87H9S5VhqPyeLkZFrboNSoYSdbNSfxIekwIspWbwezI3HE+Kf8X0p5wKB3NmgFJDd0xqrFvaS1d4S13AXOj080hoRsL6i5wxxSuepN73LI=
+	t=1724770624; cv=none; b=WQXHThJJ578UiMXUSSQV8MdQrhnHtIUC2WRjYv10nOR2MZzJ75bo3l6z3QtwsAg/ZuwdDX0NkNCD7cuKIlPz7GTpcaZw1dnUIqUDVLnwhAdVO28D3cV9jlGrsTmpbtzR2lbp9EmugA4MBlTfQtjYNvOZbeFuDgUbkvqVfKB1PS4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771447; c=relaxed/simple;
-	bh=xFm0YtqSamCuKFHE4A2ZN/sETHVAwy+tT+rPLQ7b2uU=;
+	s=arc-20240116; t=1724770624; c=relaxed/simple;
+	bh=dwtmbiVs8alIj2VSiFEUTBay4A1++JcghqvqbixUhwA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p4n4Q6wz7uptncLDqG3Jrstrh4VWEsHqrPvzIoKqXx6V28gOrhk7lnSLqZb9Go67YS+E5xl5hwxvzihfSE5rl749sJxOpUxH67U5yHKonJlVAiun8ZnxFMo8+MQkV0kfJAZJfOFmE6VaUPWxRa4h0Fq//538fXHCU0fKUWQstis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eUO14Bl+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08131C4DDE4;
-	Tue, 27 Aug 2024 15:10:46 +0000 (UTC)
+	 MIME-Version; b=rILw80i5hvVCp3q/OyzdU+OsFLI6D/TgpcSNh6RtXHSscPSevm2lwkSFcsceSE/UGi8VXCVPKV5VmLQ7LXU33JJlBm7XYS/pzc5NmspNnvgpyKC9mD/cPbO1KG/gmmYeypvcIxE8aUpOgDtjrymUi/t0/348I2KHLzk5OxaDxfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=inxA8+Zs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B3FDC4FE01;
+	Tue, 27 Aug 2024 14:57:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771447;
-	bh=xFm0YtqSamCuKFHE4A2ZN/sETHVAwy+tT+rPLQ7b2uU=;
+	s=korg; t=1724770624;
+	bh=dwtmbiVs8alIj2VSiFEUTBay4A1++JcghqvqbixUhwA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eUO14Bl+QRt91Zs87JYflablIM2Xc0a4k1cViku0SYSsSNjN8Qc+pt77W0DR8Q5+1
-	 fG1kvbMIdoehn38vYPeX2N27CQvb3hr9LI0N2OETrmIctTkq6OIQyATM4Tn9/jsdlH
-	 TDK5DjuUeaxO7+mcjXYBOpFDcPPHIzA2vZjBwK7s=
+	b=inxA8+ZsLul53S3KXEn2vRWT+lMRbFST7Z67YOG3EFsiWtl9xxKyAh99DNm0zULPY
+	 i2Zl4sSrEK1qMk96eqmYVTkpHgeM3gwfuhVhddykFmJAGzrfAoxapQEb79JGfys95T
+	 HfXXds3tQu0k+eVYkl3ncupK+FR/nsWG1ccqnRUs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Menglong Dong <dongml2@chinatelecom.cn>,
-	Adrian Moreno <amorenoz@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 190/273] net: ovs: fix ovs_drop_reasons error
+Subject: [PATCH 6.6 283/341] drm/msm/dpu: move dpu_encoders connector assignment to atomic_enable()
 Date: Tue, 27 Aug 2024 16:38:34 +0200
-Message-ID: <20240827143840.637947217@linuxfoundation.org>
+Message-ID: <20240827143854.166883602@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Menglong Dong <menglong8.dong@gmail.com>
+From: Abhinav Kumar <quic_abhinavk@quicinc.com>
 
-[ Upstream commit 57fb67783c4011581882f32e656d738da1f82042 ]
+[ Upstream commit aedf02e46eb549dac8db4821a6b9f0c6bf6e3990 ]
 
-There is something wrong with ovs_drop_reasons. ovs_drop_reasons[0] is
-"OVS_DROP_LAST_ACTION", but OVS_DROP_LAST_ACTION == __OVS_DROP_REASON + 1,
-which means that ovs_drop_reasons[1] should be "OVS_DROP_LAST_ACTION".
+For cases where the crtc's connectors_changed was set without enable/active
+getting toggled , there is an atomic_enable() call followed by an
+atomic_disable() but without an atomic_mode_set().
 
-And as Adrian tested, without the patch, adding flow to drop packets
-results in:
+This results in a NULL ptr access for the dpu_encoder_get_drm_fmt() call in
+the atomic_enable() as the dpu_encoder's connector was cleared in the
+atomic_disable() but not re-assigned as there was no atomic_mode_set() call.
 
-drop at: do_execute_actions+0x197/0xb20 [openvsw (0xffffffffc0db6f97)
-origin: software
-input port ifindex: 8
-timestamp: Tue Aug 20 10:19:17 2024 859853461 nsec
-protocol: 0x800
-length: 98
-original length: 98
-drop reason: OVS_DROP_ACTION_ERROR
+Fix the NULL ptr access by moving the assignment for atomic_enable() and also
+use drm_atomic_get_new_connector_for_encoder() to get the connector from
+the atomic_state.
 
-With the patch, the same results in:
-
-drop at: do_execute_actions+0x197/0xb20 [openvsw (0xffffffffc0db6f97)
-origin: software
-input port ifindex: 8
-timestamp: Tue Aug 20 10:16:13 2024 475856608 nsec
-protocol: 0x800
-length: 98
-original length: 98
-drop reason: OVS_DROP_LAST_ACTION
-
-Fix this by initializing ovs_drop_reasons with index.
-
-Fixes: 9d802da40b7c ("net: openvswitch: add last-action drop reason")
-Signed-off-by: Menglong Dong <dongml2@chinatelecom.cn>
-Tested-by: Adrian Moreno <amorenoz@redhat.com>
-Reviewed-by: Adrian Moreno <amorenoz@redhat.com>
-Link: https://patch.msgid.link/20240821123252.186305-1-dongml2@chinatelecom.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 25fdd5933e4c ("drm/msm: Add SDM845 DPU support")
+Reported-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Closes: https://gitlab.freedesktop.org/drm/msm/-/issues/59
+Suggested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Tested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org> # SM8350-HDK
+Patchwork: https://patchwork.freedesktop.org/patch/606729/
+Link: https://lore.kernel.org/r/20240731191723.3050932-1-quic_abhinavk@quicinc.com
+Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/openvswitch/datapath.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/openvswitch/datapath.c b/net/openvswitch/datapath.c
-index 99d72543abd3a..78d9961fcd446 100644
---- a/net/openvswitch/datapath.c
-+++ b/net/openvswitch/datapath.c
-@@ -2706,7 +2706,7 @@ static struct pernet_operations ovs_net_ops = {
- };
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
+index 0c57588044641..6262ec5e40204 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
+@@ -1119,8 +1119,6 @@ static void dpu_encoder_virt_atomic_mode_set(struct drm_encoder *drm_enc,
  
- static const char * const ovs_drop_reasons[] = {
--#define S(x)	(#x),
-+#define S(x) [(x) & ~SKB_DROP_REASON_SUBSYS_MASK] = (#x),
- 	OVS_DROP_REASONS(S)
- #undef S
- };
+ 	cstate->num_mixers = num_lm;
+ 
+-	dpu_enc->connector = conn_state->connector;
+-
+ 	for (i = 0; i < dpu_enc->num_phys_encs; i++) {
+ 		struct dpu_encoder_phys *phys = dpu_enc->phys_encs[i];
+ 
+@@ -1216,6 +1214,8 @@ static void dpu_encoder_virt_atomic_enable(struct drm_encoder *drm_enc,
+ 
+ 	dpu_enc->commit_done_timedout = false;
+ 
++	dpu_enc->connector = drm_atomic_get_new_connector_for_encoder(state, drm_enc);
++
+ 	cur_mode = &dpu_enc->base.crtc->state->adjusted_mode;
+ 
+ 	trace_dpu_enc_enable(DRMID(drm_enc), cur_mode->hdisplay,
 -- 
 2.43.0
 
