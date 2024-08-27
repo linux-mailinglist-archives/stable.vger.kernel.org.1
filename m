@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-70890-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71182-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB40C96108A
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:10:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3DE8961231
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:28:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 791CBB23003
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:10:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 228171C238C7
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:28:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C721E1C4EEF;
-	Tue, 27 Aug 2024 15:10:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 986A81C9ECD;
+	Tue, 27 Aug 2024 15:26:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qm5+Hkb2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IWcwju0W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83A541E520;
-	Tue, 27 Aug 2024 15:10:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57E001D278A;
+	Tue, 27 Aug 2024 15:26:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771402; cv=none; b=Dbo/g4zP/WUM7vI2tayG13n/LFwJkpThpy+fEtvrdUZ+g6RI6Rpp7OTdgo9axtghrrF2xQVaDJhkTf7ZlGzQ+XX655R+i/J2AJg6qU75Sz3GSZHyjAhONWQu3OBsuh1kQ4LvtlKd9J+YtlLLpqMjAFarZpr7dzsywvvqTZypsys=
+	t=1724772370; cv=none; b=SWuDUSoLg+b+1PO3Ne7Kj1wVNgQOxhROvYYgpsTjwaYG/xvTFY2Otkt/nqMdUr/0YT57rFK7bKgllLI/ZKVmZIVrsjYJb+jBAKGm4ESJiRMRy4HAcvNuLwimhc6HAnZxnorffbdczLsIwTmqd4ovQSNFO3V9tEnD+tOusmKVQGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771402; c=relaxed/simple;
-	bh=GSeG+cGfEbHnJ3hu0RTqrn/kGivG0W1MZHbr9d1BwQA=;
+	s=arc-20240116; t=1724772370; c=relaxed/simple;
+	bh=WyBm51mR6TEi8pT7pQ0qRGqigcRMlUhvKirgT6a5pRQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kr10FDy2ZQblDeOOYQelHQZtbEDbI1dYd4h9Q5E56E0WA2ZGIluQtFdI23hVSsTy1pxns6jrzYEjXIU1R2rtysmCOvaQIQP51utAJF8z6A5ez/BzbLuf2FlvKiKmPGYBeO5yCJtUnq9X2ckeqhTz2vU+BCoVQ+5LxD+IPeX9gyU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qm5+Hkb2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85D71C4AF52;
-	Tue, 27 Aug 2024 15:10:01 +0000 (UTC)
+	 MIME-Version; b=R/5+fMviUC+ykHSUWRlLKx3xHS+mv/YV6yX1jMFkRFAHX8JMt65dm/KJZb8k36qkLbWpKo4Vb2ygWLqSM5ThXgLMXjURJIx/5NVnFxKwcg7VWbEp5Hfi4oHAPg6fBy2dxR8sw8ym14QHY8S94P6r19j1IQ4d3+DgnRseqarJDrs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IWcwju0W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2196C6107C;
+	Tue, 27 Aug 2024 15:26:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771402;
-	bh=GSeG+cGfEbHnJ3hu0RTqrn/kGivG0W1MZHbr9d1BwQA=;
+	s=korg; t=1724772370;
+	bh=WyBm51mR6TEi8pT7pQ0qRGqigcRMlUhvKirgT6a5pRQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qm5+Hkb2bsTnGwVD47CltP8GmVGWPnvEGeiFX9scZnYqYV9Ssc6dEL2vKzCuB8hDk
-	 sL9WuxafgbdKSR+yFxmy/a9uvGQ929aMLFT4Ur2lAgrvQ59MWx5rWPvufSLXQVG4ql
-	 tIfL8lH0t0XKcyLEyTbilfy/++tfmU2nuy9dY88M=
+	b=IWcwju0WoVb8Zm/0v01y6HaEtRcKruV18RYdH96SRXzuBv3vESstt5HukLZfdP33K
+	 dpGpC+IMgYwlODVkgGjRU7rzI+rDn36DLunSr71Q8dakq+Ur5M35jQhOguNxxKQqji
+	 wa5S8UHM+h9uphqKORCbGeOJ/YKDMDKvsBM366g4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joseph Huang <Joseph.Huang@garmin.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Hannes Reinecke <hare@suse.de>,
+	Christoph Hellwig <hch@lst.de>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 178/273] net: dsa: mv88e6xxx: Fix out-of-bound access
+Subject: [PATCH 6.1 194/321] nvmet-tcp: do not continue for invalid icreq
 Date: Tue, 27 Aug 2024 16:38:22 +0200
-Message-ID: <20240827143840.185542142@linuxfoundation.org>
+Message-ID: <20240827143845.616170888@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +64,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joseph Huang <Joseph.Huang@garmin.com>
+From: Hannes Reinecke <hare@suse.de>
 
-[ Upstream commit 528876d867a23b5198022baf2e388052ca67c952 ]
+[ Upstream commit 0889d13b9e1cbef49e802ae09f3b516911ad82a1 ]
 
-If an ATU violation was caused by a CPU Load operation, the SPID could
-be larger than DSA_MAX_PORTS (the size of mv88e6xxx_chip.ports[] array).
+When the length check for an icreq sqe fails we should not
+continue processing but rather return immediately as all
+other contents of that sqe cannot be relied on.
 
-Fixes: 75c05a74e745 ("net: dsa: mv88e6xxx: Fix counting of ATU violations")
-Signed-off-by: Joseph Huang <Joseph.Huang@garmin.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20240819235251.1331763-1-Joseph.Huang@garmin.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/mv88e6xxx/global1_atu.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/nvme/target/tcp.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/dsa/mv88e6xxx/global1_atu.c b/drivers/net/dsa/mv88e6xxx/global1_atu.c
-index ce3b3690c3c05..c47f068f56b32 100644
---- a/drivers/net/dsa/mv88e6xxx/global1_atu.c
-+++ b/drivers/net/dsa/mv88e6xxx/global1_atu.c
-@@ -457,7 +457,8 @@ static irqreturn_t mv88e6xxx_g1_atu_prob_irq_thread_fn(int irq, void *dev_id)
- 		trace_mv88e6xxx_atu_full_violation(chip->dev, spid,
- 						   entry.portvec, entry.mac,
- 						   fid);
--		chip->ports[spid].atu_full_violation++;
-+		if (spid < ARRAY_SIZE(chip->ports))
-+			chip->ports[spid].atu_full_violation++;
+diff --git a/drivers/nvme/target/tcp.c b/drivers/nvme/target/tcp.c
+index 5556f55880411..76b9eb438268f 100644
+--- a/drivers/nvme/target/tcp.c
++++ b/drivers/nvme/target/tcp.c
+@@ -836,6 +836,7 @@ static int nvmet_tcp_handle_icreq(struct nvmet_tcp_queue *queue)
+ 		pr_err("bad nvme-tcp pdu length (%d)\n",
+ 			le32_to_cpu(icreq->hdr.plen));
+ 		nvmet_tcp_fatal_error(queue);
++		return -EPROTO;
  	}
  
- 	return IRQ_HANDLED;
+ 	if (icreq->pfv != NVME_TCP_PFV_1_0) {
 -- 
 2.43.0
 
