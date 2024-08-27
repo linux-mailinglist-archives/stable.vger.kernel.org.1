@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-70447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70452-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AC36960E2C
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:46:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4725960E32
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:46:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C5841C22706
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:46:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B5381F241B4
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:46:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 141571C68B4;
-	Tue, 27 Aug 2024 14:45:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40A2F1C6888;
+	Tue, 27 Aug 2024 14:45:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ptW5DgTP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LrKqMUEw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6AF81C578E;
-	Tue, 27 Aug 2024 14:45:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3DDC1A072D;
+	Tue, 27 Aug 2024 14:45:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724769937; cv=none; b=C0YlYRwYdsSRakav8Z4+kC5cxfoTEiZy6ydjHq7J9Pr9S3z7GQuhzytyIYteEG/yC/Va/Yignl5/Je/S5Lqd5t+bmjI9+sv4/XtYa1nOG94rF3yHRBzO1m26ojIRDVnYTQ8BeeM9pTeXPTws82S/wP28KVsidu+IxvMlr6HSyNo=
+	t=1724769954; cv=none; b=a0Hh+UvWwy7k7zappjd2d8trjjeDflavWUKytNkKcUxIYP1Pk7JMKBnPxLLHDZEb/YnAaLjJ2aRo9vph17/YT1y/3/QG30C0RQ0mh3lhEHnZQcrYzgH4CG2eANovOKoU7zUw4DWBfJ+jWvcwHHWyrMlFVrWt/3omQ9SFqBO0KKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724769937; c=relaxed/simple;
-	bh=XZEsibTtekLbj7UHYwn1KpEl7pnS0XFxCSqRnXUocZ0=;
+	s=arc-20240116; t=1724769954; c=relaxed/simple;
+	bh=AjIMYj09psgi3C+66pJTcsWSdDROev9Ww6zrF7d5ZZg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sqN2JTHW2+qvpzJmRd6KVSCQm2Q7BzovuQCr5BITHpm6sTy4IC7HzTqcuRNoO6RJum6tQGA3MZU6McwAGAVWyc33MlP6ZuPdw94FHEXJrdlnfc4NtS77oyHhFZoCOvlD26f13dqVaiHIQem/IuQK6YzhWw6DuBvTXew9r9d9D4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ptW5DgTP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 403EEC61063;
-	Tue, 27 Aug 2024 14:45:37 +0000 (UTC)
+	 MIME-Version; b=LhRNRMzgFYRjlqBpwMmrLuM0NVBK7VGU+q5lpJROtHCh7AM/8NYA8bRgpUVRI2cGza6ZhxnD95lbM6wqrxmAYlxKSmOz27ATzz7k1m14F7Qkm4xZ66pxbKVMpNr67t2AhE3dIpFysbgmL9yzC2XaUqlQEnNLOAVGd463UbVrPY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LrKqMUEw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D837C61063;
+	Tue, 27 Aug 2024 14:45:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724769937;
-	bh=XZEsibTtekLbj7UHYwn1KpEl7pnS0XFxCSqRnXUocZ0=;
+	s=korg; t=1724769953;
+	bh=AjIMYj09psgi3C+66pJTcsWSdDROev9Ww6zrF7d5ZZg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ptW5DgTPcp29/EGOiVHCun1VkDPnee546EM9acQo+KyVY9q04pnOETMvEpVwNJnTO
-	 +xn1dKRcKKNsc1EAgDKOokYiT0PYBuue6n/qke5S5BpM/RaNfAXAHJFICD7DCm7YNZ
-	 yKzl9EMnwWnMBEXkLv2uO5AvmtRHUBC1btreH/S4=
+	b=LrKqMUEw3qgKi5OkZgFH/DQZTyYv3zcG2YxFkQWLn3B0l9wka5J7xxv++9c6z3HzC
+	 XVs9wy8ZIWC5YeD6txHcKuC330YCk2oByHknEe/0INif2PJNRPyWNGb0wm37kUbT8w
+	 nEixHtOt1EeHtz5EJElOWfaFbfwO81xDQhkHHATA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Faizal Rahim <faizal.abdul.rahim@linux.intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Breno Leitao <leitao@debian.org>,
+	Moshe Shemesh <moshe@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 051/341] igc: Fix reset adapter logics when tx mode change
-Date: Tue, 27 Aug 2024 16:34:42 +0200
-Message-ID: <20240827143845.360929510@linuxfoundation.org>
+Subject: [PATCH 6.6 052/341] net/mlx5e: Take state lock during tx timeout reporter
+Date: Tue, 27 Aug 2024 16:34:43 +0200
+Message-ID: <20240827143845.399132096@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
 References: <20240827143843.399359062@linuxfoundation.org>
@@ -69,103 +69,43 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Faizal Rahim <faizal.abdul.rahim@linux.intel.com>
+From: Dragos Tatulea <dtatulea@nvidia.com>
 
-[ Upstream commit 0afeaeb5dae86aceded0d5f0c3a54d27858c0c6f ]
+[ Upstream commit e6b5afd30b99b43682a7764e1a74a42fe4d5f4b3 ]
 
-Following the "igc: Fix TX Hang issue when QBV Gate is close" changes,
-remaining issues with the reset adapter logic in igc_tsn_offload_apply()
-have been observed:
+mlx5e_safe_reopen_channels() requires the state lock taken. The
+referenced changed in the Fixes tag removed the lock to fix another
+issue. This patch adds it back but at a later point (when calling
+mlx5e_safe_reopen_channels()) to avoid the deadlock referenced in the
+Fixes tag.
 
-1. The reset adapter logics for i225 and i226 differ, although they should
-   be the same according to the guidelines in I225/6 HW Design Section
-   7.5.2.1 on software initialization during tx mode changes.
-2. The i225 resets adapter every time, even though tx mode doesn't change.
-   This occurs solely based on the condition  igc_is_device_id_i225() when
-   calling schedule_work().
-3. i226 doesn't reset adapter for tsn->legacy tx mode changes. It only
-   resets adapter for legacy->tsn tx mode transitions.
-4. qbv_count introduced in the patch is actually not needed; in this
-   context, a non-zero value of qbv_count is used to indicate if tx mode
-   was unconditionally set to tsn in igc_tsn_enable_offload(). This could
-   be replaced by checking the existing register
-   IGC_TQAVCTRL_TRANSMIT_MODE_TSN bit.
-
-This patch resolves all issues and enters schedule_work() to reset the
-adapter only when changing tx mode. It also removes reliance on qbv_count.
-
-qbv_count field will be removed in a future patch.
-
-Test ran:
-
-1. Verify reset adapter behaviour in i225/6:
-   a) Enrol a new GCL
-      Reset adapter observed (tx mode change legacy->tsn)
-   b) Enrol a new GCL without deleting qdisc
-      No reset adapter observed (tx mode remain tsn->tsn)
-   c) Delete qdisc
-      Reset adapter observed (tx mode change tsn->legacy)
-
-2. Tested scenario from "igc: Fix TX Hang issue when QBV Gate is closed"
-   to confirm it remains resolved.
-
-Fixes: 175c241288c0 ("igc: Fix TX Hang issue when QBV Gate is closed")
-Signed-off-by: Faizal Rahim <faizal.abdul.rahim@linux.intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: eab0da38912e ("net/mlx5e: Fix possible deadlock on mlx5e_tx_timeout_work")
+Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
+Link: https://lore.kernel.org/all/ZplpKq8FKi3vwfxv@gmail.com/T/
+Reviewed-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20240808144107.2095424-4-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/igc/igc_tsn.c | 24 +++++++++++++++++++-----
- 1 file changed, 19 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en/reporter_tx.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/igc/igc_tsn.c b/drivers/net/ethernet/intel/igc/igc_tsn.c
-index 8ed7b965484da..ada7514305171 100644
---- a/drivers/net/ethernet/intel/igc/igc_tsn.c
-+++ b/drivers/net/ethernet/intel/igc/igc_tsn.c
-@@ -49,6 +49,13 @@ static unsigned int igc_tsn_new_flags(struct igc_adapter *adapter)
- 	return new_flags;
- }
- 
-+static bool igc_tsn_is_tx_mode_in_tsn(struct igc_adapter *adapter)
-+{
-+	struct igc_hw *hw = &adapter->hw;
-+
-+	return !!(rd32(IGC_TQAVCTRL) & IGC_TQAVCTRL_TRANSMIT_MODE_TSN);
-+}
-+
- void igc_tsn_adjust_txtime_offset(struct igc_adapter *adapter)
- {
- 	struct igc_hw *hw = &adapter->hw;
-@@ -365,15 +372,22 @@ int igc_tsn_reset(struct igc_adapter *adapter)
- 	return err;
- }
- 
--int igc_tsn_offload_apply(struct igc_adapter *adapter)
-+static bool igc_tsn_will_tx_mode_change(struct igc_adapter *adapter)
- {
--	struct igc_hw *hw = &adapter->hw;
-+	bool any_tsn_enabled = !!(igc_tsn_new_flags(adapter) &
-+				  IGC_FLAG_TSN_ANY_ENABLED);
-+
-+	return (any_tsn_enabled && !igc_tsn_is_tx_mode_in_tsn(adapter)) ||
-+	       (!any_tsn_enabled && igc_tsn_is_tx_mode_in_tsn(adapter));
-+}
- 
--	/* Per I225/6 HW Design Section 7.5.2.1, transmit mode
--	 * cannot be changed dynamically. Require reset the adapter.
-+int igc_tsn_offload_apply(struct igc_adapter *adapter)
-+{
-+	/* Per I225/6 HW Design Section 7.5.2.1 guideline, if tx mode change
-+	 * from legacy->tsn or tsn->legacy, then reset adapter is needed.
- 	 */
- 	if (netif_running(adapter->netdev) &&
--	    (igc_is_device_id_i225(hw) || !adapter->qbv_count)) {
-+	    igc_tsn_will_tx_mode_change(adapter)) {
- 		schedule_work(&adapter->reset_task);
- 		return 0;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/reporter_tx.c b/drivers/net/ethernet/mellanox/mlx5/core/en/reporter_tx.c
+index ff8242f67c545..51a23345caa18 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/reporter_tx.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/reporter_tx.c
+@@ -149,7 +149,9 @@ static int mlx5e_tx_reporter_timeout_recover(void *ctx)
+ 		return err;
  	}
+ 
++	mutex_lock(&priv->state_lock);
+ 	err = mlx5e_safe_reopen_channels(priv);
++	mutex_unlock(&priv->state_lock);
+ 	if (!err) {
+ 		to_ctx->status = 1; /* all channels recovered */
+ 		return err;
 -- 
 2.43.0
 
