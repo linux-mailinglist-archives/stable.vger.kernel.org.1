@@ -1,161 +1,120 @@
-Return-Path: <stable+bounces-71335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71336-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15D3E96162F
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 19:59:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C994596163B
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 20:03:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 45EDE1C23797
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:59:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07DB91C21457
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 18:03:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 187021D1F70;
-	Tue, 27 Aug 2024 17:59:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 351EC1CDFC4;
+	Tue, 27 Aug 2024 18:03:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XfgIdqyF"
 X-Original-To: stable@vger.kernel.org
-Received: from vmicros1.altlinux.org (vmicros1.altlinux.org [194.107.17.57])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E67461D1756;
-	Tue, 27 Aug 2024 17:59:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.107.17.57
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5A3E1C8FD4;
+	Tue, 27 Aug 2024 18:03:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724781558; cv=none; b=eUJR8iGMoKk2zj6JMUKpd7VRUM6Vye+xN22inCMutQleNNnZ+t6x77tdnJw4AmFp01bjm5/xKY0YhrLH7LyuFP+2GMDP/WkEpNbqV6wy8SY8cVtvJCiG6DFMKe2IFeggcPsHQsN0lFIRKIbem8Fh7hshbZcU4Kf1SgXcp6ZQfeo=
+	t=1724781783; cv=none; b=nWO7RPMU5+hlVzrF/eocfaAfEMABrACCbcoUInzInfNhUG8tiHpazvetZxn/e4a30LQLNQSsCZ5wF0riXzYfEGMhV8jkPLLjWJ9fQbRSZy7Zx7Uhex+FbJlx42W1A/pYNrnckQ7SLGEtLrW0uaEW1rDRwZg0rj3fF3859/D2Vrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724781558; c=relaxed/simple;
-	bh=48Q33iSBe30feBJajsdUjyXtMAg7Ws8PgEKICrBPRVo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jIKmHQausmxAxtN1ZhN9Op7862K4XAbeS2mFpfLaLjgIbCFrC3p126JMNFJhUV7Lh8POvDAsdXiulUyGCu+sAnQECE63b3VIqahxeJRQwN7xSibtMumY0qrT2vqHkHTvAZ0wtCXXKBo+WbZapDfqlCvwN9+m5RBtnxs54kaqMhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=194.107.17.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
-Received: from imap.altlinux.org (imap.altlinux.org [194.107.17.38])
-	by vmicros1.altlinux.org (Postfix) with ESMTP id BD9A472C8CC;
-	Tue, 27 Aug 2024 20:59:07 +0300 (MSK)
-Received: from altlinux.org (sole.flsd.net [185.75.180.6])
-	by imap.altlinux.org (Postfix) with ESMTPSA id A6D3E36D0184;
-	Tue, 27 Aug 2024 20:59:07 +0300 (MSK)
-Date: Tue, 27 Aug 2024 20:59:07 +0300
-From: Vitaly Chikunov <vt@altlinux.org>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Salvatore Bonaccorso <carnil@debian.org>,
-	Willem de Bruijn <willemdebruijn.kernel@gmail.com>,
-	Christian Heusel <christian@heusel.eu>,
-	Adrian Vladu <avladu@cloudbasesolutions.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	"alexander.duyck@gmail.com" <alexander.duyck@gmail.com>,
-	"arefev@swemel.ru" <arefev@swemel.ru>,
-	"davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>,
-	"jasowang@redhat.com" <jasowang@redhat.com>,
-	"kuba@kernel.org" <kuba@kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	"willemb@google.com" <willemb@google.com>,
-	"regressions@lists.linux.dev" <regressions@lists.linux.dev>,
-	David =?utf-8?Q?Pr=C3=A9vot?= <taffit@debian.org>
-Subject: Re: [PATCH net] net: drop bad gso csum_start and offset in
- virtio_net_hdr
-Message-ID: <20240827175907.ih2jjmmm6iyf5gsm@altlinux.org>
-References: <20240814055408-mutt-send-email-mst@kernel.org>
- <c746a1d2-ba0d-40fe-8983-0bf1f7ce64a7@heusel.eu>
- <PR3PR09MB5411FC965DBCCC26AF850EA5B0872@PR3PR09MB5411.eurprd09.prod.outlook.com>
- <ad4d96b7-d033-4292-86df-91b8d7b427c4@heusel.eu>
- <66bcb6f68172f_adbf529471@willemb.c.googlers.com.notmuch>
- <zkpazbrdirbgp6xgrd54urzjv2b5o3gjfubj6hi673uf35aep3@hrqxcdd7vj5c>
- <66c5f41884850_da1e7294d2@willemb.c.googlers.com.notmuch>
- <ZsyMzW-4ee_U8NoX@eldamar.lan>
- <ZszgliPW3QEodr5G@eldamar.lan>
- <2024082741-crease-mug-f658@gregkh>
+	s=arc-20240116; t=1724781783; c=relaxed/simple;
+	bh=uDSRe4+ypz3TK5ICKGKQf7MdUR2fS3TzFqfb5D8FN50=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=l7DbqNqJPqKmLuEZeOiDZWYwd/QkDHyN96t1uF6QcLfu7SpE6+t31nNU1jowcOjNJc/K5KBsjrt7IkjaBRfKO/RJ4BiWWgQIVMLUxYBHVMHD+g3wR8QMmOiUau+hIHWPyKNkwZb7TAquwE7ZGnz6Kv9qNQ1HDmWDCVVqUABMwQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XfgIdqyF; arc=none smtp.client-ip=209.85.210.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-7143ae1b560so3246291b3a.1;
+        Tue, 27 Aug 2024 11:03:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1724781781; x=1725386581; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=FZcFyZyRdSFfHxupkjJyrWOtZv+pT4JWFFLO3DW9kp4=;
+        b=XfgIdqyF+kVklAnl8tOTih0/pZfeq+oX5pY4h6TsA3S5vG8M8MFhfFkl4nAA2CTXE+
+         iexwKGFdExuRTPZdaqKpHGplNXCUQUIhWUxVms1AyuldOibGviXv4ZUb//IeEoRY6CeQ
+         heyVSaEGYhpltpfPhqao/yFUIAr6PB/ZRUtCTjVlM9iZbFrNh4+QJu7DYrA39pYv9D5I
+         7z0uIPMfUmxgeSA5xn+AMzHp3FXOOT11hEQKrpefqZgkQc49+HDdTSGnRP9wY+SIdoom
+         mQsFZov5c3Gx9OSNFxLpXAPWq7xEb+/6yfRz8mxKFUFDOXzqgFiTFHOCfAJNn/MG4AHQ
+         A6Ow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724781781; x=1725386581;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=FZcFyZyRdSFfHxupkjJyrWOtZv+pT4JWFFLO3DW9kp4=;
+        b=rjxeNZZNGi70uQw9e/N/hAk6X/A8JjumAHaUNfTdZvf29W44vThTaDAello6F03qdD
+         PtQFH2G2ZBveKKQrHz1tIMrExP90nknYVBkT7asHfL04PA6wCBXJjIYO/Gk+2TSv8PiF
+         RYPmhlXR9Svc5gBikz2Qm+sL4WBbHweKEufR4H7k1FRvMKWrltmFBZh7hPSJ30aDHRv0
+         MVJIMZf0nfeXlxfMrkaClAjqXlVuN2QXcv7gS/7HMh2wPc/ETTkUNfo6jRoaASw/p4jp
+         fLaLbj0sQV44p/JsWHIuJBZ8UvPml1/1WXgLEduFt2KTLe9/r5uGwLZ4y5JsZK6Vs8kJ
+         G2LA==
+X-Forwarded-Encrypted: i=1; AJvYcCWWhXSO0BqKsQhFObRh40vMCeZ/3oyFHmoxMXErU4fFuJzF+xGeHNFIGmCEf71MuGVA6tyAezYA9lz3ezk=@vger.kernel.org, AJvYcCXCc3svJrbOM9N5T4z7t3uDe1zqCQbKIWJ0MMEknU0FA2rwZvHdRMdeVNuQZLo+ReC2Z5QQI6C+@vger.kernel.org
+X-Gm-Message-State: AOJu0YwMBgZTBwlCXLa/1SrPQkYWTJXAPdWPi3mfZb42HzV3MnYFo/VS
+	ooAu9YoFyGoyq0DxXnLs0db/8FyXXgHRQt4FpHdiyP1Ukty9KP3T
+X-Google-Smtp-Source: AGHT+IEm2yR2cpxVil+mWKoSNbqIrjenA9TLxT322rLBAqYECbuk0pTTEPLg5nnyzwL7snZPOq8AYA==
+X-Received: by 2002:a05:6a20:9c8f:b0:1c4:bbb8:4d02 with SMTP id adf61e73a8af0-1ccc099746bmr3997304637.37.1724781780891;
+        Tue, 27 Aug 2024 11:03:00 -0700 (PDT)
+Received: from [10.67.48.245] ([192.19.223.252])
+        by smtp.googlemail.com with ESMTPSA id d2e1a72fcca58-714342e2194sm8827604b3a.126.2024.08.27.11.02.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 27 Aug 2024 11:03:00 -0700 (PDT)
+Message-ID: <cca42eba-8b09-4552-ab2a-395cf28a6b24@gmail.com>
+Date: Tue, 27 Aug 2024 11:02:58 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2024082741-crease-mug-f658@gregkh>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.10 000/273] 6.10.7-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+ conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+References: <20240827143833.371588371@linuxfoundation.org>
+Content-Language: en-US
+From: Florian Fainelli <f.fainelli@gmail.com>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Aug 27, 2024 at 03:16:50PM +0200, Greg KH wrote:
-> On Mon, Aug 26, 2024 at 10:07:50PM +0200, Salvatore Bonaccorso wrote:
-> > Hi,
-> > 
-> > On Mon, Aug 26, 2024 at 04:10:21PM +0200, Salvatore Bonaccorso wrote:
-> > > Hi,
-> > > 
-> > > On Wed, Aug 21, 2024 at 10:05:12AM -0400, Willem de Bruijn wrote:
-> > > > Vitaly Chikunov wrote:
-> > > > > Willem,
-> > > > > 
-> > > > > On Wed, Aug 14, 2024 at 09:53:58AM GMT, Willem de Bruijn wrote:
-> > > > > > Christian Heusel wrote:
-> > > > > > > On 24/08/14 10:10AM, Adrian Vladu wrote:
-> > > > > > > > Hello,
-> > > > > > > > 
-> > > > > > > > The 6.6.y branch has the patch already in the stable queue -> https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/commit/?id=3e713b73c01fac163a5c8cb0953d1e300407a773, and it should be available in the 6.6.46 upcoming minor.
-> > > > > > > > 
-> > > > > > > > Thanks, Adrian.
-> > > > > > > 
-> > > > > > > Yeah it's also queued up for 6.10, which I both missed (sorry for that!).
-> > > > > > > If I'm able to properly backport the patch for 6.1 I'll send that one,
-> > > > > > > but my hopes are not too high that this will work ..
-> > > > > > 
-> > > > > > There are two conflicts.
-> > > > > > 
-> > > > > > The one in include/linux/virtio_net.h is resolved by first backporting
-> > > > > > commit fc8b2a6194693 ("net: more strict VIRTIO_NET_HDR_GSO_UDP_L4
-> > > > > > validation")
-> > > > > > 
-> > > > > > We did not backport that to stable because there was some slight risk
-> > > > > > that applications might be affected. This has not surfaced.
-> > > > > > 
-> > > > > > The conflict in net/ipv4/udp_offload.c is not so easy to address.
-> > > > > > There were lots of patches between v6.1 and linus/master, with far
-> > > > > > fewer of these betwee v6.1 and linux-stable/linux-6.1.y.
-> > > > > 
-> > > > > BTW, we successfully cherry-picked 3 suggested[1] commits over v6.1.105 in
-> > > > > ALT, and there is no reported problems as of yet.
-> > > > > 
-> > > > >   89add40066f9 ("net: drop bad gso csum_start and offset in virtio_net_hdr")
-> > > > >   fc8b2a619469 ("net: more strict VIRTIO_NET_HDR_GSO_UDP_L4 validation")
-> > > > >   9840036786d9 ("gso: fix dodgy bit handling for GSO_UDP_L4")
-> > > > > 
-> > > > > [1] https://lore.kernel.org/all/2024081147-altitude-luminous-19d1@gregkh/
-> > > > 
-> > > > That's good to hear.
-> > > > 
-> > > > These are all fine to go to 6.1 stable.
-> > > 
-> > > FWIW, as we are hit by this issue for Debian bookworm, we have testing
-> > > as well from David Prévot <taffit@debian.org>, cf. the report in
-> > > https://bugs.debian.org/1079684 .
-> > > 
-> > > He mentions that the 9840036786d9 ("gso: fix dodgy bit handling for
-> > > GSO_UDP_L4") patch does not apply cleanly, looks to be because of
-> > > 1fd54773c267 ("udp: allow header check for dodgy GSO_UDP_L4 packets.")
-> > > from 6.2-rc1, which are reverted in the commit.
-> > 
-> > Just to give an additional confirmation: Applying
-> > 
-> > 1fd54773c267 ("udp: allow header check for dodgy GSO_UDP_L4 packets.")
-
-Interestingly, I don't need this commit cherry-picked when applying
-above patchset over v6.1.106 (with my git 2.42.2). It applies cleanly
-with two "Auto-merging" messages, then 2nd and 3rd hunks are not
-applied. It seems that 1fd54773c267 only adds the changes that
-following 9840036786d9 removes (in the 2nd and 3rd hunks). And the git
-is smart enough to figure that out and just don't apply them when
-cherry-picking. That explains why some commits that I say is apply
-cleanly some other people cannot apply.
-
-Thanks,
-
-> > 9840036786d9 ("gso: fix dodgy bit handling for GSO_UDP_L4")
-> > fc8b2a619469 ("net: more strict VIRTIO_NET_HDR_GSO_UDP_L4 validation")
-> > 89add40066f9 ("net: drop bad gso csum_start and offset in virtio_net_hdr")
+On 8/27/24 07:35, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.10.7 release.
+> There are 273 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> Ah, that works, thanks!
+> Responses should be made by Thu, 29 Aug 2024 14:37:36 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.10.7-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.10.y
+> and the diffstat can be found below.
+> 
+> thanks,
 > 
 > greg k-h
+
+On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
+BMIPS_GENERIC:
+
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+o--
+Florian
+
 
