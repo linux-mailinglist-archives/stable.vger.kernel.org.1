@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-71229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70908-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D32FD96126A
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:31:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F2499610A0
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:11:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B1CA1C233F0
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:31:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A1D6DB2622F
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:11:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FF501CB31B;
-	Tue, 27 Aug 2024 15:28:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B9101C5788;
+	Tue, 27 Aug 2024 15:11:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B007V0wv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uSa52JX5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D3D51C93AF;
-	Tue, 27 Aug 2024 15:28:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED8D31BC9E3;
+	Tue, 27 Aug 2024 15:11:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772523; cv=none; b=DvI5/OxnbwKJuA3hS8SAg96BjJ9wCmHNeRW30c+fXSgZXi9tsDbITQhv9m/O90Digx9yEa5Y3+wlqFrrAIDchlB6cY+5dVW5ksol4r/KqbZY+kQmNU7YEd0EVw2AsVn0XJEziuQGmp86CHQWdIIfkscUIHEsxJKrL6hIBPD/H4Q=
+	t=1724771464; cv=none; b=GnkDmAst9z9oZYqCGLavV/EKKS+mkRphz07QLPvakNmCKZ3l22o9rfdurpGOn3Au4Lwg0oVbso51jjDgpoTsPj6ZEmW65rlgXkzdH4lj9pRa/4a29eyAXFgVb8tX7uR+mj3cjkhTLcE3YyrXwgF7o0/nMhydETq4gf2ruXghIb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772523; c=relaxed/simple;
-	bh=HNquGm0+89SHVFFm3mgao/1E5EWNex/Qg35CJGqs/ys=;
+	s=arc-20240116; t=1724771464; c=relaxed/simple;
+	bh=ky/2lQ0hfHuLBprqfAazAosGPl5/+PicMiUnXiMkg8g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z9lXJSK4OSmJ1P0VBNExjZd3wnS9Ml3o5NNEOPbjeyRfUUBbH7NRFfTqwUs7CVkVNC7FvDwa8ZHWgPJm7dIEoSH61kB+ILS3EjWH6s9yvdKH5QpZPC7LANgCN1GAAdw5ruNaKar2h14cCakFt40X3fbZGYeH2TzmvAeKBS9cCrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B007V0wv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D631C4AF15;
-	Tue, 27 Aug 2024 15:28:42 +0000 (UTC)
+	 MIME-Version; b=G3zz6wkkgd+P6y40yPHd75XyBZULtsJQnvICaoDS0bnpGr22mnN2vauZw07+1loxA9iCsqf9DHLGoC6JRJhcKAfMGZEiP/NS0Fi6gEGS7Ru1+vSmJmMn85BlzBUGhN1/I4Z7Z+eCNHf5ubIxEDWCHHVpjDP9CC8Of8tt3ImhuYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uSa52JX5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04227C4DDE6;
+	Tue, 27 Aug 2024 15:11:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772522;
-	bh=HNquGm0+89SHVFFm3mgao/1E5EWNex/Qg35CJGqs/ys=;
+	s=korg; t=1724771463;
+	bh=ky/2lQ0hfHuLBprqfAazAosGPl5/+PicMiUnXiMkg8g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B007V0wvJ6SRJS/uFekppdcV1jF/qG6LLvfNAMA2Km6N9Zp1WoAoUXk/VKk9umr+j
-	 PRkReV3VxBNWRdZRcDz+uH/3ezrHbLflUkd/zT96FGV9W1WTO/ti2h9z42ERtkYhS4
-	 cPCkRJn7+j+8GcnDS6V4iFoo1DrrYVUb38CiHAzc=
+	b=uSa52JX5+y85Ga28rifi3WJvhSx53RVLy746VA2WnRSnCbXL4LACT5YvW8RRpwOfI
+	 pxMT0Cun1C9iZLMbuhnf3azWD/nCdlD7HnZZt/2chRjRBsVXnvFY3mlJWXeRVudXad
+	 PG+OcRt+zz/Bztx7gmU9VP1DO0riCoXAeQPhx0mk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiri Slaby <jirislaby@gmail.com>,
-	David Laight <David.Laight@ACULAB.COM>,
-	Aurelien Jarno <aurelien@aurel32.net>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Salvatore Bonaccorso <carnil@debian.org>
-Subject: [PATCH 6.1 209/321] media: solo6x10: replace max(a, min(b, c)) by clamp(b, a, c)
-Date: Tue, 27 Aug 2024 16:38:37 +0200
-Message-ID: <20240827143846.188240589@linuxfoundation.org>
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 194/273] drm/msm/dpu: move dpu_encoders connector assignment to atomic_enable()
+Date: Tue, 27 Aug 2024 16:38:38 +0200
+Message-ID: <20240827143840.790306225@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,65 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aurelien Jarno <aurelien@aurel32.net>
+From: Abhinav Kumar <quic_abhinavk@quicinc.com>
 
-commit 31e97d7c9ae3de072d7b424b2cf706a03ec10720 upstream.
+[ Upstream commit aedf02e46eb549dac8db4821a6b9f0c6bf6e3990 ]
 
-This patch replaces max(a, min(b, c)) by clamp(b, a, c) in the solo6x10
-driver.  This improves the readability and more importantly, for the
-solo6x10-p2m.c file, this reduces on my system (x86-64, gcc 13):
+For cases where the crtc's connectors_changed was set without enable/active
+getting toggled , there is an atomic_enable() call followed by an
+atomic_disable() but without an atomic_mode_set().
 
- - the preprocessed size from 121 MiB to 4.5 MiB;
+This results in a NULL ptr access for the dpu_encoder_get_drm_fmt() call in
+the atomic_enable() as the dpu_encoder's connector was cleared in the
+atomic_disable() but not re-assigned as there was no atomic_mode_set() call.
 
- - the build CPU time from 46.8 s to 1.6 s;
+Fix the NULL ptr access by moving the assignment for atomic_enable() and also
+use drm_atomic_get_new_connector_for_encoder() to get the connector from
+the atomic_state.
 
- - the build memory from 2786 MiB to 98MiB.
-
-In fine, this allows this relatively simple C file to be built on a
-32-bit system.
-
-Reported-by: Jiri Slaby <jirislaby@gmail.com>
-Closes: https://lore.kernel.org/lkml/18c6df0d-45ed-450c-9eda-95160a2bbb8e@gmail.com/
-Cc:  <stable@vger.kernel.org> # v6.7+
-Suggested-by: David Laight <David.Laight@ACULAB.COM>
-Signed-off-by: Aurelien Jarno <aurelien@aurel32.net>
-Reviewed-by: David Laight <David.Laight@ACULAB.COM>
-Reviewed-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Salvatore Bonaccorso <carnil@debian.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 25fdd5933e4c ("drm/msm: Add SDM845 DPU support")
+Reported-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Closes: https://gitlab.freedesktop.org/drm/msm/-/issues/59
+Suggested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Tested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org> # SM8350-HDK
+Patchwork: https://patchwork.freedesktop.org/patch/606729/
+Link: https://lore.kernel.org/r/20240731191723.3050932-1-quic_abhinavk@quicinc.com
+Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/pci/solo6x10/solo6x10-offsets.h |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/media/pci/solo6x10/solo6x10-offsets.h
-+++ b/drivers/media/pci/solo6x10/solo6x10-offsets.h
-@@ -57,16 +57,16 @@
- #define SOLO_MP4E_EXT_ADDR(__solo) \
- 	(SOLO_EREF_EXT_ADDR(__solo) + SOLO_EREF_EXT_AREA(__solo))
- #define SOLO_MP4E_EXT_SIZE(__solo) \
--	max((__solo->nr_chans * 0x00080000),				\
--	    min(((__solo->sdram_size - SOLO_MP4E_EXT_ADDR(__solo)) -	\
--		 __SOLO_JPEG_MIN_SIZE(__solo)), 0x00ff0000))
-+	clamp(__solo->sdram_size - SOLO_MP4E_EXT_ADDR(__solo) -	\
-+	      __SOLO_JPEG_MIN_SIZE(__solo),			\
-+	      __solo->nr_chans * 0x00080000, 0x00ff0000)
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
+index 697ad4a640516..a6c5e3bc9bf15 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
+@@ -1179,8 +1179,6 @@ static void dpu_encoder_virt_atomic_mode_set(struct drm_encoder *drm_enc,
  
- #define __SOLO_JPEG_MIN_SIZE(__solo)		(__solo->nr_chans * 0x00080000)
- #define SOLO_JPEG_EXT_ADDR(__solo) \
- 		(SOLO_MP4E_EXT_ADDR(__solo) + SOLO_MP4E_EXT_SIZE(__solo))
- #define SOLO_JPEG_EXT_SIZE(__solo) \
--	max(__SOLO_JPEG_MIN_SIZE(__solo),				\
--	    min((__solo->sdram_size - SOLO_JPEG_EXT_ADDR(__solo)), 0x00ff0000))
-+	clamp(__solo->sdram_size - SOLO_JPEG_EXT_ADDR(__solo),	\
-+	      __SOLO_JPEG_MIN_SIZE(__solo), 0x00ff0000)
+ 	cstate->num_mixers = num_lm;
  
- #define SOLO_SDRAM_END(__solo) \
- 	(SOLO_JPEG_EXT_ADDR(__solo) + SOLO_JPEG_EXT_SIZE(__solo))
+-	dpu_enc->connector = conn_state->connector;
+-
+ 	for (i = 0; i < dpu_enc->num_phys_encs; i++) {
+ 		struct dpu_encoder_phys *phys = dpu_enc->phys_encs[i];
+ 
+@@ -1277,6 +1275,8 @@ static void dpu_encoder_virt_atomic_enable(struct drm_encoder *drm_enc,
+ 
+ 	dpu_enc->commit_done_timedout = false;
+ 
++	dpu_enc->connector = drm_atomic_get_new_connector_for_encoder(state, drm_enc);
++
+ 	cur_mode = &dpu_enc->base.crtc->state->adjusted_mode;
+ 
+ 	dpu_enc->wide_bus_en = dpu_encoder_is_widebus_enabled(drm_enc);
+-- 
+2.43.0
+
 
 
 
