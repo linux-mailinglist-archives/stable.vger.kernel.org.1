@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-70557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63B58960EC0
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:52:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D438896117D
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:21:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96CC71C220C0
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:52:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 88B1F1F23DB2
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:21:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB1AE1C6895;
-	Tue, 27 Aug 2024 14:51:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 697AE1C8FA0;
+	Tue, 27 Aug 2024 15:19:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f4eaOF2Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yo58n7aH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9931B1C579F;
-	Tue, 27 Aug 2024 14:51:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 281EF1C68A6;
+	Tue, 27 Aug 2024 15:19:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770302; cv=none; b=sGi5ZxCX+mwKUXmix7yhUWFTSf9tP9ic1z2mqvWzw8+wKmnAKLWbfxYW29ylvKib1Pjg8U1u4qHYN1cAOIzAm64ZNCzctifLMy8wBceB240+Og6IXaiM1RE0mdxUxVbR2u1C6sYGN18QqM58y0cw7DRWOnVweN9N2fQeGFfDfVc=
+	t=1724771986; cv=none; b=LQnuiFocbZfTbUz8t4EmaVA0ogAAzVhDSy9snU7iKei6KuqWcHKV6YdKZFUXUJnb0jkvekDwQyB7vVM534EbMPjL8qDksCYWWzTFn+TBMUcQk04d+HPRddD95Y2IChWuBjnxlfacJShtYN+vdtmKp50MErwvLRuQY7JuqLCpfLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770302; c=relaxed/simple;
-	bh=rUZxcQ4LxvXNbFd/ZxYVjAL4mP1vFY5oSVq5VGI9sWM=;
+	s=arc-20240116; t=1724771986; c=relaxed/simple;
+	bh=fag7Wkf2pDKMJkJegEgDpMjSjdqX0LhXt+02/F8ZDPQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X74zD6OI9VKKPJ1zv4nUIZPEAcUeKizZlrnnW2ImP612UQvdj/XtqEMH4PUmGRb3Ge5dvw00xI3bEpceXHGwDm4GKjBHDgMtvVyUTv6ggrTpopRsaW2yQ2bk2p4wSljQ/fcSUff59DNcDQFYwYwBcJ0RvdteyILuQsViZhY+xxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f4eaOF2Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CBB2C4DE11;
-	Tue, 27 Aug 2024 14:51:41 +0000 (UTC)
+	 MIME-Version; b=XbNh6a6D4uquX001Z/us+YVBRXcjVh72x7SYuZ1XRbzQEvI/CsYlaN5Um2cNiwXdL93BSK4lgSO0oouuRhXsM4TF3vntwAkX3mr0i/HMcXtDxMu73ZM0QY6Lxk88A15n/gFJjbQ48oWXJUjPeqTZyv/r8RTqg4XWOSXsqCRhWcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yo58n7aH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8497BC4AF68;
+	Tue, 27 Aug 2024 15:19:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770302;
-	bh=rUZxcQ4LxvXNbFd/ZxYVjAL4mP1vFY5oSVq5VGI9sWM=;
+	s=korg; t=1724771986;
+	bh=fag7Wkf2pDKMJkJegEgDpMjSjdqX0LhXt+02/F8ZDPQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f4eaOF2ZNJvG1xgFr34YtoIiAm2aIU0mKsz7X7D2tTPXOQBStJqV5DrVEymdlwtPz
-	 6LN+fBF5UGWZIkBD3g1J7uiO0009kru5QqVoKvL331bvSlARAeunYP5po4aOUprgNs
-	 vtWw1hqJIAozXpGfjMov6HPF+plvRunwrqf45X5c=
+	b=yo58n7aHaJS3j7QapDZS8M48zXtFoYsLJW+1pU6djSYYT3Ljxd57NLGz7nROjB2X8
+	 D352qjYi1TQbEc5Vcz52a1BfHN7rwCyZP6sNCMHyKaSVTbCQ1mTbeDqC/gDhAaO5Yq
+	 aufu/wHxDKqdB73vurrjkyIUA+oTuXPD6iaEMCHI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>,
+	syzbot+61be3359d2ee3467e7e4@syzkaller.appspotmail.com,
+	Pei Li <peili.dev@gmail.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 157/341] fuse: fix UAF in rcu pathwalks
+Subject: [PATCH 6.1 080/321] jfs: Fix shift-out-of-bounds in dbDiscardAG
 Date: Tue, 27 Aug 2024 16:36:28 +0200
-Message-ID: <20240827143849.390893632@linuxfoundation.org>
+Message-ID: <20240827143841.287064665@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,107 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Pei Li <peili.dev@gmail.com>
 
-[ Upstream commit 053fc4f755ad43cf35210677bcba798ccdc48d0c ]
+[ Upstream commit 7063b80268e2593e58bee8a8d709c2f3ff93e2f2 ]
 
-->permission(), ->get_link() and ->inode_get_acl() might dereference
-->s_fs_info (and, in case of ->permission(), ->s_fs_info->fc->user_ns
-as well) when called from rcu pathwalk.
+When searching for the next smaller log2 block, BLKSTOL2() returned 0,
+causing shift exponent -1 to be negative.
 
-Freeing ->s_fs_info->fc is rcu-delayed; we need to make freeing ->s_fs_info
-and dropping ->user_ns rcu-delayed too.
+This patch fixes the issue by exiting the loop directly when negative
+shift is found.
 
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Reported-by: syzbot+61be3359d2ee3467e7e4@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=61be3359d2ee3467e7e4
+Signed-off-by: Pei Li <peili.dev@gmail.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fuse/cuse.c   |  3 +--
- fs/fuse/fuse_i.h |  1 +
- fs/fuse/inode.c  | 15 +++++++++++----
- 3 files changed, 13 insertions(+), 6 deletions(-)
+ fs/jfs/jfs_dmap.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/fuse/cuse.c b/fs/fuse/cuse.c
-index 91e89e68177ee..b6cad106c37e4 100644
---- a/fs/fuse/cuse.c
-+++ b/fs/fuse/cuse.c
-@@ -474,8 +474,7 @@ static int cuse_send_init(struct cuse_conn *cc)
- 
- static void cuse_fc_release(struct fuse_conn *fc)
- {
--	struct cuse_conn *cc = fc_to_cc(fc);
--	kfree_rcu(cc, fc.rcu);
-+	kfree(fc_to_cc(fc));
- }
- 
- /**
-diff --git a/fs/fuse/fuse_i.h b/fs/fuse/fuse_i.h
-index 3e65cdc946316..4ce1a6fdc94f0 100644
---- a/fs/fuse/fuse_i.h
-+++ b/fs/fuse/fuse_i.h
-@@ -888,6 +888,7 @@ struct fuse_mount {
- 
- 	/* Entry on fc->mounts */
- 	struct list_head fc_entry;
-+	struct rcu_head rcu;
- };
- 
- static inline struct fuse_mount *get_fuse_mount_super(struct super_block *sb)
-diff --git a/fs/fuse/inode.c b/fs/fuse/inode.c
-index 04c7ba3ea03a2..735abf426a064 100644
---- a/fs/fuse/inode.c
-+++ b/fs/fuse/inode.c
-@@ -952,6 +952,14 @@ void fuse_conn_init(struct fuse_conn *fc, struct fuse_mount *fm,
- }
- EXPORT_SYMBOL_GPL(fuse_conn_init);
- 
-+static void delayed_release(struct rcu_head *p)
-+{
-+	struct fuse_conn *fc = container_of(p, struct fuse_conn, rcu);
-+
-+	put_user_ns(fc->user_ns);
-+	fc->release(fc);
-+}
-+
- void fuse_conn_put(struct fuse_conn *fc)
- {
- 	if (refcount_dec_and_test(&fc->count)) {
-@@ -963,13 +971,12 @@ void fuse_conn_put(struct fuse_conn *fc)
- 		if (fiq->ops->release)
- 			fiq->ops->release(fiq);
- 		put_pid_ns(fc->pid_ns);
--		put_user_ns(fc->user_ns);
- 		bucket = rcu_dereference_protected(fc->curr_bucket, 1);
- 		if (bucket) {
- 			WARN_ON(atomic_read(&bucket->count) != 1);
- 			kfree(bucket);
- 		}
--		fc->release(fc);
-+		call_rcu(&fc->rcu, delayed_release);
- 	}
- }
- EXPORT_SYMBOL_GPL(fuse_conn_put);
-@@ -1387,7 +1394,7 @@ EXPORT_SYMBOL_GPL(fuse_send_init);
- void fuse_free_conn(struct fuse_conn *fc)
- {
- 	WARN_ON(!list_empty(&fc->devices));
--	kfree_rcu(fc, rcu);
-+	kfree(fc);
- }
- EXPORT_SYMBOL_GPL(fuse_free_conn);
- 
-@@ -1921,7 +1928,7 @@ static void fuse_sb_destroy(struct super_block *sb)
- void fuse_mount_destroy(struct fuse_mount *fm)
- {
- 	fuse_conn_put(fm->fc);
--	kfree(fm);
-+	kfree_rcu(fm, rcu);
- }
- EXPORT_SYMBOL(fuse_mount_destroy);
- 
+diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
+index 8d064c9e9605d..7a3f4f62c34bc 100644
+--- a/fs/jfs/jfs_dmap.c
++++ b/fs/jfs/jfs_dmap.c
+@@ -1626,6 +1626,8 @@ s64 dbDiscardAG(struct inode *ip, int agno, s64 minlen)
+ 		} else if (rc == -ENOSPC) {
+ 			/* search for next smaller log2 block */
+ 			l2nb = BLKSTOL2(nblocks) - 1;
++			if (unlikely(l2nb < 0))
++				break;
+ 			nblocks = 1LL << l2nb;
+ 		} else {
+ 			/* Trim any already allocated blocks */
 -- 
 2.43.0
 
