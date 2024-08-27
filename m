@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-70593-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70844-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2F53960F00
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:55:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BC82961050
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:07:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 716FA286CFF
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:55:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FCF01F233BD
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:07:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D8BE1C57B1;
-	Tue, 27 Aug 2024 14:53:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 856C31C578D;
+	Tue, 27 Aug 2024 15:07:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JYhrILHU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DBTWCeVY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B2241C6887;
-	Tue, 27 Aug 2024 14:53:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D2ED1C461D;
+	Tue, 27 Aug 2024 15:07:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770423; cv=none; b=PR0KMFe66Z9uHnuo9r981k5P28ls/NsFNGhIcEpS2+5wCiV/Aksk3CeUSIENii92HUocfeO8ma1XuqzpsVFWC7y50cGuk9kLKJ64Mqld7+9oy9yYdh9UoRY07iY/Cc6DM3eTEEinn3TIJTHoWcVB9158pwxcgMkJfyY2ddMpB5k=
+	t=1724771248; cv=none; b=M34hJYRtJzV93A4BlAuwjWFqIUXx2cljIyumxluSiU+lLRne/xK0Y1xOJygzDeVLXSdkG8ijRi/fQ/2L6I8V3QfwwXIQbqo5j28ezSW5dIkA7O2uDElvdBhoWWQCrNFV6S4I811tgMoMzsfqD6f6MQyXrCRWI2SXmL9jfQ0ZJPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770423; c=relaxed/simple;
-	bh=EHAGfcXZ4LCYIR5iEfhvGMpmV7n92mNnZa0geDYrDqw=;
+	s=arc-20240116; t=1724771248; c=relaxed/simple;
+	bh=9K6p44kqQ8dwqAuakZfk7eUWeiIFNIoc4CA+2ic/vdA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=menjDG4T4zBrfzHpnhaQ3LK9OoewGaPn+msVJiHPkz2B4P2f03O7xkIvN3ydn56F2/vDNYhBdRIQ9Gll2raYy3O3eynuzHHdU9MCoGSWZx/goLtRcHt03UcmNbszGLZCQvukOFOvxvmM3lcjXe/4EwJG6t1m3Yg+9EjcbXGbCvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JYhrILHU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96316C61053;
-	Tue, 27 Aug 2024 14:53:42 +0000 (UTC)
+	 MIME-Version; b=pVCY1CyTWnu+o1GiU4vSpsxZc/oHVztCdx2bclTjmtmHB1DyBYGkhanBbAox+RawUTzQozratT7tAv7RKc6wgDjcB4M4uFHp0fQMwHU4uGzE8ZiyhcFSpIHjQxYEgntnDDjJTStqUSsT8cvFKVVNAjp5HglVewG0cjr+vQh3PME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DBTWCeVY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1249C61044;
+	Tue, 27 Aug 2024 15:07:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770423;
-	bh=EHAGfcXZ4LCYIR5iEfhvGMpmV7n92mNnZa0geDYrDqw=;
+	s=korg; t=1724771248;
+	bh=9K6p44kqQ8dwqAuakZfk7eUWeiIFNIoc4CA+2ic/vdA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JYhrILHU9ubgh6xxRy5pVzq5ym3mVNlFUiKCp6Sng0mRV0XapP0wMuNDDPDlaeu4m
-	 DNAqf1V3dKYj2A4KcnPnseuhPO+05ocVvCPQu2gPeBLjwAYEZazAOurjGIkNcODwfy
-	 6rzGImO/dWXZ8hEKfS5hjrN/3ovD/0NzjqDYj3xg=
+	b=DBTWCeVYrc9wlN3ZHKcvqXjR8Hui9HX0QA1sRCUS/lZk7IPbnN8+stqCAcshT+h9C
+	 2b6Ytgsc00vJEK2ZHCxaxxSricXzHbxvsjFiQN4u2Fshs1duSWRDRZIr8H0RVwqY/p
+	 h0sah6Q3ze8mRDyqMV3hg9s1VB0worSseexwlGu0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Sterba <dsterba@suse.com>,
+	Eugene Syromiatnikov <esyr@redhat.com>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 193/341] btrfs: delete pointless BUG_ON check on quota root in btrfs_qgroup_account_extent()
+Subject: [PATCH 6.10 100/273] mptcp: correct MPTCP_SUBFLOW_ATTR_SSN_OFFSET reserved size
 Date: Tue, 27 Aug 2024 16:37:04 +0200
-Message-ID: <20240827143850.756571096@linuxfoundation.org>
+Message-ID: <20240827143837.216336026@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Sterba <dsterba@suse.com>
+From: Eugene Syromiatnikov <esyr@redhat.com>
 
-[ Upstream commit f40a3ea94881f668084f68f6b9931486b1606db0 ]
+[ Upstream commit 655111b838cdabdb604f3625a9ff08c5eedb11da ]
 
-The BUG_ON is deep in the qgroup code where we can expect that it
-exists. A NULL pointer would cause a crash.
+ssn_offset field is u32 and is placed into the netlink response with
+nla_put_u32(), but only 2 bytes are reserved for the attribute payload
+in subflow_get_info_size() (even though it makes no difference
+in the end, as it is aligned up to 4 bytes).  Supply the correct
+argument to the relevant nla_total_size() call to make it less
+confusing.
 
-It was added long ago in 550d7a2ed5db35 ("btrfs: qgroup: Add new qgroup
-calculation function btrfs_qgroup_account_extents()."). It maybe made
-sense back then as the quota enable/disable state machine was not that
-robust as it is nowadays, so we can just delete it.
-
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 5147dfb50832 ("mptcp: allow dumping subflow context to userspace")
+Signed-off-by: Eugene Syromiatnikov <esyr@redhat.com>
+Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20240812065024.GA19719@asgard.redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/qgroup.c | 2 --
- 1 file changed, 2 deletions(-)
+ net/mptcp/diag.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/qgroup.c b/fs/btrfs/qgroup.c
-index 223dfbf009938..efe84be65a440 100644
---- a/fs/btrfs/qgroup.c
-+++ b/fs/btrfs/qgroup.c
-@@ -2725,8 +2725,6 @@ int btrfs_qgroup_account_extent(struct btrfs_trans_handle *trans, u64 bytenr,
- 	if (nr_old_roots == 0 && nr_new_roots == 0)
- 		goto out_free;
- 
--	BUG_ON(!fs_info->quota_root);
--
- 	trace_btrfs_qgroup_account_extent(fs_info, trans->transid, bytenr,
- 					num_bytes, nr_old_roots, nr_new_roots);
- 
+diff --git a/net/mptcp/diag.c b/net/mptcp/diag.c
+index 3ae46b545d2c2..2d3efb405437d 100644
+--- a/net/mptcp/diag.c
++++ b/net/mptcp/diag.c
+@@ -94,7 +94,7 @@ static size_t subflow_get_info_size(const struct sock *sk)
+ 		nla_total_size(4) +	/* MPTCP_SUBFLOW_ATTR_RELWRITE_SEQ */
+ 		nla_total_size_64bit(8) +	/* MPTCP_SUBFLOW_ATTR_MAP_SEQ */
+ 		nla_total_size(4) +	/* MPTCP_SUBFLOW_ATTR_MAP_SFSEQ */
+-		nla_total_size(2) +	/* MPTCP_SUBFLOW_ATTR_SSN_OFFSET */
++		nla_total_size(4) +	/* MPTCP_SUBFLOW_ATTR_SSN_OFFSET */
+ 		nla_total_size(2) +	/* MPTCP_SUBFLOW_ATTR_MAP_DATALEN */
+ 		nla_total_size(4) +	/* MPTCP_SUBFLOW_ATTR_FLAGS */
+ 		nla_total_size(1) +	/* MPTCP_SUBFLOW_ATTR_ID_REM */
 -- 
 2.43.0
 
