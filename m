@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-70520-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71092-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C13C960E8E
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:49:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E09C996119A
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:21:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF1FB1F23D24
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:49:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B1261F23CA8
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:21:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D10041C4EF9;
-	Tue, 27 Aug 2024 14:49:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7A581C8FD3;
+	Tue, 27 Aug 2024 15:21:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jn7UHe52"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jnrHNC5n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E27115F41B;
-	Tue, 27 Aug 2024 14:49:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9427B19F485;
+	Tue, 27 Aug 2024 15:21:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770181; cv=none; b=A4sO9lqluXNNhBgD13Yx0UtzZSbDQV28UACED01CgsRFqh3w5qiJWVAUZ4zEcNQP8KesCxnmbyQTMYggyhhOSaKCnBiARJ/6h3K+TnJj5zPf26ySv63Mh+pZ54N0ro50D8EeygbHo5743gYio4UFviRIiQyvmOSHIzM4HNyLzkA=
+	t=1724772073; cv=none; b=MqL+zfZ6Bs6RWeZrtXYbCCJ9MKS1CcEA3dqRQyimXBmenzVBYe3B8uoA11HXR0IJjbVFisPMmdHJVxa5Z62faFnLcohOqCBr7GDIdDn4dTqy+kEBe72137UOCkYUG0HZPmwVC7O9b396xDZw+hkVaUKc2kc0u83vKKknPkj3dLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770181; c=relaxed/simple;
-	bh=xl8lZbUSfOIWPGTO3DOPu9jTZXa1vlyBOL5q3Ung+ZU=;
+	s=arc-20240116; t=1724772073; c=relaxed/simple;
+	bh=8GSXK5bvTrcI2MRDpUtncSFjzMAYY3mBPLIVQnWDFC4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O0ue5pE48XU7alWPWcYgNICp55Chcny+y5GDoQgID0NY0eQ/nkjeSZi7I7wpJVYNE484OBhA7iXiyle8KAFHtb2+QEovpUdX3Nm8aPynGW+lcbywciJaYPFQdABemftMytpuQwkFbnDHvLd6cNG/qvBmBcWbNGMn46QOOAFdk9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jn7UHe52; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 151BEC4DDE5;
-	Tue, 27 Aug 2024 14:49:40 +0000 (UTC)
+	 MIME-Version; b=MPnHcKX3NOEudobynCfRUhQoyiW0YHeYbLH4005e2aQkc0BwCYpcPZQt+qLdKrbuoGp+IPVBX85k5Wd82qgNiyPwKSHk1+y0Xf3wPq5QskD9gc4J42ZikcO57Hkq2pwiEvCpKY1RsP33yB+J1uSegzUUv5ai6SlfnwT8R5VjHnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jnrHNC5n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13D63C4FE02;
+	Tue, 27 Aug 2024 15:21:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770181;
-	bh=xl8lZbUSfOIWPGTO3DOPu9jTZXa1vlyBOL5q3Ung+ZU=;
+	s=korg; t=1724772073;
+	bh=8GSXK5bvTrcI2MRDpUtncSFjzMAYY3mBPLIVQnWDFC4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jn7UHe52eBrZVfp65CqfBQXMa28guSzwN05vyxXy2YcA3aAtIQHUArfusu6BF5bZr
-	 5lhvhog5FGB/OADQXOFymcy8m+y2q8tGmTMAO5Sx7JCldZcVNnjn4x0jlbx9MKPE/1
-	 l+gnm+1Dge8PUZoW1DPoMeMskFLHv42hovCP8ZbQ=
+	b=jnrHNC5nGLLlVTOCUEiQytBjaF7VcVoLVonCs4w5Zh/zF9Oql2IDbU1E2M5eVM8yP
+	 jA3ToX1ZGJoSoiqmhVP39C37RYTSfXLn8t0jVcVQGbGNNNLHMqb+kriLJ+BWpbpCly
+	 al+LN0hcTAdfO+AYaxGJwGJOLKwb3eMpRbkLCAP4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Li Zhong <floridsleeves@gmail.com>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 150/341] Bluetooth: hci_conn: Check non NULL function before calling for HFP offload
+Subject: [PATCH 6.1 073/321] ext4: check the return value of ext4_xattr_inode_dec_ref()
 Date: Tue, 27 Aug 2024 16:36:21 +0200
-Message-ID: <20240827143849.126898694@linuxfoundation.org>
+Message-ID: <20240827143841.021226101@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Li Zhong <floridsleeves@gmail.com>
 
-[ Upstream commit 132d0fd0b8418094c9e269e5bc33bf5b864f4a65 ]
+[ Upstream commit 56d0d0b9289dae041becc7ee6bd966a00dd610e0 ]
 
-For some controllers such as QCA2066, it does not need to send
-HCI_Configure_Data_Path to configure non-HCI data transport path to support
-HFP offload, their device drivers may set hdev->get_codec_config_data as
-NULL, so Explicitly add this non NULL checking before calling the function.
+Check the return value of ext4_xattr_inode_dec_ref(), which could
+return error code and need to be warned.
 
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Li Zhong <floridsleeves@gmail.com>
+Link: https://lore.kernel.org/r/20220917002816.3804400-1-floridsleeves@gmail.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Stable-dep-of: 0a46ef234756 ("ext4: do not create EA inode under buffer lock")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_conn.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ fs/ext4/xattr.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
-index 9c670348fac42..dc1c07c7d4ff9 100644
---- a/net/bluetooth/hci_conn.c
-+++ b/net/bluetooth/hci_conn.c
-@@ -299,6 +299,13 @@ static int configure_datapath_sync(struct hci_dev *hdev, struct bt_codec *codec)
- 	__u8 vnd_len, *vnd_data = NULL;
- 	struct hci_op_configure_data_path *cmd = NULL;
+diff --git a/fs/ext4/xattr.c b/fs/ext4/xattr.c
+index f0a45d3ec4ebb..0df0a3ecba37a 100644
+--- a/fs/ext4/xattr.c
++++ b/fs/ext4/xattr.c
+@@ -1550,7 +1550,8 @@ static int ext4_xattr_inode_lookup_create(handle_t *handle, struct inode *inode,
  
-+	if (!codec->data_path || !hdev->get_codec_config_data)
-+		return 0;
-+
-+	/* Do not take me as error */
-+	if (!hdev->get_codec_config_data)
-+		return 0;
-+
- 	err = hdev->get_codec_config_data(hdev, ESCO_LINK, codec, &vnd_len,
- 					  &vnd_data);
- 	if (err < 0)
-@@ -344,9 +351,7 @@ static int hci_enhanced_setup_sync(struct hci_dev *hdev, void *data)
- 
- 	bt_dev_dbg(hdev, "hcon %p", conn);
- 
--	/* for offload use case, codec needs to configured before opening SCO */
--	if (conn->codec.data_path)
--		configure_datapath_sync(hdev, &conn->codec);
-+	configure_datapath_sync(hdev, &conn->codec);
- 
- 	conn->state = BT_CONNECT;
- 	conn->out = true;
+ 	err = ext4_xattr_inode_write(handle, ea_inode, value, value_len);
+ 	if (err) {
+-		ext4_xattr_inode_dec_ref(handle, ea_inode);
++		if (ext4_xattr_inode_dec_ref(handle, ea_inode))
++			ext4_warning_inode(ea_inode, "cleanup dec ref error %d", err);
+ 		iput(ea_inode);
+ 		return err;
+ 	}
 -- 
 2.43.0
 
