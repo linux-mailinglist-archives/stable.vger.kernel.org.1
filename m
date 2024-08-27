@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-70479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71037-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A396E960E56
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:48:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E14F961158
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:19:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 40F10B20ED3
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:47:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7EDFDB27488
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:19:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C55921C689B;
-	Tue, 27 Aug 2024 14:47:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B143B1CCB21;
+	Tue, 27 Aug 2024 15:18:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d7bzD71v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="06zQmsTC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83A451C57A3;
-	Tue, 27 Aug 2024 14:47:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D35F1C8FA0;
+	Tue, 27 Aug 2024 15:18:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770043; cv=none; b=LeMz7gQKpeNEhXzA+ymPksbz2cGy8uxpSN89gdcnaaXdGeVZ4x8GjpIaODnBc/bOc2f9t3A6gtPKwrqELC/zgi48aEM9yxGBI6qwxlgSpLjkYXeaFTheQb3gTjBObogT4Jwosyebk5gAgoKC2m4NKLfk6/xmR7cTLtW2FvI5mXY=
+	t=1724771888; cv=none; b=V5rL77Oo67dEMiAOP2cB9JeLZOx2wYKjQFaNZlftiquqQFVYU4eC3FD3Tlvcv03pBN4jOodXMRSriOFGZsy69leEUuASSd42q8gA1gM9H/raNs4E24u8yxrNg4hubDC32IQ7ECTKIHto0qgPnqugrpg1z6m/OH2S6kNaBNyJ/vI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770043; c=relaxed/simple;
-	bh=8faUT/czwVRpYjx8Hme/2AhT+G70t82YbqlHm/XwWV8=;
+	s=arc-20240116; t=1724771888; c=relaxed/simple;
+	bh=IqFASUc3H6qemN099wco2gEPP3vvnbwn/WKjRTYV0EA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k8nFgu2d/RMioggP3ZikNpQ3lhApX16PKgI+LiD14qVtHEosE6llms9iiAN9SsMvXaGmj1Y0EmhyZyNOAEc0fYZdh82SwjoJJnlZzCRex1ThHCA+MGwdMThdQf8cX7qDVothgKj9TzayCWMZQGuN1TZNUfKtKwbXkvIXzlXdDGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d7bzD71v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A93F5C4AF11;
-	Tue, 27 Aug 2024 14:47:22 +0000 (UTC)
+	 MIME-Version; b=Q6g17Kr7dx/MBtj41xeyctbsbfYXqx+d4uzkmFcZhIyf0Y/8MIoDnqQNAqW5snZyAE2Hj5AC2D4RU2SsoPaWNETxW9RNTLsWlkRY/f7XyzLDapVHQaI6/OqRlkzfUzHJybDq66UwAvVKdHeOOSXsSqE5HmOxL1e0Cx2m7BWMWWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=06zQmsTC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6197C61058;
+	Tue, 27 Aug 2024 15:18:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770043;
-	bh=8faUT/czwVRpYjx8Hme/2AhT+G70t82YbqlHm/XwWV8=;
+	s=korg; t=1724771888;
+	bh=IqFASUc3H6qemN099wco2gEPP3vvnbwn/WKjRTYV0EA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d7bzD71v5o9zi33dL293AfHypPrDJV72ph0UTQi3Pi7XDwYf40mTcqdO07M5EOWYT
-	 EXAaO/i2VLUdzAohUX2hI+YXyI4U9B2WVAAI9S7C1Kx5t85bke9SUjiDFPhytFuNb5
-	 uMIMbwfzSelYd+E9Ct2G8oiyoskjFWsQaILNCo/U=
+	b=06zQmsTCa44hM2tog62+E06GpjzwURDZISZHLEuVJx8CFnS6gWowKlJ7kzDfsLj0o
+	 xbX9B2esJP/sYAmvx+pJWEMRc+y9E0/yEpARdBd/dUy4OVuw4pFV2wHwvActZ5esOo
+	 H4PgWzmS17pgglj+5iUqYQ26xSovFlWi3tiedvhs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Grzeschik <m.grzeschik@pengutronix.de>,
+	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	syzbot+cbff7a52b6f99059e67f@syzkaller.appspotmail.com,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 110/341] usb: gadget: uvc: cleanup request when not in correct state
+Subject: [PATCH 6.1 033/321] nilfs2: prevent WARNING in nilfs_dat_commit_end()
 Date: Tue, 27 Aug 2024 16:35:41 +0200
-Message-ID: <20240827143847.597379131@linuxfoundation.org>
+Message-ID: <20240827143839.479876775@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Grzeschik <m.grzeschik@pengutronix.de>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit 52a39f2cf62bb5430ad1f54cd522dbfdab1d71ba ]
+[ Upstream commit 602ce7b8e1343b19c0cf93a3dd1926838ac5a1cc ]
 
-The uvc_video_enable function of the uvc-gadget driver is dequeing and
-immediately deallocs all requests on its disable codepath. This is not
-save since the dequeue function is async and does not ensure that the
-requests are left unlinked in the controller driver.
+If nilfs2 reads a corrupted disk image and its DAT metadata file contains
+invalid lifetime data for a virtual block number, a kernel warning can be
+generated by the WARN_ON check in nilfs_dat_commit_end() and can panic if
+the kernel is booted with panic_on_warn.
 
-By adding the ep_free_request into the completion path of the requests
-we ensure that the request will be properly deallocated.
+This patch avoids the issue with a sanity check that treats it as an
+error.
 
-Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
-Link: https://lore.kernel.org/r/20230911140530.2995138-3-m.grzeschik@pengutronix.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Since error return is not allowed in the execution phase of
+nilfs_dat_commit_end(), this inserts that sanity check in
+nilfs_dat_prepare_end(), which prepares for nilfs_dat_commit_end().
+
+As the error code, -EINVAL is returned to notify bmap layer of the
+metadata corruption.  When the bmap layer sees this code, it handles the
+abnormal situation and replaces the return code with -EIO as it should.
+
+Link: https://lkml.kernel.org/r/000000000000154d2c05e9ec7df6@google.com
+Link: https://lkml.kernel.org/r/20230127132202.6083-1-konishi.ryusuke@gmail.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: <syzbot+cbff7a52b6f99059e67f@syzkaller.appspotmail.com>
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/uvc_video.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/nilfs2/dat.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/usb/gadget/function/uvc_video.c b/drivers/usb/gadget/function/uvc_video.c
-index 281e75027b344..678ed30ada2b7 100644
---- a/drivers/usb/gadget/function/uvc_video.c
-+++ b/drivers/usb/gadget/function/uvc_video.c
-@@ -259,6 +259,12 @@ uvc_video_complete(struct usb_ep *ep, struct usb_request *req)
- 	struct uvc_device *uvc = video->uvc;
- 	unsigned long flags;
+diff --git a/fs/nilfs2/dat.c b/fs/nilfs2/dat.c
+index 242cc36bf1e97..351010828d883 100644
+--- a/fs/nilfs2/dat.c
++++ b/fs/nilfs2/dat.c
+@@ -158,6 +158,7 @@ void nilfs_dat_commit_start(struct inode *dat, struct nilfs_palloc_req *req,
+ int nilfs_dat_prepare_end(struct inode *dat, struct nilfs_palloc_req *req)
+ {
+ 	struct nilfs_dat_entry *entry;
++	__u64 start;
+ 	sector_t blocknr;
+ 	void *kaddr;
+ 	int ret;
+@@ -169,6 +170,7 @@ int nilfs_dat_prepare_end(struct inode *dat, struct nilfs_palloc_req *req)
+ 	kaddr = kmap_atomic(req->pr_entry_bh->b_page);
+ 	entry = nilfs_palloc_block_get_entry(dat, req->pr_entry_nr,
+ 					     req->pr_entry_bh, kaddr);
++	start = le64_to_cpu(entry->de_start);
+ 	blocknr = le64_to_cpu(entry->de_blocknr);
+ 	kunmap_atomic(kaddr);
  
-+	if (uvc->state == UVC_STATE_CONNECTED) {
-+		usb_ep_free_request(video->ep, ureq->req);
-+		ureq->req = NULL;
-+		return;
+@@ -179,6 +181,15 @@ int nilfs_dat_prepare_end(struct inode *dat, struct nilfs_palloc_req *req)
+ 			return ret;
+ 		}
+ 	}
++	if (unlikely(start > nilfs_mdt_cno(dat))) {
++		nilfs_err(dat->i_sb,
++			  "vblocknr = %llu has abnormal lifetime: start cno (= %llu) > current cno (= %llu)",
++			  (unsigned long long)req->pr_entry_nr,
++			  (unsigned long long)start,
++			  (unsigned long long)nilfs_mdt_cno(dat));
++		nilfs_dat_abort_entry(dat, req);
++		return -EINVAL;
 +	}
-+
- 	switch (req->status) {
- 	case 0:
- 		break;
+ 
+ 	return 0;
+ }
 -- 
 2.43.0
 
