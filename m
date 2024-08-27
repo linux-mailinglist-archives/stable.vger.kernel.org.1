@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-71204-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70945-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B18996124C
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:29:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1C849610D2
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:13:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F06C1C213A8
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:29:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8693D283956
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:13:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC1C71C86FB;
-	Tue, 27 Aug 2024 15:27:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FF061C689C;
+	Tue, 27 Aug 2024 15:13:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1a9dN+p/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W2y/XB28"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7922C1C8228;
-	Tue, 27 Aug 2024 15:27:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D10DC1C4ED4;
+	Tue, 27 Aug 2024 15:13:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772439; cv=none; b=jUy6Wx9cQNnD5RJsdIQMwYN4Dr7u86Hog4/oWsq2gbfwJnAM2alrvy4+2wT+8atJLxRCtVYep6ThNuoGILc60lOX9Aux+QF8JNjH7GrAMalecqbfb3CfybzPS+GYQaWJdgtrsktinCEquM/onFWWPrwBLbNynz4+hbJHROHDu8A=
+	t=1724771583; cv=none; b=BMIkV79rEhrJvvI3wQq3f7Mn90wZFZGd5Fuwcwj6f0HmLilamhVJxJeOucQLETrS/NxdFrCxSUFDuZeg0M9fW0MRMien4wz4SLie2UDFapnsPp+uZ7Ro8NknkyRe8Tjs3OMDdDh9C5/ARIT4v233Ja9AQJB/biYhWhEKvOTt0FY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772439; c=relaxed/simple;
-	bh=hlc2XJo6mwye7Yu9b9x/vX2g4OfvgAALWElGVujuTkQ=;
+	s=arc-20240116; t=1724771583; c=relaxed/simple;
+	bh=aEEO0acm+otKyM4T6X0KzvwTh8rEc04PaWRBuxEX8h4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fLEXP6fRTf7KwyzB5802xD8WVmsA6M7ITF+HW5sncNAU4wDWRLKiz6ufT8EGt8qn3HIBPMq6O8jUhwIv9wTXMlx54le+JV8HgB4WQeCQCwAA80G9My/jGPH/cPXuTcifvLuuKbHIppGWzEePHdtLrMCBlKVwaHxp659pnmuGTBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1a9dN+p/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7325EC4FE0B;
-	Tue, 27 Aug 2024 15:27:18 +0000 (UTC)
+	 MIME-Version; b=PFu0TtNumAQQtGRF2C4CojyGGk2/BRh5KDm1wgPqmv0z0ns1LuDdeme8K5IxWNHCD/Ly1inm4QJcVF3isflyj0F3TPwGQ9sDcbrfNWmAOpran7oLQH5q6aodMTYmMyFuUStmS/4FoANFpO/WSwI8G2/J4HiJvkVenb94tWjblWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W2y/XB28; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56862C61048;
+	Tue, 27 Aug 2024 15:13:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772438;
-	bh=hlc2XJo6mwye7Yu9b9x/vX2g4OfvgAALWElGVujuTkQ=;
+	s=korg; t=1724771583;
+	bh=aEEO0acm+otKyM4T6X0KzvwTh8rEc04PaWRBuxEX8h4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1a9dN+p/OUuZt67pff1OSQpf/W6m6zdxGctyvFJyFVRp+CkaIX8BIo1JG5G1ga56Z
-	 XfvByUXzCeRtpg2LBlPkboVzTvDpMcDVezaWd3qoJDwKTQlnhoDD8U9gpjGMggk5gr
-	 tqbEAW8Y6AGWH+/5AN1sIHBUYFK+b9ZbB+jpbd2c=
+	b=W2y/XB28WhY5Ox/8GCbS8baJ4qoUd62hTWygvBOXzSKuM9X0mvJ0YT3iVXXLkORTW
+	 czwU+5ALyLK7Wx+TaSDjMRq9c7ukTA3csRjhjy5aZaSyKcBp+8ZD9DhSQw1GGrUlEP
+	 580saGPqpJQIW6YshJBdmRQG0jXH8VGw4L9DpZsM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Tejun Heo <tj@kernel.org>,
+	syzbot+b3e4f2f51ed645fd5df2@syzkaller.appspotmail.com,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 216/321] btrfs: send: allow cloning non-aligned extent if it ends at i_size
-Date: Tue, 27 Aug 2024 16:38:44 +0200
-Message-ID: <20240827143846.455759462@linuxfoundation.org>
+Subject: [PATCH 6.10 201/273] workqueue: Fix spruious data race in __flush_work()
+Date: Tue, 27 Aug 2024 16:38:45 +0200
+Message-ID: <20240827143841.058564614@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,193 +63,131 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Tejun Heo <tj@kernel.org>
 
-[ Upstream commit 46a6e10a1ab16cc71d4a3cab73e79aabadd6b8ea ]
+[ Upstream commit 8bc35475ef1a23b0e224f3242eb11c76cab0ea88 ]
 
-If we a find that an extent is shared but its end offset is not sector
-size aligned, then we don't clone it and issue write operations instead.
-This is because the reflink (remap_file_range) operation does not allow
-to clone unaligned ranges, except if the end offset of the range matches
-the i_size of the source and destination files (and the start offset is
-sector size aligned).
+When flushing a work item for cancellation, __flush_work() knows that it
+exclusively owns the work item through its PENDING bit. 134874e2eee9
+("workqueue: Allow cancel_work_sync() and disable_work() from atomic
+contexts on BH work items") added a read of @work->data to determine whether
+to use busy wait for BH work items that are being canceled. While the read
+is safe when @from_cancel, @work->data was read before testing @from_cancel
+to simplify code structure:
 
-While this is not incorrect because send can only guarantee that a file
-has the same data in the source and destination snapshots, it's not
-optimal and generates confusion and surprising behaviour for users.
+	data = *work_data_bits(work);
+	if (from_cancel &&
+	    !WARN_ON_ONCE(data & WORK_STRUCT_PWQ) && (data & WORK_OFFQ_BH)) {
 
-For example, running this test:
+While the read data was never used if !@from_cancel, this could trigger
+KCSAN data race detection spuriously:
 
-  $ cat test.sh
-  #!/bin/bash
+  ==================================================================
+  BUG: KCSAN: data-race in __flush_work / __flush_work
 
-  DEV=/dev/sdi
-  MNT=/mnt/sdi
+  write to 0xffff8881223aa3e8 of 8 bytes by task 3998 on cpu 0:
+   instrument_write include/linux/instrumented.h:41 [inline]
+   ___set_bit include/asm-generic/bitops/instrumented-non-atomic.h:28 [inline]
+   insert_wq_barrier kernel/workqueue.c:3790 [inline]
+   start_flush_work kernel/workqueue.c:4142 [inline]
+   __flush_work+0x30b/0x570 kernel/workqueue.c:4178
+   flush_work kernel/workqueue.c:4229 [inline]
+   ...
 
-  mkfs.btrfs -f $DEV
-  mount $DEV $MNT
+  read to 0xffff8881223aa3e8 of 8 bytes by task 50 on cpu 1:
+   __flush_work+0x42a/0x570 kernel/workqueue.c:4188
+   flush_work kernel/workqueue.c:4229 [inline]
+   flush_delayed_work+0x66/0x70 kernel/workqueue.c:4251
+   ...
 
-  # Use a file size not aligned to any possible sector size.
-  file_size=$((1 * 1024 * 1024 + 5)) # 1MB + 5 bytes
-  dd if=/dev/random of=$MNT/foo bs=$file_size count=1
-  cp --reflink=always $MNT/foo $MNT/bar
+  value changed: 0x0000000000400000 -> 0xffff88810006c00d
 
-  btrfs subvolume snapshot -r $MNT/ $MNT/snap
-  rm -f /tmp/send-test
-  btrfs send -f /tmp/send-test $MNT/snap
+Reorganize the code so that @from_cancel is tested before @work->data is
+accessed. The only problem is triggering KCSAN detection spuriously. This
+shouldn't need READ_ONCE() or other access qualifiers.
 
-  umount $MNT
-  mkfs.btrfs -f $DEV
-  mount $DEV $MNT
+No functional changes.
 
-  btrfs receive -vv -f /tmp/send-test $MNT
-
-  xfs_io -r -c "fiemap -v" $MNT/snap/bar
-
-  umount $MNT
-
-Gives the following result:
-
-  (...)
-  mkfile o258-7-0
-  rename o258-7-0 -> bar
-  write bar - offset=0 length=49152
-  write bar - offset=49152 length=49152
-  write bar - offset=98304 length=49152
-  write bar - offset=147456 length=49152
-  write bar - offset=196608 length=49152
-  write bar - offset=245760 length=49152
-  write bar - offset=294912 length=49152
-  write bar - offset=344064 length=49152
-  write bar - offset=393216 length=49152
-  write bar - offset=442368 length=49152
-  write bar - offset=491520 length=49152
-  write bar - offset=540672 length=49152
-  write bar - offset=589824 length=49152
-  write bar - offset=638976 length=49152
-  write bar - offset=688128 length=49152
-  write bar - offset=737280 length=49152
-  write bar - offset=786432 length=49152
-  write bar - offset=835584 length=49152
-  write bar - offset=884736 length=49152
-  write bar - offset=933888 length=49152
-  write bar - offset=983040 length=49152
-  write bar - offset=1032192 length=16389
-  chown bar - uid=0, gid=0
-  chmod bar - mode=0644
-  utimes bar
-  utimes
-  BTRFS_IOC_SET_RECEIVED_SUBVOL uuid=06d640da-9ca1-604c-b87c-3375175a8eb3, stransid=7
-  /mnt/sdi/snap/bar:
-   EXT: FILE-OFFSET      BLOCK-RANGE      TOTAL FLAGS
-     0: [0..2055]:       26624..28679      2056   0x1
-
-There's no clone operation to clone extents from the file foo into file
-bar and fiemap confirms there's no shared flag (0x2000).
-
-So update send_write_or_clone() so that it proceeds with cloning if the
-source and destination ranges end at the i_size of the respective files.
-
-After this changes the result of the test is:
-
-  (...)
-  mkfile o258-7-0
-  rename o258-7-0 -> bar
-  clone bar - source=foo source offset=0 offset=0 length=1048581
-  chown bar - uid=0, gid=0
-  chmod bar - mode=0644
-  utimes bar
-  utimes
-  BTRFS_IOC_SET_RECEIVED_SUBVOL uuid=582420f3-ea7d-564e-bbe5-ce440d622190, stransid=7
-  /mnt/sdi/snap/bar:
-   EXT: FILE-OFFSET      BLOCK-RANGE      TOTAL FLAGS
-     0: [0..2055]:       26624..28679      2056 0x2001
-
-A test case for fstests will also follow up soon.
-
-Link: https://github.com/kdave/btrfs-progs/issues/572#issuecomment-2282841416
-CC: stable@vger.kernel.org # 5.10+
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Reported-by: syzbot+b3e4f2f51ed645fd5df2@syzkaller.appspotmail.com
+Fixes: 134874e2eee9 ("workqueue: Allow cancel_work_sync() and disable_work() from atomic contexts on BH work items")
+Link: http://lkml.kernel.org/r/000000000000ae429e061eea2157@google.com
+Cc: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/send.c | 52 ++++++++++++++++++++++++++++++++++++-------------
- 1 file changed, 39 insertions(+), 13 deletions(-)
+ kernel/workqueue.c | 45 +++++++++++++++++++++++++--------------------
+ 1 file changed, 25 insertions(+), 20 deletions(-)
 
-diff --git a/fs/btrfs/send.c b/fs/btrfs/send.c
-index e311cc291fe45..030edc1a9591b 100644
---- a/fs/btrfs/send.c
-+++ b/fs/btrfs/send.c
-@@ -5911,25 +5911,51 @@ static int send_write_or_clone(struct send_ctx *sctx,
- 	u64 offset = key->offset;
- 	u64 end;
- 	u64 bs = sctx->send_root->fs_info->sectorsize;
-+	struct btrfs_file_extent_item *ei;
-+	u64 disk_byte;
-+	u64 data_offset;
-+	u64 num_bytes;
-+	struct btrfs_inode_info info = { 0 };
+diff --git a/kernel/workqueue.c b/kernel/workqueue.c
+index c8687c0ab3645..c970eec25c5a0 100644
+--- a/kernel/workqueue.c
++++ b/kernel/workqueue.c
+@@ -4190,7 +4190,6 @@ static bool start_flush_work(struct work_struct *work, struct wq_barrier *barr,
+ static bool __flush_work(struct work_struct *work, bool from_cancel)
+ {
+ 	struct wq_barrier barr;
+-	unsigned long data;
  
- 	end = min_t(u64, btrfs_file_extent_end(path), sctx->cur_inode_size);
- 	if (offset >= end)
- 		return 0;
- 
--	if (clone_root && IS_ALIGNED(end, bs)) {
--		struct btrfs_file_extent_item *ei;
--		u64 disk_byte;
--		u64 data_offset;
-+	num_bytes = end - offset;
- 
--		ei = btrfs_item_ptr(path->nodes[0], path->slots[0],
--				    struct btrfs_file_extent_item);
--		disk_byte = btrfs_file_extent_disk_bytenr(path->nodes[0], ei);
--		data_offset = btrfs_file_extent_offset(path->nodes[0], ei);
--		ret = clone_range(sctx, path, clone_root, disk_byte,
--				  data_offset, offset, end - offset);
+ 	if (WARN_ON(!wq_online))
+ 		return false;
+@@ -4208,29 +4207,35 @@ static bool __flush_work(struct work_struct *work, bool from_cancel)
+ 	 * was queued on a BH workqueue, we also know that it was running in the
+ 	 * BH context and thus can be busy-waited.
+ 	 */
+-	data = *work_data_bits(work);
+-	if (from_cancel &&
+-	    !WARN_ON_ONCE(data & WORK_STRUCT_PWQ) && (data & WORK_OFFQ_BH)) {
+-		/*
+-		 * On RT, prevent a live lock when %current preempted soft
+-		 * interrupt processing or prevents ksoftirqd from running by
+-		 * keeping flipping BH. If the BH work item runs on a different
+-		 * CPU then this has no effect other than doing the BH
+-		 * disable/enable dance for nothing. This is copied from
+-		 * kernel/softirq.c::tasklet_unlock_spin_wait().
+-		 */
+-		while (!try_wait_for_completion(&barr.done)) {
+-			if (IS_ENABLED(CONFIG_PREEMPT_RT)) {
+-				local_bh_disable();
+-				local_bh_enable();
+-			} else {
+-				cpu_relax();
++	if (from_cancel) {
++		unsigned long data = *work_data_bits(work);
++
++		if (!WARN_ON_ONCE(data & WORK_STRUCT_PWQ) &&
++		    (data & WORK_OFFQ_BH)) {
++			/*
++			 * On RT, prevent a live lock when %current preempted
++			 * soft interrupt processing or prevents ksoftirqd from
++			 * running by keeping flipping BH. If the BH work item
++			 * runs on a different CPU then this has no effect other
++			 * than doing the BH disable/enable dance for nothing.
++			 * This is copied from
++			 * kernel/softirq.c::tasklet_unlock_spin_wait().
++			 */
++			while (!try_wait_for_completion(&barr.done)) {
++				if (IS_ENABLED(CONFIG_PREEMPT_RT)) {
++					local_bh_disable();
++					local_bh_enable();
++				} else {
++					cpu_relax();
++				}
+ 			}
++			goto out_destroy;
+ 		}
 -	} else {
--		ret = send_extent_data(sctx, path, offset, end - offset);
--	}
-+	if (!clone_root)
-+		goto write_data;
+-		wait_for_completion(&barr.done);
+ 	}
+ 
++	wait_for_completion(&barr.done);
 +
-+	if (IS_ALIGNED(end, bs))
-+		goto clone_data;
-+
-+	/*
-+	 * If the extent end is not aligned, we can clone if the extent ends at
-+	 * the i_size of the inode and the clone range ends at the i_size of the
-+	 * source inode, otherwise the clone operation fails with -EINVAL.
-+	 */
-+	if (end != sctx->cur_inode_size)
-+		goto write_data;
-+
-+	ret = get_inode_info(clone_root->root, clone_root->ino, &info);
-+	if (ret < 0)
-+		return ret;
-+
-+	if (clone_root->offset + num_bytes == info.size)
-+		goto clone_data;
-+
-+write_data:
-+	ret = send_extent_data(sctx, path, offset, num_bytes);
-+	sctx->cur_inode_next_write_offset = end;
-+	return ret;
-+
-+clone_data:
-+	ei = btrfs_item_ptr(path->nodes[0], path->slots[0],
-+			    struct btrfs_file_extent_item);
-+	disk_byte = btrfs_file_extent_disk_bytenr(path->nodes[0], ei);
-+	data_offset = btrfs_file_extent_offset(path->nodes[0], ei);
-+	ret = clone_range(sctx, path, clone_root, disk_byte, data_offset, offset,
-+			  num_bytes);
- 	sctx->cur_inode_next_write_offset = end;
- 	return ret;
++out_destroy:
+ 	destroy_work_on_stack(&barr.work);
+ 	return true;
  }
 -- 
 2.43.0
