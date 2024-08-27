@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-70549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71121-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FE09960EB7
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:51:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E12909611BF
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:23:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 18CF61F24A7E
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:51:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 603841F22DB2
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:23:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E5251C688B;
-	Tue, 27 Aug 2024 14:51:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E4EC1C9446;
+	Tue, 27 Aug 2024 15:22:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LoGpFsKW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lni2Ik7O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 084901BA87C;
-	Tue, 27 Aug 2024 14:51:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C0D51C93B7;
+	Tue, 27 Aug 2024 15:22:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770277; cv=none; b=h3PA7vtM1j4oGa6NSrZLKIaAB9Ui2dHVpB2edrEwz4sLfZ5i4iBknEhOnPqfUVFGGoLTmpdNX5vrGR+Lh+qVdAWUChlJiWaawplP/3el+BfMLfdrHb0PdTBjFls83uucewciWc4YKhHMy1Y9IcwBbVb0TG+JjthjM6k7KBVmDeI=
+	t=1724772167; cv=none; b=Es9p6XEIZm4+7k5Ma/XI/+Pxt40ANaEmjN77Wbz4+5Cw/KFsaq0dirni28LRxUdxtYg+aqJNcj3XMIYIxPQ+njA43zpTYoZsf3or/Guug4Oh842zgaISTA+zCPvoDO8ZY8VHoUx54zXTBpoAWwP8g08rNX4Tv4IwLRcXKqZkvAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770277; c=relaxed/simple;
-	bh=Vet9b+lsNKJwPdpWDAWmfJ5URJFxnjvzYZL2r9cjkBk=;
+	s=arc-20240116; t=1724772167; c=relaxed/simple;
+	bh=AvobskIawxx9u2rP5iPaUzptvalnejub0BYfQL0YI20=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rXLwdxSUYPZXC6auGR/q+E5r/cRSKp+ohPJTwgq5DxFVYLpSkej4cNHTCpbOJ4jxs1IIR+V/qN4idklCWtwuRo1InyljTkVPf8azx8t5oZutNF67pjdG0J2W2BrXlY9CWEW3bLFAkuS3/U3dSVso7Ujkge0nJ2hAiaMxK+mo8Sw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LoGpFsKW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C0D6C4DDFF;
-	Tue, 27 Aug 2024 14:51:16 +0000 (UTC)
+	 MIME-Version; b=NnStHMmykf/EjTldk8ErXVSif6ktK6nVmGDtXt5NOf40jTOeJzaTlUW/TAfMxR/xjS8E/R85yAtg7cf1dwHmMJfGbiMXzFrY+1tHIh2vDD3qrdRQauydyogDUfJ7jirHOk3C5vi9Bh1KmbuLBpsEuMO2ZolLcMXHikeKZ19mswE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lni2Ik7O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16A04C61048;
+	Tue, 27 Aug 2024 15:22:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770276;
-	bh=Vet9b+lsNKJwPdpWDAWmfJ5URJFxnjvzYZL2r9cjkBk=;
+	s=korg; t=1724772166;
+	bh=AvobskIawxx9u2rP5iPaUzptvalnejub0BYfQL0YI20=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LoGpFsKW7kw95nu3gvTUey58F/+/Q5idOsjxz48rCCxF70SvI4VaDyf5RmdLULw4z
-	 Glc36u/pi01A/LMTzpJC9dMgIMy+jkMHbDpAgu09GcpPd1eT8/4nU30lOFCH3bKAFz
-	 bVxlYG/9F/sZTG9ms00spPQed3JDtDYko00Kvu2g=
+	b=lni2Ik7O/xeXMsJvegPumRXpsU7LlUQ3u8C9UZbakDteOj0d5YwveM6xq1eZyFSRj
+	 N7PrkZaEXYuNAOkyZgOiK9m9O6LIby83Q8cbguVJZ2Nc1DEUvgtbiJSeTyC5LOOdKg
+	 fSuU2aIupMtK1blaCwJ8jMUTkODMQOQMdoS800Zs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	linux-afs@lists.infradead.org,
-	netdev@vger.kernel.org,
+	Phil Sutter <phil@nwl.cc>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 180/341] rxrpc: Dont pick values out of the wire header when setting up security
+Subject: [PATCH 6.1 103/321] netfilter: nf_tables: nft_obj_filter fits into cb->ctx
 Date: Tue, 27 Aug 2024 16:36:51 +0200
-Message-ID: <20240827143850.263530780@linuxfoundation.org>
+Message-ID: <20240827143842.169860690@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,65 +62,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Phil Sutter <phil@nwl.cc>
 
-[ Upstream commit a1c9af4d4467354132417c2d8db10d6e928a7f77 ]
+[ Upstream commit 5a893b9cdf6fa5758f43d323a1d7fa6d1bf489ff ]
 
-Don't pick values out of the wire header in rxkad when setting up DATA
-packet security, but rather use other sources.  This makes it easier to get
-rid of txb->wire.
+No need to allocate it if one may just use struct netlink_callback's
+scratch area for it.
 
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: "David S. Miller" <davem@davemloft.net>
-cc: Eric Dumazet <edumazet@google.com>
-cc: Jakub Kicinski <kuba@kernel.org>
-cc: Paolo Abeni <pabeni@redhat.com>
-cc: linux-afs@lists.infradead.org
-cc: netdev@vger.kernel.org
+Signed-off-by: Phil Sutter <phil@nwl.cc>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Stable-dep-of: bd662c4218f9 ("netfilter: nf_tables: Add locking for NFT_MSG_GETOBJ_RESET requests")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/rxrpc/rxkad.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/netfilter/nf_tables_api.c | 16 +++++-----------
+ 1 file changed, 5 insertions(+), 11 deletions(-)
 
-diff --git a/net/rxrpc/rxkad.c b/net/rxrpc/rxkad.c
-index 6b32d61d4cdc4..ad6c57a9f27c7 100644
---- a/net/rxrpc/rxkad.c
-+++ b/net/rxrpc/rxkad.c
-@@ -259,7 +259,7 @@ static int rxkad_secure_packet_auth(const struct rxrpc_call *call,
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 48cd3e2dde69c..05c93af417120 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -7425,7 +7425,7 @@ struct nft_obj_dump_ctx {
+ static int nf_tables_dump_obj(struct sk_buff *skb, struct netlink_callback *cb)
+ {
+ 	const struct nfgenmsg *nfmsg = nlmsg_data(cb->nlh);
+-	struct nft_obj_dump_ctx *ctx = cb->data;
++	struct nft_obj_dump_ctx *ctx = (void *)cb->ctx;
+ 	struct net *net = sock_net(skb->sk);
+ 	int family = nfmsg->nfgen_family;
+ 	struct nftables_pernet *nft_net;
+@@ -7487,34 +7487,28 @@ static int nf_tables_dump_obj(struct sk_buff *skb, struct netlink_callback *cb)
  
- 	_enter("");
+ static int nf_tables_dump_obj_start(struct netlink_callback *cb)
+ {
++	struct nft_obj_dump_ctx *ctx = (void *)cb->ctx;
+ 	const struct nlattr * const *nla = cb->data;
+-	struct nft_obj_dump_ctx *ctx = NULL;
  
--	check = txb->seq ^ ntohl(txb->wire.callNumber);
-+	check = txb->seq ^ call->call_id;
- 	hdr->data_size = htonl((u32)check << 16 | txb->len);
+-	ctx = kzalloc(sizeof(*ctx), GFP_ATOMIC);
+-	if (!ctx)
+-		return -ENOMEM;
++	BUILD_BUG_ON(sizeof(*ctx) > sizeof(cb->ctx));
  
- 	txb->len += sizeof(struct rxkad_level1_hdr);
-@@ -302,7 +302,7 @@ static int rxkad_secure_packet_encrypt(const struct rxrpc_call *call,
+ 	if (nla[NFTA_OBJ_TABLE]) {
+ 		ctx->table = nla_strdup(nla[NFTA_OBJ_TABLE], GFP_ATOMIC);
+-		if (!ctx->table) {
+-			kfree(ctx);
++		if (!ctx->table)
+ 			return -ENOMEM;
+-		}
+ 	}
  
- 	_enter("");
+ 	if (nla[NFTA_OBJ_TYPE])
+ 		ctx->type = ntohl(nla_get_be32(nla[NFTA_OBJ_TYPE]));
  
--	check = txb->seq ^ ntohl(txb->wire.callNumber);
-+	check = txb->seq ^ call->call_id;
+-	cb->data = ctx;
+ 	return 0;
+ }
  
- 	rxkhdr->data_size = htonl(txb->len | (u32)check << 16);
- 	rxkhdr->checksum = 0;
-@@ -362,9 +362,9 @@ static int rxkad_secure_packet(struct rxrpc_call *call, struct rxrpc_txbuf *txb)
- 	memcpy(&iv, call->conn->rxkad.csum_iv.x, sizeof(iv));
+ static int nf_tables_dump_obj_done(struct netlink_callback *cb)
+ {
+-	struct nft_obj_dump_ctx *ctx = cb->data;
++	struct nft_obj_dump_ctx *ctx = (void *)cb->ctx;
  
- 	/* calculate the security checksum */
--	x = (ntohl(txb->wire.cid) & RXRPC_CHANNELMASK) << (32 - RXRPC_CIDSHIFT);
-+	x = (call->cid & RXRPC_CHANNELMASK) << (32 - RXRPC_CIDSHIFT);
- 	x |= txb->seq & 0x3fffffff;
--	crypto.buf[0] = txb->wire.callNumber;
-+	crypto.buf[0] = htonl(call->call_id);
- 	crypto.buf[1] = htonl(x);
+ 	kfree(ctx->table);
+-	kfree(ctx);
  
- 	sg_init_one(&sg, crypto.buf, 8);
+ 	return 0;
+ }
 -- 
 2.43.0
 
