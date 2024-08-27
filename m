@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-70537-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70789-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5FD1960EA3
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:50:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A530796100C
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:05:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FC661F21B92
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:50:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B7751F235A6
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:05:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD9721C4EF9;
-	Tue, 27 Aug 2024 14:50:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14E861C4EE6;
+	Tue, 27 Aug 2024 15:04:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ry6ZtAJw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p22GUbIx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A9E61C4EDE;
-	Tue, 27 Aug 2024 14:50:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1DE71C2DB1;
+	Tue, 27 Aug 2024 15:04:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770238; cv=none; b=i5tcsQRM9+kQVXoV1Yqvs/COirz1yqaxer1KbZvUyh4b1eVOnXQ0MXzQ0QpzqmemHYs7qowEpKCYVzkcZSzWJVBP4+0k0d67oMSq4Ra+cmXK+jAVut9Z4YSECnZZiwQlq378bqaKoahxFMXUaevB+EprSA2n/rB+hYkor+3ghvc=
+	t=1724771065; cv=none; b=Oyy19NeXUPY9u3KaaPUBmjGlSwQ8wbp0MS4tCf29Rxz0I8rc+Ovu2ozIzrUv5qplt1OtE7hWCpeYOKXt/Lzrd6t2I/D13dBFg4Lx/IjMzUZlQO+P4S0E9BRj+KmpU+o30ODM6ZDHJ30sE5FxeCGPA4f4qvjbwEvPsYZD2Tm27CE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770238; c=relaxed/simple;
-	bh=c5hnKTqsSnIDptF4oFiTFMe/03PI/uCySKEm7MCQBP0=;
+	s=arc-20240116; t=1724771065; c=relaxed/simple;
+	bh=VyQ8j96z/tpAjIdS5DuXKrloN1KJHdkbg5wG1f6qeI8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SjYCPtL0sDKOZ3YJOZPSopkt8wwIEjszYGldjvinoK8vtmLHx1ph2ZxCq9oBDg0r91d66JaCvWAdilb1gPpfAAjLvO8f4+PTVFcjCka/pjNMeM7hyzfCc21mbRP6zrF1gHKaKMGsOZoPbTqQcxglmdn3/lah3wBS1Fk/1DltPQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ry6ZtAJw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0C82C4DDFB;
-	Tue, 27 Aug 2024 14:50:37 +0000 (UTC)
+	 MIME-Version; b=S3QEEeNJFzBM9WK7WcDjsGqH0YkJUaO0WDArAU8bmIWCUXX3noKHdGG/S7njx3CVJLPVTVtB82SMoGzc/cIwH17FX20l3sWhZrnLT5JCFqBVa5LJv6BotN89SbZrMWj1V6hZhqt2sQnK8/d+W4eHVRduVfMgh7v53d+HqZ1sKuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p22GUbIx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B1E4C61056;
+	Tue, 27 Aug 2024 15:04:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770238;
-	bh=c5hnKTqsSnIDptF4oFiTFMe/03PI/uCySKEm7MCQBP0=;
+	s=korg; t=1724771065;
+	bh=VyQ8j96z/tpAjIdS5DuXKrloN1KJHdkbg5wG1f6qeI8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ry6ZtAJw2GuymsDcNopRv73W11Ah8F9Vsm0/TsPk6w1756EjTvR3ajiePtcuxTQtZ
-	 zmIaDskZVLEG+8yUf3Ux3+XhHfQtnrli3nxOWED56u7cyHPBYEWCFH5kmgeeuP0hW3
-	 B5a+F34BcGt/nMfpp2y/aqgjeMKsGZhw4eDwutLI=
+	b=p22GUbIxNbS8D04i0ChbHJEIFc/u4D9DqmojfIM3hM61ncDviHdRKtKab4oxAemuq
+	 QF4HshulgmhCsd9OVpeNt4M3OhgQcooSwja6fO0P2KGpXXsBEAiV2cPPyWgiGzr9qY
+	 6Xztql292rMepiR/6RYCr5uyOIUgpMuhluwiDUz0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	Janosch Frank <frankja@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 169/341] gpio: sysfs: extend the critical section for unregistering sysfs devices
-Date: Tue, 27 Aug 2024 16:36:40 +0200
-Message-ID: <20240827143849.844521931@linuxfoundation.org>
+Subject: [PATCH 6.10 077/273] s390/uv: Panic for set and remove shared access UVC errors
+Date: Tue, 27 Aug 2024 16:36:41 +0200
+Message-ID: <20240827143836.344030991@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +64,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
 
-[ Upstream commit 59cba4a0e6ca1058fbf88fec22530a4e2841802a ]
+[ Upstream commit cff59d8631e1409ffdd22d9d717e15810181b32c ]
 
-Checking the gdev->mockdev pointer for NULL must be part of the critical
-section.
+The return value uv_set_shared() and uv_remove_shared() (which are
+wrappers around the share() function) is not always checked. The system
+integrity of a protected guest depends on the Share and Unshare UVCs
+being successful. This means that any caller that fails to check the
+return value will compromise the security of the protected guest.
 
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Acked-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+No code path that would lead to such violation of the security
+guarantees is currently exercised, since all the areas that are shared
+never get unshared during the lifetime of the system. This might
+change and become an issue in the future.
+
+The Share and Unshare UVCs can only fail in case of hypervisor
+misbehaviour (either a bug or malicious behaviour). In such cases there
+is no reasonable way forward, and the system needs to panic.
+
+This patch replaces the return at the end of the share() function with
+a panic, to guarantee system integrity.
+
+Fixes: 5abb9351dfd9 ("s390/uv: introduce guest side ultravisor code")
+Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+Reviewed-by: Steffen Eiden <seiden@linux.ibm.com>
+Reviewed-by: Janosch Frank <frankja@linux.ibm.com>
+Link: https://lore.kernel.org/r/20240801112548.85303-1-imbrenda@linux.ibm.com
+Message-ID: <20240801112548.85303-1-imbrenda@linux.ibm.com>
+[frankja@linux.ibm.com: Fixed up patch subject]
+Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpiolib-sysfs.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ arch/s390/include/asm/uv.h | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpio/gpiolib-sysfs.c b/drivers/gpio/gpiolib-sysfs.c
-index 12d853845bb80..6c27312c62788 100644
---- a/drivers/gpio/gpiolib-sysfs.c
-+++ b/drivers/gpio/gpiolib-sysfs.c
-@@ -1,6 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0
+diff --git a/arch/s390/include/asm/uv.h b/arch/s390/include/asm/uv.h
+index 0e7bd3873907f..b2e2f9a4163c5 100644
+--- a/arch/s390/include/asm/uv.h
++++ b/arch/s390/include/asm/uv.h
+@@ -442,7 +442,10 @@ static inline int share(unsigned long addr, u16 cmd)
  
- #include <linux/bitops.h>
-+#include <linux/cleanup.h>
- #include <linux/device.h>
- #include <linux/idr.h>
- #include <linux/init.h>
-@@ -774,15 +775,15 @@ void gpiochip_sysfs_unregister(struct gpio_device *gdev)
- 	struct gpio_desc *desc;
- 	struct gpio_chip *chip = gdev->chip;
+ 	if (!uv_call(0, (u64)&uvcb))
+ 		return 0;
+-	return -EINVAL;
++	pr_err("%s UVC failed (rc: 0x%x, rrc: 0x%x), possible hypervisor bug.\n",
++	       uvcb.header.cmd == UVC_CMD_SET_SHARED_ACCESS ? "Share" : "Unshare",
++	       uvcb.header.rc, uvcb.header.rrc);
++	panic("System security cannot be guaranteed unless the system panics now.\n");
+ }
  
--	if (!gdev->mockdev)
--		return;
-+	scoped_guard(mutex, &sysfs_lock) {
-+		if (!gdev->mockdev)
-+			return;
- 
--	device_unregister(gdev->mockdev);
-+		device_unregister(gdev->mockdev);
- 
--	/* prevent further gpiod exports */
--	mutex_lock(&sysfs_lock);
--	gdev->mockdev = NULL;
--	mutex_unlock(&sysfs_lock);
-+		/* prevent further gpiod exports */
-+		gdev->mockdev = NULL;
-+	}
- 
- 	/* unregister gpiod class devices owned by sysfs */
- 	for_each_gpio_desc_with_flag(chip, desc, FLAG_SYSFS) {
+ /*
 -- 
 2.43.0
 
