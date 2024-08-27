@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-70918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71201-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B4E49610AD
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:11:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93B16961240
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:29:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 08CDE2819EB
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:11:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6CFC1C22CC1
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:29:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52C791C6886;
-	Tue, 27 Aug 2024 15:11:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 584C01C68A6;
+	Tue, 27 Aug 2024 15:27:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="weNICcNY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ua03tLK+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 114251C5783;
-	Tue, 27 Aug 2024 15:11:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C2A01C3F17;
+	Tue, 27 Aug 2024 15:27:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771496; cv=none; b=liRwi1HSGR7DNcxtnz6jvoDJbt8BALVdghLBVaP7EXcPf05DfjuMxrwlj+kKccDzkYcB2bmnn0vC/X2fjXcxFb8dEaYkICPOTGqYtypUPYZAibSHHj/DqDi1p1QxCZEYw3H9yWJs3t3iu3ld83qfxLRfRlzxMyv8+8Kt1Mc8ivc=
+	t=1724772433; cv=none; b=G5aHfj4+9RE+BLJnzW2UAGQHCPKAmK1mDW7iK3xJtHcRoUuVh3Fi4GaEk79pllVQEx7AOr150i0Wnxq3XSDLTTf7jAPnUHcgU9zu4AGUUk7qD1avnmoKj+dzcDiShYw+T1RUGLuRQn7ahFWHFenDa5mnH6bm7kyAdWzxxZqbugA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771496; c=relaxed/simple;
-	bh=BNFoQeFeBo4m8jYO0KyQ0fzqxpT+Dsu8o2E+BW9uZsI=;
+	s=arc-20240116; t=1724772433; c=relaxed/simple;
+	bh=dbyKoEikQANwG/2IJbjQLgvRfb0WoJp2Ra9IU/tq+VM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=npq4a/xFijmC6UkHQCahtNKH+bKnJ5alOBqEnhagRN9Ywsg+D1Iwsa/9TMNE1AqRPkNTehIe7sM2//iZAGjYONsjgxQhCJlOfmiYsHxMdmy3+GoRevwrhnOC82nVgEQeHOXEDWR+Wqgl+hc1hiU0bRcQddn6OICP3HUACM7gkRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=weNICcNY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 874E7C4DDEE;
-	Tue, 27 Aug 2024 15:11:35 +0000 (UTC)
+	 MIME-Version; b=rc8Vmk+1GxwW8wyH4d5LvCF3EcECOdKY/Lfb0++PyfeQSa9bYeG75/u88Y8/bvRlwoM2KoGN/njeSHhcC82LsPcwFiHugkNUdAWf6ncE9qLG1BZ/mlre3Kfz+GueyaFzUrR2cH2ocqHeBbuPNfbPaSKaGUrKFIqM32NLkQUUJoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ua03tLK+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 080F5C4DE14;
+	Tue, 27 Aug 2024 15:27:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771495;
-	bh=BNFoQeFeBo4m8jYO0KyQ0fzqxpT+Dsu8o2E+BW9uZsI=;
+	s=korg; t=1724772432;
+	bh=dbyKoEikQANwG/2IJbjQLgvRfb0WoJp2Ra9IU/tq+VM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=weNICcNYTLL9a/iv3yMCV17cNoGO85ZiwK+Eghahtxafiv/0F0+fL9c4/p3kpKv80
-	 ZGQ78JPko5okrK5wUNbK25QktVVLDKRmDR6lV42+A8mE/7v9EQVZw07SHogfWQ5Jon
-	 JmG5d6UEABYivO0Q0j3WGNO9DE1uMqV9hrnXTol0=
+	b=Ua03tLK+cf9iJLt0WvzIUw46Z28HoEMTBin6Ls8jRoajA5Rf0aiX/RNQ43QtE1CNN
+	 jY5Ls3sm+F7tEPExKOUiyXCf4LsVSfe2QGtrYtMk89jIA4AyquHD+K26dR3AHa5gcU
+	 OoNq56lcOjr/HURcZM0t9Fnj5F2KAzmZNHJEdDvU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Long Li <longli@microsoft.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 198/273] drm/msm/dpu: relax YUV requirements
+Subject: [PATCH 6.1 214/321] net: mana: Fix doorbell out of order violation and avoid unnecessary doorbell rings
 Date: Tue, 27 Aug 2024 16:38:42 +0200
-Message-ID: <20240827143840.944936538@linuxfoundation.org>
+Message-ID: <20240827143846.379315559@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +63,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Long Li <longli@microsoft.com>
 
-[ Upstream commit cb18195914e353ece0e789e365a5a16872169805 ]
+[ Upstream commit 58a63729c957621f1990c3494c702711188ca347 ]
 
-YUV formats require only CSC to be enabled. Even decimated formats
-should not require scaler. Relax the requirement and don't check for the
-scaler block while checking if YUV format can be enabled.
+After napi_complete_done() is called when NAPI is polling in the current
+process context, another NAPI may be scheduled and start running in
+softirq on another CPU and may ring the doorbell before the current CPU
+does. When combined with unnecessary rings when there is no need to arm
+the CQ, it triggers error paths in the hardware.
 
-Fixes: 25fdd5933e4c ("drm/msm: Add SDM845 DPU support")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/601049/
-Link: https://lore.kernel.org/r/20240627-dpu-virtual-wide-v5-2-5efb90cbb8be@linaro.org
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+This patch fixes this by calling napi_complete_done() after doorbell
+rings. It limits the number of unnecessary rings when there is
+no need to arm. MANA hardware specifies that there must be one doorbell
+ring every 8 CQ wraparounds. This driver guarantees one doorbell ring as
+soon as the number of consumed CQEs exceeds 4 CQ wraparounds. In practical
+workloads, the 4 CQ wraparounds proves to be big enough that it rarely
+exceeds this limit before all the napi weight is consumed.
+
+To implement this, add a per-CQ counter cq->work_done_since_doorbell,
+and make sure the CQ is armed as soon as passing 4 wraparounds of the CQ.
+
+Cc: stable@vger.kernel.org
+Fixes: e1b5683ff62e ("net: mana: Move NAPI from EQ to CQ")
+Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
+Signed-off-by: Long Li <longli@microsoft.com>
+Link: https://patch.msgid.link/1723219138-29887-1-git-send-email-longli@linuxonhyperv.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/microsoft/mana/mana.h    |  1 +
+ drivers/net/ethernet/microsoft/mana/mana_en.c | 24 ++++++++++++-------
+ 2 files changed, 16 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c
-index eabc4813c649c..cbdb9628d962d 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c
-@@ -746,10 +746,9 @@ static int dpu_plane_atomic_check_pipe(struct dpu_plane *pdpu,
- 	min_src_size = MSM_FORMAT_IS_YUV(fmt) ? 2 : 1;
+diff --git a/drivers/net/ethernet/microsoft/mana/mana.h b/drivers/net/ethernet/microsoft/mana/mana.h
+index d58be64374c84..41c99eabf40a0 100644
+--- a/drivers/net/ethernet/microsoft/mana/mana.h
++++ b/drivers/net/ethernet/microsoft/mana/mana.h
+@@ -262,6 +262,7 @@ struct mana_cq {
+ 	/* NAPI data */
+ 	struct napi_struct napi;
+ 	int work_done;
++	int work_done_since_doorbell;
+ 	int budget;
+ };
  
- 	if (MSM_FORMAT_IS_YUV(fmt) &&
--	    (!pipe->sspp->cap->sblk->scaler_blk.len ||
--	     !pipe->sspp->cap->sblk->csc_blk.len)) {
-+	    !pipe->sspp->cap->sblk->csc_blk.len) {
- 		DPU_DEBUG_PLANE(pdpu,
--				"plane doesn't have scaler/csc for yuv\n");
-+				"plane doesn't have csc for yuv\n");
- 		return -EINVAL;
+diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
+index b751b03eddfb1..e7d1ce68f05e3 100644
+--- a/drivers/net/ethernet/microsoft/mana/mana_en.c
++++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+@@ -1311,7 +1311,6 @@ static void mana_poll_rx_cq(struct mana_cq *cq)
+ static int mana_cq_handler(void *context, struct gdma_queue *gdma_queue)
+ {
+ 	struct mana_cq *cq = context;
+-	u8 arm_bit;
+ 	int w;
+ 
+ 	WARN_ON_ONCE(cq->gdma_cq != gdma_queue);
+@@ -1322,16 +1321,23 @@ static int mana_cq_handler(void *context, struct gdma_queue *gdma_queue)
+ 		mana_poll_tx_cq(cq);
+ 
+ 	w = cq->work_done;
+-
+-	if (w < cq->budget &&
+-	    napi_complete_done(&cq->napi, w)) {
+-		arm_bit = SET_ARM_BIT;
+-	} else {
+-		arm_bit = 0;
++	cq->work_done_since_doorbell += w;
++
++	if (w < cq->budget) {
++		mana_gd_ring_cq(gdma_queue, SET_ARM_BIT);
++		cq->work_done_since_doorbell = 0;
++		napi_complete_done(&cq->napi, w);
++	} else if (cq->work_done_since_doorbell >
++		   cq->gdma_cq->queue_size / COMP_ENTRY_SIZE * 4) {
++		/* MANA hardware requires at least one doorbell ring every 8
++		 * wraparounds of CQ even if there is no need to arm the CQ.
++		 * This driver rings the doorbell as soon as we have exceeded
++		 * 4 wraparounds.
++		 */
++		mana_gd_ring_cq(gdma_queue, 0);
++		cq->work_done_since_doorbell = 0;
  	}
+ 
+-	mana_gd_ring_cq(gdma_queue, arm_bit);
+-
+ 	return w;
+ }
  
 -- 
 2.43.0
