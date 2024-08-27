@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-70496-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70778-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8B4D960E67
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:48:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41376961000
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:05:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 271081C232B9
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:48:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 70FAB1C23124
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:05:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A6551C57B3;
-	Tue, 27 Aug 2024 14:48:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAD151CCB2B;
+	Tue, 27 Aug 2024 15:03:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hjd5mRfA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GK7f2zKa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16EB6DDC1;
-	Tue, 27 Aug 2024 14:48:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66E341CC889;
+	Tue, 27 Aug 2024 15:03:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770100; cv=none; b=gGPAKZvASBAfIjR/GG6bBp4slVf1wgUyKOaaUIvNt6NxgGPZ3jYuwRBBKF+Cn3TogpXr22uq0msB8ceNEL1UeKDF2UkWTBQuLiw6akFhcmVe+nqdjHF4mnU5oCjEB/PJ2XNDyqg9lQv36J01G1SqxcPZ35mBCGd1x5Xez42Hjec=
+	t=1724771032; cv=none; b=T/KWEu0Wv8em+OPnU/KPTXFU/Bm9UHtYq4iFzP9MBOaEpCW4lOfsmhusQGfBtTZcgk6HXcWgLYimwEUBHPpGlBtMMsAp/2E2hK5bWCqy5WQOHtd9Ml962Hs4ob9yd10dmXc+nuXtTYFAnwU+FAvyywGWtiSgdV4VrQ7WXbWis6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770100; c=relaxed/simple;
-	bh=5JGCJNP9fyyO83Y1pU6IIdHu1LF1isQoUKT1v5buies=;
+	s=arc-20240116; t=1724771032; c=relaxed/simple;
+	bh=buQOto4HuRrTvmXxNu6xR8GD0yECdJyikGL4adkQr8Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GrGYjwePXj3i8FBod06cqDiOv40t9QcGdMKfbWTPI2gnYs1Rbq16JgUFT2+4gC+Ri8Wmz3MyPL9/B7pX5WOF/wN3vHQ1TtMOCMeVnhdETE27AZl8LtjYZEO0F5GKgqqL9ZQpiFCej8dWPiMkjJmMZFSzwpW6z0w8FEoNgnoLdTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hjd5mRfA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 941FCC61047;
-	Tue, 27 Aug 2024 14:48:19 +0000 (UTC)
+	 MIME-Version; b=c+Jj7j27koXMpw/zYokZV6rdBJXOVV5am1IPXS+0AMAU2Xzhbdv9Fk+Jy/1dL5fgpbfybcxhiOyxCjUv/ffja/eYq2bVAZt2eBPQByanpwVbwGBs790LbzBFmgVeEufaQfh1KG+xAvn7bw+ZTQ64gXFIUkzIU0qTfXg4TYD5eWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GK7f2zKa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C25F9C6104C;
+	Tue, 27 Aug 2024 15:03:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770100;
-	bh=5JGCJNP9fyyO83Y1pU6IIdHu1LF1isQoUKT1v5buies=;
+	s=korg; t=1724771032;
+	bh=buQOto4HuRrTvmXxNu6xR8GD0yECdJyikGL4adkQr8Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hjd5mRfA2IOkNPI0Tx0Q9xsc0pHXgojgTnGhHttkvWtFIzzqZ9g0mXwQa+AToql0H
-	 ETtp7a5VsFO4gGoRVCMzQ6bqpGPQKau3W4GaMLW6l3Q44J5XKKuliUM/HDMitO+pPv
-	 4FYkvp6HvQOteHwjbhN3dQEJUSVypRbHINRFlKwg=
+	b=GK7f2zKa+WntB9TlytU2uH8ykW7zr9Lyo+k1yKgF4PNUsrjeVxPH99wruJ1/wjWfY
+	 ALlIHuNwOjuXpG5ScXOdy1iHtdxiHUcyOFqXThaEIMBs74YH4EyjkZcAkERELG0Y7Y
+	 Wp9OvAGtoOcOxL1fO7D6P7FMixyDcWyYqrR5TRds=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mukesh Sisodiya <mukesh.sisodiya@intel.com>,
-	Gregory Greenman <gregory.greenman@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 128/341] wifi: iwlwifi: fw: Fix debugfs command sending
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Zdenek Kabelac <zkabelac@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>
+Subject: [PATCH 6.10 035/273] dm persistent data: fix memory allocation failure
 Date: Tue, 27 Aug 2024 16:35:59 +0200
-Message-ID: <20240827143848.287146671@linuxfoundation.org>
+Message-ID: <20240827143834.731952145@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-[ Upstream commit 048449fc666d736a1a17d950fde0b5c5c8fd10cc ]
+commit faada2174c08662ae98b439c69efe3e79382c538 upstream.
 
-During debugfs command handling transport function is used directly,
-this bypasses the locking used by runtime operation function
-and leads to a kernel warning when two commands are
-sent in parallel.
+kmalloc is unreliable when allocating more than 8 pages of memory. It may
+fail when there is plenty of free memory but the memory is fragmented.
+Zdenek Kabelac observed such failure in his tests.
 
-Fix it by using runtime operations function when sending
-debugfs command.
+This commit changes kmalloc to kvmalloc - kvmalloc will fall back to
+vmalloc if the large allocation fails.
 
-Signed-off-by: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20231004123422.4f80ac90658a.Ia1dfa1195c919f3002fe08db3eefbd2bfa921bbf@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Reported-by: Zdenek Kabelac <zkabelac@redhat.com>
+Reviewed-by: Mike Snitzer <snitzer@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/debugfs.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/md/persistent-data/dm-space-map-metadata.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c b/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
-index 3cdbc6ac7ae5d..3356e36e2af73 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
-@@ -141,7 +141,11 @@ static int iwl_dbgfs_enabled_severities_write(struct iwl_fw_runtime *fwrt,
+--- a/drivers/md/persistent-data/dm-space-map-metadata.c
++++ b/drivers/md/persistent-data/dm-space-map-metadata.c
+@@ -277,7 +277,7 @@ static void sm_metadata_destroy(struct d
+ {
+ 	struct sm_metadata *smm = container_of(sm, struct sm_metadata, sm);
  
- 	event_cfg.enabled_severities = cpu_to_le32(enabled_severities);
+-	kfree(smm);
++	kvfree(smm);
+ }
  
--	ret = iwl_trans_send_cmd(fwrt->trans, &hcmd);
-+	if (fwrt->ops && fwrt->ops->send_hcmd)
-+		ret = fwrt->ops->send_hcmd(fwrt->ops_ctx, &hcmd);
-+	else
-+		ret = -EPERM;
-+
- 	IWL_INFO(fwrt,
- 		 "sent host event cfg with enabled_severities: %u, ret: %d\n",
- 		 enabled_severities, ret);
--- 
-2.43.0
-
+ static int sm_metadata_get_nr_blocks(struct dm_space_map *sm, dm_block_t *count)
+@@ -772,7 +772,7 @@ struct dm_space_map *dm_sm_metadata_init
+ {
+ 	struct sm_metadata *smm;
+ 
+-	smm = kmalloc(sizeof(*smm), GFP_KERNEL);
++	smm = kvmalloc(sizeof(*smm), GFP_KERNEL);
+ 	if (!smm)
+ 		return ERR_PTR(-ENOMEM);
+ 
 
 
 
