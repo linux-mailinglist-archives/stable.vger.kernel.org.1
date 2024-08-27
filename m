@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-70568-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71110-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10E43960ED2
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:52:57 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 599F69611AE
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:22:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 434981C23397
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:52:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B3C0DB259A7
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:22:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D23F11C57BD;
-	Tue, 27 Aug 2024 14:52:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 556FB1BC073;
+	Tue, 27 Aug 2024 15:22:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yHZlu7O3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c/fZCT+o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D02F38DC7;
-	Tue, 27 Aug 2024 14:52:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1474F1A072D;
+	Tue, 27 Aug 2024 15:22:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770339; cv=none; b=bsVSL5dEl1KK23t3flOxNWrWKPZ7UCK7TD1x8O8frs4Y5hIDLdiyxCwkkv5fbgC72WzmjImGwKTAN9wWaSDtN+EbGF3Yj1fGV7bgwkJIRuayeH6TEmPCJXDZ2j4EeR4zEkkGtaTSuSzNtQne9A6PJLJwFKv1FwebGiTyaRkaQWg=
+	t=1724772134; cv=none; b=hel0wfFJ38OMQkx153SXH1GDAC2gYZlhmQ/iPzuqWgBI5gIyWV9NQ68BfiKWU44Y8ooBi3Jkz60rso5Tee3nwSD3he4RtyfB7KWSar0j7QAIvvp6mJNjn3YF0iUoZKZKRXFKMlpse6kEBnkD8wF+DXAiOqLvfJW0wrOztD6TUEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770339; c=relaxed/simple;
-	bh=fzNjaX2gKKCB7mlz9d7xrlb5UfIgtwXS08EYubzfLLY=;
+	s=arc-20240116; t=1724772134; c=relaxed/simple;
+	bh=Hyzkf3KI0jcJR6a4nJ4Nio8UFaMMpyiQL1xbqN2sRDk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NnylPpdsQMC/3USbnJAbdQllJixMn3O/wU9AL2rSA8fxVFGzRg/dLvlQetOKPZdVJ/a1ay96TKTePPZPoNi1DUc/H1XayQAVp2SxHBV2nhv8cDjdWFMVInEfK1JxrKPfpm9LXd/CCE56HSRHoWzvW0QkcUtAkIQ0XpS+ja914/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yHZlu7O3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7144C4DE1E;
-	Tue, 27 Aug 2024 14:52:18 +0000 (UTC)
+	 MIME-Version; b=uWG9dPoOzwQ86UhxUZj4YUFgB+S38xz+KF3nWp1UIGT2BIVOrq0Kxsq9F12rJAstHzQi1OKOeZqsFDIpo+uXkq+zZ9tkql4Ebdcvz0y83CH1IslP3vnK3KqYzFkgDqXHTOwK+GM+8pYx5nihzuUzmCDn6/w/lI0eq9AaiAVGIJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c/fZCT+o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39745C4FE0B;
+	Tue, 27 Aug 2024 15:22:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770339;
-	bh=fzNjaX2gKKCB7mlz9d7xrlb5UfIgtwXS08EYubzfLLY=;
+	s=korg; t=1724772133;
+	bh=Hyzkf3KI0jcJR6a4nJ4Nio8UFaMMpyiQL1xbqN2sRDk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yHZlu7O355+lj8J1jGWw0qM9XMMA3Ibo8ml9uXHUXK9ffxkO4VEPYzkzw1e0mo51R
-	 njHI1SHvo6ezI/PdvsMICs0iGXg0bRaK6tq+CXe8JtmfoPmSLmuy9spPBKyIB4eLBv
-	 mbtjU16ZUa3CyuuQgIY1sQCdtNSehbirBZHJCFII=
+	b=c/fZCT+oa87mMnTf3dBMWKgcH1n7NlwoVoXwwSd+CMJgpj/r4fokhVoQzhWKjeSw/
+	 9odMWz452ftUJzYMOcRpjPeZWzHGdZyP2I7Q7naYKV1/tn8dYPGY+qiv5D2NYlfx9d
+	 bj7XdVCtbpdD0Zp7wNmKARzGvV49rO3zi7tba7+I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jian Shen <shenjian15@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Sunil Goutham <sgoutham@marvell.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 200/341] net: hns3: add checking for vf id of mailbox
+Subject: [PATCH 6.1 123/321] i3c: mipi-i3c-hci: Remove BUG() when Ring Abort request times out
 Date: Tue, 27 Aug 2024 16:37:11 +0200
-Message-ID: <20240827143851.025007304@linuxfoundation.org>
+Message-ID: <20240827143842.926807744@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jian Shen <shenjian15@huawei.com>
+From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
 
-[ Upstream commit 4e2969a0d6a7549bc0bc1ebc990588b622c4443d ]
+[ Upstream commit 361acacaf7c706223968c8186f0d3b6e214e7403 ]
 
-Add checking for vf id of mailbox, in order to avoid array
-out-of-bounds risk.
+Ring Abort request will timeout in case there is an error in the Host
+Controller interrupt delivery or Ring Header configuration. Using BUG()
+makes hard to debug those cases.
 
-Signed-off-by: Jian Shen <shenjian15@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Reviewed-by: Sunil Goutham <sgoutham@marvell.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Make it less severe and turn BUG() to WARN_ON().
+
+Signed-off-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Link: https://lore.kernel.org/r/20230921055704.1087277-6-jarkko.nikula@linux.intel.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mbx.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/i3c/master/mipi-i3c-hci/dma.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mbx.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mbx.c
-index 877feee53804f..61e155c4d441e 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mbx.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mbx.c
-@@ -1124,10 +1124,11 @@ void hclge_mbx_handler(struct hclge_dev *hdev)
- 		req = (struct hclge_mbx_vf_to_pf_cmd *)desc->data;
+diff --git a/drivers/i3c/master/mipi-i3c-hci/dma.c b/drivers/i3c/master/mipi-i3c-hci/dma.c
+index 71b5dbe45c45c..a28ff177022ce 100644
+--- a/drivers/i3c/master/mipi-i3c-hci/dma.c
++++ b/drivers/i3c/master/mipi-i3c-hci/dma.c
+@@ -450,10 +450,9 @@ static bool hci_dma_dequeue_xfer(struct i3c_hci *hci,
+ 		/*
+ 		 * We're deep in it if ever this condition is ever met.
+ 		 * Hardware might still be writing to memory, etc.
+-		 * Better suspend the world than risking silent corruption.
+ 		 */
+ 		dev_crit(&hci->master.dev, "unable to abort the ring\n");
+-		BUG();
++		WARN_ON(1);
+ 	}
  
- 		flag = le16_to_cpu(crq->desc[crq->next_to_use].flag);
--		if (unlikely(!hnae3_get_bit(flag, HCLGE_CMDQ_RX_OUTVLD_B))) {
-+		if (unlikely(!hnae3_get_bit(flag, HCLGE_CMDQ_RX_OUTVLD_B) ||
-+			     req->mbx_src_vfid > hdev->num_req_vfs)) {
- 			dev_warn(&hdev->pdev->dev,
--				 "dropped invalid mailbox message, code = %u\n",
--				 req->msg.code);
-+				 "dropped invalid mailbox message, code = %u, vfid = %u\n",
-+				 req->msg.code, req->mbx_src_vfid);
- 
- 			/* dropping/not processing this invalid message */
- 			crq->desc[crq->next_to_use].flag = 0;
+ 	for (i = 0; i < n; i++) {
 -- 
 2.43.0
 
