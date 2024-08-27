@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-70485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71056-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E715960E5D
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:48:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86DDD961170
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:20:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1A7571F2472B
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:48:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA8691C237E2
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:20:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE4131C6F6C;
-	Tue, 27 Aug 2024 14:47:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B2061C7B63;
+	Tue, 27 Aug 2024 15:19:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wA7IPGe9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A8ozKVna"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AD7A1C4EF9;
-	Tue, 27 Aug 2024 14:47:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A3011C688E;
+	Tue, 27 Aug 2024 15:19:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770063; cv=none; b=TYGFtIpKM9aV/vQs+ErBDNEr/9GlWy+/dPxGfeHDsoMgGzS40q9W5jWrdzwFJpldOsMGD0+n2FgCSoLaPb2jgc7+ksxZLkxrdzNwhxiomr0MJOgptfx9ElcJRBspkEbfJSIZP4gWeiOTXQPu3l/SO5WTvDP0s9UBLOtn+iViGv4=
+	t=1724771952; cv=none; b=qEkeXMue0ERe4DhlSuNrhTcQWHUyQDAJHTxyvXKZjasARaeI/SYcH5j1keYL5jENQiYI3BPaePuQYuBXMe49R273r7xBSrUyJ0qk069tZYXcEycbe6Nyjf1O8oCxlm7tgWfld9vhK0S3ltADju8jn05cEdrEoWTJCT2eC6imCNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770063; c=relaxed/simple;
-	bh=Tz+9PWVguUx9sXKc3LHUtbgPNKKcO6SD73exaz3w2Fo=;
+	s=arc-20240116; t=1724771952; c=relaxed/simple;
+	bh=EtnsMetHgYP7vZeliFDknJiff2twx3mveX2PCR9Q2h0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hq7nDHuAeA8fAygfMTvWXLg57gGOWxxaTO7KlLhvRjAASho9EWGUqvnz7ljDA0W8bE+YOG0puMBYBGKxfVRVc59MdwB6sc3Ljqx8QUUkzBzFpmu7djzwT7Ey7al5GTov6lUYuu/8EH7d8AieRmOOgPs+tGELm+pCr3jKq/XjGuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wA7IPGe9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5C0DC61040;
-	Tue, 27 Aug 2024 14:47:42 +0000 (UTC)
+	 MIME-Version; b=lOu6RAFVkVVeZyCcA2EolWJZwGK/tnpu9KLNem3DrmihjyVfxRpSwgEuxMDos3gzt9Vl7rubZhhe031UMmxZSEf47sK6+KygTHpN42yo1tC+hcvWLIkJVxuUoSUXxJYVFQlgJEHChAtBwReRVLBE5d/i/tbYjmnXoZ1WffU80eo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A8ozKVna; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBE82C61067;
+	Tue, 27 Aug 2024 15:19:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770063;
-	bh=Tz+9PWVguUx9sXKc3LHUtbgPNKKcO6SD73exaz3w2Fo=;
+	s=korg; t=1724771952;
+	bh=EtnsMetHgYP7vZeliFDknJiff2twx3mveX2PCR9Q2h0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wA7IPGe9gYcMKsyngFFLY1NowOTWDWbXbmEPZQ6gmrAs/l3u7aej24Z0tPY7l3mB8
-	 s/9HvyneicEpDif20bA/bMTpUbvGIW5M2b9emSRUFVFU959NH1p4wmmDujLxpbFoqI
-	 mnmX0MnJK0g+RHmF06nagJuBjR+JRBtlhjAc5ovQ=
+	b=A8ozKVnapBb62xU0HKi97EVqyc6mUUFq8KC6X/0WC27YOn/fC146Y6bbr/luKcqIW
+	 JmwldmE+9JkYx1HGDkQcr5TQkJpUuoF7OJpzdvxbUo0XI4CT8cre3Rgbb1rVYIUBN/
+	 hbm+m46ceWkPsVt12nOSvsdN5J+yOmFfGUMtaAec=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ofir Bitton <obitton@habana.ai>,
-	Oded Gabbay <ogabbay@kernel.org>,
+	syzbot+8b2a08dfbd25fd933d75@syzkaller.appspotmail.com,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 115/341] accel/habanalabs/gaudi2: unsecure tpc count registers
-Date: Tue, 27 Aug 2024 16:35:46 +0200
-Message-ID: <20240827143847.789065628@linuxfoundation.org>
+Subject: [PATCH 6.1 039/321] bpf: drop unnecessary user-triggerable WARN_ONCE in verifierl log
+Date: Tue, 27 Aug 2024 16:35:47 +0200
+Message-ID: <20240827143839.713603791@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,36 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ofir Bitton <obitton@habana.ai>
+From: Andrii Nakryiko <andrii@kernel.org>
 
-[ Upstream commit 1e3a78270b4ec1c8c177eb310c08128d52137a69 ]
+[ Upstream commit cff36398bd4c7d322d424433db437f3c3391c491 ]
 
-As TPC kernels now must use those registers we unsecure them.
+It's trivial for user to trigger "verifier log line truncated" warning,
+as verifier has a fixed-sized buffer of 1024 bytes (as of now), and there are at
+least two pieces of user-provided information that can be output through
+this buffer, and both can be arbitrarily sized by user:
+  - BTF names;
+  - BTF.ext source code lines strings.
 
-Signed-off-by: Ofir Bitton <obitton@habana.ai>
-Reviewed-by: Oded Gabbay <ogabbay@kernel.org>
-Signed-off-by: Oded Gabbay <ogabbay@kernel.org>
+Verifier log buffer should be properly sized for typical verifier state
+output. But it's sort-of expected that this buffer won't be long enough
+in some circumstances. So let's drop the check. In any case code will
+work correctly, at worst truncating a part of a single line output.
+
+Reported-by: syzbot+8b2a08dfbd25fd933d75@syzkaller.appspotmail.com
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/r/20230516180409.3549088-1-andrii@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/habanalabs/gaudi2/gaudi2_security.c | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/bpf/log.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/accel/habanalabs/gaudi2/gaudi2_security.c b/drivers/accel/habanalabs/gaudi2/gaudi2_security.c
-index 2742b1f801eb2..908710524dc9e 100644
---- a/drivers/accel/habanalabs/gaudi2/gaudi2_security.c
-+++ b/drivers/accel/habanalabs/gaudi2/gaudi2_security.c
-@@ -1601,6 +1601,7 @@ static const u32 gaudi2_pb_dcr0_tpc0_unsecured_regs[] = {
- 	mmDCORE0_TPC0_CFG_KERNEL_SRF_30,
- 	mmDCORE0_TPC0_CFG_KERNEL_SRF_31,
- 	mmDCORE0_TPC0_CFG_TPC_SB_L0CD,
-+	mmDCORE0_TPC0_CFG_TPC_COUNT,
- 	mmDCORE0_TPC0_CFG_TPC_ID,
- 	mmDCORE0_TPC0_CFG_QM_KERNEL_ID_INC,
- 	mmDCORE0_TPC0_CFG_QM_TID_BASE_SIZE_HIGH_DIM_0,
+diff --git a/kernel/bpf/log.c b/kernel/bpf/log.c
+index 920061e38d2e1..cd1b7113fbfd0 100644
+--- a/kernel/bpf/log.c
++++ b/kernel/bpf/log.c
+@@ -22,9 +22,6 @@ void bpf_verifier_vlog(struct bpf_verifier_log *log, const char *fmt,
+ 
+ 	n = vscnprintf(log->kbuf, BPF_VERIFIER_TMP_LOG_SIZE, fmt, args);
+ 
+-	WARN_ONCE(n >= BPF_VERIFIER_TMP_LOG_SIZE - 1,
+-		  "verifier log line truncated - local buffer too short\n");
+-
+ 	if (log->level == BPF_LOG_KERNEL) {
+ 		bool newline = n > 0 && log->kbuf[n - 1] == '\n';
+ 
 -- 
 2.43.0
 
