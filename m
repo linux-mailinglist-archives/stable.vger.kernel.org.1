@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-70616-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71189-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2993E960F1A
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:56:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95387961235
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:29:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 546521C23447
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:55:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52E322818EB
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:29:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 552101BFE04;
-	Tue, 27 Aug 2024 14:55:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DEB61CCB21;
+	Tue, 27 Aug 2024 15:26:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WjZ227Db"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o7lTq4fT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 107211C86F2;
-	Tue, 27 Aug 2024 14:55:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1924B1CC14E;
+	Tue, 27 Aug 2024 15:26:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770501; cv=none; b=sToFl5EeMezQqu5adcUql4ZQW6nFEQ6e4zH2aToCFm3XyU74gGUgJdVr9s85RudMffucJ2ANN4SLCFdPE/VYxbghLbKMKsYMrKoVwkliTHUsc3RWuiHLlzyjxoDRfSp0a7k1d60A5UfjjbY8WeKXz47B5e4Y8hkZit+QBT48PGE=
+	t=1724772393; cv=none; b=dondSFz79AuOJxltq4IQKATJ1BuvuwfsvYIeVGVZGhrXBPFzycNvp/+npgsvJYJNYvkHymps1AMSV1mdkemklwZ4d/mubGkxkuI1rTfuenJD2D+o0N9E7TJZeIUvyYz838s/f2kMMyNJz1097L2ekkRZISyZ8PFY3HFKa3G7p0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770501; c=relaxed/simple;
-	bh=R6yYvf1bImaedV2oIYPRop+XEKn91xw4JgqoMO5fadk=;
+	s=arc-20240116; t=1724772393; c=relaxed/simple;
+	bh=x6EhfmCMvrVsJav+rzYRP4cxbmcwMAjfY3ccv2cS+yo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=otOo2CbTZY7lcdNdfgYSeZkC4h7kATnWV78UauyqIDsubhsL58e9jIFwEMZNt389T3Pa1Itb08M18Mb3PrgHfJzhMB+nXcU4gLb+1HFMmATBInL7JAlIR6KW6AS8kufaDcV9sNyq6sr4Db8Wy03Ixq3fG9Sw+Pt4CaFvHQNNl7I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WjZ227Db; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A159C4E690;
-	Tue, 27 Aug 2024 14:55:00 +0000 (UTC)
+	 MIME-Version; b=rtmM0iImbrPKy5VYNnk85060Du6Dozpg1LVyFvBYm4XD7Ey9hr4Jc58kgxrQdcQLGfSGcP+fHOBlierhsJehfeu3A5OJm4uwlcpOdGpM+9N5Ykvg5LCmFJw3J0/yrdd/8KP1UBP0jIV5IKlY0cm8LbX9e/mpudyXJ3NFkY1016U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o7lTq4fT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95012C4DE14;
+	Tue, 27 Aug 2024 15:26:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770500;
-	bh=R6yYvf1bImaedV2oIYPRop+XEKn91xw4JgqoMO5fadk=;
+	s=korg; t=1724772393;
+	bh=x6EhfmCMvrVsJav+rzYRP4cxbmcwMAjfY3ccv2cS+yo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WjZ227DblCMFI/dwX+FKi6kqxUPqXdAzaXcKrJiE71zl4SIX9hh/2O7K7biurpZ5a
-	 /nrBkHKiT2QMS/TAA+zfWKO774kdeLqevmniYMA8pTv3o2/zZZseuGX34oPGSfa4i+
-	 rOyufnLAmYKU+om9Z9/t7eRMZh9PjbdwcEN1XYB4=
+	b=o7lTq4fTqhyrBLOt6iSlK0peNBnAAaRmXnImBnhTFP4ObxXCBcTt/ZGz9TYYnSbCD
+	 Ff7PuBNIbSz4N/Lhhj51ApFh1V7jWZ95sfTUXeXSqP9chJfGW1Ln/1WvurFSKzmZ2q
+	 qezjSptvQGdjfGbD8miBsd6peK/PAECF5htoAe60=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Waiman Long <longman@redhat.com>,
+	Costa Shulyupin <costa.shul@redhat.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 247/341] selftests: udpgro: report error when receive failed
+Subject: [PATCH 6.1 170/321] hrtimer: Select housekeeping CPU during migration
 Date: Tue, 27 Aug 2024 16:37:58 +0200
-Message-ID: <20240827143852.805752915@linuxfoundation.org>
+Message-ID: <20240827143844.702218237@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,140 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Costa Shulyupin <costa.shul@redhat.com>
 
-[ Upstream commit 7167395a4be7930ecac6a33b4e54d7e3dd9ee209 ]
+[ Upstream commit 56c2cb10120894be40c40a9bf0ce798da14c50f6 ]
 
-Currently, we only check the latest senders's exit code. If the receiver
-report failed, it is not recoreded. Fix it by checking the exit code
-of all the involved processes.
+During CPU-down hotplug, hrtimers may migrate to isolated CPUs,
+compromising CPU isolation.
 
-Before:
-  bad GRO lookup       ok
-  multiple GRO socks   ./udpgso_bench_rx: recv: bad packet len, got 1452, expected 14520
+Address this issue by masking valid CPUs for hrtimers using
+housekeeping_cpumask(HK_TYPE_TIMER).
 
- ./udpgso_bench_rx: recv: bad packet len, got 1452, expected 14520
-
- failed
- $ echo $?
- 0
-
-After:
-  bad GRO lookup       ok
-  multiple GRO socks   ./udpgso_bench_rx: recv: bad packet len, got 1452, expected 14520
-
- ./udpgso_bench_rx: recv: bad packet len, got 1452, expected 14520
-
- failed
- $ echo $?
- 1
-
-Fixes: 3327a9c46352 ("selftests: add functionals test for UDP GRO")
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Suggested-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Costa Shulyupin <costa.shul@redhat.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Waiman Long <longman@redhat.com>
+Link: https://lore.kernel.org/r/20240222200856.569036-1-costa.shul@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/udpgro.sh | 44 ++++++++++++++++-----------
- 1 file changed, 27 insertions(+), 17 deletions(-)
+ kernel/time/hrtimer.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/net/udpgro.sh b/tools/testing/selftests/net/udpgro.sh
-index 8802604148dda..53341c8135e88 100755
---- a/tools/testing/selftests/net/udpgro.sh
-+++ b/tools/testing/selftests/net/udpgro.sh
-@@ -46,17 +46,19 @@ run_one() {
- 	local -r all="$@"
- 	local -r tx_args=${all%rx*}
- 	local -r rx_args=${all#*rx}
-+	local ret=0
+diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
+index 9bb88836c42e6..314fb7598a879 100644
+--- a/kernel/time/hrtimer.c
++++ b/kernel/time/hrtimer.c
+@@ -38,6 +38,7 @@
+ #include <linux/sched/deadline.h>
+ #include <linux/sched/nohz.h>
+ #include <linux/sched/debug.h>
++#include <linux/sched/isolation.h>
+ #include <linux/timer.h>
+ #include <linux/freezer.h>
+ #include <linux/compat.h>
+@@ -2220,8 +2221,8 @@ static void migrate_hrtimer_list(struct hrtimer_clock_base *old_base,
  
- 	cfg_veth
+ int hrtimers_cpu_dying(unsigned int dying_cpu)
+ {
++	int i, ncpu = cpumask_any_and(cpu_active_mask, housekeeping_cpumask(HK_TYPE_TIMER));
+ 	struct hrtimer_cpu_base *old_base, *new_base;
+-	int i, ncpu = cpumask_first(cpu_active_mask);
  
--	ip netns exec "${PEER_NS}" ./udpgso_bench_rx -C 1000 -R 10 ${rx_args} && \
--		echo "ok" || \
--		echo "failed" &
-+	ip netns exec "${PEER_NS}" ./udpgso_bench_rx -C 1000 -R 10 ${rx_args} &
-+	local PID1=$!
- 
- 	wait_local_port_listen ${PEER_NS} 8000 udp
- 	./udpgso_bench_tx ${tx_args}
--	ret=$?
--	wait $(jobs -p)
-+	check_err $?
-+	wait ${PID1}
-+	check_err $?
-+	[ "$ret" -eq 0 ] && echo "ok" || echo "failed"
- 	return $ret
- }
- 
-@@ -73,6 +75,7 @@ run_one_nat() {
- 	local -r all="$@"
- 	local -r tx_args=${all%rx*}
- 	local -r rx_args=${all#*rx}
-+	local ret=0
- 
- 	if [[ ${tx_args} = *-4* ]]; then
- 		ipt_cmd=iptables
-@@ -93,16 +96,17 @@ run_one_nat() {
- 	# ... so that GRO will match the UDP_GRO enabled socket, but packets
- 	# will land on the 'plain' one
- 	ip netns exec "${PEER_NS}" ./udpgso_bench_rx -G ${family} -b ${addr1} -n 0 &
--	pid=$!
--	ip netns exec "${PEER_NS}" ./udpgso_bench_rx -C 1000 -R 10 ${family} -b ${addr2%/*} ${rx_args} && \
--		echo "ok" || \
--		echo "failed"&
-+	local PID1=$!
-+	ip netns exec "${PEER_NS}" ./udpgso_bench_rx -C 1000 -R 10 ${family} -b ${addr2%/*} ${rx_args} &
-+	local PID2=$!
- 
- 	wait_local_port_listen "${PEER_NS}" 8000 udp
- 	./udpgso_bench_tx ${tx_args}
--	ret=$?
--	kill -INT $pid
--	wait $(jobs -p)
-+	check_err $?
-+	kill -INT ${PID1}
-+	wait ${PID2}
-+	check_err $?
-+	[ "$ret" -eq 0 ] && echo "ok" || echo "failed"
- 	return $ret
- }
- 
-@@ -111,20 +115,26 @@ run_one_2sock() {
- 	local -r all="$@"
- 	local -r tx_args=${all%rx*}
- 	local -r rx_args=${all#*rx}
-+	local ret=0
- 
- 	cfg_veth
- 
- 	ip netns exec "${PEER_NS}" ./udpgso_bench_rx -C 1000 -R 10 ${rx_args} -p 12345 &
--	ip netns exec "${PEER_NS}" ./udpgso_bench_rx -C 2000 -R 10 ${rx_args} && \
--		echo "ok" || \
--		echo "failed" &
-+	local PID1=$!
-+	ip netns exec "${PEER_NS}" ./udpgso_bench_rx -C 2000 -R 10 ${rx_args} &
-+	local PID2=$!
- 
- 	wait_local_port_listen "${PEER_NS}" 12345 udp
- 	./udpgso_bench_tx ${tx_args} -p 12345
-+	check_err $?
- 	wait_local_port_listen "${PEER_NS}" 8000 udp
- 	./udpgso_bench_tx ${tx_args}
--	ret=$?
--	wait $(jobs -p)
-+	check_err $?
-+	wait ${PID1}
-+	check_err $?
-+	wait ${PID2}
-+	check_err $?
-+	[ "$ret" -eq 0 ] && echo "ok" || echo "failed"
- 	return $ret
- }
+ 	tick_cancel_sched_timer(dying_cpu);
  
 -- 
 2.43.0
