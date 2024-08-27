@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-71124-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70553-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8B4D9611C4
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:23:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCC00960EBC
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:51:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F2471F21757
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:23:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 76FF5B253C8
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:51:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8801B1CC142;
-	Tue, 27 Aug 2024 15:22:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5088F1C57A3;
+	Tue, 27 Aug 2024 14:51:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0novR2mA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KV0E9RFb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42D0D1C7B63;
-	Tue, 27 Aug 2024 15:22:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C30538DC7;
+	Tue, 27 Aug 2024 14:51:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772177; cv=none; b=o1jc8IiqBVbwnEEMj6XzV78Ir+7ifBLqePTMvD84Vb7UMkAfRScmQCtcIO695nwlUTtXySzQdv0IOEhPyQx8AyTfWyqsXdFpbkN3+qEwHnH5awuTOo2qWOrWM2MY+6eZ5N/6OLRYOexI1Zd0Bro+TfeTvEdXXB4xSehmmH+Wnfk=
+	t=1724770290; cv=none; b=S/4oJ+lKq5S5jA0L3sKiGzW5epXzx7sy0/hs7wtDrL2EqzUA/rUrivC42M7C27AbUDOAv1s35gAPK+HnqfF+L310yVku0q7+79X6yqldFTA2Ihp6v8I8lYVez+P4Hsyr70nEHf+bnJ/glsjVa1t88wpb95BIIcC7EuQ+vur3HuE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772177; c=relaxed/simple;
-	bh=/AHrWogkmcZ2HqdhHt2gbXhLocKLF7qgJmENgJbY73c=;
+	s=arc-20240116; t=1724770290; c=relaxed/simple;
+	bh=izTJHPAfHoaAKQXOVNPkNbZEFLy3G2CnHlX6avC1tNM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kE2ew6vbDhX267x3qahUDQEONiJ2QtMJ09mbwFvty5e9tk6c2AsDYyAqHHnPWRXqsXU5v4bQou97dKjlp8imPwO03x2J9F6iqDWwQXMB0qAl4Sx3szyGXNV8hmFgIJqLSvmlMdmxztwXPTQzhmHmD+b3t/5oGYFplyBpyb8vL0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0novR2mA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52177C6104A;
-	Tue, 27 Aug 2024 15:22:56 +0000 (UTC)
+	 MIME-Version; b=kGGbD8Yww86ijWA+6Mwap1tUVqYEWB/iKsqirBpQFx7fK4O9V3eJqim8h/WhlM6Ly4y5u/tkHxguNh7vhvc/cOt22aYlLYTwlKG0xFy/QaxrYXH9r44HeKTrWd9JTL8nWRfrfG1hRT65IbyPlSU7PG8zFQ3KxBf5XmMfNJNBdWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KV0E9RFb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DE7CC4DE03;
+	Tue, 27 Aug 2024 14:51:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772176;
-	bh=/AHrWogkmcZ2HqdhHt2gbXhLocKLF7qgJmENgJbY73c=;
+	s=korg; t=1724770289;
+	bh=izTJHPAfHoaAKQXOVNPkNbZEFLy3G2CnHlX6avC1tNM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0novR2mAUZRDKyC2LfuNP732CMzYYunI110lLfbyIlUP2cyVLFXDwogDR83nRxcSq
-	 OG2EQf9tMUS2dolNPSOH6S9nXwdDluDt57XkeDnw3YwRTcKaCQtS4AVBYuG9EF5Suc
-	 Q+wRUIm19QrCiJJxgvBlupf2VGPNZ7tJmTV1TK38=
+	b=KV0E9RFb8iYOT403SGwz9Rr0Cte+6fqlW5ElLi8wHPIij3fVO5MlkifgTi8Dyh4zO
+	 7pOVgI8OM2HP1ONlOVG2TZkChASHCHTQJTa1UQES8a4RxdufbUpi2eaBAv3XU2/jlD
+	 ncH9BqMWpounic8azZp1GlsF2gHPG0T7b0bb6FcU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Phil Sutter <phil@nwl.cc>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 106/321] netfilter: nf_tables: Add locking for NFT_MSG_GETOBJ_RESET requests
+Subject: [PATCH 6.6 183/341] powerpc/boot: Only free if realloc() succeeds
 Date: Tue, 27 Aug 2024 16:36:54 +0200
-Message-ID: <20240827143842.283173208@linuxfoundation.org>
+Message-ID: <20240827143850.376737128@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,157 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phil Sutter <phil@nwl.cc>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-[ Upstream commit bd662c4218f9648e888bebde9468146965f3f8a0 ]
+[ Upstream commit f2d5bccaca3e8c09c9b9c8485375f7bdbb2631d2 ]
 
-Objects' dump callbacks are not concurrency-safe per-se with reset bit
-set. If two CPUs perform a reset at the same time, at least counter and
-quota objects suffer from value underrun.
+simple_realloc() frees the original buffer (ptr) even if the
+reallocation failed.
 
-Prevent this by introducing dedicated locking callbacks for nfnetlink
-and the asynchronous dump handling to serialize access.
+Fix it to behave like standard realloc() and only free the original
+buffer if the reallocation succeeded.
 
-Fixes: 43da04a593d8 ("netfilter: nf_tables: atomic dump and reset for stateful objects")
-Signed-off-by: Phil Sutter <phil@nwl.cc>
-Reviewed-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240229115149.749264-1-mpe@ellerman.id.au
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 72 ++++++++++++++++++++++++++++-------
- 1 file changed, 59 insertions(+), 13 deletions(-)
+ arch/powerpc/boot/simple_alloc.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 88eacfe746810..63b7be0a95d04 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -7482,6 +7482,19 @@ static int nf_tables_dump_obj(struct sk_buff *skb, struct netlink_callback *cb)
- 	return skb->len;
- }
+diff --git a/arch/powerpc/boot/simple_alloc.c b/arch/powerpc/boot/simple_alloc.c
+index db9aaa5face3f..d07796fdf91aa 100644
+--- a/arch/powerpc/boot/simple_alloc.c
++++ b/arch/powerpc/boot/simple_alloc.c
+@@ -112,10 +112,11 @@ static void *simple_realloc(void *ptr, unsigned long size)
+ 		return ptr;
  
-+static int nf_tables_dumpreset_obj(struct sk_buff *skb,
-+				   struct netlink_callback *cb)
-+{
-+	struct nftables_pernet *nft_net = nft_pernet(sock_net(skb->sk));
-+	int ret;
-+
-+	mutex_lock(&nft_net->commit_mutex);
-+	ret = nf_tables_dump_obj(skb, cb);
-+	mutex_unlock(&nft_net->commit_mutex);
-+
-+	return ret;
-+}
-+
- static int nf_tables_dump_obj_start(struct netlink_callback *cb)
- {
- 	struct nft_obj_dump_ctx *ctx = (void *)cb->ctx;
-@@ -7498,12 +7511,18 @@ static int nf_tables_dump_obj_start(struct netlink_callback *cb)
- 	if (nla[NFTA_OBJ_TYPE])
- 		ctx->type = ntohl(nla_get_be32(nla[NFTA_OBJ_TYPE]));
- 
--	if (NFNL_MSG_TYPE(cb->nlh->nlmsg_type) == NFT_MSG_GETOBJ_RESET)
--		ctx->reset = true;
--
- 	return 0;
- }
- 
-+static int nf_tables_dumpreset_obj_start(struct netlink_callback *cb)
-+{
-+	struct nft_obj_dump_ctx *ctx = (void *)cb->ctx;
-+
-+	ctx->reset = true;
-+
-+	return nf_tables_dump_obj_start(cb);
-+}
-+
- static int nf_tables_dump_obj_done(struct netlink_callback *cb)
- {
- 	struct nft_obj_dump_ctx *ctx = (void *)cb->ctx;
-@@ -7562,18 +7581,43 @@ nf_tables_getobj_single(u32 portid, const struct nfnl_info *info,
- 
- static int nf_tables_getobj(struct sk_buff *skb, const struct nfnl_info *info,
- 			    const struct nlattr * const nla[])
-+{
-+	u32 portid = NETLINK_CB(skb).portid;
-+	struct sk_buff *skb2;
-+
-+	if (info->nlh->nlmsg_flags & NLM_F_DUMP) {
-+		struct netlink_dump_control c = {
-+			.start = nf_tables_dump_obj_start,
-+			.dump = nf_tables_dump_obj,
-+			.done = nf_tables_dump_obj_done,
-+			.module = THIS_MODULE,
-+			.data = (void *)nla,
-+		};
-+
-+		return nft_netlink_dump_start_rcu(info->sk, skb, info->nlh, &c);
+ 	new = simple_malloc(size);
+-	if (new)
++	if (new) {
+ 		memcpy(new, ptr, p->size);
++		simple_free(ptr);
 +	}
-+
-+	skb2 = nf_tables_getobj_single(portid, info, nla, false);
-+	if (IS_ERR(skb2))
-+		return PTR_ERR(skb2);
-+
-+	return nfnetlink_unicast(skb2, info->net, portid);
-+}
-+
-+static int nf_tables_getobj_reset(struct sk_buff *skb,
-+				  const struct nfnl_info *info,
-+				  const struct nlattr * const nla[])
- {
- 	struct nftables_pernet *nft_net = nft_pernet(info->net);
- 	u32 portid = NETLINK_CB(skb).portid;
- 	struct net *net = info->net;
- 	struct sk_buff *skb2;
--	bool reset = false;
- 	char *buf;
  
- 	if (info->nlh->nlmsg_flags & NLM_F_DUMP) {
- 		struct netlink_dump_control c = {
--			.start = nf_tables_dump_obj_start,
--			.dump = nf_tables_dump_obj,
-+			.start = nf_tables_dumpreset_obj_start,
-+			.dump = nf_tables_dumpreset_obj,
- 			.done = nf_tables_dump_obj_done,
- 			.module = THIS_MODULE,
- 			.data = (void *)nla,
-@@ -7582,16 +7626,18 @@ static int nf_tables_getobj(struct sk_buff *skb, const struct nfnl_info *info,
- 		return nft_netlink_dump_start_rcu(info->sk, skb, info->nlh, &c);
- 	}
+-	simple_free(ptr);
+ 	return new;
+ }
  
--	if (NFNL_MSG_TYPE(info->nlh->nlmsg_type) == NFT_MSG_GETOBJ_RESET)
--		reset = true;
-+	if (!try_module_get(THIS_MODULE))
-+		return -EINVAL;
-+	rcu_read_unlock();
-+	mutex_lock(&nft_net->commit_mutex);
-+	skb2 = nf_tables_getobj_single(portid, info, nla, true);
-+	mutex_unlock(&nft_net->commit_mutex);
-+	rcu_read_lock();
-+	module_put(THIS_MODULE);
- 
--	skb2 = nf_tables_getobj_single(portid, info, nla, reset);
- 	if (IS_ERR(skb2))
- 		return PTR_ERR(skb2);
- 
--	if (!reset)
--		return nfnetlink_unicast(skb2, net, NETLINK_CB(skb).portid);
--
- 	buf = kasprintf(GFP_ATOMIC, "%.*s:%u",
- 			nla_len(nla[NFTA_OBJ_TABLE]),
- 			(char *)nla_data(nla[NFTA_OBJ_TABLE]),
-@@ -8807,7 +8853,7 @@ static const struct nfnl_callback nf_tables_cb[NFT_MSG_MAX] = {
- 		.policy		= nft_obj_policy,
- 	},
- 	[NFT_MSG_GETOBJ_RESET] = {
--		.call		= nf_tables_getobj,
-+		.call		= nf_tables_getobj_reset,
- 		.type		= NFNL_CB_RCU,
- 		.attr_count	= NFTA_OBJ_MAX,
- 		.policy		= nft_obj_policy,
 -- 
 2.43.0
 
