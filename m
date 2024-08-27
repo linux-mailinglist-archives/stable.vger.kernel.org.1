@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-70653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71227-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03668960F5D
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:58:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61C10961269
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:31:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B452A285208
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:58:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20612282220
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:31:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCD081C6F71;
-	Tue, 27 Aug 2024 14:57:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AF5B1C93AB;
+	Tue, 27 Aug 2024 15:28:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="inxA8+Zs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oJWBI2Dj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BAEF1C6894;
-	Tue, 27 Aug 2024 14:57:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA1211D1731;
+	Tue, 27 Aug 2024 15:28:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770624; cv=none; b=WQXHThJJ578UiMXUSSQV8MdQrhnHtIUC2WRjYv10nOR2MZzJ75bo3l6z3QtwsAg/ZuwdDX0NkNCD7cuKIlPz7GTpcaZw1dnUIqUDVLnwhAdVO28D3cV9jlGrsTmpbtzR2lbp9EmugA4MBlTfQtjYNvOZbeFuDgUbkvqVfKB1PS4=
+	t=1724772517; cv=none; b=VlHdXv0zr6ZwdZCZcbbCmY5AhF+BVq6lGb7uRB8dhFrHkTuKF06iJiW/h9Vxyzp5/oc6Z3zpGBjJo8pEJhQLD/P2Ts1knKx0gDv/KEgyoC8SfKL9wS/jPXQe3VRnwhPdqu9na4qr0QCQcqOhfjrNIXy0LkiZUa/J2kmU/AO5vhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770624; c=relaxed/simple;
-	bh=dwtmbiVs8alIj2VSiFEUTBay4A1++JcghqvqbixUhwA=;
+	s=arc-20240116; t=1724772517; c=relaxed/simple;
+	bh=yuQMb2Q388Ax6PCo/TRlAw3EtxuNRffsVK343qsn3O0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rILw80i5hvVCp3q/OyzdU+OsFLI6D/TgpcSNh6RtXHSscPSevm2lwkSFcsceSE/UGi8VXCVPKV5VmLQ7LXU33JJlBm7XYS/pzc5NmspNnvgpyKC9mD/cPbO1KG/gmmYeypvcIxE8aUpOgDtjrymUi/t0/348I2KHLzk5OxaDxfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=inxA8+Zs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B3FDC4FE01;
-	Tue, 27 Aug 2024 14:57:03 +0000 (UTC)
+	 MIME-Version; b=puOMQYnx2gh28etK+Mzb6Ys4sSJLB00sYltDg61cW3VKcHc2ozuDUQzkr5cvh1v8boEWMKLVh+HAm6NweibaVzkqDMjDCRyJULJUiT+eTw8POECCUHt3N3NndIzEGF9BEbwNimiy8k60BoGLSVDQNDP9ejblfvUirybyMt+mfC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oJWBI2Dj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA96EC61067;
+	Tue, 27 Aug 2024 15:28:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770624;
-	bh=dwtmbiVs8alIj2VSiFEUTBay4A1++JcghqvqbixUhwA=;
+	s=korg; t=1724772516;
+	bh=yuQMb2Q388Ax6PCo/TRlAw3EtxuNRffsVK343qsn3O0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=inxA8+ZsLul53S3KXEn2vRWT+lMRbFST7Z67YOG3EFsiWtl9xxKyAh99DNm0zULPY
-	 i2Zl4sSrEK1qMk96eqmYVTkpHgeM3gwfuhVhddykFmJAGzrfAoxapQEb79JGfys95T
-	 HfXXds3tQu0k+eVYkl3ncupK+FR/nsWG1ccqnRUs=
+	b=oJWBI2DjHEVYKOlxbUafiNPJqep40q7/5tU2ofWT6C8Z+9yrqwEVO5FNfOdoGnquO
+	 3D39y13z6WkvxKOnJiX86ifUD8v+f3CWI0AAG4tYdlGGLu7TTad/YPEnTcSOztAHTz
+	 s472DiP+c0ciK9Eblt6FmeA+0D9hdbMcsH+XRBuo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Phil Chang <phil.chang@mediatek.com>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 283/341] drm/msm/dpu: move dpu_encoders connector assignment to atomic_enable()
-Date: Tue, 27 Aug 2024 16:38:34 +0200
-Message-ID: <20240827143854.166883602@linuxfoundation.org>
+Subject: [PATCH 6.1 207/321] hrtimer: Prevent queuing of hrtimer without a function callback
+Date: Tue, 27 Aug 2024 16:38:35 +0200
+Message-ID: <20240827143846.112996107@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abhinav Kumar <quic_abhinavk@quicinc.com>
+From: Phil Chang <phil.chang@mediatek.com>
 
-[ Upstream commit aedf02e46eb549dac8db4821a6b9f0c6bf6e3990 ]
+[ Upstream commit 5a830bbce3af16833fe0092dec47b6dd30279825 ]
 
-For cases where the crtc's connectors_changed was set without enable/active
-getting toggled , there is an atomic_enable() call followed by an
-atomic_disable() but without an atomic_mode_set().
+The hrtimer function callback must not be NULL. It has to be specified by
+the call side but it is not validated by the hrtimer code. When a hrtimer
+is queued without a function callback, the kernel crashes with a null
+pointer dereference when trying to execute the callback in __run_hrtimer().
 
-This results in a NULL ptr access for the dpu_encoder_get_drm_fmt() call in
-the atomic_enable() as the dpu_encoder's connector was cleared in the
-atomic_disable() but not re-assigned as there was no atomic_mode_set() call.
+Introduce a validation before queuing the hrtimer in
+hrtimer_start_range_ns().
 
-Fix the NULL ptr access by moving the assignment for atomic_enable() and also
-use drm_atomic_get_new_connector_for_encoder() to get the connector from
-the atomic_state.
+[anna-maria: Rephrase commit message]
 
-Fixes: 25fdd5933e4c ("drm/msm: Add SDM845 DPU support")
-Reported-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Closes: https://gitlab.freedesktop.org/drm/msm/-/issues/59
-Suggested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Tested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org> # SM8350-HDK
-Patchwork: https://patchwork.freedesktop.org/patch/606729/
-Link: https://lore.kernel.org/r/20240731191723.3050932-1-quic_abhinavk@quicinc.com
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Signed-off-by: Phil Chang <phil.chang@mediatek.com>
+Signed-off-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/time/hrtimer.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-index 0c57588044641..6262ec5e40204 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-@@ -1119,8 +1119,6 @@ static void dpu_encoder_virt_atomic_mode_set(struct drm_encoder *drm_enc,
+diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
+index 314fb7598a879..f62cc13b5f143 100644
+--- a/kernel/time/hrtimer.c
++++ b/kernel/time/hrtimer.c
+@@ -1285,6 +1285,8 @@ void hrtimer_start_range_ns(struct hrtimer *timer, ktime_t tim,
+ 	struct hrtimer_clock_base *base;
+ 	unsigned long flags;
  
- 	cstate->num_mixers = num_lm;
- 
--	dpu_enc->connector = conn_state->connector;
--
- 	for (i = 0; i < dpu_enc->num_phys_encs; i++) {
- 		struct dpu_encoder_phys *phys = dpu_enc->phys_encs[i];
- 
-@@ -1216,6 +1214,8 @@ static void dpu_encoder_virt_atomic_enable(struct drm_encoder *drm_enc,
- 
- 	dpu_enc->commit_done_timedout = false;
- 
-+	dpu_enc->connector = drm_atomic_get_new_connector_for_encoder(state, drm_enc);
-+
- 	cur_mode = &dpu_enc->base.crtc->state->adjusted_mode;
- 
- 	trace_dpu_enc_enable(DRMID(drm_enc), cur_mode->hdisplay,
++	if (WARN_ON_ONCE(!timer->function))
++		return;
+ 	/*
+ 	 * Check whether the HRTIMER_MODE_SOFT bit and hrtimer.is_soft
+ 	 * match on CONFIG_PREEMPT_RT = n. With PREEMPT_RT check the hard
 -- 
 2.43.0
 
