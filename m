@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-70450-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71017-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D8A2960E2E
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:46:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67A3C961138
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:18:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4EE171C2327A
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:46:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BE54DB26F69
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:18:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BEBA1C7B97;
-	Tue, 27 Aug 2024 14:45:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 982421CCEF1;
+	Tue, 27 Aug 2024 15:17:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OO2mpZom"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iROi49XM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCEDF1C68A1;
-	Tue, 27 Aug 2024 14:45:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5467A1CCB3B;
+	Tue, 27 Aug 2024 15:17:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724769947; cv=none; b=YsRf8pisV9y63XgRwSDHKMumlmziVkCUm6TTYtYQseVwYeGKwPbyepgZdfPRbtS1JuRjhVsyshLCZYCQgvpe8SDK8Ac+UgFcHWHr5GCxGJsyx0AMBKj3lbbRYOj/YJUeAi21ruBh+nUat+htcIDI5UaSrXpKCS/8W0UF4T452HA=
+	t=1724771820; cv=none; b=qgALJgrBRyNd1o+5Mwq29sGHm3VBb7oJnqEzslKe5BtUORhCLubz7Vu5XAMi9smHROrbN4fqduNC+nQZfUvu87tqJXlSF8aS5ScE2fmwP3vDwRiFlxZE4ARzRERLbQnD1252PlrmbcueDY5N8E1fj3/D/Tn2QNPkYKgU/dEu4VU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724769947; c=relaxed/simple;
-	bh=gpd57Lz4fGhPtPG+4Umrh/0toDLgYN3oTJKy7YXxtw8=;
+	s=arc-20240116; t=1724771820; c=relaxed/simple;
+	bh=2asxtuaQkk1JFveIkkiEswvJhzOv1q6l9k+NHi3Wkx8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HIvIhCElFNUmFyO49qjO2j/KW/OeMBglMgXioiHdofEOYFDftPkeHNCudDIJacRxZLKaraDnMxBKCOMpvLwZgnMD04XdGcBVqtg1mDR4SYUPWuru5BAYbdsAMzxA1LHvlaHMWIiS1dn5rgfhT8R61FUuHEL1IPFw9l9div00xHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OO2mpZom; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53EBEC61063;
-	Tue, 27 Aug 2024 14:45:47 +0000 (UTC)
+	 MIME-Version; b=dLpMctVtG+XQBalmM6okjrhqImvSuctuAQGYcIoYp+1J9+c5HpV5UnjUbjd/OcmlZZHwwHJN3Vibhp6eqGef1byOmKIcky0sGVdXcta7SLCKhTzPTFuCAsW/u/uOsratcqNdFa5M4rl4H2qOxtYF7naiF4HVixygmyNM9tWKFws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iROi49XM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E8B4C4DE1F;
+	Tue, 27 Aug 2024 15:16:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724769947;
-	bh=gpd57Lz4fGhPtPG+4Umrh/0toDLgYN3oTJKy7YXxtw8=;
+	s=korg; t=1724771820;
+	bh=2asxtuaQkk1JFveIkkiEswvJhzOv1q6l9k+NHi3Wkx8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OO2mpZomRbnF33oJpdcvKXgwu0RuoimqGiHNTbY7CDri7LNQaa1sPMLLwgI/kEUQZ
-	 xcPecDJI2g9E077GIYd0PuXAlox/11LTOfG+lJ3giwNTATdDdT2+3K+wY/TUHUC/Hy
-	 Xz5wYZ/Ma0N6k7iVzWXxR7y1OuKrcZy1L19nZAKU=
+	b=iROi49XMJbydYqFuipKRwvrNMYJcMjTbzyWUP7lT0eoTGT58kVBMfHhA5Ct/5IJ1/
+	 5pq29vVIgvJNeeUOv++EqsARD4021iwTVUD3rxPTKS5wj+RPQt+ROF/xGmqIoGwrGV
+	 jASi1UbiYHiIxXhGuMzzrcMM9ONZclnNi5Gzig4k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jie Wang <wangjie125@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 080/341] net: hns3: fix a deadlock problem when config TC during resetting
+	syzbot+91dbdfecdd3287734d8e@syzkaller.appspotmail.com,
+	stable <stable@kernel.org>,
+	Eli Billauer <eli.billauer@gmail.com>
+Subject: [PATCH 6.1 003/321] char: xillybus: Dont destroy workqueue from work item running on it
 Date: Tue, 27 Aug 2024 16:35:11 +0200
-Message-ID: <20240827143846.455147646@linuxfoundation.org>
+Message-ID: <20240827143838.327338953@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,81 +60,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jie Wang <wangjie125@huawei.com>
+From: Eli Billauer <eli.billauer@gmail.com>
 
-[ Upstream commit be5e816d00a506719e9dbb1a9c861c5ced30a109 ]
+commit ccbde4b128ef9c73d14d0d7817d68ef795f6d131 upstream.
 
-When config TC during the reset process, may cause a deadlock, the flow is
-as below:
-                             pf reset start
-                                 │
-                                 ▼
-                              ......
-setup tc                         │
-    │                            ▼
-    ▼                      DOWN: napi_disable()
-napi_disable()(skip)             │
-    │                            │
-    ▼                            ▼
-  ......                      ......
-    │                            │
-    ▼                            │
-napi_enable()                    │
-                                 ▼
-                           UINIT: netif_napi_del()
-                                 │
-                                 ▼
-                              ......
-                                 │
-                                 ▼
-                           INIT: netif_napi_add()
-                                 │
-                                 ▼
-                              ......                 global reset start
-                                 │                      │
-                                 ▼                      ▼
-                           UP: napi_enable()(skip)    ......
-                                 │                      │
-                                 ▼                      ▼
-                              ......                 napi_disable()
+Triggered by a kref decrement, destroy_workqueue() may be called from
+within a work item for destroying its own workqueue. This illegal
+situation is averted by adding a module-global workqueue for exclusive
+use of the offending work item. Other work items continue to be queued
+on per-device workqueues to ensure performance.
 
-In reset process, the driver will DOWN the port and then UINIT, in this
-case, the setup tc process will UP the port before UINIT, so cause the
-problem. Adds a DOWN process in UINIT to fix it.
-
-Fixes: bb6b94a896d4 ("net: hns3: Add reset interface implementation in client")
-Signed-off-by: Jie Wang <wangjie125@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: syzbot+91dbdfecdd3287734d8e@syzkaller.appspotmail.com
+Cc: stable <stable@kernel.org>
+Closes: https://lore.kernel.org/lkml/0000000000000ab25a061e1dfe9f@google.com/
+Signed-off-by: Eli Billauer <eli.billauer@gmail.com>
+Link: https://lore.kernel.org/r/20240801121126.60183-1-eli.billauer@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3_enet.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/char/xillybus/xillyusb.c |   16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-index db9574e9fb7bc..14d086b535a2d 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
-@@ -5729,6 +5729,9 @@ static int hns3_reset_notify_uninit_enet(struct hnae3_handle *handle)
- 	struct net_device *netdev = handle->kinfo.netdev;
- 	struct hns3_nic_priv *priv = netdev_priv(netdev);
+--- a/drivers/char/xillybus/xillyusb.c
++++ b/drivers/char/xillybus/xillyusb.c
+@@ -50,6 +50,7 @@ MODULE_LICENSE("GPL v2");
+ static const char xillyname[] = "xillyusb";
  
-+	if (!test_bit(HNS3_NIC_STATE_DOWN, &priv->state))
-+		hns3_nic_net_stop(netdev);
+ static unsigned int fifo_buf_order;
++static struct workqueue_struct *wakeup_wq;
+ 
+ #define USB_VENDOR_ID_XILINX		0x03fd
+ #define USB_VENDOR_ID_ALTERA		0x09fb
+@@ -561,10 +562,6 @@ static void cleanup_dev(struct kref *kre
+  * errors if executed. The mechanism relies on that xdev->error is assigned
+  * a non-zero value by report_io_error() prior to queueing wakeup_all(),
+  * which prevents bulk_in_work() from calling process_bulk_in().
+- *
+- * The fact that wakeup_all() and bulk_in_work() are queued on the same
+- * workqueue makes their concurrent execution very unlikely, however the
+- * kernel's API doesn't seem to ensure this strictly.
+  */
+ 
+ static void wakeup_all(struct work_struct *work)
+@@ -619,7 +616,7 @@ static void report_io_error(struct xilly
+ 
+ 	if (do_once) {
+ 		kref_get(&xdev->kref); /* xdev is used by work item */
+-		queue_work(xdev->workq, &xdev->wakeup_workitem);
++		queue_work(wakeup_wq, &xdev->wakeup_workitem);
+ 	}
+ }
+ 
+@@ -2242,6 +2239,10 @@ static int __init xillyusb_init(void)
+ {
+ 	int rc = 0;
+ 
++	wakeup_wq = alloc_workqueue(xillyname, 0, 0);
++	if (!wakeup_wq)
++		return -ENOMEM;
 +
- 	if (!test_and_clear_bit(HNS3_NIC_STATE_INITED, &priv->state)) {
- 		netdev_warn(netdev, "already uninitialized\n");
- 		return 0;
--- 
-2.43.0
-
+ 	if (LOG2_INITIAL_FIFO_BUF_SIZE > PAGE_SHIFT)
+ 		fifo_buf_order = LOG2_INITIAL_FIFO_BUF_SIZE - PAGE_SHIFT;
+ 	else
+@@ -2249,11 +2250,16 @@ static int __init xillyusb_init(void)
+ 
+ 	rc = usb_register(&xillyusb_driver);
+ 
++	if (rc)
++		destroy_workqueue(wakeup_wq);
++
+ 	return rc;
+ }
+ 
+ static void __exit xillyusb_exit(void)
+ {
++	destroy_workqueue(wakeup_wq);
++
+ 	usb_deregister(&xillyusb_driver);
+ }
+ 
 
 
 
