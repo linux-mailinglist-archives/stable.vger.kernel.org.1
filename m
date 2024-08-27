@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-70602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70853-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 362C5960F0A
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:55:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2171A96105A
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:08:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D460B1F24744
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:55:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5490B1C20A9A
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:08:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2920F1C6F57;
-	Tue, 27 Aug 2024 14:54:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6D641C4EE8;
+	Tue, 27 Aug 2024 15:07:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xXCb93AS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ltgkKRPq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D99CE1E520;
-	Tue, 27 Aug 2024 14:54:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 739F31C3F19;
+	Tue, 27 Aug 2024 15:07:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770452; cv=none; b=X7JygAnURQ2DPKMAoICpSVqs7wO+7igAkxSOm5P91STwF7DaqGi5Q6CeCob6S8hB3kFyPKFO/t17tAA5PYGozkaKYS+eZmbN8QNWe0HCsa4VTqFykV7347J7AnvtXkWWPx9blUgFvmem1eg7Z+cKdsBwBwjnOXnmHHlmIKVR+vg=
+	t=1724771278; cv=none; b=T323Irp2FqVwNVzMGRYe/UMnMHJdCei4HL+E0O20iWvgyknu3KuzWOFJDKQJ+rspviQHp0811BrEOpqjeXj5WHdkjP7dtOJG6oyNacrAlbAz+2flXVoa91WIresT1+lQEc/0hAKdp5TjgtCYxjnBurNfPy07e1UbjUHSXHcQLuE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770452; c=relaxed/simple;
-	bh=FpzQZJ6YENy+ZhQelam/KP7jMuOdJz4+/EjBeI5AYUk=;
+	s=arc-20240116; t=1724771278; c=relaxed/simple;
+	bh=28R6Te5TEwDicyezPWZaAqbxkH9pMqTI8tOyYV4TGyM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SPDCd8gUv2pAXMMz3Fvchj7YXsvVTr7wA0dF7mqMCrEEvygpPoTunJJwg4Fa3xbtOSon285c1bp92+BB1IBJwD9LgK2JCbGxRo6c5qmj73IgR6UsTay+pYA4gWeHspQbitHRn7gvoBrwzQPPKq/kOnLPjr06NUpIjx8szflDC6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xXCb93AS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10211C4E673;
-	Tue, 27 Aug 2024 14:54:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RpLNGenE5lYDy6pz2lMfu15ehP/n3IPCMj4mof6JuqYFQe/L82sMhmaPSgeUmnlFFx+7rzQyWYGcllhHTqKzLFYrHfo58ccYOnwbIQxBcaDgRP5Rkd9uxvIYj9ND3uGONAz5zgD60ssV5cBwc5oErzkk/pED6I2x27HwfF8Oxi8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ltgkKRPq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3B60C61044;
+	Tue, 27 Aug 2024 15:07:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770452;
-	bh=FpzQZJ6YENy+ZhQelam/KP7jMuOdJz4+/EjBeI5AYUk=;
+	s=korg; t=1724771278;
+	bh=28R6Te5TEwDicyezPWZaAqbxkH9pMqTI8tOyYV4TGyM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xXCb93ASEFLgNNbnvK5x+5bU635yt8ARXMr1Ar8H3leEenrAWyB4Cj4JPeLHg1Ws/
-	 vJHz205rqKrnCa6lY2ml8xlqCDkx5FSjAM+PKht27pHuqXAzSI2Y5hxTZV2AJcpIoN
-	 O3pO6IncspKCZU93Nw8lctXl+di5xIPXJGR5QV5Q=
+	b=ltgkKRPqLY9xt33U2l0uhFm6ZQ6/biZUzLYbcsaR/KKvNKwvl2ugeq4sEqwcsWlvb
+	 Mdy5feI1AKrspjtvxuFQJbBVyUvSU7LDvmKvra2lFz4U9rQVGoI7Rr0sA2aXf7lfFy
+	 8gBo7FQ5qEhGSItIHUmGXw0zyHUnqSXkZa4/6Eo4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>,
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	=?UTF-8?q?Peter=20K=C3=A4stle?= <peter@piie.net>,
+	Zhang Rui <rui.zhang@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 234/341] drm/amd/display: Adjust cursor position
+Subject: [PATCH 6.10 141/273] thermal: gov_bang_bang: Use governor_data to reduce overhead
 Date: Tue, 27 Aug 2024 16:37:45 +0200
-Message-ID: <20240827143852.313927148@linuxfoundation.org>
+Message-ID: <20240827143838.772446120@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +61,115 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 56fb276d0244d430496f249335a44ae114dd5f54 ]
+[ Upstream commit 6e6f58a170ea98e44075b761f2da42a5aec47dfb ]
 
-[why & how]
-When the commit 9d84c7ef8a87 ("drm/amd/display: Correct cursor position
-on horizontal mirror") was introduced, it used the wrong calculation for
-the position copy for X. This commit uses the correct calculation for that
-based on the original patch.
+After running once, the for_each_trip_desc() loop in
+bang_bang_manage() is pure needless overhead because it is not going to
+make any changes unless a new cooling device has been bound to one of
+the trips in the thermal zone or the system is resuming from sleep.
 
-Fixes: 9d84c7ef8a87 ("drm/amd/display: Correct cursor position on horizontal mirror")
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Acked-by: Wayne Lin <wayne.lin@amd.com>
-Signed-off-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 8f9b23abbae5ffcd64856facd26a86b67195bc2f)
-Cc: stable@vger.kernel.org
+For this reason, make bang_bang_manage() set governor_data for the
+thermal zone and check it upfront to decide whether or not it needs to
+do anything.
+
+However, governor_data needs to be reset in some cases to let
+bang_bang_manage() know that it should walk the trips again, so add an
+.update_tz() callback to the governor and make the core additionally
+invoke it during system resume.
+
+To avoid affecting the other users of that callback unnecessarily, add
+a special notification reason for system resume, THERMAL_TZ_RESUME, and
+also pass it to __thermal_zone_device_update() called during system
+resume for consistency.
+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Acked-by: Peter Kästle <peter@piie.net>
+Reviewed-by: Zhang Rui <rui.zhang@intel.com>
+Cc: 6.10+ <stable@vger.kernel.org> # 6.10+
+Link: https://patch.msgid.link/2285575.iZASKD2KPV@rjwysocki.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn10/dcn10_hw_sequencer.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/thermal/gov_bang_bang.c | 18 ++++++++++++++++++
+ drivers/thermal/thermal_core.c  |  3 ++-
+ include/linux/thermal.h         |  1 +
+ 3 files changed, 21 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_hw_sequencer.c b/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_hw_sequencer.c
-index e3f4d497d32d5..c9f13c3768431 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_hw_sequencer.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_hw_sequencer.c
-@@ -3614,7 +3614,7 @@ void dcn10_set_cursor_position(struct pipe_ctx *pipe_ctx)
- 						(int)hubp->curs_attr.width || pos_cpy.x
- 						<= (int)hubp->curs_attr.width +
- 						pipe_ctx->plane_state->src_rect.x) {
--						pos_cpy.x = 2 * viewport_width - temp_x;
-+						pos_cpy.x = temp_x + viewport_width;
- 					}
- 				}
- 			} else {
+diff --git a/drivers/thermal/gov_bang_bang.c b/drivers/thermal/gov_bang_bang.c
+index bc55e0698bfa8..daed67d19efb8 100644
+--- a/drivers/thermal/gov_bang_bang.c
++++ b/drivers/thermal/gov_bang_bang.c
+@@ -86,6 +86,10 @@ static void bang_bang_manage(struct thermal_zone_device *tz)
+ 	const struct thermal_trip_desc *td;
+ 	struct thermal_instance *instance;
+ 
++	/* If the code below has run already, nothing needs to be done. */
++	if (tz->governor_data)
++		return;
++
+ 	for_each_trip_desc(tz, td) {
+ 		const struct thermal_trip *trip = &td->trip;
+ 
+@@ -107,11 +111,25 @@ static void bang_bang_manage(struct thermal_zone_device *tz)
+ 				bang_bang_set_instance_target(instance, 0);
+ 		}
+ 	}
++
++	tz->governor_data = (void *)true;
++}
++
++static void bang_bang_update_tz(struct thermal_zone_device *tz,
++				enum thermal_notify_event reason)
++{
++	/*
++	 * Let bang_bang_manage() know that it needs to walk trips after binding
++	 * a new cdev and after system resume.
++	 */
++	if (reason == THERMAL_TZ_BIND_CDEV || reason == THERMAL_TZ_RESUME)
++		tz->governor_data = NULL;
+ }
+ 
+ static struct thermal_governor thermal_gov_bang_bang = {
+ 	.name		= "bang_bang",
+ 	.trip_crossed	= bang_bang_control,
+ 	.manage		= bang_bang_manage,
++	.update_tz	= bang_bang_update_tz,
+ };
+ THERMAL_GOVERNOR_DECLARE(thermal_gov_bang_bang);
+diff --git a/drivers/thermal/thermal_core.c b/drivers/thermal/thermal_core.c
+index f2d31bc48f529..b8d889ef4fa5e 100644
+--- a/drivers/thermal/thermal_core.c
++++ b/drivers/thermal/thermal_core.c
+@@ -1715,7 +1715,8 @@ static void thermal_zone_device_resume(struct work_struct *work)
+ 	tz->suspended = false;
+ 
+ 	thermal_zone_device_init(tz);
+-	__thermal_zone_device_update(tz, THERMAL_EVENT_UNSPECIFIED);
++	thermal_governor_update_tz(tz, THERMAL_TZ_RESUME);
++	__thermal_zone_device_update(tz, THERMAL_TZ_RESUME);
+ 
+ 	complete(&tz->resume);
+ 	tz->resuming = false;
+diff --git a/include/linux/thermal.h b/include/linux/thermal.h
+index f1155c0439c4b..13f88317b81bf 100644
+--- a/include/linux/thermal.h
++++ b/include/linux/thermal.h
+@@ -55,6 +55,7 @@ enum thermal_notify_event {
+ 	THERMAL_TZ_BIND_CDEV, /* Cooling dev is bind to the thermal zone */
+ 	THERMAL_TZ_UNBIND_CDEV, /* Cooling dev is unbind from the thermal zone */
+ 	THERMAL_INSTANCE_WEIGHT_CHANGED, /* Thermal instance weight changed */
++	THERMAL_TZ_RESUME, /* Thermal zone is resuming after system sleep */
+ };
+ 
+ /**
 -- 
 2.43.0
 
