@@ -1,102 +1,83 @@
-Return-Path: <stable+bounces-71349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71350-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6344296196B
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 23:50:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14E999619F9
+	for <lists+stable@lfdr.de>; Wed, 28 Aug 2024 00:22:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9DA311C23191
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 21:50:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46D7D1C2285A
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 22:22:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 233831D4143;
-	Tue, 27 Aug 2024 21:50:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA2A61D27BF;
+	Tue, 27 Aug 2024 22:22:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AzcyDIPF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hYtsuTN0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA06D13B293;
-	Tue, 27 Aug 2024 21:50:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7200484D34;
+	Tue, 27 Aug 2024 22:22:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724795432; cv=none; b=QQIV+ubI45Whx5qvxsQwNNwYnPMnSfD4s20JVPMdAbiREBeSPa2iV6dVHrjFOMpzCr0p4icHJkIgXHyVRs7EfTrYJYmaqvrWnSzJ0ehACaJRqmcBwV5hfpnoqKKgtifAfDUCAYCHokz8la9hNqx5557FAiBwWMptITQ7F6rI7N4=
+	t=1724797321; cv=none; b=qoGeQY8/LszlLum+SZMCpK36GMLGeZFWm6P4qpkl72fSnfC3ScJYDy4qw19pdb4bSGgNHCKV9/Ijcw6WgfWTzSIeNmMWfbmbYwUTmF8bILuIyxEVLhW2ftJ6N0txzmIkTfiNf1MlbMZcunEd0exsbNNu7ZUMth2+BfnJROCjiIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724795432; c=relaxed/simple;
-	bh=4rYQNT0gECDd1fmElnBYuODs3dX24OZbqJmLg4YI/Ok=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=ihBRwh1UevykbZMM9XuTy0dr1hcTmIS/3LAE3nKLL397jJpZdn4evumNXGKl//deJ/iLHDsvHzEmlxs/gzmLbZkKk04sZYkukYtB3fSsxMUYtUdSJnOrH7qocFqLmsADBH7egDtzj3WNQ6ydtx+ietheZ42iIdD0VhSJrUGGS9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AzcyDIPF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28E98C4AF10;
-	Tue, 27 Aug 2024 21:50:32 +0000 (UTC)
+	s=arc-20240116; t=1724797321; c=relaxed/simple;
+	bh=A0s60QbzuSlrrDqZftQ45xwzEnGAMomAywshjLBlGOQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=sKAwAGXwGLC7yDbDVVMRivQdeb4RY0K2XWwYNyYRnxKMn/4+GsWuSfVXP6u03JQHVjE7TrnyXjyz5CrasYlYsIl0hJsL84EFtRdhi0OOBUr/8ZsvRhgpLGHDuSWrI2FfW1PDLXflSUPs8MKg/Ku45N49Qq1vkSeRyNLK4D/USn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hYtsuTN0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE508C4AF1B;
+	Tue, 27 Aug 2024 22:22:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724795432;
-	bh=4rYQNT0gECDd1fmElnBYuODs3dX24OZbqJmLg4YI/Ok=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=AzcyDIPFfuvxlKrbgceuxjGIj/h0BoY41XPHWlE3pzBTjD45pod+tU+KvQxRSO15D
-	 JxOb3RpJy/37ubScM3QMNFhGTUw4xuypB+dr11OfTpo3RbbzIc/s0mzvyxLXk0bmMv
-	 ItxiSWGJ3qqLefQi8OhpRzHwAh9XlPUFZzPmCDN6wJHWl9VY3cbX0BsqA1ZwZmbWJH
-	 ViXBuvf2hU5fBO2QYpBV4ObxPcDFaool3l7nlNuCHfdVkzB8YGqN3HuHZ2ClLfgwVw
-	 WsRPV5s2Gu7cCEhJB/dJ5i2Sncp16dCCpIFB9G3SjLyCs0VQg5grHb7FKi9WJ9p0lq
-	 22ea6eU3G2+Fg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70ED83822D6D;
-	Tue, 27 Aug 2024 21:50:33 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=k20201202; t=1724797321;
+	bh=A0s60QbzuSlrrDqZftQ45xwzEnGAMomAywshjLBlGOQ=;
+	h=Date:From:To:Cc:Subject:From;
+	b=hYtsuTN0yY8uhMCZfFVl8Etd3SdLGzoSuWxKwLV8OEBc86GVsmOrsF6295jOEIpt5
+	 wsVS59RmCzKrSKwOfaq716lHz2D/DhWfzYiRukBlgRUzESNaR0W/jsFwJFt9ISEpyR
+	 ykqFbcUBmVpJAnQe4uFeaB33YqZU5qdytqlzyZvJBj728cFYXACkSix+Afse4GYlT5
+	 P5RNKkZaxoJKly72uQWFls9JiGj41aJIbVa5qPYHUD0dK9e5eWFWJMTcBjgAF6UBFp
+	 KeUM6OsAOH5AilL8RUbT7nlV2XXCbr9K6LFYdChouqaCfXt7hMMyWiCuesleawH5e4
+	 buM6vEsw0q0Dw==
+Date: Tue, 27 Aug 2024 15:21:59 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org, llvm@lists.linux.dev
+Subject: Apply dbaee836d60a8 to linux-5.10.y
+Message-ID: <20240827222159.GA2737082@thelio-3990X>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 0/4] mptcp: close subflow when receiving TCP+FIN and
- misc.
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <172479543227.771722.4715567676668885065.git-patchwork-notify@kernel.org>
-Date: Tue, 27 Aug 2024 21:50:32 +0000
-References: <20240826-net-mptcp-close-extra-sf-fin-v1-0-905199fe1172@kernel.org>
-In-Reply-To: <20240826-net-mptcp-close-extra-sf-fin-v1-0-905199fe1172@kernel.org>
-To: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Cc: mptcp@lists.linux.dev, martineau@kernel.org, geliang@kernel.org,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- fw@strlen.de, shuah@kernel.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- stable@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Hello:
+Hi Greg and Sasha,
 
-This series was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Please apply commit dbaee836d60a ("KVM: arm64: Don't use cbz/adr with
+external symbols") to linux-5.10.y, as a recent LLVM optimization around
+__cold functions [1] can cause hyp_panic() to be too far away from
+__guest_enter(), resulting in the same error that occurred with LTO (for
+the same reason):
 
-On Mon, 26 Aug 2024 19:11:17 +0200 you wrote:
-> Here are different fixes:
-> 
-> Patch 1 closes the subflow after having received a FIN, instead of
-> leaving it half-closed until the end of the MPTCP connection. A fix for
-> v5.12.
-> 
-> Patch 2 validates the previous patch.
-> 
-> [...]
+  ld.lld: error: arch/arm64/built-in.a(kvm/hyp/entry.o):(function __guest_enter: .text+0x120): relocation R_AARCH64_CONDBR19 out of range: 14339212 is not in [-1048576, 1048575]; references 'hyp_panic'
+  >>> referenced by entry.S:88 (arch/arm64/kvm/hyp/vhe/../entry.S:88)
+  >>> defined in arch/arm64/built-in.a(kvm/hyp/vhe/switch.o)
 
-Here is the summary with links:
-  - [net,1/4] mptcp: close subflow when receiving TCP+FIN
-    https://git.kernel.org/netdev/net/c/f09b0ad55a11
-  - [net,2/4] selftests: mptcp: join: cannot rm sf if closed
-    https://git.kernel.org/netdev/net/c/e93681afcb96
-  - [net,3/4] mptcp: sched: check both backup in retrans
-    https://git.kernel.org/netdev/net/c/2a1f596ebb23
-  - [net,4/4] mptcp: pr_debug: add missing \n at the end
-    https://git.kernel.org/netdev/net/c/cb41b195e634
+  ld.lld: error: arch/arm64/built-in.a(kvm/hyp/entry.o):(function __guest_enter: .text+0x134): relocation R_AARCH64_ADR_PREL_LO21 out of range: 14339192 is not in [-1048576, 1048575]; references 'hyp_panic'
+  >>> referenced by entry.S:97 (arch/arm64/kvm/hyp/vhe/../entry.S:97)
+  >>> defined in arch/arm64/built-in.a(kvm/hyp/vhe/switch.o)
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+It applies cleanly with 'patch -p1' and I have verified that it fixes
+the issue.
 
+[1]: https://github.com/llvm/llvm-project/commit/6b11573b8c5e3d36beee099dbe7347c2a007bf53
 
+Cheers,
+Nathan
 
