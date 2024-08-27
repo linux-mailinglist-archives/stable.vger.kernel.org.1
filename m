@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-70493-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70459-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 484B4960E65
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:48:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EE1B960E3A
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:46:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7BC9A1C23114
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:48:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1293A1F24808
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:46:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E2721BA87C;
-	Tue, 27 Aug 2024 14:48:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6BC873466;
+	Tue, 27 Aug 2024 14:46:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bVRtr7c+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IusOTxk7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B7CDDDC1;
-	Tue, 27 Aug 2024 14:48:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84C2B1C6F4D;
+	Tue, 27 Aug 2024 14:46:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770090; cv=none; b=T1mVNgjlGmCdQ6GMSxkTRLmkmDQhs7tLiFypryAEjUwx9dxQVnlJxf3qSS9Fwqi18CWSquQqXJXpoAogDNNzUq1lRIO+KtxbOAeBtyFggyT5ZeOLtTOsVjW9NxAK+45wte4LF5d/pcPJLKBqulz1iLMmAuWCs/4BdnnXI8EnsJQ=
+	t=1724769976; cv=none; b=I82k9U0WpHLYEW0NZF0STOgqimOvo5lgqCZ4hTBYWNNYj8uMAxnhwtmR6TYaaD58qPJ99UYLW+MzeV0g2n6CuUm2QFq2/0eTTBiCajZvAGooe5GbfXScrGx0IGPYYBGi+vBFXP5lz1wKUILQrROEOUdtqlcX1txX2D3bPsHt67E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770090; c=relaxed/simple;
-	bh=c56uplUqgZSZ16N+6d8/3c0iZfWKVha6eAobwiFPrwA=;
+	s=arc-20240116; t=1724769976; c=relaxed/simple;
+	bh=U9+esCb/u9IY1x3BSHWadh3GfB4y8SFSWdcQWHyn2zc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EMxassQO5yR1FRpJkHp2VVBdHEAKubIYew0fBm6hN/mvAW2IDDWA26titz3oM5lpfci5C+tHKLR3ZfKkLwmO5N+QnJKjgKhxrvmu4BHHDAXVFlsUaHZAtLd3LsYnpLHji4DsbdVYsP/U6FR1Ee4koz4KVJL10zfqGTe+pvhKw2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bVRtr7c+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 937EBC61047;
-	Tue, 27 Aug 2024 14:48:09 +0000 (UTC)
+	 MIME-Version; b=i06TrvKTdqKcxQcsL8+1tv0jR9ivQP/FOuP+AT2szoezh/Ju8AEhaYdINUllJBuk5vfuJNdYABkJUbk/jtYVvyB8sIw+Q+pfTq5p2bAdL5O1+G7y+239rMjG3BBNqCr0EoJ16O9M1qKhIFVf+EFyUMqe4WQS25fR4M9x6NY8CK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IusOTxk7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08D5CC61063;
+	Tue, 27 Aug 2024 14:46:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770090;
-	bh=c56uplUqgZSZ16N+6d8/3c0iZfWKVha6eAobwiFPrwA=;
+	s=korg; t=1724769976;
+	bh=U9+esCb/u9IY1x3BSHWadh3GfB4y8SFSWdcQWHyn2zc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bVRtr7c+o+72LHFDdz6hAo+ZzIK8ClC5myyu9qUMhUkYgjzVbVudptrJ1B3vmSqCM
-	 VdnMv6JSimPBobr13Bsz9IGqix+BL+33c+zaur+ALD49x8QcLE9YR6A0hbJkwiF7qr
-	 4fAbEAAuxRmw58JdYpp+ur1E3DKZKEVIoo3N+63c=
+	b=IusOTxk7z6Yvv2BxPzZ9H5J05Kw6xD/kbiXxylVlLJfzw0n1+sl2edpKvs7S/4oW5
+	 QUhkiUyveXi2tI7LqjxHYOQTlB8DT6O1bepHS4ZUC7/TYFfl9ecIS4WAjCwbIVnMUV
+	 C3wrVHTcWrR5x3BGxNUuTZqW/pZxLt/kL8KXkoAs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Parsa Poorshikhian <parsa.poorsh@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 082/341] ALSA: hda/realtek: Fix noise from speakers on Lenovo IdeaPad 3 15IAU7
-Date: Tue, 27 Aug 2024 16:35:13 +0200
-Message-ID: <20240827143846.530444346@linuxfoundation.org>
+Subject: [PATCH 6.6 083/341] drm/amd/pm: fix error flow in sensor fetching
+Date: Tue, 27 Aug 2024 16:35:14 +0200
+Message-ID: <20240827143846.568254634@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
 References: <20240827143843.399359062@linuxfoundation.org>
@@ -66,37 +67,67 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Parsa Poorshikhian <parsa.poorsh@gmail.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit ef9718b3d54e822de294351251f3a574f8a082ce ]
+[ Upstream commit a5600853167aeba5cade81f184a382a0d1b14641 ]
 
-Fix noise from speakers connected to AUX port when no sound is playing.
-The problem occurs because the `alc_shutup_pins` function includes
-a 0x10ec0257 vendor ID, which causes noise on Lenovo IdeaPad 3 15IAU7 with
-Realtek ALC257 codec when no sound is playing.
-Removing this vendor ID from the function fixes the bug.
+Sensor fetching functions should return an signed int to
+handle errors properly.
 
-Fixes: 70794b9563fe ("ALSA: hda/realtek: Add more codec ID to no shutup pins list")
-Signed-off-by: Parsa Poorshikhian <parsa.poorsh@gmail.com>
-Link: https://patch.msgid.link/20240810150939.330693-1-parsa.poorsh@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Reviewed-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reported-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/gpu/drm/amd/pm/amdgpu_pm.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 82dcea2b78000..5736516275a34 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -585,7 +585,6 @@ static void alc_shutup_pins(struct hda_codec *codec)
- 	switch (codec->core.vendor_id) {
- 	case 0x10ec0236:
- 	case 0x10ec0256:
--	case 0x10ec0257:
- 	case 0x19e58326:
- 	case 0x10ec0283:
- 	case 0x10ec0285:
+diff --git a/drivers/gpu/drm/amd/pm/amdgpu_pm.c b/drivers/gpu/drm/amd/pm/amdgpu_pm.c
+index 7372eae0b0ef8..babb73147adfb 100644
+--- a/drivers/gpu/drm/amd/pm/amdgpu_pm.c
++++ b/drivers/gpu/drm/amd/pm/amdgpu_pm.c
+@@ -1471,9 +1471,9 @@ static ssize_t amdgpu_set_pp_power_profile_mode(struct device *dev,
+ 	return -EINVAL;
+ }
+ 
+-static unsigned int amdgpu_hwmon_get_sensor_generic(struct amdgpu_device *adev,
+-						    enum amd_pp_sensors sensor,
+-						    void *query)
++static int amdgpu_hwmon_get_sensor_generic(struct amdgpu_device *adev,
++					   enum amd_pp_sensors sensor,
++					   void *query)
+ {
+ 	int r, size = sizeof(uint32_t);
+ 
+@@ -2787,8 +2787,8 @@ static ssize_t amdgpu_hwmon_show_vddnb_label(struct device *dev,
+ 	return sysfs_emit(buf, "vddnb\n");
+ }
+ 
+-static unsigned int amdgpu_hwmon_get_power(struct device *dev,
+-					   enum amd_pp_sensors sensor)
++static int amdgpu_hwmon_get_power(struct device *dev,
++				  enum amd_pp_sensors sensor)
+ {
+ 	struct amdgpu_device *adev = dev_get_drvdata(dev);
+ 	unsigned int uw;
+@@ -2809,7 +2809,7 @@ static ssize_t amdgpu_hwmon_show_power_avg(struct device *dev,
+ 					   struct device_attribute *attr,
+ 					   char *buf)
+ {
+-	unsigned int val;
++	int val;
+ 
+ 	val = amdgpu_hwmon_get_power(dev, AMDGPU_PP_SENSOR_GPU_AVG_POWER);
+ 	if (val < 0)
+@@ -2822,7 +2822,7 @@ static ssize_t amdgpu_hwmon_show_power_input(struct device *dev,
+ 					     struct device_attribute *attr,
+ 					     char *buf)
+ {
+-	unsigned int val;
++	int val;
+ 
+ 	val = amdgpu_hwmon_get_power(dev, AMDGPU_PP_SENSOR_GPU_INPUT_POWER);
+ 	if (val < 0)
 -- 
 2.43.0
 
