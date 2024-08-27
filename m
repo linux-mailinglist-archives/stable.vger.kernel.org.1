@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-70632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70915-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6F5E960F3B
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:57:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64BAE9610AA
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:11:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C3861F22313
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:57:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F5801F23AC5
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:11:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACC5D1C8719;
-	Tue, 27 Aug 2024 14:55:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0A5B1C6F53;
+	Tue, 27 Aug 2024 15:11:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WUZB/y9d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OOGKEjJk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BDDD1C824B;
-	Tue, 27 Aug 2024 14:55:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0DE11C6887;
+	Tue, 27 Aug 2024 15:11:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770555; cv=none; b=EziTv+LgkKSYiu3sfREe2OcxZouQhGEeo7RDr4gIIQfzJFrqgF0WOUMWkVZ7BWCuLvQo5QACurMuVy/GDmaK1C18o7SBU6LkTBFcoLbnaOJZdsMPtK8zRsbobzMRWRDx8XuacqfgP/bLNIH+wo+vE+h318ooiTIMBc2ZLnifVJI=
+	t=1724771486; cv=none; b=mvtjkcYrltqpIIP+qwgIUztd9BndtTXSa+qNg+iJuVL/m4fNsrozroViglGGAtlbVNrxN//DZ2aJYLz2DHpMFy+zZyYwshNB04lfFnImXITnJggWuk6v3L1zBc7FhG2pVgZtX8HVcxL9uIESDce/cA95Ne7tMgUAd1lGLPHbmlQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770555; c=relaxed/simple;
-	bh=fn739rP3weeLsGsdEDnhWrSSiYk6+D9r9GiyiyLY7ms=;
+	s=arc-20240116; t=1724771486; c=relaxed/simple;
+	bh=0zqNNx9vF94IOn2P5vfvfdsvKl53/dahCiGdHTpyPeY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ld3xUiycr8tMSxLJhDkZs/FfxGDpRn9XstUIviJRIOSsZPFm2JCD3vmWUgiDmxt16bhHIXrX8f68/ADCnH+U36nnqZ5lnBqtchqG4EKc50lZFukwa85wIkoxTtdp0yWI/PDcK2jTV1z3nMLhYlETYueMhwX5TWpDxATRtRJ8+iw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WUZB/y9d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE8A7C4FDE1;
-	Tue, 27 Aug 2024 14:55:54 +0000 (UTC)
+	 MIME-Version; b=YRBrtpuI9jEareQAUjXAAbmZKqmGkkyl5+eCYJiaehoF6s6l+CRqhFL+UFTVd794rlsEvTPqzKwvMJXwP1aOkzmQu5pI/zcD3a/7Su8hzudlgpgFSJgaKJBxnk4VcIRggpRuzXCB6wDqzh6D25K7P5jQ30WFt7EEhHEzWECHFm8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OOGKEjJk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C67E4C4DDEE;
+	Tue, 27 Aug 2024 15:11:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770555;
-	bh=fn739rP3weeLsGsdEDnhWrSSiYk6+D9r9GiyiyLY7ms=;
+	s=korg; t=1724771486;
+	bh=0zqNNx9vF94IOn2P5vfvfdsvKl53/dahCiGdHTpyPeY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WUZB/y9de6qMBAC7FBPiOvUAk1Z/DFfbBXDKpzAWJ4mJtybD4aqR01rr1VBzwRvk1
-	 phgV8VPzr5pfLSd+Ydtj9TDTZC/rEnrV1hrYlbEHp5ncEX391BtIlmIosDvEWDf8LC
-	 p9qjZjFW804fUXgjjSiZimEyO9lGfICIPGoIZwMM=
+	b=OOGKEjJk8o4FuvNlInzyhYR9CCfPKCii9a8p0OpMtq2yPJ+/Csg9UzqGKxuN5j1ID
+	 9jhckHPV+cG9UA0yKAvPsuBpWUo1mgB1Z7piEt4v9S2thnALgfpzqHOaSgJdAnTwKX
+	 ZbcDrdv+tN675UR3bc+SDei5lpgUjE3tpkg1XNsI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Tluka <jtluka@redhat.com>,
-	Jirka Hladky <jhladky@redhat.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Corinna Vinschen <vinschen@redhat.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Hangbin Liu <liuhangbin@gmail.com>,
 	Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 264/341] igb: cope with large MAX_SKB_FRAGS
+Subject: [PATCH 6.10 171/273] bonding: fix xfrm state handling when clearing active slave
 Date: Tue, 27 Aug 2024 16:38:15 +0200
-Message-ID: <20240827143853.453249887@linuxfoundation.org>
+Message-ID: <20240827143839.915412147@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,57 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Nikolay Aleksandrov <razor@blackwall.org>
 
-[ Upstream commit 8aba27c4a5020abdf60149239198297f88338a8d ]
+[ Upstream commit c4c5c5d2ef40a9f67a9241dc5422eac9ffe19547 ]
 
-Sabrina reports that the igb driver does not cope well with large
-MAX_SKB_FRAG values: setting MAX_SKB_FRAG to 45 causes payload
-corruption on TX.
+If the active slave is cleared manually the xfrm state is not flushed.
+This leads to xfrm add/del imbalance and adding the same state multiple
+times. For example when the device cannot handle anymore states we get:
+ [ 1169.884811] bond0: (slave eni0np1): bond_ipsec_add_sa_all: failed to add SA
+because it's filled with the same state after multiple active slave
+clearings. This change also has a few nice side effects: user-space
+gets a notification for the change, the old device gets its mac address
+and promisc/mcast adjusted properly.
 
-An easy reproducer is to run ssh to connect to the machine.  With
-MAX_SKB_FRAGS=17 it works, with MAX_SKB_FRAGS=45 it fails.  This has
-been reported originally in
-https://bugzilla.redhat.com/show_bug.cgi?id=2265320
-
-The root cause of the issue is that the driver does not take into
-account properly the (possibly large) shared info size when selecting
-the ring layout, and will try to fit two packets inside the same 4K
-page even when the 1st fraglist will trump over the 2nd head.
-
-Address the issue by checking if 2K buffers are insufficient.
-
-Fixes: 3948b05950fd ("net: introduce a config option to tweak MAX_SKB_FRAGS")
-Reported-by: Jan Tluka <jtluka@redhat.com>
-Reported-by: Jirka Hladky <jhladky@redhat.com>
-Reported-by: Sabrina Dubroca <sd@queasysnail.net>
-Tested-by: Sabrina Dubroca <sd@queasysnail.net>
-Tested-by: Corinna Vinschen <vinschen@redhat.com>
+Fixes: 18cb261afd7b ("bonding: support hardware encryption offload to slaves")
+Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
+Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Corinna Vinschen <vinschen@redhat.com>
-Link: https://patch.msgid.link/20240816152034.1453285-1-vinschen@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/igb/igb_main.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/bonding/bond_options.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethernet/intel/igb/igb_main.c
-index 4431e7693d45f..8c8894ef33886 100644
---- a/drivers/net/ethernet/intel/igb/igb_main.c
-+++ b/drivers/net/ethernet/intel/igb/igb_main.c
-@@ -4833,6 +4833,7 @@ static void igb_set_rx_buffer_len(struct igb_adapter *adapter,
- 
- #if (PAGE_SIZE < 8192)
- 	if (adapter->max_frame_size > IGB_MAX_FRAME_BUILD_SKB ||
-+	    IGB_2K_TOO_SMALL_WITH_PADDING ||
- 	    rd32(E1000_RCTL) & E1000_RCTL_SBP)
- 		set_ring_uses_large_buffer(rx_ring);
- #endif
+diff --git a/drivers/net/bonding/bond_options.c b/drivers/net/bonding/bond_options.c
+index bc80fb6397dcd..95d59a18c0223 100644
+--- a/drivers/net/bonding/bond_options.c
++++ b/drivers/net/bonding/bond_options.c
+@@ -936,7 +936,7 @@ static int bond_option_active_slave_set(struct bonding *bond,
+ 	/* check to see if we are clearing active */
+ 	if (!slave_dev) {
+ 		netdev_dbg(bond->dev, "Clearing current active slave\n");
+-		RCU_INIT_POINTER(bond->curr_active_slave, NULL);
++		bond_change_active_slave(bond, NULL);
+ 		bond_select_active_slave(bond);
+ 	} else {
+ 		struct slave *old_active = rtnl_dereference(bond->curr_active_slave);
 -- 
 2.43.0
 
