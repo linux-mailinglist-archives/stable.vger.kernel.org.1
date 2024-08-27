@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-70943-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71234-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE4459610CD
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:12:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BCEF961273
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:31:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 78EC71F21E7A
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:12:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE9A11C213BC
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:31:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D06CF1C57AB;
-	Tue, 27 Aug 2024 15:12:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A8821CC17D;
+	Tue, 27 Aug 2024 15:29:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZGA4mPKB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ktn2wQ6s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D9F01C5793;
-	Tue, 27 Aug 2024 15:12:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC5981C7B82;
+	Tue, 27 Aug 2024 15:29:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771577; cv=none; b=XYJhoAfMaauFcmb8DhyPHlEnGwbX9sLubYNQbDhGjsYpu326hKKh21i1nbeWr5f4AUotFHY70yGJ5jjWI8iDwHyDZ1r3xuZhzd/PKMg9kqb+hyjUJ4tXBgiyPSOfgtlZ24tX7InakbjuybbrC8q7EMFvEb7kGbozELtNS3c0YEI=
+	t=1724772540; cv=none; b=i5zA2+sV0R1Iwp8nJ3dk5ndIgg+BfJAxFc9IIRNBkLeYPqJkfUv7NSnT0de35oZfaKcK2VV3s9eoxB0of4QynsMhsiqvOu2S4WLELDUOcGqufa8lW0GGjRCYf2roCtmZ/uv1lbMGGBOIIcPYLklvDa3llNQ+MlDVSsSF0XPV/7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771577; c=relaxed/simple;
-	bh=FByAHlSmmqpmB86zY0wTbC3zNbMUZNy5FsOasZOmAcA=;
+	s=arc-20240116; t=1724772540; c=relaxed/simple;
+	bh=FvA5kQKsxoXMdiHDhoXAeXTZIGfb/UdUB1/BrdTByZM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZEU5SWAfz+qpHSbfABzoHe7BqERLJ0kXxA4B3DqKtUSfSr58+4geE98hXw5yw3ZNbLIqn36gBVAUbtEuy/74UPVen0B6ob9Hcw+Vef27hi0nxOW2lcsAClh9JigqooUDUtwEdrU0At/X6TMJXfRdUMxk/lLuhygsaFBZssTRx88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZGA4mPKB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9BFAC61043;
-	Tue, 27 Aug 2024 15:12:56 +0000 (UTC)
+	 MIME-Version; b=b/nWL4H28jkeA3x80WOewQ434T0/77poOEWuvfXcYq5GWvKqDZ6k+EybrMR2Iup/VabonMIErMyEG4KdpsbPR9RCP52KnvS46BhKEngq3VUdH0iqD7+a7vAeNS+WJdcApl5BRvqdxnX96lewKwtOdNVi+8g3dpqd6KYf4SRVxv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ktn2wQ6s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2D24C6107E;
+	Tue, 27 Aug 2024 15:28:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771577;
-	bh=FByAHlSmmqpmB86zY0wTbC3zNbMUZNy5FsOasZOmAcA=;
+	s=korg; t=1724772540;
+	bh=FvA5kQKsxoXMdiHDhoXAeXTZIGfb/UdUB1/BrdTByZM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZGA4mPKBDKxormYvvdGw72qG3mIFQjwc5axWspJ7YQ/jUgcCuw20/btt3NlHazA7N
-	 ys6EoxxUqXhT11qImB5drafv3v9c8TSMGZ6r6nOaQFb83sYxgQTEttvVF1QD4OIxZK
-	 FE3F7CAKpqr+kYkpW5DLiW7kg3Oh4wEbYb5xoiyc=
+	b=Ktn2wQ6sIEF/JAqT8rPS4kJXE5P61FzDRxvren92C7202byhbfPNV4YCRyW1ese+y
+	 DBNHZuQdqwgK3wAysh4C2tRSPN3rzeATl4ZVjSqmAc/HyrJW2E2CPineFpHhxBnYjp
+	 ehIyjhw5sN/V02Z4AToSVT8TmsjE5K4Zws+F030g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.10 229/273] ACPI: video: Add backlight=native quirk for Dell OptiPlex 7760 AIO
-Date: Tue, 27 Aug 2024 16:39:13 +0200
-Message-ID: <20240827143842.121520453@linuxfoundation.org>
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Chandan Kumar Rout <chandanx.rout@intel.com>
+Subject: [PATCH 6.1 246/321] ice: fix page reuse when PAGE_SIZE is over 8k
+Date: Tue, 27 Aug 2024 16:39:14 +0200
+Message-ID: <20240827143847.608479264@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
 
-commit 5c7bb62cb8f53de71d8ab3d619be22740da0b837 upstream.
+[ Upstream commit 50b2143356e888777fc5bca023c39f34f404613a ]
 
-Dell All In One (AIO) models released after 2017 may use a backlight
-controller board connected to an UART.
+Architectures that have PAGE_SIZE >= 8192 such as arm64 should act the
+same as x86 currently, meaning reuse of a page should only take place
+when no one else is busy with it.
 
-In DSDT this uart port will be defined as:
+Do two things independently of underlying PAGE_SIZE:
+- store the page count under ice_rx_buf::pgcnt
+- then act upon its value vs ice_rx_buf::pagecnt_bias when making the
+  decision regarding page reuse
 
-   Name (_HID, "DELL0501")
-   Name (_CID, EisaId ("PNP0501")
-
-The Dell OptiPlex 7760 AIO has an ACPI device for one if its UARTs with
-the above _HID + _CID. Loading the dell-uart-backlight driver shows that
-there actually is a backlight controller board attached to the UART,
-which reports a firmware version of "G&MX01-V15".
-
-But the backlight controller board does not actually control the backlight
-brightness and the GPU's native backlight control method does work.
-
-Add a quirk to use the GPU's native backlight control method on this model.
-
-Fixes: 484bae9e4d6a ("platform/x86: Add new Dell UART backlight driver")
-Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2303936
-Cc: All applicable <stable@vger.kernel.org>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Link: https://patch.msgid.link/20240814190159.15650-4-hdegoede@redhat.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2b245cb29421 ("ice: Implement transmit and NAPI support")
+Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Tested-by: Chandan Kumar Rout <chandanx.rout@intel.com> (A Contingent Worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/video_detect.c |   15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/net/ethernet/intel/ice/ice_txrx.c | 12 +++---------
+ 1 file changed, 3 insertions(+), 9 deletions(-)
 
---- a/drivers/acpi/video_detect.c
-+++ b/drivers/acpi/video_detect.c
-@@ -808,6 +808,21 @@ static const struct dmi_system_id video_
- 	},
+diff --git a/drivers/net/ethernet/intel/ice/ice_txrx.c b/drivers/net/ethernet/intel/ice/ice_txrx.c
+index 6f930d99b496b..6ad4bdb0124e7 100644
+--- a/drivers/net/ethernet/intel/ice/ice_txrx.c
++++ b/drivers/net/ethernet/intel/ice/ice_txrx.c
+@@ -807,16 +807,15 @@ ice_can_reuse_rx_page(struct ice_rx_buf *rx_buf)
+ 	if (!dev_page_is_reusable(page))
+ 		return false;
  
- 	/*
-+	 * Dell AIO (All in Ones) which advertise an UART attached backlight
-+	 * controller board in their ACPI tables (and may even have one), but
-+	 * which need native backlight control nevertheless.
-+	 */
-+	{
-+	 /* https://bugzilla.redhat.com/show_bug.cgi?id=2303936 */
-+	 .callback = video_detect_force_native,
-+	 /* Dell OptiPlex 7760 AIO */
-+	 .matches = {
-+		DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
-+		DMI_MATCH(DMI_PRODUCT_NAME, "OptiPlex 7760 AIO"),
-+		},
-+	},
-+
-+	/*
- 	 * Models which have nvidia-ec-wmi support, but should not use it.
- 	 * Note this indicates a likely firmware bug on these models and should
- 	 * be revisited if/when Linux gets support for dynamic mux mode.
+-#if (PAGE_SIZE < 8192)
+ 	/* if we are only owner of page we can reuse it */
+ 	if (unlikely(rx_buf->pgcnt - pagecnt_bias > 1))
+ 		return false;
+-#else
++#if (PAGE_SIZE >= 8192)
+ #define ICE_LAST_OFFSET \
+ 	(SKB_WITH_OVERHEAD(PAGE_SIZE) - ICE_RXBUF_2048)
+ 	if (rx_buf->page_offset > ICE_LAST_OFFSET)
+ 		return false;
+-#endif /* PAGE_SIZE < 8192) */
++#endif /* PAGE_SIZE >= 8192) */
+ 
+ 	/* If we have drained the page fragment pool we need to update
+ 	 * the pagecnt_bias and page count so that we fully restock the
+@@ -904,12 +903,7 @@ ice_get_rx_buf(struct ice_rx_ring *rx_ring, const unsigned int size,
+ 	struct ice_rx_buf *rx_buf;
+ 
+ 	rx_buf = &rx_ring->rx_buf[ntc];
+-	rx_buf->pgcnt =
+-#if (PAGE_SIZE < 8192)
+-		page_count(rx_buf->page);
+-#else
+-		0;
+-#endif
++	rx_buf->pgcnt = page_count(rx_buf->page);
+ 	prefetchw(rx_buf->page);
+ 
+ 	if (!size)
+-- 
+2.43.0
+
 
 
 
