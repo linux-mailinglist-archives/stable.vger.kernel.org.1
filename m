@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-70908-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70663-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F2499610A0
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:11:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C8E1960F68
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:59:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A1D6DB2622F
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:11:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D0304286A3F
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:59:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B9101C5788;
-	Tue, 27 Aug 2024 15:11:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 404111E487;
+	Tue, 27 Aug 2024 14:57:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uSa52JX5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="srVFeCFL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED8D31BC9E3;
-	Tue, 27 Aug 2024 15:11:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F11EC1BFE04;
+	Tue, 27 Aug 2024 14:57:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771464; cv=none; b=GnkDmAst9z9oZYqCGLavV/EKKS+mkRphz07QLPvakNmCKZ3l22o9rfdurpGOn3Au4Lwg0oVbso51jjDgpoTsPj6ZEmW65rlgXkzdH4lj9pRa/4a29eyAXFgVb8tX7uR+mj3cjkhTLcE3YyrXwgF7o0/nMhydETq4gf2ruXghIb0=
+	t=1724770657; cv=none; b=Z4HgsZaLZSSD4y3VWyQrcIX1mkjBzBEVjBW2iPEaya5URGk6JF8FGkvLjdhLKdRblaET7e3HlwvDKvLVwEByGOlNMPW7v1ppLPM+t108tsE/hetu5CNn1ijBNi/2gVaWSL8rL9QReIM5bmvJdvt8ojoqqZ8jTrNSxTmQhsfUS9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771464; c=relaxed/simple;
-	bh=ky/2lQ0hfHuLBprqfAazAosGPl5/+PicMiUnXiMkg8g=;
+	s=arc-20240116; t=1724770657; c=relaxed/simple;
+	bh=BgYpx2cW7GX2456a5F4kRiZ1NnHm1dGPB9CVj4sP5nc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G3zz6wkkgd+P6y40yPHd75XyBZULtsJQnvICaoDS0bnpGr22mnN2vauZw07+1loxA9iCsqf9DHLGoC6JRJhcKAfMGZEiP/NS0Fi6gEGS7Ru1+vSmJmMn85BlzBUGhN1/I4Z7Z+eCNHf5ubIxEDWCHHVpjDP9CC8Of8tt3ImhuYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uSa52JX5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04227C4DDE6;
-	Tue, 27 Aug 2024 15:11:02 +0000 (UTC)
+	 MIME-Version; b=rfHAdfjCrF20yOtaBbM9h1h+oV0iTecWL6SHcn5eJX/nD7DR6o2zP/OTkDlPXDEfMDIHlMjyF/lNUWE2Xrh8+4AyXNcW/bB5AgdxaUmSl3XgdGVZo4mCwJwNnI9xnaN7Y+16GjQZPkMrjole2uem7deVyvyHluBhwAhy3hXElME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=srVFeCFL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F726C61040;
+	Tue, 27 Aug 2024 14:57:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771463;
-	bh=ky/2lQ0hfHuLBprqfAazAosGPl5/+PicMiUnXiMkg8g=;
+	s=korg; t=1724770656;
+	bh=BgYpx2cW7GX2456a5F4kRiZ1NnHm1dGPB9CVj4sP5nc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uSa52JX5+y85Ga28rifi3WJvhSx53RVLy746VA2WnRSnCbXL4LACT5YvW8RRpwOfI
-	 pxMT0Cun1C9iZLMbuhnf3azWD/nCdlD7HnZZt/2chRjRBsVXnvFY3mlJWXeRVudXad
-	 PG+OcRt+zz/Bztx7gmU9VP1DO0riCoXAeQPhx0mk=
+	b=srVFeCFL+biVvSXoMUE/UAd2CMaLY9yXueUbJPEJLNFwMsclAQoWixTJnaBrRIEp/
+	 OAr+rRNHJ20tik16LuyXKsn/VumfKzhvzYYQp+jZ1By29GV17tQ40EH+O8BXIkrIXb
+	 5EWEYgVgsJucmmNMs1UU6Y9H6qCxkNAERyOOb0Os=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 194/273] drm/msm/dpu: move dpu_encoders connector assignment to atomic_enable()
+Subject: [PATCH 6.6 287/341] drm/msm/dpu: take plane rotation into account for wide planes
 Date: Tue, 27 Aug 2024 16:38:38 +0200
-Message-ID: <20240827143840.790306225@linuxfoundation.org>
+Message-ID: <20240827143854.318035639@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abhinav Kumar <quic_abhinavk@quicinc.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit aedf02e46eb549dac8db4821a6b9f0c6bf6e3990 ]
+[ Upstream commit d3a785e4f983f523380e023d8a05fb6d04402957 ]
 
-For cases where the crtc's connectors_changed was set without enable/active
-getting toggled , there is an atomic_enable() call followed by an
-atomic_disable() but without an atomic_mode_set().
+Take into account the plane rotation and flipping when calculating src
+positions for the wide plane parts.
 
-This results in a NULL ptr access for the dpu_encoder_get_drm_fmt() call in
-the atomic_enable() as the dpu_encoder's connector was cleared in the
-atomic_disable() but not re-assigned as there was no atomic_mode_set() call.
+This is not an issue yet, because rotation is only supported for the
+UBWC planes and wide UBWC planes are rejected anyway because in parallel
+multirect case only the half of the usual width is supported for tiled
+formats. However it's better to fix this now rather than stumbling upon
+it later.
 
-Fix the NULL ptr access by moving the assignment for atomic_enable() and also
-use drm_atomic_get_new_connector_for_encoder() to get the connector from
-the atomic_state.
-
-Fixes: 25fdd5933e4c ("drm/msm: Add SDM845 DPU support")
-Reported-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Closes: https://gitlab.freedesktop.org/drm/msm/-/issues/59
-Suggested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Tested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org> # SM8350-HDK
-Patchwork: https://patchwork.freedesktop.org/patch/606729/
-Link: https://lore.kernel.org/r/20240731191723.3050932-1-quic_abhinavk@quicinc.com
+Fixes: 80e8ae3b38ab ("drm/msm/dpu: add support for wide planes")
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/601059/
+Link: https://lore.kernel.org/r/20240627-dpu-virtual-wide-v5-3-5efb90cbb8be@linaro.org
 Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-index 697ad4a640516..a6c5e3bc9bf15 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
-@@ -1179,8 +1179,6 @@ static void dpu_encoder_virt_atomic_mode_set(struct drm_encoder *drm_enc,
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c
+index 3c2a8c0ddaf76..637f50a8d42e6 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c
+@@ -865,6 +865,10 @@ static int dpu_plane_atomic_check(struct drm_plane *plane,
  
- 	cstate->num_mixers = num_lm;
+ 	max_linewidth = pdpu->catalog->caps->max_linewidth;
  
--	dpu_enc->connector = conn_state->connector;
--
- 	for (i = 0; i < dpu_enc->num_phys_encs; i++) {
- 		struct dpu_encoder_phys *phys = dpu_enc->phys_encs[i];
- 
-@@ -1277,6 +1275,8 @@ static void dpu_encoder_virt_atomic_enable(struct drm_encoder *drm_enc,
- 
- 	dpu_enc->commit_done_timedout = false;
- 
-+	dpu_enc->connector = drm_atomic_get_new_connector_for_encoder(state, drm_enc);
++	drm_rect_rotate(&pipe_cfg->src_rect,
++			new_plane_state->fb->width, new_plane_state->fb->height,
++			new_plane_state->rotation);
 +
- 	cur_mode = &dpu_enc->base.crtc->state->adjusted_mode;
+ 	if ((drm_rect_width(&pipe_cfg->src_rect) > max_linewidth) ||
+ 	     _dpu_plane_calc_clk(&crtc_state->adjusted_mode, pipe_cfg) > max_mdp_clk_rate) {
+ 		/*
+@@ -914,6 +918,14 @@ static int dpu_plane_atomic_check(struct drm_plane *plane,
+ 		r_pipe_cfg->dst_rect.x1 = pipe_cfg->dst_rect.x2;
+ 	}
  
- 	dpu_enc->wide_bus_en = dpu_encoder_is_widebus_enabled(drm_enc);
++	drm_rect_rotate_inv(&pipe_cfg->src_rect,
++			    new_plane_state->fb->width, new_plane_state->fb->height,
++			    new_plane_state->rotation);
++	if (r_pipe->sspp)
++		drm_rect_rotate_inv(&r_pipe_cfg->src_rect,
++				    new_plane_state->fb->width, new_plane_state->fb->height,
++				    new_plane_state->rotation);
++
+ 	ret = dpu_plane_atomic_check_pipe(pdpu, pipe, pipe_cfg, fmt, &crtc_state->adjusted_mode);
+ 	if (ret)
+ 		return ret;
 -- 
 2.43.0
 
