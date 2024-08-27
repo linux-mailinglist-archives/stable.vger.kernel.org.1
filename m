@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-70997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70490-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 320B1961114
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:16:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D35B8960E62
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:48:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B00CBB26882
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:15:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 11B6E1C23299
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:48:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 661EE1C688E;
-	Tue, 27 Aug 2024 15:15:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D051E1A0B13;
+	Tue, 27 Aug 2024 14:48:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qKWumsME"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N7Q6niWN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2073F4C634;
-	Tue, 27 Aug 2024 15:15:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CECE1BA87C;
+	Tue, 27 Aug 2024 14:48:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771755; cv=none; b=Sujvf3T7AQfMGJfw5VPRQd95ahmj0fF4/6j+lnbSRbesJiJEfGeHBd2gDCdMn7AKCCefkeOnR1+sIUBSGjXGXxmGwkWuPexJLWMypTmoDl2M2NrPAdanVGbB7ljapqGMklbd54dL5+Qcq8h7zcgjgvHESJyI9lyW5sAjNhjffQQ=
+	t=1724770080; cv=none; b=qcUJGEEi97OVy+45bNrb587z48CrAI+rTkVfUthlKcbiASMKfp+XboK+aeIIBkZqsDpYmTVT3sECQcagp/iHazW+5teLd003XX+GI+2OGaqx2JId4uZ9Jy779pgJmQMx19Flph8HOX1C7I9xuz6fbDu8MeRF+/peaQVcGkIoohE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771755; c=relaxed/simple;
-	bh=ApvPfaL60bKYF07rBdaTAf3dFlZohpgVKVwM0a9OTgg=;
+	s=arc-20240116; t=1724770080; c=relaxed/simple;
+	bh=1dWWL4oD/uB2a3h+Atb7kvbbPHzcOkSdiwCKWMC8SGU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jye/vS/ZIqg037ApA99Fn2qXCdobGjy/DsMe2wgly7IFHbykjzmFFXMkxrqmGONaqRqr9/F+3rD2fqWerxNRE0Qoz6196EpOXgB5b9ULlK08vk+gc4rh92yJNAZrCjSZBoujjANbDgpSAJrXa/z7gsXrj9bVCuIrK3Atvgb8XMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qKWumsME; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8593DC4AF50;
-	Tue, 27 Aug 2024 15:15:54 +0000 (UTC)
+	 MIME-Version; b=SRf4nVuKsHEa7yrHBG9HIpWURtVsydvjiHwlpkOEkNfnTTohIulGnqCrSH9HJxZps0z24eEBwXsXwEw7LM9ODKOkeG1AAZppyjT3p3DGU+o2YqBsQnbV9woRio96VI1Sgm1otkdfHRGaOlTpyr0VTEUpQnVZWCBiFdF16B4NuAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N7Q6niWN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E928CC61040;
+	Tue, 27 Aug 2024 14:47:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771755;
-	bh=ApvPfaL60bKYF07rBdaTAf3dFlZohpgVKVwM0a9OTgg=;
+	s=korg; t=1724770080;
+	bh=1dWWL4oD/uB2a3h+Atb7kvbbPHzcOkSdiwCKWMC8SGU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qKWumsME2FS7QD11D4LnWWnbyPLHhiWk/RaLAwIInO28MOcwys2na9MHyVIKDqggv
-	 7ehNgsqkALYcmKVyv152IFPJL8Q0KQTOw3JLRKHuSvcppuydtYnSaS+EHFYioBzShR
-	 eVXbRdUU8uCqnYr9AHEqQehmielu2SN9mj5lWGxo=
+	b=N7Q6niWNFriwMhGWlfrZn7rSKKh/z5UwoDhin85xrwvbwogSooiyUZ05sT1QiL37W
+	 /Rg5D7BVlF/nSx76AWK9b+FkiFi4ajMa+wWSs6imP5RmjgnfX6Op2dVyHIgznrCUzf
+	 7ihj1EQl5DZ7Q0wwSsfWSLb7D2grmAq6glhNB2ks=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nam Cao <namcao@linutronix.de>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH 6.1 011/321] riscv: change XIPs kernel_map.size to be size of the entire kernel
-Date: Tue, 27 Aug 2024 16:35:19 +0200
-Message-ID: <20240827143838.633996006@linuxfoundation.org>
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 089/341] wifi: cfg80211: check wiphy mutex is held for wdev mutex
+Date: Tue, 27 Aug 2024 16:35:20 +0200
+Message-ID: <20240827143846.794100356@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +61,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nam Cao <namcao@linutronix.de>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit 57d76bc51fd80824bcc0c84a5b5ec944f1b51edd upstream.
+[ Upstream commit 1474bc87fe57deac726cc10203f73daa6c3212f7 ]
 
-With XIP kernel, kernel_map.size is set to be only the size of data part of
-the kernel. This is inconsistent with "normal" kernel, who sets it to be
-the size of the entire kernel.
+This might seem pretty pointless rather than changing the locking
+immediately, but it seems safer to run for a while with checks and
+the old locking scheme, and then remove the wdev lock later.
 
-More importantly, XIP kernel fails to boot if CONFIG_DEBUG_VIRTUAL is
-enabled, because there are checks on virtual addresses with the assumption
-that kernel_map.size is the size of the entire kernel (these checks are in
-arch/riscv/mm/physaddr.c).
-
-Change XIP's kernel_map.size to be the size of the entire kernel.
-
-Signed-off-by: Nam Cao <namcao@linutronix.de>
-Cc: <stable@vger.kernel.org> # v6.1+
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Link: https://lore.kernel.org/r/20240508191917.2892064-1-namcao@linutronix.de
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/mm/init.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/wireless/core.h | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/arch/riscv/mm/init.c
-+++ b/arch/riscv/mm/init.c
-@@ -816,7 +816,7 @@ static void __init create_kernel_page_ta
- 				   PMD_SIZE, PAGE_KERNEL_EXEC);
+diff --git a/net/wireless/core.h b/net/wireless/core.h
+index f0a3a23176385..c955be6c6daa4 100644
+--- a/net/wireless/core.h
++++ b/net/wireless/core.h
+@@ -228,6 +228,7 @@ void cfg80211_register_wdev(struct cfg80211_registered_device *rdev,
+ static inline void wdev_lock(struct wireless_dev *wdev)
+ 	__acquires(wdev)
+ {
++	lockdep_assert_held(&wdev->wiphy->mtx);
+ 	mutex_lock(&wdev->mtx);
+ 	__acquire(wdev->mtx);
+ }
+@@ -235,11 +236,16 @@ static inline void wdev_lock(struct wireless_dev *wdev)
+ static inline void wdev_unlock(struct wireless_dev *wdev)
+ 	__releases(wdev)
+ {
++	lockdep_assert_held(&wdev->wiphy->mtx);
+ 	__release(wdev->mtx);
+ 	mutex_unlock(&wdev->mtx);
+ }
  
- 	/* Map the data in RAM */
--	end_va = kernel_map.virt_addr + XIP_OFFSET + kernel_map.size;
-+	end_va = kernel_map.virt_addr + kernel_map.size;
- 	for (va = kernel_map.virt_addr + XIP_OFFSET; va < end_va; va += PMD_SIZE)
- 		create_pgd_mapping(pgdir, va,
- 				   kernel_map.phys_addr + (va - (kernel_map.virt_addr + XIP_OFFSET)),
-@@ -947,7 +947,7 @@ asmlinkage void __init setup_vm(uintptr_
+-#define ASSERT_WDEV_LOCK(wdev) lockdep_assert_held(&(wdev)->mtx)
++static inline void ASSERT_WDEV_LOCK(struct wireless_dev *wdev)
++{
++	lockdep_assert_held(&wdev->wiphy->mtx);
++	lockdep_assert_held(&wdev->mtx);
++}
  
- 	phys_ram_base = CONFIG_PHYS_RAM_BASE;
- 	kernel_map.phys_addr = (uintptr_t)CONFIG_PHYS_RAM_BASE;
--	kernel_map.size = (uintptr_t)(&_end) - (uintptr_t)(&_sdata);
-+	kernel_map.size = (uintptr_t)(&_end) - (uintptr_t)(&_start);
- 
- 	kernel_map.va_kernel_xip_pa_offset = kernel_map.virt_addr - kernel_map.xiprom;
- #else
+ static inline bool cfg80211_has_monitors_only(struct cfg80211_registered_device *rdev)
+ {
+-- 
+2.43.0
+
 
 
 
