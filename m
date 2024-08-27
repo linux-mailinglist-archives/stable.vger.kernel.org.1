@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-70809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71067-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71529961026
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:05:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2620096117E
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:21:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2725A2825C4
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:05:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C4F561F238F9
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:21:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 679BD1C579F;
-	Tue, 27 Aug 2024 15:05:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 300E21C8FD3;
+	Tue, 27 Aug 2024 15:19:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RAm4FFf6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G89+lyE9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 240801C3F19;
-	Tue, 27 Aug 2024 15:05:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0F771C68A6;
+	Tue, 27 Aug 2024 15:19:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771132; cv=none; b=dQU+1ZFWpGUterMAgKrEFb4wjo4FUnlYXqip5+syhOXNFnPwh6kuvl96chpiJHiLqMd6rJoPD4KwcXJ8Q7kPDQF8XLWHFC0Ce8fj4ChOrn+FyK8nGTH4xaVzpHghlcaORZwoFBNNqwnCBTRvIXGQoZlGHoXazVqgSBj5+3j1HIs=
+	t=1724771990; cv=none; b=qWkNT8svE/t7BBk7fCQ7TqTJBCXcA9UBxU/+3nWaVrZUzYfUmZNF0aTlQ+9913OAGG1+M+FVxjhXZRM+IdwqxMW5Okpko1cBbyt7lpAtiOj/ADtaeFkmbIYxClArYzOYMMv07YF7cw4Kr7ymGyx5lJq9W7a857bxTLhfE9kBcaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771132; c=relaxed/simple;
-	bh=W5yJ21I6Pk46QjznJYfhnZ2U315wEPxsa2qfFJxieFg=;
+	s=arc-20240116; t=1724771990; c=relaxed/simple;
+	bh=E8LaoK0hpOdg0x6KwXbid+iADB2SH9DFxZokEy2h10U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qc3Qg9Id4qkRvcf5nbQcc/IJb+wZXfskf9nn9YTcUVI+tY1lCZTE1+88dHTxM4up24Nmwqr6PI8y74poXP1HXHoFQ8pJhSI1+fRqGtm3LaNqvY86ALJ7kYwmzoMkeRG8pkpt91XqKwoNp7Sn6zGvKZtETGfe1JJZf8Lwf5bZp6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RAm4FFf6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C296C6106C;
-	Tue, 27 Aug 2024 15:05:31 +0000 (UTC)
+	 MIME-Version; b=jrYvEGYC2Lta6A2nEuijNSiUbDQTWVp9fkcpeMPvpa1enP3Sl5mPouBO0v3ElUvX7/P02L0HoD7wwHsFtsywMVo/oVNYlg6aYrL6pRfh/PIBqxuzUSXF777YtNNU6dCxaZNqmGYYnzpocExoAJHqp+A3504hYSAhryruuDNBoF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G89+lyE9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA126C4AF68;
+	Tue, 27 Aug 2024 15:19:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771132;
-	bh=W5yJ21I6Pk46QjznJYfhnZ2U315wEPxsa2qfFJxieFg=;
+	s=korg; t=1724771989;
+	bh=E8LaoK0hpOdg0x6KwXbid+iADB2SH9DFxZokEy2h10U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RAm4FFf6ZLLEylhBDcNqwQv4EY7XkNfYmpslFwWzE8lbJZJcFonZXN8N7cC/1bK13
-	 ndvBJ+5Gozi6ViMaHeqdvIi2oVOkP0FkFOgPzWhaPKpyW3eaosEyO920KjK4Ai+L8n
-	 dME2gUDECMbDlDnpRK5FNKr+/htPqP+8IyoXT2BU=
+	b=G89+lyE9u2jaBtbBWZJJ6csNCs9ktzXnIsV9wKyeTnRM0gHX/z72e5+BWnA0tfYKE
+	 fZp/mnALNnKaN35Ui9Py7s7D8PCpOyKkcAZvtF1WWlXDiJCRJsf3MxGB1W6Y8TzYtl
+	 2HTk008RR5cPr5e2M4etgnkK8XWi25Qqw2jy6rac=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anand Jain <anand.jain@oracle.com>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.10 065/273] btrfs: tree-checker: add dev extent item checks
+	syzbot+36bb70085ef6edc2ebb9@syzkaller.appspotmail.com,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 081/321] fs/ntfs3: Do copy_to_user out of run_lock
 Date: Tue, 27 Aug 2024 16:36:29 +0200
-Message-ID: <20240827143835.884595034@linuxfoundation.org>
+Message-ID: <20240827143841.325148943@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,167 +62,150 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-commit 008e2512dc5696ab2dc5bf264e98a9fe9ceb830e upstream.
+[ Upstream commit d57431c6f511bf020e474026d9f3123d7bfbea8c ]
 
-[REPORT]
-There is a corruption report that btrfs refused to mount a fs that has
-overlapping dev extents:
+In order not to call copy_to_user (from fiemap_fill_next_extent)
+we allocate memory in the kernel, fill it and copy it to user memory
+after up_read(run_lock).
 
-  BTRFS error (device sdc): dev extent devid 4 physical offset 14263979671552 overlap with previous dev extent end 14263980982272
-  BTRFS error (device sdc): failed to verify dev extents against chunks: -117
-  BTRFS error (device sdc): open_ctree failed
-
-[CAUSE]
-The direct cause is very obvious, there is a bad dev extent item with
-incorrect length.
-
-With btrfs check reporting two overlapping extents, the second one shows
-some clue on the cause:
-
-  ERROR: dev extent devid 4 offset 14263979671552 len 6488064 overlap with previous dev extent end 14263980982272
-  ERROR: dev extent devid 13 offset 2257707008000 len 6488064 overlap with previous dev extent end 2257707270144
-  ERROR: errors found in extent allocation tree or chunk allocation
-
-The second one looks like a bitflip happened during new chunk
-allocation:
-hex(2257707008000) = 0x20da9d30000
-hex(2257707270144) = 0x20da9d70000
-diff               = 0x00000040000
-
-So it looks like a bitflip happened during new dev extent allocation,
-resulting the second overlap.
-
-Currently we only do the dev-extent verification at mount time, but if the
-corruption is caused by memory bitflip, we really want to catch it before
-writing the corruption to the storage.
-
-Furthermore the dev extent items has the following key definition:
-
-	(<device id> DEV_EXTENT <physical offset>)
-
-Thus we can not just rely on the generic key order check to make sure
-there is no overlapping.
-
-[ENHANCEMENT]
-Introduce dedicated dev extent checks, including:
-
-- Fixed member checks
-  * chunk_tree should always be BTRFS_CHUNK_TREE_OBJECTID (3)
-  * chunk_objectid should always be
-    BTRFS_FIRST_CHUNK_CHUNK_TREE_OBJECTID (256)
-
-- Alignment checks
-  * chunk_offset should be aligned to sectorsize
-  * length should be aligned to sectorsize
-  * key.offset should be aligned to sectorsize
-
-- Overlap checks
-  If the previous key is also a dev-extent item, with the same
-  device id, make sure we do not overlap with the previous dev extent.
-
-Reported: Stefan N <stefannnau@gmail.com>
-Link: https://lore.kernel.org/linux-btrfs/CA+W5K0rSO3koYTo=nzxxTm1-Pdu1HYgVxEpgJ=aGc7d=E8mGEg@mail.gmail.com/
-CC: stable@vger.kernel.org # 5.10+
-Reviewed-by: Anand Jain <anand.jain@oracle.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+36bb70085ef6edc2ebb9@syzkaller.appspotmail.com
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/tree-checker.c |   69 ++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 69 insertions(+)
+ fs/ntfs3/frecord.c | 75 ++++++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 72 insertions(+), 3 deletions(-)
 
---- a/fs/btrfs/tree-checker.c
-+++ b/fs/btrfs/tree-checker.c
-@@ -1718,6 +1718,72 @@ static int check_raid_stripe_extent(cons
- 	return 0;
+diff --git a/fs/ntfs3/frecord.c b/fs/ntfs3/frecord.c
+index 02465ab3f398c..6cce71cc750ea 100644
+--- a/fs/ntfs3/frecord.c
++++ b/fs/ntfs3/frecord.c
+@@ -1897,6 +1897,47 @@ enum REPARSE_SIGN ni_parse_reparse(struct ntfs_inode *ni, struct ATTRIB *attr,
+ 	return REPARSE_LINK;
  }
  
-+static int check_dev_extent_item(const struct extent_buffer *leaf,
-+				 const struct btrfs_key *key,
-+				 int slot,
-+				 struct btrfs_key *prev_key)
++/*
++ * fiemap_fill_next_extent_k - a copy of fiemap_fill_next_extent
++ * but it accepts kernel address for fi_extents_start
++ */
++static int fiemap_fill_next_extent_k(struct fiemap_extent_info *fieinfo,
++				     u64 logical, u64 phys, u64 len, u32 flags)
 +{
-+	struct btrfs_dev_extent *de;
-+	const u32 sectorsize = leaf->fs_info->sectorsize;
++	struct fiemap_extent extent;
++	struct fiemap_extent __user *dest = fieinfo->fi_extents_start;
 +
-+	de = btrfs_item_ptr(leaf, slot, struct btrfs_dev_extent);
-+	/* Basic fixed member checks. */
-+	if (unlikely(btrfs_dev_extent_chunk_tree(leaf, de) !=
-+		     BTRFS_CHUNK_TREE_OBJECTID)) {
-+		generic_err(leaf, slot,
-+			    "invalid dev extent chunk tree id, has %llu expect %llu",
-+			    btrfs_dev_extent_chunk_tree(leaf, de),
-+			    BTRFS_CHUNK_TREE_OBJECTID);
-+		return -EUCLEAN;
++	/* only count the extents */
++	if (fieinfo->fi_extents_max == 0) {
++		fieinfo->fi_extents_mapped++;
++		return (flags & FIEMAP_EXTENT_LAST) ? 1 : 0;
 +	}
-+	if (unlikely(btrfs_dev_extent_chunk_objectid(leaf, de) !=
-+		     BTRFS_FIRST_CHUNK_TREE_OBJECTID)) {
-+		generic_err(leaf, slot,
-+			    "invalid dev extent chunk objectid, has %llu expect %llu",
-+			    btrfs_dev_extent_chunk_objectid(leaf, de),
-+			    BTRFS_FIRST_CHUNK_TREE_OBJECTID);
-+		return -EUCLEAN;
-+	}
-+	/* Alignment check. */
-+	if (unlikely(!IS_ALIGNED(key->offset, sectorsize))) {
-+		generic_err(leaf, slot,
-+			    "invalid dev extent key.offset, has %llu not aligned to %u",
-+			    key->offset, sectorsize);
-+		return -EUCLEAN;
-+	}
-+	if (unlikely(!IS_ALIGNED(btrfs_dev_extent_chunk_offset(leaf, de),
-+				 sectorsize))) {
-+		generic_err(leaf, slot,
-+			    "invalid dev extent chunk offset, has %llu not aligned to %u",
-+			    btrfs_dev_extent_chunk_objectid(leaf, de),
-+			    sectorsize);
-+		return -EUCLEAN;
-+	}
-+	if (unlikely(!IS_ALIGNED(btrfs_dev_extent_length(leaf, de),
-+				 sectorsize))) {
-+		generic_err(leaf, slot,
-+			    "invalid dev extent length, has %llu not aligned to %u",
-+			    btrfs_dev_extent_length(leaf, de), sectorsize);
-+		return -EUCLEAN;
-+	}
-+	/* Overlap check with previous dev extent. */
-+	if (slot && prev_key->objectid == key->objectid &&
-+	    prev_key->type == key->type) {
-+		struct btrfs_dev_extent *prev_de;
-+		u64 prev_len;
 +
-+		prev_de = btrfs_item_ptr(leaf, slot - 1, struct btrfs_dev_extent);
-+		prev_len = btrfs_dev_extent_length(leaf, prev_de);
-+		if (unlikely(prev_key->offset + prev_len > key->offset)) {
-+			generic_err(leaf, slot,
-+		"dev extent overlap, prev offset %llu len %llu current offset %llu",
-+				    prev_key->objectid, prev_len, key->offset);
-+			return -EUCLEAN;
-+		}
-+	}
-+	return 0;
++	if (fieinfo->fi_extents_mapped >= fieinfo->fi_extents_max)
++		return 1;
++
++	if (flags & FIEMAP_EXTENT_DELALLOC)
++		flags |= FIEMAP_EXTENT_UNKNOWN;
++	if (flags & FIEMAP_EXTENT_DATA_ENCRYPTED)
++		flags |= FIEMAP_EXTENT_ENCODED;
++	if (flags & (FIEMAP_EXTENT_DATA_TAIL | FIEMAP_EXTENT_DATA_INLINE))
++		flags |= FIEMAP_EXTENT_NOT_ALIGNED;
++
++	memset(&extent, 0, sizeof(extent));
++	extent.fe_logical = logical;
++	extent.fe_physical = phys;
++	extent.fe_length = len;
++	extent.fe_flags = flags;
++
++	dest += fieinfo->fi_extents_mapped;
++	memcpy(dest, &extent, sizeof(extent));
++
++	fieinfo->fi_extents_mapped++;
++	if (fieinfo->fi_extents_mapped == fieinfo->fi_extents_max)
++		return 1;
++	return (flags & FIEMAP_EXTENT_LAST) ? 1 : 0;
 +}
 +
  /*
-  * Common point to switch the item-specific validation.
-  */
-@@ -1754,6 +1820,9 @@ static enum btrfs_tree_block_status chec
- 	case BTRFS_DEV_ITEM_KEY:
- 		ret = check_dev_item(leaf, key, slot);
- 		break;
-+	case BTRFS_DEV_EXTENT_KEY:
-+		ret = check_dev_extent_item(leaf, key, slot, prev_key);
-+		break;
- 	case BTRFS_INODE_ITEM_KEY:
- 		ret = check_inode_item(leaf, key, slot);
- 		break;
+  * ni_fiemap - Helper for file_fiemap().
+  *
+@@ -1907,6 +1948,8 @@ int ni_fiemap(struct ntfs_inode *ni, struct fiemap_extent_info *fieinfo,
+ 	      __u64 vbo, __u64 len)
+ {
+ 	int err = 0;
++	struct fiemap_extent __user *fe_u = fieinfo->fi_extents_start;
++	struct fiemap_extent *fe_k = NULL;
+ 	struct ntfs_sb_info *sbi = ni->mi.sbi;
+ 	u8 cluster_bits = sbi->cluster_bits;
+ 	struct runs_tree *run;
+@@ -1954,6 +1997,18 @@ int ni_fiemap(struct ntfs_inode *ni, struct fiemap_extent_info *fieinfo,
+ 		goto out;
+ 	}
+ 
++	/*
++	 * To avoid lock problems replace pointer to user memory by pointer to kernel memory.
++	 */
++	fe_k = kmalloc_array(fieinfo->fi_extents_max,
++			     sizeof(struct fiemap_extent),
++			     GFP_NOFS | __GFP_ZERO);
++	if (!fe_k) {
++		err = -ENOMEM;
++		goto out;
++	}
++	fieinfo->fi_extents_start = fe_k;
++
+ 	end = vbo + len;
+ 	alloc_size = le64_to_cpu(attr->nres.alloc_size);
+ 	if (end > alloc_size)
+@@ -2042,8 +2097,9 @@ int ni_fiemap(struct ntfs_inode *ni, struct fiemap_extent_info *fieinfo,
+ 			if (vbo + dlen >= end)
+ 				flags |= FIEMAP_EXTENT_LAST;
+ 
+-			err = fiemap_fill_next_extent(fieinfo, vbo, lbo, dlen,
+-						      flags);
++			err = fiemap_fill_next_extent_k(fieinfo, vbo, lbo, dlen,
++							flags);
++
+ 			if (err < 0)
+ 				break;
+ 			if (err == 1) {
+@@ -2063,7 +2119,8 @@ int ni_fiemap(struct ntfs_inode *ni, struct fiemap_extent_info *fieinfo,
+ 		if (vbo + bytes >= end)
+ 			flags |= FIEMAP_EXTENT_LAST;
+ 
+-		err = fiemap_fill_next_extent(fieinfo, vbo, lbo, bytes, flags);
++		err = fiemap_fill_next_extent_k(fieinfo, vbo, lbo, bytes,
++						flags);
+ 		if (err < 0)
+ 			break;
+ 		if (err == 1) {
+@@ -2076,7 +2133,19 @@ int ni_fiemap(struct ntfs_inode *ni, struct fiemap_extent_info *fieinfo,
+ 
+ 	up_read(run_lock);
+ 
++	/*
++	 * Copy to user memory out of lock
++	 */
++	if (copy_to_user(fe_u, fe_k,
++			 fieinfo->fi_extents_max *
++				 sizeof(struct fiemap_extent))) {
++		err = -EFAULT;
++	}
++
+ out:
++	/* Restore original pointer. */
++	fieinfo->fi_extents_start = fe_u;
++	kfree(fe_k);
+ 	return err;
+ }
+ 
+-- 
+2.43.0
+
 
 
 
