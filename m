@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-71126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70595-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AE7A9611C5
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:23:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A0C4960F02
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:55:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D12F1C222CA
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:23:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBDD1286E4E
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:55:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61B0C1C7B63;
-	Tue, 27 Aug 2024 15:23:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7B821C6895;
+	Tue, 27 Aug 2024 14:53:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YnloxEHE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="klGtT0ZT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FA351C4EDC;
-	Tue, 27 Aug 2024 15:23:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 848891BA294;
+	Tue, 27 Aug 2024 14:53:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772184; cv=none; b=SxK6OqmDM6zm3sadjhJ7Lh+TGM5w2lfHYyBOdmPTNpbC+axDRdjx3DjM+dVhkaFYrPa/fjQdLmM1/nbks8KtZnNIzSg64B8p0R7utQFupTVechdFHYQxPQ2tfxoqmMbMEkOx+YR1emhPidZg9ZvjhyLib3P0XjH80Pa75xFq68o=
+	t=1724770429; cv=none; b=LrPXxmI0X8Un5z/2NCAHqtJFojhVTpCcer8iHD5TBfexHFr6qSmOubEufmjsAJAtl6sOamgtGodKTxxNBP3L1QJ1v/ZBBt9SCaCf0cUhCBpOEXfjWOEZb+DmrTrnh3HmGRAnhccCQwQO88xYJCA+1XHoBGz/i3asDFjYnoYHDfM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772184; c=relaxed/simple;
-	bh=3MavnfKMXVQTzAU+N5qthWzp3qAfCVzu/XpibsGU7mU=;
+	s=arc-20240116; t=1724770429; c=relaxed/simple;
+	bh=PxO15zOZRycx4FLq9kCi25Sj6Q+DFuCHSzA9FLCwqpc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kPyfmEjZFpZUAuAodWXCnyPt/bLxnCSVS1oszi9Pwvp4EtNPlEAciUcLS8dVMNG6h76llpUTKzm9dMJ2NPH4u9bcERoaPD2GKx2lj+yDcGWFP4J90DcXWDQ+0UpUEIbIq19QxQA9Vr3reOyzUIMf+ZEgRpX1Zrb8IkoOtRQ/kWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YnloxEHE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16BC7C6104A;
-	Tue, 27 Aug 2024 15:23:02 +0000 (UTC)
+	 MIME-Version; b=A30Ot1qmDJEx9ug+bhN17OY1rqV9TdDgYjRknacbduveOtU9tXrdc/ywwyLAbZaMCBLifCHP5VtbyVpOSNlyDN6oFAI6rzns4oyj9JPuN8nbvtiMgvYGgzTzKNd6hytArqix5Zr2wpfvXtB/z4l/NPAL3Xi80o3D5agUjrWiFD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=klGtT0ZT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAA52C6105B;
+	Tue, 27 Aug 2024 14:53:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772183;
-	bh=3MavnfKMXVQTzAU+N5qthWzp3qAfCVzu/XpibsGU7mU=;
+	s=korg; t=1724770429;
+	bh=PxO15zOZRycx4FLq9kCi25Sj6Q+DFuCHSzA9FLCwqpc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YnloxEHE4ChPwe8n//sfjSR+KZE6wDP3lcbYdRPJEoYyOgBqR0wwtP3AI5AkOchmT
-	 6fo9MER3NAyanUxoeyTjt4XphjOORE4PuuQN1BMGJV6gqXlUdMfEWSyPjn2qBnw1UY
-	 yykgzTC8kkd5QPFMyvU9RN2cIVajVkND5fuuHkew=
+	b=klGtT0ZTuBc0KFrYkrFYV6Wte6wlfvVbkWl6Ez5DiW8IjsXJ92sVpi351XiUQjABn
+	 6jh9E6uEXQrFdkKSeDEEbONAxEK+Cqjgx60XkRNs4lFwcNgcwI14kmr+mhr/CVp9Pf
+	 lTABU456H3lgVIU4ozQwzrD0OS1I7fIE/sVg/iJ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peiyang Wang <wangpeiyang1@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Anand Jain <anand.jain@oracle.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 108/321] net: hns3: use the users cfg after reset
+Subject: [PATCH 6.6 185/341] btrfs: defrag: change BUG_ON to assertion in btrfs_defrag_leaves()
 Date: Tue, 27 Aug 2024 16:36:56 +0200
-Message-ID: <20240827143842.357864062@linuxfoundation.org>
+Message-ID: <20240827143850.452677824@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,124 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peiyang Wang <wangpeiyang1@huawei.com>
+From: David Sterba <dsterba@suse.com>
 
-[ Upstream commit 30545e17eac1f50c5ef49644daf6af205100a965 ]
+[ Upstream commit 51d4be540054be32d7ce28b63ea9b84ac6ff1db2 ]
 
-Consider the followed case that the user change speed and reset the net
-interface. Before the hw change speed successfully, the driver get old
-old speed from hw by timer task. After reset, the previous speed is config
-to hw. As a result, the new speed is configed successfully but lost after
-PF reset. The followed pictured shows more dirrectly.
+The BUG_ON verifies a condition that should be guaranteed by the correct
+use of the path search (with keep_locks and lowest_level set), an
+assertion is the suitable check.
 
-+------+              +----+                 +----+
-| USER |              | PF |                 | HW |
-+---+--+              +-+--+                 +-+--+
-    |  ethtool -s 100G  |                      |
-    +------------------>|   set speed 100G     |
-    |                   +--------------------->|
-    |                   |  set successfully    |
-    |                   |<---------------------+---+
-    |                   |query cfg (timer task)|   |
-    |                   +--------------------->|   | handle speed
-    |                   |     return 200G      |   | changing event
-    |  ethtool --reset  |<---------------------+   | (100G)
-    +------------------>|  cfg previous speed  |<--+
-    |                   |  after reset (200G)  |
-    |                   +--------------------->|
-    |                   |                      +---+
-    |                   |query cfg (timer task)|   |
-    |                   +--------------------->|   | handle speed
-    |                   |     return 100G      |   | changing event
-    |                   |<---------------------+   | (200G)
-    |                   |                      |<--+
-    |                   |query cfg (timer task)|
-    |                   +--------------------->|
-    |                   |     return 200G      |
-    |                   |<---------------------+
-    |                   |                      |
-    v                   v                      v
-
-This patch save new speed if hw change speed successfully, which will be
-used after reset successfully.
-
-Fixes: 2d03eacc0b7e ("net: hns3: Only update mac configuation when necessary")
-Signed-off-by: Peiyang Wang <wangpeiyang1@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: Anand Jain <anand.jain@oracle.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../hisilicon/hns3/hns3pf/hclge_main.c        | 24 ++++++++++++++-----
- .../hisilicon/hns3/hns3pf/hclge_mdio.c        |  3 +++
- 2 files changed, 21 insertions(+), 6 deletions(-)
+ fs/btrfs/defrag.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-index dfb428550ac03..45bd5c79e4da8 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-@@ -2696,8 +2696,17 @@ static int hclge_cfg_mac_speed_dup_h(struct hnae3_handle *handle, int speed,
- {
- 	struct hclge_vport *vport = hclge_get_vport(handle);
- 	struct hclge_dev *hdev = vport->back;
-+	int ret;
-+
-+	ret = hclge_cfg_mac_speed_dup(hdev, speed, duplex, lane_num);
- 
--	return hclge_cfg_mac_speed_dup(hdev, speed, duplex, lane_num);
-+	if (ret)
-+		return ret;
-+
-+	hdev->hw.mac.req_speed = speed;
-+	hdev->hw.mac.req_duplex = duplex;
-+
-+	return 0;
- }
- 
- static int hclge_set_autoneg_en(struct hclge_dev *hdev, bool enable)
-@@ -2999,17 +3008,20 @@ static int hclge_mac_init(struct hclge_dev *hdev)
- 	if (!test_bit(HCLGE_STATE_RST_HANDLING, &hdev->state))
- 		hdev->hw.mac.duplex = HCLGE_MAC_FULL;
- 
--	ret = hclge_cfg_mac_speed_dup_hw(hdev, hdev->hw.mac.speed,
--					 hdev->hw.mac.duplex, hdev->hw.mac.lane_num);
--	if (ret)
--		return ret;
--
- 	if (hdev->hw.mac.support_autoneg) {
- 		ret = hclge_set_autoneg_en(hdev, hdev->hw.mac.autoneg);
- 		if (ret)
- 			return ret;
- 	}
- 
-+	if (!hdev->hw.mac.autoneg) {
-+		ret = hclge_cfg_mac_speed_dup_hw(hdev, hdev->hw.mac.req_speed,
-+						 hdev->hw.mac.req_duplex,
-+						 hdev->hw.mac.lane_num);
-+		if (ret)
-+			return ret;
-+	}
-+
- 	mac->link = 0;
- 
- 	if (mac->user_fec_mode & BIT(HNAE3_FEC_USER_DEF)) {
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mdio.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mdio.c
-index 85fb11de43a12..80079657afebe 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mdio.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mdio.c
-@@ -191,6 +191,9 @@ static void hclge_mac_adjust_link(struct net_device *netdev)
- 	if (ret)
- 		netdev_err(netdev, "failed to adjust link.\n");
- 
-+	hdev->hw.mac.req_speed = (u32)speed;
-+	hdev->hw.mac.req_duplex = (u8)duplex;
-+
- 	ret = hclge_cfg_flowctrl(hdev);
- 	if (ret)
- 		netdev_err(netdev, "failed to configure flow control.\n");
+diff --git a/fs/btrfs/defrag.c b/fs/btrfs/defrag.c
+index a2e614cf3c19c..e1475dfdf7a8b 100644
+--- a/fs/btrfs/defrag.c
++++ b/fs/btrfs/defrag.c
+@@ -416,7 +416,7 @@ int btrfs_defrag_leaves(struct btrfs_trans_handle *trans,
+ 	 * keep_locks set and lowest_level is 1, regardless of the value of
+ 	 * path->slots[1].
+ 	 */
+-	BUG_ON(path->locks[1] == 0);
++	ASSERT(path->locks[1] != 0);
+ 	ret = btrfs_realloc_node(trans, root,
+ 				 path->nodes[1], 0,
+ 				 &last_ret,
 -- 
 2.43.0
 
