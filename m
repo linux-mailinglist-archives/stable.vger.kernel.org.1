@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-71083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70791-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4F1F96118F
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:21:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2256F96100D
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:05:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54869281D89
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:21:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C7B131F22D79
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:05:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 475D617C96;
-	Tue, 27 Aug 2024 15:20:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13DAC1C4EC9;
+	Tue, 27 Aug 2024 15:04:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XCAG1b0W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OYds05Oj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 039591CFBC;
-	Tue, 27 Aug 2024 15:20:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C45361E520;
+	Tue, 27 Aug 2024 15:04:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772044; cv=none; b=tCsG4Tkm/zInnrgpdUJjtalF7I5d7OZF6+Ut4auVJatIH70ttS+cu/LC/0av6Y4aF+b7+JejsMkLR5rOUNgCNDmCM2glYepltsCTCAy/UEZdKya6ooBLv2f1QBUs9ZqWOI5YJWuXyryAsTq5JSBTGIdpq8ba9GzFW/nZxO6CGgc=
+	t=1724771072; cv=none; b=ColLBW40gloLq7BZXyC0weNbiS1sGJ8iUkAXLI4cRPPgBuVw7yf+jpge5251p4m4bXUEn6GqIZVi5ezrG0Ty+k3JKOEGj92IVzKlhconMJDI+DH0+nS0kHB7mpKECMDENMQj1MyOdeKNXHygL0CqihZyQ+NFF5WMC9hsxJT7Jho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772044; c=relaxed/simple;
-	bh=gjZNHRdyFZ79Vy56HjO2/Bu9MjmkR7JQCkMzmVuyx/8=;
+	s=arc-20240116; t=1724771072; c=relaxed/simple;
+	bh=iMGQXVFEEiYn8+82KeVxQdHaH/qdJ9TPaZex0taw/tQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DyzT+dWR6/gQjz9F6jcSv4nk5OQiQfu/murT1m0xeyQ9Xq+TCqD+5xMnuSPGnrEyXUWIPMILgapo1kAD2U5qDO2MLilzvUAmlGjrmj8B3y0dbZm29Cg62Q5wn0hFBkQ0YqC7exSevcuibnLW841RznyPFgT4RR/z3f1svnSUYo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XCAG1b0W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B9CCC4E693;
-	Tue, 27 Aug 2024 15:20:43 +0000 (UTC)
+	 MIME-Version; b=AFoYJuQxiSWEZ5M3Ez6PhybVPvckTibM8FWTgKz+TDfQyVVfEGepcuVhRElTbVUrOlUl/leornCLk3KPeJKkTcaFdHC+QurEYutDdiv/N9m1fqHrVp3jByfdG0HklaDqGYBKAQ1lSb357B3G+qNNrg1GccFfe8q1zVHqmSflzD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OYds05Oj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BA4FC6105B;
+	Tue, 27 Aug 2024 15:04:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772043;
-	bh=gjZNHRdyFZ79Vy56HjO2/Bu9MjmkR7JQCkMzmVuyx/8=;
+	s=korg; t=1724771072;
+	bh=iMGQXVFEEiYn8+82KeVxQdHaH/qdJ9TPaZex0taw/tQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XCAG1b0W8ZHBD1fA1zrop+nDccZd+3yXBTXGgcFQkCMp9rZocjnuOOzUYl7gXDNcW
-	 GiWcUTEkexCxDLA4hFI9HbjUZ8vSGeMUCEKoUxrVcmFgywOflxLBj85tUmKA134AdS
-	 SIfhdxnefEJXNbdvM/exVRtGhRuWpIvku9QP69r0=
+	b=OYds05Oj/QjqA0r7aMVdwkocOPoZs+VqcG1PMeomZ8asRhcR0mnM5zKYs/y5WtQ+s
+	 PG1AkOTjm8pLpJESEswB2/kcOMa+oM+wxSennqcvZCbgddfQgQ3lf+mt11jfRwWw7n
+	 soGNhp+3ty2I1ElGC6c43aGP3X49XfHQUY5Vfxe0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Hughes <tom@compton.nu>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Omar Sandoval <osandov@fb.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 095/321] netfilter: allow ipv6 fragments to arrive on different devices
+Subject: [PATCH 6.10 079/273] filelock: fix name of file_lease slab cache
 Date: Tue, 27 Aug 2024 16:36:43 +0200
-Message-ID: <20240827143841.854871935@linuxfoundation.org>
+Message-ID: <20240827143836.419542979@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tom Hughes <tom@compton.nu>
+From: Omar Sandoval <osandov@fb.com>
 
-[ Upstream commit 3cd740b985963f874a1a094f1969e998b9d05554 ]
+[ Upstream commit 3f65f3c099bcb27949e712f39ba836f21785924a ]
 
-Commit 264640fc2c5f4 ("ipv6: distinguish frag queues by device
-for multicast and link-local packets") modified the ipv6 fragment
-reassembly logic to distinguish frag queues by device for multicast
-and link-local packets but in fact only the main reassembly code
-limits the use of the device to those address types and the netfilter
-reassembly code uses the device for all packets.
+When struct file_lease was split out from struct file_lock, the name of
+the file_lock slab cache was copied to the new slab cache for
+file_lease. This name conflict causes confusion in /proc/slabinfo and
+/sys/kernel/slab. In particular, it caused failures in drgn's test case
+for slab cache merging.
 
-This means that if fragments of a packet arrive on different interfaces
-then netfilter will fail to reassemble them and the fragments will be
-expired without going any further through the filters.
-
-Fixes: 648700f76b03 ("inet: frags: use rhashtables for reassembly units")
-Signed-off-by: Tom Hughes <tom@compton.nu>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Link: https://github.com/osandov/drgn/blob/9ad29fd86499eb32847473e928b6540872d3d59a/tests/linux_kernel/helpers/test_slab.py#L81
+Fixes: c69ff4071935 ("filelock: split leases out of struct file_lock")
+Signed-off-by: Omar Sandoval <osandov@fb.com>
+Link: https://lore.kernel.org/r/2d1d053da1cafb3e7940c4f25952da4f0af34e38.1722293276.git.osandov@fb.com
+Reviewed-by: Chuck Lever <chuck.lever@oracle.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/netfilter/nf_conntrack_reasm.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ fs/locks.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv6/netfilter/nf_conntrack_reasm.c b/net/ipv6/netfilter/nf_conntrack_reasm.c
-index 87a394179092c..e4b45db8a3992 100644
---- a/net/ipv6/netfilter/nf_conntrack_reasm.c
-+++ b/net/ipv6/netfilter/nf_conntrack_reasm.c
-@@ -154,6 +154,10 @@ static struct frag_queue *fq_find(struct net *net, __be32 id, u32 user,
- 	};
- 	struct inet_frag_queue *q;
+diff --git a/fs/locks.c b/fs/locks.c
+index 9afb16e0683ff..e45cad40f8b6b 100644
+--- a/fs/locks.c
++++ b/fs/locks.c
+@@ -2984,7 +2984,7 @@ static int __init filelock_init(void)
+ 	filelock_cache = kmem_cache_create("file_lock_cache",
+ 			sizeof(struct file_lock), 0, SLAB_PANIC, NULL);
  
-+	if (!(ipv6_addr_type(&hdr->daddr) & (IPV6_ADDR_MULTICAST |
-+					    IPV6_ADDR_LINKLOCAL)))
-+		key.iif = 0;
-+
- 	q = inet_frag_find(nf_frag->fqdir, &key);
- 	if (!q)
- 		return NULL;
+-	filelease_cache = kmem_cache_create("file_lock_cache",
++	filelease_cache = kmem_cache_create("file_lease_cache",
+ 			sizeof(struct file_lease), 0, SLAB_PANIC, NULL);
+ 
+ 	for_each_possible_cpu(i) {
 -- 
 2.43.0
 
