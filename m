@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-70629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70874-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E8D5960F36
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:57:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A2920961076
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:09:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 51F911C2332D
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:57:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D56121C234DF
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:09:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0BCB1C5788;
-	Tue, 27 Aug 2024 14:55:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4370F1C4ED4;
+	Tue, 27 Aug 2024 15:09:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h9xuDgPj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iX9R2Yuv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE6DD1BB6BE;
-	Tue, 27 Aug 2024 14:55:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F30D112E4D;
+	Tue, 27 Aug 2024 15:09:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770545; cv=none; b=mcqjboBuvnklILY/oiPCsV1hRUdvSxXCMoYhqYI3Yj+j1a7tWo6ObjyS2SaTgcq2+E3146vtifxo8tnvKKzRODjWjz8/E9+cXcCkQE8sCeVAY1DrndF9N4rswcX1HJ8DOAWA/x7kLSIl9tRyLDr9GWI0sSN3fbFqJlu6DwF2US4=
+	t=1724771349; cv=none; b=IYYTR17BSY2X3w5r2JNrVsoMVh/XJw09iffTBG4JqV2f8qNEze6g8aPeB1uhos7dN/CurId0f+cfZnZjIL8qtKNppRSVhk5PX0lW9DcwnWmeW1hRRPZhJzYJ55TXdJtn0qol0VBqH2mpSgekfZj4/wGznhTVkklarFUOv/R/jkI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770545; c=relaxed/simple;
-	bh=28PKdSUUaSN+0n/75/IruCj1nvt2KT2Bj7eYPPaKSRw=;
+	s=arc-20240116; t=1724771349; c=relaxed/simple;
+	bh=RLyWu4ZjPPDP0DzMIMCKaAzkEwMyH60tBPDjz+y+LUo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l5TBgA2kaBldS1rWnWe5K8SVzzE1WsUVM458USfzCFRZdGgrflrh8INUhU8OCi/sbk8f4/aB/ySgip1LYd/Y6zK70OcnSN3bv4vLl52uEg52aBcGQL93WueOTcJzaSF9g6YkgbYEzLKbZs920YiavW9Lxdb28puSAmrzcG8VIBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h9xuDgPj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13F37C4E699;
-	Tue, 27 Aug 2024 14:55:44 +0000 (UTC)
+	 MIME-Version; b=lDqRPBwHSXbWZGOXcJkSdc/hM5ReYt4LJGWpsOG9kCigJ+WJJEEVMjxXNTkpIX+Ts9akDMRpk3SRhiXPd8WM8Fp8zLDOyrGagD1GcoJF/uTWmdB3qDrtI2ToTw7b6cZgzSY1synWUwhQC31ShHleawUFb1uGIyxid4w/aUK5lD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iX9R2Yuv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C716C4AF18;
+	Tue, 27 Aug 2024 15:09:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770545;
-	bh=28PKdSUUaSN+0n/75/IruCj1nvt2KT2Bj7eYPPaKSRw=;
+	s=korg; t=1724771348;
+	bh=RLyWu4ZjPPDP0DzMIMCKaAzkEwMyH60tBPDjz+y+LUo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h9xuDgPjXUCt4CYUWdHP9VxI/9aeeC6a4GF4v03AJpVolZo8IVWdXf9ISJP6U1qRX
-	 tVlBfZEHj8H+4fs57WsKIA4iXMBnLr3412MnPVakIIDC4viS1Qc+nQTdYZRWktggJQ
-	 +irBI53tHZsdADOTDiKv3HeHKxpQoQz2f8UHD2s8=
+	b=iX9R2YuvooISE8gN7Ji6NTZWp2gcIQDSfELPR3bf3HkdYEjjeC1xU54T1olJHLtSg
+	 KJqFh8V74aAcF8hBE+FWrKSFOPzDnmqAPCKC0nVPmYp2otNsdgzAt6Y3jrM1Sz8iKb
+	 eXosfS51EYg2BCXqZqU6tRRjkpM8pXBEIZnCuQak=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 253/341] netfilter: nft_counter: Disable BH in nft_counter_offload_stats().
+Subject: [PATCH 6.10 160/273] selftests: udpgro: report error when receive failed
 Date: Tue, 27 Aug 2024 16:38:04 +0200
-Message-ID: <20240827143853.037882262@linuxfoundation.org>
+Message-ID: <20240827143839.493168913@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +63,141 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-[ Upstream commit 1eacdd71b3436b54d5fc8218c4bb0187d92a6892 ]
+[ Upstream commit 7167395a4be7930ecac6a33b4e54d7e3dd9ee209 ]
 
-The sequence counter nft_counter_seq is a per-CPU counter. There is no
-lock associated with it. nft_counter_do_eval() is using the same counter
-and disables BH which suggest that it can be invoked from a softirq.
-This in turn means that nft_counter_offload_stats(), which disables only
-preemption, can be interrupted by nft_counter_do_eval() leading to two
-writer for one seqcount_t.
-This can lead to loosing stats or reading statistics while they are
-updated.
+Currently, we only check the latest senders's exit code. If the receiver
+report failed, it is not recoreded. Fix it by checking the exit code
+of all the involved processes.
 
-Disable BH during stats update in nft_counter_offload_stats() to ensure
-one writer at a time.
+Before:
+  bad GRO lookup       ok
+  multiple GRO socks   ./udpgso_bench_rx: recv: bad packet len, got 1452, expected 14520
 
-Fixes: b72920f6e4a9d ("netfilter: nftables: counter hardware offload support")
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Reviewed-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+ ./udpgso_bench_rx: recv: bad packet len, got 1452, expected 14520
+
+ failed
+ $ echo $?
+ 0
+
+After:
+  bad GRO lookup       ok
+  multiple GRO socks   ./udpgso_bench_rx: recv: bad packet len, got 1452, expected 14520
+
+ ./udpgso_bench_rx: recv: bad packet len, got 1452, expected 14520
+
+ failed
+ $ echo $?
+ 1
+
+Fixes: 3327a9c46352 ("selftests: add functionals test for UDP GRO")
+Suggested-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_counter.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/selftests/net/udpgro.sh | 44 ++++++++++++++++-----------
+ 1 file changed, 27 insertions(+), 17 deletions(-)
 
-diff --git a/net/netfilter/nft_counter.c b/net/netfilter/nft_counter.c
-index dccc68a5135ad..5a90c3c7268bf 100644
---- a/net/netfilter/nft_counter.c
-+++ b/net/netfilter/nft_counter.c
-@@ -265,7 +265,7 @@ static void nft_counter_offload_stats(struct nft_expr *expr,
- 	struct nft_counter *this_cpu;
- 	seqcount_t *myseq;
+diff --git a/tools/testing/selftests/net/udpgro.sh b/tools/testing/selftests/net/udpgro.sh
+index 11a1ebda564fd..4659cf01e4384 100755
+--- a/tools/testing/selftests/net/udpgro.sh
++++ b/tools/testing/selftests/net/udpgro.sh
+@@ -46,17 +46,19 @@ run_one() {
+ 	local -r all="$@"
+ 	local -r tx_args=${all%rx*}
+ 	local -r rx_args=${all#*rx}
++	local ret=0
  
--	preempt_disable();
-+	local_bh_disable();
- 	this_cpu = this_cpu_ptr(priv->counter);
- 	myseq = this_cpu_ptr(&nft_counter_seq);
+ 	cfg_veth
  
-@@ -273,7 +273,7 @@ static void nft_counter_offload_stats(struct nft_expr *expr,
- 	this_cpu->packets += stats->pkts;
- 	this_cpu->bytes += stats->bytes;
- 	write_seqcount_end(myseq);
--	preempt_enable();
-+	local_bh_enable();
+-	ip netns exec "${PEER_NS}" ./udpgso_bench_rx -C 1000 -R 10 ${rx_args} && \
+-		echo "ok" || \
+-		echo "failed" &
++	ip netns exec "${PEER_NS}" ./udpgso_bench_rx -C 1000 -R 10 ${rx_args} &
++	local PID1=$!
+ 
+ 	wait_local_port_listen ${PEER_NS} 8000 udp
+ 	./udpgso_bench_tx ${tx_args}
+-	ret=$?
+-	wait $(jobs -p)
++	check_err $?
++	wait ${PID1}
++	check_err $?
++	[ "$ret" -eq 0 ] && echo "ok" || echo "failed"
+ 	return $ret
  }
  
- void nft_counter_init_seqcount(void)
+@@ -73,6 +75,7 @@ run_one_nat() {
+ 	local -r all="$@"
+ 	local -r tx_args=${all%rx*}
+ 	local -r rx_args=${all#*rx}
++	local ret=0
+ 
+ 	if [[ ${tx_args} = *-4* ]]; then
+ 		ipt_cmd=iptables
+@@ -93,16 +96,17 @@ run_one_nat() {
+ 	# ... so that GRO will match the UDP_GRO enabled socket, but packets
+ 	# will land on the 'plain' one
+ 	ip netns exec "${PEER_NS}" ./udpgso_bench_rx -G ${family} -b ${addr1} -n 0 &
+-	pid=$!
+-	ip netns exec "${PEER_NS}" ./udpgso_bench_rx -C 1000 -R 10 ${family} -b ${addr2%/*} ${rx_args} && \
+-		echo "ok" || \
+-		echo "failed"&
++	local PID1=$!
++	ip netns exec "${PEER_NS}" ./udpgso_bench_rx -C 1000 -R 10 ${family} -b ${addr2%/*} ${rx_args} &
++	local PID2=$!
+ 
+ 	wait_local_port_listen "${PEER_NS}" 8000 udp
+ 	./udpgso_bench_tx ${tx_args}
+-	ret=$?
+-	kill -INT $pid
+-	wait $(jobs -p)
++	check_err $?
++	kill -INT ${PID1}
++	wait ${PID2}
++	check_err $?
++	[ "$ret" -eq 0 ] && echo "ok" || echo "failed"
+ 	return $ret
+ }
+ 
+@@ -111,20 +115,26 @@ run_one_2sock() {
+ 	local -r all="$@"
+ 	local -r tx_args=${all%rx*}
+ 	local -r rx_args=${all#*rx}
++	local ret=0
+ 
+ 	cfg_veth
+ 
+ 	ip netns exec "${PEER_NS}" ./udpgso_bench_rx -C 1000 -R 10 ${rx_args} -p 12345 &
+-	ip netns exec "${PEER_NS}" ./udpgso_bench_rx -C 2000 -R 10 ${rx_args} && \
+-		echo "ok" || \
+-		echo "failed" &
++	local PID1=$!
++	ip netns exec "${PEER_NS}" ./udpgso_bench_rx -C 2000 -R 10 ${rx_args} &
++	local PID2=$!
+ 
+ 	wait_local_port_listen "${PEER_NS}" 12345 udp
+ 	./udpgso_bench_tx ${tx_args} -p 12345
++	check_err $?
+ 	wait_local_port_listen "${PEER_NS}" 8000 udp
+ 	./udpgso_bench_tx ${tx_args}
+-	ret=$?
+-	wait $(jobs -p)
++	check_err $?
++	wait ${PID1}
++	check_err $?
++	wait ${PID2}
++	check_err $?
++	[ "$ret" -eq 0 ] && echo "ok" || echo "failed"
+ 	return $ret
+ }
+ 
 -- 
 2.43.0
 
