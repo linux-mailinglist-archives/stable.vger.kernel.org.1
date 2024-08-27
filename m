@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-71090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70767-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 043A1961197
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:21:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85F2B960FEF
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:04:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F7191C23086
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:21:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28D1F1F21E2D
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:04:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C90D1C68BD;
-	Tue, 27 Aug 2024 15:21:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E84B51C6F5F;
+	Tue, 27 Aug 2024 15:03:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BLv1BM9C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j7PP5r8y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AF0919F485;
-	Tue, 27 Aug 2024 15:21:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A49461C461D;
+	Tue, 27 Aug 2024 15:03:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772067; cv=none; b=Xckr4a26XXJRfulAzHbygBeFDJRIRYMCVg9pzol56tn7b7w5E6uPLXL5SQGFIBgtyOpmN3SmKnwR28Ik/PkhTLOpxg/Jcnm0NojeHjHq2ro+p9solSThHiUzklznHA9v1SW86YRQktc2TJOx2XJRCXE0F59ygzV8VwwcekEFF6U=
+	t=1724770995; cv=none; b=W8dFlqqz71crUrshoSQ6WlZu2TiqTBkVNJqM+nLx+qSmyCh7URc0qqCaVwRQTu5SugYZ54BKyC/Uo0hy7JE4OOnCvDl+BaLk/9uIhhTJEbVZUHGPyxUWRGPvScs1UE9Jx/dfeABV0IQNfjcmkfjfxb7qsSOfqRCG4oHBB3ezjFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772067; c=relaxed/simple;
-	bh=woBMP4lCge/ns6KLn4MNpPsLjKA+BHudd4XHl44IBUM=;
+	s=arc-20240116; t=1724770995; c=relaxed/simple;
+	bh=7CSw1BxQgaWjO9gs5/GqguSNbhNk2n1qavc8j34PIFE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Juiky9ivSFisOhu0hODNKwKRBnevrm64Dlwpuu989yo1XloSvAbVUa0FuZYgIyDLutb0jfkKKMbfCcJpdrtQ99RrmtawRB9kQVPVfWXQKFmh+ajnqhGJLHYQxgB06E1WXGby6C4Nk/w5JC3tpCTMAXVURWqN7uKyHPAaBSfIUxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BLv1BM9C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBCF6C4E66E;
-	Tue, 27 Aug 2024 15:21:06 +0000 (UTC)
+	 MIME-Version; b=mt2zqeAcUmgUh8mnsGntPiqjTfiyiat2hiAtwgv+1V1X/YmDUcTP/ySSZE7n2KQ/vb3htSuO+J0UdT342eX/AkgdFdjw9UyPhiaj+qIJhdfk/XJ53dpdoaBXjXh/gpIWN4OHlyQAJLhe/ltd98/mTpVQyQbK2bChptCb9vZ9uiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j7PP5r8y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDF62C61049;
+	Tue, 27 Aug 2024 15:03:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772067;
-	bh=woBMP4lCge/ns6KLn4MNpPsLjKA+BHudd4XHl44IBUM=;
+	s=korg; t=1724770995;
+	bh=7CSw1BxQgaWjO9gs5/GqguSNbhNk2n1qavc8j34PIFE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BLv1BM9CRFPtsqrXBeAUL8qhRCncraalgMJRQg58MhehZic957Ov8KDYffXGY9w54
-	 MwbhsmB7+8hylvX/EIpWGNUI3Z0uZyIf2rf2gf7XPvrAZvEd0ZQx2Ceyld0/CaUab6
-	 vOl/KeielYe0Z8lJvsxjfR/FK7/851DniCb+Us0w=
+	b=j7PP5r8y9dyl7fRknuubnq6HjvuVG+Vinbxc/dYZ4HfvysjISGAvn5zhihY63T6Ct
+	 7vRzAl9GnsC4TJJbpkPL98uf3dL/sMMmJZZY0LLWKl9zqkiL5jzZa4h0Sk6QFDTKTn
+	 aQdo3MTaANUETLeyeQANQGM2YIzWzgFYtODpxUr0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+1fa663a2100308ab6eab@syzkaller.appspotmail.com,
-	Alexei Starovoitov <ast@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 071/321] bpf: Avoid kfree_rcu() under lock in bpf_lpm_trie.
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	James Bottomley <James.Bottomley@HansenPartnership.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.10 055/273] selftests: memfd_secret: dont build memfd_secret test on unsupported arches
 Date: Tue, 27 Aug 2024 16:36:19 +0200
-Message-ID: <20240827143840.945066797@linuxfoundation.org>
+Message-ID: <20240827143835.495019465@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,107 +67,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexei Starovoitov <ast@kernel.org>
+From: Muhammad Usama Anjum <usama.anjum@collabora.com>
 
-[ Upstream commit 59f2f841179aa6a0899cb9cf53659149a35749b7 ]
+commit 7c5e8d212d7d81991a580e7de3904ea213d9a852 upstream.
 
-syzbot reported the following lock sequence:
-cpu 2:
-  grabs timer_base lock
-    spins on bpf_lpm lock
+[1] mentions that memfd_secret is only supported on arm64, riscv, x86 and
+x86_64 for now.  It doesn't support other architectures.  I found the
+build error on arm and decided to send the fix as it was creating noise on
+KernelCI:
 
-cpu 1:
-  grab rcu krcp lock
-    spins on timer_base lock
+memfd_secret.c: In function 'memfd_secret':
+memfd_secret.c:42:24: error: '__NR_memfd_secret' undeclared (first use in this function);
+did you mean 'memfd_secret'?
+   42 |         return syscall(__NR_memfd_secret, flags);
+      |                        ^~~~~~~~~~~~~~~~~
+      |                        memfd_secret
 
-cpu 0:
-  grab bpf_lpm lock
-    spins on rcu krcp lock
+Hence I'm adding condition that memfd_secret should only be compiled on
+supported architectures.
 
-bpf_lpm lock can be the same.
-timer_base lock can also be the same due to timer migration.
-but rcu krcp lock is always per-cpu, so it cannot be the same lock.
-Hence it's a false positive.
-To avoid lockdep complaining move kfree_rcu() after spin_unlock.
+Also check in run_vmtests script if memfd_secret binary is present before
+executing it.
 
-Reported-by: syzbot+1fa663a2100308ab6eab@syzkaller.appspotmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20240329171439.37813-1-alexei.starovoitov@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20240812061522.1933054-1-usama.anjum@collabora.com
+Link: https://lore.kernel.org/all/20210518072034.31572-7-rppt@kernel.org/ [1]
+Link: https://lkml.kernel.org/r/20240809075642.403247-1-usama.anjum@collabora.com
+Fixes: 76fe17ef588a ("secretmem: test: add basic selftest for memfd_secret(2)")
+Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Cc: Albert Ou <aou@eecs.berkeley.edu>
+Cc: James Bottomley <James.Bottomley@HansenPartnership.com>
+Cc: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Paul Walmsley <paul.walmsley@sifive.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/bpf/lpm_trie.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ tools/testing/selftests/mm/Makefile       |    2 ++
+ tools/testing/selftests/mm/run_vmtests.sh |    3 +++
+ 2 files changed, 5 insertions(+)
 
-diff --git a/kernel/bpf/lpm_trie.c b/kernel/bpf/lpm_trie.c
-index b80bffc59e5fb..37b510d91b810 100644
---- a/kernel/bpf/lpm_trie.c
-+++ b/kernel/bpf/lpm_trie.c
-@@ -308,6 +308,7 @@ static int trie_update_elem(struct bpf_map *map,
- {
- 	struct lpm_trie *trie = container_of(map, struct lpm_trie, map);
- 	struct lpm_trie_node *node, *im_node = NULL, *new_node = NULL;
-+	struct lpm_trie_node *free_node = NULL;
- 	struct lpm_trie_node __rcu **slot;
- 	struct bpf_lpm_trie_key_u8 *key = _key;
- 	unsigned long irq_flags;
-@@ -382,7 +383,7 @@ static int trie_update_elem(struct bpf_map *map,
- 			trie->n_entries--;
+--- a/tools/testing/selftests/mm/Makefile
++++ b/tools/testing/selftests/mm/Makefile
+@@ -51,7 +51,9 @@ TEST_GEN_FILES += madv_populate
+ TEST_GEN_FILES += map_fixed_noreplace
+ TEST_GEN_FILES += map_hugetlb
+ TEST_GEN_FILES += map_populate
++ifneq (,$(filter $(ARCH),arm64 riscv riscv64 x86 x86_64))
+ TEST_GEN_FILES += memfd_secret
++endif
+ TEST_GEN_FILES += migration
+ TEST_GEN_FILES += mkdirty
+ TEST_GEN_FILES += mlock-random-test
+--- a/tools/testing/selftests/mm/run_vmtests.sh
++++ b/tools/testing/selftests/mm/run_vmtests.sh
+@@ -367,8 +367,11 @@ CATEGORY="hmm" run_test bash ./test_hmm.
+ # MADV_POPULATE_READ and MADV_POPULATE_WRITE tests
+ CATEGORY="madv_populate" run_test ./madv_populate
  
- 		rcu_assign_pointer(*slot, new_node);
--		kfree_rcu(node, rcu);
-+		free_node = node;
++if [ -x ./memfd_secret ]
++then
+ (echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope 2>&1) | tap_prefix
+ CATEGORY="memfd_secret" run_test ./memfd_secret
++fi
  
- 		goto out;
- 	}
-@@ -429,6 +430,7 @@ static int trie_update_elem(struct bpf_map *map,
- 	}
- 
- 	spin_unlock_irqrestore(&trie->lock, irq_flags);
-+	kfree_rcu(free_node, rcu);
- 
- 	return ret;
- }
-@@ -437,6 +439,7 @@ static int trie_update_elem(struct bpf_map *map,
- static int trie_delete_elem(struct bpf_map *map, void *_key)
- {
- 	struct lpm_trie *trie = container_of(map, struct lpm_trie, map);
-+	struct lpm_trie_node *free_node = NULL, *free_parent = NULL;
- 	struct bpf_lpm_trie_key_u8 *key = _key;
- 	struct lpm_trie_node __rcu **trim, **trim2;
- 	struct lpm_trie_node *node, *parent;
-@@ -506,8 +509,8 @@ static int trie_delete_elem(struct bpf_map *map, void *_key)
- 		else
- 			rcu_assign_pointer(
- 				*trim2, rcu_access_pointer(parent->child[0]));
--		kfree_rcu(parent, rcu);
--		kfree_rcu(node, rcu);
-+		free_parent = parent;
-+		free_node = node;
- 		goto out;
- 	}
- 
-@@ -521,10 +524,12 @@ static int trie_delete_elem(struct bpf_map *map, void *_key)
- 		rcu_assign_pointer(*trim, rcu_access_pointer(node->child[1]));
- 	else
- 		RCU_INIT_POINTER(*trim, NULL);
--	kfree_rcu(node, rcu);
-+	free_node = node;
- 
- out:
- 	spin_unlock_irqrestore(&trie->lock, irq_flags);
-+	kfree_rcu(free_parent, rcu);
-+	kfree_rcu(free_node, rcu);
- 
- 	return ret;
- }
--- 
-2.43.0
-
+ # KSM KSM_MERGE_TIME_HUGE_PAGES test with size of 100
+ CATEGORY="ksm" run_test ./ksm_tests -H -s 100
 
 
 
