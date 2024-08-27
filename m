@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-70544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70795-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45889960EAF
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:51:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA30E961013
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:05:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 04C88286E44
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:51:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 56A46B21B08
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:05:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45D741C825C;
-	Tue, 27 Aug 2024 14:51:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68CD81C3F19;
+	Tue, 27 Aug 2024 15:04:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ndDSZEOU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wdJ7wxhn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 055791C57BD;
-	Tue, 27 Aug 2024 14:51:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27EBC1B4C4E;
+	Tue, 27 Aug 2024 15:04:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770261; cv=none; b=P75tJNkJcpFp9kL/8Ez1iK+FK3/9bdFhWoXyPB+eMvfin3hcW8HZ5m/QuexiJgDx5iSgFIB5ahIMKPJlFkPaiZMTnKkFq7+R5JNglvLwBtlwjQ6O+Qir8wdpGIi0KZ2ybsDpSuy0hbguqizlkc03E+c/FPCZZfIwfK1w9CzQyqw=
+	t=1724771086; cv=none; b=pgCpp1UO1DHV0iI5mWHp1SEk12oy1jceotDihOuFrKqhCXKsf9JtGvsE0VJZyf+hUqamd879xHWswX2dxEDDa09Z5uPvkrNqjyrIlLjx322wspBHfpLgWMdRwNWeqHTa71RPdaL8CQWzSReBygO3HjLa+8QaA62qHzCwTkrP8bs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770261; c=relaxed/simple;
-	bh=15THewnaL3j6CycV+DrdH3/NFLdQ9V+SthRM2ALRREc=;
+	s=arc-20240116; t=1724771086; c=relaxed/simple;
+	bh=2yz6Hbs4pvP40myNpak07pz6V+5Pw4b1yoJfpcKMGbc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GCI1CdD/Vu4yLN5XYs4v/kkDXzfLkTzkNkX5t7Ttbu2h+DjSm/4zwLFfuYoGa9nPfQCzShtOmpNPBIiRxO12csAe3sC6/TJ25IRiypPdSFNuGjfepZVJueXN3FG5Hahjzhi32YGnUa1pilMLFzf36ZxpcRsON2Ekr6ApsYDnfyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ndDSZEOU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65EB2C4DE02;
-	Tue, 27 Aug 2024 14:51:00 +0000 (UTC)
+	 MIME-Version; b=hciK52lXmL4H5+F3OlRhOXpYJrZIaqpvUo6/n1DGSjLQqv9gj1BbKWz248Qa/OuKX5FwW0GbP8v6ATaSYrZC5u4U/UdXE1owMik0Uh3gIHW7+aV4d/hSGYKvt3lpC+03VAsvp3fFvbutgc5xP99nIW9Jv2DxoeYSdkrxoShAayk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wdJ7wxhn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A6A6C6105B;
+	Tue, 27 Aug 2024 15:04:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770260;
-	bh=15THewnaL3j6CycV+DrdH3/NFLdQ9V+SthRM2ALRREc=;
+	s=korg; t=1724771085;
+	bh=2yz6Hbs4pvP40myNpak07pz6V+5Pw4b1yoJfpcKMGbc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ndDSZEOUKYJihgiKf+UcBtCU/n+oIizgI1vvjPCYz/4y1z7udEWZUjdZuI6Ug/QxE
-	 hEKUNCdMJye4QHyvv8L4bQLFM8Lwa1y9mHi21lTyOrUwK9n7tKLbjAVRs18uA8+4dB
-	 haPRsuK0C4iD2rbpb2zjvH2JYuxp2HQRHw0hZIa8=
+	b=wdJ7wxhnQ925IVqzwKY2pH7FkTf8Q0hKBipE2Yov6RP6Li14KIFFUZ3BcMtRR56hU
+	 06cnaBohhMJjW/qVJvgsyctC9epNF6uzp7sFM8SfVUDZZ0E17SVZ9yOA5C2T0q1xLF
+	 dZP5+tOhEXmpr51VfPRmuTcXyFocS9iGXoi6dfh0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jiri Pirko <jiri@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Eduard Zingerman <eddyz87@gmail.com>,
+	Daniel Hodges <hodgesd@meta.com>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 175/341] netlink: hold nlk->cb_mutex longer in __netlink_dump_start()
+Subject: [PATCH 6.10 082/273] bpf: Fix a kernel verifier crash in stacksafe()
 Date: Tue, 27 Aug 2024 16:36:46 +0200
-Message-ID: <20240827143850.074189597@linuxfoundation.org>
+Message-ID: <20240827143836.533175374@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,82 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Yonghong Song <yonghong.song@linux.dev>
 
-[ Upstream commit b5590270068c4324dac4a2b5a4a156e02e21339f ]
+[ Upstream commit bed2eb964c70b780fb55925892a74f26cb590b25 ]
 
-__netlink_dump_start() releases nlk->cb_mutex right before
-calling netlink_dump() which grabs it again.
+Daniel Hodges reported a kernel verifier crash when playing with sched-ext.
+Further investigation shows that the crash is due to invalid memory access
+in stacksafe(). More specifically, it is the following code:
 
-This seems dangerous, even if KASAN did not bother yet.
+    if (exact != NOT_EXACT &&
+        old->stack[spi].slot_type[i % BPF_REG_SIZE] !=
+        cur->stack[spi].slot_type[i % BPF_REG_SIZE])
+            return false;
 
-Add a @lock_taken parameter to netlink_dump() to let it
-grab the mutex if called from netlink_recvmsg() only.
+The 'i' iterates old->allocated_stack.
+If cur->allocated_stack < old->allocated_stack the out-of-bound
+access will happen.
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+To fix the issue add 'i >= cur->allocated_stack' check such that if
+the condition is true, stacksafe() should fail. Otherwise,
+cur->stack[spi].slot_type[i % BPF_REG_SIZE] memory access is legal.
+
+Fixes: 2793a8b015f7 ("bpf: exact states comparison for iterator convergence checks")
+Cc: Eduard Zingerman <eddyz87@gmail.com>
+Reported-by: Daniel Hodges <hodgesd@meta.com>
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+Signed-off-by: Yonghong Song <yonghong.song@linux.dev>
+Link: https://lore.kernel.org/r/20240812214847.213612-1-yonghong.song@linux.dev
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netlink/af_netlink.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ kernel/bpf/verifier.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
-index 6ae782efb1ee3..db49fc4d42cf7 100644
---- a/net/netlink/af_netlink.c
-+++ b/net/netlink/af_netlink.c
-@@ -130,7 +130,7 @@ static const char *const nlk_cb_mutex_key_strings[MAX_LINKS + 1] = {
- 	"nlk_cb_mutex-MAX_LINKS"
- };
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index a8845cc299fec..521bd7efae038 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -16881,8 +16881,9 @@ static bool stacksafe(struct bpf_verifier_env *env, struct bpf_func_state *old,
+ 		spi = i / BPF_REG_SIZE;
  
--static int netlink_dump(struct sock *sk);
-+static int netlink_dump(struct sock *sk, bool lock_taken);
+ 		if (exact != NOT_EXACT &&
+-		    old->stack[spi].slot_type[i % BPF_REG_SIZE] !=
+-		    cur->stack[spi].slot_type[i % BPF_REG_SIZE])
++		    (i >= cur->allocated_stack ||
++		     old->stack[spi].slot_type[i % BPF_REG_SIZE] !=
++		     cur->stack[spi].slot_type[i % BPF_REG_SIZE]))
+ 			return false;
  
- /* nl_table locking explained:
-  * Lookup and traversal are protected with an RCU read-side lock. Insertion
-@@ -1989,7 +1989,7 @@ static int netlink_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
- 
- 	if (READ_ONCE(nlk->cb_running) &&
- 	    atomic_read(&sk->sk_rmem_alloc) <= sk->sk_rcvbuf / 2) {
--		ret = netlink_dump(sk);
-+		ret = netlink_dump(sk, false);
- 		if (ret) {
- 			WRITE_ONCE(sk->sk_err, -ret);
- 			sk_error_report(sk);
-@@ -2198,7 +2198,7 @@ static int netlink_dump_done(struct netlink_sock *nlk, struct sk_buff *skb,
- 	return 0;
- }
- 
--static int netlink_dump(struct sock *sk)
-+static int netlink_dump(struct sock *sk, bool lock_taken)
- {
- 	struct netlink_sock *nlk = nlk_sk(sk);
- 	struct netlink_ext_ack extack = {};
-@@ -2210,7 +2210,8 @@ static int netlink_dump(struct sock *sk)
- 	int alloc_min_size;
- 	int alloc_size;
- 
--	mutex_lock(nlk->cb_mutex);
-+	if (!lock_taken)
-+		mutex_lock(nlk->cb_mutex);
- 	if (!nlk->cb_running) {
- 		err = -EINVAL;
- 		goto errout_skb;
-@@ -2367,9 +2368,7 @@ int __netlink_dump_start(struct sock *ssk, struct sk_buff *skb,
- 	WRITE_ONCE(nlk->cb_running, true);
- 	nlk->dump_done_errno = INT_MAX;
- 
--	mutex_unlock(nlk->cb_mutex);
--
--	ret = netlink_dump(sk);
-+	ret = netlink_dump(sk, true);
- 
- 	sock_put(sk);
- 
+ 		if (!(old->stack[spi].spilled_ptr.live & REG_LIVE_READ)
 -- 
 2.43.0
 
