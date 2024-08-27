@@ -1,112 +1,84 @@
-Return-Path: <stable+bounces-70339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70340-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5414960A42
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:29:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5621B960A9A
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:37:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C3F31F22F18
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 12:29:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EA20FB20ADB
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 12:37:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C431D1B3B39;
-	Tue, 27 Aug 2024 12:29:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24DE81B3B0F;
+	Tue, 27 Aug 2024 12:37:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DTumabjO"
 X-Original-To: stable@vger.kernel.org
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF46E19FA8A;
-	Tue, 27 Aug 2024 12:29:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D827E19D8A9
+	for <stable@vger.kernel.org>; Tue, 27 Aug 2024 12:37:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724761759; cv=none; b=rm96XNvT2+OjIrTOZZ/TVJt6P8dk12qLJ29SkIB8o/wwKq3IzHPtIqWplbHsDN19WHVyuTbQR9a31urEneKNj+iQKnHzzCNplYID1xIUIRBOHDgIw4ynilwWvyhfNIS8/cZ2eJtcHnAF43y5y467KovoB53gTUvzaWFCXFWdxuw=
+	t=1724762245; cv=none; b=gKQw1aNXz/Ppnjms3ERi0z6zYWG7kq8rrHbQBWWjKdNXD8d3LlykRUspN77UhQmOpMq+zGh1O9z6dVeJXoPLBk2wykOBaPjeScqKnIKaDkj8kDL/pqXyTxNWqEf4aYXURPcVzr6baPpt9FD9kttLMXEdmta3gCXaTS+TVeQEDkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724761759; c=relaxed/simple;
-	bh=/u+8IG85UE1UCSKu2EZgx1AAgvnYYY2Ik+dwBQe+Eno=;
+	s=arc-20240116; t=1724762245; c=relaxed/simple;
+	bh=vt5ZXD2hkLfV4bxt678rYoH6v1sFPWwpiQPY31g9zR4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iNKW4FQByE8aziPIz4+Q7+dR3v++oTrcr4W3h8wXcyJB6ut593OxGy6xmJhGUEgbjphN28WBdwGyLWMneqkbJRn/gdw99KgVi3AchVz+ZNbQFhMjQLkT1qnGHG4yFfzLQ2AAwCwOpj7vjzPMcde6IFDEsrF3wmPMzV2Uq91iGus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id 2DAEB1C009E; Tue, 27 Aug 2024 14:29:16 +0200 (CEST)
-Date: Tue, 27 Aug 2024 14:29:15 +0200
-From: Pavel Machek <pavel@denx.de>
-To: Sasha Levin <sashal@kernel.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Jesse Zhang <jesse.zhang@amd.com>, Tim Huang <Tim.Huang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>, kenneth.feng@amd.com,
-	christian.koenig@amd.com, Xinhui.Pan@amd.com, airlied@gmail.com,
-	daniel@ffwll.ch, Jun.Ma2@amd.com, mario.limonciello@amd.com,
-	yifan1.zhang@amd.com, lijo.lazar@amd.com,
-	amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
-Subject: Re: [PATCH AUTOSEL 6.1 05/61] drm/amd/pm: Fix negative array index
- read
-Message-ID: <Zs3Gm4KIIN6EMNYP@duo.ucw.cz>
-References: <20240801002803.3935985-1-sashal@kernel.org>
- <20240801002803.3935985-5-sashal@kernel.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=EFr6crLlJHwc0sC4JEczJb60qxaLQXUcx5LyUEQEtSdCnkEYNB50kYzWYwf1jbFdmpazfvlwg7bcYhaffp9GyNxq4v/whiq3huyeuOTWVbaTPiylz9eexdF3HcX231chmjxcZDG/tqahPpzwkq2D9aPQ/Eb+6WcXjLUAQ3S+PCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DTumabjO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA02BC6106E;
+	Tue, 27 Aug 2024 12:37:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1724762244;
+	bh=vt5ZXD2hkLfV4bxt678rYoH6v1sFPWwpiQPY31g9zR4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=DTumabjOZ7os/fapgIXH9CXfPG09mvad1C+QXltoPrA5YHtm7KWbNag9stYiWPz56
+	 znPiPss1T/jJhrBAUbWBJGPkfTWi5r2p9aAjjMLs1bmgA5YOci58wL+Z4zehXc18kA
+	 uoFYzkWnFa5W3s6czqdRF/MHHWt2Te3SHjxJvcpc=
+Date: Tue, 27 Aug 2024 14:37:21 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Takashi Iwai <tiwai@suse.de>
+Cc: stable@vger.kernel.org
+Subject: Re: [PATCH v6.6.y] ALSA: timer: Relax start tick time check for
+ slave timer elements
+Message-ID: <2024082715-quickly-declared-749e@gregkh>
+References: <20240819154754.7629-1-tiwai@suse.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="scNabhc75NExd7rZ"
-Content-Disposition: inline
-In-Reply-To: <20240801002803.3935985-5-sashal@kernel.org>
-
-
---scNabhc75NExd7rZ
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20240819154754.7629-1-tiwai@suse.de>
 
-Hi!
+On Mon, Aug 19, 2024 at 05:47:45PM +0200, Takashi Iwai wrote:
+> commit ccbfcac05866ebe6eb3bc6d07b51d4ed4fcde436 upstream.
+> 
+> The recent addition of a sanity check for a too low start tick time
+> seems breaking some applications that uses aloop with a certain slave
+> timer setup.  They may have the initial resolution 0, hence it's
+> treated as if it were a too low value.
+> 
+> Relax and skip the check for the slave timer instance for addressing
+> the regression.
+> 
+> Fixes: 4a63bd179fa8 ("ALSA: timer: Set lower bound of start tick time")
+> Cc: <stable@vger.kernel.org>
+> Link: https://github.com/raspberrypi/linux/issues/6294
+> Link: https://patch.msgid.link/20240810084833.10939-1-tiwai@suse.de
+> Signed-off-by: Takashi Iwai <tiwai@suse.de>
+> ---
+> 
+> Greg, this is a backport for 6.6.y and older stable kernels that failed
+> to cherry-pick the original one.
+> 
 
-> From: Jesse Zhang <jesse.zhang@amd.com>
->=20
-> [ Upstream commit c8c19ebf7c0b202a6a2d37a52ca112432723db5f ]
->=20
-> Avoid using the negative values
-> for clk_idex as an index into an array pptable->DpmDescriptor.
->=20
-> V2: fix clk_index return check (Tim Huang)
+Now queued up, thanks.
 
->  	dpm_desc =3D &pptable->DpmDescriptor[clk_index];
-> =20
->  	/* 0 - Fine grained DPM, 1 - Discrete DPM */
-> -	return dpm_desc->SnapToDiscrete =3D=3D 0;
-> +	return dpm_desc->SnapToDiscrete =3D=3D 0 ? 1 : 0;
->  }
->
-
-Original code was already returning 0/1, no need for this. You could
-use !!() to emphatise that, but really....
-
-> +		if (ret) {
->  			soft_max_level =3D (soft_max_level >=3D 1 ? 1 : 0);
->  			soft_min_level =3D (soft_min_level >=3D 1 ? 1 : 0);
-
-Same here.
-
-Best regards,
-								Pavel
-
---=20
-DENX Software Engineering GmbH,        Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-
---scNabhc75NExd7rZ
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZs3GmwAKCRAw5/Bqldv6
-8lzgAJ9HRFMKO7ykdGp/Lv4c4NpdGaVW4ACgqKiVFPb39w9n2HaoIoNKdgJiFJk=
-=aWwY
------END PGP SIGNATURE-----
-
---scNabhc75NExd7rZ--
+greg k-h
 
