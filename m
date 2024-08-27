@@ -1,80 +1,76 @@
-Return-Path: <stable+bounces-70350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70351-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 536AC960B0D
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:51:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D60A8960B0E
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:51:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0FB112845EF
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 12:51:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 44F64B23716
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 12:51:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FB771BFE0E;
-	Tue, 27 Aug 2024 12:49:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 333401BC093;
+	Tue, 27 Aug 2024 12:50:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1+50Z/zB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mdYb5kMR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0135E1BC083
-	for <stable@vger.kernel.org>; Tue, 27 Aug 2024 12:49:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E68D01BBBF9
+	for <stable@vger.kernel.org>; Tue, 27 Aug 2024 12:50:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724762972; cv=none; b=TqybvpswTWuCJQxAzDUt1Xjq9UT2eYUycieZfuCrwmPQr+l8jJ3c4RvRlFhfB2o3G+kOX6uD+Zsrd0znp35WY2HYFRoHQo6zeVs45kPEogEAJ3+3hZsaNjSH/LpZGVoUiNLXeGgK5KKmadJ8xXJrq+DIwIMqC/pmUthVrtnrj10=
+	t=1724763009; cv=none; b=u6EY2NaZ+iqO6oQx1yMp50EEkfF2UDDcSPmprS+iw1I57idfyQypiwNYUeFXZ8KCi7bHYFCXPpFqFDeLr0UrLETRPWqrKnsWXlGGEOvlZ0JxfNw3RCEQcb9KYOUMh3ZW85kNum+dcKicovA5YELaSXrzPxFW+4SUfg3nssxlNWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724762972; c=relaxed/simple;
-	bh=QwqqWlN/fy0JJOVAZrPQtzzfN/QFTbAbOvG5Tsn4UlM=;
+	s=arc-20240116; t=1724763009; c=relaxed/simple;
+	bh=TnAWP2yMCJzhj0VD1iOATi4eGsN7d2enyX58VNV1sFk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RbnmlpX/B2AZSygFsv71c9f33746RbCW2uQmBNTa5p90FKW37kTfo4cBwFeGycz690OspvbJEXt4ZEtCIj6AY1aSpUlIUzn6UXqjcXHqF7eabNe0TK3TCgZwLaPdXgknKN12j1aO/xHKVneGFtzZv6iBIEdNbGXa+itKgfkqytw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1+50Z/zB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 473F1C6106D;
-	Tue, 27 Aug 2024 12:49:30 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=Q92ax3RlaxxSJ3TaACzVDOu7Xkcj/sQ+19saIVhkBI5SE6KJ2L2XmROh91r5Qvs7N/3SkwHIKvUVuWK5ccUSIp0g7J9hjX6rz6eybdDXOOt6JdCL2GO7hSw+A30zctjqvI49xOdXoqRSFcO+ChTAd7j6ve4vnGlftGFA7HOsqdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mdYb5kMR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA034C6106D;
+	Tue, 27 Aug 2024 12:50:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724762971;
-	bh=QwqqWlN/fy0JJOVAZrPQtzzfN/QFTbAbOvG5Tsn4UlM=;
+	s=korg; t=1724763008;
+	bh=TnAWP2yMCJzhj0VD1iOATi4eGsN7d2enyX58VNV1sFk=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=1+50Z/zBTk9gK0eoK7PCMY47hiXrA7BEnbrAjy+Bjv24pjxHm7JJ20RbWn8aW27nS
-	 j2H2LDcToogY7JrNGeLC2j7MhXQdjo/zTJUFJgr9AN233b8E2SEP86zMo8+Ez1TpD1
-	 LK7XCi/ZlfSYqP0j4GRiHzDseRLUCEObNCmVxQPc=
-Date: Tue, 27 Aug 2024 14:49:28 +0200
+	b=mdYb5kMRAgMccyxjpsOR63npkG2pU5LvJcx5vQOFv9U8c8VDMoiuKupRY1aHRQ57u
+	 BLIi7pFfbt7FWivv8hyeQQp2H7EuEn/Ds5CLr3LBpgkagDwrXo/ZQrUkuHsgNT8SAO
+	 omqXlzg03TH+5sfERvdIvFtbklLic8kVdntYLwaU=
+Date: Tue, 27 Aug 2024 14:50:05 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Mario Limonciello <superm1@kernel.org>
-Cc: stable@vger.kernel.org, Mario Limonciello <mario.limonciello@amd.com>
-Subject: Re: [PATCH 6.6 0/2] VCN power saving improvements
-Message-ID: <2024082722-oncoming-onslaught-cd8f@gregkh>
-References: <20240826155532.2031159-1-superm1@kernel.org>
+To: Namjae Jeon <linkinjeon@kernel.org>
+Cc: stfrench@microsoft.com, stable@vger.kernel.org
+Subject: Re: FAILED: patch "[PATCH] ksmbd: fix race condition between
+ destroy_previous_session()" failed to apply to 6.6-stable tree
+Message-ID: <2024082756-ecosystem-hazard-fd1b@gregkh>
+References: <2024082626-succulent-engraver-73cd@gregkh>
+ <CAKYAXd_j19G31-3TAC0gBiDtgWentYpRAA9oc_wZ0T+Q6s3T0w@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240826155532.2031159-1-superm1@kernel.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAKYAXd_j19G31-3TAC0gBiDtgWentYpRAA9oc_wZ0T+Q6s3T0w@mail.gmail.com>
 
-On Mon, Aug 26, 2024 at 10:55:30AM -0500, Mario Limonciello wrote:
-> From: Mario Limonciello <mario.limonciello@amd.com>
+On Tue, Aug 27, 2024 at 11:30:15AM +0900, Namjae Jeon wrote:
+> On Mon, Aug 26, 2024 at 8:57 PM <gregkh@linuxfoundation.org> wrote:
+> >
+> >
+> Hi Greg,
 > 
-> This is a backport of patches from 6.11-rc1 that improve power savings
-> for VCN when hardware accelerated video playback is active.
-> 
-> Boyuan Zhang (2):
->   drm/amdgpu/vcn: identify unified queue in sw init
->   drm/amdgpu/vcn: not pause dpg for unified queue
-> 
->  drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.c | 53 ++++++++++++-------------
->  drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.h |  1 +
->  2 files changed, 27 insertions(+), 27 deletions(-)
-> 
-> -- 
-> 2.43.0
-> 
-> 
+> > The patch below does not apply to the 6.6-stable tree.
+> > If someone wants it applied there, or to any other stable or longterm
+> > tree, then please email the backport, including the original git commit
+> > id to <stable@vger.kernel.org>.
+> Could you please apply the attached backport patch for linux 6.6 stable kernel ?
 
-Now queued up, thanks.
+Now applied, thanks.
 
 greg k-h
 
