@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-70739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70465-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D29B0960FC8
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:02:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 004F4960E43
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:47:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5332EB27082
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:02:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9CD8E1F248C3
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:47:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BF521BC9F1;
-	Tue, 27 Aug 2024 15:01:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FF991C57AB;
+	Tue, 27 Aug 2024 14:46:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qZbTZMk6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VqyL+lq0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B67B1C6887;
-	Tue, 27 Aug 2024 15:01:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E9F5DDC1;
+	Tue, 27 Aug 2024 14:46:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770906; cv=none; b=TXLFW142WnQBtPwWMcqF2Bkuq1zyL+lTgwvwDi43PArubWf2Qkq6nUfPmy/0BiCeTWORMzN+8Dfht1DneNHRJediGb6CxzTcwCJnH+b3NLTiWSIHNH3RS+/qYAocWudbx3MEaoQ6ycq8YTgJbhAuYc9fvekIbPAI+nPNOIkVEHM=
+	t=1724769996; cv=none; b=KHSCy4RCpJyZBG3wRu0YP/N2ATKSatpdV3Ag8Epa02j3/bclwwTKkqPCB4HfoElghZM5CE+li4AJAw/m5R6Bgx55O27AWXgxF1DxhzhLNVxRq5VF5Icr2CORE/kFM0RaxthyY1gvXIXMpVsxAHmOAUt2yfZksvJD/znN/xW1gHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770906; c=relaxed/simple;
-	bh=djn+d+KGpj1u9XiJRR/k6hkIp+Ti34EV2qwAUCvAQ0Q=;
+	s=arc-20240116; t=1724769996; c=relaxed/simple;
+	bh=JHGp4P8qMQi34yttHob/BqNkyUnYXnh+VJqRqaiFIxE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=culE680zLbPDoF5klfvTF9qCeByw3abag5PiJASzzNLdzsH5sPhFw/Ld4hyZ9l0sxNMz3dbCjLnnV2M8g8Etvi4R3PkVmUmVOx6jrmglFe+17mJ8ltL/69gVFn6swBDUTYV2Ag4Mgz64KH6Ec0/2SIdRmLzoq8neWTSpKM0WK2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qZbTZMk6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69E72C4AF1C;
-	Tue, 27 Aug 2024 15:01:45 +0000 (UTC)
+	 MIME-Version; b=XVAGHICus5bSwEvXqpXpEySiAS9VOcziea1zxkhDJCHnT5ZGNgLIhlm2MYxPW27INeP7yLZghWYQKbLal6YdalhsPv+8Mp+JCf0eqKWjho/54rGql3puo0WxHGtrAjqNUEYeZaTjur+q7VasSzykQFf4Map6BoZ3toVpxhT24MA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VqyL+lq0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EA46C6106D;
+	Tue, 27 Aug 2024 14:46:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770905;
-	bh=djn+d+KGpj1u9XiJRR/k6hkIp+Ti34EV2qwAUCvAQ0Q=;
+	s=korg; t=1724769996;
+	bh=JHGp4P8qMQi34yttHob/BqNkyUnYXnh+VJqRqaiFIxE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qZbTZMk6ugbOLmGIWXlwdr4E61zJs7YgxCY20f5/BcyWswiR2Iw+FK1LBxIgiLnak
-	 75OcLWbBn/QbH4sDe4CEKSIycQ/OAXahCT3rZNWXfKFKMLMQCyFQZgie7r/0/kXnLs
-	 sSfzFOxk5dv4dA/WaG7tx+97+KxDDCUhTF0bzR4s=
+	b=VqyL+lq0yNc41N6TYxIYQA50Zc05tX4MjzviXDhIuYlUAIvsPERLAN6430ye4xvNt
+	 527Z0SLH6IJ+PvpwdkXBKefDZzHbZOkCrFAVaKvW4a8du6QhJkpwV2MWzr86c0+htq
+	 Lm04Fso8xcgwUa70ANDs0hI9mPn6TRfIG3PHnwFI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Hans de Goede <hdegoede@redhat.com>
-Subject: [PATCH 6.10 004/273] Revert "ACPI: EC: Evaluate orphan _REG under EC device"
+	Kamalesh Babulal <kamalesh.babulal@oracle.com>,
+	Tejun Heo <tj@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 097/341] cgroup: Avoid extra dereference in css_populate_dir()
 Date: Tue, 27 Aug 2024 16:35:28 +0200
-Message-ID: <20240827143833.545263242@linuxfoundation.org>
+Message-ID: <20240827143847.098452815@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,151 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Kamalesh Babulal <kamalesh.babulal@oracle.com>
 
-commit 779bac9994452f6a894524f70c00cfb0cd4b6364 upstream.
+[ Upstream commit d24f05987ce8bf61e62d86fedbe47523dc5c3393 ]
 
-This reverts commit 0e6b6dedf168 ("Revert "ACPI: EC: Evaluate orphan
-_REG under EC device") because the problem addressed by it will be
-addressed differently in what follows.
+Use css directly instead of dereferencing it from &cgroup->self, while
+adding the cgroup v2 cft base and psi files in css_populate_dir(). Both
+points to the same css, when css->ss is NULL, this avoids extra deferences
+and makes code consistent in usage across the function.
 
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Cc: All applicable <stable@vger.kernel.org>
-Link: https://patch.msgid.link/3236716.5fSG56mABF@rjwysocki.net
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Kamalesh Babulal <kamalesh.babulal@oracle.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpica/acevents.h |    4 ---
- drivers/acpi/acpica/evregion.c |    6 +++-
- drivers/acpi/acpica/evxfregn.c |   54 -----------------------------------------
- drivers/acpi/ec.c              |    3 --
- include/acpi/acpixf.h          |    4 ---
- 5 files changed, 5 insertions(+), 66 deletions(-)
+ kernel/cgroup/cgroup.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/acpi/acpica/acevents.h
-+++ b/drivers/acpi/acpica/acevents.h
-@@ -191,10 +191,6 @@ void
- acpi_ev_execute_reg_methods(struct acpi_namespace_node *node,
- 			    acpi_adr_space_type space_id, u32 function);
+diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
+index d872fff901073..5eca6281d1aa6 100644
+--- a/kernel/cgroup/cgroup.c
++++ b/kernel/cgroup/cgroup.c
+@@ -1728,13 +1728,13 @@ static int css_populate_dir(struct cgroup_subsys_state *css)
  
--void
--acpi_ev_execute_orphan_reg_method(struct acpi_namespace_node *node,
--				  acpi_adr_space_type space_id);
--
- acpi_status
- acpi_ev_execute_reg_method(union acpi_operand_object *region_obj, u32 function);
+ 	if (!css->ss) {
+ 		if (cgroup_on_dfl(cgrp)) {
+-			ret = cgroup_addrm_files(&cgrp->self, cgrp,
++			ret = cgroup_addrm_files(css, cgrp,
+ 						 cgroup_base_files, true);
+ 			if (ret < 0)
+ 				return ret;
  
---- a/drivers/acpi/acpica/evregion.c
-+++ b/drivers/acpi/acpica/evregion.c
-@@ -20,6 +20,10 @@ extern u8 acpi_gbl_default_address_space
- 
- /* Local prototypes */
- 
-+static void
-+acpi_ev_execute_orphan_reg_method(struct acpi_namespace_node *device_node,
-+				  acpi_adr_space_type space_id);
-+
- static acpi_status
- acpi_ev_reg_run(acpi_handle obj_handle,
- 		u32 level, void *context, void **return_value);
-@@ -814,7 +818,7 @@ acpi_ev_reg_run(acpi_handle obj_handle,
-  *
-  ******************************************************************************/
- 
--void
-+static void
- acpi_ev_execute_orphan_reg_method(struct acpi_namespace_node *device_node,
- 				  acpi_adr_space_type space_id)
- {
---- a/drivers/acpi/acpica/evxfregn.c
-+++ b/drivers/acpi/acpica/evxfregn.c
-@@ -306,57 +306,3 @@ acpi_execute_reg_methods(acpi_handle dev
- }
- 
- ACPI_EXPORT_SYMBOL(acpi_execute_reg_methods)
--
--/*******************************************************************************
-- *
-- * FUNCTION:    acpi_execute_orphan_reg_method
-- *
-- * PARAMETERS:  device          - Handle for the device
-- *              space_id        - The address space ID
-- *
-- * RETURN:      Status
-- *
-- * DESCRIPTION: Execute an "orphan" _REG method that appears under an ACPI
-- *              device. This is a _REG method that has no corresponding region
-- *              within the device's scope.
-- *
-- ******************************************************************************/
--acpi_status
--acpi_execute_orphan_reg_method(acpi_handle device, acpi_adr_space_type space_id)
--{
--	struct acpi_namespace_node *node;
--	acpi_status status;
--
--	ACPI_FUNCTION_TRACE(acpi_execute_orphan_reg_method);
--
--	/* Parameter validation */
--
--	if (!device) {
--		return_ACPI_STATUS(AE_BAD_PARAMETER);
--	}
--
--	status = acpi_ut_acquire_mutex(ACPI_MTX_NAMESPACE);
--	if (ACPI_FAILURE(status)) {
--		return_ACPI_STATUS(status);
--	}
--
--	/* Convert and validate the device handle */
--
--	node = acpi_ns_validate_handle(device);
--	if (node) {
--
--		/*
--		 * If an "orphan" _REG method is present in the device's scope
--		 * for the given address space ID, run it.
--		 */
--
--		acpi_ev_execute_orphan_reg_method(node, space_id);
--	} else {
--		status = AE_BAD_PARAMETER;
--	}
--
--	(void)acpi_ut_release_mutex(ACPI_MTX_NAMESPACE);
--	return_ACPI_STATUS(status);
--}
--
--ACPI_EXPORT_SYMBOL(acpi_execute_orphan_reg_method)
---- a/drivers/acpi/ec.c
-+++ b/drivers/acpi/ec.c
-@@ -1507,9 +1507,6 @@ static int ec_install_handlers(struct ac
- 
- 	if (call_reg && !test_bit(EC_FLAGS_EC_REG_CALLED, &ec->flags)) {
- 		acpi_execute_reg_methods(scope_handle, ACPI_ADR_SPACE_EC);
--		if (scope_handle != ec->handle)
--			acpi_execute_orphan_reg_method(ec->handle, ACPI_ADR_SPACE_EC);
--
- 		set_bit(EC_FLAGS_EC_REG_CALLED, &ec->flags);
- 	}
- 
---- a/include/acpi/acpixf.h
-+++ b/include/acpi/acpixf.h
-@@ -663,10 +663,6 @@ ACPI_EXTERNAL_RETURN_STATUS(acpi_status
- 						     acpi_adr_space_type
- 						     space_id))
- ACPI_EXTERNAL_RETURN_STATUS(acpi_status
--			    acpi_execute_orphan_reg_method(acpi_handle device,
--							   acpi_adr_space_type
--							   space_id))
--ACPI_EXTERNAL_RETURN_STATUS(acpi_status
- 			    acpi_remove_address_space_handler(acpi_handle
- 							      device,
- 							      acpi_adr_space_type
+ 			if (cgroup_psi_enabled()) {
+-				ret = cgroup_addrm_files(&cgrp->self, cgrp,
++				ret = cgroup_addrm_files(css, cgrp,
+ 							 cgroup_psi_files, true);
+ 				if (ret < 0)
+ 					return ret;
+-- 
+2.43.0
+
 
 
 
