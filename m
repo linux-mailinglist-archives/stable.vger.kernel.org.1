@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-71085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70794-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C07B961193
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:21:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52AEC961010
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:05:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AE5C7B228A0
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:21:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F929283565
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:05:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 593521C3F0D;
-	Tue, 27 Aug 2024 15:20:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B05951C68B1;
+	Tue, 27 Aug 2024 15:04:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rKXv2twK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Itm6sCl9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15C7E1C4EE6;
-	Tue, 27 Aug 2024 15:20:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F3621C3F19;
+	Tue, 27 Aug 2024 15:04:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772051; cv=none; b=iAEsgGnJNCVSGqte2eMeDxDFG0McqKkL60GNjkn62IeYwc/2XLiH1dKmQLdgZOa5ccW6Su/rS5aAUHfRJtB0ZT5vNOokloq0Gpb+hlmRUWKHjeUo7wbUvzk3f6COR019oGqlDFDNXSBFBTB3z0A1VHz4CHP0quTYoUgCoKvnrAM=
+	t=1724771082; cv=none; b=aDTJpZNGdwGraVAvidCLbSr9pzXKFraYs6INBgY+tqX6JNsK4h5GDUivffgDWyJWYF70PupN0cryx5XXB8NsbWfkUE43vA0qobqjL4B9gENBPscyyX+eMbSKfvYoA+i07NEmLacUjzum84wm5JUVj5rUZtJGa1941MLjehk7w08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772051; c=relaxed/simple;
-	bh=y8pCksCa944XqTNFUeOJEma3oOtmYl1Tj9ExpF4u9E4=;
+	s=arc-20240116; t=1724771082; c=relaxed/simple;
+	bh=kUg39chzhFNKVYigZ9bwonUaRRBnw2niUCu7yVYE6IY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PF0Cj2Ah3cf7HFANyyuV8IGtsKqz+NtnF+O6m6eulkedLDdDfYi3EGn6P0t397sQymSlJt+/kjCPO9ONP5S1H6TyEu5fMp29d7fRCiLXU4aV3/1MX3MracotZ+ERgp0ajx0ndjTbgE4CI22SNwB8Ya2BIn7pBOicDsAFMrtmFvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rKXv2twK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 766D7C4DE1E;
-	Tue, 27 Aug 2024 15:20:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=nSjVALdUcLsN+gWU7+lGB8Eey7jynwTuBm/8v2FquAF4465o8Zjcn+mUaeq6P90lqFggi+2Y+2M/y1q20X++CRZPgPJ2w1dubSs2kr2BGvaRWl8i+sYjURVF5eiq+0iRqn60mOWStTwMJkn03qXIWrTA+h9fVXxTPCEB1hlyzzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Itm6sCl9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3D50C6105B;
+	Tue, 27 Aug 2024 15:04:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772050;
-	bh=y8pCksCa944XqTNFUeOJEma3oOtmYl1Tj9ExpF4u9E4=;
+	s=korg; t=1724771082;
+	bh=kUg39chzhFNKVYigZ9bwonUaRRBnw2niUCu7yVYE6IY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rKXv2twKRafyaMniFyl0ryaHQNbvhFqANJxCSJ5RL+aIuUdtXXpOuRbFJ/AeI0+cq
-	 2X+dkYu4eHqSlCJHYRjmwaPrdg3X5vDbVbtRssBO81W2DHnZdbaP6Dtz34UeUz43d1
-	 r5drkRtgH2CGw1/OJjI9w5fhbmm2x+ZY+cfuGJvk=
+	b=Itm6sCl9yRn7nmC78700Cru2I86wL5II1Jwg71FNBRbWgLCdEvDr19TJPz8OQaSS1
+	 nSZbahvk0CjplQZsJl9jXDUx+DPiONb+uoZg926GD+g6VmnC6zeCpfAnmLF671e1gX
+	 87kp2iPMtOYTg1oV4osvW9yxppMHHfpM3+r74cNE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Leon Hwang <leon.hwang@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 097/321] netfilter: nf_queue: drop packets with cloned unconfirmed conntracks
+Subject: [PATCH 6.10 081/273] bpf: Fix updating attached freplace prog in prog_array map
 Date: Tue, 27 Aug 2024 16:36:45 +0200
-Message-ID: <20240827143841.932496369@linuxfoundation.org>
+Message-ID: <20240827143836.495137247@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,113 +63,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Leon Hwang <leon.hwang@linux.dev>
 
-[ Upstream commit 7d8dc1c7be8d3509e8f5164dd5df64c8e34d7eeb ]
+[ Upstream commit fdad456cbcca739bae1849549c7a999857c56f88 ]
 
-Conntrack assumes an unconfirmed entry (not yet committed to global hash
-table) has a refcount of 1 and is not visible to other cores.
+The commit f7866c358733 ("bpf: Fix null pointer dereference in resolve_prog_type() for BPF_PROG_TYPE_EXT")
+fixed a NULL pointer dereference panic, but didn't fix the issue that
+fails to update attached freplace prog to prog_array map.
 
-With multicast forwarding this assumption breaks down because such
-skbs get cloned after being picked up, i.e.  ct->use refcount is > 1.
+Since commit 1c123c567fb1 ("bpf: Resolve fext program type when checking map compatibility"),
+freplace prog and its target prog are able to tail call each other.
 
-Likewise, bridge netfilter will clone broad/mutlicast frames and
-all frames in case they need to be flood-forwarded during learning
-phase.
+And the commit 3aac1ead5eb6 ("bpf: Move prog->aux->linked_prog and trampoline into bpf_link on attach")
+sets prog->aux->dst_prog as NULL after attaching freplace prog to its
+target prog.
 
-For ip multicast forwarding or plain bridge flood-forward this will
-"work" because packets don't leave softirq and are implicitly
-serialized.
+After loading freplace the prog_array's owner type is BPF_PROG_TYPE_SCHED_CLS.
+Then, after attaching freplace its prog->aux->dst_prog is NULL.
+Then, while updating freplace in prog_array the bpf_prog_map_compatible()
+incorrectly returns false because resolve_prog_type() returns
+BPF_PROG_TYPE_EXT instead of BPF_PROG_TYPE_SCHED_CLS.
+After this patch the resolve_prog_type() returns BPF_PROG_TYPE_SCHED_CLS
+and update to prog_array can succeed.
 
-With nfqueue this no longer holds true, the packets get queued
-and can be reinjected in arbitrary ways.
-
-Disable this feature, I see no other solution.
-
-After this patch, nfqueue cannot queue packets except the last
-multicast/broadcast packet.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: f7866c358733 ("bpf: Fix null pointer dereference in resolve_prog_type() for BPF_PROG_TYPE_EXT")
+Cc: Toke Høiland-Jørgensen <toke@redhat.com>
+Cc: Martin KaFai Lau <martin.lau@kernel.org>
+Acked-by: Yonghong Song <yonghong.song@linux.dev>
+Signed-off-by: Leon Hwang <leon.hwang@linux.dev>
+Link: https://lore.kernel.org/r/20240728114612.48486-2-leon.hwang@linux.dev
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_netfilter_hooks.c |  6 +++++-
- net/netfilter/nfnetlink_queue.c | 35 +++++++++++++++++++++++++++++++--
- 2 files changed, 38 insertions(+), 3 deletions(-)
+ include/linux/bpf_verifier.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/bridge/br_netfilter_hooks.c b/net/bridge/br_netfilter_hooks.c
-index 9ac70c27da835..9229300881b5f 100644
---- a/net/bridge/br_netfilter_hooks.c
-+++ b/net/bridge/br_netfilter_hooks.c
-@@ -618,8 +618,12 @@ static unsigned int br_nf_local_in(void *priv,
- 	if (likely(nf_ct_is_confirmed(ct)))
- 		return NF_ACCEPT;
- 
-+	if (WARN_ON_ONCE(refcount_read(&nfct->use) != 1)) {
-+		nf_reset_ct(skb);
-+		return NF_ACCEPT;
-+	}
-+
- 	WARN_ON_ONCE(skb_shared(skb));
--	WARN_ON_ONCE(refcount_read(&nfct->use) != 1);
- 
- 	/* We can't call nf_confirm here, it would create a dependency
- 	 * on nf_conntrack module.
-diff --git a/net/netfilter/nfnetlink_queue.c b/net/netfilter/nfnetlink_queue.c
-index 5bc342cb13767..f13eed826cbb8 100644
---- a/net/netfilter/nfnetlink_queue.c
-+++ b/net/netfilter/nfnetlink_queue.c
-@@ -647,10 +647,41 @@ static bool nf_ct_drop_unconfirmed(const struct nf_queue_entry *entry)
+diff --git a/include/linux/bpf_verifier.h b/include/linux/bpf_verifier.h
+index ff2a6cdb1fa3f..5db4a3f354804 100644
+--- a/include/linux/bpf_verifier.h
++++ b/include/linux/bpf_verifier.h
+@@ -846,8 +846,8 @@ static inline u32 type_flag(u32 type)
+ /* only use after check_attach_btf_id() */
+ static inline enum bpf_prog_type resolve_prog_type(const struct bpf_prog *prog)
  {
- #if IS_ENABLED(CONFIG_NF_CONNTRACK)
- 	static const unsigned long flags = IPS_CONFIRMED | IPS_DYING;
--	const struct nf_conn *ct = (void *)skb_nfct(entry->skb);
-+	struct nf_conn *ct = (void *)skb_nfct(entry->skb);
-+	unsigned long status;
-+	unsigned int use;
- 
--	if (ct && ((ct->status & flags) == IPS_DYING))
-+	if (!ct)
-+		return false;
-+
-+	status = READ_ONCE(ct->status);
-+	if ((status & flags) == IPS_DYING)
- 		return true;
-+
-+	if (status & IPS_CONFIRMED)
-+		return false;
-+
-+	/* in some cases skb_clone() can occur after initial conntrack
-+	 * pickup, but conntrack assumes exclusive skb->_nfct ownership for
-+	 * unconfirmed entries.
-+	 *
-+	 * This happens for br_netfilter and with ip multicast routing.
-+	 * We can't be solved with serialization here because one clone could
-+	 * have been queued for local delivery.
-+	 */
-+	use = refcount_read(&ct->ct_general.use);
-+	if (likely(use == 1))
-+		return false;
-+
-+	/* Can't decrement further? Exclusive ownership. */
-+	if (!refcount_dec_not_one(&ct->ct_general.use))
-+		return false;
-+
-+	skb_set_nfct(entry->skb, 0);
-+	/* No nf_ct_put(): we already decremented .use and it cannot
-+	 * drop down to 0.
-+	 */
-+	return true;
- #endif
- 	return false;
+-	return (prog->type == BPF_PROG_TYPE_EXT && prog->aux->dst_prog) ?
+-		prog->aux->dst_prog->type : prog->type;
++	return (prog->type == BPF_PROG_TYPE_EXT && prog->aux->saved_dst_prog_type) ?
++		prog->aux->saved_dst_prog_type : prog->type;
  }
+ 
+ static inline bool bpf_prog_check_recur(const struct bpf_prog *prog)
 -- 
 2.43.0
 
