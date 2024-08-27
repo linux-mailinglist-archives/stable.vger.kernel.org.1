@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-70662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71194-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4E98960F67
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:59:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52535961239
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:29:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B186286A04
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:59:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 851511C2389C
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:29:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F375A1C8719;
-	Tue, 27 Aug 2024 14:57:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD8E71CDFC3;
+	Tue, 27 Aug 2024 15:26:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tdp4IJO5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vhjRpdKc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFEFF1C4603;
-	Tue, 27 Aug 2024 14:57:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BB971C57AB;
+	Tue, 27 Aug 2024 15:26:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770653; cv=none; b=qhfTjT168Ilz+MKNBFFG+lDhNrVPN3iRqIgFBpFq6MpeaWLZxqWhkMjgaVZTQeDOsDDiBtIrTf8Xj0qUdWvKrN9qaFlfwBbJV7rDosaNNR9tPV81+TUFCTJ+8z8CZFkQ2cyCZ/vFikivAOgvVyw6oaW4LBtRepD2FVneCrtokxI=
+	t=1724772409; cv=none; b=J7QhBYNM5ClIejSMAMc5296aDNp92ctCfxoDZ+d/bvKwEz33M25NwyABrCMBZW7A9Cm/VapBN3ny6bB/Zz+IM7cD9y4ciGzHpl+dtR+5ZYWIwZm/x6X0qVUtyzkT1mDaE5Cqsyo7k9v3yDMbwWkVPZCgpkozE5n6XpBAP0oqD+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770653; c=relaxed/simple;
-	bh=AAy6tFFdotYAGYjh1HBsafxjXY6SY0IndeLUGEoHveo=;
+	s=arc-20240116; t=1724772409; c=relaxed/simple;
+	bh=rbUvelP94I0/FLjsdcksGYG9PWnKO4gLpQMeakjMJpM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fCk2B2MOfffsiC1Btl27cAi8eHqgt4GR6+uEKfRZLjfU9ibWsrJ/ygMDr7+sCAg0SbG0wZN9hRgmKOaMJSezS0aKG+w7z8TnFcvCkGMM0O441953wCiIJ7tTuPoZuGYPyI6ckNKMLVTzTQlgMhDgsk4uWdlK3gQ0Idw39LRmpK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tdp4IJO5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19105C61040;
-	Tue, 27 Aug 2024 14:57:32 +0000 (UTC)
+	 MIME-Version; b=nGihHk8mJ+XFU94W0yyt2r1pjIKPKRb1Zca4/o2yuRN9WYTZzP6qfzelj1QrYL4cCPqfakw3FiAbKfj8K3kYfTMoXlmO8j5d7VwMLAeR0AVkisvfMCQIa4B79jMdgokFPziHfN3VhE/DICH2EbmVKe7SXLQwc50BNR//gwivhN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vhjRpdKc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DF8EC4DE12;
+	Tue, 27 Aug 2024 15:26:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770653;
-	bh=AAy6tFFdotYAGYjh1HBsafxjXY6SY0IndeLUGEoHveo=;
+	s=korg; t=1724772409;
+	bh=rbUvelP94I0/FLjsdcksGYG9PWnKO4gLpQMeakjMJpM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tdp4IJO5vaW2R6jHVAxW3a0+m9RktEyLBPjUaELmRE/+uutFXTWFMBMuB1qNnMdlH
-	 Uxc20e+OTEZ09DYXp0LcvoxkXoUSjzE+UfqkYThvhM3u3/RY8YFOhb9nGRiqxZj4fG
-	 gI+mwmnzpJOK4T2+zB2E7NgkA/jzT9nxVsceiCNY=
+	b=vhjRpdKcgxsykrsX/uytvoB2T7pjFCAyMp1AkAK1FT9uBk3vTYMjrsDvAo1+1p/6p
+	 u9EztR1v+YQPnuH7DNwv1AnuVqr6xwzGEMneutb4xCA08wAg4pMLHmf55AK8ePyIXk
+	 evKOa1hOBec9Zu8hZGInz8v1VbJkZdT8VCBoOE2s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+b72d86aa5df17ce74c60@syzkaller.appspotmail.com,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	y0un9n132@gmail.com,
+	Kees Cook <keescook@chromium.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 252/341] kcm: Serialise kcm_sendmsg() for the same socket.
+Subject: [PATCH 6.1 175/321] x86: Increase brk randomness entropy for 64-bit systems
 Date: Tue, 27 Aug 2024 16:38:03 +0200
-Message-ID: <20240827143852.998920182@linuxfoundation.org>
+Message-ID: <20240827143844.891898677@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,225 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Kees Cook <keescook@chromium.org>
 
-[ Upstream commit 807067bf014d4a3ae2cc55bd3de16f22a01eb580 ]
+[ Upstream commit 44c76825d6eefee9eb7ce06c38e1a6632ac7eb7d ]
 
-syzkaller reported UAF in kcm_release(). [0]
+In commit c1d171a00294 ("x86: randomize brk"), arch_randomize_brk() was
+defined to use a 32MB range (13 bits of entropy), but was never increased
+when moving to 64-bit. The default arch_randomize_brk() uses 32MB for
+32-bit tasks, and 1GB (18 bits of entropy) for 64-bit tasks.
 
-The scenario is
+Update x86_64 to match the entropy used by arm64 and other 64-bit
+architectures.
 
-  1. Thread A builds a skb with MSG_MORE and sets kcm->seq_skb.
-
-  2. Thread A resumes building skb from kcm->seq_skb but is blocked
-     by sk_stream_wait_memory()
-
-  3. Thread B calls sendmsg() concurrently, finishes building kcm->seq_skb
-     and puts the skb to the write queue
-
-  4. Thread A faces an error and finally frees skb that is already in the
-     write queue
-
-  5. kcm_release() does double-free the skb in the write queue
-
-When a thread is building a MSG_MORE skb, another thread must not touch it.
-
-Let's add a per-sk mutex and serialise kcm_sendmsg().
-
-[0]:
-BUG: KASAN: slab-use-after-free in __skb_unlink include/linux/skbuff.h:2366 [inline]
-BUG: KASAN: slab-use-after-free in __skb_dequeue include/linux/skbuff.h:2385 [inline]
-BUG: KASAN: slab-use-after-free in __skb_queue_purge_reason include/linux/skbuff.h:3175 [inline]
-BUG: KASAN: slab-use-after-free in __skb_queue_purge include/linux/skbuff.h:3181 [inline]
-BUG: KASAN: slab-use-after-free in kcm_release+0x170/0x4c8 net/kcm/kcmsock.c:1691
-Read of size 8 at addr ffff0000ced0fc80 by task syz-executor329/6167
-
-CPU: 1 PID: 6167 Comm: syz-executor329 Tainted: G    B              6.8.0-rc5-syzkaller-g9abbc24128bc #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/25/2024
-Call trace:
- dump_backtrace+0x1b8/0x1e4 arch/arm64/kernel/stacktrace.c:291
- show_stack+0x2c/0x3c arch/arm64/kernel/stacktrace.c:298
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0xd0/0x124 lib/dump_stack.c:106
- print_address_description mm/kasan/report.c:377 [inline]
- print_report+0x178/0x518 mm/kasan/report.c:488
- kasan_report+0xd8/0x138 mm/kasan/report.c:601
- __asan_report_load8_noabort+0x20/0x2c mm/kasan/report_generic.c:381
- __skb_unlink include/linux/skbuff.h:2366 [inline]
- __skb_dequeue include/linux/skbuff.h:2385 [inline]
- __skb_queue_purge_reason include/linux/skbuff.h:3175 [inline]
- __skb_queue_purge include/linux/skbuff.h:3181 [inline]
- kcm_release+0x170/0x4c8 net/kcm/kcmsock.c:1691
- __sock_release net/socket.c:659 [inline]
- sock_close+0xa4/0x1e8 net/socket.c:1421
- __fput+0x30c/0x738 fs/file_table.c:376
- ____fput+0x20/0x30 fs/file_table.c:404
- task_work_run+0x230/0x2e0 kernel/task_work.c:180
- exit_task_work include/linux/task_work.h:38 [inline]
- do_exit+0x618/0x1f64 kernel/exit.c:871
- do_group_exit+0x194/0x22c kernel/exit.c:1020
- get_signal+0x1500/0x15ec kernel/signal.c:2893
- do_signal+0x23c/0x3b44 arch/arm64/kernel/signal.c:1249
- do_notify_resume+0x74/0x1f4 arch/arm64/kernel/entry-common.c:148
- exit_to_user_mode_prepare arch/arm64/kernel/entry-common.c:169 [inline]
- exit_to_user_mode arch/arm64/kernel/entry-common.c:178 [inline]
- el0_svc+0xac/0x168 arch/arm64/kernel/entry-common.c:713
- el0t_64_sync_handler+0x84/0xfc arch/arm64/kernel/entry-common.c:730
- el0t_64_sync+0x190/0x194 arch/arm64/kernel/entry.S:598
-
-Allocated by task 6166:
- kasan_save_stack mm/kasan/common.c:47 [inline]
- kasan_save_track+0x40/0x78 mm/kasan/common.c:68
- kasan_save_alloc_info+0x70/0x84 mm/kasan/generic.c:626
- unpoison_slab_object mm/kasan/common.c:314 [inline]
- __kasan_slab_alloc+0x74/0x8c mm/kasan/common.c:340
- kasan_slab_alloc include/linux/kasan.h:201 [inline]
- slab_post_alloc_hook mm/slub.c:3813 [inline]
- slab_alloc_node mm/slub.c:3860 [inline]
- kmem_cache_alloc_node+0x204/0x4c0 mm/slub.c:3903
- __alloc_skb+0x19c/0x3d8 net/core/skbuff.c:641
- alloc_skb include/linux/skbuff.h:1296 [inline]
- kcm_sendmsg+0x1d3c/0x2124 net/kcm/kcmsock.c:783
- sock_sendmsg_nosec net/socket.c:730 [inline]
- __sock_sendmsg net/socket.c:745 [inline]
- sock_sendmsg+0x220/0x2c0 net/socket.c:768
- splice_to_socket+0x7cc/0xd58 fs/splice.c:889
- do_splice_from fs/splice.c:941 [inline]
- direct_splice_actor+0xec/0x1d8 fs/splice.c:1164
- splice_direct_to_actor+0x438/0xa0c fs/splice.c:1108
- do_splice_direct_actor fs/splice.c:1207 [inline]
- do_splice_direct+0x1e4/0x304 fs/splice.c:1233
- do_sendfile+0x460/0xb3c fs/read_write.c:1295
- __do_sys_sendfile64 fs/read_write.c:1362 [inline]
- __se_sys_sendfile64 fs/read_write.c:1348 [inline]
- __arm64_sys_sendfile64+0x160/0x3b4 fs/read_write.c:1348
- __invoke_syscall arch/arm64/kernel/syscall.c:37 [inline]
- invoke_syscall+0x98/0x2b8 arch/arm64/kernel/syscall.c:51
- el0_svc_common+0x130/0x23c arch/arm64/kernel/syscall.c:136
- do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:155
- el0_svc+0x54/0x168 arch/arm64/kernel/entry-common.c:712
- el0t_64_sync_handler+0x84/0xfc arch/arm64/kernel/entry-common.c:730
- el0t_64_sync+0x190/0x194 arch/arm64/kernel/entry.S:598
-
-Freed by task 6167:
- kasan_save_stack mm/kasan/common.c:47 [inline]
- kasan_save_track+0x40/0x78 mm/kasan/common.c:68
- kasan_save_free_info+0x5c/0x74 mm/kasan/generic.c:640
- poison_slab_object+0x124/0x18c mm/kasan/common.c:241
- __kasan_slab_free+0x3c/0x78 mm/kasan/common.c:257
- kasan_slab_free include/linux/kasan.h:184 [inline]
- slab_free_hook mm/slub.c:2121 [inline]
- slab_free mm/slub.c:4299 [inline]
- kmem_cache_free+0x15c/0x3d4 mm/slub.c:4363
- kfree_skbmem+0x10c/0x19c
- __kfree_skb net/core/skbuff.c:1109 [inline]
- kfree_skb_reason+0x240/0x6f4 net/core/skbuff.c:1144
- kfree_skb include/linux/skbuff.h:1244 [inline]
- kcm_release+0x104/0x4c8 net/kcm/kcmsock.c:1685
- __sock_release net/socket.c:659 [inline]
- sock_close+0xa4/0x1e8 net/socket.c:1421
- __fput+0x30c/0x738 fs/file_table.c:376
- ____fput+0x20/0x30 fs/file_table.c:404
- task_work_run+0x230/0x2e0 kernel/task_work.c:180
- exit_task_work include/linux/task_work.h:38 [inline]
- do_exit+0x618/0x1f64 kernel/exit.c:871
- do_group_exit+0x194/0x22c kernel/exit.c:1020
- get_signal+0x1500/0x15ec kernel/signal.c:2893
- do_signal+0x23c/0x3b44 arch/arm64/kernel/signal.c:1249
- do_notify_resume+0x74/0x1f4 arch/arm64/kernel/entry-common.c:148
- exit_to_user_mode_prepare arch/arm64/kernel/entry-common.c:169 [inline]
- exit_to_user_mode arch/arm64/kernel/entry-common.c:178 [inline]
- el0_svc+0xac/0x168 arch/arm64/kernel/entry-common.c:713
- el0t_64_sync_handler+0x84/0xfc arch/arm64/kernel/entry-common.c:730
- el0t_64_sync+0x190/0x194 arch/arm64/kernel/entry.S:598
-
-The buggy address belongs to the object at ffff0000ced0fc80
- which belongs to the cache skbuff_head_cache of size 240
-The buggy address is located 0 bytes inside of
- freed 240-byte region [ffff0000ced0fc80, ffff0000ced0fd70)
-
-The buggy address belongs to the physical page:
-page:00000000d35f4ae4 refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x10ed0f
-flags: 0x5ffc00000000800(slab|node=0|zone=2|lastcpupid=0x7ff)
-page_type: 0xffffffff()
-raw: 05ffc00000000800 ffff0000c1cbf640 fffffdffc3423100 dead000000000004
-raw: 0000000000000000 00000000000c000c 00000001ffffffff 0000000000000000
-page dumped because: kasan: bad access detected
-
-Memory state around the buggy address:
- ffff0000ced0fb80: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
- ffff0000ced0fc00: fb fb fb fb fb fb fc fc fc fc fc fc fc fc fc fc
->ffff0000ced0fc80: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-                   ^
- ffff0000ced0fd00: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fc fc
- ffff0000ced0fd80: fc fc fc fc fc fc fc fc fa fb fb fb fb fb fb fb
-
-Fixes: ab7ac4eb9832 ("kcm: Kernel Connection Multiplexor module")
-Reported-by: syzbot+b72d86aa5df17ce74c60@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=b72d86aa5df17ce74c60
-Tested-by: syzbot+b72d86aa5df17ce74c60@syzkaller.appspotmail.com
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20240815220437.69511-1-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: y0un9n132@gmail.com
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Acked-by: Jiri Kosina <jkosina@suse.com>
+Closes: https://lore.kernel.org/linux-hardening/CA+2EKTVLvc8hDZc+2Yhwmus=dzOUG5E4gV7ayCbu0MPJTZzWkw@mail.gmail.com/
+Link: https://lore.kernel.org/r/20240217062545.1631668-1-keescook@chromium.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/kcm.h | 1 +
- net/kcm/kcmsock.c | 4 ++++
- 2 files changed, 5 insertions(+)
+ arch/x86/kernel/process.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/kcm.h b/include/net/kcm.h
-index 90279e5e09a5c..441e993be634c 100644
---- a/include/net/kcm.h
-+++ b/include/net/kcm.h
-@@ -70,6 +70,7 @@ struct kcm_sock {
- 	struct work_struct tx_work;
- 	struct list_head wait_psock_list;
- 	struct sk_buff *seq_skb;
-+	struct mutex tx_mutex;
- 	u32 tx_stopped : 1;
+diff --git a/arch/x86/kernel/process.c b/arch/x86/kernel/process.c
+index 279b5e9be80fc..acc83738bf5b4 100644
+--- a/arch/x86/kernel/process.c
++++ b/arch/x86/kernel/process.c
+@@ -991,7 +991,10 @@ unsigned long arch_align_stack(unsigned long sp)
  
- 	/* Don't use bit fields here, these are set under different locks */
-diff --git a/net/kcm/kcmsock.c b/net/kcm/kcmsock.c
-index 41d892bf12cc6..829eb67240a99 100644
---- a/net/kcm/kcmsock.c
-+++ b/net/kcm/kcmsock.c
-@@ -754,6 +754,7 @@ static int kcm_sendmsg(struct socket *sock, struct msghdr *msg, size_t len)
- 		  !(msg->msg_flags & MSG_MORE) : !!(msg->msg_flags & MSG_EOR);
- 	int err = -EPIPE;
- 
-+	mutex_lock(&kcm->tx_mutex);
- 	lock_sock(sk);
- 
- 	/* Per tcp_sendmsg this should be in poll */
-@@ -925,6 +926,7 @@ static int kcm_sendmsg(struct socket *sock, struct msghdr *msg, size_t len)
- 	KCM_STATS_ADD(kcm->stats.tx_bytes, copied);
- 
- 	release_sock(sk);
-+	mutex_unlock(&kcm->tx_mutex);
- 	return copied;
- 
- out_error:
-@@ -950,6 +952,7 @@ static int kcm_sendmsg(struct socket *sock, struct msghdr *msg, size_t len)
- 		sk->sk_write_space(sk);
- 
- 	release_sock(sk);
-+	mutex_unlock(&kcm->tx_mutex);
- 	return err;
+ unsigned long arch_randomize_brk(struct mm_struct *mm)
+ {
+-	return randomize_page(mm->brk, 0x02000000);
++	if (mmap_is_ia32())
++		return randomize_page(mm->brk, SZ_32M);
++
++	return randomize_page(mm->brk, SZ_1G);
  }
  
-@@ -1203,6 +1206,7 @@ static void init_kcm_sock(struct kcm_sock *kcm, struct kcm_mux *mux)
- 	spin_unlock_bh(&mux->lock);
- 
- 	INIT_WORK(&kcm->tx_work, kcm_tx_work);
-+	mutex_init(&kcm->tx_mutex);
- 
- 	spin_lock_bh(&mux->rx_lock);
- 	kcm_rcv_ready(kcm);
+ /*
 -- 
 2.43.0
 
