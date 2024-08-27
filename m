@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-70847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70565-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B867961053
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:07:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AFCA960ECF
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:52:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 81F92B25ADE
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:07:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8DFAB1C2332D
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:52:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 909431C57AB;
-	Tue, 27 Aug 2024 15:07:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F47F1C57BC;
+	Tue, 27 Aug 2024 14:52:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kzBrGPWY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XhJ8UrMc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46D6B1C461D;
-	Tue, 27 Aug 2024 15:07:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AC621C579F;
+	Tue, 27 Aug 2024 14:52:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771258; cv=none; b=NjqEcC+bBNAFfuI5oUMO6EjKzhG1FWLah3joUnKO4doJGUmBjJAZb/uUzD8RIzFf6lvZLwvl5p3y/oHINID0cdVFXEf9QoQcn7e2xdHsh+JwE7jBGI44In0dh/e2dM5xCF8Xoi0FDXOWcQC0gD6jhFDqV+ashDu/yKTq3fEZnNg=
+	t=1724770329; cv=none; b=jJDEqVuL4U14FqNaStVoGxVKDVd8IR1lmI6MTM56CZH3l6xR2RodjcVlGHchDu1sZU8o02sorMBdnrvxKa416MmXyhsxXGsmbvn6e8oX9pSOyrGNEfnkC7kkAtMJH68kSQ2p2lAf0axA2YrklSC67mFpWchxmL/4SSulnRePVtw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771258; c=relaxed/simple;
-	bh=WvoJqAGV/Vq4tLWEVO8lfqvvSAVerT1CAKrsGKsougg=;
+	s=arc-20240116; t=1724770329; c=relaxed/simple;
+	bh=OmCzQdm+zD3BD10QJtBwy50tpKwoROmeLXBzHWCwDzg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TUtVuzrUShMDkan7HdKf/aGJ89AstM3cHd7XRy22GOnjOkwwzEk/8adkqQnNVa3UFNevKhsEWMucD3XeGEoCL+CnZy9/d3ggN5eeRjI7XJYm5zl42x+Xyj+hP336Nl+lRGrXDcO90Y8rxWHCQZjjpnywPxoIJO3LMoW2f7PpE74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kzBrGPWY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDBBAC61040;
-	Tue, 27 Aug 2024 15:07:37 +0000 (UTC)
+	 MIME-Version; b=ttow10jbHPW3ZTE1WMo150Gp6xH8HBttnKB2MRVF0VAqESvsywzzIXQ6VlatuFNyTvWwZ9wwGDXTSplHdZrK/9tLZ2OiSx6pumPf7+slc3SuG0J16bAOH6tdHHRyXEP18vBcSLBSBXqrJwjPmgkd7QYrh6vNy0EVSVpJvSENyKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XhJ8UrMc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94C10C4DE03;
+	Tue, 27 Aug 2024 14:52:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771258;
-	bh=WvoJqAGV/Vq4tLWEVO8lfqvvSAVerT1CAKrsGKsougg=;
+	s=korg; t=1724770329;
+	bh=OmCzQdm+zD3BD10QJtBwy50tpKwoROmeLXBzHWCwDzg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kzBrGPWYSj0ltkb5RlOIRWpDH4yMUpt7vqqP1AuaKMDCUsHVRIDhyoH0gN8eEzOY2
-	 gvD1MWZkN59S7LHL9fx2iMkIL4G+a7eEJWaGaiS/YP8Ucc0v69apsbqZvGbKN9u5x3
-	 Fx2FEdL0oo/d1SRKHKEQ0sKMSzp3TpOP8ZT8Xs7Y=
+	b=XhJ8UrMcouSzfdw+pu7TtwfVjcQDeTHbi96VMS+bknPf7s6TONhyFItcurM/+Xtn2
+	 gjC8Qu8d8xthgt0m3GRD3VTJfko/7+sztQ95Njcj8bbR8FoR/GrHta0iJWBoSWZmuP
+	 2+uwqdPl571H25rkaBOyFddLOX4g+M2nIPxJQsbQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 103/273] netfilter: nfnetlink: Initialise extack before use in ACKs
-Date: Tue, 27 Aug 2024 16:37:07 +0200
-Message-ID: <20240827143837.329769323@linuxfoundation.org>
+Subject: [PATCH 6.6 197/341] Bluetooth: bnep: Fix out-of-bound access
+Date: Tue, 27 Aug 2024 16:37:08 +0200
+Message-ID: <20240827143850.907946262@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Donald Hunter <donald.hunter@gmail.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit d1a7b382a9d3f0f3e5a80e0be2991c075fa4f618 ]
+[ Upstream commit 0f0639b4d6f649338ce29c62da3ec0787fa08cd1 ]
 
-Add missing extack initialisation when ACKing BATCH_BEGIN and BATCH_END.
+This fixes attempting to access past ethhdr.h_source, although it seems
+intentional to copy also the contents of h_proto this triggers
+out-of-bound access problems with the likes of static analyzer, so this
+instead just copy ETH_ALEN and then proceed to use put_unaligned to copy
+h_proto separetely.
 
-Fixes: bf2ac490d28c ("netfilter: nfnetlink: Handle ACK flags for batch messages")
-Signed-off-by: Donald Hunter <donald.hunter@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nfnetlink.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/bluetooth/bnep/core.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nfnetlink.c b/net/netfilter/nfnetlink.c
-index 4abf660c7baff..932b3ddb34f13 100644
---- a/net/netfilter/nfnetlink.c
-+++ b/net/netfilter/nfnetlink.c
-@@ -427,8 +427,10 @@ static void nfnetlink_rcv_batch(struct sk_buff *skb, struct nlmsghdr *nlh,
+diff --git a/net/bluetooth/bnep/core.c b/net/bluetooth/bnep/core.c
+index 5a6a49885ab66..a660c428e2207 100644
+--- a/net/bluetooth/bnep/core.c
++++ b/net/bluetooth/bnep/core.c
+@@ -385,7 +385,8 @@ static int bnep_rx_frame(struct bnep_session *s, struct sk_buff *skb)
  
- 	nfnl_unlock(subsys_id);
+ 	case BNEP_COMPRESSED_DST_ONLY:
+ 		__skb_put_data(nskb, skb_mac_header(skb), ETH_ALEN);
+-		__skb_put_data(nskb, s->eh.h_source, ETH_ALEN + 2);
++		__skb_put_data(nskb, s->eh.h_source, ETH_ALEN);
++		put_unaligned(s->eh.h_proto, (__be16 *)__skb_put(nskb, 2));
+ 		break;
  
--	if (nlh->nlmsg_flags & NLM_F_ACK)
-+	if (nlh->nlmsg_flags & NLM_F_ACK) {
-+		memset(&extack, 0, sizeof(extack));
- 		nfnl_err_add(&err_list, nlh, 0, &extack);
-+	}
- 
- 	while (skb->len >= nlmsg_total_size(0)) {
- 		int msglen, type;
-@@ -577,6 +579,7 @@ static void nfnetlink_rcv_batch(struct sk_buff *skb, struct nlmsghdr *nlh,
- 			ss->abort(net, oskb, NFNL_ABORT_NONE);
- 			netlink_ack(oskb, nlmsg_hdr(oskb), err, NULL);
- 		} else if (nlh->nlmsg_flags & NLM_F_ACK) {
-+			memset(&extack, 0, sizeof(extack));
- 			nfnl_err_add(&err_list, nlh, 0, &extack);
- 		}
- 	} else {
+ 	case BNEP_GENERAL:
 -- 
 2.43.0
 
