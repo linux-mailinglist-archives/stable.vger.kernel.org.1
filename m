@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-70879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70627-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45DD696107D
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:09:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46E20960F34
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:56:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 039982872C3
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:09:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6AE4C1C20AF1
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:56:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A80E81C3F19;
-	Tue, 27 Aug 2024 15:09:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77F841CC882;
+	Tue, 27 Aug 2024 14:55:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EI0Sbv0B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0AXB3VNy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64E8812E4D;
-	Tue, 27 Aug 2024 15:09:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3636C1C7B61;
+	Tue, 27 Aug 2024 14:55:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771365; cv=none; b=dj11drkV6fx2msiwJpvGfI2Dad+NxUbMLqbmSxNXju4CjZEh1ersZZEhcmXtW28bNyrjcGzpGstuuUELkDtlGyK32NIIevtFEpByJk8qjpYR0iCz3IudlVsMFBjI8K9lH4ItW1NCucVUDLRfk0qpyxZbhvqFzdW3lm4VY+E0c6E=
+	t=1724770539; cv=none; b=dz8xAtwjaLpveeRveqWU7wSkX2cbhifOf6cc5eO/o0M/5zlTRwNhol/OOR6887kn0G+bDw745ZNz2HSu4jvz/9Qv6jqx21kFnzFAWMsK4EQIru/d6YSFuLmk63twTOPsaA1HnmAxqBWWOOvLn4E2HLvG/3+v+2V+XlM6wTE/S98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771365; c=relaxed/simple;
-	bh=QX+j5OUAKcyG07OrXWic3Mz1KLm5Sj20U3BPlnfHrBI=;
+	s=arc-20240116; t=1724770539; c=relaxed/simple;
+	bh=gChB20CZTuEPysysyPf5V+GWvFcrOky1K5nzyCInHBM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P5Qzw2yoMAyJXWk3NKRv47ZPHPGh/Spy2ZhmxvHIGw0SQYVpIM3HRhB9BNOy0FOASaKbtraMpgDBlcN0oNFoJTuOLPUkaAY0yvv4HoAIfhwQUpT8/5FBZ2TNPCRCSOImfERP8BFKY5pz36jCbitXWeRZf04svZCxictItTsIIXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EI0Sbv0B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE659C4AF18;
-	Tue, 27 Aug 2024 15:09:24 +0000 (UTC)
+	 MIME-Version; b=dl4PcklBy2aZuXkyXJBQvvL/BD/yoN4X1c3vZamMeAKSDxa9ws8jeQQMOCmF/WM5ASa+R5pNrLOX/yMRkA1D5vWMoH6BAARPHNI/Z73ijW57ATD5FqbrLwKdZXz3NJkW9EDuvXhY7LN35XhwVrleDNmZnAlaxdVivJymM4L388M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0AXB3VNy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9606DC4E698;
+	Tue, 27 Aug 2024 14:55:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771365;
-	bh=QX+j5OUAKcyG07OrXWic3Mz1KLm5Sj20U3BPlnfHrBI=;
+	s=korg; t=1724770539;
+	bh=gChB20CZTuEPysysyPf5V+GWvFcrOky1K5nzyCInHBM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EI0Sbv0B+pkwAK3nUi0tf4pYZfs6hgvv2/mGhMlCQPC/770APwKExMim0B5u2RIfA
-	 YqysnVDdE3wf3OjtenVklWkqZ8V65U7IETsvMrgsXaEzh7pw5N2YCO1c25pbo2MSGK
-	 89tfvQ0z3ZfBAsCl1iN74MmBPr/uyyxiAss310m0=
+	b=0AXB3VNyEWg8mmOjQjkTzHJAuwVi3jtJQEJ2AHuhZFi02DZFaXPaRc0TQlQci/iNI
+	 Cv4oJaxFzzBDgu76cxNf90VshlIrS0VbHzE/zVlLeUWSc43pc1kDZz5HUfl9nDIMEs
+	 IE+SmgbuqWQDBVbmzTN7Y33mCAHVax20lwjubLyI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Mark Brown <broonie@kernel.org>,
+	John Hubbard <jhubbard@nvidia.com>,
+	Aishwarya TCV <aishwarya.tcv@arm.com>,
+	Peter Xu <peterx@redhat.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 135/273] arm64: Fix KASAN random tag seed initialization
+Subject: [PATCH 6.6 228/341] selftests/mm: log run_vmtests.sh results in TAP format
 Date: Tue, 27 Aug 2024 16:37:39 +0200
-Message-ID: <20240827143838.540692801@linuxfoundation.org>
+Message-ID: <20240827143852.087443841@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +67,176 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Samuel Holland <samuel.holland@sifive.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
 
-[ Upstream commit f75c235565f90c4a17b125e47f1c68ef6b8c2bce ]
+[ Upstream commit a3c5cc5129ef55ac6c69f468e5ee6e4b0cd8179c ]
 
-Currently, kasan_init_sw_tags() is called before setup_per_cpu_areas(),
-so per_cpu(prng_state, cpu) accesses the same address regardless of the
-value of "cpu", and the same seed value gets copied to the percpu area
-for every CPU. Fix this by moving the call to smp_prepare_boot_cpu(),
-which is the first architecture hook after setup_per_cpu_areas().
+When running tests on a CI system (e.g.  LAVA) it is useful to output test
+results in TAP (Test Anything Protocol) format so that the CI can parse
+the fine-grained results to show regressions.  Many of the mm selftest
+binaries already output using the TAP format.  And the kselftests runner
+(run_kselftest.sh) also uses the format.  CI systems such as LAVA can
+already handle nested TAP reports.  However, with the mm selftests we have
+3 levels of nesting (run_kselftest.sh -> run_vmtests.sh -> individual test
+binaries) and the middle level did not previously support TAP, which
+breaks the parser.
 
-Fixes: 3c9e3aa11094 ("kasan: add tag related helper functions")
-Fixes: 3f41b6093823 ("kasan: fix random seed generation for tag-based mode")
-Signed-off-by: Samuel Holland <samuel.holland@sifive.com>
-Reviewed-by: Andrey Konovalov <andreyknvl@gmail.com>
-Link: https://lore.kernel.org/r/20240814091005.969756-1-samuel.holland@sifive.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Let's fix that by teaching run_vmtests.sh to output using the TAP format.
+Ideally this would be opt-in via a command line argument to avoid the
+possibility of breaking anyone's existing scripts that might scrape the
+output.  However, it is not possible to pass arguments to tests invoked
+via run_kselftest.sh.  So I've implemented an opt-out option (-n), which
+will revert to the existing output format.
+
+Future changes to this file should be aware of 2 new conventions:
+
+ - output that is part of the TAP reporting is piped through tap_output
+ - general output is piped through tap_prefix
+
+Link: https://lkml.kernel.org/r/20231214162434.3580009-1-ryan.roberts@arm.com
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Reviewed-by: Mark Brown <broonie@kernel.org>
+Tested-by: John Hubbard <jhubbard@nvidia.com>
+Cc: Aishwarya TCV <aishwarya.tcv@arm.com>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 7c5e8d212d7d ("selftests: memfd_secret: don't build memfd_secret test on unsupported arches")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kernel/setup.c | 3 ---
- arch/arm64/kernel/smp.c   | 2 ++
- 2 files changed, 2 insertions(+), 3 deletions(-)
+ tools/testing/selftests/mm/run_vmtests.sh | 51 +++++++++++++++++------
+ 1 file changed, 39 insertions(+), 12 deletions(-)
 
-diff --git a/arch/arm64/kernel/setup.c b/arch/arm64/kernel/setup.c
-index a096e2451044d..b22d28ec80284 100644
---- a/arch/arm64/kernel/setup.c
-+++ b/arch/arm64/kernel/setup.c
-@@ -355,9 +355,6 @@ void __init __no_sanitize_address setup_arch(char **cmdline_p)
- 	smp_init_cpus();
- 	smp_build_mpidr_hash();
+diff --git a/tools/testing/selftests/mm/run_vmtests.sh b/tools/testing/selftests/mm/run_vmtests.sh
+index 7d31718ce8343..7fae86e482613 100755
+--- a/tools/testing/selftests/mm/run_vmtests.sh
++++ b/tools/testing/selftests/mm/run_vmtests.sh
+@@ -5,6 +5,7 @@
+ # Kselftest framework requirement - SKIP code is 4.
+ ksft_skip=4
  
--	/* Init percpu seeds for random tags after cpus are set up. */
--	kasan_init_sw_tags();
--
- #ifdef CONFIG_ARM64_SW_TTBR0_PAN
- 	/*
- 	 * Make sure init_thread_info.ttbr0 always generates translation
-diff --git a/arch/arm64/kernel/smp.c b/arch/arm64/kernel/smp.c
-index 5de85dccc09cd..05688f6a275f1 100644
---- a/arch/arm64/kernel/smp.c
-+++ b/arch/arm64/kernel/smp.c
-@@ -469,6 +469,8 @@ void __init smp_prepare_boot_cpu(void)
- 		init_gic_priority_masking();
++count_total=0
+ count_pass=0
+ count_fail=0
+ count_skip=0
+@@ -17,6 +18,7 @@ usage: ${BASH_SOURCE[0]:-$0} [ options ]
+   -a: run all tests, including extra ones
+   -t: specify specific categories to tests to run
+   -h: display this message
++  -n: disable TAP output
  
- 	kasan_init_hw_tags();
-+	/* Init percpu seeds for random tags after cpus are set up. */
-+	kasan_init_sw_tags();
+ The default behavior is to run required tests only.  If -a is specified,
+ will run all tests.
+@@ -75,12 +77,14 @@ EOF
  }
  
- /*
+ RUN_ALL=false
++TAP_PREFIX="# "
+ 
+-while getopts "aht:" OPT; do
++while getopts "aht:n" OPT; do
+ 	case ${OPT} in
+ 		"a") RUN_ALL=true ;;
+ 		"h") usage ;;
+ 		"t") VM_SELFTEST_ITEMS=${OPTARG} ;;
++		"n") TAP_PREFIX= ;;
+ 	esac
+ done
+ shift $((OPTIND -1))
+@@ -182,30 +186,52 @@ fi
+ VADDR64=0
+ echo "$ARCH64STR" | grep "$ARCH" &>/dev/null && VADDR64=1
+ 
++tap_prefix() {
++	sed -e "s/^/${TAP_PREFIX}/"
++}
++
++tap_output() {
++	if [[ ! -z "$TAP_PREFIX" ]]; then
++		read str
++		echo $str
++	fi
++}
++
++pretty_name() {
++	echo "$*" | sed -e 's/^\(bash \)\?\.\///'
++}
++
+ # Usage: run_test [test binary] [arbitrary test arguments...]
+ run_test() {
+ 	if test_selected ${CATEGORY}; then
++		local test=$(pretty_name "$*")
+ 		local title="running $*"
+ 		local sep=$(echo -n "$title" | tr "[:graph:][:space:]" -)
+-		printf "%s\n%s\n%s\n" "$sep" "$title" "$sep"
++		printf "%s\n%s\n%s\n" "$sep" "$title" "$sep" | tap_prefix
+ 
+-		"$@"
+-		local ret=$?
++		("$@" 2>&1) | tap_prefix
++		local ret=${PIPESTATUS[0]}
++		count_total=$(( count_total + 1 ))
+ 		if [ $ret -eq 0 ]; then
+ 			count_pass=$(( count_pass + 1 ))
+-			echo "[PASS]"
++			echo "[PASS]" | tap_prefix
++			echo "ok ${count_total} ${test}" | tap_output
+ 		elif [ $ret -eq $ksft_skip ]; then
+ 			count_skip=$(( count_skip + 1 ))
+-			echo "[SKIP]"
++			echo "[SKIP]" | tap_prefix
++			echo "ok ${count_total} ${test} # SKIP" | tap_output
+ 			exitcode=$ksft_skip
+ 		else
+ 			count_fail=$(( count_fail + 1 ))
+-			echo "[FAIL]"
++			echo "[FAIL]" | tap_prefix
++			echo "not ok ${count_total} ${test} # exit=$ret" | tap_output
+ 			exitcode=1
+ 		fi
+ 	fi # test_selected
+ }
+ 
++echo "TAP version 13" | tap_output
++
+ CATEGORY="hugetlb" run_test ./hugepage-mmap
+ 
+ shmmax=$(cat /proc/sys/kernel/shmmax)
+@@ -222,9 +248,9 @@ CATEGORY="hugetlb" run_test ./hugepage-vmemmap
+ CATEGORY="hugetlb" run_test ./hugetlb-madvise
+ 
+ if test_selected "hugetlb"; then
+-	echo "NOTE: These hugetlb tests provide minimal coverage.  Use"
+-	echo "      https://github.com/libhugetlbfs/libhugetlbfs.git for"
+-	echo "      hugetlb regression testing."
++	echo "NOTE: These hugetlb tests provide minimal coverage.  Use"	  | tap_prefix
++	echo "      https://github.com/libhugetlbfs/libhugetlbfs.git for" | tap_prefix
++	echo "      hugetlb regression testing."			  | tap_prefix
+ fi
+ 
+ CATEGORY="mmap" run_test ./map_fixed_noreplace
+@@ -303,7 +329,7 @@ CATEGORY="hmm" run_test bash ./test_hmm.sh smoke
+ # MADV_POPULATE_READ and MADV_POPULATE_WRITE tests
+ CATEGORY="madv_populate" run_test ./madv_populate
+ 
+-echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
++(echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope 2>&1) | tap_prefix
+ CATEGORY="memfd_secret" run_test ./memfd_secret
+ 
+ # KSM KSM_MERGE_TIME_HUGE_PAGES test with size of 100
+@@ -358,6 +384,7 @@ CATEGORY="mkdirty" run_test ./mkdirty
+ 
+ CATEGORY="mdwe" run_test ./mdwe_test
+ 
+-echo "SUMMARY: PASS=${count_pass} SKIP=${count_skip} FAIL=${count_fail}"
++echo "SUMMARY: PASS=${count_pass} SKIP=${count_skip} FAIL=${count_fail}" | tap_prefix
++echo "1..${count_total}" | tap_output
+ 
+ exit $exitcode
 -- 
 2.43.0
 
