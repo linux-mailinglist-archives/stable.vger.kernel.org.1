@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-71047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70755-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E78B961165
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:20:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 475BE960FE1
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:03:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 51AB01C23800
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:20:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C92D41F21210
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:03:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5853D1C9DF1;
-	Tue, 27 Aug 2024 15:18:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44C5E1C6890;
+	Tue, 27 Aug 2024 15:02:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kf+L0ID3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PMneXS5u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 141AE1C9DC2;
-	Tue, 27 Aug 2024 15:18:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 008891C6881;
+	Tue, 27 Aug 2024 15:02:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771923; cv=none; b=Z+zVwF8b9/lE/7UN1+0sk+xCeqjqMVeYn1t/8JrBFeBpkd89Mw+UZw3WbE55rWGfOo/PNJvtaOsH6Jgm/b4M+qtmGn0atUepDlEdxj7U/kfY32UVbG27ELQdrXhOfp7OQtTYH6gLxvdBlf+nlaQrp0Zw1XeHMrtJ5HelbFxXAOw=
+	t=1724770956; cv=none; b=CXZ+gzQadEclSbgYuggvIDZJrxmKBpK1fxbrzahAw4mGDO4ZOoBASZe1Zv+CzyVFzvBDU2GiO98F4UBnl7wfNO+c1ruR0PNKIN93iAO5BbcG2OUjVvhuCY0xvE2fAVwJ1BIkmlx03bN3iB1ALEdaZd23Qf8g2FdH4fzcLVKOCCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771923; c=relaxed/simple;
-	bh=gxuBoakmVpZvoPtZPJKWwd/lALN9v3mT76y2e9G2wfw=;
+	s=arc-20240116; t=1724770956; c=relaxed/simple;
+	bh=eqWdNclRKx6Dc77uNNcN4+/X78K3NZDGrE8q0v7kDm4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JDRoINB+C/VsPmQES2z/U/3rPbNe/rFrK7qI5uHS+3kso+KuoX9uxYRyRl1thjCBt13oyBCvV46DxTOUvEruw9hNjzMK11cZlrQ8ikFw2YwtxsDjyBqOfjP94+eR3Ulh3yteUcqOFfP7sEPLyQgnBsYbnSkJuiOE55NhF9eBbeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kf+L0ID3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDF03C61067;
-	Tue, 27 Aug 2024 15:18:40 +0000 (UTC)
+	 MIME-Version; b=FjVGWVNsYLCyUPeu7dq/xEivhFRTEDDOgzHT2uD76EKSadGtbe01mIKKbwVh9fe7KejJ7SvFruNtGGO2vafpk8KZyQQkIP+ur4VcTqRy1dIwPcHF0OBlBGa7SEwzb2Gk6Sa6rVPWrPPuC79103328Bl5nlOSo3Pha27Sg3KI1+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PMneXS5u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 638C1C61042;
+	Tue, 27 Aug 2024 15:02:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771921;
-	bh=gxuBoakmVpZvoPtZPJKWwd/lALN9v3mT76y2e9G2wfw=;
+	s=korg; t=1724770955;
+	bh=eqWdNclRKx6Dc77uNNcN4+/X78K3NZDGrE8q0v7kDm4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kf+L0ID3U7l8NXvWdfoH3V8+k8YNeIoj8EPv3YEU4bWWWVbxL3S8ssNFUAm65o9n2
-	 CBpIE+1KoPGwvJ+6+O49JYtO9Rv2vW+1Ia7GeQkVNriMRhptiQNe5Wh0MFHL46pALm
-	 b2XP9Lr/VMuSrBdP3z92KlMTffuVyqN6K0weoe9U=
+	b=PMneXS5ubJq7AaPTauU/XnZ/lePznqXWj7HT6Ye6BatuPCso6pI103a/G8mzQRo+A
+	 oEAevbfSz2mjg6cvKLuurVTOIuq2q/TVhcnI7YS1lON5xXWtfNumDbRExd69tMKias
+	 mWkL0dnSMiFpBejoutlJntY8aH3ldcpD/ZCaAmiQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+8bb053b5d63595ab47db@syzkaller.appspotmail.com,
-	Xin Long <lucien.xin@gmail.com>,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 060/321] net: sctp: fix skb leak in sctp_inq_free()
+	David Hildenbrand <david@redhat.com>,
+	Peter Xu <peterx@redhat.com>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Muchun Song <muchun.song@linux.dev>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.10 044/273] mm/hugetlb: fix hugetlb vs. core-mm PT locking
 Date: Tue, 27 Aug 2024 16:36:08 +0200
-Message-ID: <20240827143840.521932209@linuxfoundation.org>
+Message-ID: <20240827143835.074665158@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,77 +65,166 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: David Hildenbrand <david@redhat.com>
 
-[ Upstream commit 4e45170d9acc2d5ae8f545bf3f2f67504a361338 ]
+commit 5f75cfbd6bb02295ddaed48adf667b6c828ce07b upstream.
 
-In case of GSO, 'chunk->skb' pointer may point to an entry from
-fraglist created in 'sctp_packet_gso_append()'. To avoid freeing
-random fraglist entry (and so undefined behavior and/or memory
-leak), introduce 'sctp_inq_chunk_free()' helper to ensure that
-'chunk->skb' is set to 'chunk->head_skb' (i.e. fraglist head)
-before calling 'sctp_chunk_free()', and use the aforementioned
-helper in 'sctp_inq_pop()' as well.
+We recently made GUP's common page table walking code to also walk hugetlb
+VMAs without most hugetlb special-casing, preparing for the future of
+having less hugetlb-specific page table walking code in the codebase.
+Turns out that we missed one page table locking detail: page table locking
+for hugetlb folios that are not mapped using a single PMD/PUD.
 
-Reported-by: syzbot+8bb053b5d63595ab47db@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?id=0d8351bbe54fd04a492c2daab0164138db008042
-Fixes: 90017accff61 ("sctp: Add GSO support")
-Suggested-by: Xin Long <lucien.xin@gmail.com>
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Acked-by: Xin Long <lucien.xin@gmail.com>
-Link: https://lore.kernel.org/r/20240214082224.10168-1-dmantipov@yandex.ru
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Assume we have hugetlb folio that spans multiple PTEs (e.g., 64 KiB
+hugetlb folios on arm64 with 4 KiB base page size).  GUP, as it walks the
+page tables, will perform a pte_offset_map_lock() to grab the PTE table
+lock.
+
+However, hugetlb that concurrently modifies these page tables would
+actually grab the mm->page_table_lock: with USE_SPLIT_PTE_PTLOCKS, the
+locks would differ.  Something similar can happen right now with hugetlb
+folios that span multiple PMDs when USE_SPLIT_PMD_PTLOCKS.
+
+This issue can be reproduced [1], for example triggering:
+
+[ 3105.936100] ------------[ cut here ]------------
+[ 3105.939323] WARNING: CPU: 31 PID: 2732 at mm/gup.c:142 try_grab_folio+0x11c/0x188
+[ 3105.944634] Modules linked in: [...]
+[ 3105.974841] CPU: 31 PID: 2732 Comm: reproducer Not tainted 6.10.0-64.eln141.aarch64 #1
+[ 3105.980406] Hardware name: QEMU KVM Virtual Machine, BIOS edk2-20240524-4.fc40 05/24/2024
+[ 3105.986185] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[ 3105.991108] pc : try_grab_folio+0x11c/0x188
+[ 3105.994013] lr : follow_page_pte+0xd8/0x430
+[ 3105.996986] sp : ffff80008eafb8f0
+[ 3105.999346] x29: ffff80008eafb900 x28: ffffffe8d481f380 x27: 00f80001207cff43
+[ 3106.004414] x26: 0000000000000001 x25: 0000000000000000 x24: ffff80008eafba48
+[ 3106.009520] x23: 0000ffff9372f000 x22: ffff7a54459e2000 x21: ffff7a546c1aa978
+[ 3106.014529] x20: ffffffe8d481f3c0 x19: 0000000000610041 x18: 0000000000000001
+[ 3106.019506] x17: 0000000000000001 x16: ffffffffffffffff x15: 0000000000000000
+[ 3106.024494] x14: ffffb85477fdfe08 x13: 0000ffff9372ffff x12: 0000000000000000
+[ 3106.029469] x11: 1fffef4a88a96be1 x10: ffff7a54454b5f0c x9 : ffffb854771b12f0
+[ 3106.034324] x8 : 0008000000000000 x7 : ffff7a546c1aa980 x6 : 0008000000000080
+[ 3106.038902] x5 : 00000000001207cf x4 : 0000ffff9372f000 x3 : ffffffe8d481f000
+[ 3106.043420] x2 : 0000000000610041 x1 : 0000000000000001 x0 : 0000000000000000
+[ 3106.047957] Call trace:
+[ 3106.049522]  try_grab_folio+0x11c/0x188
+[ 3106.051996]  follow_pmd_mask.constprop.0.isra.0+0x150/0x2e0
+[ 3106.055527]  follow_page_mask+0x1a0/0x2b8
+[ 3106.058118]  __get_user_pages+0xf0/0x348
+[ 3106.060647]  faultin_page_range+0xb0/0x360
+[ 3106.063651]  do_madvise+0x340/0x598
+
+Let's make huge_pte_lockptr() effectively use the same PT locks as any
+core-mm page table walker would.  Add ptep_lockptr() to obtain the PTE
+page table lock using a pte pointer -- unfortunately we cannot convert
+pte_lockptr() because virt_to_page() doesn't work with kmap'ed page tables
+we can have with CONFIG_HIGHPTE.
+
+Handle CONFIG_PGTABLE_LEVELS correctly by checking in reverse order, such
+that when e.g., CONFIG_PGTABLE_LEVELS==2 with
+PGDIR_SIZE==P4D_SIZE==PUD_SIZE==PMD_SIZE will work as expected.  Document
+why that works.
+
+There is one ugly case: powerpc 8xx, whereby we have an 8 MiB hugetlb
+folio being mapped using two PTE page tables.  While hugetlb wants to take
+the PMD table lock, core-mm would grab the PTE table lock of one of both
+PTE page tables.  In such corner cases, we have to make sure that both
+locks match, which is (fortunately!) currently guaranteed for 8xx as it
+does not support SMP and consequently doesn't use split PT locks.
+
+[1] https://lore.kernel.org/all/1bbfcc7f-f222-45a5-ac44-c5a1381c596d@redhat.com/
+
+Link: https://lkml.kernel.org/r/20240801204748.99107-1-david@redhat.com
+Fixes: 9cb28da54643 ("mm/gup: handle hugetlb in the generic follow_page_mask code")
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Acked-by: Peter Xu <peterx@redhat.com>
+Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Tested-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sctp/inqueue.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ include/linux/hugetlb.h |   33 ++++++++++++++++++++++++++++++---
+ include/linux/mm.h      |   11 +++++++++++
+ 2 files changed, 41 insertions(+), 3 deletions(-)
 
-diff --git a/net/sctp/inqueue.c b/net/sctp/inqueue.c
-index 7182c5a450fb5..5c16521818058 100644
---- a/net/sctp/inqueue.c
-+++ b/net/sctp/inqueue.c
-@@ -38,6 +38,14 @@ void sctp_inq_init(struct sctp_inq *queue)
- 	INIT_WORK(&queue->immediate, NULL);
+--- a/include/linux/hugetlb.h
++++ b/include/linux/hugetlb.h
+@@ -967,10 +967,37 @@ static inline bool htlb_allow_alloc_fall
+ static inline spinlock_t *huge_pte_lockptr(struct hstate *h,
+ 					   struct mm_struct *mm, pte_t *pte)
+ {
+-	if (huge_page_size(h) == PMD_SIZE)
++	const unsigned long size = huge_page_size(h);
++
++	VM_WARN_ON(size == PAGE_SIZE);
++
++	/*
++	 * hugetlb must use the exact same PT locks as core-mm page table
++	 * walkers would. When modifying a PTE table, hugetlb must take the
++	 * PTE PT lock, when modifying a PMD table, hugetlb must take the PMD
++	 * PT lock etc.
++	 *
++	 * The expectation is that any hugetlb folio smaller than a PMD is
++	 * always mapped into a single PTE table and that any hugetlb folio
++	 * smaller than a PUD (but at least as big as a PMD) is always mapped
++	 * into a single PMD table.
++	 *
++	 * If that does not hold for an architecture, then that architecture
++	 * must disable split PT locks such that all *_lockptr() functions
++	 * will give us the same result: the per-MM PT lock.
++	 *
++	 * Note that with e.g., CONFIG_PGTABLE_LEVELS=2 where
++	 * PGDIR_SIZE==P4D_SIZE==PUD_SIZE==PMD_SIZE, we'd use pud_lockptr()
++	 * and core-mm would use pmd_lockptr(). However, in such configurations
++	 * split PMD locks are disabled -- they don't make sense on a single
++	 * PGDIR page table -- and the end result is the same.
++	 */
++	if (size >= PUD_SIZE)
++		return pud_lockptr(mm, (pud_t *) pte);
++	else if (size >= PMD_SIZE || IS_ENABLED(CONFIG_HIGHPTE))
+ 		return pmd_lockptr(mm, (pmd_t *) pte);
+-	VM_BUG_ON(huge_page_size(h) == PAGE_SIZE);
+-	return &mm->page_table_lock;
++	/* pte_alloc_huge() only applies with !CONFIG_HIGHPTE */
++	return ptep_lockptr(mm, pte);
  }
  
-+/* Properly release the chunk which is being worked on. */
-+static inline void sctp_inq_chunk_free(struct sctp_chunk *chunk)
+ #ifndef hugepages_supported
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -2960,6 +2960,13 @@ static inline spinlock_t *pte_lockptr(st
+ 	return ptlock_ptr(page_ptdesc(pmd_page(*pmd)));
+ }
+ 
++static inline spinlock_t *ptep_lockptr(struct mm_struct *mm, pte_t *pte)
 +{
-+	if (chunk->head_skb)
-+		chunk->skb = chunk->head_skb;
-+	sctp_chunk_free(chunk);
++	BUILD_BUG_ON(IS_ENABLED(CONFIG_HIGHPTE));
++	BUILD_BUG_ON(MAX_PTRS_PER_PTE * sizeof(pte_t) > PAGE_SIZE);
++	return ptlock_ptr(virt_to_ptdesc(pte));
 +}
 +
- /* Release the memory associated with an SCTP inqueue.  */
- void sctp_inq_free(struct sctp_inq *queue)
+ static inline bool ptlock_init(struct ptdesc *ptdesc)
  {
-@@ -53,7 +61,7 @@ void sctp_inq_free(struct sctp_inq *queue)
- 	 * free it as well.
- 	 */
- 	if (queue->in_progress) {
--		sctp_chunk_free(queue->in_progress);
-+		sctp_inq_chunk_free(queue->in_progress);
- 		queue->in_progress = NULL;
- 	}
+ 	/*
+@@ -2984,6 +2991,10 @@ static inline spinlock_t *pte_lockptr(st
+ {
+ 	return &mm->page_table_lock;
  }
-@@ -130,9 +138,7 @@ struct sctp_chunk *sctp_inq_pop(struct sctp_inq *queue)
- 				goto new_skb;
- 			}
- 
--			if (chunk->head_skb)
--				chunk->skb = chunk->head_skb;
--			sctp_chunk_free(chunk);
-+			sctp_inq_chunk_free(chunk);
- 			chunk = queue->in_progress = NULL;
- 		} else {
- 			/* Nothing to do. Next chunk in the packet, please. */
--- 
-2.43.0
-
++static inline spinlock_t *ptep_lockptr(struct mm_struct *mm, pte_t *pte)
++{
++	return &mm->page_table_lock;
++}
+ static inline void ptlock_cache_init(void) {}
+ static inline bool ptlock_init(struct ptdesc *ptdesc) { return true; }
+ static inline void ptlock_free(struct ptdesc *ptdesc) {}
 
 
 
