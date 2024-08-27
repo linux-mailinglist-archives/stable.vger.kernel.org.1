@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-70715-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70974-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2691A960FA9
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:01:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A194C9610FA
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:15:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 96FDEB26F4D
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:01:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 21F1DB2406F
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:15:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 721F71C6F79;
-	Tue, 27 Aug 2024 15:00:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A033C1C68BE;
+	Tue, 27 Aug 2024 15:14:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y4tFaeMn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RhgXJQzn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E9C0DDC1;
-	Tue, 27 Aug 2024 15:00:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C2491BFE07;
+	Tue, 27 Aug 2024 15:14:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770828; cv=none; b=o1jZ+Y9wtFuuAg78ZHKchYJlJ1i/Lz04ymSNsAoWFYitPF5r6oTE6d9uYmwXi/YJ8UKQRvYlhxiuBBdB7PMKGK9kaY+AXPhCoCb4R0Zq+UtgnIxYoo7muGHYnjz3UkLISAlF423rP8JDXu38QJoJkx5qEzud3jBP6VGJb3+5bNY=
+	t=1724771680; cv=none; b=OQ8KGPoXtUypXem9C3NwsZUjBoUmlOo/Yqrk6KUZImVsVrawCl+Q3OBeJw/kl1+scuczCV2rWIkP38LfyNXQPg3elFV+cvngFf2AvHFLbZUzU11PK0X7j52K27yVKo2Qu1OyfYdr9gjJdYGA5xfCN4ubys3i/bbtw7r4YzDHRYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770828; c=relaxed/simple;
-	bh=5bfum5RmnohhU6L2FbvT94JC4mEa8nBhO/Mwh13CzZo=;
+	s=arc-20240116; t=1724771680; c=relaxed/simple;
+	bh=ogEmDNwODUNk3jAFA2MyDz5T1CeumdvCmN76wc9cHXE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tKGy+KOzUS5JIjci/EuQkW3KQFjhUIUMrm75yO71fHqegOIZjUisjYTh/+fkvteiTD0C454LwuExpk84/tG2OEpZAMkX8Z0HMtHAP/5uzKEarMBLsNHG1lcRKSlFKoRYZEvFiwLWL1pGszC9e8EVyNEOpGadmodyZ7MxggHBTu8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y4tFaeMn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC721C4AF1C;
-	Tue, 27 Aug 2024 15:00:27 +0000 (UTC)
+	 MIME-Version; b=Yva2khR/QnVY3BMUkXapV757tAbLXYN4fY7aoCWsFunzIJdyQdrR2FWBXTRsCKLUyi8WMNiKcd+2iY6XO/XsogHAsji1KYWdsepHejdF4HgqVth8T3F4sVHVGVUTw4sZbxEoGmiJgUu+2QEWtvTSpiEhDKd4vVe6hYOO+XFIHtI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RhgXJQzn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6625C61064;
+	Tue, 27 Aug 2024 15:14:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770828;
-	bh=5bfum5RmnohhU6L2FbvT94JC4mEa8nBhO/Mwh13CzZo=;
+	s=korg; t=1724771680;
+	bh=ogEmDNwODUNk3jAFA2MyDz5T1CeumdvCmN76wc9cHXE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y4tFaeMnZJVbNkphT4aBAWx6/7+f3Ol8WIHW5MkWo96G9DVGVhLZ1/m8fpcukH6cz
-	 N2XC5gPTsApJNbY7aG0Jn5oY2/ozYUtP6SJL9+qN2z1th5nPj3fmbv3a3u0Ymppt7z
-	 7tHkpuwkvHBJ/hclX/I+I1Pcm0WxB6et5Sze5+Xk=
+	b=RhgXJQznvKNYYkDDdNKfSkivkZLUioLVJmihQnFrUWJTzhJ/quE2rng4wSP48tkKR
+	 IyPQNBDGNbV8l0+YDAfCtzM9Px240YwWARGAediZSdwZtOFQ7WYnHTTui5eXfAPMxU
+	 yssjcI84sSgn2toSQJFfDyi6UPyrKpzlhwpEvoL0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Richard Acayan <mailingradian@gmail.com>
-Subject: [PATCH 6.6 327/341] drm/msm/mdss: specify cfg bandwidth for SDM670
+	Martin Whitaker <foss@martin-whitaker.me.uk>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Arun Ramadoss <arun.ramadoss@microchip.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.10 234/273] net: dsa: microchip: fix PTP config failure when using multiple ports
 Date: Tue, 27 Aug 2024 16:39:18 +0200
-Message-ID: <20240827143855.840630373@linuxfoundation.org>
+Message-ID: <20240827143842.311975239@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Martin Whitaker <foss@martin-whitaker.me.uk>
 
-commit 8d35217149daa33358c284aca6a56d5ab92cfc6c upstream.
+commit 6efea5135417ae8194485d1d05ea79a21cf1a11c upstream.
 
-Lower the requested CFG bus bandwidth for the SDM670 platform. The
-default value is 153600 kBps, which is twice as big as required by the
-platform according to the vendor kernel.
+When performing the port_hwtstamp_set operation, ptp_schedule_worker()
+will be called if hardware timestamoing is enabled on any of the ports.
+When using multiple ports for PTP, port_hwtstamp_set is executed for
+each port. When called for the first time ptp_schedule_worker() returns
+0. On subsequent calls it returns 1, indicating the worker is already
+scheduled. Currently the ksz driver treats 1 as an error and fails to
+complete the port_hwtstamp_set operation, thus leaving the timestamping
+configuration for those ports unchanged.
 
-Fixes: a55c8ff252d3 ("drm/msm/mdss: Handle the reg bus ICC path")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Tested-by: Richard Acayan <mailingradian@gmail.com>
-Patchwork: https://patchwork.freedesktop.org/patch/572182/
-Link: https://lore.kernel.org/r/20231215013222.827975-1-dmitry.baryshkov@linaro.org
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+This patch fixes this by ignoring the ptp_schedule_worker() return
+value.
+
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/7aae307a-35ca-4209-a850-7b2749d40f90@martin-whitaker.me.uk
+Fixes: bb01ad30570b0 ("net: dsa: microchip: ptp: manipulating absolute time using ptp hw clock")
+Signed-off-by: Martin Whitaker <foss@martin-whitaker.me.uk>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Acked-by: Arun Ramadoss <arun.ramadoss@microchip.com>
+Link: https://patch.msgid.link/20240817094141.3332-1-foss@martin-whitaker.me.uk
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/msm/msm_mdss.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/dsa/microchip/ksz_ptp.c |    5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/msm/msm_mdss.c
-+++ b/drivers/gpu/drm/msm/msm_mdss.c
-@@ -600,6 +600,7 @@ static const struct msm_mdss_data sm6125
- 	.ubwc_dec_version = UBWC_3_0,
- 	.ubwc_swizzle = 1,
- 	.highest_bank_bit = 1,
-+	.reg_bus_bw = 76800,
- };
+--- a/drivers/net/dsa/microchip/ksz_ptp.c
++++ b/drivers/net/dsa/microchip/ksz_ptp.c
+@@ -266,7 +266,6 @@ static int ksz_ptp_enable_mode(struct ks
+ 	struct ksz_port *prt;
+ 	struct dsa_port *dp;
+ 	bool tag_en = false;
+-	int ret;
  
- static const struct msm_mdss_data sm8250_data = {
+ 	dsa_switch_for_each_user_port(dp, dev->ds) {
+ 		prt = &dev->ports[dp->index];
+@@ -277,9 +276,7 @@ static int ksz_ptp_enable_mode(struct ks
+ 	}
+ 
+ 	if (tag_en) {
+-		ret = ptp_schedule_worker(ptp_data->clock, 0);
+-		if (ret)
+-			return ret;
++		ptp_schedule_worker(ptp_data->clock, 0);
+ 	} else {
+ 		ptp_cancel_worker_sync(ptp_data->clock);
+ 	}
 
 
 
