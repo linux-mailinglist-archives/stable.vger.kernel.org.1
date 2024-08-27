@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-70595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71095-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A0C4960F02
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:55:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 165B896119E
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:21:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBDD1286E4E
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:55:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A7FB2B27D43
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:21:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7B821C6895;
-	Tue, 27 Aug 2024 14:53:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 627271C5793;
+	Tue, 27 Aug 2024 15:21:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="klGtT0ZT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EfQ695r3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 848891BA294;
-	Tue, 27 Aug 2024 14:53:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F11919F485;
+	Tue, 27 Aug 2024 15:21:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770429; cv=none; b=LrPXxmI0X8Un5z/2NCAHqtJFojhVTpCcer8iHD5TBfexHFr6qSmOubEufmjsAJAtl6sOamgtGodKTxxNBP3L1QJ1v/ZBBt9SCaCf0cUhCBpOEXfjWOEZb+DmrTrnh3HmGRAnhccCQwQO88xYJCA+1XHoBGz/i3asDFjYnoYHDfM=
+	t=1724772083; cv=none; b=HtGLdVSiyMaMNSeNLBJcA+WYcaJ2gWG6MEOLeRM0rjVKl/6VaJJ6ucha3CxPaYZhG7R9mAh/bMp8trQmZN7RqNfMEYSJ8QyYg9nRNAo0Tn2THYgs27uj75jsL5RCTBecRhj978IJhbWMgsDgOlkD8YOgGJQOXkZaBGFBgLXNkaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770429; c=relaxed/simple;
-	bh=PxO15zOZRycx4FLq9kCi25Sj6Q+DFuCHSzA9FLCwqpc=;
+	s=arc-20240116; t=1724772083; c=relaxed/simple;
+	bh=ots0cEN/nTq/ZVEs32JOMuDJezkKaDRzgaRUurXrt+Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A30Ot1qmDJEx9ug+bhN17OY1rqV9TdDgYjRknacbduveOtU9tXrdc/ywwyLAbZaMCBLifCHP5VtbyVpOSNlyDN6oFAI6rzns4oyj9JPuN8nbvtiMgvYGgzTzKNd6hytArqix5Zr2wpfvXtB/z4l/NPAL3Xi80o3D5agUjrWiFD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=klGtT0ZT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAA52C6105B;
-	Tue, 27 Aug 2024 14:53:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lFHjBs9l8PK+L1a9NfN4VLQ5jsNOQviGwuIGNL9pxk7ZA8+/3B3j/9MDcZLik5QVk6jVjxR8X359v22kBWM6MPUoH39BkQ0En8eUhYz1hGV7QHBx0ul0Q1v70daq9aVPlnT0ZeFfKJRgf12mE3ZSpQTMDBBrgl5XAevlmiIpuXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EfQ695r3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 983FDC4FE08;
+	Tue, 27 Aug 2024 15:21:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770429;
-	bh=PxO15zOZRycx4FLq9kCi25Sj6Q+DFuCHSzA9FLCwqpc=;
+	s=korg; t=1724772083;
+	bh=ots0cEN/nTq/ZVEs32JOMuDJezkKaDRzgaRUurXrt+Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=klGtT0ZTuBc0KFrYkrFYV6Wte6wlfvVbkWl6Ez5DiW8IjsXJ92sVpi351XiUQjABn
-	 6jh9E6uEXQrFdkKSeDEEbONAxEK+Cqjgx60XkRNs4lFwcNgcwI14kmr+mhr/CVp9Pf
-	 lTABU456H3lgVIU4ozQwzrD0OS1I7fIE/sVg/iJ8=
+	b=EfQ695r3QmyDvYbTY8G5FjcAx+/HnhZmwUgGVumA/y4siZXkQgxXNWiooY0MzJzWB
+	 vtpXHeBYpucu9iMcMHwLx5Gi+Vo6AW2K0rr7wkjXPNNYAOjx7F6OHB0PmukNTY1d6x
+	 1SisqaPBLPAJVJUCps9wZPdAd8RvioZH+rMBXmwQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>,
-	Anand Jain <anand.jain@oracle.com>,
-	David Sterba <dsterba@suse.com>,
+	Jie Wang <wangjie125@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 185/341] btrfs: defrag: change BUG_ON to assertion in btrfs_defrag_leaves()
-Date: Tue, 27 Aug 2024 16:36:56 +0200
-Message-ID: <20240827143850.452677824@linuxfoundation.org>
+Subject: [PATCH 6.1 109/321] net: hns3: fix a deadlock problem when config TC during resetting
+Date: Tue, 27 Aug 2024 16:36:57 +0200
+Message-ID: <20240827143842.395409183@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +61,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Sterba <dsterba@suse.com>
+From: Jie Wang <wangjie125@huawei.com>
 
-[ Upstream commit 51d4be540054be32d7ce28b63ea9b84ac6ff1db2 ]
+[ Upstream commit be5e816d00a506719e9dbb1a9c861c5ced30a109 ]
 
-The BUG_ON verifies a condition that should be guaranteed by the correct
-use of the path search (with keep_locks and lowest_level set), an
-assertion is the suitable check.
+When config TC during the reset process, may cause a deadlock, the flow is
+as below:
+                             pf reset start
+                                 │
+                                 ▼
+                              ......
+setup tc                         │
+    │                            ▼
+    ▼                      DOWN: napi_disable()
+napi_disable()(skip)             │
+    │                            │
+    ▼                            ▼
+  ......                      ......
+    │                            │
+    ▼                            │
+napi_enable()                    │
+                                 ▼
+                           UINIT: netif_napi_del()
+                                 │
+                                 ▼
+                              ......
+                                 │
+                                 ▼
+                           INIT: netif_napi_add()
+                                 │
+                                 ▼
+                              ......                 global reset start
+                                 │                      │
+                                 ▼                      ▼
+                           UP: napi_enable()(skip)    ......
+                                 │                      │
+                                 ▼                      ▼
+                              ......                 napi_disable()
 
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: Anand Jain <anand.jain@oracle.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+In reset process, the driver will DOWN the port and then UINIT, in this
+case, the setup tc process will UP the port before UINIT, so cause the
+problem. Adds a DOWN process in UINIT to fix it.
+
+Fixes: bb6b94a896d4 ("net: hns3: Add reset interface implementation in client")
+Signed-off-by: Jie Wang <wangjie125@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/defrag.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/hisilicon/hns3/hns3_enet.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/btrfs/defrag.c b/fs/btrfs/defrag.c
-index a2e614cf3c19c..e1475dfdf7a8b 100644
---- a/fs/btrfs/defrag.c
-+++ b/fs/btrfs/defrag.c
-@@ -416,7 +416,7 @@ int btrfs_defrag_leaves(struct btrfs_trans_handle *trans,
- 	 * keep_locks set and lowest_level is 1, regardless of the value of
- 	 * path->slots[1].
- 	 */
--	BUG_ON(path->locks[1] == 0);
-+	ASSERT(path->locks[1] != 0);
- 	ret = btrfs_realloc_node(trans, root,
- 				 path->nodes[1], 0,
- 				 &last_ret,
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+index 4ce43c3a00a37..0377a056aaecc 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3_enet.c
+@@ -5728,6 +5728,9 @@ static int hns3_reset_notify_uninit_enet(struct hnae3_handle *handle)
+ 	struct net_device *netdev = handle->kinfo.netdev;
+ 	struct hns3_nic_priv *priv = netdev_priv(netdev);
+ 
++	if (!test_bit(HNS3_NIC_STATE_DOWN, &priv->state))
++		hns3_nic_net_stop(netdev);
++
+ 	if (!test_and_clear_bit(HNS3_NIC_STATE_INITED, &priv->state)) {
+ 		netdev_warn(netdev, "already uninitialized\n");
+ 		return 0;
 -- 
 2.43.0
 
