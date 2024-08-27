@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-70516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71029-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFAE6960E86
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:49:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA4F596114E
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:19:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2C88AB22D8A
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:49:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64CAE2835BC
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:19:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4795644C8C;
-	Tue, 27 Aug 2024 14:49:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5C5F1CE71F;
+	Tue, 27 Aug 2024 15:17:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WgqscGBO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o4BYTU5Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0610FDDC1;
-	Tue, 27 Aug 2024 14:49:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 655A21C7B7B;
+	Tue, 27 Aug 2024 15:17:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770168; cv=none; b=j89imqTeCvgoVuyAtyBjXmqIeF5cR1lxfD0+6LVeMnwn1y1Q/vnaPQhPwrneWEdebqRuN3LEz5ZjZ/Eq4vWouInhNrv6OjBwlcam4SpYkWZqfOZDvcXXme50qtQacEny35AfwQq+e2+npatzOdN4VsbLoGDYbz8CEdZl+K3HHpI=
+	t=1724771861; cv=none; b=mqlCaQ6mr4Sub6qGnwpWK7t69MWh4iSJE/UkJBYRDQ1ritB0tm+uDkwGey0253v8svZ+i918jIegGvesNoCdYw9BmcgqOQ42LkwiKD5cXFd0t4ZDCqJmHED4TaztnkbPRnphJJ4SJ5d6oKvWMT2Eu+ZbXMyIRQYuTHAKPkV6Rck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770168; c=relaxed/simple;
-	bh=s/M7E2uq2vv4yQCV5JWTvk6zKJbN1Rhwt9N5mOaJYfU=;
+	s=arc-20240116; t=1724771861; c=relaxed/simple;
+	bh=TkyGlNsQYwfbHRhftEiYuQf/wHE3Fkl9jQeimIoaJjQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pfQj/EbKvvwmRQ9Pao+tlF8m1j013Rrlp2UIe9ehV20stHE4Kspzir2bGGOHV71DGWBb7QU2zHiNh9mltF2zwJ+7D87nf327Px0haq729l7PVO+VlAy3IEYb0/u51WQBwLscLBtk9UJbYKHA/Cq0x6V/a2vRraTcyUU2311dS7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WgqscGBO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EB29C4AF1B;
-	Tue, 27 Aug 2024 14:49:27 +0000 (UTC)
+	 MIME-Version; b=tNjhF+7gMaRTFhXIF4pCgpjTu8tF6qHYuWkj6t3qRW7wviUb236FYSik6ayaxk0Kd3VluvVS0Haq1emyQy/PVoxrDMlVQRoHZMkYrezyIHH+hE9bNSs4hutoYwHemwBha/uKcxczczgoMb4HPekMgc3UafqnG7K64QBJP3/18aw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o4BYTU5Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CACFC61067;
+	Tue, 27 Aug 2024 15:17:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770167;
-	bh=s/M7E2uq2vv4yQCV5JWTvk6zKJbN1Rhwt9N5mOaJYfU=;
+	s=korg; t=1724771861;
+	bh=TkyGlNsQYwfbHRhftEiYuQf/wHE3Fkl9jQeimIoaJjQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WgqscGBOHhD0Q7A/tEfbA+RuVpX3TuoBKNhu2nSzeCLY11N1WFXKcnbu4bdZelZbR
-	 S9hKQvn+RawfRqQWasclC1Qvi10U96vVKqr8NP1WUXeJmK52XOHqEN5fnSjesS90or
-	 Z2o5cjCnujQlwd0OLWHpR3cGUBLKDXRZIiWh9CJc=
+	b=o4BYTU5Y3p5J2U7O2b4FKdsaHzLHDjdXFCRul8TH9f7KxOZHJQKrMWOlCPCZpuPbX
+	 +5jOO9Y51GgHG0cSZ9oMsYm4vM9nYw3wdIpXZWDFNb+zSUq1kgY5M9Q1mONU3m5go6
+	 O/NTSt5p7dmYJCW/tgIcB+veH6HFxY5hMVU3TxWc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ashish Mhetre <amhetre@nvidia.com>,
-	Mikko Perttunen <mperttunen@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 120/341] drm/tegra: Zero-initialize iosys_map
+Subject: [PATCH 6.1 043/321] gfs2: Rename the {freeze,thaw}_super callbacks
 Date: Tue, 27 Aug 2024 16:35:51 +0200
-Message-ID: <20240827143847.980417207@linuxfoundation.org>
+Message-ID: <20240827143839.867706907@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +61,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikko Perttunen <mperttunen@nvidia.com>
+From: Andreas Gruenbacher <agruenba@redhat.com>
 
-[ Upstream commit 3868ff006b572cf501a3327832d36c64a9eca86a ]
+[ Upstream commit 097cca525adf10f35c9dac037155564f1b1a688b ]
 
-UBSAN reports an invalid load for bool, as the iosys_map is read
-later without being initialized. Zero-initialize it to avoid this.
+Rename gfs2_freeze to gfs2_freeze_super and gfs2_unfreeze to
+gfs2_thaw_super to match the names of the corresponding super
+operations.
 
-Reported-by: Ashish Mhetre <amhetre@nvidia.com>
-Signed-off-by: Mikko Perttunen <mperttunen@nvidia.com>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230901115910.701518-2-cyndis@kapsi.fi
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Stable-dep-of: f66af88e3321 ("gfs2: Stop using gfs2_make_fs_ro for withdraw")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/tegra/gem.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/gfs2/super.c | 12 ++++++------
+ fs/gfs2/util.c  |  2 +-
+ 2 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/tegra/gem.c b/drivers/gpu/drm/tegra/gem.c
-index a4023163493dc..a825fbbc01af6 100644
---- a/drivers/gpu/drm/tegra/gem.c
-+++ b/drivers/gpu/drm/tegra/gem.c
-@@ -177,7 +177,7 @@ static void tegra_bo_unpin(struct host1x_bo_mapping *map)
- static void *tegra_bo_mmap(struct host1x_bo *bo)
- {
- 	struct tegra_bo *obj = host1x_to_tegra_bo(bo);
--	struct iosys_map map;
-+	struct iosys_map map = { 0 };
- 	int ret;
+diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
+index c87fafbe710a6..d7b3a982552cf 100644
+--- a/fs/gfs2/super.c
++++ b/fs/gfs2/super.c
+@@ -682,12 +682,12 @@ void gfs2_freeze_func(struct work_struct *work)
+ }
  
- 	if (obj->vaddr) {
+ /**
+- * gfs2_freeze - prevent further writes to the filesystem
++ * gfs2_freeze_super - prevent further writes to the filesystem
+  * @sb: the VFS structure for the filesystem
+  *
+  */
+ 
+-static int gfs2_freeze(struct super_block *sb)
++static int gfs2_freeze_super(struct super_block *sb)
+ {
+ 	struct gfs2_sbd *sdp = sb->s_fs_info;
+ 	int error;
+@@ -727,12 +727,12 @@ static int gfs2_freeze(struct super_block *sb)
+ }
+ 
+ /**
+- * gfs2_unfreeze - reallow writes to the filesystem
++ * gfs2_thaw_super - reallow writes to the filesystem
+  * @sb: the VFS structure for the filesystem
+  *
+  */
+ 
+-static int gfs2_unfreeze(struct super_block *sb)
++static int gfs2_thaw_super(struct super_block *sb)
+ {
+ 	struct gfs2_sbd *sdp = sb->s_fs_info;
+ 
+@@ -1499,8 +1499,8 @@ const struct super_operations gfs2_super_ops = {
+ 	.evict_inode		= gfs2_evict_inode,
+ 	.put_super		= gfs2_put_super,
+ 	.sync_fs		= gfs2_sync_fs,
+-	.freeze_super		= gfs2_freeze,
+-	.thaw_super		= gfs2_unfreeze,
++	.freeze_super		= gfs2_freeze_super,
++	.thaw_super		= gfs2_thaw_super,
+ 	.statfs			= gfs2_statfs,
+ 	.drop_inode		= gfs2_drop_inode,
+ 	.show_options		= gfs2_show_options,
+diff --git a/fs/gfs2/util.c b/fs/gfs2/util.c
+index 86d1415932a43..11cc59ac64fdc 100644
+--- a/fs/gfs2/util.c
++++ b/fs/gfs2/util.c
+@@ -188,7 +188,7 @@ static void signal_our_withdraw(struct gfs2_sbd *sdp)
+ 	sdp->sd_jinode_gh.gh_flags |= GL_NOCACHE;
+ 	gfs2_glock_dq(&sdp->sd_jinode_gh);
+ 	if (test_bit(SDF_FS_FROZEN, &sdp->sd_flags)) {
+-		/* Make sure gfs2_unfreeze works if partially-frozen */
++		/* Make sure gfs2_thaw_super works if partially-frozen */
+ 		flush_work(&sdp->sd_freeze_work);
+ 		atomic_set(&sdp->sd_freeze_state, SFS_FROZEN);
+ 		thaw_super(sdp->sd_vfs);
 -- 
 2.43.0
 
