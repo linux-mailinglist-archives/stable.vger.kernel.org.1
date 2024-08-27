@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-71244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70983-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F0BA96127C
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:31:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC822961101
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:15:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CECDD1F23457
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:31:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 69B0928287D
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:15:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE2591CCEEE;
-	Tue, 27 Aug 2024 15:29:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 726081C3F3B;
+	Tue, 27 Aug 2024 15:15:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RPKXovcb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T+MLkera"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AA971C7B63;
-	Tue, 27 Aug 2024 15:29:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F3881C7B9D;
+	Tue, 27 Aug 2024 15:15:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772574; cv=none; b=i3wOl9AEI6IWcxJiiBAK3NNm32AoY1cije9V6d6BvsqIo9zTHxRx9gIGf8C0+SvTf3+YpPULjZh8FTARUIXZ2TZ19h5jo4AXvCF014grOSkxqpN+jO7TsAoIGULVUSrRZOl0hYS8WH7fUns9MjIoqBmxTfk6vD/g4Xtb0Y7cUvY=
+	t=1724771710; cv=none; b=YkMlKARQhYqLo2R1DZtBBlpLXzPRuI7JPn8Ac6QqNemF6VY95T3OI9Blna7qsxPkq93+sTNq42S4rNNmz99gPRRjA0v2C7gF610VWLmkquvp7mCbkcTJkitPyJZp5bq0obSnrQMNxK9xPNnY6aGufugrZ3WeT6yxzyNFJ4wEtq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772574; c=relaxed/simple;
-	bh=7C5DcqVDokNErgjZ8N66k6BD2Nb2xn1js6o7nXCU3Sw=;
+	s=arc-20240116; t=1724771710; c=relaxed/simple;
+	bh=LKUNx7yGZnz9rtjWebV7L9aFEag493cWfCJfngkmm8E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AKQxi/+SCgEp8CyCNdpwG55uy0UqrL0ed0qGMuoXlhh9lr6wIG8FirEl0FH8YSCnRMIFJvT8eDWtUZeHbGiFLo+KWdWEilRWFqNUrwC6Cz8/70o8fNzv62BFOnBksZOcL99Hu39MhjF5DoPG8YNXyt0y2lSosgs9iAl6yMcT61Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RPKXovcb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8F74C6107E;
-	Tue, 27 Aug 2024 15:29:33 +0000 (UTC)
+	 MIME-Version; b=mRDqxfb9zl/+2p+69/0Yo7OxUp/uGL70AUkFXg/tIfqpPBnL+pvz/2VqCUuuSYoVYLL+OGZCzFZU4k5eygLE+sHwmEhtBZs5raRSCtjGVANVr0UZvpTnlIU6FXIIL2/TcWSzRTuha0Z70PoRa6fHPum4ORIQ29hbpYhyYSM3H4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T+MLkera; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B688C61075;
+	Tue, 27 Aug 2024 15:15:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772574;
-	bh=7C5DcqVDokNErgjZ8N66k6BD2Nb2xn1js6o7nXCU3Sw=;
+	s=korg; t=1724771710;
+	bh=LKUNx7yGZnz9rtjWebV7L9aFEag493cWfCJfngkmm8E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RPKXovcbiHQY/rznWocFqyO8ncewHYuG8PStTzRjizDEdLUnHqoUHRXKJ8SRW+q/T
-	 InWreCUkRdDS3WxjbTc1u888cHv1hT0T2Niedb0g6YHER4JBwuF3rlKlXzsbDpo47x
-	 yGKHuK1MlSkQrExpHelKPKUkBe+6Rtg6gvnpgK6g=
+	b=T+MLkeraEhTpbYGIJ8HbKeDvKd18NqHhETceK+eu8iLzjQtUykU3bQNSk4xMzX1bF
+	 PLE6QrNWic5VGtCHBnbESUZSHL4u7epO9PsmmkU82m+JxAC4g2JMyprU144Yp/GIMg
+	 CrHRyIC53PFrWMfl8SKWOtQHIPiH8rUEDDV4KGhw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bharat Bhushan <bbhushan2@marvell.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 255/321] octeontx2-af: Fix CPT AF register offset calculation
+	Werner Sembach <wse@tuxedocomputers.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.10 239/273] Input: i8042 - use new forcenorestore quirk to replace old buggy quirk combination
 Date: Tue, 27 Aug 2024 16:39:23 +0200
-Message-ID: <20240827143847.951077360@linuxfoundation.org>
+Message-ID: <20240827143842.498275202@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,93 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bharat Bhushan <bbhushan2@marvell.com>
+From: Werner Sembach <wse@tuxedocomputers.com>
 
-[ Upstream commit af688a99eb1fc7ef69774665d61e6be51cea627a ]
+commit aaa4ca873d3da768896ffc909795359a01e853ef upstream.
 
-Some CPT AF registers are per LF and others are global. Translation
-of PF/VF local LF slot number to actual LF slot number is required
-only for accessing perf LF registers. CPT AF global registers access
-do not require any LF slot number. Also, there is no reason CPT
-PF/VF to know actual lf's register offset.
+The old quirk combination sometimes cause a laggy keyboard after boot. With
+the new quirk the initial issue of an unresponsive keyboard after s3 resume
+is also fixed, but it doesn't have the negative side effect of the
+sometimes laggy keyboard.
 
-Without this fix microcode loading will fail, VFs cannot be created
-and hardware is not usable.
-
-Fixes: bc35e28af789 ("octeontx2-af: replace cpt slot with lf id on reg write")
-Signed-off-by: Bharat Bhushan <bbhushan2@marvell.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20240821070558.1020101-1-bbhushan2@marvell.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20240104183118.779778-3-wse@tuxedocomputers.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../ethernet/marvell/octeontx2/af/rvu_cpt.c   | 23 +++++++++----------
- 1 file changed, 11 insertions(+), 12 deletions(-)
+ drivers/input/serio/i8042-acpipnpio.h |   10 +---------
+ 1 file changed, 1 insertion(+), 9 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cpt.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cpt.c
-index b226a4d376aab..160e044c25c24 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cpt.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cpt.c
-@@ -632,7 +632,9 @@ int rvu_mbox_handler_cpt_inline_ipsec_cfg(struct rvu *rvu,
- 	return ret;
- }
- 
--static bool is_valid_offset(struct rvu *rvu, struct cpt_rd_wr_reg_msg *req)
-+static bool validate_and_update_reg_offset(struct rvu *rvu,
-+					   struct cpt_rd_wr_reg_msg *req,
-+					   u64 *reg_offset)
- {
- 	u64 offset = req->reg_offset;
- 	int blkaddr, num_lfs, lf;
-@@ -663,6 +665,11 @@ static bool is_valid_offset(struct rvu *rvu, struct cpt_rd_wr_reg_msg *req)
- 		if (lf < 0)
- 			return false;
- 
-+		/* Translate local LF's offset to global CPT LF's offset to
-+		 * access LFX register.
-+		 */
-+		*reg_offset = (req->reg_offset & 0xFF000) + (lf << 3);
-+
- 		return true;
- 	} else if (!(req->hdr.pcifunc & RVU_PFVF_FUNC_MASK)) {
- 		/* Registers that can be accessed from PF */
-@@ -697,7 +704,7 @@ int rvu_mbox_handler_cpt_rd_wr_register(struct rvu *rvu,
- 					struct cpt_rd_wr_reg_msg *rsp)
- {
- 	u64 offset = req->reg_offset;
--	int blkaddr, lf;
-+	int blkaddr;
- 
- 	blkaddr = validate_and_get_cpt_blkaddr(req->blkaddr);
- 	if (blkaddr < 0)
-@@ -708,18 +715,10 @@ int rvu_mbox_handler_cpt_rd_wr_register(struct rvu *rvu,
- 	    !is_cpt_vf(rvu, req->hdr.pcifunc))
- 		return CPT_AF_ERR_ACCESS_DENIED;
- 
--	if (!is_valid_offset(rvu, req))
-+	if (!validate_and_update_reg_offset(rvu, req, &offset))
- 		return CPT_AF_ERR_ACCESS_DENIED;
- 
--	/* Translate local LF used by VFs to global CPT LF */
--	lf = rvu_get_lf(rvu, &rvu->hw->block[blkaddr], req->hdr.pcifunc,
--			(offset & 0xFFF) >> 3);
--
--	/* Translate local LF's offset to global CPT LF's offset */
--	offset &= 0xFF000;
--	offset += lf << 3;
--
--	rsp->reg_offset = offset;
-+	rsp->reg_offset = req->reg_offset;
- 	rsp->ret_val = req->ret_val;
- 	rsp->is_write = req->is_write;
- 
--- 
-2.43.0
-
+--- a/drivers/input/serio/i8042-acpipnpio.h
++++ b/drivers/input/serio/i8042-acpipnpio.h
+@@ -1150,18 +1150,10 @@ static const struct dmi_system_id i8042_
+ 					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
+ 	},
+ 	{
+-		/*
+-		 * Setting SERIO_QUIRK_NOMUX or SERIO_QUIRK_RESET_ALWAYS makes
+-		 * the keyboard very laggy for ~5 seconds after boot and
+-		 * sometimes also after resume.
+-		 * However both are required for the keyboard to not fail
+-		 * completely sometimes after boot or resume.
+-		 */
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "N150CU"),
+ 		},
+-		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
+-					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
++		.driver_data = (void *)(SERIO_QUIRK_FORCENORESTORE)
+ 	},
+ 	{
+ 		.matches = {
 
 
 
