@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-70659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71170-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9C53960F64
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:59:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29283961208
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:26:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7505286830
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:59:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D510F280361
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:26:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBFBD1C6881;
-	Tue, 27 Aug 2024 14:57:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D51D1CB326;
+	Tue, 27 Aug 2024 15:25:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s3RhRLBw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ljVIYy7G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8929C1C4603;
-	Tue, 27 Aug 2024 14:57:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE2EF19F485;
+	Tue, 27 Aug 2024 15:25:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770643; cv=none; b=WOttGBPYTNruw6G2VPK+sOwP9TavPU8pqVR/3i0vAc3Mox+xLUD3lE36KeeiC6YMjkP0mZf3tkxQa/yljatyrSSHFGloZZAIUq7ya6umRToGyGZ2+ScVdpipGvF3RvhQKWemi+scAfFVwyfg1heF2ZvWp2ijzNkxBZGlDYu5zCs=
+	t=1724772330; cv=none; b=Qpwc02g7kSGFuFfCNb3qI//qTlQBCnfNc8/hwqmPbVJ+8Jyr4eSr8C6wYmg/stcaTw1B/sMhlzJM4vFqh4bQIfRVcxKmd7B/9dmVJVJlYaHwE0Qu5hucPxqITvqKZbPADGrrDMbGdXYgBf/g/6bZTjlQCgBR6WjqkGbqN1M5WO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770643; c=relaxed/simple;
-	bh=UK/5d0cKP7Yxrlg+saywix3XZAevuvRfgK3gJqg31DE=;
+	s=arc-20240116; t=1724772330; c=relaxed/simple;
+	bh=pMUkovxrgxnOeQw8ddqGHhybtbjRaF4y39MosUIm7lY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BRHcqImadcvpNdqaoNif5lPf2d8P/cIuj3NzDBM7xH/CCxY1VoXR3m9163cv6qWHJZIPt4XOmBzFqJJTnTyxVDsIh1S5Ieah2xO6t7iuVAYC2cH+4uV/5dRJs4SqLa3JhV1luABw7qySoQgH4XtLnWhNNZNNS/lNP0raQB0Pn0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s3RhRLBw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0BBFC61044;
-	Tue, 27 Aug 2024 14:57:22 +0000 (UTC)
+	 MIME-Version; b=S6OS/xZ5/ozqyjliP73DLqcJpaxiNntG8COkXSKKY+fOEQybZRKkHOkCOMwz9SilVdjj79JaonSV9wozeOuX7eYm6Dsd7u9QvhhFpem/f1svvMdeHAujcwrp/WZwJzrf5+WXnqpP1SZuEei/cA/vySOao4IgsfClSygPS7IaCh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ljVIYy7G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DEC1C4DDF5;
+	Tue, 27 Aug 2024 15:25:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770643;
-	bh=UK/5d0cKP7Yxrlg+saywix3XZAevuvRfgK3gJqg31DE=;
+	s=korg; t=1724772330;
+	bh=pMUkovxrgxnOeQw8ddqGHhybtbjRaF4y39MosUIm7lY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s3RhRLBwAyIDEwOiUtR25Fxf90tQHH8T562esIIZO+dNcQP7zJGtE7BLKlQSSapZC
-	 9oMmpwmtWMYHQFF81YGBwPUwY9RltK3GS7XQkvgfNB/4wjfg2km6k09sqTEkBmMhTs
-	 iJnnOMXS96RV6jvGFZgnNVG77LLVRrTCb/N8zi60=
+	b=ljVIYy7GDj5txBIW1EmCja+BVnXtyWJwf/5wLg0kdq8NXlJ5/naAuHxH88lwn1rnA
+	 OpxKRLhQYg5m/QEg+5eAOvBA5J2gSyn8XZtiejcO0foLlb4JjENtkP7zGFY+yQdUHD
+	 R29BFbWgj0DWgBXDB51scaproz9UADxl7J++kNtY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 259/341] bonding: fix xfrm state handling when clearing active slave
-Date: Tue, 27 Aug 2024 16:38:10 +0200
-Message-ID: <20240827143853.261233382@linuxfoundation.org>
+Subject: [PATCH 6.1 183/321] btrfs: handle invalid root reference found in may_destroy_subvol()
+Date: Tue, 27 Aug 2024 16:38:11 +0200
+Message-ID: <20240827143845.195816710@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikolay Aleksandrov <razor@blackwall.org>
+From: David Sterba <dsterba@suse.com>
 
-[ Upstream commit c4c5c5d2ef40a9f67a9241dc5422eac9ffe19547 ]
+[ Upstream commit 6fbc6f4ac1f4907da4fc674251527e7dc79ffbf6 ]
 
-If the active slave is cleared manually the xfrm state is not flushed.
-This leads to xfrm add/del imbalance and adding the same state multiple
-times. For example when the device cannot handle anymore states we get:
- [ 1169.884811] bond0: (slave eni0np1): bond_ipsec_add_sa_all: failed to add SA
-because it's filled with the same state after multiple active slave
-clearings. This change also has a few nice side effects: user-space
-gets a notification for the change, the old device gets its mac address
-and promisc/mcast adjusted properly.
+The may_destroy_subvol() looks up a root by a key, allowing to do an
+inexact search when key->offset is -1.  It's never expected to find such
+item, as it would break the allowed range of a root id.
 
-Fixes: 18cb261afd7b ("bonding: support hardware encryption offload to slaves")
-Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bonding/bond_options.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/btrfs/inode.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/bonding/bond_options.c b/drivers/net/bonding/bond_options.c
-index 00a662f8edd6b..d1208d058eea1 100644
---- a/drivers/net/bonding/bond_options.c
-+++ b/drivers/net/bonding/bond_options.c
-@@ -920,7 +920,7 @@ static int bond_option_active_slave_set(struct bonding *bond,
- 	/* check to see if we are clearing active */
- 	if (!slave_dev) {
- 		netdev_dbg(bond->dev, "Clearing current active slave\n");
--		RCU_INIT_POINTER(bond->curr_active_slave, NULL);
-+		bond_change_active_slave(bond, NULL);
- 		bond_select_active_slave(bond);
- 	} else {
- 		struct slave *old_active = rtnl_dereference(bond->curr_active_slave);
+diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+index 10ded9c2be03b..bd3388e1b532e 100644
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -4614,7 +4614,14 @@ static noinline int may_destroy_subvol(struct btrfs_root *root)
+ 	ret = btrfs_search_slot(NULL, fs_info->tree_root, &key, path, 0, 0);
+ 	if (ret < 0)
+ 		goto out;
+-	BUG_ON(ret == 0);
++	if (ret == 0) {
++		/*
++		 * Key with offset -1 found, there would have to exist a root
++		 * with such id, but this is out of valid range.
++		 */
++		ret = -EUCLEAN;
++		goto out;
++	}
+ 
+ 	ret = 0;
+ 	if (path->slots[0] > 0) {
 -- 
 2.43.0
 
