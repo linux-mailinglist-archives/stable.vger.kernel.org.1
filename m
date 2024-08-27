@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-70973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71297-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 300239610F8
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:15:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F1679612BA
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:34:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA3441F243D8
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:15:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5BA82283A66
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:34:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62CA91C68B1;
-	Tue, 27 Aug 2024 15:14:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44E5F1C9EC8;
+	Tue, 27 Aug 2024 15:32:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oWg+GTvU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ih0UIvzu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 207401BFE07;
-	Tue, 27 Aug 2024 15:14:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 045001C8FB0;
+	Tue, 27 Aug 2024 15:32:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771677; cv=none; b=XxL/cbkVeO/wk9grVqz28zaQo7896rfRSPNBtuJ53L6wREaFkV1rl9ichY2CsNHWa8AVKQ8mJtX36N5G/A9Pg0xytcNlmjqFU1KwIgq6b/Qy7OaT4RKdXvusoo3X03Lu6GFR0HOOMldkt+nfw3Y9AW8qKTAYQ1dyvsl/+Vi2o4U=
+	t=1724772749; cv=none; b=rfB94xXjPmw7SK4WgfaD5ekAJ6jc6CBMJ9485Gvb4nsF0TDE4mya+P2f8ymyAIN7TK/yG/8rK+k5mBz4KnWuhKK9OllG+5UsRuUrMWpsAVlUR+SEljy/n24dxrqcI3oWrQIuoxBvCpbqInFFKVKFnCNgEXdhmD2B9lU/+EWrJpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771677; c=relaxed/simple;
-	bh=IDvCGFpXLrrgYIjl4CZJsP8w1Q3uGWyvPSlGxg44LSI=;
+	s=arc-20240116; t=1724772749; c=relaxed/simple;
+	bh=j+ESb0S8Fvgu22ucOHlOeEm6ZNjFi5pfXkxDLajVA5k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kSQn5dzxJEhdi5hXJkZRqGsyO4AM5XfmsFtRilsLX0vkmoto3wREJ0pTMF3ij6gw4+/3uXaqxVCRfjkpvpBeC6ER+pRDVB8kWtYKoG61G52dEn8AUapRUPoRI90G9JiiGFKStM+VuSkyr2O5h7WS0L+BbzsJ2HzkAnBFs/QeLbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oWg+GTvU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96657C61064;
-	Tue, 27 Aug 2024 15:14:36 +0000 (UTC)
+	 MIME-Version; b=D2AAYCK/BoBgajBf0C5bX0PfRXyuDF8rw7zXAM8/I8gxG+WewEGjay5wM3Vl44DaDh+eLN3kQeqtoylwNath4/Wqw24nNBdGp8rwfW6yS0kUrnbvSdvbmxUyDqUKhV3zh3jC2G9W1B4R/MYdNsLlK6riaqncbynzkabv6pByi+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ih0UIvzu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E5A8C61041;
+	Tue, 27 Aug 2024 15:32:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771677;
-	bh=IDvCGFpXLrrgYIjl4CZJsP8w1Q3uGWyvPSlGxg44LSI=;
+	s=korg; t=1724772748;
+	bh=j+ESb0S8Fvgu22ucOHlOeEm6ZNjFi5pfXkxDLajVA5k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oWg+GTvU7dcJaC8nqCL1aH5xLUD4nON1q0/X11ovCzYopmin/jb0dDS4vQJ0n4PgU
-	 6Kdq/jI4wiU4NCG6XXsjVhiCuSD6OB784gMMtZ6wnq4vaAcNWNKKu5FfKkNalCWyyo
-	 E1LimGtgvNDu0bnD0CvJMtiroIGIGGohnQBOn5MU=
+	b=ih0UIvzuzrrmFTh1rMFRzH9xxVdkP+atHdLrgB1V/xX36t0tEFFDc2pO6IkzNvxLR
+	 uBd6v2XGaS6Vp8vSrFUDyXT+Nm3b52jfirFwGCMaCPDRMN1a5e8a4ZvvNIYUQ9oPj2
+	 4okLcLXlZG9B832DCJ3btgw6H+Wyrb1JE5VOQr/4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Mat Martineau <martineau@kernel.org>,
 	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.10 260/273] mptcp: pm: only decrement add_addr_accepted for MPJ req
+Subject: [PATCH 6.1 276/321] mptcp: pm: re-using ID of unused removed ADD_ADDR
 Date: Tue, 27 Aug 2024 16:39:44 +0200
-Message-ID: <20240827143843.293425543@linuxfoundation.org>
+Message-ID: <20240827143848.757846072@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit 1c1f721375989579e46741f59523e39ec9b2a9bd upstream.
+commit e255683c06df572ead96db5efb5d21be30c0efaa upstream.
 
-Adding the following warning ...
+If no subflow is attached to the 'signal' endpoint that is being
+removed, the addr ID will not be marked as available again.
 
-  WARN_ON_ONCE(msk->pm.add_addr_accepted == 0)
+Mark the linked ID as available when removing the address entry from the
+list to cover this case.
 
-... before decrementing the add_addr_accepted counter helped to find a
-bug when running the "remove single subflow" subtest from the
-mptcp_join.sh selftest.
-
-Removing a 'subflow' endpoint will first trigger a RM_ADDR, then the
-subflow closure. Before this patch, and upon the reception of the
-RM_ADDR, the other peer will then try to decrement this
-add_addr_accepted. That's not correct because the attached subflows have
-not been created upon the reception of an ADD_ADDR.
-
-A way to solve that is to decrement the counter only if the attached
-subflow was an MP_JOIN to a remote id that was not 0, and initiated by
-the host receiving the RM_ADDR.
-
-Fixes: d0876b2284cf ("mptcp: add the incoming RM_ADDR support")
+Fixes: b6c08380860b ("mptcp: remove addr and subflow in PM netlink")
 Cc: stable@vger.kernel.org
 Reviewed-by: Mat Martineau <martineau@kernel.org>
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20240819-net-mptcp-pm-reusing-id-v1-9-38035d40de5b@kernel.org
+Link: https://patch.msgid.link/20240819-net-mptcp-pm-reusing-id-v1-1-38035d40de5b@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/pm_netlink.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ net/mptcp/pm_netlink.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
 --- a/net/mptcp/pm_netlink.c
 +++ b/net/mptcp/pm_netlink.c
-@@ -829,7 +829,7 @@ static void mptcp_pm_nl_rm_addr_or_subfl
- 			mptcp_close_ssk(sk, ssk, subflow);
- 			spin_lock_bh(&msk->pm.lock);
- 
--			removed = true;
-+			removed |= subflow->request_join;
- 			if (rm_type == MPTCP_MIB_RMSUBFLOW)
- 				__MPTCP_INC_STATS(sock_net(sk), rm_type);
- 		}
-@@ -843,7 +843,11 @@ static void mptcp_pm_nl_rm_addr_or_subfl
- 		if (!mptcp_pm_is_kernel(msk))
- 			continue;
- 
--		if (rm_type == MPTCP_MIB_RMADDR) {
-+		if (rm_type == MPTCP_MIB_RMADDR && rm_id &&
-+		    !WARN_ON_ONCE(msk->pm.add_addr_accepted == 0)) {
-+			/* Note: if the subflow has been closed before, this
-+			 * add_addr_accepted counter will not be decremented.
-+			 */
- 			msk->pm.add_addr_accepted--;
- 			WRITE_ONCE(msk->pm.accept_addr, true);
- 		}
+@@ -1474,7 +1474,10 @@ static bool mptcp_pm_remove_anno_addr(st
+ 	ret = remove_anno_list_by_saddr(msk, addr);
+ 	if (ret || force) {
+ 		spin_lock_bh(&msk->pm.lock);
+-		msk->pm.add_addr_signaled -= ret;
++		if (ret) {
++			__set_bit(addr->id, msk->pm.id_avail_bitmap);
++			msk->pm.add_addr_signaled--;
++		}
+ 		mptcp_pm_remove_addr(msk, &list);
+ 		spin_unlock_bh(&msk->pm.lock);
+ 	}
 
 
 
