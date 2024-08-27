@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-71108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70566-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF0BD9611AB
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:22:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFED8960ED0
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:52:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 65D4D1F2408A
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:22:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8AA531F236BB
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:52:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53CF11C57A9;
-	Tue, 27 Aug 2024 15:22:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D760D1C57A9;
+	Tue, 27 Aug 2024 14:52:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I1acMpI2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NEFMHc68"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12AE917C96;
-	Tue, 27 Aug 2024 15:22:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D2BB1C578E;
+	Tue, 27 Aug 2024 14:52:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772127; cv=none; b=SyCLQiMH6Qc7TKr0n5JTxAr0H7R6yw8+Dafi2vp+g9vjey2a/pe3vbcsmLU/9Nn1EMnIgi1HEhmB0IF95ViCjqIunaZk0up94H7r/F4LjLWRCrxaukM5TE4HvFuhZyBWRpyZGTQD+qcQ2w4SHoR4oYvn7cZcUrOILWs/fMDJvsI=
+	t=1724770332; cv=none; b=gXfKkNYZ/Ogk+DWIk6Qb1whaurYlAoG/lOXu20xu4D8FjqrR88PEb22+dfEA1rEDa1wc+Sfir0DKOSHyA7fbdEqkH5l03s4yPFZpx46S67FN0drF9hfpPDmGKoCWM7s4RA7H0LHvz+EeI2BVZEsNBRNKwc68NtLkp7I5f/aFF6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772127; c=relaxed/simple;
-	bh=uwtb2RjtuDDwgPEln2LDeOHgsqlldx9o32pkgFj8l7Q=;
+	s=arc-20240116; t=1724770332; c=relaxed/simple;
+	bh=d1WmX66YuaZo4z6bj70Yse5gqcNUnrDhLWTlJFFR4fE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sUKNzBVTQamxq67sOPwYHFGhVv4U6OwWvr6bBM8L0mWUMMWTfVNuzocg1YZXy/LujgEkHAXZUs5kbU/qqIijBj8Uj+OnJphUfG+UqKQ4CthcdKl+V7pEn7lx7wcpsgoF/P7Dpwu/423wFYB7ukdw12Wheer+Dagl7IaYim4O5sk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I1acMpI2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80E1DC4FE09;
-	Tue, 27 Aug 2024 15:22:06 +0000 (UTC)
+	 MIME-Version; b=MH6MIwx3c9GklKjV2dQY4EvHhjjM9vnc2Z/JInSZblGDW63h0f6biUKwP+pZCuiLt7+jV0w/Gs7sZkHTYn6JZP7F20fEZrmLJ9AW6Sbinf0C+kL0PQPkQD6llHMkacS8Q2vs+TwyvN7evjYxQOi/stxbStM84FTkhiea3aP7R48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NEFMHc68; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F021CC4E66E;
+	Tue, 27 Aug 2024 14:52:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772126;
-	bh=uwtb2RjtuDDwgPEln2LDeOHgsqlldx9o32pkgFj8l7Q=;
+	s=korg; t=1724770332;
+	bh=d1WmX66YuaZo4z6bj70Yse5gqcNUnrDhLWTlJFFR4fE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I1acMpI2FqKYZu7Q1ulLsVs983UiFRoTYFrAYCgtlMdHHjSRvIM44wbQ/WM4fqPvM
-	 07qR7RPOmeYOeaJJGmK99XU7ffod1ueSrrlxI9l1MrqPky14HyLMbC/eemc71HjA0+
-	 xUoQbqCoYQiQn1SESXFcWNjNmivIBYLQiOpaAGlw=
+	b=NEFMHc68Msxt15VNknXwcqrtBH27uxSehGXkJMO8tGntjD7w9wuL355bwccXC0iiG
+	 CD/QesZ1tKgnrj0dEn/2hp6DRSqsr1OLEQJeAGqSvQQJUeuvutvTOx1p1NlqcDnqAv
+	 bS0rWSRJpi6NSpEYdy2+IoIMgpDRnPwhFwMHWPKc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 121/321] s390/smp,mcck: fix early IPI handling
+Subject: [PATCH 6.6 198/341] firmware: cirrus: cs_dsp: Initialize debugfs_root to invalid
 Date: Tue, 27 Aug 2024 16:37:09 +0200
-Message-ID: <20240827143842.849906075@linuxfoundation.org>
+Message-ID: <20240827143850.947808327@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,86 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-[ Upstream commit 4a1725281fc5b0009944b1c0e1d2c1dc311a09ec ]
+[ Upstream commit 66626b15636b5f5cf3d7f6104799f77462748974 ]
 
-Both the external call as well as the emergency signal submask bits in
-control register 0 are set before any interrupt handler is registered.
+Initialize debugfs_root to -ENODEV so that if the client never sets a
+valid debugfs root the debugfs files will not be created.
 
-Change the order and first register the interrupt handler and only then
-enable the interrupts by setting the corresponding bits in control
-register 0.
+A NULL pointer passed to any of the debugfs_create_*() functions means
+"create in the root of debugfs". It doesn't mean "ignore".
 
-This prevents that the second part of the machine check handler for
-early machine check handling is not executed: the machine check handler
-sends an IPI to the CPU it runs on. If the corresponding interrupts are
-enabled, but no interrupt handler is present, the interrupt is ignored.
-
-Reviewed-by: Sven Schnelle <svens@linux.ibm.com>
-Acked-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Link: https://msgid.link/r/20240307105353.40067-1-rf@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kernel/early.c | 12 +++---------
- arch/s390/kernel/smp.c   |  4 ++--
- 2 files changed, 5 insertions(+), 11 deletions(-)
+ drivers/firmware/cirrus/cs_dsp.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/arch/s390/kernel/early.c b/arch/s390/kernel/early.c
-index 9693c8630e73f..b3cb256ec6692 100644
---- a/arch/s390/kernel/early.c
-+++ b/arch/s390/kernel/early.c
-@@ -237,15 +237,9 @@ static inline void save_vector_registers(void)
- #endif
- }
- 
--static inline void setup_control_registers(void)
-+static inline void setup_low_address_protection(void)
+diff --git a/drivers/firmware/cirrus/cs_dsp.c b/drivers/firmware/cirrus/cs_dsp.c
+index bd1651e709365..a1da7581adb03 100644
+--- a/drivers/firmware/cirrus/cs_dsp.c
++++ b/drivers/firmware/cirrus/cs_dsp.c
+@@ -522,7 +522,7 @@ void cs_dsp_cleanup_debugfs(struct cs_dsp *dsp)
  {
--	unsigned long reg;
--
--	__ctl_store(reg, 0, 0);
--	reg |= CR0_LOW_ADDRESS_PROTECTION;
--	reg |= CR0_EMERGENCY_SIGNAL_SUBMASK;
--	reg |= CR0_EXTERNAL_CALL_SUBMASK;
--	__ctl_load(reg, 0, 0);
-+	__ctl_set_bit(0, 28);
+ 	cs_dsp_debugfs_clear(dsp);
+ 	debugfs_remove_recursive(dsp->debugfs_root);
+-	dsp->debugfs_root = NULL;
++	dsp->debugfs_root = ERR_PTR(-ENODEV);
+ }
+ EXPORT_SYMBOL_NS_GPL(cs_dsp_cleanup_debugfs, FW_CS_DSP);
+ #else
+@@ -2343,6 +2343,11 @@ static int cs_dsp_common_init(struct cs_dsp *dsp)
+ 
+ 	mutex_init(&dsp->pwr_lock);
+ 
++#ifdef CONFIG_DEBUG_FS
++	/* Ensure this is invalid if client never provides a debugfs root */
++	dsp->debugfs_root = ERR_PTR(-ENODEV);
++#endif
++
+ 	return 0;
  }
  
- static inline void setup_access_registers(void)
-@@ -304,7 +298,7 @@ void __init startup_init(void)
- 	save_vector_registers();
- 	setup_topology();
- 	sclp_early_detect();
--	setup_control_registers();
-+	setup_low_address_protection();
- 	setup_access_registers();
- 	lockdep_on();
- }
-diff --git a/arch/s390/kernel/smp.c b/arch/s390/kernel/smp.c
-index 0031325ce4bc9..436dbf4d743d8 100644
---- a/arch/s390/kernel/smp.c
-+++ b/arch/s390/kernel/smp.c
-@@ -1007,12 +1007,12 @@ void __init smp_fill_possible_mask(void)
- 
- void __init smp_prepare_cpus(unsigned int max_cpus)
- {
--	/* request the 0x1201 emergency signal external interrupt */
- 	if (register_external_irq(EXT_IRQ_EMERGENCY_SIG, do_ext_call_interrupt))
- 		panic("Couldn't request external interrupt 0x1201");
--	/* request the 0x1202 external call external interrupt */
-+	ctl_set_bit(0, 14);
- 	if (register_external_irq(EXT_IRQ_EXTERNAL_CALL, do_ext_call_interrupt))
- 		panic("Couldn't request external interrupt 0x1202");
-+	ctl_set_bit(0, 13);
- }
- 
- void __init smp_prepare_boot_cpu(void)
 -- 
 2.43.0
 
