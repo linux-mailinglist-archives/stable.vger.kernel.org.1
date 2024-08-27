@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-70554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70806-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A16D7960EBB
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:51:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9F95961021
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:05:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65C67286DE6
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:51:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 81F3B1F23FE0
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:05:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F4BF1C2DB1;
-	Tue, 27 Aug 2024 14:51:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 023051C4603;
+	Tue, 27 Aug 2024 15:05:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XKkFftTb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aQRHtyCC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CACD38DC7;
-	Tue, 27 Aug 2024 14:51:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1F3219F485;
+	Tue, 27 Aug 2024 15:05:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770293; cv=none; b=P+mHfjv2uwzam6d6XMnp2Q/UToN6bRe+iyTAHx1u8NSMIqhV2VeeS4Ca50nN3YdKqTPN8Y0zXFO2fG2fc75GtOwaCGjzi2tn7bMDLr4LHmdLCn1z9MqSE27F/G5tWjyLlsHfj48gIJEp8u2ayqwsYRKMal8kIRo9CknpRc48zdM=
+	t=1724771122; cv=none; b=HdynUJXlRso5QbU3TSmj0K/Bs3H4bhtBzRj51Clj7nlrvIyD/vRDPIZ5q2s4VAYgwGs2yaKvelvGtLwpaAoDiirIwhl+Utv7EGHTO3mgKsnxYB2oYtcrWYVAr5vYaGlZ2YwSG+BMlgW7+4xsD938oj5XRCFV/EwLphBb3VT+B/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770293; c=relaxed/simple;
-	bh=opH/8vDOhpGtPBbE7wDQb/TctlNGFa4YxtoeTfEA8Tk=;
+	s=arc-20240116; t=1724771122; c=relaxed/simple;
+	bh=F3CCdZZFApMxztZ0qBhLp4u4lzJzkgtGETBc+HTtiaY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QSogHIYYSc8vMp37yQgSlgZ0SJ1pCdHp07NWUw5ygfL1tuTtGjGjrMQKNIucIgyAvqjRgCS4DiYO/6c8KH3MRuVxVmg0uiVwE2lNOkTjhbu90XLsi9Pudc2AmTSdP+qA/kg1U58KsO1xaxwkpZOmGAJJgXjABw7zSHPCxoYPbjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XKkFftTb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84EAFC4DE03;
-	Tue, 27 Aug 2024 14:51:32 +0000 (UTC)
+	 MIME-Version; b=AHHOvDP3W6H57AKbku+BI/8RAMEDQcFPaVRjqBRBhbK9wACDnucmFkWQTpG6RTLkcudQmyPXXOPRGtVeif+CnHlGDPPZ1ILIy/JFEu3nGLyKUfz5Q50DW6E3U92PRSZZvihG5MCunQbprcktnjRhzCg8PDJ2DmcOuFjsnClTdGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aQRHtyCC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3643EC6105F;
+	Tue, 27 Aug 2024 15:05:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770292;
-	bh=opH/8vDOhpGtPBbE7wDQb/TctlNGFa4YxtoeTfEA8Tk=;
+	s=korg; t=1724771122;
+	bh=F3CCdZZFApMxztZ0qBhLp4u4lzJzkgtGETBc+HTtiaY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XKkFftTbTb8b37Nj7zQU763+L6HtWatyOZSKeLzdLIO+qwNdM5VqYvywtdV/cEd1K
-	 kc6Ky0XLxBmoLjQoCpgQPj+EExS5ciwxV5LGlQt4IFntc+yD6PG7qvp6VwbALaLhMe
-	 ZrREj6orCMkUSK/UYL/5SAxj5U9BdXIYXNBfAE74=
+	b=aQRHtyCCpXuFdihgd8myYBc9+LisKnEhXCYY1usroPAVTX9YN+dMaMxC0oKxTyw7L
+	 Y4X2MuCqHjxLGAJxEUIH+X4/2/QGLH+3IfBnc8sBu0m4eByjlD2C6Hu7LdWpsQT/lF
+	 G2uarD8gsFqApXjURp+yNQ3EC+OMrnGfdW5uw0jQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>,
-	Anand Jain <anand.jain@oracle.com>,
-	David Sterba <dsterba@suse.com>,
+	Cosmin Ratiu <cratiu@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 184/341] btrfs: delayed-inode: drop pointless BUG_ON in __btrfs_remove_delayed_item()
-Date: Tue, 27 Aug 2024 16:36:55 +0200
-Message-ID: <20240827143850.415090923@linuxfoundation.org>
+Subject: [PATCH 6.10 092/273] net/mlx5e: Correctly report errors for ethtool rx flows
+Date: Tue, 27 Aug 2024 16:36:56 +0200
+Message-ID: <20240827143836.914149763@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +65,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Sterba <dsterba@suse.com>
+From: Cosmin Ratiu <cratiu@nvidia.com>
 
-[ Upstream commit 778e618b8bfedcc39354373c1b072c5fe044fa7b ]
+[ Upstream commit cbc796be1779c4dbc9a482c7233995e2a8b6bfb3 ]
 
-There's a BUG_ON checking for a valid pointer of fs_info::delayed_root
-but it is valid since init_mount_fs_info() and has the same lifetime as
-fs_info.
+Previously, an ethtool rx flow with no attrs would not be added to the
+NIC as it has no rules to configure the hw with, but it would be
+reported as successful to the caller (return code 0). This is confusing
+for the user as ethtool then reports "Added rule $num", but no rule was
+actually added.
 
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: Anand Jain <anand.jain@oracle.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+This change corrects that by instead reporting these wrong rules as
+-EINVAL.
+
+Fixes: b29c61dac3a2 ("net/mlx5e: Ethtool steering flow validation refactoring")
+Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
+Reviewed-by: Saeed Mahameed <saeedm@nvidia.com>
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20240808144107.2095424-5-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/delayed-inode.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_fs_ethtool.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/delayed-inode.c b/fs/btrfs/delayed-inode.c
-index 6d562f18d3f80..12ff91d6f570f 100644
---- a/fs/btrfs/delayed-inode.c
-+++ b/fs/btrfs/delayed-inode.c
-@@ -425,8 +425,6 @@ static void __btrfs_remove_delayed_item(struct btrfs_delayed_item *delayed_item)
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_fs_ethtool.c b/drivers/net/ethernet/mellanox/mlx5/core/en_fs_ethtool.c
+index 3eccdadc03578..773624bb2c5d5 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_fs_ethtool.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_fs_ethtool.c
+@@ -734,7 +734,7 @@ mlx5e_ethtool_flow_replace(struct mlx5e_priv *priv,
+ 	if (num_tuples <= 0) {
+ 		netdev_warn(priv->netdev, "%s: flow is not valid %d\n",
+ 			    __func__, num_tuples);
+-		return num_tuples;
++		return num_tuples < 0 ? num_tuples : -EINVAL;
+ 	}
  
- 	delayed_root = delayed_node->root->fs_info->delayed_root;
- 
--	BUG_ON(!delayed_root);
--
- 	if (delayed_item->type == BTRFS_DELAYED_INSERTION_ITEM)
- 		root = &delayed_node->ins_root;
- 	else
+ 	eth_ft = get_flow_table(priv, fs, num_tuples);
 -- 
 2.43.0
 
