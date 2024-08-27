@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-70676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71220-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F3EE960F78
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:59:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D63D096125F
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:30:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5AF25282569
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:59:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 95287281532
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:30:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB7071C8FD9;
-	Tue, 27 Aug 2024 14:58:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 596191CFEBF;
+	Tue, 27 Aug 2024 15:28:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JzuQPP4H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qhhyozOI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77FB81CC14E;
-	Tue, 27 Aug 2024 14:58:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 163AA1C8FCF;
+	Tue, 27 Aug 2024 15:28:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770699; cv=none; b=HRkXR2FLI3LrmyWZoBKe/OOQl/DmfXpncgOZVolsQY50UWHM8+OvK1znCMGO5F4PoclOss0Y/JE1HVPxteelZp71xnJHz2HhEmuMd7YahKGEBdkpV9c5c5snKzpC6Yv9t/JE+AgDgoQPJs5/h6PwIreC8zh+PDOtZgI2U5R+7II=
+	t=1724772493; cv=none; b=UDp1dtMsNVEFAzzJVo/FkLsxA7pHJ3mHid6CqeTlvlunkHNBsh+wLsSNvU+403PXuC//nzSRJbLfzRHyka02PAwLyUgqvIEDtmIyDkOnl1IFgvY6A0r7ZBSRDhUIDyWRnFtTcCae5wDz65swWe7RRrpdGcc+U1hiTGqQQR8p/EU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770699; c=relaxed/simple;
-	bh=OmLTncWUGFyDMBo5l3DbyuuDX7EXqGZ5nvMAeMel7ik=;
+	s=arc-20240116; t=1724772493; c=relaxed/simple;
+	bh=3STfJwyoJjCqND3uB9jvzgEwpDG+m1yMU3c47A6EwtU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NSXtWFCmIWrotwHBkm6MokX4kHJjbI1RX7sRrLGz+DPaCGzq4QQcARw2RzGdBw1Xu6DTvYS085MKkH/9BthqQvTTCWBDCIWx6H791+LU3BXEm2nDxkFnbtCrt7vwYy9SU4Joe8S/HH7huTBKDI0LOMxWTe8/Dhg2JKWwSnSY6QI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JzuQPP4H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1410C61058;
-	Tue, 27 Aug 2024 14:58:18 +0000 (UTC)
+	 MIME-Version; b=DNXHsuRxATtcUL9C1EPIAxIlhu1shRIQTHEQIwx0Q96Cw3xL7tCvNOZFqSvnQlzwaJsDBRT/Tg+lO7ZPSNYyUcM70Wu4v1xkn9AzrRioSLNa7cPvnK6kmg1sIjluF+1ZHKmLRnUXNOSWdXMSsknXwwe8ad5wva5s1JM14UbXAVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qhhyozOI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22FDDC61047;
+	Tue, 27 Aug 2024 15:28:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770699;
-	bh=OmLTncWUGFyDMBo5l3DbyuuDX7EXqGZ5nvMAeMel7ik=;
+	s=korg; t=1724772492;
+	bh=3STfJwyoJjCqND3uB9jvzgEwpDG+m1yMU3c47A6EwtU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JzuQPP4HO4y1crlZKPJfOop5b/qWMX4CJGEw1oRqj68eAdJopkolp71k3+pisUrof
-	 DuEEIHW6KyGX2fah/2BZGbFF+JYwCglmERrb92i87OSa0Rv0NX1WmENHhOdpYP8kXf
-	 xy/UUDef4wYmVQt83ejBUGj9+iHVKbXjKHOPekCY=
+	b=qhhyozOI8mfMWDyl4rdaJImhOpZqTcm7spMNz4k5ecK9qW6lIjn0F+ed1GX+SFYIY
+	 raxsGLmfJ+RguPsYBlnVEf27N9fG2KECReYyIo3E4JUhR/9H5phMmgXw3tGITciXN+
+	 vNGBqGUoMAcsTmFSWB+dfBysUFH9mbuUFYMFihqs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.6 307/341] pmdomain: imx: scu-pd: Remove duplicated clocks
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 230/321] tcp/dccp: bypass empty buckets in inet_twsk_purge()
 Date: Tue, 27 Aug 2024 16:38:58 +0200
-Message-ID: <20240827143855.071308712@linuxfoundation.org>
+Message-ID: <20240827143846.992496947@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 50359c9c3cb3e55e840e3485f5ee37da5b2b16b6 upstream.
+[ Upstream commit 50e2907ef8bb52cf80ecde9eec5c4dac07177146 ]
 
-These clocks are already added to the list. Remove the duplicates ones.
+TCP ehash table is often sparsely populated.
 
-Fixes: a67d780720ff ("genpd: imx: scu-pd: add more PDs")
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240717080334.2210988-1-alexander.stein@ew.tq-group.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+inet_twsk_purge() spends too much time calling cond_resched().
+
+This patch can reduce time spent in inet_twsk_purge() by 20x.
+
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://lore.kernel.org/r/20240327191206.508114-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 565d121b6998 ("tcp: prevent concurrent execution of tcp_sk_exit_batch")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pmdomain/imx/scu-pd.c | 5 -----
- 1 file changed, 5 deletions(-)
+ net/ipv4/inet_timewait_sock.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pmdomain/imx/scu-pd.c b/drivers/pmdomain/imx/scu-pd.c
-index 05841b0bf7f3..01d465d88f60 100644
---- a/drivers/pmdomain/imx/scu-pd.c
-+++ b/drivers/pmdomain/imx/scu-pd.c
-@@ -223,11 +223,6 @@ static const struct imx_sc_pd_range imx8qxp_scu_pd_ranges[] = {
- 	{ "lvds1-pwm", IMX_SC_R_LVDS_1_PWM_0, 1, false, 0 },
- 	{ "lvds1-lpi2c", IMX_SC_R_LVDS_1_I2C_0, 2, true, 0 },
+diff --git a/net/ipv4/inet_timewait_sock.c b/net/ipv4/inet_timewait_sock.c
+index 340a8f0c29800..15d6ce41e5de7 100644
+--- a/net/ipv4/inet_timewait_sock.c
++++ b/net/ipv4/inet_timewait_sock.c
+@@ -284,12 +284,17 @@ EXPORT_SYMBOL_GPL(__inet_twsk_schedule);
+ /* Remove all non full sockets (TIME_WAIT and NEW_SYN_RECV) for dead netns */
+ void inet_twsk_purge(struct inet_hashinfo *hashinfo, int family)
+ {
++	struct inet_ehash_bucket *head = &hashinfo->ehash[0];
++	unsigned int ehash_mask = hashinfo->ehash_mask;
+ 	struct hlist_nulls_node *node;
+ 	unsigned int slot;
+ 	struct sock *sk;
  
--	{ "mipi1", IMX_SC_R_MIPI_1, 1, 0 },
--	{ "mipi1-pwm0", IMX_SC_R_MIPI_1_PWM_0, 1, 0 },
--	{ "mipi1-i2c", IMX_SC_R_MIPI_1_I2C_0, 2, 1 },
--	{ "lvds1", IMX_SC_R_LVDS_1, 1, 0 },
--
- 	/* DC SS */
- 	{ "dc0", IMX_SC_R_DC_0, 1, false, 0 },
- 	{ "dc0-pll", IMX_SC_R_DC_0_PLL_0, 2, true, 0 },
+-	for (slot = 0; slot <= hashinfo->ehash_mask; slot++) {
+-		struct inet_ehash_bucket *head = &hashinfo->ehash[slot];
++	for (slot = 0; slot <= ehash_mask; slot++, head++) {
++
++		if (hlist_nulls_empty(&head->chain))
++			continue;
++
+ restart_rcu:
+ 		cond_resched();
+ 		rcu_read_lock();
 -- 
-2.46.0
+2.43.0
 
 
 
