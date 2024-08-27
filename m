@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-70572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71115-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8DB0960ED7
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:53:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5334E9611B3
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:22:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 86DD92842E0
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:53:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 80B9B1C237A4
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:22:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E41D21C68B9;
-	Tue, 27 Aug 2024 14:52:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8E751C462B;
+	Tue, 27 Aug 2024 15:22:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FrTBFS22"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lpX9YhFe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1A361C6899;
-	Tue, 27 Aug 2024 14:52:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66F0D1A072D;
+	Tue, 27 Aug 2024 15:22:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770352; cv=none; b=LaJCre9FERGqNCthPqp9VO3PKiUzg5AVJ3P6KNvVUZk/Icifw1s90bxTKyJEsp6Pis8VpWAsb96Qfj9Hq0NcyQmHhPrmluqTeuhmETiCcFGzxqXywV1+5uB620ow4owKDcol3k/iiduYSi8Gn8ViQVf8nrgw6aQG0rkaf1nHC1c=
+	t=1724772150; cv=none; b=cRI//Z8plzmeAtDI8K6V3WTeogDiWq2/HGuzLryzLjnz697HiXFKIkjEbiiD6GkIAUyUA+r1pTNrsmXa8FqLjQsbBgE/E4J0rYR4QBVNQrVpPKjWJHpD5n/yf2TqKYsWHNpcBF5peNXLXFLMDQUe6vouNaW0yppWlkmF+fW40zw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770352; c=relaxed/simple;
-	bh=TCce4rAJnXtZCCVcbq8VQUaW2UXpQIIgNUa31uyPUfs=;
+	s=arc-20240116; t=1724772150; c=relaxed/simple;
+	bh=x9JJnD2zAlEK8aQOT/tcxK6WqxRjGCoYt230lBWtMRk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FceqLPy7kC4O+tERbZPis66aqEPfPnkUrFoDXRK+Gl9LU/CoLfIw8czAfDa1/DhBcKt7K7RxL62+xidVgIrtzNhS4aDWnjvW7GuFQaMdw3Xo/KCjBULR9TnMF2Vci4lWDB3c33KOgH+8NguFAKIjHLN1hiXHu798znU0qFFxb5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FrTBFS22; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C910C61042;
-	Tue, 27 Aug 2024 14:52:31 +0000 (UTC)
+	 MIME-Version; b=In9tdCMB5TrfTrynp5oZjfbL1UpPbX8enMNdufFzmFXp9EaRn2qHc6jSt/W4b06FtqSN9qYN5MEljVT3puAzl6pR+onSQUz9dV8Vb7A/cOH0T7+zJr4NxkkAjbC79e89T9fIOpgUHwz7MHGrKA0HHrdc5J9UUEbOgApy5u7rg9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lpX9YhFe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C794DC61043;
+	Tue, 27 Aug 2024 15:22:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770352;
-	bh=TCce4rAJnXtZCCVcbq8VQUaW2UXpQIIgNUa31uyPUfs=;
+	s=korg; t=1724772150;
+	bh=x9JJnD2zAlEK8aQOT/tcxK6WqxRjGCoYt230lBWtMRk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FrTBFS22IrL+lEb950oRDjQP6NEnaTiaBqDB0ueSuT6bnNBe0Xbsul3vJLfrCsZpr
-	 jgPE0OpmJF+lyzKMoNFDz6rRQIvTjfEv814chSQKDhEBtwKa1z2eZj8X/7aTbScX3x
-	 BLvMAmG2ZkToowdxh3m4ataxUsEXrT2ZrWYcGQUU=
+	b=lpX9YhFed25tjHwzmvbOU+k3OO0V7MLYE/egV+o2u0MS62fzqsPJ93ybMoMwuB34Y
+	 qctgWsyoqJVs8qYG42oV54WSe9d2aW5zuwzEuNC7vvgD6F+dR9nMTS97gNSuyJvepm
+	 AiwKNCY8wIcVZelflSd3XX73cxAy/3I3+zf4a/BU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Alexandra Winter <wintera@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
+	Michael Grzeschik <m.grzeschik@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 204/341] s390/iucv: fix receive buffer virtual vs physical address confusion
-Date: Tue, 27 Aug 2024 16:37:15 +0200
-Message-ID: <20240827143851.177624331@linuxfoundation.org>
+Subject: [PATCH 6.1 128/321] usb: gadget: uvc: cleanup request when not in correct state
+Date: Tue, 27 Aug 2024 16:37:16 +0200
+Message-ID: <20240827143843.117083510@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Gordeev <agordeev@linux.ibm.com>
+From: Michael Grzeschik <m.grzeschik@pengutronix.de>
 
-[ Upstream commit 4e8477aeb46dfe74e829c06ea588dd00ba20c8cc ]
+[ Upstream commit 52a39f2cf62bb5430ad1f54cd522dbfdab1d71ba ]
 
-Fix IUCV_IPBUFLST-type buffers virtual vs physical address confusion.
-This does not fix a bug since virtual and physical address spaces are
-currently the same.
+The uvc_video_enable function of the uvc-gadget driver is dequeing and
+immediately deallocs all requests on its disable codepath. This is not
+save since the dequeue function is async and does not ensure that the
+requests are left unlinked in the controller driver.
 
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+By adding the ep_free_request into the completion path of the requests
+we ensure that the request will be properly deallocated.
+
+Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Link: https://lore.kernel.org/r/20230911140530.2995138-3-m.grzeschik@pengutronix.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/iucv/iucv.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/usb/gadget/function/uvc_video.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/net/iucv/iucv.c b/net/iucv/iucv.c
-index db41eb2d977f2..038e1ba9aec27 100644
---- a/net/iucv/iucv.c
-+++ b/net/iucv/iucv.c
-@@ -1090,8 +1090,7 @@ static int iucv_message_receive_iprmdata(struct iucv_path *path,
- 		size = (size < 8) ? size : 8;
- 		for (array = buffer; size > 0; array++) {
- 			copy = min_t(size_t, size, array->length);
--			memcpy((u8 *)(addr_t) array->address,
--				rmmsg, copy);
-+			memcpy(phys_to_virt(array->address), rmmsg, copy);
- 			rmmsg += copy;
- 			size -= copy;
- 		}
+diff --git a/drivers/usb/gadget/function/uvc_video.c b/drivers/usb/gadget/function/uvc_video.c
+index be48d5ab17c7b..95e3611811cd6 100644
+--- a/drivers/usb/gadget/function/uvc_video.c
++++ b/drivers/usb/gadget/function/uvc_video.c
+@@ -259,6 +259,12 @@ uvc_video_complete(struct usb_ep *ep, struct usb_request *req)
+ 	struct uvc_device *uvc = video->uvc;
+ 	unsigned long flags;
+ 
++	if (uvc->state == UVC_STATE_CONNECTED) {
++		usb_ep_free_request(video->ep, ureq->req);
++		ureq->req = NULL;
++		return;
++	}
++
+ 	switch (req->status) {
+ 	case 0:
+ 		break;
 -- 
 2.43.0
 
