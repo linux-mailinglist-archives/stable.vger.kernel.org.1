@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-70952-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70713-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C0619610D9
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:13:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35BA0960FA2
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:00:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32CD61F236B5
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:13:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5EA771C233DD
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:00:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 547191BD514;
-	Tue, 27 Aug 2024 15:13:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFA3F1C579F;
+	Tue, 27 Aug 2024 15:00:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fw6nXA0A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hskb2uYa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1099D1BC08A;
-	Tue, 27 Aug 2024 15:13:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACCA873466;
+	Tue, 27 Aug 2024 15:00:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771607; cv=none; b=AB2N/HOrW9OOyKDBsfI8dYmqPtDei0fEj4qhI9WZyUdFLgO5At4xwwapOm3hEILt8QOWI0BzHRDT1rB4Z1mt10664n8O04SZ56+d7Ljy6yQRm5nRMPMICDujw47qGtOq6Xbl0o6WKvVTINsGRHAgUAFlbMctNwDXX1nRRiikGDg=
+	t=1724770821; cv=none; b=Tp7sfqq+Nq9YH/KKeGoVe3uO9UvTND/+GpukpV0qlRMJwxt7jMRIxt275DqJqWrLQRMyeMmyElcNqaccV7wFdSra/81G2E1FRo1sVcglR41sWCPMfHn1NbOjlYA1eP8mlq5ffr1DBRwvJcGVJ9PSlT1gO5xQS5rHC44Rn15Bb7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771607; c=relaxed/simple;
-	bh=64aYKj6asY+3qfeHeLKiHIGfDr0YSawTztjf5oqU8FA=;
+	s=arc-20240116; t=1724770821; c=relaxed/simple;
+	bh=k4mciPyFpnzRPajvJ3Zq56u0Azso0YKdkd4YeBSH1cw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nU1ZdU8cZScZASFRysUvM4A6786JFQhQCtAdMTsEU5xSzwsBSnJ0i7DSAgXmF2lerNQLDOX8XAeCgEgT2NPsblgZF+ELst9o0sb2nviQG7kChxqSnbXrtvSa5iNgM1m2NGdHe9d2jf6IjSPxwIILRv2Tj7keD+lqaAytE8TPH+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fw6nXA0A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F3BAC6105E;
-	Tue, 27 Aug 2024 15:13:26 +0000 (UTC)
+	 MIME-Version; b=s8Kra66RgKC7pvt4Fez1d8IFluJuprIuNXSrpfkmd5l4CD3yIqlRJ+65s4Oc/3pMqBGauUMJrt1tx6MU7nRklOPe8TMQ2gCsXP+14JO6iGliHDVageZ+Jfgm9qL4NR5j4rTvOlYS+CyhJbiQyMnG+gSTCv7Pi5lM1B2qXthQJ7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hskb2uYa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFE0DC4DDE2;
+	Tue, 27 Aug 2024 15:00:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771606;
-	bh=64aYKj6asY+3qfeHeLKiHIGfDr0YSawTztjf5oqU8FA=;
+	s=korg; t=1724770821;
+	bh=k4mciPyFpnzRPajvJ3Zq56u0Azso0YKdkd4YeBSH1cw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fw6nXA0A4By8ll8V72Hj31LnN4cGdM8QN/n378z6tDyBRi3G/w/41pLjBWuhzej61
-	 m4eRDzkn1Rzy/xNeDXBf4q4XGma7Hj4M2XMCvmQjVgfP1eJhjhGcXI/FbgQ79i5f2i
-	 1L/3sQJ4KW3KMD+s5s5HZvIyvr6OY6HKIgYGlw+o=
+	b=Hskb2uYa8fjX9/BCdvcNdUhW+pKna4sulG6gvMdhhvJeh6Q0kxaZr1B9MreyQiqR0
+	 V0IJrO9sqGxQIbVcS8AMOvG1OsjkQJAgvMexEVNQFc5ojpF+X79I4xX0qCT7EBHTTp
+	 RDlxJHV57B3UPCEPWqVN9ECvBlGw/kG3KvV03PTw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harald Freudenberger <freude@linux.ibm.com>,
-	Holger Dengler <dengler@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>
-Subject: [PATCH 6.10 232/273] s390/ap: Refine AP bus bindings complete processing
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.6 325/341] tcp: do not export tcp_twsk_purge()
 Date: Tue, 27 Aug 2024 16:39:16 +0200
-Message-ID: <20240827143842.235750355@linuxfoundation.org>
+Message-ID: <20240827143855.763067478@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harald Freudenberger <freude@linux.ibm.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit b4f5bd60d558f6ba451d7e76aa05782c07a182a3 upstream.
+commit c51db4ac10d57c366f9a92121e3889bfc6c324cd upstream.
 
-With the rework of the AP bus scan and the introduction of
-a bindings complete completion also the timing until the
-userspace finally receives a AP bus binding complete uevent
-had increased. Unfortunately this event triggers some important
-jobs for preparation of KVM guests, for example the modification
-of card/queue masks to reassign AP resources to the alternate
-AP queue device driver (vfio_ap) which is the precondition
-for building mediated devices which may be a precondition for
-starting KVM guests using AP resources.
+After commit 1eeb50435739 ("tcp/dccp: do not care about
+families in inet_twsk_purge()") tcp_twsk_purge() is
+no longer potentially called from a module.
 
-This small fix now triggers the check for binding complete
-each time an AP device driver has registered. With this patch
-the bindings complete may be posted up to 30s earlier as there
-is no need to wait for the next AP bus scan any more.
-
-Fixes: 778412ab915d ("s390/ap: rearm APQNs bindings complete completion")
-Signed-off-by: Harald Freudenberger <freude@linux.ibm.com>
-Reviewed-by: Holger Dengler <dengler@linux.ibm.com>
-Cc: stable@vger.kernel.org
-Acked-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Kuniyuki Iwashima <kuniyu@amazon.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/s390/crypto/ap_bus.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ net/ipv4/tcp_minisocks.c |    1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/s390/crypto/ap_bus.c b/drivers/s390/crypto/ap_bus.c
-index 0998b17ecb37..f9f682f19415 100644
---- a/drivers/s390/crypto/ap_bus.c
-+++ b/drivers/s390/crypto/ap_bus.c
-@@ -971,11 +971,16 @@ int ap_driver_register(struct ap_driver *ap_drv, struct module *owner,
- 		       char *name)
- {
- 	struct device_driver *drv = &ap_drv->driver;
-+	int rc;
- 
- 	drv->bus = &ap_bus_type;
- 	drv->owner = owner;
- 	drv->name = name;
--	return driver_register(drv);
-+	rc = driver_register(drv);
-+
-+	ap_check_bindings_complete();
-+
-+	return rc;
+--- a/net/ipv4/tcp_minisocks.c
++++ b/net/ipv4/tcp_minisocks.c
+@@ -378,7 +378,6 @@ void tcp_twsk_purge(struct list_head *ne
+ 		}
+ 	}
  }
- EXPORT_SYMBOL(ap_driver_register);
+-EXPORT_SYMBOL_GPL(tcp_twsk_purge);
  
--- 
-2.46.0
-
+ /* Warning : This function is called without sk_listener being locked.
+  * Be sure to read socket fields once, as their value could change under us.
 
 
 
