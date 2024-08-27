@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-71265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70680-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD9DE96129A
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:33:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADFAA960F7B
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:59:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 427A91F22D6E
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:33:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF2011C234AB
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:59:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A95B61CFEA4;
-	Tue, 27 Aug 2024 15:30:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21C4F1C578E;
+	Tue, 27 Aug 2024 14:58:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yJ2BPm7Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y6YZWIDB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 650FC1C93A3;
-	Tue, 27 Aug 2024 15:30:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D40E11BC097;
+	Tue, 27 Aug 2024 14:58:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772641; cv=none; b=Um549sehTARibzqJz6ugX+eB8bCex7soJyWO7YZsLZatjoBrFBVtVuq6fzt4Y3p8Lb0DWbQlStJxgULUKis3wJxvPFtm7fVqSSBGRwZThCzXrt1lS2MF5eRRkD6O69JZ+xwGSDEWAlyTcEa5pyRxuTDFbgsPzF8NZhzaej+/aGY=
+	t=1724770712; cv=none; b=J5pAUC5P1uPwazGlZFUBEY/Fp2aSnMdnq/RO680vG6nPFV1nsEz+/AlaGK2Zx9om5+nIRsQyQQnlwGzuXvcFnahCDs5CnPwksO7sCBU5SJm47ig3ZlHFJFwvJ2zD7S70I6wwfJKWV81mbaHRgkixb3cu7kWbc5C8y5+eG9JgdcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772641; c=relaxed/simple;
-	bh=skISXA1n0/AxAGsZVdu5bJeHr8TBH0X11y9AxHmecuM=;
+	s=arc-20240116; t=1724770712; c=relaxed/simple;
+	bh=O4MU7uFW9Dsdq1ZNZ2jThDH1w+l1EgJhE6uC+xlqObM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oFD+wIvzsnU/BBS9DlrnOW1EvVTA94gQ3tP/LEsme1fChLbbAQeYjLjFttsme911f1BY99ekAx0eadVXG03PZh2HnChsqYBtsxT3KxkYjN5ks3vi3sko2ru2lBn0VaOuQAy8Bm4+0YY77NMQhRzCqeo0Xq1HL1XVAhaOU4Dze9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yJ2BPm7Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB010C4DDE3;
-	Tue, 27 Aug 2024 15:30:40 +0000 (UTC)
+	 MIME-Version; b=BSvcks6vSD4+PvG272uu+P4RHt1T/gP65pgZKVJ7pdWf47CDX0a6YAb6/ZDQBunAaxpCsF0ZzvnEGs/9NX8dnXfv7/TFYWpdyF+xud1zUZKxqaQENNRtl6byYmEU6gMJ2/JTAkvCewTYNxrI8LuCbvMKMR1pa6mHm8OqhH3sY+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y6YZWIDB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 196AAC61044;
+	Tue, 27 Aug 2024 14:58:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772641;
-	bh=skISXA1n0/AxAGsZVdu5bJeHr8TBH0X11y9AxHmecuM=;
+	s=korg; t=1724770712;
+	bh=O4MU7uFW9Dsdq1ZNZ2jThDH1w+l1EgJhE6uC+xlqObM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yJ2BPm7YQus5YsQ825iZw+lwYk3+Ens4+Kj6oF0+zq3o6adKpQDO8VYsS0OtNZw27
-	 JWli9Gtk5Uf2WBHpVPdBNdiWgc/gqlvY/mjOKGMxxIBhY5zwNG1C/60i2rr+uWJx05
-	 OM6PntByW7/KLQNoHC8quzV15PXd/5bybCv70S6w=
+	b=Y6YZWIDBaXVAK3YBT5BbK3oclstj7aMIHTzV3QslJvPm0fBJHsNt/wDu/ZDS0Zu/r
+	 brVdXC2a13VIO4jRrnyMcVqyv6yKDk+IkAgMql3uhbbRkiNk1nuUNnyQKLpMtknCsy
+	 pDFdVsQ3kcFjnHgKWX15L2fNp7caxSkFIKdRxQbU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+b72d86aa5df17ce74c60@syzkaller.appspotmail.com,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 234/321] kcm: Serialise kcm_sendmsg() for the same socket.
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 311/341] mptcp: pm: re-using ID of unused removed subflows
 Date: Tue, 27 Aug 2024 16:39:02 +0200
-Message-ID: <20240827143847.144994394@linuxfoundation.org>
+Message-ID: <20240827143855.221161197@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,228 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit 807067bf014d4a3ae2cc55bd3de16f22a01eb580 ]
+commit edd8b5d868a4d459f3065493001e293901af758d upstream.
 
-syzkaller reported UAF in kcm_release(). [0]
+If no subflow is attached to the 'subflow' endpoint that is being
+removed, the addr ID will not be marked as available again.
 
-The scenario is
+Mark the linked ID as available when removing the 'subflow' endpoint if
+no subflow is attached to it.
 
-  1. Thread A builds a skb with MSG_MORE and sets kcm->seq_skb.
+While at it, the local_addr_used counter is decremented if the ID was
+marked as being used to reflect the reality, but also to allow adding
+new endpoints after that.
 
-  2. Thread A resumes building skb from kcm->seq_skb but is blocked
-     by sk_stream_wait_memory()
-
-  3. Thread B calls sendmsg() concurrently, finishes building kcm->seq_skb
-     and puts the skb to the write queue
-
-  4. Thread A faces an error and finally frees skb that is already in the
-     write queue
-
-  5. kcm_release() does double-free the skb in the write queue
-
-When a thread is building a MSG_MORE skb, another thread must not touch it.
-
-Let's add a per-sk mutex and serialise kcm_sendmsg().
-
-[0]:
-BUG: KASAN: slab-use-after-free in __skb_unlink include/linux/skbuff.h:2366 [inline]
-BUG: KASAN: slab-use-after-free in __skb_dequeue include/linux/skbuff.h:2385 [inline]
-BUG: KASAN: slab-use-after-free in __skb_queue_purge_reason include/linux/skbuff.h:3175 [inline]
-BUG: KASAN: slab-use-after-free in __skb_queue_purge include/linux/skbuff.h:3181 [inline]
-BUG: KASAN: slab-use-after-free in kcm_release+0x170/0x4c8 net/kcm/kcmsock.c:1691
-Read of size 8 at addr ffff0000ced0fc80 by task syz-executor329/6167
-
-CPU: 1 PID: 6167 Comm: syz-executor329 Tainted: G    B              6.8.0-rc5-syzkaller-g9abbc24128bc #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 01/25/2024
-Call trace:
- dump_backtrace+0x1b8/0x1e4 arch/arm64/kernel/stacktrace.c:291
- show_stack+0x2c/0x3c arch/arm64/kernel/stacktrace.c:298
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0xd0/0x124 lib/dump_stack.c:106
- print_address_description mm/kasan/report.c:377 [inline]
- print_report+0x178/0x518 mm/kasan/report.c:488
- kasan_report+0xd8/0x138 mm/kasan/report.c:601
- __asan_report_load8_noabort+0x20/0x2c mm/kasan/report_generic.c:381
- __skb_unlink include/linux/skbuff.h:2366 [inline]
- __skb_dequeue include/linux/skbuff.h:2385 [inline]
- __skb_queue_purge_reason include/linux/skbuff.h:3175 [inline]
- __skb_queue_purge include/linux/skbuff.h:3181 [inline]
- kcm_release+0x170/0x4c8 net/kcm/kcmsock.c:1691
- __sock_release net/socket.c:659 [inline]
- sock_close+0xa4/0x1e8 net/socket.c:1421
- __fput+0x30c/0x738 fs/file_table.c:376
- ____fput+0x20/0x30 fs/file_table.c:404
- task_work_run+0x230/0x2e0 kernel/task_work.c:180
- exit_task_work include/linux/task_work.h:38 [inline]
- do_exit+0x618/0x1f64 kernel/exit.c:871
- do_group_exit+0x194/0x22c kernel/exit.c:1020
- get_signal+0x1500/0x15ec kernel/signal.c:2893
- do_signal+0x23c/0x3b44 arch/arm64/kernel/signal.c:1249
- do_notify_resume+0x74/0x1f4 arch/arm64/kernel/entry-common.c:148
- exit_to_user_mode_prepare arch/arm64/kernel/entry-common.c:169 [inline]
- exit_to_user_mode arch/arm64/kernel/entry-common.c:178 [inline]
- el0_svc+0xac/0x168 arch/arm64/kernel/entry-common.c:713
- el0t_64_sync_handler+0x84/0xfc arch/arm64/kernel/entry-common.c:730
- el0t_64_sync+0x190/0x194 arch/arm64/kernel/entry.S:598
-
-Allocated by task 6166:
- kasan_save_stack mm/kasan/common.c:47 [inline]
- kasan_save_track+0x40/0x78 mm/kasan/common.c:68
- kasan_save_alloc_info+0x70/0x84 mm/kasan/generic.c:626
- unpoison_slab_object mm/kasan/common.c:314 [inline]
- __kasan_slab_alloc+0x74/0x8c mm/kasan/common.c:340
- kasan_slab_alloc include/linux/kasan.h:201 [inline]
- slab_post_alloc_hook mm/slub.c:3813 [inline]
- slab_alloc_node mm/slub.c:3860 [inline]
- kmem_cache_alloc_node+0x204/0x4c0 mm/slub.c:3903
- __alloc_skb+0x19c/0x3d8 net/core/skbuff.c:641
- alloc_skb include/linux/skbuff.h:1296 [inline]
- kcm_sendmsg+0x1d3c/0x2124 net/kcm/kcmsock.c:783
- sock_sendmsg_nosec net/socket.c:730 [inline]
- __sock_sendmsg net/socket.c:745 [inline]
- sock_sendmsg+0x220/0x2c0 net/socket.c:768
- splice_to_socket+0x7cc/0xd58 fs/splice.c:889
- do_splice_from fs/splice.c:941 [inline]
- direct_splice_actor+0xec/0x1d8 fs/splice.c:1164
- splice_direct_to_actor+0x438/0xa0c fs/splice.c:1108
- do_splice_direct_actor fs/splice.c:1207 [inline]
- do_splice_direct+0x1e4/0x304 fs/splice.c:1233
- do_sendfile+0x460/0xb3c fs/read_write.c:1295
- __do_sys_sendfile64 fs/read_write.c:1362 [inline]
- __se_sys_sendfile64 fs/read_write.c:1348 [inline]
- __arm64_sys_sendfile64+0x160/0x3b4 fs/read_write.c:1348
- __invoke_syscall arch/arm64/kernel/syscall.c:37 [inline]
- invoke_syscall+0x98/0x2b8 arch/arm64/kernel/syscall.c:51
- el0_svc_common+0x130/0x23c arch/arm64/kernel/syscall.c:136
- do_el0_svc+0x48/0x58 arch/arm64/kernel/syscall.c:155
- el0_svc+0x54/0x168 arch/arm64/kernel/entry-common.c:712
- el0t_64_sync_handler+0x84/0xfc arch/arm64/kernel/entry-common.c:730
- el0t_64_sync+0x190/0x194 arch/arm64/kernel/entry.S:598
-
-Freed by task 6167:
- kasan_save_stack mm/kasan/common.c:47 [inline]
- kasan_save_track+0x40/0x78 mm/kasan/common.c:68
- kasan_save_free_info+0x5c/0x74 mm/kasan/generic.c:640
- poison_slab_object+0x124/0x18c mm/kasan/common.c:241
- __kasan_slab_free+0x3c/0x78 mm/kasan/common.c:257
- kasan_slab_free include/linux/kasan.h:184 [inline]
- slab_free_hook mm/slub.c:2121 [inline]
- slab_free mm/slub.c:4299 [inline]
- kmem_cache_free+0x15c/0x3d4 mm/slub.c:4363
- kfree_skbmem+0x10c/0x19c
- __kfree_skb net/core/skbuff.c:1109 [inline]
- kfree_skb_reason+0x240/0x6f4 net/core/skbuff.c:1144
- kfree_skb include/linux/skbuff.h:1244 [inline]
- kcm_release+0x104/0x4c8 net/kcm/kcmsock.c:1685
- __sock_release net/socket.c:659 [inline]
- sock_close+0xa4/0x1e8 net/socket.c:1421
- __fput+0x30c/0x738 fs/file_table.c:376
- ____fput+0x20/0x30 fs/file_table.c:404
- task_work_run+0x230/0x2e0 kernel/task_work.c:180
- exit_task_work include/linux/task_work.h:38 [inline]
- do_exit+0x618/0x1f64 kernel/exit.c:871
- do_group_exit+0x194/0x22c kernel/exit.c:1020
- get_signal+0x1500/0x15ec kernel/signal.c:2893
- do_signal+0x23c/0x3b44 arch/arm64/kernel/signal.c:1249
- do_notify_resume+0x74/0x1f4 arch/arm64/kernel/entry-common.c:148
- exit_to_user_mode_prepare arch/arm64/kernel/entry-common.c:169 [inline]
- exit_to_user_mode arch/arm64/kernel/entry-common.c:178 [inline]
- el0_svc+0xac/0x168 arch/arm64/kernel/entry-common.c:713
- el0t_64_sync_handler+0x84/0xfc arch/arm64/kernel/entry-common.c:730
- el0t_64_sync+0x190/0x194 arch/arm64/kernel/entry.S:598
-
-The buggy address belongs to the object at ffff0000ced0fc80
- which belongs to the cache skbuff_head_cache of size 240
-The buggy address is located 0 bytes inside of
- freed 240-byte region [ffff0000ced0fc80, ffff0000ced0fd70)
-
-The buggy address belongs to the physical page:
-page:00000000d35f4ae4 refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x10ed0f
-flags: 0x5ffc00000000800(slab|node=0|zone=2|lastcpupid=0x7ff)
-page_type: 0xffffffff()
-raw: 05ffc00000000800 ffff0000c1cbf640 fffffdffc3423100 dead000000000004
-raw: 0000000000000000 00000000000c000c 00000001ffffffff 0000000000000000
-page dumped because: kasan: bad access detected
-
-Memory state around the buggy address:
- ffff0000ced0fb80: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
- ffff0000ced0fc00: fb fb fb fb fb fb fc fc fc fc fc fc fc fc fc fc
->ffff0000ced0fc80: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
-                   ^
- ffff0000ced0fd00: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fc fc
- ffff0000ced0fd80: fc fc fc fc fc fc fc fc fa fb fb fb fb fb fb fb
-
-Fixes: ab7ac4eb9832 ("kcm: Kernel Connection Multiplexor module")
-Reported-by: syzbot+b72d86aa5df17ce74c60@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=b72d86aa5df17ce74c60
-Tested-by: syzbot+b72d86aa5df17ce74c60@syzkaller.appspotmail.com
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20240815220437.69511-1-kuniyu@amazon.com
+Fixes: b6c08380860b ("mptcp: remove addr and subflow in PM netlink")
+Cc: stable@vger.kernel.org
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20240819-net-mptcp-pm-reusing-id-v1-3-38035d40de5b@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/kcm.h | 1 +
- net/kcm/kcmsock.c | 4 ++++
- 2 files changed, 5 insertions(+)
+ net/mptcp/pm_netlink.c |   11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/kcm.h b/include/net/kcm.h
-index 2d704f8f49059..8e8252e08a9ce 100644
---- a/include/net/kcm.h
-+++ b/include/net/kcm.h
-@@ -70,6 +70,7 @@ struct kcm_sock {
- 	struct work_struct tx_work;
- 	struct list_head wait_psock_list;
- 	struct sk_buff *seq_skb;
-+	struct mutex tx_mutex;
- 	u32 tx_stopped : 1;
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -1500,8 +1500,17 @@ static int mptcp_nl_remove_subflow_and_s
+ 		remove_subflow = lookup_subflow_by_saddr(&msk->conn_list, addr);
+ 		mptcp_pm_remove_anno_addr(msk, addr, remove_subflow &&
+ 					  !(entry->flags & MPTCP_PM_ADDR_FLAG_IMPLICIT));
+-		if (remove_subflow)
++
++		if (remove_subflow) {
+ 			mptcp_pm_remove_subflow(msk, &list);
++		} else if (entry->flags & MPTCP_PM_ADDR_FLAG_SUBFLOW) {
++			/* If the subflow has been used, but now closed */
++			spin_lock_bh(&msk->pm.lock);
++			if (!__test_and_set_bit(entry->addr.id, msk->pm.id_avail_bitmap))
++				msk->pm.local_addr_used--;
++			spin_unlock_bh(&msk->pm.lock);
++		}
++
+ 		release_sock(sk);
  
- 	/* Don't use bit fields here, these are set under different locks */
-diff --git a/net/kcm/kcmsock.c b/net/kcm/kcmsock.c
-index 7d37bf4334d26..462bdb6bfa4d8 100644
---- a/net/kcm/kcmsock.c
-+++ b/net/kcm/kcmsock.c
-@@ -912,6 +912,7 @@ static int kcm_sendmsg(struct socket *sock, struct msghdr *msg, size_t len)
- 		  !(msg->msg_flags & MSG_MORE) : !!(msg->msg_flags & MSG_EOR);
- 	int err = -EPIPE;
- 
-+	mutex_lock(&kcm->tx_mutex);
- 	lock_sock(sk);
- 
- 	/* Per tcp_sendmsg this should be in poll */
-@@ -1060,6 +1061,7 @@ static int kcm_sendmsg(struct socket *sock, struct msghdr *msg, size_t len)
- 	KCM_STATS_ADD(kcm->stats.tx_bytes, copied);
- 
- 	release_sock(sk);
-+	mutex_unlock(&kcm->tx_mutex);
- 	return copied;
- 
- out_error:
-@@ -1085,6 +1087,7 @@ static int kcm_sendmsg(struct socket *sock, struct msghdr *msg, size_t len)
- 		sk->sk_write_space(sk);
- 
- 	release_sock(sk);
-+	mutex_unlock(&kcm->tx_mutex);
- 	return err;
- }
- 
-@@ -1325,6 +1328,7 @@ static void init_kcm_sock(struct kcm_sock *kcm, struct kcm_mux *mux)
- 	spin_unlock_bh(&mux->lock);
- 
- 	INIT_WORK(&kcm->tx_work, kcm_tx_work);
-+	mutex_init(&kcm->tx_mutex);
- 
- 	spin_lock_bh(&mux->rx_lock);
- 	kcm_rcv_ready(kcm);
--- 
-2.43.0
-
+ next:
 
 
 
