@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-70960-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71255-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35E699610E4
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:14:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B34D96128D
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:32:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE6F41F216FB
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:14:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D41F91F23457
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:32:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78ABA1C6886;
-	Tue, 27 Aug 2024 15:13:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3C971C942C;
+	Tue, 27 Aug 2024 15:30:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l++xFsYQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UgJsR15l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 370421C3F0D;
-	Tue, 27 Aug 2024 15:13:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1E8418039;
+	Tue, 27 Aug 2024 15:30:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771633; cv=none; b=klMNCJlb+DmluvAemiOhZj1pSNB2cX1F7bzjqwYQYnnBud8GnkIuNYKZoUt2UPlE5gVJVD2zXAkosWYc4GRFNYsNArKOPpyYnhNwi5kkSA0yrrgajq1SnQ3+MVQ9dQAWZKtO4js7FkHh1IKQWqI7sQ6Wz9CnZLmfqe/aGfrj9uI=
+	t=1724772607; cv=none; b=OC5uScpZqDop3F1aRW8r7rqwv61KfM2jA6aydNtMWPtix7nA7CMiZahvyWLHna+83z7RLYQdSef5/THSFprMf3MyYJSBswypXanSJ+QDsHyp1Dt8+okBnvdzPD1X4mOnFsqS7WtP4Tn1zZr+S4wWGMG/0Y514H2TKniTl+PHxNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771633; c=relaxed/simple;
-	bh=9F3i0rzty8ZoTdaXLEnuqvdul1NxGvBjoRiJgMBqaec=;
+	s=arc-20240116; t=1724772607; c=relaxed/simple;
+	bh=mEGeoVjVYdaXQVP1xsWipKW9KsxOhby4bxe8tIB+HI4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KDaOy7M1AifclpLSiZkBF7zRBe9d3V6Qpw16kDWcAwpf8RBgabnNuXA3USZ0c5Uk9yw/NLgQ1qvwOLeTHBZxs0ZK+kQT01VeTDKw3qoYEAkcsUR6MBlTvAWpZ5P2RqJ1NznzqEa0H4aivORBOK5b2Jgqsa90Ep7MiTGXtG9TYbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l++xFsYQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BD18C61070;
-	Tue, 27 Aug 2024 15:13:52 +0000 (UTC)
+	 MIME-Version; b=OEl8+zNjoUVLtcVhR78qCN5z0Tl+pYl80RVlco09xfGQL5kXoa1WwjPSNk+h15NuCRwuVQJA2lPXWm63r2vbu0UCmVPEroZMMl+1xIuZa/Av54VF4EJZpsMe1idD6pfENl8WnpXxcVXc33LY2/I7lxd7w2U9NygzpEIkVNY6m9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UgJsR15l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0911BC4AF15;
+	Tue, 27 Aug 2024 15:30:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771632;
-	bh=9F3i0rzty8ZoTdaXLEnuqvdul1NxGvBjoRiJgMBqaec=;
+	s=korg; t=1724772607;
+	bh=mEGeoVjVYdaXQVP1xsWipKW9KsxOhby4bxe8tIB+HI4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l++xFsYQGHjaFjH//4q3Xl5UM8PfjG5AXEzZp1LtV5LVzIe8Zd/KCDviJEtVLpniM
-	 Jsv6ofvdoPJ4HvfUFpCPuwRDPbK99iGdF+ofvqFc5NIrnrWBkLSF6woTk60moD/6lS
-	 NYiYA0P2J/grkco5r/hxLFrfNZT6T04gOx2bS+vs=
+	b=UgJsR15l7sOh+xzupdCuGRNM8Aumrt4iv5wX+3hupL8FIQg4M5HZOZE0pZPeD04hb
+	 9SbVrlXcslkSRjMWhWCJVh+Uw6CBq4pp3uf2Xz+vrdHhAZ/Vmz2zDZBk9zx+jW+6BN
+	 hDPhEggrXgOQJwpC+OJ+HAxpVxjcIokuGMZ+aiAQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Shilovsky <piastryyy@gmail.com>,
-	David Howells <dhowells@redhat.com>,
-	abartlet@samba.org,
-	Kevin Ottens <kevin.ottens@enioka.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.10 248/273] smb3: fix broken cached reads when posix locks
+	Chaotian Jing <chaotian.jing@mediatek.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.1 264/321] scsi: core: Fix the return value of scsi_logical_block_count()
 Date: Tue, 27 Aug 2024 16:39:32 +0200
-Message-ID: <20240827143842.840603689@linuxfoundation.org>
+Message-ID: <20240827143848.298208824@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,55 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steve French <stfrench@microsoft.com>
+From: Chaotian Jing <chaotian.jing@mediatek.com>
 
-commit e4be320eeca842a3d7648258ee3673f1755a5a59 upstream.
+commit f03e94f23b04c2b71c0044c1534921b3975ef10c upstream.
 
-Mandatory locking is enforced for cached reads, which violates
-default posix semantics, and also it is enforced inconsistently.
-This affected recent versions of libreoffice, and can be
-demonstrated by opening a file twice from the same client,
-locking it from handle one and trying to read from it from
-handle two (which fails, returning EACCES).
+scsi_logical_block_count() should return the block count of a given SCSI
+command. The original implementation ended up shifting twice, leading to an
+incorrect count being returned. Fix the conversion between bytes and
+logical blocks.
 
-There is already a mount option "forcemandatorylock"
-(which defaults to off), so with this change only when the user
-intentionally specifies "forcemandatorylock" on mount will we
-break posix semantics on read to a locked range (ie we will
-only fail in this case, if the user mounts with
-"forcemandatorylock").
-
-An earlier patch fixed the write path.
-
-Fixes: 85160e03a79e ("CIFS: Implement caching mechanism for mandatory brlocks")
 Cc: stable@vger.kernel.org
-Cc: Pavel Shilovsky <piastryyy@gmail.com>
-Reviewed-by: David Howells <dhowells@redhat.com>
-Reported-by: abartlet@samba.org
-Reported-by: Kevin Ottens <kevin.ottens@enioka.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 6a20e21ae1e2 ("scsi: core: Add helper to return number of logical blocks in a request")
+Signed-off-by: Chaotian Jing <chaotian.jing@mediatek.com>
+Link: https://lore.kernel.org/r/20240813053534.7720-1-chaotian.jing@mediatek.com
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/file.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ include/scsi/scsi_cmnd.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/smb/client/file.c
-+++ b/fs/smb/client/file.c
-@@ -2912,9 +2912,7 @@ cifs_strict_readv(struct kiocb *iocb, st
- 	if (!CIFS_CACHE_READ(cinode))
- 		return netfs_unbuffered_read_iter(iocb, to);
+--- a/include/scsi/scsi_cmnd.h
++++ b/include/scsi/scsi_cmnd.h
+@@ -228,7 +228,7 @@ static inline sector_t scsi_get_lba(stru
  
--	if (cap_unix(tcon->ses) &&
--	    (CIFS_UNIX_FCNTL_CAP & le64_to_cpu(tcon->fsUnixInfo.Capability)) &&
--	    ((cifs_sb->mnt_cifs_flags & CIFS_MOUNT_NOPOSIXBRL) == 0)) {
-+	if ((cifs_sb->mnt_cifs_flags & CIFS_MOUNT_NOPOSIXBRL) == 0) {
- 		if (iocb->ki_flags & IOCB_DIRECT)
- 			return netfs_unbuffered_read_iter(iocb, to);
- 		return netfs_buffered_read_iter(iocb, to);
+ static inline unsigned int scsi_logical_block_count(struct scsi_cmnd *scmd)
+ {
+-	unsigned int shift = ilog2(scmd->device->sector_size) - SECTOR_SHIFT;
++	unsigned int shift = ilog2(scmd->device->sector_size);
+ 
+ 	return blk_rq_bytes(scsi_cmd_to_rq(scmd)) >> shift;
+ }
 
 
 
