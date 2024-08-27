@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-70724-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71058-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C55F960FB2
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:01:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D4E8961172
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:20:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 01EAC1F243A1
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:01:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 19327280D39
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:20:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D46291C2DCA;
-	Tue, 27 Aug 2024 15:00:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A57D1C6F76;
+	Tue, 27 Aug 2024 15:19:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v5OrRH2+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pLt6+i4V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 926851BC9E3;
-	Tue, 27 Aug 2024 15:00:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 380FC1C57AB;
+	Tue, 27 Aug 2024 15:19:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770857; cv=none; b=U7sbDeyJYuI/giYEFSDgTvR3Za7DvK/W6ajrOsRKMaS26yrqWEFvyBAJaqKASSG+U+UkucH/T5oh4UoH0ArCwijXw3dIJYrTRw5d7gTHvwNTGTiUQ4djaskBslDUhi5MQD6SNrlhGJIE11+gAeOqTYq+je5m9WlRpcVN7NMi0hM=
+	t=1724771959; cv=none; b=ARkHoTJyejdKiVNUHOKowAgLvbn1n4SYSyFsdCRCSgTV8C2lZVLQ+Qbox0ZiDna4+AZhkQVdXf4MpMDKTLpARghBIyWUgUOyMquSqfWUOFuxk41GxExWWsxHOd3fRzIBOvwDMRoR1vqJW7a8lKduP1IfuiknghqFyA8cvxnLMTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770857; c=relaxed/simple;
-	bh=uGO517zlueyrLdcs0rUjSDJDgu4/WyQh5wtNi7KQmOY=;
+	s=arc-20240116; t=1724771959; c=relaxed/simple;
+	bh=tsf1BNFPr62pomYwlHg5aRTxLSkgkdPeYa3trQwuHRc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EtwXVyqz8jsmMhp0jUR9NUGHRjVWAVmsLsE3584sWCQdWakjcNZwihTDx5qTD5XqutDvH9a9P1j+f1febIptOAVYPs418Upt/EiD1kBVZaMLg3GXCRPZEdF6dmdaqx92kuvO0Bar3vsMXNxbOuw3LzFTg/Ybxff85ftrUw/1QT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v5OrRH2+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3D7EC4AF1C;
-	Tue, 27 Aug 2024 15:00:56 +0000 (UTC)
+	 MIME-Version; b=AesPmbIygutaIAawbD2OuL9Axh19t6XUA8yrpH0BePjFBC6BMcvNK3tp3y/lNUeRw2ZDr01ynHn0icbhFx4Xbq+Iii5AdA8OmS6FT9rkujo0HOoSwx+kZwhHtsrhEa13rlwD+XNU/9cQyJ3LzPkXzFAwMNxUse1dQpR4IjkIAEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pLt6+i4V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A95BC61067;
+	Tue, 27 Aug 2024 15:19:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770857;
-	bh=uGO517zlueyrLdcs0rUjSDJDgu4/WyQh5wtNi7KQmOY=;
+	s=korg; t=1724771959;
+	bh=tsf1BNFPr62pomYwlHg5aRTxLSkgkdPeYa3trQwuHRc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v5OrRH2+pA8fxxhME71qucOKpJ3CRemU61a/IJ3H2G+5C1Io6KytiYS4AFI4HGGrq
-	 THhH4czcL4haIyfDrFQe0NPgi/zh9gTyJK6OyfBwq0cz4hyIqtcMPncBDlxtwgBVhW
-	 8FIKB7MYiEfnIyX9DWlVstG4f2Gwqm3UOjrpCSLY=
+	b=pLt6+i4V4RS2kPQAhHHLFXlc/QTzdzoBaN+3Rpv0x0EE2mJHPwkMLfSUtv3RDjvyZ
+	 0bn4zN1PjUWgPW6T9ZTuUvdiFhCix17eMSf7z7cXCzGP1XV5zrZHTeihshPnjrz9GY
+	 evXBU1KUOvxmZysOzhtpMftFDiXSNo6B3t2i5JQU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lianqin Hu <hulianqin@vivo.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.10 014/273] ALSA: usb-audio: Add delay quirk for VIVO USB-C-XE710 HEADSET
-Date: Tue, 27 Aug 2024 16:35:38 +0200
-Message-ID: <20240827143833.928862283@linuxfoundation.org>
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	Janosch Frank <frankja@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 031/321] s390/uv: Panic for set and remove shared access UVC errors
+Date: Tue, 27 Aug 2024 16:35:39 +0200
+Message-ID: <20240827143839.402420050@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +64,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lianqin Hu <hulianqin@vivo.com>
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
 
-commit 004eb8ba776ccd3e296ea6f78f7ae7985b12824e upstream.
+[ Upstream commit cff59d8631e1409ffdd22d9d717e15810181b32c ]
 
-Audio control requests that sets sampling frequency sometimes fail on
-this card. Adding delay between control messages eliminates that problem.
+The return value uv_set_shared() and uv_remove_shared() (which are
+wrappers around the share() function) is not always checked. The system
+integrity of a protected guest depends on the Share and Unshare UVCs
+being successful. This means that any caller that fails to check the
+return value will compromise the security of the protected guest.
 
-Signed-off-by: Lianqin Hu <hulianqin@vivo.com>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/TYUPR06MB6217FF67076AF3E49E12C877D2842@TYUPR06MB6217.apcprd06.prod.outlook.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+No code path that would lead to such violation of the security
+guarantees is currently exercised, since all the areas that are shared
+never get unshared during the lifetime of the system. This might
+change and become an issue in the future.
+
+The Share and Unshare UVCs can only fail in case of hypervisor
+misbehaviour (either a bug or malicious behaviour). In such cases there
+is no reasonable way forward, and the system needs to panic.
+
+This patch replaces the return at the end of the share() function with
+a panic, to guarantee system integrity.
+
+Fixes: 5abb9351dfd9 ("s390/uv: introduce guest side ultravisor code")
+Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+Reviewed-by: Steffen Eiden <seiden@linux.ibm.com>
+Reviewed-by: Janosch Frank <frankja@linux.ibm.com>
+Link: https://lore.kernel.org/r/20240801112548.85303-1-imbrenda@linux.ibm.com
+Message-ID: <20240801112548.85303-1-imbrenda@linux.ibm.com>
+[frankja@linux.ibm.com: Fixed up patch subject]
+Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/quirks.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/s390/include/asm/uv.h | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/sound/usb/quirks.c
-+++ b/sound/usb/quirks.c
-@@ -2221,6 +2221,8 @@ static const struct usb_audio_quirk_flag
- 		   QUIRK_FLAG_GENERIC_IMPLICIT_FB),
- 	DEVICE_FLG(0x2b53, 0x0031, /* Fiero SC-01 (firmware v1.1.0) */
- 		   QUIRK_FLAG_GENERIC_IMPLICIT_FB),
-+	DEVICE_FLG(0x2d95, 0x8021, /* VIVO USB-C-XE710 HEADSET */
-+		   QUIRK_FLAG_CTL_MSG_DELAY_1M),
- 	DEVICE_FLG(0x30be, 0x0101, /* Schiit Hel */
- 		   QUIRK_FLAG_IGNORE_CTL_ERROR),
- 	DEVICE_FLG(0x413c, 0xa506, /* Dell AE515 sound bar */
+diff --git a/arch/s390/include/asm/uv.h b/arch/s390/include/asm/uv.h
+index be3ef9dd69726..6abcb46a8dfe2 100644
+--- a/arch/s390/include/asm/uv.h
++++ b/arch/s390/include/asm/uv.h
+@@ -387,7 +387,10 @@ static inline int share(unsigned long addr, u16 cmd)
+ 
+ 	if (!uv_call(0, (u64)&uvcb))
+ 		return 0;
+-	return -EINVAL;
++	pr_err("%s UVC failed (rc: 0x%x, rrc: 0x%x), possible hypervisor bug.\n",
++	       uvcb.header.cmd == UVC_CMD_SET_SHARED_ACCESS ? "Share" : "Unshare",
++	       uvcb.header.rc, uvcb.header.rrc);
++	panic("System security cannot be guaranteed unless the system panics now.\n");
+ }
+ 
+ /*
+-- 
+2.43.0
+
 
 
 
