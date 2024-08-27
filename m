@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-71250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70705-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE35196130A
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:40:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91AFA960F9D
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:00:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6FC55B2A185
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:32:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 014E3B24BC9
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:00:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D9581D1F58;
-	Tue, 27 Aug 2024 15:29:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABB0A1C6886;
+	Tue, 27 Aug 2024 14:59:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iymzRofd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p41GJlri"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF0681C86FF;
-	Tue, 27 Aug 2024 15:29:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69AE31BA88C;
+	Tue, 27 Aug 2024 14:59:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772590; cv=none; b=GRn7uLJJwXaPJbIzTvGUx2eILrVeSzJ+AMJXcJS2DxrHG4uvP/ygYQksienszoW9B5FGFuibV0Wllm6zl/6x/fSqjekX5gUKULoLBJnsLWgtHc4KKuTMtz6y7BYVAq0VQgSkdeH8Z9tBWJSzreWaBI9RmFSAoOaCeXr9UpIdU2g=
+	t=1724770795; cv=none; b=cySOgyPMesN5Df/eRIBfHsIiQww9Q7tkfMXQPWMRK8dg9H5UR2ducY4p8vstfKZJ76Mf1cS89K4jJRjDp8VbogDAXnvN6/koobigtccy/BFKc6gMbOT5EFD7js+dWNo+JpuYDlxrG7LHvPwyGxKsTiRD8FS6VznMoxCPxlP1GY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772590; c=relaxed/simple;
-	bh=DbBeCUQe1WGjWMRejaF6ZJXZNJF4KJpWCSS09dOedLY=;
+	s=arc-20240116; t=1724770795; c=relaxed/simple;
+	bh=xdlhbcpGfW5BSkYEMOv1skEkKqU1hgGm7B1bn18J2cE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M7uqXj0hMgeZGEU+k0p6PY0MAopbZefcFjFvxGPIldMYA7QxifxlLe1cA2csjf17n+Xt7T/Xyk2GfYPixM//lu3+j41lB346x6dTXHEzZA6PVbUnA9uTA71xfywDC9jbVntu4CDwBVqi8H9QpQrdbBIiOXfDGp6kmtazDVK9SdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iymzRofd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48ED1C4AF19;
-	Tue, 27 Aug 2024 15:29:50 +0000 (UTC)
+	 MIME-Version; b=k16Nrv4/KQjuQtQAdhpnRtN20HdGAqCXwskMU2dH2iqACa8Yjl+lGvkZMuggXCHsXojREra7aCjm+muwPeTt96k8jA1jcZwpqPYh5d39e/663hUGNXDCGjCa8IGdAjZ26uaOnxBNhdSYL8L1FBiCHse7+hyGCbLUQaUdCdq4P/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p41GJlri; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCCB5C4AF1C;
+	Tue, 27 Aug 2024 14:59:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772590;
-	bh=DbBeCUQe1WGjWMRejaF6ZJXZNJF4KJpWCSS09dOedLY=;
+	s=korg; t=1724770795;
+	bh=xdlhbcpGfW5BSkYEMOv1skEkKqU1hgGm7B1bn18J2cE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iymzRofd6QOSbVzH3xKfPdPAK1TZ26n2X4k8vUqU+4b1qdlTkdVFGQHJ6szi/qOO5
-	 94MZTmDfHCFVkzEc5rtSX4L6DoC5qtKt0T/+9uij3McjCzFEW9zTsq/f/uhso5taET
-	 j8bXqVjotPs4lGQdhOv5oC/cMzJvdNu9G/6OOx2k=
+	b=p41GJlriEFvtoO3QnE8wMw7rB2Z5NJcWagI+kEotTEAjP6ZMzO7S4qhwI4YcrLfKp
+	 FO6fudq2WzKqGqBAPIcAovoH8OJu8aobE4+yRAfsrW6BWyKcJseazI7pC1ixdTJNJj
+	 OTYxZL1gPIfQK6tcNuqf9WNpNoQbsklZs9CheX0I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Stephen Boyd <swboyd@chromium.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 260/321] drm/msm/dp: reset the link phy params before link training
+	Boyuan Zhang <boyuan.zhang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Ruijing Dong <ruijing.dong@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>
+Subject: [PATCH 6.6 337/341] drm/amdgpu/vcn: not pause dpg for unified queue
 Date: Tue, 27 Aug 2024 16:39:28 +0200
-Message-ID: <20240827143848.144835322@linuxfoundation.org>
+Message-ID: <20240827143856.218261387@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abhinav Kumar <quic_abhinavk@quicinc.com>
+From: Boyuan Zhang <boyuan.zhang@amd.com>
 
-[ Upstream commit 319aca883bfa1b85ee08411541b51b9a934ac858 ]
+commit 7d75ef3736a025db441be652c8cc8e84044a215f upstream.
 
-Before re-starting link training reset the link phy params namely
-the pre-emphasis and voltage swing levels otherwise the next
-link training begins at the previously cached levels which can result
-in link training failures.
+For unified queue, DPG pause for encoding is done inside VCN firmware,
+so there is no need to pause dpg based on ring type in kernel.
 
-Fixes: 8ede2ecc3e5e ("drm/msm/dp: Add DP compliance tests on Snapdragon Chipsets")
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Tested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org> # SM8350-HDK
-Reviewed-by: Stephen Boyd <swboyd@chromium.org>
-Patchwork: https://patchwork.freedesktop.org/patch/605946/
-Link: https://lore.kernel.org/r/20240725220450.131245-1-quic_abhinavk@quicinc.com
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+For VCN3 and below, pausing DPG for encoding in kernel is still needed.
+
+v2: add more comments
+v3: update commit message
+
+Signed-off-by: Boyuan Zhang <boyuan.zhang@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Ruijing Dong <ruijing.dong@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/msm/dp/dp_ctrl.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.c |   14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/dp/dp_ctrl.c b/drivers/gpu/drm/msm/dp/dp_ctrl.c
-index bd1343602f553..3c001b792423b 100644
---- a/drivers/gpu/drm/msm/dp/dp_ctrl.c
-+++ b/drivers/gpu/drm/msm/dp/dp_ctrl.c
-@@ -1248,6 +1248,8 @@ static int dp_ctrl_link_train(struct dp_ctrl_private *ctrl,
- 	link_info.rate = ctrl->link->link_params.rate;
- 	link_info.capabilities = DP_LINK_CAP_ENHANCED_FRAMING;
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vcn.c
+@@ -372,7 +372,9 @@ static void amdgpu_vcn_idle_work_handler
+ 		for (i = 0; i < adev->vcn.num_enc_rings; ++i)
+ 			fence[j] += amdgpu_fence_count_emitted(&adev->vcn.inst[j].ring_enc[i]);
  
-+	dp_link_reset_phy_params_vx_px(ctrl->link);
+-		if (adev->pg_flags & AMD_PG_SUPPORT_VCN_DPG)	{
++		/* Only set DPG pause for VCN3 or below, VCN4 and above will be handled by FW */
++		if (adev->pg_flags & AMD_PG_SUPPORT_VCN_DPG &&
++		    !adev->vcn.using_unified_queue) {
+ 			struct dpg_pause_state new_state;
+ 
+ 			if (fence[j] ||
+@@ -418,7 +420,9 @@ void amdgpu_vcn_ring_begin_use(struct am
+ 	amdgpu_device_ip_set_powergating_state(adev, AMD_IP_BLOCK_TYPE_VCN,
+ 	       AMD_PG_STATE_UNGATE);
+ 
+-	if (adev->pg_flags & AMD_PG_SUPPORT_VCN_DPG)	{
++	/* Only set DPG pause for VCN3 or below, VCN4 and above will be handled by FW */
++	if (adev->pg_flags & AMD_PG_SUPPORT_VCN_DPG &&
++	    !adev->vcn.using_unified_queue) {
+ 		struct dpg_pause_state new_state;
+ 
+ 		if (ring->funcs->type == AMDGPU_RING_TYPE_VCN_ENC) {
+@@ -444,8 +448,12 @@ void amdgpu_vcn_ring_begin_use(struct am
+ 
+ void amdgpu_vcn_ring_end_use(struct amdgpu_ring *ring)
+ {
++	struct amdgpu_device *adev = ring->adev;
 +
- 	dp_aux_link_configure(ctrl->aux, &link_info);
++	/* Only set DPG pause for VCN3 or below, VCN4 and above will be handled by FW */
+ 	if (ring->adev->pg_flags & AMD_PG_SUPPORT_VCN_DPG &&
+-		ring->funcs->type == AMDGPU_RING_TYPE_VCN_ENC)
++	    ring->funcs->type == AMDGPU_RING_TYPE_VCN_ENC &&
++	    !adev->vcn.using_unified_queue)
+ 		atomic_dec(&ring->adev->vcn.inst[ring->me].dpg_enc_submission_cnt);
  
- 	if (drm_dp_max_downspread(dpcd))
--- 
-2.43.0
-
+ 	atomic_dec(&ring->adev->vcn.total_submission_cnt);
 
 
 
