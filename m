@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-70459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71021-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EE1B960E3A
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:46:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63C62961140
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:18:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1293A1F24808
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:46:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96BE71C2375F
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:18:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6BC873466;
-	Tue, 27 Aug 2024 14:46:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A4B51C93AB;
+	Tue, 27 Aug 2024 15:17:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IusOTxk7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TBOCQkwh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84C2B1C6F4D;
-	Tue, 27 Aug 2024 14:46:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEF611C8FC4;
+	Tue, 27 Aug 2024 15:17:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724769976; cv=none; b=I82k9U0WpHLYEW0NZF0STOgqimOvo5lgqCZ4hTBYWNNYj8uMAxnhwtmR6TYaaD58qPJ99UYLW+MzeV0g2n6CuUm2QFq2/0eTTBiCajZvAGooe5GbfXScrGx0IGPYYBGi+vBFXP5lz1wKUILQrROEOUdtqlcX1txX2D3bPsHt67E=
+	t=1724771833; cv=none; b=s6pYPydHtq1J4oHcne4dUmN5P7DAALpN2kQvMIhVHT8kZ32zuRtZjBh7dD49BSc8y2u18COMD3VElRDUaIZJhSRozKtIvtiFIaepshrqIKnoj95AmaOD1ZV4Ib2O44m7jK4k7YnO7UhGU+OlxSCyPmqOIdTEqdWeSfX1KCaYaAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724769976; c=relaxed/simple;
-	bh=U9+esCb/u9IY1x3BSHWadh3GfB4y8SFSWdcQWHyn2zc=;
+	s=arc-20240116; t=1724771833; c=relaxed/simple;
+	bh=CXSO4zILeq+3C1ZVHbFZVb19TD1mpifK7sKQHOjzEnE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i06TrvKTdqKcxQcsL8+1tv0jR9ivQP/FOuP+AT2szoezh/Ju8AEhaYdINUllJBuk5vfuJNdYABkJUbk/jtYVvyB8sIw+Q+pfTq5p2bAdL5O1+G7y+239rMjG3BBNqCr0EoJ16O9M1qKhIFVf+EFyUMqe4WQS25fR4M9x6NY8CK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IusOTxk7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08D5CC61063;
-	Tue, 27 Aug 2024 14:46:15 +0000 (UTC)
+	 MIME-Version; b=SeQ8Jm/OIuduzHDQgRmP7Azr4+E85yD+MQwuUW7CFSKfGiCGovZqH/lnOLFBbTnmj+vL8Sl/lxkq0KL6qPPND/SEj7CiEFEBk7gwQb10MkmrKKcNSOtRVLsKWlTeI3nbxkJqfDfPYxFhcqQNkXBjWPBW06D73S2UCv79Y4f0V5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TBOCQkwh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E6F5C4DE1C;
+	Tue, 27 Aug 2024 15:17:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724769976;
-	bh=U9+esCb/u9IY1x3BSHWadh3GfB4y8SFSWdcQWHyn2zc=;
+	s=korg; t=1724771833;
+	bh=CXSO4zILeq+3C1ZVHbFZVb19TD1mpifK7sKQHOjzEnE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IusOTxk7z6Yvv2BxPzZ9H5J05Kw6xD/kbiXxylVlLJfzw0n1+sl2edpKvs7S/4oW5
-	 QUhkiUyveXi2tI7LqjxHYOQTlB8DT6O1bepHS4ZUC7/TYFfl9ecIS4WAjCwbIVnMUV
-	 C3wrVHTcWrR5x3BGxNUuTZqW/pZxLt/kL8KXkoAs=
+	b=TBOCQkwhcmXcKDyFvsUQq8XrN9l/uTGMOAafoyE6qievS5rCuQiTawMjyuwTGgjWs
+	 ZdJLWuLCDow7CpwUtqIDruMQqi2hiiLvVF6UFb/ki8ajNPXeKhI8bC9/9z/yZM6X4S
+	 bv7YdFxtbfI9hzn2Nfn8O8V1FKo5gbm4c+rasw/g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-	Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 083/341] drm/amd/pm: fix error flow in sensor fetching
+	Lianqin Hu <hulianqin@vivo.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 006/321] ALSA: usb-audio: Add delay quirk for VIVO USB-C-XE710 HEADSET
 Date: Tue, 27 Aug 2024 16:35:14 +0200
-Message-ID: <20240827143846.568254634@linuxfoundation.org>
+Message-ID: <20240827143838.440682421@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Lianqin Hu <hulianqin@vivo.com>
 
-[ Upstream commit a5600853167aeba5cade81f184a382a0d1b14641 ]
+commit 004eb8ba776ccd3e296ea6f78f7ae7985b12824e upstream.
 
-Sensor fetching functions should return an signed int to
-handle errors properly.
+Audio control requests that sets sampling frequency sometimes fail on
+this card. Adding delay between control messages eliminates that problem.
 
-Reviewed-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reported-by: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Lianqin Hu <hulianqin@vivo.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/TYUPR06MB6217FF67076AF3E49E12C877D2842@TYUPR06MB6217.apcprd06.prod.outlook.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/amdgpu_pm.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ sound/usb/quirks.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/pm/amdgpu_pm.c b/drivers/gpu/drm/amd/pm/amdgpu_pm.c
-index 7372eae0b0ef8..babb73147adfb 100644
---- a/drivers/gpu/drm/amd/pm/amdgpu_pm.c
-+++ b/drivers/gpu/drm/amd/pm/amdgpu_pm.c
-@@ -1471,9 +1471,9 @@ static ssize_t amdgpu_set_pp_power_profile_mode(struct device *dev,
- 	return -EINVAL;
- }
- 
--static unsigned int amdgpu_hwmon_get_sensor_generic(struct amdgpu_device *adev,
--						    enum amd_pp_sensors sensor,
--						    void *query)
-+static int amdgpu_hwmon_get_sensor_generic(struct amdgpu_device *adev,
-+					   enum amd_pp_sensors sensor,
-+					   void *query)
- {
- 	int r, size = sizeof(uint32_t);
- 
-@@ -2787,8 +2787,8 @@ static ssize_t amdgpu_hwmon_show_vddnb_label(struct device *dev,
- 	return sysfs_emit(buf, "vddnb\n");
- }
- 
--static unsigned int amdgpu_hwmon_get_power(struct device *dev,
--					   enum amd_pp_sensors sensor)
-+static int amdgpu_hwmon_get_power(struct device *dev,
-+				  enum amd_pp_sensors sensor)
- {
- 	struct amdgpu_device *adev = dev_get_drvdata(dev);
- 	unsigned int uw;
-@@ -2809,7 +2809,7 @@ static ssize_t amdgpu_hwmon_show_power_avg(struct device *dev,
- 					   struct device_attribute *attr,
- 					   char *buf)
- {
--	unsigned int val;
-+	int val;
- 
- 	val = amdgpu_hwmon_get_power(dev, AMDGPU_PP_SENSOR_GPU_AVG_POWER);
- 	if (val < 0)
-@@ -2822,7 +2822,7 @@ static ssize_t amdgpu_hwmon_show_power_input(struct device *dev,
- 					     struct device_attribute *attr,
- 					     char *buf)
- {
--	unsigned int val;
-+	int val;
- 
- 	val = amdgpu_hwmon_get_power(dev, AMDGPU_PP_SENSOR_GPU_INPUT_POWER);
- 	if (val < 0)
--- 
-2.43.0
-
+--- a/sound/usb/quirks.c
++++ b/sound/usb/quirks.c
+@@ -2179,6 +2179,8 @@ static const struct usb_audio_quirk_flag
+ 		   QUIRK_FLAG_GENERIC_IMPLICIT_FB),
+ 	DEVICE_FLG(0x2b53, 0x0031, /* Fiero SC-01 (firmware v1.1.0) */
+ 		   QUIRK_FLAG_GENERIC_IMPLICIT_FB),
++	DEVICE_FLG(0x2d95, 0x8021, /* VIVO USB-C-XE710 HEADSET */
++		   QUIRK_FLAG_CTL_MSG_DELAY_1M),
+ 	DEVICE_FLG(0x30be, 0x0101, /* Schiit Hel */
+ 		   QUIRK_FLAG_IGNORE_CTL_ERROR),
+ 	DEVICE_FLG(0x413c, 0xa506, /* Dell AE515 sound bar */
 
 
 
