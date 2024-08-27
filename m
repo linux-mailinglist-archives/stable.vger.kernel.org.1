@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-71131-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70883-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A24019611CF
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:24:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B90DF961081
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:09:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 13B70B287B8
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:24:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EAF971C20D54
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:09:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DED01C6F58;
-	Tue, 27 Aug 2024 15:23:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42F4C1C4EEF;
+	Tue, 27 Aug 2024 15:09:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K/HhyqNO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mp1bkcTa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE1FF1C57BF;
-	Tue, 27 Aug 2024 15:23:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0084D12E4D;
+	Tue, 27 Aug 2024 15:09:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772201; cv=none; b=LuXxiuYN8PoomPZF0m0/+IsXOw4BG9xVR0zImUl5sPWvW66RKpp1JMYlKLbHPiCiOg3fzgiVUxQETGo6BQo+VVzkl4SYbiQ4EcSuafXF9b/fetfLFC861tHaLPKtqodtSxANLlpefmdB751BwIdI7frY+Tam5FTbaOqIeh5EHgo=
+	t=1724771379; cv=none; b=f6QIu3IewSgQ6hJ3W4iv8cEx3g5zAvT8cxBsBO8PEobKd0RLY57J9GxTc1pSyUMOl607YDwQOWnI4AI/848NfTSqPRWmMEmf8xyI97G7QTLRdHPN0NqoooUYLinY8/tOVDi9zV/aS70+eMKf5fLPdfdV004Zwrhdjx9r3Upfnkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772201; c=relaxed/simple;
-	bh=nYxZ4zvw5B4ZhcOnFKLIlivTV2g8hFt/kS6iOtoVMmM=;
+	s=arc-20240116; t=1724771379; c=relaxed/simple;
+	bh=4z4/k55Dw6hxoXeWJ/eXnvnSQhsZW5zDAnKeqrqSA3E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OfM1ixOl53fS8CFwASZ5TfE/qvWzArTa6racOFhM2P/j6Fa0qcqlOlC3qcUAAxj9xvnzbfltWydI49EuDl4dUnHYsB7WNN05ITgqNPHOijuer8H7Q+wrzWPSgiz+UFC9ESFc4Kxjq6JqQ/UpN3bz/JX6EZh9OheuvvVEsl/YPqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K/HhyqNO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 218BAC6105E;
-	Tue, 27 Aug 2024 15:23:19 +0000 (UTC)
+	 MIME-Version; b=s1MZA9/8xNSiUJfDhytJ/zUA7CwWEyAxFpprPxV4RncINrF9Rg/AECLiDsjiu3kT5pDL1yB3ppidB0yZ9ksBuEJaL22gy/kspWdG1T5YgTIj9dWXfEXIJl5uFqUnY1EmdXIBffU0a2YtHx7GHHG7+Vq3nDbfRMvJXa/YbKThUUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mp1bkcTa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AEA3C4AF1A;
+	Tue, 27 Aug 2024 15:09:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772200;
-	bh=nYxZ4zvw5B4ZhcOnFKLIlivTV2g8hFt/kS6iOtoVMmM=;
+	s=korg; t=1724771378;
+	bh=4z4/k55Dw6hxoXeWJ/eXnvnSQhsZW5zDAnKeqrqSA3E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K/HhyqNO4kGTMNQgR3agxFfnzcfBtGUIghWH9qnYQOVw8vFcsTbtzgD7dRP2PtEtQ
-	 Xi1vrHS7cDS6NjMrnU6EOmSr5sMlUGIN9zEGMltIV8M515rNkoEdJXL4ZDkc5cPKxK
-	 6mN7g9ajAcc9pjwJSgVeD2vnYnCjSy3sEUokuZzA=
+	b=Mp1bkcTavK89gDI+8YRXEic8CikD7QQ89/wCsDzOX8uZEngxSlFdsnm+4xUMtMsg/
+	 74cSR6rtJVXA0jvBHejLUoQhqq76hBs/wXG9BW2vfQ9QnKvYuZ+c+p/4VOI6y0tq86
+	 LKNljA9JhXtVnvGUwXvXNFWsIQi6utt5S2TTbJbM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
+	Thorsten Blum <thorsten.blum@toblux.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 144/321] kbuild: rust_is_available: handle failures calling `$RUSTC`/`$BINDGEN`
-Date: Tue, 27 Aug 2024 16:37:32 +0200
-Message-ID: <20240827143843.719414862@linuxfoundation.org>
+Subject: [PATCH 6.10 129/273] io_uring/napi: Remove unnecessary s64 cast
+Date: Tue, 27 Aug 2024 16:37:33 +0200
+Message-ID: <20240827143838.313763698@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,87 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Thorsten Blum <thorsten.blum@toblux.com>
 
-[ Upstream commit f295522886a4ebb628cadb2cd74d0661d6292978 ]
+[ Upstream commit f7c696a56cc7d70515774a24057b473757ec6089 ]
 
-The script already checks if `$RUSTC` and `$BINDGEN` exists via
-`command`, but the environment variables may point to a
-non-executable file, or the programs may fail for some other reason.
-While the script successfully exits with a failure as it should,
-the error given can be quite confusing depending on the shell and
-the behavior of its `command`. For instance, with `dash`:
+Since the do_div() macro casts the divisor to u32 anyway, remove the
+unnecessary s64 cast and fix the following Coccinelle/coccicheck
+warning reported by do_div.cocci:
 
-    $ RUSTC=./mm BINDGEN=bindgen CC=clang scripts/rust_is_available.sh
-    scripts/rust_is_available.sh: 19: arithmetic expression: expecting primary: "100000 *  + 100 *  + "
+  WARNING: do_div() does a 64-by-32 division, please consider using div64_s64 instead
 
-Thus detect failure exit codes when calling `$RUSTC` and `$BINDGEN` and
-print a better message, in a similar way to what we do when extracting
-the `libclang` version found by `bindgen`.
-
-Link: https://lore.kernel.org/rust-for-linux/CAK7LNAQYk6s11MASRHW6oxtkqF00EJVqhHOP=5rynWt-QDUsXw@mail.gmail.com/
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Link: https://lore.kernel.org/r/20230616001631.463536-10-ojeda@kernel.org
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Stable-dep-of: 5ce86c6c8613 ("rust: suppress error messages from CONFIG_{RUSTC,BINDGEN}_VERSION_TEXT")
+Signed-off-by: Thorsten Blum <thorsten.blum@toblux.com>
+Link: https://lore.kernel.org/r/20240710010520.384009-2-thorsten.blum@toblux.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Stable-dep-of: 84f2eecf9501 ("io_uring/napi: check napi_enabled in io_napi_add() before proceeding")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/rust_is_available.sh | 28 ++++++++++++++++++++++++++--
- 1 file changed, 26 insertions(+), 2 deletions(-)
+ io_uring/napi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/scripts/rust_is_available.sh b/scripts/rust_is_available.sh
-index db4519945f534..1c9081d9dbea7 100755
---- a/scripts/rust_is_available.sh
-+++ b/scripts/rust_is_available.sh
-@@ -38,8 +38,20 @@ fi
- # Check that the Rust compiler version is suitable.
- #
- # Non-stable and distributions' versions may have a version suffix, e.g. `-dev`.
-+rust_compiler_output=$( \
-+	LC_ALL=C "$RUSTC" --version 2>/dev/null
-+) || rust_compiler_code=$?
-+if [ -n "$rust_compiler_code" ]; then
-+	echo >&2 "***"
-+	echo >&2 "*** Running '$RUSTC' to check the Rust compiler version failed with"
-+	echo >&2 "*** code $rust_compiler_code. See output and docs below for details:"
-+	echo >&2 "***"
-+	echo >&2 "$rust_compiler_output"
-+	echo >&2 "***"
-+	exit 1
-+fi
- rust_compiler_version=$( \
--	LC_ALL=C "$RUSTC" --version 2>/dev/null \
-+	echo "$rust_compiler_output" \
- 		| sed -nE '1s:.*rustc ([0-9]+\.[0-9]+\.[0-9]+).*:\1:p'
- )
- rust_compiler_min_version=$($min_tool_version rustc)
-@@ -64,8 +76,20 @@ fi
- # Check that the Rust bindings generator is suitable.
- #
- # Non-stable and distributions' versions may have a version suffix, e.g. `-dev`.
-+rust_bindings_generator_output=$( \
-+	LC_ALL=C "$BINDGEN" --version 2>/dev/null
-+) || rust_bindings_generator_code=$?
-+if [ -n "$rust_bindings_generator_code" ]; then
-+	echo >&2 "***"
-+	echo >&2 "*** Running '$BINDGEN' to check the Rust bindings generator version failed with"
-+	echo >&2 "*** code $rust_bindings_generator_code. See output and docs below for details:"
-+	echo >&2 "***"
-+	echo >&2 "$rust_bindings_generator_output"
-+	echo >&2 "***"
-+	exit 1
-+fi
- rust_bindings_generator_version=$( \
--	LC_ALL=C "$BINDGEN" --version 2>/dev/null \
-+	echo "$rust_bindings_generator_output" \
- 		| sed -nE '1s:.*bindgen ([0-9]+\.[0-9]+\.[0-9]+).*:\1:p'
- )
- rust_bindings_generator_min_version=$($min_tool_version bindgen)
+diff --git a/io_uring/napi.c b/io_uring/napi.c
+index 080d10e0e0afd..327e5f3a8abe0 100644
+--- a/io_uring/napi.c
++++ b/io_uring/napi.c
+@@ -285,7 +285,7 @@ void __io_napi_adjust_timeout(struct io_ring_ctx *ctx, struct io_wait_queue *iow
+ 			s64 poll_to_ns = timespec64_to_ns(ts);
+ 			if (poll_to_ns > 0) {
+ 				u64 val = poll_to_ns + 999;
+-				do_div(val, (s64) 1000);
++				do_div(val, 1000);
+ 				poll_to = val;
+ 			}
+ 		}
 -- 
 2.43.0
 
