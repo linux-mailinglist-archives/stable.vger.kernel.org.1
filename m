@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-70858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71151-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F179961062
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:08:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2DCA9611E6
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:25:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3CD9EB21A70
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:08:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E58691C23884
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:25:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 915BE1C4EE8;
-	Tue, 27 Aug 2024 15:08:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4BA71C9DF7;
+	Tue, 27 Aug 2024 15:24:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="prbO6xoW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yeC8nL68"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F17D1C4603;
-	Tue, 27 Aug 2024 15:08:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A067B1C5793;
+	Tue, 27 Aug 2024 15:24:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771295; cv=none; b=u3jPQ9mPELPAI09khe2FEeE+lETBGo6FfpoQtV2ToIrnYw3ATkIiITZlRKH5IMIGqYEKZNRGEilsy88gh9Sy5LOytwyygZfavQuzu3D9vdzNDCYFNa8oHYEoV1TeLrbkZpwKmYGytrIMS3mGpaSwI6+i8YS+2jMARtVfYrlWYHI=
+	t=1724772267; cv=none; b=CPo40Z7KmP2zko/Yg0lJDusa3i2KMv2zYoqUJkY1CoXmgXTKiGbOJKNPu9J3sDfxGgRLDyglJu5EN2lBIjoPrc4l2eaYdP57m9VFMam8d///tsL6vmD2kFoNxzUo7N2HbWKehaatm7bEIIWH+I95eUkk4yhYOHRTQp7g7YfsMLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771295; c=relaxed/simple;
-	bh=F19FFBHTh7tmfUyS02H/rehiHi0pEA6/vuUm5pSV1FU=;
+	s=arc-20240116; t=1724772267; c=relaxed/simple;
+	bh=UFe/IWM+WJq38ghUb7UBkHDzf1BoEfuJsa1f+iNAudo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Tj534CPbbIThuSPfS8tQ3SIDFH7wzGxjcexNvT9uxIkTb6K4/gn8tpUnSMyNpEPzUqGb5I6tcOM6vvbomSmEUqP4nTKPYmbckWJ50b/7u2lD9ProSEOevvKXy4zafOrT4iH21A7uu+Zc2SJNawFXinYcPwf+TcGu5BM6/O/611g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=prbO6xoW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCF1BC61074;
-	Tue, 27 Aug 2024 15:08:14 +0000 (UTC)
+	 MIME-Version; b=jNCSbm9CyTTCDew2S+bunlp4HMP7THkGZ6oMpgjqRKRX6Ep6YVDlxEEYrREkxqblXxQZ4M/nqeONPUsG9+PgMgfwfiHop579HyDl9j73et7RQqwi/6s7CNxSU5iAABq/3Znr6jjB0KLUzVYxO2oduKMj9MnnhU5cTIWR60NU+Vw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yeC8nL68; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20BA5C61071;
+	Tue, 27 Aug 2024 15:24:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771295;
-	bh=F19FFBHTh7tmfUyS02H/rehiHi0pEA6/vuUm5pSV1FU=;
+	s=korg; t=1724772267;
+	bh=UFe/IWM+WJq38ghUb7UBkHDzf1BoEfuJsa1f+iNAudo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=prbO6xoWOHC2m0vqBME2HpKMA4G6rogL470FmGe2gAkuS6LV6dDI7sltphLBnR+9h
-	 k/FR7jz7nBPHID8zyC9+OB5NAjP3Qmxz6rhnrEkP4fCd+vczyofj1PSaWiyxbqS7/r
-	 fsNjH2VIc8Qda3yEBVb46nNYQ/QlPdsaBZpMhM6c=
+	b=yeC8nL689Yh7R769m3anLFPErjTqKifBYSlbQ4TpPLI/2U+z4i3c4k9NsLx4GCdyz
+	 miVjG/4eLLjmF/eT9hRBls2rjcgY7C/Tk06psXFd2qchlfCig287dhTFK+wCXmtn79
+	 WJGRypuGu2+tddHD1JRO6UaanAv0EW/rKKVvQ794=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maximilian Luz <luzmaximilian@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Jan Kara <jack@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 146/273] platform/surface: aggregator: Fix warning when controller is destroyed in probe
+Subject: [PATCH 6.1 162/321] quota: Remove BUG_ON from dqget()
 Date: Tue, 27 Aug 2024 16:37:50 +0200
-Message-ID: <20240827143838.962507217@linuxfoundation.org>
+Message-ID: <20240827143844.397140404@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,66 +59,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maximilian Luz <luzmaximilian@gmail.com>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit bc923d594db21bee0ead128eb4bb78f7e77467a4 ]
+[ Upstream commit 249f374eb9b6b969c64212dd860cc1439674c4a8 ]
 
-There is a small window in ssam_serial_hub_probe() where the controller
-is initialized but has not been started yet. Specifically, between
-ssam_controller_init() and ssam_controller_start(). Any failure in this
-window, for example caused by a failure of serdev_device_open(),
-currently results in an incorrect warning being emitted.
+dqget() checks whether dquot->dq_sb is set when returning it using
+BUG_ON. Firstly this doesn't work as an invalidation check for quite
+some time (we release dquot with dq_sb set these days), secondly using
+BUG_ON is quite harsh. Use WARN_ON_ONCE and check whether dquot is still
+hashed instead.
 
-In particular, any failure in this window results in the controller
-being destroyed via ssam_controller_destroy(). This function checks the
-state of the controller and, in an attempt to validate that the
-controller has been cleanly shut down before we try and deallocate any
-resources, emits a warning if that state is not SSAM_CONTROLLER_STOPPED.
-
-However, since we have only just initialized the controller and have not
-yet started it, its state is SSAM_CONTROLLER_INITIALIZED. Note that this
-is the only point at which the controller has this state, as it will
-change after we start the controller with ssam_controller_start() and
-never revert back. Further, at this point no communication has taken
-place and the sender and receiver threads have not been started yet (and
-we may not even have an open serdev device either).
-
-Therefore, it is perfectly safe to call ssam_controller_destroy() with a
-state of SSAM_CONTROLLER_INITIALIZED. This, however, means that the
-warning currently being emitted is incorrect. Fix it by extending the
-check.
-
-Fixes: c167b9c7e3d6 ("platform/surface: Add Surface Aggregator subsystem")
-Signed-off-by: Maximilian Luz <luzmaximilian@gmail.com>
-Link: https://lore.kernel.org/r/20240811124645.246016-1-luzmaximilian@gmail.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/surface/aggregator/controller.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/quota/dquot.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/platform/surface/aggregator/controller.c b/drivers/platform/surface/aggregator/controller.c
-index 7fc602e01487d..7e89f547999b2 100644
---- a/drivers/platform/surface/aggregator/controller.c
-+++ b/drivers/platform/surface/aggregator/controller.c
-@@ -1354,7 +1354,8 @@ void ssam_controller_destroy(struct ssam_controller *ctrl)
- 	if (ctrl->state == SSAM_CONTROLLER_UNINITIALIZED)
- 		return;
- 
--	WARN_ON(ctrl->state != SSAM_CONTROLLER_STOPPED);
-+	WARN_ON(ctrl->state != SSAM_CONTROLLER_STOPPED &&
-+		ctrl->state != SSAM_CONTROLLER_INITIALIZED);
- 
- 	/*
- 	 * Note: New events could still have been received after the previous
+diff --git a/fs/quota/dquot.c b/fs/quota/dquot.c
+index b67557647d61f..f7ab6b44011b5 100644
+--- a/fs/quota/dquot.c
++++ b/fs/quota/dquot.c
+@@ -995,9 +995,8 @@ struct dquot *dqget(struct super_block *sb, struct kqid qid)
+ 	 * smp_mb__before_atomic() in dquot_acquire().
+ 	 */
+ 	smp_rmb();
+-#ifdef CONFIG_QUOTA_DEBUG
+-	BUG_ON(!dquot->dq_sb);	/* Has somebody invalidated entry under us? */
+-#endif
++	/* Has somebody invalidated entry under us? */
++	WARN_ON_ONCE(hlist_unhashed(&dquot->dq_hash));
+ out:
+ 	if (empty)
+ 		do_destroy_dquot(empty);
 -- 
 2.43.0
 
