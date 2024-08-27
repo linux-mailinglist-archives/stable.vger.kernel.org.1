@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-70486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70734-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9589D960E5E
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:48:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D9C6960FBE
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:01:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A8811F21E3B
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:48:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE0E71C23712
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:01:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0568C1C6F62;
-	Tue, 27 Aug 2024 14:47:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B4891C2DB1;
+	Tue, 27 Aug 2024 15:01:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lyhHQ2as"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mh1QTFu7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B768C1C4EE6;
-	Tue, 27 Aug 2024 14:47:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 584532FB2;
+	Tue, 27 Aug 2024 15:01:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770066; cv=none; b=KSYqPoJkaW5Td3uH+Bu/dFGgYzSD3rdogvs7f+VDT7Vj72K9MeBXEoX0V1qUiXAMlTw+SgfwgT55Igv0EyDA8bVCjoshfktQrnUY811P3KaxknibJ1GIaXNX6BUow7XJvLh6Wf9nJP0FLaypMiJvEwGXtRpoZhEnE6q/8xEcITg=
+	t=1724770890; cv=none; b=hPeqJzX/4a88W4eTmQCxkNb61my1OWbnjkJYy/oJT8LuAOh96BSBaFxSWAoHdTaeB6d/TTGugNiaZwBE6k40YEUDR52zXaNDfje3g9GoF0gX7UnpzYg1w0IcjBiQtINgetxEKO8e7YA9iJfRchIBkgiRT3mzMLiAmQ6ey07Ql48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770066; c=relaxed/simple;
-	bh=Bj1TaO+o2I/2EYlab2dQbuHC82VEErgFoJNuyipXrW4=;
+	s=arc-20240116; t=1724770890; c=relaxed/simple;
+	bh=hPsGJyCYasHZSKU9t47CXQWJCZr2V8GbGf+s7FvT7vQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CvJT/vcw5RT9DQVx5VoLD+S2vkaAi+DwMCME6BPtPUcbe3lrVskRs89kCFkSCEGh94p60+yeuHRuIHetgNpWZKL09lHeBICnzQYef3O7kOH+EW91T8aVIROamGRJagZm7gxLtr//4getekCifr17/1M0LYOaWCXjdw4MNWBtxPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lyhHQ2as; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24799C61040;
-	Tue, 27 Aug 2024 14:47:45 +0000 (UTC)
+	 MIME-Version; b=uAnB13oU7QtVdqZbRdB6y0xRnFYNyTTX9CIQ/aM7TBkqTURAshX63MaBNr/lX5UqzdMX0qith/FE7rooe0IWW8P3BOg0OU7ALY45M9NNfMMzCRttYZb5kefpcfXKd9iQBjYiUrwu+hxr2zgL6/TnHG6WkS9EMAzvP+5M6dCAgnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mh1QTFu7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA853C4AF1C;
+	Tue, 27 Aug 2024 15:01:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770066;
-	bh=Bj1TaO+o2I/2EYlab2dQbuHC82VEErgFoJNuyipXrW4=;
+	s=korg; t=1724770890;
+	bh=hPsGJyCYasHZSKU9t47CXQWJCZr2V8GbGf+s7FvT7vQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lyhHQ2as/mfTKxMpjnzJ6KsqHOC1YOUS1sngfhmODZOK2e0VZLkvqZW77m6eplgm8
-	 guM97U4kICiOgpOaZlwRPaS03W0sEAzgMB5Z3cLaedx2M9jk9bENn21pRSLnjgOvO4
-	 rqYn8X3JapjUTLVTgfu0i1ryHvRFKL5k5MhKa70k=
+	b=mh1QTFu7+vs6q/3BZ1rkekCBktIrLsvSllYpDuV+4HtM44EZNuGbm+tZgT8HREz5G
+	 VL8u0CK6qpEzvWNSS5JYe9aFn9X9F9nJfYW+caItkOTbF6oTSUQBQNKx3ngGeAeJk2
+	 mzTjiUgb1buXUTq174LQsAtClRObRB2ahz3wEuA0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomer Tayar <ttayar@habana.ai>,
-	Oded Gabbay <ogabbay@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 116/341] accel/habanalabs: export dma-buf only if size/offset multiples of PAGE_SIZE
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Michael Mueller <mimu@linux.ibm.com>,
+	Janosch Frank <frankja@linux.ibm.com>
+Subject: [PATCH 6.10 023/273] KVM: s390: fix validity interception issue when gisa is switched off
 Date: Tue, 27 Aug 2024 16:35:47 +0200
-Message-ID: <20240827143847.828564806@linuxfoundation.org>
+Message-ID: <20240827143834.272121911@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +62,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomer Tayar <ttayar@habana.ai>
+From: Michael Mueller <mimu@linux.ibm.com>
 
-[ Upstream commit 0b75cb5b240fddf181c284d415ee77ef61b418d6 ]
+commit 5a44bb061d04b0306f2aa8add761d86d152b9377 upstream.
 
-It is currently allowed for a user to export dma-buf with size and
-offset that are not multiples of PAGE_SIZE.
-The exported memory is mapped for the importer device, and there it will
-be rounded to PAGE_SIZE, leading to actually exporting more than the
-user intended to.
-To make the user be aware of it, accept only size and offset which are
-multiple of PAGE_SIZE.
+We might run into a SIE validity if gisa has been disabled either via using
+kernel parameter "kvm.use_gisa=0" or by setting the related sysfs
+attribute to N (echo N >/sys/module/kvm/parameters/use_gisa).
 
-Signed-off-by: Tomer Tayar <ttayar@habana.ai>
-Reviewed-by: Oded Gabbay <ogabbay@kernel.org>
-Signed-off-by: Oded Gabbay <ogabbay@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The validity is caused by an invalid value in the SIE control block's
+gisa designation. That happens because we pass the uninitialized gisa
+origin to virt_to_phys() before writing it to the gisa designation.
+
+To fix this we return 0 in kvm_s390_get_gisa_desc() if the origin is 0.
+kvm_s390_get_gisa_desc() is used to determine which gisa designation to
+set in the SIE control block. A value of 0 in the gisa designation disables
+gisa usage.
+
+The issue surfaces in the host kernel with the following kernel message as
+soon a new kvm guest start is attemted.
+
+kvm: unhandled validity intercept 0x1011
+WARNING: CPU: 0 PID: 781237 at arch/s390/kvm/intercept.c:101 kvm_handle_sie_intercept+0x42e/0x4d0 [kvm]
+Modules linked in: vhost_net tap tun xt_CHECKSUM xt_MASQUERADE xt_conntrack ipt_REJECT xt_tcpudp nft_compat x_tables nf_nat_tftp nf_conntrack_tftp vfio_pci_core irqbypass vhost_vsock vmw_vsock_virtio_transport_common vsock vhost vhost_iotlb kvm nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 ip_set nf_tables sunrpc mlx5_ib ib_uverbs ib_core mlx5_core uvdevice s390_trng eadm_sch vfio_ccw zcrypt_cex4 mdev vfio_iommu_type1 vfio sch_fq_codel drm i2c_core loop drm_panel_orientation_quirks configfs nfnetlink lcs ctcm fsm dm_service_time ghash_s390 prng chacha_s390 libchacha aes_s390 des_s390 libdes sha3_512_s390 sha3_256_s390 sha512_s390 sha256_s390 sha1_s390 sha_common dm_mirror dm_region_hash dm_log zfcp scsi_transport_fc scsi_dh_rdac scsi_dh_emc scsi_dh_alua pkey zcrypt dm_multipath rng_core autofs4 [last unloaded: vfio_pci]
+CPU: 0 PID: 781237 Comm: CPU 0/KVM Not tainted 6.10.0-08682-gcad9f11498ea #6
+Hardware name: IBM 3931 A01 701 (LPAR)
+Krnl PSW : 0704c00180000000 000003d93deb0122 (kvm_handle_sie_intercept+0x432/0x4d0 [kvm])
+           R:0 T:1 IO:1 EX:1 Key:0 M:1 W:0 P:0 AS:3 CC:0 PM:0 RI:0 EA:3
+Krnl GPRS: 000003d900000027 000003d900000023 0000000000000028 000002cd00000000
+           000002d063a00900 00000359c6daf708 00000000000bebb5 0000000000001eff
+           000002cfd82e9000 000002cfd80bc000 0000000000001011 000003d93deda412
+           000003ff8962df98 000003d93de77ce0 000003d93deb011e 00000359c6daf960
+Krnl Code: 000003d93deb0112: c020fffe7259	larl	%r2,000003d93de7e5c4
+           000003d93deb0118: c0e53fa8beac	brasl	%r14,000003d9bd3c7e70
+          #000003d93deb011e: af000000		mc	0,0
+          >000003d93deb0122: a728ffea		lhi	%r2,-22
+           000003d93deb0126: a7f4fe24		brc	15,000003d93deafd6e
+           000003d93deb012a: 9101f0b0		tm	176(%r15),1
+           000003d93deb012e: a774fe48		brc	7,000003d93deafdbe
+           000003d93deb0132: 40a0f0ae		sth	%r10,174(%r15)
+Call Trace:
+ [<000003d93deb0122>] kvm_handle_sie_intercept+0x432/0x4d0 [kvm]
+([<000003d93deb011e>] kvm_handle_sie_intercept+0x42e/0x4d0 [kvm])
+ [<000003d93deacc10>] vcpu_post_run+0x1d0/0x3b0 [kvm]
+ [<000003d93deaceda>] __vcpu_run+0xea/0x2d0 [kvm]
+ [<000003d93dead9da>] kvm_arch_vcpu_ioctl_run+0x16a/0x430 [kvm]
+ [<000003d93de93ee0>] kvm_vcpu_ioctl+0x190/0x7c0 [kvm]
+ [<000003d9bd728b4e>] vfs_ioctl+0x2e/0x70
+ [<000003d9bd72a092>] __s390x_sys_ioctl+0xc2/0xd0
+ [<000003d9be0e9222>] __do_syscall+0x1f2/0x2e0
+ [<000003d9be0f9a90>] system_call+0x70/0x98
+Last Breaking-Event-Address:
+ [<000003d9bd3c7f58>] __warn_printk+0xe8/0xf0
+
+Cc: stable@vger.kernel.org
+Reported-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+Fixes: fe0ef0030463 ("KVM: s390: sort out physical vs virtual pointers usage")
+Signed-off-by: Michael Mueller <mimu@linux.ibm.com>
+Tested-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+Reviewed-by: Janosch Frank <frankja@linux.ibm.com>
+Link: https://lore.kernel.org/r/20240801123109.2782155-1-mimu@linux.ibm.com
+Message-ID: <20240801123109.2782155-1-mimu@linux.ibm.com>
+Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/accel/habanalabs/common/memory.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ arch/s390/kvm/kvm-s390.h |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/accel/habanalabs/common/memory.c b/drivers/accel/habanalabs/common/memory.c
-index 4fc72a07d2f59..5b7d9a351133f 100644
---- a/drivers/accel/habanalabs/common/memory.c
-+++ b/drivers/accel/habanalabs/common/memory.c
-@@ -1878,16 +1878,16 @@ static int export_dmabuf(struct hl_ctx *ctx,
+--- a/arch/s390/kvm/kvm-s390.h
++++ b/arch/s390/kvm/kvm-s390.h
+@@ -267,7 +267,12 @@ static inline unsigned long kvm_s390_get
  
- static int validate_export_params_common(struct hl_device *hdev, u64 device_addr, u64 size)
+ static inline u32 kvm_s390_get_gisa_desc(struct kvm *kvm)
  {
--	if (!IS_ALIGNED(device_addr, PAGE_SIZE)) {
-+	if (!PAGE_ALIGNED(device_addr)) {
- 		dev_dbg(hdev->dev,
--			"exported device memory address 0x%llx should be aligned to 0x%lx\n",
-+			"exported device memory address 0x%llx should be aligned to PAGE_SIZE 0x%lx\n",
- 			device_addr, PAGE_SIZE);
- 		return -EINVAL;
- 	}
- 
--	if (size < PAGE_SIZE) {
-+	if (!size || !PAGE_ALIGNED(size)) {
- 		dev_dbg(hdev->dev,
--			"exported device memory size %llu should be equal to or greater than %lu\n",
-+			"exported device memory size %llu should be a multiple of PAGE_SIZE %lu\n",
- 			size, PAGE_SIZE);
- 		return -EINVAL;
- 	}
-@@ -1938,6 +1938,13 @@ static int validate_export_params(struct hl_device *hdev, u64 device_addr, u64 s
- 	if (rc)
- 		return rc;
- 
-+	if (!PAGE_ALIGNED(offset)) {
-+		dev_dbg(hdev->dev,
-+			"exported device memory offset %llu should be a multiple of PAGE_SIZE %lu\n",
-+			offset, PAGE_SIZE);
-+		return -EINVAL;
-+	}
+-	u32 gd = virt_to_phys(kvm->arch.gisa_int.origin);
++	u32 gd;
 +
- 	if ((offset + size) > phys_pg_pack->total_size) {
- 		dev_dbg(hdev->dev, "offset %#llx and size %#llx exceed total map size %#llx\n",
- 				offset, size, phys_pg_pack->total_size);
--- 
-2.43.0
-
++	if (!kvm->arch.gisa_int.origin)
++		return 0;
++
++	gd = virt_to_phys(kvm->arch.gisa_int.origin);
+ 
+ 	if (gd && sclp.has_gisaf)
+ 		gd |= GISA_FORMAT1;
 
 
 
