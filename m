@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-70845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70594-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BE11961051
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:07:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 188B2960F01
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:55:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E22C1C2365C
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:07:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B71991F212E0
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:55:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EB001C4603;
-	Tue, 27 Aug 2024 15:07:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B18B1C6891;
+	Tue, 27 Aug 2024 14:53:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xjd8OXzG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h/tLHZLv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE8A71C461D;
-	Tue, 27 Aug 2024 15:07:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A4E51C578E;
+	Tue, 27 Aug 2024 14:53:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771252; cv=none; b=njYSKrnf91dQ1SJ2BRsVPWnczAl7hOfzT9yFY+xOw0FeSFTsViaWCqWrrU5wig2XZfdketZz50fG5a8IlxDQtOxUAADfQ7rPp48k9/ZczQLiBT89GgvyjEqF37Z6RwRr7OSVD5YS0V8psDAimhFz1k7Wl7MKUWoQ1NT20WGeSiI=
+	t=1724770426; cv=none; b=oV1rIirs/CPjfPsCouWZkJ0s4c2SptlqCG9tLmWuKqhMawaCjzMLXeVfTqXDQjeiml4IMf0FBifqyGrKRrqxxuLUJ1IBLKyu2eyMQaMLT+WjVND+a56Rwnwm97B1M5ICYnVu7WG8cJtVGOOfi3qWHDh2waCXC1oi57Ww61Ed1hg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771252; c=relaxed/simple;
-	bh=eL0MKFfh/U/Kx3hp8nIecaHVkcCAeLCfSpTPgtWFbYk=;
+	s=arc-20240116; t=1724770426; c=relaxed/simple;
+	bh=vtzgXNNNCcCiJDUwoj/jS5pt+AWLONQM49lyjcD60wQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g/kc2s1NYvV3hf3emF0bnWqS9+retcM/jZQLGZxqpt7OKqAud1WYaKhUiIl5iRnhbM4YTfDqTiAW97vcL1d4gLjkkFbN/T57bRC2a3sIDqC9YssInjKiZZrSCOTjTlWvEFnaM6w+8tY7BZkDvZAWt3iNFDVO6KCnonWTtPlbOMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xjd8OXzG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4080C61040;
-	Tue, 27 Aug 2024 15:07:30 +0000 (UTC)
+	 MIME-Version; b=Gihqu7TUb4xghMVFBunwXg+Ju7l5Q+lwvGldDsuL8jE/G2cG0Kpf3DdNndpfpA1OzghGrlsC9NQVBD7yKfKiko8kPT/+p+CTIpD0/r3duxxp5iYcB7r2XSZCK0a3ZGFm9Y/jajiQBigPXGt0FDNiiF0yMdr9bIR9mnFQiJX7SN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h/tLHZLv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AA64C61053;
+	Tue, 27 Aug 2024 14:53:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771251;
-	bh=eL0MKFfh/U/Kx3hp8nIecaHVkcCAeLCfSpTPgtWFbYk=;
+	s=korg; t=1724770426;
+	bh=vtzgXNNNCcCiJDUwoj/jS5pt+AWLONQM49lyjcD60wQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xjd8OXzGexE0SeoCu3jPp9rjdwLEw/r9XQzDNZg4F0FXXOCydkVY3Dc2kFZrU+KCO
-	 jWy4CGFouYxACljLsbXVSI5RXg+tOYEWAZhUL9t/M9GMNLcbJ2N6Oaj4KyjLtHEAS4
-	 p//DTb0ZUOPCI9SmnOab9E+ABp2QV5v1F1w3psvw=
+	b=h/tLHZLv/9uqWzIQORwBR/SMXPJiBirKVIQy1ex+eJgd5UXc0B5iaOK0Qc94S7JlC
+	 O5LI6kTsYsy6wFMDcxUWFKk+O07ZkMO6gxEq5JZ48p3DfkIFfo3w5wm4kkLX4obWe2
+	 Ftu2UgMHqyKBM0QrTIM1JOCGlJLeDOTUNSD+d7yg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Tranchetti <quic_stranche@quicinc.com>,
-	Subash Abhinov Kasiviswanathan <quic_subashab@quicinc.com>,
-	Neal Cardwell <ncardwell@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Zhiguo Niu <zhiguo.niu@unisoc.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 101/273] tcp: Update window clamping condition
+Subject: [PATCH 6.6 194/341] f2fs: fix to do sanity check in update_sit_entry
 Date: Tue, 27 Aug 2024 16:37:05 +0200
-Message-ID: <20240827143837.253608489@linuxfoundation.org>
+Message-ID: <20240827143850.793413263@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,96 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Subash Abhinov Kasiviswanathan <quic_subashab@quicinc.com>
+From: Zhiguo Niu <zhiguo.niu@unisoc.com>
 
-[ Upstream commit a2cbb1603943281a604f5adc48079a148db5cb0d ]
+[ Upstream commit 36959d18c3cf09b3c12157c6950e18652067de77 ]
 
-This patch is based on the discussions between Neal Cardwell and
-Eric Dumazet in the link
-https://lore.kernel.org/netdev/20240726204105.1466841-1-quic_subashab@quicinc.com/
+If GET_SEGNO return NULL_SEGNO for some unecpected case,
+update_sit_entry will access invalid memory address,
+cause system crash. It is better to do sanity check about
+GET_SEGNO just like update_segment_mtime & locate_dirty_segment.
 
-It was correctly pointed out that tp->window_clamp would not be
-updated in cases where net.ipv4.tcp_moderate_rcvbuf=0 or if
-(copied <= tp->rcvq_space.space). While it is expected for most
-setups to leave the sysctl enabled, the latter condition may
-not end up hitting depending on the TCP receive queue size and
-the pattern of arriving data.
+Also remove some redundant judgment code.
 
-The updated check should be hit only on initial MSS update from
-TCP_MIN_MSS to measured MSS value and subsequently if there was
-an update to a larger value.
-
-Fixes: 05f76b2d634e ("tcp: Adjust clamping window for applications specifying SO_RCVBUF")
-Signed-off-by: Sean Tranchetti <quic_stranche@quicinc.com>
-Signed-off-by: Subash Abhinov Kasiviswanathan <quic_subashab@quicinc.com>
-Acked-by: Neal Cardwell <ncardwell@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_input.c | 28 ++++++++++++----------------
- 1 file changed, 12 insertions(+), 16 deletions(-)
+ fs/f2fs/segment.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index ecd521108559f..2c52f6dcbd290 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -238,9 +238,14 @@ static void tcp_measure_rcv_mss(struct sock *sk, const struct sk_buff *skb)
- 		 */
- 		if (unlikely(len != icsk->icsk_ack.rcv_mss)) {
- 			u64 val = (u64)skb->len << TCP_RMEM_TO_WIN_SCALE;
-+			u8 old_ratio = tcp_sk(sk)->scaling_ratio;
+diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
+index 50c7537eb2250..e3e2c0b2f4959 100644
+--- a/fs/f2fs/segment.c
++++ b/fs/f2fs/segment.c
+@@ -2398,6 +2398,8 @@ static void update_sit_entry(struct f2fs_sb_info *sbi, block_t blkaddr, int del)
+ #endif
  
- 			do_div(val, skb->truesize);
- 			tcp_sk(sk)->scaling_ratio = val ? val : 1;
-+
-+			if (old_ratio != tcp_sk(sk)->scaling_ratio)
-+				WRITE_ONCE(tcp_sk(sk)->window_clamp,
-+					   tcp_win_from_space(sk, sk->sk_rcvbuf));
- 		}
- 		icsk->icsk_ack.rcv_mss = min_t(unsigned int, len,
- 					       tcp_sk(sk)->advmss);
-@@ -754,7 +759,8 @@ void tcp_rcv_space_adjust(struct sock *sk)
- 	 * <prev RTT . ><current RTT .. ><next RTT .... >
+ 	segno = GET_SEGNO(sbi, blkaddr);
++	if (segno == NULL_SEGNO)
++		return;
+ 
+ 	se = get_seg_entry(sbi, segno);
+ 	new_vblocks = se->valid_blocks + del;
+@@ -3481,8 +3483,7 @@ void f2fs_allocate_data_block(struct f2fs_sb_info *sbi, struct page *page,
+ 	 * since SSR needs latest valid block information.
  	 */
+ 	update_sit_entry(sbi, *new_blkaddr, 1);
+-	if (GET_SEGNO(sbi, old_blkaddr) != NULL_SEGNO)
+-		update_sit_entry(sbi, old_blkaddr, -1);
++	update_sit_entry(sbi, old_blkaddr, -1);
  
--	if (READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_moderate_rcvbuf)) {
-+	if (READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_moderate_rcvbuf) &&
-+	    !(sk->sk_userlocks & SOCK_RCVBUF_LOCK)) {
- 		u64 rcvwin, grow;
- 		int rcvbuf;
- 
-@@ -770,22 +776,12 @@ void tcp_rcv_space_adjust(struct sock *sk)
- 
- 		rcvbuf = min_t(u64, tcp_space_from_win(sk, rcvwin),
- 			       READ_ONCE(sock_net(sk)->ipv4.sysctl_tcp_rmem[2]));
--		if (!(sk->sk_userlocks & SOCK_RCVBUF_LOCK)) {
--			if (rcvbuf > sk->sk_rcvbuf) {
--				WRITE_ONCE(sk->sk_rcvbuf, rcvbuf);
--
--				/* Make the window clamp follow along.  */
--				WRITE_ONCE(tp->window_clamp,
--					   tcp_win_from_space(sk, rcvbuf));
--			}
--		} else {
--			/* Make the window clamp follow along while being bounded
--			 * by SO_RCVBUF.
--			 */
--			int clamp = tcp_win_from_space(sk, min(rcvbuf, sk->sk_rcvbuf));
-+		if (rcvbuf > sk->sk_rcvbuf) {
-+			WRITE_ONCE(sk->sk_rcvbuf, rcvbuf);
- 
--			if (clamp > tp->window_clamp)
--				WRITE_ONCE(tp->window_clamp, clamp);
-+			/* Make the window clamp follow along.  */
-+			WRITE_ONCE(tp->window_clamp,
-+				   tcp_win_from_space(sk, rcvbuf));
- 		}
- 	}
- 	tp->rcvq_space.space = copied;
+ 	/*
+ 	 * If the current segment is full, flush it out and replace it with a
 -- 
 2.43.0
 
