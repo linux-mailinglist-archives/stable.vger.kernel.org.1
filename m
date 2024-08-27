@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-70923-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70672-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7787F9610B3
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:11:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B31E960F73
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:59:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A44B1C2310A
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:11:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 989D8B22E5D
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:59:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0992E1C5788;
-	Tue, 27 Aug 2024 15:11:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D81F91CBE8F;
+	Tue, 27 Aug 2024 14:58:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TSAZHyKB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Aw2pkDFi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCCA51BC9E3;
-	Tue, 27 Aug 2024 15:11:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AFB01C7B62;
+	Tue, 27 Aug 2024 14:58:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771512; cv=none; b=XMtkgeFxtiWc8VKZ0/2Sfmribmd7mSay0d6aP5CD2wlMIDq/uWeQ/6QjuDjKpdj2wPXhIMNi+La0hw4Lbkihn2v88PV5TIIiCdLb9mwpYpfzgOOYxP9vz6EN+Unr0sXH0NlFWGuUj+pYYOK+tHHrx2516uz9OzL9mEsyL+fZuHk=
+	t=1724770686; cv=none; b=MXmzM6zT8MsGsT1iOkntMOEtWNoH1YB+o0MiZeCYyrLLnmVhj/TNBhQamI//5SKS4fvnJ0eNMuJLaSZyBs/A7Vlrr8Z3wdwXHWvJxnqEzaeRfmhF4P0bWwGBJDr55uYHkC8wxNHn1dyXtBHnc3jjkqyACekXyGqaz6bcqjxiY8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771512; c=relaxed/simple;
-	bh=MnxJ7H2fZOcLTdXbYnJjytAhLg1IfqNI/GJDW15gDeE=;
+	s=arc-20240116; t=1724770686; c=relaxed/simple;
+	bh=JVXBOk9MoD1iy63QPDDcNePvKmN5mn851n/LZ2tdiFU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=amQvk1JjAbdMRsQDGRmP+aUVpITt3usTI8rbvFvobtUT1QqWRR46P2lW76/qmgRpIsAmFD57/0TEWqo710qFb7WqjbHcbjMxrItOQdN466PaKqzq/gvwz+ACSOQNONHMO6Io6mBdEXF51+BAP6Lpx9vSt1LuUAZHcCatuy4BeFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TSAZHyKB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0573C4DDEE;
-	Tue, 27 Aug 2024 15:11:51 +0000 (UTC)
+	 MIME-Version; b=jqyIgIcGywlcO4mxpecCbTvfMFMCVbJtPV1N4JpTM+erZ6pwWap4SkFqrWyeWnSS5m2V26K2NEhApoBaUHkBTf+iUV/rtPVAi14iJ8nxtlvGDFvXRjiuKipkPo+5y4EeMMNmfyXHeg9EnSrxm1dyQXCUhMaQG2ARNZapxVd9Gco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Aw2pkDFi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15493C61044;
+	Tue, 27 Aug 2024 14:58:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771512;
-	bh=MnxJ7H2fZOcLTdXbYnJjytAhLg1IfqNI/GJDW15gDeE=;
+	s=korg; t=1724770686;
+	bh=JVXBOk9MoD1iy63QPDDcNePvKmN5mn851n/LZ2tdiFU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TSAZHyKBthyJVliNrh1LuC4eBIt2V6Mfxfh0/QwJBuD/3bHLdtXXhF4p4KTuH1wlS
-	 /BhSuHgtGSEO4GCynJ0SLMG0mYs4jIe9a2JzEIUnRQ6l5bgfhTOJo/VojMc20dUWUw
-	 3ESTOk4KgxjW2jPWU9zq5Rk+N2vjVLmPRcpev2V0=
+	b=Aw2pkDFi5y4hQl0ufSdOOf1bA1PGheJguvdpoRuxGXp+j6HbpblcoOYSQOhsXelo8
+	 CBk9LnokTD2kI+yJZluhRpjHgTjoOhXyDtjDneAHabjqOtlvib0HagboCP0im7cexC
+	 vICcY3/uwcYkj1sekh5DOpNS9JXnwF47BA9RAa+8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 211/273] io_uring/kbuf: sanitize peek buffer setup
+	Alexander Potapenko <glider@google.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>
+Subject: [PATCH 6.6 304/341] KVM: arm64: Make ICC_*SGI*_EL1 undef in the absence of a vGICv3
 Date: Tue, 27 Aug 2024 16:38:55 +0200
-Message-ID: <20240827143841.440223688@linuxfoundation.org>
+Message-ID: <20240827143854.958087263@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Marc Zyngier <maz@kernel.org>
 
-[ Upstream commit e0ee967630c8ee67bb47a5b38d235cd5a8789c48 ]
+commit 3e6245ebe7ef341639e9a7e402b3ade8ad45a19f upstream.
 
-Harden the buffer peeking a bit, by adding a sanity check for it having
-a valid size. Outside of that, arg->max_len is a size_t, though it's
-only ever set to a 32-bit value (as it's governed by MAX_RW_COUNT).
-Bump our needed check to a size_t so we know it fits. Finally, cap the
-calculated needed iov value to the PEEK_MAX_IMPORT, which is the
-maximum number of segments that should be peeked.
+On a system with a GICv3, if a guest hasn't been configured with
+GICv3 and that the host is not capable of GICv2 emulation,
+a write to any of the ICC_*SGI*_EL1 registers is trapped to EL2.
 
-Fixes: 35c8711c8fc4 ("io_uring/kbuf: add helpers for getting/peeking multiple buffers")
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+We therefore try to emulate the SGI access, only to hit a NULL
+pointer as no private interrupt is allocated (no GIC, remember?).
+
+The obvious fix is to give the guest what it deserves, in the
+shape of a UNDEF exception.
+
+Reported-by: Alexander Potapenko <glider@google.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240820100349.3544850-2-maz@kernel.org
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/kbuf.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ arch/arm64/kvm/sys_regs.c  |    6 ++++++
+ arch/arm64/kvm/vgic/vgic.h |    7 +++++++
+ 2 files changed, 13 insertions(+)
 
-diff --git a/io_uring/kbuf.c b/io_uring/kbuf.c
-index c95dc1736dd93..1af2bd56af44a 100644
---- a/io_uring/kbuf.c
-+++ b/io_uring/kbuf.c
-@@ -218,10 +218,13 @@ static int io_ring_buffers_peek(struct io_kiocb *req, struct buf_sel_arg *arg,
+--- a/arch/arm64/kvm/sys_regs.c
++++ b/arch/arm64/kvm/sys_regs.c
+@@ -32,6 +32,7 @@
+ #include <trace/events/kvm.h>
  
- 	buf = io_ring_head_to_buf(br, head, bl->mask);
- 	if (arg->max_len) {
--		int needed;
-+		u32 len = READ_ONCE(buf->len);
-+		size_t needed;
+ #include "sys_regs.h"
++#include "vgic/vgic.h"
  
--		needed = (arg->max_len + buf->len - 1) / buf->len;
--		needed = min(needed, PEEK_MAX_IMPORT);
-+		if (unlikely(!len))
-+			return -ENOBUFS;
-+		needed = (arg->max_len + len - 1) / len;
-+		needed = min_not_zero(needed, (size_t) PEEK_MAX_IMPORT);
- 		if (nr_avail > needed)
- 			nr_avail = needed;
- 	}
--- 
-2.43.0
-
+ #include "trace.h"
+ 
+@@ -301,6 +302,11 @@ static bool access_gic_sgi(struct kvm_vc
+ {
+ 	bool g1;
+ 
++	if (!kvm_has_gicv3(vcpu->kvm)) {
++		kvm_inject_undefined(vcpu);
++		return false;
++	}
++
+ 	if (!p->is_write)
+ 		return read_from_write_only(vcpu, p, r);
+ 
+--- a/arch/arm64/kvm/vgic/vgic.h
++++ b/arch/arm64/kvm/vgic/vgic.h
+@@ -343,4 +343,11 @@ void vgic_v4_configure_vsgis(struct kvm
+ void vgic_v4_get_vlpi_state(struct vgic_irq *irq, bool *val);
+ int vgic_v4_request_vpe_irq(struct kvm_vcpu *vcpu, int irq);
+ 
++static inline bool kvm_has_gicv3(struct kvm *kvm)
++{
++	return (static_branch_unlikely(&kvm_vgic_global_state.gicv3_cpuif) &&
++		irqchip_in_kernel(kvm) &&
++		kvm->arch.vgic.vgic_model == KVM_DEV_TYPE_ARM_VGIC_V3);
++}
++
+ #endif
 
 
 
