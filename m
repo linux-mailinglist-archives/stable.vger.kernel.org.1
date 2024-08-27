@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-70887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71179-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 247A7961086
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:10:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97C89961226
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:27:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 57AF01C23453
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:09:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3C06BB23A45
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:27:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB78F1C4ED4;
-	Tue, 27 Aug 2024 15:09:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D62E1C93A3;
+	Tue, 27 Aug 2024 15:26:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zyl+//e3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aUf3Z/Fh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68E9812E4D;
-	Tue, 27 Aug 2024 15:09:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE7FF1BFE07;
+	Tue, 27 Aug 2024 15:26:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771392; cv=none; b=Jw3/qBUPTRhiH/NTanGOgaGCRZDd61zpKwYNJwdiQYktcYVMOGt4QKc082/oNlCDW3w9yVS4s4vfCAIKdxunmJTYUCoFOd86t4GVaACGfiZWTEgPqMpsjz4wBAoPrMsoM0Ajz0DsHP+JDlKv8Q24m7/Wm0b9fmGqQRMqcbAPOMU=
+	t=1724772361; cv=none; b=P4WrSGpV7Wf3tnHPwvjeQ8+QLpfpypeNYnx6F9WnX9HQqy3T5UI1EF88ss7GWttlcr5fIJYtHyRSGAZUlpDByBQXJ/rTHolhWdhHKwaV6yGPiL/3H3g4s3m2hOlbYbfYhiCEzX9QbUEfSiWPFveVXhM4wsQmPOPaKgYKs1LPlyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771392; c=relaxed/simple;
-	bh=bB0i1jXntNK+P+bXqn8bDjeqYNykg/AKkh5GGpIHpek=;
+	s=arc-20240116; t=1724772361; c=relaxed/simple;
+	bh=1UQdwxUwk8KE3gCzZE2mt0N1cOKbUDuGcBMLvswWomw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BntlfS9lGTjLrl/BTioZI8Fdbj4lD5BUhLyMtGIKqwgXlfR/ZNvnelGH13OTnDiCZZktVgJyG49hQlbgCulF8+HTtWPkspzmR8pVZzMSTlOO+9u+0o255vLqYac+ZspxOS5zFiGnG+/b1PZp74TJS5nwOF426KcVmxlsRvsVcaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zyl+//e3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E48F5C4AF52;
-	Tue, 27 Aug 2024 15:09:51 +0000 (UTC)
+	 MIME-Version; b=Xwbk+GdOcmP8A14rBWxVGjXHvsIKmqGn3DBtNYgtX6KscJleiLfm3YzPTQy3Rl8Mr/hPbYZ0q1u5mQ3AWEUbomV4JL8F8cImLOaX6KopdbBd2dZYuFeO0VRWC+61QhW/zmR8Cnp5E9qq2PygAD/OopMOPFiNVehkv16/tYXyj88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aUf3Z/Fh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ADC5C61071;
+	Tue, 27 Aug 2024 15:25:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771392;
-	bh=bB0i1jXntNK+P+bXqn8bDjeqYNykg/AKkh5GGpIHpek=;
+	s=korg; t=1724772360;
+	bh=1UQdwxUwk8KE3gCzZE2mt0N1cOKbUDuGcBMLvswWomw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zyl+//e3cKHIWUdaLlZJ2Off545dostC18zbNHdsYiyqym/n0xpHEI80lmyPP/9tu
-	 6++UgZSOqfNWH+a/ifgINqphhdKO2sM+oXSik0AUtELICw7IXtestKHkhu5bU3doik
-	 TFgjWAbO6MdwplcUvJQlGiX1deeP0rB5hb+gU68I=
+	b=aUf3Z/FhZzKf15nf8ynVJQA7ADDQ8c1opJg8OPb9ltwL5X8gSDXCAUtpYJlohgxNs
+	 aZFUpQ6FWkSoV4n/lGF1xZtGBLgL9dcGnZ5I0EEssaNul8TbcN/x4UHabAq3rz0pKG
+	 jse65id28qop9Z1pZlVECb8MLtew/7pvrSMUA7dQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Jiri Pirko <jiri@resnulli.us>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 175/273] ice: use internal pf id instead of function number
+Subject: [PATCH 6.1 191/321] firmware: cirrus: cs_dsp: Initialize debugfs_root to invalid
 Date: Tue, 27 Aug 2024 16:38:19 +0200
-Message-ID: <20240827143840.071339850@linuxfoundation.org>
+Message-ID: <20240827143845.502007635@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-[ Upstream commit 503ab6ee40fc103ea55cc9e50bb879e571d65aac ]
+[ Upstream commit 66626b15636b5f5cf3d7f6104799f77462748974 ]
 
-Use always the same pf id in devlink port number. When doing
-pass-through the PF to VM bus info func number can be any value.
+Initialize debugfs_root to -ENODEV so that if the client never sets a
+valid debugfs root the debugfs files will not be created.
 
-Fixes: 2ae0aa4758b0 ("ice: Move devlink port to PF/VF struct")
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Suggested-by: Jiri Pirko <jiri@resnulli.us>
-Signed-off-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+A NULL pointer passed to any of the debugfs_create_*() functions means
+"create in the root of debugfs". It doesn't mean "ignore".
+
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Link: https://msgid.link/r/20240307105353.40067-1-rf@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/devlink/devlink_port.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/firmware/cirrus/cs_dsp.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/devlink/devlink_port.c b/drivers/net/ethernet/intel/ice/devlink/devlink_port.c
-index 13e6790d3cae7..afcf64dab48a1 100644
---- a/drivers/net/ethernet/intel/ice/devlink/devlink_port.c
-+++ b/drivers/net/ethernet/intel/ice/devlink/devlink_port.c
-@@ -337,7 +337,7 @@ int ice_devlink_create_pf_port(struct ice_pf *pf)
- 		return -EIO;
+diff --git a/drivers/firmware/cirrus/cs_dsp.c b/drivers/firmware/cirrus/cs_dsp.c
+index ee4c32669607f..68005cce01360 100644
+--- a/drivers/firmware/cirrus/cs_dsp.c
++++ b/drivers/firmware/cirrus/cs_dsp.c
+@@ -490,7 +490,7 @@ void cs_dsp_cleanup_debugfs(struct cs_dsp *dsp)
+ {
+ 	cs_dsp_debugfs_clear(dsp);
+ 	debugfs_remove_recursive(dsp->debugfs_root);
+-	dsp->debugfs_root = NULL;
++	dsp->debugfs_root = ERR_PTR(-ENODEV);
+ }
+ EXPORT_SYMBOL_GPL(cs_dsp_cleanup_debugfs);
+ #else
+@@ -2300,6 +2300,11 @@ static int cs_dsp_common_init(struct cs_dsp *dsp)
  
- 	attrs.flavour = DEVLINK_PORT_FLAVOUR_PHYSICAL;
--	attrs.phys.port_number = pf->hw.bus.func;
-+	attrs.phys.port_number = pf->hw.pf_id;
+ 	mutex_init(&dsp->pwr_lock);
  
- 	/* As FW supports only port split options for whole device,
- 	 * set port split options only for first PF.
-@@ -399,7 +399,7 @@ int ice_devlink_create_vf_port(struct ice_vf *vf)
- 		return -EINVAL;
++#ifdef CONFIG_DEBUG_FS
++	/* Ensure this is invalid if client never provides a debugfs root */
++	dsp->debugfs_root = ERR_PTR(-ENODEV);
++#endif
++
+ 	return 0;
+ }
  
- 	attrs.flavour = DEVLINK_PORT_FLAVOUR_PCI_VF;
--	attrs.pci_vf.pf = pf->hw.bus.func;
-+	attrs.pci_vf.pf = pf->hw.pf_id;
- 	attrs.pci_vf.vf = vf->vf_id;
- 
- 	ice_devlink_set_switch_id(pf, &attrs.switch_id);
 -- 
 2.43.0
 
