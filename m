@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-70977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71268-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB8459610FC
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:15:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 059EB96129E
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:33:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A04CC28319D
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:15:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B687E28279E
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:33:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5F461C6F65;
-	Tue, 27 Aug 2024 15:14:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 513931CFEB7;
+	Tue, 27 Aug 2024 15:30:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Btkc1L/A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UwjzxHQb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A29C81A072D;
-	Tue, 27 Aug 2024 15:14:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F9741C8FCF;
+	Tue, 27 Aug 2024 15:30:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771690; cv=none; b=sgRPz19bgAIcFei5XRNsShZKlLst1xeMk5sbBrjCvxn/n2U4JRqck19uoKxQqCrZ1xJIIkK9+omZEhG6Qfiob04pGJiknPNBX2GOsJ/HXQV2dtgHB2luHp6wA+nZGf84r8Mv0dliDsZF/jzxjUdSweJr/lM8lVY1FVngE0xgGuk=
+	t=1724772651; cv=none; b=YnTqmn4jy1pgE1/L6PV408a8TLRneBh/14jL1sFn30SOGZsIGyc72IpedW1pbsZUls1zbXRVqpjQkh70X/fB9e4LFnB3YZrVpntQ8nMnsb2edFETKbmNIKqmHWp8nBWKILSuyxdUbwe/h4lmKgkEyPLtKYA2OLta/hj9ALKZdgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771690; c=relaxed/simple;
-	bh=P5eyuso2Wn2cirKAb5RDIOwxkvXPuG4AdQbYBpzctsM=;
+	s=arc-20240116; t=1724772651; c=relaxed/simple;
+	bh=XCu8Uuvrt4QYb8uyK8fjvR3cDoJBdYVazZL0czYSB9M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kqr46GHxoxG+PAAYwY+0nhkLRQAJn0gFadSGBaLyepXETjK0+VXiewhkUVLXlwf5sVGFlDTZuUH+SBz1FBY6iEoLFXTWDqN+x/cNDBUFmflR0QW9eKCUaa9aMyBOtL7N8mDMSzITyzF/HAS9riJUhSuaFq+7I0Ga/+xGbCWG9Os=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Btkc1L/A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1ADDC61064;
-	Tue, 27 Aug 2024 15:14:49 +0000 (UTC)
+	 MIME-Version; b=j767JVt4c8lT4l/i5Hh32IX9e0tlSCuHNAfQhTceLAHyc7EVQYQ6hOWltAaDWdplkHvVqqzifKCliRJxgA1oIRnyWRmTUFS/6O33LoffWtN3ukMtCuXo99gQJ7mMpjnNtnJvSkOraYpnrTrhuqP/BG/8sV2VH/zG0kpZ6dlGCh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UwjzxHQb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A400C4DDE6;
+	Tue, 27 Aug 2024 15:30:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771690;
-	bh=P5eyuso2Wn2cirKAb5RDIOwxkvXPuG4AdQbYBpzctsM=;
+	s=korg; t=1724772650;
+	bh=XCu8Uuvrt4QYb8uyK8fjvR3cDoJBdYVazZL0czYSB9M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Btkc1L/A65oL72opzfWPPeKnw/SfZKvpiycrR31RPbuo6xbN94srwrsPp5Oa32oTq
-	 EqK8EIyupE2RMzzZ3eyFNtHUAfStHT5JC7hl9wNKh5jGBJ5b+BvIGi8QJ+RtIQnrRC
-	 OqCOadACyFAXSNOhXhD9wQmk3BZmcqjFDBuKsUtE=
+	b=UwjzxHQb6ea5ZHlNWnDelyDomAAommF2srQcs1Yj6Yco2pS1WwdPFGB4lIeZ2uRxR
+	 qA0QKZbOEcmmUzogxtxqQuQiBjkpKGCjRSDLbv5lb7S4QlM3+150O9GglbTn4Mmi/y
+	 gAWXOw0fp7uK+4S8CiBBdPWOuz5jBubDv+cxyQio=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Mat Martineau <martineau@kernel.org>,
 	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.10 263/273] mptcp: pm: fullmesh: select the right ID later
+Subject: [PATCH 6.1 279/321] mptcp: pm: only decrement add_addr_accepted for MPJ req
 Date: Tue, 27 Aug 2024 16:39:47 +0200
-Message-ID: <20240827143843.406722791@linuxfoundation.org>
+Message-ID: <20240827143848.871683856@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit 09355f7abb9fbfc1a240be029837921ea417bf4f upstream.
+commit 1c1f721375989579e46741f59523e39ec9b2a9bd upstream.
 
-When reacting upon the reception of an ADD_ADDR, the in-kernel PM first
-looks for fullmesh endpoints. If there are some, it will pick them,
-using their entry ID.
+Adding the following warning ...
 
-It should set the ID 0 when using the endpoint corresponding to the
-initial subflow, it is a special case imposed by the MPTCP specs.
+  WARN_ON_ONCE(msk->pm.add_addr_accepted == 0)
 
-Note that msk->mpc_endpoint_id might not be set when receiving the first
-ADD_ADDR from the server. So better to compare the addresses.
+... before decrementing the add_addr_accepted counter helped to find a
+bug when running the "remove single subflow" subtest from the
+mptcp_join.sh selftest.
 
-Fixes: 1a0d6136c5f0 ("mptcp: local addresses fullmesh")
+Removing a 'subflow' endpoint will first trigger a RM_ADDR, then the
+subflow closure. Before this patch, and upon the reception of the
+RM_ADDR, the other peer will then try to decrement this
+add_addr_accepted. That's not correct because the attached subflows have
+not been created upon the reception of an ADD_ADDR.
+
+A way to solve that is to decrement the counter only if the attached
+subflow was an MP_JOIN to a remote id that was not 0, and initiated by
+the host receiving the RM_ADDR.
+
+Fixes: d0876b2284cf ("mptcp: add the incoming RM_ADDR support")
 Cc: stable@vger.kernel.org
 Reviewed-by: Mat Martineau <martineau@kernel.org>
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20240819-net-mptcp-pm-reusing-id-v1-12-38035d40de5b@kernel.org
+Link: https://patch.msgid.link/20240819-net-mptcp-pm-reusing-id-v1-9-38035d40de5b@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/pm_netlink.c |   11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ net/mptcp/pm_netlink.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
 --- a/net/mptcp/pm_netlink.c
 +++ b/net/mptcp/pm_netlink.c
-@@ -636,6 +636,7 @@ static unsigned int fill_local_addresses
- {
- 	struct sock *sk = (struct sock *)msk;
- 	struct mptcp_pm_addr_entry *entry;
-+	struct mptcp_addr_info mpc_addr;
- 	struct pm_nl_pernet *pernet;
- 	unsigned int subflows_max;
- 	int i = 0;
-@@ -643,6 +644,8 @@ static unsigned int fill_local_addresses
- 	pernet = pm_nl_get_pernet_from_msk(msk);
- 	subflows_max = mptcp_pm_get_subflows_max(msk);
+@@ -834,7 +834,7 @@ static void mptcp_pm_nl_rm_addr_or_subfl
+ 			mptcp_close_ssk(sk, ssk, subflow);
+ 			spin_lock_bh(&msk->pm.lock);
  
-+	mptcp_local_address((struct sock_common *)msk, &mpc_addr);
-+
- 	rcu_read_lock();
- 	list_for_each_entry_rcu(entry, &pernet->local_addr_list, list) {
- 		if (!(entry->flags & MPTCP_PM_ADDR_FLAG_FULLMESH))
-@@ -653,7 +656,13 @@ static unsigned int fill_local_addresses
- 
- 		if (msk->pm.subflows < subflows_max) {
- 			msk->pm.subflows++;
--			addrs[i++] = entry->addr;
-+			addrs[i] = entry->addr;
-+
-+			/* Special case for ID0: set the correct ID */
-+			if (mptcp_addresses_equal(&entry->addr, &mpc_addr, entry->addr.port))
-+				addrs[i].id = 0;
-+
-+			i++;
+-			removed = true;
++			removed |= subflow->request_join;
+ 			if (rm_type == MPTCP_MIB_RMSUBFLOW)
+ 				__MPTCP_INC_STATS(sock_net(sk), rm_type);
  		}
- 	}
- 	rcu_read_unlock();
+@@ -848,7 +848,11 @@ static void mptcp_pm_nl_rm_addr_or_subfl
+ 		if (!mptcp_pm_is_kernel(msk))
+ 			continue;
+ 
+-		if (rm_type == MPTCP_MIB_RMADDR) {
++		if (rm_type == MPTCP_MIB_RMADDR && rm_id &&
++		    !WARN_ON_ONCE(msk->pm.add_addr_accepted == 0)) {
++			/* Note: if the subflow has been closed before, this
++			 * add_addr_accepted counter will not be decremented.
++			 */
+ 			msk->pm.add_addr_accepted--;
+ 			WRITE_ONCE(msk->pm.accept_addr, true);
+ 		} else if (rm_type == MPTCP_MIB_RMSUBFLOW) {
 
 
 
