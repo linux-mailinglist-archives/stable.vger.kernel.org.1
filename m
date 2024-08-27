@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-70899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71208-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76E52961094
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:10:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D836896124F
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:29:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A8B691C2367B
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:10:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D7151F214B9
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:29:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95C761BA294;
-	Tue, 27 Aug 2024 15:10:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6F061C57BF;
+	Tue, 27 Aug 2024 15:27:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nzyfU+Lh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="utLIllPO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54E4612E4D;
-	Tue, 27 Aug 2024 15:10:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9057E1C6F5B;
+	Tue, 27 Aug 2024 15:27:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771434; cv=none; b=igNhpL0VQ+GylB6wY0mCLThljLhrVfsaVcqpVCHHL6OuJNht6b/c8au/Xx121PPyllt6ajYb1KHue6KNm63toe7lMVxhFN9Nhtuj+DOR5L6jsjj3j0dnXYnRP0WRRQa7HTvkmRgPf4YFsEuOCBovYJRtZyR5VHfgBlcU+1LD1pQ=
+	t=1724772452; cv=none; b=tQHTdETs+J31R1utk43gKwy0NQoyObJudbkL6fDfUmEtDWcDYqP/sV2b4fX8t3S/uORzMe9YmKF2Bzb89ek3BluLLQb7lLMXd4uKlBGaRPqxhyfKNYPjDUQdebSUAJEy1yCHNKUoyo3ei9Js09b0+K9zwhess2A2SQcAs+OPk90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771434; c=relaxed/simple;
-	bh=r6b9L30D7Rnka36MWQm7ipKl7PQKMisjLoWdAQfokNg=;
+	s=arc-20240116; t=1724772452; c=relaxed/simple;
+	bh=FkrQxsMCrUl4p3OMxFlk8yF8c/l1W99Y1B1nMQIrOZU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EISmkXF5ahwZACPpUtLCc2+n4RvcqjV4kbyL/49sfFc71/6HzxRkMWkj5z1BFNvYsmyle9tgGpKJH4tRq8WbDhYnO8BSLCblZBfz1z5oaE4GW46oUdQfyIHR60fSsdDW6qDw++mP+dtVT7QuLlGSnT2GBRGF3SdWKwY6/O+z1xI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nzyfU+Lh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CA12C4AF63;
-	Tue, 27 Aug 2024 15:10:33 +0000 (UTC)
+	 MIME-Version; b=QfDckA93EEcAaAkEF98v/up5Y9i8XPbR3Ma9cw8IdlnOguDKa3nn2pEbodj7qsnOYMi7nNBB0Lpx9gJ2P5oUvUEDpX/Zr7Ce2HEsAPgtpJNzfcyw7huER2oisGVtLoEQaza09u5YS62kEbX5y/GKfENyu9wyUT9aFB9pn7BTvRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=utLIllPO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00734C61040;
+	Tue, 27 Aug 2024 15:27:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771434;
-	bh=r6b9L30D7Rnka36MWQm7ipKl7PQKMisjLoWdAQfokNg=;
+	s=korg; t=1724772452;
+	bh=FkrQxsMCrUl4p3OMxFlk8yF8c/l1W99Y1B1nMQIrOZU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nzyfU+LhD+EVZE/3lNb7miL+dxJfEOkKjMjYaWJSI8cfpgvsbNvKovXnQIIEG6oD2
-	 T8J8aqXPKqjLHLWoJD/fVfADWXvb5mR8DVL0+jfqFXRa6Lsvb+Gsq8jjlAD/8H1L5+
-	 AMTWlaK68tTbgX+Uydk+6mHVYNveOjaQ3Ztg3WF0=
+	b=utLIllPOlIJDpo1reSexZmPObt5VTsbxeWw9md4eoLIQgNZmzEm+YPnnBRxK4FoN1
+	 N2fGQv2Y/X4ZylqourQ+J1C8cHGvsMU+Q7hcDlnIniIhUlpnAqIe4pStX7u5fThNNQ
+	 64F2uN8bN3IMbDf3jLq1Shcwds3aWycSQgUxPglw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+8407d9bb88cd4c6bf61a@syzkaller.appspotmail.com,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Julia Lawall <julia.lawall@inria.fr>,
+	Abdulrasaq Lawani <abdulrasaqolawani@gmail.com>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 186/273] netfilter: flowtable: validate vlan header
+Subject: [PATCH 6.1 202/321] fbdev: offb: replace of_node_put with __free(device_node)
 Date: Tue, 27 Aug 2024 16:38:30 +0200
-Message-ID: <20240827143840.486386194@linuxfoundation.org>
+Message-ID: <20240827143845.922698611@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Abdulrasaq Lawani <abdulrasaqolawani@gmail.com>
 
-[ Upstream commit 6ea14ccb60c8ab829349979b22b58a941ec4a3ee ]
+[ Upstream commit ce4a7ae84a58b9f33aae8d6c769b3c94f3d5ce76 ]
 
-Ensure there is sufficient room to access the protocol field of the
-VLAN header, validate it once before the flowtable lookup.
+Replaced instance of of_node_put with __free(device_node)
+to simplify code and protect against any memory leaks
+due to future changes in the control flow.
 
-=====================================================
-BUG: KMSAN: uninit-value in nf_flow_offload_inet_hook+0x45a/0x5f0 net/netfilter/nf_flow_table_inet.c:32
- nf_flow_offload_inet_hook+0x45a/0x5f0 net/netfilter/nf_flow_table_inet.c:32
- nf_hook_entry_hookfn include/linux/netfilter.h:154 [inline]
- nf_hook_slow+0xf4/0x400 net/netfilter/core.c:626
- nf_hook_ingress include/linux/netfilter_netdev.h:34 [inline]
- nf_ingress net/core/dev.c:5440 [inline]
-
-Fixes: 4cd91f7c290f ("netfilter: flowtable: add vlan support")
-Reported-by: syzbot+8407d9bb88cd4c6bf61a@syzkaller.appspotmail.com
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Suggested-by: Julia Lawall <julia.lawall@inria.fr>
+Signed-off-by: Abdulrasaq Lawani <abdulrasaqolawani@gmail.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_flow_table_inet.c | 3 +++
- net/netfilter/nf_flow_table_ip.c   | 3 +++
- 2 files changed, 6 insertions(+)
+ drivers/video/fbdev/offb.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/net/netfilter/nf_flow_table_inet.c b/net/netfilter/nf_flow_table_inet.c
-index 6eef15648b7b0..b0f1991719324 100644
---- a/net/netfilter/nf_flow_table_inet.c
-+++ b/net/netfilter/nf_flow_table_inet.c
-@@ -17,6 +17,9 @@ nf_flow_offload_inet_hook(void *priv, struct sk_buff *skb,
- 
- 	switch (skb->protocol) {
- 	case htons(ETH_P_8021Q):
-+		if (!pskb_may_pull(skb, skb_mac_offset(skb) + sizeof(*veth)))
-+			return NF_ACCEPT;
-+
- 		veth = (struct vlan_ethhdr *)skb_mac_header(skb);
- 		proto = veth->h_vlan_encapsulated_proto;
- 		break;
-diff --git a/net/netfilter/nf_flow_table_ip.c b/net/netfilter/nf_flow_table_ip.c
-index c2c005234dcd3..98edcaa37b38d 100644
---- a/net/netfilter/nf_flow_table_ip.c
-+++ b/net/netfilter/nf_flow_table_ip.c
-@@ -281,6 +281,9 @@ static bool nf_flow_skb_encap_protocol(struct sk_buff *skb, __be16 proto,
- 
- 	switch (skb->protocol) {
- 	case htons(ETH_P_8021Q):
-+		if (!pskb_may_pull(skb, skb_mac_offset(skb) + sizeof(*veth)))
-+			return false;
-+
- 		veth = (struct vlan_ethhdr *)skb_mac_header(skb);
- 		if (veth->h_vlan_encapsulated_proto == proto) {
- 			*offset += VLAN_HLEN;
+diff --git a/drivers/video/fbdev/offb.c b/drivers/video/fbdev/offb.c
+index 91001990e351c..6f0a9851b0924 100644
+--- a/drivers/video/fbdev/offb.c
++++ b/drivers/video/fbdev/offb.c
+@@ -355,7 +355,7 @@ static void offb_init_palette_hacks(struct fb_info *info, struct device_node *dp
+ 			par->cmap_type = cmap_gxt2000;
+ 	} else if (of_node_name_prefix(dp, "vga,Display-")) {
+ 		/* Look for AVIVO initialized by SLOF */
+-		struct device_node *pciparent = of_get_parent(dp);
++		struct device_node *pciparent __free(device_node) = of_get_parent(dp);
+ 		const u32 *vid, *did;
+ 		vid = of_get_property(pciparent, "vendor-id", NULL);
+ 		did = of_get_property(pciparent, "device-id", NULL);
+@@ -367,7 +367,6 @@ static void offb_init_palette_hacks(struct fb_info *info, struct device_node *dp
+ 			if (par->cmap_adr)
+ 				par->cmap_type = cmap_avivo;
+ 		}
+-		of_node_put(pciparent);
+ 	} else if (dp && of_device_is_compatible(dp, "qemu,std-vga")) {
+ #ifdef __BIG_ENDIAN
+ 		const __be32 io_of_addr[3] = { 0x01000000, 0x0, 0x0 };
 -- 
 2.43.0
 
