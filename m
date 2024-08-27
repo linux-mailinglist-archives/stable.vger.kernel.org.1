@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-70506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71047-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15A04960E7B
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:49:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E78B961165
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:20:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8243285937
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:49:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 51AB01C23800
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:20:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B60D51C4EF6;
-	Tue, 27 Aug 2024 14:48:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5853D1C9DF1;
+	Tue, 27 Aug 2024 15:18:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lyl2ZQds"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kf+L0ID3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73E071A072D;
-	Tue, 27 Aug 2024 14:48:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 141AE1C9DC2;
+	Tue, 27 Aug 2024 15:18:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770134; cv=none; b=Cy0MVlzOjojcUppyltbV3dYV1Fhd4Iuukc482dVwOyf3pt20+xxwrPjaxjcRlA98dx6fmm2AoycYt1L5DLuP60loMXVKbfPR+BzdyzD7a9ft/Ryy3hBdZyiWY03LirHF6P/OrQ2C43JritXPN96GSbeVjCWG1yTrOsw6pbU8rLg=
+	t=1724771923; cv=none; b=Z+zVwF8b9/lE/7UN1+0sk+xCeqjqMVeYn1t/8JrBFeBpkd89Mw+UZw3WbE55rWGfOo/PNJvtaOsH6Jgm/b4M+qtmGn0atUepDlEdxj7U/kfY32UVbG27ELQdrXhOfp7OQtTYH6gLxvdBlf+nlaQrp0Zw1XeHMrtJ5HelbFxXAOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770134; c=relaxed/simple;
-	bh=mWQzw+6Cjc55awyIUeZjDfBNzp2vXedbv+/yZPqKOy0=;
+	s=arc-20240116; t=1724771923; c=relaxed/simple;
+	bh=gxuBoakmVpZvoPtZPJKWwd/lALN9v3mT76y2e9G2wfw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ORiFW/HKAkrsVJ4IIFBMIYxYfJUDv2hK3yPUg1vSptHD/8aVDs0wxqBDQ4Jkgk0kHDYGjz9YSCSTaYMpNkKWHMiG5tgows/MbORpO6kBJCxsXzifA9UGD21ZWz1TPUETWMGkFQmvBjf1zhb0dMs4UfvhxdXr4s+Ns0MfS/3Xvkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lyl2ZQds; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 231E4C6107F;
-	Tue, 27 Aug 2024 14:48:53 +0000 (UTC)
+	 MIME-Version; b=JDRoINB+C/VsPmQES2z/U/3rPbNe/rFrK7qI5uHS+3kso+KuoX9uxYRyRl1thjCBt13oyBCvV46DxTOUvEruw9hNjzMK11cZlrQ8ikFw2YwtxsDjyBqOfjP94+eR3Ulh3yteUcqOFfP7sEPLyQgnBsYbnSkJuiOE55NhF9eBbeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kf+L0ID3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDF03C61067;
+	Tue, 27 Aug 2024 15:18:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770134;
-	bh=mWQzw+6Cjc55awyIUeZjDfBNzp2vXedbv+/yZPqKOy0=;
+	s=korg; t=1724771921;
+	bh=gxuBoakmVpZvoPtZPJKWwd/lALN9v3mT76y2e9G2wfw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lyl2ZQdsoyfRVZF3nMA3OUsqcP9qTntLO+QTeF2QSVr2FLlfIPPO4zN4KPpWsx4TH
-	 wybsQ5TNE+0XrB9EMZuTaHkWb/SkEZIOk/PJbdrZGEqkS9MycF06YcWT+YnVI47+Ga
-	 xV2DzxaT1rfXfV8pPWa54tro+JcxJARaUh/6E+Sg=
+	b=kf+L0ID3U7l8NXvWdfoH3V8+k8YNeIoj8EPv3YEU4bWWWVbxL3S8ssNFUAm65o9n2
+	 CBpIE+1KoPGwvJ+6+O49JYtO9Rv2vW+1Ia7GeQkVNriMRhptiQNe5Wh0MFHL46pALm
+	 b2XP9Lr/VMuSrBdP3z92KlMTffuVyqN6K0weoe9U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Nysal Jan K.A" <nysal@linux.ibm.com>,
-	Shrikanth Hegde <sshegde@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	syzbot+8bb053b5d63595ab47db@syzkaller.appspotmail.com,
+	Xin Long <lucien.xin@gmail.com>,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 137/341] powerpc/topology: Check if a core is online
+Subject: [PATCH 6.1 060/321] net: sctp: fix skb leak in sctp_inq_free()
 Date: Tue, 27 Aug 2024 16:36:08 +0200
-Message-ID: <20240827143848.632240108@linuxfoundation.org>
+Message-ID: <20240827143840.521932209@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +64,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nysal Jan K.A <nysal@linux.ibm.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit 227bbaabe64b6f9cd98aa051454c1d4a194a8c6a ]
+[ Upstream commit 4e45170d9acc2d5ae8f545bf3f2f67504a361338 ]
 
-topology_is_core_online() checks if the core a CPU belongs to
-is online. The core is online if at least one of the sibling
-CPUs is online. The first CPU of an online core is also online
-in the common case, so this should be fairly quick.
+In case of GSO, 'chunk->skb' pointer may point to an entry from
+fraglist created in 'sctp_packet_gso_append()'. To avoid freeing
+random fraglist entry (and so undefined behavior and/or memory
+leak), introduce 'sctp_inq_chunk_free()' helper to ensure that
+'chunk->skb' is set to 'chunk->head_skb' (i.e. fraglist head)
+before calling 'sctp_chunk_free()', and use the aforementioned
+helper in 'sctp_inq_pop()' as well.
 
-Fixes: 73c58e7e1412 ("powerpc: Add HOTPLUG_SMT support")
-Signed-off-by: Nysal Jan K.A <nysal@linux.ibm.com>
-Reviewed-by: Shrikanth Hegde <sshegde@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240731030126.956210-3-nysal@linux.ibm.com
+Reported-by: syzbot+8bb053b5d63595ab47db@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?id=0d8351bbe54fd04a492c2daab0164138db008042
+Fixes: 90017accff61 ("sctp: Add GSO support")
+Suggested-by: Xin Long <lucien.xin@gmail.com>
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Acked-by: Xin Long <lucien.xin@gmail.com>
+Link: https://lore.kernel.org/r/20240214082224.10168-1-dmantipov@yandex.ru
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/topology.h | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ net/sctp/inqueue.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/topology.h b/arch/powerpc/include/asm/topology.h
-index f4e6f2dd04b73..16bacfe8c7a2c 100644
---- a/arch/powerpc/include/asm/topology.h
-+++ b/arch/powerpc/include/asm/topology.h
-@@ -145,6 +145,7 @@ static inline int cpu_to_coregroup_id(int cpu)
- 
- #ifdef CONFIG_HOTPLUG_SMT
- #include <linux/cpu_smt.h>
-+#include <linux/cpumask.h>
- #include <asm/cputhreads.h>
- 
- static inline bool topology_is_primary_thread(unsigned int cpu)
-@@ -156,6 +157,18 @@ static inline bool topology_smt_thread_allowed(unsigned int cpu)
- {
- 	return cpu_thread_in_core(cpu) < cpu_smt_num_threads;
+diff --git a/net/sctp/inqueue.c b/net/sctp/inqueue.c
+index 7182c5a450fb5..5c16521818058 100644
+--- a/net/sctp/inqueue.c
++++ b/net/sctp/inqueue.c
+@@ -38,6 +38,14 @@ void sctp_inq_init(struct sctp_inq *queue)
+ 	INIT_WORK(&queue->immediate, NULL);
  }
-+
-+#define topology_is_core_online topology_is_core_online
-+static inline bool topology_is_core_online(unsigned int cpu)
-+{
-+	int i, first_cpu = cpu_first_thread_sibling(cpu);
-+
-+	for (i = first_cpu; i < first_cpu + threads_per_core; ++i) {
-+		if (cpu_online(i))
-+			return true;
-+	}
-+	return false;
-+}
- #endif
  
- #endif /* __KERNEL__ */
++/* Properly release the chunk which is being worked on. */
++static inline void sctp_inq_chunk_free(struct sctp_chunk *chunk)
++{
++	if (chunk->head_skb)
++		chunk->skb = chunk->head_skb;
++	sctp_chunk_free(chunk);
++}
++
+ /* Release the memory associated with an SCTP inqueue.  */
+ void sctp_inq_free(struct sctp_inq *queue)
+ {
+@@ -53,7 +61,7 @@ void sctp_inq_free(struct sctp_inq *queue)
+ 	 * free it as well.
+ 	 */
+ 	if (queue->in_progress) {
+-		sctp_chunk_free(queue->in_progress);
++		sctp_inq_chunk_free(queue->in_progress);
+ 		queue->in_progress = NULL;
+ 	}
+ }
+@@ -130,9 +138,7 @@ struct sctp_chunk *sctp_inq_pop(struct sctp_inq *queue)
+ 				goto new_skb;
+ 			}
+ 
+-			if (chunk->head_skb)
+-				chunk->skb = chunk->head_skb;
+-			sctp_chunk_free(chunk);
++			sctp_inq_chunk_free(chunk);
+ 			chunk = queue->in_progress = NULL;
+ 		} else {
+ 			/* Nothing to do. Next chunk in the packet, please. */
 -- 
 2.43.0
 
