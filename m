@@ -1,53 +1,62 @@
-Return-Path: <stable+bounces-71161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71128-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E79F9611F1
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:25:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 549219611C8
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:23:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B8C21F23F0F
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:25:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06C68281BA8
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:23:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 814C01C8FD3;
-	Tue, 27 Aug 2024 15:25:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D499D1C8FC4;
+	Tue, 27 Aug 2024 15:23:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="17W1w380"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VCz8hfUT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D54D1C68BE;
-	Tue, 27 Aug 2024 15:25:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 878E11C6F58;
+	Tue, 27 Aug 2024 15:23:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772301; cv=none; b=EkYETFjIFgf+S6Pkyng+WnNcuLlWnSZXoNBAu8cLff+5MIUNDZfvqFS80zjCv7xMDlPCCgK/2pGDOJLwsh+xtZohB+7Nxa4u0OC8wf7FJqSYwxtW8Ik8X9kcQKG1VftrBTXvPs3reJ920eN/csx0faCQjP9TsnGV0pxq9X3Pccc=
+	t=1724772190; cv=none; b=CAKF2aTB3cjRZYJAudiLb/7AJGb++g4k3FkSAMrkYtAOsvIUKBAjgPPjBAcXNlxFR95cjZWFAxa+OQkgdjqzMb10EvUbCtZILSA1bZVN9AxDiOpW/BQMbWC1UxjoqfderdxzBhURKhT2YPtvuCKyjl7+bWHxHFnRHH57wLWYNYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772301; c=relaxed/simple;
-	bh=kEBE5B24GjHpQrRaPn5HoluqGWIKJSh0Xl8IRPEN5mE=;
+	s=arc-20240116; t=1724772190; c=relaxed/simple;
+	bh=vnw/26amaSwExS6VJINJ5HYBG4b505clDK0CWf2K4H8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ftq0u8/pbQ2x4u36yZ1y/y4yyUz/SywaVrW3U+GOOXZ1mdfH+OaLYT1NVQQfYSoiGM7bCaxbxzz/zeExENFlMTOoDbGiOzWOp+MW37ruaotKqbD+F+zhGTTWTaPjdBBGYs/C9Z5R31EY3pwwLtCDYvlESGrOr4MUdwygYpFpAN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=17W1w380; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F689C61071;
-	Tue, 27 Aug 2024 15:25:00 +0000 (UTC)
+	 MIME-Version; b=oUdrVBcAB3wWX3zxJY3+laTkvZ0y03AU5cz9P6rlWWPSPeynFCEegEPv9V7cUWHLj6AAjg8RfV4M5EGiJr1548LLmj9/6Fb0PtIY9GWmF2frnLkGGzzlmjPfUUkyOA+8tZPlCCnAXpFmriVwD5AVEapMYvyv/GwPI9VcQU6XBUY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VCz8hfUT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87F68C6104C;
+	Tue, 27 Aug 2024 15:23:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772301;
-	bh=kEBE5B24GjHpQrRaPn5HoluqGWIKJSh0Xl8IRPEN5mE=;
+	s=korg; t=1724772190;
+	bh=vnw/26amaSwExS6VJINJ5HYBG4b505clDK0CWf2K4H8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=17W1w380C/JiRj0nMSskdLLxIdBC9+iY7WHo816RpJshGRfOWApGksgDazCD5I9pL
-	 O6VzHCXckQ4MeHevfWBxkm29wff3D5gi3mdAEDJa4BtDbJ0xTI4ydzk50Vv+8i54O2
-	 GdfxiuAb8Zb+z6pyCO9WJiAFfzaYyzC2vvbFV7Dw=
+	b=VCz8hfUToTkJ8Z4KB13/BKb4FV3/Yp/dQsnODehzjKPohZOMM/qUQEnr+hG2R5VX2
+	 i7KG8xUZA/39WURnNE50wkkpCP/SRAl/vMv3mSEiReAShWPaj85hEH3e+NNJ4WaEtY
+	 TPiVCvgi4VDY9lA3VskJqqeiSXFfE8hQ8hpk7Ktw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Song Liu <song@kernel.org>,
+	Sargun Dhillon <sargun@sargun.me>,
+	Serge Hallyn <serge@hallyn.com>,
+	Jann Horn <jannh@google.com>,
+	Henning Schild <henning.schild@siemens.com>,
+	Andrei Vagin <avagin@gmail.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Laurent Vivier <laurent@vivier.eu>,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <christian.brauner@ubuntu.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Kees Cook <keescook@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 132/321] md/raid5-cache: use READ_ONCE/WRITE_ONCE for conf->log
-Date: Tue, 27 Aug 2024 16:37:20 +0200
-Message-ID: <20240827143843.268804303@linuxfoundation.org>
+Subject: [PATCH 6.1 133/321] binfmt_misc: cleanup on filesystem umount
+Date: Tue, 27 Aug 2024 16:37:21 +0200
+Message-ID: <20240827143843.306307294@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
 References: <20240827143838.192435816@linuxfoundation.org>
@@ -66,224 +75,440 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Christian Brauner <christian.brauner@ubuntu.com>
 
-[ Upstream commit 06a4d0d8c642b5ea654e832b74dca12965356da0 ]
+[ Upstream commit 1c5976ef0f7ad76319df748ccb99a4c7ba2ba464 ]
 
-'conf->log' is set with 'reconfig_mutex' grabbed, however, readers are
-not procted, hence protect it with READ_ONCE/WRITE_ONCE to prevent
-reading abnormal values.
+Currently, registering a new binary type pins the binfmt_misc
+filesystem. Specifically, this means that as long as there is at least
+one binary type registered the binfmt_misc filesystem survives all
+umounts, i.e. the superblock is not destroyed. Meaning that a umount
+followed by another mount will end up with the same superblock and the
+same binary type handlers. This is a behavior we tend to discourage for
+any new filesystems (apart from a few special filesystems such as e.g.
+configfs or debugfs). A umount operation without the filesystem being
+pinned - by e.g. someone holding a file descriptor to an open file -
+should usually result in the destruction of the superblock and all
+associated resources. This makes introspection easier and leads to
+clearly defined, simple and clean semantics. An administrator can rely
+on the fact that a umount will guarantee a clean slate making it
+possible to reinitialize a filesystem. Right now all binary types would
+need to be explicitly deleted before that can happen.
 
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20231010151958.145896-3-yukuai1@huaweicloud.com
+This allows us to remove the heavy-handed calls to simple_pin_fs() and
+simple_release_fs() when creating and deleting binary types. This in
+turn allows us to replace the current brittle pinning mechanism abusing
+dget() which has caused a range of bugs judging from prior fixes in [2]
+and [3]. The additional dget() in load_misc_binary() pins the dentry but
+only does so for the sake to prevent ->evict_inode() from freeing the
+node when a user removes the binary type and kill_node() is run. Which
+would mean ->interpreter and ->interp_file would be freed causing a UAF.
+
+This isn't really nicely documented nor is it very clean because it
+relies on simple_pin_fs() pinning the filesystem as long as at least one
+binary type exists. Otherwise it would cause load_misc_binary() to hold
+on to a dentry belonging to a superblock that has been shutdown.
+Replace that implicit pinning with a clean and simple per-node refcount
+and get rid of the ugly dget() pinning. A similar mechanism exists for
+e.g. binderfs (cf. [4]). All the cleanup work can now be done in
+->evict_inode().
+
+In a follow-up patch we will make it possible to use binfmt_misc in
+sandboxes. We will use the cleaner semantics where a umount for the
+filesystem will cause the superblock and all resources to be
+deallocated. In preparation for this apply the same semantics to the
+initial binfmt_misc mount. Note, that this is a user-visible change and
+as such a uapi change but one that we can reasonably risk. We've
+discussed this in earlier versions of this patchset (cf. [1]).
+
+The main user and provider of binfmt_misc is systemd. Systemd provides
+binfmt_misc via autofs since it is configurable as a kernel module and
+is used by a few exotic packages and users. As such a binfmt_misc mount
+is triggered when /proc/sys/fs/binfmt_misc is accessed and is only
+provided on demand. Other autofs on demand filesystems include EFI ESP
+which systemd umounts if the mountpoint stays idle for a certain amount
+of time. This doesn't apply to the binfmt_misc autofs mount which isn't
+touched once it is mounted meaning this change can't accidently wipe
+binary type handlers without someone having explicitly unmounted
+binfmt_misc. After speaking to systemd folks they don't expect this
+change to affect them.
+
+In line with our general policy, if we see a regression for systemd or
+other users with this change we will switch back to the old behavior for
+the initial binfmt_misc mount and have binary types pin the filesystem
+again. But while we touch this code let's take the chance and let's
+improve on the status quo.
+
+[1]: https://lore.kernel.org/r/20191216091220.465626-2-laurent@vivier.eu
+[2]: commit 43a4f2619038 ("exec: binfmt_misc: fix race between load_misc_binary() and kill_node()"
+[3]: commit 83f918274e4b ("exec: binfmt_misc: shift filp_close(interp_file) from kill_node() to bm_evict_inode()")
+[4]: commit f0fe2c0f050d ("binder: prevent UAF for binderfs devices II")
+
+Link: https://lore.kernel.org/r/20211028103114.2849140-1-brauner@kernel.org (v1)
+Cc: Sargun Dhillon <sargun@sargun.me>
+Cc: Serge Hallyn <serge@hallyn.com>
+Cc: Jann Horn <jannh@google.com>
+Cc: Henning Schild <henning.schild@siemens.com>
+Cc: Andrei Vagin <avagin@gmail.com>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Laurent Vivier <laurent@vivier.eu>
+Cc: linux-fsdevel@vger.kernel.org
+Acked-by: Serge Hallyn <serge@hallyn.com>
+Signed-off-by: Christian Brauner <christian.brauner@ubuntu.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Kees Cook <keescook@chromium.org>
+---
+/* v2 */
+- Christian Brauner <christian.brauner@ubuntu.com>:
+  - Add more comments that explain what's going on.
+  - Rename functions while changing them to better reflect what they are
+    doing to make the code easier to understand.
+  - In the first version when a specific binary type handler was removed
+    either through a write to the entry's file or all binary type
+    handlers were removed by a write to the binfmt_misc mount's status
+    file all cleanup work happened during inode eviction.
+    That includes removal of the relevant entries from entry list. While
+    that works fine I disliked that model after thinking about it for a
+    bit. Because it means that there was a window were someone has
+    already removed a or all binary handlers but they could still be
+    safely reached from load_misc_binary() when it has managed to take
+    the read_lock() on the entries list while inode eviction was already
+    happening. Again, that perfectly benign but it's cleaner to remove
+    the binary handler from the list immediately meaning that ones the
+    write to then entry's file or the binfmt_misc status file returns
+    the binary type cannot be executed anymore. That gives stronger
+    guarantees to the user.
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/raid5-cache.c | 47 +++++++++++++++++++++-------------------
- 1 file changed, 25 insertions(+), 22 deletions(-)
+ fs/binfmt_misc.c | 216 ++++++++++++++++++++++++++++++++++++-----------
+ 1 file changed, 168 insertions(+), 48 deletions(-)
 
-diff --git a/drivers/md/raid5-cache.c b/drivers/md/raid5-cache.c
-index eb66d0bfe39d2..4b9585875a669 100644
---- a/drivers/md/raid5-cache.c
-+++ b/drivers/md/raid5-cache.c
-@@ -327,8 +327,9 @@ void r5l_wake_reclaim(struct r5l_log *log, sector_t space);
- void r5c_check_stripe_cache_usage(struct r5conf *conf)
- {
- 	int total_cached;
-+	struct r5l_log *log = READ_ONCE(conf->log);
+diff --git a/fs/binfmt_misc.c b/fs/binfmt_misc.c
+index bb202ad369d53..740dac1012ae8 100644
+--- a/fs/binfmt_misc.c
++++ b/fs/binfmt_misc.c
+@@ -60,12 +60,11 @@ typedef struct {
+ 	char *name;
+ 	struct dentry *dentry;
+ 	struct file *interp_file;
++	refcount_t users;		/* sync removal with load_misc_binary() */
+ } Node;
  
--	if (!r5c_is_writeback(conf->log))
-+	if (!r5c_is_writeback(log))
- 		return;
- 
- 	total_cached = atomic_read(&conf->r5c_cached_partial_stripes) +
-@@ -344,7 +345,7 @@ void r5c_check_stripe_cache_usage(struct r5conf *conf)
- 	 */
- 	if (total_cached > conf->min_nr_stripes * 1 / 2 ||
- 	    atomic_read(&conf->empty_inactive_list_nr) > 0)
--		r5l_wake_reclaim(conf->log, 0);
-+		r5l_wake_reclaim(log, 0);
- }
+ static DEFINE_RWLOCK(entries_lock);
+ static struct file_system_type bm_fs_type;
+-static struct vfsmount *bm_mnt;
+-static int entry_count;
  
  /*
-@@ -353,7 +354,9 @@ void r5c_check_stripe_cache_usage(struct r5conf *conf)
+  * Max length of the register string.  Determined by:
+@@ -82,19 +81,23 @@ static int entry_count;
   */
- void r5c_check_cached_full_stripe(struct r5conf *conf)
- {
--	if (!r5c_is_writeback(conf->log))
-+	struct r5l_log *log = READ_ONCE(conf->log);
-+
-+	if (!r5c_is_writeback(log))
- 		return;
+ #define MAX_REGISTER_LENGTH 1920
  
- 	/*
-@@ -363,7 +366,7 @@ void r5c_check_cached_full_stripe(struct r5conf *conf)
- 	if (atomic_read(&conf->r5c_cached_full_stripes) >=
- 	    min(R5C_FULL_STRIPE_FLUSH_BATCH(conf),
- 		conf->chunk_sectors >> RAID5_STRIPE_SHIFT(conf)))
--		r5l_wake_reclaim(conf->log, 0);
-+		r5l_wake_reclaim(log, 0);
- }
- 
- /*
-@@ -396,7 +399,7 @@ void r5c_check_cached_full_stripe(struct r5conf *conf)
+-/*
+- * Check if we support the binfmt
+- * if we do, return the node, else NULL
+- * locking is done in load_misc_binary
++/**
++ * search_binfmt_handler - search for a binary handler for @bprm
++ * @misc: handle to binfmt_misc instance
++ * @bprm: binary for which we are looking for a handler
++ *
++ * Search for a binary type handler for @bprm in the list of registered binary
++ * type handlers.
++ *
++ * Return: binary type list entry on success, NULL on failure
   */
- static sector_t r5c_log_required_to_flush_cache(struct r5conf *conf)
+-static Node *check_file(struct linux_binprm *bprm)
++static Node *search_binfmt_handler(struct linux_binprm *bprm)
  {
--	struct r5l_log *log = conf->log;
-+	struct r5l_log *log = READ_ONCE(conf->log);
+ 	char *p = strrchr(bprm->interp, '.');
+-	struct list_head *l;
++	Node *e;
  
- 	if (!r5c_is_writeback(log))
- 		return 0;
-@@ -449,7 +452,7 @@ static inline void r5c_update_log_state(struct r5l_log *log)
- void r5c_make_stripe_write_out(struct stripe_head *sh)
- {
- 	struct r5conf *conf = sh->raid_conf;
--	struct r5l_log *log = conf->log;
-+	struct r5l_log *log = READ_ONCE(conf->log);
+ 	/* Walk all the registered handlers. */
+-	list_for_each(l, &entries) {
+-		Node *e = list_entry(l, Node, list);
++	list_for_each_entry(e, &entries, list) {
+ 		char *s;
+ 		int j;
  
- 	BUG_ON(!r5c_is_writeback(log));
- 
-@@ -491,7 +494,7 @@ static void r5c_handle_parity_cached(struct stripe_head *sh)
-  */
- static void r5c_finish_cache_stripe(struct stripe_head *sh)
- {
--	struct r5l_log *log = sh->raid_conf->log;
-+	struct r5l_log *log = READ_ONCE(sh->raid_conf->log);
- 
- 	if (log->r5c_journal_mode == R5C_JOURNAL_MODE_WRITE_THROUGH) {
- 		BUG_ON(test_bit(STRIPE_R5C_CACHING, &sh->state));
-@@ -692,7 +695,7 @@ static void r5c_disable_writeback_async(struct work_struct *work)
- 
- 	/* wait superblock change before suspend */
- 	wait_event(mddev->sb_wait,
--		   conf->log == NULL ||
-+		   !READ_ONCE(conf->log) ||
- 		   (!test_bit(MD_SB_CHANGE_PENDING, &mddev->sb_flags) &&
- 		    (locked = mddev_trylock(mddev))));
- 	if (locked) {
-@@ -1151,7 +1154,7 @@ static void r5l_run_no_space_stripes(struct r5l_log *log)
- static sector_t r5c_calculate_new_cp(struct r5conf *conf)
- {
- 	struct stripe_head *sh;
--	struct r5l_log *log = conf->log;
-+	struct r5l_log *log = READ_ONCE(conf->log);
- 	sector_t new_cp;
- 	unsigned long flags;
- 
-@@ -1159,12 +1162,12 @@ static sector_t r5c_calculate_new_cp(struct r5conf *conf)
- 		return log->next_checkpoint;
- 
- 	spin_lock_irqsave(&log->stripe_in_journal_lock, flags);
--	if (list_empty(&conf->log->stripe_in_journal_list)) {
-+	if (list_empty(&log->stripe_in_journal_list)) {
- 		/* all stripes flushed */
- 		spin_unlock_irqrestore(&log->stripe_in_journal_lock, flags);
- 		return log->next_checkpoint;
+@@ -123,9 +126,49 @@ static Node *check_file(struct linux_binprm *bprm)
+ 		if (j == e->size)
+ 			return e;
  	}
--	sh = list_first_entry(&conf->log->stripe_in_journal_list,
-+	sh = list_first_entry(&log->stripe_in_journal_list,
- 			      struct stripe_head, r5c);
- 	new_cp = sh->log_start;
- 	spin_unlock_irqrestore(&log->stripe_in_journal_lock, flags);
-@@ -1399,7 +1402,7 @@ void r5c_flush_cache(struct r5conf *conf, int num)
- 	struct stripe_head *sh, *next;
- 
- 	lockdep_assert_held(&conf->device_lock);
--	if (!conf->log)
-+	if (!READ_ONCE(conf->log))
- 		return;
- 
- 	count = 0;
-@@ -1420,7 +1423,7 @@ void r5c_flush_cache(struct r5conf *conf, int num)
- 
- static void r5c_do_reclaim(struct r5conf *conf)
- {
--	struct r5l_log *log = conf->log;
-+	struct r5l_log *log = READ_ONCE(conf->log);
- 	struct stripe_head *sh;
- 	int count = 0;
- 	unsigned long flags;
-@@ -1549,7 +1552,7 @@ static void r5l_reclaim_thread(struct md_thread *thread)
- {
- 	struct mddev *mddev = thread->mddev;
- 	struct r5conf *conf = mddev->private;
--	struct r5l_log *log = conf->log;
-+	struct r5l_log *log = READ_ONCE(conf->log);
- 
- 	if (!log)
- 		return;
-@@ -1589,7 +1592,7 @@ void r5l_quiesce(struct r5l_log *log, int quiesce)
- 
- bool r5l_log_disk_error(struct r5conf *conf)
- {
--	struct r5l_log *log = conf->log;
-+	struct r5l_log *log = READ_ONCE(conf->log);
- 
- 	/* don't allow write if journal disk is missing */
- 	if (!log)
-@@ -2633,7 +2636,7 @@ int r5c_try_caching_write(struct r5conf *conf,
- 			  struct stripe_head_state *s,
- 			  int disks)
- {
--	struct r5l_log *log = conf->log;
-+	struct r5l_log *log = READ_ONCE(conf->log);
- 	int i;
- 	struct r5dev *dev;
- 	int to_cache = 0;
-@@ -2800,7 +2803,7 @@ void r5c_finish_stripe_write_out(struct r5conf *conf,
- 				 struct stripe_head *sh,
- 				 struct stripe_head_state *s)
- {
--	struct r5l_log *log = conf->log;
-+	struct r5l_log *log = READ_ONCE(conf->log);
- 	int i;
- 	int do_wakeup = 0;
- 	sector_t tree_index;
-@@ -2939,7 +2942,7 @@ int r5c_cache_data(struct r5l_log *log, struct stripe_head *sh)
- /* check whether this big stripe is in write back cache. */
- bool r5c_big_stripe_cached(struct r5conf *conf, sector_t sect)
- {
--	struct r5l_log *log = conf->log;
-+	struct r5l_log *log = READ_ONCE(conf->log);
- 	sector_t tree_index;
- 	void *slot;
- 
-@@ -3047,14 +3050,14 @@ int r5l_start(struct r5l_log *log)
- void r5c_update_on_rdev_error(struct mddev *mddev, struct md_rdev *rdev)
- {
- 	struct r5conf *conf = mddev->private;
--	struct r5l_log *log = conf->log;
-+	struct r5l_log *log = READ_ONCE(conf->log);
- 
- 	if (!log)
- 		return;
- 
- 	if ((raid5_calc_degraded(conf) > 0 ||
- 	     test_bit(Journal, &rdev->flags)) &&
--	    conf->log->r5c_journal_mode == R5C_JOURNAL_MODE_WRITE_BACK)
-+	    log->r5c_journal_mode == R5C_JOURNAL_MODE_WRITE_BACK)
- 		schedule_work(&log->disable_writeback_work);
++
+ 	return NULL;
  }
  
-@@ -3143,7 +3146,7 @@ int r5l_init_log(struct r5conf *conf, struct md_rdev *rdev)
- 	spin_lock_init(&log->stripe_in_journal_lock);
- 	atomic_set(&log->stripe_in_journal_count, 0);
++/**
++ * get_binfmt_handler - try to find a binary type handler
++ * @misc: handle to binfmt_misc instance
++ * @bprm: binary for which we are looking for a handler
++ *
++ * Try to find a binfmt handler for the binary type. If one is found take a
++ * reference to protect against removal via bm_{entry,status}_write().
++ *
++ * Return: binary type list entry on success, NULL on failure
++ */
++static Node *get_binfmt_handler(struct linux_binprm *bprm)
++{
++	Node *e;
++
++	read_lock(&entries_lock);
++	e = search_binfmt_handler(bprm);
++	if (e)
++		refcount_inc(&e->users);
++	read_unlock(&entries_lock);
++	return e;
++}
++
++/**
++ * put_binfmt_handler - put binary handler node
++ * @e: node to put
++ *
++ * Free node syncing with load_misc_binary() and defer final free to
++ * load_misc_binary() in case it is using the binary type handler we were
++ * requested to remove.
++ */
++static void put_binfmt_handler(Node *e)
++{
++	if (refcount_dec_and_test(&e->users)) {
++		if (e->flags & MISC_FMT_OPEN_FILE)
++			filp_close(e->interp_file, NULL);
++		kfree(e);
++	}
++}
++
+ /*
+  * the loader itself
+  */
+@@ -139,12 +182,7 @@ static int load_misc_binary(struct linux_binprm *bprm)
+ 	if (!enabled)
+ 		return retval;
  
--	conf->log = log;
-+	WRITE_ONCE(conf->log, log);
+-	/* to keep locking time low, we copy the interpreter string */
+-	read_lock(&entries_lock);
+-	fmt = check_file(bprm);
+-	if (fmt)
+-		dget(fmt->dentry);
+-	read_unlock(&entries_lock);
++	fmt = get_binfmt_handler(bprm);
+ 	if (!fmt)
+ 		return retval;
  
- 	set_bit(MD_HAS_JOURNAL, &conf->mddev->flags);
- 	return 0;
-@@ -3171,7 +3174,7 @@ void r5l_exit_log(struct r5conf *conf)
- 	 * 'reconfig_mutex' is held by caller, set 'confg->log' to NULL to
- 	 * ensure disable_writeback_work wakes up and exits.
- 	 */
--	conf->log = NULL;
-+	WRITE_ONCE(conf->log, NULL);
- 	wake_up(&conf->mddev->sb_wait);
- 	flush_work(&log->disable_writeback_work);
+@@ -198,7 +236,16 @@ static int load_misc_binary(struct linux_binprm *bprm)
  
+ 	retval = 0;
+ ret:
+-	dput(fmt->dentry);
++
++	/*
++	 * If we actually put the node here all concurrent calls to
++	 * load_misc_binary() will have finished. We also know
++	 * that for the refcount to be zero ->evict_inode() must have removed
++	 * the node to be deleted from the list. All that is left for us is to
++	 * close and free.
++	 */
++	put_binfmt_handler(fmt);
++
+ 	return retval;
+ }
+ 
+@@ -553,30 +600,90 @@ static struct inode *bm_get_inode(struct super_block *sb, int mode)
+ 	return inode;
+ }
+ 
++/**
++ * bm_evict_inode - cleanup data associated with @inode
++ * @inode: inode to which the data is attached
++ *
++ * Cleanup the binary type handler data associated with @inode if a binary type
++ * entry is removed or the filesystem is unmounted and the super block is
++ * shutdown.
++ *
++ * If the ->evict call was not caused by a super block shutdown but by a write
++ * to remove the entry or all entries via bm_{entry,status}_write() the entry
++ * will have already been removed from the list. We keep the list_empty() check
++ * to make that explicit.
++*/
+ static void bm_evict_inode(struct inode *inode)
+ {
+ 	Node *e = inode->i_private;
+ 
+-	if (e && e->flags & MISC_FMT_OPEN_FILE)
+-		filp_close(e->interp_file, NULL);
+-
+ 	clear_inode(inode);
+-	kfree(e);
++
++	if (e) {
++		write_lock(&entries_lock);
++		if (!list_empty(&e->list))
++			list_del_init(&e->list);
++		write_unlock(&entries_lock);
++		put_binfmt_handler(e);
++	}
+ }
+ 
+-static void kill_node(Node *e)
++/**
++ * unlink_binfmt_dentry - remove the dentry for the binary type handler
++ * @dentry: dentry associated with the binary type handler
++ *
++ * Do the actual filesystem work to remove a dentry for a registered binary
++ * type handler. Since binfmt_misc only allows simple files to be created
++ * directly under the root dentry of the filesystem we ensure that we are
++ * indeed passed a dentry directly beneath the root dentry, that the inode
++ * associated with the root dentry is locked, and that it is a regular file we
++ * are asked to remove.
++ */
++static void unlink_binfmt_dentry(struct dentry *dentry)
+ {
+-	struct dentry *dentry;
++	struct dentry *parent = dentry->d_parent;
++	struct inode *inode, *parent_inode;
++
++	/* All entries are immediate descendants of the root dentry. */
++	if (WARN_ON_ONCE(dentry->d_sb->s_root != parent))
++		return;
+ 
++	/* We only expect to be called on regular files. */
++	inode = d_inode(dentry);
++	if (WARN_ON_ONCE(!S_ISREG(inode->i_mode)))
++		return;
++
++	/* The parent inode must be locked. */
++	parent_inode = d_inode(parent);
++	if (WARN_ON_ONCE(!inode_is_locked(parent_inode)))
++		return;
++
++	if (simple_positive(dentry)) {
++		dget(dentry);
++		simple_unlink(parent_inode, dentry);
++		d_delete(dentry);
++		dput(dentry);
++	}
++}
++
++/**
++ * remove_binfmt_handler - remove a binary type handler
++ * @misc: handle to binfmt_misc instance
++ * @e: binary type handler to remove
++ *
++ * Remove a binary type handler from the list of binary type handlers and
++ * remove its associated dentry. This is called from
++ * binfmt_{entry,status}_write(). In the future, we might want to think about
++ * adding a proper ->unlink() method to binfmt_misc instead of forcing caller's
++ * to use writes to files in order to delete binary type handlers. But it has
++ * worked for so long that it's not a pressing issue.
++ */
++static void remove_binfmt_handler(Node *e)
++{
+ 	write_lock(&entries_lock);
+ 	list_del_init(&e->list);
+ 	write_unlock(&entries_lock);
+-
+-	dentry = e->dentry;
+-	drop_nlink(d_inode(dentry));
+-	d_drop(dentry);
+-	dput(dentry);
+-	simple_release_fs(&bm_mnt, &entry_count);
++	unlink_binfmt_dentry(e->dentry);
+ }
+ 
+ /* /<entry> */
+@@ -603,8 +710,8 @@ bm_entry_read(struct file *file, char __user *buf, size_t nbytes, loff_t *ppos)
+ static ssize_t bm_entry_write(struct file *file, const char __user *buffer,
+ 				size_t count, loff_t *ppos)
+ {
+-	struct dentry *root;
+-	Node *e = file_inode(file)->i_private;
++	struct inode *inode = file_inode(file);
++	Node *e = inode->i_private;
+ 	int res = parse_command(buffer, count);
+ 
+ 	switch (res) {
+@@ -618,13 +725,22 @@ static ssize_t bm_entry_write(struct file *file, const char __user *buffer,
+ 		break;
+ 	case 3:
+ 		/* Delete this handler. */
+-		root = file_inode(file)->i_sb->s_root;
+-		inode_lock(d_inode(root));
++		inode = d_inode(inode->i_sb->s_root);
++		inode_lock(inode);
+ 
++		/*
++		 * In order to add new element or remove elements from the list
++		 * via bm_{entry,register,status}_write() inode_lock() on the
++		 * root inode must be held.
++		 * The lock is exclusive ensuring that the list can't be
++		 * modified. Only load_misc_binary() can access but does so
++		 * read-only. So we only need to take the write lock when we
++		 * actually remove the entry from the list.
++		 */
+ 		if (!list_empty(&e->list))
+-			kill_node(e);
++			remove_binfmt_handler(e);
+ 
+-		inode_unlock(d_inode(root));
++		inode_unlock(inode);
+ 		break;
+ 	default:
+ 		return res;
+@@ -683,13 +799,7 @@ static ssize_t bm_register_write(struct file *file, const char __user *buffer,
+ 	if (!inode)
+ 		goto out2;
+ 
+-	err = simple_pin_fs(&bm_fs_type, &bm_mnt, &entry_count);
+-	if (err) {
+-		iput(inode);
+-		inode = NULL;
+-		goto out2;
+-	}
+-
++	refcount_set(&e->users, 1);
+ 	e->dentry = dget(dentry);
+ 	inode->i_private = e;
+ 	inode->i_fop = &bm_entry_operations;
+@@ -733,7 +843,8 @@ static ssize_t bm_status_write(struct file *file, const char __user *buffer,
+ 		size_t count, loff_t *ppos)
+ {
+ 	int res = parse_command(buffer, count);
+-	struct dentry *root;
++	Node *e, *next;
++	struct inode *inode;
+ 
+ 	switch (res) {
+ 	case 1:
+@@ -746,13 +857,22 @@ static ssize_t bm_status_write(struct file *file, const char __user *buffer,
+ 		break;
+ 	case 3:
+ 		/* Delete all handlers. */
+-		root = file_inode(file)->i_sb->s_root;
+-		inode_lock(d_inode(root));
++		inode = d_inode(file_inode(file)->i_sb->s_root);
++		inode_lock(inode);
+ 
+-		while (!list_empty(&entries))
+-			kill_node(list_first_entry(&entries, Node, list));
++		/*
++		 * In order to add new element or remove elements from the list
++		 * via bm_{entry,register,status}_write() inode_lock() on the
++		 * root inode must be held.
++		 * The lock is exclusive ensuring that the list can't be
++		 * modified. Only load_misc_binary() can access but does so
++		 * read-only. So we only need to take the write lock when we
++		 * actually remove the entry from the list.
++		 */
++		list_for_each_entry_safe(e, next, &entries, list)
++			remove_binfmt_handler(e);
+ 
+-		inode_unlock(d_inode(root));
++		inode_unlock(inode);
+ 		break;
+ 	default:
+ 		return res;
 -- 
 2.43.0
 
