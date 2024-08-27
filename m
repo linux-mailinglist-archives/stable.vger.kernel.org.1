@@ -1,218 +1,154 @@
-Return-Path: <stable+bounces-70324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70325-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74644960944
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 13:49:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73D1F960950
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 13:52:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 04D791F23F58
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 11:49:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E89A9285A11
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 11:52:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FF5319FA72;
-	Tue, 27 Aug 2024 11:49:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 274411A01B8;
+	Tue, 27 Aug 2024 11:52:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="24mRC0Dx";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="e343svPb";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="24mRC0Dx";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="e343svPb"
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="IlVEJDit"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E924C199926;
-	Tue, 27 Aug 2024 11:49:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DADFF158D9C;
+	Tue, 27 Aug 2024 11:52:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724759369; cv=none; b=l7mOIqtqM0uhx8YPv4AAHJi1KGxnmLPgyKCdveCdEHbK+VJI09URZV4g6TiPsv+eAi1GT7P0DDzLejqu+uVgImG7Lv3lmpQjM4wt5Ls+3ske9TjiqnpIovdi3Hmb6R9ZXHIrzlLl1TAGX/TDZ2YbP2AXUFYLON7PN7fu6nj+CgU=
+	t=1724759543; cv=none; b=eL9Dy/mvcrG/kJGjcjmVqPctmiLKIGsUBfokaNzkA3sImLpxH/BRCVL0que40qdRnWbeMj3YxhFfsT8XiybWYI30zJNwYz4OPJSLpspmmUajhIHs0de3HrJFG8JO1mLQenhlo0M78U2c1WEbZaeGl1qoevn5/gSz2ST8uyHo1Ro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724759369; c=relaxed/simple;
-	bh=txANpfctIMIzIzTLEMz8dahbALUVADYCM2QS+Kh0kTI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=o2jgyVy+TY2RtGDcNraNniQYygMX/nc4aTBBgOUFPyNNJPiTqrpKPkHHcsQT9S0jGRP+syCeJFTysGBxYMb8L/B54Fm48VJd3uvXrnNK3VmvB/dpSmwy6cVBBV9PA63IO/e9H5LQS7q6W4GtwIFsY/baaIHkZw4AZAnPmfE1JjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=24mRC0Dx; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=e343svPb; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=24mRC0Dx; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=e343svPb; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	s=arc-20240116; t=1724759543; c=relaxed/simple;
+	bh=J+qScYQFIhcO3sueINm5ThU7Ol4ugLxkpEe0/BhH8ms=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=F33fiE6Xden7y01dvhS6NMsG+5Ryx8+ehiQOOOFXMrBEx/2LwiU/n94kNNNWsohb09QYSD1HtQIeuWsKyBiHeSHnD23fBfDzwIBzBeZbseFSNRyrAGZxveC2Hcjc3LWyrnBytDIaciYTgphzIayrd3i8OwHljTDiClm89PO7N3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=IlVEJDit; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 8FB5240E01C5;
+	Tue, 27 Aug 2024 11:52:19 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id v9mpIUU2S2BT; Tue, 27 Aug 2024 11:52:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1724759533; bh=LGaw2lZ3cyh+M3lg7t2gKWCCI7xSUNeCGodqRe631Qc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=IlVEJDitNaBky6qouSeM/VwXgaGgwp0RSsZrcTVVY8VLk5gGN+KUo4QAfqZNxlwT3
+	 OoX56E68EaHCxifJAwObuqklp1p26eB1uLVof7luuNaQnijTfVp9yzvlCaBZfP+CJb
+	 p+HWu3CvumB0aQOLDOdx/KX0NL4tWHLKuhXWHQCeA/IbSqGnTMENPRWVUzkXSoit5a
+	 XR5eZZlhnotdlBNBQ9N0MHap3BUzxbpDFo7cbWNUpXZJb3CptoEUPTrx/ucGLYERO+
+	 NlHti2RsJVMgfs/7M2EzmUtk9aKfApN0uu8yfONFPL54TSjojvFD7GvLsKWKbJerBb
+	 KjxOvxiy1Tq8yejA4HdawSIULOI9nC1Kl1/n1KlZ80Wf4kLWlxwCfrEUpzShs7KyFf
+	 1xjiA46uMwEsriKO8zBwH5UOWlDw5bmCE+nW7oN6p7v9cXtuj4wTL41Kibb/wpB1PL
+	 ZLHrhJ04M2j/qryUkiUfpIH3liSCKe7daT+fS8X4tbcgaPRTrPx8LJ0CyxKGBbpdDN
+	 H3d2P69smNqMg2aEGlmvBNqOG66cNgJwXtYixtpt1fjh0ydryBcRzHuisu3kOHjozD
+	 4KPLTHll/M0kgKH8mmED5i4pOJLcGj0O0eWL5jrD9VQaid+aRijToT4UFj1c5LLrmS
+	 6jc/teImaiyIbdwxhFi7W5ds=
+Received: from zn.tnic (p5de8ee85.dip0.t-ipconnect.de [93.232.238.133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 6FE081FB60;
-	Tue, 27 Aug 2024 11:49:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1724759362; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=gaHpcdEybhn0N55SlFuwA9Fq5+fKaN6M8GOlET6IYSc=;
-	b=24mRC0DxNRp9kCROlygxAfgyIAeiJdwSRA9ZIfZ1taxpQrctpMyMt5JKm+2h86WXQ8Q72X
-	mWKhqHOAyi8U5O8yjyjO7p1vCOhyMrqbDChxfusqZCdIdRaG/i/ZT8w4VkyWWELUbgL6hn
-	8AGRx8eoHVVvRRIQnNv9X+E2SVs9qkM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1724759362;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=gaHpcdEybhn0N55SlFuwA9Fq5+fKaN6M8GOlET6IYSc=;
-	b=e343svPbhet7sAfKIqFryC+CKRfyOxpV6te93I7Sv/YMUSFsk4GrTlRSJyndsDljTVYVrF
-	rRWPS86mOrrdB+DA==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1724759362; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=gaHpcdEybhn0N55SlFuwA9Fq5+fKaN6M8GOlET6IYSc=;
-	b=24mRC0DxNRp9kCROlygxAfgyIAeiJdwSRA9ZIfZ1taxpQrctpMyMt5JKm+2h86WXQ8Q72X
-	mWKhqHOAyi8U5O8yjyjO7p1vCOhyMrqbDChxfusqZCdIdRaG/i/ZT8w4VkyWWELUbgL6hn
-	8AGRx8eoHVVvRRIQnNv9X+E2SVs9qkM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1724759362;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=gaHpcdEybhn0N55SlFuwA9Fq5+fKaN6M8GOlET6IYSc=;
-	b=e343svPbhet7sAfKIqFryC+CKRfyOxpV6te93I7Sv/YMUSFsk4GrTlRSJyndsDljTVYVrF
-	rRWPS86mOrrdB+DA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5C6B013A44;
-	Tue, 27 Aug 2024 11:49:22 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id CQ0KFkK9zWbAVAAAD6G6ig
-	(envelope-from <mdoucha@suse.cz>); Tue, 27 Aug 2024 11:49:22 +0000
-Message-ID: <9afef16d-52b2-435d-902a-7ccfa5824968@suse.cz>
-Date: Tue, 27 Aug 2024 13:49:21 +0200
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id A970D40E0169;
+	Tue, 27 Aug 2024 11:52:02 +0000 (UTC)
+Date: Tue, 27 Aug 2024 13:51:55 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Ma Ke <make24@iscas.ac.cn>, Tero Kristo <tero.kristo@linux.intel.com>
+Cc: kristo@kernel.org, tony.luck@intel.com, james.morse@arm.com,
+	mchehab@kernel.org, rric@kernel.org, linux-edac@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	kernel test robot <lkp@intel.com>
+Subject: Re: [PATCH v5] EDAC/ti: Fix possible null pointer dereference in
+ _emif_get_id()
+Message-ID: <20240827115155.GAZs292_OMQUMgThya@fat_crate.local>
+References: <20240816052021.378832-1-make24@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [LTP] [PATCH v2 1/1] nfsstat01: Update client RPC calls for
- kernel 6.9
-To: NeilBrown <neilb@suse.de>, Petr Vorel <pvorel@suse.cz>
-Cc: linux-nfs@vger.kernel.org, Josef Bacik <josef@toxicpanda.com>,
- stable@vger.kernel.org, Chuck Lever <chuck.lever@oracle.com>,
- ltp@lists.linux.it
-References: <> <20240823064640.GA1217451@pevik>
- <172445038410.6062.6091007925280806767@noble.neil.brown.name>
-Content-Language: en-US
-From: Martin Doucha <mdoucha@suse.cz>
-Autocrypt: addr=mdoucha@suse.cz; keydata=
- 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 ag==
-In-Reply-To: <172445038410.6062.6091007925280806767@noble.neil.brown.name>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Level: 
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCPT_COUNT_SEVEN(0.00)[7];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_DN_SOME(0.00)[]
-X-Spam-Score: -4.30
-X-Spam-Flag: NO
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240816052021.378832-1-make24@iscas.ac.cn>
 
-On 23. 08. 24 23:59, NeilBrown wrote:
-> On Fri, 23 Aug 2024, Petr Vorel wrote:
->> We discussed in v1 how to fix tests.  Neil suggested to fix the test the way so
->> that it works on all kernels. As I note [1]
->>
->> 1) either we give up on checking the new functionality still works (if we
->> fallback to old behavior)
++ the driver's maintainer.
+
+On Fri, Aug 16, 2024 at 01:20:21PM +0800, Ma Ke wrote:
+> In _emif_get_id(), of_get_address() may return NULL which is later
+> dereferenced. Fix this bug by adding NULL check.
 > 
-> I don't understand.  What exactly do you mean by "the new
-> functionality".
-> As I understand it there is no new functionality.  All there was was and
-> information leak between network namespaces, and we stopped the leak.
-> Do you consider that to be new functionality?
+> Found by code review.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 86a18ee21e5e ("EDAC, ti: Add support for TI keystone and DRA7xx EDAC")
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202408160935.A6QFliqt-lkp@intel.com/
+> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+> ---
+> Changes in v5:
+> - According to the developer's suggestion, added an inspection of function 
+> of_translate_address(). However, kernel test robot reported a build 
+> warning, so the inspection is removed here, reverting to the modification 
+> solution of patch v3.
 
-The new functionality is that the patches add a new file to network 
-namespaces: /proc/net/rpc/nfs. This file did not exist outside the root 
-network namespace at least on some of the kernels where we still need to 
-run this test. So the question is: How aggressively do we want to 
-enforce backporting of these NFS patches into distros with older kernels?
+I'll drop Reported-by: kernel test robot <lkp@intel.com> since you've returned
+to the previous v3 variant.
 
-We have 3 options how to fix the test depending on the answer:
-1) Don't enforce at all. We'll check whether /proc/net/rpc/nfs exists in 
-the client namespace and read it only if it does. Otherwise we'll fall 
-back on the global file.
-2) Enforce aggressively. We'll hardcode a minimal kernel version into 
-the test (e.g. v5.4) and if the procfile doesn't exist on any newer 
-kernel, it's a bug.
-3) Enforce on new kernels only. We'll set a hard requirement for kernel 
-v6.9+ as in option 2) and check for existence of the procfile on any 
-older kernels as in option 1).
+Leaving in the rest for reference.
+
+> Changes in v4:
+> - added the check of of_translate_address() as suggestions.
+> Changes in v3:
+> - added the patch operations omitted in PATCH v2 RESEND compared to PATCH 
+> v2. Sorry for my oversight.
+> Changes in v2:
+> - added Cc stable line.
+> ---
+>  drivers/edac/ti_edac.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
+> 
+> diff --git a/drivers/edac/ti_edac.c b/drivers/edac/ti_edac.c
+> index 29723c9592f7..6f3da8d99eab 100644
+> --- a/drivers/edac/ti_edac.c
+> +++ b/drivers/edac/ti_edac.c
+> @@ -207,6 +207,9 @@ static int _emif_get_id(struct device_node *node)
+>  	int my_id = 0;
+>  
+>  	addrp = of_get_address(node, 0, NULL, NULL);
+> +	if (!addrp)
+> +		return -EINVAL;
+> +
+>  	my_addr = (u32)of_translate_address(node, addrp);
+>  
+>  	for_each_matching_node(np, ti_edac_of_match) {
+> @@ -214,6 +217,9 @@ static int _emif_get_id(struct device_node *node)
+>  			continue;
+>  
+>  		addrp = of_get_address(np, 0, NULL, NULL);
+> +		if (!addrp)
+> +			return -EINVAL;
+> +
+>  		addr = (u32)of_translate_address(np, addrp);
+>  
+>  		edac_printk(KERN_INFO, EDAC_MOD_NAME,
+> -- 
+> 2.25.1
+> 
+> 
 
 -- 
-Martin Doucha   mdoucha@suse.cz
-SW Quality Engineer
-SUSE LINUX, s.r.o.
-CORSO IIa
-Krizikova 148/34
-186 00 Prague 8
-Czech Republic
+Regards/Gruss,
+    Boris.
 
+https://people.kernel.org/tglx/notes-about-netiquette
 
