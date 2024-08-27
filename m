@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-70639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70890-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63174960F4B
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:58:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB40C96108A
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:10:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2060928232F
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:58:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 791CBB23003
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:10:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B4E61C93A3;
-	Tue, 27 Aug 2024 14:56:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C721E1C4EEF;
+	Tue, 27 Aug 2024 15:10:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vaB7ZhH3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qm5+Hkb2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBAB01C8FDE;
-	Tue, 27 Aug 2024 14:56:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83A541E520;
+	Tue, 27 Aug 2024 15:10:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770577; cv=none; b=KdWJoFYpWbxZe9FaAFy2NcoJ3/qLQsvkmZMZR3/6LvC5PprxZcbqPCnKYyRvNeG7g7HRFwzwj+L1Q6gstl38oPbZo2hF2HiiJ6qEUco/UEsPZEPGDlvaRsa1SP4Ab3jWX8f2GpS+SU43kh4WovfjuTcrCSOc6RpKYlaAUMdJov0=
+	t=1724771402; cv=none; b=Dbo/g4zP/WUM7vI2tayG13n/LFwJkpThpy+fEtvrdUZ+g6RI6Rpp7OTdgo9axtghrrF2xQVaDJhkTf7ZlGzQ+XX655R+i/J2AJg6qU75Sz3GSZHyjAhONWQu3OBsuh1kQ4LvtlKd9J+YtlLLpqMjAFarZpr7dzsywvvqTZypsys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770577; c=relaxed/simple;
-	bh=C8AXV06tZPyeQSoMCD49ug40XoYUjJlXjyynug9Q53I=;
+	s=arc-20240116; t=1724771402; c=relaxed/simple;
+	bh=GSeG+cGfEbHnJ3hu0RTqrn/kGivG0W1MZHbr9d1BwQA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t6uegxCuRMcgFDwaP15RlZvKOaEAkqEEopjlXbdaNE+qwfV02SqIpNugypzCRJT8mRN3hxumrrZxXV/SsvYufzInyAScZzQITmYDjJ6zhDOJ7FWH1DMuT73n6S9RJuJpltDGkT5joVsNxON1NrBOdcIxs3Xnozz1xJfGTb89BV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vaB7ZhH3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53959C4E699;
-	Tue, 27 Aug 2024 14:56:17 +0000 (UTC)
+	 MIME-Version; b=kr10FDy2ZQblDeOOYQelHQZtbEDbI1dYd4h9Q5E56E0WA2ZGIluQtFdI23hVSsTy1pxns6jrzYEjXIU1R2rtysmCOvaQIQP51utAJF8z6A5ez/BzbLuf2FlvKiKmPGYBeO5yCJtUnq9X2ckeqhTz2vU+BCoVQ+5LxD+IPeX9gyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qm5+Hkb2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85D71C4AF52;
+	Tue, 27 Aug 2024 15:10:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770577;
-	bh=C8AXV06tZPyeQSoMCD49ug40XoYUjJlXjyynug9Q53I=;
+	s=korg; t=1724771402;
+	bh=GSeG+cGfEbHnJ3hu0RTqrn/kGivG0W1MZHbr9d1BwQA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vaB7ZhH3qpiy5ooHxHRY6jBKK1fohDuYXNF3qzHddA4Q+pPNAHwmMtmauN0IuUvTZ
-	 IIu1F16jaVmqQoavOvMxEIKuZAa2BUoTCKqH/ZLdrdydT2MtVIYhPM/KJ0a2UlDbG2
-	 mJsOJChCR/INlj0R1f7H/IH30Ml4DXvxRFlfYzQ8=
+	b=qm5+Hkb2bsTnGwVD47CltP8GmVGWPnvEGeiFX9scZnYqYV9Ssc6dEL2vKzCuB8hDk
+	 sL9WuxafgbdKSR+yFxmy/a9uvGQ929aMLFT4Ur2lAgrvQ59MWx5rWPvufSLXQVG4ql
+	 tIfL8lH0t0XKcyLEyTbilfy/++tfmU2nuy9dY88M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Gospodarek <andrew.gospodarek@broadcom.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Somnath Kotur <somnath.kotur@broadcom.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
+	Joseph Huang <Joseph.Huang@garmin.com>,
+	Andrew Lunn <andrew@lunn.ch>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 271/341] bnxt_en: Fix double DMA unmapping for XDP_REDIRECT
+Subject: [PATCH 6.10 178/273] net: dsa: mv88e6xxx: Fix out-of-bound access
 Date: Tue, 27 Aug 2024 16:38:22 +0200
-Message-ID: <20240827143853.712732046@linuxfoundation.org>
+Message-ID: <20240827143840.185542142@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,78 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Somnath Kotur <somnath.kotur@broadcom.com>
+From: Joseph Huang <Joseph.Huang@garmin.com>
 
-[ Upstream commit 8baeef7616d5194045c5a6b97fd1246b87c55b13 ]
+[ Upstream commit 528876d867a23b5198022baf2e388052ca67c952 ]
 
-Remove the dma_unmap_page_attrs() call in the driver's XDP_REDIRECT
-code path.  This should have been removed when we let the page pool
-handle the DMA mapping.  This bug causes the warning:
+If an ATU violation was caused by a CPU Load operation, the SPID could
+be larger than DSA_MAX_PORTS (the size of mv88e6xxx_chip.ports[] array).
 
-WARNING: CPU: 7 PID: 59 at drivers/iommu/dma-iommu.c:1198 iommu_dma_unmap_page+0xd5/0x100
-CPU: 7 PID: 59 Comm: ksoftirqd/7 Tainted: G        W          6.8.0-1010-gcp #11-Ubuntu
-Hardware name: Dell Inc. PowerEdge R7525/0PYVT1, BIOS 2.15.2 04/02/2024
-RIP: 0010:iommu_dma_unmap_page+0xd5/0x100
-Code: 89 ee 48 89 df e8 cb f2 69 ff 48 83 c4 08 5b 41 5c 41 5d 41 5e 41 5f 5d 31 c0 31 d2 31 c9 31 f6 31 ff 45 31 c0 e9 ab 17 71 00 <0f> 0b 48 83 c4 08 5b 41 5c 41 5d 41 5e 41 5f 5d 31 c0 31 d2 31 c9
-RSP: 0018:ffffab1fc0597a48 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: ffff99ff838280c8 RCX: 0000000000000000
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
-RBP: ffffab1fc0597a78 R08: 0000000000000002 R09: ffffab1fc0597c1c
-R10: ffffab1fc0597cd3 R11: ffff99ffe375acd8 R12: 00000000e65b9000
-R13: 0000000000000050 R14: 0000000000001000 R15: 0000000000000002
-FS:  0000000000000000(0000) GS:ffff9a06efb80000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000565c34c37210 CR3: 00000005c7e3e000 CR4: 0000000000350ef0
-? show_regs+0x6d/0x80
-? __warn+0x89/0x150
-? iommu_dma_unmap_page+0xd5/0x100
-? report_bug+0x16a/0x190
-? handle_bug+0x51/0xa0
-? exc_invalid_op+0x18/0x80
-? iommu_dma_unmap_page+0xd5/0x100
-? iommu_dma_unmap_page+0x35/0x100
-dma_unmap_page_attrs+0x55/0x220
-? bpf_prog_4d7e87c0d30db711_xdp_dispatcher+0x64/0x9f
-bnxt_rx_xdp+0x237/0x520 [bnxt_en]
-bnxt_rx_pkt+0x640/0xdd0 [bnxt_en]
-__bnxt_poll_work+0x1a1/0x3d0 [bnxt_en]
-bnxt_poll+0xaa/0x1e0 [bnxt_en]
-__napi_poll+0x33/0x1e0
-net_rx_action+0x18a/0x2f0
-
-Fixes: 578fcfd26e2a ("bnxt_en: Let the page pool manage the DMA mapping")
-Reviewed-by: Andy Gospodarek <andrew.gospodarek@broadcom.com>
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Somnath Kotur <somnath.kotur@broadcom.com>
-Signed-off-by: Michael Chan <michael.chan@broadcom.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20240820203415.168178-1-michael.chan@broadcom.com
+Fixes: 75c05a74e745 ("net: dsa: mv88e6xxx: Fix counting of ATU violations")
+Signed-off-by: Joseph Huang <Joseph.Huang@garmin.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20240819235251.1331763-1-Joseph.Huang@garmin.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c | 5 -----
- 1 file changed, 5 deletions(-)
+ drivers/net/dsa/mv88e6xxx/global1_atu.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c
-index 8cb9a99154aad..2845796f782c2 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_xdp.c
-@@ -297,11 +297,6 @@ bool bnxt_rx_xdp(struct bnxt *bp, struct bnxt_rx_ring_info *rxr, u16 cons,
- 		 * redirect is coming from a frame received by the
- 		 * bnxt_en driver.
- 		 */
--		rx_buf = &rxr->rx_buf_ring[cons];
--		mapping = rx_buf->mapping - bp->rx_dma_offset;
--		dma_unmap_page_attrs(&pdev->dev, mapping,
--				     BNXT_RX_PAGE_SIZE, bp->rx_dir,
--				     DMA_ATTR_WEAK_ORDERING);
+diff --git a/drivers/net/dsa/mv88e6xxx/global1_atu.c b/drivers/net/dsa/mv88e6xxx/global1_atu.c
+index ce3b3690c3c05..c47f068f56b32 100644
+--- a/drivers/net/dsa/mv88e6xxx/global1_atu.c
++++ b/drivers/net/dsa/mv88e6xxx/global1_atu.c
+@@ -457,7 +457,8 @@ static irqreturn_t mv88e6xxx_g1_atu_prob_irq_thread_fn(int irq, void *dev_id)
+ 		trace_mv88e6xxx_atu_full_violation(chip->dev, spid,
+ 						   entry.portvec, entry.mac,
+ 						   fid);
+-		chip->ports[spid].atu_full_violation++;
++		if (spid < ARRAY_SIZE(chip->ports))
++			chip->ports[spid].atu_full_violation++;
+ 	}
  
- 		/* if we are unable to allocate a new buffer, abort and reuse */
- 		if (bnxt_alloc_rx_data(bp, rxr, rxr->rx_prod, GFP_ATOMIC)) {
+ 	return IRQ_HANDLED;
 -- 
 2.43.0
 
