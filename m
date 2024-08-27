@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-70402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70413-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5637B960DE9
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:43:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B4B1960DFA
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:43:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7BB7A1C23226
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:43:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD7F81C2327E
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:43:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C72AF1C4EFB;
-	Tue, 27 Aug 2024 14:43:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 248241C57B1;
+	Tue, 27 Aug 2024 14:43:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m7uSXT+h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tK/JlEhW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82E501C4EE8;
-	Tue, 27 Aug 2024 14:43:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D49FA73466;
+	Tue, 27 Aug 2024 14:43:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724769780; cv=none; b=jKzSqs+aFLMi4ZZaxAb4Zb29PkWdC84E/fJoKMhgO8ZeKR0KA76HRSAJap73gYtqL9yFhmgzKUq9jmKg61vLPUjUbg6dXwjgxczujXyFqGyrxQJeZnlkbmz/xJ33lB2eVuE6aUI2hqEVJazDoi/owEz3v2bduO+P7RSgXO0fyhQ=
+	t=1724769818; cv=none; b=fJZ/g8KfSRuB4OYUyjtXyCRgEHvrKYOkxSPrjeBjOAZZALJUwYn6jdUyheqjW3a2DOhUaDzwNtuBwA2jvgeUHWlzJv/9hEJuPXJIYDF52W8R7RQOucKghwTQyY3J3Ba0DeO47qCiWdpt675lrs9gocozbJQ/g73/aYIN5bPpUoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724769780; c=relaxed/simple;
-	bh=QLM+QZQIGXDh0jxpri9zMrNjDu0pgCaeYDzzOTKIdiw=;
+	s=arc-20240116; t=1724769818; c=relaxed/simple;
+	bh=GAhAapvkGMNWY28DsB1GE7EXHxkvXuA/tC2TWE1Mv5w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ATBwDDfbZjXMzu9Ykb75ZV1F506y+G0+iB+4F/Le39GReoTehMkYfr7bL//+mD6pWi6BpJSLT8krB5X86C6iylL5cOX5akNFd4g5iipVp3uNJ11y6oDz0YgyvUrMUdRWmtxFrUeUGRRAmiKCuxaN9oa3zvTts0IYM8tkXr+RlDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m7uSXT+h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA2E5C6104E;
-	Tue, 27 Aug 2024 14:42:59 +0000 (UTC)
+	 MIME-Version; b=F7SJtRjSM1lYAGq8XAQBy9TZXfSVpYhQMHQnYQivxTgpCx6P6xoaLSt8rZXzV6W+4WUqGepbh80yZvzo5NFqJ9lyrhPfWQi4e0g6qwlixvOIdxGpijUEaqHvOlaNI4MelptZDbv0KtPhjEC28GpJILa8Keapnal9Gj/GyhxYL9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tK/JlEhW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E23C2C61052;
+	Tue, 27 Aug 2024 14:43:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724769780;
-	bh=QLM+QZQIGXDh0jxpri9zMrNjDu0pgCaeYDzzOTKIdiw=;
+	s=korg; t=1724769818;
+	bh=GAhAapvkGMNWY28DsB1GE7EXHxkvXuA/tC2TWE1Mv5w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m7uSXT+hn1YE/UNENoLqULIkAhagFFWyXZW5niSr6zApOFr1p2q2lYDhVskYht7ZX
-	 kj31ulmOwMHZ8JLJSK5ZzsEuJ8SsKAqZnUoxsZSUkFnPt/D0ozNbcXzRHkgy9GBT3B
-	 0xguxNcT7ZwheQZ5k14A9+X6i8kwm6EDhsteTBdU=
+	b=tK/JlEhW2nYWid0m0xTwgrUrgsqPGsPP9tVlIfA/YzxMB/ZDVMGRijtau4MuG6VRS
+	 cmJ3qns1kgPuiWkeOIFUPAiSdO4kbanrtgyZdhw9mO1cXUC5p3NIF82Tr1leL6mWl7
+	 kA/2WO6RffeQUbiL1Y+9MoL/7LIi0CspcClsIyhE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Hoeppner <hoeppner@linux.ibm.com>,
-	Stefan Haberland <sth@linux.ibm.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.6 016/341] s390/dasd: fix error recovery leading to data corruption on ESE devices
-Date: Tue, 27 Aug 2024 16:34:07 +0200
-Message-ID: <20240827143844.022359701@linuxfoundation.org>
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Michael Mueller <mimu@linux.ibm.com>,
+	Janosch Frank <frankja@linux.ibm.com>
+Subject: [PATCH 6.6 017/341] KVM: s390: fix validity interception issue when gisa is switched off
+Date: Tue, 27 Aug 2024 16:34:08 +0200
+Message-ID: <20240827143844.061113693@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
 References: <20240827143843.399359062@linuxfoundation.org>
@@ -66,243 +66,89 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Stefan Haberland <sth@linux.ibm.com>
+From: Michael Mueller <mimu@linux.ibm.com>
 
-commit 7db4042336580dfd75cb5faa82c12cd51098c90b upstream.
+commit 5a44bb061d04b0306f2aa8add761d86d152b9377 upstream.
 
-Extent Space Efficient (ESE) or thin provisioned volumes need to be
-formatted on demand during usual IO processing.
+We might run into a SIE validity if gisa has been disabled either via using
+kernel parameter "kvm.use_gisa=0" or by setting the related sysfs
+attribute to N (echo N >/sys/module/kvm/parameters/use_gisa).
 
-The dasd_ese_needs_format function checks for error codes that signal
-the non existence of a proper track format.
+The validity is caused by an invalid value in the SIE control block's
+gisa designation. That happens because we pass the uninitialized gisa
+origin to virt_to_phys() before writing it to the gisa designation.
 
-The check for incorrect length is to imprecise since other error cases
-leading to transport of insufficient data also have this flag set.
-This might lead to data corruption in certain error cases for example
-during a storage server warmstart.
+To fix this we return 0 in kvm_s390_get_gisa_desc() if the origin is 0.
+kvm_s390_get_gisa_desc() is used to determine which gisa designation to
+set in the SIE control block. A value of 0 in the gisa designation disables
+gisa usage.
 
-Fix by removing the check for incorrect length and replacing by
-explicitly checking for invalid track format in transport mode.
+The issue surfaces in the host kernel with the following kernel message as
+soon a new kvm guest start is attemted.
 
-Also remove the check for file protected since this is not a valid
-ESE handling case.
+kvm: unhandled validity intercept 0x1011
+WARNING: CPU: 0 PID: 781237 at arch/s390/kvm/intercept.c:101 kvm_handle_sie_intercept+0x42e/0x4d0 [kvm]
+Modules linked in: vhost_net tap tun xt_CHECKSUM xt_MASQUERADE xt_conntrack ipt_REJECT xt_tcpudp nft_compat x_tables nf_nat_tftp nf_conntrack_tftp vfio_pci_core irqbypass vhost_vsock vmw_vsock_virtio_transport_common vsock vhost vhost_iotlb kvm nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 ip_set nf_tables sunrpc mlx5_ib ib_uverbs ib_core mlx5_core uvdevice s390_trng eadm_sch vfio_ccw zcrypt_cex4 mdev vfio_iommu_type1 vfio sch_fq_codel drm i2c_core loop drm_panel_orientation_quirks configfs nfnetlink lcs ctcm fsm dm_service_time ghash_s390 prng chacha_s390 libchacha aes_s390 des_s390 libdes sha3_512_s390 sha3_256_s390 sha512_s390 sha256_s390 sha1_s390 sha_common dm_mirror dm_region_hash dm_log zfcp scsi_transport_fc scsi_dh_rdac scsi_dh_emc scsi_dh_alua pkey zcrypt dm_multipath rng_core autofs4 [last unloaded: vfio_pci]
+CPU: 0 PID: 781237 Comm: CPU 0/KVM Not tainted 6.10.0-08682-gcad9f11498ea #6
+Hardware name: IBM 3931 A01 701 (LPAR)
+Krnl PSW : 0704c00180000000 000003d93deb0122 (kvm_handle_sie_intercept+0x432/0x4d0 [kvm])
+           R:0 T:1 IO:1 EX:1 Key:0 M:1 W:0 P:0 AS:3 CC:0 PM:0 RI:0 EA:3
+Krnl GPRS: 000003d900000027 000003d900000023 0000000000000028 000002cd00000000
+           000002d063a00900 00000359c6daf708 00000000000bebb5 0000000000001eff
+           000002cfd82e9000 000002cfd80bc000 0000000000001011 000003d93deda412
+           000003ff8962df98 000003d93de77ce0 000003d93deb011e 00000359c6daf960
+Krnl Code: 000003d93deb0112: c020fffe7259	larl	%r2,000003d93de7e5c4
+           000003d93deb0118: c0e53fa8beac	brasl	%r14,000003d9bd3c7e70
+          #000003d93deb011e: af000000		mc	0,0
+          >000003d93deb0122: a728ffea		lhi	%r2,-22
+           000003d93deb0126: a7f4fe24		brc	15,000003d93deafd6e
+           000003d93deb012a: 9101f0b0		tm	176(%r15),1
+           000003d93deb012e: a774fe48		brc	7,000003d93deafdbe
+           000003d93deb0132: 40a0f0ae		sth	%r10,174(%r15)
+Call Trace:
+ [<000003d93deb0122>] kvm_handle_sie_intercept+0x432/0x4d0 [kvm]
+([<000003d93deb011e>] kvm_handle_sie_intercept+0x42e/0x4d0 [kvm])
+ [<000003d93deacc10>] vcpu_post_run+0x1d0/0x3b0 [kvm]
+ [<000003d93deaceda>] __vcpu_run+0xea/0x2d0 [kvm]
+ [<000003d93dead9da>] kvm_arch_vcpu_ioctl_run+0x16a/0x430 [kvm]
+ [<000003d93de93ee0>] kvm_vcpu_ioctl+0x190/0x7c0 [kvm]
+ [<000003d9bd728b4e>] vfs_ioctl+0x2e/0x70
+ [<000003d9bd72a092>] __s390x_sys_ioctl+0xc2/0xd0
+ [<000003d9be0e9222>] __do_syscall+0x1f2/0x2e0
+ [<000003d9be0f9a90>] system_call+0x70/0x98
+Last Breaking-Event-Address:
+ [<000003d9bd3c7f58>] __warn_printk+0xe8/0xf0
 
-Cc: stable@vger.kernel.org # 5.3+
-Fixes: 5e2b17e712cf ("s390/dasd: Add dynamic formatting support for ESE volumes")
-Reviewed-by: Jan Hoeppner <hoeppner@linux.ibm.com>
-Signed-off-by: Stefan Haberland <sth@linux.ibm.com>
-Link: https://lore.kernel.org/r/20240812125733.126431-3-sth@linux.ibm.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Cc: stable@vger.kernel.org
+Reported-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+Fixes: fe0ef0030463 ("KVM: s390: sort out physical vs virtual pointers usage")
+Signed-off-by: Michael Mueller <mimu@linux.ibm.com>
+Tested-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+Reviewed-by: Janosch Frank <frankja@linux.ibm.com>
+Link: https://lore.kernel.org/r/20240801123109.2782155-1-mimu@linux.ibm.com
+Message-ID: <20240801123109.2782155-1-mimu@linux.ibm.com>
+Signed-off-by: Janosch Frank <frankja@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/s390/block/dasd.c          |   36 +++++++++++++++---------
- drivers/s390/block/dasd_3990_erp.c |   10 +-----
- drivers/s390/block/dasd_eckd.c     |   55 ++++++++++++++++---------------------
- drivers/s390/block/dasd_int.h      |    2 -
- 4 files changed, 50 insertions(+), 53 deletions(-)
+ arch/s390/kvm/kvm-s390.h |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/s390/block/dasd.c
-+++ b/drivers/s390/block/dasd.c
-@@ -1599,9 +1599,15 @@ static int dasd_ese_needs_format(struct
- 	if (!sense)
- 		return 0;
+--- a/arch/s390/kvm/kvm-s390.h
++++ b/arch/s390/kvm/kvm-s390.h
+@@ -249,7 +249,12 @@ static inline unsigned long kvm_s390_get
  
--	return !!(sense[1] & SNS1_NO_REC_FOUND) ||
--		!!(sense[1] & SNS1_FILE_PROTECTED) ||
--		scsw_cstat(&irb->scsw) == SCHN_STAT_INCORR_LEN;
-+	if (sense[1] & SNS1_NO_REC_FOUND)
-+		return 1;
-+
-+	if ((sense[1] & SNS1_INV_TRACK_FORMAT) &&
-+	    scsw_is_tm(&irb->scsw) &&
-+	    !(sense[2] & SNS2_ENV_DATA_PRESENT))
-+		return 1;
-+
-+	return 0;
- }
- 
- static int dasd_ese_oos_cond(u8 *sense)
-@@ -1622,7 +1628,7 @@ void dasd_int_handler(struct ccw_device
- 	struct dasd_device *device;
- 	unsigned long now;
- 	int nrf_suppressed = 0;
--	int fp_suppressed = 0;
-+	int it_suppressed = 0;
- 	struct request *req;
- 	u8 *sense = NULL;
- 	int expires;
-@@ -1677,8 +1683,9 @@ void dasd_int_handler(struct ccw_device
- 		 */
- 		sense = dasd_get_sense(irb);
- 		if (sense) {
--			fp_suppressed = (sense[1] & SNS1_FILE_PROTECTED) &&
--				test_bit(DASD_CQR_SUPPRESS_FP, &cqr->flags);
-+			it_suppressed =	(sense[1] & SNS1_INV_TRACK_FORMAT) &&
-+				!(sense[2] & SNS2_ENV_DATA_PRESENT) &&
-+				test_bit(DASD_CQR_SUPPRESS_IT, &cqr->flags);
- 			nrf_suppressed = (sense[1] & SNS1_NO_REC_FOUND) &&
- 				test_bit(DASD_CQR_SUPPRESS_NRF, &cqr->flags);
- 
-@@ -1693,7 +1700,7 @@ void dasd_int_handler(struct ccw_device
- 				return;
- 			}
- 		}
--		if (!(fp_suppressed || nrf_suppressed))
-+		if (!(it_suppressed || nrf_suppressed))
- 			device->discipline->dump_sense_dbf(device, irb, "int");
- 
- 		if (device->features & DASD_FEATURE_ERPLOG)
-@@ -2465,14 +2472,17 @@ retry:
- 	rc = 0;
- 	list_for_each_entry_safe(cqr, n, ccw_queue, blocklist) {
- 		/*
--		 * In some cases the 'File Protected' or 'Incorrect Length'
--		 * error might be expected and error recovery would be
--		 * unnecessary in these cases.	Check if the according suppress
--		 * bit is set.
-+		 * In some cases certain errors might be expected and
-+		 * error recovery would be unnecessary in these cases.
-+		 * Check if the according suppress bit is set.
- 		 */
- 		sense = dasd_get_sense(&cqr->irb);
--		if (sense && sense[1] & SNS1_FILE_PROTECTED &&
--		    test_bit(DASD_CQR_SUPPRESS_FP, &cqr->flags))
-+		if (sense && (sense[1] & SNS1_INV_TRACK_FORMAT) &&
-+		    !(sense[2] & SNS2_ENV_DATA_PRESENT) &&
-+		    test_bit(DASD_CQR_SUPPRESS_IT, &cqr->flags))
-+			continue;
-+		if (sense && (sense[1] & SNS1_NO_REC_FOUND) &&
-+		    test_bit(DASD_CQR_SUPPRESS_NRF, &cqr->flags))
- 			continue;
- 		if (scsw_cstat(&cqr->irb.scsw) == 0x40 &&
- 		    test_bit(DASD_CQR_SUPPRESS_IL, &cqr->flags))
---- a/drivers/s390/block/dasd_3990_erp.c
-+++ b/drivers/s390/block/dasd_3990_erp.c
-@@ -1406,14 +1406,8 @@ dasd_3990_erp_file_prot(struct dasd_ccw_
- 
- 	struct dasd_device *device = erp->startdev;
- 
--	/*
--	 * In some cases the 'File Protected' error might be expected and
--	 * log messages shouldn't be written then.
--	 * Check if the according suppress bit is set.
--	 */
--	if (!test_bit(DASD_CQR_SUPPRESS_FP, &erp->flags))
--		dev_err(&device->cdev->dev,
--			"Accessing the DASD failed because of a hardware error\n");
-+	dev_err(&device->cdev->dev,
-+		"Accessing the DASD failed because of a hardware error\n");
- 
- 	return dasd_3990_erp_cleanup(erp, DASD_CQR_FAILED);
- 
---- a/drivers/s390/block/dasd_eckd.c
-+++ b/drivers/s390/block/dasd_eckd.c
-@@ -2289,6 +2289,7 @@ dasd_eckd_analysis_ccw(struct dasd_devic
- 	cqr->status = DASD_CQR_FILLED;
- 	/* Set flags to suppress output for expected errors */
- 	set_bit(DASD_CQR_SUPPRESS_NRF, &cqr->flags);
-+	set_bit(DASD_CQR_SUPPRESS_IT, &cqr->flags);
- 
- 	return cqr;
- }
-@@ -2570,7 +2571,6 @@ dasd_eckd_build_check_tcw(struct dasd_de
- 	cqr->buildclk = get_tod_clock();
- 	cqr->status = DASD_CQR_FILLED;
- 	/* Set flags to suppress output for expected errors */
--	set_bit(DASD_CQR_SUPPRESS_FP, &cqr->flags);
- 	set_bit(DASD_CQR_SUPPRESS_IL, &cqr->flags);
- 
- 	return cqr;
-@@ -4146,8 +4146,6 @@ static struct dasd_ccw_req *dasd_eckd_bu
- 
- 	/* Set flags to suppress output for expected errors */
- 	if (dasd_eckd_is_ese(basedev)) {
--		set_bit(DASD_CQR_SUPPRESS_FP, &cqr->flags);
--		set_bit(DASD_CQR_SUPPRESS_IL, &cqr->flags);
- 		set_bit(DASD_CQR_SUPPRESS_NRF, &cqr->flags);
- 	}
- 
-@@ -4649,9 +4647,8 @@ static struct dasd_ccw_req *dasd_eckd_bu
- 
- 	/* Set flags to suppress output for expected errors */
- 	if (dasd_eckd_is_ese(basedev)) {
--		set_bit(DASD_CQR_SUPPRESS_FP, &cqr->flags);
--		set_bit(DASD_CQR_SUPPRESS_IL, &cqr->flags);
- 		set_bit(DASD_CQR_SUPPRESS_NRF, &cqr->flags);
-+		set_bit(DASD_CQR_SUPPRESS_IT, &cqr->flags);
- 	}
- 
- 	return cqr;
-@@ -5820,36 +5817,32 @@ static void dasd_eckd_dump_sense(struct
+ static inline u32 kvm_s390_get_gisa_desc(struct kvm *kvm)
  {
- 	u8 *sense = dasd_get_sense(irb);
- 
--	if (scsw_is_tm(&irb->scsw)) {
--		/*
--		 * In some cases the 'File Protected' or 'Incorrect Length'
--		 * error might be expected and log messages shouldn't be written
--		 * then. Check if the according suppress bit is set.
--		 */
--		if (sense && (sense[1] & SNS1_FILE_PROTECTED) &&
--		    test_bit(DASD_CQR_SUPPRESS_FP, &req->flags))
--			return;
--		if (scsw_cstat(&irb->scsw) == 0x40 &&
--		    test_bit(DASD_CQR_SUPPRESS_IL, &req->flags))
--			return;
-+	/*
-+	 * In some cases certain errors might be expected and
-+	 * log messages shouldn't be written then.
-+	 * Check if the according suppress bit is set.
-+	 */
-+	if (sense && (sense[1] & SNS1_INV_TRACK_FORMAT) &&
-+	    !(sense[2] & SNS2_ENV_DATA_PRESENT) &&
-+	    test_bit(DASD_CQR_SUPPRESS_IT, &req->flags))
-+		return;
- 
--		dasd_eckd_dump_sense_tcw(device, req, irb);
--	} else {
--		/*
--		 * In some cases the 'Command Reject' or 'No Record Found'
--		 * error might be expected and log messages shouldn't be
--		 * written then. Check if the according suppress bit is set.
--		 */
--		if (sense && sense[0] & SNS0_CMD_REJECT &&
--		    test_bit(DASD_CQR_SUPPRESS_CR, &req->flags))
--			return;
-+	if (sense && sense[0] & SNS0_CMD_REJECT &&
-+	    test_bit(DASD_CQR_SUPPRESS_CR, &req->flags))
-+		return;
- 
--		if (sense && sense[1] & SNS1_NO_REC_FOUND &&
--		    test_bit(DASD_CQR_SUPPRESS_NRF, &req->flags))
--			return;
-+	if (sense && sense[1] & SNS1_NO_REC_FOUND &&
-+	    test_bit(DASD_CQR_SUPPRESS_NRF, &req->flags))
-+		return;
- 
-+	if (scsw_cstat(&irb->scsw) == 0x40 &&
-+	    test_bit(DASD_CQR_SUPPRESS_IL, &req->flags))
-+		return;
+-	u32 gd = virt_to_phys(kvm->arch.gisa_int.origin);
++	u32 gd;
 +
-+	if (scsw_is_tm(&irb->scsw))
-+		dasd_eckd_dump_sense_tcw(device, req, irb);
-+	else
- 		dasd_eckd_dump_sense_ccw(device, req, irb);
--	}
- }
++	if (!kvm->arch.gisa_int.origin)
++		return 0;
++
++	gd = virt_to_phys(kvm->arch.gisa_int.origin);
  
- static int dasd_eckd_reload_device(struct dasd_device *device)
---- a/drivers/s390/block/dasd_int.h
-+++ b/drivers/s390/block/dasd_int.h
-@@ -225,7 +225,7 @@ struct dasd_ccw_req {
-  * The following flags are used to suppress output of certain errors.
-  */
- #define DASD_CQR_SUPPRESS_NRF	4	/* Suppress 'No Record Found' error */
--#define DASD_CQR_SUPPRESS_FP	5	/* Suppress 'File Protected' error*/
-+#define DASD_CQR_SUPPRESS_IT	5	/* Suppress 'Invalid Track' error*/
- #define DASD_CQR_SUPPRESS_IL	6	/* Suppress 'Incorrect Length' error */
- #define DASD_CQR_SUPPRESS_CR	7	/* Suppress 'Command Reject' error */
- 
+ 	if (gd && sclp.has_gisaf)
+ 		gd |= GISA_FORMAT1;
 
 
 
