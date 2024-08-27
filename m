@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-70737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70780-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA2C4960FC5
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:02:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8221E961002
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:05:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 18A131C236AD
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:02:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 36B181F226EC
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:05:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEF161C7B8C;
-	Tue, 27 Aug 2024 15:01:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68F621C6F57;
+	Tue, 27 Aug 2024 15:03:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2VtSldgO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="niKHjs6C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E0C01C6F47;
-	Tue, 27 Aug 2024 15:01:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25D431C57BF;
+	Tue, 27 Aug 2024 15:03:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770899; cv=none; b=g+6N0aaeohYYOoRyDiglqvoIpp3bu3FWqdKdQXpsUkfDXV85Pq2901x8z/hEbJtJhcoNvWrMTys0RZ6JYV2FZSHsfE3k5jjxYemE6KyNRNnXER0IBNrGXLqLKEkRYVM9p5OTOfga4LpLjNoOF5iWL/QANxAnrM0lVPSZXM6VI1w=
+	t=1724771039; cv=none; b=m0FZ+TZvoyj12BmaNuozZhpbTerd9iY5k961HTCBw5JYyEYKNFUzAYMToWFbH5kvQeA9QG/L/STsV1fmUDBsFvQhZZx/1AGlDfw2+2pIvo7GEpc6FL/kFH6a2iEe13DME42GiBpgT1effyRIrsWTkMQERL/HbVoZMuPwLGrB8cQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770899; c=relaxed/simple;
-	bh=8hB33dh6H/HYlwMHO3FhwT3ZxfMKMg5PTn/UVBXWK9U=;
+	s=arc-20240116; t=1724771039; c=relaxed/simple;
+	bh=qhpqsKLcSMXN8ICIRtS3BPHzpCEo04UN55CoqgJSpnI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tSGDt//AJRO5E3nk2tsO4vvehLUcLMrT5PFKQFdU+TSqpChBgMGFSPB+S8DnUiR2Q6YLHgbYHErJHpMFX9yOfAQ+RnE32AwOQ2WrBv5OZ2BhRr2dUISGrpLZWfWKMKZfgj1fwJhzWRDefP93MvOGD82Mm3zg6BD/7QqYb3/b+TA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2VtSldgO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09650C4AF1C;
-	Tue, 27 Aug 2024 15:01:38 +0000 (UTC)
+	 MIME-Version; b=DV1UdO/vfxor0pKnkPFuUCyinlKZG9jH9jlIRGTEAuMwJn+V8/BsRLrJfrdlIOT258+pfvR/eqK9oP0bm0uAmNxs5MsP2g3wbn0uD3wF3JsRFGyt6C3BCcdbp+NVpxNbj/dq/mwdWT12wopZ+ghLlK6JpXVYZ4c2ZQExg1rA5PQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=niKHjs6C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 877ECC6104C;
+	Tue, 27 Aug 2024 15:03:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770899;
-	bh=8hB33dh6H/HYlwMHO3FhwT3ZxfMKMg5PTn/UVBXWK9U=;
+	s=korg; t=1724771039;
+	bh=qhpqsKLcSMXN8ICIRtS3BPHzpCEo04UN55CoqgJSpnI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2VtSldgOKPfTa3iF4Pq5kE7XcsBToD92HgLI4CxwuBCzAtFEbL5Dd3siRHHmitEhb
-	 ql5Zkc2Fkgs67oJQdm12CarB23g634/8fKThZpCI+0s8Z1tTRmAId/IhWOep++bWVc
-	 rSunpdNNwm+YjcDQH4fR6RcZeWmW4hv0d4fcHLJ0=
+	b=niKHjs6CWG2tr3aWI5sJKOTu4qqZ2+BwsEMeua7PGJxs/nNQWSHI7qprYfgB0TcgN
+	 U15Pkq4R22rdzHvi5/Nm9BuFxrYbND3XFHgnEQKgOl1R1WVj96ZE/rdzvsgN7chz7C
+	 khg5xfIhPjNjnTx5IU/r3DhhvcTCmera0KymJfeU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Gstir <david@sigma-star.at>,
-	Jarkko Sakkinen <jarkko@kernel.org>
-Subject: [PATCH 6.10 026/273] KEYS: trusted: dcp: fix leak of blob encryption key
-Date: Tue, 27 Aug 2024 16:35:50 +0200
-Message-ID: <20240827143834.386892058@linuxfoundation.org>
+	Nam Cao <namcao@linutronix.de>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>
+Subject: [PATCH 6.10 027/273] riscv: change XIPs kernel_map.size to be size of the entire kernel
+Date: Tue, 27 Aug 2024 16:35:51 +0200
+Message-ID: <20240827143834.425643561@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
 References: <20240827143833.371588371@linuxfoundation.org>
@@ -65,142 +66,51 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: David Gstir <david@sigma-star.at>
+From: Nam Cao <namcao@linutronix.de>
 
-commit 0e28bf61a5f9ab30be3f3b4eafb8d097e39446bb upstream.
+commit 57d76bc51fd80824bcc0c84a5b5ec944f1b51edd upstream.
 
-Trusted keys unseal the key blob on load, but keep the sealed payload in
-the blob field so that every subsequent read (export) will simply
-convert this field to hex and send it to userspace.
+With XIP kernel, kernel_map.size is set to be only the size of data part of
+the kernel. This is inconsistent with "normal" kernel, who sets it to be
+the size of the entire kernel.
 
-With DCP-based trusted keys, we decrypt the blob encryption key (BEK)
-in the Kernel due hardware limitations and then decrypt the blob payload.
-BEK decryption is done in-place which means that the trusted key blob
-field is modified and it consequently holds the BEK in plain text.
-Every subsequent read of that key thus send the plain text BEK instead
-of the encrypted BEK to userspace.
+More importantly, XIP kernel fails to boot if CONFIG_DEBUG_VIRTUAL is
+enabled, because there are checks on virtual addresses with the assumption
+that kernel_map.size is the size of the entire kernel (these checks are in
+arch/riscv/mm/physaddr.c).
 
-This issue only occurs when importing a trusted DCP-based key and
-then exporting it again. This should rarely happen as the common use cases
-are to either create a new trusted key and export it, or import a key
-blob and then just use it without exporting it again.
+Change XIP's kernel_map.size to be the size of the entire kernel.
 
-Fix this by performing BEK decryption and encryption in a dedicated
-buffer. Further always wipe the plain text BEK buffer to prevent leaking
-the key via uninitialized memory.
-
-Cc: stable@vger.kernel.org # v6.10+
-Fixes: 2e8a0f40a39c ("KEYS: trusted: Introduce NXP DCP-backed trusted keys")
-Signed-off-by: David Gstir <david@sigma-star.at>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Nam Cao <namcao@linutronix.de>
+Cc: <stable@vger.kernel.org> # v6.1+
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/20240508191917.2892064-1-namcao@linutronix.de
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/keys/trusted-keys/trusted_dcp.c | 33 +++++++++++++++---------
- 1 file changed, 21 insertions(+), 12 deletions(-)
+ arch/riscv/mm/init.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/security/keys/trusted-keys/trusted_dcp.c b/security/keys/trusted-keys/trusted_dcp.c
-index b0947f072a98..4edc5bbbcda3 100644
---- a/security/keys/trusted-keys/trusted_dcp.c
-+++ b/security/keys/trusted-keys/trusted_dcp.c
-@@ -186,20 +186,21 @@ static int do_aead_crypto(u8 *in, u8 *out, size_t len, u8 *key, u8 *nonce,
- 	return ret;
- }
+--- a/arch/riscv/mm/init.c
++++ b/arch/riscv/mm/init.c
+@@ -931,7 +931,7 @@ static void __init create_kernel_page_ta
+ 				   PMD_SIZE, PAGE_KERNEL_EXEC);
  
--static int decrypt_blob_key(u8 *key)
-+static int decrypt_blob_key(u8 *encrypted_key, u8 *plain_key)
- {
--	return do_dcp_crypto(key, key, false);
-+	return do_dcp_crypto(encrypted_key, plain_key, false);
- }
+ 	/* Map the data in RAM */
+-	end_va = kernel_map.virt_addr + XIP_OFFSET + kernel_map.size;
++	end_va = kernel_map.virt_addr + kernel_map.size;
+ 	for (va = kernel_map.virt_addr + XIP_OFFSET; va < end_va; va += PMD_SIZE)
+ 		create_pgd_mapping(pgdir, va,
+ 				   kernel_map.phys_addr + (va - (kernel_map.virt_addr + XIP_OFFSET)),
+@@ -1100,7 +1100,7 @@ asmlinkage void __init setup_vm(uintptr_
  
--static int encrypt_blob_key(u8 *key)
-+static int encrypt_blob_key(u8 *plain_key, u8 *encrypted_key)
- {
--	return do_dcp_crypto(key, key, true);
-+	return do_dcp_crypto(plain_key, encrypted_key, true);
- }
+ 	phys_ram_base = CONFIG_PHYS_RAM_BASE;
+ 	kernel_map.phys_addr = (uintptr_t)CONFIG_PHYS_RAM_BASE;
+-	kernel_map.size = (uintptr_t)(&_end) - (uintptr_t)(&_sdata);
++	kernel_map.size = (uintptr_t)(&_end) - (uintptr_t)(&_start);
  
- static int trusted_dcp_seal(struct trusted_key_payload *p, char *datablob)
- {
- 	struct dcp_blob_fmt *b = (struct dcp_blob_fmt *)p->blob;
- 	int blen, ret;
-+	u8 plain_blob_key[AES_KEYSIZE_128];
- 
- 	blen = calc_blob_len(p->key_len);
- 	if (blen > MAX_BLOB_SIZE)
-@@ -207,30 +208,36 @@ static int trusted_dcp_seal(struct trusted_key_payload *p, char *datablob)
- 
- 	b->fmt_version = DCP_BLOB_VERSION;
- 	get_random_bytes(b->nonce, AES_KEYSIZE_128);
--	get_random_bytes(b->blob_key, AES_KEYSIZE_128);
-+	get_random_bytes(plain_blob_key, AES_KEYSIZE_128);
- 
--	ret = do_aead_crypto(p->key, b->payload, p->key_len, b->blob_key,
-+	ret = do_aead_crypto(p->key, b->payload, p->key_len, plain_blob_key,
- 			     b->nonce, true);
- 	if (ret) {
- 		pr_err("Unable to encrypt blob payload: %i\n", ret);
--		return ret;
-+		goto out;
- 	}
- 
--	ret = encrypt_blob_key(b->blob_key);
-+	ret = encrypt_blob_key(plain_blob_key, b->blob_key);
- 	if (ret) {
- 		pr_err("Unable to encrypt blob key: %i\n", ret);
--		return ret;
-+		goto out;
- 	}
- 
- 	put_unaligned_le32(p->key_len, &b->payload_len);
- 	p->blob_len = blen;
--	return 0;
-+	ret = 0;
-+
-+out:
-+	memzero_explicit(plain_blob_key, sizeof(plain_blob_key));
-+
-+	return ret;
- }
- 
- static int trusted_dcp_unseal(struct trusted_key_payload *p, char *datablob)
- {
- 	struct dcp_blob_fmt *b = (struct dcp_blob_fmt *)p->blob;
- 	int blen, ret;
-+	u8 plain_blob_key[AES_KEYSIZE_128];
- 
- 	if (b->fmt_version != DCP_BLOB_VERSION) {
- 		pr_err("DCP blob has bad version: %i, expected %i\n",
-@@ -248,14 +255,14 @@ static int trusted_dcp_unseal(struct trusted_key_payload *p, char *datablob)
- 		goto out;
- 	}
- 
--	ret = decrypt_blob_key(b->blob_key);
-+	ret = decrypt_blob_key(b->blob_key, plain_blob_key);
- 	if (ret) {
- 		pr_err("Unable to decrypt blob key: %i\n", ret);
- 		goto out;
- 	}
- 
- 	ret = do_aead_crypto(b->payload, p->key, p->key_len + DCP_BLOB_AUTHLEN,
--			     b->blob_key, b->nonce, false);
-+			     plain_blob_key, b->nonce, false);
- 	if (ret) {
- 		pr_err("Unwrap of DCP payload failed: %i\n", ret);
- 		goto out;
-@@ -263,6 +270,8 @@ static int trusted_dcp_unseal(struct trusted_key_payload *p, char *datablob)
- 
- 	ret = 0;
- out:
-+	memzero_explicit(plain_blob_key, sizeof(plain_blob_key));
-+
- 	return ret;
- }
- 
--- 
-2.46.0
-
+ 	kernel_map.va_kernel_xip_pa_offset = kernel_map.virt_addr - kernel_map.xiprom;
+ #else
 
 
 
