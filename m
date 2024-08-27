@@ -1,86 +1,130 @@
-Return-Path: <stable+bounces-70357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1BEB960B81
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:14:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E87A960B8F
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:15:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 344A3B25905
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 13:14:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 372BA28695A
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 13:15:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C7791C2DD1;
-	Tue, 27 Aug 2024 13:12:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7871D1BCA17;
+	Tue, 27 Aug 2024 13:14:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dwIM0hj1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SLehL7/M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D441417BED8;
-	Tue, 27 Aug 2024 13:11:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3810A45028
+	for <stable@vger.kernel.org>; Tue, 27 Aug 2024 13:14:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724764320; cv=none; b=IPXCFbEeOZNKsGburIYCkhWSYc6SsqOgt5wzaLnuiB56UCTslxzMw06HOm06xrK745xpXxWVPWFALFHdadfoced17XyQ3wXIZT74kQhVNUVIQjPQSF/mGxrGUxG7qQ6RAVtwD5oxs3N6Cwp6CJlwkdEp/ZFArmJX2+VioJ56AWI=
+	t=1724764456; cv=none; b=VeaujQkf92azpLKrWtbxgIv8mZK1YkwtlcT4MWNiaOh87UFFP646e3N2hmh7osf/Vh/MJDEMVE9Wt7H/g5GVvDo8L2dQ5/fpE/IQAZrD4GHxd2viYGiTshtois1FZmCFNO3QjIx57fMuMo1Ga+AfFTe8LNtCRekyzsMfytzVnzM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724764320; c=relaxed/simple;
-	bh=HwxQP61MZeHik1g5rd3oUzvQxo1n6F6I4rm2AhH1LS8=;
+	s=arc-20240116; t=1724764456; c=relaxed/simple;
+	bh=VCFZWFFqHFuYiIYsNIyn3G9HuQm1/LcyO/cKhlI6Ah4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LwAkU1CuKpaTegW0IZSIsRnxXiU1c3L9R9z8R7PFe+7snZ8A0hbF0ImmU9pyF1tMmcnxCPC9uNLMOsUrXXOBLEK9l202jlKp+JY9bJPhOMUZXDs1pQBqo86qZWbcR2Bd4bLQjTIo9CYu6umj9UUMs8mz/Yg/fa6fd1WEn67DJtA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dwIM0hj1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A42A4C61047;
-	Tue, 27 Aug 2024 13:11:58 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=TMbEGH2mLk5ghH363F1WfaRicXftJ9V3ORRPNAIh66AhUBSje+QmGY8WUrrHbZm6+yResSMqHB1+okxpOaxAGfOr1xkQh2l9Lo8xZmgXJtlrXFJWh6xJ4+FEX2sdbz6GvYw/rmDoX00dfgO5yLDT8p250IqoMT8QppDQy10Sd2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SLehL7/M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 452A7C61040;
+	Tue, 27 Aug 2024 13:14:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724764319;
-	bh=HwxQP61MZeHik1g5rd3oUzvQxo1n6F6I4rm2AhH1LS8=;
+	s=korg; t=1724764455;
+	bh=VCFZWFFqHFuYiIYsNIyn3G9HuQm1/LcyO/cKhlI6Ah4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dwIM0hj1ugbAfnBmP8vdpFQD7VlNZiTL8QseMV5QTCV4zMuW0cLz6h6AsM486bd11
-	 IzAxcoM1tj9hZ93E+6tVK9R+xSDkQThesq/GOox1iS9OLoeUYTgjHEV5hzefRo2cx5
-	 k7Y8mXzsHJoZn6tSh4ewy9aOfNnYxu1qLsNwXtAY=
-Date: Tue, 27 Aug 2024 15:11:56 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Amadeusz =?utf-8?B?U8WCYXdpxYRza2k=?= <amadeuszx.slawinski@linux.intel.com>
-Cc: stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>,
-	linux-kernel@vger.kernel.org, linux-sound@vger.kernel.org,
-	Linux kernel regressions list <regressions@lists.linux.dev>,
-	tiwai@suse.com, perex@perex.cz, lgirdwood@gmail.com,
-	=?iso-8859-1?Q?P=E9ter?= Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Thorsten Leemhuis <regressions@leemhuis.info>,
-	Vitaly Chikunov <vt@altlinux.org>, Mark Brown <broonie@kernel.org>
-Subject: Re: [PATCH for stable 0/2] ASoC: topology: Fix loading topology issue
-Message-ID: <2024082729-subatomic-anemia-003d@gregkh>
-References: <20240814140657.2369433-1-amadeuszx.slawinski@linux.intel.com>
+	b=SLehL7/MRmYutamTJY0ZxApQffHwWkr57ogyyjXXBS3CdMAz7beZkyobv9H7ofsC8
+	 smeizc0h7ZZlsLM5sr05WPzKTJ7oV3MJI8oTisuuH1Ysjc/YAAjv5k0oXmCHcVqORh
+	 xspnPHZbvgpW599nmkrH/zWeVhJB1ELVM2mv4FAQ=
+Date: Tue, 27 Aug 2024 15:14:12 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Jan =?iso-8859-1?Q?H=F6ppner?= <hoeppner@linux.ibm.com>
+Cc: stable@vger.kernel.org, sth@linux.ibm.com
+Subject: Re: [PATCH] Revert "s390/dasd: Establish DMA alignment"
+Message-ID: <2024082702-scoff-panning-4a8a@gregkh>
+References: <2024082014-riverbed-glutton-ae33@gregkh>
+ <20240820141307.2869182-1-hoeppner@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240814140657.2369433-1-amadeuszx.slawinski@linux.intel.com>
+In-Reply-To: <20240820141307.2869182-1-hoeppner@linux.ibm.com>
 
-On Wed, Aug 14, 2024 at 04:06:55PM +0200, Amadeusz SÅ‚awiÅ„ski wrote:
-> Commit 97ab304ecd95 ("ASoC: topology: Fix references to freed memory")
-> is a problematic fix for issue in topology loading code, which was
-> cherry-picked to stable. It was later corrected in
-> 0298f51652be ("ASoC: topology: Fix route memory corruption"), however to
-> apply cleanly e0e7bc2cbee9 ("ASoC: topology: Clean up route loading")
-> also needs to be applied.
+On Tue, Aug 20, 2024 at 04:13:07PM +0200, Jan Höppner wrote:
+> This reverts commit bc792884b76f ("s390/dasd: Establish DMA alignment").
 > 
-> Link: https://lore.kernel.org/linux-sound/ZrwUCnrtKQ61LWFS@sashalap/T/#mbfd273adf86fe93b208721f1437d36e5d2a9aa19
+> Quoting the original commit:
+>     linux-next commit bf8d08532bc1 ("iomap: add support for dma aligned
+>     direct-io") changes the alignment requirement to come from the block
+>     device rather than the block size, and the default alignment
+>     requirement is 512-byte boundaries. Since DASD I/O has page
+>     alignments for IDAW/TIDAW requests, let's override this value to
+>     restore the expected behavior.
+> 
+> I mentioned TIDAW, but that was wrong. TIDAWs have no distinct alignment
+> requirement (per p. 15-70 of POPS SA22-7832-13):
+> 
+>    Unless otherwise specified, TIDAWs may designate
+>    a block of main storage on any boundary and length
+>    up to 4K bytes, provided the specified block does not
+>    cross a 4 K-byte boundary.
+> 
+> IDAWs do, but the original commit neglected that while ECKD DASD are
+> typically formatted in 4096-byte blocks, they don't HAVE to be. Formatting
+> an ECKD volume with smaller blocks is permitted (dasdfmt -b xxx), and the
+> problematic commit enforces alignment properties to such a device that
+> will result in errors, such as:
+> 
+>    [test@host ~]# lsdasd -l a367 | grep blksz
+>      blksz:				512
+>    [test@host ~]# mkfs.xfs -f /dev/disk/by-path/ccw-0.0.a367-part1
+>    meta-data=/dev/dasdc1            isize=512    agcount=4, agsize=230075 blks
+>             =                       sectsz=512   attr=2, projid32bit=1
+>             =                       crc=1        finobt=1, sparse=1, rmapbt=1
+>             =                       reflink=1    bigtime=1 inobtcount=1 nrext64=1
+>    data     =                       bsize=4096   blocks=920299, imaxpct=25
+>             =                       sunit=0      swidth=0 blks
+>    naming   =version 2              bsize=4096   ascii-ci=0, ftype=1
+>    log      =internal log           bsize=4096   blocks=16384, version=2
+>             =                       sectsz=512   sunit=0 blks, lazy-count=1
+>    realtime =none                   extsz=4096   blocks=0, rtextents=0
+>    error reading existing superblock: Invalid argument
+>    mkfs.xfs: pwrite failed: Invalid argument
+>    libxfs_bwrite: write failed on (unknown) bno 0x70565c/0x100, err=22
+>    mkfs.xfs: Releasing dirty buffer to free list!
+>    found dirty buffer (bulk) on free list!
+>    mkfs.xfs: pwrite failed: Invalid argument
+>    ...snipped...
+> 
+> The original commit omitted the FBA discipline for just this reason,
+> but the formatted block size of the other disciplines was overlooked.
+> The solution to all of this is to revert to the original behavior,
+> such that the block size can be respected.
+> 
+> But what of the original problem? That was manifested with a direct-io
+> QEMU guest, where QEMU itself was changed a month or two later with
+> commit 25474d90aa ("block: use the request length for iov alignment")
+> such that the blamed kernel commit is unnecessary.
+> 
+> Note: This is an adapted version of the original upstream commit
+> 2a07bb64d801 ("s390/dasd: Remove DMA alignment").
+> 
+> Cc: stable@vger.kernel.org # 6.0+
+> Signed-off-by: Jan Höppner <hoeppner@linux.ibm.com>
+> ---
+>  drivers/s390/block/dasd_diag.c | 1 -
+>  drivers/s390/block/dasd_eckd.c | 1 -
+>  2 files changed, 2 deletions(-)
+> 
 
-You need to put the git ids in the patches directly do we have a clue
-what to do.
-
-Also, what tree(s) do you need/want these in?
-
-Please fix up and resend.
-
-thanks,
+Now queued up, thanks.
 
 greg k-h
 
