@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-71158-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70586-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65C2C9611EE
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:25:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C645F960EE6
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:53:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 987531C236A9
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:25:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81CAF286761
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:53:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D67541C57BF;
-	Tue, 27 Aug 2024 15:24:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0D681A01C8;
+	Tue, 27 Aug 2024 14:53:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iiBTy9Ue"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xj6vAKRF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 949921C689C;
-	Tue, 27 Aug 2024 15:24:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D7561C5783;
+	Tue, 27 Aug 2024 14:53:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772290; cv=none; b=Y28UeB3ZhcTG0iNXtdctvBHlbOt6X1mgPH4FK91GkvR2r76CmbZ9e+SJMWcVEV/k6Mb8ufHqmGhgZdQhQhf5nsN/hoyusH383NKpDJuY6VT0u3t6BVeB+uf9A3bSW2tEvn0MuN2e3eE7+/yOI3+0Q+3LUaTGCHirSWr2gW7Da2Q=
+	t=1724770399; cv=none; b=kF3Axc7ND41xd5BEL+FDtzDTGYTxbe8EhIwGHs5BvhpukBLnItbGNIbPUh87MW3AGsJ04BX0JaSYkeILme/2Wy7mK+zw0wE+fsvCuj5Ebrb+4hRq3IFT1cLvtoz6LKASarfDvW/hdQL1FzGqoAS2kRnYEfoEVXbDcvIX37NFSvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772290; c=relaxed/simple;
-	bh=cLtwn3BVhUx32xL5LFOQSU2xm0evSJ0PIRfHxMzba4I=;
+	s=arc-20240116; t=1724770399; c=relaxed/simple;
+	bh=eIFyzoRTECRsNPE+ln2r6FM4f1nA/rwhduzA8Tu0cEM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZOfX7vgyJYqY8XgSbtolzfs2AzZBF2p3JfNCSRyroh0RT8A95rJ/ZLwsNIFnO3on92t9CvCDaf8RjIMdkjxW2f8VsFSbaTcE+XuVQ8jX2uVkH5iXwCUSxs73bJd4CBO81Us4Jhxsh3dyXdi3H/oAEKPRAB7jDX0V3OSOS00ecfQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iiBTy9Ue; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 011D3C61071;
-	Tue, 27 Aug 2024 15:24:49 +0000 (UTC)
+	 MIME-Version; b=SmA2pEH751wFVHFrkZf0Yp1ySW8qsFP9xncem1eKb/DpDU6cNoxl23wbJ6Bm57yL//YPFqNnNZ4+IiKN1RCPE05ZqWf5LEe6Ktt3c7FebK9EuMZSA9fG9Ic7neV9uYzqhpzV6d5CsDr5akLTi7L3+bHTX4RBUxNHOq9E/zL/Ffk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xj6vAKRF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F507C61050;
+	Tue, 27 Aug 2024 14:53:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772290;
-	bh=cLtwn3BVhUx32xL5LFOQSU2xm0evSJ0PIRfHxMzba4I=;
+	s=korg; t=1724770399;
+	bh=eIFyzoRTECRsNPE+ln2r6FM4f1nA/rwhduzA8Tu0cEM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iiBTy9UecmTuNyckDjPYYO424ce1PaM/XYrNzKLvR1a7aFiou+NYUcqye1sHGTQ5/
-	 bgEbtX6XIuSmAl5NtKsXoP2YLTMNt5GcOO51A4kdwGszSllq6R84kuiHfA3AqfdjOq
-	 KETwSC/7e9vE1yCnydKlXxYmGEqC46bNwHx+lBxE=
+	b=Xj6vAKRFzYKCx02C8fHlUbef+jMHNIBlpRQcE9Olp3mZNt0UBP0hnXJoIZ4niwNMj
+	 WMTOYd+riVWhNXisvf6qSHhoh206pQnfGfTIkhTub9tMIj8IUkkHu2lOWh9wuPvzAd
+	 uxODp0Y5wUfO0mmE6/BsxeabpBhS+TDfgk05jMJM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mukesh Sisodiya <mukesh.sisodiya@intel.com>,
-	Gregory Greenman <gregory.greenman@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Phil Chang <phil.chang@mediatek.com>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 139/321] wifi: iwlwifi: fw: Fix debugfs command sending
+Subject: [PATCH 6.6 216/341] hrtimer: Prevent queuing of hrtimer without a function callback
 Date: Tue, 27 Aug 2024 16:37:27 +0200
-Message-ID: <20240827143843.531739978@linuxfoundation.org>
+Message-ID: <20240827143851.629573102@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
+From: Phil Chang <phil.chang@mediatek.com>
 
-[ Upstream commit 048449fc666d736a1a17d950fde0b5c5c8fd10cc ]
+[ Upstream commit 5a830bbce3af16833fe0092dec47b6dd30279825 ]
 
-During debugfs command handling transport function is used directly,
-this bypasses the locking used by runtime operation function
-and leads to a kernel warning when two commands are
-sent in parallel.
+The hrtimer function callback must not be NULL. It has to be specified by
+the call side but it is not validated by the hrtimer code. When a hrtimer
+is queued without a function callback, the kernel crashes with a null
+pointer dereference when trying to execute the callback in __run_hrtimer().
 
-Fix it by using runtime operations function when sending
-debugfs command.
+Introduce a validation before queuing the hrtimer in
+hrtimer_start_range_ns().
 
-Signed-off-by: Mukesh Sisodiya <mukesh.sisodiya@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20231004123422.4f80ac90658a.Ia1dfa1195c919f3002fe08db3eefbd2bfa921bbf@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+[anna-maria: Rephrase commit message]
+
+Signed-off-by: Phil Chang <phil.chang@mediatek.com>
+Signed-off-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/debugfs.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ kernel/time/hrtimer.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c b/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
-index 607e07ed2477c..7d4340c56628a 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
-@@ -163,7 +163,11 @@ static int iwl_dbgfs_enabled_severities_write(struct iwl_fw_runtime *fwrt,
+diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
+index 6057fe2e179b0..57e5cb36f1bc9 100644
+--- a/kernel/time/hrtimer.c
++++ b/kernel/time/hrtimer.c
+@@ -1288,6 +1288,8 @@ void hrtimer_start_range_ns(struct hrtimer *timer, ktime_t tim,
+ 	struct hrtimer_clock_base *base;
+ 	unsigned long flags;
  
- 	event_cfg.enabled_severities = cpu_to_le32(enabled_severities);
- 
--	ret = iwl_trans_send_cmd(fwrt->trans, &hcmd);
-+	if (fwrt->ops && fwrt->ops->send_hcmd)
-+		ret = fwrt->ops->send_hcmd(fwrt->ops_ctx, &hcmd);
-+	else
-+		ret = -EPERM;
-+
- 	IWL_INFO(fwrt,
- 		 "sent host event cfg with enabled_severities: %u, ret: %d\n",
- 		 enabled_severities, ret);
++	if (WARN_ON_ONCE(!timer->function))
++		return;
+ 	/*
+ 	 * Check whether the HRTIMER_MODE_SOFT bit and hrtimer.is_soft
+ 	 * match on CONFIG_PREEMPT_RT = n. With PREEMPT_RT check the hard
 -- 
 2.43.0
 
