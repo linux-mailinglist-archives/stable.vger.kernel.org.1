@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-71212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70920-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01260961254
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:30:05 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF4AA9610B0
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:11:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 741741F21F94
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:30:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3BDBDB2544F
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:11:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED1261CE6FC;
-	Tue, 27 Aug 2024 15:27:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 040551C57B1;
+	Tue, 27 Aug 2024 15:11:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xbEdMfSW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ma4IfzIf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC6831C9EC8;
-	Tue, 27 Aug 2024 15:27:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B450D1C5793;
+	Tue, 27 Aug 2024 15:11:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772465; cv=none; b=nQkC1dO+aku1iN7u/97QEwF4N0Eug4hlovJ47bAIxSzpprooMYgJlntZkjmDMEkaRdeSRKijZnd9A+ESEudjj4SllNllyXY8YYrdizcbDXJB23pbgOcG5xThAcJvHPZbZVZ+avfHUpeMyzTikN+GiEAm4uh/+3XUD8sdz+tR3rQ=
+	t=1724771502; cv=none; b=SHSfRl7egc6RuPs2Yc4BayH+dvOVPNSSih0lv+f10u0k8ehViHVJOxRaBqSia7XfvJe6PtH97tNBEqNb2+c+8/gEOQhyzzfvuCO7/8KGytnl449IaHMr1TcWwOLnsPAjBlymya/14XzL5C31E4syAwrIEwHnZK/kvljmd+b7tI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772465; c=relaxed/simple;
-	bh=1+kAkuHd5JgRI5i95sU7wKjo58aANzG0d8huV+IMkFQ=;
+	s=arc-20240116; t=1724771502; c=relaxed/simple;
+	bh=u4WYhQEtwmafKO+9Oip/SfE66JqtekS+4w3R5lX32KU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hgVL3JwtsuTGhwlL7FyWrVMKrWXFKsb7p///PWyglXLlTpvXPorTUMMa1Lg+f/5jGiFCEExTmniwLYvPVm/s5HpkAMrYhXY3mr9QRGTkB/CToesOlnDxs+qIyLBOhypvSct3ikqDDuwbpbPotxeLzPNaFE0fkwYgBm3F4T3tNqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xbEdMfSW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D8A5C61040;
-	Tue, 27 Aug 2024 15:27:45 +0000 (UTC)
+	 MIME-Version; b=mlJF7H7cpOcQLdOn2XAfxLMjuS1C7Lv3KpFR/a9k7K5LFmuNHsUBexFKa6HkWOE6Qxru9zxQpVB0a18bUN5DppCLi70MaoHy+nuU3FlzanQsLwrpyEZdx6ceOM5AZsBFtuAQkjf5z6LxxR7i4A9HJyoIAbPNvbIXAyBvrwBvNmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ma4IfzIf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EF30C4DE08;
+	Tue, 27 Aug 2024 15:11:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772465;
-	bh=1+kAkuHd5JgRI5i95sU7wKjo58aANzG0d8huV+IMkFQ=;
+	s=korg; t=1724771502;
+	bh=u4WYhQEtwmafKO+9Oip/SfE66JqtekS+4w3R5lX32KU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xbEdMfSWKEillm3YR0PyuF98mJXHUDOXlMLJ491Tmw4cbsOWFL65SVuOtoSlJ9+Qx
-	 t3w0rwLtXmLbZFu6HjfMGdOYf5ViR1QoYuUfVWkqdgU4teAZUUBAvxDrXw69oIvO/7
-	 Cv3LDNDzowuvJSoj3MNYktAvAo8mE1Qxb9rEZZwY=
+	b=Ma4IfzIf6Z2MRKUOib+/JUMqerF7b8H1hmvl+yIPlQqJC/sx8MkHkTXE+lThyb0Ll
+	 7MBqarJ/mDsZUwMFvfFuzEJWTv+WvbV9/VyDM+Bfr9fuhfD/OkccESjfP/YppMHfkd
+	 nJ4C3JYl/AIyRfpfnUcglANCQ79brhOcAnNPzae0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Simon Horman <simon.horman@corigine.com>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Matthew Auld <matthew.auld@intel.com>,
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 223/321] net: dsa: tag_ocelot: call only the relevant portion of __skb_vlan_pop() on TX
-Date: Tue, 27 Aug 2024 16:38:51 +0200
-Message-ID: <20240827143846.720227066@linuxfoundation.org>
+Subject: [PATCH 6.10 208/273] drm/xe: reset mmio mappings with devm
+Date: Tue, 27 Aug 2024 16:38:52 +0200
+Message-ID: <20240827143841.325306362@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,143 +63,130 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Matthew Auld <matthew.auld@intel.com>
 
-[ Upstream commit 0bcf2e4aca6c29a07555b713f2fb461dc38d5977 ]
+[ Upstream commit c7117419784f612d59ee565145f722e8b5541fe6 ]
 
-ocelot_xmit_get_vlan_info() calls __skb_vlan_pop() as the most
-appropriate helper I could find which strips away a VLAN header.
-That's all I need it to do, but __skb_vlan_pop() has more logic, which
-will become incompatible with the future revert of commit 6d1ccff62780
-("net: reset mac header in dev_start_xmit()").
+Set our various mmio mappings to NULL. This should make it easier to
+catch something rogue trying to mess with mmio after device removal. For
+example, we might unmap everything and then start hitting some mmio
+address which has already been unmamped by us and then remapped by
+something else, causing all kinds of carnage.
 
-Namely, it performs a sanity check on skb_mac_header(), which will stop
-being set after the above revert, so it will return an error instead of
-removing the VLAN tag.
-
-ocelot_xmit_get_vlan_info() gets called in 2 circumstances:
-
-(1) the port is under a VLAN-aware bridge and the bridge sends
-    VLAN-tagged packets
-
-(2) the port is under a VLAN-aware bridge and somebody else (an 8021q
-    upper) sends VLAN-tagged packets (using a VID that isn't in the
-    bridge vlan tables)
-
-In case (1), there is actually no bug to defend against, because
-br_dev_xmit() calls skb_reset_mac_header() and things continue to work.
-
-However, in case (2), illustrated using the commands below, it can be
-seen that our intervention is needed, since __skb_vlan_pop() complains:
-
-$ ip link add br0 type bridge vlan_filtering 1 && ip link set br0 up
-$ ip link set $eth master br0 && ip link set $eth up
-$ ip link add link $eth name $eth.100 type vlan id 100 && ip link set $eth.100 up
-$ ip addr add 192.168.100.1/24 dev $eth.100
-
-I could fend off the checks in __skb_vlan_pop() with some
-skb_mac_header_was_set() calls, but seeing how few callers of
-__skb_vlan_pop() there are from TX paths, that seems rather
-unproductive.
-
-As an alternative solution, extract the bare minimum logic to strip a
-VLAN header, and move it to a new helper named vlan_remove_tag(), close
-to the definition of vlan_insert_tag(). Document it appropriately and
-make ocelot_xmit_get_vlan_info() call this smaller helper instead.
-
-Seeing that it doesn't appear illegal to test skb->protocol in the TX
-path, I guess it would be a good for vlan_remove_tag() to also absorb
-the vlan_set_encap_proto() function call.
-
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 67c3ca2c5cfe ("net: mscc: ocelot: use ocelot_xmit_get_vlan_info() also for FDMA and register injection")
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240522102143.128069-33-matthew.auld@intel.com
+Stable-dep-of: 15939ca77d44 ("drm/xe: Fix tile fini sequence")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/if_vlan.h | 21 +++++++++++++++++++++
- net/core/skbuff.c       |  8 +-------
- net/dsa/tag_ocelot.c    |  2 +-
- 3 files changed, 23 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/xe/xe_device.c |  4 +++-
+ drivers/gpu/drm/xe/xe_mmio.c   | 35 ++++++++++++++++++++++++++++------
+ drivers/gpu/drm/xe/xe_mmio.h   |  2 +-
+ 3 files changed, 33 insertions(+), 8 deletions(-)
 
-diff --git a/include/linux/if_vlan.h b/include/linux/if_vlan.h
-index e0d0a645be7cf..83266201746c1 100644
---- a/include/linux/if_vlan.h
-+++ b/include/linux/if_vlan.h
-@@ -704,6 +704,27 @@ static inline void vlan_set_encap_proto(struct sk_buff *skb,
- 		skb->protocol = htons(ETH_P_802_2);
+diff --git a/drivers/gpu/drm/xe/xe_device.c b/drivers/gpu/drm/xe/xe_device.c
+index 5ef9b50a20d01..a1cbdafbff75e 100644
+--- a/drivers/gpu/drm/xe/xe_device.c
++++ b/drivers/gpu/drm/xe/xe_device.c
+@@ -551,7 +551,9 @@ int xe_device_probe(struct xe_device *xe)
+ 	if (err)
+ 		return err;
+ 
+-	xe_mmio_probe_tiles(xe);
++	err = xe_mmio_probe_tiles(xe);
++	if (err)
++		return err;
+ 
+ 	xe_ttm_sys_mgr_init(xe);
+ 
+diff --git a/drivers/gpu/drm/xe/xe_mmio.c b/drivers/gpu/drm/xe/xe_mmio.c
+index 2ebb2f0d6874e..9d8fafdf51453 100644
+--- a/drivers/gpu/drm/xe/xe_mmio.c
++++ b/drivers/gpu/drm/xe/xe_mmio.c
+@@ -254,6 +254,21 @@ static int xe_mmio_tile_vram_size(struct xe_tile *tile, u64 *vram_size,
+ 	return xe_force_wake_put(gt_to_fw(gt), XE_FW_GT);
  }
  
-+/**
-+ * vlan_remove_tag - remove outer VLAN tag from payload
-+ * @skb: skbuff to remove tag from
-+ * @vlan_tci: buffer to store value
-+ *
-+ * Expects the skb to contain a VLAN tag in the payload, and to have skb->data
-+ * pointing at the MAC header.
-+ *
-+ * Returns a new pointer to skb->data, or NULL on failure to pull.
-+ */
-+static inline void *vlan_remove_tag(struct sk_buff *skb, u16 *vlan_tci)
++static void vram_fini(void *arg)
 +{
-+	struct vlan_hdr *vhdr = (struct vlan_hdr *)(skb->data + ETH_HLEN);
++	struct xe_device *xe = arg;
++	struct xe_tile *tile;
++	int id;
 +
-+	*vlan_tci = ntohs(vhdr->h_vlan_TCI);
++	if (xe->mem.vram.mapping)
++		iounmap(xe->mem.vram.mapping);
 +
-+	memmove(skb->data + VLAN_HLEN, skb->data, 2 * ETH_ALEN);
-+	vlan_set_encap_proto(skb, vhdr);
-+	return __skb_pull(skb, VLAN_HLEN);
++	xe->mem.vram.mapping = NULL;
++
++	for_each_tile(tile, xe, id)
++		tile->mem.vram.mapping = NULL;
 +}
 +
- /**
-  * skb_vlan_tagged - check if skb is vlan tagged.
-  * @skb: skbuff to query
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 4d46788cd493a..768b8d65a5baa 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -5791,7 +5791,6 @@ EXPORT_SYMBOL(skb_ensure_writable);
-  */
- int __skb_vlan_pop(struct sk_buff *skb, u16 *vlan_tci)
+ int xe_mmio_probe_vram(struct xe_device *xe)
  {
--	struct vlan_hdr *vhdr;
- 	int offset = skb->data - skb_mac_header(skb);
- 	int err;
+ 	struct xe_tile *tile;
+@@ -330,10 +345,20 @@ int xe_mmio_probe_vram(struct xe_device *xe)
+ 	drm_info(&xe->drm, "Available VRAM: %pa, %pa\n", &xe->mem.vram.io_start,
+ 		 &available_size);
  
-@@ -5807,13 +5806,8 @@ int __skb_vlan_pop(struct sk_buff *skb, u16 *vlan_tci)
+-	return 0;
++	return devm_add_action_or_reset(xe->drm.dev, vram_fini, xe);
+ }
  
- 	skb_postpull_rcsum(skb, skb->data + (2 * ETH_ALEN), VLAN_HLEN);
+-void xe_mmio_probe_tiles(struct xe_device *xe)
++static void tiles_fini(void *arg)
++{
++	struct xe_device *xe = arg;
++	struct xe_tile *tile;
++	int id;
++
++	for_each_tile(tile, xe, id)
++		tile->mmio.regs = NULL;
++}
++
++int xe_mmio_probe_tiles(struct xe_device *xe)
+ {
+ 	size_t tile_mmio_size = SZ_16M, tile_mmio_ext_size = xe->info.tile_mmio_ext_size;
+ 	u8 id, tile_count = xe->info.tile_count;
+@@ -384,6 +409,8 @@ void xe_mmio_probe_tiles(struct xe_device *xe)
+ 			regs += tile_mmio_ext_size;
+ 		}
+ 	}
++
++	return devm_add_action_or_reset(xe->drm.dev, tiles_fini, xe);
+ }
  
--	vhdr = (struct vlan_hdr *)(skb->data + ETH_HLEN);
--	*vlan_tci = ntohs(vhdr->h_vlan_TCI);
+ static void mmio_fini(void *arg)
+@@ -391,10 +418,6 @@ static void mmio_fini(void *arg)
+ 	struct xe_device *xe = arg;
+ 
+ 	pci_iounmap(to_pci_dev(xe->drm.dev), xe->mmio.regs);
+-	if (xe->mem.vram.mapping)
+-		iounmap(xe->mem.vram.mapping);
 -
--	memmove(skb->data + VLAN_HLEN, skb->data, 2 * ETH_ALEN);
--	__skb_pull(skb, VLAN_HLEN);
-+	vlan_remove_tag(skb, vlan_tci);
+-	xe->mem.vram.mapping = NULL;
+ 	xe->mmio.regs = NULL;
+ }
  
--	vlan_set_encap_proto(skb, vhdr);
- 	skb->mac_header += VLAN_HLEN;
+diff --git a/drivers/gpu/drm/xe/xe_mmio.h b/drivers/gpu/drm/xe/xe_mmio.h
+index a3cd7b3036c73..a929d090bb2f1 100644
+--- a/drivers/gpu/drm/xe/xe_mmio.h
++++ b/drivers/gpu/drm/xe/xe_mmio.h
+@@ -21,7 +21,7 @@ struct xe_device;
+ #define LMEM_BAR		2
  
- 	if (skb_network_offset(skb) < ETH_HLEN)
-diff --git a/net/dsa/tag_ocelot.c b/net/dsa/tag_ocelot.c
-index afca3cdf190a0..18dda9423fae5 100644
---- a/net/dsa/tag_ocelot.c
-+++ b/net/dsa/tag_ocelot.c
-@@ -26,7 +26,7 @@ static void ocelot_xmit_get_vlan_info(struct sk_buff *skb, struct dsa_port *dp,
- 	br_vlan_get_proto(br, &proto);
+ int xe_mmio_init(struct xe_device *xe);
+-void xe_mmio_probe_tiles(struct xe_device *xe);
++int xe_mmio_probe_tiles(struct xe_device *xe);
  
- 	if (ntohs(hdr->h_vlan_proto) == proto) {
--		__skb_vlan_pop(skb, &tci);
-+		vlan_remove_tag(skb, &tci);
- 		*vlan_tci = tci;
- 	} else {
- 		rcu_read_lock();
+ u8 xe_mmio_read8(struct xe_gt *gt, struct xe_reg reg);
+ u16 xe_mmio_read16(struct xe_gt *gt, struct xe_reg reg);
 -- 
 2.43.0
 
