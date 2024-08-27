@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-70534-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70784-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9997F960E9F
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:50:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC321961006
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:05:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6B0C1C232FE
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:50:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7DA9284EC5
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:05:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EFF71C6888;
-	Tue, 27 Aug 2024 14:50:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07E4D2FB2;
+	Tue, 27 Aug 2024 15:04:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ojAkgUaI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J78mndhp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39FF31C57AF;
-	Tue, 27 Aug 2024 14:50:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACA961C4EE8;
+	Tue, 27 Aug 2024 15:04:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770228; cv=none; b=WGTuhU1etqm8bY/Icwcbxdq4M/xPtkREY8Mg4gXM6+5OlcPmB28rNcRcYaUQ0G6wPSsGGVedE31YmBXuwyEgGSoHmJEk/cfGCXalqq9gRwMPaZFJZiUPhFcjpQPRl9uUZOKad8GDLm7h0i9gZ2uBN76WMi8cx/gcnJPZ4Etu7N4=
+	t=1724771052; cv=none; b=DXMsvkRusx/VPvOjLnAjb6BIWHh3fd+jfp117ZjA+r2NtZRmEswFndOVnCDfp2ULjkLugJ5UgsS9KrOSB3nnhC4zy8cGuJsNANEMlFnNINM3wRQNojAmSZNCDbIMsqXqJ5/z+lGq7gnI2nAPsYBx2K6TtsbuLX+nrqzc5/i5ntE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770228; c=relaxed/simple;
-	bh=A2HQ5j+f6j5Yq/RSHRCnynG+GOOZnvtUrrPpcLgkVR4=;
+	s=arc-20240116; t=1724771052; c=relaxed/simple;
+	bh=AXA8QolLRWZTVOThkVZbIVkYCoCufRZMOsNvJ9sKzw8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UUn+5hkT+3xDCvVxBsp+FNSngk5rMdYo0e/jodQ3vfaYCp5n8F1HVAi+H35MkXhRIavvsplaNuYHVoW/HJNsdWakuSl0bBPkowjco+JG2KJIvL2LL6QSWZGX+RLBZkdPOhlJcsSk3gD44kd2In9j9OzquKvPpctJbx8ttffoREQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ojAkgUaI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C3AEC4DDF8;
-	Tue, 27 Aug 2024 14:50:27 +0000 (UTC)
+	 MIME-Version; b=cpjeIRWcU0TXs4lTD4UBDMk689G7GDl3BqQUMDwBB5l+ejpzrKIZMHCSSCtGo5gtTJPzie+b5XcmCaXBUY1Og/KCmz96euQ9v7jpW33AFGtP5d5OwM6iX0fwgagUQygufMiEWeejMvsWH4lcNtCuQBDYm2qAFWrlpyfnJDka/Vo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J78mndhp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5CA8C6104C;
+	Tue, 27 Aug 2024 15:04:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770228;
-	bh=A2HQ5j+f6j5Yq/RSHRCnynG+GOOZnvtUrrPpcLgkVR4=;
+	s=korg; t=1724771052;
+	bh=AXA8QolLRWZTVOThkVZbIVkYCoCufRZMOsNvJ9sKzw8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ojAkgUaIGhD9+siGgRN9sjndnlVOGUEBw3+L0vVaziLu/DencP3QtmKz0lPeaTFyT
-	 rQFMkub8i8uYlD27CZJzn5wR9I0JCK5AAhFosFfy8kUWxx2JzH8lgIHpfeRlAbvQ69
-	 lqrCZJnhzHnR6sOm+1yQNgwCg1K7WfGKpelllwe4=
+	b=J78mndhp+dxtW4K+2/sJkZ764h0IRV98AnoYrxXt0jDsz9whURfyG0k0FRU+HmvdU
+	 QHFu08DlXpmRmDV01Wz84RP9ImRWVw4K2UbnEX4uZdkGy3vSmV5wURYSJxdYded8vX
+	 yD7fTwHrQNvx0boBUYOzQP57se5RM8ZfYFpAYlBc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shaul Triebitz <shaul.triebitz@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 166/341] wifi: iwlwifi: mvm: avoid garbage iPN
+	Leo Liu <leo.liu@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.10 073/273] drm/amdgpu/jpeg2: properly set atomics vmid field
 Date: Tue, 27 Aug 2024 16:36:37 +0200
-Message-ID: <20240827143849.728538211@linuxfoundation.org>
+Message-ID: <20240827143836.193796728@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shaul Triebitz <shaul.triebitz@intel.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 0c1c91604f3e3fc41f4d77dcfc3753860a9a32c9 ]
+commit e414a304f2c5368a84f03ad34d29b89f965a33c9 upstream.
 
-After waking from D3, we set the iPN given by the firmware.
-For some reason, CIPHER_SUITE_AES_CMAC was missed.
-That caused copying garbage to the iPN - causing false replays.
+This needs to be set as well if the IB uses atomics.
 
-(since 'seq' is on the stack, and the iPN from the firmware
-was not copied into it, it contains garbage which later is
-copied to the iPN key).
-
-Signed-off-by: Shaul Triebitz <shaul.triebitz@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240205211151.2be5b35be30f.I99db8700d01092d22a6d76f1fc1bd5916c9df784@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Leo Liu <leo.liu@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 35c628774e50b3784c59e8ca7973f03bcb067132)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/d3.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/jpeg_v2_0.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-index 9c89f0dd69c86..08d1fab7f53c3 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/d3.c
-@@ -1849,9 +1849,12 @@ iwl_mvm_d3_set_igtk_bigtk_ipn(const struct iwl_multicast_key_data *key,
- 		memcpy(seq->aes_gmac.pn, key->ipn, sizeof(seq->aes_gmac.pn));
- 		break;
- 	case WLAN_CIPHER_SUITE_BIP_CMAC_256:
-+	case WLAN_CIPHER_SUITE_AES_CMAC:
- 		BUILD_BUG_ON(sizeof(seq->aes_cmac.pn) != sizeof(key->ipn));
- 		memcpy(seq->aes_cmac.pn, key->ipn, sizeof(seq->aes_cmac.pn));
- 		break;
-+	default:
-+		WARN_ON(1);
- 	}
- }
+--- a/drivers/gpu/drm/amd/amdgpu/jpeg_v2_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/jpeg_v2_0.c
+@@ -543,11 +543,11 @@ void jpeg_v2_0_dec_ring_emit_ib(struct a
  
--- 
-2.43.0
-
+ 	amdgpu_ring_write(ring, PACKETJ(mmUVD_LMI_JRBC_IB_VMID_INTERNAL_OFFSET,
+ 		0, 0, PACKETJ_TYPE0));
+-	amdgpu_ring_write(ring, (vmid | (vmid << 4)));
++	amdgpu_ring_write(ring, (vmid | (vmid << 4) | (vmid << 8)));
+ 
+ 	amdgpu_ring_write(ring, PACKETJ(mmUVD_LMI_JPEG_VMID_INTERNAL_OFFSET,
+ 		0, 0, PACKETJ_TYPE0));
+-	amdgpu_ring_write(ring, (vmid | (vmid << 4)));
++	amdgpu_ring_write(ring, (vmid | (vmid << 4) | (vmid << 8)));
+ 
+ 	amdgpu_ring_write(ring,	PACKETJ(mmUVD_LMI_JRBC_IB_64BIT_BAR_LOW_INTERNAL_OFFSET,
+ 		0, 0, PACKETJ_TYPE0));
 
 
 
