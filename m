@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-70501-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71043-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54300960E72
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:48:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A82FD96115F
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:19:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 876D81C20E96
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:48:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB6911C235E0
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:19:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42E091C4EF9;
-	Tue, 27 Aug 2024 14:48:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DDF41CCB33;
+	Tue, 27 Aug 2024 15:18:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vWUDheso"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JEWz+9Ua"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00D84DDC1;
-	Tue, 27 Aug 2024 14:48:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D098F17C96;
+	Tue, 27 Aug 2024 15:18:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770118; cv=none; b=oxhM0+CmQN5EWd/urAdXxIGuzl8yB7NTg/waqw3uc+8v6Gt/MKL9TV5I5i0rVIla7fSyZKAIZE+P3SE4qLsQQnd1SLv5ytIdIB6EFFZ2Wg+NbfkKk1DXjic5bTzE7q1Yh3lX3omiByZR5UZDjNtEt4RUddbrR8YA3s6sUIWizBI=
+	t=1724771908; cv=none; b=AbkJelraQ3BBd5A0OzbupZRkl4ys6tQhHAsVq4RLbJv5FLFt/qVp96dgIvkgRCV2prBuTNZws5NDKkKNYBUpXpJ2Fp0uz+9oGLMtHMsgqEdaEahCf0OucI4QghBPrAiOuMXpDyu1EWRggLtlAW7UC5XpvSzP+qb5XL+SQH6JVOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770118; c=relaxed/simple;
-	bh=tDi14tmJw+BAMVmquumWWE/SRWrRemWDdOvStwA5qJg=;
+	s=arc-20240116; t=1724771908; c=relaxed/simple;
+	bh=Weg0IorvEMugAq+IBxKdXHFEy2tL88Dy0Bd0/7w/2/Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YzI3EGbVLtmuGARD/5sY65qHCI5gEY5IP052ESvadMtoJHY74dfqheHnNSONxdnO/1kvwK1uO9cG85Cqye/Nesw3yjDxGHG8FaOcxR3PJjFOxLvtJQffQuRQ3h+UXIv79zE+JpBwqb1ahZQWtE7ZlCthAQAPSi0GzacMX8xwNPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vWUDheso; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3922C61047;
-	Tue, 27 Aug 2024 14:48:36 +0000 (UTC)
+	 MIME-Version; b=ahLk9aZz/UXoemL8mmj32TWcyEUxK2TTvHRTyt2RB4gaNpW/HZ1f7RnzLQQDH85NoRJaVJiCb3x7Mr0fEF8RAVGWegoI1gqYhATIOY/+W9GCU6U/5c3Af6IG95NNXHpmGCO6vx8Sob3B+Ov2B1BrVJ2Bfff96+l3enPEbK6z7Cs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JEWz+9Ua; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6799C61067;
+	Tue, 27 Aug 2024 15:18:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770117;
-	bh=tDi14tmJw+BAMVmquumWWE/SRWrRemWDdOvStwA5qJg=;
+	s=korg; t=1724771908;
+	bh=Weg0IorvEMugAq+IBxKdXHFEy2tL88Dy0Bd0/7w/2/Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vWUDhesobqM6x0GaYj/08FDjlalzH4b6A2n5Of/6wOk58xA9LCKzGTXc/KXYXA1CH
-	 UR4ZHRYO3sEgEhEWdPHMi/Jw39ePac3JJvzZl4Izct8T2t0Nm1TZAYCcTihWn+7QDu
-	 VnfjJ6MtjUxB7d4ZPgcXzHEhLGaj/b/6MkbpQMHc=
+	b=JEWz+9Ua0VGxyEYMupxrisQ2kF/zXcZVKTZqvhWa3SCajElm/XZyoXr67MNUBRxDA
+	 C5XZfWN2nhfSiMAE7LxH54wtxvjZRMQB1KLkj2Wa2ICOyXUrD9HTxWLEDElkrEnJ/E
+	 k7PfFArYGr5cLNG4eEM1wny+j/h12r7aUlS/j0i8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Finn Behrens <me@kloenk.dev>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 133/341] rust: work around `bindgen` 0.69.0 issue
+	Edward Adam Davis <eadavis@qq.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+b3b14fb9f8a14c5d0267@syzkaller.appspotmail.com
+Subject: [PATCH 6.1 056/321] reiserfs: fix uninit-value in comp_keys
 Date: Tue, 27 Aug 2024 16:36:04 +0200
-Message-ID: <20240827143848.480055718@linuxfoundation.org>
+Message-ID: <20240827143840.368132431@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,74 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit 9e98db17837093cb0f4dcfcc3524739d93249c45 ]
+[ Upstream commit dd8f87f21dc3da2eaf46e7401173f935b90b13a8 ]
 
-`bindgen` 0.69.0 contains a bug: `--version` does not work without
-providing a header [1]:
+The cpu_key was not initialized in reiserfs_delete_solid_item(), which triggered
+this issue.
 
-    error: the following required arguments were not provided:
-      <HEADER>
-
-    Usage: bindgen <FLAGS> <OPTIONS> <HEADER> -- <CLANG_ARGS>...
-
-Thus, in preparation for supporting several `bindgen` versions, work
-around the issue by passing a dummy argument.
-
-Include a comment so that we can remove the workaround in the future.
-
-Link: https://github.com/rust-lang/rust-bindgen/pull/2678 [1]
-Reviewed-by: Finn Behrens <me@kloenk.dev>
-Tested-by: Benno Lossin <benno.lossin@proton.me>
-Tested-by: Andreas Hindborg <a.hindborg@samsung.com>
-Link: https://lore.kernel.org/r/20240709160615.998336-9-ojeda@kernel.org
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Stable-dep-of: 5ce86c6c8613 ("rust: suppress error messages from CONFIG_{RUSTC,BINDGEN}_VERSION_TEXT")
+Reported-and-tested-by:  <syzbot+b3b14fb9f8a14c5d0267@syzkaller.appspotmail.com>
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Link: https://lore.kernel.org/r/tencent_9EA7E746DE92DBC66049A62EDF6ED64CA706@qq.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- init/Kconfig                 | 5 ++++-
- scripts/rust_is_available.sh | 6 +++++-
- 2 files changed, 9 insertions(+), 2 deletions(-)
+ fs/reiserfs/stree.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/init/Kconfig b/init/Kconfig
-index e173364abd6c0..777113dceca55 100644
---- a/init/Kconfig
-+++ b/init/Kconfig
-@@ -1921,7 +1921,10 @@ config RUSTC_VERSION_TEXT
- config BINDGEN_VERSION_TEXT
- 	string
- 	depends on RUST
--	default $(shell,command -v $(BINDGEN) >/dev/null 2>&1 && $(BINDGEN) --version || echo n)
-+	# The dummy parameter `workaround-for-0.69.0` is required to support 0.69.0
-+	# (https://github.com/rust-lang/rust-bindgen/pull/2678). It can be removed when
-+	# the minimum version is upgraded past that (0.69.1 already fixed the issue).
-+	default $(shell,command -v $(BINDGEN) >/dev/null 2>&1 && $(BINDGEN) --version workaround-for-0.69.0 || echo n)
+diff --git a/fs/reiserfs/stree.c b/fs/reiserfs/stree.c
+index 84c12a1947b22..6ecf772919688 100644
+--- a/fs/reiserfs/stree.c
++++ b/fs/reiserfs/stree.c
+@@ -1409,7 +1409,7 @@ void reiserfs_delete_solid_item(struct reiserfs_transaction_handle *th,
+ 	INITIALIZE_PATH(path);
+ 	int item_len = 0;
+ 	int tb_init = 0;
+-	struct cpu_key cpu_key;
++	struct cpu_key cpu_key = {};
+ 	int retval;
+ 	int quota_cut_bytes = 0;
  
- #
- # Place an empty function call at each tracepoint site. Can be
-diff --git a/scripts/rust_is_available.sh b/scripts/rust_is_available.sh
-index 117018946b577..a6fdcf13e0e53 100755
---- a/scripts/rust_is_available.sh
-+++ b/scripts/rust_is_available.sh
-@@ -129,8 +129,12 @@ fi
- # Check that the Rust bindings generator is suitable.
- #
- # Non-stable and distributions' versions may have a version suffix, e.g. `-dev`.
-+#
-+# The dummy parameter `workaround-for-0.69.0` is required to support 0.69.0
-+# (https://github.com/rust-lang/rust-bindgen/pull/2678). It can be removed when
-+# the minimum version is upgraded past that (0.69.1 already fixed the issue).
- rust_bindings_generator_output=$( \
--	LC_ALL=C "$BINDGEN" --version 2>/dev/null
-+	LC_ALL=C "$BINDGEN" --version workaround-for-0.69.0 2>/dev/null
- ) || rust_bindings_generator_code=$?
- if [ -n "$rust_bindings_generator_code" ]; then
- 	echo >&2 "***"
 -- 
 2.43.0
 
