@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-70449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71006-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C095960E30
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:46:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73D4596111C
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:16:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EF77CB2314C
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:46:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 30DBF282B1E
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:16:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26F6F1C57A3;
-	Tue, 27 Aug 2024 14:45:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75CBB1C4EEA;
+	Tue, 27 Aug 2024 15:16:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SGV041ek"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qdWiVUKx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D626B1C7B97;
-	Tue, 27 Aug 2024 14:45:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34ABC4C634;
+	Tue, 27 Aug 2024 15:16:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724769944; cv=none; b=YScZY9ds4OlHSmnuc+prxdgiI0p5kUk43CR1Pqa0ZzkZIa9fXZXWYmOhilaRAx0tAjs3x/btNLW8dKj68XJva8jw28F5S03MK+WSWb5n8DAECyJ0HmCND3UVALfgaaTYjn7JIrkdFEuXyVqbCNxBRNCYJjeLdtrrLM98l1WL1K4=
+	t=1724771784; cv=none; b=em5hW4tFsuWh62TZqV4A1vYHL1PLUzNRHoZzvQuy6Ylg1swBSkQvUA8qGXLmdQLNohWu/1/tsS0nkn5j2JTaKxHJT96iR62gg+z27PEGu+2yOe8Yfkt9NtPn1ngBMpCWLbl66GdALpHm2W7XzpLN2fBXzzO5DYDIN0HDBy20V64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724769944; c=relaxed/simple;
-	bh=L9ZFRmJnr4rRZ27mcFVCGDazX8SDAZaPE69W3dapNUI=;
+	s=arc-20240116; t=1724771784; c=relaxed/simple;
+	bh=3P3r8P7YL3rkbDRIcvniJi78iPEemLpcoPHtAPwDiQc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AnwNEhsoS+mSNtHvUbXOtfHdUEQVXFDpbPjkC5X+YWeUwjw+BUzltqXoNusPSMGD2zmLh8jucsPTPn0q7paDXRh/5qBOJHOTeRP6gnNvQueDhp6n22zvj77qMP0cFibgVAjPPjX9xvZdJs54Xh051/cTE9ZHa3EeZAjvAoBttTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SGV041ek; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B4C6C61063;
-	Tue, 27 Aug 2024 14:45:44 +0000 (UTC)
+	 MIME-Version; b=WqjMT/3NXTFKqMOi3JycjZEcFmTHqGXQndwDqY6G4QsarYOixGYUJ1GTduIRqhrTTK691QUXQdd1FUJwQz0PueUeJqgYRECMFLFAxybsMTLcpYyR5auFU7Z6Cis44A8/EiAk1dGrf2yVNwc4uSu0QfryZyzTEXxvbIQoipgsHqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qdWiVUKx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98AECC4AF50;
+	Tue, 27 Aug 2024 15:16:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724769944;
-	bh=L9ZFRmJnr4rRZ27mcFVCGDazX8SDAZaPE69W3dapNUI=;
+	s=korg; t=1724771784;
+	bh=3P3r8P7YL3rkbDRIcvniJi78iPEemLpcoPHtAPwDiQc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SGV041ek64XryS6VopJEqE83CYwhjkNe5Tmne1Ur80Ec8BSYPr7W9ts94101Zig4P
-	 fuLPQG33TInqkz2yxeACNOZ4cTDeuHbV6vdeBWWr2dAA4LJ/BbxMbhYDYvHM7hfWgy
-	 3PIRiC4Kk7/jDYXbKJ5UlBFT1bAlnqofOQnuEBZQ=
+	b=qdWiVUKxhnEeRIFns1b0An+a8S6uhle1YW5whP9pWg2mJM+Mn4A09scdeV2ETSQ0N
+	 +ggPNR8F8Ztme/ykP9nJtle3NdQ/5Mrnnh0C3w9YEGp/QXCKD/V5Z3YKty+jKEzk75
+	 42rlSe3zpE3yFRoRzJ+QmDjQSFVDI+Sc1nvAiDN4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peiyang Wang <wangpeiyang1@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 079/341] net: hns3: use the users cfg after reset
+	stable@kernel.org,
+	Jann Horn <jannh@google.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 6.1 002/321] fuse: Initialize beyond-EOF page contents before setting uptodate
 Date: Tue, 27 Aug 2024 16:35:10 +0200
-Message-ID: <20240827143846.417547086@linuxfoundation.org>
+Message-ID: <20240827143838.289179857@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,127 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peiyang Wang <wangpeiyang1@huawei.com>
+From: Jann Horn <jannh@google.com>
 
-[ Upstream commit 30545e17eac1f50c5ef49644daf6af205100a965 ]
+commit 3c0da3d163eb32f1f91891efaade027fa9b245b9 upstream.
 
-Consider the followed case that the user change speed and reset the net
-interface. Before the hw change speed successfully, the driver get old
-old speed from hw by timer task. After reset, the previous speed is config
-to hw. As a result, the new speed is configed successfully but lost after
-PF reset. The followed pictured shows more dirrectly.
+fuse_notify_store(), unlike fuse_do_readpage(), does not enable page
+zeroing (because it can be used to change partial page contents).
 
-+------+              +----+                 +----+
-| USER |              | PF |                 | HW |
-+---+--+              +-+--+                 +-+--+
-    |  ethtool -s 100G  |                      |
-    +------------------>|   set speed 100G     |
-    |                   +--------------------->|
-    |                   |  set successfully    |
-    |                   |<---------------------+---+
-    |                   |query cfg (timer task)|   |
-    |                   +--------------------->|   | handle speed
-    |                   |     return 200G      |   | changing event
-    |  ethtool --reset  |<---------------------+   | (100G)
-    +------------------>|  cfg previous speed  |<--+
-    |                   |  after reset (200G)  |
-    |                   +--------------------->|
-    |                   |                      +---+
-    |                   |query cfg (timer task)|   |
-    |                   +--------------------->|   | handle speed
-    |                   |     return 100G      |   | changing event
-    |                   |<---------------------+   | (200G)
-    |                   |                      |<--+
-    |                   |query cfg (timer task)|
-    |                   +--------------------->|
-    |                   |     return 200G      |
-    |                   |<---------------------+
-    |                   |                      |
-    v                   v                      v
+So fuse_notify_store() must be more careful to fully initialize page
+contents (including parts of the page that are beyond end-of-file)
+before marking the page uptodate.
 
-This patch save new speed if hw change speed successfully, which will be
-used after reset successfully.
+The current code can leave beyond-EOF page contents uninitialized, which
+makes these uninitialized page contents visible to userspace via mmap().
 
-Fixes: 2d03eacc0b7e ("net: hns3: Only update mac configuation when necessary")
-Signed-off-by: Peiyang Wang <wangpeiyang1@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This is an information leak, but only affects systems which do not
+enable init-on-alloc (via CONFIG_INIT_ON_ALLOC_DEFAULT_ON=y or the
+corresponding kernel command line parameter).
+
+Link: https://bugs.chromium.org/p/project-zero/issues/detail?id=2574
+Cc: stable@kernel.org
+Fixes: a1d75f258230 ("fuse: add store request")
+Signed-off-by: Jann Horn <jannh@google.com>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../hisilicon/hns3/hns3pf/hclge_main.c        | 24 ++++++++++++++-----
- .../hisilicon/hns3/hns3pf/hclge_mdio.c        |  3 +++
- 2 files changed, 21 insertions(+), 6 deletions(-)
+ fs/fuse/dev.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-index ad8e56234b284..92c592c177e67 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-@@ -2598,8 +2598,17 @@ static int hclge_cfg_mac_speed_dup_h(struct hnae3_handle *handle, int speed,
- {
- 	struct hclge_vport *vport = hclge_get_vport(handle);
- 	struct hclge_dev *hdev = vport->back;
-+	int ret;
-+
-+	ret = hclge_cfg_mac_speed_dup(hdev, speed, duplex, lane_num);
+--- a/fs/fuse/dev.c
++++ b/fs/fuse/dev.c
+@@ -1615,9 +1615,11 @@ static int fuse_notify_store(struct fuse
  
--	return hclge_cfg_mac_speed_dup(hdev, speed, duplex, lane_num);
-+	if (ret)
-+		return ret;
-+
-+	hdev->hw.mac.req_speed = speed;
-+	hdev->hw.mac.req_duplex = duplex;
-+
-+	return 0;
- }
+ 		this_num = min_t(unsigned, num, PAGE_SIZE - offset);
+ 		err = fuse_copy_page(cs, &page, offset, this_num, 0);
+-		if (!err && offset == 0 &&
+-		    (this_num == PAGE_SIZE || file_size == end))
++		if (!PageUptodate(page) && !err && offset == 0 &&
++		    (this_num == PAGE_SIZE || file_size == end)) {
++			zero_user_segment(page, this_num, PAGE_SIZE);
+ 			SetPageUptodate(page);
++		}
+ 		unlock_page(page);
+ 		put_page(page);
  
- static int hclge_set_autoneg_en(struct hclge_dev *hdev, bool enable)
-@@ -2901,17 +2910,20 @@ static int hclge_mac_init(struct hclge_dev *hdev)
- 	if (!test_bit(HCLGE_STATE_RST_HANDLING, &hdev->state))
- 		hdev->hw.mac.duplex = HCLGE_MAC_FULL;
- 
--	ret = hclge_cfg_mac_speed_dup_hw(hdev, hdev->hw.mac.speed,
--					 hdev->hw.mac.duplex, hdev->hw.mac.lane_num);
--	if (ret)
--		return ret;
--
- 	if (hdev->hw.mac.support_autoneg) {
- 		ret = hclge_set_autoneg_en(hdev, hdev->hw.mac.autoneg);
- 		if (ret)
- 			return ret;
- 	}
- 
-+	if (!hdev->hw.mac.autoneg) {
-+		ret = hclge_cfg_mac_speed_dup_hw(hdev, hdev->hw.mac.req_speed,
-+						 hdev->hw.mac.req_duplex,
-+						 hdev->hw.mac.lane_num);
-+		if (ret)
-+			return ret;
-+	}
-+
- 	mac->link = 0;
- 
- 	if (mac->user_fec_mode & BIT(HNAE3_FEC_USER_DEF)) {
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mdio.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mdio.c
-index 85fb11de43a12..80079657afebe 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mdio.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mdio.c
-@@ -191,6 +191,9 @@ static void hclge_mac_adjust_link(struct net_device *netdev)
- 	if (ret)
- 		netdev_err(netdev, "failed to adjust link.\n");
- 
-+	hdev->hw.mac.req_speed = (u32)speed;
-+	hdev->hw.mac.req_duplex = (u8)duplex;
-+
- 	ret = hclge_cfg_flowctrl(hdev);
- 	if (ret)
- 		netdev_err(netdev, "failed to configure flow control.\n");
--- 
-2.43.0
-
 
 
 
