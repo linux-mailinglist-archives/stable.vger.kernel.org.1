@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-70804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70557-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C6D296101F
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:05:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63B58960EC0
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:52:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1B8AA1F23673
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:05:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96CC71C220C0
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:52:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A5041C578E;
-	Tue, 27 Aug 2024 15:05:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB1AE1C6895;
+	Tue, 27 Aug 2024 14:51:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YlXa8lzQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f4eaOF2Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 230791BA294;
-	Tue, 27 Aug 2024 15:05:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9931B1C579F;
+	Tue, 27 Aug 2024 14:51:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771116; cv=none; b=tgGLmzZBSZe4LFxkegU0jROTg87/5l9EI7j0XnOkadaEfBttTGddSGIcKXFw70iQ2NwJsattzxkPkFiAN7jleW4cMc9qLQVi7pW3DFkyqtG7LooKt3Sk22uVVOVI0dts8pLMye1Ek3SStSWyGDeJOt3OYEW93NMVGfamcEuX+3Y=
+	t=1724770302; cv=none; b=sGi5ZxCX+mwKUXmix7yhUWFTSf9tP9ic1z2mqvWzw8+wKmnAKLWbfxYW29ylvKib1Pjg8U1u4qHYN1cAOIzAm64ZNCzctifLMy8wBceB240+Og6IXaiM1RE0mdxUxVbR2u1C6sYGN18QqM58y0cw7DRWOnVweN9N2fQeGFfDfVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771116; c=relaxed/simple;
-	bh=vrlwP9XK9ILTKB2DcVdaawN08KRlqSW85V5I5G/Pn40=;
+	s=arc-20240116; t=1724770302; c=relaxed/simple;
+	bh=rUZxcQ4LxvXNbFd/ZxYVjAL4mP1vFY5oSVq5VGI9sWM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ch0HfmmIZC/XUg998SSw1b2AeLm5Py8K6q2Q+Vzt/Hu8aF9AXqZgZGQeIJFWltVlNWsUnnAUNQZhmfiCH1WNUPQ1SUEJylWf9+WfsWfgJo3kWmuwdn8NkjU4CA+mcYI0T4WIKwvlyznTNqN4xsild0c4s70AszTFAbwgCwqF9L8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YlXa8lzQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 880DFC61060;
-	Tue, 27 Aug 2024 15:05:15 +0000 (UTC)
+	 MIME-Version; b=X74zD6OI9VKKPJ1zv4nUIZPEAcUeKizZlrnnW2ImP612UQvdj/XtqEMH4PUmGRb3Ge5dvw00xI3bEpceXHGwDm4GKjBHDgMtvVyUTv6ggrTpopRsaW2yQ2bk2p4wSljQ/fcSUff59DNcDQFYwYwBcJ0RvdteyILuQsViZhY+xxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f4eaOF2Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CBB2C4DE11;
+	Tue, 27 Aug 2024 14:51:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771116;
-	bh=vrlwP9XK9ILTKB2DcVdaawN08KRlqSW85V5I5G/Pn40=;
+	s=korg; t=1724770302;
+	bh=rUZxcQ4LxvXNbFd/ZxYVjAL4mP1vFY5oSVq5VGI9sWM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YlXa8lzQ0Bmy58zL1B7XUaDUWDZp2vrnruh1IF1BAkW5VDaNdBwZLNhWcrGGWQY1q
-	 e8VRprxLQ0L/P3UUyYcdL51GRyi6uZ7NRdn/bCKzkGRlUSf5eIupwDziHRO31/KfKW
-	 y2mz5fzTqwfDOrnex+WLlZTyw4yNmpxejNc1UoT0=
+	b=f4eaOF2ZNJvG1xgFr34YtoIiAm2aIU0mKsz7X7D2tTPXOQBStJqV5DrVEymdlwtPz
+	 6LN+fBF5UGWZIkBD3g1J7uiO0009kru5QqVoKvL331bvSlARAeunYP5po4aOUprgNs
+	 vtWw1hqJIAozXpGfjMov6HPF+plvRunwrqf45X5c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Naohiro Aota <naohiro.aota@wdc.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.10 064/273] btrfs: zoned: properly take lock to read/update block groups zoned variables
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 157/341] fuse: fix UAF in rcu pathwalks
 Date: Tue, 27 Aug 2024 16:36:28 +0200
-Message-ID: <20240827143835.844768219@linuxfoundation.org>
+Message-ID: <20240827143849.390893632@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +61,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naohiro Aota <naohiro.aota@wdc.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-commit e30729d4bd4001881be4d1ad4332a5d4985398f8 upstream.
+[ Upstream commit 053fc4f755ad43cf35210677bcba798ccdc48d0c ]
 
-__btrfs_add_free_space_zoned() references and modifies bg's alloc_offset,
-ro, and zone_unusable, but without taking the lock. It is mostly safe
-because they monotonically increase (at least for now) and this function is
-mostly called by a transaction commit, which is serialized by itself.
+->permission(), ->get_link() and ->inode_get_acl() might dereference
+->s_fs_info (and, in case of ->permission(), ->s_fs_info->fc->user_ns
+as well) when called from rcu pathwalk.
 
-Still, taking the lock is a safer and correct option and I'm going to add a
-change to reset zone_unusable while a block group is still alive. So, add
-locking around the operations.
+Freeing ->s_fs_info->fc is rcu-delayed; we need to make freeing ->s_fs_info
+and dropping ->user_ns rcu-delayed too.
 
-Fixes: 169e0da91a21 ("btrfs: zoned: track unusable bytes for zones")
-CC: stable@vger.kernel.org # 5.15+
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Naohiro Aota <naohiro.aota@wdc.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/free-space-cache.c |   14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ fs/fuse/cuse.c   |  3 +--
+ fs/fuse/fuse_i.h |  1 +
+ fs/fuse/inode.c  | 15 +++++++++++----
+ 3 files changed, 13 insertions(+), 6 deletions(-)
 
---- a/fs/btrfs/free-space-cache.c
-+++ b/fs/btrfs/free-space-cache.c
-@@ -2698,15 +2698,16 @@ static int __btrfs_add_free_space_zoned(
- 	u64 offset = bytenr - block_group->start;
- 	u64 to_free, to_unusable;
- 	int bg_reclaim_threshold = 0;
--	bool initial = ((size == block_group->length) && (block_group->alloc_offset == 0));
-+	bool initial;
- 	u64 reclaimable_unusable;
+diff --git a/fs/fuse/cuse.c b/fs/fuse/cuse.c
+index 91e89e68177ee..b6cad106c37e4 100644
+--- a/fs/fuse/cuse.c
++++ b/fs/fuse/cuse.c
+@@ -474,8 +474,7 @@ static int cuse_send_init(struct cuse_conn *cc)
  
--	WARN_ON(!initial && offset + size > block_group->zone_capacity);
-+	spin_lock(&block_group->lock);
- 
-+	initial = ((size == block_group->length) && (block_group->alloc_offset == 0));
-+	WARN_ON(!initial && offset + size > block_group->zone_capacity);
- 	if (!initial)
- 		bg_reclaim_threshold = READ_ONCE(sinfo->bg_reclaim_threshold);
- 
--	spin_lock(&ctl->tree_lock);
- 	if (!used)
- 		to_free = size;
- 	else if (initial)
-@@ -2719,7 +2720,9 @@ static int __btrfs_add_free_space_zoned(
- 		to_free = offset + size - block_group->alloc_offset;
- 	to_unusable = size - to_free;
- 
-+	spin_lock(&ctl->tree_lock);
- 	ctl->free_space += to_free;
-+	spin_unlock(&ctl->tree_lock);
- 	/*
- 	 * If the block group is read-only, we should account freed space into
- 	 * bytes_readonly.
-@@ -2728,11 +2731,8 @@ static int __btrfs_add_free_space_zoned(
- 		block_group->zone_unusable += to_unusable;
- 		WARN_ON(block_group->zone_unusable > block_group->length);
- 	}
--	spin_unlock(&ctl->tree_lock);
- 	if (!used) {
--		spin_lock(&block_group->lock);
- 		block_group->alloc_offset -= size;
--		spin_unlock(&block_group->lock);
- 	}
- 
- 	reclaimable_unusable = block_group->zone_unusable -
-@@ -2746,6 +2746,8 @@ static int __btrfs_add_free_space_zoned(
- 		btrfs_mark_bg_to_reclaim(block_group);
- 	}
- 
-+	spin_unlock(&block_group->lock);
-+
- 	return 0;
+ static void cuse_fc_release(struct fuse_conn *fc)
+ {
+-	struct cuse_conn *cc = fc_to_cc(fc);
+-	kfree_rcu(cc, fc.rcu);
++	kfree(fc_to_cc(fc));
  }
  
+ /**
+diff --git a/fs/fuse/fuse_i.h b/fs/fuse/fuse_i.h
+index 3e65cdc946316..4ce1a6fdc94f0 100644
+--- a/fs/fuse/fuse_i.h
++++ b/fs/fuse/fuse_i.h
+@@ -888,6 +888,7 @@ struct fuse_mount {
+ 
+ 	/* Entry on fc->mounts */
+ 	struct list_head fc_entry;
++	struct rcu_head rcu;
+ };
+ 
+ static inline struct fuse_mount *get_fuse_mount_super(struct super_block *sb)
+diff --git a/fs/fuse/inode.c b/fs/fuse/inode.c
+index 04c7ba3ea03a2..735abf426a064 100644
+--- a/fs/fuse/inode.c
++++ b/fs/fuse/inode.c
+@@ -952,6 +952,14 @@ void fuse_conn_init(struct fuse_conn *fc, struct fuse_mount *fm,
+ }
+ EXPORT_SYMBOL_GPL(fuse_conn_init);
+ 
++static void delayed_release(struct rcu_head *p)
++{
++	struct fuse_conn *fc = container_of(p, struct fuse_conn, rcu);
++
++	put_user_ns(fc->user_ns);
++	fc->release(fc);
++}
++
+ void fuse_conn_put(struct fuse_conn *fc)
+ {
+ 	if (refcount_dec_and_test(&fc->count)) {
+@@ -963,13 +971,12 @@ void fuse_conn_put(struct fuse_conn *fc)
+ 		if (fiq->ops->release)
+ 			fiq->ops->release(fiq);
+ 		put_pid_ns(fc->pid_ns);
+-		put_user_ns(fc->user_ns);
+ 		bucket = rcu_dereference_protected(fc->curr_bucket, 1);
+ 		if (bucket) {
+ 			WARN_ON(atomic_read(&bucket->count) != 1);
+ 			kfree(bucket);
+ 		}
+-		fc->release(fc);
++		call_rcu(&fc->rcu, delayed_release);
+ 	}
+ }
+ EXPORT_SYMBOL_GPL(fuse_conn_put);
+@@ -1387,7 +1394,7 @@ EXPORT_SYMBOL_GPL(fuse_send_init);
+ void fuse_free_conn(struct fuse_conn *fc)
+ {
+ 	WARN_ON(!list_empty(&fc->devices));
+-	kfree_rcu(fc, rcu);
++	kfree(fc);
+ }
+ EXPORT_SYMBOL_GPL(fuse_free_conn);
+ 
+@@ -1921,7 +1928,7 @@ static void fuse_sb_destroy(struct super_block *sb)
+ void fuse_mount_destroy(struct fuse_mount *fm)
+ {
+ 	fuse_conn_put(fm->fc);
+-	kfree(fm);
++	kfree_rcu(fm, rcu);
+ }
+ EXPORT_SYMBOL(fuse_mount_destroy);
+ 
+-- 
+2.43.0
+
 
 
 
