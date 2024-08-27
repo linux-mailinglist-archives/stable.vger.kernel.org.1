@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-70553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71125-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCC00960EBC
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:51:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AEB39611C6
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:23:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 76FF5B253C8
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:51:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 029C7B285CF
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:23:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5088F1C57A3;
-	Tue, 27 Aug 2024 14:51:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78A041C4EDD;
+	Tue, 27 Aug 2024 15:23:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KV0E9RFb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R/3t6NW4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C30538DC7;
-	Tue, 27 Aug 2024 14:51:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31AC51C825E;
+	Tue, 27 Aug 2024 15:23:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770290; cv=none; b=S/4oJ+lKq5S5jA0L3sKiGzW5epXzx7sy0/hs7wtDrL2EqzUA/rUrivC42M7C27AbUDOAv1s35gAPK+HnqfF+L310yVku0q7+79X6yqldFTA2Ihp6v8I8lYVez+P4Hsyr70nEHf+bnJ/glsjVa1t88wpb95BIIcC7EuQ+vur3HuE=
+	t=1724772180; cv=none; b=hVVoF9JP3bP/hr6ATMgEZ3rrKc1WFzqtD35h7XByyOIZPskIa5d5hn7+JwgAQ/rYILOPAqBMlLPbcZoXx2CAVsJYaB/3EKUuXls1qCtt8p9awyU0qpqQV33vuaSRF3/iGKQ92e1E5AAX1Cv715PhY8j16qCrOKYCz/8Ou2I5gUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770290; c=relaxed/simple;
-	bh=izTJHPAfHoaAKQXOVNPkNbZEFLy3G2CnHlX6avC1tNM=;
+	s=arc-20240116; t=1724772180; c=relaxed/simple;
+	bh=mC/G39zT54jCa/PbIJFszNCKlxz08OR5hr80quqJXgc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kGGbD8Yww86ijWA+6Mwap1tUVqYEWB/iKsqirBpQFx7fK4O9V3eJqim8h/WhlM6Ly4y5u/tkHxguNh7vhvc/cOt22aYlLYTwlKG0xFy/QaxrYXH9r44HeKTrWd9JTL8nWRfrfG1hRT65IbyPlSU7PG8zFQ3KxBf5XmMfNJNBdWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KV0E9RFb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DE7CC4DE03;
-	Tue, 27 Aug 2024 14:51:29 +0000 (UTC)
+	 MIME-Version; b=XI5v4OdeFQtZZIGAYzy74gcxitGLw01PqkSbMhJ5wNJKBLAatw1KMVBHYr/+TW4Ew2DaV7mx1xoAeoKPcOPA2d0FnVyUsSXqlTL+WDFRB/JZMoe+qRLixiZmqiN3m4ygEqnJBiWI44NnZukO3QcX79ZmnGkgQaxFJv0aEwTmEJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R/3t6NW4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EA1CC6104A;
+	Tue, 27 Aug 2024 15:22:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770289;
-	bh=izTJHPAfHoaAKQXOVNPkNbZEFLy3G2CnHlX6avC1tNM=;
+	s=korg; t=1724772180;
+	bh=mC/G39zT54jCa/PbIJFszNCKlxz08OR5hr80quqJXgc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KV0E9RFb8iYOT403SGwz9Rr0Cte+6fqlW5ElLi8wHPIij3fVO5MlkifgTi8Dyh4zO
-	 7pOVgI8OM2HP1ONlOVG2TZkChASHCHTQJTa1UQES8a4RxdufbUpi2eaBAv3XU2/jlD
-	 ncH9BqMWpounic8azZp1GlsF2gHPG0T7b0bb6FcU=
+	b=R/3t6NW4QVT5xRjHER0K7i63WJz7LxYzIG2F2z0MFcFTJQ83HwpGPylZIrFrWn2Aj
+	 DFwo9lE8dBtLcC82UMGFvp3+HlEVqsav/iFFVGa4DX9o+H10ZmXsW8gjitwdaomwti
+	 kcF+YR4VColhKUk01NI53hfLgEIKUXPgxZTAtL3A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Jie Wang <wangjie125@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 183/341] powerpc/boot: Only free if realloc() succeeds
-Date: Tue, 27 Aug 2024 16:36:54 +0200
-Message-ID: <20240827143850.376737128@linuxfoundation.org>
+Subject: [PATCH 6.1 107/321] net: hns3: fix wrong use of semaphore up
+Date: Tue, 27 Aug 2024 16:36:55 +0200
+Message-ID: <20240827143842.320312371@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Jie Wang <wangjie125@huawei.com>
 
-[ Upstream commit f2d5bccaca3e8c09c9b9c8485375f7bdbb2631d2 ]
+[ Upstream commit 8445d9d3c03101859663d34fda747f6a50947556 ]
 
-simple_realloc() frees the original buffer (ptr) even if the
-reallocation failed.
+Currently, if hns3 PF or VF FLR reset failed after five times retry,
+the reset done process will directly release the semaphore
+which has already released in hclge_reset_prepare_general.
+This will cause down operation fail.
 
-Fix it to behave like standard realloc() and only free the original
-buffer if the reallocation succeeded.
+So this patch fixes it by adding reset state judgement. The up operation is
+only called after successful PF FLR reset.
 
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240229115149.749264-1-mpe@ellerman.id.au
+Fixes: 8627bdedc435 ("net: hns3: refactor the precedure of PF FLR")
+Fixes: f28368bb4542 ("net: hns3: refactor the procedure of VF FLR")
+Signed-off-by: Jie Wang <wangjie125@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/boot/simple_alloc.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c   | 4 ++--
+ drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/boot/simple_alloc.c b/arch/powerpc/boot/simple_alloc.c
-index db9aaa5face3f..d07796fdf91aa 100644
---- a/arch/powerpc/boot/simple_alloc.c
-+++ b/arch/powerpc/boot/simple_alloc.c
-@@ -112,10 +112,11 @@ static void *simple_realloc(void *ptr, unsigned long size)
- 		return ptr;
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+index 01e24b69e9203..dfb428550ac03 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+@@ -11538,8 +11538,8 @@ static void hclge_reset_done(struct hnae3_ae_dev *ae_dev)
+ 		dev_err(&hdev->pdev->dev, "fail to rebuild, ret=%d\n", ret);
  
- 	new = simple_malloc(size);
--	if (new)
-+	if (new) {
- 		memcpy(new, ptr, p->size);
-+		simple_free(ptr);
-+	}
- 
--	simple_free(ptr);
- 	return new;
+ 	hdev->reset_type = HNAE3_NONE_RESET;
+-	clear_bit(HCLGE_STATE_RST_HANDLING, &hdev->state);
+-	up(&hdev->reset_sem);
++	if (test_and_clear_bit(HCLGE_STATE_RST_HANDLING, &hdev->state))
++		up(&hdev->reset_sem);
  }
  
+ static void hclge_clear_resetting_state(struct hclge_dev *hdev)
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
+index 1f5a27fb309aa..aebb104f4c290 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
+@@ -1764,8 +1764,8 @@ static void hclgevf_reset_done(struct hnae3_ae_dev *ae_dev)
+ 			 ret);
+ 
+ 	hdev->reset_type = HNAE3_NONE_RESET;
+-	clear_bit(HCLGEVF_STATE_RST_HANDLING, &hdev->state);
+-	up(&hdev->reset_sem);
++	if (test_and_clear_bit(HCLGEVF_STATE_RST_HANDLING, &hdev->state))
++		up(&hdev->reset_sem);
+ }
+ 
+ static u32 hclgevf_get_fw_version(struct hnae3_handle *handle)
 -- 
 2.43.0
 
