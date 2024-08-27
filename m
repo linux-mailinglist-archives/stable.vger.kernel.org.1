@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-71053-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70731-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3D4E96116D
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:20:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF437960FBC
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:01:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5EB8E1F23227
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:20:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 39B15B24EB7
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:01:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 666C31C6F63;
-	Tue, 27 Aug 2024 15:19:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C24121C6890;
+	Tue, 27 Aug 2024 15:01:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="blofPmdZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2TPVjQal"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23BE61C57AB;
-	Tue, 27 Aug 2024 15:19:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FDDA1B4C4E;
+	Tue, 27 Aug 2024 15:01:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771942; cv=none; b=bNtDKGKIzH6kCJQ1oBrGvdqp4UJzunuMXqRhVS6b3yXtEHQE5N1EC/CjRX7wCYEUo0sGMTUZOq/ijXw15QiGAGqO3RJ5W7xlZcCR9/JULTb7DCnMIctI3EYT72F1Mp5yxlN3DrRa6LiH0O+t2coQF2yEHUHaiFoPXyB1awh/jlE=
+	t=1724770880; cv=none; b=bA80LB/oHORVxecou8FBahYcHrhSGV7mF1uilvBhk/lePMOZURiiOhUSvji4AaTYzN9pZF3Dgm9ytMZiJbBlbec48knXkuuAnW4tNZwSTX0YL3/ohZurYopn7g7APChO5fdz40F2pmWslSj2zSAfSf5X23lC3aqUpK1ESB9lJCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771942; c=relaxed/simple;
-	bh=8VCkeZyD+YO9FU0uzWVTdOEooiXoUmOxZ9sEUCpeLmk=;
+	s=arc-20240116; t=1724770880; c=relaxed/simple;
+	bh=MNf7lwvlNQ4gJVzSSutSKubcFzku9QwnqfoV12Ah6A4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AgN89ThSeYRIvzVchd27EwW5FrzP7sSDvrMK64sVEKTr5B2piBZzVJ17aTctFaxHfFLOaTuo6VBEVAsZhwgsrIYFzBNek9a7pSf5vpgOcbxjf6OSe0nZaPd1oMzC7/hDZgeLBcMcyf1wYuOXBTBsyrFycFRS8hmloi1tIwe0GAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=blofPmdZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 826D0C61067;
-	Tue, 27 Aug 2024 15:19:01 +0000 (UTC)
+	 MIME-Version; b=GMkI56txpoPQFs8VYJk6lunyfpJAGKvugDvwRnS5qJseIbxZyZeGZoqqNT+Q0jKNdjpuQrQAqnbGxbEr4lpYTyJ8guv/eHt+dknprUNIMTSQH0g4Yc91d5vENvf5kfJdRpijvNX4ypyb7H2lstLcF80bifZ5nK7HvJiM9rP78V8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2TPVjQal; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0E97C4AF1C;
+	Tue, 27 Aug 2024 15:01:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771942;
-	bh=8VCkeZyD+YO9FU0uzWVTdOEooiXoUmOxZ9sEUCpeLmk=;
+	s=korg; t=1724770880;
+	bh=MNf7lwvlNQ4gJVzSSutSKubcFzku9QwnqfoV12Ah6A4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=blofPmdZH53e5JfAnyiV6TZdW5ydB2nY8zXbqwCG/dxIL20lGMW5LE9OlSlsh2pEc
-	 mevNJMr/RSVbGBESdTjZIJdwfu4iLP0jT19qAeJoJhpx9/A/UjwkxDHWVY852u4O4b
-	 bu8HAYgD2+zU7Nj5o2tAj1Md66ZnnOILGJ6KHfy4=
+	b=2TPVjQalGM33g7uuR5lVxeJP8odsRGzcW1UFfiE41V479mn5pUmIH/tNk2dhgprdL
+	 tIYiGWnK5Z4mGYRrKlitomiNZKRI+1e99qs/rltPbVVnglC7JDtbjTtojmw/5g5Im5
+	 ylO0bQahY0phQ6a3TjgB3HecCP6xcd8cFJWNL4Gg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzbot+048585f3f4227bb2b49b@syzkaller.appspotmail.com>,
-	Dipanjan Das <mail.dipanjan.das@gmail.com>,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Alexander Potapenko <glider@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 036/321] nilfs2: initialize "struct nilfs_binfo_dat"->bi_pad field
+	Baojun Xu <baojun.xu@ti.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.10 020/273] ALSA: hda/tas2781: fix wrong calibrated data order
 Date: Tue, 27 Aug 2024 16:35:44 +0200
-Message-ID: <20240827143839.597197834@linuxfoundation.org>
+Message-ID: <20240827143834.157099366@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,60 +61,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Baojun Xu <baojun.xu@ti.com>
 
-[ Upstream commit 7397031622e05ca206e2d674ec199d6bb66fc9ba ]
+commit 3beddef84d90590270465a907de1cfe2539ac70d upstream.
 
-nilfs_btree_assign_p() and nilfs_direct_assign_p() are not initializing
-"struct nilfs_binfo_dat"->bi_pad field, causing uninit-value reports when
-being passed to CRC function.
+Wrong calibration data order cause sound too low in some device.
+Fix wrong calibrated data order, add calibration data converssion
+by get_unaligned_be32() after reading from UEFI.
 
-Link: https://lkml.kernel.org/r/20230326152146.15872-1-konishi.ryusuke@gmail.com
-Reported-by: syzbot <syzbot+048585f3f4227bb2b49b@syzkaller.appspotmail.com>
-  Link: https://syzkaller.appspot.com/bug?extid=048585f3f4227bb2b49b
-Reported-by: Dipanjan Das <mail.dipanjan.das@gmail.com>
-  Link: https://lkml.kernel.org/r/CANX2M5bVbzRi6zH3PTcNE_31TzerstOXUa9Bay4E6y6dX23_pg@mail.gmail.com
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: Alexander Potapenko <glider@google.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 5be27f1e3ec9 ("ALSA: hda/tas2781: Add tas2781 HDA driver")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Baojun Xu <baojun.xu@ti.com>
+Link: https://patch.msgid.link/20240813043749.108-1-shenghao-ding@ti.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/btree.c  | 1 +
- fs/nilfs2/direct.c | 1 +
- 2 files changed, 2 insertions(+)
+ sound/pci/hda/tas2781_hda_i2c.c |   14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/fs/nilfs2/btree.c b/fs/nilfs2/btree.c
-index bd24a33fc72e1..42617080a8384 100644
---- a/fs/nilfs2/btree.c
-+++ b/fs/nilfs2/btree.c
-@@ -2224,6 +2224,7 @@ static int nilfs_btree_assign_p(struct nilfs_bmap *btree,
- 	/* on-disk format */
- 	binfo->bi_dat.bi_blkoff = cpu_to_le64(key);
- 	binfo->bi_dat.bi_level = level;
-+	memset(binfo->bi_dat.bi_pad, 0, sizeof(binfo->bi_dat.bi_pad));
+--- a/sound/pci/hda/tas2781_hda_i2c.c
++++ b/sound/pci/hda/tas2781_hda_i2c.c
+@@ -2,10 +2,12 @@
+ //
+ // TAS2781 HDA I2C driver
+ //
+-// Copyright 2023 Texas Instruments, Inc.
++// Copyright 2023 - 2024 Texas Instruments, Inc.
+ //
+ // Author: Shenghao Ding <shenghao-ding@ti.com>
++// Current maintainer: Baojun Xu <baojun.xu@ti.com>
  
- 	return 0;
++#include <asm/unaligned.h>
+ #include <linux/acpi.h>
+ #include <linux/crc8.h>
+ #include <linux/crc32.h>
+@@ -519,20 +521,22 @@ static void tas2781_apply_calib(struct t
+ 	static const unsigned char rgno_array[CALIB_MAX] = {
+ 		0x74, 0x0c, 0x14, 0x70, 0x7c,
+ 	};
+-	unsigned char *data;
++	int offset = 0;
+ 	int i, j, rc;
++	__be32 data;
+ 
+ 	for (i = 0; i < tas_priv->ndev; i++) {
+-		data = tas_priv->cali_data.data +
+-			i * TASDEVICE_SPEAKER_CALIBRATION_SIZE;
+ 		for (j = 0; j < CALIB_MAX; j++) {
++			data = get_unaligned_be32(
++				&tas_priv->cali_data.data[offset]);
+ 			rc = tasdevice_dev_bulk_write(tas_priv, i,
+ 				TASDEVICE_REG(0, page_array[j], rgno_array[j]),
+-				&(data[4 * j]), 4);
++				(unsigned char *)&data, 4);
+ 			if (rc < 0)
+ 				dev_err(tas_priv->dev,
+ 					"chn %d calib %d bulk_wr err = %d\n",
+ 					i, j, rc);
++			offset += 4;
+ 		}
+ 	}
  }
-diff --git a/fs/nilfs2/direct.c b/fs/nilfs2/direct.c
-index 8f802f7b0840b..893ab36824cc2 100644
---- a/fs/nilfs2/direct.c
-+++ b/fs/nilfs2/direct.c
-@@ -319,6 +319,7 @@ static int nilfs_direct_assign_p(struct nilfs_bmap *direct,
- 
- 	binfo->bi_dat.bi_blkoff = cpu_to_le64(key);
- 	binfo->bi_dat.bi_level = 0;
-+	memset(binfo->bi_dat.bi_pad, 0, sizeof(binfo->bi_dat.bi_pad));
- 
- 	return 0;
- }
--- 
-2.43.0
-
 
 
 
