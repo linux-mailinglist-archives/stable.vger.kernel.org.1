@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-70667-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70950-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 862DF960F6C
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:59:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33F389610D7
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:13:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B96EC1C20AF1
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:59:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DFA5E1F24427
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:13:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 820711CB128;
-	Tue, 27 Aug 2024 14:57:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E45471C57AF;
+	Tue, 27 Aug 2024 15:13:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hC2XXCb+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yrNfqKor"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F85A19F485;
-	Tue, 27 Aug 2024 14:57:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 918481C5793;
+	Tue, 27 Aug 2024 15:13:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770670; cv=none; b=BL5+g3rIafg8GbfMMBUHFrpb0neqeORvSOWyiOnYhbFDeB7+T0uCf7SHzBOcbmDxyBSau/8JzDiuLR9DT2qOpjrOAP83wXIVM/oj9hQ0OoNT05b28Cl4xDBS4xifkltY1uQn8YHKQuNLqBRkhctoyvzefJqLVV56VxupOsEwaAM=
+	t=1724771600; cv=none; b=eovFRvHl8Sv+RG8eVPMVNZDqHCkuqVTAZ8Q7FD0UQ9JrmULdrTIYaX3s2jwah8DJkQqcjhnNf4eWqOpEQmBGWB+D4mp43rR3IsHhBjONX9bLIVFifMYMTclbP7Wdss9L+MhMX91YO7v9/pyvaJVkQf9e4IwX5Gjk/uj+mRxzeW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770670; c=relaxed/simple;
-	bh=Js6Nz3bDZSu4imB1Px2C9hDBq84Lbz3AcJSEpITv4pk=;
+	s=arc-20240116; t=1724771600; c=relaxed/simple;
+	bh=62hGVr4C/a2mXyOBVqMa9di2d8Qi1zNc/WwuTUWtu/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lvlDLp82RtWRXXKK81VguRsqv1GQ1tHRuB1NMTcVPEhCi2FYESszfHynrvR3e6oednSvJ9nFDqg2KOydFT/ffatLfPR1aOMOKgoOB4Sp1HbYqJBoxALNuALuqecVtcbbdKdz+UzPEtCYQy+YY0Bp0es7N603kkSrJ20dYNYTY2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hC2XXCb+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA847C61044;
-	Tue, 27 Aug 2024 14:57:49 +0000 (UTC)
+	 MIME-Version; b=WJxsiKR1Rhv9NfnryUvVP0IdJyBJI0iWiPUick9zsLZq563V8XjFyi1tT7xWoYyTRSvwMu40OHHRBytkuoA18/LuCoqGADspjMBTIDhMJy3r0QVJn0IfRr5x6HoXMbTzOZ0Sw2LIGHYhR/MbCkX3vBQH6jXrp8T4OpUOa21id2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yrNfqKor; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4AE4C61053;
+	Tue, 27 Aug 2024 15:13:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770670;
-	bh=Js6Nz3bDZSu4imB1Px2C9hDBq84Lbz3AcJSEpITv4pk=;
+	s=korg; t=1724771600;
+	bh=62hGVr4C/a2mXyOBVqMa9di2d8Qi1zNc/WwuTUWtu/U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hC2XXCb+s6+ZiKQFv8lAuY+7f0o+S5ft0tN1DZjeaJChnve/LNOfHOO9uRL/GwjIJ
-	 1an9gIsMxwcdw+WLiQqzm5Yo76+/l8sYbbhE775pCyk/RWR3zvN16bNSpPYaFii/sA
-	 vQiOqRUXUhUNKZHmESBcGf7AmMqaG54M5BRqgynM=
+	b=yrNfqKorlG4uxvz1G/Dua8ziYA0HaS6L6AQm+JXAYVcj7+OmpbZ3iGCVel1fGOwrL
+	 dGMbnixy727PG60vjGXSxLs5n+949u3wm4a4vhPYIhXPcwqZgIXtucGDUw+RUvLFIe
+	 UySXIDLRCmB2qT9SLE9KTj7XhtGwxC1f3AIMIfvY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 6.6 299/341] MIPS: Loongson64: Set timer mode in cpu-probe
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 206/273] drm/xe: Fix opregion leak
 Date: Tue, 27 Aug 2024 16:38:50 +0200
-Message-ID: <20240827143854.771602590@linuxfoundation.org>
+Message-ID: <20240827143841.249750934@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +62,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+From: Lucas De Marchi <lucas.demarchi@intel.com>
 
-commit 1cb6ab446424649f03c82334634360c2e3043684 upstream.
+[ Upstream commit f4b2a0ae1a31fd3d1b5ca18ee08319b479cf9b5f ]
 
-Loongson64 C and G processors have EXTIMER feature which
-is conflicting with CP0 counter.
+Being part o the display, ideally the setup and cleanup would be done by
+display itself. However this is a bigger refactor that needs to be done
+on both i915 and xe. For now, just fix the leak:
 
-Although the processor resets in EXTIMER disabled & INTIMER
-enabled mode, which is compatible with MIPS CP0 compare, firmware
-may attempt to enable EXTIMER and interfere CP0 compare.
+unreferenced object 0xffff8881a0300008 (size 192):
+  comm "modprobe", pid 4354, jiffies 4295647021
+  hex dump (first 32 bytes):
+    00 00 87 27 81 88 ff ff 18 80 9b 00 00 c9 ff ff  ...'............
+    18 81 9b 00 00 c9 ff ff 00 00 00 00 00 00 00 00  ................
+  backtrace (crc 99260e31):
+    [<ffffffff823ce65b>] kmemleak_alloc+0x4b/0x80
+    [<ffffffff81493be2>] kmalloc_trace_noprof+0x312/0x3d0
+    [<ffffffffa1345679>] intel_opregion_setup+0x89/0x700 [xe]
+    [<ffffffffa125bfaf>] xe_display_init_noirq+0x2f/0x90 [xe]
+    [<ffffffffa1199ec3>] xe_device_probe+0x7a3/0xbf0 [xe]
+    [<ffffffffa11f3713>] xe_pci_probe+0x333/0x5b0 [xe]
+    [<ffffffff81af6be8>] local_pci_probe+0x48/0xb0
+    [<ffffffff81af8778>] pci_device_probe+0xc8/0x280
+    [<ffffffff81d09048>] really_probe+0xf8/0x390
+    [<ffffffff81d0937a>] __driver_probe_device+0x8a/0x170
+    [<ffffffff81d09503>] driver_probe_device+0x23/0xb0
+    [<ffffffff81d097b7>] __driver_attach+0xc7/0x190
+    [<ffffffff81d0628d>] bus_for_each_dev+0x7d/0xd0
+    [<ffffffff81d0851e>] driver_attach+0x1e/0x30
+    [<ffffffff81d07ac7>] bus_add_driver+0x117/0x250
 
-Set timer mode back to MIPS compatible mode to fix booting on
-systems with such firmware before we have an actual driver for
-EXTIMER.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 44e694958b95 ("drm/xe/display: Implement display support")
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240724215309.644423-1-lucas.demarchi@intel.com
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+(cherry picked from commit 6f4e43a2f771b737d991142ec4f6d4b7ff31fbb4)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/kernel/cpu-probe.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpu/drm/xe/display/xe_display.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/arch/mips/kernel/cpu-probe.c
-+++ b/arch/mips/kernel/cpu-probe.c
-@@ -1725,12 +1725,16 @@ static inline void cpu_probe_loongson(st
- 		c->ases |= (MIPS_ASE_LOONGSON_MMI | MIPS_ASE_LOONGSON_CAM |
- 			MIPS_ASE_LOONGSON_EXT | MIPS_ASE_LOONGSON_EXT2);
- 		c->ases &= ~MIPS_ASE_VZ; /* VZ of Loongson-3A2000/3000 is incomplete */
-+		change_c0_config6(LOONGSON_CONF6_EXTIMER | LOONGSON_CONF6_INTIMER,
-+				  LOONGSON_CONF6_INTIMER);
- 		break;
- 	case PRID_IMP_LOONGSON_64G:
- 		__cpu_name[cpu] = "ICT Loongson-3";
- 		set_elf_platform(cpu, "loongson3a");
- 		set_isa(c, MIPS_CPU_ISA_M64R2);
- 		decode_cpucfg(c);
-+		change_c0_config6(LOONGSON_CONF6_EXTIMER | LOONGSON_CONF6_INTIMER,
-+				  LOONGSON_CONF6_INTIMER);
- 		break;
- 	default:
- 		panic("Unknown Loongson Processor ID!");
+diff --git a/drivers/gpu/drm/xe/display/xe_display.c b/drivers/gpu/drm/xe/display/xe_display.c
+index 6ecaf83264d55..7cdc03dc40ed9 100644
+--- a/drivers/gpu/drm/xe/display/xe_display.c
++++ b/drivers/gpu/drm/xe/display/xe_display.c
+@@ -134,6 +134,7 @@ static void xe_display_fini_noirq(struct drm_device *dev, void *dummy)
+ 		return;
+ 
+ 	intel_display_driver_remove_noirq(xe);
++	intel_opregion_cleanup(xe);
+ }
+ 
+ int xe_display_init_noirq(struct xe_device *xe)
+@@ -159,8 +160,10 @@ int xe_display_init_noirq(struct xe_device *xe)
+ 	intel_display_device_info_runtime_init(xe);
+ 
+ 	err = intel_display_driver_probe_noirq(xe);
+-	if (err)
++	if (err) {
++		intel_opregion_cleanup(xe);
+ 		return err;
++	}
+ 
+ 	return drmm_add_action_or_reset(&xe->drm, xe_display_fini_noirq, NULL);
+ }
+-- 
+2.43.0
+
 
 
 
