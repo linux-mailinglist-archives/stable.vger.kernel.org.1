@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-70810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C66F7961027
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:05:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D334960EC8
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:52:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 66FBF1F218C2
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:05:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BECCE286D50
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:52:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7A191BC9E3;
-	Tue, 27 Aug 2024 15:05:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBA381C6F43;
+	Tue, 27 Aug 2024 14:51:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ogurIJ0N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c9PZ+HYR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 667171C3F19;
-	Tue, 27 Aug 2024 15:05:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 813E51C7B92;
+	Tue, 27 Aug 2024 14:51:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771135; cv=none; b=ob6UfDtTJB6IwGb/sNSileH8zSS9In+mYjFKn5mA/HEhUxQ2xd4vtPqIaNcykP3FU6TwcvBQiLPOX0G4FqW45Vkg3rDnFwBROTTs3v0NzyDxwAVIr8MJlt4u4Z1QtGi1ZXY+O1BDqMLfqdNYsFvwjGQISBlV01YJRaYtnF47VEo=
+	t=1724770312; cv=none; b=qVNNW9mH2E5rBlA03uuQA5uPrkBV7jQWdgPnguUDh85yBRrXzgybYolpMYvJtLtiMZM0kbt4JiRjobr8nDYZtbVRarz8LJhvOOUHlPdQ0+W7mtEzNRCH43QP4Zff3auVheK3KI5MFC7XHQVVU4wYbZfWBtUSaRSjjofKzAOGseU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771135; c=relaxed/simple;
-	bh=eFnK8jpqBxbWdJP0uM9fqI9vOa+HNcBMu8Ymr9odrQA=;
+	s=arc-20240116; t=1724770312; c=relaxed/simple;
+	bh=wVTSHXcjhM1RR8VqmByMHMJdgMVcR3p3nsjJ0BPD+gs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jCqG1zfMa7Bq/Nkc2aBU1TkbkYodyy5/XyTHmHc14+nMywO4TBo/irECeT5r71OJMDAIz4sXH2PWTlTjstunxayEmBCHHpDEh/lWx9v87eolsZpG/QNxkSTt8mzzWbdGm8uz8adFpymNYXxe2Q3v+BtWK8B4nH3HGPkSqKUv9wk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ogurIJ0N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF254C6106C;
-	Tue, 27 Aug 2024 15:05:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Xxyb59HNOw6zjHeLTbeQLxFbkwseS90Wu7B/v3F77C7iiKd+4Kjtb9IyseFqotjygf6N38xfUTWjS46y8F0ePov/cXoWFZldOrc0f3t7LWcUbViOQZREe3ZTcLBhFbSscfp8Rc5fhHoWerO8xZXMG+f0j9mDaU1E4TtNmHUGpCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c9PZ+HYR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA808C4DE0F;
+	Tue, 27 Aug 2024 14:51:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771135;
-	bh=eFnK8jpqBxbWdJP0uM9fqI9vOa+HNcBMu8Ymr9odrQA=;
+	s=korg; t=1724770312;
+	bh=wVTSHXcjhM1RR8VqmByMHMJdgMVcR3p3nsjJ0BPD+gs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ogurIJ0NS5JxBzCNcRjycTs73qA2EioImkg60zP9aKGUK0VTo8bunD4WHrE1qMKiA
-	 dKZ5tbc322aNmTWDrIr46jrrkt0e3a1Cikxtyj4jDvzfYqd+Dx84zYcxDyu7tCExQE
-	 mh+SpZ6/xzF926BB/ZDMMRkSTFboNVdOcDkeZgks=
+	b=c9PZ+HYRfkYxhCINbp6TMjOJvmwmJvJUEi4320yIXbxjbazIgeXrfHnhOdHUj3K6y
+	 jesl6eb6MSjICOQzpKCY1OUwRQPVOv6FBPFUJLNhEjr1otbnLYIP8MGlaUhuTZBeWF
+	 CESoJAIayRHmDXwj7e+tURihkXniyy4LQqdVruMY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.10 066/273] btrfs: only enable extent map shrinker for DEBUG builds
-Date: Tue, 27 Aug 2024 16:36:30 +0200
-Message-ID: <20240827143835.925652700@linuxfoundation.org>
+	=?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
+	Charlie Jenkins <charlie@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 160/341] riscv: blacklist assembly symbols for kprobe
+Date: Tue, 27 Aug 2024 16:36:31 +0200
+Message-ID: <20240827143849.504335749@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,52 +61,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Clément Léger <cleger@rivosinc.com>
 
-commit 534f7eff9239c1b0af852fc33f5af2b62c00eddf upstream.
+[ Upstream commit 5014396af9bbac0f28d9afee7eae405206d01ee7 ]
 
-Although there are several patches improving the extent map shrinker,
-there are still reports of too frequent shrinker behavior, taking too
-much CPU for the kswapd process.
+Adding kprobes on some assembly functions (mainly exception handling)
+will result in crashes (either recursive trap or panic). To avoid such
+errors, add ASM_NOKPROBE() macro which allow adding specific symbols
+into the __kprobe_blacklist section and use to blacklist the following
+symbols that showed to be problematic:
+- handle_exception()
+- ret_from_exception()
+- handle_kernel_stack_overflow()
 
-So let's only enable extent shrinker for now, until we got more
-comprehensive understanding and a better solution.
-
-Link: https://lore.kernel.org/linux-btrfs/3df4acd616a07ef4d2dc6bad668701504b412ffc.camel@intelfx.name/
-Link: https://lore.kernel.org/linux-btrfs/c30fd6b3-ca7a-4759-8a53-d42878bf84f7@gmail.com/
-Fixes: 956a17d9d050 ("btrfs: add a shrinker for extent maps")
-CC: stable@vger.kernel.org # 6.10+
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Clément Léger <cleger@rivosinc.com>
+Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
+Link: https://lore.kernel.org/r/20231004131009.409193-1-cleger@rivosinc.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/super.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ arch/riscv/include/asm/asm.h | 10 ++++++++++
+ arch/riscv/kernel/entry.S    |  3 +++
+ 2 files changed, 13 insertions(+)
 
---- a/fs/btrfs/super.c
-+++ b/fs/btrfs/super.c
-@@ -2387,7 +2387,13 @@ static long btrfs_nr_cached_objects(stru
+diff --git a/arch/riscv/include/asm/asm.h b/arch/riscv/include/asm/asm.h
+index bfb4c26f113c4..b5b84c6be01e1 100644
+--- a/arch/riscv/include/asm/asm.h
++++ b/arch/riscv/include/asm/asm.h
+@@ -164,6 +164,16 @@
+ 	REG_L x31, PT_T6(sp)
+ 	.endm
  
- 	trace_btrfs_extent_map_shrinker_count(fs_info, nr);
++/* Annotate a function as being unsuitable for kprobes. */
++#ifdef CONFIG_KPROBES
++#define ASM_NOKPROBE(name)				\
++	.pushsection "_kprobe_blacklist", "aw";		\
++	RISCV_PTR name;					\
++	.popsection
++#else
++#define ASM_NOKPROBE(name)
++#endif
++
+ #endif /* __ASSEMBLY__ */
  
--	return nr;
-+	/*
-+	 * Only report the real number for DEBUG builds, as there are reports of
-+	 * serious performance degradation caused by too frequent shrinks.
-+	 */
-+	if (IS_ENABLED(CONFIG_BTRFS_DEBUG))
-+		return nr;
-+	return 0;
- }
+ #endif /* _ASM_RISCV_ASM_H */
+diff --git a/arch/riscv/kernel/entry.S b/arch/riscv/kernel/entry.S
+index 278d01d2911fd..ed7baf2cf7e87 100644
+--- a/arch/riscv/kernel/entry.S
++++ b/arch/riscv/kernel/entry.S
+@@ -105,6 +105,7 @@ _save_context:
+ 1:
+ 	tail do_trap_unknown
+ SYM_CODE_END(handle_exception)
++ASM_NOKPROBE(handle_exception)
  
- static long btrfs_free_cached_objects(struct super_block *sb, struct shrink_control *sc)
+ /*
+  * The ret_from_exception must be called with interrupt disabled. Here is the
+@@ -171,6 +172,7 @@ SYM_CODE_START_NOALIGN(ret_from_exception)
+ 	sret
+ #endif
+ SYM_CODE_END(ret_from_exception)
++ASM_NOKPROBE(ret_from_exception)
+ 
+ #ifdef CONFIG_VMAP_STACK
+ SYM_CODE_START_LOCAL(handle_kernel_stack_overflow)
+@@ -206,6 +208,7 @@ SYM_CODE_START_LOCAL(handle_kernel_stack_overflow)
+ 	move a0, sp
+ 	tail handle_bad_stack
+ SYM_CODE_END(handle_kernel_stack_overflow)
++ASM_NOKPROBE(handle_kernel_stack_overflow)
+ #endif
+ 
+ SYM_CODE_START(ret_from_fork)
+-- 
+2.43.0
+
 
 
 
