@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-70873-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71163-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06357961075
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:09:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 938C89611F7
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:25:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6302BB21D4B
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:09:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D0826B254A4
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:25:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E53E91C4EE6;
-	Tue, 27 Aug 2024 15:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26B9D1C6F51;
+	Tue, 27 Aug 2024 15:25:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dni6B9c6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yq+SnZly"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A25991E520;
-	Tue, 27 Aug 2024 15:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8BB41C57AB;
+	Tue, 27 Aug 2024 15:25:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771345; cv=none; b=aU1qYA4vXYz15rxMVPRbbGA/Be6XmjY1LmPMO67jaDBocf0Kzh5G7RoggkNxfXpAdzjFeyJ9+imrTqSSQ3VjKyy1L+ENZRqtGxQ/qM5t/s/H9kkKJOhIAuEM1lRNArK0eaIGlUfMvvqdzZviUP61nhm+wCWJX8t67FS64bgPI3A=
+	t=1724772307; cv=none; b=Kp+k3mCNBzioDZ3XN71JdVIcIuUMkO6aEJhlKJpL3GucqFTqJw/ygHVKa+xQvA31RYrw6NAkU42PvM17YjnjR1J7GBJE9fCU69kSgSOkO1whjaxa9wws85k2k37UNA9ewhWwfcuokK3MI1eG0D8/x+RiDobOma1F1yWRYUHjslA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771345; c=relaxed/simple;
-	bh=V1FUd26nazDBcKrfJL/qVRL4/lX84TcxmDbssdEZatg=;
+	s=arc-20240116; t=1724772307; c=relaxed/simple;
+	bh=AKLHcfFQkS8XFOB1Q2jI4OdvLf3i3XPDpeJcDGr1d/M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uYBXTlV4+DxkjYhZoAD3+33Ug1ErhT3bD24Uqkytg2gchBobsL4C/EgHtUPCMWdQhIA0uuRzxUiYG1E99SY8QKfublfq9RItu1vSQsYldeuo4ky5BvgYscJOZqYJV73fyhG27gw2x+5nhcd/nWMgvXzEzwDTM/5VdogItbl7Fdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dni6B9c6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD3AAC4AF1A;
-	Tue, 27 Aug 2024 15:09:04 +0000 (UTC)
+	 MIME-Version; b=nsFoGmisPLz4WHP/VH5o1FD0pr0e0j+KP5ZEznBNrh0mj9+Biy/qc35d+NuZJOMVua80YzO/45ig0pqKAJMKMb8c8aVcCgGNHgDhPacoH3XS3K6tWyOyv0nSoQt6qljKF8uE789picjpMiO3PUY5iy+hCeAw4tEOxD3l4qW2w/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yq+SnZly; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BBD2C61071;
+	Tue, 27 Aug 2024 15:25:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771345;
-	bh=V1FUd26nazDBcKrfJL/qVRL4/lX84TcxmDbssdEZatg=;
+	s=korg; t=1724772307;
+	bh=AKLHcfFQkS8XFOB1Q2jI4OdvLf3i3XPDpeJcDGr1d/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dni6B9c6Sw7OCSPzFVN3xhPDpbs7obvGyF8MM2jrzHDudZEy6Yk0plHLwZw8qXM7R
-	 +SHPM6s0nBWIgkbiJyTegKCArn+vcF4zp3G9gmkQAmaFUYl+42rnMOs5VEDFRkF5wa
-	 TNg22Ujl89zMQOZ4jOdf/FFtMwrDfzMfSaeYHufQ=
+	b=yq+SnZlyr6GEUpBxLFmAg+cSfet9tnCSxHuZ01GjL0tiMMa1lc55W/ArdOFZBUHGV
+	 LHRheio43OUQN35WxO6Z9OA+/wQ8rhp6N8CGKWyUyj7FK8+HU+xeZcyIeI9g5jiq+r
+	 +eZnMJt2UgOkOMayMUV2I25Em2tNhBwGRcinCcxw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Christophe Kerello <christophe.kerello@foss.st.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 159/273] tc-testing: dont access non-existent variable on exception
-Date: Tue, 27 Aug 2024 16:38:03 +0200
-Message-ID: <20240827143839.454784658@linuxfoundation.org>
+Subject: [PATCH 6.1 176/321] memory: stm32-fmc2-ebi: check regmap_read return value
+Date: Tue, 27 Aug 2024 16:38:04 +0200
+Message-ID: <20240827143844.929164501@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +62,285 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Horman <horms@kernel.org>
+From: Christophe Kerello <christophe.kerello@foss.st.com>
 
-[ Upstream commit a0c9fe5eecc97680323ee83780ea3eaf440ba1b7 ]
+[ Upstream commit 722463f73bcf65a8c818752a38c14ee672c77da1 ]
 
-Since commit 255c1c7279ab ("tc-testing: Allow test cases to be skipped")
-the variable test_ordinal doesn't exist in call_pre_case().
-So it should not be accessed when an exception occurs.
+Check regmap_read return value to avoid to use uninitialized local
+variables.
 
-This resolves the following splat:
-
-  ...
-  During handling of the above exception, another exception occurred:
-
-  Traceback (most recent call last):
-    File ".../tdc.py", line 1028, in <module>
-      main()
-    File ".../tdc.py", line 1022, in main
-      set_operation_mode(pm, parser, args, remaining)
-    File ".../tdc.py", line 966, in set_operation_mode
-      catresults = test_runner_serial(pm, args, alltests)
-    File ".../tdc.py", line 642, in test_runner_serial
-      (index, tsr) = test_runner(pm, args, alltests)
-    File ".../tdc.py", line 536, in test_runner
-      res = run_one_test(pm, args, index, tidx)
-    File ".../tdc.py", line 419, in run_one_test
-      pm.call_pre_case(tidx)
-    File ".../tdc.py", line 146, in call_pre_case
-      print('test_ordinal is {}'.format(test_ordinal))
-  NameError: name 'test_ordinal' is not defined
-
-Fixes: 255c1c7279ab ("tc-testing: Allow test cases to be skipped")
-Signed-off-by: Simon Horman <horms@kernel.org>
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Link: https://patch.msgid.link/20240815-tdc-test-ordinal-v1-1-0255c122a427@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Christophe Kerello <christophe.kerello@foss.st.com>
+Link: https://lore.kernel.org/r/20240226101428.37791-3-christophe.kerello@foss.st.com
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/tc-testing/tdc.py | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/memory/stm32-fmc2-ebi.c | 122 +++++++++++++++++++++++---------
+ 1 file changed, 88 insertions(+), 34 deletions(-)
 
-diff --git a/tools/testing/selftests/tc-testing/tdc.py b/tools/testing/selftests/tc-testing/tdc.py
-index ee349187636fc..4f255cec0c22e 100755
---- a/tools/testing/selftests/tc-testing/tdc.py
-+++ b/tools/testing/selftests/tc-testing/tdc.py
-@@ -143,7 +143,6 @@ class PluginMgr:
-             except Exception as ee:
-                 print('exception {} in call to pre_case for {} plugin'.
-                       format(ee, pgn_inst.__class__))
--                print('test_ordinal is {}'.format(test_ordinal))
-                 print('testid is {}'.format(caseinfo['id']))
-                 raise
+diff --git a/drivers/memory/stm32-fmc2-ebi.c b/drivers/memory/stm32-fmc2-ebi.c
+index ffec26a99313b..5c387d32c078f 100644
+--- a/drivers/memory/stm32-fmc2-ebi.c
++++ b/drivers/memory/stm32-fmc2-ebi.c
+@@ -179,8 +179,11 @@ static int stm32_fmc2_ebi_check_mux(struct stm32_fmc2_ebi *ebi,
+ 				    int cs)
+ {
+ 	u32 bcr;
++	int ret;
  
+-	regmap_read(ebi->regmap, FMC2_BCR(cs), &bcr);
++	ret = regmap_read(ebi->regmap, FMC2_BCR(cs), &bcr);
++	if (ret)
++		return ret;
+ 
+ 	if (bcr & FMC2_BCR_MTYP)
+ 		return 0;
+@@ -193,8 +196,11 @@ static int stm32_fmc2_ebi_check_waitcfg(struct stm32_fmc2_ebi *ebi,
+ 					int cs)
+ {
+ 	u32 bcr, val = FIELD_PREP(FMC2_BCR_MTYP, FMC2_BCR_MTYP_NOR);
++	int ret;
+ 
+-	regmap_read(ebi->regmap, FMC2_BCR(cs), &bcr);
++	ret = regmap_read(ebi->regmap, FMC2_BCR(cs), &bcr);
++	if (ret)
++		return ret;
+ 
+ 	if ((bcr & FMC2_BCR_MTYP) == val && bcr & FMC2_BCR_BURSTEN)
+ 		return 0;
+@@ -207,8 +213,11 @@ static int stm32_fmc2_ebi_check_sync_trans(struct stm32_fmc2_ebi *ebi,
+ 					   int cs)
+ {
+ 	u32 bcr;
++	int ret;
+ 
+-	regmap_read(ebi->regmap, FMC2_BCR(cs), &bcr);
++	ret = regmap_read(ebi->regmap, FMC2_BCR(cs), &bcr);
++	if (ret)
++		return ret;
+ 
+ 	if (bcr & FMC2_BCR_BURSTEN)
+ 		return 0;
+@@ -221,8 +230,11 @@ static int stm32_fmc2_ebi_check_async_trans(struct stm32_fmc2_ebi *ebi,
+ 					    int cs)
+ {
+ 	u32 bcr;
++	int ret;
+ 
+-	regmap_read(ebi->regmap, FMC2_BCR(cs), &bcr);
++	ret = regmap_read(ebi->regmap, FMC2_BCR(cs), &bcr);
++	if (ret)
++		return ret;
+ 
+ 	if (!(bcr & FMC2_BCR_BURSTEN) || !(bcr & FMC2_BCR_CBURSTRW))
+ 		return 0;
+@@ -235,8 +247,11 @@ static int stm32_fmc2_ebi_check_cpsize(struct stm32_fmc2_ebi *ebi,
+ 				       int cs)
+ {
+ 	u32 bcr, val = FIELD_PREP(FMC2_BCR_MTYP, FMC2_BCR_MTYP_PSRAM);
++	int ret;
+ 
+-	regmap_read(ebi->regmap, FMC2_BCR(cs), &bcr);
++	ret = regmap_read(ebi->regmap, FMC2_BCR(cs), &bcr);
++	if (ret)
++		return ret;
+ 
+ 	if ((bcr & FMC2_BCR_MTYP) == val && bcr & FMC2_BCR_BURSTEN)
+ 		return 0;
+@@ -249,12 +264,18 @@ static int stm32_fmc2_ebi_check_address_hold(struct stm32_fmc2_ebi *ebi,
+ 					     int cs)
+ {
+ 	u32 bcr, bxtr, val = FIELD_PREP(FMC2_BXTR_ACCMOD, FMC2_BXTR_EXTMOD_D);
++	int ret;
++
++	ret = regmap_read(ebi->regmap, FMC2_BCR(cs), &bcr);
++	if (ret)
++		return ret;
+ 
+-	regmap_read(ebi->regmap, FMC2_BCR(cs), &bcr);
+ 	if (prop->reg_type == FMC2_REG_BWTR)
+-		regmap_read(ebi->regmap, FMC2_BWTR(cs), &bxtr);
++		ret = regmap_read(ebi->regmap, FMC2_BWTR(cs), &bxtr);
+ 	else
+-		regmap_read(ebi->regmap, FMC2_BTR(cs), &bxtr);
++		ret = regmap_read(ebi->regmap, FMC2_BTR(cs), &bxtr);
++	if (ret)
++		return ret;
+ 
+ 	if ((!(bcr & FMC2_BCR_BURSTEN) || !(bcr & FMC2_BCR_CBURSTRW)) &&
+ 	    ((bxtr & FMC2_BXTR_ACCMOD) == val || bcr & FMC2_BCR_MUXEN))
+@@ -268,12 +289,19 @@ static int stm32_fmc2_ebi_check_clk_period(struct stm32_fmc2_ebi *ebi,
+ 					   int cs)
+ {
+ 	u32 bcr, bcr1;
++	int ret;
+ 
+-	regmap_read(ebi->regmap, FMC2_BCR(cs), &bcr);
+-	if (cs)
+-		regmap_read(ebi->regmap, FMC2_BCR1, &bcr1);
+-	else
++	ret = regmap_read(ebi->regmap, FMC2_BCR(cs), &bcr);
++	if (ret)
++		return ret;
++
++	if (cs) {
++		ret = regmap_read(ebi->regmap, FMC2_BCR1, &bcr1);
++		if (ret)
++			return ret;
++	} else {
+ 		bcr1 = bcr;
++	}
+ 
+ 	if (bcr & FMC2_BCR_BURSTEN && (!cs || !(bcr1 & FMC2_BCR1_CCLKEN)))
+ 		return 0;
+@@ -305,12 +333,18 @@ static u32 stm32_fmc2_ebi_ns_to_clk_period(struct stm32_fmc2_ebi *ebi,
+ {
+ 	u32 nb_clk_cycles = stm32_fmc2_ebi_ns_to_clock_cycles(ebi, cs, setup);
+ 	u32 bcr, btr, clk_period;
++	int ret;
++
++	ret = regmap_read(ebi->regmap, FMC2_BCR1, &bcr);
++	if (ret)
++		return ret;
+ 
+-	regmap_read(ebi->regmap, FMC2_BCR1, &bcr);
+ 	if (bcr & FMC2_BCR1_CCLKEN || !cs)
+-		regmap_read(ebi->regmap, FMC2_BTR1, &btr);
++		ret = regmap_read(ebi->regmap, FMC2_BTR1, &btr);
+ 	else
+-		regmap_read(ebi->regmap, FMC2_BTR(cs), &btr);
++		ret = regmap_read(ebi->regmap, FMC2_BTR(cs), &btr);
++	if (ret)
++		return ret;
+ 
+ 	clk_period = FIELD_GET(FMC2_BTR_CLKDIV, btr) + 1;
+ 
+@@ -569,11 +603,16 @@ static int stm32_fmc2_ebi_set_address_setup(struct stm32_fmc2_ebi *ebi,
+ 	if (ret)
+ 		return ret;
+ 
+-	regmap_read(ebi->regmap, FMC2_BCR(cs), &bcr);
++	ret = regmap_read(ebi->regmap, FMC2_BCR(cs), &bcr);
++	if (ret)
++		return ret;
++
+ 	if (prop->reg_type == FMC2_REG_BWTR)
+-		regmap_read(ebi->regmap, FMC2_BWTR(cs), &bxtr);
++		ret = regmap_read(ebi->regmap, FMC2_BWTR(cs), &bxtr);
+ 	else
+-		regmap_read(ebi->regmap, FMC2_BTR(cs), &bxtr);
++		ret = regmap_read(ebi->regmap, FMC2_BTR(cs), &bxtr);
++	if (ret)
++		return ret;
+ 
+ 	if ((bxtr & FMC2_BXTR_ACCMOD) == val || bcr & FMC2_BCR_MUXEN)
+ 		val = clamp_val(setup, 1, FMC2_BXTR_ADDSET_MAX);
+@@ -691,11 +730,14 @@ static int stm32_fmc2_ebi_set_max_low_pulse(struct stm32_fmc2_ebi *ebi,
+ 					    int cs, u32 setup)
+ {
+ 	u32 old_val, new_val, pcscntr;
++	int ret;
+ 
+ 	if (setup < 1)
+ 		return 0;
+ 
+-	regmap_read(ebi->regmap, FMC2_PCSCNTR, &pcscntr);
++	ret = regmap_read(ebi->regmap, FMC2_PCSCNTR, &pcscntr);
++	if (ret)
++		return ret;
+ 
+ 	/* Enable counter for the bank */
+ 	regmap_update_bits(ebi->regmap, FMC2_PCSCNTR,
+@@ -942,17 +984,20 @@ static void stm32_fmc2_ebi_disable_bank(struct stm32_fmc2_ebi *ebi, int cs)
+ 	regmap_update_bits(ebi->regmap, FMC2_BCR(cs), FMC2_BCR_MBKEN, 0);
+ }
+ 
+-static void stm32_fmc2_ebi_save_setup(struct stm32_fmc2_ebi *ebi)
++static int stm32_fmc2_ebi_save_setup(struct stm32_fmc2_ebi *ebi)
+ {
+ 	unsigned int cs;
++	int ret;
+ 
+ 	for (cs = 0; cs < FMC2_MAX_EBI_CE; cs++) {
+-		regmap_read(ebi->regmap, FMC2_BCR(cs), &ebi->bcr[cs]);
+-		regmap_read(ebi->regmap, FMC2_BTR(cs), &ebi->btr[cs]);
+-		regmap_read(ebi->regmap, FMC2_BWTR(cs), &ebi->bwtr[cs]);
++		ret = regmap_read(ebi->regmap, FMC2_BCR(cs), &ebi->bcr[cs]);
++		ret |= regmap_read(ebi->regmap, FMC2_BTR(cs), &ebi->btr[cs]);
++		ret |= regmap_read(ebi->regmap, FMC2_BWTR(cs), &ebi->bwtr[cs]);
++		if (ret)
++			return ret;
+ 	}
+ 
+-	regmap_read(ebi->regmap, FMC2_PCSCNTR, &ebi->pcscntr);
++	return regmap_read(ebi->regmap, FMC2_PCSCNTR, &ebi->pcscntr);
+ }
+ 
+ static void stm32_fmc2_ebi_set_setup(struct stm32_fmc2_ebi *ebi)
+@@ -981,22 +1026,29 @@ static void stm32_fmc2_ebi_disable_banks(struct stm32_fmc2_ebi *ebi)
+ }
+ 
+ /* NWAIT signal can not be connected to EBI controller and NAND controller */
+-static bool stm32_fmc2_ebi_nwait_used_by_ctrls(struct stm32_fmc2_ebi *ebi)
++static int stm32_fmc2_ebi_nwait_used_by_ctrls(struct stm32_fmc2_ebi *ebi)
+ {
++	struct device *dev = ebi->dev;
+ 	unsigned int cs;
+ 	u32 bcr;
++	int ret;
+ 
+ 	for (cs = 0; cs < FMC2_MAX_EBI_CE; cs++) {
+ 		if (!(ebi->bank_assigned & BIT(cs)))
+ 			continue;
+ 
+-		regmap_read(ebi->regmap, FMC2_BCR(cs), &bcr);
++		ret = regmap_read(ebi->regmap, FMC2_BCR(cs), &bcr);
++		if (ret)
++			return ret;
++
+ 		if ((bcr & FMC2_BCR_WAITEN || bcr & FMC2_BCR_ASYNCWAIT) &&
+-		    ebi->bank_assigned & BIT(FMC2_NAND))
+-			return true;
++		    ebi->bank_assigned & BIT(FMC2_NAND)) {
++			dev_err(dev, "NWAIT signal connected to EBI and NAND controllers\n");
++			return -EINVAL;
++		}
+ 	}
+ 
+-	return false;
++	return 0;
+ }
+ 
+ static void stm32_fmc2_ebi_enable(struct stm32_fmc2_ebi *ebi)
+@@ -1083,10 +1135,9 @@ static int stm32_fmc2_ebi_parse_dt(struct stm32_fmc2_ebi *ebi)
+ 		return -ENODEV;
+ 	}
+ 
+-	if (stm32_fmc2_ebi_nwait_used_by_ctrls(ebi)) {
+-		dev_err(dev, "NWAIT signal connected to EBI and NAND controllers\n");
+-		return -EINVAL;
+-	}
++	ret = stm32_fmc2_ebi_nwait_used_by_ctrls(ebi);
++	if (ret)
++		return ret;
+ 
+ 	stm32_fmc2_ebi_enable(ebi);
+ 
+@@ -1131,7 +1182,10 @@ static int stm32_fmc2_ebi_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		goto err_release;
+ 
+-	stm32_fmc2_ebi_save_setup(ebi);
++	ret = stm32_fmc2_ebi_save_setup(ebi);
++	if (ret)
++		goto err_release;
++
+ 	platform_set_drvdata(pdev, ebi);
+ 
+ 	return 0;
 -- 
 2.43.0
 
