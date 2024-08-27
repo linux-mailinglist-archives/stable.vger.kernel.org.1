@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-71003-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70719-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94A04961119
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:16:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F8E6960FAC
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:01:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3EA211F2432E
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:16:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EF494B24CEE
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:01:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9D881BFE07;
-	Tue, 27 Aug 2024 15:16:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 444681C4ED4;
+	Tue, 27 Aug 2024 15:00:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D8vQgcHn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RQISOpGk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77FF217C96;
-	Tue, 27 Aug 2024 15:16:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 009611E487;
+	Tue, 27 Aug 2024 15:00:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771774; cv=none; b=SseNdDj03I+wFaquF+rgSpMNetc3frmU5z60Aq9lgFxP4z60wH65ZS3MlOD2IeANFT5o7WLzuyq9hb/dyFQbCp1WQVAvATiUlVcoHFi8v5xkZaOPV3JZRxMkE+kEfec5FhBxbkFAMF/50TXxiIjR7tJWKri11f05sSClPTTyIjQ=
+	t=1724770841; cv=none; b=X7DUWBWVOWc6smn67bKjkfmJLW/crFWbIbePUO1dXK/oVF7h+AAC7bWs07KjqSwZXLDxJF9kMTRkzgSWpCoSgNAOfrSqAjG0q1Xo4RF/nmj+WGO9x78JdUJjnWLd6+PKeLc+VSUrfxLUBh1uehTfdfR8To8DT+FbJ+XncyL+u7E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771774; c=relaxed/simple;
-	bh=J3JqaYUmku/fDUUtbys62J4TkEIa3WvzuhcGUMCUHKk=;
+	s=arc-20240116; t=1724770841; c=relaxed/simple;
+	bh=q+Det+yOpmVrU8s1u0JlkfJUWkAkJbqJxM9vaerIZUE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g/lZhl31S8blEq2cXyI9GZjD1AUSnTbZP9RY90hOA5gHzuQa94AkIz2Sv/gi8hTWuMb9/F4d9ELQUoQUPQqPqzxQmyH3jO/lR4v/pXZZl3h1bgC+3QqBzwjHYiXLUt2olmNnFJr/UW4npiYaXyr66O+vwq6DvLizK+Lvd4M4n2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D8vQgcHn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB8A5C4AF50;
-	Tue, 27 Aug 2024 15:16:13 +0000 (UTC)
+	 MIME-Version; b=rXdXmbklFpxGEXlvHOIgM5YJhRqOz6sZoiFqvQd5VLtrSrK+lnHg69zhsZ3KAEd8FyY7DTBE+/7Qh0m3ni9XSv8h8fA32uc0lWFp3sLwSATewvpSCYdiNJbiFIcpItcaC2XY2RzUW/fGh53Np6A+F9Dhfh6QcjElhAu5+kSsfUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RQISOpGk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F9CFC4AF1C;
+	Tue, 27 Aug 2024 15:00:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771774;
-	bh=J3JqaYUmku/fDUUtbys62J4TkEIa3WvzuhcGUMCUHKk=;
+	s=korg; t=1724770840;
+	bh=q+Det+yOpmVrU8s1u0JlkfJUWkAkJbqJxM9vaerIZUE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D8vQgcHn3PNqXrNjhkX8m2Jaup5cDvtCzMEggZ00py+INR0mszLpt6bON9dRP/Fts
-	 z6l4iDeSsUgwm+W6CE3J5nep86xqaAQmSwHaNVSgNfuomJ9FcdEVAL2q2F8fbj5hER
-	 ZP0Rnmr1+jWlCNjVKkn8T0qyDUumxrT+pdtgOCzg=
+	b=RQISOpGkNY5ClnhP6J1rDZ7Ap7mHSWQcXBiYnN2HTtsHLM9LrLaqIUDlAzh/HaBBV
+	 FNm0G1kBweC8we4vNSuNEj44XHqG6wbRHgI+6P9TKhP8+hu4rOzXpWQxuAJh3qJXbh
+	 MNEhjk+RK1ZeZJUBmWOIxWj2wH4hhzcbQkTrynT8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Peter Oberparleiter <oberpar@linux.ibm.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.1 017/321] s390/cio: rename bitmap_size() -> idset_bitmap_size()
+	stable <stable@kernel.org>,
+	Daniel Gomez <da.gomez@samsung.com>,
+	Masahiro Yamada <masahiroy@kernel.org>
+Subject: [PATCH 6.10 001/273] tty: vt: conmakehash: remove non-portable code printing comment header
 Date: Tue, 27 Aug 2024 16:35:25 +0200
-Message-ID: <20240827143838.863519171@linuxfoundation.org>
+Message-ID: <20240827143833.431480608@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +62,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Lobakin <aleksander.lobakin@intel.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-commit c1023f5634b9bfcbfff0dc200245309e3cde9b54 upstream.
+commit 7258fdd7d7459616b3fe1a603e33900584b10c13 upstream.
 
-bitmap_size() is a pretty generic name and one may want to use it for
-a generic bitmap API function. At the same time, its logic is not
-"generic", i.e. it's not just `nbits -> size of bitmap in bytes`
-converter as it would be expected from its name.
-Add the prefix 'idset_' used throughout the file where the function
-resides.
+Commit 6e20753da6bc ("tty: vt: conmakehash: cope with abs_srctree no
+longer in env") included <linux/limits.h>, which invoked another
+(wrong) patch that tried to address a build error on macOS.
 
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Acked-by: Peter Oberparleiter <oberpar@linux.ibm.com>
-Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+According to the specification [1], the correct header to use PATH_MAX
+is <limits.h>.
+
+The minimal fix would be to replace <linux/limits.h> with <limits.h>.
+
+However, the following commits seem questionable to me:
+
+ - 3bd85c6c97b2 ("tty: vt: conmakehash: Don't mention the full path of the input in output")
+ - 6e20753da6bc ("tty: vt: conmakehash: cope with abs_srctree no longer in env")
+
+These commits made too many efforts to cope with a comment header in
+drivers/tty/vt/consolemap_deftbl.c:
+
+  /*
+   * Do not edit this file; it was automatically generated by
+   *
+   * conmakehash drivers/tty/vt/cp437.uni > [this file]
+   *
+   */
+
+With this commit, the header part of the generate C file will be
+simplified as follows:
+
+  /*
+   * Automatically generated file; Do not edit.
+   */
+
+BTW, another series of excessive efforts for a comment header can be
+seen in the following:
+
+ - 5ef6dc08cfde ("lib/build_OID_registry: don't mention the full path of the script in output")
+ - 2fe29fe94563 ("lib/build_OID_registry: avoid non-destructive substitution for Perl < 5.13.2 compat")
+
+[1]: https://pubs.opengroup.org/onlinepubs/009695399/basedefs/limits.h.html
+
+Fixes: 6e20753da6bc ("tty: vt: conmakehash: cope with abs_srctree no longer in env")
+Cc: stable <stable@kernel.org>
+Reported-by: Daniel Gomez <da.gomez@samsung.com>
+Closes: https://lore.kernel.org/all/20240807-macos-build-support-v1-11-4cd1ded85694@samsung.com/
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Link: https://lore.kernel.org/r/20240809160853.1269466-1-masahiroy@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/s390/cio/idset.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/tty/vt/conmakehash.c | 12 ++----------
+ 1 file changed, 2 insertions(+), 10 deletions(-)
 
---- a/drivers/s390/cio/idset.c
-+++ b/drivers/s390/cio/idset.c
-@@ -16,7 +16,7 @@ struct idset {
- 	unsigned long bitmap[];
- };
+diff --git a/drivers/tty/vt/conmakehash.c b/drivers/tty/vt/conmakehash.c
+index 82d9db68b2ce..a931fcde7ad9 100644
+--- a/drivers/tty/vt/conmakehash.c
++++ b/drivers/tty/vt/conmakehash.c
+@@ -11,8 +11,6 @@
+  * Copyright (C) 1995-1997 H. Peter Anvin
+  */
  
--static inline unsigned long bitmap_size(int num_ssid, int num_id)
-+static inline unsigned long idset_bitmap_size(int num_ssid, int num_id)
+-#include <libgen.h>
+-#include <linux/limits.h>
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <sysexits.h>
+@@ -79,7 +77,6 @@ int main(int argc, char *argv[])
  {
- 	return BITS_TO_LONGS(num_ssid * num_id) * sizeof(unsigned long);
- }
-@@ -25,11 +25,12 @@ static struct idset *idset_new(int num_s
- {
- 	struct idset *set;
+   FILE *ctbl;
+   const char *tblname;
+-  char base_tblname[PATH_MAX];
+   char buffer[65536];
+   int fontlen;
+   int i, nuni, nent;
+@@ -245,20 +242,15 @@ int main(int argc, char *argv[])
+   for ( i = 0 ; i < fontlen ; i++ )
+     nuni += unicount[i];
  
--	set = vmalloc(sizeof(struct idset) + bitmap_size(num_ssid, num_id));
-+	set = vmalloc(sizeof(struct idset) +
-+		      idset_bitmap_size(num_ssid, num_id));
- 	if (set) {
- 		set->num_ssid = num_ssid;
- 		set->num_id = num_id;
--		memset(set->bitmap, 0, bitmap_size(num_ssid, num_id));
-+		memset(set->bitmap, 0, idset_bitmap_size(num_ssid, num_id));
- 	}
- 	return set;
- }
-@@ -41,7 +42,8 @@ void idset_free(struct idset *set)
+-  strncpy(base_tblname, tblname, PATH_MAX);
+-  base_tblname[PATH_MAX - 1] = 0;
+   printf("\
+ /*\n\
+- * Do not edit this file; it was automatically generated by\n\
+- *\n\
+- * conmakehash %s > [this file]\n\
+- *\n\
++ * Automatically generated file; Do not edit.\n\
+  */\n\
+ \n\
+ #include <linux/types.h>\n\
+ \n\
+ u8 dfont_unicount[%d] = \n\
+-{\n\t", basename(base_tblname), fontlen);
++{\n\t", fontlen);
  
- void idset_fill(struct idset *set)
- {
--	memset(set->bitmap, 0xff, bitmap_size(set->num_ssid, set->num_id));
-+	memset(set->bitmap, 0xff,
-+	       idset_bitmap_size(set->num_ssid, set->num_id));
- }
- 
- static inline void idset_add(struct idset *set, int ssid, int id)
+   for ( i = 0 ; i < fontlen ; i++ )
+     {
+-- 
+2.46.0
+
 
 
 
