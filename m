@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-70607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70842-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18B21960F0F
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:55:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFE5796104B
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:07:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B51E1C23442
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:55:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5D81FB23222
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:07:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A5351C7B82;
-	Tue, 27 Aug 2024 14:54:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A8DE1C579F;
+	Tue, 27 Aug 2024 15:07:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PqOP69J7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oJh6odc5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38A361C4EF6;
-	Tue, 27 Aug 2024 14:54:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBAE01C5788;
+	Tue, 27 Aug 2024 15:07:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770471; cv=none; b=ovah564StdMAPfvjOrbOHs/fzMUjpGVc09xmJJqwmj+F1B1RHoUQjfAxkAS3j0YxW6c9X/Q1Uv8Uq4pJdY23mpKoGGuKtqCkm98cogpmwSTriRrSaKzOAb0jMRs+qA8PCOr+oGYkfBpfAW94XdLV5EgLWvkAbsk0ucRhSgcOGxE=
+	t=1724771241; cv=none; b=H4ts/FGCGKPFIo4s+aX+2eetqZvNE6NyhxTFoFPFpv7u+UHiMLIV3lmpYvLFZ4CDhBwGXv3xHmmmlmr/ILKcDntxPJhKS4F5+zrQ+G3j5gQQ9fGz8Z0PAIG0SUFIOp6EVa6w2XkkzS5qz3w/TZlT1DGvnkMrieXo+IwRZL9Eahc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770471; c=relaxed/simple;
-	bh=k8w3YW3xhErvruaDt7ZwTcYrLbwYYBoP3SCU3N307XE=;
+	s=arc-20240116; t=1724771241; c=relaxed/simple;
+	bh=UqkTVO9gN7t60I0Er88heCdBO17coSu9lm5I/tnNj/g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FPoBl59WZM2GEiBjxJvw+JSCh7xT84M9dorynDxtvIcW3QGkRlHYudkJw3vdiN9kot4XA/GclQ8EaerW6v3voDjqBCkNyg4ECmonyWYlgu/Ezw1O/fmBEDR0G8W+8swIRaN34QEUMzukKA7FKuV8KaQpIUmnSMCcSxlS862vkeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PqOP69J7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91177C4E675;
-	Tue, 27 Aug 2024 14:54:30 +0000 (UTC)
+	 MIME-Version; b=OegZTnVSgE7z0mPQKoy4/VbGisSkrHE5YFosl2YKCODAnc1fZkI76ozm8YMXyHpft1vX7I9hwZiKiZq53O9bEx+35Wl2WHKh+ClxLap/mMQx5ylrUPCxbah4xRb2gsCJrMTeyoYDbQjtSwLMcKYBDe8azfKe+0wvA8EUKWo4264=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oJh6odc5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB6F0C4DDF5;
+	Tue, 27 Aug 2024 15:07:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770471;
-	bh=k8w3YW3xhErvruaDt7ZwTcYrLbwYYBoP3SCU3N307XE=;
+	s=korg; t=1724771241;
+	bh=UqkTVO9gN7t60I0Er88heCdBO17coSu9lm5I/tnNj/g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PqOP69J7r46XnCl6/9pl3BTqkC768EsGfn3x46Ohs1d/V0IrMEuVmX2/UpxaiK0U/
-	 0rtVYpEWIl/vOe4xg8/a2wsnEtN0PWrujHSe6tJQNpCBHj16QpH0OL/o6Ep1sUZ0Eu
-	 25NPLpIg3ZXEyDfol0RNzr7wxE8zLWvq5gKKEK6k=
+	b=oJh6odc5jZQidQgHN1Pw0N61smVykshgPABuaj1L9gwFEsB8QFiumBF/Ks93fcQyP
+	 bU5Js2byhW2QG3msG4J1cf6Owvy4bFciiFtXe3MSlzKeycfs1YH9HI0dRlb5oQIY3s
+	 /tsl5A3Z/wMXRBbQjBph0Do7R/m7H0obACTLIcA8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Harald Welte <laforge@gnumonks.org>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 221/341] gtp: pull network headers in gtp_dev_xmit()
+	Stefan Haberland <sth@linux.ibm.com>,
+	Eric Farman <farman@linux.ibm.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 128/273] s390/dasd: Remove DMA alignment
 Date: Tue, 27 Aug 2024 16:37:32 +0200
-Message-ID: <20240827143851.822421970@linuxfoundation.org>
+Message-ID: <20240827143838.276224577@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,98 +63,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Eric Farman <farman@linux.ibm.com>
 
-commit 3a3be7ff9224f424e485287b54be00d2c6bd9c40 upstream.
+[ Upstream commit 2a07bb64d80152701d507b1498237ed1b8d83866 ]
 
-syzbot/KMSAN reported use of uninit-value in get_dev_xmit() [1]
+This reverts commit bc792884b76f ("s390/dasd: Establish DMA alignment").
 
-We must make sure the IPv4 or Ipv6 header is pulled in skb->head
-before accessing fields in them.
+Quoting the original commit:
+    linux-next commit bf8d08532bc1 ("iomap: add support for dma aligned
+    direct-io") changes the alignment requirement to come from the block
+    device rather than the block size, and the default alignment
+    requirement is 512-byte boundaries. Since DASD I/O has page
+    alignments for IDAW/TIDAW requests, let's override this value to
+    restore the expected behavior.
 
-Use pskb_inet_may_pull() to fix this issue.
+I mentioned TIDAW, but that was wrong. TIDAWs have no distinct alignment
+requirement (per p. 15-70 of POPS SA22-7832-13):
 
-[1]
-BUG: KMSAN: uninit-value in ipv6_pdp_find drivers/net/gtp.c:220 [inline]
- BUG: KMSAN: uninit-value in gtp_build_skb_ip6 drivers/net/gtp.c:1229 [inline]
- BUG: KMSAN: uninit-value in gtp_dev_xmit+0x1424/0x2540 drivers/net/gtp.c:1281
-  ipv6_pdp_find drivers/net/gtp.c:220 [inline]
-  gtp_build_skb_ip6 drivers/net/gtp.c:1229 [inline]
-  gtp_dev_xmit+0x1424/0x2540 drivers/net/gtp.c:1281
-  __netdev_start_xmit include/linux/netdevice.h:4913 [inline]
-  netdev_start_xmit include/linux/netdevice.h:4922 [inline]
-  xmit_one net/core/dev.c:3580 [inline]
-  dev_hard_start_xmit+0x247/0xa20 net/core/dev.c:3596
-  __dev_queue_xmit+0x358c/0x5610 net/core/dev.c:4423
-  dev_queue_xmit include/linux/netdevice.h:3105 [inline]
-  packet_xmit+0x9c/0x6c0 net/packet/af_packet.c:276
-  packet_snd net/packet/af_packet.c:3145 [inline]
-  packet_sendmsg+0x90e3/0xa3a0 net/packet/af_packet.c:3177
-  sock_sendmsg_nosec net/socket.c:730 [inline]
-  __sock_sendmsg+0x30f/0x380 net/socket.c:745
-  __sys_sendto+0x685/0x830 net/socket.c:2204
-  __do_sys_sendto net/socket.c:2216 [inline]
-  __se_sys_sendto net/socket.c:2212 [inline]
-  __x64_sys_sendto+0x125/0x1d0 net/socket.c:2212
-  x64_sys_call+0x3799/0x3c10 arch/x86/include/generated/asm/syscalls_64.h:45
-  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-  do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+   Unless otherwise specified, TIDAWs may designate
+   a block of main storage on any boundary and length
+   up to 4K bytes, provided the specified block does not
+   cross a 4 K-byte boundary.
 
-Uninit was created at:
-  slab_post_alloc_hook mm/slub.c:3994 [inline]
-  slab_alloc_node mm/slub.c:4037 [inline]
-  kmem_cache_alloc_node_noprof+0x6bf/0xb80 mm/slub.c:4080
-  kmalloc_reserve+0x13d/0x4a0 net/core/skbuff.c:583
-  __alloc_skb+0x363/0x7b0 net/core/skbuff.c:674
-  alloc_skb include/linux/skbuff.h:1320 [inline]
-  alloc_skb_with_frags+0xc8/0xbf0 net/core/skbuff.c:6526
-  sock_alloc_send_pskb+0xa81/0xbf0 net/core/sock.c:2815
-  packet_alloc_skb net/packet/af_packet.c:2994 [inline]
-  packet_snd net/packet/af_packet.c:3088 [inline]
-  packet_sendmsg+0x749c/0xa3a0 net/packet/af_packet.c:3177
-  sock_sendmsg_nosec net/socket.c:730 [inline]
-  __sock_sendmsg+0x30f/0x380 net/socket.c:745
-  __sys_sendto+0x685/0x830 net/socket.c:2204
-  __do_sys_sendto net/socket.c:2216 [inline]
-  __se_sys_sendto net/socket.c:2212 [inline]
-  __x64_sys_sendto+0x125/0x1d0 net/socket.c:2212
-  x64_sys_call+0x3799/0x3c10 arch/x86/include/generated/asm/syscalls_64.h:45
-  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-  do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+IDAWs do, but the original commit neglected that while ECKD DASD are
+typically formatted in 4096-byte blocks, they don't HAVE to be. Formatting
+an ECKD volume with smaller blocks is permitted (dasdfmt -b xxx), and the
+problematic commit enforces alignment properties to such a device that
+will result in errors, such as:
 
-CPU: 0 UID: 0 PID: 7115 Comm: syz.1.515 Not tainted 6.11.0-rc1-syzkaller-00043-g94ede2a3e913 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 06/27/2024
+   [test@host ~]# lsdasd -l a367 | grep blksz
+     blksz:				512
+   [test@host ~]# mkfs.xfs -f /dev/disk/by-path/ccw-0.0.a367-part1
+   meta-data=/dev/dasdc1            isize=512    agcount=4, agsize=230075 blks
+            =                       sectsz=512   attr=2, projid32bit=1
+            =                       crc=1        finobt=1, sparse=1, rmapbt=1
+            =                       reflink=1    bigtime=1 inobtcount=1 nrext64=1
+   data     =                       bsize=4096   blocks=920299, imaxpct=25
+            =                       sunit=0      swidth=0 blks
+   naming   =version 2              bsize=4096   ascii-ci=0, ftype=1
+   log      =internal log           bsize=4096   blocks=16384, version=2
+            =                       sectsz=512   sunit=0 blks, lazy-count=1
+   realtime =none                   extsz=4096   blocks=0, rtextents=0
+   error reading existing superblock: Invalid argument
+   mkfs.xfs: pwrite failed: Invalid argument
+   libxfs_bwrite: write failed on (unknown) bno 0x70565c/0x100, err=22
+   mkfs.xfs: Releasing dirty buffer to free list!
+   found dirty buffer (bulk) on free list!
+   mkfs.xfs: pwrite failed: Invalid argument
+   ...snipped...
 
-Fixes: 999cb275c807 ("gtp: add IPv6 support")
-Fixes: 459aa660eb1d ("gtp: add initial driver for datapath of GPRS Tunneling Protocol (GTP-U)")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Harald Welte <laforge@gnumonks.org>
-Reviewed-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Link: https://patch.msgid.link/20240808132455.3413916-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The original commit omitted the FBA discipline for just this reason,
+but the formatted block size of the other disciplines was overlooked.
+The solution to all of this is to revert to the original behavior,
+such that the block size can be respected. There were two commits [1]
+that moved this code in the interim, so a straight git-revert is not
+possible, but the change is straightforward.
+
+But what of the original problem? That was manifested with a direct-io
+QEMU guest, where QEMU itself was changed a month or two later with
+commit 25474d90aa ("block: use the request length for iov alignment")
+such that the blamed kernel commit is unnecessary.
+
+[1] commit 0127a47f58c6 ("dasd: move queue setup to common code")
+    commit fde07a4d74e3 ("dasd: use the atomic queue limits API")
+
+Fixes: bc792884b76f ("s390/dasd: Establish DMA alignment")
+Reviewed-by: Stefan Haberland <sth@linux.ibm.com>
+Signed-off-by: Eric Farman <farman@linux.ibm.com>
+Signed-off-by: Stefan Haberland <sth@linux.ibm.com>
+Link: https://lore.kernel.org/r/20240812125733.126431-2-sth@linux.ibm.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/gtp.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/s390/block/dasd_genhd.c | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/net/gtp.c
-+++ b/drivers/net/gtp.c
-@@ -901,6 +901,9 @@ static netdev_tx_t gtp_dev_xmit(struct s
- 	if (skb_cow_head(skb, dev->needed_headroom))
- 		goto tx_err;
- 
-+	if (!pskb_inet_may_pull(skb))
-+		goto tx_err;
-+
- 	skb_reset_inner_headers(skb);
- 
- 	/* PDP context lookups in gtp_build_skb_*() need rcu read-side lock. */
+diff --git a/drivers/s390/block/dasd_genhd.c b/drivers/s390/block/dasd_genhd.c
+index 4533dd055ca8e..23d6e638f381d 100644
+--- a/drivers/s390/block/dasd_genhd.c
++++ b/drivers/s390/block/dasd_genhd.c
+@@ -41,7 +41,6 @@ int dasd_gendisk_alloc(struct dasd_block *block)
+ 		 */
+ 		.max_segment_size = PAGE_SIZE,
+ 		.seg_boundary_mask = PAGE_SIZE - 1,
+-		.dma_alignment = PAGE_SIZE - 1,
+ 		.max_segments = USHRT_MAX,
+ 	};
+ 	struct gendisk *gdp;
+-- 
+2.43.0
+
 
 
 
