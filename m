@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-70876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70651-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5741F96107A
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:09:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A80B960F5C
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:58:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0BDCD1F21CA0
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:09:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9F350B23BB5
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:58:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99AA51C4EEF;
-	Tue, 27 Aug 2024 15:09:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03DCF73466;
+	Tue, 27 Aug 2024 14:56:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yAEWSZud"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I3/iZYWb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5760F1E520;
-	Tue, 27 Aug 2024 15:09:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACAD91BC9E3;
+	Tue, 27 Aug 2024 14:56:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771355; cv=none; b=N/hnT2BBgcalrpGz7CRbUYDsqamcoDvV3hW1k8cwfMlCXC7KZjGb7yawR/JtjMx9XRxfF77zxS5YyENtB7SoH/uJGhY5NlAkuF04EB+1S68aJoh+vvJDtNHl40rYH9IHBKCliz4/Ak8YmkhTOvLvq5WMyiCAjLBkREFE0JI146I=
+	t=1724770617; cv=none; b=eLvpVPs1Lxvu3U92R+oLM2eWNXNGhr3/AZDYJ5zTXEpjLJbq8ad0YgNgP1zhXR7DTkIuhVYo5iB6Z9JCuXU73LDWwvpTv3Ev6oaGNcUNCEs1aeLhJzeraKW4wxf6DtOLtm5wLn9XoepZVZCy7VbblVSMBf1lNSK4pahCjqLMMq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771355; c=relaxed/simple;
-	bh=Igobry/o23257iE/8om2OqOLwOwjlt/y2F86BOU7u14=;
+	s=arc-20240116; t=1724770617; c=relaxed/simple;
+	bh=PfElBotpF8w1gOP4fqsF8qjWPcYYTwvelCBRGN/hVw4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c+1U9NVfELTrhB8EINDfyNdK+RBiUiTc8eAVC3mOUizH4Sqn9ErdDgPDRGvkpg0IugOaWWnPe+rZs9H8AkKnj+Wr+QL1KXgzGcqTCaEJMZ2nvFWg8IQg9DbZvk5SmcfDue/IO4PFsX9cwFDUYG5bPb8lRl2BLFMoLJoQFeVVFl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yAEWSZud; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC277C4AF1A;
-	Tue, 27 Aug 2024 15:09:14 +0000 (UTC)
+	 MIME-Version; b=BFsRGczvsSoRahoJ1VoXfoFxqP/7n1dHPT7w0/TL4LZ06DgKCkb+7rIMKX7ba2p7JvyOid2zcs8RF+JepkqZPLBq+ldl2KkN9ovf4y5LCMOuSb6hyAmUmni/qj6B6Aa37uo32M47mUh0EtRxzJO7F+YCeuu5KhxaB6PHVak2mzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I3/iZYWb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C41E4C4FE02;
+	Tue, 27 Aug 2024 14:56:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771355;
-	bh=Igobry/o23257iE/8om2OqOLwOwjlt/y2F86BOU7u14=;
+	s=korg; t=1724770617;
+	bh=PfElBotpF8w1gOP4fqsF8qjWPcYYTwvelCBRGN/hVw4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yAEWSZudE1Jsp4QnQjrW1VyVF7gHkyJWdIN9/yjpgXgN+F90HxczADaXxXXgY87Ly
-	 Oii+apd+/2L9vNd1t7fl0HRQl3PmLagOFRWjK82xRHkJSYQoO5hRHE+ZF/Of5/QY1d
-	 KHK63LkhUxXbf9HYUp1FKZ4/JxIRukB5XY2jnKfY=
+	b=I3/iZYWbneV5Hi9CDi3A66QAx/bQDJhjKU40z6DBDAYxs8tFz3QTcp8cQZ3GXcARn
+	 JaXC1xurgzcVCrtZjfxDmQF2oACVmPzUcyW0jxjS7DjWbzrpejQYPpbNF4Mw1bWBu1
+	 gRV4ObQPExFNmBYqI7bfq3ivyLoJxhzRlb/WyFUc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+8ea26396ff85d23a8929@syzkaller.appspotmail.com,
-	Florian Westphal <fw@strlen.de>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jason Xing <kerneljasonxing@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Thomas Bogendoerfer <tbogendoerfer@suse.de>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 162/273] tcp: prevent concurrent execution of tcp_sk_exit_batch
+Subject: [PATCH 6.6 255/341] ip6_tunnel: Fix broken GRO
 Date: Tue, 27 Aug 2024 16:38:06 +0200
-Message-ID: <20240827143839.571523842@linuxfoundation.org>
+Message-ID: <20240827143853.111972862@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,111 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Thomas Bogendoerfer <tbogendoerfer@suse.de>
 
-[ Upstream commit 565d121b69980637f040eb4d84289869cdaabedf ]
+[ Upstream commit 4b3e33fcc38f7750604b065c55a43e94c5bc3145 ]
 
-Its possible that two threads call tcp_sk_exit_batch() concurrently,
-once from the cleanup_net workqueue, once from a task that failed to clone
-a new netns.  In the latter case, error unwinding calls the exit handlers
-in reverse order for the 'failed' netns.
+GRO code checks for matching layer 2 headers to see, if packet belongs
+to the same flow and because ip6 tunnel set dev->hard_header_len
+this check fails in cases, where it shouldn't. To fix this don't
+set hard_header_len, but use needed_headroom like ipv4/ip_tunnel.c
+does.
 
-tcp_sk_exit_batch() calls tcp_twsk_purge().
-Problem is that since commit b099ce2602d8 ("net: Batch inet_twsk_purge"),
-this function picks up twsk in any dying netns, not just the one passed
-in via exit_batch list.
-
-This means that the error unwind of setup_net() can "steal" and destroy
-timewait sockets belonging to the exiting netns.
-
-This allows the netns exit worker to proceed to call
-
-WARN_ON_ONCE(!refcount_dec_and_test(&net->ipv4.tcp_death_row.tw_refcount));
-
-without the expected 1 -> 0 transition, which then splats.
-
-At same time, error unwind path that is also running inet_twsk_purge()
-will splat as well:
-
-WARNING: .. at lib/refcount.c:31 refcount_warn_saturate+0x1ed/0x210
-...
- refcount_dec include/linux/refcount.h:351 [inline]
- inet_twsk_kill+0x758/0x9c0 net/ipv4/inet_timewait_sock.c:70
- inet_twsk_deschedule_put net/ipv4/inet_timewait_sock.c:221
- inet_twsk_purge+0x725/0x890 net/ipv4/inet_timewait_sock.c:304
- tcp_sk_exit_batch+0x1c/0x170 net/ipv4/tcp_ipv4.c:3522
- ops_exit_list+0x128/0x180 net/core/net_namespace.c:178
- setup_net+0x714/0xb40 net/core/net_namespace.c:375
- copy_net_ns+0x2f0/0x670 net/core/net_namespace.c:508
- create_new_namespaces+0x3ea/0xb10 kernel/nsproxy.c:110
-
-... because refcount_dec() of tw_refcount unexpectedly dropped to 0.
-
-This doesn't seem like an actual bug (no tw sockets got lost and I don't
-see a use-after-free) but as erroneous trigger of debug check.
-
-Add a mutex to force strict ordering: the task that calls tcp_twsk_purge()
-blocks other task from doing final _dec_and_test before mutex-owner has
-removed all tw sockets of dying netns.
-
-Fixes: e9bd0cca09d1 ("tcp: Don't allocate tcp_death_row outside of struct netns_ipv4.")
-Reported-by: syzbot+8ea26396ff85d23a8929@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/0000000000003a5292061f5e4e19@google.com/
-Link: https://lore.kernel.org/netdev/20240812140104.GA21559@breakpoint.cc/
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Jason Xing <kerneljasonxing@gmail.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20240812222857.29837-1-fw@strlen.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Thomas Bogendoerfer <tbogendoerfer@suse.de>
+Link: https://patch.msgid.link/20240815151419.109864-1-tbogendoerfer@suse.de
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_ipv4.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ net/ipv6/ip6_tunnel.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
-index a541659b6562b..8f8f93716ff85 100644
---- a/net/ipv4/tcp_ipv4.c
-+++ b/net/ipv4/tcp_ipv4.c
-@@ -95,6 +95,8 @@ EXPORT_SYMBOL(tcp_hashinfo);
+diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
+index 70478027a7af7..97905d4174eca 100644
+--- a/net/ipv6/ip6_tunnel.c
++++ b/net/ipv6/ip6_tunnel.c
+@@ -1508,7 +1508,8 @@ static void ip6_tnl_link_config(struct ip6_tnl *t)
+ 			tdev = __dev_get_by_index(t->net, p->link);
  
- static DEFINE_PER_CPU(struct sock *, ipv4_tcp_sk);
+ 		if (tdev) {
+-			dev->hard_header_len = tdev->hard_header_len + t_hlen;
++			dev->needed_headroom = tdev->hard_header_len +
++				tdev->needed_headroom + t_hlen;
+ 			mtu = min_t(unsigned int, tdev->mtu, IP6_MAX_MTU);
  
-+static DEFINE_MUTEX(tcp_exit_batch_mutex);
-+
- static u32 tcp_v4_init_seq(const struct sk_buff *skb)
+ 			mtu = mtu - t_hlen;
+@@ -1732,7 +1733,9 @@ ip6_tnl_siocdevprivate(struct net_device *dev, struct ifreq *ifr,
+ int ip6_tnl_change_mtu(struct net_device *dev, int new_mtu)
  {
- 	return secure_tcp_seq(ip_hdr(skb)->daddr,
-@@ -3509,6 +3511,16 @@ static void __net_exit tcp_sk_exit_batch(struct list_head *net_exit_list)
- {
- 	struct net *net;
+ 	struct ip6_tnl *tnl = netdev_priv(dev);
++	int t_hlen;
  
-+	/* make sure concurrent calls to tcp_sk_exit_batch from net_cleanup_work
-+	 * and failed setup_net error unwinding path are serialized.
-+	 *
-+	 * tcp_twsk_purge() handles twsk in any dead netns, not just those in
-+	 * net_exit_list, the thread that dismantles a particular twsk must
-+	 * do so without other thread progressing to refcount_dec_and_test() of
-+	 * tcp_death_row.tw_refcount.
-+	 */
-+	mutex_lock(&tcp_exit_batch_mutex);
-+
- 	tcp_twsk_purge(net_exit_list);
- 
- 	list_for_each_entry(net, net_exit_list, exit_list) {
-@@ -3516,6 +3528,8 @@ static void __net_exit tcp_sk_exit_batch(struct list_head *net_exit_list)
- 		WARN_ON_ONCE(!refcount_dec_and_test(&net->ipv4.tcp_death_row.tw_refcount));
- 		tcp_fastopen_ctx_destroy(net);
++	t_hlen = tnl->hlen + sizeof(struct ipv6hdr);
+ 	if (tnl->parms.proto == IPPROTO_IPV6) {
+ 		if (new_mtu < IPV6_MIN_MTU)
+ 			return -EINVAL;
+@@ -1741,10 +1744,10 @@ int ip6_tnl_change_mtu(struct net_device *dev, int new_mtu)
+ 			return -EINVAL;
  	}
-+
-+	mutex_unlock(&tcp_exit_batch_mutex);
- }
+ 	if (tnl->parms.proto == IPPROTO_IPV6 || tnl->parms.proto == 0) {
+-		if (new_mtu > IP6_MAX_MTU - dev->hard_header_len)
++		if (new_mtu > IP6_MAX_MTU - dev->hard_header_len - t_hlen)
+ 			return -EINVAL;
+ 	} else {
+-		if (new_mtu > IP_MAX_MTU - dev->hard_header_len)
++		if (new_mtu > IP_MAX_MTU - dev->hard_header_len - t_hlen)
+ 			return -EINVAL;
+ 	}
+ 	dev->mtu = new_mtu;
+@@ -1890,12 +1893,11 @@ ip6_tnl_dev_init_gen(struct net_device *dev)
+ 	t_hlen = t->hlen + sizeof(struct ipv6hdr);
  
- static struct pernet_operations __net_initdata tcp_sk_ops = {
+ 	dev->type = ARPHRD_TUNNEL6;
+-	dev->hard_header_len = LL_MAX_HEADER + t_hlen;
+ 	dev->mtu = ETH_DATA_LEN - t_hlen;
+ 	if (!(t->parms.flags & IP6_TNL_F_IGN_ENCAP_LIMIT))
+ 		dev->mtu -= 8;
+ 	dev->min_mtu = ETH_MIN_MTU;
+-	dev->max_mtu = IP6_MAX_MTU - dev->hard_header_len;
++	dev->max_mtu = IP6_MAX_MTU - dev->hard_header_len - t_hlen;
+ 
+ 	netdev_hold(dev, &t->dev_tracker, GFP_KERNEL);
+ 	netdev_lockdep_set_classes(dev);
 -- 
 2.43.0
 
