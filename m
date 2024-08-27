@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-70578-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71161-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46BC2960EDE
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:53:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E79F9611F1
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:25:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 792241C233DC
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:53:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B8C21F23F0F
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:25:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 041A41C57B3;
-	Tue, 27 Aug 2024 14:52:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 814C01C8FD3;
+	Tue, 27 Aug 2024 15:25:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wwd1/ZEv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="17W1w380"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B71FB1C57B1;
-	Tue, 27 Aug 2024 14:52:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D54D1C68BE;
+	Tue, 27 Aug 2024 15:25:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770372; cv=none; b=uxnjQ9INfYeK9jIRPcPtKWgeItGy50sPHdwvF+JvBfIpzpVF20Zl57wjr3o6P1HJ7k3+nKhXFq5oGYzyN4bFJK3luITzKSRQHfnrERzine5cYFXlkN2KXH2AirEVlBFLIsnwWV0ydet51hXqhszPUSQSNGqWsnvj6NKZDTY5FHc=
+	t=1724772301; cv=none; b=EkYETFjIFgf+S6Pkyng+WnNcuLlWnSZXoNBAu8cLff+5MIUNDZfvqFS80zjCv7xMDlPCCgK/2pGDOJLwsh+xtZohB+7Nxa4u0OC8wf7FJqSYwxtW8Ik8X9kcQKG1VftrBTXvPs3reJ920eN/csx0faCQjP9TsnGV0pxq9X3Pccc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770372; c=relaxed/simple;
-	bh=7Ys5frjz+GWz1YoPu4AS+8wAUUxAWIPY39k7ZasB3II=;
+	s=arc-20240116; t=1724772301; c=relaxed/simple;
+	bh=kEBE5B24GjHpQrRaPn5HoluqGWIKJSh0Xl8IRPEN5mE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mnwOaQQW20z/cf6fXo8BuAjiBrhuPT2/Pml9H013KWiTe/Z+nWr3iYuPwOhdL0bFNC2Jf0voTv1aI0l2ulVY79t6d4eb+rNNTcDSDt8gd443UMwzCzODY/C40Q0wE7apzjy5vRFVGIvPGUPuRNNrZueC48I3AFfD7DCmyWzONd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wwd1/ZEv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EFA1C61042;
-	Tue, 27 Aug 2024 14:52:51 +0000 (UTC)
+	 MIME-Version; b=ftq0u8/pbQ2x4u36yZ1y/y4yyUz/SywaVrW3U+GOOXZ1mdfH+OaLYT1NVQQfYSoiGM7bCaxbxzz/zeExENFlMTOoDbGiOzWOp+MW37ruaotKqbD+F+zhGTTWTaPjdBBGYs/C9Z5R31EY3pwwLtCDYvlESGrOr4MUdwygYpFpAN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=17W1w380; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F689C61071;
+	Tue, 27 Aug 2024 15:25:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770372;
-	bh=7Ys5frjz+GWz1YoPu4AS+8wAUUxAWIPY39k7ZasB3II=;
+	s=korg; t=1724772301;
+	bh=kEBE5B24GjHpQrRaPn5HoluqGWIKJSh0Xl8IRPEN5mE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wwd1/ZEvOF6i+68//OtVeG4l6cy/TAfWn1tnJCCRQYK9RDFQ3/gZdeF00wYtO9pvs
-	 XXlfXEkO0eRPUxsj3E0gelWlAmoP8Kqu+PYAGXs3gucqRGWzOQAViY4gRhD7IiRdBi
-	 Hv2dTVjqkdh3BoA5ToXwgdfNU0HGoXsBwHQeMrs8=
+	b=17W1w380C/JiRj0nMSskdLLxIdBC9+iY7WHo816RpJshGRfOWApGksgDazCD5I9pL
+	 O6VzHCXckQ4MeHevfWBxkm29wff3D5gi3mdAEDJa4BtDbJ0xTI4ydzk50Vv+8i54O2
+	 GdfxiuAb8Zb+z6pyCO9WJiAFfzaYyzC2vvbFV7Dw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guanrui Huang <guanrui.huang@linux.alibaba.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Marc Zyngier <maz@kernel.org>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Song Liu <song@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 209/341] irqchip/gic-v3-its: Remove BUG_ON in its_vpe_irq_domain_alloc
+Subject: [PATCH 6.1 132/321] md/raid5-cache: use READ_ONCE/WRITE_ONCE for conf->log
 Date: Tue, 27 Aug 2024 16:37:20 +0200
-Message-ID: <20240827143851.365927061@linuxfoundation.org>
+Message-ID: <20240827143843.268804303@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +62,228 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guanrui Huang <guanrui.huang@linux.alibaba.com>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit 382d2ffe86efb1e2fa803d2cf17e5bfc34e574f3 ]
+[ Upstream commit 06a4d0d8c642b5ea654e832b74dca12965356da0 ]
 
-This BUG_ON() is useless, because the same effect will be obtained
-by letting the code run its course and vm being dereferenced,
-triggering an exception.
+'conf->log' is set with 'reconfig_mutex' grabbed, however, readers are
+not procted, hence protect it with READ_ONCE/WRITE_ONCE to prevent
+reading abnormal values.
 
-So just remove this check.
-
-Signed-off-by: Guanrui Huang <guanrui.huang@linux.alibaba.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Zenghui Yu <yuzenghui@huawei.com>
-Acked-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20240418061053.96803-3-guanrui.huang@linux.alibaba.com
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20231010151958.145896-3-yukuai1@huaweicloud.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-gic-v3-its.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/md/raid5-cache.c | 47 +++++++++++++++++++++-------------------
+ 1 file changed, 25 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
-index c7d6e6987166f..350abbb36e04b 100644
---- a/drivers/irqchip/irq-gic-v3-its.c
-+++ b/drivers/irqchip/irq-gic-v3-its.c
-@@ -4501,8 +4501,6 @@ static int its_vpe_irq_domain_alloc(struct irq_domain *domain, unsigned int virq
- 	struct page *vprop_page;
- 	int base, nr_ids, i, err = 0;
+diff --git a/drivers/md/raid5-cache.c b/drivers/md/raid5-cache.c
+index eb66d0bfe39d2..4b9585875a669 100644
+--- a/drivers/md/raid5-cache.c
++++ b/drivers/md/raid5-cache.c
+@@ -327,8 +327,9 @@ void r5l_wake_reclaim(struct r5l_log *log, sector_t space);
+ void r5c_check_stripe_cache_usage(struct r5conf *conf)
+ {
+ 	int total_cached;
++	struct r5l_log *log = READ_ONCE(conf->log);
  
--	BUG_ON(!vm);
--
- 	bitmap = its_lpi_alloc(roundup_pow_of_two(nr_irqs), &base, &nr_ids);
- 	if (!bitmap)
- 		return -ENOMEM;
+-	if (!r5c_is_writeback(conf->log))
++	if (!r5c_is_writeback(log))
+ 		return;
+ 
+ 	total_cached = atomic_read(&conf->r5c_cached_partial_stripes) +
+@@ -344,7 +345,7 @@ void r5c_check_stripe_cache_usage(struct r5conf *conf)
+ 	 */
+ 	if (total_cached > conf->min_nr_stripes * 1 / 2 ||
+ 	    atomic_read(&conf->empty_inactive_list_nr) > 0)
+-		r5l_wake_reclaim(conf->log, 0);
++		r5l_wake_reclaim(log, 0);
+ }
+ 
+ /*
+@@ -353,7 +354,9 @@ void r5c_check_stripe_cache_usage(struct r5conf *conf)
+  */
+ void r5c_check_cached_full_stripe(struct r5conf *conf)
+ {
+-	if (!r5c_is_writeback(conf->log))
++	struct r5l_log *log = READ_ONCE(conf->log);
++
++	if (!r5c_is_writeback(log))
+ 		return;
+ 
+ 	/*
+@@ -363,7 +366,7 @@ void r5c_check_cached_full_stripe(struct r5conf *conf)
+ 	if (atomic_read(&conf->r5c_cached_full_stripes) >=
+ 	    min(R5C_FULL_STRIPE_FLUSH_BATCH(conf),
+ 		conf->chunk_sectors >> RAID5_STRIPE_SHIFT(conf)))
+-		r5l_wake_reclaim(conf->log, 0);
++		r5l_wake_reclaim(log, 0);
+ }
+ 
+ /*
+@@ -396,7 +399,7 @@ void r5c_check_cached_full_stripe(struct r5conf *conf)
+  */
+ static sector_t r5c_log_required_to_flush_cache(struct r5conf *conf)
+ {
+-	struct r5l_log *log = conf->log;
++	struct r5l_log *log = READ_ONCE(conf->log);
+ 
+ 	if (!r5c_is_writeback(log))
+ 		return 0;
+@@ -449,7 +452,7 @@ static inline void r5c_update_log_state(struct r5l_log *log)
+ void r5c_make_stripe_write_out(struct stripe_head *sh)
+ {
+ 	struct r5conf *conf = sh->raid_conf;
+-	struct r5l_log *log = conf->log;
++	struct r5l_log *log = READ_ONCE(conf->log);
+ 
+ 	BUG_ON(!r5c_is_writeback(log));
+ 
+@@ -491,7 +494,7 @@ static void r5c_handle_parity_cached(struct stripe_head *sh)
+  */
+ static void r5c_finish_cache_stripe(struct stripe_head *sh)
+ {
+-	struct r5l_log *log = sh->raid_conf->log;
++	struct r5l_log *log = READ_ONCE(sh->raid_conf->log);
+ 
+ 	if (log->r5c_journal_mode == R5C_JOURNAL_MODE_WRITE_THROUGH) {
+ 		BUG_ON(test_bit(STRIPE_R5C_CACHING, &sh->state));
+@@ -692,7 +695,7 @@ static void r5c_disable_writeback_async(struct work_struct *work)
+ 
+ 	/* wait superblock change before suspend */
+ 	wait_event(mddev->sb_wait,
+-		   conf->log == NULL ||
++		   !READ_ONCE(conf->log) ||
+ 		   (!test_bit(MD_SB_CHANGE_PENDING, &mddev->sb_flags) &&
+ 		    (locked = mddev_trylock(mddev))));
+ 	if (locked) {
+@@ -1151,7 +1154,7 @@ static void r5l_run_no_space_stripes(struct r5l_log *log)
+ static sector_t r5c_calculate_new_cp(struct r5conf *conf)
+ {
+ 	struct stripe_head *sh;
+-	struct r5l_log *log = conf->log;
++	struct r5l_log *log = READ_ONCE(conf->log);
+ 	sector_t new_cp;
+ 	unsigned long flags;
+ 
+@@ -1159,12 +1162,12 @@ static sector_t r5c_calculate_new_cp(struct r5conf *conf)
+ 		return log->next_checkpoint;
+ 
+ 	spin_lock_irqsave(&log->stripe_in_journal_lock, flags);
+-	if (list_empty(&conf->log->stripe_in_journal_list)) {
++	if (list_empty(&log->stripe_in_journal_list)) {
+ 		/* all stripes flushed */
+ 		spin_unlock_irqrestore(&log->stripe_in_journal_lock, flags);
+ 		return log->next_checkpoint;
+ 	}
+-	sh = list_first_entry(&conf->log->stripe_in_journal_list,
++	sh = list_first_entry(&log->stripe_in_journal_list,
+ 			      struct stripe_head, r5c);
+ 	new_cp = sh->log_start;
+ 	spin_unlock_irqrestore(&log->stripe_in_journal_lock, flags);
+@@ -1399,7 +1402,7 @@ void r5c_flush_cache(struct r5conf *conf, int num)
+ 	struct stripe_head *sh, *next;
+ 
+ 	lockdep_assert_held(&conf->device_lock);
+-	if (!conf->log)
++	if (!READ_ONCE(conf->log))
+ 		return;
+ 
+ 	count = 0;
+@@ -1420,7 +1423,7 @@ void r5c_flush_cache(struct r5conf *conf, int num)
+ 
+ static void r5c_do_reclaim(struct r5conf *conf)
+ {
+-	struct r5l_log *log = conf->log;
++	struct r5l_log *log = READ_ONCE(conf->log);
+ 	struct stripe_head *sh;
+ 	int count = 0;
+ 	unsigned long flags;
+@@ -1549,7 +1552,7 @@ static void r5l_reclaim_thread(struct md_thread *thread)
+ {
+ 	struct mddev *mddev = thread->mddev;
+ 	struct r5conf *conf = mddev->private;
+-	struct r5l_log *log = conf->log;
++	struct r5l_log *log = READ_ONCE(conf->log);
+ 
+ 	if (!log)
+ 		return;
+@@ -1589,7 +1592,7 @@ void r5l_quiesce(struct r5l_log *log, int quiesce)
+ 
+ bool r5l_log_disk_error(struct r5conf *conf)
+ {
+-	struct r5l_log *log = conf->log;
++	struct r5l_log *log = READ_ONCE(conf->log);
+ 
+ 	/* don't allow write if journal disk is missing */
+ 	if (!log)
+@@ -2633,7 +2636,7 @@ int r5c_try_caching_write(struct r5conf *conf,
+ 			  struct stripe_head_state *s,
+ 			  int disks)
+ {
+-	struct r5l_log *log = conf->log;
++	struct r5l_log *log = READ_ONCE(conf->log);
+ 	int i;
+ 	struct r5dev *dev;
+ 	int to_cache = 0;
+@@ -2800,7 +2803,7 @@ void r5c_finish_stripe_write_out(struct r5conf *conf,
+ 				 struct stripe_head *sh,
+ 				 struct stripe_head_state *s)
+ {
+-	struct r5l_log *log = conf->log;
++	struct r5l_log *log = READ_ONCE(conf->log);
+ 	int i;
+ 	int do_wakeup = 0;
+ 	sector_t tree_index;
+@@ -2939,7 +2942,7 @@ int r5c_cache_data(struct r5l_log *log, struct stripe_head *sh)
+ /* check whether this big stripe is in write back cache. */
+ bool r5c_big_stripe_cached(struct r5conf *conf, sector_t sect)
+ {
+-	struct r5l_log *log = conf->log;
++	struct r5l_log *log = READ_ONCE(conf->log);
+ 	sector_t tree_index;
+ 	void *slot;
+ 
+@@ -3047,14 +3050,14 @@ int r5l_start(struct r5l_log *log)
+ void r5c_update_on_rdev_error(struct mddev *mddev, struct md_rdev *rdev)
+ {
+ 	struct r5conf *conf = mddev->private;
+-	struct r5l_log *log = conf->log;
++	struct r5l_log *log = READ_ONCE(conf->log);
+ 
+ 	if (!log)
+ 		return;
+ 
+ 	if ((raid5_calc_degraded(conf) > 0 ||
+ 	     test_bit(Journal, &rdev->flags)) &&
+-	    conf->log->r5c_journal_mode == R5C_JOURNAL_MODE_WRITE_BACK)
++	    log->r5c_journal_mode == R5C_JOURNAL_MODE_WRITE_BACK)
+ 		schedule_work(&log->disable_writeback_work);
+ }
+ 
+@@ -3143,7 +3146,7 @@ int r5l_init_log(struct r5conf *conf, struct md_rdev *rdev)
+ 	spin_lock_init(&log->stripe_in_journal_lock);
+ 	atomic_set(&log->stripe_in_journal_count, 0);
+ 
+-	conf->log = log;
++	WRITE_ONCE(conf->log, log);
+ 
+ 	set_bit(MD_HAS_JOURNAL, &conf->mddev->flags);
+ 	return 0;
+@@ -3171,7 +3174,7 @@ void r5l_exit_log(struct r5conf *conf)
+ 	 * 'reconfig_mutex' is held by caller, set 'confg->log' to NULL to
+ 	 * ensure disable_writeback_work wakes up and exits.
+ 	 */
+-	conf->log = NULL;
++	WRITE_ONCE(conf->log, NULL);
+ 	wake_up(&conf->mddev->sb_wait);
+ 	flush_work(&log->disable_writeback_work);
+ 
 -- 
 2.43.0
 
