@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-71190-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70617-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E7F3961236
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:29:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BB58960F23
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:56:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DCE241F2185A
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:29:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF10B1C218B6
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:56:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69D111CCB4A;
-	Tue, 27 Aug 2024 15:26:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A56CD1C93AB;
+	Tue, 27 Aug 2024 14:55:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O65WlAIv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ChXjHAna"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27EB11CC14E;
-	Tue, 27 Aug 2024 15:26:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 614E51C93A3;
+	Tue, 27 Aug 2024 14:55:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772396; cv=none; b=n2Wb8DsZczle27q+iHkB05Ksr4ZgqkDMjsZZgMpjeccE0OpLRNVIkjNcaC4kiU5PdQtj2WGE7o2I7kKCNI5aHxlqntMnAKWPLKOtloufhVrSydDKQSt1oqO+kVj46Qqz9Jm8dVCD215q8yulxS6Gf5La0T/8OP9j80RSPz1GM4Q=
+	t=1724770504; cv=none; b=A+FnjxbpW4WP8gCWMpmKx7jPH2yhuSHcFEdoPzZaMsjLVzh2XPlLKq0x2up9RMFli47SNA2yaGeGDjIhgQVWjPFdPshyfcs1E656eSI9Uq1aqlNw8e9uT1i//nQ0dnN1XydvtAdogliZ0yHt3kjVU8G/mPasZ3anIOYh5HMMaOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772396; c=relaxed/simple;
-	bh=Z/NLcNm78RZGY+0j0tzuWH6PzhNzBjCXBcERUqge3Hc=;
+	s=arc-20240116; t=1724770504; c=relaxed/simple;
+	bh=l2I0UAtcj2cOZLV2W+oHp5RgElvH6QnPAxkTy6q5N6k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lhy7r92fHkLuA/3NGyA6A0cmJt77m6qqBc3mEpAxVBO2/tKNygviaLB3YK0QPyOJskgyIKQ0bMkCgOfaY/Ci8VO1uDbMbniYU52lbJdirsrr1nBFf17zNo+i6frDBr+YWMXPWxbtm71c0VCJWJ1WbwWBE8eWyHVJvObo3I0OUtY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O65WlAIv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0AB2C6107C;
-	Tue, 27 Aug 2024 15:26:35 +0000 (UTC)
+	 MIME-Version; b=hkM9kWaPPcv8F3xuggIpE9LtV+KdFEcnXbrc9eL0zdS5OMGXQRtjLgYCyr4WqClDnfOe8ZFnRn083Qp51C7tUE2OmJy4vLk/DyZ+HlKYGsiBfIAdNw21MeIRJCKf3GFaj4p6Dq9shIli46uJSoqXBhedHf9FEZQKKGtgURLyzVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ChXjHAna; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C765FC4E699;
+	Tue, 27 Aug 2024 14:55:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772396;
-	bh=Z/NLcNm78RZGY+0j0tzuWH6PzhNzBjCXBcERUqge3Hc=;
+	s=korg; t=1724770504;
+	bh=l2I0UAtcj2cOZLV2W+oHp5RgElvH6QnPAxkTy6q5N6k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O65WlAIv2lfQkjRvEqYA2TQls0nJB2UzObCcZEz0UMgswcy4lPGjlyppGjRfs5/xS
-	 5IcYJE5Rv1SdZauu9gcRq6kgZZPdsI4U/DsMPSBqckjC4DnkRh8LNTocAge9YICMBX
-	 9IUoWTXpMC6u2/wHZK08M6538GKE3MZFvD2LD0dw=
+	b=ChXjHAnaX+dqeHolsKitJAwefr8K+8lNdlal1o6UXV5vEUXIUUPccSMCqrBQn2WAV
+	 Rc7RbKgqgUkamIVbu088I7O6I7GfcsoXBcQuAnugFfpO7IDRVJrKAQr8mlutELpjtK
+	 JKZZ82/hfFr52YeFUtzRGkxvJk5WGT7QTI5NEfZs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	Vivek Goyal <vgoyal@redhat.com>,
-	Miklos Szeredi <mszeredi@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 171/321] virtiofs: forbid newlines in tags
+Subject: [PATCH 6.6 248/341] tcp/dccp: bypass empty buckets in inet_twsk_purge()
 Date: Tue, 27 Aug 2024 16:37:59 +0200
-Message-ID: <20240827143844.740497703@linuxfoundation.org>
+Message-ID: <20240827143852.842590370@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Hajnoczi <stefanha@redhat.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 40488cc16f7ea0d193a4e248f0d809c25cc377db ]
+[ Upstream commit 50e2907ef8bb52cf80ecde9eec5c4dac07177146 ]
 
-Newlines in virtiofs tags are awkward for users and potential vectors
-for string injection attacks.
+TCP ehash table is often sparsely populated.
 
-Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-Reviewed-by: Vivek Goyal <vgoyal@redhat.com>
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+inet_twsk_purge() spends too much time calling cond_resched().
+
+This patch can reduce time spent in inet_twsk_purge() by 20x.
+
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://lore.kernel.org/r/20240327191206.508114-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 565d121b6998 ("tcp: prevent concurrent execution of tcp_sk_exit_batch")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fuse/virtio_fs.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ net/ipv4/inet_timewait_sock.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/fs/fuse/virtio_fs.c b/fs/fuse/virtio_fs.c
-index 4d8d4f16c727b..92d41269f1d35 100644
---- a/fs/fuse/virtio_fs.c
-+++ b/fs/fuse/virtio_fs.c
-@@ -323,6 +323,16 @@ static int virtio_fs_read_tag(struct virtio_device *vdev, struct virtio_fs *fs)
- 		return -ENOMEM;
- 	memcpy(fs->tag, tag_buf, len);
- 	fs->tag[len] = '\0';
-+
-+	/* While the VIRTIO specification allows any character, newlines are
-+	 * awkward on mount(8) command-lines and cause problems in the sysfs
-+	 * "tag" attr and uevent TAG= properties. Forbid them.
-+	 */
-+	if (strchr(fs->tag, '\n')) {
-+		dev_dbg(&vdev->dev, "refusing virtiofs tag with newline character\n");
-+		return -EINVAL;
-+	}
-+
- 	return 0;
- }
+diff --git a/net/ipv4/inet_timewait_sock.c b/net/ipv4/inet_timewait_sock.c
+index 757ae3a4e2f1a..55f60d1b46f2d 100644
+--- a/net/ipv4/inet_timewait_sock.c
++++ b/net/ipv4/inet_timewait_sock.c
+@@ -281,12 +281,17 @@ EXPORT_SYMBOL_GPL(__inet_twsk_schedule);
+ /* Remove all non full sockets (TIME_WAIT and NEW_SYN_RECV) for dead netns */
+ void inet_twsk_purge(struct inet_hashinfo *hashinfo, int family)
+ {
++	struct inet_ehash_bucket *head = &hashinfo->ehash[0];
++	unsigned int ehash_mask = hashinfo->ehash_mask;
+ 	struct hlist_nulls_node *node;
+ 	unsigned int slot;
+ 	struct sock *sk;
  
+-	for (slot = 0; slot <= hashinfo->ehash_mask; slot++) {
+-		struct inet_ehash_bucket *head = &hashinfo->ehash[slot];
++	for (slot = 0; slot <= ehash_mask; slot++, head++) {
++
++		if (hlist_nulls_empty(&head->chain))
++			continue;
++
+ restart_rcu:
+ 		cond_resched();
+ 		rcu_read_lock();
 -- 
 2.43.0
 
