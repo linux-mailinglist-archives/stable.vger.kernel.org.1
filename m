@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-70586-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70836-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C645F960EE6
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:53:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FBDA961042
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:07:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81CAF286761
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:53:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 425C81C20C76
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:07:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0D681A01C8;
-	Tue, 27 Aug 2024 14:53:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73EFF1C3F19;
+	Tue, 27 Aug 2024 15:07:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xj6vAKRF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RJfgKOT/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D7561C5783;
-	Tue, 27 Aug 2024 14:53:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 335121E520;
+	Tue, 27 Aug 2024 15:07:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770399; cv=none; b=kF3Axc7ND41xd5BEL+FDtzDTGYTxbe8EhIwGHs5BvhpukBLnItbGNIbPUh87MW3AGsJ04BX0JaSYkeILme/2Wy7mK+zw0wE+fsvCuj5Ebrb+4hRq3IFT1cLvtoz6LKASarfDvW/hdQL1FzGqoAS2kRnYEfoEVXbDcvIX37NFSvo=
+	t=1724771221; cv=none; b=IfQFazSzFWmxGJvMCpQsYir3phIkaQnU7B1ppjMSERHyooswD/FND3hTIWTSTy+rKk8tffeOjIemyO2tezkmqSv0VmaIoNNupYPRqagdgHderSz7Hv+8g3eBBDMOSXIcpxqof9fza8QSCeGVq7bp34kXimV0NMb/AOGKCdEhbXk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770399; c=relaxed/simple;
-	bh=eIFyzoRTECRsNPE+ln2r6FM4f1nA/rwhduzA8Tu0cEM=;
+	s=arc-20240116; t=1724771221; c=relaxed/simple;
+	bh=hXYM0a/c3MYf+uUIqNihLHrrL4+j7eayJw01hW6Yz98=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SmA2pEH751wFVHFrkZf0Yp1ySW8qsFP9xncem1eKb/DpDU6cNoxl23wbJ6Bm57yL//YPFqNnNZ4+IiKN1RCPE05ZqWf5LEe6Ktt3c7FebK9EuMZSA9fG9Ic7neV9uYzqhpzV6d5CsDr5akLTi7L3+bHTX4RBUxNHOq9E/zL/Ffk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xj6vAKRF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F507C61050;
-	Tue, 27 Aug 2024 14:53:18 +0000 (UTC)
+	 MIME-Version; b=iYmdO2yjzJ5G75hl6D3z7i6O5wKOHikhJwEGMwuBeGxmhg03PIci7h+eUbLkvS3d2FsFivrgjMCfkuortzxKHqcPcaWUdx8ScDOYHlMd2NVLrzg/69uwvXNRxnUbbJhy6CCQoIoD75p1UaTcfB5pqCdj0Tbq/oJky6qv3FK1WBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RJfgKOT/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97EE4C4AF55;
+	Tue, 27 Aug 2024 15:07:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770399;
-	bh=eIFyzoRTECRsNPE+ln2r6FM4f1nA/rwhduzA8Tu0cEM=;
+	s=korg; t=1724771221;
+	bh=hXYM0a/c3MYf+uUIqNihLHrrL4+j7eayJw01hW6Yz98=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xj6vAKRFzYKCx02C8fHlUbef+jMHNIBlpRQcE9Olp3mZNt0UBP0hnXJoIZ4niwNMj
-	 WMTOYd+riVWhNXisvf6qSHhoh206pQnfGfTIkhTub9tMIj8IUkkHu2lOWh9wuPvzAd
-	 uxODp0Y5wUfO0mmE6/BsxeabpBhS+TDfgk05jMJM=
+	b=RJfgKOT/wX5C0qUgulsEOEf3M6HoTuay3Foyn+smUR+7JkgniA6fFRR5IaV6qz9s3
+	 2bWIdU5tIu08U+tRzKYW5+QqIrMYNJy5h7k955h3qKgYFe8TmGLLFT8BEokP1XIQOQ
+	 tcdIfGRjSMcOTI8YjR/S7Yl7t5kzyGJN1zGXJ7Bg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Phil Chang <phil.chang@mediatek.com>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Parsa Poorshikhian <parsa.poorsh@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 216/341] hrtimer: Prevent queuing of hrtimer without a function callback
+Subject: [PATCH 6.10 123/273] ALSA: hda/realtek: Fix noise from speakers on Lenovo IdeaPad 3 15IAU7
 Date: Tue, 27 Aug 2024 16:37:27 +0200
-Message-ID: <20240827143851.629573102@linuxfoundation.org>
+Message-ID: <20240827143838.087568779@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phil Chang <phil.chang@mediatek.com>
+From: Parsa Poorshikhian <parsa.poorsh@gmail.com>
 
-[ Upstream commit 5a830bbce3af16833fe0092dec47b6dd30279825 ]
+[ Upstream commit ef9718b3d54e822de294351251f3a574f8a082ce ]
 
-The hrtimer function callback must not be NULL. It has to be specified by
-the call side but it is not validated by the hrtimer code. When a hrtimer
-is queued without a function callback, the kernel crashes with a null
-pointer dereference when trying to execute the callback in __run_hrtimer().
+Fix noise from speakers connected to AUX port when no sound is playing.
+The problem occurs because the `alc_shutup_pins` function includes
+a 0x10ec0257 vendor ID, which causes noise on Lenovo IdeaPad 3 15IAU7 with
+Realtek ALC257 codec when no sound is playing.
+Removing this vendor ID from the function fixes the bug.
 
-Introduce a validation before queuing the hrtimer in
-hrtimer_start_range_ns().
-
-[anna-maria: Rephrase commit message]
-
-Signed-off-by: Phil Chang <phil.chang@mediatek.com>
-Signed-off-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
+Fixes: 70794b9563fe ("ALSA: hda/realtek: Add more codec ID to no shutup pins list")
+Signed-off-by: Parsa Poorshikhian <parsa.poorsh@gmail.com>
+Link: https://patch.msgid.link/20240810150939.330693-1-parsa.poorsh@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/hrtimer.c | 2 ++
- 1 file changed, 2 insertions(+)
+ sound/pci/hda/patch_realtek.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
-index 6057fe2e179b0..57e5cb36f1bc9 100644
---- a/kernel/time/hrtimer.c
-+++ b/kernel/time/hrtimer.c
-@@ -1288,6 +1288,8 @@ void hrtimer_start_range_ns(struct hrtimer *timer, ktime_t tim,
- 	struct hrtimer_clock_base *base;
- 	unsigned long flags;
- 
-+	if (WARN_ON_ONCE(!timer->function))
-+		return;
- 	/*
- 	 * Check whether the HRTIMER_MODE_SOFT bit and hrtimer.is_soft
- 	 * match on CONFIG_PREEMPT_RT = n. With PREEMPT_RT check the hard
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 3840565ef8b02..c9d76bca99232 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -583,7 +583,6 @@ static void alc_shutup_pins(struct hda_codec *codec)
+ 	switch (codec->core.vendor_id) {
+ 	case 0x10ec0236:
+ 	case 0x10ec0256:
+-	case 0x10ec0257:
+ 	case 0x19e58326:
+ 	case 0x10ec0283:
+ 	case 0x10ec0285:
 -- 
 2.43.0
 
