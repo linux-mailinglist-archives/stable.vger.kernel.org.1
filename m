@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-70530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71072-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81421960E99
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:50:27 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FD1D961185
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:21:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3060B1F24446
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:50:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 95ED0B255B3
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:21:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 143101C68A1;
-	Tue, 27 Aug 2024 14:50:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 679981C93C8;
+	Tue, 27 Aug 2024 15:20:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0l7tdzOS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2k+T2LwB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6AEB1C688E;
-	Tue, 27 Aug 2024 14:50:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23C141C8FDE;
+	Tue, 27 Aug 2024 15:20:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770214; cv=none; b=LY8dniuDqlU8PSJo/M47+wWMhTdgzRaqGvUjDDn2LhPyIDELljtbVqoxNwV/vGNGw1dHH/qkWcYr/Ft65mtX0k4RmGYFioeJhVfKOpWNZ6QL2d9a2mRigp4M6sTO6QB/YmtYsBStkfW2DKbPSspyZ6pkpm//+5UeHfpLxKYJPkc=
+	t=1724772007; cv=none; b=dq6i8+6CLilfR7YRRrNJUb3iRcs+fPHRanZuNTKvne4kN2EeIIQfJI2oLNcfqKJyV9+AuSXaaJj/lalJbk0F1WdvvPYPqshScYJ/J/MMaWqbzonwvz292tYoQLQ/Ee/w8/n3pIe2Ai9A3v0bABuOx13n8cMU/ipjHNkIhETfpw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770214; c=relaxed/simple;
-	bh=V4yTuBx2KKVvQ5fIHth2LyjGVCucBzLgaI4CThmyIhA=;
+	s=arc-20240116; t=1724772007; c=relaxed/simple;
+	bh=goU+5W0sQi0kOsTlUKAlBEJUJ8itLBTNFAh5+vkV5yc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t139fyHWA5Vo8OhiuUsHFHuRWWV8eVylgIN9b2B9TSKTEPGex4Dr2IOW0Vtdj6zyUZD11scGgpZkxDv6/4AraKnCmzmT7SRXxQZZZ9qWMe9y6h7BKBKswDDEBxAxAgtEI3nRo6/7LJZptvS01JFUirE5TVJs1cbp3alJ9ybM4L0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0l7tdzOS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36F89C4DDEF;
-	Tue, 27 Aug 2024 14:50:14 +0000 (UTC)
+	 MIME-Version; b=SO4knR89pZezqb/UapDR+PO0NKpOi2AzGAaLLF4AvxQdAHqJUgIza1Y1lzIjnDWTllWkv4UYnFgCY6bba4B71uMvrQU7ZkuoyPxV06GEE7lagD37IdLiyWgicFk67aY7CYK96+to83K7DLxUE4fDcfj4paCiqSASZhN8N9w5XbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2k+T2LwB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8782AC4DDEB;
+	Tue, 27 Aug 2024 15:20:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770214;
-	bh=V4yTuBx2KKVvQ5fIHth2LyjGVCucBzLgaI4CThmyIhA=;
+	s=korg; t=1724772007;
+	bh=goU+5W0sQi0kOsTlUKAlBEJUJ8itLBTNFAh5+vkV5yc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0l7tdzOSaDltK7krVhIoU+fa/A8DDYVN/FzloIKQvSRrTaroXa5Wx9NCpJQeTv4mf
-	 rWvp63Yaxc3kviWwY2xwrGKizDw8FhHBdDF9mYNqkslqB++kSUzxqKhfLp1tKa4aVL
-	 WR/4bu+wI05qTZS9rpYEO+9n70MlDKTpZ18Fs7Z8=
+	b=2k+T2LwB7nzxEbUAWJFJdR5mo7EeEOcU4AnRApPseix5iHjJjmHal5xKfFXpw8+FP
+	 Mneh6TNtF3I8L8TX1VFHxrKtZTA67zbaTvkKEofEcEQqCHTWiHXtYmV2IBi23GeUiB
+	 kJKxoUB1NeMdHrapG0zwTVIEeYEQq1DDfDgPnIWc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Sicong Huang <huangsicong@iie.ac.cn>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Breno Leitao <leitao@debian.org>,
+	Moshe Shemesh <moshe@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 162/341] media: pci: cx23885: check cx23885_vdev_init() return
+Subject: [PATCH 6.1 085/321] net/mlx5e: Take state lock during tx timeout reporter
 Date: Tue, 27 Aug 2024 16:36:33 +0200
-Message-ID: <20240827143849.578930354@linuxfoundation.org>
+Message-ID: <20240827143841.475396595@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +65,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+From: Dragos Tatulea <dtatulea@nvidia.com>
 
-[ Upstream commit 15126b916e39b0cb67026b0af3c014bfeb1f76b3 ]
+[ Upstream commit e6b5afd30b99b43682a7764e1a74a42fe4d5f4b3 ]
 
-cx23885_vdev_init() can return a NULL pointer, but that pointer
-is used in the next line without a check.
+mlx5e_safe_reopen_channels() requires the state lock taken. The
+referenced changed in the Fixes tag removed the lock to fix another
+issue. This patch adds it back but at a later point (when calling
+mlx5e_safe_reopen_channels()) to avoid the deadlock referenced in the
+Fixes tag.
 
-Add a NULL pointer check and go to the error unwind if it is NULL.
-
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Reported-by: Sicong Huang <huangsicong@iie.ac.cn>
+Fixes: eab0da38912e ("net/mlx5e: Fix possible deadlock on mlx5e_tx_timeout_work")
+Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
+Link: https://lore.kernel.org/all/ZplpKq8FKi3vwfxv@gmail.com/T/
+Reviewed-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20240808144107.2095424-4-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/pci/cx23885/cx23885-video.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/net/ethernet/mellanox/mlx5/core/en/reporter_tx.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/media/pci/cx23885/cx23885-video.c b/drivers/media/pci/cx23885/cx23885-video.c
-index 9af2c5596121c..51d7d720ec48b 100644
---- a/drivers/media/pci/cx23885/cx23885-video.c
-+++ b/drivers/media/pci/cx23885/cx23885-video.c
-@@ -1354,6 +1354,10 @@ int cx23885_video_register(struct cx23885_dev *dev)
- 	/* register Video device */
- 	dev->video_dev = cx23885_vdev_init(dev, dev->pci,
- 		&cx23885_video_template, "video");
-+	if (!dev->video_dev) {
-+		err = -ENOMEM;
-+		goto fail_unreg;
-+	}
- 	dev->video_dev->queue = &dev->vb2_vidq;
- 	dev->video_dev->device_caps = V4L2_CAP_READWRITE | V4L2_CAP_STREAMING |
- 				      V4L2_CAP_AUDIO | V4L2_CAP_VIDEO_CAPTURE;
-@@ -1382,6 +1386,10 @@ int cx23885_video_register(struct cx23885_dev *dev)
- 	/* register VBI device */
- 	dev->vbi_dev = cx23885_vdev_init(dev, dev->pci,
- 		&cx23885_vbi_template, "vbi");
-+	if (!dev->vbi_dev) {
-+		err = -ENOMEM;
-+		goto fail_unreg;
-+	}
- 	dev->vbi_dev->queue = &dev->vb2_vbiq;
- 	dev->vbi_dev->device_caps = V4L2_CAP_READWRITE | V4L2_CAP_STREAMING |
- 				    V4L2_CAP_AUDIO | V4L2_CAP_VBI_CAPTURE;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en/reporter_tx.c b/drivers/net/ethernet/mellanox/mlx5/core/en/reporter_tx.c
+index 60bc5b577ab99..02d9fb0c5ec24 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/reporter_tx.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/reporter_tx.c
+@@ -111,7 +111,9 @@ static int mlx5e_tx_reporter_timeout_recover(void *ctx)
+ 		return err;
+ 	}
+ 
++	mutex_lock(&priv->state_lock);
+ 	err = mlx5e_safe_reopen_channels(priv);
++	mutex_unlock(&priv->state_lock);
+ 	if (!err) {
+ 		to_ctx->status = 1; /* all channels recovered */
+ 		return err;
 -- 
 2.43.0
 
