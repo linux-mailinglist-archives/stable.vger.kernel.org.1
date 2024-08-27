@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-70823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71114-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EA34961034
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:06:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 841039611B2
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:22:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 720E41C20919
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:06:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B592B1C2361F
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:22:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 791101B4C4E;
-	Tue, 27 Aug 2024 15:06:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E3B11C6893;
+	Tue, 27 Aug 2024 15:22:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kQ/FQe/B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cs1lmyEg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37C201E520;
-	Tue, 27 Aug 2024 15:06:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C43817C96;
+	Tue, 27 Aug 2024 15:22:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771178; cv=none; b=YE4P2fKadW5kZ8Vuw8o90pb6f+u9C0c3/iOW5bI2rWt897A5L6gze5mKFKLnIDtWjf7/f/D8SLwD4JSXbLkDHXX/bEmeUUPJEm2erOr225aaBpSzIV/hciyMnn6X9K4KD18TFsMbIfdnylOLXKk8w2mbJrfabvl4HPcSfdW3wVk=
+	t=1724772147; cv=none; b=qBNUlN5j0+Z/E6v8h9Kamn9IE6JzrYbBIBBFbcHusDaU7il4arwxIGizUG6bqisdNEcVdyotCXlwk9gfuCuzv8MR6u6IaieNWQp0ms6SQkDeb+mL0dqRQXmxcTivN2ib4T1bZaHcuPQ9SwWVqGhFTce88xe1TnnqD5gZgr+Fk7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771178; c=relaxed/simple;
-	bh=hgAPDYDhq7N+i6ZV+m2P8iOOnfOh277+C3Ptuwby8LY=;
+	s=arc-20240116; t=1724772147; c=relaxed/simple;
+	bh=UqzBvJruT0QSET6LHNQOsvcwzr7Mqhh+MU9VIyGDN4g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c98ykUr0xyHGcNHsfyi4c910t3Ae+0raaoqCr28GcosnXsyPdqqCmxAqXXzNqP1PUjLGTNT8wgWoOs/y3BCgcQWt6wHp5+UNObrWYAGNs8bkLppQqJQxl+ZLI7fResv5B2sMbO4F6q+UF4c5AEXA9NBcAKIsUBg1uVSHVh4862o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kQ/FQe/B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFD67C6107C;
-	Tue, 27 Aug 2024 15:06:17 +0000 (UTC)
+	 MIME-Version; b=ps1QGGVU9HrR9RRUq9k1ST4qo57O84FBHGsoKtFCLYOeNeW93SY9MitlAcrJnFJ/pVojw+FNywzHa1WBKg4SmW10o6E4cd5ONkItUeltiZpOv/SKfFg7ZwW5oV/oEs/D7V/ghCZTu0WEFq9kCHUuP7OdjHGkR4hoo6NIFy1NSRE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cs1lmyEg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BAFDC61041;
+	Tue, 27 Aug 2024 15:22:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771178;
-	bh=hgAPDYDhq7N+i6ZV+m2P8iOOnfOh277+C3Ptuwby8LY=;
+	s=korg; t=1724772147;
+	bh=UqzBvJruT0QSET6LHNQOsvcwzr7Mqhh+MU9VIyGDN4g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kQ/FQe/BiV80TDYAr5BRjIbTdn7u5YCm0je+6EEmMQEYuXZxRYtyA8YU+suBp3yfx
-	 ilsD+UfSzHaH5ExcAx5AhM1JUhnMbhp6aAeLXKSUAIWS5Mx5DAjr/mohafErLCSbKp
-	 Tf9KZSWPmSHVEIo2xt1XQQelhoLjCw2atvgIrrkM=
+	b=Cs1lmyEgc0ImMiFJfSXkYPljc5CZUoadyNt0f0FnByfdBz9oFEQWZpfMKkH9Qbegn
+	 xiSO3nW/cpGnKoNiASJk10IcKw7isCK1Ulp4ZhSdou8PYjA+f1uSyO0fptMzwqvkzi
+	 CB8J4RxMSdCCJ/OmlAGIG3QDMio0B5qgQM0S2mKk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <geliang@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	David Lechner <dlechner@baylibre.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 111/273] selftests: net: lib: ignore possible errors
+Subject: [PATCH 6.1 127/321] staging: iio: resolver: ad2s1210: fix use before initialization
 Date: Tue, 27 Aug 2024 16:37:15 +0200
-Message-ID: <20240827143837.633250367@linuxfoundation.org>
+Message-ID: <20240827143843.078635046@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: David Lechner <dlechner@baylibre.com>
 
-[ Upstream commit 7e0620bc6a5ec6b340a0be40054f294ca26c010f ]
+[ Upstream commit 7fe2d05cee46b1c4d9f1efaeab08cc31a0dfff60 ]
 
-No need to disable errexit temporary, simply ignore the only possible
-and not handled error.
+This fixes a use before initialization in ad2s1210_probe(). The
+ad2s1210_setup_gpios() function uses st->sdev but it was being called
+before this field was initialized.
 
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://lore.kernel.org/r/20240607-upstream-net-next-20240607-selftests-mptcp-net-lib-v1-1-e36986faac94@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 7965a7f32a53 ("selftests: net: lib: kill PIDs before del netns")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Link: https://lore.kernel.org/r/20230929-ad2s1210-mainline-v3-2-fa4364281745@baylibre.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/lib.sh | 10 +---------
- 1 file changed, 1 insertion(+), 9 deletions(-)
+ drivers/staging/iio/resolver/ad2s1210.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/net/lib.sh b/tools/testing/selftests/net/lib.sh
-index 9155c914c064f..b2572aff6286f 100644
---- a/tools/testing/selftests/net/lib.sh
-+++ b/tools/testing/selftests/net/lib.sh
-@@ -128,25 +128,17 @@ slowwait_for_counter()
- cleanup_ns()
- {
- 	local ns=""
--	local errexit=0
- 	local ret=0
+diff --git a/drivers/staging/iio/resolver/ad2s1210.c b/drivers/staging/iio/resolver/ad2s1210.c
+index 636c45b128438..afe89c91c89ea 100644
+--- a/drivers/staging/iio/resolver/ad2s1210.c
++++ b/drivers/staging/iio/resolver/ad2s1210.c
+@@ -657,9 +657,6 @@ static int ad2s1210_probe(struct spi_device *spi)
+ 	if (!indio_dev)
+ 		return -ENOMEM;
+ 	st = iio_priv(indio_dev);
+-	ret = ad2s1210_setup_gpios(st);
+-	if (ret < 0)
+-		return ret;
  
--	# disable errexit temporary
--	if [[ $- =~ "e" ]]; then
--		errexit=1
--		set +e
--	fi
--
- 	for ns in "$@"; do
- 		[ -z "${ns}" ] && continue
--		ip netns delete "${ns}" &> /dev/null
-+		ip netns delete "${ns}" &> /dev/null || true
- 		if ! busywait $BUSYWAIT_TIMEOUT ip netns list \| grep -vq "^$ns$" &> /dev/null; then
- 			echo "Warn: Failed to remove namespace $ns"
- 			ret=1
- 		fi
- 	done
+ 	spi_set_drvdata(spi, indio_dev);
  
--	[ $errexit -eq 1 ] && set -e
- 	return $ret
- }
+@@ -670,6 +667,10 @@ static int ad2s1210_probe(struct spi_device *spi)
+ 	st->resolution = 12;
+ 	st->fexcit = AD2S1210_DEF_EXCIT;
  
++	ret = ad2s1210_setup_gpios(st);
++	if (ret < 0)
++		return ret;
++
+ 	indio_dev->info = &ad2s1210_info;
+ 	indio_dev->modes = INDIO_DIRECT_MODE;
+ 	indio_dev->channels = ad2s1210_channels;
 -- 
 2.43.0
 
