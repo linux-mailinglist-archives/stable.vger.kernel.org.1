@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-70628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71130-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D90FE960F35
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:57:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72CE89611CB
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:24:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 179661C218E6
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:57:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A4E671C228BC
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:23:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6BC11CCB48;
-	Tue, 27 Aug 2024 14:55:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B301E1C9EC9;
+	Tue, 27 Aug 2024 15:23:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vT/uSqDj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v6hsue+W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8256D1BB6BE;
-	Tue, 27 Aug 2024 14:55:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DE791C8FDF;
+	Tue, 27 Aug 2024 15:23:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770542; cv=none; b=XaBkpl/BEDJeDwJ4n/rIzfssKMnN9T55Vl01MT6yyDEQdQERW7wex2p2AseYlvBfc6Y4OuXGFZoOxSg5y2FNGost5zBjdp9HR/UE7twGflFEMiTwj0KRiHRLGr/rzdj4a9tDBjNcRBTMLm7Ng3k5Rz8NFYIUvUJHKpI5ueLggdE=
+	t=1724772197; cv=none; b=IaY23wcf9hCuT3ttRJ+1JRCFNohQm1Mbt4NSgQ/kypdAO6ptEoJ4a7rI035UBfyNSLFV0uuzfPPirBkatRCimXEHeK50qxomSmo6ezZ9uNjpkXCSLrKubriuXS0VnyLxgtj6PUeKcxJ88PGpcCwxqJnQNLN0O4x/ODgRR1r/puk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770542; c=relaxed/simple;
-	bh=SW8C3U6EpucqLj5yzXZamxMpvprwj6zp+q/OhaysuYs=;
+	s=arc-20240116; t=1724772197; c=relaxed/simple;
+	bh=Ja4GV8VvfaHb9Xf0YhFvimdf70iesISEqZocGR19k9Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CkjUpwEljOYP3q1Q/I9xOAm2maV4hH8RtGqQvl2Kz8quY7ysyBUGTUVB72zf592facTCpz1llvyuMi76AQIj5PRaPz4M6eJaVj4/st6JYnEsrCyZC1AjKTVKEvTjw95NcONIEMYyl1axMaSceYdgYGfbzYYK9Jygp6/vGxG6CtE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vT/uSqDj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0007C4FDEE;
-	Tue, 27 Aug 2024 14:55:41 +0000 (UTC)
+	 MIME-Version; b=Af+PJAQ2tw2NJbcphTxQHhxuDTmQzOpKozTLXKDCMNHfQG27i+Eismb9ANDyuTeaR74k5nWZOrddR8DvX0GYJNKFXuK+wl7W9CBlMuTOysL+pHH8eXy/QMuWHJywNEjyRjT9Jca6ddQCTC4BPQwStDnu580iFmHifoqlU5CY5ic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v6hsue+W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAABDC6105D;
+	Tue, 27 Aug 2024 15:23:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770542;
-	bh=SW8C3U6EpucqLj5yzXZamxMpvprwj6zp+q/OhaysuYs=;
+	s=korg; t=1724772197;
+	bh=Ja4GV8VvfaHb9Xf0YhFvimdf70iesISEqZocGR19k9Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vT/uSqDjeFWmsbaI0VnJ/bzOI0Sm5kzu3OnsBWVTWFR0fK69cxKkOd0mrzpWKw9AD
-	 Hr6jACLtWzk5rz0feecsVvf5JGek3bmarRScxMgHE9JD5eV6SSh7XTv8U/uMoQJR//
-	 KC/0XHoiaYzayS4LRorGJHfPQxDdYLsctDZ0R+mU=
+	b=v6hsue+WWv+7GLYTyWq8aoip8zmbFxfpUzXmqR39gG5aO91Q7ZXrqb0k7Trofzqah
+	 kcgnNAHOqSkReRm1zJ220aKxety3G/UfSEm52KqFLzf5f6iiQZZpou0m1WOAsaSs5J
+	 XwPKJSxKWpNk963yk1VIwMbl/bD9fVv5YA3aSvqM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-	Tony Luck <tony.luck@intel.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 219/341] EDAC/skx_common: Allow decoding of SGX addresses
-Date: Tue, 27 Aug 2024 16:37:30 +0200
-Message-ID: <20240827143851.745814849@linuxfoundation.org>
+Subject: [PATCH 6.1 143/321] kbuild: rust_is_available: normalize version matching
+Date: Tue, 27 Aug 2024 16:37:31 +0200
+Message-ID: <20240827143843.682389537@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +64,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+From: Miguel Ojeda <ojeda@kernel.org>
 
-[ Upstream commit e0d335077831196bffe6a634ffe385fc684192ca ]
+[ Upstream commit 7cd6a3e1f94bab4f2a3425e06f70ab13eb8190d4 ]
 
-There are no "struct page" associations with SGX pages, causing the check
-pfn_to_online_page() to fail. This results in the inability to decode the
-SGX addresses and warning messages like:
+In order to match the version string, `sed` is used in a couple
+cases, and `grep` and `head` in a couple others.
 
-  Invalid address 0x34cc9a98840 in IA32_MC17_ADDR
+Make the script more consistent and easier to understand by
+using the same method, `sed`, for all of them.
 
-Add an additional check to allow the decoding of the error address and to
-skip the warning message, if the error address is an SGX address.
+This makes the version matching also a bit more strict for
+the changed cases, since the strings `rustc ` and `bindgen `
+will now be required, which should be fine since `rustc`
+complains if one attempts to call it with another program
+name, and `bindgen` uses a hardcoded string.
 
-Fixes: 1e92af09fab1 ("EDAC/skx_common: Filter out the invalid address")
-Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Signed-off-by: Tony Luck <tony.luck@intel.com>
-Link: https://lore.kernel.org/r/20240408120419.50234-1-qiuxu.zhuo@intel.com
+In addition, clarify why one of the existing `sed` commands
+does not provide an address like the others.
+
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Reviewed-by: Masahiro Yamada <masahiroy@kernel.org>
+Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Link: https://lore.kernel.org/r/20230616001631.463536-9-ojeda@kernel.org
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Stable-dep-of: 5ce86c6c8613 ("rust: suppress error messages from CONFIG_{RUSTC,BINDGEN}_VERSION_TEXT")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/edac/skx_common.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ scripts/rust_is_available.sh | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/edac/skx_common.c b/drivers/edac/skx_common.c
-index f4b192420be47..8d18099fd528c 100644
---- a/drivers/edac/skx_common.c
-+++ b/drivers/edac/skx_common.c
-@@ -659,7 +659,7 @@ int skx_mce_check_error(struct notifier_block *nb, unsigned long val,
- 	memset(&res, 0, sizeof(res));
- 	res.mce  = mce;
- 	res.addr = mce->addr & MCI_ADDR_PHYSADDR;
--	if (!pfn_to_online_page(res.addr >> PAGE_SHIFT)) {
-+	if (!pfn_to_online_page(res.addr >> PAGE_SHIFT) && !arch_is_platform_page(res.addr)) {
- 		pr_err("Invalid address 0x%llx in IA32_MC%d_ADDR\n", mce->addr, mce->bank);
- 		return NOTIFY_DONE;
- 	}
+diff --git a/scripts/rust_is_available.sh b/scripts/rust_is_available.sh
+index 7a925d2b20fc7..db4519945f534 100755
+--- a/scripts/rust_is_available.sh
++++ b/scripts/rust_is_available.sh
+@@ -40,8 +40,7 @@ fi
+ # Non-stable and distributions' versions may have a version suffix, e.g. `-dev`.
+ rust_compiler_version=$( \
+ 	LC_ALL=C "$RUSTC" --version 2>/dev/null \
+-		| head -n 1 \
+-		| grep -oE '[0-9]+\.[0-9]+\.[0-9]+' \
++		| sed -nE '1s:.*rustc ([0-9]+\.[0-9]+\.[0-9]+).*:\1:p'
+ )
+ rust_compiler_min_version=$($min_tool_version rustc)
+ rust_compiler_cversion=$(get_canonical_version $rust_compiler_version)
+@@ -67,8 +66,7 @@ fi
+ # Non-stable and distributions' versions may have a version suffix, e.g. `-dev`.
+ rust_bindings_generator_version=$( \
+ 	LC_ALL=C "$BINDGEN" --version 2>/dev/null \
+-		| head -n 1 \
+-		| grep -oE '[0-9]+\.[0-9]+\.[0-9]+' \
++		| sed -nE '1s:.*bindgen ([0-9]+\.[0-9]+\.[0-9]+).*:\1:p'
+ )
+ rust_bindings_generator_min_version=$($min_tool_version bindgen)
+ rust_bindings_generator_cversion=$(get_canonical_version $rust_bindings_generator_version)
+@@ -110,6 +108,9 @@ fi
+ 
+ # `bindgen` returned successfully, thus use the output to check that the version
+ # of the `libclang` found by the Rust bindings generator is suitable.
++#
++# Unlike other version checks, note that this one does not necessarily appear
++# in the first line of the output, thus no `sed` address is provided.
+ bindgen_libclang_version=$( \
+ 	echo "$bindgen_libclang_output" \
+ 		| sed -nE 's:.*clang version ([0-9]+\.[0-9]+\.[0-9]+).*:\1:p'
 -- 
 2.43.0
 
