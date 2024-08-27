@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-71186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70893-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23CF3961259
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:30:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2650496108C
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:10:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6FAD0B29754
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:29:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 592DB1C23698
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:10:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85AAA1C7B71;
-	Tue, 27 Aug 2024 15:26:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD1301C4ED4;
+	Tue, 27 Aug 2024 15:10:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t+DUvNcd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EcFho82Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40C8719F485;
-	Tue, 27 Aug 2024 15:26:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 791531E520;
+	Tue, 27 Aug 2024 15:10:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772383; cv=none; b=QY20oO9MAA//qSAchIQiJm2EM5WJP+0MKINVODmVlUuOY3dh7skyJmEIafSdjksTfvVrji28Ze1bI3fSyBfljJMB0gC1i0FnX7L6+UmMjdKPw8XiJEkrfiUwwbYFXW9Prtr+wNvcVoTQLoqymcXIdtg6Bw9ZQ09cPmj6iBovQO4=
+	t=1724771412; cv=none; b=OnNRONy6kRc4+XMFdy+9UPv51MInPzuUBKbDPeyfn2Sq1LtkYNqlCQCKge7G1soYmcE77Y9Romnyunp7LL6neLDELKMiKnskKfFO44sqKR2myyNYOklKVj5uCnLn24kLBGkD1VGRd+BkVaF2UMFRmeXZlpzVi0rTJfyNz8CRVU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772383; c=relaxed/simple;
-	bh=gI6ru+9ElY2t0hk5kJYLq/yatyvlnf/wDho2KV2P1G8=;
+	s=arc-20240116; t=1724771412; c=relaxed/simple;
+	bh=8wAWlU1ETzl1UfHPSQ57VCq8YXXs73UANcz6Q/XnlIQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZdA0m0SImtpetUbLmLQVy7hawwKeODSEj7XBJw/mWtHdtJMxK355cXVgJrTC2PKHSNNOrcKphctNrwo2B2cCkc3imAgbooykXaJyuRBuzI8G/qUCIznRl2WypAkSs/q/XeWg9VMIXYmld4EYKv2oOvLCAGDPBLv2jMF547+D214=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t+DUvNcd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6592C61071;
-	Tue, 27 Aug 2024 15:26:22 +0000 (UTC)
+	 MIME-Version; b=uyQiRxeLPJrdIi6WYKbywmSSSWzurVebv+tsmtWZjcCGOIvvtT15dL2GpB8qDr/C+UO/GkV/WINT2008Z4iLhLA3tccdk/G6kK+OexvSfie9w1U6U9mp+DiQz4bdJ7NQag3gYDAxHA7+5ySEYhJeGV1z3gPSLLukjv0v3pensI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EcFho82Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF14EC4AF55;
+	Tue, 27 Aug 2024 15:10:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772383;
-	bh=gI6ru+9ElY2t0hk5kJYLq/yatyvlnf/wDho2KV2P1G8=;
+	s=korg; t=1724771412;
+	bh=8wAWlU1ETzl1UfHPSQ57VCq8YXXs73UANcz6Q/XnlIQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t+DUvNcdiRz12sCV8Yry0TTvOuQVZ5OdXziYKRmsra/mwtw6JwrUyTQuJ8jDu2WI2
-	 G7pzro7JPJ9CGKoB46RBPG2Dai75wFADfLHCiuBBLA4pbZcc1U7oYC8/+vKEmNArKv
-	 3cT/b8hbxiapuy/9EA6AMifkHHjy4g2RcH3z7kxA=
+	b=EcFho82Z2grp2n0u/th9I5neZoO8yuUx6ply1MsiTD9unZ1Go/LDzl4kohKRjPNew
+	 p+afL/Xj48n9ZMT+dKM3UWL+Pvbx6iS1ylcRT8++2EFgTbP2Vs6dK6p+dAhotVt4Bd
+	 v0tUt7Mfv8k6uXfImCv7BpcaMnZZGo4j3shO+FhM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Alexandra Winter <wintera@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 197/321] s390/iucv: fix receive buffer virtual vs physical address confusion
+Subject: [PATCH 6.10 181/273] selftests: mlxsw: ethtool_lanes: Source ethtool lib from correct path
 Date: Tue, 27 Aug 2024 16:38:25 +0200
-Message-ID: <20240827143845.729755614@linuxfoundation.org>
+Message-ID: <20240827143840.298720390@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +64,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Gordeev <agordeev@linux.ibm.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 4e8477aeb46dfe74e829c06ea588dd00ba20c8cc ]
+[ Upstream commit f8669d7b5f5d2d88959456ae9123d8bb6fdc1ebe ]
 
-Fix IUCV_IPBUFLST-type buffers virtual vs physical address confusion.
-This does not fix a bug since virtual and physical address spaces are
-currently the same.
+Source the ethtool library from the correct path and avoid the following
+error:
 
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+./ethtool_lanes.sh: line 14: ./../../../net/forwarding/ethtool_lib.sh: No such file or directory
+
+Fixes: 40d269c000bd ("selftests: forwarding: Move several selftests")
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/2112faff02e536e1ac14beb4c2be09c9574b90ae.1724150067.git.petrm@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/iucv/iucv.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ tools/testing/selftests/drivers/net/mlxsw/ethtool_lanes.sh | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/iucv/iucv.c b/net/iucv/iucv.c
-index db41eb2d977f2..038e1ba9aec27 100644
---- a/net/iucv/iucv.c
-+++ b/net/iucv/iucv.c
-@@ -1090,8 +1090,7 @@ static int iucv_message_receive_iprmdata(struct iucv_path *path,
- 		size = (size < 8) ? size : 8;
- 		for (array = buffer; size > 0; array++) {
- 			copy = min_t(size_t, size, array->length);
--			memcpy((u8 *)(addr_t) array->address,
--				rmmsg, copy);
-+			memcpy(phys_to_virt(array->address), rmmsg, copy);
- 			rmmsg += copy;
- 			size -= copy;
- 		}
+diff --git a/tools/testing/selftests/drivers/net/mlxsw/ethtool_lanes.sh b/tools/testing/selftests/drivers/net/mlxsw/ethtool_lanes.sh
+index 877cd6df94a10..fe905a7f34b3c 100755
+--- a/tools/testing/selftests/drivers/net/mlxsw/ethtool_lanes.sh
++++ b/tools/testing/selftests/drivers/net/mlxsw/ethtool_lanes.sh
+@@ -2,6 +2,7 @@
+ # SPDX-License-Identifier: GPL-2.0
+ 
+ lib_dir=$(dirname $0)/../../../net/forwarding
++ethtool_lib_dir=$(dirname $0)/../hw
+ 
+ ALL_TESTS="
+ 	autoneg
+@@ -11,7 +12,7 @@ ALL_TESTS="
+ NUM_NETIFS=2
+ : ${TIMEOUT:=30000} # ms
+ source $lib_dir/lib.sh
+-source $lib_dir/ethtool_lib.sh
++source $ethtool_lib_dir/ethtool_lib.sh
+ 
+ setup_prepare()
+ {
 -- 
 2.43.0
 
