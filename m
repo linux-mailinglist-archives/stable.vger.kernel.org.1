@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-70591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70838-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CE7E960EFE
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:55:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CEBC961045
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:07:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F74D1C23415
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:55:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE9082825C4
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:07:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C50001CC150;
-	Tue, 27 Aug 2024 14:53:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C4461C462B;
+	Tue, 27 Aug 2024 15:07:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DquZhzR9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Losdoyt4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F8841C57AB;
-	Tue, 27 Aug 2024 14:53:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A3B91C2DB1;
+	Tue, 27 Aug 2024 15:07:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770416; cv=none; b=NZ/dn6x4PaRzDrWXvl24hygC7HyQr5atU4EwVWfB08GCJIDjw+nRE7ysWOvyR+avWag47Ce2rFkQrQuWihoxS4clQj20xnbBuBX4iaUR4Um7saMvSudEiLM7l7yewn9ssdhdJlI5JMTao/Dyffi4XvljN3CMuy//7efn2KL65PM=
+	t=1724771228; cv=none; b=AUC/7JjTefE2nGM7JkRxTVkAXFwPF/0ANsNw9GkNGtnmJaROc201j0IcV75R5wZb4qvm+KYTCZBUvKtMk6lvKxlCiKhHRPn02Ja+MBydqnAs7MH4NwIx79jgIBBTieJf6o41NKQgbRilSu7TLdBLWy2046+llotgfADUY+J/eRg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770416; c=relaxed/simple;
-	bh=XwGLZjdQuxemyWXvXX05wPL0Fh8nALhw+FY6hNxAjN8=;
+	s=arc-20240116; t=1724771228; c=relaxed/simple;
+	bh=NxJgfy9rn7W5ZjdaLjZSS+SnQgZE7E3+UYPUbV1c3Mc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mCnqmbBLY4M01aiLONwPNueJyandVyP4qxz6ccV6nvWlHukQVCh87Q8RmThR6AL6E7Cp8pf3T6HF5c5MOKYSl77UfbnzSpwUWsNDhQ+FiqLwdIV/lxJzk5x6C6+GpNVcrcslX8QVjcNvk8CMIzTLW3rCSM5K/h08qKjtBohKPQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DquZhzR9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFF37C6105B;
-	Tue, 27 Aug 2024 14:53:35 +0000 (UTC)
+	 MIME-Version; b=a/uggLwKHEs4fNKZp0jBZtKqGt4/mhvkyFnCgwg/EQI8MIT5uRqs04ILMbBovqydgNUCt+do7KsAyACkq5Rcj9FObyGeZODqgKFhe524kAuTugrSmewxMTPWIIS1W8apYxpsmIj2GFJQvnkyOJoFS33KQUmyq9Tz8kBIq9g6x4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Losdoyt4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B2F1C4AF55;
+	Tue, 27 Aug 2024 15:07:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770416;
-	bh=XwGLZjdQuxemyWXvXX05wPL0Fh8nALhw+FY6hNxAjN8=;
+	s=korg; t=1724771227;
+	bh=NxJgfy9rn7W5ZjdaLjZSS+SnQgZE7E3+UYPUbV1c3Mc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DquZhzR9Lk2GJPuOqXHBqXqXvQ8Vcox8BDJMoPSgi0IHO2elGAq2aS0it3TUF7RK3
-	 sCwMZRd92dMkXro6/EecMRcNIRE6Er/5QY045t+3yP58Z1DZjkL5vguGo/nrdCdG0b
-	 p64o5yqocnVWVly8fUjuhUFLZHRzAFLz1R6fhR0M=
+	b=Losdoyt42f2Ak5OREz82dfAF81oFZBI7Fld7CCa6QSQN8KsrExSOwSgXfy96F5xrr
+	 qqwyTCNZa0e96quZzZb5YTbAsAcbVQPOHx7E+qaMrF664O3RRttEcCMDh/JCKtxsSS
+	 USIew3aNe47xTsOOPtvPIzJpPt0W2fKttHwYimTk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Sterba <dsterba@suse.com>,
+	Zheng Zhang <everything411@qq.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 191/341] btrfs: send: handle unexpected inode in header process_recorded_refs()
+Subject: [PATCH 6.10 098/273] net: ethernet: mtk_wed: fix use-after-free panic in mtk_wed_setup_tc_block_cb()
 Date: Tue, 27 Aug 2024 16:37:02 +0200
-Message-ID: <20240827143850.681987401@linuxfoundation.org>
+Message-ID: <20240827143837.140544499@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Sterba <dsterba@suse.com>
+From: Zheng Zhang <everything411@qq.com>
 
-[ Upstream commit 5d2288711ccc483feca73151c46ee835bda17839 ]
+[ Upstream commit db1b4bedb9b97c6d34b03d03815147c04fffe8b4 ]
 
-Change BUG_ON to proper error handling when an unexpected inode number
-is encountered. As the comment says this should never happen.
+When there are multiple ap interfaces on one band and with WED on,
+turning the interface down will cause a kernel panic on MT798X.
 
-Signed-off-by: David Sterba <dsterba@suse.com>
+Previously, cb_priv was freed in mtk_wed_setup_tc_block() without
+marking NULL,and mtk_wed_setup_tc_block_cb() didn't check the value, too.
+
+Assign NULL after free cb_priv in mtk_wed_setup_tc_block() and check NULL
+in mtk_wed_setup_tc_block_cb().
+
+----------
+Unable to handle kernel paging request at virtual address 0072460bca32b4f5
+Call trace:
+ mtk_wed_setup_tc_block_cb+0x4/0x38
+ 0xffffffc0794084bc
+ tcf_block_playback_offloads+0x70/0x1e8
+ tcf_block_unbind+0x6c/0xc8
+...
+---------
+
+Fixes: 799684448e3e ("net: ethernet: mtk_wed: introduce wed wo support")
+Signed-off-by: Zheng Zhang <everything411@qq.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/send.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/mediatek/mtk_wed.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/fs/btrfs/send.c b/fs/btrfs/send.c
-index b153f6a96fc8c..9da3c72eb6153 100644
---- a/fs/btrfs/send.c
-+++ b/fs/btrfs/send.c
-@@ -4195,7 +4195,13 @@ static int process_recorded_refs(struct send_ctx *sctx, int *pending_move)
- 	 * This should never happen as the root dir always has the same ref
- 	 * which is always '..'
- 	 */
--	BUG_ON(sctx->cur_ino <= BTRFS_FIRST_FREE_OBJECTID);
-+	if (unlikely(sctx->cur_ino <= BTRFS_FIRST_FREE_OBJECTID)) {
-+		btrfs_err(fs_info,
-+			  "send: unexpected inode %llu in process_recorded_refs()",
-+			  sctx->cur_ino);
-+		ret = -EINVAL;
-+		goto out;
-+	}
+diff --git a/drivers/net/ethernet/mediatek/mtk_wed.c b/drivers/net/ethernet/mediatek/mtk_wed.c
+index 61334a71058c7..e212a4ba92751 100644
+--- a/drivers/net/ethernet/mediatek/mtk_wed.c
++++ b/drivers/net/ethernet/mediatek/mtk_wed.c
+@@ -2666,14 +2666,15 @@ mtk_wed_setup_tc_block_cb(enum tc_setup_type type, void *type_data, void *cb_pri
+ {
+ 	struct mtk_wed_flow_block_priv *priv = cb_priv;
+ 	struct flow_cls_offload *cls = type_data;
+-	struct mtk_wed_hw *hw = priv->hw;
++	struct mtk_wed_hw *hw = NULL;
  
- 	valid_path = fs_path_alloc();
- 	if (!valid_path) {
+-	if (!tc_can_offload(priv->dev))
++	if (!priv || !tc_can_offload(priv->dev))
+ 		return -EOPNOTSUPP;
+ 
+ 	if (type != TC_SETUP_CLSFLOWER)
+ 		return -EOPNOTSUPP;
+ 
++	hw = priv->hw;
+ 	return mtk_flow_offload_cmd(hw->eth, cls, hw->index);
+ }
+ 
+@@ -2729,6 +2730,7 @@ mtk_wed_setup_tc_block(struct mtk_wed_hw *hw, struct net_device *dev,
+ 			flow_block_cb_remove(block_cb, f);
+ 			list_del(&block_cb->driver_list);
+ 			kfree(block_cb->cb_priv);
++			block_cb->cb_priv = NULL;
+ 		}
+ 		return 0;
+ 	default:
 -- 
 2.43.0
 
