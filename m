@@ -1,55 +1,61 @@
-Return-Path: <stable+bounces-70561-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70771-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEF76960EC9
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:52:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 928B9960FF4
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:04:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 898C01F24AEF
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:52:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 04E37B214B9
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:04:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4176B1C57AB;
-	Tue, 27 Aug 2024 14:51:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FC661C6887;
+	Tue, 27 Aug 2024 15:03:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C+d8Q5dg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KiwC7igO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F32571BFE06;
-	Tue, 27 Aug 2024 14:51:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0F601B4C4E;
+	Tue, 27 Aug 2024 15:03:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770316; cv=none; b=S45qru7o614BE6Asm7Yh5SiCcEfbwIfUpvD0TdCM+Azhr1FkaVKb47BZKTxoCZDvwDONXmAGrjEYLvRAdfkxkj7UWUXZ5KTYK/5J6/+DfjvK/fd0HOyYV0mK6OO7bXLHjdaw+iijsxCR1BKItK1yaLROACr5sgx3bajhq1p3eZU=
+	t=1724771008; cv=none; b=tEpNDWT5Wk2spvxmhLqxkUCn8JQZ5sbLfwCwuM4NOF2Mgx9BvcVsvLJNXUCabTUuBF7uDK/9Mp2U2oM9wDux9Bknxzx/H9nL/2OFt9J5F02I2NbsFrcnUnxO6XONFYzcXB7aoWZPP58OYE8+cfr/0ZcwF/B3I2z0/aySm8PSw5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770316; c=relaxed/simple;
-	bh=uNXHDFxRWk+ZIlCuA+YxIwo+XuLlo+B/9twsmqn7zHg=;
+	s=arc-20240116; t=1724771008; c=relaxed/simple;
+	bh=a3vOO7cFRI7UcjixrsHuy9zSUUIuvFRRoYwtqB3VCYY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YUBdwDkTgc20PRUPmx0jLlSiiI14QywGl6wNgwOe0zO2t+ejWzN2GFph0kuxuhN9wGREbhIytpJMn8IKnaxTy1wlP5+DaxGBGVf+rFF7A80HPgMiBpyNl4dojSrjlmivws172T5uGAE8v3eS+mquB4O1JzIhQysdFwKwIFW4BeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C+d8Q5dg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6093FC4DE06;
-	Tue, 27 Aug 2024 14:51:55 +0000 (UTC)
+	 MIME-Version; b=WUfEkQPcTMwRX6ZWjCL+DbEzZ+2GzitERnTziTglA+vSQjd3mKK+cSx87CrMM0MXJx53AZIYVLQT5pfqNrbWoOz3+ISMjx6EBfxmIB6sKK6zEPjoEx28DFV/5Gm3LLh4qgcnsMUsTcWaxMrxQNnO6SRXGlW5z2gYWOPhOFIIdJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KiwC7igO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0109DC61049;
+	Tue, 27 Aug 2024 15:03:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770315;
-	bh=uNXHDFxRWk+ZIlCuA+YxIwo+XuLlo+B/9twsmqn7zHg=;
+	s=korg; t=1724771008;
+	bh=a3vOO7cFRI7UcjixrsHuy9zSUUIuvFRRoYwtqB3VCYY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C+d8Q5dg0AthsXUDZ5nDKQD/FyTjgsk/ZVohFZrnRRScLB0z7bIqaUniBbdH3ba9I
-	 R9k6Q4fNTiI6pecul8Mhs7jnzBpzMWbpiHfNUJ7wBRB+l9xObUW47CREyuo072gsrF
-	 ur50or5Mf+qAofvDtdm2m2G2vBEhwPI66IG8zcns=
+	b=KiwC7igOoud1ZxoxO+rJD67Od4cPa3UeRv0ep+DRwZjEdGgN/SEazpqZEjksU3ZYd
+	 P7pXqllsLfKFstKJRhIYiPE4/wIwsEYo2x3xF4gAEHXz4c0r6tbWaMLvlKB67XiJ8y
+	 4sEFQKVRGOnLcpBxefnTACmXihqtURp/mKJ14KhE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 151/341] gfs2: Refcounting fix in gfs2_thaw_super
+	Hailong Liu <hailong.liu@oppo.com>,
+	Tangquan Zheng <zhengtangquan@oppo.com>,
+	Baoquan He <bhe@redhat.com>,
+	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
+	Barry Song <baohua@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.10 058/273] mm/vmalloc: fix page mapping if vm_area_alloc_pages() with high order fallback to order 0
 Date: Tue, 27 Aug 2024 16:36:22 +0200
-Message-ID: <20240827143849.164517534@linuxfoundation.org>
+Message-ID: <20240827143835.610491487@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +67,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Hailong Liu <hailong.liu@oppo.com>
 
-[ Upstream commit 4e58543e7da4859c4ba61d15493e3522b6ad71fd ]
+commit 61ebe5a747da649057c37be1c37eb934b4af79ca upstream.
 
-It turns out that the .freeze_super and .thaw_super operations require
-the filesystem to manage the superblock refcount itself.  We are using
-the freeze_super() and thaw_super() helpers to mostly take care of that
-for us, but this means that the superblock may no longer be around by
-when thaw_super() returns, and gfs2_thaw_super() will then access freed
-memory.  Take an extra superblock reference in gfs2_thaw_super() to fix
-that.
+The __vmap_pages_range_noflush() assumes its argument pages** contains
+pages with the same page shift.  However, since commit e9c3cda4d86e ("mm,
+vmalloc: fix high order __GFP_NOFAIL allocations"), if gfp_flags includes
+__GFP_NOFAIL with high order in vm_area_alloc_pages() and page allocation
+failed for high order, the pages** may contain two different page shifts
+(high order and order-0).  This could lead __vmap_pages_range_noflush() to
+perform incorrect mappings, potentially resulting in memory corruption.
 
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Users might encounter this as follows (vmap_allow_huge = true, 2M is for
+PMD_SIZE):
+
+kvmalloc(2M, __GFP_NOFAIL|GFP_X)
+    __vmalloc_node_range_noprof(vm_flags=VM_ALLOW_HUGE_VMAP)
+        vm_area_alloc_pages(order=9) ---> order-9 allocation failed and fallback to order-0
+            vmap_pages_range()
+                vmap_pages_range_noflush()
+                    __vmap_pages_range_noflush(page_shift = 21) ----> wrong mapping happens
+
+We can remove the fallback code because if a high-order allocation fails,
+__vmalloc_node_range_noprof() will retry with order-0.  Therefore, it is
+unnecessary to fallback to order-0 here.  Therefore, fix this by removing
+the fallback code.
+
+Link: https://lkml.kernel.org/r/20240808122019.3361-1-hailong.liu@oppo.com
+Fixes: e9c3cda4d86e ("mm, vmalloc: fix high order __GFP_NOFAIL allocations")
+Signed-off-by: Hailong Liu <hailong.liu@oppo.com>
+Reported-by: Tangquan Zheng <zhengtangquan@oppo.com>
+Reviewed-by: Baoquan He <bhe@redhat.com>
+Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+Acked-by: Barry Song <baohua@kernel.org>
+Acked-by: Michal Hocko <mhocko@suse.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/gfs2/super.c | 2 ++
- 1 file changed, 2 insertions(+)
+ mm/vmalloc.c |   11 ++---------
+ 1 file changed, 2 insertions(+), 9 deletions(-)
 
-diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
-index 8b34c6cf9293f..1200cb8059995 100644
---- a/fs/gfs2/super.c
-+++ b/fs/gfs2/super.c
-@@ -819,6 +819,7 @@ static int gfs2_thaw_super(struct super_block *sb, enum freeze_holder who)
- 	if (!test_bit(SDF_FREEZE_INITIATOR, &sdp->sd_flags))
- 		goto out;
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -3583,15 +3583,8 @@ vm_area_alloc_pages(gfp_t gfp, int nid,
+ 			page = alloc_pages_noprof(alloc_gfp, order);
+ 		else
+ 			page = alloc_pages_node_noprof(nid, alloc_gfp, order);
+-		if (unlikely(!page)) {
+-			if (!nofail)
+-				break;
+-
+-			/* fall back to the zero order allocations */
+-			alloc_gfp |= __GFP_NOFAIL;
+-			order = 0;
+-			continue;
+-		}
++		if (unlikely(!page))
++			break;
  
-+	atomic_inc(&sb->s_active);
- 	gfs2_freeze_unlock(&sdp->sd_freeze_gh);
- 
- 	error = gfs2_do_thaw(sdp);
-@@ -829,6 +830,7 @@ static int gfs2_thaw_super(struct super_block *sb, enum freeze_holder who)
- 	}
- out:
- 	mutex_unlock(&sdp->sd_freeze_mutex);
-+	deactivate_super(sb);
- 	return error;
- }
- 
--- 
-2.43.0
-
+ 		/*
+ 		 * Higher order allocations must be able to be treated as
 
 
 
