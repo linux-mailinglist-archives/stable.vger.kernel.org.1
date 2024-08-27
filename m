@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-71165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70656-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32F2C9611FD
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:25:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31FB7960F60
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:58:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C55ECB28C11
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:25:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E46702817A0
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:58:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 512BE1C6F6D;
-	Tue, 27 Aug 2024 15:25:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9381D1C6F6C;
+	Tue, 27 Aug 2024 14:57:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JWoeypSD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HDgzDY4e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DEB9148302;
-	Tue, 27 Aug 2024 15:25:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F7FD1A08A3;
+	Tue, 27 Aug 2024 14:57:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772315; cv=none; b=rKXWstzx3B8sCEnnN8flh+6g63Qk1IBIopkyRj9DccSu8ATl23+b7n6D/fhgRk3xJuaXiXUVIkFXfGlZWMFUAA+IcSVO3sa0vx/iBWqOw5s5I778gw0KvfJfzVxG5SuNePgoH3Q7KVmO6Bn8VfvUOTr1q6waA2pK4N+CYdQ6gro=
+	t=1724770634; cv=none; b=GSorHTfobkTwgkJA90Z15gsZnFYYIotEK9E+bP7Z2N3mCHEJo6TvjYoeskdBl2VSU15XJTXe3WhtdoZY7+Bin60OPEz0oBU/DqOm9sY784+pclvcPyw9QZkEj8FnnY4jti16Mv0GyqPTfZVXs6D8wBNFfmqOGzqt7DrCrrK53/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772315; c=relaxed/simple;
-	bh=KZ6LtXZUwEbpsiy8GWqfBEsAvf1Gg2RWP8Hx8NthBEg=;
+	s=arc-20240116; t=1724770634; c=relaxed/simple;
+	bh=A3cCMo7ac5ydjSJleZI6CP/WmG8mHBDUTQ+xtkF7FRs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uhP+3tgBLlxQD1bXA8m+AHlPoIDFx2VvXwMDpua4V7S7r+iLSpeqKS/xJQkT3xLTFn3fcXzb4q/srOGMKdv/cdEsrFXxq1B9CXv1j9cgkBDbw/Lm5wFY9nQ9SPpJFqh6YJqVfF+J7KmEIPm35vlgaV1C2vQftySt28VWCqU+w78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JWoeypSD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28E51C61071;
-	Tue, 27 Aug 2024 15:25:13 +0000 (UTC)
+	 MIME-Version; b=tHLed4+VOF3jybHVpZYsBME9Zl2OI4bmEu+Y9Y5evnF/4R5dnFSZw7JxxrYXfuB9twq36GSGRqZHdkhMqfM7r+tSNGVQYlU6rwLWN2gsAftvpQIIaJgE9ZAuGp3TXxcR9aOuifCifggeuZEqI+hGQnxRHC5Ykr9vaGgx/xdxS/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HDgzDY4e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E3EFC4FE80;
+	Tue, 27 Aug 2024 14:57:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772314;
-	bh=KZ6LtXZUwEbpsiy8GWqfBEsAvf1Gg2RWP8Hx8NthBEg=;
+	s=korg; t=1724770633;
+	bh=A3cCMo7ac5ydjSJleZI6CP/WmG8mHBDUTQ+xtkF7FRs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JWoeypSDR9IY7BqUm+FaWcS5ut0Fsen9SHxOentc72/oLem3zupP6i2Fs85dXq7bP
-	 IW24UWkzoZpYTj6dKQRm1GNrLoOOtHluygMlJDEIJ2mDM33AhXFUWMTyIiiNQBGvNr
-	 cx1wHEvdE/w4LCzLT66iMQaZ1+gU43HjYodtOXf0=
+	b=HDgzDY4eWc7RDlkUpAC52+CACdPg1ZwgMdllhTZE3Dm49ral5oRNMXfzxfKjzs40m
+	 ljwRnV4etP1V8Zsw9EeKGqhH+UTXU7IaO084N1DQyoEzodK6C6x5acUtC55+g+Fpft
+	 2/73vlp3JL2cGTSaClC9WkYrpQF4jVqp4sudScGY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li zeming <zeming@nfschina.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 178/321] powerpc/boot: Handle allocation failure in simple_realloc()
-Date: Tue, 27 Aug 2024 16:38:06 +0200
-Message-ID: <20240827143845.006503867@linuxfoundation.org>
+Subject: [PATCH 6.6 256/341] bonding: fix bond_ipsec_offload_ok return type
+Date: Tue, 27 Aug 2024 16:38:07 +0200
+Message-ID: <20240827143853.149467453@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li zeming <zeming@nfschina.com>
+From: Nikolay Aleksandrov <razor@blackwall.org>
 
-[ Upstream commit 69b0194ccec033c208b071e019032c1919c2822d ]
+[ Upstream commit fc59b9a5f7201b9f7272944596113a82cc7773d5 ]
 
-simple_malloc() will return NULL when there is not enough memory left.
-Check pointer 'new' before using it to copy the old data.
+Fix the return type which should be bool.
 
-Signed-off-by: Li zeming <zeming@nfschina.com>
-[mpe: Reword subject, use change log from Christophe]
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20221219021816.3012-1-zeming@nfschina.com
+Fixes: 955b785ec6b3 ("bonding: fix suspicious RCU usage in bond_ipsec_offload_ok()")
+Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
+Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/boot/simple_alloc.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/bonding/bond_main.c | 18 ++++++------------
+ 1 file changed, 6 insertions(+), 12 deletions(-)
 
-diff --git a/arch/powerpc/boot/simple_alloc.c b/arch/powerpc/boot/simple_alloc.c
-index 267d6524caac4..db9aaa5face3f 100644
---- a/arch/powerpc/boot/simple_alloc.c
-+++ b/arch/powerpc/boot/simple_alloc.c
-@@ -112,7 +112,9 @@ static void *simple_realloc(void *ptr, unsigned long size)
- 		return ptr;
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index 722ac5c4992c9..b4f8f5112edd5 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -599,34 +599,28 @@ static bool bond_ipsec_offload_ok(struct sk_buff *skb, struct xfrm_state *xs)
+ 	struct net_device *real_dev;
+ 	struct slave *curr_active;
+ 	struct bonding *bond;
+-	int err;
++	bool ok = false;
  
- 	new = simple_malloc(size);
--	memcpy(new, ptr, p->size);
-+	if (new)
-+		memcpy(new, ptr, p->size);
-+
- 	simple_free(ptr);
- 	return new;
+ 	bond = netdev_priv(bond_dev);
+ 	rcu_read_lock();
+ 	curr_active = rcu_dereference(bond->curr_active_slave);
+ 	real_dev = curr_active->dev;
+ 
+-	if (BOND_MODE(bond) != BOND_MODE_ACTIVEBACKUP) {
+-		err = false;
++	if (BOND_MODE(bond) != BOND_MODE_ACTIVEBACKUP)
+ 		goto out;
+-	}
+ 
+-	if (!xs->xso.real_dev) {
+-		err = false;
++	if (!xs->xso.real_dev)
+ 		goto out;
+-	}
+ 
+ 	if (!real_dev->xfrmdev_ops ||
+ 	    !real_dev->xfrmdev_ops->xdo_dev_offload_ok ||
+-	    netif_is_bond_master(real_dev)) {
+-		err = false;
++	    netif_is_bond_master(real_dev))
+ 		goto out;
+-	}
+ 
+-	err = real_dev->xfrmdev_ops->xdo_dev_offload_ok(skb, xs);
++	ok = real_dev->xfrmdev_ops->xdo_dev_offload_ok(skb, xs);
+ out:
+ 	rcu_read_unlock();
+-	return err;
++	return ok;
  }
+ 
+ static const struct xfrmdev_ops bond_xfrmdev_ops = {
 -- 
 2.43.0
 
