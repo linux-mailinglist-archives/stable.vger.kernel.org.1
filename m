@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-70892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70642-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38E9496108B
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:10:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C688B960F4E
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:58:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E30691F21269
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:10:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 049C21C2341E
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:58:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AB1B1C5793;
-	Tue, 27 Aug 2024 15:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF76A1C5792;
+	Tue, 27 Aug 2024 14:56:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kujlh2aJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bLdTc2NO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05CF11BC9E3;
-	Tue, 27 Aug 2024 15:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8BBA1BC097;
+	Tue, 27 Aug 2024 14:56:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771409; cv=none; b=u6qeKxvtzua6r/CcamZZFX2IEHXWKvr1E0FAEN1j4FEySly+vXiEhhRZy8AEm6XxrqKiUh6uwU2B6xTXAJa7ZP2UdkrQqO4wWqsIyRMdvBAaf8JvnAo+2VWKLwX2NG8rDBpzrXtTi3vBofhA4+CX9bNipHnkUPivsv29B1UUoKM=
+	t=1724770587; cv=none; b=bF4a72S0hikC2dhV850mLJaCqBqx4VhV91u0Dq0MYZL70xHXt0URhDDbxcqN9B+CWGe8M0Ssf1Jt6J8mVId1nB5FKIEe6X0Iu4O29Ye6BNz/haK+4utjt8BXQzrM4Ol/cNm1DEMGDoEXZquTrqFuw6wXW0prEOMFlWIkWjMSt90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771409; c=relaxed/simple;
-	bh=NT4QdPYqCz+WusQB/+ZQYA4ilQMtZE00pcIwkrLk3Q4=;
+	s=arc-20240116; t=1724770587; c=relaxed/simple;
+	bh=Z9ObqPLBiXxW07aTy7KA4lwgfEOa2Fhlp2DdWZK6FAw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p2wybHV/CrNMTaIsrBOK2hOMV/l1cp6xCOQGBgXsdwdni2jpt868GXD02dLAPMPsmuUeknE3Ro6Xqpia48Tv4cQAmCj82ZJ65z9ZnPLhOGSB6ebz2x27JqR6OVJU2CHDrdCEzn5bIcZIL+mcqUFVZHXb+9tTVUFXWmiXyFSBdOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kujlh2aJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 681DBC4AF52;
-	Tue, 27 Aug 2024 15:10:08 +0000 (UTC)
+	 MIME-Version; b=VFaBYbeFyiTLqxXjUFBzSZp/lBtx3ZvDpeV3LAgTk5GFxrI/j1cTJjUK+oW2gN7huh5SmGVU3vlMnKA71v/Bu/x2tg9ysGozS/ot+q/GiC1V2OvLBQcgWowP2LYpMaB1dkREFWhK/quM2r6UPtQYMp6rZINoAzQNS4Vok0hT8sM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bLdTc2NO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10AC3C4FE01;
+	Tue, 27 Aug 2024 14:56:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771408;
-	bh=NT4QdPYqCz+WusQB/+ZQYA4ilQMtZE00pcIwkrLk3Q4=;
+	s=korg; t=1724770587;
+	bh=Z9ObqPLBiXxW07aTy7KA4lwgfEOa2Fhlp2DdWZK6FAw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kujlh2aJEHj1+EEj4BsfGrEI7J2/9NTdsbaVY1sFGCXxcUW1074LN7onzq+MEntbj
-	 s5q1tIfwfaSDHrTnRUp8zqbFfEVj7MbyPidn8e3LrmyosWbxjmDrVTr65aJcbY2zfG
-	 h/C0FvXl6RWmQA5BwiVZDqdCMe40TT+VJojsy75U=
+	b=bLdTc2NOZKoIcwSarsWhbyAjik2p1E5cqg3dOL/01x6vA2LPUhYOzpVe+VdLJPidu
+	 MZhvPwkXSwf56V+5xQ3B17OprYcDOGFGvhAbOrIgh3bkX/8ABdP4ddk+MH5z53LeBC
+	 R8Gm/QBLDpolokinHSoGicVdPUtFe/1bUTExsuq0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Fietkau <nbd@nbd.name>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Bharat Bhushan <bbhushan2@marvell.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 180/273] udp: fix receiving fraglist GSO packets
+Subject: [PATCH 6.6 273/341] octeontx2-af: Fix CPT AF register offset calculation
 Date: Tue, 27 Aug 2024 16:38:24 +0200
-Message-ID: <20240827143840.261409658@linuxfoundation.org>
+Message-ID: <20240827143853.787615039@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +63,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Bharat Bhushan <bbhushan2@marvell.com>
 
-[ Upstream commit b128ed5ab27330deeeaf51ea8bb69f1442a96f7f ]
+[ Upstream commit af688a99eb1fc7ef69774665d61e6be51cea627a ]
 
-When assembling fraglist GSO packets, udp4_gro_complete does not set
-skb->csum_start, which makes the extra validation in __udp_gso_segment fail.
+Some CPT AF registers are per LF and others are global. Translation
+of PF/VF local LF slot number to actual LF slot number is required
+only for accessing perf LF registers. CPT AF global registers access
+do not require any LF slot number. Also, there is no reason CPT
+PF/VF to know actual lf's register offset.
 
-Fixes: 89add40066f9 ("net: drop bad gso csum_start and offset in virtio_net_hdr")
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20240819150621.59833-1-nbd@nbd.name
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Without this fix microcode loading will fail, VFs cannot be created
+and hardware is not usable.
+
+Fixes: bc35e28af789 ("octeontx2-af: replace cpt slot with lf id on reg write")
+Signed-off-by: Bharat Bhushan <bbhushan2@marvell.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20240821070558.1020101-1-bbhushan2@marvell.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/udp_offload.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ .../ethernet/marvell/octeontx2/af/rvu_cpt.c   | 23 +++++++++----------
+ 1 file changed, 11 insertions(+), 12 deletions(-)
 
-diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
-index ee9af921556a7..5b54f4f32b1cd 100644
---- a/net/ipv4/udp_offload.c
-+++ b/net/ipv4/udp_offload.c
-@@ -279,7 +279,8 @@ struct sk_buff *__udp_gso_segment(struct sk_buff *gso_skb,
- 		return ERR_PTR(-EINVAL);
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cpt.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cpt.c
+index 3e09d22858147..daf4b951e9059 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_cpt.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_cpt.c
+@@ -632,7 +632,9 @@ int rvu_mbox_handler_cpt_inline_ipsec_cfg(struct rvu *rvu,
+ 	return ret;
+ }
  
- 	if (unlikely(skb_checksum_start(gso_skb) !=
--		     skb_transport_header(gso_skb)))
-+		     skb_transport_header(gso_skb) &&
-+		     !(skb_shinfo(gso_skb)->gso_type & SKB_GSO_FRAGLIST)))
- 		return ERR_PTR(-EINVAL);
+-static bool is_valid_offset(struct rvu *rvu, struct cpt_rd_wr_reg_msg *req)
++static bool validate_and_update_reg_offset(struct rvu *rvu,
++					   struct cpt_rd_wr_reg_msg *req,
++					   u64 *reg_offset)
+ {
+ 	u64 offset = req->reg_offset;
+ 	int blkaddr, num_lfs, lf;
+@@ -663,6 +665,11 @@ static bool is_valid_offset(struct rvu *rvu, struct cpt_rd_wr_reg_msg *req)
+ 		if (lf < 0)
+ 			return false;
  
- 	if (skb_gso_ok(gso_skb, features | NETIF_F_GSO_ROBUST)) {
++		/* Translate local LF's offset to global CPT LF's offset to
++		 * access LFX register.
++		 */
++		*reg_offset = (req->reg_offset & 0xFF000) + (lf << 3);
++
+ 		return true;
+ 	} else if (!(req->hdr.pcifunc & RVU_PFVF_FUNC_MASK)) {
+ 		/* Registers that can be accessed from PF */
+@@ -697,7 +704,7 @@ int rvu_mbox_handler_cpt_rd_wr_register(struct rvu *rvu,
+ 					struct cpt_rd_wr_reg_msg *rsp)
+ {
+ 	u64 offset = req->reg_offset;
+-	int blkaddr, lf;
++	int blkaddr;
+ 
+ 	blkaddr = validate_and_get_cpt_blkaddr(req->blkaddr);
+ 	if (blkaddr < 0)
+@@ -708,18 +715,10 @@ int rvu_mbox_handler_cpt_rd_wr_register(struct rvu *rvu,
+ 	    !is_cpt_vf(rvu, req->hdr.pcifunc))
+ 		return CPT_AF_ERR_ACCESS_DENIED;
+ 
+-	if (!is_valid_offset(rvu, req))
++	if (!validate_and_update_reg_offset(rvu, req, &offset))
+ 		return CPT_AF_ERR_ACCESS_DENIED;
+ 
+-	/* Translate local LF used by VFs to global CPT LF */
+-	lf = rvu_get_lf(rvu, &rvu->hw->block[blkaddr], req->hdr.pcifunc,
+-			(offset & 0xFFF) >> 3);
+-
+-	/* Translate local LF's offset to global CPT LF's offset */
+-	offset &= 0xFF000;
+-	offset += lf << 3;
+-
+-	rsp->reg_offset = offset;
++	rsp->reg_offset = req->reg_offset;
+ 	rsp->ret_val = req->ret_val;
+ 	rsp->is_write = req->is_write;
+ 
 -- 
 2.43.0
 
