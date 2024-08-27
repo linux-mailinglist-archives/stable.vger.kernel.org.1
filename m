@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-70697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71233-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97723960F93
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:00:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D454C961270
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:31:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CABAC1C23506
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:00:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 921702811F7
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:31:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4BD11C86EA;
-	Tue, 27 Aug 2024 14:59:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56B0A1D1F4B;
+	Tue, 27 Aug 2024 15:28:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y6XfVBV4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wCoMQJWZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92DB81C825C;
-	Tue, 27 Aug 2024 14:59:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1313C1C9ECD;
+	Tue, 27 Aug 2024 15:28:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770768; cv=none; b=uVb03x9Goi/rQMt2tqQ4Ns3s5LsI8SIbb0s1TmNXRCp+YcfBY0NLa4W/Pl4FYIOhTYeBRjyXTGPceRs6/r6Yfxx0eIQ5SCZfz+OBk75HH2O0T8No7e/TlufN58N+K7xQvyaYzNlCOB+AGZ05Tk98BOJzX8unAleSOkJfDOmhoFQ=
+	t=1724772537; cv=none; b=I0FpqOpfZ3XdawQ1Q5S1myz8QMXOhajQO714Jo36A0goyhIw/m0Bm1T5bCOBRssjMjEmiOQ8wwcJEkz1ZmkspLxlFkQiAYObkrs1+GyszJywb55FPUjts6b5LES0DlholrF7KWYRlYE5tWsEteTSm1dTkRYZJyt7VMBH87cUPz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770768; c=relaxed/simple;
-	bh=g9l38UhvPVQ/4ZBVc7/C/5ayHhD2LyfvbnT2WF+Yqrw=;
+	s=arc-20240116; t=1724772537; c=relaxed/simple;
+	bh=uP0fimkxKPzsIQ/IK05YbrOhkXtBOEzQ9ThgGIr0wN0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EHvNlGtq3+fP1uVd+g7+sbQqM0YMa0R25SMRy3G1/KJs5DeRdZUVziHG1u84UauSyodl/P6Q9zv+1LIKJJoA0PtMBe6oJ8Fpa9M3g27iD6sPRjg3JB3KJlkzT1aQXe/jaC6dRQbvDv2aiqybrO0AKRq0LoE2PbdIodT9CCc9OVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y6XfVBV4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D33EC61044;
-	Tue, 27 Aug 2024 14:59:27 +0000 (UTC)
+	 MIME-Version; b=p4TJfZHVyuzk/+acC+h3j7aW+l3ZLJCfMpiBmIBtmarms/sVlqnY9pQIeY3iw/AuRdcbglKhjOaK/7r910ONgvTXZRgQD5ZteCtgmn3TuZw2c48ged6Etj2whsGprMfcWjTqg7KW7xGlc0KqPHk47T8tZr0FFwPpDdLqpqKPM1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wCoMQJWZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76307C4AF15;
+	Tue, 27 Aug 2024 15:28:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770768;
-	bh=g9l38UhvPVQ/4ZBVc7/C/5ayHhD2LyfvbnT2WF+Yqrw=;
+	s=korg; t=1724772536;
+	bh=uP0fimkxKPzsIQ/IK05YbrOhkXtBOEzQ9ThgGIr0wN0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y6XfVBV4vzbSkb5ZoWL0C3Iy8Rl2+dRYZ6e4cvZVA+SaSvCxi3h+aCmmkpW7bkWr6
-	 XAPCbGlGkO01kORy06Qx3JyHZ2NdZ9cZaKT8lKOpQLB/Tmj7iezCrYWon6ihAFS4u2
-	 NqAEkSVKmJIRXFEOu27zM/EmJSbn8mZK6XrJfFaI=
+	b=wCoMQJWZyQk3+gFw2JgOYGjpAEp9DbHIVlzzhVVus/tVOH4BytKejbFSPWRrXj/qz
+	 G314CgeD4WOLWx6b0FlzU3dOEismXoPm9xkEOsmPA+9sb8F0C6zRM3BBbwKKS1HXh/
+	 61JNuH8ZldTivczM1zcQKW65mUK0qRukaYh1jx0A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 321/341] selftests: mptcp: join: check re-using ID of closed subflow
-Date: Tue, 27 Aug 2024 16:39:12 +0200
-Message-ID: <20240827143855.608633894@linuxfoundation.org>
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Alexander Lobakin <alexandr.lobakin@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 245/321] ice: Pull out next_to_clean bump out of ice_put_rx_buf()
+Date: Tue, 27 Aug 2024 16:39:13 +0200
+Message-ID: <20240827143847.569544554@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,99 +63,134 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
 
-commit 65fb58afa341ad68e71e5c4d816b407e6a683a66 upstream.
+[ Upstream commit d7956d81f1502d3818500cff4847f3e9ae0c6aa4 ]
 
-This test extends "delete and re-add" to validate the previous commit. A
-new 'subflow' endpoint is added, but the subflow request will be
-rejected. The result is that no subflow will be established from this
-address.
+Plan is to move ice_put_rx_buf() to the end of ice_clean_rx_irq() so
+in order to keep the ability of walking through HW Rx descriptors, pull
+out next_to_clean handling out of ice_put_rx_buf().
 
-Later, the endpoint is removed and re-added after having cleared the
-firewall rule. Before the previous commit, the client would not have
-been able to create this new subflow.
-
-While at it, extra checks have been added to validate the expected
-numbers of MPJ and RM_ADDR.
-
-The 'Fixes' tag here below is the same as the one from the previous
-commit: this patch here is not fixing anything wrong in the selftests,
-but it validates the previous fix for an issue introduced by this commit
-ID.
-
-Fixes: b6c08380860b ("mptcp: remove addr and subflow in PM netlink")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20240819-net-mptcp-pm-reusing-id-v1-4-38035d40de5b@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Reviewed-by: Alexander Lobakin <alexandr.lobakin@intel.com>
+Link: https://lore.kernel.org/bpf/20230131204506.219292-5-maciej.fijalkowski@intel.com
+Stable-dep-of: 50b2143356e8 ("ice: fix page reuse when PAGE_SIZE is over 8k")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh |   27 +++++++++++++++++++-----
- 1 file changed, 22 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_txrx.c | 29 +++++++++++++----------
+ 1 file changed, 16 insertions(+), 13 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -481,9 +481,10 @@ reset_with_tcp_filter()
- 	local ns="${!1}"
- 	local src="${2}"
- 	local target="${3}"
-+	local chain="${4:-INPUT}"
+diff --git a/drivers/net/ethernet/intel/ice/ice_txrx.c b/drivers/net/ethernet/intel/ice/ice_txrx.c
+index 977b268802dfa..6f930d99b496b 100644
+--- a/drivers/net/ethernet/intel/ice/ice_txrx.c
++++ b/drivers/net/ethernet/intel/ice/ice_txrx.c
+@@ -898,11 +898,12 @@ ice_reuse_rx_page(struct ice_rx_ring *rx_ring, struct ice_rx_buf *old_buf)
+  * for use by the CPU.
+  */
+ static struct ice_rx_buf *
+-ice_get_rx_buf(struct ice_rx_ring *rx_ring, const unsigned int size)
++ice_get_rx_buf(struct ice_rx_ring *rx_ring, const unsigned int size,
++	       const unsigned int ntc)
+ {
+ 	struct ice_rx_buf *rx_buf;
  
- 	if ! ip netns exec "${ns}" ${iptables} \
--			-A INPUT \
-+			-A "${chain}" \
- 			-s "${src}" \
- 			-p tcp \
- 			-j "${target}"; then
-@@ -3575,10 +3576,10 @@ endpoint_tests()
- 		mptcp_lib_kill_wait $tests_pid
- 	fi
+-	rx_buf = &rx_ring->rx_buf[rx_ring->next_to_clean];
++	rx_buf = &rx_ring->rx_buf[ntc];
+ 	rx_buf->pgcnt =
+ #if (PAGE_SIZE < 8192)
+ 		page_count(rx_buf->page);
+@@ -1040,19 +1041,12 @@ ice_construct_skb(struct ice_rx_ring *rx_ring, struct ice_rx_buf *rx_buf,
+  * @rx_ring: Rx descriptor ring to transact packets on
+  * @rx_buf: Rx buffer to pull data from
+  *
+- * This function will update next_to_clean and then clean up the contents
+- * of the rx_buf. It will either recycle the buffer or unmap it and free
+- * the associated resources.
++ * This function will clean up the contents of the rx_buf. It will either
++ * recycle the buffer or unmap it and free the associated resources.
+  */
+ static void
+ ice_put_rx_buf(struct ice_rx_ring *rx_ring, struct ice_rx_buf *rx_buf)
+ {
+-	u16 ntc = rx_ring->next_to_clean + 1;
+-
+-	/* fetch, update, and store next to clean */
+-	ntc = (ntc < rx_ring->count) ? ntc : 0;
+-	rx_ring->next_to_clean = ntc;
+-
+ 	if (!rx_buf)
+ 		return;
  
--	if reset "delete and re-add" &&
-+	if reset_with_tcp_filter "delete and re-add" ns2 10.0.3.2 REJECT OUTPUT &&
- 	   mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
--		pm_nl_set_limits $ns1 1 1
--		pm_nl_set_limits $ns2 1 1
-+		pm_nl_set_limits $ns1 0 2
-+		pm_nl_set_limits $ns2 0 2
- 		pm_nl_add_endpoint $ns2 10.0.2.2 id 2 dev ns2eth2 flags subflow
- 		test_linkfail=4 speed=20 \
- 			run_tests $ns1 $ns2 10.0.1.1 &
-@@ -3595,11 +3596,27 @@ endpoint_tests()
- 		chk_subflow_nr "after delete" 1
- 		chk_mptcp_info subflows 0 subflows 0
+@@ -1114,6 +1108,8 @@ int ice_clean_rx_irq(struct ice_rx_ring *rx_ring, int budget)
+ 	unsigned int xdp_res, xdp_xmit = 0;
+ 	struct sk_buff *skb = rx_ring->skb;
+ 	struct bpf_prog *xdp_prog = NULL;
++	u32 ntc = rx_ring->next_to_clean;
++	u32 cnt = rx_ring->count;
+ 	bool failure;
  
--		pm_nl_add_endpoint $ns2 10.0.2.2 dev ns2eth2 flags subflow
-+		pm_nl_add_endpoint $ns2 10.0.2.2 id 2 dev ns2eth2 flags subflow
- 		wait_mpj $ns2
- 		chk_subflow_nr "after re-add" 2
- 		chk_mptcp_info subflows 1 subflows 1
-+
-+		pm_nl_add_endpoint $ns2 10.0.3.2 id 3 flags subflow
-+		wait_attempt_fail $ns2
-+		chk_subflow_nr "after new reject" 2
-+		chk_mptcp_info subflows 1 subflows 1
-+
-+		ip netns exec "${ns2}" ${iptables} -D OUTPUT -s "10.0.3.2" -p tcp -j REJECT
-+		pm_nl_del_endpoint $ns2 3 10.0.3.2
-+		pm_nl_add_endpoint $ns2 10.0.3.2 id 3 flags subflow
-+		wait_mpj $ns2
-+		chk_subflow_nr "after no reject" 3
-+		chk_mptcp_info subflows 2 subflows 2
-+
- 		mptcp_lib_kill_wait $tests_pid
-+
-+		chk_join_nr 3 3 3
-+		chk_rm_nr 1 1
- 	fi
- }
+ 	/* Frame size depend on rx_ring setup when PAGE_SIZE=4K */
+@@ -1136,7 +1132,7 @@ int ice_clean_rx_irq(struct ice_rx_ring *rx_ring, int budget)
+ 		u16 rx_ptype;
  
+ 		/* get the Rx desc from Rx ring based on 'next_to_clean' */
+-		rx_desc = ICE_RX_DESC(rx_ring, rx_ring->next_to_clean);
++		rx_desc = ICE_RX_DESC(rx_ring, ntc);
+ 
+ 		/* status_error_len will always be zero for unused descriptors
+ 		 * because it's cleared in cleanup, and overlaps with hdr_addr
+@@ -1160,6 +1156,8 @@ int ice_clean_rx_irq(struct ice_rx_ring *rx_ring, int budget)
+ 			if (rx_desc->wb.rxdid == FDIR_DESC_RXDID &&
+ 			    ctrl_vsi->vf)
+ 				ice_vc_fdir_irq_handler(ctrl_vsi, rx_desc);
++			if (++ntc == cnt)
++				ntc = 0;
+ 			ice_put_rx_buf(rx_ring, NULL);
+ 			cleaned_count++;
+ 			continue;
+@@ -1169,7 +1167,7 @@ int ice_clean_rx_irq(struct ice_rx_ring *rx_ring, int budget)
+ 			ICE_RX_FLX_DESC_PKT_LEN_M;
+ 
+ 		/* retrieve a buffer from the ring */
+-		rx_buf = ice_get_rx_buf(rx_ring, size);
++		rx_buf = ice_get_rx_buf(rx_ring, size, ntc);
+ 
+ 		if (!size) {
+ 			xdp->data = NULL;
+@@ -1203,6 +1201,8 @@ int ice_clean_rx_irq(struct ice_rx_ring *rx_ring, int budget)
+ 		total_rx_pkts++;
+ 
+ 		cleaned_count++;
++		if (++ntc == cnt)
++			ntc = 0;
+ 		ice_put_rx_buf(rx_ring, rx_buf);
+ 		continue;
+ construct_skb:
+@@ -1222,6 +1222,8 @@ int ice_clean_rx_irq(struct ice_rx_ring *rx_ring, int budget)
+ 			break;
+ 		}
+ 
++		if (++ntc == cnt)
++			ntc = 0;
+ 		ice_put_rx_buf(rx_ring, rx_buf);
+ 		cleaned_count++;
+ 
+@@ -1262,6 +1264,7 @@ int ice_clean_rx_irq(struct ice_rx_ring *rx_ring, int budget)
+ 		total_rx_pkts++;
+ 	}
+ 
++	rx_ring->next_to_clean = ntc;
+ 	/* return up to cleaned_count buffers to hardware */
+ 	failure = ice_alloc_rx_bufs(rx_ring, cleaned_count);
+ 
+-- 
+2.43.0
+
 
 
 
