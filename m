@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-70925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71218-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DA8F9610B5
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:12:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D641B961288
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:32:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A06061F23542
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:12:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 36691B2A5BC
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:30:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 433161C57A9;
-	Tue, 27 Aug 2024 15:11:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 649E81CF2B7;
+	Tue, 27 Aug 2024 15:28:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1/qugPCU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZAiL7Qi+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01FF91C3F19;
-	Tue, 27 Aug 2024 15:11:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22AA31C8FCF;
+	Tue, 27 Aug 2024 15:28:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771519; cv=none; b=Z5rlFgevPv8fsv4WpMVWI7NePwebzHyv0eM10PPiTHfna1lVu0rmbMNJz/wRl9tV+Pf7o9eN93ht9XfUgyLnHdoAJpQ8i7U8dpejS0HIw0/LtwJHmq4Q0D3DB8PDhybgTDQ3mZVEbpAutQTceSd85DaxTpicL/dzhfz5CZNx5fk=
+	t=1724772486; cv=none; b=LoFfRPm50nsYgoF4LAa4Qo8BRjRaANlBuuNcOlRj5vtpYJwfaIo3M4IuNakhFAdyFwwI3pKMOOX2rzFWPeCXAaGz9xilcmUM7+YZEQEKr73y6OXDa/Z3lpQYWkksDxGy/H1oHxud3bqItWnb5cp+M64p//8b4RuCrO3iZNgfTVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771519; c=relaxed/simple;
-	bh=fmBmM4dPJAdkvdN9jV3ZzflEaYFM+ynGGyVqByPFcJ0=;
+	s=arc-20240116; t=1724772486; c=relaxed/simple;
+	bh=i0ZBk0oUNe170wuKTsDCbMv0r/JYqd2WP77U/s0udx8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=agdiQ+XdjlgDBOszZkGwGeAmL/NrfdetP2Z/d6Hgs5n/Dr1UAl2CcBLjFcwNTIiFEr/bc7aPvGIb8W8QeBiWCJ5gT2F9OidEF3HCyoKpd62y+fVsvA6gUMK55INvovZsbYGYDDtA7SSZGcY8tbBUVfFh01qs8Le3G4kugphZet4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1/qugPCU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6413FC4DDF6;
-	Tue, 27 Aug 2024 15:11:58 +0000 (UTC)
+	 MIME-Version; b=Rss6u1cKaCJPQ/I4Ia0q23BOADnPJ6wuy+or9Ax2kYGA35ytD4d70HvGCl1LL0h2Xs79N+7aD0RSy7dNzYxuFkA9mlBnhGEp59OokPfPWfdHKYyq9pKhSVLs5/Zcz6bECCuQaFOIPGTdhq4rAMQXD0FW5SMMhJZP1QP1kdMX/SA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZAiL7Qi+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 904B1C61047;
+	Tue, 27 Aug 2024 15:28:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771518;
-	bh=fmBmM4dPJAdkvdN9jV3ZzflEaYFM+ynGGyVqByPFcJ0=;
+	s=korg; t=1724772486;
+	bh=i0ZBk0oUNe170wuKTsDCbMv0r/JYqd2WP77U/s0udx8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1/qugPCUd3K/UIk/X/aYdPg4QJyBggrDFxBEkSrFguCYwu7dUK/jOkQ06oZpqd2HZ
-	 QGOW/RjoAhJ3va8IRsHsfRlKbRzKLoWhDhjAzZqfUqljBHnTxJTRxUAruHPitEvda5
-	 9bEtmbzeyYfATDLcEDPDxfxb8MwWwfBgan7ShUqo=
+	b=ZAiL7Qi+HhZDMJGIr5r2oFTYgmj4WfJm+IR8zHscWR0UM4cpVjkzvfhxWTLsj6jqW
+	 Lc5IkDeF0oxZWqMHnvp6kE2X1e3imgWwjqU5PhaYyRRlYWqAwrpWtzb59eDBihYAXw
+	 dIzl9jLH8QTdtjNlTeHpt66i11zCn89eDDzCplnk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Brost <matthew.brost@intel.com>,
-	Francois Dugast <francois.dugast@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 213/273] drm/xe: Relax runtime pm protection during execution
+Subject: [PATCH 6.1 229/321] selftests: udpgro: report error when receive failed
 Date: Tue, 27 Aug 2024 16:38:57 +0200
-Message-ID: <20240827143841.513804911@linuxfoundation.org>
+Message-ID: <20240827143846.948320721@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,144 +61,143 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rodrigo Vivi <rodrigo.vivi@intel.com>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-[ Upstream commit ad1e331fc451a2cffc72ae193b843682ce237e24 ]
+[ Upstream commit 7167395a4be7930ecac6a33b4e54d7e3dd9ee209 ]
 
-Limit the protection only during moments of actual job execution,
-and introduce protection for guc submit fini, which is currently
-unprotected due to the absence of exec_queue life protection.
+Currently, we only check the latest senders's exit code. If the receiver
+report failed, it is not recoreded. Fix it by checking the exit code
+of all the involved processes.
 
-In the regular use case scenario, user space will create an
-exec queue, and keep it alive to reuse that until it is done
-with that kind of workload.
+Before:
+  bad GRO lookup       ok
+  multiple GRO socks   ./udpgso_bench_rx: recv: bad packet len, got 1452, expected 14520
 
-For the regular desktop cases, it means that the exec_queue
-is alive even on idle scenarios where display goes off. This
-is unacceptable since this would entirely block runtime PM
-indefinitely, blocking deeper Package-C state. This would be
-a waste drainage of power.
+ ./udpgso_bench_rx: recv: bad packet len, got 1452, expected 14520
 
-Cc: Matthew Brost <matthew.brost@intel.com>
-Tested-by: Francois Dugast <francois.dugast@intel.com>
-Reviewed-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240522170105.327472-3-rodrigo.vivi@intel.com
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Stable-dep-of: 9e7f30563677 ("drm/xe: Free job before xe_exec_queue_put")
+ failed
+ $ echo $?
+ 0
+
+After:
+  bad GRO lookup       ok
+  multiple GRO socks   ./udpgso_bench_rx: recv: bad packet len, got 1452, expected 14520
+
+ ./udpgso_bench_rx: recv: bad packet len, got 1452, expected 14520
+
+ failed
+ $ echo $?
+ 1
+
+Fixes: 3327a9c46352 ("selftests: add functionals test for UDP GRO")
+Suggested-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_exec_queue.c | 14 --------------
- drivers/gpu/drm/xe/xe_guc_submit.c |  3 +++
- drivers/gpu/drm/xe/xe_sched_job.c  | 10 +++-------
- 3 files changed, 6 insertions(+), 21 deletions(-)
+ tools/testing/selftests/net/udpgro.sh | 44 ++++++++++++++++-----------
+ 1 file changed, 27 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_exec_queue.c b/drivers/gpu/drm/xe/xe_exec_queue.c
-index 395de93579fa6..33b03605a1d15 100644
---- a/drivers/gpu/drm/xe/xe_exec_queue.c
-+++ b/drivers/gpu/drm/xe/xe_exec_queue.c
-@@ -106,7 +106,6 @@ static struct xe_exec_queue *__xe_exec_queue_alloc(struct xe_device *xe,
+diff --git a/tools/testing/selftests/net/udpgro.sh b/tools/testing/selftests/net/udpgro.sh
+index af5dc57c8ce93..241c6c37994d8 100755
+--- a/tools/testing/selftests/net/udpgro.sh
++++ b/tools/testing/selftests/net/udpgro.sh
+@@ -46,17 +46,19 @@ run_one() {
+ 	local -r all="$@"
+ 	local -r tx_args=${all%rx*}
+ 	local -r rx_args=${all#*rx}
++	local ret=0
  
- static int __xe_exec_queue_init(struct xe_exec_queue *q)
- {
--	struct xe_device *xe = gt_to_xe(q->gt);
- 	int i, err;
+ 	cfg_veth
  
- 	for (i = 0; i < q->width; ++i) {
-@@ -119,17 +118,6 @@ static int __xe_exec_queue_init(struct xe_exec_queue *q)
- 	if (err)
- 		goto err_lrc;
+-	ip netns exec "${PEER_NS}" ./udpgso_bench_rx -C 1000 -R 10 ${rx_args} && \
+-		echo "ok" || \
+-		echo "failed" &
++	ip netns exec "${PEER_NS}" ./udpgso_bench_rx -C 1000 -R 10 ${rx_args} &
++	local PID1=$!
  
--	/*
--	 * Normally the user vm holds an rpm ref to keep the device
--	 * awake, and the context holds a ref for the vm, however for
--	 * some engines we use the kernels migrate vm underneath which offers no
--	 * such rpm ref, or we lack a vm. Make sure we keep a ref here, so we
--	 * can perform GuC CT actions when needed. Caller is expected to have
--	 * already grabbed the rpm ref outside any sensitive locks.
--	 */
--	if (!(q->flags & EXEC_QUEUE_FLAG_PERMANENT) && (q->flags & EXEC_QUEUE_FLAG_VM || !q->vm))
--		xe_pm_runtime_get_noresume(xe);
--
- 	return 0;
- 
- err_lrc:
-@@ -216,8 +204,6 @@ void xe_exec_queue_fini(struct xe_exec_queue *q)
- 
- 	for (i = 0; i < q->width; ++i)
- 		xe_lrc_finish(q->lrc + i);
--	if (!(q->flags & EXEC_QUEUE_FLAG_PERMANENT) && (q->flags & EXEC_QUEUE_FLAG_VM || !q->vm))
--		xe_pm_runtime_put(gt_to_xe(q->gt));
- 	__xe_exec_queue_free(q);
+ 	wait_local_port_listen ${PEER_NS} 8000 udp
+ 	./udpgso_bench_tx ${tx_args}
+-	ret=$?
+-	wait $(jobs -p)
++	check_err $?
++	wait ${PID1}
++	check_err $?
++	[ "$ret" -eq 0 ] && echo "ok" || echo "failed"
+ 	return $ret
  }
  
-diff --git a/drivers/gpu/drm/xe/xe_guc_submit.c b/drivers/gpu/drm/xe/xe_guc_submit.c
-index 0f42971ff0a83..8c75791cbc4fb 100644
---- a/drivers/gpu/drm/xe/xe_guc_submit.c
-+++ b/drivers/gpu/drm/xe/xe_guc_submit.c
-@@ -35,6 +35,7 @@
- #include "xe_macros.h"
- #include "xe_map.h"
- #include "xe_mocs.h"
-+#include "xe_pm.h"
- #include "xe_ring_ops_types.h"
- #include "xe_sched_job.h"
- #include "xe_trace.h"
-@@ -1011,6 +1012,7 @@ static void __guc_exec_queue_fini_async(struct work_struct *w)
- 	struct xe_exec_queue *q = ge->q;
- 	struct xe_guc *guc = exec_queue_to_guc(q);
+@@ -73,6 +75,7 @@ run_one_nat() {
+ 	local -r all="$@"
+ 	local -r tx_args=${all%rx*}
+ 	local -r rx_args=${all#*rx}
++	local ret=0
  
-+	xe_pm_runtime_get(guc_to_xe(guc));
- 	trace_xe_exec_queue_destroy(q);
+ 	if [[ ${tx_args} = *-4* ]]; then
+ 		ipt_cmd=iptables
+@@ -93,16 +96,17 @@ run_one_nat() {
+ 	# ... so that GRO will match the UDP_GRO enabled socket, but packets
+ 	# will land on the 'plain' one
+ 	ip netns exec "${PEER_NS}" ./udpgso_bench_rx -G ${family} -b ${addr1} -n 0 &
+-	pid=$!
+-	ip netns exec "${PEER_NS}" ./udpgso_bench_rx -C 1000 -R 10 ${family} -b ${addr2%/*} ${rx_args} && \
+-		echo "ok" || \
+-		echo "failed"&
++	local PID1=$!
++	ip netns exec "${PEER_NS}" ./udpgso_bench_rx -C 1000 -R 10 ${family} -b ${addr2%/*} ${rx_args} &
++	local PID2=$!
  
- 	if (xe_exec_queue_is_lr(q))
-@@ -1021,6 +1023,7 @@ static void __guc_exec_queue_fini_async(struct work_struct *w)
- 
- 	kfree(ge);
- 	xe_exec_queue_fini(q);
-+	xe_pm_runtime_put(guc_to_xe(guc));
+ 	wait_local_port_listen "${PEER_NS}" 8000 udp
+ 	./udpgso_bench_tx ${tx_args}
+-	ret=$?
+-	kill -INT $pid
+-	wait $(jobs -p)
++	check_err $?
++	kill -INT ${PID1}
++	wait ${PID2}
++	check_err $?
++	[ "$ret" -eq 0 ] && echo "ok" || echo "failed"
+ 	return $ret
  }
  
- static void guc_exec_queue_fini_async(struct xe_exec_queue *q)
-diff --git a/drivers/gpu/drm/xe/xe_sched_job.c b/drivers/gpu/drm/xe/xe_sched_job.c
-index cd8a2fba54389..a4e030f5e019a 100644
---- a/drivers/gpu/drm/xe/xe_sched_job.c
-+++ b/drivers/gpu/drm/xe/xe_sched_job.c
-@@ -158,11 +158,7 @@ struct xe_sched_job *xe_sched_job_create(struct xe_exec_queue *q,
- 	for (i = 0; i < width; ++i)
- 		job->batch_addr[i] = batch_addr[i];
+@@ -111,20 +115,26 @@ run_one_2sock() {
+ 	local -r all="$@"
+ 	local -r tx_args=${all%rx*}
+ 	local -r rx_args=${all#*rx}
++	local ret=0
  
--	/* All other jobs require a VM to be open which has a ref */
--	if (unlikely(q->flags & EXEC_QUEUE_FLAG_KERNEL))
--		xe_pm_runtime_get_noresume(job_to_xe(job));
--	xe_device_assert_mem_access(job_to_xe(job));
--
-+	xe_pm_runtime_get_noresume(job_to_xe(job));
- 	trace_xe_sched_job_create(job);
- 	return job;
+ 	cfg_veth
  
-@@ -191,13 +187,13 @@ void xe_sched_job_destroy(struct kref *ref)
- {
- 	struct xe_sched_job *job =
- 		container_of(ref, struct xe_sched_job, refcount);
-+	struct xe_device *xe = job_to_xe(job);
+ 	ip netns exec "${PEER_NS}" ./udpgso_bench_rx -C 1000 -R 10 ${rx_args} -p 12345 &
+-	ip netns exec "${PEER_NS}" ./udpgso_bench_rx -C 2000 -R 10 ${rx_args} && \
+-		echo "ok" || \
+-		echo "failed" &
++	local PID1=$!
++	ip netns exec "${PEER_NS}" ./udpgso_bench_rx -C 2000 -R 10 ${rx_args} &
++	local PID2=$!
  
--	if (unlikely(job->q->flags & EXEC_QUEUE_FLAG_KERNEL))
--		xe_pm_runtime_put(job_to_xe(job));
- 	xe_exec_queue_put(job->q);
- 	dma_fence_put(job->fence);
- 	drm_sched_job_cleanup(&job->drm);
- 	job_free(job);
-+	xe_pm_runtime_put(xe);
+ 	wait_local_port_listen "${PEER_NS}" 12345 udp
+ 	./udpgso_bench_tx ${tx_args} -p 12345
++	check_err $?
+ 	wait_local_port_listen "${PEER_NS}" 8000 udp
+ 	./udpgso_bench_tx ${tx_args}
+-	ret=$?
+-	wait $(jobs -p)
++	check_err $?
++	wait ${PID1}
++	check_err $?
++	wait ${PID2}
++	check_err $?
++	[ "$ret" -eq 0 ] && echo "ok" || echo "failed"
+ 	return $ret
  }
  
- void xe_sched_job_set_error(struct xe_sched_job *job, int error)
 -- 
 2.43.0
 
