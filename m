@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-71225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70652-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C5AF961263
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:30:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE4AA960F5B
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:58:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 328871F22FBB
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:30:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 98F7E1F248A4
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:58:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E1DB1CB126;
-	Tue, 27 Aug 2024 15:28:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1697B1C6F63;
+	Tue, 27 Aug 2024 14:57:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O5qLgZLC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wHNnHp20"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E82931C8FCF;
-	Tue, 27 Aug 2024 15:28:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C814E1C6F58;
+	Tue, 27 Aug 2024 14:57:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772510; cv=none; b=h3EN8e8Gew+zdftnImUqieG+dtGZrhdANRry0yQWSuZBsKn6Ilnu7c8ILMJFZ1OVAJdQQaNT4cvvFrQrQtCYKIS0OxZDDQibQd7UzfqmO3nV4KAYUUds45/pgJj3n3c6Z5aWEf7Sg8ZX1apnYwNtac7Ow9pT8R60k3KvnSlw/iU=
+	t=1724770620; cv=none; b=E3XZZVDgt0m/Gb0ha4655FTT5FTR3v+tLICpXPCKJhntmicHDFhsCfz5gEx7FvKs0arWyQVvNEZFDZa/lgA1Y/5myigwZ3dWqujOKQnaeT2JG/Ra1en/11IQEQe7z65ywtxxUDmd8iiFw7UqR4UEHDU39+iowL+6iVecbO31HZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772510; c=relaxed/simple;
-	bh=15ND0/OmnlhDWZQU/Pfj1+qXlnppLPNQlonez7Tw9QQ=;
+	s=arc-20240116; t=1724770620; c=relaxed/simple;
+	bh=XBVPqrawQdAWyvnFHLuAi8iD32nPZwWSGyj3pk12OOo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oJSkaX+wJUvx/6vekYqGxZnHyB6tuAUbPtGv1B9EP7Ra+ixpivqBq5BHcdHmxYgIwBfCzVIs8G/FGWT/3RlSCS9h/If/ISRg+ZjmnxMYDTlHl9tZHh6VUrfJF1O5yET0Rl7rqXX3SFcaFUxZmKI10+mLayO29rO+1vSSsdJEWBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O5qLgZLC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68D85C6104E;
-	Tue, 27 Aug 2024 15:28:29 +0000 (UTC)
+	 MIME-Version; b=JRXB6lvFedXGZSsssuVLADntSWKIo+Fqc/ZZBcMl9IOZAgcdCAeqYKUiPE/Gr4Xk+NZrSjhWi246p4rFVmtIpwgZZYRPj0AWYTPLaYm5S+CLaXThGB3Gl4s1YTT3d9f4LVJFEzoO5/RojdwRyxckh3oMaSi73rvM5hcJTjkl3fQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wHNnHp20; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4361DC4FE01;
+	Tue, 27 Aug 2024 14:57:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772509;
-	bh=15ND0/OmnlhDWZQU/Pfj1+qXlnppLPNQlonez7Tw9QQ=;
+	s=korg; t=1724770620;
+	bh=XBVPqrawQdAWyvnFHLuAi8iD32nPZwWSGyj3pk12OOo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O5qLgZLCPHgHdE9/ZcSmICGbQyFCaAxfLcrRosKz/3yjJ+pUU2MVAF1tYXTOusBj8
-	 Q2BH1xtMO+Iels9cB223SdHL8mtZY+a1rnyQAdQ4PZ+0LKwfcVOZcvlTIB/oYlgwLT
-	 S843TIhCG1QVg2P6lJL8pS8/PgMxZ+h92b/tsK+E=
+	b=wHNnHp20xeEujWdyPvCn+GbdImZHjS9rSIGNksgxq/r1UC4MntfLXRUTblOn+VbPc
+	 dq2EUSXn53EpAeQIlxpMoYqgsJMBeqa0CMab8xVWZ8eRKDdkXQrIe6L3W1XLsrGOnA
+	 XgLKM9dM//R6v2bDgli8uAtsCQVFRmVCtnQ1XTDg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 205/321] nvmet-rdma: fix possible bad dereference when freeing rsps
+Subject: [PATCH 6.6 282/341] drm/msm/dpu: capture snapshot on the first commit_done timeout
 Date: Tue, 27 Aug 2024 16:38:33 +0200
-Message-ID: <20240827143846.037511249@linuxfoundation.org>
+Message-ID: <20240827143854.129641939@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,87 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sagi Grimberg <sagi@grimberg.me>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 73964c1d07c054376f1b32a62548571795159148 ]
+[ Upstream commit 4be445f5b6b6810baf397b2d159bd07c3573fd75 ]
 
-It is possible that the host connected and saw a cm established
-event and started sending nvme capsules on the qp, however the
-ctrl did not yet see an established event. This is why the
-rsp_wait_list exists (for async handling of these cmds, we move
-them to a pending list).
+In order to debug commit_done timeouts, capture the devcoredump state
+when the first timeout occurs after the encoder has been enabled.
 
-Furthermore, it is possible that the ctrl cm times out, resulting
-in a connect-error cm event. in this case we hit a bad deref [1]
-because in nvmet_rdma_free_rsps we assume that all the responses
-are in the free list.
-
-We are freeing the cmds array anyways, so don't even bother to
-remove the rsp from the free_list. It is also guaranteed that we
-are not racing anything when we are releasing the queue so no
-other context accessing this array should be running.
-
-[1]:
---
-Workqueue: nvmet-free-wq nvmet_rdma_free_queue_work [nvmet_rdma]
-[...]
-pc : nvmet_rdma_free_rsps+0x78/0xb8 [nvmet_rdma]
-lr : nvmet_rdma_free_queue_work+0x88/0x120 [nvmet_rdma]
- Call trace:
- nvmet_rdma_free_rsps+0x78/0xb8 [nvmet_rdma]
- nvmet_rdma_free_queue_work+0x88/0x120 [nvmet_rdma]
- process_one_work+0x1ec/0x4a0
- worker_thread+0x48/0x490
- kthread+0x158/0x160
- ret_from_fork+0x10/0x18
---
-
-Signed-off-by: Sagi Grimberg <sagi@grimberg.me>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/579850/
+Link: https://lore.kernel.org/r/20240226-fd-dpu-debug-timeout-v4-3-51eec83dde23@linaro.org
+Stable-dep-of: aedf02e46eb5 ("drm/msm/dpu: move dpu_encoder's connector assignment to atomic_enable()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/rdma.c | 16 ++++------------
- 1 file changed, 4 insertions(+), 12 deletions(-)
+ drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/nvme/target/rdma.c b/drivers/nvme/target/rdma.c
-index 4597bca43a6d8..a6d55ebb82382 100644
---- a/drivers/nvme/target/rdma.c
-+++ b/drivers/nvme/target/rdma.c
-@@ -473,12 +473,8 @@ nvmet_rdma_alloc_rsps(struct nvmet_rdma_queue *queue)
- 	return 0;
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
+index ba60997350890..0c57588044641 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder.c
+@@ -124,6 +124,8 @@ enum dpu_enc_rc_states {
+  * @base:		drm_encoder base class for registration with DRM
+  * @enc_spinlock:	Virtual-Encoder-Wide Spin Lock for IRQ purposes
+  * @enabled:		True if the encoder is active, protected by enc_lock
++ * @commit_done_timedout: True if there has been a timeout on commit after
++ *			enabling the encoder.
+  * @num_phys_encs:	Actual number of physical encoders contained.
+  * @phys_encs:		Container of physical encoders managed.
+  * @cur_master:		Pointer to the current master in this mode. Optimization
+@@ -172,6 +174,7 @@ struct dpu_encoder_virt {
+ 	spinlock_t enc_spinlock;
  
- out_free:
--	while (--i >= 0) {
--		struct nvmet_rdma_rsp *rsp = &queue->rsps[i];
--
--		list_del(&rsp->free_list);
--		nvmet_rdma_free_rsp(ndev, rsp);
--	}
-+	while (--i >= 0)
-+		nvmet_rdma_free_rsp(ndev, &queue->rsps[i]);
- 	kfree(queue->rsps);
- out:
- 	return ret;
-@@ -489,12 +485,8 @@ static void nvmet_rdma_free_rsps(struct nvmet_rdma_queue *queue)
- 	struct nvmet_rdma_device *ndev = queue->dev;
- 	int i, nr_rsps = queue->recv_queue_size * 2;
+ 	bool enabled;
++	bool commit_done_timedout;
  
--	for (i = 0; i < nr_rsps; i++) {
--		struct nvmet_rdma_rsp *rsp = &queue->rsps[i];
--
--		list_del(&rsp->free_list);
--		nvmet_rdma_free_rsp(ndev, rsp);
--	}
-+	for (i = 0; i < nr_rsps; i++)
-+		nvmet_rdma_free_rsp(ndev, &queue->rsps[i]);
- 	kfree(queue->rsps);
- }
+ 	unsigned int num_phys_encs;
+ 	struct dpu_encoder_phys *phys_encs[MAX_PHYS_ENCODERS_PER_VIRTUAL];
+@@ -1210,6 +1213,9 @@ static void dpu_encoder_virt_atomic_enable(struct drm_encoder *drm_enc,
+ 	dpu_enc->dsc = dpu_encoder_get_dsc_config(drm_enc);
  
+ 	mutex_lock(&dpu_enc->enc_lock);
++
++	dpu_enc->commit_done_timedout = false;
++
+ 	cur_mode = &dpu_enc->base.crtc->state->adjusted_mode;
+ 
+ 	trace_dpu_enc_enable(DRMID(drm_enc), cur_mode->hdisplay,
+@@ -2446,6 +2452,10 @@ int dpu_encoder_wait_for_commit_done(struct drm_encoder *drm_enc)
+ 			DPU_ATRACE_BEGIN("wait_for_commit_done");
+ 			ret = phys->ops.wait_for_commit_done(phys);
+ 			DPU_ATRACE_END("wait_for_commit_done");
++			if (ret == -ETIMEDOUT && !dpu_enc->commit_done_timedout) {
++				dpu_enc->commit_done_timedout = true;
++				msm_disp_snapshot_state(drm_enc->dev);
++			}
+ 			if (ret)
+ 				return ret;
+ 		}
 -- 
 2.43.0
 
