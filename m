@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-71267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70976-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA3C796129D
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:33:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF7969610FB
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:15:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DCCC31C21070
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:33:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 76C2C1F21259
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:15:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B91D1C93A0;
-	Tue, 27 Aug 2024 15:30:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3363E1C6F58;
+	Tue, 27 Aug 2024 15:14:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lYHc9zaL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nt52RJUC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09A861C8FCF;
-	Tue, 27 Aug 2024 15:30:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E60EE1A072D;
+	Tue, 27 Aug 2024 15:14:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772648; cv=none; b=DOiJWFZ8Pv7HF0Kb8iH8h46waMja3IUoGj/KBDYhWVor61dFAKDSwtXDFcNRgrRl0o3U/ljpXq98UYkZKF7V50dztRdvQ8V/7coMLwBEprhSSLWzoKKiFbfopSHSubjFPuxy8RGERafgkfo8/OjdZVew9FkA9eu5C/+Ddm0RyYY=
+	t=1724771687; cv=none; b=XNtMAPwD9CYbCzg9GWv0IJSIEQURMAJb/yjlV+Z/+edtnsil/8kfFlJ66YGXvYV2KKwUT82Pd8qbVEGJyEWlxmy1iPOorSSZyKLMhIqbI0ryWdz3Lfwr43RASUTaBOGVEd6DuPMDLvTeBmoIcd/bPALZrVlOGVd5mU1TanNXelo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772648; c=relaxed/simple;
-	bh=yTWvek5LpIowtjvLJVm09eYUa0f1EfTHya2oz8sqd5o=;
+	s=arc-20240116; t=1724771687; c=relaxed/simple;
+	bh=O1fd0EcFmG7917xB5crjGjGErFw6kMCoZwGS0Qh0cXk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ro/sFJ5EZJfMdU7c801S++I05rfwZ+jntC3GGItbJFv5/FXp/5whhTC5hGlQDdveSQf3VQ0U7n8rAtQxcHuF6eXJdF1nzXqHvQiTClRDqfARIJ9Ry3VkpPvXkXDVcShOVaSqqZY293elmQ6MytuTq9CgwvT+jLJCF+AtZUGD3TM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lYHc9zaL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76C6EC4DDE6;
-	Tue, 27 Aug 2024 15:30:47 +0000 (UTC)
+	 MIME-Version; b=Xlo3naoBJKVXc4TTXFR1SDF4wuLmjlf3zFOkjlNXCzzlKYwfAPeMSU4qafusTCNQLsp39CCPgEwPbP5xEraW6g3T8dNmFTvqBqdgolez3m5NQIx9+arDN2tL5zwaT3L771NztL5zhc5jfhxuh2TwM5volwVIVbVRBlDnvsWWsxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nt52RJUC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E3BBC61064;
+	Tue, 27 Aug 2024 15:14:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772647;
-	bh=yTWvek5LpIowtjvLJVm09eYUa0f1EfTHya2oz8sqd5o=;
+	s=korg; t=1724771686;
+	bh=O1fd0EcFmG7917xB5crjGjGErFw6kMCoZwGS0Qh0cXk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lYHc9zaLPkwZ+c+6+MKrDhD9Dp1lgAokBIU0jtz44R+7P3LyNJiU4O9xo3MchgW0n
-	 8eBOPpBzu1RBeqNVp6ZXvOx1J3RWu9GSX0uaQ+q0YY8pmzuEESwWOUnmvw+VtdMAj1
-	 k+gUfBMcIA63x5Mh90/N0t+GdsfM2/iHIn4AZFzM=
+	b=Nt52RJUCwpar4v3DsMoRN19bu/wU0wyQh3IsamH48h9WGHZxMQ/0Mk1DBF2DJ5L36
+	 lhP1OUv5q2nfJ86ZakfWFV5VquPevcvZxWvast2Umkb6cfYL7JgapAt1N4rHziaV+A
+	 Har0xCiihWeee3vKQUrRXtbu1WSBLMTKyAgiJbU0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Geliang Tang <geliang@kernel.org>,
 	Mat Martineau <martineau@kernel.org>,
 	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 278/321] mptcp: pm: re-using ID of unused flushed subflows
+Subject: [PATCH 6.10 262/273] mptcp: pm: only in-kernel cannot have entries with ID 0
 Date: Tue, 27 Aug 2024 16:39:46 +0200
-Message-ID: <20240827143848.834613342@linuxfoundation.org>
+Message-ID: <20240827143843.368541435@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit ef34a6ea0cab1800f4b3c9c3c2cefd5091e03379 upstream.
+commit ca6e55a703ca2894611bb5c5bca8bfd2290fd91e upstream.
 
-If no subflows are attached to the 'subflow' endpoints that are being
-flushed, the corresponding addr IDs will not be marked as available
-again.
+The ID 0 is specific per MPTCP connections. The per netns entries cannot
+have this special ID 0 then.
 
-Mark all ID as being available when flushing all the 'subflow'
-endpoints, and reset local_addr_used counter to cover these cases.
+But that's different for the userspace PM where the entries are per
+connection, they can then use this special ID 0.
 
-Note that mptcp_pm_remove_addrs_and_subflows() helper is only called for
-flushing operations, not to remove a specific set of addresses and
-subflows.
-
-Fixes: 06faa2271034 ("mptcp: remove multi addresses and subflows in PM")
+Fixes: f40be0db0b76 ("mptcp: unify pm get_flags_and_ifindex_by_id")
 Cc: stable@vger.kernel.org
+Acked-by: Geliang Tang <geliang@kernel.org>
 Reviewed-by: Mat Martineau <martineau@kernel.org>
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20240819-net-mptcp-pm-reusing-id-v1-5-38035d40de5b@kernel.org
+Link: https://patch.msgid.link/20240819-net-mptcp-pm-reusing-id-v1-11-38035d40de5b@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/pm_netlink.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ net/mptcp/pm.c         |    3 ---
+ net/mptcp/pm_netlink.c |    4 ++++
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
+--- a/net/mptcp/pm.c
++++ b/net/mptcp/pm.c
+@@ -434,9 +434,6 @@ int mptcp_pm_get_flags_and_ifindex_by_id
+ 	*flags = 0;
+ 	*ifindex = 0;
+ 
+-	if (!id)
+-		return 0;
+-
+ 	if (mptcp_pm_is_userspace(msk))
+ 		return mptcp_userspace_pm_get_flags_and_ifindex_by_id(msk, id, flags, ifindex);
+ 	return mptcp_pm_nl_get_flags_and_ifindex_by_id(msk, id, flags, ifindex);
 --- a/net/mptcp/pm_netlink.c
 +++ b/net/mptcp/pm_netlink.c
-@@ -1666,8 +1666,15 @@ void mptcp_pm_remove_addrs_and_subflows(
- 		mptcp_pm_remove_addr(msk, &alist);
- 		spin_unlock_bh(&msk->pm.lock);
- 	}
-+
- 	if (slist.nr)
- 		mptcp_pm_remove_subflow(msk, &slist);
-+
-+	/* Reset counters: maybe some subflows have been removed before */
-+	spin_lock_bh(&msk->pm.lock);
-+	bitmap_fill(msk->pm.id_avail_bitmap, MPTCP_PM_MAX_ADDR_ID + 1);
-+	msk->pm.local_addr_used = 0;
-+	spin_unlock_bh(&msk->pm.lock);
- }
+@@ -1395,6 +1395,10 @@ int mptcp_pm_nl_get_flags_and_ifindex_by
+ 	struct sock *sk = (struct sock *)msk;
+ 	struct net *net = sock_net(sk);
  
- static void mptcp_nl_remove_addrs_list(struct net *net,
++	/* No entries with ID 0 */
++	if (id == 0)
++		return 0;
++
+ 	rcu_read_lock();
+ 	entry = __lookup_addr_by_id(pm_nl_get_pernet(net), id);
+ 	if (entry) {
 
 
 
