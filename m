@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-70911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70660-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D83999610A4
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:11:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ECC9960F66
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:59:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9633A2822C3
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:11:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2C769B2469F
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:59:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEA641C6887;
-	Tue, 27 Aug 2024 15:11:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6808C1C825C;
+	Tue, 27 Aug 2024 14:57:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T/sxVoxp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MY0Dz40M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D8F41C6881;
-	Tue, 27 Aug 2024 15:11:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24D181E487;
+	Tue, 27 Aug 2024 14:57:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771473; cv=none; b=mfCg9doJFO0PvSmEG0PvSOGgDrlTLWJ83GvlZWdsnlMv9d30pWl1EWgkcfLExeHOy0Xl5c9aOcxeqoEMIeULYBPWlhkqG6cYAPM3Jt7dyMR2wvZD4QZe2yG6Bn8hMvXhY/hG0P92w5esYpg60FzexX650NFTsiEs1w+COVVQFbs=
+	t=1724770647; cv=none; b=XUYnQoGLAQWsYFUW5DqSfaTCGpizWOHbI8P/YT9B7qOBsfgXedf/Npdo0aH5KGVoEtOpIpQsHtv1WKjh7xOkp2uZyl31BlvR8fZxgIp5BRTOE1cehMvayesCf6Gy4xw5b2EtnknS0hlxWSqdrqSv6CdjiRimTk7jRam2hFfZeUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771473; c=relaxed/simple;
-	bh=04L+D9jArrrlnYWljTwMt9fWdMjedjP73Z1jGJiypcQ=;
+	s=arc-20240116; t=1724770647; c=relaxed/simple;
+	bh=vOxDFoOQ7IUCRvcapMi/xNUFwChV9CCfETRn9oB06dg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CrzdPY9jlpV+14/49wrUHbGRbohCLyS2ocdu0MVDwp8e3SC7Yc0Zqa+YEpGx9zyK4MO/9cs5WOefGGL+od+8L3uq5xDmwtj8SZP2b71Kvhu3LddLPuW5GsK7HK/D+P1fJHvi+hTz4AvPZlza6TqwHkzcyoO1aK1CRBPLSUyL27c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T/sxVoxp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC7DEC4DDF2;
-	Tue, 27 Aug 2024 15:11:12 +0000 (UTC)
+	 MIME-Version; b=GlrAn0jx3ICm9jdlBUwgSlTFGeiwhCXDnydk2LMCFcxZT7MG5C27QxhJ5V9p40yTqUGGBjd/5F2Ow94NYyofgndt0YXHo98p8sSBJPorsajNFlOWlVN159Dv5yRMZ5+EfX+i6pdvhbcyHnpr9vEQc2wqaP2OziJd/Q+6ciFX+JM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MY0Dz40M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A86AC61044;
+	Tue, 27 Aug 2024 14:57:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771473;
-	bh=04L+D9jArrrlnYWljTwMt9fWdMjedjP73Z1jGJiypcQ=;
+	s=korg; t=1724770647;
+	bh=vOxDFoOQ7IUCRvcapMi/xNUFwChV9CCfETRn9oB06dg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T/sxVoxpBUdIDY/udlNFxSOlYylQOx+e6yzY3EyjJE8sJ/rWgSxJkJoijdPtSttNm
-	 h5WWSExbYUPcCqOPU525AyBQN3lSoC8HaM2F5aorZu9PaWvoaq0KHCYqtDEix17nnS
-	 yoKZKXIqG7wtybM2prHD2/dnOhv7gGxUqyuaSGjs=
+	b=MY0Dz40Me55s4kl38JbaQUGy0STWOV90DGhirAlHCcmK1NljGoeLHVnJfu1L5XJDU
+	 OdBFdVl796QUki9pgmcpNPwFotQ3UgzhEKIJEWur4SdO6dMcENWBZUQt9wMcz1B1Er
+	 XuwZIWn7e/oEyKfFrCbN5i7KAX/iNzIHncRA2D7w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Bogendoerfer <tbogendoerfer@suse.de>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 167/273] ip6_tunnel: Fix broken GRO
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Chandan Kumar Rout <chandanx.rout@intel.com>
+Subject: [PATCH 6.6 260/341] ice: fix page reuse when PAGE_SIZE is over 8k
 Date: Tue, 27 Aug 2024 16:38:11 +0200
-Message-ID: <20240827143839.764135272@linuxfoundation.org>
+Message-ID: <20240827143853.298277245@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Bogendoerfer <tbogendoerfer@suse.de>
+From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
 
-[ Upstream commit 4b3e33fcc38f7750604b065c55a43e94c5bc3145 ]
+[ Upstream commit 50b2143356e888777fc5bca023c39f34f404613a ]
 
-GRO code checks for matching layer 2 headers to see, if packet belongs
-to the same flow and because ip6 tunnel set dev->hard_header_len
-this check fails in cases, where it shouldn't. To fix this don't
-set hard_header_len, but use needed_headroom like ipv4/ip_tunnel.c
-does.
+Architectures that have PAGE_SIZE >= 8192 such as arm64 should act the
+same as x86 currently, meaning reuse of a page should only take place
+when no one else is busy with it.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Thomas Bogendoerfer <tbogendoerfer@suse.de>
-Link: https://patch.msgid.link/20240815151419.109864-1-tbogendoerfer@suse.de
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Do two things independently of underlying PAGE_SIZE:
+- store the page count under ice_rx_buf::pgcnt
+- then act upon its value vs ice_rx_buf::pagecnt_bias when making the
+  decision regarding page reuse
+
+Fixes: 2b245cb29421 ("ice: Implement transmit and NAPI support")
+Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Tested-by: Chandan Kumar Rout <chandanx.rout@intel.com> (A Contingent Worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ip6_tunnel.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_txrx.c | 12 +++---------
+ 1 file changed, 3 insertions(+), 9 deletions(-)
 
-diff --git a/net/ipv6/ip6_tunnel.c b/net/ipv6/ip6_tunnel.c
-index 9dee0c1279554..87dfb565a9f81 100644
---- a/net/ipv6/ip6_tunnel.c
-+++ b/net/ipv6/ip6_tunnel.c
-@@ -1507,7 +1507,8 @@ static void ip6_tnl_link_config(struct ip6_tnl *t)
- 			tdev = __dev_get_by_index(t->net, p->link);
+diff --git a/drivers/net/ethernet/intel/ice/ice_txrx.c b/drivers/net/ethernet/intel/ice/ice_txrx.c
+index 49b1fa9651161..8e53195df2b1c 100644
+--- a/drivers/net/ethernet/intel/ice/ice_txrx.c
++++ b/drivers/net/ethernet/intel/ice/ice_txrx.c
+@@ -834,16 +834,15 @@ ice_can_reuse_rx_page(struct ice_rx_buf *rx_buf)
+ 	if (!dev_page_is_reusable(page))
+ 		return false;
  
- 		if (tdev) {
--			dev->hard_header_len = tdev->hard_header_len + t_hlen;
-+			dev->needed_headroom = tdev->hard_header_len +
-+				tdev->needed_headroom + t_hlen;
- 			mtu = min_t(unsigned int, tdev->mtu, IP6_MAX_MTU);
+-#if (PAGE_SIZE < 8192)
+ 	/* if we are only owner of page we can reuse it */
+ 	if (unlikely(rx_buf->pgcnt - pagecnt_bias > 1))
+ 		return false;
+-#else
++#if (PAGE_SIZE >= 8192)
+ #define ICE_LAST_OFFSET \
+ 	(SKB_WITH_OVERHEAD(PAGE_SIZE) - ICE_RXBUF_2048)
+ 	if (rx_buf->page_offset > ICE_LAST_OFFSET)
+ 		return false;
+-#endif /* PAGE_SIZE < 8192) */
++#endif /* PAGE_SIZE >= 8192) */
  
- 			mtu = mtu - t_hlen;
-@@ -1731,7 +1732,9 @@ ip6_tnl_siocdevprivate(struct net_device *dev, struct ifreq *ifr,
- int ip6_tnl_change_mtu(struct net_device *dev, int new_mtu)
- {
- 	struct ip6_tnl *tnl = netdev_priv(dev);
-+	int t_hlen;
+ 	/* If we have drained the page fragment pool we need to update
+ 	 * the pagecnt_bias and page count so that we fully restock the
+@@ -946,12 +945,7 @@ ice_get_rx_buf(struct ice_rx_ring *rx_ring, const unsigned int size,
+ 	struct ice_rx_buf *rx_buf;
  
-+	t_hlen = tnl->hlen + sizeof(struct ipv6hdr);
- 	if (tnl->parms.proto == IPPROTO_IPV6) {
- 		if (new_mtu < IPV6_MIN_MTU)
- 			return -EINVAL;
-@@ -1740,10 +1743,10 @@ int ip6_tnl_change_mtu(struct net_device *dev, int new_mtu)
- 			return -EINVAL;
- 	}
- 	if (tnl->parms.proto == IPPROTO_IPV6 || tnl->parms.proto == 0) {
--		if (new_mtu > IP6_MAX_MTU - dev->hard_header_len)
-+		if (new_mtu > IP6_MAX_MTU - dev->hard_header_len - t_hlen)
- 			return -EINVAL;
- 	} else {
--		if (new_mtu > IP_MAX_MTU - dev->hard_header_len)
-+		if (new_mtu > IP_MAX_MTU - dev->hard_header_len - t_hlen)
- 			return -EINVAL;
- 	}
- 	WRITE_ONCE(dev->mtu, new_mtu);
-@@ -1887,12 +1890,11 @@ ip6_tnl_dev_init_gen(struct net_device *dev)
- 	t_hlen = t->hlen + sizeof(struct ipv6hdr);
+ 	rx_buf = &rx_ring->rx_buf[ntc];
+-	rx_buf->pgcnt =
+-#if (PAGE_SIZE < 8192)
+-		page_count(rx_buf->page);
+-#else
+-		0;
+-#endif
++	rx_buf->pgcnt = page_count(rx_buf->page);
+ 	prefetchw(rx_buf->page);
  
- 	dev->type = ARPHRD_TUNNEL6;
--	dev->hard_header_len = LL_MAX_HEADER + t_hlen;
- 	dev->mtu = ETH_DATA_LEN - t_hlen;
- 	if (!(t->parms.flags & IP6_TNL_F_IGN_ENCAP_LIMIT))
- 		dev->mtu -= 8;
- 	dev->min_mtu = ETH_MIN_MTU;
--	dev->max_mtu = IP6_MAX_MTU - dev->hard_header_len;
-+	dev->max_mtu = IP6_MAX_MTU - dev->hard_header_len - t_hlen;
- 
- 	netdev_hold(dev, &t->dev_tracker, GFP_KERNEL);
- 	netdev_lockdep_set_classes(dev);
+ 	if (!size)
 -- 
 2.43.0
 
