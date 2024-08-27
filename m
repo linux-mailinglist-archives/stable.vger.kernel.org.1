@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-70814-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A4C596102B
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:06:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D281961004
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:05:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F18D51F23AFB
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:06:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B02E31C23542
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:05:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C21751C578E;
-	Tue, 27 Aug 2024 15:05:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AF9E1C6F56;
+	Tue, 27 Aug 2024 15:04:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m8qKoQDg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l+JbBSuH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8033573466;
-	Tue, 27 Aug 2024 15:05:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19FB919F485;
+	Tue, 27 Aug 2024 15:04:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771149; cv=none; b=E6z/kFfNQdNRDQ6CZ2CXuobp7wBBJ9boXd4rEhpCbUwPgyLymwmWrQEarvdTPVgVjSoZwEzJpl2jFRrh6qPGwrLrM8KemNFfzmlwAvg8pY15MupcGd45WEH/o5JPmAYoR9rRDAUvj2s95zKDtPywjkgMoPaNmiXa0+TLIhD/Qs0=
+	t=1724771046; cv=none; b=UH/zzrgK0j+jCBDu8Hk3SvyCXFGlA5vJa0RTd7NIEOsj1HdsgQp69YsLN5hOBU3ApjPYU3Bw5ooGNwCt00XrVML74m4VRTj4CwRx+W8dDl/17k3JPAttUnMx88AgA8Jj6YAJJ8iRzOPURx4JGDxlRWT0HQQ1yroRVqT/hUFhaGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771149; c=relaxed/simple;
-	bh=QkxtvJPzg2gZlok0EPU1QaTkk+fKA6rh5WkVAYxx01E=;
+	s=arc-20240116; t=1724771046; c=relaxed/simple;
+	bh=olwMzO0l2Kx3JmcBZR3xrBBRvNe8ad7aYH0QW/NuKt0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UVn5xOnJUT8gIr+H0KLc2u2+ynaVyX9XmAfDD4n98KRE5SbltXdKh6TpnvWIfJXFn6P8hzVcGodS0zxcHmpvCu9CsQeHalpbXVbjKDUsHWNjgkiwP83W2GpR1L/vnm7VJvbDY2cCsU5rlRhwriiQNwHa/zsfy+dOW2kzVifvLqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m8qKoQDg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24357C6106C;
-	Tue, 27 Aug 2024 15:05:47 +0000 (UTC)
+	 MIME-Version; b=Qy/3ysUfh4RGr9/GPNC+Y2aicII2NVfOJOnGJ7ZBZOXGJ7To1xpwkL319HBskCuG1fLDv4LC4AQcPQh8uSAH6ipZUG2XfzN0rhQE/r/FBn1h3VmzIRn23y6oR4QwYw/wnIZ3muM5jqu3dbq8s+UQU1zkJKnhUibP3tBQ13jtUkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l+JbBSuH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F53FC6104C;
+	Tue, 27 Aug 2024 15:04:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771149;
-	bh=QkxtvJPzg2gZlok0EPU1QaTkk+fKA6rh5WkVAYxx01E=;
+	s=korg; t=1724771045;
+	bh=olwMzO0l2Kx3JmcBZR3xrBBRvNe8ad7aYH0QW/NuKt0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m8qKoQDgWKNbBATTQeKpaqjTrHoho6bV6IXCRvXhQ//tHdZNV0+d8uMhL2dfmBiOq
-	 lE05OUD1gcMoAyio5nuhYM4TXvojL4vUhWcZm9h3bkgvLoU1pYu6RKCAb73r1ujPdw
-	 zGAbIzFx7MEGaSqKQ2NzR/ZwU7/jFo6h8lXPoSmI=
+	b=l+JbBSuH/JeBmBr6LQ9deBbPg0tnGb7HOMd7uj4ngb0YzP6+1Ui2Zk0uiRpOoYgHh
+	 bHNZLyn4QwyxgeK0qzAc1j/kjBzd3UQaE05K79gc2p494dlvvpuTy32JVUW5DZq5CL
+	 kqLOTepij2+B4b7yQDuakYaKRN76F7+1G8wNEavk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roman Li <roman.li@amd.com>,
-	Hamza Mahfooz <hamza.mahfooz@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.10 070/273] drm/amd/display: fix s2idle entry for DCN3.5+
-Date: Tue, 27 Aug 2024 16:36:34 +0200
-Message-ID: <20240827143836.079639947@linuxfoundation.org>
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Alvin Lee <alvin.lee2@amd.com>,
+	Loan Chen <lo-an.chen@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>
+Subject: [PATCH 6.10 071/273] drm/amd/display: Enable otg synchronization logic for DCN321
+Date: Tue, 27 Aug 2024 16:36:35 +0200
+Message-ID: <20240827143836.118832866@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
 References: <20240827143833.371588371@linuxfoundation.org>
@@ -66,38 +69,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Hamza Mahfooz <hamza.mahfooz@amd.com>
+From: Loan Chen <lo-an.chen@amd.com>
 
-commit f6098641d3e1e4d4052ff9378857c831f9675f6b upstream.
+commit 0dbb81d44108a2a1004e5b485ef3fca5bc078424 upstream.
 
-To be able to get to the lowest power state when suspending systems with
-DCN3.5+, we must be in IPS before the display hardware is put into
-D3cold. So, to ensure that the system always reaches the lowest power
-state while suspending, force systems that support IPS to enter idle
-optimizations before entering D3cold.
+[Why]
+Tiled display cannot synchronize properly after S3.
+The fix for commit 5f0c74915815 ("drm/amd/display: Fix for otg
+synchronization logic") is not enable in DCN321, which causes
+the otg is excluded from synchronization.
 
-Reviewed-by: Roman Li <roman.li@amd.com>
-Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+[How]
+Enable otg synchronization logic in dcn321.
+
+Fixes: 5f0c74915815 ("drm/amd/display: Fix for otg synchronization logic")
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
+Signed-off-by: Loan Chen <lo-an.chen@amd.com>
+Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 237193e21b29d4aa0617ffeea3d6f49e72999708)
-Cc: stable@vger.kernel.org # 6.10+
+(cherry picked from commit d6ed53712f583423db61fbb802606759e023bf7b)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c |    3 +++
+ drivers/gpu/drm/amd/display/dc/resource/dcn321/dcn321_resource.c |    3 +++
  1 file changed, 3 insertions(+)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -2724,6 +2724,9 @@ static int dm_suspend(void *handle)
+--- a/drivers/gpu/drm/amd/display/dc/resource/dcn321/dcn321_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dcn321/dcn321_resource.c
+@@ -1778,6 +1778,9 @@ static bool dcn321_resource_construct(
+ 	dc->caps.color.mpc.ogam_rom_caps.hlg = 0;
+ 	dc->caps.color.mpc.ocsc = 1;
  
- 	hpd_rx_irq_work_suspend(dm);
- 
-+	if (adev->dm.dc->caps.ips_support)
-+		dc_allow_idle_optimizations(adev->dm.dc, true);
++	/* Use pipe context based otg sync logic */
++	dc->config.use_pipe_ctx_sync_logic = true;
 +
- 	dc_set_power_state(dm->dc, DC_ACPI_CM_POWER_STATE_D3);
- 	dc_dmub_srv_set_power_state(dm->dc->ctx->dmub_srv, DC_ACPI_CM_POWER_STATE_D3);
- 
+ 	dc->config.dc_mode_clk_limit_support = true;
+ 	dc->config.enable_windowed_mpo_odm = true;
+ 	/* read VBIOS LTTPR caps */
 
 
 
