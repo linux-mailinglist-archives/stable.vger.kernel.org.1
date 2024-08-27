@@ -1,53 +1,51 @@
-Return-Path: <stable+bounces-71318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71301-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5B5F9612D1
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:35:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D827A9612C2
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:34:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 62D9A282026
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:35:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 08FD21C21112
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:34:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 178E91CB14E;
-	Tue, 27 Aug 2024 15:33:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FF0B1CEAAD;
+	Tue, 27 Aug 2024 15:32:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jqsWroF0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XKL4uoKv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C87651C9ECD;
-	Tue, 27 Aug 2024 15:33:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EB201C86F6;
+	Tue, 27 Aug 2024 15:32:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772819; cv=none; b=ODugv6cg3tzTBN0/LuRuTqwmeDIj/AcOMQhRmDKmDnrI6/aP/egwT9QJz1KWCwiFfvQLQxxaSs+O6CipOjm1Gq7+cQi5Gj6B/pjUmoqDib1HVVlzzxgXX3UdqIOLnKWkyMfSktvpIEU6bXvNU+VujUytDKxDZHGz+ByGlhWLRE4=
+	t=1724772762; cv=none; b=EjTaal4Op8kQZ8aIoH4weLJ1gXyeMzPGRVRs+eFHwgjKzBtAd4sEqza0PK+TdFLbPOPjlFX6qZ3KSPoSlOgeUL7rmtCataUpXWHhaEswQ1V1gNm2GphlrzX9DtTCc9cB4DXEDGxsvif/JoQVZMLAMrzQNA0deTwPLfpl+8CcabU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772819; c=relaxed/simple;
-	bh=wXeZDr/BRrZ31QfDLBKaiYD0D+vsxaY0+pxclWQIdh4=;
+	s=arc-20240116; t=1724772762; c=relaxed/simple;
+	bh=C53s0O+ioDjha0W1uWL5M8FWaJQDlPidmVrgAr2wEhk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rgXEGexEYeFCgGW3OO2ZjjJ9fV8MrVx6UozPvtmwzlXKrG68Fb+VzoWB34+lyKZpFtVFo6LIHDx5fp+6BpoWF3rzCVKKNBokfz+szlwCck/nXJTkTLmza0VyzbMLZpIu/q6JxxotJbkANFyUC7X5OXtSp8pfZ5ioi7FYl6dtdr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jqsWroF0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32648C61052;
-	Tue, 27 Aug 2024 15:33:39 +0000 (UTC)
+	 MIME-Version; b=SYbmCHNsD9K3LTVwvudPc0XCWtY3JeYe93MB7twG25T2QRDjZGHyNXCcZpQOK46ybp0Lh5MX5z1N4q+/qeUYYMwMTskph5ZknagfOxRQKs/vHj+5lwEU85UzTmhNtSbm01TUWSqpx0KH9wPmUyjFHRwE9NXyCubP+HvEVu22TD0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XKL4uoKv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88F48C61041;
+	Tue, 27 Aug 2024 15:32:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772819;
-	bh=wXeZDr/BRrZ31QfDLBKaiYD0D+vsxaY0+pxclWQIdh4=;
+	s=korg; t=1724772761;
+	bh=C53s0O+ioDjha0W1uWL5M8FWaJQDlPidmVrgAr2wEhk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jqsWroF0lHIxi+r5nhx7RvbtPMxIFYGrzr/puZ8WzxZe5QXooMe9Y62wiX7kfJi5X
-	 qcIN1GgWx+GYeHP72vI4S3ynZOuVTsyfry+SzCUHuPYEG0dUJaPogscEuYNQhy4VAe
-	 N1FkONni7oAn7ir3pBfZbHn0qFEklhL2UjWshp04=
+	b=XKL4uoKvjeZyqjqK/110g3fj50bCkRwR3T8KdjOvecTw0GPNNLE7FK0fhGMweZlV1
+	 tUDpy8dRDbNbYYe0K4jL4etBcMGfFtk4GyHwBhk2ahgW8MUzi+5T1d5LzORGUB6gTF
+	 ukfTJvz1JL//ZXG8FegWGNlSmQ7aTF6DlnMbD/hw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Fietkau <nbd@nbd.name>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Nicolas Escande <nico.escande@gmail.com>
-Subject: [PATCH 6.1 311/321] wifi: cfg80211: fix receiving mesh packets without RFC1042 header
-Date: Tue, 27 Aug 2024 16:40:19 +0200
-Message-ID: <20240827143850.095453959@linuxfoundation.org>
+	Andreas Gruenbacher <agruenba@redhat.com>
+Subject: [PATCH 6.1 312/321] gfs2: Fix another freeze/thaw hang
+Date: Tue, 27 Aug 2024 16:40:20 +0200
+Message-ID: <20240827143850.133658375@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
 References: <20240827143838.192435816@linuxfoundation.org>
@@ -66,35 +64,60 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Andreas Gruenbacher <agruenba@redhat.com>
 
-commit fec3ebb5ed299ac3a998f011c380f2ded47f4866 upstream.
+commit 52954b750958dcab9e44935f0c32643279091c85 upstream.
 
-Fix ethernet header length field after stripping the mesh header
+On a thawed filesystem, the freeze glock is held in shared mode.  In
+order to initiate a cluster-wide freeze, the node initiating the freeze
+drops the freeze glock and grabs it in exclusive mode.  The other nodes
+recognize this as contention on the freeze glock; function
+freeze_go_callback is invoked.  This indicates to them that they must
+freeze the filesystem locally, drop the freeze glock, and then
+re-acquire it in shared mode before being able to unfreeze the
+filesystem locally.
 
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/CT5GNZSK28AI.2K6M69OXM9RW5@syracuse/
-Fixes: 986e43b19ae9 ("wifi: mac80211: fix receiving A-MSDU frames on mesh interfaces")
-Reported-and-tested-by: Nicolas Escande <nico.escande@gmail.com>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Link: https://lore.kernel.org/r/20230711115052.68430-1-nbd@nbd.name
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+While a node is trying to re-acquire the freeze glock in shared mode,
+additional contention can occur.  In that case, the node must behave in
+the same way as above.
+
+Unfortunately, freeze_go_callback() contains a check that causes it to
+bail out when the freeze glock isn't held in shared mode.  Fix that to
+allow the glock to be unlocked or held in shared mode.
+
+In addition, update a reference to trylock_super() which has been
+renamed to super_trylock_shared() in the meantime.
+
+Fixes: b77b4a4815a9 ("gfs2: Rework freeze / thaw logic")
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/wireless/util.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/gfs2/glops.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/net/wireless/util.c
-+++ b/net/wireless/util.c
-@@ -580,6 +580,8 @@ int ieee80211_strip_8023_mesh_hdr(struct
- 		hdrlen += ETH_ALEN + 2;
- 	else if (!pskb_may_pull(skb, hdrlen))
- 		return -EINVAL;
-+	else
-+		payload.eth.h_proto = htons(skb->len - hdrlen);
+--- a/fs/gfs2/glops.c
++++ b/fs/gfs2/glops.c
+@@ -566,15 +566,16 @@ static void freeze_go_callback(struct gf
+ 	struct super_block *sb = sdp->sd_vfs;
  
- 	mesh_addr = skb->data + sizeof(payload.eth) + ETH_ALEN;
- 	switch (payload.flags & MESH_FLAGS_AE) {
+ 	if (!remote ||
+-	    gl->gl_state != LM_ST_SHARED ||
++	    (gl->gl_state != LM_ST_SHARED &&
++	     gl->gl_state != LM_ST_UNLOCKED) ||
+ 	    gl->gl_demote_state != LM_ST_UNLOCKED)
+ 		return;
+ 
+ 	/*
+ 	 * Try to get an active super block reference to prevent racing with
+-	 * unmount (see trylock_super()).  But note that unmount isn't the only
+-	 * place where a write lock on s_umount is taken, and we can fail here
+-	 * because of things like remount as well.
++	 * unmount (see super_trylock_shared()).  But note that unmount isn't
++	 * the only place where a write lock on s_umount is taken, and we can
++	 * fail here because of things like remount as well.
+ 	 */
+ 	if (down_read_trylock(&sb->s_umount)) {
+ 		atomic_inc(&sb->s_active);
 
 
 
