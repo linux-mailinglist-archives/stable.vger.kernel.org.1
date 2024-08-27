@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-71005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70464-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A21496111B
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:16:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DF28960E42
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:47:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 01BAC1F23D1E
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:16:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B4F828439A
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:47:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 338AA1BFE07;
-	Tue, 27 Aug 2024 15:16:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 191321C4EF6;
+	Tue, 27 Aug 2024 14:46:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O0tAs2C1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tPNWcFIG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E70D217C96;
-	Tue, 27 Aug 2024 15:16:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBC5EDDC1;
+	Tue, 27 Aug 2024 14:46:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771781; cv=none; b=rZrXkWqZk9AXNg2ast9MTAmGlTrcWrmsomEFPSYkk+bq6Px+0AovXWmSlUulanRr9EQMmwEND3HNQwYo62l1Xi3IBQ6BhGv1s59EmyzpMXgVRaqA7tl9YfLdU/4ieEymLbfxYU2uU/eR5AR7R4Yl9EcKCjjiMEs4EJYe7QuKtmU=
+	t=1724769992; cv=none; b=FGz7+xB+PuXvbGSAia0c8x2ke3wqgZI3Bfb+fZvkAGSbV2lNjnsBq8gqzY9EqL21XczUcEto0vQIp94G/8hvbLF+dfYkG1hWFNwhwzSK6WFQkwG6aX1zgdZ0S7xhyHg3gGq+DaoNKb94JIZf8FnEVF0Jjd11rKcSjbmTAtmUI8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771781; c=relaxed/simple;
-	bh=ZEK2p8biCh8YIqZRyxZDu0jZPbCKPUp3dKFye33Enac=;
+	s=arc-20240116; t=1724769992; c=relaxed/simple;
+	bh=s+R7ASurKyZcvNlN00I5KtnMANAUImekWb7DfikpPdw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uScbVLfXxcA9VkvPJBhKaKXndN9XH6PqzEdwC/Ig0jkw45Yd0tpcmSUEDuPPF0YOZGN8flUSM95BKUV+Q2tF5tBg9WlC6E7LtJYEPZXc1A2nHKMud2l6OPJl8DRwI6kWvChNgdGDYE1p37GGvoffn4ora4SMw+FKUP6q9aCX7sQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O0tAs2C1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 562D6C4AF50;
-	Tue, 27 Aug 2024 15:16:20 +0000 (UTC)
+	 MIME-Version; b=LrHs4JU03YInB1xqBr+XPewd696Sg8dvFY/vLiklinlnIRdMPS/hwrgc5ROKgiMhNiLJyjXD9Xx/Am4x7IIWmwOuwL5WaUFh4ugZjTs1kletX1VJHkWkGKOpB4iLpnacnUzrsrpmYTgRevdf8UPgBjAKojkOgTJk7hf3aV4xeLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tPNWcFIG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E0D5C6106D;
+	Tue, 27 Aug 2024 14:46:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771780;
-	bh=ZEK2p8biCh8YIqZRyxZDu0jZPbCKPUp3dKFye33Enac=;
+	s=korg; t=1724769992;
+	bh=s+R7ASurKyZcvNlN00I5KtnMANAUImekWb7DfikpPdw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O0tAs2C1yrMTCgvTciIpze5CAhbXQjx72s+3+u0prCzA+DNfPJ3jmx5kh8wuKSbED
-	 NTzfvGAdlSnwba3y8lxp276Cfq5ToGZbpfNXsP2LBnqgUzZOBradg88ssaqRW34MbQ
-	 3WzeliYqIJlAUhe6MPxhqmaPzYeLP/ZOnoj/SL04=
+	b=tPNWcFIGuGvfcdXD6yn7mAv4x07QQdQjtWS7C0TH9vTNlcI9Ii4debZaMWZIzqL49
+	 vrL173xfGMzYFKJvpaF+txC0qY0inunWWC91j1e7MdLtuMW5odHlkL8Fz09Mlt8wkm
+	 ItmiMC4B0n81n7zw8mhAEgHRrDSueS6bAshRsN6Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Yury Norov <yury.norov@gmail.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.1 019/321] bitmap: introduce generic optimized bitmap_size()
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Kalle Valo <kvalo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 096/341] wifi: cw1200: Avoid processing an invalid TIM IE
 Date: Tue, 27 Aug 2024 16:35:27 +0200
-Message-ID: <20240827143838.941300414@linuxfoundation.org>
+Message-ID: <20240827143847.060859024@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,174 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Lobakin <aleksander.lobakin@intel.com>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
 
-commit a37fbe666c016fd89e4460d0ebfcea05baba46dc upstream.
+[ Upstream commit b7bcea9c27b3d87b54075735c870500123582145 ]
 
-The number of times yet another open coded
-`BITS_TO_LONGS(nbits) * sizeof(long)` can be spotted is huge.
-Some generic helper is long overdue.
+While converting struct ieee80211_tim_ie::virtual_map to be a flexible
+array it was observed that the TIM IE processing in cw1200_rx_cb()
+could potentially process a malformed IE in a manner that could result
+in a buffer over-read. Add logic to verify that the TIM IE length is
+large enough to hold a valid TIM payload before processing it.
 
-Add one, bitmap_size(), but with one detail.
-BITS_TO_LONGS() uses DIV_ROUND_UP(). The latter works well when both
-divident and divisor are compile-time constants or when the divisor
-is not a pow-of-2. When it is however, the compilers sometimes tend
-to generate suboptimal code (GCC 13):
-
-48 83 c0 3f          	add    $0x3f,%rax
-48 c1 e8 06          	shr    $0x6,%rax
-48 8d 14 c5 00 00 00 00	lea    0x0(,%rax,8),%rdx
-
-%BITS_PER_LONG is always a pow-2 (either 32 or 64), but GCC still does
-full division of `nbits + 63` by it and then multiplication by 8.
-Instead of BITS_TO_LONGS(), use ALIGN() and then divide by 8. GCC:
-
-8d 50 3f             	lea    0x3f(%rax),%edx
-c1 ea 03             	shr    $0x3,%edx
-81 e2 f8 ff ff 1f    	and    $0x1ffffff8,%edx
-
-Now it shifts `nbits + 63` by 3 positions (IOW performs fast division
-by 8) and then masks bits[2:0]. bloat-o-meter:
-
-add/remove: 0/0 grow/shrink: 20/133 up/down: 156/-773 (-617)
-
-Clang does it better and generates the same code before/after starting
-from -O1, except that with the ALIGN() approach it uses %edx and thus
-still saves some bytes:
-
-add/remove: 0/0 grow/shrink: 9/133 up/down: 18/-538 (-520)
-
-Note that we can't expand DIV_ROUND_UP() by adding a check and using
-this approach there, as it's used in array declarations where
-expressions are not allowed.
-Add this helper to tools/ as well.
-
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Acked-by: Yury Norov <yury.norov@gmail.com>
-Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20230831-ieee80211_tim_ie-v3-1-e10ff584ab5d@quicinc.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-clone-metadata.c |    5 -----
- drivers/s390/cio/idset.c       |    2 +-
- include/linux/bitmap.h         |    8 +++++---
- include/linux/cpumask.h        |    2 +-
- lib/math/prime_numbers.c       |    2 --
- tools/include/linux/bitmap.h   |    7 ++++---
- 6 files changed, 11 insertions(+), 15 deletions(-)
+ drivers/net/wireless/st/cw1200/txrx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/md/dm-clone-metadata.c
-+++ b/drivers/md/dm-clone-metadata.c
-@@ -465,11 +465,6 @@ static void __destroy_persistent_data_st
+diff --git a/drivers/net/wireless/st/cw1200/txrx.c b/drivers/net/wireless/st/cw1200/txrx.c
+index 6894b919ff94b..e16e9ae90d204 100644
+--- a/drivers/net/wireless/st/cw1200/txrx.c
++++ b/drivers/net/wireless/st/cw1200/txrx.c
+@@ -1166,7 +1166,7 @@ void cw1200_rx_cb(struct cw1200_common *priv,
+ 		size_t ies_len = skb->len - (ies - (u8 *)(skb->data));
  
- /*---------------------------------------------------------------------------*/
+ 		tim_ie = cfg80211_find_ie(WLAN_EID_TIM, ies, ies_len);
+-		if (tim_ie) {
++		if (tim_ie && tim_ie[1] >= sizeof(struct ieee80211_tim_ie)) {
+ 			struct ieee80211_tim_ie *tim =
+ 				(struct ieee80211_tim_ie *)&tim_ie[2];
  
--static size_t bitmap_size(unsigned long nr_bits)
--{
--	return BITS_TO_LONGS(nr_bits) * sizeof(long);
--}
--
- static int __dirty_map_init(struct dirty_map *dmap, unsigned long nr_words,
- 			    unsigned long nr_regions)
- {
---- a/drivers/s390/cio/idset.c
-+++ b/drivers/s390/cio/idset.c
-@@ -18,7 +18,7 @@ struct idset {
- 
- static inline unsigned long idset_bitmap_size(int num_ssid, int num_id)
- {
--	return BITS_TO_LONGS(num_ssid * num_id) * sizeof(unsigned long);
-+	return bitmap_size(size_mul(num_ssid, num_id));
- }
- 
- static struct idset *idset_new(int num_ssid, int num_id)
---- a/include/linux/bitmap.h
-+++ b/include/linux/bitmap.h
-@@ -237,9 +237,11 @@ extern int bitmap_print_list_to_buf(char
- #define BITMAP_FIRST_WORD_MASK(start) (~0UL << ((start) & (BITS_PER_LONG - 1)))
- #define BITMAP_LAST_WORD_MASK(nbits) (~0UL >> (-(nbits) & (BITS_PER_LONG - 1)))
- 
-+#define bitmap_size(nbits)	(ALIGN(nbits, BITS_PER_LONG) / BITS_PER_BYTE)
-+
- static inline void bitmap_zero(unsigned long *dst, unsigned int nbits)
- {
--	unsigned int len = BITS_TO_LONGS(nbits) * sizeof(unsigned long);
-+	unsigned int len = bitmap_size(nbits);
- 
- 	if (small_const_nbits(nbits))
- 		*dst = 0;
-@@ -249,7 +251,7 @@ static inline void bitmap_zero(unsigned
- 
- static inline void bitmap_fill(unsigned long *dst, unsigned int nbits)
- {
--	unsigned int len = BITS_TO_LONGS(nbits) * sizeof(unsigned long);
-+	unsigned int len = bitmap_size(nbits);
- 
- 	if (small_const_nbits(nbits))
- 		*dst = ~0UL;
-@@ -260,7 +262,7 @@ static inline void bitmap_fill(unsigned
- static inline void bitmap_copy(unsigned long *dst, const unsigned long *src,
- 			unsigned int nbits)
- {
--	unsigned int len = BITS_TO_LONGS(nbits) * sizeof(unsigned long);
-+	unsigned int len = bitmap_size(nbits);
- 
- 	if (small_const_nbits(nbits))
- 		*dst = *src;
---- a/include/linux/cpumask.h
-+++ b/include/linux/cpumask.h
-@@ -769,7 +769,7 @@ static inline int cpulist_parse(const ch
-  */
- static inline unsigned int cpumask_size(void)
- {
--	return BITS_TO_LONGS(nr_cpumask_bits) * sizeof(long);
-+	return bitmap_size(nr_cpumask_bits);
- }
- 
- /*
---- a/lib/math/prime_numbers.c
-+++ b/lib/math/prime_numbers.c
-@@ -6,8 +6,6 @@
- #include <linux/prime_numbers.h>
- #include <linux/slab.h>
- 
--#define bitmap_size(nbits) (BITS_TO_LONGS(nbits) * sizeof(unsigned long))
--
- struct primes {
- 	struct rcu_head rcu;
- 	unsigned long last, sz;
---- a/tools/include/linux/bitmap.h
-+++ b/tools/include/linux/bitmap.h
-@@ -25,13 +25,14 @@ bool __bitmap_intersects(const unsigned
- #define BITMAP_FIRST_WORD_MASK(start) (~0UL << ((start) & (BITS_PER_LONG - 1)))
- #define BITMAP_LAST_WORD_MASK(nbits) (~0UL >> (-(nbits) & (BITS_PER_LONG - 1)))
- 
-+#define bitmap_size(nbits)	(ALIGN(nbits, BITS_PER_LONG) / BITS_PER_BYTE)
-+
- static inline void bitmap_zero(unsigned long *dst, unsigned int nbits)
- {
- 	if (small_const_nbits(nbits))
- 		*dst = 0UL;
- 	else {
--		int len = BITS_TO_LONGS(nbits) * sizeof(unsigned long);
--		memset(dst, 0, len);
-+		memset(dst, 0, bitmap_size(nbits));
- 	}
- }
- 
-@@ -117,7 +118,7 @@ static inline int test_and_clear_bit(int
-  */
- static inline unsigned long *bitmap_zalloc(int nbits)
- {
--	return calloc(1, BITS_TO_LONGS(nbits) * sizeof(unsigned long));
-+	return calloc(1, bitmap_size(nbits));
- }
- 
- /*
+-- 
+2.43.0
+
 
 
 
