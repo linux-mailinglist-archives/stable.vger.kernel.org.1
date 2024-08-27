@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-70541-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71083-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37781960EA8
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:51:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4F1F96118F
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:21:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E765E283D43
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:51:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54869281D89
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:21:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6C711C3F0D;
-	Tue, 27 Aug 2024 14:50:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 475D617C96;
+	Tue, 27 Aug 2024 15:20:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iXtwbq4x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XCAG1b0W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A331BA87C;
-	Tue, 27 Aug 2024 14:50:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 039591CFBC;
+	Tue, 27 Aug 2024 15:20:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770251; cv=none; b=Y40/jAQUCnC+OW+mfOI6p2s7sjeS0JBrnxWE70BUL9T9IeB/W6NnjzPCsAZQ8KioC8zs+MnoRSLNC1b3kCpc12m/Y0KOWZMzDQ09moVjUOUrKyM0l0POXSx6ze/34qHtM9Fo8r7evw9sJ/+9ZpwtfKGn9o7Nrjpu399bqHRBcmE=
+	t=1724772044; cv=none; b=tCsG4Tkm/zInnrgpdUJjtalF7I5d7OZF6+Ut4auVJatIH70ttS+cu/LC/0av6Y4aF+b7+JejsMkLR5rOUNgCNDmCM2glYepltsCTCAy/UEZdKya6ooBLv2f1QBUs9ZqWOI5YJWuXyryAsTq5JSBTGIdpq8ba9GzFW/nZxO6CGgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770251; c=relaxed/simple;
-	bh=1CPqs1mdqXc83cI5WwRRHFsBlCmGzUbQIEXfojLKeR8=;
+	s=arc-20240116; t=1724772044; c=relaxed/simple;
+	bh=gjZNHRdyFZ79Vy56HjO2/Bu9MjmkR7JQCkMzmVuyx/8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pL0tovU3yBZdTPnF7GZaivrrJAFs7xEHn27xPsxDvKS9ZeCLFq3XUbUiYtnb3dhqupKylAXFMAPvgBaPUCW9VV+xRRfjARPl9WCmJIXAVK5kHtZcZahfDS4k1fTWRe5QIr6V3wS4G31khNmzfwbokO3dgJh+DQZBSql5P8xwcoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iXtwbq4x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0D20C4DDFB;
-	Tue, 27 Aug 2024 14:50:50 +0000 (UTC)
+	 MIME-Version; b=DyzT+dWR6/gQjz9F6jcSv4nk5OQiQfu/murT1m0xeyQ9Xq+TCqD+5xMnuSPGnrEyXUWIPMILgapo1kAD2U5qDO2MLilzvUAmlGjrmj8B3y0dbZm29Cg62Q5wn0hFBkQ0YqC7exSevcuibnLW841RznyPFgT4RR/z3f1svnSUYo4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XCAG1b0W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B9CCC4E693;
+	Tue, 27 Aug 2024 15:20:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770251;
-	bh=1CPqs1mdqXc83cI5WwRRHFsBlCmGzUbQIEXfojLKeR8=;
+	s=korg; t=1724772043;
+	bh=gjZNHRdyFZ79Vy56HjO2/Bu9MjmkR7JQCkMzmVuyx/8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iXtwbq4xHccCLE8LfbCuocYXCLQwEJ60Ls4xOpt8z4mbU+zMT1FWs6X3jDhzlVtNU
-	 /QtE0ckdY+TqtRzdKetjqZRpxS46b35xGdVjW5ApIhft2kxlLqWZtHWv4OAvaMnoBz
-	 tnuUnvDxMF24RaD4Ha/yYKrj6h3QjG/xIjdHUYwo=
+	b=XCAG1b0W8ZHBD1fA1zrop+nDccZd+3yXBTXGgcFQkCMp9rZocjnuOOzUYl7gXDNcW
+	 GiWcUTEkexCxDLA4hFI9HbjUZ8vSGeMUCEKoUxrVcmFgywOflxLBj85tUmKA134AdS
+	 SIfhdxnefEJXNbdvM/exVRtGhRuWpIvku9QP69r0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Avri Kehat <akehat@habana.ai>,
-	Oded Gabbay <ogabbay@kernel.org>,
-	Carl Vanderlip <quic_carlv@quicinc.com>,
+	Tom Hughes <tom@compton.nu>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 172/341] accel/habanalabs: fix debugfs files permissions
+Subject: [PATCH 6.1 095/321] netfilter: allow ipv6 fragments to arrive on different devices
 Date: Tue, 27 Aug 2024 16:36:43 +0200
-Message-ID: <20240827143849.959162960@linuxfoundation.org>
+Message-ID: <20240827143841.854871935@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,87 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Avri Kehat <akehat@habana.ai>
+From: Tom Hughes <tom@compton.nu>
 
-[ Upstream commit 0b105a2a7225f2736bd07aca0538cd67f09bfa20 ]
+[ Upstream commit 3cd740b985963f874a1a094f1969e998b9d05554 ]
 
-debugfs files are created with permissions that don't align
-with the access requirements.
+Commit 264640fc2c5f4 ("ipv6: distinguish frag queues by device
+for multicast and link-local packets") modified the ipv6 fragment
+reassembly logic to distinguish frag queues by device for multicast
+and link-local packets but in fact only the main reassembly code
+limits the use of the device to those address types and the netfilter
+reassembly code uses the device for all packets.
 
-Signed-off-by: Avri Kehat <akehat@habana.ai>
-Reviewed-by: Oded Gabbay <ogabbay@kernel.org>
-Reviewed-by: Carl Vanderlip <quic_carlv@quicinc.com>
-Signed-off-by: Oded Gabbay <ogabbay@kernel.org>
+This means that if fragments of a packet arrive on different interfaces
+then netfilter will fail to reassemble them and the fragments will be
+expired without going any further through the filters.
+
+Fixes: 648700f76b03 ("inet: frags: use rhashtables for reassembly units")
+Signed-off-by: Tom Hughes <tom@compton.nu>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/habanalabs/common/debugfs.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ net/ipv6/netfilter/nf_conntrack_reasm.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/accel/habanalabs/common/debugfs.c b/drivers/accel/habanalabs/common/debugfs.c
-index 9e84a47a21dcf..7d733e4d50611 100644
---- a/drivers/accel/habanalabs/common/debugfs.c
-+++ b/drivers/accel/habanalabs/common/debugfs.c
-@@ -1645,19 +1645,19 @@ static void add_files_to_device(struct hl_device *hdev, struct hl_dbg_device_ent
- 				&hl_data64b_fops);
+diff --git a/net/ipv6/netfilter/nf_conntrack_reasm.c b/net/ipv6/netfilter/nf_conntrack_reasm.c
+index 87a394179092c..e4b45db8a3992 100644
+--- a/net/ipv6/netfilter/nf_conntrack_reasm.c
++++ b/net/ipv6/netfilter/nf_conntrack_reasm.c
+@@ -154,6 +154,10 @@ static struct frag_queue *fq_find(struct net *net, __be32 id, u32 user,
+ 	};
+ 	struct inet_frag_queue *q;
  
- 	debugfs_create_file("set_power_state",
--				0200,
-+				0644,
- 				root,
- 				dev_entry,
- 				&hl_power_fops);
- 
- 	debugfs_create_file("device",
--				0200,
-+				0644,
- 				root,
- 				dev_entry,
- 				&hl_device_fops);
- 
- 	debugfs_create_file("clk_gate",
--				0200,
-+				0644,
- 				root,
- 				dev_entry,
- 				&hl_clk_gate_fops);
-@@ -1669,13 +1669,13 @@ static void add_files_to_device(struct hl_device *hdev, struct hl_dbg_device_ent
- 				&hl_stop_on_err_fops);
- 
- 	debugfs_create_file("dump_security_violations",
--				0644,
-+				0400,
- 				root,
- 				dev_entry,
- 				&hl_security_violations_fops);
- 
- 	debugfs_create_file("dump_razwi_events",
--				0644,
-+				0400,
- 				root,
- 				dev_entry,
- 				&hl_razwi_check_fops);
-@@ -1708,7 +1708,7 @@ static void add_files_to_device(struct hl_device *hdev, struct hl_dbg_device_ent
- 				&hdev->reset_info.skip_reset_on_timeout);
- 
- 	debugfs_create_file("state_dump",
--				0600,
-+				0644,
- 				root,
- 				dev_entry,
- 				&hl_state_dump_fops);
-@@ -1726,7 +1726,7 @@ static void add_files_to_device(struct hl_device *hdev, struct hl_dbg_device_ent
- 
- 	for (i = 0, entry = dev_entry->entry_arr ; i < count ; i++, entry++) {
- 		debugfs_create_file(hl_debugfs_list[i].name,
--					0444,
-+					0644,
- 					root,
- 					entry,
- 					&hl_debugfs_fops);
++	if (!(ipv6_addr_type(&hdr->daddr) & (IPV6_ADDR_MULTICAST |
++					    IPV6_ADDR_LINKLOCAL)))
++		key.iif = 0;
++
+ 	q = inet_frag_find(nf_frag->fqdir, &key);
+ 	if (!q)
+ 		return NULL;
 -- 
 2.43.0
 
