@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-70685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70910-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F162960F84
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:00:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D201A9610A3
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:11:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C76271F20D47
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:00:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88C0028111F
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:11:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5979D1BC9E3;
-	Tue, 27 Aug 2024 14:58:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ABAC1C57BC;
+	Tue, 27 Aug 2024 15:11:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fHSz/vW1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vyc68ZTQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17E7A1C579F;
-	Tue, 27 Aug 2024 14:58:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28B671C57A9;
+	Tue, 27 Aug 2024 15:11:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770729; cv=none; b=fJVWC83eMyG/QD8KZXpE5Fs0mG5yThsDUeq5dZbqNOyN7/w6TNP5pExWdS5VbBcBiCEF4uRBmreGbQp/gIyc16SLxflHhWpsoe3u6kHbqinjDQAof82uBeuj0pxB0ioK5nIHitNFmdwS6QejVN3ge8SXXWf6A+HxhkyVmKeiTUY=
+	t=1724771470; cv=none; b=NFGQpRBS0GnWhYMlSjgF1kf9PbnGaSNyjzbgYVqtwhRuC8ae7TafwC7RpBzNwxmRgEnK2I5HrdbaBq4XbPa/OTfDCJyvlQKgYuRZ6hRKUqfo1RrpH3Z6Xhci1AY3JRtdPTVPj6ceEUJ+vkBUXo6RadMvOgDyEYvJlmJ8d8Jj9Dc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770729; c=relaxed/simple;
-	bh=p5YdsCgrm/jJ9+f2gTwlzeKWDzRxjytpexUrrX6u/uE=;
+	s=arc-20240116; t=1724771470; c=relaxed/simple;
+	bh=V0bpvby739mAYOnxEWKk4ICa+/PvKKcHXuDQ2HZool4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AXuiPxSiUwhYOn95hl5PSDG6pgaD11OfIjb6cmHngAuf/a7kDBiyeD02XH4vTde4BkhjRDHmy+5xiRaWdcxdMFzfiv+gK/x8VPNyxwWlkBUxOB2dgzo+penLGrmjh5jsEdaJR+mMoJX41GNo4X3EmY+dTnQZACW9GczhZMpS/To=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fHSz/vW1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73662C61044;
-	Tue, 27 Aug 2024 14:58:48 +0000 (UTC)
+	 MIME-Version; b=jcQCSk4tIOsiQmC860BA4N7mW/sMe82wXjjVqnyGHCjVHLbZbPmYGT0YZh4Gk3MLt+t1UJlV+hY2bH4klmIAvlZs14iM1CJVZf79hnxpGQeocXlj95xXrbmBsb5/Ho8tegdevpn94wPyZgwMsoaRaopO7D+9Qrw3ioIgN+M3IM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vyc68ZTQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89E98C4DDED;
+	Tue, 27 Aug 2024 15:11:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770728;
-	bh=p5YdsCgrm/jJ9+f2gTwlzeKWDzRxjytpexUrrX6u/uE=;
+	s=korg; t=1724771470;
+	bh=V0bpvby739mAYOnxEWKk4ICa+/PvKKcHXuDQ2HZool4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fHSz/vW1QiYvh+uLDYL724laS1iVpN/kIBpevmN3ADqOYcIL9morKxvu1hTJFLXY+
-	 WhjcTGJulN/eH4h6T79j5EKy62MrIhSI5a3ZDNWOSizzIsG1RCKwVqLa4Xrs3/REW+
-	 IiyexblJypJJCODMOI6uOfW1DeHWDaLObimu19vc=
+	b=vyc68ZTQ8R6+FwuoXGWRV+hElYrm5ncnhUoBajGqSTqYZSkMsVIJbTgxS0dV8k64A
+	 IiZcjkLKp/RLgOpK2UAi/IQJXUHfiEou8AUebjplDls8SY/IY0KnYywZJloxnSalGA
+	 /DBgM8xPbwAln33uFKpKsLuP0xs5xsRg2tioiZIs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
 	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Abhinav Kumar <quic_abhinavk@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 289/341] drm/msm/mdss: Rename path references to mdp_path
+Subject: [PATCH 6.10 196/273] drm/msm/dpu: cleanup FB if dpu_format_populate_layout fails
 Date: Tue, 27 Aug 2024 16:38:40 +0200
-Message-ID: <20240827143854.390884636@linuxfoundation.org>
+Message-ID: <20240827143840.868101388@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit fabaf176322d687b91a4acf1630c0d0a7d097faa ]
+[ Upstream commit bfa1a6283be390947d3649c482e5167186a37016 ]
 
-The DPU1 driver needs to handle all MDPn<->DDR paths, as well as
-CPU<->SLAVE_DISPLAY_CFG. The former ones share how their values are
-calculated, but the latter one has static predefines spanning all SoCs.
+If the dpu_format_populate_layout() fails, then FB is prepared, but not
+cleaned up. This ends up leaking the pin_count on the GEM object and
+causes a splat during DRM file closure:
 
-In preparation for supporting the CPU<->SLAVE_DISPLAY_CFG path, rename
-the path-related struct members to include "mdp_".
+msm_obj->pin_count
+WARNING: CPU: 2 PID: 569 at drivers/gpu/drm/msm/msm_gem.c:121 update_lru_locked+0xc4/0xcc
+[...]
+Call trace:
+ update_lru_locked+0xc4/0xcc
+ put_pages+0xac/0x100
+ msm_gem_free_object+0x138/0x180
+ drm_gem_object_free+0x1c/0x30
+ drm_gem_object_handle_put_unlocked+0x108/0x10c
+ drm_gem_object_release_handle+0x58/0x70
+ idr_for_each+0x68/0xec
+ drm_gem_release+0x28/0x40
+ drm_file_free+0x174/0x234
+ drm_release+0xb0/0x160
+ __fput+0xc0/0x2c8
+ __fput_sync+0x50/0x5c
+ __arm64_sys_close+0x38/0x7c
+ invoke_syscall+0x48/0x118
+ el0_svc_common.constprop.0+0x40/0xe0
+ do_el0_svc+0x1c/0x28
+ el0_svc+0x4c/0x120
+ el0t_64_sync_handler+0x100/0x12c
+ el0t_64_sync+0x190/0x194
+irq event stamp: 129818
+hardirqs last  enabled at (129817): [<ffffa5f6d953fcc0>] console_unlock+0x118/0x124
+hardirqs last disabled at (129818): [<ffffa5f6da7dcf04>] el1_dbg+0x24/0x8c
+softirqs last  enabled at (129808): [<ffffa5f6d94afc18>] handle_softirqs+0x4c8/0x4e8
+softirqs last disabled at (129785): [<ffffa5f6d94105e4>] __do_softirq+0x14/0x20
 
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Fixes: 25fdd5933e4c ("drm/msm: Add SDM845 DPU support")
 Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/570163/
-Link: https://lore.kernel.org/r/20231202224247.1282567-3-dmitry.baryshkov@linaro.org
-Stable-dep-of: 3e30296b374a ("drm/msm: fix the highest_bank_bit for sc7180")
+Patchwork: https://patchwork.freedesktop.org/patch/600714/
+Link: https://lore.kernel.org/r/20240625-dpu-mode-config-width-v5-1-501d984d634f@linaro.org
+Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/msm_mdss.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/msm/msm_mdss.c b/drivers/gpu/drm/msm/msm_mdss.c
-index 67f225de57d74..cce3eb505bf46 100644
---- a/drivers/gpu/drm/msm/msm_mdss.c
-+++ b/drivers/gpu/drm/msm/msm_mdss.c
-@@ -40,8 +40,8 @@ struct msm_mdss {
- 		struct irq_domain *domain;
- 	} irq_controller;
- 	const struct msm_mdss_data *mdss_data;
--	struct icc_path *path[2];
--	u32 num_paths;
-+	struct icc_path *mdp_path[2];
-+	u32 num_mdp_paths;
- };
- 
- static int msm_mdss_parse_data_bus_icc_path(struct device *dev,
-@@ -54,13 +54,13 @@ static int msm_mdss_parse_data_bus_icc_path(struct device *dev,
- 	if (IS_ERR_OR_NULL(path0))
- 		return PTR_ERR_OR_ZERO(path0);
- 
--	msm_mdss->path[0] = path0;
--	msm_mdss->num_paths = 1;
-+	msm_mdss->mdp_path[0] = path0;
-+	msm_mdss->num_mdp_paths = 1;
- 
- 	path1 = devm_of_icc_get(dev, "mdp1-mem");
- 	if (!IS_ERR_OR_NULL(path1)) {
--		msm_mdss->path[1] = path1;
--		msm_mdss->num_paths++;
-+		msm_mdss->mdp_path[1] = path1;
-+		msm_mdss->num_mdp_paths++;
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c
+index 1c3a2657450c6..eabc4813c649c 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_plane.c
+@@ -680,6 +680,9 @@ static int dpu_plane_prepare_fb(struct drm_plane *plane,
+ 			new_state->fb, &layout);
+ 	if (ret) {
+ 		DPU_ERROR_PLANE(pdpu, "failed to get format layout, %d\n", ret);
++		if (pstate->aspace)
++			msm_framebuffer_cleanup(new_state->fb, pstate->aspace,
++						pstate->needs_dirtyfb);
+ 		return ret;
  	}
  
- 	return 0;
-@@ -70,8 +70,8 @@ static void msm_mdss_icc_request_bw(struct msm_mdss *msm_mdss, unsigned long bw)
- {
- 	int i;
- 
--	for (i = 0; i < msm_mdss->num_paths; i++)
--		icc_set_bw(msm_mdss->path[i], 0, Bps_to_icc(bw));
-+	for (i = 0; i < msm_mdss->num_mdp_paths; i++)
-+		icc_set_bw(msm_mdss->mdp_path[i], 0, Bps_to_icc(bw));
- }
- 
- static void msm_mdss_irq(struct irq_desc *desc)
 -- 
 2.43.0
 
