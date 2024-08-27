@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-70936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70687-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9E8A9610C6
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:12:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 179CA960F86
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:00:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7EA22822B0
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:12:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B0AA1C234D1
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:00:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FA171C57A9;
-	Tue, 27 Aug 2024 15:12:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 056FB1C0DE7;
+	Tue, 27 Aug 2024 14:58:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="osMOqvMe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1WsiS7kT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C27E31BC9E3;
-	Tue, 27 Aug 2024 15:12:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7FB1DDC1;
+	Tue, 27 Aug 2024 14:58:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771554; cv=none; b=G6i9L/A/T+hHDwq1NfC5Uyt0FvfbFtG8coQIOMQwabv3wdPDui55wL0EM6e10fugOCM7bfZchoyJFdoBRFSrQYwucZtiX7Gp9+qht+YExCoWA73Io8YWE88puls02TOFO2rkrS4YdZVIPDS0kunBljFvsbiXDySBq7PP+QgfnY4=
+	t=1724770735; cv=none; b=p7AxKz4fo933RRhqxjeGdbPwZPCBFHmfFnLlJqz5BR22kFz+YnYXU+8AVK6ShB19Gz1kzIT+FsNeBMB8Iws+rkpuwgbdHKBV4Is0gYH1Ee7N5BJMZfVxJMxXNUoj1JzlodFRHtrCtvhBK79xZHk3g1S+ndjgzmqnuVLUNkkB7Ac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771554; c=relaxed/simple;
-	bh=U3NRBUm/qCCfYQixEsNc81OQUmERtrZTIWfxzGX/07E=;
+	s=arc-20240116; t=1724770735; c=relaxed/simple;
+	bh=ajwQheiqwf64DL0lTS1Xq454k6eq24uKu7ayDmJkv/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LM04AwwgO1oTk+R9bPhr/T+yjBAkdDNcMCZDT1tCMqEK/Q9+qVonzIa1gFI2gLijxYgLe9ZH7heo+KYY+XMTEc01G57Gtycp5UpicgowbCRY2LiNHUFGZa/hSAJYP/s5lYRix1N7qswpH/K06D5brTquM7XE3huVAt/hfxBspJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=osMOqvMe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E3D8C61042;
-	Tue, 27 Aug 2024 15:12:34 +0000 (UTC)
+	 MIME-Version; b=CWGlN5cg1tPdpI9Ikpyt4I2qEip6B6ZbKCGuQi+qWJzj/dBCc1f5xHo0Yjy5vrUYbywoBDc1MfcvtzxUZKn6rVahsOvdOrn0jSZKDf2g8V2izlbV1UFa6RG5SHLCkjm/94JKSKP7PijZmRF4pSQpgxmjzHn2uHD4rILqLteuHBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1WsiS7kT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28346C4AF1B;
+	Tue, 27 Aug 2024 14:58:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771554;
-	bh=U3NRBUm/qCCfYQixEsNc81OQUmERtrZTIWfxzGX/07E=;
+	s=korg; t=1724770735;
+	bh=ajwQheiqwf64DL0lTS1Xq454k6eq24uKu7ayDmJkv/U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=osMOqvMebrGVj7y1mgkRCr2Zo6Ya9PPg4GWRZ0BFt8Vbcu82ZTQraIOd7oTPBg0iA
-	 uAoq3luLSgKjxq2Wk/Kbnl9qzavsaW5IwNvoHHcwvQo0s90txQG0jAw7EdtJpR4Ca9
-	 sWYv2zkURhrKSvSUGwliO4cI7NqJe1WqLgInjS5s=
+	b=1WsiS7kTAy7gqnL1Dg1P8fuGIwHH/yZwwuSinWIkPdX4Ajq69PXw6xuIiNvNNX/ve
+	 +LqSqHN60wBru95wVdOyWP5ygUAP78wkOLUwRawJBCjVgZC8FqEiQUijR10FtaOV/Y
+	 wjGcOGntFUSFlGfpRWoRmb/r4Dllpwo9szHbChDA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stable <stable@kernel.org>,
-	Griffin Kroah-Hartman <griffin@kroah.com>,
-	Yiwei Zhang <zhan4630@purdue.edu>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.10 223/273] Bluetooth: MGMT: Add error handling to pair_device()
-Date: Tue, 27 Aug 2024 16:39:07 +0200
-Message-ID: <20240827143841.891765550@linuxfoundation.org>
+	Geliang Tang <geliang@kernel.org>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 317/341] mptcp: pm: only in-kernel cannot have entries with ID 0
+Date: Tue, 27 Aug 2024 16:39:08 +0200
+Message-ID: <20240827143855.458737138@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Griffin Kroah-Hartman <griffin@kroah.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit 538fd3921afac97158d4177139a0ad39f056dbb2 upstream.
+commit ca6e55a703ca2894611bb5c5bca8bfd2290fd91e upstream.
 
-hci_conn_params_add() never checks for a NULL value and could lead to a NULL
-pointer dereference causing a crash.
+The ID 0 is specific per MPTCP connections. The per netns entries cannot
+have this special ID 0 then.
 
-Fixed by adding error handling in the function.
+But that's different for the userspace PM where the entries are per
+connection, they can then use this special ID 0.
 
-Cc: Stable <stable@kernel.org>
-Fixes: 5157b8a503fa ("Bluetooth: Fix initializing conn_params in scan phase")
-Signed-off-by: Griffin Kroah-Hartman <griffin@kroah.com>
-Reported-by: Yiwei Zhang <zhan4630@purdue.edu>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Fixes: f40be0db0b76 ("mptcp: unify pm get_flags_and_ifindex_by_id")
+Cc: stable@vger.kernel.org
+Acked-by: Geliang Tang <geliang@kernel.org>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20240819-net-mptcp-pm-reusing-id-v1-11-38035d40de5b@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/mgmt.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ net/mptcp/pm.c         |    3 ---
+ net/mptcp/pm_netlink.c |    4 ++++
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
---- a/net/bluetooth/mgmt.c
-+++ b/net/bluetooth/mgmt.c
-@@ -3457,6 +3457,10 @@ static int pair_device(struct sock *sk,
- 		 * will be kept and this function does nothing.
- 		 */
- 		p = hci_conn_params_add(hdev, &cp->addr.bdaddr, addr_type);
-+		if (!p) {
-+			err = -EIO;
-+			goto unlock;
-+		}
+--- a/net/mptcp/pm.c
++++ b/net/mptcp/pm.c
+@@ -435,9 +435,6 @@ int mptcp_pm_get_flags_and_ifindex_by_id
+ 	*flags = 0;
+ 	*ifindex = 0;
  
- 		if (p->auto_connect == HCI_AUTO_CONN_EXPLICIT)
- 			p->auto_connect = HCI_AUTO_CONN_DISABLED;
+-	if (!id)
+-		return 0;
+-
+ 	if (mptcp_pm_is_userspace(msk))
+ 		return mptcp_userspace_pm_get_flags_and_ifindex_by_id(msk, id, flags, ifindex);
+ 	return mptcp_pm_nl_get_flags_and_ifindex_by_id(msk, id, flags, ifindex);
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -1426,6 +1426,10 @@ int mptcp_pm_nl_get_flags_and_ifindex_by
+ 	struct sock *sk = (struct sock *)msk;
+ 	struct net *net = sock_net(sk);
+ 
++	/* No entries with ID 0 */
++	if (id == 0)
++		return 0;
++
+ 	rcu_read_lock();
+ 	entry = __lookup_addr_by_id(pm_nl_get_pernet(net), id);
+ 	if (entry) {
 
 
 
