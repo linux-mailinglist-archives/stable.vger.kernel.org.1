@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-70633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71176-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6A70960F3C
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:57:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5141096121E
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:27:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 83E7B2822C3
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:57:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8441E1C22CD7
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:27:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF4151C824B;
-	Tue, 27 Aug 2024 14:55:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50D0A1C6F65;
+	Tue, 27 Aug 2024 15:25:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kToLhfhu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bDrVVM3U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE6F81C4601;
-	Tue, 27 Aug 2024 14:55:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F4381A072D;
+	Tue, 27 Aug 2024 15:25:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770558; cv=none; b=O7YfWZhr4m6YU5zPPHrGAyDRKzfaIUSKwBcO8MU2wwryur//IgYBr4pz0PGeSEpM31Qh4ZWtGGaBen0VdCQC209yb6qsCHC31+ZfB1hziJertt/99jf5uPp4qRXP+/jfOrwAFJhjGaQzd+wD34+IkMNsw8zFcUzBD0Dq6tjJAx8=
+	t=1724772351; cv=none; b=Nr5z5/kfHXFw+RNMNglB8hLyXry/VLAuyHyUTI0KJFAaCld+JsK1AUCQ8oIJC4xIgHzaiP6k4NGYQ0ae44Cp2FKlW1cbP0qGIKPImqlau3o8t70QUSW0g9rxV7+bBnFqdThfsMR8A5MCFmszr2dQ57pi2W+EqrwAfIUv/5fvyxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770558; c=relaxed/simple;
-	bh=6Mq2D+wQ1OuhftmFRp9lD8out6l5yAhyUIommGXiXt0=;
+	s=arc-20240116; t=1724772351; c=relaxed/simple;
+	bh=0c7WoMZpyHUP9ljyz9VJ7kPJmoWHiy80/Zb/ozxkOD8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gc57dZ+aUOiaURGds59CnyP/TmoiXNSFWY0wYoqykb2V+PRYIxE4Wf4olYckd0ZQlgFqHlkD9D48PLbbuFtor66voncddeEiGy+bGvMSmfgQ2FmR6E1uwrnN1S0FIayTqWiL3BLsOKyBAI8FVtNQ3W36lVMB2QKHtgodIseq3/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kToLhfhu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1A54C4E699;
-	Tue, 27 Aug 2024 14:55:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=avquOsVdy2uADgOX1+ic44Z1jTbipeZViMrMcEi5rr0rsBBO3OFsJY0q9Ouz6EBtnJJnZvNtvt/gzN7qvggGeUohnFcAlwm+6ZDnArH8aMm2hBtpDL+EPfSg9CQt7Oq33v7aWAuLhVIbhEx0WeFpNkcoNw71TxSE4MV/fJQUAwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bDrVVM3U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3614CC6107C;
+	Tue, 27 Aug 2024 15:25:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770558;
-	bh=6Mq2D+wQ1OuhftmFRp9lD8out6l5yAhyUIommGXiXt0=;
+	s=korg; t=1724772350;
+	bh=0c7WoMZpyHUP9ljyz9VJ7kPJmoWHiy80/Zb/ozxkOD8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kToLhfhukIgimr6Jcg/fsAUL+4+zdonftVpeoARgwYeHnV/nlDh4jwdmfPjgMijEK
-	 0jxdaLA6GLxq8sfIYFTNqx4lG4U9wRoD1toTVZcUQw6mHIZN/Kha5ba8euE2A0Ormk
-	 jLlQaTaFpxOBWogfhjIdKmpsqmwZ8fRMfu7McfG0=
+	b=bDrVVM3UX6i2wFHwRTzjQROsNBLugPA32sdRNPQbXSmFkNldXF4TW52rnM52f/TwQ
+	 hBK3hbZ3z7wzls65AaSkUdjxcGz40Qy/ZduaC/MlkO8UdaAdBAsidLcbIDTLW+Gai9
+	 zCoLEzym6Uo80Nl29XuUPcRSUTdDQWPc65Px/gAE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joseph Huang <Joseph.Huang@garmin.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 265/341] net: dsa: mv88e6xxx: Fix out-of-bound access
+Subject: [PATCH 6.1 188/321] usb: gadget: fsl: Increase size of name buffer for endpoints
 Date: Tue, 27 Aug 2024 16:38:16 +0200
-Message-ID: <20240827143853.490130442@linuxfoundation.org>
+Message-ID: <20240827143845.387935412@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +59,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joseph Huang <Joseph.Huang@garmin.com>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit 528876d867a23b5198022baf2e388052ca67c952 ]
+[ Upstream commit 87850f6cc20911e35eafcbc1d56b0d649ae9162d ]
 
-If an ATU violation was caused by a CPU Load operation, the SPID could
-be larger than DSA_MAX_PORTS (the size of mv88e6xxx_chip.ports[] array).
+This fixes a W=1 warning about sprintf writing up to 16 bytes into a
+buffer of size 14. There is no practical relevance because there are not
+more than 32 endpoints.
 
-Fixes: 75c05a74e745 ("net: dsa: mv88e6xxx: Fix counting of ATU violations")
-Signed-off-by: Joseph Huang <Joseph.Huang@garmin.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20240819235251.1331763-1-Joseph.Huang@garmin.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Link: https://lore.kernel.org/r/6754df25c56aae04f8110594fad2cd2452b1862a.1708709120.git.u.kleine-koenig@pengutronix.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/mv88e6xxx/global1_atu.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/gadget/udc/fsl_udc_core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/dsa/mv88e6xxx/global1_atu.c b/drivers/net/dsa/mv88e6xxx/global1_atu.c
-index ce3b3690c3c05..c47f068f56b32 100644
---- a/drivers/net/dsa/mv88e6xxx/global1_atu.c
-+++ b/drivers/net/dsa/mv88e6xxx/global1_atu.c
-@@ -457,7 +457,8 @@ static irqreturn_t mv88e6xxx_g1_atu_prob_irq_thread_fn(int irq, void *dev_id)
- 		trace_mv88e6xxx_atu_full_violation(chip->dev, spid,
- 						   entry.portvec, entry.mac,
- 						   fid);
--		chip->ports[spid].atu_full_violation++;
-+		if (spid < ARRAY_SIZE(chip->ports))
-+			chip->ports[spid].atu_full_violation++;
- 	}
+diff --git a/drivers/usb/gadget/udc/fsl_udc_core.c b/drivers/usb/gadget/udc/fsl_udc_core.c
+index a67873a074b7b..c1a62ebd78d66 100644
+--- a/drivers/usb/gadget/udc/fsl_udc_core.c
++++ b/drivers/usb/gadget/udc/fsl_udc_core.c
+@@ -2487,7 +2487,7 @@ static int fsl_udc_probe(struct platform_device *pdev)
+ 	/* setup the udc->eps[] for non-control endpoints and link
+ 	 * to gadget.ep_list */
+ 	for (i = 1; i < (int)(udc_controller->max_ep / 2); i++) {
+-		char name[14];
++		char name[16];
  
- 	return IRQ_HANDLED;
+ 		sprintf(name, "ep%dout", i);
+ 		struct_ep_setup(udc_controller, i * 2, name, 1);
 -- 
 2.43.0
 
