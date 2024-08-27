@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-71078-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70788-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7602F961189
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:21:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C4D896100B
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:05:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27431280EAA
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:21:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28FF7285A45
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:05:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 797771CC882;
-	Tue, 27 Aug 2024 15:20:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7F831C4EE8;
+	Tue, 27 Aug 2024 15:04:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1hsaYcST"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kT7oK5qB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 373FB1C93AE;
-	Tue, 27 Aug 2024 15:20:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76DA71C2DB1;
+	Tue, 27 Aug 2024 15:04:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772027; cv=none; b=mVb4dWfEP4QUkiJ8Ay/S6FIbeYCuU02k/oMAxRYRu8hgMs+XAqc1fd4PrwVhoJVlGg21Q864BM0y9wX52AzZKVaBG+UelXuiy2bLSs+690crZlOz+LT8473po3peQOQnjVGTW2r3GCVObfHsgcY82l7fP/0O+U4mf3AtZOlbpkY=
+	t=1724771062; cv=none; b=E7yykW3tVfSkhySPK/WZBmKbROASQaYx/kpVwg6ykER1iPE1OSiAWj4vOHHTWs/RInR4WYdnQVvXEFWZtT8kMAxTlx1GMFYjF/uIE7rv80hJifUwbi7npDH0EefxbRI+nCdYQyUSB55GXFrD+alDU5LFV3pVrHgML5lToR89r2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772027; c=relaxed/simple;
-	bh=lHYUlYiIcBs8yJgl+IVX7nLBuPCP+QV/LDu4d5YcyIM=;
+	s=arc-20240116; t=1724771062; c=relaxed/simple;
+	bh=TMCsF+WWv8j93AjIfIB/RnrFpFPEv/895Fd2DIN9tao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SwvIe+mrH2uxywqrYP3mbIoGKS/uRXdcikIVOeS4MJSm6OBNLqn6TAqdHz1Triq6VebX5NffNxhhn9/VSbgo986cK77brOpcRhDyVFOgbZhdqKIFeNWoHlXIdTXigpEWbzqTBNq4o+HFlHQzFPlH1t02OizdQRt1TcaBYvO+Rgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1hsaYcST; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE02DC4DDF1;
-	Tue, 27 Aug 2024 15:20:26 +0000 (UTC)
+	 MIME-Version; b=akk+o+BbBGgb6uLDMABSCGVczAgOZG9kouzb270jSasqQEdPnxgp1c/gmkcnXTQFrzE889r9jEz6eMFz/BR/QfVln8IzsY70/doSiLxMAx90TetrP76kx/ejpqmNhn81xAAw1U5+RaWIFtLWl1ThdXdEhG0TGHwPzS5Z5kPXXkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kT7oK5qB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD0EBC6105B;
+	Tue, 27 Aug 2024 15:04:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772027;
-	bh=lHYUlYiIcBs8yJgl+IVX7nLBuPCP+QV/LDu4d5YcyIM=;
+	s=korg; t=1724771062;
+	bh=TMCsF+WWv8j93AjIfIB/RnrFpFPEv/895Fd2DIN9tao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1hsaYcST24tlg+ZrJ7s9QKFdmgy5NBGjQ/WxwOQwSuFVMAsWAorwAzSJNsC0Zd7oM
-	 Oye8aPH+hzDgCZD44irZZth0S3gODXftUhnWujgVQ+cvw/1XD7ElTkiJZygHXQPjuL
-	 riV/eSzVs5hS7ISeLQLtdwQMh9p3Lu5A5R7t+H8w=
+	b=kT7oK5qBJWf6Xmd0iXktS16kXFfOedOwrBw37XzngExfsG4xyjm8zCCo99lffxVAO
+	 Ezcno+FsTxI7lY6zvQM0uJvFHQn7mfGwMKZm6PvXwdnKI+liDny8ZxogCuoEP4niFE
+	 PLS4zcjNiJpoR3OE0OM4E0ru40qhknwJ9KJLbd0E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Pawel Dembicki <paweldembicki@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 091/321] net: dsa: vsc73xx: check busy flag in MDIO operations
-Date: Tue, 27 Aug 2024 16:36:39 +0200
-Message-ID: <20240827143841.703765638@linuxfoundation.org>
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.10 076/273] pidfd: prevent creation of pidfds for kthreads
+Date: Tue, 27 Aug 2024 16:36:40 +0200
+Message-ID: <20240827143836.306470810@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,119 +60,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pawel Dembicki <paweldembicki@gmail.com>
+From: Christian Brauner <brauner@kernel.org>
 
-[ Upstream commit fa63c6434b6f6aaf9d8d599dc899bc0a074cc0ad ]
+commit 3b5bbe798b2451820e74243b738268f51901e7d0 upstream.
 
-The VSC73xx has a busy flag used during MDIO operations. It is raised
-when MDIO read/write operations are in progress. Without it, PHYs are
-misconfigured and bus operations do not work as expected.
+It's currently possible to create pidfds for kthreads but it is unclear
+what that is supposed to mean. Until we have use-cases for it and we
+figured out what behavior we want block the creation of pidfds for
+kthreads.
 
-Fixes: 05bd97fc559d ("net: dsa: Add Vitesse VSC73xx DSA router driver")
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Pawel Dembicki <paweldembicki@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/r/20240731-gleis-mehreinnahmen-6bbadd128383@brauner
+Fixes: 32fcb426ec00 ("pid: add pidfd_open()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/vitesse-vsc73xx-core.c | 37 +++++++++++++++++++++++++-
- 1 file changed, 36 insertions(+), 1 deletion(-)
+ kernel/fork.c |   25 ++++++++++++++++++++++---
+ 1 file changed, 22 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/dsa/vitesse-vsc73xx-core.c b/drivers/net/dsa/vitesse-vsc73xx-core.c
-index 92087f9d73550..c8e9ca5d5c284 100644
---- a/drivers/net/dsa/vitesse-vsc73xx-core.c
-+++ b/drivers/net/dsa/vitesse-vsc73xx-core.c
-@@ -39,6 +39,10 @@
- #define VSC73XX_BLOCK_ARBITER	0x5 /* Only subblock 0 */
- #define VSC73XX_BLOCK_SYSTEM	0x7 /* Only subblock 0 */
+--- a/kernel/fork.c
++++ b/kernel/fork.c
+@@ -2069,11 +2069,24 @@ static int __pidfd_prepare(struct pid *p
+  */
+ int pidfd_prepare(struct pid *pid, unsigned int flags, struct file **ret)
+ {
+-	bool thread = flags & PIDFD_THREAD;
+-
+-	if (!pid || !pid_has_task(pid, thread ? PIDTYPE_PID : PIDTYPE_TGID))
++	if (!pid)
+ 		return -EINVAL;
  
-+/* MII Block subblock */
-+#define VSC73XX_BLOCK_MII_INTERNAL	0x0 /* Internal MDIO subblock */
-+#define VSC73XX_BLOCK_MII_EXTERNAL	0x1 /* External MDIO subblock */
++	scoped_guard(rcu) {
++		struct task_struct *tsk;
 +
- #define CPU_PORT	6 /* CPU port */
- 
- /* MAC Block registers */
-@@ -197,6 +201,8 @@
- #define VSC73XX_MII_CMD		0x1
- #define VSC73XX_MII_DATA	0x2
- 
-+#define VSC73XX_MII_STAT_BUSY	BIT(3)
++		if (flags & PIDFD_THREAD)
++			tsk = pid_task(pid, PIDTYPE_PID);
++		else
++			tsk = pid_task(pid, PIDTYPE_TGID);
++		if (!tsk)
++			return -EINVAL;
 +
- /* Arbiter block 5 registers */
- #define VSC73XX_ARBEMPTY		0x0c
- #define VSC73XX_ARBDISC			0x0e
-@@ -271,6 +277,7 @@
- #define IS_739X(a) (IS_7395(a) || IS_7398(a))
- 
- #define VSC73XX_POLL_SLEEP_US		1000
-+#define VSC73XX_MDIO_POLL_SLEEP_US	5
- #define VSC73XX_POLL_TIMEOUT_US		10000
- 
- struct vsc73xx_counter {
-@@ -488,6 +495,22 @@ static int vsc73xx_detect(struct vsc73xx *vsc)
- 	return 0;
++		/* Don't create pidfds for kernel threads for now. */
++		if (tsk->flags & PF_KTHREAD)
++			return -EINVAL;
++	}
++
+ 	return __pidfd_prepare(pid, flags, ret);
  }
  
-+static int vsc73xx_mdio_busy_check(struct vsc73xx *vsc)
-+{
-+	int ret, err;
-+	u32 val;
-+
-+	ret = read_poll_timeout(vsc73xx_read, err,
-+				err < 0 || !(val & VSC73XX_MII_STAT_BUSY),
-+				VSC73XX_MDIO_POLL_SLEEP_US,
-+				VSC73XX_POLL_TIMEOUT_US, false, vsc,
-+				VSC73XX_BLOCK_MII, VSC73XX_BLOCK_MII_INTERNAL,
-+				VSC73XX_MII_STAT, &val);
-+	if (ret)
-+		return ret;
-+	return err;
-+}
-+
- static int vsc73xx_phy_read(struct dsa_switch *ds, int phy, int regnum)
- {
- 	struct vsc73xx *vsc = ds->priv;
-@@ -495,12 +518,20 @@ static int vsc73xx_phy_read(struct dsa_switch *ds, int phy, int regnum)
- 	u32 val;
- 	int ret;
+@@ -2419,6 +2432,12 @@ __latent_entropy struct task_struct *cop
+ 	if (clone_flags & CLONE_PIDFD) {
+ 		int flags = (clone_flags & CLONE_THREAD) ? PIDFD_THREAD : 0;
  
-+	ret = vsc73xx_mdio_busy_check(vsc);
-+	if (ret)
-+		return ret;
++		/* Don't create pidfds for kernel threads for now. */
++		if (args->kthread) {
++			retval = -EINVAL;
++			goto bad_fork_free_pid;
++		}
 +
- 	/* Setting bit 26 means "read" */
- 	cmd = BIT(26) | (phy << 21) | (regnum << 16);
- 	ret = vsc73xx_write(vsc, VSC73XX_BLOCK_MII, 0, 1, cmd);
- 	if (ret)
- 		return ret;
--	msleep(2);
-+
-+	ret = vsc73xx_mdio_busy_check(vsc);
-+	if (ret)
-+		return ret;
-+
- 	ret = vsc73xx_read(vsc, VSC73XX_BLOCK_MII, 0, 2, &val);
- 	if (ret)
- 		return ret;
-@@ -524,6 +555,10 @@ static int vsc73xx_phy_write(struct dsa_switch *ds, int phy, int regnum,
- 	u32 cmd;
- 	int ret;
- 
-+	ret = vsc73xx_mdio_busy_check(vsc);
-+	if (ret)
-+		return ret;
-+
- 	/* It was found through tedious experiments that this router
- 	 * chip really hates to have it's PHYs reset. They
- 	 * never recover if that happens: autonegotiation stops
--- 
-2.43.0
-
+ 		/* Note that no task has been attached to @pid yet. */
+ 		retval = __pidfd_prepare(pid, flags, &pidfile);
+ 		if (retval < 0)
 
 
 
