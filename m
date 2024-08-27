@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-70813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70530-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E0D2961029
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:06:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81421960E99
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:50:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D131B1F23893
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:06:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3060B1F24446
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:50:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1B521C6893;
-	Tue, 27 Aug 2024 15:05:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 143101C68A1;
+	Tue, 27 Aug 2024 14:50:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oqEC9X3q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0l7tdzOS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FF4573466;
-	Tue, 27 Aug 2024 15:05:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6AEB1C688E;
+	Tue, 27 Aug 2024 14:50:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771145; cv=none; b=qv+JYqNhWe0J+ePoS6kUCmn1pQfMtrkZMWal3QtVwIQXgtiCxoWG8VjoPzyl6WwSfG7LVHpR9FqIKvuO1rh7zAcbnrSq5PvtkrLQzjQJ02//e3VeSNfYxEoQ3GJy5ChAGoRbdx8dOo8IOiQ7BY+XsixFqbcfkelQuCOtITsBFLo=
+	t=1724770214; cv=none; b=LY8dniuDqlU8PSJo/M47+wWMhTdgzRaqGvUjDDn2LhPyIDELljtbVqoxNwV/vGNGw1dHH/qkWcYr/Ft65mtX0k4RmGYFioeJhVfKOpWNZ6QL2d9a2mRigp4M6sTO6QB/YmtYsBStkfW2DKbPSspyZ6pkpm//+5UeHfpLxKYJPkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771145; c=relaxed/simple;
-	bh=Sx9RNpkWm+MBEWFkAsWDFukP1x1zUS7XYWSd64KTlDw=;
+	s=arc-20240116; t=1724770214; c=relaxed/simple;
+	bh=V4yTuBx2KKVvQ5fIHth2LyjGVCucBzLgaI4CThmyIhA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OVll4zOp9l7IGy5X5/94718qqexM1I3nrs26/wSPUDCnJaE6+8iUkvFe62ncCXerkmLE/vJlHmtHZpcxT+bso9EwnJwLUpmOp14YRLjz0zx438IJn5HtS5DseTnYeDGYiyYZkp8ytxIIlwjZ0JgNUJmexbaXPJJ/+hmh0gtM4Lg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oqEC9X3q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E2CDC6106C;
-	Tue, 27 Aug 2024 15:05:44 +0000 (UTC)
+	 MIME-Version; b=t139fyHWA5Vo8OhiuUsHFHuRWWV8eVylgIN9b2B9TSKTEPGex4Dr2IOW0Vtdj6zyUZD11scGgpZkxDv6/4AraKnCmzmT7SRXxQZZZ9qWMe9y6h7BKBKswDDEBxAxAgtEI3nRo6/7LJZptvS01JFUirE5TVJs1cbp3alJ9ybM4L0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0l7tdzOS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36F89C4DDEF;
+	Tue, 27 Aug 2024 14:50:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771145;
-	bh=Sx9RNpkWm+MBEWFkAsWDFukP1x1zUS7XYWSd64KTlDw=;
+	s=korg; t=1724770214;
+	bh=V4yTuBx2KKVvQ5fIHth2LyjGVCucBzLgaI4CThmyIhA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oqEC9X3qJhUlYEC0fcdwAjmrdakxvdm8XC5CSR0CszIGZ9fqHAtN8FsiMh0+fGsYl
-	 cQKZQ1RO2XwmYPyr7toLDkvs2xAUe8EgKBRzDOCP8HAe1XtmtkwWxlMKBtbEQjPdsQ
-	 ojtac+u66Njh/IlULC76xKwAJtAbKMPHEsymG1Gc=
+	b=0l7tdzOSaDltK7krVhIoU+fa/A8DDYVN/FzloIKQvSRrTaroXa5Wx9NCpJQeTv4mf
+	 rWvp63Yaxc3kviWwY2xwrGKizDw8FhHBdDF9mYNqkslqB++kSUzxqKhfLp1tKa4aVL
+	 WR/4bu+wI05qTZS9rpYEO+9n70MlDKTpZ18Fs7Z8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>,
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 6.10 069/273] drm/amd/display: Adjust cursor position
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Sicong Huang <huangsicong@iie.ac.cn>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 162/341] media: pci: cx23885: check cx23885_vdev_init() return
 Date: Tue, 27 Aug 2024 16:36:33 +0200
-Message-ID: <20240827143836.042391774@linuxfoundation.org>
+Message-ID: <20240827143849.578930354@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,46 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-commit 56fb276d0244d430496f249335a44ae114dd5f54 upstream.
+[ Upstream commit 15126b916e39b0cb67026b0af3c014bfeb1f76b3 ]
 
-[why & how]
-When the commit 9d84c7ef8a87 ("drm/amd/display: Correct cursor position
-on horizontal mirror") was introduced, it used the wrong calculation for
-the position copy for X. This commit uses the correct calculation for that
-based on the original patch.
+cx23885_vdev_init() can return a NULL pointer, but that pointer
+is used in the next line without a check.
 
-Fixes: 9d84c7ef8a87 ("drm/amd/display: Correct cursor position on horizontal mirror")
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Acked-by: Wayne Lin <wayne.lin@amd.com>
-Signed-off-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 8f9b23abbae5ffcd64856facd26a86b67195bc2f)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add a NULL pointer check and go to the error unwind if it is NULL.
+
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Reported-by: Sicong Huang <huangsicong@iie.ac.cn>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/hwss/dcn10/dcn10_hwseq.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/pci/cx23885/cx23885-video.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn10/dcn10_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn10/dcn10_hwseq.c
-@@ -3698,7 +3698,7 @@ void dcn10_set_cursor_position(struct pi
- 						(int)hubp->curs_attr.width || pos_cpy.x
- 						<= (int)hubp->curs_attr.width +
- 						pipe_ctx->plane_state->src_rect.x) {
--						pos_cpy.x = 2 * viewport_width - temp_x;
-+						pos_cpy.x = temp_x + viewport_width;
- 					}
- 				}
- 			} else {
+diff --git a/drivers/media/pci/cx23885/cx23885-video.c b/drivers/media/pci/cx23885/cx23885-video.c
+index 9af2c5596121c..51d7d720ec48b 100644
+--- a/drivers/media/pci/cx23885/cx23885-video.c
++++ b/drivers/media/pci/cx23885/cx23885-video.c
+@@ -1354,6 +1354,10 @@ int cx23885_video_register(struct cx23885_dev *dev)
+ 	/* register Video device */
+ 	dev->video_dev = cx23885_vdev_init(dev, dev->pci,
+ 		&cx23885_video_template, "video");
++	if (!dev->video_dev) {
++		err = -ENOMEM;
++		goto fail_unreg;
++	}
+ 	dev->video_dev->queue = &dev->vb2_vidq;
+ 	dev->video_dev->device_caps = V4L2_CAP_READWRITE | V4L2_CAP_STREAMING |
+ 				      V4L2_CAP_AUDIO | V4L2_CAP_VIDEO_CAPTURE;
+@@ -1382,6 +1386,10 @@ int cx23885_video_register(struct cx23885_dev *dev)
+ 	/* register VBI device */
+ 	dev->vbi_dev = cx23885_vdev_init(dev, dev->pci,
+ 		&cx23885_vbi_template, "vbi");
++	if (!dev->vbi_dev) {
++		err = -ENOMEM;
++		goto fail_unreg;
++	}
+ 	dev->vbi_dev->queue = &dev->vb2_vbiq;
+ 	dev->vbi_dev->device_caps = V4L2_CAP_READWRITE | V4L2_CAP_STREAMING |
+ 				    V4L2_CAP_AUDIO | V4L2_CAP_VBI_CAPTURE;
+-- 
+2.43.0
+
 
 
 
