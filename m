@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-70852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71145-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E98F7961059
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:07:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B5189611E0
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:24:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 27D271C235CB
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:07:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D3D9B1F23700
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:24:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 687AD1E520;
-	Tue, 27 Aug 2024 15:07:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 126EB1C93AB;
+	Tue, 27 Aug 2024 15:24:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SYyO1IH3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SXGNIGie"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24F801C4EEF;
-	Tue, 27 Aug 2024 15:07:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2D6B1C93A0;
+	Tue, 27 Aug 2024 15:24:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771275; cv=none; b=nha1Q6PGYhACUDZGfEAahqCAKQHmbhNuPSaF7XgTq6GIkZz6amaD99yRsmUQ23R8DiArjr22d8baPXMiJdcinNeAWKOGbfHPsL60TC1cZMVoRVQiztMxoKgfNw5ncPY4XvnxU0jdwmgmaM90yvrE+sZk5aqmos44/5COqdh43h0=
+	t=1724772247; cv=none; b=VViNlXfW4iIubx5U3PBwknf//G/+//p3N/MdkYbbCI9WAxtvibuSVv603pRd6fGkSHbrTFQTldHMvn1r421dLa2SgI5YHiXixYhUoOOy8nNaHTDTTLF5hphHh+UMKUJAJaI0X8fXP5Fn40KQ7IoCvM1xoTbFQAZYFhNjTFmtGzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771275; c=relaxed/simple;
-	bh=rNcNCamtxguQZ/Pg03eIrmbWZSDFZ7kDa+bdepyB3Lo=;
+	s=arc-20240116; t=1724772247; c=relaxed/simple;
+	bh=b9ahZOiMGqBEmrPW3xH+gNx6zPHU/4XI7NgWBBGmOY0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TVSrWQMFWSrjY1U6g5Ne1j3C73tiP2KVwCUE28W+gO+5mh4RNidCFH54tCwkTcqW5HzfoIXCgyZ27q4JzC1MnmkiRB0/ZSCK/D7x4VXHWb4NTtyB4Ah5zuL9+VSJkk7zLAQ25ta+ThsIPLQmCq0XIVejszfhJYj3cGEltFmUrgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SYyO1IH3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7876FC6107E;
-	Tue, 27 Aug 2024 15:07:54 +0000 (UTC)
+	 MIME-Version; b=awaOGuP69EY/gE24XQYKdD4DTAUFHDSaIL2lHbFpHKaVvoVSsv2gcBqJYSZPq04VKN9F9bgmMgud2L9we9QBqpNhVmAcTIsQ05R2wo/vIXQ0rsZbcZIUbFP2ZOEGis4z362NyTYn4PUnvaYg1nO01+th0MLSiPNrqCGIo78z0sc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SXGNIGie; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30490C61071;
+	Tue, 27 Aug 2024 15:24:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771275;
-	bh=rNcNCamtxguQZ/Pg03eIrmbWZSDFZ7kDa+bdepyB3Lo=;
+	s=korg; t=1724772247;
+	bh=b9ahZOiMGqBEmrPW3xH+gNx6zPHU/4XI7NgWBBGmOY0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SYyO1IH3/H6MXnqCl8QTC523t7s+8fLC6K6opXjVtiaFHs1IpBMwcUoW6jAY/nKvp
-	 nTT5UgnpHcSu1rMZGcrHAvpaCDQaOIpBKMpMd12NyOphBlP34J62kY7mnfR6NWNHyH
-	 cVweglvt0tcYlWFiA8s85oKg5VCLWJxs0N+35ekI=
+	b=SXGNIGieYfPt191X4V+oU/G/U82iohoCRJvt9okcJoF12KU88y5NB/ZFQdXV3qYwl
+	 FxvLXZeMwyfKda8+EDkdzK5C2wIK6BGgfvvcO/gA0NrgelmJluGkieziivGJlUBor1
+	 tKpdImoE533I21PUqbh0MP9w6ej7OBKRGwbjkmzU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	=?UTF-8?q?Peter=20K=C3=A4stle?= <peter@piie.net>,
-	Zhang Rui <rui.zhang@intel.com>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 140/273] thermal: gov_bang_bang: Add .manage() callback
-Date: Tue, 27 Aug 2024 16:37:44 +0200
-Message-ID: <20240827143838.733419159@linuxfoundation.org>
+Subject: [PATCH 6.1 157/321] gfs2: Refcounting fix in gfs2_thaw_super
+Date: Tue, 27 Aug 2024 16:37:45 +0200
+Message-ID: <20240827143844.208417746@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,98 +59,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Andreas Gruenbacher <agruenba@redhat.com>
 
-[ Upstream commit 5f64b4a1ab1b0412446d42e1fc2964c2cdb60b27 ]
+[ Upstream commit 4e58543e7da4859c4ba61d15493e3522b6ad71fd ]
 
-After recent changes, the Bang-bang governor may not adjust the
-initial configuration of cooling devices to the actual situation.
+It turns out that the .freeze_super and .thaw_super operations require
+the filesystem to manage the superblock refcount itself.  We are using
+the freeze_super() and thaw_super() helpers to mostly take care of that
+for us, but this means that the superblock may no longer be around by
+when thaw_super() returns, and gfs2_thaw_super() will then access freed
+memory.  Take an extra superblock reference in gfs2_thaw_super() to fix
+that.
 
-Namely, if a cooling device bound to a certain trip point starts in
-the "on" state and the thermal zone temperature is below the threshold
-of that trip point, the trip point may never be crossed on the way up
-in which case the state of the cooling device will never be adjusted
-because the thermal core will never invoke the governor's
-.trip_crossed() callback.  [Note that there is no issue if the zone
-temperature is at the trip threshold or above it to start with because
-.trip_crossed() will be invoked then to indicate the start of thermal
-mitigation for the given trip.]
-
-To address this, add a .manage() callback to the Bang-bang governor
-and use it to ensure that all of the thermal instances managed by the
-governor have been initialized properly and the states of all of the
-cooling devices involved have been adjusted to the current zone
-temperature as appropriate.
-
-Fixes: 530c932bdf75 ("thermal: gov_bang_bang: Use .trip_crossed() instead of .throttle()")
-Link: https://lore.kernel.org/linux-pm/1bfbbae5-42b0-4c7d-9544-e98855715294@piie.net/
-Cc: 6.10+ <stable@vger.kernel.org> # 6.10+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Acked-by: Peter Kästle <peter@piie.net>
-Reviewed-by: Zhang Rui <rui.zhang@intel.com>
-Link: https://patch.msgid.link/8419356.T7Z3S40VBb@rjwysocki.net
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/gov_bang_bang.c | 30 ++++++++++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
+ fs/gfs2/super.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/thermal/gov_bang_bang.c b/drivers/thermal/gov_bang_bang.c
-index 87cff3ea77a9d..bc55e0698bfa8 100644
---- a/drivers/thermal/gov_bang_bang.c
-+++ b/drivers/thermal/gov_bang_bang.c
-@@ -26,6 +26,7 @@ static void bang_bang_set_instance_target(struct thermal_instance *instance,
- 	 * when the trip is crossed on the way down.
- 	 */
- 	instance->target = target;
-+	instance->initialized = true;
+diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
+index f9b47df485d17..aff8cdc61eff7 100644
+--- a/fs/gfs2/super.c
++++ b/fs/gfs2/super.c
+@@ -814,6 +814,7 @@ static int gfs2_thaw_super(struct super_block *sb)
+ 	if (!test_bit(SDF_FREEZE_INITIATOR, &sdp->sd_flags))
+ 		goto out;
  
- 	dev_dbg(&instance->cdev->device, "target=%ld\n", instance->target);
++	atomic_inc(&sb->s_active);
+ 	gfs2_freeze_unlock(&sdp->sd_freeze_gh);
  
-@@ -80,8 +81,37 @@ static void bang_bang_control(struct thermal_zone_device *tz,
+ 	error = gfs2_do_thaw(sdp);
+@@ -824,6 +825,7 @@ static int gfs2_thaw_super(struct super_block *sb)
  	}
+ out:
+ 	mutex_unlock(&sdp->sd_freeze_mutex);
++	deactivate_super(sb);
+ 	return error;
  }
  
-+static void bang_bang_manage(struct thermal_zone_device *tz)
-+{
-+	const struct thermal_trip_desc *td;
-+	struct thermal_instance *instance;
-+
-+	for_each_trip_desc(tz, td) {
-+		const struct thermal_trip *trip = &td->trip;
-+
-+		if (tz->temperature >= td->threshold ||
-+		    trip->temperature == THERMAL_TEMP_INVALID ||
-+		    trip->type == THERMAL_TRIP_CRITICAL ||
-+		    trip->type == THERMAL_TRIP_HOT)
-+			continue;
-+
-+		/*
-+		 * If the initial cooling device state is "on", but the zone
-+		 * temperature is not above the trip point, the core will not
-+		 * call bang_bang_control() until the zone temperature reaches
-+		 * the trip point temperature which may be never.  In those
-+		 * cases, set the initial state of the cooling device to 0.
-+		 */
-+		list_for_each_entry(instance, &tz->thermal_instances, tz_node) {
-+			if (!instance->initialized && instance->trip == trip)
-+				bang_bang_set_instance_target(instance, 0);
-+		}
-+	}
-+}
-+
- static struct thermal_governor thermal_gov_bang_bang = {
- 	.name		= "bang_bang",
- 	.trip_crossed	= bang_bang_control,
-+	.manage		= bang_bang_manage,
- };
- THERMAL_GOVERNOR_DECLARE(thermal_gov_bang_bang);
 -- 
 2.43.0
 
