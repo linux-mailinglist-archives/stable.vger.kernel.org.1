@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-71007-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70739-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7216961120
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:16:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D29B0960FC8
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:02:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07B741C23510
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:16:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5332EB27082
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:02:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77C301C8228;
-	Tue, 27 Aug 2024 15:16:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BF521BC9F1;
+	Tue, 27 Aug 2024 15:01:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vt3NlYff"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qZbTZMk6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35D4717C96;
-	Tue, 27 Aug 2024 15:16:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B67B1C6887;
+	Tue, 27 Aug 2024 15:01:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771787; cv=none; b=hHGNU9M1HItifsvfhVsJ5L1/AclimxCKQfKxXxtqisiz+Elrzuhlc9iPZQweTgLpV+8pQjr5+dvBUvfUgy4tPoeDv2+rgnZkDxbRs7E7qy3rm/GpVR/4gQ6jA96EcF1kqxMGSo9RN1ewhgawWjEQKHYVSMBtrmt4RfN2Xq+RDmE=
+	t=1724770906; cv=none; b=TXLFW142WnQBtPwWMcqF2Bkuq1zyL+lTgwvwDi43PArubWf2Qkq6nUfPmy/0BiCeTWORMzN+8Dfht1DneNHRJediGb6CxzTcwCJnH+b3NLTiWSIHNH3RS+/qYAocWudbx3MEaoQ6ycq8YTgJbhAuYc9fvekIbPAI+nPNOIkVEHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771787; c=relaxed/simple;
-	bh=AMZFAmD/fK6RNfJGtOds69koBBHhUTte+TKIRRImcVw=;
+	s=arc-20240116; t=1724770906; c=relaxed/simple;
+	bh=djn+d+KGpj1u9XiJRR/k6hkIp+Ti34EV2qwAUCvAQ0Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xol9D4SYPHjp6DIbMYcHCGQV25ag8KrAdQhMbAWZXvuXeIFyjgqcSOhyLFIbH9fkcLshqMLnsCvnckyNXY9fpD+/f+Hq00jnBOdSvwwb28jV/uxQ8fzhf3+iCkAa3BOuWVcor6kycifNE+ovTS2F6IMWtb9lvO7YBkLFkg/ZPxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vt3NlYff; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A69D9C4DE10;
-	Tue, 27 Aug 2024 15:16:26 +0000 (UTC)
+	 MIME-Version; b=culE680zLbPDoF5klfvTF9qCeByw3abag5PiJASzzNLdzsH5sPhFw/Ld4hyZ9l0sxNMz3dbCjLnnV2M8g8Etvi4R3PkVmUmVOx6jrmglFe+17mJ8ltL/69gVFn6swBDUTYV2Ag4Mgz64KH6Ec0/2SIdRmLzoq8neWTSpKM0WK2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qZbTZMk6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69E72C4AF1C;
+	Tue, 27 Aug 2024 15:01:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771787;
-	bh=AMZFAmD/fK6RNfJGtOds69koBBHhUTte+TKIRRImcVw=;
+	s=korg; t=1724770905;
+	bh=djn+d+KGpj1u9XiJRR/k6hkIp+Ti34EV2qwAUCvAQ0Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vt3NlYffJeq5QSBKvzeZCPFZxvHfJzjf8l00Xjudnrn9t3jnJi1tjsQOjjxCNHYqW
-	 TZfxmTsfzUXpeSkB1R80aLNQ/lys5vfoFvpWlpTK6TSjiAQpseMhB7zsGX//uaYPAN
-	 iEkxlLkOxbFwBTjrRr58yw5RR0VR0BKETD6xrXEU=
+	b=qZbTZMk6ugbOLmGIWXlwdr4E61zJs7YgxCY20f5/BcyWswiR2Iw+FK1LBxIgiLnak
+	 75OcLWbBn/QbH4sDe4CEKSIycQ/OAXahCT3rZNWXfKFKMLMQCyFQZgie7r/0/kXnLs
+	 sSfzFOxk5dv4dA/WaG7tx+97+KxDDCUhTF0bzR4s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Al Viro <viro@zeniv.linux.org.uk>
-Subject: [PATCH 6.1 020/321] fix bitmap corruption on close_range() with CLOSE_RANGE_UNSHARE
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Hans de Goede <hdegoede@redhat.com>
+Subject: [PATCH 6.10 004/273] Revert "ACPI: EC: Evaluate orphan _REG under EC device"
 Date: Tue, 27 Aug 2024 16:35:28 +0200
-Message-ID: <20240827143838.979105793@linuxfoundation.org>
+Message-ID: <20240827143833.545263242@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,189 +61,151 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-commit 9a2fa1472083580b6c66bdaf291f591e1170123a upstream.
+commit 779bac9994452f6a894524f70c00cfb0cd4b6364 upstream.
 
-copy_fd_bitmaps(new, old, count) is expected to copy the first
-count/BITS_PER_LONG bits from old->full_fds_bits[] and fill
-the rest with zeroes.  What it does is copying enough words
-(BITS_TO_LONGS(count/BITS_PER_LONG)), then memsets the rest.
-That works fine, *if* all bits past the cutoff point are
-clear.  Otherwise we are risking garbage from the last word
-we'd copied.
+This reverts commit 0e6b6dedf168 ("Revert "ACPI: EC: Evaluate orphan
+_REG under EC device") because the problem addressed by it will be
+addressed differently in what follows.
 
-For most of the callers that is true - expand_fdtable() has
-count equal to old->max_fds, so there's no open descriptors
-past count, let alone fully occupied words in ->open_fds[],
-which is what bits in ->full_fds_bits[] correspond to.
-
-The other caller (dup_fd()) passes sane_fdtable_size(old_fdt, max_fds),
-which is the smallest multiple of BITS_PER_LONG that covers all
-opened descriptors below max_fds.  In the common case (copying on
-fork()) max_fds is ~0U, so all opened descriptors will be below
-it and we are fine, by the same reasons why the call in expand_fdtable()
-is safe.
-
-Unfortunately, there is a case where max_fds is less than that
-and where we might, indeed, end up with junk in ->full_fds_bits[] -
-close_range(from, to, CLOSE_RANGE_UNSHARE) with
-	* descriptor table being currently shared
-	* 'to' being above the current capacity of descriptor table
-	* 'from' being just under some chunk of opened descriptors.
-In that case we end up with observably wrong behaviour - e.g. spawn
-a child with CLONE_FILES, get all descriptors in range 0..127 open,
-then close_range(64, ~0U, CLOSE_RANGE_UNSHARE) and watch dup(0) ending
-up with descriptor #128, despite #64 being observably not open.
-
-The minimally invasive fix would be to deal with that in dup_fd().
-If this proves to add measurable overhead, we can go that way, but
-let's try to fix copy_fd_bitmaps() first.
-
-* new helper: bitmap_copy_and_expand(to, from, bits_to_copy, size).
-* make copy_fd_bitmaps() take the bitmap size in words, rather than
-bits; it's 'count' argument is always a multiple of BITS_PER_LONG,
-so we are not losing any information, and that way we can use the
-same helper for all three bitmaps - compiler will see that count
-is a multiple of BITS_PER_LONG for the large ones, so it'll generate
-plain memcpy()+memset().
-
-Reproducer added to tools/testing/selftests/core/close_range_test.c
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Cc: All applicable <stable@vger.kernel.org>
+Link: https://patch.msgid.link/3236716.5fSG56mABF@rjwysocki.net
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/file.c                                       |   28 ++++++++-----------
- include/linux/bitmap.h                          |   12 ++++++++
- tools/testing/selftests/core/close_range_test.c |   35 ++++++++++++++++++++++++
- 3 files changed, 59 insertions(+), 16 deletions(-)
+ drivers/acpi/acpica/acevents.h |    4 ---
+ drivers/acpi/acpica/evregion.c |    6 +++-
+ drivers/acpi/acpica/evxfregn.c |   54 -----------------------------------------
+ drivers/acpi/ec.c              |    3 --
+ include/acpi/acpixf.h          |    4 ---
+ 5 files changed, 5 insertions(+), 66 deletions(-)
 
---- a/fs/file.c
-+++ b/fs/file.c
-@@ -46,27 +46,23 @@ static void free_fdtable_rcu(struct rcu_
- #define BITBIT_NR(nr)	BITS_TO_LONGS(BITS_TO_LONGS(nr))
- #define BITBIT_SIZE(nr)	(BITBIT_NR(nr) * sizeof(long))
+--- a/drivers/acpi/acpica/acevents.h
++++ b/drivers/acpi/acpica/acevents.h
+@@ -191,10 +191,6 @@ void
+ acpi_ev_execute_reg_methods(struct acpi_namespace_node *node,
+ 			    acpi_adr_space_type space_id, u32 function);
  
-+#define fdt_words(fdt) ((fdt)->max_fds / BITS_PER_LONG) // words in ->open_fds
- /*
-  * Copy 'count' fd bits from the old table to the new table and clear the extra
-  * space if any.  This does not copy the file pointers.  Called with the files
-  * spinlock held for write.
-  */
--static void copy_fd_bitmaps(struct fdtable *nfdt, struct fdtable *ofdt,
--			    unsigned int count)
-+static inline void copy_fd_bitmaps(struct fdtable *nfdt, struct fdtable *ofdt,
-+			    unsigned int copy_words)
- {
--	unsigned int cpy, set;
-+	unsigned int nwords = fdt_words(nfdt);
- 
--	cpy = count / BITS_PER_BYTE;
--	set = (nfdt->max_fds - count) / BITS_PER_BYTE;
--	memcpy(nfdt->open_fds, ofdt->open_fds, cpy);
--	memset((char *)nfdt->open_fds + cpy, 0, set);
--	memcpy(nfdt->close_on_exec, ofdt->close_on_exec, cpy);
--	memset((char *)nfdt->close_on_exec + cpy, 0, set);
+-void
+-acpi_ev_execute_orphan_reg_method(struct acpi_namespace_node *node,
+-				  acpi_adr_space_type space_id);
 -
--	cpy = BITBIT_SIZE(count);
--	set = BITBIT_SIZE(nfdt->max_fds) - cpy;
--	memcpy(nfdt->full_fds_bits, ofdt->full_fds_bits, cpy);
--	memset((char *)nfdt->full_fds_bits + cpy, 0, set);
-+	bitmap_copy_and_extend(nfdt->open_fds, ofdt->open_fds,
-+			copy_words * BITS_PER_LONG, nwords * BITS_PER_LONG);
-+	bitmap_copy_and_extend(nfdt->close_on_exec, ofdt->close_on_exec,
-+			copy_words * BITS_PER_LONG, nwords * BITS_PER_LONG);
-+	bitmap_copy_and_extend(nfdt->full_fds_bits, ofdt->full_fds_bits,
-+			copy_words, nwords);
+ acpi_status
+ acpi_ev_execute_reg_method(union acpi_operand_object *region_obj, u32 function);
+ 
+--- a/drivers/acpi/acpica/evregion.c
++++ b/drivers/acpi/acpica/evregion.c
+@@ -20,6 +20,10 @@ extern u8 acpi_gbl_default_address_space
+ 
+ /* Local prototypes */
+ 
++static void
++acpi_ev_execute_orphan_reg_method(struct acpi_namespace_node *device_node,
++				  acpi_adr_space_type space_id);
++
+ static acpi_status
+ acpi_ev_reg_run(acpi_handle obj_handle,
+ 		u32 level, void *context, void **return_value);
+@@ -814,7 +818,7 @@ acpi_ev_reg_run(acpi_handle obj_handle,
+  *
+  ******************************************************************************/
+ 
+-void
++static void
+ acpi_ev_execute_orphan_reg_method(struct acpi_namespace_node *device_node,
+ 				  acpi_adr_space_type space_id)
+ {
+--- a/drivers/acpi/acpica/evxfregn.c
++++ b/drivers/acpi/acpica/evxfregn.c
+@@ -306,57 +306,3 @@ acpi_execute_reg_methods(acpi_handle dev
  }
  
- /*
-@@ -84,7 +80,7 @@ static void copy_fdtable(struct fdtable
- 	memcpy(nfdt->fd, ofdt->fd, cpy);
- 	memset((char *)nfdt->fd + cpy, 0, set);
+ ACPI_EXPORT_SYMBOL(acpi_execute_reg_methods)
+-
+-/*******************************************************************************
+- *
+- * FUNCTION:    acpi_execute_orphan_reg_method
+- *
+- * PARAMETERS:  device          - Handle for the device
+- *              space_id        - The address space ID
+- *
+- * RETURN:      Status
+- *
+- * DESCRIPTION: Execute an "orphan" _REG method that appears under an ACPI
+- *              device. This is a _REG method that has no corresponding region
+- *              within the device's scope.
+- *
+- ******************************************************************************/
+-acpi_status
+-acpi_execute_orphan_reg_method(acpi_handle device, acpi_adr_space_type space_id)
+-{
+-	struct acpi_namespace_node *node;
+-	acpi_status status;
+-
+-	ACPI_FUNCTION_TRACE(acpi_execute_orphan_reg_method);
+-
+-	/* Parameter validation */
+-
+-	if (!device) {
+-		return_ACPI_STATUS(AE_BAD_PARAMETER);
+-	}
+-
+-	status = acpi_ut_acquire_mutex(ACPI_MTX_NAMESPACE);
+-	if (ACPI_FAILURE(status)) {
+-		return_ACPI_STATUS(status);
+-	}
+-
+-	/* Convert and validate the device handle */
+-
+-	node = acpi_ns_validate_handle(device);
+-	if (node) {
+-
+-		/*
+-		 * If an "orphan" _REG method is present in the device's scope
+-		 * for the given address space ID, run it.
+-		 */
+-
+-		acpi_ev_execute_orphan_reg_method(node, space_id);
+-	} else {
+-		status = AE_BAD_PARAMETER;
+-	}
+-
+-	(void)acpi_ut_release_mutex(ACPI_MTX_NAMESPACE);
+-	return_ACPI_STATUS(status);
+-}
+-
+-ACPI_EXPORT_SYMBOL(acpi_execute_orphan_reg_method)
+--- a/drivers/acpi/ec.c
++++ b/drivers/acpi/ec.c
+@@ -1507,9 +1507,6 @@ static int ec_install_handlers(struct ac
  
--	copy_fd_bitmaps(nfdt, ofdt, ofdt->max_fds);
-+	copy_fd_bitmaps(nfdt, ofdt, fdt_words(ofdt));
- }
- 
- /*
-@@ -374,7 +370,7 @@ struct files_struct *dup_fd(struct files
- 		open_files = sane_fdtable_size(old_fdt, max_fds);
+ 	if (call_reg && !test_bit(EC_FLAGS_EC_REG_CALLED, &ec->flags)) {
+ 		acpi_execute_reg_methods(scope_handle, ACPI_ADR_SPACE_EC);
+-		if (scope_handle != ec->handle)
+-			acpi_execute_orphan_reg_method(ec->handle, ACPI_ADR_SPACE_EC);
+-
+ 		set_bit(EC_FLAGS_EC_REG_CALLED, &ec->flags);
  	}
  
--	copy_fd_bitmaps(new_fdt, old_fdt, open_files);
-+	copy_fd_bitmaps(new_fdt, old_fdt, open_files / BITS_PER_LONG);
- 
- 	old_fds = old_fdt->fd;
- 	new_fds = new_fdt->fd;
---- a/include/linux/bitmap.h
-+++ b/include/linux/bitmap.h
-@@ -281,6 +281,18 @@ static inline void bitmap_copy_clear_tai
- 		dst[nbits / BITS_PER_LONG] &= BITMAP_LAST_WORD_MASK(nbits);
- }
- 
-+static inline void bitmap_copy_and_extend(unsigned long *to,
-+					  const unsigned long *from,
-+					  unsigned int count, unsigned int size)
-+{
-+	unsigned int copy = BITS_TO_LONGS(count);
-+
-+	memcpy(to, from, copy * sizeof(long));
-+	if (count % BITS_PER_LONG)
-+		to[copy - 1] &= BITMAP_LAST_WORD_MASK(count);
-+	memset(to + copy, 0, bitmap_size(size) - copy * sizeof(long));
-+}
-+
- /*
-  * On 32-bit systems bitmaps are represented as u32 arrays internally. On LE64
-  * machines the order of hi and lo parts of numbers match the bitmap structure.
---- a/tools/testing/selftests/core/close_range_test.c
-+++ b/tools/testing/selftests/core/close_range_test.c
-@@ -563,4 +563,39 @@ TEST(close_range_cloexec_unshare_syzbot)
- 	EXPECT_EQ(close(fd3), 0);
- }
- 
-+TEST(close_range_bitmap_corruption)
-+{
-+	pid_t pid;
-+	int status;
-+	struct __clone_args args = {
-+		.flags = CLONE_FILES,
-+		.exit_signal = SIGCHLD,
-+	};
-+
-+	/* get the first 128 descriptors open */
-+	for (int i = 2; i < 128; i++)
-+		EXPECT_GE(dup2(0, i), 0);
-+
-+	/* get descriptor table shared */
-+	pid = sys_clone3(&args, sizeof(args));
-+	ASSERT_GE(pid, 0);
-+
-+	if (pid == 0) {
-+		/* unshare and truncate descriptor table down to 64 */
-+		if (sys_close_range(64, ~0U, CLOSE_RANGE_UNSHARE))
-+			exit(EXIT_FAILURE);
-+
-+		ASSERT_EQ(fcntl(64, F_GETFD), -1);
-+		/* ... and verify that the range 64..127 is not
-+		   stuck "fully used" according to secondary bitmap */
-+		EXPECT_EQ(dup(0), 64)
-+			exit(EXIT_FAILURE);
-+		exit(EXIT_SUCCESS);
-+	}
-+
-+	EXPECT_EQ(waitpid(pid, &status, 0), pid);
-+	EXPECT_EQ(true, WIFEXITED(status));
-+	EXPECT_EQ(0, WEXITSTATUS(status));
-+}
-+
- TEST_HARNESS_MAIN
+--- a/include/acpi/acpixf.h
++++ b/include/acpi/acpixf.h
+@@ -663,10 +663,6 @@ ACPI_EXTERNAL_RETURN_STATUS(acpi_status
+ 						     acpi_adr_space_type
+ 						     space_id))
+ ACPI_EXTERNAL_RETURN_STATUS(acpi_status
+-			    acpi_execute_orphan_reg_method(acpi_handle device,
+-							   acpi_adr_space_type
+-							   space_id))
+-ACPI_EXTERNAL_RETURN_STATUS(acpi_status
+ 			    acpi_remove_address_space_handler(acpi_handle
+ 							      device,
+ 							      acpi_adr_space_type
 
 
 
