@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-70536-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71078-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 725DF960EA1
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:50:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7602F961189
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:21:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 222551F24867
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:50:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27431280EAA
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:21:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A4C01C5788;
-	Tue, 27 Aug 2024 14:50:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 797771CC882;
+	Tue, 27 Aug 2024 15:20:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="usJ1SJF1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1hsaYcST"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB78144C8C;
-	Tue, 27 Aug 2024 14:50:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 373FB1C93AE;
+	Tue, 27 Aug 2024 15:20:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770235; cv=none; b=rgoXsO62TauyVOa0BQOdv/0b00LA3fzSnkNdOFJre7StwiwsD1r5K+Xf7fGS4euyaU85+7qguKfNt1IoVR2hElExIs2V3jkhMF+E1ygrVmjRXtkshr6v9m6uceoXqhvwu9jkAg4YsDzhZSmKIiszS8RTXy5+hAdjh7gkNsF9EvI=
+	t=1724772027; cv=none; b=mVb4dWfEP4QUkiJ8Ay/S6FIbeYCuU02k/oMAxRYRu8hgMs+XAqc1fd4PrwVhoJVlGg21Q864BM0y9wX52AzZKVaBG+UelXuiy2bLSs+690crZlOz+LT8473po3peQOQnjVGTW2r3GCVObfHsgcY82l7fP/0O+U4mf3AtZOlbpkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770235; c=relaxed/simple;
-	bh=8OU/0ySOzh+qWPzivz3rqCHRERD47zy7tTFGE201D4c=;
+	s=arc-20240116; t=1724772027; c=relaxed/simple;
+	bh=lHYUlYiIcBs8yJgl+IVX7nLBuPCP+QV/LDu4d5YcyIM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q8bnlcvKmCJKngy4nU8EPViT31year0TzRSwYU/yLA+IhTX6k/xcQ+cGPB2aj16juesXQMkeySqP8QGn28GTm5q+kb/f50poEKn43R6seeh0YlLOsVDIHdE6RvoWNr+kuLyVWe6OgwdBddqdvEnxf+4kv7mD3ltR91AcZWxUpQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=usJ1SJF1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC208C4DDF5;
-	Tue, 27 Aug 2024 14:50:34 +0000 (UTC)
+	 MIME-Version; b=SwvIe+mrH2uxywqrYP3mbIoGKS/uRXdcikIVOeS4MJSm6OBNLqn6TAqdHz1Triq6VebX5NffNxhhn9/VSbgo986cK77brOpcRhDyVFOgbZhdqKIFeNWoHlXIdTXigpEWbzqTBNq4o+HFlHQzFPlH1t02OizdQRt1TcaBYvO+Rgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1hsaYcST; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE02DC4DDF1;
+	Tue, 27 Aug 2024 15:20:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770235;
-	bh=8OU/0ySOzh+qWPzivz3rqCHRERD47zy7tTFGE201D4c=;
+	s=korg; t=1724772027;
+	bh=lHYUlYiIcBs8yJgl+IVX7nLBuPCP+QV/LDu4d5YcyIM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=usJ1SJF1G/24IswEt+nW0ZJQANoEljratHOT8P4jwhGVaTISrZoKMjFkfl1H7aDoM
-	 f6ZthmF77sHPzCscFKegPKdE3Smju/QHBfqmBKSpPo9mF2QRzKQwvt15TMjcKWy+OC
-	 GML1nJEHyrfPMynIPyBY77tHHgngh2OM3SaSvA1U=
+	b=1hsaYcST24tlg+ZrJ7s9QKFdmgy5NBGjQ/WxwOQwSuFVMAsWAorwAzSJNsC0Zd7oM
+	 Oye8aPH+hzDgCZD44irZZth0S3gODXftUhnWujgVQ+cvw/1XD7ElTkiJZygHXQPjuL
+	 riV/eSzVs5hS7ISeLQLtdwQMh9p3Lu5A5R7t+H8w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Erico Nunes <nunes.erico@gmail.com>,
-	Qiang Yu <yuq825@gmail.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Pawel Dembicki <paweldembicki@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 168/341] drm/lima: set gp bus_stop bit before hard reset
+Subject: [PATCH 6.1 091/321] net: dsa: vsc73xx: check busy flag in MDIO operations
 Date: Tue, 27 Aug 2024 16:36:39 +0200
-Message-ID: <20240827143849.805225853@linuxfoundation.org>
+Message-ID: <20240827143841.703765638@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +64,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Erico Nunes <nunes.erico@gmail.com>
+From: Pawel Dembicki <paweldembicki@gmail.com>
 
-[ Upstream commit 27aa58ec85f973d98d336df7b7941149308db80f ]
+[ Upstream commit fa63c6434b6f6aaf9d8d599dc899bc0a074cc0ad ]
 
-This is required for reliable hard resets. Otherwise, doing a hard reset
-while a task is still running (such as a task which is being stopped by
-the drm_sched timeout handler) may result in random mmu write timeouts
-or lockups which cause the entire gpu to hang.
+The VSC73xx has a busy flag used during MDIO operations. It is raised
+when MDIO read/write operations are in progress. Without it, PHYs are
+misconfigured and bus operations do not work as expected.
 
-Signed-off-by: Erico Nunes <nunes.erico@gmail.com>
-Signed-off-by: Qiang Yu <yuq825@gmail.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240124025947.2110659-5-nunes.erico@gmail.com
+Fixes: 05bd97fc559d ("net: dsa: Add Vitesse VSC73xx DSA router driver")
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Pawel Dembicki <paweldembicki@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/lima/lima_gp.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/net/dsa/vitesse-vsc73xx-core.c | 37 +++++++++++++++++++++++++-
+ 1 file changed, 36 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/lima/lima_gp.c b/drivers/gpu/drm/lima/lima_gp.c
-index ca3842f719842..82071835ec9ed 100644
---- a/drivers/gpu/drm/lima/lima_gp.c
-+++ b/drivers/gpu/drm/lima/lima_gp.c
-@@ -166,6 +166,11 @@ static void lima_gp_task_run(struct lima_sched_pipe *pipe,
- 	gp_write(LIMA_GP_CMD, cmd);
+diff --git a/drivers/net/dsa/vitesse-vsc73xx-core.c b/drivers/net/dsa/vitesse-vsc73xx-core.c
+index 92087f9d73550..c8e9ca5d5c284 100644
+--- a/drivers/net/dsa/vitesse-vsc73xx-core.c
++++ b/drivers/net/dsa/vitesse-vsc73xx-core.c
+@@ -39,6 +39,10 @@
+ #define VSC73XX_BLOCK_ARBITER	0x5 /* Only subblock 0 */
+ #define VSC73XX_BLOCK_SYSTEM	0x7 /* Only subblock 0 */
+ 
++/* MII Block subblock */
++#define VSC73XX_BLOCK_MII_INTERNAL	0x0 /* Internal MDIO subblock */
++#define VSC73XX_BLOCK_MII_EXTERNAL	0x1 /* External MDIO subblock */
++
+ #define CPU_PORT	6 /* CPU port */
+ 
+ /* MAC Block registers */
+@@ -197,6 +201,8 @@
+ #define VSC73XX_MII_CMD		0x1
+ #define VSC73XX_MII_DATA	0x2
+ 
++#define VSC73XX_MII_STAT_BUSY	BIT(3)
++
+ /* Arbiter block 5 registers */
+ #define VSC73XX_ARBEMPTY		0x0c
+ #define VSC73XX_ARBDISC			0x0e
+@@ -271,6 +277,7 @@
+ #define IS_739X(a) (IS_7395(a) || IS_7398(a))
+ 
+ #define VSC73XX_POLL_SLEEP_US		1000
++#define VSC73XX_MDIO_POLL_SLEEP_US	5
+ #define VSC73XX_POLL_TIMEOUT_US		10000
+ 
+ struct vsc73xx_counter {
+@@ -488,6 +495,22 @@ static int vsc73xx_detect(struct vsc73xx *vsc)
+ 	return 0;
  }
  
-+static int lima_gp_bus_stop_poll(struct lima_ip *ip)
++static int vsc73xx_mdio_busy_check(struct vsc73xx *vsc)
 +{
-+	return !!(gp_read(LIMA_GP_STATUS) & LIMA_GP_STATUS_BUS_STOPPED);
++	int ret, err;
++	u32 val;
++
++	ret = read_poll_timeout(vsc73xx_read, err,
++				err < 0 || !(val & VSC73XX_MII_STAT_BUSY),
++				VSC73XX_MDIO_POLL_SLEEP_US,
++				VSC73XX_POLL_TIMEOUT_US, false, vsc,
++				VSC73XX_BLOCK_MII, VSC73XX_BLOCK_MII_INTERNAL,
++				VSC73XX_MII_STAT, &val);
++	if (ret)
++		return ret;
++	return err;
 +}
 +
- static int lima_gp_hard_reset_poll(struct lima_ip *ip)
+ static int vsc73xx_phy_read(struct dsa_switch *ds, int phy, int regnum)
  {
- 	gp_write(LIMA_GP_PERF_CNT_0_LIMIT, 0xC01A0000);
-@@ -179,6 +184,13 @@ static int lima_gp_hard_reset(struct lima_ip *ip)
+ 	struct vsc73xx *vsc = ds->priv;
+@@ -495,12 +518,20 @@ static int vsc73xx_phy_read(struct dsa_switch *ds, int phy, int regnum)
+ 	u32 val;
+ 	int ret;
  
- 	gp_write(LIMA_GP_PERF_CNT_0_LIMIT, 0xC0FFE000);
- 	gp_write(LIMA_GP_INT_MASK, 0);
-+
-+	gp_write(LIMA_GP_CMD, LIMA_GP_CMD_STOP_BUS);
-+	ret = lima_poll_timeout(ip, lima_gp_bus_stop_poll, 10, 100);
-+	if (ret) {
-+		dev_err(dev->dev, "%s bus stop timeout\n", lima_ip_name(ip));
++	ret = vsc73xx_mdio_busy_check(vsc);
++	if (ret)
 +		return ret;
-+	}
- 	gp_write(LIMA_GP_CMD, LIMA_GP_CMD_RESET);
- 	ret = lima_poll_timeout(ip, lima_gp_hard_reset_poll, 10, 100);
- 	if (ret) {
++
+ 	/* Setting bit 26 means "read" */
+ 	cmd = BIT(26) | (phy << 21) | (regnum << 16);
+ 	ret = vsc73xx_write(vsc, VSC73XX_BLOCK_MII, 0, 1, cmd);
+ 	if (ret)
+ 		return ret;
+-	msleep(2);
++
++	ret = vsc73xx_mdio_busy_check(vsc);
++	if (ret)
++		return ret;
++
+ 	ret = vsc73xx_read(vsc, VSC73XX_BLOCK_MII, 0, 2, &val);
+ 	if (ret)
+ 		return ret;
+@@ -524,6 +555,10 @@ static int vsc73xx_phy_write(struct dsa_switch *ds, int phy, int regnum,
+ 	u32 cmd;
+ 	int ret;
+ 
++	ret = vsc73xx_mdio_busy_check(vsc);
++	if (ret)
++		return ret;
++
+ 	/* It was found through tedious experiments that this router
+ 	 * chip really hates to have it's PHYs reset. They
+ 	 * never recover if that happens: autonegotiation stops
 -- 
 2.43.0
 
