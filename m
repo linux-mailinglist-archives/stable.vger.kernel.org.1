@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-70906-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70659-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E23E096109D
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:10:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9C53960F64
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:59:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8BD0B1F23700
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:10:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7505286830
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:59:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84E9F1C3F19;
-	Tue, 27 Aug 2024 15:10:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBFBD1C6881;
+	Tue, 27 Aug 2024 14:57:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rSZcC2mH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s3RhRLBw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42B5B12E4D;
-	Tue, 27 Aug 2024 15:10:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8929C1C4603;
+	Tue, 27 Aug 2024 14:57:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771457; cv=none; b=WDCkZ9gb4cGy5Y+o+cDKNIg7LIr/dRjGqc3Om0T+k0yEdLOmL0iQXvlP9cYbaTSmmqy4XvqUu4B9wzZLwh/stQhaSu5NmM0GDJqjNLVSliLOeKmyEx8F3iANTHKBw38s6hcc03LHKvvcE6dpjts+i7jWCKFP44AHZOQ0LXw0D8k=
+	t=1724770643; cv=none; b=WOttGBPYTNruw6G2VPK+sOwP9TavPU8pqVR/3i0vAc3Mox+xLUD3lE36KeeiC6YMjkP0mZf3tkxQa/yljatyrSSHFGloZZAIUq7ya6umRToGyGZ2+ScVdpipGvF3RvhQKWemi+scAfFVwyfg1heF2ZvWp2ijzNkxBZGlDYu5zCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771457; c=relaxed/simple;
-	bh=nWcu2xGcmh8DYWsZ39T/L+9xqL1wD8o39s7GMa86Vdk=;
+	s=arc-20240116; t=1724770643; c=relaxed/simple;
+	bh=UK/5d0cKP7Yxrlg+saywix3XZAevuvRfgK3gJqg31DE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SV395s1/zGgD5FQ7cCwUjtJdVkYsxSjrCqrOgvBob+tzeOWv/C1vdr394oLaz3fhOW1oZc6AiZRIIJhCDDFlydeIz+36KPH+0Vj6a3RSmktDjwoXmQ9pnMAdaf/06E+oNfVIdhAjqaUX58HygP9O8JlrYU5prm9nUPb4ZJrfEF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rSZcC2mH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0B77C4DDE8;
-	Tue, 27 Aug 2024 15:10:56 +0000 (UTC)
+	 MIME-Version; b=BRHcqImadcvpNdqaoNif5lPf2d8P/cIuj3NzDBM7xH/CCxY1VoXR3m9163cv6qWHJZIPt4XOmBzFqJJTnTyxVDsIh1S5Ieah2xO6t7iuVAYC2cH+4uV/5dRJs4SqLa3JhV1luABw7qySoQgH4XtLnWhNNZNNS/lNP0raQB0Pn0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s3RhRLBw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0BBFC61044;
+	Tue, 27 Aug 2024 14:57:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771457;
-	bh=nWcu2xGcmh8DYWsZ39T/L+9xqL1wD8o39s7GMa86Vdk=;
+	s=korg; t=1724770643;
+	bh=UK/5d0cKP7Yxrlg+saywix3XZAevuvRfgK3gJqg31DE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rSZcC2mHFPzjLVYzibvIV3J1AutvC3KtYa6bEIPWIvYGAtay+KJP48fJAzg9NCyt4
-	 ThfBsTn8v+h1SwS9MHZjO61yaEMy1IgDq5pjA0QdM0HqGij6gSNZex5vlzauri3Wyj
-	 2AZNwpLQ/pn6jIPM8xdXAC8oTTjOL48KXtEuPnlU=
+	b=s3RhRLBwAyIDEwOiUtR25Fxf90tQHH8T562esIIZO+dNcQP7zJGtE7BLKlQSSapZC
+	 9oMmpwmtWMYHQFF81YGBwPUwY9RltK3GS7XQkvgfNB/4wjfg2km6k09sqTEkBmMhTs
+	 iJnnOMXS96RV6jvGFZgnNVG77LLVRrTCb/N8zi60=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 166/273] netfilter: nft_counter: Synchronize nft_counter_reset() against reader.
+Subject: [PATCH 6.6 259/341] bonding: fix xfrm state handling when clearing active slave
 Date: Tue, 27 Aug 2024 16:38:10 +0200
-Message-ID: <20240827143839.726975638@linuxfoundation.org>
+Message-ID: <20240827143853.261233382@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Nikolay Aleksandrov <razor@blackwall.org>
 
-[ Upstream commit a0b39e2dc7017ac667b70bdeee5293e410fab2fb ]
+[ Upstream commit c4c5c5d2ef40a9f67a9241dc5422eac9ffe19547 ]
 
-nft_counter_reset() resets the counter by subtracting the previously
-retrieved value from the counter. This is a write operation on the
-counter and as such it requires to be performed with a write sequence of
-nft_counter_seq to serialize against its possible reader.
+If the active slave is cleared manually the xfrm state is not flushed.
+This leads to xfrm add/del imbalance and adding the same state multiple
+times. For example when the device cannot handle anymore states we get:
+ [ 1169.884811] bond0: (slave eni0np1): bond_ipsec_add_sa_all: failed to add SA
+because it's filled with the same state after multiple active slave
+clearings. This change also has a few nice side effects: user-space
+gets a notification for the change, the old device gets its mac address
+and promisc/mcast adjusted properly.
 
-Update the packets/ bytes within write-sequence of nft_counter_seq.
-
-Fixes: d84701ecbcd6a ("netfilter: nft_counter: rework atomic dump and reset")
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Reviewed-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 18cb261afd7b ("bonding: support hardware encryption offload to slaves")
+Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
+Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_counter.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/net/bonding/bond_options.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nft_counter.c b/net/netfilter/nft_counter.c
-index 16f40b503d379..eab0dc66bee6b 100644
---- a/net/netfilter/nft_counter.c
-+++ b/net/netfilter/nft_counter.c
-@@ -107,11 +107,16 @@ static void nft_counter_reset(struct nft_counter_percpu_priv *priv,
- 			      struct nft_counter *total)
- {
- 	struct nft_counter *this_cpu;
-+	seqcount_t *myseq;
- 
- 	local_bh_disable();
- 	this_cpu = this_cpu_ptr(priv->counter);
-+	myseq = this_cpu_ptr(&nft_counter_seq);
-+
-+	write_seqcount_begin(myseq);
- 	this_cpu->packets -= total->packets;
- 	this_cpu->bytes -= total->bytes;
-+	write_seqcount_end(myseq);
- 	local_bh_enable();
- }
- 
+diff --git a/drivers/net/bonding/bond_options.c b/drivers/net/bonding/bond_options.c
+index 00a662f8edd6b..d1208d058eea1 100644
+--- a/drivers/net/bonding/bond_options.c
++++ b/drivers/net/bonding/bond_options.c
+@@ -920,7 +920,7 @@ static int bond_option_active_slave_set(struct bonding *bond,
+ 	/* check to see if we are clearing active */
+ 	if (!slave_dev) {
+ 		netdev_dbg(bond->dev, "Clearing current active slave\n");
+-		RCU_INIT_POINTER(bond->curr_active_slave, NULL);
++		bond_change_active_slave(bond, NULL);
+ 		bond_select_active_slave(bond);
+ 	} else {
+ 		struct slave *old_active = rtnl_dereference(bond->curr_active_slave);
 -- 
 2.43.0
 
