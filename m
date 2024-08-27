@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-70451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71020-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43F77960E2F
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:46:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DDC596113E
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:18:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6EA941C224A5
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:46:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 40C2C1C21E84
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:18:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E2151C6F45;
-	Tue, 27 Aug 2024 14:45:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FA371CCEEE;
+	Tue, 27 Aug 2024 15:17:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VU623D3R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UKnocZtt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E50E11C4EFB;
-	Tue, 27 Aug 2024 14:45:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A46E1C86FF;
+	Tue, 27 Aug 2024 15:17:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724769951; cv=none; b=daMztNTqLxdSwTYJAlK2Pjl3UcsvY4XIAPkHogxkmZbQeqDqw6Ce7oma/vs6EnjXu5JUJVGvwJKxSkBA8NGNqJSnHjwbGeuLGXwi4voEkvyTBAiQ/3kb5t3tn+G55GyT/bSwOn+dYATJyJne7kqiCSHYeWt9qjYtHKqv2FQBghA=
+	t=1724771830; cv=none; b=bdWbm3eTLgPUC61LiyPk/ebuZkwPvQVFXW+gfXpp9u05vUMqMESgL4SQ2kjlN1pfR8h+qGaUla3ANq5oLPMBLUMyQIicU6eCVw1KbvVxFdLvPuE2TTi8kljU8XJvKizwxRd47p7gaOzHV1QttwLf8RJdl965v3DJ3JpiXNJ5ZAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724769951; c=relaxed/simple;
-	bh=tjxwFVIq5zMf+JUpx5m3iqoPUm7path8TkQzNzKTHNE=;
+	s=arc-20240116; t=1724771830; c=relaxed/simple;
+	bh=NygZ6sbgL9lIBk+zCtYbCdhb743ZyvhxMS6oe5S6/98=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qU4geEfEkq5EfOdMvqEjZw494u7dkHvwJjOgC2d0F15ijmEOl+wyAcK++vQm0/P46EYLJkgKjM0+rlVwmpkG1Sb1tF+1mB/4ErAdmvZ2+Qa975Wr0W0fcuND+zDa42HRz8J3ng40mXBqMYl6M5Wy1MXvY4KWHOroKlZf+1rnQeA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VU623D3R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CCF0C61063;
-	Tue, 27 Aug 2024 14:45:50 +0000 (UTC)
+	 MIME-Version; b=lQQqMeBmTd1ZqmGDHsO1kcRKCVEBGkHyORX60C10ymduA+awSKg07t9pCYxMv8fFnF3SHJ4fUoy7UH6ZRNLiODV7H4gQwiRZj1a0z78UxWugU9fOr/k/dufYl+zoDbcGcxRli/3CXpBO1uWUlIutMzi042SmBh6ge9rkkM5BKjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UKnocZtt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD980C4E675;
+	Tue, 27 Aug 2024 15:17:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724769950;
-	bh=tjxwFVIq5zMf+JUpx5m3iqoPUm7path8TkQzNzKTHNE=;
+	s=korg; t=1724771830;
+	bh=NygZ6sbgL9lIBk+zCtYbCdhb743ZyvhxMS6oe5S6/98=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VU623D3Rho6c0V8HVe9UxvqD29uSIxcZ6A9IM91FvV+bQb+49xT9/xrAln94heQ2S
-	 txrQJhNAnfAci7QWHrat01kYkquYfqpsrTAxcg6cFmM5nXb94NoFB9/cX90UkLsOhr
-	 7BH92Er8hpIjvKnLNUhfDvtjrsaaYeqReiXH6N4w=
+	b=UKnocZttc1KNs5xNh4LTrJn2Ueveu2ExhDre/EnwtMsWyqHzrRYU8Qt7aE9GzZTjf
+	 pvAp+2YK2pDNXA018bP9PfdE4EH127+A3KQMNhiThqPiOXUxHlVqkAPrxQ6kUbjKB/
+	 5wHDdJaemNmTQAbv+snRngrur0eaGj0c2AAj55SA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Asmaa Mnebhi <asmaa@nvidia.com>,
-	David Thompson <davthompson@nvidia.com>,
-	Andy Shevchenko <andy@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 081/341] gpio: mlxbf3: Support shutdown() function
-Date: Tue, 27 Aug 2024 16:35:12 +0200
-Message-ID: <20240827143846.492786196@linuxfoundation.org>
+	syzbot+eac39cba052f2e750dbe@syzkaller.appspotmail.com,
+	stable <stable@kernel.org>,
+	Eli Billauer <eli.billauer@gmail.com>
+Subject: [PATCH 6.1 005/321] char: xillybus: Check USB endpoints when probing device
+Date: Tue, 27 Aug 2024 16:35:13 +0200
+Message-ID: <20240827143838.403331709@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,96 +62,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Asmaa Mnebhi <asmaa@nvidia.com>
+From: Eli Billauer <eli.billauer@gmail.com>
 
-[ Upstream commit aad41832326723627ad8ac9ee8a543b6dca4454d ]
+commit 2374bf7558de915edc6ec8cb10ec3291dfab9594 upstream.
 
-During Linux graceful reboot, the GPIO interrupts are not disabled.
-Since the drivers are not removed during graceful reboot,
-the logic to call mlxbf3_gpio_irq_disable() is not triggered.
-Interrupts that remain enabled can cause issues on subsequent boots.
+Ensure, as the driver probes the device, that all endpoints that the
+driver may attempt to access exist and are of the correct type.
 
-For example, the mlxbf-gige driver contains PHY logic to bring up the link.
-If the gpio-mlxbf3 driver loads first, the mlxbf-gige driver
-will use a GPIO interrupt to bring up the link.
-Otherwise, it will use polling.
-The next time Linux boots and loads the drivers in this order, we encounter the issue:
-- mlxbf-gige loads first and uses polling while the GPIO10
-  interrupt is still enabled from the previous boot. So if
-  the interrupt triggers, there is nothing to clear it.
-- gpio-mlxbf3 loads.
-- i2c-mlxbf loads. The interrupt doesn't trigger for I2C
-  because it is shared with the GPIO interrupt line which
-  was not cleared.
+All XillyUSB devices must have a Bulk IN and Bulk OUT endpoint at
+address 1. This is verified in xillyusb_setup_base_eps().
 
-The solution is to add a shutdown function to the GPIO driver to clear and disable
-all interrupts. Also clear the interrupt after disabling it in mlxbf3_gpio_irq_disable().
+On top of that, a XillyUSB device may have additional Bulk OUT
+endpoints. The information about these endpoints' addresses is deduced
+from a data structure (the IDT) that the driver fetches from the device
+while probing it. These endpoints are checked in setup_channels().
 
-Fixes: 38a700efc510 ("gpio: mlxbf3: Add gpio driver support")
-Signed-off-by: Asmaa Mnebhi <asmaa@nvidia.com>
-Reviewed-by: David Thompson <davthompson@nvidia.com>
-Reviewed-by: Andy Shevchenko <andy@kernel.org>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/20240611171509.22151-1-asmaa@nvidia.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+A XillyUSB device never has more than one IN endpoint, as all data
+towards the host is multiplexed in this single Bulk IN endpoint. This is
+why setup_channels() only checks OUT endpoints.
+
+Reported-by: syzbot+eac39cba052f2e750dbe@syzkaller.appspotmail.com
+Cc: stable <stable@kernel.org>
+Closes: https://lore.kernel.org/all/0000000000001d44a6061f7a54ee@google.com/T/
+Fixes: a53d1202aef1 ("char: xillybus: Add driver for XillyUSB (Xillybus variant for USB)").
+Signed-off-by: Eli Billauer <eli.billauer@gmail.com>
+Link: https://lore.kernel.org/r/20240816070200.50695-2-eli.billauer@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpio-mlxbf3.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/char/xillybus/xillyusb.c |   22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpio/gpio-mlxbf3.c b/drivers/gpio/gpio-mlxbf3.c
-index d5906d419b0ab..10ea71273c891 100644
---- a/drivers/gpio/gpio-mlxbf3.c
-+++ b/drivers/gpio/gpio-mlxbf3.c
-@@ -39,6 +39,8 @@
- #define MLXBF_GPIO_CAUSE_OR_EVTEN0        0x14
- #define MLXBF_GPIO_CAUSE_OR_CLRCAUSE      0x18
+--- a/drivers/char/xillybus/xillyusb.c
++++ b/drivers/char/xillybus/xillyusb.c
+@@ -1889,6 +1889,13 @@ static const struct file_operations xill
  
-+#define MLXBF_GPIO_CLR_ALL_INTS           GENMASK(31, 0)
+ static int xillyusb_setup_base_eps(struct xillyusb_dev *xdev)
+ {
++	struct usb_device *udev = xdev->udev;
 +
- struct mlxbf3_gpio_context {
- 	struct gpio_chip gc;
- 
-@@ -82,6 +84,8 @@ static void mlxbf3_gpio_irq_disable(struct irq_data *irqd)
- 	val = readl(gs->gpio_cause_io + MLXBF_GPIO_CAUSE_OR_EVTEN0);
- 	val &= ~BIT(offset);
- 	writel(val, gs->gpio_cause_io + MLXBF_GPIO_CAUSE_OR_EVTEN0);
++	/* Verify that device has the two fundamental bulk in/out endpoints */
++	if (usb_pipe_type_check(udev, usb_sndbulkpipe(udev, MSG_EP_NUM)) ||
++	    usb_pipe_type_check(udev, usb_rcvbulkpipe(udev, IN_EP_NUM)))
++		return -ENODEV;
 +
-+	writel(BIT(offset), gs->gpio_cause_io + MLXBF_GPIO_CAUSE_OR_CLRCAUSE);
- 	raw_spin_unlock_irqrestore(&gs->gc.bgpio_lock, flags);
+ 	xdev->msg_ep = endpoint_alloc(xdev, MSG_EP_NUM | USB_DIR_OUT,
+ 				      bulk_out_work, 1, 2);
+ 	if (!xdev->msg_ep)
+@@ -1918,14 +1925,15 @@ static int setup_channels(struct xillyus
+ 			  __le16 *chandesc,
+ 			  int num_channels)
+ {
+-	struct xillyusb_channel *chan;
++	struct usb_device *udev = xdev->udev;
++	struct xillyusb_channel *chan, *new_channels;
+ 	int i;
  
- 	gpiochip_disable_irq(gc, offset);
-@@ -253,6 +257,15 @@ static int mlxbf3_gpio_probe(struct platform_device *pdev)
+ 	chan = kcalloc(num_channels, sizeof(*chan), GFP_KERNEL);
+ 	if (!chan)
+ 		return -ENOMEM;
+ 
+-	xdev->channels = chan;
++	new_channels = chan;
+ 
+ 	for (i = 0; i < num_channels; i++, chan++) {
+ 		unsigned int in_desc = le16_to_cpu(*chandesc++);
+@@ -1954,6 +1962,15 @@ static int setup_channels(struct xillyus
+ 		 */
+ 
+ 		if ((out_desc & 0x80) && i < 14) { /* Entry is valid */
++			if (usb_pipe_type_check(udev,
++						usb_sndbulkpipe(udev, i + 2))) {
++				dev_err(xdev->dev,
++					"Missing BULK OUT endpoint %d\n",
++					i + 2);
++				kfree(new_channels);
++				return -ENODEV;
++			}
++
+ 			chan->writable = 1;
+ 			chan->out_synchronous = !!(out_desc & 0x40);
+ 			chan->out_seekable = !!(out_desc & 0x20);
+@@ -1963,6 +1980,7 @@ static int setup_channels(struct xillyus
+ 		}
+ 	}
+ 
++	xdev->channels = new_channels;
  	return 0;
  }
  
-+static void mlxbf3_gpio_shutdown(struct platform_device *pdev)
-+{
-+	struct mlxbf3_gpio_context *gs = platform_get_drvdata(pdev);
-+
-+	/* Disable and clear all interrupts */
-+	writel(0, gs->gpio_cause_io + MLXBF_GPIO_CAUSE_OR_EVTEN0);
-+	writel(MLXBF_GPIO_CLR_ALL_INTS, gs->gpio_cause_io + MLXBF_GPIO_CAUSE_OR_CLRCAUSE);
-+}
-+
- static const struct acpi_device_id mlxbf3_gpio_acpi_match[] = {
- 	{ "MLNXBF33", 0 },
- 	{}
-@@ -265,6 +278,7 @@ static struct platform_driver mlxbf3_gpio_driver = {
- 		.acpi_match_table = mlxbf3_gpio_acpi_match,
- 	},
- 	.probe    = mlxbf3_gpio_probe,
-+	.shutdown = mlxbf3_gpio_shutdown,
- };
- module_platform_driver(mlxbf3_gpio_driver);
- 
--- 
-2.43.0
-
 
 
 
