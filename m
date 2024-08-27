@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-70542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71084-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3677960EAB
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:51:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D8F0961192
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:21:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 433EDB24F75
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:51:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7618B1C232AD
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:21:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 336961C5788;
-	Tue, 27 Aug 2024 14:50:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 201811CC8AE;
+	Tue, 27 Aug 2024 15:20:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ujCG/pQd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TWU0ptva"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3B851BFE06;
-	Tue, 27 Aug 2024 14:50:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2F4A1CFBC;
+	Tue, 27 Aug 2024 15:20:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770255; cv=none; b=a4naCRcrp2DIv3/8JjU3kE70NtRBJiO9FBHGMOKlZVdvi0/QhPjS+L/NiroG704qijA+rvSG2aedsrTuPWMBHXctdX/f9DDfYaspCQaEuumgdPQDIE9TletZ9nLchGy+mz0gzqCOrtcud9Ao49ALYvO+3iw8oRUH0rgoEJ1ordY=
+	t=1724772047; cv=none; b=aE+gpUlQyRZOVyyAVlTFOUWMOiqvu3z4h6U3vnYkDvlBgqOxscKtO6n6sqH+7VZ9AIJP88IL0qK2qaFRb2rXMNpZWMsyKgnMlzz0Noklr6NRXxEEFj7ZV4ZidkmtMzCZ8MZuJWBWnpyZ0bxbUri3hEZ7O9HSlUn2uXC5tBz2PPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770255; c=relaxed/simple;
-	bh=liy07P7h9/HoONRzuNApgpPUNTc29OsjRQCo4tRqrqs=;
+	s=arc-20240116; t=1724772047; c=relaxed/simple;
+	bh=1bJJWE9omHDivhWajsBY2oooY+X6XV/rEREQFxCLMm4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u06+BRH/liXSgv5cfWRY5JkeCs1Gg71guIAQOT6Ngg5EfAn+etxDeSLl+H+EByb76TdQzFkV+LCqTW3dD0yhjQcxVkUmV2D3Xf6o8G48z2svGEz0THGsIBDfdZnOblq/ohPB+qah8h4mzf86JkNDZPLpobuJ7mXzm7Gu2+3gQTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ujCG/pQd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DB1BC4DDFF;
-	Tue, 27 Aug 2024 14:50:53 +0000 (UTC)
+	 MIME-Version; b=ZnTJ/+ktw8sedquiTfbCodntSHW/hC57lNreP2Ag+1iLPXEW+ZABADOUjsRhLzPs7gL2in8zEc58Dg2JuL44P+olh6JcXSKeDpnkrpmTVY9p8ycSswfm8qA7YZ7gavKSLIJHnsKFw9GJu+OcQJVBDMxUMFv0hr+6e2oN4flTaYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TWU0ptva; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B2F6C4E693;
+	Tue, 27 Aug 2024 15:20:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770254;
-	bh=liy07P7h9/HoONRzuNApgpPUNTc29OsjRQCo4tRqrqs=;
+	s=korg; t=1724772047;
+	bh=1bJJWE9omHDivhWajsBY2oooY+X6XV/rEREQFxCLMm4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ujCG/pQdkkFe+FFJ9IcyfMfaAOoy/2mtubje8yjs/de3nIkfAecaVcKdZeyC8+xKq
-	 8uDwDiNu8ZgjcPzzPHBDt4JI+tKPNv7W20prRAgxyykUDehQL/eeKIhisryh8NG+11
-	 70nmvsmfUgVLy+Ijv4827C592ajnRvK9zwi9lP2E=
+	b=TWU0ptvaoXSUdQfKaDEqC+V3gL1cCjuaEyDw3Vt0a7tF0QSv47Ux0S1IHEpZD8zX8
+	 3PWJzOQQEwRFdraw46avYXveOPd+0tAByez8cRnyu/lHSMIAQ7Uxe1HoNOSU7zY81j
+	 XcBY4YfrS65rB7SR7GWgGfJCqRsZmsoBQXxwDGLg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 173/341] clocksource/drivers/arm_global_timer: Guard against division by zero
+Subject: [PATCH 6.1 096/321] netfilter: flowtable: initialise extack before use
 Date: Tue, 27 Aug 2024 16:36:44 +0200
-Message-ID: <20240827143849.997585874@linuxfoundation.org>
+Message-ID: <20240827143841.893712067@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+From: Donald Hunter <donald.hunter@gmail.com>
 
-[ Upstream commit e651f2fae33634175fae956d896277cf916f5d09 ]
+[ Upstream commit e9767137308daf906496613fd879808a07f006a2 ]
 
-The result of the division of new_rate by gt_target_rate can be zero (if
-new_rate is smaller than gt_target_rate). Using that result as divisor
-without checking can result in a division by zero error. Guard against
-this by checking for a zero value earlier.
-While here, also change the psv variable to an unsigned long to make
-sure we don't overflow the datatype as all other types involved are also
-unsiged long.
+Fix missing initialisation of extack in flow offload.
 
-Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20240225151336.2728533-3-martin.blumenstingl@googlemail.com
+Fixes: c29f74e0df7a ("netfilter: nf_flow_table: hardware offload support")
+Signed-off-by: Donald Hunter <donald.hunter@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clocksource/arm_global_timer.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ net/netfilter/nf_flow_table_offload.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clocksource/arm_global_timer.c b/drivers/clocksource/arm_global_timer.c
-index e1c773bb55359..22a58d35a41fa 100644
---- a/drivers/clocksource/arm_global_timer.c
-+++ b/drivers/clocksource/arm_global_timer.c
-@@ -290,18 +290,17 @@ static int gt_clk_rate_change_cb(struct notifier_block *nb,
- 	switch (event) {
- 	case PRE_RATE_CHANGE:
- 	{
--		int psv;
-+		unsigned long psv;
+diff --git a/net/netfilter/nf_flow_table_offload.c b/net/netfilter/nf_flow_table_offload.c
+index 1c26f03fc6617..1904a4f295d4a 100644
+--- a/net/netfilter/nf_flow_table_offload.c
++++ b/net/netfilter/nf_flow_table_offload.c
+@@ -841,8 +841,8 @@ static int nf_flow_offload_tuple(struct nf_flowtable *flowtable,
+ 				 struct list_head *block_cb_list)
+ {
+ 	struct flow_cls_offload cls_flow = {};
++	struct netlink_ext_ack extack = {};
+ 	struct flow_block_cb *block_cb;
+-	struct netlink_ext_ack extack;
+ 	__be16 proto = ETH_P_ALL;
+ 	int err, i = 0;
  
--		psv = DIV_ROUND_CLOSEST(ndata->new_rate,
--					gt_target_rate);
--
--		if (abs(gt_target_rate - (ndata->new_rate / psv)) > MAX_F_ERR)
-+		psv = DIV_ROUND_CLOSEST(ndata->new_rate, gt_target_rate);
-+		if (!psv ||
-+		    abs(gt_target_rate - (ndata->new_rate / psv)) > MAX_F_ERR)
- 			return NOTIFY_BAD;
- 
- 		psv--;
- 
- 		/* prescaler within legal range? */
--		if (psv < 0 || psv > GT_CONTROL_PRESCALER_MAX)
-+		if (psv > GT_CONTROL_PRESCALER_MAX)
- 			return NOTIFY_BAD;
- 
- 		/*
 -- 
 2.43.0
 
