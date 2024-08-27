@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-70448-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70995-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCE6C960E2D
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:46:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CFE1961110
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:15:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB7761C23329
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:46:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 09962280D13
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:15:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1770C1C57BC;
-	Tue, 27 Aug 2024 14:45:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD3A81C68A6;
+	Tue, 27 Aug 2024 15:15:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FvWkF5g3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AtF3Xv7d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C94161C57A3;
-	Tue, 27 Aug 2024 14:45:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C56217C96;
+	Tue, 27 Aug 2024 15:15:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724769941; cv=none; b=rrRlm1kl64wGnBWeMAeuuT8nOQ3NyYAg1tVAeOB/QibUWVB5yfUWGGsQjhW1xs9V3nMS9J24qYSVeDQiK+geVDmKEcll8HOT95HpIWauuB68jq7HBslS0jXBH2N7O2bHGVa5+SGhh3zQXa7o4m6xC3OQgP5f0aRLQB2TjxUxM30=
+	t=1724771748; cv=none; b=L76gn1tky+B/nXtplIm0FOHNq+Ksz3JEb49WbWfzbQ7qZkQGCIuuFzAfnu4lgf+hZixRcTMcBnrTn+dOzDIgCKA51zP5zDh8uwwsKStSpy5AZYdTCfyPWJWfEtbWQJ8a5V/Y4D6Mz5t1t61l6269mdRcf6hphrWKo45mFGSY+Hk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724769941; c=relaxed/simple;
-	bh=PKJ8Arhwpey/JU2wtZcfGobKhRazGc5xeoc/6pfeQUw=;
+	s=arc-20240116; t=1724771748; c=relaxed/simple;
+	bh=zc1KL3F3E/GjN+ofvNoLMsqvV3sOwVZOd/D0VYhe1Ss=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fx9GvN/kxN4Q+F8POuIQZhBawBXxRQ7e3L5AYR/h1DEpWCjuxao92KxGOhEJwNzxBv9LQmg1yDi+xiw06LD0/JSsYNytEOY6H5OFVv6zwhxtAclKYRCSgfkjkYbQDNcNe2FRf9uv3/6Cj6+Mzmfhh+p4SglhSpVucyP/CteRAY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FvWkF5g3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BE72C6106D;
-	Tue, 27 Aug 2024 14:45:40 +0000 (UTC)
+	 MIME-Version; b=V7/DJWVYvFB81qNGcXR+zk/m/7fHf9rfQIvUxwmEQMp9DXgs5g6yV8CnUPO2aaOivgwmEDcx6HxtHx/fjf58SaD4ioP+xrQ3dz7/81HnRUIkW9sL8832FMNiMSI4cNUCY4YGsPMIbeULRukicvy+LGj/OQSxntzbP/ejFf0gyv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AtF3Xv7d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DC18C4AF50;
+	Tue, 27 Aug 2024 15:15:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724769941;
-	bh=PKJ8Arhwpey/JU2wtZcfGobKhRazGc5xeoc/6pfeQUw=;
+	s=korg; t=1724771748;
+	bh=zc1KL3F3E/GjN+ofvNoLMsqvV3sOwVZOd/D0VYhe1Ss=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FvWkF5g3OrTY5tnIc/uZ3KkbdNH3wo+p7scEEh5ZwpV8j0cPOHFGmefBOFiyYia78
-	 AOEXCvxbccqL1+xTYpBfp47adUaPZNibZygZ3OHDd6xb3e/FJ1qvrrUyU3tsk/MyJx
-	 iwhDE556Fl8+G18lYo+chmSBZKZW9XVeiHO41BmI=
+	b=AtF3Xv7dIgWMKm/tQJHou9LP1MlR/zfF3wjGofFznwAj37u1DS3ArBFjieKv0ZSAH
+	 hT0agzqNWQhW+QSKzyDXB2tUaaF/TqX2dYertmKMSOpGyAwWwKCkblxB3xAMW6UiVr
+	 JEv8rG2AKboxYBYf9w1nUeQ/PKXL3FljZwqJpRIg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jie Wang <wangjie125@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 078/341] net: hns3: fix wrong use of semaphore up
+	Mathieu Othacehe <othacehe@gnu.org>,
+	stable <stable@kernel.org>,
+	Alexander Dahl <ada@thorsis.com>
+Subject: [PATCH 6.1 001/321] tty: atmel_serial: use the correct RTS flag.
 Date: Tue, 27 Aug 2024 16:35:09 +0200
-Message-ID: <20240827143846.379899155@linuxfoundation.org>
+Message-ID: <20240827143838.251444197@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jie Wang <wangjie125@huawei.com>
+From: Mathieu Othacehe <othacehe@gnu.org>
 
-[ Upstream commit 8445d9d3c03101859663d34fda747f6a50947556 ]
+commit c9f6613b16123989f2c3bd04b1d9b2365d6914e7 upstream.
 
-Currently, if hns3 PF or VF FLR reset failed after five times retry,
-the reset done process will directly release the semaphore
-which has already released in hclge_reset_prepare_general.
-This will cause down operation fail.
+In RS485 mode, the RTS pin is driven high by hardware when the transmitter
+is operating. This behaviour cannot be changed. This means that the driver
+should claim that it supports SER_RS485_RTS_ON_SEND and not
+SER_RS485_RTS_AFTER_SEND.
 
-So this patch fixes it by adding reset state judgement. The up operation is
-only called after successful PF FLR reset.
+Otherwise, when configuring the port with the SER_RS485_RTS_ON_SEND, one
+get the following warning:
 
-Fixes: 8627bdedc435 ("net: hns3: refactor the precedure of PF FLR")
-Fixes: f28368bb4542 ("net: hns3: refactor the procedure of VF FLR")
-Signed-off-by: Jie Wang <wangjie125@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+kern.warning kernel: atmel_usart_serial atmel_usart_serial.2.auto:
+ttyS1 (1): invalid RTS setting, using RTS_AFTER_SEND instead
+
+which is contradictory with what's really happening.
+
+Signed-off-by: Mathieu Othacehe <othacehe@gnu.org>
+Cc: stable <stable@kernel.org>
+Tested-by: Alexander Dahl <ada@thorsis.com>
+Fixes: af47c491e3c7 ("serial: atmel: Fill in rs485_supported")
+Link: https://lore.kernel.org/r/20240808060637.19886-1-othacehe@gnu.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c   | 4 ++--
- drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/tty/serial/atmel_serial.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-index c8059d96f64be..ad8e56234b284 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-@@ -11430,8 +11430,8 @@ static void hclge_reset_done(struct hnae3_ae_dev *ae_dev)
- 		dev_err(&hdev->pdev->dev, "fail to rebuild, ret=%d\n", ret);
+--- a/drivers/tty/serial/atmel_serial.c
++++ b/drivers/tty/serial/atmel_serial.c
+@@ -2539,7 +2539,7 @@ static const struct uart_ops atmel_pops
+ };
  
- 	hdev->reset_type = HNAE3_NONE_RESET;
--	clear_bit(HCLGE_STATE_RST_HANDLING, &hdev->state);
--	up(&hdev->reset_sem);
-+	if (test_and_clear_bit(HCLGE_STATE_RST_HANDLING, &hdev->state))
-+		up(&hdev->reset_sem);
- }
- 
- static void hclge_clear_resetting_state(struct hclge_dev *hdev)
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
-index 43ee20eb03d1f..affdd9d70549a 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
-@@ -1710,8 +1710,8 @@ static void hclgevf_reset_done(struct hnae3_ae_dev *ae_dev)
- 			 ret);
- 
- 	hdev->reset_type = HNAE3_NONE_RESET;
--	clear_bit(HCLGEVF_STATE_RST_HANDLING, &hdev->state);
--	up(&hdev->reset_sem);
-+	if (test_and_clear_bit(HCLGEVF_STATE_RST_HANDLING, &hdev->state))
-+		up(&hdev->reset_sem);
- }
- 
- static u32 hclgevf_get_fw_version(struct hnae3_handle *handle)
--- 
-2.43.0
-
+ static const struct serial_rs485 atmel_rs485_supported = {
+-	.flags = SER_RS485_ENABLED | SER_RS485_RTS_AFTER_SEND | SER_RS485_RX_DURING_TX,
++	.flags = SER_RS485_ENABLED | SER_RS485_RTS_ON_SEND | SER_RS485_RX_DURING_TX,
+ 	.delay_rts_before_send = 1,
+ 	.delay_rts_after_send = 1,
+ };
 
 
 
