@@ -1,105 +1,163 @@
-Return-Path: <stable+bounces-71310-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71320-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B82EC9612CA
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:35:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C691E9612D4
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:35:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74DD2281721
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:35:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 525E61F210AC
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:35:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 368831CF283;
-	Tue, 27 Aug 2024 15:33:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A96A91CC14E;
+	Tue, 27 Aug 2024 15:33:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GH7Ljgej"
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="hjAz/mTr";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="VuP9xHwv"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fhigh2-smtp.messagingengine.com (fhigh2-smtp.messagingengine.com [103.168.172.153])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9B331CE703;
-	Tue, 27 Aug 2024 15:33:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65AAE1C5792;
+	Tue, 27 Aug 2024 15:33:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.153
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772793; cv=none; b=JVGKdGIUbEfoEWzoWjpN3DMQBlJsXDTKLcGYRb8Z78o+JoWGULCqnd0vwfOoI0SlXo+sJrr7GRQX/tOoihIfOLKShw6MQvuYCXnKl+uQ/ANzPHfy9nMEsE5x4DowVxyAI41/c3nMohmuGIN6wY/BcC9ALL6V35zWdqrBKgNFO+U=
+	t=1724772829; cv=none; b=BhAHyFq7Gg8QD5/K8/FVb5i10098oZGmAgT/Za7U6aTJn83AGiagMY1VSDl9+g0HTdA6Mbqt6azwyDh3yVPIDoKsjTQ72XT0/PK6JglUiwgtTL94PU6rTX8q58T9WEi4ZcoJGLbyEsA9s6AWXFVcEeNzXm1tjuJlrZfL4gSe4BQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772793; c=relaxed/simple;
-	bh=YvBQiEO1w6D90K1dE4Qq1o7pKV5GPzysW7aWF/JNejE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VvV+NmP+kNiU+t23Fhcbvu9nrLldlvxoRXDIxEcQaRWCRJd3BJpbodpW21J37SoP8aAEGTi7T/IWIPcjXuWeZ3QJQcoNl7JHHbmV9Q/8JlAq+bUVLRnkT5rHjFfh9+BR0Tgi8kwl4B08eTTeXz+uZm6cr87bR9j0tHcJnU6wm74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GH7Ljgej; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C7E2C61050;
-	Tue, 27 Aug 2024 15:33:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772792;
-	bh=YvBQiEO1w6D90K1dE4Qq1o7pKV5GPzysW7aWF/JNejE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GH7Ljgej+TeJW9nVVgIk9AbM7Pe3wJPNBmcGZmkrFdmXPagEMjkxZrHdy2i3/mEug
-	 kY021aHCh+/4zAk2ugkK6KfL/S2WKMfEaFSD6ASPphIZX2fCoBq2efOZtA+M4Hq5m3
-	 +50BoBXmDhmH1ZyJ/vLiKEqSjCloIRJZK/9BQfnU=
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	patches@lists.linux.dev,
-	syzbot <syzbot+0122fa359a69694395d5@syzkaller.appspotmail.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	George Kennedy <george.kennedy@oracle.com>
-Subject: [PATCH 6.1 321/321] Input: MT - limit max slots
-Date: Tue, 27 Aug 2024 16:40:29 +0200
-Message-ID: <20240827143850.478100588@linuxfoundation.org>
-X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
+	s=arc-20240116; t=1724772829; c=relaxed/simple;
+	bh=PqW3LaLdaIXUKRv7ae1w6/zjG46YRxp+ySlwBpNlSDA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gvoeT+QCDbTOAMUiAuFwsqGS4bnBRs7z+dwcDRl7JU086+tWEF8SB/angXi5AkLgaEKjcal9mHsbKxn97KbIBerGHoM+AVXJS25KwoBqPAt+8xVrHhCLJYZigbNCnoFsInMpiJdfWlS+79+CKiFA6ImFG/4Ri7q644nUbH+X04E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=hjAz/mTr; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=VuP9xHwv; arc=none smtp.client-ip=103.168.172.153
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+Received: from phl-compute-05.internal (phl-compute-05.nyi.internal [10.202.2.45])
+	by mailfhigh.nyi.internal (Postfix) with ESMTP id 761F41151B29;
+	Tue, 27 Aug 2024 11:33:46 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Tue, 27 Aug 2024 11:33:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1724772826;
+	 x=1724859226; bh=9uGAv2l5IKc9PnaG89xszMBC4k6+LpWKy1GRqAd95vM=; b=
+	hjAz/mTrH+BLHWsTj+xoouDhwLjLgPYmztWxfWsb5c8eawFjoR2zYN9ap9kt33XQ
+	GU4q+V6Yldpm4N5emTM/r/95AFzKE147uR6NSevaPxhubp6k6Mbe38/NpyKt36IK
+	Yi90k5R/t+ANLicDm85Qq0K0fkYJxW2VeYy0wKQP5AFsb8WJyiF+lvJ3klqpnmQp
+	ZgPq19SW/2eKN7weOChp3sLMdqCXltoEMkcWZfkAJSmCl0Ae5I0n02PpyuuLWhnN
+	D7knO7bRh/QaojLeDdrzkeAUeixxOcsaR+5DwiaGl85ePgpmlwbmkOcw7/fl91xR
+	zxjQJlhOXs2Raj09nui9Ow==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1724772826; x=
+	1724859226; bh=9uGAv2l5IKc9PnaG89xszMBC4k6+LpWKy1GRqAd95vM=; b=V
+	uP9xHwvimD1XOGUWIMnqMLs8z3QV5g3x4pG2hdqnvJ66w20G5pHAGvuXo1mUmtXb
+	2qKp/Fe2RpNR8tUzMG5VXUK7ck4MqWfknl3tRH45YVGu34c/2nznCDdi3x3grGge
+	nD20dliZvuk0UaOm9JhY+RA/MPC+QLNiFJyMSbVHBLJ3Y/fYB/Eyv0lWU7VHz/X6
+	EwTRhVh6qmIEPBON9qq2lzag5ZeO720gsOdg1YjPOaaJNzm9XJa5UXdo2WXHf83T
+	NdFebojTxwrp048grzdeue2weJGnNIxH5V1sAlgzZyluy+6h7KiLvlHFxDMQAOTj
+	IiE00zjJOSXKBDtPHIvtw==
+X-ME-Sender: <xms:2fHNZpM3m46PK3zB6LAp_x9KFftUh-rmoVjeT_Y6olZ_LZQ93G8daA>
+    <xme:2fHNZr_XfinGtvRpiAAxDcfsutbi6gaYb4EnBqNmZIh11AsJCZBZdpKD1SRz-5ccx
+    cZ24Q9KjVAx1Q>
+X-ME-Received: <xmr:2fHNZoTOSx6o9cu6ITeWAa3Fb5D8bn9fxA13OIoP8_zinPA_w4ShsW4MrqKsTydWIj8h3wcrFtu-98PXMWUSiVjeUjhRPQN1pP0jPg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrudeftddgkeelucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdej
+    necuhfhrohhmpefirhgvghcumffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtf
+    frrghtthgvrhhnpefgkeffieefieevkeelteejvdetvddtledugfdvhfetjeejieduledt
+    fefffedvieenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhroh
+    hmpehgrhgvgheskhhrohgrhhdrtghomhdpnhgspghrtghpthhtohepudegpdhmohguvgep
+    shhmthhpohhuthdprhgtphhtthhopegthhhutghkrdhlvghvvghrsehorhgrtghlvgdrtg
+    homhdprhgtphhtthhopegtvghlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehsthgr
+    sghlvgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhnfh
+    hssehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhilhhinhhgfhgvnhhg
+    feeshhhurgifvghirdgtohhmpdhrtghpthhtohepnhgvihhlsgesshhushgvrdguvgdprh
+    gtphhtthhopehjlhgrhihtohhnsehkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:2vHNZlvyZCCN5sAkb1cEvxFlTuX6OaXaV_PCYmI4wvxXnKn6fUIlTQ>
+    <xmx:2vHNZhe34A6nRC1KvTZzYcrJeu84ijWUZXJxY9JipVRvLZO0Oy9P4Q>
+    <xmx:2vHNZh07R3aq0Gi5aeHUPfr1_X83ca_ENszluGC_ydeQww5rRm3Jbw>
+    <xmx:2vHNZt_KyXJLj0mUa9smfexmv7P4uI8IM5W-PT4ovqYSskkbkBpcBw>
+    <xmx:2vHNZs1tgptKVrCeCmVPzuufnMcWE0LAwoMnRnU8hT2YtK30al1gIs78>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 27 Aug 2024 11:33:45 -0400 (EDT)
+Date: Tue, 27 Aug 2024 16:40:54 +0200
+From: Greg KH <greg@kroah.com>
+To: Chuck Lever III <chuck.lever@oracle.com>
+Cc: Chuck Lever <cel@kernel.org>, linux-stable <stable@vger.kernel.org>,
+	Linux NFS Mailing List <linux-nfs@vger.kernel.org>,
+	Li Lingfeng <lilingfeng3@huawei.com>, Neil Brown <neilb@suse.de>,
+	Jeff Layton <jlayton@kernel.org>
+Subject: Re: [PATCH 6.6.y] NFSD: simplify error paths in nfsd_svc()
+Message-ID: <2024082749-goldfish-handwoven-09b3@gregkh>
+References: <20240824162137.2157-1-cel@kernel.org>
+ <2024082712-haiku-take-ef45@gregkh>
+ <3C709C8F-8708-4434-8E64-41931DC5C753@oracle.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <3C709C8F-8708-4434-8E64-41931DC5C753@oracle.com>
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+On Tue, Aug 27, 2024 at 02:25:03PM +0000, Chuck Lever III wrote:
+> 
+> 
+> > On Aug 27, 2024, at 8:46 AM, Greg KH <greg@kroah.com> wrote:
+> > 
+> > On Sat, Aug 24, 2024 at 12:21:37PM -0400, cel@kernel.org wrote:
+> >> From: NeilBrown <neilb@suse.de>
+> >> 
+> >> [ Upstream commit bf32075256e9dd9c6b736859e2c5813981339908 ]
+> >> 
+> >> The error paths in nfsd_svc() are needlessly complex and can result in a
+> >> final call to svc_put() without nfsd_last_thread() being called.  This
+> >> results in the listening sockets not being closed properly.
+> >> 
+> >> The per-netns setup provided by nfsd_startup_new() and removed by
+> >> nfsd_shutdown_net() is needed precisely when there are running threads.
+> >> So we don't need nfsd_up_before.  We don't need to know if it *was* up.
+> >> We only need to know if any threads are left.  If none are, then we must
+> >> call nfsd_shutdown_net().  But we don't need to do that explicitly as
+> >> nfsd_last_thread() does that for us.
+> >> 
+> >> So simply call nfsd_last_thread() before the last svc_put() if there are
+> >> no running threads.  That will always do the right thing.
+> >> 
+> >> Also discard:
+> >> pr_info("nfsd: last server has exited, flushing export cache\n");
+> >> It may not be true if an attempt to start the first server failed, and
+> >> it isn't particularly helpful and it simply reports normal behaviour.
+> >> 
+> >> Signed-off-by: NeilBrown <neilb@suse.de>
+> >> Reviewed-by: Jeff Layton <jlayton@kernel.org>
+> >> Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+> >> ---
+> >> fs/nfsd/nfssvc.c | 14 ++++----------
+> >> 1 file changed, 4 insertions(+), 10 deletions(-)
+> >> 
+> >> Reported-by: Li Lingfeng <lilingfeng3@huawei.com>
+> >> Suggested-by: Li Lingfeng <lilingfeng3@huawei.com>
+> >> Tested-by: Li Lingfeng <lilingfeng3@huawei.com>
+> > 
+> > Odd placement of these :)
+> 
+> Wasn't sure I was supposed to add them to the actual
+> patch description because they weren't part of the
+> original upstream commit.
+> 
+> But if that's OK to do for stable patches, I will
+> add them in the usual spot next time.
 
-------------------
-
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-
-commit 99d3bf5f7377d42f8be60a6b9cb60fb0be34dceb upstream.
-
-syzbot is reporting too large allocation at input_mt_init_slots(), for
-num_slots is supplied from userspace using ioctl(UI_DEV_CREATE).
-
-Since nobody knows possible max slots, this patch chose 1024.
-
-Reported-by: syzbot <syzbot+0122fa359a69694395d5@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=0122fa359a69694395d5
-Suggested-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: George Kennedy <george.kennedy@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- drivers/input/input-mt.c |    3 +++
- 1 file changed, 3 insertions(+)
-
---- a/drivers/input/input-mt.c
-+++ b/drivers/input/input-mt.c
-@@ -46,6 +46,9 @@ int input_mt_init_slots(struct input_dev
- 		return 0;
- 	if (mt)
- 		return mt->num_slots != num_slots ? -EINVAL : 0;
-+	/* Arbitrary limit for avoiding too large memory allocation. */
-+	if (num_slots > 1024)
-+		return -EINVAL;
- 
- 	mt = kzalloc(struct_size(mt, slots, num_slots), GFP_KERNEL);
- 	if (!mt)
-
-
+Yes please, thanks!
 
