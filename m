@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-70570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71112-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 503F9960ED5
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:53:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1A4B9611B0
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:22:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C96C286D86
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:53:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 34D4CB21879
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:22:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C90B1C68AE;
-	Tue, 27 Aug 2024 14:52:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDFF91A072D;
+	Tue, 27 Aug 2024 15:22:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fUJfgMVm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qzZ5viOr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 175361C6899;
-	Tue, 27 Aug 2024 14:52:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D1F119F485;
+	Tue, 27 Aug 2024 15:22:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770346; cv=none; b=VMe9qW1GSos8E8P/no1E5PSgjI+OWiplilJgdS55RfUNf+EJmFBMbcblCgjVr/1MHLd1PEXNxBQt81g0Gpq1nMvop3PokrRedbV6UKwsZyJ5Q1xLwAyXKa5g9JQG6lpiol26aG/jljur+Znsqp2ZKL17gcy+CD8YAZbaGx6o61U=
+	t=1724772140; cv=none; b=JezjxuQ4VZh4p9ctMoxgx4I3Ul8K17LeIrPZclYm9DvP8E4nHd3xY5xXqfGwfs1sy6kwosfJGgPh4t+mGIbyELye0neaWspnjhMGp+QygxFjb2WiIgHg1qj3ac3pN9t9bKtz69YNUu7n5A+6uCaabmc8jA5J9Vy3nptoUqcvQls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770346; c=relaxed/simple;
-	bh=8W/kaJoVZRWC7NbckAyZhBn89s6lA4iQGWm5vdDcKqA=;
+	s=arc-20240116; t=1724772140; c=relaxed/simple;
+	bh=nfxHcTOBfWXNeW8CW0N4V1ci7JT0nz592OfEehsomIQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NjkXzenwQU75c/75ine6RYmqw63IbnpHXzd9BrXCr7ryxIyUXY4uzys7U7rddZ7GwmPZrjeNcVydOV+7+fWNlCzkMjmBTrrlcWcgoxsbRwWV8aeQZBQX5tsXCAdKtau9F6UFJCBNQ7FN3mYED2uFjSMpCpNNdplXKJA/3wuxJnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fUJfgMVm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A7CFC61049;
-	Tue, 27 Aug 2024 14:52:25 +0000 (UTC)
+	 MIME-Version; b=r/Ik/s3i0vGGzQhdknX9fJQqFDa6FOhACKmHE1qteHNiPU4FEM+R3LvtzTDo0tUJ/BcbkDYc/Z1QxvOZndT0wn6D0cxz5szy1WsDeSGwazyaqMsDiI9/nRDDKiZQy7KxhqRdepbi2nNbBzxooVfuQGZSQ6SmPKXXWrFfRxtNBkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qzZ5viOr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8B40C4FE08;
+	Tue, 27 Aug 2024 15:22:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770346;
-	bh=8W/kaJoVZRWC7NbckAyZhBn89s6lA4iQGWm5vdDcKqA=;
+	s=korg; t=1724772140;
+	bh=nfxHcTOBfWXNeW8CW0N4V1ci7JT0nz592OfEehsomIQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fUJfgMVm8yIU8DyTO9hyMxR6W/lYjGgixIJ3YCfkTGnLxH1lMAn3WxZ3Mq3g780cS
-	 YZlkdMmS0hGIcvEjW0gNoJKFHTEqjMBsNYbJ4F/u+1SFd9rNf2yU+5Te/UJHxtIBJv
-	 XW8LMdNBBBw9JVPzAO1xd3qyv55XnV67yXVGh4e4=
+	b=qzZ5viOrfefIMQWfkDysdoe3cZ1TMkGtYJ6XDYB6K3tI6nh5YBhCOKzcobOT9dNLZ
+	 JHM0q1rIP9CjEYJkXIf0/WcmcFOepCDIp0uWA5WY+++Z4hBZZmw0nSdMdGuZXvEWG2
+	 9Nrn7ZUduEbH79dT9rG2FhQKQ6ilS2ZJKzTKBvA8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	NeilBrown <neilb@suse.de>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Philip Yang <Philip.Yang@amd.com>,
+	Felix Kuehling <Felix.Kuehling@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 202/341] NFS: avoid infinite loop in pnfs_update_layout.
+Subject: [PATCH 6.1 125/321] drm/amdkfd: Move dma unmapping after TLB flush
 Date: Tue, 27 Aug 2024 16:37:13 +0200
-Message-ID: <20240827143851.102444199@linuxfoundation.org>
+Message-ID: <20240827143843.002951608@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +63,146 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: NeilBrown <neilb@suse.de>
+From: Philip Yang <Philip.Yang@amd.com>
 
-[ Upstream commit 2fdbc20036acda9e5694db74a032d3c605323005 ]
+[ Upstream commit 101b8104307eac734f2dfa4d3511430b0b631c73 ]
 
-If pnfsd_update_layout() is called on a file for which recovery has
-failed it will enter a tight infinite loop.
+Otherwise GPU may access the stale mapping and generate IOMMU
+IO_PAGE_FAULT.
 
-NFS_LAYOUT_INVALID_STID will be set, nfs4_select_rw_stateid() will
-return -EIO, and nfs4_schedule_stateid_recovery() will do nothing, so
-nfs4_client_recover_expired_lease() will not wait.  So the code will
-loop indefinitely.
+Move this to inside p->mutex to prevent multiple threads mapping and
+unmapping concurrently race condition.
 
-Break the loop by testing the validity of the open stateid at the top of
-the loop.
+After kfd_mem_dmaunmap_attachment is removed from unmap_bo_from_gpuvm,
+kfd_mem_dmaunmap_attachment is called if failed to map to GPUs, and
+before free the mem attachment in case failed to unmap from GPUs.
 
-Signed-off-by: NeilBrown <neilb@suse.de>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Philip Yang <Philip.Yang@amd.com>
+Reviewed-by: Felix Kuehling <Felix.Kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/pnfs.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.h    |  1 +
+ .../gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c  | 26 ++++++++++++++++---
+ drivers/gpu/drm/amd/amdkfd/kfd_chardev.c      | 20 ++++++++------
+ 3 files changed, 35 insertions(+), 12 deletions(-)
 
-diff --git a/fs/nfs/pnfs.c b/fs/nfs/pnfs.c
-index 9084f156d67bf..664d3128e730c 100644
---- a/fs/nfs/pnfs.c
-+++ b/fs/nfs/pnfs.c
-@@ -1997,6 +1997,14 @@ pnfs_update_layout(struct inode *ino,
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.h
+index dbc842590b253..585d608c10e8e 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd.h
+@@ -286,6 +286,7 @@ int amdgpu_amdkfd_gpuvm_map_memory_to_gpu(struct amdgpu_device *adev,
+ 					  struct kgd_mem *mem, void *drm_priv);
+ int amdgpu_amdkfd_gpuvm_unmap_memory_from_gpu(
+ 		struct amdgpu_device *adev, struct kgd_mem *mem, void *drm_priv);
++void amdgpu_amdkfd_gpuvm_dmaunmap_mem(struct kgd_mem *mem, void *drm_priv);
+ int amdgpu_amdkfd_gpuvm_sync_memory(
+ 		struct amdgpu_device *adev, struct kgd_mem *mem, bool intr);
+ int amdgpu_amdkfd_gpuvm_map_gtt_bo_to_kernel(struct kgd_mem *mem,
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
+index 7d5fbaaba72f7..3e7f4d8dc9d13 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_amdkfd_gpuvm.c
+@@ -719,7 +719,7 @@ kfd_mem_dmaunmap_sg_bo(struct kgd_mem *mem,
+ 	enum dma_data_direction dir;
+ 
+ 	if (unlikely(!ttm->sg)) {
+-		pr_err("SG Table of BO is UNEXPECTEDLY NULL");
++		pr_debug("SG Table of BO is NULL");
+ 		return;
  	}
  
- lookup_again:
-+	if (!nfs4_valid_open_stateid(ctx->state)) {
-+		trace_pnfs_update_layout(ino, pos, count,
-+					 iomode, lo, lseg,
-+					 PNFS_UPDATE_LAYOUT_INVALID_OPEN);
-+		lseg = ERR_PTR(-EIO);
-+		goto out;
+@@ -1226,8 +1226,6 @@ static void unmap_bo_from_gpuvm(struct kgd_mem *mem,
+ 	amdgpu_vm_clear_freed(adev, vm, &bo_va->last_pt_update);
+ 
+ 	amdgpu_sync_fence(sync, bo_va->last_pt_update);
+-
+-	kfd_mem_dmaunmap_attachment(mem, entry);
+ }
+ 
+ static int update_gpuvm_pte(struct kgd_mem *mem,
+@@ -1282,6 +1280,7 @@ static int map_bo_to_gpuvm(struct kgd_mem *mem,
+ 
+ update_gpuvm_pte_failed:
+ 	unmap_bo_from_gpuvm(mem, entry, sync);
++	kfd_mem_dmaunmap_attachment(mem, entry);
+ 	return ret;
+ }
+ 
+@@ -1852,8 +1851,10 @@ int amdgpu_amdkfd_gpuvm_free_memory_of_gpu(
+ 		mem->va + bo_size * (1 + mem->aql_queue));
+ 
+ 	/* Remove from VM internal data structures */
+-	list_for_each_entry_safe(entry, tmp, &mem->attachments, list)
++	list_for_each_entry_safe(entry, tmp, &mem->attachments, list) {
++		kfd_mem_dmaunmap_attachment(mem, entry);
+ 		kfd_mem_detach(entry);
++	}
+ 
+ 	ret = unreserve_bo_and_vms(&ctx, false, false);
+ 
+@@ -2024,6 +2025,23 @@ int amdgpu_amdkfd_gpuvm_map_memory_to_gpu(
+ 	return ret;
+ }
+ 
++void amdgpu_amdkfd_gpuvm_dmaunmap_mem(struct kgd_mem *mem, void *drm_priv)
++{
++	struct kfd_mem_attachment *entry;
++	struct amdgpu_vm *vm;
++
++	vm = drm_priv_to_vm(drm_priv);
++
++	mutex_lock(&mem->lock);
++
++	list_for_each_entry(entry, &mem->attachments, list) {
++		if (entry->bo_va->base.vm == vm)
++			kfd_mem_dmaunmap_attachment(mem, entry);
 +	}
 +
- 	lseg = ERR_PTR(nfs4_client_recover_expired_lease(clp));
- 	if (IS_ERR(lseg))
- 		goto out;
++	mutex_unlock(&mem->lock);
++}
++
+ int amdgpu_amdkfd_gpuvm_unmap_memory_from_gpu(
+ 		struct amdgpu_device *adev, struct kgd_mem *mem, void *drm_priv)
+ {
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
+index b0f475d51ae7e..2b21ce967e766 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
+@@ -1400,17 +1400,21 @@ static int kfd_ioctl_unmap_memory_from_gpu(struct file *filep,
+ 			goto sync_memory_failed;
+ 		}
+ 	}
+-	mutex_unlock(&p->mutex);
+ 
+-	if (flush_tlb) {
+-		/* Flush TLBs after waiting for the page table updates to complete */
+-		for (i = 0; i < args->n_devices; i++) {
+-			peer_pdd = kfd_process_device_data_by_id(p, devices_arr[i]);
+-			if (WARN_ON_ONCE(!peer_pdd))
+-				continue;
++	/* Flush TLBs after waiting for the page table updates to complete */
++	for (i = 0; i < args->n_devices; i++) {
++		peer_pdd = kfd_process_device_data_by_id(p, devices_arr[i]);
++		if (WARN_ON_ONCE(!peer_pdd))
++			continue;
++		if (flush_tlb)
+ 			kfd_flush_tlb(peer_pdd, TLB_FLUSH_HEAVYWEIGHT);
+-		}
++
++		/* Remove dma mapping after tlb flush to avoid IO_PAGE_FAULT */
++		amdgpu_amdkfd_gpuvm_dmaunmap_mem(mem, peer_pdd->drm_priv);
+ 	}
++
++	mutex_unlock(&p->mutex);
++
+ 	kfree(devices_arr);
+ 
+ 	return 0;
 -- 
 2.43.0
 
