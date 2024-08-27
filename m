@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-71157-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70585-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E25E09611EF
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:25:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F52B960EE4
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:53:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 49E53B22394
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:25:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 917B11C233E7
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:53:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BB941C8228;
-	Tue, 27 Aug 2024 15:24:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B389373466;
+	Tue, 27 Aug 2024 14:53:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IowDVF0J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Krc4rheu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37A521C6F65;
-	Tue, 27 Aug 2024 15:24:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 735171BC097;
+	Tue, 27 Aug 2024 14:53:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772287; cv=none; b=WfsSg869UlETR4gWfY45N8pLanr64aK4v1iy/HxScDyeJY47nHabxHlvYPGQDEBJuVFlwM62jTbmkEEQG8SndIwYDXchDMV76ldDSDVhTsvNESyjM9rwq4Z7TGlsqVDgHq87y+40mf2VqRQgi7G4y4LE7SedHQC65COc2KjoK2A=
+	t=1724770396; cv=none; b=UH/N8bvyw4sNvQiTQxNHrn7SuK1zDHRQIfyk/5OWI9X9g+5SkXZ/vNUSPX9Vjmq0kV06GceRS3IWF8/bxOHgUOlOWyqM6EgH7BCeT16CXDKmgBu/6jGmArpb9uEguDd4QucjO9/mCN1QqCpWRae/cW9fMV8MW/EOScVnQY5MSSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772287; c=relaxed/simple;
-	bh=hGzSR6KCnf2uHX8OVtzrcrnVFBjRTJL3IkqX23dqejI=;
+	s=arc-20240116; t=1724770396; c=relaxed/simple;
+	bh=QQTIBRJtemn34QAnXkZK2w3/MaTiMrbNkiShI7skNjM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hn6PSzR17/hG9SqbLEPQ9fWbqNPxplRyuDQcnsKRDdGys2G9hNON+Cwj6dftFM2j5B30nb/CogRUIqNIxksK1U/Y080CkwDKhyvf+luOP+vg5PEK0zV1nwGcMkJnftjswBhyyqo88eKMsj/DG8od4N6PMfTqDKKMxx4hrCaWzIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IowDVF0J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A313BC61071;
-	Tue, 27 Aug 2024 15:24:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bHNXLqWyxr9agziqVLYcSUlSFD3QQYrP+lWn5J0H7/Z/KOGBpqaZ4S++impsRLsKD79Ag5JEW0KJfAQfl+ow81/jDLzhNxmABf3Pe/rVGJHye7pugzZJtFADBFaaAIrNX3KofDaZN27dII0nRplu191qFbITs9P/GkgkCns6SQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Krc4rheu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4B1BC61042;
+	Tue, 27 Aug 2024 14:53:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772287;
-	bh=hGzSR6KCnf2uHX8OVtzrcrnVFBjRTJL3IkqX23dqejI=;
+	s=korg; t=1724770396;
+	bh=QQTIBRJtemn34QAnXkZK2w3/MaTiMrbNkiShI7skNjM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IowDVF0JHnG22tCPC+cQkGRKSRL3vvXf3LKLyCKz9NpCFP/NrgzAxf2EiNr2/DEJn
-	 ypYWqUCc9zyrIMDgBYLRoTZQWF7A21ycb1MQ3PTKEOQeawxV+YQkEvjwX8onWNLBe9
-	 ZYCwQrHHIjxJkCAtOGd/3ptHVV9tB+PCnfy/EI+4=
+	b=Krc4rheuiV2UixW/Df1kIJNirvWn98RnrT/BzS47MbPN5Cr4A3LMSVRSM0KgCv/uv
+	 bYLN4waLxEycI9/mihIId2Ib2q/Kl3gr9Hn/KtxM6jrpllH4RzLSAmdTb9vskuHgDL
+	 I4Icx86WqqZAvE8iGm2jfRLJz7gYf0VoE9a2B2/c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Gregory Greenman <gregory.greenman@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Jesse Zhang <Jesse.Zhang@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 138/321] wifi: iwlwifi: abort scan when rfkill on but device enabled
+Subject: [PATCH 6.6 215/341] drm/amdgpu: fix dereference null return value for the function amdgpu_vm_pt_parent
 Date: Tue, 27 Aug 2024 16:37:26 +0200
-Message-ID: <20240827143843.495002841@linuxfoundation.org>
+Message-ID: <20240827143851.591718503@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +61,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+From: Jesse Zhang <jesse.zhang@amd.com>
 
-[ Upstream commit 3c6a0b1f0add72e7f522bc9145222b86d0a7712a ]
+[ Upstream commit 511a623fb46a6cf578c61d4f2755783c48807c77 ]
 
-In RFKILL we first set the RFKILL bit, then we abort scan
-(if one exists) by waiting for the notification from FW
-and notifying mac80211. And then we stop the device.
-But in case we have a scan ongoing in the period of time between
-rfkill on and before the device is stopped - we will not wait for the
-FW notification because of the iwl_mvm_is_radio_killed() condition,
-and then the scan_status and uid_status are misconfigured,
-(scan_status is cleared but uid_status not)
-and when the notification suddenly arrives (before stopping the device)
-we will get into the assert about scan_status and uid_status mismatch.
-Fix this by waiting for FW notif when rfkill is on but the device isn't
-disabled yet.
+The pointer parent may be NULLed by the function amdgpu_vm_pt_parent.
+To make the code more robust, check the pointer parent.
 
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20231004123422.c43b69aa2c77.Icc7b5efb47974d6f499156ff7510b786e177993b@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
+Suggested-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vm_pt.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-index 069bac72117fe..b58441c2af730 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-@@ -3226,7 +3226,7 @@ int iwl_mvm_scan_stop(struct iwl_mvm *mvm, int type, bool notify)
- 	if (!(mvm->scan_status & type))
- 		return 0;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm_pt.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm_pt.c
+index 0d51222f6f8eb..026a3db947298 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm_pt.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm_pt.c
+@@ -766,11 +766,15 @@ int amdgpu_vm_pde_update(struct amdgpu_vm_update_params *params,
+ 			 struct amdgpu_vm_bo_base *entry)
+ {
+ 	struct amdgpu_vm_bo_base *parent = amdgpu_vm_pt_parent(entry);
+-	struct amdgpu_bo *bo = parent->bo, *pbo;
++	struct amdgpu_bo *bo, *pbo;
+ 	struct amdgpu_vm *vm = params->vm;
+ 	uint64_t pde, pt, flags;
+ 	unsigned int level;
  
--	if (iwl_mvm_is_radio_killed(mvm)) {
-+	if (!test_bit(STATUS_DEVICE_ENABLED, &mvm->trans->status)) {
- 		ret = 0;
- 		goto out;
- 	}
++	if (WARN_ON(!parent))
++		return -EINVAL;
++
++	bo = parent->bo;
+ 	for (level = 0, pbo = bo->parent; pbo; ++level)
+ 		pbo = pbo->parent;
+ 
 -- 
 2.43.0
 
