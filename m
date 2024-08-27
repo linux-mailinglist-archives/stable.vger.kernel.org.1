@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-71183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71185-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5814C961232
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:28:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DD5E96128A
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:32:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A49E1C238C4
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:28:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 19A65B29F68
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:28:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB20D1CC15B;
-	Tue, 27 Aug 2024 15:26:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 970C31CC17D;
+	Tue, 27 Aug 2024 15:26:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yGs2jk+Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mkF6nAmh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86BCE1CB33A;
-	Tue, 27 Aug 2024 15:26:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53F7B1C7B71;
+	Tue, 27 Aug 2024 15:26:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772373; cv=none; b=qEY6Dz1isYsNONL/fWVWFWo18YPWWpQY7XJqLsTQv65tvxAWZx5GFRRrbwb3rPC4IuwRz1+1MJjW3HdhgAOmUWMYz66WRaMKKVoU/2KPSkAhRMpzj0+Rr8/7r3JdxYE/3BTnPfKevEoVTQFumg2PvRt2yTYqJwerNvBrwKS/zkA=
+	t=1724772380; cv=none; b=GePT17aWRhlIkvlFxmtgHCwW368C3miO63j1/Ls91hXrPEUk5qUHDwR06T5P7XzRl9BybGTmvLFzXVtedfsyQttxa1py02/BuYY5QyHARg8bGNpot9FUqx1U3Iyh3htYew2mg4cp5UlTUY+LZnd1f/N4Yk6zVfDL0NYsqUjdXgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772373; c=relaxed/simple;
-	bh=eHJy+axbfR07CI2j7j0IGJANcN/TVwAJbxGHj/Q6rqs=;
+	s=arc-20240116; t=1724772380; c=relaxed/simple;
+	bh=CvYHSc45U9Ol8/MLkQRzH40pVMhy4Axe2RAeWoUILho=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VmCNHi8Xaofo6xSxxbVgyoFBxEbxSWnX8pX4Al/dE5tFu5GJh8IhYu/pIvpdqR9BAFP7BHv1iz2F5/WFO8FhwUI8wSyokO7sfPpNzoACgvVdYmcK8uU23xxS/ap/DOBIfMkIRqBZIq1JOPCWR0r/IyfUXqsUpEtNnO84nYwB3wM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yGs2jk+Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0378BC4DDEF;
-	Tue, 27 Aug 2024 15:26:12 +0000 (UTC)
+	 MIME-Version; b=VFm9y9x0AZGcfM0MMZj2L8wocqSO8ZXO/0bT4J7inaUrnbhjRAEAkOA5MYxRFzlSzYOVFEBiyAgUcNOtVifS53hw4UbQfEU9WWeN1CcyGdO0dhzBZzEJ6AQ2oDY8LVyq3itMAQ+79Tze7pZyqZb0T2qJwwoM7knOjT6yAidJQLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mkF6nAmh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60041C61071;
+	Tue, 27 Aug 2024 15:26:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772373;
-	bh=eHJy+axbfR07CI2j7j0IGJANcN/TVwAJbxGHj/Q6rqs=;
+	s=korg; t=1724772379;
+	bh=CvYHSc45U9Ol8/MLkQRzH40pVMhy4Axe2RAeWoUILho=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yGs2jk+YRq0V//kXDbFOeGOfALlQxuGVyRoGHHLbSpc3FiYv3rNxnJtsk15DfQW4g
-	 2/Mv0ekJlB8GYAjSnLcHDSmCMLWwuFXzfKSVYBa1MNrNGVSMpJEstd1qUgsvSDYx+7
-	 aAA6qwBibkQSQMPlS5fnWPUnHomgVnrwmKxkudus=
+	b=mkF6nAmhJ7DvWskaMwoZhe1kZDJVj9z15ISDAsNxD/nKZ+ht6k7otJsFbleuuzBs7
+	 7dw6yQtO8qENaNFvUQt6aVaEJE5ZFQY5SEHgwxwYOiEKCS7MV9dRHxqVs7gheLt5Nj
+	 dNKM3o0jm3UOwK9zn136GL/g+NiyD/QoI03wEZik=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	NeilBrown <neilb@suse.de>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Oreoluwa Babatunde <quic_obabatun@quicinc.com>,
+	Stafford Horne <shorne@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 195/321] NFS: avoid infinite loop in pnfs_update_layout.
-Date: Tue, 27 Aug 2024 16:38:23 +0200
-Message-ID: <20240827143845.653998216@linuxfoundation.org>
+Subject: [PATCH 6.1 196/321] openrisc: Call setup_memory() earlier in the init sequence
+Date: Tue, 27 Aug 2024 16:38:24 +0200
+Message-ID: <20240827143845.692067103@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
 References: <20240827143838.192435816@linuxfoundation.org>
@@ -66,47 +66,52 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: NeilBrown <neilb@suse.de>
+From: Oreoluwa Babatunde <quic_obabatun@quicinc.com>
 
-[ Upstream commit 2fdbc20036acda9e5694db74a032d3c605323005 ]
+[ Upstream commit 7b432bf376c9c198a7ff48f1ed14a14c0ffbe1fe ]
 
-If pnfsd_update_layout() is called on a file for which recovery has
-failed it will enter a tight infinite loop.
+The unflatten_and_copy_device_tree() function contains a call to
+memblock_alloc(). This means that memblock is allocating memory before
+any of the reserved memory regions are set aside in the setup_memory()
+function which calls early_init_fdt_scan_reserved_mem(). Therefore,
+there is a possibility for memblock to allocate from any of the
+reserved memory regions.
 
-NFS_LAYOUT_INVALID_STID will be set, nfs4_select_rw_stateid() will
-return -EIO, and nfs4_schedule_stateid_recovery() will do nothing, so
-nfs4_client_recover_expired_lease() will not wait.  So the code will
-loop indefinitely.
+Hence, move the call to setup_memory() to be earlier in the init
+sequence so that the reserved memory regions are set aside before any
+allocations are done using memblock.
 
-Break the loop by testing the validity of the open stateid at the top of
-the loop.
-
-Signed-off-by: NeilBrown <neilb@suse.de>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Oreoluwa Babatunde <quic_obabatun@quicinc.com>
+Signed-off-by: Stafford Horne <shorne@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/pnfs.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ arch/openrisc/kernel/setup.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/fs/nfs/pnfs.c b/fs/nfs/pnfs.c
-index 4448ff829cbb9..8c1f47ca5dc53 100644
---- a/fs/nfs/pnfs.c
-+++ b/fs/nfs/pnfs.c
-@@ -1997,6 +1997,14 @@ pnfs_update_layout(struct inode *ino,
- 	}
+diff --git a/arch/openrisc/kernel/setup.c b/arch/openrisc/kernel/setup.c
+index 0cd04d936a7a1..f2fe45d3094df 100644
+--- a/arch/openrisc/kernel/setup.c
++++ b/arch/openrisc/kernel/setup.c
+@@ -270,6 +270,9 @@ void calibrate_delay(void)
  
- lookup_again:
-+	if (!nfs4_valid_open_stateid(ctx->state)) {
-+		trace_pnfs_update_layout(ino, pos, count,
-+					 iomode, lo, lseg,
-+					 PNFS_UPDATE_LAYOUT_INVALID_OPEN);
-+		lseg = ERR_PTR(-EIO);
-+		goto out;
-+	}
+ void __init setup_arch(char **cmdline_p)
+ {
++	/* setup memblock allocator */
++	setup_memory();
 +
- 	lseg = ERR_PTR(nfs4_client_recover_expired_lease(clp));
- 	if (IS_ERR(lseg))
- 		goto out;
+ 	unflatten_and_copy_device_tree();
+ 
+ 	setup_cpuinfo();
+@@ -293,9 +296,6 @@ void __init setup_arch(char **cmdline_p)
+ 	}
+ #endif
+ 
+-	/* setup memblock allocator */
+-	setup_memory();
+-
+ 	/* paging_init() sets up the MMU and marks all pages as reserved */
+ 	paging_init();
+ 
 -- 
 2.43.0
 
