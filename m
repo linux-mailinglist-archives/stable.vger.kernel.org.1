@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-70543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71085-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03F66960EAE
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:51:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C07B961193
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:21:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A09F51F2482F
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:51:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AE5C7B228A0
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:21:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64EF11C824B;
-	Tue, 27 Aug 2024 14:51:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 593521C3F0D;
+	Tue, 27 Aug 2024 15:20:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t9+F08+U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rKXv2twK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21FAC1C7B62;
-	Tue, 27 Aug 2024 14:50:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15C7E1C4EE6;
+	Tue, 27 Aug 2024 15:20:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770260; cv=none; b=lbBrl3kGXVWOOPZX6b8vTJdV1raS31FtmEjy83SORjt41l6bMiJPPsksbF1QVun3zjPwwBUUY5JI9Wm1A3MzgMEsuOsagpRhvfgQ7Jw8lp+QV1yN3n2y9qY/R52EWWtq8s6Z/wDOOezDsE19TgR955hNE6QgtvqIYqLw4FX4dw4=
+	t=1724772051; cv=none; b=iAEsgGnJNCVSGqte2eMeDxDFG0McqKkL60GNjkn62IeYwc/2XLiH1dKmQLdgZOa5ccW6Su/rS5aAUHfRJtB0ZT5vNOokloq0Gpb+hlmRUWKHjeUo7wbUvzk3f6COR019oGqlDFDNXSBFBTB3z0A1VHz4CHP0quTYoUgCoKvnrAM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770260; c=relaxed/simple;
-	bh=mIGBsvgPRE55uQsyjeymZUGC5ducbcKJQbeOvrLE8xQ=;
+	s=arc-20240116; t=1724772051; c=relaxed/simple;
+	bh=y8pCksCa944XqTNFUeOJEma3oOtmYl1Tj9ExpF4u9E4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lQiuTKkrJNkyH6nLouOo9l8ChRk9XWUrWE4e6G7qNZqNvTEef0MGBAqI+VjVHgxN6ZW54vWNXMZFC2+haO1INuhXRaSL9bAlaiRecuYXH3/OG+qlUUi69g1wCT/wbcye05M+EaojSb9ytOTzlBiJw3PRyg/qRLD+1g0tOBHFvLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t9+F08+U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 424B6C4DE02;
-	Tue, 27 Aug 2024 14:50:57 +0000 (UTC)
+	 MIME-Version; b=PF0Cj2Ah3cf7HFANyyuV8IGtsKqz+NtnF+O6m6eulkedLDdDfYi3EGn6P0t397sQymSlJt+/kjCPO9ONP5S1H6TyEu5fMp29d7fRCiLXU4aV3/1MX3MracotZ+ERgp0ajx0ndjTbgE4CI22SNwB8Ya2BIn7pBOicDsAFMrtmFvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rKXv2twK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 766D7C4DE1E;
+	Tue, 27 Aug 2024 15:20:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770257;
-	bh=mIGBsvgPRE55uQsyjeymZUGC5ducbcKJQbeOvrLE8xQ=;
+	s=korg; t=1724772050;
+	bh=y8pCksCa944XqTNFUeOJEma3oOtmYl1Tj9ExpF4u9E4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t9+F08+U/r/BfLYG0wVV+PlPs0XSZ4GZzrFADqUIYSCO/WbUfIRIp6/NIdzXdzclk
-	 qom2JnsHq7hA6PTqKIakspqW3vRrn0f1NyUjNboRN5tqwCAe98WwIDFMJCSSFI2GDT
-	 c6b+CBpJ640O+F0yAdnLzKr3u2frYAcdI0Is51es=
+	b=rKXv2twKRafyaMniFyl0ryaHQNbvhFqANJxCSJ5RL+aIuUdtXXpOuRbFJ/AeI0+cq
+	 2X+dkYu4eHqSlCJHYRjmwaPrdg3X5vDbVbtRssBO81W2DHnZdbaP6Dtz34UeUz43d1
+	 r5drkRtgH2CGw1/OJjI9w5fhbmm2x+ZY+cfuGJvk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 174/341] tick: Move got_idle_tick away from common flags
+Subject: [PATCH 6.1 097/321] netfilter: nf_queue: drop packets with cloned unconfirmed conntracks
 Date: Tue, 27 Aug 2024 16:36:45 +0200
-Message-ID: <20240827143850.036033079@linuxfoundation.org>
+Message-ID: <20240827143841.932496369@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +62,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frederic Weisbecker <frederic@kernel.org>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 3ce74f1a8566dbbc9774f85fb0ce781fe290fd32 ]
+[ Upstream commit 7d8dc1c7be8d3509e8f5164dd5df64c8e34d7eeb ]
 
-tick_nohz_idle_got_tick() is called by cpuidle_reflect() within the idle
-loop with interrupts enabled. This function modifies the struct
-tick_sched's bitfield "got_idle_tick". However this bitfield is stored
-within the same mask as other bitfields that can be modified from
-interrupts.
+Conntrack assumes an unconfirmed entry (not yet committed to global hash
+table) has a refcount of 1 and is not visible to other cores.
 
-Fortunately so far it looks like the only race that can happen is while
-writing ->got_idle_tick to 0, an interrupt fires and writes the
-->idle_active field to 0. It's then possible that the interrupted write
-to ->got_idle_tick writes back the old value of ->idle_active back to 1.
+With multicast forwarding this assumption breaks down because such
+skbs get cloned after being picked up, i.e.  ct->use refcount is > 1.
 
-However if that happens, the worst possible outcome is that the time
-spent between that interrupt and the upcoming call to
-tick_nohz_idle_exit() is accounted as idle, which is negligible quantity.
+Likewise, bridge netfilter will clone broad/mutlicast frames and
+all frames in case they need to be flood-forwarded during learning
+phase.
 
-Still all the bitfield writes within this struct tick_sched's shadow
-mask should be IRQ-safe. Therefore move this bitfield out to its own
-storage to avoid further suprises.
+For ip multicast forwarding or plain bridge flood-forward this will
+"work" because packets don't leave softirq and are implicitly
+serialized.
 
-Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
-Link: https://lore.kernel.org/r/20240225225508.11587-12-frederic@kernel.org
+With nfqueue this no longer holds true, the packets get queued
+and can be reinjected in arbitrary ways.
+
+Disable this feature, I see no other solution.
+
+After this patch, nfqueue cannot queue packets except the last
+multicast/broadcast packet.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/tick-sched.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/bridge/br_netfilter_hooks.c |  6 +++++-
+ net/netfilter/nfnetlink_queue.c | 35 +++++++++++++++++++++++++++++++--
+ 2 files changed, 38 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/time/tick-sched.h b/kernel/time/tick-sched.h
-index 5ed5a9d41d5a7..03a586e12cf89 100644
---- a/kernel/time/tick-sched.h
-+++ b/kernel/time/tick-sched.h
-@@ -61,7 +61,6 @@ struct tick_sched {
- 	unsigned int			tick_stopped	: 1;
- 	unsigned int			idle_active	: 1;
- 	unsigned int			do_timer_last	: 1;
--	unsigned int			got_idle_tick	: 1;
+diff --git a/net/bridge/br_netfilter_hooks.c b/net/bridge/br_netfilter_hooks.c
+index 9ac70c27da835..9229300881b5f 100644
+--- a/net/bridge/br_netfilter_hooks.c
++++ b/net/bridge/br_netfilter_hooks.c
+@@ -618,8 +618,12 @@ static unsigned int br_nf_local_in(void *priv,
+ 	if (likely(nf_ct_is_confirmed(ct)))
+ 		return NF_ACCEPT;
  
- 	/* Tick handling: jiffies stall check */
- 	unsigned int			stalled_jiffies;
-@@ -73,6 +72,7 @@ struct tick_sched {
- 	ktime_t				next_tick;
- 	unsigned long			idle_jiffies;
- 	ktime_t				idle_waketime;
-+	unsigned int			got_idle_tick;
++	if (WARN_ON_ONCE(refcount_read(&nfct->use) != 1)) {
++		nf_reset_ct(skb);
++		return NF_ACCEPT;
++	}
++
+ 	WARN_ON_ONCE(skb_shared(skb));
+-	WARN_ON_ONCE(refcount_read(&nfct->use) != 1);
  
- 	/* Idle entry */
- 	seqcount_t			idle_sleeptime_seq;
+ 	/* We can't call nf_confirm here, it would create a dependency
+ 	 * on nf_conntrack module.
+diff --git a/net/netfilter/nfnetlink_queue.c b/net/netfilter/nfnetlink_queue.c
+index 5bc342cb13767..f13eed826cbb8 100644
+--- a/net/netfilter/nfnetlink_queue.c
++++ b/net/netfilter/nfnetlink_queue.c
+@@ -647,10 +647,41 @@ static bool nf_ct_drop_unconfirmed(const struct nf_queue_entry *entry)
+ {
+ #if IS_ENABLED(CONFIG_NF_CONNTRACK)
+ 	static const unsigned long flags = IPS_CONFIRMED | IPS_DYING;
+-	const struct nf_conn *ct = (void *)skb_nfct(entry->skb);
++	struct nf_conn *ct = (void *)skb_nfct(entry->skb);
++	unsigned long status;
++	unsigned int use;
+ 
+-	if (ct && ((ct->status & flags) == IPS_DYING))
++	if (!ct)
++		return false;
++
++	status = READ_ONCE(ct->status);
++	if ((status & flags) == IPS_DYING)
+ 		return true;
++
++	if (status & IPS_CONFIRMED)
++		return false;
++
++	/* in some cases skb_clone() can occur after initial conntrack
++	 * pickup, but conntrack assumes exclusive skb->_nfct ownership for
++	 * unconfirmed entries.
++	 *
++	 * This happens for br_netfilter and with ip multicast routing.
++	 * We can't be solved with serialization here because one clone could
++	 * have been queued for local delivery.
++	 */
++	use = refcount_read(&ct->ct_general.use);
++	if (likely(use == 1))
++		return false;
++
++	/* Can't decrement further? Exclusive ownership. */
++	if (!refcount_dec_not_one(&ct->ct_general.use))
++		return false;
++
++	skb_set_nfct(entry->skb, 0);
++	/* No nf_ct_put(): we already decremented .use and it cannot
++	 * drop down to 0.
++	 */
++	return true;
+ #endif
+ 	return false;
+ }
 -- 
 2.43.0
 
