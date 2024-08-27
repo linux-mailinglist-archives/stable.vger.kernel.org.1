@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-70770-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70520-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51742960FF2
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:04:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C13C960E8E
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:49:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CD90EB220A8
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:04:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF1FB1F23D24
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:49:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC2DB1C6F63;
-	Tue, 27 Aug 2024 15:03:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D10041C4EF9;
+	Tue, 27 Aug 2024 14:49:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EnrAgYBi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jn7UHe52"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 772A81BC9F1;
-	Tue, 27 Aug 2024 15:03:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E27115F41B;
+	Tue, 27 Aug 2024 14:49:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771005; cv=none; b=iaj7QLHDLDiKTxzMIZqCiYFgraxU0h8PGyf2nKd32qr435TiHp0Zswhis5S/1pf+GTeXIrF8uO1Eo0eDLSSh1HlB5fgk9WbqA3hFZkODOHNChk0TsKEa1cbathbgZskP30LU6VDWZsEAhmUP877o25lVDXPmBdeZ4zbRF1cURuE=
+	t=1724770181; cv=none; b=A4sO9lqluXNNhBgD13Yx0UtzZSbDQV28UACED01CgsRFqh3w5qiJWVAUZ4zEcNQP8KesCxnmbyQTMYggyhhOSaKCnBiARJ/6h3K+TnJj5zPf26ySv63Mh+pZ54N0ro50D8EeygbHo5743gYio4UFviRIiQyvmOSHIzM4HNyLzkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771005; c=relaxed/simple;
-	bh=lJRy8kIatNM+8ckHAtvsFKISzE5bcZmkuKrAvlkq0JU=;
+	s=arc-20240116; t=1724770181; c=relaxed/simple;
+	bh=xl8lZbUSfOIWPGTO3DOPu9jTZXa1vlyBOL5q3Ung+ZU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jmZTHv+TgypoxGHIHxNQ+4NGf3iVuVA4XMAT/FHA9uIgu/Ppzs6RReHG5nSG7gpjvR5C3smLpyxL+XSbWXMHAFTg5zWMQb9Btf+fsPAPwmBuLx7f6BWVRopu61Pmys90RNq/iQo95Xf9iH6jqWdmRhDGMRwckMKYz8uy7lSSIB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EnrAgYBi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 885BEC61049;
-	Tue, 27 Aug 2024 15:03:24 +0000 (UTC)
+	 MIME-Version; b=O0ue5pE48XU7alWPWcYgNICp55Chcny+y5GDoQgID0NY0eQ/nkjeSZi7I7wpJVYNE484OBhA7iXiyle8KAFHtb2+QEovpUdX3Nm8aPynGW+lcbywciJaYPFQdABemftMytpuQwkFbnDHvLd6cNG/qvBmBcWbNGMn46QOOAFdk9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jn7UHe52; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 151BEC4DDE5;
+	Tue, 27 Aug 2024 14:49:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771005;
-	bh=lJRy8kIatNM+8ckHAtvsFKISzE5bcZmkuKrAvlkq0JU=;
+	s=korg; t=1724770181;
+	bh=xl8lZbUSfOIWPGTO3DOPu9jTZXa1vlyBOL5q3Ung+ZU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EnrAgYBispTEpuxIQkgOEMEMxiXtMF6G5yspc6ZyLs9e+ZOdIKlhRgPlb0OfhKCXb
-	 rxnqNnI8e8EZHq7Amk5ubSAx16nJ5J55oYQ7hdzCLl0Qg0t53/CaVQQzFHPHrMmMvF
-	 ebRDCuJ+fpvyp6L7u5PCsGDRpgjKlBDLyZqsD0Ls=
+	b=Jn7UHe52eBrZVfp65CqfBQXMa28guSzwN05vyxXy2YcA3aAtIQHUArfusu6BF5bZr
+	 5lhvhog5FGB/OADQXOFymcy8m+y2q8tGmTMAO5Sx7JCldZcVNnjn4x0jlbx9MKPE/1
+	 l+gnm+1Dge8PUZoW1DPoMeMskFLHv42hovCP8ZbQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Huang, Ying" <ying.huang@intel.com>,
-	Zi Yan <ziy@nvidia.com>,
-	David Hildenbrand <david@redhat.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Mel Gorman <mgorman@suse.de>,
-	Yang Shi <shy828301@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.10 057/273] mm/numa: no task_numa_fault() call if PMD is changed
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 150/341] Bluetooth: hci_conn: Check non NULL function before calling for HFP offload
 Date: Tue, 27 Aug 2024 16:36:21 +0200
-Message-ID: <20240827143835.572540490@linuxfoundation.org>
+Message-ID: <20240827143849.126898694@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
-References: <20240827143833.371588371@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,98 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zi Yan <ziy@nvidia.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-commit fd8c35a92910f4829b7c99841f39b1b952c259d5 upstream.
+[ Upstream commit 132d0fd0b8418094c9e269e5bc33bf5b864f4a65 ]
 
-When handling a numa page fault, task_numa_fault() should be called by a
-process that restores the page table of the faulted folio to avoid
-duplicated stats counting.  Commit c5b5a3dd2c1f ("mm: thp: refactor NUMA
-fault handling") restructured do_huge_pmd_numa_page() and did not avoid
-task_numa_fault() call in the second page table check after a numa
-migration failure.  Fix it by making all !pmd_same() return immediately.
+For some controllers such as QCA2066, it does not need to send
+HCI_Configure_Data_Path to configure non-HCI data transport path to support
+HFP offload, their device drivers may set hdev->get_codec_config_data as
+NULL, so Explicitly add this non NULL checking before calling the function.
 
-This issue can cause task_numa_fault() being called more than necessary
-and lead to unexpected numa balancing results (It is hard to tell whether
-the issue will cause positive or negative performance impact due to
-duplicated numa fault counting).
-
-Link: https://lkml.kernel.org/r/20240809145906.1513458-3-ziy@nvidia.com
-Fixes: c5b5a3dd2c1f ("mm: thp: refactor NUMA fault handling")
-Reported-by: "Huang, Ying" <ying.huang@intel.com>
-Closes: https://lore.kernel.org/linux-mm/87zfqfw0yw.fsf@yhuang6-desk2.ccr.corp.intel.com/
-Signed-off-by: Zi Yan <ziy@nvidia.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: "Huang, Ying" <ying.huang@intel.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Mel Gorman <mgorman@suse.de>
-Cc: Yang Shi <shy828301@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/huge_memory.c |   29 +++++++++++++----------------
- 1 file changed, 13 insertions(+), 16 deletions(-)
+ net/bluetooth/hci_conn.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -1672,7 +1672,7 @@ vm_fault_t do_huge_pmd_numa_page(struct
- 	vmf->ptl = pmd_lock(vma->vm_mm, vmf->pmd);
- 	if (unlikely(!pmd_same(oldpmd, *vmf->pmd))) {
- 		spin_unlock(vmf->ptl);
--		goto out;
-+		return 0;
- 	}
+diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
+index 9c670348fac42..dc1c07c7d4ff9 100644
+--- a/net/bluetooth/hci_conn.c
++++ b/net/bluetooth/hci_conn.c
+@@ -299,6 +299,13 @@ static int configure_datapath_sync(struct hci_dev *hdev, struct bt_codec *codec)
+ 	__u8 vnd_len, *vnd_data = NULL;
+ 	struct hci_op_configure_data_path *cmd = NULL;
  
- 	pmd = pmd_modify(oldpmd, vma->vm_page_prot);
-@@ -1715,22 +1715,16 @@ vm_fault_t do_huge_pmd_numa_page(struct
- 	if (!migrate_misplaced_folio(folio, vma, target_nid)) {
- 		flags |= TNF_MIGRATED;
- 		nid = target_nid;
--	} else {
--		flags |= TNF_MIGRATE_FAIL;
--		vmf->ptl = pmd_lock(vma->vm_mm, vmf->pmd);
--		if (unlikely(!pmd_same(oldpmd, *vmf->pmd))) {
--			spin_unlock(vmf->ptl);
--			goto out;
--		}
--		goto out_map;
--	}
--
--out:
--	if (nid != NUMA_NO_NODE)
- 		task_numa_fault(last_cpupid, nid, HPAGE_PMD_NR, flags);
++	if (!codec->data_path || !hdev->get_codec_config_data)
 +		return 0;
-+	}
- 
--	return 0;
--
-+	flags |= TNF_MIGRATE_FAIL;
-+	vmf->ptl = pmd_lock(vma->vm_mm, vmf->pmd);
-+	if (unlikely(!pmd_same(oldpmd, *vmf->pmd))) {
-+		spin_unlock(vmf->ptl);
-+		return 0;
-+	}
- out_map:
- 	/* Restore the PMD */
- 	pmd = pmd_modify(oldpmd, vma->vm_page_prot);
-@@ -1740,7 +1734,10 @@ out_map:
- 	set_pmd_at(vma->vm_mm, haddr, vmf->pmd, pmd);
- 	update_mmu_cache_pmd(vma, vmf->address, vmf->pmd);
- 	spin_unlock(vmf->ptl);
--	goto out;
 +
-+	if (nid != NUMA_NO_NODE)
-+		task_numa_fault(last_cpupid, nid, HPAGE_PMD_NR, flags);
-+	return 0;
- }
++	/* Do not take me as error */
++	if (!hdev->get_codec_config_data)
++		return 0;
++
+ 	err = hdev->get_codec_config_data(hdev, ESCO_LINK, codec, &vnd_len,
+ 					  &vnd_data);
+ 	if (err < 0)
+@@ -344,9 +351,7 @@ static int hci_enhanced_setup_sync(struct hci_dev *hdev, void *data)
  
- /*
+ 	bt_dev_dbg(hdev, "hcon %p", conn);
+ 
+-	/* for offload use case, codec needs to configured before opening SCO */
+-	if (conn->codec.data_path)
+-		configure_datapath_sync(hdev, &conn->codec);
++	configure_datapath_sync(hdev, &conn->codec);
+ 
+ 	conn->state = BT_CONNECT;
+ 	conn->out = true;
+-- 
+2.43.0
+
 
 
 
