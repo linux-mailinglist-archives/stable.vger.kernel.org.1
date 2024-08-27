@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-71077-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70535-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00678961188
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:21:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96233960EA2
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:50:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 327DE1C238C0
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:21:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F18F9B2399A
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:50:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37A7E1C9DF7;
-	Tue, 27 Aug 2024 15:20:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15E221C6F52;
+	Tue, 27 Aug 2024 14:50:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vblTKyoV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cTjYYLEL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA6E217C96;
-	Tue, 27 Aug 2024 15:20:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8E771C6F45;
+	Tue, 27 Aug 2024 14:50:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724772024; cv=none; b=CH5eY8GDNgo6svirs+aqIkuzpx7hcNa89eQsHhQvfgnJvgbTOytjCdelb15O0dcKJSga5vjQ+ZEkBQpxzM3p6qhmSwEvo3jagjsmQin90FcB8/jUj1h4E8GEWF8sZrNbzK1i8om9DEGr0Zp+OjsPqx2lD5Qry3uXq1/g8KcVgs8=
+	t=1724770231; cv=none; b=QIwYN9foeP7O9irLUWkP7yQNX6o0jmon+Purizsfqcf0XPLHi028JmqsmCY2kZ3R9SqulN7v1TlMIUlPIxBqeI77PWO33J4egqbi9JgGG4cNglGxmznI/Yki9dhdyTLwlfTH1AVq6753ua1qqeSJTYOGi/N/2ctsfbtDSsjYzD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724772024; c=relaxed/simple;
-	bh=nuXZo3y8sg+DkDsMAXua3KZfIVhD4l49qWnYfIiLjOY=;
+	s=arc-20240116; t=1724770231; c=relaxed/simple;
+	bh=Gwn+XsmgRN+kdUtfpA9weenWQXUm4d6bm5T32u4wLHs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=khoIIaCX6MBftmMtkeoZS0gUh8At/xyKQ8O/cvOJCFhNpnQhtU7UkRWOMEvfM40j3/nC9FH14HPY8lzRgas0EJDiWxXLHSUUy7eKtHDo9+mv5TOmTmdDhvBSyucmEORSoOEYoBXMZmY3vl+B+4PIthnBa97/Q7a6pX4MwTIL5AA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vblTKyoV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DAB6C4DDE5;
-	Tue, 27 Aug 2024 15:20:23 +0000 (UTC)
+	 MIME-Version; b=BI5f2by9vLrtrVkl3tPSuSMOLyJAtPlQAUj2e0VMc+k4nEk6VmkO9Z6W7R74h5ypLYqqJH6Yoev5D3mDCgjoYW5EdLVziYQDRDMVDQAO7vxe44MfefEEOP+KO5HAi0vqQAFZ6fnAu8BPKlG4eFf8IE6XkZwW2b/bAy6834GjRso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cTjYYLEL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3646BC4DDF9;
+	Tue, 27 Aug 2024 14:50:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724772023;
-	bh=nuXZo3y8sg+DkDsMAXua3KZfIVhD4l49qWnYfIiLjOY=;
+	s=korg; t=1724770231;
+	bh=Gwn+XsmgRN+kdUtfpA9weenWQXUm4d6bm5T32u4wLHs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vblTKyoVsIjgqm6viiuuuH2pocSMbe8BpyjTqq5puhW3fkQrQW2+gTVhZAO4c2feg
-	 53kHdndbwUgrRAmifxYymH9nSjTSqSglm/dIvzlNWo62gq7m53j8alqgi4wN2f6K7h
-	 +4TKmxP1vlTYRN92z95pOMfEbhoNVph6uoZLdpw0=
+	b=cTjYYLELpUX0yChxc6oX6gZ4lErfuMNAbo732XVE81v7HtSTM3wSpyWPudK/695BS
+	 QPUhv1Z1qth9x4A5L+8lbRgww+nBVCaJ9qg8QGC+Dxpha9GYBwGbplzHXYOdJ3V/Zz
+	 ipfx/6ISfwe/Okv/5lsmLov19KrnkSfPCchF3OpM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Russell King <linux@armlinux.org.uk>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Pawel Dembicki <paweldembicki@gmail.com>,
+	Sam Creasey <sammy@sammy.net>,
+	Kees Cook <keescook@chromium.org>,
+	Simon Horman <horms@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 090/321] net: dsa: vsc73xx: use read_poll_timeout instead delay loop
+Subject: [PATCH 6.6 167/341] net/sun3_82586: Avoid reading past buffer in debug output
 Date: Tue, 27 Aug 2024 16:36:38 +0200
-Message-ID: <20240827143841.665303334@linuxfoundation.org>
+Message-ID: <20240827143849.765877144@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,102 +65,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pawel Dembicki <paweldembicki@gmail.com>
+From: Kees Cook <keescook@chromium.org>
 
-[ Upstream commit eb7e33d01db3aec128590391b2397384bab406b6 ]
+[ Upstream commit 4bea747f3fbec33c16d369b2f51e55981d7c78d0 ]
 
-Switch the delay loop during the Arbiter empty check from
-vsc73xx_adjust_link() to use read_poll_timeout(). Functionally,
-one msleep() call is eliminated at the end of the loop in the timeout
-case.
+Since NUM_XMIT_BUFFS is always 1, building m68k with sun3_defconfig and
+-Warraybounds, this build warning is visible[1]:
 
-As Russell King suggested:
+drivers/net/ethernet/i825xx/sun3_82586.c: In function 'sun3_82586_timeout':
+drivers/net/ethernet/i825xx/sun3_82586.c:990:122: warning: array subscript 1 is above array bounds of 'volatile struct transmit_cmd_struct *[1]' [-Warray-bounds=]
+  990 |                 printk("%s: command-stats: %04x %04x\n",dev->name,swab16(p->xmit_cmds[0]->cmd_status),swab16(p->xmit_cmds[1]->cmd_status));
+      |                                                                                                               ~~~~~~~~~~~~^~~
+...
+drivers/net/ethernet/i825xx/sun3_82586.c:156:46: note: while referencing 'xmit_cmds'
+  156 |         volatile struct transmit_cmd_struct *xmit_cmds[NUM_XMIT_BUFFS];
 
-"This [change] avoids the issue that on the last iteration, the code reads
-the register, tests it, finds the condition that's being waiting for is
-false, _then_ waits and end up printing the error message - that last
-wait is rather useless, and as the arbiter state isn't checked after
-waiting, it could be that we had success during the last wait."
+Avoid accessing index 1 since it doesn't exist.
 
-Suggested-by: Russell King <linux@armlinux.org.uk>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Pawel Dembicki <paweldembicki@gmail.com>
-Link: https://lore.kernel.org/r/20240417205048.3542839-2-paweldembicki@gmail.com
+Link: https://github.com/KSPP/linux/issues/325 [1]
+Cc: Sam Creasey <sammy@sammy.net>
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Simon Horman <horms@kernel.org> # build-tested
+Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Link: https://lore.kernel.org/r/20240206161651.work.876-kees@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: fa63c6434b6f ("net: dsa: vsc73xx: check busy flag in MDIO operations")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/vitesse-vsc73xx-core.c | 30 ++++++++++++++------------
- 1 file changed, 16 insertions(+), 14 deletions(-)
+ drivers/net/ethernet/i825xx/sun3_82586.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/dsa/vitesse-vsc73xx-core.c b/drivers/net/dsa/vitesse-vsc73xx-core.c
-index 81d39dfe21f45..92087f9d73550 100644
---- a/drivers/net/dsa/vitesse-vsc73xx-core.c
-+++ b/drivers/net/dsa/vitesse-vsc73xx-core.c
-@@ -17,6 +17,7 @@
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/device.h>
-+#include <linux/iopoll.h>
- #include <linux/of.h>
- #include <linux/of_device.h>
- #include <linux/of_mdio.h>
-@@ -269,6 +270,9 @@
- #define IS_7398(a) ((a)->chipid == VSC73XX_CHIPID_ID_7398)
- #define IS_739X(a) (IS_7395(a) || IS_7398(a))
- 
-+#define VSC73XX_POLL_SLEEP_US		1000
-+#define VSC73XX_POLL_TIMEOUT_US		10000
-+
- struct vsc73xx_counter {
- 	u8 counter;
- 	const char *name;
-@@ -780,7 +784,7 @@ static void vsc73xx_adjust_link(struct dsa_switch *ds, int port,
- 	 * after a PHY or the CPU port comes up or down.
- 	 */
- 	if (!phydev->link) {
--		int maxloop = 10;
-+		int ret, err;
- 
- 		dev_dbg(vsc->dev, "port %d: went down\n",
- 			port);
-@@ -795,19 +799,17 @@ static void vsc73xx_adjust_link(struct dsa_switch *ds, int port,
- 				    VSC73XX_ARBDISC, BIT(port), BIT(port));
- 
- 		/* Wait until queue is empty */
--		vsc73xx_read(vsc, VSC73XX_BLOCK_ARBITER, 0,
--			     VSC73XX_ARBEMPTY, &val);
--		while (!(val & BIT(port))) {
--			msleep(1);
--			vsc73xx_read(vsc, VSC73XX_BLOCK_ARBITER, 0,
--				     VSC73XX_ARBEMPTY, &val);
--			if (--maxloop == 0) {
--				dev_err(vsc->dev,
--					"timeout waiting for block arbiter\n");
--				/* Continue anyway */
--				break;
--			}
--		}
-+		ret = read_poll_timeout(vsc73xx_read, err,
-+					err < 0 || (val & BIT(port)),
-+					VSC73XX_POLL_SLEEP_US,
-+					VSC73XX_POLL_TIMEOUT_US, false,
-+					vsc, VSC73XX_BLOCK_ARBITER, 0,
-+					VSC73XX_ARBEMPTY, &val);
-+		if (ret)
-+			dev_err(vsc->dev,
-+				"timeout waiting for block arbiter\n");
-+		else if (err < 0)
-+			dev_err(vsc->dev, "error reading arbiter\n");
- 
- 		/* Put this port into reset */
- 		vsc73xx_write(vsc, VSC73XX_BLOCK_MAC, port, VSC73XX_MAC_CFG,
+diff --git a/drivers/net/ethernet/i825xx/sun3_82586.c b/drivers/net/ethernet/i825xx/sun3_82586.c
+index 5e27470c6b1ef..f2d4669c81cf2 100644
+--- a/drivers/net/ethernet/i825xx/sun3_82586.c
++++ b/drivers/net/ethernet/i825xx/sun3_82586.c
+@@ -987,7 +987,7 @@ static void sun3_82586_timeout(struct net_device *dev, unsigned int txqueue)
+ 	{
+ #ifdef DEBUG
+ 		printk("%s: xmitter timed out, try to restart! stat: %02x\n",dev->name,p->scb->cus);
+-		printk("%s: command-stats: %04x %04x\n",dev->name,swab16(p->xmit_cmds[0]->cmd_status),swab16(p->xmit_cmds[1]->cmd_status));
++		printk("%s: command-stats: %04x\n", dev->name, swab16(p->xmit_cmds[0]->cmd_status));
+ 		printk("%s: check, whether you set the right interrupt number!\n",dev->name);
+ #endif
+ 		sun3_82586_close(dev);
 -- 
 2.43.0
 
