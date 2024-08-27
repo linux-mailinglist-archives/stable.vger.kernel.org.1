@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-71057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-70735-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33D56961171
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:20:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01ABC960FBF
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:01:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D27FC1F23B19
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:20:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B313C281B84
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:01:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C57A1C6F6D;
-	Tue, 27 Aug 2024 15:19:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B28DD1C4603;
+	Tue, 27 Aug 2024 15:01:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eKgPbK9h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wtbGFxcq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE0B81C3F0D;
-	Tue, 27 Aug 2024 15:19:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 712681A08A3;
+	Tue, 27 Aug 2024 15:01:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724771955; cv=none; b=DJBWM3EnCqgPJLAN2WE7EzFkZ6X/6i4SHJ6umN1vbK5F61zNSnrM+VQBPZxSYap3qgOx+zhxyPR/CCFr0HM7Xxho+ueYzeSJ6jTfyEBwjUuJn7o7UCc4An00FulH2fAVPC507Jlx2MH3FkOnSKrSMRTJ0Y4aXYd5E6AGdDuH+PU=
+	t=1724770893; cv=none; b=OIzEXnYIAHt4UlsSF+tMZTRBVU1+DVHoRBJLDYTTRdLtEoQRvCyJXouWRXA8CBjWl1YOQ5z8eazPE+hxMRCEQh50Xo+aysJbvPLzrINt/3WXDf48AtQ5SEE0wx7y3fo4QDFxGb5MLlFEo3NmZ2cyDLOjxaxKQ3YNbYxxtV7juf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724771955; c=relaxed/simple;
-	bh=YOMNdysQyuOo4iurfCdMXj7XTY5r+t+sDlFgrAaKUoI=;
+	s=arc-20240116; t=1724770893; c=relaxed/simple;
+	bh=tM8Yf03nqhb473X/a3vR2NvB/U2YLRex7KccIZlFVuA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NbhZDfEfZUKd+utlaFdLYMXmsLszraVePO86Sf0cU+lsjwguxHrLHC3anpIGPkgo+2sfESsJn3MibMvBVXo20rVJdgRCQ9jpqEgK06voqsuRNa5ys/5ds3Wcpw+epqJZNBxHlouPgjC4da8FyfKBC4bgYjr9rsYEo00FraA50i4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eKgPbK9h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39D8CC61067;
-	Tue, 27 Aug 2024 15:19:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=u1w+ViEMv5LfG9axobdfXrRuR23aBVp+raKTRdKwEBPQNycSTu3ZepwjuKHHYtdf3LMeDzf+VEXlTdYvCTNwQrhNHV6wo9dMqF53VxvSVIqqdLhD6+frOvJ0OAF3SXHOwSYKgq2yGqOTH4NEqPq9ZjHj8VzmRAlBpgDxdwBh+MM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wtbGFxcq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7BBDC4DDEF;
+	Tue, 27 Aug 2024 15:01:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724771955;
-	bh=YOMNdysQyuOo4iurfCdMXj7XTY5r+t+sDlFgrAaKUoI=;
+	s=korg; t=1724770893;
+	bh=tM8Yf03nqhb473X/a3vR2NvB/U2YLRex7KccIZlFVuA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eKgPbK9hjJ6iaI9H8dZXYNu1s2DZzwiTDra+a6XEfVZ5Bl7OC/bYoJ704sCsWEhxy
-	 43kzmNcpj/jlzuyYhSAILyRG2jKXHsZfUofKhNhrUzjXnt4PPy5bsVpzRpglHv419e
-	 z6WAhIK6TRxCxMTXLYqOxeXoz61E7kdjPaxYTYPw=
+	b=wtbGFxcq0CZD9x00Cw2v1Mv2h7vzU84CmhgMMDlMuybRZ9A5a2hsx6isWtAYfV59G
+	 gqeJKOWwQ9yj7sXOWvMDUzk1rQKVSQEZcKp+k0MlJt3q4kT6+uvwkCmtDaQ7BhtZGD
+	 kcJbNBjBW6yPeepFxiOJEp+Ckus0/lQaXAXoaSkY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+5c54bd3eb218bb595aa9@syzkaller.appspotmail.com,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 040/321] posix-timers: Ensure timer ID search-loop limit is valid
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	=?UTF-8?q?Peter=20K=C3=A4stle?= <peter@piie.net>,
+	Zhang Rui <rui.zhang@intel.com>
+Subject: [PATCH 6.10 024/273] thermal: gov_bang_bang: Call __thermal_cdev_update() directly
 Date: Tue, 27 Aug 2024 16:35:48 +0200
-Message-ID: <20240827143839.751969536@linuxfoundation.org>
+Message-ID: <20240827143834.309705472@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,122 +60,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Gleixner <tglx@linutronix.de>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 8ce8849dd1e78dadcee0ec9acbd259d239b7069f ]
+commit b9b6ee6fe258ce4d89592593efcd3d798c418859 upstream.
 
-posix_timer_add() tries to allocate a posix timer ID by starting from the
-cached ID which was stored by the last successful allocation.
+Instead of clearing the "updated" flag for each cooling device
+affected by the trip point crossing in bang_bang_control() and
+walking all thermal instances to run thermal_cdev_update() for all
+of the affected cooling devices, call __thermal_cdev_update()
+directly for each of them.
 
-This is done in a loop searching the ID space for a free slot one by
-one. The loop has to terminate when the search wrapped around to the
-starting point.
+No intentional functional impact.
 
-But that's racy vs. establishing the starting point. That is read out
-lockless, which leads to the following problem:
-
-CPU0	  	      	     	   CPU1
-posix_timer_add()
-  start = sig->posix_timer_id;
-  lock(hash_lock);
-  ...				   posix_timer_add()
-  if (++sig->posix_timer_id < 0)
-      			             start = sig->posix_timer_id;
-     sig->posix_timer_id = 0;
-
-So CPU1 can observe a negative start value, i.e. -1, and the loop break
-never happens because the condition can never be true:
-
-  if (sig->posix_timer_id == start)
-     break;
-
-While this is unlikely to ever turn into an endless loop as the ID space is
-huge (INT_MAX), the racy read of the start value caught the attention of
-KCSAN and Dmitry unearthed that incorrectness.
-
-Rewrite it so that all id operations are under the hash lock.
-
-Reported-by: syzbot+5c54bd3eb218bb595aa9@syzkaller.appspotmail.com
-Reported-by: Dmitry Vyukov <dvyukov@google.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
-Link: https://lore.kernel.org/r/87bkhzdn6g.ffs@tglx
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Acked-by: Peter Kästle <peter@piie.net>
+Reviewed-by: Zhang Rui <rui.zhang@intel.com>
+Cc: 6.10+ <stable@vger.kernel.org> # 6.10+
+Link: https://patch.msgid.link/13583081.uLZWGnKmhe@rjwysocki.net
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/sched/signal.h |  2 +-
- kernel/time/posix-timers.c   | 31 ++++++++++++++++++-------------
- 2 files changed, 19 insertions(+), 14 deletions(-)
+ drivers/thermal/gov_bang_bang.c |    5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/include/linux/sched/signal.h b/include/linux/sched/signal.h
-index 20099268fa257..669e8cff40c74 100644
---- a/include/linux/sched/signal.h
-+++ b/include/linux/sched/signal.h
-@@ -135,7 +135,7 @@ struct signal_struct {
- #ifdef CONFIG_POSIX_TIMERS
+--- a/drivers/thermal/gov_bang_bang.c
++++ b/drivers/thermal/gov_bang_bang.c
+@@ -79,12 +79,9 @@ static void bang_bang_control(struct the
+ 		dev_dbg(&instance->cdev->device, "target=%ld\n", instance->target);
  
- 	/* POSIX.1b Interval Timers */
--	int			posix_timer_id;
-+	unsigned int		next_posix_timer_id;
- 	struct list_head	posix_timers;
- 
- 	/* ITIMER_REAL timer for the process */
-diff --git a/kernel/time/posix-timers.c b/kernel/time/posix-timers.c
-index ed3c4a9543982..2d6cf93ca370a 100644
---- a/kernel/time/posix-timers.c
-+++ b/kernel/time/posix-timers.c
-@@ -140,25 +140,30 @@ static struct k_itimer *posix_timer_by_id(timer_t id)
- static int posix_timer_add(struct k_itimer *timer)
- {
- 	struct signal_struct *sig = current->signal;
--	int first_free_id = sig->posix_timer_id;
- 	struct hlist_head *head;
--	int ret = -ENOENT;
-+	unsigned int cnt, id;
- 
--	do {
-+	/*
-+	 * FIXME: Replace this by a per signal struct xarray once there is
-+	 * a plan to handle the resulting CRIU regression gracefully.
-+	 */
-+	for (cnt = 0; cnt <= INT_MAX; cnt++) {
- 		spin_lock(&hash_lock);
--		head = &posix_timers_hashtable[hash(sig, sig->posix_timer_id)];
--		if (!__posix_timers_find(head, sig, sig->posix_timer_id)) {
-+		id = sig->next_posix_timer_id;
-+
-+		/* Write the next ID back. Clamp it to the positive space */
-+		sig->next_posix_timer_id = (id + 1) & INT_MAX;
-+
-+		head = &posix_timers_hashtable[hash(sig, id)];
-+		if (!__posix_timers_find(head, sig, id)) {
- 			hlist_add_head_rcu(&timer->t_hash, head);
--			ret = sig->posix_timer_id;
-+			spin_unlock(&hash_lock);
-+			return id;
- 		}
--		if (++sig->posix_timer_id < 0)
--			sig->posix_timer_id = 0;
--		if ((sig->posix_timer_id == first_free_id) && (ret == -ENOENT))
--			/* Loop over all possible ids completed */
--			ret = -EAGAIN;
- 		spin_unlock(&hash_lock);
--	} while (ret == -ENOENT);
--	return ret;
-+	}
-+	/* POSIX return code when no timer ID could be allocated */
-+	return -EAGAIN;
+ 		mutex_lock(&instance->cdev->lock);
+-		instance->cdev->updated = false; /* cdev needs update */
++		__thermal_cdev_update(instance->cdev);
+ 		mutex_unlock(&instance->cdev->lock);
+ 	}
+-
+-	list_for_each_entry(instance, &tz->thermal_instances, tz_node)
+-		thermal_cdev_update(instance->cdev);
  }
  
- static inline void unlock_timer(struct k_itimer *timr, unsigned long flags)
--- 
-2.43.0
-
+ static struct thermal_governor thermal_gov_bang_bang = {
 
 
 
