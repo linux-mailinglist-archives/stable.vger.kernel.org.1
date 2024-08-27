@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-70527-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71057-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B20BE960E95
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 16:50:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33D56961171
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 17:20:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 668E11F2225A
-	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 14:50:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D27FC1F23B19
+	for <lists+stable@lfdr.de>; Tue, 27 Aug 2024 15:20:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED4BA1C4EDE;
-	Tue, 27 Aug 2024 14:50:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C57A1C6F6D;
+	Tue, 27 Aug 2024 15:19:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NsTEYJoy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eKgPbK9h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8CAD1A072D;
-	Tue, 27 Aug 2024 14:50:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE0B81C3F0D;
+	Tue, 27 Aug 2024 15:19:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724770204; cv=none; b=B7U0hl3EGQNwf2E/A3Pi7YH/Ywt/eipZpqgaCvkDQykI/2hsVoBDNaspKN+hp6tTzOKscrwVUYlTSBLqmNO4Uyw4sk4rcco0BDe/XSG9beIYR2Hh465bL+cyOFvQ1oeD7j8sfX60pqguOIfVe3TNpLEt1i/mNXpeADlLK3PvhZA=
+	t=1724771955; cv=none; b=DJBWM3EnCqgPJLAN2WE7EzFkZ6X/6i4SHJ6umN1vbK5F61zNSnrM+VQBPZxSYap3qgOx+zhxyPR/CCFr0HM7Xxho+ueYzeSJ6jTfyEBwjUuJn7o7UCc4An00FulH2fAVPC507Jlx2MH3FkOnSKrSMRTJ0Y4aXYd5E6AGdDuH+PU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724770204; c=relaxed/simple;
-	bh=ZO86yeuV8FHPBdGdb2Glq41NOPt2V0Eif4hcb+k/n5Y=;
+	s=arc-20240116; t=1724771955; c=relaxed/simple;
+	bh=YOMNdysQyuOo4iurfCdMXj7XTY5r+t+sDlFgrAaKUoI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N7YsapeU3aBIv24zkUQdnGTZ2um8gFoPkMXUdIbtXGy+skkROJFH2J8OuhfIQfakykDMwLVuGXZ9tdUIkzFC44ZdtTUC8kQZGrNvFSjfDRmQFBSFbzp584rnYj34m3m49L+0x8PCXxYqSYD4wp4kqOGQANosREK6rtp6wCM6XFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NsTEYJoy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F140C4DDEB;
-	Tue, 27 Aug 2024 14:50:03 +0000 (UTC)
+	 MIME-Version; b=NbhZDfEfZUKd+utlaFdLYMXmsLszraVePO86Sf0cU+lsjwguxHrLHC3anpIGPkgo+2sfESsJn3MibMvBVXo20rVJdgRCQ9jpqEgK06voqsuRNa5ys/5ds3Wcpw+epqJZNBxHlouPgjC4da8FyfKBC4bgYjr9rsYEo00FraA50i4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eKgPbK9h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39D8CC61067;
+	Tue, 27 Aug 2024 15:19:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724770204;
-	bh=ZO86yeuV8FHPBdGdb2Glq41NOPt2V0Eif4hcb+k/n5Y=;
+	s=korg; t=1724771955;
+	bh=YOMNdysQyuOo4iurfCdMXj7XTY5r+t+sDlFgrAaKUoI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NsTEYJoyA7IVStc722/DKkmF9bsvbxO8QW7yn6rkvQrxLBYEvQCez+kGAByf2oJej
-	 0Caq1y1hJdLWvDqBZcl/SegrGdNK3cI1XOtGI0NQGRZ3Hf6SKEDiE7EX2tEsyEmYx2
-	 zn50hMu2iq7zqbPtTS7gSOm0yxeVs0ibd1oVX3tY=
+	b=eKgPbK9hjJ6iaI9H8dZXYNu1s2DZzwiTDra+a6XEfVZ5Bl7OC/bYoJ704sCsWEhxy
+	 43kzmNcpj/jlzuyYhSAILyRG2jKXHsZfUofKhNhrUzjXnt4PPy5bsVpzRpglHv419e
+	 z6WAhIK6TRxCxMTXLYqOxeXoz61E7kdjPaxYTYPw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	farah kassabri <fkassabri@habana.ai>,
-	Oded Gabbay <ogabbay@kernel.org>,
+	syzbot+5c54bd3eb218bb595aa9@syzkaller.appspotmail.com,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Frederic Weisbecker <frederic@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 117/341] accel/habanalabs: fix bug in timestamp interrupt handling
+Subject: [PATCH 6.1 040/321] posix-timers: Ensure timer ID search-loop limit is valid
 Date: Tue, 27 Aug 2024 16:35:48 +0200
-Message-ID: <20240827143847.865844688@linuxfoundation.org>
+Message-ID: <20240827143839.751969536@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
-References: <20240827143843.399359062@linuxfoundation.org>
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
+References: <20240827143838.192435816@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +64,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: farah kassabri <fkassabri@habana.ai>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit 0165994c215f321e2d055368f89b424756e340eb ]
+[ Upstream commit 8ce8849dd1e78dadcee0ec9acbd259d239b7069f ]
 
-There is a potential race between user thread seeking to re-use
-a timestamp record with new interrupt id, while this record is still
-in the middle of interrupt handling and it is about to be freed.
-Imagine the driver set the record in_use to 0 and only then fill the
-free_node information. This might lead to unpleasant scenario where
-the new registration thread detects the record as free to use, and
-change the cq buff address. That will cause the free_node to get
-the wrong buffer address to put refcount to.
+posix_timer_add() tries to allocate a posix timer ID by starting from the
+cached ID which was stored by the last successful allocation.
 
-Signed-off-by: farah kassabri <fkassabri@habana.ai>
-Reviewed-by: Oded Gabbay <ogabbay@kernel.org>
-Signed-off-by: Oded Gabbay <ogabbay@kernel.org>
+This is done in a loop searching the ID space for a free slot one by
+one. The loop has to terminate when the search wrapped around to the
+starting point.
+
+But that's racy vs. establishing the starting point. That is read out
+lockless, which leads to the following problem:
+
+CPU0	  	      	     	   CPU1
+posix_timer_add()
+  start = sig->posix_timer_id;
+  lock(hash_lock);
+  ...				   posix_timer_add()
+  if (++sig->posix_timer_id < 0)
+      			             start = sig->posix_timer_id;
+     sig->posix_timer_id = 0;
+
+So CPU1 can observe a negative start value, i.e. -1, and the loop break
+never happens because the condition can never be true:
+
+  if (sig->posix_timer_id == start)
+     break;
+
+While this is unlikely to ever turn into an endless loop as the ID space is
+huge (INT_MAX), the racy read of the start value caught the attention of
+KCSAN and Dmitry unearthed that incorrectness.
+
+Rewrite it so that all id operations are under the hash lock.
+
+Reported-by: syzbot+5c54bd3eb218bb595aa9@syzkaller.appspotmail.com
+Reported-by: Dmitry Vyukov <dvyukov@google.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Frederic Weisbecker <frederic@kernel.org>
+Link: https://lore.kernel.org/r/87bkhzdn6g.ffs@tglx
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/habanalabs/common/irq.c | 3 +++
- 1 file changed, 3 insertions(+)
+ include/linux/sched/signal.h |  2 +-
+ kernel/time/posix-timers.c   | 31 ++++++++++++++++++-------------
+ 2 files changed, 19 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/accel/habanalabs/common/irq.c b/drivers/accel/habanalabs/common/irq.c
-index b1010d206c2ef..813315cea4a7b 100644
---- a/drivers/accel/habanalabs/common/irq.c
-+++ b/drivers/accel/habanalabs/common/irq.c
-@@ -271,6 +271,9 @@ static int handle_registration_node(struct hl_device *hdev, struct hl_user_pendi
- 	free_node->cq_cb = pend->ts_reg_info.cq_cb;
- 	list_add(&free_node->free_objects_node, *free_list);
+diff --git a/include/linux/sched/signal.h b/include/linux/sched/signal.h
+index 20099268fa257..669e8cff40c74 100644
+--- a/include/linux/sched/signal.h
++++ b/include/linux/sched/signal.h
+@@ -135,7 +135,7 @@ struct signal_struct {
+ #ifdef CONFIG_POSIX_TIMERS
  
-+	/* Mark TS record as free */
-+	pend->ts_reg_info.in_use = false;
+ 	/* POSIX.1b Interval Timers */
+-	int			posix_timer_id;
++	unsigned int		next_posix_timer_id;
+ 	struct list_head	posix_timers;
+ 
+ 	/* ITIMER_REAL timer for the process */
+diff --git a/kernel/time/posix-timers.c b/kernel/time/posix-timers.c
+index ed3c4a9543982..2d6cf93ca370a 100644
+--- a/kernel/time/posix-timers.c
++++ b/kernel/time/posix-timers.c
+@@ -140,25 +140,30 @@ static struct k_itimer *posix_timer_by_id(timer_t id)
+ static int posix_timer_add(struct k_itimer *timer)
+ {
+ 	struct signal_struct *sig = current->signal;
+-	int first_free_id = sig->posix_timer_id;
+ 	struct hlist_head *head;
+-	int ret = -ENOENT;
++	unsigned int cnt, id;
+ 
+-	do {
++	/*
++	 * FIXME: Replace this by a per signal struct xarray once there is
++	 * a plan to handle the resulting CRIU regression gracefully.
++	 */
++	for (cnt = 0; cnt <= INT_MAX; cnt++) {
+ 		spin_lock(&hash_lock);
+-		head = &posix_timers_hashtable[hash(sig, sig->posix_timer_id)];
+-		if (!__posix_timers_find(head, sig, sig->posix_timer_id)) {
++		id = sig->next_posix_timer_id;
 +
- 	return 0;
++		/* Write the next ID back. Clamp it to the positive space */
++		sig->next_posix_timer_id = (id + 1) & INT_MAX;
++
++		head = &posix_timers_hashtable[hash(sig, id)];
++		if (!__posix_timers_find(head, sig, id)) {
+ 			hlist_add_head_rcu(&timer->t_hash, head);
+-			ret = sig->posix_timer_id;
++			spin_unlock(&hash_lock);
++			return id;
+ 		}
+-		if (++sig->posix_timer_id < 0)
+-			sig->posix_timer_id = 0;
+-		if ((sig->posix_timer_id == first_free_id) && (ret == -ENOENT))
+-			/* Loop over all possible ids completed */
+-			ret = -EAGAIN;
+ 		spin_unlock(&hash_lock);
+-	} while (ret == -ENOENT);
+-	return ret;
++	}
++	/* POSIX return code when no timer ID could be allocated */
++	return -EAGAIN;
  }
  
+ static inline void unlock_timer(struct k_itimer *timr, unsigned long flags)
 -- 
 2.43.0
 
