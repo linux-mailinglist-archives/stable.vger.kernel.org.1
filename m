@@ -1,174 +1,113 @@
-Return-Path: <stable+bounces-71434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71435-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46565962EA9
-	for <lists+stable@lfdr.de>; Wed, 28 Aug 2024 19:40:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B20F7962F4C
+	for <lists+stable@lfdr.de>; Wed, 28 Aug 2024 20:05:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F2E80281AD6
-	for <lists+stable@lfdr.de>; Wed, 28 Aug 2024 17:40:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 32C64B227AD
+	for <lists+stable@lfdr.de>; Wed, 28 Aug 2024 18:04:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA90B1A704F;
-	Wed, 28 Aug 2024 17:40:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 400641A7ADE;
+	Wed, 28 Aug 2024 18:04:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aSf5Lsk/"
+	dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b="g9iA02w+"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f47.google.com (mail-io1-f47.google.com [209.85.166.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76E5E1A4F15;
-	Wed, 28 Aug 2024 17:40:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8FCB1A7AD8
+	for <stable@vger.kernel.org>; Wed, 28 Aug 2024 18:04:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724866816; cv=none; b=caVhhtAMLJUDLcSG51JNju79hUivK2dhz78v1RoTwgA2bEskqqj9A9wCa/mrfFQXy16Shss3Vv6PwX0MAFqaRinzGYpuk5NSZ3et02GaWNriXcW2k5Qrf/3v5bNcz52pORjVt3m1xWH5UKzLR1m9Stw5IGSKgadsQ4r8m8cVYeE=
+	t=1724868288; cv=none; b=cHEMJ6LpnHopTUDeh16DbBUbzW49uckeHUBWNQU3Ap/RerFNGVmDHksOSXQk/8chBX2OAjYC0fm9yOTC3AFUoZXJQ25y5h0vxJkIixUy5c/EiqwKoKgob/KpBRRcmiNALxalIJGRlQIzL45MxpnLgJsErkAfWI1qGIZA32PaxAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724866816; c=relaxed/simple;
-	bh=+orhpqbhYE73syn3xRae0ko0GUimh1gok3+JeXs6uDg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QECQga8Fqhxn+gG+qtyIsYGQW4dLiYPNS5QG+vcDcmXjAdOf49Z8o9/syptedGuMywZB8sDswPq6z7Kj37/eIehLryXA0drhL2pHiWOew1DKzKuC9eWgi0TXjb+BkzfdVR3M1sTlKT/x8JjX2GTlHq4l43rGJe/IfIAhNn6iegU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aSf5Lsk/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B67F7C4CEC0;
-	Wed, 28 Aug 2024 17:40:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724866816;
-	bh=+orhpqbhYE73syn3xRae0ko0GUimh1gok3+JeXs6uDg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aSf5Lsk/HF8PJlGzIT13stZDjoRppbHnyg67V3Vw1VahRPiZ3lzaMarZBZJGNbRvf
-	 vgGs9SbpgCPFa0nTvhAQWanawZewQo+/VnC5bL8FqoomKMHNaLSn14B2ZpCGlgLRTM
-	 thvKUOKUyTY7TtVdnlShiIQmInoqXk4qdGJkPKA2jWjEzycgWjBdo5RiMirYXdu3ol
-	 P7G5GxvJQKRj0CBINKFWyeR2AlxaxO6elOK5vU4Vtbp48K4sHAckuOvNcz38uYjYZA
-	 w2SqM/a0yr/qmT6mo3SQJ6q/3dJjh7erFK/OGHpOk4qrbfUdczlk9ZnimjR36en3RH
-	 W+G1yWek8dMTg==
-From: cel@kernel.org
-To: <linux-nfs@vger.kernel.org>
-Cc: Olga Kornievskaia <okorniev@redhat.com>,
-	Dai Ngo <dai.ngo@oracle.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	stable@vger.kernel.org
-Subject: [RFC PATCH 2/7] NFSD: Limit the number of concurrent async COPY operations
-Date: Wed, 28 Aug 2024 13:40:04 -0400
-Message-ID: <20240828174001.322745-11-cel@kernel.org>
-X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240828174001.322745-9-cel@kernel.org>
-References: <20240828174001.322745-9-cel@kernel.org>
+	s=arc-20240116; t=1724868288; c=relaxed/simple;
+	bh=7LklAEbtnglm2QqbJRXoOdk5le0yekVD8FpktvgUQ0o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tP+ntgfaXVfKckEEuDN2n05ZrjEPE8lrfLlGtRG8BWH2c+Qt7TXS2fg3zLBgvrGBWtMsHPgUDFXC4aN4M81jo9fSGFQiB+K1NkhLOIuKAwtzPZg7iYif0PItTkTFqIq7wRi5kC4KSUSKQOikoSd8781ZD9d2HVV1BbEUOw4a4MA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org; spf=pass smtp.mailfrom=linuxtx.org; dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b=g9iA02w+; arc=none smtp.client-ip=209.85.166.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtx.org
+Received: by mail-io1-f47.google.com with SMTP id ca18e2360f4ac-81fd925287eso258801939f.3
+        for <stable@vger.kernel.org>; Wed, 28 Aug 2024 11:04:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxtx.org; s=google; t=1724868285; x=1725473085; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=D88RxHw+gLXI+BUbdOUTeiFUlCwvolVuRzDJ5llIRd8=;
+        b=g9iA02w+gnkq/9Gcd8YoLDYbuK8UasKWfDeh8xwi/77mBkO0jPCwrXyOAjUMWa9uek
+         P6dYKRUJem/9WmdDH1MQoH0He7jWpCmKEPXQGq78kN+aRydcNjxY86bl/Id4QxO4urCr
+         6DwpIEIsUBCEMc0og1bYjjjEKDQtGTRwsa6kk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724868285; x=1725473085;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=D88RxHw+gLXI+BUbdOUTeiFUlCwvolVuRzDJ5llIRd8=;
+        b=OuCGKZAx7kOQ3VsCEFdhcGCjRLQrBfJOZCdGHccJsU3txbz6wPbboJs7tu1h8qPScU
+         zG2p/xFhRZC4wbs4DAGs4Oah57I0ttmbd5MLE1bNqv5VlfVrSZSbL+FWsAPsIFvFHgLe
+         HW6pjQN6HsDUPWj/0AInKdToRa6fw+k00P401jS+aZpEI8cW7/yR/pXDPiejg54XnwHT
+         lTFBUAF2UI6P2spn0BtphRZ4l1/1mgd9C0rJpAD1ytXt6mRJ7BdmEa4ptLDqL3DwEftR
+         +GX+3fP9Q3W2U4gKCznYZ6BRZaEsNLUGlqyNLKnbAeQtkvM4nb7E4Lf1VJVz7ewt0370
+         gmdg==
+X-Gm-Message-State: AOJu0Yy0F+d1925Te3LICAYHrvPCQOXshord3dr0TCjzGnGebAUwPfcm
+	Leoy6EppruIKsoVOCLN6RN71MgUEye9DAP+ft2LMCJa8hoc1lYrUNzqewzNpBQ==
+X-Google-Smtp-Source: AGHT+IFD5bWw8dwybfSsYbERZ4OkMGlI4FfFSwejbt9P+LhXubeZLqrOlKHFBCJir/bc35aQBU9JSA==
+X-Received: by 2002:a05:6602:1487:b0:809:83e3:a35c with SMTP id ca18e2360f4ac-82a11036779mr46952939f.7.1724868284479;
+        Wed, 28 Aug 2024 11:04:44 -0700 (PDT)
+Received: from fedora64.linuxtx.org ([72.42.103.70])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4ce70f1fa89sm3123229173.16.2024.08.28.11.04.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 28 Aug 2024 11:04:44 -0700 (PDT)
+Sender: Justin Forbes <jmforbes@linuxtx.org>
+Date: Wed, 28 Aug 2024 12:04:42 -0600
+From: Justin Forbes <jforbes@fedoraproject.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+Subject: Re: [PATCH 6.10 000/273] 6.10.7-rc1 review
+Message-ID: <Zs9mus6WLnij725m@fedora64.linuxtx.org>
+References: <20240827143833.371588371@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3621; i=chuck.lever@oracle.com; h=from:subject; bh=VEBWKnuVul4SKhnXBt8l9TWqaWgmVvsUzjYpWA+H0Ig=; b=kA0DAAgBM2qzM29mf5cByyZiAGbPYPqglbuRPJal4DFBuKhVlkGJYND5XDEQ0m42OIf14G4d+ 4kCMwQAAQgAHRYhBCiy5bASht8kPPI+/jNqszNvZn+XBQJmz2D6AAoJEDNqszNvZn+XEyEQAKlS vVcXhCSvVdM3Fp2oHwWJ0bOHDKsN1dSUFg6ZQ+OjmxKP9boLlTYofM8+YC8IVQTa/2IB4Ud03eE 9YxhLDldW5Jncdy2C4z6Z9xr4woSvcJkFaJDOoM6zdGpqCrLjcnce7pgReESP/+T5mKNftngnYR pD0U2gsbx3bRxjWDQmNaEtTeJlghYdvwsBOMiT7uGI+hBvzIgUgzEz1bZG93eL5gd5oQcoDvUQz v7+E8e+I3Ss2fvZKI1/fBUA1PndyQ9pxNEJxjzSLrVAY7onVFi7+xmg21oGfANj2DcF5u/Voscs uBdgnKjvX2ftxCNCAYh+GzhvRHbgSeDT1O/abY8iQ62tLQLoFiWxLaNwsUY6bR2LAx8pbBvd4TH KXy8lPJwxbGHVt99lvG+o3h5NR3kQi9zaPxPTZuy17ygaWk4fm+fJaLzPJBOJdqs+nDufjpy5SG iNo9qJP29SkcWVXbMe8CoJ7JYMiKwbgRBBEJm/ZAOIZxP/EuoIyH4DN6XxV9b+fJU7EqRMNKHd2 7BsM+b+bby0XT3QxQHwUe1PIDB8PlzHsEfVGujBNEAPXarVrdX5XMzBq1L8cYji6K/B2K2a2YDF pMOZk+JorjC69CCtRTIFghhgQ/EntzXvM1BeJMWJswSMYbv07mIR3dGKXrkwv3c4D1H0ywh6jr0 GgfN8
-X-Developer-Key: i=chuck.lever@oracle.com; a=openpgp; fpr=28B2E5B01286DF243CF23EFE336AB3336F667F97
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240827143833.371588371@linuxfoundation.org>
 
-From: Chuck Lever <chuck.lever@oracle.com>
+On Tue, Aug 27, 2024 at 04:35:24PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.10.7 release.
+> There are 273 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Thu, 29 Aug 2024 14:37:36 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.10.7-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.10.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-Nothing appears to limit the number of concurrent async COPY
-operations that clients can start. In addition, AFAICT each async
-COPY can copy an unlimited number of 4MB chunks, so can run for a
-long time. Thus IMO async COPY can become a DoS vector.
+Tested rc1 against the Fedora build system (aarch64, ppc64le, s390x,
+x86_64), and boot tested x86_64. No regressions noted.
 
-Add a restriction mechanism that bounds the number of concurrent
-background COPY operations. Start simple and try to be fair -- this
-patch implements a per-namespace limit.
-
-An async COPY request that occurs while this limit is exceeded gets
-NFS4ERR_DELAY. The requesting client can choose to send the request
-again after a delay or fall back to a traditional read/write style
-copy.
-
-If there is need to make the mechanism more sophisticated, we can
-visit that in future patches.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
----
- fs/nfsd/netns.h     |  1 +
- fs/nfsd/nfs4proc.c  | 12 ++++++++++--
- fs/nfsd/nfs4state.c |  1 +
- fs/nfsd/xdr4.h      |  1 +
- 4 files changed, 13 insertions(+), 2 deletions(-)
-
-diff --git a/fs/nfsd/netns.h b/fs/nfsd/netns.h
-index 14ec15656320..5cae26917436 100644
---- a/fs/nfsd/netns.h
-+++ b/fs/nfsd/netns.h
-@@ -148,6 +148,7 @@ struct nfsd_net {
- 	u32		s2s_cp_cl_id;
- 	struct idr	s2s_cp_stateids;
- 	spinlock_t	s2s_cp_lock;
-+	atomic_t	pending_async_copies;
- 
- 	/*
- 	 * Version information
-diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
-index 60c526adc27c..27f7eceb3b00 100644
---- a/fs/nfsd/nfs4proc.c
-+++ b/fs/nfsd/nfs4proc.c
-@@ -1279,6 +1279,7 @@ static void nfs4_put_copy(struct nfsd4_copy *copy)
- {
- 	if (!refcount_dec_and_test(&copy->refcount))
- 		return;
-+	atomic_dec(&copy->cp_nn->pending_async_copies);
- 	kfree(copy->cp_src);
- 	kfree(copy);
- }
-@@ -1833,10 +1834,17 @@ nfsd4_copy(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
- 	memcpy(&copy->fh, &cstate->current_fh.fh_handle,
- 		sizeof(struct knfsd_fh));
- 	if (nfsd4_copy_is_async(copy)) {
--		status = nfserrno(-ENOMEM);
-+		/* Arbitrary cap on number of pending async copy operations */
-+		int nrthreads = atomic_read(&rqstp->rq_pool->sp_nrthreads);
-+
- 		async_copy = kzalloc(sizeof(struct nfsd4_copy), GFP_KERNEL);
- 		if (!async_copy)
- 			goto out_err;
-+		async_copy->cp_nn = nn;
-+		if (atomic_inc_return(&nn->pending_async_copies) > nrthreads) {
-+			atomic_dec(&nn->pending_async_copies);
-+			goto out_err;
-+		}
- 		INIT_LIST_HEAD(&async_copy->copies);
- 		refcount_set(&async_copy->refcount, 1);
- 		async_copy->cp_src = kmalloc(sizeof(*async_copy->cp_src), GFP_KERNEL);
-@@ -1876,7 +1884,7 @@ nfsd4_copy(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
- 	}
- 	if (async_copy)
- 		cleanup_async_copy(async_copy);
--	status = nfserrno(-ENOMEM);
-+	status = nfserr_jukebox;
- 	goto out;
- }
- 
-diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index a20c2c9d7d45..aaebc60cc77c 100644
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -8554,6 +8554,7 @@ static int nfs4_state_create_net(struct net *net)
- 	spin_lock_init(&nn->client_lock);
- 	spin_lock_init(&nn->s2s_cp_lock);
- 	idr_init(&nn->s2s_cp_stateids);
-+	atomic_set(&nn->pending_async_copies, 0);
- 
- 	spin_lock_init(&nn->blocked_locks_lock);
- 	INIT_LIST_HEAD(&nn->blocked_locks_lru);
-diff --git a/fs/nfsd/xdr4.h b/fs/nfsd/xdr4.h
-index fbdd42cde1fa..2a21a7662e03 100644
---- a/fs/nfsd/xdr4.h
-+++ b/fs/nfsd/xdr4.h
-@@ -713,6 +713,7 @@ struct nfsd4_copy {
- 	struct nfsd4_ssc_umount_item *ss_nsui;
- 	struct nfs_fh		c_fh;
- 	nfs4_stateid		stateid;
-+	struct nfsd_net		*cp_nn;
- };
- 
- static inline void nfsd4_copy_set_sync(struct nfsd4_copy *copy, bool sync)
--- 
-2.46.0
-
+Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
 
