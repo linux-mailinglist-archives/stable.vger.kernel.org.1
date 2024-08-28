@@ -1,105 +1,98 @@
-Return-Path: <stable+bounces-71402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71397-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD1A29625A7
-	for <lists+stable@lfdr.de>; Wed, 28 Aug 2024 13:13:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64919962450
+	for <lists+stable@lfdr.de>; Wed, 28 Aug 2024 12:09:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B14C1C21EA0
-	for <lists+stable@lfdr.de>; Wed, 28 Aug 2024 11:13:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 20E66282590
+	for <lists+stable@lfdr.de>; Wed, 28 Aug 2024 10:09:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 059E816CD10;
-	Wed, 28 Aug 2024 11:13:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C833167296;
+	Wed, 28 Aug 2024 10:08:57 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from linuxtv.org (140-211-166-241-openstack.osuosl.org [140.211.166.241])
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B70516C874
-	for <stable@vger.kernel.org>; Wed, 28 Aug 2024 11:13:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=140.211.166.241
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC35A15D5CE;
+	Wed, 28 Aug 2024 10:08:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724843607; cv=none; b=Zg/XYGon7+xNJwU6pb7sJrtTiwDuUFwixWRle63tQDufxgcdH7640h0T9cpMwoMFavW3nZ0msXJc7v63DMpXtbA/KOYkiHboJ4J48WdpPZGqMC1fBXR1i91sf2kM022f2GHmuuPqm41lyillnaaSO731WYqRzvdoBwnyYOwvL9I=
+	t=1724839737; cv=none; b=VxLf1PH7ehUx8j40R42CnrU5J+oQuDTkWJxMbs7Sf0Hs9MVvnIf1T8V0MxQLJX9PvmovalquaQjVMyavZsmKc9bpofp7efa5kaJS6vlixWQxQmGjSCumb2S11LutkkkwKZ9PLteoY4rkEYnZfHQHFpL4/6xlVFC3Mq6fV7vDPk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724843607; c=relaxed/simple;
-	bh=m6M/VSFHeyEwWPydHLaOsgXf168UmaHFzr+f0us4/js=;
-	h=From:Date:Subject:To:Cc:Message-Id; b=b4ZX7sRW8akqXkxlMNzGljDT4VwpnQSqws4E39tYMWosSoFZ5rgvkj/pnCzHNFGCGECb+7iHQ8pEiJJZ+qlh/tFZWWrbJq2IEqSlEqOdxZK4U3NO5YlE0gXhZnq9jQdDS4RQPKMkc0pkew6fDuCjJ7JyZk2IYJmAwm8l6zOV3aU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=linuxtv.org; arc=none smtp.client-ip=140.211.166.241
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtv.org
-Received: from hverkuil by linuxtv.org with local (Exim 4.96)
-	(envelope-from <hverkuil@linuxtv.org>)
-	id 1sjGc9-0006C5-21;
-	Wed, 28 Aug 2024 11:13:25 +0000
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Date: Tue, 27 Aug 2024 11:57:38 +0000
-Subject: [git:media_stage/master] media: videobuf2: Drop minimum allocation requirement of 2 buffers
-To: linuxtv-commits@linuxtv.org
-Cc: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>, stable@vger.kernel.org, Hans Verkuil <hverkuil-cisco@xs4all.nl>, Tomasz Figa <tfiga@chromium.org>
-Mail-followup-to: linux-media@vger.kernel.org
-Forward-to: linux-media@vger.kernel.org
-Reply-to: linux-media@vger.kernel.org
-Message-Id: <E1sjGc9-0006C5-21@linuxtv.org>
+	s=arc-20240116; t=1724839737; c=relaxed/simple;
+	bh=xV0P7iLUWANRkYciL//YE3bYgFBMfa6/iFXlqc1lhNY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FfISIOz3BdG372eqzu2x7g6lJuIlaTvE/2pYDDHmPKy8kOp9jycC7VxGk9QdO/bj/5ae8ub2jw6vOVsMoJxpxBMakVAbAm1J71sZQAMTZhEHjZGdfvSfNwfvCljJMIjKjY6qQL1FnLo6HdDFe8SKolzjkGzygHTvTqbb1Sc1sQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+	id A65601C0082; Wed, 28 Aug 2024 12:08:52 +0200 (CEST)
+Date: Wed, 28 Aug 2024 12:08:52 +0200
+From: Pavel Machek <pavel@denx.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+Subject: Re: [PATCH 6.1 000/321] 6.1.107-rc1 review
+Message-ID: <Zs73NFq5UiZdVxJw@duo.ucw.cz>
+References: <20240827143838.192435816@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="wRBFVEhV+Tsa0VY9"
+Content-Disposition: inline
+In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
 
-This is an automatic generated email to let you know that the following patch were queued:
 
-Subject: media: videobuf2: Drop minimum allocation requirement of 2 buffers
-Author:  Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Date:    Mon Aug 26 02:24:49 2024 +0300
+--wRBFVEhV+Tsa0VY9
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-When introducing the ability for drivers to indicate the minimum number
-of buffers they require an application to allocate, commit 6662edcd32cc
-("media: videobuf2: Add min_reqbufs_allocation field to vb2_queue
-structure") also introduced a global minimum of 2 buffers. It turns out
-this breaks the Renesas R-Car VSP test suite, where a test that
-allocates a single buffer fails when two buffers are used.
+Hi!
 
-One may consider debatable whether test suite failures without failures
-in production use cases should be considered as a regression, but
-operation with a single buffer is a valid use case. While full frame
-rate can't be maintained, memory-to-memory devices can still be used
-with a decent efficiency, and requiring applications to allocate
-multiple buffers for single-shot use cases with capture devices would
-just waste memory.
+> This is the start of the stable review cycle for the 6.1.107 release.
+> There are 321 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-For those reasons, fix the regression by dropping the global minimum of
-buffers. Individual drivers can still set their own minimum.
+CIP testing did not find any problems here:
 
-Fixes: 6662edcd32cc ("media: videobuf2: Add min_reqbufs_allocation field to vb2_queue structure")
-Cc: stable@vger.kernel.org
-Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Reviewed-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Acked-by: Tomasz Figa <tfiga@chromium.org>
-Link: https://lore.kernel.org/r/20240825232449.25905-1-laurent.pinchart+renesas@ideasonboard.com
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
+6.1.y
 
- drivers/media/common/videobuf2/videobuf2-core.c | 7 -------
- 1 file changed, 7 deletions(-)
+6.6 and 6.10 test ok too, for us.
 
----
+Tested-by: Pavel Machek (CIP) <pavel@denx.de>
 
-diff --git a/drivers/media/common/videobuf2/videobuf2-core.c b/drivers/media/common/videobuf2/videobuf2-core.c
-index 500a4e0c84ab..29a8d876e6c2 100644
---- a/drivers/media/common/videobuf2/videobuf2-core.c
-+++ b/drivers/media/common/videobuf2/videobuf2-core.c
-@@ -2632,13 +2632,6 @@ int vb2_core_queue_init(struct vb2_queue *q)
- 	if (WARN_ON(q->supports_requests && q->min_queued_buffers))
- 		return -EINVAL;
- 
--	/*
--	 * The minimum requirement is 2: one buffer is used
--	 * by the hardware while the other is being processed by userspace.
--	 */
--	if (q->min_reqbufs_allocation < 2)
--		q->min_reqbufs_allocation = 2;
--
- 	/*
- 	 * If the driver needs 'min_queued_buffers' in the queue before
- 	 * calling start_streaming() then the minimum requirement is
+Best regards,
+                                                                Pavel
+
+--=20
+DENX Software Engineering GmbH,        Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+
+--wRBFVEhV+Tsa0VY9
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZs73NAAKCRAw5/Bqldv6
+8tkNAJ9bDNAQRJYjYeVTukM2uatqjsixYwCgkOR6JE9r3HH+iZdm/W3PqnGEZCQ=
+=nJmW
+-----END PGP SIGNATURE-----
+
+--wRBFVEhV+Tsa0VY9--
 
