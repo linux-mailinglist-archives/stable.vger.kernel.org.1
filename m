@@ -1,135 +1,253 @@
-Return-Path: <stable+bounces-71432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D378D962E62
-	for <lists+stable@lfdr.de>; Wed, 28 Aug 2024 19:24:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92FA5962E7E
+	for <lists+stable@lfdr.de>; Wed, 28 Aug 2024 19:30:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5E068B23537
-	for <lists+stable@lfdr.de>; Wed, 28 Aug 2024 17:24:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C91B1F22EBE
+	for <lists+stable@lfdr.de>; Wed, 28 Aug 2024 17:30:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB9B61A38D6;
-	Wed, 28 Aug 2024 17:24:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE8161A7043;
+	Wed, 28 Aug 2024 17:29:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ecYsA2Q1"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="bBlFGv3t"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
+Received: from mail-vs1-f54.google.com (mail-vs1-f54.google.com [209.85.217.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA4E236130;
-	Wed, 28 Aug 2024 17:24:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4186A166F2B
+	for <stable@vger.kernel.org>; Wed, 28 Aug 2024 17:29:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724865845; cv=none; b=SQ3T3k4W1o32lJiYP8zdUjpEgQReQ92loDNJfRykuqwhtO22XH812sjYIZ/XnI0hPeeaZQW11B4421SxR1rZQTCz8DxLfYesw4krkzxgwz8ljn5QVk6MexqDOKDj42gXQ2hy4SbZrFf6hVNL3Ubd5QHv57gBz8JsbovVVGXvV9c=
+	t=1724866197; cv=none; b=Zpi+WmhlNULJ+dVt9HrMiJZjNEMS9t7l0MN+uJSU/Fa1JYCkn8RiLTDy4eOjTsBoobzQIMdZY8fG75LeyEiXzRL87DI+4yUL1bjK7lzFaqgXk2j6RBly4uKFuWqvKuBcb8U2c/A4RNIzUZCA2gaCAC/yLUbhbSILysZ1o9Wm45I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724865845; c=relaxed/simple;
-	bh=vFWl8poib/+4F/OW6aol1GsR7dFJOwzrkvpb0GGqDlg=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SH6eqEIfCRBw/WCBv8wMAd2RqYRlJ/23czKlr5FO98zIA2sFG3aFsPkMYDDfS4uqG9t1tMYoQMY/eSXEDiH7JgzdtoYq5PSzuZ5HYSqlQmYqpM4pehxoCYy+/m36OtMvDjRKa3tdNl04xFKa5Fe5pAORbEZAzZpwgrqbcnnFm7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ecYsA2Q1; arc=none smtp.client-ip=209.85.208.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-2f50f1d864fso36823261fa.1;
-        Wed, 28 Aug 2024 10:24:03 -0700 (PDT)
+	s=arc-20240116; t=1724866197; c=relaxed/simple;
+	bh=xq2862FC2H9fTr3XeCMmA8f8ZF7zdMx9ormtEYxTxxE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=JaLzAj4CZwPUck9golaJP00UxKavQkZRm2x9QvuPKxC7sQnv7WjCh48pM60U4hUsI+OpTYu9a7m0atSZ9G6Sh5iso3M+DDMVi0wzGO6fIv08lg+4UZKShklcknO/RqiEDygOOlCCTTz1D5pcWyHIjLlh0PZ+lU5RWJFjU3d61QQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=bBlFGv3t; arc=none smtp.client-ip=209.85.217.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-vs1-f54.google.com with SMTP id ada2fe7eead31-4989b18ee2aso537333137.0
+        for <stable@vger.kernel.org>; Wed, 28 Aug 2024 10:29:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724865842; x=1725470642; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=wKSf7KHGE8x6jvVOVqxv8wQa+Jwbt0tqgqyGwouit5E=;
-        b=ecYsA2Q1+2Gf8za/kg/QadO3R+U8jO93+rq2POyp327ImN7ZY/2n7eeblnEXB6Qpsm
-         aCpFgZxD9Si8i+liOXFt71/zSlDnjjQt7Y6msYf8JqpaZET2iqeS/D9LtvhoxY1P4VaU
-         Rrno6P8ZufrmfS/c/ybHpp3+pKOhRaIuirfRHLToB5vKBcZdRnuU4R8bhXW5NkrI9nG9
-         70hYzkKM/5uP4dRXr9QKsL0dS9eWmvLOmB1TNa79eF/+tI6hqIGpv84FyN/cjBp9ihvK
-         DzOhVcmpdeMzR3d99po68+6QyaCGkDtBBEuaeKx0U+5rd1C3ggI2igvuGkR6rJFUuknu
-         1G3A==
+        d=linaro.org; s=google; t=1724866194; x=1725470994; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=jO6WbuA2uYR9pLaLcnV8sYv7zeqotikN0u6aKu20M7M=;
+        b=bBlFGv3tpMvKT9weoBVDiwXPPn95LbdblNXbZIGVmysfJc7afXB1MuJgOjNilvvczz
+         gkxcaFzwD1KNLLgcF7lDWD+TmTecaK4O5UdE4dSmpsZRo/Axmlorpy/bMS9BToheRXVR
+         MxI4nqIK2QeJLSSh7mOHwHETnVrqpbCLspSnAbCZtpdy4g1xXFHRXDgNBGQRnjphJ8Ca
+         EXHfuD0QtjSrkjYx6Ic3CqegxfYSTTPmarRD/5gcEUl0vSASM7Er+4xH/TrAwah4VprU
+         eJ1MV6Dype/+NRrds9C2v3BBw7msVls3QQFQZ30tYNoLkaRSsajNLHd79GRGgbcCdeN1
+         t6oQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724865842; x=1725470642;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wKSf7KHGE8x6jvVOVqxv8wQa+Jwbt0tqgqyGwouit5E=;
-        b=o2is1lgYivvPMoEbL5lVVR6c7NBmgnBMk4hJbCVEVA8+8j4JDE1hgq8132Lq4hMlRj
-         +h8+IgJ8aY6RcZrpyIJvJymUEoPB06QVFg1D+HBWP4BDtgwVPQ74CEZ71Pqg7mu7w6yd
-         T9qSHrAJW+JazVVJp+qM+AJgRAt2uautle2XAdZA0I2TAusmx1L3W5w5fgLFlm8pt2Lq
-         EwEEPTRVA5ZjVRaflHw2aVXnXGxVuNHuM9jWdd0s4qc96Q1+tAbMpfUyQfnSbtOpEqt0
-         DJsa2CawDIKEHN5oAplBWe10eCMQ0Fcy5mS+9C9gh8cRVNZ4owcMY42zp1B62gcvnpv/
-         R1gg==
-X-Forwarded-Encrypted: i=1; AJvYcCU6mI28lj7jmjvOopKu0B2bMkKwbCcQ4mA70Kc6fPHRClghvl8GBEf1K5iCHwbXdXb8m36h3QqBuBxEFQU=@vger.kernel.org, AJvYcCUrsF2p3ST18eR2Fb40WQ8gLiLA1iO9esmhRbfCQ45HygSTmLHctEths8SCd6iTSwa4vyjty3Ng@vger.kernel.org
-X-Gm-Message-State: AOJu0YxLLJVJVeiVVqkKiA65D3ofTvp0+J6pqxfAr2puazD5NVpXSXIv
-	nJyXXBgmRFf2gyNLp2OsG+KhrJUnoNtZMrAyter1wCVBs4dWW8f9
-X-Google-Smtp-Source: AGHT+IGsw/F5hC5DWs12E3b4scBC2HyWOsUKn1a0W2LDOS1mCJtNnBGRm4CD71rylVT8vnXP8/sAgg==
-X-Received: by 2002:a2e:4e11:0:b0:2ec:55b5:ed45 with SMTP id 38308e7fff4ca-2f6103f62cemr2492661fa.24.1724865841293;
-        Wed, 28 Aug 2024 10:24:01 -0700 (PDT)
-Received: from pc636 (host-90-233-206-146.mobileonline.telia.com. [90.233.206.146])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2f40487f80csm19726941fa.107.2024.08.28.10.23.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Aug 2024 10:24:00 -0700 (PDT)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
-Date: Wed, 28 Aug 2024 19:23:58 +0200
-To: Michal Hocko <mhocko@suse.com>
-Cc: Uladzislau Rezki <urezki@gmail.com>, Hailong Liu <hailong.liu@oppo.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Barry Song <21cnbao@gmail.com>,
-	Christoph Hellwig <hch@infradead.org>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Tangquan Zheng <zhengtangquan@oppo.com>, stable@vger.kernel.org,
-	Baoquan He <bhe@redhat.com>, Matthew Wilcox <willy@infradead.org>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org
-Subject: Re: [RESEND PATCH v1] mm/vmalloc: fix page mapping if
- vm_area_alloc_pages() with high order fallback to order 0
-Message-ID: <Zs9dLuNrEwa-DxCk@pc636>
-References: <20240816114626.jmhqh5ducbk7qeur@oppo.com>
- <Zr9G-d6bMU4_QodJ@tiehlicka>
- <Zsi8Byjo4ayJORgS@pc638.lan>
- <Zsw0Sv9alVUb1DV2@tiehlicka>
- <Zsx3ULRaVu5Lh46Q@pc636>
- <Zs12_8AZ0k_WRWUE@tiehlicka>
- <Zs3K4h5ulL1zlj6L@pc636>
- <Zs3WouJpDk3AWV4D@tiehlicka>
- <Zs3w3k7-bzCYa3KC@pc636>
- <Zs7ObXBgULkuvaXK@tiehlicka>
+        d=1e100.net; s=20230601; t=1724866194; x=1725470994;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jO6WbuA2uYR9pLaLcnV8sYv7zeqotikN0u6aKu20M7M=;
+        b=EDkwOEBX28HguYnMcT5qRdUdRCcjlnx1ZOnXlqr71TABc8mkfacMkwq2C9KlN3EL+6
+         5qk0eFm42J9d7yvW/yujYgfWu8EIZ0h+xjwY320weX76J2CKQg1gs5NXeHPbx+nWkmJY
+         Z4m4ggWEWzRl6f2dRMztC6RKSXatSbrQ0g0dl/XuUEvAjWuD7Ac3TWt84lE9P8EN1xyy
+         5aNaO+mgwqni3YgCsAmVJLAeNpqgXNkbv5vqV00R/BjrJuJ5QtC+/68vxM8GLIx+3K0Y
+         nkqDwWcShgE/s7ArJw3Hpjl8O8c9HoKE+5QjxeHkVlH9QWcMle73+tlzb9wL95EG4aMT
+         rhPQ==
+X-Gm-Message-State: AOJu0YxqcaF70OGMMKf71pVz1GlxVSvveD63pgucPGOLG5hmr6QnRXKN
+	nh5fuyVZVxgeacWqhwzGS48RmfJN23ADaIkdkhujA6yFbb5NCT98oIH3aaYZfS15X7U3YK9oZCM
+	xcU9tirIlzr5KkfJ/ipbVB+BTn9MOVZl3ucH9GXSF8cc9504j2ds=
+X-Google-Smtp-Source: AGHT+IEiCFyB3OZw/XIox94ixhU3xa+nvwgNWznRK/vYEYi1rvpOzRrq8hn43RDFNhXIlTGReAClTYmoduDr2yIbeqc=
+X-Received: by 2002:a05:6102:3051:b0:497:6ae3:e541 with SMTP id
+ ada2fe7eead31-49a5b5bfcc3mr398727137.14.1724866194092; Wed, 28 Aug 2024
+ 10:29:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Zs7ObXBgULkuvaXK@tiehlicka>
+References: <20240827143843.399359062@linuxfoundation.org> <CA+G9fYuVcn734B-qqxYPKH++PtynJurhrhtBGLJhzhXoWo0sWQ@mail.gmail.com>
+In-Reply-To: <CA+G9fYuVcn734B-qqxYPKH++PtynJurhrhtBGLJhzhXoWo0sWQ@mail.gmail.com>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Wed, 28 Aug 2024 22:59:41 +0530
+Message-ID: <CA+G9fYs40THj+m4hWqV3ubYBPZaWQE44SXOUYYuU1T0x6R83Ng@mail.gmail.com>
+Subject: Re: [PATCH 6.6 000/341] 6.6.48-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
+	broonie@kernel.org, Zhen Lei <thunder.leizhen@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, Aug 28, 2024 at 09:14:53AM +0200, Michal Hocko wrote:
-> On Tue 27-08-24 17:29:34, Uladzislau Rezki wrote:
-> > On Tue, Aug 27, 2024 at 03:37:38PM +0200, Michal Hocko wrote:
-> > > On Tue 27-08-24 14:47:30, Uladzislau Rezki wrote:
-> > > > On Tue, Aug 26, 2024 at 08:49:35AM +0200, Michal Hocko wrote:
-> > > [...]
-> > > > > > 2. High-order allocations. Do you think we should not care much about
-> > > > > > it when __GFP_NOFAIL is set? Same here, there is a fallback for order-0
-> > > > > > if "high" fails, it is more likely NO_FAIL succeed for order-0. Thus
-> > > > > > keeping NOFAIL for high-order sounds like not a good approach to me.
-> > > > > 
-> > > > > We should avoid high order allocations with GFP_NOFAIL at all cost.
-> > > > > 
-> > > > What do you propose here? Fail such request?
-> > > 
-> > > We shouldn't have any hard requirements for higher order allocations in the vmalloc
-> > > right? In other words we can always fallback to base pages.
-> > >
-> > We always drop NOFAIL for high-order, if it fails we fall-back to
-> > order-0. I got the feeling that you wanted just bail-out fully if
-> > high-order and NOFAIL.
-> 
-> Nope. We should always fall back to order 0 for both NOFAIL and regular
-> vmalloc allocations.
-> 
-Good.
+On Wed, 28 Aug 2024 at 20:00, Naresh Kamboju <naresh.kamboju@linaro.org> wrote:
+>
+> On Tue, 27 Aug 2024 at 20:12, Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+> >
+> > This is the start of the stable review cycle for the 6.6.48 release.
+> > There are 341 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> >
+> > Responses should be made by Thu, 29 Aug 2024 14:37:36 +0000.
+> > Anything received after that time might be too late.
+> >
+> > The whole patch series can be found in one patch at:
+> >         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.48-rc1.gz
+> > or in the git tree and branch at:
+> >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+> > and the diffstat can be found below.
+> >
+> > thanks,
+> >
+> > greg k-h
+>
+> The tinyconfig builds failed for all architectures on 6.6.48-rc1.
+>
+> Builds
+>   - clang-18-tinyconfig
+>   - clang-nightly-tinyconfig
+>   - gcc-13-tinyconfig
+>   - gcc-8-tinyconfig
 
-Thanks for the ACK!
+The bisection pointed to the following is the first bad commit,
 
---
-Uladzislau Rezki
+bc2002c9d531dd4ad0241268c946abf074d2145d is the first bad commit
+    rcu: Dump memory object info if callback function is invalid
+
+    [ Upstream commit 2cbc482d325ee58001472c4359b311958c4efdd1 ]
+
+- Naresh
+
+>
+> lore links:
+>  - https://lore.kernel.org/stable/CA+G9fYuibSowhidTVByMzSRdqudz1Eg_aYBs9rVS3bYEBesiUA@mail.gmail.com/
+>
+> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+>
+> ## Build
+> * kernel: 6.6.48-rc1
+> * git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+> * git commit: 0ec2cf1e20adc2c8dcc5f58f3ebd40111c280944
+> * git describe: v6.6.47-342-g0ec2cf1e20ad
+> * test details:
+> https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.47-342-g0ec2cf1e20ad
+>
+> ## Test Regressions (compared to v6.6.46-68-gf44ed2948b39)
+> * arm64, build
+> * arm, build
+> * i386, build
+> * x86_64, build
+>   - clang-18-tinyconfig
+>   - clang-nightly-tinyconfig
+>   - gcc-13-tinyconfig
+>   - gcc-8-tinyconfig
+>
+> ## Metric Regressions (compared to v6.6.46-68-gf44ed2948b39)
+>
+> ## Test Fixes (compared to v6.6.46-68-gf44ed2948b39)
+>
+> ## Metric Fixes (compared to v6.6.46-68-gf44ed2948b39)
+>
+> ## Test result summary
+> total: 175487, pass: 153815, fail: 1637, skip: 19813, xfail: 222
+>
+> ## Build Summary
+> * arc: 5 total, 4 passed, 1 failed
+> * arm: 129 total, 125 passed, 4 failed
+> * arm64: 41 total, 37 passed, 4 failed
+> * i386: 28 total, 23 passed, 5 failed
+> * mips: 26 total, 21 passed, 5 failed
+> * parisc: 4 total, 3 passed, 1 failed
+> * powerpc: 36 total, 31 passed, 5 failed
+> * riscv: 19 total, 16 passed, 3 failed
+> * s390: 14 total, 4 passed, 10 failed
+> * sh: 10 total, 8 passed, 2 failed
+> * sparc: 7 total, 5 passed, 2 failed
+> * x86_64: 33 total, 29 passed, 4 failed
+>
+> ## Test suites summary
+> * boot
+> * commands
+> * kselftest-arm64
+> * kselftest-breakpoints
+> * kselftest-capabilities
+> * kselftest-cgroup
+> * kselftest-clone3
+> * kselftest-core
+> * kselftest-cpu-hotplug
+> * kselftest-cpufreq
+> * kselftest-efivarfs
+> * kselftest-exec
+> * kselftest-filesystems
+> * kselftest-filesystems-binderfs
+> * kselftest-filesystems-epoll
+> * kselftest-firmware
+> * kselftest-fpu
+> * kselftest-ftrace
+> * kselftest-futex
+> * kselftest-gpio
+> * kselftest-intel_pstate
+> * kselftest-ipc
+> * kselftest-kcmp
+> * kselftest-livepatch
+> * kselftest-membarrier
+> * kselftest-memfd
+> * kselftest-mincore
+> * kselftest-mqueue
+> * kselftest-net
+> * kselftest-net-mptcp
+> * kselftest-openat2
+> * kselftest-ptrace
+> * kselftest-rseq
+> * kselftest-rtc
+> * kselftest-seccomp
+> * kselftest-sigaltstack
+> * kselftest-size
+> * kselftest-tc-testing
+> * kselftest-timers
+> * kselftest-tmpfs
+> * kselftest-tpm2
+> * kselftest-user_events
+> * kselftest-vDSO
+> * kselftest-x86
+> * kunit
+> * kvm-unit-tests
+> * libgpiod
+> * libhugetlbfs
+> * log-parser-boot
+> * log-parser-test
+> * ltp-commands
+> * ltp-containers
+> * ltp-controllers
+> * ltp-cpuhotplug
+> * ltp-crypto
+> * ltp-cve
+> * ltp-dio
+> * ltp-fcntl-locktests
+> * ltp-fs
+> * ltp-fs_bind
+> * ltp-fs_perms_simple
+> * ltp-hugetlb
+> * ltp-ipc
+> * ltp-math
+> * ltp-mm
+> * ltp-nptl
+> * ltp-pty
+> * ltp-sched
+> * ltp-smoke
+> * ltp-syscalls
+> * ltp-tracing
+> * perf
+> * rcutorture
+>
+> --
+> Linaro LKFT
+> https://lkft.linaro.org
 
