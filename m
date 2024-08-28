@@ -1,253 +1,174 @@
-Return-Path: <stable+bounces-71433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71434-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92FA5962E7E
-	for <lists+stable@lfdr.de>; Wed, 28 Aug 2024 19:30:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46565962EA9
+	for <lists+stable@lfdr.de>; Wed, 28 Aug 2024 19:40:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1C91B1F22EBE
-	for <lists+stable@lfdr.de>; Wed, 28 Aug 2024 17:30:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F2E80281AD6
+	for <lists+stable@lfdr.de>; Wed, 28 Aug 2024 17:40:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE8161A7043;
-	Wed, 28 Aug 2024 17:29:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA90B1A704F;
+	Wed, 28 Aug 2024 17:40:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="bBlFGv3t"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aSf5Lsk/"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vs1-f54.google.com (mail-vs1-f54.google.com [209.85.217.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4186A166F2B
-	for <stable@vger.kernel.org>; Wed, 28 Aug 2024 17:29:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76E5E1A4F15;
+	Wed, 28 Aug 2024 17:40:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724866197; cv=none; b=Zpi+WmhlNULJ+dVt9HrMiJZjNEMS9t7l0MN+uJSU/Fa1JYCkn8RiLTDy4eOjTsBoobzQIMdZY8fG75LeyEiXzRL87DI+4yUL1bjK7lzFaqgXk2j6RBly4uKFuWqvKuBcb8U2c/A4RNIzUZCA2gaCAC/yLUbhbSILysZ1o9Wm45I=
+	t=1724866816; cv=none; b=caVhhtAMLJUDLcSG51JNju79hUivK2dhz78v1RoTwgA2bEskqqj9A9wCa/mrfFQXy16Shss3Vv6PwX0MAFqaRinzGYpuk5NSZ3et02GaWNriXcW2k5Qrf/3v5bNcz52pORjVt3m1xWH5UKzLR1m9Stw5IGSKgadsQ4r8m8cVYeE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724866197; c=relaxed/simple;
-	bh=xq2862FC2H9fTr3XeCMmA8f8ZF7zdMx9ormtEYxTxxE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JaLzAj4CZwPUck9golaJP00UxKavQkZRm2x9QvuPKxC7sQnv7WjCh48pM60U4hUsI+OpTYu9a7m0atSZ9G6Sh5iso3M+DDMVi0wzGO6fIv08lg+4UZKShklcknO/RqiEDygOOlCCTTz1D5pcWyHIjLlh0PZ+lU5RWJFjU3d61QQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=bBlFGv3t; arc=none smtp.client-ip=209.85.217.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-vs1-f54.google.com with SMTP id ada2fe7eead31-4989b18ee2aso537333137.0
-        for <stable@vger.kernel.org>; Wed, 28 Aug 2024 10:29:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1724866194; x=1725470994; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=jO6WbuA2uYR9pLaLcnV8sYv7zeqotikN0u6aKu20M7M=;
-        b=bBlFGv3tpMvKT9weoBVDiwXPPn95LbdblNXbZIGVmysfJc7afXB1MuJgOjNilvvczz
-         gkxcaFzwD1KNLLgcF7lDWD+TmTecaK4O5UdE4dSmpsZRo/Axmlorpy/bMS9BToheRXVR
-         MxI4nqIK2QeJLSSh7mOHwHETnVrqpbCLspSnAbCZtpdy4g1xXFHRXDgNBGQRnjphJ8Ca
-         EXHfuD0QtjSrkjYx6Ic3CqegxfYSTTPmarRD/5gcEUl0vSASM7Er+4xH/TrAwah4VprU
-         eJ1MV6Dype/+NRrds9C2v3BBw7msVls3QQFQZ30tYNoLkaRSsajNLHd79GRGgbcCdeN1
-         t6oQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724866194; x=1725470994;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=jO6WbuA2uYR9pLaLcnV8sYv7zeqotikN0u6aKu20M7M=;
-        b=EDkwOEBX28HguYnMcT5qRdUdRCcjlnx1ZOnXlqr71TABc8mkfacMkwq2C9KlN3EL+6
-         5qk0eFm42J9d7yvW/yujYgfWu8EIZ0h+xjwY320weX76J2CKQg1gs5NXeHPbx+nWkmJY
-         Z4m4ggWEWzRl6f2dRMztC6RKSXatSbrQ0g0dl/XuUEvAjWuD7Ac3TWt84lE9P8EN1xyy
-         5aNaO+mgwqni3YgCsAmVJLAeNpqgXNkbv5vqV00R/BjrJuJ5QtC+/68vxM8GLIx+3K0Y
-         nkqDwWcShgE/s7ArJw3Hpjl8O8c9HoKE+5QjxeHkVlH9QWcMle73+tlzb9wL95EG4aMT
-         rhPQ==
-X-Gm-Message-State: AOJu0YxqcaF70OGMMKf71pVz1GlxVSvveD63pgucPGOLG5hmr6QnRXKN
-	nh5fuyVZVxgeacWqhwzGS48RmfJN23ADaIkdkhujA6yFbb5NCT98oIH3aaYZfS15X7U3YK9oZCM
-	xcU9tirIlzr5KkfJ/ipbVB+BTn9MOVZl3ucH9GXSF8cc9504j2ds=
-X-Google-Smtp-Source: AGHT+IEiCFyB3OZw/XIox94ixhU3xa+nvwgNWznRK/vYEYi1rvpOzRrq8hn43RDFNhXIlTGReAClTYmoduDr2yIbeqc=
-X-Received: by 2002:a05:6102:3051:b0:497:6ae3:e541 with SMTP id
- ada2fe7eead31-49a5b5bfcc3mr398727137.14.1724866194092; Wed, 28 Aug 2024
- 10:29:54 -0700 (PDT)
+	s=arc-20240116; t=1724866816; c=relaxed/simple;
+	bh=+orhpqbhYE73syn3xRae0ko0GUimh1gok3+JeXs6uDg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=QECQga8Fqhxn+gG+qtyIsYGQW4dLiYPNS5QG+vcDcmXjAdOf49Z8o9/syptedGuMywZB8sDswPq6z7Kj37/eIehLryXA0drhL2pHiWOew1DKzKuC9eWgi0TXjb+BkzfdVR3M1sTlKT/x8JjX2GTlHq4l43rGJe/IfIAhNn6iegU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aSf5Lsk/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B67F7C4CEC0;
+	Wed, 28 Aug 2024 17:40:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724866816;
+	bh=+orhpqbhYE73syn3xRae0ko0GUimh1gok3+JeXs6uDg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=aSf5Lsk/HF8PJlGzIT13stZDjoRppbHnyg67V3Vw1VahRPiZ3lzaMarZBZJGNbRvf
+	 vgGs9SbpgCPFa0nTvhAQWanawZewQo+/VnC5bL8FqoomKMHNaLSn14B2ZpCGlgLRTM
+	 thvKUOKUyTY7TtVdnlShiIQmInoqXk4qdGJkPKA2jWjEzycgWjBdo5RiMirYXdu3ol
+	 P7G5GxvJQKRj0CBINKFWyeR2AlxaxO6elOK5vU4Vtbp48K4sHAckuOvNcz38uYjYZA
+	 w2SqM/a0yr/qmT6mo3SQJ6q/3dJjh7erFK/OGHpOk4qrbfUdczlk9ZnimjR36en3RH
+	 W+G1yWek8dMTg==
+From: cel@kernel.org
+To: <linux-nfs@vger.kernel.org>
+Cc: Olga Kornievskaia <okorniev@redhat.com>,
+	Dai Ngo <dai.ngo@oracle.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	stable@vger.kernel.org
+Subject: [RFC PATCH 2/7] NFSD: Limit the number of concurrent async COPY operations
+Date: Wed, 28 Aug 2024 13:40:04 -0400
+Message-ID: <20240828174001.322745-11-cel@kernel.org>
+X-Mailer: git-send-email 2.46.0
+In-Reply-To: <20240828174001.322745-9-cel@kernel.org>
+References: <20240828174001.322745-9-cel@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240827143843.399359062@linuxfoundation.org> <CA+G9fYuVcn734B-qqxYPKH++PtynJurhrhtBGLJhzhXoWo0sWQ@mail.gmail.com>
-In-Reply-To: <CA+G9fYuVcn734B-qqxYPKH++PtynJurhrhtBGLJhzhXoWo0sWQ@mail.gmail.com>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Wed, 28 Aug 2024 22:59:41 +0530
-Message-ID: <CA+G9fYs40THj+m4hWqV3ubYBPZaWQE44SXOUYYuU1T0x6R83Ng@mail.gmail.com>
-Subject: Re: [PATCH 6.6 000/341] 6.6.48-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
-	broonie@kernel.org, Zhen Lei <thunder.leizhen@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3621; i=chuck.lever@oracle.com; h=from:subject; bh=VEBWKnuVul4SKhnXBt8l9TWqaWgmVvsUzjYpWA+H0Ig=; b=kA0DAAgBM2qzM29mf5cByyZiAGbPYPqglbuRPJal4DFBuKhVlkGJYND5XDEQ0m42OIf14G4d+ 4kCMwQAAQgAHRYhBCiy5bASht8kPPI+/jNqszNvZn+XBQJmz2D6AAoJEDNqszNvZn+XEyEQAKlS vVcXhCSvVdM3Fp2oHwWJ0bOHDKsN1dSUFg6ZQ+OjmxKP9boLlTYofM8+YC8IVQTa/2IB4Ud03eE 9YxhLDldW5Jncdy2C4z6Z9xr4woSvcJkFaJDOoM6zdGpqCrLjcnce7pgReESP/+T5mKNftngnYR pD0U2gsbx3bRxjWDQmNaEtTeJlghYdvwsBOMiT7uGI+hBvzIgUgzEz1bZG93eL5gd5oQcoDvUQz v7+E8e+I3Ss2fvZKI1/fBUA1PndyQ9pxNEJxjzSLrVAY7onVFi7+xmg21oGfANj2DcF5u/Voscs uBdgnKjvX2ftxCNCAYh+GzhvRHbgSeDT1O/abY8iQ62tLQLoFiWxLaNwsUY6bR2LAx8pbBvd4TH KXy8lPJwxbGHVt99lvG+o3h5NR3kQi9zaPxPTZuy17ygaWk4fm+fJaLzPJBOJdqs+nDufjpy5SG iNo9qJP29SkcWVXbMe8CoJ7JYMiKwbgRBBEJm/ZAOIZxP/EuoIyH4DN6XxV9b+fJU7EqRMNKHd2 7BsM+b+bby0XT3QxQHwUe1PIDB8PlzHsEfVGujBNEAPXarVrdX5XMzBq1L8cYji6K/B2K2a2YDF pMOZk+JorjC69CCtRTIFghhgQ/EntzXvM1BeJMWJswSMYbv07mIR3dGKXrkwv3c4D1H0ywh6jr0 GgfN8
+X-Developer-Key: i=chuck.lever@oracle.com; a=openpgp; fpr=28B2E5B01286DF243CF23EFE336AB3336F667F97
+Content-Transfer-Encoding: 8bit
 
-On Wed, 28 Aug 2024 at 20:00, Naresh Kamboju <naresh.kamboju@linaro.org> wrote:
->
-> On Tue, 27 Aug 2024 at 20:12, Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
-> >
-> > This is the start of the stable review cycle for the 6.6.48 release.
-> > There are 341 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
-> >
-> > Responses should be made by Thu, 29 Aug 2024 14:37:36 +0000.
-> > Anything received after that time might be too late.
-> >
-> > The whole patch series can be found in one patch at:
-> >         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.48-rc1.gz
-> > or in the git tree and branch at:
-> >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-> > and the diffstat can be found below.
-> >
-> > thanks,
-> >
-> > greg k-h
->
-> The tinyconfig builds failed for all architectures on 6.6.48-rc1.
->
-> Builds
->   - clang-18-tinyconfig
->   - clang-nightly-tinyconfig
->   - gcc-13-tinyconfig
->   - gcc-8-tinyconfig
+From: Chuck Lever <chuck.lever@oracle.com>
 
-The bisection pointed to the following is the first bad commit,
+Nothing appears to limit the number of concurrent async COPY
+operations that clients can start. In addition, AFAICT each async
+COPY can copy an unlimited number of 4MB chunks, so can run for a
+long time. Thus IMO async COPY can become a DoS vector.
 
-bc2002c9d531dd4ad0241268c946abf074d2145d is the first bad commit
-    rcu: Dump memory object info if callback function is invalid
+Add a restriction mechanism that bounds the number of concurrent
+background COPY operations. Start simple and try to be fair -- this
+patch implements a per-namespace limit.
 
-    [ Upstream commit 2cbc482d325ee58001472c4359b311958c4efdd1 ]
+An async COPY request that occurs while this limit is exceeded gets
+NFS4ERR_DELAY. The requesting client can choose to send the request
+again after a delay or fall back to a traditional read/write style
+copy.
 
-- Naresh
+If there is need to make the mechanism more sophisticated, we can
+visit that in future patches.
 
->
-> lore links:
->  - https://lore.kernel.org/stable/CA+G9fYuibSowhidTVByMzSRdqudz1Eg_aYBs9rVS3bYEBesiUA@mail.gmail.com/
->
-> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
->
-> ## Build
-> * kernel: 6.6.48-rc1
-> * git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-> * git commit: 0ec2cf1e20adc2c8dcc5f58f3ebd40111c280944
-> * git describe: v6.6.47-342-g0ec2cf1e20ad
-> * test details:
-> https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.47-342-g0ec2cf1e20ad
->
-> ## Test Regressions (compared to v6.6.46-68-gf44ed2948b39)
-> * arm64, build
-> * arm, build
-> * i386, build
-> * x86_64, build
->   - clang-18-tinyconfig
->   - clang-nightly-tinyconfig
->   - gcc-13-tinyconfig
->   - gcc-8-tinyconfig
->
-> ## Metric Regressions (compared to v6.6.46-68-gf44ed2948b39)
->
-> ## Test Fixes (compared to v6.6.46-68-gf44ed2948b39)
->
-> ## Metric Fixes (compared to v6.6.46-68-gf44ed2948b39)
->
-> ## Test result summary
-> total: 175487, pass: 153815, fail: 1637, skip: 19813, xfail: 222
->
-> ## Build Summary
-> * arc: 5 total, 4 passed, 1 failed
-> * arm: 129 total, 125 passed, 4 failed
-> * arm64: 41 total, 37 passed, 4 failed
-> * i386: 28 total, 23 passed, 5 failed
-> * mips: 26 total, 21 passed, 5 failed
-> * parisc: 4 total, 3 passed, 1 failed
-> * powerpc: 36 total, 31 passed, 5 failed
-> * riscv: 19 total, 16 passed, 3 failed
-> * s390: 14 total, 4 passed, 10 failed
-> * sh: 10 total, 8 passed, 2 failed
-> * sparc: 7 total, 5 passed, 2 failed
-> * x86_64: 33 total, 29 passed, 4 failed
->
-> ## Test suites summary
-> * boot
-> * commands
-> * kselftest-arm64
-> * kselftest-breakpoints
-> * kselftest-capabilities
-> * kselftest-cgroup
-> * kselftest-clone3
-> * kselftest-core
-> * kselftest-cpu-hotplug
-> * kselftest-cpufreq
-> * kselftest-efivarfs
-> * kselftest-exec
-> * kselftest-filesystems
-> * kselftest-filesystems-binderfs
-> * kselftest-filesystems-epoll
-> * kselftest-firmware
-> * kselftest-fpu
-> * kselftest-ftrace
-> * kselftest-futex
-> * kselftest-gpio
-> * kselftest-intel_pstate
-> * kselftest-ipc
-> * kselftest-kcmp
-> * kselftest-livepatch
-> * kselftest-membarrier
-> * kselftest-memfd
-> * kselftest-mincore
-> * kselftest-mqueue
-> * kselftest-net
-> * kselftest-net-mptcp
-> * kselftest-openat2
-> * kselftest-ptrace
-> * kselftest-rseq
-> * kselftest-rtc
-> * kselftest-seccomp
-> * kselftest-sigaltstack
-> * kselftest-size
-> * kselftest-tc-testing
-> * kselftest-timers
-> * kselftest-tmpfs
-> * kselftest-tpm2
-> * kselftest-user_events
-> * kselftest-vDSO
-> * kselftest-x86
-> * kunit
-> * kvm-unit-tests
-> * libgpiod
-> * libhugetlbfs
-> * log-parser-boot
-> * log-parser-test
-> * ltp-commands
-> * ltp-containers
-> * ltp-controllers
-> * ltp-cpuhotplug
-> * ltp-crypto
-> * ltp-cve
-> * ltp-dio
-> * ltp-fcntl-locktests
-> * ltp-fs
-> * ltp-fs_bind
-> * ltp-fs_perms_simple
-> * ltp-hugetlb
-> * ltp-ipc
-> * ltp-math
-> * ltp-mm
-> * ltp-nptl
-> * ltp-pty
-> * ltp-sched
-> * ltp-smoke
-> * ltp-syscalls
-> * ltp-tracing
-> * perf
-> * rcutorture
->
-> --
-> Linaro LKFT
-> https://lkft.linaro.org
+Cc: stable@vger.kernel.org
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+---
+ fs/nfsd/netns.h     |  1 +
+ fs/nfsd/nfs4proc.c  | 12 ++++++++++--
+ fs/nfsd/nfs4state.c |  1 +
+ fs/nfsd/xdr4.h      |  1 +
+ 4 files changed, 13 insertions(+), 2 deletions(-)
+
+diff --git a/fs/nfsd/netns.h b/fs/nfsd/netns.h
+index 14ec15656320..5cae26917436 100644
+--- a/fs/nfsd/netns.h
++++ b/fs/nfsd/netns.h
+@@ -148,6 +148,7 @@ struct nfsd_net {
+ 	u32		s2s_cp_cl_id;
+ 	struct idr	s2s_cp_stateids;
+ 	spinlock_t	s2s_cp_lock;
++	atomic_t	pending_async_copies;
+ 
+ 	/*
+ 	 * Version information
+diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
+index 60c526adc27c..27f7eceb3b00 100644
+--- a/fs/nfsd/nfs4proc.c
++++ b/fs/nfsd/nfs4proc.c
+@@ -1279,6 +1279,7 @@ static void nfs4_put_copy(struct nfsd4_copy *copy)
+ {
+ 	if (!refcount_dec_and_test(&copy->refcount))
+ 		return;
++	atomic_dec(&copy->cp_nn->pending_async_copies);
+ 	kfree(copy->cp_src);
+ 	kfree(copy);
+ }
+@@ -1833,10 +1834,17 @@ nfsd4_copy(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
+ 	memcpy(&copy->fh, &cstate->current_fh.fh_handle,
+ 		sizeof(struct knfsd_fh));
+ 	if (nfsd4_copy_is_async(copy)) {
+-		status = nfserrno(-ENOMEM);
++		/* Arbitrary cap on number of pending async copy operations */
++		int nrthreads = atomic_read(&rqstp->rq_pool->sp_nrthreads);
++
+ 		async_copy = kzalloc(sizeof(struct nfsd4_copy), GFP_KERNEL);
+ 		if (!async_copy)
+ 			goto out_err;
++		async_copy->cp_nn = nn;
++		if (atomic_inc_return(&nn->pending_async_copies) > nrthreads) {
++			atomic_dec(&nn->pending_async_copies);
++			goto out_err;
++		}
+ 		INIT_LIST_HEAD(&async_copy->copies);
+ 		refcount_set(&async_copy->refcount, 1);
+ 		async_copy->cp_src = kmalloc(sizeof(*async_copy->cp_src), GFP_KERNEL);
+@@ -1876,7 +1884,7 @@ nfsd4_copy(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
+ 	}
+ 	if (async_copy)
+ 		cleanup_async_copy(async_copy);
+-	status = nfserrno(-ENOMEM);
++	status = nfserr_jukebox;
+ 	goto out;
+ }
+ 
+diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
+index a20c2c9d7d45..aaebc60cc77c 100644
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -8554,6 +8554,7 @@ static int nfs4_state_create_net(struct net *net)
+ 	spin_lock_init(&nn->client_lock);
+ 	spin_lock_init(&nn->s2s_cp_lock);
+ 	idr_init(&nn->s2s_cp_stateids);
++	atomic_set(&nn->pending_async_copies, 0);
+ 
+ 	spin_lock_init(&nn->blocked_locks_lock);
+ 	INIT_LIST_HEAD(&nn->blocked_locks_lru);
+diff --git a/fs/nfsd/xdr4.h b/fs/nfsd/xdr4.h
+index fbdd42cde1fa..2a21a7662e03 100644
+--- a/fs/nfsd/xdr4.h
++++ b/fs/nfsd/xdr4.h
+@@ -713,6 +713,7 @@ struct nfsd4_copy {
+ 	struct nfsd4_ssc_umount_item *ss_nsui;
+ 	struct nfs_fh		c_fh;
+ 	nfs4_stateid		stateid;
++	struct nfsd_net		*cp_nn;
+ };
+ 
+ static inline void nfsd4_copy_set_sync(struct nfsd4_copy *copy, bool sync)
+-- 
+2.46.0
+
 
