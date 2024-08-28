@@ -1,156 +1,163 @@
-Return-Path: <stable+bounces-71430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71431-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7379B962DE8
-	for <lists+stable@lfdr.de>; Wed, 28 Aug 2024 18:54:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 922FE962DEE
+	for <lists+stable@lfdr.de>; Wed, 28 Aug 2024 18:57:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 18E331F24AC0
-	for <lists+stable@lfdr.de>; Wed, 28 Aug 2024 16:54:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ACE631C21CBA
+	for <lists+stable@lfdr.de>; Wed, 28 Aug 2024 16:57:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45A7A1A38CD;
-	Wed, 28 Aug 2024 16:54:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E5991A4F0A;
+	Wed, 28 Aug 2024 16:57:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NXaFuk+I"
+	dkim=pass (2048-bit key) header.d=bur.io header.i=@bur.io header.b="qjXUEo8y";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="KJwMlf7f"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f46.google.com (mail-ot1-f46.google.com [209.85.210.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh2-smtp.messagingengine.com (fhigh2-smtp.messagingengine.com [103.168.172.153])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99575381B1
-	for <stable@vger.kernel.org>; Wed, 28 Aug 2024 16:54:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B4F11A3BD1;
+	Wed, 28 Aug 2024 16:57:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.153
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724864074; cv=none; b=PbqeYcVW2AfSE3DWeaiNGbBBwx/nMsjku+gPKp0J6M4BjPIBoBgrGTRegy/gy2vaxk9EAqjPmRQfPpGTzzoQ/vfnvjyoFjl6u57gtnIqdkXLfoA9UGTUdjGgW1UQk/TynCONlx1L8i/ZzHgS/XhBci2nqtxw51q45x8ElsiuxBk=
+	t=1724864235; cv=none; b=uoWve8wTYbsNEGI6mzhK+hASukzb96lIOguWsZqA8WeW0spHcg8DBocC6v8iGchYhXubLr3NqiiVw9Z6bLBFMK9zTxE2YJoLEHUajZILjeIjbCQgzHT505pkWQo/nUexh0/Ptff1kqAMlB0XJy1gFdXxMU6BurRzvdgtgz/f53g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724864074; c=relaxed/simple;
-	bh=M+pLKN8f+cprDroY9OC4x1LMbL663fwm1BXnx449Om0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=gUw9t1hXLXHHU9QFVfXzTqh4CLxOXFyOs3GbKDdH01+QtWByLwr8EB+FZrHecGTVgDR9r4M6AKovm4p6GJ8cCooYKtpx0YGaFYBA0qprQLEHNBpshM8e1EU/YWxizXOQdITCWp2Ni5q6o1mMG3sI8014JUrOE/HCdcbq7USmfvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NXaFuk+I; arc=none smtp.client-ip=209.85.210.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f46.google.com with SMTP id 46e09a7af769-709346604a7so4961061a34.1
-        for <stable@vger.kernel.org>; Wed, 28 Aug 2024 09:54:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724864071; x=1725468871; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=maENbqQ9rupduUpvBioLzq6uP9AprJlBe/pp6XMiOLg=;
-        b=NXaFuk+IFxVjemLw9pNgTpvKQvJB+i8pAK/BnV5K6Ubn9tsGIReSvN1gjYV6E76Usf
-         o7oGiZu6U4x31SOR9IcvHLJRvRcwJoCZ0VzWsS6lzXX/nVHp/Y25oDaVaAnjcyMJ7Bpg
-         t3FH0C6aqXeqkpzCmILfmGKMUroSxW2wXQqEmHOERLKhQgXd6s9SxukA9nt0SeFFwa07
-         RmXTHBaN9atrHH8oD59h5ieCNp15IvH6Sjwdb5gkZt9OWd0YqR0i4x+wi5sW4fgghSGH
-         YGT0G0o6hYMJ4xeQzDKBW7ZvgHgFW+xQ1zLoD27LBRnAtRm4eGCXExwdMO23HjpP2K6l
-         2qww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724864071; x=1725468871;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=maENbqQ9rupduUpvBioLzq6uP9AprJlBe/pp6XMiOLg=;
-        b=wFm4tyg/6YcrsJM+9fGcpdNtbw8iHpxqPViFz9OCOvb5TdGCkkSMZblzlo+ZapDb5+
-         AtwfXLx1xN25Tpfee+qP5t8M81cyPlWM2m4zxHXhSWlLNBcTyfndYjCAqBzh0tT5gzT5
-         VSs24abkI+nHtTbNy2krQPrQAkeZzku7i8FPbOLW1mcFDMwVCLzFcQCr0Gi8vcLhywdg
-         SOtiikzlsNfmtCok2EaCWjVeApWsJ9jUg2MnzP276f/oXLi1/NSoMq9hO+Oe7fPV538Y
-         2OOv9rukoqtXU4UuGdCjZzRkKDVSyZLVSMfoHQSoGYOCUWT5ckswgJmqxWhCEM5uuyzz
-         bYNw==
-X-Forwarded-Encrypted: i=1; AJvYcCVgUwLU6hmhtqRSRHtNOuhbQhPNAq5x/e+FZ8YPmLbJ6rUKTaFniyctsIybVyKrc64H4IkZQy4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwIXIYlHY2CyX2IKJxpiYCo4kbtWqlGGkRdV16y9NqI9D2k4L3Q
-	BHVr14ZCn1hOhQjPMeP7pazxVd9LA5gtfvFCrMas9Gy1fJnxsWVK
-X-Google-Smtp-Source: AGHT+IFPU7Ln1YrBKkH7iL2ZhVyIK8ZVoVejR9wWlVvhNApfL13xziziELWYh2mXT8bTRLDEroT3gg==
-X-Received: by 2002:a05:6358:590a:b0:1aa:b8ba:8e with SMTP id e5c5f4694b2df-1b603cc8defmr47422855d.22.1724864071298;
-        Wed, 28 Aug 2024 09:54:31 -0700 (PDT)
-Received: from localhost ([124.127.77.193])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7cd9ac9827bsm9808313a12.1.2024.08.28.09.54.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Aug 2024 09:54:30 -0700 (PDT)
-From: Julian Sun <sunjunchao2870@gmail.com>
-To: linux-f2fs-devel@lists.sourceforge.net
-Cc: jaegeuk@kernel.org,
-	chao@kernel.org,
-	Julian Sun <sunjunchao2870@gmail.com>,
-	syzbot+ebea2790904673d7c618@syzkaller.appspotmail.com,
+	s=arc-20240116; t=1724864235; c=relaxed/simple;
+	bh=qSQZaic1piiRaVwBistKi7MzxIz1c4l5xA0Yz7ujkV0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gbLaSMFPLxnwFaVpdz/Axh//fm0MM4VNw+5kJIxzmJtbLgQLxgnxV9p8Y94CWuruxYJWA/43b8b9ofTj57NWTnh7NU+8S144A9ZDvPkfgJ0IedpwsQ/qC2dpvnwHqvovGYh3p/pmidwfFWmJdb+++H1B4GiZ8gaqL0s49Ru34dc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bur.io; spf=pass smtp.mailfrom=bur.io; dkim=pass (2048-bit key) header.d=bur.io header.i=@bur.io header.b=qjXUEo8y; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=KJwMlf7f; arc=none smtp.client-ip=103.168.172.153
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bur.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bur.io
+Received: from phl-compute-03.internal (phl-compute-03.nyi.internal [10.202.2.43])
+	by mailfhigh.nyi.internal (Postfix) with ESMTP id B33021150DE1;
+	Wed, 28 Aug 2024 12:57:11 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-03.internal (MEProxy); Wed, 28 Aug 2024 12:57:11 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bur.io; h=cc:cc
+	:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm2; t=1724864231; x=1724950631; bh=yZDFJ+uBkJ
+	NN6I5DAKEUENScf20U9fLYyspVCQoBezg=; b=qjXUEo8y0CJNW4ycmbwMxJSKA0
+	IIxzcgKwTNW2gse0g7STqGQhi95Cn1ahjhuOaeBbNaSrS7+8kSoTMwuqhP+X06sp
+	U7OdBDyL1MjS6RMlvHtkgf/4IrLCBvqHoVcByVibRw1VDoNdymVuwXtCLihfgjEK
+	QSHmyqV4QQlU8vNfyqOFkXODMPnEHzoWcxeOOEUs8XvpEMs3xMzcoJ3uOy4Fcf3P
+	rgGyJTDtp/amWoCQmPWRCfR5ujVTbA5I3vq1Zc4iMgc1JNaR1/JINMgK0hvV5SIV
+	ckc+ikkh1/tNV4SkOCXcg7u3GFETNYSWh3Tx06GSGpAdl/V2+GRuIt+Ae1Wg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm1; t=1724864231; x=1724950631; bh=yZDFJ+uBkJNN6I5DAKEUENScf20U
+	9fLYyspVCQoBezg=; b=KJwMlf7fI+IJ0KyEG70caoGJTZxGgqCEMbuSPkPq1ts2
+	whb1v4W5CoUEz5Nqu0ObL1W4Iy/l88Q9QzCIXk45StwLrQ3aqNdDYTKOvLUxvRUL
+	cD08cZVyQb+NWYfq/0xBzMHZ7XX7wLYd3PuayDgiCzxA/f+2wBNzJH5ep+UhQNJ3
+	SGutwDOvPAS4wRioXoc0uyynDPOflDxOzJv3qChJqhyrXYUatw2IySrb/y1vajsP
+	z6Yc9Q6/SirCZ8JX7Y2oNBIQGPB0PteP+wFAMkM4uc/Cr9mKdfLobhXe2t7ulsHd
+	uy2iUi6prMdPz0+gnB/t8P+uzayDVZjDMSeoKCr8FA==
+X-ME-Sender: <xms:51bPZhlrSfa93G5JhiCXBTmwrignRq5Dn8MNbAcHLI-XY71oXGf0SQ>
+    <xme:51bPZs0rfYRwsHIP_SKKDU1N_5f6WWGXxOZJLVOA0PCKX_VqCZpZ0R2PLYWt2dKO8
+    01oVsJ80sIrNrj5zF8>
+X-ME-Received: <xmr:51bPZnosAv3ao6mjzp6Juof3r0bP4hlsoNMIgC91HhRVtVEr8AXCfNQy-VlLSQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrudefvddguddthecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
+    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddv
+    necuhfhrohhmpeeuohhrihhsuceuuhhrkhhovhcuoegsohhrihhssegsuhhrrdhioheqne
+    cuggftrfgrthhtvghrnhepffekgeffueegffeitdeviedvvdeliefgkedvtdejieffffdu
+    ffduhffgjeelvedunecuffhomhgrihhnpehlihhnuhigthgvshhtihhnghdrohhrghdpkh
+    gvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghi
+    lhhfrhhomhepsghorhhishessghurhdrihhopdhnsggprhgtphhtthhopedutddpmhhoug
+    gvpehsmhhtphhouhhtpdhrtghpthhtohepphgthhgvlhhkihhnsehishhprhgrshdrrhhu
+    pdhrtghpthhtohepqhhufigvnhhruhhordgsthhrfhhssehgmhigrdgtohhmpdhrtghpth
+    htohepughsthgvrhgsrgesshhushgvrdgtohhmpdhrtghpthhtoheptghlmhesfhgsrdgt
+    ohhmpdhrtghpthhtohepjhhoshgvfhesthhogihitghprghnuggrrdgtohhmpdhrtghpth
+    htoheplhhinhhugidqsghtrhhfshesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphht
+    thhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtph
+    htthhopehlvhgtqdhprhhojhgvtghtsehlihhnuhigthgvshhtihhnghdrohhrghdprhgt
+    phhtthhopehshiiisghothdokeduieejtdefiedvtgdvkeeffhefuggukeeklegtsehshi
+    iikhgrlhhlvghrrdgrphhpshhpohhtmhgrihhlrdgtohhm
+X-ME-Proxy: <xmx:51bPZhn4Pb9cATyffAApZvHsXUfy_Dz7Sw5Wo8Uv7oxTLxxLfYBonw>
+    <xmx:51bPZv3cmLswj7tdXprordllUjzex-qkUz6aQA3ftJ7d5rAJp91pDw>
+    <xmx:51bPZgsCxNajM1J9wWZHLga3ZgPaykxjxsfVvueWxQcWs55C6BvfTg>
+    <xmx:51bPZjVSDGqAD8GuTBeCWVYGJzVtj0uWdtHdHxTYwawM_lnfzT285A>
+    <xmx:51bPZouolGbTmzj-nSG2hWMEdZ8iKhJcEJXdcMWxyRMHXPpmjQh7PLgm>
+Feedback-ID: i083147f8:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 28 Aug 2024 12:57:10 -0400 (EDT)
+Date: Wed, 28 Aug 2024 09:57:05 -0700
+From: Boris Burkov <boris@bur.io>
+To: Fedor Pchelkin <pchelkin@ispras.ru>
+Cc: Qu Wenruo <quwenruo.btrfs@gmx.com>, David Sterba <dsterba@suse.com>,
+	Chris Mason <clm@fb.com>, Josef Bacik <josef@toxicpanda.com>,
+	linux-btrfs@vger.kernel.org, linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	syzbot+81670362c283f3dd889c@syzkaller.appspotmail.com,
 	stable@vger.kernel.org
-Subject: [PATCH v2] f2fs: Do not check the FI_DIRTY_INODE flag when umounting a ro fs.
-Date: Thu, 29 Aug 2024 00:54:25 +0800
-Message-Id: <20240828165425.324845-1-sunjunchao2870@gmail.com>
-X-Mailer: git-send-email 2.39.2
+Subject: Re: [PATCH v2] btrfs: qgroup: don't use extent changeset when not
+ needed
+Message-ID: <Zs9W4dIlckbUt5JM@devvm12410.ftw0.facebook.com>
+References: <8d26b493-6bc4-488c-b0a7-f2d129d94089@gmx.com>
+ <20240828161411.534042-1-pchelkin@ispras.ru>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240828161411.534042-1-pchelkin@ispras.ru>
 
-Hi, all.
+On Wed, Aug 28, 2024 at 07:14:11PM +0300, Fedor Pchelkin wrote:
+> The local extent changeset is passed to clear_record_extent_bits() where
+> it may have some additional memory dynamically allocated for ulist. When
+> qgroup is disabled, the memory is leaked because in this case the
+> changeset is not released upon __btrfs_qgroup_release_data() return.
+> 
+> Since the recorded contents of the changeset are not used thereafter, just
+> don't pass it.
+> 
+> Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+> 
+> Reported-by: syzbot+81670362c283f3dd889c@syzkaller.appspotmail.com
+> Closes: https://lore.kernel.org/lkml/000000000000aa8c0c060ade165e@google.com
+> Fixes: af0e2aab3b70 ("btrfs: qgroup: flush reservations during quota disable")
+> Cc: stable@vger.kernel.org # 6.10+
+> Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
 
-Recently syzbot reported a bug as following:
+This version looks even better, to me. Thanks for the catch and fix!
 
-kernel BUG at fs/f2fs/inode.c:896!
-CPU: 1 UID: 0 PID: 5217 Comm: syz-executor605 Not tainted 6.11.0-rc4-syzkaller-00033-g872cf28b8df9 #0
-RIP: 0010:f2fs_evict_inode+0x1598/0x15c0 fs/f2fs/inode.c:896
-Call Trace:
- <TASK>
- evict+0x532/0x950 fs/inode.c:704
- dispose_list fs/inode.c:747 [inline]
- evict_inodes+0x5f9/0x690 fs/inode.c:797
- generic_shutdown_super+0x9d/0x2d0 fs/super.c:627
- kill_block_super+0x44/0x90 fs/super.c:1696
- kill_f2fs_super+0x344/0x690 fs/f2fs/super.c:4898
- deactivate_locked_super+0xc4/0x130 fs/super.c:473
- cleanup_mnt+0x41f/0x4b0 fs/namespace.c:1373
- task_work_run+0x24f/0x310 kernel/task_work.c:228
- ptrace_notify+0x2d2/0x380 kernel/signal.c:2402
- ptrace_report_syscall include/linux/ptrace.h:415 [inline]
- ptrace_report_syscall_exit include/linux/ptrace.h:477 [inline]
- syscall_exit_work+0xc6/0x190 kernel/entry/common.c:173
- syscall_exit_to_user_mode_prepare kernel/entry/common.c:200 [inline]
- __syscall_exit_to_user_mode_work kernel/entry/common.c:205 [inline]
- syscall_exit_to_user_mode+0x279/0x370 kernel/entry/common.c:218
- do_syscall_64+0x100/0x230 arch/x86/entry/common.c:89
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+Reviewed-by: Boris Burkov <boris@bur.io>
 
-The syzbot constructed the following scenario: concurrently
-creating directories and setting the file system to read-only.
-In this case, while f2fs was making dir, the filesystem switched to
-readonly, and when it tried to clear the dirty flag, it triggered this
-code path: f2fs_mkdir()-> f2fs_sync_fs()->f2fs_write_checkpoint()
-->f2fs_readonly(). This resulted FI_DIRTY_INODE flag not being cleared,
-which eventually led to a bug being triggered during the FI_DIRTY_INODE
-check in f2fs_evict_inode().
-
-In this case, we cannot do anything further, so if filesystem is readonly,
-do not trigger the BUG. Instead, clean up resources to the best of our
-ability to prevent triggering subsequent resource leak checks.
-
-If there is anything important I'm missing, please let me know, thanks.
-
-Reported-by: syzbot+ebea2790904673d7c618@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=ebea2790904673d7c618
-Fixes: ca7d802a7d8e ("f2fs: detect dirty inode in evict_inode")
-CC: stable@vger.kernel.org
-Signed-off-by: Julian Sun <sunjunchao2870@gmail.com>
----
- fs/f2fs/inode.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/fs/f2fs/inode.c b/fs/f2fs/inode.c
-index aef57172014f..ebf825dba0a5 100644
---- a/fs/f2fs/inode.c
-+++ b/fs/f2fs/inode.c
-@@ -892,7 +892,8 @@ void f2fs_evict_inode(struct inode *inode)
- 			atomic_read(&fi->i_compr_blocks));
- 
- 	if (likely(!f2fs_cp_error(sbi) &&
--				!is_sbi_flag_set(sbi, SBI_CP_DISABLED)))
-+				!is_sbi_flag_set(sbi, SBI_CP_DISABLED)) &&
-+				!f2fs_readonly(sbi->sb))
- 		f2fs_bug_on(sbi, is_inode_flag_set(inode, FI_DIRTY_INODE));
- 	else
- 		f2fs_inode_synced(inode);
--- 
-2.39.2
-
+> ---
+> v2: rework the fix as Qu Wenruo suggested - just don't pass unneeded
+>     changeset. Update the commit title and description accordingly.
+> 
+>  fs/btrfs/qgroup.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/fs/btrfs/qgroup.c b/fs/btrfs/qgroup.c
+> index 5d57a285d59b..f6118c5f3c9f 100644
+> --- a/fs/btrfs/qgroup.c
+> +++ b/fs/btrfs/qgroup.c
+> @@ -4344,10 +4344,9 @@ static int __btrfs_qgroup_release_data(struct btrfs_inode *inode,
+>  	int ret;
+>  
+>  	if (btrfs_qgroup_mode(inode->root->fs_info) == BTRFS_QGROUP_MODE_DISABLED) {
+> -		extent_changeset_init(&changeset);
+>  		return clear_record_extent_bits(&inode->io_tree, start,
+>  						start + len - 1,
+> -						EXTENT_QGROUP_RESERVED, &changeset);
+> +						EXTENT_QGROUP_RESERVED, NULL);
+>  	}
+>  
+>  	/* In release case, we shouldn't have @reserved */
+> -- 
+> 2.39.2
+> 
 
