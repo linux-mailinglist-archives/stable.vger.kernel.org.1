@@ -1,74 +1,74 @@
-Return-Path: <stable+bounces-71413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71414-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 216E5962954
-	for <lists+stable@lfdr.de>; Wed, 28 Aug 2024 15:54:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A335962A34
+	for <lists+stable@lfdr.de>; Wed, 28 Aug 2024 16:27:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 549221C22A2B
-	for <lists+stable@lfdr.de>; Wed, 28 Aug 2024 13:54:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B70C328691F
+	for <lists+stable@lfdr.de>; Wed, 28 Aug 2024 14:27:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 425DC187FF6;
-	Wed, 28 Aug 2024 13:54:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2146419DF48;
+	Wed, 28 Aug 2024 14:27:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="Arny8OmQ"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="bMiHt29o"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com [209.85.218.48])
+Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB09B175D5A
-	for <stable@vger.kernel.org>; Wed, 28 Aug 2024 13:54:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E70419AD4F
+	for <stable@vger.kernel.org>; Wed, 28 Aug 2024 14:27:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724853243; cv=none; b=eBfxjSQNCn2lqFZDSIiLVWY+YTmPtkDawIDuGPAOArUYnGETHnEAIeMYbXuNsji7pKUiRz5QMceFbZbgv/unnSv4KM+aioiZY+1Ncx9DV1GmzlkyKJj9ynZmRKB3ileaMkMYtLAo6kasZqkSlzqxCQ4PptYHPadkK9D1AE02kVM=
+	t=1724855259; cv=none; b=K7C8SOIdja23/UjlT0xUh3bbLOZXPUxzxYs9Co2CAmKG1LQgAgOGoAq1sTSzhZFPmFpFlhrtfTZxXHpm+1+oluOD4eOEmIzvR/IcVCmdvfqh0sXTE4uTBKEoZSGnIrYR5mTSDZZs5Fo4IDNuEkhadUunHQxuaiq9FLZrABOzrL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724853243; c=relaxed/simple;
-	bh=y02kOSFsk9Ovek97BpXGahQxjqkYkGuGhI+KoympwwY=;
+	s=arc-20240116; t=1724855259; c=relaxed/simple;
+	bh=LrfKXxq5fUZiBLqw9Ytc2vg5QLnJoJg1U4xYgYFfVJk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WJ+rKpK2TO4x3rqt7lsPK66s/h+YiTzsDJUu51RCzI1b7K89HTc4L+hU73vk3XdiTGr5oMeDfJyRJcysPra+iv51zi8AyJ4fBAMIhyu3tJaZF2H3/LHX11o1DU3lbahfM7cl52gbI4+bv1lm0UtVbL/H2oUjRP4EsSqyEuqCYUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=Arny8OmQ; arc=none smtp.client-ip=209.85.218.48
+	 In-Reply-To:Content-Type; b=ba1+gEweqaLaClZTptY4PVA+P5ek0Nwmloo/wdYxlEn1aYCVWKqBCfembAH3s+9cuLxt64yGzBt1DoDaSmNByXLRjri16PCDYJ57Kn9Wt1IDof5uBeixWdPTrLCsD734fFRFD0f9ngqFAeK/a9x4jGUx9bLKNGzfSm+3CCUOPf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=bMiHt29o; arc=none smtp.client-ip=209.85.218.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-a8695cc91c8so710449066b.3
-        for <stable@vger.kernel.org>; Wed, 28 Aug 2024 06:54:01 -0700 (PDT)
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-a86c476f679so461812466b.1
+        for <stable@vger.kernel.org>; Wed, 28 Aug 2024 07:27:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1724853240; x=1725458040; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
+        d=suse.com; s=google; t=1724855255; x=1725460055; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=At58Bl9125tzbTcmwgBJNqywpV1jLul1XrCUjHhQfkc=;
-        b=Arny8OmQqTgcKFptIo9Ba29xY+H+Itunc8YF8lD6K9Ejyxn3jN39SzRj9Dey8Otwbx
-         McG7+EH6PW/zth2TwYiIZ60+1s5bTk/GRx88BuLE1iL1kqUoWfKHKvHamzQbkDEwQYC4
-         c8F6mBSBW684UMzzyHfRAMJsKx5MHul0znWUsYOdAZ8uK0FWh37sL9CGrdHctowcBbuG
-         +kRmaFlhBcHWQPJw2EbWhuviOtFquV4KATM1BdLM7Y8A8IK1TPxAcGoF1LJV0GYezXGY
-         zAFmtBpiFu7MYfDf5IaEHfO4W5qNFp0BMmm/VjaDa3B5nErKg6udzLzPEk+Ja8xRF1Ho
-         0oVg==
+        bh=IKUQxEFCjBIV2FGcEmpu9pMke+ylyw5c7eHy/Ue8ep0=;
+        b=bMiHt29oYmudSaAgMlopG1QyxkWDvOal3qQTOOkl3G72UdXlbvk5zqM5BGKrXLQRGy
+         pILOkEMSCA9J93K70xdsi/Uu3OdB7vIZnBU4uNx5r9BI0PdpGYRcbWf6lQlLqK70uBF7
+         tA384Wx5rf6oxMPTrBlFCC00Ud5/7iGCDTLE6unquI3/+QNGvjbw12joCXEVCd33zZHm
+         Ijt1KGBUnIPznWJpDo3zVC3b2xHjFGHwXO3rTS7vmQsVRCJd9mgFXp9rxuaZDov4o+et
+         8IKdbWh0r/4UF71zF9O//67jDD/zLBp/nsk4PvHk3DvXMfL1826oBC9Prk6ORV7H9sYn
+         7xQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724853240; x=1725458040;
-        h=content-transfer-encoding:in-reply-to:from:content-language
+        d=1e100.net; s=20230601; t=1724855255; x=1725460055;
+        h=content-transfer-encoding:in-reply-to:content-language:from
          :references:cc:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=At58Bl9125tzbTcmwgBJNqywpV1jLul1XrCUjHhQfkc=;
-        b=q/G37Cl/kn23JsnzRmtDt5CtmYNAGjfbMjSBhScq/xDo/cHM5W3QixG6ZPz0+4dSu3
-         pSLcYFA0QBkrmrrhptngZu59pwQ07SXZWisVK662Z2+UYILe1C9p2XfG6yCa33Pkld1m
-         GofWY2dl4Br4v1Zxu6H0QO8inuz6rnMNOlZnIt3F4oGFVOFgtmyx09qDPG1ucF/1rDWn
-         fvPC79QyBBGYoqZkofQOuulvBWzmKLEksSa9UyLuP+vXXBULbFfYFCXci/zQcz4gDS4E
-         ceTrK2Fy6zY3OcEMZ9C+NGGchyS3HM/L953yjmyBzVmBqQuUB6oLgQf7ZYlWS10nfAiA
-         9fBg==
-X-Forwarded-Encrypted: i=1; AJvYcCWgX/LTNKz9P6C3gPYgS8wfqerYq9vXe2eevuXmNrhQM0KWKxzAc4W8BiMFUafKGm82MDQZ4fM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxMSPOOPA47cg8oBDz5d2wX1bBMY9O+tmwiSqHQD7SQj+f97k7e
-	oSCV/tjuinDEhW+Cl2XfVA6nxJcSJuS4j2557kXWMuQSeVA+Tg4iG1HLNpie+CU=
-X-Google-Smtp-Source: AGHT+IFzCP/vvijom3OckXK6Naejo4uIiolIi31SLZ3eeK6wIavfO/bfj51BVIOfiKhEGMHey8Vawg==
-X-Received: by 2002:a17:906:f59a:b0:a86:9880:183 with SMTP id a640c23a62f3a-a870a94fe3amr168921366b.10.1724853239725;
-        Wed, 28 Aug 2024 06:53:59 -0700 (PDT)
+        bh=IKUQxEFCjBIV2FGcEmpu9pMke+ylyw5c7eHy/Ue8ep0=;
+        b=hXkFVwVLcAmyQXo3oynWg7U7T1ux0tm2CRAHaskj2MKEXOhO+5ix14Z5X0f9BFVfDH
+         LWwaufQQd2DSQ3h0pQdOoELQZKPNnCfLzvCa2hWcKx/RF1fko4EvB+Iy3htWDXgTbykK
+         CMIerJlISbG6PJRw48ieCxz2yAgU3mnb5ZBYLwlUSuJBsvBrQU4feUvKIMOzAM7icYGx
+         XPapvCdlMSTbDJuI0LCYYJEhF+thZUMtlgyV8cZx1YA3LA8/5KiLKnpI69QJqKPqeQmo
+         AVq6XKMGiEVpfXlFC1zr0OyvNNzgzuQkzR585eMcRaQQjM36lGCfvf5tuprgP+mNPTx0
+         JR1Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWfgl7KFTvUejQbEvYbuaQoeZ/C3v7/Me0A8KqoJnyNpoVzLmNj83jdwf1YDnMlgpdXx3twhpo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzpcnro0pfwOwgFRGChWaBOxB5SYl+1YY7wUbGkcMB2jtbUBraA
+	tt8hzCKXp2653pU1QDHcK7I02KH/cA0sBxLJokbxO0/ieHTF1GJAFvfQVqrNQjc=
+X-Google-Smtp-Source: AGHT+IFnd0CvBW2tABoaK1J/pJgxzTxcr2o+uC11U99GYHYQiH/fIhe9VfOGvgAmhW5w7FBYxbQubQ==
+X-Received: by 2002:a17:907:7da7:b0:a7a:9a78:4b59 with SMTP id a640c23a62f3a-a86a519905amr1155865466b.23.1724855255191;
+        Wed, 28 Aug 2024 07:27:35 -0700 (PDT)
 Received: from [10.20.4.146] (212-5-158-46.ip.btc-net.bg. [212.5.158.46])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a86e587843fsm247147766b.153.2024.08.28.06.53.58
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a86e587854csm250765566b.169.2024.08.28.07.27.33
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 28 Aug 2024 06:53:59 -0700 (PDT)
-Message-ID: <e042faa6-91be-49bb-ae59-e87792756fa4@suse.com>
-Date: Wed, 28 Aug 2024 16:53:57 +0300
+        Wed, 28 Aug 2024 07:27:34 -0700 (PDT)
+Message-ID: <0dce2a59-544a-4e98-b895-ce5848778108@suse.com>
+Date: Wed, 28 Aug 2024 17:27:32 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -76,40 +76,149 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCHv6 2/4] x86/tdx: Rename tdx_parse_tdinfo() to tdx_setup()
+Subject: Re: [PATCHv6 3/4] x86/tdx: Dynamically disable SEPT violations from
+ causing #VEs
 To: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
  Dave Hansen <dave.hansen@linux.intel.com>,
  Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
  Borislav Petkov <bp@alien8.de>, x86@kernel.org,
  "H. Peter Anvin" <hpa@zytor.com>
 Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- Kai Huang <kai.huang@intel.com>, stable@vger.kernel.org
+ stable@vger.kernel.org, Kai Huang <kai.huang@intel.com>
 References: <20240828093505.2359947-1-kirill.shutemov@linux.intel.com>
- <20240828093505.2359947-3-kirill.shutemov@linux.intel.com>
-Content-Language: en-US
+ <20240828093505.2359947-4-kirill.shutemov@linux.intel.com>
 From: Nikolay Borisov <nik.borisov@suse.com>
-In-Reply-To: <20240828093505.2359947-3-kirill.shutemov@linux.intel.com>
+Content-Language: en-US
+In-Reply-To: <20240828093505.2359947-4-kirill.shutemov@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
 
 
 On 28.08.24 г. 12:35 ч., Kirill A. Shutemov wrote:
-> Rename tdx_parse_tdinfo() to tdx_setup() and move setting NOTIFY_ENABLES
-> there.
+> Memory access #VEs are hard for Linux to handle in contexts like the
+> entry code or NMIs.  But other OSes need them for functionality.
+> There's a static (pre-guest-boot) way for a VMM to choose one or the
+> other.  But VMMs don't always know which OS they are booting, so they
+> choose to deliver those #VEs so the "other" OSes will work.  That,
+> unfortunately has left us in the lurch and exposed to these
+> hard-to-handle #VEs.
 > 
-> The function will be extended to adjust TD configuration.
+> The TDX module has introduced a new feature. Even if the static
+> configuration is set to "send nasty #VEs", the kernel can dynamically
+> request that they be disabled. Once they are disabled, access to private
+> memory that is not in the Mapped state in the Secure-EPT (SEPT) will
+> result in an exit to the VMM rather than injecting a #VE.
+> 
+> Check if the feature is available and disable SEPT #VE if possible.
+> 
+> If the TD is allowed to disable/enable SEPT #VEs, the ATTR_SEPT_VE_DISABLE
+> attribute is no longer reliable. It reflects the initial state of the
+> control for the TD, but it will not be updated if someone (e.g. bootloader)
+> changes it before the kernel starts. Kernel must check TDCS_TD_CTLS bit to
+> determine if SEPT #VEs are enabled or disabled.
 
-<offtopic>
-Since this deals with renaming, I think it will make sense to rename 
-tdx_early_init() to tdx_guest_init/tdx_guest_early_init as it becomes 
-confusing as to which parts of the TDX pertain to the host and which to 
-the guest. Right now we only have the guest portions under 
-arch/x86/coco/tdx but when the kvm/vmx stuff land things will become 
-somewhat messy..
-</offtopic>
+LGTM. However 2 minor suggestions which might be worth addressing.
 
+Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
+
+> 
+> Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> Fixes: 373e715e31bf ("x86/tdx: Panic on bad configs that #VE on "private" memory access")
+> Cc: stable@vger.kernel.org
+> Acked-by: Kai Huang <kai.huang@intel.com>
+> ---
+>   arch/x86/coco/tdx/tdx.c           | 76 ++++++++++++++++++++++++-------
+>   arch/x86/include/asm/shared/tdx.h | 10 +++-
+>   2 files changed, 69 insertions(+), 17 deletions(-)
+> 
+> diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+> index 08ce488b54d0..f969f4f5ebf8 100644
+> --- a/arch/x86/coco/tdx/tdx.c
+> +++ b/arch/x86/coco/tdx/tdx.c
+> @@ -78,7 +78,7 @@ static inline void tdcall(u64 fn, struct tdx_module_args *args)
+>   }
+>   
+>   /* Read TD-scoped metadata */
+> -static inline u64 __maybe_unused tdg_vm_rd(u64 field, u64 *value)
+> +static inline u64 tdg_vm_rd(u64 field, u64 *value)
+>   {
+>   	struct tdx_module_args args = {
+>   		.rdx = field,
+> @@ -193,6 +193,62 @@ static void __noreturn tdx_panic(const char *msg)
+>   		__tdx_hypercall(&args);
+>   }
+>   
+> +/*
+> + * The kernel cannot handle #VEs when accessing normal kernel memory. Ensure
+> + * that no #VE will be delivered for accesses to TD-private memory.
+> + *
+> + * TDX 1.0 does not allow the guest to disable SEPT #VE on its own. The VMM
+> + * controls if the guest will receive such #VE with TD attribute
+> + * ATTR_SEPT_VE_DISABLE.
+> + *
+> + * Newer TDX modules allow the guest to control if it wants to receive SEPT
+> + * violation #VEs.
+> + *
+> + * Check if the feature is available and disable SEPT #VE if possible.
+> + *
+> + * If the TD is allowed to disable/enable SEPT #VEs, the ATTR_SEPT_VE_DISABLE
+> + * attribute is no longer reliable. It reflects the initial state of the
+> + * control for the TD, but it will not be updated if someone (e.g. bootloader)
+> + * changes it before the kernel starts. Kernel must check TDCS_TD_CTLS bit to
+> + * determine if SEPT #VEs are enabled or disabled.
+> + */
+> +static void disable_sept_ve(u64 td_attr)
+> +{
+> +	const char *msg = "TD misconfiguration: SEPT #VE has to be disabled";
+> +	bool debug = td_attr & ATTR_DEBUG;
+> +	u64 config, controls;
+> +
+> +	/* Is this TD allowed to disable SEPT #VE */
+> +	tdg_vm_rd(TDCS_CONFIG_FLAGS, &config);
+> +	if (!(config & TDCS_CONFIG_FLEXIBLE_PENDING_VE)) {
+
+Should you check for the presence of those controls in in 
+TDX_FEATURES0.PENDING_EPT_VIOLATION_V2 ? I.e perhaps this code can be 
+put in the same function that checks the presence of RBP_NO_MOD in a 
+different series by Kai Huang?
+
+
+> +		/* No SEPT #VE controls for the guest: check the attribute */
+> +		if (td_attr & ATTR_SEPT_VE_DISABLE)
+> +			return;
+
+nit: Given that we expect most guests to actually have this attribute 
+set perhaps moving this check at the top of the function will cause it 
+exit early more often than not?
+> +
+> +		/* Relax SEPT_VE_DISABLE check for debug TD for backtraces */
+> +		if (debug)
+> +			pr_warn("%s\n", msg);
+> +		else
+> +			tdx_panic(msg);
+> +		return;
+> +	}
+> +
+> +	/* Check if SEPT #VE has been disabled before us */
+> +	tdg_vm_rd(TDCS_TD_CTLS, &controls);
+> +	if (controls & TD_CTLS_PENDING_VE_DISABLE)
+> +		return;
+> +
+> +	/* Keep #VEs enabled for splats in debugging environments */
+> +	if (debug)
+> +		return;
+> +
+> +	/* Disable SEPT #VEs */
+> +	tdg_vm_wr(TDCS_TD_CTLS, TD_CTLS_PENDING_VE_DISABLE,
+> +		  TD_CTLS_PENDING_VE_DISABLE);
+> +
+> +	return;
+> +}
+> +
+>   static void tdx_setup(u64 *cc_mask)
+>   {
+>   	struct tdx_module_args args = {};
 
 <snip>
 
