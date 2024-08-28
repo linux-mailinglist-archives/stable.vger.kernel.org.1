@@ -1,154 +1,116 @@
-Return-Path: <stable+bounces-71442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71443-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8571963186
-	for <lists+stable@lfdr.de>; Wed, 28 Aug 2024 22:15:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB44F9633CD
+	for <lists+stable@lfdr.de>; Wed, 28 Aug 2024 23:26:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B46821C21C6F
-	for <lists+stable@lfdr.de>; Wed, 28 Aug 2024 20:15:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8487728516F
+	for <lists+stable@lfdr.de>; Wed, 28 Aug 2024 21:26:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9249E1A7ADD;
-	Wed, 28 Aug 2024 20:15:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ABF61AC433;
+	Wed, 28 Aug 2024 21:26:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="RT+MZl00"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="L9OdHDn1"
 X-Original-To: stable@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA12B13775E
-	for <stable@vger.kernel.org>; Wed, 28 Aug 2024 20:14:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77ABF139578;
+	Wed, 28 Aug 2024 21:26:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724876101; cv=none; b=k6ed+hS4L9UOLezSma9jzXoZgV3M3n56RMkjRSIussFesauXBAb4NtDl6AfFJEOoB89SRlq1kVUv5Tz/SDuUXbCoZCkblg+z62NLvf9+JpNtXk2X0evx4iRrkJ77m5M+ju8jfG6IYAkbfZpi2D2qnBJsGN2JwMe7k5MeHPBtuN4=
+	t=1724880378; cv=none; b=I8v8ts3aMEqD0BxxWoj4b4eQZNHeSnBfpZA4A3Poto6pnazsLdiDukcX77HIMwMrJRKhHneItKjwVbzoZ0LGJBfLsH5BZhphTFk4TRnV+UNNybYY0Gr4utIDf7TE+MlST8ycg3p4V1ZA262V97rsl9hMyFJ2q8LYIXZCBI959b0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724876101; c=relaxed/simple;
-	bh=uGNu+Eo9CuHR3MZkPv67aRfcAVKI9IMCofFtdR1O1Sc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Abu6ex4rKAVORQXLMGmyKiXZDdhiBKV5Af6Nx50Mzp2265ciqKOaxQp5o4UusrN6urXYG9jcnWalMxDn97mlJooIDEp0tIzC45LRpOufQkqJDDadQtRUGxhS6NyiHmqS4fKO/LG6KE6wwhY5Q6n4PHh/2pQgDL0USdHotWPX1Q0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=RT+MZl00; arc=none smtp.client-ip=178.60.130.6
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=Le/8/9cCn/eBCEJoZiUW3LnjHOH19SUZ2uOTXQy+Hfs=; b=RT+MZl00NdFzdm2HkYCZfStfw1
-	LNPeWuX8Qsx2AEQcmDXcp8TqjcU/KLVdXSa45vhCkEShAlvC7wpxl8OK7qThmgNeRULrosjEkOtuW
-	w5WrHc/YXAudam8dns1EsMIOxOslSudzad2ew6k2rW+wOJ7TdSSbGe/6a2xfzkj/UbGFpohjzSuaV
-	7aKIMprxjKGGK5qgBU7hIqTfdsJqvYm4xE+q/6j9l1HnBY6D+5d62LT2VjVlRh87lVIDZIMWVfYno
-	/jw1+rH58aTwJNP4eFKGngk5/FPn0FC2E78UHg0c1WIA50lQaBOu6O0RvxSG3PlIIm6mCE+R9ZOW3
-	H5DEMhWA==;
-Received: from [187.36.213.55] (helo=[192.168.1.212])
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
-	id 1sjP49-006SsX-ET; Wed, 28 Aug 2024 22:14:53 +0200
-Message-ID: <22831c77-d144-4dbc-b155-6ecb1b3704d1@igalia.com>
-Date: Wed, 28 Aug 2024 17:14:46 -0300
+	s=arc-20240116; t=1724880378; c=relaxed/simple;
+	bh=tIFBR5zZigwKAzTLvkfz3ziB0klPsIbKkC11BAvQVKw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AzpAEk+VMs6jN1hxi+XSbg3bWUVPffB7dmGtrNOznb9K4gfFQG/RwRUeDOtqChTnaceFAfmtlSSnLFOzbH2bopLwESKVs5SYnvKSr8eL5y4UF768AOWq31ph0m6TrPugZ5gjk0siyRKGg4uR1DQkV+QF68aE9hedUQB66HOdv2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=L9OdHDn1; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=bHDIu89IQZJM8PA9F7hSbcqwWr6M4mep6IQVFex1qGI=; b=L9OdHDn1mcF9LexG892rggXu0t
+	6mdlwj7x6jw7C3K+3w0vJhgYpbRpk5fwWWkD0ey9tj6TpVmA8fG6vbVhOryXRbHkSnGcWauiJ7343
+	UTYYK4bVdlhzBdhUMePf32/OIdkp3RAm+v2KZmO41O30LiNWGS0oLorF2A4aJ4vYjEw8VvA+/fmbW
+	w9DsMD94gakY7qqiOvUs0EL90K2/tAQWC2RLj6LiZgjIwwU273rW1/Z7s3UA4pXke8b7RkJfVOLKk
+	zZXvUw3oTDQJQnyuDHg963e9OoBJkS4ZE3gl8y7MJ6mxJ1oUW2QFFXVgft3sHwgu4KXI8NCAK6Kwn
+	1X7mKCWw==;
+Received: from mcgrof by bombadil.infradead.org with local (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1sjQBA-0000000H3se-43lq;
+	Wed, 28 Aug 2024 21:26:12 +0000
+Date: Wed, 28 Aug 2024 14:26:12 -0700
+From: Luis Chamberlain <mcgrof@kernel.org>
+To: Jann Horn <jannh@google.com>
+Cc: Russ Weight <russ.weight@linux.dev>, Danilo Krummrich <dakr@redhat.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: Re: [PATCH v3] firmware_loader: Block path traversal
+Message-ID: <Zs-V9AZK5NkmoRSS@bombadil.infradead.org>
+References: <20240828-firmware-traversal-v3-1-c76529c63b5f@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] drm/v3d: Disable preemption while updating GPU stats
-To: Tvrtko Ursulin <tursulin@igalia.com>, dri-devel@lists.freedesktop.org
-Cc: kernel-dev@igalia.com, Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
- stable@vger.kernel.org
-References: <20240813102505.80512-1-tursulin@igalia.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>
-Autocrypt: addr=mcanal@igalia.com; keydata=
- xjMEZIsaeRYJKwYBBAHaRw8BAQdAGU6aY8oojw61KS5rGGMrlcilFqR6p6ID45IZ6ovX0h3N
- H01haXJhIENhbmFsIDxtY2FuYWxAaWdhbGlhLmNvbT7CjwQTFggANxYhBDMCqFtIvFKVRJZQ
- hDSPnHLaGFVuBQJkixp5BQkFo5qAAhsDBAsJCAcFFQgJCgsFFgIDAQAACgkQNI+cctoYVW5u
- GAEAwpaC5rI3wD8zqETKwGVoXd6+AbmGfZuVD40xepy7z/8BAM5w95/oyPsHUqOsg/xUTlNp
- rlbhA+WWoaOXA3XgR+wCzjgEZIsaeRIKKwYBBAGXVQEFAQEHQGoOK0jgh0IorMAacx6WUUWb
- s3RLiJYWUU6iNrk5wWUbAwEIB8J+BBgWCAAmFiEEMwKoW0i8UpVEllCENI+cctoYVW4FAmSL
- GnkFCQWjmoACGwwACgkQNI+cctoYVW6cqwD/Q9R98msvkhgRvi18fzUPFDwwogn+F+gQJJ6o
- pwpgFkAA/R2zOfla3IT6G3SBoV5ucdpdCpnIXFpQLbmfHK7dXsAC
-In-Reply-To: <20240813102505.80512-1-tursulin@igalia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240828-firmware-traversal-v3-1-c76529c63b5f@google.com>
+Sender: Luis Chamberlain <mcgrof@infradead.org>
 
-Hi Tvrtko,
-
-On 8/13/24 07:25, Tvrtko Ursulin wrote:
-> From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+On Wed, Aug 28, 2024 at 01:45:48AM +0200, Jann Horn wrote:
+> Most firmware names are hardcoded strings, or are constructed from fairly
+> constrained format strings where the dynamic parts are just some hex
+> numbers or such.
 > 
-> We forgot to disable preemption around the write_seqcount_begin/end() pair
-> while updating GPU stats:
+> However, there are a couple codepaths in the kernel where firmware file
+> names contain string components that are passed through from a device or
+> semi-privileged userspace; the ones I could find (not counting interfaces
+> that require root privileges) are:
 > 
->    [ ] WARNING: CPU: 2 PID: 12 at include/linux/seqlock.h:221 __seqprop_assert.isra.0+0x128/0x150 [v3d]
->    [ ] Workqueue: v3d_bin drm_sched_run_job_work [gpu_sched]
->   <...snip...>
->    [ ] Call trace:
->    [ ]  __seqprop_assert.isra.0+0x128/0x150 [v3d]
->    [ ]  v3d_job_start_stats.isra.0+0x90/0x218 [v3d]
->    [ ]  v3d_bin_job_run+0x23c/0x388 [v3d]
->    [ ]  drm_sched_run_job_work+0x520/0x6d0 [gpu_sched]
->    [ ]  process_one_work+0x62c/0xb48
->    [ ]  worker_thread+0x468/0x5b0
->    [ ]  kthread+0x1c4/0x1e0
->    [ ]  ret_from_fork+0x10/0x20
+>  - lpfc_sli4_request_firmware_update() seems to construct the firmware
+>    filename from "ModelName", a string that was previously parsed out of
+>    some descriptor ("Vital Product Data") in lpfc_fill_vpd()
+>  - nfp_net_fw_find() seems to construct a firmware filename from a model
+>    name coming from nfp_hwinfo_lookup(pf->hwinfo, "nffw.partno"), which I
+>    think parses some descriptor that was read from the device.
+>    (But this case likely isn't exploitable because the format string looks
+>    like "netronome/nic_%s", and there shouldn't be any *folders* starting
+>    with "netronome/nic_". The previous case was different because there,
+>    the "%s" is *at the start* of the format string.)
+>  - module_flash_fw_schedule() is reachable from the
+>    ETHTOOL_MSG_MODULE_FW_FLASH_ACT netlink command, which is marked as
+>    GENL_UNS_ADMIN_PERM (meaning CAP_NET_ADMIN inside a user namespace is
+>    enough to pass the privilege check), and takes a userspace-provided
+>    firmware name.
+>    (But I think to reach this case, you need to have CAP_NET_ADMIN over a
+>    network namespace that a special kind of ethernet device is mapped into,
+>    so I think this is not a viable attack path in practice.)
 > 
-> Fix it.
+> Fix it by rejecting any firmware names containing ".." path components.
 > 
-> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-> Fixes: 6abe93b621ab ("drm/v3d: Fix race-condition between sysfs/fdinfo and interrupt handler")
-> Cc: Maíra Canal <mcanal@igalia.com>
-> Cc: <stable@vger.kernel.org> # v6.10+
-> Acked-by: Maíra Canal <mcanal@igalia.com>
-
-I just applied this patch to drm-misc-fixes. I'll wait for drm-misc-
-fixes to be backported to drm-misc-next before applying the second patch
-to drm-misc-next.
-
-Thanks for your contribution!
-
-Best Regards,
-- Maíra
-
+> For what it's worth, I went looking and haven't found any USB device
+> drivers that use the firmware loader dangerously.
+> 
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Danilo Krummrich <dakr@kernel.org>
+> Fixes: abb139e75c2c ("firmware: teach the kernel to load firmware files directly from the filesystem")
+> Signed-off-by: Jann Horn <jannh@google.com>
 > ---
->   drivers/gpu/drm/v3d/v3d_sched.c | 6 ++++++
->   1 file changed, 6 insertions(+)
-> 
-> diff --git a/drivers/gpu/drm/v3d/v3d_sched.c b/drivers/gpu/drm/v3d/v3d_sched.c
-> index 42d4f4a2dba2..cc2e5a89467b 100644
-> --- a/drivers/gpu/drm/v3d/v3d_sched.c
-> +++ b/drivers/gpu/drm/v3d/v3d_sched.c
-> @@ -136,6 +136,8 @@ v3d_job_start_stats(struct v3d_job *job, enum v3d_queue queue)
->   	struct v3d_stats *local_stats = &file->stats[queue];
->   	u64 now = local_clock();
->   
-> +	preempt_disable();
-> +
->   	write_seqcount_begin(&local_stats->lock);
->   	local_stats->start_ns = now;
->   	write_seqcount_end(&local_stats->lock);
-> @@ -143,6 +145,8 @@ v3d_job_start_stats(struct v3d_job *job, enum v3d_queue queue)
->   	write_seqcount_begin(&global_stats->lock);
->   	global_stats->start_ns = now;
->   	write_seqcount_end(&global_stats->lock);
-> +
-> +	preempt_enable();
->   }
->   
->   static void
-> @@ -164,8 +168,10 @@ v3d_job_update_stats(struct v3d_job *job, enum v3d_queue queue)
->   	struct v3d_stats *local_stats = &file->stats[queue];
->   	u64 now = local_clock();
->   
-> +	preempt_disable();
->   	v3d_stats_update(local_stats, now);
->   	v3d_stats_update(global_stats, now);
-> +	preempt_enable();
->   }
->   
->   static struct dma_fence *v3d_bin_job_run(struct drm_sched_job *sched_job)
+
+Can you also extend tools/testing/selftests/firmware/ with a respective
+test for this to ensure it works? With that:
+
+Acked-by: Luis Chamberlain <mcgrof@kernel.org>
+
+  Luis
 
