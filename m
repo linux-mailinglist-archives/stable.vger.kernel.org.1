@@ -1,69 +1,69 @@
-Return-Path: <stable+bounces-71515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71516-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15D4F9649B9
-	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 17:18:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85AD89649BC
+	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 17:18:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3B7E71C20FFB
-	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 15:18:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 41779280E1C
+	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 15:18:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54C8D1B1429;
-	Thu, 29 Aug 2024 15:18:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D5BA197A6B;
+	Thu, 29 Aug 2024 15:18:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=witekio.com header.i=@witekio.com header.b="GjTsUYoB"
+	dkim=pass (2048-bit key) header.d=witekio.com header.i=@witekio.com header.b="r0uItXuO"
 X-Original-To: stable@vger.kernel.org
 Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2135.outbound.protection.outlook.com [40.107.20.135])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2ADB1B29BA
-	for <stable@vger.kernel.org>; Thu, 29 Aug 2024 15:18:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69E781B14FA
+	for <stable@vger.kernel.org>; Thu, 29 Aug 2024 15:18:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.135
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724944686; cv=fail; b=J85jmBytk74oHkiP+TYkor3ZU9ut8In3CxELoRVnMxTyEmUXXpPpF7GqINVgEq1y8uFXecPH4v8tU7XUm/O/T8uK893wycUWeXidnBN2Jq4rczIjRNYYSrr+/Xc5npmjfm3IZfVLEoVW7hS/U6iUa0K/52YNqkxY5YnCV9TK9Rw=
+	t=1724944688; cv=fail; b=FeYoRkteVKAyyU5iNz5ALaq5gnPsPfx5A4KoAmL2xG9S9N3IpdmXi9FEStHpOJPotWgiLs7KNQ+AXmGrkBRWe9Sq+B7gALJvFrcFZOdhPR4NuADQyWKwpiX3GS1dXldm9/whLbYYaaq+AMg7m5l5YYBgecmf36+sPXXyaXs1qn4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724944686; c=relaxed/simple;
-	bh=efuJVaWoODQQD6g5bstpe/ED9wNMjoLt7ib7klMTTJs=;
+	s=arc-20240116; t=1724944688; c=relaxed/simple;
+	bh=Wk5oi9ZpKnn78RSyuhD9qttsxMuzvk+scNGhdpKw6B8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ZUdBNjKdfQCAD8nVnZN4e8ozyG0PgIYHyqO92DUErA49Fhv6qMwS6UHD2jue1LUE1aJ9QGt5/PD0ETxmxNGYfMerqQhOfSkfmWTdPVLqk1KMvpb9Z2nuwYUeO4MHJqW+UFaDdNcZavH3/MTGaBncqyDFarZG8StrzwtmQMeEZOE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=witekio.com; spf=pass smtp.mailfrom=witekio.com; dkim=pass (2048-bit key) header.d=witekio.com header.i=@witekio.com header.b=GjTsUYoB; arc=fail smtp.client-ip=40.107.20.135
+	 Content-Type:MIME-Version; b=YXIFXWx8nh40F/bf81AaLo5hVlyPe5+lNudjH8TeV+Jdr3hTWSVtuKjRiZ7R9LWyWv/E8p++PYTjiBR23KMleNMCTqqW+VXg/8tyO3IjU+QH/hnEiaN4MxgLu6tpu9Rrq04/onIxWKGwWoobtt0Jq59XlyV/JEoqdCFH1RmrI+M=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=witekio.com; spf=pass smtp.mailfrom=witekio.com; dkim=pass (2048-bit key) header.d=witekio.com header.i=@witekio.com header.b=r0uItXuO; arc=fail smtp.client-ip=40.107.20.135
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=witekio.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=witekio.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=o03i22HJJSZL70oeqZcrjwT4oBWHzwvnSeHcBuGx7S6UdB/s+8/H+DsXdXKCpB2W43j3Wf9dQNDoQ9cOUF5Gchb7Xyilm0HcZhgWgL7kZHBY9CxHcQ7c1ohfGPJ4az7ro9w8KmQUX4Y/NDUaiB+uXdff76bO9agwzRo5kDQOpakBHYv7Qt4o+8OQOJUVnV/KH6imIFTQJqNxUlHIXg1GqRPmSLFeBkqaCjz2fAxsdE+cvT5jQLHBW1deWsmOAW+OErOmXZdHmIdFrrr2q+Z7lGgHWQTW9gWo//UykgWc6ed8ZUCrMTfRwCNoOqcyMn3jkDQmagzhIJ4Ec/z7ohbmLQ==
+ b=DvYqxTpMlgV7tkiv3jSPPpkTHLvTbb1/61QdtHrbN1Zl8MSpzS4fapnXjX04x9fHDWHwLEPeEOnO0sv/FtFnFRUWOBHqNQlO4ClicJVdywjqgE+Y5fxGEtqNcY/Cc6qX2gdNArKzSGoNcm3ugbjUe3WsySSVTXrubvrsO7umgYN9QDSYcv7v/5V3F9T0kZH1LHfWlAzKQiE1C5fLOEUinGXHPMOH6kvuTa0b/xunWE7ISEbSHEJC18/PlWpE0haaNfclC5PTveuPS64JpoYP16wyrb9V3OnP8zPY+8oTcFttttWOvFFPZFa+lOGjrinkv73QriANov5zHOqZ4BJ+Ag==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=x7FMt+PB/WP6cRYKN1AxREt3ILe37QH2CZri5sOTvxo=;
- b=yy6Xovp4TCznvjj7V9zuXAZQoTFkdWt8KvUCVgqlyPEsH9HZ0uUCh8MgxOYg0fBW7dmRVuaYDpvF0HAqNB/DoHIp9MRwNmDp0n0LTXmd0ASuZU227mhcqNghOyH6oSY88htBnWyxuaD+3xuezdxb8R5/wrlMXrBHDQDh/uMsT8rzS1J1m5fTMuXb7JzQzbTy/3zaQrdY0ZVDbvEwzNj2Wk0uOIpmnFs1h5pOVMHfP8GycZoNlEls4gBoZPcWGNjI7/NO2rRdyW/SSaAjqX/1dB1rZTuA1FBBNZdkiPqjQpgoVi/2F2QChPHfwSaCqs7HS4DybL4bFwnqXt2jlBD2tA==
+ bh=AkjGahXIrnR3T0eWmHWnpZfcsCzoz/E3zlJ082d1uQM=;
+ b=xQs2KOMFnV6qR09lWKPdrhyxGZ/Pda9bMWMavCSZfatbunyVUFqdypULnE2Hsi6qTy4BUohUmFRLD53tRjLv1L9UMEbLZfsvPki9z+vZ0MHZ+7aehI24fkH75hhbZqN/Hm/mwfMcWMfMKRWvfkxBVYiYC75N8ewE0CICTPbbSW27wYl+IrYxn8HWf74jzMJaUmE/yp/NRQjI/Xr76UvRGRTnsKJ6nNo7wgBIEHYFGHhLVprjfEbcj3BR1j8GhzBCzrmt4zxqWzY8PBnJ/0gbXwbeSrFznJnkPq58t3qiksBAN/znwi+BOxM347a8LAC08uGWowdcRJh1ANvVB4rp+g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=witekio.com; dmarc=pass action=none header.from=witekio.com;
  dkim=pass header.d=witekio.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=witekio.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=x7FMt+PB/WP6cRYKN1AxREt3ILe37QH2CZri5sOTvxo=;
- b=GjTsUYoB0DBh8jubzRWg58dYqExpl2ZeCGzvfJbmIHhb8Lpvkvt9L/3GXYiqs9jx4WkCOuvWk2BrjymyoBK5imxEcvHe0yt+2u7d1cywz5bBcZJhi/PVpuo6m8TZAAbNKnYCGdB65jveT07MB4KODCmurQahTanzFFfFFyu6xJuozJ1eYXgxGCuCLL/xoyhOlF4358jKSejBErWytOTmK+gBAkoY8DWf26ZoDfisecjM0pHd18/y6XCfsQ/w9y2jjXLbeMpVLrEfV8/2qBftX2FPBrFcifkyzBUTxKOegujtSzn5yoUVdwypv97DL3+i3ZTc1Tx4M5m9kR5HtAQziA==
+ bh=AkjGahXIrnR3T0eWmHWnpZfcsCzoz/E3zlJ082d1uQM=;
+ b=r0uItXuOGbqg0Nz3kku7EpOikKOH9RpYe9u1Qxd/MoqGs6qq7XKK3Fs1ksuaMwYRGBf0ysuN0eKDzCk7fjf/mhrtB+2PZ2vhj+ugXlB4ThDG+hGqdihlcbd0Fgw4r4X6if2ARTjjMRgcziSMhbtJzb62jaZ1KaEyaieiVlc69/TD/wQX9F3CaSigwGNcEG0QSZ9lxJz9D5uMamXDhEoRFlPdOZ8odoeXcfUMziSkyJFf5YnO0tU6NPe1+OvADnc1HfcBEgor4glUXaHKsO/toe5abjY+BzvuEqr6Q9XLC3LID9tSJB9Grr9YemIRLVUTRcj2MkJZqBNZKFfXXu2wiQ==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=witekio.com;
 Received: from PR3P192MB0714.EURP192.PROD.OUTLOOK.COM (2603:10a6:102:48::10)
  by AS2P192MB2266.EURP192.PROD.OUTLOOK.COM (2603:10a6:20b:64c::16) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7897.28; Thu, 29 Aug
- 2024 15:17:54 +0000
+ 2024 15:17:55 +0000
 Received: from PR3P192MB0714.EURP192.PROD.OUTLOOK.COM
  ([fe80::345f:a9e9:d884:3091]) by PR3P192MB0714.EURP192.PROD.OUTLOOK.COM
  ([fe80::345f:a9e9:d884:3091%5]) with mapi id 15.20.7918.019; Thu, 29 Aug 2024
- 15:17:54 +0000
+ 15:17:55 +0000
 From: hsimeliere.opensource@witekio.com
 To: stable@vger.kernel.org
 Cc: Miklos Szeredi <mszeredi@redhat.com>,
 	Hugo SIMELIERE <hsimeliere.opensource@witekio.com>
-Subject: [PATCH 4.19 5/6] ovl: pass correct flags for opening real directory
-Date: Thu, 29 Aug 2024 17:17:04 +0200
-Message-ID: <20240829151732.14930-5-hsimeliere.opensource@witekio.com>
+Subject: [PATCH 4.19 6/6] ovl: call secutiry hook in ovl_real_ioctl()
+Date: Thu, 29 Aug 2024 17:17:05 +0200
+Message-ID: <20240829151732.14930-6-hsimeliere.opensource@witekio.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240829151732.14930-1-hsimeliere.opensource@witekio.com>
 References: <20240829151732.14930-1-hsimeliere.opensource@witekio.com>
@@ -80,171 +80,131 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: PR3P192MB0714:EE_|AS2P192MB2266:EE_
-X-MS-Office365-Filtering-Correlation-Id: b4b0f302-8079-4d82-93dc-08dcc83dc144
+X-MS-Office365-Filtering-Correlation-Id: 45a9a86a-8a9f-4d4c-acbc-08dcc83dc1ed
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|1800799024|376014|52116014|366016|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?6OnysCMapJT/53BtZNt2hWFOnbzIDNlE72+tNFZHPtMTNnnQsWn5OYp9TDQi?=
- =?us-ascii?Q?KUqvgsTRny9WZqbOAFSIkzlCXuK+rYKmnbOyOV6wqtZO+1gjBVSu6oMEzW4O?=
- =?us-ascii?Q?vfPr6HwPTyZtH40VMSjBT5sgywmAlZdRqcmYCz6PGAncPS5ltYKu2A1rYi4L?=
- =?us-ascii?Q?zdQIKmdI2C65z1OVNovux6RRp3nd/Q3ig1EKddi56yvpGyVTOKSeSbHlaf41?=
- =?us-ascii?Q?XfkVfNrZEcdj3mmnAsk6PhwGFZICsoaTAD3VlY7s3chN6kXYpeQLm0ilAJbZ?=
- =?us-ascii?Q?8nYUtLTffXEnhxHb4imT8KZr9rd4BKxbEZdiBtIjzHEa+ne6oP5fEqW2JVkB?=
- =?us-ascii?Q?kwpwi2o11rXgeAyrsLiJGUu+kuZqLnrjQl8wDF4a0IjjfBJ1oyxVGGkhhjY0?=
- =?us-ascii?Q?Hv6k9S1oWi1opv+945IzGgdAjmGro5fZBdR1o44iEYxMqS/nAoK+tA1vn7RS?=
- =?us-ascii?Q?YZKf9pSlgvMxTogugf5JEgMbulpEeK4sz80iyh0iiPRi0WdJQqWwRyVmMRo8?=
- =?us-ascii?Q?iOEboxhmVjRu/P1HaYPt50wVW+eE6TluhDP4EfjHr93vQ39354pFLPwyG2rK?=
- =?us-ascii?Q?LGoPezyikqdtcOzbjf8rMpXwFPIThYGVO0FFeZKh090tv76Qbik1gMtfo26B?=
- =?us-ascii?Q?3mvJkwCtnKyyBkSthHqN8xK75jP2l/djUc3+53XZt/WI8lG1mNEvp9o5iKEo?=
- =?us-ascii?Q?R3VEHLXc6Y3tJ9TkfwFCMb1YJg5d+g4qHFcUnuzY/Sq0Y6DGf1oTCfULUXM/?=
- =?us-ascii?Q?2svcySlHJwH1vnYbDjylG8yaMD7b/ETYbkttxH6PkSoCbgll+V82ePW4wv9J?=
- =?us-ascii?Q?onB0f+5xbMwa8bdEh6KX7Y4LC93uWNqE77sybFAYU/FAHSp/BzLnHOY8Pqxv?=
- =?us-ascii?Q?d7n1jsw3ylZjDlenFj5mwHWpXFtwUaa/0LpJFw4cErBnVI2Y4MkZJqZDusD3?=
- =?us-ascii?Q?H77WUd/qogMzpLTBu/7w0ttqjkvDjVrfT984bqm/et6n72u2VIewC6aORFMy?=
- =?us-ascii?Q?fi8gFLR3/BD7fqJDTcx8krxENIleGdcHJIuhlkffYqCFumgTizf2BIkcqZdo?=
- =?us-ascii?Q?6WCCjJ6vjjagEzprLAYDE2xS6PrtnEb5Vwy1umbxHMGNm21BXOV99lDuoaDf?=
- =?us-ascii?Q?R1KZTYUcDBNMuLEWjklveaG5f7S32Nm/OhWY8lwjj5NZ/6U5SRgQ3ZBkegAc?=
- =?us-ascii?Q?KUayRHmghItXi5Zv36crfUM6HplHDfvlTGshMBXLeOCRfmJJdBTE60Ms55kN?=
- =?us-ascii?Q?n02mEy/NuhNDJZLDxnK7pIj29+mBJTDXG0hg1ChihFaO9yTczYTlRAB+Z6NS?=
- =?us-ascii?Q?86CyqJyLQJuDEYE1nLwsGGhEw7I+LHoIlblG1ni6XxJiQzax0vq0hCUG6cG1?=
- =?us-ascii?Q?VIIA/TWPSSx/+HDywWTiOcGhmfDAE+OeJEHSfjFgfvMK1QAobA=3D=3D?=
+	=?us-ascii?Q?iIKDPMxDt2g/9PX6PodATFlifoRiqdPwkh/6KX1ECi2QSrBURYZbDEMPXCrs?=
+ =?us-ascii?Q?LrfYQUPXjO6+z5Q+Y3VSpICX9aq6SHlo7JK2rjxK3bGHRxxOnncTmZ2FGMl4?=
+ =?us-ascii?Q?gzxZOYNjvx733LCyN15oLn7QSiUkuyYKgJ5o+39uN2FTM0VXGrM8W/B6C2g3?=
+ =?us-ascii?Q?f7GJqgA17uIo2Oejugu0t139IWFeiv3tidTmgp0MrnA8TRdaUNlwZvyvHP2P?=
+ =?us-ascii?Q?4EYwbMgxI7KQnKhHjudAJFz4WrJHD7cSEVf0ubRQJ4V3QBpF4J1HlCB7Vv/5?=
+ =?us-ascii?Q?emD9jscICL8deVpLjtXeJCABvNK6d2oziMX0xs7P2JtQ55UGw0ibgYXZu2GZ?=
+ =?us-ascii?Q?Q9Dd3G02f3FaG/Eo6/RCpKogl/oF9ONYmqeXtXoWSgDHsliHKN5HMLhDQhlb?=
+ =?us-ascii?Q?mGK5AX2/k4WzNRiyCfjU1OTzyfnQiB8b7ehR4PctOI2wrDD0KyiFYTObraNt?=
+ =?us-ascii?Q?NZ3Roco8w3ofaKeD+A8MFvbOgWJod7H02XEF8e4kB+lIfBy3KU6+HaZM7L4W?=
+ =?us-ascii?Q?em3GuYn7bAvgpANj48Hx2uMuyqlQ5hfAX0NBK0x5UCuDCAHXna/bss37yAid?=
+ =?us-ascii?Q?NuzrmMcL9rjKEjgTjKBKu67SeXcrkFdl4/ZwE4j945r/62d8QMgNZHAVpcOv?=
+ =?us-ascii?Q?DDp8Iobj7sWQn20WXGZCSgA4g4KC3E4XdUWo2wZmEO6he1Em+cUHJ0F8ANeR?=
+ =?us-ascii?Q?P3krKWrfKdHg45aN52oFiuLEuVZmxqXlYS/FCC9n0drhYSGJEzBYVTWv3KFT?=
+ =?us-ascii?Q?Ap+4ypYEGnRnQh1IOtu7WMkVFyWoqf29u5NX/Apl0P3btHPZXjMQmaXUavDj?=
+ =?us-ascii?Q?dZJ5XBml7krQnEXYx2HKbiG6cVttWUyyesPd6Bb7vzR6PQJfKyRQP/6Z4//0?=
+ =?us-ascii?Q?IM2ntZS4IbBQeRIhgokyVx+tSjXEfzCduxeiP+gVS1zrswxNqYUQQqJoSnAR?=
+ =?us-ascii?Q?03sNgI8U2qwYF19IavMDFzVkpJ60AzYvdWwEM9PQKhwUnosDU7axdiemQWxV?=
+ =?us-ascii?Q?tRhR1LJrz0yWqQ3x+LLabr6ri07O+FITSOO1BtKT4Jkytjdxn8tEa+ZU5Zej?=
+ =?us-ascii?Q?6qPRK6d3wCRnObkQxn/TbaY2+LS8Rca9Dzi3QfcCjdMEqt+kSSoV5J3ykhZf?=
+ =?us-ascii?Q?8/7g3a9VV7r/TZ7Blgl0tBXfjlvavFBrhhZCyzdC93WnadHD2iBPWIAS0MsK?=
+ =?us-ascii?Q?JpL+FsDr94wfKzd5JjOQqbrtCFwqwQrq6HF0T1xZDBv9UWPbgquBQjsfsx/o?=
+ =?us-ascii?Q?Ur5eo8+ZN82hwm+ebw3tC8D63GmDWBGdG10luGGAVlZ3nssdgxaqZ+/g32C+?=
+ =?us-ascii?Q?yNV8PvVjSHNLq4yiwxJqNBPUGKoTBYP+EcGiwv3zAz1i3TbY1tBrAjng7evH?=
+ =?us-ascii?Q?JMHNEql/aN7OAYH0kWFXUGLS12zBaD14ZXlIdCYd3BpVdUS7GQ=3D=3D?=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PR3P192MB0714.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(52116014)(366016)(38350700014);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?uy5gyVcUl+8Ry/cYhvquTpX+0xxjtCuFWA1sIneM0XcEia1bgUkUcAIR5Vw2?=
- =?us-ascii?Q?M9gyGaQQmsxUX3Uif8ecDQTPTafIyWzfbb7goAiSrQ/k4+dw58olx2hlqTFB?=
- =?us-ascii?Q?YzzGm57wPR5217Fy3Y9qX11H2BtvjRsfqtooWIsLMeEUFGhjVHeUr5TGYJVG?=
- =?us-ascii?Q?hgJA4X1By1qyL37z1vSb7JvcOK40w73LZx7zp6LzspmjNhyfEWEPFfQULCDu?=
- =?us-ascii?Q?2+aoFvvgyW0IfbX4NwG6IL0cSIgbrhzShFtEQ0+7KUu5/FwVqoFizAjm2USB?=
- =?us-ascii?Q?pkzNvBi8u3ybcGlj1PZFN//LZmREMksMNpxX9+/VQoODgwzXF6WjdbxHGjBs?=
- =?us-ascii?Q?IVtec4vjWCwLagEBVDC0BDxSOPek0oyRidIClaBsM8see34l1Vd+alY00+vt?=
- =?us-ascii?Q?fOaTRhwZJT7z5tc2M5EjJJ7LpLciaHCHwsIUypbHpkdfBSQp6vH5OEXwkmmA?=
- =?us-ascii?Q?9OhUGgTwx3T9QS+FLqYef/pbrK6zHagrOtwipCBonxav/sx0DPvfu25ygTy5?=
- =?us-ascii?Q?snm71Ug//RNgmQq4LeGsD9goU1IBvgkht3eK67l67/CF67N7tSBQzxX2qv9a?=
- =?us-ascii?Q?iLdkrFPMYLeD+AmfqrmoiUhZ9pEylGMxjHqN4Q9ecDGYcephfZ0YnVLdBIKO?=
- =?us-ascii?Q?FqsBxcvPik/Xy2fW2SD1jyooU0hqrSXgSTH+d7bbM547BKLge1Bo8RVKSeoX?=
- =?us-ascii?Q?WLKEMuN8tjPHkzkgg5kqtjnw+VCfinjm1ozmZepCnCiLSfyKgsagcz6VEd7z?=
- =?us-ascii?Q?rxIUaF8/jU95LnyaAKOVyRrABvvv/pv50X5X3DELUHI8RsrePAcIdiC8sXk/?=
- =?us-ascii?Q?Sv/wOEe2WOKiDunslxX1qwtScyji+VZVjUZJ+UajhNsaHh22WjzUqyCyost6?=
- =?us-ascii?Q?6JWmPGNDKJ/UGCQs1DDxaU88eCQgsj9nDplpaSsZ+z5aPQe/+AFqbb6Hca2n?=
- =?us-ascii?Q?KfXgnX3P8VIBqQZz2SulEfCbIeRAVtx7Qbr2bCph9rgUBmAwhA+6DrvX07Tv?=
- =?us-ascii?Q?rPqBX1Ddnt91PhhnNW/frZ3YhhG983F+xlAlz+MXhXgNXp+2lIVtB96BOOYP?=
- =?us-ascii?Q?vsHpc+W0Ckta0rBejWWswX9a5vymDSFoIHNUPI8vLnaMN0kKXslBmNloDdcW?=
- =?us-ascii?Q?+6GScE3TnmsaBTwE/n1Ep4wxJysr3+Q8xV/nmXSwDM4LwozYwRAlkb8QR9nd?=
- =?us-ascii?Q?Hzuwhf5C05qEit+ZBLd0P1fE7fTfAihdh6g+Rt+1i4hat4mGXBHud4wUrtHE?=
- =?us-ascii?Q?vBRQA/PoLgflzSQyLeDgLMbdVZVY63H2iqqSN9NDanTIO3404V4wgaC8VDJp?=
- =?us-ascii?Q?YHlUFdroQZ/sornohPSwdPUIN+wYaC7xmLa3FJsnqDaUNCl7ANIRBZtpQI3l?=
- =?us-ascii?Q?UaqP7eYQxv6brzNeTX0ceuo8Hek+fjg99+MtjtI6f56kDkJFIluwmEBSYWtZ?=
- =?us-ascii?Q?SSLHdkJnngYwUoB7ftYYfPuOPpYRSZ+qKOjWBOcpw9MIp6tsKtO2I6XmqqEO?=
- =?us-ascii?Q?+5ElBBJFaGPwtSmYHnBwYO4P4UHowRwbwYHNMiAqYBRdgsVC7UHQLBYnKbrR?=
- =?us-ascii?Q?oXrZL3vBdG7tfcmD1iSyZ47UAkWP4w0px2DbeZp+xbojoCaW8i1v9+UxkJ3r?=
- =?us-ascii?Q?lg=3D=3D?=
+	=?us-ascii?Q?UR06NSvr7jkguUIm2x1EJ2EfMeE9s3Is4kzzpNU8w3kVJi237qubWcMe0rIO?=
+ =?us-ascii?Q?jXa5HL/2OLHH3wfPQxf++eTaer4QSoA/SmDf1LfYsp1rCN8Gw1i5dMOs/wAZ?=
+ =?us-ascii?Q?vZiw6h5EZ4IoAkreoXzJorTm1zZ+LeKhNN03hMZ3L2w4iANQcoRKKhpCQo4G?=
+ =?us-ascii?Q?9l9xOb2FyPf+JEb7FCoEIkPhiYfYCeGWRCzfkEppXXXL+BOSbAkl6/NZyqls?=
+ =?us-ascii?Q?zuiondP3A1G7L5zGbdDhme+e1OD0HYedM2oUliUsKdLUiYiZd6ZYfSajq5Gu?=
+ =?us-ascii?Q?dhccysBNesqNP6NjKwsHRiBog4Itj539ZKAh/mbKZb5+HZsqWBbDxLz+qxbD?=
+ =?us-ascii?Q?NQB0+A+hnijJKPK7Z37purH3APiL7+SbLaEJnbobUzyrGnw+4rsoN7A6FKi5?=
+ =?us-ascii?Q?DQ1rQ5eyWF4Xp68w4nLUJugnqHiaZ7oxqhYHD7lEYYvZ7Q4nmLrcXvnFohZN?=
+ =?us-ascii?Q?fXlTjLAj8cQdbSEcQ4qcqgI8Wr459NT6DfQVEC5n0WHPKT1G6DZyyBNQkAin?=
+ =?us-ascii?Q?S3jpLxl6AneXyPm4vCYcdOe97Sp74BvPzNtE3oVVjBudIIWONnc0RBJwgvpA?=
+ =?us-ascii?Q?ckZsQHAqNrNSNx+UfDU9MZq+Vd+z9cC8bvXKswZ5t8Ixknd1sOnQhHMkzM/n?=
+ =?us-ascii?Q?BEB8DThuQNxsCek3p5Ak5kQuNj2eAd1v/xuM6tWPV4GSl7nMdEUM84sMfv81?=
+ =?us-ascii?Q?eawhl4SaydrQRURwpp6w9YVYbV50Fpl+cnM67tIARDFoiM2IH0YncPIcxjSG?=
+ =?us-ascii?Q?OYVzJEMny54Iap5jZV/YokzpqsR/dnsST9REPGCd7lr4Bep/G8dVcvTJ3kxN?=
+ =?us-ascii?Q?zL7mgDn0G3eSWGjZEcoNXI2Shr+47Frnxp8ccob6R7Whw2ncBF/2H7ny5pu3?=
+ =?us-ascii?Q?D5kmLDOjQqajXSjP8RQUZMP7tnj1bkTvzrcyJU0zvwuKE/H8Mp9j82W6E8KO?=
+ =?us-ascii?Q?BKdMuhhINz4gJg0V1Ji1AMGS3tGqoNH7ZrEZFgSMi8VdO8e9j4HJF9wLBGya?=
+ =?us-ascii?Q?RGzONE7Yvh4biaSn1BEd3woMF9KXPpCn6yBNcfUE/4CohP43cHawn5m9DJ6K?=
+ =?us-ascii?Q?QAwxE8/bh5XF7JpFb2qw0d9WiHi8/Q/et92IZD87d6quoQYDO3PpTVAOTj88?=
+ =?us-ascii?Q?l9nCp2VCRWF5o/EoVSVj8lFVuRRsnkCc4iFMbCvDHDREUrbbM56ji0obC6bl?=
+ =?us-ascii?Q?S7O4vdU8fX1Q8V28QEmWK0XFxWu5QpMkw6O+NQSdMaZrYZDjI34X/HF6C8Qx?=
+ =?us-ascii?Q?rIGjwoAE62UMJET4BdwPOY++7OfYsDuFzcN0s9B+3UURoDljil2X4VoIBG+X?=
+ =?us-ascii?Q?x1gL8h82+WwhP6YDJ/RPtK+SJqVN95sME9hrQFuhFIdwA+sSMzPkJT3Pba+B?=
+ =?us-ascii?Q?Quuf//IYOqbSJvPhuKEkAoDTxPjy9xKh6pAI4uEADAVWA+I1ICpd+bjo7Ou8?=
+ =?us-ascii?Q?pS6yiQMkkgdPbx2/OtB6pjYS8Nf42vBpsuFTmuI1zgTbFopFhs9OEhc5hbnA?=
+ =?us-ascii?Q?RsXP7nlrhF9H1P0odT8wVomfffjmyUtFXccTOIzcM4+fbx03pQEeHotBAfdd?=
+ =?us-ascii?Q?s4E/2MDOSqC8jN0CVA86O5d/9mPGmsmBCfFYHO4FyQbAWBvHOn2Rc4JnXMZb?=
+ =?us-ascii?Q?Wg=3D=3D?=
 X-OriginatorOrg: witekio.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b4b0f302-8079-4d82-93dc-08dcc83dc144
+X-MS-Exchange-CrossTenant-Network-Message-Id: 45a9a86a-8a9f-4d4c-acbc-08dcc83dc1ed
 X-MS-Exchange-CrossTenant-AuthSource: PR3P192MB0714.EURP192.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Aug 2024 15:17:54.1651
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Aug 2024 15:17:55.2529
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 317e086a-301a-49af-9ea4-48a1c458b903
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: zoGYebmOxlQCDquuTWa5wuuUm3eKaZjXJ8+ExyNkXiJAK45/fHDpDBXNVI2ptSiayb3hqEepSqZMIukRM7Iivw==
+X-MS-Exchange-CrossTenant-UserPrincipalName: LFwut1QyWkw50Lw43FNHuzNKk1WaQXeoPNqMgSqfmF9nWxWrgBbjTnGPY5qzU+nJ9L/RzCS7d0g/1UStJ/a44Q==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS2P192MB2266
 
 From: Miklos Szeredi <mszeredi@redhat.com>
 
-commit 130fdbc3d1f9966dd4230709c30f3768bccd3065 upstream.
+commit 292f902a40c11f043a5ca1305a114da0e523eaa3 upstream.
 
-The three instances of ovl_path_open() in overlayfs/readdir.c do three
-different things:
+Verify LSM permissions for underlying file, since vfs_ioctl() doesn't do
+it.
 
- - pass f_flags from overlay file
- - pass O_RDONLY | O_DIRECTORY
- - pass just O_RDONLY
-
-The value of f_flags can be (other than O_RDONLY):
-
-O_WRONLY	- not possible for a directory
-O_RDWR		- not possible for a directory
-O_CREAT		- masked out by dentry_open()
-O_EXCL		- masked out by dentry_open()
-O_NOCTTY	- masked out by dentry_open()
-O_TRUNC		- masked out by dentry_open()
-O_APPEND	- no effect on directory ops
-O_NDELAY	- no effect on directory ops
-O_NONBLOCK	- no effect on directory ops
-__O_SYNC	- no effect on directory ops
-O_DSYNC		- no effect on directory ops
-FASYNC		- no effect on directory ops
-O_DIRECT	- no effect on directory ops
-O_LARGEFILE	- ?
-O_DIRECTORY	- only affects lookup
-O_NOFOLLOW	- only affects lookup
-O_NOATIME	- overlay sets this unconditionally in ovl_path_open()
-O_CLOEXEC	- only affects fd allocation
-O_PATH		- no effect on directory ops
-__O_TMPFILE	- not possible for a directory
-
-Fon non-merge directories we use the underlying filesystem's iterate; in
-this case honor O_LARGEFILE from the original file to make sure that open
-doesn't get rejected.
-
-For merge directories it's safe to pass O_LARGEFILE unconditionally since
-userspace will only see the artificial offsets created by overlayfs.
+[Stephen Rothwell] export security_file_ioctl
 
 Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
 Signed-off-by: Hugo SIMELIERE <hsimeliere.opensource@witekio.com>
 ---
- fs/overlayfs/readdir.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ fs/overlayfs/file.c | 5 ++++-
+ security/security.c | 1 +
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/fs/overlayfs/readdir.c b/fs/overlayfs/readdir.c
-index db9132a020de..2e12b756cc82 100644
---- a/fs/overlayfs/readdir.c
-+++ b/fs/overlayfs/readdir.c
-@@ -300,7 +300,7 @@ static inline int ovl_dir_read(struct path *realpath,
- 	struct file *realfile;
- 	int err;
+diff --git a/fs/overlayfs/file.c b/fs/overlayfs/file.c
+index 65a7c600f228..470ea215bebc 100644
+--- a/fs/overlayfs/file.c
++++ b/fs/overlayfs/file.c
+@@ -12,6 +12,7 @@
+ #include <linux/xattr.h>
+ #include <linux/uio.h>
+ #include <linux/uaccess.h>
++#include <linux/security.h>
+ #include "overlayfs.h"
  
--	realfile = ovl_path_open(realpath, O_RDONLY | O_DIRECTORY);
-+	realfile = ovl_path_open(realpath, O_RDONLY | O_LARGEFILE);
- 	if (IS_ERR(realfile))
- 		return PTR_ERR(realfile);
+ static char ovl_whatisit(struct inode *inode, struct inode *realinode)
+@@ -410,7 +411,9 @@ static long ovl_real_ioctl(struct file *file, unsigned int cmd,
+ 		return ret;
  
-@@ -831,6 +831,12 @@ static loff_t ovl_dir_llseek(struct file *file, loff_t offset, int origin)
- 	return res;
- }
+ 	old_cred = ovl_override_creds(file_inode(file)->i_sb);
+-	ret = vfs_ioctl(real.file, cmd, arg);
++	ret = security_file_ioctl(real.file, cmd, arg);
++	if (!ret)
++		ret = vfs_ioctl(real.file, cmd, arg);
+ 	revert_creds(old_cred);
  
-+static struct file *ovl_dir_open_realfile(struct file *file,
-+					  struct path *realpath)
-+{
-+	return ovl_path_open(realpath, O_RDONLY | (file->f_flags & O_LARGEFILE));
-+}
-+
- static int ovl_dir_fsync(struct file *file, loff_t start, loff_t end,
- 			 int datasync)
+ 	fdput(real);
+diff --git a/security/security.c b/security/security.c
+index e8a53164e6b5..035d8d87d07b 100644
+--- a/security/security.c
++++ b/security/security.c
+@@ -889,6 +889,7 @@ int security_file_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
  {
-@@ -853,7 +859,7 @@ static int ovl_dir_fsync(struct file *file, loff_t start, loff_t end,
- 			struct path upperpath;
+ 	return call_int_hook(file_ioctl, 0, file, cmd, arg);
+ }
++EXPORT_SYMBOL_GPL(security_file_ioctl);
  
- 			ovl_path_upper(dentry, &upperpath);
--			realfile = ovl_path_open(&upperpath, O_RDONLY);
-+			realfile = ovl_dir_open_realfile(file, &upperpath);
- 
- 			inode_lock(inode);
- 			if (!od->upperfile) {
-@@ -904,7 +910,7 @@ static int ovl_dir_open(struct inode *inode, struct file *file)
- 		return -ENOMEM;
- 
- 	type = ovl_path_real(file->f_path.dentry, &realpath);
--	realfile = ovl_path_open(&realpath, file->f_flags);
-+	realfile = ovl_dir_open_realfile(file, &realpath);
- 	if (IS_ERR(realfile)) {
- 		kfree(od);
- 		return PTR_ERR(realfile);
+ /**
+  * security_file_ioctl_compat() - Check if an ioctl is allowed in compat mode
 -- 
 2.43.0
 
