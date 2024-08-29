@@ -1,51 +1,63 @@
-Return-Path: <stable+bounces-71494-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71495-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CDF696472C
-	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 15:49:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0B12964772
+	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 16:03:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C01A51C223CA
-	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 13:49:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 16CCEB24062
+	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 13:54:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35CD31ABEC0;
-	Thu, 29 Aug 2024 13:49:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 804CA1AC44F;
+	Thu, 29 Aug 2024 13:54:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nuo3IXBF"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jaVBywgb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC38118E046;
-	Thu, 29 Aug 2024 13:49:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3392D19306A;
+	Thu, 29 Aug 2024 13:54:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724939368; cv=none; b=Q0k3SgV/Uz0/y7eNiWQdZTkjEGCF9S40OI8LxB5teTAEtFyJe1psrDsM4qqcsB+Xi9rXD/G+iX07vdSEB3a4/wuF8WgYXdkvBCKxRu2xdGpcKVDWKzCm3QmGh3u095xQ2g7uv+t5P4HNfLhXyL8deH3WpdnZX7VK+QpaMpLOPI8=
+	t=1724939644; cv=none; b=fIkFUUBQuZLoo0ZnjPDTn+aVgas7VxUBEG1BTkmyIsZUDxaaKqhSe6Gy3eRCoYwxh+gqvHy4KCeRR7T8jJ3jWmJCz7TqYwkTMK6+qVQqXCy1MPrUhpQqEuyoF/1XRzdFJp4qYHoKkSjkyhLpu+fB5onrmgPKEUL9s17E+qCpy14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724939368; c=relaxed/simple;
-	bh=ZjlvTB1aaAO4hOFWRp43KPAA2JHxRKrYqvPBK3Z63+k=;
+	s=arc-20240116; t=1724939644; c=relaxed/simple;
+	bh=BmMRbA2qEwzOz1sUZJsVWPr0HWKMM6RYtc1oRFXePTk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YnU3TBKa3imBf1Y/Kzgi6bQEE8UzzNmmpGHGP0F8xAhxHcvjeUQI9Br86yFE95m0xossaas/rm8p0mg7YpUEOSJzkZ/IP+tV4pBVXmDzpftuwMv1d26rRviGoB46bREl50hUmNUIHbKg2+Y0cgROcThihNxznT+Ju68f89inLDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nuo3IXBF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD47CC4CEC1;
-	Thu, 29 Aug 2024 13:49:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724939367;
-	bh=ZjlvTB1aaAO4hOFWRp43KPAA2JHxRKrYqvPBK3Z63+k=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=daye4VqG6DLbRsq3PLFAKIMJBJmGaihD65pf351mnVFdgIzCwGF+Xy0aeNXdZOaS4TAcKG/FkrZg/D1mHINR1xs5hgyVVsBiN1PvnyipDnTPsPN11N/0noCd+cEBez9/jaBOSOFeEkPrYojN6KS4zbKhqlvutc4sGlqp6uCW3e8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jaVBywgb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06A9AC4CEC3;
+	Thu, 29 Aug 2024 13:54:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724939643;
+	bh=BmMRbA2qEwzOz1sUZJsVWPr0HWKMM6RYtc1oRFXePTk=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Nuo3IXBFh/EVtO+Ynd3eBbehx7JayOaIGaZyqFAvumXGCvt7Sx8Ik+twDj7sKJ0+F
-	 FW9+kXMiV1AWQGAfEMFW0x4twRt3iKAuTa0vcMGeGUFb/X3vEriZMTWGObOjhy75jH
-	 WZlLtedw/8LlkRnvqZZrmN+akyM1obYLUF1dgwAg=
-Date: Thu, 29 Aug 2024 15:49:24 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Markuss Broks <markuss.broks@gmail.com>
-Cc: Mark Brown <broonie@kernel.org>, linux-sound@vger.kernel.org,
+	b=jaVBywgbBNmKGTFi8oYt1lGWqsq4cAZiAXT/EsqdGc5SXMsQQl9to7z+/aBvP/jSb
+	 UAafbTtcm0PhLMBmuHniDyL/dRQuk8cO5KrBQOHS3SUo905du5581wZHArgN0iWSTx
+	 AS0Wy5ulmT8yC8hN474vrlaY79ZNh2/A73toc6uXSFwCOv0zAoAOfVu3Tdy/OjjL32
+	 MmCcmzmjrPgoMyxJ3Qaxg74yxdEjgI56UFzYDwQbn2L7CCNmtNSprde6AsKvmRcK/3
+	 rSlPoxmuBgmq9dYnUbGqCnDiQxWVXRh1FM2yY61XQnGlBz2R4qZWs8ATLECn/yquP3
+	 4mQpYMLQKV0Tw==
+Date: Thu, 29 Aug 2024 14:53:58 +0100
+From: Simon Horman <horms@kernel.org>
+To: longli@linuxonhyperv.com
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+	Ajay Sharma <sharmaajay@microsoft.com>,
+	Konstantin Taranov <kotaranov@microsoft.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	linux-rdma@vger.kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Long Li <longli@microsoft.com>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH] ASoC: amd: yc: Add a quirk for MSI Bravo 17 (D7VEK)
-Message-ID: <2024082917-jockstrap-armored-6a14@gregkh>
-References: <20240829130313.338508-1-markuss.broks@gmail.com>
+Subject: Re: [PATCH net] RDMA/mana_ib: use the correct page size for mapping
+ user-mode doorbell page
+Message-ID: <20240829135358.GA2923441@kernel.org>
+References: <1724875569-12912-1-git-send-email-longli@linuxonhyperv.com>
+ <1724875569-12912-2-git-send-email-longli@linuxonhyperv.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,47 +66,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240829130313.338508-1-markuss.broks@gmail.com>
+In-Reply-To: <1724875569-12912-2-git-send-email-longli@linuxonhyperv.com>
 
-On Thu, Aug 29, 2024 at 04:03:05PM +0300, Markuss Broks wrote:
-> MSI Bravo 17 (D7VEK), like other laptops from the family,
-> has broken ACPI tables and needs a quirk for internal mic
-> to work.
+On Wed, Aug 28, 2024 at 01:06:09PM -0700, longli@linuxonhyperv.com wrote:
+> From: Long Li <longli@microsoft.com>
 > 
-> Signed-off-by: Markuss Broks <markuss.broks@gmail.com>
+> When mapping doorbell page from user-mode, the driver should use the system
+> page size as the doorbell is allocated via mmap() from user-mode.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 0266a177631d ("RDMA/mana_ib: Add a driver for Microsoft Azure Network Adapter")
+> Signed-off-by: Long Li <longli@microsoft.com>
 > ---
->  sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
->  1 file changed, 7 insertions(+)
+>  drivers/infiniband/hw/mana/main.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
-> index 0523c16305db..843abc378b28 100644
-> --- a/sound/soc/amd/yc/acp6x-mach.c
-> +++ b/sound/soc/amd/yc/acp6x-mach.c
-> @@ -353,6 +353,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
->  			DMI_MATCH(DMI_PRODUCT_NAME, "Bravo 15 C7VF"),
->  		}
->  	},
-> +	{
-> +		.driver_data = &acp6x_card,
-> +		.matches = {
-> +			DMI_MATCH(DMI_BOARD_VENDOR, "Micro-Star International Co., Ltd."),
-> +			DMI_MATCH(DMI_PRODUCT_NAME, "Bravo 17 D7VEK"),
-> +		}
-> +	},
->  	{
->  		.driver_data = &acp6x_card,
->  		.matches = {
+> diff --git a/drivers/infiniband/hw/mana/main.c b/drivers/infiniband/hw/mana/main.c
+> index f68f54aea820..b26c4ebec2e0 100644
+> --- a/drivers/infiniband/hw/mana/main.c
+> +++ b/drivers/infiniband/hw/mana/main.c
+> @@ -511,13 +511,13 @@ int mana_ib_mmap(struct ib_ucontext *ibcontext, struct vm_area_struct *vma)
+>  	      PAGE_SHIFT;
+>  	prot = pgprot_writecombine(vma->vm_page_prot);
+>  
+> -	ret = rdma_user_mmap_io(ibcontext, vma, pfn, gc->db_page_size, prot,
+> +	ret = rdma_user_mmap_io(ibcontext, vma, pfn, PAGE_SIZE, prot,
+>  				NULL);
+>  	if (ret)
+>  		ibdev_dbg(ibdev, "can't rdma_user_mmap_io ret %d\n", ret);
+>  	else
+>  		ibdev_dbg(ibdev, "mapped I/O pfn 0x%llx page_size %u, ret %d\n",
+> -			  pfn, gc->db_page_size, ret);
+> +			  pfn, PAGE_SIZE, ret);
+
+This is not a full review, but according to both clang-18 and gcc-14,
+this patch should also update the format specifier from %u to %lu.
+
+>  
+>  	return ret;
+>  }
 > -- 
-> 2.46.0
+> 2.17.1
 > 
 > 
-
-<formletter>
-
-This is not the correct way to submit patches for inclusion in the
-stable kernel tree.  Please read:
-    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-for how to do this properly.
-
-</formletter>
 
