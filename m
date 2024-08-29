@@ -1,115 +1,116 @@
-Return-Path: <stable+bounces-71538-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71539-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02396964BC8
-	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 18:35:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82426964C12
+	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 18:52:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 350B51C230AB
-	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 16:35:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B53241C22CBD
+	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 16:52:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39D661B3737;
-	Thu, 29 Aug 2024 16:35:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCA311B14F6;
+	Thu, 29 Aug 2024 16:52:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="u+s3YqA5";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="UhF833Hz"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ief7QQmX"
 X-Original-To: stable@vger.kernel.org
-Received: from fout5-smtp.messagingengine.com (fout5-smtp.messagingengine.com [103.168.172.148])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E08D1B1402
-	for <stable@vger.kernel.org>; Thu, 29 Aug 2024 16:35:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.148
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA03A1B5EB5
+	for <stable@vger.kernel.org>; Thu, 29 Aug 2024 16:52:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724949335; cv=none; b=Ex7t/QCgGnxBHCsT2OjE/vbuBEGzlBIZFGzcbW3/Ka1naMU414J8Xb4LdC83EwGSz3pTbsmdeFM2BoFi/iqTS9oLlFG0l+ehZ+rcXpErU1YQCA3LFYv1oCcMunKHu21uW5QYnlX+COBpKPlZqNHcyxqQISQsvd94pU7r1JARooo=
+	t=1724950323; cv=none; b=dZx1drqSaxnVshdv9/GSMAmI5K9U3T58LoaukTs75DGy3XbZXBzIAy7FyVl/XSQNdC+kG9hTSr602X+8ZfGzX8od3v5RubeGkZSLmxQfILqM9AaMBNPPUslZN0gHUVRycjI2Z/c5LamVxnfxyoHSU9F3OHWIrMeybQdwx/woJaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724949335; c=relaxed/simple;
-	bh=s6i9k7ksGo1NQ2z68qZa0leXY5fx6WRQpOuKgCFrEE0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AL/qevcRbQioEG2V5bjSlMJ9ulHPX6QakHCj/S/pEVP1RiANuan8Y5ga4HStdsSs0TnPk5THQNxal3T1NDRcVTcbO835M71aRmMWb8j9s6RVdbAohU0xp75kI8xUMat/XUaxInSmgxgg6asINrmdMFdeTXNZ1EHkSSAf9/4DaXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=u+s3YqA5; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=UhF833Hz; arc=none smtp.client-ip=103.168.172.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from phl-compute-03.internal (phl-compute-03.nyi.internal [10.202.2.43])
-	by mailfout.nyi.internal (Postfix) with ESMTP id 30B94138FC6F;
-	Thu, 29 Aug 2024 12:35:32 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-03.internal (MEProxy); Thu, 29 Aug 2024 12:35:32 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm1; t=1724949332; x=1725035732; bh=hekZab7Cpc
-	tDLvC1E1e+reE7UOtjxvKmREX8kISZhfc=; b=u+s3YqA5rXwALQP/Md1iXWl6CM
-	L3JooVNHKwllkTKWGDi7/WXipInXQeOX3gu/8tnK2qRd++UU5nlCOXBNb1/9MB8z
-	MkQZ0QoaHtWI0U4eq08VClwQAPUQNgah64R8D9l4i6uZqNr/pm3pzxt92+FJQCK6
-	YdvNldE2PPfj3b2SgY1B+Tkejx5wVa3mDCDbREN6F2AZpOsy0cTtLeUxNUIEusyr
-	gKMl/S3mTWvcL0kEzyez7FXjLpMyWo13SILc4WLBU9W6r2nsy29Xa93NIey6FGUu
-	atiw6Vxd9uQqKaVu74j5Zwd7gnyqxLoYAd/1y1EcLHJs/Mw20UYoJXfvX8mw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm1; t=1724949332; x=1725035732; bh=hekZab7CpctDLvC1E1e+reE7UOtj
-	xvKmREX8kISZhfc=; b=UhF833Hz2cB2inNrSx/vnZpDN/9QmG9AGjwK3OVsCq93
-	54rmWSdaIhoWt9Fz6YVaqxPv/gJsWdv1TIHRw6fAjCauU76Q9n1bYnss9ABcJQLA
-	Q2/GZk2vHhZEo69JGGXqjcGHOFYUYOPN1FNmYhLiMqwQ844A3hRfuMN5h5oHCzno
-	Wd0Yn6UMvbW9rt8F6m/2fz6MiGfa5QN2ZPLr9m7PWpRBRS2OIz97XuXSPQfnnyJA
-	Xa41pbEWKpTrfrRmPNGmTI6JsoN1RMpSVyzvFasF0GqDqNy10OAS4Nqat9QFygyY
-	Zi4iuH5qq0QagBSHYs6dCfgHhZVxt8wc51om7dpQrA==
-X-ME-Sender: <xms:VKPQZgBnr47UWHOadXtIuak2utEnIkx0CvSjBORXJbYXMM9FRecdDg>
-    <xme:VKPQZij3LpNFi1tPFaiw24yoBI5z2MIdwkdWkDk_TnC_QdipHDleOQ6UHC-qYzQg8
-    io1n2x6L8_b4Q>
-X-ME-Received: <xmr:VKPQZjmETV0PEW3sRrjnbwPIy-hOtvdMMjbxnY7qgEY0BXtz3EFLUYGEDk8Nl289t6xZdKm79U-XLvJGOlgp6pytZh_XWUpfjsYVgA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrudefgedguddtudcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecufghrlhcuvffnffculd
-    dquddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhm
-    pefirhgvghcumffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrh
-    hnpeevffehjeekteehlefhheejfeeujefhgefffeffhfefjeejgfeviefhfefhteevteen
-    ucffohhmrghinhepnhhishhtrdhgohhvpdhkvghrnhgvlhdrohhrghenucevlhhushhtvg
-    hrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhhdr
-    tghomhdpnhgspghrtghpthhtohepgedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoh
-    ephhhsihhmvghlihgvrhgvrdhophgvnhhsohhurhgtvgesfihithgvkhhiohdrtghomhdp
-    rhgtphhtthhopehsthgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:VKPQZmzuO_Z_XLKyhFdWqXt9MxEn4j68oe6Bq4RpjXlvrSUo8SwqCA>
-    <xmx:VKPQZlRQjV9EPGB7ZMQvrEOU5OjdvWflFw-EVnkUJ3LP0XY_IK81Yw>
-    <xmx:VKPQZhZIrQvzSDX4uOMdYnti4-6pNmXRts0V23VAC908F-J22TaJpQ>
-    <xmx:VKPQZuQGcaJQw45U6sv7NIc-1kv-d0qoXtNhKQCJS0tINbLyPyuIcA>
-    <xmx:VKPQZjMOvxNDCZ3aKjbMBZ3IXkHNqzXVL42S9MHje25Le68PblptnBgl>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 29 Aug 2024 12:35:31 -0400 (EDT)
-Date: Thu, 29 Aug 2024 18:35:25 +0200
-From: Greg KH <greg@kroah.com>
-To: hsimeliere.opensource@witekio.com
-Cc: stable@vger.kernel.org
-Subject: Re: [PATCH 4.19 0/1] Fix CVE-2021-3493
-Message-ID: <2024082943-sprinkled-stinky-46d1@gregkh>
-References: <20240829162631.19391-1-hsimeliere.opensource@witekio.com>
+	s=arc-20240116; t=1724950323; c=relaxed/simple;
+	bh=xNkeEavtwbx0mAt+8xqeMZ+/XtuQ3/8CDtF98LR+grU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=sXvZcbgSaUkW9h6AqYlPfvX3BPvzyyPQ313n/MDeDKcnWwyL9QNnj91HeJd8/BN4fCUkG3sH+AtlNZOER6oUWKnkYrug8sG9ziFduLKRbHiSxzvtjodNSE80Oh4OmKxaA3359vpWjfoii6u2oMKOrdIl8LUOjXtzSGDf77XJPN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ief7QQmX; arc=none smtp.client-ip=209.85.167.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-533521cd1c3so1068427e87.1
+        for <stable@vger.kernel.org>; Thu, 29 Aug 2024 09:52:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1724950320; x=1725555120; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=OPG/wl3r47+GhDQahEwoaa/XPnwwxMkatRYg2lbVpFs=;
+        b=ief7QQmXNaenzNrorJdVdRSAxf9KXUwYB/Z5W3UnlLGGJgYpNUr5REkvOnBVbJ3qTW
+         5f9r11YOaNYW/vVzm4Q92NbT6Z3W4bzRDyrlKNj8OUVi0xo/VWoq9/bmYmgxynyP1tBo
+         1Rli4E2jpmivF0elHCUAkXqpXRm9xc2iUFi6tfObysGdj41e+gsrMHY3mIBcy8enFfor
+         3JY3A154U+7W09NkmFDERKgvfmIWs30+OOMIWbF5gTmLaYK/TOI4uNwtQkYcqfaI98MS
+         tK0nJJ7PLQHKfzgwQ4VrcY+aywnoCdLpZ8nDeL5w5Fh8oWIMl2hvf8YP+sVWZL9WeWWM
+         zptw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724950320; x=1725555120;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=OPG/wl3r47+GhDQahEwoaa/XPnwwxMkatRYg2lbVpFs=;
+        b=fvQOX9aSfwXuooXQ2JtjDBNxx4aut7TBChu9WiTRR7WDhjUkiuBXbr+KGuu+oKG6SD
+         4qdr/xJiAe3UKon/9XO3WN5E/P8uDEhSsOkj56AfjXal6avb2TvEwkxePKp+EPEGA3Kd
+         4eFT623vGxK7fX8bQWmjgL/465y8Q8YoKqxa/ao44B7l8u2xoCqmp3ew0ArGztCf44Up
+         mYIU0xAKePpoiMz0J/iePmDZ/Syj1PTb83S3nUgG+dYcJWMTmpR3MMWW+bWJmymSK2Ra
+         k6YfZHEwdOu1sI93LAqIdtHhxiPOwKCwNU3oQ6Ty8oY7EpxFXO8o7iyXzI6B3+Old3Mj
+         NNYg==
+X-Gm-Message-State: AOJu0YwAY5VOVB5aogrKbCm75sQBaFF95USK1+HV7XoS3d4HS0wYtSFM
+	kjO10bM99Favhk4x66Lq5c0oOfmCSWcrYAaJIOBBLahmo7l6gAdz
+X-Google-Smtp-Source: AGHT+IHzNUWzKl1RJe53Mn1fQQdXrgH7PIBCm4a9ZM+Sk5E8u40akZbhk3aFzGoTGp5QyYaBEhwgUA==
+X-Received: by 2002:a05:6512:398e:b0:52c:8342:6699 with SMTP id 2adb3069b0e04-5353e5b7902mr3559191e87.55.1724950319513;
+        Thu, 29 Aug 2024 09:51:59 -0700 (PDT)
+Received: from [130.235.83.196] (nieman.control.lth.se. [130.235.83.196])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5354079baecsm200187e87.22.2024.08.29.09.51.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 29 Aug 2024 09:51:59 -0700 (PDT)
+Message-ID: <d762f4e9-92fa-4e67-ba9a-2a0fd1f57047@gmail.com>
+Date: Thu, 29 Aug 2024 18:51:58 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240829162631.19391-1-hsimeliere.opensource@witekio.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: Fwd: [PATCH 3/9] xfs: xfs_finobt_count_blocks() walks the wrong
+ btree
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
+ "Darrick J. Wong" <djwong@kernel.org>, Dave Chinner <dchinner@redhat.com>
+References: <172437083802.56860.3620518618047728107.stgit@frogsfrogsfrogs>
+ <25fab507-bf7f-446f-9ea1-cec08e9ebf1d@gmail.com>
+ <2024082928-unguarded-explore-0689@gregkh>
+Content-Language: en-US
+From: Anders Blomdell <anders.blomdell@gmail.com>
+In-Reply-To: <2024082928-unguarded-explore-0689@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Aug 29, 2024 at 06:26:20PM +0200, hsimeliere.opensource@witekio.com wrote:
+It seems like it has not reached Linus's tree yet, but is still pending in 'https://git.kernel.org/pub/scm/fs/xfs/xfs-linux.git/'
+in the branches {xfs-6.11-fixes, for-next}, where it has commit id 95179935bead.
+
+I'll come back to you when it has reached Linus's tree.
+
+Sorry for making premature noise.
+
+/Anders
+
+https://git.kernel.org/pub/scm/fs/xfs/xfs-linux.git/commit/?h=xfs-6.11-fixes&id=95179935beadccaf0f0bb461adb778731e293da4
+
+
+On 2024-08-29 18:17, Greg KH wrote:
+> On Thu, Aug 29, 2024 at 02:08:37PM +0200, Anders Blomdell wrote:
+>> Dave forgot to mark the original patch for stable, so after consulting with Dave, here it comes
+>>
+>> @Greg: you might want to add the patch to all versions that received 14dd46cf31f4  ("xfs: split xfs_inobt_init_cursor")
+>> (which I think is v6.9 and v6.10)
 > 
-> https://nvd.nist.gov/vuln/detail/CVE-2021-3493
+> What is the git commit id of this in Linus's tree?
 > 
-
-This "bug" was only applicable to Ubuntu kernel releases, why are you
-thinking that it should be backported to kernel.org releases?
-
-Please only send us fixes that are relevant for our kernel trees.
-
-thanks,
-
-greg k-h
+> thanks,
+> 
+> greg k-h
 
