@@ -1,129 +1,105 @@
-Return-Path: <stable+bounces-71484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71485-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D59ED964401
-	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 14:12:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57D53964455
+	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 14:24:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 13F361C21F33
-	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 12:12:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 159EA281B87
+	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 12:24:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F3C1193077;
-	Thu, 29 Aug 2024 12:12:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 906CE19047F;
+	Thu, 29 Aug 2024 12:24:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J8hpWNY1"
 X-Original-To: stable@vger.kernel.org
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDDF218FC80;
-	Thu, 29 Aug 2024 12:11:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47F0F191484;
+	Thu, 29 Aug 2024 12:24:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724933521; cv=none; b=FI9Y/UV16CifcXjqldQ6AAqlNX6qQGBgE0X91+h4tPXIq5RmUeSg/bxtfgXpY2wozs38jGiOykfGAijV7ID7AeyWePUKYrJxXO8drbMS0QThsxTt9v5p/WeyS8rl6NyMj/leOTLPThZ7NfYK8oXAOq0pvyNQ9XaSMDZGJ02/Gt8=
+	t=1724934272; cv=none; b=kEs9C7AEW5tXgHigAGi1heAqmzpeW4TeembItjPuhy3YrTk3yYB4a56AFWM4qK3/xjFtWBU+V9/ZyHvZuk4HL7qJPK67ORW0dNFqZhH2sv9kclnPu/13zQC0aZGUxkVGZzLY/XgqIbR+lmdhKHHhSJ7/KdXZIRS/oigp4dwoTr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724933521; c=relaxed/simple;
-	bh=zapUbZJQVanMkIHZhhfPhDB73v8gU7VmyyYoZ6pTKoE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=h94wl6/JNBoTPLjn3DvehAL4o2Y184Aa3sl29ACrAFVgDfcCOicTSNmJwuiHorR3BgUDT0aArAi1zkliiAUytoHZjXCvinwQPy1FwNXnQHf5gXBQnnkas0Ij8hr20SicuU8d08hmACs0s0b1lLJVrfwPqB5EbdphBT3rtgD5Auo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-	id 99E241C0082; Thu, 29 Aug 2024 14:11:57 +0200 (CEST)
-Date: Thu, 29 Aug 2024 14:11:57 +0200
-From: Pavel Machek <pavel@denx.de>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Pavel Machek <pavel@denx.de>, stable@vger.kernel.org,
-	patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, jonathanh@nvidia.com,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	allen.lkml@gmail.com, broonie@kernel.org, kuba@kernel.org,
-	linan122@huawei.com, dsterba@suse.com, song@kernel.org,
-	tglx@linutronix.de, viro@zeniv.linux.org.uk,
-	christian.brauner@ubuntu.com, keescook@chromium.org
-Subject: Re: [PATCH 6.1 000/321] 6.1.107-rc1 review
-Message-ID: <ZtBljcXHrUdvglG0@duo.ucw.cz>
-References: <20240827143838.192435816@linuxfoundation.org>
- <ZtBdhPWRqJ6vJPu3@duo.ucw.cz>
- <2024082954-direction-gonad-7fa2@gregkh>
+	s=arc-20240116; t=1724934272; c=relaxed/simple;
+	bh=8q5dePvHecEGWISUoUyB9pSR67Uw5EVyugueLsakF3E=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=LMQBjFKUBPVOYIN1J1rHbqm6E6wj/r8E45Lg0M6K0G6vSn7Vw+YkhfPlZ3McgtePf3/15Fd4Sn0KAQhuFxOZhv278/3DNPR2dcFne3MqTJ7hfrb5z3SGPKM3czZbVKZD9GYQM2IV/+AAeg4Vr4H6yDjrT3yYWrEL8dGbE5rOQ9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J8hpWNY1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAA5BC4CEC1;
+	Thu, 29 Aug 2024 12:24:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724934270;
+	bh=8q5dePvHecEGWISUoUyB9pSR67Uw5EVyugueLsakF3E=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=J8hpWNY1cCk7W2ZPRTJzMmu2RWAeCMLJU4KUtr/D048++ZwY8Kq9TYJ6A3aKs8wS9
+	 gvJWOucOayjghBUSD8g1Y8xbetYqai7DXwFRwXzk1daArAsqyOJJebN+YPcDu78IhH
+	 1/Q9XUUTKobNN22HCXINGIMzEYXohuvN/KF32p4YeGMmhQkkYnSzPQs9aEd2k32T/5
+	 wpImGE27kOKSA/jA7CJDQNs6dPXq8oo8FKll8qwOFHYsLjlbAQSVCx+WZro1hhBCaw
+	 BTM5RRM0bfGBDBsFIwM0E4drhsY48sHhMxujnCxmZv4+xYm0v7fG4i2k6zfpTInMoj
+	 X17c6izstukrw==
+From: Mark Brown <broonie@kernel.org>
+To: Brian Norris <briannorris@chromium.org>
+Cc: Jon Lin <jon.lin@rock-chips.com>, 
+ =?utf-8?q?Ond=C5=99ej_Jirman?= <megi@xff.cz>, stable@vger.kernel.org, 
+ Heiko Stuebner <heiko@sntech.de>, linux-arm-kernel@lists.infradead.org, 
+ linux-kernel@vger.kernel.org, linux-rockchip@lists.infradead.org, 
+ linux-spi@vger.kernel.org, shengfei Xu <xsf@rock-chips.com>
+In-Reply-To: <20240827171126.1115748-1-briannorris@chromium.org>
+References: <20240827171126.1115748-1-briannorris@chromium.org>
+Subject: Re: [PATCH v3] spi: rockchip: Resolve unbalanced runtime PM /
+ system PM handling
+Message-Id: <172493426855.31273.9511769608557747574.b4-ty@kernel.org>
+Date: Thu, 29 Aug 2024 13:24:28 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="JBWiqXJWiq3wsYRA"
-Content-Disposition: inline
-In-Reply-To: <2024082954-direction-gonad-7fa2@gregkh>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-37811
 
+On Tue, 27 Aug 2024 10:11:16 -0700, Brian Norris wrote:
+> Commit e882575efc77 ("spi: rockchip: Suspend and resume the bus during
+> NOIRQ_SYSTEM_SLEEP_PM ops") stopped respecting runtime PM status and
+> simply disabled clocks unconditionally when suspending the system. This
+> causes problems when the device is already runtime suspended when we go
+> to sleep -- in which case we double-disable clocks and produce a
+> WARNing.
+> 
+> [...]
 
---JBWiqXJWiq3wsYRA
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Applied to
 
-On Thu 2024-08-29 13:52:59, Greg Kroah-Hartman wrote:
-> On Thu, Aug 29, 2024 at 01:37:40PM +0200, Pavel Machek wrote:
-> > > Christian Brauner <brauner@kernel.org>
-> > >     binfmt_misc: cleanup on filesystem umount
-> >=20
-> > Changelog explains how this may cause problems. It does not fix a
-> > bug. It is overly long. It does not have proper signoff by stable team.
->=20
-> The sign off is there, it's just further down than you might expect.
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/spi.git for-next
 
-Is it? Who signed this off for stable?
+Thanks!
 
-cf7602cbd58246d02a8544e4f107658fe846137a
+[1/1] spi: rockchip: Resolve unbalanced runtime PM / system PM handling
+      commit: be721b451affbecc4ba4eaac3b71cdbdcade1b1b
 
-    In line with our general policy, if we see a regression for systemd or
-    other users with this change we will switch back to the old behavior for
-    the initial binfmt_misc mount and have binary types pin the filesystem
-    again. But while we touch this code let's take the chance and let's
-    improve on the status quo.
-   =20
-    [1]: https://lore.kernel.org/r/20191216091220.465626-2-laurent@vivier.eu
-    [2]: commit 43a4f2619038 ("exec: binfmt_misc: fix race between load_mis=
-c_binary() and kill_node()"
-    [3]: commit 83f918274e4b ("exec: binfmt_misc: shift filp_close(interp_f=
-ile) from kill_node() to bm_evict_inode()")
-    [4]: commit f0fe2c0f050d ("binder: prevent UAF for binderfs devices II")
-   =20
-    Link: https://lore.kernel.org/r/20211028103114.2849140-1-brauner@kernel=
-=2Eorg (v1)
-    Cc: Sargun Dhillon <sargun@sargun.me>
-    Cc: Serge Hallyn <serge@hallyn.com>
-    Cc: Jann Horn <jannh@google.com>
-    Cc: Henning Schild <henning.schild@siemens.com>
-    Cc: Andrei Vagin <avagin@gmail.com>
-    Cc: Al Viro <viro@zeniv.linux.org.uk>
-    Cc: Laurent Vivier <laurent@vivier.eu>
-    Cc: linux-fsdevel@vger.kernel.org
-    Acked-by: Serge Hallyn <serge@hallyn.com>
-    Signed-off-by: Christian Brauner <christian.brauner@ubuntu.com>
-    Signed-off-by: Christian Brauner <brauner@kernel.org>
-    Signed-off-by: Kees Cook <keescook@chromium.org>
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-Regards,
-								Pavel
---=20
-DENX Software Engineering GmbH,        Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
 
---JBWiqXJWiq3wsYRA
-Content-Type: application/pgp-signature; name="signature.asc"
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
 
------BEGIN PGP SIGNATURE-----
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
 
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZtBljQAKCRAw5/Bqldv6
-8hEuAJ98arwiZ0nH0QVgNCAYcu+ZgY+ylACfbnoO/39Q0lW4EkGXGBCy1/zxhUc=
-=lz5Y
------END PGP SIGNATURE-----
+Thanks,
+Mark
 
---JBWiqXJWiq3wsYRA--
 
