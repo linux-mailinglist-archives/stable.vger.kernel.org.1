@@ -1,150 +1,176 @@
-Return-Path: <stable+bounces-71476-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71477-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8841964276
-	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 12:59:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3DF89642CB
+	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 13:15:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 923741F27BA3
-	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 10:59:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0AF7FB22CD2
+	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 11:15:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E286B18DF91;
-	Thu, 29 Aug 2024 10:59:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4D2219148A;
+	Thu, 29 Aug 2024 11:15:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Xe2ni663"
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=shreeya.patel@collabora.com header.b="Yd3VybFr"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from sender4-op-o12.zoho.com (sender4-op-o12.zoho.com [136.143.188.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48DC822097;
-	Thu, 29 Aug 2024 10:59:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724929184; cv=none; b=abotxReKQi4XvlYJ3KGcohuziUfhUTsgXGpWK7Cs6ZOT/EkucVD52qCHAGTSFElSw+e3NP7u2oPTsZ89h6Eaom1BTbrPL9gOS0+xSUFcNg8Vge/UTsyAAnUe7B3Qe2jR00PGLcl1Mu3xgbmF1ob85iuvzG+p6iqGa8iC1V4871Q=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724929184; c=relaxed/simple;
-	bh=jXZDHzKBB72ifpzF16YMfRYFr+9T5f/n/snDNmchpIU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BSjSQ3xTWJ5bqLVl7p1lG6NW+BJhJ6mQ1iIRK1CwugMPUcdJ4i7PIeBGkk5T6J3QSrUcG8vpMB/FQZ/Wb/CpDbdKaEhKoBydF8na7AzZsIJjxwqtTneUCoNYTZvdR6oyZiIzOS8Bdx+na+HOi08x6kdC8yEyPJV0KRmXgpjy+LI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Xe2ni663; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1724929183; x=1756465183;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=jXZDHzKBB72ifpzF16YMfRYFr+9T5f/n/snDNmchpIU=;
-  b=Xe2ni663lNQXrRownrVAshkueqKUNCMGViRsGbQlDVjpUfKYaOV99ZI1
-   gnwkL9NfeuthO2nD7GyZfe2Tg0lrL/JO3r5N5b5+ZqKNmLREwcfHDQWW2
-   ua0Cal8JV/q7B8vxFLnn5j9cell4GidapsSL/LacTj0ZNN9xk4PJd8ANP
-   sFtpb0i24hqtaox6U+yH/TPe0XnU4J4bAvIz3aZgsDFSgNNQdv4VrzgXH
-   Qsc85pwQWzpzu2P4zuFI+I5rOE+0y8l943BSCnpBUwp40/40bzEncR/Iq
-   EMAOzZ6J0aKBqvWCqc3K6j2K87HiJ3xAia1oFMfNLUEXbN6pBkU3HRZWk
-   g==;
-X-CSE-ConnectionGUID: lHlY1/I0R+eXikHF8plo6g==
-X-CSE-MsgGUID: h2BlsB4GRESoydlJld48ig==
-X-IronPort-AV: E=McAfee;i="6700,10204,11178"; a="23029282"
-X-IronPort-AV: E=Sophos;i="6.10,185,1719903600"; 
-   d="scan'208";a="23029282"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Aug 2024 03:59:43 -0700
-X-CSE-ConnectionGUID: /o0N/svPTkyS9eBnyjyQvQ==
-X-CSE-MsgGUID: yfhLpQlGTaCvODyMMSnOZA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,185,1719903600"; 
-   d="scan'208";a="68318556"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Aug 2024 03:59:39 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1sjcsJ-00000002yEq-1X7x;
-	Thu, 29 Aug 2024 13:59:35 +0300
-Date: Thu, 29 Aug 2024 13:59:35 +0300
-From: 'Andy Shevchenko' <andriy.shevchenko@linux.intel.com>
-To: Jiawen Wu <jiawenwu@trustnetic.com>
-Cc: andi.shyti@kernel.org, jarkko.nikula@linux.intel.com,
-	mika.westerberg@linux.intel.com, jsd@semihalf.com,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, rmk+kernel@armlinux.org.uk, andrew@lunn.ch,
-	linux-i2c@vger.kernel.org, netdev@vger.kernel.org,
-	mengyuanlou@net-swift.com, duanqiangwen@net-swift.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net 3/3] i2c: designware: support hardware lock for
- Wangxun 10Gb NIC
-Message-ID: <ZtBUlxDWTfwpzm5V@smile.fi.intel.com>
-References: <20240823030242.3083528-1-jiawenwu@trustnetic.com>
- <20240823030242.3083528-4-jiawenwu@trustnetic.com>
- <ZsiZALjnoUpb0H_I@smile.fi.intel.com>
- <02a901daf9f4$063e8cf0$12bba6d0$@trustnetic.com>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C05D6158DB1;
+	Thu, 29 Aug 2024 11:15:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1724930102; cv=pass; b=unRiMfI+BIlfATyg8Ra0rWYDN7MMT5e2zRYZh8jUoZZ3rHna4IM6H+35w3Wh1/y1BvuepGN7RDeDzvwdF1TcAO13fWcYlkGuEwMWDZBuUFkn4hmkS+tGud1Bjx0QS2wmBk9lsi/SkRuxcVtGokwao3Ia/0q0mhId8w1YywIR3zM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1724930102; c=relaxed/simple;
+	bh=XNgpgXy8BWzemPVyYyqvZqBqyMbZxQd898INyFO+4h8=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 MIME-Version:Content-Type; b=TpHvYGQ4iE76GwpVUKDWscVRD2+0cg7V/x7e94hVq8JLzXTK4zK28M8te7scn9LD+LdAze0ICo48hogWpHwsBi7nD8fjBBqsmAFdA1tKijxF5Yv+Ed52v05cV1waEhqDmaGlrMbnKuytu6QwppcePaAfXWvEgkHQo2g7fVhXHAw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=shreeya.patel@collabora.com header.b=Yd3VybFr; arc=pass smtp.client-ip=136.143.188.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+Delivered-To: kernelci-regressions@collabora.com
+ARC-Seal: i=1; a=rsa-sha256; t=1724930071; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=DfPzDSylb8U6ZKJWOTc60smxfv35Du8b/r3tLyf5hrGnUEJ9eA3WBXlVeEcYKcCg+ntZJA5awDSEFLXoTT4WY7H8m9H1V/Ul+AGyXlHxrVxiAW/WJv7mPMOWiWgR+0nXwZ6TGViCjxOVTUPMxYzCpFEe7r/8wLsZ5m4j0vCl/rA=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1724930071; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=FvUnkTngcFUqn+ENmgaZvQ/jbOmVX27wh0PL86ioFCQ=; 
+	b=Gc6jxBWPf6IMZAJjleWz94PunDgX6xa5KT1rtw8wFtRXLprn6YFPzFumw0wcTJKamBMUZjmn5ZXnnBZpKhm4x42dt/ZsqoN7GUqlFQMm8LcyFzgxT5vZ5I25jX89Gg3pEDqcBPqV5u6nWOxX8upPm5rH3xFmmeRJXqwbWzzfdk8=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=shreeya.patel@collabora.com;
+	dmarc=pass header.from=<shreeya.patel@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1724930071;
+	s=zohomail; d=collabora.com; i=shreeya.patel@collabora.com;
+	h=Date:Date:From:From:To:To:Cc:Cc:Message-ID:In-Reply-To:References:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=FvUnkTngcFUqn+ENmgaZvQ/jbOmVX27wh0PL86ioFCQ=;
+	b=Yd3VybFrQf1WV/UpDb5Z5XC10pXlGAe+DdCVXpf0aZiqyM7nKPB3DHBb54wWBAP7
+	0BbGmj8/RLbvYUYptC3sgs4VJ4NYhVU4mb2vRAD7H+g6ns1MbBoblki6KsEGHZsrH2M
+	2B6adYvTJTJt/pK8mB3792qr5TKjtxFylkd2O7nw=
+Received: from mail.zoho.com by mx.zohomail.com
+	with SMTP id 1724930068832649.3499772276887; Thu, 29 Aug 2024 04:14:28 -0700 (PDT)
+Date: Thu, 29 Aug 2024 16:44:28 +0530
+From: Shreeya Patel <shreeya.patel@collabora.com>
+To: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
+Cc: "stable" <stable@vger.kernel.org>, "patches" <patches@lists.linux.dev>,
+	"linux-kernel" <linux-kernel@vger.kernel.org>,
+	"torvalds" <torvalds@linux-foundation.org>,
+	"akpm" <akpm@linux-foundation.org>, "linux" <linux@roeck-us.net>,
+	"shuah" <shuah@kernel.org>, "patches" <patches@kernelci.org>,
+	"lkft-triage" <lkft-triage@lists.linaro.org>,
+	"pavel" <pavel@denx.de>, "jonathanh" <jonathanh@nvidia.com>,
+	"f.fainelli" <f.fainelli@gmail.com>,
+	"sudipm.mukherjee" <sudipm.mukherjee@gmail.com>,
+	"srw" <srw@sladewatkins.net>, "rwarsow" <rwarsow@gmx.de>,
+	"conor" <conor@kernel.org>, "allen.lkml" <allen.lkml@gmail.com>,
+	"broonie" <broonie@kernel.org>,
+	"Kernel CI - Regressions" <kernelci-regressions@collabora.com>,
+	"Gustavo Padovan" <gustavo.padovan@collabora.com>,
+	"Jeny Sheth" <jeny.sadadia@collabora.com>
+Message-ID: <1919dd8114b.bf596719466314.4771125099001339719@collabora.com>
+In-Reply-To: <20240827143843.399359062@linuxfoundation.org>
+References: <20240827143843.399359062@linuxfoundation.org>
+Subject: Re: [PATCH 6.6 000/341] 6.6.48-rc1 review
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <02a901daf9f4$063e8cf0$12bba6d0$@trustnetic.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+Importance: Medium
+User-Agent: Zoho Mail
+X-Mailer: Zoho Mail
 
-On Thu, Aug 29, 2024 at 05:15:42PM +0800, Jiawen Wu wrote:
-> On Fri, Aug 23, 2024 10:13 PM, Andy Shevchenko wrote:
-> > On Fri, Aug 23, 2024 at 11:02:42AM +0800, Jiawen Wu wrote:
+ ---- On Tue, 27 Aug 2024 20:03:51 +0530  Greg Kroah-Hartman  wrote ---=20
+ > This is the start of the stable review cycle for the 6.6.48 release.
+ > There are 341 patches in this series, all will be posted as a response
+ > to this one.  If anyone has any issues with these being applied, please
+ > let me know.
+ >=20
+ > Responses should be made by Thu, 29 Aug 2024 14:37:36 +0000.
+ > Anything received after that time might be too late.
+ >=20
+ > The whole patch series can be found in one patch at:
+ > =C2=A0=C2=A0=C2=A0=C2=A0https://www.kernel.org/pub/linux/kernel/v6.x/sta=
+ble-review/patch-6.6.48-rc1.gz
+ > or in the git tree and branch at:
+ > =C2=A0=C2=A0=C2=A0=C2=A0git://git.kernel.org/pub/scm/linux/kernel/git/st=
+able/linux-stable-rc.git linux-6.6.y
+ > and the diffstat can be found below.
+ >=20
 
-...
+Hi,
 
-> > > +static int i2c_dw_txgbe_acquire_lock(struct dw_i2c_dev *dev)
-> > > +{
-> > > +	void __iomem *req_addr;
-> > > +	u32 swsm;
-> > > +	int i;
-> > > +
-> > > +	req_addr = dev->ext + I2C_DW_TXGBE_MNG_SW;
-> > > +
-> > > +	for (i = 0; i < I2C_DW_TXGBE_REQ_RETRY_CNT; i++) {
-> > 
-> > Retry loops much better in a form of
-> > 
-> > 	unsigned int retries = ...;
-> > 	...
-> > 	do {
-> > 		...
-> > 	} while (--retries);
-> > 
-> > BUT... see below.
-> > 
-> > > +		writel(I2C_DW_TXGBE_MNG_SW_SM, req_addr);
-> > > +
-> > > +		/* If we set the bit successfully then we got semaphore. */
-> > > +		swsm = readl(req_addr);
-> > > +		if (swsm & I2C_DW_TXGBE_MNG_SW_SM)
-> > > +			break;
-> > > +
-> > > +		udelay(50);
-> > 
-> > So, can a macro from iopoll.h be utilised here? Why not?
-> 
-> I need to write the register first and then read it in this loop.
-> It does not seem to apply to the macros in iopoll.h.
+Please find the KernelCI report below :-
 
-I don't see how does it prevent from using read_poll_timeout() macro.
-You need to implement a body of the loop as a helper function that you supply
-into macro as a parameter.
+OVERVIEW
 
-> > > +	}
-> > > +
-> > > +	if (i == I2C_DW_TXGBE_REQ_RETRY_CNT)
-> > > +		return -ETIMEDOUT;
-> > > +
-> > > +	return 0;
-> > > +}
+        Builds: 30 passed, 2 failed
 
--- 
-With Best Regards,
-Andy Shevchenko
+    Boot tests: 436 passed, 20 failed
+
+    CI systems: broonie, maestro
+
+REVISION
+
+    Commit
+        name: v6.6.47-330-gfd01fbcb4e1b
+        hash: fd01fbcb4e1b208d063aedf49e3af43655837eb2
+    Checked out from
+        https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.6.y
 
 
+BUILDS
+
+    Failures
+      -i386 (tinyconfig)
+      Build detail: https://kcidb.kernelci.org/d/build/build?orgId=3D1&var-=
+id=3Dmaestro:66cdd5a3fb8042744d0e8d2b
+      Build error: kernel/rcu/rcu.h:255:17: error: implicit declaration of =
+function =E2=80=98kmem_dump_obj=E2=80=99; did you mean =E2=80=98mem_dump_ob=
+j=E2=80=99? [-Werror=3Dimplicit-function-declaration]
+
+      -x86_64 (tinyconfig)
+      Build detail: https://kcidb.kernelci.org/d/build/build?orgId=3D1&var-=
+id=3Dmaestro:66cdd5a5fb8042744d0e8d36
+      Build error: kernel/rcu/rcu.h:255:17: error: implicit declaration of =
+function =E2=80=98kmem_dump_obj=E2=80=99; did you mean =E2=80=98kmemdup_nul=
+=E2=80=99? [-Werror=3Dimplicit-function-declaration]
+      CI system: maestro
+
+
+BOOT TESTS
+
+    Failures
+
+      arm:(multi_v7_defconfig)
+      -bcm2836-rpi-2-b
+      CI system: maestro
+
+      x86_64: (x86_64_defconfig)
+      -lenovo-TPad-C13-Yoga-zork
+      -hp-x360-14a-cb0001xx-zork
+      -hp-14b-na0052xx-zork
+      -asus-CM1400CXA-dalboz
+      -acer-cbv514-1h-34uz-brya
+      -minnowboard-turbot-E3826
+      CI system: maestro
+
+See complete and up-to-date report at:
+
+    https://kcidb.kernelci.org/d/revision/revision?orgId=3D1&var-git_commit=
+_hash=3Dfd01fbcb4e1b208d063aedf49e3af43655837eb2&var-patchset_hash=3D
+
+
+Tested-by: kernelci.org bot <bot@kernelci.org>
+
+
+Thanks,
+KernelCI team
 
