@@ -1,64 +1,62 @@
-Return-Path: <stable+bounces-71462-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71464-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E34B963C52
-	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 09:13:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81ED2963D68
+	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 09:44:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D0A3E2862D6
-	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 07:13:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 397661F238F7
+	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 07:44:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD5441741C3;
-	Thu, 29 Aug 2024 07:13:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE1871898FC;
+	Thu, 29 Aug 2024 07:44:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="NHbKXNN3"
+	dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b="EJefvFLm"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ECEA16C86D;
-	Thu, 29 Aug 2024 07:13:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from codeconstruct.com.au (pi.codeconstruct.com.au [203.29.241.158])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF4AA18785D;
+	Thu, 29 Aug 2024 07:44:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.29.241.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724915614; cv=none; b=QMDwB/vTshJgP5KhjoJYeq53QcJxmiPnsj/XwRoTQVqo2hyvGUA0BRGJiXXsR9hgKXygi29dMJba8CQbw3jBI3swHH3hDRZ+DTHtjdMTtWUbVQUHinnKGK+5rc1mwLb5/nGhSqckuWdlTvngxGVOUv8bcHtocbpAnvswWpMfNaE=
+	t=1724917455; cv=none; b=iwYmUybdHwwLaAHH8J5GjXYu+DeMR+V3bp2hLv67HGUmeDPPRrpBAT4pHfWPUyWhU3/xqT/NBYmh0OXLfk/9QN3BywnOlxSRIRNtdYiLK4Q/cuzd/qoRAzWX1YuMscb3pC4zqJD8SoZ+82DvEvlvCPCXwLkF6IaFhX6T9P/4uJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724915614; c=relaxed/simple;
-	bh=s1/4HKit9dSyhZkSL0rQTHpnyOYZ9xWwZEfcXsLqo6c=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=jZ7ZH32GCzXauX56MBox3Sp/QQMFQHboVIFM5DLReSwFExuJ2MFRHCg2Oo1OLHPncDqALc5njal6WqDhelGczX9AVMiW7QN50QljfQIbFP6WxnCtbbrQ/aq/Hxm9H5O46AcscL8JGfXKE+3uEpU1tUH5CMwXpUsMmw/AWjpqFLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=NHbKXNN3; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: from namjain-Virtual-Machine.mshome.net (unknown [167.220.238.141])
-	by linux.microsoft.com (Postfix) with ESMTPSA id AA3EA20B712C;
-	Thu, 29 Aug 2024 00:13:29 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com AA3EA20B712C
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1724915612;
-	bh=6GoNotYZxN8p/FiKL5H0w/+Gi4edkJwlbdA1lxuTIjg=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NHbKXNN3iTzzgYKTziTbCrbqh3viV52L0e/ZV6Fu8P+r+LGtkbFEKCjMIOO1MmPEL
-	 OxLuMFYagVrP7V/UzoirbJFCMRspve+f8thGDqUHgGpuen5de9hUFzNzjKsb8cyY5T
-	 BbtfC0i6DCuZr4Sy5PIgh44SAVd4WKJWvmioWCdQ=
-From: Naman Jain <namjain@linux.microsoft.com>
-To: "K . Y . Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Stephen Hemminger <stephen@networkplumber.org>,
-	Michael Kelley <mhklinux@outlook.com>
-Cc: linux-hyperv@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Saurabh Sengar <ssengar@linux.microsoft.com>,
-	Naman Jain <namjain@linux.microsoft.com>,
+	s=arc-20240116; t=1724917455; c=relaxed/simple;
+	bh=3H72LhuMwWS0t4/YPNgUCGZ4hz8rWOy8uMlCfu9xSGU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=rKYCBY5IkJZlubVLRpSLwkv4TJI+mKGzcTByQMKwZlrk1dquq1V2iV9XNV1ZHZiFm4r2l3e9GjJ7ZdTzh2qQX9OG4Ze1n04S2oCSn4cjmIwUzV24n7FNuifRACqgtxrar3NgTUDfwp/XSStuVRc2zldmCK++lKNnYZwMJak4hhI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au; spf=pass smtp.mailfrom=codeconstruct.com.au; dkim=pass (2048-bit key) header.d=codeconstruct.com.au header.i=@codeconstruct.com.au header.b=EJefvFLm; arc=none smtp.client-ip=203.29.241.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=codeconstruct.com.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=codeconstruct.com.au
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=codeconstruct.com.au; s=2022a; t=1724917445;
+	bh=5R+sgB3xKH3yRTXkv5FKxf6/TvALXzaZUV1xcy3orLM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=EJefvFLmrToaN45BDm1toX0lNG1nkCxFmISUiVnFTeUKEgFFuzb9QxSguJGGECvK4
+	 bAFnmZ2vQO7v0ZB/X3FN9qGv+XRkYt/HgjD6To+U4yTZSUC8qpe+KYXTw93QG7KHYK
+	 bSgwi8q5dA1QYUpHIg+pYHhDMEK1oa15JCRQD/sPZQ6ogoz3kSFyrltg8PzkWBwmva
+	 VOPOX/9j/BotVXKda6KcswQjrKHJzsIImPB8Y4Xt3ZyC6OET58E3OgY0egktuPHw2R
+	 HA3hFjMG7XVtDJPFc7UM5uqIQUJHRG4ljCQQ+jq7IRXgt3lxoZRS9AnFhWUGSBaBAl
+	 dtiKfyMk+3UXQ==
+Received: by codeconstruct.com.au (Postfix, from userid 10001)
+	id DDA566750A; Thu, 29 Aug 2024 15:44:05 +0800 (AWST)
+From: Matt Johnston <matt@codeconstruct.com.au>
+To: Jeremy Kerr <jk@codeconstruct.com.au>
+Cc: "David S. Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
+	netdev@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH v2 2/2] Drivers: hv: vmbus: Fix rescind handling in uio_hv_generic
-Date: Thu, 29 Aug 2024 12:43:12 +0530
-Message-Id: <20240829071312.1595-3-namjain@linux.microsoft.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240829071312.1595-1-namjain@linux.microsoft.com>
-References: <20240829071312.1595-1-namjain@linux.microsoft.com>
+Subject: [PATCH net v2 2/2] net: mctp-serial: Fix missing escapes on transmit
+Date: Thu, 29 Aug 2024 15:43:46 +0800
+Message-ID: <20240829074355.1327255-3-matt@codeconstruct.com.au>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240829074355.1327255-1-matt@codeconstruct.com.au>
+References: <20240829074355.1327255-1-matt@codeconstruct.com.au>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,56 +65,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Rescind offer handling relies on rescind callbacks for some of the
-resources cleanup, if they are registered. It does not unregister
-vmbus device for the primary channel closure, when callback is
-registered. Without it, next onoffer does not come, rescind flag
-remains set and device goes to unusable state.
+0x7d and 0x7e bytes are meant to be escaped in the data portion of
+frames, but this didn't occur since next_chunk_len() had an off-by-one
+error. That also resulted in the final byte of a payload being written
+as a separate tty write op.
 
-Add logic to unregister vmbus for the primary channel in rescind callback
-to ensure channel removal and relid release, and to ensure that next
-onoffer can be received and handled properly.
+The chunk prior to an escaped byte would be one byte short, and the
+next call would never test the txpos+1 case, which is where the escaped
+byte was located. That meant it never hit the escaping case in
+mctp_serial_tx_work().
+
+Example Input: 01 00 08 c8 7e 80 02
+
+Previous incorrect chunks from next_chunk_len():
+
+01 00 08
+c8 7e 80
+02
+
+With this fix:
+
+01 00 08 c8
+7e
+80 02
 
 Cc: stable@vger.kernel.org
-Fixes: ca3cda6fcf1e ("uio_hv_generic: add rescind support")
-Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
+Fixes: a0c2ccd9b5ad ("mctp: Add MCTP-over-serial transport binding")
+Signed-off-by: Matt Johnston <matt@codeconstruct.com.au>
 ---
- drivers/hv/vmbus_drv.c       | 1 +
- drivers/uio/uio_hv_generic.c | 8 ++++++++
- 2 files changed, 9 insertions(+)
+ drivers/net/mctp/mctp-serial.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hv/vmbus_drv.c b/drivers/hv/vmbus_drv.c
-index 7242c4920427..c405295b930a 100644
---- a/drivers/hv/vmbus_drv.c
-+++ b/drivers/hv/vmbus_drv.c
-@@ -1980,6 +1980,7 @@ void vmbus_device_unregister(struct hv_device *device_obj)
+diff --git a/drivers/net/mctp/mctp-serial.c b/drivers/net/mctp/mctp-serial.c
+index 7a40d07ff77b..f39bbe255497 100644
+--- a/drivers/net/mctp/mctp-serial.c
++++ b/drivers/net/mctp/mctp-serial.c
+@@ -91,8 +91,8 @@ static int next_chunk_len(struct mctp_serial *dev)
+ 	 * will be those non-escaped bytes, and does not include the escaped
+ 	 * byte.
  	 */
- 	device_unregister(&device_obj->device);
- }
-+EXPORT_SYMBOL_GPL(vmbus_device_unregister);
+-	for (i = 1; i + dev->txpos + 1 < dev->txlen; i++) {
+-		if (needs_escape(dev->txbuf[dev->txpos + i + 1]))
++	for (i = 1; i + dev->txpos < dev->txlen; i++) {
++		if (needs_escape(dev->txbuf[dev->txpos + i]))
+ 			break;
+ 	}
  
- #ifdef CONFIG_ACPI
- /*
-diff --git a/drivers/uio/uio_hv_generic.c b/drivers/uio/uio_hv_generic.c
-index e3e66a3e85a8..870409599411 100644
---- a/drivers/uio/uio_hv_generic.c
-+++ b/drivers/uio/uio_hv_generic.c
-@@ -121,6 +121,14 @@ static void hv_uio_rescind(struct vmbus_channel *channel)
- 
- 	/* Wake up reader */
- 	uio_event_notify(&pdata->info);
-+
-+	/*
-+	 * With rescind callback registered, rescind path will not unregister the device
-+	 * from vmbus when the primary channel is rescinded.
-+	 * Without it, rescind handling is incomplete and next onoffer msg does not come.
-+	 * Unregister the device from vmbus here.
-+	 */
-+	vmbus_device_unregister(channel->device_obj);
- }
- 
- /* Sysfs API to allow mmap of the ring buffers
--- 
-2.34.1
-
 
