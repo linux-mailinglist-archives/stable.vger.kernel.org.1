@@ -1,92 +1,125 @@
-Return-Path: <stable+bounces-71546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71547-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78607965030
-	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 21:54:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B618965188
+	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 23:12:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ABF251C20E4B
-	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 19:54:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8F70BB214A4
+	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 21:12:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7706D1BB6BA;
-	Thu, 29 Aug 2024 19:44:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YRfiYAP7"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1296C18C013;
+	Thu, 29 Aug 2024 21:12:06 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15F701BAEDE;
-	Thu, 29 Aug 2024 19:44:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from vmicros1.altlinux.org (vmicros1.altlinux.org [194.107.17.57])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 490B618B482
+	for <stable@vger.kernel.org>; Thu, 29 Aug 2024 21:12:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.107.17.57
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724960696; cv=none; b=euV8/2qNpPKoiLE96NTEVWHKSUKLVnlXE/cuJrhJsQPz80f+urVq16E1q78flWsF64fn63r1BRg52qHXOrtri81svQUiMLILGFnqt0ifi9isvyqkAMGDR6UbnGLWUUO1meRK1KhEChHekmVW9+1RfljXRaB59Lk//mdd13B2QQM=
+	t=1724965925; cv=none; b=eelmUzdfcWo7loGzLch5vADypZZ6kfFhsSJUkPOBzbJwtEKuyXjQQfAo5luxlCRsiKGwmcmsXb4ZPuMP4RTOrkGpBQJ7RL1m1SXAlOqoLpOg7AxYlZK7/aMUVtgpX2WpY9IfSK6jrAi4KEybCnFXn0WoNa1NqwPYaZleYnyinLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724960696; c=relaxed/simple;
-	bh=k/g00ysHF7KkuUbMODChP4TngDt/vB6+q6ahC1ZjB14=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nz0VUU3Cz7nln7L+BCfvEEWF6Z5JXCo+KYsQVGLexV4myzArLhv+T0PlydCxWW+KR3Ga3K3FACaM9ifppHFxWBkwK/UMz98kwSI09XVdLs2DuVPBwgtAA79zuzWrgx2PK26crCLJwe33ypBRryeq65FbOzdttxhLaYpsZ3P899Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YRfiYAP7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A9E8C4CEC2;
-	Thu, 29 Aug 2024 19:44:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724960695;
-	bh=k/g00ysHF7KkuUbMODChP4TngDt/vB6+q6ahC1ZjB14=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=YRfiYAP7VoPoNx/3AAkHbr5Qk8vXD3mE2Vj2EiM2UXXnPBZbGuwHvUr0GBJNv9/cb
-	 r2p9aAgV8pSy0lfu1XX6mGJgZfY2A7xPcgSWqguM40AxlzmuwjrP6GXndjzusSOhOf
-	 ZgNjxfL/lA25Q+UrG9cLm228FqQy0Uv8B/RHc1wJVmYNiJXaa6haJqDdRNnrxbuZqA
-	 Eh4Z3x7TSnr0hz2TAgl7wykB1fHftqmvckZ6d+hdIyIrxLtPKC8Wdca81SbXJ8Ueu9
-	 WoYbT/OT2L5McrRT5yoLpV07TjdjQZ6iilvNtvSLa6baA6zIyKSj8906zKeu59drC+
-	 8wpfssMv6gM8Q==
-Message-ID: <1a1e3d43-27b7-4927-ad4d-25580bd133e7@kernel.org>
-Date: Thu, 29 Aug 2024 21:44:48 +0200
+	s=arc-20240116; t=1724965925; c=relaxed/simple;
+	bh=ajsUGNyZXgkadl/Qi5QNq/d4nCBtSVb9PgBi6qfVYZc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cZgIYOqlpOKs3H14lZPKVfqr9IAT+kj0hBesHbW7cwWVxLgXrOE6/49jrevEtJwJhtTlShKstykkiKwvpazKiEqZjth6RlNv2DY07aHvasBGEF8DtW4XiIS1H1ekhEV4FttyXEvCCZkjGGABBpmlyVky4PJZNLKiUmc6UGq/SAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=194.107.17.57
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
+Received: from imap.altlinux.org (imap.altlinux.org [194.107.17.38])
+	by vmicros1.altlinux.org (Postfix) with ESMTP id 984DC72C8CC;
+	Fri, 30 Aug 2024 00:11:54 +0300 (MSK)
+Received: from pony.office.basealt.ru (unknown [193.43.10.9])
+	by imap.altlinux.org (Postfix) with ESMTPSA id 90A4936D0184;
+	Fri, 30 Aug 2024 00:11:54 +0300 (MSK)
+Received: by pony.office.basealt.ru (Postfix, from userid 500)
+	id 8E498360BF9D; Fri, 30 Aug 2024 00:11:53 +0300 (MSK)
+Date: Fri, 30 Aug 2024 00:11:53 +0300
+From: Vitaly Chikunov <vt@altlinux.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	Julia Lawall <julia.lawall@inria.fr>, Abdulrasaq Lawani <abdulrasaqolawani@gmail.com>, 
+	Helge Deller <deller@gmx.de>
+Subject: Re: [PATCH 6.1 202/321] fbdev: offb: replace of_node_put with
+ __free(device_node)
+Message-ID: <ppqadq365psk4abmtn7kpfvfxbps4qzhn3fz25ysqtzj72opob@jfzmajuq6dyw>
+References: <20240827143838.192435816@linuxfoundation.org>
+ <20240827143845.922698611@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/5] Revert "soc: qcom: smd-rpm: Match rpmsg channel
- instead of compatible"
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Andy Gross <agross@kernel.org>,
- Stephan Gerhold <stephan@gerhold.net>,
- Michael Turquette <mturquette@baylibre.com>, Stephen Boyd
- <sboyd@kernel.org>, Mathieu Poirier <mathieu.poirier@linaro.org>
-Cc: linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
- linux-clk@vger.kernel.org, linux-remoteproc@vger.kernel.org,
- stable@vger.kernel.org
-References: <20240729-fix-smd-rpm-v2-0-0776408a94c5@linaro.org>
- <20240729-fix-smd-rpm-v2-1-0776408a94c5@linaro.org>
-Content-Language: en-US
-From: Konrad Dybcio <konradybcio@kernel.org>
-In-Reply-To: <20240729-fix-smd-rpm-v2-1-0776408a94c5@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240827143845.922698611@linuxfoundation.org>
 
-On 29.07.2024 9:52 PM, Dmitry Baryshkov wrote:
-> The rpm_requests device nodes have the compatible node. As such the
-> rpmsg core uses OF modalias instead of a native rpmsg modalias. Thus if
-> smd-rpm is built as a module, it doesn't get autoloaded for the device.
+Greg, Sasha,
+
+On Tue, Aug 27, 2024 at 04:38:30PM GMT, Greg Kroah-Hartman wrote:
+> 6.1-stable review patch.  If anyone has any objections, please let me know.
+
+We got v6.1.107 build error on ppc64le due to this commit, with:
+
+    CC      drivers/video/fbdev/offb.o
+  drivers/video/fbdev/offb.c: In function 'offb_init_palette_hacks':
+  drivers/video/fbdev/offb.c:358:24: error: cleanup argument not a function
+    358 |                 struct device_node *pciparent __free(device_node) = of_get_parent(dp);
+        |                        ^~~~~~~~~~~
+  make[4]: *** [scripts/Makefile.build:250: drivers/video/fbdev/offb.o] Error 1
+
+Where CONFIG_FB_OF is enabled. Perhaps, due to this commit not being picked:
+
+  9448e55d032d ("of: Add cleanup.h based auto release via __free(device_node) markings")
+
+Thanks,
+
 > 
-> Revert the commit bcabe1e09135 ("soc: qcom: smd-rpm: Match rpmsg channel
-> instead of compatible")
+> ------------------
 > 
-> Fixes: bcabe1e09135 ("soc: qcom: smd-rpm: Match rpmsg channel instead of compatible")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+> From: Abdulrasaq Lawani <abdulrasaqolawani@gmail.com>
+> 
+> [ Upstream commit ce4a7ae84a58b9f33aae8d6c769b3c94f3d5ce76 ]
+> 
+> Replaced instance of of_node_put with __free(device_node)
+> to simplify code and protect against any memory leaks
+> due to future changes in the control flow.
+> 
+> Suggested-by: Julia Lawall <julia.lawall@inria.fr>
+> Signed-off-by: Abdulrasaq Lawani <abdulrasaqolawani@gmail.com>
+> Signed-off-by: Helge Deller <deller@gmx.de>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
 > ---
-
-Reviewed-by: Konrad Dybcio <konradybcio@kernel.org>
-
-Konrad
+>  drivers/video/fbdev/offb.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/drivers/video/fbdev/offb.c b/drivers/video/fbdev/offb.c
+> index 91001990e351c..6f0a9851b0924 100644
+> --- a/drivers/video/fbdev/offb.c
+> +++ b/drivers/video/fbdev/offb.c
+> @@ -355,7 +355,7 @@ static void offb_init_palette_hacks(struct fb_info *info, struct device_node *dp
+>  			par->cmap_type = cmap_gxt2000;
+>  	} else if (of_node_name_prefix(dp, "vga,Display-")) {
+>  		/* Look for AVIVO initialized by SLOF */
+> -		struct device_node *pciparent = of_get_parent(dp);
+> +		struct device_node *pciparent __free(device_node) = of_get_parent(dp);
+>  		const u32 *vid, *did;
+>  		vid = of_get_property(pciparent, "vendor-id", NULL);
+>  		did = of_get_property(pciparent, "device-id", NULL);
+> @@ -367,7 +367,6 @@ static void offb_init_palette_hacks(struct fb_info *info, struct device_node *dp
+>  			if (par->cmap_adr)
+>  				par->cmap_type = cmap_avivo;
+>  		}
+> -		of_node_put(pciparent);
+>  	} else if (dp && of_device_is_compatible(dp, "qemu,std-vga")) {
+>  #ifdef __BIG_ENDIAN
+>  		const __be32 io_of_addr[3] = { 0x01000000, 0x0, 0x0 };
+> -- 
+> 2.43.0
+> 
+> 
+> 
 
