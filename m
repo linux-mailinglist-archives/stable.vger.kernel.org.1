@@ -1,120 +1,112 @@
-Return-Path: <stable+bounces-71542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71543-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B509C964C46
-	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 18:58:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F9A0964C88
+	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 19:04:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 69A391F231E6
-	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 16:58:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E0085B21F5C
+	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 17:04:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 748801B5EBF;
-	Thu, 29 Aug 2024 16:57:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E58B1B653A;
+	Thu, 29 Aug 2024 17:01:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="oB8/Zc9m";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="dWjs2KM/"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="X+3DuIXH"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh1-smtp.messagingengine.com (fhigh1-smtp.messagingengine.com [103.168.172.152])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52CBA1B6544
-	for <stable@vger.kernel.org>; Thu, 29 Aug 2024 16:57:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65A2C1AAE1A;
+	Thu, 29 Aug 2024 17:01:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724950648; cv=none; b=H5t+AuG+y4voCc9C4I2jzNxNoxq2N4xCOlIADueYDAfhZTMPjrL6RNU8l28zxla6YpbIXdux8exgV7dIrkPznisCtjA8Lejw28/NZzhlaql3yCxBv4Mn5oN/sOyZH4VG8o+skKpWWnbTLN7iZ8L/bXzp+JtZuplFXkTWxYkuvOg=
+	t=1724950895; cv=none; b=eD4vzRa307fd9iY3H7kfVZ9UlqKb5O4ftN9JLLSGwtxR6RR3O1NYo1MAQDxUw+1iEsp7OBOyDjDMFuJfFWlT94tN/MHVIF0vvW+wvj/cWsMEZMxnSgexLn1S0vLH6HOj7zb7vTzEBeCnpLiDr6R0liLGwz9mVzNJnzJhxIdBzAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724950648; c=relaxed/simple;
-	bh=T/GDZlK1KPwK6grJcn9auW1lRRXmLLyRqZMbIdgvVMI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=J86oLr1gRMi+WJf7XqrDb47p1SPovu50Xfp3jiS139qsMXTRkvFiBrgGd6UaQtdcd89sg1BzxQkdUfrPNySLs2wIaDOTtF6+FeOem+2q4B7bgeqj4Y0txNMEzVNy/hwrM7qs6W96ZNjKn530I+aZcPaYAFov6dCbpbSATRbaDwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=oB8/Zc9m; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=dWjs2KM/; arc=none smtp.client-ip=103.168.172.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from phl-compute-06.internal (phl-compute-06.nyi.internal [10.202.2.46])
-	by mailfhigh.nyi.internal (Postfix) with ESMTP id 765EE11481AC;
-	Thu, 29 Aug 2024 12:57:25 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Thu, 29 Aug 2024 12:57:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm1; t=1724950645; x=1725037045; bh=T/GDZlK1KP
-	wK6grJcn9auW1lRRXmLLyRqZMbIdgvVMI=; b=oB8/Zc9mG70RHgi7URxy5deghM
-	qxtOAsUwe4jitzVHdo1eowvbxBjGP6w/TUm+koyVNnstCzymxG7xnVNmmC69PVq/
-	qXckexIr3bK/zFH9yI8tIa8qnGK8n/22UhyIdemXE8gbdYSiXXqQYZ0qoBSrI0Bz
-	OY7bEbe+tChBtdUDYQBagmmkHLBJmw1ergk5eqHVD9M30d2Q15VD7hw53eJvSWYm
-	qntpkIxbGgTRzk5JvZMkwfDYPht4h9h7QEWK2fazwlJrw424OxXrHKcJmZvCZVEn
-	/ZCOUJ/C7kAwDQJCrLLTeLLd9gDkJXQ1sySxQspIhAGtJGWy9f0IBiz48Lbw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm1; t=1724950645; x=1725037045; bh=T/GDZlK1KPwK6grJcn9auW1lRRXm
-	LLyRqZMbIdgvVMI=; b=dWjs2KM/CojJSTawPozRWNlRRkdbWX6M6JTtFxoL+j4d
-	EW/NgiePNNNMjLq+4CGsjtzYuTbmFOO4naYBFcjusPHgHr9E0S0Pr22Whps88MqI
-	rj7OXaZFY2nQB6AVpHyuPBHOiNg6yhVZ54aN2DjHlgfLZJm0IM9jRTcfS6SIKdwr
-	r/O6j0vesFxDCwXfSFvtkERpBu9wx77rkngfS8UtU8fIyUtdiyo3++DXa3ZYvuJ+
-	RH65897CPwnyppcO28n9JOmmMUXbQpu3Hnr8FpjZDZnJdWA5POmVyJN49dwkTYH/
-	/ZUTez9O1jVn5kYJA9kXNUtlYc7BFCNYcaqAqdzxyg==
-X-ME-Sender: <xms:dajQZnuwnYYcpSkUmcWiUIM5an2dln0qAOFoEQGRxR6HvKW8nEdvsQ>
-    <xme:dajQZofCDKF_-7_8pBrFlCYd2Zksmcso3pZY1M_PlvuQHlkV2cHth1it_HyZIdFwF
-    o4T7Q5FFbx-Kg>
-X-ME-Received: <xmr:dajQZqx1CGdCcL4tgGnpn0GTRgHp6myI0PMu9pPmF7NEt8iWfm4G4iRuYJJGf5eG8gs879qs3tu5fqvgdjiE6q1uf7ZNn6Mhuo1sbw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrudefgedguddtiecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecunecujfgurhepfffhvf
-    evuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghgucfmjfcuoehgrhgv
-    gheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepheegvdevvdeljeeugfdtud
-    duhfekledtiefhveejkeejuefhtdeufefhgfehkeetnecuvehluhhsthgvrhfuihiivgep
-    tdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorghhrdgtohhmpdhnsg
-    gprhgtphhtthhopeekpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehhshhimhgv
-    lhhivghrvgdrohhpvghnshhouhhrtggvseifihhtvghkihhordgtohhmpdhrtghpthhtoh
-    epjhgrmhhorhhrihhssehlihhnuhigrdhmihgtrhhoshhofhhtrdgtohhmpdhrtghpthht
-    ohepmhhsiigvrhgvughisehrvgguhhgrthdrtghomhdprhgtphhtthhopehsthgrsghlvg
-    esvhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:dajQZmMOxl943pYM0-5-5IkKoi3Mtnhh1AEAJx0plvSsfSZweGe2eg>
-    <xmx:dajQZn_WyBFdc8D7J1QA2IFJXvkWLcWz3EIJ0f4s_HpbcPclmMSSZg>
-    <xmx:dajQZmUKNGNwwVlxjLsYNUhPCsduTUwgRcIOZl-lrDft9t12pBri_A>
-    <xmx:dajQZoe8OJzdYYNGikmiXwIGC8uSyIUUEtsuN9_81bZFelzcB8P3yw>
-    <xmx:dajQZjQhsENb7ExWF53JdCxTcG-SIWrP9pQMXpRHHOYW6no2YB8Lujg->
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 29 Aug 2024 12:57:24 -0400 (EDT)
-Date: Thu, 29 Aug 2024 18:57:22 +0200
-From: Greg KH <greg@kroah.com>
-To: hsimeliere.opensource@witekio.com
-Cc: jamorris@linux.microsoft.com, mszeredi@redhat.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 4.19 1/1] vfs: move cap_convert_nscap() call into
- vfs_setxattr()
-Message-ID: <2024082959-outsource-candied-2b64@gregkh>
-References: <2024082914-relay-climatic-95c7@gregkh>
- <20240829165312.20532-1-hsimeliere.opensource@witekio.com>
+	s=arc-20240116; t=1724950895; c=relaxed/simple;
+	bh=YehqG4PtaapmXnLiVOq9WpGytyQ7YD42DofQvtnV7HU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=oDQJ9wlkIjKJQfS6Hi1ipTWoXIyJHNE43FnikJ+/n3FeZOZOzFpNiwKnU4joTWS49QHM8sq/pVwpP3aByZRSLyuAO0cgAJFy2LYPAAo+f25s7f4/S5JA/UVLv0nm7Q+UaKFo0rC3wexdol81zVUvKlyfqmR91CkrcN4CZ2rIbio=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=X+3DuIXH; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-42bb885f97eso3141985e9.0;
+        Thu, 29 Aug 2024 10:01:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1724950892; x=1725555692; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=YehqG4PtaapmXnLiVOq9WpGytyQ7YD42DofQvtnV7HU=;
+        b=X+3DuIXHoo8K9zqnOkOu6lfu+iD15nO//aLM7VQqy53CjmcynFvcvgv4rASa2399Yt
+         E5BIwTo/iwKDLJzLDZfo1dV82wTvNYfKgL786TA1vOSxc0oY85RIBc6DG/+DuCeN3XxI
+         tGXdpP+OTw6g+LLmNyai2SAen+J1e5NATCRHs/58xDFsY3kjCERHixzfuECEjMBQdd3B
+         U0eatbQCVec6pmdU+otdxyxariUTaxN6+H2VJ7qwDoOBmbuq5Ml8GaQoTKvP/07ieeSI
+         ULUgRSi+lO+pGf/foKAZBplk1Jp61zPlxdjVgBoNJ8F+EnPp/l8Ol1zZmpvs6My/CjNt
+         A01w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724950892; x=1725555692;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=YehqG4PtaapmXnLiVOq9WpGytyQ7YD42DofQvtnV7HU=;
+        b=XK4H131FYqzYCwX4EmEQVbLozbL2fCUFH4ETLQ9nC+mpUfQaatAiMh3UG5Lr26W/FC
+         9IsrBp6H79l4FP0cRk0BaeeZN2cgl/t0Ol86LnM+RxvgVefudGrOvgKN1/DsH0jhQHLK
+         rFZlYTSs3WTlis8IJcY135PdpO8JmxiCuQEKKZFk053tuAUnOabtsHr8kuMoQB8mtmht
+         Y1AaC/BpsXrX9wZw5oL4qAxcRZGwxzQQtnSIuZI35oClHvf7LG0tSzryl1gH+FD6L3tv
+         MxJ5DR0DgybKBKlYRNgb4xI7FEFrfewHAJDSpCuBYBmklQhc+HKcrAp3BZ5C7VNEh6JF
+         oJug==
+X-Forwarded-Encrypted: i=1; AJvYcCVHSn50cu2VXr5BkKVgHGZVXWZckLn29NuOWyX8GO4RgXWAKIt26o1pQF8Oz1B8w5efAOifXa1Kl0qHB6c=@vger.kernel.org, AJvYcCWV+V3PWka97re/06juc4PdzGiIfnfkaHvF8Z1DmiFB5IAeOr2l4t3rpFncVq5xutqNJ3duJjZT@vger.kernel.org
+X-Gm-Message-State: AOJu0YwHDBRhhIm8Rk5dKBFHDAeYB57N0qkFKw6W8KkRh4MJgbqiFPCZ
+	ZuG59rupERnjw/GymLR/3LOv8Z6C3GB0NxK6qK5zZ21MlTXj6QYm
+X-Google-Smtp-Source: AGHT+IFosliCC5+a+h4wlp+6u+dlP/pGWWU2L2Rh54ZG82z8dvc2aWVVIoZMBy8f4qkeaRSreWo7yA==
+X-Received: by 2002:adf:f302:0:b0:362:23d5:3928 with SMTP id ffacd0b85a97d-3749c1da581mr1781820f8f.17.1724950890602;
+        Thu, 29 Aug 2024 10:01:30 -0700 (PDT)
+Received: from ?IPV6:2001:861:3385:e20:6384:4cf:52c5:3194? ([2001:861:3385:e20:6384:4cf:52c5:3194])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42bb6e33f5esm22284355e9.39.2024.08.29.10.01.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 29 Aug 2024 10:01:30 -0700 (PDT)
+Message-ID: <cc32d1c4-16de-423d-b125-9301154c950d@gmail.com>
+Date: Thu, 29 Aug 2024 19:01:29 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240829165312.20532-1-hsimeliere.opensource@witekio.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RESEND] drm/sti: avoid potential dereference of error
+ pointers
+To: Ma Ke <make24@iscas.ac.cn>, alain.volmat@foss.st.com,
+ maarten.lankhorst@linux.intel.com, mripard@kernel.org, tzimmermann@suse.de,
+ airlied@gmail.com, daniel@ffwll.ch, laurent.pinchart@ideasonboard.com,
+ akpm@linux-foundation.org
+Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20240826052652.2565521-1-make24@iscas.ac.cn>
+Content-Language: en-US, fr
+From: =?UTF-8?Q?Rapha=C3=ABl_Gallais-Pou?= <rgallaispou@gmail.com>
+In-Reply-To: <20240826052652.2565521-1-make24@iscas.ac.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Thu, Aug 29, 2024 at 06:53:12PM +0200, hsimeliere.opensource@witekio.com wrote:
-> Ok so if a bug is fixed in version 5.15, we have to send the
-> correction patches for version 5.10, 5.4 and 4.19 for it to be taken
-> into account for version 4.19?
 
-Yes.
 
-> I'm sorry for the scope error on this bug, I'll be more attentive on
-> the next ones. In order to send only corrections related to this
-> kernel tree
+Le 26/08/2024 à 07:26, Ma Ke a écrit :
+> The return value of drm_atomic_get_crtc_state() needs to be
+> checked. To avoid use of error pointer 'crtc_state' in case
+> of the failure.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: dec92020671c ("drm: Use the state pointer directly in planes atomic_check")
+>
+> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+>
+Hi,
 
-No problem, thanks for doing this work.
+Tested-by: Raphaël Gallais-Pou <rgallaispou@gmail.com>
 
-greg k-h
+Regards,
+Raphaël
 
