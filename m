@@ -1,193 +1,160 @@
-Return-Path: <stable+bounces-71471-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4874D96406A
-	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 11:41:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FC6696407A
+	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 11:45:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AC267B262EF
-	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 09:41:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 825BA1C22278
+	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 09:45:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 375F519047E;
-	Thu, 29 Aug 2024 09:39:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD54118D649;
+	Thu, 29 Aug 2024 09:45:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="mS5GiFI5"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="jTZ1aBJr"
 X-Original-To: stable@vger.kernel.org
-Received: from mailout1.samsung.com (mailout1.samsung.com [203.254.224.24])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E2C918FDB7
-	for <stable@vger.kernel.org>; Thu, 29 Aug 2024 09:39:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.24
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A70B7189F37;
+	Thu, 29 Aug 2024 09:45:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724924368; cv=none; b=gaRLa9xDSahqVFUxIyFDF9IS/cpMToxW8+rxf7/fcTctO3N+LHL+9/HICV3j2vJtwt8y+qynsWwjFBleMJDtbbpI6A3YOZtqdCl6X942cJxwYqQsSZnPeElLdpbGHU+KqCavoJ/97HYT4+rCaKvVbWtT78BxDzi2/0c3Y26gWtM=
+	t=1724924739; cv=none; b=bC6QAi2Bdnxaq/8r+zeskpH0rf/lCo3kE7V6AG/+z9WmE2HNDXDg3FsqHG2hkXtd4OapvhP15SoreYDzbakKWUKXFmcxegj27lyY52BOyJkE+sB12hZkEFvhIrfgRsz77Aqhl8+gt0H2HGwcvXLPZ7AYeLtuandss88L7BLydAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724924368; c=relaxed/simple;
-	bh=vqdNvXkoRmeV6Usb0tFIK/Ojl3s9dgP2i9C4ucSMDxk=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:Content-Type:
-	 References; b=PE2kV0VxvbDbqkW20wHoFopJuPwZM8ruQp3inc70sSoI7KVuc2cMf158nneiGWm2uWXbCNXpmoL7ZjTgNe2BuZfVjxVzcKG+V734J+QgaKhYtKG2ql0iDqvso8Vh1YjjlnIq96RH4BAVtK4k4Un8/p2nc5EKUpeFet1sIsqJSXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=mS5GiFI5; arc=none smtp.client-ip=203.254.224.24
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
-Received: from epcas1p2.samsung.com (unknown [182.195.41.46])
-	by mailout1.samsung.com (KnoxPortal) with ESMTP id 20240829093923epoutp01ea66bb06050264abb1670da1cd64062b~wKZHCOncF0954309543epoutp01W
-	for <stable@vger.kernel.org>; Thu, 29 Aug 2024 09:39:23 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com 20240829093923epoutp01ea66bb06050264abb1670da1cd64062b~wKZHCOncF0954309543epoutp01W
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1724924363;
-	bh=aa5/JjPkt7dEuyoZ5rPhW1zLfqGVrrp1MMlIUm7auVM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mS5GiFI5+bp9NexewMPNZhWqppDEMWE+4IIZ0YNGhjY9jdirLQ9oapL7guwlkyc0n
-	 JB3jKsRXibIKAcVTqM/YUlbqFaY67D0IMTq59m2Lh7xFrpEsedT00ozHDMTMIenxt/
-	 Oo20jafPBuJ8Jd2dXNX5yxAAFmwB6+RBSYI+gY9w=
-Received: from epsnrtp3.localdomain (unknown [182.195.42.164]) by
-	epcas1p4.samsung.com (KnoxPortal) with ESMTP id
-	20240829093922epcas1p4a1bfcc85c05a026de1dcfadd7683d140~wKZGWlQpy0342303423epcas1p4V;
-	Thu, 29 Aug 2024 09:39:22 +0000 (GMT)
-Received: from epsmgec1p1.samsung.com (unknown [182.195.38.241]) by
-	epsnrtp3.localdomain (Postfix) with ESMTP id 4WvbpL19lSz4x9Px; Thu, 29 Aug
-	2024 09:39:22 +0000 (GMT)
-Received: from epcas1p1.samsung.com ( [182.195.41.45]) by
-	epsmgec1p1.samsung.com (Symantec Messaging Gateway) with SMTP id
-	45.2B.09623.9C140D66; Thu, 29 Aug 2024 18:39:21 +0900 (KST)
-Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
-	epcas1p3.samsung.com (KnoxPortal) with ESMTPA id
-	20240829093921epcas1p35d28696b0f79e2ae39d8e3690f088e64~wKZFGBBFA0443604436epcas1p3P;
-	Thu, 29 Aug 2024 09:39:21 +0000 (GMT)
-Received: from epsmgmcp1.samsung.com (unknown [182.195.42.82]) by
-	epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
-	20240829093921epsmtrp240c1190c20197b8bd144f84fc720adae~wKZFCXKE92298422984epsmtrp29;
-	Thu, 29 Aug 2024 09:39:21 +0000 (GMT)
-X-AuditID: b6c32a36-ef9ff70000002597-62-66d041c936a3
-Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
-	epsmgmcp1.samsung.com (Symantec Messaging Gateway) with SMTP id
-	1B.41.19367.8C140D66; Thu, 29 Aug 2024 18:39:21 +0900 (KST)
-Received: from localhost.localdomain (unknown [10.253.98.171]) by
-	epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
-	20240829093920epsmtip29d66190305a25b9a9276fc6b4fce4cb1~wKZEzE5SS1393413934epsmtip2T;
-	Thu, 29 Aug 2024 09:39:20 +0000 (GMT)
-From: Seunghwan Baek <sh8267.baek@samsung.com>
-To: linux-kernel@vger.kernel.org, linux-scsi@vger.kernel.org,
-	martin.petersen@oracle.com, James.Bottomley@HansenPartnership.com,
-	bvanassche@acm.org, avri.altman@wdc.com, alim.akhtar@samsung.com
-Cc: grant.jung@samsung.com, jt77.jang@samsung.com, junwoo80.lee@samsung.com,
-	dh0421.hwang@samsung.com, jangsub.yi@samsung.com, sh043.lee@samsung.com,
-	cw9316.lee@samsung.com, sh8267.baek@samsung.com, wkon.kim@samsung.com,
-	stable@vger.kernel.org
-Subject: [PATCH v1 1/1] ufs: core: set SDEV_OFFLINE when ufs shutdown.
-Date: Thu, 29 Aug 2024 18:39:13 +0900
-Message-Id: <20240829093913.6282-2-sh8267.baek@samsung.com>
+	s=arc-20240116; t=1724924739; c=relaxed/simple;
+	bh=4ueHelHgSTqT3lKO+PyUF90mHm7gbgnOAxqWdSm+Ulg=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=jx6oquAW3n8ibTdns8ZllMjf4LU+JMxyr9vb7JmzFGySRvlhBaX5pXSfkPSE5OiL+s/CIZQf88rDIuh7OsUbRfCCvg4SVABL3ySX6y5u51JjqQSMFnq5X7nckrDwH5Y4UXLYSZ/ir8S/cju/WY5/g8nawRf5uAIqYb81SMnZ3u0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=jTZ1aBJr; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 47T8Pba2014958;
+	Thu, 29 Aug 2024 09:45:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-type:date:from:message-id:mime-version:subject:to; s=
+	qcppdkim1; bh=jNegF+g1xhVssgmkjuQ/vzvKlzG4fD1d4RD6qVQLKtk=; b=jT
+	Z1aBJrAkXn5hp02TIr1+g/9Elg7hCL/9jvBFUk2kkhQKVLg5k5dLDTdbI0CXFou6
+	up6rrPHuGZoazj7dPd8o3pCu+u74PLF8M1/t6uwCZ3o8AcXhxu9dOnWZ1SJ9iw5k
+	o1hed4CHRpYkUy8QygwGqvz9BcfdNumD3jf9//07Bf7tho09NYq8iCfAC3ovUgGH
+	uU65tgPeIIbrNXnHIrBaBRoegBxthZKk47sgrQz338HxxZNjFasogI8r4Evp2ATg
+	rtscAKjJB1UilnCPxg3T5P4QHjABstrMpsa/XMbo0BQH2yrupSDkQhdMijN+0z8g
+	SUoGjNYCsvwYNupOVXpg==
+Received: from nasanppmta01.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 419px5mp1b-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 29 Aug 2024 09:45:32 +0000 (GMT)
+Received: from nasanex01a.na.qualcomm.com (nasanex01a.na.qualcomm.com [10.52.223.231])
+	by NASANPPMTA01.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 47T9jFrk020098
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 29 Aug 2024 09:45:15 GMT
+Received: from hu-faisalh-hyd.qualcomm.com (10.80.80.8) by
+ nasanex01a.na.qualcomm.com (10.52.223.231) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Thu, 29 Aug 2024 02:45:13 -0700
+From: Faisal Hassan <quic_faisalh@quicinc.com>
+To: Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+        Greg Kroah-Hartman
+	<gregkh@linuxfoundation.org>
+CC: <linux-usb@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Faisal Hassan
+	<quic_faisalh@quicinc.com>, <stable@vger.kernel.org>
+Subject: [PATCH v2] usb: dwc3: core: update LC timer as per USB Spec V3.2
+Date: Thu, 29 Aug 2024 15:15:02 +0530
+Message-ID: <20240829094502.26502-1-quic_faisalh@quicinc.com>
 X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20240829093913.6282-1-sh8267.baek@samsung.com>
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFmpnk+LIzCtJLcpLzFFi42LZdlhTV/ek44U0gyMfLCwezNvGZvHy51U2
-	i2kffjJbzDjVxmqx79pJdotff9ezW2zs57Do2DqZyWLH8zPsFrv+NjNZXN41h82i+/oONovl
-	x/8xWTT92cdice3MCVaLBRsfMVpsvvSNxUHQ4/IVb49pk06xeXx8eovFo2/LKkaPz5vkPNoP
-	dDMFsEVl22SkJqakFimk5iXnp2TmpdsqeQfHO8ebmhkY6hpaWpgrKeQl5qbaKrn4BOi6ZeYA
-	3a6kUJaYUwoUCkgsLlbSt7Mpyi8tSVXIyC8usVVKLUjJKTAr0CtOzC0uzUvXy0stsTI0MDAy
-	BSpMyM64d7+fueCTVMXZpTPZGxhPiHQxcnJICJhInLzbzAhiCwnsYJR4cIavi5ELyP7EKDH3
-	wkNmOOfwp/OMMB1zl21kh0jsZJR4/GwyE4TzmVFi9ZXvLCBVbAJ6Eq/aD7OBJEQEjjJK3Nr2
-	gBHEYRb4ySjx/vpBdpAqYQE3ifVndgK1c3CwCKhKfH7DCxLmFbCW2L+6lwVinbzE6g0HmEFs
-	TgEbifcLJoJtkxCYyiHR9PodE0SRi8Spl81Q9wlLvDq+hR3ClpL4/G4vG4RdLLFw4yQWiOYW
-	Ronry/9ANdhLNLc2s4EcwSygKbF+lz5ImFmAT+Ld1x5WkLCEAK9ER5sQRLWqxKkNW6E6pSWu
-	NzewQtgeEhvX7YeGVz+jxO0NVxgnMMrOQpi6gJFxFaNYakFxbnpqsWGBETyekvNzNzGCU6SW
-	2Q7GSW8/6B1iZOJgPMQowcGsJMJ74vjZNCHelMTKqtSi/Pii0pzU4kOMpsAAm8gsJZqcD0zS
-	eSXxhiaWBiZmRiYWxpbGZkrivGeulKUKCaQnlqRmp6YWpBbB9DFxcEo1MDkvytQv+J12se36
-	9Fktby8uPJCfl7bxgWboxE/7Hh60CqsO6GtpClvzembZydfrrDR3LotbtidQKNhU79Vu3Xvv
-	2P8yqa+5KPjDI6x1oRPfPeFa/xDfvu6GopCrDnPXMK8V+rft0OwKfbWINe63eW64cgeesP/M
-	HDB9PSMnd+5kQ6u/ge4VzprdJzReLlMVfm6SKas/w+u5Ttllzs3H9ebslFI/tp99Vl35u7PT
-	GTdM9BFpZ7Cx2r1005rlbwKt+n79K1g4oU++qelmcgp/fD739ahUo8VfjzfeObeX6+6t6QYW
-	x5UuyR5bkNn+3/FQyJ47gn1BHn8ebvCd8O6fU9XLXwd0L1k4zJrjoH3r7HIlluKMREMt5qLi
-	RABJWa4hGgQAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrOLMWRmVeSWpSXmKPExsWy7bCSvO5JxwtpBlM2Mlo8mLeNzeLlz6ts
-	FtM+/GS2mHGqjdVi37WT7Ba//q5nt9jYz2HRsXUyk8WO52fYLXb9bWayuLxrDptF9/UdbBbL
-	j/9jsmj6s4/F4tqZE6wWCzY+YrTYfOkbi4Ogx+Ur3h7TJp1i8/j49BaLR9+WVYwenzfJebQf
-	6GYKYIvisklJzcksSy3St0vgyrh3v5+54JNUxdmlM9kbGE+IdDFyckgImEjMXbaRvYuRi0NI
-	YDujxKcNbWwQCWmJxwdeMnYxcgDZwhKHDxdD1HxklDh1+T4zSA2bgJ7Eq/bDYPUiAmcZJY5O
-	LAApYhZoZZI4t7WNCSQhLOAmsf7MTiaQQSwCqhKf3/CChHkFrCX2r+5lgdglL7F6wwGwmZwC
-	NhLvF0wEaxUCqvk48y37BEa+BYwMqxhFUwuKc9NzkwsM9YoTc4tL89L1kvNzNzGCw1oraAfj
-	svV/9Q4xMnEwHmKU4GBWEuE9cfxsmhBvSmJlVWpRfnxRaU5q8SFGaQ4WJXFe5ZzOFCGB9MSS
-	1OzU1ILUIpgsEwenVAOTzpErprZ2+lOspkc/uupiscCi97zrrf2NLfl2BWzP776J38Rss5ix
-	cOGnZTopurEs2c/EhbmDPeYIVUnsbOzWtbt/zP+tSnLZ1QeOS+dqvLpXoN4Q/OWPRJzMVMWJ
-	Ah/mBQT+WtDu9VW47VjrxP81Zyutn177fMpkziEf6Tts0z/9fVe2ucNdbvGRb57f+n7NWaVY
-	cNfRy+VL6dGtp6/WnlVZ379LfplTVOuD7f5q0vOcX+zb0T3HJ7QzWk//aHzyvekz+kpzIiel
-	+XALS+1fYvFdeGOBXGCpB6PCr4KPisuKu4UPTnBmP+BWvbO+XXzBXK6rGwtL/7/zimipv7GQ
-	O3nm96hlToed/5TzvhRVYinOSDTUYi4qTgQAhIQqmNoCAAA=
-X-CMS-MailID: 20240829093921epcas1p35d28696b0f79e2ae39d8e3690f088e64
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-CMS-TYPE: 101P
-DLP-Filter: Pass
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20240829093921epcas1p35d28696b0f79e2ae39d8e3690f088e64
-References: <20240829093913.6282-1-sh8267.baek@samsung.com>
-	<CGME20240829093921epcas1p35d28696b0f79e2ae39d8e3690f088e64@epcas1p3.samsung.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01a.na.qualcomm.com (10.52.223.231)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: FauzJH8HQ6X88T0VtEzu_JSg2OyxzIQC
+X-Proofpoint-GUID: FauzJH8HQ6X88T0VtEzu_JSg2OyxzIQC
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.28.16
+ definitions=2024-08-29_02,2024-08-29_01,2024-05-17_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 clxscore=1015
+ adultscore=0 suspectscore=0 lowpriorityscore=0 mlxlogscore=999 spamscore=0
+ priorityscore=1501 bulkscore=0 mlxscore=0 malwarescore=0 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2407110000
+ definitions=main-2408290072
 
-There is a history of dead lock as reboot is performed at the beginning of
-booting. SDEV_QUIESCE was set for all lu's scsi_devices by ufs shutdown,
-and at that time the audio driver was waiting on blk_mq_submit_bio holding
-a mutex_lock while reading the fw binary. After that, a deadlock issue
-occurred while audio driver shutdown was waiting for mutex_unlock of
-blk_mq_submit_bio. To solve this, set SDEV_OFFLINE for all lus except wlun,
-so that any i/o that comes down after a ufs shutdown will return an error.
+This fix addresses STAR 9001285599, which only affects DWC_usb3 version
+3.20a. The timer value for PM_LC_TIMER in DWC_usb3 3.20a for the Link
+ECN changes is incorrect. If the PM TIMER ECN is enabled via GUCTL2[19],
+the link compliance test (TD7.21) may fail. If the ECN is not enabled
+(GUCTL2[19] = 0), the controller will use the old timer value (5us),
+which is still acceptable for the link compliance test. Therefore, clear
+GUCTL2[19] to pass the USB link compliance test: TD 7.21.
 
-[   31.907781]I[0:      swapper/0:    0]        1        130705007       1651079834      11289729804                0 D(   2) 3 ffffff882e208000 *             init [device_shutdown]
-[   31.907793]I[0:      swapper/0:    0] Mutex: 0xffffff8849a2b8b0: owner[0xffffff882e28cb00 kworker/6:0 :49]
-[   31.907806]I[0:      swapper/0:    0] Call trace:
-[   31.907810]I[0:      swapper/0:    0]  __switch_to+0x174/0x338
-[   31.907819]I[0:      swapper/0:    0]  __schedule+0x5ec/0x9cc
-[   31.907826]I[0:      swapper/0:    0]  schedule+0x7c/0xe8
-[   31.907834]I[0:      swapper/0:    0]  schedule_preempt_disabled+0x24/0x40
-[   31.907842]I[0:      swapper/0:    0]  __mutex_lock+0x408/0xdac
-[   31.907849]I[0:      swapper/0:    0]  __mutex_lock_slowpath+0x14/0x24
-[   31.907858]I[0:      swapper/0:    0]  mutex_lock+0x40/0xec
-[   31.907866]I[0:      swapper/0:    0]  device_shutdown+0x108/0x280
-[   31.907875]I[0:      swapper/0:    0]  kernel_restart+0x4c/0x11c
-[   31.907883]I[0:      swapper/0:    0]  __arm64_sys_reboot+0x15c/0x280
-[   31.907890]I[0:      swapper/0:    0]  invoke_syscall+0x70/0x158
-[   31.907899]I[0:      swapper/0:    0]  el0_svc_common+0xb4/0xf4
-[   31.907909]I[0:      swapper/0:    0]  do_el0_svc+0x2c/0xb0
-[   31.907918]I[0:      swapper/0:    0]  el0_svc+0x34/0xe0
-[   31.907928]I[0:      swapper/0:    0]  el0t_64_sync_handler+0x68/0xb4
-[   31.907937]I[0:      swapper/0:    0]  el0t_64_sync+0x1a0/0x1a4
-
-[   31.908774]I[0:      swapper/0:    0]       49                0         11960702      11236868007                0 D(   2) 6 ffffff882e28cb00 *      kworker/6:0 [__bio_queue_enter]
-[   31.908783]I[0:      swapper/0:    0] Call trace:
-[   31.908788]I[0:      swapper/0:    0]  __switch_to+0x174/0x338
-[   31.908796]I[0:      swapper/0:    0]  __schedule+0x5ec/0x9cc
-[   31.908803]I[0:      swapper/0:    0]  schedule+0x7c/0xe8
-[   31.908811]I[0:      swapper/0:    0]  __bio_queue_enter+0xb8/0x178
-[   31.908818]I[0:      swapper/0:    0]  blk_mq_submit_bio+0x194/0x67c
-[   31.908827]I[0:      swapper/0:    0]  __submit_bio+0xb8/0x19c
-
-Fixes: b294ff3e3449 ("scsi: ufs: core: Enable power management for wlun")
 Cc: stable@vger.kernel.org
-Signed-off-by: Seunghwan Baek <sh8267.baek@samsung.com>
+Signed-off-by: Faisal Hassan <quic_faisalh@quicinc.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
 ---
- drivers/ufs/core/ufshcd.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+Changes in v2: Updated comment and commit message to include the
+controller IP.
 
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index a6f818cdef0e..4ac1492787c2 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -10215,7 +10215,9 @@ static void ufshcd_wl_shutdown(struct device *dev)
- 	shost_for_each_device(sdev, hba->host) {
- 		if (sdev == hba->ufs_device_wlun)
- 			continue;
--		scsi_device_quiesce(sdev);
-+		mutex_lock(&sdev->state_mutex);
-+		scsi_device_set_state(sdev, SDEV_OFFLINE);
-+		mutex_unlock(&sdev->state_mutex);
+v1 link:
+https://lore.kernel.org/all/20240822084504.1355-1-quic_faisalh@quicinc.com
+
+ drivers/usb/dwc3/core.c | 15 +++++++++++++++
+ drivers/usb/dwc3/core.h |  2 ++
+ 2 files changed, 17 insertions(+)
+
+diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
+index 734de2a8bd21..92d7ec830322 100644
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -1378,6 +1378,21 @@ static int dwc3_core_init(struct dwc3 *dwc)
+ 		dwc3_writel(dwc->regs, DWC3_GUCTL2, reg);
  	}
- 	__ufshcd_wl_suspend(hba, UFS_SHUTDOWN_PM);
  
++	/*
++	 * STAR 9001285599: This issue affects DWC_usb3 version 3.20a
++	 * only. If the PM TIMER ECM is enabled through GUCTL2[19], the
++	 * link compliance test (TD7.21) may fail. If the ECN is not
++	 * enabled (GUCTL2[19] = 0), the controller will use the old timer
++	 * value (5us), which is still acceptable for the link compliance
++	 * test. Therefore, do not enable PM TIMER ECM in 3.20a by
++	 * setting GUCTL2[19] by default; instead, use GUCTL2[19] = 0.
++	 */
++	if (DWC3_VER_IS(DWC3, 320A)) {
++		reg = dwc3_readl(dwc->regs, DWC3_GUCTL2);
++		reg &= ~DWC3_GUCTL2_LC_TIMER;
++		dwc3_writel(dwc->regs, DWC3_GUCTL2, reg);
++	}
++
+ 	/*
+ 	 * When configured in HOST mode, after issuing U3/L2 exit controller
+ 	 * fails to send proper CRC checksum in CRC5 feild. Because of this
+diff --git a/drivers/usb/dwc3/core.h b/drivers/usb/dwc3/core.h
+index 1e561fd8b86e..c71240e8f7c7 100644
+--- a/drivers/usb/dwc3/core.h
++++ b/drivers/usb/dwc3/core.h
+@@ -421,6 +421,7 @@
+ 
+ /* Global User Control Register 2 */
+ #define DWC3_GUCTL2_RST_ACTBITLATER		BIT(14)
++#define DWC3_GUCTL2_LC_TIMER			BIT(19)
+ 
+ /* Global User Control Register 3 */
+ #define DWC3_GUCTL3_SPLITDISABLE		BIT(14)
+@@ -1269,6 +1270,7 @@ struct dwc3 {
+ #define DWC3_REVISION_290A	0x5533290a
+ #define DWC3_REVISION_300A	0x5533300a
+ #define DWC3_REVISION_310A	0x5533310a
++#define DWC3_REVISION_320A	0x5533320a
+ #define DWC3_REVISION_330A	0x5533330a
+ 
+ #define DWC31_REVISION_ANY	0x0
 -- 
 2.17.1
 
