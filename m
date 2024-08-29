@@ -1,90 +1,194 @@
-Return-Path: <stable+bounces-71470-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71471-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F316964050
-	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 11:37:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4874D96406A
+	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 11:41:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DE2F1F23668
-	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 09:37:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AC267B262EF
+	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 09:41:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DAF318C347;
-	Thu, 29 Aug 2024 09:37:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 375F519047E;
+	Thu, 29 Aug 2024 09:39:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b="FfNxxO8i"
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="mS5GiFI5"
 X-Original-To: stable@vger.kernel.org
-Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
+Received: from mailout1.samsung.com (mailout1.samsung.com [203.254.224.24])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D87018E76D;
-	Thu, 29 Aug 2024 09:37:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E2C918FDB7
+	for <stable@vger.kernel.org>; Thu, 29 Aug 2024 09:39:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.24
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724924224; cv=none; b=mA3ez1gU5bRvV0OZCtH2poiTEKGSGQQtuVVNhNZIQIHP1c1XpfskQg6L1R0lc0oncF1HqOwKrS+ASRnVryuHOV97PAmgvHPLbl2p1b4brFexy4nN25SGDGaQuZVlBiKAA/iXMBXh7TpIU+O/Z8jmiWnPP3KsLMktpf/xOPkMBk0=
+	t=1724924368; cv=none; b=gaRLa9xDSahqVFUxIyFDF9IS/cpMToxW8+rxf7/fcTctO3N+LHL+9/HICV3j2vJtwt8y+qynsWwjFBleMJDtbbpI6A3YOZtqdCl6X942cJxwYqQsSZnPeElLdpbGHU+KqCavoJ/97HYT4+rCaKvVbWtT78BxDzi2/0c3Y26gWtM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724924224; c=relaxed/simple;
-	bh=ljZRLR6ytzY0AL4iexkNEXILNTY8g0s6vpQRByJ+buE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=b621gLM+fjBT/SPmjKmbjYYxCIR3XXmKeooxB1s51ObVcc7224e2EtkunhBQn17w7LM0HNCp5Snoo0lgMIL0QsSzsQfgVUsWQp4R3h6tciT8Ly8Jv9Mn/Fp2NYrMxsr1MfC66Rh+5ZXkrHU19otdKBeHN9M4HfUM0BFbyRDFo5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b=FfNxxO8i; arc=none smtp.client-ip=185.11.138.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
-	s=gloria202408; h=Content-Transfer-Encoding:Content-Type:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=A4/PMpvvxpYEvmqf7GIVYSw2u73NgreGhX+iQ/x8PvU=; b=FfNxxO8iDdSp0bEAxEyoSmJfKI
-	8uDKoObVrSLicbi6Cn6RyY4kgmdObgMv2VQRvCQm0ZnNWWJ6LfcoOTxaEKhqY6ciKtca3wD7+82HA
-	iCNsZ/VytXcnB8N3BQCebiRA8HNrlasovHk0SM7VF3eazaXMfRG8KAgH6qrcrUpHk+gXGKJcapBdm
-	nRx6fehSqR8UToaOILbgOXsbbMo5r1KgEokNtWBIYKuQ0/LbumGl8k94zBikhRHJ9jfqAlDiAR/9K
-	ojKaRoCA0YmEAIIfhGqXjJLggXUqzeN30B/lN8KgN9bNji5iQVSpkEjNtL0AN6gLaaFRpqbuiFU6U
-	M5ye0ubw==;
-Received: from i5e861916.versanet.de ([94.134.25.22] helo=phil.lan)
-	by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <heiko@sntech.de>)
-	id 1sjbaH-0002nq-3y; Thu, 29 Aug 2024 11:36:53 +0200
-From: Heiko Stuebner <heiko@sntech.de>
-To: Alexander Shiyan <eagle.alexander923@gmail.com>,
-	linux-rockchip@lists.infradead.org
-Cc: Heiko Stuebner <heiko@sntech.de>,
-	Michael Turquette <mturquette@baylibre.com>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Dragan Simic <dsimic@manjaro.org>,
-	stable@vger.kernel.org,
-	linux-clk@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v2] clk: rockchip: clk-rk3588: Fix 32k clock name for pmu_24m_32k_100m_src_p
-Date: Thu, 29 Aug 2024 11:36:48 +0200
-Message-ID: <172492351365.1695089.15416632298326411853.b4-ty@sntech.de>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240829052820.3604-1-eagle.alexander923@gmail.com>
-References: <20240829052820.3604-1-eagle.alexander923@gmail.com>
+	s=arc-20240116; t=1724924368; c=relaxed/simple;
+	bh=vqdNvXkoRmeV6Usb0tFIK/Ojl3s9dgP2i9C4ucSMDxk=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:Content-Type:
+	 References; b=PE2kV0VxvbDbqkW20wHoFopJuPwZM8ruQp3inc70sSoI7KVuc2cMf158nneiGWm2uWXbCNXpmoL7ZjTgNe2BuZfVjxVzcKG+V734J+QgaKhYtKG2ql0iDqvso8Vh1YjjlnIq96RH4BAVtK4k4Un8/p2nc5EKUpeFet1sIsqJSXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=mS5GiFI5; arc=none smtp.client-ip=203.254.224.24
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+Received: from epcas1p2.samsung.com (unknown [182.195.41.46])
+	by mailout1.samsung.com (KnoxPortal) with ESMTP id 20240829093923epoutp01ea66bb06050264abb1670da1cd64062b~wKZHCOncF0954309543epoutp01W
+	for <stable@vger.kernel.org>; Thu, 29 Aug 2024 09:39:23 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com 20240829093923epoutp01ea66bb06050264abb1670da1cd64062b~wKZHCOncF0954309543epoutp01W
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1724924363;
+	bh=aa5/JjPkt7dEuyoZ5rPhW1zLfqGVrrp1MMlIUm7auVM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=mS5GiFI5+bp9NexewMPNZhWqppDEMWE+4IIZ0YNGhjY9jdirLQ9oapL7guwlkyc0n
+	 JB3jKsRXibIKAcVTqM/YUlbqFaY67D0IMTq59m2Lh7xFrpEsedT00ozHDMTMIenxt/
+	 Oo20jafPBuJ8Jd2dXNX5yxAAFmwB6+RBSYI+gY9w=
+Received: from epsnrtp3.localdomain (unknown [182.195.42.164]) by
+	epcas1p4.samsung.com (KnoxPortal) with ESMTP id
+	20240829093922epcas1p4a1bfcc85c05a026de1dcfadd7683d140~wKZGWlQpy0342303423epcas1p4V;
+	Thu, 29 Aug 2024 09:39:22 +0000 (GMT)
+Received: from epsmgec1p1.samsung.com (unknown [182.195.38.241]) by
+	epsnrtp3.localdomain (Postfix) with ESMTP id 4WvbpL19lSz4x9Px; Thu, 29 Aug
+	2024 09:39:22 +0000 (GMT)
+Received: from epcas1p1.samsung.com ( [182.195.41.45]) by
+	epsmgec1p1.samsung.com (Symantec Messaging Gateway) with SMTP id
+	45.2B.09623.9C140D66; Thu, 29 Aug 2024 18:39:21 +0900 (KST)
+Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
+	epcas1p3.samsung.com (KnoxPortal) with ESMTPA id
+	20240829093921epcas1p35d28696b0f79e2ae39d8e3690f088e64~wKZFGBBFA0443604436epcas1p3P;
+	Thu, 29 Aug 2024 09:39:21 +0000 (GMT)
+Received: from epsmgmcp1.samsung.com (unknown [182.195.42.82]) by
+	epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
+	20240829093921epsmtrp240c1190c20197b8bd144f84fc720adae~wKZFCXKE92298422984epsmtrp29;
+	Thu, 29 Aug 2024 09:39:21 +0000 (GMT)
+X-AuditID: b6c32a36-ef9ff70000002597-62-66d041c936a3
+Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
+	epsmgmcp1.samsung.com (Symantec Messaging Gateway) with SMTP id
+	1B.41.19367.8C140D66; Thu, 29 Aug 2024 18:39:21 +0900 (KST)
+Received: from localhost.localdomain (unknown [10.253.98.171]) by
+	epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20240829093920epsmtip29d66190305a25b9a9276fc6b4fce4cb1~wKZEzE5SS1393413934epsmtip2T;
+	Thu, 29 Aug 2024 09:39:20 +0000 (GMT)
+From: Seunghwan Baek <sh8267.baek@samsung.com>
+To: linux-kernel@vger.kernel.org, linux-scsi@vger.kernel.org,
+	martin.petersen@oracle.com, James.Bottomley@HansenPartnership.com,
+	bvanassche@acm.org, avri.altman@wdc.com, alim.akhtar@samsung.com
+Cc: grant.jung@samsung.com, jt77.jang@samsung.com, junwoo80.lee@samsung.com,
+	dh0421.hwang@samsung.com, jangsub.yi@samsung.com, sh043.lee@samsung.com,
+	cw9316.lee@samsung.com, sh8267.baek@samsung.com, wkon.kim@samsung.com,
+	stable@vger.kernel.org
+Subject: [PATCH v1 1/1] ufs: core: set SDEV_OFFLINE when ufs shutdown.
+Date: Thu, 29 Aug 2024 18:39:13 +0900
+Message-Id: <20240829093913.6282-2-sh8267.baek@samsung.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20240829093913.6282-1-sh8267.baek@samsung.com>
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFmpnk+LIzCtJLcpLzFFi42LZdlhTV/ek44U0gyMfLCwezNvGZvHy51U2
+	i2kffjJbzDjVxmqx79pJdotff9ezW2zs57Do2DqZyWLH8zPsFrv+NjNZXN41h82i+/oONovl
+	x/8xWTT92cdice3MCVaLBRsfMVpsvvSNxUHQ4/IVb49pk06xeXx8eovFo2/LKkaPz5vkPNoP
+	dDMFsEVl22SkJqakFimk5iXnp2TmpdsqeQfHO8ebmhkY6hpaWpgrKeQl5qbaKrn4BOi6ZeYA
+	3a6kUJaYUwoUCkgsLlbSt7Mpyi8tSVXIyC8usVVKLUjJKTAr0CtOzC0uzUvXy0stsTI0MDAy
+	BSpMyM64d7+fueCTVMXZpTPZGxhPiHQxcnJICJhInLzbzAhiCwnsYJR4cIavi5ELyP7EKDH3
+	wkNmOOfwp/OMMB1zl21kh0jsZJR4/GwyE4TzmVFi9ZXvLCBVbAJ6Eq/aD7OBJEQEjjJK3Nr2
+	gBHEYRb4ySjx/vpBdpAqYQE3ifVndgK1c3CwCKhKfH7DCxLmFbCW2L+6lwVinbzE6g0HmEFs
+	TgEbifcLJoJtkxCYyiHR9PodE0SRi8Spl81Q9wlLvDq+hR3ClpL4/G4vG4RdLLFw4yQWiOYW
+	Ronry/9ANdhLNLc2s4EcwSygKbF+lz5ImFmAT+Ld1x5WkLCEAK9ER5sQRLWqxKkNW6E6pSWu
+	NzewQtgeEhvX7YeGVz+jxO0NVxgnMMrOQpi6gJFxFaNYakFxbnpqsWGBETyekvNzNzGCU6SW
+	2Q7GSW8/6B1iZOJgPMQowcGsJMJ74vjZNCHelMTKqtSi/Pii0pzU4kOMpsAAm8gsJZqcD0zS
+	eSXxhiaWBiZmRiYWxpbGZkrivGeulKUKCaQnlqRmp6YWpBbB9DFxcEo1MDkvytQv+J12se36
+	9Fktby8uPJCfl7bxgWboxE/7Hh60CqsO6GtpClvzembZydfrrDR3LotbtidQKNhU79Vu3Xvv
+	2P8yqa+5KPjDI6x1oRPfPeFa/xDfvu6GopCrDnPXMK8V+rft0OwKfbWINe63eW64cgeesP/M
+	HDB9PSMnd+5kQ6u/ge4VzprdJzReLlMVfm6SKas/w+u5Ttllzs3H9ebslFI/tp99Vl35u7PT
+	GTdM9BFpZ7Cx2r1005rlbwKt+n79K1g4oU++qelmcgp/fD739ahUo8VfjzfeObeX6+6t6QYW
+	x5UuyR5bkNn+3/FQyJ47gn1BHn8ebvCd8O6fU9XLXwd0L1k4zJrjoH3r7HIlluKMREMt5qLi
+	RABJWa4hGgQAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrOLMWRmVeSWpSXmKPExsWy7bCSvO5JxwtpBlM2Mlo8mLeNzeLlz6ts
+	FtM+/GS2mHGqjdVi37WT7Ba//q5nt9jYz2HRsXUyk8WO52fYLXb9bWayuLxrDptF9/UdbBbL
+	j/9jsmj6s4/F4tqZE6wWCzY+YrTYfOkbi4Ogx+Ur3h7TJp1i8/j49BaLR9+WVYwenzfJebQf
+	6GYKYIvisklJzcksSy3St0vgyrh3v5+54JNUxdmlM9kbGE+IdDFyckgImEjMXbaRvYuRi0NI
+	YDujxKcNbWwQCWmJxwdeMnYxcgDZwhKHDxdD1HxklDh1+T4zSA2bgJ7Eq/bDYPUiAmcZJY5O
+	LAApYhZoZZI4t7WNCSQhLOAmsf7MTiaQQSwCqhKf3/CChHkFrCX2r+5lgdglL7F6wwGwmZwC
+	NhLvF0wEaxUCqvk48y37BEa+BYwMqxhFUwuKc9NzkwsM9YoTc4tL89L1kvNzNzGCw1oraAfj
+	svV/9Q4xMnEwHmKU4GBWEuE9cfxsmhBvSmJlVWpRfnxRaU5q8SFGaQ4WJXFe5ZzOFCGB9MSS
+	1OzU1ILUIpgsEwenVAOTzpErprZ2+lOspkc/uupiscCi97zrrf2NLfl2BWzP776J38Rss5ix
+	cOGnZTopurEs2c/EhbmDPeYIVUnsbOzWtbt/zP+tSnLZ1QeOS+dqvLpXoN4Q/OWPRJzMVMWJ
+	Ah/mBQT+WtDu9VW47VjrxP81Zyutn177fMpkziEf6Tts0z/9fVe2ucNdbvGRb57f+n7NWaVY
+	cNfRy+VL6dGtp6/WnlVZ379LfplTVOuD7f5q0vOcX+zb0T3HJ7QzWk//aHzyvekz+kpzIiel
+	+XALS+1fYvFdeGOBXGCpB6PCr4KPisuKu4UPTnBmP+BWvbO+XXzBXK6rGwtL/7/zimipv7GQ
+	O3nm96hlToed/5TzvhRVYinOSDTUYi4qTgQAhIQqmNoCAAA=
+X-CMS-MailID: 20240829093921epcas1p35d28696b0f79e2ae39d8e3690f088e64
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+CMS-TYPE: 101P
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20240829093921epcas1p35d28696b0f79e2ae39d8e3690f088e64
+References: <20240829093913.6282-1-sh8267.baek@samsung.com>
+	<CGME20240829093921epcas1p35d28696b0f79e2ae39d8e3690f088e64@epcas1p3.samsung.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
 
-On Thu, 29 Aug 2024 08:28:20 +0300, Alexander Shiyan wrote:
-> The 32kHz input clock is named "xin32k" in the driver,
-> so the name "32k" appears to be a typo in this case. Lets fix this.
-> 
-> 
+There is a history of dead lock as reboot is performed at the beginning of
+booting. SDEV_QUIESCE was set for all lu's scsi_devices by ufs shutdown,
+and at that time the audio driver was waiting on blk_mq_submit_bio holding
+a mutex_lock while reading the fw binary. After that, a deadlock issue
+occurred while audio driver shutdown was waiting for mutex_unlock of
+blk_mq_submit_bio. To solve this, set SDEV_OFFLINE for all lus except wlun,
+so that any i/o that comes down after a ufs shutdown will return an error.
 
-Applied, thanks!
+[   31.907781]I[0:      swapper/0:    0]        1        130705007       1651079834      11289729804                0 D(   2) 3 ffffff882e208000 *             init [device_shutdown]
+[   31.907793]I[0:      swapper/0:    0] Mutex: 0xffffff8849a2b8b0: owner[0xffffff882e28cb00 kworker/6:0 :49]
+[   31.907806]I[0:      swapper/0:    0] Call trace:
+[   31.907810]I[0:      swapper/0:    0]  __switch_to+0x174/0x338
+[   31.907819]I[0:      swapper/0:    0]  __schedule+0x5ec/0x9cc
+[   31.907826]I[0:      swapper/0:    0]  schedule+0x7c/0xe8
+[   31.907834]I[0:      swapper/0:    0]  schedule_preempt_disabled+0x24/0x40
+[   31.907842]I[0:      swapper/0:    0]  __mutex_lock+0x408/0xdac
+[   31.907849]I[0:      swapper/0:    0]  __mutex_lock_slowpath+0x14/0x24
+[   31.907858]I[0:      swapper/0:    0]  mutex_lock+0x40/0xec
+[   31.907866]I[0:      swapper/0:    0]  device_shutdown+0x108/0x280
+[   31.907875]I[0:      swapper/0:    0]  kernel_restart+0x4c/0x11c
+[   31.907883]I[0:      swapper/0:    0]  __arm64_sys_reboot+0x15c/0x280
+[   31.907890]I[0:      swapper/0:    0]  invoke_syscall+0x70/0x158
+[   31.907899]I[0:      swapper/0:    0]  el0_svc_common+0xb4/0xf4
+[   31.907909]I[0:      swapper/0:    0]  do_el0_svc+0x2c/0xb0
+[   31.907918]I[0:      swapper/0:    0]  el0_svc+0x34/0xe0
+[   31.907928]I[0:      swapper/0:    0]  el0t_64_sync_handler+0x68/0xb4
+[   31.907937]I[0:      swapper/0:    0]  el0t_64_sync+0x1a0/0x1a4
 
-[1/1] clk: rockchip: clk-rk3588: Fix 32k clock name for pmu_24m_32k_100m_src_p
-      commit: 0d02e8d284a45bfa8997ebe8764437b8eb6b108b
+[   31.908774]I[0:      swapper/0:    0]       49                0         11960702      11236868007                0 D(   2) 6 ffffff882e28cb00 *      kworker/6:0 [__bio_queue_enter]
+[   31.908783]I[0:      swapper/0:    0] Call trace:
+[   31.908788]I[0:      swapper/0:    0]  __switch_to+0x174/0x338
+[   31.908796]I[0:      swapper/0:    0]  __schedule+0x5ec/0x9cc
+[   31.908803]I[0:      swapper/0:    0]  schedule+0x7c/0xe8
+[   31.908811]I[0:      swapper/0:    0]  __bio_queue_enter+0xb8/0x178
+[   31.908818]I[0:      swapper/0:    0]  blk_mq_submit_bio+0x194/0x67c
+[   31.908827]I[0:      swapper/0:    0]  __submit_bio+0xb8/0x19c
 
-Best regards,
+Fixes: b294ff3e3449 ("scsi: ufs: core: Enable power management for wlun")
+Cc: stable@vger.kernel.org
+Signed-off-by: Seunghwan Baek <sh8267.baek@samsung.com>
+---
+ drivers/ufs/core/ufshcd.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index a6f818cdef0e..4ac1492787c2 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -10215,7 +10215,9 @@ static void ufshcd_wl_shutdown(struct device *dev)
+ 	shost_for_each_device(sdev, hba->host) {
+ 		if (sdev == hba->ufs_device_wlun)
+ 			continue;
+-		scsi_device_quiesce(sdev);
++		mutex_lock(&sdev->state_mutex);
++		scsi_device_set_state(sdev, SDEV_OFFLINE);
++		mutex_unlock(&sdev->state_mutex);
+ 	}
+ 	__ufshcd_wl_suspend(hba, UFS_SHUTDOWN_PM);
+ 
 -- 
-Heiko Stuebner <heiko@sntech.de>
+2.17.1
+
 
