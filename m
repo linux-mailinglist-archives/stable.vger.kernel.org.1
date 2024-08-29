@@ -1,114 +1,217 @@
-Return-Path: <stable+bounces-71465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71466-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACD5B963EA2
-	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 10:33:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD478963EC2
+	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 10:37:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 49095B23CFE
-	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 08:33:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F20D21C242B4
+	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 08:37:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71DDA18CC12;
-	Thu, 29 Aug 2024 08:30:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BE4118C036;
+	Thu, 29 Aug 2024 08:37:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="R90Bo+6E"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CAA743154;
-	Thu, 29 Aug 2024 08:30:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D0C83D6A;
+	Thu, 29 Aug 2024 08:37:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724920257; cv=none; b=Y2TEqwbTKy1PQiAWKLqeyOq3/897oLZ4PSrwSYxVl4/uiDB8i4/lNa4JIy1V508aC4ombbdRj43y5orylwr0GoZPdUp53JMBiZW+W+kjtIOlFeAqfyLQDNIZ+nV+LsNQ23do+yx0XGpGfsed7JD1hPjbJPaXu/qTqkciEt7yaCo=
+	t=1724920626; cv=none; b=Ij/B2jBikwp91i8uph8Y0d762VOAF83rAXiTZBtvKCVh/sPaIRqnBkqaySU1jqoPAvgfIQIW9YzFSqbyE4vLYD7E0dPrvY4WhaFKT6QIZczAvqMiOaqLq2OMPT1qRMwuAlrx91M2vQt3ePLDrkG4PbhxwXiAXO1oisnR51iMp9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724920257; c=relaxed/simple;
-	bh=jmQoHidF+pqSdlMEJDvQ5iPil4CrsAlQ/9Bauya5xLc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=h9mQIk+RdX6AtpT4Ch9ehLToY5iFpVk+uTUAa/3+BGZQ7VNjIgg0AEUTNJlxl8ndjggJ/V4cSlVfXG4qKZ+OTYKBYtzIswakHnXOE8/F+ql/vI0EnHt1FvQ8Bh9seUYsNcm/hw9LQiYfhiGsi0yu8450XyYqII2VXKwVbJeVd3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
-	by APP-05 (Coremail) with SMTP id zQCowAB34UCjMdBm6R02Cw--.14213S2;
-	Thu, 29 Aug 2024 16:30:35 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: nbd@nbd.name,
-	lorenzo@kernel.org,
-	ryder.lee@mediatek.com,
-	shayne.chen@mediatek.com,
-	sean.wang@mediatek.com,
-	kvalo@kernel.org,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
-	chui-hao.chiu@mediatek.com,
-	howard-yh.hsu@mediatek.com,
-	StanleyYP.Wang@mediatek.com,
-	benjamin-jw.lin@mediatek.com,
-	allen.ye@mediatek.com,
-	chank.chen@mediatek.com,
-	meichia.chiu@mediatek.com
-Cc: linux-wireless@vger.kernel.org,
+	s=arc-20240116; t=1724920626; c=relaxed/simple;
+	bh=1h+WeBtsVytlCUWzdY+Woq+1e7PbLK94rU8EPRzpGn4=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=H2hhGwWR7rLfeQ5pZCdX6C8esLINw+UaXkeCgtvrKT5hlewn58/doeKni0+djwEemZxiovRnKv9mik7okWtI6rMkco3lewB9qfh9gAn/9CnqzfIbFqWARQ3plZf4mgEro484BWXiDSk2GNW8jkla540c7rS5ouXETI2baxBbMEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=R90Bo+6E; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: by linux.microsoft.com (Postfix, from userid 1099)
+	id 1725C20B7165; Thu, 29 Aug 2024 01:37:04 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 1725C20B7165
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1724920624;
+	bh=wzjuHwdSxz3Gg3y22vDYhlPDTd1A5vSqMohovQuwOJw=;
+	h=From:To:Cc:Subject:Date:From;
+	b=R90Bo+6EIb9pbEgDLB+fmVPRQs3swvRrJ1NwMhk2/G5ZbhVmgwveJaSf9LWFkngtz
+	 h8ahqnw+mcuDtipo+9Egqxiz3hs2FDZBZVM+sWfNk5gZw1f7SlJOZnBFGW7BK07KV8
+	 1zY3J++NsTulZjtE2HI47pt1QHCVYRZ7PA0Q7p7M=
+From: Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
+To: kys@microsoft.com,
+	haiyangz@microsoft.com,
+	wei.liu@kernel.org,
+	decui@microsoft.com,
+	davem@davemloft.net,
+	longli@microsoft.com,
+	ssengar@linux.microsoft.com,
+	linux-hyperv@vger.kernel.org,
+	netdev@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org,
-	Ma Ke <make24@iscas.ac.cn>,
+	linux-rdma@vger.kernel.org
+Cc: schakrabarti@microsoft.com,
+	Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>,
 	stable@vger.kernel.org
-Subject: [PATCH] wifi: mt76: mt7996: fix NULL pointer dereference in mt7996_mcu_sta_bfer_eht
-Date: Thu, 29 Aug 2024 16:30:26 +0800
-Message-Id: <20240829083026.3195359-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+Subject: [PATCH V3 net] net: mana: Fix error handling in mana_create_txq/rxq's NAPI cleanup
+Date: Thu, 29 Aug 2024 01:36:50 -0700
+Message-Id: <1724920610-15546-1-git-send-email-schakrabarti@linux.microsoft.com>
+X-Mailer: git-send-email 1.8.3.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowAB34UCjMdBm6R02Cw--.14213S2
-X-Coremail-Antispam: 1UD129KBjvdXoWruw4fGryfuF17KFW5ZF18Xwb_yoWfAwc_ur
-	1Ivrn3Jw40gw45Kr47ZwsxuryYkaykZF97Gay5tayfJa9rAFWUWF1Svas3Ar9xCFn7ZF1U
-	Jw1DJFyFvrZ3XjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbSkFF20E14v26ryj6rWUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j
-	6F4UJwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r
-	xl6s0DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVAC
-	Y4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJV
-	W8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI2
-	0VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r4a6rW5MxAIw28Icx
-	kI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2Iq
-	xVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42
-	IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY
-	6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aV
-	CY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7sRiSfO3UUUUU==
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-Fix the NULL pointer dereference in mt7996_mcu_sta_bfer_eht.
+Currently napi_disable() gets called during rxq and txq cleanup,
+even before napi is enabled and hrtimer is initialized. It causes
+kernel panic.
 
-Found by code review.
+? page_fault_oops+0x136/0x2b0
+  ? page_counter_cancel+0x2e/0x80
+  ? do_user_addr_fault+0x2f2/0x640
+  ? refill_obj_stock+0xc4/0x110
+  ? exc_page_fault+0x71/0x160
+  ? asm_exc_page_fault+0x27/0x30
+  ? __mmdrop+0x10/0x180
+  ? __mmdrop+0xec/0x180
+  ? hrtimer_active+0xd/0x50
+  hrtimer_try_to_cancel+0x2c/0xf0
+  hrtimer_cancel+0x15/0x30
+  napi_disable+0x65/0x90
+  mana_destroy_rxq+0x4c/0x2f0
+  mana_create_rxq.isra.0+0x56c/0x6d0
+  ? mana_uncfg_vport+0x50/0x50
+  mana_alloc_queues+0x21b/0x320
+  ? skb_dequeue+0x5f/0x80
 
 Cc: stable@vger.kernel.org
-Fixes: ba01944adee9 ("wifi: mt76: mt7996: add EHT beamforming support")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Fixes: e1b5683ff62e ("net: mana: Move NAPI from EQ to CQ")
+Signed-off-by: Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
+Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
+Reviewed-by: Shradha Gupta <shradhagupta@linux.microsoft.com>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 3 +++
- 1 file changed, 3 insertions(+)
+V3 -> V2:
+Instead of using napi internal attribute, using an atomic
+attribute to verify napi is initialized for a particular txq / rxq.
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-index 2e4fa9f48dfb..d0fe2505ddbf 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-@@ -1605,6 +1605,9 @@ mt7996_mcu_sta_bfer_eht(struct ieee80211_sta *sta, struct ieee80211_vif *vif,
- 				 IEEE80211_EHT_MCS_NSS_RX) - 1;
- 	u8 snd_dim, sts;
+V2 -> V1:
+Addressed the comment on cleaning up napi for the queues,
+where queue creation was successful.
+---
+ drivers/net/ethernet/microsoft/mana/mana_en.c | 30 ++++++++++++-------
+ include/net/mana/mana.h                       |  4 +++
+ 2 files changed, 24 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
+index 39f56973746d..bd303c89cfa6 100644
+--- a/drivers/net/ethernet/microsoft/mana/mana_en.c
++++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+@@ -1872,10 +1872,12 @@ static void mana_destroy_txq(struct mana_port_context *apc)
  
-+	if (!vc)
-+		return;
+ 	for (i = 0; i < apc->num_queues; i++) {
+ 		napi = &apc->tx_qp[i].tx_cq.napi;
+-		napi_synchronize(napi);
+-		napi_disable(napi);
+-		netif_napi_del(napi);
+-
++		if (atomic_read(&apc->tx_qp[i].txq.napi_initialized)) {
++			napi_synchronize(napi);
++			napi_disable(napi);
++			netif_napi_del(napi);
++			atomic_set(&apc->tx_qp[i].txq.napi_initialized, 0);
++		}
+ 		mana_destroy_wq_obj(apc, GDMA_SQ, apc->tx_qp[i].tx_object);
+ 
+ 		mana_deinit_cq(apc, &apc->tx_qp[i].tx_cq);
+@@ -1931,6 +1933,7 @@ static int mana_create_txq(struct mana_port_context *apc,
+ 		txq->ndev = net;
+ 		txq->net_txq = netdev_get_tx_queue(net, i);
+ 		txq->vp_offset = apc->tx_vp_offset;
++		atomic_set(&txq->napi_initialized, 0);
+ 		skb_queue_head_init(&txq->pending_skbs);
+ 
+ 		memset(&spec, 0, sizeof(spec));
+@@ -1997,6 +2000,7 @@ static int mana_create_txq(struct mana_port_context *apc,
+ 
+ 		netif_napi_add_tx(net, &cq->napi, mana_poll);
+ 		napi_enable(&cq->napi);
++		atomic_set(&txq->napi_initialized, 1);
+ 
+ 		mana_gd_ring_cq(cq->gdma_cq, SET_ARM_BIT);
+ 	}
+@@ -2023,14 +2027,18 @@ static void mana_destroy_rxq(struct mana_port_context *apc,
+ 
+ 	napi = &rxq->rx_cq.napi;
+ 
+-	if (validate_state)
+-		napi_synchronize(napi);
++	if (atomic_read(&rxq->napi_initialized)) {
+ 
+-	napi_disable(napi);
++		if (validate_state)
++			napi_synchronize(napi);
+ 
+-	xdp_rxq_info_unreg(&rxq->xdp_rxq);
++		napi_disable(napi);
+ 
+-	netif_napi_del(napi);
++		netif_napi_del(napi);
++		atomic_set(&rxq->napi_initialized, 0);
++	}
 +
- 	bf->tx_mode = MT_PHY_TYPE_EHT_MU;
++	xdp_rxq_info_unreg(&rxq->xdp_rxq);
  
- 	mt7996_mcu_sta_sounding_rate(bf);
+ 	mana_destroy_wq_obj(apc, GDMA_RQ, rxq->rxobj);
+ 
+@@ -2199,6 +2207,7 @@ static struct mana_rxq *mana_create_rxq(struct mana_port_context *apc,
+ 	rxq->num_rx_buf = RX_BUFFERS_PER_QUEUE;
+ 	rxq->rxq_idx = rxq_idx;
+ 	rxq->rxobj = INVALID_MANA_HANDLE;
++	atomic_set(&rxq->napi_initialized, 0);
+ 
+ 	mana_get_rxbuf_cfg(ndev->mtu, &rxq->datasize, &rxq->alloc_size,
+ 			   &rxq->headroom);
+@@ -2286,6 +2295,8 @@ static struct mana_rxq *mana_create_rxq(struct mana_port_context *apc,
+ 
+ 	napi_enable(&cq->napi);
+ 
++	atomic_set(&rxq->napi_initialized, 1);
++
+ 	mana_gd_ring_cq(cq->gdma_cq, SET_ARM_BIT);
+ out:
+ 	if (!err)
+@@ -2336,7 +2347,6 @@ static void mana_destroy_vport(struct mana_port_context *apc)
+ 		rxq = apc->rxqs[rxq_idx];
+ 		if (!rxq)
+ 			continue;
+-
+ 		mana_destroy_rxq(apc, rxq, true);
+ 		apc->rxqs[rxq_idx] = NULL;
+ 	}
+diff --git a/include/net/mana/mana.h b/include/net/mana/mana.h
+index 7caa334f4888..be75abd63dc8 100644
+--- a/include/net/mana/mana.h
++++ b/include/net/mana/mana.h
+@@ -98,6 +98,8 @@ struct mana_txq {
+ 
+ 	atomic_t pending_sends;
+ 
++	atomic_t napi_initialized;
++
+ 	struct mana_stats_tx stats;
+ };
+ 
+@@ -335,6 +337,8 @@ struct mana_rxq {
+ 	bool xdp_flush;
+ 	int xdp_rc; /* XDP redirect return code */
+ 
++	atomic_t napi_initialized;
++
+ 	struct page_pool *page_pool;
+ 
+ 	/* MUST BE THE LAST MEMBER:
 -- 
-2.25.1
+2.34.1
 
 
