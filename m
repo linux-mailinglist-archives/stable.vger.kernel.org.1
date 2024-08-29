@@ -1,110 +1,186 @@
-Return-Path: <stable+bounces-71549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71550-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A51796533B
-	for <lists+stable@lfdr.de>; Fri, 30 Aug 2024 01:04:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EF2A965345
+	for <lists+stable@lfdr.de>; Fri, 30 Aug 2024 01:08:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1A4301F23694
-	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 23:04:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 722CAB219D1
+	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 23:08:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4279618DF60;
-	Thu, 29 Aug 2024 23:04:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14D0718E37E;
+	Thu, 29 Aug 2024 23:08:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fYYY2L4e"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="dUn3iWfy"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 869CB18A6D2;
-	Thu, 29 Aug 2024 23:04:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4988B18B47D
+	for <stable@vger.kernel.org>; Thu, 29 Aug 2024 23:08:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724972681; cv=none; b=LeXBvZb80czJFGGFOeJZWhQC3yQ95IJOkieSv+nf8YA02DUjaAVbqbwSfGc4hrkJHsdvH/s2uSomTB12SVAF2jeoNtSKR/lB1OjyJjj7M1kB8fMh7ujiaLRk79FFyKYqVdn5A6fdpmswXEvf/UwQrqiN+9EHSpBcDXD/eF4cyWw=
+	t=1724972928; cv=none; b=SEelFZ0z5cV0PtlFmeaMdS79qs2XZgeevh29oKiJbvYjWU36dJDhSuTFZF5JKipUnzaCb19+sFwBpMLrpvHoKSuMy/ofx4zq3V8Hu9t0VPGRNeMVyWb39w7z0FyHz8kfemLZOV/iSxcMI4t5Ltbi7AHrn3TpsJRVzVmXqeu9vX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724972681; c=relaxed/simple;
-	bh=xxKz9PCxVQJGKzd3KrLHagUw7YiCjOLdR1D0sByscmA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ArGURY9N5TmQ5kWqdYjp1DizsTf/LS8ZhIBoX/K3kejweedawNxi5gh3SXiOKNxj6o2h5gTCGQP71mcbqIImHnbqGJtMNMWUDMnamlwoM5Q66Sm7p2vxl9w7vtzp0hQ3ji0w1t6+OgatOBS1Dj1iUAYItGIPDDA1eC9FS11tBVE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fYYY2L4e; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1724972679; x=1756508679;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=xxKz9PCxVQJGKzd3KrLHagUw7YiCjOLdR1D0sByscmA=;
-  b=fYYY2L4e1V07AoyWKKWgUdY5bwfTlE3sK0Xn37GWPyKzfD35L6M2hDOG
-   ij1+pWRbWGEllgSAxS+9mvt3TZLQtB9Fc6Za6ujblvPACiNj7+s52KVjk
-   oVryv75MJAzrCa1F01Atjw5wV3P3REuBhDqicZ2z9FxOMZO2WWs+iDouE
-   E23Wg24usUsysbq19Ltko5Lf+ZwIxsV4hvpL4tTFloLZjipsXzvCT9kzi
-   1lxtNEG/l7We5GlCSDjLdADsp2nrhRiXsCOA/ImdhGija8XEZSGbcJL8Y
-   o6lv0Bz8kVHa4XzcaWq0QA2KaaP9D9sPqwN+hjNLnTlG92w8EVA3lnC+D
-   A==;
-X-CSE-ConnectionGUID: i9lOqrZZQeCjANDk9aZAWA==
-X-CSE-MsgGUID: PIRpRCtISziPPU+nrb1v7w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11179"; a="23787287"
-X-IronPort-AV: E=Sophos;i="6.10,187,1719903600"; 
-   d="scan'208";a="23787287"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Aug 2024 16:04:38 -0700
-X-CSE-ConnectionGUID: zZrwyE/lRvChSnynhLhZ3g==
-X-CSE-MsgGUID: 27Uof+B2QCmlHWAXj6GV2Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,187,1719903600"; 
-   d="scan'208";a="101234744"
-Received: from bpinto-mobl1.amr.corp.intel.com (HELO desk) ([10.125.65.120])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Aug 2024 16:04:39 -0700
-Date: Thu, 29 Aug 2024 16:04:29 -0700
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	linux-kernel@vger.kernel.org, x86@kernel.org,
-	Robert Gill <rtgill82@gmail.com>,
-	Jari Ruusu <jariruusu@protonmail.com>,
-	Brian Gerst <brgerst@gmail.com>,
-	"Linux regression tracking (Thorsten Leemhuis)" <regressions@leemhuis.info>,
-	antonio.gomez.iglesias@linux.intel.com,
-	daniel.sneddon@linux.intel.com, stable@vger.kernel.org
-Subject: Re: [PATCH v5] x86/entry_32: Use stack segment selector for VERW
- operand
-Message-ID: <20240829230429.bksowrtyj7qqwtsh@desk>
-References: <20240711-fix-dosemu-vm86-v5-1-e87dcd7368aa@linux.intel.com>
- <cdcc5b91-321b-4e33-9a86-829b8f632ae6@intel.com>
+	s=arc-20240116; t=1724972928; c=relaxed/simple;
+	bh=oEhdU27rm+H122x0J06f7tWH2tcOqaSJecjN31uJNgE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=J//4XV1Uh93Ukpsoy+qnQwPDhufqYlfaaBcibnk2zP6xMniF5TtJLbZcP3HkGvOrCVqyDSw+0nkZxe9QqHSo8v8uIwLk15PKjPkklQGEy6AspD2PSplbGP67zbEIKtFetuuY5BXNLP17ZpaAD69Rm+V2P5fHRBTmMO4GUKZFI7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=dUn3iWfy; arc=none smtp.client-ip=209.85.214.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-20230059241so11098655ad.3
+        for <stable@vger.kernel.org>; Thu, 29 Aug 2024 16:08:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1724972925; x=1725577725; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=HgVDj+jfQTykac+tyDyMarRYMWlwS6Q2qsgwnJuZfh0=;
+        b=dUn3iWfyizWQTAk4TYMnk3flYOK9+ai5VXNDL2Lf46S6F9AX0u689wDcPxot9XEc4O
+         bJYBon/MajEE+tERXc5DnvE2wOydKQjUqcwvVRjX+fQLT1mhIDBWMRlnoBGqKn4KaGzj
+         voCqIjgdj0td8q+b6ZiMfgZ/hE67cyqoYfBt0=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724972925; x=1725577725;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=HgVDj+jfQTykac+tyDyMarRYMWlwS6Q2qsgwnJuZfh0=;
+        b=SFDQjmy0sCqoRxnBPuIa0avlU+isw82yM+M68tfd2NcPFFKpfTPpsDykwng1mE1XDC
+         msm0F+TReJSeIDTAE+mwAKUv3KuB3BfzT4qnmyDYW/My3RwDYlD5pLOoaBqQPRgBICkj
+         jrmf5HpZ4HG4/pAF5mkzaJ/piTeGjhwVoqN73qBOpT1ynkcQilnaYfuuLa+LzsWiptg8
+         koirUfqWGZNSGB6CwefQ36m/UI0P79Xw/UpuScv7k6kNVp86ZD37Sgg5yCh7HPzAVuqp
+         ps1JrmQsRrGq+NJxa6nNHkrAfc2lsLZk0NNjjqj9yEGARWNZ0MyNvUygiskFDOcH0kHJ
+         b2OA==
+X-Forwarded-Encrypted: i=1; AJvYcCVj8fyuoIL6fYlj8sxIsJ9VU6ldGN+wk/eazA+qEzdMSesYrHQJiAtJ8xwdUrs2Z6XcTzzaaDw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzI+/YBpkY0bxROs0Vp3BWe5Ozfl1dchUTCq1hpCdLeNIL5d4jc
+	yARi6YNgv5qL/MA1kcJFViuxFpDbvHzbcPEmCkF8nd3xd7MaeVkZv6+YqVuNyQ==
+X-Google-Smtp-Source: AGHT+IHx0S+q6RNjDk9ZvBL2wqUSFukR2NjucZxBJM3TzlabNfu6Puq9dgskFALAl15H42KIm5Whaw==
+X-Received: by 2002:a17:90b:1a8a:b0:2c3:2557:3de8 with SMTP id 98e67ed59e1d1-2d8564a29d3mr4791127a91.33.1724972925314;
+        Thu, 29 Aug 2024 16:08:45 -0700 (PDT)
+Received: from [10.211.103.201] ([216.221.25.35])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2d85b39d90csm2275967a91.38.2024.08.29.16.08.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 29 Aug 2024 16:08:44 -0700 (PDT)
+Message-ID: <1ab03e92-9b3d-45a8-8561-d0b527d6d4a7@broadcom.com>
+Date: Thu, 29 Aug 2024 16:08:43 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cdcc5b91-321b-4e33-9a86-829b8f632ae6@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] drm/vmwgfx: Cleanup kms setup without 3d
+To: Zack Rusin <zack.rusin@broadcom.com>, dri-devel@lists.freedesktop.org
+Cc: Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>, ian.forbes@broadcom.com,
+ martin.krastev@broadcom.com, stable@vger.kernel.org
+References: <20240827043905.472825-1-zack.rusin@broadcom.com>
+From: Maaz Mombasawala <maaz.mombasawala@broadcom.com>
+Content-Language: en-US
+In-Reply-To: <20240827043905.472825-1-zack.rusin@broadcom.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Aug 29, 2024 at 03:28:13PM -0700, Dave Hansen wrote:
-> On 7/11/24 15:03, Pawan Gupta wrote:
-> > +/*
-> > + * Safer version of CLEAR_CPU_BUFFERS that uses %ss to reference VERW operand
-> > + * mds_verw_sel. This ensures VERW will not #GP for an arbitrary user %ds.
-> > + */
-> > +.macro CLEAR_CPU_BUFFERS_SAFE
-> > +	ALTERNATIVE "", __stringify(verw %ss:_ASM_RIP(mds_verw_sel)), X86_FEATURE_CLEAR_CPU_BUF
-> > +.endm
+On 8/26/24 21:39, Zack Rusin wrote:
+> Do not validate format equality for the non 3d cases to allow xrgb to
+> argb copies and make sure the dx binding flags are only used
+> on dx compatible surfaces.
 > 
-> One other thing...
+> Fixes basic 2d kms setup on configurations without 3d. There's little
+> practical benefit to it because kms framebuffer coherence is disabled
+> on configurations without 3d but with those changes the code actually
+> makes sense.
 > 
-> Instead of making a "_SAFE" variant, let's just make the 32-bit version
-> always safe.
+> v2: Remove the now unused format variable
+> 
+> Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+> Fixes: d6667f0ddf46 ("drm/vmwgfx: Fix handling of dumb buffers")
+> Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: <stable@vger.kernel.org> # v6.9+
+> Cc: Maaz Mombasawala <maaz.mombasawala@broadcom.com>
+> Cc: Martin Krastev <martin.krastev@broadcom.com>
+> ---
+>  drivers/gpu/drm/vmwgfx/vmwgfx_kms.c     | 29 -------------------------
+>  drivers/gpu/drm/vmwgfx/vmwgfx_surface.c |  9 +++++---
+>  2 files changed, 6 insertions(+), 32 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
+> index 288ed0bb75cb..282b6153bcdd 100644
+> --- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
+> +++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
+> @@ -1283,7 +1283,6 @@ static int vmw_kms_new_framebuffer_surface(struct vmw_private *dev_priv,
+>  {
+>  	struct drm_device *dev = &dev_priv->drm;
+>  	struct vmw_framebuffer_surface *vfbs;
+> -	enum SVGA3dSurfaceFormat format;
+>  	struct vmw_surface *surface;
+>  	int ret;
+>  
+> @@ -1320,34 +1319,6 @@ static int vmw_kms_new_framebuffer_surface(struct vmw_private *dev_priv,
+>  		return -EINVAL;
+>  	}
+>  
+> -	switch (mode_cmd->pixel_format) {
+> -	case DRM_FORMAT_ARGB8888:
+> -		format = SVGA3D_A8R8G8B8;
+> -		break;
+> -	case DRM_FORMAT_XRGB8888:
+> -		format = SVGA3D_X8R8G8B8;
+> -		break;
+> -	case DRM_FORMAT_RGB565:
+> -		format = SVGA3D_R5G6B5;
+> -		break;
+> -	case DRM_FORMAT_XRGB1555:
+> -		format = SVGA3D_A1R5G5B5;
+> -		break;
+> -	default:
+> -		DRM_ERROR("Invalid pixel format: %p4cc\n",
+> -			  &mode_cmd->pixel_format);
+> -		return -EINVAL;
+> -	}
+> -
+> -	/*
+> -	 * For DX, surface format validation is done when surface->scanout
+> -	 * is set.
+> -	 */
+> -	if (!has_sm4_context(dev_priv) && format != surface->metadata.format) {
+> -		DRM_ERROR("Invalid surface format for requested mode.\n");
+> -		return -EINVAL;
+> -	}
+> -
+>  	vfbs = kzalloc(sizeof(*vfbs), GFP_KERNEL);
+>  	if (!vfbs) {
+>  		ret = -ENOMEM;
+> diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_surface.c b/drivers/gpu/drm/vmwgfx/vmwgfx_surface.c
+> index 1625b30d9970..5721c74da3e0 100644
+> --- a/drivers/gpu/drm/vmwgfx/vmwgfx_surface.c
+> +++ b/drivers/gpu/drm/vmwgfx/vmwgfx_surface.c
+> @@ -2276,9 +2276,12 @@ int vmw_dumb_create(struct drm_file *file_priv,
+>  	const struct SVGA3dSurfaceDesc *desc = vmw_surface_get_desc(format);
+>  	SVGA3dSurfaceAllFlags flags = SVGA3D_SURFACE_HINT_TEXTURE |
+>  				      SVGA3D_SURFACE_HINT_RENDERTARGET |
+> -				      SVGA3D_SURFACE_SCREENTARGET |
+> -				      SVGA3D_SURFACE_BIND_SHADER_RESOURCE |
+> -				      SVGA3D_SURFACE_BIND_RENDER_TARGET;
+> +				      SVGA3D_SURFACE_SCREENTARGET;
+> +
+> +	if (vmw_surface_is_dx_screen_target_format(format)) {
+> +		flags |= SVGA3D_SURFACE_BIND_SHADER_RESOURCE |
+> +			 SVGA3D_SURFACE_BIND_RENDER_TARGET;
+> +	}
+>  
+>  	/*
+>  	 * Without mob support we're just going to use raw memory buffer
 
-That sounds good to me.
+LGTM
 
-> Also, is there any downside to using %ss: on 64-bit?  If not, let's just
-> update the one and only CLEAR_CPU_BUFFERS use %ss:.
+Reviewed-by: Maaz Mombasawala <maaz.mombasawala@broadcom.com>
 
-A quick test after adding %ss: on 64-bit doesn't show any significant
-latency difference. I will revise the patch.
+-- 
+Maaz Mombasawala <maaz.mombasawala@broadcom.com>
 
