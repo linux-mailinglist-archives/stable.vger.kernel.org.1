@@ -1,162 +1,164 @@
-Return-Path: <stable+bounces-71482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71483-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3A7C9643EA
-	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 14:07:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1AFF9643F0
+	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 14:08:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7DB1C28763B
-	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 12:07:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 76A461F24BF9
+	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 12:08:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52E80192B9C;
-	Thu, 29 Aug 2024 12:07:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1124918FC80;
+	Thu, 29 Aug 2024 12:08:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=shreeya.patel@collabora.com header.b="GeM63ouC"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HLHxgkwS"
 X-Original-To: stable@vger.kernel.org
-Received: from sender3-op-o17.zoho.com (sender3-op-o17.zoho.com [136.143.184.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81E8718E755;
-	Thu, 29 Aug 2024 12:07:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.184.17
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724933259; cv=pass; b=YfSXLcZtemjIbTi+HDTYhzOlGq4//kEZCH2GOpfuzT8MpiAVUqBxrwJAhHB/zoA/NR0mNFDx6rUl5tkEjYopyjgLUH39p9hiBwOHeX+bNeDziYqlBYPyIZTFmkg1yO+XUgSGI8Jwl8RW2TAFuBbvx+WWSSDvqZ20N/oOrdX7sqg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724933259; c=relaxed/simple;
-	bh=4I+e2okk/YXtq/9Vz9Ywovnl1TTnH572UNNPSZy1zgM=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=nKXpJvst2gTaF2rJhziBVU8yqJyJRKUBj6gbmKg35yxf69jnKOrOTddq+HdxV8mQKQ0Ldes20kLcCn7qhRj9Igo8zRLtNtht9yFar9IHDo7atle1FkBBbLzcqOCr/fs3rnNRrRX4PmP8crePoq8+SQp5z7cepgbNkatX1mz9sFY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=shreeya.patel@collabora.com header.b=GeM63ouC; arc=pass smtp.client-ip=136.143.184.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-Delivered-To: kernelci-regressions@collabora.com
-ARC-Seal: i=1; a=rsa-sha256; t=1724933230; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=lAgKO66A+YW8nXOM/2RPjho0fKN+McEJFnRbNCQ4B85A6hz8qHLTygeQitDEWEWuhvpBxR8NqXlnfM5FGSYjwP4VoC958q872KZmIKL7d2UR5IcrLKrqiFaONPrZAOSbkXCH/zIDjrrZFOIr7nrsWBe2AcjLK0MPRtV8rSpVxMY=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1724933230; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=suyBxaZl/fG6Fm9ksWETuidxGq6YUFN7oHDB/v3rqIw=; 
-	b=czOsfKpv/XYBqizsDvgmRpb/d9K+6eBpnwl6CPxS56H8Ds0B1f/k3mrfYEdxLGD/41uyeoeHpaWLESu9ZhfXCSkWc7FOm1RCiqSS24cKzkwe00G4C5DqYboaUjLqx0db8oVbk5t15egmNbZd80FY+xd3LMayGri/GVRbI2wROig=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=shreeya.patel@collabora.com;
-	dmarc=pass header.from=<shreeya.patel@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1724933230;
-	s=zohomail; d=collabora.com; i=shreeya.patel@collabora.com;
-	h=Date:Date:From:From:To:To:Cc:Cc:Message-ID:In-Reply-To:References:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=suyBxaZl/fG6Fm9ksWETuidxGq6YUFN7oHDB/v3rqIw=;
-	b=GeM63ouCQd+7kOawk7G+duxxreMxS7IuB96Dvnx0NxIaWwkT4IGbYtzZGO7ARF4l
-	Af2nAlPhyLssZyIUIF1Hv5sbOyD3eRsJb2lgu7wAUSH3gqHAHTDzZNQhrEwjm9oxqRh
-	khH7TbE4opIcwPCpv2IBwc01ZxlywtueaQArVNFg=
-Received: from mail.zoho.com by mx.zohomail.com
-	with SMTP id 1724933227631219.01950855698306; Thu, 29 Aug 2024 05:07:07 -0700 (PDT)
-Date: Thu, 29 Aug 2024 17:37:07 +0530
-From: Shreeya Patel <shreeya.patel@collabora.com>
-To: "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>
-Cc: "stable" <stable@vger.kernel.org>, "patches" <patches@lists.linux.dev>,
-	"linux-kernel" <linux-kernel@vger.kernel.org>,
-	"torvalds" <torvalds@linux-foundation.org>,
-	"akpm" <akpm@linux-foundation.org>, "linux" <linux@roeck-us.net>,
-	"shuah" <shuah@kernel.org>, "patches" <patches@kernelci.org>,
-	"lkft-triage" <lkft-triage@lists.linaro.org>,
-	"pavel" <pavel@denx.de>, "jonathanh" <jonathanh@nvidia.com>,
-	"f.fainelli" <f.fainelli@gmail.com>,
-	"sudipm.mukherjee" <sudipm.mukherjee@gmail.com>,
-	"srw" <srw@sladewatkins.net>, "rwarsow" <rwarsow@gmx.de>,
-	"conor" <conor@kernel.org>, "allen.lkml" <allen.lkml@gmail.com>,
-	"broonie" <broonie@kernel.org>,
-	"Kernel CI - Regressions" <kernelci-regressions@collabora.com>,
-	"Gustavo Padovan" <gustavo.padovan@collabora.com>,
-	"Jeny Sheth" <jeny.sadadia@collabora.com>
-Message-ID: <1919e08445a.c252539b484915.5023963413874535346@collabora.com>
-In-Reply-To: <20240827143838.192435816@linuxfoundation.org>
-References: <20240827143838.192435816@linuxfoundation.org>
-Subject: Re: [PATCH 6.1 000/321] 6.1.107-rc1 review
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09C0A16D300
+	for <stable@vger.kernel.org>; Thu, 29 Aug 2024 12:08:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1724933322; cv=none; b=q3r1UBFXJ05I0NC9XZf7rLzYJjv5/2XPa2sPGfQ9Df0sx8PAAXNeIsPBFSCzn5vNkiIqBfs5o0rtI1C4vzXG32nqJmxEpHH0OR2lw+USGaTvWF4Ysp5IO2Xqs6UwwPk4a+XoDEm/0TLpCuJ1fH8xB9OIYLg6tdDsZtaqoyq9J9I=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1724933322; c=relaxed/simple;
+	bh=KtYpPUXw+zEnbjLpy8nw2gc8bTe4ABd85XtQXUrHDw4=;
+	h=Message-ID:Date:MIME-Version:Subject:References:To:Cc:From:
+	 In-Reply-To:Content-Type; b=kOmnYyWWENODovdJd+P8ubx7lK/YDn1lakMUz3uN2mSRNK0oY6VZKzB5TO0yhc3xy6n5uSQWagLqkWiUvUcLLTXB0oltzItdje28hx+/sTWH8XkMddoP1uMr5InlV9nfTimd2cJNpOZIVhTaSG/NBJx98sl0vhpAZUDoaTKvzkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HLHxgkwS; arc=none smtp.client-ip=209.85.208.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-2f3fea6a0a9so5415011fa.0
+        for <stable@vger.kernel.org>; Thu, 29 Aug 2024 05:08:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1724933319; x=1725538119; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:cc:to:content-language
+         :references:subject:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=zhm0ZYuyloZkq+EYQ560MJVmdDqagRw+L7k478p9DZ8=;
+        b=HLHxgkwSgYTCefbOrhZv74OreTrf/RKOC0/DL+XsLYeCV02vt/PBsy6l9n59R9m18c
+         gw7dn4RBGwAqhusvFmDb42PtCvuJWa1gvlMDRdEUi5O86nnev1k2h1cFU8xqreeCAVW4
+         +vhWommHTdGv2gvBri8lhheFgw5gf9AJIEeUc8jsz5A+mXtw9lVA/yB/qrCvjrRdYItq
+         kw35OSlZwhGqHFTuOW0yLvEqHFT02yDLDP17an/TMpEMTjG0oWZewL1IxohzeNn0KAok
+         Txr3bWmyY9y6SLfXwGRjSNzGaH6sq3A7zBnBjWL6V1Hlqcb/cEGKICXquApGxqPpLOgT
+         Eiaw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724933319; x=1725538119;
+        h=content-transfer-encoding:in-reply-to:from:cc:to:content-language
+         :references:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=zhm0ZYuyloZkq+EYQ560MJVmdDqagRw+L7k478p9DZ8=;
+        b=rxN9Ix2iLD45HN+tQhl8U4iQml0gTqh4WPZB0gLzgEEttqUHzSv8OE24tcTSUhZwMh
+         PwXOn/MRrkkUCVKoOAUlMXFHkNNix6JaduJeupVB4e50MCYbe0PYqrmSo8pn+e3S+Wol
+         3Hhc1jes0/fiW0OZbIPZy5v7x5tMvAoeI1k3Hd31ecG1UbIUbMIZ0iYVP8HskxFmrR7k
+         3jWH4YS8H9jeQprruP1nugFpOzPAyL8AZ5yjtNZ6nH9uJfaZmbQtvpPGW7nHw5H6bXOJ
+         YD0MNmHvDIy5Nxzd4RWJOswqtSLr9da8KmmXMlklGZnn7ZUJN5crl1ehZe1LZxwj/maa
+         UCZQ==
+X-Gm-Message-State: AOJu0YxiSy9tFsNIYLuPHMBKQFiprpOZVi+bUthnKhxjokf0ApKqdYqh
+	WjkpYlHPJxAbGwseilcjCe2p9wFHZtQ8Ronun+ybU6ptkxGpn7zB6egMcgpL
+X-Google-Smtp-Source: AGHT+IHmZ8lgRx+m4mvwhvX0IT6JBNEj2X72kFDeILgDTzl6kRXsKo8zG1ZGrOpMgvCN+WWTMiUGqg==
+X-Received: by 2002:a2e:f01:0:b0:2f5:29f:43d5 with SMTP id 38308e7fff4ca-2f6168b008fmr4686071fa.24.1724933318582;
+        Thu, 29 Aug 2024 05:08:38 -0700 (PDT)
+Received: from [130.235.83.196] (nieman.control.lth.se. [130.235.83.196])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2f614f38748sm1523901fa.61.2024.08.29.05.08.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 29 Aug 2024 05:08:38 -0700 (PDT)
+Message-ID: <25fab507-bf7f-446f-9ea1-cec08e9ebf1d@gmail.com>
+Date: Thu, 29 Aug 2024 14:08:37 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Importance: Medium
-User-Agent: Zoho Mail
-X-Mailer: Zoho Mail
+User-Agent: Mozilla Thunderbird
+Subject: Fwd: [PATCH 3/9] xfs: xfs_finobt_count_blocks() walks the wrong btree
+References: <172437083802.56860.3620518618047728107.stgit@frogsfrogsfrogs>
+Content-Language: en-US
+To: stable@vger.kernel.org, Greg KH <gregkh@linuxfoundation.org>
+Cc: Christoph Hellwig <hch@lst.de>, "Darrick J. Wong" <djwong@kernel.org>,
+ Dave Chinner <dchinner@redhat.com>
+From: Anders Blomdell <anders.blomdell@gmail.com>
+In-Reply-To: <172437083802.56860.3620518618047728107.stgit@frogsfrogsfrogs>
+X-Forwarded-Message-Id: <172437083802.56860.3620518618047728107.stgit@frogsfrogsfrogs>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
- ---- On Tue, 27 Aug 2024 20:05:08 +0530  Greg Kroah-Hartman  wrote ---=20
- > This is the start of the stable review cycle for the 6.1.107 release.
- > There are 321 patches in this series, all will be posted as a response
- > to this one.  If anyone has any issues with these being applied, please
- > let me know.
- >=20
- > Responses should be made by Thu, 29 Aug 2024 14:37:36 +0000.
- > Anything received after that time might be too late.
- >=20
- > The whole patch series can be found in one patch at:
- > =C2=A0=C2=A0=C2=A0=C2=A0https://www.kernel.org/pub/linux/kernel/v6.x/sta=
-ble-review/patch-6.1.107-rc1.gz
- > or in the git tree and branch at:
- > =C2=A0=C2=A0=C2=A0=C2=A0git://git.kernel.org/pub/scm/linux/kernel/git/st=
-able/linux-stable-rc.git linux-6.1.y
- > and the diffstat can be found below.
- >=20
+Dave forgot to mark the original patch for stable, so after consulting with Dave, here it comes
 
-Hi,
+@Greg: you might want to add the patch to all versions that received 14dd46cf31f4  ("xfs: split xfs_inobt_init_cursor")
+(which I think is v6.9 and v6.10)
 
-Please find the KernelCI report below :-
+/Anders
 
 
-OVERVIEW
 
-    Builds: 25 passed, 2 failed
+-------- Forwarded Message --------
+Subject: [PATCH 3/9] xfs: xfs_finobt_count_blocks() walks the wrong btree
+Date: Thu, 22 Aug 2024 16:59:33 -0700
+From: Darrick J. Wong <djwong@kernel.org>
+To: djwong@kernel.org
+CC: Anders Blomdell <anders.blomdell@gmail.com>, Dave Chinner <dchinner@redhat.com>, Christoph Hellwig <hch@lst.de>, hch@lst.de, linux-xfs@vger.kernel.org
 
-    Boot tests: 412 passed, 0 failed
+From: Dave Chinner <dchinner@redhat.com>
 
-    CI systems: broonie, maestro
+As a result of the factoring in commit 14dd46cf31f4 ("xfs: split
+xfs_inobt_init_cursor"), mount started taking a long time on a
+user's filesystem.  For Anders, this made mount times regress from
+under a second to over 15 minutes for a filesystem with only 30
+million inodes in it.
 
-REVISION
+Anders bisected it down to the above commit, but even then the bug
+was not obvious. In this commit, over 20 calls to
+xfs_inobt_init_cursor() were modified, and some we modified to call
+a new function named xfs_finobt_init_cursor().
 
-    Commit
-        name: v6.1.106-322-gb9218327d235
-        hash: b9218327d235d21e2e82c8dc6a8ef4a389c9c6a6
-    Checked out from
-        https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.1.y
+If that takes you a moment to reread those function names to see
+what the rename was, then you have realised why this bug wasn't
+spotted during review. And it wasn't spotted on inspection even
+after the bisect pointed at this commit - a single missing "f" isn't
+the easiest thing for a human eye to notice....
 
+The result is that xfs_finobt_count_blocks() now incorrectly calls
+xfs_inobt_init_cursor() so it is now walking the inobt instead of
+the finobt. Hence when there are lots of allocated inodes in a
+filesystem, mount takes a -long- time run because it now walks a
+massive allocated inode btrees instead of the small, nearly empty
+free inode btrees. It also means all the finobt space reservations
+are wrong, so mount could potentially given ENOSPC on kernel
+upgrade.
 
-BUILDS
+In hindsight, commit 14dd46cf31f4 should have been two commits - the
+first to convert the finobt callers to the new API, the second to
+modify the xfs_inobt_init_cursor() API for the inobt callers. That
+would have made the bug very obvious during review.
 
-    Failures
-      -i386 (tinyconfig)
-      Build detail: https://kcidb.kernelci.org/d/build/build?orgId=3D1&var-=
-id=3Dmaestro:66cdf1fffb8042744d0f1923
-      Build error: kernel/rcu/rcu.h:218:17: error: implicit declaration of =
-function =E2=80=98kmem_dump_obj=E2=80=99; did you mean =E2=80=98mem_dump_ob=
-j=E2=80=99? [-Werror=3Dimplicit-function-declaration]
-      -x86_64 (tinyconfig)
-      Build detail: https://kcidb.kernelci.org/d/build/build?orgId=3D1&var-=
-id=3Dmaestro:66cdf200fb8042744d0f192a
-      Build error: kernel/rcu/rcu.h:218:17: error: implicit declaration of =
-function =E2=80=98kmem_dump_obj=E2=80=99; did you mean =E2=80=98mem_dump_ob=
-j=E2=80=99? [-Werror=3Dimplicit-function-declaration]
-      CI system: maestro
-
-
-BOOT TESTS
-
-No new boot failures found
-
-See complete and up-to-date report at:
-
-    https://kcidb.kernelci.org/d/revision/revision?orgId=3D1&var-git_commit=
-_hash=3Db9218327d235d21e2e82c8dc6a8ef4a389c9c6a6&var-patchset_hash=3D
+Fixes: 14dd46cf31f4 ("xfs: split xfs_inobt_init_cursor")
+Reported-by: Anders Blomdell <anders.blomdell@gmail.com>
+Signed-off-by: Dave Chinner <dchinner@redhat.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+---
+  fs/xfs/libxfs/xfs_ialloc_btree.c |    2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
 
 
-Tested-by: kernelci.org bot <bot@kernelci.org>
+diff --git a/fs/xfs/libxfs/xfs_ialloc_btree.c b/fs/xfs/libxfs/xfs_ialloc_btree.c
+index 496e2f72a85b9..797d5b5f7b725 100644
+--- a/fs/xfs/libxfs/xfs_ialloc_btree.c
++++ b/fs/xfs/libxfs/xfs_ialloc_btree.c
+@@ -749,7 +749,7 @@ xfs_finobt_count_blocks(
+  	if (error)
+  		return error;
+  
+-	cur = xfs_inobt_init_cursor(pag, tp, agbp);
++	cur = xfs_finobt_init_cursor(pag, tp, agbp);
+  	error = xfs_btree_count_blocks(cur, tree_blocks);
+  	xfs_btree_del_cursor(cur, error);
+  	xfs_trans_brelse(tp, agbp);
 
-Thanks,
-KernelCI team
 
