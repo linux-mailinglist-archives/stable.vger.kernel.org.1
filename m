@@ -1,193 +1,152 @@
-Return-Path: <stable+bounces-71534-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B721E964B9C
-	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 18:24:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83129964BAE
+	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 18:27:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB6F11C225C4
-	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 16:24:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C2141F21D7B
+	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 16:27:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34A0F1B140A;
-	Thu, 29 Aug 2024 16:24:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 118101B4C49;
+	Thu, 29 Aug 2024 16:26:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jSbVltL6"
+	dkim=pass (2048-bit key) header.d=witekio.com header.i=@witekio.com header.b="swrOfUb6"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from EUR03-AM7-obe.outbound.protection.outlook.com (mail-am7eur03on2102.outbound.protection.outlook.com [40.107.105.102])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E557338F9C
-	for <stable@vger.kernel.org>; Thu, 29 Aug 2024 16:24:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724948662; cv=none; b=pP/59SC2D09g724oOmlCgHQj5oolZjNhCTFqBEWQy+ZQh+U4vqF1DeoRNFp2t5rdenP1x3/YlU7jpnRVmt9ducrtZfqhpNds6AXpsA8utbCw0o6+Prh1Qi7BNqBK+9ptke66IjPLFQGGJAErVpucWuxAzOTV+5MmrTDXVpJzd4A=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724948662; c=relaxed/simple;
-	bh=bjECiSFKhi33PYw6uMYiUH8DUz81W/Z+lrj5OmTI+C8=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=FLj2kAqAav0ysCX1kdfWu6SUoxWTNQDxU+wkcejmBOGLE5le9jhN0Oxao0IBLgbV6+5nRh9J/wvc/niLo4+grhPIa3o6ySZilx1wX/9FqfM1P168sIsrq8gPpU/xzJP7zHY7HWtj//ERdaFjJCnyTn3L20CM/a6MvHKhyT+nJW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jSbVltL6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B13EC4CEC1;
-	Thu, 29 Aug 2024 16:24:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724948661;
-	bh=bjECiSFKhi33PYw6uMYiUH8DUz81W/Z+lrj5OmTI+C8=;
-	h=Subject:To:Cc:From:Date:From;
-	b=jSbVltL6N+0orrsTLXTQ0srR9vqhAOl2R3z5zenCW2pSkgMWWW/BFpOHgqBH42fib
-	 oHQqpBszIHAcSKhVcyIU971lKpF4LWAhaAKILV/qGGOwtrlvwvaB57rdHd4QCAq90u
-	 hrL5yrOGbUsiwVViWTC+febkHCsJPgAfVuIRhizQ=
-Subject: FAILED: patch "[PATCH] smb/client: fix rdma usage in smb2_async_writev()" failed to apply to 6.6-stable tree
-To: metze@samba.org,dhowells@redhat.com,stfrench@microsoft.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Thu, 29 Aug 2024 18:24:10 +0200
-Message-ID: <2024082910-depraved-thing-8c02@gregkh>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E54A31B5330
+	for <stable@vger.kernel.org>; Thu, 29 Aug 2024 16:26:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.105.102
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1724948808; cv=fail; b=TmFM9ermk9tNxbgxlthHcFN0Kf32QB14AhrS7sv6gxjuo1E3K2+U9s2GSWepWF0IV7o0ccW9Ym2avFJgckws3cF+v7DV94OhXoGlmcB6atjw1VPjHDaSIEkoycWGrBzjLmP6RmBDqZ3WQHTjwYAAwA8v8esLoVO1bGsCNq9Dyww=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1724948808; c=relaxed/simple;
+	bh=TVMzlI7tcVBBXlxJkXPRaLdP0D705BQte6aMv51q/vg=;
+	h=From:To:Subject:Date:Message-ID:Content-Type:MIME-Version; b=GxWPQcJp6xgF/lAo+VNX43zO6wWlIZrOi8xOl5aJ0OoaAwAg8TlWBbMhK/S5l+t5wBgZ5A4X2QKmjadEl/55VbdRx8zhjhYqfdzFp4DnkRvZsiQDsZgxPwzHPwhA52CEr6mAUYqFfNitUdpNebpi9imY8/v8bniv9EBrw2Lc4aw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=witekio.com; spf=pass smtp.mailfrom=witekio.com; dkim=pass (2048-bit key) header.d=witekio.com header.i=@witekio.com header.b=swrOfUb6; arc=fail smtp.client-ip=40.107.105.102
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=witekio.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=witekio.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=fTtN5OzIUwFUZuIG0Kuqf5HlAXeEQ8bQvyk2V8JL6d8Mqrakiq6vMi4J1hIPUkmX02CBW53fiko4RJ/dG+c7niMO/xy1AXYPXtax5Dh6CQ4N+sbl74jMbs05Id2xXvDXVARlHTmVmjRrYkhaN8YOPd+HPA3yZGfBpQuyihk30kLdQR5SalDHjxbAqH3m1g8ObsRC8ZsH5ELNdBA8bFj5fTaCSf8M0aXusBd8mWy5R5bIx7rYc8xsmqBIkHUDbs9o5+PFTzOa6gbhU/2DIjh8d4a7Ecl0jtfv69+V6gG7jrgXKUAUrcuQ99937vlEqZYRqiRadyg2AsNpjTYrQPLWjw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=TVMzlI7tcVBBXlxJkXPRaLdP0D705BQte6aMv51q/vg=;
+ b=xL93hLlKjf1AVEUV6ENWxEWBbYHYhkmg7J3Z6S0zHOT+M60fSFIJq8lAqMETYUPpc1v9Bs8H5ZtKhNdfMYkjDV7ErqsLwTax+3U2Fz+l1CWEVSHFzGxW8I+2MNY0QhBu4W9+XA935uMN2zS4j3BYwwCLLIEzQj119MYvPHkC97yNNgdDZDIzezFE/rA00PHLMnE1ZLAVFWBV5crlCv7z7PbfZPtqUdJ21UNPRrsmgtXbCP6wsliMhpDizFtiKqxBaYtN0WMX2U5Xk4zO2dslf2s0xwNEwMhoNH8PKiwgO4s+2doCYkmG9MmE5kRhA/qVSq2IslHVcfxmfkagwlHTwA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=witekio.com; dmarc=pass action=none header.from=witekio.com;
+ dkim=pass header.d=witekio.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=witekio.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=TVMzlI7tcVBBXlxJkXPRaLdP0D705BQte6aMv51q/vg=;
+ b=swrOfUb6sG31AW8KUTCp2vz0klMQ7hadYsGDItV0cpD3MjDwDCTLWiWaWsVhoVHDPTFUiQXQb4UVjizuLRbR3dHLjmCoVOQzPJNMPj0M3d9LOAPw3Xq7NFPDxrfld1wMVzAZdflLeSxSGdKU1HZc40tAQAsRbEKuHM9rn8SEeTFlpr2GR4AZRVz5GbjH1lcQkvI+8rWdPWluPNI1TcYDlwYLmJ5jpUEF/8NQyQQNImkI7Wikuisg8Pu5lHFrZdwMopQD+4j5uA+fu1/eSeVMn79EaYquJm9nM9zWrDQqiutKDjujym5Ce5Na8ioh/nZO7SNMcg1GugU6Em7VjG2ILg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=witekio.com;
+Received: from PR3P192MB0714.EURP192.PROD.OUTLOOK.COM (2603:10a6:102:48::10)
+ by DU2P192MB2159.EURP192.PROD.OUTLOOK.COM (2603:10a6:10:495::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7897.27; Thu, 29 Aug
+ 2024 16:26:39 +0000
+Received: from PR3P192MB0714.EURP192.PROD.OUTLOOK.COM
+ ([fe80::345f:a9e9:d884:3091]) by PR3P192MB0714.EURP192.PROD.OUTLOOK.COM
+ ([fe80::345f:a9e9:d884:3091%5]) with mapi id 15.20.7918.019; Thu, 29 Aug 2024
+ 16:26:39 +0000
+From: hsimeliere.opensource@witekio.com
+To: stable@vger.kernel.org
+Subject: [PATCH 4.19 0/1] Fix CVE-2021-3493
+Date: Thu, 29 Aug 2024 18:26:20 +0200
+Message-ID: <20240829162631.19391-1-hsimeliere.opensource@witekio.com>
+X-Mailer: git-send-email 2.43.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: PA7P264CA0091.FRAP264.PROD.OUTLOOK.COM
+ (2603:10a6:102:348::10) To PR3P192MB0714.EURP192.PROD.OUTLOOK.COM
+ (2603:10a6:102:48::10)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PR3P192MB0714:EE_|DU2P192MB2159:EE_
+X-MS-Office365-Filtering-Correlation-Id: ab9514b9-f7a3-4783-ab23-08dcc8475c02
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|52116014|376014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?xzn8goAx0krW2jFkiF7jXxJrg5wYzO3WHvx+xGpNFOHiNE4slfR4D31nn6Wa?=
+ =?us-ascii?Q?AMRyoqLXBMynEHWAckm16xuE0fejIU8uRmUnI4tvPj8RWKbCm4O1Q5ppg+Vf?=
+ =?us-ascii?Q?xq6LRz/xrpdszIWSA0xI2k8GXTAQn3CrdPWh9G7jM0jBeXJAubFV87MZ73mu?=
+ =?us-ascii?Q?INXZ16c8GGfPnDuBEplcYftXykJ/VHxnJOV0CL7xtnh+mrx7PI85enbfCbHn?=
+ =?us-ascii?Q?g8/ZlWK2I86mzko4xUWSW6rsq5BhabbyuYGjRfvd+gkFWmRJzs5+sroRtLBN?=
+ =?us-ascii?Q?AE9yzk7Lm6tiJyMuemM2O+SjuX/tX3QpoSjRhuJN1bDCwxdZD5XvBtLtSCNW?=
+ =?us-ascii?Q?oph/f1Foq2/KWC4GKLl806T8txniXjUpSjSrWm1IEEvAFg7DZFQT8TJMuemX?=
+ =?us-ascii?Q?bs6hyZeJ+97wDOqZ17MVI/FtumX9vqjxyx+dTjTVDO0oZ1xLKzYwR7L6T0Oi?=
+ =?us-ascii?Q?74N9qnAOt5p0C+KNb1BGlHK90vpqU/Y8EaP+VbAr5EDPquZHfB6aIAGoB5v2?=
+ =?us-ascii?Q?0swzJIRgCoxFAYADi5xTX/x3hKn27aypxvEU6uct5khk/zAuC6dR3DbOn/WJ?=
+ =?us-ascii?Q?oSMiZYMWAHelA5L1eEoivKzNrv5tLPq2ZM5i2G3s5q6C92urI+BSe/KpmfxC?=
+ =?us-ascii?Q?/XfbVzLa8nvDr31KCZQWpwJimJt8/IbRuK9ojzY2Ya8/3yQO49e/CMKzSYSI?=
+ =?us-ascii?Q?2PQtO4WdXjeOZN5G5My1nC2+78Kvf7XkxmBCeiMvpetQsrd2cMlgE+yrIMKL?=
+ =?us-ascii?Q?mjCodeFin4t6HwwRkKpL+78vwjzMvw0YNlMBKgCysDYhumiyxA49n5/UHeN6?=
+ =?us-ascii?Q?mm31pOlo+YUIgZfPE87jfLcPd8vEn8PIq793f0QXfHlpzIrJBc+Y6WICtkRe?=
+ =?us-ascii?Q?NQgsFY41n6HarhP8PtymchthFy/ChntH9o+wx6rFL5xZOLzqrL1VzDWePwCN?=
+ =?us-ascii?Q?jGPf4r7GdZCv8UtvM3fqcMqFKu4uyqeL5Cpl0DIt6uFu5wnUdxaoxyAwetbC?=
+ =?us-ascii?Q?AM4NWVUQcujOavpZYxMbHibPdlURR2Idgf6fm4e1bUCDZelc/WWFcYjbrI8O?=
+ =?us-ascii?Q?93Ob4jLkt04TIc9nEqA6vSmgLB7khdpEISCPQPwj/SVHbw9vBnh7XjvK6AEM?=
+ =?us-ascii?Q?U5DNAa2IcsCKBFm1sqiC1sVohwwLoJjD8eR/gXZowLW/U2nKgw+WFvuaYtEJ?=
+ =?us-ascii?Q?nlBvpd+DZBuPPwPUVTgxu3sWgtEEUYVa7brvvHwcGB7LL9AGzMmRPxCJzqZr?=
+ =?us-ascii?Q?fieGU9UIuQCqzcpmtD7JYpVGYal5s6YO43bsnQ9X+g=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PR3P192MB0714.EURP192.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(52116014)(376014)(38350700014);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?aXRky40lDt/cMxie7gztgwRRl03KphcyYqpV3OqeiZgZkq2y1yz0QYjqSyUJ?=
+ =?us-ascii?Q?MnTA0iuJhNwrOuzdfGAi7x7MKAGFdmqmD7BVPWJ7ZzAh7k3rJC2o+6o4J23U?=
+ =?us-ascii?Q?nIJUMd4e90kuRx1YiCr5M5KcgwD3M51S57vp5aBaAz05y2Cw3LOHz97K55hc?=
+ =?us-ascii?Q?QSGYP0wHVO+pcuDLB5PaSuIcIklyzSsOYhcsrBFzFcMAmO4cZRwWFj8dhJbd?=
+ =?us-ascii?Q?a3FmJtwRisLpWEW4skrSphxu0NNl2CyCfJu8GmNRYz4k8e0lSh86ZQWSh98l?=
+ =?us-ascii?Q?rYFa+fbf0cY0S60M6ntQ0wWA7t/oc8JgAAdUcLlWJfFI5AXztf83nVJzfsa8?=
+ =?us-ascii?Q?AyT5yk7e3ry4SL1Wg+KdHCZ8sXJqITdpRM/owR9uKKqzNEQ4musjzpnMqoin?=
+ =?us-ascii?Q?EcRbxtzZG9zAwpB7yNwGMb+uJeuP9+CvQfW01jfrdjjuJcSRI4Gw29oFPem8?=
+ =?us-ascii?Q?JIfki4xTdIeP3tIv0fbK9+ri9mN4L9luM5zLs7MWJaGAdIvguF+iLNWJ4rhi?=
+ =?us-ascii?Q?vk+62CZkKzJjUTicRmgRTM88VRx2kLpgEl57yWbckgf61iVtgMB5b2YOStmK?=
+ =?us-ascii?Q?s5pvdeBHix1zfDXvNzdm5kByTA0REPuba24Q0/1v+iKmAE7p8sB/l/c1Fb7G?=
+ =?us-ascii?Q?MeUtP1vtWkp3OaJeP0NOTfOxOiLTTwSSm+/bYdK4lh8hR1Hpp1siHkDbnnV/?=
+ =?us-ascii?Q?ghoaJkNuRp+nUe0HoewBoqv7FO9D9zAFn9fyR761Q78iDvbVu99/4Lc9mDjp?=
+ =?us-ascii?Q?5jyri5u0ibB3xzJlcEUwSc93a4o6iKEBhctJ2iOMR+NgQ4Jns4rxXMWmxnkC?=
+ =?us-ascii?Q?1RlA0Bo8XPTu9nD7uBlNGBslzbwB436Ws4Ymm+TuEKAtFtMOdl5vJao7r8uX?=
+ =?us-ascii?Q?xkuhJMcQhhc3zvV9K+qgSsCpCyMNLOHMil15TRDsRqKCl6TN2/OMclFTF/2o?=
+ =?us-ascii?Q?P4YHJdPXyJK2U18xjrQN0iRDjCfm3EjsfrgxiFZkhL6FMtEp7AShKRtoLEXB?=
+ =?us-ascii?Q?+OW0VcHK7QZ7HtiGAYjQ2JhW35M6bFzG8DP4ylVwNzYwbAebhylJzAKTbWuT?=
+ =?us-ascii?Q?m+Blzjk+/XoHvuYpG7LpjLWaN/8OK7YrsTVWv8Zlb4FixGFYrSTUdlWGkKIy?=
+ =?us-ascii?Q?X4L/wOaX8VApOjSZQCuj9yzHFwJdabk9TNGqWLyqagwHeXAUpB43XYaXp7m3?=
+ =?us-ascii?Q?J4YX5UMJZRLkYbWHn0SYgaTjMdNRQ8HKa7gmkKeFIEb+87+i9LWiCR6rEjQT?=
+ =?us-ascii?Q?IEhew2YOD6TjBpVq8/LsCSZcI+WgTQio5lexHRzu5RqU9fZ9yJfwzHYeTpnH?=
+ =?us-ascii?Q?CeBk1EnEsJqMrFvQgfD4osmrnXKhY3i2yUwaz0sBpV7T5jwbTw31z3XgNIgE?=
+ =?us-ascii?Q?xhFhzpAquojU3f8kd+biELMY/7JYddb7zgpN81qvOQ4igPdy/oz3kIQ7EzXy?=
+ =?us-ascii?Q?ShtaGeitABWvXRaeJhqizKPbHdO62ZZnF5eF/5cqiVZcNULPP6Bo0cY1ENmQ?=
+ =?us-ascii?Q?qGnd1XZgZeGd0pQFCIFfntiEte9vG0ag9GnYbk7jwMEmR6s8yUem43aomz6i?=
+ =?us-ascii?Q?TyuyVsQWRK2UhIKe5Ov29BLntKrPmfhr8QffJRKPluC5I11TGbQsQaJYcHXo?=
+ =?us-ascii?Q?aw=3D=3D?=
+X-OriginatorOrg: witekio.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ab9514b9-f7a3-4783-ab23-08dcc8475c02
+X-MS-Exchange-CrossTenant-AuthSource: PR3P192MB0714.EURP192.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Aug 2024 16:26:39.2591
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 317e086a-301a-49af-9ea4-48a1c458b903
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: YNDiESH9La1+/97BXV2GIdtcceo4J5oMZmcHGB5bAhi8l+iJS8kXevltzLAGAbyCNV3mCSGszrOCw/g65hL69g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2P192MB2159
 
 
-The patch below does not apply to the 6.6-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
-
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
-git checkout FETCH_HEAD
-git cherry-pick -x 017d1701743657fbfaea74397727a9d2b81846b7
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024082910-depraved-thing-8c02@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
-
-Possible dependencies:
-
-017d17017436 ("smb/client: fix rdma usage in smb2_async_writev()")
-b608e2c31878 ("smb/client: remove unused rq_iter_size from struct smb_rqst")
-dc5939de82f1 ("cifs: Replace the writedata replay bool with a netfs sreq flag")
-ab58fbdeebc7 ("cifs: Use more fields from netfs_io_subrequest")
-a975a2f22cdc ("cifs: Replace cifs_writedata with a wrapper around netfs_io_subrequest")
-753b67eb630d ("cifs: Replace cifs_readdata with a wrapper around netfs_io_subrequest")
-f3dc1bdb6b0b ("cifs: Fix writeback data corruption")
-d1bba17e20d5 ("Merge tag '6.8-rc1-smb3-client-fixes' of git://git.samba.org/sfrench/cifs-2.6")
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 017d1701743657fbfaea74397727a9d2b81846b7 Mon Sep 17 00:00:00 2001
-From: Stefan Metzmacher <metze@samba.org>
-Date: Wed, 21 Aug 2024 16:31:39 +0200
-Subject: [PATCH] smb/client: fix rdma usage in smb2_async_writev()
-
-rqst.rq_iter needs to be truncated otherwise we'll
-also send the bytes into the stream socket...
-
-This is the logic behind rqst.rq_npages = 0, which was removed in
-"cifs: Change the I/O paths to use an iterator rather than a page list"
-(d08089f649a0cfb2099c8551ac47eef0cc23fdf2).
-
-Cc: stable@vger.kernel.org
-Fixes: d08089f649a0 ("cifs: Change the I/O paths to use an iterator rather than a page list")
-Reviewed-by: David Howells <dhowells@redhat.com>
-Signed-off-by: Stefan Metzmacher <metze@samba.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-
-diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
-index 63a2541d4a05..2d7e6c42cf18 100644
---- a/fs/smb/client/smb2pdu.c
-+++ b/fs/smb/client/smb2pdu.c
-@@ -4913,6 +4913,13 @@ smb2_async_writev(struct cifs_io_subrequest *wdata)
- 	if (rc)
- 		goto out;
- 
-+	rqst.rq_iov = iov;
-+	rqst.rq_iter = wdata->subreq.io_iter;
-+
-+	rqst.rq_iov[0].iov_len = total_len - 1;
-+	rqst.rq_iov[0].iov_base = (char *)req;
-+	rqst.rq_nvec += 1;
-+
- 	if (smb3_encryption_required(tcon))
- 		flags |= CIFS_TRANSFORM_REQ;
- 
-@@ -4924,6 +4931,7 @@ smb2_async_writev(struct cifs_io_subrequest *wdata)
- 	req->WriteChannelInfoOffset = 0;
- 	req->WriteChannelInfoLength = 0;
- 	req->Channel = SMB2_CHANNEL_NONE;
-+	req->Length = cpu_to_le32(io_parms->length);
- 	req->Offset = cpu_to_le64(io_parms->offset);
- 	req->DataOffset = cpu_to_le16(
- 				offsetof(struct smb2_write_req, Buffer));
-@@ -4943,7 +4951,6 @@ smb2_async_writev(struct cifs_io_subrequest *wdata)
- 	 */
- 	if (smb3_use_rdma_offload(io_parms)) {
- 		struct smbd_buffer_descriptor_v1 *v1;
--		size_t data_size = iov_iter_count(&wdata->subreq.io_iter);
- 		bool need_invalidate = server->dialect == SMB30_PROT_ID;
- 
- 		wdata->mr = smbd_register_mr(server->smbd_conn, &wdata->subreq.io_iter,
-@@ -4952,9 +4959,10 @@ smb2_async_writev(struct cifs_io_subrequest *wdata)
- 			rc = -EAGAIN;
- 			goto async_writev_out;
- 		}
-+		/* For RDMA read, I/O size is in RemainingBytes not in Length */
-+		req->RemainingBytes = req->Length;
- 		req->Length = 0;
- 		req->DataOffset = 0;
--		req->RemainingBytes = cpu_to_le32(data_size);
- 		req->Channel = SMB2_CHANNEL_RDMA_V1_INVALIDATE;
- 		if (need_invalidate)
- 			req->Channel = SMB2_CHANNEL_RDMA_V1;
-@@ -4966,30 +4974,22 @@ smb2_async_writev(struct cifs_io_subrequest *wdata)
- 		v1->offset = cpu_to_le64(wdata->mr->mr->iova);
- 		v1->token = cpu_to_le32(wdata->mr->mr->rkey);
- 		v1->length = cpu_to_le32(wdata->mr->mr->length);
-+
-+		rqst.rq_iov[0].iov_len += sizeof(*v1);
-+
-+		/*
-+		 * We keep wdata->subreq.io_iter,
-+		 * but we have to truncate rqst.rq_iter
-+		 */
-+		iov_iter_truncate(&rqst.rq_iter, 0);
- 	}
- #endif
--	iov[0].iov_len = total_len - 1;
--	iov[0].iov_base = (char *)req;
- 
--	rqst.rq_iov = iov;
--	rqst.rq_nvec = 1;
--	rqst.rq_iter = wdata->subreq.io_iter;
- 	if (test_bit(NETFS_SREQ_RETRYING, &wdata->subreq.flags))
- 		smb2_set_replay(server, &rqst);
--#ifdef CONFIG_CIFS_SMB_DIRECT
--	if (wdata->mr)
--		iov[0].iov_len += sizeof(struct smbd_buffer_descriptor_v1);
--#endif
--	cifs_dbg(FYI, "async write at %llu %u bytes iter=%zx\n",
--		 io_parms->offset, io_parms->length, iov_iter_count(&rqst.rq_iter));
- 
--#ifdef CONFIG_CIFS_SMB_DIRECT
--	/* For RDMA read, I/O size is in RemainingBytes not in Length */
--	if (!wdata->mr)
--		req->Length = cpu_to_le32(io_parms->length);
--#else
--	req->Length = cpu_to_le32(io_parms->length);
--#endif
-+	cifs_dbg(FYI, "async write at %llu %u bytes iter=%zx\n",
-+		 io_parms->offset, io_parms->length, iov_iter_count(&wdata->subreq.io_iter));
- 
- 	if (wdata->credits.value > 0) {
- 		shdr->CreditCharge = cpu_to_le16(DIV_ROUND_UP(wdata->subreq.len,
-
+https://nvd.nist.gov/vuln/detail/CVE-2021-3493
 
