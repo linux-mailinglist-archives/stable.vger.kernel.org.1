@@ -1,63 +1,66 @@
-Return-Path: <stable+bounces-71495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0B12964772
-	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 16:03:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61E74964757
+	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 15:58:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 16CCEB24062
-	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 13:54:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 13E9B1F2294E
+	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 13:58:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 804CA1AC44F;
-	Thu, 29 Aug 2024 13:54:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABFB31AE84C;
+	Thu, 29 Aug 2024 13:57:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jaVBywgb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fi8Wj1mz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3392D19306A;
-	Thu, 29 Aug 2024 13:54:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AC611AD9FA;
+	Thu, 29 Aug 2024 13:57:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724939644; cv=none; b=fIkFUUBQuZLoo0ZnjPDTn+aVgas7VxUBEG1BTkmyIsZUDxaaKqhSe6Gy3eRCoYwxh+gqvHy4KCeRR7T8jJ3jWmJCz7TqYwkTMK6+qVQqXCy1MPrUhpQqEuyoF/1XRzdFJp4qYHoKkSjkyhLpu+fB5onrmgPKEUL9s17E+qCpy14=
+	t=1724939872; cv=none; b=kig7LDTVhAT3qDx3nhtUFxyTzr7AqTChvaZb62U0HtYQUamgpqKu9qJrJMa8rE737pGJALRdZTfPKQGWmJcTVOuR0Ct/sQbM5Z1v5v/ECamqwpMrUvVMbP/+4TszU91dBHejlp1X2t4vbQY93hj+MsNC1AFZqpGFcrh1GYSsI2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724939644; c=relaxed/simple;
-	bh=BmMRbA2qEwzOz1sUZJsVWPr0HWKMM6RYtc1oRFXePTk=;
+	s=arc-20240116; t=1724939872; c=relaxed/simple;
+	bh=2SRfQnOkjrGsIdLv3up5m1cm2I8BhCPtTqy+1qCTNmE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=daye4VqG6DLbRsq3PLFAKIMJBJmGaihD65pf351mnVFdgIzCwGF+Xy0aeNXdZOaS4TAcKG/FkrZg/D1mHINR1xs5hgyVVsBiN1PvnyipDnTPsPN11N/0noCd+cEBez9/jaBOSOFeEkPrYojN6KS4zbKhqlvutc4sGlqp6uCW3e8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jaVBywgb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06A9AC4CEC3;
-	Thu, 29 Aug 2024 13:54:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724939643;
-	bh=BmMRbA2qEwzOz1sUZJsVWPr0HWKMM6RYtc1oRFXePTk=;
+	 Content-Type:Content-Disposition:In-Reply-To; b=qBtkLa1muETTswCMeSq1xKwL2eads5MKzLxiSkYUZ9lscV1nph0YHURoiTiowgH4mGQBK17T6C3dTBg4UNXXAEtdbEG5TlktrxNdEtOBCexIaKua+NbCcCiq2uDnd7hoQDxW1HgWvG2ihqukeZpNnAeu+GtTLL+uJndyVJ5qF74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fi8Wj1mz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05B08C4CEC9;
+	Thu, 29 Aug 2024 13:57:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1724939871;
+	bh=2SRfQnOkjrGsIdLv3up5m1cm2I8BhCPtTqy+1qCTNmE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jaVBywgbBNmKGTFi8oYt1lGWqsq4cAZiAXT/EsqdGc5SXMsQQl9to7z+/aBvP/jSb
-	 UAafbTtcm0PhLMBmuHniDyL/dRQuk8cO5KrBQOHS3SUo905du5581wZHArgN0iWSTx
-	 AS0Wy5ulmT8yC8hN474vrlaY79ZNh2/A73toc6uXSFwCOv0zAoAOfVu3Tdy/OjjL32
-	 MmCcmzmjrPgoMyxJ3Qaxg74yxdEjgI56UFzYDwQbn2L7CCNmtNSprde6AsKvmRcK/3
-	 rSlPoxmuBgmq9dYnUbGqCnDiQxWVXRh1FM2yY61XQnGlBz2R4qZWs8ATLECn/yquP3
-	 4mQpYMLQKV0Tw==
-Date: Thu, 29 Aug 2024 14:53:58 +0100
-From: Simon Horman <horms@kernel.org>
-To: longli@linuxonhyperv.com
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
-	Ajay Sharma <sharmaajay@microsoft.com>,
-	Konstantin Taranov <kotaranov@microsoft.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	linux-rdma@vger.kernel.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Long Li <longli@microsoft.com>,
-	stable@vger.kernel.org
-Subject: Re: [PATCH net] RDMA/mana_ib: use the correct page size for mapping
- user-mode doorbell page
-Message-ID: <20240829135358.GA2923441@kernel.org>
-References: <1724875569-12912-1-git-send-email-longli@linuxonhyperv.com>
- <1724875569-12912-2-git-send-email-longli@linuxonhyperv.com>
+	b=fi8Wj1mz+XR0Bx7TlQDx5tYh+hfgW086Ar3j9shr7Iql1qKxt1MIlhmVIf6fvTxUs
+	 rT1QD58bBimfeBwBNyvO0fNWIZRB2aqdepoEY9H3oD9gxzcdj4DEerGpndstcHFRp1
+	 mxCGJvxVnJ3P/sPfVES3NavKfyuzURRJKplGy+Co=
+Date: Thu, 29 Aug 2024 15:57:48 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Dominique Martinet <asmadeus@codewreck.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	David Howells <dhowells@redhat.com>,
+	Eric Van Hensbergen <ericvh@kernel.org>,
+	Latchesar Ionkov <lucho@ionkov.net>,
+	Christian Schoenebeck <linux_oss@crudebyte.com>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	Ilya Dryomov <idryomov@gmail.com>, Steve French <sfrench@samba.org>,
+	Paulo Alcantara <pc@manguebit.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	v9fs@lists.linux.dev, linux-afs@lists.infradead.org,
+	ceph-devel@vger.kernel.org, linux-cifs@vger.kernel.org,
+	linux-nfs@vger.kernel.org, netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.10 083/273] 9p: Fix DIO read through netfs
+Message-ID: <2024082940-unbend-purple-a400@gregkh>
+References: <20240827143833.371588371@linuxfoundation.org>
+ <20240827143836.571273512@linuxfoundation.org>
+ <Zs4v6aV4-VpIqdfy@codewreck.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,47 +69,30 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1724875569-12912-2-git-send-email-longli@linuxonhyperv.com>
+In-Reply-To: <Zs4v6aV4-VpIqdfy@codewreck.org>
 
-On Wed, Aug 28, 2024 at 01:06:09PM -0700, longli@linuxonhyperv.com wrote:
-> From: Long Li <longli@microsoft.com>
+On Wed, Aug 28, 2024 at 04:58:33AM +0900, Dominique Martinet wrote:
+> Greg Kroah-Hartman wrote on Tue, Aug 27, 2024 at 04:36:47PM +0200:
+> > From: Dominique Martinet <asmadeus@codewreck.org>
+> > 
+> > [ Upstream commit e3786b29c54cdae3490b07180a54e2461f42144c ]
 > 
-> When mapping doorbell page from user-mode, the driver should use the system
-> page size as the doorbell is allocated via mmap() from user-mode.
+> As much as I'd like to have this in, it breaks cifs so please hold this
+> patch until at least these two patches also get backported (I didn't
+> actually test the fix so not sure which is needed, *probably*
+> either/both):
+> 950b03d0f66 ("netfs: Fix missing iterator reset on retry of short read")
+> https://lore.kernel.org/r/20240823200819.532106-8-dhowells@redhat.com ("netfs, cifs: Fix handling of short DIO read")
 > 
-> Cc: stable@vger.kernel.org
-> Fixes: 0266a177631d ("RDMA/mana_ib: Add a driver for Microsoft Azure Network Adapter")
-> Signed-off-by: Long Li <longli@microsoft.com>
-> ---
->  drivers/infiniband/hw/mana/main.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+> For some reason the former got in master but the later wasn't despite
+> having been sent together, I might have missed some mails and only the
+> first might actually be required.. David, Steve please let us know if
+> just the first is enough.
 > 
-> diff --git a/drivers/infiniband/hw/mana/main.c b/drivers/infiniband/hw/mana/main.c
-> index f68f54aea820..b26c4ebec2e0 100644
-> --- a/drivers/infiniband/hw/mana/main.c
-> +++ b/drivers/infiniband/hw/mana/main.c
-> @@ -511,13 +511,13 @@ int mana_ib_mmap(struct ib_ucontext *ibcontext, struct vm_area_struct *vma)
->  	      PAGE_SHIFT;
->  	prot = pgprot_writecombine(vma->vm_page_prot);
->  
-> -	ret = rdma_user_mmap_io(ibcontext, vma, pfn, gc->db_page_size, prot,
-> +	ret = rdma_user_mmap_io(ibcontext, vma, pfn, PAGE_SIZE, prot,
->  				NULL);
->  	if (ret)
->  		ibdev_dbg(ibdev, "can't rdma_user_mmap_io ret %d\n", ret);
->  	else
->  		ibdev_dbg(ibdev, "mapped I/O pfn 0x%llx page_size %u, ret %d\n",
-> -			  pfn, gc->db_page_size, ret);
-> +			  pfn, PAGE_SIZE, ret);
+> Either way the 9p patch can wait a couple more weeks; stuck debian CI
+> (9p) is bad but cifs corruptions are worse.
 
-This is not a full review, but according to both clang-18 and gcc-14,
-this patch should also update the format specifier from %u to %lu.
+Ok, now dropped, thanks!
 
->  
->  	return ret;
->  }
-> -- 
-> 2.17.1
-> 
-> 
+greg k-h
 
