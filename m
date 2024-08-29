@@ -1,68 +1,74 @@
-Return-Path: <stable+bounces-71544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D345964D09
-	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 19:42:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D52EC964EEC
+	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 21:30:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 321821C22139
-	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 17:42:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B2901F23E7E
+	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 19:30:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFFEB1B791C;
-	Thu, 29 Aug 2024 17:42:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="urHzLm72"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3B361BB685;
+	Thu, 29 Aug 2024 19:30:02 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67F9F1B78FB;
-	Thu, 29 Aug 2024 17:42:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8668E1BA876
+	for <stable@vger.kernel.org>; Thu, 29 Aug 2024 19:30:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724953358; cv=none; b=gwKb0ddLF9ZB9xXK11vDSdE4n7tTf46jnA6FGf1C/uszGPGoYScnAg8vu3C12D/fNF4Zir9GeswxYRtBluCdG+u2z6grg13uLCNetGvFzqkWYgQB99g8vP8m9V/3va+WGlm9Jh1LflK/itmruTD08slUTEYtQG1Rt9VObQs9Kx8=
+	t=1724959802; cv=none; b=kwIkKme+68dfDljJrosTlMyuHWAuPcC6+BeeLKCjEte6j7Jcv3xXPvfJEuWeJe01rcwOltI6YkaoRcqQuO7APQEhLFM5vfpBRcShaJgEZsxS+wnJc3jftUVVWK9eLsdjVCYT7y0BcNUWeirFLrtQxhHZguHSfhra/CZ0OPMekYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724953358; c=relaxed/simple;
-	bh=wR1R0e1Zi9YKCuyt9M3VgHLYSWK2su/QlRrjtoWcppc=;
+	s=arc-20240116; t=1724959802; c=relaxed/simple;
+	bh=QjlpltM6WFPSPXwWxD309mOOafvEIZ88vhL3o9egL0g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KsKHIHBQdM7ibiwPH/pSL9k/WcfTuxOsuXkuq9z1cWNc4okq2tQRcUQKTTIplYHshWnMVaHUoLuyGlbqXMRqlnDc4lHFKcl1CSmbgH+CWV2w4dpXyXNQMOAkBvPLcqtZ/iFsiRj+AHlteG9jtrsQIL1aWLEGiNj1/uMg44KfjzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=urHzLm72; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D37AC4CEC1;
-	Thu, 29 Aug 2024 17:42:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724953358;
-	bh=wR1R0e1Zi9YKCuyt9M3VgHLYSWK2su/QlRrjtoWcppc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=urHzLm72UFR1B7nmShcEOGVpnFSl6PfYIqK/V3jPtWPlpy89zKCsy7GLfVrcobWIz
-	 v+SiX1zosX/t0XpzBqYd3GWtGMK/EIya1ThmeOfj0M6glnTzk7+kAkNx8RSOaj40uK
-	 8JUhVdJ6aQXkI9PMwpCar36PnUqK9xO1DZhGZJu+Rckc+hzbbibh0u1qrhDyl9BUa9
-	 yN0psa9zIYwkb4dM9OHFRbabe+b0TnxKHuBpFHUb0sfHJZWXtnEcLzRcozVjQ8LIVY
-	 dCkTmULMjQmi4oDOxE85M6i0Qapac8t3NfxCI+ZYHk3gqYu9A/PQQKx4N5uvzOE7dm
-	 +y1Dl1GOIDpHA==
-From: Andrii Nakryiko <andrii@kernel.org>
-To: bpf@vger.kernel.org
-Cc: linux-mm@kvack.org,
-	akpm@linux-foundation.org,
-	adobriyan@gmail.com,
-	shakeel.butt@linux.dev,
-	hannes@cmpxchg.org,
-	ak@linux.intel.com,
-	osandov@osandov.com,
-	song@kernel.org,
-	jannh@google.com,
-	linux-fsdevel@vger.kernel.org,
-	willy@infradead.org,
-	Andrii Nakryiko <andrii@kernel.org>,
+	 MIME-Version; b=heYug3Pr6eUzDXR62b02ySOnpiyz0AQhkf6WcSTv4TBs56mp3dULQRwAol6nWuH/STcrG+bWH90ZKPiYAy2fZO9wi3zV5M6d44wMl39I8z8nSBgsLn8zaNYadHrXnf13mhBPzIBkKDG4k/WvByEBpVgzO+0v49PZMzfiGxuHmqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1sjkqE-0006AV-M3
+	for stable@vger.kernel.org; Thu, 29 Aug 2024 21:29:58 +0200
+Received: from [2a0a:edc0:0:b01:1d::7b] (helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1sjkqC-003ytd-GK
+	for stable@vger.kernel.org; Thu, 29 Aug 2024 21:29:56 +0200
+Received: from dspam.blackshift.org (localhost [127.0.0.1])
+	by bjornoya.blackshift.org (Postfix) with SMTP id 2DB5F32D4DC
+	for <stable@vger.kernel.org>; Thu, 29 Aug 2024 19:29:56 +0000 (UTC)
+Received: from hardanger.blackshift.org (unknown [172.20.34.65])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by bjornoya.blackshift.org (Postfix) with ESMTPS id 940DE32D485;
+	Thu, 29 Aug 2024 19:29:52 +0000 (UTC)
+Received: from blackshift.org (localhost [::1])
+	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id bb5451c1;
+	Thu, 29 Aug 2024 19:29:51 +0000 (UTC)
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	kuba@kernel.org,
+	linux-can@vger.kernel.org,
+	kernel@pengutronix.de,
+	Simon Arlott <simon@octiron.net>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
 	stable@vger.kernel.org,
-	Eduard Zingerman <eddyz87@gmail.com>
-Subject: [PATCH v7 bpf-next 01/10] lib/buildid: harden build ID parsing logic
-Date: Thu, 29 Aug 2024 10:42:23 -0700
-Message-ID: <20240829174232.3133883-2-andrii@kernel.org>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20240829174232.3133883-1-andrii@kernel.org>
-References: <20240829174232.3133883-1-andrii@kernel.org>
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH net 12/13] can: mcp251x: fix deadlock if an interrupt occurs during mcp251x_open
+Date: Thu, 29 Aug 2024 21:20:45 +0200
+Message-ID: <20240829192947.1186760-13-mkl@pengutronix.de>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240829192947.1186760-1-mkl@pengutronix.de>
+References: <20240829192947.1186760-1-mkl@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -70,170 +76,59 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
 
-Harden build ID parsing logic, adding explicit READ_ONCE() where it's
-important to have a consistent value read and validated just once.
+From: Simon Arlott <simon@octiron.net>
 
-Also, as pointed out by Andi Kleen, we need to make sure that entire ELF
-note is within a page bounds, so move the overflow check up and add an
-extra note_size boundaries validation.
+The mcp251x_hw_wake() function is called with the mpc_lock mutex held and
+disables the interrupt handler so that no interrupts can be processed while
+waking the device. If an interrupt has already occurred then waiting for
+the interrupt handler to complete will deadlock because it will be trying
+to acquire the same mutex.
 
-Fixes tag below points to the code that moved this code into
-lib/buildid.c, and then subsequently was used in perf subsystem, making
-this code exposed to perf_event_open() users in v5.12+.
+CPU0                           CPU1
+----                           ----
+mcp251x_open()
+ mutex_lock(&priv->mcp_lock)
+  request_threaded_irq()
+                               <interrupt>
+                               mcp251x_can_ist()
+                                mutex_lock(&priv->mcp_lock)
+  mcp251x_hw_wake()
+   disable_irq() <-- deadlock
 
+Use disable_irq_nosync() instead because the interrupt handler does
+everything while holding the mutex so it doesn't matter if it's still
+running.
+
+Fixes: 8ce8c0abcba3 ("can: mcp251x: only reset hardware as required")
+Signed-off-by: Simon Arlott <simon@octiron.net>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: Eduard Zingerman <eddyz87@gmail.com>
-Reviewed-by: Jann Horn <jannh@google.com>
-Suggested-by: Andi Kleen <ak@linux.intel.com>
-Fixes: bd7525dacd7e ("bpf: Move stack_map_get_build_id into lib")
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/all/4fc08687-1d80-43fe-9f0d-8ef8475e75f6@0882a8b5-c6c3-11e9-b005-00805fc181fe.uuid.home.arpa
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- lib/buildid.c | 76 +++++++++++++++++++++++++++++----------------------
- 1 file changed, 44 insertions(+), 32 deletions(-)
+ drivers/net/can/spi/mcp251x.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/lib/buildid.c b/lib/buildid.c
-index e02b5507418b..26007cc99a38 100644
---- a/lib/buildid.c
-+++ b/lib/buildid.c
-@@ -18,31 +18,37 @@ static int parse_build_id_buf(unsigned char *build_id,
- 			      const void *note_start,
- 			      Elf32_Word note_size)
- {
--	Elf32_Word note_offs = 0, new_offs;
--
--	while (note_offs + sizeof(Elf32_Nhdr) < note_size) {
--		Elf32_Nhdr *nhdr = (Elf32_Nhdr *)(note_start + note_offs);
-+	const char note_name[] = "GNU";
-+	const size_t note_name_sz = sizeof(note_name);
-+	u64 note_off = 0, new_off, name_sz, desc_sz;
-+	const char *data;
-+
-+	while (note_off + sizeof(Elf32_Nhdr) < note_size &&
-+	       note_off + sizeof(Elf32_Nhdr) > note_off /* overflow */) {
-+		Elf32_Nhdr *nhdr = (Elf32_Nhdr *)(note_start + note_off);
-+
-+		name_sz = READ_ONCE(nhdr->n_namesz);
-+		desc_sz = READ_ONCE(nhdr->n_descsz);
-+
-+		new_off = note_off + sizeof(Elf32_Nhdr);
-+		if (check_add_overflow(new_off, ALIGN(name_sz, 4), &new_off) ||
-+		    check_add_overflow(new_off, ALIGN(desc_sz, 4), &new_off) ||
-+		    new_off > note_size)
-+			break;
+diff --git a/drivers/net/can/spi/mcp251x.c b/drivers/net/can/spi/mcp251x.c
+index 3b8736ff0345..ec5c64006a16 100644
+--- a/drivers/net/can/spi/mcp251x.c
++++ b/drivers/net/can/spi/mcp251x.c
+@@ -752,7 +752,7 @@ static int mcp251x_hw_wake(struct spi_device *spi)
+ 	int ret;
  
- 		if (nhdr->n_type == BUILD_ID &&
--		    nhdr->n_namesz == sizeof("GNU") &&
--		    !strcmp((char *)(nhdr + 1), "GNU") &&
--		    nhdr->n_descsz > 0 &&
--		    nhdr->n_descsz <= BUILD_ID_SIZE_MAX) {
--			memcpy(build_id,
--			       note_start + note_offs +
--			       ALIGN(sizeof("GNU"), 4) + sizeof(Elf32_Nhdr),
--			       nhdr->n_descsz);
--			memset(build_id + nhdr->n_descsz, 0,
--			       BUILD_ID_SIZE_MAX - nhdr->n_descsz);
-+		    name_sz == note_name_sz &&
-+		    memcmp(nhdr + 1, note_name, note_name_sz) == 0 &&
-+		    desc_sz > 0 && desc_sz <= BUILD_ID_SIZE_MAX) {
-+			data = note_start + note_off + ALIGN(note_name_sz, 4);
-+			memcpy(build_id, data, desc_sz);
-+			memset(build_id + desc_sz, 0, BUILD_ID_SIZE_MAX - desc_sz);
- 			if (size)
--				*size = nhdr->n_descsz;
-+				*size = desc_sz;
- 			return 0;
- 		}
--		new_offs = note_offs + sizeof(Elf32_Nhdr) +
--			ALIGN(nhdr->n_namesz, 4) + ALIGN(nhdr->n_descsz, 4);
--		if (new_offs <= note_offs)  /* overflow */
--			break;
--		note_offs = new_offs;
-+
-+		note_off = new_off;
- 	}
+ 	/* Force wakeup interrupt to wake device, but don't execute IST */
+-	disable_irq(spi->irq);
++	disable_irq_nosync(spi->irq);
+ 	mcp251x_write_2regs(spi, CANINTE, CANINTE_WAKIE, CANINTF_WAKIF);
  
- 	return -EINVAL;
-@@ -71,7 +77,7 @@ static int get_build_id_32(const void *page_addr, unsigned char *build_id,
- {
- 	Elf32_Ehdr *ehdr = (Elf32_Ehdr *)page_addr;
- 	Elf32_Phdr *phdr;
--	int i;
-+	__u32 i, phnum;
- 
- 	/*
- 	 * FIXME
-@@ -80,18 +86,19 @@ static int get_build_id_32(const void *page_addr, unsigned char *build_id,
- 	 */
- 	if (ehdr->e_phoff != sizeof(Elf32_Ehdr))
- 		return -EINVAL;
-+
-+	phnum = READ_ONCE(ehdr->e_phnum);
- 	/* only supports phdr that fits in one page */
--	if (ehdr->e_phnum >
--	    (PAGE_SIZE - sizeof(Elf32_Ehdr)) / sizeof(Elf32_Phdr))
-+	if (phnum > (PAGE_SIZE - sizeof(Elf32_Ehdr)) / sizeof(Elf32_Phdr))
- 		return -EINVAL;
- 
- 	phdr = (Elf32_Phdr *)(page_addr + sizeof(Elf32_Ehdr));
- 
--	for (i = 0; i < ehdr->e_phnum; ++i) {
-+	for (i = 0; i < phnum; ++i) {
- 		if (phdr[i].p_type == PT_NOTE &&
- 		    !parse_build_id(page_addr, build_id, size,
--				    page_addr + phdr[i].p_offset,
--				    phdr[i].p_filesz))
-+				    page_addr + READ_ONCE(phdr[i].p_offset),
-+				    READ_ONCE(phdr[i].p_filesz)))
- 			return 0;
- 	}
- 	return -EINVAL;
-@@ -103,7 +110,7 @@ static int get_build_id_64(const void *page_addr, unsigned char *build_id,
- {
- 	Elf64_Ehdr *ehdr = (Elf64_Ehdr *)page_addr;
- 	Elf64_Phdr *phdr;
--	int i;
-+	__u32 i, phnum;
- 
- 	/*
- 	 * FIXME
-@@ -112,18 +119,19 @@ static int get_build_id_64(const void *page_addr, unsigned char *build_id,
- 	 */
- 	if (ehdr->e_phoff != sizeof(Elf64_Ehdr))
- 		return -EINVAL;
-+
-+	phnum = READ_ONCE(ehdr->e_phnum);
- 	/* only supports phdr that fits in one page */
--	if (ehdr->e_phnum >
--	    (PAGE_SIZE - sizeof(Elf64_Ehdr)) / sizeof(Elf64_Phdr))
-+	if (phnum > (PAGE_SIZE - sizeof(Elf64_Ehdr)) / sizeof(Elf64_Phdr))
- 		return -EINVAL;
- 
- 	phdr = (Elf64_Phdr *)(page_addr + sizeof(Elf64_Ehdr));
- 
--	for (i = 0; i < ehdr->e_phnum; ++i) {
-+	for (i = 0; i < phnum; ++i) {
- 		if (phdr[i].p_type == PT_NOTE &&
- 		    !parse_build_id(page_addr, build_id, size,
--				    page_addr + phdr[i].p_offset,
--				    phdr[i].p_filesz))
-+				    page_addr + READ_ONCE(phdr[i].p_offset),
-+				    READ_ONCE(phdr[i].p_filesz)))
- 			return 0;
- 	}
- 	return -EINVAL;
-@@ -152,6 +160,10 @@ int build_id_parse(struct vm_area_struct *vma, unsigned char *build_id,
- 	page = find_get_page(vma->vm_file->f_mapping, 0);
- 	if (!page)
- 		return -EFAULT;	/* page not mapped */
-+	if (!PageUptodate(page)) {
-+		put_page(page);
-+		return -EFAULT;
-+	}
- 
- 	ret = -EINVAL;
- 	page_addr = kmap_local_page(page);
+ 	/* Wait for oscillator startup timer after wake up */
 -- 
-2.43.5
+2.45.2
+
 
 
