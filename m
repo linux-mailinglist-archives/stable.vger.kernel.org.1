@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-71533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71534-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEE08964B9B
-	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 18:24:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B721E964B9C
+	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 18:24:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9434A1F21418
-	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 16:24:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB6F11C225C4
+	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 16:24:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 960F41B143E;
-	Thu, 29 Aug 2024 16:24:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34A0F1B140A;
+	Thu, 29 Aug 2024 16:24:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FBuMJgjh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jSbVltL6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 579621B0117
-	for <stable@vger.kernel.org>; Thu, 29 Aug 2024 16:24:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E557338F9C
+	for <stable@vger.kernel.org>; Thu, 29 Aug 2024 16:24:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724948653; cv=none; b=YfDI39BIlzfhFea+yxC+7/oxhN2U85DzoYRQnkRRgIjiy/uokkhxegNwPy1pu1ie5azcZokHKbb7r/luvpoXoEBvSFY+zU8uUIhiHjZFc8fiVSUJXpfOpyisEh14oijmBq8PGv3cq39CZgF80URuxmp7G0s7jWRCC3+Pf8vLpr4=
+	t=1724948662; cv=none; b=pP/59SC2D09g724oOmlCgHQj5oolZjNhCTFqBEWQy+ZQh+U4vqF1DeoRNFp2t5rdenP1x3/YlU7jpnRVmt9ducrtZfqhpNds6AXpsA8utbCw0o6+Prh1Qi7BNqBK+9ptke66IjPLFQGGJAErVpucWuxAzOTV+5MmrTDXVpJzd4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724948653; c=relaxed/simple;
-	bh=f7k2RFFNI4rYawBKgZ9GVW3htA3KUVzIjVPTHpETdKc=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Ky1dbwIWLkQ1kUGMp6Uf3vhZpGk97cONjiYycEs45reJiKxOEPFVdd9JyaGKtAxXLttYDaOEsEFwtzSkjD1soOd77x0s6qM5KqpMqbZyY4C/pQ84rCuNDbmn/LZVQv18llj/QjJLGMeLaVq8lE9/D1Jnnw2lQpAYYjfYYRfWsg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FBuMJgjh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CF5EC4CEC1;
-	Thu, 29 Aug 2024 16:24:12 +0000 (UTC)
+	s=arc-20240116; t=1724948662; c=relaxed/simple;
+	bh=bjECiSFKhi33PYw6uMYiUH8DUz81W/Z+lrj5OmTI+C8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=FLj2kAqAav0ysCX1kdfWu6SUoxWTNQDxU+wkcejmBOGLE5le9jhN0Oxao0IBLgbV6+5nRh9J/wvc/niLo4+grhPIa3o6ySZilx1wX/9FqfM1P168sIsrq8gPpU/xzJP7zHY7HWtj//ERdaFjJCnyTn3L20CM/a6MvHKhyT+nJW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jSbVltL6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B13EC4CEC1;
+	Thu, 29 Aug 2024 16:24:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724948652;
-	bh=f7k2RFFNI4rYawBKgZ9GVW3htA3KUVzIjVPTHpETdKc=;
+	s=korg; t=1724948661;
+	bh=bjECiSFKhi33PYw6uMYiUH8DUz81W/Z+lrj5OmTI+C8=;
 	h=Subject:To:Cc:From:Date:From;
-	b=FBuMJgjhtmNM4rfeR2jdD9sNz8M5L/J0psfQlGGXP6gp+nDyICHqvdzS5i1Kd1Ifg
-	 YsJo0uclXfvL40948nhO4yA/59/1VB4XeEaIg6yf0zkqtPjW39A8e017mIM/L3G89u
-	 4FN/coGMazFcYLPdXCRNu1LRbbyZNUlurtKQeDp8=
-Subject: FAILED: patch "[PATCH] smb/client: fix rdma usage in smb2_async_writev()" failed to apply to 6.10-stable tree
+	b=jSbVltL6N+0orrsTLXTQ0srR9vqhAOl2R3z5zenCW2pSkgMWWW/BFpOHgqBH42fib
+	 oHQqpBszIHAcSKhVcyIU971lKpF4LWAhaAKILV/qGGOwtrlvwvaB57rdHd4QCAq90u
+	 hrL5yrOGbUsiwVViWTC+febkHCsJPgAfVuIRhizQ=
+Subject: FAILED: patch "[PATCH] smb/client: fix rdma usage in smb2_async_writev()" failed to apply to 6.6-stable tree
 To: metze@samba.org,dhowells@redhat.com,stfrench@microsoft.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Thu, 29 Aug 2024 18:24:09 +0200
-Message-ID: <2024082909-everyday-familiar-e920@gregkh>
+Date: Thu, 29 Aug 2024 18:24:10 +0200
+Message-ID: <2024082910-depraved-thing-8c02@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,30 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.10-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x 017d1701743657fbfaea74397727a9d2b81846b7
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024082909-everyday-familiar-e920@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024082910-depraved-thing-8c02@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
 017d17017436 ("smb/client: fix rdma usage in smb2_async_writev()")
 b608e2c31878 ("smb/client: remove unused rq_iter_size from struct smb_rqst")
+dc5939de82f1 ("cifs: Replace the writedata replay bool with a netfs sreq flag")
+ab58fbdeebc7 ("cifs: Use more fields from netfs_io_subrequest")
+a975a2f22cdc ("cifs: Replace cifs_writedata with a wrapper around netfs_io_subrequest")
+753b67eb630d ("cifs: Replace cifs_readdata with a wrapper around netfs_io_subrequest")
+f3dc1bdb6b0b ("cifs: Fix writeback data corruption")
+d1bba17e20d5 ("Merge tag '6.8-rc1-smb3-client-fixes' of git://git.samba.org/sfrench/cifs-2.6")
 
 thanks,
 
