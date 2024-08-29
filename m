@@ -1,217 +1,123 @@
-Return-Path: <stable+bounces-71466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD478963EC2
-	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 10:37:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E9E3963F55
+	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 11:00:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F20D21C242B4
-	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 08:37:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43E3628426D
+	for <lists+stable@lfdr.de>; Thu, 29 Aug 2024 09:00:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BE4118C036;
-	Thu, 29 Aug 2024 08:37:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24A7418CC11;
+	Thu, 29 Aug 2024 09:00:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="R90Bo+6E"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z1c4bfN9"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D0C83D6A;
-	Thu, 29 Aug 2024 08:37:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD699158541;
+	Thu, 29 Aug 2024 09:00:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724920626; cv=none; b=Ij/B2jBikwp91i8uph8Y0d762VOAF83rAXiTZBtvKCVh/sPaIRqnBkqaySU1jqoPAvgfIQIW9YzFSqbyE4vLYD7E0dPrvY4WhaFKT6QIZczAvqMiOaqLq2OMPT1qRMwuAlrx91M2vQt3ePLDrkG4PbhxwXiAXO1oisnR51iMp9A=
+	t=1724922045; cv=none; b=oP2OWuO5CbUTMRM7G77Npu+flg2Z4IikJIZzI3f6ckfkpSCaodK4cLurSOc1hgRWinjof8oUGxIttgaNuB9KSfT+gNKgR6sLIxO1le8Hqq7Eyyy6ThDkY1iQ9fYw+0Ompr7W8X/OuNaHLRCkwjJEBplfXs4zFEUuO5J0MeFwpbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724920626; c=relaxed/simple;
-	bh=1h+WeBtsVytlCUWzdY+Woq+1e7PbLK94rU8EPRzpGn4=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=H2hhGwWR7rLfeQ5pZCdX6C8esLINw+UaXkeCgtvrKT5hlewn58/doeKni0+djwEemZxiovRnKv9mik7okWtI6rMkco3lewB9qfh9gAn/9CnqzfIbFqWARQ3plZf4mgEro484BWXiDSk2GNW8jkla540c7rS5ouXETI2baxBbMEQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=R90Bo+6E; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: by linux.microsoft.com (Postfix, from userid 1099)
-	id 1725C20B7165; Thu, 29 Aug 2024 01:37:04 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 1725C20B7165
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1724920624;
-	bh=wzjuHwdSxz3Gg3y22vDYhlPDTd1A5vSqMohovQuwOJw=;
-	h=From:To:Cc:Subject:Date:From;
-	b=R90Bo+6EIb9pbEgDLB+fmVPRQs3swvRrJ1NwMhk2/G5ZbhVmgwveJaSf9LWFkngtz
-	 h8ahqnw+mcuDtipo+9Egqxiz3hs2FDZBZVM+sWfNk5gZw1f7SlJOZnBFGW7BK07KV8
-	 1zY3J++NsTulZjtE2HI47pt1QHCVYRZ7PA0Q7p7M=
-From: Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
-To: kys@microsoft.com,
-	haiyangz@microsoft.com,
-	wei.liu@kernel.org,
-	decui@microsoft.com,
-	davem@davemloft.net,
-	longli@microsoft.com,
-	ssengar@linux.microsoft.com,
-	linux-hyperv@vger.kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-rdma@vger.kernel.org
-Cc: schakrabarti@microsoft.com,
-	Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>,
-	stable@vger.kernel.org
-Subject: [PATCH V3 net] net: mana: Fix error handling in mana_create_txq/rxq's NAPI cleanup
-Date: Thu, 29 Aug 2024 01:36:50 -0700
-Message-Id: <1724920610-15546-1-git-send-email-schakrabarti@linux.microsoft.com>
-X-Mailer: git-send-email 1.8.3.1
+	s=arc-20240116; t=1724922045; c=relaxed/simple;
+	bh=6FlULx1l5ZzbnHr7od9Cx8fS3FJKI2YOaUqcI6QMaZk=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=QKU2PtZu8vwIhTrtCxnBqcQwsbwu7rZR+FfEb+hwX+8Ag/xVqKhAEYdEe/631rccReGerOSGR6/mCu6s7ZTHnTgLHtYBQj0OGP2OqkFzWr/ZBmP8XsinZFlMdw1MqQhPfEx17Lul0WM8l3UY9hME/ESRFfQqkfut3jSPdGdLjX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z1c4bfN9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 347D0C4CEC3;
+	Thu, 29 Aug 2024 09:00:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724922045;
+	bh=6FlULx1l5ZzbnHr7od9Cx8fS3FJKI2YOaUqcI6QMaZk=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=Z1c4bfN9u42xl5To8HSB36ylnLJeSgoSk2Snuc/Iw93J6HrGQNp9LHfERvscNDf5q
+	 ZWCDek7aoeLnRrxX2rf/1l1rEL8A0+nsBpDfJrsrVj2qSDaTabEhMTBYq8cmur9S7X
+	 2Zj6wkakEOd3tQ5WOnmgHYT+hGBxkgEL1uhB5qMjgn3CyAHeOPtlb6aGVFH/Zc6VLp
+	 dWDIusAb2rXlI/WhuVpWInJFVLyWjOrj1T4T5dHQVM8jD5ZHGB2/1EYhA0Uv7cSTNP
+	 T8e7RRi0O0Wscgh/IWfw5wTSAVtkCi74skAvtRGQ0jtXhJTOwzq07smhtvBRgw1tT2
+	 qER1yxcalTDrA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id AE3A03809A80;
+	Thu, 29 Aug 2024 09:00:46 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v2 00/15] mptcp: more fixes for the in-kernel PM
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <172492204527.1873855.649951306821371963.git-patchwork-notify@kernel.org>
+Date: Thu, 29 Aug 2024 09:00:45 +0000
+References: <20240828-net-mptcp-more-pm-fix-v2-0-7f11b283fff7@kernel.org>
+In-Reply-To: <20240828-net-mptcp-more-pm-fix-v2-0-7f11b283fff7@kernel.org>
+To: Matthieu Baerts <matttbe@kernel.org>
+Cc: mptcp@lists.linux.dev, martineau@kernel.org, geliang@kernel.org,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ shuah@kernel.org, fw@strlen.de, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ stable@vger.kernel.org, arinc.unal@arinc9.com,
+ syzbot+455d38ecd5f655fc45cf@syzkaller.appspotmail.com
 
-Currently napi_disable() gets called during rxq and txq cleanup,
-even before napi is enabled and hrtimer is initialized. It causes
-kernel panic.
+Hello:
 
-? page_fault_oops+0x136/0x2b0
-  ? page_counter_cancel+0x2e/0x80
-  ? do_user_addr_fault+0x2f2/0x640
-  ? refill_obj_stock+0xc4/0x110
-  ? exc_page_fault+0x71/0x160
-  ? asm_exc_page_fault+0x27/0x30
-  ? __mmdrop+0x10/0x180
-  ? __mmdrop+0xec/0x180
-  ? hrtimer_active+0xd/0x50
-  hrtimer_try_to_cancel+0x2c/0xf0
-  hrtimer_cancel+0x15/0x30
-  napi_disable+0x65/0x90
-  mana_destroy_rxq+0x4c/0x2f0
-  mana_create_rxq.isra.0+0x56c/0x6d0
-  ? mana_uncfg_vport+0x50/0x50
-  mana_alloc_queues+0x21b/0x320
-  ? skb_dequeue+0x5f/0x80
+This series was applied to netdev/net.git (main)
+by Paolo Abeni <pabeni@redhat.com>:
 
-Cc: stable@vger.kernel.org
-Fixes: e1b5683ff62e ("net: mana: Move NAPI from EQ to CQ")
-Signed-off-by: Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
-Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
-Reviewed-by: Shradha Gupta <shradhagupta@linux.microsoft.com>
----
-V3 -> V2:
-Instead of using napi internal attribute, using an atomic
-attribute to verify napi is initialized for a particular txq / rxq.
+On Wed, 28 Aug 2024 08:14:23 +0200 you wrote:
+> Here is a new batch of fixes for the MPTCP in-kernel path-manager:
+> 
+> Patch 1 ensures the address ID is set to 0 when the path-manager sends
+> an ADD_ADDR for the address of the initial subflow. The same fix is
+> applied when a new subflow is created re-using this special address. A
+> fix for v6.0.
+> 
+> [...]
 
-V2 -> V1:
-Addressed the comment on cleaning up napi for the queues,
-where queue creation was successful.
----
- drivers/net/ethernet/microsoft/mana/mana_en.c | 30 ++++++++++++-------
- include/net/mana/mana.h                       |  4 +++
- 2 files changed, 24 insertions(+), 10 deletions(-)
+Here is the summary with links:
+  - [net,v2,01/15] mptcp: pm: reuse ID 0 after delete and re-add
+    https://git.kernel.org/netdev/net/c/8b8ed1b429f8
+  - [net,v2,02/15] mptcp: pm: fix RM_ADDR ID for the initial subflow
+    https://git.kernel.org/netdev/net/c/87b5896f3f78
+  - [net,v2,03/15] selftests: mptcp: join: check removing ID 0 endpoint
+    https://git.kernel.org/netdev/net/c/5f94b08c0012
+  - [net,v2,04/15] mptcp: pm: send ACK on an active subflow
+    https://git.kernel.org/netdev/net/c/c07cc3ed895f
+  - [net,v2,05/15] mptcp: pm: skip connecting to already established sf
+    https://git.kernel.org/netdev/net/c/bc19ff57637f
+  - [net,v2,06/15] mptcp: pm: reset MPC endp ID when re-added
+    https://git.kernel.org/netdev/net/c/dce1c6d1e925
+  - [net,v2,07/15] selftests: mptcp: join: check re-adding init endp with != id
+    https://git.kernel.org/netdev/net/c/1c2326fcae4f
+  - [net,v2,08/15] selftests: mptcp: join: no extra msg if no counter
+    https://git.kernel.org/netdev/net/c/76a2d8394cc1
+  - [net,v2,09/15] mptcp: pm: do not remove already closed subflows
+    https://git.kernel.org/netdev/net/c/58e1b66b4e4b
+  - [net,v2,10/15] mptcp: pm: fix ID 0 endp usage after multiple re-creations
+    https://git.kernel.org/netdev/net/c/9366922adc6a
+  - [net,v2,11/15] selftests: mptcp: join: check re-re-adding ID 0 endp
+    https://git.kernel.org/netdev/net/c/d397d7246c11
+  - [net,v2,12/15] mptcp: avoid duplicated SUB_CLOSED events
+    https://git.kernel.org/netdev/net/c/d82809b6c5f2
+  - [net,v2,13/15] selftests: mptcp: join: validate event numbers
+    https://git.kernel.org/netdev/net/c/20ccc7c5f7a3
+  - [net,v2,14/15] mptcp: pm: ADD_ADDR 0 is not a new address
+    https://git.kernel.org/netdev/net/c/57f86203b41c
+  - [net,v2,15/15] selftests: mptcp: join: check re-re-adding ID 0 signal
+    https://git.kernel.org/netdev/net/c/f18fa2abf810
 
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-index 39f56973746d..bd303c89cfa6 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -1872,10 +1872,12 @@ static void mana_destroy_txq(struct mana_port_context *apc)
- 
- 	for (i = 0; i < apc->num_queues; i++) {
- 		napi = &apc->tx_qp[i].tx_cq.napi;
--		napi_synchronize(napi);
--		napi_disable(napi);
--		netif_napi_del(napi);
--
-+		if (atomic_read(&apc->tx_qp[i].txq.napi_initialized)) {
-+			napi_synchronize(napi);
-+			napi_disable(napi);
-+			netif_napi_del(napi);
-+			atomic_set(&apc->tx_qp[i].txq.napi_initialized, 0);
-+		}
- 		mana_destroy_wq_obj(apc, GDMA_SQ, apc->tx_qp[i].tx_object);
- 
- 		mana_deinit_cq(apc, &apc->tx_qp[i].tx_cq);
-@@ -1931,6 +1933,7 @@ static int mana_create_txq(struct mana_port_context *apc,
- 		txq->ndev = net;
- 		txq->net_txq = netdev_get_tx_queue(net, i);
- 		txq->vp_offset = apc->tx_vp_offset;
-+		atomic_set(&txq->napi_initialized, 0);
- 		skb_queue_head_init(&txq->pending_skbs);
- 
- 		memset(&spec, 0, sizeof(spec));
-@@ -1997,6 +2000,7 @@ static int mana_create_txq(struct mana_port_context *apc,
- 
- 		netif_napi_add_tx(net, &cq->napi, mana_poll);
- 		napi_enable(&cq->napi);
-+		atomic_set(&txq->napi_initialized, 1);
- 
- 		mana_gd_ring_cq(cq->gdma_cq, SET_ARM_BIT);
- 	}
-@@ -2023,14 +2027,18 @@ static void mana_destroy_rxq(struct mana_port_context *apc,
- 
- 	napi = &rxq->rx_cq.napi;
- 
--	if (validate_state)
--		napi_synchronize(napi);
-+	if (atomic_read(&rxq->napi_initialized)) {
- 
--	napi_disable(napi);
-+		if (validate_state)
-+			napi_synchronize(napi);
- 
--	xdp_rxq_info_unreg(&rxq->xdp_rxq);
-+		napi_disable(napi);
- 
--	netif_napi_del(napi);
-+		netif_napi_del(napi);
-+		atomic_set(&rxq->napi_initialized, 0);
-+	}
-+
-+	xdp_rxq_info_unreg(&rxq->xdp_rxq);
- 
- 	mana_destroy_wq_obj(apc, GDMA_RQ, rxq->rxobj);
- 
-@@ -2199,6 +2207,7 @@ static struct mana_rxq *mana_create_rxq(struct mana_port_context *apc,
- 	rxq->num_rx_buf = RX_BUFFERS_PER_QUEUE;
- 	rxq->rxq_idx = rxq_idx;
- 	rxq->rxobj = INVALID_MANA_HANDLE;
-+	atomic_set(&rxq->napi_initialized, 0);
- 
- 	mana_get_rxbuf_cfg(ndev->mtu, &rxq->datasize, &rxq->alloc_size,
- 			   &rxq->headroom);
-@@ -2286,6 +2295,8 @@ static struct mana_rxq *mana_create_rxq(struct mana_port_context *apc,
- 
- 	napi_enable(&cq->napi);
- 
-+	atomic_set(&rxq->napi_initialized, 1);
-+
- 	mana_gd_ring_cq(cq->gdma_cq, SET_ARM_BIT);
- out:
- 	if (!err)
-@@ -2336,7 +2347,6 @@ static void mana_destroy_vport(struct mana_port_context *apc)
- 		rxq = apc->rxqs[rxq_idx];
- 		if (!rxq)
- 			continue;
--
- 		mana_destroy_rxq(apc, rxq, true);
- 		apc->rxqs[rxq_idx] = NULL;
- 	}
-diff --git a/include/net/mana/mana.h b/include/net/mana/mana.h
-index 7caa334f4888..be75abd63dc8 100644
---- a/include/net/mana/mana.h
-+++ b/include/net/mana/mana.h
-@@ -98,6 +98,8 @@ struct mana_txq {
- 
- 	atomic_t pending_sends;
- 
-+	atomic_t napi_initialized;
-+
- 	struct mana_stats_tx stats;
- };
- 
-@@ -335,6 +337,8 @@ struct mana_rxq {
- 	bool xdp_flush;
- 	int xdp_rc; /* XDP redirect return code */
- 
-+	atomic_t napi_initialized;
-+
- 	struct page_pool *page_pool;
- 
- 	/* MUST BE THE LAST MEMBER:
+You are awesome, thank you!
 -- 
-2.34.1
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
 
 
