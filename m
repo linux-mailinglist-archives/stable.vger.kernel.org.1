@@ -1,194 +1,87 @@
-Return-Path: <stable+bounces-71562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71564-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3D0E9658F6
-	for <lists+stable@lfdr.de>; Fri, 30 Aug 2024 09:45:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D2EC965951
+	for <lists+stable@lfdr.de>; Fri, 30 Aug 2024 10:02:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E44FD1C24C0D
-	for <lists+stable@lfdr.de>; Fri, 30 Aug 2024 07:45:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CCBB8B25138
+	for <lists+stable@lfdr.de>; Fri, 30 Aug 2024 08:02:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A904166F15;
-	Fri, 30 Aug 2024 07:44:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE355165F07;
+	Fri, 30 Aug 2024 08:02:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="RQ3uFd4Z"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qtG8fV2P"
 X-Original-To: stable@vger.kernel.org
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D54F7166F28;
-	Fri, 30 Aug 2024 07:44:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A884414B96F;
+	Fri, 30 Aug 2024 08:02:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725003881; cv=none; b=ISCavlD76bvI2v8sySjI5pvQWxxB3AEqXUhflBXKmeMvKGu5KM0gkeocg3Vkl9yLAoBvG17+JbOXBH2GGJzik3jVeCw1RWUYG7yx9dLYvUg669oiJChAgylv+G/Dknlcv/iWeGUyU87IMfNvVFmIMHNRwerp/zRrCJXMbUcDRYA=
+	t=1725004928; cv=none; b=U4iiEbB3fM/UhgerhBgCMPIC6srq28/22Jl/JgBLLuS6N0H0S9SD34a0KMCkItNsaarYgDD3hcy9KtfyWc5lyC+3w+NOO3hsD/HPcda82W220QCj/KrT532KRoMpY3xGPSqZB1+dhbf1Ww9eSj2/T9le/6h+yGISD24Z3+8/FYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725003881; c=relaxed/simple;
-	bh=FUvLcMpGL4nSbEl0PsICLAPhs8DuZOyUCWFR23DfrcI=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MNFVLvj+DOoLKskke2ouhFkeqF09jkJU02nAHiZYtrIzkChdkqBhQbZloCf3OzUTG5xHr0A8IAt0ldKiLHrktXGw6nfNBCL+PcLKHZuk05ZSHTv7xKAOsxEVsxQ5BJyOIG6lr84hbKfAYmLD8ePJDKKIw4Kj3mZPKyZwUCXmWa4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=RQ3uFd4Z; arc=none smtp.client-ip=60.244.123.138
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: b026a2b866a311ef8593d301e5c8a9c0-20240830
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=fxSkhFbqT3Lmzn9GYCBNfN/kI1le+L441+1Sv9CAAxQ=;
-	b=RQ3uFd4ZikDWEVLeJOxiiqIMAKOMjND5j7o85ep5ZwsXJGEzgB90HtKSHaiRuDwnpvuWFsEN4hncrA/eMYe9xDdh7akWW9czoggdrn4mmnmQO9SLYVc1Hb41aV4qjgfnJB62lfe2JHRTbbHeY+vYHTdYFl/kNpBSc0JRBZUe138=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.41,REQID:85de5f81-b3ee-4d15-8082-ec2640497bc1,IP:0,U
-	RL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-	N:release,TS:-25
-X-CID-META: VersionHash:6dc6a47,CLOUDID:da8c0a15-737d-40b3-9394-11d4ad6e91a1,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-	RL:11|1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES
-	:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULN
-X-UUID: b026a2b866a311ef8593d301e5c8a9c0-20240830
-Received: from mtkmbs13n1.mediatek.inc [(172.21.101.193)] by mailgw01.mediatek.com
-	(envelope-from <peter.wang@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 2082730637; Fri, 30 Aug 2024 15:44:29 +0800
-Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
- MTKMBS09N1.mediatek.inc (172.21.101.35) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Fri, 30 Aug 2024 15:44:28 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Fri, 30 Aug 2024 15:44:28 +0800
-From: <peter.wang@mediatek.com>
-To: <linux-scsi@vger.kernel.org>, <martin.petersen@oracle.com>,
-	<avri.altman@wdc.com>, <alim.akhtar@samsung.com>, <jejb@linux.ibm.com>
-CC: <wsd_upstream@mediatek.com>, <linux-mediatek@lists.infradead.org>,
-	<peter.wang@mediatek.com>, <chun-hung.wu@mediatek.com>,
-	<alice.chao@mediatek.com>, <cc.chou@mediatek.com>,
-	<chaotian.jing@mediatek.com>, <jiajie.hao@mediatek.com>,
-	<powen.kao@mediatek.com>, <qilin.tan@mediatek.com>, <lin.gui@mediatek.com>,
-	<tun-yu.yu@mediatek.com>, <eddie.huang@mediatek.com>,
-	<naomi.chu@mediatek.com>, <ed.tsai@mediatek.com>, <bvanassche@acm.org>,
-	<stable@vger.kernel.org>
-Subject: [PATCH v1 2/2] ufs: core: requeue MCQ abort request
-Date: Fri, 30 Aug 2024 15:44:26 +0800
-Message-ID: <20240830074426.21968-3-peter.wang@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <20240830074426.21968-1-peter.wang@mediatek.com>
-References: <20240830074426.21968-1-peter.wang@mediatek.com>
+	s=arc-20240116; t=1725004928; c=relaxed/simple;
+	bh=cSpUz9tGreeQZHZ76mO099ESTCd1OjL4+gJ/XohMhsQ=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=hdjAlLAejBNh11Fimd3RYt9LkIemLAxjhQgC+OSK784fS+CnkTCqOmmBA9oQ/TbVtMqRT/ZoqdTbqhc0RJ/niamDxoTf0OIqtkrFKFlJZYS4rCtC2niaQk+SH4wYNkopmJF4xlGm0sqJPuXj5LSaJEzN2DaBMXN64mO2SUVUWa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qtG8fV2P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54048C4CEC2;
+	Fri, 30 Aug 2024 08:02:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1725004928;
+	bh=cSpUz9tGreeQZHZ76mO099ESTCd1OjL4+gJ/XohMhsQ=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=qtG8fV2PJlKSLxVuo6PjovFFE4tj7AQV/mnSLoxwwvYFZXSW1JRHCMZb+n1OZbUvr
+	 cuUDYefhU3fjMSRdhLM3CNGu+pcYHjpB2sXInG4aX3+9ebDlZQ70wAhvlhzEiEy3GI
+	 qgw2NMOip6ioGmKuSXg95Q81d5ny8HBMbj6FfWK3ffY83cQJBKx87xdivwqyYIk3Nc
+	 Hw3LW5cqLiguAA7YZlI4a9PKFcA+WeCVuC7+TC6Ol0MbhOAB+p1JPgTRNhBW8R0wHs
+	 IHTsnHuhcPLyPsIha1ttHTVyeiwWXOIFg7uYF4YoDOZWrfplo6jA0FXxstcLZ0WKAH
+	 Ml2kFjpQOd/Ew==
+From: Lee Jones <lee@kernel.org>
+To: Riku Voipio <riku.voipio@iki.fi>, Pavel Machek <pavel@ucw.cz>, 
+ Lee Jones <lee@kernel.org>, 
+ Bastien Curutchet <bastien.curutchet@bootlin.com>
+Cc: linux-leds@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Herve Codina <herve.codina@bootlin.com>, 
+ Christopher Cordahi <christophercordahi@nanometrics.ca>, 
+ stable@vger.kernel.org
+In-Reply-To: <20240826133237.134604-1-bastien.curutchet@bootlin.com>
+References: <20240826133237.134604-1-bastien.curutchet@bootlin.com>
+Subject: Re: (subset) [PATCH] leds: pca9532: Remove irrelevant error
+ message
+Message-Id: <172500492610.73690.11744937448959919672.b4-ty@kernel.org>
+Date: Fri, 30 Aug 2024 09:02:06 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK: N
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Mailer: b4 0.13.0
 
-From: Peter Wang <peter.wang@mediatek.com>
+On Mon, 26 Aug 2024 15:32:37 +0200, Bastien Curutchet wrote:
+> The update_hw_blink() function prints an error message when hardware is
+> not able to handle a blink configuration on its own. IMHO, this isn't a
+> 'real' error since the software fallback is used afterwards.
+> 
+> Remove the error messages to avoid flooding the logs with unnecessary
+> messages.
+> 
+> [...]
 
-MCQ aborts a command using two methods below:
-1. Nullified UTRD, Host controller skips this transfer request,
-   reply Completion Queue entry to Host SW with OCS=ABORTED
-2. SQ cleanup, The host controller will post to the Completion Queue
-   to update the OCS field with ABORTED.
+Applied, thanks!
 
-For these two cases, set a flag to notify SCSI to requeue the
-command after receiving OCS_ABORTED.
+[1/1] leds: pca9532: Remove irrelevant error message
+      commit: 2aad93b6de0d874038d3d7958be05011284cd6b9
 
-Fixes: ab248643d3d6 ("scsi: ufs: core: Add error handling for MCQ mode")
-Cc: stable@vger.kernel.org
-Signed-off-by: Peter Wang <peter.wang@mediatek.com>
----
- drivers/ufs/core/ufs-mcq.c |  1 +
- drivers/ufs/core/ufshcd.c  | 21 ++++++++-------------
- include/ufs/ufshcd.h       |  2 ++
- 3 files changed, 11 insertions(+), 13 deletions(-)
-
-diff --git a/drivers/ufs/core/ufs-mcq.c b/drivers/ufs/core/ufs-mcq.c
-index afd9541f4bd8..abdc55a8b960 100644
---- a/drivers/ufs/core/ufs-mcq.c
-+++ b/drivers/ufs/core/ufs-mcq.c
-@@ -642,6 +642,7 @@ static bool ufshcd_mcq_sqe_search(struct ufs_hba *hba,
- 		match = le64_to_cpu(utrd->command_desc_base_addr) & CQE_UCD_BA;
- 		if (addr == match) {
- 			ufshcd_mcq_nullify_sqe(utrd);
-+			lrbp->host_initiate_abort = true;
- 			ret = true;
- 			goto out;
- 		}
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index a6f818cdef0e..18418e9d7549 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -3006,6 +3006,7 @@ static int ufshcd_queuecommand(struct Scsi_Host *host, struct scsi_cmnd *cmd)
- 	ufshcd_prepare_lrbp_crypto(scsi_cmd_to_rq(cmd), lrbp);
- 
- 	lrbp->req_abort_skip = false;
-+	lrbp->host_initiate_abort = false;
- 
- 	ufshcd_comp_scsi_upiu(hba, lrbp);
- 
-@@ -5404,7 +5405,10 @@ ufshcd_transfer_rsp_status(struct ufs_hba *hba, struct ufshcd_lrb *lrbp,
- 		}
- 		break;
- 	case OCS_ABORTED:
--		result |= DID_ABORT << 16;
-+		if (lrbp->host_initiate_abort)
-+			result |= DID_REQUEUE << 16;
-+		else
-+			result |= DID_ABORT << 16;
- 		break;
- 	case OCS_INVALID_COMMAND_STATUS:
- 		result |= DID_REQUEUE << 16;
-@@ -6472,24 +6476,15 @@ static bool ufshcd_abort_one(struct request *rq, void *priv)
- 	struct Scsi_Host *shost = sdev->host;
- 	struct ufs_hba *hba = shost_priv(shost);
- 	struct ufshcd_lrb *lrbp = &hba->lrb[tag];
--	struct ufs_hw_queue *hwq;
--	unsigned long flags;
- 
- 	*ret = ufshcd_try_to_abort_task(hba, tag);
- 	dev_err(hba->dev, "Aborting tag %d / CDB %#02x %s\n", tag,
- 		hba->lrb[tag].cmd ? hba->lrb[tag].cmd->cmnd[0] : -1,
- 		*ret ? "failed" : "succeeded");
- 
--	/* Release cmd in MCQ mode if abort succeeds */
--	if (hba->mcq_enabled && (*ret == 0)) {
--		hwq = ufshcd_mcq_req_to_hwq(hba, scsi_cmd_to_rq(lrbp->cmd));
--		if (!hwq)
--			return 0;
--		spin_lock_irqsave(&hwq->cq_lock, flags);
--		if (ufshcd_cmd_inflight(lrbp->cmd))
--			ufshcd_release_scsi_cmd(hba, lrbp);
--		spin_unlock_irqrestore(&hwq->cq_lock, flags);
--	}
-+	/* Host will post to CQ with OCS_ABORTED after SQ clean up */
-+	if (is_mcq_enabled(hba) && (*ret == 0))
-+		lrbp->host_initiate_abort = true;
- 
- 	return *ret == 0;
- }
-diff --git a/include/ufs/ufshcd.h b/include/ufs/ufshcd.h
-index 0fd2aebac728..49dd5ca8a4e7 100644
---- a/include/ufs/ufshcd.h
-+++ b/include/ufs/ufshcd.h
-@@ -173,6 +173,7 @@ struct ufs_pm_lvl_states {
-  * @crypto_key_slot: the key slot to use for inline crypto (-1 if none)
-  * @data_unit_num: the data unit number for the first block for inline crypto
-  * @req_abort_skip: skip request abort task flag
-+ * @host_initiate_abort: Abort flag initiated by host
-  */
- struct ufshcd_lrb {
- 	struct utp_transfer_req_desc *utr_descriptor_ptr;
-@@ -202,6 +203,7 @@ struct ufshcd_lrb {
- #endif
- 
- 	bool req_abort_skip;
-+	bool host_initiate_abort;
- };
- 
- /**
--- 
-2.45.2
+--
+Lee Jones [李琼斯]
 
 
