@@ -1,49 +1,49 @@
-Return-Path: <stable+bounces-71557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E8CD965765
-	for <lists+stable@lfdr.de>; Fri, 30 Aug 2024 08:12:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F79F96576C
+	for <lists+stable@lfdr.de>; Fri, 30 Aug 2024 08:12:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB29628409F
-	for <lists+stable@lfdr.de>; Fri, 30 Aug 2024 06:12:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B07BEB22350
+	for <lists+stable@lfdr.de>; Fri, 30 Aug 2024 06:12:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34529150989;
-	Fri, 30 Aug 2024 06:12:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A3A81537D1;
+	Fri, 30 Aug 2024 06:12:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="GaaKR42r"
+	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="s4/sHg8A"
 X-Original-To: stable@vger.kernel.org
 Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1256481DB;
-	Fri, 30 Aug 2024 06:12:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0935314D44F;
+	Fri, 30 Aug 2024 06:12:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724998332; cv=none; b=AT+1qwvPWx4FkYFa3NSTwFrmXHAqzTb75/eBFydCxLBF0bxZE14fQ07lB5G4RlP9JDh1bmjFh1flj5HOm2o84IJs2v/11JGz1AYyVGFYlW6QhsFJSQo27hcZUSN9IBTsaryDvW57u4ixWHkxV5vXNocenuTCruwhJYTgu8U8Fwg=
+	t=1724998338; cv=none; b=qnAIeMwPM4MJlc1UbUX2JvfJx8CEv/M9OpAgRIz9ZmhHNPI4aL0ncJTJ/sYviq0oex2xa2CKUqf5iJJMO6WtsVgNsza7+jrGRJ9Nob5YyILLZYsaqPNGHAV3ghRdYwXKScVTWurFgfijkyPBOc6oQcij4NaGbwcwcc6tB5YAlN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724998332; c=relaxed/simple;
-	bh=LSNxO6sFebrhQiVeGhHLcgjRgxU3KR/BCfC7qN5Q08I=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=jZ/E9OWnNzMWjbKFXBbxFZSaH+mOS2HXGCTVXHbeMrDmyweVqfsBu2U6mgXcEKPNE8m+wcmMbA9/fqF9d6xhsETQIIo4aPgafwlF3gQAF2kTij9pmkgjlvnVYT6ua/hkSXKKKw6vYiGinmBJ6zMvBaPeQBXAGWfi8Tg7qmcyUjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=GaaKR42r; arc=none smtp.client-ip=213.167.242.64
+	s=arc-20240116; t=1724998338; c=relaxed/simple;
+	bh=RS94icNT3Eg1ti5P4VHowp58hHjlEiQghewC7c9ZRdY=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=k4dqTAt2gQYyQcQ9FjtcR2aBFHK9gU9ATmHSqZHrGSYUl0iM4Cem8ADrGkGRP2iPzfaPe6MdMecxJsiQy0g76zonWTWTffMBFRvArVFIcWqN1BUwPffdTSjk4N5XzrKp2jZ/M3kmSn+nQ9ZozvYvr37yKWdw9mdHs0ikbcrH8PI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=s4/sHg8A; arc=none smtp.client-ip=213.167.242.64
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
 Received: from [192.168.29.25] (unknown [IPv6:2405:201:2015:f873:55f8:639e:8e9f:12ec])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id 6CF40229;
-	Fri, 30 Aug 2024 08:10:55 +0200 (CEST)
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id C059AAD8;
+	Fri, 30 Aug 2024 08:11:02 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1724998258;
-	bh=LSNxO6sFebrhQiVeGhHLcgjRgxU3KR/BCfC7qN5Q08I=;
-	h=From:Subject:Date:To:Cc:From;
-	b=GaaKR42rgLf2d1olXsyWhoIrkCGJ3DZjMNO7y21HdEXrzZFomF5orEaLxSADCmZVU
-	 5HrQzKev/j5hXk7rPuM9MRTZxObbvRAGCpjwJ46VaP3jQkn9sJ4F/qVRwRJhUUL22K
-	 KfWbUvQUJ62NyO6a1Dws6WyzV1uIxbvSRd8nIC7E=
+	s=mail; t=1724998266;
+	bh=RS94icNT3Eg1ti5P4VHowp58hHjlEiQghewC7c9ZRdY=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
+	b=s4/sHg8ALwJUHm5ZOWL54xlfL0miILM7yRdGp8SIFrYZk9gIqMrChE8nFIghJt2Sj
+	 6vMCCV+PnOhBrcSIpiawk6l3b1Wj2vuw+CUepu00LqfzxRB8um52J3UxKj9u3cGn6C
+	 fL3WFQRB1Hf/Nn1FP9/GLUNrx0bcq/ZD/1tcohfw=
 From: Umang Jain <umang.jain@ideasonboard.com>
-Subject: [PATCH v4 0/2] media: imx335: Fix reset-gpio handling
-Date: Fri, 30 Aug 2024 11:41:50 +0530
-Message-Id: <20240830-imx335-vflip-v4-0-cb9f20fc7b87@ideasonboard.com>
+Date: Fri, 30 Aug 2024 11:41:52 +0530
+Subject: [PATCH v4 2/2] media: imx335: Fix reset-gpio handling
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -52,9 +52,9 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAKZi0WYC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyTHQUlJIzE
- vPSU3UzU4B8JSMDIxMDC2MD3czcCmNjU92ytJzMAl3zNNMUkySTFAODtFQloJaCotS0zAqwcdG
- xtbUA5YvHAV4AAAA=
+Message-Id: <20240830-imx335-vflip-v4-2-cb9f20fc7b87@ideasonboard.com>
+References: <20240830-imx335-vflip-v4-0-cb9f20fc7b87@ideasonboard.com>
+In-Reply-To: <20240830-imx335-vflip-v4-0-cb9f20fc7b87@ideasonboard.com>
 To: Mauro Carvalho Chehab <mchehab@kernel.org>, 
  Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
  Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
@@ -71,62 +71,108 @@ Cc: linux-media@vger.kernel.org, devicetree@vger.kernel.org,
  Mauro Carvalho Chehab <mchehab+huawei@kernel.org>, 
  Kieran Bingham <kieran.bingham@ideasonboard.com>, 
  Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
- Umang Jain <umang.jain@ideasonboard.com>, 
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>, 
- stable@vger.kernel.org
+ Umang Jain <umang.jain@ideasonboard.com>, stable@vger.kernel.org
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1724998323; l=1475;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1724998323; l=4046;
  i=umang.jain@ideasonboard.com; s=20240731; h=from:subject:message-id;
- bh=LSNxO6sFebrhQiVeGhHLcgjRgxU3KR/BCfC7qN5Q08I=;
- b=9vlxnyuGZ/VzIRIJKJ/rr/w8RNFAHS7Pjh3PKKSi5XXtvYXkHOp4NJBSthjHbb7ENuqATsM4v
- EzieYwWZJXCCpeThAgn71733n5+CuoG42Mi4ywTU4SANAox3kEzfbel
+ bh=RS94icNT3Eg1ti5P4VHowp58hHjlEiQghewC7c9ZRdY=;
+ b=WS3Iz29bSo0Je4ynMwl7AtWMEvgu1kXD2Vj39Q3XQoJvlK12wlS4WynKSj2FSGR1XrSLK0I1r
+ oTr5rI22EBFDNJcjICZjBu0skjOJ8Qr7EeCK5ZZKmwFgTil6Z+Hhg5+
 X-Developer-Key: i=umang.jain@ideasonboard.com; a=ed25519;
  pk=7pvnIBNsDpFUMiph0Vlhrr01+rAn5fSIn/QtDeLeXL0=
 
-These couple of patches intends to fix the reset-gpio handling
-for imx335 driver.
+Rectify the logical value of reset-gpio so that it is set to
+0 (disabled) during power-on and to 1 (enabled) during power-off.
 
-Patch 1/2 mentions reset-gpio polarity in DT binding example.
+Set the reset-gpio to GPIO_OUT_HIGH at initialization time to make
+sure it starts off in reset. Also drop the "Set XCLR" comment which
+is not-so-informative.
 
-Patch 2/2 fixes the logical value of reset-gpio during
-power-on/power-off sequence.
+The existing usage of imx335 had reset-gpios polarity inverted
+(GPIO_ACTIVE_HIGH) in their device-tree sources. With this patch
+included, those DTS will not be able to stream imx335 anymore. The
+reset-gpio polarity will need to be rectified in the device-tree
+sources as shown in [1] example, in order to get imx335 functional
+again (as it remains in reset prior to this fix).
 
---
-Changes in v4:
-- rework 2/2 commit message
-- Explain conclusions for 2/2 patch, in the '---' section.
-
-Changes in v3:
-- Rework 1/2 commit message
-- Fix gpio include in DT example in 1/2
-- Remove not-so-informative XCLR comment in 2/2
-
-Changes in v2:
-- Also include reset-gpio polarity, mention in DT binding
-- Add Fixes tag in 2/2
-- Set the reset line to high during init time in 2/2
-
-Link to v2:
-https://lore.kernel.org/linux-media/20240729110437.199428-1-umang.jain@ideasonboard.com/
-
-Link to v1:
-https://lore.kernel.org/linux-media/tyo5etjwsfznuk6vzwqmcphbu4pz4lskrg3fjieojq5qc3mg6s@6jbwavmapwmf/T/#m189ccfa77ddceda6c3b29be3306f1a27ed0934d6
-
+Cc: stable@vger.kernel.org
+Fixes: 45d19b5fb9ae ("media: i2c: Add imx335 camera sensor driver")
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Link: https://lore.kernel.org/linux-media/20240729110437.199428-1-umang.jain@ideasonboard.com/
 Signed-off-by: Umang Jain <umang.jain@ideasonboard.com>
 ---
-Umang Jain (2):
-      dt-bindings: media: imx335: Add reset-gpios to the DT example
-      media: imx335: Fix reset-gpio handling
+Following conclusions has been observed and discussed [2]:
 
- Documentation/devicetree/bindings/media/i2c/sony,imx335.yaml | 4 ++++
- drivers/media/i2c/imx335.c                                   | 9 ++++-----
- 2 files changed, 8 insertions(+), 5 deletions(-)
+- Original driver was reviewed [3] but, the improper handling of
+  reset-gpios was missed in review.
+- Commit fea91ee73b7c ("media: i2c: imx335: Enable regulator supplies")
+  shows the driver didn't had regulator enablement support. The driver
+  would have only worked for cases when the supplies were always-on.
+- Commit 14a60786d72e ("media: imx335: Set reserved register to default value")
+  reflects that the imx335 driver was un-usable due to a reserved
+  register not been set to default.
+- The original author is no longer using the driver nor it is used for its
+  original purpose any more (confirmed by Sakari Ailus).
+- It's extremely unlikely the driver has been or continues to be in
+  use on ACPI based systems (comment by Sakari Ailus).
+
+The above discussion points in a direction that driver does not cater
+to a large user-base. Nonetheless, the breakage will be noticed by a few
+users (if at all) hence, this explanation would help resolve the breakage
+as soon as noticed (by using correct reset-gpio polarity as mentioned
+in [1]).
+
+[1]: Documentation/devicetree/bindings/media/i2c/sony,imx335.yaml
+[2]: https://lore.kernel.org/linux-media/20240729110437.199428-1-umang.jain@ideasonboard.com/
+[3]: https://lore.kernel.org/all/20210527142145.173-3-martinax.krasteva@linux.intel.com/
 ---
-base-commit: 393556c9f56ced8d9776c32ce99f34913cfd904e
-change-id: 20240830-imx335-vflip-7f5d4b4d00fe
+---
+ drivers/media/i2c/imx335.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-Best regards,
+diff --git a/drivers/media/i2c/imx335.c b/drivers/media/i2c/imx335.c
+index 990d74214cc2..54a1de53d497 100644
+--- a/drivers/media/i2c/imx335.c
++++ b/drivers/media/i2c/imx335.c
+@@ -997,7 +997,7 @@ static int imx335_parse_hw_config(struct imx335 *imx335)
+ 
+ 	/* Request optional reset pin */
+ 	imx335->reset_gpio = devm_gpiod_get_optional(imx335->dev, "reset",
+-						     GPIOD_OUT_LOW);
++						     GPIOD_OUT_HIGH);
+ 	if (IS_ERR(imx335->reset_gpio)) {
+ 		dev_err(imx335->dev, "failed to get reset gpio %ld\n",
+ 			PTR_ERR(imx335->reset_gpio));
+@@ -1110,8 +1110,7 @@ static int imx335_power_on(struct device *dev)
+ 
+ 	usleep_range(500, 550); /* Tlow */
+ 
+-	/* Set XCLR */
+-	gpiod_set_value_cansleep(imx335->reset_gpio, 1);
++	gpiod_set_value_cansleep(imx335->reset_gpio, 0);
+ 
+ 	ret = clk_prepare_enable(imx335->inclk);
+ 	if (ret) {
+@@ -1124,7 +1123,7 @@ static int imx335_power_on(struct device *dev)
+ 	return 0;
+ 
+ error_reset:
+-	gpiod_set_value_cansleep(imx335->reset_gpio, 0);
++	gpiod_set_value_cansleep(imx335->reset_gpio, 1);
+ 	regulator_bulk_disable(ARRAY_SIZE(imx335_supply_name), imx335->supplies);
+ 
+ 	return ret;
+@@ -1141,7 +1140,7 @@ static int imx335_power_off(struct device *dev)
+ 	struct v4l2_subdev *sd = dev_get_drvdata(dev);
+ 	struct imx335 *imx335 = to_imx335(sd);
+ 
+-	gpiod_set_value_cansleep(imx335->reset_gpio, 0);
++	gpiod_set_value_cansleep(imx335->reset_gpio, 1);
+ 	clk_disable_unprepare(imx335->inclk);
+ 	regulator_bulk_disable(ARRAY_SIZE(imx335_supply_name), imx335->supplies);
+ 
+
 -- 
-Umang Jain <umang.jain@ideasonboard.com>
+2.45.0
 
 
