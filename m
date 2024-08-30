@@ -1,227 +1,203 @@
-Return-Path: <stable+bounces-71559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94134965777
-	for <lists+stable@lfdr.de>; Fri, 30 Aug 2024 08:14:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 613339657E0
+	for <lists+stable@lfdr.de>; Fri, 30 Aug 2024 08:57:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 51AFF284CCD
-	for <lists+stable@lfdr.de>; Fri, 30 Aug 2024 06:14:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 85BFC1C2246D
+	for <lists+stable@lfdr.de>; Fri, 30 Aug 2024 06:57:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FFB9152170;
-	Fri, 30 Aug 2024 06:13:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="AIv9nXQw"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C161E1531ED;
+	Fri, 30 Aug 2024 06:56:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C12E614F9F4;
-	Fri, 30 Aug 2024 06:13:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98BEC1509AB
+	for <stable@vger.kernel.org>; Fri, 30 Aug 2024 06:56:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724998437; cv=none; b=sooWfdVWpeLi1FzmLLfpgnx017y18XUmU5wQCgbpLYAwwJHzqlkqzchev5j0jzXvFNyrB+r6hSVBZIDGZeT4jlw26bQQs3M97Dg2RK/ydkkSH4ZVGl98NgJYrBghXQ5YZvBBZ+JV6xEnzONvt3w1HtPcEjl6FlgoHzfjhnCwWbE=
+	t=1725001012; cv=none; b=ETH4GWBO0mpvm+kr7nZvZhEhkiQB1kKJ99ZX7hgxKPtmuhmlAOW5JYgbLr5E32jaoFTddl3TzWwiDNdjadnU9qhuzxkmREAl9/FydY6/oLrbN8nNNP6x/3yvp4olEJK28UKQzg/OV8CCPwnycYM/s/N4DU6jy/yaDVtuO/y/cgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724998437; c=relaxed/simple;
-	bh=p37CJIbeVvxUnXIiq+2XX77bD1ppgbxyfDuu2ZWeuzs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Itp5xKVcjc7eyOX9EBKI1Q0s0AyTgi2/5RGisY+Fcsws+2lN8iao1XP0IcK+PoM30C2IpAp6ukz7PP1IynDUlUSgGPEx/Gl7NVSrAeRLgcr2lr++3/Yle8K76Y8+1MUIHUimS85iZjkMVCPZHiORs9yHIDYy4dPP8WqEYrI9RoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=AIv9nXQw; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: by linux.microsoft.com (Postfix, from userid 1134)
-	id 5A83020B7165; Thu, 29 Aug 2024 23:13:55 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 5A83020B7165
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1724998435;
-	bh=xCOyMDJIpLS4T3O8nkaE9qmCOU+j9U5LKWcYQs6GEfc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AIv9nXQwENmbAc6VrQ9aTwjjGRZCCYPLMNWX6HzghLrifLjjvI7Zvndn/8E+JVN2y
-	 J3OBZ8OPSOyOchOajM86xk1S3XS/vpls8V9RwPA2U1KlTBbtSq3eyH0+JSF3XgmCM/
-	 +9bTB5pno5ZSXaS1Pq+YIxQMNKVGcIZJWoHdp3uQ=
-Date: Thu, 29 Aug 2024 23:13:55 -0700
-From: Shradha Gupta <shradhagupta@linux.microsoft.com>
-To: Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
-Cc: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
-	decui@microsoft.com, davem@davemloft.net, longli@microsoft.com,
-	ssengar@linux.microsoft.com, linux-hyperv@vger.kernel.org,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-rdma@vger.kernel.org, schakrabarti@microsoft.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH V3 net] net: mana: Fix error handling in
- mana_create_txq/rxq's NAPI cleanup
-Message-ID: <20240830061355.GA2986@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
-References: <1724920610-15546-1-git-send-email-schakrabarti@linux.microsoft.com>
+	s=arc-20240116; t=1725001012; c=relaxed/simple;
+	bh=BlIxAcwGa+8upDBGYvXg5ZROmK8JfZqh6uiMdaTixcM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=Fq4yUK9k1MFAg4FUCh7Wo5F5eDc+a135sX/FBth2DE0JqhX9Xgbzua/5H86pdWDizMM1iy7NdKrGRen7J/ru8kwcqIVyDnh3NzwVmOkaBV2fAcD9XAwHAObM85RlPh26Dlozm4e359590QBKBYjBHopdNKAuKMeAnmuJjGdnbNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1sjvYp-0000cY-9V; Fri, 30 Aug 2024 08:56:43 +0200
+Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1sjvYo-0045i3-D7; Fri, 30 Aug 2024 08:56:42 +0200
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1sjvYo-00FVXZ-15;
+	Fri, 30 Aug 2024 08:56:42 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Fri, 30 Aug 2024 08:56:40 +0200
+Subject: [PATCH] wifi: mwifiex: Ensure all STA and AP use the same channel
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1724920610-15546-1-git-send-email-schakrabarti@linux.microsoft.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240830-mwifiex-check-channel-v1-1-b04e075c9184@pengutronix.de>
+X-B4-Tracking: v=1; b=H4sIACdt0WYC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDC2MD3dzyzLTM1Ard5IzU5GxdkJq81BzdNBNDw0RDU7OkpFQDJaDegqL
+ UtMwKsLnRsbW1AMMXMMZnAAAA
+To: Brian Norris <briannorris@chromium.org>, 
+ Francesco Dolcini <francesco@dolcini.it>, Kalle Valo <kvalo@kernel.org>
+Cc: linux-wireless@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Sascha Hauer <s.hauer@pengutronix.de>, stable@vger.kernel.org
+X-Mailer: b4 0.12.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1725001002; l=4512;
+ i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
+ bh=BlIxAcwGa+8upDBGYvXg5ZROmK8JfZqh6uiMdaTixcM=;
+ b=ACXByfCHTjsW6GcXK75L1BrF519tdKThFURlWV6ju0MkWrTBkL22xshKW0JYSki3gkT2Q6BRM
+ sYWik4RLguQAi9c0EAs9VMYUfEPH5qBUACJ9JKzYMHtJCPefZVza3nl
+X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
+ pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: s.hauer@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
 
-On Thu, Aug 29, 2024 at 01:36:50AM -0700, Souradeep Chakrabarti wrote:
-> Currently napi_disable() gets called during rxq and txq cleanup,
-> even before napi is enabled and hrtimer is initialized. It causes
-> kernel panic.
-> 
-> ? page_fault_oops+0x136/0x2b0
->   ? page_counter_cancel+0x2e/0x80
->   ? do_user_addr_fault+0x2f2/0x640
->   ? refill_obj_stock+0xc4/0x110
->   ? exc_page_fault+0x71/0x160
->   ? asm_exc_page_fault+0x27/0x30
->   ? __mmdrop+0x10/0x180
->   ? __mmdrop+0xec/0x180
->   ? hrtimer_active+0xd/0x50
->   hrtimer_try_to_cancel+0x2c/0xf0
->   hrtimer_cancel+0x15/0x30
->   napi_disable+0x65/0x90
->   mana_destroy_rxq+0x4c/0x2f0
->   mana_create_rxq.isra.0+0x56c/0x6d0
->   ? mana_uncfg_vport+0x50/0x50
->   mana_alloc_queues+0x21b/0x320
->   ? skb_dequeue+0x5f/0x80
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: e1b5683ff62e ("net: mana: Move NAPI from EQ to CQ")
-> Signed-off-by: Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
-> Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
-> Reviewed-by: Shradha Gupta <shradhagupta@linux.microsoft.com>
-> ---
-> V3 -> V2:
-> Instead of using napi internal attribute, using an atomic
-> attribute to verify napi is initialized for a particular txq / rxq.
-> 
-> V2 -> V1:
-> Addressed the comment on cleaning up napi for the queues,
-> where queue creation was successful.
-> ---
->  drivers/net/ethernet/microsoft/mana/mana_en.c | 30 ++++++++++++-------
->  include/net/mana/mana.h                       |  4 +++
->  2 files changed, 24 insertions(+), 10 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-> index 39f56973746d..bd303c89cfa6 100644
-> --- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-> +++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-> @@ -1872,10 +1872,12 @@ static void mana_destroy_txq(struct mana_port_context *apc)
->  
->  	for (i = 0; i < apc->num_queues; i++) {
->  		napi = &apc->tx_qp[i].tx_cq.napi;
-> -		napi_synchronize(napi);
-> -		napi_disable(napi);
-> -		netif_napi_del(napi);
-> -
-> +		if (atomic_read(&apc->tx_qp[i].txq.napi_initialized)) {
-> +			napi_synchronize(napi);
-> +			napi_disable(napi);
-> +			netif_napi_del(napi);
-> +			atomic_set(&apc->tx_qp[i].txq.napi_initialized, 0);
-> +		}
->  		mana_destroy_wq_obj(apc, GDMA_SQ, apc->tx_qp[i].tx_object);
->  
->  		mana_deinit_cq(apc, &apc->tx_qp[i].tx_cq);
-> @@ -1931,6 +1933,7 @@ static int mana_create_txq(struct mana_port_context *apc,
->  		txq->ndev = net;
->  		txq->net_txq = netdev_get_tx_queue(net, i);
->  		txq->vp_offset = apc->tx_vp_offset;
-> +		atomic_set(&txq->napi_initialized, 0);
->  		skb_queue_head_init(&txq->pending_skbs);
->  
->  		memset(&spec, 0, sizeof(spec));
-> @@ -1997,6 +2000,7 @@ static int mana_create_txq(struct mana_port_context *apc,
->  
->  		netif_napi_add_tx(net, &cq->napi, mana_poll);
->  		napi_enable(&cq->napi);
-> +		atomic_set(&txq->napi_initialized, 1);
->  
->  		mana_gd_ring_cq(cq->gdma_cq, SET_ARM_BIT);
->  	}
-> @@ -2023,14 +2027,18 @@ static void mana_destroy_rxq(struct mana_port_context *apc,
->  
->  	napi = &rxq->rx_cq.napi;
->  
-> -	if (validate_state)
-> -		napi_synchronize(napi);
-> +	if (atomic_read(&rxq->napi_initialized)) {
->  
-> -	napi_disable(napi);
-> +		if (validate_state)
-> +			napi_synchronize(napi);
+The mwifiex chips support simultaneous Accesspoint and station mode,
+but this only works when all are using the same channel. The downstream
+driver uses ECSA which makes the Accesspoint automatically switch to the
+channel the station is going to use.  Until this is implemented in the
+mwifiex driver at least catch this situation and bail out with an error.
+Userspace doesn't have a meaningful way to figure out what went wrong,
+so print an error message to give the user a clue.
 
-Is this validate_state flag still needed? The new napi_initialized
-variable will make sure the napi_synchronize() is called only for rxqs
-that have napi_enabled.
+Without this patch the driver would timeout on the
+HostCmd_CMD_802_11_ASSOCIATE command when creating a station with a
+channel different from the one that an existing accesspoint uses.
 
-Regards,
-Shradha.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: stable@vger.kernel.org
+---
+ drivers/net/wireless/marvell/mwifiex/cfg80211.c  | 52 ++++++++++++++++++++++++
+ drivers/net/wireless/marvell/mwifiex/main.h      |  1 +
+ drivers/net/wireless/marvell/mwifiex/sta_ioctl.c |  3 ++
+ 3 files changed, 56 insertions(+)
 
->  
-> -	xdp_rxq_info_unreg(&rxq->xdp_rxq);
-> +		napi_disable(napi);
->  
-> -	netif_napi_del(napi);
-> +		netif_napi_del(napi);
-> +		atomic_set(&rxq->napi_initialized, 0);
-> +	}
-> +
-> +	xdp_rxq_info_unreg(&rxq->xdp_rxq);
->  
->  	mana_destroy_wq_obj(apc, GDMA_RQ, rxq->rxobj);
->  
-> @@ -2199,6 +2207,7 @@ static struct mana_rxq *mana_create_rxq(struct mana_port_context *apc,
->  	rxq->num_rx_buf = RX_BUFFERS_PER_QUEUE;
->  	rxq->rxq_idx = rxq_idx;
->  	rxq->rxobj = INVALID_MANA_HANDLE;
-> +	atomic_set(&rxq->napi_initialized, 0);
->  
->  	mana_get_rxbuf_cfg(ndev->mtu, &rxq->datasize, &rxq->alloc_size,
->  			   &rxq->headroom);
-> @@ -2286,6 +2295,8 @@ static struct mana_rxq *mana_create_rxq(struct mana_port_context *apc,
->  
->  	napi_enable(&cq->napi);
->  
-> +	atomic_set(&rxq->napi_initialized, 1);
-> +
->  	mana_gd_ring_cq(cq->gdma_cq, SET_ARM_BIT);
->  out:
->  	if (!err)
-> @@ -2336,7 +2347,6 @@ static void mana_destroy_vport(struct mana_port_context *apc)
->  		rxq = apc->rxqs[rxq_idx];
->  		if (!rxq)
->  			continue;
-> -
->  		mana_destroy_rxq(apc, rxq, true);
->  		apc->rxqs[rxq_idx] = NULL;
->  	}
-> diff --git a/include/net/mana/mana.h b/include/net/mana/mana.h
-> index 7caa334f4888..be75abd63dc8 100644
-> --- a/include/net/mana/mana.h
-> +++ b/include/net/mana/mana.h
-> @@ -98,6 +98,8 @@ struct mana_txq {
->  
->  	atomic_t pending_sends;
->  
-> +	atomic_t napi_initialized;
-> +
->  	struct mana_stats_tx stats;
->  };
->  
-> @@ -335,6 +337,8 @@ struct mana_rxq {
->  	bool xdp_flush;
->  	int xdp_rc; /* XDP redirect return code */
->  
-> +	atomic_t napi_initialized;
-> +
->  	struct page_pool *page_pool;
->  
->  	/* MUST BE THE LAST MEMBER:
-> -- 
-> 2.34.1
-> 
-> 
+diff --git a/drivers/net/wireless/marvell/mwifiex/cfg80211.c b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+index 5697a02e6b8d3..0d3bf624cd3de 100644
+--- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
++++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+@@ -2054,6 +2054,55 @@ static int mwifiex_cfg80211_stop_ap(struct wiphy *wiphy, struct net_device *dev,
+ 	return 0;
+ }
+ 
++bool mwifiex_channel_conflict(struct mwifiex_private *priv, struct ieee80211_channel *ch)
++{
++	struct mwifiex_adapter *adapter = priv->adapter;
++	struct mwifiex_current_bss_params *bss_params;
++	u8 band;
++	int freq, i;
++
++	for (i = 0; i < adapter->priv_num; i++) {
++		struct mwifiex_private *p = adapter->priv[i];
++		struct ieee80211_channel *used = NULL;
++
++		if (p == priv)
++			continue;
++
++		switch (GET_BSS_ROLE(p)) {
++		case MWIFIEX_BSS_ROLE_UAP:
++			if (!netif_carrier_ok(p->netdev))
++				break;
++
++			if (!cfg80211_chandef_valid(&p->bss_chandef))
++				break;
++
++			used = p->bss_chandef.chan;
++
++			break;
++		case MWIFIEX_BSS_ROLE_STA:
++			if (!p->media_connected)
++				break;
++
++			bss_params = &p->curr_bss_params;
++			band = mwifiex_band_to_radio_type(bss_params->band);
++			freq = ieee80211_channel_to_frequency(bss_params->bss_descriptor.channel,
++							      band);
++
++			used = ieee80211_get_channel(priv->wdev.wiphy, freq);
++
++			break;
++		}
++
++		if (used && !ieee80211_channel_equal(used, ch)) {
++			mwifiex_dbg(priv->adapter, MSG,
++				    "all AP and STA must operate on same channel\n");
++			return false;
++		}
++	}
++
++	return true;
++}
++
+ /* cfg80211 operation handler for start_ap.
+  * Function sets beacon period, DTIM period, SSID and security into
+  * AP config structure.
+@@ -2069,6 +2118,9 @@ static int mwifiex_cfg80211_start_ap(struct wiphy *wiphy,
+ 	if (GET_BSS_ROLE(priv) != MWIFIEX_BSS_ROLE_UAP)
+ 		return -1;
+ 
++	if (!mwifiex_channel_conflict(priv, params->chandef.chan))
++		return -EBUSY;
++
+ 	bss_cfg = kzalloc(sizeof(struct mwifiex_uap_bss_param), GFP_KERNEL);
+ 	if (!bss_cfg)
+ 		return -ENOMEM;
+diff --git a/drivers/net/wireless/marvell/mwifiex/main.h b/drivers/net/wireless/marvell/mwifiex/main.h
+index 529863edd7a25..b68dbf884156b 100644
+--- a/drivers/net/wireless/marvell/mwifiex/main.h
++++ b/drivers/net/wireless/marvell/mwifiex/main.h
+@@ -1697,6 +1697,7 @@ int mwifiex_set_mac_address(struct mwifiex_private *priv,
+ 			    struct net_device *dev,
+ 			    bool external, u8 *new_mac);
+ void mwifiex_devdump_tmo_func(unsigned long function_context);
++bool mwifiex_channel_conflict(struct mwifiex_private *priv, struct ieee80211_channel *ch);
+ 
+ #ifdef CONFIG_DEBUG_FS
+ void mwifiex_debugfs_init(void);
+diff --git a/drivers/net/wireless/marvell/mwifiex/sta_ioctl.c b/drivers/net/wireless/marvell/mwifiex/sta_ioctl.c
+index d3cba6895f8ce..9794816d8a0c6 100644
+--- a/drivers/net/wireless/marvell/mwifiex/sta_ioctl.c
++++ b/drivers/net/wireless/marvell/mwifiex/sta_ioctl.c
+@@ -291,6 +291,9 @@ int mwifiex_bss_start(struct mwifiex_private *priv, struct cfg80211_bss *bss,
+ 		if (!bss_desc)
+ 			return -1;
+ 
++		if (!mwifiex_channel_conflict(priv, bss->channel))
++			return -EBUSY;
++
+ 		if (mwifiex_band_to_radio_type(bss_desc->bss_band) ==
+ 						HostCmd_SCAN_RADIO_TYPE_BG) {
+ 			config_bands = BAND_B | BAND_G | BAND_GN;
+
+---
+base-commit: 67a72043aa2e6f60f7bbe7bfa598ba168f16d04f
+change-id: 20240830-mwifiex-check-channel-f411a156bbe0
+
+Best regards,
+-- 
+Sascha Hauer <s.hauer@pengutronix.de>
+
 
