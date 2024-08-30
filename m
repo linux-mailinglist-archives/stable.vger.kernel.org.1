@@ -1,95 +1,74 @@
-Return-Path: <stable+bounces-71665-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71666-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C93E966A13
-	for <lists+stable@lfdr.de>; Fri, 30 Aug 2024 21:50:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61BFD966BE7
+	for <lists+stable@lfdr.de>; Sat, 31 Aug 2024 00:00:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 46D801F2362D
-	for <lists+stable@lfdr.de>; Fri, 30 Aug 2024 19:50:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 175D51F239AC
+	for <lists+stable@lfdr.de>; Fri, 30 Aug 2024 22:00:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE2BA1BE24B;
-	Fri, 30 Aug 2024 19:50:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="XekhFN/e"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEA301C2DDF;
+	Fri, 30 Aug 2024 21:59:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E35281BE228
-	for <stable@vger.kernel.org>; Fri, 30 Aug 2024 19:50:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81E7C1C1ADF
+	for <stable@vger.kernel.org>; Fri, 30 Aug 2024 21:59:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725047433; cv=none; b=nz94thIGhc7+jD8TLiEIzNW1EPYhqy8XNIxBzcb347cz9D2LKGmla75b5v6t88Thc9NuD2a9wiM1fhBGsoRLqh98zTK0eQA2XLC1HP2VKTmj9Ja3emgErpTCz32fyc1Lkkwaod3tFuN5YTLLPVsto1sU9+xgRCrqWv9V3ZfhFGA=
+	t=1725055167; cv=none; b=EDCc8ETMe1sm9DpiTIFldYvPgUGr7W7LSLUJjH5rbFpXhwQT+BNpuZD3e4zDM8uqrFsxoSrfXYwSybov2oUtwbFyHbyGrWdMYsuvYFw0ZJLrcqrzPH2FFj7QL45u6TDEhDxAbRdr3nB9A0JlFxJYxj+1ytBKEJpUKkfrsoX9yQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725047433; c=relaxed/simple;
-	bh=yXNmqAtLWS5NlIPRIhOiDrjJJPBlvX+h51JTFVleZsY=;
+	s=arc-20240116; t=1725055167; c=relaxed/simple;
+	bh=QjlpltM6WFPSPXwWxD309mOOafvEIZ88vhL3o9egL0g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CGWtL6cQVJsVO4RDnvmHe6YCBdZX90+V28e9RhZ24gfqfidgKpnFAvk9sljCRo+7spcatGOUztQU4bEiow9royoyglCMwHNWjxyqgB537ehbPYQY6wLeyXeuBvd911g318fYwC0+RFm9O2/DHC3EVJGyBVN/bA5sYc/z+kwzJ6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=XekhFN/e; arc=none smtp.client-ip=209.85.210.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-71456acebe8so1776265b3a.3
-        for <stable@vger.kernel.org>; Fri, 30 Aug 2024 12:50:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1725047431; x=1725652231; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=I6QlsYvzYMyoJ1Ksug9tyv8g6XTQnvNg8jtnf6sK7fQ=;
-        b=XekhFN/eDLLhULgj+9yt+QR+Z8hd5PxKNrD99xDYp/sxEGJSYOG3IQlu3T0pogDAWs
-         /xQDJJeggNAdXJ1XA+rv9d7JtE6SIiob89+FJ2LGDNwmtuu/kQys5sPtub6TPiFPS5Lh
-         N8q5V7fZZQ/aCUnmpwRi7umO7NARDQaDHKXaoh5DP8ycTuy5IPhEz2VFbCOyF4umuO+8
-         Gvemy0goURud/zXa9fWQ6ly/rEYt4OZWFd5fOb0LCL1ekwVv7A8YRd5uwGj2wv+VqbNc
-         +AaoppnfB531dAEpzMSeLTfSXHXyvr9eCpTJt8lnHONJPSEC1lqH+GInCAVnofjVoCpt
-         W0Uw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725047431; x=1725652231;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=I6QlsYvzYMyoJ1Ksug9tyv8g6XTQnvNg8jtnf6sK7fQ=;
-        b=xO7TQRdxXzGsMYhrcCqz1NDjvXYQt0bgK8pEGnJrV2lQ3ric1JjBtYTMp0wJnUy/Ux
-         xNDonEjUsrAIEulWRr+NRLC9sn5aa65EGY6C8KhwJZdGI+Ce9ktEE4/tOtl7Ig0QND8M
-         vQ+9IZMwaWDb3tlha6NP6P4e4+9/KiQ5mDl8SGVS2H09r1aOUDEcHflFw9aFYrtd/oys
-         bKqfoXCbmN14HAN3fFbN8GAnuF+hdW45ffzNq+i0vJmoka4VIb9jeGnczdaVHijDTEfV
-         o+UVAkkx51QNTmrsrZvConWMoBXcXvuLgE53BRg3SjS3CiBpRSlpz4c+8tKI/ySILSbm
-         o5cg==
-X-Forwarded-Encrypted: i=1; AJvYcCXBxr1nbqk8RcUTURVcsirJ1vKCDMv5J3/pNlTVX8hdAhMi5p8TEN5MFu+r6UwyzL62xNJpXjQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzEMlqX/Woy+5UKmma37gkV2T5OPXhvCY62aFpsr5yNzhP6VVFr
-	XrqLIB6EL7Jw+vyVwEjqp9/E/tUCISr19TT3nU6c1Oi4mDkSJlDWtsOM14KtrFQ=
-X-Google-Smtp-Source: AGHT+IEcm7YmlJtxqZsF4YzOMKYXwtY0ArLtbfsQjCm0ebmHvrq6+/sfSJC7izruBGlFJ/auiUixHg==
-X-Received: by 2002:a05:6a20:9c9b:b0:1cd:f065:4eec with SMTP id adf61e73a8af0-1cdf06555a8mr2551415637.41.1725047431173;
-        Fri, 30 Aug 2024 12:50:31 -0700 (PDT)
-Received: from localhost ([71.212.170.185])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7d22e7423c2sm3296998a12.17.2024.08.30.12.50.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Aug 2024 12:50:30 -0700 (PDT)
-From: Kevin Hilman <khilman@baylibre.com>
-To: s-vadapalli@ti.com
-Cc: bhelgaas@google.com,
-	j-keerthy@ti.com,
-	kishon@kernel.org,
-	kw@linux.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-omap@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	lpieralisi@kernel.org,
-	manivannan.sadhasivam@linaro.org,
-	robh@kernel.org,
-	srk@ti.com,
+	 MIME-Version; b=O/qXazG0MDgOtcEiagksMDIExI7Mb/8CPUJqkKi3LFBofS672HHdd51U7WqqfPiqnSXk9/mbXeAVUrAyhPkQZAD/YNt7fa0/eG3eDlp9GZ1HCUDa2uTNR/Zfak0LkcKQZ2C0o6VgcJseWKs3WTS6kSaDxEM97F8HTvUe392BUrc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1sk9eN-0004Hh-Hx
+	for stable@vger.kernel.org; Fri, 30 Aug 2024 23:59:23 +0200
+Received: from [2a0a:edc0:0:b01:1d::7b] (helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1sk9eL-004FZs-Mo
+	for stable@vger.kernel.org; Fri, 30 Aug 2024 23:59:21 +0200
+Received: from dspam.blackshift.org (localhost [127.0.0.1])
+	by bjornoya.blackshift.org (Postfix) with SMTP id 5C5CE32E544
+	for <stable@vger.kernel.org>; Fri, 30 Aug 2024 21:59:21 +0000 (UTC)
+Received: from hardanger.blackshift.org (unknown [172.20.34.65])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by bjornoya.blackshift.org (Postfix) with ESMTPS id 8837932E4EB;
+	Fri, 30 Aug 2024 21:59:17 +0000 (UTC)
+Received: from blackshift.org (localhost [::1])
+	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id d5b58076;
+	Fri, 30 Aug 2024 21:59:16 +0000 (UTC)
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	kuba@kernel.org,
+	linux-can@vger.kernel.org,
+	kernel@pengutronix.de,
+	Simon Arlott <simon@octiron.net>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
 	stable@vger.kernel.org,
-	u-kumar1@ti.com,
-	vigneshr@ti.com
-Subject: Re: [PATCH 0/2] Fixes for the PCI dra7xx driver
-Date: Fri, 30 Aug 2024 12:50:30 -0700
-Message-ID: <20240830195030.3586919-1-khilman@baylibre.com>
-X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240827122422.985547-1-s-vadapalli@ti.com>
-References: <20240827122422.985547-1-s-vadapalli@ti.com>
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH net 12/13] can: mcp251x: fix deadlock if an interrupt occurs during mcp251x_open
+Date: Fri, 30 Aug 2024 23:53:47 +0200
+Message-ID: <20240830215914.1610393-13-mkl@pengutronix.de>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240830215914.1610393-1-mkl@pengutronix.de>
+References: <20240830215914.1610393-1-mkl@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -97,23 +76,59 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
 
-> This series is based on commit
-> 3e9bff3bbe13 Merge tag 'vfs-6.11-rc6.fixes' of gitolite.kernel.org:pub/scm/linux/kernel/git/vfs/vfs
-> of Mainline Linux.
-> 
-> The first patch fixes conversion to "devm_request_threaded_irq()" where
-> the IRQF_ONESHOT flag should have been added since the handler is NULL.
-> 
-> The second patch fixes the error handling when IRQ request fails in the
-> probe function. The existing error handling doesn't cleanup the changes
-> performed prior to the IRQ request invocation.
+From: Simon Arlott <simon@octiron.net>
 
-I tested this patch on v6.11-rc5 using a am57xx-beagle-x15 with a SATA
-drive connected to the eSATA port, and confirm that this allows
-booting again.
+The mcp251x_hw_wake() function is called with the mpc_lock mutex held and
+disables the interrupt handler so that no interrupts can be processed while
+waking the device. If an interrupt has already occurred then waiting for
+the interrupt handler to complete will deadlock because it will be trying
+to acquire the same mutex.
 
-Reviewed-by: Kevin Hilman <khilman@baylibre.com>
+CPU0                           CPU1
+----                           ----
+mcp251x_open()
+ mutex_lock(&priv->mcp_lock)
+  request_threaded_irq()
+                               <interrupt>
+                               mcp251x_can_ist()
+                                mutex_lock(&priv->mcp_lock)
+  mcp251x_hw_wake()
+   disable_irq() <-- deadlock
 
-Kevin
+Use disable_irq_nosync() instead because the interrupt handler does
+everything while holding the mutex so it doesn't matter if it's still
+running.
+
+Fixes: 8ce8c0abcba3 ("can: mcp251x: only reset hardware as required")
+Signed-off-by: Simon Arlott <simon@octiron.net>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/4fc08687-1d80-43fe-9f0d-8ef8475e75f6@0882a8b5-c6c3-11e9-b005-00805fc181fe.uuid.home.arpa
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+---
+ drivers/net/can/spi/mcp251x.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/can/spi/mcp251x.c b/drivers/net/can/spi/mcp251x.c
+index 3b8736ff0345..ec5c64006a16 100644
+--- a/drivers/net/can/spi/mcp251x.c
++++ b/drivers/net/can/spi/mcp251x.c
+@@ -752,7 +752,7 @@ static int mcp251x_hw_wake(struct spi_device *spi)
+ 	int ret;
+ 
+ 	/* Force wakeup interrupt to wake device, but don't execute IST */
+-	disable_irq(spi->irq);
++	disable_irq_nosync(spi->irq);
+ 	mcp251x_write_2regs(spi, CANINTE, CANINTE_WAKIE, CANINTF_WAKIF);
+ 
+ 	/* Wait for oscillator startup timer after wake up */
+-- 
+2.45.2
+
+
 
