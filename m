@@ -1,87 +1,202 @@
-Return-Path: <stable+bounces-71564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71565-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D2EC965951
-	for <lists+stable@lfdr.de>; Fri, 30 Aug 2024 10:02:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AD3C96596B
+	for <lists+stable@lfdr.de>; Fri, 30 Aug 2024 10:06:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CCBB8B25138
-	for <lists+stable@lfdr.de>; Fri, 30 Aug 2024 08:02:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 988751F23300
+	for <lists+stable@lfdr.de>; Fri, 30 Aug 2024 08:06:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE355165F07;
-	Fri, 30 Aug 2024 08:02:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC74616C84C;
+	Fri, 30 Aug 2024 08:06:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qtG8fV2P"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KXMurrdJ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A884414B96F;
-	Fri, 30 Aug 2024 08:02:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DDF316190B
+	for <stable@vger.kernel.org>; Fri, 30 Aug 2024 08:06:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725004928; cv=none; b=U4iiEbB3fM/UhgerhBgCMPIC6srq28/22Jl/JgBLLuS6N0H0S9SD34a0KMCkItNsaarYgDD3hcy9KtfyWc5lyC+3w+NOO3hsD/HPcda82W220QCj/KrT532KRoMpY3xGPSqZB1+dhbf1Ww9eSj2/T9le/6h+yGISD24Z3+8/FYg=
+	t=1725005191; cv=none; b=jVV9K6K/2PfRXDAUi14vLs0oy1s57gbv7VYIdBrevM+Ktz2e6P7ap+ECvHP2nOQfxzVmdX5JB/8MhuK2xJBuexYX2YVngVYJcIiHktBVWHjnjjaZeuvugfhsnFD2dgfyf/cLb/73bYxQne0stRp/nx/TK4JcnsDFi8nKfg1D5m4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725004928; c=relaxed/simple;
-	bh=cSpUz9tGreeQZHZ76mO099ESTCd1OjL4+gJ/XohMhsQ=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=hdjAlLAejBNh11Fimd3RYt9LkIemLAxjhQgC+OSK784fS+CnkTCqOmmBA9oQ/TbVtMqRT/ZoqdTbqhc0RJ/niamDxoTf0OIqtkrFKFlJZYS4rCtC2niaQk+SH4wYNkopmJF4xlGm0sqJPuXj5LSaJEzN2DaBMXN64mO2SUVUWa8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qtG8fV2P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54048C4CEC2;
-	Fri, 30 Aug 2024 08:02:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725004928;
-	bh=cSpUz9tGreeQZHZ76mO099ESTCd1OjL4+gJ/XohMhsQ=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=qtG8fV2PJlKSLxVuo6PjovFFE4tj7AQV/mnSLoxwwvYFZXSW1JRHCMZb+n1OZbUvr
-	 cuUDYefhU3fjMSRdhLM3CNGu+pcYHjpB2sXInG4aX3+9ebDlZQ70wAhvlhzEiEy3GI
-	 qgw2NMOip6ioGmKuSXg95Q81d5ny8HBMbj6FfWK3ffY83cQJBKx87xdivwqyYIk3Nc
-	 Hw3LW5cqLiguAA7YZlI4a9PKFcA+WeCVuC7+TC6Ol0MbhOAB+p1JPgTRNhBW8R0wHs
-	 IHTsnHuhcPLyPsIha1ttHTVyeiwWXOIFg7uYF4YoDOZWrfplo6jA0FXxstcLZ0WKAH
-	 Ml2kFjpQOd/Ew==
-From: Lee Jones <lee@kernel.org>
-To: Riku Voipio <riku.voipio@iki.fi>, Pavel Machek <pavel@ucw.cz>, 
- Lee Jones <lee@kernel.org>, 
- Bastien Curutchet <bastien.curutchet@bootlin.com>
-Cc: linux-leds@vger.kernel.org, linux-kernel@vger.kernel.org, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- Herve Codina <herve.codina@bootlin.com>, 
- Christopher Cordahi <christophercordahi@nanometrics.ca>, 
- stable@vger.kernel.org
-In-Reply-To: <20240826133237.134604-1-bastien.curutchet@bootlin.com>
-References: <20240826133237.134604-1-bastien.curutchet@bootlin.com>
-Subject: Re: (subset) [PATCH] leds: pca9532: Remove irrelevant error
- message
-Message-Id: <172500492610.73690.11744937448959919672.b4-ty@kernel.org>
-Date: Fri, 30 Aug 2024 09:02:06 +0100
+	s=arc-20240116; t=1725005191; c=relaxed/simple;
+	bh=71gPXzApkUJkbbo3sc3sJH3nklCpJRWVUVpfiyyleDM=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=JEZ5fn0xoIdLNmO7F7z1ZWzojWRKuWbSXxKqoHKYMXJHKo7j0BQ7giNiJ+w1rXEAERh1ocfzkgXnvD0guwSk0qeYV6AqtyZabSFh35ScbIKQAIS0hh1uzuWuN/w+vgYyz4rS03e2s7N7sXes9WxHk3I2+H+/LZQFY20uu2juAmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KXMurrdJ; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1725005187;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=71gPXzApkUJkbbo3sc3sJH3nklCpJRWVUVpfiyyleDM=;
+	b=KXMurrdJSWi/NjM0k0S7xW0yLSH8wUpRXZDKD0zETzSpwA5Ze3rxY2Plp1CCtHqJD/IG6t
+	gSPai8A6cevo2/PivW2T0y43BmUo1g9To0FRX5lYJkyS5EUphW/ugf3c50ctDqCAgLWnO3
+	db0zIYPmxZKZEz7ebBFEArJsXD0gBfA=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-650-hYOiRsnOPEe3OC9URsbHNA-1; Fri, 30 Aug 2024 04:05:17 -0400
+X-MC-Unique: hYOiRsnOPEe3OC9URsbHNA-1
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-42bb68e1706so14386995e9.3
+        for <stable@vger.kernel.org>; Fri, 30 Aug 2024 01:05:17 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725005116; x=1725609916;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=71gPXzApkUJkbbo3sc3sJH3nklCpJRWVUVpfiyyleDM=;
+        b=CZTvRFrOtMS07O2kauBVb2PzdVqFhf3TcyOWGLdJrrL3geRiUsp569dYACnk4chUVV
+         vrUUIhPmUZeoKMvSS3sc679LndyR9PyRFTxPMPMg+aw29d3xZ66uRYF5MQxcFsWqfaxY
+         WYIG42sV2i4AVhNLUc0ZfMZSzzB8l/o/Z/fAWddZPo30aHZA+0QGLkZ3ME66xeFhHsNY
+         DD+OiudOG6TmVikaISCNSoS2snoZdnHev5EG8Pfy0mfdxMaxRR7lXHypuLk7xW0wbzcn
+         bnrsJXFEXsyzMUOZuXry9vMgdnypitJ3+X4KvcALbGjTUqcWqCWZxOf6C68JfRWD0Mb7
+         CgcA==
+X-Forwarded-Encrypted: i=1; AJvYcCUERvwbBv+7EyZkfhYcomlaX6rw0s+n1aCYg7PACT9qv27fpRT9ydx9ZXfzsksBg03OiCv4zlQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YziAIZIx3Ech3HhBpJWC8+zM1g//IOa2/H6HGor/mHAfgyvMv5L
+	l6QGhT8f+5hP92eFm7QGGGrXa3boNZZIJxs+OGHCpAGcVBfouz+vQxroeYythJ+rSuGyoe44cn7
+	KCIZB2Uj5s0TjFygAryfXsxmVv3e0hy3CuUQPxLEy18W6Z16/dWusNA==
+X-Received: by 2002:a05:600c:1914:b0:42b:afbb:1704 with SMTP id 5b1f17b1804b1-42bb0281326mr42324715e9.6.1725005115861;
+        Fri, 30 Aug 2024 01:05:15 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IElMHHa1ss0AjuIdZRhm4Z2kioy67ZZmuCCx+UBXe8jQVj10UPNfr/s1tjKN2uvyTW+vaIl2g==
+X-Received: by 2002:a05:600c:1914:b0:42b:afbb:1704 with SMTP id 5b1f17b1804b1-42bb0281326mr42324235e9.6.1725005115323;
+        Fri, 30 Aug 2024 01:05:15 -0700 (PDT)
+Received: from eisenberg.fritz.box (200116b82d2f1b0080ee39dcd7d81ce9.dip.versatel-1u1.de. [2001:16b8:2d2f:1b00:80ee:39dc:d7d8:1ce9])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3749ef7f329sm3287195f8f.70.2024.08.30.01.05.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 30 Aug 2024 01:05:14 -0700 (PDT)
+Message-ID: <ff637570c16c6a15be414839ec4878e49ecd2350.camel@redhat.com>
+Subject: Re: [PATCH v5 6/7] vdpa: solidrun: Fix UB bug with devres
+From: Philipp Stanner <pstanner@redhat.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Andy Shevchenko <andy.shevchenko@gmail.com>, Jens Axboe
+ <axboe@kernel.dk>,  Wu Hao <hao.wu@intel.com>, Tom Rix <trix@redhat.com>,
+ Moritz Fischer <mdf@kernel.org>, Xu Yilun <yilun.xu@intel.com>, Andy
+ Shevchenko <andy@kernel.org>, Linus Walleij <linus.walleij@linaro.org>,
+ Bartosz Golaszewski <brgl@bgdev.pl>, "David S. Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, Jakub Kicinski
+ <kuba@kernel.org>,  Paolo Abeni <pabeni@redhat.com>, Bjorn Helgaas
+ <bhelgaas@google.com>, Alvaro Karsz <alvaro.karsz@solid-run.com>, Jason
+ Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio
+ =?ISO-8859-1?Q?P=E9rez?= <eperezma@redhat.com>, Richard Cochran
+ <richardcochran@gmail.com>, Damien Le Moal <dlemoal@kernel.org>, Hannes
+ Reinecke <hare@suse.de>, John Garry <john.g.garry@oracle.com>,
+ linux-block@vger.kernel.org,  linux-kernel@vger.kernel.org,
+ linux-fpga@vger.kernel.org,  linux-gpio@vger.kernel.org,
+ netdev@vger.kernel.org, linux-pci@vger.kernel.org, 
+ virtualization@lists.linux.dev, stable@vger.kernel.org, Christophe JAILLET
+ <christophe.jaillet@wanadoo.fr>
+Date: Fri, 30 Aug 2024 10:05:12 +0200
+In-Reply-To: <20240829110902-mutt-send-email-mst@kernel.org>
+References: <20240829141844.39064-1-pstanner@redhat.com>
+	 <20240829141844.39064-7-pstanner@redhat.com>
+	 <20240829102320-mutt-send-email-mst@kernel.org>
+	 <CAHp75Ve7O6eAiNx0+v_SNR2vuYgnkeWrPD1Umb1afS3pf7m8MQ@mail.gmail.com>
+	 <20240829104124-mutt-send-email-mst@kernel.org>
+	 <2cc5984b65beb6805f8d60ffd9627897b65b7700.camel@redhat.com>
+	 <20240829110902-mutt-send-email-mst@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Mailer: b4 0.13.0
 
-On Mon, 26 Aug 2024 15:32:37 +0200, Bastien Curutchet wrote:
-> The update_hw_blink() function prints an error message when hardware is
-> not able to handle a blink configuration on its own. IMHO, this isn't a
-> 'real' error since the software fallback is used afterwards.
-> 
-> Remove the error messages to avoid flooding the logs with unnecessary
-> messages.
-> 
-> [...]
+On Thu, 2024-08-29 at 11:10 -0400, Michael S. Tsirkin wrote:
+> On Thu, Aug 29, 2024 at 04:49:50PM +0200, Philipp Stanner wrote:
+> > On Thu, 2024-08-29 at 10:41 -0400, Michael S. Tsirkin wrote:
+> > > On Thu, Aug 29, 2024 at 05:26:39PM +0300, Andy Shevchenko wrote:
+> > > > On Thu, Aug 29, 2024 at 5:23=E2=80=AFPM Michael S. Tsirkin
+> > > > <mst@redhat.com>
+> > > > wrote:
+> > > > >=20
+> > > > > On Thu, Aug 29, 2024 at 04:16:25PM +0200, Philipp Stanner
+> > > > > wrote:
+> > > > > > In psnet_open_pf_bar() and snet_open_vf_bar() a string
+> > > > > > later
+> > > > > > passed to
+> > > > > > pcim_iomap_regions() is placed on the stack. Neither
+> > > > > > pcim_iomap_regions() nor the functions it calls copy that
+> > > > > > string.
+> > > > > >=20
+> > > > > > Should the string later ever be used, this, consequently,
+> > > > > > causes
+> > > > > > undefined behavior since the stack frame will by then have
+> > > > > > disappeared.
+> > > > > >=20
+> > > > > > Fix the bug by allocating the strings on the heap through
+> > > > > > devm_kasprintf().
+> > > > > >=20
+> > > > > > Cc: stable@vger.kernel.org=C2=A0=C2=A0=C2=A0 # v6.3
+> > > > > > Fixes: 51a8f9d7f587 ("virtio: vdpa: new SolidNET DPU
+> > > > > > driver.")
+> > > > > > Reported-by: Christophe JAILLET
+> > > > > > <christophe.jaillet@wanadoo.fr>
+> > > > > > Closes:
+> > > > > > https://lore.kernel.org/all/74e9109a-ac59-49e2-9b1d-d825c9c9f89=
+1@wanadoo.fr/
+> > > > > > Suggested-by: Andy Shevchenko <andy@kernel.org>
+> > > > > > Signed-off-by: Philipp Stanner <pstanner@redhat.com>
+> > > > >=20
+> > > > > Post this separately, so I can apply?
+> > > >=20
+> > > > Don't you use `b4`? With it it as simple as
+> > > >=20
+> > > > =C2=A0 b4 am -P 6 $MSG_ID_OF_THIS_SERIES
+> > > >=20
+> > > > --=20
+> > > > With Best Regards,
+> > > > Andy Shevchenko
+> > >=20
+> > > I can do all kind of things, but if it's posted as part of a
+> > > patchset,
+> > > it is not clear to me this has been tested outside of the
+> > > patchset.
+> > >=20
+> >=20
+> > Separating it from the series would lead to merge conflicts,
+> > because
+> > patch 7 depends on it.
+> >=20
+> > If you're responsible for vdpa in general I could send patches 6
+> > and 7
+> > separately to you.
+> >=20
+> > But number 7 depends on number 1, because pcim_iounmap_region()
+> > needs
+> > to be public. So if patches 1-5 enter through a different tree than
+> > yours, that could be a problem.
+> >=20
+> >=20
+> > P.
+>=20
+> Defer 1/7 until after the merge window, this is what is normally
+> done.
 
-Applied, thanks!
+1 cannot be deferred. Take a look what 1 does.
 
-[1/1] leds: pca9532: Remove irrelevant error message
-      commit: 2aad93b6de0d874038d3d7958be05011284cd6b9
+Your message is not comprehensible. Be so kind and write some more
+sentences.
+*What* is normally done? Sending patches? It's up to subsystem
+maintainers to queue them for the right cycle.
 
---
-Lee Jones [李琼斯]
+> Adding new warnings is not nice, anyway.
+
+What?
+
+
+
+>=20
 
 
