@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-71618-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71619-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AA43965F3F
-	for <lists+stable@lfdr.de>; Fri, 30 Aug 2024 12:30:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE796965F47
+	for <lists+stable@lfdr.de>; Fri, 30 Aug 2024 12:30:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 903281C24966
-	for <lists+stable@lfdr.de>; Fri, 30 Aug 2024 10:30:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DDEEC1C21C85
+	for <lists+stable@lfdr.de>; Fri, 30 Aug 2024 10:30:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7E8D18A6A4;
-	Fri, 30 Aug 2024 10:28:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9FB117B508;
+	Fri, 30 Aug 2024 10:29:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JmWO4xcC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KJPXBBAa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97775188A38
-	for <stable@vger.kernel.org>; Fri, 30 Aug 2024 10:28:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79E3E17C22E
+	for <stable@vger.kernel.org>; Fri, 30 Aug 2024 10:29:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725013739; cv=none; b=ppAba2O56kPf31b3dJjtXBaZhmPVW4S9f65tG3SU/Ws5ylmkO4LISWzp7EAsp3dX8Td3i0fQIoIQAJnBJPDSL5YUqvLT2s5GM0BhrMKjUFTwLd6zBxh3Kbv1wW7Z5bok6ccToendsMZ6IAYAAIzgpXGSfbkVQc8GQ6u/Eh1zeKE=
+	t=1725013795; cv=none; b=TlvbABOcLLr7f4PU2D2cvXCMdqAz1xcEzdEx0EkguAeTuIqbhGrDxMyQPcu8Jlrm187HA8GoxxnQdkDWDFD2Igl3/KiQKO6E7yVrdS9KF5v4QIDm2//AvGzmO2tzpub7N0iaUkZmTZYWCXYXiyY4AeRiGZDXXPmuTl4HMMJj1mA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725013739; c=relaxed/simple;
-	bh=SM/wZqhvH35vbo0XoO8gYgYti5nGXUbqBGhYe62v5LE=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=VQQrQbiEQav+R9avbjgU00dz88r8s6eDnux5lKIP868T6qMPSEN4z0EPunu+yUpEqZOep5FdXzooX1EBcnMl3cbA+GZKps3TPfaKi6WpTsFry29YP+QtDxneplz2jkBA/c/xLhsI2tqTNNIg2Wz5/k3rtimAsGgLgznjaIcseWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JmWO4xcC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CD07C4CEC2;
-	Fri, 30 Aug 2024 10:28:58 +0000 (UTC)
+	s=arc-20240116; t=1725013795; c=relaxed/simple;
+	bh=qJs26KERlurdk8Lnpi1mGQ5sRro9jly7mNhqGbVe1g8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=R8BdY1zSyptk/7CXEjBvz34jKFdii8tPsx65EL8GdPbHUhA+49PRcFKYsL79QM+Cfqvp9w/6SisgXZZ1+r+6rGM/MnQpxvHj2fXiAK4r7F/PBOwcFk8bR25wA6d6Lir5CnpnvJcZBdRLRH9BepnbSBRN5iMBpUr5WlcFHH8wwPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KJPXBBAa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2F39C4CEC4;
+	Fri, 30 Aug 2024 10:29:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725013739;
-	bh=SM/wZqhvH35vbo0XoO8gYgYti5nGXUbqBGhYe62v5LE=;
+	s=korg; t=1725013795;
+	bh=qJs26KERlurdk8Lnpi1mGQ5sRro9jly7mNhqGbVe1g8=;
 	h=Subject:To:Cc:From:Date:From;
-	b=JmWO4xcCa2wUa/4WmrcDR3fLlJvpP/diGKxd/3DG8TKlU+6mYr9y6y7BUfMEM4p/0
-	 SyPk9CDTQ5CRoH8g8G2eKqK85CXX3DiV2u8BNcuBTHUhejdnQWAPx6Hl311vVKudY4
-	 /tP5Oyq1poM/cWgYFTmQ1azjQQmVtfs/gfz/xzFc=
-Subject: FAILED: patch "[PATCH] selftests: mptcp: join: check re-re-adding ID 0 signal" failed to apply to 5.10-stable tree
-To: matttbe@kernel.org,martineau@kernel.org,pabeni@redhat.com
+	b=KJPXBBAaba3ceVA5ClHxy2UXn2ALp2hPocX2g/owdpGCjjBUHct9VfmSjHbOLLI9x
+	 6DEbFc8DZ/VQjmi5aTQAc8h5MUXG+fFhwjdD7NSStc+okeFqfP6SDnXo0/J/7BNZ+N
+	 ccb+fydwFL1zcLEVzkfEw4OrA0SBvsVlSbqrnFwg=
+Subject: FAILED: patch "[PATCH] drm/i915/dp_mst: Fix MST state after a sink reset" failed to apply to 6.6-stable tree
+To: imre.deak@intel.com,jani.nikula@intel.com,joonas.lahtinen@linux.intel.com,suraj.kandpal@intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 30 Aug 2024 12:28:35 +0200
-Message-ID: <2024083034-parched-driller-96e5@gregkh>
+Date: Fri, 30 Aug 2024 12:29:52 +0200
+Message-ID: <2024083051-camisole-self-47bb@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,42 +53,24 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x f18fa2abf81099d822d842a107f8c9889c86043c
+git cherry-pick -x a2ccc33b88e2953a6bf0b309e7e8849cc5320018
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024083034-parched-driller-96e5@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024083051-camisole-self-47bb@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
-f18fa2abf810 ("selftests: mptcp: join: check re-re-adding ID 0 signal")
-20ccc7c5f7a3 ("selftests: mptcp: join: validate event numbers")
-d397d7246c11 ("selftests: mptcp: join: check re-re-adding ID 0 endp")
-1c2326fcae4f ("selftests: mptcp: join: check re-adding init endp with != id")
-5f94b08c0012 ("selftests: mptcp: join: check removing ID 0 endpoint")
-65fb58afa341 ("selftests: mptcp: join: check re-using ID of closed subflow")
-a13d5aad4dd9 ("selftests: mptcp: join: check re-using ID of unused ADD_ADDR")
-b5e2fb832f48 ("selftests: mptcp: add explicit test case for remove/readd")
-40061817d95b ("selftests: mptcp: join: fix dev in check_endpoint")
-23a0485d1c04 ("selftests: mptcp: declare event macros in mptcp_lib")
-35bc143a8514 ("selftests: mptcp: add mptcp_lib_events helper")
-3a0f9bed3c28 ("selftests: mptcp: add mptcp_lib_ns_init/exit helpers")
-3fb8c33ef4b9 ("selftests: mptcp: add mptcp_lib_check_tools helper")
-7c2eac649054 ("selftests: mptcp: stop forcing iptables-legacy")
-4cc5cc7ca052 ("selftests: mptcp: userspace pm get addr tests")
-38f027fca1b7 ("selftests: mptcp: dump userspace addrs list")
-2d0c1d27ea4e ("selftests: mptcp: add mptcp_lib_check_output helper")
-9480f388a2ef ("selftests: mptcp: join: add ss mptcp support check")
-7092dbee2328 ("selftests: mptcp: rm subflow with v4/v4mapped addr")
-04b57c9e096a ("selftests: mptcp: join: stop transfer when check is done (part 2)")
+a2ccc33b88e2 ("drm/i915/dp_mst: Fix MST state after a sink reset")
+e37137380931 ("drm/i915/dp_mst: Force modeset CRTC if DSC toggling requires it")
 
 thanks,
 
@@ -96,89 +78,117 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From f18fa2abf81099d822d842a107f8c9889c86043c Mon Sep 17 00:00:00 2001
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Wed, 28 Aug 2024 08:14:38 +0200
-Subject: [PATCH] selftests: mptcp: join: check re-re-adding ID 0 signal
+From a2ccc33b88e2953a6bf0b309e7e8849cc5320018 Mon Sep 17 00:00:00 2001
+From: Imre Deak <imre.deak@intel.com>
+Date: Fri, 23 Aug 2024 19:29:18 +0300
+Subject: [PATCH] drm/i915/dp_mst: Fix MST state after a sink reset
 
-This test extends "delete re-add signal" to validate the previous
-commit: when the 'signal' endpoint linked to the initial subflow (ID 0)
-is re-added multiple times, it will re-send the ADD_ADDR with id 0. The
-client should still be able to re-create this subflow, even if the
-add_addr_accepted limit has been reached as this special address is not
-considered as a new address.
+In some cases the sink can reset itself after it was configured into MST
+mode, without the driver noticing the disconnected state. For instance
+the reset may happen in the middle of a modeset, or the (long) HPD pulse
+generated may be not long enough for the encoder detect handler to
+observe the HPD's deasserted state. In this case the sink's DPCD
+register programmed to enable MST will be reset, while the driver still
+assumes MST is still enabled. Detect this condition, which will tear
+down and recreate/re-enable the MST topology.
 
-The 'Fixes' tag here below is the same as the one from the previous
-commit: this patch here is not fixing anything wrong in the selftests,
-but it validates the previous fix for an issue introduced by this commit
-ID.
+v2:
+- Add a code comment about adjusting the expected DP_MSTM_CTRL register
+  value for SST + SideBand. (Suraj, Jani)
+- Print a debug message about detecting the link reset. (Jani)
+- Verify the DPCD MST state only if it wasn't already determined that
+  the sink is disconnected.
 
-Fixes: d0876b2284cf ("mptcp: add the incoming RM_ADDR support")
 Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Cc: Jani Nikula <jani.nikula@intel.com>
+Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/11195
+Reviewed-by: Suraj Kandpal <suraj.kandpal@intel.com> (v1)
+Signed-off-by: Imre Deak <imre.deak@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240823162918.1211875-1-imre.deak@intel.com
+(cherry picked from commit 594cf78dc36f31c0c7e0de4567e644f406d46bae)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 
-diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-index a8ea0fe200fb..a4762c49a878 100755
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -3688,7 +3688,7 @@ endpoint_tests()
- 		# broadcast IP: no packet for this address will be received on ns1
- 		pm_nl_add_endpoint $ns1 224.0.0.1 id 2 flags signal
- 		pm_nl_add_endpoint $ns1 10.0.1.1 id 42 flags signal
--		test_linkfail=4 speed=20 \
-+		test_linkfail=4 speed=5 \
- 			run_tests $ns1 $ns2 10.0.1.1 &
- 		local tests_pid=$!
+diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i915/display/intel_dp.c
+index 59f11af3b0a1..dc75a929d3ed 100644
+--- a/drivers/gpu/drm/i915/display/intel_dp.c
++++ b/drivers/gpu/drm/i915/display/intel_dp.c
+@@ -5935,6 +5935,18 @@ intel_dp_detect(struct drm_connector *connector,
+ 	else
+ 		status = connector_status_disconnected;
  
-@@ -3717,7 +3717,17 @@ endpoint_tests()
- 
- 		pm_nl_add_endpoint $ns1 10.0.1.1 id 99 flags signal
- 		wait_mpj $ns2
--		chk_subflow_nr "after re-add" 3
-+		chk_subflow_nr "after re-add ID 0" 3
-+		chk_mptcp_info subflows 3 subflows 3
++	if (status != connector_status_disconnected &&
++	    !intel_dp_mst_verify_dpcd_state(intel_dp))
++		/*
++		 * This requires retrying detection for instance to re-enable
++		 * the MST mode that got reset via a long HPD pulse. The retry
++		 * will happen either via the hotplug handler's retry logic,
++		 * ensured by setting the connector here to SST/disconnected,
++		 * or via a userspace connector probing in response to the
++		 * hotplug uevent sent when removing the MST connectors.
++		 */
++		status = connector_status_disconnected;
 +
-+		pm_nl_del_endpoint $ns1 99 10.0.1.1
-+		sleep 0.5
-+		chk_subflow_nr "after re-delete ID 0" 2
-+		chk_mptcp_info subflows 2 subflows 2
+ 	if (status == connector_status_disconnected) {
+ 		memset(&intel_dp->compliance, 0, sizeof(intel_dp->compliance));
+ 		memset(intel_connector->dp.dsc_dpcd, 0, sizeof(intel_connector->dp.dsc_dpcd));
+diff --git a/drivers/gpu/drm/i915/display/intel_dp_mst.c b/drivers/gpu/drm/i915/display/intel_dp_mst.c
+index 27ce5c3f5951..17978a1f9ab0 100644
+--- a/drivers/gpu/drm/i915/display/intel_dp_mst.c
++++ b/drivers/gpu/drm/i915/display/intel_dp_mst.c
+@@ -1998,3 +1998,43 @@ bool intel_dp_mst_crtc_needs_modeset(struct intel_atomic_state *state,
+ 
+ 	return false;
+ }
 +
-+		pm_nl_add_endpoint $ns1 10.0.1.1 id 88 flags signal
-+		wait_mpj $ns2
-+		chk_subflow_nr "after re-re-add ID 0" 3
- 		chk_mptcp_info subflows 3 subflows 3
- 		mptcp_lib_kill_wait $tests_pid
++/*
++ * intel_dp_mst_verify_dpcd_state - verify the MST SW enabled state wrt. the DPCD
++ * @intel_dp: DP port object
++ *
++ * Verify if @intel_dp's MST enabled SW state matches the corresponding DPCD
++ * state. A long HPD pulse - not long enough to be detected as a disconnected
++ * state - could've reset the DPCD state, which requires tearing
++ * down/recreating the MST topology.
++ *
++ * Returns %true if the SW MST enabled and DPCD states match, %false
++ * otherwise.
++ */
++bool intel_dp_mst_verify_dpcd_state(struct intel_dp *intel_dp)
++{
++	struct intel_display *display = to_intel_display(intel_dp);
++	struct intel_connector *connector = intel_dp->attached_connector;
++	struct intel_digital_port *dig_port = dp_to_dig_port(intel_dp);
++	struct intel_encoder *encoder = &dig_port->base;
++	int ret;
++	u8 val;
++
++	if (!intel_dp->is_mst)
++		return true;
++
++	ret = drm_dp_dpcd_readb(intel_dp->mst_mgr.aux, DP_MSTM_CTRL, &val);
++
++	/* Adjust the expected register value for SST + SideBand. */
++	if (ret < 0 || val != (DP_MST_EN | DP_UP_REQ_EN | DP_UPSTREAM_IS_SRC)) {
++		drm_dbg_kms(display->drm,
++			    "[CONNECTOR:%d:%s][ENCODER:%d:%s] MST mode got reset, removing topology (ret=%d, ctrl=0x%02x)\n",
++			    connector->base.base.id, connector->base.name,
++			    encoder->base.base.id, encoder->base.name,
++			    ret, val);
++
++		return false;
++	}
++
++	return true;
++}
+diff --git a/drivers/gpu/drm/i915/display/intel_dp_mst.h b/drivers/gpu/drm/i915/display/intel_dp_mst.h
+index 8ca1d599091c..9e4c7679f1c3 100644
+--- a/drivers/gpu/drm/i915/display/intel_dp_mst.h
++++ b/drivers/gpu/drm/i915/display/intel_dp_mst.h
+@@ -27,5 +27,6 @@ int intel_dp_mst_atomic_check_link(struct intel_atomic_state *state,
+ 				   struct intel_link_bw_limits *limits);
+ bool intel_dp_mst_crtc_needs_modeset(struct intel_atomic_state *state,
+ 				     struct intel_crtc *crtc);
++bool intel_dp_mst_verify_dpcd_state(struct intel_dp *intel_dp);
  
-@@ -3727,19 +3737,19 @@ endpoint_tests()
- 		chk_evt_nr ns1 MPTCP_LIB_EVENT_ESTABLISHED 1
- 		chk_evt_nr ns1 MPTCP_LIB_EVENT_ANNOUNCED 0
- 		chk_evt_nr ns1 MPTCP_LIB_EVENT_REMOVED 0
--		chk_evt_nr ns1 MPTCP_LIB_EVENT_SUB_ESTABLISHED 4
--		chk_evt_nr ns1 MPTCP_LIB_EVENT_SUB_CLOSED 2
-+		chk_evt_nr ns1 MPTCP_LIB_EVENT_SUB_ESTABLISHED 5
-+		chk_evt_nr ns1 MPTCP_LIB_EVENT_SUB_CLOSED 3
- 
- 		chk_evt_nr ns2 MPTCP_LIB_EVENT_CREATED 1
- 		chk_evt_nr ns2 MPTCP_LIB_EVENT_ESTABLISHED 1
--		chk_evt_nr ns2 MPTCP_LIB_EVENT_ANNOUNCED 5
--		chk_evt_nr ns2 MPTCP_LIB_EVENT_REMOVED 3
--		chk_evt_nr ns2 MPTCP_LIB_EVENT_SUB_ESTABLISHED 4
--		chk_evt_nr ns2 MPTCP_LIB_EVENT_SUB_CLOSED 2
-+		chk_evt_nr ns2 MPTCP_LIB_EVENT_ANNOUNCED 6
-+		chk_evt_nr ns2 MPTCP_LIB_EVENT_REMOVED 4
-+		chk_evt_nr ns2 MPTCP_LIB_EVENT_SUB_ESTABLISHED 5
-+		chk_evt_nr ns2 MPTCP_LIB_EVENT_SUB_CLOSED 3
- 
--		chk_join_nr 4 4 4
--		chk_add_nr 5 5
--		chk_rm_nr 3 2 invert
-+		chk_join_nr 5 5 5
-+		chk_add_nr 6 6
-+		chk_rm_nr 4 3 invert
- 	fi
- 
- 	# flush and re-add
+ #endif /* __INTEL_DP_MST_H__ */
 
 
