@@ -1,95 +1,105 @@
-Return-Path: <stable+bounces-71640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71641-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6201B9661F8
-	for <lists+stable@lfdr.de>; Fri, 30 Aug 2024 14:47:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CE4F966209
+	for <lists+stable@lfdr.de>; Fri, 30 Aug 2024 14:52:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 208BC2854BC
-	for <lists+stable@lfdr.de>; Fri, 30 Aug 2024 12:47:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 08FC21F2362D
+	for <lists+stable@lfdr.de>; Fri, 30 Aug 2024 12:52:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E54C117B4FF;
-	Fri, 30 Aug 2024 12:47:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0X1aFLxd"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 695B0199FDC;
+	Fri, 30 Aug 2024 12:52:36 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F5E513C3D5;
-	Fri, 30 Aug 2024 12:47:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4C3C179652;
+	Fri, 30 Aug 2024 12:52:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725022038; cv=none; b=RdZRhLVc6jXwvr3wMqkZsMh0055GiAcB1E0Ef+qYF+S526UZrYVGT9G8yr8mYYfFkS3+vspu6Qq52GU4fA+D/zsvPVznFTqYPHH4VCzfh/JuEEv9EG44UBirhv55IiE9KAhv1ZykGIRtpv/NaZaXxKmRkwFkspsbYm0T6xG8bWs=
+	t=1725022356; cv=none; b=QtbnSj4gzSAay1FzAxpseshJum5mzy7xpDyhJObP8Inhra7WyJXZYwuF6JryUG2VwzRaKC4a5L1GtMJmBEru5TcbCgeZn9pNksILZDly/cEjKXdlpT+ducW5AuPISAQFMZYkgGYkTX+XbJgxON4A97INb0Bo9/y/x1dHjCdhZGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725022038; c=relaxed/simple;
-	bh=LcGBkLQt3MdE6QDzY1xhZinz4rSO8r3XSJhxINE6t3Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qCMlajbNcJ8iw8uTLP2zbGbSQU1vZiZXV0kCt4uRyi2whEwxPBhytfNoMV6kQjCDWxNyjNF1bPsqGKDNq8DkZthOAf34/UvGkYsA/oW9B3kVHNA9IhIQAnlr/jJuFKxVH+mvlFXVSbkKbs56kaj4RGdCeeMM/geb/204G39X9E8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0X1aFLxd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A31ACC4CEC6;
-	Fri, 30 Aug 2024 12:47:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725022038;
-	bh=LcGBkLQt3MdE6QDzY1xhZinz4rSO8r3XSJhxINE6t3Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=0X1aFLxdlpi9qyBswVmslcyTJBTY7VhqYcih6atMp0NVDxzoCqNa3/b+vvXRz6lJb
-	 BVhH+OgupmEOqNRno2juT9ei2n2K2bJKt9XxClFOsctveLLFyHZv2We7NgzhnFdNpG
-	 stt3t6GxLFfBbnl+eMklmoNaCJ5mfc1cCd5WEgXM=
-Date: Fri, 30 Aug 2024 14:47:14 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Dominique Martinet <asmadeus@codewreck.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.10 194/317] Input: ioc3kbd - convert to platform remove
- callback returning void
-Message-ID: <2024083007-gratified-cesspool-6cfb@gregkh>
-References: <20240613113247.525431100@linuxfoundation.org>
- <20240613113255.060736154@linuxfoundation.org>
- <Zs6hwNxk7QkCe7AW@codewreck.org>
+	s=arc-20240116; t=1725022356; c=relaxed/simple;
+	bh=Dxd+8h2+3gt8NubO3TPwI1zrCjlxTOnQv/3bwoZTPoE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=l33x2dAXkQ1SIH7eBvxQ3+9mt6Q4dFRJj+UILZ6QBrzQBDkVZpwUSMjuNVP6F/Y8iw3Vwg5ZuHzJbK3xsxQRn0sCKHSv4g1NZejnXVTRUGBUMW32ECjRnTgYbCvbd6+CPCzMuv1LlZZLjrwx17wXejI8ji1yHGAJlZsEfFqhMuk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
+	by APP-03 (Coremail) with SMTP id rQCowABnbPh1wNFmIyaOCw--.2806S2;
+	Fri, 30 Aug 2024 20:52:08 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: alain.volmat@foss.st.com,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	airlied@gmail.com,
+	daniel@ffwll.ch,
+	benjamin.gaignard@linaro.org,
+	vincent.abriou@st.com
+Cc: dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	Ma Ke <make24@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH] drm/sti: avoid potential dereference of error pointers in sti_gdp_atomic_check
+Date: Fri, 30 Aug 2024 20:52:04 +0800
+Message-Id: <20240830125204.3433408-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Zs6hwNxk7QkCe7AW@codewreck.org>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:rQCowABnbPh1wNFmIyaOCw--.2806S2
+X-Coremail-Antispam: 1UD129KBjvdXoWruF4kGrW7Gw18WF43uryrXrb_yoWfZwcEga
+	1UXrnYkry7GF1jv3WjywnxAasakFZY9F48Xa48tay3ArWDtry8X3y2gF1rKF1UWa1jqF1D
+	ta1xu3s0gr9akjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbfAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
+	Cr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
+	0DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
+	64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AKxVWUJVW8Jw
+	Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAG
+	YxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7V
+	AKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCj
+	r7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6x
+	IIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAI
+	w20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x
+	0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VU122NtUUUUU==
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-On Wed, Aug 28, 2024 at 01:04:16PM +0900, Dominique Martinet wrote:
-> Greg Kroah-Hartman wrote on Thu, Jun 13, 2024 at 01:33:32PM +0200:
-> > The .remove() callback for a platform driver returns an int which makes
-> > many driver authors wrongly assume it's possible to do error handling by
-> > returning an error code. However the value returned is ignored (apart
-> > from emitting a warning) and this typically results in resource leaks.
-> > To improve here there is a quest to make the remove callback return
-> > void. In the first step of this quest all drivers are converted to
-> > .remove_new() which already returns void. Eventually after all drivers
-> > are converted, .remove_new() will be renamed to .remove().
-> 
-> A bit late to the party here (this patch was included as commit
-> 0096d223f78c in v5.10.219), but 5.10 does not have .remove_new()
-> (missing commit 5c5a7680e67b ("platform: Provide a remove callback that
-> returns no value")) so there is no way this commit will work.
-> 
-> 
-> I'm not building this driver so don't really care and this can be left
-> as is as far as I'm concerned (and since it's been over 2 months
-> probably no-one is using this driver on this old kernel, it doesn't look
-> enabled on e.g. debian's build); so this is just a head's up for mail
-> archives if anyone is notified about the problem they'll want to either
-> revert this or pick up the above commit.
-> 
-> (I checked quickly and that commit was backported to 5.15, so 5.10 is
-> the only tree where that broke, and there is no other driver in 5.10
-> that tries to set .remove_new)
+The return value of drm_atomic_get_crtc_state() needs to be
+checked. To avoid use of error pointer 'crtc_state' in case
+of the failure.
 
-Thanks, I'll go revert this!
+Cc: stable@vger.kernel.org
+Fixes: dd86dc2f9ae1 ("drm/sti: implement atomic_check for the planes")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+---
+ drivers/gpu/drm/sti/sti_gdp.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-greg k-h
+diff --git a/drivers/gpu/drm/sti/sti_gdp.c b/drivers/gpu/drm/sti/sti_gdp.c
+index 43c72c2604a0..f046f5f7ad25 100644
+--- a/drivers/gpu/drm/sti/sti_gdp.c
++++ b/drivers/gpu/drm/sti/sti_gdp.c
+@@ -638,6 +638,9 @@ static int sti_gdp_atomic_check(struct drm_plane *drm_plane,
+ 
+ 	mixer = to_sti_mixer(crtc);
+ 	crtc_state = drm_atomic_get_crtc_state(state, crtc);
++	if (IS_ERR(crtc_state))
++		return PTR_ERR(crtc_state);
++
+ 	mode = &crtc_state->mode;
+ 	dst_x = new_plane_state->crtc_x;
+ 	dst_y = new_plane_state->crtc_y;
+-- 
+2.25.1
+
 
