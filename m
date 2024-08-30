@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-71594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71595-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7975A965F05
-	for <lists+stable@lfdr.de>; Fri, 30 Aug 2024 12:26:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 09218965F06
+	for <lists+stable@lfdr.de>; Fri, 30 Aug 2024 12:26:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ACAE51C24B5A
-	for <lists+stable@lfdr.de>; Fri, 30 Aug 2024 10:26:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C5091C20B7B
+	for <lists+stable@lfdr.de>; Fri, 30 Aug 2024 10:26:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C7CE18A6A2;
-	Fri, 30 Aug 2024 10:23:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1356B17BB0F;
+	Fri, 30 Aug 2024 10:23:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tAhZ8y/U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KMHtduIe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16D5018991D
-	for <stable@vger.kernel.org>; Fri, 30 Aug 2024 10:23:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4FD8189B9E
+	for <stable@vger.kernel.org>; Fri, 30 Aug 2024 10:23:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725013395; cv=none; b=MZwJdkaWSfLgtpcgCGxbf2oqwIN9tuAeE59Bssr+Lq43hbxFOhSTNwqOl1kKX4xyTrZDhraSNzIg69daDomS/5c2cw6JGsiZ1NhM/zxlvrSBElOrL7I1FSQrUGm+H2YcT2746Su9rO1Y22FW2/UBY+DWxchaZVskUZjr13sBvmw=
+	t=1725013411; cv=none; b=JsHvLOIz+ptxuZSL4VnAQXG4MI0o0Fg3TMNrO0TXmDN7GthjXlY6/gKeVW+1qoQXFbOEEDXS7Vt3x6PYiNjMNcRXiBQYGjmKrkCjM2vIpInWIK+2YB+oszthdg/gJw0AJ3Wwnq2oL398P7ku0m0vXMMi/C04Paes5sd1Rv4TygQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725013395; c=relaxed/simple;
-	bh=dao4W0V4RN2AfKfZnekjqNQdNAeD68c70oPvCL919jU=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=rNmEqdal5UgEtwktf9MQtnA1+aIovJKJArpwQ4ZytT1z0bZ8vGW/TRbqLAbQCaX7Sxk6nshVpEECdpdLp0Ii18jhIa3Q8OpSw0sxO88IwybVde4FisrC+9aOg2T2+I0Mr+eW7mDnuDvJNM7sAJa0g2AZp7p6o9sfhcL4sl2nQ3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tAhZ8y/U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F5B4C4CEC2;
-	Fri, 30 Aug 2024 10:23:14 +0000 (UTC)
+	s=arc-20240116; t=1725013411; c=relaxed/simple;
+	bh=X9NmSgr2mzRbfrAv6cAA8rAcSwZWf0TxYqHEzOyRq5E=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=mFsoZRtZKn32c5RZCYI0B+v1hH4v0n8C8Bn191b5JPSgq7LP3QbynUYlpcSvpBMlqPPxE0UJtupCPmRB2Q9Z24RzrpvcIpm8UbYYVPG501tIGR79AJAyUOOSN1UneJuvjZyERuO3SCY3Khz2w/0d0cG8JfW0bk2U9pn4mhq30rc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KMHtduIe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 011D7C4CEC6;
+	Fri, 30 Aug 2024 10:23:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725013395;
-	bh=dao4W0V4RN2AfKfZnekjqNQdNAeD68c70oPvCL919jU=;
+	s=korg; t=1725013410;
+	bh=X9NmSgr2mzRbfrAv6cAA8rAcSwZWf0TxYqHEzOyRq5E=;
 	h=Subject:To:Cc:From:Date:From;
-	b=tAhZ8y/UvfGewXKxAkWzmtfUSIWUfbQY04lRf+WlWJ/824lGMFjKN21z+NExFe4Jw
-	 e6rObL8G70r4doXV81imV/v6HLGoMZiu+zVSTUEc5PJLx2rPMiOg7aSOFKTK7eE1Uy
-	 U3wqsQOlWUMzjOMvFW6lY2pRFiRyN4DB4OIY91o8=
-Subject: FAILED: patch "[PATCH] mptcp: pm: fix ID 0 endp usage after multiple re-creations" failed to apply to 6.1-stable tree
+	b=KMHtduIe4HTPmGQAdOGLkALgSpkaLOHcd0Z70xKaPOMQ7ooVtoRNT1kUBbtCND10L
+	 kfpVVFwuy21+Mr9e+6RwiTv4rcV2uc0GJcsCB5zq5bCQUdE0DWfIs/tZ8bp/jnQ9pZ
+	 0ABjgflx7XI7EHFs010zyGd5xs3MQhkv/qOA/PLw=
+Subject: FAILED: patch "[PATCH] mptcp: avoid duplicated SUB_CLOSED events" failed to apply to 6.6-stable tree
 To: matttbe@kernel.org,arinc.unal@arinc9.com,martineau@kernel.org,pabeni@redhat.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 30 Aug 2024 12:23:11 +0200
-Message-ID: <2024083011-antics-rented-acb7@gregkh>
+Date: Fri, 30 Aug 2024 12:23:27 +0200
+Message-ID: <2024083026-snooper-unbundle-373f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,42 +53,28 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
-git cherry-pick -x 9366922adc6a71378ca01f898c41be295309f044
+git cherry-pick -x d82809b6c5f2676b382f77a5cbeb1a5d91ed2235
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024083011-antics-rented-acb7@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024083026-snooper-unbundle-373f@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
-9366922adc6a ("mptcp: pm: fix ID 0 endp usage after multiple re-creations")
-8b8ed1b429f8 ("mptcp: pm: reuse ID 0 after delete and re-add")
-48e50dcbcbaa ("mptcp: pm: avoid possible UaF when selecting endp")
-85df533a787b ("mptcp: pm: do not ignore 'subflow' if 'signal' flag is also set")
-cd7c957f936f ("mptcp: pm: don't try to create sf if alloc failed")
-c95eb32ced82 ("mptcp: pm: reduce indentation blocks")
-40eec1795cc2 ("mptcp: pm: update add_addr counters after connect")
-6a09788c1a66 ("mptcp: pm: inc RmAddr MIB counter once per RM_ADDR ID")
-e571fb09c893 ("selftests: mptcp: add speed env var")
-4aadde088a58 ("selftests: mptcp: add fullmesh env var")
-080b7f5733fd ("selftests: mptcp: add fastclose env var")
-662aa22d7dcd ("selftests: mptcp: set all env vars as local ones")
-9e9d176df8e9 ("selftests: mptcp: add pm_nl_set_endpoint helper")
-1534f87ee0dc ("selftests: mptcp: drop sflags parameter")
-595ef566a2ef ("selftests: mptcp: drop addr_nr_ns1/2 parameters")
-0c93af1f8907 ("selftests: mptcp: drop test_linkfail parameter")
-be7e9786c915 ("selftests: mptcp: set FAILING_LINKS in run_tests")
-4369c198e599 ("selftests: mptcp: test userspace pm out of transfer")
-528cb5f2a1e8 ("mptcp: pass addr to mptcp_pm_alloc_anno_list")
-ae947bb2c253 ("selftests: mptcp: join: skip Fastclose tests if not supported")
+d82809b6c5f2 ("mptcp: avoid duplicated SUB_CLOSED events")
+a7cfe7766370 ("mptcp: fix data races on local_id")
+84c531f54ad9 ("mptcp: userspace pm send RM_ADDR for ID 0")
+f1f26512a9bf ("mptcp: use plain bool instead of custom binary enum")
+1e07938e29c5 ("net: mptcp: rename netlink handlers to mptcp_pm_nl_<blah>_{doit,dumpit}")
+1d0507f46843 ("net: mptcp: convert netlink from small_ops to ops")
 
 thanks,
 
@@ -96,65 +82,81 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 9366922adc6a71378ca01f898c41be295309f044 Mon Sep 17 00:00:00 2001
+From d82809b6c5f2676b382f77a5cbeb1a5d91ed2235 Mon Sep 17 00:00:00 2001
 From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Wed, 28 Aug 2024 08:14:33 +0200
-Subject: [PATCH] mptcp: pm: fix ID 0 endp usage after multiple re-creations
+Date: Wed, 28 Aug 2024 08:14:35 +0200
+Subject: [PATCH] mptcp: avoid duplicated SUB_CLOSED events
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-'local_addr_used' and 'add_addr_accepted' are decremented for addresses
-not related to the initial subflow (ID0), because the source and
-destination addresses of the initial subflows are known from the
-beginning: they don't count as "additional local address being used" or
-"ADD_ADDR being accepted".
+The initial subflow might have already been closed, but still in the
+connection list. When the worker is instructed to close the subflows
+that have been marked as closed, it might then try to close the initial
+subflow again.
 
-It is then required not to increment them when the entrypoint used by
-the initial subflow is removed and re-added during a connection. Without
-this modification, this entrypoint cannot be removed and re-added more
-than once.
+ A consequence of that is that the SUB_CLOSED event can be seen twice:
 
-Reported-by: Arınç ÜNAL <arinc.unal@arinc9.com>
-Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/512
-Fixes: 3ad14f54bd74 ("mptcp: more accurate MPC endpoint tracking")
-Reported-by: syzbot+455d38ecd5f655fc45cf@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/00000000000049861306209237f4@google.com
+  # ip mptcp endpoint
+  1.1.1.1 id 1 subflow dev eth0
+  2.2.2.2 id 2 subflow dev eth1
+
+  # ip mptcp monitor &
+  [         CREATED] remid=0 locid=0 saddr4=1.1.1.1 daddr4=9.9.9.9
+  [     ESTABLISHED] remid=0 locid=0 saddr4=1.1.1.1 daddr4=9.9.9.9
+  [  SF_ESTABLISHED] remid=0 locid=2 saddr4=2.2.2.2 daddr4=9.9.9.9
+
+  # ip mptcp endpoint delete id 1
+  [       SF_CLOSED] remid=0 locid=0 saddr4=1.1.1.1 daddr4=9.9.9.9
+  [       SF_CLOSED] remid=0 locid=0 saddr4=1.1.1.1 daddr4=9.9.9.9
+
+The first one is coming from mptcp_pm_nl_rm_subflow_received(), and the
+second one from __mptcp_close_subflow().
+
+To avoid doing the post-closed processing twice, the subflow is now
+marked as closed the first time.
+
+Note that it is not enough to check if we are dealing with the first
+subflow and check its sk_state: the subflow might have been reset or
+closed before calling mptcp_close_ssk().
+
+Fixes: b911c97c7dc7 ("mptcp: add netlink event support")
 Cc: stable@vger.kernel.org
 Tested-by: Arınç ÜNAL <arinc.unal@arinc9.com>
 Reviewed-by: Mat Martineau <martineau@kernel.org>
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 
-diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
-index 3ff273e219f2..a93450ded50a 100644
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -615,12 +615,13 @@ static void mptcp_pm_create_subflow_or_signal_addr(struct mptcp_sock *msk)
+diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+index b571fba88a2f..37ebcb7640eb 100644
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -2508,6 +2508,12 @@ static void __mptcp_close_ssk(struct sock *sk, struct sock *ssk,
+ void mptcp_close_ssk(struct sock *sk, struct sock *ssk,
+ 		     struct mptcp_subflow_context *subflow)
+ {
++	/* The first subflow can already be closed and still in the list */
++	if (subflow->close_event_done)
++		return;
++
++	subflow->close_event_done = true;
++
+ 	if (sk->sk_state == TCP_ESTABLISHED)
+ 		mptcp_event(MPTCP_EVENT_SUB_CLOSED, mptcp_sk(sk), ssk, GFP_KERNEL);
  
- 		fullmesh = !!(local.flags & MPTCP_PM_ADDR_FLAG_FULLMESH);
- 
--		msk->pm.local_addr_used++;
- 		__clear_bit(local.addr.id, msk->pm.id_avail_bitmap);
- 
- 		/* Special case for ID0: set the correct ID */
- 		if (local.addr.id == msk->mpc_endpoint_id)
- 			local.addr.id = 0;
-+		else /* local_addr_used is not decr for ID 0 */
-+			msk->pm.local_addr_used++;
- 
- 		nr = fill_remote_addresses_vec(msk, &local.addr, fullmesh, addrs);
- 		if (nr == 0)
-@@ -750,7 +751,9 @@ static void mptcp_pm_nl_add_addr_received(struct mptcp_sock *msk)
- 	spin_lock_bh(&msk->pm.lock);
- 
- 	if (sf_created) {
--		msk->pm.add_addr_accepted++;
-+		/* add_addr_accepted is not decr for ID 0 */
-+		if (remote.id)
-+			msk->pm.add_addr_accepted++;
- 		if (msk->pm.add_addr_accepted >= add_addr_accept_max ||
- 		    msk->pm.subflows >= subflows_max)
- 			WRITE_ONCE(msk->pm.accept_addr, false);
+diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
+index 240d7c2ea551..26eb898a202b 100644
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -524,7 +524,8 @@ struct mptcp_subflow_context {
+ 		stale : 1,	    /* unable to snd/rcv data, do not use for xmit */
+ 		valid_csum_seen : 1,        /* at least one csum validated */
+ 		is_mptfo : 1,	    /* subflow is doing TFO */
+-		__unused : 10;
++		close_event_done : 1,       /* has done the post-closed part */
++		__unused : 9;
+ 	bool	data_avail;
+ 	bool	scheduled;
+ 	u32	remote_nonce;
 
 
