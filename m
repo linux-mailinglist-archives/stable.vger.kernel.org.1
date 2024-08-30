@@ -1,106 +1,57 @@
-Return-Path: <stable+bounces-71629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71630-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9B7896600C
-	for <lists+stable@lfdr.de>; Fri, 30 Aug 2024 13:09:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D873F96600F
+	for <lists+stable@lfdr.de>; Fri, 30 Aug 2024 13:09:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 563321F281D9
-	for <lists+stable@lfdr.de>; Fri, 30 Aug 2024 11:09:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 91495286D08
+	for <lists+stable@lfdr.de>; Fri, 30 Aug 2024 11:09:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13AED192D77;
-	Fri, 30 Aug 2024 11:06:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2080199FB3;
+	Fri, 30 Aug 2024 11:06:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="mM0r5Cst";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Raev1Wcn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HbNq/mM/"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh5-smtp.messagingengine.com (fhigh5-smtp.messagingengine.com [103.168.172.156])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 611A6192D69
-	for <stable@vger.kernel.org>; Fri, 30 Aug 2024 11:05:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.156
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7593D199FAE;
+	Fri, 30 Aug 2024 11:06:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725015960; cv=none; b=QoC+0CsVCNzx+iaUJrLf8YO7Oy4ijUPVnB4NkphKi1QQgscBE5V3x1EEVplkPKJgkd9/Y4mKD462+a+sPmEF8nu2EkqRb5WC00lv2A4MzHkSlzZe5BN7COWroN8CHcz1TcF74JO/7qHuY4CtU0678ibs5AqgYvX8mckNrgm2wXE=
+	t=1725016002; cv=none; b=o8LFibCxAEhbSJCDltwzO/u2Rj+ZIusDDggLH5c5bWih/vr1UqK+9o+9FpMb7UG+XgEQ6tsm0S1NPcpgbW4r+mGe0SclVlzOKqQllqRQmqaHNzCMJ8krFh+kcPj/WQGzay//LiHv4k8xnUpqFt1cWsX8xIjYjmjq+233zuAZAIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725015960; c=relaxed/simple;
-	bh=ZhWA+SuzgnFodl+OGFsSDS2b0A5c94Jd3tD7s6pNg2s=;
+	s=arc-20240116; t=1725016002; c=relaxed/simple;
+	bh=d+UZ5rR/XJ0uiV33JsZnGNgXqNE+fGWSIU2/sa2Gi80=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pgspKJ55AjJRD21Lpwp+b/49+jqiyJkbDWbl7Zb5HXKd+apYUud7qnadMsu1mW9qaV4NkWrEnTZQtNeHn4ZHBJxv9UegfAvmUoK6pqmDTi4oav1AKXTdgjLzxB85XB5Yrt5CQ+Cu4faptZGbeT48tDTqNNY6R6p8Mn9crp/Y+b4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=mM0r5Cst; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Raev1Wcn; arc=none smtp.client-ip=103.168.172.156
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from phl-compute-05.internal (phl-compute-05.nyi.internal [10.202.2.45])
-	by mailfhigh.nyi.internal (Postfix) with ESMTP id 6A25611400EE;
-	Fri, 30 Aug 2024 07:05:56 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Fri, 30 Aug 2024 07:05:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm1; t=1725015956; x=1725102356; bh=ete4J6bbcV
-	w8jFtvm54u705s5vWv7ECUhMDzH2CPO/A=; b=mM0r5Cst3NrkeiAShYH4a37pwP
-	nM5bQ4VlfjJwJIG9JlxRk47KIphnlP7ZyYDXPQXnThdCRxbh9ro1+nL2qGR2zqVg
-	iiL2SQ5ZMcsOPFqP6gRPxcr/WQf75OPgC6i0dqLkWE+ns7AcYUns8pgc5gzM7iwt
-	FAd9GeCDM68gr++Zc4+O5MS2kjiiHuyjbln/Ps4i/JtN463ax6WZmK+w5wp4YDTo
-	hDms/jv6jbvrtMuSqsLQB5G6xVJ5IfJeDqRIPNLROluUkWMPxEAQq+g5Kpv+8S59
-	n4jeUoRlCiiVuKZnCI7nuOV+zcRLx90DZ4VN+LsvW7VvR53753yRi2CF1VZw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm1; t=1725015956; x=1725102356; bh=ete4J6bbcVw8jFtvm54u705s5vWv
-	7ECUhMDzH2CPO/A=; b=Raev1Wcn7ROanS2MS09HasO3WRtcEuYDKwX+FlvxJak9
-	v/dC9QYUmBWJ2ybr2FwHv5Hu17QnnlgUxwwVyxG/uLvy5gaPVvI3GoeE0uj3Zobf
-	DYTxhB1jhlHnHdpLGJvl1NSdKETDLAkKm+J0b8zM7r0ICSOl9jDnI4trEdN7Hh8p
-	WelGzbM/U81DaXyOkkWda/WTr3TKlDnVARGgeJZ+LOTR+aIWTXjpgLfVDHBJjUHJ
-	kdUv/wlvELuWAqN1xkGG7izo0WXc63s1Oriu1HKxfUFZCvUFdIXxL8Bj7HbtfJct
-	9ROlLTt32A2yYoYXFy4GXWhOS0wlhtSzRN4i9YbRVA==
-X-ME-Sender: <xms:lKfRZgPO1YECVdYavnU-lgJA0-cyh9zPiU07G2eM51OuI_eXiEiV0Q>
-    <xme:lKfRZm-F2StD482CAttbPmob8OuTbAcvMSc9kWwx7Eov4ssaZz1Fpcgvz67Kx0RS1
-    eycqiaSm-r8jg>
-X-ME-Received: <xmr:lKfRZnTiM1VTn2hAlBNbGZLQLaOpsKr6dfPnUdRXZocrWj1APcln_flTYKK1a2JbLGLJturog8FenXa432BTxLf6bUj9mcAQNpMfdg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrudefiedgfeehucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvden
-    ucfhrhhomhepifhrvghgucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrf
-    grthhtvghrnhepgeehueehgfdtledutdelkeefgeejteegieekheefudeiffdvudeffeel
-    vedttddvnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiii
-    gvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhhdrtghomhdp
-    nhgspghrtghpthhtohepudeipdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehhsh
-    himhgvlhhivghrvgdrohhpvghnshhouhhrtggvseifihhtvghkihhordgtohhmpdhrtghp
-    thhtohepshhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprg
-    hquhhinhhisehrvgguhhgrthdrtghomhdprhgtphhtthhopegusghuvghsohesshhushgv
-    rdguvgdprhgtphhtthhopehmrghnfhhrvggusegtohhlohhrfhhulhhlihhfvgdrtghomh
-    dprhgtphhtthhopehllhhonhhgsehrvgguhhgrthdrtghomhdprhgtphhtthhopegrkhhp
-    mheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepthhorhhvrg
-    hlughssehlihhnuhigqdhfohhunhgurghtihhonhdrohhrgh
-X-ME-Proxy: <xmx:lKfRZosPX4SG780eokxYi-XrJXlTt79YB-PAPt8kcJww7AlTnJzAQA>
-    <xmx:lKfRZodE2N4rOIjRhL4EAXo_hep84aIiQfKvMtlTQgmT10M6gHUE0A>
-    <xmx:lKfRZs0TAe9xAU_6kt1CHozZ1U6inJERwwHDeMq2fDDp40g0SZWa_g>
-    <xmx:lKfRZs8t2TQmxJtXsCh0BgtEP7NYNOWxsJ4b0PGCR-iRoYUSnfcmLQ>
-    <xmx:lKfRZrs9-ppoVSGbYCZSBUSlj1kSPnqXQL0COjojaLdnekusSvf7zy4i>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 30 Aug 2024 07:05:55 -0400 (EDT)
-Date: Fri, 30 Aug 2024 13:05:52 +0200
-From: Greg KH <greg@kroah.com>
-To: hsimeliere.opensource@witekio.com
-Cc: stable@vger.kernel.org, Rafael Aquini <aquini@redhat.com>,
-	Davidlohr Bueso <dbueso@suse.de>,
-	Manfred Spraul <manfred@colorfullife.com>,
-	Waiman Long <llong@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: Re: [PATCH 5.10 1/1] ipc: replace costly bailout check in
- sysvipc_find_ipc()
-Message-ID: <2024083047-excretory-character-c63c@gregkh>
-References: <20240830094001.30036-1-hsimeliere.opensource@witekio.com>
- <20240830094001.30036-2-hsimeliere.opensource@witekio.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=YZTd1AYx1d6z9R7ahpPwUw+OMGgkUrFNa58/7G7dr0W0s7J36t2O195/CnPj5KAtp1Z4DZ6C/L9YPssYJES88FVDjdSwvrflKw+L963TTNJtwKSJpMuh607HHl6FIXqMPYs5LYoXH//x2xw1COcoHO7CVOk5X3uosSmHZJXWzZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HbNq/mM/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDC54C4CEC2;
+	Fri, 30 Aug 2024 11:06:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1725016002;
+	bh=d+UZ5rR/XJ0uiV33JsZnGNgXqNE+fGWSIU2/sa2Gi80=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=HbNq/mM/pVldNcOCGlYaFpUXuGxPkVjmFxYGdIUo+faOfNhJUnY7DYXHLT1uFTrDv
+	 QjdJcAUkdpj6yNosxljNA8OwMSLR6VCo4WisRPsWY2GIQ5/2Mr2TxdHxTJne5pxkKX
+	 ryt57w9weoKtsKREu9oi13raAzD3l5OdeZvhMfN8=
+Date: Fri, 30 Aug 2024 13:06:39 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Ignat Korchagin <ignat@cloudflare.com>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	John Hubbard <jhubbard@nvidia.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Mat Martineau <martineau@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Sasha Levin <sashal@kernel.org>,
+	kernel-team@cloudflare.com
+Subject: Re: [PATCH 6.6 046/139] selftests/net: fix uninitialized variables
+Message-ID: <2024083021-cytoplasm-width-3e44@gregkh>
+References: <20240709110658.146853929@linuxfoundation.org>
+ <20240709110659.948165869@linuxfoundation.org>
+ <8B1717DB-8C4A-47EE-B28C-170B630C4639@cloudflare.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -109,58 +60,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240830094001.30036-2-hsimeliere.opensource@witekio.com>
+In-Reply-To: <8B1717DB-8C4A-47EE-B28C-170B630C4639@cloudflare.com>
 
-On Fri, Aug 30, 2024 at 11:38:29AM +0200, hsimeliere.opensource@witekio.com wrote:
-> From: Rafael Aquini <aquini@redhat.com>
+On Thu, Jul 11, 2024 at 04:31:45PM +0100, Ignat Korchagin wrote:
+> Hi,
+> > On 9 Jul 2024, at 12:09, Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+> > 
+> > 6.6-stable review patch.  If anyone has any objections, please let me know.
+> > 
+> > ------------------
+> > 
+> > From: John Hubbard <jhubbard@nvidia.com>
+> > 
+> > [ Upstream commit eb709b5f6536636dfb87b85ded0b2af9bb6cd9e6 ]
+> > 
+> > When building with clang, via:
+> > 
+> >    make LLVM=1 -C tools/testing/selftest
+> > 
+> > ...clang warns about three variables that are not initialized in all
+> > cases:
+> > 
+> > 1) The opt_ipproto_off variable is used uninitialized if "testname" is
+> > not "ip". Willem de Bruijn pointed out that this is an actual bug, and
+> > suggested the fix that I'm using here (thanks!).
+> > 
+> > 2) The addr_len is used uninitialized, but only in the assert case,
+> >   which bails out, so this is harmless.
+> > 
+> > 3) The family variable in add_listener() is only used uninitialized in
+> >   the error case (neither IPv4 nor IPv6 is specified), so it's also
+> >   harmless.
+> > 
+> > Fix by initializing each variable.
+> > 
+> > Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+> > Reviewed-by: Willem de Bruijn <willemb@google.com>
+> > Acked-by: Mat Martineau <martineau@kernel.org>
+> > Link: https://lore.kernel.org/r/20240506190204.28497-1-jhubbard@nvidia.com
+> > Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> > Signed-off-by: Sasha Levin <sashal@kernel.org>
+> > ---
+> > tools/testing/selftests/net/gro.c                 | 3 +++
+> > tools/testing/selftests/net/ip_local_port_range.c | 2 +-
+> > tools/testing/selftests/net/mptcp/pm_nl_ctl.c     | 2 +-
+> > 3 files changed, 5 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/tools/testing/selftests/net/gro.c b/tools/testing/selftests/net/gro.c
+> > index 30024d0ed3739..b204df4f33322 100644
+> > --- a/tools/testing/selftests/net/gro.c
+> > +++ b/tools/testing/selftests/net/gro.c
+> > @@ -113,6 +113,9 @@ static void setup_sock_filter(int fd)
+> > next_off = offsetof(struct ipv6hdr, nexthdr);
+> > ipproto_off = ETH_HLEN + next_off;
+> > 
+> > + /* Overridden later if exthdrs are used: */
+> > + opt_ipproto_off = ipproto_off;
+> > +
 > 
-> commit 20401d1058f3f841f35a594ac2fc1293710e55b9 upstream.
-> 
-> sysvipc_find_ipc() was left with a costly way to check if the offset
-> position fed to it is bigger than the total number of IPC IDs in use.  So
-> much so that the time it takes to iterate over /proc/sysvipc/* files grows
-> exponentially for a custom benchmark that creates "N" SYSV shm segments
-> and then times the read of /proc/sysvipc/shm (milliseconds):
-> 
->     12 msecs to read   1024 segs from /proc/sysvipc/shm
->     18 msecs to read   2048 segs from /proc/sysvipc/shm
->     65 msecs to read   4096 segs from /proc/sysvipc/shm
->    325 msecs to read   8192 segs from /proc/sysvipc/shm
->   1303 msecs to read  16384 segs from /proc/sysvipc/shm
->   5182 msecs to read  32768 segs from /proc/sysvipc/shm
-> 
-> The root problem lies with the loop that computes the total amount of ids
-> in use to check if the "pos" feeded to sysvipc_find_ipc() grew bigger than
-> "ids->in_use".  That is a quite inneficient way to get to the maximum
-> index in the id lookup table, specially when that value is already
-> provided by struct ipc_ids.max_idx.
-> 
-> This patch follows up on the optimization introduced via commit
-> 15df03c879836 ("sysvipc: make get_maxid O(1) again") and gets rid of the
-> aforementioned costly loop replacing it by a simpler checkpoint based on
-> ipc_get_maxidx() returned value, which allows for a smooth linear increase
-> in time complexity for the same custom benchmark:
-> 
->      2 msecs to read   1024 segs from /proc/sysvipc/shm
->      2 msecs to read   2048 segs from /proc/sysvipc/shm
->      4 msecs to read   4096 segs from /proc/sysvipc/shm
->      9 msecs to read   8192 segs from /proc/sysvipc/shm
->     19 msecs to read  16384 segs from /proc/sysvipc/shm
->     39 msecs to read  32768 segs from /proc/sysvipc/shm
-> 
-> Link: https://lkml.kernel.org/r/20210809203554.1562989-1-aquini@redhat.com
-> Signed-off-by: Rafael Aquini <aquini@redhat.com>
-> Acked-by: Davidlohr Bueso <dbueso@suse.de>
-> Acked-by: Manfred Spraul <manfred@colorfullife.com>
-> Cc: Waiman Long <llong@redhat.com>
-> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-> Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-> Signed-off-by: Hugo SIMELIERE <hsimeliere.opensource@witekio.com>
-> ---
->  ipc/util.c | 16 ++++------------
->  1 file changed, 4 insertions(+), 12 deletions(-)
+> This breaks selftest compilation on 6.6, because opt_ipproto_off is not
+> defined in the first place in 6.6
 
-Now queued up, thanks.
+So should it be reverted or fixed up?
+
+Can you send a patch doing either one of these?
+
+thanks,
 
 greg k-h
 
