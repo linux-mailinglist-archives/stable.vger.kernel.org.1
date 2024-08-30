@@ -1,97 +1,112 @@
-Return-Path: <stable+bounces-71581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71582-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01ABB965D4E
-	for <lists+stable@lfdr.de>; Fri, 30 Aug 2024 11:49:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73A00965D94
+	for <lists+stable@lfdr.de>; Fri, 30 Aug 2024 11:55:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3D9211C21F66
-	for <lists+stable@lfdr.de>; Fri, 30 Aug 2024 09:49:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A5BDF1C22EFB
+	for <lists+stable@lfdr.de>; Fri, 30 Aug 2024 09:55:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C04217108A;
-	Fri, 30 Aug 2024 09:49:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iIoSlefj"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D25AC18B479;
+	Fri, 30 Aug 2024 09:53:40 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A80F16C86B;
-	Fri, 30 Aug 2024 09:49:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C854188A39;
+	Fri, 30 Aug 2024 09:53:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.6.53.87
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725011378; cv=none; b=ZRqXi0fAuDu2UwHomtX6pYXwgeK5HlMLoY6Hs37T/xKn46hBeVHErLZw6/f2ZLxIacwoWGa4yCeOgWWs4mTeTmzeB37iiWtqt0mg6xDApNLhlcMiEqXpvBROgnV7jw7JMMvDDeZvvhC/rlMk/YYtzO7pLIJe5ZF0fIRBZqR826Q=
+	t=1725011620; cv=none; b=f4b/C2eUiLcR8lU67ubhkfHWSJyd8x1i5xRvErN0NlNPSLGGoHcdzD66rdYgMiXyQ2U2ovr80QuLrtymHzpfOw3ZfBgxd53MXuLZxXFCGTGDFwx7eR4xGEGr9kQ+nOslERykowAG2uO7l+MdPiCzI7+Jo3kTjTOiEWva9YZFJKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725011378; c=relaxed/simple;
-	bh=7vWXtQ9E28kRJVjIwVcQQ9i05NPbbMxBj09ldhUAnlk=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=DWM91OERjhvjWzdfHg5efSRzoT4IAcWIBDp+bWD9+b+BR7832GB2WS6zVwEBEfwC696ZVEBc2hey8j7VHZDR6Yvmv5yo/HfoLxGLK7nxas5uWnwxrz+1OHASuCyyK/1a9lg5dPjR++8t7tAHZ8DU0bhiMVpfvntMQBk7LfpKUAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iIoSlefj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 448C9C4CEC2;
-	Fri, 30 Aug 2024 09:49:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725011377;
-	bh=7vWXtQ9E28kRJVjIwVcQQ9i05NPbbMxBj09ldhUAnlk=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=iIoSlefjE69bNPEToFn7Hve41mYXY+AqFqCQubAPwKxTeUxGEfF+9U78A68GYwa8M
-	 1yMaoWt+N0ium7+FEywqo5Z0asoFjN6o2ud9gm72EAr+x8TfBSmWwNplccNeVkOwIU
-	 DzUmHfjZZx1335/pB3oR06zLaqC6ePlT/hXJZFOu9OC3cH4P9eghExoTZLek+TDZjU
-	 RE2zHifU/QHMagZM88PSwn8L4TMnjP03sby+8JQRkTcUpLGYCHN1Tgk9kDUPs82OE7
-	 IKoZEU1e9jxfWSZAYZr5claQqS+iA3TjkV8gS0jG3oir+IVv4ZWm5mbjC4zKRmYd5J
-	 ZoxOa80vR5Pwg==
-From: Kalle Valo <kvalo@kernel.org>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Brian Norris <briannorris@chromium.org>,  Francesco Dolcini
- <francesco@dolcini.it>,  linux-wireless@vger.kernel.org,
-  linux-kernel@vger.kernel.org,  stable@vger.kernel.org
-Subject: Re: [PATCH] wifi: mwifiex: Ensure all STA and AP use the same channel
-References: <20240830-mwifiex-check-channel-v1-1-b04e075c9184@pengutronix.de>
-Date: Fri, 30 Aug 2024 12:49:34 +0300
-In-Reply-To: <20240830-mwifiex-check-channel-v1-1-b04e075c9184@pengutronix.de>
-	(Sascha Hauer's message of "Fri, 30 Aug 2024 08:56:40 +0200")
-Message-ID: <8734mmuyq9.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	s=arc-20240116; t=1725011620; c=relaxed/simple;
+	bh=yFNoWirOsLFaQ2/ZHS0wZXqnaEF6GYGpZvhGR3HGpx8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=NznzSFwaP97gfZypucazgV7pMwqGFU9lkrLKUp4CWTR6UauWBwdMWINoKjT6ztL4bMi+OgKeYhh65ye+jgS2aMj6GZQLHUQGBvAJcBt8hdYlv1TsuJoqP1mfQ2Fg4wu3MqhzWJVA02w3CuibOsqqfkMtGKemUcsz5YnrAqUw8Ik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; arc=none smtp.client-ip=144.6.53.87
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
+	id 1sjyBK-008Tou-0I;
+	Fri, 30 Aug 2024 17:53:24 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Fri, 30 Aug 2024 17:53:23 +0800
+Date: Fri, 30 Aug 2024 17:53:23 +0800
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: Ma Ke <make24@iscas.ac.cn>
+Cc: davem@davemloft.net, j-keerthy@ti.com, t-kristo@ti.com,
+	akpm@linux-foundation.org, linux-crypto@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH RESEND] crypto: sa2ul - fix memory leak in
+ sa_cra_init_aead()
+Message-ID: <ZtGWkxsMHGihPh81@gondor.apana.org.au>
+References: <20240819084843.1012289-1-make24@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240819084843.1012289-1-make24@iscas.ac.cn>
 
-Sascha Hauer <s.hauer@pengutronix.de> writes:
-
-> The mwifiex chips support simultaneous Accesspoint and station mode,
-> but this only works when all are using the same channel. The downstream
-> driver uses ECSA which makes the Accesspoint automatically switch to the
-> channel the station is going to use.  Until this is implemented in the
-> mwifiex driver at least catch this situation and bail out with an error.
-> Userspace doesn't have a meaningful way to figure out what went wrong,
-> so print an error message to give the user a clue.
->
-> Without this patch the driver would timeout on the
-> HostCmd_CMD_802_11_ASSOCIATE command when creating a station with a
-> channel different from the one that an existing accesspoint uses.
->
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+On Mon, Aug 19, 2024 at 04:48:43PM +0800, Ma Ke wrote:
+> Currently the resource allocated by crypto_alloc_shash() is not freed in
+> case crypto_alloc_aead() fails, resulting in memory leak.
+> 
+> Add crypto_free_shash() to fix it.
+> 
+> Found by code review.
+> 
 > Cc: stable@vger.kernel.org
+> Fixes: d2c8ac187fc9 ("crypto: sa2ul - Add AEAD algorithm support")
+> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+> ---
+>  drivers/crypto/sa2ul.c | 20 +++++++++++++-------
+>  1 file changed, 13 insertions(+), 7 deletions(-)
+> 
+> diff --git a/drivers/crypto/sa2ul.c b/drivers/crypto/sa2ul.c
+> index 461eca40e878..b5af621f7f17 100644
+> --- a/drivers/crypto/sa2ul.c
+> +++ b/drivers/crypto/sa2ul.c
+> @@ -1740,7 +1740,8 @@ static int sa_cra_init_aead(struct crypto_aead *tfm, const char *hash,
+>  	ctx->shash = crypto_alloc_shash(hash, 0, CRYPTO_ALG_NEED_FALLBACK);
+>  	if (IS_ERR(ctx->shash)) {
+>  		dev_err(sa_k3_dev, "base driver %s couldn't be loaded\n", hash);
+> -		return PTR_ERR(ctx->shash);
+> +		ret = PTR_ERR(ctx->shash);
+> +		goto err_free_shash;
+>  	}
 
-Does this mean that iface combination definitions are wrong? For example:
+This hunk is unnecessary and confusing.  Please keep the existing
+code.
 
-static const struct
-ieee80211_iface_combination mwifiex_iface_comb_ap_sta_drcs = {
-	.limits = mwifiex_ap_sta_limits,
-	.num_different_channels = 2,
-	.n_limits = ARRAY_SIZE(mwifiex_ap_sta_limits),
-	.max_interfaces = MWIFIEX_MAX_BSS_NUM,
-	.beacon_int_infra_match = true,
-};
+> @@ -1749,7 +1750,8 @@ static int sa_cra_init_aead(struct crypto_aead *tfm, const char *hash,
+>  	if (IS_ERR(ctx->fallback.aead)) {
+>  		dev_err(sa_k3_dev, "fallback driver %s couldn't be loaded\n",
+>  			fallback);
+> -		return PTR_ERR(ctx->fallback.aead);
+> +		ret = PTR_ERR(ctx->fallback.aead);
+> +		goto err_free_shash;
+>  	}
+>  
+>  	crypto_aead_set_reqsize(tfm, sizeof(struct aead_request) +
+> @@ -1757,19 +1759,23 @@ static int sa_cra_init_aead(struct crypto_aead *tfm, const char *hash,
+>  
+>  	ret = sa_init_ctx_info(&ctx->enc, data);
+>  	if (ret)
+> -		return ret;
+> +		goto err_free_shash;
 
+Shouldn't this free the fallback AEAD?
+
+Cheers,
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
-
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
-https://docs.kernel.org/process/submitting-patches.html
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
 
