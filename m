@@ -1,136 +1,103 @@
-Return-Path: <stable+bounces-71553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71554-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BD3496556A
-	for <lists+stable@lfdr.de>; Fri, 30 Aug 2024 04:52:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB521965641
+	for <lists+stable@lfdr.de>; Fri, 30 Aug 2024 06:23:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8757A283DB8
-	for <lists+stable@lfdr.de>; Fri, 30 Aug 2024 02:52:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 34B16B21AE1
+	for <lists+stable@lfdr.de>; Fri, 30 Aug 2024 04:23:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E41B552F6F;
-	Fri, 30 Aug 2024 02:52:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD8C81494CC;
+	Fri, 30 Aug 2024 04:23:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from vmicros1.altlinux.org (vmicros1.altlinux.org [194.107.17.57])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77DA938DD6
-	for <stable@vger.kernel.org>; Fri, 30 Aug 2024 02:52:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.107.17.57
+Received: from ni.piap.pl (ni.piap.pl [195.187.100.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9688C71750;
+	Fri, 30 Aug 2024 04:23:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.187.100.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724986355; cv=none; b=LXaeTRaRi4RKg9TLFhSC56ZbtRFuH7SoKwt4dyVJ3FHQ7uuwYSM1LbMmgmjmvcgQxx2aeLnhHAAkoq3dOo9uYjOWVjMa3BVFt8JfBbqcNfROvYLS8bb/D0a6tvjQqqE9Iq3+FkUCbRqVo1fLOkwux0v9Wd6B3Soeb9eG4r+9Ttk=
+	t=1724991821; cv=none; b=rGcroeoZ1HUeud2Cud1A/UIcZl4GwwcPKosehtr/qaR/YpPDs/SmhFt+R5RqgliJZezsVmF2oSw9xVvP7ldi3PylxrC1i/IBwP9ngfvSnKI+/FPWbEekzoR/LYRgxqi9/gf0vrF6Fe44jJtqkbRVDYwyZgsylLQaMYL2NQCiiYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724986355; c=relaxed/simple;
-	bh=gO0VkDPWz2eQLi/X3OVCfH44YmaB7V70WpyF004Ayas=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=r5+sJ8am4snQo/t5tKXPiWHIFRYVlkFziZjg/OZ9BzhlUutrzf9f3eAcmtIqCVRr6jzzj8Ml9gfuPOeud4jhOqaVE206ZwUb0Ck2WZMhd0ImVRNYR9dR5G4CV0Q1R2svkl/Ikd9qV8YlI50pMGHx6xY7anL5F7TC00plGX1ddug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=194.107.17.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=altlinux.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
-Received: from imap.altlinux.org (imap.altlinux.org [194.107.17.38])
-	by vmicros1.altlinux.org (Postfix) with ESMTP id 0956072C8CC;
-	Fri, 30 Aug 2024 05:52:31 +0300 (MSK)
-Received: from pony.office.basealt.ru (unknown [193.43.10.9])
-	by imap.altlinux.org (Postfix) with ESMTPSA id EC86236D0184;
-	Fri, 30 Aug 2024 05:52:30 +0300 (MSK)
-Received: by pony.office.basealt.ru (Postfix, from userid 500)
-	id B63A4360BF6F; Fri, 30 Aug 2024 05:52:30 +0300 (MSK)
-Date: Fri, 30 Aug 2024 05:52:30 +0300
-From: Vitaly Chikunov <vt@altlinux.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Sasha Levin <sashal@kernel.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	Julia Lawall <julia.lawall@inria.fr>, Abdulrasaq Lawani <abdulrasaqolawani@gmail.com>, 
-	Helge Deller <deller@gmx.de>
-Subject: Re: [PATCH 6.1 202/321] fbdev: offb: replace of_node_put with
- __free(device_node)
-Message-ID: <ycpomlflgfhwph5jebyx3atvgzwirx4lawbkia5qtulzwjibck@a6ohf5qvnjdx>
-References: <20240827143838.192435816@linuxfoundation.org>
- <20240827143845.922698611@linuxfoundation.org>
- <ppqadq365psk4abmtn7kpfvfxbps4qzhn3fz25ysqtzj72opob@jfzmajuq6dyw>
+	s=arc-20240116; t=1724991821; c=relaxed/simple;
+	bh=IA5fO1pMxmVnjPUveYTyLOeSTItzyo6eYll4Ij/Nn1E=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=E9or/oInr5gM863If+6zGvbnEuEmLSAiMe+wxUaJsSBQs82vzg8LOun2RWn3WHzSvyDKm58nww9Rt6VhAOddBORJV8uFaRIyEwbLT8vFO3Rs2zvEXX+1cNzyuNBIyR8geQmj/zvHyJeaO1dTb61pA+AbP4jcAgo+SgIfhWKGIrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=piap.pl; spf=pass smtp.mailfrom=piap.pl; arc=none smtp.client-ip=195.187.100.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=piap.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=piap.pl
+Received: from t19.piap.pl (OSB1819.piap.pl [10.0.9.19])
+	by ni.piap.pl (Postfix) with ESMTPS id E2976C3F2A57;
+	Fri, 30 Aug 2024 06:17:41 +0200 (CEST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 ni.piap.pl E2976C3F2A57
+From: =?utf-8?Q?Krzysztof_Ha=C5=82asa?= <khalasa@piap.pl>
+To: Alexander Shiyan <eagle.alexander923@gmail.com>
+Cc: linux-media@vger.kernel.org,  Sakari Ailus
+ <sakari.ailus@linux.intel.com>,  Mauro Carvalho Chehab
+ <mchehab@kernel.org>,  stable@vger.kernel.org
+Subject: Re: [PATCH] media: i2c: ar0521: Use cansleep version of
+ gpiod_set_value()
+In-Reply-To: <20240829054849.4761-1-eagle.alexander923@gmail.com> (Alexander
+	Shiyan's message of "Thu, 29 Aug 2024 08:48:49 +0300")
+References: <20240829054849.4761-1-eagle.alexander923@gmail.com>
+Sender: khalasa@piap.pl
+Date: Fri, 30 Aug 2024 06:17:41 +0200
+Message-ID: <m37cbyeja2.fsf@t19.piap.pl>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ppqadq365psk4abmtn7kpfvfxbps4qzhn3fz25ysqtzj72opob@jfzmajuq6dyw>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Greg,
+Hi Alexander,
 
-On Fri, Aug 30, 2024 at 12:11:53AM GMT, Vitaly Chikunov wrote:
-> Greg, Sasha,
-> 
-> On Tue, Aug 27, 2024 at 04:38:30PM GMT, Greg Kroah-Hartman wrote:
-> > 6.1-stable review patch.  If anyone has any objections, please let me know.
-> 
-> We got v6.1.107 build error on ppc64le due to this commit, with:
-> 
->     CC      drivers/video/fbdev/offb.o
->   drivers/video/fbdev/offb.c: In function 'offb_init_palette_hacks':
->   drivers/video/fbdev/offb.c:358:24: error: cleanup argument not a function
->     358 |                 struct device_node *pciparent __free(device_node) = of_get_parent(dp);
->         |                        ^~~~~~~~~~~
->   make[4]: *** [scripts/Makefile.build:250: drivers/video/fbdev/offb.o] Error 1
-> 
-> Where CONFIG_FB_OF is enabled. Perhaps, due to this commit not being picked:
-> 
->   9448e55d032d ("of: Add cleanup.h based auto release via __free(device_node) markings")
+Alexander Shiyan <eagle.alexander923@gmail.com> writes:
 
-I just tested, and cherry-picking this commit over 6.1.107 fixes the
-build on ppc64le with CONFIG_FB_OF=y.
+> If we use GPIO reset from I2C port expander, we must use *_cansleep()
+> variant of GPIO functions.
+> This was not done in ar0521_power_on()/ar0521_power_off() functions.
+> Let's fix that.
 
-Thanks,
+Definitely.
 
+> Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
+> Fixes: 852b50aeed15 ("media: On Semi AR0521 sensor driver")
+> Cc: stable@vger.kernel.org
 
-> 
-> Thanks,
-> 
-> > 
-> > ------------------
-> > 
-> > From: Abdulrasaq Lawani <abdulrasaqolawani@gmail.com>
-> > 
-> > [ Upstream commit ce4a7ae84a58b9f33aae8d6c769b3c94f3d5ce76 ]
-> > 
-> > Replaced instance of of_node_put with __free(device_node)
-> > to simplify code and protect against any memory leaks
-> > due to future changes in the control flow.
-> > 
-> > Suggested-by: Julia Lawall <julia.lawall@inria.fr>
-> > Signed-off-by: Abdulrasaq Lawani <abdulrasaqolawani@gmail.com>
-> > Signed-off-by: Helge Deller <deller@gmx.de>
-> > Signed-off-by: Sasha Levin <sashal@kernel.org>
-> > ---
-> >  drivers/video/fbdev/offb.c | 3 +--
-> >  1 file changed, 1 insertion(+), 2 deletions(-)
-> > 
-> > diff --git a/drivers/video/fbdev/offb.c b/drivers/video/fbdev/offb.c
-> > index 91001990e351c..6f0a9851b0924 100644
-> > --- a/drivers/video/fbdev/offb.c
-> > +++ b/drivers/video/fbdev/offb.c
-> > @@ -355,7 +355,7 @@ static void offb_init_palette_hacks(struct fb_info *info, struct device_node *dp
-> >  			par->cmap_type = cmap_gxt2000;
-> >  	} else if (of_node_name_prefix(dp, "vga,Display-")) {
-> >  		/* Look for AVIVO initialized by SLOF */
-> > -		struct device_node *pciparent = of_get_parent(dp);
-> > +		struct device_node *pciparent __free(device_node) = of_get_parent(dp);
-> >  		const u32 *vid, *did;
-> >  		vid = of_get_property(pciparent, "vendor-id", NULL);
-> >  		did = of_get_property(pciparent, "device-id", NULL);
-> > @@ -367,7 +367,6 @@ static void offb_init_palette_hacks(struct fb_info *info, struct device_node *dp
-> >  			if (par->cmap_adr)
-> >  				par->cmap_type = cmap_avivo;
-> >  		}
-> > -		of_node_put(pciparent);
-> >  	} else if (dp && of_device_is_compatible(dp, "qemu,std-vga")) {
-> >  #ifdef __BIG_ENDIAN
-> >  		const __be32 io_of_addr[3] = { 0x01000000, 0x0, 0x0 };
-> > -- 
-> > 2.43.0
-> > 
-> > 
-> > 
+Acked-by: Krzysztof Ha=C5=82asa <khalasa@piap.pl>
+
+> +++ b/drivers/media/i2c/ar0521.c
+> @@ -844,7 +844,8 @@ static int ar0521_power_off(struct device *dev)
+>         clk_disable_unprepare(sensor->extclk);
+>
+>         if (sensor->reset_gpio)
+> -               gpiod_set_value(sensor->reset_gpio, 1); /* assert RESET s=
+ignal */
+> +               /* assert RESET signal */
+> +               gpiod_set_value_cansleep(sensor->reset_gpio, 1);
+>
+>         for (i =3D ARRAY_SIZE(ar0521_supply_names) - 1; i >=3D 0; i--) {
+>                 if (sensor->supplies[i])
+> @@ -878,7 +879,7 @@ static int ar0521_power_on(struct device *dev)
+>
+>         if (sensor->reset_gpio)
+>                 /* deassert RESET signal */
+> -               gpiod_set_value(sensor->reset_gpio, 0);
+> +               gpiod_set_value_cansleep(sensor->reset_gpio, 0);
+>         usleep_range(4500, 5000); /* min 45000 clocks */
+>
+>         for (cnt =3D 0; cnt < ARRAY_SIZE(initial_regs); cnt++) {
+
+--=20
+Krzysztof "Chris" Ha=C5=82asa
+
+Sie=C4=87 Badawcza =C5=81ukasiewicz
+Przemys=C5=82owy Instytut Automatyki i Pomiar=C3=B3w PIAP
+Al. Jerozolimskie 202, 02-486 Warszawa
 
