@@ -1,158 +1,122 @@
-Return-Path: <stable+bounces-71609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71608-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80797965F31
-	for <lists+stable@lfdr.de>; Fri, 30 Aug 2024 12:29:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88A91965F2D
+	for <lists+stable@lfdr.de>; Fri, 30 Aug 2024 12:29:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B2BCF1C24A33
-	for <lists+stable@lfdr.de>; Fri, 30 Aug 2024 10:29:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 01513B2926E
+	for <lists+stable@lfdr.de>; Fri, 30 Aug 2024 10:29:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6496D1922EE;
-	Fri, 30 Aug 2024 10:28:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ih3l/d7W"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF53F190693;
+	Fri, 30 Aug 2024 10:28:31 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 261961917F5
-	for <stable@vger.kernel.org>; Fri, 30 Aug 2024 10:28:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B11D18E355;
+	Fri, 30 Aug 2024 10:28:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.6.53.87
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725013712; cv=none; b=lUMBjHUCtfYIZUO3sx9PyBjXYMbAKlhVspKfKIEktQ8YQUkUtoGhGIamakDi5T2G/GLYgQfSVuNMKHH5jpUAG4Tehh+oJxRCJtNI/pedR6ENOCjNOyAJibU4K7rxuxHCezylqh9nOj4apiWqQz9gT9s8aBZ+qCWcRxqqmBTjyps=
+	t=1725013711; cv=none; b=D2vQ6vrS9wmkTc5yKWIXXFl241GvsU10nMtSqCdh6VU84SLeXeYJu6n5pMSciiEzrKffKexjZ6EpBdqqaz/kmRuBe/lMGHCjGBRh4u6TGVH+ZXYzQBU6rceWli9H9AFy8YjyyXnhnB5brX5QXmsIFkeS+deD91KEro0JqLLbpPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725013712; c=relaxed/simple;
-	bh=zMAOrY/U9/0P3zCPaTTGAVdRhBYUxKVoNf7eyDpStAI=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=jevWmZEsig4NazWoMGuzmQ+BtM1FABtiGHThhWyI+Lx6/hP8Cg1k90aDSgzkbDpDpaliQ1JJ0fpTaRMpVr0+9dDCha8xyl3JZBzZ/wFxwGgZ+HuBoIK2GwrXuMMwV1dJwBl5aIBaNC16l6ysR2eizWxlfyyMKjOAhP61ImWMYqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ih3l/d7W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CB0BC4CEC2;
-	Fri, 30 Aug 2024 10:28:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725013711;
-	bh=zMAOrY/U9/0P3zCPaTTGAVdRhBYUxKVoNf7eyDpStAI=;
-	h=Subject:To:Cc:From:Date:From;
-	b=Ih3l/d7WCPd57QfGzwEPcUC+ycDIABMQfBgWHNacqr5F/+8wXQOIgrLlgITRsSi9Y
-	 aHQpkglGXUWpdDpjI5neYJz/w6iNBF9FH6LIN6STWIgGI7as42BKoKSBUPnzLNdYsI
-	 NGq++W2RlEaN/Kc3qDe7F/13XItkzeN+BL+ScpCg=
-Subject: FAILED: patch "[PATCH] selftests: mptcp: join: check re-adding init endp with != id" failed to apply to 6.1-stable tree
-To: matttbe@kernel.org,martineau@kernel.org,pabeni@redhat.com
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Fri, 30 Aug 2024 12:28:19 +0200
-Message-ID: <2024083019-resurrect-iodine-5ad6@gregkh>
+	s=arc-20240116; t=1725013711; c=relaxed/simple;
+	bh=zIr6ofHRy4wHFT1oom3DmckyPg52yr84jBW6Dqoz3Go=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LNR6K2lplVii/R8R9kRm+o94ksdkgZhElhaQQd5n4QavXBtP3kWGzSrB4zCxRjwfA/qBld97DmO+WIQfiXIb3adwybtij+l3DgaE8NgX6H+cgXjLKRhH47QfMhDWvc5KSY+jJptNSVdHItFn3zCZ8+uPlV8bglYTrKIr4V5uAfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; arc=none smtp.client-ip=144.6.53.87
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
+	id 1sjyj9-008Ufb-1u;
+	Fri, 30 Aug 2024 18:28:21 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Fri, 30 Aug 2024 18:28:20 +0800
+Date: Fri, 30 Aug 2024 18:28:20 +0800
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: Pavan Kumar Paluri <papaluri@amd.com>
+Cc: linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Ashish Kalra <ashish.kalra@amd.com>,
+	John Allen <john.allen@amd.com>,
+	"David S . Miller" <davem@davemloft.net>, stable@vger.kernel.org
+Subject: Re: [PATCH] crypto: ccp: Properly unregister /dev/sev on sev
+ PLATFORM_STATUS failure
+Message-ID: <ZtGexA2G-kOTQZ4i@gondor.apana.org.au>
+References: <20240815122500.71946-1-papaluri@amd.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240815122500.71946-1-papaluri@amd.com>
 
+On Thu, Aug 15, 2024 at 07:25:00AM -0500, Pavan Kumar Paluri wrote:
+> In case of sev PLATFORM_STATUS failure, sev_get_api_version() fails
+> resulting in sev_data field of psp_master nulled out. This later becomes
+> a problem when unloading the ccp module because the device has not been
+> unregistered (via misc_deregister()) before clearing the sev_data field
+> of psp_master. As a result, on reloading the ccp module, a duplicate
+> device issue is encountered as can be seen from the dmesg log below.
+> 
+> on reloading ccp module via modprobe ccp
+> 
+> Call Trace:
+>   <TASK>
+>   dump_stack_lvl+0xd7/0xf0
+>   dump_stack+0x10/0x20
+>   sysfs_warn_dup+0x5c/0x70
+>   sysfs_create_dir_ns+0xbc/0xd
+>   kobject_add_internal+0xb1/0x2f0
+>   kobject_add+0x7a/0xe0
+>   ? srso_alias_return_thunk+0x5/0xfbef5
+>   ? get_device_parent+0xd4/0x1e0
+>   ? __pfx_klist_children_get+0x10/0x10
+>   device_add+0x121/0x870
+>   ? srso_alias_return_thunk+0x5/0xfbef5
+>   device_create_groups_vargs+0xdc/0x100
+>   device_create_with_groups+0x3f/0x60
+>   misc_register+0x13b/0x1c0
+>   sev_dev_init+0x1d4/0x290 [ccp]
+>   psp_dev_init+0x136/0x300 [ccp]
+>   sp_init+0x6f/0x80 [ccp]
+>   sp_pci_probe+0x2a6/0x310 [ccp]
+>   ? srso_alias_return_thunk+0x5/0xfbef5
+>   local_pci_probe+0x4b/0xb0
+>   work_for_cpu_fn+0x1a/0x30
+>   process_one_work+0x203/0x600
+>   worker_thread+0x19e/0x350
+>   ? __pfx_worker_thread+0x10/0x10
+>   kthread+0xeb/0x120
+>   ? __pfx_kthread+0x10/0x10
+>   ret_from_fork+0x3c/0x60
+>   ? __pfx_kthread+0x10/0x10
+>   ret_from_fork_asm+0x1a/0x30
+>   </TASK>
+>   kobject: kobject_add_internal failed for sev with -EEXIST, don't try to register things with the same name in the same directory.
+>   ccp 0000:22:00.1: sev initialization failed
+>   ccp 0000:22:00.1: psp initialization failed
+>   ccp 0000:a2:00.1: no command queues available
+>   ccp 0000:a2:00.1: psp enabled
+> 
+> Address this issue by unregistering the /dev/sev before clearing out
+> sev_data in case of PLATFORM_STATUS failure.
+> 
+> Fixes: 200664d5237f ("crypto: ccp: Add Secure Encrypted Virtualization (SEV) command support")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Pavan Kumar Paluri <papaluri@amd.com>
+> ---
+>  drivers/crypto/ccp/sev-dev.c | 2 ++
+>  1 file changed, 2 insertions(+)
 
-The patch below does not apply to the 6.1-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
-
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
-git checkout FETCH_HEAD
-git cherry-pick -x 1c2326fcae4f0c5de8ad0d734ced43a8e5f17dac
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024083019-resurrect-iodine-5ad6@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
-
-Possible dependencies:
-
-1c2326fcae4f ("selftests: mptcp: join: check re-adding init endp with != id")
-a13d5aad4dd9 ("selftests: mptcp: join: check re-using ID of unused ADD_ADDR")
-b5e2fb832f48 ("selftests: mptcp: add explicit test case for remove/readd")
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 1c2326fcae4f0c5de8ad0d734ced43a8e5f17dac Mon Sep 17 00:00:00 2001
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Date: Wed, 28 Aug 2024 08:14:30 +0200
-Subject: [PATCH] selftests: mptcp: join: check re-adding init endp with != id
-
-The initial subflow has a special local ID: 0. It is specific per
-connection.
-
-When a global endpoint is deleted and re-added later, it can have a
-different ID, but the kernel should still use the ID 0 if it corresponds
-to the initial address.
-
-This test validates this behaviour: the endpoint linked to the initial
-subflow is removed, and re-added with a different ID.
-
-Note that removing the initial subflow will not decrement the 'subflows'
-counters, which corresponds to the *additional* subflows. On the other
-hand, when the same endpoint is re-added, it will increment this
-counter, as it will be seen as an additional subflow this time.
-
-The 'Fixes' tag here below is the same as the one from the previous
-commit: this patch here is not fixing anything wrong in the selftests,
-but it validates the previous fix for an issue introduced by this commit
-ID.
-
-Fixes: 3ad14f54bd74 ("mptcp: more accurate MPC endpoint tracking")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-
-diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-index 8b4529ff15e5..75458ade32c7 100755
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -3627,11 +3627,12 @@ endpoint_tests()
- 	# remove and re-add
- 	if reset "delete re-add signal" &&
- 	   mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
--		pm_nl_set_limits $ns1 0 2
--		pm_nl_set_limits $ns2 2 2
-+		pm_nl_set_limits $ns1 0 3
-+		pm_nl_set_limits $ns2 3 3
- 		pm_nl_add_endpoint $ns1 10.0.2.1 id 1 flags signal
- 		# broadcast IP: no packet for this address will be received on ns1
- 		pm_nl_add_endpoint $ns1 224.0.0.1 id 2 flags signal
-+		pm_nl_add_endpoint $ns1 10.0.1.1 id 42 flags signal
- 		test_linkfail=4 speed=20 \
- 			run_tests $ns1 $ns2 10.0.1.1 &
- 		local tests_pid=$!
-@@ -3653,11 +3654,21 @@ endpoint_tests()
- 		wait_mpj $ns2
- 		chk_subflow_nr "after re-add" 3
- 		chk_mptcp_info subflows 2 subflows 2
-+
-+		pm_nl_del_endpoint $ns1 42 10.0.1.1
-+		sleep 0.5
-+		chk_subflow_nr "after delete ID 0" 2
-+		chk_mptcp_info subflows 2 subflows 2
-+
-+		pm_nl_add_endpoint $ns1 10.0.1.1 id 99 flags signal
-+		wait_mpj $ns2
-+		chk_subflow_nr "after re-add" 3
-+		chk_mptcp_info subflows 3 subflows 3
- 		mptcp_lib_kill_wait $tests_pid
- 
--		chk_join_nr 3 3 3
--		chk_add_nr 4 4
--		chk_rm_nr 2 1 invert
-+		chk_join_nr 4 4 4
-+		chk_add_nr 5 5
-+		chk_rm_nr 3 2 invert
- 	fi
- 
- 	# flush and re-add
-
+Patch applied.  Thanks.
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
 
