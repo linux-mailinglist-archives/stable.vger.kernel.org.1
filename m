@@ -1,178 +1,227 @@
-Return-Path: <stable+bounces-71558-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71559-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F79F96576C
-	for <lists+stable@lfdr.de>; Fri, 30 Aug 2024 08:12:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94134965777
+	for <lists+stable@lfdr.de>; Fri, 30 Aug 2024 08:14:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B07BEB22350
-	for <lists+stable@lfdr.de>; Fri, 30 Aug 2024 06:12:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 51AFF284CCD
+	for <lists+stable@lfdr.de>; Fri, 30 Aug 2024 06:14:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A3A81537D1;
-	Fri, 30 Aug 2024 06:12:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FFB9152170;
+	Fri, 30 Aug 2024 06:13:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b="s4/sHg8A"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="AIv9nXQw"
 X-Original-To: stable@vger.kernel.org
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0935314D44F;
-	Fri, 30 Aug 2024 06:12:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.167.242.64
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C12E614F9F4;
+	Fri, 30 Aug 2024 06:13:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724998338; cv=none; b=qnAIeMwPM4MJlc1UbUX2JvfJx8CEv/M9OpAgRIz9ZmhHNPI4aL0ncJTJ/sYviq0oex2xa2CKUqf5iJJMO6WtsVgNsza7+jrGRJ9Nob5YyILLZYsaqPNGHAV3ghRdYwXKScVTWurFgfijkyPBOc6oQcij4NaGbwcwcc6tB5YAlN0=
+	t=1724998437; cv=none; b=sooWfdVWpeLi1FzmLLfpgnx017y18XUmU5wQCgbpLYAwwJHzqlkqzchev5j0jzXvFNyrB+r6hSVBZIDGZeT4jlw26bQQs3M97Dg2RK/ydkkSH4ZVGl98NgJYrBghXQ5YZvBBZ+JV6xEnzONvt3w1HtPcEjl6FlgoHzfjhnCwWbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724998338; c=relaxed/simple;
-	bh=RS94icNT3Eg1ti5P4VHowp58hHjlEiQghewC7c9ZRdY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=k4dqTAt2gQYyQcQ9FjtcR2aBFHK9gU9ATmHSqZHrGSYUl0iM4Cem8ADrGkGRP2iPzfaPe6MdMecxJsiQy0g76zonWTWTffMBFRvArVFIcWqN1BUwPffdTSjk4N5XzrKp2jZ/M3kmSn+nQ9ZozvYvr37yKWdw9mdHs0ikbcrH8PI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=ideasonboard.com; dkim=pass (1024-bit key) header.d=ideasonboard.com header.i=@ideasonboard.com header.b=s4/sHg8A; arc=none smtp.client-ip=213.167.242.64
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ideasonboard.com
-Received: from [192.168.29.25] (unknown [IPv6:2405:201:2015:f873:55f8:639e:8e9f:12ec])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id C059AAD8;
-	Fri, 30 Aug 2024 08:11:02 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1724998266;
-	bh=RS94icNT3Eg1ti5P4VHowp58hHjlEiQghewC7c9ZRdY=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=s4/sHg8ALwJUHm5ZOWL54xlfL0miILM7yRdGp8SIFrYZk9gIqMrChE8nFIghJt2Sj
-	 6vMCCV+PnOhBrcSIpiawk6l3b1Wj2vuw+CUepu00LqfzxRB8um52J3UxKj9u3cGn6C
-	 fL3WFQRB1Hf/Nn1FP9/GLUNrx0bcq/ZD/1tcohfw=
-From: Umang Jain <umang.jain@ideasonboard.com>
-Date: Fri, 30 Aug 2024 11:41:52 +0530
-Subject: [PATCH v4 2/2] media: imx335: Fix reset-gpio handling
+	s=arc-20240116; t=1724998437; c=relaxed/simple;
+	bh=p37CJIbeVvxUnXIiq+2XX77bD1ppgbxyfDuu2ZWeuzs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Itp5xKVcjc7eyOX9EBKI1Q0s0AyTgi2/5RGisY+Fcsws+2lN8iao1XP0IcK+PoM30C2IpAp6ukz7PP1IynDUlUSgGPEx/Gl7NVSrAeRLgcr2lr++3/Yle8K76Y8+1MUIHUimS85iZjkMVCPZHiORs9yHIDYy4dPP8WqEYrI9RoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=AIv9nXQw; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: by linux.microsoft.com (Postfix, from userid 1134)
+	id 5A83020B7165; Thu, 29 Aug 2024 23:13:55 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 5A83020B7165
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1724998435;
+	bh=xCOyMDJIpLS4T3O8nkaE9qmCOU+j9U5LKWcYQs6GEfc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=AIv9nXQwENmbAc6VrQ9aTwjjGRZCCYPLMNWX6HzghLrifLjjvI7Zvndn/8E+JVN2y
+	 J3OBZ8OPSOyOchOajM86xk1S3XS/vpls8V9RwPA2U1KlTBbtSq3eyH0+JSF3XgmCM/
+	 +9bTB5pno5ZSXaS1Pq+YIxQMNKVGcIZJWoHdp3uQ=
+Date: Thu, 29 Aug 2024 23:13:55 -0700
+From: Shradha Gupta <shradhagupta@linux.microsoft.com>
+To: Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
+Cc: kys@microsoft.com, haiyangz@microsoft.com, wei.liu@kernel.org,
+	decui@microsoft.com, davem@davemloft.net, longli@microsoft.com,
+	ssengar@linux.microsoft.com, linux-hyperv@vger.kernel.org,
+	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-rdma@vger.kernel.org, schakrabarti@microsoft.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH V3 net] net: mana: Fix error handling in
+ mana_create_txq/rxq's NAPI cleanup
+Message-ID: <20240830061355.GA2986@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+References: <1724920610-15546-1-git-send-email-schakrabarti@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240830-imx335-vflip-v4-2-cb9f20fc7b87@ideasonboard.com>
-References: <20240830-imx335-vflip-v4-0-cb9f20fc7b87@ideasonboard.com>
-In-Reply-To: <20240830-imx335-vflip-v4-0-cb9f20fc7b87@ideasonboard.com>
-To: Mauro Carvalho Chehab <mchehab@kernel.org>, 
- Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Shawn Guo <shawnguo@kernel.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, 
- "Paul J. Murphy" <paul.j.murphy@intel.com>, 
- Daniele Alessandrelli <daniele.alessandrelli@intel.com>, 
- Sakari Ailus <sakari.ailus@linux.intel.com>, 
- Martina Krasteva <martinax.krasteva@intel.com>
-Cc: linux-media@vger.kernel.org, devicetree@vger.kernel.org, 
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
- linux-kernel@vger.kernel.org, 
- Mauro Carvalho Chehab <mchehab+huawei@kernel.org>, 
- Kieran Bingham <kieran.bingham@ideasonboard.com>, 
- Laurent Pinchart <laurent.pinchart@ideasonboard.com>, 
- Umang Jain <umang.jain@ideasonboard.com>, stable@vger.kernel.org
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1724998323; l=4046;
- i=umang.jain@ideasonboard.com; s=20240731; h=from:subject:message-id;
- bh=RS94icNT3Eg1ti5P4VHowp58hHjlEiQghewC7c9ZRdY=;
- b=WS3Iz29bSo0Je4ynMwl7AtWMEvgu1kXD2Vj39Q3XQoJvlK12wlS4WynKSj2FSGR1XrSLK0I1r
- oTr5rI22EBFDNJcjICZjBu0skjOJ8Qr7EeCK5ZZKmwFgTil6Z+Hhg5+
-X-Developer-Key: i=umang.jain@ideasonboard.com; a=ed25519;
- pk=7pvnIBNsDpFUMiph0Vlhrr01+rAn5fSIn/QtDeLeXL0=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1724920610-15546-1-git-send-email-schakrabarti@linux.microsoft.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 
-Rectify the logical value of reset-gpio so that it is set to
-0 (disabled) during power-on and to 1 (enabled) during power-off.
+On Thu, Aug 29, 2024 at 01:36:50AM -0700, Souradeep Chakrabarti wrote:
+> Currently napi_disable() gets called during rxq and txq cleanup,
+> even before napi is enabled and hrtimer is initialized. It causes
+> kernel panic.
+> 
+> ? page_fault_oops+0x136/0x2b0
+>   ? page_counter_cancel+0x2e/0x80
+>   ? do_user_addr_fault+0x2f2/0x640
+>   ? refill_obj_stock+0xc4/0x110
+>   ? exc_page_fault+0x71/0x160
+>   ? asm_exc_page_fault+0x27/0x30
+>   ? __mmdrop+0x10/0x180
+>   ? __mmdrop+0xec/0x180
+>   ? hrtimer_active+0xd/0x50
+>   hrtimer_try_to_cancel+0x2c/0xf0
+>   hrtimer_cancel+0x15/0x30
+>   napi_disable+0x65/0x90
+>   mana_destroy_rxq+0x4c/0x2f0
+>   mana_create_rxq.isra.0+0x56c/0x6d0
+>   ? mana_uncfg_vport+0x50/0x50
+>   mana_alloc_queues+0x21b/0x320
+>   ? skb_dequeue+0x5f/0x80
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: e1b5683ff62e ("net: mana: Move NAPI from EQ to CQ")
+> Signed-off-by: Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
+> Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
+> Reviewed-by: Shradha Gupta <shradhagupta@linux.microsoft.com>
+> ---
+> V3 -> V2:
+> Instead of using napi internal attribute, using an atomic
+> attribute to verify napi is initialized for a particular txq / rxq.
+> 
+> V2 -> V1:
+> Addressed the comment on cleaning up napi for the queues,
+> where queue creation was successful.
+> ---
+>  drivers/net/ethernet/microsoft/mana/mana_en.c | 30 ++++++++++++-------
+>  include/net/mana/mana.h                       |  4 +++
+>  2 files changed, 24 insertions(+), 10 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
+> index 39f56973746d..bd303c89cfa6 100644
+> --- a/drivers/net/ethernet/microsoft/mana/mana_en.c
+> +++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
+> @@ -1872,10 +1872,12 @@ static void mana_destroy_txq(struct mana_port_context *apc)
+>  
+>  	for (i = 0; i < apc->num_queues; i++) {
+>  		napi = &apc->tx_qp[i].tx_cq.napi;
+> -		napi_synchronize(napi);
+> -		napi_disable(napi);
+> -		netif_napi_del(napi);
+> -
+> +		if (atomic_read(&apc->tx_qp[i].txq.napi_initialized)) {
+> +			napi_synchronize(napi);
+> +			napi_disable(napi);
+> +			netif_napi_del(napi);
+> +			atomic_set(&apc->tx_qp[i].txq.napi_initialized, 0);
+> +		}
+>  		mana_destroy_wq_obj(apc, GDMA_SQ, apc->tx_qp[i].tx_object);
+>  
+>  		mana_deinit_cq(apc, &apc->tx_qp[i].tx_cq);
+> @@ -1931,6 +1933,7 @@ static int mana_create_txq(struct mana_port_context *apc,
+>  		txq->ndev = net;
+>  		txq->net_txq = netdev_get_tx_queue(net, i);
+>  		txq->vp_offset = apc->tx_vp_offset;
+> +		atomic_set(&txq->napi_initialized, 0);
+>  		skb_queue_head_init(&txq->pending_skbs);
+>  
+>  		memset(&spec, 0, sizeof(spec));
+> @@ -1997,6 +2000,7 @@ static int mana_create_txq(struct mana_port_context *apc,
+>  
+>  		netif_napi_add_tx(net, &cq->napi, mana_poll);
+>  		napi_enable(&cq->napi);
+> +		atomic_set(&txq->napi_initialized, 1);
+>  
+>  		mana_gd_ring_cq(cq->gdma_cq, SET_ARM_BIT);
+>  	}
+> @@ -2023,14 +2027,18 @@ static void mana_destroy_rxq(struct mana_port_context *apc,
+>  
+>  	napi = &rxq->rx_cq.napi;
+>  
+> -	if (validate_state)
+> -		napi_synchronize(napi);
+> +	if (atomic_read(&rxq->napi_initialized)) {
+>  
+> -	napi_disable(napi);
+> +		if (validate_state)
+> +			napi_synchronize(napi);
 
-Set the reset-gpio to GPIO_OUT_HIGH at initialization time to make
-sure it starts off in reset. Also drop the "Set XCLR" comment which
-is not-so-informative.
+Is this validate_state flag still needed? The new napi_initialized
+variable will make sure the napi_synchronize() is called only for rxqs
+that have napi_enabled.
 
-The existing usage of imx335 had reset-gpios polarity inverted
-(GPIO_ACTIVE_HIGH) in their device-tree sources. With this patch
-included, those DTS will not be able to stream imx335 anymore. The
-reset-gpio polarity will need to be rectified in the device-tree
-sources as shown in [1] example, in order to get imx335 functional
-again (as it remains in reset prior to this fix).
+Regards,
+Shradha.
 
-Cc: stable@vger.kernel.org
-Fixes: 45d19b5fb9ae ("media: i2c: Add imx335 camera sensor driver")
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Link: https://lore.kernel.org/linux-media/20240729110437.199428-1-umang.jain@ideasonboard.com/
-Signed-off-by: Umang Jain <umang.jain@ideasonboard.com>
----
-Following conclusions has been observed and discussed [2]:
-
-- Original driver was reviewed [3] but, the improper handling of
-  reset-gpios was missed in review.
-- Commit fea91ee73b7c ("media: i2c: imx335: Enable regulator supplies")
-  shows the driver didn't had regulator enablement support. The driver
-  would have only worked for cases when the supplies were always-on.
-- Commit 14a60786d72e ("media: imx335: Set reserved register to default value")
-  reflects that the imx335 driver was un-usable due to a reserved
-  register not been set to default.
-- The original author is no longer using the driver nor it is used for its
-  original purpose any more (confirmed by Sakari Ailus).
-- It's extremely unlikely the driver has been or continues to be in
-  use on ACPI based systems (comment by Sakari Ailus).
-
-The above discussion points in a direction that driver does not cater
-to a large user-base. Nonetheless, the breakage will be noticed by a few
-users (if at all) hence, this explanation would help resolve the breakage
-as soon as noticed (by using correct reset-gpio polarity as mentioned
-in [1]).
-
-[1]: Documentation/devicetree/bindings/media/i2c/sony,imx335.yaml
-[2]: https://lore.kernel.org/linux-media/20240729110437.199428-1-umang.jain@ideasonboard.com/
-[3]: https://lore.kernel.org/all/20210527142145.173-3-martinax.krasteva@linux.intel.com/
----
----
- drivers/media/i2c/imx335.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
-
-diff --git a/drivers/media/i2c/imx335.c b/drivers/media/i2c/imx335.c
-index 990d74214cc2..54a1de53d497 100644
---- a/drivers/media/i2c/imx335.c
-+++ b/drivers/media/i2c/imx335.c
-@@ -997,7 +997,7 @@ static int imx335_parse_hw_config(struct imx335 *imx335)
- 
- 	/* Request optional reset pin */
- 	imx335->reset_gpio = devm_gpiod_get_optional(imx335->dev, "reset",
--						     GPIOD_OUT_LOW);
-+						     GPIOD_OUT_HIGH);
- 	if (IS_ERR(imx335->reset_gpio)) {
- 		dev_err(imx335->dev, "failed to get reset gpio %ld\n",
- 			PTR_ERR(imx335->reset_gpio));
-@@ -1110,8 +1110,7 @@ static int imx335_power_on(struct device *dev)
- 
- 	usleep_range(500, 550); /* Tlow */
- 
--	/* Set XCLR */
--	gpiod_set_value_cansleep(imx335->reset_gpio, 1);
-+	gpiod_set_value_cansleep(imx335->reset_gpio, 0);
- 
- 	ret = clk_prepare_enable(imx335->inclk);
- 	if (ret) {
-@@ -1124,7 +1123,7 @@ static int imx335_power_on(struct device *dev)
- 	return 0;
- 
- error_reset:
--	gpiod_set_value_cansleep(imx335->reset_gpio, 0);
-+	gpiod_set_value_cansleep(imx335->reset_gpio, 1);
- 	regulator_bulk_disable(ARRAY_SIZE(imx335_supply_name), imx335->supplies);
- 
- 	return ret;
-@@ -1141,7 +1140,7 @@ static int imx335_power_off(struct device *dev)
- 	struct v4l2_subdev *sd = dev_get_drvdata(dev);
- 	struct imx335 *imx335 = to_imx335(sd);
- 
--	gpiod_set_value_cansleep(imx335->reset_gpio, 0);
-+	gpiod_set_value_cansleep(imx335->reset_gpio, 1);
- 	clk_disable_unprepare(imx335->inclk);
- 	regulator_bulk_disable(ARRAY_SIZE(imx335_supply_name), imx335->supplies);
- 
-
--- 
-2.45.0
-
+>  
+> -	xdp_rxq_info_unreg(&rxq->xdp_rxq);
+> +		napi_disable(napi);
+>  
+> -	netif_napi_del(napi);
+> +		netif_napi_del(napi);
+> +		atomic_set(&rxq->napi_initialized, 0);
+> +	}
+> +
+> +	xdp_rxq_info_unreg(&rxq->xdp_rxq);
+>  
+>  	mana_destroy_wq_obj(apc, GDMA_RQ, rxq->rxobj);
+>  
+> @@ -2199,6 +2207,7 @@ static struct mana_rxq *mana_create_rxq(struct mana_port_context *apc,
+>  	rxq->num_rx_buf = RX_BUFFERS_PER_QUEUE;
+>  	rxq->rxq_idx = rxq_idx;
+>  	rxq->rxobj = INVALID_MANA_HANDLE;
+> +	atomic_set(&rxq->napi_initialized, 0);
+>  
+>  	mana_get_rxbuf_cfg(ndev->mtu, &rxq->datasize, &rxq->alloc_size,
+>  			   &rxq->headroom);
+> @@ -2286,6 +2295,8 @@ static struct mana_rxq *mana_create_rxq(struct mana_port_context *apc,
+>  
+>  	napi_enable(&cq->napi);
+>  
+> +	atomic_set(&rxq->napi_initialized, 1);
+> +
+>  	mana_gd_ring_cq(cq->gdma_cq, SET_ARM_BIT);
+>  out:
+>  	if (!err)
+> @@ -2336,7 +2347,6 @@ static void mana_destroy_vport(struct mana_port_context *apc)
+>  		rxq = apc->rxqs[rxq_idx];
+>  		if (!rxq)
+>  			continue;
+> -
+>  		mana_destroy_rxq(apc, rxq, true);
+>  		apc->rxqs[rxq_idx] = NULL;
+>  	}
+> diff --git a/include/net/mana/mana.h b/include/net/mana/mana.h
+> index 7caa334f4888..be75abd63dc8 100644
+> --- a/include/net/mana/mana.h
+> +++ b/include/net/mana/mana.h
+> @@ -98,6 +98,8 @@ struct mana_txq {
+>  
+>  	atomic_t pending_sends;
+>  
+> +	atomic_t napi_initialized;
+> +
+>  	struct mana_stats_tx stats;
+>  };
+>  
+> @@ -335,6 +337,8 @@ struct mana_rxq {
+>  	bool xdp_flush;
+>  	int xdp_rc; /* XDP redirect return code */
+>  
+> +	atomic_t napi_initialized;
+> +
+>  	struct page_pool *page_pool;
+>  
+>  	/* MUST BE THE LAST MEMBER:
+> -- 
+> 2.34.1
+> 
+> 
 
