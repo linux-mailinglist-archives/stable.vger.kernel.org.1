@@ -1,256 +1,153 @@
-Return-Path: <stable+bounces-71653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71654-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2214E966368
-	for <lists+stable@lfdr.de>; Fri, 30 Aug 2024 15:50:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B51E796636A
+	for <lists+stable@lfdr.de>; Fri, 30 Aug 2024 15:52:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD466284CB2
-	for <lists+stable@lfdr.de>; Fri, 30 Aug 2024 13:50:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 23D7C284C83
+	for <lists+stable@lfdr.de>; Fri, 30 Aug 2024 13:52:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3345F1AE846;
-	Fri, 30 Aug 2024 13:50:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7A3D1AF4E4;
+	Fri, 30 Aug 2024 13:51:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="V458laKH"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="n4UgI8s1"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BA974A1D;
-	Fri, 30 Aug 2024 13:50:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.15
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725025815; cv=fail; b=mdgmd1OcfXQCPgKdtqQx2xQrn8DeTf+msLEcE5Amt/ya4pdJUWUaIxqWI4GqsSrodW1uDviqycgLXS5fqT/lNBjjfxMrQN35a+4YPpk5nQ73m4gvTbj02ATgS1i+me4I+YA7XekdPTjmSzd4+9+NscFhbTobPoDY/2Tg95fGM2o=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725025815; c=relaxed/simple;
-	bh=dvcKd454qCAHEJ8L+ZiX3pc1gu4iGiGg27/DJdu6Lus=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=V1exRsn/Yir570zeGhtd4ldN27XUw7h9Kk6yGYz1bgps4Q68zUUAKmzlZFrPogcujSEJL35bbcRp27q05GVS2zI7sfYSlmrxBtejiNtwzN3Ls55B7qbEE7dZmWwxM7igwSYpC0HRcbv8uwcMhfPqmoCyHc1L/CJxWpQSJ1HTeeo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=V458laKH; arc=fail smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11246190059;
+	Fri, 30 Aug 2024 13:51:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1725025915; cv=none; b=MRLV3lCJ5mKQ8VYt/rhyrATuHXZxiZyeQlG70MtXLWqTrlhXO9CAo6xrDhRsrdutSxrjr4vRmCSlcvLmRZxxDytzGDIxlt2eVhgkUA3y1D7+J3xn7uM7d7urjAtLs+d0Dck4GX8HgHRE7S3+m1NPIXFmZzdzhDnjfnlDPpzfEMs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1725025915; c=relaxed/simple;
+	bh=z5c+A6SazVqr8L3iF7US28CgCvu9PZLF+fDGvMs8bP4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PAd/wjwJ3U3/PFRQ7Eu0ELIAJeciWfB7Ul4fuA4tYECJ7QF9bhW+exq8hTHup38MJq080lL7AlVu4o+mEAUn2I7Mb3x9rhtxAf/jtpEI+0v/zlR1FR8nR7m3BqK98nVYPrPvGKrHzwlwsEQ1K/eAbrzF5jBh6LJAogOJpNlaRYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=n4UgI8s1; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1725025813; x=1756561813;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=dvcKd454qCAHEJ8L+ZiX3pc1gu4iGiGg27/DJdu6Lus=;
-  b=V458laKHfOEOBsOzpLcFTsDPftjWgHAzenzOIqaALunmB23S1TGHcfYU
-   tzgHu1DdA293sP1b1BzL5mSs5IWDS8qQicELN2Y0xuFHy04lWOVeVwmV2
-   XSv1cWRRos6X5PY0Artj/1meGRIYwUmuZQzUQ6goHXuBhQPORudoxkM2z
-   pJhXkwF8miGOfaluGhILaVZCHcqJpw2dTDnOTnRy7y/yzOi3LA6VloUUp
-   BvNoUoj/RXTe38ROrokbDTDh+Nn5nXMKpfakgbMgFQphJm4ULjhCF88tB
-   0twirs5gP/b+DLwJNklwv+anKESIIv2R+3Hc1Q+gsArQceG7EdR0EyIkL
-   A==;
-X-CSE-ConnectionGUID: 2DUPyJxcRPaWKlV59k3Gbw==
-X-CSE-MsgGUID: qkgZpNPAQ1iRhpwCeaUgFA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11180"; a="23832319"
+  t=1725025914; x=1756561914;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=z5c+A6SazVqr8L3iF7US28CgCvu9PZLF+fDGvMs8bP4=;
+  b=n4UgI8s1gVYJO75v0PxHx4tF01krstqYIpBN6HBe1m4M19TMRdVUAVM0
+   ijm7v9UHYYqRU72PNJGimWfup9cFAUojrMUW/5G8Wd4MGnKFvgfOJ9cDw
+   YlhO1qB0JZsc0BRF4/Qw5wsxGRBqJudjj3nVAMStEHNT3m1qRbKzP7H2r
+   qmfR2Lorbw7Uz7ZXIKvA6LYv5VV3DKF8XGnhFm0Gvqpd41/GJJj+7ytNs
+   v97/lgw72swhiVdWle2rb6ci0ef2WsXPE+4iMq5JcqlAtkrEHqS4MR6Fo
+   ZYTpb2DdRYbpghG1LgjXGnPGgLOGSMIejNfTsSlOP8YUv5BcgvSN7c4Xb
+   g==;
+X-CSE-ConnectionGUID: OhzKoBdfRPSbahXp+K6F6w==
+X-CSE-MsgGUID: kJcPnryjQIu3DVIoBvw6bQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11180"; a="23804898"
 X-IronPort-AV: E=Sophos;i="6.10,188,1719903600"; 
-   d="scan'208";a="23832319"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Aug 2024 06:50:12 -0700
-X-CSE-ConnectionGUID: DgeO69duReaWRtzgxpqzyw==
-X-CSE-MsgGUID: aGb6N3xdTs2ZgFi3q0Ut5A==
+   d="scan'208";a="23804898"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Aug 2024 06:51:54 -0700
+X-CSE-ConnectionGUID: EUBIpPy8TYSzts9WRRxs+w==
+X-CSE-MsgGUID: 4MP1KPWFTjiy58Y3JUwwpQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.10,188,1719903600"; 
-   d="scan'208";a="94719444"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
-  by fmviesa001.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 30 Aug 2024 06:50:11 -0700
-Received: from orsmsx603.amr.corp.intel.com (10.22.229.16) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Fri, 30 Aug 2024 06:50:10 -0700
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- orsmsx603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Fri, 30 Aug 2024 06:50:10 -0700
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com (104.47.73.169)
- by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Fri, 30 Aug 2024 06:50:10 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KHalokO0RZY1zoX8/nKd4Meqi97qZm4bfQg6jmBBcMZCjjuG7xU1Tjm6z2/k+zJTY3lz6OSIdnk6Yek+qsSSsZ0xqcufhL7wwYyFmGdO7m+esRNzQIysz4/pTQ5g8ddqkR20rKgWTwgB9aTxPC3jgmiQcA6tE0PDPJ2PaFv9K3sTawwgHeQV2iGBWBzyAb8sTswifExosbjRDMmHxsVP3Vfwd4EAcuzYEeaau3c8FnQRtuQeAkxMX+tZxLgaDAgtDyMPdIYNNnpS48Cjs2/cSDBuukYZzShKxVOel7J4pNkhmQx+p7sUq0yZ5ASfxk5z/7rlHrzIIjUX8Jpv7/oIbQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yJmcWuPr5a241X+FEQpplaJdljl0ZC6Bxx6W3qBTy8M=;
- b=s8KZIFLQc2J5oXbAsefE3Z09bwaQIFwsqkJ77N8+zOlLd69oKa+vYhzL30G2KSgYznVHaEA1bLQ944HCZ71lvsN7/qCKR1ftai81UK2Y6sbVd6LFZH0k5E/Kz16gDYlxWaD6qKtnd6Mv8LlJsp72mqM6ZN6fIDeVDFimaEpjSwLHEkZnfd1/V/OJcbFMUaUeI+1SWxIB2dShiJGk7TSWfmYnXfV7k7l/enzWrgJjVeU08eJDLE11WigFKskFIg/hLnHxLCGFuQtbWw0ZfEfdmh9wP848r1KwCZu5q+ggb2jXYWvp+5ZVBdyr6KjVlxHct9AbPwZ8EEAQ1nIa3ryIqQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS0PR11MB8718.namprd11.prod.outlook.com (2603:10b6:8:1b9::20)
- by SJ0PR11MB5118.namprd11.prod.outlook.com (2603:10b6:a03:2dd::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7918.20; Fri, 30 Aug
- 2024 13:50:09 +0000
-Received: from DS0PR11MB8718.namprd11.prod.outlook.com
- ([fe80::4b3b:9dbe:f68c:d808]) by DS0PR11MB8718.namprd11.prod.outlook.com
- ([fe80::4b3b:9dbe:f68c:d808%5]) with mapi id 15.20.7875.019; Fri, 30 Aug 2024
- 13:50:08 +0000
-Message-ID: <d2b7a43f-2a6a-44ba-affa-90d581c7d2bf@intel.com>
-Date: Fri, 30 Aug 2024 15:49:39 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ice: Fix possible double free in error handling path
-To: Ma Ke <make24@iscas.ac.cn>
-CC: <anthony.l.nguyen@intel.com>, <przemyslaw.kitszel@intel.com>,
-	<davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-	<pabeni@redhat.com>, <shiraz.saleem@intel.com>, <david.m.ertman@intel.com>,
-	<intel-wired-lan@lists.osuosl.org>, <netdev@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
-References: <20240830133325.3439293-1-make24@iscas.ac.cn>
-From: Alexander Lobakin <aleksander.lobakin@intel.com>
-Content-Language: en-US
-In-Reply-To: <20240830133325.3439293-1-make24@iscas.ac.cn>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MI1P293CA0020.ITAP293.PROD.OUTLOOK.COM
- (2603:10a6:290:3::18) To DS0PR11MB8718.namprd11.prod.outlook.com
- (2603:10b6:8:1b9::20)
+   d="scan'208";a="68048416"
+Received: from mattu-haswell.fi.intel.com (HELO [10.237.72.199]) ([10.237.72.199])
+  by fmviesa003.fm.intel.com with ESMTP; 30 Aug 2024 06:51:51 -0700
+Message-ID: <45e02c34-c45d-4ec7-8bd3-6c7808518229@linux.intel.com>
+Date: Fri, 30 Aug 2024 16:53:56 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB8718:EE_|SJ0PR11MB5118:EE_
-X-MS-Office365-Filtering-Correlation-Id: 463058a9-b02a-4d07-cbce-08dcc8faa93b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?ZXRZWVovVnkwQ3U2MU5jeC9EYVVKM05CTjd2Rjd6cE1OZ1BYMDRwZXRnN3Rj?=
- =?utf-8?B?TzQ1RDUxYUo4Z2hGUnI5eS9aaTh6Wi9KOThyNUxqWXRVcmRkaXlGZFhNMGh6?=
- =?utf-8?B?aFdudG1qQ0xUVjNYRjBUVDE1Mk5XekJrNnZLeFpWYzZ6TDA2bmlWSEt2cXFr?=
- =?utf-8?B?bUJGeWdKaUszQzUzSTE1YmZCNnRNS29iSzR4S2NqU2pZS0I2VkY1ZDRWTzRO?=
- =?utf-8?B?Y2REVFoyc0tONEVKeHlySjV1SVcvRWxDQ2lsUE00YzUrVjFxRTBZaUVac2pL?=
- =?utf-8?B?b0Z3VlBmVzJSTXVHcmVHVUZ3TWovcFZqcldaeFhQdUZDc2JxWFNVZEEwS0Za?=
- =?utf-8?B?clRkN0EzYmlzUmFMZXdyVmkwRHJzVlpvcm5xSmVzTWhwVWJBcTNHZStnRjZh?=
- =?utf-8?B?VmcxTHdHUG5xVTBiMTBLSUJNS2pHcnVRcU9TRkRzQWR0UTl3L1NsNlc4c3pE?=
- =?utf-8?B?RXhna0wzR21GTXJWQVhDUUg0djRQVHI4YjhqNDFPb3VKRFZaSnl2R1dXcVFL?=
- =?utf-8?B?YnhDTGZTR25YTlB6N05ORk1rdDZzcHljOXd1ekUrQmxiQ04wdWJZMUpyZWM5?=
- =?utf-8?B?YlhvVXlKK2pyZjlGZE1ob1JqQ3lYV0JPcmhVY2syLzJtTkhUbGRQeU9IWkZy?=
- =?utf-8?B?SDBBN3c4K0pOYkVubXhmSTlUdmJUcSs1TmMyMWFnaXgzUnFXcEgyREt4WFRN?=
- =?utf-8?B?RUNvV0JSUTRFLzJaVThVbWt1UjM5MHJ6a21mMnRlUmZhVW1jSHR2NEQwMVNp?=
- =?utf-8?B?aGVOd3RyYjRwczQrYWRuZ09YNmYvUnpMazJONmo4aTNweVVxSmZId2ZuSlRi?=
- =?utf-8?B?ZXo5YmlCVWlWRVB6TEtSVWp6aFNMZlowK2p3c3llUnZ0VnFSNDB2SlNIZGR3?=
- =?utf-8?B?QlNCcUlaUlJiVzlEL3pzTVZaQ08zVTBMMEhtUS9yVTJhQ3RmdTQrQ3JRcDVG?=
- =?utf-8?B?T1pjUnJESmcvVTFmSmNKZ1lKa0pvTFdCY29LVDdoYVl3ckorREFrNlpQcHlj?=
- =?utf-8?B?K2dUSUtMdW5ZM0VVL3U4bTM4VVAvWFBMUHQxL1JRd0dBN096ekJGNURSTlBZ?=
- =?utf-8?B?MUROdFk4aHlwUHJRTUlYQVIrbUtoRTV1amorZkpibGJGQ3VmWm9EZjd0d3B0?=
- =?utf-8?B?V2RWa1IydVloNTRzeXNpSkdFdk1GWGRjOWdvYWJ4cHFIeWdxZmFTRkhaS3R4?=
- =?utf-8?B?NldHQWpSOTFZOXhHRjN5cDZRMjQ3M2RXZXhlQ3lLOUJaN0FlUTVKZWc2YUM0?=
- =?utf-8?B?L1VCSnRJc2U2UHF0bGI1dkZaa1NNcDJSK2pNQ0JuSVdYNW41WEphNG4wRlN0?=
- =?utf-8?B?VHdWMk45N05qVFpDWXpnMG9JV0pxdWpiempKQnh1VjZKUVFPQ0N3WG5Ob3NQ?=
- =?utf-8?B?Wlh1RTFJanRGajJ3aFYzaStLYWc5bGlPdkpNa0hBWC9IaGoyeXd3NVBZOGx0?=
- =?utf-8?B?bTZDZ1RUUkNDeXphWWp0bkYxRSt1MkNQRC9oQjFiOXpKWVBMeGR2cDNwc0pi?=
- =?utf-8?B?K1pqQ2d6cFdpQzJpM0taSVJ0bFZiWE1kb3BtVlhYcmo4TURxaTM2SkM3WldW?=
- =?utf-8?B?Lzd0eFZXcXhKNXRBc1R1Si9pdEZoWnJnS1lEb0U2ZlpuelUxaWU4bzB1N0Jw?=
- =?utf-8?B?MzZKR05LTzFxUEFuS0VBWjNFdkN2MlFnbm53M3Bjb0RTTk1IWTB5TnBUdDBh?=
- =?utf-8?B?QWNQcm1kOG9LckxybGUzQjJJdmRoejRTVDh0SVk5T25FTlFDZjFmd2VVS0Rr?=
- =?utf-8?B?SHUxU0tUSTA3QlJwdWhwMWdOTklkcWh0UCtKQTI1Z1pFTVYzdkY4QWdhWGZV?=
- =?utf-8?B?MVIrM0Mvemt1TngzNmFKQT09?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB8718.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?cWRlYjNYTTduTUtSODZZU2hma0tHU2RMR2thbmNlMjl2WXJPREdPMk42Yk9I?=
- =?utf-8?B?Y0hhSlhDZXo3U1VibVdUYndCMGVXMmh1aFkwRExtM0VuZDFzNTg0TUVyZTdm?=
- =?utf-8?B?NGhOZ3JjWm9NNFJ1U2g5dzBCb2pEZWEvZHlIYzEyQVZscGxXMWNrcEt2Qmo1?=
- =?utf-8?B?VGduZE5FTjRWT2pWcGY2TWtEUmRFT1VHN1M4bWJsdGJZcHdsMWpqNnIyMUtW?=
- =?utf-8?B?L2ZIbjZ3WUpKL21ZZ3dhVlpFSXRSTWltM2tHNFA0Mk45c3QyZThDNVBndW85?=
- =?utf-8?B?enZjY29kZ0ZSMHV1V3BqOXozMEpHSWphSkhOMUltQml4UlFGSG1MdGdlZEhm?=
- =?utf-8?B?eHovSHF5OS8xcUI0ZFMzSUtuaTNzWTNZYWZJcmxwbXBpMGpUTnhlWmxmRFFz?=
- =?utf-8?B?Q0puR2RBMTZSUGRrZ2hhZ3VzVm1TSWkvQjltN1Iza0hzTUFOZ2tZZjUrR01m?=
- =?utf-8?B?N0lPR044REhoaU95VGJBQUtMR21zRStBNEk3aXVsMG1Bc1ZJbmsvclJVUmJh?=
- =?utf-8?B?NjloT2hkTFdtWDFWWkx5ejJnRERKOXdlZm13VTJYaFpNN0prYkN6RVVxRUtw?=
- =?utf-8?B?SVNVSjB0SlN6bXBybi9jZE5NWTdZd2JObUsrQTlNakFiU2oyL3BPcEROeU84?=
- =?utf-8?B?d1BUWDgxc013b3JpalFuK2xYd295Wi9rSjhLT3BFNmxKQXA3eXUyTndYUk5n?=
- =?utf-8?B?NG5IS2p3WHlkRkFyUG5YbVlmNUZjcDZZaFdTUGkyRzkyOTdoSWhML29PRjJ6?=
- =?utf-8?B?US9vdWpWck91S3VVWmQyR3JVNXlvMklRTUpNQlAydzY5b3I1aWhtbThnR2dZ?=
- =?utf-8?B?T3JiR3FwbzJ6RHVhNGtYeUhRTkgzcUlXVFAxZ211UE0xU2RGYXNUMHdCaGUw?=
- =?utf-8?B?dzFacEZrZnc4RGNKQ2NwMEVVdGVwL3JqMEEzUkxiMzZIb2p4eVY5V1JtZHYz?=
- =?utf-8?B?M09SYU9GdmFTTUlkSzJvTENidkNSRDlLNUIyUHFNa253eEJBKzVoS3RYS1dj?=
- =?utf-8?B?MWU0WGlMN0hDU1ljc0xwZk9uK0RqTHBvaWs4elp6ODZtU2s3aVNGK1JoMzJt?=
- =?utf-8?B?b1ZJMVg5dnJpUkpzUUQ0Ky9rRWdpSWo4THloRVp2blFqa0oySDdUSTMyV2hl?=
- =?utf-8?B?T3BiSTd0MU9jcjRLSjBaTjR2WE9lellwOUZ5YnlPc3Rnemh5RWx0Z2x1THIv?=
- =?utf-8?B?QXV2N3c5a0J6QWhrQUowTWN5TVpBYWtQU0VrYXJUWjIrOGNyZHlKNUdXUjFP?=
- =?utf-8?B?THVqR3M5Q1k4aUZqN2cvSk9hVy8xZWhZbFFGVFJOYjBiZVNzcmkyeVNlMnBi?=
- =?utf-8?B?UC8xbFhwZ0wyeWYwU3IyTkw0d0JnRmdDeUZQYTlvc1hPQXpkVm1keTQwS3dZ?=
- =?utf-8?B?YXhmQ0ZjMXJCWU1lZit4OTV4OFZ4WHVkU054YXR1ZlI0eXA2RlcrRGRhQ0dG?=
- =?utf-8?B?WWdOY1IwTnd5bUdRL2J3RzlqS1FERzNvZmRqSkpYOE5IQ29ieTh0K2l4TXFr?=
- =?utf-8?B?THcyWDF1ZXg0clhzZHBhNUVNSWN3Q3AwUGVmN1IwUmpqR2xlbFRXcnZaU2hB?=
- =?utf-8?B?WEpKaE5uMmhNNk5ncUkyTkpQanROT2xEbW5kVGhxVldlaHN3eERMbklrNDVk?=
- =?utf-8?B?bFo4MWhEdzlLLy9PMmJwZGJoTHZneW5rTVJvbTVMNjl4SEJ0TjNiUFl5b2x1?=
- =?utf-8?B?ZzBJS1g4QkF6NlpMdHlEQkFGQU9Oc2ZBR0JLMXhBR3VJV0tVeUhOelQyWnlP?=
- =?utf-8?B?S1ZJc3Mvb3lSd2gxVXc1RjRlNkdZd2ZFM3pWdVExVTdWenFvR0RiOW5ta1kw?=
- =?utf-8?B?Y0JmU2JFYlp1cWVjSnFubTlPSkxvaVZ4bUxIUmROZXBjL2wyeDVrc3hWRWpP?=
- =?utf-8?B?a0JLaUc5YTNlSllvalhmcWE4MStwMFNxOUpyaUp1aWpTM3g3MGVOVG1PMDNH?=
- =?utf-8?B?ai9kWCtSUis2YTRTUkVpZHY5OVdEQmgzdFhrMmJMY2diK1h6L2Q5eTVQQVk4?=
- =?utf-8?B?VDlyTTRMM2p0aDZMY3JrVmRxMjViazQyZEEyU1orTGhYK2QraC9FS3hMVXdG?=
- =?utf-8?B?RVdwME9SR3lPOGFZMUdYOUtqY3JXdWRhZmF2cWxxMUd2b0dhaC96UW5MY1ZM?=
- =?utf-8?B?ak81UUN6NkJyQU0wNXpBelVQZm4yV1BkcVpwdUVJWHFqYU5TRHpsdDdqdG4r?=
- =?utf-8?B?d0E9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 463058a9-b02a-4d07-cbce-08dcc8faa93b
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB8718.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Aug 2024 13:50:08.8934
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: gebmsEqg1ZdMtapSykxuxj4lwjqlngUifk1YCOU3PKqkskcqCdZjISrl+BHLncUWH0vxm/4g8QtJCIGg/40iViRdEa9woiAp5WRWCTL0Q9g=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR11MB5118
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] usb: xhci: fixes lost of data for xHCI Cadence
+ Controllers
+To: Pawel Laszczak <pawell@cadence.com>,
+ "mathias.nyman@intel.com" <mathias.nyman@intel.com>
+Cc: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+ "peter.chen@kernel.org" <peter.chen@kernel.org>,
+ "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+References: <20240821055828.78589-1-pawell@cadence.com>
+ <PH7PR07MB95388A2D2A3EB3C26E83710FDD8E2@PH7PR07MB9538.namprd07.prod.outlook.com>
+Content-Language: en-US
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
+In-Reply-To: <PH7PR07MB95388A2D2A3EB3C26E83710FDD8E2@PH7PR07MB9538.namprd07.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Ma Ke <make24@iscas.ac.cn>
-Date: Fri, 30 Aug 2024 21:33:24 +0800
-
-> When auxiliary_device_add() returns error and then calls
-> auxiliary_device_uninit(), callback function adev_release
-> calls kfree(iadev). We shouldn't call kfree(iadev) again
-> in the error handling path. Set 'iadev' to NULL.
+On 21.8.2024 9.01, Pawel Laszczak wrote:
+> Stream endpoint can skip part of TD during next transfer initialization
+> after beginning stopped during active stream data transfer.
+> The Set TR Dequeue Pointer command does not clear all internal
+> transfer-related variables that position stream endpoint on transfer ring.
 > 
-> Cc: stable@vger.kernel.org
-
-You need to add a comment with the first kernel version which has this
-bug. E.g.
-
-Cc: stable@vger.kernel.org # 9.9+
-
-(replace 9.9 with the actual version)
-
-BTW usually Cc: stable goes *after* "Fixes:".
-
-> Fixes: f9f5301e7e2d ("ice: Register auxiliary device to provide RDMA")
-> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-> ---
->  drivers/net/ethernet/intel/ice/ice_idc.c | 1 +
->  1 file changed, 1 insertion(+)
+> USB Controller stores all endpoint state information within RsvdO fields
+> inside endpoint context structure. For stream endpoints, all relevant
+> information regarding particular StreamID is stored within corresponding
+> Stream Endpoint context.
+> Whenever driver wants to stop stream endpoint traffic, it invokes
+> Stop Endpoint command which forces the controller to dump all endpoint
+> state-related variables into RsvdO spaces into endpoint context and stream
+> endpoint context. Whenever driver wants to reinitialize endpoint starting
+> point on Transfer Ring, it uses the Set TR Dequeue Pointer command
+> to update dequeue pointer for particular stream in Stream Endpoint
+> Context. When stream endpoint is forced to stop active transfer in the
+> middle of TD, it dumps an information about TRB bytes left in RsvdO fields
+> in Stream Endpoint Context which will be used in next transfer
+> initialization to designate starting point for XDMA. This field is not
+> cleared during Set TR Dequeue Pointer command which causes XDMA to skip
+> over transfer ring and leads to data loss on stream pipe.
 > 
-> diff --git a/drivers/net/ethernet/intel/ice/ice_idc.c b/drivers/net/ethernet/intel/ice/ice_idc.c
-> index 145b27f2a4ce..5db05f54a80c 100644
-> --- a/drivers/net/ethernet/intel/ice/ice_idc.c
-> +++ b/drivers/net/ethernet/intel/ice/ice_idc.c
-> @@ -330,6 +330,7 @@ int ice_plug_aux_dev(struct ice_pf *pf)
->  		return ret;
->  	}
->  
-> +	iadev = NULL;
->  	ret = auxiliary_device_add(adev);
->  	if (ret) {
->  		auxiliary_device_uninit(adev);
-
-I don't understand this patch.
-I checked net-next, tnguy/net-queue, tnguy/next-queue and not in a
-single branch @iadev is used after auxiliary_device_add().
-IOW you just introduce a dead store which will be removed by the
-compiler. The kfree() above that you mentioned is called only once and
-never after auxiliary_device_uninit().
-Can you draw a call ladder with the related code pieces how I can
-reproduce the issue?
+> Patch fixes this by clearing out all RsvdO fields before initializing new
+> transfer via that StreamID.
+> 
+> Field Rsvd0 is reserved field, so patch should not have impact for other
+> xHCI controllers.
+> 
+> Fixes: 3d82904559f4 ("usb: cdnsp: cdns3 Add main part of Cadence USBSSP DRD Driver")
+> cc: <stable@vger.kernel.org>
+> Signed-off-by: Pawel Laszczak <pawell@cadence.com>
 
 Thanks,
-Olek
+
+Code looks good but maybe we should skip adding this to stable until we are really
+sure modifying the RsvdO fields for _all_ host controllers doesn't cause any issues.
+
+I simplified and changed the commit message, is the following ok with you:
+
+usb: xhci: fix loss of data on Cadence xHC
+
+Streams should flush their TRB cache, re-read TRBs, and start executing
+TRBs from the beginning of the new dequeue pointer after a 'Set TR
+Dequeue Pointer' command.
+
+Cadence controllers may fail to start from the beginning of the dequeue
+TRB as it doesn't clear the Opaque 'RsvdO' field of the stream context
+during 'Set TR Dequeue' command.
+This stream context area is where xHC stores information about the last
+partially executed TD when a stream is stopped.
+xHC uses this information to resume the transfer where it left mid TD,
+when the stream is restarted.
+
+Patch fixes this by clearing out all RsvdO fields before initializing new
+Stream transfer using a 'Set TR Dequeue Pointer' command.
+
+Field RsvdO is reserved field, so patch should not have impact on other
+xHCI controllers, but don't add this patch to stable kernels yet
+before it has worked flawlessly upstream on different hosts for a while.
+
+[simplify and edit commit message -Mathias]
+
+Signed-off-by: Pawel Laszczak <pawell@cadence.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+
 
