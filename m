@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-71619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71620-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE796965F47
-	for <lists+stable@lfdr.de>; Fri, 30 Aug 2024 12:30:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D14A6965F4A
+	for <lists+stable@lfdr.de>; Fri, 30 Aug 2024 12:31:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DDEEC1C21C85
-	for <lists+stable@lfdr.de>; Fri, 30 Aug 2024 10:30:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D1A71F27D94
+	for <lists+stable@lfdr.de>; Fri, 30 Aug 2024 10:31:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9FB117B508;
-	Fri, 30 Aug 2024 10:29:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D8F57173C;
+	Fri, 30 Aug 2024 10:30:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KJPXBBAa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WneWJi/F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79E3E17C22E
-	for <stable@vger.kernel.org>; Fri, 30 Aug 2024 10:29:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BE4D18FC61
+	for <stable@vger.kernel.org>; Fri, 30 Aug 2024 10:30:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725013795; cv=none; b=TlvbABOcLLr7f4PU2D2cvXCMdqAz1xcEzdEx0EkguAeTuIqbhGrDxMyQPcu8Jlrm187HA8GoxxnQdkDWDFD2Igl3/KiQKO6E7yVrdS9KF5v4QIDm2//AvGzmO2tzpub7N0iaUkZmTZYWCXYXiyY4AeRiGZDXXPmuTl4HMMJj1mA=
+	t=1725013804; cv=none; b=BzxRORFhhqBS/x97jj2N6OmB6uy9b6w67jjpIdnJxOzYSux8VK20aATJ9eEGbEI1t8aT+Vq1W2qJspmi6TiBrElFo25BGCJ+G6FjWy53lB9cj7Crlv1p6Bb8Fe8cuLUNkgCbAmOp/JdnBpCIyw3GyzNhOZjwd8Qa3qzI/HW1BbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725013795; c=relaxed/simple;
-	bh=qJs26KERlurdk8Lnpi1mGQ5sRro9jly7mNhqGbVe1g8=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=R8BdY1zSyptk/7CXEjBvz34jKFdii8tPsx65EL8GdPbHUhA+49PRcFKYsL79QM+Cfqvp9w/6SisgXZZ1+r+6rGM/MnQpxvHj2fXiAK4r7F/PBOwcFk8bR25wA6d6Lir5CnpnvJcZBdRLRH9BepnbSBRN5iMBpUr5WlcFHH8wwPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KJPXBBAa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2F39C4CEC4;
-	Fri, 30 Aug 2024 10:29:54 +0000 (UTC)
+	s=arc-20240116; t=1725013804; c=relaxed/simple;
+	bh=DUkzaOwmgUGq/eEiACbu3sF06gJk2WjEJFM4nAnEeDg=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=MDpsPPhINR6B0cg+AGyjWn7eaRvihTJvvGM/jJpSaSyguDklsAxtyC1q1Uc9QiBULNttLHz2UOEhshdH7f9B7aT34fbw5vUgkhQxdH2EI3ehypiXe4lMtH84DR5VaLLzKOVnTm+H3e5qPpPHJSzZyaaRcStS2W6F7FNPxBdB230=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WneWJi/F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF1BAC4CEC7;
+	Fri, 30 Aug 2024 10:30:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725013795;
-	bh=qJs26KERlurdk8Lnpi1mGQ5sRro9jly7mNhqGbVe1g8=;
+	s=korg; t=1725013804;
+	bh=DUkzaOwmgUGq/eEiACbu3sF06gJk2WjEJFM4nAnEeDg=;
 	h=Subject:To:Cc:From:Date:From;
-	b=KJPXBBAaba3ceVA5ClHxy2UXn2ALp2hPocX2g/owdpGCjjBUHct9VfmSjHbOLLI9x
-	 6DEbFc8DZ/VQjmi5aTQAc8h5MUXG+fFhwjdD7NSStc+okeFqfP6SDnXo0/J/7BNZ+N
-	 ccb+fydwFL1zcLEVzkfEw4OrA0SBvsVlSbqrnFwg=
-Subject: FAILED: patch "[PATCH] drm/i915/dp_mst: Fix MST state after a sink reset" failed to apply to 6.6-stable tree
+	b=WneWJi/FnuvsuLEVBfx9wUD312N+mufeZnmnNoYaJfLIqKf8D4l343hflXxBUOsXW
+	 AG5Nr9RvhofUhtLnvdHnc6mV4wifvRryVptmGcr+ZVFCdmGch5OlQBOYKgfn8MO8D5
+	 PxsVoBIxanMy/5cyBTuc9PI5lv4Vz56o5iIpKIvw=
+Subject: FAILED: patch "[PATCH] drm/i915/dp_mst: Fix MST state after a sink reset" failed to apply to 6.1-stable tree
 To: imre.deak@intel.com,jani.nikula@intel.com,joonas.lahtinen@linux.intel.com,suraj.kandpal@intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 30 Aug 2024 12:29:52 +0200
-Message-ID: <2024083051-camisole-self-47bb@gregkh>
+Date: Fri, 30 Aug 2024 12:29:53 +0200
+Message-ID: <2024083052-definite-customs-8a5e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,25 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x a2ccc33b88e2953a6bf0b309e7e8849cc5320018
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024083051-camisole-self-47bb@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024083052-definite-customs-8a5e@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
 a2ccc33b88e2 ("drm/i915/dp_mst: Fix MST state after a sink reset")
 e37137380931 ("drm/i915/dp_mst: Force modeset CRTC if DSC toggling requires it")
+326b1e792ff0 ("drm/i915/dp_mst: Add the MST topology state for modesetted CRTCs")
 
 thanks,
 
