@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-71692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71693-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F870967249
-	for <lists+stable@lfdr.de>; Sat, 31 Aug 2024 17:00:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87E2496727F
+	for <lists+stable@lfdr.de>; Sat, 31 Aug 2024 17:48:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D121FB221DE
-	for <lists+stable@lfdr.de>; Sat, 31 Aug 2024 15:00:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AA35C1C21182
+	for <lists+stable@lfdr.de>; Sat, 31 Aug 2024 15:48:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8D0129429;
-	Sat, 31 Aug 2024 15:00:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D1E63D38E;
+	Sat, 31 Aug 2024 15:48:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=lausen.nl header.i=@lausen.nl header.b="Y+haWd6F"
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=lausen.nl header.i=@lausen.nl header.b="RvvXIg1n"
 X-Original-To: stable@vger.kernel.org
 Received: from mailgate02.uberspace.is (mailgate02.uberspace.is [185.26.156.114])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF0251EB2F
-	for <stable@vger.kernel.org>; Sat, 31 Aug 2024 15:00:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BE5137143
+	for <stable@vger.kernel.org>; Sat, 31 Aug 2024 15:48:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.26.156.114
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725116407; cv=none; b=KzWzkiEeDM370e44hBUNNrDMZnpjtqsMWoLBjS95CIPJUb5+ngCyqy98TebTbybJvqwhXrVt1UHcduuTOpgc5rdJuP7NTkXbFF2Me6ZG2v2bR/OnweHYP+53mk3QG8gCRJ4DJgzm8740HU8KNeU09y7EKuFZzH0P96BvU+f+2vk=
+	t=1725119288; cv=none; b=F+JxI9jhOC9UN6CiNoIG8LWv91ifgfIkUK86F+FtjAXzLwJ19FRBZHP1dxgerMZul54QldiMCnZwvBTSf6ebOodGZbZXdRKzT7620ynhF0gUJ7wnxzGBzHoY0qnHSNfEo2GVk0CIMxK/4VG1n622U4whByOOXbPWD3513X7OImw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725116407; c=relaxed/simple;
-	bh=YyHUK4IQnTPVeEYta+n1gsttoFXt/qfofrar4WmPX0o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eIvNJ2PokeU90QZ6YFeSJvKaFrYZrr9nBTBmWBhoMLy9BMUKjphM3ybG8IRBF4AtxrdNa/fHH0K/IQ+tXIbNe1pkvVlSHjeF6bzwvJtwwcWEYC9+iARslEe3YSHj6/lAMvfIGZSJW4YWbVpr2dGlHX4l+wDQqCFO9Dn/GTRBBnE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lausen.nl; spf=fail smtp.mailfrom=lausen.nl; dkim=fail (0-bit key) header.d=lausen.nl header.i=@lausen.nl header.b=Y+haWd6F reason="key not found in DNS"; arc=none smtp.client-ip=185.26.156.114
+	s=arc-20240116; t=1725119288; c=relaxed/simple;
+	bh=tgZeO18/FatOKxCPfjewl3Otax0/Cbf5GNMDqKVUYK8=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=OO3F9/p/UZ+TI3afbAilCllgilSTinXfTgprg6YEL+f+9RnhcOf8FtAvtS0Ue4D21CmLxtdjPxg/OA8lW7DMVqE2s52pw/lxCbe7opkSU8RuY3Tzj1tgsEyO9ojvuEPeJTd42um4NKN6+Hk3aHn3qdflmxS7Ti+Z0BwEP6375MQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lausen.nl; spf=pass smtp.mailfrom=lausen.nl; dkim=fail (0-bit key) header.d=lausen.nl header.i=@lausen.nl header.b=RvvXIg1n reason="key not found in DNS"; arc=none smtp.client-ip=185.26.156.114
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=lausen.nl
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=lausen.nl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lausen.nl
 Received: from devico.uberspace.de (devico.uberspace.de [185.26.156.185])
-	by mailgate02.uberspace.is (Postfix) with ESMTPS id 29D9D180399
-	for <stable@vger.kernel.org>; Sat, 31 Aug 2024 16:53:26 +0200 (CEST)
-Received: (qmail 12192 invoked by uid 990); 31 Aug 2024 14:53:25 -0000
+	by mailgate02.uberspace.is (Postfix) with ESMTPS id 269CB1802EC
+	for <stable@vger.kernel.org>; Sat, 31 Aug 2024 17:48:03 +0200 (CEST)
+Received: (qmail 6512 invoked by uid 990); 31 Aug 2024 15:48:02 -0000
 Authentication-Results: devico.uberspace.de;
 	auth=pass (plain)
 Received: from unknown (HELO unkown) (::1)
-	by devico.uberspace.de (Haraka/3.0.1) with ESMTPSA; Sat, 31 Aug 2024 16:53:25 +0200
-Message-ID: <9723f25d-1005-4045-b8f2-7c2d06f30394@lausen.nl>
-Date: Sat, 31 Aug 2024 10:53:19 -0400
+	by devico.uberspace.de (Haraka/3.0.1) with ESMTPSA; Sat, 31 Aug 2024 17:48:02 +0200
+Message-ID: <0b2286bf-42fc-45dc-a4e0-89f85e97b189@lausen.nl>
+Date: Sat, 31 Aug 2024 11:47:58 -0400
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -48,9 +48,9 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
+From: Leonard Lausen <leonard@lausen.nl>
 Subject: Re: [v2,1/2] drm/msm/dpu1: don't choke on disabling the writeback
  connector
-Content-Language: en-US
 To: =?UTF-8?Q?Gy=C3=B6rgy_Kurucz?= <me@kuruczgy.com>,
  Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
  Rob Clark <robdclark@gmail.com>, Abhinav Kumar <quic_abhinavk@quicinc.com>,
@@ -61,7 +61,7 @@ Cc: linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
  Jeykumar Sankaran <jsanka@codeaurora.org>, stable@vger.kernel.org
 References: <20240802-dpu-fix-wb-v2-1-7eac9eb8e895@linaro.org>
  <b70a4d1d-f98f-4169-942c-cb9006a42b40@kuruczgy.com>
-From: Leonard Lausen <leonard@lausen.nl>
+Content-Language: en-US
 Autocrypt: addr=leonard@lausen.nl; keydata=
  xsFNBFDqr+kBEACh9pVkQnCP8c748JdNX3KKYZTtSgRDr9ZFIE5V5S39ws9kTxEOGFgUld4c
  zP5yU8hSO69khQi+AS9yqwUp/2vV6yQHh9m+aUJYSoI3Lj5/qj/NSaroF+Y5EPws23JgKYhs
@@ -109,22 +109,24 @@ In-Reply-To: <b70a4d1d-f98f-4169-942c-cb9006a42b40@kuruczgy.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Rspamd-Bar: /
-X-Rspamd-Report: BAYES_HAM(-0.000362) XM_UA_NO_VERSION(0.01) MIME_GOOD(-0.1)
-X-Rspamd-Score: -0.090362
+X-Rspamd-Report: BAYES_HAM(-0.003114) XM_UA_NO_VERSION(0.01) MIME_GOOD(-0.1)
+X-Rspamd-Score: -0.093114
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
 	d=lausen.nl; s=uberspace;
 	h=from:to:cc:subject:date;
-	bh=YyHUK4IQnTPVeEYta+n1gsttoFXt/qfofrar4WmPX0o=;
-	b=Y+haWd6F2IkMZFwSh6XhOxrXM68YxkZSpN/H80ZBRQNLHfuwidSidGR4PD9M+Gzi15Jk29us7A
-	bRQJ0xuAOLBWqEexqccheh2Tan22DqzMAJ2F3Ot6Ez5HqWvj5CZchmTdgriNGQXTEjSiTBGlpEzo
-	HoctCqB47hI81L/hxhzRUe2F4/4iHs81Khy3rsvxA4s2Z/6detbkdS5gY0kyqMLwOktmoP7n0A9v
-	lE0dLsmUic7nv7L73f0O/uZfxMUqMDAW83e44TwGsjtAOWEOW/1yeoF90sBn5v4QXBal0+40XS+r
-	V+M51ztYaTKdG+hA26AK8SZifxYTU0+khBNSrE7XSGyCrFjTe3B005kfBaWKAkI3KQZDqD9QvAG9
-	hQZ6xVIXPriN2d92DYBxdbi7kKBNcpuNrlScbVWv0HWUwstlPIj1rZ9v8fcIbjZiPd9y3LM/Ky1U
-	ZZdUPhrXwPZEQk/YwkUQtppmozUxDvjN+71MYaPyeo0vovbyOFG0tf291v4AW+Yr9fKFm03pQPpr
-	OZYmkxwfZ7osHZ9YjQpS/AVXtsCU61v+5mfW1joq6/AiFMEoeH+PbF6Ro0eAS2WVgt67d/oh9wzX
-	0hMVxoqrOIsgOdmxaNACJTte1joMG7h1SUt9s5VHmualyyJny0muzZN4ODus91qj/LiJUOXRMXF0
-	c=
+	bh=tgZeO18/FatOKxCPfjewl3Otax0/Cbf5GNMDqKVUYK8=;
+	b=RvvXIg1n1RMEkwDs+dHHZh2peLNIMlagK2CVB0gD1VGCP9JaviWXv5aWi8CnbiA8gEbQOBokuX
+	sGVBGAMRHUkBQ9FFsSgPpTBx+ihl8BcQJkTckl1lWNnQLxUZbtAQQjboulh1pYAepMGZ6K8HYHKi
+	aBJABGsq2dv3cPFJW07bwsYbyKMHGjFz0yRVDAzYP5uw/YOrfJvo1vZcYn4FPQybmnRygzGwamWH
+	lAFd8PjFBnDqZqkdGY7aM/n/jAGYYTN8a4UcpSi/WfxIb/HTVySZLIs/gEBvh+HcLEY1d2vH6ZHz
+	MqKEzNIk0Yk40o0+sFg/iHsZHvjhIpH7Ty19IUR02XVdrNQ/wuLOh+tZsNQVst2UlZaJw9hRU7Vw
+	G4bi57SPS4zGoQv6CM4u15S9ukys5Yf12uC6Gue8PnlcyIgZfeehT89R++yoavVhL67bdvMM4912
+	kcLCAlB+MM1VaUAtUy+LL2Y0cpWOj+EGn+7VeowCsEcgzpSTqvCWbdzjydkoHuFqBV14buj4ZTn0
+	4VdDw6sxE59DVzeJHyhWIh6E57yUZDh9WeLRSSPlEb5WkxT8Yrlz2FE1gdS5+Cd3xPUt7tv8s+5h
+	mLAjDvwbbCdUudwiE5hYR6saY8AAsPHV3ny4SST9HlsIuzmlaIdphnhxeSmy27V4yB0h2Xq4xPmZ
+	I=
+
+(Resend as there was an email SPF record issue)
 
 Dear György,
 
