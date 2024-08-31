@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-71674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71675-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B959966D88
-	for <lists+stable@lfdr.de>; Sat, 31 Aug 2024 02:34:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A24D2966E5B
+	for <lists+stable@lfdr.de>; Sat, 31 Aug 2024 03:14:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 59AFCB21C4D
-	for <lists+stable@lfdr.de>; Sat, 31 Aug 2024 00:33:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D513E1C21D14
+	for <lists+stable@lfdr.de>; Sat, 31 Aug 2024 01:14:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AD9233FE;
-	Sat, 31 Aug 2024 00:33:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C1AA1E493;
+	Sat, 31 Aug 2024 01:14:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="MBd4YXCl"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="LphuKG4e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49892A945;
-	Sat, 31 Aug 2024 00:33:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C587F1D12FF;
+	Sat, 31 Aug 2024 01:14:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725064427; cv=none; b=tzIY/kUtDBDf6c3sZRmqgDt8pNmmJWOcV0vgBm/aR3Pvkk8WbU0ic4Jqw00JzJ70SsN7tavYuQ2r+S8L0+EYmb25bZOG5T4xB4E/viSlB5HMlZiQ2crfgRSDf6nzmXHQwaIUGpnyBIeC8H5qBBnb6LnjdeXAo5ejeDRmBK6xP9U=
+	t=1725066851; cv=none; b=FR76ENvgQVRsnVlescifMPkQUAiLIcgwANgbTuXkPQJno3dTuWru4lCuMhRtGsx3gUg0i0A/LCqNh8tpMyfuw0TQxuHcBZghx70OFcJAASbWiXunti2NKol6xYANdyXDFNlYGSCFUEne72pB3xE1Qdr+nP/mPJQbDuuM8qN5bA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725064427; c=relaxed/simple;
-	bh=ecksECLzr9qEh32RltxULEE/B058OZPsq1C9z4xPyR0=;
-	h=Date:To:From:Subject:Message-Id; b=kKF8P+M9l0ZeMUEAD/uM8AIcksTVvrUfYxJC0QuKQIHbOUoCJVAfXUHmmjD9Z5wiG59VYD8BqYZefaXVoYM1bx7QdhHGQXXVZJ3fp8e6XNVCKePQiOpLHILRRk1x0IJ5ZUCcFklWYytlumD7pHRYLM9MMTfTra6zcQsVCbnYj4A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=MBd4YXCl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B47BCC4CEC2;
-	Sat, 31 Aug 2024 00:33:46 +0000 (UTC)
+	s=arc-20240116; t=1725066851; c=relaxed/simple;
+	bh=rOGAbE559xd2jiSuFjaUZjkm4vO67jm4qc1SmzRoaoM=;
+	h=Date:To:From:Subject:Message-Id; b=OnrP2N3VZjh5l609F7W6Tq91bMJCALuDD072maF602mUBx1CKcynrjkPK27mzkQBchjCQglVZ78ZR01oD0vZ6ICz1w6h6OTzzkKKD6APuXWKuDoSqae3ledrbdPjr8uL23VX5S23mS+jy9dIIx8ecIC1xEN1Lr7xZM8Z4NsbXZ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=LphuKG4e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3245DC4CEC2;
+	Sat, 31 Aug 2024 01:14:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1725064426;
-	bh=ecksECLzr9qEh32RltxULEE/B058OZPsq1C9z4xPyR0=;
+	s=korg; t=1725066851;
+	bh=rOGAbE559xd2jiSuFjaUZjkm4vO67jm4qc1SmzRoaoM=;
 	h=Date:To:From:Subject:From;
-	b=MBd4YXCl0FBMNweTWwsjduMBvnrPzWH4nVo2okIerAaAwoRD87xUoCcuImBdsO7Nn
-	 IRy1VfU+01E9vGlrscUdZHkj61bQDJvecBtkCzR0riY+uWfMne7N3nb3O5riWL/y01
-	 rsodJ/NqKEWP+ndlXvnj8vO88UQmktIiHS2hMO90=
-Date: Fri, 30 Aug 2024 17:33:46 -0700
-To: mm-commits@vger.kernel.org,urezki@gmail.com,stable@vger.kernel.org,hch@infradead.org,ahuang12@lenovo.com,akpm@linux-foundation.org
+	b=LphuKG4eAqGKFk9+itSot7Dfo9StGddWrpLON4ylIXy6Xs+rgSmwOC2Z98k+YGuY4
+	 kUOe8K6ZpcVW/TjS36ObJa4DSpDT/3w7xFl/EuZCshLN2674IeA9HvnQgrEMgEugNl
+	 FdFegLZWAjNSPRM8q2OrSTmj/0cT6xjgETHFD/rk=
+Date: Fri, 30 Aug 2024 18:14:10 -0700
+To: mm-commits@vger.kernel.org,vbabka@suse.cz,stable@vger.kernel.org,souravpanda@google.com,pasha.tatashin@soleen.com,kent.overstreet@linux.dev,keescook@chromium.org,david@redhat.com,surenb@google.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-vmalloc-optimize-vmap_lazy_nr-arithmetic-when-purging-each-vmap_area.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240831003346.B47BCC4CEC2@smtp.kernel.org>
+Subject: + alloc_tag-fix-allocation-tag-reporting-when-config_modules=n.patch added to mm-hotfixes-unstable branch
+Message-Id: <20240831011411.3245DC4CEC2@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,12 +50,12 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The patch titled
-     Subject: mm: vmalloc: optimize vmap_lazy_nr arithmetic when purging each vmap_area
+     Subject: alloc_tag: fix allocation tag reporting when CONFIG_MODULES=n
 has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-vmalloc-optimize-vmap_lazy_nr-arithmetic-when-purging-each-vmap_area.patch
+     alloc_tag-fix-allocation-tag-reporting-when-config_modules=n.patch
 
 This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-vmalloc-optimize-vmap_lazy_nr-arithmetic-when-purging-each-vmap_area.patch
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/alloc_tag-fix-allocation-tag-reporting-when-config_modules=n.patch
 
 This patch will later appear in the mm-hotfixes-unstable branch at
     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
@@ -73,159 +73,92 @@ branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 and is updated there every 2-3 working days
 
 ------------------------------------------------------
-From: Adrian Huang <ahuang12@lenovo.com>
-Subject: mm: vmalloc: optimize vmap_lazy_nr arithmetic when purging each vmap_area
-Date: Thu, 29 Aug 2024 21:06:33 +0800
+From: Suren Baghdasaryan <surenb@google.com>
+Subject: alloc_tag: fix allocation tag reporting when CONFIG_MODULES=n
+Date: Wed, 28 Aug 2024 16:15:36 -0700
 
-When running the vmalloc stress on a 448-core system, observe the average
-latency of purge_vmap_node() is about 2 seconds by using the eBPF/bcc
-'funclatency.py' tool [1].
+codetag_module_init() is used to initialize sections containing allocation
+tags.  This function is used to initialize module sections as well as core
+kernel sections, in which case the module parameter is set to NULL.  This
+function has to be called even when CONFIG_MODULES=n to initialize core
+kernel allocation tag sections.  When CONFIG_MODULES=n, this function is a
+NOP, which is wrong.  This leads to /proc/allocinfo reported as empty. 
+Fix this by making it independent of CONFIG_MODULES.
 
-  # /your-git-repo/bcc/tools/funclatency.py -u purge_vmap_node & pid1=$! && sleep 8 && modprobe test_vmalloc nr_threads=$(nproc) run_test_mask=0x7; kill -SIGINT $pid1
-
-     usecs             : count    distribution
-        0 -> 1         : 0       |                                        |
-        2 -> 3         : 29      |                                        |
-        4 -> 7         : 19      |                                        |
-        8 -> 15        : 56      |                                        |
-       16 -> 31        : 483     |****                                    |
-       32 -> 63        : 1548    |************                            |
-       64 -> 127       : 2634    |*********************                   |
-      128 -> 255       : 2535    |*********************                   |
-      256 -> 511       : 1776    |**************                          |
-      512 -> 1023      : 1015    |********                                |
-     1024 -> 2047      : 573     |****                                    |
-     2048 -> 4095      : 488     |****                                    |
-     4096 -> 8191      : 1091    |*********                               |
-     8192 -> 16383     : 3078    |*************************               |
-    16384 -> 32767     : 4821    |****************************************|
-    32768 -> 65535     : 3318    |***************************             |
-    65536 -> 131071    : 1718    |**************                          |
-   131072 -> 262143    : 2220    |******************                      |
-   262144 -> 524287    : 1147    |*********                               |
-   524288 -> 1048575   : 1179    |*********                               |
-  1048576 -> 2097151   : 822     |******                                  |
-  2097152 -> 4194303   : 906     |*******                                 |
-  4194304 -> 8388607   : 2148    |*****************                       |
-  8388608 -> 16777215  : 4497    |*************************************   |
- 16777216 -> 33554431  : 289     |**                                      |
-
-  avg = 2041714 usecs, total: 78381401772 usecs, count: 38390
-
-  The worst case is over 16-33 seconds, so soft lockup is triggered [2].
-
-[Root Cause]
-1) Each purge_list has the long list. The following shows the number of
-   vmap_area is purged.
-
-   crash> p vmap_nodes
-   vmap_nodes = $27 = (struct vmap_node *) 0xff2de5a900100000
-   crash> vmap_node 0xff2de5a900100000 128 | grep nr_purged
-     nr_purged = 663070
-     ...
-     nr_purged = 821670
-     nr_purged = 692214
-     nr_purged = 726808
-     ...
-
-2) atomic_long_sub() employs the 'lock' prefix to ensure the atomic
-   operation when purging each vmap_area. However, the iteration is over
-   600000 vmap_area (See 'nr_purged' above).
-
-   Here is objdump output:
-
-     $ objdump -D vmlinux
-     ffffffff813e8c80 <purge_vmap_node>:
-     ...
-     ffffffff813e8d70:  f0 48 29 2d 68 0c bb  lock sub %rbp,0x2bb0c68(%rip)
-     ...
-
-   Quote from "Instruction tables" pdf file [3]:
-     Instructions with a LOCK prefix have a long latency that depends on
-     cache organization and possibly RAM speed. If there are multiple
-     processors or cores or direct memory access (DMA) devices, then all
-     locked instructions will lock a cache line for exclusive access,
-     which may involve RAM access. A LOCK prefix typically costs more
-     than a hundred clock cycles, even on single-processor systems.
-
-   That's why the latency of purge_vmap_node() dramatically increases
-   on a many-core system: One core is busy on purging each vmap_area of
-   the *long* purge_list and executing atomic_long_sub() for each
-   vmap_area, while other cores free vmalloc allocations and execute
-   atomic_long_add_return() in free_vmap_area_noflush().
-
-[Solution]
-Employ a local variable to record the total purged pages, and execute
-atomic_long_sub() after the traversal of the purge_list is done. The
-experiment result shows the latency improvement is 99%.
-
-[Experiment Result]
-1) System Configuration: Three servers (with HT-enabled) are tested.
-     * 72-core server: 3rd Gen Intel Xeon Scalable Processor*1
-     * 192-core server: 5th Gen Intel Xeon Scalable Processor*2
-     * 448-core server: AMD Zen 4 Processor*2
-
-2) Kernel Config
-     * CONFIG_KASAN is disabled
-
-3) The data in column "w/o patch" and "w/ patch"
-     * Unit: micro seconds (us)
-     * Each data is the average of 3-time measurements
-
-         System        w/o patch (us)   w/ patch (us)    Improvement (%)
-     ---------------   --------------   -------------    -------------
-     72-core server          2194              14            99.36%
-     192-core server       143799            1139            99.21%
-     448-core server      1992122            6883            99.65%
-
-[1] https://github.com/iovisor/bcc/blob/master/tools/funclatency.py
-[2] https://gist.github.com/AdrianHuang/37c15f67b45407b83c2d32f918656c12
-[3] https://www.agner.org/optimize/instruction_tables.pdf
-
-Link: https://lkml.kernel.org/r/20240829130633.2184-1-ahuang12@lenovo.com
-Signed-off-by: Adrian Huang <ahuang12@lenovo.com>
-Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
-Cc: Christoph Hellwig <hch@infradead.org>
-Cc: <stable@vger.kernel.org>
+Link: https://lkml.kernel.org/r/20240828231536.1770519-1-surenb@google.com
+Fixes: 916cc5167cc6 ("lib: code tagging framework")
+Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Kent Overstreet <kent.overstreet@linux.dev>
+Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: Sourav Panda <souravpanda@google.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: <stable@vger.kernel.org>	[6.10+]
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/vmalloc.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ lib/codetag.c |   17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
---- a/mm/vmalloc.c~mm-vmalloc-optimize-vmap_lazy_nr-arithmetic-when-purging-each-vmap_area
-+++ a/mm/vmalloc.c
-@@ -2191,6 +2191,7 @@ static void purge_vmap_node(struct work_
- {
- 	struct vmap_node *vn = container_of(work,
- 		struct vmap_node, purge_work);
-+	unsigned long nr_purged_pages = 0;
- 	struct vmap_area *va, *n_va;
- 	LIST_HEAD(local_list);
- 
-@@ -2208,7 +2209,7 @@ static void purge_vmap_node(struct work_
- 			kasan_release_vmalloc(orig_start, orig_end,
- 					      va->va_start, va->va_end);
- 
--		atomic_long_sub(nr, &vmap_lazy_nr);
-+		nr_purged_pages += nr;
- 		vn->nr_purged++;
- 
- 		if (is_vn_id_valid(vn_id) && !vn->skip_populate)
-@@ -2219,6 +2220,8 @@ static void purge_vmap_node(struct work_
- 		list_add(&va->list, &local_list);
- 	}
- 
-+	atomic_long_sub(nr_purged_pages, &vmap_lazy_nr);
-+
- 	reclaim_list_global(&local_list);
+--- a/lib/codetag.c~alloc_tag-fix-allocation-tag-reporting-when-config_modules=n
++++ a/lib/codetag.c
+@@ -125,7 +125,6 @@ static inline size_t range_size(const st
+ 			cttype->desc.tag_size;
  }
  
+-#ifdef CONFIG_MODULES
+ static void *get_symbol(struct module *mod, const char *prefix, const char *name)
+ {
+ 	DECLARE_SEQ_BUF(sb, KSYM_NAME_LEN);
+@@ -155,6 +154,15 @@ static struct codetag_range get_section_
+ 	};
+ }
+ 
++static const char *get_mod_name(__maybe_unused struct module *mod)
++{
++#ifdef CONFIG_MODULES
++	if (mod)
++		return mod->name;
++#endif
++	return "(built-in)";
++}
++
+ static int codetag_module_init(struct codetag_type *cttype, struct module *mod)
+ {
+ 	struct codetag_range range;
+@@ -164,8 +172,7 @@ static int codetag_module_init(struct co
+ 	range = get_section_range(mod, cttype->desc.section);
+ 	if (!range.start || !range.stop) {
+ 		pr_warn("Failed to load code tags of type %s from the module %s\n",
+-			cttype->desc.section,
+-			mod ? mod->name : "(built-in)");
++			cttype->desc.section, get_mod_name(mod));
+ 		return -EINVAL;
+ 	}
+ 
+@@ -199,6 +206,7 @@ static int codetag_module_init(struct co
+ 	return 0;
+ }
+ 
++#ifdef CONFIG_MODULES
+ void codetag_load_module(struct module *mod)
+ {
+ 	struct codetag_type *cttype;
+@@ -248,9 +256,6 @@ bool codetag_unload_module(struct module
+ 
+ 	return unload_ok;
+ }
+-
+-#else /* CONFIG_MODULES */
+-static int codetag_module_init(struct codetag_type *cttype, struct module *mod) { return 0; }
+ #endif /* CONFIG_MODULES */
+ 
+ struct codetag_type *
 _
 
-Patches currently in -mm which might be from ahuang12@lenovo.com are
+Patches currently in -mm which might be from surenb@google.com are
 
-mm-vmalloc-optimize-vmap_lazy_nr-arithmetic-when-purging-each-vmap_area.patch
-mm-vmalloc-combine-all-tlb-flush-operations-of-kasan-shadow-virtual-address-into-one-operation.patch
+alloc_tag-fix-allocation-tag-reporting-when-config_modules=n.patch
 
 
