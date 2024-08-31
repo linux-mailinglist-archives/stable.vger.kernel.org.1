@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-73651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73649-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 318DF96E195
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 20:09:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49C8C96E18E
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 20:09:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B3360B2531E
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 18:09:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B5071C23B87
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 18:09:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5934617C9B9;
-	Thu,  5 Sep 2024 18:09:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FC1517A58C;
+	Thu,  5 Sep 2024 18:08:57 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from linuxtv.org (140-211-166-241-openstack.osuosl.org [140.211.166.241])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC19917BECA
-	for <stable@vger.kernel.org>; Thu,  5 Sep 2024 18:09:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC768172760
+	for <stable@vger.kernel.org>; Thu,  5 Sep 2024 18:08:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=140.211.166.241
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725559748; cv=none; b=uSRKdb9EIB+8ps2fRLrggoWtroZGVR52TXJJwYIbPKdhn4BL7RMhDSMRk70BeR8cckXNb2/Y5cPXhse8s6Iwo3BXS/zIydyhIVOhZbWQJAXR8/uf31wgsx/+yAX9rq/jFvseiE8z/OhuLBBLUTZSMa3M1mSy4nffZDKbEAx5Mzg=
+	t=1725559737; cv=none; b=ULqYGaAeBmd7rr+3SDQTHH2EIeJ50CV+keymmL9PAm+oWdCYHBVUo8eUCTrTERMozivBCg3id3IZE89gRXu53MvbKXz2xjtOlYuwZ7Z1EA6PZiUaHe2p/iX8yjdSAHh7WXU6Os51AdTs82kF+Sjv6PPwHKgCYFjhdJj11B5l1ZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725559748; c=relaxed/simple;
-	bh=m6M/VSFHeyEwWPydHLaOsgXf168UmaHFzr+f0us4/js=;
-	h=From:Date:Subject:To:Cc:Message-Id; b=gRlfmB11pzeolbvcrACpfA9pyuD5OH2piFb2Y/jK8G/d7M5BdVlHChrl+2/5QYIAxyCQwyRDVNTX2lP9wmOcsLyviM39rWn7J7CuhF313WBjaK9XfNJa8tkJtVmkE5KSkTIOF6+Bb/Zxs+CNjr3sOZDmWhXITask2UFqZzFXizk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; spf=pass smtp.mailfrom=linuxtv.org; arc=none smtp.client-ip=140.211.166.241
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+	s=arc-20240116; t=1725559737; c=relaxed/simple;
+	bh=1gOqJajq7K9PZT6Rc8JrdbV7NfH7TVnSIZoN1zkKZvE=;
+	h=From:Date:Subject:To:Cc:Message-Id; b=TuElwHj33+BSHC0eO4aMIEy0Y8ZF71OjpbfztqqOn5dv+hTb25Cegjb/1w/hlh6/ppb+4M1Mr+TMN70Jgs98vPMp5bfNVFmWXN/4nMBQvUetrN2Jh9OEH3Eltn3WzD3szlUzX21yggwgGTLm2BFp7XmdsAVJ6kyS1cN7o1tsGJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=xs4all.nl; spf=pass smtp.mailfrom=linuxtv.org; arc=none smtp.client-ip=140.211.166.241
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=xs4all.nl
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtv.org
 Received: from mchehab by linuxtv.org with local (Exim 4.96)
 	(envelope-from <mchehab@linuxtv.org>)
-	id 1smGuj-0001Wf-2t;
-	Thu, 05 Sep 2024 18:09:03 +0000
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Date: Tue, 27 Aug 2024 11:57:38 +0000
-Subject: [git:media_tree/master] media: videobuf2: Drop minimum allocation requirement of 2 buffers
+	id 1smGuc-0001Ix-1k;
+	Thu, 05 Sep 2024 18:08:54 +0000
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Date: Sat, 31 Aug 2024 07:40:43 +0000
+Subject: [git:media_tree/master] media: ov5675: Fix power on/off delay timings
 To: linuxtv-commits@linuxtv.org
-Cc: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>, stable@vger.kernel.org, Hans Verkuil <hverkuil-cisco@xs4all.nl>, Tomasz Figa <tfiga@chromium.org>
+Cc: Quentin Schulz <quentin.schulz@cherry.de>, Bryan O'Donoghue <bryan.odonoghue@linaro.org>, stable@vger.kernel.org, Sakari Ailus <sakari.ailus@linux.intel.com>, Johan Hovold <johan+linaro@kernel.org>
 Mail-followup-to: linux-media@vger.kernel.org
 Forward-to: linux-media@vger.kernel.org
 Reply-to: linux-media@vger.kernel.org
-Message-Id: <E1smGuj-0001Wf-2t@linuxtv.org>
+Message-Id: <E1smGuc-0001Ix-1k@linuxtv.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -49,57 +49,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 This is an automatic generated email to let you know that the following patch were queued:
 
-Subject: media: videobuf2: Drop minimum allocation requirement of 2 buffers
-Author:  Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Date:    Mon Aug 26 02:24:49 2024 +0300
+Subject: media: ov5675: Fix power on/off delay timings
+Author:  Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Date:    Sat Jul 13 23:33:29 2024 +0100
 
-When introducing the ability for drivers to indicate the minimum number
-of buffers they require an application to allocate, commit 6662edcd32cc
-("media: videobuf2: Add min_reqbufs_allocation field to vb2_queue
-structure") also introduced a global minimum of 2 buffers. It turns out
-this breaks the Renesas R-Car VSP test suite, where a test that
-allocates a single buffer fails when two buffers are used.
+The ov5675 specification says that the gap between XSHUTDN deassert and the
+first I2C transaction should be a minimum of 8192 XVCLK cycles.
 
-One may consider debatable whether test suite failures without failures
-in production use cases should be considered as a regression, but
-operation with a single buffer is a valid use case. While full frame
-rate can't be maintained, memory-to-memory devices can still be used
-with a decent efficiency, and requiring applications to allocate
-multiple buffers for single-shot use cases with capture devices would
-just waste memory.
+Right now we use a usleep_rage() that gives a sleep time of between about
+430 and 860 microseconds.
 
-For those reasons, fix the regression by dropping the global minimum of
-buffers. Individual drivers can still set their own minimum.
+On the Lenovo X13s we have observed that in about 1/20 cases the current
+timing is too tight and we start transacting before the ov5675's reset
+cycle completes, leading to I2C bus transaction failures.
 
-Fixes: 6662edcd32cc ("media: videobuf2: Add min_reqbufs_allocation field to vb2_queue structure")
+The reset racing is sometimes triggered at initial chip probe but, more
+usually on a subsequent power-off/power-on cycle e.g.
+
+[   71.451662] ov5675 24-0010: failed to write reg 0x0103. error = -5
+[   71.451686] ov5675 24-0010: failed to set plls
+
+The current quiescence period we have is too tight. Instead of expressing
+the post reset delay in terms of the current XVCLK this patch converts the
+power-on and power-off delays to the maximum theoretical delay @ 6 MHz with
+an additional buffer.
+
+1.365 milliseconds on the power-on path is 1.5 milliseconds with grace.
+85.3 microseconds on the power-off path is 90 microseconds with grace.
+
+Fixes: 49d9ad719e89 ("media: ov5675: add device-tree support and support runtime PM")
 Cc: stable@vger.kernel.org
-Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Reviewed-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Acked-by: Tomasz Figa <tfiga@chromium.org>
-Link: https://lore.kernel.org/r/20240825232449.25905-1-laurent.pinchart+renesas@ideasonboard.com
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Tested-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
+Tested-by: Quentin Schulz <quentin.schulz@cherry.de> # RK3399 Puma with
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
- drivers/media/common/videobuf2/videobuf2-core.c | 7 -------
- 1 file changed, 7 deletions(-)
+ drivers/media/i2c/ov5675.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
 ---
 
-diff --git a/drivers/media/common/videobuf2/videobuf2-core.c b/drivers/media/common/videobuf2/videobuf2-core.c
-index 500a4e0c84ab..29a8d876e6c2 100644
---- a/drivers/media/common/videobuf2/videobuf2-core.c
-+++ b/drivers/media/common/videobuf2/videobuf2-core.c
-@@ -2632,13 +2632,6 @@ int vb2_core_queue_init(struct vb2_queue *q)
- 	if (WARN_ON(q->supports_requests && q->min_queued_buffers))
- 		return -EINVAL;
+diff --git a/drivers/media/i2c/ov5675.c b/drivers/media/i2c/ov5675.c
+index 3641911bc73f..5b5127f8953f 100644
+--- a/drivers/media/i2c/ov5675.c
++++ b/drivers/media/i2c/ov5675.c
+@@ -972,12 +972,10 @@ static int ov5675_set_stream(struct v4l2_subdev *sd, int enable)
  
--	/*
--	 * The minimum requirement is 2: one buffer is used
--	 * by the hardware while the other is being processed by userspace.
--	 */
--	if (q->min_reqbufs_allocation < 2)
--		q->min_reqbufs_allocation = 2;
--
- 	/*
- 	 * If the driver needs 'min_queued_buffers' in the queue before
- 	 * calling start_streaming() then the minimum requirement is
+ static int ov5675_power_off(struct device *dev)
+ {
+-	/* 512 xvclk cycles after the last SCCB transation or MIPI frame end */
+-	u32 delay_us = DIV_ROUND_UP(512, OV5675_XVCLK_19_2 / 1000 / 1000);
+ 	struct v4l2_subdev *sd = dev_get_drvdata(dev);
+ 	struct ov5675 *ov5675 = to_ov5675(sd);
+ 
+-	usleep_range(delay_us, delay_us * 2);
++	usleep_range(90, 100);
+ 
+ 	clk_disable_unprepare(ov5675->xvclk);
+ 	gpiod_set_value_cansleep(ov5675->reset_gpio, 1);
+@@ -988,7 +986,6 @@ static int ov5675_power_off(struct device *dev)
+ 
+ static int ov5675_power_on(struct device *dev)
+ {
+-	u32 delay_us = DIV_ROUND_UP(8192, OV5675_XVCLK_19_2 / 1000 / 1000);
+ 	struct v4l2_subdev *sd = dev_get_drvdata(dev);
+ 	struct ov5675 *ov5675 = to_ov5675(sd);
+ 	int ret;
+@@ -1014,8 +1011,11 @@ static int ov5675_power_on(struct device *dev)
+ 
+ 	gpiod_set_value_cansleep(ov5675->reset_gpio, 0);
+ 
+-	/* 8192 xvclk cycles prior to the first SCCB transation */
+-	usleep_range(delay_us, delay_us * 2);
++	/* Worst case quiesence gap is 1.365 milliseconds @ 6MHz XVCLK
++	 * Add an additional threshold grace period to ensure reset
++	 * completion before initiating our first I2C transaction.
++	 */
++	usleep_range(1500, 1600);
+ 
+ 	return 0;
+ }
 
