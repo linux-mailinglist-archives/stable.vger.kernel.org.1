@@ -1,64 +1,92 @@
-Return-Path: <stable+bounces-71683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71688-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 216FC967028
-	for <lists+stable@lfdr.de>; Sat, 31 Aug 2024 09:38:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DA3C9670B7
+	for <lists+stable@lfdr.de>; Sat, 31 Aug 2024 12:11:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF5481F23439
-	for <lists+stable@lfdr.de>; Sat, 31 Aug 2024 07:38:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4D93B1C214B4
+	for <lists+stable@lfdr.de>; Sat, 31 Aug 2024 10:11:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37961175D3F;
-	Sat, 31 Aug 2024 07:38:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBF2117BB2A;
+	Sat, 31 Aug 2024 10:11:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="joxfg+wU"
 X-Original-To: stable@vger.kernel.org
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FC2916A94F;
-	Sat, 31 Aug 2024 07:38:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1A2A170A37
+	for <stable@vger.kernel.org>; Sat, 31 Aug 2024 10:11:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725089884; cv=none; b=b1+uG78uiQMuhxnwpJGJibQ3+K7TmLDOAy1kXoAmzgRrHWnfe5GWIc/g8RgOx80nnrDBYtZq5tWuNchNzvKrk1tMRYisTIfuWddsF1nTzLw0spABlhrLm/BtTbcGUmizbri0H5ZOz4faEz4kgo91c9swLa3nJOsmxjBkD4ItaOc=
+	t=1725099097; cv=none; b=p9lJGsQT/q5G7y7B9BPptoCt4+xKue3MwM/p76rExVybDHSG5HcB66vxMF46CgU2GZYpcQxuXbSt7a1uuYMItxdxuEEa12AOqFDlwOmZ1ePg2NCWPqL1/B7tUU7C9t9F1q8cIn7wYVYRbye48v40AhZT//cL3sN5V16lXWDCCoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725089884; c=relaxed/simple;
-	bh=j0XOpFyagEYUW9FYGaJGqvJddW77ivLx+Jdq21ViqPc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=m91fkWTJgDfz9BBz0fRHVo5hyoOloSCSipqIF6+ZjEzfmTzd4Nifp1Q0qQ8tqE8fu6cHa8pFc6DGNa6bFmf0edbkqxZYE8tfVmZSDfxAD3YqwpNsY8E0/rrOi5Mcna3ZUcPo6nC0VYPdcTOL1C3sZXUJZkQSKqicIrgBLp9CUJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.163.235])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4Wwn181Q8Dz4f3jZQ;
-	Sat, 31 Aug 2024 15:37:48 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id 499E11A0568;
-	Sat, 31 Aug 2024 15:37:58 +0800 (CST)
-Received: from huaweicloud.com (unknown [10.67.174.193])
-	by APP4 (Coremail) with SMTP id gCh0CgCXv4VQyNJmLLDdDA--.28814S6;
-	Sat, 31 Aug 2024 15:37:58 +0800 (CST)
-From: Luo Gengkun <luogengkun@huaweicloud.com>
-To: peterz@infradead.org
-Cc: mingo@redhat.com,
-	acme@kernel.org,
-	namhyung@kernel.org,
-	mark.rutland@arm.com,
-	alexander.shishkin@linux.intel.com,
-	jolsa@kernel.org,
-	irogers@google.com,
-	adrian.hunter@intel.com,
-	kan.liang@linux.intel.com,
-	linux-perf-users@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	luogengkun@huaweicloud.com
-Subject: [PATCH v5 2/2] perf/core: Fix incorrect time diff in tick adjust period
-Date: Sat, 31 Aug 2024 07:43:16 +0000
-Message-Id: <20240831074316.2106159-3-luogengkun@huaweicloud.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240831074316.2106159-1-luogengkun@huaweicloud.com>
-References: <20240831074316.2106159-1-luogengkun@huaweicloud.com>
+	s=arc-20240116; t=1725099097; c=relaxed/simple;
+	bh=eK9lwHTGrE9nYN6gnIQ8mYnUNzrrnjm32O0cFnJTIKA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=q7nhx2qxopEGja5qiuthk8a/sKXmIj1YvJYmHCf5An4PyQr+Cn47pqS+MDnDllgXEhwS8lPglx1F0cvINC+s+F79Pt3cZX52XIvVt5tWG+Ye13a23CD5DscKofUNk4BGHb+QRNSQsuMZc9Q/pLlFb8h4xbMqj6A/W4HB11U6kNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=joxfg+wU; arc=none smtp.client-ip=209.85.208.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-5c245580f5cso71620a12.0
+        for <stable@vger.kernel.org>; Sat, 31 Aug 2024 03:11:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1725099093; x=1725703893; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=HB1tlgukKY1KvsXWQTxeELXSE2pe2uY+begkTD0612E=;
+        b=joxfg+wUU8v1TZmwm1Rf9r9TdPBUNw4ZFrQ10iw8LjTng1TLE4FjUT2TZ1xU20Qvdz
+         WHklzz+SzIspxoYGBbrzsYOnqYQ2Gipgoi5q0gcf4Rqq/ulRmPK8X6Wyagovn6kMeGLU
+         wf4/K7hcLyP5sTer+tUIxjjMOV3BpTxBef+lE1PBeQ8D8PkRfQdq9g+zQUG7RN6xZb/w
+         FoSjfqgdZdrN1n0bUkVCR5Y3gh0u3d4aLty8YHOFwAtYMPz8mAY/ilYP53OZnEV1rD31
+         UcyhPIfRVMNWIsTfT9G+SP5ZR+AdxM6j0o1aDreNrQ+cP+qfC4IPCpIBx0Fu38eewhJA
+         DYJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725099093; x=1725703893;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=HB1tlgukKY1KvsXWQTxeELXSE2pe2uY+begkTD0612E=;
+        b=tHzKDbOvWpCpKZhvnqfMpmBjMaRe1Q4qBgyMpDNlynpFjd7gYE/PQydxwztNDFABEr
+         2izg1uBH6PmTOSV2IhVZVFeeP5ZPdoR04EVvDj//bg0dxO5M1PdW1BG6FqdkuHTHo8zq
+         qhpYaz46DQYU7j9GZETTAONe9pBF1c5EiG+CIU8mUCtfnrtB2zSRbfjMxvt/tId4tG3d
+         pnRUArhJWT2bIovh1pDZ+SPXWwY3LnKDWyS1pbmkjckd0mstH8+O/7ciFVJPNvLpWPHv
+         qx6MYXY4I/Kg39W5WPcP95mTT0t/xTKm8CMkdAxzwCmu+VnRIE86KSJZfsFoDDzSUpj2
+         GcoA==
+X-Forwarded-Encrypted: i=1; AJvYcCXyQ9RcgjGNWsw/75m+EGhhFrpg5btmJr6P6FhB+hWcRzgwvK6G9yA2spip725DaP43VSnw/Iw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwCf1jmle6yKa3omMLayP850BMGRMG8OeCHzQyHQYm7JVzixn/v
+	NwTbpFsFnKb4Y7wqQDNUo6L7usMPmzIzWOMfrr/4y/M8XN8cHOhiE0/Js2+h6mg=
+X-Google-Smtp-Source: AGHT+IFwVGnm/EKQ8MW41lLfc+/EkRKkHINcUVfO3ryyMSVQwViKKq7XhFYFirZ0oz/oMNb/3Yf2CQ==
+X-Received: by 2002:a17:907:3f87:b0:a80:ed7a:c114 with SMTP id a640c23a62f3a-a89a2ff7874mr144197666b.0.1725099092826;
+        Sat, 31 Aug 2024 03:11:32 -0700 (PDT)
+Received: from krzk-bin.. ([178.197.222.82])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a8988feae4dsm311707266b.31.2024.08.31.03.11.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 31 Aug 2024 03:11:32 -0700 (PDT)
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To: Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Fabio Estevam <festevam@gmail.com>,
+	Michael Trimarchi <michael@amarulasolutions.com>,
+	Matteo Lisi <matteo.lisi@engicam.com>,
+	Jagan Teki <jagan@amarulasolutions.com>,
+	Parthiban Nallathambi <parthiban@linumiz.com>,
+	devicetree@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/2] ARM: dts: imx6ul-geam: fix fsl,pins property in tscgrp pinctrl
+Date: Sat, 31 Aug 2024 12:11:28 +0200
+Message-ID: <20240831101129.15640-1-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,105 +94,34 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:gCh0CgCXv4VQyNJmLLDdDA--.28814S6
-X-Coremail-Antispam: 1UD129KBjvJXoWxWF4rXryDtF4kAr13XrW3GFg_yoW5WFy7pF
-	Z8AF1aqFWkXw1F9w15C3Z2g345W3WkArsxWa45KrWfZw17trZ3XFsrWF15JF15AFZ7Za4a
-	vwnFgryUC3yjqFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUm014x267AKxVWrJVCq3wAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2048vs2IY020E87I2jVAFwI0_Jryl82xGYIkIc2
-	x26xkF7I0E14v26ryj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2z4x0
-	Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr1j6F4UJw
-	A2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oVCq3wAS
-	0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2
-	IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0
-	Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628vn2kIc2
-	xKxwCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWU
-	JVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67
-	kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY
-	6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0x
-	vEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVj
-	vjDU0xZFpf9x0JUQXo7UUUUU=
-X-CM-SenderInfo: 5oxrwvpqjn3046kxt4xhlfz01xgou0bp/
 
-Perf events has the notion of sampling frequency which is implemented in
-software by dynamically adjusting the counter period so that samples occur
-at approximately the target frequency.  Period adjustment is done in 2
-places:
- - when the counter overflows (and a sample is recorded)
- - each timer tick, when the event is active
-The later case is slightly flawed because it assumes that the time since
-the last timer-tick period adjustment is 1 tick, whereas the event may not
-have been active (e.g. for a task that is sleeping).
+The property is "fsl,pins", not "fsl,pin".  Wrong property means the pin
+configuration was not applied.  Fixes dtbs_check warnings:
 
-Fix by using jiffies to determine the elapsed time in that case.
+  imx6ul-geam.dtb: pinctrl@20e0000: tscgrp: 'fsl,pins' is a required property
+  imx6ul-geam.dtb: pinctrl@20e0000: tscgrp: 'fsl,pin' does not match any of the regexes: 'pinctrl-[0-9]+'
 
-Signed-off-by: Luo Gengkun <luogengkun@huaweicloud.com>
-Reviewed-by: Adrian Hunter <adrian.hunter@intel.com>
+Cc: <stable@vger.kernel.org>
+Fixes: a58e4e608bc8 ("ARM: dts: imx6ul-geam: Add Engicam IMX6UL GEA M6UL initial support")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 ---
- include/linux/perf_event.h |  1 +
- kernel/events/core.c       | 12 +++++++++---
- 2 files changed, 10 insertions(+), 3 deletions(-)
+ arch/arm/boot/dts/nxp/imx/imx6ul-geam.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
-index 1a8942277dda..d29b7cf971a1 100644
---- a/include/linux/perf_event.h
-+++ b/include/linux/perf_event.h
-@@ -265,6 +265,7 @@ struct hw_perf_event {
- 	 * State for freq target events, see __perf_event_overflow() and
- 	 * perf_adjust_freq_unthr_context().
- 	 */
-+	u64				freq_tick_stamp;
- 	u64				freq_time_stamp;
- 	u64				freq_count_stamp;
- #endif
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index a9395bbfd4aa..183291e0d070 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -55,6 +55,7 @@
- #include <linux/pgtable.h>
- #include <linux/buildid.h>
- #include <linux/task_work.h>
-+#include <linux/jiffies.h>
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-geam.dts b/arch/arm/boot/dts/nxp/imx/imx6ul-geam.dts
+index cdbb8c435cd6..601d89b904cd 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6ul-geam.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx6ul-geam.dts
+@@ -365,7 +365,7 @@ MX6UL_PAD_ENET1_RX_ER__PWM8_OUT   0x110b0
+ 	};
  
- #include "internal.h"
- 
-@@ -4120,9 +4121,11 @@ static void perf_adjust_freq_unthr_events(struct list_head *event_list)
- {
- 	struct perf_event *event;
- 	struct hw_perf_event *hwc;
--	u64 now, period = TICK_NSEC;
-+	u64 now, period, tick_stamp;
- 	s64 delta;
- 
-+	tick_stamp = jiffies64_to_nsecs(get_jiffies_64());
-+
- 	list_for_each_entry(event, event_list, active_list) {
- 		if (event->state != PERF_EVENT_STATE_ACTIVE)
- 			continue;
-@@ -4148,6 +4151,9 @@ static void perf_adjust_freq_unthr_events(struct list_head *event_list)
- 		 */
- 		event->pmu->stop(event, PERF_EF_UPDATE);
- 
-+		period = tick_stamp - hwc->freq_tick_stamp;
-+		hwc->freq_tick_stamp = tick_stamp;
-+
- 		now = local64_read(&event->count);
- 		delta = now - hwc->freq_count_stamp;
- 		hwc->freq_count_stamp = now;
-@@ -4157,9 +4163,9 @@ static void perf_adjust_freq_unthr_events(struct list_head *event_list)
- 		 * reload only if value has changed
- 		 * we have stopped the event so tell that
- 		 * to perf_adjust_period() to avoid stopping it
--		 * twice.
-+		 * twice. And skip if it is the first tick adjust period.
- 		 */
--		if (delta > 0)
-+		if (delta > 0 && likely(period != tick_stamp))
- 			perf_adjust_period(event, period, delta, false);
- 
- 		event->pmu->start(event, delta > 0 ? PERF_EF_RELOAD : 0);
+ 	pinctrl_tsc: tscgrp {
+-		fsl,pin = <
++		fsl,pins = <
+ 			MX6UL_PAD_GPIO1_IO01__GPIO1_IO01	0xb0
+ 			MX6UL_PAD_GPIO1_IO02__GPIO1_IO02	0xb0
+ 			MX6UL_PAD_GPIO1_IO03__GPIO1_IO03	0xb0
 -- 
-2.34.1
+2.43.0
 
 
