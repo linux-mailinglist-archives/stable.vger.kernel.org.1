@@ -1,124 +1,124 @@
-Return-Path: <stable+bounces-73650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-73648-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A65D96E190
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 20:09:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CAB396E18F
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 20:09:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D9186B24168
-	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 18:09:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CDED6B217CA
+	for <lists+stable@lfdr.de>; Thu,  5 Sep 2024 18:09:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95C9317ADFC;
-	Thu,  5 Sep 2024 18:08:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89A3E17ADF7;
+	Thu,  5 Sep 2024 18:08:56 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from linuxtv.org (140-211-166-241-openstack.osuosl.org [140.211.166.241])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0489A17A938
-	for <stable@vger.kernel.org>; Thu,  5 Sep 2024 18:08:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAB7B1C2E
+	for <stable@vger.kernel.org>; Thu,  5 Sep 2024 18:08:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=140.211.166.241
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725559737; cv=none; b=ri9bmfhpGLj/lBDVJGohrkc7r2JrLuwKVcHDoFaUWN4Js/RbeN5KeRpj/SEPUksv/YpIqGbUCVUDkPC0cEc1wDclb/txBhzIwu71k7iJQsmYq10nphNcPjF/XTZ6BhWRjeo79akT3eCPENYg72MUaGXf9b3hZKPF5QfRaiHoMVQ=
+	t=1725559736; cv=none; b=Z32eCMtSvP7Lo75O6PZnd+AzkMzRObvmA5KjccmJxNFDT3Yjwpa4z6F29Y92iWU39i2RSwoXhXp8W6Zfgjk1E3hqD3MppihSw9x/JsFnboBtSWvdWORnw3nxNvWXtjShgZzj83xdd6b5rREahQKcG594KlSPLcE1cHJdJq/KK0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725559737; c=relaxed/simple;
-	bh=ZI8K8njkaYV9oGXzZBBlt9FZB+ON64jMRFDOGGP+rsY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:To:Cc:Message-Id; b=Zi5rb/1QzeecMvZEt0i0FTFKyPxbPeNfPcNKuZy7flPE+KEAuti7UbOJEE34i9ZxA0lukQr0NL5uRcOb38hdczTln6uT0UnY3ek82pahnUSPZxf0G8qs5T13/yh0z3P17OI/Xptb4rneEWgX1MICOclPzbM6WqL23sL+96Rgd/Y=
+	s=arc-20240116; t=1725559736; c=relaxed/simple;
+	bh=+LFVKNvAFftRmdf8q7PF11CcsxdA4XRIAwr8nHmHQNU=;
+	h=From:Date:Subject:To:Cc:Message-Id; b=igKaO2pbZmmHcbZcSFBxCJLCGSSJQ9vR9msZhL443X32N167DYFOV7JzgpB2Eg58SF3MkMdqMQ2djj109IUMfYbfzs5R/glsRnm/38r3H0918iRqmknnlMw77doqOqvhYXvyytLxgphdE3Jk7PGseFf2VPkT8zfvGkQVzvdq0Ec=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=xs4all.nl; spf=pass smtp.mailfrom=linuxtv.org; arc=none smtp.client-ip=140.211.166.241
 Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=xs4all.nl
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtv.org
 Received: from mchehab by linuxtv.org with local (Exim 4.96)
 	(envelope-from <mchehab@linuxtv.org>)
-	id 1smGuc-0001IB-0h;
-	Thu, 05 Sep 2024 18:08:54 +0000
+	id 1smGub-0001Ek-09;
+	Thu, 05 Sep 2024 18:08:53 +0000
 From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Date: Sat, 31 Aug 2024 07:40:43 +0000
-Subject: [git:media_tree/master] media: i2c: ar0521: Use cansleep version of gpiod_set_value()
+Date: Sat, 31 Aug 2024 07:40:44 +0000
+Subject: [git:media_tree/master] media: imx335: Fix reset-gpio handling
+To: linuxtv-commits@linuxtv.org
+Cc: Umang Jain <umang.jain@ideasonboard.com>, Laurent Pinchart <laurent.pinchart@ideasonboard.com>, stable@vger.kernel.org, Sakari Ailus <sakari.ailus@linux.intel.com>
+Mail-followup-to: linux-media@vger.kernel.org
+Forward-to: linux-media@vger.kernel.org
+Reply-to: linux-media@vger.kernel.org
+Message-Id: <E1smGub-0001Ek-09@linuxtv.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-To: linuxtv-commits@linuxtv.org
-Cc: Krzysztof Hałasa <khalasa@piap.pl>, stable@vger.kernel.org, Sakari Ailus <sakari.ailus@linux.intel.com>, Alexander Shiyan <eagle.alexander923@gmail.com>
-Mail-followup-to: linux-media@vger.kernel.org
-Forward-to: linux-media@vger.kernel.org
-Reply-to: linux-media@vger.kernel.org
-Message-Id: <E1smGuc-0001IB-0h@linuxtv.org>
 
 This is an automatic generated email to let you know that the following patch were queued:
 
-Subject: media: i2c: ar0521: Use cansleep version of gpiod_set_value()
-Author:  Alexander Shiyan <eagle.alexander923@gmail.com>
-Date:    Thu Aug 29 08:48:49 2024 +0300
+Subject: media: imx335: Fix reset-gpio handling
+Author:  Umang Jain <umang.jain@ideasonboard.com>
+Date:    Fri Aug 30 11:41:52 2024 +0530
 
-If we use GPIO reset from I2C port expander, we must use *_cansleep()
-variant of GPIO functions.
-This was not done in ar0521_power_on()/ar0521_power_off() functions.
-Let's fix that.
+Rectify the logical value of reset-gpio so that it is set to
+0 (disabled) during power-on and to 1 (enabled) during power-off.
 
-------------[ cut here ]------------
-WARNING: CPU: 0 PID: 11 at drivers/gpio/gpiolib.c:3496 gpiod_set_value+0x74/0x7c
-Modules linked in:
-CPU: 0 PID: 11 Comm: kworker/u16:0 Not tainted 6.10.0 #53
-Hardware name: Diasom DS-RK3568-SOM-EVB (DT)
-Workqueue: events_unbound deferred_probe_work_func
-pstate: 80400009 (Nzcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-pc : gpiod_set_value+0x74/0x7c
-lr : ar0521_power_on+0xcc/0x290
-sp : ffffff8001d7ab70
-x29: ffffff8001d7ab70 x28: ffffff80027dcc90 x27: ffffff8003c82000
-x26: ffffff8003ca9250 x25: ffffffc080a39c60 x24: ffffff8003ca9088
-x23: ffffff8002402720 x22: ffffff8003ca9080 x21: ffffff8003ca9088
-x20: 0000000000000000 x19: ffffff8001eb2a00 x18: ffffff80efeeac80
-x17: 756d2d6332692f30 x16: 0000000000000000 x15: 0000000000000000
-x14: ffffff8001d91d40 x13: 0000000000000016 x12: ffffffc080e98930
-x11: ffffff8001eb2880 x10: 0000000000000890 x9 : ffffff8001d7a9f0
-x8 : ffffff8001d92570 x7 : ffffff80efeeac80 x6 : 000000003fc6e780
-x5 : ffffff8001d91c80 x4 : 0000000000000002 x3 : 0000000000000000
-x2 : 0000000000000000 x1 : 0000000000000000 x0 : 0000000000000001
-Call trace:
- gpiod_set_value+0x74/0x7c
- ar0521_power_on+0xcc/0x290
-...
+Set the reset-gpio to GPIO_OUT_HIGH at initialization time to make
+sure it starts off in reset. Also drop the "Set XCLR" comment which
+is not-so-informative.
 
-Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
-Fixes: 852b50aeed15 ("media: On Semi AR0521 sensor driver")
+The existing usage of imx335 had reset-gpios polarity inverted
+(GPIO_ACTIVE_HIGH) in their device-tree sources. With this patch
+included, those DTS will not be able to stream imx335 anymore. The
+reset-gpio polarity will need to be rectified in the device-tree
+sources as shown in [1] example, in order to get imx335 functional
+again (as it remains in reset prior to this fix).
+
 Cc: stable@vger.kernel.org
-Acked-by: Krzysztof Hałasa <khalasa@piap.pl>
+Fixes: 45d19b5fb9ae ("media: i2c: Add imx335 camera sensor driver")
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Link: https://lore.kernel.org/linux-media/20240729110437.199428-1-umang.jain@ideasonboard.com/
+Signed-off-by: Umang Jain <umang.jain@ideasonboard.com>
 Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
- drivers/media/i2c/ar0521.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/media/i2c/imx335.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
 ---
 
-diff --git a/drivers/media/i2c/ar0521.c b/drivers/media/i2c/ar0521.c
-index 56a724b4d47e..fc27238dd4d3 100644
---- a/drivers/media/i2c/ar0521.c
-+++ b/drivers/media/i2c/ar0521.c
-@@ -842,7 +842,8 @@ static void __ar0521_power_off(struct device *dev)
- 	int i;
+diff --git a/drivers/media/i2c/imx335.c b/drivers/media/i2c/imx335.c
+index 990d74214cc2..54a1de53d497 100644
+--- a/drivers/media/i2c/imx335.c
++++ b/drivers/media/i2c/imx335.c
+@@ -997,7 +997,7 @@ static int imx335_parse_hw_config(struct imx335 *imx335)
  
- 	if (sensor->reset_gpio)
--		gpiod_set_value(sensor->reset_gpio, 1); /* assert RESET signal */
-+		/* assert RESET signal */
-+		gpiod_set_value_cansleep(sensor->reset_gpio, 1);
+ 	/* Request optional reset pin */
+ 	imx335->reset_gpio = devm_gpiod_get_optional(imx335->dev, "reset",
+-						     GPIOD_OUT_LOW);
++						     GPIOD_OUT_HIGH);
+ 	if (IS_ERR(imx335->reset_gpio)) {
+ 		dev_err(imx335->dev, "failed to get reset gpio %ld\n",
+ 			PTR_ERR(imx335->reset_gpio));
+@@ -1110,8 +1110,7 @@ static int imx335_power_on(struct device *dev)
  
- 	for (i = ARRAY_SIZE(ar0521_supply_names) - 1; i >= 0; i--) {
- 		if (sensor->supplies[i])
-@@ -886,7 +887,7 @@ static int ar0521_power_on(struct device *dev)
+ 	usleep_range(500, 550); /* Tlow */
  
- 	if (sensor->reset_gpio)
- 		/* deassert RESET signal */
--		gpiod_set_value(sensor->reset_gpio, 0);
-+		gpiod_set_value_cansleep(sensor->reset_gpio, 0);
- 	usleep_range(4500, 5000); /* min 45000 clocks */
+-	/* Set XCLR */
+-	gpiod_set_value_cansleep(imx335->reset_gpio, 1);
++	gpiod_set_value_cansleep(imx335->reset_gpio, 0);
  
- 	for (cnt = 0; cnt < ARRAY_SIZE(initial_regs); cnt++) {
+ 	ret = clk_prepare_enable(imx335->inclk);
+ 	if (ret) {
+@@ -1124,7 +1123,7 @@ static int imx335_power_on(struct device *dev)
+ 	return 0;
+ 
+ error_reset:
+-	gpiod_set_value_cansleep(imx335->reset_gpio, 0);
++	gpiod_set_value_cansleep(imx335->reset_gpio, 1);
+ 	regulator_bulk_disable(ARRAY_SIZE(imx335_supply_name), imx335->supplies);
+ 
+ 	return ret;
+@@ -1141,7 +1140,7 @@ static int imx335_power_off(struct device *dev)
+ 	struct v4l2_subdev *sd = dev_get_drvdata(dev);
+ 	struct imx335 *imx335 = to_imx335(sd);
+ 
+-	gpiod_set_value_cansleep(imx335->reset_gpio, 0);
++	gpiod_set_value_cansleep(imx335->reset_gpio, 1);
+ 	clk_disable_unprepare(imx335->inclk);
+ 	regulator_bulk_disable(ARRAY_SIZE(imx335_supply_name), imx335->supplies);
+ 
 
