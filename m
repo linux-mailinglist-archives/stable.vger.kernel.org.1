@@ -1,164 +1,136 @@
-Return-Path: <stable+bounces-71675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71676-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A24D2966E5B
-	for <lists+stable@lfdr.de>; Sat, 31 Aug 2024 03:14:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B74BB966F5E
+	for <lists+stable@lfdr.de>; Sat, 31 Aug 2024 07:16:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D513E1C21D14
-	for <lists+stable@lfdr.de>; Sat, 31 Aug 2024 01:14:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C4AE91C2197D
+	for <lists+stable@lfdr.de>; Sat, 31 Aug 2024 05:16:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C1AA1E493;
-	Sat, 31 Aug 2024 01:14:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B6FF6BFCA;
+	Sat, 31 Aug 2024 05:16:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="LphuKG4e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XDfbX9AU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C587F1D12FF;
-	Sat, 31 Aug 2024 01:14:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4C691D12E0;
+	Sat, 31 Aug 2024 05:16:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725066851; cv=none; b=FR76ENvgQVRsnVlescifMPkQUAiLIcgwANgbTuXkPQJno3dTuWru4lCuMhRtGsx3gUg0i0A/LCqNh8tpMyfuw0TQxuHcBZghx70OFcJAASbWiXunti2NKol6xYANdyXDFNlYGSCFUEne72pB3xE1Qdr+nP/mPJQbDuuM8qN5bA8=
+	t=1725081360; cv=none; b=tBXH3MvOhlze+k8zNF04AArMKLAIXCicf32Mxzcerlfne//RjiOQdja69DZIBAIFSi4mBGYuS4B0+JkPB1R6yOWbyGdMJ1GZc61duDLMDvMm2dqY82sHGhkPcreWcGpEkZEtC9blfLO4ECIsdVzYmvBNAoxH67rXr04qDLMnEPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725066851; c=relaxed/simple;
-	bh=rOGAbE559xd2jiSuFjaUZjkm4vO67jm4qc1SmzRoaoM=;
-	h=Date:To:From:Subject:Message-Id; b=OnrP2N3VZjh5l609F7W6Tq91bMJCALuDD072maF602mUBx1CKcynrjkPK27mzkQBchjCQglVZ78ZR01oD0vZ6ICz1w6h6OTzzkKKD6APuXWKuDoSqae3ledrbdPjr8uL23VX5S23mS+jy9dIIx8ecIC1xEN1Lr7xZM8Z4NsbXZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=LphuKG4e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3245DC4CEC2;
-	Sat, 31 Aug 2024 01:14:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1725066851;
-	bh=rOGAbE559xd2jiSuFjaUZjkm4vO67jm4qc1SmzRoaoM=;
-	h=Date:To:From:Subject:From;
-	b=LphuKG4eAqGKFk9+itSot7Dfo9StGddWrpLON4ylIXy6Xs+rgSmwOC2Z98k+YGuY4
-	 kUOe8K6ZpcVW/TjS36ObJa4DSpDT/3w7xFl/EuZCshLN2674IeA9HvnQgrEMgEugNl
-	 FdFegLZWAjNSPRM8q2OrSTmj/0cT6xjgETHFD/rk=
-Date: Fri, 30 Aug 2024 18:14:10 -0700
-To: mm-commits@vger.kernel.org,vbabka@suse.cz,stable@vger.kernel.org,souravpanda@google.com,pasha.tatashin@soleen.com,kent.overstreet@linux.dev,keescook@chromium.org,david@redhat.com,surenb@google.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + alloc_tag-fix-allocation-tag-reporting-when-config_modules=n.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240831011411.3245DC4CEC2@smtp.kernel.org>
+	s=arc-20240116; t=1725081360; c=relaxed/simple;
+	bh=eQyGWvxbnuak2OM3KuRSOxCHYGa3wrlalVf8AGGQSCs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KZfg+DIhexKBzG3dMVV5q3901UgWwYi3WNrSBdgAPn7ihcX1EAj7pQ9oHNqzZD5aEG6Z7dUN5iZPgjTumx2zmPmlzeCVkNK8fjF/AVvNkhkBsh0fBhAGRmdN4ZSs2CissG91YGHCRUFX/g3DHPiODJQOjWfL7Sx9H/UmPzobXGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XDfbX9AU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 942C1C4CEC0;
+	Sat, 31 Aug 2024 05:15:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1725081360;
+	bh=eQyGWvxbnuak2OM3KuRSOxCHYGa3wrlalVf8AGGQSCs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=XDfbX9AUCl1/+yQ+5VTYvUt0ip/em/zwfZittCmaD2qlDHYXQwmWOldBzZuH+rzRr
+	 cyyGH8do7kR08k6iVyZU9MVp1E7Ffk5VkRwjRMjFw6kjgIAAWhJQ2PX6hkIMccx+Na
+	 4uwziuu0DnNhrZtDaHBKaEKiJqXDhy/GiWacqH4Y=
+Date: Sat, 31 Aug 2024 07:15:56 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: John Hubbard <jhubbard@nvidia.com>
+Cc: Ignat Korchagin <ignat@cloudflare.com>, stable@vger.kernel.org,
+	patches@lists.linux.dev, Willem de Bruijn <willemb@google.com>,
+	Mat Martineau <martineau@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>, Sasha Levin <sashal@kernel.org>,
+	kernel-team@cloudflare.com
+Subject: Re: [PATCH 6.6 046/139] selftests/net: fix uninitialized variables
+Message-ID: <2024083143-haiku-unkempt-9642@gregkh>
+References: <20240709110658.146853929@linuxfoundation.org>
+ <20240709110659.948165869@linuxfoundation.org>
+ <8B1717DB-8C4A-47EE-B28C-170B630C4639@cloudflare.com>
+ <2024083021-cytoplasm-width-3e44@gregkh>
+ <015f481d-fd0a-48d5-a712-0df224d6d937@nvidia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <015f481d-fd0a-48d5-a712-0df224d6d937@nvidia.com>
 
+On Fri, Aug 30, 2024 at 04:40:39PM -0700, John Hubbard wrote:
+> On 8/30/24 4:06 AM, Greg Kroah-Hartman wrote:
+> > On Thu, Jul 11, 2024 at 04:31:45PM +0100, Ignat Korchagin wrote:
+> > > Hi,
+> > > > On 9 Jul 2024, at 12:09, Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+> > > > 
+> > > > 6.6-stable review patch.  If anyone has any objections, please let me know.
+> > > > 
+> > > > ------------------
+> > > > 
+> > > > From: John Hubbard <jhubbard@nvidia.com>
+> > > > 
+> > > > [ Upstream commit eb709b5f6536636dfb87b85ded0b2af9bb6cd9e6 ]
+> > > > 
+> > > > When building with clang, via:
+> > > > 
+> > > >     make LLVM=1 -C tools/testing/selftest
+> > > > 
+> > > > ...clang warns about three variables that are not initialized in all
+> > > > cases:
+> > > > 
+> > > > 1) The opt_ipproto_off variable is used uninitialized if "testname" is
+> > > > not "ip". Willem de Bruijn pointed out that this is an actual bug, and
+> > > > suggested the fix that I'm using here (thanks!).
+> > > > 
+> > > > 2) The addr_len is used uninitialized, but only in the assert case,
+> > > >    which bails out, so this is harmless.
+> > > > 
+> > > > 3) The family variable in add_listener() is only used uninitialized in
+> > > >    the error case (neither IPv4 nor IPv6 is specified), so it's also
+> > > >    harmless.
+> > > > 
+> > > > Fix by initializing each variable.
+> > > > 
+> > > > Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+> > > > Reviewed-by: Willem de Bruijn <willemb@google.com>
+> > > > Acked-by: Mat Martineau <martineau@kernel.org>
+> > > > Link: https://lore.kernel.org/r/20240506190204.28497-1-jhubbard@nvidia.com
+> > > > Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> > > > Signed-off-by: Sasha Levin <sashal@kernel.org>
+> > > > ---
+> > > > tools/testing/selftests/net/gro.c                 | 3 +++
+> > > > tools/testing/selftests/net/ip_local_port_range.c | 2 +-
+> > > > tools/testing/selftests/net/mptcp/pm_nl_ctl.c     | 2 +-
+> > > > 3 files changed, 5 insertions(+), 2 deletions(-)
+> > > > 
+> > > > diff --git a/tools/testing/selftests/net/gro.c b/tools/testing/selftests/net/gro.c
+> > > > index 30024d0ed3739..b204df4f33322 100644
+> > > > --- a/tools/testing/selftests/net/gro.c
+> > > > +++ b/tools/testing/selftests/net/gro.c
+> > > > @@ -113,6 +113,9 @@ static void setup_sock_filter(int fd)
+> > > > next_off = offsetof(struct ipv6hdr, nexthdr);
+> > > > ipproto_off = ETH_HLEN + next_off;
+> > > > 
+> > > > + /* Overridden later if exthdrs are used: */
+> > > > + opt_ipproto_off = ipproto_off;
+> > > > +
+> > > 
+> > > This breaks selftest compilation on 6.6, because opt_ipproto_off is not
+> > > defined in the first place in 6.6
+> > 
+> > So should it be reverted or fixed up?
+> 
+> It should be fixed up. And that's what we already did, last month:
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?id=6b05ad408f09a1b30dc279d35b1cd238361dc856
 
-The patch titled
-     Subject: alloc_tag: fix allocation tag reporting when CONFIG_MODULES=n
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     alloc_tag-fix-allocation-tag-reporting-when-config_modules=n.patch
+Ah, thanks, forgot about that!
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/alloc_tag-fix-allocation-tag-reporting-when-config_modules=n.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Suren Baghdasaryan <surenb@google.com>
-Subject: alloc_tag: fix allocation tag reporting when CONFIG_MODULES=n
-Date: Wed, 28 Aug 2024 16:15:36 -0700
-
-codetag_module_init() is used to initialize sections containing allocation
-tags.  This function is used to initialize module sections as well as core
-kernel sections, in which case the module parameter is set to NULL.  This
-function has to be called even when CONFIG_MODULES=n to initialize core
-kernel allocation tag sections.  When CONFIG_MODULES=n, this function is a
-NOP, which is wrong.  This leads to /proc/allocinfo reported as empty. 
-Fix this by making it independent of CONFIG_MODULES.
-
-Link: https://lkml.kernel.org/r/20240828231536.1770519-1-surenb@google.com
-Fixes: 916cc5167cc6 ("lib: code tagging framework")
-Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Kent Overstreet <kent.overstreet@linux.dev>
-Cc: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Sourav Panda <souravpanda@google.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: <stable@vger.kernel.org>	[6.10+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- lib/codetag.c |   17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
-
---- a/lib/codetag.c~alloc_tag-fix-allocation-tag-reporting-when-config_modules=n
-+++ a/lib/codetag.c
-@@ -125,7 +125,6 @@ static inline size_t range_size(const st
- 			cttype->desc.tag_size;
- }
- 
--#ifdef CONFIG_MODULES
- static void *get_symbol(struct module *mod, const char *prefix, const char *name)
- {
- 	DECLARE_SEQ_BUF(sb, KSYM_NAME_LEN);
-@@ -155,6 +154,15 @@ static struct codetag_range get_section_
- 	};
- }
- 
-+static const char *get_mod_name(__maybe_unused struct module *mod)
-+{
-+#ifdef CONFIG_MODULES
-+	if (mod)
-+		return mod->name;
-+#endif
-+	return "(built-in)";
-+}
-+
- static int codetag_module_init(struct codetag_type *cttype, struct module *mod)
- {
- 	struct codetag_range range;
-@@ -164,8 +172,7 @@ static int codetag_module_init(struct co
- 	range = get_section_range(mod, cttype->desc.section);
- 	if (!range.start || !range.stop) {
- 		pr_warn("Failed to load code tags of type %s from the module %s\n",
--			cttype->desc.section,
--			mod ? mod->name : "(built-in)");
-+			cttype->desc.section, get_mod_name(mod));
- 		return -EINVAL;
- 	}
- 
-@@ -199,6 +206,7 @@ static int codetag_module_init(struct co
- 	return 0;
- }
- 
-+#ifdef CONFIG_MODULES
- void codetag_load_module(struct module *mod)
- {
- 	struct codetag_type *cttype;
-@@ -248,9 +256,6 @@ bool codetag_unload_module(struct module
- 
- 	return unload_ok;
- }
--
--#else /* CONFIG_MODULES */
--static int codetag_module_init(struct codetag_type *cttype, struct module *mod) { return 0; }
- #endif /* CONFIG_MODULES */
- 
- struct codetag_type *
-_
-
-Patches currently in -mm which might be from surenb@google.com are
-
-alloc_tag-fix-allocation-tag-reporting-when-config_modules=n.patch
-
+greg k-h
 
