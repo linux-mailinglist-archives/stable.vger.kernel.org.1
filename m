@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-71788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71998-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5B319677BF
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:23:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7845C9678BF
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:35:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71A89280E41
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:23:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9C221C211B0
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:35:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBD8833987;
-	Sun,  1 Sep 2024 16:23:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D671617E46E;
+	Sun,  1 Sep 2024 16:35:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V13Gxzg6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sQhLQ0pL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8FC618132F;
-	Sun,  1 Sep 2024 16:23:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D35C2B9C7;
+	Sun,  1 Sep 2024 16:35:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725207817; cv=none; b=iocaMNZ78UhCfnBWdztGlhvDHNW2OXN0L0+f1eQT9yh4c2AucJEJeLUKIqr/K0D/EB59l+AMtDzaEDxUGxbpSwH+Zvn2Ntc3bPP3V202QKpBXhV1IMDaODA1J8OtBkhpAr81G5DljGi3ZJxVidC0JUrKyogSf4sUCGMNzZkmKtY=
+	t=1725208508; cv=none; b=JSph5PDzv6ZBymRsgV+9IRT2ylx/gdjfqa935P39vzy4LAcecajWHIT2kVTAtBqYdd6rSdh2xLc8/qMfNLhhYMpAY14fUa/G5orAQB0sDXpxFfEdyNjG1aFtqKYpp4WtndIab3hDhPllwgvu2OMpJWSRrOiZbfPMsjwfMImP3x4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725207817; c=relaxed/simple;
-	bh=EglFBCo7+KpMEFiufHnU5H9TFQKp1/bgO4mQBTp5tSY=;
+	s=arc-20240116; t=1725208508; c=relaxed/simple;
+	bh=k2m/pE2UTS1QFj9KJHLQMLbYOdOmS5fdynoR1dLOFlA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PRqV+KBagxRH45Cd0F3NDCwBAsYSHndjNHhfRx8oSNSLtAk7GaIE0OEGFBehVzpzalQ/AKwM4fF6dWYjl3q9dbn1p3LnQsnu4j5uLN3CODv/0XDmg4t/mFGG0VU7naxQbIgDzcymmMowCyk8MpRoefOUXktY8JEkNDzUNcE66Oo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V13Gxzg6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD0A0C4CEC3;
-	Sun,  1 Sep 2024 16:23:36 +0000 (UTC)
+	 MIME-Version; b=O0GWlF30pOQHqsL/fIxo4bJrTusuJ/nSIJ/1008C35OY6565DU87n2m6ua9Q/BosFYTk+1XUrOYtARIeTrKGv193gmIxV6JxXHbqpsWtWGIXCuaf55mEAf4SWqR+tLdEdPG4UaKzRuRzW1lGuGHjEyU2xbMW0VNWdi8viiLw/pA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sQhLQ0pL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE283C4CEC8;
+	Sun,  1 Sep 2024 16:35:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725207817;
-	bh=EglFBCo7+KpMEFiufHnU5H9TFQKp1/bgO4mQBTp5tSY=;
+	s=korg; t=1725208508;
+	bh=k2m/pE2UTS1QFj9KJHLQMLbYOdOmS5fdynoR1dLOFlA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V13Gxzg6GMAsq9pUo5Ght4s/wrvoJiSMRNT/KmT9RJ8u/iC5DH+vjpLipMo8e+fho
-	 P2JbOseoDi1uMgr/dIRqKYzTH9Uc8r+64KseEwEbFKcCrITBIDCcJi7CCaOO4xaKGM
-	 68ogdDJ9yijP6pwz6hmxXlasBeo6hZTrz78vi7jw=
+	b=sQhLQ0pLDrVguI3BdAm7lyw9EhN2+3RqjDyeDyaY3q1AaSyw5S4Jdnxzmilcas6TL
+	 eLD61iD3qHeXMz+X/HPa7dveuHASi72NqckOIVur9niQq5m7Ev5sfp4zwcRn/mIz32
+	 eS5dmh7xfqKdAUgZc6BuRjKpUGuZfEnVkLNFLwtk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhenghan Wang <wzhmmmmm@gmail.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Hugo SIMELIERE <hsimeliere.opensource@witekio.com>
-Subject: [PATCH 4.19 85/98] ida: Fix crash in ida_free when the bitmap is empty
+	Jianbo Liu <jianbol@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Jay Vosburgh <jv@jvosburgh.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 104/149] bonding: implement xdo_dev_state_free and call it after deletion
 Date: Sun,  1 Sep 2024 18:16:55 +0200
-Message-ID: <20240901160806.903436876@linuxfoundation.org>
+Message-ID: <20240901160821.368841052@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
-References: <20240901160803.673617007@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,98 +65,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Jianbo Liu <jianbol@nvidia.com>
 
-commit af73483f4e8b6f5c68c9aa63257bdd929a9c194a upstream.
+[ Upstream commit ec13009472f4a756288eb4e18e20a7845da98d10 ]
 
-The IDA usually detects double-frees, but that detection failed to
-consider the case when there are no nearby IDs allocated and so we have a
-NULL bitmap rather than simply having a clear bit.  Add some tests to the
-test-suite to be sure we don't inadvertently reintroduce this problem.
-Unfortunately they're quite noisy so include a message to disregard
-the warnings.
+Add this implementation for bonding, so hardware resources can be
+freed from the active slave after xfrm state is deleted. The netdev
+used to invoke xdo_dev_state_free callback, is saved in the xfrm state
+(xs->xso.real_dev), which is also the bond's active slave. To prevent
+it from being freed, acquire netdev reference before leaving RCU
+read-side critical section, and release it after callback is done.
 
-Reported-by: Zhenghan Wang <wzhmmmmm@gmail.com>
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Hugo SIMELIERE <hsimeliere.opensource@witekio.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+And call it when deleting all SAs from old active real interface while
+switching current active slave.
+
+Fixes: 9a5605505d9c ("bonding: Add struct bond_ipesc to manage SA")
+Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
+Acked-by: Jay Vosburgh <jv@jvosburgh.net>
+Link: https://patch.msgid.link/20240823031056.110999-2-jianbol@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/idr.c      |    2 +-
- lib/test_ida.c |   40 ++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 41 insertions(+), 1 deletion(-)
+ drivers/net/bonding/bond_main.c | 36 +++++++++++++++++++++++++++++++++
+ 1 file changed, 36 insertions(+)
 
---- a/lib/idr.c
-+++ b/lib/idr.c
-@@ -471,7 +471,7 @@ static void ida_remove(struct ida *ida,
- 	} else {
- 		btmp = bitmap->bitmap;
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index b257504a85347..232e592389638 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -581,12 +581,47 @@ static void bond_ipsec_del_sa_all(struct bonding *bond)
+ 				   __func__);
+ 		} else {
+ 			slave->dev->xfrmdev_ops->xdo_dev_state_delete(ipsec->xs);
++			if (slave->dev->xfrmdev_ops->xdo_dev_state_free)
++				slave->dev->xfrmdev_ops->xdo_dev_state_free(ipsec->xs);
+ 		}
  	}
--	if (!test_bit(offset, btmp))
-+	if (!bitmap || !test_bit(offset, btmp))
- 		goto err;
- 
- 	__clear_bit(offset, btmp);
---- a/lib/test_ida.c
-+++ b/lib/test_ida.c
-@@ -150,6 +150,45 @@ static void ida_check_conv(struct ida *i
- 	IDA_BUG_ON(ida, !ida_is_empty(ida));
+ 	spin_unlock_bh(&bond->ipsec_lock);
+ 	rcu_read_unlock();
  }
  
-+/*
-+ * Check various situations where we attempt to free an ID we don't own.
-+ */
-+static void ida_check_bad_free(struct ida *ida)
++static void bond_ipsec_free_sa(struct xfrm_state *xs)
 +{
-+	unsigned long i;
++	struct net_device *bond_dev = xs->xso.dev;
++	struct net_device *real_dev;
++	netdevice_tracker tracker;
++	struct bonding *bond;
++	struct slave *slave;
 +
-+	printk("vvv Ignore \"not allocated\" warnings\n");
-+	/* IDA is empty; all of these will fail */
-+	ida_free(ida, 0);
-+	for (i = 0; i < 31; i++)
-+		ida_free(ida, 1 << i);
++	if (!bond_dev)
++		return;
 +
-+	/* IDA contains a single value entry */
-+	IDA_BUG_ON(ida, ida_alloc_min(ida, 3, GFP_KERNEL) != 3);
-+	ida_free(ida, 0);
-+	for (i = 0; i < 31; i++)
-+		ida_free(ida, 1 << i);
++	rcu_read_lock();
++	bond = netdev_priv(bond_dev);
++	slave = rcu_dereference(bond->curr_active_slave);
++	real_dev = slave ? slave->dev : NULL;
++	netdev_hold(real_dev, &tracker, GFP_ATOMIC);
++	rcu_read_unlock();
 +
-+	/* IDA contains a single bitmap */
-+	IDA_BUG_ON(ida, ida_alloc_min(ida, 1023, GFP_KERNEL) != 1023);
-+	ida_free(ida, 0);
-+	for (i = 0; i < 31; i++)
-+		ida_free(ida, 1 << i);
++	if (!slave)
++		goto out;
 +
-+	/* IDA contains a tree */
-+	IDA_BUG_ON(ida, ida_alloc_min(ida, (1 << 20) - 1, GFP_KERNEL) != (1 << 20) - 1);
-+	ida_free(ida, 0);
-+	for (i = 0; i < 31; i++)
-+		ida_free(ida, 1 << i);
-+	printk("^^^ \"not allocated\" warnings over\n");
++	if (!xs->xso.real_dev)
++		goto out;
 +
-+	ida_free(ida, 3);
-+	ida_free(ida, 1023);
-+	ida_free(ida, (1 << 20) - 1);
++	WARN_ON(xs->xso.real_dev != real_dev);
 +
-+	IDA_BUG_ON(ida, !ida_is_empty(ida));
++	if (real_dev && real_dev->xfrmdev_ops &&
++	    real_dev->xfrmdev_ops->xdo_dev_state_free)
++		real_dev->xfrmdev_ops->xdo_dev_state_free(xs);
++out:
++	netdev_put(real_dev, &tracker);
 +}
 +
- static DEFINE_IDA(ida);
- 
- static int ida_checks(void)
-@@ -162,6 +201,7 @@ static int ida_checks(void)
- 	ida_check_leaf(&ida, 1024 * 64);
- 	ida_check_max(&ida);
- 	ida_check_conv(&ida);
-+	ida_check_bad_free(&ida);
- 
- 	printk("IDA: %u of %u tests passed\n", tests_passed, tests_run);
- 	return (tests_run != tests_passed) ? 0 : -EINVAL;
+ /**
+  * bond_ipsec_offload_ok - can this packet use the xfrm hw offload
+  * @skb: current data packet
+@@ -627,6 +662,7 @@ static bool bond_ipsec_offload_ok(struct sk_buff *skb, struct xfrm_state *xs)
+ static const struct xfrmdev_ops bond_xfrmdev_ops = {
+ 	.xdo_dev_state_add = bond_ipsec_add_sa,
+ 	.xdo_dev_state_delete = bond_ipsec_del_sa,
++	.xdo_dev_state_free = bond_ipsec_free_sa,
+ 	.xdo_dev_offload_ok = bond_ipsec_offload_ok,
+ };
+ #endif /* CONFIG_XFRM_OFFLOAD */
+-- 
+2.43.0
+
 
 
 
