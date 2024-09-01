@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-72043-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17D0C9678EF
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:37:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC0A1967B17
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:05:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C19111F21A04
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:37:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88A0A2811E1
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:04:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 516FF17E900;
-	Sun,  1 Sep 2024 16:37:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C63DB17E005;
+	Sun,  1 Sep 2024 17:04:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="APuMTx4F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Aouv1rqu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F79017CA1F;
-	Sun,  1 Sep 2024 16:37:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 827872C6AF;
+	Sun,  1 Sep 2024 17:04:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208653; cv=none; b=mClaYHEdIPPMh59e20m5Y5wnxCWJ+Sqv/98NMIeJmZuPGebus0aj8oq42Bmpo3NZW+t4lc8+PMmXH4moCmsrquHe3RicnsTGeqBW6X0b2wI0GUjHydOWmqahc6r2WvIpdv1qWnxIhwhdkVGNWwpFZpV0M8Gw8UCR1YHB8/hK0Xs=
+	t=1725210297; cv=none; b=mbT73dZWpV+IGFFAfLWafvKGLnn+nMDUyhuUrUfnsE1i2fSES5GYzDPBibw99kOvd6T0hg3vZhyDsY50mdFlOxjKrUy/4KwTmMCQLHNF3V+kGZeYo5Me6yRaoBTjhYV86N5jFx5AQJEQj3Ar4lu61d4qx4pKOXQ+hP+0qQyKyck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208653; c=relaxed/simple;
-	bh=2WzH4BwU+PsJrgyzSKaPmh8vaT9pcUz6wdQrSXOIRjI=;
+	s=arc-20240116; t=1725210297; c=relaxed/simple;
+	bh=fZIYmT2oilqshdz34Zi18uEXGXxEC6EDDTq5fxvcslE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=thu9Zn2NJOXiDOJeE/OS/9MOPf13jyQcFHylZQh/YtW9fHnv0He47MOi09bPnaxhPy/LDyutHF2J5jwk3TwtRlY5M1GeN77eR8hM7VG8Qpv7xNfF3GlC+Gw4mpMnIx5rGTyP7fQ0rqd7P4HuNMKZ8/r8cft31wft2yrdZVr26eg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=APuMTx4F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E5CBC4CEC3;
-	Sun,  1 Sep 2024 16:37:32 +0000 (UTC)
+	 MIME-Version; b=SIFzCPi1BKomZlL6hNCIXrOyriCeV0DMqa48Nytv2UFoiT7QxtVSX26uznI+7J+o5iibzzDGVCCHfxVF0XYy12I5RYA9E7Yo+dAWBF+PAdglxYHcpU6ZwYh9QRHTfMdGO35tzJpR489xsvzCdZiyAa/5FvsZcpDQhuRG1NxH7FY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Aouv1rqu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEDB1C4CEC3;
+	Sun,  1 Sep 2024 17:04:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208652;
-	bh=2WzH4BwU+PsJrgyzSKaPmh8vaT9pcUz6wdQrSXOIRjI=;
+	s=korg; t=1725210297;
+	bh=fZIYmT2oilqshdz34Zi18uEXGXxEC6EDDTq5fxvcslE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=APuMTx4FAkc5tn4QuxNdPZs9zBH8JV4pUtrjLOcbRQpiF8Gru+m8wm4ZC6NSbiy8H
-	 MwmjxY/O7GjQiOVh3g0iEFS8KJnf+OcX2h4aoVb/MwIOYApemv4mX6l6U4EO1r7LmJ
-	 A1JfMudHBD6+DBurtNR2mZpaWRTySPcV11c6T1h0=
+	b=Aouv1rquK/oTxd5Ie5tEAx3oFsAfz+pykSJ1Q5d/ROG+981bEia9Vgc0t02aqIU2+
+	 Tt1goWRuujfIA61pKMlt/Wjl820TkZPB5/7QtZ84UOpJ6qOVkDKiTZC5y3e/OlgK8m
+	 OePpCOXH+BYgBE0SKc28VtAPgv5/8W1KETyWiig8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brendan Higgins <brendanhiggins@google.com>,
-	Kees Cook <keescook@chromium.org>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Budimir Markovic <markovicbudimir@gmail.com>,
+	Stephen Hemminger <stephen@networkplumber.org>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 148/149] apparmor: fix policy_unpack_test on big endian systems
-Date: Sun,  1 Sep 2024 18:17:39 +0200
-Message-ID: <20240901160823.011775196@linuxfoundation.org>
+Subject: [PATCH 5.15 148/215] netem: fix return value if duplicate enqueue fails
+Date: Sun,  1 Sep 2024 18:17:40 +0200
+Message-ID: <20240901160828.960186031@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
-References: <20240901160817.461957599@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +64,140 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Stephen Hemminger <stephen@networkplumber.org>
 
-[ Upstream commit 98c0cc48e27e9d269a3e4db2acd72b486c88ec77 ]
+[ Upstream commit c07ff8592d57ed258afee5a5e04991a48dbaf382 ]
 
-policy_unpack_test fails on big endian systems because data byte order
-is expected to be little endian but is generated in host byte order.
-This results in test failures such as:
+There is a bug in netem_enqueue() introduced by
+commit 5845f706388a ("net: netem: fix skb length BUG_ON in __skb_to_sgvec")
+that can lead to a use-after-free.
 
- # policy_unpack_test_unpack_array_with_null_name: EXPECTATION FAILED at security/apparmor/policy_unpack_test.c:150
-    Expected array_size == (u16)16, but
-        array_size == 4096 (0x1000)
-        (u16)16 == 16 (0x10)
-    # policy_unpack_test_unpack_array_with_null_name: pass:0 fail:1 skip:0 total:1
-    not ok 3 policy_unpack_test_unpack_array_with_null_name
-    # policy_unpack_test_unpack_array_with_name: EXPECTATION FAILED at security/apparmor/policy_unpack_test.c:164
-    Expected array_size == (u16)16, but
-        array_size == 4096 (0x1000)
-        (u16)16 == 16 (0x10)
-    # policy_unpack_test_unpack_array_with_name: pass:0 fail:1 skip:0 total:1
+This commit made netem_enqueue() always return NET_XMIT_SUCCESS
+when a packet is duplicated, which can cause the parent qdisc's q.qlen
+to be mistakenly incremented. When this happens qlen_notify() may be
+skipped on the parent during destruction, leaving a dangling pointer
+for some classful qdiscs like DRR.
 
-Add the missing endianness conversions when generating test data.
+There are two ways for the bug happen:
 
-Fixes: 4d944bcd4e73 ("apparmor: add AppArmor KUnit tests for policy unpack")
-Cc: Brendan Higgins <brendanhiggins@google.com>
-Cc: Kees Cook <keescook@chromium.org>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+- If the duplicated packet is dropped by rootq->enqueue() and then
+  the original packet is also dropped.
+- If rootq->enqueue() sends the duplicated packet to a different qdisc
+  and the original packet is dropped.
+
+In both cases NET_XMIT_SUCCESS is returned even though no packets
+are enqueued at the netem qdisc.
+
+The fix is to defer the enqueue of the duplicate packet until after
+the original packet has been guaranteed to return NET_XMIT_SUCCESS.
+
+Fixes: 5845f706388a ("net: netem: fix skb length BUG_ON in __skb_to_sgvec")
+Reported-by: Budimir Markovic <markovicbudimir@gmail.com>
+Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20240819175753.5151-1-stephen@networkplumber.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/apparmor/policy_unpack_test.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/sched/sch_netem.c | 47 ++++++++++++++++++++++++++-----------------
+ 1 file changed, 29 insertions(+), 18 deletions(-)
 
-diff --git a/security/apparmor/policy_unpack_test.c b/security/apparmor/policy_unpack_test.c
-index 5c9bde25e56df..2b8003eb4f463 100644
---- a/security/apparmor/policy_unpack_test.c
-+++ b/security/apparmor/policy_unpack_test.c
-@@ -80,14 +80,14 @@ static struct aa_ext *build_aa_ext_struct(struct policy_unpack_fixture *puf,
- 	*(buf + 1) = strlen(TEST_U32_NAME) + 1;
- 	strscpy(buf + 3, TEST_U32_NAME, e->end - (void *)(buf + 3));
- 	*(buf + 3 + strlen(TEST_U32_NAME) + 1) = AA_U32;
--	*((u32 *)(buf + 3 + strlen(TEST_U32_NAME) + 2)) = TEST_U32_DATA;
-+	*((__le32 *)(buf + 3 + strlen(TEST_U32_NAME) + 2)) = cpu_to_le32(TEST_U32_DATA);
+diff --git a/net/sched/sch_netem.c b/net/sched/sch_netem.c
+index 08aaa6efc62c8..e0e16b0fdb179 100644
+--- a/net/sched/sch_netem.c
++++ b/net/sched/sch_netem.c
+@@ -437,12 +437,10 @@ static int netem_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 	struct netem_sched_data *q = qdisc_priv(sch);
+ 	/* We don't fill cb now as skb_unshare() may invalidate it */
+ 	struct netem_skb_cb *cb;
+-	struct sk_buff *skb2;
++	struct sk_buff *skb2 = NULL;
+ 	struct sk_buff *segs = NULL;
+ 	unsigned int prev_len = qdisc_pkt_len(skb);
+ 	int count = 1;
+-	int rc = NET_XMIT_SUCCESS;
+-	int rc_drop = NET_XMIT_DROP;
  
- 	buf = e->start + TEST_NAMED_U64_BUF_OFFSET;
- 	*buf = AA_NAME;
- 	*(buf + 1) = strlen(TEST_U64_NAME) + 1;
- 	strscpy(buf + 3, TEST_U64_NAME, e->end - (void *)(buf + 3));
- 	*(buf + 3 + strlen(TEST_U64_NAME) + 1) = AA_U64;
--	*((u64 *)(buf + 3 + strlen(TEST_U64_NAME) + 2)) = TEST_U64_DATA;
-+	*((__le64 *)(buf + 3 + strlen(TEST_U64_NAME) + 2)) = cpu_to_le64(TEST_U64_DATA);
+ 	/* Do not fool qdisc_drop_all() */
+ 	skb->prev = NULL;
+@@ -471,19 +469,11 @@ static int netem_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 		skb_orphan_partial(skb);
  
- 	buf = e->start + TEST_NAMED_BLOB_BUF_OFFSET;
- 	*buf = AA_NAME;
-@@ -103,7 +103,7 @@ static struct aa_ext *build_aa_ext_struct(struct policy_unpack_fixture *puf,
- 	*(buf + 1) = strlen(TEST_ARRAY_NAME) + 1;
- 	strscpy(buf + 3, TEST_ARRAY_NAME, e->end - (void *)(buf + 3));
- 	*(buf + 3 + strlen(TEST_ARRAY_NAME) + 1) = AA_ARRAY;
--	*((u16 *)(buf + 3 + strlen(TEST_ARRAY_NAME) + 2)) = TEST_ARRAY_SIZE;
-+	*((__le16 *)(buf + 3 + strlen(TEST_ARRAY_NAME) + 2)) = cpu_to_le16(TEST_ARRAY_SIZE);
+ 	/*
+-	 * If we need to duplicate packet, then re-insert at top of the
+-	 * qdisc tree, since parent queuer expects that only one
+-	 * skb will be queued.
++	 * If we need to duplicate packet, then clone it before
++	 * original is modified.
+ 	 */
+-	if (count > 1 && (skb2 = skb_clone(skb, GFP_ATOMIC)) != NULL) {
+-		struct Qdisc *rootq = qdisc_root_bh(sch);
+-		u32 dupsave = q->duplicate; /* prevent duplicating a dup... */
+-
+-		q->duplicate = 0;
+-		rootq->enqueue(skb2, rootq, to_free);
+-		q->duplicate = dupsave;
+-		rc_drop = NET_XMIT_SUCCESS;
+-	}
++	if (count > 1)
++		skb2 = skb_clone(skb, GFP_ATOMIC);
  
- 	return e;
- }
+ 	/*
+ 	 * Randomized packet corruption.
+@@ -495,7 +485,8 @@ static int netem_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 		if (skb_is_gso(skb)) {
+ 			skb = netem_segment(skb, sch, to_free);
+ 			if (!skb)
+-				return rc_drop;
++				goto finish_segs;
++
+ 			segs = skb->next;
+ 			skb_mark_not_on_list(skb);
+ 			qdisc_skb_cb(skb)->pkt_len = skb->len;
+@@ -521,7 +512,24 @@ static int netem_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 		/* re-link segs, so that qdisc_drop_all() frees them all */
+ 		skb->next = segs;
+ 		qdisc_drop_all(skb, sch, to_free);
+-		return rc_drop;
++		if (skb2)
++			__qdisc_drop(skb2, to_free);
++		return NET_XMIT_DROP;
++	}
++
++	/*
++	 * If doing duplication then re-insert at top of the
++	 * qdisc tree, since parent queuer expects that only one
++	 * skb will be queued.
++	 */
++	if (skb2) {
++		struct Qdisc *rootq = qdisc_root_bh(sch);
++		u32 dupsave = q->duplicate; /* prevent duplicating a dup... */
++
++		q->duplicate = 0;
++		rootq->enqueue(skb2, rootq, to_free);
++		q->duplicate = dupsave;
++		skb2 = NULL;
+ 	}
+ 
+ 	qdisc_qstats_backlog_inc(sch, skb);
+@@ -592,9 +600,12 @@ static int netem_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 	}
+ 
+ finish_segs:
++	if (skb2)
++		__qdisc_drop(skb2, to_free);
++
+ 	if (segs) {
+ 		unsigned int len, last_len;
+-		int nb;
++		int rc, nb;
+ 
+ 		len = skb ? skb->len : 0;
+ 		nb = skb ? 1 : 0;
 -- 
 2.43.0
 
