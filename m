@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-72269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71859-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0F6E9679F1
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:49:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 165FC967816
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:27:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E24571C2145D
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:49:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7AEA9B20CEF
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:27:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E7EC183CDB;
-	Sun,  1 Sep 2024 16:49:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDC40183CBD;
+	Sun,  1 Sep 2024 16:27:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1XRYzzmj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fP151QfU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 418A5183CA9;
-	Sun,  1 Sep 2024 16:49:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C6F7183090;
+	Sun,  1 Sep 2024 16:27:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209380; cv=none; b=p/44J27lOm9hugjc1JVfU7JQ7lcePavNHvGJWpIVXJ99HOHBP0PwzIygp2VLfEF/XgKUvh1GhXNBZ25stgoKbwwZpb763Wo4hZo1/IChFK0rodZnabOoacF2GN3k1qpmX6or5XItlvn+VFbFQAnIsC7ZCcaW8SWUBPORiT96Fu4=
+	t=1725208050; cv=none; b=Wt/qmXhlIdD/qWGuUJw1fdkKR6mcLyaoAtEy7wh5ZB29pd+H3ib3bHDRLseRi5Pap09nO+1lth1u8Yw5AQU54ws1GDUmj3LQpN7a+2BA0iGH+zr7V0X89iAwZUUtQKQDzowe+006VhpfH4A7nekvuWFGUVBFw+Y8ShcISxzZNYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209380; c=relaxed/simple;
-	bh=Bt1f60IIuKxVdTdVNSp/lQWwduFU2bWnJHzKzxEWvew=;
+	s=arc-20240116; t=1725208050; c=relaxed/simple;
+	bh=VNILEzJZ/dinOgr1Y3xIRtgD6oM8gIl4IPYveJGt+RU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B8h6Ba7wu1Az/49aYJvTSHaIjuvsvm4xQeQws5cdjtLBFhW+qyJMn9iecBR9LY5zaLVZLfeAnbghufXJ4C7D6GBY3WeoVDrZTpXEYWslZk7uBFuB63a7IjIE898JDbKUDGQ/wAlRQd48sU5ZWSUXDBnvwIPsX3+woAXX0FByVvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1XRYzzmj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51774C4CEC4;
-	Sun,  1 Sep 2024 16:49:39 +0000 (UTC)
+	 MIME-Version; b=BcGOIJrsTZFMeD1BzN/AmUCCCP5/FP8lz9GIQ5ZTyTsqnLvs+azvt5LXCiVucaakGPJH3TQiHB2A74so257z2DVsGtV6RVs7uKyM/5vgU8LddnuYzxy7jIL33EBUZzdy7IXuR0jrYN7rC4GIkPUdw8oUz9AzO02TbB7fSf94U2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fP151QfU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B49BC4CEC3;
+	Sun,  1 Sep 2024 16:27:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209379;
-	bh=Bt1f60IIuKxVdTdVNSp/lQWwduFU2bWnJHzKzxEWvew=;
+	s=korg; t=1725208050;
+	bh=VNILEzJZ/dinOgr1Y3xIRtgD6oM8gIl4IPYveJGt+RU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1XRYzzmj5OdVGP0Dm8bnxCGT/nBsk07430FnnUoR83bkY7/+e0uBv35ulPsOEsmuP
-	 l91vW2oEoYqNdRivkNn0gAZhNAFBTifV21bHkGPxDVIXXiEvV0bxHDwmGArXeD1vM3
-	 m2kCYLsMThtvMM4esDDUEZRM+2Y0eLvurVzZNuNs=
+	b=fP151QfUT0hebK8i60la14/gGrCdoo/DWUiU7fjdAZz4JY05LZx6a7DhVPmcx+9wR
+	 t53y7ZWwHpWf57QmoHh7FSJ6RtWhh5uQWt/+yoZyehYz1bngQ2VmOKkQKaLJBsUPW3
+	 YNiSQa5Qsb1JI1G9qpUD5CJ9uDq84wSFKBYtrApk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	David Sterba <dsterba@suse.com>,
-	Yury Norov <yury.norov@gmail.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.10 018/151] btrfs: rename bitmap_set_bits() -> btrfs_bitmap_set_bits()
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 31/93] thermal: of: Fix OF node leak in of_thermal_zone_find() error paths
 Date: Sun,  1 Sep 2024 18:16:18 +0200
-Message-ID: <20240901160814.786021163@linuxfoundation.org>
+Message-ID: <20240901160808.531909392@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
-References: <20240901160814.090297276@linuxfoundation.org>
+In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
+References: <20240901160807.346406833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +64,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Lobakin <aleksander.lobakin@intel.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit 4ca532d64648d4776d15512caed3efea05ca7195 upstream.
+[ Upstream commit c0a1ef9c5be72ff28a5413deb1b3e1a066593c13 ]
 
-bitmap_set_bits() does not start with the FS' prefix and may collide
-with a new generic helper one day. It operates with the FS-specific
-types, so there's no change those two could do the same thing.
-Just add the prefix to exclude such possible conflict.
+Terminating for_each_available_child_of_node() loop requires dropping OF
+node reference, so bailing out on errors misses this.  Solve the OF node
+reference leak with scoped for_each_available_child_of_node_scoped().
 
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Acked-by: David Sterba <dsterba@suse.com>
-Reviewed-by: Yury Norov <yury.norov@gmail.com>
-Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3fd6d6e2b4e8 ("thermal/of: Rework the thermal device tree initialization")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
+Reviewed-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://patch.msgid.link/20240814195823.437597-3-krzysztof.kozlowski@linaro.org
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/free-space-cache.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/thermal/thermal_of.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
---- a/fs/btrfs/free-space-cache.c
-+++ b/fs/btrfs/free-space-cache.c
-@@ -1755,9 +1755,9 @@ static void bitmap_clear_bits(struct btr
- 	ctl->free_space -= bytes;
- }
+diff --git a/drivers/thermal/thermal_of.c b/drivers/thermal/thermal_of.c
+index e7d25e70fb93e..d8dfcd49695d3 100644
+--- a/drivers/thermal/thermal_of.c
++++ b/drivers/thermal/thermal_of.c
+@@ -182,14 +182,14 @@ static struct device_node *of_thermal_zone_find(struct device_node *sensor, int
+ 	 * Search for each thermal zone, a defined sensor
+ 	 * corresponding to the one passed as parameter
+ 	 */
+-	for_each_available_child_of_node(np, tz) {
++	for_each_available_child_of_node_scoped(np, child) {
  
--static void bitmap_set_bits(struct btrfs_free_space_ctl *ctl,
--			    struct btrfs_free_space *info, u64 offset,
--			    u64 bytes)
-+static void btrfs_bitmap_set_bits(struct btrfs_free_space_ctl *ctl,
-+				  struct btrfs_free_space *info, u64 offset,
-+				  u64 bytes)
- {
- 	unsigned long start, count, end;
- 	int extent_delta = 1;
-@@ -2077,7 +2077,7 @@ static u64 add_bytes_to_bitmap(struct bt
+ 		int count, i;
  
- 	bytes_to_set = min(end - offset, bytes);
+-		count = of_count_phandle_with_args(tz, "thermal-sensors",
++		count = of_count_phandle_with_args(child, "thermal-sensors",
+ 						   "#thermal-sensor-cells");
+ 		if (count <= 0) {
+-			pr_err("%pOFn: missing thermal sensor\n", tz);
++			pr_err("%pOFn: missing thermal sensor\n", child);
+ 			tz = ERR_PTR(-EINVAL);
+ 			goto out;
+ 		}
+@@ -198,18 +198,19 @@ static struct device_node *of_thermal_zone_find(struct device_node *sensor, int
  
--	bitmap_set_bits(ctl, info, offset, bytes_to_set);
-+	btrfs_bitmap_set_bits(ctl, info, offset, bytes_to_set);
+ 			int ret;
  
- 	/*
- 	 * We set some bytes, we have no idea what the max extent size is
+-			ret = of_parse_phandle_with_args(tz, "thermal-sensors",
++			ret = of_parse_phandle_with_args(child, "thermal-sensors",
+ 							 "#thermal-sensor-cells",
+ 							 i, &sensor_specs);
+ 			if (ret < 0) {
+-				pr_err("%pOFn: Failed to read thermal-sensors cells: %d\n", tz, ret);
++				pr_err("%pOFn: Failed to read thermal-sensors cells: %d\n", child, ret);
+ 				tz = ERR_PTR(ret);
+ 				goto out;
+ 			}
+ 
+ 			if ((sensor == sensor_specs.np) && id == (sensor_specs.args_count ?
+ 								  sensor_specs.args[0] : 0)) {
+-				pr_debug("sensor %pOFn id=%d belongs to %pOFn\n", sensor, id, tz);
++				pr_debug("sensor %pOFn id=%d belongs to %pOFn\n", sensor, id, child);
++				tz = no_free_ptr(child);
+ 				goto out;
+ 			}
+ 		}
+-- 
+2.43.0
+
 
 
 
