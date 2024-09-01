@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-71775-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72019-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA6949677B0
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:23:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0530C9678D7
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:36:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E38D3B21782
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:22:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A22901F21450
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:36:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55EEA17F394;
-	Sun,  1 Sep 2024 16:22:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 093E717DFFC;
+	Sun,  1 Sep 2024 16:36:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bng2jUg8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n7DOwiZi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12000364AB;
-	Sun,  1 Sep 2024 16:22:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9EE21C68C;
+	Sun,  1 Sep 2024 16:36:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725207775; cv=none; b=Ku8xcPHz+YKQzsZ8Bhl1lmzDGFr6CTD1sO8/U1kiZMRoanLwH5J3Qr9Y5LVbJxrzhXc2mfXtx4faO03GntbScWledgVgatXAYsYP4BOiHcTpr4u1L/WVK/liiQKkmWPxUqmHCJHG7XWu4tpvgaD+VcIItmIr+0Ts/C/NJMeBYDo=
+	t=1725208576; cv=none; b=Muh1F65kipPIQm1LG4TSclqvnzMyOVFNfQacDcYSr8FQBRMAqLEAUHk/UpVwRopKfppp3IHQAjh3JCTyGfjmn7xxz86n1ysFnRlwU9pcc22WAycv9Tn81+oGNggAfzFRguGftuLZl15GB3pUxT1PcUY2McXshMVILtD2Dc8HZcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725207775; c=relaxed/simple;
-	bh=tWKJ9z8R1LV4tv4DmsIUaAHAgX878Eil3VArETKY/dc=;
+	s=arc-20240116; t=1725208576; c=relaxed/simple;
+	bh=obPE+7EkYCRrwKs0fLcyL22xmeoP9CytV/qXhDeqTfM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ivW/dNPQjEM8Qp2Lryn9y5b5lP2k+73Q3HSrAmYIqjSEADvOPiOnQbV1LeiLIK2aYmiGjK/JAwoScaOFUba4N/bIphP6jfRNmvGrEkwUmQal/HJESbLdLoAAzWW6nnaFvZcUelnQ8OdYiBzbsqxJyRDLX3DE3r2CCf/2ZWFedXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bng2jUg8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76859C4CEC3;
-	Sun,  1 Sep 2024 16:22:54 +0000 (UTC)
+	 MIME-Version; b=Q0Nuijs8yeO67frT2hPllXLVnFiG5WYwkmcWKzY1O1MJiDCEgB7TJqOsGCOFXR50m2pLZ4AbS/fhyf/S7jIaJqI6qnIax6TtuD0hs1uBNhccG+269+ujl3POuPAIGTvQVszYHQS9rQ7dW1AQFhi7dbUfRcQ4JOVPUJtEmbfQ3v8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n7DOwiZi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28E37C4CEC3;
+	Sun,  1 Sep 2024 16:36:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725207774;
-	bh=tWKJ9z8R1LV4tv4DmsIUaAHAgX878Eil3VArETKY/dc=;
+	s=korg; t=1725208576;
+	bh=obPE+7EkYCRrwKs0fLcyL22xmeoP9CytV/qXhDeqTfM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bng2jUg8DjX4V9IyG0lVFqkiI7AZ8h6CtLbVgHaY2/y8p08NJA8gQR4mxZ1y1wf6W
-	 PUJVMFLNhMMIpeWxF+1M4gY4I5sEgdXcWJc9WZAIG5qksmI/vaPG+Ncu0ADi6+5IAP
-	 X1jCCSqMTvntOcxjULNzX1qqWhoV1oXWPT/VyRDU=
+	b=n7DOwiZiLDbWStOjyg17CwasEvII31qBCqTmu4yqxpEF4BSac8PhRMSDcpfRWa0/T
+	 5HrEUuvQn9y0Jxjr8fYXW54dtN/zUDTJqeRkx5h7XLNysDe6pmZeWMlWOHKO2DmOGy
+	 MfhHW35BJ4wBuw4gmc2CVKVjXfUdAgqcmMl3eL6k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Brian Norris <briannorris@chromium.org>,
-	Kalle Valo <kvalo@kernel.org>
-Subject: [PATCH 4.19 74/98] wifi: mwifiex: duplicate static structs used in driver instances
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Will Deacon <will@kernel.org>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Joerg Roedel <jroedel@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 093/149] iommu: Do not return 0 from map_pages if it doesnt do anything
 Date: Sun,  1 Sep 2024 18:16:44 +0200
-Message-ID: <20240901160806.486963650@linuxfoundation.org>
+Message-ID: <20240901160820.961381827@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
-References: <20240901160803.673617007@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,89 +64,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-commit 27ec3c57fcadb43c79ed05b2ea31bc18c72d798a upstream.
+[ Upstream commit 6093cd582f8e027117a8d4ad5d129a1aacdc53d2 ]
 
-mwifiex_band_2ghz and mwifiex_band_5ghz are statically allocated, but
-used and modified in driver instances. Duplicate them before using
-them in driver instances so that different driver instances do not
-influence each other.
+These three implementations of map_pages() all succeed if a mapping is
+requested with no read or write. Since they return back to __iommu_map()
+leaving the mapped output as 0 it triggers an infinite loop. Therefore
+nothing is using no-access protection bits.
 
-This was observed on a board which has one PCIe and one SDIO mwifiex
-adapter. It blew up in mwifiex_setup_ht_caps(). This was called with
-the statically allocated struct which is modified in this function.
+Further, VFIO and iommufd rely on iommu_iova_to_phys() to get back PFNs
+stored by map, if iommu_map() succeeds but iommu_iova_to_phys() fails that
+will create serious bugs.
 
-Cc: stable@vger.kernel.org
-Fixes: d6bffe8bb520 ("mwifiex: support for creation of AP interface")
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Acked-by: Brian Norris <briannorris@chromium.org>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/20240809-mwifiex-duplicate-static-structs-v1-1-6837b903b1a4@pengutronix.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Thus remove this never used "nothing to do" concept and just fail map
+immediately.
+
+Fixes: e5fc9753b1a8 ("iommu/io-pgtable: Add ARMv7 short descriptor support")
+Fixes: e1d3c0fd701d ("iommu: add ARM LPAE page table allocator")
+Fixes: 745ef1092bcf ("iommu/io-pgtable: Move Apple DART support to its own file")
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Acked-by: Will Deacon <will@kernel.org>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Link: https://lore.kernel.org/r/2-v1-1211e1294c27+4b1-iommu_no_prot_jgg@nvidia.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/marvell/mwifiex/cfg80211.c |   32 +++++++++++++++++++-----
- 1 file changed, 26 insertions(+), 6 deletions(-)
+ drivers/iommu/io-pgtable-arm-v7s.c | 3 +--
+ drivers/iommu/io-pgtable-arm.c     | 3 +--
+ drivers/iommu/io-pgtable-dart.c    | 3 +--
+ 3 files changed, 3 insertions(+), 6 deletions(-)
 
---- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-+++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-@@ -4294,11 +4294,27 @@ int mwifiex_register_cfg80211(struct mwi
- 	if (ISSUPP_ADHOC_ENABLED(adapter->fw_cap_info))
- 		wiphy->interface_modes |= BIT(NL80211_IFTYPE_ADHOC);
+diff --git a/drivers/iommu/io-pgtable-arm-v7s.c b/drivers/iommu/io-pgtable-arm-v7s.c
+index 75f244a3e12df..06ffc683b28fe 100644
+--- a/drivers/iommu/io-pgtable-arm-v7s.c
++++ b/drivers/iommu/io-pgtable-arm-v7s.c
+@@ -552,9 +552,8 @@ static int arm_v7s_map_pages(struct io_pgtable_ops *ops, unsigned long iova,
+ 		    paddr >= (1ULL << data->iop.cfg.oas)))
+ 		return -ERANGE;
  
--	wiphy->bands[NL80211_BAND_2GHZ] = &mwifiex_band_2ghz;
--	if (adapter->config_bands & BAND_A)
--		wiphy->bands[NL80211_BAND_5GHZ] = &mwifiex_band_5ghz;
--	else
-+	wiphy->bands[NL80211_BAND_2GHZ] = devm_kmemdup(adapter->dev,
-+						       &mwifiex_band_2ghz,
-+						       sizeof(mwifiex_band_2ghz),
-+						       GFP_KERNEL);
-+	if (!wiphy->bands[NL80211_BAND_2GHZ]) {
-+		ret = -ENOMEM;
-+		goto err;
-+	}
-+
-+	if (adapter->config_bands & BAND_A) {
-+		wiphy->bands[NL80211_BAND_5GHZ] = devm_kmemdup(adapter->dev,
-+							       &mwifiex_band_5ghz,
-+							       sizeof(mwifiex_band_5ghz),
-+							       GFP_KERNEL);
-+		if (!wiphy->bands[NL80211_BAND_5GHZ]) {
-+			ret = -ENOMEM;
-+			goto err;
-+		}
-+	} else {
- 		wiphy->bands[NL80211_BAND_5GHZ] = NULL;
-+	}
+-	/* If no access, then nothing to do */
+ 	if (!(prot & (IOMMU_READ | IOMMU_WRITE)))
+-		return 0;
++		return -EINVAL;
  
- 	if (adapter->drcs_enabled && ISSUPP_DRCS_ENABLED(adapter->fw_cap_info))
- 		wiphy->iface_combinations = &mwifiex_iface_comb_ap_sta_drcs;
-@@ -4386,8 +4402,7 @@ int mwifiex_register_cfg80211(struct mwi
- 	if (ret < 0) {
- 		mwifiex_dbg(adapter, ERROR,
- 			    "%s: wiphy_register failed: %d\n", __func__, ret);
--		wiphy_free(wiphy);
--		return ret;
-+		goto err;
- 	}
+ 	while (pgcount--) {
+ 		ret = __arm_v7s_map(data, iova, paddr, pgsize, prot, 1, data->pgd,
+diff --git a/drivers/iommu/io-pgtable-arm.c b/drivers/iommu/io-pgtable-arm.c
+index 3d23b924cec16..07c9b90eab2ed 100644
+--- a/drivers/iommu/io-pgtable-arm.c
++++ b/drivers/iommu/io-pgtable-arm.c
+@@ -495,9 +495,8 @@ static int arm_lpae_map_pages(struct io_pgtable_ops *ops, unsigned long iova,
+ 	if (WARN_ON(iaext || paddr >> cfg->oas))
+ 		return -ERANGE;
  
- 	if (!adapter->regd) {
-@@ -4429,4 +4444,9 @@ int mwifiex_register_cfg80211(struct mwi
+-	/* If no access, then nothing to do */
+ 	if (!(iommu_prot & (IOMMU_READ | IOMMU_WRITE)))
+-		return 0;
++		return -EINVAL;
  
- 	adapter->wiphy = wiphy;
- 	return ret;
-+
-+err:
-+	wiphy_free(wiphy);
-+
-+	return ret;
- }
+ 	prot = arm_lpae_prot_to_pte(data, iommu_prot);
+ 	ret = __arm_lpae_map(data, iova, paddr, pgsize, pgcount, prot, lvl,
+diff --git a/drivers/iommu/io-pgtable-dart.c b/drivers/iommu/io-pgtable-dart.c
+index ad28031e1e93d..c004640640ee5 100644
+--- a/drivers/iommu/io-pgtable-dart.c
++++ b/drivers/iommu/io-pgtable-dart.c
+@@ -245,9 +245,8 @@ static int dart_map_pages(struct io_pgtable_ops *ops, unsigned long iova,
+ 	if (WARN_ON(paddr >> cfg->oas))
+ 		return -ERANGE;
+ 
+-	/* If no access, then nothing to do */
+ 	if (!(iommu_prot & (IOMMU_READ | IOMMU_WRITE)))
+-		return 0;
++		return -EINVAL;
+ 
+ 	tbl = dart_get_table(data, iova);
+ 
+-- 
+2.43.0
+
 
 
 
