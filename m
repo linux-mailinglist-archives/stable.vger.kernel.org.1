@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-71796-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72484-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C58419677CC
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:24:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5D35967AD0
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:01:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 70AED1F218D9
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:24:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6270D281C76
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:01:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B03F4184539;
-	Sun,  1 Sep 2024 16:24:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1DF82C190;
+	Sun,  1 Sep 2024 17:01:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VgJmxWAO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E3kqm0e1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7034B184533;
-	Sun,  1 Sep 2024 16:24:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF19017C;
+	Sun,  1 Sep 2024 17:01:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725207845; cv=none; b=g3d+iPWPi1zkQSczOT/BDKAkZ7zwQf0fJJtD6mP8KxvMLvS/LmPOt+Bui2NyzPdd1m5SuExa61d7G/3ZEnzKtKnk2NlVvCllqkzeqcThiGgBuJvtKgqzzNtfRc/U0hzptH9g5n2asS4Bw4AzQowSDuTxFN7lJ7Ct6AL7W++6FHY=
+	t=1725210074; cv=none; b=aFauhNk6CsW+XCA6T3mJrLvnbIl1E47vDCDZIPni+uhIwzAx3oc2ycbx0dXXcmV/FZd9RGQw04jjfS5otiwW/tF4THUzMJiJdOiTbBY0PVFp3IKsC3qXy/XzOSOUkB12SwYpJdtQfNtWs6Gcy0E3D9kRcAtBufXCL/nFffzD1Mw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725207845; c=relaxed/simple;
-	bh=UcVd8XtjP+U2/D3/7Xvdb1Dpb8G5C9qvExsXfjWG25s=;
+	s=arc-20240116; t=1725210074; c=relaxed/simple;
+	bh=CUZgZKfTOxGmvO6bQdRij6s1Xv6KK3Wp+ib9vlxbhL0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AxtRXoukbUMridKWU4AH26xweMgvy5almVBca+2IyOzTqUWX5k5pY0t83Agh6DHorLKpLcqtxpARbVR68V0dTQIrONjdOUrxRkzb+dvwmB8YR4HRNtWye6yzG+6VhaKUjI9QFW+tJFPkT6envWkEC8Ha+RbBXRvyfLJDv811WJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VgJmxWAO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9976FC4CEC4;
-	Sun,  1 Sep 2024 16:24:04 +0000 (UTC)
+	 MIME-Version; b=A5HCSd93a/FfHxeOX+cUonw1OkQyCnIS23YM1RpYCHjTP3duhVLvRqXx5ZRDE1Noc2+687mQz5UXl08ihMiOZ/DNERqKFbncXHUCf+YTp3nYKzHii4ndwlH9vrUV2CNsTBAHpesJKO5FF08ywxF6Aor5bvepjaQVSsTzZgLi6vI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E3kqm0e1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C513C4CEC3;
+	Sun,  1 Sep 2024 17:01:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725207845;
-	bh=UcVd8XtjP+U2/D3/7Xvdb1Dpb8G5C9qvExsXfjWG25s=;
+	s=korg; t=1725210074;
+	bh=CUZgZKfTOxGmvO6bQdRij6s1Xv6KK3Wp+ib9vlxbhL0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VgJmxWAOsnuVMNw3m/gY6uCEHDpZtK2/PDwkPEa2zVl+L3pTKl0/eN6U7DzXbXPtG
-	 D3pim11i+sIlGjJNQnkX5bus6JdMeML6S+4ZOjyynhDIBGoFh261Iw4RaYmaUE2TX4
-	 gEzXNt+VKDLtAsNMxuROb4BnZ81VQbwCm9pSaZW0=
+	b=E3kqm0e1d0chXb9qy2GjwBAFfQ6eFNG9Bjkk42+nGwvK8nviaJUygwWe2BoESifxa
+	 iDQQD6vvQW/6lmQK/om8Mz6XQ8qP0WLkg069/9KBJlh96b7VIOIkSCZs6qi+C0t6AA
+	 kO2KIfMOxuBvZnV4Iu+9w2mbQzMNfzQjA3V357Ag=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Li Nan <linan122@huawei.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Song Liu <song@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 63/98] mmc: mmc_test: Fix NULL dereference on allocation failure
+Subject: [PATCH 5.15 081/215] md: clean up invalid BUG_ON in md_ioctl
 Date: Sun,  1 Sep 2024 18:16:33 +0200
-Message-ID: <20240901160806.075952327@linuxfoundation.org>
+Message-ID: <20240901160826.418153885@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
-References: <20240901160803.673617007@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Li Nan <linan122@huawei.com>
 
-[ Upstream commit a1e627af32ed60713941cbfc8075d44cad07f6dd ]
+[ Upstream commit 9dd8702e7cd28ebf076ff838933f29cf671165ec ]
 
-If the "test->highmem = alloc_pages()" allocation fails then calling
-__free_pages(test->highmem) will result in a NULL dereference.  Also
-change the error code to -ENOMEM instead of returning success.
+'disk->private_data' is set to mddev in md_alloc() and never set to NULL,
+and users need to open mddev before submitting ioctl. So mddev must not
+have been freed during ioctl, and there is no need to check mddev here.
+Clean up it.
 
-Fixes: 2661081f5ab9 ("mmc_test: highmem tests")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/8c90be28-67b4-4b0d-a105-034dc72a0b31@stanley.mountain
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Li Nan <linan122@huawei.com>
+Reviewed-by: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20240226031444.3606764-4-linan666@huaweicloud.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/core/mmc_test.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/md/md.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/drivers/mmc/core/mmc_test.c b/drivers/mmc/core/mmc_test.c
-index ef18daeaa4cc6..164b4e43050e7 100644
---- a/drivers/mmc/core/mmc_test.c
-+++ b/drivers/mmc/core/mmc_test.c
-@@ -3101,13 +3101,13 @@ static ssize_t mtf_test_write(struct file *file, const char __user *buf,
- 	test->buffer = kzalloc(BUFFER_SIZE, GFP_KERNEL);
- #ifdef CONFIG_HIGHMEM
- 	test->highmem = alloc_pages(GFP_KERNEL | __GFP_HIGHMEM, BUFFER_ORDER);
-+	if (!test->highmem) {
-+		count = -ENOMEM;
-+		goto free_test_buffer;
-+	}
- #endif
+diff --git a/drivers/md/md.c b/drivers/md/md.c
+index 5b6c366587d54..332458ad96637 100644
+--- a/drivers/md/md.c
++++ b/drivers/md/md.c
+@@ -7589,11 +7589,6 @@ static int md_ioctl(struct block_device *bdev, fmode_t mode,
  
--#ifdef CONFIG_HIGHMEM
--	if (test->buffer && test->highmem) {
--#else
- 	if (test->buffer) {
--#endif
- 		mutex_lock(&mmc_test_lock);
- 		mmc_test_run(test, testcase);
- 		mutex_unlock(&mmc_test_lock);
-@@ -3115,6 +3115,7 @@ static ssize_t mtf_test_write(struct file *file, const char __user *buf,
+ 	mddev = bdev->bd_disk->private_data;
  
- #ifdef CONFIG_HIGHMEM
- 	__free_pages(test->highmem, BUFFER_ORDER);
-+free_test_buffer:
- #endif
- 	kfree(test->buffer);
- 	kfree(test);
+-	if (!mddev) {
+-		BUG();
+-		goto out;
+-	}
+-
+ 	/* Some actions do not requires the mutex */
+ 	switch (cmd) {
+ 	case GET_ARRAY_INFO:
 -- 
 2.43.0
 
