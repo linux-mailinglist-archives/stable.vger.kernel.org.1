@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-72356-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72220-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE0CF967A4E
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:54:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E10A9679BE
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:48:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4DD9AB20F7A
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:54:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 91E761F2135A
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:48:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A9C617E919;
-	Sun,  1 Sep 2024 16:54:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39CB618732C;
+	Sun,  1 Sep 2024 16:47:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LLPeRwDu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eNXEI/3G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDE271DFD1;
-	Sun,  1 Sep 2024 16:54:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E995218452E;
+	Sun,  1 Sep 2024 16:47:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209657; cv=none; b=YgpDUxDAFnwJvDSKLsrPmn1oeyBnBSYfQq93VWReDg9hLUfYm8nreoGais6VTD8G6JQ90KJ4xuaStGW88v63noyOPEZkUdtvIzQkLn4rZMCrLEku+5MAFyJPrS+uLP9/wfqNKSAceED8/hXuzybZFN2mPl20tlTwb2FysVG/5o4=
+	t=1725209228; cv=none; b=nBFIS5EAgUM9ftgk8KDNsVFisEpApLog4s2NonpbMwRXMayNX+KXzOyODkdLjSzxjSEdK2i3j5ZBXsfDJZ3O3Y9CQH8eEcG+otLG34zZ58+C1cPD5rrlXc4+hYzPKPuvmq1pJ0Z6G7P94Q4vSInzM+UCq7Pag35pdL6+Jgv453M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209657; c=relaxed/simple;
-	bh=zqltx1sHdx6Zf3JYvoQ41z691/8pRP5WGEjgJdF6GYU=;
+	s=arc-20240116; t=1725209228; c=relaxed/simple;
+	bh=Ck8gt6SO3X0kCEZOLatK9Qp/uqhq0QTLTv4NDmVk1Ck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uPO8h+uMvkTzuAUkA3Wb22A4zRQJyNsD5UVr96DZea9li6p3gvi306Ay/rfEj+pAfhr+UeRpnVm2KKUzD+HSxoV1/KfJIgWZptava+fOJ5BhGmLttpmSRGBU1KHEwWdQMTm303ShhTDQUHPLJW6vN2WmioJ6hqUw46YXfbfjHr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LLPeRwDu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB871C4CEC3;
-	Sun,  1 Sep 2024 16:54:16 +0000 (UTC)
+	 MIME-Version; b=MNZAUmNQbtNgSyZ2mi8R3lJ9E7Aq7pi0BuJMXZDh5yfsUS+4SahCrCg4dTN9Spqmesk0RVO/VK3tkhu+Ly8I3DnUIrD6pGUnbAMEFoSb2foZ0bgSIMaeGjd1asNsrFuJuz01VoVKmIuPnEiRP2p8yVSOKu/bArowgqbDsS3QYws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eNXEI/3G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FD0CC4CEC3;
+	Sun,  1 Sep 2024 16:47:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209657;
-	bh=zqltx1sHdx6Zf3JYvoQ41z691/8pRP5WGEjgJdF6GYU=;
+	s=korg; t=1725209227;
+	bh=Ck8gt6SO3X0kCEZOLatK9Qp/uqhq0QTLTv4NDmVk1Ck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LLPeRwDufhFK0ibemMImYB6mEVzDUGX9KRgc3In4uIur7Gxmbey8BK4YxQfP++vGt
-	 5nSZDdnNo4XGRWng6oFSaLgI71UjOo0coJ7jduAr8tvUxfJrK/Hs9vbyD/D8YaviQc
-	 eMaPrx1lLqjkbVOojRtl+LaOXbfKpRDr076pqKjw=
+	b=eNXEI/3GAPucAZJiJd65Xg5Gy6sWYhucDK9ESdF/x3heu2b83kL+AhSGpBo0StqsY
+	 E3+pP79BePtDjdOXEQHq7Ryy9yKql+TrbS+Ikf4pG0zuR6rYY95wPwxCi13paV57yH
+	 0sLgUedYjYbK3kqhHy69POdZzrbnyLGlkk/MDgtY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Stephen Boyd <swboyd@chromium.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Serge Semin <fancer.lancer@gmail.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 105/151] drm/msm/dp: reset the link phy params before link training
+Subject: [PATCH 6.1 40/71] dmaengine: dw: Add peripheral bus width verification
 Date: Sun,  1 Sep 2024 18:17:45 +0200
-Message-ID: <20240901160818.059704313@linuxfoundation.org>
+Message-ID: <20240901160803.405135203@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
-References: <20240901160814.090297276@linuxfoundation.org>
+In-Reply-To: <20240901160801.879647959@linuxfoundation.org>
+References: <20240901160801.879647959@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +63,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abhinav Kumar <quic_abhinavk@quicinc.com>
+From: Serge Semin <fancer.lancer@gmail.com>
 
-[ Upstream commit 319aca883bfa1b85ee08411541b51b9a934ac858 ]
+[ Upstream commit b336268dde75cb09bd795cb24893d52152a9191f ]
 
-Before re-starting link training reset the link phy params namely
-the pre-emphasis and voltage swing levels otherwise the next
-link training begins at the previously cached levels which can result
-in link training failures.
+Currently the src_addr_width and dst_addr_width fields of the
+dma_slave_config structure are mapped to the CTLx.SRC_TR_WIDTH and
+CTLx.DST_TR_WIDTH fields of the peripheral bus side in order to have the
+properly aligned data passed to the target device. It's done just by
+converting the passed peripheral bus width to the encoded value using the
+__ffs() function. This implementation has several problematic sides:
 
-Fixes: 8ede2ecc3e5e ("drm/msm/dp: Add DP compliance tests on Snapdragon Chipsets")
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Tested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org> # SM8350-HDK
-Reviewed-by: Stephen Boyd <swboyd@chromium.org>
-Patchwork: https://patchwork.freedesktop.org/patch/605946/
-Link: https://lore.kernel.org/r/20240725220450.131245-1-quic_abhinavk@quicinc.com
-Signed-off-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+1. __ffs() is undefined if no bit exist in the passed value. Thus if the
+specified addr-width is DMA_SLAVE_BUSWIDTH_UNDEFINED, __ffs() may return
+unexpected value depending on the platform-specific implementation.
+
+2. DW AHB DMA-engine permits having the power-of-2 transfer width limited
+by the DMAH_Mk_HDATA_WIDTH IP-core synthesize parameter. Specifying
+bus-width out of that constraints scope will definitely cause unexpected
+result since the destination reg will be only partly touched than the
+client driver implied.
+
+Let's fix all of that by adding the peripheral bus width verification
+method and calling it in dwc_config() which is supposed to be executed
+before preparing any transfer. The new method will make sure that the
+passed source or destination address width is valid and if undefined then
+the driver will just fallback to the 1-byte width transfer.
+
+Fixes: 029a40e97d0d ("dmaengine: dw: provide DMA capabilities")
+Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
+Acked-by: Andy Shevchenko <andy@kernel.org>
+Link: https://lore.kernel.org/r/20240802075100.6475-2-fancer.lancer@gmail.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/dp/dp_ctrl.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/dma/dw/core.c | 38 ++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 38 insertions(+)
 
-diff --git a/drivers/gpu/drm/msm/dp/dp_ctrl.c b/drivers/gpu/drm/msm/dp/dp_ctrl.c
-index 07becbf3c64fc..0b0d86d2121b9 100644
---- a/drivers/gpu/drm/msm/dp/dp_ctrl.c
-+++ b/drivers/gpu/drm/msm/dp/dp_ctrl.c
-@@ -1246,6 +1246,8 @@ static int dp_ctrl_link_train(struct dp_ctrl_private *ctrl,
- 	link_info.rate = ctrl->link->link_params.rate;
- 	link_info.capabilities = DP_LINK_CAP_ENHANCED_FRAMING;
+diff --git a/drivers/dma/dw/core.c b/drivers/dma/dw/core.c
+index 97ba3bfc10b13..9cafd8aff278e 100644
+--- a/drivers/dma/dw/core.c
++++ b/drivers/dma/dw/core.c
+@@ -16,6 +16,7 @@
+ #include <linux/init.h>
+ #include <linux/interrupt.h>
+ #include <linux/io.h>
++#include <linux/log2.h>
+ #include <linux/mm.h>
+ #include <linux/module.h>
+ #include <linux/slab.h>
+@@ -780,10 +781,43 @@ bool dw_dma_filter(struct dma_chan *chan, void *param)
+ }
+ EXPORT_SYMBOL_GPL(dw_dma_filter);
  
-+	dp_link_reset_phy_params_vx_px(ctrl->link);
++static int dwc_verify_p_buswidth(struct dma_chan *chan)
++{
++	struct dw_dma_chan *dwc = to_dw_dma_chan(chan);
++	struct dw_dma *dw = to_dw_dma(chan->device);
++	u32 reg_width, max_width;
 +
- 	dp_aux_link_configure(ctrl->aux, &link_info);
- 	drm_dp_dpcd_write(ctrl->aux, DP_MAIN_LINK_CHANNEL_CODING_SET,
- 				&encoding, 1);
++	if (dwc->dma_sconfig.direction == DMA_MEM_TO_DEV)
++		reg_width = dwc->dma_sconfig.dst_addr_width;
++	else if (dwc->dma_sconfig.direction == DMA_DEV_TO_MEM)
++		reg_width = dwc->dma_sconfig.src_addr_width;
++	else /* DMA_MEM_TO_MEM */
++		return 0;
++
++	max_width = dw->pdata->data_width[dwc->dws.p_master];
++
++	/* Fall-back to 1-byte transfer width if undefined */
++	if (reg_width == DMA_SLAVE_BUSWIDTH_UNDEFINED)
++		reg_width = DMA_SLAVE_BUSWIDTH_1_BYTE;
++	else if (!is_power_of_2(reg_width) || reg_width > max_width)
++		return -EINVAL;
++	else /* bus width is valid */
++		return 0;
++
++	/* Update undefined addr width value */
++	if (dwc->dma_sconfig.direction == DMA_MEM_TO_DEV)
++		dwc->dma_sconfig.dst_addr_width = reg_width;
++	else /* DMA_DEV_TO_MEM */
++		dwc->dma_sconfig.src_addr_width = reg_width;
++
++	return 0;
++}
++
+ static int dwc_config(struct dma_chan *chan, struct dma_slave_config *sconfig)
+ {
+ 	struct dw_dma_chan *dwc = to_dw_dma_chan(chan);
+ 	struct dw_dma *dw = to_dw_dma(chan->device);
++	int ret;
+ 
+ 	memcpy(&dwc->dma_sconfig, sconfig, sizeof(*sconfig));
+ 
+@@ -792,6 +826,10 @@ static int dwc_config(struct dma_chan *chan, struct dma_slave_config *sconfig)
+ 	dwc->dma_sconfig.dst_maxburst =
+ 		clamp(dwc->dma_sconfig.dst_maxburst, 0U, dwc->max_burst);
+ 
++	ret = dwc_verify_p_buswidth(chan);
++	if (ret)
++		return ret;
++
+ 	dw->encode_maxburst(dwc, &dwc->dma_sconfig.src_maxburst);
+ 	dw->encode_maxburst(dwc, &dwc->dma_sconfig.dst_maxburst);
+ 
 -- 
 2.43.0
 
