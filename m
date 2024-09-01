@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-71835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71940-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5388C9677F6
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:26:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36EA7967872
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:32:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C4CD2809B2
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:26:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 68BCA1C20FC8
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:32:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ABD4143894;
-	Sun,  1 Sep 2024 16:26:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C7C817F389;
+	Sun,  1 Sep 2024 16:31:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uwlW3/Wa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D3X5OTHn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 378C944C97;
-	Sun,  1 Sep 2024 16:26:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE810537FF;
+	Sun,  1 Sep 2024 16:31:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725207973; cv=none; b=HbNLLrueCHt+NxASsxLYQ/Vvzc2fLoww5yONRp0v83eajywu6+L6+I7EW0naP9r8eGSIFCyi3pkXZshTckP4TwhJCYusnIACf00nS7462nIjyTAtS9fx1kH0Otol1NcoWkByms/TiYO2D5ckAC2oBaI8MQYIx7RFGJEGxed+lY4=
+	t=1725208318; cv=none; b=jX8OlJrH3eFRmeNr4RKFGztFQnme5yZRpwcLe8S3cqKfnooFLPSb10ePuYIUyJDl+tr7GWLPdBSD/9zUjR/50jBbWcnxj6xv19UDoXpq5u+vBXaeF0NFRagQYUnpjN8/HgYPvt5fPbm67H03OMZT8DR4XF4XWLKVLEZlBW+rFPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725207973; c=relaxed/simple;
-	bh=k7iLQ1mPTlXxMrHggeiPNw1qfWsc6OTAjJfJRxAmohg=;
+	s=arc-20240116; t=1725208318; c=relaxed/simple;
+	bh=xf7+o2QFYARtfWLCp8t6zVGM+6EhAOQ1qVhIO3wG4PI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Xu+yfDoAvxJFdW3bHA4d5FFVtLk+ipE3HaDTVPwDW78hMSjOV0wj5UPmF8S76SlQLVr2lrdoRuptE0TTXUX0Jec77PhdoRY4r/2gNBnp8h9ZpCtOlXYhVfNQJxRQhChUyswy46zzsTNSAL9T6wLWIfoCWeMlOrnSrl2pgx7RfTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uwlW3/Wa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA6EEC4CEC3;
-	Sun,  1 Sep 2024 16:26:12 +0000 (UTC)
+	 MIME-Version; b=uiv1FNBxUwPpZitKzoU1GysEYMw3GPVVTSdqxstSP0bOnvB3bEK6r8Gv7HbopA9I5g2BVQQGZzDyAOgRxhSJ7oOnfzn+UfpFG0B+F+My4DzgMOpc6UJH90CpmG7lvJQo/sRalIISzyXZXJIZWLDVEWyhemX8Bq/QzhQqQdEQqFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D3X5OTHn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65DF6C4CEC3;
+	Sun,  1 Sep 2024 16:31:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725207973;
-	bh=k7iLQ1mPTlXxMrHggeiPNw1qfWsc6OTAjJfJRxAmohg=;
+	s=korg; t=1725208317;
+	bh=xf7+o2QFYARtfWLCp8t6zVGM+6EhAOQ1qVhIO3wG4PI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uwlW3/WaVXlKhcaI/rQvgzbsPeegQzfn9Z2kO12RrSdzpC3mU8QFCHed4vrl+4bmX
-	 aBbRVtks86BGEzX16s20gjsTGbh/zZX3H9jmM5SKL/vs31+LttkVA7T6J6JM9CsG8W
-	 i2HgnWF1zBa1at+sVOnOtG8gQhZz6hZ1g7mnkodo=
+	b=D3X5OTHnuptpEqinp9z0WGP1tm9P7kBG4CMFA8h2nxLAocX4/h9vLUyZwlWtgEmr9
+	 czlst0LaQ7hYLXEORpH88Li+Nr5fWwHRaNnegjezhszC4kTX81pDpql+jSBdpGCY5S
+	 6rNiIrd/U38BG/HHTbe7YvZWgnbErZ57vRY2a05g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	=?UTF-8?q?J=C3=A9r=C3=B4me=20Pouiller?= <jerome.pouiller@silabs.com>,
-	Kalle Valo <kvalo@kernel.org>
-Subject: [PATCH 6.6 09/93] wifi: wfx: repair open network AP mode
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Uma Shankar <uma.shankar@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 045/149] drm/xe/display: Make display suspend/resume work on discrete
 Date: Sun,  1 Sep 2024 18:15:56 +0200
-Message-ID: <20240901160807.707886223@linuxfoundation.org>
+Message-ID: <20240901160819.159982378@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
-References: <20240901160807.346406833@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,71 +61,125 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+From: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
 
-commit 6d30bb88f623526197c0e18a366e68a4254a2c83 upstream.
+[ Upstream commit ddf6492e0e508b7c2b42c8d5a4ac82bd38ef0dd5 ]
 
-RSN IE missing in beacon is normal in open networks.
-Avoid returning -EINVAL in this case.
+We should unpin before evicting all memory, and repin after GT resume.
+This way, we preserve the contents of the framebuffers, and won't hang
+on resume due to migration engine not being restored yet.
 
-Steps to reproduce:
-
-$ cat /etc/wpa_supplicant.conf
-network={
-	ssid="testNet"
-	mode=2
-	key_mgmt=NONE
-}
-
-$ wpa_supplicant -iwlan0 -c /etc/wpa_supplicant.conf
-nl80211: Beacon set failed: -22 (Invalid argument)
-Failed to set beacon parameters
-Interface initialization failed
-wlan0: interface state UNINITIALIZED->DISABLED
-wlan0: AP-DISABLED
-wlan0: Unable to setup interface.
-Failed to initialize AP interface
-
-After the change:
-
-$ wpa_supplicant -iwlan0 -c /etc/wpa_supplicant.conf
-Successfully initialized wpa_supplicant
-wlan0: interface state UNINITIALIZED->ENABLED
-wlan0: AP-ENABLED
-
-Cc: stable@vger.kernel.org
-Fixes: fe0a7776d4d1 ("wifi: wfx: fix possible NULL pointer dereference in wfx_set_mfp_ap()")
-Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Reviewed-by: Jérôme Pouiller <jerome.pouiller@silabs.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/20240823131521.3309073-1-alexander.sverdlin@siemens.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
+Cc: stable@vger.kernel.org # v6.8+
+Reviewed-by: Uma Shankar <uma.shankar@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240806105044.596842-3-maarten.lankhorst@linux.intel.com
+Signed-off-by: Maarten Lankhorst,,, <maarten.lankhorst@linux.intel.com>
+(cherry picked from commit cb8f81c1753187995b7a43e79c12959f14eb32d3)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/silabs/wfx/sta.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/xe/display/xe_display.c | 23 +++++++++++++++++++++++
+ drivers/gpu/drm/xe/xe_pm.c              | 11 ++++++-----
+ 2 files changed, 29 insertions(+), 5 deletions(-)
 
---- a/drivers/net/wireless/silabs/wfx/sta.c
-+++ b/drivers/net/wireless/silabs/wfx/sta.c
-@@ -370,8 +370,11 @@ static int wfx_set_mfp_ap(struct wfx_vif
+diff --git a/drivers/gpu/drm/xe/display/xe_display.c b/drivers/gpu/drm/xe/display/xe_display.c
+index 79d33d592093c..96835ffa5734e 100644
+--- a/drivers/gpu/drm/xe/display/xe_display.c
++++ b/drivers/gpu/drm/xe/display/xe_display.c
+@@ -302,6 +302,27 @@ static bool suspend_to_idle(void)
+ 	return false;
+ }
  
- 	ptr = (u16 *)cfg80211_find_ie(WLAN_EID_RSN, skb->data + ieoffset,
- 				      skb->len - ieoffset);
--	if (unlikely(!ptr))
-+	if (!ptr) {
-+		/* No RSN IE is fine in open networks */
-+		ret = 0;
- 		goto free_skb;
++static void xe_display_flush_cleanup_work(struct xe_device *xe)
++{
++	struct intel_crtc *crtc;
++
++	for_each_intel_crtc(&xe->drm, crtc) {
++		struct drm_crtc_commit *commit;
++
++		spin_lock(&crtc->base.commit_lock);
++		commit = list_first_entry_or_null(&crtc->base.commit_list,
++						  struct drm_crtc_commit, commit_entry);
++		if (commit)
++			drm_crtc_commit_get(commit);
++		spin_unlock(&crtc->base.commit_lock);
++
++		if (commit) {
++			wait_for_completion(&commit->cleanup_done);
++			drm_crtc_commit_put(commit);
++		}
 +	}
++}
++
+ void xe_display_pm_suspend(struct xe_device *xe, bool runtime)
+ {
+ 	bool s2idle = suspend_to_idle();
+@@ -319,6 +340,8 @@ void xe_display_pm_suspend(struct xe_device *xe, bool runtime)
+ 	if (!runtime)
+ 		intel_display_driver_suspend(xe);
  
- 	ptr += pairwise_cipher_suite_count_offset;
- 	if (WARN_ON(ptr > (u16 *)skb_tail_pointer(skb)))
++	xe_display_flush_cleanup_work(xe);
++
+ 	intel_dp_mst_suspend(xe);
+ 
+ 	intel_hpd_cancel_work(xe);
+diff --git a/drivers/gpu/drm/xe/xe_pm.c b/drivers/gpu/drm/xe/xe_pm.c
+index 07615acd2c299..cf80679ceb701 100644
+--- a/drivers/gpu/drm/xe/xe_pm.c
++++ b/drivers/gpu/drm/xe/xe_pm.c
+@@ -91,13 +91,13 @@ int xe_pm_suspend(struct xe_device *xe)
+ 	for_each_gt(gt, xe, id)
+ 		xe_gt_suspend_prepare(gt);
+ 
++	xe_display_pm_suspend(xe, false);
++
+ 	/* FIXME: Super racey... */
+ 	err = xe_bo_evict_all(xe);
+ 	if (err)
+ 		goto err;
+ 
+-	xe_display_pm_suspend(xe, false);
+-
+ 	for_each_gt(gt, xe, id) {
+ 		err = xe_gt_suspend(gt);
+ 		if (err) {
+@@ -151,11 +151,11 @@ int xe_pm_resume(struct xe_device *xe)
+ 
+ 	xe_irq_resume(xe);
+ 
+-	xe_display_pm_resume(xe, false);
+-
+ 	for_each_gt(gt, xe, id)
+ 		xe_gt_resume(gt);
+ 
++	xe_display_pm_resume(xe, false);
++
+ 	err = xe_bo_restore_user(xe);
+ 	if (err)
+ 		goto err;
+@@ -363,10 +363,11 @@ int xe_pm_runtime_suspend(struct xe_device *xe)
+ 	mutex_unlock(&xe->mem_access.vram_userfault.lock);
+ 
+ 	if (xe->d3cold.allowed) {
++		xe_display_pm_suspend(xe, true);
++
+ 		err = xe_bo_evict_all(xe);
+ 		if (err)
+ 			goto out;
+-		xe_display_pm_suspend(xe, true);
+ 	}
+ 
+ 	for_each_gt(gt, xe, id) {
+-- 
+2.43.0
+
 
 
 
