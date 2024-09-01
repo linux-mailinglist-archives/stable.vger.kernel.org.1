@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-72528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72162-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 554F2967B00
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:03:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83A9296796D
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:44:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8681F1C20CF3
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:03:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4074628146A
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:44:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6DB1376EC;
-	Sun,  1 Sep 2024 17:03:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6A6C17E00C;
+	Sun,  1 Sep 2024 16:44:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hHxvMTpi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1m2MyzgS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9520F17C;
-	Sun,  1 Sep 2024 17:03:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85E1F1C68C;
+	Sun,  1 Sep 2024 16:44:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210219; cv=none; b=ugCzSc5DLh1LndxM24zCKAfssFVfZl8w5WcjpSHnJDCTwcAZjPIM0C4D28mK3P1GVlX6kvPfMjf2N1afJ4qHb7DfkjI+cRJa0l1WvNnvSnCeCgYD9WOUKXYVCRlJAMoepFvkgqBmVnaEbJ9p0SSmcJ/rAkjZPbhRizB7IudCyl4=
+	t=1725209048; cv=none; b=aTIH5KFl/EW3WLsdXflvzjylbv9nwYffmCA47Q6p5LACGn7n41KphlPIJZzM5yYUwi7BY06bCMbZIVvZJ3ntOMtHdXMhUIRuG95zQOhb6tbrJDLcJzETQ1vs0T5eL/TdHikj8kQqlMcswjvdPQfwJDmZdsP/3oqn5p+zXGQdpy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210219; c=relaxed/simple;
-	bh=FKsJn1X2J9y7owkpyJpnSenEGAxM4b3CZ2IR0SAJDMo=;
+	s=arc-20240116; t=1725209048; c=relaxed/simple;
+	bh=GMQO9UjamNPFvOhwODwIy0w6gBqUq52djJZGSIqxD4Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q/MUjTydBoKOmLRSyec3xHCsKtO1R84nqIhrqVyYSSGxas7k6Ts05urUfcCfUg2pfboJFS1ss678zNJOhWXECMdPAEOZkDjWLZbSfOoZ2ZHhkd1khM6Q4GYqp0Sq8hVl/vADupDDyJgCz4jrFYrLglkyatV3wlStgZerylS/aJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hHxvMTpi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03E7FC4CEC3;
-	Sun,  1 Sep 2024 17:03:38 +0000 (UTC)
+	 MIME-Version; b=BQbyUO84mHNgiBBW8NPOjEMKFhN+Q1p+zgo8LR/Stqs9eRF9DXn8AzliDS2gILMio2OIR/X11UoHLiuEf/E2Zm1Dq4rejg/VyzgRV2e6sLfnULjH2R66jHextIamytXQ4PlRefl9/IrJJSf1JzgIlgcOjulCr/AATuslMzYcUPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1m2MyzgS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7374C4CEC3;
+	Sun,  1 Sep 2024 16:44:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210219;
-	bh=FKsJn1X2J9y7owkpyJpnSenEGAxM4b3CZ2IR0SAJDMo=;
+	s=korg; t=1725209048;
+	bh=GMQO9UjamNPFvOhwODwIy0w6gBqUq52djJZGSIqxD4Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hHxvMTpiqvdKXyOk3Gv29c4Gr/DVP1cc1TqAqtQGiKfIVKG26jyEj38m7f9Reh2By
-	 kXck++nKq/XF9EKWN8KeErNG6zwAMk/IdBeABkQ7BmuOH8rMB7zdEolZyUt7UfN6M1
-	 8+rV5FbbyOqeyjXkKYS+ooOZT1/MkfPxujJ2B/48=
+	b=1m2MyzgSP/VPlHsY9Xki3PWsF7aqsYarwi/ZAeNR6SREthiLctx75XXV8iq6KjMss
+	 WBwvAEJfkrG6wtHDQK20cjx1XesSP4yAkwCmuW1hFca1MRiUAJmkbY44FGj9SQpupC
+	 S/MUuFgALF4K2SkidDOmeUaQ1dX/j66m1SKsp4Vk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 124/215] nfsd: expose /proc/net/sunrpc/nfsd in net namespaces
+	Joseph Huang <Joseph.Huang@garmin.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 090/134] net: dsa: mv88e6xxx: Fix out-of-bound access
 Date: Sun,  1 Sep 2024 18:17:16 +0200
-Message-ID: <20240901160828.048147102@linuxfoundation.org>
+Message-ID: <20240901160813.485078124@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
+References: <20240901160809.752718937@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,138 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Joseph Huang <Joseph.Huang@garmin.com>
 
-[ Upstream commit 93483ac5fec62cc1de166051b219d953bb5e4ef4 ]
+[ Upstream commit 528876d867a23b5198022baf2e388052ca67c952 ]
 
-We are running nfsd servers inside of containers with their own network
-namespace, and we want to monitor these services using the stats found
-in /proc.  However these are not exposed in the proc inside of the
-container, so we have to bind mount the host /proc into our containers
-to get at this information.
+If an ATU violation was caused by a CPU Load operation, the SPID could
+be larger than DSA_MAX_PORTS (the size of mv88e6xxx_chip.ports[] array).
 
-Separate out the stat counters init and the proc registration, and move
-the proc registration into the pernet operations entry and exit points
-so that these stats can be exposed inside of network namespaces.
-
-This is an intermediate step, this just exposes the global counters in
-the network namespace.  Subsequent patches will move these counters into
-the per-network namespace container.
-
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 75c05a74e745 ("net: dsa: mv88e6xxx: Fix counting of ATU violations")
+Signed-off-by: Joseph Huang <Joseph.Huang@garmin.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20240819235251.1331763-1-Joseph.Huang@garmin.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfsctl.c |    8 +++++---
- fs/nfsd/stats.c  |   21 ++++++---------------
- fs/nfsd/stats.h  |    6 ++++--
- 3 files changed, 15 insertions(+), 20 deletions(-)
+ drivers/net/dsa/mv88e6xxx/global1_atu.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/nfsd/nfsctl.c
-+++ b/fs/nfsd/nfsctl.c
-@@ -1466,6 +1466,7 @@ static __net_init int nfsd_init_net(stru
- 	nfsd4_init_leases_net(nn);
- 	get_random_bytes(&nn->siphash_key, sizeof(nn->siphash_key));
- 	seqlock_init(&nn->writeverf_lock);
-+	nfsd_proc_stat_init(net);
+diff --git a/drivers/net/dsa/mv88e6xxx/global1_atu.c b/drivers/net/dsa/mv88e6xxx/global1_atu.c
+index 2b314b416256d..f2e07d903aa73 100644
+--- a/drivers/net/dsa/mv88e6xxx/global1_atu.c
++++ b/drivers/net/dsa/mv88e6xxx/global1_atu.c
+@@ -421,7 +421,8 @@ static irqreturn_t mv88e6xxx_g1_atu_prob_irq_thread_fn(int irq, void *dev_id)
+ 		trace_mv88e6xxx_atu_full_violation(chip->dev, spid,
+ 						   entry.portvec, entry.mac,
+ 						   fid);
+-		chip->ports[spid].atu_full_violation++;
++		if (spid < ARRAY_SIZE(chip->ports))
++			chip->ports[spid].atu_full_violation++;
+ 	}
+ 	mv88e6xxx_reg_unlock(chip);
  
- 	return 0;
- 
-@@ -1481,6 +1482,7 @@ static __net_exit void nfsd_exit_net(str
- {
- 	struct nfsd_net *nn = net_generic(net, nfsd_net_id);
- 
-+	nfsd_proc_stat_shutdown(net);
- 	nfsd_net_reply_cache_destroy(nn);
- 	nfsd_idmap_shutdown(net);
- 	nfsd_export_shutdown(net);
-@@ -1504,7 +1506,7 @@ static int __init init_nfsd(void)
- 	retval = nfsd4_init_pnfs();
- 	if (retval)
- 		goto out_free_slabs;
--	retval = nfsd_stat_init();	/* Statistics */
-+	retval = nfsd_stat_counters_init();	/* Statistics */
- 	if (retval)
- 		goto out_free_pnfs;
- 	retval = nfsd_drc_slab_create();
-@@ -1540,7 +1542,7 @@ out_free_lockd:
- 	nfsd_lockd_shutdown();
- 	nfsd_drc_slab_free();
- out_free_stat:
--	nfsd_stat_shutdown();
-+	nfsd_stat_counters_destroy();
- out_free_pnfs:
- 	nfsd4_exit_pnfs();
- out_free_slabs:
-@@ -1557,7 +1559,7 @@ static void __exit exit_nfsd(void)
- 	nfsd_drc_slab_free();
- 	remove_proc_entry("fs/nfs/exports", NULL);
- 	remove_proc_entry("fs/nfs", NULL);
--	nfsd_stat_shutdown();
-+	nfsd_stat_counters_destroy();
- 	nfsd_lockd_shutdown();
- 	nfsd4_free_slabs();
- 	nfsd4_exit_pnfs();
---- a/fs/nfsd/stats.c
-+++ b/fs/nfsd/stats.c
-@@ -106,31 +106,22 @@ void nfsd_percpu_counters_destroy(struct
- 		percpu_counter_destroy(&counters[i]);
- }
- 
--static int nfsd_stat_counters_init(void)
-+int nfsd_stat_counters_init(void)
- {
- 	return nfsd_percpu_counters_init(nfsdstats.counter, NFSD_STATS_COUNTERS_NUM);
- }
- 
--static void nfsd_stat_counters_destroy(void)
-+void nfsd_stat_counters_destroy(void)
- {
- 	nfsd_percpu_counters_destroy(nfsdstats.counter, NFSD_STATS_COUNTERS_NUM);
- }
- 
--int nfsd_stat_init(void)
-+void nfsd_proc_stat_init(struct net *net)
- {
--	int err;
--
--	err = nfsd_stat_counters_init();
--	if (err)
--		return err;
--
--	svc_proc_register(&init_net, &nfsd_svcstats, &nfsd_proc_ops);
--
--	return 0;
-+	svc_proc_register(net, &nfsd_svcstats, &nfsd_proc_ops);
- }
- 
--void nfsd_stat_shutdown(void)
-+void nfsd_proc_stat_shutdown(struct net *net)
- {
--	nfsd_stat_counters_destroy();
--	svc_proc_unregister(&init_net, "nfsd");
-+	svc_proc_unregister(net, "nfsd");
- }
---- a/fs/nfsd/stats.h
-+++ b/fs/nfsd/stats.h
-@@ -39,8 +39,10 @@ extern struct svc_stat		nfsd_svcstats;
- int nfsd_percpu_counters_init(struct percpu_counter *counters, int num);
- void nfsd_percpu_counters_reset(struct percpu_counter *counters, int num);
- void nfsd_percpu_counters_destroy(struct percpu_counter *counters, int num);
--int nfsd_stat_init(void);
--void nfsd_stat_shutdown(void);
-+int nfsd_stat_counters_init(void);
-+void nfsd_stat_counters_destroy(void);
-+void nfsd_proc_stat_init(struct net *net);
-+void nfsd_proc_stat_shutdown(struct net *net);
- 
- static inline void nfsd_stats_rc_hits_inc(void)
- {
+-- 
+2.43.0
+
 
 
 
