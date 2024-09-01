@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-72327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71891-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00587967A31
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:52:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A867896783A
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:29:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F5CC1F236FD
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:52:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0B4B2B2207E
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:29:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A9CA17E900;
-	Sun,  1 Sep 2024 16:52:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC0B318452D;
+	Sun,  1 Sep 2024 16:29:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Twh3BLMs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lV760gSw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D622017ADE1;
-	Sun,  1 Sep 2024 16:52:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C843183CDB;
+	Sun,  1 Sep 2024 16:29:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209563; cv=none; b=PwwCj4ZOaowFOiYFfuckSuz9oGnmEWl4+RZXWqEHXRmSM8w06DFMjBFg9ClnFav7WvyPSZo+PZaV6AE5e2f7lSsFYix/x4ooIeTEAMSgadkQd4V2Kcemp1yiugaeLJGjjpS4SSiiJZswgjPn1LsZq6O9gf9T+t/mSgjuopKQF1Q=
+	t=1725208157; cv=none; b=mGro8RjM3tk+jYyEvPlACUWbvn4wRC6HBiSiUVCzXpAjBRhFHaSzREQyYHBl47N+9FIwMgT6YVcurUtFKrVrbbf3HN8f3mXSWHcVN7xRcS0oNHXifvhkRmrlSPwzc+78AScYot3ElfSJJ1SZRWX1eXvEu8T6RGjSiDCLf/BNzjw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209563; c=relaxed/simple;
-	bh=ciONJ8bHiqDzhgVvXSCHRv3iskHL94LxWOXaQU/KG2Q=;
+	s=arc-20240116; t=1725208157; c=relaxed/simple;
+	bh=abECa1ULDUuHANIO+qVaYzv2UQxwuYbI1Brs9kqzvn0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SjKALU2HrxKcRITr+sKW/nhzB5hDr8Hv9pKYcq0biEVjDro75B1egJOpJwE2zKuWCa7eQiPQ6kvogDgyjcMAl4q9LgV7c8w/9r5VXg4FJ2S+jgBPPxxjs8f3O2vfua3bmAZRojqJT5frmyzroVbReT1HxSBIQ04xAa4vt056uSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Twh3BLMs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51A63C4CEC3;
-	Sun,  1 Sep 2024 16:52:43 +0000 (UTC)
+	 MIME-Version; b=AyuA2Yl4FBZs3/hFy0L44IvNiIJuc2OTG/8b+phNY8IGvL3jm4SgVH8Nhg8JdVwGQyPooK+8Dc80iHdWLg6xv6i01HX+Nh/uvWIfQwNBsGBkXprxvN/hlZSU4B2niatE20dgAgFWUTjY7EX0SrPTwhjtHZeERsc6AxAsrQT348A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lV760gSw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8604C4CECC;
+	Sun,  1 Sep 2024 16:29:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209563;
-	bh=ciONJ8bHiqDzhgVvXSCHRv3iskHL94LxWOXaQU/KG2Q=;
+	s=korg; t=1725208157;
+	bh=abECa1ULDUuHANIO+qVaYzv2UQxwuYbI1Brs9kqzvn0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Twh3BLMsvaxGprNcWhyfNZAea2n33MQ9yZgpD7LPcKntXxRIC10OXBtJ4tiwm05U3
-	 b1pMSC43QhCU04QID/yQV8y0Hm8t+Bux3NqwC5ZeeS8NJ7ztrc65kReUWAH2UxquA5
-	 P7kN93iE+yZRy5o54fiq+DTCW9SU+PO9ir9lc/1U=
+	b=lV760gSwOjjR/bvsiTsZZ1IbzvH9EwT5KOfOfUNSUqb0QkEOO3czdBA82FqEuzCtT
+	 xB1wIC6or+EGIB3oSfd217U7yq4ReTjByjhA18xzYNebuMPVfkM6OyNsGb0HcOPMb/
+	 JghV2oIg7tQb6ALniFcPM+m6hxBp7QzIaJt+iUp0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Krishna Kurapati <quic_kriskura@quicinc.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Markus Niebel <Markus.Niebel@ew.tq-group.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 076/151] usb: dwc3: core: Skip setting event buffers for host only controllers
-Date: Sun,  1 Sep 2024 18:17:16 +0200
-Message-ID: <20240901160816.973235479@linuxfoundation.org>
+Subject: [PATCH 6.6 90/93] arm64: dts: freescale: imx93-tqma9352: fix CMA alloc-ranges
+Date: Sun,  1 Sep 2024 18:17:17 +0200
+Message-ID: <20240901160811.120892865@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
-References: <20240901160814.090297276@linuxfoundation.org>
+In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
+References: <20240901160807.346406833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,73 +64,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krishna Kurapati <quic_kriskura@quicinc.com>
+From: Markus Niebel <Markus.Niebel@ew.tq-group.com>
 
-[ Upstream commit 89d7f962994604a3e3d480832788d06179abefc5 ]
+[ Upstream commit cd0c6872aab4d2c556a5e953e6926a1b4485e543 ]
 
-On some SoC's like SA8295P where the tertiary controller is host-only
-capable, GEVTADDRHI/LO, GEVTSIZ, GEVTCOUNT registers are not accessible.
-Trying to access them leads to a crash.
+DRAM starts at 0x80000000.
 
-For DRD/Peripheral supported controllers, event buffer setup is done
-again in gadget_pullup. Skip setup or cleanup of event buffers if
-controller is host-only capable.
-
-Suggested-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Bjorn Andersson <andersson@kernel.org>
-Tested-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20240420044901.884098-4-quic_kriskura@quicinc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c982ecfa7992 ("arm64: dts: freescale: add initial device tree for MBa93xxLA SBC board")
+Signed-off-by: Markus Niebel <Markus.Niebel@ew.tq-group.com>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/core.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ arch/arm64/boot/dts/freescale/imx93-tqma9352.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
-index 7275bff857ae8..f4497522f929e 100644
---- a/drivers/usb/dwc3/core.c
-+++ b/drivers/usb/dwc3/core.c
-@@ -430,6 +430,13 @@ static void dwc3_free_event_buffers(struct dwc3 *dwc)
- static int dwc3_alloc_event_buffers(struct dwc3 *dwc, unsigned length)
- {
- 	struct dwc3_event_buffer *evt;
-+	unsigned int hw_mode;
-+
-+	hw_mode = DWC3_GHWPARAMS0_MODE(dwc->hwparams.hwparams0);
-+	if (hw_mode == DWC3_GHWPARAMS0_MODE_HOST) {
-+		dwc->ev_buf = NULL;
-+		return 0;
-+	}
- 
- 	evt = dwc3_alloc_one_event_buffer(dwc, length);
- 	if (IS_ERR(evt)) {
-@@ -451,6 +458,9 @@ int dwc3_event_buffers_setup(struct dwc3 *dwc)
- {
- 	struct dwc3_event_buffer	*evt;
- 
-+	if (!dwc->ev_buf)
-+		return 0;
-+
- 	evt = dwc->ev_buf;
- 	evt->lpos = 0;
- 	dwc3_writel(dwc->regs, DWC3_GEVNTADRLO(0),
-@@ -468,6 +478,9 @@ void dwc3_event_buffers_cleanup(struct dwc3 *dwc)
- {
- 	struct dwc3_event_buffer	*evt;
- 
-+	if (!dwc->ev_buf)
-+		return;
-+
- 	evt = dwc->ev_buf;
- 
- 	evt->lpos = 0;
+diff --git a/arch/arm64/boot/dts/freescale/imx93-tqma9352.dtsi b/arch/arm64/boot/dts/freescale/imx93-tqma9352.dtsi
+index f6e422dc2663e..b6f3c076fe54a 100644
+--- a/arch/arm64/boot/dts/freescale/imx93-tqma9352.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx93-tqma9352.dtsi
+@@ -19,7 +19,7 @@
+ 		linux,cma {
+ 			compatible = "shared-dma-pool";
+ 			reusable;
+-			alloc-ranges = <0 0x60000000 0 0x40000000>;
++			alloc-ranges = <0 0x80000000 0 0x40000000>;
+ 			size = <0 0x10000000>;
+ 			linux,cma-default;
+ 		};
 -- 
 2.43.0
 
