@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-72183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72364-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74B68967991
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:47:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B96F1967A56
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:54:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A2861F21C13
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:47:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 76798281C44
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:54:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C52481849CB;
-	Sun,  1 Sep 2024 16:45:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27DBA181B86;
+	Sun,  1 Sep 2024 16:54:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wGBChOkG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KHN2eduL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 840B7181CE1;
-	Sun,  1 Sep 2024 16:45:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB58E1DFD1;
+	Sun,  1 Sep 2024 16:54:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209114; cv=none; b=KzpfN4vkoVLc5MtW3IicsAuhyiPYZkoOhJ+2GQ5fjght1LQd2ZYt+McAlUT8tQ3iKb+dkQ/lFpU3MhUoiV5Q8KLCwWNxDkX7EwF2rJawgtvGqVzOc6nc7QiFPwPwg2mkIjsrrK2T+xNKrW6sW1r4r0l4TZ2sh7FemP2SUPEUPys=
+	t=1725209683; cv=none; b=q1sC2WyYs6wqXbp1vPUa68SkmNia6/6MzDsf/8xzBoU0fGQ5Cq+ZI+l8ouyDPmxrsrEzbfIO89fkTgCkIGHDQOakE8qXE5d1KI+nR7RtxBkwyPwfdsEkEGqF0NwNPptHb3TvWFGLVbWJGwmKfLCgKCd4tzJVLprFRB21agxja/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209114; c=relaxed/simple;
-	bh=YYP0vWqkoSv0KWJJ6ZPapyWflDqyjvtJhzmrjcBIlu4=;
+	s=arc-20240116; t=1725209683; c=relaxed/simple;
+	bh=JTWwN2RVuqgoX4iELSFHJGmYWoZ02VZUVnocunf3PTo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ses02RV6cmzPhY55daWMpIYknydRZR01K7KEa9WV/dXQ22f2bqnaDDuY6xiV0sVUT3HXZ8wRe6WvXip1yGvoSJS8qYu9cE/9rhDExM7IBw/kqXj8I1u3TgvWYwUfCjzrWdb7XW96yJTOevOWrF6POv+N0orsJ6keuwHR9Bl5KxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wGBChOkG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BFA4C4CEC3;
-	Sun,  1 Sep 2024 16:45:13 +0000 (UTC)
+	 MIME-Version; b=mqQFYvnQ+zs6FoN8OkjY6/ay//eW7lEqa/OuRw0tWCdxF/EulDw0jS3WK8TEAS2yWPD9hT34fXbfa/tkYqkOSrPsCvBtoUDickwheScO0YEmu5Iz8K+De7azdw7mjuDlbC+SVbc7rX9v9lXpqRffR5f7fdxp68k5xvetxTBqNuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KHN2eduL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF22BC4CEC3;
+	Sun,  1 Sep 2024 16:54:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209114;
-	bh=YYP0vWqkoSv0KWJJ6ZPapyWflDqyjvtJhzmrjcBIlu4=;
+	s=korg; t=1725209683;
+	bh=JTWwN2RVuqgoX4iELSFHJGmYWoZ02VZUVnocunf3PTo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wGBChOkGi8GG3EvzWnUvspbtZqoY9o6qFslWgBk36GD2NF6e8Ej1WllacF0ZeOjKt
-	 aREf/Sd70gbPSUfZtAHxZoLL2WKCjY+54SgTxAyg3HDLqo0NjvYhPHA+saAi9ewf7Z
-	 Az/yyvClLmoSrGqBWKfrQvWjbm4sOdNQwrUjolt8=
+	b=KHN2eduL73+y6+gcSeduwy4DpO/eNY88lNAlXpAIY1GZ4KP5Lp2dc1RRcaHmduR7d
+	 rOnSsZ/r99rLwaBW1AnxALlgo+XEo1S+b5l33Rpgahmv8+Z15U7KHWX/oMfcQsNNyH
+	 zgV3PFMNYA666w3DKS8j62dEmo3bDcQrvuCLw0z0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ZHANG Yuntian <yt@radxa.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.4 127/134] USB: serial: option: add MeiG Smart SRM825L
+	Alexander Potapenko <glider@google.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>
+Subject: [PATCH 5.10 113/151] KVM: arm64: Make ICC_*SGI*_EL1 undef in the absence of a vGICv3
 Date: Sun,  1 Sep 2024 18:17:53 +0200
-Message-ID: <20240901160814.858764958@linuxfoundation.org>
+Message-ID: <20240901160818.359461356@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
-References: <20240901160809.752718937@linuxfoundation.org>
+In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
+References: <20240901160814.090297276@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,76 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ZHANG Yuntian <yt@radxa.com>
+From: Marc Zyngier <maz@kernel.org>
 
-commit 9a471de516c35219d1722c13367191ce1f120fe9 upstream.
+commit 3e6245ebe7ef341639e9a7e402b3ade8ad45a19f upstream.
 
-Add support for MeiG Smart SRM825L which is based on Qualcomm 315 chip.
+On a system with a GICv3, if a guest hasn't been configured with
+GICv3 and that the host is not capable of GICv2 emulation,
+a write to any of the ICC_*SGI*_EL1 registers is trapped to EL2.
 
-T:  Bus=04 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=5000 MxCh= 0
-D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
-P:  Vendor=2dee ProdID=4d22 Rev= 4.14
-S:  Manufacturer=MEIG
-S:  Product=LTE-A Module
-S:  SerialNumber=6f345e48
-C:* #Ifs= 6 Cfg#= 1 Atr=80 MxPwr=896mA
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
-E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:* If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
-E:  Ad=05(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=88(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:* If#= 5 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=89(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+We therefore try to emulate the SGI access, only to hit a NULL
+pointer as no private interrupt is allocated (no GIC, remember?).
 
-Signed-off-by: ZHANG Yuntian <yt@radxa.com>
-Link: https://lore.kernel.org/0041DFA5200EFB1B+20240803074619.563116-1-yt@radxa.com/
+The obvious fix is to give the guest what it deserves, in the
+shape of a UNDEF exception.
+
+Reported-by: Alexander Potapenko <glider@google.com>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Link: https://lore.kernel.org/r/20240820100349.3544850-2-maz@kernel.org
+Signed-off-by: Oliver Upton <oliver.upton@linux.dev>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ arch/arm64/kvm/sys_regs.c  |    6 ++++++
+ arch/arm64/kvm/vgic/vgic.h |    7 +++++++
+ 2 files changed, 13 insertions(+)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -619,6 +619,8 @@ static void option_instat_callback(struc
+--- a/arch/arm64/kvm/sys_regs.c
++++ b/arch/arm64/kvm/sys_regs.c
+@@ -30,6 +30,7 @@
+ #include <trace/events/kvm.h>
  
- /* MeiG Smart Technology products */
- #define MEIGSMART_VENDOR_ID			0x2dee
-+/* MeiG Smart SRM825L based on Qualcomm 315 */
-+#define MEIGSMART_PRODUCT_SRM825L		0x4d22
- /* MeiG Smart SLM320 based on UNISOC UIS8910 */
- #define MEIGSMART_PRODUCT_SLM320		0x4d41
+ #include "sys_regs.h"
++#include "vgic/vgic.h"
  
-@@ -2366,6 +2368,9 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, TOZED_PRODUCT_LT70C, 0xff, 0, 0) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, LUAT_PRODUCT_AIR720U, 0xff, 0, 0) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SLM320, 0xff, 0, 0) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x30) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x40) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x60) },
- 	{ } /* Terminating entry */
- };
- MODULE_DEVICE_TABLE(usb, option_ids);
+ #include "trace.h"
+ 
+@@ -275,6 +276,11 @@ static bool access_gic_sgi(struct kvm_vc
+ {
+ 	bool g1;
+ 
++	if (!kvm_has_gicv3(vcpu->kvm)) {
++		kvm_inject_undefined(vcpu);
++		return false;
++	}
++
+ 	if (!p->is_write)
+ 		return read_from_write_only(vcpu, p, r);
+ 
+--- a/arch/arm64/kvm/vgic/vgic.h
++++ b/arch/arm64/kvm/vgic/vgic.h
+@@ -318,4 +318,11 @@ int vgic_v4_init(struct kvm *kvm);
+ void vgic_v4_teardown(struct kvm *kvm);
+ void vgic_v4_configure_vsgis(struct kvm *kvm);
+ 
++static inline bool kvm_has_gicv3(struct kvm *kvm)
++{
++	return (static_branch_unlikely(&kvm_vgic_global_state.gicv3_cpuif) &&
++		irqchip_in_kernel(kvm) &&
++		kvm->arch.vgic.vgic_model == KVM_DEV_TYPE_ARM_VGIC_V3);
++}
++
+ #endif
 
 
 
