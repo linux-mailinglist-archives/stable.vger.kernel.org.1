@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-72435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71714-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BCCB967A9D
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:58:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C70CD96776D
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:19:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18325280DE2
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:58:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84978281DCE
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:19:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADEE417ADE1;
-	Sun,  1 Sep 2024 16:58:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7991617E01C;
+	Sun,  1 Sep 2024 16:19:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="apOB806u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rRIOA9iT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68DC844C93;
-	Sun,  1 Sep 2024 16:58:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36B802C1B4;
+	Sun,  1 Sep 2024 16:19:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209914; cv=none; b=RnRdhNacYwlDVua2BQzK8xPJt5qCTue66/cBejKx10ILMIptxLwAgkinq82ptlSRCKGBrikzmF7sxaZ6FvHycYhMSuc53zgvSJ1JcwWhQ0EsTm5TVuyfOzQEytNbG14KICk8vvNGLpDjt28L7XnV4ODenBtvJ0yC1wVxIcsbLMw=
+	t=1725207574; cv=none; b=hTbwWYTfOD/8LqbgWgBBrDDDvuKcAQhjTGAzCdcehE8cqN5WC3S6rUYJqPb5DQPzcCoHXTG+yLMC3S7JO9ofGPBIdKRVLQzICei9qLI7T8fUEie0hyX7qTk/ieBwbxjJrGtpf7qbGnGmL0kvXd48lRMisbX7fRSED4ql50/LHRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209914; c=relaxed/simple;
-	bh=xzQqqrlBOAmrcBbjLzBcXtTK0+Rx2XV8BW1SPZ1CEiE=;
+	s=arc-20240116; t=1725207574; c=relaxed/simple;
+	bh=i7zWUtKms9qUcWFQ75m4H0gaPWVQVdPavvTxsxFhiog=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=br985LVSw1UMBS7xECOkvrRox1WyJnyawAtIGk0Xx8TeeNh6vBm/9/h7YuZOsWrxFmxxt9gNZbWeU5Byg4xPlCgIShtCL2oo1C9SbRSJ+5VCae0k9VmYNPm3i89irdYkyDWX0rH8dGf0cK2uScHVIcY3yxZS47QoHnV8pNhWtNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=apOB806u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D025DC4CEC3;
-	Sun,  1 Sep 2024 16:58:33 +0000 (UTC)
+	 MIME-Version; b=kDePCQ9PAJkQUFqbYSUZikISvhdEWtOrC2lqCs3kqZNbnvjWQKtPuGmyXdfH3G532yyxgdV/4PJbrS9gJBWgGCvay0lYHU1J2sSyX9TeRyOUBazUEYN7j2dxf7c+EcLpGUWZqHYYMOd89XcrVjU7tkxpTmxt4YEK81hTZU+O+T4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rRIOA9iT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7615AC4CEC3;
+	Sun,  1 Sep 2024 16:19:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209914;
-	bh=xzQqqrlBOAmrcBbjLzBcXtTK0+Rx2XV8BW1SPZ1CEiE=;
+	s=korg; t=1725207573;
+	bh=i7zWUtKms9qUcWFQ75m4H0gaPWVQVdPavvTxsxFhiog=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=apOB806uAhZXLgePjJO7JTBdusSta1Q5b/pRtzIIyWNbNzQrFTCNPd43Ei7s76Zrd
-	 YnOIpP3Dq39lvMNTS3YfaDpGF1i4BXN0LZP5fhQhTmUwPmE8f/l1O9mqvcf5X6MG4u
-	 3DVFqwnZQxVovvDgZ6Jh5rwygYdCstvqd3ABqkHc=
+	b=rRIOA9iT6PgYMozlUSemtdO+XMGA2nzj13rqKcRnNZiBFvOVAgDXOocnOlVMDAEKG
+	 dQZP86NRdk86d2cQWYepLD4geyCbi+6/X5iwnFT17EiOopxG5swauNpquIDzbqBGPt
+	 O7aRKCyq0D2ExoF96EaPSFbZzkOrWIbEsMfoeKQg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 030/215] net: axienet: Fix register defines comment description
-Date: Sun,  1 Sep 2024 18:15:42 +0200
-Message-ID: <20240901160824.403063013@linuxfoundation.org>
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	David Sterba <dsterba@suse.com>,
+	Yury Norov <yury.norov@gmail.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 4.19 13/98] btrfs: rename bitmap_set_bits() -> btrfs_bitmap_set_bits()
+Date: Sun,  1 Sep 2024 18:15:43 +0200
+Message-ID: <20240901160804.187033925@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
+References: <20240901160803.673617007@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+From: Alexander Lobakin <aleksander.lobakin@intel.com>
 
-[ Upstream commit 9ff2f816e2aa65ca9a1cdf0954842f8173c0f48d ]
+commit 4ca532d64648d4776d15512caed3efea05ca7195 upstream.
 
-In axiethernet header fix register defines comment description to be
-inline with IP documentation. It updates MAC configuration register,
-MDIO configuration register and frame filter control description.
+bitmap_set_bits() does not start with the FS' prefix and may collide
+with a new generic helper one day. It operates with the FS-specific
+types, so there's no change those two could do the same thing.
+Just add the prefix to exclude such possible conflict.
 
-Fixes: 8a3b7a252dca ("drivers/net/ethernet/xilinx: added Xilinx AXI Ethernet driver")
-Signed-off-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Acked-by: David Sterba <dsterba@suse.com>
+Reviewed-by: Yury Norov <yury.norov@gmail.com>
+Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/xilinx/xilinx_axienet.h | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ fs/btrfs/free-space-cache.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet.h b/drivers/net/ethernet/xilinx/xilinx_axienet.h
-index 5b4d153b1492c..cbf637078c38a 100644
---- a/drivers/net/ethernet/xilinx/xilinx_axienet.h
-+++ b/drivers/net/ethernet/xilinx/xilinx_axienet.h
-@@ -159,16 +159,16 @@
- #define XAE_RCW1_OFFSET		0x00000404 /* Rx Configuration Word 1 */
- #define XAE_TC_OFFSET		0x00000408 /* Tx Configuration */
- #define XAE_FCC_OFFSET		0x0000040C /* Flow Control Configuration */
--#define XAE_EMMC_OFFSET		0x00000410 /* EMAC mode configuration */
--#define XAE_PHYC_OFFSET		0x00000414 /* RGMII/SGMII configuration */
-+#define XAE_EMMC_OFFSET		0x00000410 /* MAC speed configuration */
-+#define XAE_PHYC_OFFSET		0x00000414 /* RX Max Frame Configuration */
- #define XAE_ID_OFFSET		0x000004F8 /* Identification register */
--#define XAE_MDIO_MC_OFFSET	0x00000500 /* MII Management Config */
--#define XAE_MDIO_MCR_OFFSET	0x00000504 /* MII Management Control */
--#define XAE_MDIO_MWD_OFFSET	0x00000508 /* MII Management Write Data */
--#define XAE_MDIO_MRD_OFFSET	0x0000050C /* MII Management Read Data */
-+#define XAE_MDIO_MC_OFFSET	0x00000500 /* MDIO Setup */
-+#define XAE_MDIO_MCR_OFFSET	0x00000504 /* MDIO Control */
-+#define XAE_MDIO_MWD_OFFSET	0x00000508 /* MDIO Write Data */
-+#define XAE_MDIO_MRD_OFFSET	0x0000050C /* MDIO Read Data */
- #define XAE_UAW0_OFFSET		0x00000700 /* Unicast address word 0 */
- #define XAE_UAW1_OFFSET		0x00000704 /* Unicast address word 1 */
--#define XAE_FMI_OFFSET		0x00000708 /* Filter Mask Index */
-+#define XAE_FMI_OFFSET		0x00000708 /* Frame Filter Control */
- #define XAE_AF0_OFFSET		0x00000710 /* Address Filter 0 */
- #define XAE_AF1_OFFSET		0x00000714 /* Address Filter 1 */
+--- a/fs/btrfs/free-space-cache.c
++++ b/fs/btrfs/free-space-cache.c
+@@ -1732,9 +1732,9 @@ static void bitmap_clear_bits(struct btr
+ 	ctl->free_space -= bytes;
+ }
  
-@@ -307,7 +307,7 @@
-  */
- #define XAE_UAW1_UNICASTADDR_MASK	0x0000FFFF
+-static void bitmap_set_bits(struct btrfs_free_space_ctl *ctl,
+-			    struct btrfs_free_space *info, u64 offset,
+-			    u64 bytes)
++static void btrfs_bitmap_set_bits(struct btrfs_free_space_ctl *ctl,
++				  struct btrfs_free_space *info, u64 offset,
++				  u64 bytes)
+ {
+ 	unsigned long start, count;
  
--/* Bit masks for Axi Ethernet FMI register */
-+/* Bit masks for Axi Ethernet FMC register */
- #define XAE_FMI_PM_MASK			0x80000000 /* Promis. mode enable */
- #define XAE_FMI_IND_MASK		0x00000003 /* Index Mask */
+@@ -1991,7 +1991,7 @@ static u64 add_bytes_to_bitmap(struct bt
  
--- 
-2.43.0
-
+ 	bytes_to_set = min(end - offset, bytes);
+ 
+-	bitmap_set_bits(ctl, info, offset, bytes_to_set);
++	btrfs_bitmap_set_bits(ctl, info, offset, bytes_to_set);
+ 
+ 	/*
+ 	 * We set some bytes, we have no idea what the max extent size is
 
 
 
