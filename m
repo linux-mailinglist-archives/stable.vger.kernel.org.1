@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-72300-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71902-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98A3E967A16
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:51:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF062967845
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:30:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4EA0C1F23098
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:51:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5540AB20FB9
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:29:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A516B16B391;
-	Sun,  1 Sep 2024 16:51:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 767B3183CA3;
+	Sun,  1 Sep 2024 16:29:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e9Fn0DSV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2tAg89vH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6185B1DFD1;
-	Sun,  1 Sep 2024 16:51:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 347B228387;
+	Sun,  1 Sep 2024 16:29:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209477; cv=none; b=KPKAyuRw1e5aZ1M8snqxvbFLKehAMzVHapUDwDmgM0WeevurSP9Y++Im2TKRfttFhXXVHogaMfMfAs4Q65xlhF3KKOR4HtOw0L2OuMRAqvARl5l6RubAsxe2MoIu2Yd1W69CMMY/WpMaRiUEm/4YbR5DQ/3LngjllCMh16yOLSc=
+	t=1725208195; cv=none; b=kG7oOIRQyCu3s+nsAJNcrErQ7MTK5bcpbC0cn3LxJsDQZY9aD9sNHBB2c1XBLUOLUxJFYrknYqzSfgVBnzH38UE/EmeM/Gxbl6iFHrrKlVkDSuh3wNNkP/iCbkyaAGhOq2uNbaEmf96tfDU5L7oSiBmcPDgH9J76mlwrng84sWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209477; c=relaxed/simple;
-	bh=4G4BelQoRmAdoOV7XpNMgAAOqppD6L6Adla7W5f5yjg=;
+	s=arc-20240116; t=1725208195; c=relaxed/simple;
+	bh=Yt8SbjtRVPuqLfxbpvJX0my5PKGfJDZvWJPOc49gYhY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aL8z6DDoNkatTFeNrzxakn4ZwmrvICMWn0ZrxlFwOjynfHKEPGppcWmZmx3HoXJVCZn7Vo5vHc9DGQ322Z1JF050OMgR5tj1uzYGXC2LXpvgrAOi6xMIi9Y62wnXM57A8pAEEFRM46bqN9G1C7Z9+rULtkLyxFKf1GrkoDr1Szk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e9Fn0DSV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB6D7C4CEC3;
-	Sun,  1 Sep 2024 16:51:16 +0000 (UTC)
+	 MIME-Version; b=ayG30Msju4GMU+FApnCLXZy6LusKVwNEYP0VLF3ojjpoUty66sCLZblVKNKhsQRWq0Wrs06FC0SpjFK39CsRi+mVzOOi7B7vFRE2YkoPaLrv9Dd6PKaF8jwzO59TVJigpc3dpghxDm0y0H7LszaLg8Pc1MF+aAPoMZxmeSjLPZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2tAg89vH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50AF4C4CEC3;
+	Sun,  1 Sep 2024 16:29:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209477;
-	bh=4G4BelQoRmAdoOV7XpNMgAAOqppD6L6Adla7W5f5yjg=;
+	s=korg; t=1725208194;
+	bh=Yt8SbjtRVPuqLfxbpvJX0my5PKGfJDZvWJPOc49gYhY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e9Fn0DSVYDPF4p7p/i5W4frUapPBnTY/c9DnJX0hn0pfA574NUGlLVF3ybpxO/oMP
-	 eDeUUgfPGgqi+j8ZciUr8RMN65PQY7Frux0jNBLW7dzumQWJ3BtteGj9OvdpkK2bkN
-	 6V45LCSQobw1s7v4DaRZM0zePSQjYWC/SqEER/Oc=
+	b=2tAg89vH8POwF1BIMw8jEhoKVBFm+Rb1uhJ9qUizC51RTWPUfelIDX/j2k9BiroFh
+	 jz60Ad0H7N7q2lUO+xUn3texG/t2PdsMDQecScOUfyCAc06KqdGJMffGnd9w00xX16
+	 6jU7e+OAnmw8QGpAWjAIEapeWM+zYAtdHVw2KDhw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hannes Reinecke <hare@suse.de>,
-	Daniel Wagner <dwagner@suse.de>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
+	Jianbo Liu <jianbol@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Jay Vosburgh <jv@jvosburgh.net>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 048/151] nvmet-trace: avoid dereferencing pointer too early
-Date: Sun,  1 Sep 2024 18:16:48 +0200
-Message-ID: <20240901160815.925724658@linuxfoundation.org>
+Subject: [PATCH 6.6 62/93] bonding: implement xdo_dev_state_free and call it after deletion
+Date: Sun,  1 Sep 2024 18:16:49 +0200
+Message-ID: <20240901160809.698354810@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
-References: <20240901160814.090297276@linuxfoundation.org>
+In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
+References: <20240901160807.346406833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,143 +65,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Wagner <dwagner@suse.de>
+From: Jianbo Liu <jianbol@nvidia.com>
 
-[ Upstream commit 0e716cec6fb11a14c220ee17c404b67962e902f7 ]
+[ Upstream commit ec13009472f4a756288eb4e18e20a7845da98d10 ]
 
-The first command issued from the host to the target is the fabrics
-connect command. At this point, neither the target queue nor the
-controller have been allocated. But we already try to trace this command
-in nvmet_req_init.
+Add this implementation for bonding, so hardware resources can be
+freed from the active slave after xfrm state is deleted. The netdev
+used to invoke xdo_dev_state_free callback, is saved in the xfrm state
+(xs->xso.real_dev), which is also the bond's active slave. To prevent
+it from being freed, acquire netdev reference before leaving RCU
+read-side critical section, and release it after callback is done.
 
-Reported by KASAN.
+And call it when deleting all SAs from old active real interface while
+switching current active slave.
 
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: Daniel Wagner <dwagner@suse.de>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fixes: 9a5605505d9c ("bonding: Add struct bond_ipesc to manage SA")
+Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
+Acked-by: Jay Vosburgh <jv@jvosburgh.net>
+Link: https://patch.msgid.link/20240823031056.110999-2-jianbol@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/trace.c |  6 +++---
- drivers/nvme/target/trace.h | 28 +++++++++++++++++-----------
- 2 files changed, 20 insertions(+), 14 deletions(-)
+ drivers/net/bonding/bond_main.c | 36 +++++++++++++++++++++++++++++++++
+ 1 file changed, 36 insertions(+)
 
-diff --git a/drivers/nvme/target/trace.c b/drivers/nvme/target/trace.c
-index 1373a3c67962a..a3564e12927b6 100644
---- a/drivers/nvme/target/trace.c
-+++ b/drivers/nvme/target/trace.c
-@@ -195,7 +195,7 @@ const char *nvmet_trace_disk_name(struct trace_seq *p, char *name)
- 	return ret;
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index 566b02ca78261..c166c4b8cee78 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -581,12 +581,47 @@ static void bond_ipsec_del_sa_all(struct bonding *bond)
+ 				   __func__);
+ 		} else {
+ 			slave->dev->xfrmdev_ops->xdo_dev_state_delete(ipsec->xs);
++			if (slave->dev->xfrmdev_ops->xdo_dev_state_free)
++				slave->dev->xfrmdev_ops->xdo_dev_state_free(ipsec->xs);
+ 		}
+ 	}
+ 	spin_unlock_bh(&bond->ipsec_lock);
+ 	rcu_read_unlock();
  }
  
--const char *nvmet_trace_ctrl_name(struct trace_seq *p, struct nvmet_ctrl *ctrl)
-+const char *nvmet_trace_ctrl_id(struct trace_seq *p, u16 ctrl_id)
- {
- 	const char *ret = trace_seq_buffer_ptr(p);
- 
-@@ -208,8 +208,8 @@ const char *nvmet_trace_ctrl_name(struct trace_seq *p, struct nvmet_ctrl *ctrl)
- 	 * If we can know the extra data of the connect command in this stage,
- 	 * we can update this print statement later.
- 	 */
--	if (ctrl)
--		trace_seq_printf(p, "%d", ctrl->cntlid);
-+	if (ctrl_id)
-+		trace_seq_printf(p, "%d", ctrl_id);
- 	else
- 		trace_seq_printf(p, "_");
- 	trace_seq_putc(p, 0);
-diff --git a/drivers/nvme/target/trace.h b/drivers/nvme/target/trace.h
-index c14e3249a14dc..13fb8265f9520 100644
---- a/drivers/nvme/target/trace.h
-+++ b/drivers/nvme/target/trace.h
-@@ -32,18 +32,24 @@ const char *nvmet_trace_parse_fabrics_cmd(struct trace_seq *p, u8 fctype,
- 	 nvmet_trace_parse_nvm_cmd(p, opcode, cdw10) :			\
- 	 nvmet_trace_parse_admin_cmd(p, opcode, cdw10)))
- 
--const char *nvmet_trace_ctrl_name(struct trace_seq *p, struct nvmet_ctrl *ctrl);
--#define __print_ctrl_name(ctrl)				\
--	nvmet_trace_ctrl_name(p, ctrl)
-+const char *nvmet_trace_ctrl_id(struct trace_seq *p, u16 ctrl_id);
-+#define __print_ctrl_id(ctrl_id)			\
-+	nvmet_trace_ctrl_id(p, ctrl_id)
- 
- const char *nvmet_trace_disk_name(struct trace_seq *p, char *name);
- #define __print_disk_name(name)				\
- 	nvmet_trace_disk_name(p, name)
- 
- #ifndef TRACE_HEADER_MULTI_READ
--static inline struct nvmet_ctrl *nvmet_req_to_ctrl(struct nvmet_req *req)
-+static inline u16 nvmet_req_to_ctrl_id(struct nvmet_req *req)
- {
--	return req->sq->ctrl;
-+	/*
-+	 * The queue and controller pointers are not valid until an association
-+	 * has been established.
-+	 */
-+	if (!req->sq || !req->sq->ctrl)
-+		return 0;
-+	return req->sq->ctrl->cntlid;
- }
- 
- static inline void __assign_req_name(char *name, struct nvmet_req *req)
-@@ -60,7 +66,7 @@ TRACE_EVENT(nvmet_req_init,
- 	TP_ARGS(req, cmd),
- 	TP_STRUCT__entry(
- 		__field(struct nvme_command *, cmd)
--		__field(struct nvmet_ctrl *, ctrl)
-+		__field(u16, ctrl_id)
- 		__array(char, disk, DISK_NAME_LEN)
- 		__field(int, qid)
- 		__field(u16, cid)
-@@ -73,7 +79,7 @@ TRACE_EVENT(nvmet_req_init,
- 	),
- 	TP_fast_assign(
- 		__entry->cmd = cmd;
--		__entry->ctrl = nvmet_req_to_ctrl(req);
-+		__entry->ctrl_id = nvmet_req_to_ctrl_id(req);
- 		__assign_req_name(__entry->disk, req);
- 		__entry->qid = req->sq->qid;
- 		__entry->cid = cmd->common.command_id;
-@@ -87,7 +93,7 @@ TRACE_EVENT(nvmet_req_init,
- 	),
- 	TP_printk("nvmet%s: %sqid=%d, cmdid=%u, nsid=%u, flags=%#x, "
- 		  "meta=%#llx, cmd=(%s, %s)",
--		__print_ctrl_name(__entry->ctrl),
-+		__print_ctrl_id(__entry->ctrl_id),
- 		__print_disk_name(__entry->disk),
- 		__entry->qid, __entry->cid, __entry->nsid,
- 		__entry->flags, __entry->metadata,
-@@ -101,7 +107,7 @@ TRACE_EVENT(nvmet_req_complete,
- 	TP_PROTO(struct nvmet_req *req),
- 	TP_ARGS(req),
- 	TP_STRUCT__entry(
--		__field(struct nvmet_ctrl *, ctrl)
-+		__field(u16, ctrl_id)
- 		__array(char, disk, DISK_NAME_LEN)
- 		__field(int, qid)
- 		__field(int, cid)
-@@ -109,7 +115,7 @@ TRACE_EVENT(nvmet_req_complete,
- 		__field(u16, status)
- 	),
- 	TP_fast_assign(
--		__entry->ctrl = nvmet_req_to_ctrl(req);
-+		__entry->ctrl_id = nvmet_req_to_ctrl_id(req);
- 		__entry->qid = req->cq->qid;
- 		__entry->cid = req->cqe->command_id;
- 		__entry->result = le64_to_cpu(req->cqe->result.u64);
-@@ -117,7 +123,7 @@ TRACE_EVENT(nvmet_req_complete,
- 		__assign_req_name(__entry->disk, req);
- 	),
- 	TP_printk("nvmet%s: %sqid=%d, cmdid=%u, res=%#llx, status=%#x",
--		__print_ctrl_name(__entry->ctrl),
-+		__print_ctrl_id(__entry->ctrl_id),
- 		__print_disk_name(__entry->disk),
- 		__entry->qid, __entry->cid, __entry->result, __entry->status)
- 
++static void bond_ipsec_free_sa(struct xfrm_state *xs)
++{
++	struct net_device *bond_dev = xs->xso.dev;
++	struct net_device *real_dev;
++	netdevice_tracker tracker;
++	struct bonding *bond;
++	struct slave *slave;
++
++	if (!bond_dev)
++		return;
++
++	rcu_read_lock();
++	bond = netdev_priv(bond_dev);
++	slave = rcu_dereference(bond->curr_active_slave);
++	real_dev = slave ? slave->dev : NULL;
++	netdev_hold(real_dev, &tracker, GFP_ATOMIC);
++	rcu_read_unlock();
++
++	if (!slave)
++		goto out;
++
++	if (!xs->xso.real_dev)
++		goto out;
++
++	WARN_ON(xs->xso.real_dev != real_dev);
++
++	if (real_dev && real_dev->xfrmdev_ops &&
++	    real_dev->xfrmdev_ops->xdo_dev_state_free)
++		real_dev->xfrmdev_ops->xdo_dev_state_free(xs);
++out:
++	netdev_put(real_dev, &tracker);
++}
++
+ /**
+  * bond_ipsec_offload_ok - can this packet use the xfrm hw offload
+  * @skb: current data packet
+@@ -627,6 +662,7 @@ static bool bond_ipsec_offload_ok(struct sk_buff *skb, struct xfrm_state *xs)
+ static const struct xfrmdev_ops bond_xfrmdev_ops = {
+ 	.xdo_dev_state_add = bond_ipsec_add_sa,
+ 	.xdo_dev_state_delete = bond_ipsec_del_sa,
++	.xdo_dev_state_free = bond_ipsec_free_sa,
+ 	.xdo_dev_offload_ok = bond_ipsec_offload_ok,
+ };
+ #endif /* CONFIG_XFRM_OFFLOAD */
 -- 
 2.43.0
 
