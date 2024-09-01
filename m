@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-72417-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71909-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE2D4967A8B
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:57:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F268E96784E
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:30:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DEF1B1C2147B
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:57:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1657280D87
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:30:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C06817E919;
-	Sun,  1 Sep 2024 16:57:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EFBC537FF;
+	Sun,  1 Sep 2024 16:30:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KpAp1e6O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bJGx4VD2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD7082A1B8;
-	Sun,  1 Sep 2024 16:57:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C40817E46E;
+	Sun,  1 Sep 2024 16:30:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209853; cv=none; b=kYZfSRblM3peZt9x1Om2g3fqKE0QpK1zLS2ukKXXvE6mb+fnBXeYQxnkP6lJJR7inddn7uszVDHYbxV3ffr3Wyw7IhpZUnlvEcBvtgww52YoTO8YgyFRP2EI2cOtJyDfi9J0MM9LDOuFIoMeDsWQimEuxLqpdhiTrjqB2LYfmzc=
+	t=1725208218; cv=none; b=rsf1qIlMWgL9W4HDvG4foaux+UafE2yiUwUWf34dlIasj9sXMFYlQeVSsKM/LjHz8CTCMncatMQQDLEIQwkVAQgwsjwFD2tHKEUoueZke7nEKnxfViWXAl63bSqc3y2BBIy6TjRFOItwlXrxYaIv1lpupYqgLyzJy2pCOqcPXfs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209853; c=relaxed/simple;
-	bh=FZVIR2tz3S+lzbDwQcSoDl1A+dVNocIZH2uY/bKkFKE=;
+	s=arc-20240116; t=1725208218; c=relaxed/simple;
+	bh=CHNZQSIdmpqjlEL2phEnShEUaXKZYB2Yq1Ih8Gkd/JE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vl3zwM5JxLzFllGMY8uo1Fpwe01ywElOoLH40gqvNjr9bNHhC3cq52s7EbjRngHZT0i3IT90yUrHOyng9LKqiwWRTLOMtAePD/eMBWw01Gu9j1OO1ZwVFhzwF9OiOz942EjQrVe6Mag3nQUrIrhAN8/kKssll7de9uEh7709yZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KpAp1e6O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A8F3C4CEC3;
-	Sun,  1 Sep 2024 16:57:32 +0000 (UTC)
+	 MIME-Version:Content-Type; b=O38FEofcL/gEAQ494Uy3seWpWfqxkB+dhYjP6W4xp62I2rAc73Ane9vWlQoyLB0DvaLRjaS9IiRQvnb2asKF9v500id644DYkRZbZcmZ1/ytlZHN+RqpZ66CGl78USz9bSS2oySVKgvL1bKmuWm45gpV58LGGemnKCmInWDF0oM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bJGx4VD2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE312C4CEC3;
+	Sun,  1 Sep 2024 16:30:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209852;
-	bh=FZVIR2tz3S+lzbDwQcSoDl1A+dVNocIZH2uY/bKkFKE=;
+	s=korg; t=1725208218;
+	bh=CHNZQSIdmpqjlEL2phEnShEUaXKZYB2Yq1Ih8Gkd/JE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KpAp1e6Odu1kaULlXx+1GnSLz648cC1b9lKoNi7qVsLkmAQ3pjHXdZhDX6uHx/jIA
-	 mxnAaaUm0gfQjiNgyDwcc3tCUJLVt5YH+NHHOyMNGDE/Nen3NfpfGAOg4LMA+hPIkn
-	 5Hd7s9mP8+eHviJz/ufoKQJPfadRMBJwWEn2rrNU=
+	b=bJGx4VD21CC0iG/lnW1Lm0Z9tjkSaDhXRkzfyr7UD6kwPZVSBAykZZFLoxqEPBXaQ
+	 BgAVH3u/GjePKQJZATb9N+h37EhykFGLa3Wvh5uhsFw19D4mzdHx21PZsC8XbcUPF4
+	 D4jw1zFldyjmdZxBobDwplHG2MVuYd0K3Wq+5CXs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Yury Norov <yury.norov@gmail.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.15 014/215] fs/ntfs3: add prefix to bitmap_size() and use BITS_TO_U64()
+	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	=?UTF-8?q?J=C3=A9r=C3=B4me=20Pouiller?= <jerome.pouiller@silabs.com>,
+	Kalle Valo <kvalo@kernel.org>
+Subject: [PATCH 6.10 015/149] wifi: wfx: repair open network AP mode
 Date: Sun,  1 Sep 2024 18:15:26 +0200
-Message-ID: <20240901160823.791418936@linuxfoundation.org>
+Message-ID: <20240901160818.040873135@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,127 +60,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Lobakin <aleksander.lobakin@intel.com>
+From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 
-commit 3f5ef5109f6a054ce58b3bec7214ed76c9cc269f upstream.
+commit 6d30bb88f623526197c0e18a366e68a4254a2c83 upstream.
 
-bitmap_size() is a pretty generic name and one may want to use it for
-a generic bitmap API function. At the same time, its logic is
-NTFS-specific, as it aligns to the sizeof(u64), not the sizeof(long)
-(although it uses ideologically right ALIGN() instead of division).
-Add the prefix 'ntfs3_' used for that FS (not just 'ntfs_' to not mix
-it with the legacy module) and use generic BITS_TO_U64() while at it.
+RSN IE missing in beacon is normal in open networks.
+Avoid returning -EINVAL in this case.
 
-Suggested-by: Yury Norov <yury.norov@gmail.com> # BITS_TO_U64()
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Yury Norov <yury.norov@gmail.com>
-Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Steps to reproduce:
+
+$ cat /etc/wpa_supplicant.conf
+network={
+	ssid="testNet"
+	mode=2
+	key_mgmt=NONE
+}
+
+$ wpa_supplicant -iwlan0 -c /etc/wpa_supplicant.conf
+nl80211: Beacon set failed: -22 (Invalid argument)
+Failed to set beacon parameters
+Interface initialization failed
+wlan0: interface state UNINITIALIZED->DISABLED
+wlan0: AP-DISABLED
+wlan0: Unable to setup interface.
+Failed to initialize AP interface
+
+After the change:
+
+$ wpa_supplicant -iwlan0 -c /etc/wpa_supplicant.conf
+Successfully initialized wpa_supplicant
+wlan0: interface state UNINITIALIZED->ENABLED
+wlan0: AP-ENABLED
+
+Cc: stable@vger.kernel.org
+Fixes: fe0a7776d4d1 ("wifi: wfx: fix possible NULL pointer dereference in wfx_set_mfp_ap()")
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Reviewed-by: Jérôme Pouiller <jerome.pouiller@silabs.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://patch.msgid.link/20240823131521.3309073-1-alexander.sverdlin@siemens.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ntfs3/bitmap.c  |    4 ++--
- fs/ntfs3/fsntfs.c  |    2 +-
- fs/ntfs3/index.c   |   11 ++++++-----
- fs/ntfs3/ntfs_fs.h |    4 ++--
- fs/ntfs3/super.c   |    2 +-
- 5 files changed, 12 insertions(+), 11 deletions(-)
+ drivers/net/wireless/silabs/wfx/sta.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/fs/ntfs3/bitmap.c
-+++ b/fs/ntfs3/bitmap.c
-@@ -661,7 +661,7 @@ int wnd_init(struct wnd_bitmap *wnd, str
- 	wnd->total_zeroes = nbits;
- 	wnd->extent_max = MINUS_ONE_T;
- 	wnd->zone_bit = wnd->zone_end = 0;
--	wnd->nwnd = bytes_to_block(sb, bitmap_size(nbits));
-+	wnd->nwnd = bytes_to_block(sb, ntfs3_bitmap_size(nbits));
- 	wnd->bits_last = nbits & (wbits - 1);
- 	if (!wnd->bits_last)
- 		wnd->bits_last = wbits;
-@@ -1325,7 +1325,7 @@ int wnd_extend(struct wnd_bitmap *wnd, s
- 		return -EINVAL;
+--- a/drivers/net/wireless/silabs/wfx/sta.c
++++ b/drivers/net/wireless/silabs/wfx/sta.c
+@@ -352,8 +352,11 @@ static int wfx_set_mfp_ap(struct wfx_vif
  
- 	/* Align to 8 byte boundary. */
--	new_wnd = bytes_to_block(sb, bitmap_size(new_bits));
-+	new_wnd = bytes_to_block(sb, ntfs3_bitmap_size(new_bits));
- 	new_last = new_bits & (wbits - 1);
- 	if (!new_last)
- 		new_last = wbits;
---- a/fs/ntfs3/fsntfs.c
-+++ b/fs/ntfs3/fsntfs.c
-@@ -493,7 +493,7 @@ static int ntfs_extend_mft(struct ntfs_s
- 	ni->mi.dirty = true;
+ 	ptr = (u16 *)cfg80211_find_ie(WLAN_EID_RSN, skb->data + ieoffset,
+ 				      skb->len - ieoffset);
+-	if (unlikely(!ptr))
++	if (!ptr) {
++		/* No RSN IE is fine in open networks */
++		ret = 0;
+ 		goto free_skb;
++	}
  
- 	/* Step 2: Resize $MFT::BITMAP. */
--	new_bitmap_bytes = bitmap_size(new_mft_total);
-+	new_bitmap_bytes = ntfs3_bitmap_size(new_mft_total);
- 
- 	err = attr_set_size(ni, ATTR_BITMAP, NULL, 0, &sbi->mft.bitmap.run,
- 			    new_bitmap_bytes, &new_bitmap_bytes, true, NULL);
---- a/fs/ntfs3/index.c
-+++ b/fs/ntfs3/index.c
-@@ -1461,8 +1461,8 @@ static int indx_create_allocate(struct n
- 
- 	alloc->nres.valid_size = alloc->nres.data_size = cpu_to_le64(data_size);
- 
--	err = ni_insert_resident(ni, bitmap_size(1), ATTR_BITMAP, in->name,
--				 in->name_len, &bitmap, NULL, NULL);
-+	err = ni_insert_resident(ni, ntfs3_bitmap_size(1), ATTR_BITMAP,
-+				 in->name, in->name_len, &bitmap, NULL, NULL);
- 	if (err)
- 		goto out2;
- 
-@@ -1523,8 +1523,9 @@ static int indx_add_allocate(struct ntfs
- 	if (bmp) {
- 		/* Increase bitmap. */
- 		err = attr_set_size(ni, ATTR_BITMAP, in->name, in->name_len,
--				    &indx->bitmap_run, bitmap_size(bit + 1),
--				    NULL, true, NULL);
-+				    &indx->bitmap_run,
-+				    ntfs3_bitmap_size(bit + 1), NULL, true,
-+				    NULL);
- 		if (err)
- 			goto out1;
- 	}
-@@ -2087,7 +2088,7 @@ static int indx_shrink(struct ntfs_index
- 	if (err)
- 		return err;
- 
--	bpb = bitmap_size(bit);
-+	bpb = ntfs3_bitmap_size(bit);
- 	if (bpb * 8 == nbits)
- 		return 0;
- 
---- a/fs/ntfs3/ntfs_fs.h
-+++ b/fs/ntfs3/ntfs_fs.h
-@@ -950,9 +950,9 @@ static inline bool run_is_empty(struct r
- }
- 
- /* NTFS uses quad aligned bitmaps. */
--static inline size_t bitmap_size(size_t bits)
-+static inline size_t ntfs3_bitmap_size(size_t bits)
- {
--	return ALIGN((bits + 7) >> 3, 8);
-+	return BITS_TO_U64(bits) * sizeof(u64);
- }
- 
- #define _100ns2seconds 10000000
---- a/fs/ntfs3/super.c
-+++ b/fs/ntfs3/super.c
-@@ -1103,7 +1103,7 @@ static int ntfs_fill_super(struct super_
- 
- 	/* Check bitmap boundary. */
- 	tt = sbi->used.bitmap.nbits;
--	if (inode->i_size < bitmap_size(tt)) {
-+	if (inode->i_size < ntfs3_bitmap_size(tt)) {
- 		err = -EINVAL;
- 		goto put_inode_out;
- 	}
+ 	ptr += pairwise_cipher_suite_count_offset;
+ 	if (WARN_ON(ptr > (u16 *)skb_tail_pointer(skb)))
 
 
 
