@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-72336-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72027-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DB8C967A3A
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:53:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 427459678DF
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:36:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C12D2822A4
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:53:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B9BA3B220D4
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:36:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B526617E900;
-	Sun,  1 Sep 2024 16:53:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05F1E17E900;
+	Sun,  1 Sep 2024 16:36:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JLWCThJX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LhQXq/7w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 741651DFD1;
-	Sun,  1 Sep 2024 16:53:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B74411C68C;
+	Sun,  1 Sep 2024 16:36:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209592; cv=none; b=GipzIzq8jaF769L+MXj8SOwtmDT1IUeAsGn8T4MRZOCll5VE0tbsjV3+pPQ6XkG6sOZO2J7jVU5VOYWwVlwDfnd1CuoEKSIIw6KnmnKdmMtQ6J0iVxYQy2mjw3T5Zj+DaBWxagnbPZRC6Hgak4OC5F03ZoIEQ2K7o05QTK2M1wI=
+	t=1725208601; cv=none; b=KOJBTHRs1UAWBRuhXRhK0TxD0gVrMLrBi0ZwAQgYsz6O4ocNEsKBOkkGZXBpMUSeB7CV8aTefW7ausq+QzHmcPRtVvRSdt+6usQ/thrFfNP3MxDGSAE/47cnZNdWRZu0lSf7n4KpI3cmszmmhE1qo20SMEWRgVyv5pDu9aOZqJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209592; c=relaxed/simple;
-	bh=J/Urf9y7KkKolmgGzUWUMRW0bg6s/dK1XGtHqDgKHbU=;
+	s=arc-20240116; t=1725208601; c=relaxed/simple;
+	bh=4rO0CaBx8yB4vCH8fXbp7B+6pDpLY0NW7gTQuf7CD7s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nTmYi5WxTUxn4THf6bXozfnfglBP5t3akUhzwhh7OzTZY985lAb8vxZR38f6N83Catwreo5A1PdWf90xDVLGkxFc1RrdVXFGLI2sEbqiaN6LoAF/PZzgp0MgWQGNXf/Qt23HuhZwwfUseuwRMxCBouZvhIyQcWNB1Q5wPjNlIu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JLWCThJX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F047CC4CEC3;
-	Sun,  1 Sep 2024 16:53:11 +0000 (UTC)
+	 MIME-Version; b=iErv9fBBhklBZTJL/2F56LmBg7fqAESGcmdzN/jMW5MUXNOXRCvPqRro/XMeiNWW6G0IjBVch+gMuZl5hpIB+fFrb6duwx4hP2QVsaNX894rWe7rhxIjekwS2YOBY9fNdveiODkvbt6CVa+DzpcWTmz2n+qVKWQ5NlzKpsa9ep0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LhQXq/7w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A307C4CEC3;
+	Sun,  1 Sep 2024 16:36:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209592;
-	bh=J/Urf9y7KkKolmgGzUWUMRW0bg6s/dK1XGtHqDgKHbU=;
+	s=korg; t=1725208601;
+	bh=4rO0CaBx8yB4vCH8fXbp7B+6pDpLY0NW7gTQuf7CD7s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JLWCThJXYox2TfPz3MQkX+UAhOnIn+lX7R/58cQ8ImOgtSgyxW1/bgQmZLxmEvG5A
-	 TDvW6zLMrjFL8tWWGCyK5DXuJ1g3Xnj0ivC3nDjhir6h0BU0R2FkRBmfNhexH5VgfQ
-	 tIgYJ89+kVAVY9Oxaf4+osZTPL3wJh2dyFWhqhI0=
+	b=LhQXq/7w8msV6wjrOqQW2SM9zUA+g26X8TC+i8xd427/Wzott1Aso35/jbrY3K9ho
+	 FcDwKtEaR+lZUBVL5iV4hsYVYiEjynY0US5UpD0VLmNR45zMAHgCb8TZEPStOi0qBp
+	 jJ0Z/tRdyjozZP+Ap/Y5p0YfdXATr8QfclQ2pKjk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiri Slaby <jirislaby@gmail.com>,
-	David Laight <David.Laight@ACULAB.COM>,
-	Aurelien Jarno <aurelien@aurel32.net>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 5.10 084/151] media: solo6x10: replace max(a, min(b, c)) by clamp(b, a, c)
+	stable <stable@kernel.org>,
+	Selvarasu Ganesan <selvarasu.g@samsung.com>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 6.10 133/149] usb: dwc3: core: Prevent USB core invalid event buffer address access
 Date: Sun,  1 Sep 2024 18:17:24 +0200
-Message-ID: <20240901160817.279661962@linuxfoundation.org>
+Message-ID: <20240901160822.453061495@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
-References: <20240901160814.090297276@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aurelien Jarno <aurelien@aurel32.net>
+From: Selvarasu Ganesan <selvarasu.g@samsung.com>
 
-commit 31e97d7c9ae3de072d7b424b2cf706a03ec10720 upstream.
+commit 14e497183df28c006603cc67fd3797a537eef7b9 upstream.
 
-This patch replaces max(a, min(b, c)) by clamp(b, a, c) in the solo6x10
-driver.  This improves the readability and more importantly, for the
-solo6x10-p2m.c file, this reduces on my system (x86-64, gcc 13):
+This commit addresses an issue where the USB core could access an
+invalid event buffer address during runtime suspend, potentially causing
+SMMU faults and other memory issues in Exynos platforms. The problem
+arises from the following sequence.
+        1. In dwc3_gadget_suspend, there is a chance of a timeout when
+        moving the USB core to the halt state after clearing the
+        run/stop bit by software.
+        2. In dwc3_core_exit, the event buffer is cleared regardless of
+        the USB core's status, which may lead to an SMMU faults and
+        other memory issues. if the USB core tries to access the event
+        buffer address.
 
- - the preprocessed size from 121 MiB to 4.5 MiB;
+To prevent this hardware quirk on Exynos platforms, this commit ensures
+that the event buffer address is not cleared by software  when the USB
+core is active during runtime suspend by checking its status before
+clearing the buffer address.
 
- - the build CPU time from 46.8 s to 1.6 s;
-
- - the build memory from 2786 MiB to 98MiB.
-
-In fine, this allows this relatively simple C file to be built on a
-32-bit system.
-
-Reported-by: Jiri Slaby <jirislaby@gmail.com>
-Closes: https://lore.kernel.org/lkml/18c6df0d-45ed-450c-9eda-95160a2bbb8e@gmail.com/
-Cc:  <stable@vger.kernel.org> # v6.7+
-Suggested-by: David Laight <David.Laight@ACULAB.COM>
-Signed-off-by: Aurelien Jarno <aurelien@aurel32.net>
-Reviewed-by: David Laight <David.Laight@ACULAB.COM>
-Reviewed-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: stable <stable@kernel.org>
+Signed-off-by: Selvarasu Ganesan <selvarasu.g@samsung.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/20240815064836.1491-1-selvarasu.g@samsung.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/pci/solo6x10/solo6x10-offsets.h |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/usb/dwc3/core.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/media/pci/solo6x10/solo6x10-offsets.h
-+++ b/drivers/media/pci/solo6x10/solo6x10-offsets.h
-@@ -57,16 +57,16 @@
- #define SOLO_MP4E_EXT_ADDR(__solo) \
- 	(SOLO_EREF_EXT_ADDR(__solo) + SOLO_EREF_EXT_AREA(__solo))
- #define SOLO_MP4E_EXT_SIZE(__solo) \
--	max((__solo->nr_chans * 0x00080000),				\
--	    min(((__solo->sdram_size - SOLO_MP4E_EXT_ADDR(__solo)) -	\
--		 __SOLO_JPEG_MIN_SIZE(__solo)), 0x00ff0000))
-+	clamp(__solo->sdram_size - SOLO_MP4E_EXT_ADDR(__solo) -	\
-+	      __SOLO_JPEG_MIN_SIZE(__solo),			\
-+	      __solo->nr_chans * 0x00080000, 0x00ff0000)
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -559,9 +559,17 @@ int dwc3_event_buffers_setup(struct dwc3
+ void dwc3_event_buffers_cleanup(struct dwc3 *dwc)
+ {
+ 	struct dwc3_event_buffer	*evt;
++	u32				reg;
  
- #define __SOLO_JPEG_MIN_SIZE(__solo)		(__solo->nr_chans * 0x00080000)
- #define SOLO_JPEG_EXT_ADDR(__solo) \
- 		(SOLO_MP4E_EXT_ADDR(__solo) + SOLO_MP4E_EXT_SIZE(__solo))
- #define SOLO_JPEG_EXT_SIZE(__solo) \
--	max(__SOLO_JPEG_MIN_SIZE(__solo),				\
--	    min((__solo->sdram_size - SOLO_JPEG_EXT_ADDR(__solo)), 0x00ff0000))
-+	clamp(__solo->sdram_size - SOLO_JPEG_EXT_ADDR(__solo),	\
-+	      __SOLO_JPEG_MIN_SIZE(__solo), 0x00ff0000)
+ 	if (!dwc->ev_buf)
+ 		return;
++	/*
++	 * Exynos platforms may not be able to access event buffer if the
++	 * controller failed to halt on dwc3_core_exit().
++	 */
++	reg = dwc3_readl(dwc->regs, DWC3_DSTS);
++	if (!(reg & DWC3_DSTS_DEVCTRLHLT))
++		return;
  
- #define SOLO_SDRAM_END(__solo) \
- 	(SOLO_JPEG_EXT_ADDR(__solo) + SOLO_JPEG_EXT_SIZE(__solo))
+ 	evt = dwc->ev_buf;
+ 
 
 
 
