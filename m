@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-71995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72110-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BCCE9678BC
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:35:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C55496793A
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:41:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B799B1F20D44
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:35:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0BBB2B20CA5
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:41:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A95C017CA1F;
-	Sun,  1 Sep 2024 16:34:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA7EB183CA9;
+	Sun,  1 Sep 2024 16:41:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y/QEydw2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PrdxU3lh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67493183CA3;
-	Sun,  1 Sep 2024 16:34:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A60D17CA1F;
+	Sun,  1 Sep 2024 16:41:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208498; cv=none; b=qhIf3+Cn0uhWGd3KGrDd5wRG6pBuEPQejHtktlmUAxk/u/OYkxLujwBN7hkFdxZUiAN81+7hbcsD0Hz+B09a+q7cm8Yyh+pioqvaphSexGUepxWcLkxQCrJKQYdIjd09hUmcx/5f/VCwBIKvyIfJcEYaRnon49sqDbXZMletGrU=
+	t=1725208873; cv=none; b=Rrw+YIrCTZLgqLat7X4xOcGPpnncPWqUC9/KkFA5WTq/sPG2DJ/Ord+aEPELcndh7R7nXbV4yEnZjFJHXmwOcc5bW8G7PlD/tuE45MKl4bncFT8XBAqqPAS9IJ5KhVgBKwSm03ArfizH2CAhdwdoNJOuzv69m3TrOWzkIUh0EjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208498; c=relaxed/simple;
-	bh=2g71342dXKGLNaoXBYyGXVpgqQqD+xpZji5M598HD7A=;
+	s=arc-20240116; t=1725208873; c=relaxed/simple;
+	bh=oS3ZcuJd1c0BV+3fasTGgAY2aSY7HhIfWAMeC6PiStU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NKER8XPKRf5tWrDrAseG9EC5sMObtLXK1OSKPYSpovqXqwh4debYPOzi8gk56EjYW++hu6Yv8nzHds23cbmh4UNs//uuNhx+008jKRWmzkPD7GMp+9hAjMxFiS4zaUiMrUpfGpIzRITDoiv1MgeL01iPXjPIR8PhcAazZzyQlFo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y/QEydw2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEF74C4CEC3;
-	Sun,  1 Sep 2024 16:34:57 +0000 (UTC)
+	 MIME-Version; b=U8ZwrybFfw4ZDuMj0eUs+ckxls44MYhHp1NNb2ew1jd4A7i/FgWBEyErAXoSyShy/3rcPCnWTmlUJiXBehkH9SbJSIoMk9NXPUAXRLgy4o4U9wMzQbUGP2CYZ7l+ea/LG4jhosPxC9IL4yv+gFgIFOx4sjn9hu851EfnLc4BsD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PrdxU3lh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 132C3C4CEC3;
+	Sun,  1 Sep 2024 16:41:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208498;
-	bh=2g71342dXKGLNaoXBYyGXVpgqQqD+xpZji5M598HD7A=;
+	s=korg; t=1725208873;
+	bh=oS3ZcuJd1c0BV+3fasTGgAY2aSY7HhIfWAMeC6PiStU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y/QEydw2OYe2KDubpdSFXKA9SPwNpNmTDOBOIo5P925UiaeFDEbkQDoLDv8G54R3g
-	 1EW3C6b824/NK5oCc+xd1ezCurLWN+ValGQTrADm/vRwk6thXD1Zb6EAL1IczGfI8L
-	 Syp9lkyFnikRSyNt0tFs39bClfUpnWd8hIVDpo+A=
+	b=PrdxU3lhnavY4RblurtGMcXcTbnBxoBv5prli8Tns6ypAvBOUJdLk4/fSRAohEojl
+	 v7E9OHDPCV3UrsGH1u0Vbj77HkvJDzUJmwCdmUz/8mA1sB19vT+Y863NvbuE6/qK8f
+	 hSLKEDJruCPB9pTlNs8WTTQBbk/OsKiyLVbF2EDI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Oreoluwa Babatunde <quic_obabatun@quicinc.com>,
+	Stafford Horne <shorne@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 101/149] netfilter: nf_tables_ipv6: consider network offset in netdev/egress validation
+Subject: [PATCH 5.4 066/134] openrisc: Call setup_memory() earlier in the init sequence
 Date: Sun,  1 Sep 2024 18:16:52 +0200
-Message-ID: <20240901160821.257876915@linuxfoundation.org>
+Message-ID: <20240901160812.585036226@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
-References: <20240901160817.461957599@linuxfoundation.org>
+In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
+References: <20240901160809.752718937@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Oreoluwa Babatunde <quic_obabatun@quicinc.com>
 
-[ Upstream commit 70c261d500951cf3ea0fcf32651aab9a65a91471 ]
+[ Upstream commit 7b432bf376c9c198a7ff48f1ed14a14c0ffbe1fe ]
 
->From netdev/egress, skb->len can include the ethernet header, therefore,
-subtract network offset from skb->len when validating IPv6 packet length.
+The unflatten_and_copy_device_tree() function contains a call to
+memblock_alloc(). This means that memblock is allocating memory before
+any of the reserved memory regions are set aside in the setup_memory()
+function which calls early_init_fdt_scan_reserved_mem(). Therefore,
+there is a possibility for memblock to allocate from any of the
+reserved memory regions.
 
-Fixes: 42df6e1d221d ("netfilter: Introduce egress hook")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Hence, move the call to setup_memory() to be earlier in the init
+sequence so that the reserved memory regions are set aside before any
+allocations are done using memblock.
+
+Signed-off-by: Oreoluwa Babatunde <quic_obabatun@quicinc.com>
+Signed-off-by: Stafford Horne <shorne@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/netfilter/nf_tables_ipv6.h | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/openrisc/kernel/setup.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/include/net/netfilter/nf_tables_ipv6.h b/include/net/netfilter/nf_tables_ipv6.h
-index 467d59b9e5334..a0633eeaec977 100644
---- a/include/net/netfilter/nf_tables_ipv6.h
-+++ b/include/net/netfilter/nf_tables_ipv6.h
-@@ -31,8 +31,8 @@ static inline int __nft_set_pktinfo_ipv6_validate(struct nft_pktinfo *pkt)
- 	struct ipv6hdr *ip6h, _ip6h;
- 	unsigned int thoff = 0;
- 	unsigned short frag_off;
-+	u32 pkt_len, skb_len;
- 	int protohdr;
--	u32 pkt_len;
+diff --git a/arch/openrisc/kernel/setup.c b/arch/openrisc/kernel/setup.c
+index ae104eb4becc7..bd0ba3157d515 100644
+--- a/arch/openrisc/kernel/setup.c
++++ b/arch/openrisc/kernel/setup.c
+@@ -280,6 +280,9 @@ void calibrate_delay(void)
  
- 	ip6h = skb_header_pointer(pkt->skb, skb_network_offset(pkt->skb),
- 				  sizeof(*ip6h), &_ip6h);
-@@ -43,7 +43,8 @@ static inline int __nft_set_pktinfo_ipv6_validate(struct nft_pktinfo *pkt)
- 		return -1;
+ void __init setup_arch(char **cmdline_p)
+ {
++	/* setup memblock allocator */
++	setup_memory();
++
+ 	unflatten_and_copy_device_tree();
  
- 	pkt_len = ntohs(ip6h->payload_len);
--	if (pkt_len + sizeof(*ip6h) > pkt->skb->len)
-+	skb_len = pkt->skb->len - skb_network_offset(pkt->skb);
-+	if (pkt_len + sizeof(*ip6h) > skb_len)
- 		return -1;
+ 	setup_cpuinfo();
+@@ -304,9 +307,6 @@ void __init setup_arch(char **cmdline_p)
+ 	initrd_below_start_ok = 1;
+ #endif
  
- 	protohdr = ipv6_find_hdr(pkt->skb, &thoff, -1, &frag_off, &flags);
+-	/* setup memblock allocator */
+-	setup_memory();
+-
+ 	/* paging_init() sets up the MMU and marks all pages as reserved */
+ 	paging_init();
+ 
 -- 
 2.43.0
 
