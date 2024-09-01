@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-71733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72271-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92CDE967782
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:20:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E4E349679F4
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:49:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C324E1C20DA4
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:20:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 206EE1C2149F
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:49:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 720EE181B88;
-	Sun,  1 Sep 2024 16:20:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A16A916B391;
+	Sun,  1 Sep 2024 16:49:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SzKA56Nm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qCy2rXV9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DDDC2C1B4;
-	Sun,  1 Sep 2024 16:20:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6135F1C68C;
+	Sun,  1 Sep 2024 16:49:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725207636; cv=none; b=QgDWuap6cQeH0Vs5G6SRnAFitfRAF3ouAYx6fJ8P8vVk2iIUfo6KFVKd1U4Keq2MIedFxTtn3aj01hJgvq4TdNARf9pIe221GwsTMAJvm1aG9CFCc4FM33z+syQB0aUXFUp5fL3wxaxxFea0rE+ZjbQ1G1J0v/VbbcViF71HIa8=
+	t=1725209386; cv=none; b=n+GhdmE8mVXqHy9wd+KBrq9B1lDEVoOswruct1fhuUAfh9ePyXkBR75s0H6swXd10z0QDNrtpDv1SFxwbqf2VdGpFiuPkPc9qY4Hex35Uk9fTNeY6OWVAN4Sisr+riZHA1q0RYy3j7b9N7cpHmvN8APVZSLR1O3SORlGUjiDtUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725207636; c=relaxed/simple;
-	bh=37jUno90uhltMdwfJXE65JQ/4aLRpX2ig3oX9TBH5f8=;
+	s=arc-20240116; t=1725209386; c=relaxed/simple;
+	bh=bEfm5ea6uLZxg0LIbxKttBmqpPDf+auPH7zls/jSowI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bw1iy1+cm3THpG7Vja3xHaV2pcbkOwLSQD5A82rZ5rjZuuPsm8FO5y4MQCNyR41k39tavVnHKOtT/dEkyjVuIjIOVYnWudpwMgfAtKa7ZVOs/7JQXwVa93fQsJVM9FLuzR2DeTKnKSg+s/pXLKk89UmcH86VDdzrsUlcq1VLR2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SzKA56Nm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E4C9C4CEC3;
-	Sun,  1 Sep 2024 16:20:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PTvUooedTn1aM/dP3P5R0/Wsq34rztEHdqw914bP+WdD6RuP5mtmcK1vYLrh4ILlvlTmoMObAL1Rai673zb9U8t8X8DK7EOoZapKyTlF1DHmJiCsVhIhahWI42qltJm3Y4I5ympiLz9yYye+Iamwq7Hd6+W8gN2/A5h33dRTBvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qCy2rXV9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD6A1C4CEC3;
+	Sun,  1 Sep 2024 16:49:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725207635;
-	bh=37jUno90uhltMdwfJXE65JQ/4aLRpX2ig3oX9TBH5f8=;
+	s=korg; t=1725209386;
+	bh=bEfm5ea6uLZxg0LIbxKttBmqpPDf+auPH7zls/jSowI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SzKA56NmKsT7hWHIR/haDxeAB4IxGMk2W9+DabmlH+/Wm9HeiENlNPvKV9U48gTmq
-	 2rdAeBDILjgiAq8/ai7w0yr2PUYN1cIIGFBwFjQEJqzTA7Fz/nGUbFSY1XiVaLzPKI
-	 V6P6n3wBsGdkzyBdgVHZuGgYX6JBftKRhLblxER4=
+	b=qCy2rXV9bq1ZgSA3Q0SjGmuEL35l4YYq5zb9mHxz0UHC03ZAsxw9iQzvx7hqQcFH1
+	 b6vmHYoFJIX280WRWNv9bbyZMb9t8X0dX3vCQhqJNnakTI0UtSzF7k/uRDUtd8vVrg
+	 PeSmKke3LCLozFHn22ok3tUIBETZbAYRdSK8e/jY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Nan <linan122@huawei.com>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Song Liu <song@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 32/98] md: clean up invalid BUG_ON in md_ioctl
+	=?UTF-8?q?Juan=20Jos=C3=A9=20Arboleda?= <soyjuanarbol@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.10 002/151] ALSA: usb-audio: Support Yamaha P-125 quirk entry
 Date: Sun,  1 Sep 2024 18:16:02 +0200
-Message-ID: <20240901160804.909907771@linuxfoundation.org>
+Message-ID: <20240901160814.186662418@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
-References: <20240901160803.673617007@linuxfoundation.org>
+In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
+References: <20240901160814.090297276@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +59,38 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Nan <linan122@huawei.com>
+From: Juan José Arboleda <soyjuanarbol@gmail.com>
 
-[ Upstream commit 9dd8702e7cd28ebf076ff838933f29cf671165ec ]
+commit c286f204ce6ba7b48e3dcba53eda7df8eaa64dd9 upstream.
 
-'disk->private_data' is set to mddev in md_alloc() and never set to NULL,
-and users need to open mddev before submitting ioctl. So mddev must not
-have been freed during ioctl, and there is no need to check mddev here.
-Clean up it.
+This patch adds a USB quirk for the Yamaha P-125 digital piano.
 
-Signed-off-by: Li Nan <linan122@huawei.com>
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20240226031444.3606764-4-linan666@huaweicloud.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Juan José Arboleda <soyjuanarbol@gmail.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20240813161053.70256-1-soyjuanarbol@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/md.c | 5 -----
- 1 file changed, 5 deletions(-)
+ sound/usb/quirks-table.h |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/md/md.c b/drivers/md/md.c
-index 68eb3220be1c9..6f463eec60b48 100644
---- a/drivers/md/md.c
-+++ b/drivers/md/md.c
-@@ -7245,11 +7245,6 @@ static int md_ioctl(struct block_device *bdev, fmode_t mode,
- 
- 	mddev = bdev->bd_disk->private_data;
- 
--	if (!mddev) {
--		BUG();
--		goto out;
--	}
--
- 	/* Some actions do not requires the mutex */
- 	switch (cmd) {
- 	case GET_ARRAY_INFO:
--- 
-2.43.0
-
+--- a/sound/usb/quirks-table.h
++++ b/sound/usb/quirks-table.h
+@@ -273,6 +273,7 @@ YAMAHA_DEVICE(0x105a, NULL),
+ YAMAHA_DEVICE(0x105b, NULL),
+ YAMAHA_DEVICE(0x105c, NULL),
+ YAMAHA_DEVICE(0x105d, NULL),
++YAMAHA_DEVICE(0x1718, "P-125"),
+ {
+ 	USB_DEVICE(0x0499, 0x1503),
+ 	.driver_info = (unsigned long) & (const struct snd_usb_audio_quirk) {
 
 
 
