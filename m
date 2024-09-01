@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-71886-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72017-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3D77967832
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:29:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F52E9678D5
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:36:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 219821C20B15
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:29:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3423B1F210B8
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:36:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71C90183CAF;
-	Sun,  1 Sep 2024 16:29:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5AE61C68C;
+	Sun,  1 Sep 2024 16:36:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mPF2hYKN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XWvdsnqg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E3AF181B88;
-	Sun,  1 Sep 2024 16:29:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 652F317F389;
+	Sun,  1 Sep 2024 16:36:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208141; cv=none; b=rux8V4kDKGZjjIG06l6ecY1Kv39JgW4JciNyGsvvSueCZVs9gmXtn9NcwyvuKL3LGyLXA0K3TrW954Xy7Iu+fywQD6q3rG8r3vdZsIovvkcibu4G1YXeeKwSeW39HeXinIZ8kHONb3+d6nGn99qOOFIRHOy73BwMjgoGTkoZgbA=
+	t=1725208570; cv=none; b=Nhkzv4ABSvSnMDqAfO9a5UA3jU/2wfCMn8hdyJ+C10rqYGUwEGXW61mJB43AcJtO4BubPmTh2TTq2Bcga+Q33F6SE11KKfPOjlu/xzA8w6TKThtUp4ZX4bjARhmh4fQdKP4N/tJXRSYbgvgTYht8O1dcOOg8X7mxIgjrJXpzMSw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208141; c=relaxed/simple;
-	bh=/nSElZU80cYsyk0yjk5tdM2N1BQyZBnkEyVBphCnIzA=;
+	s=arc-20240116; t=1725208570; c=relaxed/simple;
+	bh=C+jrN6zvj3fny5D/r0dCtP++jlIr5TSjex3ghNVWhj4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J0u0Rehz50oYmRURsOwNIzMl7pMHwElMudg+nOFgGBoXYM96CSBoy1WB+Z2HAMqWFsfZgDVCHNFMnmccm9MHFea9KScgSSstDa3tnn2jOJ6Q5Hak517010wIiM3HeL+SEZy9lsWho1660ydK4AUb4kAnYwmga8qyJ5j+He2ZDWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mPF2hYKN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40462C4CEC3;
-	Sun,  1 Sep 2024 16:29:00 +0000 (UTC)
+	 MIME-Version; b=ABMs80KyMP+beyol3Olkx0kCr6XGjPlS93jGZJhoJUdhAujbmrZ+8O7iXtFAqzaUSppVrvQs0YxgkPsWx9Q+i6cagVy8Q61r6Lo2XgQXF/tPiXI62hskKyMoIRSotR/ZeiRSNZ9Oy+nryFpB/i3Z4DV3VJKxxCviJ8vPMs92i8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XWvdsnqg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE446C4CEC3;
+	Sun,  1 Sep 2024 16:36:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208140;
-	bh=/nSElZU80cYsyk0yjk5tdM2N1BQyZBnkEyVBphCnIzA=;
+	s=korg; t=1725208570;
+	bh=C+jrN6zvj3fny5D/r0dCtP++jlIr5TSjex3ghNVWhj4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mPF2hYKNZAucZSzjbhsQ1P5GUUob+KOJo0Op/eriRAth1K3QEIt+kUif7cZG3MGTA
-	 h6JirXzPih46PNgmFOJ7QX5IRT+j4EP+ie7/9LH5xQvx0EBCon7PZn8dheGNHJaib4
-	 e4yiH1YglEHFM0HO1G9ALSnObcNN8qx833kS/J1g=
+	b=XWvdsnqg0KnQtU1EZ76y3/ROzujQWL/2VfGZIxVt2qr47YItQSul9p31hMJuhQmtj
+	 v/N+7cVwsnezWttBPsxueIky4kq1s3qdqsfGUuygWHrPWAVVCfw3/X1nm5+/es1PMN
+	 O5nfyi+jnbfbam0v9UmaMu/4VXbHe8nwBovRw/8Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Sicelo A. Mhlongo" <absicsz@gmail.com>,
-	Andreas Kemnade <andreas@kemnade.info>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 85/93] ARM: dts: omap3-n900: correct the accelerometer orientation
+	Yihang Li <liyihang9@huawei.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.10 121/149] scsi: sd: Ignore command SYNCHRONIZE CACHE error if format in progress
 Date: Sun,  1 Sep 2024 18:17:12 +0200
-Message-ID: <20240901160810.934428644@linuxfoundation.org>
+Message-ID: <20240901160822.004128133@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
-References: <20240901160807.346406833@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sicelo A. Mhlongo <absicsz@gmail.com>
+From: Yihang Li <liyihang9@huawei.com>
 
-[ Upstream commit 5062d9c0cbbc202e495e9b20f147f64ef5cc2897 ]
+commit 4f9eedfa27ae5806ed10906bcceee7bae49c8941 upstream.
 
-Negate the values reported for the accelerometer z-axis in order to
-match Documentation/devicetree/bindings/iio/mount-matrix.txt.
+If formatting a suspended disk (such as formatting with different DIF
+type), the disk will be resuming first, and then the format command will
+submit to the disk through SG_IO ioctl.
 
-Fixes: 14a213dcb004 ("ARM: dts: n900: use iio driver for accelerometer")
+When the disk is processing the format command, the system does not
+submit other commands to the disk. Therefore, the system attempts to
+suspend the disk again and sends the SYNCHRONIZE CACHE command. However,
+the SYNCHRONIZE CACHE command will fail because the disk is in the
+formatting process. This will cause the runtime_status of the disk to
+error and it is difficult for user to recover it. Error info like:
 
-Signed-off-by: Sicelo A. Mhlongo <absicsz@gmail.com>
-Reviewed-By: Andreas Kemnade <andreas@kemnade.info>
-Link: https://lore.kernel.org/r/20240722113137.3240847-1-absicsz@gmail.com
-Signed-off-by: Kevin Hilman <khilman@baylibre.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[  669.925325] sd 6:0:6:0: [sdg] Synchronizing SCSI cache
+[  670.202371] sd 6:0:6:0: [sdg] Synchronize Cache(10) failed: Result: hostbyte=0x00 driverbyte=DRIVER_OK
+[  670.216300] sd 6:0:6:0: [sdg] Sense Key : 0x2 [current]
+[  670.221860] sd 6:0:6:0: [sdg] ASC=0x4 ASCQ=0x4
+
+To solve the issue, ignore the error and return success/0 when format is
+in progress.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Yihang Li <liyihang9@huawei.com>
+Link: https://lore.kernel.org/r/20240819090934.2130592-1-liyihang9@huawei.com
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/boot/dts/ti/omap/omap3-n900.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/sd.c |   12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm/boot/dts/ti/omap/omap3-n900.dts b/arch/arm/boot/dts/ti/omap/omap3-n900.dts
-index d334853412517..036e472b77beb 100644
---- a/arch/arm/boot/dts/ti/omap/omap3-n900.dts
-+++ b/arch/arm/boot/dts/ti/omap/omap3-n900.dts
-@@ -781,7 +781,7 @@
+--- a/drivers/scsi/sd.c
++++ b/drivers/scsi/sd.c
+@@ -1711,13 +1711,15 @@ static int sd_sync_cache(struct scsi_dis
+ 			    (sshdr.asc == 0x74 && sshdr.ascq == 0x71))	/* drive is password locked */
+ 				/* this is no error here */
+ 				return 0;
++
+ 			/*
+-			 * This drive doesn't support sync and there's not much
+-			 * we can do because this is called during shutdown
+-			 * or suspend so just return success so those operations
+-			 * can proceed.
++			 * If a format is in progress or if the drive does not
++			 * support sync, there is not much we can do because
++			 * this is called during shutdown or suspend so just
++			 * return success so those operations can proceed.
+ 			 */
+-			if (sshdr.sense_key == ILLEGAL_REQUEST)
++			if ((sshdr.asc == 0x04 && sshdr.ascq == 0x04) ||
++			    sshdr.sense_key == ILLEGAL_REQUEST)
+ 				return 0;
+ 		}
  
- 		mount-matrix =	 "-1",  "0",  "0",
- 				  "0",  "1",  "0",
--				  "0",  "0",  "1";
-+				  "0",  "0",  "-1";
- 	};
- 
- 	cam1: camera@3e {
--- 
-2.43.0
-
 
 
 
