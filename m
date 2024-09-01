@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-72069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71758-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 278CE967909
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:39:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB14C96779D
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:21:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4853D1C208ED
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:39:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8833A281F9D
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:21:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6225E17E8EA;
-	Sun,  1 Sep 2024 16:38:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27C84181B88;
+	Sun,  1 Sep 2024 16:21:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xZbpubjG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hRjsq0U2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 215802B9C7;
-	Sun,  1 Sep 2024 16:38:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6E2717E01C;
+	Sun,  1 Sep 2024 16:21:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208739; cv=none; b=n1BSVMoiqkaOgftHBgL23Ao6VrnIMm+NOImnIQUUgRNr/i3FKtL/uYuqSXfhl5/wDChLKHFiWWXCX4ab9Rtb6VRWSjo/9UjJisuZc2QGA5tmEbocEXVKb84HX01PR5c7XNOMGSp6qv+wX6/LgcdvY7aDW17M8eEGwFuKFnORHW4=
+	t=1725207717; cv=none; b=LKh5xRGKh+CZUQvUbyJIQI/QwceIxQh9HqoB78fYVcSekT/7myShuP49KXpHniCvAfQWIGQEP5fKHcKXQz4FmOwcKSSxDZdHcd+zSqSc5sI8R3BlHTZWR+vO3mFE3vKn/WtQiDPa1F5Qczy3FwY20bCCqd2b7YPZDr0XUxK0TBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208739; c=relaxed/simple;
-	bh=B/QejyBH8cBH4ufvfFO8fMW9qgD+gwdBEN2nl9EMUB4=;
+	s=arc-20240116; t=1725207717; c=relaxed/simple;
+	bh=jLd0gF9qozKn4XVnjGm58Slr2T6DzctitxFVluO8PP8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DBcSoAhJfdcKx50wp1spMu71HmiWZK5WyNUdcaw3SXx1bbi0zubs3jcbKuY4mzYustr0ue4z4SrgAPWF2ju5XqZXQBTGz4uLt6mYmaQ7rLJ26a//Ek5P69Vzc/+o4x0sZrKWW4vrSl/zcMv9ppsJYL7rv7GKrBzDx0CnPk5NFSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xZbpubjG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46523C4CEC3;
-	Sun,  1 Sep 2024 16:38:58 +0000 (UTC)
+	 MIME-Version; b=DQMjsSXoVyWvPxNnoMX+KIFhfDmybyvI9EWNtPEtuC57Gb7vJK2DrFf0ZFzMqxRnnC0HCj6tVVN9z7itNB/7PJQJTAgjs0a2pKBJkgX7F2bj3oM4MK3KYb6SN6Yqh74EHaXgHtCf+A0j6cuN7FPL4Ol3dEC28lVqw0DIur9OEMY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hRjsq0U2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E0E5C4CEC3;
+	Sun,  1 Sep 2024 16:21:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208738;
-	bh=B/QejyBH8cBH4ufvfFO8fMW9qgD+gwdBEN2nl9EMUB4=;
+	s=korg; t=1725207717;
+	bh=jLd0gF9qozKn4XVnjGm58Slr2T6DzctitxFVluO8PP8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xZbpubjGmnksDAv5HbqBqKv1nyGynNnhUc5bsutcEvxgmI365pQcvcciHkDxG1Fit
-	 tRlP3K9RQp86RyJdTDYcMFStZg4pgkuHoRicp8TYd3qkr+ehrjmGzV1daRLcdD3/HP
-	 eZmmsYMBzxUc4EulC1YQ5EOt93z24FyZl0IGdZNY=
+	b=hRjsq0U2/uyG7VNIbX4jAkbhrkUngeVv45qXlg1nkVWPMTswVvQnCznUk3b1XPKID
+	 NS2yTq4DTpYWiRXxgAQEopNOsxC8akabTBweTMokva/B7a5O6ovl5e49tH6EkH0W6H
+	 tDSJB/I3sGbGJ5GHAGUYKd4d6LUohxA8kP8VzP2k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Yury Norov <yury.norov@gmail.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.4 009/134] bitmap: introduce generic optimized bitmap_size()
+	Kunwu Chan <chentao@kylinos.cn>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 25/98] powerpc/xics: Check return value of kasprintf in icp_native_map_one_cpu
 Date: Sun,  1 Sep 2024 18:15:55 +0200
-Message-ID: <20240901160810.463097224@linuxfoundation.org>
+Message-ID: <20240901160804.641050000@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
-References: <20240901160809.752718937@linuxfoundation.org>
+In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
+References: <20240901160803.673617007@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,171 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Lobakin <aleksander.lobakin@intel.com>
+From: Kunwu Chan <chentao@kylinos.cn>
 
-commit a37fbe666c016fd89e4460d0ebfcea05baba46dc upstream.
+[ Upstream commit 45b1ba7e5d1f6881050d558baf9bc74a2ae13930 ]
 
-The number of times yet another open coded
-`BITS_TO_LONGS(nbits) * sizeof(long)` can be spotted is huge.
-Some generic helper is long overdue.
+kasprintf() returns a pointer to dynamically allocated memory
+which can be NULL upon failure. Ensure the allocation was successful
+by checking the pointer validity.
 
-Add one, bitmap_size(), but with one detail.
-BITS_TO_LONGS() uses DIV_ROUND_UP(). The latter works well when both
-divident and divisor are compile-time constants or when the divisor
-is not a pow-of-2. When it is however, the compilers sometimes tend
-to generate suboptimal code (GCC 13):
-
-48 83 c0 3f          	add    $0x3f,%rax
-48 c1 e8 06          	shr    $0x6,%rax
-48 8d 14 c5 00 00 00 00	lea    0x0(,%rax,8),%rdx
-
-%BITS_PER_LONG is always a pow-2 (either 32 or 64), but GCC still does
-full division of `nbits + 63` by it and then multiplication by 8.
-Instead of BITS_TO_LONGS(), use ALIGN() and then divide by 8. GCC:
-
-8d 50 3f             	lea    0x3f(%rax),%edx
-c1 ea 03             	shr    $0x3,%edx
-81 e2 f8 ff ff 1f    	and    $0x1ffffff8,%edx
-
-Now it shifts `nbits + 63` by 3 positions (IOW performs fast division
-by 8) and then masks bits[2:0]. bloat-o-meter:
-
-add/remove: 0/0 grow/shrink: 20/133 up/down: 156/-773 (-617)
-
-Clang does it better and generates the same code before/after starting
-from -O1, except that with the ALIGN() approach it uses %edx and thus
-still saves some bytes:
-
-add/remove: 0/0 grow/shrink: 9/133 up/down: 18/-538 (-520)
-
-Note that we can't expand DIV_ROUND_UP() by adding a check and using
-this approach there, as it's used in array declarations where
-expressions are not allowed.
-Add this helper to tools/ as well.
-
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Acked-by: Yury Norov <yury.norov@gmail.com>
-Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20231122030651.3818-1-chentao@kylinos.cn
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-clone-metadata.c |    5 -----
- drivers/s390/cio/idset.c       |    2 +-
- include/linux/bitmap.h         |    8 +++++---
- include/linux/cpumask.h        |    2 +-
- lib/math/prime_numbers.c       |    2 --
- tools/include/linux/bitmap.h   |    7 ++++---
- 6 files changed, 11 insertions(+), 15 deletions(-)
+ arch/powerpc/sysdev/xics/icp-native.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/md/dm-clone-metadata.c
-+++ b/drivers/md/dm-clone-metadata.c
-@@ -471,11 +471,6 @@ static void __destroy_persistent_data_st
+diff --git a/arch/powerpc/sysdev/xics/icp-native.c b/arch/powerpc/sysdev/xics/icp-native.c
+index 340de58a15bd6..71278d554715d 100644
+--- a/arch/powerpc/sysdev/xics/icp-native.c
++++ b/arch/powerpc/sysdev/xics/icp-native.c
+@@ -240,6 +240,8 @@ static int __init icp_native_map_one_cpu(int hw_id, unsigned long addr,
+ 	rname = kasprintf(GFP_KERNEL, "CPU %d [0x%x] Interrupt Presentation",
+ 			  cpu, hw_id);
  
- /*---------------------------------------------------------------------------*/
- 
--static size_t bitmap_size(unsigned long nr_bits)
--{
--	return BITS_TO_LONGS(nr_bits) * sizeof(long);
--}
--
- static int __dirty_map_init(struct dirty_map *dmap, unsigned long nr_words,
- 			    unsigned long nr_regions)
- {
---- a/drivers/s390/cio/idset.c
-+++ b/drivers/s390/cio/idset.c
-@@ -18,7 +18,7 @@ struct idset {
- 
- static inline unsigned long bitmap_size(int num_ssid, int num_id)
- {
--	return BITS_TO_LONGS(num_ssid * num_id) * sizeof(unsigned long);
-+	return bitmap_size(size_mul(num_ssid, num_id));
- }
- 
- static struct idset *idset_new(int num_ssid, int num_id)
---- a/include/linux/bitmap.h
-+++ b/include/linux/bitmap.h
-@@ -216,22 +216,24 @@ extern int bitmap_print_to_pagebuf(bool
- #define small_const_nbits(nbits) \
- 	(__builtin_constant_p(nbits) && (nbits) <= BITS_PER_LONG && (nbits) > 0)
- 
-+#define bitmap_size(nbits)	(ALIGN(nbits, BITS_PER_LONG) / BITS_PER_BYTE)
-+
- static inline void bitmap_zero(unsigned long *dst, unsigned int nbits)
- {
--	unsigned int len = BITS_TO_LONGS(nbits) * sizeof(unsigned long);
-+	unsigned int len = bitmap_size(nbits);
- 	memset(dst, 0, len);
- }
- 
- static inline void bitmap_fill(unsigned long *dst, unsigned int nbits)
- {
--	unsigned int len = BITS_TO_LONGS(nbits) * sizeof(unsigned long);
-+	unsigned int len = bitmap_size(nbits);
- 	memset(dst, 0xff, len);
- }
- 
- static inline void bitmap_copy(unsigned long *dst, const unsigned long *src,
- 			unsigned int nbits)
- {
--	unsigned int len = BITS_TO_LONGS(nbits) * sizeof(unsigned long);
-+	unsigned int len = bitmap_size(nbits);
- 	memcpy(dst, src, len);
- }
- 
---- a/include/linux/cpumask.h
-+++ b/include/linux/cpumask.h
-@@ -685,7 +685,7 @@ static inline int cpulist_parse(const ch
-  */
- static inline unsigned int cpumask_size(void)
- {
--	return BITS_TO_LONGS(nr_cpumask_bits) * sizeof(long);
-+	return bitmap_size(nr_cpumask_bits);
- }
- 
- /*
---- a/lib/math/prime_numbers.c
-+++ b/lib/math/prime_numbers.c
-@@ -6,8 +6,6 @@
- #include <linux/prime_numbers.h>
- #include <linux/slab.h>
- 
--#define bitmap_size(nbits) (BITS_TO_LONGS(nbits) * sizeof(unsigned long))
--
- struct primes {
- 	struct rcu_head rcu;
- 	unsigned long last, sz;
---- a/tools/include/linux/bitmap.h
-+++ b/tools/include/linux/bitmap.h
-@@ -28,13 +28,14 @@ void bitmap_clear(unsigned long *map, un
- #define small_const_nbits(nbits) \
- 	(__builtin_constant_p(nbits) && (nbits) <= BITS_PER_LONG)
- 
-+#define bitmap_size(nbits)	(ALIGN(nbits, BITS_PER_LONG) / BITS_PER_BYTE)
-+
- static inline void bitmap_zero(unsigned long *dst, int nbits)
- {
- 	if (small_const_nbits(nbits))
- 		*dst = 0UL;
- 	else {
--		int len = BITS_TO_LONGS(nbits) * sizeof(unsigned long);
--		memset(dst, 0, len);
-+		memset(dst, 0, bitmap_size(nbits));
- 	}
- }
- 
-@@ -120,7 +121,7 @@ static inline int test_and_clear_bit(int
-  */
- static inline unsigned long *bitmap_alloc(int nbits)
- {
--	return calloc(1, BITS_TO_LONGS(nbits) * sizeof(unsigned long));
-+	return calloc(1, bitmap_size(nbits));
- }
- 
- /*
++	if (!rname)
++		return -ENOMEM;
+ 	if (!request_mem_region(addr, size, rname)) {
+ 		pr_warn("icp_native: Could not reserve ICP MMIO for CPU %d, interrupt server #0x%x\n",
+ 			cpu, hw_id);
+-- 
+2.43.0
+
 
 
 
