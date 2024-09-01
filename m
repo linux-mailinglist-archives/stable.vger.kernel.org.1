@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-72430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71953-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 223EB967A98
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:58:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C50CF967881
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:32:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A09A41F23EC4
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:58:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5057BB21155
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:32:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DACD18132A;
-	Sun,  1 Sep 2024 16:58:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B60E117CA1F;
+	Sun,  1 Sep 2024 16:32:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vcUQsyS3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xee6pA7g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E19EC1C68C;
-	Sun,  1 Sep 2024 16:58:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 744E51C68C;
+	Sun,  1 Sep 2024 16:32:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209897; cv=none; b=hLYmqa5G5l/AoP3ee3QuSWoiWMa+daBoy+ftokXZm0P/ZRna0slZDyX1UswnXI0BDkJ7aMwwUlpixUlz1CVH3UMc5pElceyE97hPEtoYzWpc++Rh9v4791BYg7gQcXQ6WX5gotYaS9Bh1/HmBbLjfflIooq3nUzXdGG/TXNUofs=
+	t=1725208359; cv=none; b=kxDV2ySFc8gmA1uLROFjZD56N5WE4iFVuqO9xTh4duC12VV0fS/IzccqQAzyJ4BkAB0ib+B8sNVv+K1jmEgdgsJVvWp7RcNQ9Ahk/Z0FBBhhQA//8hbVGOkz40yAb4P/8roI8syALPPJTtdNaeMSF45cTyedSJOllB1BhE+WJIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209897; c=relaxed/simple;
-	bh=nyPwlwYooYN5LDuTTloFRHHF+i1tWx3AQr424Fve4zc=;
+	s=arc-20240116; t=1725208359; c=relaxed/simple;
+	bh=vYhcWEs9v2gp9uiOJ0k8eFXJbEnt7JOEI/nn6VLho3c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=euQc3bo92FpTDUPckdTuV/NeRJ/dolNFZ3KFVXhPRETQk6ijwrA7QwqY7NRaN1JyMC+WqwiRrp1tpCDy4Yai1+SRsuCzPCdRk00Ro+dTbxdosKtfrjE/+rSrvsLRWOXnwDkQT3Eg4b0bAFtFxJKQGlrJ0zxTgEOtx83ZmrfXHG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vcUQsyS3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D558C4CEC3;
-	Sun,  1 Sep 2024 16:58:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=htLghG5SeIAKyLyT8vjTnu/qpHkYYmZcghqTHctRsYX2mxBnbd7bvWPwXB904P63RaVA+39cQqvmkpXCcRdZ1AdEr+jUDFMO2MzJNrKQty8+P3HvaTKfjfSmQbnlKamzzX4vc/ObCKTVBjYLmG/KzEAeEXxF/k+HfcvhE/SXp0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xee6pA7g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3B73C4CEC3;
+	Sun,  1 Sep 2024 16:32:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209896;
-	bh=nyPwlwYooYN5LDuTTloFRHHF+i1tWx3AQr424Fve4zc=;
+	s=korg; t=1725208359;
+	bh=vYhcWEs9v2gp9uiOJ0k8eFXJbEnt7JOEI/nn6VLho3c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vcUQsyS35Au9ga3dnA5AO2IJQlJ3SZvaVLq6Sz471gS2U5QcuVilMzpvrgTS3WLQ6
-	 vT9RmDlg9ixN3fI40+vKdEI3NOyz6GutVWtuYMmKmPt/uyjmjdQdNV4YqkF7GNY03E
-	 L/7sr8KCkbvkoYyDzwpIxeD432wVHOMwwsPeKYJM=
+	b=Xee6pA7gQEZPTlneJRYzOCteqCgZKTRcizB4rgMb190prjxG1jJ9GlPTliHIdBJxq
+	 jT4u57gjd2U7lJHOL4pMaVUgtQkfnk3iVQod1GBqB5KKkw3ygImZ9aeYPZ10QA2e2N
+	 eQgpMx3twUT8O96G1VPEljSqna5PHujITwK3Fbcc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tan Tee Min <tee.min.tan@linux.intel.com>,
-	Muhammad Husaini Zulkifli <muhammad.husaini.zulkifli@intel.com>,
-	Naama Meir <naamax.meir@linux.intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 026/215] igc: remove I226 Qbv BaseTime restriction
+	=?UTF-8?q?Ar=C4=B1n=C3=A7=20=C3=9CNAL?= <arinc.unal@arinc9.com>,
+	syzbot+455d38ecd5f655fc45cf@syzkaller.appspotmail.com,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.10 027/149] mptcp: pm: fix ID 0 endp usage after multiple re-creations
 Date: Sun,  1 Sep 2024 18:15:38 +0200
-Message-ID: <20240901160824.251305556@linuxfoundation.org>
+Message-ID: <20240901160818.485397994@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,228 +62,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Muhammad Husaini Zulkifli <muhammad.husaini.zulkifli@intel.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit b8897dc54e3bc9d25281bbb42a7d730782ff4588 ]
+commit 9366922adc6a71378ca01f898c41be295309f044 upstream.
 
-Remove the Qbv BaseTime restriction for I226 so that the BaseTime can be
-scheduled to the future time. A new register bit of Tx Qav Control
-(Bit-7: FutScdDis) was introduced to allow I226 scheduling future time as
-Qbv BaseTime and not having the Tx hang timeout issue.
+'local_addr_used' and 'add_addr_accepted' are decremented for addresses
+not related to the initial subflow (ID0), because the source and
+destination addresses of the initial subflows are known from the
+beginning: they don't count as "additional local address being used" or
+"ADD_ADDR being accepted".
 
-Besides, according to datasheet section 7.5.2.9.3.3, FutScdDis bit has to
-be configured first before the cycle time and base time.
+It is then required not to increment them when the entrypoint used by
+the initial subflow is removed and re-added during a connection. Without
+this modification, this entrypoint cannot be removed and re-added more
+than once.
 
-Indeed the FutScdDis bit is only active on re-configuration, thus we have
-to set the BASET_L to zero and then only set it to the desired value.
-
-Please also note that the Qbv configuration flow is moved around based on
-the Qbv programming guideline that is documented in the latest datasheet.
-
-Co-developed-by: Tan Tee Min <tee.min.tan@linux.intel.com>
-Signed-off-by: Tan Tee Min <tee.min.tan@linux.intel.com>
-Signed-off-by: Muhammad Husaini Zulkifli <muhammad.husaini.zulkifli@intel.com>
-Tested-by: Naama Meir <naamax.meir@linux.intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Stable-dep-of: e037a26ead18 ("igc: Fix packet still tx after gate close by reducing i226 MAC retry buffer")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Arınç ÜNAL <arinc.unal@arinc9.com>
+Closes: https://github.com/multipath-tcp/mptcp_net-next/issues/512
+Fixes: 3ad14f54bd74 ("mptcp: more accurate MPC endpoint tracking")
+Reported-by: syzbot+455d38ecd5f655fc45cf@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/00000000000049861306209237f4@google.com
+Cc: stable@vger.kernel.org
+Tested-by: Arınç ÜNAL <arinc.unal@arinc9.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/igc/igc_base.c    | 29 +++++++++++++
- drivers/net/ethernet/intel/igc/igc_base.h    |  2 +
- drivers/net/ethernet/intel/igc/igc_defines.h |  1 +
- drivers/net/ethernet/intel/igc/igc_main.c    |  5 ++-
- drivers/net/ethernet/intel/igc/igc_tsn.c     | 44 +++++++++++++-------
- 5 files changed, 65 insertions(+), 16 deletions(-)
+ net/mptcp/pm_netlink.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/igc/igc_base.c b/drivers/net/ethernet/intel/igc/igc_base.c
-index 84f142f5e472e..be095c6531b68 100644
---- a/drivers/net/ethernet/intel/igc/igc_base.c
-+++ b/drivers/net/ethernet/intel/igc/igc_base.c
-@@ -402,6 +402,35 @@ void igc_rx_fifo_flush_base(struct igc_hw *hw)
- 	rd32(IGC_MPC);
- }
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -615,12 +615,13 @@ subflow:
  
-+bool igc_is_device_id_i225(struct igc_hw *hw)
-+{
-+	switch (hw->device_id) {
-+	case IGC_DEV_ID_I225_LM:
-+	case IGC_DEV_ID_I225_V:
-+	case IGC_DEV_ID_I225_I:
-+	case IGC_DEV_ID_I225_K:
-+	case IGC_DEV_ID_I225_K2:
-+	case IGC_DEV_ID_I225_LMVP:
-+	case IGC_DEV_ID_I225_IT:
-+		return true;
-+	default:
-+		return false;
-+	}
-+}
-+
-+bool igc_is_device_id_i226(struct igc_hw *hw)
-+{
-+	switch (hw->device_id) {
-+	case IGC_DEV_ID_I226_LM:
-+	case IGC_DEV_ID_I226_V:
-+	case IGC_DEV_ID_I226_K:
-+	case IGC_DEV_ID_I226_IT:
-+		return true;
-+	default:
-+		return false;
-+	}
-+}
-+
- static struct igc_mac_operations igc_mac_ops_base = {
- 	.init_hw		= igc_init_hw_base,
- 	.check_for_link		= igc_check_for_copper_link,
-diff --git a/drivers/net/ethernet/intel/igc/igc_base.h b/drivers/net/ethernet/intel/igc/igc_base.h
-index 52849f5e8048d..9f3827eda157c 100644
---- a/drivers/net/ethernet/intel/igc/igc_base.h
-+++ b/drivers/net/ethernet/intel/igc/igc_base.h
-@@ -7,6 +7,8 @@
- /* forward declaration */
- void igc_rx_fifo_flush_base(struct igc_hw *hw);
- void igc_power_down_phy_copper_base(struct igc_hw *hw);
-+bool igc_is_device_id_i225(struct igc_hw *hw);
-+bool igc_is_device_id_i226(struct igc_hw *hw);
+ 		fullmesh = !!(local.flags & MPTCP_PM_ADDR_FLAG_FULLMESH);
  
- /* Transmit Descriptor - Advanced */
- union igc_adv_tx_desc {
-diff --git a/drivers/net/ethernet/intel/igc/igc_defines.h b/drivers/net/ethernet/intel/igc/igc_defines.h
-index 95282dde6b8bc..4f2021a940fb3 100644
---- a/drivers/net/ethernet/intel/igc/igc_defines.h
-+++ b/drivers/net/ethernet/intel/igc/igc_defines.h
-@@ -527,6 +527,7 @@
- /* Transmit Scheduling */
- #define IGC_TQAVCTRL_TRANSMIT_MODE_TSN	0x00000001
- #define IGC_TQAVCTRL_ENHANCED_QAV	0x00000008
-+#define IGC_TQAVCTRL_FUTSCDDIS		0x00000080
+-		msk->pm.local_addr_used++;
+ 		__clear_bit(local.addr.id, msk->pm.id_avail_bitmap);
  
- #define IGC_TXQCTL_QUEUE_MODE_LAUNCHT	0x00000001
- #define IGC_TXQCTL_STRICT_CYCLE		0x00000002
-diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
-index eb8c24318fdac..7605115e6a1b2 100644
---- a/drivers/net/ethernet/intel/igc/igc_main.c
-+++ b/drivers/net/ethernet/intel/igc/igc_main.c
-@@ -5991,6 +5991,7 @@ static bool validate_schedule(struct igc_adapter *adapter,
- 			      const struct tc_taprio_qopt_offload *qopt)
- {
- 	int queue_uses[IGC_MAX_TX_QUEUES] = { };
-+	struct igc_hw *hw = &adapter->hw;
- 	struct timespec64 now;
- 	size_t n;
+ 		/* Special case for ID0: set the correct ID */
+ 		if (local.addr.id == msk->mpc_endpoint_id)
+ 			local.addr.id = 0;
++		else /* local_addr_used is not decr for ID 0 */
++			msk->pm.local_addr_used++;
  
-@@ -6003,8 +6004,10 @@ static bool validate_schedule(struct igc_adapter *adapter,
- 	 * in the future, it will hold all the packets until that
- 	 * time, causing a lot of TX Hangs, so to avoid that, we
- 	 * reject schedules that would start in the future.
-+	 * Note: Limitation above is no longer in i226.
- 	 */
--	if (!is_base_time_past(qopt->base_time, &now))
-+	if (!is_base_time_past(qopt->base_time, &now) &&
-+	    igc_is_device_id_i225(hw))
- 		return false;
+ 		nr = fill_remote_addresses_vec(msk, &local.addr, fullmesh, addrs);
+ 		if (nr == 0)
+@@ -750,7 +751,9 @@ static void mptcp_pm_nl_add_addr_receive
+ 	spin_lock_bh(&msk->pm.lock);
  
- 	for (n = 0; n < qopt->num_entries; n++) {
-diff --git a/drivers/net/ethernet/intel/igc/igc_tsn.c b/drivers/net/ethernet/intel/igc/igc_tsn.c
-index 93518c785c7d2..066444675aade 100644
---- a/drivers/net/ethernet/intel/igc/igc_tsn.c
-+++ b/drivers/net/ethernet/intel/igc/igc_tsn.c
-@@ -2,6 +2,7 @@
- /* Copyright (c)  2019 Intel Corporation */
- 
- #include "igc.h"
-+#include "igc_hw.h"
- #include "igc_tsn.h"
- 
- static bool is_any_launchtime(struct igc_adapter *adapter)
-@@ -92,7 +93,8 @@ static int igc_tsn_disable_offload(struct igc_adapter *adapter)
- 
- 	tqavctrl = rd32(IGC_TQAVCTRL);
- 	tqavctrl &= ~(IGC_TQAVCTRL_TRANSMIT_MODE_TSN |
--		      IGC_TQAVCTRL_ENHANCED_QAV);
-+		      IGC_TQAVCTRL_ENHANCED_QAV | IGC_TQAVCTRL_FUTSCDDIS);
-+
- 	wr32(IGC_TQAVCTRL, tqavctrl);
- 
- 	for (i = 0; i < adapter->num_tx_queues; i++) {
-@@ -117,20 +119,10 @@ static int igc_tsn_enable_offload(struct igc_adapter *adapter)
- 	ktime_t base_time, systim;
- 	int i;
- 
--	cycle = adapter->cycle_time;
--	base_time = adapter->base_time;
--
- 	wr32(IGC_TSAUXC, 0);
- 	wr32(IGC_DTXMXPKTSZ, IGC_DTXMXPKTSZ_TSN);
- 	wr32(IGC_TXPBS, IGC_TXPBSIZE_TSN);
- 
--	tqavctrl = rd32(IGC_TQAVCTRL);
--	tqavctrl |= IGC_TQAVCTRL_TRANSMIT_MODE_TSN | IGC_TQAVCTRL_ENHANCED_QAV;
--	wr32(IGC_TQAVCTRL, tqavctrl);
--
--	wr32(IGC_QBVCYCLET_S, cycle);
--	wr32(IGC_QBVCYCLET, cycle);
--
- 	for (i = 0; i < adapter->num_tx_queues; i++) {
- 		struct igc_ring *ring = adapter->tx_ring[i];
- 		u32 txqctl = 0;
-@@ -233,21 +225,43 @@ static int igc_tsn_enable_offload(struct igc_adapter *adapter)
- 		wr32(IGC_TXQCTL(i), txqctl);
- 	}
- 
-+	tqavctrl = rd32(IGC_TQAVCTRL);
-+	tqavctrl |= IGC_TQAVCTRL_TRANSMIT_MODE_TSN | IGC_TQAVCTRL_ENHANCED_QAV;
-+
-+	cycle = adapter->cycle_time;
-+	base_time = adapter->base_time;
-+
- 	nsec = rd32(IGC_SYSTIML);
- 	sec = rd32(IGC_SYSTIMH);
- 
- 	systim = ktime_set(sec, nsec);
--
- 	if (ktime_compare(systim, base_time) > 0) {
--		s64 n;
-+		s64 n = div64_s64(ktime_sub_ns(systim, base_time), cycle);
- 
--		n = div64_s64(ktime_sub_ns(systim, base_time), cycle);
- 		base_time = ktime_add_ns(base_time, (n + 1) * cycle);
-+	} else {
-+		/* According to datasheet section 7.5.2.9.3.3, FutScdDis bit
-+		 * has to be configured before the cycle time and base time.
-+		 */
-+		if (igc_is_device_id_i226(hw))
-+			tqavctrl |= IGC_TQAVCTRL_FUTSCDDIS;
- 	}
- 
--	baset_h = div_s64_rem(base_time, NSEC_PER_SEC, &baset_l);
-+	wr32(IGC_TQAVCTRL, tqavctrl);
-+
-+	wr32(IGC_QBVCYCLET_S, cycle);
-+	wr32(IGC_QBVCYCLET, cycle);
- 
-+	baset_h = div_s64_rem(base_time, NSEC_PER_SEC, &baset_l);
- 	wr32(IGC_BASET_H, baset_h);
-+
-+	/* In i226, Future base time is only supported when FutScdDis bit
-+	 * is enabled and only active for re-configuration.
-+	 * In this case, initialize the base time with zero to create
-+	 * "re-configuration" scenario then only set the desired base time.
-+	 */
-+	if (tqavctrl & IGC_TQAVCTRL_FUTSCDDIS)
-+		wr32(IGC_BASET_L, 0);
- 	wr32(IGC_BASET_L, baset_l);
- 
- 	return 0;
--- 
-2.43.0
-
+ 	if (sf_created) {
+-		msk->pm.add_addr_accepted++;
++		/* add_addr_accepted is not decr for ID 0 */
++		if (remote.id)
++			msk->pm.add_addr_accepted++;
+ 		if (msk->pm.add_addr_accepted >= add_addr_accept_max ||
+ 		    msk->pm.subflows >= subflows_max)
+ 			WRITE_ONCE(msk->pm.accept_addr, false);
 
 
 
