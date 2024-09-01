@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-71847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71797-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9587E967805
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:26:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C5309677CD
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:24:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6DA81C2039F
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:26:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B60DA1F2131D
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:24:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC44933987;
-	Sun,  1 Sep 2024 16:26:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FCF3183CB4;
+	Sun,  1 Sep 2024 16:24:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uDY7uSmG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tRT5Qz85"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A67144C97;
-	Sun,  1 Sep 2024 16:26:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2CFA17F394;
+	Sun,  1 Sep 2024 16:24:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208011; cv=none; b=hB/n85fruadZmG2ynMH1GJF/WZvQtDrSpiAoXnezSYIrANj2WN4e+58UDjhIEULxEWWabZAn1nVq5yNJp9J2blNAbN/TLw+GGMlshndhf0VcWC0T2Xs58KsciuvJJqQfnSH3Ovusfk0A1IJfb3Xto4m5v5AiK63D4NSt7dyIThg=
+	t=1725207848; cv=none; b=QzOvt8Kg2Gr50b0zXex9v2/487w8EItt4C873tvRuSs7Hzed7YvvwR0ZnSL2fsxxKHOHq0aR5oYhYWEL71uKV78hw0PB4Cb10GKbGVI1BlflIhm0LIK6F+OMDSfZlnxOgu00jDrDlE8HVkpLEmg/hcA4iqYgrua5rNLeuo73Ztw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208011; c=relaxed/simple;
-	bh=4Pvmx2x+vpw5+kr1mRC3NtwH/6QG2dXoEQ+b5QcvNsw=;
+	s=arc-20240116; t=1725207848; c=relaxed/simple;
+	bh=mvJo1Jqt7jp8k/aPLsa5QWYkeFauGeqM9rddAcKpYVY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KRtYZ1rjm0OdZi/TMZz0GVAGQr9mp3zCoOv+FXfpKIbl5c9UMxFBgjL9iZOCtc5nMwHf2+amGkn3UUptbfv3/1n25bQBsUQu33xAJ6FEbsEQazpfrmgDhVy61N4nKogrZxSdx0JInROKzwv9ew6YD9yIjTiM5moTC4JCf5VZYLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uDY7uSmG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB309C4CEC3;
-	Sun,  1 Sep 2024 16:26:50 +0000 (UTC)
+	 MIME-Version; b=KCCSEPF0CtTicbHBhx+c7d/oIM9SzTB3wYtRfjYnzAFYhrTHez5dTnuDb6wrdUsJ4eExCpCVkkkgc+yMQOvfQGepxgBL9pEzbh/ab08ICyx4BZJ2eRBg5AKTloisQ/B6umk7rXWJYF8AjBP3pXojaa9c2A82uI7U7D52ioa17LU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tRT5Qz85; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD34AC4CEC3;
+	Sun,  1 Sep 2024 16:24:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208011;
-	bh=4Pvmx2x+vpw5+kr1mRC3NtwH/6QG2dXoEQ+b5QcvNsw=;
+	s=korg; t=1725207848;
+	bh=mvJo1Jqt7jp8k/aPLsa5QWYkeFauGeqM9rddAcKpYVY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uDY7uSmGrvj4gsL6RGN2Dhp1UuZB0ofV6dM/95KQimHxKwNo5Ev0Y5oqA19jlv4JS
-	 JUewBNxuWVOoeMs53KX0nE4q1FV8dMNFD5PsJR1+G6VeNxxFLjBp8pVjO5ZAKvztLR
-	 dnCjAUl6DUj2aISKwg5iEd98QC9XXH/McTnw2wog=
+	b=tRT5Qz85mNkTEt5eF22xog9eCdPod5oCvw0BbSyrtGoAB/ROAnmm1pAeh58n2k45L
+	 cA+vFdy4F00d/R+S0PF6EgyodkS76JERSeuWSiFM+GKObv8PpR3bVIdNM/trILBEHH
+	 kFXcnTx2UfzhjIscct4Fh71a5984VBOzCEB0KYQw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mrinmay Sarkar <quic_msarkar@quicinc.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Serge Semin <fancer.lancer@gmail.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.6 47/93] dmaengine: dw-edma: Do not enable watermark interrupts for HDMA
+	Stable <stable@kernel.org>,
+	Griffin Kroah-Hartman <griffin@kroah.com>,
+	Yiwei Zhang <zhan4630@purdue.edu>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 4.19 64/98] Bluetooth: MGMT: Add error handling to pair_device()
 Date: Sun,  1 Sep 2024 18:16:34 +0200
-Message-ID: <20240901160809.133798898@linuxfoundation.org>
+Message-ID: <20240901160806.113781723@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
-References: <20240901160807.346406833@linuxfoundation.org>
+In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
+References: <20240901160803.673617007@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mrinmay Sarkar <quic_msarkar@quicinc.com>
+From: Griffin Kroah-Hartman <griffin@kroah.com>
 
-commit 9f646ff25c09c52cebe726601db27a60f876f15e upstream.
+commit 538fd3921afac97158d4177139a0ad39f056dbb2 upstream.
 
-DW_HDMA_V0_LIE and DW_HDMA_V0_RIE are initialized as BIT(3) and BIT(4)
-respectively in dw_hdma_control enum. But as per HDMA register these
-bits are corresponds to LWIE and RWIE bit i.e local watermark interrupt
-enable and remote watermarek interrupt enable. In linked list mode LWIE
-and RWIE bits only enable the local and remote watermark interrupt.
+hci_conn_params_add() never checks for a NULL value and could lead to a NULL
+pointer dereference causing a crash.
 
-Since the watermark interrupts are not used but enabled, this leads to
-spurious interrupts getting generated. So remove the code that enables
-them to avoid generating spurious watermark interrupts.
+Fixed by adding error handling in the function.
 
-And also rename DW_HDMA_V0_LIE to DW_HDMA_V0_LWIE and DW_HDMA_V0_RIE to
-DW_HDMA_V0_RWIE as there is no LIE and RIE bits in HDMA and those bits
-are corresponds to LWIE and RWIE bits.
-
-Fixes: e74c39573d35 ("dmaengine: dw-edma: Add support for native HDMA")
-cc: stable@vger.kernel.org
-Signed-off-by: Mrinmay Sarkar <quic_msarkar@quicinc.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
-Link: https://lore.kernel.org/r/1724674261-3144-3-git-send-email-quic_msarkar@quicinc.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Cc: Stable <stable@kernel.org>
+Fixes: 5157b8a503fa ("Bluetooth: Fix initializing conn_params in scan phase")
+Signed-off-by: Griffin Kroah-Hartman <griffin@kroah.com>
+Reported-by: Yiwei Zhang <zhan4630@purdue.edu>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/dw-edma/dw-hdma-v0-core.c | 17 +++--------------
- 1 file changed, 3 insertions(+), 14 deletions(-)
+ net/bluetooth/mgmt.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/dma/dw-edma/dw-hdma-v0-core.c b/drivers/dma/dw-edma/dw-hdma-v0-core.c
-index 2addaca3b694..e3f8db4fe909 100644
---- a/drivers/dma/dw-edma/dw-hdma-v0-core.c
-+++ b/drivers/dma/dw-edma/dw-hdma-v0-core.c
-@@ -17,8 +17,8 @@ enum dw_hdma_control {
- 	DW_HDMA_V0_CB					= BIT(0),
- 	DW_HDMA_V0_TCB					= BIT(1),
- 	DW_HDMA_V0_LLP					= BIT(2),
--	DW_HDMA_V0_LIE					= BIT(3),
--	DW_HDMA_V0_RIE					= BIT(4),
-+	DW_HDMA_V0_LWIE					= BIT(3),
-+	DW_HDMA_V0_RWIE					= BIT(4),
- 	DW_HDMA_V0_CCS					= BIT(8),
- 	DW_HDMA_V0_LLE					= BIT(9),
- };
-@@ -195,25 +195,14 @@ static void dw_hdma_v0_write_ll_link(struct dw_edma_chunk *chunk,
- static void dw_hdma_v0_core_write_chunk(struct dw_edma_chunk *chunk)
- {
- 	struct dw_edma_burst *child;
--	struct dw_edma_chan *chan = chunk->chan;
- 	u32 control = 0, i = 0;
--	int j;
+--- a/net/bluetooth/mgmt.c
++++ b/net/bluetooth/mgmt.c
+@@ -2913,6 +2913,10 @@ static int pair_device(struct sock *sk,
+ 		 * will be kept and this function does nothing.
+ 		 */
+ 		p = hci_conn_params_add(hdev, &cp->addr.bdaddr, addr_type);
++		if (!p) {
++			err = -EIO;
++			goto unlock;
++		}
  
- 	if (chunk->cb)
- 		control = DW_HDMA_V0_CB;
- 
--	j = chunk->bursts_alloc;
--	list_for_each_entry(child, &chunk->burst->list, list) {
--		j--;
--		if (!j) {
--			control |= DW_HDMA_V0_LIE;
--			if (!(chan->dw->chip->flags & DW_EDMA_CHIP_LOCAL))
--				control |= DW_HDMA_V0_RIE;
--		}
--
-+	list_for_each_entry(child, &chunk->burst->list, list)
- 		dw_hdma_v0_write_ll_data(chunk, i++, control, child->sz,
- 					 child->sar, child->dar);
--	}
- 
- 	control = DW_HDMA_V0_LLP | DW_HDMA_V0_TCB;
- 	if (!chunk->cb)
--- 
-2.46.0
-
+ 		if (p->auto_connect == HCI_AUTO_CONN_EXPLICIT)
+ 			p->auto_connect = HCI_AUTO_CONN_DISABLED;
 
 
 
