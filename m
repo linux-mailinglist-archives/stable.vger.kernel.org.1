@@ -1,64 +1,56 @@
-Return-Path: <stable+bounces-71960-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72471-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12FB5967889
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:33:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AE1F967AC3
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:00:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C476D2813CF
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:33:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 289E7281E31
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:00:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8209183CAA;
-	Sun,  1 Sep 2024 16:33:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B00081EB5B;
+	Sun,  1 Sep 2024 17:00:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mCuJa/Cs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sg40YgI0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F62C1C68C;
-	Sun,  1 Sep 2024 16:33:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B6BD3398B;
+	Sun,  1 Sep 2024 17:00:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208382; cv=none; b=oOaNy2/SvRMdQ0rgpF86PyCt6ZxYpffdgpgf3pZ+qXbv5eAOahiW6qVKVxEdBIENFWh2+cvaeMb/LW2T1/do1pH0L6WDNafmH165xQOR9mlLf6sSjYItOq+kr48KuuC/oIa83xtoNCtc8KjqYHfkfnvsUzvqxenWCoSCe+2D8VU=
+	t=1725210033; cv=none; b=JhJ/TJSsRLrICecW90X/gpKHUQXOTtOLe1ai1iMUpMwsvo0twrIYYHjIWFEscxrV1CaRjlr10t51Y+Kdk4OORh4g4FlNddBV7iEY3+MDaVHkYiDBFoHDoou8Tsoq+ByZEKdw5bNB0527EfnhzTqw0TLSQlv6ndY04dV2vUOH2W8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208382; c=relaxed/simple;
-	bh=qFxpFqMLZ+DFLfzfGFyOQUXyeGsxg2sLnyFJ5vtrwBM=;
+	s=arc-20240116; t=1725210033; c=relaxed/simple;
+	bh=P77+rzpc+2ntTwoT6FJiNTI/zxwMfYjjSKw8RNDKX/I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pqy1Nq6kpFNyIziBXSJ8MeY425muH6XaCunY1Jtyww4A+8QDJKdiYta5LqrLVyH8b+dPuef6qIjIAo1EgTG0AQPJVkOTqqy+VGt+f7FTxBRK7QHJ3JbIrLfyoGggShnywQgIqzxo+vlDsnjcdWCVbu/3pJ1iI+/QNL+RSiwmFlw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mCuJa/Cs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA702C4CEC3;
-	Sun,  1 Sep 2024 16:33:01 +0000 (UTC)
+	 MIME-Version; b=AlzHlE54u9iJeaCgJPsEDJA4xOkUpHsXLosW+zwZbZIag/FHGQP8rZ7wZcLZWfKiE/ctxPoe4VV+tzL3G56CYCfbn2CHIJA1cJeW7sCn7mhXxxQS32K9Rjj3kSZhIBoDBIVAg4ovfZR4cK2dLXUZ0bNM3M4UqbJNF9GFWSTCKms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sg40YgI0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7B08C4CEC3;
+	Sun,  1 Sep 2024 17:00:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208382;
-	bh=qFxpFqMLZ+DFLfzfGFyOQUXyeGsxg2sLnyFJ5vtrwBM=;
+	s=korg; t=1725210033;
+	bh=P77+rzpc+2ntTwoT6FJiNTI/zxwMfYjjSKw8RNDKX/I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mCuJa/CsG6480KfuMjYtyvW2OfMBCmySkvqeSUTmYGLHSCUvMAzupEbsYwuSudeHq
-	 BVacgOp7QFw0GmbwV7FtInGcVipiOxGv5Oppngm7LCnLQ3ysJs8zLRur+o7ajaWeIl
-	 lOGeqltbuu6l0fT4nm2yzgjGbtc0RXxp9ooDuDac=
+	b=sg40YgI0ieqw13VPkmYX+xoTzos+JVTZw6t8/r3gYz74M5Ast3/39552NNtwwz4QU
+	 x+qXxi7QOzSIRuu68dwFY0weHdz+9gf6GF4grvHD2rcnKUMikQfbCs2T6DqT0qVlbL
+	 Z9q6+iTMep8r5Af1zPg9Mlvc1wWyNJCI/sUN8j6s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Pankaj Raghav <p.raghav@samsung.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Marc Dionne <marc.dionne@auristor.com>,
-	linux-afs@lists.infradead.org,
-	netfs@lists.linux.dev,
-	linux-mm@kvack.org,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>,
+	Kunwu Chan <chentao@kylinos.cn>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 066/149] afs: Fix post-setattr file edit to do truncation correctly
-Date: Sun,  1 Sep 2024 18:16:17 +0200
-Message-ID: <20240901160819.949225099@linuxfoundation.org>
+Subject: [PATCH 5.15 066/215] powerpc/xics: Check return value of kasprintf in icp_native_map_one_cpu
+Date: Sun,  1 Sep 2024 18:16:18 +0200
+Message-ID: <20240901160825.849191254@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
-References: <20240901160817.461957599@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,71 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Kunwu Chan <chentao@kylinos.cn>
 
-[ Upstream commit a74ee0e878e262c0276966528d72d4e887174410 ]
+[ Upstream commit 45b1ba7e5d1f6881050d558baf9bc74a2ae13930 ]
 
-At the end of an kAFS RPC operation, there is an "edit" phase (originally
-intended for post-directory modification ops to edit the local image) that
-the setattr VFS op uses to fix up the pagecache if the RPC that requested
-truncation of a file was successful.
+kasprintf() returns a pointer to dynamically allocated memory
+which can be NULL upon failure. Ensure the allocation was successful
+by checking the pointer validity.
 
-afs_setattr_edit_file() calls truncate_setsize() which sets i_size, expands
-the pagecache if needed and truncates the pagecache.  The first two of
-those, however, are redundant as they've already been done by
-afs_setattr_success() under the io_lock and the first is also done under
-the callback lock (cb_lock).
-
-Fix afs_setattr_edit_file() to call truncate_pagecache() instead (which is
-called by truncate_setsize(), thereby skipping the redundant parts.
-
-Fixes: 100ccd18bb41 ("netfs: Optimise away reads above the point at which there can be no data")
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://lore.kernel.org/r/20240823200819.532106-3-dhowells@redhat.com
-cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-cc: Pankaj Raghav <p.raghav@samsung.com>
-cc: Jeff Layton <jlayton@kernel.org>
-cc: Marc Dionne <marc.dionne@auristor.com>
-cc: linux-afs@lists.infradead.org
-cc: netfs@lists.linux.dev
-cc: linux-mm@kvack.org
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20231122030651.3818-1-chentao@kylinos.cn
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/afs/inode.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ arch/powerpc/sysdev/xics/icp-native.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/afs/inode.c b/fs/afs/inode.c
-index 3acf5e0500728..a95e77670b494 100644
---- a/fs/afs/inode.c
-+++ b/fs/afs/inode.c
-@@ -695,13 +695,18 @@ static void afs_setattr_edit_file(struct afs_operation *op)
- {
- 	struct afs_vnode_param *vp = &op->file[0];
- 	struct afs_vnode *vnode = vp->vnode;
-+	struct inode *inode = &vnode->netfs.inode;
+diff --git a/arch/powerpc/sysdev/xics/icp-native.c b/arch/powerpc/sysdev/xics/icp-native.c
+index 7d13d2ef5a905..66de291b27d08 100644
+--- a/arch/powerpc/sysdev/xics/icp-native.c
++++ b/arch/powerpc/sysdev/xics/icp-native.c
+@@ -235,6 +235,8 @@ static int __init icp_native_map_one_cpu(int hw_id, unsigned long addr,
+ 	rname = kasprintf(GFP_KERNEL, "CPU %d [0x%x] Interrupt Presentation",
+ 			  cpu, hw_id);
  
- 	if (op->setattr.attr->ia_valid & ATTR_SIZE) {
- 		loff_t size = op->setattr.attr->ia_size;
--		loff_t i_size = op->setattr.old_i_size;
-+		loff_t old = op->setattr.old_i_size;
-+
-+		/* Note: inode->i_size was updated by afs_apply_status() inside
-+		 * the I/O and callback locks.
-+		 */
- 
--		if (size != i_size) {
--			truncate_setsize(&vnode->netfs.inode, size);
-+		if (size != old) {
-+			truncate_pagecache(inode, size);
- 			netfs_resize_file(&vnode->netfs, size, true);
- 			fscache_resize_cookie(afs_vnode_cache(vnode), size);
- 		}
++	if (!rname)
++		return -ENOMEM;
+ 	if (!request_mem_region(addr, size, rname)) {
+ 		pr_warn("icp_native: Could not reserve ICP MMIO for CPU %d, interrupt server #0x%x\n",
+ 			cpu, hw_id);
 -- 
 2.43.0
 
