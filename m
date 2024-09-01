@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-72522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71885-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB4BE967AFB
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:03:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 192FD967831
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:29:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 222BEB20BF6
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:03:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 695D7B21F15
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:29:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C508C17B50B;
-	Sun,  1 Sep 2024 17:03:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C77CB181B88;
+	Sun,  1 Sep 2024 16:28:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1ManoBa5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qts9mhSC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8446B26AC1;
-	Sun,  1 Sep 2024 17:03:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 865A9183CA5;
+	Sun,  1 Sep 2024 16:28:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210199; cv=none; b=JJ3/Lwlp/W5nOGJsHnivZ0Ih4i+kbhh2HhwA/VVs/a62W7QYvFNuTIfAs57L0dEDMliPKdwG+BDD3LbvBEV2XI7haaiefTtvBCn6XQMSSZASTjW6HgA3z4d8tMHqrDj9sWqRaLjEdsPH2uJh7QeVafNJ8SKwGEEKs20kewUHcdI=
+	t=1725208137; cv=none; b=YIpfIvjaY8809XetIYSMfkrCjrhGDXk1rTxhwIE28YX+MlbsF6QaPtg3bIe+0053Reko085j2VPI60rNOITMaCQ7SXWhd6M45JnURRfD6P7M5IjVL41+5/V2bQuM6NLIWnZCvd9i5mvZgOelYOMJno530zwY2NQlufc3U13D1R4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210199; c=relaxed/simple;
-	bh=rOXBc7zvACVAxuN+BN9QdbHNzqMTd5BiAz2NhVHo6LA=;
+	s=arc-20240116; t=1725208137; c=relaxed/simple;
+	bh=3X5Ds3N6ZnS8y2rqhWzku7u12jdpB8AR+SmAv5594YA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sLQnEvusOAI6PsD0cUrnqmR2VteLrxSXnH6zm1pHWTSPCkvRBFECFlJ/vvHMVsGS/iy6yMZZCO2xZ2NInV/pArFOEGmIEw9AXOw2D/vyS3Pews14Hb2RBKnaZhVUOVaWzILGanc54oI5dTytzug8TfxlN/cc32ssFVY8rvh9nAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1ManoBa5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5A19C4CEC3;
-	Sun,  1 Sep 2024 17:03:18 +0000 (UTC)
+	 MIME-Version; b=OB6x5en7cmhZRTpbW//A4GfE5fHiSun+9Z0xFEa8bDiLtUn/ksE+ZZMT3ThDjOwhi1IFsGnyGgA3g+nSU3hhNGlV92aOsewY/SBF/TUBKcht86JaTONINmFoyQ9hjnJy1pT4qTGvw1exYSNi7dYKgzdrWofSvyzFOxpLOmqQlqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qts9mhSC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D593EC4CEC3;
+	Sun,  1 Sep 2024 16:28:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210199;
-	bh=rOXBc7zvACVAxuN+BN9QdbHNzqMTd5BiAz2NhVHo6LA=;
+	s=korg; t=1725208137;
+	bh=3X5Ds3N6ZnS8y2rqhWzku7u12jdpB8AR+SmAv5594YA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1ManoBa5m6kWejw6dW8oOBq/EGqmE10MKMBkXW5kFfRvDNCjcHoV9sG2Fp+gVuE8U
-	 1ODUKdyjjZjrM2tGbwshCmStTpwVgtQwQitwoaqGLh24U3el7R09tp3gi8aVPkKN/q
-	 I7pXiBA4GFvvIkAPWj4ffV82RbXNVkH+1KtCsJsA=
+	b=Qts9mhSCt67v3YgkUyq//wn0stg9eaLiLu6KkoZpBgMZfdMlE189/t2dTxP/3KvTK
+	 ffqPQSzA2LogOHUnOrEUm/yVDJ03Yj/TktF8Pmv3b+hf41vaegqyhWxRcD814lsg7m
+	 cXSIidbr8xWrDLh3IHOAJNHACDZUN7J9A208rrWI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 119/215] nfsd: stop setting ->pg_stats for unused stats
+	Pawel Laszczak <pawell@cadence.com>,
+	Peter Chen <peter.chen@kernel.org>
+Subject: [PATCH 6.6 84/93] usb: cdnsp: fix for Link TRB with TC
 Date: Sun,  1 Sep 2024 18:17:11 +0200
-Message-ID: <20240901160827.852669131@linuxfoundation.org>
+Message-ID: <20240901160810.897794170@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
+References: <20240901160807.346406833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,91 +61,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Pawel Laszczak <pawell@cadence.com>
 
-[ Upstream commit a2214ed588fb3c5b9824a21cff870482510372bb ]
+commit 740f2e2791b98e47288b3814c83a3f566518fed2 upstream.
 
-A lot of places are setting a blank svc_stats in ->pg_stats and never
-utilizing these stats.  Remove all of these extra structs as we're not
-reporting these stats anywhere.
+Stop Endpoint command on LINK TRB with TC bit set to 1 causes that
+internal cycle bit can have incorrect state after command complete.
+In consequence empty transfer ring can be incorrectly detected
+when EP is resumed.
+NOP TRB before LINK TRB avoid such scenario. Stop Endpoint command
+is then on NOP TRB and internal cycle bit is not changed and have
+correct value.
 
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: 3d82904559f4 ("usb: cdnsp: cdns3 Add main part of Cadence USBSSP DRD Driver")
+cc: <stable@vger.kernel.org>
+Signed-off-by: Pawel Laszczak <pawell@cadence.com>
+Reviewed-by: Peter Chen <peter.chen@kernel.org>
+Link: https://lore.kernel.org/r/PH7PR07MB953878279F375CCCE6C6F40FDD8E2@PH7PR07MB9538.namprd07.prod.outlook.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/lockd/svc.c    |    3 ---
- fs/nfs/callback.c |    3 ---
- fs/nfsd/nfssvc.c  |    5 -----
- 3 files changed, 11 deletions(-)
+ drivers/usb/cdns3/cdnsp-gadget.h |    3 +++
+ drivers/usb/cdns3/cdnsp-ring.c   |   28 ++++++++++++++++++++++++++++
+ 2 files changed, 31 insertions(+)
 
---- a/fs/lockd/svc.c
-+++ b/fs/lockd/svc.c
-@@ -759,8 +759,6 @@ static const struct svc_version *nlmsvc_
- #endif
+--- a/drivers/usb/cdns3/cdnsp-gadget.h
++++ b/drivers/usb/cdns3/cdnsp-gadget.h
+@@ -811,6 +811,7 @@ struct cdnsp_stream_info {
+  *        generate Missed Service Error Event.
+  *        Set skip flag when receive a Missed Service Error Event and
+  *        process the missed tds on the endpoint ring.
++ * @wa1_nop_trb: hold pointer to NOP trb.
+  */
+ struct cdnsp_ep {
+ 	struct usb_ep endpoint;
+@@ -838,6 +839,8 @@ struct cdnsp_ep {
+ #define EP_UNCONFIGURED		BIT(7)
+ 
+ 	bool skip;
++	union cdnsp_trb	 *wa1_nop_trb;
++
  };
  
--static struct svc_stat		nlmsvc_stats;
--
- #define NLM_NRVERS	ARRAY_SIZE(nlmsvc_version)
- static struct svc_program	nlmsvc_program = {
- 	.pg_prog		= NLM_PROGRAM,		/* program number */
-@@ -768,7 +766,6 @@ static struct svc_program	nlmsvc_program
- 	.pg_vers		= nlmsvc_version,	/* version table */
- 	.pg_name		= "lockd",		/* service name */
- 	.pg_class		= "nfsd",		/* share authentication with nfsd */
--	.pg_stats		= &nlmsvc_stats,	/* stats table */
- 	.pg_authenticate	= &lockd_authenticate,	/* export authentication */
- 	.pg_init_request	= svc_generic_init_request,
- 	.pg_rpcbind_set		= svc_generic_rpcbind_set,
---- a/fs/nfs/callback.c
-+++ b/fs/nfs/callback.c
-@@ -407,15 +407,12 @@ static const struct svc_version *nfs4_ca
- 	[4] = &nfs4_callback_version4,
- };
+ /**
+--- a/drivers/usb/cdns3/cdnsp-ring.c
++++ b/drivers/usb/cdns3/cdnsp-ring.c
+@@ -1905,6 +1905,23 @@ int cdnsp_queue_bulk_tx(struct cdnsp_dev
+ 		return ret;
  
--static struct svc_stat nfs4_callback_stats;
--
- static struct svc_program nfs4_callback_program = {
- 	.pg_prog = NFS4_CALLBACK,			/* RPC service number */
- 	.pg_nvers = ARRAY_SIZE(nfs4_callback_version),	/* Number of entries */
- 	.pg_vers = nfs4_callback_version,		/* version table */
- 	.pg_name = "NFSv4 callback",			/* service name */
- 	.pg_class = "nfs",				/* authentication class */
--	.pg_stats = &nfs4_callback_stats,
- 	.pg_authenticate = nfs_callback_authenticate,
- 	.pg_init_request = svc_generic_init_request,
- 	.pg_rpcbind_set	= svc_generic_rpcbind_set,
---- a/fs/nfsd/nfssvc.c
-+++ b/fs/nfsd/nfssvc.c
-@@ -89,7 +89,6 @@ unsigned long	nfsd_drc_max_mem;
- unsigned long	nfsd_drc_mem_used;
+ 	/*
++	 * workaround 1: STOP EP command on LINK TRB with TC bit set to 1
++	 * causes that internal cycle bit can have incorrect state after
++	 * command complete. In consequence empty transfer ring can be
++	 * incorrectly detected when EP is resumed.
++	 * NOP TRB before LINK TRB avoid such scenario. STOP EP command is
++	 * then on NOP TRB and internal cycle bit is not changed and have
++	 * correct value.
++	 */
++	if (pep->wa1_nop_trb) {
++		field = le32_to_cpu(pep->wa1_nop_trb->trans_event.flags);
++		field ^= TRB_CYCLE;
++
++		pep->wa1_nop_trb->trans_event.flags = cpu_to_le32(field);
++		pep->wa1_nop_trb = NULL;
++	}
++
++	/*
+ 	 * Don't give the first TRB to the hardware (by toggling the cycle bit)
+ 	 * until we've finished creating all the other TRBs. The ring's cycle
+ 	 * state may change as we enqueue the other TRBs, so save it too.
+@@ -1999,6 +2016,17 @@ int cdnsp_queue_bulk_tx(struct cdnsp_dev
+ 		send_addr = addr;
+ 	}
  
- #if defined(CONFIG_NFSD_V2_ACL) || defined(CONFIG_NFSD_V3_ACL)
--static struct svc_stat	nfsd_acl_svcstats;
- static const struct svc_version *nfsd_acl_version[] = {
- # if defined(CONFIG_NFSD_V2_ACL)
- 	[2] = &nfsd_acl_version2,
-@@ -108,15 +107,11 @@ static struct svc_program	nfsd_acl_progr
- 	.pg_vers		= nfsd_acl_version,
- 	.pg_name		= "nfsacl",
- 	.pg_class		= "nfsd",
--	.pg_stats		= &nfsd_acl_svcstats,
- 	.pg_authenticate	= &svc_set_client,
- 	.pg_init_request	= nfsd_acl_init_request,
- 	.pg_rpcbind_set		= nfsd_acl_rpcbind_set,
- };
- 
--static struct svc_stat	nfsd_acl_svcstats = {
--	.program	= &nfsd_acl_program,
--};
- #endif /* defined(CONFIG_NFSD_V2_ACL) || defined(CONFIG_NFSD_V3_ACL) */
- 
- static const struct svc_version *nfsd_version[] = {
++	if (cdnsp_trb_is_link(ring->enqueue + 1)) {
++		field = TRB_TYPE(TRB_TR_NOOP) | TRB_IOC;
++		if (!ring->cycle_state)
++			field |= TRB_CYCLE;
++
++		pep->wa1_nop_trb = ring->enqueue;
++
++		cdnsp_queue_trb(pdev, ring, 0, 0x0, 0x0,
++				TRB_INTR_TARGET(0), field);
++	}
++
+ 	cdnsp_check_trb_math(preq, enqd_len);
+ 	ret = cdnsp_giveback_first_trb(pdev, pep, preq->request.stream_id,
+ 				       start_cycle, start_trb);
 
 
 
