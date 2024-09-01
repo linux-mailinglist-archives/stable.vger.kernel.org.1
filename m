@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-72126-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72195-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 408EC967949
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:42:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9432B96799F
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:47:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D5DEAB21EA1
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:42:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 528EB2822A4
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:47:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35EE017E900;
-	Sun,  1 Sep 2024 16:42:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 570A7185928;
+	Sun,  1 Sep 2024 16:45:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DdMjj3OS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mxSfoYb+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9BBE537FF;
-	Sun,  1 Sep 2024 16:42:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F2BD185950;
+	Sun,  1 Sep 2024 16:45:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208925; cv=none; b=XL0StJEg+ndOMK0tJVN3OAtmum577MBJjtU5IhbXejnHK1saJ+h/MXLDehr3GkemcsBMIYDt2yr6OOBT8ipUFbac4N6jPnlOLEQwo9ubxRws6wh2Zjwi6bnxDXtw9PEVORyOoZ/mYIjzyGgAWruvfS/BdmXeztvuoGzXI/kdttc=
+	t=1725209151; cv=none; b=AKAksTvRvw3p7to0DF3mVyJavLKgX0L3tcBYjTTqaiTp/BWA83QCJnF7rKMZySkp9GJzqYiaMmXNQiX6YwBs3AOEQqcnla+XRLxDwx17dMeSOxCpzz+X2o8MwkMe0P8+uLSzNIVIpkpNcTZsV/eR4NoRy0+SakonitYhkYWEBb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208925; c=relaxed/simple;
-	bh=4iuCT8aQtwjxRAk+INpJ5DbveFzAZgcuMLKouUQKbio=;
+	s=arc-20240116; t=1725209151; c=relaxed/simple;
+	bh=KL1aeYDXfkMf0ZBVGUFkiX60nWnwKKYzb1HhrQleF4k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bBIo26xALo8MXhAeRYxjfUQJQlESzp7hjIckrRUoJ0cl79mI8DRCd8UHIsy+HviCQe6zC8BCnXsYmhvm5lxFYOPTdkLm2JWHSBtJmy9K16EY5DHv6cO7nHfKv3hDVlnmRlqsk+m9r0ctMylMa7hwQKqoXtwVFFy6QD8MpyUQ8WE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DdMjj3OS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A7CDC4CEC3;
-	Sun,  1 Sep 2024 16:42:04 +0000 (UTC)
+	 MIME-Version; b=pLeGsBUwVXz9EYtBONRUKaosBfUJqq+tK95eRaO+sD5hJZ8qINdcSe76Kadg/+LhED1Jg7SNu09bzm07dchSeU6xMixzAUZNZJHFj2i9o5PZAPhDJNTqaI0onrxEeOCJi4whRrGb5D/7gasuRgjnrVPSiLTtwgRFEXCZIczXDf8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mxSfoYb+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89BC4C4CEC3;
+	Sun,  1 Sep 2024 16:45:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208924;
-	bh=4iuCT8aQtwjxRAk+INpJ5DbveFzAZgcuMLKouUQKbio=;
+	s=korg; t=1725209150;
+	bh=KL1aeYDXfkMf0ZBVGUFkiX60nWnwKKYzb1HhrQleF4k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DdMjj3OSHSNvJLy3MF5rO9EF93n79H09XG9C2g0RbHFuauB8fQiTZMYUOMFgoh/bW
-	 j1FwEXsch1MrZMqv18CunvJw5yiWT9FpXmh/oLrZYS13YKnQEsFh3e5q1zSQAKs1B0
-	 lyJZOYZ3iLNUguO8oefdv4WSPzxxaJ0+rVWR+nXY=
+	b=mxSfoYb+rffanOjKaFH8pjRiOvJI+v9L/2qT5EL9P3kHf2iv5TGrt3mAjciWMeTIH
+	 epi2FSmJqbyi6z4o1tdLM7LLH5uHnGHGx8IoE48SsVDjzcsvck+MGUqoaFIEmZ/Ln0
+	 1sPTJXCzNbSn1w4D17rcelh79LiHkaYtOpNzqFyU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	David Beinder <david@beinder.at>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 081/134] Bluetooth: hci_core: Fix not handling link timeouts propertly
+	Miao Wang <shankerwangmiao@gmail.com>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.1 02/71] LoongArch: Remove the unused dma-direct.h
 Date: Sun,  1 Sep 2024 18:17:07 +0200
-Message-ID: <20240901160813.147611587@linuxfoundation.org>
+Message-ID: <20240901160801.975806106@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
-References: <20240901160809.752718937@linuxfoundation.org>
+In-Reply-To: <20240901160801.879647959@linuxfoundation.org>
+References: <20240901160801.879647959@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,109 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Miao Wang <shankerwangmiao@gmail.com>
 
-[ Upstream commit 116523c8fac05d1d26f748fee7919a4ec5df67ea ]
+commit 58aec91efb93338d1cc7acc0a93242613a2a4e5f upstream.
 
-Change that introduced the use of __check_timeout did not account for
-link types properly, it always assumes ACL_LINK is used thus causing
-hdev->acl_last_tx to be used even in case of LE_LINK and then again
-uses ACL_LINK with hci_link_tx_to.
+dma-direct.h is introduced in commit d4b6f1562a3c3284 ("LoongArch: Add
+Non-Uniform Memory Access (NUMA) support"). In commit c78c43fe7d42524c
+("LoongArch: Use acpi_arch_dma_setup() and remove ARCH_HAS_PHYS_TO_DMA"),
+ARCH_HAS_PHYS_TO_DMA was deselected and the coresponding phys_to_dma()/
+dma_to_phys() functions were removed. However, the unused dma-direct.h
+was left behind, which is removed by this patch.
 
-To fix this __check_timeout now takes the link type as parameter and
-then procedure to use the right last_tx based on the link type and pass
-it to hci_link_tx_to.
-
-Fixes: 1b1d29e51499 ("Bluetooth: Make use of __check_timeout on hci_sched_le")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Tested-by: David Beinder <david@beinder.at>
-Stable-dep-of: 932021a11805 ("Bluetooth: hci_core: Fix LE quote calculation")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: <stable@vger.kernel.org>
+Fixes: c78c43fe7d42 ("LoongArch: Use acpi_arch_dma_setup() and remove ARCH_HAS_PHYS_TO_DMA")
+Signed-off-by: Miao Wang <shankerwangmiao@gmail.com>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_core.c | 34 +++++++++++++++++++++++-----------
- 1 file changed, 23 insertions(+), 11 deletions(-)
+ arch/loongarch/include/asm/dma-direct.h | 11 -----------
+ 1 file changed, 11 deletions(-)
+ delete mode 100644 arch/loongarch/include/asm/dma-direct.h
 
-diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
-index 6caef575c628c..b6243cb97e8ec 100644
---- a/net/bluetooth/hci_core.c
-+++ b/net/bluetooth/hci_core.c
-@@ -4055,15 +4055,27 @@ static inline int __get_blocks(struct hci_dev *hdev, struct sk_buff *skb)
- 	return DIV_ROUND_UP(skb->len - HCI_ACL_HDR_SIZE, hdev->block_len);
- }
- 
--static void __check_timeout(struct hci_dev *hdev, unsigned int cnt)
-+static void __check_timeout(struct hci_dev *hdev, unsigned int cnt, u8 type)
- {
--	if (!hci_dev_test_flag(hdev, HCI_UNCONFIGURED)) {
--		/* ACL tx timeout must be longer than maximum
--		 * link supervision timeout (40.9 seconds) */
--		if (!cnt && time_after(jiffies, hdev->acl_last_tx +
--				       HCI_ACL_TX_TIMEOUT))
--			hci_link_tx_to(hdev, ACL_LINK);
-+	unsigned long last_tx;
-+
-+	if (hci_dev_test_flag(hdev, HCI_UNCONFIGURED))
-+		return;
-+
-+	switch (type) {
-+	case LE_LINK:
-+		last_tx = hdev->le_last_tx;
-+		break;
-+	default:
-+		last_tx = hdev->acl_last_tx;
-+		break;
- 	}
-+
-+	/* tx timeout must be longer than maximum link supervision timeout
-+	 * (40.9 seconds)
-+	 */
-+	if (!cnt && time_after(jiffies, last_tx + HCI_ACL_TX_TIMEOUT))
-+		hci_link_tx_to(hdev, type);
- }
- 
- static void hci_sched_acl_pkt(struct hci_dev *hdev)
-@@ -4073,7 +4085,7 @@ static void hci_sched_acl_pkt(struct hci_dev *hdev)
- 	struct sk_buff *skb;
- 	int quote;
- 
--	__check_timeout(hdev, cnt);
-+	__check_timeout(hdev, cnt, ACL_LINK);
- 
- 	while (hdev->acl_cnt &&
- 	       (chan = hci_chan_sent(hdev, ACL_LINK, &quote))) {
-@@ -4112,8 +4124,6 @@ static void hci_sched_acl_blk(struct hci_dev *hdev)
- 	int quote;
- 	u8 type;
- 
--	__check_timeout(hdev, cnt);
+diff --git a/arch/loongarch/include/asm/dma-direct.h b/arch/loongarch/include/asm/dma-direct.h
+deleted file mode 100644
+index 75ccd808a2af..000000000000
+--- a/arch/loongarch/include/asm/dma-direct.h
++++ /dev/null
+@@ -1,11 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-/*
+- * Copyright (C) 2020-2022 Loongson Technology Corporation Limited
+- */
+-#ifndef _LOONGARCH_DMA_DIRECT_H
+-#define _LOONGARCH_DMA_DIRECT_H
 -
- 	BT_DBG("%s", hdev->name);
- 
- 	if (hdev->dev_type == HCI_AMP)
-@@ -4121,6 +4131,8 @@ static void hci_sched_acl_blk(struct hci_dev *hdev)
- 	else
- 		type = ACL_LINK;
- 
-+	__check_timeout(hdev, cnt, type);
-+
- 	while (hdev->block_cnt > 0 &&
- 	       (chan = hci_chan_sent(hdev, type, &quote))) {
- 		u32 priority = (skb_peek(&chan->data_q))->priority;
-@@ -4242,7 +4254,7 @@ static void hci_sched_le(struct hci_dev *hdev)
- 
- 	cnt = hdev->le_pkts ? hdev->le_cnt : hdev->acl_cnt;
- 
--	__check_timeout(hdev, cnt);
-+	__check_timeout(hdev, cnt, LE_LINK);
- 
- 	tmp = cnt;
- 	while (cnt && (chan = hci_chan_sent(hdev, LE_LINK, &quote))) {
+-dma_addr_t phys_to_dma(struct device *dev, phys_addr_t paddr);
+-phys_addr_t dma_to_phys(struct device *dev, dma_addr_t daddr);
+-
+-#endif /* _LOONGARCH_DMA_DIRECT_H */
 -- 
-2.43.0
+2.46.0
 
 
 
