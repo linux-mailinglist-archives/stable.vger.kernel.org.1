@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-72337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72231-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC28D967A3B
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:53:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 582B29679C9
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:49:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 60ED1B20A86
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:53:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 16A1A281497
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:48:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0BD917E919;
-	Sun,  1 Sep 2024 16:53:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1392D1C68C;
+	Sun,  1 Sep 2024 16:47:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LGqOF3x8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D3Du1BzI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EB281DFD1;
-	Sun,  1 Sep 2024 16:53:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6255181334;
+	Sun,  1 Sep 2024 16:47:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209595; cv=none; b=qlItwR/91prehuwpq1e/odVfPvO12BXUzUklX2BHs6APPu/j2QAmy7t5wpDLLLgsWkSvnSc+CkBiJrt1NIXIfCgFNU/KL6n/eKhskXJulhGCTNmshg2+t5syEl0ek6Zp9TSlU+O39sR79CuCI4zCfd1k9Haby2mzoZx8JUUj+0E=
+	t=1725209261; cv=none; b=mGZYNeBNaqH06mGRsUXA8hKScRvhgqHCq9iqghBFyYYxdZsfSlfAqRnJGGi2oddtDRw6ymx8VkmIg19j0mRpQwPtCc4nm0Ar4kB2rWv6MFBlGg274awTjf4x7XLg8sb0fHPPE9/WbUVwEDeRbHkJ1JDUHfrSI2vBcSMZ9X3n/7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209595; c=relaxed/simple;
-	bh=0ldbB0CY/Lh1KwTUbvPpZUrs71qVU2wT0lJRSKn8MP8=;
+	s=arc-20240116; t=1725209261; c=relaxed/simple;
+	bh=N2D2O03KBZ0j88Kv+HSl9mQdT9nK4OELIJJrQp4j+fk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NX/2FTzk28nRmqIQzMfxXHtxzY4tNevjS6+q6LIF9KpMZ0+dOMx25AOJ5/bSckMXlMBR3wuLu9YyVaKgBuflw12eqO7CG7dm5/g29T1+GeBdiagbjgh+90726oKsOn1R2qp/sqfRWIowqMc7DeoO9n0NQY3W08f9MeEeYbjSq9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LGqOF3x8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12D79C4CEC3;
-	Sun,  1 Sep 2024 16:53:14 +0000 (UTC)
+	 MIME-Version; b=RQT6zA269sYD0/74xFd7JbPKNYBjhSFF1Z5aDFr6s0zH2zqeU7dL6Eqp59N93csmixYRJaDh+vy/RcbaOK7L2tnb4aARa6VWC/wTlC5RJg0EH+VbdDWM+imS/PFeFhW7uSQD3aaXNaGiv12TgMv3Rq2xJp/4UoZZuWc+byWoC9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D3Du1BzI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B467C4CEC3;
+	Sun,  1 Sep 2024 16:47:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209595;
-	bh=0ldbB0CY/Lh1KwTUbvPpZUrs71qVU2wT0lJRSKn8MP8=;
+	s=korg; t=1725209261;
+	bh=N2D2O03KBZ0j88Kv+HSl9mQdT9nK4OELIJJrQp4j+fk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LGqOF3x8aA95LpfSM4w7nqW2mYtZ4Hfpi/jqejFPWjbKThrpuykGQ928qJ+v0fWGa
-	 lekOcoFh6pB11AC3xK0pSEEDJI+jRo6g6GQL8Hd+1feewm1teKgDMkj+sRF+5hJy/d
-	 /xzeZIGXv5Z/3Y+4HMI6Etbes0SdQnCTyQjOW1s8=
+	b=D3Du1BzIZTUg1aF6bwiVj2Z7cOKb2YerOVZdiNzOs6NSRM9BfPDvnuCOMYO/gxalY
+	 sFJ421qKyFEkfZhN6+zgEBxIw/6lzY0+KIH1XJNAgSbTg3kAOJw85SijCs6YoLYPnW
+	 SViFIANr+nmiv33E6ho4J6N4ya+EEL7Ty59FDY50=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 085/151] dm suspend: return -ERESTARTSYS instead of -EINTR
+	Damien Le Moal <dlemoal@kernel.org>,
+	Hannes Reinecke <hare@suse.de>,
+	John Garry <john.g.garry@oracle.com>,
+	Niklas Cassel <cassel@kernel.org>,
+	Oleksandr Tymoshenko <ovt@google.com>
+Subject: [PATCH 6.1 20/71] ata: libata-core: Fix null pointer dereference on error
 Date: Sun,  1 Sep 2024 18:17:25 +0200
-Message-ID: <20240901160817.317434443@linuxfoundation.org>
+Message-ID: <20240901160802.650807619@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
-References: <20240901160814.090297276@linuxfoundation.org>
+In-Reply-To: <20240901160801.879647959@linuxfoundation.org>
+References: <20240901160801.879647959@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +64,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Niklas Cassel <cassel@kernel.org>
 
-[ Upstream commit 1e1fd567d32fcf7544c6e09e0e5bc6c650da6e23 ]
+commit 5d92c7c566dc76d96e0e19e481d926bbe6631c1e upstream.
 
-This commit changes device mapper, so that it returns -ERESTARTSYS
-instead of -EINTR when it is interrupted by a signal (so that the ioctl
-can be restarted).
+If the ata_port_alloc() call in ata_host_alloc() fails,
+ata_host_release() will get called.
 
-The manpage signal(7) says that the ioctl function should be restarted if
-the signal was handled with SA_RESTART.
+However, the code in ata_host_release() tries to free ata_port struct
+members unconditionally, which can lead to the following:
 
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+BUG: unable to handle page fault for address: 0000000000003990
+PGD 0 P4D 0
+Oops: Oops: 0000 [#1] PREEMPT SMP NOPTI
+CPU: 10 PID: 594 Comm: (udev-worker) Not tainted 6.10.0-rc5 #44
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-2.fc40 04/01/2014
+RIP: 0010:ata_host_release.cold+0x2f/0x6e [libata]
+Code: e4 4d 63 f4 44 89 e2 48 c7 c6 90 ad 32 c0 48 c7 c7 d0 70 33 c0 49 83 c6 0e 41
+RSP: 0018:ffffc90000ebb968 EFLAGS: 00010246
+RAX: 0000000000000041 RBX: ffff88810fb52e78 RCX: 0000000000000000
+RDX: 0000000000000000 RSI: ffff88813b3218c0 RDI: ffff88813b3218c0
+RBP: ffff88810fb52e40 R08: 0000000000000000 R09: 6c65725f74736f68
+R10: ffffc90000ebb738 R11: 73692033203a746e R12: 0000000000000004
+R13: 0000000000000000 R14: 0000000000000011 R15: 0000000000000006
+FS:  00007f6cc55b9980(0000) GS:ffff88813b300000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000003990 CR3: 00000001122a2000 CR4: 0000000000750ef0
+PKRU: 55555554
+Call Trace:
+ <TASK>
+ ? __die_body.cold+0x19/0x27
+ ? page_fault_oops+0x15a/0x2f0
+ ? exc_page_fault+0x7e/0x180
+ ? asm_exc_page_fault+0x26/0x30
+ ? ata_host_release.cold+0x2f/0x6e [libata]
+ ? ata_host_release.cold+0x2f/0x6e [libata]
+ release_nodes+0x35/0xb0
+ devres_release_group+0x113/0x140
+ ata_host_alloc+0xed/0x120 [libata]
+ ata_host_alloc_pinfo+0x14/0xa0 [libata]
+ ahci_init_one+0x6c9/0xd20 [ahci]
+
+Do not access ata_port struct members unconditionally.
+
+Fixes: 633273a3ed1c ("libata-pmp: hook PMP support and enable it")
 Cc: stable@vger.kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: John Garry <john.g.garry@oracle.com>
+Link: https://lore.kernel.org/r/20240629124210.181537-7-cassel@kernel.org
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Oleksandr Tymoshenko <ovt@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/ata/libata-core.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/md/dm.c b/drivers/md/dm.c
-index dc8498b4b5c13..b56ea42ab7d2b 100644
---- a/drivers/md/dm.c
-+++ b/drivers/md/dm.c
-@@ -2343,7 +2343,7 @@ static int dm_wait_for_bios_completion(struct mapped_device *md, long task_state
- 			break;
+--- a/drivers/ata/libata-core.c
++++ b/drivers/ata/libata-core.c
+@@ -5471,6 +5471,9 @@ static void ata_host_release(struct kref
+ 	for (i = 0; i < host->n_ports; i++) {
+ 		struct ata_port *ap = host->ports[i];
  
- 		if (signal_pending_state(task_state, current)) {
--			r = -EINTR;
-+			r = -ERESTARTSYS;
- 			break;
- 		}
- 
-@@ -2368,7 +2368,7 @@ static int dm_wait_for_completion(struct mapped_device *md, long task_state)
- 			break;
- 
- 		if (signal_pending_state(task_state, current)) {
--			r = -EINTR;
-+			r = -ERESTARTSYS;
- 			break;
- 		}
- 
--- 
-2.43.0
-
++		if (!ap)
++			continue;
++
+ 		kfree(ap->pmp_link);
+ 		kfree(ap->slave_link);
+ 		kfree(ap);
 
 
 
