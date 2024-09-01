@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-72371-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72253-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7A35967A5D
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:55:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96DA39679E2
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:49:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 353CCB215D4
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:55:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C80911C213E4
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:49:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9BF218132A;
-	Sun,  1 Sep 2024 16:55:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64E99184531;
+	Sun,  1 Sep 2024 16:48:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aHhQkaz9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M+v2g+ME"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 690321DFD1;
-	Sun,  1 Sep 2024 16:55:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 229BE1DFD1;
+	Sun,  1 Sep 2024 16:48:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209706; cv=none; b=RocdOY49IAUorO9gE9VDxswLRX+hbDH3kyrjlQMB1AMjGfszM1AL2OaIKdARgVwz8s9QOjORF/2hsXCNo5yvzmIWRCECP+RSBNrioWdF7qnYnXMBRjQyqtR9uS/WPrw0Nv11ZjqIpqM+jGewiaz2tbpkdkARe4ZTy40ZjJsnuxQ=
+	t=1725209330; cv=none; b=AwZobklGqd01zF5Mq6jqz+8VsAvEO732BUO63MjMFyZvLMP/hxzUp9pOobMMigNE9QYFAhQvXxoMCLvIFkwWya8hNKUebf7fY5yoymL4HddSIAxuSma//JEgBrI/RhJIdCsA22M3X9DTcgofwOxjdPZ3UD2w71tyyAy3FiHoPnQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209706; c=relaxed/simple;
-	bh=P03iV06rJJrIAuXpH1LU+LZVodYq1ACl5tTEpdyYkws=;
+	s=arc-20240116; t=1725209330; c=relaxed/simple;
+	bh=PCvX4HOowOV3y3ZnTTzaDDo8m8Cg1uAu1XEzJVBIuiE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DGlt8VThXHelsCZXr3qiKo9fRW15x0dalPq+qpQxASXCd2d5RHtqu8w77ELSj3Rr79+xxXt0JvugJMI/zR7iAzX3SU41bAbebXDskwHJQf3RAJ71vIl7oir+kuPGGoau6NfiqDVHupt258wB5QemqSZnxw8ERvrTl2qnnXyTZyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aHhQkaz9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2092C4CEC3;
-	Sun,  1 Sep 2024 16:55:05 +0000 (UTC)
+	 MIME-Version; b=jqbTxYyWs4XW+NwUZWedjy3ogftqYmFkxYi47FGz4YLB7CIp6NOZg/mRCLKGGFkADLOt5gLL3H3k/n0CYp46Tj/OJiUK/KtB+YT3KR3H9kEtsYEbl3MrpTK3DWHcBLMEm/mvOyc0yqz3JQQCu2f24us3gmMWM7sBzm7gVaYMhTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M+v2g+ME; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88582C4CEC3;
+	Sun,  1 Sep 2024 16:48:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209706;
-	bh=P03iV06rJJrIAuXpH1LU+LZVodYq1ACl5tTEpdyYkws=;
+	s=korg; t=1725209330;
+	bh=PCvX4HOowOV3y3ZnTTzaDDo8m8Cg1uAu1XEzJVBIuiE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aHhQkaz953y1ZHMcub3M7kmUBqGidE4yNO8IjMxnZRRAsS6iQ7pIPJog0gMkZM4bn
-	 NNdKp8pm1mC2iyDGssTz/DQ5IpiBguYTmD5aemsRdpMIbamHZJQPvX6J8lxB+dBig3
-	 Ej9BVEYiu+y+vlExjjjwRzfYoXXqxrs6f+UYKcY4=
+	b=M+v2g+MEUlIENl6sRA5SEwNQhE+nPHt5pHu3IVpFXLIanSi89uV0Vte2PeMdwqYru
+	 LihwTdBBiy+d6bVcgNUCASUzNh5ozrfcKlPymwlkq6vTYV+AK/hFvH0cXyIFy/evCp
+	 /rz6avftQCVQj8QmtX5K79tgqiQ2IOua/JBlirLg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzbot+0122fa359a69694395d5@syzkaller.appspotmail.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	George Kennedy <george.kennedy@oracle.com>
-Subject: [PATCH 5.10 119/151] Input: MT - limit max slots
+	Eric Dumazet <edumazet@google.com>,
+	Mina Almasry <almasrymina@google.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Joe Damato <jdamato@fastly.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 54/71] net: busy-poll: use ktime_get_ns() instead of local_clock()
 Date: Sun,  1 Sep 2024 18:17:59 +0200
-Message-ID: <20240901160818.585920817@linuxfoundation.org>
+Message-ID: <20240901160803.927857284@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
-References: <20240901160814.090297276@linuxfoundation.org>
+In-Reply-To: <20240901160801.879647959@linuxfoundation.org>
+References: <20240901160801.879647959@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +65,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 99d3bf5f7377d42f8be60a6b9cb60fb0be34dceb upstream.
+[ Upstream commit 0870b0d8b393dde53106678a1e2cec9dfa52f9b7 ]
 
-syzbot is reporting too large allocation at input_mt_init_slots(), for
-num_slots is supplied from userspace using ioctl(UI_DEV_CREATE).
+Typically, busy-polling durations are below 100 usec.
 
-Since nobody knows possible max slots, this patch chose 1024.
+When/if the busy-poller thread migrates to another cpu,
+local_clock() can be off by +/-2msec or more for small
+values of HZ, depending on the platform.
 
-Reported-by: syzbot <syzbot+0122fa359a69694395d5@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=0122fa359a69694395d5
-Suggested-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: George Kennedy <george.kennedy@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Use ktimer_get_ns() to ensure deterministic behavior,
+which is the whole point of busy-polling.
+
+Fixes: 060212928670 ("net: add low latency socket poll")
+Fixes: 9a3c71aa8024 ("net: convert low latency sockets to sched_clock()")
+Fixes: 37089834528b ("sched, net: Fixup busy_loop_us_clock()")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Mina Almasry <almasrymina@google.com>
+Cc: Willem de Bruijn <willemb@google.com>
+Reviewed-by: Joe Damato <jdamato@fastly.com>
+Link: https://patch.msgid.link/20240827114916.223377-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/input-mt.c |    3 +++
- 1 file changed, 3 insertions(+)
+ include/net/busy_poll.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/input/input-mt.c
-+++ b/drivers/input/input-mt.c
-@@ -45,6 +45,9 @@ int input_mt_init_slots(struct input_dev
- 		return 0;
- 	if (mt)
- 		return mt->num_slots != num_slots ? -EINVAL : 0;
-+	/* Arbitrary limit for avoiding too large memory allocation. */
-+	if (num_slots > 1024)
-+		return -EINVAL;
- 
- 	mt = kzalloc(struct_size(mt, slots, num_slots), GFP_KERNEL);
- 	if (!mt)
+diff --git a/include/net/busy_poll.h b/include/net/busy_poll.h
+index f90f0021f5f2d..5387e1daa5a8b 100644
+--- a/include/net/busy_poll.h
++++ b/include/net/busy_poll.h
+@@ -63,7 +63,7 @@ static inline bool sk_can_busy_loop(struct sock *sk)
+ static inline unsigned long busy_loop_current_time(void)
+ {
+ #ifdef CONFIG_NET_RX_BUSY_POLL
+-	return (unsigned long)(local_clock() >> 10);
++	return (unsigned long)(ktime_get_ns() >> 10);
+ #else
+ 	return 0;
+ #endif
+-- 
+2.43.0
+
 
 
 
