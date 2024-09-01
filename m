@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-72162-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72327-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83A9296796D
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:44:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00587967A31
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:52:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4074628146A
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:44:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F5CC1F236FD
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:52:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6A6C17E00C;
-	Sun,  1 Sep 2024 16:44:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A9CA17E900;
+	Sun,  1 Sep 2024 16:52:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1m2MyzgS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Twh3BLMs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85E1F1C68C;
-	Sun,  1 Sep 2024 16:44:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D622017ADE1;
+	Sun,  1 Sep 2024 16:52:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209048; cv=none; b=aTIH5KFl/EW3WLsdXflvzjylbv9nwYffmCA47Q6p5LACGn7n41KphlPIJZzM5yYUwi7BY06bCMbZIVvZJ3ntOMtHdXMhUIRuG95zQOhb6tbrJDLcJzETQ1vs0T5eL/TdHikj8kQqlMcswjvdPQfwJDmZdsP/3oqn5p+zXGQdpy8=
+	t=1725209563; cv=none; b=PwwCj4ZOaowFOiYFfuckSuz9oGnmEWl4+RZXWqEHXRmSM8w06DFMjBFg9ClnFav7WvyPSZo+PZaV6AE5e2f7lSsFYix/x4ooIeTEAMSgadkQd4V2Kcemp1yiugaeLJGjjpS4SSiiJZswgjPn1LsZq6O9gf9T+t/mSgjuopKQF1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209048; c=relaxed/simple;
-	bh=GMQO9UjamNPFvOhwODwIy0w6gBqUq52djJZGSIqxD4Q=;
+	s=arc-20240116; t=1725209563; c=relaxed/simple;
+	bh=ciONJ8bHiqDzhgVvXSCHRv3iskHL94LxWOXaQU/KG2Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BQbyUO84mHNgiBBW8NPOjEMKFhN+Q1p+zgo8LR/Stqs9eRF9DXn8AzliDS2gILMio2OIR/X11UoHLiuEf/E2Zm1Dq4rejg/VyzgRV2e6sLfnULjH2R66jHextIamytXQ4PlRefl9/IrJJSf1JzgIlgcOjulCr/AATuslMzYcUPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1m2MyzgS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7374C4CEC3;
-	Sun,  1 Sep 2024 16:44:07 +0000 (UTC)
+	 MIME-Version; b=SjKALU2HrxKcRITr+sKW/nhzB5hDr8Hv9pKYcq0biEVjDro75B1egJOpJwE2zKuWCa7eQiPQ6kvogDgyjcMAl4q9LgV7c8w/9r5VXg4FJ2S+jgBPPxxjs8f3O2vfua3bmAZRojqJT5frmyzroVbReT1HxSBIQ04xAa4vt056uSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Twh3BLMs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51A63C4CEC3;
+	Sun,  1 Sep 2024 16:52:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209048;
-	bh=GMQO9UjamNPFvOhwODwIy0w6gBqUq52djJZGSIqxD4Q=;
+	s=korg; t=1725209563;
+	bh=ciONJ8bHiqDzhgVvXSCHRv3iskHL94LxWOXaQU/KG2Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1m2MyzgSP/VPlHsY9Xki3PWsF7aqsYarwi/ZAeNR6SREthiLctx75XXV8iq6KjMss
-	 WBwvAEJfkrG6wtHDQK20cjx1XesSP4yAkwCmuW1hFca1MRiUAJmkbY44FGj9SQpupC
-	 S/MUuFgALF4K2SkidDOmeUaQ1dX/j66m1SKsp4Vk=
+	b=Twh3BLMsvaxGprNcWhyfNZAea2n33MQ9yZgpD7LPcKntXxRIC10OXBtJ4tiwm05U3
+	 b1pMSC43QhCU04QID/yQV8y0Hm8t+Bux3NqwC5ZeeS8NJ7ztrc65kReUWAH2UxquA5
+	 P7kN93iE+yZRy5o54fiq+DTCW9SU+PO9ir9lc/1U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joseph Huang <Joseph.Huang@garmin.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Johan Hovold <johan@kernel.org>,
+	Krishna Kurapati <quic_kriskura@quicinc.com>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 090/134] net: dsa: mv88e6xxx: Fix out-of-bound access
+Subject: [PATCH 5.10 076/151] usb: dwc3: core: Skip setting event buffers for host only controllers
 Date: Sun,  1 Sep 2024 18:17:16 +0200
-Message-ID: <20240901160813.485078124@linuxfoundation.org>
+Message-ID: <20240901160816.973235479@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
-References: <20240901160809.752718937@linuxfoundation.org>
+In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
+References: <20240901160814.090297276@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +65,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joseph Huang <Joseph.Huang@garmin.com>
+From: Krishna Kurapati <quic_kriskura@quicinc.com>
 
-[ Upstream commit 528876d867a23b5198022baf2e388052ca67c952 ]
+[ Upstream commit 89d7f962994604a3e3d480832788d06179abefc5 ]
 
-If an ATU violation was caused by a CPU Load operation, the SPID could
-be larger than DSA_MAX_PORTS (the size of mv88e6xxx_chip.ports[] array).
+On some SoC's like SA8295P where the tertiary controller is host-only
+capable, GEVTADDRHI/LO, GEVTSIZ, GEVTCOUNT registers are not accessible.
+Trying to access them leads to a crash.
 
-Fixes: 75c05a74e745 ("net: dsa: mv88e6xxx: Fix counting of ATU violations")
-Signed-off-by: Joseph Huang <Joseph.Huang@garmin.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20240819235251.1331763-1-Joseph.Huang@garmin.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+For DRD/Peripheral supported controllers, event buffer setup is done
+again in gadget_pullup. Skip setup or cleanup of event buffers if
+controller is host-only capable.
+
+Suggested-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Bjorn Andersson <andersson@kernel.org>
+Tested-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20240420044901.884098-4-quic_kriskura@quicinc.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/mv88e6xxx/global1_atu.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/dwc3/core.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/drivers/net/dsa/mv88e6xxx/global1_atu.c b/drivers/net/dsa/mv88e6xxx/global1_atu.c
-index 2b314b416256d..f2e07d903aa73 100644
---- a/drivers/net/dsa/mv88e6xxx/global1_atu.c
-+++ b/drivers/net/dsa/mv88e6xxx/global1_atu.c
-@@ -421,7 +421,8 @@ static irqreturn_t mv88e6xxx_g1_atu_prob_irq_thread_fn(int irq, void *dev_id)
- 		trace_mv88e6xxx_atu_full_violation(chip->dev, spid,
- 						   entry.portvec, entry.mac,
- 						   fid);
--		chip->ports[spid].atu_full_violation++;
-+		if (spid < ARRAY_SIZE(chip->ports))
-+			chip->ports[spid].atu_full_violation++;
- 	}
- 	mv88e6xxx_reg_unlock(chip);
+diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
+index 7275bff857ae8..f4497522f929e 100644
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -430,6 +430,13 @@ static void dwc3_free_event_buffers(struct dwc3 *dwc)
+ static int dwc3_alloc_event_buffers(struct dwc3 *dwc, unsigned length)
+ {
+ 	struct dwc3_event_buffer *evt;
++	unsigned int hw_mode;
++
++	hw_mode = DWC3_GHWPARAMS0_MODE(dwc->hwparams.hwparams0);
++	if (hw_mode == DWC3_GHWPARAMS0_MODE_HOST) {
++		dwc->ev_buf = NULL;
++		return 0;
++	}
  
+ 	evt = dwc3_alloc_one_event_buffer(dwc, length);
+ 	if (IS_ERR(evt)) {
+@@ -451,6 +458,9 @@ int dwc3_event_buffers_setup(struct dwc3 *dwc)
+ {
+ 	struct dwc3_event_buffer	*evt;
+ 
++	if (!dwc->ev_buf)
++		return 0;
++
+ 	evt = dwc->ev_buf;
+ 	evt->lpos = 0;
+ 	dwc3_writel(dwc->regs, DWC3_GEVNTADRLO(0),
+@@ -468,6 +478,9 @@ void dwc3_event_buffers_cleanup(struct dwc3 *dwc)
+ {
+ 	struct dwc3_event_buffer	*evt;
+ 
++	if (!dwc->ev_buf)
++		return;
++
+ 	evt = dwc->ev_buf;
+ 
+ 	evt->lpos = 0;
 -- 
 2.43.0
 
