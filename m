@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-71880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72126-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E839D96782D
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:28:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 408EC967949
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:42:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 871E7B21E44
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:28:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D5DEAB21EA1
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:42:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9239F183CAF;
-	Sun,  1 Sep 2024 16:28:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35EE017E900;
+	Sun,  1 Sep 2024 16:42:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lEV71fGh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DdMjj3OS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51D6F44C97;
-	Sun,  1 Sep 2024 16:28:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9BBE537FF;
+	Sun,  1 Sep 2024 16:42:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208121; cv=none; b=T+5cVkWokY9mzHnAl8KoLwuKywD2DXsoGhZBDNe7i3QI4dyN0lvHltVSn0yXPd+9+Go9QY6WbTffpR6c/n9UBw2fz0R+7/XvrDi3/mnDjo0VTU2uV1aU1CnGnNWKPaKeqL07VDh6Fv2lgQlO3xghBRWN1ZJjVt6vXIVbxKLnEjc=
+	t=1725208925; cv=none; b=XL0StJEg+ndOMK0tJVN3OAtmum577MBJjtU5IhbXejnHK1saJ+h/MXLDehr3GkemcsBMIYDt2yr6OOBT8ipUFbac4N6jPnlOLEQwo9ubxRws6wh2Zjwi6bnxDXtw9PEVORyOoZ/mYIjzyGgAWruvfS/BdmXeztvuoGzXI/kdttc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208121; c=relaxed/simple;
-	bh=pI93jKb0iF2l8zRrHFTwhtM6V0EnjL/5bJ89etHET+c=;
+	s=arc-20240116; t=1725208925; c=relaxed/simple;
+	bh=4iuCT8aQtwjxRAk+INpJ5DbveFzAZgcuMLKouUQKbio=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bTnvByfgFuPi0kwAB2ex+4j8ukmdUd2IOyn+S2UmSLimAGfpV9TAYdtK9GMDTd2zflOtXADborMKPT/P+4dGFIREluBapXbue65gks3zZaZ1Aimd1XA7W6yt0NZ5lRSq8WT22n4dDUjbo0adKolHerg05tmCxl56ckdN/uB7rwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lEV71fGh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5DACC4CEC3;
-	Sun,  1 Sep 2024 16:28:40 +0000 (UTC)
+	 MIME-Version; b=bBIo26xALo8MXhAeRYxjfUQJQlESzp7hjIckrRUoJ0cl79mI8DRCd8UHIsy+HviCQe6zC8BCnXsYmhvm5lxFYOPTdkLm2JWHSBtJmy9K16EY5DHv6cO7nHfKv3hDVlnmRlqsk+m9r0ctMylMa7hwQKqoXtwVFFy6QD8MpyUQ8WE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DdMjj3OS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A7CDC4CEC3;
+	Sun,  1 Sep 2024 16:42:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208121;
-	bh=pI93jKb0iF2l8zRrHFTwhtM6V0EnjL/5bJ89etHET+c=;
+	s=korg; t=1725208924;
+	bh=4iuCT8aQtwjxRAk+INpJ5DbveFzAZgcuMLKouUQKbio=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lEV71fGhLWES7128eAW8QJ/Jw9h9I6P6zvlk/MxvqIQvOIM5PxpwyFGpmzDRhXiiN
-	 3r3JPA20DWxzPoEQyBJVAS+Bwn/93ZSH8knyYIm09eWqn/D9m+wbfpEVpqf1SYZ4ew
-	 y2leUdNcgQcvERP7wb/HN8Xz4JZ09dQGEJhjsYQ4=
+	b=DdMjj3OSHSNvJLy3MF5rO9EF93n79H09XG9C2g0RbHFuauB8fQiTZMYUOMFgoh/bW
+	 j1FwEXsch1MrZMqv18CunvJw5yiWT9FpXmh/oLrZYS13YKnQEsFh3e5q1zSQAKs1B0
+	 lyJZOYZ3iLNUguO8oefdv4WSPzxxaJ0+rVWR+nXY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-	Patrice Chotard <patrice.chotard@foss.st.com>
-Subject: [PATCH 6.6 80/93] usb: dwc3: st: fix probed platform device ref count on probe error path
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	David Beinder <david@beinder.at>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 081/134] Bluetooth: hci_core: Fix not handling link timeouts propertly
 Date: Sun,  1 Sep 2024 18:17:07 +0200
-Message-ID: <20240901160810.746507039@linuxfoundation.org>
+Message-ID: <20240901160813.147611587@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
-References: <20240901160807.346406833@linuxfoundation.org>
+In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
+References: <20240901160809.752718937@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +62,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-commit ddfcfeba891064b88bb844208b43bef2ef970f0c upstream.
+[ Upstream commit 116523c8fac05d1d26f748fee7919a4ec5df67ea ]
 
-The probe function never performs any paltform device allocation, thus
-error path "undo_platform_dev_alloc" is entirely bogus.  It drops the
-reference count from the platform device being probed.  If error path is
-triggered, this will lead to unbalanced device reference counts and
-premature release of device resources, thus possible use-after-free when
-releasing remaining devm-managed resources.
+Change that introduced the use of __check_timeout did not account for
+link types properly, it always assumes ACL_LINK is used thus causing
+hdev->acl_last_tx to be used even in case of LE_LINK and then again
+uses ACL_LINK with hci_link_tx_to.
 
-Fixes: f83fca0707c6 ("usb: dwc3: add ST dwc3 glue layer to manage dwc3 HC")
-Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Reviewed-by: Patrice Chotard <patrice.chotard@foss.st.com>
-Link: https://lore.kernel.org/r/20240814093957.37940-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To fix this __check_timeout now takes the link type as parameter and
+then procedure to use the right last_tx based on the link type and pass
+it to hci_link_tx_to.
+
+Fixes: 1b1d29e51499 ("Bluetooth: Make use of __check_timeout on hci_sched_le")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Tested-by: David Beinder <david@beinder.at>
+Stable-dep-of: 932021a11805 ("Bluetooth: hci_core: Fix LE quote calculation")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/dwc3-st.c |   11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ net/bluetooth/hci_core.c | 34 +++++++++++++++++++++++-----------
+ 1 file changed, 23 insertions(+), 11 deletions(-)
 
---- a/drivers/usb/dwc3/dwc3-st.c
-+++ b/drivers/usb/dwc3/dwc3-st.c
-@@ -219,10 +219,8 @@ static int st_dwc3_probe(struct platform
- 	dwc3_data->regmap = regmap;
- 
- 	res = platform_get_resource_byname(pdev, IORESOURCE_MEM, "syscfg-reg");
--	if (!res) {
--		ret = -ENXIO;
--		goto undo_platform_dev_alloc;
--	}
-+	if (!res)
-+		return -ENXIO;
- 
- 	dwc3_data->syscfg_reg_off = res->start;
- 
-@@ -233,8 +231,7 @@ static int st_dwc3_probe(struct platform
- 		devm_reset_control_get_exclusive(dev, "powerdown");
- 	if (IS_ERR(dwc3_data->rstc_pwrdn)) {
- 		dev_err(&pdev->dev, "could not get power controller\n");
--		ret = PTR_ERR(dwc3_data->rstc_pwrdn);
--		goto undo_platform_dev_alloc;
-+		return PTR_ERR(dwc3_data->rstc_pwrdn);
- 	}
- 
- 	/* Manage PowerDown */
-@@ -300,8 +297,6 @@ undo_softreset:
- 	reset_control_assert(dwc3_data->rstc_rst);
- undo_powerdown:
- 	reset_control_assert(dwc3_data->rstc_pwrdn);
--undo_platform_dev_alloc:
--	platform_device_put(pdev);
- 	return ret;
+diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
+index 6caef575c628c..b6243cb97e8ec 100644
+--- a/net/bluetooth/hci_core.c
++++ b/net/bluetooth/hci_core.c
+@@ -4055,15 +4055,27 @@ static inline int __get_blocks(struct hci_dev *hdev, struct sk_buff *skb)
+ 	return DIV_ROUND_UP(skb->len - HCI_ACL_HDR_SIZE, hdev->block_len);
  }
  
+-static void __check_timeout(struct hci_dev *hdev, unsigned int cnt)
++static void __check_timeout(struct hci_dev *hdev, unsigned int cnt, u8 type)
+ {
+-	if (!hci_dev_test_flag(hdev, HCI_UNCONFIGURED)) {
+-		/* ACL tx timeout must be longer than maximum
+-		 * link supervision timeout (40.9 seconds) */
+-		if (!cnt && time_after(jiffies, hdev->acl_last_tx +
+-				       HCI_ACL_TX_TIMEOUT))
+-			hci_link_tx_to(hdev, ACL_LINK);
++	unsigned long last_tx;
++
++	if (hci_dev_test_flag(hdev, HCI_UNCONFIGURED))
++		return;
++
++	switch (type) {
++	case LE_LINK:
++		last_tx = hdev->le_last_tx;
++		break;
++	default:
++		last_tx = hdev->acl_last_tx;
++		break;
+ 	}
++
++	/* tx timeout must be longer than maximum link supervision timeout
++	 * (40.9 seconds)
++	 */
++	if (!cnt && time_after(jiffies, last_tx + HCI_ACL_TX_TIMEOUT))
++		hci_link_tx_to(hdev, type);
+ }
+ 
+ static void hci_sched_acl_pkt(struct hci_dev *hdev)
+@@ -4073,7 +4085,7 @@ static void hci_sched_acl_pkt(struct hci_dev *hdev)
+ 	struct sk_buff *skb;
+ 	int quote;
+ 
+-	__check_timeout(hdev, cnt);
++	__check_timeout(hdev, cnt, ACL_LINK);
+ 
+ 	while (hdev->acl_cnt &&
+ 	       (chan = hci_chan_sent(hdev, ACL_LINK, &quote))) {
+@@ -4112,8 +4124,6 @@ static void hci_sched_acl_blk(struct hci_dev *hdev)
+ 	int quote;
+ 	u8 type;
+ 
+-	__check_timeout(hdev, cnt);
+-
+ 	BT_DBG("%s", hdev->name);
+ 
+ 	if (hdev->dev_type == HCI_AMP)
+@@ -4121,6 +4131,8 @@ static void hci_sched_acl_blk(struct hci_dev *hdev)
+ 	else
+ 		type = ACL_LINK;
+ 
++	__check_timeout(hdev, cnt, type);
++
+ 	while (hdev->block_cnt > 0 &&
+ 	       (chan = hci_chan_sent(hdev, type, &quote))) {
+ 		u32 priority = (skb_peek(&chan->data_q))->priority;
+@@ -4242,7 +4254,7 @@ static void hci_sched_le(struct hci_dev *hdev)
+ 
+ 	cnt = hdev->le_pkts ? hdev->le_cnt : hdev->acl_cnt;
+ 
+-	__check_timeout(hdev, cnt);
++	__check_timeout(hdev, cnt, LE_LINK);
+ 
+ 	tmp = cnt;
+ 	while (cnt && (chan = hci_chan_sent(hdev, LE_LINK, &quote))) {
+-- 
+2.43.0
+
 
 
 
