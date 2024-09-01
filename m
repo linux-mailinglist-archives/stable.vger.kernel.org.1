@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-72419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71911-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58B12967A8D
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:57:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8656F967850
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:30:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 163DE2822CC
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:57:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B79F41C20FC8
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:30:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 898B417E919;
-	Sun,  1 Sep 2024 16:57:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A2BC1822F8;
+	Sun,  1 Sep 2024 16:30:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z8z4G1Y1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PPUqGBtb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46D812A1B8;
-	Sun,  1 Sep 2024 16:57:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08B0917DFFC;
+	Sun,  1 Sep 2024 16:30:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209859; cv=none; b=MilxwfYATH9wyV4gG9KsXhhoAbxcVzCfQ7ZrUSDXfQTmhQRl3QaJEo/Ltn40C7R8WN1MVUqqcPm+NXGUy2ayUW6qZPHQILN4ZvDJsZkACOrPkz90MbN+cwNzuJzlFKVdGAcXA71b8xlI/XDCjmsV9YG3j7Bcu1I4/DIuvIpYq2c=
+	t=1725208225; cv=none; b=S4gUYORlh6k8uVktP7ziRvG9CmEkUZgpFAKxDbUtB4P67nQ4qphwLSPayOvSHI87ahRS5Su1zBVrHEOVKSMnfzICNXQ683Z4ZgArYVpGX5J4eA6jqQRDZuAAIem+4FWXLM8Fnjw4G5FldEPkDodIgQ/f0l6Rx9l7+kBSoIQpGkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209859; c=relaxed/simple;
-	bh=bQcEPAUpG+NfIjd9TTD72bRHK1OKlJrMmtTLM6oPPYg=;
+	s=arc-20240116; t=1725208225; c=relaxed/simple;
+	bh=c/sY3xsT/rUQ8WYjVcdH2sLKeh/vQw9QYpxvJ1L94Dc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ACqOauaS2/F/lfFbYn0Kjl/2TovZ5dfWVaScSmPiKRc+cEoQf5duSQ4zWob69U6kE2zvkp9afQuvnnpBwkqm76KyXEvBhAsYOlVf/pl4aBnuQJvW90/WBE19a7pkJRkH9zSFUgwz48F3zwKTAkkHYMnLyd7t2fslKH5UymXiQxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z8z4G1Y1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6ACFC4CEC3;
-	Sun,  1 Sep 2024 16:57:38 +0000 (UTC)
+	 MIME-Version; b=TdzbYBmKeIf+XfxsHaPUdUozDDy31sJmq0BR0tw3nd8bLO4Eps/fkQ2vC8DKXaJfz/6wB594jh9qRaGaXWzNd+b98USKRZDKBzp6uM4g5KKB49+VcuTSd0U/BSK5FM9xtYwhSGIfez1Ji1zHO+qZOyHzh3DQZy+JDQSHl8HYAWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PPUqGBtb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 837E4C4CEC3;
+	Sun,  1 Sep 2024 16:30:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209859;
-	bh=bQcEPAUpG+NfIjd9TTD72bRHK1OKlJrMmtTLM6oPPYg=;
+	s=korg; t=1725208224;
+	bh=c/sY3xsT/rUQ8WYjVcdH2sLKeh/vQw9QYpxvJ1L94Dc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z8z4G1Y1XhBWFQDxbq3KFgi8YKJMGq50D9AnvxQXlJdVy3aktK0PR8oik5BLeOIf8
-	 tr/rmaUqT7at9U1ylAGON8m7QfKJu91DAw2x2klR7mp2RkGkX4eAiJQHmddGTo8IKp
-	 TNgxOd+4gr6GygKCcGGdy/Dqmm/pow/I2nkgVptM=
+	b=PPUqGBtbQCdMAgdjs91SJk8siuaKO/p2ATmcuoPaUFOcugKU3FZWwFBYsXS9hMewD
+	 kKhNWy9hcUMKRmA+9r0hQjm3ljCQIyDmuItUkdQXanuSF+C0dO8ileBt+qoDNxZhMd
+	 fKsnVL9ifIPRC0Cq8bpyyyVzodKUdDls11h89WKM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	David Sterba <dsterba@suse.com>,
-	Yury Norov <yury.norov@gmail.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Long Li <longli@microsoft.com>,
 	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.15 016/215] btrfs: rename bitmap_set_bits() -> btrfs_bitmap_set_bits()
+Subject: [PATCH 6.10 017/149] net: mana: Fix race of mana_hwc_post_rx_wqe and new hwc response
 Date: Sun,  1 Sep 2024 18:15:28 +0200
-Message-ID: <20240901160823.868195508@linuxfoundation.org>
+Message-ID: <20240901160818.114255549@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +62,138 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Lobakin <aleksander.lobakin@intel.com>
+From: Haiyang Zhang <haiyangz@microsoft.com>
 
-commit 4ca532d64648d4776d15512caed3efea05ca7195 upstream.
+commit 8af174ea863c72f25ce31cee3baad8a301c0cf0f upstream.
 
-bitmap_set_bits() does not start with the FS' prefix and may collide
-with a new generic helper one day. It operates with the FS-specific
-types, so there's no change those two could do the same thing.
-Just add the prefix to exclude such possible conflict.
+The mana_hwc_rx_event_handler() / mana_hwc_handle_resp() calls
+complete(&ctx->comp_event) before posting the wqe back. It's
+possible that other callers, like mana_create_txq(), start the
+next round of mana_hwc_send_request() before the posting of wqe.
+And if the HW is fast enough to respond, it can hit no_wqe error
+on the HW channel, then the response message is lost. The mana
+driver may fail to create queues and open, because of waiting for
+the HW response and timed out.
+Sample dmesg:
+[  528.610840] mana 39d4:00:02.0: HWC: Request timed out!
+[  528.614452] mana 39d4:00:02.0: Failed to send mana message: -110, 0x0
+[  528.618326] mana 39d4:00:02.0 enP14804s2: Failed to create WQ object: -110
 
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Acked-by: David Sterba <dsterba@suse.com>
-Reviewed-by: Yury Norov <yury.norov@gmail.com>
-Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+To fix it, move posting of rx wqe before complete(&ctx->comp_event).
+
+Cc: stable@vger.kernel.org
+Fixes: ca9c54d2d6a5 ("net: mana: Add a driver for Microsoft Azure Network Adapter (MANA)")
+Signed-off-by: Haiyang Zhang <haiyangz@microsoft.com>
+Reviewed-by: Long Li <longli@microsoft.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/free-space-cache.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/microsoft/mana/hw_channel.c |   62 ++++++++++++-----------
+ 1 file changed, 34 insertions(+), 28 deletions(-)
 
---- a/fs/btrfs/free-space-cache.c
-+++ b/fs/btrfs/free-space-cache.c
-@@ -1787,9 +1787,9 @@ static void bitmap_clear_bits(struct btr
- 	ctl->free_space -= bytes;
+--- a/drivers/net/ethernet/microsoft/mana/hw_channel.c
++++ b/drivers/net/ethernet/microsoft/mana/hw_channel.c
+@@ -52,9 +52,33 @@ static int mana_hwc_verify_resp_msg(cons
+ 	return 0;
  }
  
--static void bitmap_set_bits(struct btrfs_free_space_ctl *ctl,
--			    struct btrfs_free_space *info, u64 offset,
--			    u64 bytes)
-+static void btrfs_bitmap_set_bits(struct btrfs_free_space_ctl *ctl,
-+				  struct btrfs_free_space *info, u64 offset,
-+				  u64 bytes)
++static int mana_hwc_post_rx_wqe(const struct hwc_wq *hwc_rxq,
++				struct hwc_work_request *req)
++{
++	struct device *dev = hwc_rxq->hwc->dev;
++	struct gdma_sge *sge;
++	int err;
++
++	sge = &req->sge;
++	sge->address = (u64)req->buf_sge_addr;
++	sge->mem_key = hwc_rxq->msg_buf->gpa_mkey;
++	sge->size = req->buf_len;
++
++	memset(&req->wqe_req, 0, sizeof(struct gdma_wqe_request));
++	req->wqe_req.sgl = sge;
++	req->wqe_req.num_sge = 1;
++	req->wqe_req.client_data_unit = 0;
++
++	err = mana_gd_post_and_ring(hwc_rxq->gdma_wq, &req->wqe_req, NULL);
++	if (err)
++		dev_err(dev, "Failed to post WQE on HWC RQ: %d\n", err);
++	return err;
++}
++
+ static void mana_hwc_handle_resp(struct hw_channel_context *hwc, u32 resp_len,
+-				 const struct gdma_resp_hdr *resp_msg)
++				 struct hwc_work_request *rx_req)
  {
- 	unsigned long start, count, end;
- 	int extent_delta = 1;
-@@ -2085,7 +2085,7 @@ static u64 add_bytes_to_bitmap(struct bt
++	const struct gdma_resp_hdr *resp_msg = rx_req->buf_va;
+ 	struct hwc_caller_ctx *ctx;
+ 	int err;
  
- 	bytes_to_set = min(end - offset, bytes);
+@@ -62,6 +86,7 @@ static void mana_hwc_handle_resp(struct
+ 		      hwc->inflight_msg_res.map)) {
+ 		dev_err(hwc->dev, "hwc_rx: invalid msg_id = %u\n",
+ 			resp_msg->response.hwc_msg_id);
++		mana_hwc_post_rx_wqe(hwc->rxq, rx_req);
+ 		return;
+ 	}
  
--	bitmap_set_bits(ctl, info, offset, bytes_to_set);
-+	btrfs_bitmap_set_bits(ctl, info, offset, bytes_to_set);
+@@ -75,30 +100,13 @@ static void mana_hwc_handle_resp(struct
+ 	memcpy(ctx->output_buf, resp_msg, resp_len);
+ out:
+ 	ctx->error = err;
+-	complete(&ctx->comp_event);
+-}
+-
+-static int mana_hwc_post_rx_wqe(const struct hwc_wq *hwc_rxq,
+-				struct hwc_work_request *req)
+-{
+-	struct device *dev = hwc_rxq->hwc->dev;
+-	struct gdma_sge *sge;
+-	int err;
+-
+-	sge = &req->sge;
+-	sge->address = (u64)req->buf_sge_addr;
+-	sge->mem_key = hwc_rxq->msg_buf->gpa_mkey;
+-	sge->size = req->buf_len;
  
- 	/*
- 	 * We set some bytes, we have no idea what the max extent size is
+-	memset(&req->wqe_req, 0, sizeof(struct gdma_wqe_request));
+-	req->wqe_req.sgl = sge;
+-	req->wqe_req.num_sge = 1;
+-	req->wqe_req.client_data_unit = 0;
++	/* Must post rx wqe before complete(), otherwise the next rx may
++	 * hit no_wqe error.
++	 */
++	mana_hwc_post_rx_wqe(hwc->rxq, rx_req);
+ 
+-	err = mana_gd_post_and_ring(hwc_rxq->gdma_wq, &req->wqe_req, NULL);
+-	if (err)
+-		dev_err(dev, "Failed to post WQE on HWC RQ: %d\n", err);
+-	return err;
++	complete(&ctx->comp_event);
+ }
+ 
+ static void mana_hwc_init_event_handler(void *ctx, struct gdma_queue *q_self,
+@@ -235,14 +243,12 @@ static void mana_hwc_rx_event_handler(vo
+ 		return;
+ 	}
+ 
+-	mana_hwc_handle_resp(hwc, rx_oob->tx_oob_data_size, resp);
++	mana_hwc_handle_resp(hwc, rx_oob->tx_oob_data_size, rx_req);
+ 
+-	/* Do no longer use 'resp', because the buffer is posted to the HW
+-	 * in the below mana_hwc_post_rx_wqe().
++	/* Can no longer use 'resp', because the buffer is posted to the HW
++	 * in mana_hwc_handle_resp() above.
+ 	 */
+ 	resp = NULL;
+-
+-	mana_hwc_post_rx_wqe(hwc_rxq, rx_req);
+ }
+ 
+ static void mana_hwc_tx_event_handler(void *ctx, u32 gdma_txq_id,
 
 
 
