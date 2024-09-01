@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-72275-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71869-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82D089679F8
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:50:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65DD596781F
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:28:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2DB8D1F2263E
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:50:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 967781C20F78
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:28:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D58D1DFD1;
-	Sun,  1 Sep 2024 16:49:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE49C183CA9;
+	Sun,  1 Sep 2024 16:28:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v2IdOG+i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lZZKqTdb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEC83143894;
-	Sun,  1 Sep 2024 16:49:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D6D413D53B;
+	Sun,  1 Sep 2024 16:28:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209398; cv=none; b=TcFVhTvp56JiBzissprWfU6F0G4SxBEY93jZ/zsidTYSG74r0bvAagRS3Euydoyird5lhysiUoBzQr2I/CbTLvcIcYH3DKt9+rkIgdw3duncLBUdM/03ZTx3/H3a9nCIb+P8d8GOiZ/btfWEEIzOUt9crhMZ1gUX6idlvjkBK9M=
+	t=1725208084; cv=none; b=Ah4eF5iaqqXApySxa/uOhsmwlwfQUaLLZ4JfRe8TY5Qeg3WfZ53D3rPUTBvS6Vw7XiwQTDw7qvLWmc1ft5fxiDJ462ME0SnfcVExyaJUVRsgApU/kFZcRXG6UOP+UaC4sen0cz6t31lyaGnUzHGiHw4MwaWSv6CEyg/Fcrx9Ud0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209398; c=relaxed/simple;
-	bh=n3IJBxnsSDf497t+jb53oYcC+oI/q+HyXAD0Z07BAak=;
+	s=arc-20240116; t=1725208084; c=relaxed/simple;
+	bh=JuC0DvE3BWhzBa7y59RI1PP8ZYINpzxeYuQkVwpRjAM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TQkkWl/dzJGSZSCLFe7z7zVmh92DcibjqV+6erJqn9mLkxYQ18/yCKn0CQRLPd5kVWWw0fofrP2AQn5kqUmZxtavMwP+XcDpJjRFN2yoPDJ2seX2QS5I/waD8ZcD5R/grKGS00VpL3IiDReY0ZTHkRYxmllcim+Uux3nX+d+Zek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v2IdOG+i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40E50C4CEC3;
-	Sun,  1 Sep 2024 16:49:58 +0000 (UTC)
+	 MIME-Version; b=pxzhZ/4BxwsEVyJEVWFPjjDCxhRA6aep8u1yyKMr+MBB9zOzms1E6BQZZiugEVNhvMAdzFNdgZLTauq/4lEshVcans1DlJXqU+q6XEvWOIn+GQVj28prQ2Huw8avHC8eCNorAZ7sWuBHGv8luSeQkM5RTF518ITVTt/std2w28E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lZZKqTdb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B270C4CEC3;
+	Sun,  1 Sep 2024 16:28:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209398;
-	bh=n3IJBxnsSDf497t+jb53oYcC+oI/q+HyXAD0Z07BAak=;
+	s=korg; t=1725208084;
+	bh=JuC0DvE3BWhzBa7y59RI1PP8ZYINpzxeYuQkVwpRjAM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v2IdOG+icmwBLcdGRZiTtKD7U/Tc2T7q5mGFkTBmq4waKW2C+pY9oeBjFyy5IMuCf
-	 nsroYS2cHnfRnQIoKEijlhH/BabdGuHE2sA+FKo4jY4Jl55M1OMJbcki6IZ0/xtUSC
-	 6t5cfHjNZ9aqnphvjAEhN7igNrU1XbefUF4WmDzc=
+	b=lZZKqTdbq4VAaSOXUriEgs/qvMmqpLy0KVvOoc5e6FUH6C/L7yiCIo17lqwlRWrQz
+	 xPxzeHQj9P0aaYiOCA7WRvx5EvUljE5IfiaGcDmG8NH523nyL7ydz0dj79Nd/SJopi
+	 RfamfUaC9U7FsO4ubtsVi0BDWK7FWB5xU8ayNMD8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Pawel Dembicki <paweldembicki@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 023/151] net: dsa: vsc73xx: pass value in phy_write operation
-Date: Sun,  1 Sep 2024 18:16:23 +0200
-Message-ID: <20240901160814.970978280@linuxfoundation.org>
+Subject: [PATCH 6.6 37/93] ovl: fix wrong lowerdir number check for parameter Opt_lowerdir
+Date: Sun,  1 Sep 2024 18:16:24 +0200
+Message-ID: <20240901160808.756407145@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
-References: <20240901160814.090297276@linuxfoundation.org>
+In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
+References: <20240901160807.346406833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +63,125 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pawel Dembicki <paweldembicki@gmail.com>
+From: Zhihao Cheng <chengzhihao1@huawei.com>
 
-[ Upstream commit 5b9eebc2c7a5f0cc7950d918c1e8a4ad4bed5010 ]
+[ Upstream commit ca76ac36bb6068866feca185045e7edf2a8f392f ]
 
-In the 'vsc73xx_phy_write' function, the register value is missing,
-and the phy write operation always sends zeros.
+The max count of lowerdir is OVL_MAX_STACK[500], which is broken by
+commit 37f32f526438("ovl: fix memory leak in ovl_parse_param()") for
+parameter Opt_lowerdir. Since commit 819829f0319a("ovl: refactor layer
+parsing helpers") and commit 24e16e385f22("ovl: add support for
+appending lowerdirs one by one") added check ovl_mount_dir_check() in
+function ovl_parse_param_lowerdir(), the 'ctx->nr' should be smaller
+than OVL_MAX_STACK, after commit 37f32f526438("ovl: fix memory leak in
+ovl_parse_param()") is applied, the 'ctx->nr' is updated before the
+check ovl_mount_dir_check(), which leads the max count of lowerdir
+to become 499 for parameter Opt_lowerdir.
+Fix it by replacing lower layers parsing code with the existing helper
+function ovl_parse_layer().
 
-This commit passes the value variable into the proper register.
-
-Fixes: 05bd97fc559d ("net: dsa: Add Vitesse VSC73xx DSA router driver")
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Pawel Dembicki <paweldembicki@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 37f32f526438 ("ovl: fix memory leak in ovl_parse_param()")
+Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Link: https://lore.kernel.org/r/20240705011510.794025-3-chengzhihao1@huawei.com
+Reviewed-by: Amir Goldstein <amir73il@gmail.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/vitesse-vsc73xx-core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/overlayfs/params.c | 40 +++++++---------------------------------
+ 1 file changed, 7 insertions(+), 33 deletions(-)
 
-diff --git a/drivers/net/dsa/vitesse-vsc73xx-core.c b/drivers/net/dsa/vitesse-vsc73xx-core.c
-index 018988b95035e..55c1063327a8f 100644
---- a/drivers/net/dsa/vitesse-vsc73xx-core.c
-+++ b/drivers/net/dsa/vitesse-vsc73xx-core.c
-@@ -531,7 +531,7 @@ static int vsc73xx_phy_write(struct dsa_switch *ds, int phy, int regnum,
- 		return 0;
+diff --git a/fs/overlayfs/params.c b/fs/overlayfs/params.c
+index 17b9c1838182d..39919a10ce1c9 100644
+--- a/fs/overlayfs/params.c
++++ b/fs/overlayfs/params.c
+@@ -357,6 +357,8 @@ static void ovl_add_layer(struct fs_context *fc, enum ovl_opt layer,
+ 	case Opt_datadir_add:
+ 		ctx->nr_data++;
+ 		fallthrough;
++	case Opt_lowerdir:
++		fallthrough;
+ 	case Opt_lowerdir_add:
+ 		WARN_ON(ctx->nr >= ctx->capacity);
+ 		l = &ctx->lower[ctx->nr++];
+@@ -379,7 +381,7 @@ static int ovl_parse_layer(struct fs_context *fc, const char *layer_name, enum o
+ 	if (!name)
+ 		return -ENOMEM;
+ 
+-	if (upper)
++	if (upper || layer == Opt_lowerdir)
+ 		err = ovl_mount_dir(name, &path);
+ 	else
+ 		err = ovl_mount_dir_noesc(name, &path);
+@@ -435,7 +437,6 @@ static int ovl_parse_param_lowerdir(const char *name, struct fs_context *fc)
+ {
+ 	int err;
+ 	struct ovl_fs_context *ctx = fc->fs_private;
+-	struct ovl_fs_context_layer *l;
+ 	char *dup = NULL, *iter;
+ 	ssize_t nr_lower, nr;
+ 	bool data_layer = false;
+@@ -475,35 +476,11 @@ static int ovl_parse_param_lowerdir(const char *name, struct fs_context *fc)
+ 		goto out_err;
  	}
  
--	cmd = (phy << 21) | (regnum << 16);
-+	cmd = (phy << 21) | (regnum << 16) | val;
- 	ret = vsc73xx_write(vsc, VSC73XX_BLOCK_MII, 0, 1, cmd);
- 	if (ret)
- 		return ret;
+-	if (nr_lower > ctx->capacity) {
+-		err = -ENOMEM;
+-		l = krealloc_array(ctx->lower, nr_lower, sizeof(*ctx->lower),
+-				   GFP_KERNEL_ACCOUNT);
+-		if (!l)
+-			goto out_err;
+-
+-		ctx->lower = l;
+-		ctx->capacity = nr_lower;
+-	}
+-
+ 	iter = dup;
+-	l = ctx->lower;
+-	for (nr = 0; nr < nr_lower; nr++, l++) {
+-		ctx->nr++;
+-		memset(l, 0, sizeof(*l));
+-
+-		err = ovl_mount_dir(iter, &l->path);
++	for (nr = 0; nr < nr_lower; nr++) {
++		err = ovl_parse_layer(fc, iter, Opt_lowerdir);
+ 		if (err)
+-			goto out_put;
+-
+-		err = ovl_mount_dir_check(fc, &l->path, Opt_lowerdir, iter, false);
+-		if (err)
+-			goto out_put;
+-
+-		err = -ENOMEM;
+-		l->name = kstrdup(iter, GFP_KERNEL_ACCOUNT);
+-		if (!l->name)
+-			goto out_put;
++			goto out_err;
+ 
+ 		if (data_layer)
+ 			ctx->nr_data++;
+@@ -521,7 +498,7 @@ static int ovl_parse_param_lowerdir(const char *name, struct fs_context *fc)
+ 			 */
+ 			if (ctx->nr_data > 0) {
+ 				pr_err("regular lower layers cannot follow data lower layers");
+-				goto out_put;
++				goto out_err;
+ 			}
+ 
+ 			data_layer = false;
+@@ -535,9 +512,6 @@ static int ovl_parse_param_lowerdir(const char *name, struct fs_context *fc)
+ 	kfree(dup);
+ 	return 0;
+ 
+-out_put:
+-	ovl_reset_lowerdirs(ctx);
+-
+ out_err:
+ 	kfree(dup);
+ 
 -- 
 2.43.0
 
