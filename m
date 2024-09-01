@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-72282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71821-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E86A9679FF
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:50:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5154B9677E6
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:25:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9FFA61C21390
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:50:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CFC18B2154B
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:25:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00E3A17CA1F;
-	Sun,  1 Sep 2024 16:50:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C666183CA4;
+	Sun,  1 Sep 2024 16:25:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mtv28h9g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QeJVmbat"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B54441C68C;
-	Sun,  1 Sep 2024 16:50:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0904814290C;
+	Sun,  1 Sep 2024 16:25:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209420; cv=none; b=BqPDXAy+8zom3Pnq0u5NG3zPp6NSiyBXbxKK6aGJ5HuhZcvtKZXGZw5OPSaZMdtXrJDaONMEE4WWyNUFoBdp1Cbtj4QIA7mOKob2CoxDvsJ+9jkevPlSbYd+0hWmbfBfAkSGsbEQ1CXslZwV76xTebmeE7ORMTJRZqc3C8oi9gg=
+	t=1725207929; cv=none; b=t53QvEtSvOCV21Ig2p5RgTDufA+pzhaO3yXA5CeC1m8lEv2Lo0q+OTNzbH8UvfB3eY5Z54h0q1eis+XBrWJjzjsS3ga4Evn1UiRXp8Hd621tn5l5Jz8eA/BA+0iPsOOqP337RxoFy4FPjficAezt4EZ+HYWCFA/2tFUGm2AHzxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209420; c=relaxed/simple;
-	bh=/vBJjSXbzmx3EQA9ftknf8rpJqv7H5+InzGlyVdaY84=;
+	s=arc-20240116; t=1725207929; c=relaxed/simple;
+	bh=2Z+2r9mx5Wa4qrqQzOaf2SomOJ+os7WddaXt0H7MuQk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LA57vtLwj57LUK8grxXoe5ZNYH6Na5N9B8BgcIomSAZIDE69kNUaarH6an93cFfNeD+T2+Up2+1cj1YLL/AQcbD+UkOp/IQicgqC8thJzgGdqj0DAGOadjmo9KcIyGtZ1HUPttBXbqBcm38/Mg6oQa04uAINDpWZYSVSozivMNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mtv28h9g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CBFCC4CEC3;
-	Sun,  1 Sep 2024 16:50:20 +0000 (UTC)
+	 MIME-Version; b=tSvB1dD+764pGAXu5Q/RlS4PT68kphyQpd3CJAhQBLWtwu+x+g0Ltb3L28eCNnICKnEr8M+VSbbKfPkYwXH8EPyf52r4zHrphi6+Yr46Ln8I6D5p+k8y9MSIW34JXbhNhi736l1EnynsgWxqihqv1P+mH/vk4MDBThe8Bu9ZaT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QeJVmbat; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14AD0C4CEC3;
+	Sun,  1 Sep 2024 16:25:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209420;
-	bh=/vBJjSXbzmx3EQA9ftknf8rpJqv7H5+InzGlyVdaY84=;
+	s=korg; t=1725207928;
+	bh=2Z+2r9mx5Wa4qrqQzOaf2SomOJ+os7WddaXt0H7MuQk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mtv28h9g+TF0APRM7Zma1FcnVISJ4qPGI/j6CSTsGlCTcHmXDcIEV0VHtjkm46cAU
-	 EyQC3ePoURKERPMY/v2DEwUcSRpbO2FcJNj88bGXnPCBup59CoHEAuun1TdTEEG5j8
-	 V/zh00qmZFwnicS30x36A6yasrD2Nv6efyokMUBI=
+	b=QeJVmbatl6AuPX78bEPazDR5ePVoR7zA3QgjEzq/GKoW35mIMkYBqwMD9HgKlYbFM
+	 vBwK6vgDytRdcqeTLn7JxPR6iriuR+gzsS5EnoW8wAC2egfJCQn41Ds8mC2Wpidt6p
+	 mkB6N0EY2Qb3Mdai1FaRDnFNJaq7LQ+SQUURwow8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Khazhismel Kumykov <khazhy@google.com>
-Subject: [PATCH 5.10 007/151] dm resume: dont return EINVAL when signalled
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.6 20/93] mptcp: pm: ADD_ADDR 0 is not a new address
 Date: Sun,  1 Sep 2024 18:16:07 +0200
-Message-ID: <20240901160814.374401129@linuxfoundation.org>
+Message-ID: <20240901160808.121477060@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
-References: <20240901160814.090297276@linuxfoundation.org>
+In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
+References: <20240901160807.346406833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Khazhismel Kumykov <khazhy@google.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit 7a636b4f03af9d541205f69e373672e7b2b60a8a upstream.
+commit 57f86203b41c98b322119dfdbb1ec54ce5e3369b upstream.
 
-If the dm_resume method is called on a device that is not suspended, the
-method will suspend the device briefly, before resuming it (so that the
-table will be swapped).
+The ADD_ADDR 0 with the address from the initial subflow should not be
+considered as a new address: this is not something new. If the host
+receives it, it simply means that the address is available again.
 
-However, there was a bug that the return value of dm_suspended_md was not
-checked. dm_suspended_md may return an error when it is interrupted by a
-signal. In this case, do_resume would call dm_swap_table, which would
-return -EINVAL.
+When receiving an ADD_ADDR for the ID 0, the PM already doesn't consider
+it as new by not incrementing the 'add_addr_accepted' counter. But the
+'accept_addr' might not be set if the limit has already been reached:
+this can be bypassed in this case. But before, it is important to check
+that this ADD_ADDR for the ID 0 is for the same address as the initial
+subflow. If not, it is not something that should happen, and the
+ADD_ADDR can be ignored.
 
-This commit fixes the logic, so that error returned by dm_suspend is
-checked and the resume operation is undone.
+Note that if an ADD_ADDR is received while there is already a subflow
+opened using the same address, this ADD_ADDR is ignored as well. It
+means that if multiple ADD_ADDR for ID 0 are received, there will not be
+any duplicated subflows created by the client.
 
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Signed-off-by: Khazhismel Kumykov <khazhy@google.com>
+Fixes: d0876b2284cf ("mptcp: add the incoming RM_ADDR support")
 Cc: stable@vger.kernel.org
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-ioctl.c |   22 ++++++++++++++++++++--
- 1 file changed, 20 insertions(+), 2 deletions(-)
+ net/mptcp/pm.c         |    4 +++-
+ net/mptcp/pm_netlink.c |    9 +++++++++
+ net/mptcp/protocol.h   |    2 ++
+ 3 files changed, 14 insertions(+), 1 deletion(-)
 
---- a/drivers/md/dm-ioctl.c
-+++ b/drivers/md/dm-ioctl.c
-@@ -1064,8 +1064,26 @@ static int do_resume(struct dm_ioctl *pa
- 			suspend_flags &= ~DM_SUSPEND_LOCKFS_FLAG;
- 		if (param->flags & DM_NOFLUSH_FLAG)
- 			suspend_flags |= DM_SUSPEND_NOFLUSH_FLAG;
--		if (!dm_suspended_md(md))
--			dm_suspend(md, suspend_flags);
-+		if (!dm_suspended_md(md)) {
-+			r = dm_suspend(md, suspend_flags);
-+			if (r) {
-+				down_write(&_hash_lock);
-+				hc = dm_get_mdptr(md);
-+				if (hc && !hc->new_map) {
-+					hc->new_map = new_map;
-+					new_map = NULL;
-+				} else {
-+					r = -ENXIO;
-+				}
-+				up_write(&_hash_lock);
-+				if (new_map) {
-+					dm_sync_table(md);
-+					dm_table_destroy(new_map);
-+				}
-+				dm_put(md);
-+				return r;
-+			}
-+		}
+--- a/net/mptcp/pm.c
++++ b/net/mptcp/pm.c
+@@ -227,7 +227,9 @@ void mptcp_pm_add_addr_received(const st
+ 		} else {
+ 			__MPTCP_INC_STATS(sock_net((struct sock *)msk), MPTCP_MIB_ADDADDRDROP);
+ 		}
+-	} else if (!READ_ONCE(pm->accept_addr)) {
++	/* id0 should not have a different address */
++	} else if ((addr->id == 0 && !mptcp_pm_nl_is_init_remote_addr(msk, addr)) ||
++		   (addr->id > 0 && !READ_ONCE(pm->accept_addr))) {
+ 		mptcp_pm_announce_addr(msk, addr, true);
+ 		mptcp_pm_add_addr_send_ack(msk);
+ 	} else if (mptcp_pm_schedule_work(msk, MPTCP_PM_ADD_ADDR_RECEIVED)) {
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -768,6 +768,15 @@ static void mptcp_pm_nl_add_addr_receive
+ 	}
+ }
  
- 		old_map = dm_swap_table(md, new_map);
- 		if (IS_ERR(old_map)) {
++bool mptcp_pm_nl_is_init_remote_addr(struct mptcp_sock *msk,
++				     const struct mptcp_addr_info *remote)
++{
++	struct mptcp_addr_info mpc_remote;
++
++	remote_address((struct sock_common *)msk, &mpc_remote);
++	return mptcp_addresses_equal(&mpc_remote, remote, remote->port);
++}
++
+ void mptcp_pm_nl_addr_send_ack(struct mptcp_sock *msk)
+ {
+ 	struct mptcp_subflow_context *subflow;
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -907,6 +907,8 @@ void mptcp_pm_add_addr_received(const st
+ void mptcp_pm_add_addr_echoed(struct mptcp_sock *msk,
+ 			      const struct mptcp_addr_info *addr);
+ void mptcp_pm_add_addr_send_ack(struct mptcp_sock *msk);
++bool mptcp_pm_nl_is_init_remote_addr(struct mptcp_sock *msk,
++				     const struct mptcp_addr_info *remote);
+ void mptcp_pm_nl_addr_send_ack(struct mptcp_sock *msk);
+ void mptcp_pm_rm_addr_received(struct mptcp_sock *msk,
+ 			       const struct mptcp_rm_list *rm_list);
 
 
 
