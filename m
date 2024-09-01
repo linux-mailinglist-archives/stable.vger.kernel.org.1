@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-72411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72611-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEA1B967A85
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:57:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9880F967B53
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:08:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 430CBB207D5
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:57:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 54F222809C9
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:08:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFFA318132A;
-	Sun,  1 Sep 2024 16:57:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01B1B3BB48;
+	Sun,  1 Sep 2024 17:08:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VpKvuoKM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VG96fJCT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D6C7208A7;
-	Sun,  1 Sep 2024 16:57:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B37782C190;
+	Sun,  1 Sep 2024 17:08:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209833; cv=none; b=CrvVlbG2yvQGI5s5UJarNbaNlxFxMGEcrhiLnzcwQqKNo5TRFf2j2O52Ks9QTJsr6kf7Wj71BcpRQAkZ8mZ+AbFSWoXkKZHcZjXmtKNXWReFfNMVQETFKQC1lOo3kEaiYEaJ+aXpgpypy+SkMBTbHHzQG+lHZ/mL9bVVZhe5S0Q=
+	t=1725210497; cv=none; b=tDLHB+fHdBYeD/xYGfKotZhXkElLsD4ePuYjreOmdwEJcQkbAH9lqjSjg3rjSPwfaAUDbolyjygJ7+yvuF67CyIardF+JPtGD5Q71utxPu/7jHTMCL6RG1wYFdWPj3JAKbpSo9VT1Nbmov8t2OzxhrL872YplKdqUqnxVczynvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209833; c=relaxed/simple;
-	bh=RLKmvVjs2w6wNKOZvyWENsUt4CvhUO4NOucUZUulo9s=;
+	s=arc-20240116; t=1725210497; c=relaxed/simple;
+	bh=1RWceZPmmH4UtqoPzAbzP6Q0Flk8hv+FpT9R4dDgfSM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IiCOWQfMB/p21qvKgtkfYa/jvFJA2eUFU5ZvrMzBKZTQvM+b2h4T5es+XCUMK/7MlDdsFKatrAaiE249LFxjfpafX7SBhQzBAhIum+54ux0BaDDjYvV1a0qS6wHqZI3I6dI4CRz09zt+ZG214CtBgsMbYUhaQlOhDnReQfRllHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VpKvuoKM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E02A1C4CEC3;
-	Sun,  1 Sep 2024 16:57:12 +0000 (UTC)
+	 MIME-Version; b=dSA/iFmciG0hTtiR2v2ojVBSQsinYYhxu40QBxzJ6lUPFs6mf55VM+VS5s7Q0hX4sNRoUpb2RqkbvQLIG0SQzuIj4AnI6eBIMrSNMCepk+SVLcAlP/wo7uNVZ029XJx0b6CiHujsn3QMv26Kipw1yXT99+VVx2GNIAW8CWW2vXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VG96fJCT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 395F7C4CEC3;
+	Sun,  1 Sep 2024 17:08:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209833;
-	bh=RLKmvVjs2w6wNKOZvyWENsUt4CvhUO4NOucUZUulo9s=;
+	s=korg; t=1725210497;
+	bh=1RWceZPmmH4UtqoPzAbzP6Q0Flk8hv+FpT9R4dDgfSM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VpKvuoKMafkFtt8PNvdxPrTplStOECKe2qBZbuycVjsslspYitNbiidWln3fWaO8j
-	 Dk/3FJe35xTnfZtzOb/VF2Tp0e14Kfb9Sli67B6qXeOGWm5JbQhww9O7A1LDJqpuvy
-	 aI08xKHDvE9ruf73Yy0OCuL/vvR3hUbkCZ96WLBE=
+	b=VG96fJCT1Iqg/A6yUtvZvAvJwbouEMCqi7MnDXRi+p8nt3nEIFihjsxyC7pjYjv4Q
+	 QOnZA2xNAUGz4z9WuyP9llL9n10LwrjvTav8iHwWihu0+toDyzH3raIptGzdD2HbZs
+	 3j8zDtjolsVMjoD7Rguu0XQaIeBZPOo+f+yfMBD0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Kuehling <felix.kuehling@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 5.10 128/151] drm/amdkfd: dont allow mapping the MMIO HDP page with large pages
+	Qu Wenruo <wqu@suse.com>,
+	Josef Bacik <josef@toxicpanda.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 5.15 176/215] btrfs: run delayed iputs when flushing delalloc
 Date: Sun,  1 Sep 2024 18:18:08 +0200
-Message-ID: <20240901160818.923608914@linuxfoundation.org>
+Message-ID: <20240901160830.013829791@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
-References: <20240901160814.090297276@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Josef Bacik <josef@toxicpanda.com>
 
-commit be4a2a81b6b90d1a47eaeaace4cc8e2cb57b96c7 upstream.
+commit 2d3447261031503b181dacc549fe65ffe2d93d65 upstream.
 
-We don't get the right offset in that case.  The GPU has
-an unused 4K area of the register BAR space into which you can
-remap registers.  We remap the HDP flush registers into this
-space to allow userspace (CPU or GPU) to flush the HDP when it
-updates VRAM.  However, on systems with >4K pages, we end up
-exposing PAGE_SIZE of MMIO space.
+We have transient failures with btrfs/301, specifically in the part
+where we do
 
-Fixes: d8e408a82704 ("drm/amdkfd: Expose HDP registers to user space")
-Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Felix Kuehling <felix.kuehling@amd.com>
+  for i in $(seq 0 10); do
+	  write 50m to file
+	  rm -f file
+  done
+
+Sometimes this will result in a transient quota error, and it's because
+sometimes we start writeback on the file which results in a delayed
+iput, and thus the rm doesn't actually clean the file up.  When we're
+flushing the quota space we need to run the delayed iputs to make sure
+all the unlinks that we think have completed have actually completed.
+This removes the small window where we could fail to find enough space
+in our quota.
+
+CC: stable@vger.kernel.org # 5.15+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_chardev.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ fs/btrfs/qgroup.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
-@@ -1311,7 +1311,7 @@ static int kfd_ioctl_alloc_memory_of_gpu
- 			goto err_unlock;
- 		}
- 		offset = amdgpu_amdkfd_get_mmio_remap_phys_addr(dev->kgd);
--		if (!offset) {
-+		if (!offset || (PAGE_SIZE > 4096)) {
- 			err = -ENOMEM;
- 			goto err_unlock;
- 		}
-@@ -1969,6 +1969,9 @@ static int kfd_mmio_mmap(struct kfd_dev
- 	if (vma->vm_end - vma->vm_start != PAGE_SIZE)
- 		return -EINVAL;
+--- a/fs/btrfs/qgroup.c
++++ b/fs/btrfs/qgroup.c
+@@ -3677,6 +3677,8 @@ static int try_flush_qgroup(struct btrfs
+ 		return 0;
+ 	}
  
-+	if (PAGE_SIZE > 4096)
-+		return -EINVAL;
-+
- 	address = amdgpu_amdkfd_get_mmio_remap_phys_addr(dev->kgd);
- 
- 	vma->vm_flags |= VM_IO | VM_DONTCOPY | VM_DONTEXPAND | VM_NORESERVE |
++	btrfs_run_delayed_iputs(root->fs_info);
++	btrfs_wait_on_delayed_iputs(root->fs_info);
+ 	ret = btrfs_start_delalloc_snapshot(root, true);
+ 	if (ret < 0)
+ 		goto out;
 
 
 
