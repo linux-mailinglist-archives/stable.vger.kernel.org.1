@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-72459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71968-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1BBF967AB6
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:59:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34E7896789C
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:33:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F6861C21524
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:59:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D29BB1F2122E
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:33:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B93D18132A;
-	Sun,  1 Sep 2024 16:59:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80738184534;
+	Sun,  1 Sep 2024 16:33:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uI09mrqk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BgvDOzr3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF3E11E87B;
-	Sun,  1 Sep 2024 16:59:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D1D05381A;
+	Sun,  1 Sep 2024 16:33:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209994; cv=none; b=Wc4hMQjvicUh81ZxKb6t0pLGqkIWm+rGBt31XhTPhVEfirKijdZD7OCEsK8MTl3K5vdphTuac/HA4zcqbl4bQ6PmhfdMk2sFNktSP+oQ6dLe1Szt20zhdD1H0GH0+Zg9m7kDNbRQehszwAeYUQuKgC0QAZp/olP3MlhlsblT9ck=
+	t=1725208409; cv=none; b=fo6e/fsMchmxV9VpAbEOYWJ7Fs54YdB6c1TGvzLbO8CJfkNRrHZ5eS155E++w2V8ITs413aXzPHR70/XShmdmNGMiUN702L0P7D6rcr7aGIzxAVF8PetAEH1/cUxdH8mcnH30RReyrtdw8qLlrDpIcK3DXVYDBuZuVCWruae0fo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209994; c=relaxed/simple;
-	bh=JmNI3uT4zD3levVc1oVplZBusl7vZ9+Z1sCm4SsYRf8=;
+	s=arc-20240116; t=1725208409; c=relaxed/simple;
+	bh=dFSaBCnhyHkUQeoEdUvGPTjuOQ7NcfRhdze7qJIhtk0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VJO6PKQJ/rvYNSIC2tZOxPrmKowyYWAb/0gtysvnL8wcjDSseRdLAlkAD6McbQRKtlydi/JNMRWJPQ7EiGrDQ4y8zVy1+xnKDgnl/2Vo4H+9QN+UNoSXjpjkPHmTcedMtNt0Wvzb+emNKJxOctkQviEFlbpjGqtdEtfv0r0tC1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uI09mrqk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D7CEC4CEC3;
-	Sun,  1 Sep 2024 16:59:53 +0000 (UTC)
+	 MIME-Version; b=EqImBG/rm5TwseUxh/rnv6fdYd/2iU8zyroJbpEptXOULC54tBr2FNFzyjwNpalsKV5G67+Ce2pcoK5cHCqHxZEnLgW8wFbhmMgS3Crj7DY7VElCqV8XAPaYvBoXnYT+kTWW6c52Jfv8Ess21+XBqaJtNdTOedFlSRHJ3db8d18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BgvDOzr3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FDCAC4CEC3;
+	Sun,  1 Sep 2024 16:33:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209993;
-	bh=JmNI3uT4zD3levVc1oVplZBusl7vZ9+Z1sCm4SsYRf8=;
+	s=korg; t=1725208409;
+	bh=dFSaBCnhyHkUQeoEdUvGPTjuOQ7NcfRhdze7qJIhtk0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uI09mrqkSyndVZUk76MdfzoXp9cr+O4CStKrbBCV6MPjDrMdWlNRx9mAzLbbCbU8O
-	 tvGwQQkmEq+UHJuCLgKRRB8iP1JGZq06l9Mx/LoA0Gi9Zrvi0tZhZ23ZjMo7VghxsG
-	 H7XHleJBGdF+/jv3WN3KSErpLMoF8I5uyOmbbIHU=
+	b=BgvDOzr3d1ZSiBJIeKlPrkhUvMbYP4Cjj+JDgQppL7CpiVsYkL2m2ADlsi2qdRX0o
+	 5eCgimI/tkpHDCWLbIPvY+DxjISATTNtHIMJV02I8I2dXqsQY1ey/jfYBkrGBLjSW9
+	 SlZ9Q4lTOkH+IjQrBWk9snjpl6cgiKnEtoq3JDN8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chengfeng Ye <dg573847474@gmail.com>,
+	Simon Trimmer <simont@opensource.cirrus.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 055/215] staging: ks7010: disable bh on tx_dev_lock
+Subject: [PATCH 6.10 056/149] ALSA: hda: cs35l56: Dont use the device index as a calibration index
 Date: Sun,  1 Sep 2024 18:16:07 +0200
-Message-ID: <20240901160825.430707051@linuxfoundation.org>
+Message-ID: <20240901160819.576027090@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengfeng Ye <dg573847474@gmail.com>
+From: Simon Trimmer <simont@opensource.cirrus.com>
 
-[ Upstream commit 058cbee52ccd7be77e373d31a4f14670cfd32018 ]
+[ Upstream commit 91191a6e50a2ff752da244493171037663536768 ]
 
-As &priv->tx_dev.tx_dev_lock is also acquired by xmit callback which
-could be call from timer under softirq context, use spin_lock_bh()
-on it to prevent potential deadlock.
+The HDA driver cannot assume that the order that the devices are
+specified in the cirrus,dev-index matches the order of calibration
+entries.
 
-hostif_sme_work()
---> hostif_sme_set_pmksa()
---> hostif_mib_set_request()
---> ks_wlan_hw_tx()
---> spin_lock(&priv->tx_dev.tx_dev_lock)
+Only a calibration entry with a matching silicon id will be used.
 
-ks_wlan_start_xmit()
---> hostif_data_request()
---> ks_wlan_hw_tx()
---> spin_lock(&priv->tx_dev.tx_dev_lock)
-
-Signed-off-by: Chengfeng Ye <dg573847474@gmail.com>
-Link: https://lore.kernel.org/r/20230926161323.41928-1-dg573847474@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: cfa43aaa7948 ("ALSA: hda: cs35l56: Apply amp calibration from EFI data")
+Signed-off-by: Simon Trimmer <simont@opensource.cirrus.com>
+Link: https://patch.msgid.link/20240821124711.44325-1-simont@opensource.cirrus.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/ks7010/ks7010_sdio.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/pci/hda/cs35l56_hda.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/staging/ks7010/ks7010_sdio.c b/drivers/staging/ks7010/ks7010_sdio.c
-index 98d759e7cc957..a4f3a7a79422b 100644
---- a/drivers/staging/ks7010/ks7010_sdio.c
-+++ b/drivers/staging/ks7010/ks7010_sdio.c
-@@ -395,9 +395,9 @@ int ks_wlan_hw_tx(struct ks_wlan_private *priv, void *p, unsigned long size,
- 	priv->hostt.buff[priv->hostt.qtail] = le16_to_cpu(hdr->event);
- 	priv->hostt.qtail = (priv->hostt.qtail + 1) % SME_EVENT_BUFF_SIZE;
+diff --git a/sound/pci/hda/cs35l56_hda.c b/sound/pci/hda/cs35l56_hda.c
+index e134ede6c5aa5..357fd59aa49e4 100644
+--- a/sound/pci/hda/cs35l56_hda.c
++++ b/sound/pci/hda/cs35l56_hda.c
+@@ -980,7 +980,7 @@ int cs35l56_hda_common_probe(struct cs35l56_hda *cs35l56, int hid, int id)
+ 		goto err;
+ 	}
  
--	spin_lock(&priv->tx_dev.tx_dev_lock);
-+	spin_lock_bh(&priv->tx_dev.tx_dev_lock);
- 	result = enqueue_txdev(priv, p, size, complete_handler, skb);
--	spin_unlock(&priv->tx_dev.tx_dev_lock);
-+	spin_unlock_bh(&priv->tx_dev.tx_dev_lock);
+-	cs35l56->base.cal_index = cs35l56->index;
++	cs35l56->base.cal_index = -1;
  
- 	if (txq_has_space(priv))
- 		queue_delayed_work(priv->wq, &priv->rw_dwork, 0);
+ 	cs35l56_init_cs_dsp(&cs35l56->base, &cs35l56->cs_dsp);
+ 	cs35l56->cs_dsp.client_ops = &cs35l56_hda_client_ops;
 -- 
 2.43.0
 
