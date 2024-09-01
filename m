@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-72112-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72306-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CBBB96793B
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:41:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F8E7967A1C
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:51:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5C381F21A96
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:41:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A0C1B1C21017
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:51:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A257181CE1;
-	Sun,  1 Sep 2024 16:41:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03A5917E00C;
+	Sun,  1 Sep 2024 16:51:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yTiZ9TdG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pWMIsiUE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1780817E900;
-	Sun,  1 Sep 2024 16:41:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5C341DFD1;
+	Sun,  1 Sep 2024 16:51:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208880; cv=none; b=WgCcpq/QxNSpqNwUWvyBYrs0yXQLXC/e4hvQYU1N0Ny3RoHmTJcEzY4CULxZIwpP703ueyyByzCRs19XMYNaEeSyvGJVDgQRcawlsQ5v5o3LpgZLIKdnK2/kBz8Wz8Zyvx2xo8b/c3vUWlvuxtZvYt7CBCgQs4uLY8rdPv1fjAU=
+	t=1725209496; cv=none; b=jc7jRypiqQdn6voSSqAmTcrci4i97BWBIFyvSXYHVMYwCjPG+LlxZJP2+DNznA8El+JHfGgts24yJW2qfIXij7DqhAIxLrIwqZmkgQrsUc5onZ7Nq/+DqXj6Hf6X4/M7Y7JVR4llxPMb79WGOGMF9YVb+1geK+EtzrWaCsrMy5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208880; c=relaxed/simple;
-	bh=TcQCz3fd78ZU2g2ZGnDtVrsbODsQCZD6g/8TiyebfL4=;
+	s=arc-20240116; t=1725209496; c=relaxed/simple;
+	bh=B2vPQ0ieU62tx3tluclJ96801ZupA/DL+OBTYLTjLzA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hkKbb3gVjSITdteynpTMDouy7f1onr7pKvCD3SKyl8P3XmRQM+DNEJrccT+ndo1WRkQVdEyCeojopLHo4PkENUPORRBrK6VZb18JsLVCgiNY0IGcGGCajgNWcvX60ZhudzhgEsBVpRNuOLqiKouXA8O/pBxeAcjSmtu7InUH6/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yTiZ9TdG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76EE6C4CEC3;
-	Sun,  1 Sep 2024 16:41:19 +0000 (UTC)
+	 MIME-Version; b=OjM8KVvD2KcduPA1IWzUbtDXZpP1Qn1eu+ci7Z6DiQrUyWJWWcv7yTjbR0TeFA7GecsVMClexFEMvQOPK8/cFmLEzBWYp7zWjBDy6qjQTpHvI9VsuRcOt0wt7R1NEGiGbYd/MNWNzgEPPFTnadNPurwZYfsy1MoSgYpjCkwUn6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pWMIsiUE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2707DC4CEC3;
+	Sun,  1 Sep 2024 16:51:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208880;
-	bh=TcQCz3fd78ZU2g2ZGnDtVrsbODsQCZD6g/8TiyebfL4=;
+	s=korg; t=1725209496;
+	bh=B2vPQ0ieU62tx3tluclJ96801ZupA/DL+OBTYLTjLzA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yTiZ9TdGk6if/tiHSA8uasWP2K+2JaFVIcd/ZMyXR0zjAc2SR/8zZLO/E8N0fLTSO
-	 5OQOmxoKhg3FPYwPlcAEO2sJ4yVto4cdcaX7XQWiWdl2Crm05hRgzV4AwIyQe90hv3
-	 ZYq7P9DkaGAeqdOWcwkyxvLhBRNyJyjLF79aH05s=
+	b=pWMIsiUEoyldx3gO9Tdq7ZMSkZkU+/CQHfVUWm4VugJTSrbC/vsxLo9H+3Dl6YRJ0
+	 Uu/xDkTTIufytHEagsFxOKKS/k4FHuV52oFlt0VlbmblF6BE2ropiQoawPgESCadtA
+	 ywn5v2gKitFG//PaTFL2EV+rX1T1PkkhZ72ExoT4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Krishna Kurapati <quic_kriskura@quicinc.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Sam Creasey <sammy@sammy.net>,
+	Kees Cook <keescook@chromium.org>,
+	Simon Horman <horms@kernel.org>,
+	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 068/134] usb: dwc3: core: Skip setting event buffers for host only controllers
+Subject: [PATCH 5.10 054/151] net/sun3_82586: Avoid reading past buffer in debug output
 Date: Sun,  1 Sep 2024 18:16:54 +0200
-Message-ID: <20240901160812.658703893@linuxfoundation.org>
+Message-ID: <20240901160816.151199414@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
-References: <20240901160809.752718937@linuxfoundation.org>
+In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
+References: <20240901160814.090297276@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,73 +65,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krishna Kurapati <quic_kriskura@quicinc.com>
+From: Kees Cook <keescook@chromium.org>
 
-[ Upstream commit 89d7f962994604a3e3d480832788d06179abefc5 ]
+[ Upstream commit 4bea747f3fbec33c16d369b2f51e55981d7c78d0 ]
 
-On some SoC's like SA8295P where the tertiary controller is host-only
-capable, GEVTADDRHI/LO, GEVTSIZ, GEVTCOUNT registers are not accessible.
-Trying to access them leads to a crash.
+Since NUM_XMIT_BUFFS is always 1, building m68k with sun3_defconfig and
+-Warraybounds, this build warning is visible[1]:
 
-For DRD/Peripheral supported controllers, event buffer setup is done
-again in gadget_pullup. Skip setup or cleanup of event buffers if
-controller is host-only capable.
+drivers/net/ethernet/i825xx/sun3_82586.c: In function 'sun3_82586_timeout':
+drivers/net/ethernet/i825xx/sun3_82586.c:990:122: warning: array subscript 1 is above array bounds of 'volatile struct transmit_cmd_struct *[1]' [-Warray-bounds=]
+  990 |                 printk("%s: command-stats: %04x %04x\n",dev->name,swab16(p->xmit_cmds[0]->cmd_status),swab16(p->xmit_cmds[1]->cmd_status));
+      |                                                                                                               ~~~~~~~~~~~~^~~
+...
+drivers/net/ethernet/i825xx/sun3_82586.c:156:46: note: while referencing 'xmit_cmds'
+  156 |         volatile struct transmit_cmd_struct *xmit_cmds[NUM_XMIT_BUFFS];
 
-Suggested-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Bjorn Andersson <andersson@kernel.org>
-Tested-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20240420044901.884098-4-quic_kriskura@quicinc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Avoid accessing index 1 since it doesn't exist.
+
+Link: https://github.com/KSPP/linux/issues/325 [1]
+Cc: Sam Creasey <sammy@sammy.net>
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Simon Horman <horms@kernel.org> # build-tested
+Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Link: https://lore.kernel.org/r/20240206161651.work.876-kees@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/core.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/net/ethernet/i825xx/sun3_82586.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
-index 12e72e804278e..cbe475134b3c6 100644
---- a/drivers/usb/dwc3/core.c
-+++ b/drivers/usb/dwc3/core.c
-@@ -391,6 +391,13 @@ static void dwc3_free_event_buffers(struct dwc3 *dwc)
- static int dwc3_alloc_event_buffers(struct dwc3 *dwc, unsigned length)
- {
- 	struct dwc3_event_buffer *evt;
-+	unsigned int hw_mode;
-+
-+	hw_mode = DWC3_GHWPARAMS0_MODE(dwc->hwparams.hwparams0);
-+	if (hw_mode == DWC3_GHWPARAMS0_MODE_HOST) {
-+		dwc->ev_buf = NULL;
-+		return 0;
-+	}
- 
- 	evt = dwc3_alloc_one_event_buffer(dwc, length);
- 	if (IS_ERR(evt)) {
-@@ -412,6 +419,9 @@ int dwc3_event_buffers_setup(struct dwc3 *dwc)
- {
- 	struct dwc3_event_buffer	*evt;
- 
-+	if (!dwc->ev_buf)
-+		return 0;
-+
- 	evt = dwc->ev_buf;
- 	evt->lpos = 0;
- 	dwc3_writel(dwc->regs, DWC3_GEVNTADRLO(0),
-@@ -429,6 +439,9 @@ void dwc3_event_buffers_cleanup(struct dwc3 *dwc)
- {
- 	struct dwc3_event_buffer	*evt;
- 
-+	if (!dwc->ev_buf)
-+		return;
-+
- 	evt = dwc->ev_buf;
- 
- 	evt->lpos = 0;
+diff --git a/drivers/net/ethernet/i825xx/sun3_82586.c b/drivers/net/ethernet/i825xx/sun3_82586.c
+index 4564ee02c95f6..83a6114afbf90 100644
+--- a/drivers/net/ethernet/i825xx/sun3_82586.c
++++ b/drivers/net/ethernet/i825xx/sun3_82586.c
+@@ -990,7 +990,7 @@ static void sun3_82586_timeout(struct net_device *dev, unsigned int txqueue)
+ 	{
+ #ifdef DEBUG
+ 		printk("%s: xmitter timed out, try to restart! stat: %02x\n",dev->name,p->scb->cus);
+-		printk("%s: command-stats: %04x %04x\n",dev->name,swab16(p->xmit_cmds[0]->cmd_status),swab16(p->xmit_cmds[1]->cmd_status));
++		printk("%s: command-stats: %04x\n", dev->name, swab16(p->xmit_cmds[0]->cmd_status));
+ 		printk("%s: check, whether you set the right interrupt number!\n",dev->name);
+ #endif
+ 		sun3_82586_close(dev);
 -- 
 2.43.0
 
