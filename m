@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-72254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72372-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D02DC9679E3
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:49:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4D1F967A5E
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:55:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A6D8281801
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:49:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70380282217
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:55:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 827F9183CD8;
-	Sun,  1 Sep 2024 16:48:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4BC7181334;
+	Sun,  1 Sep 2024 16:55:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L4wt9f62"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V35oWbau"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4184C1DFD1;
-	Sun,  1 Sep 2024 16:48:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A27451DFD1;
+	Sun,  1 Sep 2024 16:55:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209333; cv=none; b=gR5rMw/OLrndUfypvREy6eDMCMVWGHrAhvWgmvt48caFTH8rB+9Vvjw+qq1UJt+K2+vNFVHVS44Dsg+qxqJpgMl3Rwky8whb1996DpKOPyKMmzBWT7TfXhJI7C2bJkK6NAtWqO8TjXUL/fe/JQvwgBnWHFx9paW9N1gW0+RG/Rg=
+	t=1725209709; cv=none; b=i1XDzSVziC6Zge9OOqB+4hz2nV+WPzwJvllqwwhbg1526BoT3SL7Wiw+62HpfrODemBvEcNuOhlHV4pg8rFx/sSmriuFu1lOpemfUrs3HSwZf836PcH/bkSmTzbFH45iMHVJBribkk9+c2F95/ZfR6+6bFl5umgHtGQKVjfjLPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209333; c=relaxed/simple;
-	bh=2UJqfxfErCD5IBg93bNQ6JQmJt0VUnL/4/tkjmzU6mk=;
+	s=arc-20240116; t=1725209709; c=relaxed/simple;
+	bh=ZQdHKYaJaN+56/oXH3BcQnBseNAv8y19p83p5KNbomU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c7LaTA9EQYh2FLy4G3AHdXqEIDZ4FS6wsXNgbW54AsrMJRb6axYCnBgAy6rYEeZiEgRnx9tBIJSQntqUBqKrgcsNYwzwp/G4pKx/lMx3ho/UzfhwzQCzBJ/vgIu8QbYgTmS4YS/ROuL4CA9wEdYirkOKEbFdOyAlIXovRogMn/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L4wt9f62; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBB8EC4CEC3;
-	Sun,  1 Sep 2024 16:48:52 +0000 (UTC)
+	 MIME-Version; b=FeeQIT6weo9ttz/QYVQVEK95tCmAUljTomUo1Q2QP7T3XG7w8Uf4UpZQDEWKXUBWhkLXiQx554swUl3B3tmkTcn6iKpyh3EsQ8ZvEZVDMrI5UuAKDkHUSQuVliiZ7KJnc/nlcZIrZkJw9mFicXFgLp99yZrYEgNzeGMwHdbi0RU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V35oWbau; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25878C4CEC3;
+	Sun,  1 Sep 2024 16:55:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209333;
-	bh=2UJqfxfErCD5IBg93bNQ6JQmJt0VUnL/4/tkjmzU6mk=;
+	s=korg; t=1725209709;
+	bh=ZQdHKYaJaN+56/oXH3BcQnBseNAv8y19p83p5KNbomU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L4wt9f62pVE83Q56txTM3I1LcsUlzU870mYZeGaAaKYp/Kq5V2QthNUtxldG9YzKE
-	 d7O7ht7LmLtiwGUwkDvo+fqrYqDVlFMgLCPLdw4CBbZ3/s2vZDZDfc3VS4t28NIpaB
-	 zrygs4m4u4JkiHsFfTcXrNs36q+u3PSs80qmJnf0=
+	b=V35oWbau09R3sdQklDfxhkUnFMtuenTwrYfHAgORh6qyvboKgTrHjKy/S7VN92oGG
+	 xH1QdphJSbuGN4JSR3nfMWPhalrqJRnuXNaUC1H3JSS1LjqIY/2Ui8VDe4oRc5QB0E
+	 tMthp138duOL+3gvn+yzaNRYVor4O55C0+59YyTI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Mishin <amishin@t-argos.ru>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 55/71] nfc: pn533: Add poll mod list filling check
+	Yury Norov <yury.norov@gmail.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 5.10 120/151] tools: move alignment-related macros to new <linux/align.h>
 Date: Sun,  1 Sep 2024 18:18:00 +0200
-Message-ID: <20240901160803.965128423@linuxfoundation.org>
+Message-ID: <20240901160818.623542840@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160801.879647959@linuxfoundation.org>
-References: <20240901160801.879647959@linuxfoundation.org>
+In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
+References: <20240901160814.090297276@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: Alexander Lobakin <aleksander.lobakin@intel.com>
 
-[ Upstream commit febccb39255f9df35527b88c953b2e0deae50e53 ]
+commit 10a04ff09bcc39e0044190ffe9f00f998f13647c upstream.
 
-In case of im_protocols value is 1 and tm_protocols value is 0 this
-combination successfully passes the check
-'if (!im_protocols && !tm_protocols)' in the nfc_start_poll().
-But then after pn533_poll_create_mod_list() call in pn533_start_poll()
-poll mod list will remain empty and dev->poll_mod_count will remain 0
-which lead to division by zero.
+Currently, tools have *ALIGN*() macros scattered across the unrelated
+headers, as there are only 3 of them and they were added separately
+each time on an as-needed basis.
+Anyway, let's make it more consistent with the kernel headers and allow
+using those macros outside of the mentioned headers. Create
+<linux/align.h> inside the tools/ folder and include it where needed.
 
-Normally no im protocol has value 1 in the mask, so this combination is
-not expected by driver. But these protocol values actually come from
-userspace via Netlink interface (NFC_CMD_START_POLL operation). So a
-broken or malicious program may pass a message containing a "bad"
-combination of protocol parameter values so that dev->poll_mod_count
-is not incremented inside pn533_poll_create_mod_list(), thus leading
-to division by zero.
-Call trace looks like:
-nfc_genl_start_poll()
-  nfc_start_poll()
-    ->start_poll()
-    pn533_start_poll()
-
-Add poll mod list filling check.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: dfccd0f58044 ("NFC: pn533: Add some polling entropy")
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://patch.msgid.link/20240827084822.18785-1-amishin@t-argos.ru
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Yury Norov <yury.norov@gmail.com>
+Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nfc/pn533/pn533.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ tools/include/linux/align.h  |   12 ++++++++++++
+ tools/include/linux/bitmap.h |    2 +-
+ 2 files changed, 13 insertions(+), 1 deletion(-)
+ create mode 100644 tools/include/linux/align.h
 
-diff --git a/drivers/nfc/pn533/pn533.c b/drivers/nfc/pn533/pn533.c
-index f0cac19005527..2e0871409926b 100644
---- a/drivers/nfc/pn533/pn533.c
-+++ b/drivers/nfc/pn533/pn533.c
-@@ -1723,6 +1723,11 @@ static int pn533_start_poll(struct nfc_dev *nfc_dev,
- 	}
+--- /dev/null
++++ b/tools/include/linux/align.h
+@@ -0,0 +1,12 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++
++#ifndef _TOOLS_LINUX_ALIGN_H
++#define _TOOLS_LINUX_ALIGN_H
++
++#include <uapi/linux/const.h>
++
++#define ALIGN(x, a)		__ALIGN_KERNEL((x), (a))
++#define ALIGN_DOWN(x, a)	__ALIGN_KERNEL((x) - ((a) - 1), (a))
++#define IS_ALIGNED(x, a)	(((x) & ((typeof(x))(a) - 1)) == 0)
++
++#endif /* _TOOLS_LINUX_ALIGN_H */
+--- a/tools/include/linux/bitmap.h
++++ b/tools/include/linux/bitmap.h
+@@ -3,6 +3,7 @@
+ #define _PERF_BITOPS_H
  
- 	pn533_poll_create_mod_list(dev, im_protocols, tm_protocols);
-+	if (!dev->poll_mod_count) {
-+		nfc_err(dev->dev,
-+			"Poll mod list is empty\n");
-+		return -EINVAL;
-+	}
+ #include <string.h>
++#include <linux/align.h>
+ #include <linux/bitops.h>
+ #include <stdlib.h>
+ #include <linux/kernel.h>
+@@ -166,7 +167,6 @@ static inline int bitmap_and(unsigned lo
+ #define BITMAP_MEM_ALIGNMENT (8 * sizeof(unsigned long))
+ #endif
+ #define BITMAP_MEM_MASK (BITMAP_MEM_ALIGNMENT - 1)
+-#define IS_ALIGNED(x, a) (((x) & ((typeof(x))(a) - 1)) == 0)
  
- 	/* Do not always start polling from the same modulation */
- 	get_random_bytes(&rand_mod, sizeof(rand_mod));
--- 
-2.43.0
-
+ static inline int bitmap_equal(const unsigned long *src1,
+ 			const unsigned long *src2, unsigned int nbits)
 
 
 
