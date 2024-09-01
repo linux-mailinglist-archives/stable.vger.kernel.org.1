@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-72154-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72209-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 534F3967965
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:43:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02C349679B2
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:48:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A05C1F21A1E
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:43:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF6B028174E
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:48:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F2BD17E00C;
-	Sun,  1 Sep 2024 16:43:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46888186E42;
+	Sun,  1 Sep 2024 16:46:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MKulpuFX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xUrGDFdq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CAEA1E498;
-	Sun,  1 Sep 2024 16:43:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 047FB186E3B;
+	Sun,  1 Sep 2024 16:46:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209020; cv=none; b=R8NQDkAw83yyO0hZf3HaRAqOvbuoMA8oGeiuuISnyJw5LxUQ9SWg++ZissjsCRRBgI2u5+lEUkE9XZFxqhGuGZHmy5gQzUo69F2LA+R4ry0PseTggtO77KbEZpW0Sk9u0bYM/7tIA1j3+qrx3TDvY5pUFaF3eaYLlx68g8Le8xU=
+	t=1725209195; cv=none; b=Fyq9nL9b6oA+FVQMaDWiW5hqWhcXjV5OGEX2Eg0uoA05FngZ4/9xJeTYwx3XICPRO/sqgrX4LONHTxEYoOaMDrxD4qsVsW9PJmpCINIurWHVXZvmERu9aS2QIDE6rSwrptCAlHu+ua1E2nQSraHZDUBBZwTR/FXQIgqsP5lXHpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209020; c=relaxed/simple;
-	bh=hLF3NCfUZkMlDHN1Ndj+vEZdp4U704W+X58g45BRG/A=;
+	s=arc-20240116; t=1725209195; c=relaxed/simple;
+	bh=Fd8T90vfOzWMoUedCqP3SI8t3erLJ4A+A9khb46PMys=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mCbrqa6RJpiTOkLORwzlypaNp2UXll98sr91ZzgHtFsyGkvn/Qe1z5uYiOKK+II+nIAIyvbb2lruNPY20sw2c0wDjDJg1T1g1K+MjHUXCuRoxmSE/TXBN9zFOu0jupgohH0IKYq9DhW1JcU223N1F2LyjiB7rvpIyqbmU+2gPSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MKulpuFX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EF92C4CEC3;
-	Sun,  1 Sep 2024 16:43:39 +0000 (UTC)
+	 MIME-Version; b=AmVer8QANjCM6mp4z05CF7lXN55kmrKfMN0QjwgwutMQ2RJUkeQJ3fRabDdJsnK9ounQfASl8h8DbyHCDlq983hROw5pLiDg570M/q6fc2+dPmdvwZZZE49VMBR03FtUWzPpXrVJCxkEQznkB0b+jIJ9wmRWYnoc7atNOhpXITA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xUrGDFdq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C9ACC4CEC4;
+	Sun,  1 Sep 2024 16:46:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209020;
-	bh=hLF3NCfUZkMlDHN1Ndj+vEZdp4U704W+X58g45BRG/A=;
+	s=korg; t=1725209193;
+	bh=Fd8T90vfOzWMoUedCqP3SI8t3erLJ4A+A9khb46PMys=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MKulpuFXiPr4bNZ/GtpgqdTr1OyBp9419vjHUOKcyi+oepHYJQ69P11ASYvdm5ndh
-	 ujBpsRNOovInIBTq9yvSAZz8wWZ8b639cBRsCXOwNpMgeKwOtBpcA857y8L3iV/9qU
-	 xr9fr1g8eYviISdCDA2UPGcf+059kBSYglmOwrTE=
+	b=xUrGDFdq89MQhXBQRDkYManHwI3wZnH2di56/t5IuCUXu6HqzDf8OkbjkoWSGr4rQ
+	 ry47RghvvitDnjcl01dceU06oai4No2lrLMa3kN/9CIJ543qDYS61d0w7k6+laszRT
+	 vS+qKkOF0t4W+vbN3sUKYGRC2QCgbDEUHgNLnsX4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Brian Norris <briannorris@chromium.org>,
-	Kalle Valo <kvalo@kernel.org>
-Subject: [PATCH 5.4 109/134] wifi: mwifiex: duplicate static structs used in driver instances
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 30/71] thermal: of: Fix OF node leak in of_thermal_zone_find() error paths
 Date: Sun,  1 Sep 2024 18:17:35 +0200
-Message-ID: <20240901160814.187985860@linuxfoundation.org>
+Message-ID: <20240901160803.026968164@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
-References: <20240901160809.752718937@linuxfoundation.org>
+In-Reply-To: <20240901160801.879647959@linuxfoundation.org>
+References: <20240901160801.879647959@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,89 +64,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit 27ec3c57fcadb43c79ed05b2ea31bc18c72d798a upstream.
+[ Upstream commit c0a1ef9c5be72ff28a5413deb1b3e1a066593c13 ]
 
-mwifiex_band_2ghz and mwifiex_band_5ghz are statically allocated, but
-used and modified in driver instances. Duplicate them before using
-them in driver instances so that different driver instances do not
-influence each other.
+Terminating for_each_available_child_of_node() loop requires dropping OF
+node reference, so bailing out on errors misses this.  Solve the OF node
+reference leak with scoped for_each_available_child_of_node_scoped().
 
-This was observed on a board which has one PCIe and one SDIO mwifiex
-adapter. It blew up in mwifiex_setup_ht_caps(). This was called with
-the statically allocated struct which is modified in this function.
-
-Cc: stable@vger.kernel.org
-Fixes: d6bffe8bb520 ("mwifiex: support for creation of AP interface")
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Acked-by: Brian Norris <briannorris@chromium.org>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/20240809-mwifiex-duplicate-static-structs-v1-1-6837b903b1a4@pengutronix.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3fd6d6e2b4e8 ("thermal/of: Rework the thermal device tree initialization")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
+Reviewed-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://patch.msgid.link/20240814195823.437597-3-krzysztof.kozlowski@linaro.org
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/marvell/mwifiex/cfg80211.c |   32 +++++++++++++++++++-----
- 1 file changed, 26 insertions(+), 6 deletions(-)
+ drivers/thermal/thermal_of.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
---- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-+++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-@@ -4319,11 +4319,27 @@ int mwifiex_register_cfg80211(struct mwi
- 	if (ISSUPP_ADHOC_ENABLED(adapter->fw_cap_info))
- 		wiphy->interface_modes |= BIT(NL80211_IFTYPE_ADHOC);
+diff --git a/drivers/thermal/thermal_of.c b/drivers/thermal/thermal_of.c
+index 62099ffcd9721..323c8cd171485 100644
+--- a/drivers/thermal/thermal_of.c
++++ b/drivers/thermal/thermal_of.c
+@@ -294,14 +294,14 @@ static struct device_node *of_thermal_zone_find(struct device_node *sensor, int
+ 	 * Search for each thermal zone, a defined sensor
+ 	 * corresponding to the one passed as parameter
+ 	 */
+-	for_each_available_child_of_node(np, tz) {
++	for_each_available_child_of_node_scoped(np, child) {
  
--	wiphy->bands[NL80211_BAND_2GHZ] = &mwifiex_band_2ghz;
--	if (adapter->config_bands & BAND_A)
--		wiphy->bands[NL80211_BAND_5GHZ] = &mwifiex_band_5ghz;
--	else
-+	wiphy->bands[NL80211_BAND_2GHZ] = devm_kmemdup(adapter->dev,
-+						       &mwifiex_band_2ghz,
-+						       sizeof(mwifiex_band_2ghz),
-+						       GFP_KERNEL);
-+	if (!wiphy->bands[NL80211_BAND_2GHZ]) {
-+		ret = -ENOMEM;
-+		goto err;
-+	}
-+
-+	if (adapter->config_bands & BAND_A) {
-+		wiphy->bands[NL80211_BAND_5GHZ] = devm_kmemdup(adapter->dev,
-+							       &mwifiex_band_5ghz,
-+							       sizeof(mwifiex_band_5ghz),
-+							       GFP_KERNEL);
-+		if (!wiphy->bands[NL80211_BAND_5GHZ]) {
-+			ret = -ENOMEM;
-+			goto err;
-+		}
-+	} else {
- 		wiphy->bands[NL80211_BAND_5GHZ] = NULL;
-+	}
+ 		int count, i;
  
- 	if (adapter->drcs_enabled && ISSUPP_DRCS_ENABLED(adapter->fw_cap_info))
- 		wiphy->iface_combinations = &mwifiex_iface_comb_ap_sta_drcs;
-@@ -4411,8 +4427,7 @@ int mwifiex_register_cfg80211(struct mwi
- 	if (ret < 0) {
- 		mwifiex_dbg(adapter, ERROR,
- 			    "%s: wiphy_register failed: %d\n", __func__, ret);
--		wiphy_free(wiphy);
--		return ret;
-+		goto err;
- 	}
+-		count = of_count_phandle_with_args(tz, "thermal-sensors",
++		count = of_count_phandle_with_args(child, "thermal-sensors",
+ 						   "#thermal-sensor-cells");
+ 		if (count <= 0) {
+-			pr_err("%pOFn: missing thermal sensor\n", tz);
++			pr_err("%pOFn: missing thermal sensor\n", child);
+ 			tz = ERR_PTR(-EINVAL);
+ 			goto out;
+ 		}
+@@ -310,18 +310,19 @@ static struct device_node *of_thermal_zone_find(struct device_node *sensor, int
  
- 	if (!adapter->regd) {
-@@ -4454,4 +4469,9 @@ int mwifiex_register_cfg80211(struct mwi
+ 			int ret;
  
- 	adapter->wiphy = wiphy;
- 	return ret;
-+
-+err:
-+	wiphy_free(wiphy);
-+
-+	return ret;
- }
+-			ret = of_parse_phandle_with_args(tz, "thermal-sensors",
++			ret = of_parse_phandle_with_args(child, "thermal-sensors",
+ 							 "#thermal-sensor-cells",
+ 							 i, &sensor_specs);
+ 			if (ret < 0) {
+-				pr_err("%pOFn: Failed to read thermal-sensors cells: %d\n", tz, ret);
++				pr_err("%pOFn: Failed to read thermal-sensors cells: %d\n", child, ret);
+ 				tz = ERR_PTR(ret);
+ 				goto out;
+ 			}
+ 
+ 			if ((sensor == sensor_specs.np) && id == (sensor_specs.args_count ?
+ 								  sensor_specs.args[0] : 0)) {
+-				pr_debug("sensor %pOFn id=%d belongs to %pOFn\n", sensor, id, tz);
++				pr_debug("sensor %pOFn id=%d belongs to %pOFn\n", sensor, id, child);
++				tz = no_free_ptr(child);
+ 				goto out;
+ 			}
+ 		}
+-- 
+2.43.0
+
 
 
 
