@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-72128-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71773-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5D8A96794B
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:42:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AD499677AE
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:22:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 90A001F211BC
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:42:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 046F2B20D1B
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:22:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B4BD17E46E;
-	Sun,  1 Sep 2024 16:42:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83F43183090;
+	Sun,  1 Sep 2024 16:22:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m2E9cnOb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UFTbAucc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE56E1C68C;
-	Sun,  1 Sep 2024 16:42:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43B9C17F394;
+	Sun,  1 Sep 2024 16:22:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208932; cv=none; b=K51ssjKPni34ErMza9PI2i0Deg48hYo9m7YUcpwIVUUCFQ+rhpSk59ZVQVbgB6Vx6OmBiFS2wPo3z43EgTUu3pnqZe/WaQdZ5bkYxS+ImbIS4tIbHnPQYP1AbSM9GkUQ6ii3qMQv8Z3pBYH5os5zzj52fzkTgy1sSR0Hh7P90aA=
+	t=1725207768; cv=none; b=u0zjPnS4hf8AOShyM5j+uXROcz9JF+fd++F9+dcC0fWHJB6zvrpAj4ZwF8foXABd/q+/SbWX2xz9QjtOpnlX4R/zcAFLcjy6Mc0g0IrXsxJusiPJWF4chOaP8m4ht7+o3RllCpOg8VKhN93Ekdhw9vgNHH3ySkbYmX/yTVNroW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208932; c=relaxed/simple;
-	bh=+qHS1nlXbcOrEnF4MAwa9OTICgREQvMvWLoQieS8/Cs=;
+	s=arc-20240116; t=1725207768; c=relaxed/simple;
+	bh=JmgcnSuiBorqBRwY2bUdv7UCGL76c2AMK6jq6wBc/jk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KIA4vAKfbB7NsUk0ZXcg4rascsgPIBKjD174HF+9+Cv/7TvQ5FR+sDNPI1+qSblptJRC9/JoLbenHsR4vMR5sFoU/9B9eN71eaLI+n+lBe+aI1rxSyJcyQKlIY0H7h/lRyZuUHvRgwyNSBYsXeMLkiXvUo8VYSLU/LS84BevAkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m2E9cnOb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48A4CC4CEC3;
-	Sun,  1 Sep 2024 16:42:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XQUHyr38VdIakCUL9RV8dzzxx7l6Tc92z9JS0CKNfwx50XIk7W/PelF2htMgJGrQAt4CwJgwA8XAKWaQAtbwwGoa7295bNYBa2XGXN4mXUIWLMUztJ8cj3n8fqvtnw272Ci42hOCZjosBO/L2QpisxeXH4THJomaRqDlD0404zc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UFTbAucc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99A1EC4CEC3;
+	Sun,  1 Sep 2024 16:22:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208931;
-	bh=+qHS1nlXbcOrEnF4MAwa9OTICgREQvMvWLoQieS8/Cs=;
+	s=korg; t=1725207768;
+	bh=JmgcnSuiBorqBRwY2bUdv7UCGL76c2AMK6jq6wBc/jk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m2E9cnObmoCuluNhTZAxiYRR3nzcDQZwOAxyEUHwzChuAA9UjPPFujcKTCgZam0Hh
-	 WLrt7AOWa07RoYQKGAirjhXzTs8xB0Ff8iG1+9nr+SP/E5QL/B957mkZ4X9N6PMpEh
-	 gaiKnKeT5IfwL0MG9+5bZMfQ817+bZRyCOvzJs/E=
+	b=UFTbAuccJ0/DBaGP9NCTKQ6tkZUp7HotoMmDe4LvLaH185ZJDajhaTXqTx58sOEsf
+	 XxBq5ICjp+x0hUruCekCUDz3cTmtnuExiSqWguHOKCKqKtA3bDTteg/YCJn1i8Bo5L
+	 62SK1k+ucwBVGaJB1U/rCYzGVYsCWoTvBUM+NYw8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>,
-	Anand Jain <anand.jain@oracle.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 056/134] btrfs: change BUG_ON to assertion when checking for delayed_node root
+	Jesse Zhang <jesse.zhang@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Vamsi Krishna Brahmajosyula <vamsi-krishna.brahmajosyula@broadcom.com>
+Subject: [PATCH 4.19 72/98] drm/amdgpu: Using uninitialized value *size when calling amdgpu_vce_cs_reloc
 Date: Sun,  1 Sep 2024 18:16:42 +0200
-Message-ID: <20240901160812.215347646@linuxfoundation.org>
+Message-ID: <20240901160806.412069898@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
-References: <20240901160809.752718937@linuxfoundation.org>
+In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
+References: <20240901160803.673617007@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +62,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Sterba <dsterba@suse.com>
+From: Jesse Zhang <jesse.zhang@amd.com>
 
-[ Upstream commit be73f4448b607e6b7ce41cd8ef2214fdf6e7986f ]
+commit 88a9a467c548d0b3c7761b4fd54a68e70f9c0944 upstream.
 
-The pointer to root is initialized in btrfs_init_delayed_node(), no need
-to check for it again. Change the BUG_ON to assertion.
+Initialize the size before calling amdgpu_vce_cs_reloc, such as case 0x03000001.
+V2: To really improve the handling we would actually
+   need to have a separate value of 0xffffffff.(Christian)
 
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: Anand Jain <anand.jain@oracle.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Jesse Zhang <jesse.zhang@amd.com>
+Suggested-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Vamsi Krishna Brahmajosyula <vamsi-krishna.brahmajosyula@broadcom.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/delayed-inode.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vce.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/delayed-inode.c b/fs/btrfs/delayed-inode.c
-index 95afe5ef7500c..e3a43bf63f06c 100644
---- a/fs/btrfs/delayed-inode.c
-+++ b/fs/btrfs/delayed-inode.c
-@@ -988,7 +988,7 @@ static void btrfs_release_delayed_inode(struct btrfs_delayed_node *delayed_node)
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vce.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vce.c
+@@ -714,7 +714,8 @@ int amdgpu_vce_ring_parse_cs(struct amdg
+ 	uint32_t created = 0;
+ 	uint32_t allocated = 0;
+ 	uint32_t tmp, handle = 0;
+-	uint32_t *size = &tmp;
++	uint32_t dummy = 0xffffffff;
++	uint32_t *size = &dummy;
+ 	unsigned idx;
+ 	int i, r = 0;
  
- 	if (delayed_node &&
- 	    test_bit(BTRFS_DELAYED_NODE_INODE_DIRTY, &delayed_node->flags)) {
--		BUG_ON(!delayed_node->root);
-+		ASSERT(delayed_node->root);
- 		clear_bit(BTRFS_DELAYED_NODE_INODE_DIRTY, &delayed_node->flags);
- 		delayed_node->count--;
- 
--- 
-2.43.0
-
 
 
 
