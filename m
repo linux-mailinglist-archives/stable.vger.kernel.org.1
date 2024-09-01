@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-71826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72263-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 237AA9677EC
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:25:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D81B39679EC
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:49:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A3831C20B1F
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:25:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1517D1C21447
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:49:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B014D143894;
-	Sun,  1 Sep 2024 16:25:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63A7744C93;
+	Sun,  1 Sep 2024 16:49:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bH4I5ywl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1LN9Mebs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D18014290C;
-	Sun,  1 Sep 2024 16:25:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 236CE183092;
+	Sun,  1 Sep 2024 16:49:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725207944; cv=none; b=erNlTTmdIfgV8R4w1SWO2K30bO7y41Z5SteXV0pBVe6LPt0raBrKGPHhrfE4dtPEMugSFwbkeS979PlSSoONhZOfisrGfTSp0hzlhaGHqwGTm/ajuYWkIVul48KWrsNQlbziLS14yulvIs+AI2Ub9+qg73V3rynAsnzFFhKwJdc=
+	t=1725209361; cv=none; b=tgekoXbaF1UeXP9wQ+CahSJ5pGbl/H+Uk2TmkMVnPIiGSgvV0jF8rlIwhxVcLoMzAygxsWq6G3xnUDjxzy1UKuPoib9SOcCw9zYhqFidbOQfZQ4ur0HeO+anmBeq9/om8Erw/B/y5Yy2XEmrBdUXKghEe7LE8hsRE9cai8v5ays=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725207944; c=relaxed/simple;
-	bh=fn3oSNhjGH7qsh9o/fFzdo94Veo4j9892mMJOUtSRko=;
+	s=arc-20240116; t=1725209361; c=relaxed/simple;
+	bh=jzaemdfIJgLmQoqXW4iB3o6xzckJDJiM0dCkG47hTVc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bz1VAyeoLk1/Hwy5qJG96ejgL+nIbufhWLI9aIl3oV7CdzvVEqyd03S05gKeXd43yMa/p8+hkP8GqEHmpx9jpkz3fK7x9bSZzP6Kf8iuqlUGFc5RyoZaon2ulfdGYdO81vDQh5tKSY2YPA8tfPBvPo715y7zuADaJzF2gBpjqcU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bH4I5ywl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1074C4CEC3;
-	Sun,  1 Sep 2024 16:25:43 +0000 (UTC)
+	 MIME-Version; b=s2EZPFZY36uiOaKqp2bT2vnxdgrVB6NKLJnECtDU47jkkXK3GIK4VrJZL7FNIc6Ousq0WhWgjUzn2iSuWolvLczG9St+9NujqruOB0VTYeAXZLNhiQnVaaWqWja/XchDGUb+jdxpLJtNkZLtZo34x0HROSr8JtM/569KmDIdcwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1LN9Mebs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98EE7C4CEC3;
+	Sun,  1 Sep 2024 16:49:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725207944;
-	bh=fn3oSNhjGH7qsh9o/fFzdo94Veo4j9892mMJOUtSRko=;
+	s=korg; t=1725209361;
+	bh=jzaemdfIJgLmQoqXW4iB3o6xzckJDJiM0dCkG47hTVc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bH4I5ywlcRbclYfvlKXOgpxpMxhoUfv2nFjhs51InVHPgCbvFf4cwvHfsR/js5QoZ
-	 Urr1konb2Ib+h3MsK4vcNw7r21p0EadqTn6ucv/EVddcgrKFTrTc+z6ZNd7NulCHUH
-	 sh1UW0ngHneuy9tfwQW2GbYa0etOI8jWx+1oTuac=
+	b=1LN9MebsdN7Qas2iZDlD12Er8JR1x3ALMNVI5Bh+n6n8FHdEDOLUYC1GvP8eQscyB
+	 C4mmLX1ypM2Dx+Exl07ygxBtPACmeGJkQLfxktF3OPODJOMNsDT08E1kFo4tku1te8
+	 5ZuWlTxmLRqtPGO61e5dWiEAg4MrnrJUN8lNlImc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kenneth Feng <kenneth.feng@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 25/93] drm/amdgpu/swsmu: always force a state reprogram on init
+	Zhen Lei <thunder.leizhen@huawei.com>,
+	Stephen Smalley <stephen.smalley.work@gmail.com>,
+	Paul Moore <paul@paul-moore.com>
+Subject: [PATCH 5.10 012/151] selinux: fix potential counting error in avc_add_xperms_decision()
 Date: Sun,  1 Sep 2024 18:16:12 +0200
-Message-ID: <20240901160808.305876769@linuxfoundation.org>
+Message-ID: <20240901160814.562266150@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
-References: <20240901160807.346406833@linuxfoundation.org>
+In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
+References: <20240901160814.090297276@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,76 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Zhen Lei <thunder.leizhen@huawei.com>
 
-commit d420c857d85777663e8d16adfc24463f5d5c2dbc upstream.
+commit 379d9af3f3da2da1bbfa67baf1820c72a080d1f1 upstream.
 
-Always reprogram the hardware state on init.  This ensures
-the PMFW state is explicitly programmed and we are not relying
-on the default PMFW state.
+The count increases only when a node is successfully added to
+the linked list.
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3131
-Reviewed-by: Kenneth Feng <kenneth.feng@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit c50fe289ed7207f71df3b5f1720512a9620e84fb)
 Cc: stable@vger.kernel.org
+Fixes: fa1aa143ac4a ("selinux: extended permissions for ioctls")
+Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
+Acked-by: Stephen Smalley <stephen.smalley.work@gmail.com>
+Signed-off-by: Paul Moore <paul@paul-moore.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c |   15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ security/selinux/avc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
-@@ -1841,8 +1841,9 @@ static int smu_bump_power_profile_mode(s
+--- a/security/selinux/avc.c
++++ b/security/selinux/avc.c
+@@ -332,12 +332,12 @@ static int avc_add_xperms_decision(struc
+ {
+ 	struct avc_xperms_decision_node *dest_xpd;
+ 
+-	node->ae.xp_node->xp.len++;
+ 	dest_xpd = avc_xperms_decision_alloc(src->used);
+ 	if (!dest_xpd)
+ 		return -ENOMEM;
+ 	avc_copy_xperms_decision(&dest_xpd->xpd, src);
+ 	list_add(&dest_xpd->xpd_list, &node->ae.xp_node->xpd_head);
++	node->ae.xp_node->xp.len++;
+ 	return 0;
  }
  
- static int smu_adjust_power_state_dynamic(struct smu_context *smu,
--				   enum amd_dpm_forced_level level,
--				   bool skip_display_settings)
-+					  enum amd_dpm_forced_level level,
-+					  bool skip_display_settings,
-+					  bool force_update)
- {
- 	int ret = 0;
- 	int index = 0;
-@@ -1871,7 +1872,7 @@ static int smu_adjust_power_state_dynami
- 		}
- 	}
- 
--	if (smu_dpm_ctx->dpm_level != level) {
-+	if (force_update || smu_dpm_ctx->dpm_level != level) {
- 		ret = smu_asic_set_performance_level(smu, level);
- 		if (ret) {
- 			dev_err(smu->adev->dev, "Failed to set performance level!");
-@@ -1887,7 +1888,7 @@ static int smu_adjust_power_state_dynami
- 		index = index > 0 && index <= WORKLOAD_POLICY_MAX ? index - 1 : 0;
- 		workload[0] = smu->workload_setting[index];
- 
--		if (smu->power_profile_mode != workload[0])
-+		if (force_update || smu->power_profile_mode != workload[0])
- 			smu_bump_power_profile_mode(smu, workload, 0);
- 	}
- 
-@@ -1908,11 +1909,13 @@ static int smu_handle_task(struct smu_co
- 		ret = smu_pre_display_config_changed(smu);
- 		if (ret)
- 			return ret;
--		ret = smu_adjust_power_state_dynamic(smu, level, false);
-+		ret = smu_adjust_power_state_dynamic(smu, level, false, false);
- 		break;
- 	case AMD_PP_TASK_COMPLETE_INIT:
-+		ret = smu_adjust_power_state_dynamic(smu, level, true, true);
-+		break;
- 	case AMD_PP_TASK_READJUST_POWER_STATE:
--		ret = smu_adjust_power_state_dynamic(smu, level, true);
-+		ret = smu_adjust_power_state_dynamic(smu, level, true, false);
- 		break;
- 	default:
- 		break;
 
 
 
