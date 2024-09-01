@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-72196-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72519-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 957269679A1
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:47:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72970967AF7
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:03:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6DA31C20894
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:47:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A3A0D1C21543
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:03:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2A92183CAA;
-	Sun,  1 Sep 2024 16:45:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A33E72C190;
+	Sun,  1 Sep 2024 17:03:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KnTm4Cs/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ucNU0hEi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6809E18593B;
-	Sun,  1 Sep 2024 16:45:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61DF63BB48;
+	Sun,  1 Sep 2024 17:03:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209154; cv=none; b=JlFk/+1gc05clj0SWhlNPTvwrwK99d+VZ5KE9sAIKWzPHdJdGvoYMA3uCCiEe+Z8okPbrS7TdBWh3xUx0SvtgGG2EddIRsx/NrpM2q/62B2dlz6NzDKbYCCuUaKnDg/DdFGB+dcdkpz30FRKWXMfnwrL+yO2Ge9+cdxq+vc4dwY=
+	t=1725210189; cv=none; b=Et0GXGQ+CjhFLxX5D5ZE147aL863419cnkw0IOOwis5oRz9iz0FSz+O7OdzfQs3GZM2Dvlbgf/aBBDrKDzcuiaMC+zWABEO3RkYX5N75gJ7Qs46mitWSBolRy99+7lfM3PSbiGuoTdlf6q+kmebIqNoEK1VUVl8eycXs3Rc+TkM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209154; c=relaxed/simple;
-	bh=LlRh3IOqcOHntNATvqQDMioHE5mjMCDMQUACnEw8yAU=;
+	s=arc-20240116; t=1725210189; c=relaxed/simple;
+	bh=j04oPRQxmfN5xMtTQNXJbStB/6j0L5Zof+nV8UxKTQk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XVQMhmKjfKr2Y8yUf1pU0DZqPOxrKnV5V081U8k2PYBb+fctciZzsfpKD7QlVeGVPTaNKPixZOwTQgfUhF7wSPnNXifCPTa5eczj5Z3FnmWA3rPIuNbhGL/suQ4tjzw+VApAatdZRLUF6s00f9pwe/pl2AQBVMV1V5N8ZhJIDeY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KnTm4Cs/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98C64C4CEC3;
-	Sun,  1 Sep 2024 16:45:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mxlp7neThSdPNreS3OBU8GJRgt1KRwuHzI1MVZO8RXH0MuEUmO74OEpYNYcf/JwGqsYHbeCJIUBMd1NAgbyr5zKNPCDCXGL6dUwoCurg5cIR7r36EZTT4Inv9P8iL+myY1ndAX8x6eijeyhNJ6n00JaAdHXs4/107A51KPzRWQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ucNU0hEi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C361BC4CEC3;
+	Sun,  1 Sep 2024 17:03:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209154;
-	bh=LlRh3IOqcOHntNATvqQDMioHE5mjMCDMQUACnEw8yAU=;
+	s=korg; t=1725210189;
+	bh=j04oPRQxmfN5xMtTQNXJbStB/6j0L5Zof+nV8UxKTQk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KnTm4Cs/zj14zC6c18j+C64Pxi60fdPLnCleIjMsba+ThTTL70lxjOIb3boLfTOWu
-	 uso1yZqzz+aDYa8VBUDQBV4PrXVLp5tYq/m+3wSwzypQSWVeeNYWRRn45YJ7Nv5Idg
-	 7+XFO2hzIv0sVjpwI7xPn8719W+jOatTHWqStDKE=
+	b=ucNU0hEiUc7ORivFxqjGy9jo5FB9SSBLBpgF2yQI6J2QVPyqjgBxevfcVyWnCj3k7
+	 zXfHAKPnNEofQITEoP60/EC9sTZaoKXTZVxSt5g7emrzUUo5vR1Ok9ldwR2dv3eLtn
+	 N3Kv/WlE6mcH49B9yY0aID7RgpLO8VDYh76KRg9A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Josef Bacik <josef@toxicpanda.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.1 03/71] btrfs: run delayed iputs when flushing delalloc
+	Amir Goldstein <amir73il@gmail.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 116/215] NFSD: Rewrite synopsis of nfsd_percpu_counters_init()
 Date: Sun,  1 Sep 2024 18:17:08 +0200
-Message-ID: <20240901160802.012777840@linuxfoundation.org>
+Message-ID: <20240901160827.738087609@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160801.879647959@linuxfoundation.org>
-References: <20240901160801.879647959@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +60,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-commit 2d3447261031503b181dacc549fe65ffe2d93d65 upstream.
+[ Upstream commit 5ec39944f874e1ecc09f624a70dfaa8ac3bf9d08 ]
 
-We have transient failures with btrfs/301, specifically in the part
-where we do
+In function ‘export_stats_init’,
+    inlined from ‘svc_export_alloc’ at fs/nfsd/export.c:866:6:
+fs/nfsd/export.c:337:16: warning: ‘nfsd_percpu_counters_init’ accessing 40 bytes in a region of size 0 [-Wstringop-overflow=]
+  337 |         return nfsd_percpu_counters_init(&stats->counter, EXP_STATS_COUNTERS_NUM);
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+fs/nfsd/export.c:337:16: note: referencing argument 1 of type ‘struct percpu_counter[0]’
+fs/nfsd/stats.h: In function ‘svc_export_alloc’:
+fs/nfsd/stats.h:40:5: note: in a call to function ‘nfsd_percpu_counters_init’
+   40 | int nfsd_percpu_counters_init(struct percpu_counter counters[], int num);
+      |     ^~~~~~~~~~~~~~~~~~~~~~~~~
 
-  for i in $(seq 0 10); do
-	  write 50m to file
-	  rm -f file
-  done
-
-Sometimes this will result in a transient quota error, and it's because
-sometimes we start writeback on the file which results in a delayed
-iput, and thus the rm doesn't actually clean the file up.  When we're
-flushing the quota space we need to run the delayed iputs to make sure
-all the unlinks that we think have completed have actually completed.
-This removes the small window where we could fail to find enough space
-in our quota.
-
-CC: stable@vger.kernel.org # 5.15+
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Cc: Amir Goldstein <amir73il@gmail.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Stable-dep-of: 93483ac5fec6 ("nfsd: expose /proc/net/sunrpc/nfsd in net namespaces")
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/qgroup.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/nfsd/stats.c |    2 +-
+ fs/nfsd/stats.h |    6 +++---
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
---- a/fs/btrfs/qgroup.c
-+++ b/fs/btrfs/qgroup.c
-@@ -3745,6 +3745,8 @@ static int try_flush_qgroup(struct btrfs
- 		return 0;
- 	}
+--- a/fs/nfsd/stats.c
++++ b/fs/nfsd/stats.c
+@@ -74,7 +74,7 @@ static int nfsd_show(struct seq_file *se
  
-+	btrfs_run_delayed_iputs(root->fs_info);
-+	btrfs_wait_on_delayed_iputs(root->fs_info);
- 	ret = btrfs_start_delalloc_snapshot(root, true);
- 	if (ret < 0)
- 		goto out;
+ DEFINE_PROC_SHOW_ATTRIBUTE(nfsd);
+ 
+-int nfsd_percpu_counters_init(struct percpu_counter counters[], int num)
++int nfsd_percpu_counters_init(struct percpu_counter *counters, int num)
+ {
+ 	int i, err = 0;
+ 
+--- a/fs/nfsd/stats.h
++++ b/fs/nfsd/stats.h
+@@ -36,9 +36,9 @@ extern struct nfsd_stats	nfsdstats;
+ 
+ extern struct svc_stat		nfsd_svcstats;
+ 
+-int nfsd_percpu_counters_init(struct percpu_counter counters[], int num);
+-void nfsd_percpu_counters_reset(struct percpu_counter counters[], int num);
+-void nfsd_percpu_counters_destroy(struct percpu_counter counters[], int num);
++int nfsd_percpu_counters_init(struct percpu_counter *counters, int num);
++void nfsd_percpu_counters_reset(struct percpu_counter *counters, int num);
++void nfsd_percpu_counters_destroy(struct percpu_counter *counters, int num);
+ int nfsd_stat_init(void);
+ void nfsd_stat_shutdown(void);
+ 
 
 
 
