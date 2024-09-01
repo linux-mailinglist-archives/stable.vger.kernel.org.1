@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-72305-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71785-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9591E967A1B
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:51:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B88D9677BC
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:23:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C67C61C2139A
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:51:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A01A2811D1
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:23:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E996A17E900;
-	Sun,  1 Sep 2024 16:51:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC743183061;
+	Sun,  1 Sep 2024 16:23:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fXxSAdmY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yinq472D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A77C51DFD1;
-	Sun,  1 Sep 2024 16:51:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BD2B183090;
+	Sun,  1 Sep 2024 16:23:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209493; cv=none; b=pimSbqcOEWhOv6ibTaaJgYQ7lmzR5qO60vyPz6y6fmRX3qho2UBJuky55aXWiXg/jNJHOfgbHi9DuMMP7L16UDmFSZCYY8+rOHtQuu8CoAHzdbKW/JtmcXztx1x3eAf4UpLJkMuAbgG6aUKjkIOn44W0DPAdYFko+kT+9raA3Sw=
+	t=1725207807; cv=none; b=m013SO27bVQSndkZSJvBpQ6VWH1wv2sXrUj0+qH79I/ixFqx7/Q3vk0+sj6VqYKGxH+16V4bIFT9A22Hx04yllSYBrAw4LP8ynUhQgtbv89BYggI7kxlA+YIoxoF612HXOzuE89BO/H2IiI5iXVyCE7XMPQYhOV0FkdLBubitPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209493; c=relaxed/simple;
-	bh=afMlcvXSYk+i5kSTImcT51opNdNnBRee4FHENl7OiEs=;
+	s=arc-20240116; t=1725207807; c=relaxed/simple;
+	bh=4LE36Gmeh5dUvzzB+TKF9HiR0+kHsHb66Xf2NsgXR0g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=spMzFjlwF3G3vJ+NrBgA/+Y/ubKUId1EfKbfjvIVRlab2v79K7GJOpXlNSciVDWC9PT8mGasKc07u9jqIJRUmZM+o6awtB+X/ya4ISuDQyEswOa4YewrYbdk+ELmXK55Wk+nNfZiWpu/UjSN/0EARly01ILyToZzPC5ifWR5uPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fXxSAdmY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F272BC4CEC3;
-	Sun,  1 Sep 2024 16:51:32 +0000 (UTC)
+	 MIME-Version; b=hX0KJ92BXG44n5aZdQxKu96r/C9i2WS9CCL3xXbu+Y2tgJ8SRz2e7XkoCnGqli6lg9yiqomRTRyfPCn+hsY95qi6vR20b0cVkAM7VhU8vkycpRlcue3LX4QcQRmTrGBhzxGPonNFOWx0CJnd/PLgtjA044kOkJXnEYvzvPE6i80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yinq472D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17F22C4CEC3;
+	Sun,  1 Sep 2024 16:23:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209493;
-	bh=afMlcvXSYk+i5kSTImcT51opNdNnBRee4FHENl7OiEs=;
+	s=korg; t=1725207807;
+	bh=4LE36Gmeh5dUvzzB+TKF9HiR0+kHsHb66Xf2NsgXR0g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fXxSAdmYtQziqubuP5MsIyDQK0e3PdbNd3xR7+nqW0y3k7q/AOwLkbpTYmkbl0djO
-	 I1wnbFu41FcdP0KooTUWccLyAMLsnm0X1H6uDcm3uDoVaDIPbS8FvGlyzm6/36CQBe
-	 s4xpcY7qhPQ9Ojcrnzbvo7lM3PLtd1BnvM/Y9gqw=
+	b=yinq472DAKVnMHX/ZUchBAZDnkUBR9VBgSkumJUjFYaR/aEPgSsG6OUEeFp5NSiH4
+	 pPV/0dZ5s5BoN0tbnrqE/ZscLjqLzJnn7mCfgWZw+PnCtHf2xXrvsJvXcC84FI51UW
+	 0StXlLeSI0TnYYmDYxI7MvEBkBbhetFqsx1Awjns=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Tee <justin.tee@broadcom.com>,
-	Himanshu Madhani <himanshu.madhani@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 053/151] scsi: lpfc: Initialize status local variable in lpfc_sli4_repost_sgl_list()
+	Helge Deller <deller@gmx.de>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Hugo SIMELIERE <hsimeliere.opensource@witekio.com>
+Subject: [PATCH 4.19 83/98] fbmem: Check virtual screen sizes in fb_set_var()
 Date: Sun,  1 Sep 2024 18:16:53 +0200
-Message-ID: <20240901160816.114653567@linuxfoundation.org>
+Message-ID: <20240901160806.827529554@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
-References: <20240901160814.090297276@linuxfoundation.org>
+In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
+References: <20240901160803.673617007@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Tee <justin.tee@broadcom.com>
+From: Helge Deller <deller@gmx.de>
 
-[ Upstream commit 3d0f9342ae200aa1ddc4d6e7a573c6f8f068d994 ]
+commit 6c11df58fd1ac0aefcb3b227f72769272b939e56 upstream.
 
-A static code analyzer tool indicates that the local variable called status
-in the lpfc_sli4_repost_sgl_list() routine could be used to print garbage
-uninitialized values in the routine's log message.
+Verify that the fbdev or drm driver correctly adjusted the virtual
+screen sizes. On failure report the failing driver and reject the screen
+size change.
 
-Fix by initializing to zero.
-
-Signed-off-by: Justin Tee <justin.tee@broadcom.com>
-Link: https://lore.kernel.org/r/20240131185112.149731-2-justintee8345@gmail.com
-Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: stable@vger.kernel.org # v5.4+
+Signed-off-by: Hugo SIMELIERE <hsimeliere.opensource@witekio.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/lpfc/lpfc_sli.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/video/fbdev/core/fbmem.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/scsi/lpfc/lpfc_sli.c b/drivers/scsi/lpfc/lpfc_sli.c
-index 923ceaba0bf30..84f90f4d5abd8 100644
---- a/drivers/scsi/lpfc/lpfc_sli.c
-+++ b/drivers/scsi/lpfc/lpfc_sli.c
-@@ -7048,7 +7048,7 @@ lpfc_sli4_repost_sgl_list(struct lpfc_hba *phba,
- 	struct lpfc_sglq *sglq_entry = NULL;
- 	struct lpfc_sglq *sglq_entry_next = NULL;
- 	struct lpfc_sglq *sglq_entry_first = NULL;
--	int status, total_cnt;
-+	int status = 0, total_cnt;
- 	int post_cnt = 0, num_posted = 0, block_cnt = 0;
- 	int last_xritag = NO_XRI;
- 	LIST_HEAD(prep_sgl_list);
--- 
-2.43.0
-
+--- a/drivers/video/fbdev/core/fbmem.c
++++ b/drivers/video/fbdev/core/fbmem.c
+@@ -1006,6 +1006,17 @@ fb_set_var(struct fb_info *info, struct
+ 		if (ret)
+ 			goto done;
+ 
++		/* verify that virtual resolution >= physical resolution */
++		if (var->xres_virtual < var->xres ||
++		    var->yres_virtual < var->yres) {
++			pr_warn("WARNING: fbcon: Driver '%s' missed to adjust virtual screen size (%ux%u vs. %ux%u)\n",
++				info->fix.id,
++				var->xres_virtual, var->yres_virtual,
++				var->xres, var->yres);
++			ret = -EINVAL;
++			goto done;
++		}
++
+ 		if ((var->activate & FB_ACTIVATE_MASK) == FB_ACTIVATE_NOW) {
+ 			struct fb_var_screeninfo old_var;
+ 			struct fb_videomode mode;
 
 
 
