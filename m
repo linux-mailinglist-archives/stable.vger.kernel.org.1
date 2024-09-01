@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-72386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72163-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1C65967A6D
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:55:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9ABE96796E
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:44:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 540B3B20BFC
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:55:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 661CB280989
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:44:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D81971DFD1;
-	Sun,  1 Sep 2024 16:55:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14F9B1C68C;
+	Sun,  1 Sep 2024 16:44:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DZaltxwz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y8hGsRSK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E5DF44C93;
-	Sun,  1 Sep 2024 16:55:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7DF52B9C7;
+	Sun,  1 Sep 2024 16:44:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209753; cv=none; b=CWwTIAIufKWREWhwpYB0T+j0qT0vF5kzKoUsOmNoWAPni5TJQJfppWC0CEp3GAmkns+ANkj5PC/tpwyEIqocq7v4X2nI4k/Jr/APnCtwUyzxjKDRkf+2tx/BJeUPficWYQe5XPM6780hL96uU5FXe59GPB+2uwHnCdJ0EsA6RDw=
+	t=1725209051; cv=none; b=eXvIQGvyOXyLEQXFiiJJ9N3jNLsQTA8rxU/UV7oix/Rd7KUrz5oqjZC6nS2cgdVwMCHswDsNjwxNGbAcM6+fqGWFspWjxWiDZ52X6W4BsUW1TN+CoEeTyqbkfsVl50OaSN/Ug0rLCIVsbm/sTmU+TLdArBG25sOG+TnVp6l9sXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209753; c=relaxed/simple;
-	bh=UZx5d+AHxnlBUxI97YWU+ZU5bWPxCJwMTrVBzDUSTgs=;
+	s=arc-20240116; t=1725209051; c=relaxed/simple;
+	bh=1oCLPWqcUpOiRzCIxk6prm4h3N2E0gHyQX5DdaZyVDg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iewJzoUXCC0tt42+NSxvU7hOBQRtIl2Cn0bYSMXiBJMG83GG6e2cY8RJdTWkePdkU3f5qzd+OBQQHC+SOG9tr4suNvgjrIiElLyH3ueUB9/B8atihWnc9oFKB7jYzZmgRYsd66KKIXehbe0E5axPgQOvwBuCenIBwczfn7a4Vf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DZaltxwz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBA84C4CEC3;
-	Sun,  1 Sep 2024 16:55:52 +0000 (UTC)
+	 MIME-Version; b=dLJwpTOKAtemEdIeSuNCCsJXsf46xzwm1ieTE+T9n6vj/VIFCUR28MOH2ksdFgDjueyHQ3vKeFrIf+UukJWXXh1qvSasAPPMj3lWLxccA4s46g+twDB5/0ZkikzR46eQb2NIYPyvPSjVmab+qy6jg57oZj62CuxjRJSp3n1dKp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y8hGsRSK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36541C4CEC3;
+	Sun,  1 Sep 2024 16:44:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209753;
-	bh=UZx5d+AHxnlBUxI97YWU+ZU5bWPxCJwMTrVBzDUSTgs=;
+	s=korg; t=1725209051;
+	bh=1oCLPWqcUpOiRzCIxk6prm4h3N2E0gHyQX5DdaZyVDg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DZaltxwzsQ6opAri7B3sXF1hFNBuhjwmmxlBK5BwrWWrsPeCrvdcHM54Ff6l7fEE5
-	 ANhFBKzhg+76AwUvKDDJRUnpcfJSwvXhh+QVh/3Dd7J8tNp9NjGLo303/yh/ddx0UD
-	 6zbaZtzXXvFalN54d/ZWKyOkpLUSUPv/FAn2vnpU=
+	b=Y8hGsRSKXHS1ZmFNTz1t1Gw72prY2+z8ICNvLI62wDkpSAOUMuy3Gwq9Y8V9mC+9t
+	 OqET3J52xFq9v+8qeKLaP82/an6z4c5fkkbH1DEJAEY+hSNf9jsDZbPiqU1mOhAQuC
+	 nWdHLWpn3J89PMVta4Pok3MYM5xDTgrbNWZWkt3Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Anderson <sean.anderson@linux.dev>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 103/151] net: xilinx: axienet: Fix dangling multicast addresses
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 5.4 117/134] soundwire: stream: fix programming slave ports for non-continous port maps
 Date: Sun,  1 Sep 2024 18:17:43 +0200
-Message-ID: <20240901160817.985496359@linuxfoundation.org>
+Message-ID: <20240901160814.484904918@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
-References: <20240901160814.090297276@linuxfoundation.org>
+In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
+References: <20240901160809.752718937@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,99 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Anderson <sean.anderson@linux.dev>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 797a68c9de0f5a5447baf4bd3bb9c10a3993435b ]
+commit ab8d66d132bc8f1992d3eb6cab8d32dda6733c84 upstream.
 
-If a multicast address is removed but there are still some multicast
-addresses, that address would remain programmed into the frame filter.
-Fix this by explicitly setting the enable bit for each filter.
+Two bitmasks in 'struct sdw_slave_prop' - 'source_ports' and
+'sink_ports' - define which ports to program in
+sdw_program_slave_port_params().  The masks are used to get the
+appropriate data port properties ('struct sdw_get_slave_dpn_prop') from
+an array.
 
-Fixes: 8a3b7a252dca ("drivers/net/ethernet/xilinx: added Xilinx AXI Ethernet driver")
-Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20240822154059.1066595-3-sean.anderson@linux.dev
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Bitmasks can be non-continuous or can start from index different than 0,
+thus when looking for matching port property for given port, we must
+iterate over mask bits, not from 0 up to number of ports.
+
+This fixes allocation and programming slave ports, when a source or sink
+masks start from further index.
+
+Fixes: f8101c74aa54 ("soundwire: Add Master and Slave port programming")
+Cc: stable@vger.kernel.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Link: https://lore.kernel.org/r/20240729140157.326450-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/xilinx/xilinx_axienet.h  |  1 +
- .../net/ethernet/xilinx/xilinx_axienet_main.c | 21 ++++++++-----------
- 2 files changed, 10 insertions(+), 12 deletions(-)
+ drivers/soundwire/stream.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet.h b/drivers/net/ethernet/xilinx/xilinx_axienet.h
-index c0c93d0e3c7f9..071822028ea5e 100644
---- a/drivers/net/ethernet/xilinx/xilinx_axienet.h
-+++ b/drivers/net/ethernet/xilinx/xilinx_axienet.h
-@@ -169,6 +169,7 @@
- #define XAE_UAW0_OFFSET		0x00000700 /* Unicast address word 0 */
- #define XAE_UAW1_OFFSET		0x00000704 /* Unicast address word 1 */
- #define XAE_FMI_OFFSET		0x00000708 /* Frame Filter Control */
-+#define XAE_FFE_OFFSET		0x0000070C /* Frame Filter Enable */
- #define XAE_AF0_OFFSET		0x00000710 /* Address Filter 0 */
- #define XAE_AF1_OFFSET		0x00000714 /* Address Filter 1 */
- 
-diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-index b814ef1da3c73..3253ace2b6014 100644
---- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-+++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
-@@ -409,7 +409,7 @@ static int netdev_set_mac_address(struct net_device *ndev, void *p)
-  */
- static void axienet_set_multicast_list(struct net_device *ndev)
+--- a/drivers/soundwire/stream.c
++++ b/drivers/soundwire/stream.c
+@@ -1407,18 +1407,18 @@ struct sdw_dpn_prop *sdw_get_slave_dpn_p
+ 					    unsigned int port_num)
  {
--	int i;
-+	int i = 0;
- 	u32 reg, af0reg, af1reg;
- 	struct axienet_local *lp = netdev_priv(ndev);
+ 	struct sdw_dpn_prop *dpn_prop;
+-	u8 num_ports;
++	unsigned long mask;
+ 	int i;
  
-@@ -431,7 +431,6 @@ static void axienet_set_multicast_list(struct net_device *ndev)
- 		reg &= ~XAE_FMI_PM_MASK;
- 		axienet_iow(lp, XAE_FMI_OFFSET, reg);
- 
--		i = 0;
- 		netdev_for_each_mc_addr(ha, ndev) {
- 			if (i >= XAE_MULTICAST_CAM_TABLE_NUM)
- 				break;
-@@ -450,6 +449,7 @@ static void axienet_set_multicast_list(struct net_device *ndev)
- 			axienet_iow(lp, XAE_FMI_OFFSET, reg);
- 			axienet_iow(lp, XAE_AF0_OFFSET, af0reg);
- 			axienet_iow(lp, XAE_AF1_OFFSET, af1reg);
-+			axienet_iow(lp, XAE_FFE_OFFSET, 1);
- 			i++;
- 		}
+ 	if (direction == SDW_DATA_DIR_TX) {
+-		num_ports = hweight32(slave->prop.source_ports);
++		mask = slave->prop.source_ports;
+ 		dpn_prop = slave->prop.src_dpn_prop;
  	} else {
-@@ -457,18 +457,15 @@ static void axienet_set_multicast_list(struct net_device *ndev)
- 		reg &= ~XAE_FMI_PM_MASK;
- 
- 		axienet_iow(lp, XAE_FMI_OFFSET, reg);
--
--		for (i = 0; i < XAE_MULTICAST_CAM_TABLE_NUM; i++) {
--			reg = axienet_ior(lp, XAE_FMI_OFFSET) & 0xFFFFFF00;
--			reg |= i;
--
--			axienet_iow(lp, XAE_FMI_OFFSET, reg);
--			axienet_iow(lp, XAE_AF0_OFFSET, 0);
--			axienet_iow(lp, XAE_AF1_OFFSET, 0);
--		}
--
- 		dev_info(&ndev->dev, "Promiscuous mode disabled.\n");
+-		num_ports = hweight32(slave->prop.sink_ports);
++		mask = slave->prop.sink_ports;
+ 		dpn_prop = slave->prop.sink_dpn_prop;
  	}
-+
-+	for (; i < XAE_MULTICAST_CAM_TABLE_NUM; i++) {
-+		reg = axienet_ior(lp, XAE_FMI_OFFSET) & 0xFFFFFF00;
-+		reg |= i;
-+		axienet_iow(lp, XAE_FMI_OFFSET, reg);
-+		axienet_iow(lp, XAE_FFE_OFFSET, 0);
-+	}
- }
  
- /**
--- 
-2.43.0
-
+-	for (i = 0; i < num_ports; i++) {
++	for_each_set_bit(i, &mask, 32) {
+ 		if (dpn_prop[i].num == port_num)
+ 			return &dpn_prop[i];
+ 	}
 
 
 
