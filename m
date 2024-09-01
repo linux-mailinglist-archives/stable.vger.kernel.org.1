@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-72281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71738-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86D6E9679FD
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:50:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43C0F967788
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:20:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F7591F2273F
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:50:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE3AA281FAB
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:20:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B559317E00C;
-	Sun,  1 Sep 2024 16:50:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C1352C1B4;
+	Sun,  1 Sep 2024 16:20:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a8ak/6tj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QJsQI3os"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7206D1C68C;
-	Sun,  1 Sep 2024 16:50:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B16017E01C;
+	Sun,  1 Sep 2024 16:20:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209417; cv=none; b=TU0b0PXoN194oH7208W0fiXR3pA9AolXJ32HXyFd8T67S+FDbvYDxy6+rYNQXyNmcDU5B1XS79xoeaJVDgCcOOXIJE6u4JLjh4izBIKxBrcI/mmG4HqPJGHA3cTG00O9wJkC/HrhlfxIP6QseV8pn1Chite+glaLcQ0dJQ1A44c=
+	t=1725207652; cv=none; b=gxVRC7mce9jvCB5C6YlUk4oAD5XsfzgLBTwoDIEBIVQ9p5rGp6jTlS6q5fEX0pmIXBLLgG4pBfJg9+HV9deeML1QYlZRyn5j8JebWRXHU23GdUMnML8CvudZ12eOqXDNjGvSNc847IA1j/+V45DNdGeAtzOiWNnOHd1dZHX5K6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209417; c=relaxed/simple;
-	bh=TThz+3hopQwX8sX+UrQW9A11WzpsfBpm1uCSGvQrCL8=;
+	s=arc-20240116; t=1725207652; c=relaxed/simple;
+	bh=hPfffHJe+UY2pevyINT9srx/Zakw3X43IBlS+B0p83E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iAh2OJS/kX21tfOBP9Xg2smbUByTjt+P6dXkfti4JIVIvzocU2C8hocHg9qp8aQhRYQs/DMEYsV8tjYnNQfcLoKjT9A4QaLxwqYUcNDSE8XT16PoDulHV5f+5i7bed/bVA82ThfGPk16vLV5A2S6SJpxXf/lpHmsGkeuFtUlaDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a8ak/6tj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBDEDC4CEC3;
-	Sun,  1 Sep 2024 16:50:16 +0000 (UTC)
+	 MIME-Version; b=Zn/bIljw4F9gogwAWWdj6Ssx4S1OLnPPzrP5s9l/b4813brrnXfrhtOqNybOXbUN6e/eYKQQBS0gW0clOTpYEysA5/JOipseI9rIg5JdJyOLh7FEbBARdzsT7ntng+qgLJLyMcIxouiWaSOYNBk73zwT4l/kbr63BGu9C6gacmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QJsQI3os; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F260C4CEC3;
+	Sun,  1 Sep 2024 16:20:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209417;
-	bh=TThz+3hopQwX8sX+UrQW9A11WzpsfBpm1uCSGvQrCL8=;
+	s=korg; t=1725207651;
+	bh=hPfffHJe+UY2pevyINT9srx/Zakw3X43IBlS+B0p83E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a8ak/6tjoOgYm9fg2srrujneJH62bkZI/uiTAP0p1mvaHFFfZX0ntHV6dLlLy8PyV
-	 8KuvwIUOHQRSKF4Y1IyDOjQXbzcDEgSy3TUQoFdstCeFp1pfMAxNaWP5qlXarSmTRI
-	 8diL9kts1JlgcKJtMQmiT4DAOKYZkEHKWqpYAl84=
+	b=QJsQI3osEezpwq00dcGt3CPyOCu2bw0vUGhvw1VWDCi48ckN0dNwzpoULSRTv1qx0
+	 eeGsLljsADZhZbYu9f5Q6GR8UzVNyz6nZXeiATiZ8R/AtvXUkRapUd340EnG9OgKXf
+	 31osg/UTM3A0eXKxCslhSzK5igZEYEhcWWmLhEpo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Jones <ajones@ventanamicro.com>,
-	Haibo Xu <haibo1.xu@intel.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Sunil V L <sunilvl@ventanamicro.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Hanjun Guo <guohanjun@huawei.com>
-Subject: [PATCH 5.10 006/151] arm64: ACPI: NUMA: initialize all values of acpi_early_node_map to NUMA_NO_NODE
-Date: Sun,  1 Sep 2024 18:16:06 +0200
-Message-ID: <20240901160814.336020444@linuxfoundation.org>
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 37/98] btrfs: handle invalid root reference found in may_destroy_subvol()
+Date: Sun,  1 Sep 2024 18:16:07 +0200
+Message-ID: <20240901160805.098421493@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
-References: <20240901160814.090297276@linuxfoundation.org>
+In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
+References: <20240901160803.673617007@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,47 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haibo Xu <haibo1.xu@intel.com>
+From: David Sterba <dsterba@suse.com>
 
-commit a21dcf0ea8566ebbe011c79d6ed08cdfea771de3 upstream.
+[ Upstream commit 6fbc6f4ac1f4907da4fc674251527e7dc79ffbf6 ]
 
-Currently, only acpi_early_node_map[0] was initialized to NUMA_NO_NODE.
-To ensure all the values were properly initialized, switch to initialize
-all of them to NUMA_NO_NODE.
+The may_destroy_subvol() looks up a root by a key, allowing to do an
+inexact search when key->offset is -1.  It's never expected to find such
+item, as it would break the allowed range of a root id.
 
-Fixes: e18962491696 ("arm64: numa: rework ACPI NUMA initialization")
-Cc: <stable@vger.kernel.org> # 4.19.x
-Reported-by: Andrew Jones <ajones@ventanamicro.com>
-Suggested-by: Andrew Jones <ajones@ventanamicro.com>
-Signed-off-by: Haibo Xu <haibo1.xu@intel.com>
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Reviewed-by: Sunil V L <sunilvl@ventanamicro.com>
-Reviewed-by: Andrew Jones <ajones@ventanamicro.com>
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
-Acked-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Reviewed-by: Hanjun Guo <guohanjun@huawei.com>
-Link: https://lore.kernel.org/r/853d7f74aa243f6f5999e203246f0d1ae92d2b61.1722828421.git.haibo1.xu@intel.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kernel/acpi_numa.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/btrfs/inode.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/arch/arm64/kernel/acpi_numa.c
-+++ b/arch/arm64/kernel/acpi_numa.c
-@@ -27,7 +27,7 @@
+diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+index 7f675862ffb0e..15ebebed40056 100644
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -4296,7 +4296,14 @@ static noinline int may_destroy_subvol(struct btrfs_root *root)
+ 	ret = btrfs_search_slot(NULL, fs_info->tree_root, &key, path, 0, 0);
+ 	if (ret < 0)
+ 		goto out;
+-	BUG_ON(ret == 0);
++	if (ret == 0) {
++		/*
++		 * Key with offset -1 found, there would have to exist a root
++		 * with such id, but this is out of valid range.
++		 */
++		ret = -EUCLEAN;
++		goto out;
++	}
  
- #include <asm/numa.h>
- 
--static int acpi_early_node_map[NR_CPUS] __initdata = { NUMA_NO_NODE };
-+static int acpi_early_node_map[NR_CPUS] __initdata = { [0 ... NR_CPUS - 1] = NUMA_NO_NODE };
- 
- int __init acpi_numa_get_nid(unsigned int cpu)
- {
+ 	ret = 0;
+ 	if (path->slots[0] > 0) {
+-- 
+2.43.0
+
 
 
 
