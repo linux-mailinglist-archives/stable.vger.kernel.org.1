@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-71743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71986-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE5DF96778D
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:21:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95C749678B0
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:34:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6DBBE1F21790
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:21:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C73A91C21171
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:34:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 009A71836E2;
-	Sun,  1 Sep 2024 16:21:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CF9117DFFC;
+	Sun,  1 Sep 2024 16:34:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EHhD4KgR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ds5MhEj6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1EAF17E91A;
-	Sun,  1 Sep 2024 16:21:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE6862B9C7;
+	Sun,  1 Sep 2024 16:34:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725207668; cv=none; b=te4COMZKnvFuFbDAe6kc0X9BxLdaBAWvo42RKz31vj7Hw0Fxj/vExM2qG+x5aSF1NLUW8vtn63oLVCD1WnIyumOEzBd78fNVXdIHi6PqDpYmT9n3b8FCl55qjEBu/INzE21EVlCgApQx03CDGB9fvHMdb85Jsb7q+igAhf/Xl4o=
+	t=1725208468; cv=none; b=a0HRcO++JBZ3dUfLh4uFQin1LaIu1k9Aei87jRs1KOO3yLlH3/yRJ03bivVCsGSIsOvxKv/1+TN3w5KsBdT6bO76uK6UXoy06KEb+Chmu3XvW8OfazKBDFDCMpc4XRjh0sp6sIhT8YXHMjDJXs10kwKYbf8304e5Z7Om3pOR1rs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725207668; c=relaxed/simple;
-	bh=TjPtU/zDy+d9GQB/ZSI4HrM/DhsPo21+E8V3F7gZ2qg=;
+	s=arc-20240116; t=1725208468; c=relaxed/simple;
+	bh=iW4c7ZNQ1EDnzPRsHIT5OiRErvFH2z1Y46HW/LLQdMY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=b5rsJ7HF/7B4aBWeB7fzvh9rldSQGrQDnAC0nEuhkZW6uMG7X2c95yjfp/nuYCNgMNmZ1cJRp0eZ03u2IfP5eFxrwGZ1g5XdwGMnpqKw4jZoSghprjVwRmNgWV9/gEJvrFrgyk9mcX68KMPxkCYHD8C4uRTgPNYpbm+d+yRnqyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EHhD4KgR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEC53C4CEC3;
-	Sun,  1 Sep 2024 16:21:07 +0000 (UTC)
+	 MIME-Version; b=WupcFuWJQkL1WFBrn1ijNqD5RAFNgQedpco3jamRa9SYgd3L6m4XwgypBfiZtjpkDmJLn5fzwybSd69NT2Tc7JBc8rFxwxD+QL5w4S+HDzUvLjW2H15iHJewZew+P2BH9zDt9EdcytMIFAjFmYUxkkRZPssivp55+3O3pMbpyvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ds5MhEj6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 044D4C4CEC3;
+	Sun,  1 Sep 2024 16:34:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725207668;
-	bh=TjPtU/zDy+d9GQB/ZSI4HrM/DhsPo21+E8V3F7gZ2qg=;
+	s=korg; t=1725208468;
+	bh=iW4c7ZNQ1EDnzPRsHIT5OiRErvFH2z1Y46HW/LLQdMY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EHhD4KgRmDCpMXpvOM3Lmtu2lqlWGMdA8+axoUA7kA/TVGqejP4hgyYOiXqfQhd3P
-	 2zxNPAp0Klkbi6oWDqNt5DmNbttWCXFYe9S+d5LvhK737ho4MuRT+GJypmdvtPtmyQ
-	 7d79CKyC48UN8KNYZ6lrUe1oX0Z4I9LZGwvsP6AI=
+	b=ds5MhEj62AKb2iMJVRpFzGwvtrbOu1yMjmz4dI+NYH+tZWoqGDF8PFylF105Tyckp
+	 bHc3ykJUQ+0akpuyjUb+EosDxjLQx8RCiRAteqCfnBySJ34b66XPZXULFFQPOgXWqk
+	 Pq9ySz9I6iKwjRo+YMTeFa3p25H/vEfsm+5kf8fk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Ed Tsai <ed.tsai@mediatek.com>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 41/98] usb: gadget: fsl: Increase size of name buffer for endpoints
+Subject: [PATCH 6.10 060/149] backing-file: convert to using fops->splice_write
 Date: Sun,  1 Sep 2024 18:16:11 +0200
-Message-ID: <20240901160805.248669016@linuxfoundation.org>
+Message-ID: <20240901160819.725179129@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
-References: <20240901160803.673617007@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,42 +61,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Ed Tsai <ed.tsai@mediatek.com>
 
-[ Upstream commit 87850f6cc20911e35eafcbc1d56b0d649ae9162d ]
+[ Upstream commit 996b37da1e0f51314d4186b326742c2a95a9f0dd ]
 
-This fixes a W=1 warning about sprintf writing up to 16 bytes into a
-buffer of size 14. There is no practical relevance because there are not
-more than 32 endpoints.
+Filesystems may define their own splice write. Therefore, use the file
+fops instead of invoking iter_file_splice_write() directly.
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Link: https://lore.kernel.org/r/6754df25c56aae04f8110594fad2cd2452b1862a.1708709120.git.u.kleine-koenig@pengutronix.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ed Tsai <ed.tsai@mediatek.com>
+Link: https://lore.kernel.org/r/20240708072208.25244-1-ed.tsai@mediatek.com
+Fixes: 5ca73468612d ("fuse: implement splice read/write passthrough")
+Reviewed-by: Amir Goldstein <amir73il@gmail.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/udc/fsl_udc_core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/backing-file.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/gadget/udc/fsl_udc_core.c b/drivers/usb/gadget/udc/fsl_udc_core.c
-index 367697144cda2..b86f86902f55e 100644
---- a/drivers/usb/gadget/udc/fsl_udc_core.c
-+++ b/drivers/usb/gadget/udc/fsl_udc_core.c
-@@ -2501,7 +2501,7 @@ static int fsl_udc_probe(struct platform_device *pdev)
- 	/* setup the udc->eps[] for non-control endpoints and link
- 	 * to gadget.ep_list */
- 	for (i = 1; i < (int)(udc_controller->max_ep / 2); i++) {
--		char name[14];
-+		char name[16];
+diff --git a/fs/backing-file.c b/fs/backing-file.c
+index afb557446c27c..8860dac58c37e 100644
+--- a/fs/backing-file.c
++++ b/fs/backing-file.c
+@@ -303,13 +303,16 @@ ssize_t backing_file_splice_write(struct pipe_inode_info *pipe,
+ 	if (WARN_ON_ONCE(!(out->f_mode & FMODE_BACKING)))
+ 		return -EIO;
  
- 		sprintf(name, "ep%dout", i);
- 		struct_ep_setup(udc_controller, i * 2, name, 1);
++	if (!out->f_op->splice_write)
++		return -EINVAL;
++
+ 	ret = file_remove_privs(ctx->user_file);
+ 	if (ret)
+ 		return ret;
+ 
+ 	old_cred = override_creds(ctx->cred);
+ 	file_start_write(out);
+-	ret = iter_file_splice_write(pipe, out, ppos, len, flags);
++	ret = out->f_op->splice_write(pipe, out, ppos, len, flags);
+ 	file_end_write(out);
+ 	revert_creds(old_cred);
+ 
 -- 
 2.43.0
 
