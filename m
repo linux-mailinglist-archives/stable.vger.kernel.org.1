@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-72271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71815-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4E349679F4
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:49:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 309D29677DF
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:25:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 206EE1C2149F
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:49:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E0EDA2810DD
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:25:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A16A916B391;
-	Sun,  1 Sep 2024 16:49:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6298F183090;
+	Sun,  1 Sep 2024 16:25:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qCy2rXV9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KBtlZ45G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6135F1C68C;
-	Sun,  1 Sep 2024 16:49:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2001914290C;
+	Sun,  1 Sep 2024 16:25:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209386; cv=none; b=n+GhdmE8mVXqHy9wd+KBrq9B1lDEVoOswruct1fhuUAfh9ePyXkBR75s0H6swXd10z0QDNrtpDv1SFxwbqf2VdGpFiuPkPc9qY4Hex35Uk9fTNeY6OWVAN4Sisr+riZHA1q0RYy3j7b9N7cpHmvN8APVZSLR1O3SORlGUjiDtUc=
+	t=1725207909; cv=none; b=Di+D3vCA1NKxkDrJIASNIlsHueQnHSBx0X1u8q0lM2v7Ui85dV6ReY8FfB7EFsCijlFYkyKt9KEEsDAVrZ4n0thSYb0WY51CmIgQWmxr/Ck/oM9Hrlc22JS6g2TZI7M9SPBR+XwUWh3DTkCHChJyx8YgvcDFD6UUxWL2xNG4TbY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209386; c=relaxed/simple;
-	bh=bEfm5ea6uLZxg0LIbxKttBmqpPDf+auPH7zls/jSowI=;
+	s=arc-20240116; t=1725207909; c=relaxed/simple;
+	bh=sSdNlcAVUjAP60cIr8hikHEZfyaoPY/yCXMSleQw008=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PTvUooedTn1aM/dP3P5R0/Wsq34rztEHdqw914bP+WdD6RuP5mtmcK1vYLrh4ILlvlTmoMObAL1Rai673zb9U8t8X8DK7EOoZapKyTlF1DHmJiCsVhIhahWI42qltJm3Y4I5ympiLz9yYye+Iamwq7Hd6+W8gN2/A5h33dRTBvE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qCy2rXV9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD6A1C4CEC3;
-	Sun,  1 Sep 2024 16:49:45 +0000 (UTC)
+	 MIME-Version; b=m93AqM+cGbrtT2ly0agFsNoZcf7rI3LGhZFrphoo61ws4gxVGVJqXEXDEGkP5/wRkO/NgrU+u1/siPEN4Dv/3MecKfqRO2T9mWr45zI7lTyEW07vetqnvTMl61SX3Hp9CkvQvm2QNFMxaEfkC/UR4vC9NZgORkArNPSbFuqF+IU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KBtlZ45G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DC4DC4CEC8;
+	Sun,  1 Sep 2024 16:25:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209386;
-	bh=bEfm5ea6uLZxg0LIbxKttBmqpPDf+auPH7zls/jSowI=;
+	s=korg; t=1725207908;
+	bh=sSdNlcAVUjAP60cIr8hikHEZfyaoPY/yCXMSleQw008=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qCy2rXV9bq1ZgSA3Q0SjGmuEL35l4YYq5zb9mHxz0UHC03ZAsxw9iQzvx7hqQcFH1
-	 b6vmHYoFJIX280WRWNv9bbyZMb9t8X0dX3vCQhqJNnakTI0UtSzF7k/uRDUtd8vVrg
-	 PeSmKke3LCLozFHn22ok3tUIBETZbAYRdSK8e/jY=
+	b=KBtlZ45GHg+qUHIXUZC6hv4a5DzNNkIOdo8bRknKgZP7OUHD5yZ9R0Ctz31xn035y
+	 YcvkBd8adIHwODhsopX7haMSihp2/VEmLWSclthrgzSNGLNIaN75UmwoiBkXq4qhMS
+	 +TRS3whsNQfmYGiDQBj9436Pw/uG9QzU1YQlAxhc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Juan=20Jos=C3=A9=20Arboleda?= <soyjuanarbol@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.10 002/151] ALSA: usb-audio: Support Yamaha P-125 quirk entry
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.6 15/93] mptcp: pm: skip connecting to already established sf
 Date: Sun,  1 Sep 2024 18:16:02 +0200
-Message-ID: <20240901160814.186662418@linuxfoundation.org>
+Message-ID: <20240901160807.933845232@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
-References: <20240901160814.090297276@linuxfoundation.org>
+In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
+References: <20240901160807.346406833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,38 +60,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juan José Arboleda <soyjuanarbol@gmail.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit c286f204ce6ba7b48e3dcba53eda7df8eaa64dd9 upstream.
+commit bc19ff57637ff563d2bdf2b385b48c41e6509e0d upstream.
 
-This patch adds a USB quirk for the Yamaha P-125 digital piano.
+The lookup_subflow_by_daddr() helper checks if there is already a
+subflow connected to this address. But there could be a subflow that is
+closing, but taking time due to some reasons: latency, losses, data to
+process, etc.
 
-Signed-off-by: Juan José Arboleda <soyjuanarbol@gmail.com>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20240813161053.70256-1-soyjuanarbol@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+If an ADD_ADDR is received while the endpoint is being closed, it is
+better to try connecting to it, instead of rejecting it: the peer which
+has sent the ADD_ADDR will not be notified that the ADD_ADDR has been
+rejected for this reason, and the expected subflow will not be created
+at the end.
+
+This helper should then only look for subflows that are established, or
+going to be, but not the ones being closed.
+
+Fixes: d84ad04941c3 ("mptcp: skip connecting the connected address")
+Cc: stable@vger.kernel.org
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/quirks-table.h |    1 +
- 1 file changed, 1 insertion(+)
+ net/mptcp/pm_netlink.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/sound/usb/quirks-table.h
-+++ b/sound/usb/quirks-table.h
-@@ -273,6 +273,7 @@ YAMAHA_DEVICE(0x105a, NULL),
- YAMAHA_DEVICE(0x105b, NULL),
- YAMAHA_DEVICE(0x105c, NULL),
- YAMAHA_DEVICE(0x105d, NULL),
-+YAMAHA_DEVICE(0x1718, "P-125"),
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -135,12 +135,15 @@ static bool lookup_subflow_by_daddr(cons
  {
- 	USB_DEVICE(0x0499, 0x1503),
- 	.driver_info = (unsigned long) & (const struct snd_usb_audio_quirk) {
+ 	struct mptcp_subflow_context *subflow;
+ 	struct mptcp_addr_info cur;
+-	struct sock_common *skc;
+ 
+ 	list_for_each_entry(subflow, list, node) {
+-		skc = (struct sock_common *)mptcp_subflow_tcp_sock(subflow);
++		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
+ 
+-		remote_address(skc, &cur);
++		if (!((1 << inet_sk_state_load(ssk)) &
++		      (TCPF_ESTABLISHED | TCPF_SYN_SENT | TCPF_SYN_RECV)))
++			continue;
++
++		remote_address((struct sock_common *)ssk, &cur);
+ 		if (mptcp_addresses_equal(&cur, daddr, daddr->port))
+ 			return true;
+ 	}
 
 
 
