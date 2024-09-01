@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-72120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72320-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60FD1967943
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:41:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D23C967A2A
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:52:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CB5FCB21C75
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:41:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BFB012822C5
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:52:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D197017E00C;
-	Sun,  1 Sep 2024 16:41:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70B18181B86;
+	Sun,  1 Sep 2024 16:52:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wbXD40qX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xmkaUMkq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 905F61C68C;
-	Sun,  1 Sep 2024 16:41:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C12C17ADE1;
+	Sun,  1 Sep 2024 16:52:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208905; cv=none; b=D+mBzlML1a6SYcmtTe9GOQjH9QpoUnei3kqCHxQoX7puqNtXtLQB4apRI3mgjKkfJZ//DzNva8yz/73G9OCBLWP0FNy6ItNCt6F8vjlW388Fp/ttYFz5grIP5zPZqN/u3PKbdcoFBXlFjXN5LyFEqpQCzX4ANg1B7rXMnIo5t9M=
+	t=1725209541; cv=none; b=IVp3CbHBALCw77Jjk5o9MkRcSntBH4+YbXPc5KlstxlSXlv9ADUfTzkOtzWONbcVJcNSs7UY1NqPYuTbMH+TgbutW30DQuEr3IB0Ac1Fs+NbZwg0vtZyjoFN1Lk3pSExPhfsKQtZgiOsh3Obhda4VTR3KHyUy+BZ8mvpCPyV4l0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208905; c=relaxed/simple;
-	bh=LqOB5Zh5+wdJOHuFBgsf3QH3ECfjwCwRebN0JLEg6vs=;
+	s=arc-20240116; t=1725209541; c=relaxed/simple;
+	bh=4OplOvx/23KUCPHYsPoaLSB5jBwy5JBiI1/xGqnQ+3I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e+bTN4mJOBnGuQ4ecbOEbzpJDsfskk8HgxMSjt+KTByvk+fxCTnkwKC5AUuwyySvzfAEVgX355Ank7EChtrOh0p8nHiDdddDDA9nqui5ZXAY/YGMC1FM9u6k3l9SNjjbW7WfOCejp0cwXrQ/DSBZxlQ8zJRko44tptMcF+QP1d8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wbXD40qX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F291AC4CEC3;
-	Sun,  1 Sep 2024 16:41:44 +0000 (UTC)
+	 MIME-Version; b=iB02WQlonI/nHpxW/SerDjm++lVtbn+HC/3gBE3+0qHsrX7C0ROKZ9cC0CG3mLBJdhJEilNFh2/tKl+MxtN2PyunF7RdTTOR+zjtTG98VNvStdL/FW3hU/ILduuPEsXpgN+APvyBqouPZ1RgL1DngsqH9YRmAbE4bjzMqbNsH7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xmkaUMkq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6941C4CEC3;
+	Sun,  1 Sep 2024 16:52:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208905;
-	bh=LqOB5Zh5+wdJOHuFBgsf3QH3ECfjwCwRebN0JLEg6vs=;
+	s=korg; t=1725209541;
+	bh=4OplOvx/23KUCPHYsPoaLSB5jBwy5JBiI1/xGqnQ+3I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wbXD40qXk1Tc8uOZ85WK6PqPqW1gjsEJUGCSPzJ2/A4RzSP4RKtCaK3J7U7Jju7Jb
-	 d2Ctu/eIxoGwUKsj2Za9IujysQLfdGOCpiVUy3/uXV2KlxHZt3iZMuSUaf8EpR/WWU
-	 4XS8GAmnLjFW/MjbsGiMWXXvykDxw1o93EkvrJpg=
+	b=xmkaUMkqzb+R8QFWmUyUVlpVHfsn2Gx48U2KGjDko6bLL6rXMglEYiXxzmqKtN49A
+	 bcjAY/7f5SEYM8h9OIMDUQmEnaHT81KYzErtbEswnxo2AvtnUSZsR3Wat5WYDM6Nxr
+	 IBHUif5g+eMkmve0InY4acvi9nHTszq0+zs/PCWA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
-	David Hunter <david.hunter.linux@gmail.com>
-Subject: [PATCH 5.4 075/134] block: use "unsigned long" for blk_validate_block_size().
+	Helge Deller <deller@gmx.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 061/151] parisc: Use irq_enter_rcu() to fix warning at kernel/context_tracking.c:367
 Date: Sun,  1 Sep 2024 18:17:01 +0200
-Message-ID: <20240901160812.924439564@linuxfoundation.org>
+Message-ID: <20240901160816.412918744@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
-References: <20240901160809.752718937@linuxfoundation.org>
+In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
+References: <20240901160814.090297276@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +61,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
+From: Helge Deller <deller@gmx.de>
 
-commit 37ae5a0f5287a52cf51242e76ccf198d02ffe495 upstream.
+[ Upstream commit 73cb4a2d8d7e0259f94046116727084f21e4599f ]
 
-Since lo_simple_ioctl(LOOP_SET_BLOCK_SIZE) and ioctl(NBD_SET_BLKSIZE) pass
-user-controlled "unsigned long arg" to blk_validate_block_size(),
-"unsigned long" should be used for validation.
+Use irq*_rcu() functions to fix this kernel warning:
 
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/9ecbf057-4375-c2db-ab53-e4cc0dff953d@i-love.sakura.ne.jp
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: David Hunter <david.hunter.linux@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ WARNING: CPU: 0 PID: 0 at kernel/context_tracking.c:367 ct_irq_enter+0xa0/0xd0
+ Modules linked in:
+ CPU: 0 PID: 0 Comm: swapper/0 Not tainted 6.7.0-rc3-64bit+ #1037
+ Hardware name: 9000/785/C3700
+
+ IASQ: 0000000000000000 0000000000000000 IAOQ: 00000000412cd758 00000000412cd75c
+  IIR: 03ffe01f    ISR: 0000000000000000  IOR: 0000000043c20c20
+  CPU:        0   CR30: 0000000041caa000 CR31: 0000000000000000
+  ORIG_R28: 0000000000000005
+  IAOQ[0]: ct_irq_enter+0xa0/0xd0
+  IAOQ[1]: ct_irq_enter+0xa4/0xd0
+  RP(r2): irq_enter+0x34/0x68
+ Backtrace:
+  [<000000004034a3ec>] irq_enter+0x34/0x68
+  [<000000004030dc48>] do_cpu_irq_mask+0xc0/0x450
+  [<0000000040303070>] intr_return+0x0/0xc
+
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/blkdev.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/parisc/kernel/irq.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/include/linux/blkdev.h
-+++ b/include/linux/blkdev.h
-@@ -59,7 +59,7 @@ struct blk_stat_callback;
-  */
- #define BLKCG_MAX_POLS		5
+diff --git a/arch/parisc/kernel/irq.c b/arch/parisc/kernel/irq.c
+index 2762e8540672e..5e3b9be45de92 100644
+--- a/arch/parisc/kernel/irq.c
++++ b/arch/parisc/kernel/irq.c
+@@ -520,7 +520,7 @@ void do_cpu_irq_mask(struct pt_regs *regs)
  
--static inline int blk_validate_block_size(unsigned int bsize)
-+static inline int blk_validate_block_size(unsigned long bsize)
- {
- 	if (bsize < 512 || bsize > PAGE_SIZE || !is_power_of_2(bsize))
- 		return -EINVAL;
+ 	old_regs = set_irq_regs(regs);
+ 	local_irq_disable();
+-	irq_enter();
++	irq_enter_rcu();
+ 
+ 	eirr_val = mfctl(23) & cpu_eiem & per_cpu(local_ack_eiem, cpu);
+ 	if (!eirr_val)
+@@ -555,7 +555,7 @@ void do_cpu_irq_mask(struct pt_regs *regs)
+ #endif /* CONFIG_IRQSTACKS */
+ 
+  out:
+-	irq_exit();
++	irq_exit_rcu();
+ 	set_irq_regs(old_regs);
+ 	return;
+ 
+-- 
+2.43.0
+
 
 
 
