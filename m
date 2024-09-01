@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-72590-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72390-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BBFD967B3E
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:07:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FF19967A70
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:56:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 216A91F222DC
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:07:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DE53281B8E
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:56:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A88243BB48;
-	Sun,  1 Sep 2024 17:07:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4A8C17E900;
+	Sun,  1 Sep 2024 16:56:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="riKWb3Yk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wfwv2HKM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E2B426AC1;
-	Sun,  1 Sep 2024 17:07:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91EEC1DFD1;
+	Sun,  1 Sep 2024 16:56:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210427; cv=none; b=dvmwwMmJGNQJ3JcylRovDx2+saWLS3TJ4aDM0I6tbLh1Yy40GcTU/OWUU9iSzDQq0f6DlNj5NIM+ut0rZRDYtCYBqUMgKNsUdGayGqPxGPzp+8i62cDATf42WVh1N4jGpaPegU/v3VFbcvP1/UM5iIU1jvGf3/MB0xL72Tbx1y8=
+	t=1725209767; cv=none; b=TIVh/U0ekvICzuv29kRxkRiKoUqWf+TYBPGf4OTPwNF351Tfj2MUQuiwL8/Q3ODkWtIawVes4Istz9TkKppMvOd2aBzRHnkOeQsK++/NffZpfD0qfM9pZJwgER61R78FoGWyaJfOT/vvDoM+2nSmiyoLrlXRZhW0ZOVFaJEkC1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210427; c=relaxed/simple;
-	bh=R8z8UEIGJuufqgN+RcMielTXqsoA3JB0CfmcNzspq38=;
+	s=arc-20240116; t=1725209767; c=relaxed/simple;
+	bh=SBfwcNyzzpzgbmCNx8QDCpufNM0m73ukEnNeqEFIuAk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BBdvEuIgba9cUT2t5mLv9WZyW8Ja2Ju8MydycS4U5gH9n/luxo3vv5bhy2lv67fsf9ckFG7MAtA+98SWDVtbpTUQ9gv8/2cAnmBWaX+ZvirmvisqgMbuVyQS2HTxR6Flx4zPb7W2ffw551RQmbt08oqPzTUAaCep3S7I57yqrLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=riKWb3Yk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1BD9C4CEC3;
-	Sun,  1 Sep 2024 17:07:06 +0000 (UTC)
+	 MIME-Version; b=SaTDGqEKWcA4jCiFmOMOWvPkAGixoDOtvhdJlS7i/zyrUE8d4O8MDfYvY54UKOP4nTRMiDBPGd3p1E+UWraFDCyRYqbdSuhVTk1ADPH4D/TWWSHU+A72htQZ18USqVDN5nkdoEbxz0vYEVa0vOmGpt3fvFfRGNTm9hno2MkVw/8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wfwv2HKM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA06FC4CEC3;
+	Sun,  1 Sep 2024 16:56:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210427;
-	bh=R8z8UEIGJuufqgN+RcMielTXqsoA3JB0CfmcNzspq38=;
+	s=korg; t=1725209767;
+	bh=SBfwcNyzzpzgbmCNx8QDCpufNM0m73ukEnNeqEFIuAk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=riKWb3YkIF++OBvax0g+b0oZjtu8kio7FiMVc6eCZCPedUYNBwYfktnm8H3dmFddL
-	 P5qfz5Me9U2NywiGpzr5FKGPtrYVXCaYSPPRQvh/p0DeK6CkdzJnz4lUtqkht0PJvY
-	 ZyZ7f83RuRNK8cxG7sn2Wb66275E6BWt963IhcuU=
+	b=wfwv2HKMT8j7LrhFsG0rx7DrquUrVLYz3IUDJBu21tj1aWOEhOcm0OFRrjenBXQpp
+	 rG+3TokqSti8t1MAXNNquDZpOA7EsA11tOL1/BeJ8Z86mLImjzcifvEw3e0GrRyM57
+	 VxK8boDtOn0BdjsnsCMQBGlMMdC4nhBjvMj4ExBE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Andreas Schultz <aschultz@tpip.net>,
+	Harald Welte <laforge@gnumonks.org>,
+	Cong Wang <cong.wang@bytedance.com>,
+	Simon Horman <horms@kernel.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 187/215] ksmbd: the buffer of smb2 query dir response has at least 1 byte
+Subject: [PATCH 5.10 139/151] gtp: fix a potential NULL pointer dereference
 Date: Sun,  1 Sep 2024 18:18:19 +0200
-Message-ID: <20240901160830.426516431@linuxfoundation.org>
+Message-ID: <20240901160819.336514207@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
+References: <20240901160814.090297276@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +66,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Cong Wang <cong.wang@bytedance.com>
 
-[ Upstream commit ce61b605a00502c59311d0a4b1f58d62b48272d0 ]
+[ Upstream commit defd8b3c37b0f9cb3e0f60f47d3d78d459d57fda ]
 
-When STATUS_NO_MORE_FILES status is set to smb2 query dir response,
-->StructureSize is set to 9, which mean buffer has 1 byte.
-This issue occurs because ->Buffer[1] in smb2_query_directory_rsp to
-flex-array.
+When sockfd_lookup() fails, gtp_encap_enable_socket() returns a
+NULL pointer, but its callers only check for error pointers thus miss
+the NULL pointer case.
 
-Fixes: eb3e28c1e89b ("smb3: Replace smb2pdu 1-element arrays with flex-arrays")
-Cc: stable@vger.kernel.org # v6.1+
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fix it by returning an error pointer with the error code carried from
+sockfd_lookup().
+
+(I found this bug during code inspection.)
+
+Fixes: 1e3a3abd8b28 ("gtp: make GTP sockets in gtp_newlink optional")
+Cc: Andreas Schultz <aschultz@tpip.net>
+Cc: Harald Welte <laforge@gnumonks.org>
+Signed-off-by: Cong Wang <cong.wang@bytedance.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Link: https://patch.msgid.link/20240825191638.146748-1-xiyou.wangcong@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ksmbd/smb2pdu.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/gtp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ksmbd/smb2pdu.c b/fs/ksmbd/smb2pdu.c
-index 57f59172d8212..3458f2ae5cee4 100644
---- a/fs/ksmbd/smb2pdu.c
-+++ b/fs/ksmbd/smb2pdu.c
-@@ -4160,7 +4160,8 @@ int smb2_query_dir(struct ksmbd_work *work)
- 		rsp->OutputBufferLength = cpu_to_le32(0);
- 		rsp->Buffer[0] = 0;
- 		rc = ksmbd_iov_pin_rsp(work, (void *)rsp,
--				       sizeof(struct smb2_query_directory_rsp));
-+				       offsetof(struct smb2_query_directory_rsp, Buffer)
-+				       + 1);
- 		if (rc)
- 			goto err_out;
- 	} else {
+diff --git a/drivers/net/gtp.c b/drivers/net/gtp.c
+index 993960f0fa3cb..24cb7b97e4fcc 100644
+--- a/drivers/net/gtp.c
++++ b/drivers/net/gtp.c
+@@ -801,7 +801,7 @@ static struct sock *gtp_encap_enable_socket(int fd, int type,
+ 	sock = sockfd_lookup(fd, &err);
+ 	if (!sock) {
+ 		pr_debug("gtp socket fd=%d not found\n", fd);
+-		return NULL;
++		return ERR_PTR(err);
+ 	}
+ 
+ 	sk = sock->sk;
 -- 
 2.43.0
 
