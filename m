@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-72326-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72190-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DFC3967A30
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:52:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 915AF96799D
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:47:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF7B81C212A4
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:52:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F2B44B203CB
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:47:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A7E4181B86;
-	Sun,  1 Sep 2024 16:52:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68A01184554;
+	Sun,  1 Sep 2024 16:45:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WSM7xNOw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TRHOG8kW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA35244393;
-	Sun,  1 Sep 2024 16:52:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 117FC17E900;
+	Sun,  1 Sep 2024 16:45:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209560; cv=none; b=KijF5VaSaiy5nrSlggslV+7JUq1m7Q8rk2MpBBQEYNSuuaRm2wfoSDnzqDNjpERimHtfr2s6xx0Eca1AgHynGSznAslEF9qBMteW4sRILciTfgiuy/tABxG7z8Ud+w0uIBvdFWQ2LDv2fd38RhapipLzdE91hru7cSuO8gus18g=
+	t=1725209136; cv=none; b=nUb0TeQBVrbSWdiyOYkJ+jBC/vZ3iqEgRyYAN6sYu/ojQxt6SWw2LDqZoMwQK92+91edTY6f8VV9f2UU12OK+au1Yq+Y6hBKo6rtNMsEqNOfAicxaENXksEn+lx5Nsr6HEmlWryZcLYPC8U8D3aHnJQ46i9QvT2sZp5D8uzM5ck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209560; c=relaxed/simple;
-	bh=EZPa8LkzmanPLRFK3kcsrJ4CNWlk9EWcmDh/Ya/Qk/0=;
+	s=arc-20240116; t=1725209136; c=relaxed/simple;
+	bh=lrVYpjvXe7uC8O3bSO5ENItPO1XxNHqL74O726V8eEw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kgoeL20mikMmGb4hhiuCZoI2fHWDWaK/GmorlnBJmZRklqthSohKbKbdzM06S6ZQUZ1VGaQsTHSD01n67FI0foh0PsL0kc8FbSLNdZa0cZxXV1TLtTzDuw45aW8ih7HuBW01uqhyFgftplgqZwK3bvbrM/5vKIzCNudtmKidVWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WSM7xNOw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36B94C4CEC3;
-	Sun,  1 Sep 2024 16:52:40 +0000 (UTC)
+	 MIME-Version; b=EpG8HsaWax+08Y0/F6gC5qHYR73oQO/RE8owanUecmd0UhLY8yIa26niKFevMJRhSZCtt73mjzLZAotIA+QPjzJhdLj5kPjz/GrQTwKhoF7eU+BN3EGE1Nz6SJxXuwbU7PSWI0No7Uk6e/9K48avEG3a0lHDHg/+Bygk6VHmLoU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TRHOG8kW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E09FC4CEC3;
+	Sun,  1 Sep 2024 16:45:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209560;
-	bh=EZPa8LkzmanPLRFK3kcsrJ4CNWlk9EWcmDh/Ya/Qk/0=;
+	s=korg; t=1725209135;
+	bh=lrVYpjvXe7uC8O3bSO5ENItPO1XxNHqL74O726V8eEw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WSM7xNOwpOnstiJgr+7tGiZFNqCVy9Y3+0UA3wlu08NaEuaB5k7DLFIMEccLgHcKE
-	 udyZpaxdBJ2NysaTAfAD0jb/OtHFMX48d/WlJD4GMCOIgODXxgKeOjAZmgiqKuCfX9
-	 YpRbmpuVSO5SIE5ixeV9OLgPGmYtfoC+V2P/VsBE=
+	b=TRHOG8kWofQqFe39vFM0CtE+BNgMqiqPw6edpLTCZhn13jKKcLrjeGgYKGSLuK/hL
+	 gpUHdkatHSL6h90GDcDAN38mvx/llzftxS9DeKW6iu7xLBuZahMQL+Ddh3QuaBKm7i
+	 vAjB3a5zJrId1fPmTYFw/Rs5D/l43UXiBMGt5dsI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Alexandra Winter <wintera@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 075/151] s390/iucv: fix receive buffer virtual vs physical address confusion
-Date: Sun,  1 Sep 2024 18:17:15 +0200
-Message-ID: <20240901160816.935764301@linuxfoundation.org>
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 11/71] mptcp: close subflow when receiving TCP+FIN
+Date: Sun,  1 Sep 2024 18:17:16 +0200
+Message-ID: <20240901160802.314142191@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
-References: <20240901160814.090297276@linuxfoundation.org>
+In-Reply-To: <20240901160801.879647959@linuxfoundation.org>
+References: <20240901160801.879647959@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Gordeev <agordeev@linux.ibm.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit 4e8477aeb46dfe74e829c06ea588dd00ba20c8cc ]
+commit f09b0ad55a1196f5891663f8888463c0541059cb upstream.
 
-Fix IUCV_IPBUFLST-type buffers virtual vs physical address confusion.
-This does not fix a bug since virtual and physical address spaces are
-currently the same.
+When a peer decides to close one subflow in the middle of a connection
+having multiple subflows, the receiver of the first FIN should accept
+that, and close the subflow on its side as well. If not, the subflow
+will stay half closed, and would even continue to be used until the end
+of the MPTCP connection or a reset from the network.
 
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Reviewed-by: Alexandra Winter <wintera@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The issue has not been seen before, probably because the in-kernel
+path-manager always sends a RM_ADDR before closing the subflow. Upon the
+reception of this RM_ADDR, the other peer will initiate the closure on
+its side as well. On the other hand, if the RM_ADDR is lost, or if the
+path-manager of the other peer only closes the subflow without sending a
+RM_ADDR, the subflow would switch to TCP_CLOSE_WAIT, but that's it,
+leaving the subflow half-closed.
+
+So now, when the subflow switches to the TCP_CLOSE_WAIT state, and if
+the MPTCP connection has not been closed before with a DATA_FIN, the
+kernel owning the subflow schedules its worker to initiate the closure
+on its side as well.
+
+This issue can be easily reproduced with packetdrill, as visible in [1],
+by creating an additional subflow, injecting a FIN+ACK before sending
+the DATA_FIN, and expecting a FIN+ACK in return.
+
+Fixes: 40947e13997a ("mptcp: schedule worker when subflow is closed")
+Cc: stable@vger.kernel.org
+Link: https://github.com/multipath-tcp/packetdrill/pull/154 [1]
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20240826-net-mptcp-close-extra-sf-fin-v1-1-905199fe1172@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/iucv/iucv.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ net/mptcp/protocol.c |    5 ++++-
+ net/mptcp/subflow.c  |    8 ++++++--
+ 2 files changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/net/iucv/iucv.c b/net/iucv/iucv.c
-index 06770b77e5d22..be5f598acbce2 100644
---- a/net/iucv/iucv.c
-+++ b/net/iucv/iucv.c
-@@ -1088,8 +1088,7 @@ static int iucv_message_receive_iprmdata(struct iucv_path *path,
- 		size = (size < 8) ? size : 8;
- 		for (array = buffer; size > 0; array++) {
- 			copy = min_t(size_t, size, array->length);
--			memcpy((u8 *)(addr_t) array->address,
--				rmmsg, copy);
-+			memcpy(phys_to_virt(array->address), rmmsg, copy);
- 			rmmsg += copy;
- 			size -= copy;
- 		}
--- 
-2.43.0
-
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -2528,8 +2528,11 @@ static void __mptcp_close_subflow(struct
+ 
+ 	mptcp_for_each_subflow_safe(msk, subflow, tmp) {
+ 		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
++		int ssk_state = inet_sk_state_load(ssk);
+ 
+-		if (inet_sk_state_load(ssk) != TCP_CLOSE)
++		if (ssk_state != TCP_CLOSE &&
++		    (ssk_state != TCP_CLOSE_WAIT ||
++		     inet_sk_state_load(sk) != TCP_ESTABLISHED))
+ 			continue;
+ 
+ 		/* 'subflow_data_ready' will re-sched once rx queue is empty */
+--- a/net/mptcp/subflow.c
++++ b/net/mptcp/subflow.c
+@@ -1137,12 +1137,16 @@ out:
+ /* sched mptcp worker to remove the subflow if no more data is pending */
+ static void subflow_sched_work_if_closed(struct mptcp_sock *msk, struct sock *ssk)
+ {
+-	if (likely(ssk->sk_state != TCP_CLOSE))
++	struct sock *sk = (struct sock *)msk;
++
++	if (likely(ssk->sk_state != TCP_CLOSE &&
++		   (ssk->sk_state != TCP_CLOSE_WAIT ||
++		    inet_sk_state_load(sk) != TCP_ESTABLISHED)))
+ 		return;
+ 
+ 	if (skb_queue_empty(&ssk->sk_receive_queue) &&
+ 	    !test_and_set_bit(MPTCP_WORK_CLOSE_SUBFLOW, &msk->flags))
+-		mptcp_schedule_work((struct sock *)msk);
++		mptcp_schedule_work(sk);
+ }
+ 
+ static bool subflow_can_fallback(struct mptcp_subflow_context *subflow)
 
 
 
