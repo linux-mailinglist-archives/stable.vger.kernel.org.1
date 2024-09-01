@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-71963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71754-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10B2B967893
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:33:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C4F996779A
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:21:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 418A21C210E6
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:33:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A547282065
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:21:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E747F183CD7;
-	Sun,  1 Sep 2024 16:33:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14514183CBB;
+	Sun,  1 Sep 2024 16:21:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JyfZ53OU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cSrsHQbu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A057217E46E;
-	Sun,  1 Sep 2024 16:33:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7E5E44C97;
+	Sun,  1 Sep 2024 16:21:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208392; cv=none; b=KyFsSZylVDiWF5z6MqvDZfMZd6fz3+24LNfNhCtJMOmYeM44x73EA4IKS0kt51r3Lao9EQX8o8fYD37TAGDTUIXUytuTx9nDC/bW3fpKBu0GVhedCJ2mBT68oxPq1d+SNuxZipwS3D0iLsb6554enrE837+MMLW0W5CzkZZv0XA=
+	t=1725207704; cv=none; b=DJp3Sw1hs4Bm3rirUCDft4yV9RtBxScF/GlW7bnOXfQnHJwve322XSQsWckgGxx2Nxy/9qrJ7LyYK/mOjLjwSI+8vM2h818hf/GSQzJta+NPKVLiT8HsEjz4Rf/KKvLLPMBufa1US8p1WRA5xxBhUkXi+mNjNZlQDpN4zETvI3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208392; c=relaxed/simple;
-	bh=v4Ur4u1Bj8s/ckHrunGoQMCP28DvkrdDH3ttcxoBy74=;
+	s=arc-20240116; t=1725207704; c=relaxed/simple;
+	bh=jrL/fZ+RD4vOMmnxX1VGyeuonQRqpmd1JvkV10lP1K8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c9WcjKsIQe8gsAOemQHsytDNMZRNA1+L3OyUq5JHvr99QyRoiOrNnkB4Fv6YiepHtIYU6FecNuyIwFYNmXL6G2STrOt5yU0fMnfwWZSaZzy5VDSazcEsmDunTi9heKV06IksDANsB7FbSJlDMZE17kJy0UH5FtFaqmT4P5+0u8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JyfZ53OU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 126E5C4CEC3;
-	Sun,  1 Sep 2024 16:33:11 +0000 (UTC)
+	 MIME-Version; b=h9cxYFbUlJgdM73cp04BXPDN3DeRKJ/B0fx4KdRy91FTUiZ9MHScZZkOuimm3V/77Tm+UwvwnQjutMpm56ya8FET9z+bRp2raqQKGUIDFy8ImycxZo57RHS7sAwBp0xgHHZKPlOERiWRxe/b6IH1xn74Ucj9bI6dfLMWDVY7s0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cSrsHQbu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A515C4CEC3;
+	Sun,  1 Sep 2024 16:21:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208392;
-	bh=v4Ur4u1Bj8s/ckHrunGoQMCP28DvkrdDH3ttcxoBy74=;
+	s=korg; t=1725207704;
+	bh=jrL/fZ+RD4vOMmnxX1VGyeuonQRqpmd1JvkV10lP1K8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JyfZ53OUvOIBY7zEvF63nqKPHdR0JzJ5zEt/GWzcYShPvQmAklLDBLfjgyEiicUWD
-	 6sSLuniyg40s/6J0++fa47lCKorA0M25eRqQNHlZVAUjuoQOvllrhePAQdBDIjUekM
-	 n/RbuQfA+Xe3jUOHGhK80yj8jMCuqdw392GLzdnc=
+	b=cSrsHQbuCsIpcaIQqbXZQJd5IHIUOeeWjxUTyNeXIzVcbtPwlfZVQU3cHnFvT/+1z
+	 Ci7LwqgHejoivgIzbRpOJ4kLl39YoTzbBc0dCnHjynNEKwGEuJaXCqaoZHg09Xxgii
+	 7WlesHNzsL5En74hbaQtJjcouSbzXwHdiC8sKhBs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Steve French <sfrench@samba.org>,
-	Paulo Alcantara <pc@manguebit.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	linux-cifs@vger.kernel.org,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>,
+	Phil Chang <phil.chang@mediatek.com>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 069/149] netfs: Fix missing iterator reset on retry of short read
-Date: Sun,  1 Sep 2024 18:16:20 +0200
-Message-ID: <20240901160820.061147257@linuxfoundation.org>
+Subject: [PATCH 4.19 51/98] hrtimer: Prevent queuing of hrtimer without a function callback
+Date: Sun,  1 Sep 2024 18:16:21 +0200
+Message-ID: <20240901160805.624963222@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
-References: <20240901160817.461957599@linuxfoundation.org>
+In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
+References: <20240901160803.673617007@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,44 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Phil Chang <phil.chang@mediatek.com>
 
-[ Upstream commit 950b03d0f664a54389a555d79215348ed413161f ]
+[ Upstream commit 5a830bbce3af16833fe0092dec47b6dd30279825 ]
 
-Fix netfs_rreq_perform_resubmissions() to reset before retrying a short
-read, otherwise the wrong part of the output buffer will be used.
+The hrtimer function callback must not be NULL. It has to be specified by
+the call side but it is not validated by the hrtimer code. When a hrtimer
+is queued without a function callback, the kernel crashes with a null
+pointer dereference when trying to execute the callback in __run_hrtimer().
 
-Fixes: 92b6cc5d1e7c ("netfs: Add iov_iters to (sub)requests to describe various buffers")
-Signed-off-by: David Howells <dhowells@redhat.com>
-Link: https://lore.kernel.org/r/20240823200819.532106-6-dhowells@redhat.com
-cc: Steve French <sfrench@samba.org>
-cc: Paulo Alcantara <pc@manguebit.com>
-cc: Jeff Layton <jlayton@kernel.org>
-cc: linux-cifs@vger.kernel.org
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Introduce a validation before queuing the hrtimer in
+hrtimer_start_range_ns().
+
+[anna-maria: Rephrase commit message]
+
+Signed-off-by: Phil Chang <phil.chang@mediatek.com>
+Signed-off-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/netfs/io.c | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/time/hrtimer.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/netfs/io.c b/fs/netfs/io.c
-index f3abc5dfdbc0c..c96431d3da6d8 100644
---- a/fs/netfs/io.c
-+++ b/fs/netfs/io.c
-@@ -313,6 +313,7 @@ static bool netfs_rreq_perform_resubmissions(struct netfs_io_request *rreq)
- 			netfs_reset_subreq_iter(rreq, subreq);
- 			netfs_read_from_server(rreq, subreq);
- 		} else if (test_bit(NETFS_SREQ_SHORT_IO, &subreq->flags)) {
-+			netfs_reset_subreq_iter(rreq, subreq);
- 			netfs_rreq_short_read(rreq, subreq);
- 		}
- 	}
+diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
+index 0eb5b6cc6d939..b600dc1290d7e 100644
+--- a/kernel/time/hrtimer.c
++++ b/kernel/time/hrtimer.c
+@@ -1172,6 +1172,8 @@ void hrtimer_start_range_ns(struct hrtimer *timer, ktime_t tim,
+ 	struct hrtimer_clock_base *base;
+ 	unsigned long flags;
+ 
++	if (WARN_ON_ONCE(!timer->function))
++		return;
+ 	/*
+ 	 * Check whether the HRTIMER_MODE_SOFT bit and hrtimer.is_soft
+ 	 * match.
 -- 
 2.43.0
 
