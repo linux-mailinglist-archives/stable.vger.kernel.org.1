@@ -1,60 +1,54 @@
-Return-Path: <stable+bounces-72429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71728-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A5F0967A97
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:58:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6227B96777D
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:20:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E74C72822BC
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:58:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 96E28B21791
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:20:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 985F717B50B;
-	Sun,  1 Sep 2024 16:58:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6353181B88;
+	Sun,  1 Sep 2024 16:20:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c8g6gLTT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zAJX1/sU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55BB4208A7;
-	Sun,  1 Sep 2024 16:58:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83322183061;
+	Sun,  1 Sep 2024 16:20:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209893; cv=none; b=Gf20NVjKfKZtxmzinkGqoHUd5oVcRznQccwwCo9sPi7Z6tnSpwlSvV4x3HFmEA8UkJrxc/ieTuUtYRjcdFPhOKOvyE4PNH8R2vxRJxma1ZpNNAQsh5xJBypfvKm5VWj1C6krnPF6TqldgTXjAXpcFkuC1oIN5HW5uqlGCrfIGqw=
+	t=1725207619; cv=none; b=GeklFiCTcmPVdu9B/SZTrfA/mTiM4UGTkgT7W+VYT2e89FIeXED6yrp0Y6Wll3HKpT8wkyeMhHBdz/8rkWstKEE+aUQ6xcMvFl7FmnBE9XOt5ERUvrTHNv9+bKtn2fLuL/r0vwUTSp9g5z+r0xWwJxxUBX+DhtrP7vbYpBwH9KQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209893; c=relaxed/simple;
-	bh=h7J++ftOOIXkcrgJ2n7exue1NwEMKne86CI+XexG/Gw=;
+	s=arc-20240116; t=1725207619; c=relaxed/simple;
+	bh=OKZsBfQHlCsVo4qRvTLB49hgMduVcRUbZkiH3WZJC/s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qlQukWO/1j19YZjNnMesAnyqwhFyymdobjlO/QkrD74Oi/gQHY2BSTPcyNa4zPr6rzRC4qXn3dRkAbVbbAZS1kfgCBRiP74+qgQqrESL8nWXUouDai9MPLJK9HYgvqsK61/tK7i00KgD7NLan4iPfuy/uGvI7QUOX+6dKuBV7xo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c8g6gLTT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9286C4CEC3;
-	Sun,  1 Sep 2024 16:58:12 +0000 (UTC)
+	 MIME-Version; b=GV32LyG6jZpj7jFfPtn+4xc8YVFXRTVKGX0Tx+EsKXIa6IdwJV5oU0A7mhCauRVdDyC/z2DFH6pJXxcvCw4+hLSZzh5tJOBUFt8RHPGBVmH2MQYcKPiOBUqr8wsP+bVqEWOiX0CZmkMMh+mki832V//PVPf9Y3Uac/2ID5H5vgs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zAJX1/sU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5102C4CEC3;
+	Sun,  1 Sep 2024 16:20:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209893;
-	bh=h7J++ftOOIXkcrgJ2n7exue1NwEMKne86CI+XexG/Gw=;
+	s=korg; t=1725207619;
+	bh=OKZsBfQHlCsVo4qRvTLB49hgMduVcRUbZkiH3WZJC/s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c8g6gLTT3czihfmS7roZRNa4zcsbV3ih8yU4tKjqdsXn10bSGcrDIYInueLdCnqt3
-	 p3tGpuK+qgMi3NGs8wURI5PHhEHMQBW3PvLSZnh84U8QvEkRS3UsdajAqba60eH9jC
-	 PJoqoy12L0LYEa8uRZ+UHyfRAhP/104KTZ4gGalY=
+	b=zAJX1/sUC28U8ukKge1wmYDyAbLnVEbc6wk9XnYsbc5Rv8r7WloY+aTuh5OqNv+/6
+	 f8SgpW2+IHsSb0mIFrp/o5hbXXfyF+2hUGtFjLnkR4Ge/U2jx9rurGQdvPg3dS9+9m
+	 e9aa070jVNOzBOmxn6peGGPs9zriB/O9bF6M+qx4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	Muhammad Husaini Zulkifli <muhammad.husaini.zulkifli@intel.com>,
-	Sasha Neftin <sasha.neftin@intel.com>,
-	Paul Menzel <pmenzel@molgen.mpg.de>,
-	Naama Meir <naamax.meir@linux.intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 025/215] igc: Correct the launchtime offset
-Date: Sun,  1 Sep 2024 18:15:37 +0200
-Message-ID: <20240901160824.213241899@linuxfoundation.org>
+	Al Viro <viro@zeniv.linux.org.uk>
+Subject: [PATCH 4.19 08/98] fix bitmap corruption on close_range() with CLOSE_RANGE_UNSHARE
+Date: Sun,  1 Sep 2024 18:15:38 +0200
+Message-ID: <20240901160803.999210410@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
+References: <20240901160803.673617007@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,173 +60,146 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Muhammad Husaini Zulkifli <muhammad.husaini.zulkifli@intel.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit 790835fcc0cb9992349ae3c9010dbc7321aaa24d ]
+commit 9a2fa1472083580b6c66bdaf291f591e1170123a upstream.
 
-The launchtime offset should be corrected according to sections 7.5.2.6
-Transmit Scheduling Latency of the Intel Ethernet I225/I226 Software
-User Manual.
+copy_fd_bitmaps(new, old, count) is expected to copy the first
+count/BITS_PER_LONG bits from old->full_fds_bits[] and fill
+the rest with zeroes.  What it does is copying enough words
+(BITS_TO_LONGS(count/BITS_PER_LONG)), then memsets the rest.
+That works fine, *if* all bits past the cutoff point are
+clear.  Otherwise we are risking garbage from the last word
+we'd copied.
 
-Software can compensate the latency between the transmission scheduling
-and the time that packet is transmitted to the network by setting this
-GTxOffset register. Without setting this register, there may be a
-significant delay between the packet scheduling and the network point.
+For most of the callers that is true - expand_fdtable() has
+count equal to old->max_fds, so there's no open descriptors
+past count, let alone fully occupied words in ->open_fds[],
+which is what bits in ->full_fds_bits[] correspond to.
 
-This patch helps to reduce the latency for each of the link speed.
+The other caller (dup_fd()) passes sane_fdtable_size(old_fdt, max_fds),
+which is the smallest multiple of BITS_PER_LONG that covers all
+opened descriptors below max_fds.  In the common case (copying on
+fork()) max_fds is ~0U, so all opened descriptors will be below
+it and we are fine, by the same reasons why the call in expand_fdtable()
+is safe.
 
-Before:
+Unfortunately, there is a case where max_fds is less than that
+and where we might, indeed, end up with junk in ->full_fds_bits[] -
+close_range(from, to, CLOSE_RANGE_UNSHARE) with
+	* descriptor table being currently shared
+	* 'to' being above the current capacity of descriptor table
+	* 'from' being just under some chunk of opened descriptors.
+In that case we end up with observably wrong behaviour - e.g. spawn
+a child with CLONE_FILES, get all descriptors in range 0..127 open,
+then close_range(64, ~0U, CLOSE_RANGE_UNSHARE) and watch dup(0) ending
+up with descriptor #128, despite #64 being observably not open.
 
-10Mbps   : 11000 - 13800 nanosecond
-100Mbps  : 1300 - 1700 nanosecond
-1000Mbps : 190 - 600 nanosecond
-2500Mbps : 1400 - 1700 nanosecond
+The minimally invasive fix would be to deal with that in dup_fd().
+If this proves to add measurable overhead, we can go that way, but
+let's try to fix copy_fd_bitmaps() first.
 
-After:
+* new helper: bitmap_copy_and_expand(to, from, bits_to_copy, size).
+* make copy_fd_bitmaps() take the bitmap size in words, rather than
+bits; it's 'count' argument is always a multiple of BITS_PER_LONG,
+so we are not losing any information, and that way we can use the
+same helper for all three bitmaps - compiler will see that count
+is a multiple of BITS_PER_LONG for the large ones, so it'll generate
+plain memcpy()+memset().
 
-10Mbps   : less than 750 nanosecond
-100Mbps  : less than 192 nanosecond
-1000Mbps : less than 128 nanosecond
-2500Mbps : less than 128 nanosecond
+Reproducer added to tools/testing/selftests/core/close_range_test.c
 
-Test Setup:
-
-Talker : Use l2_tai.c to generate the launchtime into packet payload.
-Listener: Use timedump.c to compute the delta between packet arrival and
-LaunchTime packet payload.
-
-Signed-off-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Signed-off-by: Muhammad Husaini Zulkifli <muhammad.husaini.zulkifli@intel.com>
-Acked-by: Sasha Neftin <sasha.neftin@intel.com>
-Acked-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Tested-by: Naama Meir <naamax.meir@linux.intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Stable-dep-of: e037a26ead18 ("igc: Fix packet still tx after gate close by reducing i226 MAC retry buffer")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/igc/igc_defines.h |  9 ++++++
- drivers/net/ethernet/intel/igc/igc_main.c    |  7 +++++
- drivers/net/ethernet/intel/igc/igc_regs.h    |  1 +
- drivers/net/ethernet/intel/igc/igc_tsn.c     | 30 ++++++++++++++++++++
- drivers/net/ethernet/intel/igc/igc_tsn.h     |  1 +
- 5 files changed, 48 insertions(+)
+ fs/file.c              |   28 ++++++++++++----------------
+ include/linux/bitmap.h |   12 ++++++++++++
+ 2 files changed, 24 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/igc/igc_defines.h b/drivers/net/ethernet/intel/igc/igc_defines.h
-index 703b62c5f79b5..95282dde6b8bc 100644
---- a/drivers/net/ethernet/intel/igc/igc_defines.h
-+++ b/drivers/net/ethernet/intel/igc/igc_defines.h
-@@ -405,6 +405,15 @@
- #define IGC_DTXMXPKTSZ_TSN	0x19 /* 1600 bytes of max TX DMA packet size */
- #define IGC_DTXMXPKTSZ_DEFAULT	0x98 /* 9728-byte Jumbo frames */
+--- a/fs/file.c
++++ b/fs/file.c
+@@ -41,27 +41,23 @@ static void free_fdtable_rcu(struct rcu_
+ #define BITBIT_NR(nr)	BITS_TO_LONGS(BITS_TO_LONGS(nr))
+ #define BITBIT_SIZE(nr)	(BITBIT_NR(nr) * sizeof(long))
  
-+/* Transmit Scheduling Latency */
-+/* Latency between transmission scheduling (LaunchTime) and the time
-+ * the packet is transmitted to the network in nanosecond.
-+ */
-+#define IGC_TXOFFSET_SPEED_10	0x000034BC
-+#define IGC_TXOFFSET_SPEED_100	0x00000578
-+#define IGC_TXOFFSET_SPEED_1000	0x0000012C
-+#define IGC_TXOFFSET_SPEED_2500	0x00000578
-+
- /* Time Sync Interrupt Causes */
- #define IGC_TSICR_SYS_WRAP	BIT(0) /* SYSTIM Wrap around. */
- #define IGC_TSICR_TXTS		BIT(1) /* Transmit Timestamp. */
-diff --git a/drivers/net/ethernet/intel/igc/igc_main.c b/drivers/net/ethernet/intel/igc/igc_main.c
-index 6185566fbb98c..eb8c24318fdac 100644
---- a/drivers/net/ethernet/intel/igc/igc_main.c
-+++ b/drivers/net/ethernet/intel/igc/igc_main.c
-@@ -5532,6 +5532,13 @@ static void igc_watchdog_task(struct work_struct *work)
- 				break;
- 			}
++#define fdt_words(fdt) ((fdt)->max_fds / BITS_PER_LONG) // words in ->open_fds
+ /*
+  * Copy 'count' fd bits from the old table to the new table and clear the extra
+  * space if any.  This does not copy the file pointers.  Called with the files
+  * spinlock held for write.
+  */
+-static void copy_fd_bitmaps(struct fdtable *nfdt, struct fdtable *ofdt,
+-			    unsigned int count)
++static inline void copy_fd_bitmaps(struct fdtable *nfdt, struct fdtable *ofdt,
++			    unsigned int copy_words)
+ {
+-	unsigned int cpy, set;
++	unsigned int nwords = fdt_words(nfdt);
  
-+			/* Once the launch time has been set on the wire, there
-+			 * is a delay before the link speed can be determined
-+			 * based on link-up activity. Write into the register
-+			 * as soon as we know the correct link speed.
-+			 */
-+			igc_tsn_adjust_txtime_offset(adapter);
-+
- 			if (adapter->link_speed != SPEED_1000)
- 				goto no_wait;
- 
-diff --git a/drivers/net/ethernet/intel/igc/igc_regs.h b/drivers/net/ethernet/intel/igc/igc_regs.h
-index 026c3b65fc37a..0e9c1298f36fe 100644
---- a/drivers/net/ethernet/intel/igc/igc_regs.h
-+++ b/drivers/net/ethernet/intel/igc/igc_regs.h
-@@ -227,6 +227,7 @@
- /* Transmit Scheduling Registers */
- #define IGC_TQAVCTRL		0x3570
- #define IGC_TXQCTL(_n)		(0x3344 + 0x4 * (_n))
-+#define IGC_GTXOFFSET		0x3310
- #define IGC_BASET_L		0x3314
- #define IGC_BASET_H		0x3318
- #define IGC_QBVCYCLET		0x331C
-diff --git a/drivers/net/ethernet/intel/igc/igc_tsn.c b/drivers/net/ethernet/intel/igc/igc_tsn.c
-index 2330b1ff915e7..93518c785c7d2 100644
---- a/drivers/net/ethernet/intel/igc/igc_tsn.c
-+++ b/drivers/net/ethernet/intel/igc/igc_tsn.c
-@@ -48,6 +48,35 @@ static unsigned int igc_tsn_new_flags(struct igc_adapter *adapter)
- 	return new_flags;
+-	cpy = count / BITS_PER_BYTE;
+-	set = (nfdt->max_fds - count) / BITS_PER_BYTE;
+-	memcpy(nfdt->open_fds, ofdt->open_fds, cpy);
+-	memset((char *)nfdt->open_fds + cpy, 0, set);
+-	memcpy(nfdt->close_on_exec, ofdt->close_on_exec, cpy);
+-	memset((char *)nfdt->close_on_exec + cpy, 0, set);
+-
+-	cpy = BITBIT_SIZE(count);
+-	set = BITBIT_SIZE(nfdt->max_fds) - cpy;
+-	memcpy(nfdt->full_fds_bits, ofdt->full_fds_bits, cpy);
+-	memset((char *)nfdt->full_fds_bits + cpy, 0, set);
++	bitmap_copy_and_extend(nfdt->open_fds, ofdt->open_fds,
++			copy_words * BITS_PER_LONG, nwords * BITS_PER_LONG);
++	bitmap_copy_and_extend(nfdt->close_on_exec, ofdt->close_on_exec,
++			copy_words * BITS_PER_LONG, nwords * BITS_PER_LONG);
++	bitmap_copy_and_extend(nfdt->full_fds_bits, ofdt->full_fds_bits,
++			copy_words, nwords);
  }
  
-+void igc_tsn_adjust_txtime_offset(struct igc_adapter *adapter)
+ /*
+@@ -79,7 +75,7 @@ static void copy_fdtable(struct fdtable
+ 	memcpy(nfdt->fd, ofdt->fd, cpy);
+ 	memset((char *)nfdt->fd + cpy, 0, set);
+ 
+-	copy_fd_bitmaps(nfdt, ofdt, ofdt->max_fds);
++	copy_fd_bitmaps(nfdt, ofdt, fdt_words(ofdt));
+ }
+ 
+ static struct fdtable * alloc_fdtable(unsigned int nr)
+@@ -330,7 +326,7 @@ struct files_struct *dup_fd(struct files
+ 		open_files = count_open_files(old_fdt);
+ 	}
+ 
+-	copy_fd_bitmaps(new_fdt, old_fdt, open_files);
++	copy_fd_bitmaps(new_fdt, old_fdt, open_files / BITS_PER_LONG);
+ 
+ 	old_fds = old_fdt->fd;
+ 	new_fds = new_fdt->fd;
+--- a/include/linux/bitmap.h
++++ b/include/linux/bitmap.h
+@@ -256,6 +256,18 @@ static inline void bitmap_copy_clear_tai
+ 		dst[nbits / BITS_PER_LONG] &= BITMAP_LAST_WORD_MASK(nbits);
+ }
+ 
++static inline void bitmap_copy_and_extend(unsigned long *to,
++					  const unsigned long *from,
++					  unsigned int count, unsigned int size)
 +{
-+	struct igc_hw *hw = &adapter->hw;
-+	u16 txoffset;
++	unsigned int copy = BITS_TO_LONGS(count);
 +
-+	if (!is_any_launchtime(adapter))
-+		return;
-+
-+	switch (adapter->link_speed) {
-+	case SPEED_10:
-+		txoffset = IGC_TXOFFSET_SPEED_10;
-+		break;
-+	case SPEED_100:
-+		txoffset = IGC_TXOFFSET_SPEED_100;
-+		break;
-+	case SPEED_1000:
-+		txoffset = IGC_TXOFFSET_SPEED_1000;
-+		break;
-+	case SPEED_2500:
-+		txoffset = IGC_TXOFFSET_SPEED_2500;
-+		break;
-+	default:
-+		txoffset = 0;
-+		break;
-+	}
-+
-+	wr32(IGC_GTXOFFSET, txoffset);
++	memcpy(to, from, copy * sizeof(long));
++	if (count % BITS_PER_LONG)
++		to[copy - 1] &= BITMAP_LAST_WORD_MASK(count);
++	memset(to + copy, 0, bitmap_size(size) - copy * sizeof(long));
 +}
 +
- /* Returns the TSN specific registers to their default values after
-  * the adapter is reset.
-  */
-@@ -57,6 +86,7 @@ static int igc_tsn_disable_offload(struct igc_adapter *adapter)
- 	u32 tqavctrl;
- 	int i;
- 
-+	wr32(IGC_GTXOFFSET, 0);
- 	wr32(IGC_TXPBS, I225_TXPBSIZE_DEFAULT);
- 	wr32(IGC_DTXMXPKTSZ, IGC_DTXMXPKTSZ_DEFAULT);
- 
-diff --git a/drivers/net/ethernet/intel/igc/igc_tsn.h b/drivers/net/ethernet/intel/igc/igc_tsn.h
-index 1512307f5a528..b53e6af560b73 100644
---- a/drivers/net/ethernet/intel/igc/igc_tsn.h
-+++ b/drivers/net/ethernet/intel/igc/igc_tsn.h
-@@ -6,5 +6,6 @@
- 
- int igc_tsn_offload_apply(struct igc_adapter *adapter);
- int igc_tsn_reset(struct igc_adapter *adapter);
-+void igc_tsn_adjust_txtime_offset(struct igc_adapter *adapter);
- 
- #endif /* _IGC_BASE_H */
--- 
-2.43.0
-
+ /*
+  * On 32-bit systems bitmaps are represented as u32 arrays internally, and
+  * therefore conversion is not needed when copying data from/to arrays of u32.
 
 
 
