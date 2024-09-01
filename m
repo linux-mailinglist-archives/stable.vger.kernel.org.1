@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-71765-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72085-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B29039677A6
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:22:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB9A096791E
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:40:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6EFBF281FE3
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:22:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A3BB1F211BC
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:40:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D080183CBC;
-	Sun,  1 Sep 2024 16:22:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E266F181B87;
+	Sun,  1 Sep 2024 16:39:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ES5iJmcb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZX+l9FlM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B8F116EB4B;
-	Sun,  1 Sep 2024 16:22:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EF9B1C68C;
+	Sun,  1 Sep 2024 16:39:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725207741; cv=none; b=jtPBA3VZ05/TLdufE7YNfwcOw03Cq18LqX2z/WBINPzMvqTKUxBzzPSOEJ0/3DK28UAf0PYpYE53uT9kB5k0tYrEbHNDxjJkBFNXPgelLp3DCBkDUmQwAPbyF6pAABNXewfSvaZ5sQH2VP69Rl5N41N56PG6IOEZMhgusyj0FXo=
+	t=1725208791; cv=none; b=op/0fqlYzhtQ7SaZG70kX20qpR5lPbUlmY8UGWxohqM1+IWolgZKbf045k7DvMODhugd7Dl4+SxdetQz+lgt2G1rAQh8dsKlyn72llgqa3LdjRnK76lYd6W24nz5qdl+1UsupxNCUlMF9DeGk0KUYOHyI8wKjG3weMpmOmldeDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725207741; c=relaxed/simple;
-	bh=9nb111DVIdbO2wzndmZB3uqTiy1SLaozL11AKMWT85M=;
+	s=arc-20240116; t=1725208791; c=relaxed/simple;
+	bh=UWF+bWQVfQScPwFCvpGaM4LERQuU6CNc3RM2z7OxOKg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J/O0vb4cgOKtd2BeIkRV4UqmWA8zDRvsgZfE24bMo1UbSyPB5yDhKe8x8DpnquP2hzxZd3cdg2htTYnD3phl5PJzwu3h+PuM9BkL0zsj1UBBhKCA7DOqqK8vrimGW4NWvxROAFtGggWxqgdDWQjv18m74fbzSQYbmNQcStJQt2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ES5iJmcb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C366BC4CEC3;
-	Sun,  1 Sep 2024 16:22:20 +0000 (UTC)
+	 MIME-Version; b=jsL91Oc7yfoM39kqWbT4GOyZkREIRHRI1mh/7KmtNSFRRUEkv9EOuq/W9eQby6FtpxCSCEGAuUY/Kkwkh3o/vmbt2Ye/8R1sO3wbBfV/7JtkZSba80gtDxzkScGQAvLsbIcWca9iRz+8uuR7i9HkhpHH8bPImswcTg5IcbMmpkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZX+l9FlM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05720C4CEC3;
+	Sun,  1 Sep 2024 16:39:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725207741;
-	bh=9nb111DVIdbO2wzndmZB3uqTiy1SLaozL11AKMWT85M=;
+	s=korg; t=1725208791;
+	bh=UWF+bWQVfQScPwFCvpGaM4LERQuU6CNc3RM2z7OxOKg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ES5iJmcbAOGn5QraDMWmQ3vZvVwLuHkDkQJrDWVzNwLVRkTtK43ZsLjU9VbG/aO4Y
-	 upOfEJwVTm0WmOsG1QLKuwDGaSP2/mN2V5hAQCIvW5a4x2l5CJzrarPpGZ9CwepxYv
-	 rkxJpv3GaijAY8oXAdi2Go7FHt79mQbzkFwMbT4w=
+	b=ZX+l9FlM3KhzRO5TH2NcJiWlIfi16D89zYqI4D6NbF+sUyi303tKUZXELQA3dmOWw
+	 d4N6zYOElK8iGBgk8YDJsY49zyU39N0b2Uqz7FLmlryx3QpxwEbjYsTu6I+v3cqfB7
+	 x5tCDcmmc5HImgN3vTvX9KhlxSmJN6qIaI2+xSeE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Chengfeng Ye <dg573847474@gmail.com>,
+	Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 56/98] Bluetooth: hci_core: Fix LE quote calculation
+Subject: [PATCH 5.4 040/134] IB/hfi1: Fix potential deadlock on &irq_src_lock and &dd->uctxt_lock
 Date: Sun,  1 Sep 2024 18:16:26 +0200
-Message-ID: <20240901160805.811360028@linuxfoundation.org>
+Message-ID: <20240901160811.618276949@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
-References: <20240901160803.673617007@linuxfoundation.org>
+In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
+References: <20240901160809.752718937@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,76 +63,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Chengfeng Ye <dg573847474@gmail.com>
 
-[ Upstream commit 932021a11805b9da4bd6abf66fe233cccd59fe0e ]
+[ Upstream commit 2f19c4b8395ccb6eb25ccafee883c8cfbe3fc193 ]
 
-Function hci_sched_le needs to update the respective counter variable
-inplace other the likes of hci_quote_sent would attempt to use the
-possible outdated value of conn->{le_cnt,acl_cnt}.
+handle_receive_interrupt_napi_sp() running inside interrupt handler
+could introduce inverse lock ordering between &dd->irq_src_lock
+and &dd->uctxt_lock, if read_mod_write() is preempted by the isr.
 
-Link: https://github.com/bluez/bluez/issues/915
-Fixes: 73d80deb7bdf ("Bluetooth: prioritizing data over HCI")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+          [CPU0]                                        |          [CPU1]
+hfi1_ipoib_dev_open()                                   |
+--> hfi1_netdev_enable_queues()                         |
+--> enable_queues(rx)                                   |
+--> hfi1_rcvctrl()                                      |
+--> set_intr_bits()                                     |
+--> read_mod_write()                                    |
+--> spin_lock(&dd->irq_src_lock)                        |
+                                                        | hfi1_poll()
+                                                        | --> poll_next()
+                                                        | --> spin_lock_irq(&dd->uctxt_lock)
+                                                        |
+                                                        | --> hfi1_rcvctrl()
+                                                        | --> set_intr_bits()
+                                                        | --> read_mod_write()
+                                                        | --> spin_lock(&dd->irq_src_lock)
+<interrupt>                                             |
+   --> handle_receive_interrupt_napi_sp()               |
+   --> set_all_fastpath()                               |
+   --> hfi1_rcd_get_by_index()                          |
+   --> spin_lock_irqsave(&dd->uctxt_lock)               |
+
+This flaw was found by an experimental static analysis tool I am
+developing for irq-related deadlock.
+
+To prevent the potential deadlock, the patch use spin_lock_irqsave()
+on &dd->irq_src_lock inside read_mod_write() to prevent the possible
+deadlock scenario.
+
+Signed-off-by: Chengfeng Ye <dg573847474@gmail.com>
+Link: https://lore.kernel.org/r/20230926101116.2797-1-dg573847474@gmail.com
+Acked-by: Dennis Dalessandro <dennis.dalessandro@cornelisnetworks.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_core.c | 19 +++++++------------
- 1 file changed, 7 insertions(+), 12 deletions(-)
+ drivers/infiniband/hw/hfi1/chip.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
-index 3360ae1e4c8ce..bb89ca37decbc 100644
---- a/net/bluetooth/hci_core.c
-+++ b/net/bluetooth/hci_core.c
-@@ -4121,19 +4121,19 @@ static void hci_sched_le(struct hci_dev *hdev)
+diff --git a/drivers/infiniband/hw/hfi1/chip.c b/drivers/infiniband/hw/hfi1/chip.c
+index 65d6bf34614c8..6cf87fcfc4eb5 100644
+--- a/drivers/infiniband/hw/hfi1/chip.c
++++ b/drivers/infiniband/hw/hfi1/chip.c
+@@ -13067,15 +13067,16 @@ static void read_mod_write(struct hfi1_devdata *dd, u16 src, u64 bits,
  {
- 	struct hci_chan *chan;
- 	struct sk_buff *skb;
--	int quote, cnt, tmp;
-+	int quote, *cnt, tmp;
+ 	u64 reg;
+ 	u16 idx = src / BITS_PER_REGISTER;
++	unsigned long flags;
  
- 	BT_DBG("%s", hdev->name);
- 
- 	if (!hci_conn_num(hdev, LE_LINK))
- 		return;
- 
--	cnt = hdev->le_pkts ? hdev->le_cnt : hdev->acl_cnt;
-+	cnt = hdev->le_pkts ? &hdev->le_cnt : &hdev->acl_cnt;
- 
--	__check_timeout(hdev, cnt, LE_LINK);
-+	__check_timeout(hdev, *cnt, LE_LINK);
- 
--	tmp = cnt;
--	while (cnt && (chan = hci_chan_sent(hdev, LE_LINK, &quote))) {
-+	tmp = *cnt;
-+	while (*cnt && (chan = hci_chan_sent(hdev, LE_LINK, &quote))) {
- 		u32 priority = (skb_peek(&chan->data_q))->priority;
- 		while (quote-- && (skb = skb_peek(&chan->data_q))) {
- 			BT_DBG("chan %p skb %p len %d priority %u", chan, skb,
-@@ -4148,18 +4148,13 @@ static void hci_sched_le(struct hci_dev *hdev)
- 			hci_send_frame(hdev, skb);
- 			hdev->le_last_tx = jiffies;
- 
--			cnt--;
-+			(*cnt)--;
- 			chan->sent++;
- 			chan->conn->sent++;
- 		}
- 	}
- 
--	if (hdev->le_pkts)
--		hdev->le_cnt = cnt;
--	else
--		hdev->acl_cnt = cnt;
--
--	if (cnt != tmp)
-+	if (*cnt != tmp)
- 		hci_prio_recalculate(hdev, LE_LINK);
+-	spin_lock(&dd->irq_src_lock);
++	spin_lock_irqsave(&dd->irq_src_lock, flags);
+ 	reg = read_csr(dd, CCE_INT_MASK + (8 * idx));
+ 	if (set)
+ 		reg |= bits;
+ 	else
+ 		reg &= ~bits;
+ 	write_csr(dd, CCE_INT_MASK + (8 * idx), reg);
+-	spin_unlock(&dd->irq_src_lock);
++	spin_unlock_irqrestore(&dd->irq_src_lock, flags);
  }
  
+ /**
 -- 
 2.43.0
 
