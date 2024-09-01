@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-72462-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71985-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57B04967AB9
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:00:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64EB39678AF
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:34:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 142152816AD
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:00:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 957791C211BF
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:34:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33655183CA7;
-	Sun,  1 Sep 2024 17:00:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C08818452D;
+	Sun,  1 Sep 2024 16:34:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vZrzNCVF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FvhIXkz7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E61D2183CD2;
-	Sun,  1 Sep 2024 17:00:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF3171C68C;
+	Sun,  1 Sep 2024 16:34:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210004; cv=none; b=JiRttlljvsTQns0SMWIJtO09VRgZVfEuCjBrWn4Jn864sjbT5J22ENvyaegBECSlwH9k0q3xlkPet1sl/ckd6CKc3QpK/CYfJH6zbcuVKARTzhDOlk3KBWPTf9AZSfNLHr1fN7qWBps1wEFCA15fQ8OGd+uBsBhsH0aGFQxKeGQ=
+	t=1725208465; cv=none; b=Zb+Jh2lAiLqSeKHYFYxYFlmeSrJpkRFR6n1CcJeKvZG5Cn3TT8EMowOzAZVix6mJ6UtWt5z2lw/h+fqQVcPSxzixTr+JaY1pzwMxNYCQjqDz9Oga3gakoiUtVTxf3XFtJK1S/L8rJ2pNCXy8xNi5vBcQWfdI0KLsNObHzhq0D9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210004; c=relaxed/simple;
-	bh=M46+lpSvrXcGTsry/0UkBwXs9jC4fNdh6ERcuIZTZyI=;
+	s=arc-20240116; t=1725208465; c=relaxed/simple;
+	bh=7RJtrmFnEF5jJgaa7OTn/Mpbmdw8EHKZ17GuLnrC3yA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=En6hOyCEWfKMJyZNCxGRAPkyErKtAg8HavdvoQqMS8mP7+4qIoP+WdvdLthM5VmZkP7rKKb1mER7jE9tQvFkWIjfPXzR58S53EiDXo+o4XEhHwrk41br2Z06oU3jK0T2rW1dYmOcgJ42M+szuKPHRBtWPFcE5W7Ncmr/+vMtqBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vZrzNCVF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 584A7C4CEC3;
-	Sun,  1 Sep 2024 17:00:03 +0000 (UTC)
+	 MIME-Version; b=Tw3lVcYILx/ZEsaePDgK2yxSVFmmR+5zSjg4rsytM5JAQx9XDVF5a6uLYXyejSoVFgeeCCAJ0nYt9g797qllZkwweXlI1kGbW1s8dwvZsYLu2UL69herFEmQ9uJ0+LE4xTCQdqNOdvlcTAny96ei0yiWYqxoers+cRja/NiUH7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FvhIXkz7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCE5DC4CEC4;
+	Sun,  1 Sep 2024 16:34:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210003;
-	bh=M46+lpSvrXcGTsry/0UkBwXs9jC4fNdh6ERcuIZTZyI=;
+	s=korg; t=1725208465;
+	bh=7RJtrmFnEF5jJgaa7OTn/Mpbmdw8EHKZ17GuLnrC3yA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vZrzNCVFAgLiLvj+2oeEqDM+QKbJpXrRocR9h/BlEchazkfqolEQTMOhX2187Z3F6
-	 WtqQTANuQMkAp952pac3vXGqhBqZ+ieShAjKOSrdqminRlCs/j9wpQhwajiNiBQ38h
-	 AWG/Jb+nVbwJ43gKkkn2hsQwiLyPC3F1CRM2ix9w=
+	b=FvhIXkz7+0N/8XF+2+9f1XF/tJA2GmRuY56kvlTK6YvKC/j2Uxy3/oc/GW0Tev06C
+	 Zafi3QkSB/nN6ygpGesL7xuYByusblHNSz7xyOYUstEa2PBiWbXxDQWJbXr45tEQ0w
+	 UJU2ysKTWnpFxZh0d5iSYzpGShoENbmO1MXpbR2A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Christie <michael.christie@oracle.com>,
-	Christoph Hellwig <hch@lst.de>,
-	John Garry <john.g.garry@oracle.com>,
-	Martin Wilck <mwilck@suse.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 058/215] scsi: spi: Fix sshdr use
+Subject: [PATCH 6.10 059/149] nfsd: ensure that nfsd4_fattr_args.context is zeroed out
 Date: Sun,  1 Sep 2024 18:16:10 +0200
-Message-ID: <20240901160825.550262880@linuxfoundation.org>
+Message-ID: <20240901160819.687995275@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,47 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Christie <michael.christie@oracle.com>
+From: Jeff Layton <jlayton@kernel.org>
 
-[ Upstream commit 0b149cee836aa53989ea089af1cb9d90d7c6ac9e ]
+[ Upstream commit f58bab6fd4063913bd8321e99874b8239e9ba726 ]
 
-If scsi_execute_cmd returns < 0, it doesn't initialize the sshdr, so we
-shouldn't access the sshdr. If it returns 0, then the cmd executed
-successfully, so there is no need to check the sshdr. This has us access
-the sshdr when we get a return value > 0.
+If nfsd4_encode_fattr4 ends up doing a "goto out" before we get to
+checking for the security label, then args.context will be set to
+uninitialized junk on the stack, which we'll then try to free.
+Initialize it early.
 
-Signed-off-by: Mike Christie <michael.christie@oracle.com>
-Link: https://lore.kernel.org/r/20231004210013.5601-7-michael.christie@oracle.com
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Reviewed-by: Martin Wilck <mwilck@suse.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: f59388a579c6 ("NFSD: Add nfsd4_encode_fattr4_sec_label()")
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/scsi_transport_spi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/nfsd/nfs4xdr.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/scsi_transport_spi.c b/drivers/scsi/scsi_transport_spi.c
-index bd72c38d7bfc4..5c43d0ec95a77 100644
---- a/drivers/scsi/scsi_transport_spi.c
-+++ b/drivers/scsi/scsi_transport_spi.c
-@@ -677,10 +677,10 @@ spi_dv_device_echo_buffer(struct scsi_device *sdev, u8 *buffer,
- 	for (r = 0; r < retries; r++) {
- 		result = spi_execute(sdev, spi_write_buffer, DMA_TO_DEVICE,
- 				     buffer, len, &sshdr);
--		if(result || !scsi_device_online(sdev)) {
-+		if (result || !scsi_device_online(sdev)) {
+diff --git a/fs/nfsd/nfs4xdr.c b/fs/nfsd/nfs4xdr.c
+index c7bfd2180e3f2..8a7bc2b58e721 100644
+--- a/fs/nfsd/nfs4xdr.c
++++ b/fs/nfsd/nfs4xdr.c
+@@ -3545,6 +3545,9 @@ nfsd4_encode_fattr4(struct svc_rqst *rqstp, struct xdr_stream *xdr,
+ 	args.dentry = dentry;
+ 	args.ignore_crossmnt = (ignore_crossmnt != 0);
+ 	args.acl = NULL;
++#ifdef CONFIG_NFSD_V4_SECURITY_LABEL
++	args.context = NULL;
++#endif
  
- 			scsi_device_set_state(sdev, SDEV_QUIESCE);
--			if (scsi_sense_valid(&sshdr)
-+			if (result > 0 && scsi_sense_valid(&sshdr)
- 			    && sshdr.sense_key == ILLEGAL_REQUEST
- 			    /* INVALID FIELD IN CDB */
- 			    && sshdr.asc == 0x24 && sshdr.ascq == 0x00)
+ 	/*
+ 	 * Make a local copy of the attribute bitmap that can be modified.
+@@ -3617,7 +3620,6 @@ nfsd4_encode_fattr4(struct svc_rqst *rqstp, struct xdr_stream *xdr,
+ 	args.contextsupport = false;
+ 
+ #ifdef CONFIG_NFSD_V4_SECURITY_LABEL
+-	args.context = NULL;
+ 	if ((attrmask[2] & FATTR4_WORD2_SECURITY_LABEL) ||
+ 	     attrmask[0] & FATTR4_WORD0_SUPPORTED_ATTRS) {
+ 		if (exp->ex_flags & NFSEXP_SECURITY_LABEL)
 -- 
 2.43.0
 
