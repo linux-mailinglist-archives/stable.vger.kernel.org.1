@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-72278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71734-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 495619679FB
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:50:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 05392967784
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:20:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCCFA1F226DD
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:50:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF5311F218D2
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:20:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2308617E900;
-	Sun,  1 Sep 2024 16:50:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58C9817E01C;
+	Sun,  1 Sep 2024 16:20:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="01lBOKB9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0tPWLRQV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D38741DFD1;
-	Sun,  1 Sep 2024 16:50:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16122155A24;
+	Sun,  1 Sep 2024 16:20:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209407; cv=none; b=n/lZ9BxJ0ZuUYAT9UB2JFhHnH2kvspxN70oW+jlsld7jd+PtHAbUtp2xsrif9NGFvo/NW5/PJWatqCa6cd0JPX7rUe2AWmNt0Zskksk41mwuwFxtCvtCIAWKkT9kxCE+dXvl2wU7N0Db1M/ssn2KWXCRaAFsRosRZu2Sqc1igAk=
+	t=1725207639; cv=none; b=Kk2fjkjeNIHdd4Xp07W/GsYAbjMnVW3fWBQNwbhdKk4Hu15gkiGVvvqjSMItZ8eeuRjA2ef6Y6iNyEHBRHak/SMg/P1xE8NxPHrSVOhiFsWiz9jxa3xiTuffQoX8mgFzhZwKqISH48PZFz9EaRjTRUi36eWda+d4kebmDlcUKrE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209407; c=relaxed/simple;
-	bh=5X5hGyqnkI36zEkz/9OCAuO30z6d5akhMXJ62Nu3VcY=;
+	s=arc-20240116; t=1725207639; c=relaxed/simple;
+	bh=/F35yBG868jOTvALTqTD5WLAGig2f1APXqrJkPRsybc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lWItZGvDWNQmY/Ckc24b8LvjHFofKBaJiNIuvxXO2hg2MDPpfBj8I+0/Uu8xDJy92V6dXma6RnyEX6GMYmEj0s+uHkzLUA37OGCg4+IdBa/0b3r+m0ohvUBGtJ73L9QSvB07HhM16jhIo8SgJbXjUiIh8D5Ntnuj40r77IXTjaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=01lBOKB9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58903C4CEC3;
-	Sun,  1 Sep 2024 16:50:07 +0000 (UTC)
+	 MIME-Version; b=CGjPyYFB6liergqqa/A0uS4cmefSFpZ3YxW6J3XjSvXOacbvZikcqfs7qAxnyuwxsHTRLd0ZD5kTILd/UOVRYfcgcGOZn/PjV2DK0TLpUIYgNTV+UxmmNV0Ss4W183+86cLk5rx9V+kZaLKpsnwCv1BrSmMlqcH6HiSira6x1kE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0tPWLRQV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79169C4CEC3;
+	Sun,  1 Sep 2024 16:20:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209407;
-	bh=5X5hGyqnkI36zEkz/9OCAuO30z6d5akhMXJ62Nu3VcY=;
+	s=korg; t=1725207639;
+	bh=/F35yBG868jOTvALTqTD5WLAGig2f1APXqrJkPRsybc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=01lBOKB9QlctcabUoitM19tp7XkM8+1ReGKhOcDs78JAMxuVnyb5sJ+hSf0FRK3nv
-	 1itJ6ZU6jSQeoF8RUYbYPEPF3kW5Kqv3noJTcQwpLDoEi51RbXyhCmCgtB69GOeKKV
-	 Cfj7vrftY6Ozcd8QobDzUrraFIe8gf4t6PGUGr/k=
+	b=0tPWLRQVytiHJ4leA1QwPHPe6lHOyC+3HTYI4mCYuHH7miug0h4cTulxLhUZboNWZ
+	 Ipb+5jHHpqcr0h3oW2Bfvcq2P7PAQXubj0aKx7SBHTs+IAen0gsmCa/KRYn62a1Rbq
+	 0HJptwedduFXYYWfkQh6pS6n7oAA874Jg40kPg9I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Karel Balej <balejk@matfyz.cz>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 5.10 003/151] xhci: Fix Panther point NULL pointer deref at full-speed re-enumeration
+	Helge Deller <deller@gmx.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 33/98] parisc: Use irq_enter_rcu() to fix warning at kernel/context_tracking.c:367
 Date: Sun,  1 Sep 2024 18:16:03 +0200
-Message-ID: <20240901160814.223776762@linuxfoundation.org>
+Message-ID: <20240901160804.947327822@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
-References: <20240901160814.090297276@linuxfoundation.org>
+In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
+References: <20240901160803.673617007@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,87 +61,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: Helge Deller <deller@gmx.de>
 
-commit af8e119f52e9c13e556be9e03f27957554a84656 upstream.
+[ Upstream commit 73cb4a2d8d7e0259f94046116727084f21e4599f ]
 
-re-enumerating full-speed devices after a failed address device command
-can trigger a NULL pointer dereference.
+Use irq*_rcu() functions to fix this kernel warning:
 
-Full-speed devices may need to reconfigure the endpoint 0 Max Packet Size
-value during enumeration. Usb core calls usb_ep0_reinit() in this case,
-which ends up calling xhci_configure_endpoint().
+ WARNING: CPU: 0 PID: 0 at kernel/context_tracking.c:367 ct_irq_enter+0xa0/0xd0
+ Modules linked in:
+ CPU: 0 PID: 0 Comm: swapper/0 Not tainted 6.7.0-rc3-64bit+ #1037
+ Hardware name: 9000/785/C3700
 
-On Panther point xHC the xhci_configure_endpoint() function will
-additionally check and reserve bandwidth in software. Other hosts do
-this in hardware
+ IASQ: 0000000000000000 0000000000000000 IAOQ: 00000000412cd758 00000000412cd75c
+  IIR: 03ffe01f    ISR: 0000000000000000  IOR: 0000000043c20c20
+  CPU:        0   CR30: 0000000041caa000 CR31: 0000000000000000
+  ORIG_R28: 0000000000000005
+  IAOQ[0]: ct_irq_enter+0xa0/0xd0
+  IAOQ[1]: ct_irq_enter+0xa4/0xd0
+  RP(r2): irq_enter+0x34/0x68
+ Backtrace:
+  [<000000004034a3ec>] irq_enter+0x34/0x68
+  [<000000004030dc48>] do_cpu_irq_mask+0xc0/0x450
+  [<0000000040303070>] intr_return+0x0/0xc
 
-If xHC address device command fails then a new xhci_virt_device structure
-is allocated as part of re-enabling the slot, but the bandwidth table
-pointers are not set up properly here.
-This triggers the NULL pointer dereference the next time usb_ep0_reinit()
-is called and xhci_configure_endpoint() tries to check and reserve
-bandwidth
-
-[46710.713538] usb 3-1: new full-speed USB device number 5 using xhci_hcd
-[46710.713699] usb 3-1: Device not responding to setup address.
-[46710.917684] usb 3-1: Device not responding to setup address.
-[46711.125536] usb 3-1: device not accepting address 5, error -71
-[46711.125594] BUG: kernel NULL pointer dereference, address: 0000000000000008
-[46711.125600] #PF: supervisor read access in kernel mode
-[46711.125603] #PF: error_code(0x0000) - not-present page
-[46711.125606] PGD 0 P4D 0
-[46711.125610] Oops: Oops: 0000 [#1] PREEMPT SMP PTI
-[46711.125615] CPU: 1 PID: 25760 Comm: kworker/1:2 Not tainted 6.10.3_2 #1
-[46711.125620] Hardware name: Gigabyte Technology Co., Ltd.
-[46711.125623] Workqueue: usb_hub_wq hub_event [usbcore]
-[46711.125668] RIP: 0010:xhci_reserve_bandwidth (drivers/usb/host/xhci.c
-
-Fix this by making sure bandwidth table pointers are set up correctly
-after a failed address device command, and additionally by avoiding
-checking for bandwidth in cases like this where no actual endpoints are
-added or removed, i.e. only context for default control endpoint 0 is
-evaluated.
-
-Reported-by: Karel Balej <balejk@matfyz.cz>
-Closes: https://lore.kernel.org/linux-usb/D3CKQQAETH47.1MUO22RTCH2O3@matfyz.cz/
-Cc: stable@vger.kernel.org
-Fixes: 651aaf36a7d7 ("usb: xhci: Handle USB transaction error on address command")
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20240815141117.2702314-2-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ arch/parisc/kernel/irq.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/host/xhci.c
-+++ b/drivers/usb/host/xhci.c
-@@ -2826,7 +2826,7 @@ static int xhci_configure_endpoint(struc
- 				xhci->num_active_eps);
- 		return -ENOMEM;
- 	}
--	if ((xhci->quirks & XHCI_SW_BW_CHECKING) &&
-+	if ((xhci->quirks & XHCI_SW_BW_CHECKING) && !ctx_change &&
- 	    xhci_reserve_bandwidth(xhci, virt_dev, command->in_ctx)) {
- 		if ((xhci->quirks & XHCI_EP_LIMIT_QUIRK))
- 			xhci_free_host_resources(xhci, ctrl_ctx);
-@@ -4242,8 +4242,10 @@ static int xhci_setup_device(struct usb_
- 		mutex_unlock(&xhci->mutex);
- 		ret = xhci_disable_slot(xhci, udev->slot_id);
- 		xhci_free_virt_device(xhci, udev->slot_id);
--		if (!ret)
--			xhci_alloc_dev(hcd, udev);
-+		if (!ret) {
-+			if (xhci_alloc_dev(hcd, udev) == 1)
-+				xhci_setup_addressable_virt_dev(xhci, udev);
-+		}
- 		kfree(command->completion);
- 		kfree(command);
- 		return -EPROTO;
+diff --git a/arch/parisc/kernel/irq.c b/arch/parisc/kernel/irq.c
+index 11c1505775f87..6b20a0a11913b 100644
+--- a/arch/parisc/kernel/irq.c
++++ b/arch/parisc/kernel/irq.c
+@@ -524,7 +524,7 @@ void do_cpu_irq_mask(struct pt_regs *regs)
+ 
+ 	old_regs = set_irq_regs(regs);
+ 	local_irq_disable();
+-	irq_enter();
++	irq_enter_rcu();
+ 
+ 	eirr_val = mfctl(23) & cpu_eiem & per_cpu(local_ack_eiem, cpu);
+ 	if (!eirr_val)
+@@ -559,7 +559,7 @@ void do_cpu_irq_mask(struct pt_regs *regs)
+ #endif /* CONFIG_IRQSTACKS */
+ 
+  out:
+-	irq_exit();
++	irq_exit_rcu();
+ 	set_irq_regs(old_regs);
+ 	return;
+ 
+-- 
+2.43.0
+
 
 
 
