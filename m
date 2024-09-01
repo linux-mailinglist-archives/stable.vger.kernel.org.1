@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-71938-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72068-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 516DC967873
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:32:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3D6A967908
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:38:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 856E7B22339
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:31:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6D6EB281348
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:38:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 071AE183CBD;
-	Sun,  1 Sep 2024 16:31:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2026B17E46E;
+	Sun,  1 Sep 2024 16:38:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SQC3gYbL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y58ynh4x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B930A5381A;
-	Sun,  1 Sep 2024 16:31:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D183A2B9C7;
+	Sun,  1 Sep 2024 16:38:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208311; cv=none; b=tSkxiRM91TfuJWbppWTYgqJr/JuG609mykNZ3snYg54cKs//8VN8672R+vd2h9aFqV4e4FwR29y5rLoaVLKt+mJoSbsJxI/ZNEv5hhJPTgRE+0AXULA8zLklkeUBnkVhA1otuyF5bgtD+pUf4OJr2J6KP75IkbIYTghpcpqrSZs=
+	t=1725208735; cv=none; b=EfO3826MqCIV01NsZ0aff+Fp5GGcvnxZcExjaD9ZaRGxdWhNN3/dwRl/JEFJG19+nhsuMlFSdE7g4h7i8ieX1wfDUEZm8yhvdV4Kl2srU4qF7nj/4oR89peGI1CpLgmQr630OYgp7Qx0ItpyGBe2kUGiLkZhEKlaKY6mIcQGsOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208311; c=relaxed/simple;
-	bh=N9jhI61vmvVcfGOfiUss9kahFjfZBn2BPi7wSnfUV50=;
+	s=arc-20240116; t=1725208735; c=relaxed/simple;
+	bh=KZ+xGyPcFpWkDzmKg3Djqlb6+nfs+K/qzzBCgUkGEWE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OlZMP6cDljZQiT/NxKia0AxB5Z0BwsLpIRhtwVJ9vCibe2AIvq9lIjK/iKCF/B12jpK4hCIT5/lSdfsxXmB624hlr0iUoNtX/bPhRSOl2fxSU2fOPqHGfiPrWjjK3krQ93c3lLehqaIQvIMFtSMNvvg/6nBWXyf6YYltupancHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SQC3gYbL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38591C4CEC3;
-	Sun,  1 Sep 2024 16:31:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=e5DRo015qphwiDEyS0DP0jWRobJh/k/CDOmor05um2dBj50oK+/Sf2FyD4ZINwXFmPDoLU3vH+5mcr/OQK+8pxm87MHs+fxY4rbMiGaN6pSHnFsw2Y05bBo8LVRq8XGtyaJTerszlG6m1tLu5RB4gIhQEWxy9UdjuVt1JHfg31A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y58ynh4x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEFC6C4CEC3;
+	Sun,  1 Sep 2024 16:38:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208311;
-	bh=N9jhI61vmvVcfGOfiUss9kahFjfZBn2BPi7wSnfUV50=;
+	s=korg; t=1725208735;
+	bh=KZ+xGyPcFpWkDzmKg3Djqlb6+nfs+K/qzzBCgUkGEWE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SQC3gYbL70sJPEKZXvtDgsn4doQoLx8jlij9tcUvYVBAjkKcALo8rlI8yW3HU+Lld
-	 I1+8FKHA3/gnchzlekGQ1wb/u7afz6Y84huSOUVuaHidZImC+KKrvPPb/t+EPM9I71
-	 /ZVZDAoFC0K+dUuoOydl7NR+39e3MVnID5rxvjq4=
+	b=y58ynh4xrA6poFWHiKluJ0ZYBhEkmT11NdHmWAS7+sWPkZsyAK7XOTt/LVS1w8vOj
+	 uGE70bjTo5EdzVe61yP7sS5vsvXCSOe7YLLPprYOBIgG15LPvCuonvnrVw0RhTZx6W
+	 bOOuHdhkEmQ3Qt6DX3dm9ohJZakeLt2N82cWayNE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Martinez Canillas <javierm@redhat.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Helge Deller <deller@gmx.de>,
-	Sam Ravnborg <sam@ravnborg.org>,
-	Daniel Vetter <daniel.vetter@ffwll.ch>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.10 043/149] video/aperture: optionally match the device in sysfb_disable()
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Mateusz Guzik <mjguzik@gmail.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 5.4 008/134] vfs: Dont evict inode under the inode lru traversing context
 Date: Sun,  1 Sep 2024 18:15:54 +0200
-Message-ID: <20240901160819.085485817@linuxfoundation.org>
+Message-ID: <20240901160810.425534650@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
-References: <20240901160817.461957599@linuxfoundation.org>
+In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
+References: <20240901160809.752718937@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,182 +61,220 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Zhihao Cheng <chengzhihao1@huawei.com>
 
-commit b49420d6a1aeb399e5b107fc6eb8584d0860fbd7 upstream.
+commit 2a0629834cd82f05d424bbc193374f9a43d1f87d upstream.
 
-In aperture_remove_conflicting_pci_devices(), we currently only
-call sysfb_disable() on vga class devices.  This leads to the
-following problem when the pimary device is not VGA compatible:
+The inode reclaiming process(See function prune_icache_sb) collects all
+reclaimable inodes and mark them with I_FREEING flag at first, at that
+time, other processes will be stuck if they try getting these inodes
+(See function find_inode_fast), then the reclaiming process destroy the
+inodes by function dispose_list(). Some filesystems(eg. ext4 with
+ea_inode feature, ubifs with xattr) may do inode lookup in the inode
+evicting callback function, if the inode lookup is operated under the
+inode lru traversing context, deadlock problems may happen.
 
-1. A PCI device with a non-VGA class is the boot display
-2. That device is probed first and it is not a VGA device so
-   sysfb_disable() is not called, but the device resources
-   are freed by aperture_detach_platform_device()
-3. Non-primary GPU has a VGA class and it ends up calling sysfb_disable()
-4. NULL pointer dereference via sysfb_disable() since the resources
-   have already been freed by aperture_detach_platform_device() when
-   it was called by the other device.
+Case 1: In function ext4_evict_inode(), the ea inode lookup could happen
+        if ea_inode feature is enabled, the lookup process will be stuck
+	under the evicting context like this:
 
-Fix this by passing a device pointer to sysfb_disable() and checking
-the device to determine if we should execute it or not.
+ 1. File A has inode i_reg and an ea inode i_ea
+ 2. getfattr(A, xattr_buf) // i_ea is added into lru // lru->i_ea
+ 3. Then, following three processes running like this:
 
-v2: Fix build when CONFIG_SCREEN_INFO is not set
-v3: Move device check into the mutex
-    Drop primary variable in aperture_remove_conflicting_pci_devices()
-    Drop __init on pci sysfb_pci_dev_is_enabled()
+    PA                              PB
+ echo 2 > /proc/sys/vm/drop_caches
+  shrink_slab
+   prune_dcache_sb
+   // i_reg is added into lru, lru->i_ea->i_reg
+   prune_icache_sb
+    list_lru_walk_one
+     inode_lru_isolate
+      i_ea->i_state |= I_FREEING // set inode state
+     inode_lru_isolate
+      __iget(i_reg)
+      spin_unlock(&i_reg->i_lock)
+      spin_unlock(lru_lock)
+                                     rm file A
+                                      i_reg->nlink = 0
+      iput(i_reg) // i_reg->nlink is 0, do evict
+       ext4_evict_inode
+        ext4_xattr_delete_inode
+         ext4_xattr_inode_dec_ref_all
+          ext4_xattr_inode_iget
+           ext4_iget(i_ea->i_ino)
+            iget_locked
+             find_inode_fast
+              __wait_on_freeing_inode(i_ea) ----→ AA deadlock
+    dispose_list // cannot be executed by prune_icache_sb
+     wake_up_bit(&i_ea->i_state)
 
-Fixes: 5ae3716cfdcd ("video/aperture: Only remove sysfb on the default vga pci device")
-Cc: Javier Martinez Canillas <javierm@redhat.com>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Helge Deller <deller@gmx.de>
-Cc: Sam Ravnborg <sam@ravnborg.org>
-Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Case 2: In deleted inode writing function ubifs_jnl_write_inode(), file
+        deleting process holds BASEHD's wbuf->io_mutex while getting the
+	xattr inode, which could race with inode reclaiming process(The
+        reclaiming process could try locking BASEHD's wbuf->io_mutex in
+	inode evicting function), then an ABBA deadlock problem would
+	happen as following:
+
+ 1. File A has inode ia and a xattr(with inode ixa), regular file B has
+    inode ib and a xattr.
+ 2. getfattr(A, xattr_buf) // ixa is added into lru // lru->ixa
+ 3. Then, following three processes running like this:
+
+        PA                PB                        PC
+                echo 2 > /proc/sys/vm/drop_caches
+                 shrink_slab
+                  prune_dcache_sb
+                  // ib and ia are added into lru, lru->ixa->ib->ia
+                  prune_icache_sb
+                   list_lru_walk_one
+                    inode_lru_isolate
+                     ixa->i_state |= I_FREEING // set inode state
+                    inode_lru_isolate
+                     __iget(ib)
+                     spin_unlock(&ib->i_lock)
+                     spin_unlock(lru_lock)
+                                                   rm file B
+                                                    ib->nlink = 0
+ rm file A
+  iput(ia)
+   ubifs_evict_inode(ia)
+    ubifs_jnl_delete_inode(ia)
+     ubifs_jnl_write_inode(ia)
+      make_reservation(BASEHD) // Lock wbuf->io_mutex
+      ubifs_iget(ixa->i_ino)
+       iget_locked
+        find_inode_fast
+         __wait_on_freeing_inode(ixa)
+          |          iput(ib) // ib->nlink is 0, do evict
+          |           ubifs_evict_inode
+          |            ubifs_jnl_delete_inode(ib)
+          ↓             ubifs_jnl_write_inode
+     ABBA deadlock ←-----make_reservation(BASEHD)
+                   dispose_list // cannot be executed by prune_icache_sb
+                    wake_up_bit(&ixa->i_state)
+
+Fix the possible deadlock by using new inode state flag I_LRU_ISOLATING
+to pin the inode in memory while inode_lru_isolate() reclaims its pages
+instead of using ordinary inode reference. This way inode deletion
+cannot be triggered from inode_lru_isolate() thus avoiding the deadlock.
+evict() is made to wait for I_LRU_ISOLATING to be cleared before
+proceeding with inode cleanup.
+
+Link: https://lore.kernel.org/all/37c29c42-7685-d1f0-067d-63582ffac405@huaweicloud.com/
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=219022
+Fixes: e50e5129f384 ("ext4: xattr-in-inode support")
+Fixes: 7959cf3a7506 ("ubifs: journal: Handle xattrs like files")
 Cc: stable@vger.kernel.org
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240821191135.829765-1-alexander.deucher@amd.com
+Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Link: https://lore.kernel.org/r/20240809031628.1069873-1-chengzhihao@huaweicloud.com
+Reviewed-by: Jan Kara <jack@suse.cz>
+Suggested-by: Jan Kara <jack@suse.cz>
+Suggested-by: Mateusz Guzik <mjguzik@gmail.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/sysfb.c |   19 +++++++++++++------
- drivers/of/platform.c    |    2 +-
- drivers/video/aperture.c |   11 +++--------
- include/linux/sysfb.h    |    4 ++--
- 4 files changed, 19 insertions(+), 17 deletions(-)
+ fs/inode.c         |   39 +++++++++++++++++++++++++++++++++++++--
+ include/linux/fs.h |    5 +++++
+ 2 files changed, 42 insertions(+), 2 deletions(-)
 
---- a/drivers/firmware/sysfb.c
-+++ b/drivers/firmware/sysfb.c
-@@ -39,6 +39,8 @@ static struct platform_device *pd;
- static DEFINE_MUTEX(disable_lock);
- static bool disabled;
+--- a/fs/inode.c
++++ b/fs/inode.c
+@@ -450,6 +450,39 @@ static void inode_lru_list_del(struct in
+ 		this_cpu_dec(nr_unused);
+ }
  
-+static struct device *sysfb_parent_dev(const struct screen_info *si);
++static void inode_pin_lru_isolating(struct inode *inode)
++{
++	lockdep_assert_held(&inode->i_lock);
++	WARN_ON(inode->i_state & (I_LRU_ISOLATING | I_FREEING | I_WILL_FREE));
++	inode->i_state |= I_LRU_ISOLATING;
++}
 +
- static bool sysfb_unregister(void)
- {
- 	if (IS_ERR_OR_NULL(pd))
-@@ -52,6 +54,7 @@ static bool sysfb_unregister(void)
- 
- /**
-  * sysfb_disable() - disable the Generic System Framebuffers support
-+ * @dev:	the device to check if non-NULL
-  *
-  * This disables the registration of system framebuffer devices that match the
-  * generic drivers that make use of the system framebuffer set up by firmware.
-@@ -61,17 +64,21 @@ static bool sysfb_unregister(void)
-  * Context: The function can sleep. A @disable_lock mutex is acquired to serialize
-  *          against sysfb_init(), that registers a system framebuffer device.
-  */
--void sysfb_disable(void)
-+void sysfb_disable(struct device *dev)
- {
-+	struct screen_info *si = &screen_info;
++static void inode_unpin_lru_isolating(struct inode *inode)
++{
++	spin_lock(&inode->i_lock);
++	WARN_ON(!(inode->i_state & I_LRU_ISOLATING));
++	inode->i_state &= ~I_LRU_ISOLATING;
++	smp_mb();
++	wake_up_bit(&inode->i_state, __I_LRU_ISOLATING);
++	spin_unlock(&inode->i_lock);
++}
 +
- 	mutex_lock(&disable_lock);
--	sysfb_unregister();
--	disabled = true;
-+	if (!dev || dev == sysfb_parent_dev(si)) {
-+		sysfb_unregister();
-+		disabled = true;
++static void inode_wait_for_lru_isolating(struct inode *inode)
++{
++	spin_lock(&inode->i_lock);
++	if (inode->i_state & I_LRU_ISOLATING) {
++		DEFINE_WAIT_BIT(wq, &inode->i_state, __I_LRU_ISOLATING);
++		wait_queue_head_t *wqh;
++
++		wqh = bit_waitqueue(&inode->i_state, __I_LRU_ISOLATING);
++		spin_unlock(&inode->i_lock);
++		__wait_on_bit(wqh, &wq, bit_wait, TASK_UNINTERRUPTIBLE);
++		spin_lock(&inode->i_lock);
++		WARN_ON(inode->i_state & I_LRU_ISOLATING);
 +	}
- 	mutex_unlock(&disable_lock);
- }
- EXPORT_SYMBOL_GPL(sysfb_disable);
++	spin_unlock(&inode->i_lock);
++}
++
+ /**
+  * inode_sb_list_add - add inode to the superblock list of inodes
+  * @inode: inode to add
+@@ -562,6 +595,8 @@ static void evict(struct inode *inode)
  
- #if defined(CONFIG_PCI)
--static __init bool sysfb_pci_dev_is_enabled(struct pci_dev *pdev)
-+static bool sysfb_pci_dev_is_enabled(struct pci_dev *pdev)
- {
+ 	inode_sb_list_del(inode);
+ 
++	inode_wait_for_lru_isolating(inode);
++
  	/*
- 	 * TODO: Try to integrate this code into the PCI subsystem
-@@ -87,13 +94,13 @@ static __init bool sysfb_pci_dev_is_enab
- 	return true;
- }
- #else
--static __init bool sysfb_pci_dev_is_enabled(struct pci_dev *pdev)
-+static bool sysfb_pci_dev_is_enabled(struct pci_dev *pdev)
- {
- 	return false;
- }
- #endif
+ 	 * Wait for flusher thread to be done with the inode so that filesystem
+ 	 * does not start destroying it while writeback is still running. Since
+@@ -761,7 +796,7 @@ static enum lru_status inode_lru_isolate
+ 	}
  
--static __init struct device *sysfb_parent_dev(const struct screen_info *si)
-+static struct device *sysfb_parent_dev(const struct screen_info *si)
- {
- 	struct pci_dev *pdev;
- 
---- a/drivers/of/platform.c
-+++ b/drivers/of/platform.c
-@@ -592,7 +592,7 @@ static int __init of_platform_default_po
- 			 * This can happen for example on DT systems that do EFI
- 			 * booting and may provide a GOP handle to the EFI stub.
- 			 */
--			sysfb_disable();
-+			sysfb_disable(NULL);
- 			of_platform_device_create(node, NULL, NULL);
- 			of_node_put(node);
+ 	if (inode_has_buffers(inode) || inode->i_data.nrpages) {
+-		__iget(inode);
++		inode_pin_lru_isolating(inode);
+ 		spin_unlock(&inode->i_lock);
+ 		spin_unlock(lru_lock);
+ 		if (remove_inode_buffers(inode)) {
+@@ -774,7 +809,7 @@ static enum lru_status inode_lru_isolate
+ 			if (current->reclaim_state)
+ 				current->reclaim_state->reclaimed_slab += reap;
  		}
---- a/drivers/video/aperture.c
-+++ b/drivers/video/aperture.c
-@@ -293,7 +293,7 @@ int aperture_remove_conflicting_devices(
- 	 * ask for this, so let's assume that a real driver for the display
- 	 * was already probed and prevent sysfb to register devices later.
- 	 */
--	sysfb_disable();
-+	sysfb_disable(NULL);
- 
- 	aperture_detach_devices(base, size);
- 
-@@ -346,15 +346,10 @@ EXPORT_SYMBOL(__aperture_remove_legacy_v
+-		iput(inode);
++		inode_unpin_lru_isolating(inode);
+ 		spin_lock(lru_lock);
+ 		return LRU_RETRY;
+ 	}
+--- a/include/linux/fs.h
++++ b/include/linux/fs.h
+@@ -2153,6 +2153,9 @@ static inline void init_sync_kiocb(struc
+  *			Used to detect that mark_inode_dirty() should not move
+  * 			inode between dirty lists.
+  *
++ * I_LRU_ISOLATING	Inode is pinned being isolated from LRU without holding
++ *			i_count.
++ *
+  * Q: What is the difference between I_WILL_FREE and I_FREEING?
   */
- int aperture_remove_conflicting_pci_devices(struct pci_dev *pdev, const char *name)
- {
--	bool primary = false;
- 	resource_size_t base, size;
- 	int bar, ret = 0;
+ #define I_DIRTY_SYNC		(1 << 0)
+@@ -2174,6 +2177,8 @@ static inline void init_sync_kiocb(struc
+ #define I_OVL_INUSE		(1 << 14)
+ #define I_CREATING		(1 << 15)
+ #define I_SYNC_QUEUED		(1 << 17)
++#define __I_LRU_ISOLATING	19
++#define I_LRU_ISOLATING		(1 << __I_LRU_ISOLATING)
  
--	if (pdev == vga_default_device())
--		primary = true;
--
--	if (primary)
--		sysfb_disable();
-+	sysfb_disable(&pdev->dev);
- 
- 	for (bar = 0; bar < PCI_STD_NUM_BARS; ++bar) {
- 		if (!(pci_resource_flags(pdev, bar) & IORESOURCE_MEM))
-@@ -370,7 +365,7 @@ int aperture_remove_conflicting_pci_devi
- 	 * that consumes the VGA framebuffer I/O range. Remove this
- 	 * device as well.
- 	 */
--	if (primary)
-+	if (pdev == vga_default_device())
- 		ret = __aperture_remove_legacy_vga_devices(pdev);
- 
- 	return ret;
---- a/include/linux/sysfb.h
-+++ b/include/linux/sysfb.h
-@@ -58,11 +58,11 @@ struct efifb_dmi_info {
- 
- #ifdef CONFIG_SYSFB
- 
--void sysfb_disable(void);
-+void sysfb_disable(struct device *dev);
- 
- #else /* CONFIG_SYSFB */
- 
--static inline void sysfb_disable(void)
-+static inline void sysfb_disable(struct device *dev)
- {
- }
- 
+ #define I_DIRTY_INODE (I_DIRTY_SYNC | I_DIRTY_DATASYNC)
+ #define I_DIRTY (I_DIRTY_INODE | I_DIRTY_PAGES)
 
 
 
