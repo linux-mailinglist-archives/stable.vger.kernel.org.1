@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-72198-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72522-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB6CF9679A2
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:47:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB4BE967AFB
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:03:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9979D28223A
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:47:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 222BEB20BF6
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:03:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C393185B73;
-	Sun,  1 Sep 2024 16:46:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C508C17B50B;
+	Sun,  1 Sep 2024 17:03:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xTXQz/kG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1ManoBa5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2930C183CA3;
-	Sun,  1 Sep 2024 16:46:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8446B26AC1;
+	Sun,  1 Sep 2024 17:03:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209160; cv=none; b=BBsSbjCjzHoQ1dtYXTOYwWy8iFC4MXwRXtczYLp+FgR/7G3Ay9wxcubOhjvZ6Sr7HTXiisZID3l+mCR7b2FNSKc3rxqTKR2Gy3c7nfwDfmmuem90Kuzd7saqcB4qS/RJGnHtoXKVTqDdpQjcX0MHzMvQigwirTQBOKg4llLycmM=
+	t=1725210199; cv=none; b=JJ3/Lwlp/W5nOGJsHnivZ0Ih4i+kbhh2HhwA/VVs/a62W7QYvFNuTIfAs57L0dEDMliPKdwG+BDD3LbvBEV2XI7haaiefTtvBCn6XQMSSZASTjW6HgA3z4d8tMHqrDj9sWqRaLjEdsPH2uJh7QeVafNJ8SKwGEEKs20kewUHcdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209160; c=relaxed/simple;
-	bh=g7+q6+s/hGnhraDFDtxaoSlKIaLsQT8lv4PeP2+c3aA=;
+	s=arc-20240116; t=1725210199; c=relaxed/simple;
+	bh=rOXBc7zvACVAxuN+BN9QdbHNzqMTd5BiAz2NhVHo6LA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lSJka/VOeF8kE9xzF5yMDwyJVP6rcVhNqq3A7fzmgjEFHObHhf9Fi/m5hQaQF/HO1xgNxOVORGFhjV72eeQ1w1Urat1GNcMO+Zyt8ixhUPt/0HUPgMzOIvGJtr+8s+RzGkJasgEhv/2qDLJnAbCKUwELjPkH1pxskKDNjrAPgBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xTXQz/kG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88DDAC4CEC3;
-	Sun,  1 Sep 2024 16:45:59 +0000 (UTC)
+	 MIME-Version; b=sLQnEvusOAI6PsD0cUrnqmR2VteLrxSXnH6zm1pHWTSPCkvRBFECFlJ/vvHMVsGS/iy6yMZZCO2xZ2NInV/pArFOEGmIEw9AXOw2D/vyS3Pews14Hb2RBKnaZhVUOVaWzILGanc54oI5dTytzug8TfxlN/cc32ssFVY8rvh9nAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1ManoBa5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5A19C4CEC3;
+	Sun,  1 Sep 2024 17:03:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209160;
-	bh=g7+q6+s/hGnhraDFDtxaoSlKIaLsQT8lv4PeP2+c3aA=;
+	s=korg; t=1725210199;
+	bh=rOXBc7zvACVAxuN+BN9QdbHNzqMTd5BiAz2NhVHo6LA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xTXQz/kGpo7mBZu0bjvKNUh8vguWYHk942rl/bkC3izgvz9cCTb2bE74VogpEI3XP
-	 BYkO6paV9XwJ8WrHDuvNuXMN0j//q20WT3/igG5Uhd4MdpkFVVu2q+TGN1r+I0GwX2
-	 9EnVQY5G5WzDlaveBlOGm1+x7UWrVG3nmGKIHWYg=
+	b=1ManoBa5m6kWejw6dW8oOBq/EGqmE10MKMBkXW5kFfRvDNCjcHoV9sG2Fp+gVuE8U
+	 1ODUKdyjjZjrM2tGbwshCmStTpwVgtQwQitwoaqGLh24U3el7R09tp3gi8aVPkKN/q
+	 I7pXiBA4GFvvIkAPWj4ffV82RbXNVkH+1KtCsJsA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Kojedzinszky <richard@kojedz.in>,
-	Huang-Huang Bao <i@eh5.me>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Daniel Golle <daniel@makrotopia.org>,
-	Trevor Woerner <twoerner@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 6.1 05/71] pinctrl: rockchip: correct RK3328 iomux width flag for GPIO2-B pins
-Date: Sun,  1 Sep 2024 18:17:10 +0200
-Message-ID: <20240901160802.089288744@linuxfoundation.org>
+	Josef Bacik <josef@toxicpanda.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 119/215] nfsd: stop setting ->pg_stats for unused stats
+Date: Sun,  1 Sep 2024 18:17:11 +0200
+Message-ID: <20240901160827.852669131@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160801.879647959@linuxfoundation.org>
-References: <20240901160801.879647959@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,57 +62,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huang-Huang Bao <i@eh5.me>
+From: Josef Bacik <josef@toxicpanda.com>
 
-commit 128f71fe014fc91efa1407ce549f94a9a9f1072c upstream.
+[ Upstream commit a2214ed588fb3c5b9824a21cff870482510372bb ]
 
-The base iomux offsets for each GPIO pin line are accumulatively
-calculated based off iomux width flag in rockchip_pinctrl_get_soc_data.
-If the iomux width flag is one of IOMUX_WIDTH_4BIT, IOMUX_WIDTH_3BIT or
-IOMUX_WIDTH_2BIT, the base offset for next pin line would increase by 8
-bytes, otherwise it would increase by 4 bytes.
+A lot of places are setting a blank svc_stats in ->pg_stats and never
+utilizing these stats.  Remove all of these extra structs as we're not
+reporting these stats anywhere.
 
-Despite most of GPIO2-B iomux have 2-bit data width, which can be fit
-into 4 bytes space with write mask, it actually take 8 bytes width for
-whole GPIO2-B line.
-
-Commit e8448a6c817c ("pinctrl: rockchip: fix pinmux bits for RK3328
-GPIO2-B pins") wrongly set iomux width flag to 0, causing all base
-iomux offset for line after GPIO2-B to be calculated wrong. Fix the
-iomux width flag to IOMUX_WIDTH_2BIT so the offset after GPIO2-B is
-correctly increased by 8, matching the actual width of GPIO2-B iomux.
-
-Fixes: e8448a6c817c ("pinctrl: rockchip: fix pinmux bits for RK3328 GPIO2-B pins")
-Cc: stable@vger.kernel.org
-Reported-by: Richard Kojedzinszky <richard@kojedz.in>
-Closes: https://lore.kernel.org/linux-rockchip/4f29b743202397d60edfb3c725537415@kojedz.in/
-Tested-by: Richard Kojedzinszky <richard@kojedz.in>
-Signed-off-by: Huang-Huang Bao <i@eh5.me>
-Reviewed-by: Heiko Stuebner <heiko@sntech.de>
-Tested-by: Daniel Golle <daniel@makrotopia.org>
-Tested-by: Trevor Woerner <twoerner@gmail.com>
-Link: https://lore.kernel.org/20240709105428.1176375-1-i@eh5.me
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/pinctrl-rockchip.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/lockd/svc.c    |    3 ---
+ fs/nfs/callback.c |    3 ---
+ fs/nfsd/nfssvc.c  |    5 -----
+ 3 files changed, 11 deletions(-)
 
---- a/drivers/pinctrl/pinctrl-rockchip.c
-+++ b/drivers/pinctrl/pinctrl-rockchip.c
-@@ -3803,7 +3803,7 @@ static struct rockchip_pin_bank rk3328_p
- 	PIN_BANK_IOMUX_FLAGS(0, 32, "gpio0", 0, 0, 0, 0),
- 	PIN_BANK_IOMUX_FLAGS(1, 32, "gpio1", 0, 0, 0, 0),
- 	PIN_BANK_IOMUX_FLAGS(2, 32, "gpio2", 0,
--			     0,
-+			     IOMUX_WIDTH_2BIT,
- 			     IOMUX_WIDTH_3BIT,
- 			     0),
- 	PIN_BANK_IOMUX_FLAGS(3, 32, "gpio3",
+--- a/fs/lockd/svc.c
++++ b/fs/lockd/svc.c
+@@ -759,8 +759,6 @@ static const struct svc_version *nlmsvc_
+ #endif
+ };
+ 
+-static struct svc_stat		nlmsvc_stats;
+-
+ #define NLM_NRVERS	ARRAY_SIZE(nlmsvc_version)
+ static struct svc_program	nlmsvc_program = {
+ 	.pg_prog		= NLM_PROGRAM,		/* program number */
+@@ -768,7 +766,6 @@ static struct svc_program	nlmsvc_program
+ 	.pg_vers		= nlmsvc_version,	/* version table */
+ 	.pg_name		= "lockd",		/* service name */
+ 	.pg_class		= "nfsd",		/* share authentication with nfsd */
+-	.pg_stats		= &nlmsvc_stats,	/* stats table */
+ 	.pg_authenticate	= &lockd_authenticate,	/* export authentication */
+ 	.pg_init_request	= svc_generic_init_request,
+ 	.pg_rpcbind_set		= svc_generic_rpcbind_set,
+--- a/fs/nfs/callback.c
++++ b/fs/nfs/callback.c
+@@ -407,15 +407,12 @@ static const struct svc_version *nfs4_ca
+ 	[4] = &nfs4_callback_version4,
+ };
+ 
+-static struct svc_stat nfs4_callback_stats;
+-
+ static struct svc_program nfs4_callback_program = {
+ 	.pg_prog = NFS4_CALLBACK,			/* RPC service number */
+ 	.pg_nvers = ARRAY_SIZE(nfs4_callback_version),	/* Number of entries */
+ 	.pg_vers = nfs4_callback_version,		/* version table */
+ 	.pg_name = "NFSv4 callback",			/* service name */
+ 	.pg_class = "nfs",				/* authentication class */
+-	.pg_stats = &nfs4_callback_stats,
+ 	.pg_authenticate = nfs_callback_authenticate,
+ 	.pg_init_request = svc_generic_init_request,
+ 	.pg_rpcbind_set	= svc_generic_rpcbind_set,
+--- a/fs/nfsd/nfssvc.c
++++ b/fs/nfsd/nfssvc.c
+@@ -89,7 +89,6 @@ unsigned long	nfsd_drc_max_mem;
+ unsigned long	nfsd_drc_mem_used;
+ 
+ #if defined(CONFIG_NFSD_V2_ACL) || defined(CONFIG_NFSD_V3_ACL)
+-static struct svc_stat	nfsd_acl_svcstats;
+ static const struct svc_version *nfsd_acl_version[] = {
+ # if defined(CONFIG_NFSD_V2_ACL)
+ 	[2] = &nfsd_acl_version2,
+@@ -108,15 +107,11 @@ static struct svc_program	nfsd_acl_progr
+ 	.pg_vers		= nfsd_acl_version,
+ 	.pg_name		= "nfsacl",
+ 	.pg_class		= "nfsd",
+-	.pg_stats		= &nfsd_acl_svcstats,
+ 	.pg_authenticate	= &svc_set_client,
+ 	.pg_init_request	= nfsd_acl_init_request,
+ 	.pg_rpcbind_set		= nfsd_acl_rpcbind_set,
+ };
+ 
+-static struct svc_stat	nfsd_acl_svcstats = {
+-	.program	= &nfsd_acl_program,
+-};
+ #endif /* defined(CONFIG_NFSD_V2_ACL) || defined(CONFIG_NFSD_V3_ACL) */
+ 
+ static const struct svc_version *nfsd_version[] = {
 
 
 
