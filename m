@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-72438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71917-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D6FC967AA0
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:58:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65F45967856
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:30:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D0D5D280C0F
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:58:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96CF61C20FF8
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:30:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8130317ADE1;
-	Sun,  1 Sep 2024 16:58:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9CC417E00C;
+	Sun,  1 Sep 2024 16:30:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i2FPHFSm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OkwD771f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FD621E87B;
-	Sun,  1 Sep 2024 16:58:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA4BA537FF;
+	Sun,  1 Sep 2024 16:30:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209924; cv=none; b=MWduTcegYz4TCb+3J+aBoLuwKvwlwj2wzwxI7At2Z7aFYG5/AFgK6N5v6UNo5Qd/4/5LI2IT1Kb0DC1JQdIDBX+FtPjMXpddVirOESIxDdL2ning/pCAlnSUOvWpNWEGnIkLtf6BfVbRul4ttQL6qPuWL9u2Y8LXsVhhLecl/C4=
+	t=1725208244; cv=none; b=DVegnpgOmj7zPIPOPbXNUM5x1PWJjM4ZIVFNW5E9p6puE+oudTvSGIWS+Y6GVkF16vatDHgowVXMAqWf97KNAI3QfTU1LCPkTQ9ST4hYJMLhx0Boc2pWC9S5dak75vImLdP2bb3Q8VBS4R+QJkTgrMkmKGzGJqyxM74lGry+M34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209924; c=relaxed/simple;
-	bh=jHevElhDfFwhCGrGRKjVGnT5Opj0rb07S3JIBDXiMY4=;
+	s=arc-20240116; t=1725208244; c=relaxed/simple;
+	bh=7i5AIydh/fGlbuuE1runtAWyKv9Qe044sTbBOYf64Uo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=akW84m7nuLh/n2jK4/CTk2aPmCqL73F/SqA1NMOTmFRTAAuLkoxqbIYIyQXH1R7FvmugjhjMKQi0X9/O1YRAp8UUuEk9xvf4KqbW3ZrQlY0P521rZcHV3kbV/paWCrHggcXXrUBEclqDvwBhuRBAyf2aJtQ+fQGvXTLpf87owcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i2FPHFSm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A744EC4CEC3;
-	Sun,  1 Sep 2024 16:58:43 +0000 (UTC)
+	 MIME-Version; b=ObrAOnI/t42lvPMxjcoGmdt+QJm2FfIdfAenKmx7YUHQowN+HK376tIpzcq8QqDp0q1wrts5X03wt9Byj5i3fhw6xcN3mDlo35TwRbY4SKXRfRL29r6A9WmVnZzBRfYXqlBqJLlsPt04m/OwjPGdN4TZQPPZPSjtXeTOUyZRxMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OkwD771f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30967C4CEC3;
+	Sun,  1 Sep 2024 16:30:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209924;
-	bh=jHevElhDfFwhCGrGRKjVGnT5Opj0rb07S3JIBDXiMY4=;
+	s=korg; t=1725208244;
+	bh=7i5AIydh/fGlbuuE1runtAWyKv9Qe044sTbBOYf64Uo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i2FPHFSmTjSh6bXzN+zLcUvPVQwcVLU+1iCZA/JHTp/luIvRoD/IsOYfjNHwCATNC
-	 w9iO5cx2c7kgVrWj01UAHBps2HIL3fV+dujalsE6RyLvmuofJCpQ/nmgtPPb/ehcA9
-	 C4z54fPVLzhiQLl7UsPtPfRkkhMVzygb1J3BwC3g=
+	b=OkwD771fSlsy9Vvy9RXZfPv6/67Gg9Ho17kpUyPIf5iucGEVAlhGIoztRX7wrqf2A
+	 jeLIctHiKM471Kvdvr4/gqy2hGsmsBfO5z4hSzh42+SxFdW9r6tg3WBKzpGPAstw6P
+	 ruB372aODQi285JQdHipc9U991Cs/hcqrz2Zlibw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+eac39cba052f2e750dbe@syzkaller.appspotmail.com,
-	stable <stable@kernel.org>,
-	Eli Billauer <eli.billauer@gmail.com>
-Subject: [PATCH 5.15 004/215] char: xillybus: Check USB endpoints when probing device
+	Hendrik Borghorst <hendrikborghorst@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.10 005/149] ALSA: hda/realtek: support HP Pavilion Aero 13-bg0xxx Mute LED
 Date: Sun,  1 Sep 2024 18:15:16 +0200
-Message-ID: <20240901160823.404189556@linuxfoundation.org>
+Message-ID: <20240901160817.668792390@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,98 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eli Billauer <eli.billauer@gmail.com>
+From: Hendrik Borghorst <hendrikborghorst@gmail.com>
 
-commit 2374bf7558de915edc6ec8cb10ec3291dfab9594 upstream.
+commit 2dc43c5e212036458ed7c5586fb82ee183fee504 upstream.
 
-Ensure, as the driver probes the device, that all endpoints that the
-driver may attempt to access exist and are of the correct type.
+This patch adds the HP Pavilion Aero 13 (13-bg0xxx) (year 2024) to list of
+quirks for keyboard LED mute indication.
 
-All XillyUSB devices must have a Bulk IN and Bulk OUT endpoint at
-address 1. This is verified in xillyusb_setup_base_eps().
+The laptop has two LEDs (one for speaker and one for mic mute). The
+pre-existing quirk ALC245_FIXUP_HP_X360_MUTE_LEDS chains both the quirk for
+mic and speaker mute.
 
-On top of that, a XillyUSB device may have additional Bulk OUT
-endpoints. The information about these endpoints' addresses is deduced
-from a data structure (the IDT) that the driver fetches from the device
-while probing it. These endpoints are checked in setup_channels().
+Tested on 6.11.0-rc4 with the aforementioned laptop.
 
-A XillyUSB device never has more than one IN endpoint, as all data
-towards the host is multiplexed in this single Bulk IN endpoint. This is
-why setup_channels() only checks OUT endpoints.
-
-Reported-by: syzbot+eac39cba052f2e750dbe@syzkaller.appspotmail.com
-Cc: stable <stable@kernel.org>
-Closes: https://lore.kernel.org/all/0000000000001d44a6061f7a54ee@google.com/T/
-Fixes: a53d1202aef1 ("char: xillybus: Add driver for XillyUSB (Xillybus variant for USB)").
-Signed-off-by: Eli Billauer <eli.billauer@gmail.com>
-Link: https://lore.kernel.org/r/20240816070200.50695-2-eli.billauer@gmail.com
+Signed-off-by: Hendrik Borghorst <hendrikborghorst@gmail.com>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20240825174351.5687-1-hendrikborghorst@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/xillybus/xillyusb.c |   22 ++++++++++++++++++++--
- 1 file changed, 20 insertions(+), 2 deletions(-)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/char/xillybus/xillyusb.c
-+++ b/drivers/char/xillybus/xillyusb.c
-@@ -1889,6 +1889,13 @@ static const struct file_operations xill
- 
- static int xillyusb_setup_base_eps(struct xillyusb_dev *xdev)
- {
-+	struct usb_device *udev = xdev->udev;
-+
-+	/* Verify that device has the two fundamental bulk in/out endpoints */
-+	if (usb_pipe_type_check(udev, usb_sndbulkpipe(udev, MSG_EP_NUM)) ||
-+	    usb_pipe_type_check(udev, usb_rcvbulkpipe(udev, IN_EP_NUM)))
-+		return -ENODEV;
-+
- 	xdev->msg_ep = endpoint_alloc(xdev, MSG_EP_NUM | USB_DIR_OUT,
- 				      bulk_out_work, 1, 2);
- 	if (!xdev->msg_ep)
-@@ -1918,14 +1925,15 @@ static int setup_channels(struct xillyus
- 			  __le16 *chandesc,
- 			  int num_channels)
- {
--	struct xillyusb_channel *chan;
-+	struct usb_device *udev = xdev->udev;
-+	struct xillyusb_channel *chan, *new_channels;
- 	int i;
- 
- 	chan = kcalloc(num_channels, sizeof(*chan), GFP_KERNEL);
- 	if (!chan)
- 		return -ENOMEM;
- 
--	xdev->channels = chan;
-+	new_channels = chan;
- 
- 	for (i = 0; i < num_channels; i++, chan++) {
- 		unsigned int in_desc = le16_to_cpu(*chandesc++);
-@@ -1954,6 +1962,15 @@ static int setup_channels(struct xillyus
- 		 */
- 
- 		if ((out_desc & 0x80) && i < 14) { /* Entry is valid */
-+			if (usb_pipe_type_check(udev,
-+						usb_sndbulkpipe(udev, i + 2))) {
-+				dev_err(xdev->dev,
-+					"Missing BULK OUT endpoint %d\n",
-+					i + 2);
-+				kfree(new_channels);
-+				return -ENODEV;
-+			}
-+
- 			chan->writable = 1;
- 			chan->out_synchronous = !!(out_desc & 0x40);
- 			chan->out_seekable = !!(out_desc & 0x20);
-@@ -1963,6 +1980,7 @@ static int setup_channels(struct xillyus
- 		}
- 	}
- 
-+	xdev->channels = new_channels;
- 	return 0;
- }
- 
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10260,6 +10260,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x103c, 0x8ca2, "HP ZBook Power", ALC236_FIXUP_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8ca4, "HP ZBook Fury", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
+ 	SND_PCI_QUIRK(0x103c, 0x8ca7, "HP ZBook Fury", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
++	SND_PCI_QUIRK(0x103c, 0x8cbd, "HP Pavilion Aero Laptop 13-bg0xxx", ALC245_FIXUP_HP_X360_MUTE_LEDS),
+ 	SND_PCI_QUIRK(0x103c, 0x8cdd, "HP Spectre", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x103c, 0x8cde, "HP Spectre", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x103c, 0x8cdf, "HP SnowWhite", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
 
 
 
