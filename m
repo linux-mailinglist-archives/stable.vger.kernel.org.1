@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-71990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71818-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D030C9678B7
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:35:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 044229677E2
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:25:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8F0FC28126F
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:35:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AEF551F20F96
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:25:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AF0E184527;
-	Sun,  1 Sep 2024 16:34:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B3BF183090;
+	Sun,  1 Sep 2024 16:25:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GsKvaXhq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WcL/p5nu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1888717B50B;
-	Sun,  1 Sep 2024 16:34:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 089F616EB4B;
+	Sun,  1 Sep 2024 16:25:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208482; cv=none; b=fkkAze/C1AttLDHuvgyd0G03E3dJN9yapESQ4rqUhv8gqQHGmJNCIYlFlPxWV77kv0WoOQBC/c43GrzbGjDMFwmXCvceOKf+N1ZSz0WrblBayb9Sn74atNtIxehLTi37TIxn5yemMyimCb6UrCet1bG0aNOLea2FCIBrf5tAA8I=
+	t=1725207919; cv=none; b=C30h65lyLtYN239nV8l14Ohw/GMbf31pUkIZkuf69kxvcyfgnLleSEGIKKfdHkq/8+zJww+KdEr6oAVCRgXZ7Posra6yVapxifpbtJ4ol2YqvTjCrfx0PN5AUmLaUdGqHxy+KqFm7hag9LSVMtqFiW24rDu0Ifkqj9kBrasWBes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208482; c=relaxed/simple;
-	bh=+z0BvOEn8XoMHDqkI975EHC4ZBfrrH+ZRmPujKDjmDM=;
+	s=arc-20240116; t=1725207919; c=relaxed/simple;
+	bh=czUmFwjIu6cywCytCVBLpU5EZLOdinsVhnYw+1FyqLM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j7JeQLkG4hkI6qExKMvLKoVpAsjjLjQy+uOAG1tp7HVrBDuS8QDqmFYOpZIS+NsN2hJBPcd9IKbod+BNDtvZGFQZftsQd4UCUIQ27qEUGKnsuCWixVFoqjbj2OAP5YmMnfMyVG1l0OneEE5M69HMeuM1aYryRHvC5D12DBQqas8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GsKvaXhq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33658C4CEC3;
-	Sun,  1 Sep 2024 16:34:41 +0000 (UTC)
+	 MIME-Version; b=iVNcoYou1aC6hkCRm8xyMoIRIlcM943wDO5ePAS8LZYIhIFNzYi+EA3mCR8rW2nF6SL5E8It6HktmFV+o0Mf5VO1MMatrZyGZ+tIwFov9pzy2nNG+B4k6XyemGRHu/wvEG96U1r76RspilpUO8XIPBlstna1TC3tO8xvwrCJWXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WcL/p5nu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26531C4CEC3;
+	Sun,  1 Sep 2024 16:25:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208481;
-	bh=+z0BvOEn8XoMHDqkI975EHC4ZBfrrH+ZRmPujKDjmDM=;
+	s=korg; t=1725207918;
+	bh=czUmFwjIu6cywCytCVBLpU5EZLOdinsVhnYw+1FyqLM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GsKvaXhqb1k4px+vL2zpvlM+l32QTmG8ywO8lUy8QZu+cGzStMx5J7nJ5alewMvG5
-	 PHxFvCwf/QgH4Ogn4gy2XpqW8lKoOzooFmetVIC3QNsVP+D2e+/WhiBjOkYfZpWQr/
-	 nzFqg/C4vBDN6dYZfPdMbKN+47AFyPl2D8ggVjPw=
+	b=WcL/p5nuR8zPNwKulmMON7cX0WH62L6gw3SgG1VrTUjvfMDXM9iOoYVQzSxRFsNei
+	 AgG41waP4BaYgmYsi/iFwD/cW/PX2NDIrz0exMY2OMfzqC8Jd1AyOxuNuSpthpD5m2
+	 tVdQsIjeJttEIx2steOqRGqz3gBucT8nunhfoGtc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuntao Liu <liuyuntao12@huawei.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 054/149] ASoC: amd: acp: fix module autoloading
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.6 18/93] mptcp: pm: do not remove already closed subflows
 Date: Sun,  1 Sep 2024 18:16:05 +0200
-Message-ID: <20240901160819.501088680@linuxfoundation.org>
+Message-ID: <20240901160808.047757651@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
-References: <20240901160817.461957599@linuxfoundation.org>
+In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
+References: <20240901160807.346406833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuntao Liu <liuyuntao12@huawei.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit 164199615ae230ace4519141285f06766d6d8036 ]
+commit 58e1b66b4e4b8a602d3f2843e8eba00a969ecce2 upstream.
 
-Add MODULE_DEVICE_TABLE(), so modules could be properly autoloaded
-based on the alias from platform_device_id table.
+It is possible to have in the list already closed subflows, e.g. the
+initial subflow has been already closed, but still in the list. No need
+to try to close it again, and increments the related counters again.
 
-Fixes: 9d8a7be88b336 ("ASoC: amd: acp: Add legacy sound card support for Chrome audio")
-Signed-off-by: Yuntao Liu <liuyuntao12@huawei.com>
-Link: https://patch.msgid.link/20240815084923.756476-1-liuyuntao12@huawei.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 0ee4261a3681 ("mptcp: implement mptcp_pm_remove_subflow")
+Cc: stable@vger.kernel.org
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/amd/acp/acp-legacy-mach.c | 2 ++
+ net/mptcp/pm_netlink.c |    2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/sound/soc/amd/acp/acp-legacy-mach.c b/sound/soc/amd/acp/acp-legacy-mach.c
-index 47c3b5f167f59..0d529e32e552b 100644
---- a/sound/soc/amd/acp/acp-legacy-mach.c
-+++ b/sound/soc/amd/acp/acp-legacy-mach.c
-@@ -227,6 +227,8 @@ static const struct platform_device_id board_ids[] = {
- 	},
- 	{ }
- };
-+MODULE_DEVICE_TABLE(platform, board_ids);
-+
- static struct platform_driver acp_asoc_audio = {
- 	.driver = {
- 		.pm = &snd_soc_pm_ops,
--- 
-2.43.0
-
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -851,6 +851,8 @@ static void mptcp_pm_nl_rm_addr_or_subfl
+ 			int how = RCV_SHUTDOWN | SEND_SHUTDOWN;
+ 			u8 id = subflow_get_local_id(subflow);
+ 
++			if (inet_sk_state_load(ssk) == TCP_CLOSE)
++				continue;
+ 			if (rm_type == MPTCP_MIB_RMADDR && remote_id != rm_id)
+ 				continue;
+ 			if (rm_type == MPTCP_MIB_RMSUBFLOW && !mptcp_local_id_match(msk, id, rm_id))
 
 
 
