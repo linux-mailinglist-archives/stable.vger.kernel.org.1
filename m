@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-71967-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72507-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E3FA96789A
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:33:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC85D967AE9
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:02:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AFA961C210EC
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:33:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0919F1C214D2
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:02:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 201E3181CE1;
-	Sun,  1 Sep 2024 16:33:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE30C183CA6;
+	Sun,  1 Sep 2024 17:02:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X7PldnEe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yQCWfZlg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1D7C1C68C;
-	Sun,  1 Sep 2024 16:33:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C37017E005;
+	Sun,  1 Sep 2024 17:02:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208405; cv=none; b=mNB8l++j8EPu4cwssMepd8Ykq76VH249wODW417r0RmhTDd4KMZTzj9TVArIShzb4bU9sz0aRo7qH+bJFrON2AdBRrxSGjsBTLTIeKDQMJdQrJ33m9QP2y0F6BQ8GlZMRo46SkH8OGFC2jSwK96ZVy2ZRQhSp6hWReUcaHFqQRg=
+	t=1725210149; cv=none; b=iJBR7l1U9zIPl6/EVBEpxnb5/t11mM0DyJl0PKP0XeeZgFVhEetB4OB4J66iWnbgkwxe81EI9oJv1X52JNxHrvVF3193LkT9brKVkH47p+3Y497YWEbhWVVAn0rctF0BaiRq99t0w9G+szrOoYA0UZKuwzu5oTn7dREG1D8REvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208405; c=relaxed/simple;
-	bh=oa9A7DBGZmTBqq9I6fxPrF5sbiH9qR4UD4HrxEYimSg=;
+	s=arc-20240116; t=1725210149; c=relaxed/simple;
+	bh=5LIwOQJJMOT/PbYglCB0tFkZInxkc9bmX2DGa81rYe8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qrgGR4scMyGuKKYygyr6Z1hGR+xhPlfjE9Bmc1cj6nY7/GZeJGtbKBtZ+Io0L8Q5tZiK2r1l9ynaI4i/1R6qCdMv51cTjwfleinTH4YxlHzbYp8YVrhEN7eT++w99aFNVgMkqCY1cm5I93cHznOk42bbHiibXLxdaeSXOROcu7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X7PldnEe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44390C4CEC3;
-	Sun,  1 Sep 2024 16:33:25 +0000 (UTC)
+	 MIME-Version; b=uNbDB0udKElyHl6FderRsidKamcrAtZYZxpcLqz+hlz01wb11Yz9B7sFj0LFit6zpxz9g1fd6UgDIULPGU31v70wM3VtOj9vrUVnyLOPrjPblgLCSA5ZtfALkHMfDNP07O9udWyApQw2nvs7ji+WEAe25SQ7fIsxrYOI0yv0MFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yQCWfZlg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24CC8C4CEC3;
+	Sun,  1 Sep 2024 17:02:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208405;
-	bh=oa9A7DBGZmTBqq9I6fxPrF5sbiH9qR4UD4HrxEYimSg=;
+	s=korg; t=1725210149;
+	bh=5LIwOQJJMOT/PbYglCB0tFkZInxkc9bmX2DGa81rYe8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X7PldnEesyh7VtttE1Eu5J5B7ZblgkKp783JPewAD6ojsuPw7H+qUaE/vg71YRjYw
-	 yKQnQnuz1R0avJDK5o65hMaCKige9zTpvfYzSquKzHfgt0O0286OlnPgH672E5OzAq
-	 qa1F+Cuz+p/3jUhwHkd7CS7lRXNJiefTXaAAuBZk=
+	b=yQCWfZlgOofVm1VZqhgpvcyUE7NCwJonX67lAOj59MaaKjvS5KqOWGSlJ8u9Ax05O
+	 vhc2vQCvL9IYc+YGEUgL2+itK6l2w6Uwb2ZgWVOqNlNTxaOC13o6I0a2+dAeXYapGV
+	 WlHEokOTT+drxrY4OAC3jlUF5EiE5BtGtexuik9o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Sicong Huang <huangsicong@iie.ac.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 073/149] nfsd: hold reference to delegation when updating it for cb_getattr
+Subject: [PATCH 5.15 072/215] media: pci: cx23885: check cx23885_vdev_init() return
 Date: Sun,  1 Sep 2024 18:16:24 +0200
-Message-ID: <20240901160820.211219947@linuxfoundation.org>
+Message-ID: <20240901160826.074317999@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
-References: <20240901160817.461957599@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-[ Upstream commit da05ba23d4c8d3e8a45846b952e53dd76c4b5e36 ]
+[ Upstream commit 15126b916e39b0cb67026b0af3c014bfeb1f76b3 ]
 
-Once we've dropped the flc_lock, there is nothing that ensures that the
-delegation that was found will still be around later. Take a reference
-to it while holding the lock and then drop it when we've finished with
-the delegation.
+cx23885_vdev_init() can return a NULL pointer, but that pointer
+is used in the next line without a check.
 
-Fixes: c5967721e106 ("NFSD: handle GETATTR conflict with write delegation")
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Add a NULL pointer check and go to the error unwind if it is NULL.
+
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Reported-by: Sicong Huang <huangsicong@iie.ac.cn>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4state.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/media/pci/cx23885/cx23885-video.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index dafff707e23a4..19d39872be325 100644
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -8837,7 +8837,6 @@ nfsd4_deleg_getattr_conflict(struct svc_rqst *rqstp, struct inode *inode,
- 	struct nfsd_net *nn = net_generic(SVC_NET(rqstp), nfsd_net_id);
- 	struct file_lock_context *ctx;
- 	struct file_lease *fl;
--	struct nfs4_delegation *dp;
- 	struct iattr attrs;
- 	struct nfs4_cb_fattr *ncf;
- 
-@@ -8862,7 +8861,8 @@ nfsd4_deleg_getattr_conflict(struct svc_rqst *rqstp, struct inode *inode,
- 			goto break_lease;
- 		}
- 		if (type == F_WRLCK) {
--			dp = fl->c.flc_owner;
-+			struct nfs4_delegation *dp = fl->c.flc_owner;
-+
- 			if (dp->dl_recall.cb_clp == *(rqstp->rq_lease_breaker)) {
- 				spin_unlock(&ctx->flc_lock);
- 				return 0;
-@@ -8870,6 +8870,7 @@ nfsd4_deleg_getattr_conflict(struct svc_rqst *rqstp, struct inode *inode,
- break_lease:
- 			nfsd_stats_wdeleg_getattr_inc(nn);
- 			dp = fl->c.flc_owner;
-+			refcount_inc(&dp->dl_stid.sc_count);
- 			ncf = &dp->dl_cb_fattr;
- 			nfs4_cb_getattr(&dp->dl_cb_fattr);
- 			spin_unlock(&ctx->flc_lock);
-@@ -8879,8 +8880,10 @@ nfsd4_deleg_getattr_conflict(struct svc_rqst *rqstp, struct inode *inode,
- 				/* Recall delegation only if client didn't respond */
- 				status = nfserrno(nfsd_open_break_lease(inode, NFSD_MAY_READ));
- 				if (status != nfserr_jukebox ||
--						!nfsd_wait_for_delegreturn(rqstp, inode))
-+						!nfsd_wait_for_delegreturn(rqstp, inode)) {
-+					nfs4_put_stid(&dp->dl_stid);
- 					return status;
-+				}
- 			}
- 			if (!ncf->ncf_file_modified &&
- 					(ncf->ncf_initial_cinfo != ncf->ncf_cb_change ||
-@@ -8900,6 +8903,7 @@ nfsd4_deleg_getattr_conflict(struct svc_rqst *rqstp, struct inode *inode,
- 				*size = ncf->ncf_cur_fsize;
- 				*modified = true;
- 			}
-+			nfs4_put_stid(&dp->dl_stid);
- 			return 0;
- 		}
- 		break;
+diff --git a/drivers/media/pci/cx23885/cx23885-video.c b/drivers/media/pci/cx23885/cx23885-video.c
+index 6851e01da1c5b..7a696aea52f10 100644
+--- a/drivers/media/pci/cx23885/cx23885-video.c
++++ b/drivers/media/pci/cx23885/cx23885-video.c
+@@ -1354,6 +1354,10 @@ int cx23885_video_register(struct cx23885_dev *dev)
+ 	/* register Video device */
+ 	dev->video_dev = cx23885_vdev_init(dev, dev->pci,
+ 		&cx23885_video_template, "video");
++	if (!dev->video_dev) {
++		err = -ENOMEM;
++		goto fail_unreg;
++	}
+ 	dev->video_dev->queue = &dev->vb2_vidq;
+ 	dev->video_dev->device_caps = V4L2_CAP_READWRITE | V4L2_CAP_STREAMING |
+ 				      V4L2_CAP_AUDIO | V4L2_CAP_VIDEO_CAPTURE;
+@@ -1382,6 +1386,10 @@ int cx23885_video_register(struct cx23885_dev *dev)
+ 	/* register VBI device */
+ 	dev->vbi_dev = cx23885_vdev_init(dev, dev->pci,
+ 		&cx23885_vbi_template, "vbi");
++	if (!dev->vbi_dev) {
++		err = -ENOMEM;
++		goto fail_unreg;
++	}
+ 	dev->vbi_dev->queue = &dev->vb2_vbiq;
+ 	dev->vbi_dev->device_caps = V4L2_CAP_READWRITE | V4L2_CAP_STREAMING |
+ 				    V4L2_CAP_AUDIO | V4L2_CAP_VBI_CAPTURE;
 -- 
 2.43.0
 
