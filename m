@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-72038-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72577-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0612E9678EA
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:37:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFF94967B31
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:06:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 70DF3B20990
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:37:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ACE0C280FF8
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:06:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E375817E46E;
-	Sun,  1 Sep 2024 16:37:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3D1617ADE1;
+	Sun,  1 Sep 2024 17:06:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cOwrhPpa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Me3/eXUF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A40D61C68C;
-	Sun,  1 Sep 2024 16:37:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A29C5376EC;
+	Sun,  1 Sep 2024 17:06:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208636; cv=none; b=NRqiJms4SCBSkcyGGxFMCgCLNo+BIVcSbl4g8HYGjPMdDBSZ5T+6GYVP+huuDiyWl2xmfmrD//nJ21z2UWwjeanRjVqbHiHWc5rUrq+qjOM+XDuM8bhxHe2OBakdJHJbrTMyR9slHDE0WRy7si9mCMN16xGOpRtJdmn4QK2/wFQ=
+	t=1725210384; cv=none; b=je1Yf37HCE+bPPfUdidjNWlaSLXm2x4UE5+GZoB+lvRFlTubY+VxGCJqNWJCKTejEc55bwaf/FeXBXpJ7DJwPZytxaOOyqaOOq9x/qCmlRhaVQJVqt2bZ8lRtBfywy4/OSgWyTsoc/UixMsL7Wn1XhOQG9wn5jAQAKFVKB3HkeA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208636; c=relaxed/simple;
-	bh=p3x9dBwF1IarLKQj8HWOn/mHCk/TxXpUYPqLLs93wUY=;
+	s=arc-20240116; t=1725210384; c=relaxed/simple;
+	bh=TN+B/kxbvakHEM77WpDg8frHpDF4ifn7L5RxLSgBtaE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Pj5dY6Nj06AKQHH/Xw7kAowm/cAuHt6z+kVTJeCiojGLn2CkbJPHxm0+YNtiKzo0blml3qIAkWUUUnsKT16a/Q1e/TTPY58Un8ah2QLbUVzfbEJWGhIk6JYeGV3XWK+o4lwrvAd99vVvkditvjEjMwwYKqJ+dpGv3xzRvnhBALw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cOwrhPpa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15898C4CEC3;
-	Sun,  1 Sep 2024 16:37:15 +0000 (UTC)
+	 MIME-Version; b=s9ci7eHE456m6JY4CEoAkTSQuvmmb4pRil8B5MucDGQWB1LEqvUy8R8dz3rrGT7cQfskO9F19R2EWubocwFK9INihhXCg4DggCkAjxNIIoYcyqBHBkNZPpoSgA0slfl+JGJxmZ2Vp1huY/CV6mA79KixZoNLDTjj2z2/B2MEvwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Me3/eXUF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2963AC4CEC3;
+	Sun,  1 Sep 2024 17:06:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208636;
-	bh=p3x9dBwF1IarLKQj8HWOn/mHCk/TxXpUYPqLLs93wUY=;
+	s=korg; t=1725210384;
+	bh=TN+B/kxbvakHEM77WpDg8frHpDF4ifn7L5RxLSgBtaE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cOwrhPpadqfvWQr6EkaA56ojYhLA19sGanUZZ9Lmy0pxRSInNCjg6wH8iyphV/iDS
-	 tUs0gysr+VqAH4u6h5YyuzXy5z8sU2Bw+t4d4dJERON6woLzypEcwvzUKxIpWz1KI3
-	 Nf/riC7u9io3tfEZDkvdpStwaf2y/0QxGN+nWB6w=
+	b=Me3/eXUFb5rSelKjdnABWcjCNw/KWtLyBKMmPG0liARCvpnJOozgcP+8iBiNGBmg7
+	 ic40KgLssWVnHQRgnMAUPVSpYPtsIZ2+0zWsBwcURgpThW3kmEWxRbUFhRIkreE0B4
+	 caNA4kzO/n4njSVYitrRt+OzRBnrcRDkiAuhrScU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shenwei Wang <shenwei.wang@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 143/149] arm64: dts: imx93: update default value for snps,clk-csr
+Subject: [PATCH 5.15 142/215] bonding: fix xfrm state handling when clearing active slave
 Date: Sun,  1 Sep 2024 18:17:34 +0200
-Message-ID: <20240901160822.824565956@linuxfoundation.org>
+Message-ID: <20240901160828.733330817@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
-References: <20240901160817.461957599@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shenwei Wang <shenwei.wang@nxp.com>
+From: Nikolay Aleksandrov <razor@blackwall.org>
 
-[ Upstream commit 109f256285dd6a5f8c3bd0d80d39b2ccd4fe314e ]
+[ Upstream commit c4c5c5d2ef40a9f67a9241dc5422eac9ffe19547 ]
 
-For the i.MX93 SoC, the default clock rate for the IP of STMMAC EQOS is
-312.5 MHz. According to the following mapping table from the i.MX93
-reference manual, this clock rate corresponds to a CSR value of 6.
+If the active slave is cleared manually the xfrm state is not flushed.
+This leads to xfrm add/del imbalance and adding the same state multiple
+times. For example when the device cannot handle anymore states we get:
+ [ 1169.884811] bond0: (slave eni0np1): bond_ipsec_add_sa_all: failed to add SA
+because it's filled with the same state after multiple active slave
+clearings. This change also has a few nice side effects: user-space
+gets a notification for the change, the old device gets its mac address
+and promisc/mcast adjusted properly.
 
- 0000: CSR clock = 60-100 MHz; MDC clock = CSR clock/42
- 0001: CSR clock = 100-150 MHz; MDC clock = CSR clock/62
- 0010: CSR clock = 20-35 MHz; MDC clock = CSR clock/16
- 0011: CSR clock = 35-60 MHz; MDC clock = CSR clock/26
- 0100: CSR clock = 150-250 MHz; MDC clock = CSR clock/102
- 0101: CSR clock = 250-300 MHz; MDC clock = CSR clock/124
- 0110: CSR clock = 300-500 MHz; MDC clock = CSR clock/204
- 0111: CSR clock = 500-800 MHz; MDC clock = CSR clock/324
-
-Fixes: f2d03ba997cb ("arm64: dts: imx93: reorder device nodes")
-Signed-off-by: Shenwei Wang <shenwei.wang@nxp.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Fixes: 18cb261afd7b ("bonding: support hardware encryption offload to slaves")
+Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
+Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx93.dtsi | 2 +-
+ drivers/net/bonding/bond_options.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx93.dtsi b/arch/arm64/boot/dts/freescale/imx93.dtsi
-index 4a3f42355cb8f..a0993022c102d 100644
---- a/arch/arm64/boot/dts/freescale/imx93.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx93.dtsi
-@@ -1105,7 +1105,7 @@
- 							 <&clk IMX93_CLK_SYS_PLL_PFD0_DIV2>;
- 				assigned-clock-rates = <100000000>, <250000000>;
- 				intf_mode = <&wakeupmix_gpr 0x28>;
--				snps,clk-csr = <0>;
-+				snps,clk-csr = <6>;
- 				nvmem-cells = <&eth_mac2>;
- 				nvmem-cell-names = "mac-address";
- 				status = "disabled";
+diff --git a/drivers/net/bonding/bond_options.c b/drivers/net/bonding/bond_options.c
+index 1f8f7537e8ebf..5da4599377e1e 100644
+--- a/drivers/net/bonding/bond_options.c
++++ b/drivers/net/bonding/bond_options.c
+@@ -893,7 +893,7 @@ static int bond_option_active_slave_set(struct bonding *bond,
+ 	/* check to see if we are clearing active */
+ 	if (!slave_dev) {
+ 		netdev_dbg(bond->dev, "Clearing current active slave\n");
+-		RCU_INIT_POINTER(bond->curr_active_slave, NULL);
++		bond_change_active_slave(bond, NULL);
+ 		bond_select_active_slave(bond);
+ 	} else {
+ 		struct slave *old_active = rtnl_dereference(bond->curr_active_slave);
 -- 
 2.43.0
 
