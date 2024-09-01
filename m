@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-72176-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72571-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7755896798A
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:47:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13E37967B2B
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:06:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 371992821B9
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:47:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 44B891C20A0F
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:06:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E957A18454F;
-	Sun,  1 Sep 2024 16:44:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 949C13BB59;
+	Sun,  1 Sep 2024 17:06:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iBnAeEUv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tlE/z3Go"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A798C183CD4;
-	Sun,  1 Sep 2024 16:44:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 539CD17C;
+	Sun,  1 Sep 2024 17:06:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209092; cv=none; b=AlCgmm2XPiGT0ms3kEBNx8Um6adBSo/Njozw1bYAol9l5trKULnHaDnyi++2V8Gu7i4RqgIbLvEPkYg+vM42JF0pE1f5iJNyYzwAhVrBthvw5BOifqXFXE7UXyse2gykuzpzdUYUTK9cFek6MRQhRIzR/BCj1HWsd6+LWKNI4EI=
+	t=1725210365; cv=none; b=LWlJH7X3laHJJETzS3QioltjjKitkfZXEMb56cz6Bs5U46odo3YcEgmfTd+SqhDgb7JsNqCGKO5UDHzsiPSDcHilSu0RFQqHpjxHMQ+xPGwIxamXGNTH5kt4r5FRJxVHL0L5ldqk75bod03x5Ett1eqELYW601dkt6szSifD1I0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209092; c=relaxed/simple;
-	bh=vQcEaRKQrNEUo+zlZuF+3HKUxss8v+sM2z718yUmHHo=;
+	s=arc-20240116; t=1725210365; c=relaxed/simple;
+	bh=EPq9WxZQLa3vBt9zLo4YtZU8O7uEl8BdW9vSqd2F0pc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tz4DiSBmMJxNq3CAHi8ugtfvvHvkgqM1fDq6Bb5st1f1lRNlIy0LCRzlI3VD3j/eksrpachq6H3TNGq7ngbMl1XmLLr06+0VdZwRclXDmm3ugEyY1JxXzYFkCbXdd8Tft2YwmXIr4RPx+EexItca8t9gd7kMn8bV7DuOo82c6Mw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iBnAeEUv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3113AC4CEC3;
-	Sun,  1 Sep 2024 16:44:52 +0000 (UTC)
+	 MIME-Version; b=DzZJAh8U76jQDfI55VE5cqVXoECY26xfPzIU+hwrDt2bV6IYb+hQebTleCrFukniNM4ukJoPMzCflhuk/qP10/TKKvDi+WSfAWuhCsbEy8009MBpWyp2Sn6A8+fc5yFJDJkXr9xrIyBbdZ2ZLNvptcczmVa3Z9cBh2rrMtVBQzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tlE/z3Go; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2C97C4CEC3;
+	Sun,  1 Sep 2024 17:06:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209092;
-	bh=vQcEaRKQrNEUo+zlZuF+3HKUxss8v+sM2z718yUmHHo=;
+	s=korg; t=1725210365;
+	bh=EPq9WxZQLa3vBt9zLo4YtZU8O7uEl8BdW9vSqd2F0pc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iBnAeEUv7t4Xenvg8nDJ2B5wJx2TiLiqLF3iwRYUxftu/ZJPHPNVizJvus1IdBDBX
-	 +7EWTXqcouEFYjvr55VHyN68Nbs7azND9LCAHdAOgxmM9OS4F8emn+6BHtiQKCVorg
-	 hS8yx+nhkRoYUn4rD7JEo0ubJJ7HK1HK3s7fSH6U=
+	b=tlE/z3Go8wGYF5s5+P4xrc9pVhJJsnCLtiF5aZKO+EV4TzzpZY3Q9CYoBtykWynYe
+	 ojtIUTjAbq7kzPsLZRlU5NxKEs7HjQRabvdllll1lnzKUM0tdZhbFZWHp5cbaOiMbp
+	 d24dlWU2u+h2HDx2E9kh+I9WkCgiC5suidkybbdQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>
-Subject: [PATCH 5.4 132/134] usb: core: sysfs: Unmerge @usb3_hardware_lpm_attr_group in remove_power_attributes()
+	Ben Whitten <ben.whitten@gmail.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.15 166/215] mmc: dw_mmc: allow biu and ciu clocks to defer
 Date: Sun,  1 Sep 2024 18:17:58 +0200
-Message-ID: <20240901160815.044042059@linuxfoundation.org>
+Message-ID: <20240901160829.633413110@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
-References: <20240901160809.752718937@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,37 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Ben Whitten <ben.whitten@gmail.com>
 
-commit 3a8839bbb86da7968a792123ed2296d063871a52 upstream.
+commit 6275c7bc8dd07644ea8142a1773d826800f0f3f7 upstream.
 
-Device attribute group @usb3_hardware_lpm_attr_group is merged by
-add_power_attributes(), but it is not unmerged explicitly, fixed by
-unmerging it in remove_power_attributes().
+Fix a race condition if the clock provider comes up after mmc is probed,
+this causes mmc to fail without retrying.
+When given the DEFER error from the clk source, pass it on up the chain.
 
-Fixes: 655fe4effe0f ("usbcore: add sysfs support to xHCI usb3 hardware LPM")
+Fixes: f90a0612f0e1 ("mmc: dw_mmc: lookup for optional biu and ciu clocks")
+Signed-off-by: Ben Whitten <ben.whitten@gmail.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/r/20240820-sysfs_fix-v2-1-a9441487077e@quicinc.com
+Link: https://lore.kernel.org/r/20240811212212.123255-1-ben.whitten@gmail.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/sysfs.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/mmc/host/dw_mmc.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/usb/core/sysfs.c
-+++ b/drivers/usb/core/sysfs.c
-@@ -690,6 +690,7 @@ static int add_power_attributes(struct d
- 
- static void remove_power_attributes(struct device *dev)
- {
-+	sysfs_unmerge_group(&dev->kobj, &usb3_hardware_lpm_attr_group);
- 	sysfs_unmerge_group(&dev->kobj, &usb2_hardware_lpm_attr_group);
- 	sysfs_unmerge_group(&dev->kobj, &power_attr_group);
- }
+--- a/drivers/mmc/host/dw_mmc.c
++++ b/drivers/mmc/host/dw_mmc.c
+@@ -3246,6 +3246,10 @@ int dw_mci_probe(struct dw_mci *host)
+ 	host->biu_clk = devm_clk_get(host->dev, "biu");
+ 	if (IS_ERR(host->biu_clk)) {
+ 		dev_dbg(host->dev, "biu clock not available\n");
++		ret = PTR_ERR(host->biu_clk);
++		if (ret == -EPROBE_DEFER)
++			return ret;
++
+ 	} else {
+ 		ret = clk_prepare_enable(host->biu_clk);
+ 		if (ret) {
+@@ -3257,6 +3261,10 @@ int dw_mci_probe(struct dw_mci *host)
+ 	host->ciu_clk = devm_clk_get(host->dev, "ciu");
+ 	if (IS_ERR(host->ciu_clk)) {
+ 		dev_dbg(host->dev, "ciu clock not available\n");
++		ret = PTR_ERR(host->ciu_clk);
++		if (ret == -EPROBE_DEFER)
++			goto err_clk_biu;
++
+ 		host->bus_hz = host->pdata->bus_hz;
+ 	} else {
+ 		ret = clk_prepare_enable(host->ciu_clk);
 
 
 
