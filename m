@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-72610-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72241-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9D6F967B52
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:08:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8010B9679D3
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:49:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 58B3AB208A4
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:08:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B0CF91C213BE
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:49:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B384226AC1;
-	Sun,  1 Sep 2024 17:08:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7140B18592D;
+	Sun,  1 Sep 2024 16:48:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FnWA5YL1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N1o6OhAO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71090376EC;
-	Sun,  1 Sep 2024 17:08:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F59A183CA3;
+	Sun,  1 Sep 2024 16:48:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210494; cv=none; b=HzzTQXHMxOWt7vLu+LTQzPd7oKB0rz9/ko5mS7Qeg7etVZjaGXC7nHfJBLDxqHxHii0iJFHEkwtuRyHws9Y0QaJb8RMsAySRlZcO4MBnOE19p0BsEEI+HH3BNi4LHYsMr7G/VTHW2T5/WwdaNlmdSFWaQ+mPezvorNFrjEVhy3s=
+	t=1725209293; cv=none; b=TL/FzbkUCsmDqGRMDu+LPBZvK+lPnLS8yxX3bkD4gWMhDXICeW0dvjdSALhvAkg+4YBvyHDndKoGNkpFovjZf2f6bjK5e210XtsWziXxncZOKugyEOey4vOyXkqoz/FVywA/F5Pwpq96Y0Du53It8uWjy6vH41g4yTWyVBXA1WM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210494; c=relaxed/simple;
-	bh=OF8SGl71r+jfyaDH9ycJe12u2tgT1ZTCSAy7hfz38QY=;
+	s=arc-20240116; t=1725209293; c=relaxed/simple;
+	bh=0+AuAji31pXLg+QAvwwqKrr3afFlaMCEDSkDf/XvkFg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Y/dznEJiX6GBqfqaw/xAyOj1lRZXQDQV9fRbAlB1O0VYBinf98wzUtpoHA9QON9ZFz0plZ6Ca0Ro6rDV+N3OiP9DxnQFEpurnVI3tQDD4z5usSPGS1LwYMDhQ4N5Otl4vIxmVHRRtWR/QkLjIizGrDM/FWGBlO8Si+9HBrEwqIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FnWA5YL1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0DCBC4CEC3;
-	Sun,  1 Sep 2024 17:08:13 +0000 (UTC)
+	 MIME-Version; b=DZxWOgfc9RSy+uKFKOn5KEKT4XnoDdqvcV8RsC9vdRhTZTJPZjiQvo4vm6svbZOhs+w7YwSHVYqmC/RbZ5SwPGGM9nbqU7fb0RRqetn+ll0lxcHW7IKIwQ/7YHAXA0hB1+y0zv1PHzWq8b7PMp+AdgCBsx06vCWEvMTqc/GRKkw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N1o6OhAO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D102C4CEC3;
+	Sun,  1 Sep 2024 16:48:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210494;
-	bh=OF8SGl71r+jfyaDH9ycJe12u2tgT1ZTCSAy7hfz38QY=;
+	s=korg; t=1725209292;
+	bh=0+AuAji31pXLg+QAvwwqKrr3afFlaMCEDSkDf/XvkFg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FnWA5YL1td8KCRdHhIG4kvYgYNkuUkKjnf1yPZ1fkN74/27Avsum8x50vOZhUGYRo
-	 YnY3YYxDTpCcOgGuZK9zxtWvUOrVGRPeW/EnfhCyglczv/6K2M+wtpTvt+qzhxA4ZS
-	 ptTnwXxRGc8prB9vwyby9Mw+zN+oCwyCDrb+5o0M=
+	b=N1o6OhAOhnUOEe+0PPYRZMcm1ZmduG/t1e8iBSJuspvp8/wjaJ+fav2xv7ja2vdid
+	 kANCbLGext13M61XKrw9Nc2EduLFJXCznOH08Q/Y9yLPzHRPrD81MFOKK0Gw+jd9Z3
+	 HWfKLVmYfU7tKeEV8QdfOOwT2F4CPPThEW5fj/eY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jesse Zhang <jesse.zhang@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Vamsi Krishna Brahmajosyula <vamsi-krishna.brahmajosyula@broadcom.com>
-Subject: [PATCH 5.15 175/215] drm/amdgpu: Using uninitialized value *size when calling amdgpu_vce_cs_reloc
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Patrice Chotard <patrice.chotard@foss.st.com>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 6.1 62/71] usb: dwc3: st: add missing depopulate in probe error path
 Date: Sun,  1 Sep 2024 18:18:07 +0200
-Message-ID: <20240901160829.977211556@linuxfoundation.org>
+Message-ID: <20240901160804.226973358@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160801.879647959@linuxfoundation.org>
+References: <20240901160801.879647959@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +60,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jesse Zhang <jesse.zhang@amd.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit 88a9a467c548d0b3c7761b4fd54a68e70f9c0944 upstream.
+commit cd4897bfd14f6a5388b21ba45a066541a0425199 upstream.
 
-Initialize the size before calling amdgpu_vce_cs_reloc, such as case 0x03000001.
-V2: To really improve the handling we would actually
-   need to have a separate value of 0xffffffff.(Christian)
+Depopulate device in probe error paths to fix leak of children
+resources.
 
-Signed-off-by: Jesse Zhang <jesse.zhang@amd.com>
-Suggested-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Vamsi Krishna Brahmajosyula <vamsi-krishna.brahmajosyula@broadcom.com>
+Fixes: f83fca0707c6 ("usb: dwc3: add ST dwc3 glue layer to manage dwc3 HC")
+Cc: stable@vger.kernel.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Patrice Chotard <patrice.chotard@foss.st.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://lore.kernel.org/r/20240814093957.37940-2-krzysztof.kozlowski@linaro.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_vce.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/dwc3/dwc3-st.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vce.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vce.c
-@@ -733,7 +733,8 @@ int amdgpu_vce_ring_parse_cs(struct amdg
- 	uint32_t created = 0;
- 	uint32_t allocated = 0;
- 	uint32_t tmp, handle = 0;
--	uint32_t *size = &tmp;
-+	uint32_t dummy = 0xffffffff;
-+	uint32_t *size = &dummy;
- 	unsigned idx;
- 	int i, r = 0;
+--- a/drivers/usb/dwc3/dwc3-st.c
++++ b/drivers/usb/dwc3/dwc3-st.c
+@@ -266,7 +266,7 @@ static int st_dwc3_probe(struct platform
+ 	if (!child_pdev) {
+ 		dev_err(dev, "failed to find dwc3 core device\n");
+ 		ret = -ENODEV;
+-		goto err_node_put;
++		goto depopulate;
+ 	}
  
+ 	dwc3_data->dr_mode = usb_get_dr_mode(&child_pdev->dev);
+@@ -282,6 +282,7 @@ static int st_dwc3_probe(struct platform
+ 	ret = st_dwc3_drd_init(dwc3_data);
+ 	if (ret) {
+ 		dev_err(dev, "drd initialisation failed\n");
++		of_platform_depopulate(dev);
+ 		goto undo_softreset;
+ 	}
+ 
+@@ -291,6 +292,8 @@ static int st_dwc3_probe(struct platform
+ 	platform_set_drvdata(pdev, dwc3_data);
+ 	return 0;
+ 
++depopulate:
++	of_platform_depopulate(dev);
+ err_node_put:
+ 	of_node_put(child);
+ undo_softreset:
 
 
 
