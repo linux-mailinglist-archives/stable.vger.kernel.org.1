@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-72464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71826-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5219967ABC
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:00:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 237AA9677EC
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:25:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 73A06281BD0
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:00:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A3831C20B1F
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:25:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F53B183CAB;
-	Sun,  1 Sep 2024 17:00:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B014D143894;
+	Sun,  1 Sep 2024 16:25:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AxLShZdp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bH4I5ywl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C29D517B50B;
-	Sun,  1 Sep 2024 17:00:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D18014290C;
+	Sun,  1 Sep 2024 16:25:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210010; cv=none; b=esEavgSQS+laxlAwR5Lc6GGTPyokY176VmDlf9J2zc2ZwcVKXs+eFRuWmFfOICqWSvdpkIEqjemJpoBokVLLgvnVLBLQ6gfjacnJWfyXhE7c0QaSAMIGmfyrf7WDVXn6R8jClc4B1WMsthiGQgA2N8MlRkSGjO/uCu/7P4XU/aA=
+	t=1725207944; cv=none; b=erNlTTmdIfgV8R4w1SWO2K30bO7y41Z5SteXV0pBVe6LPt0raBrKGPHhrfE4dtPEMugSFwbkeS979PlSSoONhZOfisrGfTSp0hzlhaGHqwGTm/ajuYWkIVul48KWrsNQlbziLS14yulvIs+AI2Ub9+qg73V3rynAsnzFFhKwJdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210010; c=relaxed/simple;
-	bh=3kUNCAqIXL/M6l00jj7Yh6uI9H/KFpe21QdQvdM2LCw=;
+	s=arc-20240116; t=1725207944; c=relaxed/simple;
+	bh=fn3oSNhjGH7qsh9o/fFzdo94Veo4j9892mMJOUtSRko=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZgVS3HnphSC/MCChlnXARDWwND0ftuLrLwEgFbEoswIXJfpfltYrucJKa9lSvPLCD+1ZQ3cr8MoZK8mYeQwEhICVUC04+FImpRIPRg2+84jwWYD/8UTBPhV1MvY6DdpT+VI7iQ5F8twX9BX5cm94j7ED7Jf67MDQ+7fNwoyKtcw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AxLShZdp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33DDFC4CEC3;
-	Sun,  1 Sep 2024 17:00:10 +0000 (UTC)
+	 MIME-Version; b=bz1VAyeoLk1/Hwy5qJG96ejgL+nIbufhWLI9aIl3oV7CdzvVEqyd03S05gKeXd43yMa/p8+hkP8GqEHmpx9jpkz3fK7x9bSZzP6Kf8iuqlUGFc5RyoZaon2ulfdGYdO81vDQh5tKSY2YPA8tfPBvPo715y7zuADaJzF2gBpjqcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bH4I5ywl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1074C4CEC3;
+	Sun,  1 Sep 2024 16:25:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210010;
-	bh=3kUNCAqIXL/M6l00jj7Yh6uI9H/KFpe21QdQvdM2LCw=;
+	s=korg; t=1725207944;
+	bh=fn3oSNhjGH7qsh9o/fFzdo94Veo4j9892mMJOUtSRko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AxLShZdpgRRPpd5OFV7vRa/ZX1QBl7ZT9wJdfo8/MNbYa+JwWBZD0T8r19P2P4zge
-	 e3N9YSOTjFMf2wIM91fzyCzsvX8QZ1COCNFf4Dymu2cILPm07Htiiq1l97r9Jc666z
-	 HcwN6e+rScRxsDAsv/tbq8Spqi8/AbPCv5MR81MA=
+	b=bH4I5ywlcRbclYfvlKXOgpxpMxhoUfv2nFjhs51InVHPgCbvFf4cwvHfsR/js5QoZ
+	 Urr1konb2Ib+h3MsK4vcNw7r21p0EadqTn6ucv/EVddcgrKFTrTc+z6ZNd7NulCHUH
+	 sh1UW0ngHneuy9tfwQW2GbYa0etOI8jWx+1oTuac=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Gregory Greenman <gregory.greenman@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 060/215] wifi: iwlwifi: abort scan when rfkill on but device enabled
+	Kenneth Feng <kenneth.feng@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 25/93] drm/amdgpu/swsmu: always force a state reprogram on init
 Date: Sun,  1 Sep 2024 18:16:12 +0200
-Message-ID: <20240901160825.624612805@linuxfoundation.org>
+Message-ID: <20240901160808.305876769@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
+References: <20240901160807.346406833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +61,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 3c6a0b1f0add72e7f522bc9145222b86d0a7712a ]
+commit d420c857d85777663e8d16adfc24463f5d5c2dbc upstream.
 
-In RFKILL we first set the RFKILL bit, then we abort scan
-(if one exists) by waiting for the notification from FW
-and notifying mac80211. And then we stop the device.
-But in case we have a scan ongoing in the period of time between
-rfkill on and before the device is stopped - we will not wait for the
-FW notification because of the iwl_mvm_is_radio_killed() condition,
-and then the scan_status and uid_status are misconfigured,
-(scan_status is cleared but uid_status not)
-and when the notification suddenly arrives (before stopping the device)
-we will get into the assert about scan_status and uid_status mismatch.
-Fix this by waiting for FW notif when rfkill is on but the device isn't
-disabled yet.
+Always reprogram the hardware state on init.  This ensures
+the PMFW state is explicitly programmed and we are not relying
+on the default PMFW state.
 
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Signed-off-by: Gregory Greenman <gregory.greenman@intel.com>
-Link: https://lore.kernel.org/r/20231004123422.c43b69aa2c77.Icc7b5efb47974d6f499156ff7510b786e177993b@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3131
+Reviewed-by: Kenneth Feng <kenneth.feng@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit c50fe289ed7207f71df3b5f1720512a9620e84fb)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c |   15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-index 8179a7395bcaf..4bab14ceef5f5 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-@@ -3068,7 +3068,7 @@ int iwl_mvm_scan_stop(struct iwl_mvm *mvm, int type, bool notify)
- 	if (!(mvm->scan_status & type))
- 		return 0;
+--- a/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
+@@ -1841,8 +1841,9 @@ static int smu_bump_power_profile_mode(s
+ }
  
--	if (iwl_mvm_is_radio_killed(mvm)) {
-+	if (!test_bit(STATUS_DEVICE_ENABLED, &mvm->trans->status)) {
- 		ret = 0;
- 		goto out;
+ static int smu_adjust_power_state_dynamic(struct smu_context *smu,
+-				   enum amd_dpm_forced_level level,
+-				   bool skip_display_settings)
++					  enum amd_dpm_forced_level level,
++					  bool skip_display_settings,
++					  bool force_update)
+ {
+ 	int ret = 0;
+ 	int index = 0;
+@@ -1871,7 +1872,7 @@ static int smu_adjust_power_state_dynami
+ 		}
  	}
--- 
-2.43.0
-
+ 
+-	if (smu_dpm_ctx->dpm_level != level) {
++	if (force_update || smu_dpm_ctx->dpm_level != level) {
+ 		ret = smu_asic_set_performance_level(smu, level);
+ 		if (ret) {
+ 			dev_err(smu->adev->dev, "Failed to set performance level!");
+@@ -1887,7 +1888,7 @@ static int smu_adjust_power_state_dynami
+ 		index = index > 0 && index <= WORKLOAD_POLICY_MAX ? index - 1 : 0;
+ 		workload[0] = smu->workload_setting[index];
+ 
+-		if (smu->power_profile_mode != workload[0])
++		if (force_update || smu->power_profile_mode != workload[0])
+ 			smu_bump_power_profile_mode(smu, workload, 0);
+ 	}
+ 
+@@ -1908,11 +1909,13 @@ static int smu_handle_task(struct smu_co
+ 		ret = smu_pre_display_config_changed(smu);
+ 		if (ret)
+ 			return ret;
+-		ret = smu_adjust_power_state_dynamic(smu, level, false);
++		ret = smu_adjust_power_state_dynamic(smu, level, false, false);
+ 		break;
+ 	case AMD_PP_TASK_COMPLETE_INIT:
++		ret = smu_adjust_power_state_dynamic(smu, level, true, true);
++		break;
+ 	case AMD_PP_TASK_READJUST_POWER_STATE:
+-		ret = smu_adjust_power_state_dynamic(smu, level, true);
++		ret = smu_adjust_power_state_dynamic(smu, level, true, false);
+ 		break;
+ 	default:
+ 		break;
 
 
 
