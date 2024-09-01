@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-71824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71741-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A05729677EB
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:25:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CF3296778B
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:21:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F6D028154B
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:25:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43B6A1F218C9
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:21:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CA46183CA5;
-	Sun,  1 Sep 2024 16:25:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8CB144C97;
+	Sun,  1 Sep 2024 16:21:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WbQMsGHQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1ur8Qaxq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19F23143894;
-	Sun,  1 Sep 2024 16:25:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9660F155A24;
+	Sun,  1 Sep 2024 16:21:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725207938; cv=none; b=d5LSROTUAYhe1hsVv1khAZ20ZXj3yIMFeNGVFLMUMy5vANw3IJsHSZl8VXb7yoBxZ8WhAvV0Fex5/MeVkaHFF6qTcS3sO/j7/jGqCaX5+OVxUqnnyItFRx5/F/NZyoR6551w60x8qJpd/goeQFJdAkyuvlxhs4hAL2r2+CSi3NA=
+	t=1725207661; cv=none; b=T0Z1oObJ0Y3cszYgYj+4sUiSIZ/Vfg3Id0/2EhgIc3woDTz+4xX8RNMHnhYeVWlm1CiHtAMc5d2es95pBBsl/tEvtIYHkmkXNzy7k2uLvM3VklZOPSfmi0h90ae4ucI3ndOlIj3sNz9ALKAvjc29qMlYsp2MBvSmPMAMbar5i4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725207938; c=relaxed/simple;
-	bh=6FZUONix21cgDzxbMak0SeDXtuHYLAOwLQlahgWAF6w=;
+	s=arc-20240116; t=1725207661; c=relaxed/simple;
+	bh=GWfp588RcYpSH6lXUQq0/Z3iRXzVrv9wCqtmJD6gZz4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fR+tpP0v34VrNIHtQtjl8YmXqLlFsJrzfZBvLRNavZ+40cx1H08xpwttA0Qwmy3Iz6PN6vAqQSCto76ulWnKmVhGklSCJbu6aGPmiS74D/QSqEXG20tfHZ3mYq08BTip5WBJbxFcEm1HIm1NSm2dDiN47+9zVxopcetcFfwyLTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WbQMsGHQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EC2CC4CEC3;
-	Sun,  1 Sep 2024 16:25:37 +0000 (UTC)
+	 MIME-Version; b=Nk9crUnjzMwqcVagNBj/lm9Bkn5tfR7UR1pfmNLUYlc6pj57w7fU9jFLOSJeivmxfmnlUo7w5Ugi2ri2rIVl5X31X9SJsA3UFb9sQ1gV94VtHADkJ0ZtAEVHVBMGLFXhfWxmr4AQXkIgcEW+Kn2yvsvsVjhQZr+66BfKbef3WPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1ur8Qaxq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05051C4CEC3;
+	Sun,  1 Sep 2024 16:21:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725207938;
-	bh=6FZUONix21cgDzxbMak0SeDXtuHYLAOwLQlahgWAF6w=;
+	s=korg; t=1725207661;
+	bh=GWfp588RcYpSH6lXUQq0/Z3iRXzVrv9wCqtmJD6gZz4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WbQMsGHQvjFeLMXxF0SBZGqH9V0wVyh3Z4clEC3hfCu+4HEP/Le5QsSUo+wlHhuWk
-	 F3I6zjK2hvXrIc+1+9kbuTzULhWcnPfYK35DZmVf5+j98cjcIZJSerrK9AlYrh72zT
-	 IAy0U3Dgujhko2Shop7hvlL2S/d2kWkIWiSlsOY0=
+	b=1ur8QaxqIcvIXXw+XC1siLjoWylgdAe4RZn1xbWk4puaQpl25gK70wnnSYVfy0K/b
+	 /K++y/sjZ2IgA4nrDfHV2YLVGKk0l+2sWqtuMKxpY55kFWmNd6Te6xbmVvyYkrPXx4
+	 ULrB44hz4fYe9Sm1I9nFfcnSlKgfcqdcEjabOylk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.6 23/93] selftests: mptcp: join: check re-re-adding ID 0 endp
+	Zhiguo Niu <zhiguo.niu@unisoc.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 40/98] f2fs: fix to do sanity check in update_sit_entry
 Date: Sun,  1 Sep 2024 18:16:10 +0200
-Message-ID: <20240901160808.231799469@linuxfoundation.org>
+Message-ID: <20240901160805.211763724@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
-References: <20240901160807.346406833@linuxfoundation.org>
+In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
+References: <20240901160803.673617007@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Zhiguo Niu <zhiguo.niu@unisoc.com>
 
-commit d397d7246c11ca36c33c932bc36d38e3a79e9aa0 upstream.
+[ Upstream commit 36959d18c3cf09b3c12157c6950e18652067de77 ]
 
-This test extends "delete and re-add" to validate the previous commit:
-when the endpoint linked to the initial subflow (ID 0) is re-added
-multiple times, it was no longer being used, because the internal linked
-counters are not decremented for this special endpoint: it is not an
-additional endpoint.
+If GET_SEGNO return NULL_SEGNO for some unecpected case,
+update_sit_entry will access invalid memory address,
+cause system crash. It is better to do sanity check about
+GET_SEGNO just like update_segment_mtime & locate_dirty_segment.
 
-Here, the "del/add id 0" steps are done 3 times to unsure this case is
-validated.
+Also remove some redundant judgment code.
 
-The 'Fixes' tag here below is the same as the one from the previous
-commit: this patch here is not fixing anything wrong in the selftests,
-but it validates the previous fix for an issue introduced by this commit
-ID.
-
-Fixes: 3ad14f54bd74 ("mptcp: more accurate MPC endpoint tracking")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh |   27 +++++++++++++-----------
- 1 file changed, 15 insertions(+), 12 deletions(-)
+ fs/f2fs/segment.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -3582,7 +3582,7 @@ endpoint_tests()
- 		pm_nl_set_limits $ns2 0 3
- 		pm_nl_add_endpoint $ns2 10.0.1.2 id 1 dev ns2eth1 flags subflow
- 		pm_nl_add_endpoint $ns2 10.0.2.2 id 2 dev ns2eth2 flags subflow
--		test_linkfail=4 speed=20 \
-+		test_linkfail=4 speed=5 \
- 			run_tests $ns1 $ns2 10.0.1.1 &
- 		local tests_pid=$!
+diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
+index 34090edc8ce25..6750cda692cc3 100644
+--- a/fs/f2fs/segment.c
++++ b/fs/f2fs/segment.c
+@@ -2018,6 +2018,8 @@ static void update_sit_entry(struct f2fs_sb_info *sbi, block_t blkaddr, int del)
+ #endif
  
-@@ -3614,20 +3614,23 @@ endpoint_tests()
- 		chk_subflow_nr "after no reject" 3
- 		chk_mptcp_info subflows 2 subflows 2
+ 	segno = GET_SEGNO(sbi, blkaddr);
++	if (segno == NULL_SEGNO)
++		return;
  
--		pm_nl_del_endpoint $ns2 1 10.0.1.2
--		sleep 0.5
--		chk_subflow_nr "after delete id 0" 2
--		chk_mptcp_info subflows 2 subflows 2 # only decr for additional sf
--
--		pm_nl_add_endpoint $ns2 10.0.1.2 id 1 dev ns2eth1 flags subflow
--		wait_mpj $ns2
--		chk_subflow_nr "after re-add id 0" 3
--		chk_mptcp_info subflows 3 subflows 3
-+		local i
-+		for i in $(seq 3); do
-+			pm_nl_del_endpoint $ns2 1 10.0.1.2
-+			sleep 0.5
-+			chk_subflow_nr "after delete id 0 ($i)" 2
-+			chk_mptcp_info subflows 2 subflows 2 # only decr for additional sf
-+
-+			pm_nl_add_endpoint $ns2 10.0.1.2 id 1 dev ns2eth1 flags subflow
-+			wait_mpj $ns2
-+			chk_subflow_nr "after re-add id 0 ($i)" 3
-+			chk_mptcp_info subflows 3 subflows 3
-+		done
+ 	se = get_seg_entry(sbi, segno);
+ 	new_vblocks = se->valid_blocks + del;
+@@ -2935,8 +2937,7 @@ void f2fs_allocate_data_block(struct f2fs_sb_info *sbi, struct page *page,
+ 	 * since SSR needs latest valid block information.
+ 	 */
+ 	update_sit_entry(sbi, *new_blkaddr, 1);
+-	if (GET_SEGNO(sbi, old_blkaddr) != NULL_SEGNO)
+-		update_sit_entry(sbi, old_blkaddr, -1);
++	update_sit_entry(sbi, old_blkaddr, -1);
  
- 		mptcp_lib_kill_wait $tests_pid
- 
--		chk_join_nr 4 4 4
--		chk_rm_nr 2 2
-+		chk_join_nr 6 6 6
-+		chk_rm_nr 4 4
- 	fi
- }
- 
+ 	if (!__has_curseg_space(sbi, type))
+ 		sit_i->s_ops->allocate_segment(sbi, type, false);
+-- 
+2.43.0
+
 
 
 
