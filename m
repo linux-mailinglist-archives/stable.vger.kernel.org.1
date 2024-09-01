@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-71766-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72095-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3525B9677A7
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:22:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 864F0967928
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:40:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1CD631C20B3D
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:22:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 24DE4B20CB1
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:40:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6D58181B88;
-	Sun,  1 Sep 2024 16:22:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60EDD17DFFC;
+	Sun,  1 Sep 2024 16:40:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l1JlOPNX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bbVowFIS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6853364AB;
-	Sun,  1 Sep 2024 16:22:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E7541C68C;
+	Sun,  1 Sep 2024 16:40:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725207744; cv=none; b=Wcb8Vt5sT+bl8ZfqRrwHhUsE/4pZLHSL8GqZdYlhh+aeSRfHs48bZ+aQUKnPigtlmxFlZvteH8ZTF5KMRZfQcpteH5gsKcidd+a5pdQl6IU13+O+MXUGIka8ta3nl/QU/1RZsDdrP555it5/Qyjo/8PUThV9vSAclQrFsgHlqrU=
+	t=1725208825; cv=none; b=u8fd4CqRF1NWf8TQbIZeqRIBCeV5xkbK9w4uFK5nBTXxMDwUvy5h046jBrDxE468CQKzIj9zVPF2gO/omonQH+lMLhXAqBP8gYi4yI9WYL81sfCvrXFBEGZj5dbHdAVVN66ZEK+vd743WwX59uTjEjmTIhVCshg3o8X9aLdHIR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725207744; c=relaxed/simple;
-	bh=u2kHE52fqksnO/SLxTzEZO92I2zeBMvlkW8yyB52ERY=;
+	s=arc-20240116; t=1725208825; c=relaxed/simple;
+	bh=x8cpt4cpdqXaayB7ZI1OK4dmRUs+YJjoHtmX9jdWR/I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OEFagEB4ivvji8DGyJzFAAJ+1+ICxsrgB93KcDxFx4DD4UL39hMnJ7AwCTsZ+Uh/LbqP6jtzTgWLTtaYOwL0uTFwKy6CLVXX2B9/omwHzeLwGkPrLH/MG1kUvboCXd9m0yUNy71Ov3W/1oJc9j7Ivv9XynmqxWNPSIrKDlFx+wo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l1JlOPNX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C134C4CEC3;
-	Sun,  1 Sep 2024 16:22:23 +0000 (UTC)
+	 MIME-Version; b=P6aJHLHY4Is4N1YecffIhov/HpvBcwoRD9j5AvGoARezuVEWkRgLCEmX0IGiTgqIHbSW+gA+qzlxMoOQL14TUtKGu+ZfB9Ie8vMySvv+e/H+IqdRNWJ7+pOT8wgu7Of/kGZ6FE28TkFbSHS2j4L0ceUJckhtk6RqIgn/X3KeQDw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bbVowFIS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F8CCC4CEC3;
+	Sun,  1 Sep 2024 16:40:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725207744;
-	bh=u2kHE52fqksnO/SLxTzEZO92I2zeBMvlkW8yyB52ERY=;
+	s=korg; t=1725208824;
+	bh=x8cpt4cpdqXaayB7ZI1OK4dmRUs+YJjoHtmX9jdWR/I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l1JlOPNX8jlGCiX6fjlJALOYL/iMuEvvhmmMJ8NkuBwo2V9S30OBMFlep6Peo6AV9
-	 9Xh7tvzaYIPzdt+LAeaSlDaVViVYZzidUZ1ICswuvjEYFt7/dCf0otPumBL6VLR07N
-	 7EcnrhLl6LJyShaOSxNoaTmnzA485q7e2VbEb6d0=
+	b=bbVowFISzlhCEX7c9321cR0EWT6zhOPA12kSFqqgb8AZ4u6TqBxeFaoqR6Ki3bFte
+	 qFM6bcluTUKJghaSZp9bWeRrFc1uYO/Osg/aBkO6eDq2rqwzpeUPi7SjUVdPKHCQCs
+	 x7dp56sAolD8wr04g7V5UKo8aBOelYylGZcPfRBc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Gerecke <jason.gerecke@wacom.com>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 4.19 65/98] HID: wacom: Defer calculation of resolution until resolution_code is known
+	Erico Nunes <nunes.erico@gmail.com>,
+	Qiang Yu <yuq825@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 049/134] drm/lima: set gp bus_stop bit before hard reset
 Date: Sun,  1 Sep 2024 18:16:35 +0200
-Message-ID: <20240901160806.150597878@linuxfoundation.org>
+Message-ID: <20240901160811.954339224@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
-References: <20240901160803.673617007@linuxfoundation.org>
+In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
+References: <20240901160809.752718937@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gerecke <jason.gerecke@wacom.com>
+From: Erico Nunes <nunes.erico@gmail.com>
 
-commit 1b8f9c1fb464968a5b18d3acc1da8c00bad24fad upstream.
+[ Upstream commit 27aa58ec85f973d98d336df7b7941149308db80f ]
 
-The Wacom driver maps the HID_DG_TWIST usage to ABS_Z (rather than ABS_RZ)
-for historic reasons. When the code to support twist was introduced in
-commit 50066a042da5 ("HID: wacom: generic: Add support for height, tilt,
-and twist usages"), we were careful to write it in such a way that it had
-HID calculate the resolution of the twist axis assuming ABS_RZ instead
-(so that we would get correct angular behavior). This was broken with
-the introduction of commit 08a46b4190d3 ("HID: wacom: Set a default
-resolution for older tablets"), which moved the resolution calculation
-to occur *before* the adjustment from ABS_Z to ABS_RZ occurred.
+This is required for reliable hard resets. Otherwise, doing a hard reset
+while a task is still running (such as a task which is being stopped by
+the drm_sched timeout handler) may result in random mmu write timeouts
+or lockups which cause the entire gpu to hang.
 
-This commit moves the calculation of resolution after the point that
-we are finished setting things up for its proper use.
-
-Signed-off-by: Jason Gerecke <jason.gerecke@wacom.com>
-Fixes: 08a46b4190d3 ("HID: wacom: Set a default resolution for older tablets")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Erico Nunes <nunes.erico@gmail.com>
+Signed-off-by: Qiang Yu <yuq825@gmail.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240124025947.2110659-5-nunes.erico@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/wacom_wac.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/lima/lima_gp.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/drivers/hid/wacom_wac.c
-+++ b/drivers/hid/wacom_wac.c
-@@ -1830,12 +1830,14 @@ static void wacom_map_usage(struct input
- 	int fmax = field->logical_maximum;
- 	unsigned int equivalent_usage = wacom_equivalent_usage(usage->hid);
- 	int resolution_code = code;
--	int resolution = hidinput_calc_abs_res(field, resolution_code);
-+	int resolution;
+diff --git a/drivers/gpu/drm/lima/lima_gp.c b/drivers/gpu/drm/lima/lima_gp.c
+index 3fca560087c97..4bf216cb33030 100644
+--- a/drivers/gpu/drm/lima/lima_gp.c
++++ b/drivers/gpu/drm/lima/lima_gp.c
+@@ -138,6 +138,11 @@ static void lima_gp_task_run(struct lima_sched_pipe *pipe,
+ 	gp_write(LIMA_GP_CMD, cmd);
+ }
  
- 	if (equivalent_usage == HID_DG_TWIST) {
- 		resolution_code = ABS_RZ;
- 	}
- 
-+	resolution = hidinput_calc_abs_res(field, resolution_code);
++static int lima_gp_bus_stop_poll(struct lima_ip *ip)
++{
++	return !!(gp_read(LIMA_GP_STATUS) & LIMA_GP_STATUS_BUS_STOPPED);
++}
 +
- 	if (equivalent_usage == HID_GD_X) {
- 		fmin += features->offset_left;
- 		fmax -= features->offset_right;
+ static int lima_gp_hard_reset_poll(struct lima_ip *ip)
+ {
+ 	gp_write(LIMA_GP_PERF_CNT_0_LIMIT, 0xC01A0000);
+@@ -151,6 +156,13 @@ static int lima_gp_hard_reset(struct lima_ip *ip)
+ 
+ 	gp_write(LIMA_GP_PERF_CNT_0_LIMIT, 0xC0FFE000);
+ 	gp_write(LIMA_GP_INT_MASK, 0);
++
++	gp_write(LIMA_GP_CMD, LIMA_GP_CMD_STOP_BUS);
++	ret = lima_poll_timeout(ip, lima_gp_bus_stop_poll, 10, 100);
++	if (ret) {
++		dev_err(dev->dev, "%s bus stop timeout\n", lima_ip_name(ip));
++		return ret;
++	}
+ 	gp_write(LIMA_GP_CMD, LIMA_GP_CMD_RESET);
+ 	ret = lima_poll_timeout(ip, lima_gp_hard_reset_poll, 10, 100);
+ 	if (ret) {
+-- 
+2.43.0
+
 
 
 
