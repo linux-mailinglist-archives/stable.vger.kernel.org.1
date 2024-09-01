@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-72414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71907-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 755BD967A88
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:57:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02DB696784A
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:30:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3139D282239
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:57:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 849D3B20A6A
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:30:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C77F181334;
-	Sun,  1 Sep 2024 16:57:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8A2B17E00C;
+	Sun,  1 Sep 2024 16:30:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uWCg9OJn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q279tNfa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B1FE208A7;
-	Sun,  1 Sep 2024 16:57:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95965183CAB;
+	Sun,  1 Sep 2024 16:30:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209843; cv=none; b=TjB5nrkD81BIpQRFk9OuPetrruFIl8XRPAbz/RNsymtZUZ6jHusxP8pLP5P3kZ1L1npMtTGdSC5tsikjpZMr/dzfH7mPg2mTQXZZhEjTN0Y3wYcmXvLbvi9TATHyqv3j4SxGl/8bawzksbIRCYCMUOmf4GcDatQAgow+00nTMik=
+	t=1725208211; cv=none; b=ZaKTUu6WB32NBkQPNLsTP58EjEZiUWyVI6fCx5eoorpWqAP7CCjQ866x1gKFboanKJotNSfsaHCioj2tmDtj/t0reQUCXt6HwUlcsOTsdlYXLaea5VI3ogj2hegLS0lmWHGXM6MnVtj2EJxQjSXBA5AscdGCtelQVzjDAZS3wTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209843; c=relaxed/simple;
-	bh=s497HjR8Z7sOMFLltS5+izsE4GK20G7VLoXjxx5HXvY=;
+	s=arc-20240116; t=1725208211; c=relaxed/simple;
+	bh=0QcsczcFN4FH4YFeGY9Wit01VddJCzv7a5M42ZW0VZ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TPauDxZFGBtIe1RcXb3TlPwx3/85XNCsOgwYxjUiJ+tXCqhdt4Q7yzVJV10isbm2p0KhUpbts7ML2Hz+ZxM5rG7Z70uDnX3AHvc1cpIZby2y4eDgybjhsjIELIYMFr82jr8wHLq4Rb9mSHCy1bfvPv5g56leRvnpShXWrLnSZ44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uWCg9OJn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CFE1C4CEC3;
-	Sun,  1 Sep 2024 16:57:22 +0000 (UTC)
+	 MIME-Version; b=Icg43za6Vd6Upr6RhdZYyX4otUstIf4jOEEJhv/VQBq+5SsAuiaIMXQDLkezN2nGhX44QhpZk0NrnGHpehe8gk+qR4HQ5VdQvQynZcdDWf/0Kc5WRWji3Zi+d22FJ0b6s3cCqO8cKF+VoVyuVdVLsuAe/Ker0AaRqazzXbKbsVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q279tNfa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03CCDC4CEC3;
+	Sun,  1 Sep 2024 16:30:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209843;
-	bh=s497HjR8Z7sOMFLltS5+izsE4GK20G7VLoXjxx5HXvY=;
+	s=korg; t=1725208211;
+	bh=0QcsczcFN4FH4YFeGY9Wit01VddJCzv7a5M42ZW0VZ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uWCg9OJnVMzgY8VAKHozlBVMkJvyIcLMNyhzXeGUW7c0NX7nwQnsti4GTjkg0LGiZ
-	 sv7LgsAdZsdL3k6XI2RN5uWR0g5OGI0WZHz2iH4LlBcT58AQuyFPXN3DAy+oYqFMe7
-	 2eSbSmEGECxsyLMuQK8RuKA43f+7E97IjiVrQtpU=
+	b=Q279tNfa5ZV3SSxjAgG08F7XjZZKnG4WNHm4RVm8OWaZAqRMDOcPpnFGvRUXfPhtQ
+	 ziufq1M6BonTMud+PecJng97yRKoW3Z1yFxrKSlZQ0RiRXxqbhovhhfwXlCktYzlrk
+	 FqD1KHefXDPmRNJ4qPXI4NJXlyz0ceUYuxEcIfYs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Khazhismel Kumykov <khazhy@google.com>
-Subject: [PATCH 5.15 011/215] dm resume: dont return EINVAL when signalled
-Date: Sun,  1 Sep 2024 18:15:23 +0200
-Message-ID: <20240901160823.671580902@linuxfoundation.org>
+	Ma Ke <make24@iscas.ac.cn>,
+	Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 6.10 013/149] pinctrl: single: fix potential NULL dereference in pcs_get_function()
+Date: Sun,  1 Sep 2024 18:15:24 +0200
+Message-ID: <20240901160817.966680664@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Khazhismel Kumykov <khazhy@google.com>
+From: Ma Ke <make24@iscas.ac.cn>
 
-commit 7a636b4f03af9d541205f69e373672e7b2b60a8a upstream.
+commit 1c38a62f15e595346a1106025722869e87ffe044 upstream.
 
-If the dm_resume method is called on a device that is not suspended, the
-method will suspend the device briefly, before resuming it (so that the
-table will be swapped).
+pinmux_generic_get_function() can return NULL and the pointer 'function'
+was dereferenced without checking against NULL. Add checking of pointer
+'function' in pcs_get_function().
 
-However, there was a bug that the return value of dm_suspended_md was not
-checked. dm_suspended_md may return an error when it is interrupted by a
-signal. In this case, do_resume would call dm_swap_table, which would
-return -EINVAL.
+Found by code review.
 
-This commit fixes the logic, so that error returned by dm_suspend is
-checked and the resume operation is undone.
-
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Signed-off-by: Khazhismel Kumykov <khazhy@google.com>
 Cc: stable@vger.kernel.org
+Fixes: 571aec4df5b7 ("pinctrl: single: Use generic pinmux helpers for managing functions")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Link: https://lore.kernel.org/20240808041355.2766009-1-make24@iscas.ac.cn
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-ioctl.c |   22 ++++++++++++++++++++--
- 1 file changed, 20 insertions(+), 2 deletions(-)
+ drivers/pinctrl/pinctrl-single.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/md/dm-ioctl.c
-+++ b/drivers/md/dm-ioctl.c
-@@ -1151,8 +1151,26 @@ static int do_resume(struct dm_ioctl *pa
- 			suspend_flags &= ~DM_SUSPEND_LOCKFS_FLAG;
- 		if (param->flags & DM_NOFLUSH_FLAG)
- 			suspend_flags |= DM_SUSPEND_NOFLUSH_FLAG;
--		if (!dm_suspended_md(md))
--			dm_suspend(md, suspend_flags);
-+		if (!dm_suspended_md(md)) {
-+			r = dm_suspend(md, suspend_flags);
-+			if (r) {
-+				down_write(&_hash_lock);
-+				hc = dm_get_mdptr(md);
-+				if (hc && !hc->new_map) {
-+					hc->new_map = new_map;
-+					new_map = NULL;
-+				} else {
-+					r = -ENXIO;
-+				}
-+				up_write(&_hash_lock);
-+				if (new_map) {
-+					dm_sync_table(md);
-+					dm_table_destroy(new_map);
-+				}
-+				dm_put(md);
-+				return r;
-+			}
-+		}
- 
- 		old_size = dm_get_size(md);
- 		old_map = dm_swap_table(md, new_map);
+--- a/drivers/pinctrl/pinctrl-single.c
++++ b/drivers/pinctrl/pinctrl-single.c
+@@ -345,6 +345,8 @@ static int pcs_get_function(struct pinct
+ 		return -ENOTSUPP;
+ 	fselector = setting->func;
+ 	function = pinmux_generic_get_function(pctldev, fselector);
++	if (!function)
++		return -EINVAL;
+ 	*func = function->data;
+ 	if (!(*func)) {
+ 		dev_err(pcs->dev, "%s could not find function%i\n",
 
 
 
