@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-72284-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71984-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55BB8967A01
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:50:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2890B9678AD
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:34:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9E0E6B20923
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:50:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B9413B2213C
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:34:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AADA17E919;
-	Sun,  1 Sep 2024 16:50:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5978317E00C;
+	Sun,  1 Sep 2024 16:34:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XycM9ici"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tSI2PPA9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCE71143894;
-	Sun,  1 Sep 2024 16:50:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16D861E87B;
+	Sun,  1 Sep 2024 16:34:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209426; cv=none; b=bL0x3zsoc4PAtdY3JYQhb9K1vVsvfxAHGlIaOwqwHNxmg6Om4Wfl2mtjeMn9s++VETOWUcmfvj/LFCH8xsG6mot9rzqMVgOXE7wPYnQkc9jvQ6+TUa2SgUPCoI1pd1baRAIPnJjQrbnUlKF2/pflZSaqLTXPXY+dFuWdGdlZbQE=
+	t=1725208462; cv=none; b=PD2JhinFSDYjDpNHjF5BW7YNLy4B0arnn3FqVMcAFwzGepan0yh/ZDepytPn/SLDYJbXdOohA6Whq2yCbR8hSJPUMDGzBXWCLRMgUem0kFzUt1kj1NrmAizNmF+TuPz5OxRLb8gpOlCJnGfI3ZO3XtUk9bEHcS3UnzEncrR1wtw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209426; c=relaxed/simple;
-	bh=A59qfPWwLxgN8MrOrXedJcMmulONCq+Xl8O8BFiZjLc=;
+	s=arc-20240116; t=1725208462; c=relaxed/simple;
+	bh=VQBUEP1HTo6GNB2PK0P4RF7sTYIWZoG0gzyNgzCMbnw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=C4sTumapF+FMBCaNTf8W1iL+nNMdy8IfQAa+IZHt4Pg/OhS+JXrfzHa+XV6+ot54eeSSACPu0bpdhHDYIzYH8UiBHf0bm20BtLqE6dh1p7t84TozJNyao11zc25dIaTwVtS/KW7U6xajGiAGzYiqRzj/bhMmz3kTOxTKPcxhvbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XycM9ici; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C106C4CEC3;
-	Sun,  1 Sep 2024 16:50:26 +0000 (UTC)
+	 MIME-Version; b=m4ujrc17h+L6NdwVdjySsODuKkqlqBG1FqGjT2DRCBPQmlk57OGgSvPgsbz4wPkhm/SxLxiOSUrCPeedvuAVmT1x2tlrGIYiGbsKxueFbrZ0ANd/U9En3zi2Qe21eZtO78ShCtysvF+rRC8qQdgKSVO0tVt0M098/OapJ/N/wt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tSI2PPA9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 925A1C4CEC4;
+	Sun,  1 Sep 2024 16:34:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209426;
-	bh=A59qfPWwLxgN8MrOrXedJcMmulONCq+Xl8O8BFiZjLc=;
+	s=korg; t=1725208462;
+	bh=VQBUEP1HTo6GNB2PK0P4RF7sTYIWZoG0gzyNgzCMbnw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XycM9iciHUbkZDA3Z8875mRsTNdkS3LGT2xEA6OaG/8PXM/pTumQpX9I/jLJRwluE
-	 RHRRwy9K6l4vo5IMVn/3vw4Lya3kEdfDf5KHbXrF6VtvjvgZDWzrgMBDRjbGQqW8lP
-	 kIp7Mh2FIlGJ6OEdPMTSBCtBKB7SRzPVMT+Su78s=
+	b=tSI2PPA9GWnucH0eXZDfHH3fdttTEpVoh00xk5DaHLO4lXNmvvh2tqnYgWcXlJAme
+	 bA2nUA4EL1thL2PFm5d/n4pPagx9usbwUGfE+NUYKFx7fxsbsIC62M3ziCD+/ViKJn
+	 zXSZXB132lzFduiZeb9w8GJMq8hl5rQJSNJeEQh8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Mateusz Guzik <mjguzik@gmail.com>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 5.10 009/151] vfs: Dont evict inode under the inode lru traversing context
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 058/149] ASoC: cs-amp-lib: Ignore empty UEFI calibration entries
 Date: Sun,  1 Sep 2024 18:16:09 +0200
-Message-ID: <20240901160814.449968247@linuxfoundation.org>
+Message-ID: <20240901160819.650972860@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
-References: <20240901160814.090297276@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,220 +60,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhihao Cheng <chengzhihao1@huawei.com>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-commit 2a0629834cd82f05d424bbc193374f9a43d1f87d upstream.
+[ Upstream commit bb4485562f5907708f1c218b5d70dce04165d1e1 ]
 
-The inode reclaiming process(See function prune_icache_sb) collects all
-reclaimable inodes and mark them with I_FREEING flag at first, at that
-time, other processes will be stuck if they try getting these inodes
-(See function find_inode_fast), then the reclaiming process destroy the
-inodes by function dispose_list(). Some filesystems(eg. ext4 with
-ea_inode feature, ubifs with xattr) may do inode lookup in the inode
-evicting callback function, if the inode lookup is operated under the
-inode lru traversing context, deadlock problems may happen.
+If the timestamp of a calibration entry is 0 it is an unused entry and
+must be ignored.
 
-Case 1: In function ext4_evict_inode(), the ea inode lookup could happen
-        if ea_inode feature is enabled, the lookup process will be stuck
-	under the evicting context like this:
+Some end-products reserve EFI space for calibration entries by shipping
+with a zero-filled EFI file. When searching the file for calibration
+data the driver must skip the empty entries. The timestamp of a valid
+entry is always non-zero.
 
- 1. File A has inode i_reg and an ea inode i_ea
- 2. getfattr(A, xattr_buf) // i_ea is added into lru // lru->i_ea
- 3. Then, following three processes running like this:
-
-    PA                              PB
- echo 2 > /proc/sys/vm/drop_caches
-  shrink_slab
-   prune_dcache_sb
-   // i_reg is added into lru, lru->i_ea->i_reg
-   prune_icache_sb
-    list_lru_walk_one
-     inode_lru_isolate
-      i_ea->i_state |= I_FREEING // set inode state
-     inode_lru_isolate
-      __iget(i_reg)
-      spin_unlock(&i_reg->i_lock)
-      spin_unlock(lru_lock)
-                                     rm file A
-                                      i_reg->nlink = 0
-      iput(i_reg) // i_reg->nlink is 0, do evict
-       ext4_evict_inode
-        ext4_xattr_delete_inode
-         ext4_xattr_inode_dec_ref_all
-          ext4_xattr_inode_iget
-           ext4_iget(i_ea->i_ino)
-            iget_locked
-             find_inode_fast
-              __wait_on_freeing_inode(i_ea) ----→ AA deadlock
-    dispose_list // cannot be executed by prune_icache_sb
-     wake_up_bit(&i_ea->i_state)
-
-Case 2: In deleted inode writing function ubifs_jnl_write_inode(), file
-        deleting process holds BASEHD's wbuf->io_mutex while getting the
-	xattr inode, which could race with inode reclaiming process(The
-        reclaiming process could try locking BASEHD's wbuf->io_mutex in
-	inode evicting function), then an ABBA deadlock problem would
-	happen as following:
-
- 1. File A has inode ia and a xattr(with inode ixa), regular file B has
-    inode ib and a xattr.
- 2. getfattr(A, xattr_buf) // ixa is added into lru // lru->ixa
- 3. Then, following three processes running like this:
-
-        PA                PB                        PC
-                echo 2 > /proc/sys/vm/drop_caches
-                 shrink_slab
-                  prune_dcache_sb
-                  // ib and ia are added into lru, lru->ixa->ib->ia
-                  prune_icache_sb
-                   list_lru_walk_one
-                    inode_lru_isolate
-                     ixa->i_state |= I_FREEING // set inode state
-                    inode_lru_isolate
-                     __iget(ib)
-                     spin_unlock(&ib->i_lock)
-                     spin_unlock(lru_lock)
-                                                   rm file B
-                                                    ib->nlink = 0
- rm file A
-  iput(ia)
-   ubifs_evict_inode(ia)
-    ubifs_jnl_delete_inode(ia)
-     ubifs_jnl_write_inode(ia)
-      make_reservation(BASEHD) // Lock wbuf->io_mutex
-      ubifs_iget(ixa->i_ino)
-       iget_locked
-        find_inode_fast
-         __wait_on_freeing_inode(ixa)
-          |          iput(ib) // ib->nlink is 0, do evict
-          |           ubifs_evict_inode
-          |            ubifs_jnl_delete_inode(ib)
-          ↓             ubifs_jnl_write_inode
-     ABBA deadlock ←-----make_reservation(BASEHD)
-                   dispose_list // cannot be executed by prune_icache_sb
-                    wake_up_bit(&ixa->i_state)
-
-Fix the possible deadlock by using new inode state flag I_LRU_ISOLATING
-to pin the inode in memory while inode_lru_isolate() reclaims its pages
-instead of using ordinary inode reference. This way inode deletion
-cannot be triggered from inode_lru_isolate() thus avoiding the deadlock.
-evict() is made to wait for I_LRU_ISOLATING to be cleared before
-proceeding with inode cleanup.
-
-Link: https://lore.kernel.org/all/37c29c42-7685-d1f0-067d-63582ffac405@huaweicloud.com/
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=219022
-Fixes: e50e5129f384 ("ext4: xattr-in-inode support")
-Fixes: 7959cf3a7506 ("ubifs: journal: Handle xattrs like files")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Link: https://lore.kernel.org/r/20240809031628.1069873-1-chengzhihao@huaweicloud.com
-Reviewed-by: Jan Kara <jack@suse.cz>
-Suggested-by: Jan Kara <jack@suse.cz>
-Suggested-by: Mateusz Guzik <mjguzik@gmail.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Fixes: 1cad8725f2b9 ("ASoC: cs-amp-lib: Add helpers for factory calibration data")
+Link: https://patch.msgid.link/20240822133544.304421-1-rf@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/inode.c         |   39 +++++++++++++++++++++++++++++++++++++--
- include/linux/fs.h |    5 +++++
- 2 files changed, 42 insertions(+), 2 deletions(-)
+ sound/soc/codecs/cs-amp-lib.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/fs/inode.c
-+++ b/fs/inode.c
-@@ -453,6 +453,39 @@ static void inode_lru_list_del(struct in
- 		this_cpu_dec(nr_unused);
- }
+diff --git a/sound/soc/codecs/cs-amp-lib.c b/sound/soc/codecs/cs-amp-lib.c
+index 605964af8afad..51b128c806718 100644
+--- a/sound/soc/codecs/cs-amp-lib.c
++++ b/sound/soc/codecs/cs-amp-lib.c
+@@ -182,6 +182,10 @@ static int _cs_amp_get_efi_calibration_data(struct device *dev, u64 target_uid,
+ 		for (i = 0; i < efi_data->count; ++i) {
+ 			u64 cal_target = cs_amp_cal_target_u64(&efi_data->data[i]);
  
-+static void inode_pin_lru_isolating(struct inode *inode)
-+{
-+	lockdep_assert_held(&inode->i_lock);
-+	WARN_ON(inode->i_state & (I_LRU_ISOLATING | I_FREEING | I_WILL_FREE));
-+	inode->i_state |= I_LRU_ISOLATING;
-+}
++			/* Skip empty entries */
++			if (!efi_data->data[i].calTime[0] && !efi_data->data[i].calTime[1])
++				continue;
 +
-+static void inode_unpin_lru_isolating(struct inode *inode)
-+{
-+	spin_lock(&inode->i_lock);
-+	WARN_ON(!(inode->i_state & I_LRU_ISOLATING));
-+	inode->i_state &= ~I_LRU_ISOLATING;
-+	smp_mb();
-+	wake_up_bit(&inode->i_state, __I_LRU_ISOLATING);
-+	spin_unlock(&inode->i_lock);
-+}
-+
-+static void inode_wait_for_lru_isolating(struct inode *inode)
-+{
-+	spin_lock(&inode->i_lock);
-+	if (inode->i_state & I_LRU_ISOLATING) {
-+		DEFINE_WAIT_BIT(wq, &inode->i_state, __I_LRU_ISOLATING);
-+		wait_queue_head_t *wqh;
-+
-+		wqh = bit_waitqueue(&inode->i_state, __I_LRU_ISOLATING);
-+		spin_unlock(&inode->i_lock);
-+		__wait_on_bit(wqh, &wq, bit_wait, TASK_UNINTERRUPTIBLE);
-+		spin_lock(&inode->i_lock);
-+		WARN_ON(inode->i_state & I_LRU_ISOLATING);
-+	}
-+	spin_unlock(&inode->i_lock);
-+}
-+
- /**
-  * inode_sb_list_add - add inode to the superblock list of inodes
-  * @inode: inode to add
-@@ -565,6 +598,8 @@ static void evict(struct inode *inode)
- 
- 	inode_sb_list_del(inode);
- 
-+	inode_wait_for_lru_isolating(inode);
-+
- 	/*
- 	 * Wait for flusher thread to be done with the inode so that filesystem
- 	 * does not start destroying it while writeback is still running. Since
-@@ -764,7 +799,7 @@ static enum lru_status inode_lru_isolate
- 	}
- 
- 	if (inode_has_buffers(inode) || inode->i_data.nrpages) {
--		__iget(inode);
-+		inode_pin_lru_isolating(inode);
- 		spin_unlock(&inode->i_lock);
- 		spin_unlock(lru_lock);
- 		if (remove_inode_buffers(inode)) {
-@@ -777,7 +812,7 @@ static enum lru_status inode_lru_isolate
- 			if (current->reclaim_state)
- 				current->reclaim_state->reclaimed_slab += reap;
+ 			/* Skip entries with unpopulated silicon ID */
+ 			if (cal_target == 0)
+ 				continue;
+@@ -193,7 +197,8 @@ static int _cs_amp_get_efi_calibration_data(struct device *dev, u64 target_uid,
  		}
--		iput(inode);
-+		inode_unpin_lru_isolating(inode);
- 		spin_lock(lru_lock);
- 		return LRU_RETRY;
  	}
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -2249,6 +2249,9 @@ static inline void kiocb_clone(struct ki
-  *			Used to detect that mark_inode_dirty() should not move
-  * 			inode between dirty lists.
-  *
-+ * I_LRU_ISOLATING	Inode is pinned being isolated from LRU without holding
-+ *			i_count.
-+ *
-  * Q: What is the difference between I_WILL_FREE and I_FREEING?
-  */
- #define I_DIRTY_SYNC		(1 << 0)
-@@ -2271,6 +2274,8 @@ static inline void kiocb_clone(struct ki
- #define I_CREATING		(1 << 15)
- #define I_DONTCACHE		(1 << 16)
- #define I_SYNC_QUEUED		(1 << 17)
-+#define __I_LRU_ISOLATING	19
-+#define I_LRU_ISOLATING		(1 << __I_LRU_ISOLATING)
  
- #define I_DIRTY_INODE (I_DIRTY_SYNC | I_DIRTY_DATASYNC)
- #define I_DIRTY (I_DIRTY_INODE | I_DIRTY_PAGES)
+-	if (!cal && (amp_index >= 0) && (amp_index < efi_data->count)) {
++	if (!cal && (amp_index >= 0) && (amp_index < efi_data->count) &&
++	    (efi_data->data[amp_index].calTime[0] || efi_data->data[amp_index].calTime[1])) {
+ 		u64 cal_target = cs_amp_cal_target_u64(&efi_data->data[amp_index]);
+ 
+ 		/*
+-- 
+2.43.0
+
 
 
 
