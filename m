@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-72604-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72403-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64B74967B4C
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:07:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A36B9967A7D
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:56:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0FF961F22617
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:07:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D3DD41C20C5D
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:56:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EEEC3BB48;
-	Sun,  1 Sep 2024 17:07:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3707E18306C;
+	Sun,  1 Sep 2024 16:56:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m3FkwaRE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="si24krL0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FEBB26AC1;
-	Sun,  1 Sep 2024 17:07:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E812D16B391;
+	Sun,  1 Sep 2024 16:56:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210474; cv=none; b=c6x4yRtJBd3CAZdci/UOYAkvXt9qqHp28wNyVG4bGyUjCWLmJI7kdJyDkF0glJX3wA/xF9lE13+Wf9M4WIjip9CsyDr8ixcyNj9u7ACH/6lEumiWtfnTrQSaPILeVkD2tpOrL0v819TGgCdWP4x6YMIDl8AxCPDevg4iR23G0qU=
+	t=1725209808; cv=none; b=TCj67h2Mz9GUxUC1qVwGySwrbd0dplWEviBjPJMdd6i720bjdXibpA3/kIJr4NJTrUrUhxXkOL7kBv3jwUNUeOsKbKTbOR3VDdN/IGoFyti2iXkYTFYUn0MVz/ZhpfUgqcS0uFk+qoPylm6ypE/dk8GUW5ghf31M+HUaxbxea1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210474; c=relaxed/simple;
-	bh=MD74r7yAimuF+otA/1zGe4adHKweSK4vAHWN1hD4MZw=;
+	s=arc-20240116; t=1725209808; c=relaxed/simple;
+	bh=NDrCorSaE9aRALAopxQzA5td9CTuRK9pHMP0+o0QGFw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rcPu3PnrX9p2NxMtwLHnjY0K7UjUsScwUCpgMeGaPZlwcwIGSSBKvcFfWi5UqJoIV4Puod8YEsUsQ3fcps5duG6Gg0lD8JOln75kYwOJijCQa0RhiuRVWxYlP+3A41vfUveJvqv4Yv/awD8UvbWpCqlwGTBk3x+rPapls3yK/iE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m3FkwaRE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2C4AC4CEC3;
-	Sun,  1 Sep 2024 17:07:53 +0000 (UTC)
+	 MIME-Version; b=kayqxu8+yjk3dEXIz3wRREEKpqvLuy6+I3WQtrKanWulXUqjtVrrynjEV0XTeCog+vyyL/rbqIanDs2RPu18ZNm8ooHY3fjoWe0vBJPsmwrnRnjcpna/tYggX4oJ4GX8M/ZeY7ROyOp23eD3HH3nCzmEJLmtublzl0apXtsZgCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=si24krL0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 619E3C4CEC3;
+	Sun,  1 Sep 2024 16:56:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210474;
-	bh=MD74r7yAimuF+otA/1zGe4adHKweSK4vAHWN1hD4MZw=;
+	s=korg; t=1725209807;
+	bh=NDrCorSaE9aRALAopxQzA5td9CTuRK9pHMP0+o0QGFw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m3FkwaREvAH8PZVSy82qucX86lcJjHACg21++v0QHDlcmuqOLY0+qMhTSs44hPVrw
-	 S9Xo5C/9h+GOZu+vBxnYHOFoD+IcfDWqTbDNCYfGYyVNnR9PY6I3uOBuzBoegWFJ+g
-	 bI1t9yV1P+chq6zOOwlmJZReqcyXrjUHN1zACsvU=
+	b=si24krL0jcWtxg3F/usfePM+afCEBvNVrosjnVTvMjx7EDYjVCM2kDKuTXIDxHi3m
+	 649LjB03sAtzcO3GxiwdqfizJYd0ta4F0mYE9MnFdixB89WCdr5aafvpFIKeympO6Z
+	 BQxBMU2RSulRp5JoIji200c72OqH55I/ebewEgjE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Mina Almasry <almasrymina@google.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Joe Damato <jdamato@fastly.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Brendan Higgins <brendanhiggins@google.com>,
+	Kees Cook <keescook@chromium.org>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 199/215] net: busy-poll: use ktime_get_ns() instead of local_clock()
+Subject: [PATCH 5.10 151/151] apparmor: fix policy_unpack_test on big endian systems
 Date: Sun,  1 Sep 2024 18:18:31 +0200
-Message-ID: <20240901160830.874937297@linuxfoundation.org>
+Message-ID: <20240901160819.793471960@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
+References: <20240901160814.090297276@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,50 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit 0870b0d8b393dde53106678a1e2cec9dfa52f9b7 ]
+[ Upstream commit 98c0cc48e27e9d269a3e4db2acd72b486c88ec77 ]
 
-Typically, busy-polling durations are below 100 usec.
+policy_unpack_test fails on big endian systems because data byte order
+is expected to be little endian but is generated in host byte order.
+This results in test failures such as:
 
-When/if the busy-poller thread migrates to another cpu,
-local_clock() can be off by +/-2msec or more for small
-values of HZ, depending on the platform.
+ # policy_unpack_test_unpack_array_with_null_name: EXPECTATION FAILED at security/apparmor/policy_unpack_test.c:150
+    Expected array_size == (u16)16, but
+        array_size == 4096 (0x1000)
+        (u16)16 == 16 (0x10)
+    # policy_unpack_test_unpack_array_with_null_name: pass:0 fail:1 skip:0 total:1
+    not ok 3 policy_unpack_test_unpack_array_with_null_name
+    # policy_unpack_test_unpack_array_with_name: EXPECTATION FAILED at security/apparmor/policy_unpack_test.c:164
+    Expected array_size == (u16)16, but
+        array_size == 4096 (0x1000)
+        (u16)16 == 16 (0x10)
+    # policy_unpack_test_unpack_array_with_name: pass:0 fail:1 skip:0 total:1
 
-Use ktimer_get_ns() to ensure deterministic behavior,
-which is the whole point of busy-polling.
+Add the missing endianness conversions when generating test data.
 
-Fixes: 060212928670 ("net: add low latency socket poll")
-Fixes: 9a3c71aa8024 ("net: convert low latency sockets to sched_clock()")
-Fixes: 37089834528b ("sched, net: Fixup busy_loop_us_clock()")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Mina Almasry <almasrymina@google.com>
-Cc: Willem de Bruijn <willemb@google.com>
-Reviewed-by: Joe Damato <jdamato@fastly.com>
-Link: https://patch.msgid.link/20240827114916.223377-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 4d944bcd4e73 ("apparmor: add AppArmor KUnit tests for policy unpack")
+Cc: Brendan Higgins <brendanhiggins@google.com>
+Cc: Kees Cook <keescook@chromium.org>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/busy_poll.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ security/apparmor/policy_unpack_test.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/include/net/busy_poll.h b/include/net/busy_poll.h
-index 3459a04a3d61c..2c37aa0a4ccb9 100644
---- a/include/net/busy_poll.h
-+++ b/include/net/busy_poll.h
-@@ -63,7 +63,7 @@ static inline bool sk_can_busy_loop(struct sock *sk)
- static inline unsigned long busy_loop_current_time(void)
- {
- #ifdef CONFIG_NET_RX_BUSY_POLL
--	return (unsigned long)(local_clock() >> 10);
-+	return (unsigned long)(ktime_get_ns() >> 10);
- #else
- 	return 0;
- #endif
+diff --git a/security/apparmor/policy_unpack_test.c b/security/apparmor/policy_unpack_test.c
+index 533137f45361c..4951d9bef5794 100644
+--- a/security/apparmor/policy_unpack_test.c
++++ b/security/apparmor/policy_unpack_test.c
+@@ -78,14 +78,14 @@ struct aa_ext *build_aa_ext_struct(struct policy_unpack_fixture *puf,
+ 	*(buf + 1) = strlen(TEST_U32_NAME) + 1;
+ 	strcpy(buf + 3, TEST_U32_NAME);
+ 	*(buf + 3 + strlen(TEST_U32_NAME) + 1) = AA_U32;
+-	*((u32 *)(buf + 3 + strlen(TEST_U32_NAME) + 2)) = TEST_U32_DATA;
++	*((__le32 *)(buf + 3 + strlen(TEST_U32_NAME) + 2)) = cpu_to_le32(TEST_U32_DATA);
+ 
+ 	buf = e->start + TEST_NAMED_U64_BUF_OFFSET;
+ 	*buf = AA_NAME;
+ 	*(buf + 1) = strlen(TEST_U64_NAME) + 1;
+ 	strcpy(buf + 3, TEST_U64_NAME);
+ 	*(buf + 3 + strlen(TEST_U64_NAME) + 1) = AA_U64;
+-	*((u64 *)(buf + 3 + strlen(TEST_U64_NAME) + 2)) = TEST_U64_DATA;
++	*((__le64 *)(buf + 3 + strlen(TEST_U64_NAME) + 2)) = cpu_to_le64(TEST_U64_DATA);
+ 
+ 	buf = e->start + TEST_NAMED_BLOB_BUF_OFFSET;
+ 	*buf = AA_NAME;
+@@ -101,7 +101,7 @@ struct aa_ext *build_aa_ext_struct(struct policy_unpack_fixture *puf,
+ 	*(buf + 1) = strlen(TEST_ARRAY_NAME) + 1;
+ 	strcpy(buf + 3, TEST_ARRAY_NAME);
+ 	*(buf + 3 + strlen(TEST_ARRAY_NAME) + 1) = AA_ARRAY;
+-	*((u16 *)(buf + 3 + strlen(TEST_ARRAY_NAME) + 2)) = TEST_ARRAY_SIZE;
++	*((__le16 *)(buf + 3 + strlen(TEST_ARRAY_NAME) + 2)) = cpu_to_le16(TEST_ARRAY_SIZE);
+ 
+ 	return e;
+ }
 -- 
 2.43.0
 
