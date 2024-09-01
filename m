@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-72175-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72249-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 468A1967989
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:47:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46A2F9679DE
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:49:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 77E4C1C20CD6
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:47:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01287280A16
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:49:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0253218453F;
-	Sun,  1 Sep 2024 16:44:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D857D185936;
+	Sun,  1 Sep 2024 16:48:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k10whDxQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mYY0Zq0r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B49671C68C;
-	Sun,  1 Sep 2024 16:44:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95C201E87B;
+	Sun,  1 Sep 2024 16:48:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209089; cv=none; b=foHRFvA9uSjYq5OF0lViPxs7h0xK085fICbSfYrM6aN/7NnktWwE2T7IGzwFkOng+jbFvqMbljTlJhWuL2etWhjNNJ70GITV2KY4gMGSdrpd2VFrhjDbF0pVkEdxcVqix6bn2rAq+ZISwruAzJSoOTEkunZUp3/QPAbcPGPBx7I=
+	t=1725209317; cv=none; b=L+t8YHj+7K+zNrnWp6IThHbTU2W3mbvcr0wjYyvE0XItauimz7eU7tL0V63TqCiK0U+2zNbs0OwLMoV/WcQjEIx07HAsX9M2H/7c0lY4gGHoVehRb2fDh5GchwpVpDefylwGKLwZ2ztOs7kZ0iZAmDVq5Gq0y6J1MXKIJ9h0SBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209089; c=relaxed/simple;
-	bh=ilzknX4SJfHwMWTnZwaQukLu3VD0DQudmhV212FLpNo=;
+	s=arc-20240116; t=1725209317; c=relaxed/simple;
+	bh=N1wRxK6F6gaIwM+5wwPnXi5Gf0Eg33wzEXdr4XbsPbU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t9Hs2hU96O/GJr8ax1P1z5K6pCS9DZU5PkL+M/23+5DXoYpAvMYAGxfXYwjkeDVc1MCNt+7rn7NQFel+mXYZCXBpVdgJlPUe47fPOIjwE4j5s+XxccBi0yCtxQNlkbD97Za5EheIOuEdCUb2ocNdifOrlekdbz8thBbAphUOtJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k10whDxQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 419C3C4CEC3;
-	Sun,  1 Sep 2024 16:44:49 +0000 (UTC)
+	 MIME-Version; b=oLKjD8X9paUBTnoTxf5v2ejryB3T7SmXiuyF2IKiv0FCpF2SS/n9AR19J61VR3HseoY7g50tKfnmGnpW5LVKE/3VwkRv5yfo6wNSgQfWDtJ0yYTXZgG9Okl2ac9fR0sOkhQgj3RRoMhOc4OZmtXEZACarmDklvl0KR3sdN+X6+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mYY0Zq0r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C12FC4CEC3;
+	Sun,  1 Sep 2024 16:48:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209089;
-	bh=ilzknX4SJfHwMWTnZwaQukLu3VD0DQudmhV212FLpNo=;
+	s=korg; t=1725209317;
+	bh=N1wRxK6F6gaIwM+5wwPnXi5Gf0Eg33wzEXdr4XbsPbU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k10whDxQWQB2oMueBxI/+bU6bI5ZEeIBT8XbI6fz7zvEKDxWR+XW5Rrq8STWWDdTx
-	 y0tLPCs8FttKaWk6B7TQspJiNieR3hNZx+n/qyODc1uuegA/BiclQehlSvxwzA/WY+
-	 8DwnaSdk/tzQCYjiWpOU6lDzu/pEhThikAYvm8M4=
+	b=mYY0Zq0r86nFyMISgM2cqp5kgnFdu9qaz7BE0LT5uUpQyDriHGfDBE/eEPukHBBTK
+	 8emHWAX/vHbjpC2xGXAZz19ilbS8Y/qx0p5Kef1xtmVt8lqGb7AHphTb99X77/Oqv3
+	 J6kwBJK0x4A8D9U2BrSP2AyIRJYz9m43SA4aEVGg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Patrice Chotard <patrice.chotard@foss.st.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 5.4 131/134] usb: dwc3: st: add missing depopulate in probe error path
+	Xin Long <lucien.xin@gmail.com>,
+	Ondrej Mosnacek <omosnace@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Paul Moore <paul@paul-moore.com>
+Subject: [PATCH 6.1 52/71] sctp: fix association labeling in the duplicate COOKIE-ECHO case
 Date: Sun,  1 Sep 2024 18:17:57 +0200
-Message-ID: <20240901160815.006943272@linuxfoundation.org>
+Message-ID: <20240901160803.853537177@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
-References: <20240901160809.752718937@linuxfoundation.org>
+In-Reply-To: <20240901160801.879647959@linuxfoundation.org>
+References: <20240901160801.879647959@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +64,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Ondrej Mosnacek <omosnace@redhat.com>
 
-commit cd4897bfd14f6a5388b21ba45a066541a0425199 upstream.
+[ Upstream commit 3a0504d54b3b57f0d7bf3d9184a00c9f8887f6d7 ]
 
-Depopulate device in probe error paths to fix leak of children
-resources.
+sctp_sf_do_5_2_4_dupcook() currently calls security_sctp_assoc_request()
+on new_asoc, but as it turns out, this association is always discarded
+and the LSM labels never get into the final association (asoc).
 
-Fixes: f83fca0707c6 ("usb: dwc3: add ST dwc3 glue layer to manage dwc3 HC")
-Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Patrice Chotard <patrice.chotard@foss.st.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/20240814093957.37940-2-krzysztof.kozlowski@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This can be reproduced by having two SCTP endpoints try to initiate an
+association with each other at approximately the same time and then peel
+off the association into a new socket, which exposes the unitialized
+labels and triggers SELinux denials.
+
+Fix it by calling security_sctp_assoc_request() on asoc instead of
+new_asoc. Xin Long also suggested limit calling the hook only to cases
+A, B, and D, since in cases C and E the COOKIE ECHO chunk is discarded
+and the association doesn't enter the ESTABLISHED state, so rectify that
+as well.
+
+One related caveat with SELinux and peer labeling: When an SCTP
+connection is set up simultaneously in this way, we will end up with an
+association that is initialized with security_sctp_assoc_request() on
+both sides, so the MLS component of the security context of the
+association will get swapped between the peers, instead of just one side
+setting it to the other's MLS component. However, at that point
+security_sctp_assoc_request() had already been called on both sides in
+sctp_sf_do_unexpected_init() (on a temporary association) and thus if
+the exchange didn't fail before due to MLS, it won't fail now either
+(most likely both endpoints have the same MLS range).
+
+Tested by:
+ - reproducer from https://src.fedoraproject.org/tests/selinux/pull-request/530
+ - selinux-testsuite (https://github.com/SELinuxProject/selinux-testsuite/)
+ - sctp-tests (https://github.com/sctp/sctp-tests) - no tests failed
+   that wouldn't fail also without the patch applied
+
+Fixes: c081d53f97a1 ("security: pass asoc to sctp_assoc_request and sctp_sk_clone")
+Suggested-by: Xin Long <lucien.xin@gmail.com>
+Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
+Acked-by: Xin Long <lucien.xin@gmail.com>
+Acked-by: Paul Moore <paul@paul-moore.com> (LSM/SELinux)
+Link: https://patch.msgid.link/20240826130711.141271-1-omosnace@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/dwc3-st.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/sctp/sm_statefuns.c | 22 ++++++++++++++++------
+ 1 file changed, 16 insertions(+), 6 deletions(-)
 
---- a/drivers/usb/dwc3/dwc3-st.c
-+++ b/drivers/usb/dwc3/dwc3-st.c
-@@ -266,7 +266,7 @@ static int st_dwc3_probe(struct platform
- 	if (!child_pdev) {
- 		dev_err(dev, "failed to find dwc3 core device\n");
- 		ret = -ENODEV;
--		goto err_node_put;
-+		goto depopulate;
+diff --git a/net/sctp/sm_statefuns.c b/net/sctp/sm_statefuns.c
+index 5383b6a9da61c..a56749a50e5c5 100644
+--- a/net/sctp/sm_statefuns.c
++++ b/net/sctp/sm_statefuns.c
+@@ -2261,12 +2261,6 @@ enum sctp_disposition sctp_sf_do_5_2_4_dupcook(
+ 		}
  	}
  
- 	dwc3_data->dr_mode = usb_get_dr_mode(&child_pdev->dev);
-@@ -282,6 +282,7 @@ static int st_dwc3_probe(struct platform
- 	ret = st_dwc3_drd_init(dwc3_data);
- 	if (ret) {
- 		dev_err(dev, "drd initialisation failed\n");
-+		of_platform_depopulate(dev);
- 		goto undo_softreset;
- 	}
+-	/* Update socket peer label if first association. */
+-	if (security_sctp_assoc_request(new_asoc, chunk->head_skb ?: chunk->skb)) {
+-		sctp_association_free(new_asoc);
+-		return sctp_sf_pdiscard(net, ep, asoc, type, arg, commands);
+-	}
+-
+ 	/* Set temp so that it won't be added into hashtable */
+ 	new_asoc->temp = 1;
  
-@@ -291,6 +292,8 @@ static int st_dwc3_probe(struct platform
- 	platform_set_drvdata(pdev, dwc3_data);
- 	return 0;
+@@ -2275,6 +2269,22 @@ enum sctp_disposition sctp_sf_do_5_2_4_dupcook(
+ 	 */
+ 	action = sctp_tietags_compare(new_asoc, asoc);
  
-+depopulate:
-+	of_platform_depopulate(dev);
- err_node_put:
- 	of_node_put(child);
- undo_softreset:
++	/* In cases C and E the association doesn't enter the ESTABLISHED
++	 * state, so there is no need to call security_sctp_assoc_request().
++	 */
++	switch (action) {
++	case 'A': /* Association restart. */
++	case 'B': /* Collision case B. */
++	case 'D': /* Collision case D. */
++		/* Update socket peer label if first association. */
++		if (security_sctp_assoc_request((struct sctp_association *)asoc,
++						chunk->head_skb ?: chunk->skb)) {
++			sctp_association_free(new_asoc);
++			return sctp_sf_pdiscard(net, ep, asoc, type, arg, commands);
++		}
++		break;
++	}
++
+ 	switch (action) {
+ 	case 'A': /* Association restart. */
+ 		retval = sctp_sf_do_dupcook_a(net, ep, asoc, chunk, commands,
+-- 
+2.43.0
+
 
 
 
