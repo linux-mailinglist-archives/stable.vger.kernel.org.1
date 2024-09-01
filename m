@@ -1,54 +1,59 @@
-Return-Path: <stable+bounces-72242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72612-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 553C09679D5
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:49:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88146967B54
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:08:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B7A73B219C6
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:49:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3205B1F2282C
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:08:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 765FF1849CB;
-	Sun,  1 Sep 2024 16:48:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBCE917E919;
+	Sun,  1 Sep 2024 17:08:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mQoJF1m4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zoDl8rTu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36018183CA3;
-	Sun,  1 Sep 2024 16:48:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 782FA3BB59;
+	Sun,  1 Sep 2024 17:08:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209296; cv=none; b=nOlDn7O3PtrsJ69qGYY6kJZbPsMmKb9WImtj84ZuPZf/JQDU2dDlleSbjchL9bvNlTXmWhQKUOzD2D77R2E3P2AjzwM923WR2Xk2XalIK/z+xDtLydwY9l95hAOyL7SivF/6CP8D1qWWkOjEN6k0qHRtNUC9dWVBRfc9ROkqZsE=
+	t=1725210501; cv=none; b=JgiJqvAjB9La4vRYI30+4GffT1ztwLATvFTr8/Sz82+Ecl65Rpc90iHsV+SD3EebW0FQL6zJVwHTqT+oCzbfq8MA1u/W4H5TZu9e9ZvdrACMMP9dW+DvbAqPrCouWNlZvvWsVXQrR7sxbb4OpOSfPLNXbMuhzMv01k/heL4P+Iw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209296; c=relaxed/simple;
-	bh=C6jpKMeBEsrTF2lnFDtWD4ppwjUYLfxTTxEUaVu0wi8=;
+	s=arc-20240116; t=1725210501; c=relaxed/simple;
+	bh=Fuaa3yKALtg2CHJh91rs2oS2IcUylI/3QGahoFGGk44=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yi67xaYvK1cLeMOL8jeR4tFtpXLl7evbyTK/2NFAXuWxBDkniPSDTcx30nhtoqh3+/ld+fJNcxdF65ZjudbRvXQkBySdK3VJsP3GqMcHIT9zr+NDiOvgW1gWPur4YQ7SjlOu5+mYrjiPqiiGi3T9QWv9pSpOx6AJ4SlrqP9pc40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mQoJF1m4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1536C4CEC3;
-	Sun,  1 Sep 2024 16:48:15 +0000 (UTC)
+	 MIME-Version; b=lkC5UBmzXnnPBnJyc5Q0QJ+utOFMAMYh2r/HGhAiMfumrthBHeA49XuDke1Hfm87WvzB7CazDyY0tBRiqm/238irMa4SBt8bZD5+ToVHGQXsfJkdo7Au+m2JdkR7FYCEaHr9vAkfRWvs3QBiJzKqook1GPLExqU/qbEaUOPO8J4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zoDl8rTu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96218C4CEC3;
+	Sun,  1 Sep 2024 17:08:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209296;
-	bh=C6jpKMeBEsrTF2lnFDtWD4ppwjUYLfxTTxEUaVu0wi8=;
+	s=korg; t=1725210501;
+	bh=Fuaa3yKALtg2CHJh91rs2oS2IcUylI/3QGahoFGGk44=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mQoJF1m4w9WJPX7pAUHtfuf6PDJ2XxHo/JuWda0TmOOc13ZdR05D19+Gw8+o9tyXo
-	 GtkRtKHTUgZBwwnLACmx0ufJUIUoVRQtu0ItfAo9AMK5ZB39u/obrLHdw5uC6HKcna
-	 9Y1GyTnE6hdXbt4FtXZD9FprZBK+vl8wi1OAYdzA=
+	b=zoDl8rTubsIRwQDSTnkCd/dazz9MrN1RDnPzZK6RIXLqMoQU8IXr8A0ve/LkEfq5s
+	 pnbzxNyKyLoYTAJN3J+bnyVnSfT6GJ+Wx2UeyoHVIJZX4/e4pj9cmAepXC/r7g3jH2
+	 0huriiQ/OVCNEM/r9F1QRK8sVvhA9CSCFyF1MwHg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>
-Subject: [PATCH 6.1 63/71] usb: core: sysfs: Unmerge @usb3_hardware_lpm_attr_group in remove_power_attributes()
-Date: Sun,  1 Sep 2024 18:18:08 +0200
-Message-ID: <20240901160804.264642019@linuxfoundation.org>
+	Richard Kojedzinszky <richard@kojedz.in>,
+	Huang-Huang Bao <i@eh5.me>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Daniel Golle <daniel@makrotopia.org>,
+	Trevor Woerner <twoerner@gmail.com>,
+	Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 5.15 177/215] pinctrl: rockchip: correct RK3328 iomux width flag for GPIO2-B pins
+Date: Sun,  1 Sep 2024 18:18:09 +0200
+Message-ID: <20240901160830.053466994@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160801.879647959@linuxfoundation.org>
-References: <20240901160801.879647959@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,37 +65,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Huang-Huang Bao <i@eh5.me>
 
-commit 3a8839bbb86da7968a792123ed2296d063871a52 upstream.
+commit 128f71fe014fc91efa1407ce549f94a9a9f1072c upstream.
 
-Device attribute group @usb3_hardware_lpm_attr_group is merged by
-add_power_attributes(), but it is not unmerged explicitly, fixed by
-unmerging it in remove_power_attributes().
+The base iomux offsets for each GPIO pin line are accumulatively
+calculated based off iomux width flag in rockchip_pinctrl_get_soc_data.
+If the iomux width flag is one of IOMUX_WIDTH_4BIT, IOMUX_WIDTH_3BIT or
+IOMUX_WIDTH_2BIT, the base offset for next pin line would increase by 8
+bytes, otherwise it would increase by 4 bytes.
 
-Fixes: 655fe4effe0f ("usbcore: add sysfs support to xHCI usb3 hardware LPM")
+Despite most of GPIO2-B iomux have 2-bit data width, which can be fit
+into 4 bytes space with write mask, it actually take 8 bytes width for
+whole GPIO2-B line.
+
+Commit e8448a6c817c ("pinctrl: rockchip: fix pinmux bits for RK3328
+GPIO2-B pins") wrongly set iomux width flag to 0, causing all base
+iomux offset for line after GPIO2-B to be calculated wrong. Fix the
+iomux width flag to IOMUX_WIDTH_2BIT so the offset after GPIO2-B is
+correctly increased by 8, matching the actual width of GPIO2-B iomux.
+
+Fixes: e8448a6c817c ("pinctrl: rockchip: fix pinmux bits for RK3328 GPIO2-B pins")
 Cc: stable@vger.kernel.org
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/r/20240820-sysfs_fix-v2-1-a9441487077e@quicinc.com
+Reported-by: Richard Kojedzinszky <richard@kojedz.in>
+Closes: https://lore.kernel.org/linux-rockchip/4f29b743202397d60edfb3c725537415@kojedz.in/
+Tested-by: Richard Kojedzinszky <richard@kojedz.in>
+Signed-off-by: Huang-Huang Bao <i@eh5.me>
+Reviewed-by: Heiko Stuebner <heiko@sntech.de>
+Tested-by: Daniel Golle <daniel@makrotopia.org>
+Tested-by: Trevor Woerner <twoerner@gmail.com>
+Link: https://lore.kernel.org/20240709105428.1176375-1-i@eh5.me
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/sysfs.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/pinctrl/pinctrl-rockchip.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/core/sysfs.c
-+++ b/drivers/usb/core/sysfs.c
-@@ -670,6 +670,7 @@ static int add_power_attributes(struct d
- 
- static void remove_power_attributes(struct device *dev)
- {
-+	sysfs_unmerge_group(&dev->kobj, &usb3_hardware_lpm_attr_group);
- 	sysfs_unmerge_group(&dev->kobj, &usb2_hardware_lpm_attr_group);
- 	sysfs_unmerge_group(&dev->kobj, &power_attr_group);
- }
+--- a/drivers/pinctrl/pinctrl-rockchip.c
++++ b/drivers/pinctrl/pinctrl-rockchip.c
+@@ -3218,7 +3218,7 @@ static struct rockchip_pin_bank rk3328_p
+ 	PIN_BANK_IOMUX_FLAGS(0, 32, "gpio0", 0, 0, 0, 0),
+ 	PIN_BANK_IOMUX_FLAGS(1, 32, "gpio1", 0, 0, 0, 0),
+ 	PIN_BANK_IOMUX_FLAGS(2, 32, "gpio2", 0,
+-			     0,
++			     IOMUX_WIDTH_2BIT,
+ 			     IOMUX_WIDTH_3BIT,
+ 			     0),
+ 	PIN_BANK_IOMUX_FLAGS(3, 32, "gpio3",
 
 
 
