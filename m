@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-72384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72552-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E665C967A6A
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:55:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBA3C967B18
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:05:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 54B1EB20A48
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:55:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 757DE281166
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:05:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0205181B86;
-	Sun,  1 Sep 2024 16:55:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AE8117ADE1;
+	Sun,  1 Sep 2024 17:05:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sA24mMAh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MR3Moro2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6669D208A7;
-	Sun,  1 Sep 2024 16:55:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBCF3376EC;
+	Sun,  1 Sep 2024 17:05:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209747; cv=none; b=Rz+Mflx2Hjnw4RAdRJdlHyyTxlOKCCh/SIqZe6uun7LsDgog9RoCupAj2McHDNjY7ugLaGKgz7y9bNJSWaWJkWi/DDypAFv1msV5ov3f0SdhZBp0rxFvEYmnpiK6eqFjxE8v7uye5iYgP7ICEmWp+2DN5Uv03TKHFdiW7hyuKSw=
+	t=1725210300; cv=none; b=ktdxRjIBSjPkSkR2FOkvG/hqJzOLRKwPJf9mBwWiX4ZERgzC4NmCNy8mohbvytP86gEGbjvx5wTbRacEQJasXKFlxmlOGV9b0WShhJhWxkLALBscM5+O+DsIP6OT3rHrUmhsJBi0qFmADHnUix6ej1EFiE/PadsOI2U59/95Ng4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209747; c=relaxed/simple;
-	bh=EHClZhC7jehXwMZCHoSKVx9zPCxhjRQoH4BrxBsZhY4=;
+	s=arc-20240116; t=1725210300; c=relaxed/simple;
+	bh=qVjXJGMYjm8iJ5xu82VcSu+nf6AjI/cnqGFfv5Pcroo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O+G3LnylkXW+QsR42vIMzPOWp2GunxX0VGqkJ7QoLX2B7KU5fsCT6SC+7n7Aa202/+A7avsQGWtOY62eEVGcpzQudC2OPtWzvLYrrpmYorquGsqQQ2fEUezMSd1lj9LkseTiDQtr5BAFl4u0EaWW6qI1UdEFU259IpID+bli6OI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sA24mMAh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E06A1C4CEC3;
-	Sun,  1 Sep 2024 16:55:46 +0000 (UTC)
+	 MIME-Version; b=sr7kjn894Tb+bKBtDo1WEA4R5r3lN32Hm2CBg9udaBkT2QY1lKqCGINaqjNUsllGDqkgA8KT5a8l4YgyQxbSOlo3GMYilQjE8sJof9bv3G0mtJLYNkDQcZsCmIIIX5MECKI2AxJfO+F+fHN5MH3BelrRPZrRu68cT/lartuD1Ww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MR3Moro2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E3DCC4CEC3;
+	Sun,  1 Sep 2024 17:05:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209747;
-	bh=EHClZhC7jehXwMZCHoSKVx9zPCxhjRQoH4BrxBsZhY4=;
+	s=korg; t=1725210300;
+	bh=qVjXJGMYjm8iJ5xu82VcSu+nf6AjI/cnqGFfv5Pcroo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sA24mMAh9hTNZliriNDepw60EKmnDaWkMMQJ7b/Dj7Fkud04RGvi02O79P8gCjfqg
-	 +V/bOLpVrGielodyYwHHyxJspvt1TuaNJi3jU/a0eFUP4a7hFA7sQhLHpxeXNSjdjU
-	 DVRNJw0EUECgs5djnUBxUXcs0lmpwDefqhr+emoA=
+	b=MR3Moro2jLVbY6d2ucMBysAILDNUpABgwZNHOhE/oyDx+j4QZQ76eKDUuB9707Ggi
+	 xvxRohBF9FGoe9hpnzpXHUyQ9vwCOQHydyRJ07zQ49nLgf2of7Stv/LJld65A6jqdY
+	 Ovlc18K2vGajqTgBv1t1I43ugoKMc+32S7NE0by4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,12 +47,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	David Ahern <dsahern@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 101/151] ipv6: prevent UAF in ip6_send_skb()
+Subject: [PATCH 5.15 149/215] ipv6: prevent UAF in ip6_send_skb()
 Date: Sun,  1 Sep 2024 18:17:41 +0200
-Message-ID: <20240901160817.911514268@linuxfoundation.org>
+Message-ID: <20240901160828.998633997@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
-References: <20240901160814.090297276@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,7 +64,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -199,10 +199,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+)
 
 diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
-index 32512b8ca5e72..436733021b1e9 100644
+index ce37c83455796..1d06b71c1adad 100644
 --- a/net/ipv6/ip6_output.c
 +++ b/net/ipv6/ip6_output.c
-@@ -1952,6 +1952,7 @@ int ip6_send_skb(struct sk_buff *skb)
+@@ -1940,6 +1940,7 @@ int ip6_send_skb(struct sk_buff *skb)
  	struct rt6_info *rt = (struct rt6_info *)skb_dst(skb);
  	int err;
  
@@ -210,7 +210,7 @@ index 32512b8ca5e72..436733021b1e9 100644
  	err = ip6_local_out(net, skb->sk, skb);
  	if (err) {
  		if (err > 0)
-@@ -1961,6 +1962,7 @@ int ip6_send_skb(struct sk_buff *skb)
+@@ -1949,6 +1950,7 @@ int ip6_send_skb(struct sk_buff *skb)
  				      IPSTATS_MIB_OUTDISCARDS);
  	}
  
