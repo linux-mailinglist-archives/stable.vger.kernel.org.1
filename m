@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-71823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72261-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54FC89677EA
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:25:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8B0B9679EA
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:49:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11D6D280F79
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:25:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 618BA28100E
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:49:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E6FE184531;
-	Sun,  1 Sep 2024 16:25:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39CAF183CA3;
+	Sun,  1 Sep 2024 16:49:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I1Dy14uw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qJEPV6Tl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFA81184529;
-	Sun,  1 Sep 2024 16:25:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB6A8181B86;
+	Sun,  1 Sep 2024 16:49:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725207935; cv=none; b=GQAoYVTY2YiViBH0Ecbsu5IleHgx8qS/8ICcYEkoR3E6pIdBxwMA4H+2etDJ9ITtadC8uW48Q1Hlm29IuRpNrYF2SGOeESw1IaIcfSCSWsx9EOCr1RmgMrE+7GDr1k5SDiWZOC/vvGziHq7Waii7njkJRG7O8wUY7Hoq2qvwHjA=
+	t=1725209355; cv=none; b=EcqG9Ohj4kKGFz1gHybkxEd+wLTns4MTLsjFS77XnS0ZekL6do63lOoS0J678/+uI/Yhm7Ps0oWq1vgBKV9V1GZxUUs9PftS8B9JdEIFPw5BaoxR01V5IGR+3saZCrbu6DUvYbUJXyyVTUxpyvFfXDAdCoRNOIDrclK6mj0F81E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725207935; c=relaxed/simple;
-	bh=VVSXkFYHUDFG5P6Ry+z2W/JGwc8VwMZcad1j45e/dOs=;
+	s=arc-20240116; t=1725209355; c=relaxed/simple;
+	bh=Ujw47HTiM+m4sajf+9l/P+4V0qNyGVc/pPXdNr7Ku/w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B4eY0OCSInP2UHturZ0pv9RntDTM7ZDNMG6I5p/OqijEkk9mFnd5KBtRBW3h8I86uXdiOdMgyWNxdBDYmhoPAH5cJ2DUmWDFq4WSnNh8ydxKRGu9ik1ZX9Mwhp29WVXacQ317+0Y8GpozjRqmjuDRLPwEF7Mj4LBftalfDncqLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I1Dy14uw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78FE9C4CEC4;
-	Sun,  1 Sep 2024 16:25:34 +0000 (UTC)
+	 MIME-Version; b=mrJGqGui+Vq+kaRuTP6NkIsSUqcJEUgzgNbd5Gf3h89fjzBhvQqbPO2pxdQ861VOnSC44SlUsYbBkLOgp7fFqRWTaRR+PyGsm83iTSarPbmUe4f6uZW6EQThrM8fCrlaRehdqyjXT8q0IRMF9lFOc1VRmYpUH5mgQe660t44uKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qJEPV6Tl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AF2BC4CEC3;
+	Sun,  1 Sep 2024 16:49:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725207934;
-	bh=VVSXkFYHUDFG5P6Ry+z2W/JGwc8VwMZcad1j45e/dOs=;
+	s=korg; t=1725209354;
+	bh=Ujw47HTiM+m4sajf+9l/P+4V0qNyGVc/pPXdNr7Ku/w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I1Dy14uwuRdWZJh5lwzjSSKEm9Hk9nWudi+0Q80Ci3P+iCfOiWuuBLwC9nYdYUWXC
-	 4xHxzcXkKHMzvQq8QZSq/CpPelPzlKM5s6+9tuH8QP/SCWSBTbrTQi0WWCQdmo8oct
-	 PVGPJJW0AugZcHLf26TsTjRdFahxSDdYZNRrSmEM=
+	b=qJEPV6TlBYQU5dZfH1Zn9HBYp01farpn3ig1WJ99Bs++XcQ0Gy1/yngfYQ0rPVcGr
+	 Cnb2o+3XUFYwaD4tdrjAvmV4tioNdQLVWP2RiWZkf8orXNcKny2YZP0I0fmShbNhPp
+	 JG4w0RJ2yg3tLTAHBrbYrTSF2TTlLzmB9D0WCluM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geliang Tang <geliang@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.6 22/93] selftests: mptcp: join: no extra msg if no counter
-Date: Sun,  1 Sep 2024 18:16:09 +0200
-Message-ID: <20240901160808.195140469@linuxfoundation.org>
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Yury Norov <yury.norov@gmail.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 5.10 010/151] bitmap: introduce generic optimized bitmap_size()
+Date: Sun,  1 Sep 2024 18:16:10 +0200
+Message-ID: <20240901160814.487196331@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
-References: <20240901160807.346406833@linuxfoundation.org>
+In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
+References: <20240901160814.090297276@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,95 +63,171 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Alexander Lobakin <aleksander.lobakin@intel.com>
 
-commit 76a2d8394cc183df872adf04bf636eaf42746449 upstream.
+commit a37fbe666c016fd89e4460d0ebfcea05baba46dc upstream.
 
-The checksum and fail counters might not be available. Then no need to
-display an extra message with missing info.
+The number of times yet another open coded
+`BITS_TO_LONGS(nbits) * sizeof(long)` can be spotted is huge.
+Some generic helper is long overdue.
 
-While at it, fix the indentation around, which is wrong since the same
-commit.
+Add one, bitmap_size(), but with one detail.
+BITS_TO_LONGS() uses DIV_ROUND_UP(). The latter works well when both
+divident and divisor are compile-time constants or when the divisor
+is not a pow-of-2. When it is however, the compilers sometimes tend
+to generate suboptimal code (GCC 13):
 
-Fixes: 47867f0a7e83 ("selftests: mptcp: join: skip check if MIB counter not supported")
-Cc: stable@vger.kernel.org
-Reviewed-by: Geliang Tang <geliang@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+48 83 c0 3f          	add    $0x3f,%rax
+48 c1 e8 06          	shr    $0x6,%rax
+48 8d 14 c5 00 00 00 00	lea    0x0(,%rax,8),%rdx
+
+%BITS_PER_LONG is always a pow-2 (either 32 or 64), but GCC still does
+full division of `nbits + 63` by it and then multiplication by 8.
+Instead of BITS_TO_LONGS(), use ALIGN() and then divide by 8. GCC:
+
+8d 50 3f             	lea    0x3f(%rax),%edx
+c1 ea 03             	shr    $0x3,%edx
+81 e2 f8 ff ff 1f    	and    $0x1ffffff8,%edx
+
+Now it shifts `nbits + 63` by 3 positions (IOW performs fast division
+by 8) and then masks bits[2:0]. bloat-o-meter:
+
+add/remove: 0/0 grow/shrink: 20/133 up/down: 156/-773 (-617)
+
+Clang does it better and generates the same code before/after starting
+from -O1, except that with the ALIGN() approach it uses %edx and thus
+still saves some bytes:
+
+add/remove: 0/0 grow/shrink: 9/133 up/down: 18/-538 (-520)
+
+Note that we can't expand DIV_ROUND_UP() by adding a check and using
+this approach there, as it's used in array declarations where
+expressions are not allowed.
+Add this helper to tools/ as well.
+
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Acked-by: Yury Norov <yury.norov@gmail.com>
+Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh |   16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/md/dm-clone-metadata.c |    5 -----
+ drivers/s390/cio/idset.c       |    2 +-
+ include/linux/bitmap.h         |    8 +++++---
+ include/linux/cpumask.h        |    2 +-
+ lib/math/prime_numbers.c       |    2 --
+ tools/include/linux/bitmap.h   |    7 ++++---
+ 6 files changed, 11 insertions(+), 15 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -1256,26 +1256,26 @@ chk_csum_nr()
+--- a/drivers/md/dm-clone-metadata.c
++++ b/drivers/md/dm-clone-metadata.c
+@@ -471,11 +471,6 @@ static void __destroy_persistent_data_st
  
- 	print_check "sum"
- 	count=$(mptcp_lib_get_counter ${ns1} "MPTcpExtDataCsumErr")
--	if [ "$count" != "$csum_ns1" ]; then
-+	if [ -n "$count" ] && [ "$count" != "$csum_ns1" ]; then
- 		extra_msg+=" ns1=$count"
- 	fi
- 	if [ -z "$count" ]; then
- 		print_skip
- 	elif { [ "$count" != $csum_ns1 ] && [ $allow_multi_errors_ns1 -eq 0 ]; } ||
--	   { [ "$count" -lt $csum_ns1 ] && [ $allow_multi_errors_ns1 -eq 1 ]; }; then
-+	     { [ "$count" -lt $csum_ns1 ] && [ $allow_multi_errors_ns1 -eq 1 ]; }; then
- 		fail_test "got $count data checksum error[s] expected $csum_ns1"
- 	else
- 		print_ok
- 	fi
- 	print_check "csum"
- 	count=$(mptcp_lib_get_counter ${ns2} "MPTcpExtDataCsumErr")
--	if [ "$count" != "$csum_ns2" ]; then
-+	if [ -n "$count" ] && [ "$count" != "$csum_ns2" ]; then
- 		extra_msg+=" ns2=$count"
- 	fi
- 	if [ -z "$count" ]; then
- 		print_skip
- 	elif { [ "$count" != $csum_ns2 ] && [ $allow_multi_errors_ns2 -eq 0 ]; } ||
--	   { [ "$count" -lt $csum_ns2 ] && [ $allow_multi_errors_ns2 -eq 1 ]; }; then
-+	     { [ "$count" -lt $csum_ns2 ] && [ $allow_multi_errors_ns2 -eq 1 ]; }; then
- 		fail_test "got $count data checksum error[s] expected $csum_ns2"
- 	else
- 		print_ok
-@@ -1313,13 +1313,13 @@ chk_fail_nr()
+ /*---------------------------------------------------------------------------*/
  
- 	print_check "ftx"
- 	count=$(mptcp_lib_get_counter ${ns_tx} "MPTcpExtMPFailTx")
--	if [ "$count" != "$fail_tx" ]; then
-+	if [ -n "$count" ] && [ "$count" != "$fail_tx" ]; then
- 		extra_msg+=",tx=$count"
- 	fi
- 	if [ -z "$count" ]; then
- 		print_skip
- 	elif { [ "$count" != "$fail_tx" ] && [ $allow_tx_lost -eq 0 ]; } ||
--	   { [ "$count" -gt "$fail_tx" ] && [ $allow_tx_lost -eq 1 ]; }; then
-+	     { [ "$count" -gt "$fail_tx" ] && [ $allow_tx_lost -eq 1 ]; }; then
- 		fail_test "got $count MP_FAIL[s] TX expected $fail_tx"
- 	else
- 		print_ok
-@@ -1327,13 +1327,13 @@ chk_fail_nr()
+-static size_t bitmap_size(unsigned long nr_bits)
+-{
+-	return BITS_TO_LONGS(nr_bits) * sizeof(long);
+-}
+-
+ static int __dirty_map_init(struct dirty_map *dmap, unsigned long nr_words,
+ 			    unsigned long nr_regions)
+ {
+--- a/drivers/s390/cio/idset.c
++++ b/drivers/s390/cio/idset.c
+@@ -18,7 +18,7 @@ struct idset {
  
- 	print_check "failrx"
- 	count=$(mptcp_lib_get_counter ${ns_rx} "MPTcpExtMPFailRx")
--	if [ "$count" != "$fail_rx" ]; then
-+	if [ -n "$count" ] && [ "$count" != "$fail_rx" ]; then
- 		extra_msg+=",rx=$count"
- 	fi
- 	if [ -z "$count" ]; then
- 		print_skip
- 	elif { [ "$count" != "$fail_rx" ] && [ $allow_rx_lost -eq 0 ]; } ||
--	   { [ "$count" -gt "$fail_rx" ] && [ $allow_rx_lost -eq 1 ]; }; then
-+	     { [ "$count" -gt "$fail_rx" ] && [ $allow_rx_lost -eq 1 ]; }; then
- 		fail_test "got $count MP_FAIL[s] RX expected $fail_rx"
- 	else
- 		print_ok
+ static inline unsigned long bitmap_size(int num_ssid, int num_id)
+ {
+-	return BITS_TO_LONGS(num_ssid * num_id) * sizeof(unsigned long);
++	return bitmap_size(size_mul(num_ssid, num_id));
+ }
+ 
+ static struct idset *idset_new(int num_ssid, int num_id)
+--- a/include/linux/bitmap.h
++++ b/include/linux/bitmap.h
+@@ -240,22 +240,24 @@ extern int bitmap_print_to_pagebuf(bool
+ #define small_const_nbits(nbits) \
+ 	(__builtin_constant_p(nbits) && (nbits) <= BITS_PER_LONG && (nbits) > 0)
+ 
++#define bitmap_size(nbits)	(ALIGN(nbits, BITS_PER_LONG) / BITS_PER_BYTE)
++
+ static inline void bitmap_zero(unsigned long *dst, unsigned int nbits)
+ {
+-	unsigned int len = BITS_TO_LONGS(nbits) * sizeof(unsigned long);
++	unsigned int len = bitmap_size(nbits);
+ 	memset(dst, 0, len);
+ }
+ 
+ static inline void bitmap_fill(unsigned long *dst, unsigned int nbits)
+ {
+-	unsigned int len = BITS_TO_LONGS(nbits) * sizeof(unsigned long);
++	unsigned int len = bitmap_size(nbits);
+ 	memset(dst, 0xff, len);
+ }
+ 
+ static inline void bitmap_copy(unsigned long *dst, const unsigned long *src,
+ 			unsigned int nbits)
+ {
+-	unsigned int len = BITS_TO_LONGS(nbits) * sizeof(unsigned long);
++	unsigned int len = bitmap_size(nbits);
+ 	memcpy(dst, src, len);
+ }
+ 
+--- a/include/linux/cpumask.h
++++ b/include/linux/cpumask.h
+@@ -690,7 +690,7 @@ static inline int cpulist_parse(const ch
+  */
+ static inline unsigned int cpumask_size(void)
+ {
+-	return BITS_TO_LONGS(nr_cpumask_bits) * sizeof(long);
++	return bitmap_size(nr_cpumask_bits);
+ }
+ 
+ /*
+--- a/lib/math/prime_numbers.c
++++ b/lib/math/prime_numbers.c
+@@ -6,8 +6,6 @@
+ #include <linux/prime_numbers.h>
+ #include <linux/slab.h>
+ 
+-#define bitmap_size(nbits) (BITS_TO_LONGS(nbits) * sizeof(unsigned long))
+-
+ struct primes {
+ 	struct rcu_head rcu;
+ 	unsigned long last, sz;
+--- a/tools/include/linux/bitmap.h
++++ b/tools/include/linux/bitmap.h
+@@ -30,13 +30,14 @@ void bitmap_clear(unsigned long *map, un
+ #define small_const_nbits(nbits) \
+ 	(__builtin_constant_p(nbits) && (nbits) <= BITS_PER_LONG)
+ 
++#define bitmap_size(nbits)	(ALIGN(nbits, BITS_PER_LONG) / BITS_PER_BYTE)
++
+ static inline void bitmap_zero(unsigned long *dst, int nbits)
+ {
+ 	if (small_const_nbits(nbits))
+ 		*dst = 0UL;
+ 	else {
+-		int len = BITS_TO_LONGS(nbits) * sizeof(unsigned long);
+-		memset(dst, 0, len);
++		memset(dst, 0, bitmap_size(nbits));
+ 	}
+ }
+ 
+@@ -122,7 +123,7 @@ static inline int test_and_clear_bit(int
+  */
+ static inline unsigned long *bitmap_alloc(int nbits)
+ {
+-	return calloc(1, BITS_TO_LONGS(nbits) * sizeof(unsigned long));
++	return calloc(1, bitmap_size(nbits));
+ }
+ 
+ /*
 
 
 
