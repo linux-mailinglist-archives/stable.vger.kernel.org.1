@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-71715-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71927-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E49A096776E
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:19:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 009F8967864
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:31:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8F0911F216EA
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:19:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2F1B281FED
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:31:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D780181B88;
-	Sun,  1 Sep 2024 16:19:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C9485381A;
+	Sun,  1 Sep 2024 16:31:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q0/gHmrs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UeL5IR5L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ACA32C1B4;
-	Sun,  1 Sep 2024 16:19:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BA6C183CD8;
+	Sun,  1 Sep 2024 16:31:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725207577; cv=none; b=FLlAji+Fx3eJkdsmNR5aFQ2Ao1Ohn2BFwq2s6DQPo0ZrZamzhirIXBhVJ3X1DfyH/OVM/zhBjE+48RIq0sbFzw4ixABKBJ3Xo7xg1HZHKM7sThnzsEpGBzEQIpzjmaRAj8FU9l/NNGKLqCsAlIwMTfRfFEUJqCo+M4eaQYvxyIE=
+	t=1725208277; cv=none; b=FgCsbo9scGN48sMlPiri8CLKpH5mLhMcpI5mNp9P73xe+KiCNEwgH+63yyDv2N239DVfj5EP4W4JnaQfl5HwlIXquCZXDgeMtfKoM3jXdD5UEylbOFseSpF/REYNobyMyi55FNiQKaldl0tF6Dvlk+/HAtGiAVXZt7rhF4gJah8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725207577; c=relaxed/simple;
-	bh=GSZq1BGO+FXLwlVKTapthMf507S29LnmU+iVa02Q1bU=;
+	s=arc-20240116; t=1725208277; c=relaxed/simple;
+	bh=lHexZca08x6bD+ddDh7LIe04j9q3LPYXyp4EPTIkObk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rzd+3qawDCbFWN+Rl+p4kLrWCkoIY/5ekeDin3dpw4EGi1xw9hMJ7tMkcCVeHxT2vzBVuRsy0xo6hjJ/hHKd3iMg83EyRimOLRAIR9GuNp3aIItbxATEI7rPZCGWFU3D3Yl7DFHRXTEy3f1eQ3W2c6+TDP8EvCuuEFJKSFs7wmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q0/gHmrs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85CD1C4CEC3;
-	Sun,  1 Sep 2024 16:19:36 +0000 (UTC)
+	 MIME-Version; b=dbm/llz6xXM419A24WGdP5efWpm4G5W9nphfY+hGX37t3W8gD8EwrKZR3YslzXw+VnsjnDt+RlUKnz4MtORoeBxMJ5Kw3JFEIbv1QoLc271eEV1wcZhh3CfXX7Gz2TCAJxgoX7fv8laMu6LAueHVHQ93hNEZpPIg14GSaR8++cY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UeL5IR5L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74667C4CEC3;
+	Sun,  1 Sep 2024 16:31:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725207577;
-	bh=GSZq1BGO+FXLwlVKTapthMf507S29LnmU+iVa02Q1bU=;
+	s=korg; t=1725208276;
+	bh=lHexZca08x6bD+ddDh7LIe04j9q3LPYXyp4EPTIkObk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q0/gHmrsxfonfqBmoVBm7S5ePA4C1TlG9lvMQFL8eRaj1QhVaRavKuMoD/9DOcspd
-	 azC52pDlg39f0CUH28x9f50fzK3toV4xns8cQpSoHviZt7M+bV9Kl47vfFSzYrC6AH
-	 49irx3POwnjKWXuOe+PKAj00+eSB7/QDzBkej3tE=
+	b=UeL5IR5LNGJL9HezIm2JXj+csGZCrkGu73EFFcWpRljLxN6jqOD+i2Pi6SP3uoNuc
+	 GoUADmmk9WG2OADh7VnbNrSyVbRkwnSNJ9p3HewJZ2SdKSWW2WenaRHve0a0QkwFW8
+	 cjaxVL7nH7ze9gfP735dzyAe5D1kv5/hGvAizdAw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cosmin Ratiu <cratiu@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 14/98] net/mlx5e: Correctly report errors for ethtool rx flows
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.10 033/149] selftests: mptcp: join: check re-re-adding ID 0 endp
 Date: Sun,  1 Sep 2024 18:15:44 +0200
-Message-ID: <20240901160804.224594786@linuxfoundation.org>
+Message-ID: <20240901160818.707938019@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
-References: <20240901160803.673617007@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,51 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cosmin Ratiu <cratiu@nvidia.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit cbc796be1779c4dbc9a482c7233995e2a8b6bfb3 ]
+commit d397d7246c11ca36c33c932bc36d38e3a79e9aa0 upstream.
 
-Previously, an ethtool rx flow with no attrs would not be added to the
-NIC as it has no rules to configure the hw with, but it would be
-reported as successful to the caller (return code 0). This is confusing
-for the user as ethtool then reports "Added rule $num", but no rule was
-actually added.
+This test extends "delete and re-add" to validate the previous commit:
+when the endpoint linked to the initial subflow (ID 0) is re-added
+multiple times, it was no longer being used, because the internal linked
+counters are not decremented for this special endpoint: it is not an
+additional endpoint.
 
-This change corrects that by instead reporting these wrong rules as
--EINVAL.
+Here, the "del/add id 0" steps are done 3 times to unsure this case is
+validated.
 
-Fixes: b29c61dac3a2 ("net/mlx5e: Ethtool steering flow validation refactoring")
-Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
-Reviewed-by: Saeed Mahameed <saeedm@nvidia.com>
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20240808144107.2095424-5-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The 'Fixes' tag here below is the same as the one from the previous
+commit: this patch here is not fixing anything wrong in the selftests,
+but it validates the previous fix for an issue introduced by this commit
+ID.
+
+Fixes: 3ad14f54bd74 ("mptcp: more accurate MPC endpoint tracking")
+Cc: stable@vger.kernel.org
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_fs_ethtool.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |   27 +++++++++++++-----------
+ 1 file changed, 15 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_fs_ethtool.c b/drivers/net/ethernet/mellanox/mlx5/core/en_fs_ethtool.c
-index 41cde926cdab6..48ae9c201af46 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_fs_ethtool.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_fs_ethtool.c
-@@ -689,7 +689,7 @@ mlx5e_ethtool_flow_replace(struct mlx5e_priv *priv,
- 	if (num_tuples <= 0) {
- 		netdev_warn(priv->netdev, "%s: flow is not valid %d\n",
- 			    __func__, num_tuples);
--		return num_tuples;
-+		return num_tuples < 0 ? num_tuples : -EINVAL;
- 	}
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -3576,7 +3576,7 @@ endpoint_tests()
+ 		pm_nl_set_limits $ns2 0 3
+ 		pm_nl_add_endpoint $ns2 10.0.1.2 id 1 dev ns2eth1 flags subflow
+ 		pm_nl_add_endpoint $ns2 10.0.2.2 id 2 dev ns2eth2 flags subflow
+-		test_linkfail=4 speed=20 \
++		test_linkfail=4 speed=5 \
+ 			run_tests $ns1 $ns2 10.0.1.1 &
+ 		local tests_pid=$!
  
- 	eth_ft = get_flow_table(priv, fs, num_tuples);
--- 
-2.43.0
-
+@@ -3608,20 +3608,23 @@ endpoint_tests()
+ 		chk_subflow_nr "after no reject" 3
+ 		chk_mptcp_info subflows 2 subflows 2
+ 
+-		pm_nl_del_endpoint $ns2 1 10.0.1.2
+-		sleep 0.5
+-		chk_subflow_nr "after delete id 0" 2
+-		chk_mptcp_info subflows 2 subflows 2 # only decr for additional sf
+-
+-		pm_nl_add_endpoint $ns2 10.0.1.2 id 1 dev ns2eth1 flags subflow
+-		wait_mpj $ns2
+-		chk_subflow_nr "after re-add id 0" 3
+-		chk_mptcp_info subflows 3 subflows 3
++		local i
++		for i in $(seq 3); do
++			pm_nl_del_endpoint $ns2 1 10.0.1.2
++			sleep 0.5
++			chk_subflow_nr "after delete id 0 ($i)" 2
++			chk_mptcp_info subflows 2 subflows 2 # only decr for additional sf
++
++			pm_nl_add_endpoint $ns2 10.0.1.2 id 1 dev ns2eth1 flags subflow
++			wait_mpj $ns2
++			chk_subflow_nr "after re-add id 0 ($i)" 3
++			chk_mptcp_info subflows 3 subflows 3
++		done
+ 
+ 		mptcp_lib_kill_wait $tests_pid
+ 
+-		chk_join_nr 4 4 4
+-		chk_rm_nr 2 2
++		chk_join_nr 6 6 6
++		chk_rm_nr 4 4
+ 	fi
+ }
+ 
 
 
 
