@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-72188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72125-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3B84967999
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:47:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93E0B967948
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:42:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D41D51C20C21
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:47:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 521032821A1
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:42:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBEDC185958;
-	Sun,  1 Sep 2024 16:45:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E53E817E8EA;
+	Sun,  1 Sep 2024 16:42:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2J/mUb5U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jre+DbmQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90A20185B58;
-	Sun,  1 Sep 2024 16:45:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A27E92B9C7;
+	Sun,  1 Sep 2024 16:42:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209129; cv=none; b=rYMi/O5tA5EFWy09I9l6D3ERm6nxE0Zd9F1FaaKVZDpgQBASXJdpy1BVIAF15w8bFHSttkhn5Jwz0pDj9uwbVVIfin0bbWKxM9VF0W/3qwdaWCX6At70BGefQfZHX9mVw94VvGnX4MWxCZgs1v8jby6U+g/82eVmKf3pPZZCHsc=
+	t=1725208921; cv=none; b=j5y6orYgxxQnwsN23mqp0AkXt01YTr3YPUGukLi7+z86qk+9plpyXh4KDooH2xAA8CqXVqMvbmbzMflxUWY8bwax/cJBSEqQkF5cU8CBy5gURPa5ugSEtWkeKl37MeqWMRjsUGxuJvbkpStDqZnPeOqmREiZ2cnp4RsP7T/bIIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209129; c=relaxed/simple;
-	bh=vWtYNI3WpLzV7JjVoNdbkf9uJ7EeFgdVBEALm+eV100=;
+	s=arc-20240116; t=1725208921; c=relaxed/simple;
+	bh=vo/17mCWQWoQJaN87SoYKPsyEsiWuOtYqYMddRkQ7hc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BfppYLc5+bOmQbPutEi87DhUwTwhlbjJTTrkdw4F19fSsWCXQvJ3vwWMAbw6qvLaG0e7ZEIk/al/m47IVRJnctlgiSPCKSNOl1CzgCQPiV5elqHUwXAstvjqeCfoflbhFEh05+MT6oaQPrhKf9htdO2oghebU3/FP3du+xYKvEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2J/mUb5U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17B54C4CEC3;
-	Sun,  1 Sep 2024 16:45:28 +0000 (UTC)
+	 MIME-Version; b=GzKo9WVJsps3Yt8GBxtlj8OLYAgqBjHj246bfAq6STyvlAxsQ8SzKbUC4Sz7uuOxQiUwRvn+5qFZ3M1LjXIVkSEn3QSqDiquAiOVQYh7SL2dUol+QiKpj05/gtDQoPZbGRG+O2mkuWzAPylB49/JVCenmxd5WKuQgcCJZZy2sBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jre+DbmQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12E4FC4CEC3;
+	Sun,  1 Sep 2024 16:42:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209129;
-	bh=vWtYNI3WpLzV7JjVoNdbkf9uJ7EeFgdVBEALm+eV100=;
+	s=korg; t=1725208921;
+	bh=vo/17mCWQWoQJaN87SoYKPsyEsiWuOtYqYMddRkQ7hc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2J/mUb5UQAUDLho+/KUWHgrhT5FwXKExuqKi3Hj3TihnSfWW9kphXHlcQ7Y4xNv3+
-	 m16/TDC+K8rdK0cRsu7fRVnLS1MtzsVp5EEHueL5mxvg/1ZCDXF8YC/laHjmPa08eQ
-	 pne1cUTpRxv8VpIfDMYBz+DaxeSoBKdT2+8sgkKY=
+	b=jre+DbmQdGwNwKtm7Jk8tEiZ9GS5T7f7o9+w9sci+mREtrmgLAD1sDlV+sG2YQJd7
+	 yCYAowBU9yebK3qY3c4dWXLIf4AsCW7KWmUhizido4Zxva9B5dbQjtoZ31tAGENuKs
+	 DQxEoKfp1fis8FBfcXTtgCt6/UgI1HdFRFSzPtIc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jesse Zhang <jesse.zhang@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Vamsi Krishna Brahmajosyula <vamsi-krishna.brahmajosyula@broadcom.com>
-Subject: [PATCH 6.1 01/71] drm/amdgpu: Using uninitialized value *size when calling amdgpu_vce_cs_reloc
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Marcel Holtmann <marcel@holtmann.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 080/134] Bluetooth: Make use of __check_timeout on hci_sched_le
 Date: Sun,  1 Sep 2024 18:17:06 +0200
-Message-ID: <20240901160801.939133742@linuxfoundation.org>
+Message-ID: <20240901160813.110000056@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160801.879647959@linuxfoundation.org>
-References: <20240901160801.879647959@linuxfoundation.org>
+In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
+References: <20240901160809.752718937@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +60,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jesse Zhang <jesse.zhang@amd.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-commit 88a9a467c548d0b3c7761b4fd54a68e70f9c0944 upstream.
+[ Upstream commit 1b1d29e5149990e44634b2e681de71effd463591 ]
 
-Initialize the size before calling amdgpu_vce_cs_reloc, such as case 0x03000001.
-V2: To really improve the handling we would actually
-   need to have a separate value of 0xffffffff.(Christian)
+This reuse __check_timeout on hci_sched_le following the same logic
+used hci_sched_acl.
 
-Signed-off-by: Jesse Zhang <jesse.zhang@amd.com>
-Suggested-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Marcel Holtmann <marcel@holtmann.org>
+Stable-dep-of: 932021a11805 ("Bluetooth: hci_core: Fix LE quote calculation")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Vamsi Krishna Brahmajosyula <vamsi-krishna.brahmajosyula@broadcom.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_vce.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/bluetooth/hci_core.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vce.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vce.c
-@@ -743,7 +743,8 @@ int amdgpu_vce_ring_parse_cs(struct amdg
- 	uint32_t created = 0;
- 	uint32_t allocated = 0;
- 	uint32_t tmp, handle = 0;
--	uint32_t *size = &tmp;
-+	uint32_t dummy = 0xffffffff;
-+	uint32_t *size = &dummy;
- 	unsigned idx;
- 	int i, r = 0;
+diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
+index 71a7e42097cc0..6caef575c628c 100644
+--- a/net/bluetooth/hci_core.c
++++ b/net/bluetooth/hci_core.c
+@@ -4240,15 +4240,10 @@ static void hci_sched_le(struct hci_dev *hdev)
+ 	if (!hci_conn_num(hdev, LE_LINK))
+ 		return;
  
+-	if (!hci_dev_test_flag(hdev, HCI_UNCONFIGURED)) {
+-		/* LE tx timeout must be longer than maximum
+-		 * link supervision timeout (40.9 seconds) */
+-		if (!hdev->le_cnt && hdev->le_pkts &&
+-		    time_after(jiffies, hdev->le_last_tx + HZ * 45))
+-			hci_link_tx_to(hdev, LE_LINK);
+-	}
+-
+ 	cnt = hdev->le_pkts ? hdev->le_cnt : hdev->acl_cnt;
++
++	__check_timeout(hdev, cnt);
++
+ 	tmp = cnt;
+ 	while (cnt && (chan = hci_chan_sent(hdev, LE_LINK, &quote))) {
+ 		u32 priority = (skb_peek(&chan->data_q))->priority;
+-- 
+2.43.0
+
 
 
 
