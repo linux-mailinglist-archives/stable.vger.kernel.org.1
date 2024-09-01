@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-71876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72342-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 871B4967826
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:28:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 043A9967A40
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:53:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 16E73B21899
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:28:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AE6C91F23B36
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:53:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69033183CAF;
-	Sun,  1 Sep 2024 16:28:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A09E181B86;
+	Sun,  1 Sep 2024 16:53:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XoPZ8ujJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KX3PAkHE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28A4728387;
-	Sun,  1 Sep 2024 16:28:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB2EF208A7;
+	Sun,  1 Sep 2024 16:53:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208108; cv=none; b=GpLE4cBAJcthjro4+6pyrhdaPymg4EoLTJxuQuM7A0eTVRYX4HwWOavDzE+HjYgP1hVdiVKhojPlCVgGpejKycMXB7Nku90Z5NAPR4uoTFEX4NIRRECng1Qc3k5GAFZsEDn6sTkgXW+MlBFvBIcbQ7ogrIP6TOimV5wo7RNHrOs=
+	t=1725209612; cv=none; b=Uwr5ikKFDWn2FaH/V0m/SdpTU+RVXvIMVzla09UY+S2edrKJJg2pNV4Cq3DV0JlRnapNdaMG0n64tnoMAiASjUuzhcJZlorOtkK8ndiJQqlaspyS10xZfnfYuLSI+1YWVRgbmgpZVeEydDRQpl75Zzcsi1iiOqu+a2eRAL+T+cU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208108; c=relaxed/simple;
-	bh=FGQFXL4qI712IwoATlskeAXW8EzOH9HrLBaXcBzaeCU=;
+	s=arc-20240116; t=1725209612; c=relaxed/simple;
+	bh=l7yyjopWC1u7I9zMIILbOx+l9rdowcwP4y7C0NtBPuw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BTIwbS+j3aFvbXm40daHo8dLI912G7Nm1/mRRlJ2hOItUtex+xGuyWjPZsWblWhlwz191gYPC3XSjtoenWAQEDJbFcLdxV5QhVjRPQThsHKouFt09ycXKr8sI0qSW5Q7xCa61/2dX1ZTKsGAK5uQuZEeuEU3F9/HJxy7mII8U20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XoPZ8ujJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91CF1C4CEC3;
-	Sun,  1 Sep 2024 16:28:27 +0000 (UTC)
+	 MIME-Version; b=l6WJp4L3jEyc+jSDff03sRpl3wZEbtVqO1/wdhHv8DRfi7Om04BuHyKkW7OWlBlg3Xh4tVlhyQdyFkkDHGKX85qO26x37uz/61zToABdkliSsRxGVGseGwSRMGtnLhe6IX1csDq7vcNjCwC2g/csn+YXppAb1zeSOZ6/8C9SliI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KX3PAkHE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C3E3C4CEC3;
+	Sun,  1 Sep 2024 16:53:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208108;
-	bh=FGQFXL4qI712IwoATlskeAXW8EzOH9HrLBaXcBzaeCU=;
+	s=korg; t=1725209611;
+	bh=l7yyjopWC1u7I9zMIILbOx+l9rdowcwP4y7C0NtBPuw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XoPZ8ujJhEI8bh+8G8k/q+PIjGx3QYfrj3dL2IWUzVg/pA1esaIw6v0Wi5hWE48WV
-	 YK778+WWPhjDusYwH8PcS4d+Q0vH0rUjETn9IMbIya81BWD0DJisWHTbs7DlqtYrdj
-	 EoEL+EGQ0JTU7NWMeK9AXWCoP8z3bPbSvpXaix9M=
+	b=KX3PAkHEfJHAFUOcT+cuAxh9gxZvq+iC7xSdg4aTwlJPwCD0aJO0j9QNd+/wjDGg0
+	 pczHlVps7okjxEQXHDYGGkKrTxyN9x5ZK9hrFKFbsxoXyEvpLQXAI7Fc3KA9Psg4yD
+	 ettjyN+uR66vMvXEC0qb2Em6aOGP/1ZfEP65t8pk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ZHANG Yuntian <yt@radxa.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.6 76/93] USB: serial: option: add MeiG Smart SRM825L
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 063/151] powerpc/boot: Only free if realloc() succeeds
 Date: Sun,  1 Sep 2024 18:17:03 +0200
-Message-ID: <20240901160810.598824411@linuxfoundation.org>
+Message-ID: <20240901160816.488742521@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
-References: <20240901160807.346406833@linuxfoundation.org>
+In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
+References: <20240901160814.090297276@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,76 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ZHANG Yuntian <yt@radxa.com>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-commit 9a471de516c35219d1722c13367191ce1f120fe9 upstream.
+[ Upstream commit f2d5bccaca3e8c09c9b9c8485375f7bdbb2631d2 ]
 
-Add support for MeiG Smart SRM825L which is based on Qualcomm 315 chip.
+simple_realloc() frees the original buffer (ptr) even if the
+reallocation failed.
 
-T:  Bus=04 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=5000 MxCh= 0
-D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
-P:  Vendor=2dee ProdID=4d22 Rev= 4.14
-S:  Manufacturer=MEIG
-S:  Product=LTE-A Module
-S:  SerialNumber=6f345e48
-C:* #Ifs= 6 Cfg#= 1 Atr=80 MxPwr=896mA
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
-E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:* If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
-E:  Ad=05(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=88(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:* If#= 5 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
-E:  Ad=89(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+Fix it to behave like standard realloc() and only free the original
+buffer if the reallocation succeeded.
 
-Signed-off-by: ZHANG Yuntian <yt@radxa.com>
-Link: https://lore.kernel.org/0041DFA5200EFB1B+20240803074619.563116-1-yt@radxa.com/
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240229115149.749264-1-mpe@ellerman.id.au
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ arch/powerpc/boot/simple_alloc.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -619,6 +619,8 @@ static void option_instat_callback(struc
+diff --git a/arch/powerpc/boot/simple_alloc.c b/arch/powerpc/boot/simple_alloc.c
+index 188c4f996512a..bc99f75b8582d 100644
+--- a/arch/powerpc/boot/simple_alloc.c
++++ b/arch/powerpc/boot/simple_alloc.c
+@@ -114,10 +114,11 @@ static void *simple_realloc(void *ptr, unsigned long size)
+ 		return ptr;
  
- /* MeiG Smart Technology products */
- #define MEIGSMART_VENDOR_ID			0x2dee
-+/* MeiG Smart SRM825L based on Qualcomm 315 */
-+#define MEIGSMART_PRODUCT_SRM825L		0x4d22
- /* MeiG Smart SLM320 based on UNISOC UIS8910 */
- #define MEIGSMART_PRODUCT_SLM320		0x4d41
+ 	new = simple_malloc(size);
+-	if (new)
++	if (new) {
+ 		memcpy(new, ptr, p->size);
++		simple_free(ptr);
++	}
  
-@@ -2366,6 +2368,9 @@ static const struct usb_device_id option
- 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, TOZED_PRODUCT_LT70C, 0xff, 0, 0) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, LUAT_PRODUCT_AIR720U, 0xff, 0, 0) },
- 	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SLM320, 0xff, 0, 0) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x30) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x40) },
-+	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x60) },
- 	{ } /* Terminating entry */
- };
- MODULE_DEVICE_TABLE(usb, option_ids);
+-	simple_free(ptr);
+ 	return new;
+ }
+ 
+-- 
+2.43.0
+
 
 
 
