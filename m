@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-71754-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72273-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C4F996779A
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:21:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B0299679F6
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:50:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A547282065
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:21:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3BCD71C20C16
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:50:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14514183CBB;
-	Sun,  1 Sep 2024 16:21:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EECDD181B86;
+	Sun,  1 Sep 2024 16:49:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cSrsHQbu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z9E4MfV5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7E5E44C97;
-	Sun,  1 Sep 2024 16:21:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACB2144C93;
+	Sun,  1 Sep 2024 16:49:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725207704; cv=none; b=DJp3Sw1hs4Bm3rirUCDft4yV9RtBxScF/GlW7bnOXfQnHJwve322XSQsWckgGxx2Nxy/9qrJ7LyYK/mOjLjwSI+8vM2h818hf/GSQzJta+NPKVLiT8HsEjz4Rf/KKvLLPMBufa1US8p1WRA5xxBhUkXi+mNjNZlQDpN4zETvI3c=
+	t=1725209392; cv=none; b=T7lcHIahNgq9AWJjsmF4Nn64doj9xvXPenGB9UiBzetj73pVkcreqSx/+aQdFrUgl2uy1uCta07UJDXT6lFtPBTVQmqn8UTaPvRVUsTyrhRV6du8VtMRodVbzM02mHIPzZtOrcJhYWF6AZ6Wfbm99QWNZMo/VLb8Gp5caQKjNAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725207704; c=relaxed/simple;
-	bh=jrL/fZ+RD4vOMmnxX1VGyeuonQRqpmd1JvkV10lP1K8=;
+	s=arc-20240116; t=1725209392; c=relaxed/simple;
+	bh=IDpmmLK4Xqa0ToYGEJ//CadYBJ29OIsTzORe9C4OruU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h9cxYFbUlJgdM73cp04BXPDN3DeRKJ/B0fx4KdRy91FTUiZ9MHScZZkOuimm3V/77Tm+UwvwnQjutMpm56ya8FET9z+bRp2raqQKGUIDFy8ImycxZo57RHS7sAwBp0xgHHZKPlOERiWRxe/b6IH1xn74Ucj9bI6dfLMWDVY7s0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cSrsHQbu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A515C4CEC3;
-	Sun,  1 Sep 2024 16:21:44 +0000 (UTC)
+	 MIME-Version; b=RikekgVj0JmRjjUNqiWdV27dNMWHtC+5Ff0HiZsWKwF6G1LN7eshi6DKAPVKEViNCSys0XXTZeL/bqKe303akHg/RZne2bGP3BxIrOCoWOE7ksJPeY7mT1qdel8aklLp8hIrNIOBnvF6wt9NV0cKWbHU6f7DmoQOcYBYpiL/WCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z9E4MfV5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 302D8C4CEC3;
+	Sun,  1 Sep 2024 16:49:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725207704;
-	bh=jrL/fZ+RD4vOMmnxX1VGyeuonQRqpmd1JvkV10lP1K8=;
+	s=korg; t=1725209392;
+	bh=IDpmmLK4Xqa0ToYGEJ//CadYBJ29OIsTzORe9C4OruU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cSrsHQbuCsIpcaIQqbXZQJd5IHIUOeeWjxUTyNeXIzVcbtPwlfZVQU3cHnFvT/+1z
-	 Ci7LwqgHejoivgIzbRpOJ4kLl39YoTzbBc0dCnHjynNEKwGEuJaXCqaoZHg09Xxgii
-	 7WlesHNzsL5En74hbaQtJjcouSbzXwHdiC8sKhBs=
+	b=z9E4MfV5idsEcpjHa4hmxyv1Drz75rJfpMvgVI1OEAdyQ8rWgK3e9iuNV96aVsZU6
+	 /gkMT8TWXrjbY4AsoJtoSlTLx9ohvIH14PMevl0dBjCIHj1MnyKJl3dQH0pO1SEbW5
+	 5G/ybKuTuLZCOT3/BWQZZWeknVwR+uDeBV46HgLM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Phil Chang <phil.chang@mediatek.com>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	Thomas Gleixner <tglx@linutronix.de>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 51/98] hrtimer: Prevent queuing of hrtimer without a function callback
+Subject: [PATCH 5.10 021/151] atm: idt77252: prevent use after free in dequeue_rx()
 Date: Sun,  1 Sep 2024 18:16:21 +0200
-Message-ID: <20240901160805.624963222@linuxfoundation.org>
+Message-ID: <20240901160814.897535613@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
-References: <20240901160803.673617007@linuxfoundation.org>
+In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
+References: <20240901160814.090297276@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phil Chang <phil.chang@mediatek.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 5a830bbce3af16833fe0092dec47b6dd30279825 ]
+[ Upstream commit a9a18e8f770c9b0703dab93580d0b02e199a4c79 ]
 
-The hrtimer function callback must not be NULL. It has to be specified by
-the call side but it is not validated by the hrtimer code. When a hrtimer
-is queued without a function callback, the kernel crashes with a null
-pointer dereference when trying to execute the callback in __run_hrtimer().
+We can't dereference "skb" after calling vcc->push() because the skb
+is released.
 
-Introduce a validation before queuing the hrtimer in
-hrtimer_start_range_ns().
-
-[anna-maria: Rephrase commit message]
-
-Signed-off-by: Phil Chang <phil.chang@mediatek.com>
-Signed-off-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/hrtimer.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/atm/idt77252.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/time/hrtimer.c b/kernel/time/hrtimer.c
-index 0eb5b6cc6d939..b600dc1290d7e 100644
---- a/kernel/time/hrtimer.c
-+++ b/kernel/time/hrtimer.c
-@@ -1172,6 +1172,8 @@ void hrtimer_start_range_ns(struct hrtimer *timer, ktime_t tim,
- 	struct hrtimer_clock_base *base;
- 	unsigned long flags;
+diff --git a/drivers/atm/idt77252.c b/drivers/atm/idt77252.c
+index e616e33c8a209..25fd73fafb371 100644
+--- a/drivers/atm/idt77252.c
++++ b/drivers/atm/idt77252.c
+@@ -1118,8 +1118,8 @@ dequeue_rx(struct idt77252_dev *card, struct rsq_entry *rsqe)
+ 	rpp->len += skb->len;
  
-+	if (WARN_ON_ONCE(!timer->function))
-+		return;
- 	/*
- 	 * Check whether the HRTIMER_MODE_SOFT bit and hrtimer.is_soft
- 	 * match.
+ 	if (stat & SAR_RSQE_EPDU) {
++		unsigned int len, truesize;
+ 		unsigned char *l1l2;
+-		unsigned int len;
+ 
+ 		l1l2 = (unsigned char *) ((unsigned long) skb->data + skb->len - 6);
+ 
+@@ -1189,14 +1189,15 @@ dequeue_rx(struct idt77252_dev *card, struct rsq_entry *rsqe)
+ 		ATM_SKB(skb)->vcc = vcc;
+ 		__net_timestamp(skb);
+ 
++		truesize = skb->truesize;
+ 		vcc->push(vcc, skb);
+ 		atomic_inc(&vcc->stats->rx);
+ 
+-		if (skb->truesize > SAR_FB_SIZE_3)
++		if (truesize > SAR_FB_SIZE_3)
+ 			add_rx_skb(card, 3, SAR_FB_SIZE_3, 1);
+-		else if (skb->truesize > SAR_FB_SIZE_2)
++		else if (truesize > SAR_FB_SIZE_2)
+ 			add_rx_skb(card, 2, SAR_FB_SIZE_2, 1);
+-		else if (skb->truesize > SAR_FB_SIZE_1)
++		else if (truesize > SAR_FB_SIZE_1)
+ 			add_rx_skb(card, 1, SAR_FB_SIZE_1, 1);
+ 		else
+ 			add_rx_skb(card, 0, SAR_FB_SIZE_0, 1);
 -- 
 2.43.0
 
