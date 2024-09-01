@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-71760-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72055-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FD3C9677A0
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:22:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E4759678FB
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:38:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5D834B2184E
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:22:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B8EE2810D1
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:38:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7E7A17F394;
-	Sun,  1 Sep 2024 16:22:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0F3617E46E;
+	Sun,  1 Sep 2024 16:38:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GKyviHHt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UpGHuQEH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 774E12C1B4;
-	Sun,  1 Sep 2024 16:22:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E3E61C68C;
+	Sun,  1 Sep 2024 16:38:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725207724; cv=none; b=LJSZ0xyUQIk6BJbtZ6Ve3f4GNcyTwz8VytytX/dRaP168E3YBwBhP4kB7xe2eRu5cG7f31c4ic/rwwpWjdXYBlStXCg9ARSs3xos6mkivI3z4iYENCtmCULWAV3Pzfn9h5iwLDnEK1oLRYxaJIFgVpM/13IxbkspIhg1Ud4lEAE=
+	t=1725208692; cv=none; b=IKlEc/HTSVVseMlLxZM/toVWZI37Qfm4tNw2UfIErkoM4zYgbq0VOaj9Bin1uAjlWP7KF8V8wMBuArh0C4dxTMjv8qdu0ivRDKIHMQODShx0cDxcMdTM0iSb5fcFF1lv3rXsKCAIO9r+i1VDkxWZXokjW2QRdVyhuzfW062YdEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725207724; c=relaxed/simple;
-	bh=f8NVK4ypHpdf9Nk32NHxg+bwiGzG7Ed6+/QS5xBRmks=;
+	s=arc-20240116; t=1725208692; c=relaxed/simple;
+	bh=wakBcYyoWC4/7y7zu45bGzlT11TI+OkEq3Wfk+3TEcs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tJvwhCZ8qaMJ3J5Ho0cLJEffxdsa2o2a8eh99syuHW7gdvaLWyPQmUniSXxKjXkDo6C6EOZiEZyVt3twdVTg3HTQKr+7gzqunsPIlDYjHp4cFZSjfcm6Q9g5laUFURTARIwJyB2Z2dCk3SSpfuGdebgdMKBWKhjP3plLD/TrRqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GKyviHHt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB3A8C4CEC3;
-	Sun,  1 Sep 2024 16:22:03 +0000 (UTC)
+	 MIME-Version; b=lU/lXZFNMh0Q7iS0LrLC9e2teW83m8V0ke2zhJ/bAh3HlTNag3b7lUW28l+1bpewMiI0JeVe5qWW28zCCoOvzItJ/Jszyb6oMxsUsUIOcDwQuS16opTd2S6HGpYiLJvtmHoWnvX4xS76vsZAe9RJv/aD1mN3PcVf5ZpcSX/bHZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UpGHuQEH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9199C4CEC3;
+	Sun,  1 Sep 2024 16:38:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725207724;
-	bh=f8NVK4ypHpdf9Nk32NHxg+bwiGzG7Ed6+/QS5xBRmks=;
+	s=korg; t=1725208692;
+	bh=wakBcYyoWC4/7y7zu45bGzlT11TI+OkEq3Wfk+3TEcs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GKyviHHtnFA85REYTOLqnk1FsDQCBSvv4pLnt3Zf+G5AdEp2dk7ojBdMohUvDafst
-	 n9ODsSfmCmzQCGkj8wyUWeST8IYqf3ohPS208YjR3/boheCWsrSWvew+x3k7p56OGs
-	 uOFOfvpJTFiKJfOLDXFMaA1lEQ3hLOJSuGQacQIA=
+	b=UpGHuQEHCVAlkTjuJ4aB+8RAKf6r2+w4W3zaCi8CN2r04KdNP1+S/2EYe2J8pOde6
+	 i8IaV6ouIgaoLjl+dBplmigQEIhk6GZlP69yIhaiQaddodocvAEKrJZNpvp1kAb/E6
+	 IKx1NYtuKinLYu4QGCjv4aRXjljB7wm3iNIeGIV8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 27/98] quota: Remove BUG_ON from dqget()
+	Zhen Lei <thunder.leizhen@huawei.com>,
+	Stephen Smalley <stephen.smalley.work@gmail.com>,
+	Paul Moore <paul@paul-moore.com>
+Subject: [PATCH 5.4 011/134] selinux: fix potential counting error in avc_add_xperms_decision()
 Date: Sun,  1 Sep 2024 18:15:57 +0200
-Message-ID: <20240901160804.716098942@linuxfoundation.org>
+Message-ID: <20240901160810.537500774@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
-References: <20240901160803.673617007@linuxfoundation.org>
+In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
+References: <20240901160809.752718937@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Zhen Lei <thunder.leizhen@huawei.com>
 
-[ Upstream commit 249f374eb9b6b969c64212dd860cc1439674c4a8 ]
+commit 379d9af3f3da2da1bbfa67baf1820c72a080d1f1 upstream.
 
-dqget() checks whether dquot->dq_sb is set when returning it using
-BUG_ON. Firstly this doesn't work as an invalidation check for quite
-some time (we release dquot with dq_sb set these days), secondly using
-BUG_ON is quite harsh. Use WARN_ON_ONCE and check whether dquot is still
-hashed instead.
+The count increases only when a node is successfully added to
+the linked list.
 
-Signed-off-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: fa1aa143ac4a ("selinux: extended permissions for ioctls")
+Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
+Acked-by: Stephen Smalley <stephen.smalley.work@gmail.com>
+Signed-off-by: Paul Moore <paul@paul-moore.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/quota/dquot.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ security/selinux/avc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/quota/dquot.c b/fs/quota/dquot.c
-index 6bdb44fb07a7f..a470bb4e00f18 100644
---- a/fs/quota/dquot.c
-+++ b/fs/quota/dquot.c
-@@ -985,9 +985,8 @@ struct dquot *dqget(struct super_block *sb, struct kqid qid)
- 	 * smp_mb__before_atomic() in dquot_acquire().
- 	 */
- 	smp_rmb();
--#ifdef CONFIG_QUOTA_DEBUG
--	BUG_ON(!dquot->dq_sb);	/* Has somebody invalidated entry under us? */
--#endif
-+	/* Has somebody invalidated entry under us? */
-+	WARN_ON_ONCE(hlist_unhashed(&dquot->dq_hash));
- out:
- 	if (empty)
- 		do_destroy_dquot(empty);
--- 
-2.43.0
-
+--- a/security/selinux/avc.c
++++ b/security/selinux/avc.c
+@@ -329,12 +329,12 @@ static int avc_add_xperms_decision(struc
+ {
+ 	struct avc_xperms_decision_node *dest_xpd;
+ 
+-	node->ae.xp_node->xp.len++;
+ 	dest_xpd = avc_xperms_decision_alloc(src->used);
+ 	if (!dest_xpd)
+ 		return -ENOMEM;
+ 	avc_copy_xperms_decision(&dest_xpd->xpd, src);
+ 	list_add(&dest_xpd->xpd_list, &node->ae.xp_node->xpd_head);
++	node->ae.xp_node->xp.len++;
+ 	return 0;
+ }
+ 
 
 
 
