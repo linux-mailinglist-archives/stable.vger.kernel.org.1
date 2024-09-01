@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-71790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72310-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39EE49677C1
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:23:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 748F7967A21
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:51:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B5C41C20F49
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:23:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 017A3B20FEB
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:51:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8939417F394;
-	Sun,  1 Sep 2024 16:23:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 823B317E00C;
+	Sun,  1 Sep 2024 16:51:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="trBfDivG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bXguvQW9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 490B933987;
-	Sun,  1 Sep 2024 16:23:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D9C21DFD1;
+	Sun,  1 Sep 2024 16:51:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725207824; cv=none; b=O4uqle0Fh5v9FS/uJFC6NcMoFbwoc/65Rn27vtLKSTxA6BnYMyzR7pyBex7c8omOUiGrJrRdeDIlpdIZhjVsGhyyKRarxOFn6Kj0xy8u8VLSnZ5nWQX2Y9evnUIagLQNCB1IbpYwTy+poWf7WCYaA0gKhQu7YOOKufJF0embuFY=
+	t=1725209509; cv=none; b=AWwLa924lfw0SeXC64M/jWqOKL8UJBUrP3K6n+07RhWu7GZ8+XdjqrkS9YDs45ezVW5KS2sK+k+kMLaXP+8Y2MgviuoGwElpIC+MwB6e2yCMTI3RHJcSyDH5JecZVDZ1BTvWEysnZdIh4zxkj2fZQEhVUe7TrXoQjrj5dWg2Jrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725207824; c=relaxed/simple;
-	bh=IE5jdrmu/BFk3Kd+uAsUMPfWcp9+jbsgRHC+UxoLZdA=;
+	s=arc-20240116; t=1725209509; c=relaxed/simple;
+	bh=MBRQALCTGTLAKk7Su7LzG+cx/ZLGeSQvON8GNd+IBdQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mzz94OuKXAP7VXmGQ2nxnTEtmtPg1edc65RhA7MeJVv5sMs1GNj90DPjAzZmTpNkwgMjhLLpzpSZLCVeuhBRNS2XadXt9wRO2RWM9SmFO++glqHfcfk7HW2F8Rp919bk69QSUE/zozWGTa4gaVxiPuZo5ui9wWzh2JXPDHFPcrA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=trBfDivG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C73A1C4CEC3;
-	Sun,  1 Sep 2024 16:23:43 +0000 (UTC)
+	 MIME-Version; b=IZ9t4o2qdfvScc3VLYlGpQwMeN/ZUOZXA927N3HCeVi8eAxeUNUYTi4yQkWwabq4dQLXqH9M/NI1kYATnWHL0+i1cmPCehkYUq+aW339JJ11S+hmXC02rtsNtJyknRabtyd/YNNnrcrhVEK63+v1vgko+T4O5c34ukgyjbwix4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bXguvQW9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1660C4CEC3;
+	Sun,  1 Sep 2024 16:51:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725207824;
-	bh=IE5jdrmu/BFk3Kd+uAsUMPfWcp9+jbsgRHC+UxoLZdA=;
+	s=korg; t=1725209509;
+	bh=MBRQALCTGTLAKk7Su7LzG+cx/ZLGeSQvON8GNd+IBdQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=trBfDivGoHQJSaPCGgBUuxO0a+AjA1Fkv8VXF0c8rbddIzb2HMNmAtztQHr28Q7Zc
-	 XuT35tU2DOWGZiQx3DbyARPkh5CvS8dAJCwfHR0l92kcUAH/twMudLrtmA7sHIW5x5
-	 7TJD5ou1VCc+kThUtMNQh/PQxHOQgpF2jO8sXIPo=
+	b=bXguvQW9J5eWKtlhkuvQa3OYXrhi34fYPMfIBPseOumJ5MtB6o4evuNS0cdXdf37k
+	 GpLsbtY0XdSPFnaZeaTiDefrRXyzQ7zxE66YEipcD7/XvJAr296sz/QkxmQiXnwzfM
+	 HCCv/SJJwrG6QIGMHo8uld9CgtLDNG4RMzgWLoqE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 4.19 87/98] soundwire: stream: fix programming slave ports for non-continous port maps
+	Eric Dumazet <edumazet@google.com>,
+	Jiri Pirko <jiri@nvidia.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 057/151] netlink: hold nlk->cb_mutex longer in __netlink_dump_start()
 Date: Sun,  1 Sep 2024 18:16:57 +0200
-Message-ID: <20240901160806.977998218@linuxfoundation.org>
+Message-ID: <20240901160816.263537470@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
-References: <20240901160803.673617007@linuxfoundation.org>
+In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
+References: <20240901160814.090297276@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +63,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Eric Dumazet <edumazet@google.com>
 
-commit ab8d66d132bc8f1992d3eb6cab8d32dda6733c84 upstream.
+[ Upstream commit b5590270068c4324dac4a2b5a4a156e02e21339f ]
 
-Two bitmasks in 'struct sdw_slave_prop' - 'source_ports' and
-'sink_ports' - define which ports to program in
-sdw_program_slave_port_params().  The masks are used to get the
-appropriate data port properties ('struct sdw_get_slave_dpn_prop') from
-an array.
+__netlink_dump_start() releases nlk->cb_mutex right before
+calling netlink_dump() which grabs it again.
 
-Bitmasks can be non-continuous or can start from index different than 0,
-thus when looking for matching port property for given port, we must
-iterate over mask bits, not from 0 up to number of ports.
+This seems dangerous, even if KASAN did not bother yet.
 
-This fixes allocation and programming slave ports, when a source or sink
-masks start from further index.
+Add a @lock_taken parameter to netlink_dump() to let it
+grab the mutex if called from netlink_recvmsg() only.
 
-Fixes: f8101c74aa54 ("soundwire: Add Master and Slave port programming")
-Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Link: https://lore.kernel.org/r/20240729140157.326450-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soundwire/stream.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/netlink/af_netlink.c | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
---- a/drivers/soundwire/stream.c
-+++ b/drivers/soundwire/stream.c
-@@ -1232,18 +1232,18 @@ struct sdw_dpn_prop *sdw_get_slave_dpn_p
- 				unsigned int port_num)
+diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
+index ac3678d2d6d52..4f2a3d46554ff 100644
+--- a/net/netlink/af_netlink.c
++++ b/net/netlink/af_netlink.c
+@@ -126,7 +126,7 @@ static const char *const nlk_cb_mutex_key_strings[MAX_LINKS + 1] = {
+ 	"nlk_cb_mutex-MAX_LINKS"
+ };
+ 
+-static int netlink_dump(struct sock *sk);
++static int netlink_dump(struct sock *sk, bool lock_taken);
+ 
+ /* nl_table locking explained:
+  * Lookup and traversal are protected with an RCU read-side lock. Insertion
+@@ -1996,7 +1996,7 @@ static int netlink_recvmsg(struct socket *sock, struct msghdr *msg, size_t len,
+ 
+ 	if (READ_ONCE(nlk->cb_running) &&
+ 	    atomic_read(&sk->sk_rmem_alloc) <= sk->sk_rcvbuf / 2) {
+-		ret = netlink_dump(sk);
++		ret = netlink_dump(sk, false);
+ 		if (ret) {
+ 			sk->sk_err = -ret;
+ 			sk->sk_error_report(sk);
+@@ -2206,7 +2206,7 @@ static int netlink_dump_done(struct netlink_sock *nlk, struct sk_buff *skb,
+ 	return 0;
+ }
+ 
+-static int netlink_dump(struct sock *sk)
++static int netlink_dump(struct sock *sk, bool lock_taken)
  {
- 	struct sdw_dpn_prop *dpn_prop;
--	u8 num_ports;
-+	unsigned long mask;
- 	int i;
+ 	struct netlink_sock *nlk = nlk_sk(sk);
+ 	struct netlink_ext_ack extack = {};
+@@ -2218,7 +2218,8 @@ static int netlink_dump(struct sock *sk)
+ 	int alloc_min_size;
+ 	int alloc_size;
  
- 	if (direction == SDW_DATA_DIR_TX) {
--		num_ports = hweight32(slave->prop.source_ports);
-+		mask = slave->prop.source_ports;
- 		dpn_prop = slave->prop.src_dpn_prop;
- 	} else {
--		num_ports = hweight32(slave->prop.sink_ports);
-+		mask = slave->prop.sink_ports;
- 		dpn_prop = slave->prop.sink_dpn_prop;
- 	}
+-	mutex_lock(nlk->cb_mutex);
++	if (!lock_taken)
++		mutex_lock(nlk->cb_mutex);
+ 	if (!nlk->cb_running) {
+ 		err = -EINVAL;
+ 		goto errout_skb;
+@@ -2374,9 +2375,7 @@ int __netlink_dump_start(struct sock *ssk, struct sk_buff *skb,
+ 	WRITE_ONCE(nlk->cb_running, true);
+ 	nlk->dump_done_errno = INT_MAX;
  
--	for (i = 0; i < num_ports; i++) {
-+	for_each_set_bit(i, &mask, 32) {
- 		if (dpn_prop[i].num == port_num)
- 			return &dpn_prop[i];
- 	}
+-	mutex_unlock(nlk->cb_mutex);
+-
+-	ret = netlink_dump(sk);
++	ret = netlink_dump(sk, true);
+ 
+ 	sock_put(sk);
+ 
+-- 
+2.43.0
+
 
 
 
