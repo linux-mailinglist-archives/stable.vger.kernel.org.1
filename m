@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-71984-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72461-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2890B9678AD
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:34:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A8C5967ABA
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:00:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B9413B2213C
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:34:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 004EFB20C28
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:00:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5978317E00C;
-	Sun,  1 Sep 2024 16:34:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE9AF183CAB;
+	Sun,  1 Sep 2024 17:00:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tSI2PPA9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K/4ugMCl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16D861E87B;
-	Sun,  1 Sep 2024 16:34:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEE831E87B;
+	Sun,  1 Sep 2024 17:00:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208462; cv=none; b=PD2JhinFSDYjDpNHjF5BW7YNLy4B0arnn3FqVMcAFwzGepan0yh/ZDepytPn/SLDYJbXdOohA6Whq2yCbR8hSJPUMDGzBXWCLRMgUem0kFzUt1kj1NrmAizNmF+TuPz5OxRLb8gpOlCJnGfI3ZO3XtUk9bEHcS3UnzEncrR1wtw=
+	t=1725210000; cv=none; b=s3if/lB11rfr+ctFcbaiOM5U4nKNnikUzPzIRMSBm2vLrKLnlI0k3oVW2wn51wu1EJgzegdn2KQJwxC4HoJHSN4bRFOAb0fOUh1bwB4wBq/EljvpNu3cBQ2l80sLzkJCPnlmwJYwqhsLDOQM1D3akDXitkie1JGk03nOgoahUto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208462; c=relaxed/simple;
-	bh=VQBUEP1HTo6GNB2PK0P4RF7sTYIWZoG0gzyNgzCMbnw=;
+	s=arc-20240116; t=1725210000; c=relaxed/simple;
+	bh=7Yu82DZHBo1kEwrpUt35GMDLjItBBahCm+WTREaDzEA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m4ujrc17h+L6NdwVdjySsODuKkqlqBG1FqGjT2DRCBPQmlk57OGgSvPgsbz4wPkhm/SxLxiOSUrCPeedvuAVmT1x2tlrGIYiGbsKxueFbrZ0ANd/U9En3zi2Qe21eZtO78ShCtysvF+rRC8qQdgKSVO0tVt0M098/OapJ/N/wt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tSI2PPA9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 925A1C4CEC4;
-	Sun,  1 Sep 2024 16:34:21 +0000 (UTC)
+	 MIME-Version; b=q92h7nDG+WKubHWOKvORzAobEeYZSWuAdwn69OM/S0iYjlstQHI7EWx6nNHhlNbJ0/55CtJCgs5tG8IbGIqvw+Ogu1cIVugAZB+6BhsPrFBAUOwTmeWd/aPhR4altZTIKnmFxx8Miq95cljODa4ZpZJFlsFmBp/4+AXQ+RQLVQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K/4ugMCl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2234BC4CEC3;
+	Sun,  1 Sep 2024 16:59:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208462;
-	bh=VQBUEP1HTo6GNB2PK0P4RF7sTYIWZoG0gzyNgzCMbnw=;
+	s=korg; t=1725210000;
+	bh=7Yu82DZHBo1kEwrpUt35GMDLjItBBahCm+WTREaDzEA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tSI2PPA9GWnucH0eXZDfHH3fdttTEpVoh00xk5DaHLO4lXNmvvh2tqnYgWcXlJAme
-	 bA2nUA4EL1thL2PFm5d/n4pPagx9usbwUGfE+NUYKFx7fxsbsIC62M3ziCD+/ViKJn
-	 zXSZXB132lzFduiZeb9w8GJMq8hl5rQJSNJeEQh8=
+	b=K/4ugMCl2ctR1GeAFf49u7yU4fQn2rIen56zKOQulAK2VSHm+TXjUuISi/K7y0npH
+	 Jj43H9OdnihNbOXYfdfas9uSHLqUVT4uNM/KPSnc+HZWUoNWtiBwTabGpgQ8KADlmm
+	 keXkAwKsMcW4hAsT/2+I03DO1OJaqEJanaSsnOKg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 058/149] ASoC: cs-amp-lib: Ignore empty UEFI calibration entries
+Subject: [PATCH 5.15 057/215] media: qcom: venus: fix incorrect return value
 Date: Sun,  1 Sep 2024 18:16:09 +0200
-Message-ID: <20240901160819.650972860@linuxfoundation.org>
+Message-ID: <20240901160825.506300339@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
-References: <20240901160817.461957599@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-[ Upstream commit bb4485562f5907708f1c218b5d70dce04165d1e1 ]
+[ Upstream commit 51b74c09ac8c5862007fc2bf0d465529d06dd446 ]
 
-If the timestamp of a calibration entry is 0 it is an unused entry and
-must be ignored.
+'pd' can be NULL, and in that case it shouldn't be passed to
+PTR_ERR. Fixes a smatch warning:
 
-Some end-products reserve EFI space for calibration entries by shipping
-with a zero-filled EFI file. When searching the file for calibration
-data the driver must skip the empty entries. The timestamp of a valid
-entry is always non-zero.
+drivers/media/platform/qcom/venus/pm_helpers.c:873 vcodec_domains_get() warn: passing zero to 'PTR_ERR'
 
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Fixes: 1cad8725f2b9 ("ASoC: cs-amp-lib: Add helpers for factory calibration data")
-Link: https://patch.msgid.link/20240822133544.304421-1-rf@opensource.cirrus.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/cs-amp-lib.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/media/platform/qcom/venus/pm_helpers.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/cs-amp-lib.c b/sound/soc/codecs/cs-amp-lib.c
-index 605964af8afad..51b128c806718 100644
---- a/sound/soc/codecs/cs-amp-lib.c
-+++ b/sound/soc/codecs/cs-amp-lib.c
-@@ -182,6 +182,10 @@ static int _cs_amp_get_efi_calibration_data(struct device *dev, u64 target_uid,
- 		for (i = 0; i < efi_data->count; ++i) {
- 			u64 cal_target = cs_amp_cal_target_u64(&efi_data->data[i]);
- 
-+			/* Skip empty entries */
-+			if (!efi_data->data[i].calTime[0] && !efi_data->data[i].calTime[1])
-+				continue;
-+
- 			/* Skip entries with unpopulated silicon ID */
- 			if (cal_target == 0)
- 				continue;
-@@ -193,7 +197,8 @@ static int _cs_amp_get_efi_calibration_data(struct device *dev, u64 target_uid,
- 		}
+diff --git a/drivers/media/platform/qcom/venus/pm_helpers.c b/drivers/media/platform/qcom/venus/pm_helpers.c
+index 055513a7301f1..656c17986c1c3 100644
+--- a/drivers/media/platform/qcom/venus/pm_helpers.c
++++ b/drivers/media/platform/qcom/venus/pm_helpers.c
+@@ -870,7 +870,7 @@ static int vcodec_domains_get(struct venus_core *core)
+ 		pd = dev_pm_domain_attach_by_name(dev,
+ 						  res->vcodec_pmdomains[i]);
+ 		if (IS_ERR_OR_NULL(pd))
+-			return PTR_ERR(pd) ? : -ENODATA;
++			return pd ? PTR_ERR(pd) : -ENODATA;
+ 		core->pmdomains[i] = pd;
  	}
  
--	if (!cal && (amp_index >= 0) && (amp_index < efi_data->count)) {
-+	if (!cal && (amp_index >= 0) && (amp_index < efi_data->count) &&
-+	    (efi_data->data[amp_index].calTime[0] || efi_data->data[amp_index].calTime[1])) {
- 		u64 cal_target = cs_amp_cal_target_u64(&efi_data->data[amp_index]);
- 
- 		/*
 -- 
 2.43.0
 
