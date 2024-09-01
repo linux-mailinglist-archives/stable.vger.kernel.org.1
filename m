@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-72056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71761-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 463B99678FD
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:38:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A904E9677A1
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:22:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B9D19B21792
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:38:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65003281FE3
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:22:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37D7117E900;
-	Sun,  1 Sep 2024 16:38:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 029A7183061;
+	Sun,  1 Sep 2024 16:22:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y/comlBO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="toMNF3dN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAD4E17CA1F;
-	Sun,  1 Sep 2024 16:38:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B582144C97;
+	Sun,  1 Sep 2024 16:22:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208696; cv=none; b=Xg7zRyiPPNR9FlonAySCGVNotmW+xO5x1VWThu6BTeUksV3iauqMqIvz/YN0DQYDbSkmhMgrOIAvVsrwm6xHyY70LMKEH73pNQMijN2fGsLt/JskIFvc4jqkJFiV+9sQBSwxoF6bd2lV3ThoCCtU6yW/G9b7ucFoyO4/vdlGXgI=
+	t=1725207727; cv=none; b=Rvlb4VyrPtufUJ30T/0VcW4gVxBa9i4CSRBz6+qiJp5vjDfbm/JEElEvX0j/aKmQoB/r4VQE9G29NI7+I0slKGJQAKgeNUxfr8NZxz/HLxYyG75uTqRewlA6Hz3FerHNV5fJhoUDK73zsdP89aqIOlqL/R75ZeYWi7EH8JqELBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208696; c=relaxed/simple;
-	bh=775453cZbTktHxyT0jWBxN3ceeoJmiSsW7Jz8QUstNY=;
+	s=arc-20240116; t=1725207727; c=relaxed/simple;
+	bh=QX8lu6aCQ+R6fo8blx6JyDm3rufilsl7ofMHPw2X+YU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C++XWPHwb24pnMnY6v5HcGYcJUP4QUcJsHaNWR5gRqWq+5a2FwHYZtVF1ENfGHA97OkhY9oJq2HfGPJK3CGTH2DriI1bZlVCBHoFoEgw0gyY8NXcNp+Jde3qiwAmnMUMeHAiHMryKJAfJvUgf8AdnWKw9GXFoYdzrf5bP45ccVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y/comlBO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CEC3C4CEC3;
-	Sun,  1 Sep 2024 16:38:15 +0000 (UTC)
+	 MIME-Version; b=TunFpKpKZOX5/3E9I03QerfbMXkSAngE2Yx1uNGRw5IEnJq6dN9U1LOyXyfCHEwMVFQM+ze8fQkl7a6IBny/xm2GBiuSuC8jSo18BTKc7ofbBEEE/9uWJb6Cu79dQ9NDaLye+4onJGBA0SbmHR6BMVGcOA9izJu36ceDi/NnaQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=toMNF3dN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B2DEC4CEC3;
+	Sun,  1 Sep 2024 16:22:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208695;
-	bh=775453cZbTktHxyT0jWBxN3ceeoJmiSsW7Jz8QUstNY=;
+	s=korg; t=1725207727;
+	bh=QX8lu6aCQ+R6fo8blx6JyDm3rufilsl7ofMHPw2X+YU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y/comlBOceyajhRjOjWJtd0pwPut8/+jDHVWC/xy/5hoIltihH/xJ6f19DyaM0her
-	 Bh+/e1K2ojWf0Tas7StXV8GpfWEK476ethtcBYd/FX9TMBsxoPY+8bWQcFyWV2lmdi
-	 FyvCvEe8nb2eaW0VrMN3G1ziQ/hIG8cUdvEMQPME=
+	b=toMNF3dNhzkiRy2JjkrgUC3BivFCvjvaZb/2vZAtzZrYlhJXYefO5PHwBYaBStPoS
+	 2NbMqY9vE+b8liJF+yLt6v1FvfYF5pE2MnuCQdJhdYZKylLPi+Gn73kL+wYmDKqWM7
+	 hFvinCVHSE0zl7jM2f8PQ7QgSOfxo0T0EIT//qLo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 5.4 012/134] drm/amdgpu: Actually check flags for all context ops.
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Sicong Huang <huangsicong@iie.ac.cn>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 28/98] media: pci: cx23885: check cx23885_vdev_init() return
 Date: Sun,  1 Sep 2024 18:15:58 +0200
-Message-ID: <20240901160810.574658989@linuxfoundation.org>
+Message-ID: <20240901160804.754307514@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
-References: <20240901160809.752718937@linuxfoundation.org>
+In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
+References: <20240901160803.673617007@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-commit 0573a1e2ea7e35bff08944a40f1adf2bb35cea61 upstream.
+[ Upstream commit 15126b916e39b0cb67026b0af3c014bfeb1f76b3 ]
 
-Missing validation ...
+cx23885_vdev_init() can return a NULL pointer, but that pointer
+is used in the next line without a check.
 
-Checked libdrm and it clears all the structs, so we should be
-safe to just check everything.
+Add a NULL pointer check and go to the error unwind if it is NULL.
 
-Signed-off-by: Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit c6b86421f1f9ddf9d706f2453159813ee39d0cf9)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Reported-by: Sicong Huang <huangsicong@iie.ac.cn>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_ctx.c |    8 ++++++++
+ drivers/media/pci/cx23885/cx23885-video.c | 8 ++++++++
  1 file changed, 8 insertions(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ctx.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ctx.c
-@@ -401,16 +401,24 @@ int amdgpu_ctx_ioctl(struct drm_device *
- 
- 	switch (args->in.op) {
- 	case AMDGPU_CTX_OP_ALLOC_CTX:
-+		if (args->in.flags)
-+			return -EINVAL;
- 		r = amdgpu_ctx_alloc(adev, fpriv, filp, priority, &id);
- 		args->out.alloc.ctx_id = id;
- 		break;
- 	case AMDGPU_CTX_OP_FREE_CTX:
-+		if (args->in.flags)
-+			return -EINVAL;
- 		r = amdgpu_ctx_free(fpriv, id);
- 		break;
- 	case AMDGPU_CTX_OP_QUERY_STATE:
-+		if (args->in.flags)
-+			return -EINVAL;
- 		r = amdgpu_ctx_query(adev, fpriv, id, &args->out);
- 		break;
- 	case AMDGPU_CTX_OP_QUERY_STATE2:
-+		if (args->in.flags)
-+			return -EINVAL;
- 		r = amdgpu_ctx_query2(adev, fpriv, id, &args->out);
- 		break;
- 	default:
+diff --git a/drivers/media/pci/cx23885/cx23885-video.c b/drivers/media/pci/cx23885/cx23885-video.c
+index 16564899f1141..435a3c1c7e650 100644
+--- a/drivers/media/pci/cx23885/cx23885-video.c
++++ b/drivers/media/pci/cx23885/cx23885-video.c
+@@ -1297,6 +1297,10 @@ int cx23885_video_register(struct cx23885_dev *dev)
+ 	/* register Video device */
+ 	dev->video_dev = cx23885_vdev_init(dev, dev->pci,
+ 		&cx23885_video_template, "video");
++	if (!dev->video_dev) {
++		err = -ENOMEM;
++		goto fail_unreg;
++	}
+ 	dev->video_dev->queue = &dev->vb2_vidq;
+ 	err = video_register_device(dev->video_dev, VFL_TYPE_GRABBER,
+ 				    video_nr[dev->nr]);
+@@ -1311,6 +1315,10 @@ int cx23885_video_register(struct cx23885_dev *dev)
+ 	/* register VBI device */
+ 	dev->vbi_dev = cx23885_vdev_init(dev, dev->pci,
+ 		&cx23885_vbi_template, "vbi");
++	if (!dev->vbi_dev) {
++		err = -ENOMEM;
++		goto fail_unreg;
++	}
+ 	dev->vbi_dev->queue = &dev->vb2_vbiq;
+ 	err = video_register_device(dev->vbi_dev, VFL_TYPE_VBI,
+ 				    vbi_nr[dev->nr]);
+-- 
+2.43.0
+
 
 
 
