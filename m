@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-72582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72246-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F04E967B36
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:06:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EB249679D8
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:49:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CCA1281615
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:06:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D114C28198F
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:49:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E797E3BB48;
-	Sun,  1 Sep 2024 17:06:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2E4118593E;
+	Sun,  1 Sep 2024 16:48:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MVKR7sSH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y/rmHiGs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A599426AC1;
-	Sun,  1 Sep 2024 17:06:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 685E81DFD1;
+	Sun,  1 Sep 2024 16:48:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210400; cv=none; b=dh8wdfDNLbJrxFcEOyL6Mghk+yPRxR4wJN2KoQU9bcFmSNdO1F096GJ9KFXBMRVUbWZRCM3CyxS6pHjOwUQy1MN/fEN9stOyJw28BnKeqVehQ3lom9C0ZSstSg6ooVl0oqF0k7Cc1Mw9QYpQs5Gg4XPFr7m9N6mMCXc9/mLLw/g=
+	t=1725209308; cv=none; b=fVMaaIuTz0RXPsIIoh46o/enA6MW04MrWGE7Cbz1qw2ZloiziVZdqxHxf7R5Hn7/dhH5uQ08cChFOhzM/DAAhWdSKt8SGI2V9CCCACLYSCGmWXeLoa45+HYHTiWxOeNZfdUs5H9K7NX/BS/D9lmBbZLUKRcc2DgMIlFOzKjQFZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210400; c=relaxed/simple;
-	bh=XoLeniHt+UFC/yUp4mCRxn7VOdAfADXgFwLVffi7LYo=;
+	s=arc-20240116; t=1725209308; c=relaxed/simple;
+	bh=qi45Ln7/4OPL6gbEcyq6CmnuRlTx7m1W0qZUvxxsQCU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LpI9OB/H5MtEZ2uZDajGRTWZQdzuuhRZO8nFh3n1u1QeP4tnOBCX9D/M6/HQFtQMTZU0UKGxJWRkiFFO1iaexTaHjx/lhNqdTRNDon5HPLEQFhMgtaBYQs2NL3wHm35dH8ADpD8J6G1BaBe2VFLjQNF0xGpWrgUZP8cQjLjg1H4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MVKR7sSH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2964BC4CEC3;
-	Sun,  1 Sep 2024 17:06:39 +0000 (UTC)
+	 MIME-Version; b=fpvBgkSba+5n1+n3ddvMC9Vm/kHCM38dps8DQpMml/rw1JSOzcDbj8Gfug7Otpt+ffVGLoKshafZ1MbNQay1ZDCajygUIAJbQKAzlFT1uAUR4wEqj6CIRlicD8hpkKlT05JGezErqqbQwr5HjncBZoN0Lv+3EYY3/nseEoQzSno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y/rmHiGs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E49D2C4CEC3;
+	Sun,  1 Sep 2024 16:48:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210400;
-	bh=XoLeniHt+UFC/yUp4mCRxn7VOdAfADXgFwLVffi7LYo=;
+	s=korg; t=1725209308;
+	bh=qi45Ln7/4OPL6gbEcyq6CmnuRlTx7m1W0qZUvxxsQCU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MVKR7sSH3P7WKI8OMRuW3MVlF1Eqn/FLztsH+6x53XuFP7utTB4VCmsG+4Siaoknj
-	 Cov0TaowXtj6UervAkaaxYsikqoGD/22o+DyiVFDtrT4zK1XFZe1pLWoi8/Y5ByTup
-	 QkQ8UYJi70Sgkgj8WynId2ZOO/fnf1jvJvLmKVcY=
+	b=y/rmHiGsYF4pa2BM0Ht2IU7AYZhuldm7Zu86Rq+a3FRGaZPdYkCCY/0Ai0zhmEg7A
+	 xNDKPZHc7pEUd7AC7PRibSWB9wuE9Hv6UP7nA5gY8x1gu1klZ+vVRQEkWos8MHfLpZ
+	 tTdVLD2lC5SSw3q3MFCn+zNokyBsTv7HQvkWKQKM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Brian Norris <briannorris@chromium.org>,
-	Kalle Valo <kvalo@kernel.org>
-Subject: [PATCH 5.15 179/215] wifi: mwifiex: duplicate static structs used in driver instances
-Date: Sun,  1 Sep 2024 18:18:11 +0200
-Message-ID: <20240901160830.127698251@linuxfoundation.org>
+	Faizal Rahim <faizal.abdul.rahim@linux.intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>
+Subject: [PATCH 6.1 67/71] igc: Fix reset adapter logics when tx mode change
+Date: Sun,  1 Sep 2024 18:18:12 +0200
+Message-ID: <20240901160804.415109013@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160801.879647959@linuxfoundation.org>
+References: <20240901160801.879647959@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,89 +64,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
+From: Faizal Rahim <faizal.abdul.rahim@linux.intel.com>
 
-commit 27ec3c57fcadb43c79ed05b2ea31bc18c72d798a upstream.
+commit 0afeaeb5dae86aceded0d5f0c3a54d27858c0c6f upstream.
 
-mwifiex_band_2ghz and mwifiex_band_5ghz are statically allocated, but
-used and modified in driver instances. Duplicate them before using
-them in driver instances so that different driver instances do not
-influence each other.
+Following the "igc: Fix TX Hang issue when QBV Gate is close" changes,
+remaining issues with the reset adapter logic in igc_tsn_offload_apply()
+have been observed:
 
-This was observed on a board which has one PCIe and one SDIO mwifiex
-adapter. It blew up in mwifiex_setup_ht_caps(). This was called with
-the statically allocated struct which is modified in this function.
+1. The reset adapter logics for i225 and i226 differ, although they should
+   be the same according to the guidelines in I225/6 HW Design Section
+   7.5.2.1 on software initialization during tx mode changes.
+2. The i225 resets adapter every time, even though tx mode doesn't change.
+   This occurs solely based on the condition  igc_is_device_id_i225() when
+   calling schedule_work().
+3. i226 doesn't reset adapter for tsn->legacy tx mode changes. It only
+   resets adapter for legacy->tsn tx mode transitions.
+4. qbv_count introduced in the patch is actually not needed; in this
+   context, a non-zero value of qbv_count is used to indicate if tx mode
+   was unconditionally set to tsn in igc_tsn_enable_offload(). This could
+   be replaced by checking the existing register
+   IGC_TQAVCTRL_TRANSMIT_MODE_TSN bit.
 
-Cc: stable@vger.kernel.org
-Fixes: d6bffe8bb520 ("mwifiex: support for creation of AP interface")
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Acked-by: Brian Norris <briannorris@chromium.org>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/20240809-mwifiex-duplicate-static-structs-v1-1-6837b903b1a4@pengutronix.de
+This patch resolves all issues and enters schedule_work() to reset the
+adapter only when changing tx mode. It also removes reliance on qbv_count.
+
+qbv_count field will be removed in a future patch.
+
+Test ran:
+
+1. Verify reset adapter behaviour in i225/6:
+   a) Enrol a new GCL
+      Reset adapter observed (tx mode change legacy->tsn)
+   b) Enrol a new GCL without deleting qdisc
+      No reset adapter observed (tx mode remain tsn->tsn)
+   c) Delete qdisc
+      Reset adapter observed (tx mode change tsn->legacy)
+
+2. Tested scenario from "igc: Fix TX Hang issue when QBV Gate is closed"
+   to confirm it remains resolved.
+
+Fixes: 175c241288c0 ("igc: Fix TX Hang issue when QBV Gate is closed")
+Signed-off-by: Faizal Rahim <faizal.abdul.rahim@linux.intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+[ Only want the igc_tsn_is_tx_mode_in_tsn() portion of this for older stable
+  kernels - gregkh ]
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/marvell/mwifiex/cfg80211.c |   32 +++++++++++++++++++-----
- 1 file changed, 26 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/intel/igc/igc_tsn.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-+++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
-@@ -4328,11 +4328,27 @@ int mwifiex_register_cfg80211(struct mwi
- 	if (ISSUPP_ADHOC_ENABLED(adapter->fw_cap_info))
- 		wiphy->interface_modes |= BIT(NL80211_IFTYPE_ADHOC);
- 
--	wiphy->bands[NL80211_BAND_2GHZ] = &mwifiex_band_2ghz;
--	if (adapter->config_bands & BAND_A)
--		wiphy->bands[NL80211_BAND_5GHZ] = &mwifiex_band_5ghz;
--	else
-+	wiphy->bands[NL80211_BAND_2GHZ] = devm_kmemdup(adapter->dev,
-+						       &mwifiex_band_2ghz,
-+						       sizeof(mwifiex_band_2ghz),
-+						       GFP_KERNEL);
-+	if (!wiphy->bands[NL80211_BAND_2GHZ]) {
-+		ret = -ENOMEM;
-+		goto err;
-+	}
-+
-+	if (adapter->config_bands & BAND_A) {
-+		wiphy->bands[NL80211_BAND_5GHZ] = devm_kmemdup(adapter->dev,
-+							       &mwifiex_band_5ghz,
-+							       sizeof(mwifiex_band_5ghz),
-+							       GFP_KERNEL);
-+		if (!wiphy->bands[NL80211_BAND_5GHZ]) {
-+			ret = -ENOMEM;
-+			goto err;
-+		}
-+	} else {
- 		wiphy->bands[NL80211_BAND_5GHZ] = NULL;
-+	}
- 
- 	if (adapter->drcs_enabled && ISSUPP_DRCS_ENABLED(adapter->fw_cap_info))
- 		wiphy->iface_combinations = &mwifiex_iface_comb_ap_sta_drcs;
-@@ -4425,8 +4441,7 @@ int mwifiex_register_cfg80211(struct mwi
- 	if (ret < 0) {
- 		mwifiex_dbg(adapter, ERROR,
- 			    "%s: wiphy_register failed: %d\n", __func__, ret);
--		wiphy_free(wiphy);
--		return ret;
-+		goto err;
- 	}
- 
- 	if (!adapter->regd) {
-@@ -4468,4 +4483,9 @@ int mwifiex_register_cfg80211(struct mwi
- 
- 	adapter->wiphy = wiphy;
- 	return ret;
-+
-+err:
-+	wiphy_free(wiphy);
-+
-+	return ret;
+--- a/drivers/net/ethernet/intel/igc/igc_tsn.c
++++ b/drivers/net/ethernet/intel/igc/igc_tsn.c
+@@ -49,6 +49,13 @@ static unsigned int igc_tsn_new_flags(st
+ 	return new_flags;
  }
+ 
++static bool igc_tsn_is_tx_mode_in_tsn(struct igc_adapter *adapter)
++{
++	struct igc_hw *hw = &adapter->hw;
++
++	return !!(rd32(IGC_TQAVCTRL) & IGC_TQAVCTRL_TRANSMIT_MODE_TSN);
++}
++
+ void igc_tsn_adjust_txtime_offset(struct igc_adapter *adapter)
+ {
+ 	struct igc_hw *hw = &adapter->hw;
 
 
 
