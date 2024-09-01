@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-72201-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72052-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E6029679A9
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:48:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42E559678F8
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:38:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C89521F21C30
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:48:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED9471F210D2
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:38:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF5971865F9;
-	Sun,  1 Sep 2024 16:46:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0F1B17E00C;
+	Sun,  1 Sep 2024 16:38:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ByxqnOeD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dWQub7KI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E8B51865E3;
-	Sun,  1 Sep 2024 16:46:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FAC91C68C;
+	Sun,  1 Sep 2024 16:38:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209170; cv=none; b=bh8tEQJPS0EL5r2jL04a6w3SZaphHWHETFfm29sgYMoaU3AO+7tfjPVdj9WOQmRE0URTcxGxcmnLo1TU2HTJ5uK2WD2hT58IKb76LZ2G5iy24LS3odUFGYuDCONej3TFW8tp1vhRtB1AB41GpDZDVnAa+ZeI/OOdop9UqscvCP0=
+	t=1725208682; cv=none; b=PMudBRf+MAgZLY3KLRk/B6BHRaWDMaWDkPydp3D55AZem+r8C3MD+TfX00P0KPeTFyvpM9nETtPWsnGrUIxi+0Pz/VowjR/yseQjgKpxc1nHJsjI9ZlhsANWp/TpM60XvCjSYZna+8EuqiyKijCVmHbs5wSHwftKG9IQ3WFn6zM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209170; c=relaxed/simple;
-	bh=X6rs3GjWu78mQU1Deoz5jS9fvg6L62FCdbZ6FbBSU1A=;
+	s=arc-20240116; t=1725208682; c=relaxed/simple;
+	bh=KKWzR28Y0LZzHLeb1x3qwxvtXK8cuJOg7IMed/9G6cI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZhSdr+Wxe0nJ/fQwPhFxwgMnB6FIzyPyZdv0gRCaSjVPV8W7bYftWSaRMGg5rnX+qg1pmtkbn0ETKZqewd0C3r4SqI+HsPQ7EdyTLKkvChKSvujn78aGbO2pEUybx6boDR0kvzs6wUGJzVcSyROd0ENVQz5yQFuFHGmVeNX6pr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ByxqnOeD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D028FC4CEC3;
-	Sun,  1 Sep 2024 16:46:08 +0000 (UTC)
+	 MIME-Version; b=gYHy0dawk7mvheetOL5AhqcEQ1ABgCHoz/z+H6QwWX46iNd1tfyaiAHMBU+eh/830u+M0HWugcSzEeqlHkp+FpAiAh4tDOpeY/6eA1qvcuMFsEq/cj/6wgMouFYMrT/6AOn2FOWOHMVkr2x8yOGqTEf3WSO8fLpyYXeBiJSTtvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dWQub7KI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB973C4CEC3;
+	Sun,  1 Sep 2024 16:38:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209169;
-	bh=X6rs3GjWu78mQU1Deoz5jS9fvg6L62FCdbZ6FbBSU1A=;
+	s=korg; t=1725208682;
+	bh=KKWzR28Y0LZzHLeb1x3qwxvtXK8cuJOg7IMed/9G6cI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ByxqnOeDkumQf1nXNsaVnWbszpp28ZdXmxJCNs0aXgm6TPemFTidCkYXVv/hAhYUb
-	 tVy2EMqBF1vvRiTrpE6To3P9vkA8wW8E/98ihVECEDywwv7e5ONt/I58QjNQfX10bU
-	 PlWalMvY4qLIkyKxInDbeDeHDv0D3dSpoTsuvFo4=
+	b=dWQub7KIrvhwgQJ65ioymivtJ4dbxkjdYk9QgTlrYqKy7ItFXfr+noh7dn0yw6peh
+	 NzahZxXJQtL4YLe6/dt9ucg+jK/6jN/TyBirL2ivU64xwEjTUKdcUSNWPYPOjNjcTK
+	 QlhxS7t+e6mcOCeYruErJiJZ6xgKez+sfnOxH6NQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	=?UTF-8?q?J=C3=A9r=C3=B4me=20Pouiller?= <jerome.pouiller@silabs.com>,
-	Kalle Valo <kvalo@kernel.org>
-Subject: [PATCH 6.1 08/71] wifi: wfx: repair open network AP mode
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>
+Subject: [PATCH 6.10 122/149] dt-bindings: usb: microchip,usb2514: Fix reference USB device schema
 Date: Sun,  1 Sep 2024 18:17:13 +0200
-Message-ID: <20240901160802.201425933@linuxfoundation.org>
+Message-ID: <20240901160822.041311224@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160801.879647959@linuxfoundation.org>
-References: <20240901160801.879647959@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,71 +59,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-commit 6d30bb88f623526197c0e18a366e68a4254a2c83 upstream.
+commit 5b235693ed2a1e4963625717a1598becf97759cc upstream.
 
-RSN IE missing in beacon is normal in open networks.
-Avoid returning -EINVAL in this case.
+An USB hub is not a HCD, but an USB device. Fix the referenced schema
+accordingly.
 
-Steps to reproduce:
-
-$ cat /etc/wpa_supplicant.conf
-network={
-	ssid="testNet"
-	mode=2
-	key_mgmt=NONE
-}
-
-$ wpa_supplicant -iwlan0 -c /etc/wpa_supplicant.conf
-nl80211: Beacon set failed: -22 (Invalid argument)
-Failed to set beacon parameters
-Interface initialization failed
-wlan0: interface state UNINITIALIZED->DISABLED
-wlan0: AP-DISABLED
-wlan0: Unable to setup interface.
-Failed to initialize AP interface
-
-After the change:
-
-$ wpa_supplicant -iwlan0 -c /etc/wpa_supplicant.conf
-Successfully initialized wpa_supplicant
-wlan0: interface state UNINITIALIZED->ENABLED
-wlan0: AP-ENABLED
-
+Fixes: bfbf2e4b77e2 ("dt-bindings: usb: Document the Microchip USB2514 hub")
 Cc: stable@vger.kernel.org
-Fixes: fe0a7776d4d1 ("wifi: wfx: fix possible NULL pointer dereference in wfx_set_mfp_ap()")
-Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Reviewed-by: Jérôme Pouiller <jerome.pouiller@silabs.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/20240823131521.3309073-1-alexander.sverdlin@siemens.com
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Link: https://lore.kernel.org/r/20240815113132.372542-1-alexander.stein@ew.tq-group.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/silabs/wfx/sta.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ Documentation/devicetree/bindings/usb/microchip,usb2514.yaml |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/drivers/net/wireless/silabs/wfx/sta.c
-+++ b/drivers/net/wireless/silabs/wfx/sta.c
-@@ -370,8 +370,11 @@ static int wfx_set_mfp_ap(struct wfx_vif
+--- a/Documentation/devicetree/bindings/usb/microchip,usb2514.yaml
++++ b/Documentation/devicetree/bindings/usb/microchip,usb2514.yaml
+@@ -10,7 +10,7 @@ maintainers:
+   - Fabio Estevam <festevam@gmail.com>
  
- 	ptr = (u16 *)cfg80211_find_ie(WLAN_EID_RSN, skb->data + ieoffset,
- 				      skb->len - ieoffset);
--	if (unlikely(!ptr))
-+	if (!ptr) {
-+		/* No RSN IE is fine in open networks */
-+		ret = 0;
- 		goto free_skb;
-+	}
+ allOf:
+-  - $ref: usb-hcd.yaml#
++  - $ref: usb-device.yaml#
  
- 	ptr += pairwise_cipher_suite_count_offset;
- 	if (WARN_ON(ptr > (u16 *)skb_tail_pointer(skb)))
+ properties:
+   compatible:
+@@ -35,6 +35,13 @@ required:
+   - compatible
+   - reg
+ 
++patternProperties:
++  "^.*@[0-9a-f]{1,2}$":
++    description: The hard wired USB devices
++    type: object
++    $ref: /schemas/usb/usb-device.yaml
++    additionalProperties: true
++
+ unevaluatedProperties: false
+ 
+ examples:
 
 
 
