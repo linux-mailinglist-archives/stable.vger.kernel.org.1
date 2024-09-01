@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-71840-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72510-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C4F29677FD
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:26:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4494A967AEC
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:02:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC2AF280FC5
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:26:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 754D51C21572
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:02:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 458C018452C;
-	Sun,  1 Sep 2024 16:26:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AD9F17B50B;
+	Sun,  1 Sep 2024 17:02:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qp5D+XHt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a0MAVbmT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F091E18132F;
-	Sun,  1 Sep 2024 16:26:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAB1E3B79C;
+	Sun,  1 Sep 2024 17:02:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725207989; cv=none; b=gttj8wOM/x+zJ6fJA2Um6Wwz8S+0ktEr0DWlXsXF4O1mNhW+40rTlCmg31HpyqjQY5vUMhvL7GFRWYLME4SAaMkGLN11sx7ISPJaWHDjdB0GRc2IeDdb+jLJzKgNbEqT7RmrEZ061kfh5LqQd1U2nSYHeZGuyqjjdVXZQK5rc5M=
+	t=1725210159; cv=none; b=t5KRHCV1/0JoPLVVdw/S2hctERvapFHY1GxSx33e6bm9dnGTxMqjYgNglVB5ISt1FUty0YYd5Xi2ZsGsv6dLadB2MfDeOHl6wrrDkrB/1MWYDftANQD/WMC+AbyLD4I7VhC2Dk2UjcEUAhVAGENqtWcFN2a62jRiEQnHz71Y9/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725207989; c=relaxed/simple;
-	bh=N/959gfYX00ziHtqMXnG549dcbHHpLZdLmkODtpAD8o=;
+	s=arc-20240116; t=1725210159; c=relaxed/simple;
+	bh=oEwSBkNc9yRulwyvbeYwF0gzOMV27oJNVTEny2ZqIEw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hlkmMArZawysg5C2e6LdOD2mYei/r78MjEP0Mi4tz7qHLFKvbHKIHEPagY6/eJwm1kgfdxH/XNBSVLokBvRVa+tqg/YrZ16HWyx687sGEn/K0b2WrtwhqAmKgg9Ii1/8d54KtCmlQs8Q5BlovCy63QNqJel3lJy/P5KLct4Mgt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qp5D+XHt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7988EC4CEC3;
-	Sun,  1 Sep 2024 16:26:28 +0000 (UTC)
+	 MIME-Version; b=UYbW5YYO/47J5pUAXprq3Ld1lq1LA8FPC8QZ9BEqP3R7id3MVTm7Wq6A3OLe2I2vQyLn1yy7cwgMiA/Tosit+2ewDQez2w6Gq8w4qYfPqpqj7EZp2tgd4LgyPMBf4mhfXEUH3HK9NpH4QyfTmXafFqe/yugLldb28a9ygMs6Quc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a0MAVbmT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 325D4C4CEC3;
+	Sun,  1 Sep 2024 17:02:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725207988;
-	bh=N/959gfYX00ziHtqMXnG549dcbHHpLZdLmkODtpAD8o=;
+	s=korg; t=1725210159;
+	bh=oEwSBkNc9yRulwyvbeYwF0gzOMV27oJNVTEny2ZqIEw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qp5D+XHtHnF3J9X6XnVIxGXlWjIvjWsJA98Od70cJUgs3JllvjttWqxtTKexuhonq
-	 cbMRebALByB+JCfRM4XZimOwbjU1OL3gRv6DcxZEKD4ZYvNgfw30KVmiowd8/k5dzx
-	 hxbPhyDmhnzrAc7aar8ZCinGFlP3h5ulr4KECRBE=
+	b=a0MAVbmTq6kbgVGctOAYA4DwoKNBNLdFPBqHQHIz37ivUaFRo+JpQkIpsjGQ1SRlh
+	 dPPyrI48NmHTflRMLubVzQVPjkS7+zfwz2FtgulolAVbdzvj39MwbwP2uJ8eV8k4JL
+	 aeujC5pG0rSQHhAGExti7Ph7P/UEfmoIichGXb/8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Steve French <sfrench@samba.org>,
-	Paulo Alcantara <pc@manguebit.com>,
-	Shyam Prasad N <nspmangalore@gmail.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	linux-cifs@vger.kernel.org,
-	netfs@lists.linux.dev,
-	Steve French <stfrench@microsoft.com>,
+	Dave Airlie <airlied@redhat.com>,
+	Philipp Stanner <pstanner@redhat.com>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 40/93] cifs: Fix FALLOC_FL_PUNCH_HOLE support
+Subject: [PATCH 5.15 075/215] media: drivers/media/dvb-core: copy user arrays safely
 Date: Sun,  1 Sep 2024 18:16:27 +0200
-Message-ID: <20240901160808.870426806@linuxfoundation.org>
+Message-ID: <20240901160826.187838002@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
-References: <20240901160807.346406833@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,107 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Philipp Stanner <pstanner@redhat.com>
 
-[ Upstream commit 416871f4fb84bc96822562e654941d5625a25bf8 ]
+[ Upstream commit 102fb77c2deb0df3683ef8ff7a6f4cf91dc456e2 ]
 
-The cifs filesystem doesn't quite emulate FALLOC_FL_PUNCH_HOLE correctly
-(note that due to lack of protocol support, it can't actually implement it
-directly).  Whilst it will (partially) invalidate dirty folios in the
-pagecache, it doesn't write them back first, and so the EOF marker on the
-server may be lower than inode->i_size.
+At several positions in dvb_frontend.c, memdup_user() is utilized to
+copy userspace arrays. This is done without overflow checks.
 
-This presents a problem, however, as if the punched hole invalidates the
-tail of the locally cached dirty data, writeback won't know it needs to
-move the EOF over to account for the hole punch (which isn't supposed to
-move the EOF).  We could just write zeroes over the punched out region of
-the pagecache and write that back - but this is supposed to be a
-deallocatory operation.
+Use the new wrapper memdup_array_user() to copy the arrays more safely.
 
-Fix this by manually moving the EOF over on the server after the operation
-if the hole punched would corrupt it.
-
-Note that the FSCTL_SET_ZERO_DATA RPC and the setting of the EOF should
-probably be compounded to stop a third party interfering (or, at least,
-massively reduce the chance).
-
-This was reproducible occasionally by using fsx with the following script:
-
-	truncate 0x0 0x375e2 0x0
-	punch_hole 0x2f6d3 0x6ab5 0x375e2
-	truncate 0x0 0x3a71f 0x375e2
-	mapread 0xee05 0xcf12 0x3a71f
-	write 0x2078e 0x5604 0x3a71f
-	write 0x3ebdf 0x1421 0x3a71f *
-	punch_hole 0x379d0 0x8630 0x40000 *
-	mapread 0x2aaa2 0x85b 0x40000
-	fallocate 0x1b401 0x9ada 0x40000
-	read 0x15f2 0x7d32 0x40000
-	read 0x32f37 0x7a3b 0x40000 *
-
-The second "write" should extend the EOF to 0x40000, and the "punch_hole"
-should operate inside of that - but that depends on whether the VM gets in
-and writes back the data first.  If it doesn't, the file ends up 0x3a71f in
-size, not 0x40000.
-
-Fixes: 31742c5a3317 ("enable fallocate punch hole ("fallocate -p") for SMB3")
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Steve French <sfrench@samba.org>
-cc: Paulo Alcantara <pc@manguebit.com>
-cc: Shyam Prasad N <nspmangalore@gmail.com>
-cc: Jeff Layton <jlayton@kernel.org>
-cc: linux-cifs@vger.kernel.org
-cc: netfs@lists.linux.dev
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Link: https://lore.kernel.org/linux-media/20231102191633.52592-2-pstanner@redhat.com
+Suggested-by: Dave Airlie <airlied@redhat.com>
+Signed-off-by: Philipp Stanner <pstanner@redhat.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smb2ops.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ drivers/media/dvb-core/dvb_frontend.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
-index 66cfce456263b..012d6ec12a691 100644
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -3251,6 +3251,7 @@ static long smb3_punch_hole(struct file *file, struct cifs_tcon *tcon,
- 	struct inode *inode = file_inode(file);
- 	struct cifsFileInfo *cfile = file->private_data;
- 	struct file_zero_data_information fsctl_buf;
-+	unsigned long long end = offset + len, i_size, remote_i_size;
- 	long rc;
- 	unsigned int xid;
- 	__u8 set_sparse = 1;
-@@ -3282,6 +3283,27 @@ static long smb3_punch_hole(struct file *file, struct cifs_tcon *tcon,
- 			(char *)&fsctl_buf,
- 			sizeof(struct file_zero_data_information),
- 			CIFSMaxBufSize, NULL, NULL);
-+
-+	if (rc)
-+		goto unlock;
-+
-+	/* If there's dirty data in the buffer that would extend the EOF if it
-+	 * were written, then we need to move the EOF marker over to the lower
-+	 * of the high end of the hole and the proposed EOF.  The problem is
-+	 * that we locally hole-punch the tail of the dirty data, the proposed
-+	 * EOF update will end up in the wrong place.
-+	 */
-+	i_size = i_size_read(inode);
-+	remote_i_size = netfs_inode(inode)->remote_i_size;
-+	if (end > remote_i_size && i_size > remote_i_size) {
-+		unsigned long long extend_to = umin(end, i_size);
-+		rc = SMB2_set_eof(xid, tcon, cfile->fid.persistent_fid,
-+				  cfile->fid.volatile_fid, cfile->pid, extend_to);
-+		if (rc >= 0)
-+			netfs_inode(inode)->remote_i_size = extend_to;
-+	}
-+
-+unlock:
- 	filemap_invalidate_unlock(inode->i_mapping);
- out:
- 	inode_unlock(inode);
+diff --git a/drivers/media/dvb-core/dvb_frontend.c b/drivers/media/dvb-core/dvb_frontend.c
+index fea62bce97468..d76ac3ec93c2f 100644
+--- a/drivers/media/dvb-core/dvb_frontend.c
++++ b/drivers/media/dvb-core/dvb_frontend.c
+@@ -2160,7 +2160,8 @@ static int dvb_frontend_handle_compat_ioctl(struct file *file, unsigned int cmd,
+ 		if (!tvps->num || (tvps->num > DTV_IOCTL_MAX_MSGS))
+ 			return -EINVAL;
+ 
+-		tvp = memdup_user(compat_ptr(tvps->props), tvps->num * sizeof(*tvp));
++		tvp = memdup_array_user(compat_ptr(tvps->props),
++					tvps->num, sizeof(*tvp));
+ 		if (IS_ERR(tvp))
+ 			return PTR_ERR(tvp);
+ 
+@@ -2191,7 +2192,8 @@ static int dvb_frontend_handle_compat_ioctl(struct file *file, unsigned int cmd,
+ 		if (!tvps->num || (tvps->num > DTV_IOCTL_MAX_MSGS))
+ 			return -EINVAL;
+ 
+-		tvp = memdup_user(compat_ptr(tvps->props), tvps->num * sizeof(*tvp));
++		tvp = memdup_array_user(compat_ptr(tvps->props),
++					tvps->num, sizeof(*tvp));
+ 		if (IS_ERR(tvp))
+ 			return PTR_ERR(tvp);
+ 
+@@ -2368,7 +2370,8 @@ static int dvb_get_property(struct dvb_frontend *fe, struct file *file,
+ 	if (!tvps->num || tvps->num > DTV_IOCTL_MAX_MSGS)
+ 		return -EINVAL;
+ 
+-	tvp = memdup_user((void __user *)tvps->props, tvps->num * sizeof(*tvp));
++	tvp = memdup_array_user((void __user *)tvps->props,
++				tvps->num, sizeof(*tvp));
+ 	if (IS_ERR(tvp))
+ 		return PTR_ERR(tvp);
+ 
+@@ -2446,7 +2449,8 @@ static int dvb_frontend_handle_ioctl(struct file *file,
+ 		if (!tvps->num || (tvps->num > DTV_IOCTL_MAX_MSGS))
+ 			return -EINVAL;
+ 
+-		tvp = memdup_user((void __user *)tvps->props, tvps->num * sizeof(*tvp));
++		tvp = memdup_array_user((void __user *)tvps->props,
++					tvps->num, sizeof(*tvp));
+ 		if (IS_ERR(tvp))
+ 			return PTR_ERR(tvp);
+ 
 -- 
 2.43.0
 
