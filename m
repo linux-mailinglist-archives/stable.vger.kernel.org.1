@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-71968-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72282-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34E7896789C
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:33:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E86A9679FF
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:50:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D29BB1F2122E
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:33:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9FFA61C21390
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:50:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80738184534;
-	Sun,  1 Sep 2024 16:33:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00E3A17CA1F;
+	Sun,  1 Sep 2024 16:50:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BgvDOzr3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mtv28h9g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D1D05381A;
-	Sun,  1 Sep 2024 16:33:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B54441C68C;
+	Sun,  1 Sep 2024 16:50:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208409; cv=none; b=fo6e/fsMchmxV9VpAbEOYWJ7Fs54YdB6c1TGvzLbO8CJfkNRrHZ5eS155E++w2V8ITs413aXzPHR70/XShmdmNGMiUN702L0P7D6rcr7aGIzxAVF8PetAEH1/cUxdH8mcnH30RReyrtdw8qLlrDpIcK3DXVYDBuZuVCWruae0fo=
+	t=1725209420; cv=none; b=BqPDXAy+8zom3Pnq0u5NG3zPp6NSiyBXbxKK6aGJ5HuhZcvtKZXGZw5OPSaZMdtXrJDaONMEE4WWyNUFoBdp1Cbtj4QIA7mOKob2CoxDvsJ+9jkevPlSbYd+0hWmbfBfAkSGsbEQ1CXslZwV76xTebmeE7ORMTJRZqc3C8oi9gg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208409; c=relaxed/simple;
-	bh=dFSaBCnhyHkUQeoEdUvGPTjuOQ7NcfRhdze7qJIhtk0=;
+	s=arc-20240116; t=1725209420; c=relaxed/simple;
+	bh=/vBJjSXbzmx3EQA9ftknf8rpJqv7H5+InzGlyVdaY84=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EqImBG/rm5TwseUxh/rnv6fdYd/2iU8zyroJbpEptXOULC54tBr2FNFzyjwNpalsKV5G67+Ce2pcoK5cHCqHxZEnLgW8wFbhmMgS3Crj7DY7VElCqV8XAPaYvBoXnYT+kTWW6c52Jfv8Ess21+XBqaJtNdTOedFlSRHJ3db8d18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BgvDOzr3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FDCAC4CEC3;
-	Sun,  1 Sep 2024 16:33:28 +0000 (UTC)
+	 MIME-Version; b=LA57vtLwj57LUK8grxXoe5ZNYH6Na5N9B8BgcIomSAZIDE69kNUaarH6an93cFfNeD+T2+Up2+1cj1YLL/AQcbD+UkOp/IQicgqC8thJzgGdqj0DAGOadjmo9KcIyGtZ1HUPttBXbqBcm38/Mg6oQa04uAINDpWZYSVSozivMNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mtv28h9g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CBFCC4CEC3;
+	Sun,  1 Sep 2024 16:50:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208409;
-	bh=dFSaBCnhyHkUQeoEdUvGPTjuOQ7NcfRhdze7qJIhtk0=;
+	s=korg; t=1725209420;
+	bh=/vBJjSXbzmx3EQA9ftknf8rpJqv7H5+InzGlyVdaY84=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BgvDOzr3d1ZSiBJIeKlPrkhUvMbYP4Cjj+JDgQppL7CpiVsYkL2m2ADlsi2qdRX0o
-	 5eCgimI/tkpHDCWLbIPvY+DxjISATTNtHIMJV02I8I2dXqsQY1ey/jfYBkrGBLjSW9
-	 SlZ9Q4lTOkH+IjQrBWk9snjpl6cgiKnEtoq3JDN8=
+	b=mtv28h9g+TF0APRM7Zma1FcnVISJ4qPGI/j6CSTsGlCTcHmXDcIEV0VHtjkm46cAU
+	 EyQC3ePoURKERPMY/v2DEwUcSRpbO2FcJNj88bGXnPCBup59CoHEAuun1TdTEEG5j8
+	 V/zh00qmZFwnicS30x36A6yasrD2Nv6efyokMUBI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Trimmer <simont@opensource.cirrus.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 056/149] ALSA: hda: cs35l56: Dont use the device index as a calibration index
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Khazhismel Kumykov <khazhy@google.com>
+Subject: [PATCH 5.10 007/151] dm resume: dont return EINVAL when signalled
 Date: Sun,  1 Sep 2024 18:16:07 +0200
-Message-ID: <20240901160819.576027090@linuxfoundation.org>
+Message-ID: <20240901160814.374401129@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
-References: <20240901160817.461957599@linuxfoundation.org>
+In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
+References: <20240901160814.090297276@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +61,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Trimmer <simont@opensource.cirrus.com>
+From: Khazhismel Kumykov <khazhy@google.com>
 
-[ Upstream commit 91191a6e50a2ff752da244493171037663536768 ]
+commit 7a636b4f03af9d541205f69e373672e7b2b60a8a upstream.
 
-The HDA driver cannot assume that the order that the devices are
-specified in the cirrus,dev-index matches the order of calibration
-entries.
+If the dm_resume method is called on a device that is not suspended, the
+method will suspend the device briefly, before resuming it (so that the
+table will be swapped).
 
-Only a calibration entry with a matching silicon id will be used.
+However, there was a bug that the return value of dm_suspended_md was not
+checked. dm_suspended_md may return an error when it is interrupted by a
+signal. In this case, do_resume would call dm_swap_table, which would
+return -EINVAL.
 
-Fixes: cfa43aaa7948 ("ALSA: hda: cs35l56: Apply amp calibration from EFI data")
-Signed-off-by: Simon Trimmer <simont@opensource.cirrus.com>
-Link: https://patch.msgid.link/20240821124711.44325-1-simont@opensource.cirrus.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This commit fixes the logic, so that error returned by dm_suspend is
+checked and the resume operation is undone.
+
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Khazhismel Kumykov <khazhy@google.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/cs35l56_hda.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/md/dm-ioctl.c |   22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
 
-diff --git a/sound/pci/hda/cs35l56_hda.c b/sound/pci/hda/cs35l56_hda.c
-index e134ede6c5aa5..357fd59aa49e4 100644
---- a/sound/pci/hda/cs35l56_hda.c
-+++ b/sound/pci/hda/cs35l56_hda.c
-@@ -980,7 +980,7 @@ int cs35l56_hda_common_probe(struct cs35l56_hda *cs35l56, int hid, int id)
- 		goto err;
- 	}
+--- a/drivers/md/dm-ioctl.c
++++ b/drivers/md/dm-ioctl.c
+@@ -1064,8 +1064,26 @@ static int do_resume(struct dm_ioctl *pa
+ 			suspend_flags &= ~DM_SUSPEND_LOCKFS_FLAG;
+ 		if (param->flags & DM_NOFLUSH_FLAG)
+ 			suspend_flags |= DM_SUSPEND_NOFLUSH_FLAG;
+-		if (!dm_suspended_md(md))
+-			dm_suspend(md, suspend_flags);
++		if (!dm_suspended_md(md)) {
++			r = dm_suspend(md, suspend_flags);
++			if (r) {
++				down_write(&_hash_lock);
++				hc = dm_get_mdptr(md);
++				if (hc && !hc->new_map) {
++					hc->new_map = new_map;
++					new_map = NULL;
++				} else {
++					r = -ENXIO;
++				}
++				up_write(&_hash_lock);
++				if (new_map) {
++					dm_sync_table(md);
++					dm_table_destroy(new_map);
++				}
++				dm_put(md);
++				return r;
++			}
++		}
  
--	cs35l56->base.cal_index = cs35l56->index;
-+	cs35l56->base.cal_index = -1;
- 
- 	cs35l56_init_cs_dsp(&cs35l56->base, &cs35l56->cs_dsp);
- 	cs35l56->cs_dsp.client_ops = &cs35l56_hda_client_ops;
--- 
-2.43.0
-
+ 		old_map = dm_swap_table(md, new_map);
+ 		if (IS_ERR(old_map)) {
 
 
 
