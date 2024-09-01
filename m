@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-72243-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72613-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 463DA9679D7
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:49:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54673967B55
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:08:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B9B41B21BE1
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:49:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 84EA21C21622
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:08:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7BF8185932;
-	Sun,  1 Sep 2024 16:48:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA953376EC;
+	Sun,  1 Sep 2024 17:08:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1aJc+NE+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CorTJmNL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74B76183CA3;
-	Sun,  1 Sep 2024 16:48:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A0591DFD1;
+	Sun,  1 Sep 2024 17:08:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209299; cv=none; b=p/rRNuRoAExHfoEM1jdpK0OoVq4kkzR20mCOkuL2xjmsoKzXCATnMgwQ683sURqaYljdxnZYuuPkTec/1OF9fPjxydlMNq9OHUlWBSH+FlpMNUoSNhcnzeeC3QlEh9ca71Hk5zAmsbijmjOFu6vLkYr3ogJWUvVyGahtu02cIoM=
+	t=1725210504; cv=none; b=Wnp+DRtpUKFK+GdF7Czffy9RgQ3Ti2GUYwGNh74Zp0WRAQ3yyxX1uQtKL1/U67BPKDLMKdj+nJfxfMaDhJwZfnomETJUAC0qHV4VpOSA8yDPIxq8nGCWGK3MsoUDTvtNl4ntgivVJZZ3lt1PU1dZy2Q7X7Ljch6hg+P1ZS1hBGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209299; c=relaxed/simple;
-	bh=3Z2pzhnXSGYn+L+fIdWVt9d3itP8hf3nDhbtgasw03E=;
+	s=arc-20240116; t=1725210504; c=relaxed/simple;
+	bh=nP2dcNfMWzln7cdW/+pEJi/C3piFyrhrT35jBrnAwLQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PY3cNy+I87opR4mEutNEPU4mPRSK4Tq5NAFoM9Oxmgr8XihqMS3H0beCNPVbxBXMbJAPRn5FEeisNJccaFFyuz1UtoX9AyGpi/tvqpvs9aniVjl5jkp01+BaveukMMPOaIkBuQci8j1FBgJBll75e+R1/efUG9yjo7o2uqBNi0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1aJc+NE+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4691C4CEC3;
-	Sun,  1 Sep 2024 16:48:18 +0000 (UTC)
+	 MIME-Version; b=XKPPb/5z0foHI5QTUaOWr6K1996vkWCVc0i+Y4SDqHn4X5K/k/pPbbNRI2cS0xddQa+zFBM3BS2QKLyN9nCv7o5Y457sfbQH6uSeoNlmPSXXvOo/3N4c7jxP7Wf8PAsmP4gmu8IRPn9DH9bbxG/SkW3OnBZQSVp2NQAIxABIBS8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CorTJmNL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9D44C4CEC3;
+	Sun,  1 Sep 2024 17:08:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209299;
-	bh=3Z2pzhnXSGYn+L+fIdWVt9d3itP8hf3nDhbtgasw03E=;
+	s=korg; t=1725210504;
+	bh=nP2dcNfMWzln7cdW/+pEJi/C3piFyrhrT35jBrnAwLQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1aJc+NE+NDFtl0wzMVDykpjttRiSov3GhHr5UBVGdgCN8DuhwoRd3dZ8dwn9LPau5
-	 jOgd5GudzW6dAW6De4TpHeuCJKCn8+JsL6oId63uneY9IvCbb5vcxnsIQcfIlkGjh0
-	 2yu0iicMyVGpE4cwFUZkJb1K3Iqm0eAoIP+dGNIg=
+	b=CorTJmNLkBucIJTOuhlG4r6GkJyhM96Wey+TyI5sXcUWDKgVHP+1ay61vGuNfC3sc
+	 eO2bAmXmHZydIRBF22lIiUYMx1khFFO0llUPg9JHs0Pu34LKARoGWw8A2S+vbSZwqo
+	 MuCvyV2KPvI8y8jgKwIqnfR7TNjeBqQ8jEDwo+vY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pawel Laszczak <pawell@cadence.com>,
-	Peter Chen <peter.chen@kernel.org>
-Subject: [PATCH 6.1 64/71] usb: cdnsp: fix incorrect index in cdnsp_get_hw_deq function
-Date: Sun,  1 Sep 2024 18:18:09 +0200
-Message-ID: <20240901160804.301981850@linuxfoundation.org>
+	Ma Ke <make24@iscas.ac.cn>,
+	Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 5.15 178/215] pinctrl: single: fix potential NULL dereference in pcs_get_function()
+Date: Sun,  1 Sep 2024 18:18:10 +0200
+Message-ID: <20240901160830.090991964@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160801.879647959@linuxfoundation.org>
-References: <20240901160801.879647959@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pawel Laszczak <pawell@cadence.com>
+From: Ma Ke <make24@iscas.ac.cn>
 
-commit 0497a356d3c498221eb0c1edc1e8985816092f12 upstream.
+commit 1c38a62f15e595346a1106025722869e87ffe044 upstream.
 
-Patch fixes the incorrect "stream_id" table index instead of
-"ep_index" used in cdnsp_get_hw_deq function.
+pinmux_generic_get_function() can return NULL and the pointer 'function'
+was dereferenced without checking against NULL. Add checking of pointer
+'function' in pcs_get_function().
 
-Fixes: 3d82904559f4 ("usb: cdnsp: cdns3 Add main part of Cadence USBSSP DRD Driver")
-cc: stable@vger.kernel.org
-Signed-off-by: Pawel Laszczak <pawell@cadence.com>
-Reviewed-by: Peter Chen <peter.chen@kernel.org>
-Link: https://lore.kernel.org/r/PH7PR07MB95381F2182688811D5C711CEDD8D2@PH7PR07MB9538.namprd07.prod.outlook.com
+Found by code review.
+
+Cc: stable@vger.kernel.org
+Fixes: 571aec4df5b7 ("pinctrl: single: Use generic pinmux helpers for managing functions")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Link: https://lore.kernel.org/20240808041355.2766009-1-make24@iscas.ac.cn
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/cdns3/cdnsp-ring.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pinctrl/pinctrl-single.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/usb/cdns3/cdnsp-ring.c
-+++ b/drivers/usb/cdns3/cdnsp-ring.c
-@@ -402,7 +402,7 @@ static u64 cdnsp_get_hw_deq(struct cdnsp
- 	struct cdnsp_stream_ctx *st_ctx;
- 	struct cdnsp_ep *pep;
- 
--	pep = &pdev->eps[stream_id];
-+	pep = &pdev->eps[ep_index];
- 
- 	if (pep->ep_state & EP_HAS_STREAMS) {
- 		st_ctx = &pep->stream_info.stream_ctx_array[stream_id];
+--- a/drivers/pinctrl/pinctrl-single.c
++++ b/drivers/pinctrl/pinctrl-single.c
+@@ -350,6 +350,8 @@ static int pcs_get_function(struct pinct
+ 		return -ENOTSUPP;
+ 	fselector = setting->func;
+ 	function = pinmux_generic_get_function(pctldev, fselector);
++	if (!function)
++		return -EINVAL;
+ 	*func = function->data;
+ 	if (!(*func)) {
+ 		dev_err(pcs->dev, "%s could not find function%i\n",
 
 
 
