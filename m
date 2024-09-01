@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-71833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72069-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14CFE9677F4
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:26:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 278CE967909
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:39:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 96429B21A28
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:26:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4853D1C208ED
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:39:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DCDD16EB4B;
-	Sun,  1 Sep 2024 16:26:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6225E17E8EA;
+	Sun,  1 Sep 2024 16:38:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sWYrQCD5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xZbpubjG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEC002C6AF;
-	Sun,  1 Sep 2024 16:26:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 215802B9C7;
+	Sun,  1 Sep 2024 16:38:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725207966; cv=none; b=LRmUzbwB2vBKUDjrLF1vy4knMT8eCBs7SK3j7u5/jjyYk4hmISmL8ot+BxWzo6ZB7QCkgNj8Ug2YpcWxIBQTOkAzd8jAonqyRO53rpxrSCNJ2VyWwvGVqH3NKR/HPSZ/6nRvxo/CBqQfm6Mg+26yuT/94XPYilI5lrwnaKJJUKA=
+	t=1725208739; cv=none; b=n1BSVMoiqkaOgftHBgL23Ao6VrnIMm+NOImnIQUUgRNr/i3FKtL/uYuqSXfhl5/wDChLKHFiWWXCX4ab9Rtb6VRWSjo/9UjJisuZc2QGA5tmEbocEXVKb84HX01PR5c7XNOMGSp6qv+wX6/LgcdvY7aDW17M8eEGwFuKFnORHW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725207966; c=relaxed/simple;
-	bh=Xylso641AHwINPMIf7BpCXmiiRKmrvxsRl7srDoYMcY=;
+	s=arc-20240116; t=1725208739; c=relaxed/simple;
+	bh=B/QejyBH8cBH4ufvfFO8fMW9qgD+gwdBEN2nl9EMUB4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K5G4Sb7MDToUozBW/NDS6Pwu5rX3VQH9xA3dagn7aK37WYWQ0oPADd5jlM0k/oqZCNycT1ACbwzuiLSs5KQJTeWoeYaxtMk2oxR7xLjy7MgGvVuB+uwHmPQVBa55FjfYrssjITULP+MZc/rkZOokoJkdfiv/N8Cn878RAoH7XEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sWYrQCD5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D73FC4CEC3;
-	Sun,  1 Sep 2024 16:26:06 +0000 (UTC)
+	 MIME-Version; b=DBcSoAhJfdcKx50wp1spMu71HmiWZK5WyNUdcaw3SXx1bbi0zubs3jcbKuY4mzYustr0ue4z4SrgAPWF2ju5XqZXQBTGz4uLt6mYmaQ7rLJ26a//Ek5P69Vzc/+o4x0sZrKWW4vrSl/zcMv9ppsJYL7rv7GKrBzDx0CnPk5NFSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xZbpubjG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46523C4CEC3;
+	Sun,  1 Sep 2024 16:38:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725207966;
-	bh=Xylso641AHwINPMIf7BpCXmiiRKmrvxsRl7srDoYMcY=;
+	s=korg; t=1725208738;
+	bh=B/QejyBH8cBH4ufvfFO8fMW9qgD+gwdBEN2nl9EMUB4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sWYrQCD5R0JJoV0Ols+zb/BcKnHFEpetJRQrfo3rGIpM0l0gr05PhxaygG3m0aFFs
-	 WIOLFMIQjDoS2aYcVU9ccV6roAMDhF3bPgjwDI0ZJpZOXNuye1AaKpSxzs2TgryNna
-	 j1EvpyLMZaSQlzWWLpweRt/fZ63fdpDRMZQEXQtA=
+	b=xZbpubjGmnksDAv5HbqBqKv1nyGynNnhUc5bsutcEvxgmI365pQcvcciHkDxG1Fit
+	 tRlP3K9RQp86RyJdTDYcMFStZg4pgkuHoRicp8TYd3qkr+ehrjmGzV1daRLcdD3/HP
+	 eZmmsYMBzxUc4EulC1YQ5EOt93z24FyZl0IGdZNY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 6.6 07/93] pinctrl: single: fix potential NULL dereference in pcs_get_function()
-Date: Sun,  1 Sep 2024 18:15:54 +0200
-Message-ID: <20240901160807.632891607@linuxfoundation.org>
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Yury Norov <yury.norov@gmail.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 5.4 009/134] bitmap: introduce generic optimized bitmap_size()
+Date: Sun,  1 Sep 2024 18:15:55 +0200
+Message-ID: <20240901160810.463097224@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
-References: <20240901160807.346406833@linuxfoundation.org>
+In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
+References: <20240901160809.752718937@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +63,171 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Alexander Lobakin <aleksander.lobakin@intel.com>
 
-commit 1c38a62f15e595346a1106025722869e87ffe044 upstream.
+commit a37fbe666c016fd89e4460d0ebfcea05baba46dc upstream.
 
-pinmux_generic_get_function() can return NULL and the pointer 'function'
-was dereferenced without checking against NULL. Add checking of pointer
-'function' in pcs_get_function().
+The number of times yet another open coded
+`BITS_TO_LONGS(nbits) * sizeof(long)` can be spotted is huge.
+Some generic helper is long overdue.
 
-Found by code review.
+Add one, bitmap_size(), but with one detail.
+BITS_TO_LONGS() uses DIV_ROUND_UP(). The latter works well when both
+divident and divisor are compile-time constants or when the divisor
+is not a pow-of-2. When it is however, the compilers sometimes tend
+to generate suboptimal code (GCC 13):
 
-Cc: stable@vger.kernel.org
-Fixes: 571aec4df5b7 ("pinctrl: single: Use generic pinmux helpers for managing functions")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Link: https://lore.kernel.org/20240808041355.2766009-1-make24@iscas.ac.cn
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+48 83 c0 3f          	add    $0x3f,%rax
+48 c1 e8 06          	shr    $0x6,%rax
+48 8d 14 c5 00 00 00 00	lea    0x0(,%rax,8),%rdx
+
+%BITS_PER_LONG is always a pow-2 (either 32 or 64), but GCC still does
+full division of `nbits + 63` by it and then multiplication by 8.
+Instead of BITS_TO_LONGS(), use ALIGN() and then divide by 8. GCC:
+
+8d 50 3f             	lea    0x3f(%rax),%edx
+c1 ea 03             	shr    $0x3,%edx
+81 e2 f8 ff ff 1f    	and    $0x1ffffff8,%edx
+
+Now it shifts `nbits + 63` by 3 positions (IOW performs fast division
+by 8) and then masks bits[2:0]. bloat-o-meter:
+
+add/remove: 0/0 grow/shrink: 20/133 up/down: 156/-773 (-617)
+
+Clang does it better and generates the same code before/after starting
+from -O1, except that with the ALIGN() approach it uses %edx and thus
+still saves some bytes:
+
+add/remove: 0/0 grow/shrink: 9/133 up/down: 18/-538 (-520)
+
+Note that we can't expand DIV_ROUND_UP() by adding a check and using
+this approach there, as it's used in array declarations where
+expressions are not allowed.
+Add this helper to tools/ as well.
+
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Acked-by: Yury Norov <yury.norov@gmail.com>
+Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/pinctrl-single.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/md/dm-clone-metadata.c |    5 -----
+ drivers/s390/cio/idset.c       |    2 +-
+ include/linux/bitmap.h         |    8 +++++---
+ include/linux/cpumask.h        |    2 +-
+ lib/math/prime_numbers.c       |    2 --
+ tools/include/linux/bitmap.h   |    7 ++++---
+ 6 files changed, 11 insertions(+), 15 deletions(-)
 
---- a/drivers/pinctrl/pinctrl-single.c
-+++ b/drivers/pinctrl/pinctrl-single.c
-@@ -349,6 +349,8 @@ static int pcs_get_function(struct pinct
- 		return -ENOTSUPP;
- 	fselector = setting->func;
- 	function = pinmux_generic_get_function(pctldev, fselector);
-+	if (!function)
-+		return -EINVAL;
- 	*func = function->data;
- 	if (!(*func)) {
- 		dev_err(pcs->dev, "%s could not find function%i\n",
+--- a/drivers/md/dm-clone-metadata.c
++++ b/drivers/md/dm-clone-metadata.c
+@@ -471,11 +471,6 @@ static void __destroy_persistent_data_st
+ 
+ /*---------------------------------------------------------------------------*/
+ 
+-static size_t bitmap_size(unsigned long nr_bits)
+-{
+-	return BITS_TO_LONGS(nr_bits) * sizeof(long);
+-}
+-
+ static int __dirty_map_init(struct dirty_map *dmap, unsigned long nr_words,
+ 			    unsigned long nr_regions)
+ {
+--- a/drivers/s390/cio/idset.c
++++ b/drivers/s390/cio/idset.c
+@@ -18,7 +18,7 @@ struct idset {
+ 
+ static inline unsigned long bitmap_size(int num_ssid, int num_id)
+ {
+-	return BITS_TO_LONGS(num_ssid * num_id) * sizeof(unsigned long);
++	return bitmap_size(size_mul(num_ssid, num_id));
+ }
+ 
+ static struct idset *idset_new(int num_ssid, int num_id)
+--- a/include/linux/bitmap.h
++++ b/include/linux/bitmap.h
+@@ -216,22 +216,24 @@ extern int bitmap_print_to_pagebuf(bool
+ #define small_const_nbits(nbits) \
+ 	(__builtin_constant_p(nbits) && (nbits) <= BITS_PER_LONG && (nbits) > 0)
+ 
++#define bitmap_size(nbits)	(ALIGN(nbits, BITS_PER_LONG) / BITS_PER_BYTE)
++
+ static inline void bitmap_zero(unsigned long *dst, unsigned int nbits)
+ {
+-	unsigned int len = BITS_TO_LONGS(nbits) * sizeof(unsigned long);
++	unsigned int len = bitmap_size(nbits);
+ 	memset(dst, 0, len);
+ }
+ 
+ static inline void bitmap_fill(unsigned long *dst, unsigned int nbits)
+ {
+-	unsigned int len = BITS_TO_LONGS(nbits) * sizeof(unsigned long);
++	unsigned int len = bitmap_size(nbits);
+ 	memset(dst, 0xff, len);
+ }
+ 
+ static inline void bitmap_copy(unsigned long *dst, const unsigned long *src,
+ 			unsigned int nbits)
+ {
+-	unsigned int len = BITS_TO_LONGS(nbits) * sizeof(unsigned long);
++	unsigned int len = bitmap_size(nbits);
+ 	memcpy(dst, src, len);
+ }
+ 
+--- a/include/linux/cpumask.h
++++ b/include/linux/cpumask.h
+@@ -685,7 +685,7 @@ static inline int cpulist_parse(const ch
+  */
+ static inline unsigned int cpumask_size(void)
+ {
+-	return BITS_TO_LONGS(nr_cpumask_bits) * sizeof(long);
++	return bitmap_size(nr_cpumask_bits);
+ }
+ 
+ /*
+--- a/lib/math/prime_numbers.c
++++ b/lib/math/prime_numbers.c
+@@ -6,8 +6,6 @@
+ #include <linux/prime_numbers.h>
+ #include <linux/slab.h>
+ 
+-#define bitmap_size(nbits) (BITS_TO_LONGS(nbits) * sizeof(unsigned long))
+-
+ struct primes {
+ 	struct rcu_head rcu;
+ 	unsigned long last, sz;
+--- a/tools/include/linux/bitmap.h
++++ b/tools/include/linux/bitmap.h
+@@ -28,13 +28,14 @@ void bitmap_clear(unsigned long *map, un
+ #define small_const_nbits(nbits) \
+ 	(__builtin_constant_p(nbits) && (nbits) <= BITS_PER_LONG)
+ 
++#define bitmap_size(nbits)	(ALIGN(nbits, BITS_PER_LONG) / BITS_PER_BYTE)
++
+ static inline void bitmap_zero(unsigned long *dst, int nbits)
+ {
+ 	if (small_const_nbits(nbits))
+ 		*dst = 0UL;
+ 	else {
+-		int len = BITS_TO_LONGS(nbits) * sizeof(unsigned long);
+-		memset(dst, 0, len);
++		memset(dst, 0, bitmap_size(nbits));
+ 	}
+ }
+ 
+@@ -120,7 +121,7 @@ static inline int test_and_clear_bit(int
+  */
+ static inline unsigned long *bitmap_alloc(int nbits)
+ {
+-	return calloc(1, BITS_TO_LONGS(nbits) * sizeof(unsigned long));
++	return calloc(1, bitmap_size(nbits));
+ }
+ 
+ /*
 
 
 
