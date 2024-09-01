@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-72228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0BAD9679C6
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:48:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A24EF967A55
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:54:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D8261C21341
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:48:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3FE25B21090
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:54:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D28E184547;
-	Sun,  1 Sep 2024 16:47:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF2D517E900;
+	Sun,  1 Sep 2024 16:54:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vM6DIdoz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RVP0iwM5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEBCF1C68C;
-	Sun,  1 Sep 2024 16:47:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F4941DFD1;
+	Sun,  1 Sep 2024 16:54:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209252; cv=none; b=uj2YdSYOMZsQgCynqEBIUbiM5uPeTI3QdMDEVcgVFIpdLcLcHPsuZWCc9GMCfcX2lxP7u62eNYpf3LQxBFB+q46xiyB0ZOjYTzj42dfd5XRGOQe9ZvQrzSJj3F9hO4gUGskCtOWwEKBjZNIN1jBqW2aLDtL8RZxr/4WNtu8+6X0=
+	t=1725209680; cv=none; b=I89m/WNsZ63IC5thH14vG8Heac2V3dQ8DUkZcLC3w+qBzts+WkqO3Kwcpr2/jy6ucos+kfILqB2buiJgGxFpOX195j15jQslZQpL/l02d3A36IaCbojz3kPPD5jp7PrRJhB7Phm7JYmsnylnVds7nkdRIFLMrg1rMYoYgH6/IGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209252; c=relaxed/simple;
-	bh=bKmaNKmQOU+62MXIPRr0INsIYKpt1hir+U1s4/Jlav8=;
+	s=arc-20240116; t=1725209680; c=relaxed/simple;
+	bh=Md7k0Sy7dtz6562kKg1D3Z8d4ESrw1++HvIUDJTgnpI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fREvYd/rF3DkJ+M8SyJZun9dHsLODsLgsnXr0+ZRnkZuhm00ij2AgpRQJr5PO91sBa7sLHVgzytzTMO/jAJiFurBWYhVyjLM6Qb7NPyh+YayJVzOBjZmVzcJ/cpmsbElYJFaieJvT1e48XjXRUkXXvizsuifjr/kQaTIUlZjvIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vM6DIdoz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3357C4CEC8;
-	Sun,  1 Sep 2024 16:47:31 +0000 (UTC)
+	 MIME-Version; b=DmgFj6UpPfMvEqTBuJT7P8Q7V3crbZoJyvcj3ScFyZumHGpxdpHkWs0zCulEtPt5qJoNjPYosNjnmlMuYEnm81k1b7QrQ+Imh0pfhtqELG+09OWwRufl4tGuFnLoM3iNsD1DYyPG9zUclaHcL9TkxT6yuuInbO1XaNyjJ/hkq9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RVP0iwM5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2DA7C4CEC3;
+	Sun,  1 Sep 2024 16:54:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209252;
-	bh=bKmaNKmQOU+62MXIPRr0INsIYKpt1hir+U1s4/Jlav8=;
+	s=korg; t=1725209680;
+	bh=Md7k0Sy7dtz6562kKg1D3Z8d4ESrw1++HvIUDJTgnpI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vM6DIdozDoctfXDoIUzfZnNzxpOuD0k3eB6TY7S24UYVI/7P+CUrKVwXZ4BZ13bZU
-	 1fWI8X+gLtNXwFnXlxgQg45HfvfIIEO4aYMcsGPdMGMy/8XsdboaWnsZgRSuaTMFis
-	 eoMeAYFVWbNhBFd/zlSb0+uYhv8bIQWArxKysbgA=
+	b=RVP0iwM57BQ/XBgt0Nd1wEJJcas+RkbXbQl3TGfMRm1RaZYBqEz5MHmqaSaYaWiuC
+	 g91TIb0UCukbJ86fvDN97iF/1GUTB+CMB8zHfuhZCrHkc9G3O6UX6FtFPcVtGDNpO8
+	 qpsshX3L41ISrvbAsbhvxUvyEEiLnvvEbG6H2f/c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 47/71] netfilter: nf_tables_ipv6: consider network offset in netdev/egress validation
+	Nikolay Kuratov <kniv@yandex-team.ru>,
+	Simon Horman <horms@kernel.org>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 112/151] cxgb4: add forgotten u64 ivlan cast before shift
 Date: Sun,  1 Sep 2024 18:17:52 +0200
-Message-ID: <20240901160803.666371913@linuxfoundation.org>
+Message-ID: <20240901160818.322235854@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160801.879647959@linuxfoundation.org>
-References: <20240901160801.879647959@linuxfoundation.org>
+In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
+References: <20240901160814.090297276@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Nikolay Kuratov <kniv@yandex-team.ru>
 
-[ Upstream commit 70c261d500951cf3ea0fcf32651aab9a65a91471 ]
+commit 80a1e7b83bb1834b5568a3872e64c05795d88f31 upstream.
 
->From netdev/egress, skb->len can include the ethernet header, therefore,
-subtract network offset from skb->len when validating IPv6 packet length.
+It is done everywhere in cxgb4 code, e.g. in is_filter_exact_match()
+There is no reason it should not be done here
 
-Fixes: 42df6e1d221d ("netfilter: Introduce egress hook")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Found by Linux Verification Center (linuxtesting.org) with SVACE
+
+Signed-off-by: Nikolay Kuratov <kniv@yandex-team.ru>
+Cc: stable@vger.kernel.org
+Fixes: 12b276fbf6e0 ("cxgb4: add support to create hash filters")
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20240819075408.92378-1-kniv@yandex-team.ru
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/netfilter/nf_tables_ipv6.h | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/chelsio/cxgb4/cxgb4_filter.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/netfilter/nf_tables_ipv6.h b/include/net/netfilter/nf_tables_ipv6.h
-index ec7eaeaf4f04c..f1d6a65280475 100644
---- a/include/net/netfilter/nf_tables_ipv6.h
-+++ b/include/net/netfilter/nf_tables_ipv6.h
-@@ -31,8 +31,8 @@ static inline int __nft_set_pktinfo_ipv6_validate(struct nft_pktinfo *pkt)
- 	struct ipv6hdr *ip6h, _ip6h;
- 	unsigned int thoff = 0;
- 	unsigned short frag_off;
-+	u32 pkt_len, skb_len;
- 	int protohdr;
--	u32 pkt_len;
+--- a/drivers/net/ethernet/chelsio/cxgb4/cxgb4_filter.c
++++ b/drivers/net/ethernet/chelsio/cxgb4/cxgb4_filter.c
+@@ -1244,7 +1244,8 @@ static u64 hash_filter_ntuple(struct ch_
+ 	 * in the Compressed Filter Tuple.
+ 	 */
+ 	if (tp->vlan_shift >= 0 && fs->mask.ivlan)
+-		ntuple |= (FT_VLAN_VLD_F | fs->val.ivlan) << tp->vlan_shift;
++		ntuple |= (u64)(FT_VLAN_VLD_F |
++				fs->val.ivlan) << tp->vlan_shift;
  
- 	ip6h = skb_header_pointer(pkt->skb, skb_network_offset(pkt->skb),
- 				  sizeof(*ip6h), &_ip6h);
-@@ -43,7 +43,8 @@ static inline int __nft_set_pktinfo_ipv6_validate(struct nft_pktinfo *pkt)
- 		return -1;
- 
- 	pkt_len = ntohs(ip6h->payload_len);
--	if (pkt_len + sizeof(*ip6h) > pkt->skb->len)
-+	skb_len = pkt->skb->len - skb_network_offset(pkt->skb);
-+	if (pkt_len + sizeof(*ip6h) > skb_len)
- 		return -1;
- 
- 	protohdr = ipv6_find_hdr(pkt->skb, &thoff, -1, &frag_off, &flags);
--- 
-2.43.0
-
+ 	if (tp->port_shift >= 0 && fs->mask.iport)
+ 		ntuple |= (u64)fs->val.iport << tp->port_shift;
 
 
 
