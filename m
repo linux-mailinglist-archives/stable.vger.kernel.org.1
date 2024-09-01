@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-72006-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71875-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B9239678C7
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:35:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF045967825
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:28:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 82C391C20896
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:35:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E01921C20358
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:28:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A494517DFFC;
-	Sun,  1 Sep 2024 16:35:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10DCC181B88;
+	Sun,  1 Sep 2024 16:28:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yJDosJTv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DlSpMORJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 627A41E87B;
-	Sun,  1 Sep 2024 16:35:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C419F44C97;
+	Sun,  1 Sep 2024 16:28:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208535; cv=none; b=Rvc0ggKVp7qS/j3EKmXCnVVmC6jx18nroFCDQMjw+HFNzr3BGCoGQqvFEs+EDrje+DY4QAhRs+vHjCCE54+dyO3EmMwVc65+1NQ/q241gBrtt/xP6APwovyWCvEkUGTuEwVqN3PcEZ2HS0aW0fi9l/9EGZE2OYNcIzd+yQaOkzg=
+	t=1725208104; cv=none; b=DxhOrngz1XctUXN0T3ayIn31hzmRBQAJAyGAzZOFjHakN5afDCH4kgca7x4YmoM2HOjoxET6aEQLsk6on3iIj2z9fbI9X2jIQzvWyfCV88uX7Rxzy6LvaNxPGoHG+ARWMWaE6vOa0U+gEv5Ppuvt4wK9J7zvhzxt7duz9OUJOZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208535; c=relaxed/simple;
-	bh=4QNcIgrlTdrKUK6qyQT6CMPWWdXD2HI/yJa+MRGL/Jk=;
+	s=arc-20240116; t=1725208104; c=relaxed/simple;
+	bh=EDZ3krE2XCzQlxEBs7piYdVJX9YJZZ42ux2KsDa0hfE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LTCkDg/QbGAG7PC3sQl3fIk7AmM7UQ4ZE9yFC26mOPe7CNJg8jW+BJUQclw3tmeTLRMUJtETXDpWtOnKAnq8cK+aSOaKbKFrznCWmoJ2N19c71KH/nzNNChCieqiFn51hA+2YonQq0V4I2sfVkazNj5vKCMbXa+k+8O0r8RQASU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yJDosJTv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D87D8C4CEC8;
-	Sun,  1 Sep 2024 16:35:34 +0000 (UTC)
+	 MIME-Version; b=Nd8LOjOCU/MLTBaFsdLrSLjzwBmizy8gfZ2VHVP3jJDyGNoj2+dK+th65BREKbOmW1Gukg9hVjGJAN7Z5J5YuFS5k8zRt6JddKbSQ9DJuWhEtsR69iEI9bQXqyybnsH6YdoyUO0HrUF3qz7bdQBK2AaYsyfI8Am5KEGLyZz1jZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DlSpMORJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CF42C4CEC3;
+	Sun,  1 Sep 2024 16:28:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208535;
-	bh=4QNcIgrlTdrKUK6qyQT6CMPWWdXD2HI/yJa+MRGL/Jk=;
+	s=korg; t=1725208104;
+	bh=EDZ3krE2XCzQlxEBs7piYdVJX9YJZZ42ux2KsDa0hfE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yJDosJTvDjLzisGeiNpRuYS5YvK6NIa1M8LEecWgMqfdokbZp8ECY1hMl03V4wlPV
-	 V9/SE0qbmc6gAKjfvFOCQqQEqRP349P5u5nenBgUsdEl10SsPv58WN7h44x0Mvi8k7
-	 kCW1f1cJj92rypHAjESbDEOefE9f85claSJQdC1Y=
+	b=DlSpMORJOqeU07ABGHUZablYNBw9QdJmgSJx47f4cRksInlssiuxSZPyrprHMbr5A
+	 iyzTFt57BLWI5XpfMEYJlYHLa9iJWBrYjwvpYGqrF0yToHyhL3qNfaTdCXoG8n5D0h
+	 QwJGefdQohtSoy/MbxvDIpT7KHJMx9rccRW7slBM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Mina Almasry <almasrymina@google.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Joe Damato <jdamato@fastly.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 111/149] net: busy-poll: use ktime_get_ns() instead of local_clock()
+	Yihang Li <liyihang9@huawei.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.6 75/93] scsi: sd: Ignore command SYNCHRONIZE CACHE error if format in progress
 Date: Sun,  1 Sep 2024 18:17:02 +0200
-Message-ID: <20240901160821.629468196@linuxfoundation.org>
+Message-ID: <20240901160810.560626716@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
-References: <20240901160817.461957599@linuxfoundation.org>
+In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
+References: <20240901160807.346406833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,53 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Yihang Li <liyihang9@huawei.com>
 
-[ Upstream commit 0870b0d8b393dde53106678a1e2cec9dfa52f9b7 ]
+commit 4f9eedfa27ae5806ed10906bcceee7bae49c8941 upstream.
 
-Typically, busy-polling durations are below 100 usec.
+If formatting a suspended disk (such as formatting with different DIF
+type), the disk will be resuming first, and then the format command will
+submit to the disk through SG_IO ioctl.
 
-When/if the busy-poller thread migrates to another cpu,
-local_clock() can be off by +/-2msec or more for small
-values of HZ, depending on the platform.
+When the disk is processing the format command, the system does not
+submit other commands to the disk. Therefore, the system attempts to
+suspend the disk again and sends the SYNCHRONIZE CACHE command. However,
+the SYNCHRONIZE CACHE command will fail because the disk is in the
+formatting process. This will cause the runtime_status of the disk to
+error and it is difficult for user to recover it. Error info like:
 
-Use ktimer_get_ns() to ensure deterministic behavior,
-which is the whole point of busy-polling.
+[  669.925325] sd 6:0:6:0: [sdg] Synchronizing SCSI cache
+[  670.202371] sd 6:0:6:0: [sdg] Synchronize Cache(10) failed: Result: hostbyte=0x00 driverbyte=DRIVER_OK
+[  670.216300] sd 6:0:6:0: [sdg] Sense Key : 0x2 [current]
+[  670.221860] sd 6:0:6:0: [sdg] ASC=0x4 ASCQ=0x4
 
-Fixes: 060212928670 ("net: add low latency socket poll")
-Fixes: 9a3c71aa8024 ("net: convert low latency sockets to sched_clock()")
-Fixes: 37089834528b ("sched, net: Fixup busy_loop_us_clock()")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Mina Almasry <almasrymina@google.com>
-Cc: Willem de Bruijn <willemb@google.com>
-Reviewed-by: Joe Damato <jdamato@fastly.com>
-Link: https://patch.msgid.link/20240827114916.223377-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+To solve the issue, ignore the error and return success/0 when format is
+in progress.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Yihang Li <liyihang9@huawei.com>
+Link: https://lore.kernel.org/r/20240819090934.2130592-1-liyihang9@huawei.com
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/busy_poll.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/sd.c |   12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/include/net/busy_poll.h b/include/net/busy_poll.h
-index 9b09acac538ee..522f1da8b747a 100644
---- a/include/net/busy_poll.h
-+++ b/include/net/busy_poll.h
-@@ -68,7 +68,7 @@ static inline bool sk_can_busy_loop(struct sock *sk)
- static inline unsigned long busy_loop_current_time(void)
- {
- #ifdef CONFIG_NET_RX_BUSY_POLL
--	return (unsigned long)(local_clock() >> 10);
-+	return (unsigned long)(ktime_get_ns() >> 10);
- #else
- 	return 0;
- #endif
--- 
-2.43.0
-
+--- a/drivers/scsi/sd.c
++++ b/drivers/scsi/sd.c
+@@ -1690,13 +1690,15 @@ static int sd_sync_cache(struct scsi_dis
+ 			    (sshdr.asc == 0x74 && sshdr.ascq == 0x71))	/* drive is password locked */
+ 				/* this is no error here */
+ 				return 0;
++
+ 			/*
+-			 * This drive doesn't support sync and there's not much
+-			 * we can do because this is called during shutdown
+-			 * or suspend so just return success so those operations
+-			 * can proceed.
++			 * If a format is in progress or if the drive does not
++			 * support sync, there is not much we can do because
++			 * this is called during shutdown or suspend so just
++			 * return success so those operations can proceed.
+ 			 */
+-			if (sshdr.sense_key == ILLEGAL_REQUEST)
++			if ((sshdr.asc == 0x04 && sshdr.ascq == 0x04) ||
++			    sshdr.sense_key == ILLEGAL_REQUEST)
+ 				return 0;
+ 		}
+ 
 
 
 
