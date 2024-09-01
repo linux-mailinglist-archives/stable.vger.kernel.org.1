@@ -1,61 +1,55 @@
-Return-Path: <stable+bounces-72592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72257-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1184967B40
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:07:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 474729679E6
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:49:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D7622817F8
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:07:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F233E1F221B0
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:49:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F41617ADE1;
-	Sun,  1 Sep 2024 17:07:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6CD718306C;
+	Sun,  1 Sep 2024 16:49:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bVZCORbP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O6YoVjw3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F19482C190;
-	Sun,  1 Sep 2024 17:07:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 958211C68C;
+	Sun,  1 Sep 2024 16:49:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210434; cv=none; b=Z+2WBCSmKUF1AK0gSuop96WvdjZOE04ULElDI/QWMDVuwbTpSHb9WitFcol/bLo8035SrM/0usryaS/Mcl4XuHb1xVItZ2Q/77qNL4s26q5x7o9RNuEMW62u6iCsq4h4oj3T7KLeyIBOqFY1BJNt3s/H1imiPd1GQnq/RrzYfAs=
+	t=1725209342; cv=none; b=AMuZb8gklH7D0mUdVyWtTCJUqZVBGL8mXbG0cgeNoEbD2TKH089F2rQdvyn4Tdi4oHuoBNufCS3FPgwab1eeW2aflKQg11bCh/e1fxfigNgpl69FGI/IcSyv5MSHtDe60frTW4iSsDMuqr7E1VK4st7wo8ueI2EXnyGTOZsPhsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210434; c=relaxed/simple;
-	bh=S1uHVgA11CNxnlnkj0hC4pTTZv7qCeclGI0856zpHUM=;
+	s=arc-20240116; t=1725209342; c=relaxed/simple;
+	bh=S24VOYJzr36u1fK0HJFY685lFOOT6PizT7YesRN7vkM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X048XXGT35PU4eSCxFZuWcf11wZKmAP2mbHuDlJN6Aqi1D1zYzBOv8N8wlk/MArTlnTsCztCDbA2yMbnnYzAUytTyPKQIDdhWMOBamRNkjePjoACAq/GyatM8RZZTUrziNIwo69tf+8dvZp1Qa2xlEv+/d3VqOujk/J1Isl7jyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bVZCORbP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C358C4CEC3;
-	Sun,  1 Sep 2024 17:07:13 +0000 (UTC)
+	 MIME-Version; b=TW9LzC1EWP3DiBEs3eHjLrLVguke7UL67jad8NkrIE3DBWZ5Hyufoc7OjLWtKL2IipArxpP9RwIEGIODVmYi8i6RJ3PPSxnVjbG8hUsRGdKocM57K5lPnIsdtXoo2qjHhYd4a0Qg8KouWPMDB1/UHWVC6/VCplUwzXInWwSdKrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O6YoVjw3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AA19C4CEC3;
+	Sun,  1 Sep 2024 16:49:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210433;
-	bh=S1uHVgA11CNxnlnkj0hC4pTTZv7qCeclGI0856zpHUM=;
+	s=korg; t=1725209342;
+	bh=S24VOYJzr36u1fK0HJFY685lFOOT6PizT7YesRN7vkM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bVZCORbPRSo6LiD2reSNKUSpYgTFWr0RU1uKy+LVNYNPSy/7ib81b6WivJizVh4to
-	 f18UeFKFbuWwgUlgV4JRlGbGVi9HqSfOeq3aDi8R36mLppWFblX1q+IteHVt6anDIK
-	 rTq0TcLBppaIU8X6rM1xlMxxue1BevdRJOsRi1+8=
+	b=O6YoVjw3aJ08W1C5SylaEYHNCymUhI/htX/3DoH3Gj3reaqPIehv3ZjLt4b4CSBVt
+	 ZvyPgRTfsPS174dIVCiQQehVyPtFR3I0F1pTA0EergGawlsVlgacF+MsApgUoOgmb6
+	 MA+3JrKAFWiFIKPFJ32zBRckbRxBiZoC1SKPPsUA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zi Yan <ziy@nvidia.com>,
-	"Huang, Ying" <ying.huang@intel.com>,
-	David Hildenbrand <david@redhat.com>,
-	Baolin Wang <baolin.wang@linux.alibaba.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Mel Gorman <mgorman@suse.de>,
-	Yang Shi <shy828301@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 171/215] mm/numa: no task_numa_fault() call if PTE is changed
+	ZHANG Yuntian <yt@radxa.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.1 58/71] USB: serial: option: add MeiG Smart SRM825L
 Date: Sun,  1 Sep 2024 18:18:03 +0200
-Message-ID: <20240901160829.826156416@linuxfoundation.org>
+Message-ID: <20240901160804.078319284@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160801.879647959@linuxfoundation.org>
+References: <20240901160801.879647959@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,98 +61,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zi Yan <ziy@nvidia.com>
+From: ZHANG Yuntian <yt@radxa.com>
 
-commit 40b760cfd44566bca791c80e0720d70d75382b84 upstream.
+commit 9a471de516c35219d1722c13367191ce1f120fe9 upstream.
 
-When handling a numa page fault, task_numa_fault() should be called by a
-process that restores the page table of the faulted folio to avoid
-duplicated stats counting.  Commit b99a342d4f11 ("NUMA balancing: reduce
-TLB flush via delaying mapping on hint page fault") restructured
-do_numa_page() and did not avoid task_numa_fault() call in the second page
-table check after a numa migration failure.  Fix it by making all
-!pte_same() return immediately.
+Add support for MeiG Smart SRM825L which is based on Qualcomm 315 chip.
 
-This issue can cause task_numa_fault() being called more than necessary
-and lead to unexpected numa balancing results (It is hard to tell whether
-the issue will cause positive or negative performance impact due to
-duplicated numa fault counting).
+T:  Bus=04 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=5000 MxCh= 0
+D:  Ver= 3.20 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
+P:  Vendor=2dee ProdID=4d22 Rev= 4.14
+S:  Manufacturer=MEIG
+S:  Product=LTE-A Module
+S:  SerialNumber=6f345e48
+C:* #Ifs= 6 Cfg#= 1 Atr=80 MxPwr=896mA
+I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=60 Driver=option
+E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:* If#= 4 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=42 Prot=01 Driver=(none)
+E:  Ad=05(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=88(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+I:* If#= 5 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=50 Driver=qmi_wwan
+E:  Ad=89(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+E:  Ad=8e(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=0f(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
 
-Link: https://lkml.kernel.org/r/20240809145906.1513458-2-ziy@nvidia.com
-Fixes: b99a342d4f11 ("NUMA balancing: reduce TLB flush via delaying mapping on hint page fault")
-Signed-off-by: Zi Yan <ziy@nvidia.com>
-Reported-by: "Huang, Ying" <ying.huang@intel.com>
-Closes: https://lore.kernel.org/linux-mm/87zfqfw0yw.fsf@yhuang6-desk2.ccr.corp.intel.com/
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Mel Gorman <mgorman@suse.de>
-Cc: Yang Shi <shy828301@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: ZHANG Yuntian <yt@radxa.com>
+Link: https://lore.kernel.org/0041DFA5200EFB1B+20240803074619.563116-1-yt@radxa.com/
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/memory.c |   29 ++++++++++++++---------------
- 1 file changed, 14 insertions(+), 15 deletions(-)
+ drivers/usb/serial/option.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -4407,7 +4407,7 @@ static vm_fault_t do_numa_page(struct vm
- 	spin_lock(vmf->ptl);
- 	if (unlikely(!pte_same(*vmf->pte, vmf->orig_pte))) {
- 		pte_unmap_unlock(vmf->pte, vmf->ptl);
--		goto out;
-+		return 0;
- 	}
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -619,6 +619,8 @@ static void option_instat_callback(struc
  
- 	/* Get the normal PTE  */
-@@ -4454,21 +4454,17 @@ static vm_fault_t do_numa_page(struct vm
- 	if (migrate_misplaced_page(page, vma, target_nid)) {
- 		page_nid = target_nid;
- 		flags |= TNF_MIGRATED;
--	} else {
--		flags |= TNF_MIGRATE_FAIL;
--		vmf->pte = pte_offset_map(vmf->pmd, vmf->address);
--		spin_lock(vmf->ptl);
--		if (unlikely(!pte_same(*vmf->pte, vmf->orig_pte))) {
--			pte_unmap_unlock(vmf->pte, vmf->ptl);
--			goto out;
--		}
--		goto out_map;
-+		task_numa_fault(last_cpupid, page_nid, 1, flags);
-+		return 0;
- 	}
+ /* MeiG Smart Technology products */
+ #define MEIGSMART_VENDOR_ID			0x2dee
++/* MeiG Smart SRM825L based on Qualcomm 315 */
++#define MEIGSMART_PRODUCT_SRM825L		0x4d22
+ /* MeiG Smart SLM320 based on UNISOC UIS8910 */
+ #define MEIGSMART_PRODUCT_SLM320		0x4d41
  
--out:
--	if (page_nid != NUMA_NO_NODE)
--		task_numa_fault(last_cpupid, page_nid, 1, flags);
--	return 0;
-+	flags |= TNF_MIGRATE_FAIL;
-+	vmf->pte = pte_offset_map(vmf->pmd, vmf->address);
-+	spin_lock(vmf->ptl);
-+	if (unlikely(!pte_same(*vmf->pte, vmf->orig_pte))) {
-+		pte_unmap_unlock(vmf->pte, vmf->ptl);
-+		return 0;
-+	}
- out_map:
- 	/*
- 	 * Make it present again, depending on how arch implements
-@@ -4482,7 +4478,10 @@ out_map:
- 	ptep_modify_prot_commit(vma, vmf->address, vmf->pte, old_pte, pte);
- 	update_mmu_cache(vma, vmf->address, vmf->pte);
- 	pte_unmap_unlock(vmf->pte, vmf->ptl);
--	goto out;
-+
-+	if (page_nid != NUMA_NO_NODE)
-+		task_numa_fault(last_cpupid, page_nid, 1, flags);
-+	return 0;
- }
- 
- static inline vm_fault_t create_huge_pmd(struct vm_fault *vmf)
+@@ -2366,6 +2368,9 @@ static const struct usb_device_id option
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, TOZED_PRODUCT_LT70C, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(UNISOC_VENDOR_ID, LUAT_PRODUCT_AIR720U, 0xff, 0, 0) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SLM320, 0xff, 0, 0) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x30) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x40) },
++	{ USB_DEVICE_AND_INTERFACE_INFO(MEIGSMART_VENDOR_ID, MEIGSMART_PRODUCT_SRM825L, 0xff, 0xff, 0x60) },
+ 	{ } /* Terminating entry */
+ };
+ MODULE_DEVICE_TABLE(usb, option_ids);
 
 
 
