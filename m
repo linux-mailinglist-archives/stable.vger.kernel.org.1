@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-71917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65F45967856
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:30:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85CD5967AA1
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:58:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96CF61C20FF8
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:30:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2EE821F213CE
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:58:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9CC417E00C;
-	Sun,  1 Sep 2024 16:30:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC6A417E919;
+	Sun,  1 Sep 2024 16:58:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OkwD771f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ysmexQj/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA4BA537FF;
-	Sun,  1 Sep 2024 16:30:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ABFE1E87B;
+	Sun,  1 Sep 2024 16:58:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208244; cv=none; b=DVegnpgOmj7zPIPOPbXNUM5x1PWJjM4ZIVFNW5E9p6puE+oudTvSGIWS+Y6GVkF16vatDHgowVXMAqWf97KNAI3QfTU1LCPkTQ9ST4hYJMLhx0Boc2pWC9S5dak75vImLdP2bb3Q8VBS4R+QJkTgrMkmKGzGJqyxM74lGry+M34=
+	t=1725209927; cv=none; b=CGg3/5nfZlQVU4SIHXWav88QdQ0HqOqmfDBc3rfMH5Cqa3SXKCBDTA8ZMZVAPl2TNIL3tKXM0RHyE1QSfSefHiw6SCUeBlZQ/jdNhKb1nlALPq0yk3obWYzzNtvAkd4LE2xrb/OTmJLOLMBBGye2661Obm9rC6NKU2nQXWJARHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208244; c=relaxed/simple;
-	bh=7i5AIydh/fGlbuuE1runtAWyKv9Qe044sTbBOYf64Uo=;
+	s=arc-20240116; t=1725209927; c=relaxed/simple;
+	bh=soE1SAzPdMw4HSEqd7fO0Fu4XWhUAU2ntDoXPjB5PwE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ObrAOnI/t42lvPMxjcoGmdt+QJm2FfIdfAenKmx7YUHQowN+HK376tIpzcq8QqDp0q1wrts5X03wt9Byj5i3fhw6xcN3mDlo35TwRbY4SKXRfRL29r6A9WmVnZzBRfYXqlBqJLlsPt04m/OwjPGdN4TZQPPZPSjtXeTOUyZRxMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OkwD771f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30967C4CEC3;
-	Sun,  1 Sep 2024 16:30:43 +0000 (UTC)
+	 MIME-Version; b=GvTHcDhbsz7aIWrHqklWGYGdCmTFeKl6YxBD+/XzrLXcRiebhYu7MG0/zOcVJZxnX9aKCQpBbdkCviaeh12rANr2AApL5yVM8/SpBqbKNSH2vjAQSslDNbPjGuTpaCT3YoNwCPtA1PWZABDaBSM0EKYi5XKT3B4Lx2lELYcEOFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ysmexQj/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3C54C4CEC3;
+	Sun,  1 Sep 2024 16:58:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208244;
-	bh=7i5AIydh/fGlbuuE1runtAWyKv9Qe044sTbBOYf64Uo=;
+	s=korg; t=1725209927;
+	bh=soE1SAzPdMw4HSEqd7fO0Fu4XWhUAU2ntDoXPjB5PwE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OkwD771fSlsy9Vvy9RXZfPv6/67Gg9Ho17kpUyPIf5iucGEVAlhGIoztRX7wrqf2A
-	 jeLIctHiKM471Kvdvr4/gqy2hGsmsBfO5z4hSzh42+SxFdW9r6tg3WBKzpGPAstw6P
-	 ruB372aODQi285JQdHipc9U991Cs/hcqrz2Zlibw=
+	b=ysmexQj/XNeED46hR73n9ns3eCo11yGH7zh9j4t3oy1W2ni2g3g2xwQhUPL7DHvIR
+	 2Ewau/24vUlrB9rj7CWk/1c8IItwqn1gKFvw9Oe5JMpZDH9YS/Z33mhtaQ840JJstt
+	 ycUILJ8jVy2XgX8DnrsUzmGL6vMTfzimIvUf+/rY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hendrik Borghorst <hendrikborghorst@gmail.com>,
+	Lianqin Hu <hulianqin@vivo.com>,
 	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.10 005/149] ALSA: hda/realtek: support HP Pavilion Aero 13-bg0xxx Mute LED
-Date: Sun,  1 Sep 2024 18:15:16 +0200
-Message-ID: <20240901160817.668792390@linuxfoundation.org>
+Subject: [PATCH 5.15 005/215] ALSA: usb-audio: Add delay quirk for VIVO USB-C-XE710 HEADSET
+Date: Sun,  1 Sep 2024 18:15:17 +0200
+Message-ID: <20240901160823.443501912@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
-References: <20240901160817.461957599@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hendrik Borghorst <hendrikborghorst@gmail.com>
+From: Lianqin Hu <hulianqin@vivo.com>
 
-commit 2dc43c5e212036458ed7c5586fb82ee183fee504 upstream.
+commit 004eb8ba776ccd3e296ea6f78f7ae7985b12824e upstream.
 
-This patch adds the HP Pavilion Aero 13 (13-bg0xxx) (year 2024) to list of
-quirks for keyboard LED mute indication.
+Audio control requests that sets sampling frequency sometimes fail on
+this card. Adding delay between control messages eliminates that problem.
 
-The laptop has two LEDs (one for speaker and one for mic mute). The
-pre-existing quirk ALC245_FIXUP_HP_X360_MUTE_LEDS chains both the quirk for
-mic and speaker mute.
-
-Tested on 6.11.0-rc4 with the aforementioned laptop.
-
-Signed-off-by: Hendrik Borghorst <hendrikborghorst@gmail.com>
+Signed-off-by: Lianqin Hu <hulianqin@vivo.com>
 Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20240825174351.5687-1-hendrikborghorst@gmail.com
+Link: https://patch.msgid.link/TYUPR06MB6217FF67076AF3E49E12C877D2842@TYUPR06MB6217.apcprd06.prod.outlook.com
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ sound/usb/quirks.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10260,6 +10260,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x103c, 0x8ca2, "HP ZBook Power", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8ca4, "HP ZBook Fury", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8ca7, "HP ZBook Fury", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
-+	SND_PCI_QUIRK(0x103c, 0x8cbd, "HP Pavilion Aero Laptop 13-bg0xxx", ALC245_FIXUP_HP_X360_MUTE_LEDS),
- 	SND_PCI_QUIRK(0x103c, 0x8cdd, "HP Spectre", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x103c, 0x8cde, "HP Spectre", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x103c, 0x8cdf, "HP SnowWhite", ALC287_FIXUP_CS35L41_I2C_2_HP_GPIO_LED),
+--- a/sound/usb/quirks.c
++++ b/sound/usb/quirks.c
+@@ -1900,6 +1900,8 @@ static const struct usb_audio_quirk_flag
+ 		   QUIRK_FLAG_GENERIC_IMPLICIT_FB),
+ 	DEVICE_FLG(0x2b53, 0x0031, /* Fiero SC-01 (firmware v1.1.0) */
+ 		   QUIRK_FLAG_GENERIC_IMPLICIT_FB),
++	DEVICE_FLG(0x2d95, 0x8021, /* VIVO USB-C-XE710 HEADSET */
++		   QUIRK_FLAG_CTL_MSG_DELAY_1M),
+ 	DEVICE_FLG(0x30be, 0x0101, /* Schiit Hel */
+ 		   QUIRK_FLAG_IGNORE_CTL_ERROR),
+ 	DEVICE_FLG(0x413c, 0xa506, /* Dell AE515 sound bar */
 
 
 
