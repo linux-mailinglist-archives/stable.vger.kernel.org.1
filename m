@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-72094-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71978-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B25DA967927
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:40:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E30659678A6
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:34:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1F73CB20C31
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:40:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 10A0A1C21145
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:34:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B3DE17E8EA;
-	Sun,  1 Sep 2024 16:40:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D2D4183092;
+	Sun,  1 Sep 2024 16:34:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FU4zDf63"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BFakcnv0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FD7A2B9C7;
-	Sun,  1 Sep 2024 16:40:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 285061E87B;
+	Sun,  1 Sep 2024 16:34:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208822; cv=none; b=MiL/Qw7G7lzo5znFqNrDaC4ZzBjhAR7Lpm7kuZRnZfU471HKd0gvKDwZYoYgf9+qiXWZoJ2rGrPTPQZrdvdQji+YjCkWySDQB11CDkhfI8Vp3aKPlP1lwjsX/MAHG5oCOgy/Br89ggaDKjpOv6n3oDTAFEspgAe9x2GhL67gPDY=
+	t=1725208442; cv=none; b=WKUdiThxv/pzUp5QQKHgV26qCCcGkpitQLyqy9m0//OCddrqgFpdZUneQyp7KqIo2a2uvc2Fsz62gsrEz3YOYzW96enklplIVChngJloLB+vsO9BGyQW04Ud8tAQuiF8Mn9gG4RauWBBZrnw8xLoYrAfrAVI+KvDcMqU5LTEAZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208822; c=relaxed/simple;
-	bh=EQdYFzsn1Xv9YGwiu6QDIYSJ1fEYyrQSlDEpWr4lSnc=;
+	s=arc-20240116; t=1725208442; c=relaxed/simple;
+	bh=4L8KffLsXE7bPvNl7YqEU28NpyWsXFgyejHyp8LZY+U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NUMIdivWOYgfTFsndd086yGKuu65a38WnFiu56pp+O22Om+d38lrm/vIvQhOWh7mK1n6cY+jN6xTs2MblKQLV0j0Oofvs18GDXELBPcXUgyuAJOyO7KNffocVtlyu/a1OCcO+anUNO3sSdCpF3Bh97/otTQOTGQ4eufwg0o5V34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FU4zDf63; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3891BC4CEC3;
-	Sun,  1 Sep 2024 16:40:21 +0000 (UTC)
+	 MIME-Version; b=jqgD/UGoE8f1UmrJK/BT8d+ojnYZeJOM3H/Z1mavQd3AsARv+skOGO9//fG8JABAEtCq4HqrFQm20uDOXin4EfAFaWgny8pOb6D5jK4YpMc32YzxwmKbX560mbg4Pan6AuKksz3M158cVJ3zXBWB4aXbh6oOXqL0xRplu2x5jvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BFakcnv0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36322C4CEC3;
+	Sun,  1 Sep 2024 16:34:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208821;
-	bh=EQdYFzsn1Xv9YGwiu6QDIYSJ1fEYyrQSlDEpWr4lSnc=;
+	s=korg; t=1725208441;
+	bh=4L8KffLsXE7bPvNl7YqEU28NpyWsXFgyejHyp8LZY+U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FU4zDf637RV3i+x6G3aK7Q6bbj8/2qwzTRAh/zeiMZXbSjOU/4UtuEwSEN6DbEkEI
-	 hNU0XrjaH/bq7oTm2HZNH/foRr1jz/ZWz3CmVVpTQ0Jyq5ORZQdey+Ej5HkTeegd7m
-	 E9V/uTwjyzV3JOXXXImTfIgzHXqqNGUBmETR+d6A=
+	b=BFakcnv0LK7Q/nHh6QQooJtFBGAJHh3pD2I1MOY5EV9lR18RZi0GkQbMhYDz7BZyu
+	 lUrok2Q8Ai2G4hJVVJErftmT8vt44P4bxwD/U+hHTJ6mhoUvGG2MmJJG0gP+smfe1y
+	 7IDOXEOuY/MeTj/uI31MYiwEpV3bqU8d8ebsrX/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sam Creasey <sammy@sammy.net>,
-	Kees Cook <keescook@chromium.org>,
-	Simon Horman <horms@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Abel Vesa <abel.vesa@linaro.org>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 048/134] net/sun3_82586: Avoid reading past buffer in debug output
+Subject: [PATCH 6.10 083/149] phy: qcom: qmp-pcie: Fix X1E80100 PCIe Gen4 PHY initialisation
 Date: Sun,  1 Sep 2024 18:16:34 +0200
-Message-ID: <20240901160811.916014005@linuxfoundation.org>
+Message-ID: <20240901160820.589118496@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
-References: <20240901160809.752718937@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,53 +62,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <keescook@chromium.org>
+From: Abel Vesa <abel.vesa@linaro.org>
 
-[ Upstream commit 4bea747f3fbec33c16d369b2f51e55981d7c78d0 ]
+[ Upstream commit 0e8a0504da59041e775a95db3ebc1a6211423593 ]
 
-Since NUM_XMIT_BUFFS is always 1, building m68k with sun3_defconfig and
--Warraybounds, this build warning is visible[1]:
+Update the PCIe Gen4 PHY init sequence with the latest based on internal
+Qualcomm documentation.
 
-drivers/net/ethernet/i825xx/sun3_82586.c: In function 'sun3_82586_timeout':
-drivers/net/ethernet/i825xx/sun3_82586.c:990:122: warning: array subscript 1 is above array bounds of 'volatile struct transmit_cmd_struct *[1]' [-Warray-bounds=]
-  990 |                 printk("%s: command-stats: %04x %04x\n",dev->name,swab16(p->xmit_cmds[0]->cmd_status),swab16(p->xmit_cmds[1]->cmd_status));
-      |                                                                                                               ~~~~~~~~~~~~^~~
-...
-drivers/net/ethernet/i825xx/sun3_82586.c:156:46: note: while referencing 'xmit_cmds'
-  156 |         volatile struct transmit_cmd_struct *xmit_cmds[NUM_XMIT_BUFFS];
-
-Avoid accessing index 1 since it doesn't exist.
-
-Link: https://github.com/KSPP/linux/issues/325 [1]
-Cc: Sam Creasey <sammy@sammy.net>
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Simon Horman <horms@kernel.org> # build-tested
-Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Link: https://lore.kernel.org/r/20240206161651.work.876-kees@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 606060ce8fd0 ("phy: qcom-qmp-pcie: Add support for X1E80100 g3x2 and g4x2 PCIE")
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+Link: https://lore.kernel.org/r/20240801-x1e80100-phy-qmp-pcie-fix-config-v2-1-cdc0f22b4169@linaro.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/i825xx/sun3_82586.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/phy/qualcomm/phy-qcom-qmp-pcie.c | 23 ++++++++++++++++-------
+ 1 file changed, 16 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/i825xx/sun3_82586.c b/drivers/net/ethernet/i825xx/sun3_82586.c
-index 1a86184d44c0a..e0c9fee4e1e65 100644
---- a/drivers/net/ethernet/i825xx/sun3_82586.c
-+++ b/drivers/net/ethernet/i825xx/sun3_82586.c
-@@ -990,7 +990,7 @@ static void sun3_82586_timeout(struct net_device *dev)
- 	{
- #ifdef DEBUG
- 		printk("%s: xmitter timed out, try to restart! stat: %02x\n",dev->name,p->scb->cus);
--		printk("%s: command-stats: %04x %04x\n",dev->name,swab16(p->xmit_cmds[0]->cmd_status),swab16(p->xmit_cmds[1]->cmd_status));
-+		printk("%s: command-stats: %04x\n", dev->name, swab16(p->xmit_cmds[0]->cmd_status));
- 		printk("%s: check, whether you set the right interrupt number!\n",dev->name);
- #endif
- 		sun3_82586_close(dev);
+diff --git a/drivers/phy/qualcomm/phy-qcom-qmp-pcie.c b/drivers/phy/qualcomm/phy-qcom-qmp-pcie.c
+index 8fcdcb193d241..e99cbcc378908 100644
+--- a/drivers/phy/qualcomm/phy-qcom-qmp-pcie.c
++++ b/drivers/phy/qualcomm/phy-qcom-qmp-pcie.c
+@@ -1008,8 +1008,8 @@ static const struct qmp_phy_init_tbl x1e80100_qmp_gen4x2_pcie_serdes_tbl[] = {
+ static const struct qmp_phy_init_tbl x1e80100_qmp_gen4x2_pcie_ln_shrd_tbl[] = {
+ 	QMP_PHY_INIT_CFG(QSERDES_V6_LN_SHRD_RXCLK_DIV2_CTRL, 0x01),
+ 	QMP_PHY_INIT_CFG(QSERDES_V6_LN_SHRD_DFE_DAC_ENABLE1, 0x88),
+-	QMP_PHY_INIT_CFG(QSERDES_V6_LN_SHRD_TX_ADAPT_POST_THRESH1, 0x00),
+-	QMP_PHY_INIT_CFG(QSERDES_V6_LN_SHRD_TX_ADAPT_POST_THRESH2, 0x1f),
++	QMP_PHY_INIT_CFG(QSERDES_V6_LN_SHRD_TX_ADAPT_POST_THRESH1, 0x02),
++	QMP_PHY_INIT_CFG(QSERDES_V6_LN_SHRD_TX_ADAPT_POST_THRESH2, 0x0d),
+ 	QMP_PHY_INIT_CFG(QSERDES_V6_LN_SHRD_RX_MODE_RATE_0_1_B0, 0xd4),
+ 	QMP_PHY_INIT_CFG(QSERDES_V6_LN_SHRD_RX_MODE_RATE_0_1_B1, 0x12),
+ 	QMP_PHY_INIT_CFG(QSERDES_V6_LN_SHRD_RX_MODE_RATE_0_1_B2, 0xdb),
+@@ -1026,6 +1026,7 @@ static const struct qmp_phy_init_tbl x1e80100_qmp_gen4x2_pcie_ln_shrd_tbl[] = {
+ 	QMP_PHY_INIT_CFG(QSERDES_V6_LN_SHRD_RX_MARG_COARSE_THRESH4_RATE3, 0x1f),
+ 	QMP_PHY_INIT_CFG(QSERDES_V6_LN_SHRD_RX_MARG_COARSE_THRESH5_RATE3, 0x1f),
+ 	QMP_PHY_INIT_CFG(QSERDES_V6_LN_SHRD_RX_MARG_COARSE_THRESH6_RATE3, 0x1f),
++	QMP_PHY_INIT_CFG(QSERDES_V6_LN_SHRD_RX_SUMMER_CAL_SPD_MODE, 0x5b),
+ };
+ 
+ static const struct qmp_phy_init_tbl x1e80100_qmp_gen4x2_pcie_tx_tbl[] = {
+@@ -1049,12 +1050,15 @@ static const struct qmp_phy_init_tbl x1e80100_qmp_gen4x2_pcie_rx_tbl[] = {
+ 	QMP_PHY_INIT_CFG(QSERDES_V6_20_RX_DFE_1, 0x01),
+ 	QMP_PHY_INIT_CFG(QSERDES_V6_20_RX_DFE_2, 0x01),
+ 	QMP_PHY_INIT_CFG(QSERDES_V6_20_RX_DFE_3, 0x45),
+-	QMP_PHY_INIT_CFG(QSERDES_V6_20_RX_VGA_CAL_MAN_VAL, 0x0b),
++	QMP_PHY_INIT_CFG_LANE(QSERDES_V6_20_RX_VGA_CAL_MAN_VAL, 0x0a, 1),
++	QMP_PHY_INIT_CFG_LANE(QSERDES_V6_20_RX_VGA_CAL_MAN_VAL, 0x0b, 2),
++	QMP_PHY_INIT_CFG(QSERDES_V6_20_VGA_CAL_CNTRL1, 0x00),
+ 	QMP_PHY_INIT_CFG(QSERDES_V6_20_RX_GM_CAL, 0x0d),
+ 	QMP_PHY_INIT_CFG(QSERDES_V6_20_RX_EQU_ADAPTOR_CNTRL4, 0x0b),
+ 	QMP_PHY_INIT_CFG(QSERDES_V6_20_RX_SIGDET_ENABLES, 0x1c),
+ 	QMP_PHY_INIT_CFG(QSERDES_V6_20_RX_PHPRE_CTRL, 0x20),
+-	QMP_PHY_INIT_CFG(QSERDES_V6_20_RX_DFE_CTLE_POST_CAL_OFFSET, 0x38),
++	QMP_PHY_INIT_CFG_LANE(QSERDES_V6_20_RX_DFE_CTLE_POST_CAL_OFFSET, 0x3a, 1),
++	QMP_PHY_INIT_CFG_LANE(QSERDES_V6_20_RX_DFE_CTLE_POST_CAL_OFFSET, 0x38, 2),
+ 	QMP_PHY_INIT_CFG(QSERDES_V6_20_RX_Q_PI_INTRINSIC_BIAS_RATE32, 0x39),
+ 	QMP_PHY_INIT_CFG(QSERDES_V6_20_RX_MODE_RATE2_B0, 0x14),
+ 	QMP_PHY_INIT_CFG(QSERDES_V6_20_RX_MODE_RATE2_B1, 0xb3),
+@@ -1070,6 +1074,7 @@ static const struct qmp_phy_init_tbl x1e80100_qmp_gen4x2_pcie_rx_tbl[] = {
+ 	QMP_PHY_INIT_CFG(QSERDES_V6_20_RX_MODE_RATE3_B4, 0x4b),
+ 	QMP_PHY_INIT_CFG(QSERDES_V6_20_RX_MODE_RATE3_B5, 0x76),
+ 	QMP_PHY_INIT_CFG(QSERDES_V6_20_RX_MODE_RATE3_B6, 0xff),
++	QMP_PHY_INIT_CFG(QSERDES_V6_20_RX_TX_ADPT_CTRL, 0x10),
+ };
+ 
+ static const struct qmp_phy_init_tbl x1e80100_qmp_gen4x2_pcie_pcs_tbl[] = {
+@@ -1077,6 +1082,8 @@ static const struct qmp_phy_init_tbl x1e80100_qmp_gen4x2_pcie_pcs_tbl[] = {
+ 	QMP_PHY_INIT_CFG(QPHY_V6_20_PCS_RX_SIGDET_LVL, 0xcc),
+ 	QMP_PHY_INIT_CFG(QPHY_V6_20_PCS_EQ_CONFIG4, 0x00),
+ 	QMP_PHY_INIT_CFG(QPHY_V6_20_PCS_EQ_CONFIG5, 0x22),
++	QMP_PHY_INIT_CFG(QPHY_V6_20_PCS_TX_RX_CONFIG1, 0x04),
++	QMP_PHY_INIT_CFG(QPHY_V6_20_PCS_TX_RX_CONFIG2, 0x02),
+ };
+ 
+ static const struct qmp_phy_init_tbl x1e80100_qmp_gen4x2_pcie_pcs_misc_tbl[] = {
+@@ -1087,11 +1094,13 @@ static const struct qmp_phy_init_tbl x1e80100_qmp_gen4x2_pcie_pcs_misc_tbl[] = {
+ 	QMP_PHY_INIT_CFG(QPHY_PCIE_V6_20_PCS_G4_PRE_GAIN, 0x2e),
+ 	QMP_PHY_INIT_CFG(QPHY_PCIE_V6_20_PCS_RX_MARGINING_CONFIG1, 0x03),
+ 	QMP_PHY_INIT_CFG(QPHY_PCIE_V6_20_PCS_RX_MARGINING_CONFIG3, 0x28),
++	QMP_PHY_INIT_CFG(QPHY_PCIE_V6_20_PCS_G3_RXEQEVAL_TIME, 0x27),
++	QMP_PHY_INIT_CFG(QPHY_PCIE_V6_20_PCS_G4_RXEQEVAL_TIME, 0x27),
+ 	QMP_PHY_INIT_CFG(QPHY_PCIE_V6_20_PCS_TX_RX_CONFIG, 0xc0),
+ 	QMP_PHY_INIT_CFG(QPHY_PCIE_V6_20_PCS_POWER_STATE_CONFIG2, 0x1d),
+-	QMP_PHY_INIT_CFG(QPHY_PCIE_V6_20_PCS_RX_MARGINING_CONFIG5, 0x0f),
+-	QMP_PHY_INIT_CFG(QPHY_PCIE_V6_20_PCS_G3_FOM_EQ_CONFIG5, 0xf2),
+-	QMP_PHY_INIT_CFG(QPHY_PCIE_V6_20_PCS_G4_FOM_EQ_CONFIG5, 0xf2),
++	QMP_PHY_INIT_CFG(QPHY_PCIE_V6_20_PCS_RX_MARGINING_CONFIG5, 0x18),
++	QMP_PHY_INIT_CFG(QPHY_PCIE_V6_20_PCS_G3_FOM_EQ_CONFIG5, 0x7a),
++	QMP_PHY_INIT_CFG(QPHY_PCIE_V6_20_PCS_G4_FOM_EQ_CONFIG5, 0x8a),
+ };
+ 
+ static const struct qmp_phy_init_tbl sm8250_qmp_pcie_serdes_tbl[] = {
 -- 
 2.43.0
 
