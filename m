@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-72066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71731-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8710C967906
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:38:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B411967781
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:20:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3BFFF1F21765
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:38:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 111D51F21914
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:20:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C28DF17E8EA;
-	Sun,  1 Sep 2024 16:38:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D01A183CC3;
+	Sun,  1 Sep 2024 16:20:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vB8r/6ta"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UVh6iOHj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81C0F1C68C;
-	Sun,  1 Sep 2024 16:38:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5879F183CBC;
+	Sun,  1 Sep 2024 16:20:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208729; cv=none; b=HL4oxW4MPYCRgL9OtcphXOSV4ELlUEwD5VZ6XthKrZ+F5bBRO/gO9TjBIdUEMIBSyf2QrCPEtZYpKKvriGm0yxtPCBSRVoMmDAa+Y3ocEF2Kxla7VNAbl5EONueNPjthSpwkEIp+nDI7YQtHSUBZlSYehBoOAgBe54TxlTikWM0=
+	t=1725207629; cv=none; b=b4HPmjwO7sbKcOTdT5yEOqekW8OCunp7FiNmDbPHKxm2XXDr78+LjxGIKVYHw++uK1zhfnFiJLlWUdwnJ3/GV2LThmyZ6C2Tv3tPgMJ2BoiPP9nWJE8wxA2lRZgNBURJZuAMlIOmvwjxG+hHiswyc56O2gZY9oZUwQ7oviQ+87A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208729; c=relaxed/simple;
-	bh=0paFXTcSReWGIiVujGmeFJ82+7NPP+MPuTaH6OJIg2I=;
+	s=arc-20240116; t=1725207629; c=relaxed/simple;
+	bh=iIb4fAgg7xgZAoPuBKnDig42jkO5LZuq1WixVcFmFdg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CMs7nQHjyzpVkUe8qcW6XXFF+8/K+DWBUFKbK1XHnbXR4mXIXnKCAN1QdDvgjE0VWllJ/YKOaEjyf68VXzpm7EhltPV5NnSDkMnGe3yRSbJfVBjlug/ImnkdZQGmeH+qbqhm981e9qlwG3+RzgNwwVtDBFhfAu0/mwpcBKxz5nY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vB8r/6ta; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1B73C4CEC3;
-	Sun,  1 Sep 2024 16:38:48 +0000 (UTC)
+	 MIME-Version; b=pSGIQtTb8aQkG1ZSQxdJdcF9n4czEAFY52CzqEf6sYqnIDQm7wVAgoFbNVpmxyKEOh0LKtTR7F3J0NULdag2XtYZ9S6ZevxbkWJkUx48Rfx+vzRxu43HDD5QS0o+LkKRMFAdrGLUSteJUvLS7+GXfpZeVEnhYU39xrwJoWOuYb4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UVh6iOHj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3144C4CEC3;
+	Sun,  1 Sep 2024 16:20:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208729;
-	bh=0paFXTcSReWGIiVujGmeFJ82+7NPP+MPuTaH6OJIg2I=;
+	s=korg; t=1725207629;
+	bh=iIb4fAgg7xgZAoPuBKnDig42jkO5LZuq1WixVcFmFdg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vB8r/6ta+lw5ssDCkLH6v8nQtXTmHdeN71G/t8MH0yMGqekObEnR9xueUFOJIEgpu
-	 AylPH8o64VdvRYeS9q1KPfWxGe4HvJQsApguIeONJslbB3THPNahLqy8lz1MMoN/dw
-	 YdhFIP1+BjntG8BGnF88gJjCxFymJeGH6+8cs4ao=
+	b=UVh6iOHjJdfc+YwCpzrKD1SgqHL/wKBG4cRdUd+DkqhGxCir43L+6aPB/lSJPOTjJ
+	 wfyUlVx3wnIkP2U2Z7TQ9mh6dii5sJPNO/iVrPiO4+L6itAG8d9MPR8EJ768wk9ikt
+	 15A2OeVVq2uX+B3e44QnVycCN5yRQ/9sZAM/4ZFQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Khazhismel Kumykov <khazhy@google.com>
-Subject: [PATCH 5.4 006/134] dm resume: dont return EINVAL when signalled
+	Mike Christie <michael.christie@oracle.com>,
+	Christoph Hellwig <hch@lst.de>,
+	John Garry <john.g.garry@oracle.com>,
+	Martin Wilck <mwilck@suse.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 22/98] scsi: spi: Fix sshdr use
 Date: Sun,  1 Sep 2024 18:15:52 +0200
-Message-ID: <20240901160810.000629264@linuxfoundation.org>
+Message-ID: <20240901160804.529286438@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
-References: <20240901160809.752718937@linuxfoundation.org>
+In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
+References: <20240901160803.673617007@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +65,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Khazhismel Kumykov <khazhy@google.com>
+From: Mike Christie <michael.christie@oracle.com>
 
-commit 7a636b4f03af9d541205f69e373672e7b2b60a8a upstream.
+[ Upstream commit 0b149cee836aa53989ea089af1cb9d90d7c6ac9e ]
 
-If the dm_resume method is called on a device that is not suspended, the
-method will suspend the device briefly, before resuming it (so that the
-table will be swapped).
+If scsi_execute_cmd returns < 0, it doesn't initialize the sshdr, so we
+shouldn't access the sshdr. If it returns 0, then the cmd executed
+successfully, so there is no need to check the sshdr. This has us access
+the sshdr when we get a return value > 0.
 
-However, there was a bug that the return value of dm_suspended_md was not
-checked. dm_suspended_md may return an error when it is interrupted by a
-signal. In this case, do_resume would call dm_swap_table, which would
-return -EINVAL.
-
-This commit fixes the logic, so that error returned by dm_suspend is
-checked and the resume operation is undone.
-
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Signed-off-by: Khazhismel Kumykov <khazhy@google.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Mike Christie <michael.christie@oracle.com>
+Link: https://lore.kernel.org/r/20231004210013.5601-7-michael.christie@oracle.com
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: John Garry <john.g.garry@oracle.com>
+Reviewed-by: Martin Wilck <mwilck@suse.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-ioctl.c |   22 ++++++++++++++++++++--
- 1 file changed, 20 insertions(+), 2 deletions(-)
+ drivers/scsi/scsi_transport_spi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/md/dm-ioctl.c
-+++ b/drivers/md/dm-ioctl.c
-@@ -1064,8 +1064,26 @@ static int do_resume(struct dm_ioctl *pa
- 			suspend_flags &= ~DM_SUSPEND_LOCKFS_FLAG;
- 		if (param->flags & DM_NOFLUSH_FLAG)
- 			suspend_flags |= DM_SUSPEND_NOFLUSH_FLAG;
--		if (!dm_suspended_md(md))
--			dm_suspend(md, suspend_flags);
-+		if (!dm_suspended_md(md)) {
-+			r = dm_suspend(md, suspend_flags);
-+			if (r) {
-+				down_write(&_hash_lock);
-+				hc = dm_get_mdptr(md);
-+				if (hc && !hc->new_map) {
-+					hc->new_map = new_map;
-+					new_map = NULL;
-+				} else {
-+					r = -ENXIO;
-+				}
-+				up_write(&_hash_lock);
-+				if (new_map) {
-+					dm_sync_table(md);
-+					dm_table_destroy(new_map);
-+				}
-+				dm_put(md);
-+				return r;
-+			}
-+		}
+diff --git a/drivers/scsi/scsi_transport_spi.c b/drivers/scsi/scsi_transport_spi.c
+index efb9c3d902133..adbe9b07f3d0b 100644
+--- a/drivers/scsi/scsi_transport_spi.c
++++ b/drivers/scsi/scsi_transport_spi.c
+@@ -690,10 +690,10 @@ spi_dv_device_echo_buffer(struct scsi_device *sdev, u8 *buffer,
+ 	for (r = 0; r < retries; r++) {
+ 		result = spi_execute(sdev, spi_write_buffer, DMA_TO_DEVICE,
+ 				     buffer, len, &sshdr);
+-		if(result || !scsi_device_online(sdev)) {
++		if (result || !scsi_device_online(sdev)) {
  
- 		old_map = dm_swap_table(md, new_map);
- 		if (IS_ERR(old_map)) {
+ 			scsi_device_set_state(sdev, SDEV_QUIESCE);
+-			if (scsi_sense_valid(&sshdr)
++			if (result > 0 && scsi_sense_valid(&sshdr)
+ 			    && sshdr.sense_key == ILLEGAL_REQUEST
+ 			    /* INVALID FIELD IN CDB */
+ 			    && sshdr.asc == 0x24 && sshdr.ascq == 0x00)
+-- 
+2.43.0
+
 
 
 
