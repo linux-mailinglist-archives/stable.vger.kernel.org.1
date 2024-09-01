@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-72453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71947-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7D83967AB0
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:59:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5429C96787B
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:32:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 253541C2155C
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:59:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8536A1C20D58
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:32:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C739518308E;
-	Sun,  1 Sep 2024 16:59:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A96D21E87B;
+	Sun,  1 Sep 2024 16:32:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ilKmhV/t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K1E2UqWg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 857A518132A;
-	Sun,  1 Sep 2024 16:59:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 676C617DFFC;
+	Sun,  1 Sep 2024 16:32:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209973; cv=none; b=PLRujzy/dUvw4jLOvonVr8KNuwrUA62CzuS2Bj2P4Ewlqr20tMhRNqiOvQHBfYXp9Si2p3Y3ghaQC+mMMuKkud3Kgqj+l3JipZTSRvpv7Gk7rCmNWKI9S4HB5wbSK/ixSRKpWdvVk4EezOexTl1GJjM4n4qwU6WkmG56XPbkVf4=
+	t=1725208340; cv=none; b=bk+kS//7QnXjK1Y/kuNUJiUjz9HTIZkDVNfYmrRxcaOC+JEAds7MUWByk5qWzX4NagclXqXhRD+eXm/m3H4PBWfuSOO5P8n/UPamtXlT4JPXcqWulAp+8Bv9lrAnBDFR2WvrFMLqF7BV699144kHNGVxIYhfGRymDSWsocjBwFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209973; c=relaxed/simple;
-	bh=kQQbfKglmdFtLwVOyzBOA/H/qBHn7IhfTm4DFpVUbKs=;
+	s=arc-20240116; t=1725208340; c=relaxed/simple;
+	bh=pizUEyOMdsOY3gkK65JglbpokWPyeCaKWcAtvo9+zOM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hqR9brRsrN3shKirYyix1ta8z9nhYC9lMPOnptszixDzE3E4boxSOCh6ZymlLptFQXgC9zDsmDZfLami8CGo3v7upjBkLsJEGcTJsOQZEJovYxHwyB4KgmK3qvF5rFWoKi33xG4uf8PrDr8WwjOmWKP8eC7DYkfQdSSvAuZNW5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ilKmhV/t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A3E9C4CEC3;
-	Sun,  1 Sep 2024 16:59:32 +0000 (UTC)
+	 MIME-Version; b=OEfTWamPGnWoDINe32M9ajEdCHERDOY3dQ/IlVhl1AhRgACBR9cjNRTHJxaLQwxGh9eHoaLnZHE0af+GE7nZWXAdh5h5Q3FS1IH4q3j48ozeZMNs6OEALrjAp1rnM17kCPicW2ZytQkvy41n7e0e4ScC6b1XBelzIppocBsSJFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K1E2UqWg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE651C4CEC3;
+	Sun,  1 Sep 2024 16:32:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209973;
-	bh=kQQbfKglmdFtLwVOyzBOA/H/qBHn7IhfTm4DFpVUbKs=;
+	s=korg; t=1725208340;
+	bh=pizUEyOMdsOY3gkK65JglbpokWPyeCaKWcAtvo9+zOM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ilKmhV/t99r2CjBK3Lk627n7KD+AUFWx0LLn5+8+W3aeNwT8D94fzGSEOxVSO9zk8
-	 cWvM0zBzszpAE9O+e9w1AI7gOz5E2AN302NcskT2lHPydmkarOMWM+J20Po5pHpAar
-	 qcHTw8YnDa7gU4OWAvgA9sJvK7S9LC6FycVRD8zg=
+	b=K1E2UqWg1FhfJpCt4j0yMIS7v6vQo93Bn9DkOUaOpHg8qvcCfnWlSKk49g1aAh/qc
+	 yjO4Iw0M6VqiYEBHtY0Oqc1WugTEQz9DVhVCvwaJk+PSGRob+d6G3rROU761Sg3vhv
+	 JS73aByU2A+bgWINPt7Qef6+fyLPi1T+9JDvyvt8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Abel Vesa <abel.vesa@linaro.org>,
+	Rajendra Nayak <quic_rjendra@quicinc.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 050/215] i3c: mipi-i3c-hci: Remove BUG() when Ring Abort request times out
+Subject: [PATCH 6.10 051/149] pinctrl: qcom: x1e80100: Update PDC hwirq map
 Date: Sun,  1 Sep 2024 18:16:02 +0200
-Message-ID: <20240901160825.245252344@linuxfoundation.org>
+Message-ID: <20240901160819.387934192@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +64,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit 361acacaf7c706223968c8186f0d3b6e214e7403 ]
+[ Upstream commit b7fd10333713e9984cc9b9c04f3681f80efdc809 ]
 
-Ring Abort request will timeout in case there is an error in the Host
-Controller interrupt delivery or Ring Header configuration. Using BUG()
-makes hard to debug those cases.
+The current map seems to be out of sync (and includes a duplicate entry
+for GPIO193..).
 
-Make it less severe and turn BUG() to WARN_ON().
+Replace it with the map present in shipping devices' ACPI tables.
 
-Signed-off-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Link: https://lore.kernel.org/r/20230921055704.1087277-6-jarkko.nikula@linux.intel.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+This new one seems more complete, as it e.g. contains GPIO145 (PCIE6a
+WAKE#)
+
+Fixes: 05e4941d97ef ("pinctrl: qcom: Add X1E80100 pinctrl driver")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
+Reviewed-by: Rajendra Nayak <quic_rjendra@quicinc.com>
+Link: https://lore.kernel.org/20240711-topic-x1e_pdc_tlmm-v1-1-e278b249d793@linaro.org
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master/mipi-i3c-hci/dma.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/pinctrl/qcom/pinctrl-x1e80100.c | 27 ++++++++++++++-----------
+ 1 file changed, 15 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/i3c/master/mipi-i3c-hci/dma.c b/drivers/i3c/master/mipi-i3c-hci/dma.c
-index dd2dc00399600..7ad2edd479157 100644
---- a/drivers/i3c/master/mipi-i3c-hci/dma.c
-+++ b/drivers/i3c/master/mipi-i3c-hci/dma.c
-@@ -450,10 +450,9 @@ static bool hci_dma_dequeue_xfer(struct i3c_hci *hci,
- 		/*
- 		 * We're deep in it if ever this condition is ever met.
- 		 * Hardware might still be writing to memory, etc.
--		 * Better suspend the world than risking silent corruption.
- 		 */
- 		dev_crit(&hci->master.dev, "unable to abort the ring\n");
--		BUG();
-+		WARN_ON(1);
- 	}
+diff --git a/drivers/pinctrl/qcom/pinctrl-x1e80100.c b/drivers/pinctrl/qcom/pinctrl-x1e80100.c
+index e30e938403574..6cd4d10e6fd6f 100644
+--- a/drivers/pinctrl/qcom/pinctrl-x1e80100.c
++++ b/drivers/pinctrl/qcom/pinctrl-x1e80100.c
+@@ -1813,18 +1813,21 @@ static const struct msm_pingroup x1e80100_groups[] = {
  
- 	for (i = 0; i < n; i++) {
+ static const struct msm_gpio_wakeirq_map x1e80100_pdc_map[] = {
+ 	{ 0, 72 }, { 2, 70 }, { 3, 71 }, { 6, 123 }, { 7, 67 }, { 11, 85 },
+-	{ 15, 68 }, { 18, 122 }, { 19, 69 }, { 21, 158 }, { 23, 143 }, { 26, 129 },
+-	{ 27, 144 }, { 28, 77 }, { 29, 78 }, { 30, 92 }, { 32, 145 }, { 33, 115 },
+-	{ 34, 130 }, { 35, 146 }, { 36, 147 }, { 39, 80 }, { 43, 148 }, { 47, 149 },
+-	{ 51, 79 }, { 53, 89 }, { 59, 87 }, { 64, 90 }, { 65, 106 }, { 66, 142 },
+-	{ 67, 88 }, { 71, 91 }, { 75, 152 }, { 79, 153 }, { 80, 125 }, { 81, 128 },
+-	{ 84, 137 }, { 85, 155 }, { 87, 156 }, { 91, 157 }, { 92, 138 }, { 94, 140 },
+-	{ 95, 141 }, { 113, 84 }, { 121, 73 }, { 123, 74 }, { 129, 76 }, { 131, 82 },
+-	{ 134, 83 }, { 141, 93 }, { 144, 94 }, { 147, 96 }, { 148, 97 }, { 150, 102 },
+-	{ 151, 103 }, { 153, 104 }, { 156, 105 }, { 157, 107 }, { 163, 98 }, { 166, 112 },
+-	{ 172, 99 }, { 181, 101 }, { 184, 116 }, { 193, 40 }, { 193, 117 }, { 196, 108 },
+-	{ 203, 133 }, { 212, 120 }, { 213, 150 }, { 214, 121 }, { 215, 118 }, { 217, 109 },
+-	{ 220, 110 }, { 221, 111 }, { 222, 124 }, { 224, 131 }, { 225, 132 },
++	{ 13, 86 }, { 15, 68 }, { 18, 122 }, { 19, 69 }, { 21, 158 }, { 23, 143 },
++	{ 24, 126 }, { 26, 129 }, { 27, 144 }, { 28, 77 }, { 29, 78 }, { 30, 92 },
++	{ 31, 159 }, { 32, 145 }, { 33, 115 }, { 34, 130 }, { 35, 146 }, { 36, 147 },
++	{ 38, 113 }, { 39, 80 }, { 43, 148 }, { 47, 149 }, { 51, 79 }, { 53, 89 },
++	{ 55, 81 }, { 59, 87 }, { 64, 90 }, { 65, 106 }, { 66, 142 }, { 67, 88 },
++	{ 68, 151 }, { 71, 91 }, { 75, 152 }, { 79, 153 }, { 80, 125 }, { 81, 128 },
++	{ 83, 154 }, { 84, 137 }, { 85, 155 }, { 87, 156 }, { 91, 157 }, { 92, 138 },
++	{ 93, 139 }, { 94, 140 }, { 95, 141 }, { 113, 84 }, { 121, 73 }, { 123, 74 },
++	{ 125, 75 }, { 129, 76 }, { 131, 82 }, { 134, 83 }, { 141, 93 }, { 144, 94 },
++	{ 145, 95 }, { 147, 96 }, { 148, 97 }, { 150, 102 }, { 151, 103 }, { 153, 104 },
++	{ 154, 100 }, { 156, 105 }, { 157, 107 }, { 163, 98 }, { 166, 112 }, { 172, 99 },
++	{ 175, 114 }, { 181, 101 }, { 184, 116 }, { 193, 117 }, { 196, 108 }, { 203, 133 },
++	{ 208, 134 }, { 212, 120 }, { 213, 150 }, { 214, 121 }, { 215, 118 }, { 217, 109 },
++	{ 219, 119 }, { 220, 110 }, { 221, 111 }, { 222, 124 }, { 224, 131 }, { 225, 132 },
++	{ 228, 135 }, { 230, 136 }, { 232, 162 },
+ };
+ 
+ static const struct msm_pinctrl_soc_data x1e80100_pinctrl = {
 -- 
 2.43.0
 
