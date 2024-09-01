@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-71972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72297-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46C899678A0
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:34:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30326967A10
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:51:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 05367280F5D
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:34:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D86DE1F22F3A
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:51:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64EDC183CBD;
-	Sun,  1 Sep 2024 16:33:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5597E17E00C;
+	Sun,  1 Sep 2024 16:51:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nJ9iY7u/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qf3Qbhiz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 248155381A;
-	Sun,  1 Sep 2024 16:33:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 141D41C68C;
+	Sun,  1 Sep 2024 16:51:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208422; cv=none; b=O2SHtmudILnEmsaZPeP80HAOyBU475+3mWpL2MMwPEKlX69sWloN5T5zsUygu0Yl1NffgpENBHrDsYWpQFukhR7a8bxlqCnmt0w0/sHDZhuJuO9z256nbFEwmhHfc4fFZ90WNkWV9Nw6Pj3ByOles03+AfFbYfAYoGbFT87WZq0=
+	t=1725209468; cv=none; b=jjBtQ/zrEhrpeshpWzCnJ40MRY8H3RlSYY4EWOLcIZtdwITKZsNoJXEx2yyriVDPQMRIS7gbAVgw1GewGbALcyLoLOf5Parzh+ragUg7kUONbv+jza3d+cWSj7D/suuy1PBQoMHGNy6BIvzIeQw00UVgV3oyyaBUrYNSX5sAZ4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208422; c=relaxed/simple;
-	bh=v4g/Vz56LyYs8rzw2ISzuXYAoAjpzQ9D6Tx1kdZ0DaE=;
+	s=arc-20240116; t=1725209468; c=relaxed/simple;
+	bh=2rcf6Ahy0k5HAy/Di0TepiruEd2VBYoW+OXMXJPE7So=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uaXGsDswLALM/Ahd/aa6347aTv+9YYc3LkLwqa/794PK065ZV8v0t7RpMqG+E4/s9DTXl7y7K3MocZYTPJtrh4bBjp4ir2XJgjTEbjH21BGCsLsHNc+JAokK7Rs/9IQ3sDB5vaCv36YlLQ0nmbo41Aq7jwcptG3Ihk06QcCpKQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nJ9iY7u/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BBF5C4CEC3;
-	Sun,  1 Sep 2024 16:33:41 +0000 (UTC)
+	 MIME-Version; b=eT+nvCMBbda2MpSbVZdzRU4kd7xftbVksyrOfIydwxcLar8UtFcc748aBnIgIVYovntN962a7orpCAiFvl94rScr+xouCo26S8N7g8nlBW5Dn+R0UrfJznvFre+EZAsc/kG5Mf5MX7XQ4swT0Ad36FTIRhPG/+N7YRNQeAp5koM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qf3Qbhiz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9030FC4CEC3;
+	Sun,  1 Sep 2024 16:51:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208422;
-	bh=v4g/Vz56LyYs8rzw2ISzuXYAoAjpzQ9D6Tx1kdZ0DaE=;
+	s=korg; t=1725209467;
+	bh=2rcf6Ahy0k5HAy/Di0TepiruEd2VBYoW+OXMXJPE7So=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nJ9iY7u/7V4elHoI2Mck2dnYlkNBA3+i4yoUaQunanW7BXv2cw6GxzEU42sdEZ1a9
-	 lWomxNysGd+MR/qPqdrbRDVTK2mp/QvlORP645eHn+dJkQIDqgezO+JgplEsBc59c4
-	 w4KpVALBFWoRdneZO5bv40GG3tZiIfwYj/r/I6c0=
+	b=qf3Qbhiz8U2SqfPsK9mmuqq6M+yIM+6qz5RNO79Kv8xM83uwhxblhyGjZPked2OIz
+	 gU/J4vbTy+rlZM04By8YOOZpMOgys3fcNdC0MzktGQmsxSTCHtaicLIqJksUAS2UD7
+	 R/oaAaJqpVsZvoEmLXl4zEyweru69Fh+CZnj7TrM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
-	Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH 6.10 077/149] cpufreq/amd-pstate: Use topology_logical_package_id() instead of logical_die_id()
+	Jie Wang <wangjie125@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 028/151] net: hns3: fix wrong use of semaphore up
 Date: Sun,  1 Sep 2024 18:16:28 +0200
-Message-ID: <20240901160820.363068340@linuxfoundation.org>
+Message-ID: <20240901160815.156117877@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
-References: <20240901160817.461957599@linuxfoundation.org>
+In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
+References: <20240901160814.090297276@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gautham R. Shenoy <gautham.shenoy@amd.com>
+From: Jie Wang <wangjie125@huawei.com>
 
-commit 0d8584d288a9b4132e945d76bcc04395d158b2e7 upstream.
+[ Upstream commit 8445d9d3c03101859663d34fda747f6a50947556 ]
 
-After the commit 63edbaa48a57 ("x86/cpu/topology: Add support for the
-AMD 0x80000026 leaf"), the topolgy_logical_die_id() function returns
-the logical Core Chiplet Die (CCD) ID instead of the logical socket
-ID.
+Currently, if hns3 PF or VF FLR reset failed after five times retry,
+the reset done process will directly release the semaphore
+which has already released in hclge_reset_prepare_general.
+This will cause down operation fail.
 
-Since this is currently used to set MSR_AMD_CPPC_ENABLE, which needs
-to be set on any one of the threads of the socket, it is prudent to
-use topology_logical_package_id() in place of
-topology_logical_die_id().
+So this patch fixes it by adding reset state judgement. The up operation is
+only called after successful PF FLR reset.
 
-Fixes: 63edbaa48a57 ("x86/cpu/topology: Add support for the AMD 0x80000026 leaf")
-cc: stable@vger.kernel.org # 6.10
-Signed-off-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
-Tested-by: Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>
-Link: https://lore.kernel.org/lkml/20240801124509.3650-1-Dhananjay.Ugwekar@amd.com/
-Signed-off-by: Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8627bdedc435 ("net: hns3: refactor the precedure of PF FLR")
+Fixes: f28368bb4542 ("net: hns3: refactor the procedure of VF FLR")
+Signed-off-by: Jie Wang <wangjie125@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/amd-pstate.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c   | 4 ++--
+ drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/cpufreq/amd-pstate.c
-+++ b/drivers/cpufreq/amd-pstate.c
-@@ -329,7 +329,7 @@ static inline int pstate_enable(bool ena
- 		return 0;
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+index 5dbee850fef53..885793707a5f1 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+@@ -10051,8 +10051,8 @@ static void hclge_flr_done(struct hnae3_ae_dev *ae_dev)
+ 		dev_err(&hdev->pdev->dev, "fail to rebuild, ret=%d\n", ret);
  
- 	for_each_present_cpu(cpu) {
--		unsigned long logical_id = topology_logical_die_id(cpu);
-+		unsigned long logical_id = topology_logical_package_id(cpu);
+ 	hdev->reset_type = HNAE3_NONE_RESET;
+-	clear_bit(HCLGE_STATE_RST_HANDLING, &hdev->state);
+-	up(&hdev->reset_sem);
++	if (test_and_clear_bit(HCLGE_STATE_RST_HANDLING, &hdev->state))
++		up(&hdev->reset_sem);
+ }
  
- 		if (test_bit(logical_id, &logical_proc_id_mask))
- 			continue;
+ static void hclge_clear_resetting_state(struct hclge_dev *hdev)
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
+index be41117ec1465..755935f9efc81 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
+@@ -2093,8 +2093,8 @@ static void hclgevf_flr_done(struct hnae3_ae_dev *ae_dev)
+ 			 ret);
+ 
+ 	hdev->reset_type = HNAE3_NONE_RESET;
+-	clear_bit(HCLGEVF_STATE_RST_HANDLING, &hdev->state);
+-	up(&hdev->reset_sem);
++	if (test_and_clear_bit(HCLGEVF_STATE_RST_HANDLING, &hdev->state))
++		up(&hdev->reset_sem);
+ }
+ 
+ static u32 hclgevf_get_fw_version(struct hnae3_handle *handle)
+-- 
+2.43.0
+
 
 
 
