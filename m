@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-72567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72259-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 882EC967B27
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:05:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BEF99679E8
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:49:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B84C41C215F3
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:05:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3771F1F22218
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:49:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 157973BB48;
-	Sun,  1 Sep 2024 17:05:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5B5A183087;
+	Sun,  1 Sep 2024 16:49:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aHoYeJ+W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jUsbfyZu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C500617C;
-	Sun,  1 Sep 2024 17:05:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93EFE44C93;
+	Sun,  1 Sep 2024 16:49:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210352; cv=none; b=QaDWWooLGA3LFm+8meTeL8gS4JeuuWMMQk6okXvmQnUHf6uVerHk9MLOum8zq5JtHtXeI1a7v+fBR3SGe4mkmuECVXDbb3grgNCw1xuIhbUc4mGF2DFHJeFizkRb+DryO0oRVtId+K+O0t9OH0FZJpLufOfkECb0YQoOBMPfBFI=
+	t=1725209348; cv=none; b=Cio6kZv6hYLGXso7GjkBNXEqxhMkVQFmIvZ/DQNg3tMmTlLK067P5GDg6WkwDicwUW03x/e2n2rTLJd7Ptvq3EkF5Uyj48L8uhEcVMRq2qb9AtlbLjRhsBG41+HVxknvmPHOHzbYRUKmX0hHb8DM8WvSjA+LFiRvd2lxs2HPR2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210352; c=relaxed/simple;
-	bh=zrpam1r/ZJqmGJGhHnrMwtao3XYb44H0RIFyZIFzRS4=;
+	s=arc-20240116; t=1725209348; c=relaxed/simple;
+	bh=vqHoH/8zkB1u0EbZeuY7mc3OEFNN8FIVG0JcFOEl+vA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=el02oBJW1GV8KnRHppB6RMPxKgf0uybNNpS4u34UH+MvAg/PcgeuaIfiAFNt3Vj0f4GBmOxGE88scJFDkWfcVH0pSy6ThriygdX5eHbHWXBH3JNIwek4NgxohYl6QV8QV6eG5BgGawjW0bHDYzpjKzva/dAs6/oOvbDZQ+xqlk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aHoYeJ+W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3991FC4CEC3;
-	Sun,  1 Sep 2024 17:05:52 +0000 (UTC)
+	 MIME-Version; b=TiGuwVHAW6YmMR0wtl2fFpRwyHIfh2CBS2CsufRpbQZ7f5NrdCge/TR+yWDBExt+H7x6AMYYm1r4iFCAhcdfEcNNSsVPL+cl/Or3T5mUD6CtgnbnPPzkS/tHbE+RskfFHb2mh+rtP4rFWM8FCTuglzFmvLtKfNOCEmeiv8EpcuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jUsbfyZu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A88DC4CEC3;
+	Sun,  1 Sep 2024 16:49:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210352;
-	bh=zrpam1r/ZJqmGJGhHnrMwtao3XYb44H0RIFyZIFzRS4=;
+	s=korg; t=1725209348;
+	bh=vqHoH/8zkB1u0EbZeuY7mc3OEFNN8FIVG0JcFOEl+vA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aHoYeJ+WpjnyyY790zcQDpHZUBLXOznM05HekwlGFQQxThR9pnpplzdNPRTrIx6Ui
-	 K1TrMjnY4uCfPSakHNfesx1z6x7rxTkqaedTUYiF6lHjEU9ONvwGSPXE5bvNuhaAnD
-	 Z6vvBolN9UOTEXO1o756TE+TB5JSJx1z1QC8HW8Y=
+	b=jUsbfyZuG+WNvC2A0oOk/kXADduma/w+8csN5rdBuKF+CEVFOn6d2X7PpjkhfiLjJ
+	 s13nlyVHRotom3acenbs/tji9VgZInj6y/v/5MR9YSIGmbgsuxcCDviKq5LffI5lxL
+	 l/4WJYbDfO2S3tYzybihJ+X/OuTOBG7fC2RAvz+s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bastien Nocera <hadess@hadess.net>,
-	Siarhei Vishniakou <svv@google.com>,
-	Jiri Kosina <jkosina@suse.cz>
-Subject: [PATCH 5.15 163/215] HID: microsoft: Add rumble support to latest xbox controllers
+	Jianbo Liu <jianbol@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Hangbin Liu <liuhangbin@gmail.com>,
+	Jay Vosburgh <jv@jvosburgh.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 50/71] bonding: implement xdo_dev_state_free and call it after deletion
 Date: Sun,  1 Sep 2024 18:17:55 +0200
-Message-ID: <20240901160829.520801309@linuxfoundation.org>
+Message-ID: <20240901160803.779253870@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160801.879647959@linuxfoundation.org>
+References: <20240901160801.879647959@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,102 +65,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Siarhei Vishniakou <svv@google.com>
+From: Jianbo Liu <jianbol@nvidia.com>
 
-commit f5554725f30475b05b5178b998366f11ecb50c7f upstream.
+[ Upstream commit ec13009472f4a756288eb4e18e20a7845da98d10 ]
 
-Currently, rumble is only supported via bluetooth on a single xbox
-controller, called 'model 1708'. On the back of the device, it's named
-'wireless controller for xbox one'. However, in 2021, Microsoft released
-a firmware update for this controller. As part of this update, the HID
-descriptor of the device changed. The product ID was also changed from
-0x02fd to 0x0b20. On this controller, rumble was supported via
-hid-microsoft, which matched against the old product id (0x02fd). As a
-result, the firmware update broke rumble support on this controller.
+Add this implementation for bonding, so hardware resources can be
+freed from the active slave after xfrm state is deleted. The netdev
+used to invoke xdo_dev_state_free callback, is saved in the xfrm state
+(xs->xso.real_dev), which is also the bond's active slave. To prevent
+it from being freed, acquire netdev reference before leaving RCU
+read-side critical section, and release it after callback is done.
 
-See:
-https://news.xbox.com/en-us/2021/09/08/xbox-controller-firmware-update-rolling-out-to-insiders-starting-today/
+And call it when deleting all SAs from old active real interface while
+switching current active slave.
 
-The hid-microsoft driver actually supports rumble on the new firmware,
-as well. So simply adding new product id is sufficient to bring back
-this support.
-
-After discussing further with the xbox team, it was pointed out that
-another xbox controller, xbox elite series 2, can be supported in a
-similar way.
-
-Add rumble support for all of these devices in this patch. Two of the
-devices have received firmware updates that caused their product id's to
-change. Both old and new firmware versions of these devices were tested.
-
-The tested controllers are:
-
-1. 'wireless controller for xbox one', model 1708
-2. 'xbox wireless controller', model 1914. This is also sometimes
-   referred to as 'xbox series S|X'.
-3. 'elite series 2', model 1797.
-
-The tested configurations are:
-1. model 1708, pid 0x02fd (old firmware)
-2. model 1708, pid 0x0b20 (new firmware)
-3. model 1914, pid 0x0b13
-4. model 1797, pid 0x0b05 (old firmware)
-5. model 1797, pid 0x0b22 (new firmware)
-
-I verified rumble support on both bluetooth and usb.
-
-Reviewed-by: Bastien Nocera <hadess@hadess.net>
-Signed-off-by: Siarhei Vishniakou <svv@google.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9a5605505d9c ("bonding: Add struct bond_ipesc to manage SA")
+Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
+Acked-by: Jay Vosburgh <jv@jvosburgh.net>
+Link: https://patch.msgid.link/20240823031056.110999-2-jianbol@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-ids.h       |   10 +++++++++-
- drivers/hid/hid-microsoft.c |   11 ++++++++++-
- 2 files changed, 19 insertions(+), 2 deletions(-)
+ drivers/net/bonding/bond_main.c | 36 +++++++++++++++++++++++++++++++++
+ 1 file changed, 36 insertions(+)
 
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -894,7 +894,15 @@
- #define USB_DEVICE_ID_MS_TYPE_COVER_2    0x07a9
- #define USB_DEVICE_ID_MS_POWER_COVER     0x07da
- #define USB_DEVICE_ID_MS_SURFACE3_COVER		0x07de
--#define USB_DEVICE_ID_MS_XBOX_ONE_S_CONTROLLER	0x02fd
-+/*
-+ * For a description of the Xbox controller models, refer to:
-+ * https://en.wikipedia.org/wiki/Xbox_Wireless_Controller#Summary
-+ */
-+#define USB_DEVICE_ID_MS_XBOX_CONTROLLER_MODEL_1708	0x02fd
-+#define USB_DEVICE_ID_MS_XBOX_CONTROLLER_MODEL_1708_BLE	0x0b20
-+#define USB_DEVICE_ID_MS_XBOX_CONTROLLER_MODEL_1914	0x0b13
-+#define USB_DEVICE_ID_MS_XBOX_CONTROLLER_MODEL_1797	0x0b05
-+#define USB_DEVICE_ID_MS_XBOX_CONTROLLER_MODEL_1797_BLE	0x0b22
- #define USB_DEVICE_ID_MS_PIXART_MOUSE    0x00cb
- #define USB_DEVICE_ID_8BITDO_SN30_PRO_PLUS      0x02e0
- #define USB_DEVICE_ID_MS_MOUSE_0783      0x0783
---- a/drivers/hid/hid-microsoft.c
-+++ b/drivers/hid/hid-microsoft.c
-@@ -446,7 +446,16 @@ static const struct hid_device_id ms_dev
- 		.driver_data = MS_PRESENTER },
- 	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_MICROSOFT, 0x091B),
- 		.driver_data = MS_SURFACE_DIAL },
--	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_MICROSOFT, USB_DEVICE_ID_MS_XBOX_ONE_S_CONTROLLER),
+diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
+index c218352814430..375412ce1ea5f 100644
+--- a/drivers/net/bonding/bond_main.c
++++ b/drivers/net/bonding/bond_main.c
+@@ -577,12 +577,47 @@ static void bond_ipsec_del_sa_all(struct bonding *bond)
+ 				   __func__);
+ 		} else {
+ 			slave->dev->xfrmdev_ops->xdo_dev_state_delete(ipsec->xs);
++			if (slave->dev->xfrmdev_ops->xdo_dev_state_free)
++				slave->dev->xfrmdev_ops->xdo_dev_state_free(ipsec->xs);
+ 		}
+ 	}
+ 	spin_unlock_bh(&bond->ipsec_lock);
+ 	rcu_read_unlock();
+ }
+ 
++static void bond_ipsec_free_sa(struct xfrm_state *xs)
++{
++	struct net_device *bond_dev = xs->xso.dev;
++	struct net_device *real_dev;
++	netdevice_tracker tracker;
++	struct bonding *bond;
++	struct slave *slave;
 +
-+	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_MICROSOFT, USB_DEVICE_ID_MS_XBOX_CONTROLLER_MODEL_1708),
-+		.driver_data = MS_QUIRK_FF },
-+	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_MICROSOFT, USB_DEVICE_ID_MS_XBOX_CONTROLLER_MODEL_1708_BLE),
-+		.driver_data = MS_QUIRK_FF },
-+	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_MICROSOFT, USB_DEVICE_ID_MS_XBOX_CONTROLLER_MODEL_1914),
-+		.driver_data = MS_QUIRK_FF },
-+	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_MICROSOFT, USB_DEVICE_ID_MS_XBOX_CONTROLLER_MODEL_1797),
-+		.driver_data = MS_QUIRK_FF },
-+	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_MICROSOFT, USB_DEVICE_ID_MS_XBOX_CONTROLLER_MODEL_1797_BLE),
- 		.driver_data = MS_QUIRK_FF },
- 	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_MICROSOFT, USB_DEVICE_ID_8BITDO_SN30_PRO_PLUS),
- 		.driver_data = MS_QUIRK_FF },
++	if (!bond_dev)
++		return;
++
++	rcu_read_lock();
++	bond = netdev_priv(bond_dev);
++	slave = rcu_dereference(bond->curr_active_slave);
++	real_dev = slave ? slave->dev : NULL;
++	netdev_hold(real_dev, &tracker, GFP_ATOMIC);
++	rcu_read_unlock();
++
++	if (!slave)
++		goto out;
++
++	if (!xs->xso.real_dev)
++		goto out;
++
++	WARN_ON(xs->xso.real_dev != real_dev);
++
++	if (real_dev && real_dev->xfrmdev_ops &&
++	    real_dev->xfrmdev_ops->xdo_dev_state_free)
++		real_dev->xfrmdev_ops->xdo_dev_state_free(xs);
++out:
++	netdev_put(real_dev, &tracker);
++}
++
+ /**
+  * bond_ipsec_offload_ok - can this packet use the xfrm hw offload
+  * @skb: current data packet
+@@ -623,6 +658,7 @@ static bool bond_ipsec_offload_ok(struct sk_buff *skb, struct xfrm_state *xs)
+ static const struct xfrmdev_ops bond_xfrmdev_ops = {
+ 	.xdo_dev_state_add = bond_ipsec_add_sa,
+ 	.xdo_dev_state_delete = bond_ipsec_del_sa,
++	.xdo_dev_state_free = bond_ipsec_free_sa,
+ 	.xdo_dev_offload_ok = bond_ipsec_offload_ok,
+ };
+ #endif /* CONFIG_XFRM_OFFLOAD */
+-- 
+2.43.0
+
 
 
 
