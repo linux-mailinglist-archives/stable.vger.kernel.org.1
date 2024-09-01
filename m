@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-71986-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71825-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95C749678B0
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:34:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57AFD9677ED
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:25:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C73A91C21171
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:34:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BC33FB21D89
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:25:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CF9117DFFC;
-	Sun,  1 Sep 2024 16:34:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E751183CBD;
+	Sun,  1 Sep 2024 16:25:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ds5MhEj6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ypVC5JKs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE6862B9C7;
-	Sun,  1 Sep 2024 16:34:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A79D183CB5;
+	Sun,  1 Sep 2024 16:25:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208468; cv=none; b=a0HRcO++JBZ3dUfLh4uFQin1LaIu1k9Aei87jRs1KOO3yLlH3/yRJ03bivVCsGSIsOvxKv/1+TN3w5KsBdT6bO76uK6UXoy06KEb+Chmu3XvW8OfazKBDFDCMpc4XRjh0sp6sIhT8YXHMjDJXs10kwKYbf8304e5Z7Om3pOR1rs=
+	t=1725207941; cv=none; b=BR6w1vXbaelWC6jQgZA1IGU2YqvNACUuSLxRhVF53yb9KRoXp2TGEwh/C/zvd6/+6o1osDk8AcC8r0U+d06odP/BQfyvjxZDAh9/39XoscXzFENxCmK/PEPMojvV7FIzMPehzSirbJVlhrgjDupVaCiquKLb3JtASyEiUMZVX/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208468; c=relaxed/simple;
-	bh=iW4c7ZNQ1EDnzPRsHIT5OiRErvFH2z1Y46HW/LLQdMY=;
+	s=arc-20240116; t=1725207941; c=relaxed/simple;
+	bh=g8837ZwzQzIrx8Srmx6LFAhgoVOQJtmrhgiX+Id/6Gc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WupcFuWJQkL1WFBrn1ijNqD5RAFNgQedpco3jamRa9SYgd3L6m4XwgypBfiZtjpkDmJLn5fzwybSd69NT2Tc7JBc8rFxwxD+QL5w4S+HDzUvLjW2H15iHJewZew+P2BH9zDt9EdcytMIFAjFmYUxkkRZPssivp55+3O3pMbpyvQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ds5MhEj6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 044D4C4CEC3;
-	Sun,  1 Sep 2024 16:34:27 +0000 (UTC)
+	 MIME-Version; b=pdhO3wySoeA2h2LuUqVjY24FXu2/w8NajGw/cypfv0XUiyCFyei0gT377dJJ5wlfE8wfHTLim1qG+u1YNZWX/yPiP1Vr2zxzBl71GNaW/Hlz7tNZ2PijJ+tnGeZY8GZV2GpQJev/x/TEkwmNKPc1V7caZuWxB+tBtktMVVoY6Pw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ypVC5JKs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8981EC4CEC3;
+	Sun,  1 Sep 2024 16:25:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208468;
-	bh=iW4c7ZNQ1EDnzPRsHIT5OiRErvFH2z1Y46HW/LLQdMY=;
+	s=korg; t=1725207941;
+	bh=g8837ZwzQzIrx8Srmx6LFAhgoVOQJtmrhgiX+Id/6Gc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ds5MhEj62AKb2iMJVRpFzGwvtrbOu1yMjmz4dI+NYH+tZWoqGDF8PFylF105Tyckp
-	 bHc3ykJUQ+0akpuyjUb+EosDxjLQx8RCiRAteqCfnBySJ34b66XPZXULFFQPOgXWqk
-	 Pq9ySz9I6iKwjRo+YMTeFa3p25H/vEfsm+5kf8fk=
+	b=ypVC5JKsUa48GkgkT1/mXSMcjbHNSLsVZHzTx9OExOFnwVvRpYJShmjmAFT2Uway8
+	 8SmkvFaPzeCQDmLz0D/bjbjk/FRvhl86dZULFLXCCZ6a+0m7y3osgGiCjAwCMajQrn
+	 65VY1EPoWHvOHw/lhWFQJPLZpwfy9IYLiidxz6R8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ed Tsai <ed.tsai@mediatek.com>,
-	Amir Goldstein <amir73il@gmail.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 060/149] backing-file: convert to using fops->splice_write
+	Kenneth Feng <kenneth.feng@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 24/93] drm/amdgpu: align pp_power_profile_mode with kernel docs
 Date: Sun,  1 Sep 2024 18:16:11 +0200
-Message-ID: <20240901160819.725179129@linuxfoundation.org>
+Message-ID: <20240901160808.268839079@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
-References: <20240901160817.461957599@linuxfoundation.org>
+In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
+References: <20240901160807.346406833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +61,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ed Tsai <ed.tsai@mediatek.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 996b37da1e0f51314d4186b326742c2a95a9f0dd ]
+commit 8f614469de248a4bc55fb07e55d5f4c340c75b11 upstream.
 
-Filesystems may define their own splice write. Therefore, use the file
-fops instead of invoking iter_file_splice_write() directly.
+The kernel doc says you need to select manual mode to
+adjust this, but the code only allows you to adjust it when
+manual mode is not selected.  Remove the manual mode check.
 
-Signed-off-by: Ed Tsai <ed.tsai@mediatek.com>
-Link: https://lore.kernel.org/r/20240708072208.25244-1-ed.tsai@mediatek.com
-Fixes: 5ca73468612d ("fuse: implement splice read/write passthrough")
-Reviewed-by: Amir Goldstein <amir73il@gmail.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Kenneth Feng <kenneth.feng@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit bbb05f8a9cd87f5046d05a0c596fddfb714ee457)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/backing-file.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/fs/backing-file.c b/fs/backing-file.c
-index afb557446c27c..8860dac58c37e 100644
---- a/fs/backing-file.c
-+++ b/fs/backing-file.c
-@@ -303,13 +303,16 @@ ssize_t backing_file_splice_write(struct pipe_inode_info *pipe,
- 	if (WARN_ON_ONCE(!(out->f_mode & FMODE_BACKING)))
- 		return -EIO;
+--- a/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/amdgpu_smu.c
+@@ -1882,8 +1882,7 @@ static int smu_adjust_power_state_dynami
+ 		smu_dpm_ctx->dpm_level = level;
+ 	}
  
-+	if (!out->f_op->splice_write)
-+		return -EINVAL;
-+
- 	ret = file_remove_privs(ctx->user_file);
- 	if (ret)
- 		return ret;
+-	if (smu_dpm_ctx->dpm_level != AMD_DPM_FORCED_LEVEL_MANUAL &&
+-		smu_dpm_ctx->dpm_level != AMD_DPM_FORCED_LEVEL_PERF_DETERMINISM) {
++	if (smu_dpm_ctx->dpm_level != AMD_DPM_FORCED_LEVEL_PERF_DETERMINISM) {
+ 		index = fls(smu->workload_mask);
+ 		index = index > 0 && index <= WORKLOAD_POLICY_MAX ? index - 1 : 0;
+ 		workload[0] = smu->workload_setting[index];
+@@ -1960,8 +1959,7 @@ static int smu_switch_power_profile(void
+ 		workload[0] = smu->workload_setting[index];
+ 	}
  
- 	old_cred = override_creds(ctx->cred);
- 	file_start_write(out);
--	ret = iter_file_splice_write(pipe, out, ppos, len, flags);
-+	ret = out->f_op->splice_write(pipe, out, ppos, len, flags);
- 	file_end_write(out);
- 	revert_creds(old_cred);
+-	if (smu_dpm_ctx->dpm_level != AMD_DPM_FORCED_LEVEL_MANUAL &&
+-		smu_dpm_ctx->dpm_level != AMD_DPM_FORCED_LEVEL_PERF_DETERMINISM)
++	if (smu_dpm_ctx->dpm_level != AMD_DPM_FORCED_LEVEL_PERF_DETERMINISM)
+ 		smu_bump_power_profile_mode(smu, workload, 0);
  
--- 
-2.43.0
-
+ 	return 0;
 
 
 
