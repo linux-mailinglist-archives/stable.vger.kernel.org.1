@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-71814-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72260-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 868DD9677DE
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:25:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A073F9679E9
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:49:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 52628B219BA
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:25:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5732A1F22243
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:49:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF60A181B88;
-	Sun,  1 Sep 2024 16:25:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF4C0143894;
+	Sun,  1 Sep 2024 16:49:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CQQS9tPe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pIatHPsX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C41A14290C;
-	Sun,  1 Sep 2024 16:25:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D03C181B86;
+	Sun,  1 Sep 2024 16:49:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725207905; cv=none; b=m6h3968klWFXKW3RyYB7/5icNoBSDkZ0sLGi/VWnYZ1d0jBzLHDNaQerbCRvkOTxwOYkRwGNM9Q/ry4/F1Da8UiRH3+2RUHq1/b2B1hjtlzTDiKYJ2MHCMMF3o+DyQFcs5GN2wPaPAf8QXcz4hnxO/oslaxmcieRs+zeldzPsJs=
+	t=1725209351; cv=none; b=Cnn3z0bEYmrR6pM+a0CH5Sfdv7U//aRW8TLnEU/ykbFrPGxm7Je4huIe5FEa+W0H5+ywrVJoo6BQY7u0p2rLEvmOsFgSPr33YP5pEtUaM95MOdAlrKaihH1hhYjG+P03bU2R5ds5rUm6xnaVWE+XgZ8WPhHLtqssUk86LtpQPn0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725207905; c=relaxed/simple;
-	bh=a8VWYZerN+wAUKI8xaIntN+QXrh1YXcmQQKeIbBnwM0=;
+	s=arc-20240116; t=1725209351; c=relaxed/simple;
+	bh=UxIfPHyQSL76X/t/DWB6wprgWJOBzqnB0SXWpK5miQg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GdhElisDQTDe7iu8Whc25W7IaAfJHyUVJfMjteJYhmhLIcngfm+75lCo8hIn9xcKkKgPJowmW6tvGzLcOrFD1tfArMo+IrJgZpvTqVdmVMeZc3QKzpdrjkJ92lY28GM4SSdA36zDpnrDRdrCoZuSq+qBQXOnimJRhNXAEDdvqaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CQQS9tPe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0483C4CEC3;
-	Sun,  1 Sep 2024 16:25:04 +0000 (UTC)
+	 MIME-Version; b=drKiFFfRjHd3tUY/agkDOeSVAsk1z0WPpyhiCRuXk2KXhqyWxXsLR7lau/Y4w1zePuxKtjLa6XQF8wO4EkpO/c3Yly0VyOh74ChHHfZ6WIG2uVeA2iVguuj2FvGCj0XVMkX4JtpLfFWCWdAt4EzbgGkQB6W1ckoXmlyrwHdq01M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pIatHPsX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25E27C4CEC3;
+	Sun,  1 Sep 2024 16:49:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725207905;
-	bh=a8VWYZerN+wAUKI8xaIntN+QXrh1YXcmQQKeIbBnwM0=;
+	s=korg; t=1725209351;
+	bh=UxIfPHyQSL76X/t/DWB6wprgWJOBzqnB0SXWpK5miQg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CQQS9tPe2sRsjiAAaZDJB+bK/fYjvMRakxaa0FgpSkJdP7zb7A+0Qk54Po32pcFX9
-	 3gy/QOq2XmI4zU/+p1sCylWQxNJvp2lJ8RJ9d7VinMuhEjQZwqo6kylHVXnTtLdo/4
-	 tnitNuH4rlF4PNUI6tDAYdRdY3kJPvjnm8YPUdCQ=
+	b=pIatHPsXF6jcirdzNv7Jrf/kw3CRxwShKqEOXLymEdNYlzCcON05AvJf484Scds3M
+	 iU9H7Rwi55Wf/mXlhgjOTz9Vi7T45ac/VFzdQW8NZh/LSt46ehETWjcwGHJbrZrOJC
+	 U0d/bGqNQG/APB2+8D+QcQGb51i+hs0Sk41ht+fc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.6 14/93] mptcp: pm: reuse ID 0 after delete and re-add
+	stable@kernel.org,
+	Jann Horn <jannh@google.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 5.10 001/151] fuse: Initialize beyond-EOF page contents before setting uptodate
 Date: Sun,  1 Sep 2024 18:16:01 +0200
-Message-ID: <20240901160807.895470744@linuxfoundation.org>
+Message-ID: <20240901160814.150750006@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
-References: <20240901160807.346406833@linuxfoundation.org>
+In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
+References: <20240901160814.090297276@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Jann Horn <jannh@google.com>
 
-commit 8b8ed1b429f8fa7ebd5632555e7b047bc0620075 upstream.
+commit 3c0da3d163eb32f1f91891efaade027fa9b245b9 upstream.
 
-When the endpoint used by the initial subflow is removed and re-added
-later, the PM has to force the ID 0, it is a special case imposed by the
-MPTCP specs.
+fuse_notify_store(), unlike fuse_do_readpage(), does not enable page
+zeroing (because it can be used to change partial page contents).
 
-Note that the endpoint should then need to be re-added reusing the same
-ID.
+So fuse_notify_store() must be more careful to fully initialize page
+contents (including parts of the page that are beyond end-of-file)
+before marking the page uptodate.
 
-Fixes: 3ad14f54bd74 ("mptcp: more accurate MPC endpoint tracking")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+The current code can leave beyond-EOF page contents uninitialized, which
+makes these uninitialized page contents visible to userspace via mmap().
+
+This is an information leak, but only affects systems which do not
+enable init-on-alloc (via CONFIG_INIT_ON_ALLOC_DEFAULT_ON=y or the
+corresponding kernel command line parameter).
+
+Link: https://bugs.chromium.org/p/project-zero/issues/detail?id=2574
+Cc: stable@kernel.org
+Fixes: a1d75f258230 ("fuse: add store request")
+Signed-off-by: Jann Horn <jannh@google.com>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/pm_netlink.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ fs/fuse/dev.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -593,6 +593,11 @@ static void mptcp_pm_create_subflow_or_s
+--- a/fs/fuse/dev.c
++++ b/fs/fuse/dev.c
+@@ -1627,9 +1627,11 @@ static int fuse_notify_store(struct fuse
  
- 		__clear_bit(local.addr.id, msk->pm.id_avail_bitmap);
- 		msk->pm.add_addr_signaled++;
-+
-+		/* Special case for ID0: set the correct ID */
-+		if (local.addr.id == msk->mpc_endpoint_id)
-+			local.addr.id = 0;
-+
- 		mptcp_pm_announce_addr(msk, &local.addr, false);
- 		mptcp_pm_nl_addr_send_ack(msk);
+ 		this_num = min_t(unsigned, num, PAGE_SIZE - offset);
+ 		err = fuse_copy_page(cs, &page, offset, this_num, 0);
+-		if (!err && offset == 0 &&
+-		    (this_num == PAGE_SIZE || file_size == end))
++		if (!PageUptodate(page) && !err && offset == 0 &&
++		    (this_num == PAGE_SIZE || file_size == end)) {
++			zero_user_segment(page, this_num, PAGE_SIZE);
+ 			SetPageUptodate(page);
++		}
+ 		unlock_page(page);
+ 		put_page(page);
  
-@@ -617,6 +622,11 @@ subflow:
- 
- 		msk->pm.local_addr_used++;
- 		__clear_bit(local.addr.id, msk->pm.id_avail_bitmap);
-+
-+		/* Special case for ID0: set the correct ID */
-+		if (local.addr.id == msk->mpc_endpoint_id)
-+			local.addr.id = 0;
-+
- 		nr = fill_remote_addresses_vec(msk, &local.addr, fullmesh, addrs);
- 		if (nr == 0)
- 			continue;
 
 
 
