@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-72253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72572-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96DA39679E2
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:49:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40F47967B2C
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:06:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C80911C213E4
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:49:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A5A92B2084C
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:06:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64E99184531;
-	Sun,  1 Sep 2024 16:48:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C322817E005;
+	Sun,  1 Sep 2024 17:06:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M+v2g+ME"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q1CszhFZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 229BE1DFD1;
-	Sun,  1 Sep 2024 16:48:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8278317C;
+	Sun,  1 Sep 2024 17:06:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209330; cv=none; b=AwZobklGqd01zF5Mq6jqz+8VsAvEO732BUO63MjMFyZvLMP/hxzUp9pOobMMigNE9QYFAhQvXxoMCLvIFkwWya8hNKUebf7fY5yoymL4HddSIAxuSma//JEgBrI/RhJIdCsA22M3X9DTcgofwOxjdPZ3UD2w71tyyAy3FiHoPnQ=
+	t=1725210368; cv=none; b=sZhB5KQYDF34zZ1VqT2kRgZa1FfrVmHx2QoHiI0Nb2F0ruBCgXPQT6jzszSt/duEUYDbE2JYhk1x1q3St8k8utmoay53jl+iSAK4ucmnHIv1VFxeaheHjGs446mqDkWIGlSH36LmvYxclNb8MS5IIuPpuFTN6FX1p1DdgzNiGIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209330; c=relaxed/simple;
-	bh=PCvX4HOowOV3y3ZnTTzaDDo8m8Cg1uAu1XEzJVBIuiE=;
+	s=arc-20240116; t=1725210368; c=relaxed/simple;
+	bh=8sxaB70xG92Vjx/X9qSnKADNaT5yXqNKjJypfZyDdec=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jqbTxYyWs4XW+NwUZWedjy3ogftqYmFkxYi47FGz4YLB7CIp6NOZg/mRCLKGGFkADLOt5gLL3H3k/n0CYp46Tj/OJiUK/KtB+YT3KR3H9kEtsYEbl3MrpTK3DWHcBLMEm/mvOyc0yqz3JQQCu2f24us3gmMWM7sBzm7gVaYMhTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M+v2g+ME; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88582C4CEC3;
-	Sun,  1 Sep 2024 16:48:49 +0000 (UTC)
+	 MIME-Version; b=CHy4rP5Y6UMgv8B3IL6kf8n1KP4dRgggt2jMBL8GTk8Alwp7A6QD0KHa67n1EmjhlCh1wflhtOGpLyZQPM459kyL8ZAnLuykLNhZkSP2aEnlN1RtKNidhVdXPTKV98R5OsxZ+WUPdpx5bBNt6cvJHAC7dgJULJTff66AkqKQv7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q1CszhFZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 026A4C4CEC3;
+	Sun,  1 Sep 2024 17:06:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209330;
-	bh=PCvX4HOowOV3y3ZnTTzaDDo8m8Cg1uAu1XEzJVBIuiE=;
+	s=korg; t=1725210368;
+	bh=8sxaB70xG92Vjx/X9qSnKADNaT5yXqNKjJypfZyDdec=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M+v2g+MEUlIENl6sRA5SEwNQhE+nPHt5pHu3IVpFXLIanSi89uV0Vte2PeMdwqYru
-	 LihwTdBBiy+d6bVcgNUCASUzNh5ozrfcKlPymwlkq6vTYV+AK/hFvH0cXyIFy/evCp
-	 /rz6avftQCVQj8QmtX5K79tgqiQ2IOua/JBlirLg=
+	b=q1CszhFZtvSsn2hZSOSqtyqc4KvgRnFII7ywG8cet/sU03VrTkB4XC/Z7RnZHV+Uh
+	 1TUXNbwR5rggfKzgjEGM3/jq+W5qWt3iiWEtzQoATnzk0bBtGIBdRSQmNRVAE0GuPo
+	 hQ8DaWmkrQ672v4JV+BvDhs6Y9x9FkBAxal2zc/M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Mina Almasry <almasrymina@google.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Joe Damato <jdamato@fastly.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 54/71] net: busy-poll: use ktime_get_ns() instead of local_clock()
+	Alex Hung <alex.hung@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 5.15 167/215] Revert "drm/amd/display: Validate hw_points_num before using it"
 Date: Sun,  1 Sep 2024 18:17:59 +0200
-Message-ID: <20240901160803.927857284@linuxfoundation.org>
+Message-ID: <20240901160829.671891739@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160801.879647959@linuxfoundation.org>
-References: <20240901160801.879647959@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,53 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Alex Hung <alex.hung@amd.com>
 
-[ Upstream commit 0870b0d8b393dde53106678a1e2cec9dfa52f9b7 ]
+commit 8f4bdbc8e99db6ec9cb0520748e49a2f2d7d1727 upstream.
 
-Typically, busy-polling durations are below 100 usec.
+This reverts commit 58c3b3341cea4f75dc8c003b89f8a6dd8ec55e50.
 
-When/if the busy-poller thread migrates to another cpu,
-local_clock() can be off by +/-2msec or more for small
-values of HZ, depending on the platform.
+[WHY & HOW]
+The writeback series cause a regression in thunderbolt display.
 
-Use ktimer_get_ns() to ensure deterministic behavior,
-which is the whole point of busy-polling.
-
-Fixes: 060212928670 ("net: add low latency socket poll")
-Fixes: 9a3c71aa8024 ("net: convert low latency sockets to sched_clock()")
-Fixes: 37089834528b ("sched, net: Fixup busy_loop_us_clock()")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Mina Almasry <almasrymina@google.com>
-Cc: Willem de Bruijn <willemb@google.com>
-Reviewed-by: Joe Damato <jdamato@fastly.com>
-Link: https://patch.msgid.link/20240827114916.223377-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/busy_poll.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/dcn30/dcn30_dwb_cm.c |    3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/include/net/busy_poll.h b/include/net/busy_poll.h
-index f90f0021f5f2d..5387e1daa5a8b 100644
---- a/include/net/busy_poll.h
-+++ b/include/net/busy_poll.h
-@@ -63,7 +63,7 @@ static inline bool sk_can_busy_loop(struct sock *sk)
- static inline unsigned long busy_loop_current_time(void)
- {
- #ifdef CONFIG_NET_RX_BUSY_POLL
--	return (unsigned long)(local_clock() >> 10);
-+	return (unsigned long)(ktime_get_ns() >> 10);
- #else
- 	return 0;
- #endif
--- 
-2.43.0
-
+--- a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_dwb_cm.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_dwb_cm.c
+@@ -243,9 +243,6 @@ static bool dwb3_program_ogam_lut(
+ 		return false;
+ 	}
+ 
+-	if (params->hw_points_num == 0)
+-		return false;
+-
+ 	REG_SET(DWB_OGAM_CONTROL, 0, DWB_OGAM_MODE, 2);
+ 
+ 	current_mode = dwb3_get_ogam_current(dwbc30);
 
 
 
