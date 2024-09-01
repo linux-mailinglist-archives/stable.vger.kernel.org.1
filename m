@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-72609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72379-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18514967B51
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:08:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE074967A65
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:55:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 45EB51C21645
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:08:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A705281785
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:55:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82E2217E005;
-	Sun,  1 Sep 2024 17:08:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 327F818132A;
+	Sun,  1 Sep 2024 16:55:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bhm0UPuu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1k6j7Qyk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42C362C190;
-	Sun,  1 Sep 2024 17:08:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E619C1DFD1;
+	Sun,  1 Sep 2024 16:55:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210491; cv=none; b=KOBDRLr8TlRguBKEoBReDdqbpXNq6BINFft/Z/GGoZBzcm14FtChyTT/3m8QkOT9JbcL8j8QuQhb8DxcdqHmR+7X71DOlHzJzSvycWtmB7ixIeZ7UoAWRnPtwtYG/0gOh8Xl+HQUH9gmHAkirF0GP94amRlfcuvE3/XXfyInh64=
+	t=1725209732; cv=none; b=pl6L21cME8rKIKr4zAH5xcJ6ozX1uqb9cp/6PxPL6qqv2r4PBKiR7nKqp4qBN0Lw/JEM3ME4Qte+tsPFv+uj2Fk2X0vorGEECxyHyCYgr+e7CD6nLY2VgQJosLhwgT/i7uLGnJ13LWTSyCDnPv4VsaDA/1hBEB16BYKR4+H5h7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210491; c=relaxed/simple;
-	bh=AJFxwj+bB2NuZXJQqGvB75OAciIhHUg3cLvlhsE/MqU=;
+	s=arc-20240116; t=1725209732; c=relaxed/simple;
+	bh=Fw/Zuzin8av+oWjI7rj70v3gSt/i8lkI8GslnUGDhhs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o81I/l9prt7p0gYQIU0sjvwAUHmcHkOb71cPRnHm2BEtTx1jAoEFFNG4kjVSfCmTzoGGb5XY01txxq4+Qam2HCj0K+jxxqBIJBi0hnZUf17ghWAeb2fFhcbPY5+qsFwJIZI1pbqdnujxUz/+xYBLrdKm6dqWpNt1j9/LdaWS2JM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bhm0UPuu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6B21C4CEC3;
-	Sun,  1 Sep 2024 17:08:10 +0000 (UTC)
+	 MIME-Version; b=KYo+BGuTrrwiw/KBWJTVvAjHAnRwROS2yaBnDcFbfuRO1NSO4+HAFt6Ho5lcS9tpxmrluD3OdXez1WuQoYrkyPnwV7AEOs5rvDkMMrAc2fn7bR+xFcgseRfm+z7SSY1BMaTWfLgvXYLvrlkw2x+wtma/iryu6ciqOe8R/CDn6Us=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1k6j7Qyk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA5B4C4CEC3;
+	Sun,  1 Sep 2024 16:55:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210491;
-	bh=AJFxwj+bB2NuZXJQqGvB75OAciIhHUg3cLvlhsE/MqU=;
+	s=korg; t=1725209731;
+	bh=Fw/Zuzin8av+oWjI7rj70v3gSt/i8lkI8GslnUGDhhs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bhm0UPuu5ESLBPOH7FzuOCs6z3SxRdxPhDPMV0p3z8vXGI1xNvaRS3+zDR0N0Wbgo
-	 xcc44ysWGg5olckErZ0O6TVAd9v8MPEYmBlMO0CYgkjfVthbLBbRnyvDnzlCosjAwu
-	 HZYNTDC5oZk/5kF95eRMqxUlmwqlPVuiji+MTKGk=
+	b=1k6j7QykOFzw8oX7uO+H7Mpx8j5Jw2sgjpZ9puSGkKJy9vl0UZ6G+P8ULLi0lPA3g
+	 dPKptWZP9cwsmZm2GZJ/eZp1oPKdelnnf1rjsjeb+asNOoZB2C5aSL9QDqJ2EmpQ1Q
+	 We4ielcBqNrkAu/wLcxAQXhD0mOqBVGRY3PYk7+w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yury Norov <yury.norov@gmail.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.15 174/215] tools: move alignment-related macros to new <linux/align.h>
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 126/151] mptcp: sched: check both backup in retrans
 Date: Sun,  1 Sep 2024 18:18:06 +0200
-Message-ID: <20240901160829.940325600@linuxfoundation.org>
+Message-ID: <20240901160818.848300748@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
+References: <20240901160814.090297276@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,64 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Lobakin <aleksander.lobakin@intel.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-commit 10a04ff09bcc39e0044190ffe9f00f998f13647c upstream.
+commit 2a1f596ebb23eadc0f9b95a8012e18ef76295fc8 upstream.
 
-Currently, tools have *ALIGN*() macros scattered across the unrelated
-headers, as there are only 3 of them and they were added separately
-each time on an as-needed basis.
-Anyway, let's make it more consistent with the kernel headers and allow
-using those macros outside of the mentioned headers. Create
-<linux/align.h> inside the tools/ folder and include it where needed.
+The 'mptcp_subflow_context' structure has two items related to the
+backup flags:
 
-Signed-off-by: Yury Norov <yury.norov@gmail.com>
-Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+ - 'backup': the subflow has been marked as backup by the other peer
+
+ - 'request_bkup': the backup flag has been set by the host
+
+Looking only at the 'backup' flag can make sense in some cases, but it
+is not the behaviour of the default packet scheduler when selecting
+paths.
+
+As explained in the commit b6a66e521a20 ("mptcp: sched: check both
+directions for backup"), the packet scheduler should look at both flags,
+because that was the behaviour from the beginning: the 'backup' flag was
+set by accident instead of the 'request_bkup' one. Now that the latter
+has been fixed, get_retrans() needs to be adapted as well.
+
+Fixes: b6a66e521a20 ("mptcp: sched: check both directions for backup")
+Cc: stable@vger.kernel.org
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20240826-net-mptcp-close-extra-sf-fin-v1-3-905199fe1172@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/include/linux/align.h  |   12 ++++++++++++
- tools/include/linux/bitmap.h |    2 +-
- 2 files changed, 13 insertions(+), 1 deletion(-)
- create mode 100644 tools/include/linux/align.h
+ net/mptcp/protocol.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- /dev/null
-+++ b/tools/include/linux/align.h
-@@ -0,0 +1,12 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
-+#ifndef _TOOLS_LINUX_ALIGN_H
-+#define _TOOLS_LINUX_ALIGN_H
-+
-+#include <uapi/linux/const.h>
-+
-+#define ALIGN(x, a)		__ALIGN_KERNEL((x), (a))
-+#define ALIGN_DOWN(x, a)	__ALIGN_KERNEL((x) - ((a) - 1), (a))
-+#define IS_ALIGNED(x, a)	(((x) & ((typeof(x))(a) - 1)) == 0)
-+
-+#endif /* _TOOLS_LINUX_ALIGN_H */
---- a/tools/include/linux/bitmap.h
-+++ b/tools/include/linux/bitmap.h
-@@ -3,6 +3,7 @@
- #define _PERF_BITOPS_H
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -1664,7 +1664,7 @@ static struct sock *mptcp_subflow_get_re
+ 			return NULL;
+ 		}
  
- #include <string.h>
-+#include <linux/align.h>
- #include <linux/bitops.h>
- #include <stdlib.h>
- #include <linux/kernel.h>
-@@ -160,7 +161,6 @@ static inline int bitmap_and(unsigned lo
- #define BITMAP_MEM_ALIGNMENT (8 * sizeof(unsigned long))
- #endif
- #define BITMAP_MEM_MASK (BITMAP_MEM_ALIGNMENT - 1)
--#define IS_ALIGNED(x, a) (((x) & ((typeof(x))(a) - 1)) == 0)
- 
- static inline int bitmap_equal(const unsigned long *src1,
- 			const unsigned long *src2, unsigned int nbits)
+-		if (subflow->backup) {
++		if (subflow->backup || subflow->request_bkup) {
+ 			if (!backup)
+ 				backup = ssk;
+ 			continue;
 
 
 
