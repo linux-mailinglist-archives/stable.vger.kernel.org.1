@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-72142-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72537-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B20896795A
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:43:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D03E0967B09
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:04:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 579C6282187
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:43:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D2F01C2094A
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:04:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A27317E00C;
-	Sun,  1 Sep 2024 16:43:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 615163BB48;
+	Sun,  1 Sep 2024 17:04:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N7I+xSxQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="15Sl3G0Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58DF31C68C;
-	Sun,  1 Sep 2024 16:43:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DE2D17C;
+	Sun,  1 Sep 2024 17:04:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208980; cv=none; b=UjtFIwC5L5qa0LyHtPOuC6lvMSJIAIxt00XiHgfpj/lx2LA4zokzXduZrlQ6wSEkm7trz4BaM33e/kJUOf8NiTvQb3UuBzfzHBC/hPIvc/PEZmESbN5P4ktSsTh2oVJXwRHlghomC/xbU8P96T5pn7mLVo+wNNn6TCZCrxgrtWg=
+	t=1725210250; cv=none; b=rQd6pSeVrKbXvKRmAj7ZswYopFlWgNQG/HvDD92ZLDKVCp7bLKHFHMz11Uxi4tUK9VqxWvEQjNYWqdGHJ+mhNVVaY7mtA/FxodCcn93ppLACpv75Gjmx3ntfv0wG3V7x9y4Iq8kZcDrFvNtVtuRv1mGAl37Ej5L0q4TCIPGFSIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208980; c=relaxed/simple;
-	bh=9Iw9jWKoSJihDx6GE46E1/wVi0a1Ue8CKdg2D/OIWk0=;
+	s=arc-20240116; t=1725210250; c=relaxed/simple;
+	bh=Ea6m6k6eCdFzagZbggN1hTgpOvlksbWbsigdhZ/Va6w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZbRYFYEeBcoT53/d7d5yyVKZfs5ZYtFTHpKdR60jiS0ah5hC9yspwutXJwlHpc67VYm6vx+HXwTCrhVW6yNxdGnm7zwLNWYahYE4X10JAfl5oya+5AbcbZCwV05JFeD73lx8M7CjnfLuIpBFa9//Uy9ALFStyIUJOT9F6jopTHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N7I+xSxQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB4A3C4CEC3;
-	Sun,  1 Sep 2024 16:42:59 +0000 (UTC)
+	 MIME-Version; b=uA7VhHIhS31ERroj2K3tRCbh9xRa9iRMIewFV6r4bAKlGRYxKOwnYuLPoR1ebw3qcZH2em38scftGvSGZAIIuq3IEt+VHHpJZg4Jp6vsSVn7z8vKKSO1aKRST5CsrEWqRNSD77+IZDim6GJClw30mdfQxv0VuAoF8t32yXSys4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=15Sl3G0Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80466C4CEC3;
+	Sun,  1 Sep 2024 17:04:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208980;
-	bh=9Iw9jWKoSJihDx6GE46E1/wVi0a1Ue8CKdg2D/OIWk0=;
+	s=korg; t=1725210250;
+	bh=Ea6m6k6eCdFzagZbggN1hTgpOvlksbWbsigdhZ/Va6w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N7I+xSxQAs2PZ1PMD7znGLLcPLQA28GBsem+EqS+aXv8yD7pt6Ch1DRqaFgbi3ZHd
-	 H7i0UinofybX33dVTOI51gvF8jkGkt2f6SOkvA6KjuheMshsXYNMvFTJX7VpFuGR38
-	 aBBw8XT97lJ98G3vYVZPIod8gIJa4832hMK5cDaI=
+	b=15Sl3G0Ym4ChZanQYxmWMPZn8my9cKlkP630IfBvufrRLFtnAgjqlvnaW3VAZuNuM
+	 trGWD1gxWrNn3CPbsALVgMQ34DoggG9+8mSBqO/xJnnaT2PSYLv/BUhzZLsopgIj0k
+	 PpdjdnUZX3w9Pn2YHbxuwo1gZR0d9whdGrBqGJiw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stable <stable@kernel.org>,
-	Griffin Kroah-Hartman <griffin@kroah.com>,
-	Yiwei Zhang <zhan4630@purdue.edu>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 5.4 098/134] Bluetooth: MGMT: Add error handling to pair_device()
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 132/215] Bluetooth: hci_core: Fix LE quote calculation
 Date: Sun,  1 Sep 2024 18:17:24 +0200
-Message-ID: <20240901160813.780537463@linuxfoundation.org>
+Message-ID: <20240901160828.355501265@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
-References: <20240901160809.752718937@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +61,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Griffin Kroah-Hartman <griffin@kroah.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-commit 538fd3921afac97158d4177139a0ad39f056dbb2 upstream.
+[ Upstream commit 932021a11805b9da4bd6abf66fe233cccd59fe0e ]
 
-hci_conn_params_add() never checks for a NULL value and could lead to a NULL
-pointer dereference causing a crash.
+Function hci_sched_le needs to update the respective counter variable
+inplace other the likes of hci_quote_sent would attempt to use the
+possible outdated value of conn->{le_cnt,acl_cnt}.
 
-Fixed by adding error handling in the function.
-
-Cc: Stable <stable@kernel.org>
-Fixes: 5157b8a503fa ("Bluetooth: Fix initializing conn_params in scan phase")
-Signed-off-by: Griffin Kroah-Hartman <griffin@kroah.com>
-Reported-by: Yiwei Zhang <zhan4630@purdue.edu>
+Link: https://github.com/bluez/bluez/issues/915
+Fixes: 73d80deb7bdf ("Bluetooth: prioritizing data over HCI")
 Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/mgmt.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ net/bluetooth/hci_core.c | 19 +++++++------------
+ 1 file changed, 7 insertions(+), 12 deletions(-)
 
---- a/net/bluetooth/mgmt.c
-+++ b/net/bluetooth/mgmt.c
-@@ -2908,6 +2908,10 @@ static int pair_device(struct sock *sk,
- 		 * will be kept and this function does nothing.
- 		 */
- 		p = hci_conn_params_add(hdev, &cp->addr.bdaddr, addr_type);
-+		if (!p) {
-+			err = -EIO;
-+			goto unlock;
-+		}
+diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
+index fc4e02b3f26ad..7dff3f1a2a9eb 100644
+--- a/net/bluetooth/hci_core.c
++++ b/net/bluetooth/hci_core.c
+@@ -4876,19 +4876,19 @@ static void hci_sched_le(struct hci_dev *hdev)
+ {
+ 	struct hci_chan *chan;
+ 	struct sk_buff *skb;
+-	int quote, cnt, tmp;
++	int quote, *cnt, tmp;
  
- 		if (p->auto_connect == HCI_AUTO_CONN_EXPLICIT)
- 			p->auto_connect = HCI_AUTO_CONN_DISABLED;
+ 	BT_DBG("%s", hdev->name);
+ 
+ 	if (!hci_conn_num(hdev, LE_LINK))
+ 		return;
+ 
+-	cnt = hdev->le_pkts ? hdev->le_cnt : hdev->acl_cnt;
++	cnt = hdev->le_pkts ? &hdev->le_cnt : &hdev->acl_cnt;
+ 
+-	__check_timeout(hdev, cnt, LE_LINK);
++	__check_timeout(hdev, *cnt, LE_LINK);
+ 
+-	tmp = cnt;
+-	while (cnt && (chan = hci_chan_sent(hdev, LE_LINK, &quote))) {
++	tmp = *cnt;
++	while (*cnt && (chan = hci_chan_sent(hdev, LE_LINK, &quote))) {
+ 		u32 priority = (skb_peek(&chan->data_q))->priority;
+ 		while (quote-- && (skb = skb_peek(&chan->data_q))) {
+ 			BT_DBG("chan %p skb %p len %d priority %u", chan, skb,
+@@ -4903,7 +4903,7 @@ static void hci_sched_le(struct hci_dev *hdev)
+ 			hci_send_frame(hdev, skb);
+ 			hdev->le_last_tx = jiffies;
+ 
+-			cnt--;
++			(*cnt)--;
+ 			chan->sent++;
+ 			chan->conn->sent++;
+ 
+@@ -4913,12 +4913,7 @@ static void hci_sched_le(struct hci_dev *hdev)
+ 		}
+ 	}
+ 
+-	if (hdev->le_pkts)
+-		hdev->le_cnt = cnt;
+-	else
+-		hdev->acl_cnt = cnt;
+-
+-	if (cnt != tmp)
++	if (*cnt != tmp)
+ 		hci_prio_recalculate(hdev, LE_LINK);
+ }
+ 
+-- 
+2.43.0
+
 
 
 
