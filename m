@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-72259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72367-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BEF99679E8
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:49:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C7D0967A59
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:54:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3771F1F22218
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:49:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4711B2821E1
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:54:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5B5A183087;
-	Sun,  1 Sep 2024 16:49:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB0EB17E919;
+	Sun,  1 Sep 2024 16:54:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jUsbfyZu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pxg/gwwz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93EFE44C93;
-	Sun,  1 Sep 2024 16:49:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A57D208A7;
+	Sun,  1 Sep 2024 16:54:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209348; cv=none; b=Cio6kZv6hYLGXso7GjkBNXEqxhMkVQFmIvZ/DQNg3tMmTlLK067P5GDg6WkwDicwUW03x/e2n2rTLJd7Ptvq3EkF5Uyj48L8uhEcVMRq2qb9AtlbLjRhsBG41+HVxknvmPHOHzbYRUKmX0hHb8DM8WvSjA+LFiRvd2lxs2HPR2M=
+	t=1725209693; cv=none; b=oaTm5BiRpA6BJ1BXT+LDTEZjA41DO4HF9rSAh0m3I3LGWSOAtY0MgK2y82Egm9sobGOF9pO4/tkwunSB9KAjS0ytC2rDJXGuO3xof75cFa6cZTLNZJh+zFe4wJTKBxz9dorr2xlNMD0w+WXAvu5izrzj6DwcOCD2u5SDOHYJR5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209348; c=relaxed/simple;
-	bh=vqHoH/8zkB1u0EbZeuY7mc3OEFNN8FIVG0JcFOEl+vA=;
+	s=arc-20240116; t=1725209693; c=relaxed/simple;
+	bh=fJRPSyThuURO/QFSC4grS883v4xTEbFpPJLQxx3Em0o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TiGuwVHAW6YmMR0wtl2fFpRwyHIfh2CBS2CsufRpbQZ7f5NrdCge/TR+yWDBExt+H7x6AMYYm1r4iFCAhcdfEcNNSsVPL+cl/Or3T5mUD6CtgnbnPPzkS/tHbE+RskfFHb2mh+rtP4rFWM8FCTuglzFmvLtKfNOCEmeiv8EpcuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jUsbfyZu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A88DC4CEC3;
-	Sun,  1 Sep 2024 16:49:07 +0000 (UTC)
+	 MIME-Version; b=h3GFwb9CWPr8yr98Fx1V+uG4Wanp/cuVAcg04KXASIwmcIS05c/Np4tVlLVTePFk3aT5OT4q49iS8yeTQ0Eqag//1SgVJM9x2PSpcRwl7ZKJKp0caXLEhyqjnp66RnJ06kv/Nmey777sdBWII1faUw3NfUsaiHO4KqgaQPgIVRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pxg/gwwz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D549AC4CEC3;
+	Sun,  1 Sep 2024 16:54:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209348;
-	bh=vqHoH/8zkB1u0EbZeuY7mc3OEFNN8FIVG0JcFOEl+vA=;
+	s=korg; t=1725209693;
+	bh=fJRPSyThuURO/QFSC4grS883v4xTEbFpPJLQxx3Em0o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jUsbfyZuG+WNvC2A0oOk/kXADduma/w+8csN5rdBuKF+CEVFOn6d2X7PpjkhfiLjJ
-	 s13nlyVHRotom3acenbs/tji9VgZInj6y/v/5MR9YSIGmbgsuxcCDviKq5LffI5lxL
-	 l/4WJYbDfO2S3tYzybihJ+X/OuTOBG7fC2RAvz+s=
+	b=pxg/gwwzKGAeSkIrSZWJdbdtzLIQUQJ1IIuMpbtbbkBOeVCRDJ6DQLDGBMf7lNyZk
+	 9AbmiXD/wJj0FR0tv/80piz/35R9MNLeQK7wL2oh9uZUmryVPKPaCuEBQb1GSGMOEW
+	 CaKwi2VD5J8ICOMCFdh2krqiTBp0SUd0V7X/R/9Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jianbo Liu <jianbol@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Jay Vosburgh <jv@jvosburgh.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 50/71] bonding: implement xdo_dev_state_free and call it after deletion
+	Alex Hung <alex.hung@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 5.10 115/151] Revert "drm/amd/display: Validate hw_points_num before using it"
 Date: Sun,  1 Sep 2024 18:17:55 +0200
-Message-ID: <20240901160803.779253870@linuxfoundation.org>
+Message-ID: <20240901160818.435500543@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160801.879647959@linuxfoundation.org>
-References: <20240901160801.879647959@linuxfoundation.org>
+In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
+References: <20240901160814.090297276@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,99 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jianbo Liu <jianbol@nvidia.com>
+From: Alex Hung <alex.hung@amd.com>
 
-[ Upstream commit ec13009472f4a756288eb4e18e20a7845da98d10 ]
+commit 8f4bdbc8e99db6ec9cb0520748e49a2f2d7d1727 upstream.
 
-Add this implementation for bonding, so hardware resources can be
-freed from the active slave after xfrm state is deleted. The netdev
-used to invoke xdo_dev_state_free callback, is saved in the xfrm state
-(xs->xso.real_dev), which is also the bond's active slave. To prevent
-it from being freed, acquire netdev reference before leaving RCU
-read-side critical section, and release it after callback is done.
+This reverts commit 58c3b3341cea4f75dc8c003b89f8a6dd8ec55e50.
 
-And call it when deleting all SAs from old active real interface while
-switching current active slave.
+[WHY & HOW]
+The writeback series cause a regression in thunderbolt display.
 
-Fixes: 9a5605505d9c ("bonding: Add struct bond_ipesc to manage SA")
-Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Acked-by: Jay Vosburgh <jv@jvosburgh.net>
-Link: https://patch.msgid.link/20240823031056.110999-2-jianbol@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/bonding/bond_main.c | 36 +++++++++++++++++++++++++++++++++
- 1 file changed, 36 insertions(+)
+ drivers/gpu/drm/amd/display/dc/dcn30/dcn30_dwb_cm.c |    3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index c218352814430..375412ce1ea5f 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -577,12 +577,47 @@ static void bond_ipsec_del_sa_all(struct bonding *bond)
- 				   __func__);
- 		} else {
- 			slave->dev->xfrmdev_ops->xdo_dev_state_delete(ipsec->xs);
-+			if (slave->dev->xfrmdev_ops->xdo_dev_state_free)
-+				slave->dev->xfrmdev_ops->xdo_dev_state_free(ipsec->xs);
- 		}
+--- a/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_dwb_cm.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn30/dcn30_dwb_cm.c
+@@ -243,9 +243,6 @@ static bool dwb3_program_ogam_lut(
+ 		return false;
  	}
- 	spin_unlock_bh(&bond->ipsec_lock);
- 	rcu_read_unlock();
- }
  
-+static void bond_ipsec_free_sa(struct xfrm_state *xs)
-+{
-+	struct net_device *bond_dev = xs->xso.dev;
-+	struct net_device *real_dev;
-+	netdevice_tracker tracker;
-+	struct bonding *bond;
-+	struct slave *slave;
-+
-+	if (!bond_dev)
-+		return;
-+
-+	rcu_read_lock();
-+	bond = netdev_priv(bond_dev);
-+	slave = rcu_dereference(bond->curr_active_slave);
-+	real_dev = slave ? slave->dev : NULL;
-+	netdev_hold(real_dev, &tracker, GFP_ATOMIC);
-+	rcu_read_unlock();
-+
-+	if (!slave)
-+		goto out;
-+
-+	if (!xs->xso.real_dev)
-+		goto out;
-+
-+	WARN_ON(xs->xso.real_dev != real_dev);
-+
-+	if (real_dev && real_dev->xfrmdev_ops &&
-+	    real_dev->xfrmdev_ops->xdo_dev_state_free)
-+		real_dev->xfrmdev_ops->xdo_dev_state_free(xs);
-+out:
-+	netdev_put(real_dev, &tracker);
-+}
-+
- /**
-  * bond_ipsec_offload_ok - can this packet use the xfrm hw offload
-  * @skb: current data packet
-@@ -623,6 +658,7 @@ static bool bond_ipsec_offload_ok(struct sk_buff *skb, struct xfrm_state *xs)
- static const struct xfrmdev_ops bond_xfrmdev_ops = {
- 	.xdo_dev_state_add = bond_ipsec_add_sa,
- 	.xdo_dev_state_delete = bond_ipsec_del_sa,
-+	.xdo_dev_state_free = bond_ipsec_free_sa,
- 	.xdo_dev_offload_ok = bond_ipsec_offload_ok,
- };
- #endif /* CONFIG_XFRM_OFFLOAD */
--- 
-2.43.0
-
+-	if (params->hw_points_num == 0)
+-		return false;
+-
+ 	REG_SET(DWB_OGAM_CONTROL, 0, DWB_OGAM_MODE, 2);
+ 
+ 	current_mode = dwb3_get_ogam_current(dwbc30);
 
 
 
