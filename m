@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-71759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71810-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E03F96779F
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:22:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09EF59677DA
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:24:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 02697B21958
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:22:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B87BE280EB4
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:24:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 750EE183090;
-	Sun,  1 Sep 2024 16:22:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69BF5181B88;
+	Sun,  1 Sep 2024 16:24:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uCwGaOzL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZwlaDS1y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33D0018132F;
-	Sun,  1 Sep 2024 16:22:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2833416EB4B;
+	Sun,  1 Sep 2024 16:24:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725207721; cv=none; b=Zuq2cESGKL/NeMLn5doO+DkZmxoT6kWd3PCVbFvvezNp1pnVPz/ve5FTeq8OI66mdPDwhk1hOTm86dyRRC7860YTqC5SOgEMwobf/jBDf232qmyF4yw4KKGDG1OG3tdDT0dbWpXjx1qbE01BA8Lab5JKWDXtbZgWnq+XUQrw3no=
+	t=1725207892; cv=none; b=UwjIoGPhwzMmmlJ4OJod3DWO3eTXQ1iQ1V92pTbM9J6ODYmr2qFCpKCAVIlgD6uaYwsAlPnaFU5TYrdS2ek2ZmFfxlVhqg7ckzqq9MEwYmtwW/5suh1lSFOzxtNkmAuk8tz0YIh+E70fPgmi3olkb2lMmRAGAU4yWvjOSc961Ig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725207721; c=relaxed/simple;
-	bh=rY1jPElhtJF7uKuk6KtO4DbGjHHVUo2QVD3iM+bXhdI=;
+	s=arc-20240116; t=1725207892; c=relaxed/simple;
+	bh=osmAc78uuGpuDsNxYTpUgKxk33u8wjw+uyWCDEW8VPM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iLpL6U85TZI+dMam+JkSY9VgsnCh7nwa4Ba/PoNet+XInd0B7ni4+cvRn7Jg88dd8Tv3dSfV3OgwtTP5KOIOjA3fOPMGK2E66Mml4o4tUvMIxQN6Su6Tax5dW6qRWHRhCawcehsu+wTJXYjkoQuRH0IJUt3t+dQOAhq5VJbwBEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uCwGaOzL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 922F9C4CEC3;
-	Sun,  1 Sep 2024 16:22:00 +0000 (UTC)
+	 MIME-Version; b=RozdW6HdsoiTIv0gMxHYiMJLRlsEAmgnAgwOJ4Up8pIp4Ymd5TEiY+FXfSsSg2dRUjWuFrfUeyoFLOlaQuuyJevybzKXs2wNt8Jo0CiNZqz02d8llnlAd139GcqBmKjm1kpKpuuqhU82J3HJ3KGL6L+McyVr1kE6hRXNQBBIyQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZwlaDS1y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DA8BC4CEC3;
+	Sun,  1 Sep 2024 16:24:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725207721;
-	bh=rY1jPElhtJF7uKuk6KtO4DbGjHHVUo2QVD3iM+bXhdI=;
+	s=korg; t=1725207892;
+	bh=osmAc78uuGpuDsNxYTpUgKxk33u8wjw+uyWCDEW8VPM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uCwGaOzLZCCGeufSgCuh4GlZ85K9tIlKP/57zqmwes9kIZJJuN/ID/eYo2sheNem+
-	 OIBMj1eEIyrDxkJ6+uOtx4UyENH/C5+rDSs2wyA2wPCYV42xCsRT6+eHvahEspLxE5
-	 1MoMtOr+eBKRYCnrzrwcoGuRRXj0dLFUndWRQWQQ=
+	b=ZwlaDS1yPbLebyrkFQjSKyqdFJdhgUjBPFWuR1uwfd4kqITshj1cqid9/anM0d8Gm
+	 GcUnP0GT82OrXWGrjyfrkba0WG7EDmTD5VH1wBPDJz58cARsBibcSki2V/DiwbGz3K
+	 vakpmE8jAQdVb9QeCptnqfez7mE1PdlaHn3zBEVU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 26/98] ext4: do not trim the group with corrupted block bitmap
-Date: Sun,  1 Sep 2024 18:15:56 +0200
-Message-ID: <20240901160804.678846751@linuxfoundation.org>
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Brian Norris <briannorris@chromium.org>,
+	Kalle Valo <kvalo@kernel.org>
+Subject: [PATCH 6.6 10/93] wifi: mwifiex: duplicate static structs used in driver instances
+Date: Sun,  1 Sep 2024 18:15:57 +0200
+Message-ID: <20240901160807.746118182@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
-References: <20240901160803.673617007@linuxfoundation.org>
+In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
+References: <20240901160807.346406833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +63,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Sascha Hauer <s.hauer@pengutronix.de>
 
-[ Upstream commit 172202152a125955367393956acf5f4ffd092e0d ]
+commit 27ec3c57fcadb43c79ed05b2ea31bc18c72d798a upstream.
 
-Otherwise operating on an incorrupted block bitmap can lead to all sorts
-of unknown problems.
+mwifiex_band_2ghz and mwifiex_band_5ghz are statically allocated, but
+used and modified in driver instances. Duplicate them before using
+them in driver instances so that different driver instances do not
+influence each other.
 
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20240104142040.2835097-3-libaokun1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This was observed on a board which has one PCIe and one SDIO mwifiex
+adapter. It blew up in mwifiex_setup_ht_caps(). This was called with
+the statically allocated struct which is modified in this function.
+
+Cc: stable@vger.kernel.org
+Fixes: d6bffe8bb520 ("mwifiex: support for creation of AP interface")
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Acked-by: Brian Norris <briannorris@chromium.org>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://patch.msgid.link/20240809-mwifiex-duplicate-static-structs-v1-1-6837b903b1a4@pengutronix.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/mballoc.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/wireless/marvell/mwifiex/cfg80211.c |   32 +++++++++++++++++++-----
+ 1 file changed, 26 insertions(+), 6 deletions(-)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index 5dcc3cad5c7d3..75dbe40ed8f72 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -5219,6 +5219,9 @@ static int ext4_try_to_trim_range(struct super_block *sb,
- 	bool set_trimmed = false;
- 	void *bitmap;
+--- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
++++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+@@ -4362,11 +4362,27 @@ int mwifiex_register_cfg80211(struct mwi
+ 	if (ISSUPP_ADHOC_ENABLED(adapter->fw_cap_info))
+ 		wiphy->interface_modes |= BIT(NL80211_IFTYPE_ADHOC);
  
-+	if (unlikely(EXT4_MB_GRP_BBITMAP_CORRUPT(e4b->bd_info)))
-+		return 0;
+-	wiphy->bands[NL80211_BAND_2GHZ] = &mwifiex_band_2ghz;
+-	if (adapter->config_bands & BAND_A)
+-		wiphy->bands[NL80211_BAND_5GHZ] = &mwifiex_band_5ghz;
+-	else
++	wiphy->bands[NL80211_BAND_2GHZ] = devm_kmemdup(adapter->dev,
++						       &mwifiex_band_2ghz,
++						       sizeof(mwifiex_band_2ghz),
++						       GFP_KERNEL);
++	if (!wiphy->bands[NL80211_BAND_2GHZ]) {
++		ret = -ENOMEM;
++		goto err;
++	}
 +
- 	last = ext4_last_grp_cluster(sb, e4b->bd_group);
- 	bitmap = e4b->bd_bitmap;
- 	if (start == 0 && max >= last)
--- 
-2.43.0
-
++	if (adapter->config_bands & BAND_A) {
++		wiphy->bands[NL80211_BAND_5GHZ] = devm_kmemdup(adapter->dev,
++							       &mwifiex_band_5ghz,
++							       sizeof(mwifiex_band_5ghz),
++							       GFP_KERNEL);
++		if (!wiphy->bands[NL80211_BAND_5GHZ]) {
++			ret = -ENOMEM;
++			goto err;
++		}
++	} else {
+ 		wiphy->bands[NL80211_BAND_5GHZ] = NULL;
++	}
+ 
+ 	if (adapter->drcs_enabled && ISSUPP_DRCS_ENABLED(adapter->fw_cap_info))
+ 		wiphy->iface_combinations = &mwifiex_iface_comb_ap_sta_drcs;
+@@ -4460,8 +4476,7 @@ int mwifiex_register_cfg80211(struct mwi
+ 	if (ret < 0) {
+ 		mwifiex_dbg(adapter, ERROR,
+ 			    "%s: wiphy_register failed: %d\n", __func__, ret);
+-		wiphy_free(wiphy);
+-		return ret;
++		goto err;
+ 	}
+ 
+ 	if (!adapter->regd) {
+@@ -4503,4 +4518,9 @@ int mwifiex_register_cfg80211(struct mwi
+ 
+ 	adapter->wiphy = wiphy;
+ 	return ret;
++
++err:
++	wiphy_free(wiphy);
++
++	return ret;
+ }
 
 
 
