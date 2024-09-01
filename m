@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-72241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72411-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8010B9679D3
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:49:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEA1B967A85
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:57:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B0CF91C213BE
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:49:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 430CBB207D5
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:57:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7140B18592D;
-	Sun,  1 Sep 2024 16:48:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFFA318132A;
+	Sun,  1 Sep 2024 16:57:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N1o6OhAO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VpKvuoKM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F59A183CA3;
-	Sun,  1 Sep 2024 16:48:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D6C7208A7;
+	Sun,  1 Sep 2024 16:57:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209293; cv=none; b=TL/FzbkUCsmDqGRMDu+LPBZvK+lPnLS8yxX3bkD4gWMhDXICeW0dvjdSALhvAkg+4YBvyHDndKoGNkpFovjZf2f6bjK5e210XtsWziXxncZOKugyEOey4vOyXkqoz/FVywA/F5Pwpq96Y0Du53It8uWjy6vH41g4yTWyVBXA1WM=
+	t=1725209833; cv=none; b=CrvVlbG2yvQGI5s5UJarNbaNlxFxMGEcrhiLnzcwQqKNo5TRFf2j2O52Ks9QTJsr6kf7Wj71BcpRQAkZ8mZ+AbFSWoXkKZHcZjXmtKNXWReFfNMVQETFKQC1lOo3kEaiYEaJ+aXpgpypy+SkMBTbHHzQG+lHZ/mL9bVVZhe5S0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209293; c=relaxed/simple;
-	bh=0+AuAji31pXLg+QAvwwqKrr3afFlaMCEDSkDf/XvkFg=;
+	s=arc-20240116; t=1725209833; c=relaxed/simple;
+	bh=RLKmvVjs2w6wNKOZvyWENsUt4CvhUO4NOucUZUulo9s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DZxWOgfc9RSy+uKFKOn5KEKT4XnoDdqvcV8RsC9vdRhTZTJPZjiQvo4vm6svbZOhs+w7YwSHVYqmC/RbZ5SwPGGM9nbqU7fb0RRqetn+ll0lxcHW7IKIwQ/7YHAXA0hB1+y0zv1PHzWq8b7PMp+AdgCBsx06vCWEvMTqc/GRKkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N1o6OhAO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D102C4CEC3;
-	Sun,  1 Sep 2024 16:48:12 +0000 (UTC)
+	 MIME-Version; b=IiCOWQfMB/p21qvKgtkfYa/jvFJA2eUFU5ZvrMzBKZTQvM+b2h4T5es+XCUMK/7MlDdsFKatrAaiE249LFxjfpafX7SBhQzBAhIum+54ux0BaDDjYvV1a0qS6wHqZI3I6dI4CRz09zt+ZG214CtBgsMbYUhaQlOhDnReQfRllHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VpKvuoKM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E02A1C4CEC3;
+	Sun,  1 Sep 2024 16:57:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209292;
-	bh=0+AuAji31pXLg+QAvwwqKrr3afFlaMCEDSkDf/XvkFg=;
+	s=korg; t=1725209833;
+	bh=RLKmvVjs2w6wNKOZvyWENsUt4CvhUO4NOucUZUulo9s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N1o6OhAOhnUOEe+0PPYRZMcm1ZmduG/t1e8iBSJuspvp8/wjaJ+fav2xv7ja2vdid
-	 kANCbLGext13M61XKrw9Nc2EduLFJXCznOH08Q/Y9yLPzHRPrD81MFOKK0Gw+jd9Z3
-	 HWfKLVmYfU7tKeEV8QdfOOwT2F4CPPThEW5fj/eY=
+	b=VpKvuoKMafkFtt8PNvdxPrTplStOECKe2qBZbuycVjsslspYitNbiidWln3fWaO8j
+	 Dk/3FJe35xTnfZtzOb/VF2Tp0e14Kfb9Sli67B6qXeOGWm5JbQhww9O7A1LDJqpuvy
+	 aI08xKHDvE9ruf73Yy0OCuL/vvR3hUbkCZ96WLBE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Patrice Chotard <patrice.chotard@foss.st.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 6.1 62/71] usb: dwc3: st: add missing depopulate in probe error path
-Date: Sun,  1 Sep 2024 18:18:07 +0200
-Message-ID: <20240901160804.226973358@linuxfoundation.org>
+	Felix Kuehling <felix.kuehling@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 5.10 128/151] drm/amdkfd: dont allow mapping the MMIO HDP page with large pages
+Date: Sun,  1 Sep 2024 18:18:08 +0200
+Message-ID: <20240901160818.923608914@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160801.879647959@linuxfoundation.org>
-References: <20240901160801.879647959@linuxfoundation.org>
+In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
+References: <20240901160814.090297276@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-commit cd4897bfd14f6a5388b21ba45a066541a0425199 upstream.
+commit be4a2a81b6b90d1a47eaeaace4cc8e2cb57b96c7 upstream.
 
-Depopulate device in probe error paths to fix leak of children
-resources.
+We don't get the right offset in that case.  The GPU has
+an unused 4K area of the register BAR space into which you can
+remap registers.  We remap the HDP flush registers into this
+space to allow userspace (CPU or GPU) to flush the HDP when it
+updates VRAM.  However, on systems with >4K pages, we end up
+exposing PAGE_SIZE of MMIO space.
 
-Fixes: f83fca0707c6 ("usb: dwc3: add ST dwc3 glue layer to manage dwc3 HC")
+Fixes: d8e408a82704 ("drm/amdkfd: Expose HDP registers to user space")
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Patrice Chotard <patrice.chotard@foss.st.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://lore.kernel.org/r/20240814093957.37940-2-krzysztof.kozlowski@linaro.org
+Signed-off-by: Felix Kuehling <felix.kuehling@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/dwc3-st.c |    5 ++++-
+ drivers/gpu/drm/amd/amdkfd/kfd_chardev.c |    5 ++++-
  1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/dwc3/dwc3-st.c
-+++ b/drivers/usb/dwc3/dwc3-st.c
-@@ -266,7 +266,7 @@ static int st_dwc3_probe(struct platform
- 	if (!child_pdev) {
- 		dev_err(dev, "failed to find dwc3 core device\n");
- 		ret = -ENODEV;
--		goto err_node_put;
-+		goto depopulate;
- 	}
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_chardev.c
+@@ -1311,7 +1311,7 @@ static int kfd_ioctl_alloc_memory_of_gpu
+ 			goto err_unlock;
+ 		}
+ 		offset = amdgpu_amdkfd_get_mmio_remap_phys_addr(dev->kgd);
+-		if (!offset) {
++		if (!offset || (PAGE_SIZE > 4096)) {
+ 			err = -ENOMEM;
+ 			goto err_unlock;
+ 		}
+@@ -1969,6 +1969,9 @@ static int kfd_mmio_mmap(struct kfd_dev
+ 	if (vma->vm_end - vma->vm_start != PAGE_SIZE)
+ 		return -EINVAL;
  
- 	dwc3_data->dr_mode = usb_get_dr_mode(&child_pdev->dev);
-@@ -282,6 +282,7 @@ static int st_dwc3_probe(struct platform
- 	ret = st_dwc3_drd_init(dwc3_data);
- 	if (ret) {
- 		dev_err(dev, "drd initialisation failed\n");
-+		of_platform_depopulate(dev);
- 		goto undo_softreset;
- 	}
++	if (PAGE_SIZE > 4096)
++		return -EINVAL;
++
+ 	address = amdgpu_amdkfd_get_mmio_remap_phys_addr(dev->kgd);
  
-@@ -291,6 +292,8 @@ static int st_dwc3_probe(struct platform
- 	platform_set_drvdata(pdev, dwc3_data);
- 	return 0;
- 
-+depopulate:
-+	of_platform_depopulate(dev);
- err_node_put:
- 	of_node_put(child);
- undo_softreset:
+ 	vma->vm_flags |= VM_IO | VM_DONTCOPY | VM_DONTEXPAND | VM_NORESERVE |
 
 
 
