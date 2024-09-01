@@ -1,58 +1,64 @@
-Return-Path: <stable+bounces-71750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71961-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F14A967796
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:21:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 737FA96788E
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:33:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0EAA8B21CDC
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:21:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 27FDC1F21A31
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:33:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3479183CC3;
-	Sun,  1 Sep 2024 16:21:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17BE118454E;
+	Sun,  1 Sep 2024 16:33:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KGeTmYcC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uBovR2h7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FB4E183CBC;
-	Sun,  1 Sep 2024 16:21:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C569518453F;
+	Sun,  1 Sep 2024 16:33:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725207691; cv=none; b=Xvui4Oje93mA9aMF9A9tpvchKOs//hQdG5Un67OphuvnJIT9F9n+WZcuMz40Zx+t92Bq0XYLhM1lorqU6llZltoHPwFPVBjeO0Z7GtWYoQ2S+jr8gU0yCXWTRuf5VKvst2couMaRlhUJgTJk+H/NyJksv8d3kS7g+b3DLm2ZZec=
+	t=1725208385; cv=none; b=gPfZrn4p9VUpPAq0mr9VM9ScfyCpPF+GwVlTDWg67Hg+jOFiOaNdvz0+gAaaUF5/cjh0WlUDCSj9uIN++oNHelau+6nuZ/YblNxBI1mwG3hwQ5Ls1u9uGMhOKbeB49BpliIUoHsyDs5arWDsljUALEML+syJYAXzFh+gMcUjyXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725207691; c=relaxed/simple;
-	bh=CkG0/D/38YUg5Rfc8hWNtyeq+Mn/5vui02ah8N1u4Ws=;
+	s=arc-20240116; t=1725208385; c=relaxed/simple;
+	bh=oMm9PBHYo4bF6r1c1EIdWZn1Vu/P8ue46SnQKcPFL3Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JHRR1JURQM3xJfyaH0vsOSrEUL7lBp/0nU7XKDnKnHY3P2UYwPoXyGWQRcM9YhzCn0xkDZiJZuZiHxqy39ERN0APZM3XLjzyK+X/PstDM1TDjVduqUeRO5+Edl1PKMwDWf1Q77Q7y/7ok63Rj9K7rrS3ZuRA67B1+/RnD0nM044=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KGeTmYcC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11F10C4CEC3;
-	Sun,  1 Sep 2024 16:21:30 +0000 (UTC)
+	 MIME-Version; b=EhZFq6cNdnkPit5MT4ucZNzreDR1g0aGtZF6pdByK8SIvfE1RVvn58WiO1jf+YotkfaVLC5OG0M1CWOb3RJbn8Bs381KSljJCakx9ZyGqWh3AJLeWBmBV6Yqs/2I2Gl4NqB2mYGRpdXmUCTnqoRYNJE5u5t6gIDSe3TaxVDDbU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uBovR2h7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19A19C4CEC9;
+	Sun,  1 Sep 2024 16:33:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725207691;
-	bh=CkG0/D/38YUg5Rfc8hWNtyeq+Mn/5vui02ah8N1u4Ws=;
+	s=korg; t=1725208385;
+	bh=oMm9PBHYo4bF6r1c1EIdWZn1Vu/P8ue46SnQKcPFL3Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KGeTmYcChB8G4FI7VZvVpBOdTlx856mtrObO33nXgFOUdMbNsUa8y+EmcG6MnR8xQ
-	 ijet6Z235KNpnSosrhMaBmio1GC3MSLEhr2ojsNVRJjGbL9jtZDZvKHoHknB+KCvpk
-	 vkp2eAZfNA+0u8OSlcpfqW0Iw16hCzRDzkPri1sc=
+	b=uBovR2h7eTc61ch1Qu4mYBjE96/qLoE3/ezQLNe25KQ8U6k+1FAmeRyHXlmDMw28z
+	 On+E5ABS/fZiYqo/oBUsD64HzPq3WE0DmjC6Xa0O8CRkrx4ChLkXmqPD7V/XTz7UsL
+	 QOYo8kkpVLtgYl3MJpd4PUIObDiFs9RHmmiK6zoM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guanrui Huang <guanrui.huang@linux.alibaba.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Marc Zyngier <maz@kernel.org>,
+	David Howells <dhowells@redhat.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Pankaj Raghav <p.raghav@samsung.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Marc Dionne <marc.dionne@auristor.com>,
+	linux-afs@lists.infradead.org,
+	netfs@lists.linux.dev,
+	linux-mm@kvack.org,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 48/98] irqchip/gic-v3-its: Remove BUG_ON in its_vpe_irq_domain_alloc
+Subject: [PATCH 6.10 067/149] netfs: Fix netfs_release_folio() to say no if folio dirty
 Date: Sun,  1 Sep 2024 18:16:18 +0200
-Message-ID: <20240901160805.511957221@linuxfoundation.org>
+Message-ID: <20240901160819.986674115@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
-References: <20240901160803.673617007@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +70,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guanrui Huang <guanrui.huang@linux.alibaba.com>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit 382d2ffe86efb1e2fa803d2cf17e5bfc34e574f3 ]
+[ Upstream commit 7dfc8f0c6144c290dbeb01835a67e81b34dda8cd ]
 
-This BUG_ON() is useless, because the same effect will be obtained
-by letting the code run its course and vm being dereferenced,
-triggering an exception.
+Fix netfs_release_folio() to say no (ie. return false) if the folio is
+dirty (analogous with iomap's behaviour).  Without this, it will say yes to
+the release of a dirty page by split_huge_page_to_list_to_order(), which
+will result in the loss of untruncated data in the folio.
 
-So just remove this check.
+Without this, the generic/075 and generic/112 xfstests (both fsx-based
+tests) fail with minimum folio size patches applied[1].
 
-Signed-off-by: Guanrui Huang <guanrui.huang@linux.alibaba.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Zenghui Yu <yuzenghui@huawei.com>
-Acked-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20240418061053.96803-3-guanrui.huang@linux.alibaba.com
+Fixes: c1ec4d7c2e13 ("netfs: Provide invalidate_folio and release_folio calls")
+Signed-off-by: David Howells <dhowells@redhat.com>
+Link: https://lore.kernel.org/r/20240815090849.972355-1-kernel@pankajraghav.com/ [1]
+Link: https://lore.kernel.org/r/20240823200819.532106-4-dhowells@redhat.com
+cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+cc: Pankaj Raghav <p.raghav@samsung.com>
+cc: Jeff Layton <jlayton@kernel.org>
+cc: Marc Dionne <marc.dionne@auristor.com>
+cc: linux-afs@lists.infradead.org
+cc: netfs@lists.linux.dev
+cc: linux-mm@kvack.org
+cc: linux-fsdevel@vger.kernel.org
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-gic-v3-its.c | 2 --
- 1 file changed, 2 deletions(-)
+ fs/netfs/misc.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
-index 6b58194c1e346..2e0478e8be747 100644
---- a/drivers/irqchip/irq-gic-v3-its.c
-+++ b/drivers/irqchip/irq-gic-v3-its.c
-@@ -2958,8 +2958,6 @@ static int its_vpe_irq_domain_alloc(struct irq_domain *domain, unsigned int virq
- 	struct page *vprop_page;
- 	int base, nr_ids, i, err = 0;
+diff --git a/fs/netfs/misc.c b/fs/netfs/misc.c
+index 607a1972f4563..21acf4b092a46 100644
+--- a/fs/netfs/misc.c
++++ b/fs/netfs/misc.c
+@@ -161,6 +161,9 @@ bool netfs_release_folio(struct folio *folio, gfp_t gfp)
+ 	struct netfs_inode *ctx = netfs_inode(folio_inode(folio));
+ 	unsigned long long end;
  
--	BUG_ON(!vm);
--
- 	bitmap = its_lpi_alloc(roundup_pow_of_two(nr_irqs), &base, &nr_ids);
- 	if (!bitmap)
- 		return -ENOMEM;
++	if (folio_test_dirty(folio))
++		return false;
++
+ 	end = folio_pos(folio) + folio_size(folio);
+ 	if (end > ctx->zero_point)
+ 		ctx->zero_point = end;
 -- 
 2.43.0
 
