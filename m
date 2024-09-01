@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-71985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72463-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64EB39678AF
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:34:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50C8E967ABB
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:00:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 957791C211BF
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:34:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E728281285
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:00:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C08818452D;
-	Sun,  1 Sep 2024 16:34:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B48C93B79C;
+	Sun,  1 Sep 2024 17:00:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FvhIXkz7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1dgZM1V8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF3171C68C;
-	Sun,  1 Sep 2024 16:34:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC3726AC1;
+	Sun,  1 Sep 2024 17:00:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208465; cv=none; b=Zb+Jh2lAiLqSeKHYFYxYFlmeSrJpkRFR6n1CcJeKvZG5Cn3TT8EMowOzAZVix6mJ6UtWt5z2lw/h+fqQVcPSxzixTr+JaY1pzwMxNYCQjqDz9Oga3gakoiUtVTxf3XFtJK1S/L8rJ2pNCXy8xNi5vBcQWfdI0KLsNObHzhq0D9w=
+	t=1725210007; cv=none; b=WxmFAeqeGf5VPlea0CDsFpmKpTr2t0/u4whSBqCWIiRzfaI4uOSeta510CFmZqGugRxrO1siaykRdalwB9/7k1heUbszidPxz5txfjRmN5sidJyuAMDM1QR4Y82Tw3IMtd+UMDeOXKohB3ZudfqF9Gw5E/5cO9PdcLkRmjUYpnM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208465; c=relaxed/simple;
-	bh=7RJtrmFnEF5jJgaa7OTn/Mpbmdw8EHKZ17GuLnrC3yA=;
+	s=arc-20240116; t=1725210007; c=relaxed/simple;
+	bh=EubeKURDzYldantp7zGZR2Zcx24kBYjaNBR48x5+vw4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tw3lVcYILx/ZEsaePDgK2yxSVFmmR+5zSjg4rsytM5JAQx9XDVF5a6uLYXyejSoVFgeeCCAJ0nYt9g797qllZkwweXlI1kGbW1s8dwvZsYLu2UL69herFEmQ9uJ0+LE4xTCQdqNOdvlcTAny96ei0yiWYqxoers+cRja/NiUH7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FvhIXkz7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCE5DC4CEC4;
-	Sun,  1 Sep 2024 16:34:24 +0000 (UTC)
+	 MIME-Version; b=qs8/lmh3Ikw9Xwrn2TRnG8L3vc2OtuH/FADtDonyUB2r0V5OvHD7LSuMxb52l4ErkGYFsXYCe6p2pANHxQJgrjKNHw9I3I/w0c/REy0EQA8vK9WTJ0hwNeHN+WuoifwVZq9BMqG6nO/QmMUjKEg3i89dx0368hhT4o01MTSFiVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1dgZM1V8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB862C4CEC3;
+	Sun,  1 Sep 2024 17:00:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208465;
-	bh=7RJtrmFnEF5jJgaa7OTn/Mpbmdw8EHKZ17GuLnrC3yA=;
+	s=korg; t=1725210007;
+	bh=EubeKURDzYldantp7zGZR2Zcx24kBYjaNBR48x5+vw4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FvhIXkz7+0N/8XF+2+9f1XF/tJA2GmRuY56kvlTK6YvKC/j2Uxy3/oc/GW0Tev06C
-	 Zafi3QkSB/nN6ygpGesL7xuYByusblHNSz7xyOYUstEa2PBiWbXxDQWJbXr45tEQ0w
-	 UJU2ysKTWnpFxZh0d5iSYzpGShoENbmO1MXpbR2A=
+	b=1dgZM1V8vePIcEMMGP5p4t/zIR5A0XHKW4WPEBIo1B3ws1xE1uWzWpR9t6UBnJB4U
+	 BWBWfZBdqDe2MMPaNFvYh8xjDr0hiIfVolQpqcqNvIUgE1oq+rVVHyl+NW8XmPxMIv
+	 T4o4h1IgmMWnz6O7gnpxJ+a7pUE6Vw67dDr2lmCc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 059/149] nfsd: ensure that nfsd4_fattr_args.context is zeroed out
-Date: Sun,  1 Sep 2024 18:16:10 +0200
-Message-ID: <20240901160819.687995275@linuxfoundation.org>
+Subject: [PATCH 5.15 059/215] gfs2: setattr_chown: Add missing initialization
+Date: Sun,  1 Sep 2024 18:16:11 +0200
+Message-ID: <20240901160825.587133227@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
-References: <20240901160817.461957599@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Andreas Gruenbacher <agruenba@redhat.com>
 
-[ Upstream commit f58bab6fd4063913bd8321e99874b8239e9ba726 ]
+[ Upstream commit 2d8d7990619878a848b1d916c2f936d3012ee17d ]
 
-If nfsd4_encode_fattr4 ends up doing a "goto out" before we get to
-checking for the security label, then args.context will be set to
-uninitialized junk on the stack, which we'll then try to free.
-Initialize it early.
+Add a missing initialization of variable ap in setattr_chown().
+Without, chown() may be able to bypass quotas.
 
-Fixes: f59388a579c6 ("NFSD: Add nfsd4_encode_fattr4_sec_label()")
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4xdr.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/gfs2/inode.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nfsd/nfs4xdr.c b/fs/nfsd/nfs4xdr.c
-index c7bfd2180e3f2..8a7bc2b58e721 100644
---- a/fs/nfsd/nfs4xdr.c
-+++ b/fs/nfsd/nfs4xdr.c
-@@ -3545,6 +3545,9 @@ nfsd4_encode_fattr4(struct svc_rqst *rqstp, struct xdr_stream *xdr,
- 	args.dentry = dentry;
- 	args.ignore_crossmnt = (ignore_crossmnt != 0);
- 	args.acl = NULL;
-+#ifdef CONFIG_NFSD_V4_SECURITY_LABEL
-+	args.context = NULL;
-+#endif
+diff --git a/fs/gfs2/inode.c b/fs/gfs2/inode.c
+index 462e957eda8be..763d8dccdfc13 100644
+--- a/fs/gfs2/inode.c
++++ b/fs/gfs2/inode.c
+@@ -1910,7 +1910,7 @@ static int setattr_chown(struct inode *inode, struct iattr *attr)
+ 	kuid_t ouid, nuid;
+ 	kgid_t ogid, ngid;
+ 	int error;
+-	struct gfs2_alloc_parms ap;
++	struct gfs2_alloc_parms ap = {};
  
- 	/*
- 	 * Make a local copy of the attribute bitmap that can be modified.
-@@ -3617,7 +3620,6 @@ nfsd4_encode_fattr4(struct svc_rqst *rqstp, struct xdr_stream *xdr,
- 	args.contextsupport = false;
- 
- #ifdef CONFIG_NFSD_V4_SECURITY_LABEL
--	args.context = NULL;
- 	if ((attrmask[2] & FATTR4_WORD2_SECURITY_LABEL) ||
- 	     attrmask[0] & FATTR4_WORD0_SUPPORTED_ATTRS) {
- 		if (exp->ex_flags & NFSEXP_SECURITY_LABEL)
+ 	ouid = inode->i_uid;
+ 	ogid = inode->i_gid;
 -- 
 2.43.0
 
