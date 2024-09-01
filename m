@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-72230-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72184-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A1509679C8
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:48:59 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 664CD967992
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:47:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 104AA1F211D5
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:48:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 23E352821F4
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:47:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F230C184540;
-	Sun,  1 Sep 2024 16:47:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DB29181CE1;
+	Sun,  1 Sep 2024 16:45:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jm/ipePk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sqCJlznP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACCE0181B86;
-	Sun,  1 Sep 2024 16:47:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C214018308E;
+	Sun,  1 Sep 2024 16:45:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209258; cv=none; b=Mpc4rmPGDiTn02PK8C6KYtZkTKFpW2QkIL4bonr9jwN+pmKDHELlbJjR6KxoY3i0EzZa37KcphXRjSexhwsMV2+Cy2z9y/6N7pP1xC1V9RM9u6IwR7EIiMTgtLuhXluq5+H6zUhGdZAWe7YnsDGz/+fXd1p57CEYLmgmdIaVZw8=
+	t=1725209117; cv=none; b=TTm9j8llgYP1t6rIayiE2lOgUajt3l7/3pq+FYHO+T0gsLV466w7zGK0+sl+ei2XWlH+fXF5pQy1zRE238LylekyrtOBG9coXGjzeGt8jKwNIsHQ05WTZogun4FCBJOiZG3iwNF/8KaFRkyfNJxmzcOYmTYh5BFh52yNwkVuK+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209258; c=relaxed/simple;
-	bh=jA3D9qTQU0ZFimK2vgzObGJIQW9H1NCf8yolSFG1L94=;
+	s=arc-20240116; t=1725209117; c=relaxed/simple;
+	bh=jh7rL0YE6TbcHGp1RoLNwl1btEQMaIis7FdggqZ0grs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X0y/3CpmrLVI57cNhYZvICSu5Mc48Q/Yk1QgH8q5wBhaSsO7ngi2Rl7eH8ZH416LRgH/bhdDgnEFcCBjdE9CwdXn4CkK2GodA6tBV4EWb/dSKgSVAHLqe6gNkG0x8VmyngN+Wwn5QGo8YV+IgILyY7IR6k+ncQbgXqcECcdtMqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jm/ipePk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BF09C4CEC3;
-	Sun,  1 Sep 2024 16:47:37 +0000 (UTC)
+	 MIME-Version; b=N846as8HII0JsfnqkQtw5TUN7GZMPFQ8HAhdUArKTWKthAVS2GEBTo6Gyh0S2Ub64t3fpGAysXDZCraJYtk9gUlw0Y/x7PZCdx2pbf8xAGd/ZtnMI0wc25IKb39IaeSQ7zpQOZFd0+7d0O1pF2z3oN8d3E0n6VqqFvxHaz3bZlw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sqCJlznP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 114E8C4CEC3;
+	Sun,  1 Sep 2024 16:45:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209258;
-	bh=jA3D9qTQU0ZFimK2vgzObGJIQW9H1NCf8yolSFG1L94=;
+	s=korg; t=1725209117;
+	bh=jh7rL0YE6TbcHGp1RoLNwl1btEQMaIis7FdggqZ0grs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jm/ipePk0SVN3mJVMoQyrYSM3z5pbBGf5x57RcZUPB1k7lQBONq/2Tqh7hsfCx60n
-	 ld6mvszcLNCmdbJI5N3ABRIn5vc2MXW9A38xRJv7eqO7Vl9Jw/94xtouGUQTLdyXHM
-	 ZST1TTdDaU2+LXbz/H7QhWIFvsomljtPcN4+nVDE=
+	b=sqCJlznP6kx0QgojhKfSC/8gkFl8sQoFgGw5fiZz1Cz+D5gvtNpn98GC+3QQS2bT1
+	 45sc31n/svyTxT1Bvh4N2vwr4iIA7VuP1SBpq+4KjsyvrbIzgVhh/BUzIz6S+ejgyJ
+	 eEN1hv4V+B/T9MVsJY0eq64SSE1faA0Qohh56m6w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Machata <petrm@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 49/71] selftests: forwarding: local_termination: Down ports on cleanup
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+Subject: [PATCH 5.4 128/134] usb: dwc3: omap: add missing depopulate in probe error path
 Date: Sun,  1 Sep 2024 18:17:54 +0200
-Message-ID: <20240901160803.741820831@linuxfoundation.org>
+Message-ID: <20240901160814.896139632@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160801.879647959@linuxfoundation.org>
-References: <20240901160801.879647959@linuxfoundation.org>
+In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
+References: <20240901160809.752718937@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Machata <petrm@nvidia.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 65a3cce43d5b4c53cf16b0be1a03991f665a0806 ]
+commit 2aa765a43817ec8add990f83c8e54a9a5d87aa9c upstream.
 
-This test neglects to put ports down on cleanup. Fix it.
+Depopulate device in probe error paths to fix leak of children
+resources.
 
-Fixes: 90b9566aa5cd ("selftests: forwarding: add a test for local_termination.sh")
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Link: https://patch.msgid.link/bf9b79f45de378f88344d44550f0a5052b386199.1724692132.git.petrm@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ee249b455494 ("usb: dwc3: omap: remove IRQ_NOAUTOEN used with shared irq")
+Cc: stable@vger.kernel.org
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+Link: https://lore.kernel.org/r/20240816075409.23080-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/forwarding/local_termination.sh | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/usb/dwc3/dwc3-omap.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/net/forwarding/local_termination.sh b/tools/testing/selftests/net/forwarding/local_termination.sh
-index c5b0cbc85b3e0..9b5a63519b949 100755
---- a/tools/testing/selftests/net/forwarding/local_termination.sh
-+++ b/tools/testing/selftests/net/forwarding/local_termination.sh
-@@ -278,6 +278,10 @@ bridge()
- cleanup()
- {
- 	pre_cleanup
-+
-+	ip link set $h2 down
-+	ip link set $h1 down
-+
- 	vrf_cleanup
- }
+--- a/drivers/usb/dwc3/dwc3-omap.c
++++ b/drivers/usb/dwc3/dwc3-omap.c
+@@ -527,11 +527,13 @@ static int dwc3_omap_probe(struct platfo
+ 	if (ret) {
+ 		dev_err(dev, "failed to request IRQ #%d --> %d\n",
+ 			omap->irq, ret);
+-		goto err1;
++		goto err2;
+ 	}
+ 	dwc3_omap_enable_irqs(omap);
+ 	return 0;
  
--- 
-2.43.0
-
++err2:
++	of_platform_depopulate(dev);
+ err1:
+ 	pm_runtime_put_sync(dev);
+ 	pm_runtime_disable(dev);
 
 
 
