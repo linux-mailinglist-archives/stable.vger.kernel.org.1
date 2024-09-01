@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-72014-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72197-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B74F99678D3
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:36:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 046F69679A3
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:47:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1EE68B226AA
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:36:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7C56CB2185F
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:47:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 328E9181CE1;
-	Sun,  1 Sep 2024 16:36:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F561185B6A;
+	Sun,  1 Sep 2024 16:45:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uTTe5fk0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uMIYiN4H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3BD717B50B;
-	Sun,  1 Sep 2024 16:36:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12B29185B4B;
+	Sun,  1 Sep 2024 16:45:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208561; cv=none; b=kGPlkTpQYKgV/J2m2AI2TA6/Zsu0JgWuIPKOn7os6JgvEulxpoYK509KnxAQLhk4DeVvEmltjwA+frcLpeJSlCdVHeouCppExQS649fmuIfca15HXj/q8HP4/l3vmK8vRQqsYf3VNMWzWrwdIUhrl2INCOauhWSqqCa8BQg8kNk=
+	t=1725209157; cv=none; b=qdzt6EC2cUeGF3FxqJV6zsrXiD3MsXsDrH7l+Pd3R3NXW5SHKhn+t0fshVbEVCVAkIZ2jb6V26gY8RAVRv9ZiqdYL5NyVIfWZ32BhQ6a/P0YAvl0mZaanM8vy/Hy11YhJFS/C+xVeJbZ/E3fIUZBmMhqcO07ngLE/eDJFXCcp5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208561; c=relaxed/simple;
-	bh=Tzot7pc0m4CxYq1jNb08VYyex84tbUQgBeUXafo/FYA=;
+	s=arc-20240116; t=1725209157; c=relaxed/simple;
+	bh=1BYOKrIeTyHDGQJSf3mFwoOKNjwX/bxMkq3zp6/KjQQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HfpFrxtNMhXWURKjCOc39amcZQm2jnpGivrOzWiVLosmMsmKwNw/Ch7xi/W24lZKh0Y4vEdNs2jn2E3uvqx3kHn72CxbT3rvBBW3w/yI7DH2uZY6ZrxFGNwnNXnM7o41dmYNYNyUNYJTnsY5ak3x7bZ5jROVXqC4r1V8SptilNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uTTe5fk0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 605B6C4CEC3;
-	Sun,  1 Sep 2024 16:36:00 +0000 (UTC)
+	 MIME-Version; b=Xn+IZSNlBYMDd/E2jFhwKA3zMn5XbXffLcAJ8Ku5oeJopggYGlpsaaGyF5GVIQQ0pUBNA0N1kkpD9qXtz+oOeX5dGXBVAgVjpUSmzhtJIYYxoF+AeVEaKfwWvEoJP9bCkYaCIrBlFZ0UKNetr4Hxca2OEewFmRF3aQ/Sp0qPEz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uMIYiN4H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81646C4CEC3;
+	Sun,  1 Sep 2024 16:45:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208560;
-	bh=Tzot7pc0m4CxYq1jNb08VYyex84tbUQgBeUXafo/FYA=;
+	s=korg; t=1725209156;
+	bh=1BYOKrIeTyHDGQJSf3mFwoOKNjwX/bxMkq3zp6/KjQQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uTTe5fk0TI+mr+FDd+TIsrDncq+Jxn3XBGQg6GwR6pUetqLzF43no4pfCWtv1iAs7
-	 3dKUnTrcm5ntRNTGetjnnyIDSDKnWxodl1Hu1BwicdPtNl5sdst49QIvY+YW7LMxZU
-	 CEqX9C+frTfAWHU14MNuQwdFIBpvzyPsiNQ5UiwQ=
+	b=uMIYiN4H/IVgwo5dKh3fAilVrgRhDdF942UINbNPHT+kIpAsv4hz3UIYtrj1Iwhgo
+	 TE2vEolSK05MJW3eI8s4EgPJibKGhQantwti9AMlYBW7xUokNSDS0X+ui6lwdnKxqy
+	 zZ6n+iWYBOM+tz5JPjQxM9K/TEIHa3n5dPoiq9e0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Ray <ian.ray@gehealthcare.com>,
-	Oliver Neuku <oneukum@suse.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.10 118/149] cdc-acm: Add DISABLE_ECHO quirk for GE HealthCare UI Controller
+	David Howells <dhowells@redhat.com>,
+	Stefan Metzmacher <metze@samba.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 04/71] smb/client: avoid dereferencing rdata=NULL in smb2_new_read_req()
 Date: Sun,  1 Sep 2024 18:17:09 +0200
-Message-ID: <20240901160821.893338086@linuxfoundation.org>
+Message-ID: <20240901160802.051467047@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
-References: <20240901160817.461957599@linuxfoundation.org>
+In-Reply-To: <20240901160801.879647959@linuxfoundation.org>
+References: <20240901160801.879647959@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Ray <ian.ray@gehealthcare.com>
+From: Stefan Metzmacher <metze@samba.org>
 
-commit 0b00583ecacb0b51712a5ecd34cf7e6684307c67 upstream.
+commit c724b2ab6a46435b4e7d58ad2fbbdb7a318823cf upstream.
 
-USB_DEVICE(0x1901, 0x0006) may send data before cdc_acm is ready, which
-may be misinterpreted in the default N_TTY line discipline.
+This happens when called from SMB2_read() while using rdma
+and reaching the rdma_readwrite_threshold.
 
-Signed-off-by: Ian Ray <ian.ray@gehealthcare.com>
-Acked-by: Oliver Neuku <oneukum@suse.com>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20240814072905.2501-1-ian.ray@gehealthcare.com
+Cc: stable@vger.kernel.org
+Fixes: a6559cc1d35d ("cifs: split out smb3_use_rdma_offload() helper")
+Reviewed-by: David Howells <dhowells@redhat.com>
+Signed-off-by: Stefan Metzmacher <metze@samba.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/class/cdc-acm.c |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/smb/client/smb2pdu.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/class/cdc-acm.c
-+++ b/drivers/usb/class/cdc-acm.c
-@@ -1761,6 +1761,9 @@ static const struct usb_device_id acm_id
- 	{ USB_DEVICE(0x11ca, 0x0201), /* VeriFone Mx870 Gadget Serial */
- 	.driver_info = SINGLE_RX_URB,
- 	},
-+	{ USB_DEVICE(0x1901, 0x0006), /* GE Healthcare Patient Monitor UI Controller */
-+	.driver_info = DISABLE_ECHO, /* DISABLE ECHO in termios flag */
-+	},
- 	{ USB_DEVICE(0x1965, 0x0018), /* Uniden UBC125XLT */
- 	.driver_info = NO_UNION_NORMAL, /* has no union descriptor */
- 	},
+--- a/fs/smb/client/smb2pdu.c
++++ b/fs/smb/client/smb2pdu.c
+@@ -4184,7 +4184,7 @@ smb2_new_read_req(void **buf, unsigned i
+ 	 * If we want to do a RDMA write, fill in and append
+ 	 * smbd_buffer_descriptor_v1 to the end of read request
+ 	 */
+-	if (smb3_use_rdma_offload(io_parms)) {
++	if (rdata && smb3_use_rdma_offload(io_parms)) {
+ 		struct smbd_buffer_descriptor_v1 *v1;
+ 		bool need_invalidate = server->dialect == SMB30_PROT_ID;
+ 
 
 
 
