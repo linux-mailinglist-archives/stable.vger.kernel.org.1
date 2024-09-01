@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-72347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72516-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48DE3967A45
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:53:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2050C967AF3
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:03:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 06FDB281C43
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:53:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8AD95B210E1
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:03:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9207183087;
-	Sun,  1 Sep 2024 16:53:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03A593B79C;
+	Sun,  1 Sep 2024 17:03:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xesSFSMM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lqPbN9dR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68E5F181334;
-	Sun,  1 Sep 2024 16:53:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7EDA17C;
+	Sun,  1 Sep 2024 17:02:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209628; cv=none; b=UIRwvcnXHMEWslU8FfBNpvtpqgfxA8X66HFiLKvj0dFMpiDB7Ox5RIWBuaRsmPU1guUO+4bphb8k/fXwUrvtohqHdrgzcpCwtex2eCPccvIqd9P1K+Ei3+6OhellMF+JajHF7MIZ7nvdzej0ii1nxBr+h0d0yMfPeYB4AoeGOYI=
+	t=1725210179; cv=none; b=YATjX7DROsSo6gdj7TRJExrvu3BF4PqNCHgE9IN0v7UYuvI14fxZKvf0bZQL0gLUZU+WAF7JOoW8qfG0lyKrwaxMtDTLfRIDNF8m1uO/pXvAZ1amwgF6K8wm2lettPnXD0g50rh9XXm5r1mqmPqcsq95iVbcyWj0xu7g1RhI4Y8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209628; c=relaxed/simple;
-	bh=DEpKeUiVL1pOBZEHyt1gkaLZIHPaiy3rIJBJyYmzEmg=;
+	s=arc-20240116; t=1725210179; c=relaxed/simple;
+	bh=uEN1T0P/M7/ZI9Mob5MgekN4KyQotvqzdXuXNZzxOoU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KewPUfdOVavlyYSAlROTQF1300KAkwmZfwqeBFmA7UM+I0FkHp87ctm87lqNvlKyYi+lcIJJgaKFajanTnFvF7oBUv7dAG5cFZb668hMsJhvTTonQri+ry6bn/YZE123npmKY0r64fLjZ50dBtXccm/0wd51ikDzLXu21lLqFlw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xesSFSMM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEA71C4CEC3;
-	Sun,  1 Sep 2024 16:53:47 +0000 (UTC)
+	 MIME-Version; b=S+3sTEbe4UhQuFMmoLbJEKmaFUiswe8OVqZDmzPpi9ZKkhbWPCpsb0oklzh7tlApka2lbyHCi4XzCOrKLsoaCaX19+KbwJdbNv/cgckgH924O4hHwQuyLQCludyR8nBeLfSr/maX+B4+lC8QdP21lOixRfj3gGev88nIGvMBl1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lqPbN9dR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBCA3C4CEC3;
+	Sun,  1 Sep 2024 17:02:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209628;
-	bh=DEpKeUiVL1pOBZEHyt1gkaLZIHPaiy3rIJBJyYmzEmg=;
+	s=korg; t=1725210179;
+	bh=uEN1T0P/M7/ZI9Mob5MgekN4KyQotvqzdXuXNZzxOoU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xesSFSMMqsu6bv3/0Iz1uSa44S39Mh+Pg62dBY3xnc7HBS4BKSq3iaP3TlzeMFdGK
-	 e7HYWmOyOjRlEFajxaCVaKwrF+/qInkA8WRfcpy9b4DWpZFHFBVIr2tgGzf0DOIQ7y
-	 pZnp6CkDSY7250iEA5RwPrV35tr7LbiSpkKjFFMc=
+	b=lqPbN9dRPvrQuzq2Bi01Ct0asQAGz+WflvEYRl8FyJvou02jvFzQycLxAr9wQHGaj
+	 kWzmjUMz7ASh/8JwhkMUgmpaWGaggF+0YUxbCQrsQiZZwuQ+C9Vy0VCCJ6Yg7yPLn5
+	 1aHXj+xQeV/758cR3dWz47l/XL+CPs8UshXChDPc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>,
-	Anand Jain <anand.jain@oracle.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 064/151] btrfs: change BUG_ON to assertion when checking for delayed_node root
-Date: Sun,  1 Sep 2024 18:17:04 +0200
-Message-ID: <20240901160816.526197570@linuxfoundation.org>
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 113/215] NFSD: Rename nfsd_reply_cache_alloc()
+Date: Sun,  1 Sep 2024 18:17:05 +0200
+Message-ID: <20240901160827.622193294@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
-References: <20240901160814.090297276@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Sterba <dsterba@suse.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit be73f4448b607e6b7ce41cd8ef2214fdf6e7986f ]
+[ Upstream commit ff0d169329768c1102b7b07eebe5a9839aa1c143 ]
 
-The pointer to root is initialized in btrfs_init_delayed_node(), no need
-to check for it again. Change the BUG_ON to assertion.
+For readability, rename to match the other helpers.
 
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: Anand Jain <anand.jain@oracle.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Stable-dep-of: 4b14885411f7 ("nfsd: make all of the nfsd stats per-network namespace")
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/delayed-inode.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfsd/nfscache.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/fs/btrfs/delayed-inode.c b/fs/btrfs/delayed-inode.c
-index cdfc791b3c405..e2afaa70ae5e5 100644
---- a/fs/btrfs/delayed-inode.c
-+++ b/fs/btrfs/delayed-inode.c
-@@ -986,7 +986,7 @@ static void btrfs_release_delayed_inode(struct btrfs_delayed_node *delayed_node)
+--- a/fs/nfsd/nfscache.c
++++ b/fs/nfsd/nfscache.c
+@@ -85,8 +85,8 @@ nfsd_hashsize(unsigned int limit)
+ }
  
- 	if (delayed_node &&
- 	    test_bit(BTRFS_DELAYED_NODE_INODE_DIRTY, &delayed_node->flags)) {
--		BUG_ON(!delayed_node->root);
-+		ASSERT(delayed_node->root);
- 		clear_bit(BTRFS_DELAYED_NODE_INODE_DIRTY, &delayed_node->flags);
- 		delayed_node->count--;
+ static struct svc_cacherep *
+-nfsd_reply_cache_alloc(struct svc_rqst *rqstp, __wsum csum,
+-			struct nfsd_net *nn)
++nfsd_cacherep_alloc(struct svc_rqst *rqstp, __wsum csum,
++		    struct nfsd_net *nn)
+ {
+ 	struct svc_cacherep	*rp;
  
--- 
-2.43.0
-
+@@ -457,7 +457,7 @@ int nfsd_cache_lookup(struct svc_rqst *r
+ 	 * preallocate an entry.
+ 	 */
+ 	nn = net_generic(SVC_NET(rqstp), nfsd_net_id);
+-	rp = nfsd_reply_cache_alloc(rqstp, csum, nn);
++	rp = nfsd_cacherep_alloc(rqstp, csum, nn);
+ 	if (!rp)
+ 		goto out;
+ 
 
 
 
