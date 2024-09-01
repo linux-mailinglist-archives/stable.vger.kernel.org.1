@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-72412-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71914-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2313967A86
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:57:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C87B967853
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:30:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E8FC1F23EB3
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:57:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 030F61F217EC
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:30:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04731181334;
-	Sun,  1 Sep 2024 16:57:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8095217E00C;
+	Sun,  1 Sep 2024 16:30:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zF1SWvAt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wXfs1OZ9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5C87208A7;
-	Sun,  1 Sep 2024 16:57:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F03C1C68C;
+	Sun,  1 Sep 2024 16:30:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209836; cv=none; b=EpAmv5UYjMSIgTpurj6Sg5s0ViO4vtv4zP8uCSRYeQpG0jZees993jU9KNr+WqmbtbB6a1XC42vLHr/r/JQ6UlzKXtDeR6tnSmdIKgsJU3AbZcDNMertB9jUOawJueP81KlpUX8N9a42HbxEsfgvYTHJpQYimHOWvNewTYsoFYU=
+	t=1725208234; cv=none; b=co305WlSAfTObas614MKHlUxsdi/APQayvDrZ7Wi4oN8J5dHuj2kira5OhnTm3rk4a1m6lxLJUC/xKjmFGm9DIXcGw09qyxqY/z1piyzXaCaOVrxV8bupzTrNmP0S7YcIAzE4lYK00FPzwEKxgHG44R/OOLyrTxBJMJhC7Z0FOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209836; c=relaxed/simple;
-	bh=iaQDcG6hQH13ci41A8RJexA8omsSjIBJBBBy4qaWKVk=;
+	s=arc-20240116; t=1725208234; c=relaxed/simple;
+	bh=1kzh7LrC7veQMIPT7HM2WpjjMX5oEMyBTPOpZwMLDQE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u/86mFTQvrNqAO6AV9LXfj6+Tz0nXzYvvmxyvbV1P1Q6kEepHdjWyB+ZUW2g/aK/mjlCth+6Cbmdy2IhzkwM3i73uzALRaHon2vgfet8GQISwxEqVnXz3Aw6HAlpaWcqUh/H46WS+6VHepfX1huL8pxniTxhIzVspbs7KDZppUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zF1SWvAt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06149C4CEC3;
-	Sun,  1 Sep 2024 16:57:15 +0000 (UTC)
+	 MIME-Version; b=oe15rLlNY8W/UwWo43zNxiw8K9qG+Bz1SX77DI7PYto7Kk4eAMt4vQ9Mj49jGvDii7t8wreOkFEYIkCYGQRkx0qUrpMB6BO7thy6kICm8A5abMGaIB2RdTOFxk437S54T4PSMrSCfH5D5iIEBY04NGF+q9YbdVMOZi7HdAjkQB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wXfs1OZ9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B01EDC4CEC3;
+	Sun,  1 Sep 2024 16:30:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209836;
-	bh=iaQDcG6hQH13ci41A8RJexA8omsSjIBJBBBy4qaWKVk=;
+	s=korg; t=1725208234;
+	bh=1kzh7LrC7veQMIPT7HM2WpjjMX5oEMyBTPOpZwMLDQE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zF1SWvAtwFuPojcZORgQq6PNDz/PkgwaDkop6HrbCJJzKDG75apmLktAwL6wgXMgX
-	 be2nP55SjBGn8lUmmKoDeAf+pmqdPFhk0V8fMqZBfqduhk/HBaE9MZruPiE1jWlH44
-	 965sfmrOw8FTzfENZpX5SkexC17lbcbx5SJjaCuc=
+	b=wXfs1OZ9JDYdg/A58Ay3f38Oq4zYewIRmmrWMbW9vnlHkfpjxEFAO48rr0WOcLcfr
+	 givYl7VJfYIi1i4icrK0KJ8t4cy/tjAC9uFzTtqiX+whPeYYndPMh5aCASz1Is7N2W
+	 XsCoNTY06Uw99XjcclWBjvunOyG/3K5FrjwMtIAM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Jann Horn <jannh@google.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 5.15 001/215] fuse: Initialize beyond-EOF page contents before setting uptodate
+	syzbot+242ee56aaa9585553766@syzkaller.appspotmail.com,
+	Chunhai Guo <guochunhai@vivo.com>,
+	Sandeep Dhavale <dhavale@google.com>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>
+Subject: [PATCH 6.10 002/149] erofs: fix out-of-bound access when z_erofs_gbuf_growsize() partially fails
 Date: Sun,  1 Sep 2024 18:15:13 +0200
-Message-ID: <20240901160823.289479819@linuxfoundation.org>
+Message-ID: <20240901160817.557372399@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-commit 3c0da3d163eb32f1f91891efaade027fa9b245b9 upstream.
+commit 0005e01e1e875c5e27130c5e2ed0189749d1e08a upstream.
 
-fuse_notify_store(), unlike fuse_do_readpage(), does not enable page
-zeroing (because it can be used to change partial page contents).
+If z_erofs_gbuf_growsize() partially fails on a global buffer due to
+memory allocation failure or fault injection (as reported by syzbot [1]),
+new pages need to be freed by comparing to the existing pages to avoid
+memory leaks.
 
-So fuse_notify_store() must be more careful to fully initialize page
-contents (including parts of the page that are beyond end-of-file)
-before marking the page uptodate.
+However, the old gbuf->pages[] array may not be large enough, which can
+lead to null-ptr-deref or out-of-bound access.
 
-The current code can leave beyond-EOF page contents uninitialized, which
-makes these uninitialized page contents visible to userspace via mmap().
+Fix this by checking against gbuf->nrpages in advance.
 
-This is an information leak, but only affects systems which do not
-enable init-on-alloc (via CONFIG_INIT_ON_ALLOC_DEFAULT_ON=y or the
-corresponding kernel command line parameter).
+[1] https://lore.kernel.org/r/000000000000f7b96e062018c6e3@google.com
 
-Link: https://bugs.chromium.org/p/project-zero/issues/detail?id=2574
-Cc: stable@kernel.org
-Fixes: a1d75f258230 ("fuse: add store request")
-Signed-off-by: Jann Horn <jannh@google.com>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Reported-by: syzbot+242ee56aaa9585553766@syzkaller.appspotmail.com
+Fixes: d6db47e571dc ("erofs: do not use pagepool in z_erofs_gbuf_growsize()")
+Cc: <stable@vger.kernel.org> # 6.10+
+Reviewed-by: Chunhai Guo <guochunhai@vivo.com>
+Reviewed-by: Sandeep Dhavale <dhavale@google.com>
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20240820085619.1375963-1-hsiangkao@linux.alibaba.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/fuse/dev.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ fs/erofs/zutil.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/fuse/dev.c
-+++ b/fs/fuse/dev.c
-@@ -1623,9 +1623,11 @@ static int fuse_notify_store(struct fuse
- 
- 		this_num = min_t(unsigned, num, PAGE_SIZE - offset);
- 		err = fuse_copy_page(cs, &page, offset, this_num, 0);
--		if (!err && offset == 0 &&
--		    (this_num == PAGE_SIZE || file_size == end))
-+		if (!PageUptodate(page) && !err && offset == 0 &&
-+		    (this_num == PAGE_SIZE || file_size == end)) {
-+			zero_user_segment(page, this_num, PAGE_SIZE);
- 			SetPageUptodate(page);
-+		}
- 		unlock_page(page);
- 		put_page(page);
- 
+--- a/fs/erofs/zutil.c
++++ b/fs/erofs/zutil.c
+@@ -111,7 +111,8 @@ int z_erofs_gbuf_growsize(unsigned int n
+ out:
+ 	if (i < z_erofs_gbuf_count && tmp_pages) {
+ 		for (j = 0; j < nrpages; ++j)
+-			if (tmp_pages[j] && tmp_pages[j] != gbuf->pages[j])
++			if (tmp_pages[j] && (j >= gbuf->nrpages ||
++					     tmp_pages[j] != gbuf->pages[j]))
+ 				__free_page(tmp_pages[j]);
+ 		kfree(tmp_pages);
+ 	}
 
 
 
