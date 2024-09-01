@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-72309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71899-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05067967A1F
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:51:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5430967841
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:29:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A644F2821BF
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:51:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 121EE1C20B77
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:29:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 420FE17E00C;
-	Sun,  1 Sep 2024 16:51:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C92C183CB1;
+	Sun,  1 Sep 2024 16:29:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cjO1tm6Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FA7Mi4+i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 012E81DFD1;
-	Sun,  1 Sep 2024 16:51:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE4CA14290C;
+	Sun,  1 Sep 2024 16:29:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209506; cv=none; b=goCERXXSalM7VZepSXbu8csY2Ee5AcXafAbc1iXPLPIVy79RDQpvwTFcdlXZRVim73BN+yM4mJzrEm8VDNW+FgNsIXPlaqHwJs0Km1i420Ua31H+VfeqqNscH08dzUoQFReadq56E0kkuGsd1i9X3LsbtrL/aEhggDBYt8Yjq68=
+	t=1725208184; cv=none; b=jeAep8WaBbx/+i3ERS8dsUW4+M+X/uJS2P6PorZ1OPByhGDXHo/Q00aVmNenarpx1ijz9UppRfkAs0d6lSM7bnCVXU+PCofTdNF3EAAxwqLyVdbIzHeThxo6PJ2hP1wVEt7Nm+CaFK/rUc7rozRK/jzGzKWhNMaICigA25sa8CM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209506; c=relaxed/simple;
-	bh=LR0XDEZ5gG2n2gIgkQYFFxNRVOl9Twm7qAbSfVCv+Gk=;
+	s=arc-20240116; t=1725208184; c=relaxed/simple;
+	bh=rJUXkhaQBrvuwYpNislF1gjtbTjB/dR9/eceG0+if+I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LLB5QNBzKRrwPnamuUm6KKIc5AiBiZ4wvOamAFmvuIo+wl+bEol4Wo6n7biDCJKB+ZF76bCCEvWQpQ/jSnVPQcRDM9qzPmhBWXE284WnYrGQLpl7SkyETsMlHpCmtSaKnpH5Rf+/h3C8PuX2jpyKNWR5S2smfFQF3CUrqiTgy1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cjO1tm6Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B530C4CEC3;
-	Sun,  1 Sep 2024 16:51:45 +0000 (UTC)
+	 MIME-Version; b=e9Uo2h7GpyBAcrMvmnVt8CJFRToQpKaJjjSdJIhkvEtbZdL7WXhV4advmj3BPKU6L53qoEIq4KP3wxrxeFpxAWKZ9TzxWkBZDjeGxO79DXWKTdJ4PoUCauIgnsDAblQbVHWqXPO7MI62ArU+8RNwld76D1ocm3Fu95YX0WB6bwM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FA7Mi4+i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E75EC4CEC3;
+	Sun,  1 Sep 2024 16:29:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209505;
-	bh=LR0XDEZ5gG2n2gIgkQYFFxNRVOl9Twm7qAbSfVCv+Gk=;
+	s=korg; t=1725208184;
+	bh=rJUXkhaQBrvuwYpNislF1gjtbTjB/dR9/eceG0+if+I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cjO1tm6YlkOUOLYPUM7LDaGaZi0NMGRr+8jPGR3pxYv7bOQtf3JSw/IuoWj3nLHYP
-	 YO7bn/CDhDQCWQdBsTTNKmG2gDAzs4y/Tr8s+Gl+MAkbuO6LqLZWzuyoN9e9Hiof53
-	 SqjLy0parhlWrjEze9ezYKGkfltd0Vd22iqXIRG4=
+	b=FA7Mi4+iZvthXMH2yVxSHPxz5ah25xMReA3TrOZi3/l3yYXarGiXTnofrIvZrBqCD
+	 7uzMFVr+3Dw8KLKJmffUHkhsaySOkd1UEvdVS7H4qCxABezESSuOLb7KvKJHrJHHIm
+	 fumsnHLVEFauYQoq6mUpB8GM9g6VVR2Lup6u+qXY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	Vivek Goyal <vgoyal@redhat.com>,
-	Miklos Szeredi <mszeredi@redhat.com>,
+	Aleksandr Mishin <amishin@t-argos.ru>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 056/151] virtiofs: forbid newlines in tags
+Subject: [PATCH 6.6 69/93] nfc: pn533: Add poll mod list filling check
 Date: Sun,  1 Sep 2024 18:16:56 +0200
-Message-ID: <20240901160816.226031702@linuxfoundation.org>
+Message-ID: <20240901160809.961949750@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
-References: <20240901160814.090297276@linuxfoundation.org>
+In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
+References: <20240901160807.346406833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Hajnoczi <stefanha@redhat.com>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-[ Upstream commit 40488cc16f7ea0d193a4e248f0d809c25cc377db ]
+[ Upstream commit febccb39255f9df35527b88c953b2e0deae50e53 ]
 
-Newlines in virtiofs tags are awkward for users and potential vectors
-for string injection attacks.
+In case of im_protocols value is 1 and tm_protocols value is 0 this
+combination successfully passes the check
+'if (!im_protocols && !tm_protocols)' in the nfc_start_poll().
+But then after pn533_poll_create_mod_list() call in pn533_start_poll()
+poll mod list will remain empty and dev->poll_mod_count will remain 0
+which lead to division by zero.
 
-Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-Reviewed-by: Vivek Goyal <vgoyal@redhat.com>
-Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Normally no im protocol has value 1 in the mask, so this combination is
+not expected by driver. But these protocol values actually come from
+userspace via Netlink interface (NFC_CMD_START_POLL operation). So a
+broken or malicious program may pass a message containing a "bad"
+combination of protocol parameter values so that dev->poll_mod_count
+is not incremented inside pn533_poll_create_mod_list(), thus leading
+to division by zero.
+Call trace looks like:
+nfc_genl_start_poll()
+  nfc_start_poll()
+    ->start_poll()
+    pn533_start_poll()
+
+Add poll mod list filling check.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: dfccd0f58044 ("NFC: pn533: Add some polling entropy")
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://patch.msgid.link/20240827084822.18785-1-amishin@t-argos.ru
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/fuse/virtio_fs.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/nfc/pn533/pn533.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/fs/fuse/virtio_fs.c b/fs/fuse/virtio_fs.c
-index 7d4655022afc6..c50999ad9f7ab 100644
---- a/fs/fuse/virtio_fs.c
-+++ b/fs/fuse/virtio_fs.c
-@@ -315,6 +315,16 @@ static int virtio_fs_read_tag(struct virtio_device *vdev, struct virtio_fs *fs)
- 		return -ENOMEM;
- 	memcpy(fs->tag, tag_buf, len);
- 	fs->tag[len] = '\0';
-+
-+	/* While the VIRTIO specification allows any character, newlines are
-+	 * awkward on mount(8) command-lines and cause problems in the sysfs
-+	 * "tag" attr and uevent TAG= properties. Forbid them.
-+	 */
-+	if (strchr(fs->tag, '\n')) {
-+		dev_dbg(&vdev->dev, "refusing virtiofs tag with newline character\n");
+diff --git a/drivers/nfc/pn533/pn533.c b/drivers/nfc/pn533/pn533.c
+index b19c39dcfbd93..e2bc67300a915 100644
+--- a/drivers/nfc/pn533/pn533.c
++++ b/drivers/nfc/pn533/pn533.c
+@@ -1723,6 +1723,11 @@ static int pn533_start_poll(struct nfc_dev *nfc_dev,
+ 	}
+ 
+ 	pn533_poll_create_mod_list(dev, im_protocols, tm_protocols);
++	if (!dev->poll_mod_count) {
++		nfc_err(dev->dev,
++			"Poll mod list is empty\n");
 +		return -EINVAL;
 +	}
-+
- 	return 0;
- }
  
+ 	/* Do not always start polling from the same modulation */
+ 	get_random_bytes(&rand_mod, sizeof(rand_mod));
 -- 
 2.43.0
 
