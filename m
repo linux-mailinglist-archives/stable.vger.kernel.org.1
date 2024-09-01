@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-71752-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72078-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F191B967798
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:21:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDDB1967916
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:39:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F1421C20B74
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:21:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A3A961F21A43
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:39:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B6A4181B88;
-	Sun,  1 Sep 2024 16:21:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E2C2183CAA;
+	Sun,  1 Sep 2024 16:39:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UbjG4yqs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t6gEGIvZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AD232C1B4;
-	Sun,  1 Sep 2024 16:21:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D19C17E00C;
+	Sun,  1 Sep 2024 16:39:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725207698; cv=none; b=r5SjWmo73YEKWlOuXeW0go/5ZtYC0ndo3UjNJAK5caAsVf1rold3Cvw5ZIWFt3G8IoQBvJ8mOyYtj+6RLz1D4xx1vN8+YBCID3WjFezAaIwB2tC5v8l8kWd2iq5A9F65qjQqEP6Ok6Z/mmMEUBm0rQw/bBeNYWzT83xrC510EVw=
+	t=1725208768; cv=none; b=YmqEA2d/nZ/oWgzJDXgagp9BxnygLIl98aQ+TsYiurzuCt4GUIcQGGSNHlpAUwfLum9+D2UgENAQ+eUpDsy6v5o4NukdBGUkeNPsOfp4hMFX12670EzERJy1eFt3Pa+zgDp66vWsUSqbAaRj+gr2S/QcaDB/rIJRMMathcGgjZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725207698; c=relaxed/simple;
-	bh=ApetZ26n8GR3vsKls4q4H8vTu7UWWjUnvM13U9VWTnw=;
+	s=arc-20240116; t=1725208768; c=relaxed/simple;
+	bh=qe8uDsLRbGOuhXGxSJbfSrzvCNlKme5hzVO5ModOE+E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PsKRoGVncrTpnu1RdEKdZR3hlim+826HFv1iaTL+1we6BHAdRbuucxYllSUFcSM2L3pgmnalPmdFQFSkW+3dX8gwKEwphElSxGN4c5o+1SEib86VMY2eZ8C8eShC/5RhODRCXbv22eQtdT90Z6S3dSLvc2gSV8FNmk+ujQilV4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UbjG4yqs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 888DBC4CEC3;
-	Sun,  1 Sep 2024 16:21:37 +0000 (UTC)
+	 MIME-Version; b=j/ahcgG7PbqrdwDINjqTYPoGirAaKtEQJpU9HxSnm3dr2u2Xvz6Z53eSIuEw3W+4uewnhIUae6afDbd7fWITqcp4SpIGvPbSPKaggzp8Jt1RGr9jaZRy/bvrSecW2uapgVcjs8tl0X/Hz9kbCsSKfz5/ynjm8buqK+ZJGN0PsGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t6gEGIvZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE702C4CEC3;
+	Sun,  1 Sep 2024 16:39:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725207698;
-	bh=ApetZ26n8GR3vsKls4q4H8vTu7UWWjUnvM13U9VWTnw=;
+	s=korg; t=1725208768;
+	bh=qe8uDsLRbGOuhXGxSJbfSrzvCNlKme5hzVO5ModOE+E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UbjG4yqsB9SNRRoKo1YDlz1JTM15J6o31Ony/xqnak5wd8LDXlLYpCd+U9aCArmZV
-	 08tprsyXed2h/fz19dMM2LlAcT4gY0cxFERVc8exPWd9XZR89jDy4EvccuE+uMpOL/
-	 +56qlcD4R3F0bKck/6XhMIfwmuPMhDppGLLcO7H0=
+	b=t6gEGIvZ5XxgM7zDv07ySI/qrEJ9pRhPEVDbqS0DpO/H8aWSxfX6QXeDPPEGdoVyZ
+	 zoE4DEzCh62OdnRzJ+Q32BnpEWB00DrO4RH0c0/+P3zRKexKZjt1lsjnT0WxjbmJz6
+	 oj1lY1zbYm9j7bfEdK3lm7kyPOYClNMFa63+KAlU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 50/98] nvmet-rdma: fix possible bad dereference when freeing rsps
+Subject: [PATCH 5.4 034/134] media: radio-isa: use dev_name to fill in bus_info
 Date: Sun,  1 Sep 2024 18:16:20 +0200
-Message-ID: <20240901160805.587325639@linuxfoundation.org>
+Message-ID: <20240901160811.387922551@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
-References: <20240901160803.673617007@linuxfoundation.org>
+In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
+References: <20240901160809.752718937@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sagi Grimberg <sagi@grimberg.me>
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-[ Upstream commit 73964c1d07c054376f1b32a62548571795159148 ]
+[ Upstream commit 8b7f3cf4eb9a95940eaabad3226caeaa0d9aa59d ]
 
-It is possible that the host connected and saw a cm established
-event and started sending nvme capsules on the qp, however the
-ctrl did not yet see an established event. This is why the
-rsp_wait_list exists (for async handling of these cmds, we move
-them to a pending list).
+This fixes this warning:
 
-Furthermore, it is possible that the ctrl cm times out, resulting
-in a connect-error cm event. in this case we hit a bad deref [1]
-because in nvmet_rdma_free_rsps we assume that all the responses
-are in the free list.
+drivers/media/radio/radio-isa.c: In function 'radio_isa_querycap':
+drivers/media/radio/radio-isa.c:39:57: warning: '%s' directive output may be truncated writing up to 35 bytes into a region of size 28 [-Wformat-truncation=]
+   39 |         snprintf(v->bus_info, sizeof(v->bus_info), "ISA:%s", isa->v4l2_dev.name);
+      |                                                         ^~
+drivers/media/radio/radio-isa.c:39:9: note: 'snprintf' output between 5 and 40 bytes into a destination of size 32
+   39 |         snprintf(v->bus_info, sizeof(v->bus_info), "ISA:%s", isa->v4l2_dev.name);
+      |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-We are freeing the cmds array anyways, so don't even bother to
-remove the rsp from the free_list. It is also guaranteed that we
-are not racing anything when we are releasing the queue so no
-other context accessing this array should be running.
-
-[1]:
---
-Workqueue: nvmet-free-wq nvmet_rdma_free_queue_work [nvmet_rdma]
-[...]
-pc : nvmet_rdma_free_rsps+0x78/0xb8 [nvmet_rdma]
-lr : nvmet_rdma_free_queue_work+0x88/0x120 [nvmet_rdma]
- Call trace:
- nvmet_rdma_free_rsps+0x78/0xb8 [nvmet_rdma]
- nvmet_rdma_free_queue_work+0x88/0x120 [nvmet_rdma]
- process_one_work+0x1ec/0x4a0
- worker_thread+0x48/0x490
- kthread+0x158/0x160
- ret_from_fork+0x10/0x18
---
-
-Signed-off-by: Sagi Grimberg <sagi@grimberg.me>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/rdma.c | 16 ++++------------
- 1 file changed, 4 insertions(+), 12 deletions(-)
+ drivers/media/radio/radio-isa.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/target/rdma.c b/drivers/nvme/target/rdma.c
-index cfd26437aeaea..7889a55156f4d 100644
---- a/drivers/nvme/target/rdma.c
-+++ b/drivers/nvme/target/rdma.c
-@@ -435,12 +435,8 @@ nvmet_rdma_alloc_rsps(struct nvmet_rdma_queue *queue)
+diff --git a/drivers/media/radio/radio-isa.c b/drivers/media/radio/radio-isa.c
+index ad2ac16ff12dd..610d3e3269518 100644
+--- a/drivers/media/radio/radio-isa.c
++++ b/drivers/media/radio/radio-isa.c
+@@ -36,7 +36,7 @@ static int radio_isa_querycap(struct file *file, void  *priv,
+ 
+ 	strscpy(v->driver, isa->drv->driver.driver.name, sizeof(v->driver));
+ 	strscpy(v->card, isa->drv->card, sizeof(v->card));
+-	snprintf(v->bus_info, sizeof(v->bus_info), "ISA:%s", isa->v4l2_dev.name);
++	snprintf(v->bus_info, sizeof(v->bus_info), "ISA:%s", dev_name(isa->v4l2_dev.dev));
  	return 0;
- 
- out_free:
--	while (--i >= 0) {
--		struct nvmet_rdma_rsp *rsp = &queue->rsps[i];
--
--		list_del(&rsp->free_list);
--		nvmet_rdma_free_rsp(ndev, rsp);
--	}
-+	while (--i >= 0)
-+		nvmet_rdma_free_rsp(ndev, &queue->rsps[i]);
- 	kfree(queue->rsps);
- out:
- 	return ret;
-@@ -451,12 +447,8 @@ static void nvmet_rdma_free_rsps(struct nvmet_rdma_queue *queue)
- 	struct nvmet_rdma_device *ndev = queue->dev;
- 	int i, nr_rsps = queue->recv_queue_size * 2;
- 
--	for (i = 0; i < nr_rsps; i++) {
--		struct nvmet_rdma_rsp *rsp = &queue->rsps[i];
--
--		list_del(&rsp->free_list);
--		nvmet_rdma_free_rsp(ndev, rsp);
--	}
-+	for (i = 0; i < nr_rsps; i++)
-+		nvmet_rdma_free_rsp(ndev, &queue->rsps[i]);
- 	kfree(queue->rsps);
  }
  
 -- 
