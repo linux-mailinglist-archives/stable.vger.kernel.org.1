@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-71732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72059-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECA0A967783
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:20:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F4959678FF
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:38:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6E326B21B6B
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:20:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 80C351C208DA
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:38:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDF98183CCA;
-	Sun,  1 Sep 2024 16:20:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41BDE17E8EA;
+	Sun,  1 Sep 2024 16:38:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XKrRaIzQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qgFVYZtD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DC9E2C1B4;
-	Sun,  1 Sep 2024 16:20:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0102B17E00C;
+	Sun,  1 Sep 2024 16:38:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725207632; cv=none; b=CWSKEMTa//QCrNxj4g9iXngzlZ44IZf8SNy1XDTTdfEE5B3nfRzWJowEnDG4iBEg8c1G9m7jCv+mOad3wsLVsvX3a7NmEiBhiRn5s4u41TWfQjdmKP+CyoQr68QPU1Ie1X9XCj9tGfK5T+zsfPj3pJ8+QGdeJH2OSV1usw6i5Bg=
+	t=1725208706; cv=none; b=NHvdYj7VEoUpJtJlBl48Un7KkQOAir8PJ8IW6GaeHmhG+2mXCD1dBrddVFTm57+1tZmW+WD+mbDQ1ArIrMMpOA4mcJ/u1eyV5jDCMOL+fzeogRs2z2u28XrFRKf7IQxpfXWHEgGYNpSuXvMu1LbBvGpnK+ZD8HZbumdMf42SuB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725207632; c=relaxed/simple;
-	bh=tDjP8V8tBip5pTlVwKOHpJA7CeyDXvPdEY6s0OoGEfc=;
+	s=arc-20240116; t=1725208706; c=relaxed/simple;
+	bh=OkWDAFe3J9I6MDdRG5roGXQoIB/yLeZjoIychJFmbjM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E+xQAwQrN8FacFPA1fmdDuLjP52/xyDmeicug04ZR68XTOEKBGf4qfvBY7Dih5Gb95LL3jrYGhXJX5w0HLXeVmSTJfQjViMLPPMleGqxxGrGUN1xH5xwtjSPSNKJH6HXFabl23EhMUdkA7oHKIPnXfMxmKS7ASROibY6rgK8ZiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XKrRaIzQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15E83C4CEC3;
-	Sun,  1 Sep 2024 16:20:31 +0000 (UTC)
+	 MIME-Version; b=apyMcxppsPHPRD/wWRwXNXYKleLtGyI9ehzJWS1uVQ8EROiXJHQFc8uHwiYXPo2rTJltzTW3bfPF238p5b1FHM2GhufP2dx7ybQy/24W4xNssuERVAi6q5v29Rci+ETPiNh+Cwpi8c/SOljgOMvuhmNHcNKD3EoTgdZ7T8L0kAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qgFVYZtD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65C24C4CEC3;
+	Sun,  1 Sep 2024 16:38:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725207632;
-	bh=tDjP8V8tBip5pTlVwKOHpJA7CeyDXvPdEY6s0OoGEfc=;
+	s=korg; t=1725208705;
+	bh=OkWDAFe3J9I6MDdRG5roGXQoIB/yLeZjoIychJFmbjM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XKrRaIzQcmKqJ8Kb3D0+ABwMRzu93IU2202j+7melJDwo9ENV1RYU86pvcXk9gKm/
-	 79GpuCNg0W8kz/RWril1Br+4fX/s5XmW7K+N5En/DIFm1bK72bEKW7ldZUYDGWyY5U
-	 qHAZwATqQcnmTgP/QD0dLC4F6CF5Ms4ctQjSFxM8=
+	b=qgFVYZtDy+uFsIm86v6oduuKlCbU6NYwix7lwvUscJ3zcOhOGh8sPfGYLEcABAOtC
+	 gOhP576qdVDXsnjxHvPFPqp3h1KbUX4Cik9q+6qbVRcvTFbiwx+Qa/smjxhMKxwIVS
+	 x8SKx+krZ3hrujl2E8we5UZVc80oNR83CYSIoPFw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sam Creasey <sammy@sammy.net>,
-	Kees Cook <keescook@chromium.org>,
-	Simon Horman <horms@kernel.org>,
-	"Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 31/98] net/sun3_82586: Avoid reading past buffer in debug output
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	David Sterba <dsterba@suse.com>,
+	Yury Norov <yury.norov@gmail.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 5.4 015/134] btrfs: rename bitmap_set_bits() -> btrfs_bitmap_set_bits()
 Date: Sun,  1 Sep 2024 18:16:01 +0200
-Message-ID: <20240901160804.870981240@linuxfoundation.org>
+Message-ID: <20240901160810.686530132@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
-References: <20240901160803.673617007@linuxfoundation.org>
+In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
+References: <20240901160809.752718937@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,56 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <keescook@chromium.org>
+From: Alexander Lobakin <aleksander.lobakin@intel.com>
 
-[ Upstream commit 4bea747f3fbec33c16d369b2f51e55981d7c78d0 ]
+commit 4ca532d64648d4776d15512caed3efea05ca7195 upstream.
 
-Since NUM_XMIT_BUFFS is always 1, building m68k with sun3_defconfig and
--Warraybounds, this build warning is visible[1]:
+bitmap_set_bits() does not start with the FS' prefix and may collide
+with a new generic helper one day. It operates with the FS-specific
+types, so there's no change those two could do the same thing.
+Just add the prefix to exclude such possible conflict.
 
-drivers/net/ethernet/i825xx/sun3_82586.c: In function 'sun3_82586_timeout':
-drivers/net/ethernet/i825xx/sun3_82586.c:990:122: warning: array subscript 1 is above array bounds of 'volatile struct transmit_cmd_struct *[1]' [-Warray-bounds=]
-  990 |                 printk("%s: command-stats: %04x %04x\n",dev->name,swab16(p->xmit_cmds[0]->cmd_status),swab16(p->xmit_cmds[1]->cmd_status));
-      |                                                                                                               ~~~~~~~~~~~~^~~
-...
-drivers/net/ethernet/i825xx/sun3_82586.c:156:46: note: while referencing 'xmit_cmds'
-  156 |         volatile struct transmit_cmd_struct *xmit_cmds[NUM_XMIT_BUFFS];
-
-Avoid accessing index 1 since it doesn't exist.
-
-Link: https://github.com/KSPP/linux/issues/325 [1]
-Cc: Sam Creasey <sammy@sammy.net>
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Simon Horman <horms@kernel.org> # build-tested
-Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Link: https://lore.kernel.org/r/20240206161651.work.876-kees@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Acked-by: David Sterba <dsterba@suse.com>
+Reviewed-by: Yury Norov <yury.norov@gmail.com>
+Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/i825xx/sun3_82586.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/btrfs/free-space-cache.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/i825xx/sun3_82586.c b/drivers/net/ethernet/i825xx/sun3_82586.c
-index 1a86184d44c0a..e0c9fee4e1e65 100644
---- a/drivers/net/ethernet/i825xx/sun3_82586.c
-+++ b/drivers/net/ethernet/i825xx/sun3_82586.c
-@@ -990,7 +990,7 @@ static void sun3_82586_timeout(struct net_device *dev)
- 	{
- #ifdef DEBUG
- 		printk("%s: xmitter timed out, try to restart! stat: %02x\n",dev->name,p->scb->cus);
--		printk("%s: command-stats: %04x %04x\n",dev->name,swab16(p->xmit_cmds[0]->cmd_status),swab16(p->xmit_cmds[1]->cmd_status));
-+		printk("%s: command-stats: %04x\n", dev->name, swab16(p->xmit_cmds[0]->cmd_status));
- 		printk("%s: check, whether you set the right interrupt number!\n",dev->name);
- #endif
- 		sun3_82586_close(dev);
--- 
-2.43.0
-
+--- a/fs/btrfs/free-space-cache.c
++++ b/fs/btrfs/free-space-cache.c
+@@ -1729,9 +1729,9 @@ static void bitmap_clear_bits(struct btr
+ 	ctl->free_space -= bytes;
+ }
+ 
+-static void bitmap_set_bits(struct btrfs_free_space_ctl *ctl,
+-			    struct btrfs_free_space *info, u64 offset,
+-			    u64 bytes)
++static void btrfs_bitmap_set_bits(struct btrfs_free_space_ctl *ctl,
++				  struct btrfs_free_space *info, u64 offset,
++				  u64 bytes)
+ {
+ 	unsigned long start, count;
+ 
+@@ -1988,7 +1988,7 @@ static u64 add_bytes_to_bitmap(struct bt
+ 
+ 	bytes_to_set = min(end - offset, bytes);
+ 
+-	bitmap_set_bits(ctl, info, offset, bytes_to_set);
++	btrfs_bitmap_set_bits(ctl, info, offset, bytes_to_set);
+ 
+ 	/*
+ 	 * We set some bytes, we have no idea what the max extent size is
 
 
 
