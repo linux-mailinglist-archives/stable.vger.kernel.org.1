@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-71822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71740-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE9579677E5
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:25:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EB4D96778A
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:21:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 871E61F2109C
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:25:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E91B61F2171D
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:20:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EED7181B88;
-	Sun,  1 Sep 2024 16:25:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 829BD17E01C;
+	Sun,  1 Sep 2024 16:20:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VmbKAm3u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="llsSw8D7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2EBB143C6E;
-	Sun,  1 Sep 2024 16:25:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E29144C97;
+	Sun,  1 Sep 2024 16:20:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725207931; cv=none; b=TPjimLJcwDsw6pxgO8Tb6vgcRTkhUnnO3YhJVxJlFkYZ9Gh3z81dHJXT/4teAbFSK4jlCX3BjVl5OcEUuhC57RYgLFPJdW/jUpfxSHhFWizQHPJrcBg7dI2gteGfGerSeJMYcYdtGd5w6MaJ1yZT0Wa+OIAXAbs+Ryb1YxfYOEo=
+	t=1725207658; cv=none; b=PXTx1/BbIIpRbIbheCtpT2MZdh5Esv6DWvxYddpaeroRPAHT0OnJ8B7GB016rGWZYWLceOvpKjeIj70PXMQi4JJ4MXmX7HQD85ncvs3d8CgK/NhaRW1OODvjBKUUXX+bixBwofp76kCHHwkRrBIDkNhZs8J6z17fSBjQojvSoTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725207931; c=relaxed/simple;
-	bh=MNbxKstlr0o7CmhBA6NhWp8hRr4a0eLwsABiKWdyj0M=;
+	s=arc-20240116; t=1725207658; c=relaxed/simple;
+	bh=kU+0+RapXi5Oul8uhZGsV3634GPRs5Ka6/nfU03YsoA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i2xGv4E8TQO0pHoUPiy3wPzlk29IMy8dKW1yncw4FS3lbp9Zpr9uHeILu/36+utWYhtShMj42OX0dcuZ+zVFDPTjpdYeAEIj/Pg1FVekRv1pA3mr8AJnTW8j7WqyaW4DI2ZEjMlqMAXX502TzWVxfgQwZktAumUnWkwIJpqO0BI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VmbKAm3u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 407BEC4CEC3;
-	Sun,  1 Sep 2024 16:25:31 +0000 (UTC)
+	 MIME-Version; b=MI9nB6ml/WvyeUllG7ZwQROUHI6IsDKvqKDl7YcAIKfBbPYGbP0whDZf4tC8DY5mZDcADt2CyNlm7Sgm3afhRLi9gUYRg1/B5vG/DPvXeGYU1WtlsTcMKx+heUj7BCts1opbWt3W/1LbU/3xWKRVlIL+4LAaSnPgRESAFv0MjS4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=llsSw8D7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DECBC4CEC3;
+	Sun,  1 Sep 2024 16:20:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725207931;
-	bh=MNbxKstlr0o7CmhBA6NhWp8hRr4a0eLwsABiKWdyj0M=;
+	s=korg; t=1725207658;
+	bh=kU+0+RapXi5Oul8uhZGsV3634GPRs5Ka6/nfU03YsoA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VmbKAm3uNdgxbZeW2F5/QgBzs1ZkuzGEpdyr39OOfG0AZjX/evfOkKJaaYo23kuKC
-	 IA9l5AV2yCvFX4XWzxT3G3m2sb5eSogqcq4KIDd8Rd8ni6HVgw3v/u+ySfwz/EPgMZ
-	 GCKH46MBx5hbTEtgJgoS2DtHrc7VV8qudy8gg2HU=
+	b=llsSw8D7HQ/RTpuPq2hPVAFswB+6qDT4Va1xTEYTCXze3iNEsJAq+2yu6NXjv1trR
+	 XwnVRdEiiZhlLupknUcT1Gqsx6xAGLP3qeSpTACUJ//3ZHn0oYyWZmhMAljoDoKyAa
+	 bQAZNS9TPxDOfRZkbFBhkxuZe95T7wAvUn7RgTgc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.6 21/93] selftests: mptcp: join: check removing ID 0 endpoint
-Date: Sun,  1 Sep 2024 18:16:08 +0200
-Message-ID: <20240901160808.158105680@linuxfoundation.org>
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 39/98] btrfs: delete pointless BUG_ON check on quota root in btrfs_qgroup_account_extent()
+Date: Sun,  1 Sep 2024 18:16:09 +0200
+Message-ID: <20240901160805.174327721@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
-References: <20240901160807.346406833@linuxfoundation.org>
+In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
+References: <20240901160803.673617007@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,96 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: David Sterba <dsterba@suse.com>
 
-commit 5f94b08c001290acda94d9d8868075590931c198 upstream.
+[ Upstream commit f40a3ea94881f668084f68f6b9931486b1606db0 ]
 
-Removing the endpoint linked to the initial subflow should trigger a
-RM_ADDR for the right ID, and the removal of the subflow. That's what is
-now being verified in the "delete and re-add" test.
+The BUG_ON is deep in the qgroup code where we can expect that it
+exists. A NULL pointer would cause a crash.
 
-Note that removing the initial subflow will not decrement the 'subflows'
-counters, which corresponds to the *additional* subflows. On the other
-hand, when the same endpoint is re-added, it will increment this
-counter, as it will be seen as an additional subflow this time.
+It was added long ago in 550d7a2ed5db35 ("btrfs: qgroup: Add new qgroup
+calculation function btrfs_qgroup_account_extents()."). It maybe made
+sense back then as the quota enable/disable state machine was not that
+robust as it is nowadays, so we can just delete it.
 
-The 'Fixes' tag here below is the same as the one from the previous
-commit: this patch here is not fixing anything wrong in the selftests,
-but it validates the previous fix for an issue introduced by this commit
-ID.
-
-Fixes: 3ad14f54bd74 ("mptcp: more accurate MPC endpoint tracking")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh |   25 +++++++++++++++++-------
- 1 file changed, 18 insertions(+), 7 deletions(-)
+ fs/btrfs/qgroup.c | 2 --
+ 1 file changed, 2 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -3578,8 +3578,9 @@ endpoint_tests()
+diff --git a/fs/btrfs/qgroup.c b/fs/btrfs/qgroup.c
+index ef95525fa6cdf..770e6f652a1e5 100644
+--- a/fs/btrfs/qgroup.c
++++ b/fs/btrfs/qgroup.c
+@@ -2095,8 +2095,6 @@ int btrfs_qgroup_account_extent(struct btrfs_trans_handle *trans, u64 bytenr,
+ 	if (nr_old_roots == 0 && nr_new_roots == 0)
+ 		goto out_free;
  
- 	if reset_with_tcp_filter "delete and re-add" ns2 10.0.3.2 REJECT OUTPUT &&
- 	   mptcp_lib_kallsyms_has "subflow_rebuild_header$"; then
--		pm_nl_set_limits $ns1 0 2
--		pm_nl_set_limits $ns2 0 2
-+		pm_nl_set_limits $ns1 0 3
-+		pm_nl_set_limits $ns2 0 3
-+		pm_nl_add_endpoint $ns2 10.0.1.2 id 1 dev ns2eth1 flags subflow
- 		pm_nl_add_endpoint $ns2 10.0.2.2 id 2 dev ns2eth2 flags subflow
- 		test_linkfail=4 speed=20 \
- 			run_tests $ns1 $ns2 10.0.1.1 &
-@@ -3588,17 +3589,17 @@ endpoint_tests()
- 		wait_mpj $ns2
- 		pm_nl_check_endpoint "creation" \
- 			$ns2 10.0.2.2 id 2 flags subflow dev ns2eth2
--		chk_subflow_nr "before delete" 2
-+		chk_subflow_nr "before delete id 2" 2
- 		chk_mptcp_info subflows 1 subflows 1
+-	BUG_ON(!fs_info->quota_root);
+-
+ 	trace_btrfs_qgroup_account_extent(fs_info, trans->transid, bytenr,
+ 					num_bytes, nr_old_roots, nr_new_roots);
  
- 		pm_nl_del_endpoint $ns2 2 10.0.2.2
- 		sleep 0.5
--		chk_subflow_nr "after delete" 1
-+		chk_subflow_nr "after delete id 2" 1
- 		chk_mptcp_info subflows 0 subflows 0
- 
- 		pm_nl_add_endpoint $ns2 10.0.2.2 id 2 dev ns2eth2 flags subflow
- 		wait_mpj $ns2
--		chk_subflow_nr "after re-add" 2
-+		chk_subflow_nr "after re-add id 2" 2
- 		chk_mptcp_info subflows 1 subflows 1
- 
- 		pm_nl_add_endpoint $ns2 10.0.3.2 id 3 flags subflow
-@@ -3613,10 +3614,20 @@ endpoint_tests()
- 		chk_subflow_nr "after no reject" 3
- 		chk_mptcp_info subflows 2 subflows 2
- 
-+		pm_nl_del_endpoint $ns2 1 10.0.1.2
-+		sleep 0.5
-+		chk_subflow_nr "after delete id 0" 2
-+		chk_mptcp_info subflows 2 subflows 2 # only decr for additional sf
-+
-+		pm_nl_add_endpoint $ns2 10.0.1.2 id 1 dev ns2eth1 flags subflow
-+		wait_mpj $ns2
-+		chk_subflow_nr "after re-add id 0" 3
-+		chk_mptcp_info subflows 3 subflows 3
-+
- 		mptcp_lib_kill_wait $tests_pid
- 
--		chk_join_nr 3 3 3
--		chk_rm_nr 1 1
-+		chk_join_nr 4 4 4
-+		chk_rm_nr 2 2
- 	fi
- }
- 
+-- 
+2.43.0
+
 
 
 
