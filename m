@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-72150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72035-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAC2B967961
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:43:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B1869678E7
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:37:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 077801C20CB7
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:43:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE14C281231
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:37:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D71A17F389;
-	Sun,  1 Sep 2024 16:43:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 585B217F389;
+	Sun,  1 Sep 2024 16:37:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ls9COscB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o69bB0am"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CA6117CA1F;
-	Sun,  1 Sep 2024 16:43:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16A701C68C;
+	Sun,  1 Sep 2024 16:37:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209006; cv=none; b=UEQmYfEkOBTn9EtklCMjypF/H0763XGD8OoWUrB300ib9ZscY7vXdfk2VadTKS0h6MopBuqCkkCIxq0JTuEU5QtgXV5Kw2AfXGno9KPkzA6wriJr18i68esK9ywuz23pfeKB+gqXOSXfGEMF26hrugvAhpbiJ8rGIl1vmKbAi50=
+	t=1725208627; cv=none; b=lgGfS2QcyLQn9ALWblT2DjXyZIGDOf2U7CsNNI88IK0UXiO5is1PXc2pB+wlvqrC9pHLW9YPOK4DId/dZULXH79Zc8O4pg+Wh7U3+BXAJdYykKLxf57lFFVKZJI1YlVrrwUj6brsXq733t5KHuykiaH4b6L+zhcciEtx+p5pMpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209006; c=relaxed/simple;
-	bh=k8Vu5GbhatEthMtKawaWANqRRH1FVabqTpQdS3rgJJQ=;
+	s=arc-20240116; t=1725208627; c=relaxed/simple;
+	bh=ft8nhVgfs7QsMnLVoIwHu4vrNDqgcEw5D5aRS5E4R4c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mm1UHCRK9Ncs/owNhr7Lf7KoZVsCu4JaOq4kHMSLLzeH1vq7Aqa9jbCdyW46eXx9KueXvmQHegzp3BCes94OJhh4pFoWWsXfZdcJWKcZCsX1PmKqPiXjh9haCEBblrE9l3KwZ5HjClyv4nigoHFw3EjL3MGWp6i5GzpIA20sVsc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ls9COscB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57243C4CEC3;
-	Sun,  1 Sep 2024 16:43:25 +0000 (UTC)
+	 MIME-Version; b=LRBicViLjLj7sjiTtoso+rE4/Q70HDkSPEOsZX/9J8cCAaCEFYP5K5f+en4Z5G8kbnvoKN9BKKTpo7Z5ptjnze6fd6G/XIfA8/BJN0SWOQ/mNhM23mn/+uQcZJBZhDck0PJeFv1rNI0MLdDfNglsK2MMMrFJW17jUmY18xtISpU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o69bB0am; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88DFEC4CEC3;
+	Sun,  1 Sep 2024 16:37:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209005;
-	bh=k8Vu5GbhatEthMtKawaWANqRRH1FVabqTpQdS3rgJJQ=;
+	s=korg; t=1725208627;
+	bh=ft8nhVgfs7QsMnLVoIwHu4vrNDqgcEw5D5aRS5E4R4c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ls9COscBg3iL9cR1Bh3EuzdiMpiS/jcFW8iWwgOlQcGhtOjZTBgjFJOAXFiqYSle/
-	 HOHUXkL8yQrEBb8EErisehzRJH7natxznmZt3Ep0zoGzeoMxtAhgok1RoQ3bvnqhRR
-	 V7nOj2shmJfVYLkm8GJLdNBMa8v63/oGxofm8b5Y=
+	b=o69bB0amop8lSQXofPb3BlK57FrR/eu/oueCmXwWvtu/B4e1eaE7yNAfF0Wns+TYJ
+	 rywbWX8mtX2TDdW9VVhF0SoG9Q84eeAeKTMHq3l7wRoisxPT+bYOjPPtfRHMc2mDv6
+	 3a7xgAD///oL4G+mfvV79pSZ1opChp4tZ/4j2ACE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yury Norov <yury.norov@gmail.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.4 106/134] tools: move alignment-related macros to new <linux/align.h>
+	"Sicelo A. Mhlongo" <absicsz@gmail.com>,
+	Andreas Kemnade <andreas@kemnade.info>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 141/149] ARM: dts: omap3-n900: correct the accelerometer orientation
 Date: Sun,  1 Sep 2024 18:17:32 +0200
-Message-ID: <20240901160814.077821000@linuxfoundation.org>
+Message-ID: <20240901160822.749642864@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
-References: <20240901160809.752718937@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Lobakin <aleksander.lobakin@intel.com>
+From: Sicelo A. Mhlongo <absicsz@gmail.com>
 
-commit 10a04ff09bcc39e0044190ffe9f00f998f13647c upstream.
+[ Upstream commit 5062d9c0cbbc202e495e9b20f147f64ef5cc2897 ]
 
-Currently, tools have *ALIGN*() macros scattered across the unrelated
-headers, as there are only 3 of them and they were added separately
-each time on an as-needed basis.
-Anyway, let's make it more consistent with the kernel headers and allow
-using those macros outside of the mentioned headers. Create
-<linux/align.h> inside the tools/ folder and include it where needed.
+Negate the values reported for the accelerometer z-axis in order to
+match Documentation/devicetree/bindings/iio/mount-matrix.txt.
 
-Signed-off-by: Yury Norov <yury.norov@gmail.com>
-Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 14a213dcb004 ("ARM: dts: n900: use iio driver for accelerometer")
+
+Signed-off-by: Sicelo A. Mhlongo <absicsz@gmail.com>
+Reviewed-By: Andreas Kemnade <andreas@kemnade.info>
+Link: https://lore.kernel.org/r/20240722113137.3240847-1-absicsz@gmail.com
+Signed-off-by: Kevin Hilman <khilman@baylibre.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/include/linux/align.h  |   12 ++++++++++++
- tools/include/linux/bitmap.h |    1 +
- 2 files changed, 13 insertions(+)
- create mode 100644 tools/include/linux/align.h
+ arch/arm/boot/dts/ti/omap/omap3-n900.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- /dev/null
-+++ b/tools/include/linux/align.h
-@@ -0,0 +1,12 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
-+#ifndef _TOOLS_LINUX_ALIGN_H
-+#define _TOOLS_LINUX_ALIGN_H
-+
-+#include <uapi/linux/const.h>
-+
-+#define ALIGN(x, a)		__ALIGN_KERNEL((x), (a))
-+#define ALIGN_DOWN(x, a)	__ALIGN_KERNEL((x) - ((a) - 1), (a))
-+#define IS_ALIGNED(x, a)	(((x) & ((typeof(x))(a) - 1)) == 0)
-+
-+#endif /* _TOOLS_LINUX_ALIGN_H */
---- a/tools/include/linux/bitmap.h
-+++ b/tools/include/linux/bitmap.h
-@@ -3,6 +3,7 @@
- #define _PERF_BITOPS_H
+diff --git a/arch/arm/boot/dts/ti/omap/omap3-n900.dts b/arch/arm/boot/dts/ti/omap/omap3-n900.dts
+index 07c5b963af78a..4bde3342bb959 100644
+--- a/arch/arm/boot/dts/ti/omap/omap3-n900.dts
++++ b/arch/arm/boot/dts/ti/omap/omap3-n900.dts
+@@ -781,7 +781,7 @@
  
- #include <string.h>
-+#include <linux/align.h>
- #include <linux/bitops.h>
- #include <stdlib.h>
- #include <linux/kernel.h>
+ 		mount-matrix =	 "-1",  "0",  "0",
+ 				  "0",  "1",  "0",
+-				  "0",  "0",  "1";
++				  "0",  "0",  "-1";
+ 	};
+ 
+ 	cam1: camera@3e {
+-- 
+2.43.0
+
 
 
 
