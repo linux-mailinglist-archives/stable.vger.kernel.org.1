@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-72083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71757-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2351B96791B
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:39:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA24996779E
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:22:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 543EB1C2117E
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:39:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0EFFFB21912
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:21:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 694FD184527;
-	Sun,  1 Sep 2024 16:39:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2754183CA5;
+	Sun,  1 Sep 2024 16:21:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TIGTn1hM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w1RlO40G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 264731C68C;
-	Sun,  1 Sep 2024 16:39:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E138183090;
+	Sun,  1 Sep 2024 16:21:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208785; cv=none; b=Yz/NtqKG+ncN+xirzGsfC1f8IZeH4Q4C3Sp9VXA0505NUMnGcauZc72z0CYPjUgitdhu9Pf2IIpblXm4AU99D1Pl27W7nwY+l+xnFlT82KF+y8T0ewhIWG79UFo5wUE61P+g8pVoIvpoXmCAbepCcmAOBJHdQ1Gf405X49nuM9I=
+	t=1725207714; cv=none; b=niE5iIKGCU7ukk7PsXlU5+hsED7tDX6FG8EcUUtT9NEf3CBXF4nJkPmt4V1puglHwEjiys7OdlXALa0y0skZIFEH4ud/Hhn8o7XewjEtrzbnfdsrAisRZ2udXsYsIj8zS/HCZqCbYbzXePXgV6j8hiqhRCIVaE/HWOOXEXypBQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208785; c=relaxed/simple;
-	bh=KHGLogeJaMubrSo6A9PK9pqIxItqhErOE7j1iz+HTRI=;
+	s=arc-20240116; t=1725207714; c=relaxed/simple;
+	bh=uCzjZbbqctetRMcepL6W8oC9JX1cyTPl2kvyCAxmdOw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N6pS/aNlETEYyum5CERdriXBQmCX4gBZB13ndfXJDvD77/j+2GYIQQXLHyr/HRk2sDjzVx8TbsqfeDpX0RXhLB8glDEtOYJeMQlYga9V/pxPmYhxM+/jn9TGJ/RHMnJIdbUDzc1BU/0dFtxrLKyQUvKbLwJ/fDqkjEIw2JU5hEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TIGTn1hM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F436C4CEC3;
-	Sun,  1 Sep 2024 16:39:44 +0000 (UTC)
+	 MIME-Version; b=YMDsaRmrV3MBnosqirnnzXAJ/q/cAhEmxM9nV0nsCbxNmMzIeo4vxfAAHGycnLY9yTKHp/yRpEqY5tEMqfqa+6Vtsc8vKqEydDs17QdByCNzmB2ITa3PTdiwjTii/sfpATT2dNOCZDBvXJbYeMS1WF1lb9KUkPQRTsJRryRhi6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w1RlO40G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F3D5C4CEC3;
+	Sun,  1 Sep 2024 16:21:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208785;
-	bh=KHGLogeJaMubrSo6A9PK9pqIxItqhErOE7j1iz+HTRI=;
+	s=korg; t=1725207714;
+	bh=uCzjZbbqctetRMcepL6W8oC9JX1cyTPl2kvyCAxmdOw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TIGTn1hM5f9JGbsEo01Z2ibVG+R+6Sh2DRXBPvOkdluAyyTcZ8hY6PfDWfG93JWi0
-	 ByS+JJr74KNkOwiA84EJdsW74eYQzS02qU4M6FjhXfaFIlO/SSIJRW+hqklOKyDUFt
-	 pndqV6t+L6ux7rde1inJOy1s2+Mmj6cSUEbigluw=
+	b=w1RlO40GqTyBxmZ0/a/hETXKRfia2S1MpwEJh4xLpesURUm9wNoyxM5ZSwIyYzTzZ
+	 mJSu9gNLV9p/EdY6pK1A/MgAc+TIuPvDn548RUw0xyJx+Nk2J07BonA1aPk1TAm6sY
+	 BXbqQGhEtQfW9yRn/PwpXKDpEBWi94JoeJOIvNN0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Gruenbacher <agruenba@redhat.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Marcel Holtmann <marcel@holtmann.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 038/134] gfs2: setattr_chown: Add missing initialization
+Subject: [PATCH 4.19 54/98] Bluetooth: Make use of __check_timeout on hci_sched_le
 Date: Sun,  1 Sep 2024 18:16:24 +0200
-Message-ID: <20240901160811.543703986@linuxfoundation.org>
+Message-ID: <20240901160805.737359832@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
-References: <20240901160809.752718937@linuxfoundation.org>
+In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
+References: <20240901160803.673617007@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 2d8d7990619878a848b1d916c2f936d3012ee17d ]
+[ Upstream commit 1b1d29e5149990e44634b2e681de71effd463591 ]
 
-Add a missing initialization of variable ap in setattr_chown().
-Without, chown() may be able to bypass quotas.
+This reuse __check_timeout on hci_sched_le following the same logic
+used hci_sched_acl.
 
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Marcel Holtmann <marcel@holtmann.org>
+Stable-dep-of: 932021a11805 ("Bluetooth: hci_core: Fix LE quote calculation")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/inode.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/bluetooth/hci_core.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
-diff --git a/fs/gfs2/inode.c b/fs/gfs2/inode.c
-index 988bb7b17ed8f..4e0c933e08002 100644
---- a/fs/gfs2/inode.c
-+++ b/fs/gfs2/inode.c
-@@ -1869,7 +1869,7 @@ static int setattr_chown(struct inode *inode, struct iattr *attr)
- 	kuid_t ouid, nuid;
- 	kgid_t ogid, ngid;
- 	int error;
--	struct gfs2_alloc_parms ap;
-+	struct gfs2_alloc_parms ap = {};
+diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
+index 504f6aa4e95db..0221aa5785052 100644
+--- a/net/bluetooth/hci_core.c
++++ b/net/bluetooth/hci_core.c
+@@ -4116,15 +4116,10 @@ static void hci_sched_le(struct hci_dev *hdev)
+ 	if (!hci_conn_num(hdev, LE_LINK))
+ 		return;
  
- 	ouid = inode->i_uid;
- 	ogid = inode->i_gid;
+-	if (!hci_dev_test_flag(hdev, HCI_UNCONFIGURED)) {
+-		/* LE tx timeout must be longer than maximum
+-		 * link supervision timeout (40.9 seconds) */
+-		if (!hdev->le_cnt && hdev->le_pkts &&
+-		    time_after(jiffies, hdev->le_last_tx + HZ * 45))
+-			hci_link_tx_to(hdev, LE_LINK);
+-	}
+-
+ 	cnt = hdev->le_pkts ? hdev->le_cnt : hdev->acl_cnt;
++
++	__check_timeout(hdev, cnt);
++
+ 	tmp = cnt;
+ 	while (cnt && (chan = hci_chan_sent(hdev, LE_LINK, &quote))) {
+ 		u32 priority = (skb_peek(&chan->data_q))->priority;
 -- 
 2.43.0
 
