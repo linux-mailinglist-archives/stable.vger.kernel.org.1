@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-72351-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72127-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D682967A49
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:54:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A87DF96794A
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:42:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE35A2815AC
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:54:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3582BB21E24
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:42:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E4AF17E900;
-	Sun,  1 Sep 2024 16:54:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB37617E00C;
+	Sun,  1 Sep 2024 16:42:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aD2sZ86G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bwdo0xKW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BAF71DFD1;
-	Sun,  1 Sep 2024 16:54:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 692CE1C68C;
+	Sun,  1 Sep 2024 16:42:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209641; cv=none; b=e5T7nx5bhKj0vlCqXWwdmUL9vIohnjNg7KOvPxejzrSB6Yv7O3fWAql+1Bzbv2bfpwoFRRbH2mbos/SYsZkI92LYjthVVgceddDanlmPF02a5M+Cy+cmh7WGEU6ezXfeepgUBE7XbOMt3ccxLzVgC5mO46kMsC+ARxxKURnwGbY=
+	t=1725208928; cv=none; b=auL2VfMlo+mLK3N4T7xgLN4PFy5/a+/uPHSR6KueoGcwFSYYEGZ74SHVFV3cM0LGhRPKfUgKJTLNqUtc4ewis9uAI2qasyY/KUoi+nQdEvysk17eNFfPHJNhvMs+90k7g8v7Ds0Jlj0sYq/64WZ06ZJ9/f7oVMdTNxR6DT5gIs4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209641; c=relaxed/simple;
-	bh=60i4SP3bpa1LPWGGTYFBHQpBqUtAZe4ukJckt1cYHSw=;
+	s=arc-20240116; t=1725208928; c=relaxed/simple;
+	bh=kCp2z2s7gWkz8I549ukfWwUI2Iv8sCDoEJiBZH6jgaA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YK5/d5T6KS05XSIzYlMiZob9aLrxIv9EAoLUzhgICyCnFF0PsKa1D2b/He4s6n8LF2LIDwqR52nGShnN+gbDkvNDm1jUbTKrWCPkOW2YfYcFPA/A7BPsAyZV2UFZ1gZ5nrutYspecTFsWvj9Ouu3FMiz5lJSiBy2a9OFlDRPpFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aD2sZ86G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EB03C4CEC3;
-	Sun,  1 Sep 2024 16:54:00 +0000 (UTC)
+	 MIME-Version; b=j8IWeaUcXziUSvDIG6UxXYxRPZALD6I0ZAhF4o/fsLQKiNYfkjowxZRUJ3vTSibRQboEpdlHZTs7PhQzU4DeTGzT9SoaGTB3lAmL+HrXF9wqAdTbF3QZVefIMfNtXY9C/K5IYmXCV+rRKq1LgFfemCZl11xtvSTYiJ1cnK+2ZQk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bwdo0xKW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E44AEC4CEC3;
+	Sun,  1 Sep 2024 16:42:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209640;
-	bh=60i4SP3bpa1LPWGGTYFBHQpBqUtAZe4ukJckt1cYHSw=;
+	s=korg; t=1725208928;
+	bh=kCp2z2s7gWkz8I549ukfWwUI2Iv8sCDoEJiBZH6jgaA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aD2sZ86GoWJHIURAr3L/7HmklhqRrqiF2WU36y1lvJSMQZvrYUQyQ9Op4fgup8Aaf
-	 jjXMJxI6jGNzHNg2eu0BCBFYXLksOlsFi/p+5k3H+RmCBdDI8pIoydmfBw8XvLj9nf
-	 buvGa/XJIl9lDPa+HdvY99Rmt2uhQogGWAUEWZz4=
+	b=Bwdo0xKWAt4PD6k22zdSADnSYTzADEbXrd4Dxw4sTKDM7rndrawEF/WBOomAD5i1Z
+	 EXYVes9e0ZRi2vJpiQ5G/7BpDHykfpyo1GQe/cRdGiFQpWc/VI9dmLkooZSF4ZtTNJ
+	 9vwJl++vrgq3Jx+N9rN8W7FYBFGwCdF0DdvV/dx4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhiguo Niu <zhiguo.niu@unisoc.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 068/151] f2fs: fix to do sanity check in update_sit_entry
+Subject: [PATCH 5.4 082/134] Bluetooth: hci_core: Fix LE quote calculation
 Date: Sun,  1 Sep 2024 18:17:08 +0200
-Message-ID: <20240901160816.676434794@linuxfoundation.org>
+Message-ID: <20240901160813.184769409@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
-References: <20240901160814.090297276@linuxfoundation.org>
+In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
+References: <20240901160809.752718937@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +61,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhiguo Niu <zhiguo.niu@unisoc.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 36959d18c3cf09b3c12157c6950e18652067de77 ]
+[ Upstream commit 932021a11805b9da4bd6abf66fe233cccd59fe0e ]
 
-If GET_SEGNO return NULL_SEGNO for some unecpected case,
-update_sit_entry will access invalid memory address,
-cause system crash. It is better to do sanity check about
-GET_SEGNO just like update_segment_mtime & locate_dirty_segment.
+Function hci_sched_le needs to update the respective counter variable
+inplace other the likes of hci_quote_sent would attempt to use the
+possible outdated value of conn->{le_cnt,acl_cnt}.
 
-Also remove some redundant judgment code.
-
-Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Link: https://github.com/bluez/bluez/issues/915
+Fixes: 73d80deb7bdf ("Bluetooth: prioritizing data over HCI")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/segment.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ net/bluetooth/hci_core.c | 19 +++++++------------
+ 1 file changed, 7 insertions(+), 12 deletions(-)
 
-diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
-index 134a78179e6ff..6fcc83637b153 100644
---- a/fs/f2fs/segment.c
-+++ b/fs/f2fs/segment.c
-@@ -2215,6 +2215,8 @@ static void update_sit_entry(struct f2fs_sb_info *sbi, block_t blkaddr, int del)
- #endif
+diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
+index b6243cb97e8ec..f1e8bda97c106 100644
+--- a/net/bluetooth/hci_core.c
++++ b/net/bluetooth/hci_core.c
+@@ -4245,19 +4245,19 @@ static void hci_sched_le(struct hci_dev *hdev)
+ {
+ 	struct hci_chan *chan;
+ 	struct sk_buff *skb;
+-	int quote, cnt, tmp;
++	int quote, *cnt, tmp;
  
- 	segno = GET_SEGNO(sbi, blkaddr);
-+	if (segno == NULL_SEGNO)
-+		return;
+ 	BT_DBG("%s", hdev->name);
  
- 	se = get_seg_entry(sbi, segno);
- 	new_vblocks = se->valid_blocks + del;
-@@ -3391,8 +3393,7 @@ void f2fs_allocate_data_block(struct f2fs_sb_info *sbi, struct page *page,
- 	 * since SSR needs latest valid block information.
- 	 */
- 	update_sit_entry(sbi, *new_blkaddr, 1);
--	if (GET_SEGNO(sbi, old_blkaddr) != NULL_SEGNO)
--		update_sit_entry(sbi, old_blkaddr, -1);
-+	update_sit_entry(sbi, old_blkaddr, -1);
+ 	if (!hci_conn_num(hdev, LE_LINK))
+ 		return;
  
- 	if (!__has_curseg_space(sbi, curseg)) {
- 		if (from_gc)
+-	cnt = hdev->le_pkts ? hdev->le_cnt : hdev->acl_cnt;
++	cnt = hdev->le_pkts ? &hdev->le_cnt : &hdev->acl_cnt;
+ 
+-	__check_timeout(hdev, cnt, LE_LINK);
++	__check_timeout(hdev, *cnt, LE_LINK);
+ 
+-	tmp = cnt;
+-	while (cnt && (chan = hci_chan_sent(hdev, LE_LINK, &quote))) {
++	tmp = *cnt;
++	while (*cnt && (chan = hci_chan_sent(hdev, LE_LINK, &quote))) {
+ 		u32 priority = (skb_peek(&chan->data_q))->priority;
+ 		while (quote-- && (skb = skb_peek(&chan->data_q))) {
+ 			BT_DBG("chan %p skb %p len %d priority %u", chan, skb,
+@@ -4272,18 +4272,13 @@ static void hci_sched_le(struct hci_dev *hdev)
+ 			hci_send_frame(hdev, skb);
+ 			hdev->le_last_tx = jiffies;
+ 
+-			cnt--;
++			(*cnt)--;
+ 			chan->sent++;
+ 			chan->conn->sent++;
+ 		}
+ 	}
+ 
+-	if (hdev->le_pkts)
+-		hdev->le_cnt = cnt;
+-	else
+-		hdev->acl_cnt = cnt;
+-
+-	if (cnt != tmp)
++	if (*cnt != tmp)
+ 		hci_prio_recalculate(hdev, LE_LINK);
+ }
+ 
 -- 
 2.43.0
 
