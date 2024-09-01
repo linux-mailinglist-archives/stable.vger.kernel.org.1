@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-72320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72005-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D23C967A2A
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:52:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CD2B9678C6
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:35:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BFB012822C5
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:52:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D287DB21920
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:35:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70B18181B86;
-	Sun,  1 Sep 2024 16:52:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32D3017CA1F;
+	Sun,  1 Sep 2024 16:35:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xmkaUMkq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o72uL8Db"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C12C17ADE1;
-	Sun,  1 Sep 2024 16:52:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E35982B9C7;
+	Sun,  1 Sep 2024 16:35:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209541; cv=none; b=IVp3CbHBALCw77Jjk5o9MkRcSntBH4+YbXPc5KlstxlSXlv9ADUfTzkOtzWONbcVJcNSs7UY1NqPYuTbMH+TgbutW30DQuEr3IB0Ac1Fs+NbZwg0vtZyjoFN1Lk3pSExPhfsKQtZgiOsh3Obhda4VTR3KHyUy+BZ8mvpCPyV4l0=
+	t=1725208532; cv=none; b=nrDNvJyRIBnUqh3rdFHZRKIVpnCkBPBWpVDsHhHkPkrQMmV870zfWkbD93dmEfpxPvHo12b2xRuHo+aEpP5D3UlOdzba9ZL6xyEj767QRW4uQLAbIIcx4FEKlb3mKCu7V4Ib1KtyWAywVqDELhFpvIYfhTJ2JNCo/KG4UjzvzG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209541; c=relaxed/simple;
-	bh=4OplOvx/23KUCPHYsPoaLSB5jBwy5JBiI1/xGqnQ+3I=;
+	s=arc-20240116; t=1725208532; c=relaxed/simple;
+	bh=Ftz4wo2u1su45f/Q5QkoxPVM1Y8Xd+nBOucyzi7VJ6k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iB02WQlonI/nHpxW/SerDjm++lVtbn+HC/3gBE3+0qHsrX7C0ROKZ9cC0CG3mLBJdhJEilNFh2/tKl+MxtN2PyunF7RdTTOR+zjtTG98VNvStdL/FW3hU/ILduuPEsXpgN+APvyBqouPZ1RgL1DngsqH9YRmAbE4bjzMqbNsH7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xmkaUMkq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6941C4CEC3;
-	Sun,  1 Sep 2024 16:52:20 +0000 (UTC)
+	 MIME-Version; b=NzcwzQvtQiGxu7Va3EQGETe96vqb3PUGO2KpXQv1JFE/1rXgWqeA29a8MffIiY7ZTB4E75DisSSmsmLkIK8v5Tvms/X8GLBn7Q33Ljciv8sePGVkX3eoIsQQbRkplNFuS6C5EuflFcU7pbQPHH2EKr7BTbGAEwJP2pkREfMtPIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o72uL8Db; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51D9BC4CEC3;
+	Sun,  1 Sep 2024 16:35:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209541;
-	bh=4OplOvx/23KUCPHYsPoaLSB5jBwy5JBiI1/xGqnQ+3I=;
+	s=korg; t=1725208531;
+	bh=Ftz4wo2u1su45f/Q5QkoxPVM1Y8Xd+nBOucyzi7VJ6k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xmkaUMkqzb+R8QFWmUyUVlpVHfsn2Gx48U2KGjDko6bLL6rXMglEYiXxzmqKtN49A
-	 bcjAY/7f5SEYM8h9OIMDUQmEnaHT81KYzErtbEswnxo2AvtnUSZsR3Wat5WYDM6Nxr
-	 IBHUif5g+eMkmve0InY4acvi9nHTszq0+zs/PCWA=
+	b=o72uL8DbuxHK1H7FEuCm7u+vZCEDlTJNkaxt2WYTJCeFSUqjX7APX7O+6cXJR7WvH
+	 Ll6EaBLLYyr0+/l0+m6pP6kgkbx5TmPXPHbFOmeawZLmh/gUj8h+ZzS+NicgqqWDoc
+	 YiH6zpAqBZDKGxwK3yea0LcCXvo8ZSa3BxTk7D8M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>,
+	Ma Ke <make24@iscas.ac.cn>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 061/151] parisc: Use irq_enter_rcu() to fix warning at kernel/context_tracking.c:367
+Subject: [PATCH 6.10 110/149] drm/amd/display: avoid using null object of framebuffer
 Date: Sun,  1 Sep 2024 18:17:01 +0200
-Message-ID: <20240901160816.412918744@linuxfoundation.org>
+Message-ID: <20240901160821.592504238@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
-References: <20240901160814.090297276@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Ma Ke <make24@iscas.ac.cn>
 
-[ Upstream commit 73cb4a2d8d7e0259f94046116727084f21e4599f ]
+[ Upstream commit 3b9a33235c773c7a3768060cf1d2cf8a9153bc37 ]
 
-Use irq*_rcu() functions to fix this kernel warning:
+Instead of using state->fb->obj[0] directly, get object from framebuffer
+by calling drm_gem_fb_get_obj() and return error code when object is
+null to avoid using null object of framebuffer.
 
- WARNING: CPU: 0 PID: 0 at kernel/context_tracking.c:367 ct_irq_enter+0xa0/0xd0
- Modules linked in:
- CPU: 0 PID: 0 Comm: swapper/0 Not tainted 6.7.0-rc3-64bit+ #1037
- Hardware name: 9000/785/C3700
-
- IASQ: 0000000000000000 0000000000000000 IAOQ: 00000000412cd758 00000000412cd75c
-  IIR: 03ffe01f    ISR: 0000000000000000  IOR: 0000000043c20c20
-  CPU:        0   CR30: 0000000041caa000 CR31: 0000000000000000
-  ORIG_R28: 0000000000000005
-  IAOQ[0]: ct_irq_enter+0xa0/0xd0
-  IAOQ[1]: ct_irq_enter+0xa4/0xd0
-  RP(r2): irq_enter+0x34/0x68
- Backtrace:
-  [<000000004034a3ec>] irq_enter+0x34/0x68
-  [<000000004030dc48>] do_cpu_irq_mask+0xc0/0x450
-  [<0000000040303070>] intr_return+0x0/0xc
-
-Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: 5d945cbcd4b1 ("drm/amd/display: Create a file dedicated to planes")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 73dd0ad9e5dad53766ea3e631303430116f834b3)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/parisc/kernel/irq.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/arch/parisc/kernel/irq.c b/arch/parisc/kernel/irq.c
-index 2762e8540672e..5e3b9be45de92 100644
---- a/arch/parisc/kernel/irq.c
-+++ b/arch/parisc/kernel/irq.c
-@@ -520,7 +520,7 @@ void do_cpu_irq_mask(struct pt_regs *regs)
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
+index 311c62d2d1ebb..70e45d980bb93 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
+@@ -28,6 +28,7 @@
+ #include <drm/drm_blend.h>
+ #include <drm/drm_gem_atomic_helper.h>
+ #include <drm/drm_plane_helper.h>
++#include <drm/drm_gem_framebuffer_helper.h>
+ #include <drm/drm_fourcc.h>
  
- 	old_regs = set_irq_regs(regs);
- 	local_irq_disable();
--	irq_enter();
-+	irq_enter_rcu();
+ #include "amdgpu.h"
+@@ -854,10 +855,14 @@ static int amdgpu_dm_plane_helper_prepare_fb(struct drm_plane *plane,
+ 	}
  
- 	eirr_val = mfctl(23) & cpu_eiem & per_cpu(local_ack_eiem, cpu);
- 	if (!eirr_val)
-@@ -555,7 +555,7 @@ void do_cpu_irq_mask(struct pt_regs *regs)
- #endif /* CONFIG_IRQSTACKS */
- 
-  out:
--	irq_exit();
-+	irq_exit_rcu();
- 	set_irq_regs(old_regs);
- 	return;
- 
+ 	afb = to_amdgpu_framebuffer(new_state->fb);
+-	obj = new_state->fb->obj[0];
++	obj = drm_gem_fb_get_obj(new_state->fb, 0);
++	if (!obj) {
++		DRM_ERROR("Failed to get obj from framebuffer\n");
++		return -EINVAL;
++	}
++
+ 	rbo = gem_to_amdgpu_bo(obj);
+ 	adev = amdgpu_ttm_adev(rbo->tbo.bdev);
+-
+ 	r = amdgpu_bo_reserve(rbo, true);
+ 	if (r) {
+ 		dev_err(adev->dev, "fail to reserve bo (%d)\n", r);
 -- 
 2.43.0
 
