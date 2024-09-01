@@ -1,55 +1,62 @@
-Return-Path: <stable+bounces-72127-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72012-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A87DF96794A
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:42:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5086A9678CF
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:36:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3582BB21E24
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:42:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 70F121C211D3
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:36:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB37617E00C;
-	Sun,  1 Sep 2024 16:42:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA75A183CBD;
+	Sun,  1 Sep 2024 16:35:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bwdo0xKW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AaVUu0ol"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 692CE1C68C;
-	Sun,  1 Sep 2024 16:42:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89E3017CA1F;
+	Sun,  1 Sep 2024 16:35:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208928; cv=none; b=auL2VfMlo+mLK3N4T7xgLN4PFy5/a+/uPHSR6KueoGcwFSYYEGZ74SHVFV3cM0LGhRPKfUgKJTLNqUtc4ewis9uAI2qasyY/KUoi+nQdEvysk17eNFfPHJNhvMs+90k7g8v7Ds0Jlj0sYq/64WZ06ZJ9/f7oVMdTNxR6DT5gIs4=
+	t=1725208554; cv=none; b=NoWmtVmPKJUUD8oTm1XP5VArtc37CaQAWGFFFjHr7jcKYebOCBPzkWAAHurSXpnJ0V7qJ20XdXa1OHVzqVbSjCON4ML/0C+7AbIdNmQHhZXHwTZj2u0rzfltmMBFC7ZE31B0FcFVdMHxZEqoUPfEikdx/vCZVOMYVrrb6RD/EOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208928; c=relaxed/simple;
-	bh=kCp2z2s7gWkz8I549ukfWwUI2Iv8sCDoEJiBZH6jgaA=;
+	s=arc-20240116; t=1725208554; c=relaxed/simple;
+	bh=7cS6ycPlY/NSwKrmafuEz1e/QvSplfEYYmipP8gs0fY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j8IWeaUcXziUSvDIG6UxXYxRPZALD6I0ZAhF4o/fsLQKiNYfkjowxZRUJ3vTSibRQboEpdlHZTs7PhQzU4DeTGzT9SoaGTB3lAmL+HrXF9wqAdTbF3QZVefIMfNtXY9C/K5IYmXCV+rRKq1LgFfemCZl11xtvSTYiJ1cnK+2ZQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bwdo0xKW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E44AEC4CEC3;
-	Sun,  1 Sep 2024 16:42:07 +0000 (UTC)
+	 MIME-Version; b=Hs84f5i9qlI+lhFAAGFIm6HfsyBR+6s1eRvm2DfB1I80m9SOB3pA3I7Anzp1bGVkEMuJnQmrHHgtL2sNDwgS7lln82dVu4FanMj0NT8zRusMKuQy+m47vSo8VaaOP6lTlQY4lqaf5QQ1gifXvx4BmdC3svLkaHLJHm6xJ/1+W10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AaVUu0ol; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECB72C4CEC8;
+	Sun,  1 Sep 2024 16:35:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208928;
-	bh=kCp2z2s7gWkz8I549ukfWwUI2Iv8sCDoEJiBZH6jgaA=;
+	s=korg; t=1725208554;
+	bh=7cS6ycPlY/NSwKrmafuEz1e/QvSplfEYYmipP8gs0fY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bwdo0xKWAt4PD6k22zdSADnSYTzADEbXrd4Dxw4sTKDM7rndrawEF/WBOomAD5i1Z
-	 EXYVes9e0ZRi2vJpiQ5G/7BpDHykfpyo1GQe/cRdGiFQpWc/VI9dmLkooZSF4ZtTNJ
-	 9vwJl++vrgq3Jx+N9rN8W7FYBFGwCdF0DdvV/dx4=
+	b=AaVUu0olDdwBVC6eQhJqAwwmkJNsYXiRqQIJ0ondnamAQ55ANdTX/AKkUMFSdmUYW
+	 X2M2ZBYQWgJYAhk+tA3/GEzks43txbiIz1O0RcfPRDzQ9Hu3yoLmLcUHkMiO6ox2i3
+	 Z1dHDvuGus3fl5btI0BrD4dEFMi118/JGvIgw3C4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 082/134] Bluetooth: hci_core: Fix LE quote calculation
+	Amit Pundir <amit.pundir@linaro.org>,
+	Johan Hovold <johan@kernel.org>,
+	Stephen Boyd <swboyd@chromium.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Bjorn Andersson <quic_bjorande@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.10 117/149] soc: qcom: pmic_glink: Fix race during initialization
 Date: Sun,  1 Sep 2024 18:17:08 +0200
-Message-ID: <20240901160813.184769409@linuxfoundation.org>
+Message-ID: <20240901160821.856543417@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
-References: <20240901160809.752718937@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,79 +68,226 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Bjorn Andersson <quic_bjorande@quicinc.com>
 
-[ Upstream commit 932021a11805b9da4bd6abf66fe233cccd59fe0e ]
+commit 3568affcddd68743e25aa3ec1647d9b82797757b upstream.
 
-Function hci_sched_le needs to update the respective counter variable
-inplace other the likes of hci_quote_sent would attempt to use the
-possible outdated value of conn->{le_cnt,acl_cnt}.
+As pointed out by Stephen Boyd it is possible that during initialization
+of the pmic_glink child drivers, the protection-domain notifiers fires,
+and the associated work is scheduled, before the client registration
+returns and as a result the local "client" pointer has been initialized.
 
-Link: https://github.com/bluez/bluez/issues/915
-Fixes: 73d80deb7bdf ("Bluetooth: prioritizing data over HCI")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The outcome of this is a NULL pointer dereference as the "client"
+pointer is blindly dereferenced.
+
+Timeline provided by Stephen:
+ CPU0                               CPU1
+ ----                               ----
+ ucsi->client = NULL;
+ devm_pmic_glink_register_client()
+  client->pdr_notify(client->priv, pg->client_state)
+   pmic_glink_ucsi_pdr_notify()
+    schedule_work(&ucsi->register_work)
+    <schedule away>
+                                    pmic_glink_ucsi_register()
+                                     ucsi_register()
+                                      pmic_glink_ucsi_read_version()
+                                       pmic_glink_ucsi_read()
+                                        pmic_glink_ucsi_read()
+                                         pmic_glink_send(ucsi->client)
+                                         <client is NULL BAD>
+ ucsi->client = client // Too late!
+
+This code is identical across the altmode, battery manager and usci
+child drivers.
+
+Resolve this by splitting the allocation of the "client" object and the
+registration thereof into two operations.
+
+This only happens if the protection domain registry is populated at the
+time of registration, which by the introduction of commit '1ebcde047c54
+("soc: qcom: add pd-mapper implementation")' became much more likely.
+
+Reported-by: Amit Pundir <amit.pundir@linaro.org>
+Closes: https://lore.kernel.org/all/CAMi1Hd2_a7TjA7J9ShrAbNOd_CoZ3D87twmO5t+nZxC9sX18tA@mail.gmail.com/
+Reported-by: Johan Hovold <johan@kernel.org>
+Closes: https://lore.kernel.org/all/ZqiyLvP0gkBnuekL@hovoldconsulting.com/
+Reported-by: Stephen Boyd <swboyd@chromium.org>
+Closes: https://lore.kernel.org/all/CAE-0n52JgfCBWiFQyQWPji8cq_rCsviBpW-m72YitgNfdaEhQg@mail.gmail.com/
+Fixes: 58ef4ece1e41 ("soc: qcom: pmic_glink: Introduce base PMIC GLINK driver")
+Cc: stable@vger.kernel.org
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Tested-by: Amit Pundir <amit.pundir@linaro.org>
+Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
+Acked-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Tested-by: Johan Hovold <johan+linaro@kernel.org>
+Signed-off-by: Bjorn Andersson <quic_bjorande@quicinc.com>
+Link: https://lore.kernel.org/r/20240820-pmic-glink-v6-11-races-v3-1-eec53c750a04@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/hci_core.c | 19 +++++++------------
- 1 file changed, 7 insertions(+), 12 deletions(-)
+ drivers/power/supply/qcom_battmgr.c   |   16 ++++++++++------
+ drivers/soc/qcom/pmic_glink.c         |   28 ++++++++++++++++++----------
+ drivers/soc/qcom/pmic_glink_altmode.c |   17 +++++++++++------
+ drivers/usb/typec/ucsi/ucsi_glink.c   |   16 ++++++++++------
+ include/linux/soc/qcom/pmic_glink.h   |   11 ++++++-----
+ 5 files changed, 55 insertions(+), 33 deletions(-)
 
-diff --git a/net/bluetooth/hci_core.c b/net/bluetooth/hci_core.c
-index b6243cb97e8ec..f1e8bda97c106 100644
---- a/net/bluetooth/hci_core.c
-+++ b/net/bluetooth/hci_core.c
-@@ -4245,19 +4245,19 @@ static void hci_sched_le(struct hci_dev *hdev)
- {
- 	struct hci_chan *chan;
- 	struct sk_buff *skb;
--	int quote, cnt, tmp;
-+	int quote, *cnt, tmp;
- 
- 	BT_DBG("%s", hdev->name);
- 
- 	if (!hci_conn_num(hdev, LE_LINK))
- 		return;
- 
--	cnt = hdev->le_pkts ? hdev->le_cnt : hdev->acl_cnt;
-+	cnt = hdev->le_pkts ? &hdev->le_cnt : &hdev->acl_cnt;
- 
--	__check_timeout(hdev, cnt, LE_LINK);
-+	__check_timeout(hdev, *cnt, LE_LINK);
- 
--	tmp = cnt;
--	while (cnt && (chan = hci_chan_sent(hdev, LE_LINK, &quote))) {
-+	tmp = *cnt;
-+	while (*cnt && (chan = hci_chan_sent(hdev, LE_LINK, &quote))) {
- 		u32 priority = (skb_peek(&chan->data_q))->priority;
- 		while (quote-- && (skb = skb_peek(&chan->data_q))) {
- 			BT_DBG("chan %p skb %p len %d priority %u", chan, skb,
-@@ -4272,18 +4272,13 @@ static void hci_sched_le(struct hci_dev *hdev)
- 			hci_send_frame(hdev, skb);
- 			hdev->le_last_tx = jiffies;
- 
--			cnt--;
-+			(*cnt)--;
- 			chan->sent++;
- 			chan->conn->sent++;
- 		}
+--- a/drivers/power/supply/qcom_battmgr.c
++++ b/drivers/power/supply/qcom_battmgr.c
+@@ -1384,12 +1384,16 @@ static int qcom_battmgr_probe(struct aux
+ 					     "failed to register wireless charing power supply\n");
  	}
  
--	if (hdev->le_pkts)
--		hdev->le_cnt = cnt;
--	else
--		hdev->acl_cnt = cnt;
--
--	if (cnt != tmp)
-+	if (*cnt != tmp)
- 		hci_prio_recalculate(hdev, LE_LINK);
+-	battmgr->client = devm_pmic_glink_register_client(dev,
+-							  PMIC_GLINK_OWNER_BATTMGR,
+-							  qcom_battmgr_callback,
+-							  qcom_battmgr_pdr_notify,
+-							  battmgr);
+-	return PTR_ERR_OR_ZERO(battmgr->client);
++	battmgr->client = devm_pmic_glink_client_alloc(dev, PMIC_GLINK_OWNER_BATTMGR,
++						       qcom_battmgr_callback,
++						       qcom_battmgr_pdr_notify,
++						       battmgr);
++	if (IS_ERR(battmgr->client))
++		return PTR_ERR(battmgr->client);
++
++	pmic_glink_client_register(battmgr->client);
++
++	return 0;
  }
  
--- 
-2.43.0
-
+ static const struct auxiliary_device_id qcom_battmgr_id_table[] = {
+--- a/drivers/soc/qcom/pmic_glink.c
++++ b/drivers/soc/qcom/pmic_glink.c
+@@ -66,15 +66,14 @@ static void _devm_pmic_glink_release_cli
+ 	spin_unlock_irqrestore(&pg->client_lock, flags);
+ }
+ 
+-struct pmic_glink_client *devm_pmic_glink_register_client(struct device *dev,
+-							  unsigned int id,
+-							  void (*cb)(const void *, size_t, void *),
+-							  void (*pdr)(void *, int),
+-							  void *priv)
++struct pmic_glink_client *devm_pmic_glink_client_alloc(struct device *dev,
++						       unsigned int id,
++						       void (*cb)(const void *, size_t, void *),
++						       void (*pdr)(void *, int),
++						       void *priv)
+ {
+ 	struct pmic_glink_client *client;
+ 	struct pmic_glink *pg = dev_get_drvdata(dev->parent);
+-	unsigned long flags;
+ 
+ 	client = devres_alloc(_devm_pmic_glink_release_client, sizeof(*client), GFP_KERNEL);
+ 	if (!client)
+@@ -85,6 +84,18 @@ struct pmic_glink_client *devm_pmic_glin
+ 	client->cb = cb;
+ 	client->pdr_notify = pdr;
+ 	client->priv = priv;
++	INIT_LIST_HEAD(&client->node);
++
++	devres_add(dev, client);
++
++	return client;
++}
++EXPORT_SYMBOL_GPL(devm_pmic_glink_client_alloc);
++
++void pmic_glink_client_register(struct pmic_glink_client *client)
++{
++	struct pmic_glink *pg = client->pg;
++	unsigned long flags;
+ 
+ 	mutex_lock(&pg->state_lock);
+ 	spin_lock_irqsave(&pg->client_lock, flags);
+@@ -95,11 +106,8 @@ struct pmic_glink_client *devm_pmic_glin
+ 	spin_unlock_irqrestore(&pg->client_lock, flags);
+ 	mutex_unlock(&pg->state_lock);
+ 
+-	devres_add(dev, client);
+-
+-	return client;
+ }
+-EXPORT_SYMBOL_GPL(devm_pmic_glink_register_client);
++EXPORT_SYMBOL_GPL(pmic_glink_client_register);
+ 
+ int pmic_glink_send(struct pmic_glink_client *client, void *data, size_t len)
+ {
+--- a/drivers/soc/qcom/pmic_glink_altmode.c
++++ b/drivers/soc/qcom/pmic_glink_altmode.c
+@@ -520,12 +520,17 @@ static int pmic_glink_altmode_probe(stru
+ 			return ret;
+ 	}
+ 
+-	altmode->client = devm_pmic_glink_register_client(dev,
+-							  altmode->owner_id,
+-							  pmic_glink_altmode_callback,
+-							  pmic_glink_altmode_pdr_notify,
+-							  altmode);
+-	return PTR_ERR_OR_ZERO(altmode->client);
++	altmode->client = devm_pmic_glink_client_alloc(dev,
++						       altmode->owner_id,
++						       pmic_glink_altmode_callback,
++						       pmic_glink_altmode_pdr_notify,
++						       altmode);
++	if (IS_ERR(altmode->client))
++		return PTR_ERR(altmode->client);
++
++	pmic_glink_client_register(altmode->client);
++
++	return 0;
+ }
+ 
+ static const struct auxiliary_device_id pmic_glink_altmode_id_table[] = {
+--- a/drivers/usb/typec/ucsi/ucsi_glink.c
++++ b/drivers/usb/typec/ucsi/ucsi_glink.c
+@@ -395,12 +395,16 @@ static int pmic_glink_ucsi_probe(struct
+ 		ucsi->port_orientation[port] = desc;
+ 	}
+ 
+-	ucsi->client = devm_pmic_glink_register_client(dev,
+-						       PMIC_GLINK_OWNER_USBC,
+-						       pmic_glink_ucsi_callback,
+-						       pmic_glink_ucsi_pdr_notify,
+-						       ucsi);
+-	return PTR_ERR_OR_ZERO(ucsi->client);
++	ucsi->client = devm_pmic_glink_client_alloc(dev, PMIC_GLINK_OWNER_USBC,
++						    pmic_glink_ucsi_callback,
++						    pmic_glink_ucsi_pdr_notify,
++						    ucsi);
++	if (IS_ERR(ucsi->client))
++		return PTR_ERR(ucsi->client);
++
++	pmic_glink_client_register(ucsi->client);
++
++	return 0;
+ }
+ 
+ static void pmic_glink_ucsi_remove(struct auxiliary_device *adev)
+--- a/include/linux/soc/qcom/pmic_glink.h
++++ b/include/linux/soc/qcom/pmic_glink.h
+@@ -23,10 +23,11 @@ struct pmic_glink_hdr {
+ 
+ int pmic_glink_send(struct pmic_glink_client *client, void *data, size_t len);
+ 
+-struct pmic_glink_client *devm_pmic_glink_register_client(struct device *dev,
+-							  unsigned int id,
+-							  void (*cb)(const void *, size_t, void *),
+-							  void (*pdr)(void *, int),
+-							  void *priv);
++struct pmic_glink_client *devm_pmic_glink_client_alloc(struct device *dev,
++						       unsigned int id,
++						       void (*cb)(const void *, size_t, void *),
++						       void (*pdr)(void *, int),
++						       void *priv);
++void pmic_glink_client_register(struct pmic_glink_client *client);
+ 
+ #endif
 
 
 
