@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-72442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71904-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DC65967AA4
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:58:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48877967847
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:30:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 115741F2172C
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:58:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A4B71C20F73
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:30:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A42CC18306C;
-	Sun,  1 Sep 2024 16:58:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D157A183CA3;
+	Sun,  1 Sep 2024 16:30:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lxseVqmL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y4bmncX9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63D2417ADE1;
-	Sun,  1 Sep 2024 16:58:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F76B28387;
+	Sun,  1 Sep 2024 16:30:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209937; cv=none; b=N4HwrnlX5V7QeCYgYFng4v15JywkvG6YsKvPScERMI3MFYIeotYO4lcBpfAqPNi+y7ZSlzFAwV00HmbckkA6g+tRKJQaTQRbjnWnhqhSbPZbz4XxXQVPa0kStI8Th3ghkANyuDNrk4eAtRA7AqSCHD6jgSvB9/GAUxm6iAsHFM0=
+	t=1725208201; cv=none; b=tkp85Qs9C72WerRhbP6wJ5MjCES6Cyz4sm4DGFetMkApcntM13HsK7c2lbAP/i8gmAaRhkFwcWpt8tq7HLt67/mAPb6TCyY3HgKokywv+WhgRm1cbmQnLvFdySAXeNRpFqgn5jMt//cyLo0mCxjfMtRHKES1jCriRRXyQaPEzLo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209937; c=relaxed/simple;
-	bh=6X5xUf49DE7E3OLXU2Mhh1vuHDuXovPLR05YLise/+U=;
+	s=arc-20240116; t=1725208201; c=relaxed/simple;
+	bh=boF8wD+mrZL9Kt/pZEyxjR6NefOpTlA5pNHXbro3jPE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nSUMLGnkES15Wb1C5uANzMdjz3/RXIEwUXSCZ4HZVBlAd2+uRdD5EV8NeiUgfy9mznTtXUS31MJFUYYNd4GNn7tADhCnWnTw3TDpm1Fd3BEtFxxcazRezqny2uEkddByLoF2NB9lCmlIU4tV6XR/gYuKfBCMOfRVr0UI7fre1RQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lxseVqmL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5C59C4CEC3;
-	Sun,  1 Sep 2024 16:58:56 +0000 (UTC)
+	 MIME-Version; b=cFbXLvz66Pighug5Eu5o7PzUHIov2wz32NMUjM3+idjWjGUdq6XzTJuOs4RBMzxfLdg6KSxxiXHXYT47Aj8As9SlMndF0OrlXVFZFTmZjDvXGjIhnD2cDF7dMBLT9o/KFV9da51gtcMa1WTqdWm4uZHtapVGT3ipM6qvuyWgeFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y4bmncX9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0AA4C4CEC3;
+	Sun,  1 Sep 2024 16:30:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209937;
-	bh=6X5xUf49DE7E3OLXU2Mhh1vuHDuXovPLR05YLise/+U=;
+	s=korg; t=1725208201;
+	bh=boF8wD+mrZL9Kt/pZEyxjR6NefOpTlA5pNHXbro3jPE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lxseVqmLEJQAjse6xbiMZUOvEAr5Yhpu6s9dqeDozYHLI4FAAphzSIbQNGhmhvcG5
-	 lB+WMPlkH925YjwbYEd0yI2cuGBbnnVyFe+7Vvg/VRYCo1xCXsbfpkBYz/cKGq7hsy
-	 XZzxSWE0fEJHHd2yuxhWEdLXqtK9+BtuudKNxnpw=
+	b=Y4bmncX99SAJM1E7BT9dz4eQ+ZNeUMmsAJ0VvM0TnMhrZbseNKPAlyxrWcDklap1H
+	 y0ITPt/pMYlkQ2RjgSGCQnceBEDy3V2jC55leMd0FnvhDDzGLbTdAyQltXduhxs1AP
+	 u/Q4Fue0L1FpGj8jttelHZZquU6WJUtut6hHWBiI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 5.15 008/215] thunderbolt: Mark XDomain as unplugged when router is removed
-Date: Sun,  1 Sep 2024 18:15:20 +0200
-Message-ID: <20240901160823.554816293@linuxfoundation.org>
+	Qu Wenruo <wqu@suse.com>,
+	Josef Bacik <josef@toxicpanda.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.10 010/149] btrfs: run delayed iputs when flushing delalloc
+Date: Sun,  1 Sep 2024 18:15:21 +0200
+Message-ID: <20240901160817.855940133@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
+From: Josef Bacik <josef@toxicpanda.com>
 
-commit e2006140ad2e01a02ed0aff49cc2ae3ceeb11f8d upstream.
+commit 2d3447261031503b181dacc549fe65ffe2d93d65 upstream.
 
-I noticed that when we do discrete host router NVM upgrade and it gets
-hot-removed from the PCIe side as a result of NVM firmware authentication,
-if there is another host connected with enabled paths we hang in tearing
-them down. This is due to fact that the Thunderbolt networking driver
-also tries to cleanup the paths and ends up blocking in
-tb_disconnect_xdomain_paths() waiting for the domain lock.
+We have transient failures with btrfs/301, specifically in the part
+where we do
 
-However, at this point we already cleaned the paths in tb_stop() so
-there is really no need for tb_disconnect_xdomain_paths() to do that
-anymore. Furthermore it already checks if the XDomain is unplugged and
-bails out early so take advantage of that and mark the XDomain as
-unplugged when we remove the parent router.
+  for i in $(seq 0 10); do
+	  write 50m to file
+	  rm -f file
+  done
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Sometimes this will result in a transient quota error, and it's because
+sometimes we start writeback on the file which results in a delayed
+iput, and thus the rm doesn't actually clean the file up.  When we're
+flushing the quota space we need to run the delayed iputs to make sure
+all the unlinks that we think have completed have actually completed.
+This removes the small window where we could fail to find enough space
+in our quota.
+
+CC: stable@vger.kernel.org # 5.15+
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thunderbolt/switch.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/btrfs/qgroup.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/thunderbolt/switch.c
-+++ b/drivers/thunderbolt/switch.c
-@@ -2877,6 +2877,7 @@ void tb_switch_remove(struct tb_switch *
- 			tb_switch_remove(port->remote->sw);
- 			port->remote = NULL;
- 		} else if (port->xdomain) {
-+			port->xdomain->is_unplugged = true;
- 			tb_xdomain_remove(port->xdomain);
- 			port->xdomain = NULL;
- 		}
+--- a/fs/btrfs/qgroup.c
++++ b/fs/btrfs/qgroup.c
+@@ -4100,6 +4100,8 @@ static int try_flush_qgroup(struct btrfs
+ 		return 0;
+ 	}
+ 
++	btrfs_run_delayed_iputs(root->fs_info);
++	btrfs_wait_on_delayed_iputs(root->fs_info);
+ 	ret = btrfs_start_delalloc_snapshot(root, true);
+ 	if (ret < 0)
+ 		goto out;
 
 
 
