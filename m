@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-71870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72468-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCAF7967820
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:28:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A80A7967AC0
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:00:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3B931B2176E
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:28:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D91001C21475
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:00:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78C46181B88;
-	Sun,  1 Sep 2024 16:28:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6A9F376EC;
+	Sun,  1 Sep 2024 17:00:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SH+A8PVt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V8ZW/1oJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3685928387;
-	Sun,  1 Sep 2024 16:28:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 794C5225D9;
+	Sun,  1 Sep 2024 17:00:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208088; cv=none; b=W38p7YAVzNtWGoSCux5DhvqYf6+7qjZpqQ8FhldGs7Ci4tp93NCL5VwudgGcLSPiRHJheBvrVW479EseNlA69t8C7bnTTn8n3wsEy38oJZcSckc9Dh0tpaDFU6DuO4HBEE7DlrZ93YRzy4uIhhbP2JFuFh6BSwSfpADbDbafBaY=
+	t=1725210024; cv=none; b=bBiWTRZQsIXTO0jhwAN4OeYvyzHF+ggWxc5JB6zOueDnLPuULxbulNK1hDYlZ9/IoDSxzeX2pZrIHsDIy1nUDzmfNQdk/rxqrR7QzW0a8tAbTZkBW+XDW32J3AsHbxqtOb/rsL1Uh5O3+PLnOv3LGh7zLW8spNXzEPy+trKTPlY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208088; c=relaxed/simple;
-	bh=zV312t+dQD1y6UUXZJ/zC/vTeZjq/2IOFZ4Wznj1I0A=;
+	s=arc-20240116; t=1725210024; c=relaxed/simple;
+	bh=lC/aUdU5V5g6gs+iTRJ6vZ5mJ6bqsKzYL88YniNqsA4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NOGy/T01URO4W5A80AM/Bv0J3sU8MQXRzbKZrC6YINnaJxW92NHfH0ixFDF2TN1nfBADxejuSt2WaI/Ml/RG92SiKudJRPg4FV8PLKdbHLCul9a2JM2ydm11dV2S6Xn8eF4GguM635VhrpKJXJr8NYCoNQ96gNjHEuVJsLPvArA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SH+A8PVt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A899C4CEC3;
-	Sun,  1 Sep 2024 16:28:07 +0000 (UTC)
+	 MIME-Version; b=Y2Dq2koOsul6q0XZEY3lTjkoPMop2BsFTPNweypyr5K/3/6IUktj1w8CmyRblT+hPwdr5cSCJX0bWPAy0IMH7K/5qVT3aAyS8B5I5G9z+aj8n53JVUM4GpdJdZ9ZR8yNqUwrw8Rj/cHXm4V4OBvtkpHly84AE35wpgoDG8qQpac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V8ZW/1oJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93C5FC4CEC3;
+	Sun,  1 Sep 2024 17:00:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208088;
-	bh=zV312t+dQD1y6UUXZJ/zC/vTeZjq/2IOFZ4Wznj1I0A=;
+	s=korg; t=1725210024;
+	bh=lC/aUdU5V5g6gs+iTRJ6vZ5mJ6bqsKzYL88YniNqsA4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SH+A8PVtCtNvPkxWh0uojdKYNUG3KNkx2oduH8elf2Jwv8O8SHkdMLYgjxpXfQ07V
-	 mQo+Rca9Y/wBTw6ckFngM+LyqttRBxUTEy4YeYaHB+Y7DFnDkbHpAhZqdfWkQQaFSP
-	 rB+J6xhelooltScfgfkl6t4RWCzNrq6xCiKXRaGQ=
+	b=V8ZW/1oJfhwPKg7ao8SsGIwxDdqjzVTTuoVypW5mNxLgMPbjAuXxtCzrsTCShW8r6
+	 c+DefJ/gHkESueW+7einZdCigSiTCufQ9h13oOIHqsyhJfCdbiMmeLWwLIgxHlPtUR
+	 HqrjNqRHONAbUNOOEY2e1hjV14tTRGMrHcgGARXI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Yo <charlesyo@google.com>,
-	Kyle Tso <kyletso@google.com>,
-	Amit Sunil Dhamne <amitsd@google.com>,
-	Ondrej Jirman <megi@xff.cz>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Subject: [PATCH 6.6 28/93] usb: typec: fix up incorrectly backported "usb: typec: tcpm: unregister existing source caps before re-registration"
+	Antoniu Miclaus <antoniu.miclaus@analog.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 063/215] hwmon: (ltc2992) Avoid division by zero
 Date: Sun,  1 Sep 2024 18:16:15 +0200
-Message-ID: <20240901160808.419602012@linuxfoundation.org>
+Message-ID: <20240901160825.736809930@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
-References: <20240901160807.346406833@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,77 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Antoniu Miclaus <antoniu.miclaus@analog.com>
 
-In commit b16abab1fb64 ("usb: typec: tcpm: unregister existing source
-caps before re-registration"), quilt, and git, applied the diff to the
-incorrect function, which would cause bad problems if exercised in a
-device with these capabilities.
+[ Upstream commit 10b02902048737f376104bc69e5212466e65a542 ]
 
-Fix this all up (including the follow-up fix in commit 04c05d50fa79
-("usb: typec: tcpm: fix use-after-free case in
-tcpm_register_source_caps") to be in the correct function.
+Do not allow setting shunt resistor to 0. This results in a division by
+zero when performing current value computations based on input voltages
+and connected resistor values.
 
-Fixes: 04c05d50fa79 ("usb: typec: tcpm: fix use-after-free case in tcpm_register_source_caps")
-Fixes: b16abab1fb64 ("usb: typec: tcpm: unregister existing source caps before re-registration")
-Reported-by: Charles Yo <charlesyo@google.com>
-Cc: Kyle Tso <kyletso@google.com>
-Cc: Amit Sunil Dhamne <amitsd@google.com>
-Cc: Ondrej Jirman <megi@xff.cz>
-Cc: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Link: https://lore.kernel.org/r/20231011135754.13508-1-antoniu.miclaus@analog.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/typec/tcpm/tcpm.c |   14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -2403,7 +2403,7 @@ static int tcpm_register_source_caps(str
- {
- 	struct usb_power_delivery_desc desc = { port->negotiated_rev };
- 	struct usb_power_delivery_capabilities_desc caps = { };
--	struct usb_power_delivery_capabilities *cap;
-+	struct usb_power_delivery_capabilities *cap = port->partner_source_caps;
+ drivers/hwmon/ltc2992.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/hwmon/ltc2992.c b/drivers/hwmon/ltc2992.c
+index 009a0a5af9236..a657f93882dd1 100644
+--- a/drivers/hwmon/ltc2992.c
++++ b/drivers/hwmon/ltc2992.c
+@@ -912,8 +912,12 @@ static int ltc2992_parse_dt(struct ltc2992_state *st)
+ 		}
  
- 	if (!port->partner_pd)
- 		port->partner_pd = usb_power_delivery_register(NULL, &desc);
-@@ -2413,6 +2413,11 @@ static int tcpm_register_source_caps(str
- 	memcpy(caps.pdo, port->source_caps, sizeof(u32) * port->nr_source_caps);
- 	caps.role = TYPEC_SOURCE;
+ 		ret = fwnode_property_read_u32(child, "shunt-resistor-micro-ohms", &val);
+-		if (!ret)
++		if (!ret) {
++			if (!val)
++				return dev_err_probe(&st->client->dev, -EINVAL,
++						     "shunt resistor value cannot be zero\n");
+ 			st->r_sense_uohm[addr] = val;
++		}
+ 	}
  
-+	if (cap) {
-+		usb_power_delivery_unregister_capabilities(cap);
-+		port->partner_source_caps = NULL;
-+	}
-+
- 	cap = usb_power_delivery_register_capabilities(port->partner_pd, &caps);
- 	if (IS_ERR(cap))
- 		return PTR_ERR(cap);
-@@ -2426,7 +2431,7 @@ static int tcpm_register_sink_caps(struc
- {
- 	struct usb_power_delivery_desc desc = { port->negotiated_rev };
- 	struct usb_power_delivery_capabilities_desc caps = { };
--	struct usb_power_delivery_capabilities *cap = port->partner_source_caps;
-+	struct usb_power_delivery_capabilities *cap;
- 
- 	if (!port->partner_pd)
- 		port->partner_pd = usb_power_delivery_register(NULL, &desc);
-@@ -2436,11 +2441,6 @@ static int tcpm_register_sink_caps(struc
- 	memcpy(caps.pdo, port->sink_caps, sizeof(u32) * port->nr_sink_caps);
- 	caps.role = TYPEC_SINK;
- 
--	if (cap) {
--		usb_power_delivery_unregister_capabilities(cap);
--		port->partner_source_caps = NULL;
--	}
--
- 	cap = usb_power_delivery_register_capabilities(port->partner_pd, &caps);
- 	if (IS_ERR(cap))
- 		return PTR_ERR(cap);
+ 	return 0;
+-- 
+2.43.0
+
 
 
 
