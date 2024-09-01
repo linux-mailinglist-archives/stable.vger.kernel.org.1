@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-72387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72208-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BCC3967A6C
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:55:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D34A39679B1
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:48:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38A42281D83
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:55:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 91EE1280D46
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:48:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E22C517E919;
-	Sun,  1 Sep 2024 16:55:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD358186E3D;
+	Sun,  1 Sep 2024 16:46:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n8Vu7Khn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="euFcleQt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E011208A7;
-	Sun,  1 Sep 2024 16:55:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C083186611;
+	Sun,  1 Sep 2024 16:46:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209756; cv=none; b=eOz8fRX4Ogn8URy6o3EmquDvZKjSsIUkW9JTPu+KwRr/hvvjMVq3k/bOs97ype8rVwu10+mKJgWL2InwYYQVmjdbL1Ey4/UAhd5v9SxE6xI4LPMBnlqX3iBFcvGvKxr/V0Hw9wokqZJ4nWhSHg6Mym++09xFbplMuhMo1x8A43c=
+	t=1725209191; cv=none; b=bjdOjrAMZuy5BiY0eyiunhkQ+saV0lErc5wUK7CuQ8putGsSwtDptcGn4MKyi+lYvA3ZptzhzCH1cw9WAcs7eR69RfQCRgc2TKsr+Fsfdx+NRILS9skgjfz4whw3Ga2iMd3QePGyXQP7bxWFIQm30w51UeaT4bpTCmkAGJAf7jM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209756; c=relaxed/simple;
-	bh=MjF7rB+Ix7zsbAi9l3UxOL+l4Az7wdDLJqEDcLD1oEY=;
+	s=arc-20240116; t=1725209191; c=relaxed/simple;
+	bh=DhLCpcZbUCcEzdq0TFpi9ioDLhVV1JseRrEtVHpOS9o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WXvbG5sZGAba6lQkBpJPm2lRKh+SOP6E4/5kBEJcD75S076cKNrw03JC7BauBn8ZoOEOgLVm05BnngtCSubJ/B+9CdGufJODgfZfO0cEFhS+nGxAmLEGsOTPpxgAYXPFsI3i6U//rY5AaGrPP+kiyC1g+yHv5Uev7OnUI7jxqPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n8Vu7Khn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21DD7C4CEC3;
-	Sun,  1 Sep 2024 16:55:55 +0000 (UTC)
+	 MIME-Version; b=u35xFQclPP5eY7dm2nYZbbJNX+WOKTGkLUezQErzBSY1NJPUaO6hb8O/R41r1y4s8oVTyKIXIymr2maYtg+UNYIpYigI3pQI0Y3KvvU+dyl2p8RY2z7Co0HIjD61UXOX1pPLV0ZkLMEylucpmt069QxdiQtKymn6CICv3OFLhOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=euFcleQt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E808AC4CEC3;
+	Sun,  1 Sep 2024 16:46:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209756;
-	bh=MjF7rB+Ix7zsbAi9l3UxOL+l4Az7wdDLJqEDcLD1oEY=;
+	s=korg; t=1725209190;
+	bh=DhLCpcZbUCcEzdq0TFpi9ioDLhVV1JseRrEtVHpOS9o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n8Vu7KhnUTgGuwScw0duz1kt3KsbMH1SxDZDSIEvyMOC6Q8AV6RXifwFUt5ih9WPa
-	 SUh0Sue+pRizxUiwcasdn4kQboakiwht+B7SE/a1ihtPVsvq4O2KgXYD+Iq0YTSzX8
-	 BrH2kFINjh8XUUAAJUV7IaWkUrbOmeHbl7hom+iM=
+	b=euFcleQt99I0PO11oYwTbqCU4VmLlhmwymXQMyPQTy9y+xlVvXetqqJOujlOy8aex
+	 a83aUus2KM/S3tsohF1Z6SvK5s6u1aPlsHaciK3bKeyrCkXE4Hc3AUPwnjO7/m0VBK
+	 QVh3iIQ+5ZFSRttXsHJ/F1wJChKX12KrUa5qFF8w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Hangbin Liu <liuhangbin@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Chen-Yu Tsai <wenst@chromium.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 094/151] bonding: fix xfrm real_dev null pointer dereference
+Subject: [PATCH 6.1 29/71] thermal: of: Fix OF node leak in thermal_of_trips_init() error path
 Date: Sun,  1 Sep 2024 18:17:34 +0200
-Message-ID: <20240901160817.651592956@linuxfoundation.org>
+Message-ID: <20240901160802.989936037@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
-References: <20240901160814.090297276@linuxfoundation.org>
+In-Reply-To: <20240901160801.879647959@linuxfoundation.org>
+References: <20240901160801.879647959@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,83 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikolay Aleksandrov <razor@blackwall.org>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit f8cde9805981c50d0c029063dc7d82821806fc44 ]
+[ Upstream commit afc954fd223ded70b1fa000767e2531db55cce58 ]
 
-We shouldn't set real_dev to NULL because packets can be in transit and
-xfrm might call xdo_dev_offload_ok() in parallel. All callbacks assume
-real_dev is set.
+Terminating for_each_child_of_node() loop requires dropping OF node
+reference, so bailing out after thermal_of_populate_trip() error misses
+this.  Solve the OF node reference leak with scoped
+for_each_child_of_node_scoped().
 
- Example trace:
- kernel: BUG: unable to handle page fault for address: 0000000000001030
- kernel: bond0: (slave eni0np1): making interface the new active one
- kernel: #PF: supervisor write access in kernel mode
- kernel: #PF: error_code(0x0002) - not-present page
- kernel: PGD 0 P4D 0
- kernel: Oops: 0002 [#1] PREEMPT SMP
- kernel: CPU: 4 PID: 2237 Comm: ping Not tainted 6.7.7+ #12
- kernel: Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-2.fc40 04/01/2014
- kernel: RIP: 0010:nsim_ipsec_offload_ok+0xc/0x20 [netdevsim]
- kernel: bond0: (slave eni0np1): bond_ipsec_add_sa_all: failed to add SA
- kernel: Code: e0 0f 0b 48 83 7f 38 00 74 de 0f 0b 48 8b 47 08 48 8b 37 48 8b 78 40 e9 b2 e5 9a d7 66 90 0f 1f 44 00 00 48 8b 86 80 02 00 00 <83> 80 30 10 00 00 01 b8 01 00 00 00 c3 0f 1f 80 00 00 00 00 0f 1f
- kernel: bond0: (slave eni0np1): making interface the new active one
- kernel: RSP: 0018:ffffabde81553b98 EFLAGS: 00010246
- kernel: bond0: (slave eni0np1): bond_ipsec_add_sa_all: failed to add SA
- kernel:
- kernel: RAX: 0000000000000000 RBX: ffff9eb404e74900 RCX: ffff9eb403d97c60
- kernel: RDX: ffffffffc090de10 RSI: ffff9eb404e74900 RDI: ffff9eb3c5de9e00
- kernel: RBP: ffff9eb3c0a42000 R08: 0000000000000010 R09: 0000000000000014
- kernel: R10: 7974203030303030 R11: 3030303030303030 R12: 0000000000000000
- kernel: R13: ffff9eb3c5de9e00 R14: ffffabde81553cc8 R15: ffff9eb404c53000
- kernel: FS:  00007f2a77a3ad00(0000) GS:ffff9eb43bd00000(0000) knlGS:0000000000000000
- kernel: CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- kernel: CR2: 0000000000001030 CR3: 00000001122ab000 CR4: 0000000000350ef0
- kernel: bond0: (slave eni0np1): making interface the new active one
- kernel: Call Trace:
- kernel:  <TASK>
- kernel:  ? __die+0x1f/0x60
- kernel: bond0: (slave eni0np1): bond_ipsec_add_sa_all: failed to add SA
- kernel:  ? page_fault_oops+0x142/0x4c0
- kernel:  ? do_user_addr_fault+0x65/0x670
- kernel:  ? kvm_read_and_reset_apf_flags+0x3b/0x50
- kernel: bond0: (slave eni0np1): making interface the new active one
- kernel:  ? exc_page_fault+0x7b/0x180
- kernel:  ? asm_exc_page_fault+0x22/0x30
- kernel:  ? nsim_bpf_uninit+0x50/0x50 [netdevsim]
- kernel: bond0: (slave eni0np1): bond_ipsec_add_sa_all: failed to add SA
- kernel:  ? nsim_ipsec_offload_ok+0xc/0x20 [netdevsim]
- kernel: bond0: (slave eni0np1): making interface the new active one
- kernel:  bond_ipsec_offload_ok+0x7b/0x90 [bonding]
- kernel:  xfrm_output+0x61/0x3b0
- kernel: bond0: (slave eni0np1): bond_ipsec_add_sa_all: failed to add SA
- kernel:  ip_push_pending_frames+0x56/0x80
-
-Fixes: 18cb261afd7b ("bonding: support hardware encryption offload to slaves")
-Signed-off-by: Nikolay Aleksandrov <razor@blackwall.org>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: d0c75fa2c17f ("thermal/of: Initialize trip points separately")
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
+Reviewed-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://patch.msgid.link/20240814195823.437597-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bonding/bond_main.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/thermal/thermal_of.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/bonding/bond_main.c b/drivers/net/bonding/bond_main.c
-index bd74b2d64ad48..506b6d1cc27df 100644
---- a/drivers/net/bonding/bond_main.c
-+++ b/drivers/net/bonding/bond_main.c
-@@ -540,7 +540,6 @@ static void bond_ipsec_del_sa_all(struct bonding *bond)
- 		} else {
- 			slave->dev->xfrmdev_ops->xdo_dev_state_delete(ipsec->xs);
- 		}
--		ipsec->xs->xso.real_dev = NULL;
- 	}
- 	spin_unlock_bh(&bond->ipsec_lock);
- 	rcu_read_unlock();
+diff --git a/drivers/thermal/thermal_of.c b/drivers/thermal/thermal_of.c
+index 202dce0d2e309..62099ffcd9721 100644
+--- a/drivers/thermal/thermal_of.c
++++ b/drivers/thermal/thermal_of.c
+@@ -235,7 +235,7 @@ static int thermal_of_populate_trip(struct device_node *np,
+ static struct thermal_trip *thermal_of_trips_init(struct device_node *np, int *ntrips)
+ {
+ 	struct thermal_trip *tt;
+-	struct device_node *trips, *trip;
++	struct device_node *trips;
+ 	int ret, count;
+ 
+ 	trips = of_get_child_by_name(np, "trips");
+@@ -260,7 +260,7 @@ static struct thermal_trip *thermal_of_trips_init(struct device_node *np, int *n
+ 	*ntrips = count;
+ 
+ 	count = 0;
+-	for_each_child_of_node(trips, trip) {
++	for_each_child_of_node_scoped(trips, trip) {
+ 		ret = thermal_of_populate_trip(trip, &tt[count++]);
+ 		if (ret)
+ 			goto out_kfree;
 -- 
 2.43.0
 
