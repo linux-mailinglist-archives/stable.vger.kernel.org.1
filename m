@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-72052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72202-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42E559678F8
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:38:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 534F19679AA
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:48:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED9471F210D2
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:38:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EFDB01F21BD3
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:48:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0F1B17E00C;
-	Sun,  1 Sep 2024 16:38:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4C22183092;
+	Sun,  1 Sep 2024 16:46:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dWQub7KI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AdIUCePd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FAC91C68C;
-	Sun,  1 Sep 2024 16:38:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D88B185B4B;
+	Sun,  1 Sep 2024 16:46:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208682; cv=none; b=PMudBRf+MAgZLY3KLRk/B6BHRaWDMaWDkPydp3D55AZem+r8C3MD+TfX00P0KPeTFyvpM9nETtPWsnGrUIxi+0Pz/VowjR/yseQjgKpxc1nHJsjI9ZlhsANWp/TpM60XvCjSYZna+8EuqiyKijCVmHbs5wSHwftKG9IQ3WFn6zM=
+	t=1725209172; cv=none; b=h3bKuPQfqn18e9Jq7oSHhwmRemPYYLnfAvd+Sk6di7lcvVQdvxrOE7VzFsyt6f93crOmL6jy/iAzWnPaxfvlC14fV+e13IbFQgka+WuYIi5a8AplgELdbvv9qNRjWoHnkFxX5GvdoqZTSzP53ch0vA0r5eKIfHZl62hr8vRx6/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208682; c=relaxed/simple;
-	bh=KKWzR28Y0LZzHLeb1x3qwxvtXK8cuJOg7IMed/9G6cI=;
+	s=arc-20240116; t=1725209172; c=relaxed/simple;
+	bh=OZiThIV+lWQbmOBbfBQu+DIChia7iAzTIs94ipgHUTY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gYHy0dawk7mvheetOL5AhqcEQ1ABgCHoz/z+H6QwWX46iNd1tfyaiAHMBU+eh/830u+M0HWugcSzEeqlHkp+FpAiAh4tDOpeY/6eA1qvcuMFsEq/cj/6wgMouFYMrT/6AOn2FOWOHMVkr2x8yOGqTEf3WSO8fLpyYXeBiJSTtvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dWQub7KI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB973C4CEC3;
-	Sun,  1 Sep 2024 16:38:01 +0000 (UTC)
+	 MIME-Version; b=t5ZFwjsRkFUIv46+nsPUz91DAQCMRrEYQLukdUBE7aYTlXpaMGnih+3Zr/n6oTzParSgb0TYt4yyZjJUlKcUGUCwusi74SAADdRa8xRJfs5v2gs7oG3OgotrH5DcB4NKzSKvrDlaEaV9ppBes0/cc+EBsm4Furwt1707oPVkx5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AdIUCePd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5974C4CEC3;
+	Sun,  1 Sep 2024 16:46:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208682;
-	bh=KKWzR28Y0LZzHLeb1x3qwxvtXK8cuJOg7IMed/9G6cI=;
+	s=korg; t=1725209172;
+	bh=OZiThIV+lWQbmOBbfBQu+DIChia7iAzTIs94ipgHUTY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dWQub7KIrvhwgQJ65ioymivtJ4dbxkjdYk9QgTlrYqKy7ItFXfr+noh7dn0yw6peh
-	 NzahZxXJQtL4YLe6/dt9ucg+jK/6jN/TyBirL2ivU64xwEjTUKdcUSNWPYPOjNjcTK
-	 QlhxS7t+e6mcOCeYruErJiJZ6xgKez+sfnOxH6NQ=
+	b=AdIUCePdSxSJnSNKvtLaW6s5jJCdab2fLnoNpVoUSbZw68cmuktf/gsJHKipY/++N
+	 r+yulCGCeR7o0FqrYuo7LIkjt6ysAVaxFzyw4wVbAAyDbbAyb33UCkpn8PPpMo/TLp
+	 8JwJY06UcDTkWr6FH0LPn5uoitJPa9o4hU96MfYM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>
-Subject: [PATCH 6.10 122/149] dt-bindings: usb: microchip,usb2514: Fix reference USB device schema
-Date: Sun,  1 Sep 2024 18:17:13 +0200
-Message-ID: <20240901160822.041311224@linuxfoundation.org>
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>,
+	Brian Norris <briannorris@chromium.org>,
+	Kalle Valo <kvalo@kernel.org>
+Subject: [PATCH 6.1 09/71] wifi: mwifiex: duplicate static structs used in driver instances
+Date: Sun,  1 Sep 2024 18:17:14 +0200
+Message-ID: <20240901160802.239839310@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
-References: <20240901160817.461957599@linuxfoundation.org>
+In-Reply-To: <20240901160801.879647959@linuxfoundation.org>
+References: <20240901160801.879647959@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +63,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
+From: Sascha Hauer <s.hauer@pengutronix.de>
 
-commit 5b235693ed2a1e4963625717a1598becf97759cc upstream.
+commit 27ec3c57fcadb43c79ed05b2ea31bc18c72d798a upstream.
 
-An USB hub is not a HCD, but an USB device. Fix the referenced schema
-accordingly.
+mwifiex_band_2ghz and mwifiex_band_5ghz are statically allocated, but
+used and modified in driver instances. Duplicate them before using
+them in driver instances so that different driver instances do not
+influence each other.
 
-Fixes: bfbf2e4b77e2 ("dt-bindings: usb: Document the Microchip USB2514 hub")
+This was observed on a board which has one PCIe and one SDIO mwifiex
+adapter. It blew up in mwifiex_setup_ht_caps(). This was called with
+the statically allocated struct which is modified in this function.
+
 Cc: stable@vger.kernel.org
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Link: https://lore.kernel.org/r/20240815113132.372542-1-alexander.stein@ew.tq-group.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d6bffe8bb520 ("mwifiex: support for creation of AP interface")
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
+Acked-by: Brian Norris <briannorris@chromium.org>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://patch.msgid.link/20240809-mwifiex-duplicate-static-structs-v1-1-6837b903b1a4@pengutronix.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/devicetree/bindings/usb/microchip,usb2514.yaml |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/net/wireless/marvell/mwifiex/cfg80211.c |   32 +++++++++++++++++++-----
+ 1 file changed, 26 insertions(+), 6 deletions(-)
 
---- a/Documentation/devicetree/bindings/usb/microchip,usb2514.yaml
-+++ b/Documentation/devicetree/bindings/usb/microchip,usb2514.yaml
-@@ -10,7 +10,7 @@ maintainers:
-   - Fabio Estevam <festevam@gmail.com>
+--- a/drivers/net/wireless/marvell/mwifiex/cfg80211.c
++++ b/drivers/net/wireless/marvell/mwifiex/cfg80211.c
+@@ -4362,11 +4362,27 @@ int mwifiex_register_cfg80211(struct mwi
+ 	if (ISSUPP_ADHOC_ENABLED(adapter->fw_cap_info))
+ 		wiphy->interface_modes |= BIT(NL80211_IFTYPE_ADHOC);
  
- allOf:
--  - $ref: usb-hcd.yaml#
-+  - $ref: usb-device.yaml#
- 
- properties:
-   compatible:
-@@ -35,6 +35,13 @@ required:
-   - compatible
-   - reg
- 
-+patternProperties:
-+  "^.*@[0-9a-f]{1,2}$":
-+    description: The hard wired USB devices
-+    type: object
-+    $ref: /schemas/usb/usb-device.yaml
-+    additionalProperties: true
+-	wiphy->bands[NL80211_BAND_2GHZ] = &mwifiex_band_2ghz;
+-	if (adapter->config_bands & BAND_A)
+-		wiphy->bands[NL80211_BAND_5GHZ] = &mwifiex_band_5ghz;
+-	else
++	wiphy->bands[NL80211_BAND_2GHZ] = devm_kmemdup(adapter->dev,
++						       &mwifiex_band_2ghz,
++						       sizeof(mwifiex_band_2ghz),
++						       GFP_KERNEL);
++	if (!wiphy->bands[NL80211_BAND_2GHZ]) {
++		ret = -ENOMEM;
++		goto err;
++	}
 +
- unevaluatedProperties: false
++	if (adapter->config_bands & BAND_A) {
++		wiphy->bands[NL80211_BAND_5GHZ] = devm_kmemdup(adapter->dev,
++							       &mwifiex_band_5ghz,
++							       sizeof(mwifiex_band_5ghz),
++							       GFP_KERNEL);
++		if (!wiphy->bands[NL80211_BAND_5GHZ]) {
++			ret = -ENOMEM;
++			goto err;
++		}
++	} else {
+ 		wiphy->bands[NL80211_BAND_5GHZ] = NULL;
++	}
  
- examples:
+ 	if (adapter->drcs_enabled && ISSUPP_DRCS_ENABLED(adapter->fw_cap_info))
+ 		wiphy->iface_combinations = &mwifiex_iface_comb_ap_sta_drcs;
+@@ -4459,8 +4475,7 @@ int mwifiex_register_cfg80211(struct mwi
+ 	if (ret < 0) {
+ 		mwifiex_dbg(adapter, ERROR,
+ 			    "%s: wiphy_register failed: %d\n", __func__, ret);
+-		wiphy_free(wiphy);
+-		return ret;
++		goto err;
+ 	}
+ 
+ 	if (!adapter->regd) {
+@@ -4502,4 +4517,9 @@ int mwifiex_register_cfg80211(struct mwi
+ 
+ 	adapter->wiphy = wiphy;
+ 	return ret;
++
++err:
++	wiphy_free(wiphy);
++
++	return ret;
+ }
 
 
 
