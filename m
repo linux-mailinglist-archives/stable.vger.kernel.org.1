@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-72138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71863-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF624967955
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:42:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C195E967819
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:27:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 26A4FB21C3C
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:42:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F29F71C20E01
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:27:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42B9317DFFC;
-	Sun,  1 Sep 2024 16:42:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA3B6183CCD;
+	Sun,  1 Sep 2024 16:27:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U1pmVvUq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nhgJZ4N8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00A382B9C7;
-	Sun,  1 Sep 2024 16:42:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89C1E183CA3;
+	Sun,  1 Sep 2024 16:27:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208967; cv=none; b=iy76Z9ykuVqIjA/FujCkYjqDeXuisQBnWTFo8Dmvfx4VfL3RV+zAOWatxG49oW/Da7NMnGA7XJSryRr2SvP+hqu8LblvVQBMGcwFpKbG8hsuigyU7CKMm6fMJY3IGYhHXKpjajb8Dj8lAD/bgNbEuIp9GBG/mGbdF9/ewbPOcV8=
+	t=1725208064; cv=none; b=jI/Cest+5OKulJCojr2dCflo5j/Plwf6s0us3NY0M2bVgAJmc+Ef78wE7pvrHyVc5DNgcUzqc0CohcDzFYHNwlHJ8/cf96GAr809r4l+9EXBPu1M414xHU8K+gmjfIOli8bjkFZq5rk6tDNCiko2nucEs6PXmWBqGOvlS7yQd20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208967; c=relaxed/simple;
-	bh=Q199uq/rq31Pw7eFbD3yIT5mU+dDzi8xf4OX1mVdRUk=;
+	s=arc-20240116; t=1725208064; c=relaxed/simple;
+	bh=bTy4rdCtEERnwW+IBh/0BdCUVDwnD7HEMkOhuS1oD38=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QVToMAEIB/Dthxg8qYBJaVhHdZrj0CIKW8AHqEvxqJ4XAilu2I/FQYiuVnbpBZCSdxQfBeh4n9oT9L7snJOLYFw7ezZrEOxQd3C9b3Ljg8rEPaQB9KvPYyMGsBEwMXIwSmr9h/1L9mpbWXnXtoCTNO9D60kLct+Vun/OFAewYVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U1pmVvUq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6990FC4CEC3;
-	Sun,  1 Sep 2024 16:42:46 +0000 (UTC)
+	 MIME-Version; b=mAAXANSg8PP15tOaz32LNAukrz03Bjgs0jAErDsGxyATadCqMWuSHjP03xvI+DQotTzedcW2Hi8Jv6A4/FGGb3z0LglzyiaYUNqxTNGYVvMWldpPFhqiKqZUPJHeDpHaQ/TGvzvIkWk53y1L5lvjbL0cjpu5P86wQgtMrtC8rFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nhgJZ4N8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF3A1C4CEC3;
+	Sun,  1 Sep 2024 16:27:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208966;
-	bh=Q199uq/rq31Pw7eFbD3yIT5mU+dDzi8xf4OX1mVdRUk=;
+	s=korg; t=1725208064;
+	bh=bTy4rdCtEERnwW+IBh/0BdCUVDwnD7HEMkOhuS1oD38=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U1pmVvUqB65IWt54ZMhmII3Wo0dbJNtXcnoEHccYgaOp7XnagApIHICjX6DMIgYB4
-	 svUbG3A6CtbCVJvLNp1u5Dxq5BvHBiMuv83XWNT5PzWAPrC47TQtC+jlChXGwCiirq
-	 mJ8ad4ZYmpf/20NOHYczWlWXCvRdF0CraopKI85U=
+	b=nhgJZ4N8Y/Iy85T8sR6Ya2zAtq47wEy3Hc8YM0gyylAs1C6Ub8b0D3FY+CpRPDk0l
+	 aRy7uxiSlRTlqFcC5WoeZ/Weguf8cveldZ+NsGs0RqRgxBPDAhZvDHUgtsI5V4Ls8+
+	 hBvtPQN0QfRHKAhmXgWH15w5R7IzBUsUGm2aXxU8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
+	Petr Machata <petrm@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 062/134] nvme: clear caller pointer on identify failure
+Subject: [PATCH 6.6 61/93] selftests: forwarding: local_termination: Down ports on cleanup
 Date: Sun,  1 Sep 2024 18:16:48 +0200
-Message-ID: <20240901160812.437428299@linuxfoundation.org>
+Message-ID: <20240901160809.661837519@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
-References: <20240901160809.752718937@linuxfoundation.org>
+In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
+References: <20240901160807.346406833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keith Busch <kbusch@kernel.org>
+From: Petr Machata <petrm@nvidia.com>
 
-[ Upstream commit 7e80eb792bd7377a20f204943ac31c77d859be89 ]
+[ Upstream commit 65a3cce43d5b4c53cf16b0be1a03991f665a0806 ]
 
-The memory allocated for the identification is freed on failure. Set
-it to NULL so the caller doesn't have a pointer to that freed address.
+This test neglects to put ports down on cleanup. Fix it.
 
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fixes: 90b9566aa5cd ("selftests: forwarding: add a test for local_termination.sh")
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Link: https://patch.msgid.link/bf9b79f45de378f88344d44550f0a5052b386199.1724692132.git.petrm@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/core.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ tools/testing/selftests/net/forwarding/local_termination.sh | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index 9144ed14b0741..0676637e1eab6 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -1080,8 +1080,10 @@ static int nvme_identify_ctrl(struct nvme_ctrl *dev, struct nvme_id_ctrl **id)
- 
- 	error = nvme_submit_sync_cmd(dev->admin_q, &c, *id,
- 			sizeof(struct nvme_id_ctrl));
--	if (error)
-+	if (error) {
- 		kfree(*id);
-+		*id = NULL;
-+	}
- 	return error;
+diff --git a/tools/testing/selftests/net/forwarding/local_termination.sh b/tools/testing/selftests/net/forwarding/local_termination.sh
+index c5b0cbc85b3e0..9b5a63519b949 100755
+--- a/tools/testing/selftests/net/forwarding/local_termination.sh
++++ b/tools/testing/selftests/net/forwarding/local_termination.sh
+@@ -278,6 +278,10 @@ bridge()
+ cleanup()
+ {
+ 	pre_cleanup
++
++	ip link set $h2 down
++	ip link set $h1 down
++
+ 	vrf_cleanup
  }
  
-@@ -1193,6 +1195,7 @@ static int nvme_identify_ns(struct nvme_ctrl *ctrl,
- 	if (error) {
- 		dev_warn(ctrl->device, "Identify namespace failed (%d)\n", error);
- 		kfree(*id);
-+		*id = NULL;
- 	}
- 
- 	return error;
 -- 
 2.43.0
 
