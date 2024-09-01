@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-71770-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72024-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D0EA9677AB
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:22:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43CEA9678DC
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:36:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1A23EB20CAA
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:22:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73DD91C2081F
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:36:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87B1D16EB4B;
-	Sun,  1 Sep 2024 16:22:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59EFE17E00C;
+	Sun,  1 Sep 2024 16:36:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rU8ZKqJv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mPNr0bxN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 480AF2C1B4;
-	Sun,  1 Sep 2024 16:22:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18F531C68C;
+	Sun,  1 Sep 2024 16:36:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725207758; cv=none; b=vBoPJLXKRI4rZhBmM3fTZ2oAfHsgTVePE07zQXXdeqvABmtND7vCfgnhitylWWvnS6wCdY7Yif32EsFsTurl7aNK7772rNzR9kWKx702+ttbbDx+UYc0OZTmpf3keJl/FVFwe1Ax0XrFYO8VUxFka7r0HXzgsBctfCoGdPb6y78=
+	t=1725208592; cv=none; b=T7V6bhTCbXErmKNP/KrDRTZFyD4b+X/2LZQigM2pmsK2I/HiHgfRf+GaiF/AFQUMpzSruMsjnhj9r3WUuzo1Hkwl0rHz9DkF0iMvjM3aetkGnGEg0IGQqewCTfEPs2vDL+B+3uMG+Es4cpDQtO4PHdT842e/34IuaeJb5L2Zgdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725207758; c=relaxed/simple;
-	bh=hZ5WsR6kf3pCYdO5RuDvJC7XMdHIhrDBh2fsYFZXh6Y=;
+	s=arc-20240116; t=1725208592; c=relaxed/simple;
+	bh=iCsNp11O8E9n3XSH3INrz9Dwz6b0MNELipy/NfU6USc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f1paVL+QCAb2I7NmxA4uo+fQZVrnj9fqcmquYVcNCARw+bIJTrLkI92cANXd714KkqEAETJ0vjeyP4i5B8YFQJtVtrhZg03UqH45DeWW2nTSJ/zUzmPDoJjUK6cXUUHARZ7cT/KK81nZVNTRn4mDV7XbaOOawlJX4URoSXGNSbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rU8ZKqJv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8F75C4CEC3;
-	Sun,  1 Sep 2024 16:22:37 +0000 (UTC)
+	 MIME-Version; b=oQ8gyDTIjfHzusMjjN68YHJCjStiAiowtyFAR0SHQM19QuwabzjuPYunFxND/gC5O7M1Gt0YQ0QDnmqV3HzQH2JAVwivC2e3jQFQur8xAZPPJkgWBgODiByQEC03TGPhAWTc4EtLVmu3nO1+yrywW8mJWwh/LBopJSustdQk4+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mPNr0bxN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92C19C4CEC3;
+	Sun,  1 Sep 2024 16:36:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725207758;
-	bh=hZ5WsR6kf3pCYdO5RuDvJC7XMdHIhrDBh2fsYFZXh6Y=;
+	s=korg; t=1725208592;
+	bh=iCsNp11O8E9n3XSH3INrz9Dwz6b0MNELipy/NfU6USc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rU8ZKqJvDdx31PvVyy3BpvQSfJmQUyPhcizMtdSBxYp9KjyIVuVUJo9y33/aEoSfN
-	 HmeVzMmtqDn0zVM0tDJMnDLybrUKDeyvE3MWai6tQq78iz2PhG+orm2zvnZr+Rm3dP
-	 xtpIFWCOZEAy9brX9/Va0EyXu7pOMNNLSSPk05F8=
+	b=mPNr0bxNsmliRNQSrB8C4oQ6MFKL3+qQFTfoVgy+uPPXfWf49EL7TFKPFtGkqUOnm
+	 /qYF+J4ZeJYXQ6wPP3eVNVSu4fwsw+YYOlSajD2Hw5aAsSHhZVjBTzOwXmfJQv0gGX
+	 2F5/ym0ytIBxYTErZY+erl4wLJ+jXLGV59SBFmls=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Hao <yhao016@ucr.edu>,
-	Weiteng Chen <wchen130@ucr.edu>,
-	"Lee, Chun-Yi" <jlee@suse.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Subject: [PATCH 4.19 69/98] Bluetooth: hci_ldisc: check HCI_UART_PROTO_READY flag in HCIUARTGETPROTO
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 088/149] pktgen: use cpus_read_lock() in pg_net_init()
 Date: Sun,  1 Sep 2024 18:16:39 +0200
-Message-ID: <20240901160806.299169010@linuxfoundation.org>
+Message-ID: <20240901160820.775794142@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
-References: <20240901160803.673617007@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lee, Chun-Yi <joeyli.kernel@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 9c33663af9ad115f90c076a1828129a3fbadea98 upstream.
+[ Upstream commit 979b581e4c69257acab1af415ddad6b2d78a2fa5 ]
 
-This patch adds code to check HCI_UART_PROTO_READY flag before
-accessing hci_uart->proto. It fixes the race condition in
-hci_uart_tty_ioctl() between HCIUARTSETPROTO and HCIUARTGETPROTO.
-This issue bug found by Yu Hao and Weiteng Chen:
+I have seen the WARN_ON(smp_processor_id() != cpu) firing
+in pktgen_thread_worker() during tests.
 
-BUG: general protection fault in hci_uart_tty_ioctl [1]
+We must use cpus_read_lock()/cpus_read_unlock()
+around the for_each_online_cpu(cpu) loop.
 
-The information of C reproducer can also reference the link [2]
+While we are at it use WARN_ON_ONCE() to avoid a possible syslog flood.
 
-Reported-by: Yu Hao <yhao016@ucr.edu>
-Closes: https://lore.kernel.org/all/CA+UBctC3p49aTgzbVgkSZ2+TQcqq4fPDO7yZitFT5uBPDeCO2g@mail.gmail.com/ [1]
-Reported-by: Weiteng Chen <wchen130@ucr.edu>
-Closes: https://lore.kernel.org/lkml/CA+UBctDPEvHdkHMwD340=n02rh+jNRJNNQ5LBZNA+Wm4Keh2ow@mail.gmail.com/T/ [2]
-Signed-off-by: "Lee, Chun-Yi" <jlee@suse.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20240821175339.1191779-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/hci_ldisc.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/core/pktgen.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/bluetooth/hci_ldisc.c
-+++ b/drivers/bluetooth/hci_ldisc.c
-@@ -773,7 +773,8 @@ static int hci_uart_tty_ioctl(struct tty
- 		break;
+diff --git a/net/core/pktgen.c b/net/core/pktgen.c
+index ea55a758a475a..197a50ef8e2e1 100644
+--- a/net/core/pktgen.c
++++ b/net/core/pktgen.c
+@@ -3654,7 +3654,7 @@ static int pktgen_thread_worker(void *arg)
+ 	struct pktgen_dev *pkt_dev = NULL;
+ 	int cpu = t->cpu;
  
- 	case HCIUARTGETPROTO:
--		if (test_bit(HCI_UART_PROTO_SET, &hu->flags))
-+		if (test_bit(HCI_UART_PROTO_SET, &hu->flags) &&
-+		    test_bit(HCI_UART_PROTO_READY, &hu->flags))
- 			err = hu->proto->id;
- 		else
- 			err = -EUNATCH;
+-	WARN_ON(smp_processor_id() != cpu);
++	WARN_ON_ONCE(smp_processor_id() != cpu);
+ 
+ 	init_waitqueue_head(&t->queue);
+ 	complete(&t->start_done);
+@@ -3989,6 +3989,7 @@ static int __net_init pg_net_init(struct net *net)
+ 		goto remove;
+ 	}
+ 
++	cpus_read_lock();
+ 	for_each_online_cpu(cpu) {
+ 		int err;
+ 
+@@ -3997,6 +3998,7 @@ static int __net_init pg_net_init(struct net *net)
+ 			pr_warn("Cannot create thread for cpu %d (%d)\n",
+ 				   cpu, err);
+ 	}
++	cpus_read_unlock();
+ 
+ 	if (list_empty(&pn->pktgen_threads)) {
+ 		pr_err("Initialization failed for all threads\n");
+-- 
+2.43.0
+
 
 
 
