@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-72106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71771-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4C93967937
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:41:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4CFA9677AC
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:22:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 07E86B226D1
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:41:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 710CE281FFE
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:22:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DFDF17DFFC;
-	Sun,  1 Sep 2024 16:41:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09BC5183090;
+	Sun,  1 Sep 2024 16:22:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sjLgqh1Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QBFaypGo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B1A62B9C7;
-	Sun,  1 Sep 2024 16:41:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB8E8364AB;
+	Sun,  1 Sep 2024 16:22:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208861; cv=none; b=TWwiKuW5y1Pw2q4B6usuW1iJyRLRxY1gbiYpb+PlnN+iMBwLTjFT1COemjmLa3H82UYe0gvIOAj8kpb5aQCF9hCBy67UNOWiXpaa2s1aKts2x/SjlXVhqou5rubcHJ3a21fvvX/GI419vx8CRf0fymiCxxi9PQhxNZDbnGaRGQg=
+	t=1725207761; cv=none; b=bako17QRaxVSJND6GcMUi/oWwdxZ2SvOpPCAXh99mQX1DFpDGofciNgXGBCyF1BwskT2i9syg/0FtJZGFgX+iKvvtNhMI4F8dA2HVjZ08XxHuJkEbD0R8AG1DGMl6TqaCY18u3mUaFIIYEdd9bCUPhl2XUQR6DOCLIxkh5s2aDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208861; c=relaxed/simple;
-	bh=r6r39Oos/hOv2HKZWhZnPGu2Dw9lFIpNOqrtwsnF2I4=;
+	s=arc-20240116; t=1725207761; c=relaxed/simple;
+	bh=vnk6qnZ8hz9iFsJiAc2HktbOSMc4UPSYt9+J9JuIphY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rhnBLzhaQxiu/s9ykf5bsclrbnjJytzDfRvVlXQcdXN+WCPTtPMz/9UOIaVhh0vQ40bTma86WgIg6FGgckwPR6mAyuNOcdQBTJkjCe/WjNXUKvimpzc1AVVJb8cBgHtN4/rsRhc9r8Rt4XtD0uk6wvf7MAq4rGIO+hCA06aQeKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sjLgqh1Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FD9AC4CEC3;
-	Sun,  1 Sep 2024 16:41:00 +0000 (UTC)
+	 MIME-Version; b=gxiBbQut1LQSxy+7aplKpBB3lsVW+7hJjwDKHbCzey+qhUr2jGrF84Y9NbTKpjt1EQs5YHii7ntKH5LH0RG+vvEenrd5F8s5W+5UawNjeNaNTnD8U7WLOTE4JegDh7LZIpWxgr/a+dCe6Ri+kTvrsiX7apsJz9+Y69ynvBR4QhA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QBFaypGo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B57CC4CEC3;
+	Sun,  1 Sep 2024 16:22:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208860;
-	bh=r6r39Oos/hOv2HKZWhZnPGu2Dw9lFIpNOqrtwsnF2I4=;
+	s=korg; t=1725207761;
+	bh=vnk6qnZ8hz9iFsJiAc2HktbOSMc4UPSYt9+J9JuIphY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sjLgqh1YvsrUUGQ2JbSS7IdIb/Cp0N8105qEfqh2zc3zhFAp7UiI4KD8ratNxcB43
-	 NGSPxlbDTrUpUoIAH09MThRxmCww9efQhFpjRSxr40c0FZ2T6cilTQwkxLuBkMmYtz
-	 G+wDnHGKoCN29GRr2yp9G3Cn0ioLKtphO/zgE2Js=
+	b=QBFaypGoJg3tnx+7L9G4IL1xp5T9KajqNVRlPAoBoaXW/8f6Qqvi3mwDv7Tt8IRN2
+	 vUstJborNK7Vb2FSthZXzHEGnEI9ccVaGq5zB7Bnshq3NCkWt3wfc0i0Zy+ryxSD3n
+	 v4u5kFo6LtUOxyu6VPLL2E5+zbOM/4JRDuS7n7Bo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li zeming <zeming@nfschina.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 054/134] powerpc/boot: Handle allocation failure in simple_realloc()
+	syzbot <syzbot+0122fa359a69694395d5@syzkaller.appspotmail.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	George Kennedy <george.kennedy@oracle.com>
+Subject: [PATCH 4.19 70/98] Input: MT - limit max slots
 Date: Sun,  1 Sep 2024 18:16:40 +0200
-Message-ID: <20240901160812.141282107@linuxfoundation.org>
+Message-ID: <20240901160806.337361697@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
-References: <20240901160809.752718937@linuxfoundation.org>
+In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
+References: <20240901160803.673617007@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +64,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li zeming <zeming@nfschina.com>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-[ Upstream commit 69b0194ccec033c208b071e019032c1919c2822d ]
+commit 99d3bf5f7377d42f8be60a6b9cb60fb0be34dceb upstream.
 
-simple_malloc() will return NULL when there is not enough memory left.
-Check pointer 'new' before using it to copy the old data.
+syzbot is reporting too large allocation at input_mt_init_slots(), for
+num_slots is supplied from userspace using ioctl(UI_DEV_CREATE).
 
-Signed-off-by: Li zeming <zeming@nfschina.com>
-[mpe: Reword subject, use change log from Christophe]
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20221219021816.3012-1-zeming@nfschina.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Since nobody knows possible max slots, this patch chose 1024.
+
+Reported-by: syzbot <syzbot+0122fa359a69694395d5@syzkaller.appspotmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=0122fa359a69694395d5
+Suggested-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: George Kennedy <george.kennedy@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/boot/simple_alloc.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/input/input-mt.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/powerpc/boot/simple_alloc.c b/arch/powerpc/boot/simple_alloc.c
-index 65ec135d01579..188c4f996512a 100644
---- a/arch/powerpc/boot/simple_alloc.c
-+++ b/arch/powerpc/boot/simple_alloc.c
-@@ -114,7 +114,9 @@ static void *simple_realloc(void *ptr, unsigned long size)
- 		return ptr;
+--- a/drivers/input/input-mt.c
++++ b/drivers/input/input-mt.c
+@@ -48,6 +48,9 @@ int input_mt_init_slots(struct input_dev
+ 		return 0;
+ 	if (mt)
+ 		return mt->num_slots != num_slots ? -EINVAL : 0;
++	/* Arbitrary limit for avoiding too large memory allocation. */
++	if (num_slots > 1024)
++		return -EINVAL;
  
- 	new = simple_malloc(size);
--	memcpy(new, ptr, p->size);
-+	if (new)
-+		memcpy(new, ptr, p->size);
-+
- 	simple_free(ptr);
- 	return new;
- }
--- 
-2.43.0
-
+ 	mt = kzalloc(struct_size(mt, slots, num_slots), GFP_KERNEL);
+ 	if (!mt)
 
 
 
