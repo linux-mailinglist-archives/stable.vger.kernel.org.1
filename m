@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-71948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72061-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFF8796787C
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:32:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33A97967901
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:38:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1CAC31C20968
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:32:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A5DCFB2192A
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:38:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4332417E8EA;
-	Sun,  1 Sep 2024 16:32:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2551217E46E;
+	Sun,  1 Sep 2024 16:38:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N9D8SU6p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QI96op4a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02799537FF;
-	Sun,  1 Sep 2024 16:32:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7B0C537FF;
+	Sun,  1 Sep 2024 16:38:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208344; cv=none; b=HCi+TJ+1T8jniVcpRBmDgcBfMafmdg9Sqi8o7o0gU9THVTMtAPvGBRTGcy/nx/LgE7jpkAZpW/FdHeEu4KPNLMrdzK+cYVLOHwpeQCbL/4thDKJmDgklZskHLycYcZBQXM/KIND+rY3+7BHEEJpStVOOYmFNHakC9iND8OUBM+A=
+	t=1725208712; cv=none; b=OpXVaJDBXsckAzkM8z7jNVKGJqnI99xD2Ovh8K+JbTFz9yE23CrpmkwvXaN9rHxeOnyNFfnDJ8mZ4ildoLHR59k7fv3TJiayCO83WZAgUKKDcrN6rWq5PG+xjYiMA5xZScDKEJnaQ6gpMdlmllQDMu5lJMmpMviJIPQuiOIX/OQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208344; c=relaxed/simple;
-	bh=zOodQLOETq5jRUQnnhLehHw7jVXuX+vFln1WOXnCGeA=;
+	s=arc-20240116; t=1725208712; c=relaxed/simple;
+	bh=lG6ss0CzmteKPFkHD7emFMPv7cEsT5tGWdZ4QUhBOq8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lBIUVFJzpsahazQsgaWAy5bSin5u/FV77tDQM0CxOgJimWwoaBmK6uNsWx8Ki8KDyYwG1cMkx9ShuJyEwoA86OPXgQQMQIWHhC6/l+2/fR59+oUs+oqFNt8c48uoPGZUGOCtnxwfKtf+DpPrYyTzKrAxvzxo3ejz9hdBTjHEGI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N9D8SU6p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18C48C4CEC3;
-	Sun,  1 Sep 2024 16:32:22 +0000 (UTC)
+	 MIME-Version; b=Y6J959v31ojG4l+2ZxTQ3KFEHGTeQrFx2xXoXV8vFwTRXP/ZQwm3uWCC4KxdDEqFKaoOAiuja3u5PAWHJiRpjpph1OXH9KacAh7NSc6RxGQSeQmEa4w7FIc4NsoW3rjRCSQgZPdpLhhjN7wvb7LCo1hjWCjTUCb8Voy3SLsIZGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QI96op4a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4745FC4CEC3;
+	Sun,  1 Sep 2024 16:38:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208343;
-	bh=zOodQLOETq5jRUQnnhLehHw7jVXuX+vFln1WOXnCGeA=;
+	s=korg; t=1725208712;
+	bh=lG6ss0CzmteKPFkHD7emFMPv7cEsT5tGWdZ4QUhBOq8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N9D8SU6pCKJlTHlSMnf5WpJVJd+nDoPC3gHFAZ0OsnRdSKEdSF2J0EcMThVnGXzRd
-	 A5PP8lgOrCGYeSIC0Iq81kWtrN+SUgth9mAlLV3erC3xqiHayyND+vEyqrN1T/b+zh
-	 h7GnXDejf8X8q+dA0bHEsfRCYQM/nCGZAP4hCfsY=
+	b=QI96op4aLjVsP7oDCrE8XQEUX6KuCaJm9o/rGlWGHFOs++7frdrHXxorDNkHHtjdK
+	 VKkB+il5kMJGvwI8UwGNAxtFaKPmm1HfluQPi86GfyRn7PN9plTTIc/mTkEMhSqyUv
+	 DCtZ688Nhm0SZp+qQhG6WYb1gBkpjAtO4e0pYtPI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
-	Mark Brown <broonie@kernel.org>,
+	Cosmin Ratiu <cratiu@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 052/149] ASoC: SOF: amd: move iram-dram fence register programming sequence
+Subject: [PATCH 5.4 017/134] net/mlx5e: Correctly report errors for ethtool rx flows
 Date: Sun,  1 Sep 2024 18:16:03 +0200
-Message-ID: <20240901160819.425174278@linuxfoundation.org>
+Message-ID: <20240901160810.760013902@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
-References: <20240901160817.461957599@linuxfoundation.org>
+In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
+References: <20240901160809.752718937@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +65,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
+From: Cosmin Ratiu <cratiu@nvidia.com>
 
-[ Upstream commit c56ba3e44784527fd6efe5eb7a4fa6c9f6969a58 ]
+[ Upstream commit cbc796be1779c4dbc9a482c7233995e2a8b6bfb3 ]
 
-The existing code modifies IRAM and DRAM size after sha dma start for
-vangogh platform. The problem with this sequence is that it might cause
-sha dma failure when firmware code binary size is greater than the default
-IRAM size. To fix this issue, Move the iram-dram fence register sequence
-prior to sha dma start.
+Previously, an ethtool rx flow with no attrs would not be added to the
+NIC as it has no rules to configure the hw with, but it would be
+reported as successful to the caller (return code 0). This is confusing
+for the user as ethtool then reports "Added rule $num", but no rule was
+actually added.
 
-Fixes: 094d11768f74 ("ASoC: SOF: amd: Skip IRAM/DRAM size modification for Steam Deck OLED")
-Signed-off-by: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
-Link: https://patch.msgid.link/20240813105944.3126903-1-Vijendar.Mukunda@amd.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+This change corrects that by instead reporting these wrong rules as
+-EINVAL.
+
+Fixes: b29c61dac3a2 ("net/mlx5e: Ethtool steering flow validation refactoring")
+Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
+Reviewed-by: Saeed Mahameed <saeedm@nvidia.com>
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20240808144107.2095424-5-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/amd/acp.c | 22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_fs_ethtool.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/sof/amd/acp.c b/sound/soc/sof/amd/acp.c
-index 74fd5f2b148b8..9123427fab4e3 100644
---- a/sound/soc/sof/amd/acp.c
-+++ b/sound/soc/sof/amd/acp.c
-@@ -263,6 +263,17 @@ int configure_and_run_sha_dma(struct acp_dev_data *adata, void *image_addr,
- 	snd_sof_dsp_write(sdev, ACP_DSP_BAR, ACP_SHA_DMA_STRT_ADDR, start_addr);
- 	snd_sof_dsp_write(sdev, ACP_DSP_BAR, ACP_SHA_DMA_DESTINATION_ADDR, dest_addr);
- 	snd_sof_dsp_write(sdev, ACP_DSP_BAR, ACP_SHA_MSG_LENGTH, image_length);
-+
-+	/* psp_send_cmd only required for vangogh platform (rev - 5) */
-+	if (desc->rev == 5 && !(adata->quirks && adata->quirks->skip_iram_dram_size_mod)) {
-+		/* Modify IRAM and DRAM size */
-+		ret = psp_send_cmd(adata, MBOX_ACP_IRAM_DRAM_FENCE_COMMAND | IRAM_DRAM_FENCE_2);
-+		if (ret)
-+			return ret;
-+		ret = psp_send_cmd(adata, MBOX_ACP_IRAM_DRAM_FENCE_COMMAND | MBOX_ISREADY_FLAG);
-+		if (ret)
-+			return ret;
-+	}
- 	snd_sof_dsp_write(sdev, ACP_DSP_BAR, ACP_SHA_DMA_CMD, ACP_SHA_RUN);
- 
- 	ret = snd_sof_dsp_read_poll_timeout(sdev, ACP_DSP_BAR, ACP_SHA_TRANSFER_BYTE_CNT,
-@@ -280,17 +291,6 @@ int configure_and_run_sha_dma(struct acp_dev_data *adata, void *image_addr,
- 			return ret;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_fs_ethtool.c b/drivers/net/ethernet/mellanox/mlx5/core/en_fs_ethtool.c
+index acd946f2ddbe7..be49a2a53f29d 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_fs_ethtool.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_fs_ethtool.c
+@@ -676,7 +676,7 @@ mlx5e_ethtool_flow_replace(struct mlx5e_priv *priv,
+ 	if (num_tuples <= 0) {
+ 		netdev_warn(priv->netdev, "%s: flow is not valid %d\n",
+ 			    __func__, num_tuples);
+-		return num_tuples;
++		return num_tuples < 0 ? num_tuples : -EINVAL;
  	}
  
--	/* psp_send_cmd only required for vangogh platform (rev - 5) */
--	if (desc->rev == 5 && !(adata->quirks && adata->quirks->skip_iram_dram_size_mod)) {
--		/* Modify IRAM and DRAM size */
--		ret = psp_send_cmd(adata, MBOX_ACP_IRAM_DRAM_FENCE_COMMAND | IRAM_DRAM_FENCE_2);
--		if (ret)
--			return ret;
--		ret = psp_send_cmd(adata, MBOX_ACP_IRAM_DRAM_FENCE_COMMAND | MBOX_ISREADY_FLAG);
--		if (ret)
--			return ret;
--	}
--
- 	ret = snd_sof_dsp_read_poll_timeout(sdev, ACP_DSP_BAR, ACP_SHA_DSP_FW_QUALIFIER,
- 					    fw_qualifier, fw_qualifier & DSP_FW_RUN_ENABLE,
- 					    ACP_REG_POLL_INTERVAL, ACP_DMA_COMPLETE_TIMEOUT_US);
+ 	eth_ft = get_flow_table(priv, fs, num_tuples);
 -- 
 2.43.0
 
