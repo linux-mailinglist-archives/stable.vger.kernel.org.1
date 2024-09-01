@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-72534-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72334-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DC1A967B06
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:04:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79485967A38
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:53:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 845471F20F5D
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:04:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38D2028230F
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:53:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20EFE2C190;
-	Sun,  1 Sep 2024 17:04:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD20C17E900;
+	Sun,  1 Sep 2024 16:53:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lAGlyfyF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PT21QXqJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4637381BD;
-	Sun,  1 Sep 2024 17:03:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98BDF1DFD1;
+	Sun,  1 Sep 2024 16:53:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210239; cv=none; b=RmjVKDuXhu7Syados0kCT/8w0rARGl8eEEvIpOE7ESzI0eFKYXFNyPudRm75mpp3g61FxOcGAYAOEi9tjIIT8I74fzTb+nA8y2gjIajLb0bEF2zHF0GhxWwki1xAYzr3wuE3An8fk0/njQNdTpZ0pOen9lSAByjxijmDueUzq9k=
+	t=1725209586; cv=none; b=KDjJTaJJup1OnYLCV0DK/I9a4NnHVRlk0779lFQr7Pglc/ArWOCPg0BklK9xVbNEI4jHUVUc7sZCEpo8oBoVydtB8ooiZ2xaJrP8ijNBITAuVznJR5C4LN0HmOb1stNW5P5GFCFCAKeAGJasMZgpZJI730O0SZk2eR5dPV+zFqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210239; c=relaxed/simple;
-	bh=Lmy0nG9+wQnhBvk318t14FrTA+BYdaC+PVVFzpkKFZM=;
+	s=arc-20240116; t=1725209586; c=relaxed/simple;
+	bh=KgcWLLRfJJXKBb4oX5x1bzmFQKKAb8gFjh3CEz4C/88=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CQeeKRcciOKzfmSayJtvs5X85eNDMUMvFhQOI7hfSSuhdkejmnWBXOpObx09Sf2J09IAH7Uss29Op0DBp60Lqkxc4FP7YQKQzgLkYDm1yriOKgvFcsdqsy6UWF0zjOSz4JH5HtVoGU2kNemJAf9AhilLOZyrb0JSSCQ0PN+cic8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lAGlyfyF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45DBDC4CEC3;
-	Sun,  1 Sep 2024 17:03:59 +0000 (UTC)
+	 MIME-Version; b=DbkbkCZXmtkRL9NM4jyxnC+I+XE6wBNk4o98IXxsvxP44RGwMcB0mHjc1DZKKlwQoPXWB/aDUiLSQQPStx1isp5yNVsJDXLNdn0hz6OeaS/XzZTFTEnIyW4rkAbknlTAVwPf7kjs3Y/KcTCIF0UEL9SFkE8kmXG3Fbo7cRlyKeQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PT21QXqJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A146BC4CEC3;
+	Sun,  1 Sep 2024 16:53:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210239;
-	bh=Lmy0nG9+wQnhBvk318t14FrTA+BYdaC+PVVFzpkKFZM=;
+	s=korg; t=1725209586;
+	bh=KgcWLLRfJJXKBb4oX5x1bzmFQKKAb8gFjh3CEz4C/88=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lAGlyfyFfKOJLBQTd/orCnG+UUhh4CRypTdCLFtvPwG2tpKOMQfYZzYtdSG8fdwfP
-	 mq7XgoSFOqJrK51IaE0pVLMuJealmfFjeqfqATOfMh7+dddyeXlna9ESkjGzQLLL0f
-	 irrzbVx75zUIzJY7xHh9H1dWMyEj9xDel0YOX9bg=
+	b=PT21QXqJKbo3tyeayrty/IU5y/tCX+Oms9XvfnBWdZg8BWP0+sPd2mdv3YohoGTOr
+	 Ackz6fwNzmla7Yme+4eyj9tHxFDYXHtg4i2wl6Ga8AzYd5orkTsZrSHUYA+U34+/rf
+	 7WBEyjT+yKCXGJd/9Q3FXMaDv9mjkOMBZlAFzscI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Long Li <longli@microsoft.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 130/215] net: mana: Fix doorbell out of order violation and avoid unnecessary doorbell rings
+	Eric Dumazet <edumazet@google.com>,
+	Harald Welte <laforge@gnumonks.org>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 082/151] gtp: pull network headers in gtp_dev_xmit()
 Date: Sun,  1 Sep 2024 18:17:22 +0200
-Message-ID: <20240901160828.280305435@linuxfoundation.org>
+Message-ID: <20240901160817.206333173@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
+References: <20240901160814.090297276@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,102 +63,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Long Li <longli@microsoft.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 58a63729c957621f1990c3494c702711188ca347 ]
+commit 3a3be7ff9224f424e485287b54be00d2c6bd9c40 upstream.
 
-After napi_complete_done() is called when NAPI is polling in the current
-process context, another NAPI may be scheduled and start running in
-softirq on another CPU and may ring the doorbell before the current CPU
-does. When combined with unnecessary rings when there is no need to arm
-the CQ, it triggers error paths in the hardware.
+syzbot/KMSAN reported use of uninit-value in get_dev_xmit() [1]
 
-This patch fixes this by calling napi_complete_done() after doorbell
-rings. It limits the number of unnecessary rings when there is
-no need to arm. MANA hardware specifies that there must be one doorbell
-ring every 8 CQ wraparounds. This driver guarantees one doorbell ring as
-soon as the number of consumed CQEs exceeds 4 CQ wraparounds. In practical
-workloads, the 4 CQ wraparounds proves to be big enough that it rarely
-exceeds this limit before all the napi weight is consumed.
+We must make sure the IPv4 or Ipv6 header is pulled in skb->head
+before accessing fields in them.
 
-To implement this, add a per-CQ counter cq->work_done_since_doorbell,
-and make sure the CQ is armed as soon as passing 4 wraparounds of the CQ.
+Use pskb_inet_may_pull() to fix this issue.
 
-Cc: stable@vger.kernel.org
-Fixes: e1b5683ff62e ("net: mana: Move NAPI from EQ to CQ")
-Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
-Signed-off-by: Long Li <longli@microsoft.com>
-Link: https://patch.msgid.link/1723219138-29887-1-git-send-email-longli@linuxonhyperv.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[1]
+BUG: KMSAN: uninit-value in ipv6_pdp_find drivers/net/gtp.c:220 [inline]
+ BUG: KMSAN: uninit-value in gtp_build_skb_ip6 drivers/net/gtp.c:1229 [inline]
+ BUG: KMSAN: uninit-value in gtp_dev_xmit+0x1424/0x2540 drivers/net/gtp.c:1281
+  ipv6_pdp_find drivers/net/gtp.c:220 [inline]
+  gtp_build_skb_ip6 drivers/net/gtp.c:1229 [inline]
+  gtp_dev_xmit+0x1424/0x2540 drivers/net/gtp.c:1281
+  __netdev_start_xmit include/linux/netdevice.h:4913 [inline]
+  netdev_start_xmit include/linux/netdevice.h:4922 [inline]
+  xmit_one net/core/dev.c:3580 [inline]
+  dev_hard_start_xmit+0x247/0xa20 net/core/dev.c:3596
+  __dev_queue_xmit+0x358c/0x5610 net/core/dev.c:4423
+  dev_queue_xmit include/linux/netdevice.h:3105 [inline]
+  packet_xmit+0x9c/0x6c0 net/packet/af_packet.c:276
+  packet_snd net/packet/af_packet.c:3145 [inline]
+  packet_sendmsg+0x90e3/0xa3a0 net/packet/af_packet.c:3177
+  sock_sendmsg_nosec net/socket.c:730 [inline]
+  __sock_sendmsg+0x30f/0x380 net/socket.c:745
+  __sys_sendto+0x685/0x830 net/socket.c:2204
+  __do_sys_sendto net/socket.c:2216 [inline]
+  __se_sys_sendto net/socket.c:2212 [inline]
+  __x64_sys_sendto+0x125/0x1d0 net/socket.c:2212
+  x64_sys_call+0x3799/0x3c10 arch/x86/include/generated/asm/syscalls_64.h:45
+  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+  do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Uninit was created at:
+  slab_post_alloc_hook mm/slub.c:3994 [inline]
+  slab_alloc_node mm/slub.c:4037 [inline]
+  kmem_cache_alloc_node_noprof+0x6bf/0xb80 mm/slub.c:4080
+  kmalloc_reserve+0x13d/0x4a0 net/core/skbuff.c:583
+  __alloc_skb+0x363/0x7b0 net/core/skbuff.c:674
+  alloc_skb include/linux/skbuff.h:1320 [inline]
+  alloc_skb_with_frags+0xc8/0xbf0 net/core/skbuff.c:6526
+  sock_alloc_send_pskb+0xa81/0xbf0 net/core/sock.c:2815
+  packet_alloc_skb net/packet/af_packet.c:2994 [inline]
+  packet_snd net/packet/af_packet.c:3088 [inline]
+  packet_sendmsg+0x749c/0xa3a0 net/packet/af_packet.c:3177
+  sock_sendmsg_nosec net/socket.c:730 [inline]
+  __sock_sendmsg+0x30f/0x380 net/socket.c:745
+  __sys_sendto+0x685/0x830 net/socket.c:2204
+  __do_sys_sendto net/socket.c:2216 [inline]
+  __se_sys_sendto net/socket.c:2212 [inline]
+  __x64_sys_sendto+0x125/0x1d0 net/socket.c:2212
+  x64_sys_call+0x3799/0x3c10 arch/x86/include/generated/asm/syscalls_64.h:45
+  do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+  do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+CPU: 0 UID: 0 PID: 7115 Comm: syz.1.515 Not tainted 6.11.0-rc1-syzkaller-00043-g94ede2a3e913 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 06/27/2024
+
+Fixes: 999cb275c807 ("gtp: add IPv6 support")
+Fixes: 459aa660eb1d ("gtp: add initial driver for datapath of GPRS Tunneling Protocol (GTP-U)")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Harald Welte <laforge@gnumonks.org>
+Reviewed-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Link: https://patch.msgid.link/20240808132455.3413916-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/microsoft/mana/mana.h    |  1 +
- drivers/net/ethernet/microsoft/mana/mana_en.c | 24 ++++++++++++-------
- 2 files changed, 16 insertions(+), 9 deletions(-)
+ drivers/net/gtp.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/net/ethernet/microsoft/mana/mana.h b/drivers/net/ethernet/microsoft/mana/mana.h
-index fc98a5ba5ed07..35e937a7079c0 100644
---- a/drivers/net/ethernet/microsoft/mana/mana.h
-+++ b/drivers/net/ethernet/microsoft/mana/mana.h
-@@ -252,6 +252,7 @@ struct mana_cq {
- 	/* NAPI data */
- 	struct napi_struct napi;
- 	int work_done;
-+	int work_done_since_doorbell;
- 	int budget;
- };
+--- a/drivers/net/gtp.c
++++ b/drivers/net/gtp.c
+@@ -567,6 +567,9 @@ static netdev_tx_t gtp_dev_xmit(struct s
+ 	if (skb_cow_head(skb, dev->needed_headroom))
+ 		goto tx_err;
  
-diff --git a/drivers/net/ethernet/microsoft/mana/mana_en.c b/drivers/net/ethernet/microsoft/mana/mana_en.c
-index 6224b7c21e0af..b0963fda4d9fd 100644
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -1074,7 +1074,6 @@ static void mana_poll_rx_cq(struct mana_cq *cq)
- static int mana_cq_handler(void *context, struct gdma_queue *gdma_queue)
- {
- 	struct mana_cq *cq = context;
--	u8 arm_bit;
- 	int w;
- 
- 	WARN_ON_ONCE(cq->gdma_cq != gdma_queue);
-@@ -1085,16 +1084,23 @@ static int mana_cq_handler(void *context, struct gdma_queue *gdma_queue)
- 		mana_poll_tx_cq(cq);
- 
- 	w = cq->work_done;
--
--	if (w < cq->budget &&
--	    napi_complete_done(&cq->napi, w)) {
--		arm_bit = SET_ARM_BIT;
--	} else {
--		arm_bit = 0;
-+	cq->work_done_since_doorbell += w;
++	if (!pskb_inet_may_pull(skb))
++		goto tx_err;
 +
-+	if (w < cq->budget) {
-+		mana_gd_ring_cq(gdma_queue, SET_ARM_BIT);
-+		cq->work_done_since_doorbell = 0;
-+		napi_complete_done(&cq->napi, w);
-+	} else if (cq->work_done_since_doorbell >
-+		   cq->gdma_cq->queue_size / COMP_ENTRY_SIZE * 4) {
-+		/* MANA hardware requires at least one doorbell ring every 8
-+		 * wraparounds of CQ even if there is no need to arm the CQ.
-+		 * This driver rings the doorbell as soon as we have exceeded
-+		 * 4 wraparounds.
-+		 */
-+		mana_gd_ring_cq(gdma_queue, 0);
-+		cq->work_done_since_doorbell = 0;
- 	}
+ 	skb_reset_inner_headers(skb);
  
--	mana_gd_ring_cq(gdma_queue, arm_bit);
--
- 	return w;
- }
- 
--- 
-2.43.0
-
+ 	/* PDP context lookups in gtp_build_skb_*() need rcu read-side lock. */
 
 
 
