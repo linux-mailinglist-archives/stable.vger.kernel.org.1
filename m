@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-72392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72594-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDC68967A72
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:56:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B4154967B42
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:07:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 28E011C208E4
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:56:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E49E51C216A9
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:07:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C7A017E919;
-	Sun,  1 Sep 2024 16:56:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F69217ADE1;
+	Sun,  1 Sep 2024 17:07:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hub12zPG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JSmhPuH+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09FDF1DFD1;
-	Sun,  1 Sep 2024 16:56:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0E9F26AC1;
+	Sun,  1 Sep 2024 17:07:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209774; cv=none; b=nTaXtgCcVgkT3sC9OVBTvaXxbhqaN8lA0KvyN7ewOZ02aPcRq0ZiH8dXK+ieGEqHy/owogATGvHW2Iu/7fB19OPTvKOvs9w1B0Job75wY8rvKCaAv5YfOz6pcvrJweysCZIKfjZinsyuol4wNJ3T7Kbc2rK8M5HckRkkbPuTVTs=
+	t=1725210440; cv=none; b=gJNqFs904s0/OBZkKhTPurIeEfChlpDrmRU7DXYRvuvMQ3zqL20uu2L6v4YLxheUjHytuqSIjHh7XrVsBroA21uEW4w/M7/JWDl1uQyOB5H1Ib6P3blW8FXFY+B5mRCgi5R3VdO0BbnlFof1KunucJWbqWucjkTuCNWa+VVAw+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209774; c=relaxed/simple;
-	bh=jvIg+V+w9rAjR0u1Ip+85iGSYzcb0YLSEAXtUUUHz5s=;
+	s=arc-20240116; t=1725210440; c=relaxed/simple;
+	bh=fMJFBePvwqIh5NMO1rK13UQNi/kmjQDip0G725C/o1w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SCM60o6fl4HfldDOerzS4CHkOnGcL+05OnV1icBOuUMrhwDNyosUL+w8SsJrZ/9+TybNsqZa0dLAfIQ/EhYuX7ddojtidEMAYB6ywSwHkjtdJfomhKg8aXp5CaNCjdxeILw7Os8L9LK2h8O7RkaIPLxm+PvrXcnnuXkKasT7Lqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hub12zPG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D8F9C4CEC3;
-	Sun,  1 Sep 2024 16:56:13 +0000 (UTC)
+	 MIME-Version; b=aAEix+2YXs9xIzwFs32qjbzRBc5PVXDuJbn3usaXNc6VoCntJA4BaYsjBndNiCHm20wfLHU2scLadqT3Op2/vEnU+eqxLlLn0TXIrrizA5IdoAIg03cQuFti5+QJUDEq3YOaWmrsHoP2cNng9GIaulOEtjNNVWEUKp38a8hKQHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JSmhPuH+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BDE6C4CEC3;
+	Sun,  1 Sep 2024 17:07:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209773;
-	bh=jvIg+V+w9rAjR0u1Ip+85iGSYzcb0YLSEAXtUUUHz5s=;
+	s=korg; t=1725210440;
+	bh=fMJFBePvwqIh5NMO1rK13UQNi/kmjQDip0G725C/o1w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hub12zPGMEvCqeGnleOp8wD/r0NjgL+82ApdABBvuqWhbhqi+QNGBBr+l4xhTMyjz
-	 A/CDoA8bRk6iO10/ohYVgDi1rSBddfvk6NwLTZ/M/Sor7o6aW7bpsGWZAfLu5jaRGC
-	 M7vfZmnAm0XayYn2SmPhaDnicdbhWLpNj3TLtn/k=
+	b=JSmhPuH+2Q+Nw+YbaP+6CcipZEbu5sz7/DiABeys2AEDA/GwTCkDg0Bp9YQuak7Yu
+	 52rvrvumM3D+K1tXjwIQ/fKaVBtfMmUFABcU2RaWbVmzJ0XSzGPpDj7y0+PI3TYndQ
+	 ZucIWIMAopZ7CBlfxMkdJlGFl3jm9NidA37CdHWs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aleksandr Mishin <amishin@t-argos.ru>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Paul Cercueil <paul@crapouillou.net>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 141/151] nfc: pn533: Add poll mod list filling check
-Date: Sun,  1 Sep 2024 18:18:21 +0200
-Message-ID: <20240901160819.412700759@linuxfoundation.org>
+Subject: [PATCH 5.15 190/215] PM: core: Add EXPORT[_GPL]_SIMPLE_DEV_PM_OPS macros
+Date: Sun,  1 Sep 2024 18:18:22 +0200
+Message-ID: <20240901160830.539374448@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
-References: <20240901160814.090297276@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +64,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: Paul Cercueil <paul@crapouillou.net>
 
-[ Upstream commit febccb39255f9df35527b88c953b2e0deae50e53 ]
+[ Upstream commit 0ae101fdd3297b7165755340e05386f1e1379709 ]
 
-In case of im_protocols value is 1 and tm_protocols value is 0 this
-combination successfully passes the check
-'if (!im_protocols && !tm_protocols)' in the nfc_start_poll().
-But then after pn533_poll_create_mod_list() call in pn533_start_poll()
-poll mod list will remain empty and dev->poll_mod_count will remain 0
-which lead to division by zero.
+These macros are defined conditionally, according to CONFIG_PM:
+- if CONFIG_PM is enabled, these macros resolve to
+  DEFINE_SIMPLE_DEV_PM_OPS(), and the dev_pm_ops symbol will be
+  exported.
 
-Normally no im protocol has value 1 in the mask, so this combination is
-not expected by driver. But these protocol values actually come from
-userspace via Netlink interface (NFC_CMD_START_POLL operation). So a
-broken or malicious program may pass a message containing a "bad"
-combination of protocol parameter values so that dev->poll_mod_count
-is not incremented inside pn533_poll_create_mod_list(), thus leading
-to division by zero.
-Call trace looks like:
-nfc_genl_start_poll()
-  nfc_start_poll()
-    ->start_poll()
-    pn533_start_poll()
+- if CONFIG_PM is disabled, these macros will result in a dummy static
+  dev_pm_ops to be created with the __maybe_unused flag. The dev_pm_ops
+  will then be discarded by the compiler, along with the provided
+  callback functions if they are not used anywhere else.
 
-Add poll mod list filling check.
+In the second case, the symbol is not exported, which should be
+perfectly fine - users of the symbol should all use the pm_ptr() or
+pm_sleep_ptr() macro, so the dev_pm_ops marked as "extern" in the
+client's code will never be accessed.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: dfccd0f58044 ("NFC: pn533: Add some polling entropy")
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://patch.msgid.link/20240827084822.18785-1-amishin@t-argos.ru
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Paul Cercueil <paul@crapouillou.net>
+Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Stable-dep-of: 5af9b304bc60 ("phy: xilinx: phy-zynqmp: Fix SGMII linkup failure on resume")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nfc/pn533/pn533.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ include/linux/pm.h | 35 ++++++++++++++++++++++++++++++++---
+ 1 file changed, 32 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/nfc/pn533/pn533.c b/drivers/nfc/pn533/pn533.c
-index 87e1296c68381..4de5205d9d61b 100644
---- a/drivers/nfc/pn533/pn533.c
-+++ b/drivers/nfc/pn533/pn533.c
-@@ -1751,6 +1751,11 @@ static int pn533_start_poll(struct nfc_dev *nfc_dev,
- 	}
+diff --git a/include/linux/pm.h b/include/linux/pm.h
+index 452c1ed902b75..c3665382b9f8c 100644
+--- a/include/linux/pm.h
++++ b/include/linux/pm.h
+@@ -8,6 +8,7 @@
+ #ifndef _LINUX_PM_H
+ #define _LINUX_PM_H
  
- 	pn533_poll_create_mod_list(dev, im_protocols, tm_protocols);
-+	if (!dev->poll_mod_count) {
-+		nfc_err(dev->dev,
-+			"Poll mod list is empty\n");
-+		return -EINVAL;
-+	}
++#include <linux/export.h>
+ #include <linux/list.h>
+ #include <linux/workqueue.h>
+ #include <linux/spinlock.h>
+@@ -357,14 +358,42 @@ struct dev_pm_ops {
+ #define SET_RUNTIME_PM_OPS(suspend_fn, resume_fn, idle_fn)
+ #endif
  
- 	/* Do not always start polling from the same modulation */
- 	get_random_bytes(&rand_mod, sizeof(rand_mod));
++#define _DEFINE_DEV_PM_OPS(name, \
++			   suspend_fn, resume_fn, \
++			   runtime_suspend_fn, runtime_resume_fn, idle_fn) \
++const struct dev_pm_ops name = { \
++	SYSTEM_SLEEP_PM_OPS(suspend_fn, resume_fn) \
++	RUNTIME_PM_OPS(runtime_suspend_fn, runtime_resume_fn, idle_fn) \
++}
++
++#ifdef CONFIG_PM
++#define _EXPORT_DEV_PM_OPS(name, suspend_fn, resume_fn, runtime_suspend_fn, \
++			   runtime_resume_fn, idle_fn, sec) \
++	_DEFINE_DEV_PM_OPS(name, suspend_fn, resume_fn, runtime_suspend_fn, \
++			   runtime_resume_fn, idle_fn); \
++	_EXPORT_SYMBOL(name, sec)
++#else
++#define _EXPORT_DEV_PM_OPS(name, suspend_fn, resume_fn, runtime_suspend_fn, \
++			   runtime_resume_fn, idle_fn, sec) \
++static __maybe_unused _DEFINE_DEV_PM_OPS(__static_##name, suspend_fn, \
++					 resume_fn, runtime_suspend_fn, \
++					 runtime_resume_fn, idle_fn)
++#endif
++
+ /*
+  * Use this if you want to use the same suspend and resume callbacks for suspend
+  * to RAM and hibernation.
++ *
++ * If the underlying dev_pm_ops struct symbol has to be exported, use
++ * EXPORT_SIMPLE_DEV_PM_OPS() or EXPORT_GPL_SIMPLE_DEV_PM_OPS() instead.
+  */
+ #define DEFINE_SIMPLE_DEV_PM_OPS(name, suspend_fn, resume_fn) \
+-const struct dev_pm_ops name = { \
+-	SYSTEM_SLEEP_PM_OPS(suspend_fn, resume_fn) \
+-}
++	_DEFINE_DEV_PM_OPS(name, suspend_fn, resume_fn, NULL, NULL, NULL)
++
++#define EXPORT_SIMPLE_DEV_PM_OPS(name, suspend_fn, resume_fn) \
++	_EXPORT_DEV_PM_OPS(name, suspend_fn, resume_fn, NULL, NULL, NULL, "")
++#define EXPORT_GPL_SIMPLE_DEV_PM_OPS(name, suspend_fn, resume_fn) \
++	_EXPORT_DEV_PM_OPS(name, suspend_fn, resume_fn, NULL, NULL, NULL, "_gpl")
+ 
+ /* Deprecated. Use DEFINE_SIMPLE_DEV_PM_OPS() instead. */
+ #define SIMPLE_DEV_PM_OPS(name, suspend_fn, resume_fn) \
 -- 
 2.43.0
 
