@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-72330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72048-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0D34967A34
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:52:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DD4D9678F4
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:37:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F516282313
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:52:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B73D2810D1
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:37:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F325817E900;
-	Sun,  1 Sep 2024 16:52:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B07D217DFFC;
+	Sun,  1 Sep 2024 16:37:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TQbKcqQQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L+LJW3sk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B14E71DFD1;
-	Sun,  1 Sep 2024 16:52:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 701981C68C;
+	Sun,  1 Sep 2024 16:37:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209573; cv=none; b=LJfwd1pBolyqUYZkx82LEP9FISF+GGcm8kdCn57AMhBeavPxJA7Jtv5BQHthny4jeBsZ2z1qV6qGGxfQ64wSLc99KaRjBgVMQNn7e1Y+C3HrqKo63pnWyq3GuRoJtT6gu5TMANyyQuVwmy4TcXVaDhNeEst/un1tDtD0i0ohK6U=
+	t=1725208669; cv=none; b=IIFBKUK50gwXZ13wVjcgrkZSP2ytLL6CWL1nPw/ZNjm/HAPL3tJJw/EhsxLvgShULqOSzz45v2Y1kydjAcviFv2xwQnSHkOZ3QECZ2Kc0v5rQ47DrVEhxoz9AmtWUI98WzUz5J1aekryy7xon9W7/GMNP8WoX5hMgd/VtYIQXXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209573; c=relaxed/simple;
-	bh=ftRo6Pp/UaVX/mad1DOuOcGE2oYLkoAftNTDFNTgilM=;
+	s=arc-20240116; t=1725208669; c=relaxed/simple;
+	bh=1SM28nTHpPHPGU+tFqlOvmAj5Gup5pgR2kpRj6aLFR0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=su/RbtawQjwhX+uj17xrFv2+b01z0oO2rJMp0NVVCrjFVgP93lCPlyxni10aUF/7BjsEn2dfUAr1gyeGLe6q64Mis3BT5LVYDVFYhHNZ0lwI/mkkx9hkjomM9K8/SnMAaokS9K/8ZX8d8pfhRS7EVPyMm1ifWIgWIqy16i7stTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TQbKcqQQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8C4EC4CEC3;
-	Sun,  1 Sep 2024 16:52:52 +0000 (UTC)
+	 MIME-Version; b=mAxCCecUyJLylX9gDV6eknCipQbPdktAsJVEm/d3FXTPVrpWZ1ceOaJ/J/7ZO3XULAVEEkaGKHdsLhRr21Rq8d7smBIbv+VRzWQaTZj0qRg/omadgIdh/2zAlIom775OI393H42Iz7lcF2dhSaW8Zy549YiVBKwvuEg4cmFpjVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L+LJW3sk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCD89C4CEC3;
+	Sun,  1 Sep 2024 16:37:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209573;
-	bh=ftRo6Pp/UaVX/mad1DOuOcGE2oYLkoAftNTDFNTgilM=;
+	s=korg; t=1725208669;
+	bh=1SM28nTHpPHPGU+tFqlOvmAj5Gup5pgR2kpRj6aLFR0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TQbKcqQQa1kTCwo3sqvayxeBzO/f+VAZb7cc+kE0pLTmnEfWXYtg/K90CmFtbHVel
-	 vi4Wmw+VOBzXKAsi6+JDJUA1amZ4PT8lsxKvOKuqSh7p26HCGOq47vq+GfSLBNApBu
-	 6b9lkQ3m/swuHTPeBY8Ce+F1LufZpegvvEEcnkCI=
+	b=L+LJW3sk2Ip6g/NgOq0ZMYA0wyLbM560NN5cfv8w1uVxhHKGfmBf0j/KnmIXJcjQ7
+	 oncvie9y3BdlqNH1pjJX+2Rl28nsHqNWKWph3STZb10LvSJPsJ3rW7S7xkrqf5XOh+
+	 KG2f0dihhP7CiclVn+ucq1IiPllEaLv9QvY7VrzI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 079/151] ext4: set the type of max_zeroout to unsigned int to avoid overflow
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.10 128/149] arm64: dts: qcom: x1e80100: fix PCIe domain numbers
 Date: Sun,  1 Sep 2024 18:17:19 +0200
-Message-ID: <20240901160817.092229198@linuxfoundation.org>
+Message-ID: <20240901160822.267884459@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
-References: <20240901160814.090297276@linuxfoundation.org>
+In-Reply-To: <20240901160817.461957599@linuxfoundation.org>
+References: <20240901160817.461957599@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit 261341a932d9244cbcd372a3659428c8723e5a49 ]
+commit f8fa1f2f6412bffa71972f9506b72992d0e6e485 upstream.
 
-The max_zeroout is of type int and the s_extent_max_zeroout_kb is of
-type uint, and the s_extent_max_zeroout_kb can be freely modified via
-the sysfs interface. When the block size is 1024, max_zeroout may
-overflow, so declare it as unsigned int to avoid overflow.
+The current PCIe domain numbers are off by one and do not match the
+numbers that the UEFI firmware (and Windows) uses.
 
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20240319113325.3110393-9-libaokun1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 5eb83fc10289 ("arm64: dts: qcom: x1e80100: Add PCIe nodes")
+Cc: stable@vger.kernel.org	# 6.9
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Link: https://lore.kernel.org/r/20240722094249.26471-3-johan+linaro@kernel.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/extents.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/x1e80100.dtsi |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
-index 9e12592727914..f5fa9d542d648 100644
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -3399,9 +3399,10 @@ static int ext4_ext_convert_to_initialized(handle_t *handle,
- 	struct ext4_extent *ex, *abut_ex;
- 	ext4_lblk_t ee_block, eof_block;
- 	unsigned int ee_len, depth, map_len = map->m_len;
--	int allocated = 0, max_zeroout = 0;
- 	int err = 0;
- 	int split_flag = EXT4_EXT_DATA_VALID2;
-+	int allocated = 0;
-+	unsigned int max_zeroout = 0;
+--- a/arch/arm64/boot/dts/qcom/x1e80100.dtsi
++++ b/arch/arm64/boot/dts/qcom/x1e80100.dtsi
+@@ -2756,7 +2756,7 @@
  
- 	ext_debug(inode, "logical block %llu, max_blocks %u\n",
- 		  (unsigned long long)map->m_lblk, map_len);
--- 
-2.43.0
-
+ 			dma-coherent;
+ 
+-			linux,pci-domain = <7>;
++			linux,pci-domain = <6>;
+ 			num-lanes = <2>;
+ 
+ 			interrupts = <GIC_SPI 773 IRQ_TYPE_LEVEL_HIGH>,
+@@ -2878,7 +2878,7 @@
+ 
+ 			dma-coherent;
+ 
+-			linux,pci-domain = <5>;
++			linux,pci-domain = <4>;
+ 			num-lanes = <2>;
+ 
+ 			interrupts = <GIC_SPI 141 IRQ_TYPE_LEVEL_HIGH>,
 
 
 
