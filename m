@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-72408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72251-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1C00967A82
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:57:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB4BE9679E0
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:49:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5DFF91F23EAF
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:57:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 625C31F21FCA
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:49:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C21BD17E919;
-	Sun,  1 Sep 2024 16:57:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CAB918452C;
+	Sun,  1 Sep 2024 16:48:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iwCO0nxQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FjnKRsvc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EFE72A1B8;
-	Sun,  1 Sep 2024 16:57:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDCA71E87B;
+	Sun,  1 Sep 2024 16:48:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209823; cv=none; b=seJlmQF+lb9N/75B8J+DVDdSLuLy6FMATBGP20pZVALXzCYPXE0H/tCAYqe+02I2C5LXAbAAfcJJG/Cwpaj3TzILWYRGWd+crdb/VaTQO2rKKbhdQcSe2hlG8yNkb505ZxtxjcefxLQC2eg8LOAsIT5cYTUevBax5P7DGnfcrIc=
+	t=1725209324; cv=none; b=FsAQwFvWKPcJK7LrxYGK9IiA4TIJfd25MFpg2gIl/an2ppV7BhsdLSrgUaw+RNJoYwAUFq0ePq8HYUW3xNsEanZxLMt4sYtc/mruSdi11EDh8Sfb9ceQLPpHQBd87XrCcFmiUiaaAvwraxRRk8MKjkklxiloq52XbJAeO5IFGuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209823; c=relaxed/simple;
-	bh=RouQDi8LkXJ5gwndn2KTUfyW2Fd3gYVybBp19iPIsFI=;
+	s=arc-20240116; t=1725209324; c=relaxed/simple;
+	bh=hAAHoHASLDOIeMowJ0hfxGD0mIAHVdpbi+i5C9/KUp0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vCeKO36c8rKa35Y2sUuYoIuIQwXm/5pEWrl7Bg2vMz0+8+3+D9YXoiodM0+JO4M+uCJdSl4JYYIGaMgRMiaGMq4RLMF9Tx/KPxlHqY/sriF3QDIButn6Zh7B09nVqwh8bbL1aFxpOAzxhAgkVT63Su/N+QTCzG6PtLc2xtTpkf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iwCO0nxQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0EFCC4CEC3;
-	Sun,  1 Sep 2024 16:57:02 +0000 (UTC)
+	 MIME-Version; b=EgaL0VK53iK6Hc7OTnzQyIAQYjiPAd7E3sX/tM4YTWts8K3CCKd9OxedvBX5HvHXW4hUyNnhYKUOCEdgt7KepiEX30zYb/AQbxXarXY3PjXKrt/wT6rTG8N/RO0BKm28nMdGQ8LZ8xn0I0OncdTV8Fm5QBNXtIXntwWmoL9EIhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FjnKRsvc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 650EEC4CEC3;
+	Sun,  1 Sep 2024 16:48:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209823;
-	bh=RouQDi8LkXJ5gwndn2KTUfyW2Fd3gYVybBp19iPIsFI=;
+	s=korg; t=1725209323;
+	bh=hAAHoHASLDOIeMowJ0hfxGD0mIAHVdpbi+i5C9/KUp0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iwCO0nxQ0xlWpoAW+9QTmjBSsrsIGX4TitxCADkyMSQ1OIt0OkAe9t91l/GQPSoO0
-	 kzr3uzQb1hMiWRidUv0OaFal0wiKsbeKB/zrl/A8DUVpi1Y0sOY2O0SvADJeGSIijQ
-	 2ZOD2dr2zyZDLt7WgZA5NaeBE1OKk7hY00pRh2vo=
+	b=FjnKRsvcAerv6XeDvCub8YMNNX4TM250XfhPua1mdaxwTZAs0sj6KMXI3bDWjDYbO
+	 yk/qHyIvypW/ThBqucoYyduwN2BVXCDIQz8SvDoHn7KGWvw8M6jaF/4VglpwiI48pX
+	 uFIjGyILyXk8MfBAP5z8zTdx25SQjDf6q6/FLmWk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 5.10 135/151] soundwire: stream: fix programming slave ports for non-continous port maps
-Date: Sun,  1 Sep 2024 18:18:15 +0200
-Message-ID: <20240901160819.183874052@linuxfoundation.org>
+	Guenter Roeck <linux@roeck-us.net>,
+	Julia Lawall <julia.lawall@inria.fr>,
+	Abdulrasaq Lawani <abdulrasaqolawani@gmail.com>,
+	Helge Deller <deller@gmx.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 71/71] fbdev: offb: fix up missing cleanup.h
+Date: Sun,  1 Sep 2024 18:18:16 +0200
+Message-ID: <20240901160804.567921379@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
-References: <20240901160814.090297276@linuxfoundation.org>
+In-Reply-To: <20240901160801.879647959@linuxfoundation.org>
+References: <20240901160801.879647959@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +64,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit ab8d66d132bc8f1992d3eb6cab8d32dda6733c84 upstream.
+In commit 96ee5c5712ef ("fbdev: offb: replace of_node_put with
+__free(device_node)"), __free() was added, but not cleanup.h so it broke
+the build.  Fix this up.
 
-Two bitmasks in 'struct sdw_slave_prop' - 'source_ports' and
-'sink_ports' - define which ports to program in
-sdw_program_slave_port_params().  The masks are used to get the
-appropriate data port properties ('struct sdw_get_slave_dpn_prop') from
-an array.
-
-Bitmasks can be non-continuous or can start from index different than 0,
-thus when looking for matching port property for given port, we must
-iterate over mask bits, not from 0 up to number of ports.
-
-This fixes allocation and programming slave ports, when a source or sink
-masks start from further index.
-
-Fixes: f8101c74aa54 ("soundwire: Add Master and Slave port programming")
-Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Link: https://lore.kernel.org/r/20240729140157.326450-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/4f4ac35e-e31c-4f67-b809-a5de4d4b273a@roeck-us.net
+Fixes: 96ee5c5712ef ("fbdev: offb: replace of_node_put with __free(device_node)")
+Cc: Julia Lawall <julia.lawall@inria.fr>
+Cc: Abdulrasaq Lawani <abdulrasaqolawani@gmail.com>
+Cc: Helge Deller <deller@gmx.de>
+Cc: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soundwire/stream.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/video/fbdev/offb.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/soundwire/stream.c
-+++ b/drivers/soundwire/stream.c
-@@ -1425,18 +1425,18 @@ struct sdw_dpn_prop *sdw_get_slave_dpn_p
- 					    unsigned int port_num)
- {
- 	struct sdw_dpn_prop *dpn_prop;
--	u8 num_ports;
-+	unsigned long mask;
- 	int i;
+--- a/drivers/video/fbdev/offb.c
++++ b/drivers/video/fbdev/offb.c
+@@ -27,6 +27,7 @@
+ #include <linux/ioport.h>
+ #include <linux/pci.h>
+ #include <linux/platform_device.h>
++#include <linux/cleanup.h>
+ #include <asm/io.h>
  
- 	if (direction == SDW_DATA_DIR_TX) {
--		num_ports = hweight32(slave->prop.source_ports);
-+		mask = slave->prop.source_ports;
- 		dpn_prop = slave->prop.src_dpn_prop;
- 	} else {
--		num_ports = hweight32(slave->prop.sink_ports);
-+		mask = slave->prop.sink_ports;
- 		dpn_prop = slave->prop.sink_dpn_prop;
- 	}
- 
--	for (i = 0; i < num_ports; i++) {
-+	for_each_set_bit(i, &mask, 32) {
- 		if (dpn_prop[i].num == port_num)
- 			return &dpn_prop[i];
- 	}
+ #ifdef CONFIG_PPC32
 
 
 
