@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-72485-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71766-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E1AA967AD1
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:01:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3525B9677A7
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:22:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE482281C78
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:01:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1CD631C20B3D
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:22:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 939B23398B;
-	Sun,  1 Sep 2024 17:01:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6D58181B88;
+	Sun,  1 Sep 2024 16:22:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F8pAEFz5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l1JlOPNX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FEFB17C;
-	Sun,  1 Sep 2024 17:01:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6853364AB;
+	Sun,  1 Sep 2024 16:22:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210078; cv=none; b=At92njdHWhYVQ1FdJbV5zXytw7gAyJ+5elxZU6KIa18dXDb8M5OuSct3eIirf2I/eERYCil5JyQZg4uixpGPEkhCr0e8WLe1Z1OgEJtIsmI42dyCrzw2+vKP8MGRTYiF+03Sx024klSGPyruF8luab9WMLqdWvFe1O1Bzw7EJkI=
+	t=1725207744; cv=none; b=Wcb8Vt5sT+bl8ZfqRrwHhUsE/4pZLHSL8GqZdYlhh+aeSRfHs48bZ+aQUKnPigtlmxFlZvteH8ZTF5KMRZfQcpteH5gsKcidd+a5pdQl6IU13+O+MXUGIka8ta3nl/QU/1RZsDdrP555it5/Qyjo/8PUThV9vSAclQrFsgHlqrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210078; c=relaxed/simple;
-	bh=QlPc3L7DFFTMahRxtX2G6PMyoydTa+6zmA2aeqG/Vw4=;
+	s=arc-20240116; t=1725207744; c=relaxed/simple;
+	bh=u2kHE52fqksnO/SLxTzEZO92I2zeBMvlkW8yyB52ERY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mMHsPTYucq1Yqi4QB/Gb3JMqDONuiHDmFg08myTcNjVLl3TAkP7zZmVni/M2GxO/YRrt3ojPJFTmL/4QKZ11CRMxM7PMNRzSWMfx+ycKN4ewUnhlweU3Gjs5pNtWSMLo1bY30kwePjZ6Wwf+2oOoYzdSmiVGWNAqyu4w/h9vB+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F8pAEFz5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F735C4CEC3;
-	Sun,  1 Sep 2024 17:01:17 +0000 (UTC)
+	 MIME-Version; b=OEFagEB4ivvji8DGyJzFAAJ+1+ICxsrgB93KcDxFx4DD4UL39hMnJ7AwCTsZ+Uh/LbqP6jtzTgWLTtaYOwL0uTFwKy6CLVXX2B9/omwHzeLwGkPrLH/MG1kUvboCXd9m0yUNy71Ov3W/1oJc9j7Ivv9XynmqxWNPSIrKDlFx+wo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l1JlOPNX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C134C4CEC3;
+	Sun,  1 Sep 2024 16:22:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210077;
-	bh=QlPc3L7DFFTMahRxtX2G6PMyoydTa+6zmA2aeqG/Vw4=;
+	s=korg; t=1725207744;
+	bh=u2kHE52fqksnO/SLxTzEZO92I2zeBMvlkW8yyB52ERY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F8pAEFz58hy+1LiIufcYN5zLj+e6t+9EriBJtEffb63r0PwiaNWYD94Xma+zriSyH
-	 rnJUEogcjA/Brz1TDHvEPMTjerN1E23+apyj0N7QR7V+fF/xZQJsaPhOzUoljXuF4W
-	 73p2kYAR2SYt57Fo2WmBw1uIgtlUi5DWuwGP9flA=
+	b=l1JlOPNX8jlGCiX6fjlJALOYL/iMuEvvhmmMJ8NkuBwo2V9S30OBMFlep6Peo6AV9
+	 9Xh7tvzaYIPzdt+LAeaSlDaVViVYZzidUZ1ICswuvjEYFt7/dCf0otPumBL6VLR07N
+	 7EcnrhLl6LJyShaOSxNoaTmnzA485q7e2VbEb6d0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	y0un9n132@gmail.com,
-	Kees Cook <keescook@chromium.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Jiri Kosina <jkosina@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 082/215] x86: Increase brk randomness entropy for 64-bit systems
-Date: Sun,  1 Sep 2024 18:16:34 +0200
-Message-ID: <20240901160826.456577968@linuxfoundation.org>
+	Jason Gerecke <jason.gerecke@wacom.com>,
+	Jiri Kosina <jkosina@suse.com>
+Subject: [PATCH 4.19 65/98] HID: wacom: Defer calculation of resolution until resolution_code is known
+Date: Sun,  1 Sep 2024 18:16:35 +0200
+Message-ID: <20240901160806.150597878@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
-References: <20240901160823.230213148@linuxfoundation.org>
+In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
+References: <20240901160803.673617007@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <keescook@chromium.org>
+From: Jason Gerecke <jason.gerecke@wacom.com>
 
-[ Upstream commit 44c76825d6eefee9eb7ce06c38e1a6632ac7eb7d ]
+commit 1b8f9c1fb464968a5b18d3acc1da8c00bad24fad upstream.
 
-In commit c1d171a00294 ("x86: randomize brk"), arch_randomize_brk() was
-defined to use a 32MB range (13 bits of entropy), but was never increased
-when moving to 64-bit. The default arch_randomize_brk() uses 32MB for
-32-bit tasks, and 1GB (18 bits of entropy) for 64-bit tasks.
+The Wacom driver maps the HID_DG_TWIST usage to ABS_Z (rather than ABS_RZ)
+for historic reasons. When the code to support twist was introduced in
+commit 50066a042da5 ("HID: wacom: generic: Add support for height, tilt,
+and twist usages"), we were careful to write it in such a way that it had
+HID calculate the resolution of the twist axis assuming ABS_RZ instead
+(so that we would get correct angular behavior). This was broken with
+the introduction of commit 08a46b4190d3 ("HID: wacom: Set a default
+resolution for older tablets"), which moved the resolution calculation
+to occur *before* the adjustment from ABS_Z to ABS_RZ occurred.
 
-Update x86_64 to match the entropy used by arm64 and other 64-bit
-architectures.
+This commit moves the calculation of resolution after the point that
+we are finished setting things up for its proper use.
 
-Reported-by: y0un9n132@gmail.com
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Jiri Kosina <jkosina@suse.com>
-Closes: https://lore.kernel.org/linux-hardening/CA+2EKTVLvc8hDZc+2Yhwmus=dzOUG5E4gV7ayCbu0MPJTZzWkw@mail.gmail.com/
-Link: https://lore.kernel.org/r/20240217062545.1631668-1-keescook@chromium.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Jason Gerecke <jason.gerecke@wacom.com>
+Fixes: 08a46b4190d3 ("HID: wacom: Set a default resolution for older tablets")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/process.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/hid/wacom_wac.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/process.c b/arch/x86/kernel/process.c
-index e6b28c689e9a9..720d99520316a 100644
---- a/arch/x86/kernel/process.c
-+++ b/arch/x86/kernel/process.c
-@@ -937,7 +937,10 @@ unsigned long arch_align_stack(unsigned long sp)
+--- a/drivers/hid/wacom_wac.c
++++ b/drivers/hid/wacom_wac.c
+@@ -1830,12 +1830,14 @@ static void wacom_map_usage(struct input
+ 	int fmax = field->logical_maximum;
+ 	unsigned int equivalent_usage = wacom_equivalent_usage(usage->hid);
+ 	int resolution_code = code;
+-	int resolution = hidinput_calc_abs_res(field, resolution_code);
++	int resolution;
  
- unsigned long arch_randomize_brk(struct mm_struct *mm)
- {
--	return randomize_page(mm->brk, 0x02000000);
-+	if (mmap_is_ia32())
-+		return randomize_page(mm->brk, SZ_32M);
+ 	if (equivalent_usage == HID_DG_TWIST) {
+ 		resolution_code = ABS_RZ;
+ 	}
+ 
++	resolution = hidinput_calc_abs_res(field, resolution_code);
 +
-+	return randomize_page(mm->brk, SZ_1G);
- }
- 
- /*
--- 
-2.43.0
-
+ 	if (equivalent_usage == HID_GD_X) {
+ 		fmin += features->offset_left;
+ 		fmax -= features->offset_right;
 
 
 
