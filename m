@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-71762-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72057-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86DFE9677A2
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:22:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F246B9678FC
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:38:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E2C2AB2156B
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:22:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 290731C20EBF
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:38:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AEA117E01C;
-	Sun,  1 Sep 2024 16:22:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BFEC2B9C7;
+	Sun,  1 Sep 2024 16:38:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U/HnXbvA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2hWV33ez"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A4822C1B4;
-	Sun,  1 Sep 2024 16:22:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B8FD1C68C;
+	Sun,  1 Sep 2024 16:38:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725207731; cv=none; b=H/5fq7AWX63rRUndnhSxpP9S7hcQTYkrBvWQRSlQXAI+qa5IxzQ+xySjRDXKh+1uU/TdYalpcVUQG78AnmklNwrc+JSR2D+8nzhfeRfKWdMb2bP9ggOpysYbLJ56z0SpbWq9pXRbXINYaQNUwRgSUDbSDpqjFkcMZ2mll5jJk1A=
+	t=1725208699; cv=none; b=SsNWBqcKptuaHPHUAVVLxXHSqy5PR/u58GMfzAYh6DtITpijjga2REMmOTGFN6SzRu2+YqWaIMhxNKulf9M5vyeOr0E8K173oiwLCIx2M1T8ZHOToXw964E3BUGU5dx+9j89XIbCzLBkaGXwb3pdWW5eYGjs0SKr3A6jPBHp1Wk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725207731; c=relaxed/simple;
-	bh=FFl+xjbFFJS61oQVrKZ9M3aVXzp28T5CP4ORQIicUSQ=;
+	s=arc-20240116; t=1725208699; c=relaxed/simple;
+	bh=49Q23zQHiIodSv8xO3eGG7CJNN+wU/dISJg4JfFqcMs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M16xw8nP7cSS46ossNAg71fL5yfF/E6QekZRZQnuEkHCTyTzAtjVZBjAtoWHoZNGZv121Mo2dyh4WJOp3xEWHfe4CYs1hRRIuJqNWQScPEL68+p4qeYMIghphxLsYMm58wcHPcdYLPVIHpMXU/q8+5h+ow9M3qD9f4VbAo3hHso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U/HnXbvA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E288C4CEC3;
-	Sun,  1 Sep 2024 16:22:10 +0000 (UTC)
+	 MIME-Version; b=bM9HOof999uxKf1GbUfecYqPMC0ZLaYrpPZ7pZC4bqOw2xibqQrVvhFAyz9I1ukZ8j9pPwtYvJJBFyI4EbjCoXD2npqIjSwC+5OV5/YJUZMa9WXbLzmhnzLw7cKzLmn5pT6QAh6h8JfKLSuu/J5zY7012zeXp6KGwEQ7yG5MJY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2hWV33ez; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0907C4CEC3;
+	Sun,  1 Sep 2024 16:38:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725207730;
-	bh=FFl+xjbFFJS61oQVrKZ9M3aVXzp28T5CP4ORQIicUSQ=;
+	s=korg; t=1725208699;
+	bh=49Q23zQHiIodSv8xO3eGG7CJNN+wU/dISJg4JfFqcMs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U/HnXbvAZU9GLzIF8UDhL840w1EtSmPefmRMVmTvoDC1AKrSpMuoOLY4PFP8ejdRC
-	 npZS//LOD93eapJbtr5zWRYRBE6NHlIXy3T850R4+83E3OU09BA4QDghnRCa/fDUCu
-	 78INB+A9D6fEMudemFctuhBFALCVOQ5PE78mIqGo=
+	b=2hWV33ezJXxhTSyYPOmnS6h5sp6vqpjKbX/lQ4b00ffbSaZ128LJ04EKJdxJUJFY4
+	 lJeQAav+6peF/79Q4+wM8k/URFTrBvL9x3i0299B+yaKqfvlrJn/zWyWn+z8AKdwhK
+	 5ztwGKFL1+1+zLJIHJGl3qvCF1Gk10gztxwh4Jtw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Max Filippov <jcmvbkbc@gmail.com>,
-	Kees Cook <keescook@chromium.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 29/98] fs: binfmt_elf_efpic: dont use missing interpreters properties
+	Andrew Morton <akpm@linux-foundation.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Al Viro <viro@zeniv.linux.org.uk>
+Subject: [PATCH 5.4 013/134] memcg_write_event_control(): fix a user-triggerable oops
 Date: Sun,  1 Sep 2024 18:15:59 +0200
-Message-ID: <20240901160804.792855435@linuxfoundation.org>
+Message-ID: <20240901160810.611953724@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
-References: <20240901160803.673617007@linuxfoundation.org>
+In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
+References: <20240901160809.752718937@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Max Filippov <jcmvbkbc@gmail.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit 15fd1dc3dadb4268207fa6797e753541aca09a2a ]
+commit 046667c4d3196938e992fba0dfcde570aa85cd0e upstream.
 
-Static FDPIC executable may get an executable stack even when it has
-non-executable GNU_STACK segment. This happens when STACK segment has rw
-permissions, but does not specify stack size. In that case FDPIC loader
-uses permissions of the interpreter's stack, and for static executables
-with no interpreter it results in choosing the arch-default permissions
-for the stack.
+we are *not* guaranteed that anything past the terminating NUL
+is mapped (let alone initialized with anything sane).
 
-Fix that by using the interpreter's properties only when the interpreter
-is actually used.
-
-Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
-Link: https://lore.kernel.org/r/20240118150637.660461-1-jcmvbkbc@gmail.com
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 0dea116876ee ("cgroup: implement eventfd-based generic API for notifications")
+Cc: stable@vger.kernel.org
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Acked-by: Michal Hocko <mhocko@suse.com>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/binfmt_elf_fdpic.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/memcontrol.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/fs/binfmt_elf_fdpic.c b/fs/binfmt_elf_fdpic.c
-index a7c2efcd0a4a3..0dbbb3a21e6c3 100644
---- a/fs/binfmt_elf_fdpic.c
-+++ b/fs/binfmt_elf_fdpic.c
-@@ -324,7 +324,7 @@ static int load_elf_fdpic_binary(struct linux_binprm *bprm)
- 	else
- 		executable_stack = EXSTACK_DEFAULT;
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -4732,9 +4732,12 @@ static ssize_t memcg_write_event_control
+ 	buf = endp + 1;
  
--	if (stack_size == 0) {
-+	if (stack_size == 0 && interp_params.flags & ELF_FDPIC_FLAG_PRESENT) {
- 		stack_size = interp_params.stack_size;
- 		if (interp_params.flags & ELF_FDPIC_FLAG_EXEC_STACK)
- 			executable_stack = EXSTACK_ENABLE_X;
--- 
-2.43.0
-
+ 	cfd = simple_strtoul(buf, &endp, 10);
+-	if ((*endp != ' ') && (*endp != '\0'))
++	if (*endp == '\0')
++		buf = endp;
++	else if (*endp == ' ')
++		buf = endp + 1;
++	else
+ 		return -EINVAL;
+-	buf = endp + 1;
+ 
+ 	event = kzalloc(sizeof(*event), GFP_KERNEL);
+ 	if (!event)
 
 
 
