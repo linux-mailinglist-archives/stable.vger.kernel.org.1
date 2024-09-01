@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-71713-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72435-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D348696776C
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:19:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BCCB967A9D
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:58:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5E049B2122D
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:19:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18325280DE2
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:58:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 795D9181B88;
-	Sun,  1 Sep 2024 16:19:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADEE417ADE1;
+	Sun,  1 Sep 2024 16:58:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LVloD3+s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="apOB806u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 358712C1B4;
-	Sun,  1 Sep 2024 16:19:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68DC844C93;
+	Sun,  1 Sep 2024 16:58:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725207571; cv=none; b=KkWLDI4/qz4HgWRLaoRNr/9CsypWgxkCb1wOmw3ZpP7Ne7hXnbWc3mLRqqr+w7dSF0RQ70GN7l3BzSpb7Vdsp6i+HG8bFNAOBTZjpkFhM6dt6EENDU7IpbRjktr04pWwcbhqqkJ9Dy1SV2akM1UOsqxgGx/xs2BBlY7EmxzLVh4=
+	t=1725209914; cv=none; b=RnRdhNacYwlDVua2BQzK8xPJt5qCTue66/cBejKx10ILMIptxLwAgkinq82ptlSRCKGBrikzmF7sxaZ6FvHycYhMSuc53zgvSJ1JcwWhQ0EsTm5TVuyfOzQEytNbG14KICk8vvNGLpDjt28L7XnV4ODenBtvJ0yC1wVxIcsbLMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725207571; c=relaxed/simple;
-	bh=Uab43FtKXTllZD1UiuQlFVFtbFh6KR3h7rPO1wb++fw=;
+	s=arc-20240116; t=1725209914; c=relaxed/simple;
+	bh=xzQqqrlBOAmrcBbjLzBcXtTK0+Rx2XV8BW1SPZ1CEiE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t+1o6OjcBvT/JvB94+/lulKBsVhuc+YkEJEhtEJEnZmCwVOMG7d0S+7Bz+s278F7XGipDrTxvFB9o5hEyrIuwPDaSHGIMxRPS+oAu7xVD+aGm54pkkW0l+1f0WzvBOsxsB7mWkCCMqIjGmiwzTmuP+2VYgfvVG3bVD3rVFPBt4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LVloD3+s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BEA7C4CEC3;
-	Sun,  1 Sep 2024 16:19:30 +0000 (UTC)
+	 MIME-Version; b=br985LVSw1UMBS7xECOkvrRox1WyJnyawAtIGk0Xx8TeeNh6vBm/9/h7YuZOsWrxFmxxt9gNZbWeU5Byg4xPlCgIShtCL2oo1C9SbRSJ+5VCae0k9VmYNPm3i89irdYkyDWX0rH8dGf0cK2uScHVIcY3yxZS47QoHnV8pNhWtNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=apOB806u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D025DC4CEC3;
+	Sun,  1 Sep 2024 16:58:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725207570;
-	bh=Uab43FtKXTllZD1UiuQlFVFtbFh6KR3h7rPO1wb++fw=;
+	s=korg; t=1725209914;
+	bh=xzQqqrlBOAmrcBbjLzBcXtTK0+Rx2XV8BW1SPZ1CEiE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LVloD3+s7rLjcxn89grTqlTrb/0SVRyMokGWbMwEh1mCTQ40Ic1FrZwoqy2R1jouR
-	 MhmjueSzlLltFNnLxxrPvzBsLwTEJ6W0D/kLYOu/pkEYN2ibcp8UF71hDhvBPyoWPk
-	 PO3DhAab3lKwwDcYC/Z2goNfQmACQc/ljmqYTrrg=
+	b=apOB806uAhZXLgePjJO7JTBdusSta1Q5b/pRtzIIyWNbNzQrFTCNPd43Ei7s76Zrd
+	 YnOIpP3Dq39lvMNTS3YfaDpGF1i4BXN0LZP5fhQhTmUwPmE8f/l1O9mqvcf5X6MG4u
+	 3DVFqwnZQxVovvDgZ6Jh5rwygYdCstvqd3ABqkHc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Peter Oberparleiter <oberpar@linux.ibm.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 4.19 12/98] s390/cio: rename bitmap_size() -> idset_bitmap_size()
+	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 030/215] net: axienet: Fix register defines comment description
 Date: Sun,  1 Sep 2024 18:15:42 +0200
-Message-ID: <20240901160804.148943893@linuxfoundation.org>
+Message-ID: <20240901160824.403063013@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160803.673617007@linuxfoundation.org>
-References: <20240901160803.673617007@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Lobakin <aleksander.lobakin@intel.com>
+From: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
 
-commit c1023f5634b9bfcbfff0dc200245309e3cde9b54 upstream.
+[ Upstream commit 9ff2f816e2aa65ca9a1cdf0954842f8173c0f48d ]
 
-bitmap_size() is a pretty generic name and one may want to use it for
-a generic bitmap API function. At the same time, its logic is not
-"generic", i.e. it's not just `nbits -> size of bitmap in bytes`
-converter as it would be expected from its name.
-Add the prefix 'idset_' used throughout the file where the function
-resides.
+In axiethernet header fix register defines comment description to be
+inline with IP documentation. It updates MAC configuration register,
+MDIO configuration register and frame filter control description.
 
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Acked-by: Peter Oberparleiter <oberpar@linux.ibm.com>
-Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Fixes: 8a3b7a252dca ("drivers/net/ethernet/xilinx: added Xilinx AXI Ethernet driver")
+Signed-off-by: Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/cio/idset.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/xilinx/xilinx_axienet.h | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
---- a/drivers/s390/cio/idset.c
-+++ b/drivers/s390/cio/idset.c
-@@ -16,7 +16,7 @@ struct idset {
- 	unsigned long bitmap[0];
- };
+diff --git a/drivers/net/ethernet/xilinx/xilinx_axienet.h b/drivers/net/ethernet/xilinx/xilinx_axienet.h
+index 5b4d153b1492c..cbf637078c38a 100644
+--- a/drivers/net/ethernet/xilinx/xilinx_axienet.h
++++ b/drivers/net/ethernet/xilinx/xilinx_axienet.h
+@@ -159,16 +159,16 @@
+ #define XAE_RCW1_OFFSET		0x00000404 /* Rx Configuration Word 1 */
+ #define XAE_TC_OFFSET		0x00000408 /* Tx Configuration */
+ #define XAE_FCC_OFFSET		0x0000040C /* Flow Control Configuration */
+-#define XAE_EMMC_OFFSET		0x00000410 /* EMAC mode configuration */
+-#define XAE_PHYC_OFFSET		0x00000414 /* RGMII/SGMII configuration */
++#define XAE_EMMC_OFFSET		0x00000410 /* MAC speed configuration */
++#define XAE_PHYC_OFFSET		0x00000414 /* RX Max Frame Configuration */
+ #define XAE_ID_OFFSET		0x000004F8 /* Identification register */
+-#define XAE_MDIO_MC_OFFSET	0x00000500 /* MII Management Config */
+-#define XAE_MDIO_MCR_OFFSET	0x00000504 /* MII Management Control */
+-#define XAE_MDIO_MWD_OFFSET	0x00000508 /* MII Management Write Data */
+-#define XAE_MDIO_MRD_OFFSET	0x0000050C /* MII Management Read Data */
++#define XAE_MDIO_MC_OFFSET	0x00000500 /* MDIO Setup */
++#define XAE_MDIO_MCR_OFFSET	0x00000504 /* MDIO Control */
++#define XAE_MDIO_MWD_OFFSET	0x00000508 /* MDIO Write Data */
++#define XAE_MDIO_MRD_OFFSET	0x0000050C /* MDIO Read Data */
+ #define XAE_UAW0_OFFSET		0x00000700 /* Unicast address word 0 */
+ #define XAE_UAW1_OFFSET		0x00000704 /* Unicast address word 1 */
+-#define XAE_FMI_OFFSET		0x00000708 /* Filter Mask Index */
++#define XAE_FMI_OFFSET		0x00000708 /* Frame Filter Control */
+ #define XAE_AF0_OFFSET		0x00000710 /* Address Filter 0 */
+ #define XAE_AF1_OFFSET		0x00000714 /* Address Filter 1 */
  
--static inline unsigned long bitmap_size(int num_ssid, int num_id)
-+static inline unsigned long idset_bitmap_size(int num_ssid, int num_id)
- {
- 	return bitmap_size(size_mul(num_ssid, num_id));
- }
-@@ -25,11 +25,12 @@ static struct idset *idset_new(int num_s
- {
- 	struct idset *set;
+@@ -307,7 +307,7 @@
+  */
+ #define XAE_UAW1_UNICASTADDR_MASK	0x0000FFFF
  
--	set = vmalloc(sizeof(struct idset) + bitmap_size(num_ssid, num_id));
-+	set = vmalloc(sizeof(struct idset) +
-+		      idset_bitmap_size(num_ssid, num_id));
- 	if (set) {
- 		set->num_ssid = num_ssid;
- 		set->num_id = num_id;
--		memset(set->bitmap, 0, bitmap_size(num_ssid, num_id));
-+		memset(set->bitmap, 0, idset_bitmap_size(num_ssid, num_id));
- 	}
- 	return set;
- }
-@@ -41,7 +42,8 @@ void idset_free(struct idset *set)
+-/* Bit masks for Axi Ethernet FMI register */
++/* Bit masks for Axi Ethernet FMC register */
+ #define XAE_FMI_PM_MASK			0x80000000 /* Promis. mode enable */
+ #define XAE_FMI_IND_MASK		0x00000003 /* Index Mask */
  
- void idset_fill(struct idset *set)
- {
--	memset(set->bitmap, 0xff, bitmap_size(set->num_ssid, set->num_id));
-+	memset(set->bitmap, 0xff,
-+	       idset_bitmap_size(set->num_ssid, set->num_id));
- }
- 
- static inline void idset_add(struct idset *set, int ssid, int id)
+-- 
+2.43.0
+
 
 
 
