@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-72248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72407-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E99B49679DD
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:49:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10136967A81
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:57:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 94F841F21DA1
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:49:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 402621C20F97
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:57:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2405185B5D;
-	Sun,  1 Sep 2024 16:48:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9208718132A;
+	Sun,  1 Sep 2024 16:57:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ExkQCBBw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GMbh2QcK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67745185B55;
-	Sun,  1 Sep 2024 16:48:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50A722A1B8;
+	Sun,  1 Sep 2024 16:57:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209314; cv=none; b=uZUyHmYwvdqATNxFvQz0J+4SQZX6LTtWbXq/3Po3CP+zKE03MjIirzOLj7bM0mpjTM3wc99IflZYIUkz6OO9225Tg5rRizLbOaHsUfd8CAxSC7B3iG6kyPhAOM2ikHFg7PQB9YcR7K8holC0QwtxYtF2C3fln2NeVBEdl2mzOVY=
+	t=1725209820; cv=none; b=a1FoZ8bZVZX3c6Xa9DhdKQ3MhAAoYH5b80s+qMR0vVQtIl2qWlstdd2gScqi5HkfsJy4Ikg/hOe/x0Ux9h/r1foqRMyuEPRgkPPFFnUOe9/RlcDQ+Bjr0OsIXVL4ST1f3mhD4J8hpyU39c4237c1IDl0JYVUKpmJmhlizPNr7Ow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209314; c=relaxed/simple;
-	bh=A+xxftYSB42VCcT28LsC2uIwWKeY2xV8hFO8yQCfjiY=;
+	s=arc-20240116; t=1725209820; c=relaxed/simple;
+	bh=wV/xCnAquXbf+mbsBwYN2USXZ1jCGSYim6tQ5gNqNwk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rWcUMenpnURxLwWdTZjyt+a6aCREY7uiKybBsy9+OTFd0G2ahEbcB+Wn8BzL8yM5ZX/RA69nq1jC5Xi793CHMDsEE+/SqKkqyYjrvx01EbLro842W2BAIF6WWvTqBqpyBsIoH3KxvogcHCagdy+zykXrTUdwt1DDfBDa0gcuGjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ExkQCBBw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5725C4CEC8;
-	Sun,  1 Sep 2024 16:48:33 +0000 (UTC)
+	 MIME-Version; b=fzYplR1k7BB/1UCSTXfrCa68oDtRYMSrXw95gmXa43sn6VVVMgEtirOV9uJQEkAtaV/JIg/uw/5UaNtiVjEAZpEJRr6hak23zORBh27Q5QQ6W8Q289C1/Cc5lBpT9BtMcAyHytuFT50cWqBhfp9z3b2NDqUF19vAxbXxu9XEQy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GMbh2QcK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC0D9C4CEC3;
+	Sun,  1 Sep 2024 16:56:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209314;
-	bh=A+xxftYSB42VCcT28LsC2uIwWKeY2xV8hFO8yQCfjiY=;
+	s=korg; t=1725209820;
+	bh=wV/xCnAquXbf+mbsBwYN2USXZ1jCGSYim6tQ5gNqNwk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ExkQCBBwLCnoSaW5OtO90h5sMM7KEngDcg/Ml5svzbtS8I+6/5n0QeurGDgpOOXIc
-	 M4YKnf9FlMsGh9BlMqj7N3hup3z2KIxjeDYYOXPKNLX7+JSP02DG/YiDfsoK5N0NyM
-	 WXozkbPCfdhexJf65F9c4fw+fUVeDOubu8P98USc=
+	b=GMbh2QcK93uHzKEQDUnNDvb6rCLigxgNAgnhiGJ8rnsEOoaHlAv8olXTq68ZmNwfG
+	 K73FSsA9FA7ue3IKyuExa7hMPd/evZVPDghGFAz3LI4RLtL4o7w7S65ZmEOyW9i0xf
+	 rAVMG/VOwKGAWJoAaXCx7fkdqOWb8EFCyMY8wB60=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Gordon <m.gordon.zelenoborsky@gmail.com>,
-	Ben Hutchings <benh@debian.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 69/71] scsi: aacraid: Fix double-free on probe failure
+	Miklos Szeredi <mszeredi@redhat.com>,
+	Hugo SIMELIERE <hsimeliere.opensource@witekio.com>
+Subject: [PATCH 5.10 134/151] ovl: do not fail because of O_NOATIME
 Date: Sun,  1 Sep 2024 18:18:14 +0200
-Message-ID: <20240901160804.491838246@linuxfoundation.org>
+Message-ID: <20240901160819.146836718@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160801.879647959@linuxfoundation.org>
-References: <20240901160801.879647959@linuxfoundation.org>
+In-Reply-To: <20240901160814.090297276@linuxfoundation.org>
+References: <20240901160814.090297276@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +61,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Hutchings <benh@debian.org>
+From: Miklos Szeredi <mszeredi@redhat.com>
 
-[ Upstream commit 919ddf8336f0b84c0453bac583808c9f165a85c2 ]
+commit b6650dab404c701d7fe08a108b746542a934da84 upstream.
 
-aac_probe_one() calls hardware-specific init functions through the
-aac_driver_ident::init pointer, all of which eventually call down to
-aac_init_adapter().
+In case the file cannot be opened with O_NOATIME because of lack of
+capabilities, then clear O_NOATIME instead of failing.
 
-If aac_init_adapter() fails after allocating memory for aac_dev::queues,
-it frees the memory but does not clear that member.
+Remove WARN_ON(), since it would now trigger if O_NOATIME was cleared.
+Noticed by Amir Goldstein.
 
-After the hardware-specific init function returns an error,
-aac_probe_one() goes down an error path that frees the memory pointed to
-by aac_dev::queues, resulting.in a double-free.
-
-Reported-by: Michael Gordon <m.gordon.zelenoborsky@gmail.com>
-Link: https://bugs.debian.org/1075855
-Fixes: 8e0c5ebde82b ("[SCSI] aacraid: Newer adapter communication iterface support")
-Signed-off-by: Ben Hutchings <benh@debian.org>
-Link: https://lore.kernel.org/r/ZsZvfqlQMveoL5KQ@decadent.org.uk
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Signed-off-by: Hugo SIMELIERE <hsimeliere.opensource@witekio.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/aacraid/comminit.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/overlayfs/file.c |   11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/scsi/aacraid/comminit.c b/drivers/scsi/aacraid/comminit.c
-index bd99c5492b7d4..0f64b02443037 100644
---- a/drivers/scsi/aacraid/comminit.c
-+++ b/drivers/scsi/aacraid/comminit.c
-@@ -642,6 +642,7 @@ struct aac_dev *aac_init_adapter(struct aac_dev *dev)
+--- a/fs/overlayfs/file.c
++++ b/fs/overlayfs/file.c
+@@ -53,9 +53,10 @@ static struct file *ovl_open_realfile(co
+ 	err = inode_permission(realinode, MAY_OPEN | acc_mode);
+ 	if (err) {
+ 		realfile = ERR_PTR(err);
+-	} else if (!inode_owner_or_capable(realinode)) {
+-		realfile = ERR_PTR(-EPERM);
+ 	} else {
++		if (!inode_owner_or_capable(realinode))
++			flags &= ~O_NOATIME;
++
+ 		realfile = open_with_fake_path(&file->f_path, flags, realinode,
+ 					       current_cred());
+ 	}
+@@ -75,12 +76,6 @@ static int ovl_change_flags(struct file
+ 	struct inode *inode = file_inode(file);
+ 	int err;
  
- 	if (aac_comm_init(dev)<0){
- 		kfree(dev->queues);
-+		dev->queues = NULL;
- 		return NULL;
- 	}
- 	/*
-@@ -649,6 +650,7 @@ struct aac_dev *aac_init_adapter(struct aac_dev *dev)
- 	 */
- 	if (aac_fib_setup(dev) < 0) {
- 		kfree(dev->queues);
-+		dev->queues = NULL;
- 		return NULL;
- 	}
- 		
--- 
-2.43.0
-
+-	flags |= OVL_OPEN_FLAGS;
+-
+-	/* If some flag changed that cannot be changed then something's amiss */
+-	if (WARN_ON((file->f_flags ^ flags) & ~OVL_SETFL_MASK))
+-		return -EIO;
+-
+ 	flags &= OVL_SETFL_MASK;
+ 
+ 	if (((flags ^ file->f_flags) & O_APPEND) && IS_APPEND(inode))
 
 
 
