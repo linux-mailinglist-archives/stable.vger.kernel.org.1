@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-72199-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72523-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 187AA9679A4
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:47:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7D10967AFA
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:03:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C28F71F21C26
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:47:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D96F1F21C14
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:03:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A79E1183CAB;
-	Sun,  1 Sep 2024 16:46:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30E553BB48;
+	Sun,  1 Sep 2024 17:03:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gaAAJDdd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V1nqaJIF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6593E185B63;
-	Sun,  1 Sep 2024 16:46:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3C8F381BD;
+	Sun,  1 Sep 2024 17:03:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725209163; cv=none; b=QNp2pqEsO0BVwZj0RItr8ttE6rkh02+oaZoc0EkGeqbmmrSzZ7WIfV305q6dotn0vwddWq9BN2kC0PmWkJnf6BjOUvIfXD+T1n4SE+vdNi2S1iEeercA0pjiKSYwmXydTCYGWbD3oqyRnlBeqQd8y2iPUjLmRTZc3qKUsKxocJ0=
+	t=1725210203; cv=none; b=K9i7QQhEtLu3w51Tdn+Ts6U9KilI0EIL6o2obWEHw7vr63Q56DPpIh61dwbdSnC+KAGwX/3qgEMNCfq7spjaZx1XoWbo2rHb6r1lI2hqtiQlMRTMvzK9GBINQbRkXE0r7Ac1perzMiZHS0MaAaxDqh3W0mb7ZsjIzBqhsqZHsnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725209163; c=relaxed/simple;
-	bh=t0Ir/OfEDQf0yupz54NIB4LuIYdKwxzZlLwcIkVNEMo=;
+	s=arc-20240116; t=1725210203; c=relaxed/simple;
+	bh=w8G5KHM9Erufzp8I7zw1NRWgUUfX1BxSebAywSSOR3c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WDHmhbMGTawfxxDGezNhtrmmyRh9BRV3gHpZfdls34cKUvW+FsHR2VmTZ8p0yJrPSl0KRaQEPAQ+k0PbddSqveG6SwO6K64UIxFp3DQPR8qMrpYmijBuewH8n0a0mr1E0IThCXFU5/CaejVr/a7/gQxiUp2Of89HD8g0cajE3yU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gaAAJDdd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B490CC4CEC3;
-	Sun,  1 Sep 2024 16:46:02 +0000 (UTC)
+	 MIME-Version; b=CJTZsWXuHnKrINDW15OgkF9NaOpMoI6QZOlxMx3WfAsfyRLKxwJI3gfq63ShHGcL96TjJuvs++u/44oB3/XIPKGFiQfDDRWZYyKGV8Q/W5ixLPsA2jkhvqi9aShDCbUtN5Gg7QH3RHqB4GqGI12ICLoF0cbH5gJHZW53ne7XCeA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V1nqaJIF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67241C4CEC3;
+	Sun,  1 Sep 2024 17:03:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725209163;
-	bh=t0Ir/OfEDQf0yupz54NIB4LuIYdKwxzZlLwcIkVNEMo=;
+	s=korg; t=1725210202;
+	bh=w8G5KHM9Erufzp8I7zw1NRWgUUfX1BxSebAywSSOR3c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gaAAJDddug+QbW5OhgfMEJb4j8dCO9leBKNPJ1/fShd6xJQf4kqJN7OVT7ouA7Xnr
-	 CaF4UcwZTICzMvRvYo9nNWU9EE1gLhmAEzFHcezei9yobQkbavkZ+WfvKGjLCoalNi
-	 CAs1gNQaQLCoviDwqDYHepVMifqFYlyY5jXE7SLQ=
+	b=V1nqaJIFzwL9IgNZJ99HOGmT/A5ZFwfoKtr0x7UOi5pJJ+lcTZWwVknma7DkejKdc
+	 DIS+sWVZnhjqMmRI8OJO6Q0t+KZIbNsDq8wOdOy0kGy1uAYTKiAjEVyr/Wu89G2RBa
+	 BAAy9b2CjHDBiMp5tluAAtFrE3XkqggAmfuJwzfc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 6.1 06/71] pinctrl: single: fix potential NULL dereference in pcs_get_function()
-Date: Sun,  1 Sep 2024 18:17:11 +0200
-Message-ID: <20240901160802.127032720@linuxfoundation.org>
+	Josef Bacik <josef@toxicpanda.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 120/215] sunrpc: pass in the sv_stats struct through svc_create_pooled
+Date: Sun,  1 Sep 2024 18:17:12 +0200
+Message-ID: <20240901160827.891007905@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160801.879647959@linuxfoundation.org>
-References: <20240901160801.879647959@linuxfoundation.org>
+In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
+References: <20240901160823.230213148@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +62,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Josef Bacik <josef@toxicpanda.com>
 
-commit 1c38a62f15e595346a1106025722869e87ffe044 upstream.
+[ Upstream commit f094323867668d50124886ad884b665de7319537 ]
 
-pinmux_generic_get_function() can return NULL and the pointer 'function'
-was dereferenced without checking against NULL. Add checking of pointer
-'function' in pcs_get_function().
+Since only one service actually reports the rpc stats there's not much
+of a reason to have a pointer to it in the svc_program struct.  Adjust
+the svc_create_pooled function to take the sv_stats as an argument and
+pass the struct through there as desired instead of getting it from the
+svc_program->pg_stats.
 
-Found by code review.
-
-Cc: stable@vger.kernel.org
-Fixes: 571aec4df5b7 ("pinctrl: single: Use generic pinmux helpers for managing functions")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Link: https://lore.kernel.org/20240808041355.2766009-1-make24@iscas.ac.cn
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+[ cel: adjusted to apply to v5.15.y ]
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/pinctrl-single.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/nfsd/nfssvc.c           |    3 ++-
+ include/linux/sunrpc/svc.h |    4 +++-
+ net/sunrpc/svc.c           |   12 +++++++-----
+ 3 files changed, 12 insertions(+), 7 deletions(-)
 
---- a/drivers/pinctrl/pinctrl-single.c
-+++ b/drivers/pinctrl/pinctrl-single.c
-@@ -350,6 +350,8 @@ static int pcs_get_function(struct pinct
- 		return -ENOTSUPP;
- 	fselector = setting->func;
- 	function = pinmux_generic_get_function(pctldev, fselector);
-+	if (!function)
-+		return -EINVAL;
- 	*func = function->data;
- 	if (!(*func)) {
- 		dev_err(pcs->dev, "%s could not find function%i\n",
+--- a/fs/nfsd/nfssvc.c
++++ b/fs/nfsd/nfssvc.c
+@@ -665,7 +665,8 @@ int nfsd_create_serv(struct net *net)
+ 	if (nfsd_max_blksize == 0)
+ 		nfsd_max_blksize = nfsd_get_default_max_blksize();
+ 	nfsd_reset_versions(nn);
+-	serv = svc_create_pooled(&nfsd_program, nfsd_max_blksize, nfsd);
++	serv = svc_create_pooled(&nfsd_program, &nfsd_svcstats,
++				 nfsd_max_blksize, nfsd);
+ 	if (serv == NULL)
+ 		return -ENOMEM;
+ 
+--- a/include/linux/sunrpc/svc.h
++++ b/include/linux/sunrpc/svc.h
+@@ -483,7 +483,9 @@ void		   svc_rqst_replace_page(struct sv
+ 					 struct page *page);
+ void		   svc_rqst_free(struct svc_rqst *);
+ void		   svc_exit_thread(struct svc_rqst *);
+-struct svc_serv *  svc_create_pooled(struct svc_program *, unsigned int,
++struct svc_serv *  svc_create_pooled(struct svc_program *prog,
++				     struct svc_stat *stats,
++				     unsigned int bufsize,
+ 				     int (*threadfn)(void *data));
+ int		   svc_set_num_threads(struct svc_serv *, struct svc_pool *, int);
+ int		   svc_pool_stats_open(struct svc_serv *serv, struct file *file);
+--- a/net/sunrpc/svc.c
++++ b/net/sunrpc/svc.c
+@@ -447,8 +447,8 @@ __svc_init_bc(struct svc_serv *serv)
+  * Create an RPC service
+  */
+ static struct svc_serv *
+-__svc_create(struct svc_program *prog, unsigned int bufsize, int npools,
+-	     int (*threadfn)(void *data))
++__svc_create(struct svc_program *prog, struct svc_stat *stats,
++	     unsigned int bufsize, int npools, int (*threadfn)(void *data))
+ {
+ 	struct svc_serv	*serv;
+ 	unsigned int vers;
+@@ -460,7 +460,7 @@ __svc_create(struct svc_program *prog, u
+ 	serv->sv_name      = prog->pg_name;
+ 	serv->sv_program   = prog;
+ 	kref_init(&serv->sv_refcnt);
+-	serv->sv_stats     = prog->pg_stats;
++	serv->sv_stats     = stats;
+ 	if (bufsize > RPCSVC_MAXPAYLOAD)
+ 		bufsize = RPCSVC_MAXPAYLOAD;
+ 	serv->sv_max_payload = bufsize? bufsize : 4096;
+@@ -522,26 +522,28 @@ __svc_create(struct svc_program *prog, u
+ struct svc_serv *svc_create(struct svc_program *prog, unsigned int bufsize,
+ 			    int (*threadfn)(void *data))
+ {
+-	return __svc_create(prog, bufsize, 1, threadfn);
++	return __svc_create(prog, NULL, bufsize, 1, threadfn);
+ }
+ EXPORT_SYMBOL_GPL(svc_create);
+ 
+ /**
+  * svc_create_pooled - Create an RPC service with pooled threads
+  * @prog: the RPC program the new service will handle
++ * @stats: the stats struct if desired
+  * @bufsize: maximum message size for @prog
+  * @threadfn: a function to service RPC requests for @prog
+  *
+  * Returns an instantiated struct svc_serv object or NULL.
+  */
+ struct svc_serv *svc_create_pooled(struct svc_program *prog,
++				   struct svc_stat *stats,
+ 				   unsigned int bufsize,
+ 				   int (*threadfn)(void *data))
+ {
+ 	struct svc_serv *serv;
+ 	unsigned int npools = svc_pool_map_get();
+ 
+-	serv = __svc_create(prog, bufsize, npools, threadfn);
++	serv = __svc_create(prog, stats, bufsize, npools, threadfn);
+ 	if (!serv)
+ 		goto out_err;
+ 	return serv;
 
 
 
