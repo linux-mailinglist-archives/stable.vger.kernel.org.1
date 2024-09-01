@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-72113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-71898-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E7A296793C
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:41:25 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEA61967842
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 18:29:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 053AC1F218CC
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:41:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6B53EB2241F
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 16:29:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E57F17E00C;
-	Sun,  1 Sep 2024 16:41:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7304183CA5;
+	Sun,  1 Sep 2024 16:29:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="STYKd3Tr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NcNZGgnE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DAF42B9C7;
-	Sun,  1 Sep 2024 16:41:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9637328387;
+	Sun,  1 Sep 2024 16:29:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725208883; cv=none; b=nK6XcexQzYfIvPpP6mRusfyzzR+M0L70WHHJ8SfLtbZD6LZPHMiPX+QTRQ3yY0vNvz0UWm/c8milo8qtASXu7gjLhA5LARpvhT8uaMK4K7uUYNRD1QVYf6aLzEF/9VTyQrC2UlE2vPeMB6A0novPmVi91snKy9xIRss8w+fJ3M0=
+	t=1725208181; cv=none; b=B4AhR8mXPiQQLh3LkLYWtuVlTB7nhTBfc6OCWiMWV1uWkHqd1qGCLstQRN3m1YnvflocqcK3DZkVjsmchgdLeDkWDt7bY8VwJ+1P803cz9itlIlwoBfSuDwjN/blqkOr6xbPY6xoVZCuqMf6InAIVlcSvO5zM4qCSafAqOTKPfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725208883; c=relaxed/simple;
-	bh=2gHaTqrQ85LQDG6wnG8s7Ush25NZzPg/OIeRtgFtn7k=;
+	s=arc-20240116; t=1725208181; c=relaxed/simple;
+	bh=vcKi9HgF7jEJPDg/vYKKq7YhACEPABhO2xnvwjke+RM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l16Z7CDZDNhAGO73cQ8yqlqHrJmY6GSsZQayJ9KrRi78HSDgGHTj1SvSXeJXbH9AyIAoicQ5fvTRWqRmX2gCcPsTTXzv20MKyhsCqvsGZEduj67mXjJ8rQ4Qw0iesIntcxzmGZuSe10pS/l9vhZo0B7FhUbSze10GD2CFxzBA6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=STYKd3Tr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD6CDC4CEC3;
-	Sun,  1 Sep 2024 16:41:22 +0000 (UTC)
+	 MIME-Version; b=nkpRFdMc8dB8MaTpBwQUqMbBrdOG/NOqhm3Z8EieBFbG+kVxTBECUgY94YOlHC4aLJ5z7fCX+8PhSiCW0hLtMQcLRaRZdWWWTdRfz+mk5gD+GP7y4A1eDvFnmmSYTDMSuh+r0ru1+60VWK6B7toghXUBuJDhcfyEN+VFzMRhu/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NcNZGgnE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 041E5C4CEC3;
+	Sun,  1 Sep 2024 16:29:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725208883;
-	bh=2gHaTqrQ85LQDG6wnG8s7Ush25NZzPg/OIeRtgFtn7k=;
+	s=korg; t=1725208181;
+	bh=vcKi9HgF7jEJPDg/vYKKq7YhACEPABhO2xnvwjke+RM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=STYKd3TrnwCMDP/IKm2jXyYfgnKx8Tx3YjVkE5Pl4FkKF+TEddKml2SdVMTtXpqO/
-	 ImPYs+I8HvuvM7QywB3MWJX5B7mKy7PL+tt8KakqRvKLaj5HMYvLLeAbQ9ZzKeG/Xb
-	 UhX11o0o4VtjWZkvsmVca3zRibXPgpKiXj8p0fJs=
+	b=NcNZGgnEsXa6gSI8mV0ALf2s75uDEzn7Q84D6rzdCQxIJI3yyFy5iBncMW1UuwKNt
+	 jy1OqMk5tjk0ScnYhG4wNcDZhxn0nJoUodfgwKYbJMg2jkL2NtrsCNkt8n2Yv2g3B0
+	 R5seWgST4PlrXggpIMZ1excdlx0+r8ULVwAh5PHg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Julia Lawall <julia.lawall@inria.fr>,
-	Abdulrasaq Lawani <abdulrasaqolawani@gmail.com>,
-	Helge Deller <deller@gmx.de>,
+	Eric Dumazet <edumazet@google.com>,
+	Mina Almasry <almasrymina@google.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Joe Damato <jdamato@fastly.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 069/134] fbdev: offb: replace of_node_put with __free(device_node)
+Subject: [PATCH 6.6 68/93] net: busy-poll: use ktime_get_ns() instead of local_clock()
 Date: Sun,  1 Sep 2024 18:16:55 +0200
-Message-ID: <20240901160812.697636134@linuxfoundation.org>
+Message-ID: <20240901160809.924232687@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240901160809.752718937@linuxfoundation.org>
-References: <20240901160809.752718937@linuxfoundation.org>
+In-Reply-To: <20240901160807.346406833@linuxfoundation.org>
+References: <20240901160807.346406833@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +65,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdulrasaq Lawani <abdulrasaqolawani@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit ce4a7ae84a58b9f33aae8d6c769b3c94f3d5ce76 ]
+[ Upstream commit 0870b0d8b393dde53106678a1e2cec9dfa52f9b7 ]
 
-Replaced instance of of_node_put with __free(device_node)
-to simplify code and protect against any memory leaks
-due to future changes in the control flow.
+Typically, busy-polling durations are below 100 usec.
 
-Suggested-by: Julia Lawall <julia.lawall@inria.fr>
-Signed-off-by: Abdulrasaq Lawani <abdulrasaqolawani@gmail.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
+When/if the busy-poller thread migrates to another cpu,
+local_clock() can be off by +/-2msec or more for small
+values of HZ, depending on the platform.
+
+Use ktimer_get_ns() to ensure deterministic behavior,
+which is the whole point of busy-polling.
+
+Fixes: 060212928670 ("net: add low latency socket poll")
+Fixes: 9a3c71aa8024 ("net: convert low latency sockets to sched_clock()")
+Fixes: 37089834528b ("sched, net: Fixup busy_loop_us_clock()")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Mina Almasry <almasrymina@google.com>
+Cc: Willem de Bruijn <willemb@google.com>
+Reviewed-by: Joe Damato <jdamato@fastly.com>
+Link: https://patch.msgid.link/20240827114916.223377-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/offb.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ include/net/busy_poll.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/video/fbdev/offb.c b/drivers/video/fbdev/offb.c
-index fbc6eafb63c77..fcff3601b05cc 100644
---- a/drivers/video/fbdev/offb.c
-+++ b/drivers/video/fbdev/offb.c
-@@ -354,7 +354,7 @@ static void offb_init_palette_hacks(struct fb_info *info, struct device_node *dp
- 			par->cmap_type = cmap_gxt2000;
- 	} else if (of_node_name_prefix(dp, "vga,Display-")) {
- 		/* Look for AVIVO initialized by SLOF */
--		struct device_node *pciparent = of_get_parent(dp);
-+		struct device_node *pciparent __free(device_node) = of_get_parent(dp);
- 		const u32 *vid, *did;
- 		vid = of_get_property(pciparent, "vendor-id", NULL);
- 		did = of_get_property(pciparent, "device-id", NULL);
-@@ -366,7 +366,6 @@ static void offb_init_palette_hacks(struct fb_info *info, struct device_node *dp
- 			if (par->cmap_adr)
- 				par->cmap_type = cmap_avivo;
- 		}
--		of_node_put(pciparent);
- 	} else if (dp && of_device_is_compatible(dp, "qemu,std-vga")) {
- #ifdef __BIG_ENDIAN
- 		const __be32 io_of_addr[3] = { 0x01000000, 0x0, 0x0 };
+diff --git a/include/net/busy_poll.h b/include/net/busy_poll.h
+index 4dabeb6c76d31..9f2ce4d05c265 100644
+--- a/include/net/busy_poll.h
++++ b/include/net/busy_poll.h
+@@ -64,7 +64,7 @@ static inline bool sk_can_busy_loop(struct sock *sk)
+ static inline unsigned long busy_loop_current_time(void)
+ {
+ #ifdef CONFIG_NET_RX_BUSY_POLL
+-	return (unsigned long)(local_clock() >> 10);
++	return (unsigned long)(ktime_get_ns() >> 10);
+ #else
+ 	return 0;
+ #endif
 -- 
 2.43.0
 
