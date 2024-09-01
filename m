@@ -1,52 +1,51 @@
-Return-Path: <stable+bounces-72573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-72614-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2934C967B2D
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:06:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B97D967B56
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 19:08:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 84499B207A6
-	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:06:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CCF3F1C21327
+	for <lists+stable@lfdr.de>; Sun,  1 Sep 2024 17:08:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFC4017B50B;
-	Sun,  1 Sep 2024 17:06:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 278BC1DFD1;
+	Sun,  1 Sep 2024 17:08:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="drNdW5/a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WM5sZsEk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF3052C190;
-	Sun,  1 Sep 2024 17:06:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB35926AC1;
+	Sun,  1 Sep 2024 17:08:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725210371; cv=none; b=RqBwX8xzavAySv6cwvg0vH6a6588xRBRgXDCGdxcwNw0ayD+JeKz1QR2Zr84pjQW+HgsKto4B9fdk9H7arYbS8zzv1cy81VoES3UnwQ4dCmsFJws+TOQREcETegNxCvepTcdHDLoxTzl3vBJ8cQlFl1QBqtUrZ1VLlLCik9s1Oc=
+	t=1725210507; cv=none; b=nC+pt32vCzH3x8eHPr0Wcd51BKqDmmWTekCSzUp67dfY3PPVMchXfirGRKB9uJW5tPrgFLx1+wBWHKmZ0JuTBAdfsg0EeQjUVvpt+FdEO9L8eyZGGeCDa2/XXn71BmPI0Eg4SomSXTFy3P4CFNHQGLe0p+rXNcvd1o+rZKtAkEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725210371; c=relaxed/simple;
-	bh=ff9r634YEkTTrH0Qdt2VodPyV2F0KXR8Qk/NM3e7ASo=;
+	s=arc-20240116; t=1725210507; c=relaxed/simple;
+	bh=67SrPtkfRMiW1Z3YbI5qLhzOY87VvPZ1J2lP1IAL6Ww=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TQ9ggcpNV7DFgS+uH4msNvIDptsG4e5k+cArvwOTNz0xKJ0conj1dP/mL1a12M4F+MetuhwIlRNdETu3/zy0RtS46QYja9rnDbVpvaphSz0niGXwTPCFFHvf8iiaeYD+DVamu39MTPnVVz3exsBJpsNQdlIM/5/vEFR6wM5gZ78=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=drNdW5/a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C752C4CEC3;
-	Sun,  1 Sep 2024 17:06:10 +0000 (UTC)
+	 MIME-Version; b=CqbNGF3lpTn7MEkWlmEymqR/4QQuyXzAiRiwzvaqBRU9xCs3+uTlPb9d5RBBdeDS94slYDY3Z3+qjlVjUog5ho5L2GqQZbf6w+pEq+3Y95+gQj9ccxwyJdo4w8WE9wzt1qng7YOYqGBzJ+yJR0ji6JYY31RCe3MB662vjXz0MN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WM5sZsEk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41DEEC4CEC3;
+	Sun,  1 Sep 2024 17:08:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725210371;
-	bh=ff9r634YEkTTrH0Qdt2VodPyV2F0KXR8Qk/NM3e7ASo=;
+	s=korg; t=1725210507;
+	bh=67SrPtkfRMiW1Z3YbI5qLhzOY87VvPZ1J2lP1IAL6Ww=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=drNdW5/aBuE/F5p2izX/JqSg4qtOp6AlKoE25FgdJrjZ5d2wcynLxkkVOCwBs0ceQ
-	 czEkCFeWzn1uZiMfjL9rjnGkKKVg9TmrRGkifHF9QBLpkhtxAVHYI3HOSad+kUVmZD
-	 mF1w7h7e2ts6KB+offV+8vClSuKt5beiW2eDF+9A=
+	b=WM5sZsEkhLtlE/McjjdZx0bBH/czH/hZIXA8lutiW6EkgGJbyxlBlY6tchnKihfzT
+	 deB8Rov52Cs1ODubxxaKDrBwlIdBQ6GsYBRDVYBJHEALavq/29rdKj0PtEZJO/fy1X
+	 4N+swxHdtVDNc1m2gqxztm/FxeCDGXjZEEdSo6cY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 5.15 168/215] hwmon: (ltc2992) Fix memory leak in ltc2992_parse_dt()
-Date: Sun,  1 Sep 2024 18:18:00 +0200
-Message-ID: <20240901160829.709296395@linuxfoundation.org>
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.15 169/215] ALSA: timer: Relax start tick time check for slave timer elements
+Date: Sun,  1 Sep 2024 18:18:01 +0200
+Message-ID: <20240901160829.750536831@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240901160823.230213148@linuxfoundation.org>
 References: <20240901160823.230213148@linuxfoundation.org>
@@ -65,42 +64,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit a94ff8e50c20bde6d50864849a98b106e45d30c6 upstream.
+commit ccbfcac05866ebe6eb3bc6d07b51d4ed4fcde436 upstream.
 
-A new error path was added to the fwnode_for_each_available_node() loop
-in ltc2992_parse_dt(), which leads to an early return that requires a
-call to fwnode_handle_put() to avoid a memory leak in that case.
+The recent addition of a sanity check for a too low start tick time
+seems breaking some applications that uses aloop with a certain slave
+timer setup.  They may have the initial resolution 0, hence it's
+treated as if it were a too low value.
 
-Add the missing fwnode_handle_put() in the error path from a zero value
-shunt resistor.
+Relax and skip the check for the slave timer instance for addressing
+the regression.
 
-Cc: stable@vger.kernel.org
-Fixes: 10b029020487 ("hwmon: (ltc2992) Avoid division by zero")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Link: https://lore.kernel.org/r/20240523-fwnode_for_each_available_child_node_scoped-v2-1-701f3a03f2fb@gmail.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: 4a63bd179fa8 ("ALSA: timer: Set lower bound of start tick time")
+Cc: <stable@vger.kernel.org>
+Link: https://github.com/raspberrypi/linux/issues/6294
+Link: https://patch.msgid.link/20240810084833.10939-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/ltc2992.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ sound/core/timer.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/hwmon/ltc2992.c
-+++ b/drivers/hwmon/ltc2992.c
-@@ -913,9 +913,11 @@ static int ltc2992_parse_dt(struct ltc29
- 
- 		ret = fwnode_property_read_u32(child, "shunt-resistor-micro-ohms", &val);
- 		if (!ret) {
--			if (!val)
-+			if (!val) {
-+				fwnode_handle_put(child);
- 				return dev_err_probe(&st->client->dev, -EINVAL,
- 						     "shunt resistor value cannot be zero\n");
-+			}
- 			st->r_sense_uohm[addr] = val;
- 		}
- 	}
+--- a/sound/core/timer.c
++++ b/sound/core/timer.c
+@@ -556,7 +556,7 @@ static int snd_timer_start1(struct snd_t
+ 	/* check the actual time for the start tick;
+ 	 * bail out as error if it's way too low (< 100us)
+ 	 */
+-	if (start) {
++	if (start && !(timer->hw.flags & SNDRV_TIMER_HW_SLAVE)) {
+ 		if ((u64)snd_timer_hw_resolution(timer) * ticks < 100000) {
+ 			result = -EINVAL;
+ 			goto unlock;
 
 
 
